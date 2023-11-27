@@ -130,11 +130,13 @@ const HeaderMenu = ({ loggedUser }: any) => {
 
                 return (
                   <>
-                    <li>
+                    <li style={{ cursor: "default" }}>
                       <Link href={`/${jsonData[0][1]?.camp_link}`}>
                         <a className={styles.camp_heading_color}>
                           {" "}
-                          <label>{x.type_value}</label>
+                          <label style={{ cursor: "pointer" }}>
+                            {x.type_value}
+                          </label>
                         </a>
                       </Link>
 
@@ -193,9 +195,12 @@ const HeaderMenu = ({ loggedUser }: any) => {
                 );
                 return (
                   <>
-                    <li>
+                    <li style={{ cursor: "default" }}>
                       <div className="d-flex flex-wrap g-2">
-                        <a href={`/${jsonData?.[0]?.[1]?.camp_link}`}>
+                        <a
+                          style={{ cursor: "pointer" }}
+                          href={`/${jsonData?.[0]?.[1]?.camp_link}`}
+                        >
                           <h3 className="m-0">
                             {jsonData?.length > 1
                               ? jsonData?.[0]?.[1]?.camp_name
