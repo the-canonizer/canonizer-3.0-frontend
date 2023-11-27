@@ -52,21 +52,34 @@ const CurrentTopicCard = ({ loadingIndicator, backGroundColorClass }: any) => {
             <div className="cmp-change-icon">
               {topicRecord?.in_review_changes > 0 ? (
                 // <img className="change-icon" src="/images/change-icon.svg" />
-                <Popover
-                  content={
-                    "Some changes are currently under review in this topic."
-                  }
-                  placement="topLeft"
-                  className={styles.infoIcon}
+                <div
+                  onClick={(e) => {
+                    e.stopPropagation();
+
+                    router.push(
+                      `/topic/history/${replaceSpecialCharacters(
+                        router?.query?.camp[0],
+                        "-"
+                      )}`
+                    );
+                  }}
                 >
-                  <Image
-                    // className="change-icon"
-                    width={20}
-                    height={20}
-                    src="/images/change-icon.svg"
-                    alt=""
-                  />
-                </Popover>
+                  <Popover
+                    content={
+                      "Some changes are currently under review in this topic."
+                    }
+                    placement="topLeft"
+                    className={styles.infoIcon}
+                  >
+                    <Image
+                      // className="change-icon"
+                      width={20}
+                      height={20}
+                      src="/images/change-icon.svg"
+                      alt=""
+                    />
+                  </Popover>
+                </div>
               ) : (
                 ""
               )}
