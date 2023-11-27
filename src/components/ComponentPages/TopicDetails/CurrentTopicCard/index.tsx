@@ -45,27 +45,32 @@ const CurrentTopicCard = ({ loadingIndicator, backGroundColorClass }: any) => {
         className={`header-bg-color-change ${backGroundColorClass}`}
         header={
           <>
-            <h3>{K?.exceptionalMessages?.topicRecordHeading}</h3>
-            {topicRecord?.in_review_changes > 0 ? (
-              // <img className="change-icon" src="/images/change-icon.svg" />
-              <Popover
-                content={
-                  "Some changes are currently under review in this topic."
-                }
-                placement="topLeft"
-                className={styles.infoIcon}
-              >
-                <Image
-                  className="change-icon"
-                  width={20}
-                  height={20}
-                  src="/images/change-icon.svg"
-                  alt=""
-                />
-              </Popover>
-            ) : (
-              ""
-            )}
+            <h3 className="cmp-title">
+              {K?.exceptionalMessages?.topicRecordHeading}
+            </h3>
+
+            <div className="cmp-change-icon">
+              {topicRecord?.in_review_changes > 0 ? (
+                // <img className="change-icon" src="/images/change-icon.svg" />
+                <Popover
+                  content={
+                    "Some changes are currently under review in this topic."
+                  }
+                  placement="topLeft"
+                  className={styles.infoIcon}
+                >
+                  <Image
+                    // className="change-icon"
+                    width={20}
+                    height={20}
+                    src="/images/change-icon.svg"
+                    alt=""
+                  />
+                </Popover>
+              ) : (
+                ""
+              )}
+            </div>
           </>
         }
         key="1"
@@ -85,9 +90,7 @@ const CurrentTopicCard = ({ loadingIndicator, backGroundColorClass }: any) => {
               <Link
                 href={`/user/supports/${
                   topicRecord?.submitter_nick_id || ""
-                }?topicnum=${topicRecord?.topic_num || ""}&campnum=${
-                  topicRecord?.camp_num || ""
-                }&canon=${topicRecord?.namespace_id || ""}`}
+                }?canon=${topicRecord?.namespace_id || ""}`}
                 passHref
               >
                 <a>{topicRecord?.submitter_nick_name}</a>

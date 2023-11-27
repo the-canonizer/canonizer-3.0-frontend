@@ -194,8 +194,6 @@ export const UserProfileCard = ({
                                               href={{
                                                 pathname: `/user/supports/${data.delegate_nick_name_id}`,
                                                 query: {
-                                                  topicnum: data?.topic_num,
-                                                  campnum: reqBody?.campNum,
                                                   canon: data?.namespace_id,
                                                 },
                                               }}

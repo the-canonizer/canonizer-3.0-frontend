@@ -20,9 +20,13 @@ const HeaderMenu = ({ loggedUser }: any) => {
   const [searchCamps, setSearchCamps] = useState([]);
   const [searchCampStatement, setSearchCampStatement] = useState([]);
   const [searchNickname, setSearchNickname] = useState([]);
-  const { searchValue } = useSelector((state: RootState) => ({
+  const [searchVal, setSearchVal] = useState("");
+  let { searchValue } = useSelector((state: RootState) => ({
     searchValue: state?.searchSlice?.searchValue,
   }));
+
+  const router = useRouter();
+
   const dispatch = useDispatch();
 
   const renderTitle = (icon: any, title: string) => (
@@ -45,10 +49,18 @@ const HeaderMenu = ({ loggedUser }: any) => {
     return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
   };
   useEffect(() => {
-    const localSearch = localStorage.getItem("searchValue");
-    if (localSearch) {
-      dispatch(setSearchValue(localSearch));
-      getGlobalSearchCanonizer(localSearch, true);
+    if (searchValue?.length == 0) {
+      // const localSearch = localStorage.getItem("searchValue");
+      searchValue = router?.asPath
+        ?.split("=")[1]
+        ?.split("+")
+        .join(" ")
+        ?.replace(/%20/g, " ");
+      setSearchVal("");
+      // if (localSearch) {
+      dispatch(setSearchValue(searchValue));
+      getGlobalSearchCanonizer(searchValue, true);
+      // }
     }
   }, []);
 
@@ -76,6 +88,11 @@ const HeaderMenu = ({ loggedUser }: any) => {
                 );
               })}
             </ul>
+            {searchTopics.length ? (
+              <span className={styles.bold_margin}></span>
+            ) : (
+              ""
+            )}
           </div>
         ),
       ],
@@ -97,8 +114,8 @@ const HeaderMenu = ({ loggedUser }: any) => {
                     accumulator[index] = {
                       camp_name:
                         currentVal[accIndex]?.camp_name == "Agreement"
-                          ? currentVal[accIndex].topic_name
-                          : currentVal[accIndex].camp_name,
+                          ? currentVal[accIndex]?.topic_name
+                          : currentVal[accIndex]?.camp_name,
                       camp_link: currentVal[accIndex]?.camp_link,
                     };
                     return accumulator;
@@ -109,7 +126,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
                 return (
                   <>
                     <li>
-                      <Link href={`/${jsonData[0][1].camp_link}`}>
+                      <Link href={`/${jsonData[0][1]?.camp_link}`}>
                         <a className={styles.camp_heading_color}>
                           {" "}
                           {x.type_value}
@@ -134,6 +151,11 @@ const HeaderMenu = ({ loggedUser }: any) => {
                 );
               })}
             </ul>
+            {searchCamps.length ? (
+              <span className={styles.bold_margin}></span>
+            ) : (
+              ""
+            )}
           </div>
         ),
       ],
@@ -168,7 +190,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
                   <>
                     <li>
                       <div className="d-flex flex-wrap g-2">
-                        <a href={`/${jsonData?.[0]?.[1].camp_link}`}>
+                        <a href={`/${jsonData?.[0]?.[1]?.camp_link}`}>
                           <h3 className="m-0">
                             {jsonData?.length > 1
                               ? jsonData?.[0]?.[1]?.camp_name
@@ -208,6 +230,11 @@ const HeaderMenu = ({ loggedUser }: any) => {
                 );
               })}
             </ul>
+            {searchCampStatement.length ? (
+              <span className={styles.bold_margin}></span>
+            ) : (
+              ""
+            )}
           </div>
         ),
       ],
@@ -243,6 +270,11 @@ const HeaderMenu = ({ loggedUser }: any) => {
                 );
               })}
             </ul>
+            {searchNickname.length ? (
+              <span className={styles.bold_margin}></span>
+            ) : (
+              ""
+            )}
           </div>
         ),
       ],
@@ -255,9 +287,12 @@ const HeaderMenu = ({ loggedUser }: any) => {
             <Link
               href={{
                 pathname: "/search",
+                query: { q: searchValue },
               }}
             >
-              <a>{`Search for "${searchValue}"`}</a>
+              <a
+                onClick={() => handleSearchfor()}
+              >{`Search for "${searchValue}"`}</a>
             </Link>
           </footer>
         ),
@@ -286,8 +321,6 @@ const HeaderMenu = ({ loggedUser }: any) => {
 
   const [mockLinks, setMockLinks] = useState(links);
 
-  const router = useRouter();
-
   useEffect(() => {
     if (!loggedUser?.is_admin) {
       const allLinks = [...mockLinks];
@@ -314,8 +347,19 @@ const HeaderMenu = ({ loggedUser }: any) => {
     }
   };
 
-  const handlePress = () => {
-    router.push("/search");
+  const handleSearchfor = () => {
+    setInputSearch("");
+    setSearchVal("");
+    getGlobalSearchCanonizer(searchValue, true);
+  };
+
+  const handlePress = (e) => {
+    setInputSearch("");
+    setSearchVal("");
+    router.push({
+      pathname: "/search",
+      query: { q: searchValue },
+    });
   };
   return (
     <Fragment>
@@ -359,25 +403,27 @@ const HeaderMenu = ({ loggedUser }: any) => {
           dropdownMatchSelectWidth={false}
           // className={"search_header"}
           options={inputSearch ? options : []}
-          value={searchValue}
+          value={searchVal}
         >
           <Input
             size="large"
             placeholder="Search for"
-            value={searchValue}
+            value={searchVal}
             type="text"
             name="search"
             prefix={<i className="icon-search"></i>}
             onChange={(e) => {
-              localStorage.setItem("searchValue", e.target.value);
+              // localStorage.setItem("searchValue", e.target.value);
 
               dispatch(setSearchValue(e.target.value));
               setInputSearch(e.target.value);
+              setSearchVal(e.target.value);
               getGlobalSearchCanonizer(e.target.value, false);
             }}
             onPressEnter={(e) => {
               // localStorage.setItem("searchValue",(e.target as HTMLTextAreaElement).value)
-              !router.asPath.includes("/search") ? handlePress() : "";
+              // !router.asPath.includes("/search") ? handlePress(e) : "";
+              handlePress(e);
               getGlobalSearchCanonizer(
                 (e.target as HTMLTextAreaElement).value,
                 true

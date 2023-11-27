@@ -213,7 +213,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
             <Paragraph className={styles.algoInfo}>
               {/* <i className="icon-fish-bones"></i> Algorithm Information */}
             </Paragraph>
-            <div className={styles.filter}>
+            {/* <div className={styles.filter}>
               <Text className={styles.filterText}>Filter</Text>
               <LeftOutlined className={styles.LeftOutlined} />
               <Input
@@ -229,7 +229,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
               >
                 <i className="icon-info"></i>
               </Popover>
-            </div>
+            </div> */}
           </Panel>
         </Collapse>
       </div>

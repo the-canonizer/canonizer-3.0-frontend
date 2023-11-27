@@ -184,18 +184,6 @@ const SupportTreeCard = ({
       if ((!loadMore && index < supportLength) || loadMore) {
         if (data[item].delegates) {
           /* eslint-disable */
-          const linkss = (
-            <Link
-              href={{
-                pathname: `/user/supports/${data[item].nick_name_id}`,
-                query: {
-                  topicnum: topicRecord?.topic_num,
-                  campnum: topicRecord?.camp_num,
-                  canon: topicRecord?.namespace_id,
-                },
-              }}
-            ></Link>
-          );
           /* eslint-enable */
 
           return (
@@ -217,9 +205,7 @@ const SupportTreeCard = ({
                         href={{
                           pathname: `/user/supports/${data[item].nick_name_id}`,
                           query: {
-                            topicnum: topicRecord?.topic_num,
-                            campnum: topicRecord?.camp_num,
-                            canon: router?.query?.canon,
+                            canon: topicRecord?.namespace_id,
                           },
                         }}
                       >

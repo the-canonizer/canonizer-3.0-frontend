@@ -11,10 +11,14 @@ import {
 import { EditOutlined } from "@ant-design/icons";
 import moment from "moment";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 import styles from "./Forum.module.scss";
 import messages from "../../../../messages";
-import { getTime } from "../../../../utils/generalUtility";
+import {
+  getTime,
+  replaceSpecialCharacters,
+} from "../../../../utils/generalUtility";
 import useAuthentication from "../../../../hooks/isUserAuthenticated";
 import CustomSkelton from "../../../common/customSkelton";
 
@@ -38,6 +42,8 @@ const ThreadListUI = ({
 }: any) => {
   const [isLog, setIsLog] = useState(false);
   const { isUserAuthenticated } = useAuthentication();
+
+  const router = useRouter();
 
   useEffect(() => {
     setIsLog(isUserAuthenticated);
@@ -233,27 +239,38 @@ const ThreadListUI = ({
                 title="Thread Name"
                 dataIndex="title"
                 key="title"
-                render={(text, others, idx) => {
+                render={(text, others: any, idx) => {
                   return (
-                    <a
-                      onClick={(e) => onThreadClick(e, others)}
-                      className={styles.threadListTitle}
-                      id={"thread-label-" + (+idx + 1)}
-                      data-testid={"thread-label-" + (+idx + 1)}
-                    >
-                      {text}
-                      {isLog && paramsList.by === "my" ? (
-                        <Tooltip title="edit">
-                          <a
-                            onClick={(e) => onEditClick(e, others)}
-                            className="linkCss"
-                            data-testid="edit_btn"
-                          >
-                            <EditOutlined />
-                          </a>
-                        </Tooltip>
-                      ) : null}
-                    </a>
+                    <Fragment key={idx}>
+                      <a
+                        onClick={(e) => onThreadClick(e, others)}
+                        className={styles.threadListTitle}
+                        id={"thread-label-" + (+idx + 1)}
+                        data-testid={"thread-label-" + (+idx + 1)}
+                        href={`/forum/${replaceSpecialCharacters(
+                          router?.query?.topic as string,
+                          "-"
+                        )}/${replaceSpecialCharacters(
+                          router?.query?.camp as string,
+                          "-"
+                        )}/threads/${others?.id}`}
+                      >
+                        <Fragment>
+                          {text}
+                          {isLog && paramsList.by === "my" ? (
+                            <Tooltip title="edit">
+                              <a
+                                onClick={(e) => onEditClick(e, others)}
+                                className="linkCss"
+                                data-testid="edit_btn"
+                              >
+                                <EditOutlined />
+                              </a>
+                            </Tooltip>
+                          ) : null}
+                        </Fragment>
+                      </a>
+                    </Fragment>
                   );
                 }}
                 width="350px"
@@ -273,9 +290,7 @@ const ThreadListUI = ({
                           <Link
                             href={`/user/supports/${
                               others["nick_name_id"] || ""
-                            }?topicnum=${others["topic_id"] || ""}&campnum=${
-                              others["camp_id"] || ""
-                            }&canon=${others["namespace_id"] || 1}`}
+                            }?canon=${others["namespace_id"] || 1}`}
                             passHref
                           >
                             <a>

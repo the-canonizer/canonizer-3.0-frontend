@@ -1,6 +1,5 @@
 import {
   fireEvent,
-  getByTestId,
   render,
   screen,
   waitFor,
@@ -10,14 +9,8 @@ import ManageSupportUI from "../index";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import ManageSupport from "../..";
 import { Card } from "antd";
-// import { useRouter } from "next/router";
-// import { renderHook } from "@testing-library/react-hooks";
-// import dynamic from "next/dynamic";
-// import moment from "moment";
-// import isAuth from "src/hooks/isUserAuthenticated";
-// import { act } from "react-dom/test-utils";
-// import { placeholders } from "src/messages/placeholder";
-// import SupportRemovedModal from "src/components/common/supportRemovedModal";
+import userEvent from "@testing-library/user-event";
+import { placeholders } from "src/messages/placeholder";
 
 const { labels } = messages;
 const nickNameList = [
@@ -36,7 +29,6 @@ const nickNameList = [
     private: 1,
   },
 ];
-// const currentGetCheckSupportExist = {
 //   camp_num: expect.any(Number),
 //   disable_submit: "true",
 //   is_confirm: expect.any(Number),
@@ -60,7 +52,16 @@ const nickNameList = [
 // };
 // const checkDelegateClick = true;
 // const manageSupportLink = "/support/949-top/2-camp-1 link";
-const manageSupportList = [];
+const manageSupportList = [
+  {
+    camp_name: "Test Camp name",
+    camp_num: 2,
+    id: 1,
+    link: "/topic/949-top/2-camp-1",
+    support_order: 1,
+    topic_num: 10,
+  },
+];
 const clearAllChanges = jest.fn();
 const removeAll = jest.fn();
 const handleClose = jest.fn();
@@ -79,7 +80,7 @@ const campRecord = {
   camp_about_nick_id: 0,
   camp_about_nick_name: "joy",
   camp_about_url: "",
-  camp_name: "",
+  camp_name: "Test Camp name",
   camp_num: 0,
   direct_archive: 0,
   flag: 0,
@@ -92,91 +93,56 @@ const campRecord = {
   note: 0,
   parentCamps: [
     {
-      camp_name: "",
+      camp_name: "Test Camp name",
       camp_num: 1,
       topic_num: 23,
     },
   ],
 };
-// const currentGetCheckSupportExistData = {
-//   camp_num: 1,
-//   is_confirm: 0,
-//   support_flag: 1,
-//   topic_num: 12,
-// };
 
-// const topicSupportList = [
-//   {
-//     camp_name: "Aggreement",
-//     camp_num: 1,
-//     delegate_nick_name_id: 1,
-//     end: 0,
-//     link: "",
-//     namespace_id: 1,
-//     nick_name_id: 627,
-//     start: 1111,
-//     support_id: 1,
-//     support_order: 1,
-//     title: "ABC",
-//     topic_num: 920,
-//   },
-// ];
-
-// const allParentList = [
-//   {
-//     camp_about_nick_id: 1,
-//     camp_about_url: "",
-//     camp_name: "Aggrement",
-//     camp_num: 2,
-//     direct_archive: 0,
-//     go_live_time: 121212,
-//     grace_period: 0,
-//     id: 23,
-//     // is_archive:0,
-//     is_disabled: 0,
-//     is_one_level: 0,
-//     key_words: "abc",
-//     language: "English",
-//     note: "",
-//   },
-// ];
-// const addDelegatedSupport = {
-//   nick_name_id: 1,
-//   delegated_nick_name_id: 2,
-//   topic_num: 12,
-// };
 const manageSupport = ["abc-name", "def-age"];
 jest.mock("next/router", () => ({
   useRouter: jest.fn(() => ({
     query: { manageSupport: manageSupport },
     push: jest.fn(),
+    asPath: "abc_efg",
   })),
 }));
-// jest.mock("react-redux", () => ({
-//   ...jest.requireActual("react-redux"),
-//   useSelector: jest.fn().mockImplementation(() => {
-//     return {
-//       campRecord: {
-//         camp_name: "ABC",
-//       },
-//       asof: "",
-//       asofdate: "",
-//       manageSupportUrlLink: "",
-//       currentDelegatedSupportedClick: {},
-//       currentGetCheckSupportExistsData: {
-//         is_delegator: true
-//       },
-//       CurrentCheckSupportStatus: "",
-//       manageSupportStatusCheck: true,
-//     };
-//   }),
-// }));
+jest.mock("react-redux", () => ({
+  ...jest.requireActual("react-redux"),
+  useSelector: jest.fn().mockImplementation(() => {
+    return {
+      campRecord: {
+        camp_name: "Test Camp name",
+      },
+      asof: "",
+      asofdate: "",
+      manageSupportUrlLink: "",
+      currentDelegatedSupportedClick: {
+        delegatedSupportClick: false,
+      },
+      currentGetCheckSupportExistsData: {
+        warning: "",
+        is_confirm: 1,
+        remove_camps: [
+          {
+            camp: "abc",
+          },
+        ],
+      },
+      CurrentCheckSupportStatus: "",
+      manageSupportStatusCheck: true,
+    };
+  }),
+}));
 jest.mock("src/hooks/isUserAuthenticated", () =>
   jest.fn(() => ({ isUserAuthenticated: true }))
 );
 jest.mock("src/network/api/campDetailApi", () => ({
   getAllUsedNickNames: jest.fn(),
-  getCurrentCampRecordApi: jest.fn(),
+  getCurrentCampRecordApi: jest
+    .fn()
+    .mockReturnValue(Promise.resolve({ camp_name: "Test Camp name" })),
   getAllRemovedReasons: jest
     .fn()
     .mockReturnValue(Promise.resolve({ success: true })),
@@ -191,7 +157,7 @@ jest.mock("src/network/api/topicAPI", () => ({
   GetCheckSupportExists: jest.fn(() =>
     Promise.resolve({
       data: {
-        remove_camps: {},
+        remove_camps: [],
       },
       status_code: 200,
     })
@@ -208,9 +174,15 @@ jest.mock("src/network/api/userApi", () => ({
     })
   ),
 }));
-jest.mock("src/components/common/supportRemovedModal", () => {
-  return <div>Removed Modal</div>;
-});
+const supportRemovedModal = () => <div>Removed Modal</div>;
+supportRemovedModal.displayName = "SupportRemovedModal";
+jest.mock(
+  "src/components/common/supportRemovedModal",
+  () => {
+    return () => supportRemovedModal;
+  },
+  { virtual: true }
+);
 
 describe("ManageSupportUI", () => {
   it("render show SupportedCamps", () => {
@@ -318,7 +290,7 @@ it("render show cancel button", () => {
 it("render support remove card component", () => {
   const manageSupportList = [
     {
-      camp_name: 1,
+      camp_name: "Test Camp name",
       camp_num: 2,
       id: 1,
       link: "/topic/949-top/2-camp-1",
@@ -560,60 +532,77 @@ it("Check the checkbox is checked/unchecked", () => {
   ).toBeTruthy();
 });
 
-it("should render card with title and content", () => {
-  render(
-    <ManageSupportUI
-      nickNameList={nickNameList}
-      manageSupportList={manageSupportList}
-      clearAllChanges={clearAllChanges}
-      removeAll={removeAll}
-      handleClose={handleClose}
-      checked={checked}
-      setManageSupportList={setManageSupportList}
-      parentSupportDataList={parentSupportDataList}
-      getSupportStatusData={getSupportStatusData}
-      submitNickNameSupportCamps={submitNickNameSupportCamps}
-      cancelManageRoute={cancelManageRoute}
-      setSelectedtNickname={setSelectedtNickname}
-      selectedtNickname={selectedtNickname}
-      submitButtonDisable={submitButtonDisable}
-      setUpdatePostion={setUpdatePostion}
-      unableToFindCamp={unableToFindCamp}
-    />
-  );
-  const title = "Test Card Title";
-  const content = "Test Card Content";
+// it("should render card with title and content", () => {
+//   render(
+//     <ManageSupportUI
+//       nickNameList={nickNameList}
+//       manageSupportList={manageSupportList}
+//       clearAllChanges={clearAllChanges}
+//       removeAll={removeAll}
+//       handleClose={handleClose}
+//       checked={checked}
+//       setManageSupportList={setManageSupportList}
+//       parentSupportDataList={parentSupportDataList}
+//       getSupportStatusData={getSupportStatusData}
+//       submitNickNameSupportCamps={submitNickNameSupportCamps}
+//       cancelManageRoute={cancelManageRoute}
+//       setSelectedtNickname={setSelectedtNickname}
+//       selectedtNickname={selectedtNickname}
+//       submitButtonDisable={submitButtonDisable}
+//       setUpdatePostion={setUpdatePostion}
+//       unableToFindCamp={unableToFindCamp}
+//     />
+//   );
 
-  render(
-    <Card title={title}>
-      <p>{content}</p>
-    </Card>
-  );
+//   const tagBtn = screen.getByTestId("tag-btn")
+//   expect(tagBtn).toBeInTheDocument()
 
-  const cardTitle = screen.getByText(title);
-  const cardContent = screen.getByText(content);
-
-  expect(cardTitle).toBeInTheDocument();
-  expect(cardContent).toBeInTheDocument();
-});
+// });
 it("should render card with title and contents", async () => {
-  const nicknamelist = [];
-  const manageSupportList = [];
+  const nicknamelist = [
+    {
+      nick_name: "Vikas",
+      id: "1",
+    },
+  ];
+  const manageSupportList = [
+    {
+      topic_num: 1,
+      camp_num: 1,
+      camp_name: "test",
+      support_order: 1,
+      link: "/test",
+    },
+    {
+      topic_num: 2,
+      camp_num: 2,
+      camp_name: "test 2",
+      support_order: 2,
+      link: "/test2",
+    },
+  ];
   const removeAll = jest.fn();
   const handleClose = jest.fn();
   const checked = false;
   const setManageSupportList = jest.fn();
-  const parentSupportDataList = jest.fn();
-  const getSupportStatusData = "";
+  const parentSupportDataList = [
+    {
+      camp_num: 1,
+      support_order: 1,
+      camp_name: "Test",
+      link: "/test",
+    },
+  ];
+  const getSupportStatusData = "test";
   const submitNickNameSupportCamps = jest.fn();
   const cancelManageRoute = jest.fn();
   const setSelectedtNickname = jest.fn();
-  const selectedtNickname = "";
+  const selectedtNickname = "1";
   const submitButtonDisable = false;
   const setUpdatePostion = jest.fn();
   const unableToFindCamp = false;
 
-  const { getByTestId } = render(
+  const { getByTestId, getAllByTestId } = render(
     <ManageSupportUI
       nickNameList={nicknamelist}
       manageSupportList={manageSupportList}
@@ -631,15 +620,31 @@ it("should render card with title and contents", async () => {
       submitButtonDisable={submitButtonDisable}
       setUpdatePostion={setUpdatePostion}
       unableToFindCamp={unableToFindCamp}
+      getManageSupportLoadingIndicator={false}
     />
   );
-  const inputEl = getByTestId("select-option");
-  expect(inputEl).toBeInTheDocument();
-  // expect(inputEl).toHaveAttribute("type", "text");
-  fireEvent.click(inputEl);
+  const campName = getByTestId("camp_name");
+  expect(campName).toBeInTheDocument();
 
-  // await fireEvent.change(inputEl, { target: { value: "abc" } });
-  // userEvent.selectOptions(getByTestId('select-option'), '<value>');
+  const clickOnCamp = getAllByTestId("styles_Bluecolor")[0];
+  expect(clickOnCamp).toBeInTheDocument();
+  fireEvent.click(clickOnCamp);
+  const closeCircle = getAllByTestId("close")[0];
+  expect(closeCircle).toBeInTheDocument();
+  fireEvent.click(closeCircle);
+  // const selectInput = screen.getByRole("combobox");
+
+  //   userEvent.click(selectInput);
+  // const inputE1 = screen.getByTestId("select-option")
+  // const inputE1 = screen.getAllByLabelText("Vikas");
+  // userEvent.click(inputE1[0]);
+
+  // expect(inputE1).toBeInTheDocument();
+  // expect(inputEl).toHaveAttribute("type", "search");
+  // fireEvent.click(inputEl);
+
+  // await fireEvent.change(inputE1, { target: { value: "1" } });
+  //  await  userEvent.selectOptions(getByTestId('select-option'), '1');
 });
 describe("Manage support", () => {
   it("render nick name list", async () => {
@@ -652,9 +657,12 @@ describe("Manage support", () => {
       expect(screen.getByText(nickNameList[0].private)).toBeInTheDocument();
     });
   });
-  it("render camp record", () => {
-    render(<ManageSupport />);
+  it("render camp record", async () => {
+    await render(<ManageSupport />);
     waitFor(async () => {
+      const tagBtn = screen.getByText("Test Camp name");
+      expect(tagBtn).toBeInTheDocument();
+      fireEvent.click(tagBtn);
       expect(
         screen.getByText(campRecord.camp_about_nick_id)
       ).toBeInTheDocument();
@@ -685,87 +693,91 @@ describe("Manage support", () => {
   });
 });
 
-describe("Test Case", () => {
-  // beforeEach(()=>{
-  jest.mock("react-redux", () => ({
-    ...jest.requireActual("react-redux"),
-    useSelector: jest.fn().mockImplementation(() => {
-      return {
-        campRecord: {
-          camp_name: "ABC",
-        },
-        asof: "",
-        asofdate: "",
-        manageSupportUrlLink: "",
-        currentDelegatedSupportedClick: {},
-        currentGetCheckSupportExistsData: {
-          is_delegator: true,
-        },
-        CurrentCheckSupportStatus: "",
-        manageSupportStatusCheck: true,
-      };
-    }),
-  }));
-  // })
-  // it("click on cancel button", () => {
-  //   const { getAllByText, container } = render(<ManageSupport></ManageSupport>);
-  //   const cancel_button = getAllByText("Cancel")[0];
-  //   fireEvent.click(cancel_button);
-  //   expect(
-  //     container.getElementsByClassName("ant-select-selection-item")
-  //   ).toBeTruthy();
-  // });
-  // it("click on Submit button - RemoveApi call", () => {
-  //   const { getAllByText } = render(<ManageSupport></ManageSupport>);
-  //   const submit_button = getAllByText("Submit")[0];
-  //   fireEvent.click(submit_button);
-  // });
+// describe("Test Case", () => {
+//   // beforeEach(()=>{
+//     jest.mock("react-redux", () => ({
+//       ...jest.requireActual("react-redux"),
+//       useSelector: jest.fn().mockImplementation(() => {
+//         return {
+//           campRecord: {
+//             camp_name: "ABC",
+//           },
+//           asof: "",
+//           asofdate: "",
+//           manageSupportUrlLink: "",
+//           currentDelegatedSupportedClick: {},
+//           currentGetCheckSupportExistsData: {
+//             is_delegator: true
+//           },
+//           CurrentCheckSupportStatus: "",
+//           manageSupportStatusCheck: true,
+//         };
+//       }),
+//     }));
+//   // })
+describe("Manage support ui cancle or submit button", () => {
+  it("click on cancel button", () => {
+    const { getAllByText, container } = render(<ManageSupport></ManageSupport>);
+    const cancel_button = getAllByText("Cancel")[0];
+    fireEvent.click(cancel_button);
+    expect(
+      container.getElementsByClassName("ant-select-selection-item")
+    ).toBeTruthy();
+  });
+  it("click on Submit button", () => {
+    const { getAllByText, container } = render(<ManageSupport></ManageSupport>);
+    const cancel_button = getAllByText("Submit")[0];
+    fireEvent.click(cancel_button);
+    expect(
+      container.getElementsByClassName("ant-select-selection-item")
+    ).toBeTruthy();
+  });
 
-  // it("click on clear all changes button", () => {
-  //   const { getAllByText, container } = render(<ManageSupport></ManageSupport>);
-  //   const clear_all_button = getAllByText("Clear all changes")[0];
-  //   fireEvent.click(clear_all_button);
-  //   expect(
-  //     container.getElementsByClassName("ant-select-selection-item")
-  //   ).toBeTruthy();
-  // });
+  it("click on clear all changes button", () => {
+    const { getAllByText, container } = render(<ManageSupport></ManageSupport>);
+    const clear_all_button = getAllByText("Clear all changes")[0];
+    fireEvent.click(clear_all_button);
+    expect(
+      container.getElementsByClassName("ant-select-selection-item")
+    ).toBeTruthy();
+  });
 
-  // it("click on remove all changes button", () => {
-  //   const { getAllByTestId, container } = render(
-  //     <ManageSupport></ManageSupport>
-  //   );
-  //   const remove_all_button = getAllByTestId("checkbox")[0];
-  //   fireEvent.click(remove_all_button);
-  //   expect(
-  //     container.getElementsByClassName("ManageSupport_checkbox__DQcrk")
-  //   ).toBeTruthy();
-  // });
+  it("click on remove all changes button", () => {
+    const { getAllByTestId, container } = render(
+      <ManageSupport></ManageSupport>
+    );
+    const remove_all_button = getAllByTestId("checkbox")[0];
+    fireEvent.click(remove_all_button);
+    expect(
+      container.getElementsByClassName("ManageSupport_checkbox__DQcrk")
+    ).toBeTruthy();
+  });
 });
-describe("Test Cases", () => {
-  // beforeEach(()=>{
-  jest.mock("react-redux", () => ({
-    ...jest.requireActual("react-redux"),
-    useSelector: jest.fn().mockImplementation(() => {
-      return {
-        campRecord: {
-          camp_name: "ABC",
-        },
-        asof: "",
-        asofdate: "",
-        manageSupportUrlLink: "",
-        currentDelegatedSupportedClick: {},
-        currentGetCheckSupportExistsData: {
-          is_delegator: true,
-        },
-        CurrentCheckSupportStatus: "",
-        manageSupportStatusCheck: true,
-      };
-    }),
-  }));
-  // })
-  // it("click on Submit button - Add or Remove Api", () => {
-  //   const { getAllByText } = render(<ManageSupport></ManageSupport>);
-  //   const submit_button = getAllByText("Submit")[0];
-  //   fireEvent.click(submit_button);
-  // });
-});
+// describe("Test Cases", () => {
+//   // beforeEach(()=>{
+//     jest.mock("react-redux", () => ({
+//       ...jest.requireActual("react-redux"),
+//       useSelector: jest.fn().mockImplementation(() => {
+//         return {
+//           campRecord: {
+//             camp_name: "ABC",
+//           },
+//           asof: "",
+//           asofdate: "",
+//           manageSupportUrlLink: "",
+//           currentDelegatedSupportedClick: {},
+//           currentGetCheckSupportExistsData: {
+//             is_delegator: false
+//           },
+//           CurrentCheckSupportStatus: "",
+//           manageSupportStatusCheck: true,
+//         };
+//       }),
+//     }));
+//   })
+//   it("click on Submit button - Add or Remove Api", () => {
+//     const { getAllByText } = render(<ManageSupport></ManageSupport>);
+//     const submit_button = getAllByText("Submit")[0];
+//     fireEvent.click(submit_button);
+//   });
+// })

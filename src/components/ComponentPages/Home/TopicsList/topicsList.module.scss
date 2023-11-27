@@ -305,12 +305,12 @@
   }
 }
 .head {
-  overflow-x: hidden;
+  // overflow-x: hidden;
   position: relative;
 
   @media screen and (min-width: 1025px) {
     [class*="ant-select-single"] {
-      max-width: 60% !important;
+      max-width: 58% !important;
     }
   }
 }

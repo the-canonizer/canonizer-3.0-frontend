@@ -123,6 +123,7 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
    * /stmt.asp/2/2
    * /[anything].asp/dadsa
    * /secure/upload.asp
+   * /secure/email_camp.asp/88/6/3
    *
    */
 
@@ -218,6 +219,27 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
           `/topic/${topic_num}/${camp_num}`,
           +topic_num,
           +camp_num,
+          "topic"
+        );
+      }
+    } else if (aspath?.includes("email_camp.asp")) {
+      const replaced = aspath.replace(".asp", "");
+      let spilitedPath = replaced?.split("/");
+      const topic = +spilitedPath[spilitedPath?.length - 3]?.split("-")[0],
+        camp = +spilitedPath[spilitedPath?.length - 2]?.split("-")[0] ?? 1,
+        threadId = +spilitedPath[spilitedPath?.length - 1];
+      if (threadId) {
+        returnData = await redirect(
+          `/forum/${topic}/${camp}/threads/${threadId}`,
+          topic,
+          camp,
+          "topic"
+        );
+      } else {
+        returnData = await redirect(
+          `/forum/${topic}/${camp}/threads`,
+          topic,
+          camp,
           "topic"
         );
       }

@@ -73,6 +73,7 @@ const TopicsList = () => {
     is_archive,
     filterObject,
     viewThisVersion,
+    loading,
     // archeived
   } = useSelector((state: RootState) => ({
     // archeived: state.utils?.archived_checkbox,
@@ -90,6 +91,7 @@ const TopicsList = () => {
     is_archive: state?.filters?.filterObject?.is_archive,
     filterObject: state?.filters?.filterObject,
     viewThisVersion: state?.filters?.viewThisVersionCheck,
+    loading: state?.loading?.loading,
   }));
   const { is_camp_archive_checked } = useSelector((state: RootState) => ({
     is_camp_archive_checked: state?.utils?.archived_checkbox,
@@ -220,20 +222,20 @@ const TopicsList = () => {
       await getTopicsApiCallWithReqBody();
       setGetTopicsLoadingIndicator(false);
     }
-    if (
-      didMount.current ||
-      !(
-        router?.query?.asof != filterObject?.asof ||
-        router?.query?.algo != filterObject?.algorithm ||
-        +router?.query?.score != filterByScore
-      ) ||
-      (router?.query?.algo == undefined &&
-        router?.query?.asof == undefined &&
-        router?.query?.score == undefined)
-    ) {
-      getTopicsApiCall();
-    }
-    didMount.current = true;
+    // if (
+    //   didMount.current ||
+    //   !(
+    //     router?.query?.asof != filterObject?.asof ||
+    //     router?.query?.algo != filterObject?.algorithm ||
+    //     +router?.query?.score != filterByScore
+    //   ) ||
+    //   (router?.query?.algo == undefined &&
+    //     router?.query?.asof == undefined &&
+    //     router?.query?.score == undefined)
+    // ) {
+    getTopicsApiCall();
+    // }
+    // didMount.current = true;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     asofdate,
@@ -457,6 +459,7 @@ const TopicsList = () => {
           showSearch
           optionFilterProp="children"
           id="name-space-dropdown"
+          disabled={loading}
         >
           {nameSpacesList?.map((item) => {
             return (
@@ -477,6 +480,7 @@ const TopicsList = () => {
           <Checkbox
             className={styles.checkboxOnlyMyTopics}
             onChange={handleCheckbox}
+            disabled={loading}
           >
             Only My Topics
           </Checkbox>
@@ -492,6 +496,7 @@ const TopicsList = () => {
               onSearch={onSearch}
               onChange={handleKeyUpSearch}
               ref={inputRef}
+              disabled={loading}
               onBlur={() => {
                 setTimeout(() => {
                   setShowSearchDropdown(false);

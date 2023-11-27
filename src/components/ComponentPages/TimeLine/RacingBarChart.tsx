@@ -1,4 +1,4 @@
-import React, { useRef, useLayoutEffect } from "react";
+import React, { useRef, useLayoutEffect, useState, useEffect } from "react";
 import { select, scaleBand, scaleLinear, max } from "d3";
 import useResizeObserver from "./useResizeObserver";
 
@@ -25,6 +25,7 @@ function RacingBarChart({ data }: any) {
   const svgRef = useRef();
   const wrapperRef = useRef();
   const dimensions = useResizeObserver(wrapperRef);
+  const [widthBar, setWidthBar] = useState(489);
 
   //Manage X axis
 
@@ -43,6 +44,10 @@ function RacingBarChart({ data }: any) {
       return /* handle other cases or return a default value */;
     }
   };
+
+  useEffect(() => {
+    setWidthBar(489);
+  }, [data]);
 
   // will be called initially and on every data change
   useLayoutEffect(() => {
@@ -63,19 +68,19 @@ function RacingBarChart({ data }: any) {
     // .y(link => link.x);
 
     const yScale = scaleBand()
-      .paddingInner(0.1)
-      .domain(data?.map((value, index) => index)) // [0,1,2,3,4,5]
-      .range([0, dimensions.height]); // [0, 200]
+      ?.paddingInner(0.1)
+      ?.domain(data?.map((value, index) => index)) // [0,1,2,3,4,5]
+      ?.range([0, dimensions.height]); // [0, 200]
 
     const xScale = scaleLinear()
-      .domain([0, max(data, (entry) => entry.score)]) // [0, 65 (example)]
-      .range([0, 900]); // [0, 400 (example)]
+      ?.domain([0, max(data, (entry) => entry.score)]) // [0, 65 (example)]
+      ?.range([0, 900]); // [0, 400 (example)]
 
     // Add minus square icon
     svg
-      .selectAll(".icon")
-      .data(data, (entry) => entry.title)
-      .join((enter) =>
+      ?.selectAll(".icon")
+      ?.data(data, (entry) => entry.title)
+      ?.join((enter) =>
         enter
           .append("image")
           .attr("class", "circle")
@@ -102,9 +107,9 @@ function RacingBarChart({ data }: any) {
 
     // draw the Title labels
     svg
-      .selectAll(".label")
-      .data(data, (entry) => entry.title)
-      .join((enter) =>
+      ?.selectAll(".label")
+      ?.data(data, (entry) => entry.title)
+      ?.join((enter) =>
         enter
           .append("text")
           .attr(
@@ -122,9 +127,9 @@ function RacingBarChart({ data }: any) {
 
     // draw the bars
     svg
-      .selectAll(".bar")
-      .data(data, (entry) => entry.title)
-      .join((enter) =>
+      ?.selectAll(".bar")
+      ?.data(data, (entry) => entry.title)
+      ?.join((enter) =>
         enter.append("rect").attr("y", (entry, index) => yScale(index))
       )
       .attr("fill", () => "#f89d15")
@@ -132,14 +137,20 @@ function RacingBarChart({ data }: any) {
       .attr("x", (entry) => manageBarXAxis(entry))
       .attr("height", yScale.bandwidth())
       .transition()
-      .attr("width", (entry) => xScale(entry.score) + 39)
+      .attr("width", (entry) => {
+        const length = manageBarXAxis(entry);
+        if (widthBar < xScale(entry.score) + length) {
+          setWidthBar(xScale(entry.score) + length);
+        }
+        return xScale(entry.score) + 39;
+      })
       .attr("y", (entry, index) => yScale(index));
 
     // draw the Score labels
     svg
-      .selectAll(".label1")
-      .data(data, (entry) => entry.title)
-      .join((enter) =>
+      ?.selectAll(".label1")
+      ?.data(data, (entry) => entry.title)
+      ?.join((enter) =>
         enter
           .append("text")
           .attr(
@@ -159,9 +170,9 @@ function RacingBarChart({ data }: any) {
     for (let i = 0; i < linesData?.length; i++) {
       count = count + 0.001;
       svg
-        .selectAll(`.line${i}`)
-        .data(linesData)
-        .join((enter) =>
+        ?.selectAll(`.line${i}`)
+        ?.data(linesData)
+        ?.join((enter) =>
           enter
             .append("line")
             .style("stroke", "#d9d9d9")
@@ -189,7 +200,7 @@ function RacingBarChart({ data }: any) {
     <div
       className={styles.svgD3}
       ref={wrapperRef}
-      style={{ marginBottom: "2rem" }}
+      style={{ marginBottom: "2rem", width: widthBar + 45 }}
     >
       <svg height={data?.length * 30} ref={svgRef}></svg>
     </div>

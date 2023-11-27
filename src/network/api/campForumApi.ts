@@ -69,10 +69,10 @@ export const updatePost = async (body, id) => {
   }
 };
 
-export const getPostsList = async (thread_id, queries) => {
+export const getPostsList = async (thread_id, queries, token = "") => {
   try {
     const response = await NetworkCall.fetch(
-      ForumRequests.getPosts(thread_id, queries),
+      ForumRequests.getPosts(thread_id, queries, token),
       false
     );
 
@@ -95,15 +95,19 @@ export const deletePost = async (id) => {
   }
 };
 
-export const getThreadData = async (thread_id: any) => {
+export const getThreadData = async (
+  thread_id: string,
+  topic_num: string,
+  camp_num: string
+) => {
   try {
     const response = await NetworkCall.fetch(
-      ForumRequests.getThreadDetails(thread_id),
+      ForumRequests.getThreadDetails(thread_id, topic_num, camp_num),
       false
     );
 
     return response;
   } catch (error) {
-    handleError(error);
+    return error.error;
   }
 };

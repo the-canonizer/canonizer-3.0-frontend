@@ -27,6 +27,9 @@ export const getHistoryApi = async (
     return { data: history?.data, status_code: history?.status_code };
   } catch (error) {
     store.dispatch(pushToCampHistory([]));
+    if (error?.error?.data?.status_code == 404) {
+      store?.dispatch(setHistory({}));
+    }
     return {
       status_code: error?.error?.data?.status_code,
       errorType: error?.error?.data?.error,

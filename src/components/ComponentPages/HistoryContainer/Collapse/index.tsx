@@ -108,7 +108,7 @@ function HistoryCollapse({
     };
     const reqBodyForService = {
       topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
-      camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
+      camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0) || 1,
       asOf: asof,
       asofdate:
         asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
@@ -587,11 +587,7 @@ function HistoryCollapse({
                                         name: data?.nick_name,
                                         path: `/user/supports/${
                                           data?.id || ""
-                                        }?topicnum=${
-                                          campStatement?.topic_num || ""
-                                        }&campnum=${
-                                          campStatement?.camp_num || ""
-                                        }&canon=${topicNamespaceId || ""}`,
+                                        }?canon=${topicNamespaceId || ""}`,
                                       },
                                     };
                                   }
@@ -811,3 +807,4 @@ const Timer = ({ unixTime, setCommited }: any) => {
     </div>
   );
 };
+export { Timer };
