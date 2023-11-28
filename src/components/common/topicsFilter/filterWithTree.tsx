@@ -73,6 +73,7 @@ const FilterWithTree = ({
   setTotalCampScoreForSupportTree,
   setSupportTreeForCamp,
   backGroundColorClass,
+  isForumPage = false,
 }: any) => {
   const [isDatePicker, setIsDatePicker] = useState(false);
 
@@ -620,6 +621,7 @@ const FilterWithTree = ({
                     }
                     backGroundColorClass={backGroundColorClass}
                     setSupportTreeForCamp={setSupportTreeForCamp}
+                    isForumPage={isForumPage}
                   />
                 </div>
               </Col>

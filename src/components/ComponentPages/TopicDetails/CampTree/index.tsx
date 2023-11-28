@@ -19,6 +19,7 @@ const CampTree = ({
   setSupportTreeForCamp,
   treeExpandValue,
   prevTreeValueRef,
+  isForumPage = false,
 }: any) => {
   const {
     tree,
@@ -155,6 +156,7 @@ const CampTree = ({
       }
     }
   };
+
   useEffect(() => {
     if (tree?.at(0) != null) {
       dispatchData(tree?.at(0));
@@ -331,10 +333,18 @@ const CampTree = ({
                         <Link
                           href={`${
                             includeReview
-                              ? data[item]?.review_link?.replace(
-                                  "#statement",
-                                  ""
-                                )
+                              ? isForumPage
+                                ? data[item]?.review_link
+                                    ?.replace("#statement", "")
+                                    ?.replace("/topic/", "/forum/") + "/threads"
+                                : data[item]?.review_link?.replace(
+                                    "#statement",
+                                    ""
+                                  )
+                              : isForumPage
+                              ? data[item]?.link
+                                  ?.replace("#statement", "")
+                                  ?.replace("/topic/", "/forum/") + "/threads"
                               : data[item]?.link?.replace("#statement", "")
                           }?filter=${treeExpandValue}&score=${filterByScore}&algo=${
                             filterObject?.algorithm
@@ -509,7 +519,8 @@ const CampTree = ({
   };
 
   return tree?.at(0) ? (
-    showTree && tree?.at(0)["1"]?.title != "" && defaultExpandKeys ? (
+    (showTree && tree?.at(0)["1"]?.title != "" && defaultExpandKeys) ||
+    isForumPage ? (
       <>
         <Tree
           showLine={{ showLeafIcon: false }}

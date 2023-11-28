@@ -5,53 +5,49 @@ import { useDispatch } from "react-redux";
 
 import styles from "../Forum.module.scss";
 
-import messages from "../../../../../messages";
-import { showLoginModal } from "../../../../../store/slices/uiSlice";
-
-import CustomSkelton from "../../../../common/customSkelton";
-
+import messages from "src/messages";
+import { showLoginModal } from "src/store/slices/uiSlice";
+import CustomSkelton from "src/components/common/customSkelton";
 const Editorckl = dynamic(
   () => import("src/components/common/editorck/index"),
   { ssr: false }
 );
 
-const { Option } = Select;
-const { Text } = Typography;
-
-const { labels, placeholders, nickNmRule, validations } = messages;
-
-const formats = [
-  "heading",
-  "|",
-  "bold",
-  "italic",
-  "underline",
-  "strikethrough",
-  "superscript",
-  "subscript",
-  "|",
-  "numberedList",
-  "bulletedList",
-  "alignment",
-  "|",
-  "fontSize",
-  "fontColor",
-  "fontBackgroundColor",
-  "highlight",
-  "fontFamily",
-  "|",
-  "indent",
-  "outdent",
-  "|",
-  "link",
-  "autolink",
-  "blockQuote",
-  "|",
-  "findAndReplace",
-  "|",
-  "undo",
-  "redo",
-];
+const { Option } = Select,
+  { Text } = Typography,
+  { labels, placeholders, nickNmRule, validations } = messages,
+  formats = [
+    "heading",
+    "|",
+    "bold",
+    "italic",
+    "underline",
+    "strikethrough",
+    "superscript",
+    "subscript",
+    "|",
+    "numberedList",
+    "bulletedList",
+    "alignment",
+    "|",
+    "fontSize",
+    "fontColor",
+    "fontBackgroundColor",
+    "highlight",
+    "fontFamily",
+    "|",
+    "indent",
+    "outdent",
+    "|",
+    "link",
+    "autolink",
+    "blockQuote",
+    "|",
+    "findAndReplace",
+    "|",
+    "undo",
+    "redo",
+  ];
 
 const PostForm = ({
   onFinish,
@@ -178,7 +174,6 @@ const PostForm = ({
             </Col>
           ) : null}
         </Row>
-
         {isLog ? (
           <Form.Item noStyle>
             <Button
@@ -191,7 +186,6 @@ const PostForm = ({
             >
               Submit
             </Button>
-
             <Button
               type="primary"
               htmlType="button"
@@ -201,7 +195,7 @@ const PostForm = ({
               id="back-btn"
               data-testid="back-btn"
             >
-              Back
+              Cancel
             </Button>
           </Form.Item>
         ) : null}
