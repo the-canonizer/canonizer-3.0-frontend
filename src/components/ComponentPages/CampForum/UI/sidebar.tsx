@@ -55,20 +55,24 @@ const ThreadSidebar = () => {
         showTreeSkeltonRef.current = true;
       }
 
-      const reqBodyForService = {
-        topic_num: (router?.query?.topic as string)?.split("-")[0],
-        camp_num: (router?.query?.camp as string)?.split("-")[0] ?? 1,
-        asOf: asof,
-        asofdate:
-          asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
-        algorithm: algorithm,
-        update_all: 1,
-        fetch_topic_history: viewThisVersionCheck ? 1 : null,
-      };
+      if (router?.asPath?.includes("/forum/")) {
+        const reqBodyForService = {
+          topic_num: (router?.query?.topic as string)?.split("-")[0],
+          camp_num: (router?.query?.camp as string)?.split("-")[0] ?? 1,
+          asOf: asof,
+          asofdate:
+            asof == "default" || asof == "review"
+              ? Date.now() / 1000
+              : asofdate,
+          algorithm: algorithm,
+          update_all: 1,
+          fetch_topic_history: viewThisVersionCheck ? 1 : null,
+        };
 
-      await getTreesApi(reqBodyForService);
+        await getTreesApi(reqBodyForService);
 
-      setGetTreeLoadingIndicator(false);
+        setGetTreeLoadingIndicator(false);
+      }
     }
 
     if (router?.asPath?.includes("/forum/")) {
