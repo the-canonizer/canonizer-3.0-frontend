@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { Layout, Menu, Dropdown, Button, Space, Avatar } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
+import md5 from "md5";
 
 import styles from "../siteHeader.module.scss";
 
@@ -20,6 +21,7 @@ import {
 import Notifications from "../notification";
 import useAuthentication from "src/hooks/isUserAuthenticated";
 import {
+  getGravatarPicApi,
   getLists,
   markNotificationRead,
 } from "src/network/api/notificationAPI";
@@ -36,6 +38,8 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
   }));
 
   const { isUserAuthenticated } = useAuthentication();
+  const [isGravatarImage, setIsGravatarImage] = useState(false);
+  const [loadingImage, setLoadingImage] = useState(false);
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -119,9 +123,20 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
       </Menu.Item>
     </Menu>
   );
+  const getGravatarImage = async (email) => {
+    setLoadingImage(true);
+    let data = await getGravatarPicApi(email);
+    if (data?.status == 200) {
+      setIsGravatarImage(true);
+    }
+    setLoadingImage(false);
+  };
 
   useEffect(() => {
     setLoggedUser(loggedInUser);
+    if (isUserAuthenticated && loggedInUser && !loggedInUser?.profile_picture) {
+      getGravatarImage(loggedInUser?.email);
+    }
   }, [loggedInUser]);
 
   return (
@@ -152,10 +167,16 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
                     <Space size="large">
                       {/* <i className="icon-user"></i>{" "} */}
 
-                      {loggedInUser?.profile_picture ? (
+                      {loggedInUser?.profile_picture && !loadingImage ? (
                         <Avatar
                           src={loggedInUser?.profile_picture}
                           size="small"
+                        />
+                      ) : isGravatarImage && !loadingImage ? (
+                        <Avatar
+                          src={`https://www.gravatar.com/avatar/${md5(
+                            loggedInUser?.email
+                          )}.png`}
                         />
                       ) : (
                         <Avatar
@@ -220,7 +241,7 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
                       placement="bottomLeft"
                     >
                       <Space size="small">
-                        {loggedInUser?.profile_picture ? (
+                        {loggedInUser?.profile_picture && !loadingImage ? (
                           // <Image
                           //   alt="display-picture"
                           //   width={50}
@@ -229,6 +250,12 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
                           //   src={loggedInUser?.profile_picture}
                           // />
                           <Avatar src={loggedInUser?.profile_picture} />
+                        ) : isGravatarImage && !loadingImage ? (
+                          <Avatar
+                            src={`https://www.gravatar.com/avatar/${md5(
+                              loggedInUser?.email
+                            )}.png`}
+                          />
                         ) : (
                           <Avatar
                             style={{
