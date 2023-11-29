@@ -79,6 +79,7 @@ const CampTreeCard = ({
   setTotalCampScoreForSupportTree,
   setSupportTreeForCamp,
   backGroundColorClass,
+  isForumPage = false,
 }: any) => {
   const { asof, asofdate, campWithScore, tree, campExist } = useSelector(
     (state: RootState) => ({
@@ -259,6 +260,7 @@ const CampTreeCard = ({
                 treeExpandValue={treeExpandValue}
                 setTreeExpandValue={setTreeExpandValue}
                 prevTreeValueRef={prevTreeValueRef}
+                isForumPage={isForumPage}
               />
             )}
           </Panel>
