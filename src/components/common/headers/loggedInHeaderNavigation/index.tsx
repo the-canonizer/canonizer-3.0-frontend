@@ -215,6 +215,7 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
                       <Notifications />
                     </div>
                     <Dropdown
+                      className={styles.logo_in_header}
                       overlay={menu}
                       trigger={["click"]}
                       placement="bottomLeft"
