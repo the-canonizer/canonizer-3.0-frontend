@@ -71,7 +71,9 @@ const ThreadSidebar = () => {
       setGetTreeLoadingIndicator(false);
     }
 
-    getTreeApiCall();
+    if (router?.asPath?.includes("/forum/")) {
+      getTreeApiCall();
+    }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [asofdate, algorithm, +(router?.query?.camp[1]?.split("-")[0] ?? 1)]);
@@ -79,15 +81,19 @@ const ThreadSidebar = () => {
   return (
     <Fragment>
       <aside className="leftSideBar miniSideBar topicPageNewLayoutSidebar bg-white">
-        <HomeSideBar
-          onCreateCamp={onCreateCamp}
-          getTreeLoadingIndicator={getTreeLoadingIndicator}
-          scrollToCampStatement={scrollToCampStatement}
-          setTotalCampScoreForSupportTree={() => {}}
-          setSupportTreeForCamp={() => {}}
-          backGroundColorClass={"default"}
-          isForumPage={true}
-        />
+        {router?.asPath?.includes("/forum/") ? (
+          <HomeSideBar
+            onCreateCamp={onCreateCamp}
+            getTreeLoadingIndicator={getTreeLoadingIndicator}
+            scrollToCampStatement={scrollToCampStatement}
+            setTotalCampScoreForSupportTree={() => {}}
+            setSupportTreeForCamp={() => {}}
+            backGroundColorClass={"default"}
+            isForumPage={true}
+          />
+        ) : (
+          ""
+        )}
       </aside>
     </Fragment>
   );
