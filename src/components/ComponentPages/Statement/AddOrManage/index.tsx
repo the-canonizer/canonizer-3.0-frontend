@@ -187,7 +187,6 @@ export default function AddOrManage({ add }: any) {
       });
       setOptions(oldOptions);
     }
-    console.log("aaaaaaaaaaaa");
     setScreenLoading(false);
   };
 
@@ -302,7 +301,6 @@ export default function AddOrManage({ add }: any) {
       setCanNameSpace(filteredNamespace);
     }
   };
-
   const fetchParentsCampList = async (
     topic_num: number,
     parent_camp_num: number,
