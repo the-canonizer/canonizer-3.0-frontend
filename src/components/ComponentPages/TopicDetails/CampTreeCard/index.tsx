@@ -144,7 +144,6 @@ const CampTreeCard = ({
   }, []);
 
   useEffect(() => {
-    console.log(router?.query?.filter, "<<<>>>", typeof router?.query?.filter);
     if (
       router?.query?.filter === "undefined" ||
       router?.query?.filter === undefined
