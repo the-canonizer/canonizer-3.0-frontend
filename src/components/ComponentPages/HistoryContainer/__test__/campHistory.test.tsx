@@ -652,6 +652,9 @@ describe("CampHistory Page", () => {
           <RouterContext.Provider
             value={createMockRouter({
               asPath: "/statement/history/1444-17-JAN-20232/1-Agreement",
+              query: {
+                camp: ["1444-17-JAN-20232", "1-Agreement"],
+              },
             })}
           >
             <CampList />
@@ -669,6 +672,9 @@ describe("CampHistory Page", () => {
             value={createMockRouter({
               asPath: "/camp/history/1444-17-JAN-20232/1-Agreement",
               pathname: "/camp/history/[...camp]",
+              query: {
+                camp: ["1444-17-JAN-20232", "1-Agreement"],
+              },
             })}
           >
             <CampList />
@@ -686,6 +692,9 @@ describe("CampHistory Page", () => {
             value={createMockRouter({
               asPath: "/topic/history/1444-17-JAN-20232/1-Agreement",
               pathname: "/topic/history/[...camp]",
+              query: {
+                camp: ["1444-17-JAN-20232", "1-Agreement"],
+              },
             })}
           >
             <CampList />
@@ -742,6 +751,9 @@ describe("CampHistory Page", () => {
             value={createMockRouter({
               asPath: "/topic/history/88-Theories-of-Consciousness",
               pathname: "/topic/history/[...camp]",
+              query: {
+                camp: ["1444-17-JAN-20232"],
+              },
             })}
           >
             <CampList />
@@ -797,6 +809,9 @@ describe("CampHistory Page", () => {
             value={createMockRouter({
               asPath: "/statement/history/1444-17-JAN-20232/1-Agreement",
               pathname: "/statement/history/[...camp]",
+              query: {
+                camp: ["1444-17-JAN-20232", "1-Agreement"],
+              },
             })}
           >
             <CampList />

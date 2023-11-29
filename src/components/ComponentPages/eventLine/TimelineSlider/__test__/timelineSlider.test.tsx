@@ -209,7 +209,7 @@ describe("TimelineSlider", () => {
     const setIteration = jest.fn();
     const handleForwardOrBackord = jest.fn();
     const setIsPlaying = jest.fn();
-    const { getByTestId } = render(
+    const { getByTestId, debug } = render(
       <TimelineSlider
         mockData={mockData}
         setStart={jest.fn()}
@@ -235,5 +235,6 @@ describe("TimelineSlider", () => {
     const playButton = getByTestId("play-button");
     expect(playButton).toBeInTheDocument();
     fireEvent.click(playButton);
+    fireEvent.click(screen.getByText(/Dec 6, 06/i));
   });
 });
