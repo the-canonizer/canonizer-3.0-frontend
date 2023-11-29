@@ -55,23 +55,29 @@ const ThreadSidebar = () => {
         showTreeSkeltonRef.current = true;
       }
 
-      const reqBodyForService = {
-        topic_num: (router?.query?.topic as string)?.split("-")[0],
-        camp_num: (router?.query?.camp as string)?.split("-")[0] ?? 1,
-        asOf: asof,
-        asofdate:
-          asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
-        algorithm: algorithm,
-        update_all: 1,
-        fetch_topic_history: viewThisVersionCheck ? 1 : null,
-      };
+      if (router?.asPath?.includes("/forum/")) {
+        const reqBodyForService = {
+          topic_num: (router?.query?.topic as string)?.split("-")[0],
+          camp_num: (router?.query?.camp as string)?.split("-")[0] ?? 1,
+          asOf: asof,
+          asofdate:
+            asof == "default" || asof == "review"
+              ? Date.now() / 1000
+              : asofdate,
+          algorithm: algorithm,
+          update_all: 1,
+          fetch_topic_history: viewThisVersionCheck ? 1 : null,
+        };
 
-      await getTreesApi(reqBodyForService);
+        await getTreesApi(reqBodyForService);
 
-      setGetTreeLoadingIndicator(false);
+        setGetTreeLoadingIndicator(false);
+      }
     }
 
-    getTreeApiCall();
+    if (router?.asPath?.includes("/forum/")) {
+      getTreeApiCall();
+    }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [asofdate, algorithm, +(router?.query?.camp[1]?.split("-")[0] ?? 1)]);
@@ -79,15 +85,19 @@ const ThreadSidebar = () => {
   return (
     <Fragment>
       <aside className="leftSideBar miniSideBar topicPageNewLayoutSidebar bg-white">
-        <HomeSideBar
-          onCreateCamp={onCreateCamp}
-          getTreeLoadingIndicator={getTreeLoadingIndicator}
-          scrollToCampStatement={scrollToCampStatement}
-          setTotalCampScoreForSupportTree={() => {}}
-          setSupportTreeForCamp={() => {}}
-          backGroundColorClass={"default"}
-          isForumPage={true}
-        />
+        {router?.asPath?.includes("/forum/") ? (
+          <HomeSideBar
+            onCreateCamp={onCreateCamp}
+            getTreeLoadingIndicator={getTreeLoadingIndicator}
+            scrollToCampStatement={scrollToCampStatement}
+            setTotalCampScoreForSupportTree={() => {}}
+            setSupportTreeForCamp={() => {}}
+            backGroundColorClass={"default"}
+            isForumPage={true}
+          />
+        ) : (
+          ""
+        )}
       </aside>
     </Fragment>
   );

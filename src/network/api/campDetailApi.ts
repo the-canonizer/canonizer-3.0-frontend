@@ -20,7 +20,6 @@ import { createToken, SupportTreeAndScoreCount } from "./userApi";
 export const getTreesApi = async (reqBody) => {
   try {
     const trees = await NetworkCall.fetch(TreeRequest.getTrees(reqBody), false);
-    console.log("🚀 ~ file: campDetailApi.ts:23 ~ getTreesApi ~ trees:", trees)
 
     store.dispatch(setTree(trees?.data || []));
     return {
