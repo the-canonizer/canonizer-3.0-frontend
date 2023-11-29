@@ -12,6 +12,7 @@ import { store } from "src/store";
 import { NextRouter } from "next/router";
 import configureMockStore from "redux-mock-store";
 import { RouterContext } from "next/dist/shared/lib/router-context";
+import { changeCommitStatement } from "src/network/api/history";
 
 function createMockRouter(router: Partial<NextRouter>): NextRouter {
   return {
@@ -130,7 +131,11 @@ const store3 = mockStore({
     },
   },
 });
+jest.mock("src/network/api/history");
 describe("HistoryCollapse component", () => {
+  beforeEach(() => {
+    jest.mock("src/network/api/history");
+  });
   beforeAll(() => {
     jest.useFakeTimers();
     jest.setSystemTime(new Date("30 Oct 2023 02:12:00 GMT").getTime());
@@ -145,6 +150,9 @@ describe("HistoryCollapse component", () => {
           value={createMockRouter({
             asPath: "/statement/history/3020-test-colapse-2/1-Agreement",
             pathname: "/statement/history/[...camp]",
+            query: {
+              camp: ["3020-test-colapse-2", "1-Agreement"],
+            },
           })}
         >
           <HistoryCollapse
@@ -290,6 +298,10 @@ describe("HistoryCollapse component", () => {
           value={createMockRouter({
             asPath: "/statement/history/3020-test-colapse-2/1-Agreement",
             pathname: "/statement/history/[...camp]",
+
+            query: {
+              camp: ["3020-test-colapse-2", "1-Agreement"],
+            },
           })}
         >
           <HistoryCollapse
@@ -395,6 +407,9 @@ describe("HistoryCollapse component", () => {
           value={createMockRouter({
             asPath: "/statement/history/3020-test-colapse-2/1-Agreement",
             pathname: "/statement/history/[...camp]",
+            query: {
+              camp: ["3020-test-colapse-2", "1-Agreement"],
+            },
           })}
         >
           <HistoryCollapse
@@ -509,6 +524,9 @@ describe("HistoryCollapse component", () => {
           value={createMockRouter({
             asPath: "/statement/history/3020-test-colapse-2/1-Agreement",
             pathname: "/statement/history/[...camp]",
+            query: {
+              camp: ["3020-test-colapse-2", "1-Agreement"],
+            },
           })}
         >
           <HistoryCollapse
@@ -619,6 +637,9 @@ describe("HistoryCollapse component", () => {
           value={createMockRouter({
             asPath: "/topic/history/3020-test-colapse-2/1-Agreement",
             pathname: "/topic/history/[...camp]",
+            query: {
+              camp: ["3020-test-colapse-2"],
+            },
           })}
         >
           <HistoryCollapse
@@ -700,12 +721,22 @@ describe("HistoryCollapse component", () => {
     );
   });
   test("renders for Topic commit", () => {
+    changeCommitStatement.mockResolvedValue({
+      status_code: 200,
+      message:
+        "Your change to statement has been submitted to your supporters.",
+      data: [],
+    });
+
     const { container, debug } = render(
       <Provider store={store3}>
         <RouterContext.Provider
           value={createMockRouter({
             asPath: "/camp/history/3020-test-colapse-2/1-Agreement",
             pathname: "/camp/history/[...camp]",
+            query: {
+              camp: ["3020-test-colapse-2", "1-Agreement"],
+            },
           })}
         >
           <HistoryCollapse
