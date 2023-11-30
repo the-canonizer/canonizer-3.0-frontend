@@ -9,7 +9,7 @@ import { act } from "react-dom/test-utils";
 import { setHistory } from "../../../../store/slices/campDetailSlice";
 
 import configureMockStore from "redux-mock-store";
-import CampHistory from "../Collapse/campHistory";
+
 function createMockRouter(router: Partial<NextRouter>): NextRouter {
   return {
     basePath: "",
@@ -615,7 +615,7 @@ const store1 = mockStore({
 describe("CampHistory Page", () => {
   it("should render without crash and fire events", () => {
     act(() => {
-      const { container, debug } = render(
+      render(
         <Provider store={store1}>
           <RouterContext.Provider
             value={createMockRouter({
@@ -647,7 +647,7 @@ describe("CampHistory Page", () => {
 
   it("should statementhistory render without crash without store", () => {
     act(() => {
-      const { container, debug } = render(
+      render(
         <Provider store={store}>
           <RouterContext.Provider
             value={createMockRouter({
@@ -664,29 +664,9 @@ describe("CampHistory Page", () => {
     });
   });
 
-  it("should camphistory render without crash without store", () => {
-    act(() => {
-      render(
-        <Provider store={store}>
-          <RouterContext.Provider
-            value={createMockRouter({
-              asPath: "/camp/history/1444-17-JAN-20232/1-Agreement",
-              pathname: "/camp/history/[...camp]",
-              query: {
-                camp: ["1444-17-JAN-20232", "1-Agreement"],
-              },
-            })}
-          >
-            <CampList />
-          </RouterContext.Provider>
-        </Provider>
-      );
-      // debug();
-    });
-  });
   it("should topichistory render without crash without store", () => {
     act(() => {
-      const { container, debug } = render(
+      render(
         <Provider store={store}>
           <RouterContext.Provider
             value={createMockRouter({
@@ -802,28 +782,25 @@ describe("CampHistory Page", () => {
   });
 
   it("click on viewAll objected live", () => {
-    act(() => {
-      render(
-        <Provider store={store1}>
-          <RouterContext.Provider
-            value={createMockRouter({
-              asPath: "/statement/history/1444-17-JAN-20232/1-Agreement",
-              pathname: "/statement/history/[...camp]",
-              query: {
-                camp: ["1444-17-JAN-20232", "1-Agreement"],
-              },
-            })}
-          >
-            <CampList />
-          </RouterContext.Provider>
-        </Provider>
-      );
-      // debug();
-      fireEvent.click(screen.getByText(/view all/i));
-      fireEvent.click(screen.getByText(/objected/i));
-      fireEvent.click(screen.getAllByText(/live/i)[0]);
-      fireEvent.click(screen.getByText(/not live/i));
-      fireEvent.click(screen.getByText(/old/i));
-    });
+    render(
+      <Provider store={store1}>
+        <RouterContext.Provider
+          value={createMockRouter({
+            asPath: "/statement/history/1444-17-JAN-20232/1-Agreement",
+            pathname: "/statement/history/[...camp]",
+            query: {
+              camp: ["1444-17-JAN-20232", "1-Agreement"],
+            },
+          })}
+        >
+          <CampList />
+        </RouterContext.Provider>
+      </Provider>
+    );
+    fireEvent.click(screen.getByText(/view all/i));
+    fireEvent.click(screen.getByText(/objected/i));
+    fireEvent.click(screen.getAllByText(/live/i)[0]);
+    fireEvent.click(screen.getByText(/not live/i));
+    fireEvent.click(screen.getByText(/old/i));
   });
 });

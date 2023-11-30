@@ -455,7 +455,7 @@ describe("TopicsList", () => {
     jest.mock("src/network/api/homePageApi");
   });
   test("renders select canon title", () => {
-    const { debug } = render(
+    render(
       <Provider store={store}>
         <TopicsList />
       </Provider>
@@ -477,7 +477,7 @@ describe("TopicsList", () => {
       data: nameSpaces,
     });
 
-    const { debug } = render(
+    render(
       <Provider store={store1}>
         <RouterContext.Provider value={createMockRouter({ asPath: "/" })}>
           <TopicsList />
@@ -552,7 +552,7 @@ describe("TopicsList", () => {
       data: nameSpaces,
     });
 
-    const { debug } = render(
+    render(
       <Provider store={store1}>
         <RouterContext.Provider
           value={createMockRouter({
@@ -573,8 +573,7 @@ describe("TopicsList", () => {
         screen.getByText(/theories of consciousness/i)
       ).toBeInTheDocument();
     });
-
-    const checkboxLabel = screen.getByText("Only My Topics");
+    screen.getByText("Only My Topics");
     const checkbox = screen.getByRole("checkbox", { name: "Only My Topics" });
 
     // Ensure the checkbox is initially unchecked
@@ -593,7 +592,7 @@ describe("TopicsList", () => {
       data: nameSpaces,
     });
 
-    const { debug } = render(
+    render(
       <Provider store={store1}>
         <RouterContext.Provider
           value={createMockRouter({
@@ -633,7 +632,7 @@ describe("TopicsList", () => {
       data: nameSpaces,
     });
 
-    const { debug } = render(
+    render(
       <Provider store={store1}>
         <RouterContext.Provider
           value={createMockRouter({
@@ -680,7 +679,7 @@ describe("TopicsList", () => {
       data: nameSpaces,
     });
 
-    const { debug } = render(
+    render(
       <Provider store={store1}>
         <RouterContext.Provider
           value={createMockRouter({
@@ -716,7 +715,7 @@ describe("TopicsList", () => {
       data: nameSpaces,
     });
 
-    const { debug } = render(
+    render(
       <Provider store={store2}>
         <RouterContext.Provider
           value={createMockRouter({

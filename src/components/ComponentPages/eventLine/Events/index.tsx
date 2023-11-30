@@ -15,7 +15,7 @@ const Events = ({ timelineDescript, loadingEvents }: any) => {
   const dispatch = useDispatch();
   const [check, setCheck] = useState(true);
   // const router = useRouter();
-  const { viewThisVersion, filterObject, filterByScore, loading } = useSelector(
+  const { viewThisVersion, filterObject, filterByScore } = useSelector(
     (state: RootState) => ({
       viewThisVersion: state?.filters?.viewThisVersionCheck,
       filterObject: state?.filters?.filterObject,

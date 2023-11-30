@@ -119,7 +119,7 @@ describe("Should render Addnews", () => {
     }));
   });
   it("Only admin can acces page error", async () => {
-    const { container, debug } = await render(
+    render(
       <Provider store={store2}>
         <RouterContext.Provider
           value={createMockRouter(
@@ -139,7 +139,7 @@ describe("Should render Addnews", () => {
   });
 
   it("Login to access this  page", () => {
-    const { container, debug } = render(
+    render(
       <Provider store={store3}>
         <RouterContext.Provider
           value={createMockRouter(
@@ -217,7 +217,7 @@ describe("Should render Addnews", () => {
       ],
       status_code: 200,
     });
-    const { container, debug } = await render(
+    render(
       <Provider store={store1}>
         <RouterContext.Provider
           value={createMockRouter({
@@ -230,10 +230,10 @@ describe("Should render Addnews", () => {
       </Provider>
     );
     await waitFor(() => {
-      const submitButton = screen.getByRole("button", {
+      screen.getByRole("button", {
         name: /Create News/i,
       });
-      const cancelButton = screen.getByRole("button", {
+      screen.getByRole("button", {
         name: /Cancel/i,
       });
 
@@ -278,7 +278,7 @@ describe("Should render Addnews", () => {
       ],
       status_code: 200,
     });
-    const { container, debug } = await render(
+    render(
       <Provider store={store1}>
         <RouterContext.Provider
           value={createMockRouter({
@@ -291,10 +291,10 @@ describe("Should render Addnews", () => {
       </Provider>
     );
     await waitFor(() => {
-      const submitButton = screen.getByRole("button", {
+      screen.getByRole("button", {
         name: /submit/i,
       });
-      const cancelButton = screen.getByRole("button", {
+      screen.getByRole("button", {
         name: /Cancel/i,
       });
     });
@@ -326,7 +326,7 @@ describe("Should render Addnews", () => {
       ],
       status_code: 200,
     });
-    const { container, debug } = await render(
+    render(
       <Provider store={store1}>
         <RouterContext.Provider
           value={createMockRouter({
@@ -339,10 +339,10 @@ describe("Should render Addnews", () => {
       </Provider>
     );
     await waitFor(() => {
-      const submitButton = screen.getByRole("button", {
+      screen.getByRole("button", {
         name: /submit/i,
       });
-      const cancelButton = screen.getByRole("button", {
+      screen.getByRole("button", {
         name: /Cancel/i,
       });
     });
@@ -352,11 +352,5 @@ describe("Should render Addnews", () => {
         name: /submit/i,
       })
     );
-    // await waitFor(() => {
-    //   const submitButton = screen.getByRole("button", {
-    //     name: /submitaaa/i,
-    //   });
-    // });
-    // debug();
   });
 });

@@ -22,7 +22,7 @@ import configureMockStore from "redux-mock-store";
 
 import { NextRouter } from "next/router";
 import { RouterContext } from "next/dist/shared/lib/router-context";
-import { act } from "react-dom/test-utils";
+
 import {
   getEditCampApi,
   getEditStatementApi,
@@ -319,7 +319,7 @@ describe("AddOrManage component", () => {
   });
   //=============================================Create Statement Cases==================
 
-  it("create statement ", async () => {
+  it("create statement", async () => {
     getCurrentTopicRecordApi.mockResolvedValue({
       status_code: 200,
       data: {
@@ -339,7 +339,7 @@ describe("AddOrManage component", () => {
     });
     getAllUsedNickNames.mockResolvedValue(allUsedNickname);
 
-    const { container, debug } = render(
+    render(
       <Provider store={store1}>
         <RouterContext.Provider
           value={createMockRouter({
@@ -403,7 +403,7 @@ describe("AddOrManage component", () => {
     });
     getAllUsedNickNames.mockResolvedValue(allUsedNickname);
 
-    const { container, debug } = render(
+    render(
       <Provider store={store1}>
         <RouterContext.Provider
           value={createMockRouter({
@@ -421,10 +421,12 @@ describe("AddOrManage component", () => {
       expect(screen.getByText(/andrea_allsop/i)).toBeInTheDocument();
       expect(screen.getByText(/add camp statement/i)).toBeInTheDocument();
     });
-    const mainHeading = screen.getByText(/add camp statement/i);
-    const submitButton = screen.getByRole("button", {
-      name: /submit statement/i,
-    });
+    expect(screen.getByText(/add camp statement/i)).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", {
+        name: /submit statement/i,
+      })
+    ).toBeInTheDocument();
     const cancelButton = screen.getByRole("button", {
       name: /cancel/i,
     });
@@ -433,7 +435,7 @@ describe("AddOrManage component", () => {
 
   // ===================================Edit Statement=============================
 
-  it("Edit  statement ", async () => {
+  it("Edit  statement", async () => {
     getEditStatementApi.mockResolvedValue({
       status_code: 200,
       data: getEditStatementData,
@@ -444,7 +446,7 @@ describe("AddOrManage component", () => {
       data: {},
     });
 
-    const { container, debug } = render(
+    render(
       <Provider store={store1}>
         <RouterContext.Provider
           value={createMockRouter({
@@ -488,7 +490,7 @@ describe("AddOrManage component", () => {
       message: "Objection submitted successfully.",
     });
 
-    const { container, debug } = render(
+    render(
       <Provider store={store1}>
         <RouterContext.Provider
           value={createMockRouter({
@@ -579,7 +581,7 @@ describe("AddOrManage component", () => {
       ],
     });
 
-    const { container, debug } = render(
+    render(
       <Provider store={store1}>
         <RouterContext.Provider
           value={createMockRouter({
@@ -604,7 +606,7 @@ describe("AddOrManage component", () => {
     );
   });
 
-  it("create statement cancel form", async () => {
+  it("manage camp cancel form", async () => {
     getAllUsedNickNames.mockResolvedValue(allUsedNickname);
     getEditCampApi.mockResolvedValue({
       status_code: 200,
@@ -708,7 +710,7 @@ describe("AddOrManage component", () => {
       },
     });
 
-    const { container, debug } = render(
+    render(
       <Provider store={store1}>
         <RouterContext.Provider
           value={createMockRouter({
@@ -751,7 +753,7 @@ describe("AddOrManage component", () => {
       data: namespaceData,
     });
 
-    const { container, debug } = render(
+    render(
       <Provider store={store1}>
         <RouterContext.Provider
           value={createMockRouter({
@@ -792,7 +794,7 @@ describe("AddOrManage component", () => {
       message: "Topic updated successfully.",
     });
 
-    const { container, debug } = render(
+    render(
       <Provider store={store1}>
         <RouterContext.Provider
           value={createMockRouter({

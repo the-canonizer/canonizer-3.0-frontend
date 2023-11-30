@@ -1,6 +1,6 @@
 import { Collapse, Popover, Image, Typography, Select, Alert } from "antd";
 import React, { Fragment, useEffect, useState, useRef } from "react";
-import { RightOutlined } from "@ant-design/icons";
+
 import { useSelector, useDispatch } from "react-redux";
 import moment from "moment";
 

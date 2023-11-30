@@ -4,13 +4,11 @@ import {
   render,
   screen,
   fireEvent,
-  act,
   waitFor,
 } from "@testing-library/react";
 
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
-import { store } from "../../../../store";
 import { NextRouter } from "next/router";
 import { RouterContext } from "next/dist/shared/lib/router-context";
 
@@ -140,8 +138,8 @@ describe("Sidebar Filters Component", () => {
       expect(screen.getAllByText("Computer Science Experts")).toHaveLength(1);
     });
   });
-  it("Should render without crash", async () => {
-    const { getByText, debug } = render(
+  it("search topic", async () => {
+    render(
       <Provider store={store1}>
         <RouterContext.Provider value={createMockRouter()}>
           <CreateTopic />
@@ -150,6 +148,7 @@ describe("Sidebar Filters Component", () => {
     );
 
     const selectInput = screen.getByRole("combobox");
+    expect(selectInput).toBeInTheDocument();
 
     fireEvent.change(selectInput, { target: { value: "Mind Experts" } });
     fireEvent.click(

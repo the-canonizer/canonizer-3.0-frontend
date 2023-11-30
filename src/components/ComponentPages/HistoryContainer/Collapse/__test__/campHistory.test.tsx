@@ -56,7 +56,7 @@ describe("CampHistory", () => {
   });
 
   it("renders the keywords", () => {
-    const { container, debug } = render(
+    const { container } = render(
       <CampHistory
         campStatement={campStatement}
         topicNamespaceId="topicNamespaceId"
@@ -93,7 +93,7 @@ describe("CampHistory", () => {
     expect(container.getElementsByTagName("a")).toHaveLength(4);
   });
   it("renders the with topic namespaceid null", () => {
-    const { container } = render(
+    render(
       <CampHistory campStatement={campStatement2} topicNamespaceId={null} />
     );
     expect(screen.getByText(/parent camp :/i)).toBeInTheDocument();

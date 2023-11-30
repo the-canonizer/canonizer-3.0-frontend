@@ -57,9 +57,6 @@ const TimelineInfoBar = ({
     asofdate,
     asof,
     // algorithm,
-    viewThisVersion,
-    filterObject,
-    filterByScore,
   } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
     campRecord: state?.topicDetails?.currentCampRecord,

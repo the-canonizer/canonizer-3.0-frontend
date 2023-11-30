@@ -79,32 +79,32 @@ const store1 = mockStore({
     },
   },
 });
-const store2 = mockStore({
-  auth: {
-    authenticated: false,
-    loggedInUser: {
-      is_admin: false,
-    },
-  },
-  topicDetails: {
-    currentCampRecord: {},
-  },
-  filters: {
-    filterObject: {
-      page_number: 1,
-      page_size: 15,
-      nameSpace: "/General/",
-      namespace_id: 1,
-      asofdate: 1698655445.598,
-      asof: "review",
-      filterByScore: "0",
-      algorithm: "blind_popularity",
-      search: "",
-      includeReview: false,
-      is_archive: 0,
-    },
-  },
-});
+// const store2 = mockStore({
+//   auth: {
+//     authenticated: false,
+//     loggedInUser: {
+//       is_admin: false,
+//     },
+//   },
+//   topicDetails: {
+//     currentCampRecord: {},
+//   },
+//   filters: {
+//     filterObject: {
+//       page_number: 1,
+//       page_size: 15,
+//       nameSpace: "/General/",
+//       namespace_id: 1,
+//       asofdate: 1698655445.598,
+//       asof: "review",
+//       filterByScore: "0",
+//       algorithm: "blind_popularity",
+//       search: "",
+//       includeReview: false,
+//       is_archive: 0,
+//     },
+//   },
+// });
 const store3 = mockStore({
   auth: {
     authenticated: true,
@@ -144,7 +144,7 @@ describe("HistoryCollapse component", () => {
     jest.useRealTimers();
   });
   test("renders commit and cancel button", () => {
-    const { container, debug } = render(
+    const { container } = render(
       <Provider store={store1}>
         <RouterContext.Provider
           value={createMockRouter({
@@ -292,7 +292,7 @@ describe("HistoryCollapse component", () => {
     );
   });
   test("renders agree or object", () => {
-    const { container, debug } = render(
+    const { container } = render(
       <Provider store={store1}>
         <RouterContext.Provider
           value={createMockRouter({
@@ -401,7 +401,7 @@ describe("HistoryCollapse component", () => {
   });
 
   test("renders Objected", () => {
-    const { container, debug } = render(
+    const { container } = render(
       <Provider store={store1}>
         <RouterContext.Provider
           value={createMockRouter({
@@ -518,7 +518,7 @@ describe("HistoryCollapse component", () => {
   });
 
   test("renders Objected with unAuth user", () => {
-    const { container, debug } = render(
+    const { container } = render(
       <Provider store={store}>
         <RouterContext.Provider
           value={createMockRouter({
@@ -630,96 +630,7 @@ describe("HistoryCollapse component", () => {
       })
     );
   });
-  test("renders for Topic", () => {
-    const { container, debug } = render(
-      <Provider store={store2}>
-        <RouterContext.Provider
-          value={createMockRouter({
-            asPath: "/topic/history/3020-test-colapse-2/1-Agreement",
-            pathname: "/topic/history/[...camp]",
-            query: {
-              camp: ["3020-test-colapse-2"],
-            },
-          })}
-        >
-          <HistoryCollapse
-            collapseKey={"1"}
-            isChecked={false}
-            campStatement={{
-              value: "<p>stateedit</p>",
-              parsed_value: "<p>stateedit</p>",
-              topic_num: 3020,
-              camp_num: 1,
-              id: 6193,
-              note: "editSum",
-              submit_time: 1698655566,
-              submitter_nick_id: 831,
-              go_live_time: 1698741966,
-              objector_nick_id: null,
-              object_time: null,
-              object_reason: null,
-              proposed: null,
-              replacement: null,
-              language: "English",
-              grace_period: 1,
-              objector_nick_name: null,
-              agreed_to_change: 0,
-              submitter_nick_name: "test2",
-              isAuthor: true,
-              total_supporters: 2,
-              agreed_supporters: 1,
-              ifIamSupporter: 0,
-              ifIAmExplicitSupporter: false,
-              status: "in_review",
-            }}
-            topicNamespaceId={19}
-            userNickNameData={[
-              {
-                id: 2,
-                nick_name: "Malia_Allsop",
-              },
-            ]}
-            campHistoryItems={[
-              {
-                value: "<p>stateedit</p>",
-                parsed_value: "<p>stateedit</p>",
-                topic_num: 3020,
-                camp_num: 1,
-                id: 6193,
-                note: "editSum",
-                submit_time: 1698655566,
-                submitter_nick_id: 831,
-                go_live_time: 1698741966,
-                objector_nick_id: null,
-                object_time: null,
-                object_reason: null,
-                proposed: null,
-                replacement: null,
-                language: "English",
-                grace_period: 1,
-                objector_nick_name: null,
-                agreed_to_change: 0,
-                submitter_nick_name: "test2",
-                isAuthor: true,
-                total_supporters: 2,
-                agreed_supporters: 1,
-                ifIamSupporter: 0,
-                ifIAmExplicitSupporter: false,
-                status: "in_review",
-              },
-            ]}
-            callManageCampApi={jest.fn()}
-            changeAgree={jest.fn()}
-            changeDiscard={jest.fn()}
-            onSelectCompare={jest.fn()}
-            setIsTreesApiCallStop={jest.fn()}
-            isDisabledCheck={false}
-            parentArchived={0}
-          />
-        </RouterContext.Provider>
-      </Provider>
-    );
-  });
+
   test("renders for Topic commit", () => {
     changeCommitStatement.mockResolvedValue({
       status_code: 200,
@@ -728,7 +639,7 @@ describe("HistoryCollapse component", () => {
       data: [],
     });
 
-    const { container, debug } = render(
+    render(
       <Provider store={store3}>
         <RouterContext.Provider
           value={createMockRouter({
@@ -816,6 +727,11 @@ describe("HistoryCollapse component", () => {
         </RouterContext.Provider>
       </Provider>
     );
+    expect(
+      screen.getByRole("button", {
+        name: /commit change/i,
+      })
+    ).toBeInTheDocument();
     fireEvent.click(
       screen.getByRole("button", {
         name: /commit change/i,

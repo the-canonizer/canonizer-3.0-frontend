@@ -133,17 +133,17 @@ describe("TimelineSlider", () => {
     );
     expect(
       screen.getByRole("img", {
-        name: /step\-backward/i,
+        name: /step-backward/i,
       })
     ).toBeInTheDocument();
     expect(
       screen.getByRole("img", {
-        name: /caret\-right/i,
+        name: /caret-right/i,
       })
     ).toBeInTheDocument();
     expect(
       screen.getByRole("img", {
-        name: /step\-forward/i,
+        name: /step-forward/i,
       })
     ).toBeInTheDocument();
 
@@ -209,7 +209,7 @@ describe("TimelineSlider", () => {
     const setIteration = jest.fn();
     const handleForwardOrBackord = jest.fn();
     const setIsPlaying = jest.fn();
-    const { getByTestId, debug } = render(
+    const { getByTestId } = render(
       <TimelineSlider
         mockData={mockData}
         setStart={jest.fn()}

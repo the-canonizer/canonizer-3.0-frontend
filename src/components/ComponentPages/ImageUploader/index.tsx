@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { PlusOutlined, UploadOutlined } from "@ant-design/icons";
+import { UploadOutlined } from "@ant-design/icons";
 import { Modal, Upload, message } from "antd";
 import type { RcFile, UploadProps } from "antd/es/upload";
 import type { UploadFile } from "antd/es/upload/interface";
@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "src/store";
 import { setProfilePicture } from "src/store/slices/authSlice";
 
-const MAX_IMAGE_SIZE_MB = 5; // Maximum image size in megabytes
+// const MAX_IMAGE_SIZE_MB = 5; // Maximum image size in megabytes
 const MAX_IMAGE_WIDTH = 1000; // Maximum image width in pixels
 const MAX_IMAGE_HEIGHT = 1000; // Maximum image height in pixels
 
