@@ -35,6 +35,16 @@ const TopicDetailsPage = ({
   tree,
   serverCall,
 }: any) => {
+  console.log("fix = > > ", {
+    current_date,
+    newsFeed,
+    topicRecord,
+    campRecord,
+    campStatement,
+    statementHistory,
+    tree,
+    serverCall,
+  });
   const serverSideCall = useRef(serverCall || false);
   const dispatch = useDispatch();
 
@@ -61,8 +71,7 @@ const TopicDetailsPage = ({
   return (
     <Layout>
       {tree?.status_code == 404 ||
-      tree?.status_code == 422 ||
-      campRecord?.status_code == 404 ? (
+      (tree?.status_code == 422 && campRecord?.status_code == 404) ? (
         <DataNotFound
           name={ErrorStatus}
           message={`${ErrorStatus} not found`}
@@ -110,6 +119,12 @@ export async function getServerSideProps({ req, query }) {
     per_page: 4,
     page: 1,
   };
+  console.log("============================================================");
+  console.log({
+    reqBodyForCampData,
+    reqBody,
+    reqBodyForService,
+  });
 
   const [
     newsFeed,
