@@ -427,8 +427,10 @@
 }
 
 .backButton {
-  background: #ffffff 0% 0% no-repeat padding-box;
-  border: 1px solid var(--primary);
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
   border-radius: 2px;
   opacity: 1;
   letter-spacing: 0px;
@@ -438,14 +440,14 @@
   opacity: 1;
   line-height: 16px;
   transition: all 0.3s;
-  position: absolute;
-  right: 0;
-  float: right;
-  top: 0;
+  // position: absolute;
+  // right: 0;
+  // float: right;
+  // top: 0;
   z-index: 100;
 
-  &:hover {
-    background: var(--primary);
-    color: #ffffff;
-  }
+  // &:hover {
+  // background: var(--primary);
+  // color: #ffffff;
+  // }
 }
