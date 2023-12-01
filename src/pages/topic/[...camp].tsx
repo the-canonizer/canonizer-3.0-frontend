@@ -35,16 +35,6 @@ const TopicDetailsPage = ({
   tree,
   serverCall,
 }: any) => {
-  console.log("fix = > > ", {
-    current_date,
-    newsFeed,
-    topicRecord,
-    campRecord,
-    campStatement,
-    statementHistory,
-    tree,
-    serverCall,
-  });
   const serverSideCall = useRef(serverCall || false);
   const dispatch = useDispatch();
 
@@ -119,12 +109,6 @@ export async function getServerSideProps({ req, query }) {
     per_page: 4,
     page: 1,
   };
-  console.log("============================================================");
-  console.log({
-    reqBodyForCampData,
-    reqBody,
-    reqBodyForService,
-  });
 
   const [
     newsFeed,
