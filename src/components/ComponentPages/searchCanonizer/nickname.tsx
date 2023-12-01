@@ -50,10 +50,10 @@ const NicknameSearch = () => {
                       return (
                         <>
                           <li>
-                            <Link href={`/${x.link}`}>
+                            <Link href={`/${x?.link}`}>
                               <a>
                                 <label style={{ cursor: "pointer" }}>
-                                  {x.type_value}
+                                  {x?.type_value}
                                 </label>
                               </a>
                             </Link>

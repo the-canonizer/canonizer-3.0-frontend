@@ -51,9 +51,9 @@ const TopicSearch = () => {
                       return (
                         <>
                           <li>
-                            <Link href={`/${x.link}`}>
+                            <Link href={`/${x?.link}`}>
                               <a>
-                                <label>{x.type_value}</label>
+                                <label>{x?.type_value}</label>
                               </a>
                             </Link>
 

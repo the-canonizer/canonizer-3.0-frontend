@@ -76,8 +76,8 @@ const CampSearch = () => {
                                 return (
                                   <>
                                     <a
-                                      href={`/${obj.camp_link}`}
-                                      key={`/${obj.camp_link}`}
+                                      href={`/${obj?.camp_link}`}
+                                      key={`/${obj?.camp_link}`}
                                     >
                                       {obj.camp_name}
                                       {index < parsedData.length - 1
