@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic";
-import { Fragment } from "react";
-import { Form, Button, Select, Row, Col, Typography } from "antd";
+import { Fragment, useState } from "react";
+import { Form, Button, Select, Row, Col, Typography, Modal } from "antd";
 import { useDispatch } from "react-redux";
 
 import styles from "../Forum.module.scss";
@@ -61,145 +61,168 @@ const PostForm = ({
   isError = false,
   isLog,
   isLoading,
+  isModalOpen = false,
+  showModal,
 }: any) => {
   const dispatch = useDispatch();
   const openModal = () => dispatch(showLoginModal());
 
   return (
     <Fragment>
-      <Form
-        autoComplete="off"
-        form={form}
-        onFinish={onFinish}
-        name="new_post"
-        className={`${styles.postForm}`}
-        layout={"vertical"}
-        scrollToFirstError
-        validateTrigger={messages.formValidationTypes()}
-        initialValues={{ ...initialValue }}
-      >
-        <Row gutter={16}>
-          <Col xs={24}>
-            <Text
-              style={{ marginBottom: "10px", display: "block" }}
-              id="post-count-label"
-            >
-              {isLoading ? (
-                <CustomSkelton
-                  skeltonFor="list"
-                  bodyCount={1}
-                  stylingClass=""
-                  listStyle="countLi"
-                  isButton={false}
-                />
-              ) : (
-                `Number of Post in this thread: ${postCount}`
-              )}
-            </Text>
-            {!isLog && (
-              <Text id="sign-in-msg" data-testid="logincheck">
-                Please <a onClick={openModal}>Sign In</a> to comment on this
-                Thread
-              </Text>
+      <Row gutter={16}>
+        <Col xs={24} md={12}>
+          <Text
+            style={{ marginBottom: "10px", display: "block" }}
+            id="post-count-label"
+          >
+            {isLoading ? (
+              <CustomSkelton
+                skeltonFor="list"
+                bodyCount={1}
+                stylingClass=""
+                listStyle="countLi"
+                isButton={false}
+              />
+            ) : (
+              `Number of Post in this thread: ${postCount}`
             )}
-            {isLog ? (
-              <div className={styles.editorQuill} key="post_editor_div">
-                <Editorckl
-                  key="post_editor"
-                  editorState={quillContent || ""}
-                  oneditorchange={onContentChange}
-                  placeholder="Post Your Message Here..."
-                  items={formats}
-                  height={200}
-                ></Editorckl>
-                {isError && <Text type="danger">{validations.reply}</Text>}
-              </div>
-            ) : null}
-          </Col>
-          {isLog ? (
-            <Col xs={24} sm={12}>
-              {nickNameList.length > 0 ? (
-                <Form.Item
-                  label={
-                    <Fragment>
-                      {labels.cr_nick_name}
-                      <span className="required">*</span>
-                    </Fragment>
-                  }
-                  name="nick_name"
-                  {...nickNmRule}
-                  initialValue={nickNameList[0]?.id}
-                  extra={labels.cr_nick_name_sp}
-                  className="nick_name_extra"
-                >
-                  <Select
-                    placeholder={placeholders.nickName}
-                    allowClear
-                    size={"large"}
-                    data-id="nick-name-label"
-                    showSearch
-                    optionFilterProp="children"
-                  >
-                    {nickNameList.map((nick) => (
-                      <Option key={nick.id} value={nick.id}>
-                        {nick.nick_name}
-                      </Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-              ) : null}
-              {nickNameList.length <= 0 ? (
-                <Form.Item
-                  label={
-                    <Fragment>
-                      {labels.cr_nick_name}
-                      <span className="required">*</span>
-                    </Fragment>
-                  }
-                  name="nick_name"
-                  {...nickNmRule}
-                  extra={labels.cr_nick_name_sp}
-                  className="nick_name_extra"
-                >
-                  <Select
-                    placeholder={placeholders.nickName}
-                    allowClear
-                    size={"large"}
-                    data-id="nick-name-label"
-                    showSearch
-                    optionFilterProp="children"
-                  ></Select>
-                </Form.Item>
+          </Text>
+        </Col>
+        <Col xs={24} md={12} className={styles.btnText}>
+          {!isLog ? (
+            <Text id="sign-in-msg" data-testid="logincheck">
+              Please <a onClick={openModal}>Sign In</a> to comment on this
+              Thread
+            </Text>
+          ) : (
+            <Button type="primary" onClick={showModal}>
+              Create Post
+            </Button>
+          )}
+        </Col>
+      </Row>
+      <Modal
+        title="Create Post Form"
+        open={isModalOpen}
+        onOk={showModal}
+        onCancel={showModal}
+        className={styles.postFormModal}
+        footer={null}
+      >
+        <Form
+          autoComplete="off"
+          form={form}
+          onFinish={onFinish}
+          name="new_post"
+          className={`${styles.postForm}`}
+          layout={"vertical"}
+          scrollToFirstError
+          validateTrigger={messages.formValidationTypes()}
+          initialValues={{ ...initialValue }}
+        >
+          <Row gutter={16}>
+            <Col xs={24}>
+              {isLog ? (
+                <div className={styles.editorQuill} key="post_editor_div">
+                  <Editorckl
+                    key="post_editor"
+                    editorState={quillContent || ""}
+                    oneditorchange={onContentChange}
+                    placeholder="Post Your Message Here..."
+                    items={formats}
+                    height={200}
+                  ></Editorckl>
+                  {isError && <Text type="danger">{validations.reply}</Text>}
+                </div>
               ) : null}
             </Col>
+            {isLog ? (
+              <Col xs={24} sm={18}>
+                {nickNameList.length > 0 ? (
+                  <Form.Item
+                    label={
+                      <Fragment>
+                        {labels.cr_nick_name}
+                        <span className="required">*</span>
+                      </Fragment>
+                    }
+                    name="nick_name"
+                    {...nickNmRule}
+                    initialValue={nickNameList[0]?.id}
+                    extra={labels.cr_nick_name_sp}
+                    className="nick_name_extra"
+                  >
+                    <Select
+                      placeholder={placeholders.nickName}
+                      allowClear
+                      size={"large"}
+                      data-id="nick-name-label"
+                      showSearch
+                      optionFilterProp="children"
+                    >
+                      {nickNameList.map((nick) => (
+                        <Option key={nick.id} value={nick.id}>
+                          {nick.nick_name}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                ) : null}
+                {nickNameList.length <= 0 ? (
+                  <Form.Item
+                    label={
+                      <Fragment>
+                        {labels.cr_nick_name}
+                        <span className="required">*</span>
+                      </Fragment>
+                    }
+                    name="nick_name"
+                    {...nickNmRule}
+                    extra={labels.cr_nick_name_sp}
+                    className="nick_name_extra"
+                  >
+                    <Select
+                      placeholder={placeholders.nickName}
+                      allowClear
+                      size={"large"}
+                      data-id="nick-name-label"
+                      showSearch
+                      optionFilterProp="children"
+                    ></Select>
+                  </Form.Item>
+                ) : null}
+              </Col>
+            ) : null}
+          </Row>
+          {isLog ? (
+            <div className={styles.saveBtns}>
+              <Form.Item noStyle>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  size={"large"}
+                  className={`${styles.submit_btn}`}
+                  id="submit-btn"
+                  data-testid="submit-btn"
+                >
+                  Submit
+                </Button>
+                <Button
+                  type="primary"
+                  htmlType="button"
+                  size={"large"}
+                  className={`${styles.cancel_btn}`}
+                  onClick={onCancel}
+                  id="back-btn"
+                  data-testid="back-btn"
+                >
+                  Cancel
+                </Button>
+              </Form.Item>
+            </div>
           ) : null}
-        </Row>
-        {isLog ? (
-          <Form.Item noStyle>
-            <Button
-              type="primary"
-              htmlType="submit"
-              size={"large"}
-              className={`${styles.submit_btn}`}
-              id="submit-btn"
-              data-testid="submit-btn"
-            >
-              Submit
-            </Button>
-            <Button
-              type="primary"
-              htmlType="button"
-              size={"large"}
-              className={`${styles.cancel_btn}`}
-              onClick={onCancel}
-              id="back-btn"
-              data-testid="back-btn"
-            >
-              Cancel
-            </Button>
-          </Form.Item>
-        ) : null}
-      </Form>
+        </Form>
+      </Modal>
     </Fragment>
   );
 };
