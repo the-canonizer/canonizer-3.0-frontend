@@ -23,6 +23,8 @@ const Threads = ({
   postperPage,
   threadDetailsLoading,
   payload,
+  isModalOpen,
+  showModal,
 }: any) => (
   <div className="d-flex">
     <ThreadSidebar />
@@ -48,6 +50,8 @@ const Threads = ({
         isLoading={isLoading}
         postperPage={postperPage}
         threadDetailsLoading={threadDetailsLoading}
+        isModalOpen={isModalOpen}
+        showModal={showModal}
       />
     </div>
   </div>

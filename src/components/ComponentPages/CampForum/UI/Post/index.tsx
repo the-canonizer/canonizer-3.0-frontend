@@ -32,6 +32,8 @@ const PostUI = ({
   isLoading,
   postperPage,
   threadDetailsLoading,
+  isModalOpen,
+  showModal,
 }: any) => (
   <Fragment>
     <Card
@@ -103,6 +105,8 @@ const PostUI = ({
         isError={isError}
         isLog={isLog}
         isLoading={isLoading}
+        showModal={showModal}
+        isModalOpen={isModalOpen}
       />
 
       {isLoading ? (
