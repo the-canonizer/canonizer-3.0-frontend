@@ -248,7 +248,7 @@ const UploadFileUI = ({
         </Menu.Item>
       ) : (
         <Menu.Item
-        data-testid="test2"
+          data-testid="test2"
           onClick={() => {
             window.location.href = item.file_path;
           }}
