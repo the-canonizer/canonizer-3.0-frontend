@@ -184,7 +184,7 @@ const mockState = {
     // disabledCreateFolderBtn,
     visibleUploadOptions: true,
     addButton: true,
-    folderOpen: true
+    folderOpen: true,
   },
 };
 
