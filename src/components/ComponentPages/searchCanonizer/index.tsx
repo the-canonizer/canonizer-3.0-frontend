@@ -93,8 +93,8 @@ const Search = () => {
                               return (
                                 <>
                                   <a
-                                    href={`/${obj.camp_link}`}
-                                    key={`/${obj.camp_link}`}
+                                    href={`/${obj?.camp_link}`}
+                                    key={`/${obj?.camp_link}`}
                                   >
                                     {obj.camp_name}
                                     {index < parsedData.length - 1 ? "/ " : ""}
@@ -138,7 +138,7 @@ const Search = () => {
                     return (
                       <>
                         <li>
-                          <a href={jsonData[0][1].camp_link}>
+                          <a href={jsonData[0][1]?.camp_link}>
                             <h3 className={styles.statement_heading}>
                               {jsonData.length > 1
                                 ? jsonData?.[0]?.[1]?.camp_name
@@ -162,8 +162,8 @@ const Search = () => {
                             {parsedData.reverse().map((obj, index) => {
                               return (
                                 <>
-                                  <a href={obj.camp_link} key={obj.camp_link}>
-                                    {obj.camp_name}
+                                  <a href={obj?.camp_link} key={obj?.camp_link}>
+                                    {obj?.camp_name}
                                     {index < parsedData.length - 1 ? "/ " : ""}
                                   </a>
                                 </>

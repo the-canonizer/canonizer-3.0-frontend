@@ -102,10 +102,8 @@ const Events = ({ timelineDescript, loadingEvents }: any) => {
                                       title?.url
                                     }?score=${filterByScore}&algo=${
                                       filterObject?.algorithm
-                                    }${
-                                      filterObject?.asof == "bydate"
-                                        ? "&asofdate=" + title?.eventDate
-                                        : ""
+                                    }&asofdate=${
+                                      title?.eventDate
                                     }&asof=bydate&canon=${
                                       filterObject?.namespace_id
                                     }${

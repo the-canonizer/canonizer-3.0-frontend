@@ -357,9 +357,9 @@ const CampTree = ({
                           }${viewThisVersion ? "&viewversion=1" : ""}`}
                         >
                           <a
-                            className={
+                            className={`${
                               data[item].is_archive == 1
-                                ? `font-weight-bold ${styles.archive_grey}`
+                                ? `font-weight-bold tra ${styles.archive_grey}`
                                 : data[item]?.camp_id ==
                                     router?.query?.camp
                                       ?.at(1)
@@ -367,7 +367,15 @@ const CampTree = ({
                                       ?.at(0) ?? "1"
                                 ? `font-weight-bold ${styles.activeCamp}`
                                 : ""
-                            }
+                            } ${
+                              isForumPage &&
+                              data[item]?.camp_id ==
+                                ((router?.query?.camp as string)
+                                  ?.split("-")
+                                  ?.at(0) ?? "1")
+                                ? `font-weight-bold forumActive ${styles.activeCamp}`
+                                : ""
+                            }`}
                           >
                             {data[item].is_archive == 1 ? (
                               <Popover content="Archived Camp">
