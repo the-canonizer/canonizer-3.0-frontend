@@ -60,6 +60,7 @@ const ForumComponent = ({
   const [threadDetailsLoading, setthreadDetailsLoading] = useState(false);
   const [perPage] = useState(10);
   const [postperPage] = useState(10);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -301,6 +302,10 @@ const ForumComponent = ({
 
   const [form] = Form.useForm();
 
+  const showModal = () => {
+    setIsModalOpen((prev) => !prev);
+  };
+
   async function fetchNickNameList(topic_num) {
     setLoading(false);
 
@@ -530,6 +535,7 @@ const ForumComponent = ({
       setQuillContent("");
 
       fetchNickNameList(topic_num);
+      showModal();
     }
     setPostLoading(false);
   };
@@ -546,6 +552,7 @@ const ForumComponent = ({
 
     setQuillContent(post.body);
     setCurrentPost(post);
+    showModal();
   };
 
   const onDeleteClick = async (id) => {
@@ -562,7 +569,8 @@ const ForumComponent = ({
   };
 
   const onCancel = () => {
-    onCancelCreateThread();
+    // onCancelCreateThread();
+    showModal();
     setQuillContent("");
     setCurrentPost({});
   };
@@ -643,6 +651,8 @@ const ForumComponent = ({
           postperPage={postperPage}
           threadDetailsLoading={threadDetailsLoading}
           payload={payload}
+          showModal={showModal}
+          isModalOpen={isModalOpen}
         />
       ) : null}
     </Fragment>

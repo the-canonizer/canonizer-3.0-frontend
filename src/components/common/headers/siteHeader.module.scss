@@ -326,7 +326,9 @@
     }
   }
 }
+
 .badgeCls {
+  cursor: pointer;
   sup {
     border: none;
     background: #f89d15;
@@ -408,4 +410,7 @@
 .bold_margin {
   border-bottom: 2px solid #ededed;
   margin: 0 0 8px;
+}
+.logo_in_header{
+  cursor: pointer;
 }

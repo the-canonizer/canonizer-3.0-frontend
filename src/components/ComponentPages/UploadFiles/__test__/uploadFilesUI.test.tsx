@@ -1,5 +1,6 @@
 import {
   fireEvent,
+  getAllByPlaceholderText,
   render,
   screen,
   waitFor,
@@ -8,6 +9,11 @@ import UploadFileUI from "../UploadFilesUI";
 import messages from "../../../../messages";
 import { cleanup } from "@testing-library/react-hooks";
 import { Empty, Input } from "antd";
+import { Provider, connectAdvanced } from "react-redux";
+import UploadFiles from "..";
+import userEvent from "@testing-library/user-event";
+import configureMockStore from "redux-mock-store";
+
 // import { showDrageBox } from "src/store/slices/uiSlice";
 
 jest.mock("src/hooks/isUserAuthenticated", () =>
@@ -17,12 +23,21 @@ jest.mock("src/hooks/isUserAuthenticated", () =>
 jest.mock("src/network/api/userApi", () => ({
   uploadFile: jest.fn(),
   deleteFolderApi: jest.fn(),
+  createFolderApi: jest
+    .fn()
+    .mockReturnValue(Promise.resolve({ status_code: 200 })),
   deleteUploadFileApi: jest.fn(),
   getFileInsideFolderApi: jest
     .fn()
     .mockReturnValue(Promise.resolve({ success: true })),
   getUploadFileAndFolder: jest.fn(() =>
     Promise.resolve({ data: { files: [], folders: [] } })
+  ),
+  globalSearchUploadFiles: jest.fn((v) =>
+    Promise.resolve({
+      status_code: 200,
+      data: { files: [{ ...v, type: "file", file_type: "image/jpeg" }] },
+    })
   ),
 }));
 const { labels } = messages;
@@ -31,7 +46,7 @@ const input = "";
 const setInput = jest.fn();
 const selectedFolderID = jest.fn();
 const setFileLists = jest.fn();
-const folderFiles = [];
+// const folderFiles = [];
 const setFolderFiles = jest.fn();
 const uploadFun = jest.fn();
 const closeFolder = jest.fn();
@@ -44,7 +59,7 @@ const uploadFileList = [];
 const setUploadFileList = jest.fn();
 const removeUploadFiles = jest.fn();
 const GetUploadFileAndFolder = jest.fn();
-const getFileListFromFolderID = [];
+// const getFileListFromFolderID = [];
 const setShowCreateFolderModal = jest.fn();
 const showCreateFolderModal = true;
 const DeleteConfirmationVisible = true;
@@ -64,24 +79,49 @@ const setToggleFileView = jest.fn();
 jest.mock("next/router", () => ({
   useRouter: jest.fn(),
 }));
+const mockStore = configureMockStore();
+const store1 = mockStore({
+  ui: {
+    uploadAfter: true,
+    dragBox: false,
+    // disabledCreateFolderBtn,
+    visibleUploadOptions: true,
+    addButton: true,
+    folderOpen: false,
+  },
+});
+const store2 = mockStore({
+  ui: {
+    dragBox: false,
+    // disabledCreateFolderBtn,
+    visibleUploadOptions: true,
+    addButton: true,
+    folderOpen: false,
+  },
+});
+
+// jest.mock("react-redux", () => ({
+//   ...jest.requireActual("react-redux"),
+//   useDispatch: () => jest.fn(),
+//   useSelector: () =>
+//     jest.fn().mockImplementation((callback) => callback(mockState)),
+// }));
 
 const fileLists = [
   {
-    created_at: 1650894718,
-    deleted_at: null,
-    file_id: "can-lmLrBLqFe",
-    file_name: "Third.jpg",
-    file_path:
-      "https://canonizer-public-file.s3.us-east-2.amazonaws.com/TWFsaWExMTM0TWFsaWE%3D_1650894717_713566.jpg",
-    short_code_path:
-      "https://canonizer-public-file.s3.us-east-2.amazonaws.com/TWFsaWExMTM0TWFsaWE%3D_1650894717_713566.jpg",
-    file_type: "image/jpeg",
+    id: 173,
+    user_id: 1235,
     folder_id: null,
-    id: 132,
-    short_code: "can-lmLrBLqFe",
-    type: "file",
-    updated_at: 1650894718,
-    user_id: 1134,
+    file_id: "Why.jpg",
+    short_code: "Why.jpg",
+    file_name: "Why.jpg",
+    file_type: "image/jpeg",
+    file_path:
+      "https://canonizer-test.s3.us-west-2.amazonaws.com/TWFsaWExMjM1TWFsaWE%3D_1672056635_987947.jpg",
+    created_at: 1672056635,
+    updated_at: 1672056635,
+    deleted_at: null,
+    short_code_path: "TWFsaWExMjM1TWFsaWE%3D_1672056635_987947.jpg",
   },
   {
     created_at: 1650894719,
@@ -211,6 +251,51 @@ const fileLists = [
     type: "file",
     updated_at: 1650894119,
     user_id: 1184,
+  },
+  {
+    id: 183,
+    user_id: 1235,
+    folder_id: null,
+    file_id: "TestFile1.json",
+    short_code: "TestFile1.json",
+    file_name: "TestFile1.json",
+    file_type: "application/json",
+    file_path:
+      "https://canonizer-test.s3.us-west-2.amazonaws.com/TWFsaWExMjM1TWFsaWE%3D_1699340170_414767.json",
+    created_at: 1699340170,
+    updated_at: 1699340170,
+    deleted_at: null,
+    short_code_path: "TWFsaWExMjM1TWFsaWE%3D_1699340170_414767.json",
+  },
+];
+
+const folderFiles = [
+  {
+    id: 4,
+    user_id: 1235,
+    name: "Test Folder 1",
+    created_at: 1699247632,
+    updated_at: 1699247632,
+    deleted_at: null,
+    uploads_count: 0,
+  },
+];
+
+const getFileListFromFolderID = [
+  {
+    id: 184,
+    user_id: 1235,
+    folder_id: 4,
+    file_id: "Testfile2.json",
+    short_code: "Testfile2.json",
+    file_name: "Testfile2.json",
+    file_type: "application/json",
+    file_path:
+      "https://canonizer-test.s3.us-west-2.amazonaws.com/TWFsaWExMjM1TWFsaWE%3D_1699341363_118335.json",
+    created_at: 1699341363,
+    updated_at: 1699341363,
+    deleted_at: null,
+    short_code_path: "TWFsaWExMjM1TWFsaWE%3D_1699341363_118335.json",
   },
 ];
 
@@ -346,7 +431,7 @@ describe("Upload File UI Page", () => {
   });
 
   it("render Create folder button image grid view", async () => {
-    const { getByAltText } = await render(
+    const { getByAltText } = render(
       <UploadFileUI
         input={input}
         setInput={setInput}
@@ -377,9 +462,9 @@ describe("Upload File UI Page", () => {
         setToggleFileView={setToggleFileView}
       />
     );
-    const image = getByAltText("gridView");
-
-    expect(image).toHaveAttribute("alt", "gridView");
+    const close_Folder = screen.getByTestId("folderFilled");
+    expect(close_Folder).toBeInTheDocument();
+    fireEvent.click(close_Folder);
   });
 
   it("render Create folder button image list view", async () => {
@@ -782,7 +867,86 @@ describe("Upload File UI Page", () => {
     fireEvent.click(btnE3);
   });
   it("Empty component displays correct content", () => {
-    render(
+    const { container } = render(
+      <Provider store={store1}>
+        <UploadFileUI
+          input={input}
+          setInput={setInput}
+          selectedFolderID={selectedFolderID}
+          fileLists={fileLists}
+          setFileLists={setFileLists}
+          folderFiles={folderFiles}
+          setFolderFiles={setFolderFiles}
+          closeFolder={closeFolder}
+          uploadFun={uploadFun}
+          handleCancel={handleCancel}
+          handle_X_btn={handle_X_btn}
+          addNewFile={addNewFile}
+          Openfolder={Openfolder}
+          removeFiles={removeFiles}
+          uploadFileList={uploadFileList}
+          setUploadFileList={setUploadFileList}
+          removeUploadFiles={removeUploadFiles}
+          GetUploadFileAndFolder={GetUploadFileAndFolder}
+          getFileListFromFolderID={getFileListFromFolderID}
+          setShowCreateFolderModal={setShowCreateFolderModal}
+          showCreateFolderModal={showCreateFolderModal}
+          DeleteConfirmationVisible={DeleteConfirmationVisible}
+          setDeleteConfirmationVisible={setDeleteConfirmationVisible}
+          flickringData={flickringData}
+          setFlickringData={setFlickringData}
+          toggleFileView={false}
+          setToggleFileView={setToggleFileView}
+        />
+      </Provider>
+    );
+    const span = screen.getAllByTestId("cpoy_span")[0];
+    expect(span).toBeInTheDocument();
+    fireEvent.click(span);
+    fireEvent.click(container.querySelector("#threeDots"));
+    expect(screen.getByTestId("test1")).toBeDefined();
+    fireEvent.click(screen.getByTestId("test1"));
+  });
+  it("Empty component displays correct", () => {
+    const { container } = render(
+      <Provider store={store2}>
+        <UploadFileUI
+          input={input}
+          setInput={setInput}
+          selectedFolderID={selectedFolderID}
+          fileLists={fileLists}
+          setFileLists={setFileLists}
+          folderFiles={folderFiles}
+          setFolderFiles={setFolderFiles}
+          closeFolder={closeFolder}
+          uploadFun={uploadFun}
+          handleCancel={handleCancel}
+          handle_X_btn={handle_X_btn}
+          addNewFile={addNewFile}
+          Openfolder={Openfolder}
+          removeFiles={removeFiles}
+          uploadFileList={uploadFileList}
+          setUploadFileList={setUploadFileList}
+          removeUploadFiles={removeUploadFiles}
+          GetUploadFileAndFolder={GetUploadFileAndFolder}
+          getFileListFromFolderID={getFileListFromFolderID}
+          setShowCreateFolderModal={setShowCreateFolderModal}
+          showCreateFolderModal={showCreateFolderModal}
+          DeleteConfirmationVisible={DeleteConfirmationVisible}
+          setDeleteConfirmationVisible={setDeleteConfirmationVisible}
+          flickringData={flickringData}
+          setFlickringData={setFlickringData}
+          toggleFileView={false}
+          setToggleFileView={setToggleFileView}
+        />
+      </Provider>
+    );
+    const span = screen.getByTestId("open_folder_render_mennu");
+    expect(span).toBeInTheDocument();
+    fireEvent.click(span);
+  });
+  it("Menu item render", () => {
+    const { container, getByText } = render(
       <UploadFileUI
         input={input}
         setInput={setInput}
@@ -809,20 +973,22 @@ describe("Upload File UI Page", () => {
         setDeleteConfirmationVisible={setDeleteConfirmationVisible}
         flickringData={flickringData}
         setFlickringData={setFlickringData}
-        toggleFileView={toggleFileView}
+        toggleFileView={true}
         setToggleFileView={setToggleFileView}
       />
     );
-    const emptyContent = "No data found";
-
-    // Render the Empty component
-    render(<Empty description={emptyContent} />);
-
-    // Assert that the empty content is displayed
-    const emptyElement = screen.getByText(emptyContent);
-    expect(emptyElement).toBeInTheDocument();
+    fireEvent.click(container.querySelector(".threeDOt"));
+    expect(getByText("View File")).toBeDefined();
+    fireEvent.click(getByText("View File"));
+    fireEvent.click(container.querySelector(".threeDOt"));
+    expect(getByText("Copy Perma Link")).toBeDefined();
+    fireEvent.click(getByText("Copy Perma Link"));
+    fireEvent.click(container.querySelector(".threeDOt"));
+    expect(getByText("Delete File")).toBeDefined();
+    fireEvent.click(getByText("Delete File"));
   });
-  it("Menu item render", () => {
+
+  it("Menu item render download file", () => {
     const { container, getByText } = render(
       <UploadFileUI
         input={input}
@@ -854,16 +1020,17 @@ describe("Upload File UI Page", () => {
         setToggleFileView={setToggleFileView}
       />
     );
-    fireEvent.click(container.querySelector(".threeDOt"));
-    expect(getByText("View File")).toBeDefined();
-    fireEvent.click(getByText("View File"));
-    fireEvent.click(container.querySelector(".threeDOt"));
-    expect(getByText("Copy Perma Link")).toBeDefined();
+    const menu = container.querySelectorAll(".threeDOt");
+    fireEvent.click(menu[menu.length - 1]);
+    expect(screen.getByText("Download File")).toBeDefined();
+    fireEvent.click(screen.getByText("Download File"));
+    fireEvent.click(menu[menu.length - 1]);
     fireEvent.click(getByText("Copy Perma Link"));
-    fireEvent.click(container.querySelector(".threeDOt"));
+    fireEvent.click(menu[menu.length - 1]);
     expect(getByText("Delete File")).toBeDefined();
     fireEvent.click(getByText("Delete File"));
   });
+
   it("Menu item render for folder", () => {
     const { container, getByText } = render(
       <UploadFileUI
@@ -922,3 +1089,362 @@ describe("Upload File UI Page", () => {
   });
 });
 afterEach(cleanup);
+
+describe("upload files ui", () => {
+  it("create new folder test", async () => {
+    const { container, getAllByText, getAllByTestId, getAllByPlaceholderText } =
+      render(
+        <UploadFileUI
+          input={input}
+          setInput={setInput}
+          selectedFolderID={selectedFolderID}
+          fileLists={fileLists}
+          setFileLists={setFileLists}
+          folderFiles={folderFiles}
+          setFolderFiles={setFolderFiles}
+          closeFolder={closeFolder}
+          uploadFun={uploadFun}
+          handleCancel={handleCancel}
+          handle_X_btn={handle_X_btn}
+          addNewFile={addNewFile}
+          Openfolder={Openfolder}
+          removeFiles={removeFiles}
+          uploadFileList={uploadFileList}
+          setUploadFileList={setUploadFileList}
+          removeUploadFiles={removeUploadFiles}
+          GetUploadFileAndFolder={GetUploadFileAndFolder}
+          getFileListFromFolderID={getFileListFromFolderID}
+          setShowCreateFolderModal={setShowCreateFolderModal}
+          showCreateFolderModal={showCreateFolderModal}
+          DeleteConfirmationVisible={DeleteConfirmationVisible}
+          setDeleteConfirmationVisible={setDeleteConfirmationVisible}
+          flickringData={flickringData}
+          setFlickringData={setFlickringData}
+          toggleFileView={toggleFileView}
+          setToggleFileView={setToggleFileView}
+        />
+      );
+    const add_folder_element = getAllByTestId("add_AFile_Btn");
+    fireEvent.click(add_folder_element[0]);
+    await waitFor(() => {
+      const change_name_input = getAllByPlaceholderText(
+        "Enter name of the Folder"
+      );
+      // expect(change_name_input[0]).toBeInTheDocument()
+      fireEvent.change(change_name_input[0], {
+        target: { value: "Test Folder 1" },
+      });
+      const create_button = getAllByText("Create");
+      fireEvent.click(create_button[0]);
+    });
+  });
+
+  it("change fodler name test", async () => {
+    const { container, getAllByText, getAllByTestId, getAllByPlaceholderText } =
+      render(
+        <UploadFileUI
+          input={input}
+          setInput={setInput}
+          selectedFolderID={selectedFolderID}
+          fileLists={fileLists}
+          setFileLists={setFileLists}
+          folderFiles={folderFiles}
+          setFolderFiles={setFolderFiles}
+          closeFolder={closeFolder}
+          uploadFun={uploadFun}
+          handleCancel={handleCancel}
+          handle_X_btn={handle_X_btn}
+          addNewFile={addNewFile}
+          Openfolder={Openfolder}
+          removeFiles={removeFiles}
+          uploadFileList={uploadFileList}
+          setUploadFileList={setUploadFileList}
+          removeUploadFiles={removeUploadFiles}
+          GetUploadFileAndFolder={GetUploadFileAndFolder}
+          getFileListFromFolderID={getFileListFromFolderID}
+          setShowCreateFolderModal={setShowCreateFolderModal}
+          showCreateFolderModal={showCreateFolderModal}
+          DeleteConfirmationVisible={DeleteConfirmationVisible}
+          setDeleteConfirmationVisible={setDeleteConfirmationVisible}
+          flickringData={flickringData}
+          setFlickringData={setFlickringData}
+          toggleFileView={toggleFileView}
+          setToggleFileView={setToggleFileView}
+        />
+      );
+    await waitFor(() => {
+      fireEvent.click(container.querySelectorAll(".threeDOt")[3]);
+      const edit_button = screen.getByText("Edit folder name");
+      expect(edit_button).toBeInTheDocument();
+      fireEvent.click(edit_button);
+      const change_input = screen.getAllByPlaceholderText(
+        "Enter name of the Folder"
+      );
+      fireEvent.change(change_input[0], { target: { value: "Test 2" } });
+      fireEvent.click(screen.getByText("Update"));
+    });
+  });
+
+  it("Open folder", async () => {
+    const { container, getAllByText, getAllByTestId, getAllByPlaceholderText } =
+      render(
+        <UploadFileUI
+          input={input}
+          setInput={setInput}
+          selectedFolderID={selectedFolderID}
+          fileLists={fileLists}
+          setFileLists={setFileLists}
+          folderFiles={folderFiles}
+          setFolderFiles={setFolderFiles}
+          closeFolder={closeFolder}
+          uploadFun={uploadFun}
+          handleCancel={handleCancel}
+          handle_X_btn={handle_X_btn}
+          addNewFile={addNewFile}
+          Openfolder={Openfolder}
+          removeFiles={removeFiles}
+          uploadFileList={uploadFileList}
+          setUploadFileList={setUploadFileList}
+          removeUploadFiles={removeUploadFiles}
+          GetUploadFileAndFolder={GetUploadFileAndFolder}
+          getFileListFromFolderID={getFileListFromFolderID}
+          setShowCreateFolderModal={setShowCreateFolderModal}
+          showCreateFolderModal={showCreateFolderModal}
+          DeleteConfirmationVisible={DeleteConfirmationVisible}
+          setDeleteConfirmationVisible={setDeleteConfirmationVisible}
+          flickringData={flickringData}
+          setFlickringData={setFlickringData}
+          toggleFileView={toggleFileView}
+          setToggleFileView={setToggleFileView}
+        />
+      );
+    await waitFor(() => {
+      fireEvent.click(container.querySelectorAll(".threeDOt")[3]);
+      const edit_button = screen.getByText("Delete folder");
+      fireEvent.click(edit_button);
+    });
+  });
+
+  it("create new folder test close", async () => {
+    const { container, getAllByText, getAllByTestId, getAllByPlaceholderText } =
+      render(
+        <UploadFileUI
+          input={input}
+          setInput={setInput}
+          selectedFolderID={selectedFolderID}
+          fileLists={fileLists}
+          setFileLists={setFileLists}
+          folderFiles={folderFiles}
+          setFolderFiles={setFolderFiles}
+          closeFolder={closeFolder}
+          uploadFun={uploadFun}
+          handleCancel={handleCancel}
+          handle_X_btn={handle_X_btn}
+          addNewFile={addNewFile}
+          Openfolder={Openfolder}
+          removeFiles={removeFiles}
+          uploadFileList={uploadFileList}
+          setUploadFileList={setUploadFileList}
+          removeUploadFiles={removeUploadFiles}
+          GetUploadFileAndFolder={GetUploadFileAndFolder}
+          getFileListFromFolderID={getFileListFromFolderID}
+          setShowCreateFolderModal={setShowCreateFolderModal}
+          showCreateFolderModal={showCreateFolderModal}
+          DeleteConfirmationVisible={DeleteConfirmationVisible}
+          setDeleteConfirmationVisible={setDeleteConfirmationVisible}
+          flickringData={flickringData}
+          setFlickringData={setFlickringData}
+          toggleFileView={toggleFileView}
+          setToggleFileView={setToggleFileView}
+        />
+      );
+    const add_folder_element = getAllByTestId("add_AFile_Btn");
+    fireEvent.click(add_folder_element[0]);
+    await waitFor(() => {
+      const close_button = screen.getAllByRole("img");
+      expect(close_button[close_button.length - 1]).toBeInTheDocument();
+      fireEvent.click(close_button[close_button.length - 1]);
+    });
+  });
+
+  it("search uploaded folder by name", async () => {
+    const { container, getAllByText, getAllByTestId, getAllByPlaceholderText } =
+      render(
+        <UploadFileUI
+          input={input}
+          setInput={setInput}
+          selectedFolderID={selectedFolderID}
+          fileLists={fileLists}
+          setFileLists={setFileLists}
+          folderFiles={folderFiles}
+          setFolderFiles={setFolderFiles}
+          closeFolder={closeFolder}
+          uploadFun={uploadFun}
+          handleCancel={handleCancel}
+          handle_X_btn={handle_X_btn}
+          addNewFile={addNewFile}
+          Openfolder={Openfolder}
+          removeFiles={removeFiles}
+          uploadFileList={uploadFileList}
+          setUploadFileList={setUploadFileList}
+          removeUploadFiles={removeUploadFiles}
+          GetUploadFileAndFolder={GetUploadFileAndFolder}
+          getFileListFromFolderID={getFileListFromFolderID}
+          setShowCreateFolderModal={setShowCreateFolderModal}
+          showCreateFolderModal={showCreateFolderModal}
+          DeleteConfirmationVisible={DeleteConfirmationVisible}
+          setDeleteConfirmationVisible={setDeleteConfirmationVisible}
+          flickringData={flickringData}
+          setFlickringData={setFlickringData}
+          toggleFileView={toggleFileView}
+          setToggleFileView={setToggleFileView}
+        />
+      );
+
+    await waitFor(() => {
+      const update_name_menu = screen.getAllByTestId("datePickerText");
+      expect(update_name_menu[0]).toBeInTheDocument();
+      fireEvent.change(update_name_menu[0], { target: { value: "Test" } });
+    });
+  });
+
+  it("search uploaded folder by date", async () => {
+    const { container, getAllByText, getAllByTestId, getAllByPlaceholderText } =
+      render(
+        <UploadFileUI
+          input={input}
+          setInput={setInput}
+          selectedFolderID={selectedFolderID}
+          fileLists={fileLists}
+          setFileLists={setFileLists}
+          folderFiles={folderFiles}
+          setFolderFiles={setFolderFiles}
+          closeFolder={closeFolder}
+          uploadFun={uploadFun}
+          handleCancel={handleCancel}
+          handle_X_btn={handle_X_btn}
+          addNewFile={addNewFile}
+          Openfolder={Openfolder}
+          removeFiles={removeFiles}
+          uploadFileList={uploadFileList}
+          setUploadFileList={setUploadFileList}
+          removeUploadFiles={removeUploadFiles}
+          GetUploadFileAndFolder={GetUploadFileAndFolder}
+          getFileListFromFolderID={getFileListFromFolderID}
+          setShowCreateFolderModal={setShowCreateFolderModal}
+          showCreateFolderModal={showCreateFolderModal}
+          DeleteConfirmationVisible={DeleteConfirmationVisible}
+          setDeleteConfirmationVisible={setDeleteConfirmationVisible}
+          flickringData={flickringData}
+          setFlickringData={setFlickringData}
+          toggleFileView={toggleFileView}
+          setToggleFileView={setToggleFileView}
+        />
+      );
+
+    await waitFor(() => {
+      const update_name_menu_date =
+        container.getElementsByClassName("ant-picker");
+      fireEvent.click(update_name_menu_date[0]);
+      const toady = screen.getAllByText("Today");
+      fireEvent.click(toady[0]);
+    });
+  });
+
+  it("upload file", async () => {
+    const { container, getAllByText, getAllByTestId, getAllByPlaceholderText } =
+      render(
+        <UploadFileUI
+          input={input}
+          setInput={setInput}
+          selectedFolderID={selectedFolderID}
+          fileLists={fileLists}
+          setFileLists={setFileLists}
+          folderFiles={folderFiles}
+          setFolderFiles={setFolderFiles}
+          closeFolder={closeFolder}
+          uploadFun={uploadFun}
+          handleCancel={handleCancel}
+          handle_X_btn={handle_X_btn}
+          addNewFile={addNewFile}
+          Openfolder={Openfolder}
+          removeFiles={removeFiles}
+          uploadFileList={uploadFileList}
+          setUploadFileList={setUploadFileList}
+          removeUploadFiles={removeUploadFiles}
+          GetUploadFileAndFolder={GetUploadFileAndFolder}
+          getFileListFromFolderID={getFileListFromFolderID}
+          setShowCreateFolderModal={setShowCreateFolderModal}
+          showCreateFolderModal={showCreateFolderModal}
+          DeleteConfirmationVisible={DeleteConfirmationVisible}
+          setDeleteConfirmationVisible={setDeleteConfirmationVisible}
+          flickringData={flickringData}
+          setFlickringData={setFlickringData}
+          toggleFileView={toggleFileView}
+          setToggleFileView={setToggleFileView}
+        />
+      );
+    const upload_file_button = screen.getByTestId("addAFileBtn");
+    fireEvent.click(upload_file_button);
+    const file_input = screen.getByTestId("upload_images");
+    const file = new File(["test file content"], "test.txt", {
+      type: "text/plain",
+    });
+    fireEvent.change(file_input, { target: { files: [file] } });
+  });
+
+  it("upload file and click on upload button", async () => {
+    const {
+      container,
+      getAllByText,
+      getAllByTestId,
+      getAllByPlaceholderText,
+      rerender,
+    } = render(
+      <UploadFileUI
+        input={input}
+        setInput={setInput}
+        selectedFolderID={selectedFolderID}
+        fileLists={fileLists}
+        setFileLists={setFileLists}
+        folderFiles={folderFiles}
+        setFolderFiles={setFolderFiles}
+        closeFolder={closeFolder}
+        uploadFun={uploadFun}
+        handleCancel={handleCancel}
+        handle_X_btn={handle_X_btn}
+        addNewFile={addNewFile}
+        Openfolder={Openfolder}
+        removeFiles={removeFiles}
+        uploadFileList={uploadFileList}
+        setUploadFileList={setUploadFileList}
+        removeUploadFiles={removeUploadFiles}
+        GetUploadFileAndFolder={GetUploadFileAndFolder}
+        getFileListFromFolderID={getFileListFromFolderID}
+        setShowCreateFolderModal={setShowCreateFolderModal}
+        showCreateFolderModal={showCreateFolderModal}
+        DeleteConfirmationVisible={DeleteConfirmationVisible}
+        setDeleteConfirmationVisible={setDeleteConfirmationVisible}
+        flickringData={flickringData}
+        setFlickringData={setFlickringData}
+        toggleFileView={toggleFileView}
+        setToggleFileView={setToggleFileView}
+      />
+    );
+    const upload_file_button = screen.getByTestId("addAFileBtn");
+    fireEvent.click(upload_file_button);
+
+    await waitFor(async () => {
+      const file_input = screen.getByTestId("upload_images");
+      const file = new File(["test file content"], "test.txt", {
+        type: "text/plain",
+      });
+      await fireEvent.change(file_input, { target: { files: [file] } });
+    });
+
+    const Loading_screen = container.getElementsByClassName(
+      "ant-upload-list ant-upload-list-picture"
+    );
+    expect(Loading_screen).toBeInTheDocument();
+  });
+});

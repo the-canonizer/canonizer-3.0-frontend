@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from "react";
-import { Button, Spin, Tooltip, Typography } from "antd";
+import { Button, Popover, Spin, Tooltip, Typography } from "antd";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
-import { DoubleRightOutlined, ArrowLeftOutlined } from "@ant-design/icons";
+import { DoubleRightOutlined, DoubleLeftOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import moment from "moment";
 
@@ -369,6 +369,23 @@ const TimelineInfoBar = ({
 
         <Spin spinning={false}>
           <div className={styles.topicDetailContentHead_Left}>
+            {isForumPage ? (
+              <Popover
+                content="Back to camp forum page"
+                key="back_button"
+                placement="topLeft"
+              >
+                <Button
+                  onClick={() => router.back()}
+                  className={styles.backButton}
+                >
+                  <DoubleLeftOutlined />
+                  {/* Back */}
+                </Button>
+              </Popover>
+            ) : (
+              ""
+            )}
             <Typography.Paragraph
               className={
                 "mb-0 " +
@@ -479,17 +496,6 @@ const TimelineInfoBar = ({
                 )}
               </Typography.Paragraph>
             </div>
-            {isForumPage ? (
-              <Button
-                onClick={() => router.back()}
-                className={styles.backButton}
-              >
-                <ArrowLeftOutlined />
-                Back
-              </Button>
-            ) : (
-              ""
-            )}
           </div>
 
           {/* <div className={styles.topicDetailContentHead_Right}>

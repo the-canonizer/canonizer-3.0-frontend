@@ -71,6 +71,8 @@ const TopicDetails = ({ serverSideCall }: any) => {
   const totalFullSupportScore = 0;
   const [topicList, setTopicList] = useState([]);
   const [isSupportTreeCardModal, setIsSupportTreeCardModal] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+
   const [isDelegateSupportTreeCardModal, setIsDelegateSupportTreeCardModal] =
     useState(false);
   const [removeSupportSpinner, setRemoveSupportSpinner] = useState(false);
@@ -439,6 +441,10 @@ const TopicDetails = ({ serverSideCall }: any) => {
     );
   };
 
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   return (
     <Fragment>
       <div className={styles.topicDetailContentWrap}>
@@ -499,7 +505,8 @@ const TopicDetails = ({ serverSideCall }: any) => {
                 backGroundColorClass={backGroundColorClass}
               /> */}
 
-            {tree &&
+            {isClient &&
+              tree &&
               (!tree["1"]?.is_valid_as_of_time ||
                 (tree["1"]?.is_valid_as_of_time &&
                   !(
@@ -537,7 +544,8 @@ const TopicDetails = ({ serverSideCall }: any) => {
                 </div>
               )}
 
-            {((tree &&
+            {((isClient &&
+              tree &&
               tree["1"]?.is_valid_as_of_time &&
               tree["1"]?.created_date <=
                 (asof == "default" || asof == "review"

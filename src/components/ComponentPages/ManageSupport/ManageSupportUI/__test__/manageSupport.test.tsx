@@ -119,7 +119,9 @@ jest.mock("react-redux", () => ({
       currentGetCheckSupportExistsData: {
         warning: "ABC",
         is_confirm: 1,
-        remove_camps: [{camp_name:"ABC",camp_num:1,link:"/topic",support_order:1}],
+        remove_camps: [
+          { camp_name: "ABC", camp_num: 1, link: "/topic", support_order: 1 },
+        ],
         support_flag: 1,
         is_delegator: 1,
       },
@@ -133,18 +135,20 @@ jest.mock("src/hooks/isUserAuthenticated", () =>
   jest.fn(() => ({ isUserAuthenticated: true }))
 );
 jest.mock("src/network/api/campDetailApi", () => ({
-  getAllUsedNickNames: jest
-  .fn()
-  .mockReturnValue(Promise.resolve({
-    status_code: 200,
-    data: [{
-      create_time: "1970-01-01",
-      id: "1",
-      nick_name: "ABC",
-      owner_code: "qwerty",
-      private: 0,
-    }]  ,
-  })),
+  getAllUsedNickNames: jest.fn().mockReturnValue(
+    Promise.resolve({
+      status_code: 200,
+      data: [
+        {
+          create_time: "1970-01-01",
+          id: "1",
+          nick_name: "ABC",
+          owner_code: "qwerty",
+          private: 0,
+        },
+      ],
+    })
+  ),
   getCurrentCampRecordApi: jest
     .fn()
     .mockReturnValue(Promise.resolve({ camp_name: "Test Camp name" })),
@@ -166,8 +170,10 @@ jest.mock("src/network/api/topicAPI", () => ({
       data: {
         warning: "ABC",
         support_flag: 0,
-        remove_camp:[{camp_name:"ABC",camp_num:1,link:"/topic",support_order:1}],
-        disable_submit:true
+        remove_camp: [
+          { camp_name: "ABC", camp_num: 1, link: "/topic", support_order: 1 },
+        ],
+        disable_submit: true,
       },
     })
   ),
@@ -182,7 +188,9 @@ jest.mock("src/network/api/userApi", () => ({
       status_code: 200,
     })
   ),
-  addDelegateSupportCamps: jest.fn(() => Promise.resolve({ status_code: 200, data: [{}] })),
+  addDelegateSupportCamps: jest.fn(() =>
+    Promise.resolve({ status_code: 200, data: [{}] })
+  ),
 }));
 const supportRemovedModal = () => <div>Removed Modal</div>;
 supportRemovedModal.displayName = "SupportRemovedModal";
@@ -288,5 +296,4 @@ describe("Manage support ui cancle or submit button", () => {
   //     container.getElementsByClassName("ManageSupport_checkbox__DQcrk")
   //   ).toBeTruthy();
   // });
-  
 });

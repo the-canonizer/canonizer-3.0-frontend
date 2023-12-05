@@ -177,17 +177,17 @@ const HeaderMenu = ({ loggedUser }: any) => {
           <div className={styles.search_lists}>
             <ul>
               {searchCampStatement.slice(0, 5)?.map((x) => {
-                const jsonData = JSON.parse(x.breadcrumb_data) as Array<any>;
+                const jsonData = JSON.parse(x?.breadcrumb_data) as Array<any>;
                 const parsedData = jsonData?.reduce(
                   (accumulator, currentVal, index) => {
                     const accIndex = index + 1;
                     accumulator[index] = {
                       camp_name:
-                        currentVal[accIndex].camp_name == "Agreement"
-                          ? currentVal[accIndex].topic_name
-                          : currentVal[accIndex].camp_name,
-                      camp_link: currentVal[accIndex].camp_link,
-                      topic_name: currentVal[accIndex].topic_name,
+                        currentVal[accIndex]?.camp_name == "Agreement"
+                          ? currentVal[accIndex]?.topic_name
+                          : currentVal[accIndex]?.camp_name,
+                      camp_link: currentVal[accIndex]?.camp_link,
+                      topic_name: currentVal[accIndex]?.topic_name,
                     };
                     return accumulator;
                   },
@@ -204,19 +204,19 @@ const HeaderMenu = ({ loggedUser }: any) => {
                           <h3 className="m-0">
                             {jsonData?.length > 1
                               ? jsonData?.[0]?.[1]?.camp_name
-                              : jsonData?.[0]?.[1].topic_name}
+                              : jsonData?.[0]?.[1]?.topic_name}
                           </h3>
                         </a>
                         <div style={{ marginLeft: "auto" }}>
                           <strong>Go live Time : </strong>
-                          {covertToTime(x.go_live_time)}
+                          {covertToTime(x?.go_live_time)}
                         </div>
                       </div>
 
                       <div className="d-flex flex-wrap w-100 mb-1">
                         <p className={styles.search_heading_top}>
                           <div
-                            dangerouslySetInnerHTML={{ __html: x.type_value }}
+                            dangerouslySetInnerHTML={{ __html: x?.type_value }}
                           ></div>
                         </p>
                       </div>
@@ -226,10 +226,10 @@ const HeaderMenu = ({ loggedUser }: any) => {
                         {parsedData?.reverse()?.map((obj, index) => {
                           return (
                             <a
-                              href={`/${obj.camp_link}`}
-                              key={`/${obj.camp_link}`}
+                              href={`/${obj?.camp_link}`}
+                              key={`/${obj?.camp_link}`}
                             >
-                              {obj.camp_name}
+                              {obj?.camp_name}
                               {index < parsedData.length - 1 ? "/ " : ""}
                             </a>
                           );
@@ -240,7 +240,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
                 );
               })}
             </ul>
-            {searchCampStatement.length ? (
+            {searchCampStatement?.length ? (
               <span className={styles.bold_margin}></span>
             ) : (
               ""
@@ -350,7 +350,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
   }, [loggedUser]);
   const getGlobalSearchCanonizer = async (queryString, onPresEnter) => {
     let response = await globalSearchCanonizer(
-      queryParams({ term: queryString })
+      queryParams({ term: queryString == undefined ? "" : queryString })
     );
     if (response) {
       setSearchTopics(response.data.data.topic);
@@ -445,7 +445,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
               setInputSearch(e.target.value);
               setSearchVal(e.target.value);
               debounceFn.cancel();
-              if (e?.target?.value) debounceFn(e.target.value, false);
+              debounceFn(e.target.value, false);
             }}
             onPressEnter={(e) => {
               // localStorage.setItem("searchValue",(e.target as HTMLTextAreaElement).value)
