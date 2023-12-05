@@ -2,10 +2,11 @@ import React, { Fragment, useEffect, useState } from "react";
 import SearchSideBar from "../../common/SearchSideBar";
 import styles from "./search.module.scss";
 // import AdvanceFilter from "../../common/AdvanceSearchFilter";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "src/store";
 import moment from "moment";
 import { Empty, Pagination } from "antd";
+import { setPageNumber } from "src/store/slices/searchSlice";
 
 const CampStatementSearch = () => {
   const { searchData } = useSelector((state: RootState) => ({
@@ -14,10 +15,10 @@ const CampStatementSearch = () => {
   const [startingPosition, setStartingPosition] = useState(0);
   const [endingPosition, setEndingPosition] = useState(20);
   const [currentPage, setCurrentPage] = useState(1);
-
+  const dispatch =useDispatch()
   const pageChange = (pageNumber, pageSize) => {
     setCurrentPage(pageNumber);
-
+    dispatch(setPageNumber(pageNumber));
     setStartingPosition((pageNumber - 1) * pageSize);
     setEndingPosition((pageNumber - 1) * pageSize + pageSize);
   };
@@ -45,7 +46,7 @@ const CampStatementSearch = () => {
             {/* <AdvanceFilter /> */}
           </div>
           <div className={styles.search_lists}>
-            {searchData.statement.length ? (
+            {searchData.statement?.length ? (
               <div>
                 <ul>
                   {searchData?.statement

@@ -11,6 +11,7 @@ export const searchSlice = createSlice({
       response: false,
     },
     searchValue: "",
+    pageNumber:1
   },
   reducers: {
     setSearchData: (state, action) => {
@@ -25,9 +26,12 @@ export const searchSlice = createSlice({
     setSearchValue: (state, action) => {
       state.searchValue = action.payload;
     },
+    setPageNumber: (state, action) => {
+      state.pageNumber = action.payload;
+    },
   },
 });
 
-export const { setSearchData, setSearchValue } = searchSlice.actions;
+export const { setSearchData, setSearchValue,setPageNumber } = searchSlice.actions;
 
 export default searchSlice.reducer;

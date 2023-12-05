@@ -3,9 +3,11 @@ import SearchSideBar from "../../common/SearchSideBar";
 import styles from "./search.module.scss";
 // import AdvanceFilter from "../../common/AdvanceSearchFilter";
 import Link from "next/link";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "src/store";
 import { Empty, Pagination } from "antd";
+import { setPageNumber } from "src/store/slices/searchSlice";
+
 
 const TopicSearch = () => {
   const { searchData } = useSelector((state: RootState) => ({
@@ -14,10 +16,11 @@ const TopicSearch = () => {
   const [startingPosition, setStartingPosition] = useState(0);
   const [endingPosition, setEndingPosition] = useState(20);
   const [currentPage, setCurrentPage] = useState(1);
+  const dispatch = useDispatch();
 
   const pageChange = (pageNumber, pageSize) => {
     setCurrentPage(pageNumber);
-
+    dispatch(setPageNumber(pageNumber));
     setStartingPosition((pageNumber - 1) * pageSize);
     setEndingPosition((pageNumber - 1) * pageSize + pageSize);
   };
@@ -42,7 +45,7 @@ const TopicSearch = () => {
             {/* <AdvanceFilter /> */}
           </div>
           <div className={styles.search_lists}>
-            {searchData.topic.length ? (
+            {searchData.topic?.length ? (
               <div>
                 <ul>
                   {searchData.topic

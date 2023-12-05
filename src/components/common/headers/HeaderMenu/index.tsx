@@ -24,6 +24,9 @@ const HeaderMenu = ({ loggedUser }: any) => {
   let { searchValue } = useSelector((state: RootState) => ({
     searchValue: state?.searchSlice?.searchValue,
   }));
+  const { pageNumber } = useSelector((state: RootState) => ({
+    pageNumber: state?.searchSlice?.pageNumber,
+  }));
 
   const router = useRouter();
 
@@ -70,14 +73,14 @@ const HeaderMenu = ({ loggedUser }: any) => {
   const options = [
     {
       label: renderTitle(
-        searchTopics.length ? <i className="icon-topic"></i> : "",
-        searchTopics.length ? "Topic" : ""
+        searchTopics?.length ? <i className="icon-topic"></i> : "",
+        searchTopics?.length ? "Topic" : ""
       ),
       options: [
         renderItem(
           <div className={styles.search_lists}>
             <ul>
-              {searchTopics.slice(0, 5)?.map((x) => {
+              {searchTopics?.slice(0, 5)?.map((x) => {
                 return (
                   <>
                     <li style={{ cursor: "default" }}>
@@ -93,7 +96,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
                 );
               })}
             </ul>
-            {searchTopics.length ? (
+            {searchTopics?.length ? (
               <span className={styles.bold_margin}></span>
             ) : (
               ""
@@ -104,14 +107,14 @@ const HeaderMenu = ({ loggedUser }: any) => {
     },
     {
       label: renderTitle(
-        searchCamps.length ? <i className="icon-camp"></i> : "",
-        searchCamps.length ? "Camp" : ""
+        searchCamps?.length ? <i className="icon-camp"></i> : "",
+        searchCamps?.length ? "Camp" : ""
       ),
       options: [
         renderItem(
           <div className={styles.search_lists}>
             <ul>
-              {searchCamps.slice(0, 5)?.map((x) => {
+              {searchCamps?.slice(0, 5)?.map((x) => {
                 const jsonData = JSON.parse(x.breadcrumb_data) as Array<any>;
                 const parsedData = jsonData.reduce(
                   (accumulator, currentVal, index) => {
@@ -148,7 +151,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
                               key={`/${obj.camp_link}`}
                             >
                               {obj.camp_name}
-                              {index < parsedData.length - 1 ? "/ " : ""}
+                              {index < parsedData?.length - 1 ? "/ " : ""}
                             </a>
                           );
                         })}
@@ -158,7 +161,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
                 );
               })}
             </ul>
-            {searchCamps.length ? (
+            {searchCamps?.length ? (
               <span className={styles.bold_margin}></span>
             ) : (
               ""
@@ -169,14 +172,14 @@ const HeaderMenu = ({ loggedUser }: any) => {
     },
     {
       label: renderTitle(
-        searchCampStatement.length ? <i className="icon-camp"></i> : "",
-        searchCampStatement.length ? "Camp statement" : ""
+        searchCampStatement?.length ? <i className="icon-camp"></i> : "",
+        searchCampStatement?.length ? "Camp statement" : ""
       ),
       options: [
         renderItem(
           <div className={styles.search_lists}>
             <ul>
-              {searchCampStatement.slice(0, 5)?.map((x) => {
+              {searchCampStatement?.slice(0, 5)?.map((x) => {
                 const jsonData = JSON.parse(x?.breadcrumb_data) as Array<any>;
                 const parsedData = jsonData?.reduce(
                   (accumulator, currentVal, index) => {
@@ -230,7 +233,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
                               key={`/${obj?.camp_link}`}
                             >
                               {obj?.camp_name}
-                              {index < parsedData.length - 1 ? "/ " : ""}
+                              {index < parsedData?.length - 1 ? "/ " : ""}
                             </a>
                           );
                         })}
@@ -251,14 +254,14 @@ const HeaderMenu = ({ loggedUser }: any) => {
     },
     {
       label: renderTitle(
-        searchNickname.length ? <i className="icon-camp"></i> : "",
-        searchNickname.length ? "Nickname" : ""
+        searchNickname?.length ? <i className="icon-camp"></i> : "",
+        searchNickname?.length ? "Nickname" : ""
       ),
       options: [
         renderItem(
           <div className={styles.search_lists}>
             <ul>
-              {searchNickname.slice(0, 5)?.map((x) => {
+              {searchNickname?.slice(0, 5)?.map((x) => {
                 return (
                   <>
                     <li style={{ cursor: "default" }}>
@@ -282,7 +285,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
                 );
               })}
             </ul>
-            {searchNickname.length ? (
+            {searchNickname?.length ? (
               <span className={styles.bold_margin}></span>
             ) : (
               ""
@@ -348,9 +351,54 @@ const HeaderMenu = ({ loggedUser }: any) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedUser]);
+
+  useEffect(()=>{
+    getGlobalSearchCanonizerNav(searchValue,false)
+  },[router.pathname,pageNumber]);
+  const getGlobalSearchCanonizerNav = async(queryString, onPresEnter) => {
+    let queryParamObj: any ={
+      term: queryString,
+      size:20, 
+      page:pageNumber
+    };
+    switch (router.pathname) {
+      case "/search":
+        queryParamObj = {
+          term: queryString
+        };
+        break;
+      case "/search/topic":
+        queryParamObj.type= "topic";
+        break;
+      case "/search/camp":
+        queryParamObj.type= "camp";
+        break;    
+      case "/search/camp_statement":
+        queryParamObj.type= "statement";
+        break; 
+      case "/search/nickname":
+        queryParamObj.type= "nickname";
+        break;      
+      default:
+        queryParamObj.type= "all";
+        break;
+      }
+    let response = await globalSearchCanonizer(
+      queryParams(queryParamObj)
+    );
+    if (response) {
+      setSearchTopics(response.data.data.topic);
+      setSearchCamps(response.data.data.camp);
+      setSearchCampStatement(response.data.data.statement);
+      setSearchNickname(response.data.data.nickname);
+      if (onPresEnter) {
+        dispatch(setSearchData(response?.data?.data));
+      }
+    }
+  }
   const getGlobalSearchCanonizer = async (queryString, onPresEnter) => {
     let response = await globalSearchCanonizer(
-      queryParams({ term: queryString == undefined ? "" : queryString })
+      queryParams({term: queryString})
     );
     if (response) {
       setSearchTopics(response.data.data.topic);
@@ -362,7 +410,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
       }
     }
   };
-
+  
   const handleSearchfor = () => {
     setInputSearch("");
     setSearchVal("");
@@ -420,13 +468,12 @@ const HeaderMenu = ({ loggedUser }: any) => {
           dropdownMatchSelectWidth={false}
           // className={"search_header"}
           options={
-            searchTopics.length ||
-            searchCamps.length ||
-            searchCampStatement.length ||
-            searchNickname.length
+            inputSearch == ""? []:
+            searchTopics?.length ||
+            searchCamps?.length ||
+            searchCampStatement?.length ||
+            searchNickname?.length
               ? options
-              : inputSearch == ""
-              ? []
               : no
           }
           value={searchVal}
