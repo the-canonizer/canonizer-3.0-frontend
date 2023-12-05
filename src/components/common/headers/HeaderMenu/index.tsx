@@ -350,7 +350,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
   }, [loggedUser]);
   const getGlobalSearchCanonizer = async (queryString, onPresEnter) => {
     let response = await globalSearchCanonizer(
-      queryParams({ term: queryString })
+      queryParams({ term: queryString == undefined ? "" : queryString })
     );
     if (response) {
       setSearchTopics(response.data.data.topic);
@@ -445,7 +445,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
               setInputSearch(e.target.value);
               setSearchVal(e.target.value);
               debounceFn.cancel();
-              if (e?.target?.value) debounceFn(e.target.value, false);
+              debounceFn(e.target.value, false);
             }}
             onPressEnter={(e) => {
               // localStorage.setItem("searchValue",(e.target as HTMLTextAreaElement).value)
