@@ -40,7 +40,7 @@ function RacingBarChart({ data }: any) {
       const length = element.getComputedTextLength();
       return entry.level * 30 + 30 + length;
     } else {
-      console.warn("Element is not an SVG text element");
+      // console.warn("Element is not an SVG text element");
       return /* handle other cases or return a default value */;
     }
   };

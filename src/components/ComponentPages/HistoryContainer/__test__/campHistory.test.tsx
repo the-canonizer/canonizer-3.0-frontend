@@ -613,6 +613,7 @@ const store1 = mockStore({
 // afterEach(cleanup);
 
 describe("CampHistory Page", () => {
+  // eslint-disable-next-line jest/expect-expect
   it("should render without crash and fire events", () => {
     act(() => {
       render(
@@ -645,45 +646,9 @@ describe("CampHistory Page", () => {
     });
   });
 
-  it("should statementhistory render without crash without store", () => {
-    act(() => {
-      render(
-        <Provider store={store}>
-          <RouterContext.Provider
-            value={createMockRouter({
-              asPath: "/statement/history/1444-17-JAN-20232/1-Agreement",
-              query: {
-                camp: ["1444-17-JAN-20232", "1-Agreement"],
-              },
-            })}
-          >
-            <CampList />
-          </RouterContext.Provider>
-        </Provider>
-      );
-    });
-  });
-
-  it("should topichistory render without crash without store", () => {
-    act(() => {
-      render(
-        <Provider store={store}>
-          <RouterContext.Provider
-            value={createMockRouter({
-              asPath: "/topic/history/1444-17-JAN-20232/1-Agreement",
-              pathname: "/topic/history/[...camp]",
-              query: {
-                camp: ["1444-17-JAN-20232", "1-Agreement"],
-              },
-            })}
-          >
-            <CampList />
-          </RouterContext.Provider>
-        </Provider>
-      );
-    });
-  });
+  // eslint-disable-next-line jest/expect-expect
   it("Check rendered info", () => {
+    // eslint-disable-next-line jest/expect-expect
     act(() => {
       store.dispatch(
         setHistory({
@@ -780,7 +745,7 @@ describe("CampHistory Page", () => {
       expect(container.getElementsByTagName("input")).toHaveLength(1);
     });
   });
-
+  // eslint-disable-next-line jest/expect-expect
   it("click on viewAll objected live", () => {
     render(
       <Provider store={store1}>

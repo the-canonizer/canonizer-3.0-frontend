@@ -290,6 +290,9 @@ describe("Should render Addnews", () => {
         </RouterContext.Provider>
       </Provider>
     );
+    expect(screen.getAllByText(/only admin can add\/edit news/i)).toHaveLength(
+      2
+    );
     await waitFor(() => {
       screen.getByRole("button", {
         name: /submit/i,
@@ -304,6 +307,7 @@ describe("Should render Addnews", () => {
       })
     );
   });
+  // eslint-disable-next-line jest/expect-expect
   it("Submit to Edit News", async () => {
     getAllUsedNickNames.mockResolvedValue({
       data: [

@@ -25,7 +25,6 @@ import {
 } from "src/network/api/notificationAPI";
 import { setManageSupportStatusCheck } from "src/store/slices/campDetailSlice";
 import HeaderMenu from "../HeaderMenu";
-import Image from "next/image";
 
 const { Header } = Layout;
 

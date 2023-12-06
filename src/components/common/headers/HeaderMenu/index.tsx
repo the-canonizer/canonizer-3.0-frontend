@@ -12,7 +12,6 @@ import queryParams from "src/utils/queryParams";
 import { globalSearchCanonizer } from "src/network/api/userApi";
 import moment from "moment";
 import { setSearchData, setSearchValue } from "src/store/slices/searchSlice";
-import { key } from "localforage";
 
 const HeaderMenu = ({ loggedUser }: any) => {
   const [inputSearch, setInputSearch] = useState("");
