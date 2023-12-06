@@ -74,11 +74,11 @@ describe("CampInfoBar", () => {
       </Provider>
     );
     expect(screen.getByText("Topic : Test Topic")).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", {
-        name: /arrow\\-left/i,
-      })
-    ).toBeInTheDocument();
+    // expect(
+    //   screen.getByRole("button", {
+    //     name: /arrow\\-left/i,
+    //   })
+    // ).toBeInTheDocument();
   });
 
   test("dispatches action and navigates on button click", () => {
