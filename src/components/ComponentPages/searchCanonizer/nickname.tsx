@@ -9,13 +9,16 @@ import { Empty, Pagination } from "antd";
 import { setPageNumber } from "src/store/slices/searchSlice";
 
 const NicknameSearch = () => {
-  const { searchData } = useSelector((state: RootState) => ({
-    searchData: state?.searchSlice?.searchData,
+  const { searchDataAll } = useSelector((state: RootState) => ({
+    searchDataAll: state?.searchSlice?.searchDataAll,
+  }));
+  const { searchMetaData } = useSelector((state: RootState) => ({
+    searchMetaData: state?.searchSlice?.searchMetaData,
   }));
   const [startingPosition, setStartingPosition] = useState(0);
   const [endingPosition, setEndingPosition] = useState(20);
   const [currentPage, setCurrentPage] = useState(1);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const pageChange = (pageNumber, pageSize) => {
     setCurrentPage(pageNumber);
     dispatch(setPageNumber(pageNumber));
@@ -42,10 +45,10 @@ const NicknameSearch = () => {
             {/* <AdvanceFilter /> */}
           </div>
           <div className={styles.search_lists}>
-            {searchData.nickname?.length ? (
+            {searchDataAll.nickname?.length ? (
               <div>
                 <ul>
-                  {searchData.nickname
+                  {searchDataAll.nickname
                     .slice(startingPosition, endingPosition)
                     .map((x) => {
                       return (
@@ -77,7 +80,7 @@ const NicknameSearch = () => {
           </div>
           <Pagination
             hideOnSinglePage={true}
-            total={searchData.nickname?.length}
+            total={searchMetaData.total}
             pageSize={20}
             onChange={pageChange}
             showSizeChanger={false}

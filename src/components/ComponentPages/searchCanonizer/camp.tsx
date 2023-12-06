@@ -13,8 +13,11 @@ const CampSearch = () => {
   const [endingPosition, setEndingPosition] = useState(20);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { searchData } = useSelector((state: RootState) => ({
-    searchData: state?.searchSlice?.searchData,
+  const { searchDataAll } = useSelector((state: RootState) => ({
+    searchDataAll: state?.searchSlice?.searchDataAll,
+  }));
+  const { searchMetaData } = useSelector((state: RootState) => ({
+    searchMetaData: state?.searchSlice?.searchMetaData,
   }));
   const dispatch = useDispatch();
   const pageChange = (pageNumber, pageSize) => {
@@ -43,10 +46,10 @@ const CampSearch = () => {
             {/* <AdvanceFilter/> */}
           </div>
           <div className={styles.search_lists}>
-            {searchData.camp?.length ? (
+            {searchDataAll.camp?.length ? (
               <div>
                 <ul>
-                  {searchData?.camp
+                  {searchDataAll?.camp
                     ?.slice(startingPosition, endingPosition)
                     .map((x) => {
                       const jsonData = JSON.parse(
@@ -103,7 +106,7 @@ const CampSearch = () => {
 
           <Pagination
             hideOnSinglePage={true}
-            total={searchData?.camp?.length}
+            total={searchMetaData?.total}
             pageSize={20}
             onChange={pageChange}
             showSizeChanger={false}

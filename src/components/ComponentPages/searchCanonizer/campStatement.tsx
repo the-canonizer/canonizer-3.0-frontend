@@ -9,13 +9,16 @@ import { Empty, Pagination } from "antd";
 import { setPageNumber } from "src/store/slices/searchSlice";
 
 const CampStatementSearch = () => {
-  const { searchData } = useSelector((state: RootState) => ({
-    searchData: state?.searchSlice?.searchData,
+  const { searchDataAll } = useSelector((state: RootState) => ({
+    searchDataAll: state?.searchSlice?.searchDataAll,
+  }));
+  const { searchMetaData } = useSelector((state: RootState) => ({
+    searchMetaData: state?.searchSlice?.searchMetaData,
   }));
   const [startingPosition, setStartingPosition] = useState(0);
   const [endingPosition, setEndingPosition] = useState(20);
   const [currentPage, setCurrentPage] = useState(1);
-  const dispatch =useDispatch()
+  const dispatch = useDispatch();
   const pageChange = (pageNumber, pageSize) => {
     setCurrentPage(pageNumber);
     dispatch(setPageNumber(pageNumber));
@@ -46,10 +49,10 @@ const CampStatementSearch = () => {
             {/* <AdvanceFilter /> */}
           </div>
           <div className={styles.search_lists}>
-            {searchData.statement?.length ? (
+            {searchDataAll.statement?.length ? (
               <div>
                 <ul>
-                  {searchData?.statement
+                  {searchDataAll?.statement
                     ?.slice(startingPosition, endingPosition)
                     .map((x) => {
                       const jsonData = JSON.parse(
@@ -123,7 +126,7 @@ const CampStatementSearch = () => {
           </div>
           <Pagination
             hideOnSinglePage={true}
-            total={searchData?.statement?.length}
+            total={searchMetaData?.total}
             pageSize={20}
             onChange={pageChange}
             showSizeChanger={false}

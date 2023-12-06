@@ -8,10 +8,12 @@ import { RootState } from "src/store";
 import { Empty, Pagination } from "antd";
 import { setPageNumber } from "src/store/slices/searchSlice";
 
-
 const TopicSearch = () => {
-  const { searchData } = useSelector((state: RootState) => ({
-    searchData: state?.searchSlice?.searchData,
+  const { searchDataAll } = useSelector((state: RootState) => ({
+    searchDataAll: state?.searchSlice?.searchDataAll,
+  }));
+  const { searchMetaData } = useSelector((state: RootState) => ({
+    searchMetaData: state?.searchSlice?.searchMetaData,
   }));
   const [startingPosition, setStartingPosition] = useState(0);
   const [endingPosition, setEndingPosition] = useState(20);
@@ -26,7 +28,7 @@ const TopicSearch = () => {
   };
   useEffect(() => {
     pageChange(currentPage, 20);
-  });
+  }, [searchDataAll?.topic]);
   const showEmpty = (msg) => {
     return <Empty description={msg} />;
   };
@@ -45,10 +47,10 @@ const TopicSearch = () => {
             {/* <AdvanceFilter /> */}
           </div>
           <div className={styles.search_lists}>
-            {searchData.topic?.length ? (
+            {searchDataAll.topic?.length ? (
               <div>
                 <ul>
-                  {searchData.topic
+                  {searchDataAll.topic
                     .slice(startingPosition, endingPosition)
                     .map((x) => {
                       return (
@@ -75,7 +77,7 @@ const TopicSearch = () => {
           </div>
           <Pagination
             hideOnSinglePage={true}
-            total={searchData.topic?.length}
+            total={searchMetaData.total}
             pageSize={20}
             onChange={pageChange}
             showSizeChanger={false}

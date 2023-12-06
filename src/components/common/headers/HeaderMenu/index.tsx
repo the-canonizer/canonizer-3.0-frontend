@@ -11,7 +11,12 @@ import TopicCreationBTN from "../TopicCreationBTN";
 import queryParams from "src/utils/queryParams";
 import { globalSearchCanonizer } from "src/network/api/userApi";
 import moment from "moment";
-import { setSearchData, setSearchValue } from "src/store/slices/searchSlice";
+import {
+  setSearchData,
+  setSearchMetaData,
+  setSearchValue,
+  setSearchDataAll,
+} from "src/store/slices/searchSlice";
 import { key } from "localforage";
 
 const HeaderMenu = ({ loggedUser }: any) => {
@@ -60,10 +65,10 @@ const HeaderMenu = ({ loggedUser }: any) => {
         .join(" ")
         ?.replace(/%20/g, " ");
       setSearchVal("");
-      // if (localSearch) {
-      dispatch(setSearchValue(searchValue));
-      getGlobalSearchCanonizer(searchValue, true);
-      // }
+      if (inputSearch) {
+        dispatch(setSearchValue(searchValue));
+        getGlobalSearchCanonizer(searchValue, true);
+      }
     }
   }, []);
   const showEmpty = (msg) => {
@@ -352,53 +357,59 @@ const HeaderMenu = ({ loggedUser }: any) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedUser]);
 
-  useEffect(()=>{
-    getGlobalSearchCanonizerNav(searchValue,false)
-  },[router.pathname,pageNumber]);
-  const getGlobalSearchCanonizerNav = async(queryString, onPresEnter) => {
-    let queryParamObj: any ={
+  useEffect(() => {
+    if (inputSearch || searchValue) {
+      getGlobalSearchCanonizerNav(searchValue, false);
+    }
+  }, [router.pathname, pageNumber]);
+  const getGlobalSearchCanonizerNav = async (queryString, onPresEnter) => {
+    let queryParamObj: any = {
       term: queryString,
-      size:20, 
-      page:pageNumber
+      size: 20,
+      page: pageNumber,
     };
     switch (router.pathname) {
       case "/search":
         queryParamObj = {
-          term: queryString
+          term: queryString,
         };
         break;
       case "/search/topic":
-        queryParamObj.type= "topic";
+        queryParamObj.type = "topic";
         break;
       case "/search/camp":
-        queryParamObj.type= "camp";
-        break;    
-      case "/search/camp_statement":
-        queryParamObj.type= "statement";
-        break; 
-      case "/search/nickname":
-        queryParamObj.type= "nickname";
-        break;      
-      default:
-        queryParamObj.type= "all";
+        queryParamObj.type = "camp";
         break;
-      }
-    let response = await globalSearchCanonizer(
-      queryParams(queryParamObj)
-    );
+      case "/search/camp_statement":
+        queryParamObj.type = "statement";
+        break;
+      case "/search/nickname":
+        queryParamObj.type = "nickname";
+        break;
+      default:
+        queryParamObj.type = "all";
+        break;
+    }
+    let response = await globalSearchCanonizer(queryParams(queryParamObj));
     if (response) {
       setSearchTopics(response.data.data.topic);
       setSearchCamps(response.data.data.camp);
       setSearchCampStatement(response.data.data.statement);
       setSearchNickname(response.data.data.nickname);
-      if (onPresEnter) {
-        dispatch(setSearchData(response?.data?.data));
+      if (
+        router.pathname == "/search/topic" ||
+        router.pathname == "/search/camp" ||
+        router.pathname == "/search/camp_statement" ||
+        router.pathname == "/search/nickname"
+      ) {
+        dispatch(setSearchDataAll(response?.data?.data));
+        dispatch(setSearchMetaData(response?.data?.meta_data));
       }
     }
-  }
+  };
   const getGlobalSearchCanonizer = async (queryString, onPresEnter) => {
     let response = await globalSearchCanonizer(
-      queryParams({term: queryString})
+      queryParams({ term: queryString == undefined ? "" : queryString })
     );
     if (response) {
       setSearchTopics(response.data.data.topic);
@@ -410,7 +421,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
       }
     }
   };
-  
+
   const handleSearchfor = () => {
     setInputSearch("");
     setSearchVal("");
@@ -468,11 +479,12 @@ const HeaderMenu = ({ loggedUser }: any) => {
           dropdownMatchSelectWidth={false}
           // className={"search_header"}
           options={
-            inputSearch == ""? []:
-            searchTopics?.length ||
-            searchCamps?.length ||
-            searchCampStatement?.length ||
-            searchNickname?.length
+            inputSearch == ""
+              ? []
+              : searchTopics?.length ||
+                searchCamps?.length ||
+                searchCampStatement?.length ||
+                searchNickname?.length
               ? options
               : no
           }
