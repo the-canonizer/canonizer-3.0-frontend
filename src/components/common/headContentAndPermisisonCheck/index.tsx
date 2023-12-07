@@ -31,13 +31,15 @@ const HeadContentAndPermissionComponent = ({
   const { isUserAuthenticated } = useAuthentication();
 
   const getToken = async () => {
-    if (!authToken) await createToken();
+    if (!authToken) {
+      await createToken();
+    }
   };
 
   useEffect(() => {
     getToken();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [authToken, router]);
+  }, [authToken]);
 
   useEffect(() => {
     //Check permission
