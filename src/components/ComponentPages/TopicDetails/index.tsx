@@ -87,6 +87,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
   const {
     asof,
     asofdate,
+    algorithms,
     algorithm,
     newsFeed,
     topicRecord,
@@ -96,6 +97,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
     viewThisVersionCheck,
   } = useSelector((state: RootState) => ({
     asofdate: state.filters?.filterObject?.asofdate,
+    algorithms: state.homePage?.algorithms,
     algorithm: state.filters?.filterObject?.algorithm,
     newsFeed: state?.topicDetails?.newsFeed,
     asof: state?.filters?.filterObject?.asof,
@@ -171,6 +173,9 @@ const TopicDetails = ({ serverSideCall }: any) => {
           getCanonizedAlgorithmsApi(),
           getTreesApi(reqBodyForService),
         ]);
+        if (!algorithms) {
+          await getCanonizedAlgorithmsApi();
+        }
       } else if (serverSideCall.current) {
         serverSideCall.current = false;
         didMount.current = true;

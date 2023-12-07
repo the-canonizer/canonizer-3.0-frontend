@@ -229,7 +229,9 @@ const CreateTopic = () => {
   }, [filteredAsOfDate]);
 
   useEffect(() => {
-    getCanonizedAlgorithmsApi();
+    if (!algorithms) {
+      getCanonizedAlgorithmsApi();
+    }
   }, []);
 
   const selectAlgorithm = (value) => {

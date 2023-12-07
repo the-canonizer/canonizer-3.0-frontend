@@ -417,13 +417,14 @@ const TopicsList = () => {
     setGetTopicsLoadingIndicator(true);
     dispatch(setShowDrawer(true));
   };
-
   useEffect(() => {
     //When Page is render remove data from GetCheckSupportStatus and GetCheckSupportExistsData
     dispatch(setCurrentCheckSupportStatus(""));
     dispatch(setCheckSupportExistsData(""));
     dispatch(setManageSupportStatusCheck(false));
-    getCanonizedNameSpacesApi();
+    if (!nameSpaces) {
+      getCanonizedNameSpacesApi();
+    }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
