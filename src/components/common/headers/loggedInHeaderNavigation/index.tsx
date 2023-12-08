@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { Layout, Menu, Dropdown, Button, Space, Avatar } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
+import md5 from "md5";
 
 import styles from "../siteHeader.module.scss";
 
@@ -20,12 +21,14 @@ import {
 import Notifications from "../notification";
 import useAuthentication from "src/hooks/isUserAuthenticated";
 import {
+  getGravatarPicApi,
   getLists,
   markNotificationRead,
 } from "src/network/api/notificationAPI";
 import { setManageSupportStatusCheck } from "src/store/slices/campDetailSlice";
 import HeaderMenu from "../HeaderMenu";
 import Image from "next/image";
+import ProfileInfoTab from "./profileInfoTab";
 
 const { Header } = Layout;
 
@@ -36,6 +39,8 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
   }));
 
   const { isUserAuthenticated } = useAuthentication();
+  const [isGravatarImage, setIsGravatarImage] = useState(false);
+  const [loadingImage, setLoadingImage] = useState(false);
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -119,9 +124,20 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
       </Menu.Item>
     </Menu>
   );
+  const getGravatarImage = async (email) => {
+    setLoadingImage(true);
+    let data = await getGravatarPicApi(email);
+    if (data?.status == 200) {
+      setIsGravatarImage(true);
+    }
+    setLoadingImage(false);
+  };
 
   useEffect(() => {
     setLoggedUser(loggedInUser);
+    if (isUserAuthenticated && loggedInUser && !loggedInUser?.profile_picture) {
+      getGravatarImage(loggedInUser?.email);
+    }
   }, [loggedInUser]);
 
   return (
@@ -146,60 +162,14 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
             <HeaderMenu loggedUser={loggedUser} />
 
             {!isLoginPage ? (
-              <Fragment>
-                <div className={styles.btnsLoginRegister}>
-                  <div className="hdrUserdropdown">
-                    <Space size="large">
-                      {/* <i className="icon-user"></i>{" "} */}
-
-                      {loggedInUser?.profile_picture ? (
-                        <Avatar
-                          src={loggedInUser?.profile_picture}
-                          size="small"
-                        />
-                      ) : (
-                        <Avatar
-                          style={{
-                            border: "1px solid #fff",
-                            color: "#fff",
-                            backgroundColor: "#4484ce",
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            fontSize: "12px",
-                          }}
-                          size="small"
-                        >
-                          {loggedUser["first_name"].charAt(0).toUpperCase() +
-                            loggedUser["last_name"].charAt(0).toUpperCase()}
-                        </Avatar>
-                      )}
-                      <div>
-                        {loggedUser ? loggedUser["first_name"] : ""}{" "}
-                        {loggedUser ? loggedUser["last_name"] : ""}
-                      </div>
-                    </Space>
-                  </div>
-                </div>
-                <div className={`mobile_tag ${styles.mobMenuWithIcons}`}>
-                  <Link href="/settings">
-                    <a onClick={toggleMobNav}>
-                      <SettingOutlined />
-                      Account Settings
-                    </a>
-                  </Link>
-                  <Link href="/settings?tab=supported_camps" passHref>
-                    <a onClick={toggleMobNav}>
-                      <CheckCircleOutlined />
-                      Supported Camps
-                    </a>
-                  </Link>
-                  <a onClick={logOut}>
-                    <LogoutOutlined />
-                    Log Out
-                  </a>
-                </div>
-              </Fragment>
+              <ProfileInfoTab
+                isGravatarImage={isGravatarImage}
+                loadingImage={loadingImage}
+                loggedUser={loggedUser}
+                toggleMobNav={toggleMobNav}
+                logOut={logOut}
+                isMobile={true}
+              />
             ) : null}
           </div>
 
@@ -208,77 +178,15 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
             key="right-area"
           >
             {!isLoginPage ? (
-              <div className={styles.btnsLoginRegister} key="registerbtnarea">
-                <div className="hdrUserdropdown" key="hdrUserdropdown">
-                  <Space size={15}>
-                    <div className={styles.not_2}>
-                      <Notifications />
-                    </div>
-                    <Dropdown
-                      className={styles.logo_in_header}
-                      overlay={menu}
-                      trigger={["click"]}
-                      placement="bottomLeft"
-                    >
-                      <Space size="small">
-                        {loggedInUser?.profile_picture ? (
-                          // <Image
-                          //   alt="display-picture"
-                          //   width={50}
-                          //   height={50}
-                          //   style={{ borderRadius: "50px" }}
-                          //   src={loggedInUser?.profile_picture}
-                          // />
-                          <Avatar src={loggedInUser?.profile_picture} />
-                        ) : (
-                          <Avatar
-                            style={{
-                              border: "1px solid #fff",
-                              color: "#fff",
-                              backgroundColor: "#4484ce",
-                              display: "flex",
-                              justifyContent: "center",
-                              alignItems: "center",
-                            }}
-                          >
-                            {loggedUser["first_name"].charAt(0).toUpperCase() +
-                              loggedUser["last_name"].charAt(0).toUpperCase()}
-                          </Avatar>
-                          // <span
-                          //   style={{
-                          //     border: "2px solid #fff",
-                          //     borderRadius: "50px",
-                          //     padding: "10px",
-                          //     color: "#fff",
-                          //     fontSize: "16px",
-                          //     fontWeight: "bolder",
-                          //     backgroundColor: "#4484ce",
-                          //   }}
-                          // >
-                          // {loggedUser["first_name"].charAt(0).toUpperCase() +
-                          //   loggedUser["last_name"].charAt(0).toUpperCase()}
-                          // </span>
-                        )}
-
-                        <a
-                          className="ant-dropdown-link"
-                          onClick={(e) => e.preventDefault()}
-                        >
-                          {loggedUser ? loggedUser["first_name"] : ""}{" "}
-                          {loggedUser ? loggedUser["last_name"] : ""}
-                        </a>
-                        <DownOutlined
-                          style={{
-                            fontSize: "15px",
-                            color: "#fff",
-                            cursor: "pointer",
-                          }}
-                        />
-                      </Space>
-                    </Dropdown>
-                  </Space>
-                </div>
-              </div>
+              <ProfileInfoTab
+                isGravatarImage={isGravatarImage}
+                loadingImage={loadingImage}
+                loggedUser={loggedUser}
+                toggleMobNav={toggleMobNav}
+                logOut={logOut}
+                isMobile={false}
+                menu={menu}
+              />
             ) : null}
             <div className={styles.iconMobMenu}>
               {!isLoginPage ? (

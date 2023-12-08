@@ -3,6 +3,8 @@ import NotificationRequests from "../request/notificationsRequests";
 import { handleError } from "../../utils/generalUtility";
 import { store } from "../../store";
 import { setData, setHeaderData } from "../../store/slices/notificationSlice";
+import md5 from "md5";
+import axios from "axios";
 
 export const getLists = async (
   page: number = 1,
@@ -24,7 +26,16 @@ export const getLists = async (
     }
     return res;
   } catch (error) {
-    handleError(error);
+    return error;
+  }
+};
+export const getGravatarPicApi = async (email) => {
+  try {
+    let url = `https://www.gravatar.com/avatar/${md5(email)}?d=404`;
+    let res = await axios.get(url);
+    return res;
+  } catch (error) {
+    return error;
   }
 };
 
