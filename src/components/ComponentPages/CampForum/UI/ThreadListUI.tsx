@@ -339,7 +339,7 @@ const ThreadListUI = ({
         )}
       </Card>
       <Modal
-        title="Edit Thread Name"
+        title="Edit title of the thread"
         open={isModalOpen}
         // onOk={}
         onCancel={() => showModal()}
@@ -356,7 +356,7 @@ const ThreadListUI = ({
         >
           <Row gutter={16}>
             {isLog ? (
-              <Col xs={24} sm={18}>
+              <Col xs={24} sm={24}>
                 <Form.Item
                   name="threadName"
                   // className="nick_name_extra"
