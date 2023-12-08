@@ -2,22 +2,27 @@ import React, { Fragment, useEffect, useState } from "react";
 import SearchSideBar from "../../common/SearchSideBar";
 import styles from "./search.module.scss";
 // import AdvanceFilter from "../../common/AdvanceSearchFilter";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "src/store";
 import { Empty, Pagination } from "antd";
 import Link from "next/link";
+import { setPageNumber } from "src/store/slices/searchSlice";
 
 const CampSearch = () => {
   const [startingPosition, setStartingPosition] = useState(0);
   const [endingPosition, setEndingPosition] = useState(20);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { searchData } = useSelector((state: RootState) => ({
-    searchData: state?.searchSlice?.searchData,
+  const { searchDataAll } = useSelector((state: RootState) => ({
+    searchDataAll: state?.searchSlice?.searchDataAll,
   }));
+  const { searchMetaData } = useSelector((state: RootState) => ({
+    searchMetaData: state?.searchSlice?.searchMetaData,
+  }));
+  const dispatch = useDispatch();
   const pageChange = (pageNumber, pageSize) => {
     setCurrentPage(pageNumber);
-
+    dispatch(setPageNumber(pageNumber));
     setStartingPosition((pageNumber - 1) * pageSize);
     setEndingPosition((pageNumber - 1) * pageSize + pageSize);
   };
@@ -41,10 +46,10 @@ const CampSearch = () => {
             {/* <AdvanceFilter/> */}
           </div>
           <div className={styles.search_lists}>
-            {searchData.camp.length ? (
+            {searchDataAll.camp?.length ? (
               <div>
                 <ul>
-                  {searchData?.camp
+                  {searchDataAll?.camp
                     ?.slice(startingPosition, endingPosition)
                     .map((x) => {
                       const jsonData = JSON.parse(
@@ -101,7 +106,7 @@ const CampSearch = () => {
 
           <Pagination
             hideOnSinglePage={true}
-            total={searchData?.camp?.length}
+            total={searchMetaData?.total}
             pageSize={20}
             onChange={pageChange}
             showSizeChanger={false}
