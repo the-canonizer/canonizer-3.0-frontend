@@ -80,7 +80,7 @@ const ThreadSidebar = () => {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [asofdate, algorithm, +(router?.query?.camp[1]?.split("-")[0] ?? 1)]);
+  }, [asofdate, algorithm, +(router?.query?.camp?.[1]?.split("-")[0] ?? 1)]);
 
   return (
     <Fragment>
