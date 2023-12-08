@@ -25,12 +25,12 @@ const Search = () => {
       </aside>
       <div className="pageContentWrap">
         <div className={styles.card}>
-          {searchData.topic.length ||
-          searchData.camp.length ||
-          searchData.statement.length ||
-          searchData.nickname.length ? (
+          {searchData?.topic?.length ||
+          searchData?.camp?.length ||
+          searchData?.statement?.length ||
+          searchData?.nickname?.length ? (
             <div>
-              {searchData.topic.length > 0 ? (
+              {searchData?.topic?.length > 0 ? (
                 <h4 data-testid="all_topic_heading">Topic</h4>
               ) : (
                 ""
@@ -56,7 +56,7 @@ const Search = () => {
                   })}
                 </ul>
               </div>
-              {searchData.camp.length > 0 ? (
+              {searchData.camp?.length > 0 ? (
                 <h4 data-testid="all_camp_heading">Camp</h4>
               ) : (
                 ""
@@ -110,7 +110,7 @@ const Search = () => {
                 </ul>
               </div>
 
-              {searchData.statement.length > 0 ? (
+              {searchData.statement?.length > 0 ? (
                 <h4 data-testid="all_camp_statement_heading">Camp Statement</h4>
               ) : (
                 ""
@@ -177,7 +177,7 @@ const Search = () => {
                 </ul>
               </div>
 
-              {searchData.nickname.length > 0 ? (
+              {searchData.nickname?.length > 0 ? (
                 <h4 data-testid="all_nick_name_heading">Nickname</h4>
               ) : (
                 ""

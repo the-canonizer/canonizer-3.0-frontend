@@ -440,6 +440,7 @@ const ForumComponent = ({
           )}/${replaceSpecialCharacters(queries.camp as string, "-")}/threads`,
         });
       }
+      return;
     }
     setLoading(false);
   };

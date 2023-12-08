@@ -60,6 +60,7 @@ const TimelineInfoBar = ({
     viewThisVersion,
     filterObject,
     filterByScore,
+    campScoreValue,
   } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
     campRecord: state?.topicDetails?.currentCampRecord,
@@ -69,6 +70,7 @@ const TimelineInfoBar = ({
     viewThisVersion: state?.filters?.viewThisVersionCheck,
     filterObject: state?.filters?.filterObject,
     filterByScore: state.filters?.filterObject?.filterByScore,
+    campScoreValue: state?.filters?.campWithScoreValue,
   }));
   const [campSubscriptionID, setCampSubscriptionID] = useState(
     campRecord?.subscriptionId
@@ -359,6 +361,81 @@ const TimelineInfoBar = ({
   //   </Menu>
   // );
 
+  const objectToQueryString = (obj) => {
+    const keys = Object.keys(obj);
+    const keyValuePairs = keys.map((key) => {
+      return encodeURIComponent(key) + "=" + encodeURIComponent(obj[key]);
+    });
+    return keyValuePairs.join("&");
+  };
+
+  const getQueryParams = () => {
+    const filterByScore = filterObject?.filterByScore,
+      algorithm = filterObject?.algorithm,
+      asof = filterObject?.asof,
+      asofdate = filterObject?.asofdate,
+      namespace_id = filterObject?.namespace_id,
+      viewversion = viewThisVersion;
+
+    let returnQuery = "",
+      query: any = {
+        score: filterByScore,
+        algo: algorithm,
+        canon: namespace_id,
+        asof: asof,
+        filter: campScoreValue || "10",
+      };
+
+    if (asof == "bydate") {
+      query.asofdate = asofdate;
+    }
+
+    if (viewversion) {
+      query.viewversion = "1";
+    }
+
+    // query = { ...router?.query, ...query };
+
+    if (asof != "bydate") {
+      delete query.asofdate;
+    }
+
+    if (String(filterByScore) === "0") {
+      delete query.score;
+    }
+
+    if (String(namespace_id) === "1") {
+      delete query.canon;
+    }
+
+    if (query.canon === "") {
+      delete query.canon;
+    }
+
+    if (asof === "default") {
+      delete query.asof;
+    }
+
+    if (algorithm === "blind_popularity") {
+      delete query.algo;
+    }
+
+    if (String(campScoreValue) === "10") {
+      delete query.filter;
+    }
+
+    if (
+      query?.filter === "undefined" ||
+      query?.filter === undefined ||
+      query?.filter === "null" ||
+      query?.filter === null
+    ) {
+      delete query.filter;
+    }
+    returnQuery = objectToQueryString(query);
+    return returnQuery;
+  };
+
   return (
     <>
       <div className={styles.topicDetailContentHead + " " + styles.info_bar_n}>
@@ -415,7 +492,7 @@ const TimelineInfoBar = ({
                     }-${replaceSpecialCharacters(
                       breadCrumbRes?.topic_name,
                       "-"
-                    )}/1-Agreement`}
+                    )}/1-Agreement?${getQueryParams()}`}
                   >
                     <a className={styles.boldBreadcrumb}>
                       {breadCrumbRes?.topic_name}
@@ -465,7 +542,7 @@ const TimelineInfoBar = ({
                           )}/${camp?.camp_num}-${replaceSpecialCharacters(
                             camp?.camp_name,
                             "-"
-                          )}`}
+                          )}?${getQueryParams()}`}
                           key={index}
                         >
                           <a>
