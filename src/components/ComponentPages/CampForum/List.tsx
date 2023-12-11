@@ -15,6 +15,13 @@ const Threads = ({
   paramsList,
   isLoading,
   payload,
+  isModalOpen,
+  showModal,
+  onFinish,
+  onCancelThreadUpdateForm,
+  onThreadEdit,
+  initialValue,
+  form,
 }: any) => (
   <div className="d-flex">
     <ThreadSidebar />
@@ -32,6 +39,13 @@ const Threads = ({
         onEditClick={onEditClick}
         paramsList={paramsList}
         isLoading={isLoading}
+        isModalOpen={isModalOpen}
+        showModal={showModal}
+        onFinish={onFinish}
+        onCancelThreadUpdateForm={onCancelThreadUpdateForm}
+        onThreadEdit={onThreadEdit}
+        initialValue={initialValue}
+        form={form}
       />
     </div>
   </div>

@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import { Layout, Menu, Dropdown, Button, Space, Avatar } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
-import md5 from "md5";
 
 import styles from "../siteHeader.module.scss";
 
