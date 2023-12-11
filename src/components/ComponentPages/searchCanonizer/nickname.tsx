@@ -2,22 +2,26 @@ import React, { Fragment, useEffect, useState } from "react";
 import SearchSideBar from "../../common/SearchSideBar";
 import styles from "./search.module.scss";
 // import AdvanceFilter from "../../common/AdvanceSearchFilter";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "src/store";
 import Link from "next/link";
 import { Empty, Pagination } from "antd";
+import { setPageNumber } from "src/store/slices/searchSlice";
 
 const NicknameSearch = () => {
-  const { searchData } = useSelector((state: RootState) => ({
-    searchData: state?.searchSlice?.searchData,
+  const { searchDataAll } = useSelector((state: RootState) => ({
+    searchDataAll: state?.searchSlice?.searchDataAll,
+  }));
+  const { searchMetaData } = useSelector((state: RootState) => ({
+    searchMetaData: state?.searchSlice?.searchMetaData,
   }));
   const [startingPosition, setStartingPosition] = useState(0);
   const [endingPosition, setEndingPosition] = useState(20);
   const [currentPage, setCurrentPage] = useState(1);
-
+  const dispatch = useDispatch();
   const pageChange = (pageNumber, pageSize) => {
     setCurrentPage(pageNumber);
-
+    dispatch(setPageNumber(pageNumber));
     setStartingPosition((pageNumber - 1) * pageSize);
     setEndingPosition((pageNumber - 1) * pageSize + pageSize);
   };
@@ -41,10 +45,10 @@ const NicknameSearch = () => {
             {/* <AdvanceFilter /> */}
           </div>
           <div className={styles.search_lists}>
-            {searchData.nickname.length ? (
+            {searchDataAll.nickname?.length ? (
               <div>
                 <ul>
-                  {searchData.nickname
+                  {searchDataAll.nickname
                     .slice(startingPosition, endingPosition)
                     .map((x) => {
                       return (
@@ -76,7 +80,7 @@ const NicknameSearch = () => {
           </div>
           <Pagination
             hideOnSinglePage={true}
-            total={searchData.nickname?.length}
+            total={searchMetaData.total}
             pageSize={20}
             onChange={pageChange}
             showSizeChanger={false}

@@ -156,7 +156,7 @@ function ProfileInfoForm({
         </Title>
         <div className={style.profileCardWrapper}>
           <div className={style.imageWrapper}>
-            <div>
+            <div id="upload-profile">
               <ImageUploader />
             </div>
           </div>
