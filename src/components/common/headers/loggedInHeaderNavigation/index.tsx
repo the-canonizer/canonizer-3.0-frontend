@@ -86,10 +86,11 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
   }, [router]);
 
   const logOut = async () => {
-    const res = await logout();
-    if (res?.status_code === 200) {
-      router?.push("/");
-    }
+    // const res =
+    await logout();
+    // if (res?.status_code === 200) {
+    //   router?.push("/");
+    // }
   };
 
   const onClick = ({ key }) => {
