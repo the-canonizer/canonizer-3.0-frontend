@@ -7,6 +7,10 @@ import {
   Table,
   Pagination,
   Tooltip,
+  Modal,
+  Form,
+  Row,
+  Col,
 } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 import moment from "moment";
@@ -39,6 +43,12 @@ const ThreadListUI = ({
   onEditClick,
   paramsList,
   isLoading,
+  isModalOpen = false,
+  showModal,
+  onFinish,
+  onCancelThreadUpdateForm,
+  onThreadEdit,
+  form,
 }: any) => {
   const [isLog, setIsLog] = useState(false);
   const { isUserAuthenticated } = useAuthentication();
@@ -255,21 +265,22 @@ const ThreadListUI = ({
                           "-"
                         )}/threads/${others?.id}`}
                       >
-                        <Fragment>
-                          {text}
-                          {isLog && paramsList.by === "my" ? (
-                            <Tooltip title="edit">
-                              <a
-                                onClick={(e) => onEditClick(e, others)}
-                                className="linkCss"
-                                data-testid="edit_btn"
-                              >
-                                <EditOutlined />
-                              </a>
-                            </Tooltip>
-                          ) : null}
-                        </Fragment>
+                        <Fragment>{text}</Fragment>
                       </a>
+                      {isLog && paramsList.by === "my" ? (
+                        <Tooltip title="edit">
+                          <a
+                            onClick={(e) => {
+                              onThreadEdit({ text, others });
+                              // onEditClick(e, others);
+                            }}
+                            className="linkCss"
+                            data-testid="edit_btn"
+                          >
+                            <EditOutlined />
+                          </a>
+                        </Tooltip>
+                      ) : null}
                     </Fragment>
                   );
                 }}
@@ -327,6 +338,64 @@ const ThreadListUI = ({
           </Fragment>
         )}
       </Card>
+      <Modal
+        title="Edit title of the thread"
+        open={isModalOpen}
+        // onOk={}
+        onCancel={() => showModal()}
+        className={styles.postFormModal}
+        footer={null}
+      >
+        <Form
+          autoComplete="off"
+          form={form}
+          onFinish={onFinish}
+          name="new_post"
+          className={`${styles.postForm}`}
+          layout={"vertical"}
+        >
+          <Row gutter={16}>
+            {isLog ? (
+              <Col xs={24} sm={24}>
+                <Form.Item
+                  name="threadName"
+                  // className="nick_name_extra"
+                  className={styles.editorQuill}
+                >
+                  <Input />
+                </Form.Item>
+              </Col>
+            ) : null}
+          </Row>
+          {isLog ? (
+            <div className={styles.saveBtns}>
+              <Form.Item noStyle>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  size={"large"}
+                  className={`${styles.submit_btn}`}
+                  id="submit-btn"
+                  data-testid="submit-btn"
+                >
+                  Submit
+                </Button>
+                <Button
+                  type="primary"
+                  htmlType="button"
+                  size={"large"}
+                  className={`${styles.cancel_btn}`}
+                  onClick={onCancelThreadUpdateForm}
+                  id="back-btn"
+                  data-testid="back-btn"
+                >
+                  Cancel
+                </Button>
+              </Form.Item>
+            </div>
+          ) : null}
+        </Form>
+      </Modal>
     </Fragment>
   );
 };

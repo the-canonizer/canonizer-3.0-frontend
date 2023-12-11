@@ -61,6 +61,7 @@ const ForumComponent = ({
   const [perPage] = useState(10);
   const [postperPage] = useState(10);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [threadUpdateOthers, setThreadUpdateOthers] = useState({ id: null });
 
   const dispatch = useDispatch();
 
@@ -444,6 +445,34 @@ const ForumComponent = ({
     setLoading(false);
   };
 
+  const onFinishThreadUpdate = async (values) => {
+    setLoading(true);
+    let res = null;
+    if (values?.threadName?.trim()) {
+      if (threadUpdateOthers?.id) {
+        const body = {
+          title: values?.threadName?.trim(),
+          topic_num: paramsList["topic_num"],
+          camp_num: paramsList["camp_num"],
+          camp_name: paramsList["camp_name"],
+        };
+        res = await updateThread(body, +threadUpdateOthers?.id);
+
+        if (res && res.status_code === 200) {
+          const queries = router?.query;
+          const campArr = (queries.camp as string).split("-");
+          const camp_num = campArr.shift();
+          const topicArr = (queries?.topic as string)?.split("-");
+          const topic_num = topicArr?.shift();
+          const type = queries["by"] as string;
+
+          getThreads(camp_num, topic_num, type, page, searchQuery);
+        }
+      }
+    }
+    setIsModalOpen(false);
+    setLoading(false);
+  };
   // create thread start
 
   //  post section start
@@ -556,6 +585,15 @@ const ForumComponent = ({
     showModal();
   };
 
+  const onThreadEdit = ({ text, others }) => {
+    setThreadUpdateOthers(others);
+    // setInitialValues({ threadName: text?.text });
+    form.setFieldsValue({
+      threadName: text,
+    });
+    showModal();
+  };
+
   const onDeleteClick = async (id) => {
     const q = router?.query;
 
@@ -604,6 +642,13 @@ const ForumComponent = ({
           paramsList={paramsList}
           isLoading={loading}
           payload={payload}
+          isModalOpen={isModalOpen}
+          showModal={showModal}
+          onFinish={onFinishThreadUpdate}
+          onCancelThreadUpdateForm={onCancel}
+          onThreadEdit={onThreadEdit}
+          initialValue={initialValue}
+          form={form}
         />
       ) : null}
       {router?.pathname === "/forum/[topic]/[camp]/threads/create" ? (
