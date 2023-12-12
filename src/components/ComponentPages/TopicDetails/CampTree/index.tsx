@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Tree, Tooltip, Popover } from "antd";
+import { Tree, Tooltip, Popover, Typography } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../../../store";
 import Link from "next/link";
@@ -381,10 +381,14 @@ const CampTree = ({
                               <Popover content="Archived Camp">
                                 {includeReview
                                   ? data[item]?.review_title
+                                  : data[item].camp_id === 1
+                                  ? "Agreement"
                                   : data[item]?.title}
                               </Popover>
                             ) : includeReview ? (
                               data[item]?.review_title
+                            ) : data[item].camp_id === 1 ? (
+                              "Agreement"
                             ) : (
                               data[item]?.title
                             )}
@@ -530,6 +534,82 @@ const CampTree = ({
     (showTree && tree?.at(0)["1"]?.title != "" && defaultExpandKeys) ||
     isForumPage ? (
       <>
+        <Typography.Paragraph
+          className={`${styles.topicTitleStyle} ${styles.topicTitle}`}
+        >
+          <span className="normal">Topic : </span>
+          {tree?.length && tree[0] ? (
+            <Link
+              href={`${
+                includeReview
+                  ? isForumPage
+                    ? tree[0]["1"]?.review_link
+                        ?.replace("#statement", "")
+                        ?.replace("/topic/", "/forum/") + "/threads"
+                    : tree[0]["1"]?.review_link?.replace("#statement", "")
+                  : isForumPage
+                  ? tree[0]["1"]?.link
+                      ?.replace("#statement", "")
+                      ?.replace("/topic/", "/forum/") + "/threads"
+                  : tree[0]["1"]?.link?.replace("#statement", "")
+              }?filter=${treeExpandValue}&score=${filterByScore}&algo=${
+                filterObject?.algorithm
+              }${
+                filterObject?.asof == "bydate"
+                  ? "&asofdate=" + filterObject?.asofdate
+                  : ""
+              }&asof=${filterObject?.asof}&canon=${filterObject?.namespace_id}${
+                viewThisVersion ? "&viewversion=1" : ""
+              }`}
+              className={styles.boldBreadcrumb}
+            >
+              <a
+                className={`${
+                  tree[0]["1"].is_archive == 1
+                    ? `font-weight-bold tra ${styles.archive_grey}`
+                    : tree[0]["1"]?.camp_id ==
+                        router?.query?.camp?.at(1)?.split("-")?.at(0) ?? "1"
+                    ? `font-weight-bold ${styles.activeCamp}`
+                    : ""
+                } ${
+                  isForumPage &&
+                  tree[0]["1"]?.camp_id ==
+                    ((router?.query?.camp as string)?.split("-")?.at(0) ?? "1")
+                    ? `font-weight-bold forumActive ${styles.activeCamp}`
+                    : ""
+                }`}
+              >
+                {tree[0]["1"].is_archive == 1 ? (
+                  <Popover content="Archived Camp">
+                    {includeReview
+                      ? tree[0]["1"]?.review_title
+                      : tree[0]["1"]?.title}
+                  </Popover>
+                ) : includeReview ? (
+                  tree[0]["1"]?.review_title
+                ) : (
+                  tree[0]["1"]?.title
+                )}
+              </a>
+            </Link>
+          ) : (
+            ""
+          )}{" "}
+          <span className={styles.subScriptionIcon}>
+            {isUserAuthenticated && !!topicRecord?.topicSubscriptionId ? (
+              <Tooltip
+                title="You have subscribed to the entire topic."
+                key="camp_subscribed_icon"
+              >
+                <small>
+                  <i className="icon-subscribe text-primary"></i>
+                </small>
+              </Tooltip>
+            ) : (
+              ""
+            )}
+          </span>
+        </Typography.Paragraph>
         <Tree
           showLine={{ showLeafIcon: false }}
           onSelect={onSelect}
