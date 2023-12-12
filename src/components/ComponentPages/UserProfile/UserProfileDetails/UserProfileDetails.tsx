@@ -29,7 +29,11 @@ const UserProfileDetails = ({
               />
             ) : (
               <div>
-                <div className={styles.profileInfo}>
+                <div
+                  className={`${styles.profileInfo} ${
+                    profileData?.profile_picture ? styles.profileAvatar : ""
+                  }`}
+                >
                   {profileData?.profile_picture && (
                     <div className={styles.profile_picture}>
                       <Image

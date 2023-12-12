@@ -31,8 +31,10 @@
   width: calc(100% - 260px);
   margin: 0 8px !important;
   border: 1px solid #f0f0f0;
-  .profileInfo {
+  .profileAvatar {
     display: flex;
+  }
+  .profileInfo {
     padding-bottom: 8px;
     .profile_picture {
       width: 150px;
