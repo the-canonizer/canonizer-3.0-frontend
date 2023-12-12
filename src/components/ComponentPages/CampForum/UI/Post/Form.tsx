@@ -1,13 +1,14 @@
 import dynamic from "next/dynamic";
 import { Fragment, useState } from "react";
 import { Form, Button, Select, Row, Col, Typography, Modal } from "antd";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import styles from "../Forum.module.scss";
 
 import messages from "src/messages";
 import { showLoginModal } from "src/store/slices/uiSlice";
 import CustomSkelton from "src/components/common/customSkelton";
+import { RootState } from "src/store";
 const Editorckl = dynamic(
   () => import("src/components/common/editorck/index"),
   { ssr: false }
@@ -64,6 +65,10 @@ const PostForm = ({
   isModalOpen = false,
   showModal,
 }: any) => {
+  const { currentPost } = useSelector((state: RootState) => ({
+    currentPost: state.forum.currentPost,
+  }));
+
   const dispatch = useDispatch();
   const openModal = () => dispatch(showLoginModal());
 
@@ -102,7 +107,11 @@ const PostForm = ({
         </Col>
       </Row>
       <Modal
-        title="Create Post Form"
+        title={
+          currentPost && Object.keys(currentPost)?.length
+            ? "Edit Post Form"
+            : "Create Post Form"
+        }
         open={isModalOpen}
         onOk={showModal}
         onCancel={showModal}
