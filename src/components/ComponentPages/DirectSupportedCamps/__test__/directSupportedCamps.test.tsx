@@ -184,7 +184,7 @@ describe("directsupported camps", () => {
   });
 
   it("direct support cancel", async () => {
-    const { getAllByTestId, getAllByText } = render(
+    const { getAllByText } = render(
       <DirectSupportedCamps search={""}></DirectSupportedCamps>
     );
 
@@ -196,7 +196,7 @@ describe("directsupported camps", () => {
     });
   });
   it("direct support remove", async () => {
-    const { getAllByTestId, getAllByText } = render(
+    const { getAllByText } = render(
       <DirectSupportedCamps search={""}></DirectSupportedCamps>
     );
 

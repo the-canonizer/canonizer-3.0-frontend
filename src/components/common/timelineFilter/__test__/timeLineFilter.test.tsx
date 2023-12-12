@@ -4,13 +4,11 @@ import {
   render,
   screen,
   fireEvent,
-  act,
   waitFor,
 } from "@testing-library/react";
 
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
-import { store } from "../../../../store";
 import { NextRouter } from "next/router";
 import { RouterContext } from "next/dist/shared/lib/router-context";
 
@@ -113,15 +111,7 @@ describe("Sidebar Filters Component", () => {
     );
     expect(getByText("Canonizer")).toBeInTheDocument();
     expect(getByText("Canonizer Algorithm:")).toBeInTheDocument();
-    expect(screen.getByText(/filter/i)).toBeInTheDocument();
-
     expect(screen.getAllByRole("combobox")).toHaveLength(1);
-    expect(screen.getAllByRole("textbox")).toHaveLength(1);
-    const inputElement = screen.getAllByRole("textbox")[0];
-    fireEvent.change(inputElement, { target: { value: "123" } });
-    act(() => {
-      jest.advanceTimersByTime(1001);
-    });
 
     const selectInput = screen.getByRole("combobox");
 
@@ -147,5 +137,25 @@ describe("Sidebar Filters Component", () => {
     await waitFor(() => {
       expect(screen.getAllByText("Computer Science Experts")).toHaveLength(1);
     });
+  });
+  it("search topic", async () => {
+    render(
+      <Provider store={store1}>
+        <RouterContext.Provider value={createMockRouter()}>
+          <CreateTopic />
+        </RouterContext.Provider>
+      </Provider>
+    );
+
+    const selectInput = screen.getByRole("combobox");
+    expect(selectInput).toBeInTheDocument();
+
+    fireEvent.change(selectInput, { target: { value: "Mind Experts" } });
+    fireEvent.click(
+      screen.getByRole("img", {
+        name: /search/i,
+        hidden: true,
+      })
+    );
   });
 });

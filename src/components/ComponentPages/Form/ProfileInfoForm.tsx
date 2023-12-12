@@ -16,7 +16,7 @@ import messages from "../../../messages";
 import PlacesAutocomplete from "react-places-autocomplete";
 import CustomSkelton from "../../common/customSkelton";
 import { useEffect, useState } from "react";
-import ImageUploader from "@/components/ComponentPages/ImageUploader";
+import ImageUploader from "../../ComponentPages/ImageUploader";
 import style from "./style.module.scss";
 const { Title } = Typography;
 const { Option } = Select;

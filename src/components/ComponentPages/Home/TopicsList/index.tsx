@@ -57,7 +57,7 @@ const TopicsList = () => {
   const [pageNumber, setPageNumber, pageNumberRef] = useState(1);
   const dispatch = useDispatch();
   const { isUserAuthenticated } = useAuthentication();
-  const didMount = useRef(false);
+
   const {
     canonizedTopics,
     asofdate,
@@ -71,8 +71,7 @@ const TopicsList = () => {
     search,
     is_checked,
     is_archive,
-    filterObject,
-    viewThisVersion,
+
     loading,
     // archeived
   } = useSelector((state: RootState) => ({

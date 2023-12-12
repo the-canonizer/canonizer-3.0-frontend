@@ -6,7 +6,6 @@ import {
   setFilterCanonizedTopics,
   setShowDrawer,
 } from "../../../store/slices/filtersSlice";
-import CustomSkelton from "../../common/customSkelton";
 
 import {
   getCanonizedCampStatementApi,

@@ -90,6 +90,7 @@ const UserProfile = () => {
     UserSupportCampListNewSpaces();
     setDropdownNameSpaceList(namespace_name_id as any);
     // }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router?.query]);
 
   useEffect(() => {

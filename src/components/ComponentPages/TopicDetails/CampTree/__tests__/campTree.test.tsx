@@ -504,7 +504,7 @@ describe("Camp tree on camp details page", () => {
   });
 
   test("expands tree nodes correctly", () => {
-    let { container } = render(
+    render(
       <Provider store={store1}>
         <RouterContext.Provider
           value={createMockRouter2({
@@ -533,13 +533,13 @@ describe("Camp tree on camp details page", () => {
 
     expect(
       screen.getAllByRole("img", {
-        name: /plus\-square/i,
+        name: /plus-square/i,
         hidden: true,
       })
     ).toHaveLength(1);
     expect(
       screen.getAllByRole("img", {
-        name: /minus\-square/i,
+        name: /minus-square/i,
         hidden: true,
       })
     ).toHaveLength(7);
