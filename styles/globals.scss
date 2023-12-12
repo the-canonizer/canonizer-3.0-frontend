@@ -438,12 +438,50 @@ img {
 {
   position: relative;
 }
+.search_header > button.ant-btn {
+  position: absolute;
+  left: 105px;
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: #fff;
+  top: 5px;
+  bottom: 0;
+  margin: auto;
+  z-index: 1;
+  cursor: unset;
+}
+.ant-select-single .ant-select-selector .ant-select-selection-search-input {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+.ant-select-single .ant-select-selector .ant-select-selection-search-input button.ant-btn {
+  position: absolute;
+  left: 15px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  color: #fff;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  display: flex;
+  align-items: center;
+}
 .search_header
 {
     flex: 1 1;
     display: flex;
     padding: 0 30px;
     justify-content: center;
+    position: relative;
+    .ant-select.ant-select-auto-complete input {
+      padding-left: 40px;
+      color: #fff;
+      border: none;
+      height: 39px;
+  }
   .ant-select{
     width: 100%;
     max-width: 550px;

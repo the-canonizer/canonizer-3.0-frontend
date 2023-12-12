@@ -15,19 +15,16 @@ const TopicSearch = () => {
   const { searchMetaData } = useSelector((state: RootState) => ({
     searchMetaData: state?.searchSlice?.searchMetaData,
   }));
-  const [startingPosition, setStartingPosition] = useState(0);
-  const [endingPosition, setEndingPosition] = useState(20);
+
   const [currentPage, setCurrentPage] = useState(1);
   const dispatch = useDispatch();
 
-  const pageChange = (pageNumber, pageSize) => {
+  const pageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
     dispatch(setPageNumber(pageNumber));
-    setStartingPosition((pageNumber - 1) * pageSize);
-    setEndingPosition((pageNumber - 1) * pageSize + pageSize);
   };
   useEffect(() => {
-    pageChange(currentPage, 20);
+    pageChange(currentPage);
   }, [searchDataAll?.topic]);
   const showEmpty = (msg) => {
     return <Empty description={msg} />;
@@ -50,25 +47,21 @@ const TopicSearch = () => {
             {searchDataAll.topic?.length ? (
               <div>
                 <ul>
-                  {searchDataAll.topic
-                    .slice(startingPosition, endingPosition)
-                    .map((x) => {
-                      return (
-                        <>
-                          <li>
-                            <Link href={`/${x?.link}`}>
-                              <a>
-                                <label>{x?.type_value}</label>
-                              </a>
-                            </Link>
+                  {searchDataAll.topic.map((x) => {
+                    return (
+                      <>
+                        <li>
+                          <Link href={`/${x?.link}`}>
+                            <a>
+                              <label>{x?.type_value}</label>
+                            </a>
+                          </Link>
 
-                            <span className={styles.ml_auto}>
-                              {x.namespace}
-                            </span>
-                          </li>
-                        </>
-                      );
-                    })}
+                          <span className={styles.ml_auto}>{x.namespace}</span>
+                        </li>
+                      </>
+                    );
+                  })}
                 </ul>
               </div>
             ) : (
