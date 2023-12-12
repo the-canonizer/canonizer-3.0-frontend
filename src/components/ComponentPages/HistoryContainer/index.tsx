@@ -368,6 +368,9 @@ function HistoryContainer() {
             campHistoryItems={campHistory?.items}
             callManageCampApi={callManageCampApi}
             parentArchived={parentarchived}
+            unarchiveChangeSubmitted={
+              campHistory?.details?.unarchive_change_submitted
+            }
           />
         );
       })
