@@ -360,11 +360,13 @@ const CampTree = ({
                             className={`${
                               data[item].is_archive == 1
                                 ? `font-weight-bold tra ${styles.archive_grey}`
-                                : data[item]?.camp_id ==
+                                : !isForumPage &&
+                                  (data[item]?.camp_id ==
                                     router?.query?.camp
                                       ?.at(1)
                                       ?.split("-")
-                                      ?.at(0) ?? "1"
+                                      ?.at(0) ??
+                                    "1")
                                 ? `font-weight-bold ${styles.activeCamp}`
                                 : ""
                             } ${

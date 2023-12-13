@@ -109,8 +109,8 @@ const PostForm = ({
       <Modal
         title={
           currentPost && Object.keys(currentPost)?.length
-            ? "Edit Post Form"
-            : "Create Post Form"
+            ? "Edit Post"
+            : "Create Post"
         }
         open={isModalOpen}
         onOk={showModal}
