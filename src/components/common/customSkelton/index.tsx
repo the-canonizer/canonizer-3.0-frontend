@@ -155,7 +155,7 @@ const CustomSkelton = ({
     >
       <Skeleton className={styles[stylingClass]} count={bodyCount} />
     </Card>
-  ) : skeltonFor == "profileInfoForm" ? (
+  ) :skeltonFor == "profileInfoForm" ? (
     <Form layout="vertical">
       <Row gutter={30}>
         <Col md={12}>
@@ -199,7 +199,13 @@ const CustomSkelton = ({
         </Col>
       </Row>
     </div>
-  ) : (
+  ) :skeltonFor == "search" ? (
+    <Skeleton
+      className={styles.search_skeleton}
+      count={bodyCount}
+      circle={circle}
+    />
+  ): (
     /* eslint-disable */
     (skeltonFor = "cardForUploadFile" ? (
       <Card

@@ -18,6 +18,7 @@ import {
   setSearchDataAll,
 } from "src/store/slices/searchSlice";
 import { key } from "localforage";
+import CustomSkelton from "../../customSkelton";
 
 const HeaderMenu = ({ loggedUser }: any) => {
   const [inputSearch, setInputSearch] = useState("");
@@ -26,6 +27,8 @@ const HeaderMenu = ({ loggedUser }: any) => {
   const [searchCampStatement, setSearchCampStatement] = useState([]);
   const [searchNickname, setSearchNickname] = useState([]);
   const [searchVal, setSearchVal] = useState("");
+  const [loadingSekelton, setLoadingSekelton] = useState(true);
+
   let { searchValue } = useSelector((state: RootState) => ({
     searchValue: state?.searchSlice?.searchValue,
   }));
@@ -440,6 +443,16 @@ const HeaderMenu = ({ loggedUser }: any) => {
       options: [renderItem(showEmpty("No Data Found"))],
     },
   ];
+  const loader = [
+    {
+      options: [renderItem(<CustomSkelton
+        skeltonFor="search"
+        bodyCount={10}
+        stylingClass=""
+        // isButton={false}
+      />)],
+    },
+  ];
   const links = [
     {
       link: "/browse",
@@ -535,6 +548,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
       if (onPresEnter) {
         dispatch(setSearchData(response?.data?.data));
       }
+      setLoadingSekelton(false)
     }
   };
 
@@ -596,14 +610,12 @@ const HeaderMenu = ({ loggedUser }: any) => {
           dropdownMatchSelectWidth={false}
           // className={"search_header"}
           options={
-            inputSearch == ""
-              ? []
-              : searchTopics?.length ||
-                searchCamps?.length ||
-                searchCampStatement?.length ||
-                searchNickname?.length
-              ? options
-              : no
+            inputSearch==""?[]:(loadingSekelton?loader:
+              (!searchTopics?.length ||
+                    !searchCamps?.length ||
+                    !searchCampStatement?.length ||
+                    !searchNickname?.length)?
+              no:options)
           }
           value={searchVal}
         >
@@ -620,7 +632,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
               // prefix={<button className={styles.new_search_btn} disabled > <i className="icon-search" /></button>}
               onChange={(e) => {
                 // localStorage.setItem("searchValue", e.target.value);
-
+                setLoadingSekelton(true)
                 dispatch(setSearchValue(e.target.value));
                 setInputSearch(e.target.value);
                 setSearchVal(e.target.value);
