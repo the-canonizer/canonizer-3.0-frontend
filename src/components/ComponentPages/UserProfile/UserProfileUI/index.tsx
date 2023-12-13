@@ -113,7 +113,7 @@ const UserProfile = () => {
 
   return (
     <>
-      {is404Status ? (
+      {is404Status?.status ? (
         <>
           {is404Status?.message && (
             <DataNotFound message={is404Status?.message} backURL={"/"} />
