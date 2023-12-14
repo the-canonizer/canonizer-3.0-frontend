@@ -167,7 +167,7 @@ function HistoryContainer() {
         page: count.current,
       };
       let res = await getHistoryApi(reqBody, count.current, historyOf);
-      if (res?.status_code == 404) {
+      if (res?.status_code == 404 || res?.status_code == 400) {
         if (router?.pathname == "/topic/history/[...camp]") {
           router?.push(router?.asPath?.replace("topic/history", "topic"));
         } else if (router?.pathname == "/statement/history/[...camp]") {
