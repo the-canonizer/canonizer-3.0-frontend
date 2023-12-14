@@ -1,4 +1,4 @@
-import React, { useRef, useLayoutEffect } from "react";
+import React, { useRef, useLayoutEffect, useState, useEffect } from "react";
 import { select, scaleBand, scaleLinear, max } from "d3";
 import useResizeObserver from "./useResizeObserver";
 
@@ -25,6 +25,7 @@ function RacingBarChart({ data }: any) {
   const svgRef = useRef();
   const wrapperRef = useRef();
   const dimensions = useResizeObserver(wrapperRef);
+  const [widthBar, setWidthBar] = useState(489);
 
   //Manage X axis
 
@@ -39,10 +40,14 @@ function RacingBarChart({ data }: any) {
       const length = element.getComputedTextLength();
       return entry.level * 30 + 30 + length;
     } else {
-      console.warn("Element is not an SVG text element");
+      // console.warn("Element is not an SVG text element");
       return /* handle other cases or return a default value */;
     }
   };
+
+  useEffect(() => {
+    setWidthBar(489);
+  }, [data]);
 
   // will be called initially and on every data change
   useLayoutEffect(() => {
@@ -132,7 +137,13 @@ function RacingBarChart({ data }: any) {
       .attr("x", (entry) => manageBarXAxis(entry))
       .attr("height", yScale.bandwidth())
       .transition()
-      .attr("width", (entry) => xScale(entry.score) + 39)
+      .attr("width", (entry) => {
+        const length = manageBarXAxis(entry);
+        if (widthBar < xScale(entry.score) + length) {
+          setWidthBar(xScale(entry.score) + length);
+        }
+        return xScale(entry.score) + 39;
+      })
       .attr("y", (entry, index) => yScale(index));
 
     // draw the Score labels
@@ -189,7 +200,7 @@ function RacingBarChart({ data }: any) {
     <div
       className={styles.svgD3}
       ref={wrapperRef}
-      style={{ marginBottom: "2rem" }}
+      style={{ marginBottom: "2rem", width: widthBar + 45 }}
     >
       <svg height={data?.length * 30} ref={svgRef}></svg>
     </div>

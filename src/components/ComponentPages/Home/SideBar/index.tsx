@@ -5,8 +5,8 @@ import { Button, Drawer } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 
 import { RootState } from "src/store";
-import TopicsFilter from "../../../common/topicsFilter";
-import TopicsFilterWithDrawer from "../../../common/topicsFilter/filterWithTree";
+import TopicsFilter from "src/components/common/topicsFilter";
+import TopicsFilterWithDrawer from "src/components/common/topicsFilter/filterWithTree";
 import { setShowDrawer } from "src/store/slices/filtersSlice";
 
 export default function HomeSideBar({
@@ -16,6 +16,7 @@ export default function HomeSideBar({
   setTotalCampScoreForSupportTree,
   setSupportTreeForCamp,
   backGroundColorClass,
+  isForumPage = false,
 }: any) {
   const { drawerShow } = useSelector((state: RootState) => ({
     drawerShow: state?.filters?.showDrawer,
@@ -53,7 +54,7 @@ export default function HomeSideBar({
 
   return (
     <Fragment>
-      {!router?.asPath?.includes("topic") ? (
+      {!isForumPage && !router?.asPath?.includes("topic") ? (
         <TopicsFilter key="topic_filter" />
       ) : (
         <Fragment>
@@ -92,6 +93,7 @@ export default function HomeSideBar({
               setTotalCampScoreForSupportTree={setTotalCampScoreForSupportTree}
               setSupportTreeForCamp={setSupportTreeForCamp}
               backGroundColorClass={backGroundColorClass}
+              isForumPage={isForumPage}
             />
           </Drawer>
         </Fragment>

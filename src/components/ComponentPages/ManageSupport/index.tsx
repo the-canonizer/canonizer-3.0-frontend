@@ -42,7 +42,7 @@ const ManageSupport = () => {
   const [manageSupportList, setManageSupportList] = useState([]);
   const [manageSupportRevertData, setManageSupportRevertData] = useState([]);
   const [parentSupportDataList, setParentSupportDataList] = useState([]);
-  const [selectedtNickname, setSelectedtNickname] = useState();
+  const [selectedtNickname, setSelectedtNickname] = useState("");
   const [checked, setChecked] = useState(false);
   const [getSupportStatusData, setGetSupportStatusData] = useState("");
   const [unableToFindCamp, setUnableToFindCamp] = useState<boolean>(false);
@@ -155,9 +155,9 @@ const ManageSupport = () => {
   }, [isUserAuthenticated, reqBodyData.topic_num, campRecord?.camp_name]);
   const GetCheckStatusData = async (campReff: any) => {
     let response = await GetCheckSupportExists(queryParams(reqBodyData));
-    if (response && response?.status_code === 404) {
-      router?.push(router?.asPath?.replace("support", "topic"));
-    }
+    // if (response && response?.status_code === 404) {
+    //   router?.push(router?.asPath?.replace("support", "topic"));
+    // }
     if (response && response.status_code === 200) {
       if (response.data?.remove_camps)
         setParentSupportDataList(response.data.remove_camps);
@@ -446,7 +446,7 @@ const ManageSupport = () => {
     let nickNameID = nickNameList.filter(
       (values) => selectedtNickname == values.id
     );
-    let nickNameIDValue = nickNameID[0].id;
+    let nickNameIDValue = nickNameID[0]?.id;
     let addCampsData;
     if (support_flag_Status == 1) {
       addCampsData = {};
@@ -474,7 +474,7 @@ const ManageSupport = () => {
       let nickNameID = nickNameList.filter(
         (values) => selectedtNickname == values.id
       );
-      let nickNameIDValue = nickNameID[0].id;
+      let nickNameIDValue = nickNameID[0]?.id;
       let delegated_user_id = getDelegateId;
 
       const addDelegatedSupport = {

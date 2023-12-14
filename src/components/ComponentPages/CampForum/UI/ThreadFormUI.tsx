@@ -138,7 +138,7 @@ const CreateThreadForm = ({
               id="back-btn"
               data-testid="back-btn"
             >
-              Back
+              Cancel
             </Button>
           </Form.Item>
         </Form>

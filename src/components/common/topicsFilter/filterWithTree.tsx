@@ -73,6 +73,7 @@ const FilterWithTree = ({
   setTotalCampScoreForSupportTree,
   setSupportTreeForCamp,
   backGroundColorClass,
+  isForumPage = false,
 }: any) => {
   const [isDatePicker, setIsDatePicker] = useState(false);
 
@@ -181,6 +182,15 @@ const FilterWithTree = ({
       delete router.query.filter;
     }
 
+    if (
+      router?.query?.filter === "undefined" ||
+      router?.query?.filter === undefined ||
+      router?.query?.filter === "null" ||
+      router?.query?.filter === null
+    ) {
+      delete router.query.filter;
+    }
+
     Router.replace(router, null, { shallow: true });
   };
 
@@ -193,6 +203,8 @@ const FilterWithTree = ({
     ) {
       onChangeRoute();
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -618,6 +630,7 @@ const FilterWithTree = ({
                     }
                     backGroundColorClass={backGroundColorClass}
                     setSupportTreeForCamp={setSupportTreeForCamp}
+                    isForumPage={isForumPage}
                   />
                 </div>
               </Col>

@@ -23,17 +23,18 @@ export const getTreesApi = async (reqBody) => {
 
     store.dispatch(setTree(trees?.data || []));
     return {
-      treeData: trees?.data[0],
+      treeData: trees?.data?.at(0),
       status_code: trees?.code,
-      message: trees?.message,
+      message: trees?.message || "",
     };
   } catch (error) {
     store.dispatch(setTree([]));
     let data = error?.error?.data;
     return {
-      treeData: data?.data[0],
+      treeData: data?.data?.at(0) || {},
       status_code: data?.code,
-      message: data?.message,
+      message: data?.message || "",
+      error: data?.error || {},
     };
   }
 };
@@ -106,7 +107,9 @@ export const getCanonizedCampStatementApi = async (
     store.dispatch(setCampStatement(campStatement?.data));
     return campStatement?.data;
   } catch (error) {
-    // message.error(error.message);
+    if (error?.error?.data?.status_code == 404) {
+      store.dispatch(setCampStatement([]));
+    }
   }
 };
 
@@ -179,7 +182,7 @@ export const getCurrentCampRecordApi = async (reqBody, loginToken = null) => {
       status_code: currentCampRecord?.status_code,
     };
   } catch (error) {
-    return { status_code: error?.error?.data?.status_code };
+    return { status_code: error?.error?.data?.status_code || "" };
     // message.error(error.message);
   }
 };

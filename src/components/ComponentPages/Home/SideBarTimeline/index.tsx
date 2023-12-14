@@ -11,6 +11,7 @@ import Events from "../../eventLine/Events";
 export default function SideBarTimeline({
   onCreateCamp = () => {},
   timelineDescript,
+  loadingEvents,
 }: any) {
   // const { isUserAuthenticated } = useAuthentication();
 
@@ -52,7 +53,14 @@ export default function SideBarTimeline({
       )}
       {typeof window !== "undefined" &&
         router?.asPath.includes("eventline") && (
-          <Fragment>{<Events timelineDescript={timelineDescript} />}</Fragment>
+          <Fragment>
+            {
+              <Events
+                timelineDescript={timelineDescript}
+                loadingEvents={loadingEvents}
+              />
+            }
+          </Fragment>
         )}
     </Fragment>
   );

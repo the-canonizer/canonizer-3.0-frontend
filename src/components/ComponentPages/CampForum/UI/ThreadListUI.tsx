@@ -7,14 +7,22 @@ import {
   Table,
   Pagination,
   Tooltip,
+  Modal,
+  Form,
+  Row,
+  Col,
 } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 import moment from "moment";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 import styles from "./Forum.module.scss";
 import messages from "../../../../messages";
-import { getTime } from "../../../../utils/generalUtility";
+import {
+  getTime,
+  replaceSpecialCharacters,
+} from "../../../../utils/generalUtility";
 import useAuthentication from "../../../../hooks/isUserAuthenticated";
 import CustomSkelton from "../../../common/customSkelton";
 
@@ -35,9 +43,17 @@ const ThreadListUI = ({
   onEditClick,
   paramsList,
   isLoading,
+  isModalOpen = false,
+  showModal,
+  onFinish,
+  onCancelThreadUpdateForm,
+  onThreadEdit,
+  form,
 }: any) => {
   const [isLog, setIsLog] = useState(false);
   const { isUserAuthenticated } = useAuthentication();
+
+  const router = useRouter();
 
   useEffect(() => {
     setIsLog(isUserAuthenticated);
@@ -233,19 +249,31 @@ const ThreadListUI = ({
                 title="Thread Name"
                 dataIndex="title"
                 key="title"
-                render={(text, others, idx) => {
+                render={(text, others: any, idx) => {
                   return (
-                    <a
-                      onClick={(e) => onThreadClick(e, others)}
-                      className={styles.threadListTitle}
-                      id={"thread-label-" + (+idx + 1)}
-                      data-testid={"thread-label-" + (+idx + 1)}
-                    >
-                      {text}
+                    <Fragment key={idx}>
+                      <a
+                        onClick={(e) => onThreadClick(e, others)}
+                        className={styles.threadListTitle}
+                        id={"thread-label-" + (+idx + 1)}
+                        data-testid={"thread-label-" + (+idx + 1)}
+                        href={`/forum/${replaceSpecialCharacters(
+                          router?.query?.topic as string,
+                          "-"
+                        )}/${replaceSpecialCharacters(
+                          router?.query?.camp as string,
+                          "-"
+                        )}/threads/${others?.id}`}
+                      >
+                        <Fragment>{text}</Fragment>
+                      </a>
                       {isLog && paramsList.by === "my" ? (
                         <Tooltip title="edit">
                           <a
-                            onClick={(e) => onEditClick(e, others)}
+                            onClick={(e) => {
+                              onThreadEdit({ text, others });
+                              // onEditClick(e, others);
+                            }}
                             className="linkCss"
                             data-testid="edit_btn"
                           >
@@ -253,7 +281,7 @@ const ThreadListUI = ({
                           </a>
                         </Tooltip>
                       ) : null}
-                    </a>
+                    </Fragment>
                   );
                 }}
                 width="350px"
@@ -273,9 +301,7 @@ const ThreadListUI = ({
                           <Link
                             href={`/user/supports/${
                               others["nick_name_id"] || ""
-                            }?topicnum=${others["topic_id"] || ""}&campnum=${
-                              others["camp_id"] || ""
-                            }&canon=${others["namespace_id"] || 1}`}
+                            }?canon=${others["namespace_id"] || 1}`}
                             passHref
                           >
                             <a>
@@ -312,6 +338,64 @@ const ThreadListUI = ({
           </Fragment>
         )}
       </Card>
+      <Modal
+        title="Edit title of the thread"
+        open={isModalOpen}
+        // onOk={}
+        onCancel={() => showModal()}
+        className={styles.postFormModal}
+        footer={null}
+      >
+        <Form
+          autoComplete="off"
+          form={form}
+          onFinish={onFinish}
+          name="new_post"
+          className={`${styles.postForm}`}
+          layout={"vertical"}
+        >
+          <Row gutter={16}>
+            {isLog ? (
+              <Col xs={24} sm={24}>
+                <Form.Item
+                  name="threadName"
+                  // className="nick_name_extra"
+                  className={styles.editorQuill}
+                >
+                  <Input />
+                </Form.Item>
+              </Col>
+            ) : null}
+          </Row>
+          {isLog ? (
+            <div className={styles.saveBtns}>
+              <Form.Item noStyle>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  size={"large"}
+                  className={`${styles.submit_btn}`}
+                  id="submit-btn"
+                  data-testid="submit-btn"
+                >
+                  Submit
+                </Button>
+                <Button
+                  type="primary"
+                  htmlType="button"
+                  size={"large"}
+                  className={`${styles.cancel_btn}`}
+                  onClick={onCancelThreadUpdateForm}
+                  id="back-btn"
+                  data-testid="back-btn"
+                >
+                  Cancel
+                </Button>
+              </Form.Item>
+            </div>
+          ) : null}
+        </Form>
+      </Modal>
     </Fragment>
   );
 };

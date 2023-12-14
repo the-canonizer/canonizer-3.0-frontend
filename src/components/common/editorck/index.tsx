@@ -1,7 +1,8 @@
-import { CKEditor } from "@ckeditor/ckeditor5-react";
-import ClassicEditor from "../../../../ckeditor51/build/ckeditor";
 import { useState, useEffect } from "react";
 import { Skeleton } from "antd";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+
+import ClassicEditor from "../../../../ckeditor51/build/ckeditor";
 import isAuth from "../../../hooks/isUserAuthenticated";
 
 interface editorState {
@@ -35,7 +36,7 @@ export default function Editorck(
     setEditordata(props.editorState);
     setLoadeditor(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isUserAuthenticated]);
+  }, [isUserAuthenticated, props.editorState]);
 
   const editorConfiguration = {
     innerHeight: 200,

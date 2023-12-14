@@ -47,7 +47,7 @@ describe("HomePage Sidebar Component", () => {
     );
     expect(container.getElementsByTagName("button")).toHaveLength(0);
     expect(container.getElementsByTagName("textarea")).toHaveLength(0);
-    expect(container.getElementsByTagName("input")).toHaveLength(2);
+    expect(container.getElementsByTagName("input")).toHaveLength(1);
     expect(container.getElementsByTagName("a")).toHaveLength(0);
   });
 });

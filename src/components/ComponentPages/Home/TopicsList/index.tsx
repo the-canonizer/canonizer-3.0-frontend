@@ -57,7 +57,7 @@ const TopicsList = () => {
   const [pageNumber, setPageNumber, pageNumberRef] = useState(1);
   const dispatch = useDispatch();
   const { isUserAuthenticated } = useAuthentication();
-  const didMount = useRef(false);
+
   const {
     canonizedTopics,
     asofdate,
@@ -71,8 +71,7 @@ const TopicsList = () => {
     search,
     is_checked,
     is_archive,
-    filterObject,
-    viewThisVersion,
+
     loading,
     // archeived
   } = useSelector((state: RootState) => ({
@@ -222,20 +221,20 @@ const TopicsList = () => {
       await getTopicsApiCallWithReqBody();
       setGetTopicsLoadingIndicator(false);
     }
-    if (
-      didMount.current ||
-      !(
-        router?.query?.asof != filterObject?.asof ||
-        router?.query?.algo != filterObject?.algorithm ||
-        +router?.query?.score != filterByScore
-      ) ||
-      (router?.query?.algo == undefined &&
-        router?.query?.asof == undefined &&
-        router?.query?.score == undefined)
-    ) {
-      getTopicsApiCall();
-    }
-    didMount.current = true;
+    // if (
+    //   didMount.current ||
+    //   !(
+    //     router?.query?.asof != filterObject?.asof ||
+    //     router?.query?.algo != filterObject?.algorithm ||
+    //     +router?.query?.score != filterByScore
+    //   ) ||
+    //   (router?.query?.algo == undefined &&
+    //     router?.query?.asof == undefined &&
+    //     router?.query?.score == undefined)
+    // ) {
+    getTopicsApiCall();
+    // }
+    // didMount.current = true;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     asofdate,
@@ -459,6 +458,7 @@ const TopicsList = () => {
           showSearch
           optionFilterProp="children"
           id="name-space-dropdown"
+          data-testid="name-space-dropdown"
           disabled={loading}
         >
           {nameSpacesList?.map((item) => {

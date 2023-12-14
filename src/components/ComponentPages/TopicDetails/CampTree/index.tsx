@@ -19,6 +19,7 @@ const CampTree = ({
   setSupportTreeForCamp,
   treeExpandValue,
   prevTreeValueRef,
+  isForumPage = false,
 }: any) => {
   const {
     tree,
@@ -155,6 +156,7 @@ const CampTree = ({
       }
     }
   };
+
   useEffect(() => {
     if (tree?.at(0) != null) {
       dispatchData(tree?.at(0));
@@ -331,10 +333,18 @@ const CampTree = ({
                         <Link
                           href={`${
                             includeReview
-                              ? data[item]?.review_link?.replace(
-                                  "#statement",
-                                  ""
-                                )
+                              ? isForumPage
+                                ? data[item]?.review_link
+                                    ?.replace("#statement", "")
+                                    ?.replace("/topic/", "/forum/") + "/threads"
+                                : data[item]?.review_link?.replace(
+                                    "#statement",
+                                    ""
+                                  )
+                              : isForumPage
+                              ? data[item]?.link
+                                  ?.replace("#statement", "")
+                                  ?.replace("/topic/", "/forum/") + "/threads"
                               : data[item]?.link?.replace("#statement", "")
                           }?filter=${treeExpandValue}&score=${filterByScore}&algo=${
                             filterObject?.algorithm
@@ -347,9 +357,9 @@ const CampTree = ({
                           }${viewThisVersion ? "&viewversion=1" : ""}`}
                         >
                           <a
-                            className={
+                            className={`${
                               data[item].is_archive == 1
-                                ? `font-weight-bold ${styles.archive_grey}`
+                                ? `font-weight-bold tra ${styles.archive_grey}`
                                 : data[item]?.camp_id ==
                                     router?.query?.camp
                                       ?.at(1)
@@ -357,7 +367,15 @@ const CampTree = ({
                                       ?.at(0) ?? "1"
                                 ? `font-weight-bold ${styles.activeCamp}`
                                 : ""
-                            }
+                            } ${
+                              isForumPage &&
+                              data[item]?.camp_id ==
+                                ((router?.query?.camp as string)
+                                  ?.split("-")
+                                  ?.at(0) ?? "1")
+                                ? `font-weight-bold forumActive ${styles.activeCamp}`
+                                : ""
+                            }`}
                           >
                             {data[item].is_archive == 1 ? (
                               <Popover content="Archived Camp">
@@ -509,7 +527,8 @@ const CampTree = ({
   };
 
   return tree?.at(0) ? (
-    showTree && tree?.at(0)["1"]?.title != "" && defaultExpandKeys ? (
+    (showTree && tree?.at(0)["1"]?.title != "" && defaultExpandKeys) ||
+    isForumPage ? (
       <>
         <Tree
           showLine={{ showLeafIcon: false }}
