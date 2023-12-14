@@ -464,7 +464,16 @@ const TimelineInfoBar = ({
                 placement="topLeft"
               >
                 <Button
-                  onClick={() => router.back()}
+                  onClick={() => {
+                    router.push({
+                      pathname:
+                        "/forum/" +
+                        router?.query?.topic +
+                        "/" +
+                        router?.query?.camp +
+                        "/threads",
+                    });
+                  }}
                   className={styles.backButton}
                 >
                   <DoubleLeftOutlined />
