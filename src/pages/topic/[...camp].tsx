@@ -92,9 +92,6 @@ export async function getServerSideProps({ req, query }) {
     fetch_topic_history: query?.viewversion == "1" ? 1 : null,
   };
 
-  console.log("🚀 ~ getServerSideProps ~ QUERY:", query);
-  console.log("🚀 ~ getServerSideProps:", reqBodyForService);
-
   const reqBody = {
     topic_num: topicNum,
     camp_num: campNum,

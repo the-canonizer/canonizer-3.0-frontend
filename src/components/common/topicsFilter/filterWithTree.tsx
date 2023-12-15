@@ -26,7 +26,7 @@ const { Panel } = Collapse;
 const { Option } = Select;
 
 import styles from "./topicListFilter.module.scss";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { setFilterCanonizedTopics } from "../../../store/slices/filtersSlice";
 import K from "../../../constants";
 import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
@@ -191,7 +191,7 @@ const FilterWithTree = ({
       delete router.query.filter;
     }
 
-    Router.replace(router, null, { shallow: true });
+    router.replace(router, null, { shallow: true });
   };
 
   useEffect(() => {
@@ -199,7 +199,8 @@ const FilterWithTree = ({
       String(filterObject?.filterByScore) !== "0" ||
       String(filterObject?.namespace_id) !== "1" ||
       filterObject?.asof !== "default" ||
-      filterObject?.algorithm !== "blind_popularity"
+      filterObject?.algorithm !== "blind_popularity" ||
+      campScoreValue !== 10
     ) {
       onChangeRoute();
     }

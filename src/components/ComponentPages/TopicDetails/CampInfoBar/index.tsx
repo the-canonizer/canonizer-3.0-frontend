@@ -432,6 +432,14 @@ const TimelineInfoBar = ({
     ) {
       delete query.filter;
     }
+
+    if (
+      router?.query?.is_tree_open == "0" ||
+      router?.query?.is_tree_open == "1"
+    ) {
+      query.is_tree_open = router?.query?.is_tree_open;
+    }
+
     returnQuery = objectToQueryString(query);
     return returnQuery;
   };
@@ -456,7 +464,16 @@ const TimelineInfoBar = ({
                 placement="topLeft"
               >
                 <Button
-                  onClick={() => router.back()}
+                  onClick={() => {
+                    router.push({
+                      pathname:
+                        "/forum/" +
+                        router?.query?.topic +
+                        "/" +
+                        router?.query?.camp +
+                        "/threads",
+                    });
+                  }}
                   className={styles.backButton}
                 >
                   <DoubleLeftOutlined />

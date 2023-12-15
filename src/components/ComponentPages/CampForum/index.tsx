@@ -304,7 +304,13 @@ const ForumComponent = ({
   const [form] = Form.useForm();
 
   const showModal = () => {
-    setIsModalOpen((prev) => !prev);
+    setIsModalOpen((prev) => {
+      if (prev) {
+        setCurrentPost({});
+        setQuillContent("");
+      }
+      return !prev;
+    });
   };
 
   async function fetchNickNameList(topic_num) {
