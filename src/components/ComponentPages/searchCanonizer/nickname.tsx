@@ -15,18 +15,14 @@ const NicknameSearch = () => {
   const { searchMetaData } = useSelector((state: RootState) => ({
     searchMetaData: state?.searchSlice?.searchMetaData,
   }));
-  const [startingPosition, setStartingPosition] = useState(0);
-  const [endingPosition, setEndingPosition] = useState(20);
   const [currentPage, setCurrentPage] = useState(1);
   const dispatch = useDispatch();
-  const pageChange = (pageNumber, pageSize) => {
+  const pageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
     dispatch(setPageNumber(pageNumber));
-    setStartingPosition((pageNumber - 1) * pageSize);
-    setEndingPosition((pageNumber - 1) * pageSize + pageSize);
   };
   useEffect(() => {
-    pageChange(currentPage, 20);
+    pageChange(currentPage);
   });
   const showEmpty = (msg) => {
     return <Empty description={msg} />;
@@ -48,30 +44,28 @@ const NicknameSearch = () => {
             {searchDataAll.nickname?.length ? (
               <div>
                 <ul>
-                  {searchDataAll.nickname
-                    .slice(startingPosition, endingPosition)
-                    .map((x) => {
-                      return (
-                        <>
-                          <li>
-                            <Link href={`/${x?.link}`}>
-                              <a>
-                                <label style={{ cursor: "pointer" }}>
-                                  {x?.type_value}
-                                </label>
-                              </a>
-                            </Link>
+                  {searchDataAll.nickname.map((x) => {
+                    return (
+                      <>
+                        <li>
+                          <Link href={`/${x?.link}`}>
+                            <a>
+                              <label style={{ cursor: "pointer" }}>
+                                {x?.type_value}
+                              </label>
+                            </a>
+                          </Link>
 
-                            <span className={styles.ml_auto}>
-                              Supported camps:{" "}
-                              <strong className={styles.yellow_color}>
-                                {x.support_count ? x.support_count : 0}
-                              </strong>{" "}
-                            </span>
-                          </li>
-                        </>
-                      );
-                    })}
+                          <span className={styles.ml_auto}>
+                            Supported camps:{" "}
+                            <strong className={styles.yellow_color}>
+                              {x.support_count ? x.support_count : 0}
+                            </strong>{" "}
+                          </span>
+                        </li>
+                      </>
+                    );
+                  })}
                 </ul>
               </div>
             ) : (

@@ -9,8 +9,6 @@ import Link from "next/link";
 import { setPageNumber } from "src/store/slices/searchSlice";
 
 const CampSearch = () => {
-  const [startingPosition, setStartingPosition] = useState(0);
-  const [endingPosition, setEndingPosition] = useState(20);
   const [currentPage, setCurrentPage] = useState(1);
 
   const { searchDataAll } = useSelector((state: RootState) => ({
@@ -20,14 +18,12 @@ const CampSearch = () => {
     searchMetaData: state?.searchSlice?.searchMetaData,
   }));
   const dispatch = useDispatch();
-  const pageChange = (pageNumber, pageSize) => {
+  const pageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
     dispatch(setPageNumber(pageNumber));
-    setStartingPosition((pageNumber - 1) * pageSize);
-    setEndingPosition((pageNumber - 1) * pageSize + pageSize);
   };
   useEffect(() => {
-    pageChange(currentPage, 20);
+    pageChange(currentPage);
   });
   const showEmpty = (msg) => {
     return <Empty description={msg} />;
@@ -49,54 +45,50 @@ const CampSearch = () => {
             {searchDataAll.camp?.length ? (
               <div>
                 <ul>
-                  {searchDataAll?.camp
-                    ?.slice(startingPosition, endingPosition)
-                    .map((x) => {
-                      const jsonData = JSON.parse(
-                        x.breadcrumb_data
-                      ) as Array<any>;
-                      const parsedData = jsonData.reduce(
-                        (accumulator, currentVal, index) => {
-                          const accIndex = index + 1;
-                          accumulator[index] = {
-                            camp_name:
-                              currentVal[accIndex]?.camp_name == "Agreement"
-                                ? currentVal[accIndex]?.topic_name
-                                : currentVal[accIndex]?.camp_name,
-                            camp_link: currentVal[accIndex]?.camp_link,
-                            topic_name: currentVal[accIndex]?.topic_name,
-                          };
-                          return accumulator;
-                        },
-                        []
-                      );
-                      return (
-                        <>
-                          <li>
-                            <Link href={`/${jsonData[0][1]?.camp_link}`}>
-                              <a> {x.type_value}</a>
-                            </Link>
-                            <div className={styles.tags_all}>
-                              {parsedData.reverse().map((obj, index) => {
-                                return (
-                                  <>
-                                    <a
-                                      href={`/${obj?.camp_link}`}
-                                      key={`/${obj?.camp_link}`}
-                                    >
-                                      {obj.camp_name}
-                                      {index < parsedData.length - 1
-                                        ? "/ "
-                                        : ""}
-                                    </a>
-                                  </>
-                                );
-                              })}
-                            </div>
-                          </li>
-                        </>
-                      );
-                    })}
+                  {searchDataAll?.camp.map((x) => {
+                    const jsonData = JSON.parse(
+                      x.breadcrumb_data
+                    ) as Array<any>;
+                    const parsedData = jsonData.reduce(
+                      (accumulator, currentVal, index) => {
+                        const accIndex = index + 1;
+                        accumulator[index] = {
+                          camp_name:
+                            currentVal[accIndex]?.camp_name == "Agreement"
+                              ? currentVal[accIndex]?.topic_name
+                              : currentVal[accIndex]?.camp_name,
+                          camp_link: currentVal[accIndex]?.camp_link,
+                          topic_name: currentVal[accIndex]?.topic_name,
+                        };
+                        return accumulator;
+                      },
+                      []
+                    );
+                    return (
+                      <>
+                        <li>
+                          <Link href={`/${jsonData[0][1]?.camp_link}`}>
+                            <a> {x.type_value}</a>
+                          </Link>
+                          <div className={styles.tags_all}>
+                            {parsedData.reverse().map((obj, index) => {
+                              return (
+                                <>
+                                  <a
+                                    href={`/${obj?.camp_link}`}
+                                    key={`/${obj?.camp_link}`}
+                                  >
+                                    {obj.camp_name}
+                                    {index < parsedData.length - 1 ? "/ " : ""}
+                                  </a>
+                                </>
+                              );
+                            })}
+                          </div>
+                        </li>
+                      </>
+                    );
+                  })}
                 </ul>
               </div>
             ) : (
