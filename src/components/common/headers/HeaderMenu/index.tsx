@@ -85,8 +85,8 @@ const HeaderMenu = ({ loggedUser }: any) => {
   const options = [
     {
       label: renderTitle(
-        searchTopics?.length ? <i className="icon-topic"></i> : "",
-        searchTopics?.length ? "Topic" : ""
+        searchTopics && searchTopics?.length ? <i className="icon-topic"></i> : "",
+        searchTopics && searchTopics?.length ? "Topic" : ""
       ),
       options: [
         renderItem(
@@ -157,8 +157,8 @@ const HeaderMenu = ({ loggedUser }: any) => {
     },
     {
       label: renderTitle(
-        searchCamps?.length ? <i className="icon-camp"></i> : "",
-        searchCamps?.length ? "Camp" : ""
+        searchCamps&& searchCamps?.length ? <i className="icon-camp"></i> : "",
+        searchCamps&&searchCamps?.length ? "Camp" : ""
       ),
       options: [
         renderItem(
@@ -245,8 +245,8 @@ const HeaderMenu = ({ loggedUser }: any) => {
     },
     {
       label: renderTitle(
-        searchCampStatement?.length ? <i className="icon-camp"></i> : "",
-        searchCampStatement?.length ? "Camp statement" : ""
+        searchCampStatement&& searchCampStatement?.length ? <i className="icon-camp"></i> : "",
+        searchCampStatement&& searchCampStatement?.length ? "Camp statement" : ""
       ),
       options: [
         renderItem(
@@ -351,8 +351,8 @@ const HeaderMenu = ({ loggedUser }: any) => {
     },
     {
       label: renderTitle(
-        searchNickname?.length ? <i className="icon-camp"></i> : "",
-        searchNickname?.length ? "Nickname" : ""
+        searchNickname && searchNickname?.length ? <i className="icon-camp"></i> : "",
+        searchNickname && searchNickname?.length ? "Nickname" : ""
       ),
       options: [
         renderItem(
