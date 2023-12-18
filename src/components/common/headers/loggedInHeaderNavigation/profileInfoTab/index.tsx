@@ -24,7 +24,6 @@ const ProfileInfoTab = ({
   isMobile,
   menu = <></>,
 }) => {
-  console.log(isMobile);
   const { loggedInUser, list } = useSelector((state: RootState) => ({
     loggedInUser: state.auth.loggedInUser,
     list: state.notifications.headerNotification.list,
