@@ -81,7 +81,7 @@ describe("NewsFeedsCard on camp details page", () => {
       </Provider>
     );
     expect(screen.getByText(/news feeds/i)).toBeInTheDocument();
-    expect(screen.getAllByText(/sajid\-dev/i)).toHaveLength(2);
+    expect(screen.getAllByText(/sajid-dev/i)).toHaveLength(2);
     expect(screen.getAllByText(/\(by \)/i)).toHaveLength(2);
     expect(
       screen.getByRole("link", {
@@ -140,7 +140,7 @@ describe("NewsFeedsCard on camp details page", () => {
         name: /delete news/i,
       })
     ).toHaveLength(2);
-    expect(screen.getAllByText(/sajid\-dev/i)).toHaveLength(2);
+    expect(screen.getAllByText(/sajid-dev/i)).toHaveLength(2);
     expect(screen.getAllByText(/\(by \)/i)).toHaveLength(2);
     expect(
       screen.getByRole("link", {
@@ -202,7 +202,7 @@ describe("NewsFeedsCard on camp details page", () => {
   });
 
   it("newfeed exist admin fire delete", async () => {
-    const { container } = render(
+    render(
       <Provider store={store1}>
         <NewsFeedsCard
           newsFeed={[

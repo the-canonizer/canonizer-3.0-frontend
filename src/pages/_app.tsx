@@ -45,6 +45,8 @@ class WrappedApp extends App<AppInitialProps> {
 // perform automatic static optimization, causing every page in your app to
 // be server-side rendered.
 //
+
+let timeout;
 WrappedApp.getInitialProps = async (appContext: AppContext) => {
   // calls page's `getInitialProps` and fills `appProps.pageProps`
   const appProps = await App.getInitialProps(appContext);
@@ -105,7 +107,14 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
     author: "",
   };
 
-  const metaResults = await metaTagsApi(req);
+  let metaResults;
+  if (timeout) timeout = clearTimeout(timeout);
+
+  if (!timeout) {
+    timeout = setTimeout(async () => {
+      metaResults = await metaTagsApi(req);
+    }, 1500);
+  }
   const metaData =
     metaResults?.status_code == 200 ? metaResults.data : defaultTags;
 

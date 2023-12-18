@@ -1,12 +1,10 @@
 import { Collapse, Popover, Image, Typography, Select, Alert } from "antd";
 import React, { Fragment, useEffect, useState, useRef } from "react";
-import { RightOutlined } from "@ant-design/icons";
 import { useSelector, useDispatch } from "react-redux";
 import moment from "moment";
 
 import CampTree from "../CampTree";
 import { RootState } from "src/store";
-// import useAuthentication from "src/hooks/isUserAuthenticated";
 import styles from "../topicDetails.module.scss";
 import { useRouter } from "next/router";
 import CustomSkelton from "../../../common/customSkelton";
@@ -79,6 +77,7 @@ const CampTreeCard = ({
   setTotalCampScoreForSupportTree,
   setSupportTreeForCamp,
   backGroundColorClass,
+  isForumPage = false,
 }: any) => {
   const { asof, asofdate, campWithScore, tree, campExist } = useSelector(
     (state: RootState) => ({
@@ -145,8 +144,19 @@ const CampTreeCard = ({
   }, []);
 
   useEffect(() => {
-    if (router?.query?.filter)
+    if (
+      router?.query?.filter === "undefined" ||
+      router?.query?.filter === undefined
+    ) {
+      dispatch(setCampWithScorevalue("10"));
+    } else if (
+      router?.query?.filter &&
+      router?.query?.filter !== "undefined" &&
+      router?.query?.filter !== "null"
+    ) {
       dispatch(setCampWithScorevalue(router?.query?.filter));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router?.query?.filter]);
 
   return (
@@ -259,6 +269,7 @@ const CampTreeCard = ({
                 treeExpandValue={treeExpandValue}
                 setTreeExpandValue={setTreeExpandValue}
                 prevTreeValueRef={prevTreeValueRef}
+                isForumPage={isForumPage}
               />
             )}
           </Panel>

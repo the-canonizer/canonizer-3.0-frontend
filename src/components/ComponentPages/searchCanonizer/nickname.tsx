@@ -2,28 +2,31 @@ import React, { Fragment, useEffect, useState } from "react";
 import SearchSideBar from "../../common/SearchSideBar";
 import styles from "./search.module.scss";
 // import AdvanceFilter from "../../common/AdvanceSearchFilter";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "src/store";
 import Link from "next/link";
-import { Pagination } from "antd";
+import { Empty, Pagination } from "antd";
+import { setPageNumber } from "src/store/slices/searchSlice";
 
 const NicknameSearch = () => {
-  const { searchData } = useSelector((state: RootState) => ({
-    searchData: state?.searchSlice?.searchData,
+  const { searchDataAll } = useSelector((state: RootState) => ({
+    searchDataAll: state?.searchSlice?.searchDataAll,
   }));
-  const [startingPosition, setStartingPosition] = useState(0);
-  const [endingPosition, setEndingPosition] = useState(20);
+  const { searchMetaData } = useSelector((state: RootState) => ({
+    searchMetaData: state?.searchSlice?.searchMetaData,
+  }));
   const [currentPage, setCurrentPage] = useState(1);
-
-  const pageChange = (pageNumber, pageSize) => {
+  const dispatch = useDispatch();
+  const pageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
-
-    setStartingPosition((pageNumber - 1) * pageSize);
-    setEndingPosition((pageNumber - 1) * pageSize + pageSize);
+    dispatch(setPageNumber(pageNumber));
   };
   useEffect(() => {
-    pageChange(currentPage, 20);
+    pageChange(currentPage);
   });
+  const showEmpty = (msg) => {
+    return <Empty description={msg} />;
+  };
   return (
     <Fragment>
       <aside className="leftSideBar miniSideBar">
@@ -38,36 +41,40 @@ const NicknameSearch = () => {
             {/* <AdvanceFilter /> */}
           </div>
           <div className={styles.search_lists}>
-            <ul>
-              {searchData.nickname
-                .slice(startingPosition, endingPosition)
-                .map((x) => {
-                  return (
-                    <>
-                      <li>
-                        <Link href={`/${x.link}`}>
-                          <a>
-                            <label style={{ cursor: "pointer" }}>
-                              {x.type_value}
-                            </label>
-                          </a>
-                        </Link>
+            {searchDataAll.nickname?.length ? (
+              <div>
+                <ul>
+                  {searchDataAll.nickname.map((x) => {
+                    return (
+                      <>
+                        <li>
+                          <Link href={`/${x?.link}`}>
+                            <a>
+                              <label style={{ cursor: "pointer" }}>
+                                {x?.type_value}
+                              </label>
+                            </a>
+                          </Link>
 
-                        <span className={styles.ml_auto}>
-                          Supported camps:{" "}
-                          <strong className={styles.yellow_color}>
-                            {x.support_count}
-                          </strong>{" "}
-                        </span>
-                      </li>
-                    </>
-                  );
-                })}
-            </ul>
+                          <span className={styles.ml_auto}>
+                            Supported camps:{" "}
+                            <strong className={styles.yellow_color}>
+                              {x.support_count ? x.support_count : 0}
+                            </strong>{" "}
+                          </span>
+                        </li>
+                      </>
+                    );
+                  })}
+                </ul>
+              </div>
+            ) : (
+              showEmpty("No Data Found")
+            )}
           </div>
           <Pagination
             hideOnSinglePage={true}
-            total={searchData.nickname?.length}
+            total={searchMetaData.total}
             pageSize={20}
             onChange={pageChange}
             showSizeChanger={false}

@@ -31,6 +31,24 @@
   width: calc(100% - 260px);
   margin: 0 8px !important;
   border: 1px solid #f0f0f0;
+  .profileAvatar {
+    display: flex;
+  }
+  .profileInfo {
+    padding-bottom: 8px;
+    .profile_picture {
+      width: 150px;
+      @media (max-width: 768px) {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        margin-bottom: 15px;
+      }
+    }
+    @media (max-width: 768px) {
+      flex-direction: column;
+    }
+  }
 
   @media screen and (max-width: 767px) {
     width: 100%;

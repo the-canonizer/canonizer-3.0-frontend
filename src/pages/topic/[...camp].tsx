@@ -61,8 +61,8 @@ const TopicDetailsPage = ({
   return (
     <Layout>
       {tree?.status_code == 404 ||
-      tree?.status_code == 422 ||
-      campRecord?.status_code == 404 ? (
+      (tree?.status_code == 422 &&
+        (campRecord?.status_code == 404 || campRecord?.status_code == 400)) ? (
         <DataNotFound
           name={ErrorStatus}
           message={`${ErrorStatus} not found`}

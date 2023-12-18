@@ -26,7 +26,7 @@ const { Panel } = Collapse;
 const { Option } = Select;
 
 import styles from "./topicListFilter.module.scss";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { setFilterCanonizedTopics } from "../../../store/slices/filtersSlice";
 import K from "../../../constants";
 import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
@@ -73,6 +73,7 @@ const FilterWithTree = ({
   setTotalCampScoreForSupportTree,
   setSupportTreeForCamp,
   backGroundColorClass,
+  isForumPage = false,
 }: any) => {
   const [isDatePicker, setIsDatePicker] = useState(false);
 
@@ -181,7 +182,16 @@ const FilterWithTree = ({
       delete router.query.filter;
     }
 
-    Router.replace(router, null, { shallow: true });
+    if (
+      router?.query?.filter === "undefined" ||
+      router?.query?.filter === undefined ||
+      router?.query?.filter === "null" ||
+      router?.query?.filter === null
+    ) {
+      delete router.query.filter;
+    }
+
+    router.replace(router, null, { shallow: true });
   };
 
   useEffect(() => {
@@ -189,7 +199,8 @@ const FilterWithTree = ({
       String(filterObject?.filterByScore) !== "0" ||
       String(filterObject?.namespace_id) !== "1" ||
       filterObject?.asof !== "default" ||
-      filterObject?.algorithm !== "blind_popularity"
+      filterObject?.algorithm !== "blind_popularity" ||
+      campScoreValue !== 10
     ) {
       onChangeRoute();
     }
@@ -620,6 +631,7 @@ const FilterWithTree = ({
                     }
                     backGroundColorClass={backGroundColorClass}
                     setSupportTreeForCamp={setSupportTreeForCamp}
+                    isForumPage={isForumPage}
                   />
                 </div>
               </Col>

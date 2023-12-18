@@ -20,6 +20,7 @@ export const filtersSlice = createSlice({
     current_date: new Date().valueOf(),
     viewThisVersionCheck: false,
     showDrawer: false,
+    showForumDrawer: false,
     campWithScoreValue: 10,
   },
   reducers: {
@@ -52,6 +53,9 @@ export const filtersSlice = createSlice({
     setCampWithScorevalue: (state, action) => {
       state.campWithScoreValue = action.payload;
     },
+    setShowForumDrawer: (state, action) => {
+      state.showForumDrawer = action.payload;
+    },
   },
 });
 
@@ -63,6 +67,7 @@ export const {
   setCurrentDate,
   setShowDrawer,
   setCampWithScorevalue,
+  setShowForumDrawer,
 } = filtersSlice.actions;
 
 export default filtersSlice.reducer;

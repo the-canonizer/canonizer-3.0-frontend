@@ -50,21 +50,36 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
             </h3>
             <div className="cmp-change-icon">
               {campStatement[0]?.in_review_changes > 0 ? (
-                <Popover
-                  content={
-                    "Some changes are currently under review in this camp statement."
-                  }
-                  placement="topLeft"
-                  className={styles.infoIcon}
+                <div
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    router.push(
+                      `/statement/history/${replaceSpecialCharacters(
+                        router?.query?.camp[0],
+                        "-"
+                      )}/${replaceSpecialCharacters(
+                        router?.query?.camp[1] ?? "1-Agreement",
+                        "-"
+                      )}`
+                    );
+                  }}
                 >
-                  <Image
-                    // className="change-icon"
-                    width={20}
-                    height={20}
-                    src="/images/change-icon.svg"
-                    alt=""
-                  />
-                </Popover>
+                  <Popover
+                    content={
+                      "Some changes are currently under review in this camp statement."
+                    }
+                    placement="topLeft"
+                    className={styles.infoIcon}
+                  >
+                    <Image
+                      // className="change-icon"
+                      width={20}
+                      height={20}
+                      src="/images/change-icon.svg"
+                      alt=""
+                    />
+                  </Popover>
+                </div>
               ) : (
                 ""
               )}

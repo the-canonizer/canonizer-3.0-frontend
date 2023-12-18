@@ -1623,42 +1623,52 @@ del.diffmod img {
       }
     }
   }
-}
-
-.objected {
-  .ant-collapse-item {
-    .ant-collapse-header {
-      background: #e3ede8;
-    }
-    &.ant-collapse-item-active {
+  &.objected {
+    .ant-collapse-item {
       .ant-collapse-header {
-        background-color: #ef5e5e;
+        background: #f2e3e5;
+      }
+      &.ant-collapse-item-active {
+        .ant-collapse-header {
+          background-color: #ef5e5e;
+        }
       }
     }
   }
-}
-
-.live {
-  .ant-collapse-item {
-    .ant-collapse-header {
-      background: #e3ede8;
-    }
-    &.ant-collapse-item-active {
+  &.live {
+    .ant-collapse-item {
       .ant-collapse-header {
-        background-color: #12c879;
+        background: #e3ede8;
+      }
+      &.ant-collapse-item-active {
+        .ant-collapse-header {
+          background-color: #12c879;
+        }
       }
     }
   }
-}
 
-.in_review {
-  .ant-collapse-item {
-    .ant-collapse-header {
-      background: #f0eee5;
-    }
-    &.ant-collapse-item-active {
+  &.in_review {
+    .ant-collapse-item {
       .ant-collapse-header {
-        background-color: #ffdd00;
+        background: #f0eee5;
+      }
+      &.ant-collapse-item-active {
+        .ant-collapse-header {
+          background-color: #ffdd00;
+        }
+      }
+    }
+  }
+  &.old {
+    .ant-collapse-item {
+      .ant-collapse-header {
+        background: #e8e9f0;
+      }
+      &.ant-collapse-item-active {
+        .ant-collapse-header {
+          background-color: #4484ce;
+        }
       }
     }
   }
@@ -1793,16 +1803,6 @@ del.diffmod img {
         a {
           color: #2e68db;
         }
-      }
-    }
-  }
-}
-
-.old {
-  .ant-collapse-item {
-    &.ant-collapse-item-active {
-      .ant-collapse-header {
-        background-color: #4484ce;
       }
     }
   }
@@ -2918,4 +2918,37 @@ div[role="option"]::before {
 .miniSideBar .leftSideBar_Card .leftSideBar_Card {
   border: none;
   margin: 0;
+}
+
+// profile picture uploader
+
+.ant-upload-list-item {
+  border: 0 !important;
+}
+
+.ant-upload-list-item,
+.ant-upload-list-item-info,
+.ant-upload-list-item-thumbnail,
+.ant-upload-list-picture-card-container {
+  border-radius: 50%;
+}
+
+.ant-upload-list-item-actions {
+  border-radius: 50%;
+}
+
+.ant-upload-list-item-actions > li {
+  border-top: none;
+}
+
+.ant-upload-list-item-actions-icon,
+.ant-upload-list-item-actions-remove {
+  border-radius: 50%;
+}
+
+.picture-upload {
+  .ant-upload-select-picture-card {
+    background-color: transparent;
+    border-radius: 50%;
+  }
 }

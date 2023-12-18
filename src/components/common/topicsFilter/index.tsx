@@ -172,6 +172,15 @@ const CreateTopic = () => {
       delete router.query.filter;
     }
 
+    if (
+      router.query.filter === "undefined" ||
+      router.query.filter === undefined ||
+      router.query.filter === "null" ||
+      router.query.filter === null
+    ) {
+      delete router.query.filter;
+    }
+
     Router.replace(router, null, { shallow: true });
   };
 

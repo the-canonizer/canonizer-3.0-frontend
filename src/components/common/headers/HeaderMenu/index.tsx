@@ -1,18 +1,24 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../store";
-
+import debounce from "lodash/debounce";
 import styles from "../siteHeader.module.scss";
-import { AutoComplete, Input } from "antd";
+import { AutoComplete, Button, Empty, Input } from "antd";
 
 import TopicCreationBTN from "../TopicCreationBTN";
 import queryParams from "src/utils/queryParams";
 import { globalSearchCanonizer } from "src/network/api/userApi";
 import moment from "moment";
-import { setSearchData, setSearchValue } from "src/store/slices/searchSlice";
+import {
+  setSearchData,
+  setSearchMetaData,
+  setSearchValue,
+  setSearchDataAll,
+} from "src/store/slices/searchSlice";
 import { key } from "localforage";
+import CustomSkelton from "../../customSkelton";
 
 const HeaderMenu = ({ loggedUser }: any) => {
   const [inputSearch, setInputSearch] = useState("");
@@ -21,10 +27,17 @@ const HeaderMenu = ({ loggedUser }: any) => {
   const [searchCampStatement, setSearchCampStatement] = useState([]);
   const [searchNickname, setSearchNickname] = useState([]);
   const [searchVal, setSearchVal] = useState("");
+  const [loadingSekelton, setLoadingSekelton] = useState(true);
+
   let { searchValue } = useSelector((state: RootState) => ({
     searchValue: state?.searchSlice?.searchValue,
   }));
-
+  const { pageNumber } = useSelector((state: RootState) => ({
+    pageNumber: state?.searchSlice?.pageNumber,
+  }));
+  const { searchDataAll } = useSelector((state: RootState) => ({
+    searchDataAll: state?.searchSlice?.searchDataAll,
+  }));
   const router = useRouter();
 
   const dispatch = useDispatch();
@@ -57,38 +70,83 @@ const HeaderMenu = ({ loggedUser }: any) => {
         .join(" ")
         ?.replace(/%20/g, " ");
       setSearchVal("");
-      // if (localSearch) {
-      dispatch(setSearchValue(searchValue));
-      getGlobalSearchCanonizer(searchValue, true);
-      // }
+      if (inputSearch) {
+        dispatch(setSearchValue(searchValue));
+        getGlobalSearchCanonizer(searchValue, true);
+      }
     }
   }, []);
+  const showEmpty = (msg) => {
+    return <Empty description={msg} />;
+  };
+
+  const searchValueLength = 30;
 
   const options = [
     {
       label: renderTitle(
-        searchTopics.length ? <i className="icon-topic"></i> : "",
-        searchTopics.length ? "Topic" : ""
+        searchTopics?.length ? <i className="icon-topic"></i> : "",
+        searchTopics?.length ? "Topic" : ""
       ),
       options: [
         renderItem(
           <div className={styles.search_lists}>
             <ul>
-              {searchTopics.slice(0, 5)?.map((x) => {
-                return (
-                  <>
-                    <li>
-                      <Link href={`/${x.link}`}>
-                        <a>
-                          <label>{x.type_value}</label>
-                        </a>
-                      </Link>
-                    </li>
-                  </>
-                );
+              {searchTopics?.slice(0, 5)?.map((x) => {
+                const index = x.type_value
+                  ?.toLowerCase()
+                  .indexOf(searchValue?.toLowerCase());
+
+                if (index !== -1) {
+                  const length = searchValue.length;
+                  const prefix = x.type_value.substring(0, index);
+                  const suffix = x.type_value.substring(index + length);
+                  const match = x.type_value.substring(index, index + length);
+                  return (
+                    <>
+                      <li style={{ cursor: "default" }}>
+                        <Link href={`/${x.link}`}>
+                          <a>
+                            {!!prefix && (
+                              <label style={{ cursor: "pointer" }}>
+                                {prefix}
+                              </label>
+                            )}
+                            <label
+                              style={{
+                                cursor: "pointer",
+                                backgroundColor: "#fef2d2",
+                              }}
+                            >
+                              {match}
+                            </label>
+                            {!!suffix && (
+                              <label style={{ cursor: "pointer" }}>
+                                {suffix}
+                              </label>
+                            )}
+                          </a>
+                        </Link>
+                      </li>
+                    </>
+                  );
+                }
+                // return (
+                //   <>
+                //     <li style={{ cursor: "default" }}>
+                //       <Link href={`/${x.link}`}>
+                //         <a>
+                //           <label style={{ cursor: "pointer" }}>
+                //             {x.type_value}
+                //           </label>
+                //         </a>
+                //       </Link>
+                //     </li>
+                //   </>
+                // );
               })}
             </ul>
-            {searchTopics.length ? (
+            {searchTopics?.length ? (
               <span className={styles.bold_margin}></span>
             ) : (
               ""
@@ -99,14 +157,14 @@ const HeaderMenu = ({ loggedUser }: any) => {
     },
     {
       label: renderTitle(
-        searchCamps.length ? <i className="icon-camp"></i> : "",
-        searchCamps.length ? "Camp" : ""
+        searchCamps?.length ? <i className="icon-camp"></i> : "",
+        searchCamps?.length ? "Camp" : ""
       ),
       options: [
         renderItem(
           <div className={styles.search_lists}>
             <ul>
-              {searchCamps.slice(0, 5)?.map((x) => {
+              {searchCamps?.slice(0, 5)?.map((x) => {
                 const jsonData = JSON.parse(x.breadcrumb_data) as Array<any>;
                 const parsedData = jsonData.reduce(
                   (accumulator, currentVal, index) => {
@@ -122,36 +180,61 @@ const HeaderMenu = ({ loggedUser }: any) => {
                   },
                   []
                 );
-
-                return (
-                  <>
-                    <li>
-                      <Link href={`/${jsonData[0][1]?.camp_link}`}>
-                        <a className={styles.camp_heading_color}>
-                          {" "}
-                          {x.type_value}
-                        </a>
-                      </Link>
-
-                      <div className={styles.tags_all_search_camp_statement}>
-                        {parsedData?.reverse()?.map((obj, index) => {
-                          return (
-                            <a
-                              href={`/${obj.camp_link}`}
-                              key={`/${obj.camp_link}`}
+                const index = x.type_value
+                  ?.toLowerCase()
+                  .indexOf(searchValue?.toLowerCase());
+                if (index !== -1) {
+                  const length = searchValue.length;
+                  const prefix = x.type_value.substring(0, index);
+                  const suffix = x.type_value.substring(index + length);
+                  const match = x.type_value.substring(index, index + length);
+                  return (
+                    <>
+                      <li style={{ cursor: "default" }}>
+                        <Link href={`/${jsonData[0][1]?.camp_link}`}>
+                          <a className={styles.camp_heading_color}>
+                            {" "}
+                            {!!prefix && (
+                              <label style={{ cursor: "pointer" }}>
+                                {prefix}
+                              </label>
+                            )}
+                            <label
+                              style={{
+                                cursor: "pointer",
+                                backgroundColor: "#fef2d2",
+                              }}
                             >
-                              {obj.camp_name}
-                              {index < parsedData.length - 1 ? "/ " : ""}
-                            </a>
-                          );
-                        })}
-                      </div>
-                    </li>
-                  </>
-                );
+                              {match}
+                            </label>
+                            {!!suffix && (
+                              <label style={{ cursor: "pointer" }}>
+                                {suffix}
+                              </label>
+                            )}
+                          </a>
+                        </Link>
+
+                        <div className={styles.tags_all_search_camp_statement}>
+                          {parsedData?.reverse()?.map((obj, index) => {
+                            return (
+                              <a
+                                href={`/${obj.camp_link}`}
+                                key={`/${obj.camp_link}`}
+                              >
+                                {obj.camp_name}
+                                {index < parsedData?.length - 1 ? "/ " : ""}
+                              </a>
+                            );
+                          })}
+                        </div>
+                      </li>
+                    </>
+                  );
+                }
               })}
             </ul>
-            {searchCamps.length ? (
+            {searchCamps?.length ? (
               <span className={styles.bold_margin}></span>
             ) : (
               ""
@@ -162,75 +245,102 @@ const HeaderMenu = ({ loggedUser }: any) => {
     },
     {
       label: renderTitle(
-        searchCampStatement.length ? <i className="icon-camp"></i> : "",
-        searchCampStatement.length ? "Camp statement" : ""
+        searchCampStatement?.length ? <i className="icon-camp"></i> : "",
+        searchCampStatement?.length ? "Camp statement" : ""
       ),
       options: [
         renderItem(
           <div className={styles.search_lists}>
             <ul>
-              {searchCampStatement.slice(0, 5)?.map((x) => {
-                const jsonData = JSON.parse(x.breadcrumb_data) as Array<any>;
+              {searchCampStatement?.slice(0, 5)?.map((x) => {
+                const jsonData = JSON.parse(x?.breadcrumb_data) as Array<any>;
                 const parsedData = jsonData?.reduce(
                   (accumulator, currentVal, index) => {
                     const accIndex = index + 1;
                     accumulator[index] = {
                       camp_name:
-                        currentVal[accIndex].camp_name == "Agreement"
-                          ? currentVal[accIndex].topic_name
-                          : currentVal[accIndex].camp_name,
-                      camp_link: currentVal[accIndex].camp_link,
-                      topic_name: currentVal[accIndex].topic_name,
+                        currentVal[accIndex]?.camp_name == "Agreement"
+                          ? currentVal[accIndex]?.topic_name
+                          : currentVal[accIndex]?.camp_name,
+                      camp_link: currentVal[accIndex]?.camp_link,
+                      topic_name: currentVal[accIndex]?.topic_name,
                     };
                     return accumulator;
                   },
                   []
                 );
-                return (
-                  <>
-                    <li>
-                      <div className="d-flex flex-wrap g-2">
-                        <a href={`/${jsonData?.[0]?.[1]?.camp_link}`}>
-                          <h3 className="m-0">
-                            {jsonData?.length > 1
-                              ? jsonData?.[0]?.[1]?.camp_name
-                              : jsonData?.[0]?.[1].topic_name}
-                          </h3>
-                        </a>
-                        <div style={{ marginLeft: "auto" }}>
-                          <strong>Go live Time : </strong>
-                          {covertToTime(x.go_live_time)}
+                const index = x.type_value
+                  ?.toLowerCase()
+                  .indexOf(searchValue?.toLowerCase());
+                if (index !== -1) {
+                  const length = searchValue.length;
+                  const prefix = x.type_value.substring(0, index);
+                  const suffix = x.type_value.substring(index + length);
+                  const match = x.type_value.substring(index, index + length);
+                  return (
+                    <>
+                      <li style={{ cursor: "default" }}>
+                        <div className="d-flex flex-wrap g-2">
+                          <a
+                            style={{ cursor: "pointer" }}
+                            href={`/${jsonData?.[0]?.[1]?.camp_link}`}
+                          >
+                            <h3 className="m-0">
+                              {jsonData?.length > 1
+                                ? jsonData?.[0]?.[1]?.camp_name
+                                : jsonData?.[0]?.[1]?.topic_name}
+                            </h3>
+                          </a>
+                          <div style={{ marginLeft: "auto" }}>
+                            <strong>Go live Time : </strong>
+                            {covertToTime(x?.go_live_time)}
+                          </div>
                         </div>
-                      </div>
 
-                      <div className="d-flex flex-wrap w-100 mb-1">
-                        <p className={styles.search_heading_top}>
-                          <div
-                            dangerouslySetInnerHTML={{ __html: x.type_value }}
-                          ></div>
-                        </p>
-                      </div>
-                      {/* {" "} */}
+                        <div className="d-flex flex-wrap w-100 mb-1">
+                          <p className={styles.search_heading_top}>
+                            {!!prefix && (
+                              <div
+                                className={styles.inner_html_prefix}
+                                dangerouslySetInnerHTML={{ __html: prefix }}
+                              ></div>
+                            )}
+                            &nbsp;
+                            <div
+                              className={styles.inner_html_match}
+                              dangerouslySetInnerHTML={{ __html: match }}
+                            ></div>
+                            &nbsp;
+                            {!!suffix && (
+                              <div
+                                className={styles.inner_html_prefix}
+                                dangerouslySetInnerHTML={{ __html: suffix }}
+                              ></div>
+                            )}
+                          </p>
+                        </div>
+                        {/* {" "} */}
 
-                      <div className={styles.tags_all_search_camp_statement}>
-                        {parsedData?.reverse()?.map((obj, index) => {
-                          return (
-                            <a
-                              href={`/${obj.camp_link}`}
-                              key={`/${obj.camp_link}`}
-                            >
-                              {obj.camp_name}
-                              {index < parsedData.length - 1 ? "/ " : ""}
-                            </a>
-                          );
-                        })}
-                      </div>
-                    </li>
-                  </>
-                );
+                        <div className={styles.tags_all_search_camp_statement}>
+                          {parsedData?.reverse()?.map((obj, index) => {
+                            return (
+                              <a
+                                href={`/${obj?.camp_link}`}
+                                key={`/${obj?.camp_link}`}
+                              >
+                                {obj?.camp_name}
+                                {index < parsedData?.length - 1 ? "/ " : ""}
+                              </a>
+                            );
+                          })}
+                        </div>
+                      </li>
+                    </>
+                  );
+                }
               })}
             </ul>
-            {searchCampStatement.length ? (
+            {searchCampStatement?.length ? (
               <span className={styles.bold_margin}></span>
             ) : (
               ""
@@ -241,36 +351,63 @@ const HeaderMenu = ({ loggedUser }: any) => {
     },
     {
       label: renderTitle(
-        searchNickname.length ? <i className="icon-camp"></i> : "",
-        searchNickname.length ? "Nickname" : ""
+        searchNickname?.length ? <i className="icon-camp"></i> : "",
+        searchNickname?.length ? "Nickname" : ""
       ),
       options: [
         renderItem(
           <div className={styles.search_lists}>
             <ul>
-              {searchNickname.slice(0, 5)?.map((x) => {
-                return (
-                  <>
-                    <li>
-                      <div className="d-flex flex-wrap">
-                        <Link href={`/${x.link}`}>
-                          <a>
-                            <label>{x.type_value}</label>
-                          </a>
-                        </Link>
-                        <span className="ml_auto suppport_camps">
-                          Supported camps:{" "}
-                          <strong className={styles.yellow_color}>
-                            {x.support_count}
-                          </strong>{" "}
-                        </span>
-                      </div>
-                    </li>
-                  </>
-                );
+              {searchNickname?.slice(0, 5)?.map((x) => {
+                const index = x.type_value
+                  ?.toLowerCase()
+                  .indexOf(searchValue?.toLowerCase());
+
+                if (index !== -1) {
+                  const length = searchValue.length;
+                  const prefix = x.type_value.substring(0, index);
+                  const suffix = x.type_value.substring(index + length);
+                  const match = x.type_value.substring(index, index + length);
+                  return (
+                    <>
+                      <li style={{ cursor: "default" }}>
+                        <div className="d-flex flex-wrap">
+                          <Link href={`/${x.link}`}>
+                            <a>
+                              {!!prefix && (
+                                <label style={{ cursor: "pointer" }}>
+                                  {prefix}
+                                </label>
+                              )}
+                              <label
+                                style={{
+                                  cursor: "pointer",
+                                  backgroundColor: "#fef2d2",
+                                }}
+                              >
+                                {match}
+                              </label>
+                              {!!suffix && (
+                                <label style={{ cursor: "pointer" }}>
+                                  {suffix}
+                                </label>
+                              )}
+                            </a>
+                          </Link>
+                          <span className="ml_auto suppport_camps">
+                            Supported camps:{" "}
+                            <strong className={styles.yellow_color}>
+                              {x.support_count}
+                            </strong>{" "}
+                          </span>
+                        </div>
+                      </li>
+                    </>
+                  );
+                }
               })}
             </ul>
-            {searchNickname.length ? (
+            {searchNickname?.length ? (
               <span className={styles.bold_margin}></span>
             ) : (
               ""
@@ -290,16 +427,32 @@ const HeaderMenu = ({ loggedUser }: any) => {
                 query: { q: searchValue },
               }}
             >
-              <a
-                onClick={() => handleSearchfor()}
-              >{`Search for "${searchValue}"`}</a>
+              <a onClick={() => handleSearchfor()}>{`Search for "${
+                searchValue.length > searchValueLength
+                  ? searchValue.substring(0, searchValueLength) + "..."
+                  : searchValue
+              }"`}</a>
             </Link>
           </footer>
         ),
       ],
     },
   ];
-
+  const no = [
+    {
+      options: [renderItem(showEmpty("No Data Found"))],
+    },
+  ];
+  const loader = [
+    {
+      options: [renderItem(<CustomSkelton
+        skeltonFor="search"
+        bodyCount={10}
+        stylingClass=""
+        // isButton={false}
+      />)],
+    },
+  ];
   const links = [
     {
       link: "/browse",
@@ -332,9 +485,60 @@ const HeaderMenu = ({ loggedUser }: any) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedUser]);
+
+  useEffect(() => {
+    if (inputSearch || searchValue) {
+      getGlobalSearchCanonizerNav(searchValue, false);
+    }
+  }, [pageNumber, router.pathname]);
+  const getGlobalSearchCanonizerNav = async (queryString, onPresEnter) => {
+    let queryParamObj: any = {
+      term: queryString,
+      size: 20,
+      page: pageNumber,
+    };
+    switch (router.pathname) {
+      case "/search":
+        queryParamObj = {
+          term: queryString,
+        };
+        break;
+      case "/search/topic":
+        queryParamObj.type = "topic";
+        break;
+      case "/search/camp":
+        queryParamObj.type = "camp";
+        break;
+      case "/search/camp_statement":
+        queryParamObj.type = "statement";
+        break;
+      case "/search/nickname":
+        queryParamObj.type = "nickname";
+        break;
+      default:
+        queryParamObj.type = "all";
+        break;
+    }
+    let response = await globalSearchCanonizer(queryParams(queryParamObj));
+    if (response) {
+      setSearchTopics(response.data.data.topic);
+      setSearchCamps(response.data.data.camp);
+      setSearchCampStatement(response.data.data.statement);
+      setSearchNickname(response.data.data.nickname);
+      if (
+        router.pathname == "/search/topic" ||
+        router.pathname == "/search/camp" ||
+        router.pathname == "/search/camp_statement" ||
+        router.pathname == "/search/nickname"
+      ) {
+        dispatch(setSearchDataAll(response?.data?.data));
+        dispatch(setSearchMetaData(response?.data?.meta_data));
+      }
+    }
+  };
   const getGlobalSearchCanonizer = async (queryString, onPresEnter) => {
     let response = await globalSearchCanonizer(
-      queryParams({ term: queryString })
+      queryParams({ term: queryString == undefined ? "" : queryString })
     );
     if (response) {
       setSearchTopics(response.data.data.topic);
@@ -344,6 +548,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
       if (onPresEnter) {
         dispatch(setSearchData(response?.data?.data));
       }
+      setLoadingSekelton(false)
     }
   };
 
@@ -361,6 +566,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
       query: { q: searchValue },
     });
   };
+  const debounceFn = useMemo(() => debounce(getGlobalSearchCanonizer, 500), []);
   return (
     <Fragment>
       <nav className={styles.nav}>
@@ -397,39 +603,54 @@ const HeaderMenu = ({ loggedUser }: any) => {
           })}
         </ul>
       </nav>
+
       <div className="search_header">
         <AutoComplete
           popupClassName="certain-category-search-dropdown"
           dropdownMatchSelectWidth={false}
           // className={"search_header"}
-          options={inputSearch ? options : []}
+          options={
+            inputSearch==""?[]:(loadingSekelton?loader:
+              (searchTopics?.length ||
+                    searchCamps?.length ||
+                    searchCampStatement?.length ||
+                    searchNickname?.length)?
+              options:no)
+          }
           value={searchVal}
         >
-          <Input
-            size="large"
-            placeholder="Search for"
-            value={searchVal}
-            type="text"
-            name="search"
-            prefix={<i className="icon-search"></i>}
-            onChange={(e) => {
-              // localStorage.setItem("searchValue", e.target.value);
-
-              dispatch(setSearchValue(e.target.value));
-              setInputSearch(e.target.value);
-              setSearchVal(e.target.value);
-              getGlobalSearchCanonizer(e.target.value, false);
-            }}
-            onPressEnter={(e) => {
-              // localStorage.setItem("searchValue",(e.target as HTMLTextAreaElement).value)
-              // !router.asPath.includes("/search") ? handlePress(e) : "";
-              handlePress(e);
-              getGlobalSearchCanonizer(
-                (e.target as HTMLTextAreaElement).value,
-                true
-              );
-            }}
-          />
+          <div>
+            <Button>
+              <i className="icon-search"></i>
+            </Button>
+            <Input
+              size="large"
+              placeholder="Search for"
+              value={searchVal}
+              type="text"
+              name="search"
+              // prefix={<button className={styles.new_search_btn} disabled > <i className="icon-search" /></button>}
+              onChange={(e) => {
+                // localStorage.setItem("searchValue", e.target.value);
+                setLoadingSekelton(true)
+                dispatch(setSearchValue(e.target.value));
+                setInputSearch(e.target.value);
+                setSearchVal(e.target.value);
+                debounceFn.cancel();
+                debounceFn(e.target.value, false);
+              }}
+              onPressEnter={(e) => {
+                // localStorage.setItem("searchValue",(e.target as HTMLTextAreaElement).value)
+                // !router.asPath.includes("/search") ? handlePress(e) : "";
+                handlePress(e);
+                if ((e.target as HTMLTextAreaElement).value)
+                  getGlobalSearchCanonizer(
+                    (e.target as HTMLTextAreaElement).value,
+                    true
+                  );
+              }}
+            />
+          </div>
         </AutoComplete>
       </div>
     </Fragment>

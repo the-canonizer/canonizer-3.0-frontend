@@ -62,6 +62,7 @@ function HistoryCollapse({
   campHistoryItems,
   callManageCampApi,
   parentArchived,
+  unarchiveChangeSubmitted,
 }: any) {
   const router = useRouter();
   const [commited, setCommited] = useState(false);
@@ -422,6 +423,7 @@ function HistoryCollapse({
                         : submitUpdateRedirect(historyOf);
                     }}
                     disabled={
+                      unarchiveChangeSubmitted ||
                       (campHistoryItems[0]?.status == "in_review" &&
                         !commited &&
                         !!campHistoryItems[0]?.grace_period) ||

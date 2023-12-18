@@ -59,7 +59,7 @@ const ManageSupportUI = ({
   // const openPopup = () => setIsSupportTreeCardModal(true);
   const closePopup = () => {};
 
-  const filteredList = manageSupportList.map((obj: any, index: any) => {
+  const filteredList = manageSupportList?.map((obj: any, index: any) => {
     return {
       camp_num: obj.camp_num,
       order: index + 1, //obj.support_order,
@@ -75,13 +75,13 @@ const ManageSupportUI = ({
   };
 
   const removeAllCampNum = () => {
-    const filteredList = manageSupportList.filter((obj: any) => obj.dis);
-    return filteredList.map((obj) => obj.camp_num);
+    const filteredList = manageSupportList?.filter((obj: any) => obj.dis);
+    return filteredList?.map((obj) => obj.camp_num);
   };
 
   const removeAllIsSelected = () => {
-    const filteredList = manageSupportList.filter((obj: any) => obj.dis);
-    if (filteredList.length == manageSupportList.length) return true;
+    const filteredList = manageSupportList?.filter((obj: any) => obj.dis);
+    if (filteredList?.length == manageSupportList?.length) return true;
     else false;
   };
 
@@ -99,12 +99,12 @@ const ManageSupportUI = ({
 
   // const topicNum = router?.query?.manageSupport?.at(0)?.split("-")?.at(0);
 
-  const findManageOrder = filteredList.findIndex((obj: any) => {
+  const findManageOrder = filteredList?.findIndex((obj: any) => {
     return obj.camp_num === reqBodyData.camp_num;
   });
 
   const manageListOrder =
-    manageSupportList.length > 0
+    manageSupportList?.length > 0
       ? findManageOrder > -1
         ? filteredList[findManageOrder].order
         : manageSupportList[manageSupportList.length - 1]?.support_order
@@ -112,11 +112,11 @@ const ManageSupportUI = ({
 
   // const body = { topic_num: topicNum };
 
-  const nickNameloop = nickNameList.filter((nickName) => {
+  const nickNameloop = nickNameList?.filter((nickName) => {
     return selectedtNickname == nickName.id;
   });
 
-  const nickNameIDValue = nickNameloop[0]?.id;
+  const nickNameIDValue = nickNameloop?.[0]?.id;
 
   useEffect(() => {
     // (async () => {
@@ -234,7 +234,7 @@ const ManageSupportUI = ({
     currentDelegatedSupportedClick.delegatedSupportClick;
 
   useEffect(() => {
-    if (nickNameList.length > 0) {
+    if (nickNameList?.length > 0) {
       setSelectedtNickname(nickNameList[0]?.id);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

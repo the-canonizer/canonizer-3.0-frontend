@@ -1,46 +1,5 @@
-import {
-  fireEvent,
-  act,
-  render,
-  screen,
-  waitFor,
-  waitForElementToBeRemoved,
-} from "@testing-library/react";
-import HistoryCollapse, { Timer } from "../index";
-import { Provider } from "react-redux";
-import { store } from "src/store";
-
-import { NextRouter } from "next/router";
-import configureMockStore from "redux-mock-store";
-import { RouterContext } from "next/dist/shared/lib/router-context";
-
-function createMockRouter(router: Partial<NextRouter>): NextRouter {
-  return {
-    basePath: "",
-    pathname: "/",
-    route: "/",
-    query: {},
-    asPath: "/",
-    back: jest.fn(),
-    beforePopState: jest.fn(),
-    prefetch: jest.fn(),
-    push: jest.fn(),
-    reload: jest.fn(),
-    replace: jest.fn(),
-    events: {
-      on: jest.fn(),
-      off: jest.fn(),
-      emit: jest.fn(),
-    },
-    isFallback: false,
-    isLocaleDomain: false,
-    isReady: true,
-    defaultLocale: "en",
-    domainLocales: [],
-    isPreview: false,
-    ...router,
-  };
-}
+import { act, render } from "@testing-library/react";
+import { Timer } from "../index";
 
 describe("HistoryCollapse component", () => {
   beforeAll(() => {
@@ -51,7 +10,7 @@ describe("HistoryCollapse component", () => {
     jest.useRealTimers();
   });
   test("renders commit and cancel button", async () => {
-    const { container, debug } = render(
+    const { container } = render(
       <Timer unixTime={1698680495} setCommited={jest.fn()} />
     );
     const timerText = container.querySelector("span");
@@ -85,7 +44,7 @@ describe("HistoryCollapse component", () => {
     });
   });
   it("renders with default time (00:00:00)", () => {
-    const { container, debug } = render(<Timer unixTime={0} />);
+    const { container } = render(<Timer unixTime={0} />);
     const timerText = container.querySelector("span");
 
     expect(timerText).toHaveTextContent("00:00:00");

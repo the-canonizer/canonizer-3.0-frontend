@@ -11,11 +11,11 @@ import Link from "next/link";
 import { RootState } from "src/store";
 import activityStyle from "../../Home/CampRecentActivities/campRecentActivities.module.scss";
 import CustomSkelton from "../../../common/customSkelton";
-const Events = ({ timelineDescript }: any) => {
+const Events = ({ timelineDescript, loadingEvents }: any) => {
   const dispatch = useDispatch();
   const [check, setCheck] = useState(true);
   // const router = useRouter();
-  const { viewThisVersion, filterObject, filterByScore, loading } = useSelector(
+  const { viewThisVersion, filterObject, filterByScore } = useSelector(
     (state: RootState) => ({
       viewThisVersion: state?.filters?.viewThisVersionCheck,
       filterObject: state?.filters?.filterObject,
@@ -58,7 +58,7 @@ const Events = ({ timelineDescript }: any) => {
           "activities evntLineActivity " + activityStyle.campActivities
         }
       >
-        {loading && timelineDescript?.length == 0 ? (
+        {loadingEvents || timelineDescript?.length == 0 ? (
           <>
             <CustomSkelton
               skeltonFor="list"
@@ -102,10 +102,8 @@ const Events = ({ timelineDescript }: any) => {
                                       title?.url
                                     }?score=${filterByScore}&algo=${
                                       filterObject?.algorithm
-                                    }${
-                                      filterObject?.asof == "bydate"
-                                        ? "&asofdate=" + title?.eventDate
-                                        : ""
+                                    }&asofdate=${
+                                      title?.eventDate
                                     }&asof=bydate&canon=${
                                       filterObject?.namespace_id
                                     }${

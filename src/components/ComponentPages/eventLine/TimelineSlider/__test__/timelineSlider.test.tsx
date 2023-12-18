@@ -133,17 +133,17 @@ describe("TimelineSlider", () => {
     );
     expect(
       screen.getByRole("img", {
-        name: /step\-backward/i,
+        name: /step-backward/i,
       })
     ).toBeInTheDocument();
     expect(
       screen.getByRole("img", {
-        name: /caret\-right/i,
+        name: /caret-right/i,
       })
     ).toBeInTheDocument();
     expect(
       screen.getByRole("img", {
-        name: /step\-forward/i,
+        name: /step-forward/i,
       })
     ).toBeInTheDocument();
 
@@ -235,5 +235,6 @@ describe("TimelineSlider", () => {
     const playButton = getByTestId("play-button");
     expect(playButton).toBeInTheDocument();
     fireEvent.click(playButton);
+    fireEvent.click(screen.getByText(/Dec 6, 06/i));
   });
 });

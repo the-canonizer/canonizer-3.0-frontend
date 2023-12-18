@@ -4,7 +4,7 @@ import Link from "next/link";
 
 import styles from "./datanotfound.module.scss";
 
-const DataNotFound = ({ name, backURL, message = "" }) => {
+const DataNotFound = ({ name, backURL, message = "" }: any) => {
   return (
     <>
       <div className={styles.errorPageContentWrap}>

@@ -97,7 +97,7 @@ export const getCurrentCampRecordApi = async (reqBody, loginToken = null) => {
       status_code: currentCampRecord?.status_code,
     };
   } catch (error) {
-    return { status_code: error?.error?.data?.status_code };
+    return { status_code: error?.error?.data?.status_code || "" };
     // message.error(error.message);
   }
 };
