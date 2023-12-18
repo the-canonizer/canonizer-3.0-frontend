@@ -611,10 +611,10 @@ const HeaderMenu = ({ loggedUser }: any) => {
           // className={"search_header"}
           options={
             inputSearch==""?[]:(loadingSekelton?loader:
-              (searchTopics?.length ||
+              searchTopics?.length ||
                     searchCamps?.length ||
                     searchCampStatement?.length ||
-                    searchNickname?.length)?
+                    searchNickname?.length?
               options:no)
           }
           value={searchVal}
