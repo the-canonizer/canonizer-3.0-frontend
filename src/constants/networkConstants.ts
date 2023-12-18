@@ -158,6 +158,7 @@ const NetworkConstants = {
     // compare statement
     CompareStatement: `${BaseCanonizerApiUrl}/get-statement-comparison`,
     ChangeSupporters: `${BaseCanonizerApiUrl}/get-change-supporters`,
+    CheckCampStatus: `${BaseCanonizerApiUrl}/check-camp-status`,
 
     // notification list
     GetList: `${BaseCanonizerApiUrl}/notification-list`,
