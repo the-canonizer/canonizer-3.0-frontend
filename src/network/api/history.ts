@@ -67,6 +67,18 @@ export const getChangeSupporters = async (reqBody) => {
   }
 };
 
+export const getCheckCampStatus = async (reqBody) => {
+  try {
+    const res = await NetworkCall.fetch(
+      historyRequest.checkCampStatus(reqBody),
+      false
+    );
+    return res;
+  } catch (error) {
+    handleError(error);
+  }
+};
+
 export const getCompareStatement = async (reqBody) => {
   try {
     const res = await NetworkCall.fetch(

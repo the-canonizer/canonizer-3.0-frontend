@@ -95,7 +95,7 @@ export default function RecentActivities() {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedTab, isChecked, router]);
+  }, [selectedTab, isChecked]);
 
   const handleTabChange = (key: string) => {
     if (key == "threads") {
