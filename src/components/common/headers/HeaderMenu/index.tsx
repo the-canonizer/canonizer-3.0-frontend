@@ -95,7 +95,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
               {searchTopics?.slice(0, 5)?.map((x) => {
                 const index = x.type_value
                   ?.toLowerCase()
-                  .indexOf(searchValue?.toLowerCase());
+                  .indexOf(searchValue?.toLowerCase().trim());
 
                 if (index !== -1) {
                   const length = searchValue.length;
@@ -182,7 +182,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
                 );
                 const index = x.type_value
                   ?.toLowerCase()
-                  .indexOf(searchValue?.toLowerCase());
+                  .indexOf(searchValue?.toLowerCase().trim());
                 if (index !== -1) {
                   const length = searchValue.length;
                   const prefix = x.type_value.substring(0, index);
@@ -271,7 +271,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
                 );
                 const index = x.type_value
                   ?.toLowerCase()
-                  .indexOf(searchValue?.toLowerCase());
+                  .indexOf(searchValue?.toLowerCase().trim());
                 if (index !== -1) {
                   const length = searchValue.length;
                   const prefix = x.type_value.substring(0, index);
@@ -361,7 +361,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
               {searchNickname?.slice(0, 5)?.map((x) => {
                 const index = x.type_value
                   ?.toLowerCase()
-                  .indexOf(searchValue?.toLowerCase());
+                  .indexOf(searchValue?.toLowerCase().trim());
 
                 if (index !== -1) {
                   const length = searchValue.length;
