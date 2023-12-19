@@ -102,7 +102,7 @@ function SubscriptionsList({ isTestData = [] }: any) {
     setTimeout(() => {
       setIsDisabled(false);
       setIsLoading(false);
-    }, 300);
+    }, 900);
   };
 
   return isLoading ? (
