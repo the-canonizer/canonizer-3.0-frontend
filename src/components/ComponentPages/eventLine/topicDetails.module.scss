@@ -28,7 +28,7 @@
     }
   }
   &_Left {
-      display: flex;
+    display: flex;
     @media screen and (min-width: 992px) {
       width: calc(100% - 300px);
     }
@@ -40,7 +40,7 @@
     .topicTitleStyle {
       margin-right: 50px;
       span {
-        white-space:normal;
+        white-space: normal;
       }
     }
     .topicTitleSkeleton {
@@ -95,7 +95,7 @@
   justify-content: center;
   align-items: center;
   padding: 24px;
-  @media screen and (max-width: 991px){
+  @media screen and (max-width: 991px) {
     width: 100%;
     margin: 0;
   }
@@ -111,7 +111,7 @@
     font-weight: 400;
     /* white-space: nowrap; */
     &:hover {
-      color: #71b1fc!important;
+      color: #71b1fc !important;
     }
   }
 }
@@ -151,8 +151,8 @@
         color: #4484ce;
       }
       &.activeCamp {
-          color: #08b608 !important;
-        }
+        color: #08b608 !important;
+      }
     }
   }
   .treeListItemNumber {
@@ -165,11 +165,11 @@
     padding: 2px 7px;
     border-radius: 2px;
     color: #fff;
-    margin-left: 6px ;
+    margin-left: 6px;
     transition: all ease 50s;
-    @media screen and (max-width:767px) {
-      width:auto !important;
-  }
+    @media screen and (max-width: 767px) {
+      width: auto !important;
+    }
   }
   .subScriptionIcon {
     margin-left: 6px;
@@ -225,15 +225,15 @@
 }
 
 .campStatement {
-  ul, ol {
+  ul,
+  ol {
     padding-left: 40px;
   }
 }
 
-
 .boldBreadcrumb {
-    font-weight: 700;
-    font-size: 17px;
+  font-weight: 700;
+  font-size: 17px;
 }
 
 .slashStyle {
@@ -253,11 +253,8 @@
   }
 }
 .eventLineBtn {
-
   margin-left: 10px;
-
 }
-
 
 .backButton {
   margin-right: 18px;

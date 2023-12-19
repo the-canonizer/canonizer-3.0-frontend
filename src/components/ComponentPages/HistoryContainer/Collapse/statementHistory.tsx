@@ -22,11 +22,14 @@ const StatementHistory = ({ campStatement, topicNamespaceId }: any) => {
         Submitter Nickname :{" "}
         <span>
           <Link
-            href={`/user/supports/${
-              campStatement?.submitter_nick_id || ""
-            }?topicnum=${campStatement?.topic_num || ""}&campnum=${
-              campStatement?.camp_num || ""
-            }&canon=${topicNamespaceId || ""}`}
+            href={{
+              pathname: `/user/supports/${
+                campStatement?.submitter_nick_id || ""
+              }`,
+              query: {
+                canon: topicNamespaceId || "",
+              },
+            }}
             passHref
           >
             <a>{campStatement?.submitter_nick_name}</a>
@@ -45,9 +48,7 @@ const StatementHistory = ({ campStatement, topicNamespaceId }: any) => {
             <Link
               href={`/user/supports/${
                 campStatement?.objector_nick_id || ""
-              }?topicnum=${campStatement?.topic_num || ""}&campnum=${
-                campStatement?.camp_num || ""
-              }&canon=${topicNamespaceId || ""}`}
+              }?canon=${topicNamespaceId || ""}`}
               passHref
             >
               <a>{campStatement?.objector_nick_name}</a>

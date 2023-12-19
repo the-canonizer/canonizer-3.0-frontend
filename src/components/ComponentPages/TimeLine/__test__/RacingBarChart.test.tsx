@@ -23,11 +23,11 @@ describe("RacingBarChart", () => {
 
   // For example, test the component with data and check if it renders correctly
   it("renders with data", () => {
-    const data = [
-      { level: 1, score: 10, title: "Title 1", camp_id: "camp1" },
-      { level: 2, score: 20, title: "Title 2", camp_id: "camp2" },
-      // Add more data entries as needed
-    ];
+    // const data = [
+    //   { level: 1, score: 10, title: "Title 1", camp_id: "camp1" },
+    //   { level: 2, score: 20, title: "Title 2", camp_id: "camp2" },
+    //   // Add more data entries as needed
+    // ];
     const data2 = [
       {
         topic_id: 2,

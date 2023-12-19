@@ -588,6 +588,26 @@ export default class UserRequest extends Request {
     );
   }
 
+  static uploadProfileImage(body, authToken) {
+    return new Request(
+      K.Network.URL.EditProfileImage,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.formData,
+      authToken
+    );
+  }
+
+  static deleteProfileImage(authToken) {
+    return new Request(
+      K.Network.URL.EditProfileImage,
+      K.Network.Method.DELETE,
+      {},
+      K.Network.Header.Type.Json,
+      authToken
+    );
+  }
+
   static GlobalSearchUploadedFiles(reqbody, authToken) {
     return new Request(
       K.Network.URL.GlobalSearchUploadedFile + reqbody,

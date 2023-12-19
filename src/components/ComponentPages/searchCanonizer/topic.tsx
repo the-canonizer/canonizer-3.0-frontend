@@ -1,29 +1,34 @@
 import React, { Fragment, useEffect, useState } from "react";
 import SearchSideBar from "../../common/SearchSideBar";
 import styles from "./search.module.scss";
-import AdvanceFilter from "../../common/AdvanceSearchFilter";
+// import AdvanceFilter from "../../common/AdvanceSearchFilter";
 import Link from "next/link";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "src/store";
-import { Pagination } from "antd";
+import { Empty, Pagination } from "antd";
+import { setPageNumber } from "src/store/slices/searchSlice";
 
 const TopicSearch = () => {
-  const { searchData } = useSelector((state: RootState) => ({
-    searchData: state?.searchSlice?.searchData,
+  const { searchDataAll } = useSelector((state: RootState) => ({
+    searchDataAll: state?.searchSlice?.searchDataAll,
   }));
-  const [startingPosition, setStartingPosition] = useState(0);
-  const [endingPosition, setEndingPosition] = useState(20);
+  const { searchMetaData } = useSelector((state: RootState) => ({
+    searchMetaData: state?.searchSlice?.searchMetaData,
+  }));
+
   const [currentPage, setCurrentPage] = useState(1);
+  const dispatch = useDispatch();
 
-  const pageChange = (pageNumber, pageSize) => {
+  const pageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
-
-    setStartingPosition((pageNumber - 1) * pageSize);
-    setEndingPosition((pageNumber - 1) * pageSize + pageSize);
+    dispatch(setPageNumber(pageNumber));
   };
   useEffect(() => {
-    pageChange(currentPage, 20);
-  });
+    pageChange(currentPage);
+  }, [searchDataAll?.topic]);
+  const showEmpty = (msg) => {
+    return <Empty description={msg} />;
+  };
   return (
     <Fragment>
       <aside className="leftSideBar miniSideBar">
@@ -36,32 +41,36 @@ const TopicSearch = () => {
         <div className={styles.card}>
           <div className="d-flex mb-2 align-items-center flex-wrap relative">
             <h4 data-testid="topic_heading">Topic</h4>
-            <AdvanceFilter />
+            {/* <AdvanceFilter /> */}
           </div>
           <div className={styles.search_lists}>
-            <ul>
-              {searchData.topic
-                .slice(startingPosition, endingPosition)
-                .map((x) => {
-                  return (
-                    <>
-                      <li>
-                        <Link href={`/${x.link}`}>
-                          <a>
-                            <label>{x.type_value}</label>
-                          </a>
-                        </Link>
+            {searchDataAll.topic?.length ? (
+              <div>
+                <ul>
+                  {searchDataAll.topic.map((x) => {
+                    return (
+                      <>
+                        <li>
+                          <Link href={`/${x?.link}`}>
+                            <a>
+                              <label>{x?.type_value}</label>
+                            </a>
+                          </Link>
 
-                        <span className={styles.ml_auto}>{x.namespace}</span>
-                      </li>
-                    </>
-                  );
-                })}
-            </ul>
+                          <span className={styles.ml_auto}>{x.namespace}</span>
+                        </li>
+                      </>
+                    );
+                  })}
+                </ul>
+              </div>
+            ) : (
+              showEmpty("No Data Found")
+            )}
           </div>
           <Pagination
             hideOnSinglePage={true}
-            total={searchData.topic?.length}
+            total={searchMetaData.total}
             pageSize={20}
             onChange={pageChange}
             showSizeChanger={false}

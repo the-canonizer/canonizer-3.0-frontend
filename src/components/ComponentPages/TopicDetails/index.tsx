@@ -6,7 +6,6 @@ import {
   setFilterCanonizedTopics,
   setShowDrawer,
 } from "../../../store/slices/filtersSlice";
-import CustomSkelton from "../../common/customSkelton";
 
 import {
   getCanonizedCampStatementApi,
@@ -72,6 +71,8 @@ const TopicDetails = ({ serverSideCall }: any) => {
   const totalFullSupportScore = 0;
   const [topicList, setTopicList] = useState([]);
   const [isSupportTreeCardModal, setIsSupportTreeCardModal] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+
   const [isDelegateSupportTreeCardModal, setIsDelegateSupportTreeCardModal] =
     useState(false);
   const [removeSupportSpinner, setRemoveSupportSpinner] = useState(false);
@@ -113,6 +114,15 @@ const TopicDetails = ({ serverSideCall }: any) => {
   //       ? Date.now() / 1000
   //       : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
   // };
+  // const reqBody = {
+  //   topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
+  //   camp_num: +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1),
+  //   as_of: asof,
+  //   as_of_date:
+  //     asof == "default" || asof == "review"
+  //       ? Date.now() / 1000
+  //       : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
+  // };
   useEffect(() => {
     async function getTreeApiCall() {
       if (!showTreeSkeltonRef) {
@@ -123,8 +133,8 @@ const TopicDetails = ({ serverSideCall }: any) => {
 
       if (didMount.current && !serverSideCall.current) {
         const reqBodyForService = {
-          topic_num: +router?.query?.camp[0]?.split("-")[0],
-          camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
+          topic_num: router?.query?.camp[0]?.split("-")[0],
+          camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
           asOf: asof,
           asofdate:
             asof == "default" || asof == "review"
@@ -134,7 +144,6 @@ const TopicDetails = ({ serverSideCall }: any) => {
           update_all: 1,
           fetch_topic_history: viewThisVersionCheck ? 1 : null,
         };
-
         const reqBody = {
           topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
           camp_num: +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1),
@@ -145,8 +154,8 @@ const TopicDetails = ({ serverSideCall }: any) => {
               : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
         };
         const reqBodyForCampData = {
-          topic_num: +router?.query?.camp[0]?.split("-")[0],
-          camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
+          topic_num: router?.query?.camp[0]?.split("-")[0],
+          camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
           type: "all",
           per_page: 4,
           page: 1,
@@ -167,7 +176,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
       } else {
         didMount.current = true;
       }
-      //getCanonizedCampSupportingTreeApi(reqBody, algorithm);
+      // getCanonizedCampSupportingTreeApi(reqBody, algorithm);
 
       const topicNum = router?.query?.camp?.at(0)?.split("-")?.at(0);
       const body = { topic_num: topicNum };
@@ -217,7 +226,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
       message.success(res.message);
       setIsSupportTreeCardModal(false);
       GetCheckStatusData();
-      //getCanonizedCampSupportingTreeApi(reqBody, algorithm);
+      // getCanonizedCampSupportingTreeApi(reqBody, algorithm);
       getTreesApi(reqBodyForService);
       // fetchTotalScore();
     }
@@ -251,7 +260,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
       message.success(res.message);
       setIsSupportTreeCardModal(false);
       GetCheckStatusData();
-      //getCanonizedCampSupportingTreeApi(reqBody, algorithm);
+      // getCanonizedCampSupportingTreeApi(reqBody, algorithm);
       getTreesApi(reqBodyForService);
       // fetchTotalScore();
     }
@@ -281,7 +290,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
       setIsSupportTreeCardModal(false);
       setIsDelegateSupportTreeCardModal(false);
       GetCheckStatusData();
-      //getCanonizedCampSupportingTreeApi(reqBody, algorithm);
+      // getCanonizedCampSupportingTreeApi(reqBody, algorithm);
       getTreesApi(reqBodyForService);
       // fetchTotalScore();
     }
@@ -432,6 +441,10 @@ const TopicDetails = ({ serverSideCall }: any) => {
     );
   };
 
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   return (
     <Fragment>
       <div className={styles.topicDetailContentWrap}>
@@ -492,7 +505,8 @@ const TopicDetails = ({ serverSideCall }: any) => {
                 backGroundColorClass={backGroundColorClass}
               /> */}
 
-            {tree &&
+            {isClient &&
+              tree &&
               (!tree["1"]?.is_valid_as_of_time ||
                 (tree["1"]?.is_valid_as_of_time &&
                   !(
@@ -530,7 +544,8 @@ const TopicDetails = ({ serverSideCall }: any) => {
                 </div>
               )}
 
-            {((tree &&
+            {((isClient &&
+              tree &&
               tree["1"]?.is_valid_as_of_time &&
               tree["1"]?.created_date <=
                 (asof == "default" || asof == "review"

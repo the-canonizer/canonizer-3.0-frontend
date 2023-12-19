@@ -197,7 +197,9 @@ const UploadFileUI = ({
           Openfolder(obj.id);
         }}
       >
-        <span id="openFolder">Open folder</span>
+        <span id="openFolder" data-testid="open_folder">
+          Open folder
+        </span>
       </Menu.Item>
       <Menu.Item onClick={() => editFolder(obj)}>
         <span id="editFolderName">Edit folder name</span>
@@ -218,6 +220,7 @@ const UploadFileUI = ({
     <Menu>
       {imageRegexData.test(item.file_type) ? (
         <Menu.Item
+          data-testid="test1"
           onClick={() =>
             setPreview({
               previewVisible: true,
@@ -245,6 +248,7 @@ const UploadFileUI = ({
         </Menu.Item>
       ) : (
         <Menu.Item
+          data-testid="test2"
           onClick={() => {
             window.location.href = item.file_path;
           }}
@@ -262,6 +266,7 @@ const UploadFileUI = ({
         </Menu.Item>
       )}
       <Menu.Item
+        data-testid="test3"
         onClick={() => {
           {
             navigator.clipboard.writeText(item.short_code_path),
@@ -281,6 +286,7 @@ const UploadFileUI = ({
         </span>
       </Menu.Item>
       <span
+        data-testid="test4"
         onClick={() => {
           setRemoveFileData({
             keyParam: item,
@@ -335,6 +341,7 @@ const UploadFileUI = ({
           } else if (obj.type == "folder") {
             return (
               <FolderFilled
+                data-testid="folderFilled"
                 className={styles.folder_icons}
                 style={{ cursor: "pointer" }}
                 onClick={() => {
@@ -688,13 +695,14 @@ const UploadFileUI = ({
                 </div>
               </div>
             </Card>
-            <div className={styles.dropdown}>
+            <div className={styles.dropdown} data-testid="overlay_menu">
               <Dropdown
                 overlay={menu(i, item)}
                 trigger={["click"]}
                 placement="topCenter"
               >
                 <div
+                  data-testid="open_folder_render_mennu"
                   className="ant-dropdown-link"
                   onClick={(e) => e.preventDefault()}
                 >
@@ -733,6 +741,7 @@ const UploadFileUI = ({
                 {subStringData(item.name ? item.name : item.file_name)}
               </span>
               <span
+                data-testid="cpoy_span"
                 className="copySpan"
                 onClick={() => {
                   navigator.clipboard.writeText(item.short_code_path),
@@ -796,6 +805,7 @@ const UploadFileUI = ({
                         <h2 className={styles.FolderOpenHeading}>
                           {" "}
                           <span
+                            data-testid="arrow_outlined"
                             style={{ cursor: "pointer" }}
                             onClick={() => {
                               closeFolder();
@@ -1056,6 +1066,7 @@ const UploadFileUI = ({
                           <Input
                             disabled={show_UploadOptions || dragBoxStatus}
                             id="datePickerText"
+                            data-testid="datePickerText"
                             placeholder="Search"
                             autoComplete="off"
                             value={search}
@@ -1110,6 +1121,7 @@ const UploadFileUI = ({
                         </Button>
                         {addButtonShow && !dragBoxStatus ? (
                           <Button
+                            data-testid="addAFileBtn"
                             id="addAFileBtn"
                             className={styles.add_file_btn}
                             onClick={() => {
@@ -1182,6 +1194,7 @@ const UploadFileUI = ({
                             handle_X_btn();
                             setSearch("");
                           }}
+                          data-testid="handle_x_btn"
                         />
                       </div>
                     ) : (
@@ -1193,6 +1206,7 @@ const UploadFileUI = ({
                       name="file"
                       listType="picture"
                       multiple
+                      data-testid="upload_images"
                       fileList={fileStatus ? folderFiles : uploadFileList}
                       beforeUpload={(file, fileList) => {
                         setLoadingArray([...fileList]);
@@ -1310,6 +1324,7 @@ const UploadFileUI = ({
                                   ]}
                                 >
                                   <Input
+                                    data-testid="enterFileName"
                                     id="enterFileName"
                                     className="mr0"
                                     name={file.uid}
@@ -1351,7 +1366,7 @@ const UploadFileUI = ({
                             id="clickOrDragAreaBtn"
                             className={styles.Drager}
                           >
-                            <div className="uploadBTn">
+                            <div className="uploadBTn" data-testid="drag_file">
                               <InboxOutlined />
                               <h2>
                                 <b>Click or drag file to this area to upload</b>
@@ -1486,6 +1501,7 @@ const UploadFileUI = ({
               <div className="copy__text">
                 <h6>{preview.previewName}</h6>
                 <div
+                  data-testid="onCancel"
                   className="copy_wrap"
                   onClick={() => {
                     navigator.clipboard.writeText(preview.prevShort),

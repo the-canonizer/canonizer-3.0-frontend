@@ -2,7 +2,7 @@ const BaseCanonizerServiceUrl = process.env.NEXT_PUBLIC_BASE_SERVICE_URL;
 const BaseCanonizerApiUrl = process.env.NEXT_PUBLIC_BASE_API_URL;
 const BaseImagesURL = process.env.NEXT_PUBLIC_BASE_IMAGES_URL;
 const BaseVideosURL = process.env.NEXT_PUBLIC_BASE_VIDEOS_URL;
-const BaseCanonizerDevApiUrl = process.env.NEXT_PUBLIC_BASE_API_DEV_URL;
+// const BaseCanonizerDevApiUrl = process.env.NEXT_PUBLIC_BASE_API_DEV_URL;
 const NetworkConstants = {
   URL: {
     BaseImagesURL,
@@ -34,6 +34,7 @@ const NetworkConstants = {
     SendOTP: `${BaseCanonizerApiUrl}/send-otp`,
     VerifyOTP: `${BaseCanonizerApiUrl}/verify-otp`,
     GetLanguageList: `${BaseCanonizerApiUrl}/get-languages`,
+    EditProfileImage: `${BaseCanonizerApiUrl}/update-profile-picture`,
     // Forgot Password
     SendForgotPasswordOTP: `${BaseCanonizerApiUrl}/forgot-password/send-otp`,
     VerifyForgotPasswordOTP: `${BaseCanonizerApiUrl}/forgot-password/verify-otp`,

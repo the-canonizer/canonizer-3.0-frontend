@@ -8,11 +8,12 @@ import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store/index.js";
 import CustomSkelton from "../../common/customSkelton";
+import { Empty } from "antd";
 // const getRandomIndex = (array) => {
 //   return Math.floor(array.length * Math.random());
 // };
 
-function TimeLine({ setTimelineDescript }: any) {
+function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
   const [loading, setLoading] = useState(false);
   const [iteration, setIteration] = useState(0);
   const [start, setStart] = useState(false);
@@ -34,6 +35,7 @@ function TimeLine({ setTimelineDescript }: any) {
   );
   useEffect(() => {
     setLoading(true);
+    setLoadingEvents(true);
     async function apiCall() {
       const data = await getEventLineApi({
         topic_num: router?.query?.camp[0]?.split("-")[0],
@@ -63,7 +65,7 @@ function TimeLine({ setTimelineDescript }: any) {
     }
 
     apiCall();
-
+    setLoadingEvents(false);
     setLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [algorithm]);
@@ -138,7 +140,8 @@ function TimeLine({ setTimelineDescript }: any) {
             <RacingBarChart data={data} />
           </>
         ) : (
-          <h1>No Event Found!</h1>
+          // <h1>No Event Found!</h1>
+          <Empty description="No Event Found!" />
         )}
       </div>
     </React.Fragment>

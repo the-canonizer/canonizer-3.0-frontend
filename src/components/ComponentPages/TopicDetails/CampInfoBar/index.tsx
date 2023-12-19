@@ -1,24 +1,23 @@
-import { Spin, Tooltip, Typography } from "antd";
-import { useRouter } from "next/router";
 import { useState, useEffect, useRef } from "react";
+import { Button, Popover, Spin, Tooltip, Typography } from "antd";
+import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
+import { DoubleRightOutlined, DoubleLeftOutlined } from "@ant-design/icons";
+import Link from "next/link";
+import moment from "moment";
+
 // import {
 //   getTreesApi,
 //   subscribeToCampApi,
 // } from "../../../../network/api/campDetailApi";
 import { RootState } from "src/store";
 import styles from "../topicDetails.module.scss";
-import moment from "moment";
-import CustomSkelton from "../../../common/customSkelton";
-
-import { setManageSupportStatusCheck } from "../../../../store/slices/campDetailSlice";
-
+import CustomSkelton from "src/components/common/customSkelton";
+import { setManageSupportStatusCheck } from "src/store/slices/campDetailSlice";
 // import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
-import { getCampBreadCrumbApi } from "../../../../network/api/campDetailApi";
-import { DoubleRightOutlined } from "@ant-design/icons";
-import Link from "next/link";
-import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
 // import SocialShareUI from "../../../common/socialShare";
+import { getCampBreadCrumbApi } from "src/network/api/campDetailApi";
+import { replaceSpecialCharacters } from "src/utils/generalUtility";
 
 // const CodeIcon = () => (
 //   <svg
@@ -38,6 +37,7 @@ const TimelineInfoBar = ({
   payload = null,
   isTopicPage = false,
   isTopicHistoryPage = false,
+  isForumPage = false,
 }: any) => {
   // const { isUserAuthenticated } = useAuthentication();
 
@@ -60,6 +60,7 @@ const TimelineInfoBar = ({
     viewThisVersion,
     filterObject,
     filterByScore,
+    campScoreValue,
   } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
     campRecord: state?.topicDetails?.currentCampRecord,
@@ -69,6 +70,7 @@ const TimelineInfoBar = ({
     viewThisVersion: state?.filters?.viewThisVersionCheck,
     filterObject: state?.filters?.filterObject,
     filterByScore: state.filters?.filterObject?.filterByScore,
+    campScoreValue: state?.filters?.campWithScoreValue,
   }));
   const [campSubscriptionID, setCampSubscriptionID] = useState(
     campRecord?.subscriptionId
@@ -359,6 +361,89 @@ const TimelineInfoBar = ({
   //   </Menu>
   // );
 
+  const objectToQueryString = (obj) => {
+    const keys = Object.keys(obj);
+    const keyValuePairs = keys.map((key) => {
+      return encodeURIComponent(key) + "=" + encodeURIComponent(obj[key]);
+    });
+    return keyValuePairs.join("&");
+  };
+
+  const getQueryParams = () => {
+    const filterByScore = filterObject?.filterByScore,
+      algorithm = filterObject?.algorithm,
+      asof = filterObject?.asof,
+      asofdate = filterObject?.asofdate,
+      namespace_id = filterObject?.namespace_id,
+      viewversion = viewThisVersion;
+
+    let returnQuery = "",
+      query: any = {
+        score: filterByScore,
+        algo: algorithm,
+        canon: namespace_id,
+        asof: asof,
+        filter: campScoreValue || "10",
+      };
+
+    if (asof == "bydate") {
+      query.asofdate = asofdate;
+    }
+
+    if (viewversion) {
+      query.viewversion = "1";
+    }
+
+    // query = { ...router?.query, ...query };
+
+    if (asof != "bydate") {
+      delete query.asofdate;
+    }
+
+    if (String(filterByScore) === "0") {
+      delete query.score;
+    }
+
+    if (String(namespace_id) === "1") {
+      delete query.canon;
+    }
+
+    if (query.canon === "") {
+      delete query.canon;
+    }
+
+    if (asof === "default") {
+      delete query.asof;
+    }
+
+    if (algorithm === "blind_popularity") {
+      delete query.algo;
+    }
+
+    if (String(campScoreValue) === "10") {
+      delete query.filter;
+    }
+
+    if (
+      query?.filter === "undefined" ||
+      query?.filter === undefined ||
+      query?.filter === "null" ||
+      query?.filter === null
+    ) {
+      delete query.filter;
+    }
+
+    if (
+      router?.query?.is_tree_open == "0" ||
+      router?.query?.is_tree_open == "1"
+    ) {
+      query.is_tree_open = router?.query?.is_tree_open;
+    }
+
+    returnQuery = objectToQueryString(query);
+    return returnQuery;
+  };
+
   return (
     <>
       <div className={styles.topicDetailContentHead + " " + styles.info_bar_n}>
@@ -372,6 +457,32 @@ const TimelineInfoBar = ({
 
         <Spin spinning={false}>
           <div className={styles.topicDetailContentHead_Left}>
+            {isForumPage ? (
+              <Popover
+                content="Back to camp forum page"
+                key="back_button"
+                placement="topLeft"
+              >
+                <Button
+                  onClick={() => {
+                    router.push({
+                      pathname:
+                        "/forum/" +
+                        router?.query?.topic +
+                        "/" +
+                        router?.query?.camp +
+                        "/threads",
+                    });
+                  }}
+                  className={styles.backButton}
+                >
+                  <DoubleLeftOutlined />
+                  {/* Back */}
+                </Button>
+              </Popover>
+            ) : (
+              ""
+            )}
             <Typography.Paragraph
               className={
                 "mb-0 " +
@@ -382,8 +493,7 @@ const TimelineInfoBar = ({
                 }`
               }
             >
-              {" "}
-              <span className="normal"> Topic : </span>
+              <span className="normal">Topic : </span>
               {loadingIndicator ? (
                 <CustomSkelton
                   skeltonFor="list"
@@ -393,14 +503,13 @@ const TimelineInfoBar = ({
                 />
               ) : isTopicHistoryPage ? (
                 <>
-                  {" "}
                   <Link
                     href={`/topic/${
                       payload?.topic_num
                     }-${replaceSpecialCharacters(
                       breadCrumbRes?.topic_name,
                       "-"
-                    )}/1-Agreement`}
+                    )}/1-Agreement?${getQueryParams()}`}
                   >
                     <a className={styles.boldBreadcrumb}>
                       {breadCrumbRes?.topic_name}
@@ -412,7 +521,6 @@ const TimelineInfoBar = ({
                   {breadCrumbRes?.topic_name}
                 </span>
               )}
-              {"  "}
               {!!topicSubscriptionID && (
                 <Tooltip
                   title="You have subscribed to the entire topic."
@@ -425,7 +533,6 @@ const TimelineInfoBar = ({
               )}
             </Typography.Paragraph>
             <div className={styles.breadcrumbLinks}>
-              {" "}
               <Typography.Paragraph
                 className={"mb-0 " + styles.topicTitleStyle}
               >
@@ -452,12 +559,11 @@ const TimelineInfoBar = ({
                           )}/${camp?.camp_num}-${replaceSpecialCharacters(
                             camp?.camp_name,
                             "-"
-                          )}`}
+                          )}?${getQueryParams()}`}
                           key={index}
                         >
                           <a>
                             <span className={styles.slashStyle}>
-                              {" "}
                               {index !== 0 && <DoubleRightOutlined />}{" "}
                             </span>
                             <span

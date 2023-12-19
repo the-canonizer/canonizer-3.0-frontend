@@ -12,6 +12,7 @@ import { getCanonizedNameSpacesApi } from "src/network/api/homePageApi";
 import { GetSupportedNickNames } from "src/network/api/campDetailApi";
 import useAuthentication from "src/hooks/isUserAuthenticated";
 import { RootState } from "src/store";
+import DataNotFound from "../../DataNotFound/dataNotFound";
 
 const UserProfile = () => {
   const { isUserAuthenticated } = useAuthentication();
@@ -27,6 +28,10 @@ const UserProfile = () => {
   const [selectedNikname, setSelectedNikname] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(isUserAuthenticated);
   const [userProfileCardSkeleton, SetUserProfileCardSkeleton] = useState(false);
+  const [is404Status, setIs404Status] = useState({
+    status: false,
+    message: "",
+  });
 
   const router = useRouter();
 
@@ -38,12 +43,9 @@ const UserProfile = () => {
       setUserSupportedCampsList(res?.data?.support_list);
       setProfileData(res?.data?.profile);
     } else if (res && res.status_code === 404) {
-      let aa = `/topic/${router?.query?.topicnum}/${
-        router?.query?.campnum || "1"
-      }`;
-      router.push({
-        pathname: aa,
-        query: {},
+      setIs404Status({
+        status: true,
+        message: res?.message,
       });
     }
     SetUserProfileCardSkeleton(false);
@@ -80,19 +82,18 @@ const UserProfile = () => {
   useEffect(() => {
     setNoData(false);
     const userId = router?.query?.supports?.[0];
-    const topic_num = router?.query?.topicnum;
-    const camp_num = router?.query?.campnum;
     const namespace_name_id = dropdownNameSpaceList
       ? dropdownNameSpaceList
       : router?.query?.canon;
     // if (dropdownNameSpaceList) {
-    const query = `${userId}?topicnum=${topic_num}&campnum=${camp_num}&namespace=${namespace_name_id}`;
+    const query = `${userId}?namespace=${namespace_name_id}`;
     UserSupportedCampsListApi(query);
     // } else {
     UserSupportCampListNewSpaces();
     setDropdownNameSpaceList(namespace_name_id as any);
     // }
-  }, [dropdownNameSpaceList, router?.query]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router?.query]);
 
   useEffect(() => {
     const q = router?.query,
@@ -112,29 +113,37 @@ const UserProfile = () => {
 
   return (
     <>
-      <div className={styles.userProfileData}>
-        <UserProfileDetails
-          profileData={profileData}
-          userSupportedCampsList={userSupportedCampsList}
-          userProfileCardSkeleton={userProfileCardSkeleton}
-        />
-        <UserProfileCard
-          userSupportedCampsList={userSupportedCampsList}
-          setUserSupportedCampsList={setUserSupportedCampsList}
-          nameSpaceList={nameSpaceList}
-          dropdownNameSpaceList={dropdownNameSpaceList}
-          setDropdownNameSpaceList={setDropdownNameSpaceList}
-          noData={noData}
-          profileData={profileData}
-          nickNames={nickNameList}
-          defaultNickname={defaultNickname}
-          selectedNikname={selectedNikname}
-          // onNickNameChange={onNickNameChange}
-          isLoggedIn={isLoggedIn}
-          userProfileCardSkeleton={userProfileCardSkeleton}
-          setSelectedNikname={setSelectedNikname}
-        />
-      </div>
+      {is404Status?.status ? (
+        <>
+          {is404Status?.message && (
+            <DataNotFound message={is404Status?.message} backURL={"/"} />
+          )}
+        </>
+      ) : (
+        <div className={styles.userProfileData}>
+          <UserProfileDetails
+            profileData={profileData}
+            userSupportedCampsList={userSupportedCampsList}
+            userProfileCardSkeleton={userProfileCardSkeleton}
+          />
+          <UserProfileCard
+            userSupportedCampsList={userSupportedCampsList}
+            setUserSupportedCampsList={setUserSupportedCampsList}
+            nameSpaceList={nameSpaceList}
+            dropdownNameSpaceList={dropdownNameSpaceList}
+            setDropdownNameSpaceList={setDropdownNameSpaceList}
+            noData={noData}
+            profileData={profileData}
+            nickNames={nickNameList}
+            defaultNickname={defaultNickname}
+            selectedNikname={selectedNikname}
+            // onNickNameChange={onNickNameChange}
+            isLoggedIn={isLoggedIn}
+            userProfileCardSkeleton={userProfileCardSkeleton}
+            setSelectedNikname={setSelectedNikname}
+          />
+        </div>
+      )}
     </>
   );
 };

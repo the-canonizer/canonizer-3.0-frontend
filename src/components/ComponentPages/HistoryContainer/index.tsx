@@ -72,8 +72,8 @@ function HistoryContainer() {
     topic_num: router?.query?.camp?.at(0)?.split("-")?.at(0),
   };
   const reqBodyForService = {
-    topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
-    camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0) || 1,
+    topic_num: router?.query?.camp?.at(0)?.split("-")?.at(0),
+    camp_num: router?.query?.camp?.at(1)?.split("-")?.at(0) || 1,
     asOf: asof,
     asofdate:
       asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
@@ -92,7 +92,7 @@ function HistoryContainer() {
       }
       let res = await getTreesApi(reqBodyForService);
       setLoadingIndicator(false);
-      setParentarchived(res?.treeData[1].is_archive);
+      setParentarchived(res?.treeData[1]?.is_archive);
     }
     if (!isTreesApiCallStop) {
       getTreeApiCall();
@@ -159,15 +159,15 @@ function HistoryContainer() {
     try {
       setLoadingIndicator(true);
       const reqBody = {
-        topic_num: +router?.query.camp[0].split("-")[0],
+        topic_num: router?.query.camp[0].split("-")[0],
         camp_num:
-          historyOf != "topic" ? +router?.query.camp[1].split("-")[0] : null,
+          historyOf != "topic" ? router?.query.camp[1].split("-")[0] : 1,
         type: activeTab,
         per_page: 4,
         page: count.current,
       };
       let res = await getHistoryApi(reqBody, count.current, historyOf);
-      if (res?.status_code == 404) {
+      if (res?.status_code == 404 || res?.status_code == 400) {
         if (router?.pathname == "/topic/history/[...camp]") {
           router?.push(router?.asPath?.replace("topic/history", "topic"));
         } else if (router?.pathname == "/statement/history/[...camp]") {
@@ -368,6 +368,9 @@ function HistoryContainer() {
             campHistoryItems={campHistory?.items}
             callManageCampApi={callManageCampApi}
             parentArchived={parentarchived}
+            unarchiveChangeSubmitted={
+              campHistory?.details?.unarchive_change_submitted
+            }
           />
         );
       })

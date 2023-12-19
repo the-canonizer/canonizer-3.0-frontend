@@ -7,8 +7,6 @@ import moment from "moment";
 
 import styles from "./index.module.scss";
 
-// import CreateCampBtn from "../../../common/button/createNewCampBtn";
-// import CreateTopicBtn from "../../../common/button/createNewTopicBtn";
 import CampInfoBar from "../../TopicDetails/CampInfoBar";
 import CustomSkelton from "../../../common/customSkelton";
 import { changeSlashToArrow } from "src/utils/generalUtility";
@@ -65,14 +63,6 @@ function CompareStatementUI({
     <Fragment>
       <div className={styles.wrap}>
         <CampInfoBar payload={payload} />
-        <div className={styles.btnGroup}>
-          {/* <CreateTopicBtn />
-          <CreateCampBtn
-            url={`/camp/create/${
-              router?.query?.routes[0] + "/" + router?.query?.routes[1]
-            }`}
-          /> */}
-        </div>
         <div className={styles.campStatement}>
           <div className={styles.tabHead}>
             <div className={styles.filterOt}>
@@ -119,7 +109,9 @@ function CompareStatementUI({
                     </Paragraph>
                     <Paragraph>
                       <Text strong>Submitted on : </Text>
-                      <Text>{covertToTime(s1?.submit_time)}</Text>
+                      <Text>
+                        {s1?.submit_time ? covertToTime(s1?.submit_time) : ""}
+                      </Text>
                     </Paragraph>
                     <Paragraph>
                       <Text strong>Submitter Nickname : </Text>
@@ -127,9 +119,7 @@ function CompareStatementUI({
                         <Link
                           href={`/user/supports/${
                             s1["submitter_nick_id"] || ""
-                          }?topicnum=${s1["topic_num"] || ""}&campnum=${
-                            s1["camp_num"] || ""
-                          }&canon=${s1["namespace_id"] || 1}`}
+                          }?canon=${s1["namespace_id"] || 1}`}
                         >
                           <a>{s1?.submitter_nick_name}</a>
                         </Link>
@@ -137,7 +127,9 @@ function CompareStatementUI({
                     </Paragraph>
                     <Paragraph>
                       <Text strong>Go live time : </Text>
-                      <Text>{covertToTime(s1?.go_live_time)}</Text>
+                      <Text>
+                        {s1?.go_live_time ? covertToTime(s1?.go_live_time) : ""}
+                      </Text>
                     </Paragraph>
                     {from == "topic" ? (
                       <Paragraph>
@@ -176,9 +168,7 @@ function CompareStatementUI({
                             <Link
                               href={`/user/supports/${
                                 s1["camp_about_nick_id"] || ""
-                              }?topicnum=${s1["topic_num"] || ""}&campnum=${
-                                s1["camp_num"] || ""
-                              }&canon=${s1["namespace_id"] || 1}`}
+                              }?canon=${s1["namespace_id"] || 1}`}
                             >
                               <a>{s1?.camp_about_nick_name}</a>
                             </Link>
@@ -243,7 +233,9 @@ function CompareStatementUI({
                     </Paragraph>
                     <Paragraph>
                       <Text strong>Submitted on : </Text>
-                      <Text>{covertToTime(s2?.submit_time)}</Text>
+                      <Text>
+                        {s2?.submit_time ? covertToTime(s2?.submit_time) : ""}
+                      </Text>
                     </Paragraph>
                     <Paragraph>
                       <Text strong>Submitter Nickname : </Text>
@@ -251,9 +243,7 @@ function CompareStatementUI({
                         <Link
                           href={`/user/supports/${
                             s2["submitter_nick_id"] || ""
-                          }?topicnum=${s2["topic_num"] || ""}&campnum=${
-                            s2["camp_num"] || ""
-                          }&canon=${s2["namespace_id"] || 1}`}
+                          }?canon=${s2["namespace_id"] || 1}`}
                         >
                           <a>{s2?.submitter_nick_name}</a>
                         </Link>
@@ -261,7 +251,9 @@ function CompareStatementUI({
                     </Paragraph>
                     <Paragraph>
                       <Text strong>Go live time : </Text>
-                      <Text>{covertToTime(s2?.go_live_time)}</Text>
+                      <Text>
+                        {s2?.go_live_time ? covertToTime(s2?.go_live_time) : ""}
+                      </Text>
                     </Paragraph>
                     {from == "topic" ? (
                       <Paragraph>
@@ -299,9 +291,7 @@ function CompareStatementUI({
                             <Link
                               href={`/user/supports/${
                                 s2["camp_about_nick_id"] || ""
-                              }?topicnum=${s2["topic_num"] || ""}&campnum=${
-                                s2["camp_num"] || ""
-                              }&canon=${s2["namespace_id"] || 1}`}
+                              }?canon=${s2["namespace_id"] || 1}`}
                             >
                               <a>{s2?.camp_about_nick_name}</a>
                             </Link>
@@ -364,7 +354,9 @@ function CompareStatementUI({
                     title={
                       <Text>
                         Latest revision as of{" "}
-                        {covertToTime(liveStatement?.revision_date)}
+                        {liveStatement?.revision_date
+                          ? covertToTime(liveStatement?.revision_date)
+                          : ""}
                       </Text>
                     }
                   >
@@ -388,7 +380,11 @@ function CompareStatementUI({
                     </Paragraph>
                     <Paragraph>
                       <Text strong>Submitted on : </Text>
-                      <Text>{covertToTime(liveStatement?.submit_time)}</Text>
+                      <Text>
+                        {liveStatement?.submit_time
+                          ? covertToTime(liveStatement?.submit_time)
+                          : ""}
+                      </Text>
                     </Paragraph>
                     <Paragraph>
                       <Text strong>Submitter Nickname : </Text>
@@ -396,11 +392,7 @@ function CompareStatementUI({
                         <Link
                           href={`/user/supports/${
                             liveStatement["submitter_nick_id"] || ""
-                          }?topicnum=${
-                            liveStatement["topic_num"] || ""
-                          }&campnum=${liveStatement["camp_num"] || ""}&canon=${
-                            liveStatement["namespace_id"] || 1
-                          }`}
+                          }?canon=${liveStatement["namespace_id"] || 1}`}
                         >
                           <a>{liveStatement?.submitter_nick_name}</a>
                         </Link>
@@ -408,7 +400,11 @@ function CompareStatementUI({
                     </Paragraph>
                     <Paragraph>
                       <Text strong>Go live time : </Text>
-                      <Text>{covertToTime(liveStatement?.go_live_time)}</Text>
+                      <Text>
+                        {liveStatement?.go_live_time
+                          ? covertToTime(liveStatement?.go_live_time)
+                          : ""}
+                      </Text>
                     </Paragraph>
                     {from == "topic" ? (
                       <Paragraph>
@@ -448,11 +444,7 @@ function CompareStatementUI({
                             <Link
                               href={`/user/supports/${
                                 liveStatement["camp_about_nick_id"] || ""
-                              }?topicnum=${
-                                liveStatement["topic_num"] || ""
-                              }&campnum=${
-                                liveStatement["camp_num"] || ""
-                              }&canon=${liveStatement["namespace_id"] || 1}`}
+                              }?canon=${liveStatement["namespace_id"] || 1}`}
                             >
                               <a>{liveStatement?.camp_about_nick_name}</a>
                             </Link>

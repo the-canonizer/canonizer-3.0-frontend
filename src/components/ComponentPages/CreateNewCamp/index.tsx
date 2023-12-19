@@ -186,6 +186,7 @@ const CreateNewCamp = ({
       });
       setOptions(oldOptions);
       dispatch(setShowDrawer(true));
+      return;
     }
 
     if (res && res.status_code === 400) {
