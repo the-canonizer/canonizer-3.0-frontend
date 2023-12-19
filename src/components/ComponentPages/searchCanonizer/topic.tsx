@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "src/store";
 import { Empty, Pagination } from "antd";
 import { setPageNumber } from "src/store/slices/searchSlice";
+import CustomSkelton from "@/components/common/customSkelton";
 
 const TopicSearch = () => {
   const { searchDataAll } = useSelector((state: RootState) => ({
@@ -16,7 +17,13 @@ const TopicSearch = () => {
     searchMetaData: state?.searchSlice?.searchMetaData,
   }));
 
+  const { loading } = useSelector((state: RootState) => ({
+    loading: state?.loading?.loading,
+  }));
+
   const [currentPage, setCurrentPage] = useState(1);
+  const [seleteonIndicator, setSeleteonIndicator] = useState(false);
+
   const dispatch = useDispatch();
 
   const pageChange = (pageNumber) => {
@@ -43,31 +50,42 @@ const TopicSearch = () => {
             <h4 data-testid="topic_heading">Topic</h4>
             {/* <AdvanceFilter /> */}
           </div>
-          <div className={styles.search_lists}>
-            {searchDataAll.topic?.length ? (
-              <div>
-                <ul>
-                  {searchDataAll.topic.map((x) => {
-                    return (
-                      <>
-                        <li>
-                          <Link href={`/${x?.link}`}>
-                            <a>
-                              <label>{x?.type_value}</label>
-                            </a>
-                          </Link>
+          {loading ? (
+            <CustomSkelton
+              skeltonFor="list"
+              bodyCount={10}
+              stylingClass="listSkeleton"
+              isButton={false}
+            />
+          ) : (
+            <div className={styles.search_lists}>
+              {searchDataAll.topic?.length ? (
+                <div>
+                  <ul>
+                    {searchDataAll.topic.map((x) => {
+                      return (
+                        <>
+                          <li>
+                            <Link href={`/${x?.link}`}>
+                              <a>
+                                <label>{x?.type_value}</label>
+                              </a>
+                            </Link>
 
-                          <span className={styles.ml_auto}>{x.namespace}</span>
-                        </li>
-                      </>
-                    );
-                  })}
-                </ul>
-              </div>
-            ) : (
-              showEmpty("No Data Found")
-            )}
-          </div>
+                            <span className={styles.ml_auto}>
+                              {x.namespace}
+                            </span>
+                          </li>
+                        </>
+                      );
+                    })}
+                  </ul>
+                </div>
+              ) : (
+                showEmpty("No Data Found")
+              )}
+            </div>
+          )}
           <Pagination
             hideOnSinglePage={true}
             total={searchMetaData.total}

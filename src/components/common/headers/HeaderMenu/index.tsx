@@ -19,6 +19,7 @@ import {
 } from "src/store/slices/searchSlice";
 import { key } from "localforage";
 import CustomSkelton from "../../customSkelton";
+import { setLoadingAction } from "src/store/slices/loading";
 
 const HeaderMenu = ({ loggedUser }: any) => {
   const [inputSearch, setInputSearch] = useState("");
@@ -85,7 +86,11 @@ const HeaderMenu = ({ loggedUser }: any) => {
   const options = [
     {
       label: renderTitle(
-        searchTopics && searchTopics?.length ? <i className="icon-topic"></i> : "",
+        searchTopics && searchTopics?.length ? (
+          <i className="icon-topic"></i>
+        ) : (
+          ""
+        ),
         searchTopics && searchTopics?.length ? "Topic" : ""
       ),
       options: [
@@ -157,8 +162,8 @@ const HeaderMenu = ({ loggedUser }: any) => {
     },
     {
       label: renderTitle(
-        searchCamps&& searchCamps?.length ? <i className="icon-camp"></i> : "",
-        searchCamps&&searchCamps?.length ? "Camp" : ""
+        searchCamps && searchCamps?.length ? <i className="icon-camp"></i> : "",
+        searchCamps && searchCamps?.length ? "Camp" : ""
       ),
       options: [
         renderItem(
@@ -245,8 +250,14 @@ const HeaderMenu = ({ loggedUser }: any) => {
     },
     {
       label: renderTitle(
-        searchCampStatement&& searchCampStatement?.length ? <i className="icon-camp"></i> : "",
-        searchCampStatement&& searchCampStatement?.length ? "Camp statement" : ""
+        searchCampStatement && searchCampStatement?.length ? (
+          <i className="icon-camp"></i>
+        ) : (
+          ""
+        ),
+        searchCampStatement && searchCampStatement?.length
+          ? "Camp statement"
+          : ""
       ),
       options: [
         renderItem(
@@ -351,7 +362,11 @@ const HeaderMenu = ({ loggedUser }: any) => {
     },
     {
       label: renderTitle(
-        searchNickname && searchNickname?.length ? <i className="icon-camp"></i> : "",
+        searchNickname && searchNickname?.length ? (
+          <i className="icon-camp"></i>
+        ) : (
+          ""
+        ),
         searchNickname && searchNickname?.length ? "Nickname" : ""
       ),
       options: [
@@ -445,12 +460,16 @@ const HeaderMenu = ({ loggedUser }: any) => {
   ];
   const loader = [
     {
-      options: [renderItem(<CustomSkelton
-        skeltonFor="search"
-        bodyCount={10}
-        stylingClass=""
-        // isButton={false}
-      />)],
+      options: [
+        renderItem(
+          <CustomSkelton
+            skeltonFor="search"
+            bodyCount={10}
+            stylingClass=""
+            // isButton={false}
+          />
+        ),
+      ],
     },
   ];
   const links = [
@@ -519,6 +538,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
         queryParamObj.type = "all";
         break;
     }
+    dispatch(setLoadingAction(true));
     let response = await globalSearchCanonizer(queryParams(queryParamObj));
     if (response) {
       setSearchTopics(response.data.data.topic);
@@ -533,10 +553,12 @@ const HeaderMenu = ({ loggedUser }: any) => {
       ) {
         dispatch(setSearchDataAll(response?.data?.data));
         dispatch(setSearchMetaData(response?.data?.meta_data));
+        dispatch(setLoadingAction(false));
       }
     }
   };
   const getGlobalSearchCanonizer = async (queryString, onPresEnter) => {
+    // dispatch(setLoadingAction(true))
     let response = await globalSearchCanonizer(
       queryParams({ term: queryString == undefined ? "" : queryString })
     );
@@ -546,9 +568,11 @@ const HeaderMenu = ({ loggedUser }: any) => {
       setSearchCampStatement(response.data.data.statement);
       setSearchNickname(response.data.data.nickname);
       if (onPresEnter) {
+        dispatch(setLoadingAction(true));
         dispatch(setSearchData(response?.data?.data));
+        dispatch(setLoadingAction(false));
       }
-      setLoadingSekelton(false)
+      setLoadingSekelton(false);
     }
   };
 
@@ -610,12 +634,16 @@ const HeaderMenu = ({ loggedUser }: any) => {
           dropdownMatchSelectWidth={false}
           // className={"search_header"}
           options={
-            inputSearch==""?[]:(loadingSekelton?loader:
-              searchTopics?.length ||
-                    searchCamps?.length ||
-                    searchCampStatement?.length ||
-                    searchNickname?.length?
-              options:no)
+            inputSearch == ""
+              ? []
+              : loadingSekelton
+              ? loader
+              : searchTopics?.length ||
+                searchCamps?.length ||
+                searchCampStatement?.length ||
+                searchNickname?.length
+              ? options
+              : no
           }
           value={searchVal}
         >
@@ -632,7 +660,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
               // prefix={<button className={styles.new_search_btn} disabled > <i className="icon-search" /></button>}
               onChange={(e) => {
                 // localStorage.setItem("searchValue", e.target.value);
-                setLoadingSekelton(true)
+                setLoadingSekelton(true);
                 dispatch(setSearchValue(e.target.value));
                 setInputSearch(e.target.value);
                 setSearchVal(e.target.value);
