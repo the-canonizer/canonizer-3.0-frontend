@@ -7,6 +7,7 @@ import { RootState } from "src/store";
 import Link from "next/link";
 import { Empty, Pagination } from "antd";
 import { setPageNumber } from "src/store/slices/searchSlice";
+import CustomSkelton from "@/components/common/customSkelton";
 
 const NicknameSearch = () => {
   const { searchDataAll } = useSelector((state: RootState) => ({
@@ -15,6 +16,10 @@ const NicknameSearch = () => {
   const { searchMetaData } = useSelector((state: RootState) => ({
     searchMetaData: state?.searchSlice?.searchMetaData,
   }));
+  const { loading } = useSelector((state: RootState) => ({
+    loading: state?.loading?.loading,
+  }));
+
   const [currentPage, setCurrentPage] = useState(1);
   const dispatch = useDispatch();
   const pageChange = (pageNumber) => {
@@ -40,38 +45,47 @@ const NicknameSearch = () => {
             <h4 data-testid="nickname_heading">Nickname</h4>
             {/* <AdvanceFilter /> */}
           </div>
-          <div className={styles.search_lists}>
-            {searchDataAll.nickname?.length ? (
-              <div>
-                <ul>
-                  {searchDataAll.nickname.map((x) => {
-                    return (
-                      <>
-                        <li>
-                          <Link href={`/${x?.link}`}>
-                            <a>
-                              <label style={{ cursor: "pointer" }}>
-                                {x?.type_value}
-                              </label>
-                            </a>
-                          </Link>
+          {loading ? (
+            <CustomSkelton
+              skeltonFor="list"
+              bodyCount={10}
+              stylingClass="listSkeleton"
+              isButton={false}
+            />
+          ) : (
+            <div className={styles.search_lists}>
+              {searchDataAll.nickname?.length ? (
+                <div>
+                  <ul>
+                    {searchDataAll.nickname.map((x) => {
+                      return (
+                        <>
+                          <li>
+                            <Link href={`/${x?.link}`}>
+                              <a>
+                                <label style={{ cursor: "pointer" }}>
+                                  {x?.type_value}
+                                </label>
+                              </a>
+                            </Link>
 
-                          <span className={styles.ml_auto}>
-                            Supported camps:{" "}
-                            <strong className={styles.yellow_color}>
-                              {x.support_count ? x.support_count : 0}
-                            </strong>{" "}
-                          </span>
-                        </li>
-                      </>
-                    );
-                  })}
-                </ul>
-              </div>
-            ) : (
-              showEmpty("No Data Found")
-            )}
-          </div>
+                            <span className={styles.ml_auto}>
+                              Supported camps:{" "}
+                              <strong className={styles.yellow_color}>
+                                {x.support_count ? x.support_count : 0}
+                              </strong>{" "}
+                            </span>
+                          </li>
+                        </>
+                      );
+                    })}
+                  </ul>
+                </div>
+              ) : (
+                showEmpty("No Data Found")
+              )}
+            </div>
+          )}
           <Pagination
             hideOnSinglePage={true}
             total={searchMetaData.total}
