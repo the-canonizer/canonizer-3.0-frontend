@@ -12,9 +12,12 @@ import {
 } from "src/store/slices/utilsSlice";
 
 const ArchivedCampCheckBox = () => {
-  const { is_camp_archive_checked } = useSelector((state: RootState) => ({
-    is_camp_archive_checked: state?.utils?.archived_checkbox,
-  }));
+  const { is_camp_archive_checked, loading } = useSelector(
+    (state: RootState) => ({
+      is_camp_archive_checked: state?.utils?.archived_checkbox,
+      loading: state?.loading?.loading,
+    })
+  );
   const [isChecked, setIsChecked] = useState(is_camp_archive_checked);
 
   const dispatch = useDispatch();
@@ -34,7 +37,7 @@ const ArchivedCampCheckBox = () => {
 
   return (
     <div className={styles.archived_checkbox}>
-      <Checkbox onChange={onChange} checked={isChecked}>
+      <Checkbox disabled={loading} onChange={onChange} checked={isChecked}>
         Show archived camps
       </Checkbox>
     </div>
