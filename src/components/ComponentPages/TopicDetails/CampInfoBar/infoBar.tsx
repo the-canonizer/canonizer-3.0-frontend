@@ -112,10 +112,11 @@ const InfoBar = ({
 
   const onCampForumClick = () => {
     router?.push({
-      pathname: `/forum/${router?.query?.camp[0]}/${router?.query?.camp[1]}/threads`,
+      pathname: `/forum/${router?.query?.camp[0]}/${
+        router?.query?.camp[1] || "1"
+      }/threads`,
     });
   };
-
   const campOrTopicScribe = async (isTopic: Boolean) => {
     const reqBodyForService = {
       topic_num: +router?.query?.camp?.[0]?.split("-")[0],
