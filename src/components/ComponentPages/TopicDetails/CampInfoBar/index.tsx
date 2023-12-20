@@ -502,24 +502,24 @@ const TimelineInfoBar = ({
                   isButton={false}
                 />
               ) : isTopicHistoryPage ? (
-                <>
-                  <Link
-                    href={`/topic/${
-                      payload?.topic_num
-                    }-${replaceSpecialCharacters(
-                      breadCrumbRes?.topic_name,
-                      "-"
-                    )}/1-Agreement?${getQueryParams()}`}
-                  >
-                    <a className={styles.boldBreadcrumb}>
-                      {breadCrumbRes?.topic_name}
-                    </a>
-                  </Link>
-                </>
-              ) : (
+                <Link
+                  href={`/topic/${
+                    payload?.topic_num
+                  }-${replaceSpecialCharacters(
+                    breadCrumbRes?.topic_name,
+                    "-"
+                  )}/1-Agreement?${getQueryParams()}`}
+                >
+                  <a className={styles.boldBreadcrumb}>
+                    {breadCrumbRes?.topic_name}
+                  </a>
+                </Link>
+              ) : breadCrumbRes ? (
                 <span className={styles.boldBreadcrumb}>
                   {breadCrumbRes?.topic_name}
                 </span>
+              ) : (
+                "N/A"
               )}
               {!!topicSubscriptionID && (
                 <Tooltip
