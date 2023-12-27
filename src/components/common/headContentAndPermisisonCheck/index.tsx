@@ -52,16 +52,16 @@ const HeadContentAndPermissionComponent = ({
     //redirect if authentication is required and user is not loggedIn
 
     if (requiredAuthentication && !isUserAuthenticated) {
-      const lgt = localStorage.getItem("logout_type");
-      if (lgt == "true") {
-        router?.push("/");
-      } else {
-        router?.push({
-          pathname: "/login",
-          query: { returnUrl: router?.asPath },
-        });
-      }
-      localStorage.removeItem("logout_type");
+      // const lgt = localStorage.getItem("logout_type");
+      // if (lgt == "true") {
+      // router?.push("/");
+      // } else {
+      router?.push({
+        pathname: "/login",
+        query: { returnUrl: router?.asPath },
+      });
+      // }
+      // localStorage.removeItem("logout_type");
     }
 
     //redirect if user doesn't have specific permission to view that page
@@ -69,6 +69,21 @@ const HeadContentAndPermissionComponent = ({
       router?.push("/required-permission");
     }
   }, [componentName, isUserAuthenticated, isAllowed, router]);
+
+  useEffect(() => {
+    //Check permission
+    // let permission = PermissionsForPages[componentName];
+    // const requiredAuthentication =
+    //   permission && permission.isAuthenticationRequired ? true : false;
+
+    //redirect if authentication is required and user is not loggedIn
+
+    const lgt = localStorage.getItem("logout_type");
+    if (lgt == "true") {
+      localStorage.removeItem("logout_type");
+      router?.push("/");
+    }
+  }, [isUserAuthenticated]);
 
   return (
     <HeadContent
