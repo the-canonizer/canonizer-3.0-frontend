@@ -80,7 +80,7 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
 
   const req = {
     page_name:
-      componentName == "SocialLoginCallbackPage" ? "Home" : componentName,
+      componentName === "SocialLoginCallbackPage" ? "Home" : componentName,
     keys: {
       topic_num: appContext.router?.asPath.includes("forum")
         ? path?.topic?.toLocaleString().split("-")[0]
