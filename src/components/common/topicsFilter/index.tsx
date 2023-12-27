@@ -180,6 +180,7 @@ const CreateTopic = () => {
     ) {
       delete router.query.filter;
     }
+    console.log("aaaaaaa");
 
     Router.replace(router, null, { shallow: true });
   };

@@ -33,6 +33,7 @@ import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
 import FullScoreCheckbox from "../../ComponentPages/FullScoreCheckbox";
 import ArchivedCampCheckBox from "src/components/ComponentPages/ArchivedCampCheckBox";
 import CampTreeCard from "src/components/ComponentPages/TopicDetails/CampTreeCard";
+import { replaceSpecialCharacters } from "src/utils/generalUtility";
 
 const infoContent = (
   <>
@@ -96,6 +97,8 @@ const FilterWithTree = ({
     filterObject,
     viewThisVersion,
     campScoreValue,
+    topicRecord,
+    campRecord,
   } = useSelector((state: RootState) => ({
     algorithms: state.homePage?.algorithms,
     filteredScore: state?.filters?.filterObject?.filterByScore,
@@ -107,6 +110,8 @@ const FilterWithTree = ({
     filterObject: state?.filters?.filterObject,
     viewThisVersion: state?.filters?.viewThisVersionCheck,
     campScoreValue: state?.filters?.campWithScoreValue,
+    topicRecord: state?.topicDetails?.currentTopicRecord,
+    campRecord: state?.topicDetails?.currentCampRecord,
   }));
 
   const [value, setValue] = useState(
@@ -119,7 +124,7 @@ const FilterWithTree = ({
   );
   const [isLoading, setIsLoading] = useState(loading);
   const didMount = useRef(false);
-
+  const didMount2 = useRef(false);
   function removeEmptyValues(obj) {
     const result = {};
     for (const key in obj) {
@@ -138,8 +143,10 @@ const FilterWithTree = ({
     asof = filterObject?.asof,
     asofdate = filterObject?.asofdate,
     namespace_id = filterObject?.namespace_id,
-    viewversion = viewThisVersion
+    viewversion = viewThisVersion,
+    campCheck = false
   ) => {
+    console.log("asasasasasasas ", campCheck);
     let query: any = {
       score: filterByScore,
       algo: algorithm,
@@ -147,6 +154,22 @@ const FilterWithTree = ({
       asof: asof,
       filter: campScoreValue || "10",
     };
+    if (campCheck) {
+      query.camp = [
+        `${topicRecord?.topic_num}-${replaceSpecialCharacters(
+          topicRecord?.topic_name,
+          "-"
+        )}`,
+        `${
+          campRecord?.camp_num
+            ? `${campRecord?.camp_num}-${replaceSpecialCharacters(
+                campRecord?.camp_name,
+                "-"
+              )}`
+            : "1-Agreement"
+        }`,
+      ];
+    }
 
     if (asof == "bydate") {
       query.asofdate = asofdate;
@@ -196,17 +219,67 @@ const FilterWithTree = ({
 
   useEffect(() => {
     if (
-      String(filterObject?.filterByScore) !== "0" ||
-      String(filterObject?.namespace_id) !== "1" ||
-      filterObject?.asof !== "default" ||
-      filterObject?.algorithm !== "blind_popularity" ||
-      campScoreValue !== 10
+      (String(filterObject?.filterByScore) !== "0" ||
+        String(filterObject?.namespace_id) !== "1" ||
+        filterObject?.asof !== "default" ||
+        filterObject?.algorithm !== "blind_popularity" ||
+        campScoreValue !== 10) &&
+      !didMount2.current
     ) {
-      onChangeRoute();
+      console.log(
+        "sadad 1= >  ",
+        `${topicRecord?.topic_num}-${replaceSpecialCharacters(
+          topicRecord?.topic_name,
+          "-"
+        )}`,
+        `${
+          campRecord?.camp_num
+            ? `${campRecord?.camp_num}-${replaceSpecialCharacters(
+                campRecord?.camp_name,
+                "-"
+              )}`
+            : "1-Agreement"
+        }`
+      );
+      onChangeRoute(
+        filterObject?.filterByScore,
+        filterObject?.algorithm,
+        filterObject?.asof,
+        filterObject?.asofdate,
+        filterObject?.namespace_id,
+        viewThisVersion,
+        false
+      );
+    } else if (didMount2.current) {
+      console.log(
+        "sadad 1= >  ",
+        `${topicRecord?.topic_num}-${replaceSpecialCharacters(
+          topicRecord?.topic_name,
+          "-"
+        )}`,
+        `${
+          campRecord?.camp_num
+            ? `${campRecord?.camp_num}-${replaceSpecialCharacters(
+                campRecord?.camp_name,
+                "-"
+              )}`
+            : "1-Agreement"
+        }`
+      );
+      onChangeRoute(
+        filterObject?.filterByScore,
+        filterObject?.algorithm,
+        filterObject?.asof,
+        filterObject?.asofdate,
+        filterObject?.namespace_id,
+        viewThisVersion,
+        true
+      );
     }
+    didMount2.current = true;
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [campRecord]);
 
   useEffect(() => {
     if (!didMount.current) {
