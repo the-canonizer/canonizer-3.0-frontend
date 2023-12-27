@@ -818,7 +818,9 @@ export default function AddOrManage({ add }: any) {
                                   (
                                     (option?.children as any)?.props
                                       ?.children ?? ""
-                                  ).includes(input)
+                                  )
+                                    .toLowerCase()
+                                    .includes(input.toLowerCase())
                                 }
                               >
                                 {parentCamp.map((camp) =>
