@@ -129,16 +129,11 @@ export async function getServerSideProps({ req, query }) {
     statementHistory,
     tree,
   ] = await Promise.all([
-    getNewsFeedApi(reqBody, req.cookies["loginToken"]),
-    getCurrentTopicRecordApi(reqBody, req.cookies["loginToken"]),
-    getCurrentCampRecordApi(reqBody, req.cookies["loginToken"]),
-    getCanonizedCampStatementApi(reqBody, req.cookies["loginToken"]),
-    getHistoryApi(
-      reqBodyForCampData,
-      "1",
-      "statement",
-      req.cookies["loginToken"]
-    ),
+    getNewsFeedApi(reqBody, token),
+    getCurrentTopicRecordApi(reqBody, token),
+    getCurrentCampRecordApi(reqBody, token),
+    getCanonizedCampStatementApi(reqBody, token),
+    getHistoryApi(reqBodyForCampData, "1", "statement", token),
     getTreesApi(reqBodyForService),
   ]);
 
