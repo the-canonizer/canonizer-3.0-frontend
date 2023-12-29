@@ -564,6 +564,7 @@ const CampTree = ({
                 viewThisVersion ? "&viewversion=1" : ""
               }`}
               className={styles.boldBreadcrumb}
+              replace
             >
               <a
                 className={`${
