@@ -116,7 +116,7 @@ function WrappedApp({
   );
 }
 
-// let timeout;
+let timeout;
 // export async function getServerSideProps(...rest) {
 //   console.log("🚀 ~ file: _app.tsx:106 ~ getServerSideProps ~ rest:", rest);
 
