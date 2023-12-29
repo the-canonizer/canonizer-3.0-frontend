@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import App, { AppContext, AppInitialProps, AppProps } from "next/app";
 import { Provider } from "react-redux";
 import { CookiesProvider } from "react-cookie";
@@ -19,7 +19,6 @@ import { metaTagsApi } from "src/network/api/metaTagsAPI";
 import { checkTopicCampExistAPICall } from "src/network/api/campDetailApi";
 import { getCookies } from "src/utils/generalUtility";
 import { createToken } from "src/network/api/userApi";
-import { setAuthToken } from "src/store/slices/authSlice";
 
 interface CustomPageProps {
   meta: any;
@@ -36,67 +35,22 @@ function WrappedApp({
   const [isAuthenticated, setIsAuthenticated] = useState(
     !!(getCookies() as any)?.loginToken
   );
-  const [currentPathname, setCurrentPathname] = useState("");
 
   useEffect(() => {
-    const handleRouteChange = (url: string) => {
-      setCurrentPathname(url);
-    };
-
     const fetchToken = async () => {
       if (!isAuthenticated) {
         try {
-          const response = await fetch(
-            "http://110.39.11.117:7020/api/v3/client-token",
-            {
-              headers: {
-                accept: "application/json",
-                "accept-language": "en-GB,en-US;q=0.9,en;q=0.8",
-                authorization: "Bearer",
-                "content-type": "application/json",
-              },
-              referrer: "http://localhost:4000/",
-              referrerPolicy: "strict-origin-when-cross-origin",
-              body: '{"client_id":"1","client_secret":"3xyS0aEjGKOSgxJavP3Y7aAqjjLlFBAG99Y7JNIC"}',
-              method: "POST",
-              mode: "cors",
-              credentials: "include",
-            }
-          );
-
-          if (!response.ok) {
-            setIsAuthenticated(false);
-            throw new Error(`HTTP error! Status: ${response.status}`);
-          }
-
-          const token = await response.json();
-          // Process the token as needed
-
-          document.cookie =
-            "loginToken=" +
-            token?.data?.access_token +
-            "; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
-          store.dispatch(setAuthToken(token?.data?.access_token));
-          localStorage.setItem("auth_token", token?.data?.access_token);
-          setIsAuthenticated(true);
-          console.log(token);
+          await createToken();
         } catch (error) {
-          setIsAuthenticated(false);
           console.error("Error fetching data:", error);
+        } finally {
+          setIsAuthenticated(true);
         }
       }
     };
 
-    const { pathname } = router;
-    setCurrentPathname(pathname);
-
-    router.events.on("routeChangeComplete", handleRouteChange);
     fetchToken();
-
-    return () => {
-      router.events.off("routeChangeComplete", handleRouteChange);
-    };
-  }, [isAuthenticated, router]);
+  }, [isAuthenticated, router.pathname]);
 
   return isAuthenticated ? (
     <CookiesProvider>
