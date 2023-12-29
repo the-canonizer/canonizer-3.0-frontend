@@ -1,8 +1,9 @@
-import React, { Fragment, useEffect } from "react";
-import App, { AppContext, AppInitialProps } from "next/app";
+import React, { useEffect } from "react";
+import useState from "react-usestateref";
+import App, { AppContext, AppInitialProps, AppProps } from "next/app";
 import { Provider } from "react-redux";
 import { CookiesProvider } from "react-cookie";
-import Router from "next/router";
+import { useRouter } from "next/router";
 
 import "antd/dist/antd.css";
 
@@ -19,113 +20,76 @@ import { metaTagsApi } from "src/network/api/metaTagsAPI";
 import { checkTopicCampExistAPICall } from "src/network/api/campDetailApi";
 import { getCookies } from "src/utils/generalUtility";
 import { createToken } from "src/network/api/userApi";
-import { setAuthToken } from "src/store/slices/authSlice";
 
-class WrappedApp extends App<AppInitialProps> {
-  state = {
-    isAuthenticated: !!getCookies()?.loginToken,
-    currentPathname: "",
-  };
-
-  componentDidMount() {
-    const { pathname } = Router;
-    debugger;
-    this.setState({ currentPathname: pathname });
-    Router.events.on("routeChangeComplete", this.handleRouteChange);
-    this.fetchToken();
-  }
-
-  componentWillUnmount() {
-    Router.events.off("routeChangeComplete", this.handleRouteChange);
-  }
-
-  // componentDidUpdate(prevProps, prevState) {
-  //   debugger;
-  //   if (prevState.currentPathname !== this.state.currentPathname) {
-  //     // URL has changed. Place your logic here.
-  //     this.fetchToken();
-  //   }
-  // }
-
-  handleRouteChange = (url) => {
-    debugger;
-    this.setState({ currentPathname: url });
-  };
-
-  fetchToken = async () => {
-    debugger;
-    if (!this.state.isAuthenticated) {
-      try {
-        const response = await fetch(
-          "http://110.39.11.117:7020/api/v3/client-token",
-          {
-            headers: {
-              accept: "application/json",
-              "accept-language": "en-GB,en-US;q=0.9,en;q=0.8",
-              authorization: "Bearer",
-              "content-type": "application/json",
-            },
-            referrer: "http://localhost:4000/",
-            referrerPolicy: "strict-origin-when-cross-origin",
-            body: '{"client_id":"1","client_secret":"3xyS0aEjGKOSgxJavP3Y7aAqjjLlFBAG99Y7JNIC"}',
-            method: "POST",
-            mode: "cors",
-            credentials: "include",
-          }
-        );
-
-        if (!response.ok) {
-          this.setState({ isAuthenticated: false });
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
-        const token = await response.json();
-        // Process the token as needed
-
-        document.cookie =
-          "loginToken=" +
-          token?.data?.access_token +
-          "; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
-        store.dispatch(setAuthToken(token?.data?.access_token));
-        localStorage.setItem("auth_token", token?.data?.access_token);
-        this.setState({ isAuthenticated: true });
-        console.log(token);
-      } catch (error) {
-        this.setState({ isAuthenticated: false });
-        console.error("Error fetching data:", error);
-      }
-    }
-  };
-
-  public render() {
-    const { Component, pageProps, meta, canonical_url } = this.props as any;
-
-    return this.state.isAuthenticated ? (
-      <CookiesProvider>
-        <Provider store={store}>
-          <ErrorBoundary>
-            <HeadContentAndPermissionComponent
-              componentName={Component.displayName || Component.name}
-              metaContent={meta}
-              canonical={canonical_url}
-            />
-            <Component {...pageProps} />
-          </ErrorBoundary>
-        </Provider>
-      </CookiesProvider>
-    ) : (
-      <></>
-    );
-  }
+interface CustomPageProps {
+  meta: any;
+  canonical_url: string;
 }
 
-// Only uncomment this method if you have blocking data requirements for
-// every single page in your application. This disables the ability to
-// perform automatic static optimization, causing every page in your app to
-// be server-side rendered.
-//
+function WrappedApp({
+  Component,
+  pageProps,
+  meta,
+  canonical_url,
+}: AppProps<CustomPageProps>) {
+  const router = useRouter();
+  const [isAuthenticated, setIsAuthenticated, isAuthenticatedRef] = useState(
+    !!(getCookies() as any)?.loginToken
+  );
+
+  useEffect(() => {
+    const fetchToken = async () => {
+      console.log("first", router);
+      debugger;
+
+      if (!(getCookies() as any)?.loginToken) {
+        setIsAuthenticated(false);
+      }
+
+      if (!isAuthenticatedRef.current) {
+        try {
+          await createToken();
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        } finally {
+          setIsAuthenticated(true);
+        }
+      }
+    };
+
+    fetchToken();
+  }, [router.pathname, +router.query.camp[1].split("-")[0]]);
+
+  return isAuthenticatedRef.current && !!(getCookies() as any)?.loginToken ? (
+    <CookiesProvider>
+      <Provider store={store}>
+        <ErrorBoundary>
+          <HeadContentAndPermissionComponent
+            componentName={Component.displayName || Component.name}
+            metaContent={meta}
+            canonical={canonical_url}
+          />
+          <Component {...pageProps} />
+        </ErrorBoundary>
+      </Provider>
+    </CookiesProvider>
+  ) : (
+    <></>
+  );
+}
 
 let timeout;
+// export async function getServerSideProps(...rest) {
+//   console.log("🚀 ~ file: _app.tsx:106 ~ getServerSideProps ~ rest:", rest);
+
+//   return {
+//     props: {
+//       meta: "",
+//       canonical_url: "",
+//     },
+//   };
+// }
+
 WrappedApp.getInitialProps = async (appContext: AppContext) => {
   // calls page's `getInitialProps` and fills `appProps.pageProps`
   const appProps = await App.getInitialProps(appContext);
@@ -425,9 +389,4 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
   return { ...appProps, meta: metaData, returnURL: returnData, canonical_url };
 };
 
-// const googleAPIKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
-//export default wrapper.withRedux(MyApp);
-// export default scriptLoader([
-//   `https://maps.googleapis.com/maps/api/js?key=${googleAPIKey}&libraries=places`,
-// ])
 export default wrapper.withRedux(WrappedApp);
