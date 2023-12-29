@@ -29,7 +29,7 @@ class WrappedApp extends App<AppInitialProps> {
 
   componentDidMount() {
     const { pathname } = Router;
-    debugger;
+
     this.setState({ currentPathname: pathname });
     Router.events.on("routeChangeComplete", this.handleRouteChange);
     this.fetchToken();
@@ -48,12 +48,10 @@ class WrappedApp extends App<AppInitialProps> {
   // }
 
   handleRouteChange = (url) => {
-    debugger;
     this.setState({ currentPathname: url });
   };
 
   fetchToken = async () => {
-    debugger;
     if (!this.state.isAuthenticated) {
       try {
         const response = await fetch(
