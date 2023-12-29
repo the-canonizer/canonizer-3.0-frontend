@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
+import useState from "react-usestateref";
 import App, { AppContext, AppInitialProps, AppProps } from "next/app";
 import { Provider } from "react-redux";
 import { CookiesProvider } from "react-cookie";
@@ -32,13 +33,20 @@ function WrappedApp({
   canonical_url,
 }: AppProps<CustomPageProps>) {
   const router = useRouter();
-  const [isAuthenticated, setIsAuthenticated] = useState(
+  const [isAuthenticated, setIsAuthenticated, isAuthenticatedRef] = useState(
     !!(getCookies() as any)?.loginToken
   );
 
   useEffect(() => {
     const fetchToken = async () => {
-      if (!isAuthenticated) {
+      console.log("first", router);
+      debugger;
+
+      if (!(getCookies() as any)?.loginToken) {
+        setIsAuthenticated(false);
+      }
+
+      if (!isAuthenticatedRef.current) {
         try {
           await createToken();
         } catch (error) {
@@ -50,9 +58,9 @@ function WrappedApp({
     };
 
     fetchToken();
-  }, [isAuthenticated, router.pathname]);
+  }, [router.pathname, +router.query.camp[1].split("-")[0]]);
 
-  return isAuthenticated ? (
+  return isAuthenticatedRef.current && !!(getCookies() as any)?.loginToken ? (
     <CookiesProvider>
       <Provider store={store}>
         <ErrorBoundary>
