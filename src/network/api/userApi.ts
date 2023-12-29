@@ -22,13 +22,15 @@ export const createToken = async () => {
   try {
     const token = await NetworkCall.fetch(UserRequest.createToken());
 
-    document.cookie =
-      "loginToken=" +
-      token?.data?.access_token +
-      "; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
+    if (!isServer()) {
+      document.cookie =
+        "loginToken=" +
+        token?.data?.access_token +
+        "; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
+      localStorage.setItem("auth_token", token?.data?.access_token);
+    }
 
     store.dispatch(setAuthToken(token?.data?.access_token));
-    localStorage.setItem("auth_token", token?.data?.access_token);
 
     return token.data;
   } catch (error) {
