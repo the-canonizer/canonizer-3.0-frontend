@@ -69,7 +69,12 @@ export async function getServerSideProps({ req, resolvedUrl }) {
         : Date.now() / 1000,
   };
 
-  const threadRes = await getThreadData(id, String(topicNum), String(campNum));
+  const threadRes = await getThreadData(
+    id,
+    String(topicNum),
+    String(campNum),
+    req.cookies["authToken"]
+  );
 
   if (threadRes?.data?.status_code === 404) {
     return {

@@ -48,7 +48,12 @@ export const getNewsFeedApi = async (reqBody, loginToken = null) => {
     store.dispatch(setNewsFeed(newsFeed?.data));
     return newsFeed?.data;
   } catch (error) {
-    // message.error(error.message);
+    if (
+      error?.error?.data?.error === "No camp news feed found." &&
+      error?.error?.data?.status_code === 404
+    ) {
+      store.dispatch(setNewsFeed(error?.error?.data?.data));
+    }
   }
 };
 

@@ -99,7 +99,13 @@ const store2 = mockStore({
     folderOpen: false,
   },
 });
-
+const store3 = mockStore({
+  ui: {
+    dragBox: false,
+    // disabledCreateFolderBtn,
+    folderOpen: true,
+  },
+});
 // jest.mock("react-redux", () => ({
 //   ...jest.requireActual("react-redux"),
 //   useDispatch: () => jest.fn(),
@@ -945,6 +951,44 @@ describe("Upload File UI Page", () => {
     expect(span).toBeInTheDocument();
     fireEvent.click(span);
   });
+  it("open folder  correct", () => {
+    const { container } = render(
+      <Provider store={store3}>
+        <UploadFileUI
+          input={input}
+          setInput={setInput}
+          selectedFolderID={selectedFolderID}
+          fileLists={fileLists}
+          setFileLists={setFileLists}
+          folderFiles={folderFiles}
+          setFolderFiles={setFolderFiles}
+          closeFolder={closeFolder}
+          uploadFun={uploadFun}
+          handleCancel={handleCancel}
+          handle_X_btn={handle_X_btn}
+          addNewFile={addNewFile}
+          Openfolder={Openfolder}
+          removeFiles={removeFiles}
+          uploadFileList={uploadFileList}
+          setUploadFileList={setUploadFileList}
+          removeUploadFiles={removeUploadFiles}
+          GetUploadFileAndFolder={GetUploadFileAndFolder}
+          getFileListFromFolderID={getFileListFromFolderID}
+          setShowCreateFolderModal={setShowCreateFolderModal}
+          showCreateFolderModal={showCreateFolderModal}
+          DeleteConfirmationVisible={DeleteConfirmationVisible}
+          setDeleteConfirmationVisible={setDeleteConfirmationVisible}
+          flickringData={flickringData}
+          setFlickringData={setFlickringData}
+          toggleFileView={false}
+          setToggleFileView={setToggleFileView}
+        />
+      </Provider>
+    );
+    const span = screen.getByTestId("arrow_outlined");
+    expect(span).toBeInTheDocument();
+    fireEvent.click(span);
+  });
   it("Menu item render", () => {
     const { container, getByText } = render(
       <UploadFileUI
@@ -1391,6 +1435,47 @@ describe("upload files ui", () => {
       type: "text/plain",
     });
     fireEvent.change(file_input, { target: { files: [file] } });
+  });
+  it("render remove upload files", async () => {
+    const { container, getAllByText, getAllByTestId, getAllByPlaceholderText } =
+      render(
+        <UploadFileUI
+          input={input}
+          setInput={setInput}
+          selectedFolderID={selectedFolderID}
+          fileLists={fileLists}
+          setFileLists={setFileLists}
+          folderFiles={folderFiles}
+          setFolderFiles={setFolderFiles}
+          closeFolder={closeFolder}
+          uploadFun={uploadFun}
+          handleCancel={handleCancel}
+          handle_X_btn={handle_X_btn}
+          addNewFile={addNewFile}
+          Openfolder={Openfolder}
+          removeFiles={removeFiles}
+          uploadFileList={uploadFileList}
+          setUploadFileList={setUploadFileList}
+          removeUploadFiles={removeUploadFiles}
+          GetUploadFileAndFolder={GetUploadFileAndFolder}
+          getFileListFromFolderID={getFileListFromFolderID}
+          setShowCreateFolderModal={setShowCreateFolderModal}
+          showCreateFolderModal={showCreateFolderModal}
+          DeleteConfirmationVisible={DeleteConfirmationVisible}
+          setDeleteConfirmationVisible={setDeleteConfirmationVisible}
+          flickringData={flickringData}
+          setFlickringData={setFlickringData}
+          toggleFileView={toggleFileView}
+          setToggleFileView={setToggleFileView}
+        />
+      );
+    const upload_file_button = screen.getByTestId("remove_upload_files");
+    fireEvent.click(upload_file_button);
+    // const file_input = screen.getByTestId("upload_images");
+    // const file = new File(["test file content"], "test.txt", {
+    //   type: "text/plain",
+    // });
+    // fireEvent.change(file_input, { target: { files: [file] } });
   });
 
   it("upload file and click on upload button", async () => {
