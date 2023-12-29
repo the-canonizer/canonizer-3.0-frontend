@@ -100,7 +100,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
               {searchTopics?.slice(0, 5)?.map((x) => {
                 const index = x.type_value
                   ?.toLowerCase()
-                  .indexOf(searchValue?.toLowerCase().trim());
+                  .indexOf(searchValue?.toLowerCase().replace(/^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/g," ").trim());
 
                 if (index !== -1) {
                   const length = searchValue.length;
@@ -187,7 +187,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
                 );
                 const index = x.type_value
                   ?.toLowerCase()
-                  .indexOf(searchValue?.toLowerCase().trim());
+                  .indexOf(searchValue?.toLowerCase().replace(/^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/g," ").trim());
                 if (index !== -1) {
                   const length = searchValue.length;
                   const prefix = x.type_value.substring(0, index);
@@ -282,7 +282,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
                 );
                 const index = x.type_value
                   ?.toLowerCase()
-                  .indexOf(searchValue?.toLowerCase().trim());
+                  .indexOf(searchValue?.toLowerCase().replace(/^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/g," ").trim());
                 if (index !== -1) {
                   const length = searchValue.length;
                   const prefix = x.type_value.substring(0, index);
@@ -376,7 +376,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
               {searchNickname?.slice(0, 5)?.map((x) => {
                 const index = x.type_value
                   ?.toLowerCase()
-                  .indexOf(searchValue?.toLowerCase().trim());
+                  .indexOf(searchValue?.toLowerCase().replace(/^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/g," ").trim());
 
                 if (index !== -1) {
                   const length = searchValue.length;
@@ -538,7 +538,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
         queryParamObj.type = "all";
         break;
     }
-    dispatch(setLoadingAction(true));
+    // dispatch(setLoadingAction(true));
     let response = await globalSearchCanonizer(queryParams(queryParamObj));
     if (response) {
       setSearchTopics(response.data.data.topic);
@@ -553,7 +553,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
       ) {
         dispatch(setSearchDataAll(response?.data?.data));
         dispatch(setSearchMetaData(response?.data?.meta_data));
-        dispatch(setLoadingAction(false));
+        // dispatch(setLoadingAction(false));
       }
     }
   };
@@ -568,9 +568,9 @@ const HeaderMenu = ({ loggedUser }: any) => {
       setSearchCampStatement(response.data.data.statement);
       setSearchNickname(response.data.data.nickname);
       if (onPresEnter) {
-        dispatch(setLoadingAction(true));
+        // dispatch(setLoadingAction(true));
         dispatch(setSearchData(response?.data?.data));
-        dispatch(setLoadingAction(false));
+        // dispatch(setLoadingAction(false));
       }
       setLoadingSekelton(false);
     }
