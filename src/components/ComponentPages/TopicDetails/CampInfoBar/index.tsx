@@ -78,28 +78,6 @@ const TimelineInfoBar = ({
   const [topicSubscriptionID, setTopicSubscriptionID] = useState(
     topicRecord?.topicSubscriptionId
   );
-  useEffect(() => {
-    setPayloadData(payload);
-    async function getBreadCrumbApiCall() {
-      setLoadingIndicator(true);
-      let reqBody = {
-        topic_num: payload?.topic_num,
-        camp_num: payload?.camp_num,
-        as_of: router?.pathname == "/topic/[...camp]" ? asof : "default",
-        as_of_date:
-          asof == "default" || asof == "review"
-            ? Date.now() / 1000
-            : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
-      };
-      let res = await getCampBreadCrumbApi(reqBody);
-      setBreadCrumbRes(res?.data);
-      setLoadingIndicator(false);
-    }
-    if (payload && Object.keys(payload).length > 0) {
-      getBreadCrumbApiCall();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router?.asPath, asofdate]);
 
   useEffect(() => {
     if (isTopicPage) {
@@ -439,10 +417,64 @@ const TimelineInfoBar = ({
     ) {
       query.is_tree_open = router?.query?.is_tree_open;
     }
-
     returnQuery = objectToQueryString(query);
-    return returnQuery;
+    return { returnQuery, query };
   };
+
+  useEffect(() => {
+    setPayloadData(payload);
+    async function getBreadCrumbApiCall() {
+      setLoadingIndicator(true);
+      let reqBody = {
+        topic_num: payload?.topic_num,
+        camp_num: payload?.camp_num,
+        as_of: router?.pathname == "/topic/[...camp]" ? asof : "default",
+        as_of_date:
+          asof == "default" || asof == "review"
+            ? Date.now() / 1000
+            : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
+      };
+      let res = await getCampBreadCrumbApi(reqBody);
+
+      if (res?.status_code == 200 && router?.pathname == "/topic/[...camp]") {
+        let breadTopicId = res?.data?.bread_crumb?.at(
+          res?.data?.bread_crumb?.length - 1
+        )?.topic_num;
+        let breadCampId = res?.data?.bread_crumb?.at(
+          res?.data?.bread_crumb?.length - 1
+        )?.camp_num;
+        let breadCampName = res?.data?.bread_crumb?.at(
+          res?.data?.bread_crumb?.length - 1
+        )?.camp_name;
+        let breadTopicName = res?.data?.topic_name;
+        let queryCamp = {
+          camp: [
+            `${breadTopicId}-${replaceSpecialCharacters(breadTopicName, "-")}`,
+
+            breadCampId
+              ? `${breadCampId}-${replaceSpecialCharacters(breadCampName, "-")}`
+              : "1-Agreement",
+          ],
+        };
+        let query = getQueryParams()?.query;
+        query.camp = [
+          `${breadTopicId}-${replaceSpecialCharacters(breadTopicName, "-")}`,
+
+          breadCampId
+            ? `${breadCampId}-${replaceSpecialCharacters(breadCampName, "-")}`
+            : "1-Agreement",
+        ];
+        router.query = { ...router?.query, ...query };
+        router.replace(router, null, { shallow: true });
+      }
+      setBreadCrumbRes(res?.data);
+      setLoadingIndicator(false);
+    }
+    if (payload && Object.keys(payload).length > 0) {
+      getBreadCrumbApiCall();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router?.asPath, asofdate]);
 
   return (
     <>
@@ -508,7 +540,7 @@ const TimelineInfoBar = ({
                   }-${replaceSpecialCharacters(
                     breadCrumbRes?.topic_name,
                     "-"
-                  )}/1-Agreement?${getQueryParams()}`}
+                  )}/1-Agreement?${getQueryParams()?.returnQuery}`}
                 >
                   <a className={styles.boldBreadcrumb}>
                     {breadCrumbRes?.topic_name}
@@ -559,7 +591,7 @@ const TimelineInfoBar = ({
                           )}/${camp?.camp_num}-${replaceSpecialCharacters(
                             camp?.camp_name,
                             "-"
-                          )}?${getQueryParams()}`}
+                          )}?${getQueryParams()?.returnQuery}`}
                           key={index}
                         >
                           <a>
