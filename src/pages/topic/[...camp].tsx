@@ -67,6 +67,7 @@ const TopicDetailsPage = ({
           name={ErrorStatus}
           message={`${ErrorStatus} not found`}
           backURL={"/"}
+          goBack={true}
         />
       ) : (
         <TopicDetails serverSideCall={serverSideCall} />
