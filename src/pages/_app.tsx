@@ -39,9 +39,6 @@ function WrappedApp({
 
   useEffect(() => {
     const fetchToken = async () => {
-      console.log("first", router);
-      debugger;
-
       if (!(getCookies() as any)?.loginToken) {
         setIsAuthenticated(false);
       }
@@ -58,7 +55,7 @@ function WrappedApp({
     };
 
     fetchToken();
-  }, [router.pathname, +router.query.camp[1].split("-")[0]]);
+  }, [router.pathname, +router.query.camp?.at(1).split("-")[0]]);
 
   return isAuthenticatedRef.current && !!(getCookies() as any)?.loginToken ? (
     <CookiesProvider>
