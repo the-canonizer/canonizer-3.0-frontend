@@ -1,7 +1,8 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import App, { AppContext, AppInitialProps } from "next/app";
 import { Provider } from "react-redux";
 import { CookiesProvider } from "react-cookie";
+import Router from "next/router";
 
 import "antd/dist/antd.css";
 
@@ -16,26 +17,104 @@ import HeadContentAndPermissionComponent from "../components/common/headContentA
 import { store, wrapper } from "../store";
 import { metaTagsApi } from "src/network/api/metaTagsAPI";
 import { checkTopicCampExistAPICall } from "src/network/api/campDetailApi";
+import { getCookies } from "src/utils/generalUtility";
+import { createToken } from "src/network/api/userApi";
+import { setAuthToken } from "src/store/slices/authSlice";
 
 class WrappedApp extends App<AppInitialProps> {
+  state = {
+    isAuthenticated: !!getCookies()?.loginToken,
+    currentPathname: "",
+  };
+
+  componentDidMount() {
+    const { pathname } = Router;
+    debugger;
+    this.setState({ currentPathname: pathname });
+    Router.events.on("routeChangeComplete", this.handleRouteChange);
+    this.fetchToken();
+  }
+
+  componentWillUnmount() {
+    Router.events.off("routeChangeComplete", this.handleRouteChange);
+  }
+
+  // componentDidUpdate(prevProps, prevState) {
+  //   debugger;
+  //   if (prevState.currentPathname !== this.state.currentPathname) {
+  //     // URL has changed. Place your logic here.
+  //     this.fetchToken();
+  //   }
+  // }
+
+  handleRouteChange = (url) => {
+    debugger;
+    this.setState({ currentPathname: url });
+  };
+
+  fetchToken = async () => {
+    debugger;
+    if (!this.state.isAuthenticated) {
+      try {
+        const response = await fetch(
+          "http://110.39.11.117:7020/api/v3/client-token",
+          {
+            headers: {
+              accept: "application/json",
+              "accept-language": "en-GB,en-US;q=0.9,en;q=0.8",
+              authorization: "Bearer",
+              "content-type": "application/json",
+            },
+            referrer: "http://localhost:4000/",
+            referrerPolicy: "strict-origin-when-cross-origin",
+            body: '{"client_id":"1","client_secret":"3xyS0aEjGKOSgxJavP3Y7aAqjjLlFBAG99Y7JNIC"}',
+            method: "POST",
+            mode: "cors",
+            credentials: "include",
+          }
+        );
+
+        if (!response.ok) {
+          this.setState({ isAuthenticated: false });
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const token = await response.json();
+        // Process the token as needed
+
+        document.cookie =
+          "loginToken=" +
+          token?.data?.access_token +
+          "; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
+        store.dispatch(setAuthToken(token?.data?.access_token));
+        localStorage.setItem("auth_token", token?.data?.access_token);
+        this.setState({ isAuthenticated: true });
+        console.log(token);
+      } catch (error) {
+        this.setState({ isAuthenticated: false });
+        console.error("Error fetching data:", error);
+      }
+    }
+  };
+
   public render() {
     const { Component, pageProps, meta, canonical_url } = this.props as any;
 
-    return (
-      <Fragment>
-        <CookiesProvider>
-          <Provider store={store}>
-            <ErrorBoundary>
-              <HeadContentAndPermissionComponent
-                componentName={Component.displayName || Component.name}
-                metaContent={meta}
-                canonical={canonical_url}
-              />
-              <Component {...pageProps} />
-            </ErrorBoundary>
-          </Provider>
-        </CookiesProvider>
-      </Fragment>
+    return this.state.isAuthenticated ? (
+      <CookiesProvider>
+        <Provider store={store}>
+          <ErrorBoundary>
+            <HeadContentAndPermissionComponent
+              componentName={Component.displayName || Component.name}
+              metaContent={meta}
+              canonical={canonical_url}
+            />
+            <Component {...pageProps} />
+          </ErrorBoundary>
+        </Provider>
+      </CookiesProvider>
+    ) : (
+      <></>
     );
   }
 }
