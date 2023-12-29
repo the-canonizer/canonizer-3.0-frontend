@@ -34,8 +34,6 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
     })
   );
   useEffect(() => {
-    setLoading(true);
-    setLoadingEvents(true);
     async function apiCall() {
       const data = await getEventLineApi({
         topic_num: router?.query?.camp[0]?.split("-")[0],
@@ -63,6 +61,12 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
       }
       data && setMockData(data);
     }
+    setLoading(true);
+    setLoadingEvents(true);
+    setIteration(0);
+    setStart(false);
+    setMockData({});
+    setIsPlaying(false);
 
     apiCall();
     setLoadingEvents(false);

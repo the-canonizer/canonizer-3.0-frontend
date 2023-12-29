@@ -769,7 +769,7 @@ const UploadFileUI = ({
     );
   };
   const subStringData = (fileName) => {
-    return fileName.length > 10 ? fileName.substring(0, 10) + "..." : fileName;
+    return fileName?.length > 10 ? fileName.substring(0, 10) + "..." : fileName;
   };
   const filterArrList = [];
   const searchFilter = () => {
@@ -1287,6 +1287,7 @@ const UploadFileUI = ({
                                 }
                               >
                                 <CloseCircleOutlined
+                                  data-testid="remove_upload_files"
                                   onClick={() => {
                                     removeUploadFiles(
                                       originNode,
@@ -1420,6 +1421,7 @@ const UploadFileUI = ({
                     {show_UploadOptions ? (
                       <div className={styles.Upload_Cancel_Btn}>
                         <Button
+                          data-testid="upload_btn"
                           id="uploadBtn"
                           htmlType="submit"
                           className={styles.Upload_Btn}

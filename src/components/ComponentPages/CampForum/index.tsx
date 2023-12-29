@@ -17,18 +17,14 @@ import {
   updatePost,
   getPostsList,
   deletePost,
-  // getThreadData,
+  getThreadData,
 } from "../../../network/api/campForumApi";
 import {
   getAllUsedNickNames,
   getCurrentCampRecordApi,
   getCurrentTopicRecordApi,
 } from "../../../network/api/campDetailApi";
-import {
-  // setThread,
-  setPost,
-} from "../../../store/slices/campForumSlice";
-// import CampInfoBar from "../TopicDetails/CampInfoBar";
+import { setThread, setPost } from "../../../store/slices/campForumSlice";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
 
 const ForumComponent = ({
@@ -39,7 +35,7 @@ const ForumComponent = ({
 
   const { isUserAuthenticated } = useIsUserAuthenticated();
   const didMount = useRef(false);
-  // const didMountList = useRef(false);
+  const didMountList = useRef(false);
   const didMountPost = useRef(false);
 
   const [paramsList, setParamsList] = useState({});
@@ -79,7 +75,7 @@ const ForumComponent = ({
       currentPost: state.forum.currentPost,
     }));
 
-  // const setCurrentThread = (data) => dispatch(setThread(data));
+  const setCurrentThread = (data) => dispatch(setThread(data));
 
   const setCurrentPost = (data) => dispatch(setPost(data));
 
@@ -144,37 +140,37 @@ const ForumComponent = ({
     }
   };
 
-  // const threadDetails = async () => {
-  //   const queries = router?.query;
-  //   const campArr = (queries.camp as string).split("-");
-  //   const camp_num = campArr.shift();
-  //   const topicArr = (queries?.topic as string)?.split("-");
-  //   const topic_num = topicArr?.shift(),
-  //     q = router?.query,
-  //     id = q?.id as string;
+  const threadDetails = async () => {
+    const queries = router?.query;
+    const campArr = (queries.camp as string).split("-");
+    const camp_num = campArr.shift();
+    const topicArr = (queries?.topic as string)?.split("-");
+    const topic_num = topicArr?.shift(),
+      q = router?.query,
+      id = q?.id as string;
 
-  //   try {
-  //     setthreadDetailsLoading(true);
-  //     setPostLoading(true);
+    try {
+      setthreadDetailsLoading(true);
+      setPostLoading(true);
 
-  //     const res = await getThreadData(id, topic_num, camp_num);
+      const res = await getThreadData(id, topic_num, camp_num);
 
-  //     if (res?.data?.status_code === 404) {
-  //       message.error(res?.data?.error || "Something went wrong ");
-  //       setCurrentThread({});
-  //     }
+      if (res?.data?.status_code === 404) {
+        message.error(res?.data?.error || "Something went wrong ");
+        setCurrentThread({});
+      }
 
-  //     if (res && res?.status_code === 200) {
-  //       const data = res.data;
-  //       setCurrentThread(data);
-  //     }
-  //   } catch (error) {
-  //     // handle errors
-  //   } finally {
-  //     setPostLoading(false);
-  //     setthreadDetailsLoading(false);
-  //   }
-  // };
+      if (res && res?.status_code === 200) {
+        const data = res.data;
+        setCurrentThread(data);
+      }
+    } catch (error) {
+      // handle errors
+    } finally {
+      setPostLoading(false);
+      setthreadDetailsLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (router && router?.query && didMount.current) {
@@ -217,7 +213,6 @@ const ForumComponent = ({
   }, [campRecord]);
 
   // start thread List section
-
   const onSearch = (v: string) => {
     setSearchQuery(v.trim());
   };
@@ -271,8 +266,6 @@ const ForumComponent = ({
 
     if (type !== queries.by) {
       setLoading(true);
-      // setTotalRecords(0);
-      // setThreadList([]);
       setPage(1);
       queries.by = type;
       router?.push(router, undefined, { shallow: true });
@@ -296,11 +289,9 @@ const ForumComponent = ({
       )}/threads/edit/${item.id}`,
     });
   };
-
   // end thread list section
 
   // create thread start
-
   const [form] = Form.useForm();
 
   const showModal = () => {
@@ -482,22 +473,18 @@ const ForumComponent = ({
   // create thread start
 
   //  post section start
-
   const [formPost] = Form.useForm();
 
   useEffect(() => {
-    // const queries = router?.query;
-    // const campArr = (queries.camp as string).split("-");
-    // const camp_num = campArr.shift();
-    // const topicArr = (queries?.topic as string)?.split("-");
-    // const topic_num = topicArr?.shift();
-    // const q = router?.query,
-    //   threadId = q?.id;
-    // if (threadId) {
-    //   threadDetails(threadId, topic_num, camp_num);
-    // }
+    const q = router?.query,
+      threadId = q?.id;
+
+    if (threadId && didMountList.current) {
+      threadDetails();
+    } else didMountList.current = true;
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router]);
+  }, [isLoggedIn]);
 
   useEffect(() => {
     const q = router?.query,
@@ -509,11 +496,9 @@ const ForumComponent = ({
       didMountPost.current = true;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router?.query?.id, ppage]);
+  }, [router?.query?.id, ppage, isLoggedIn]);
 
   const onContentChange = (v) => {
-    // v = v.replace(/(^|>)\s+|\s+(?=<|$)/g, "$1");
-
     setQuillContent(v);
     setIsError(false);
   };
@@ -593,10 +578,7 @@ const ForumComponent = ({
 
   const onThreadEdit = ({ text, others }) => {
     setThreadUpdateOthers(others);
-    // setInitialValues({ threadName: text?.text });
-    form.setFieldsValue({
-      threadName: text,
-    });
+    form.setFieldsValue({ threadName: text });
     showModal();
   };
 
@@ -614,7 +596,6 @@ const ForumComponent = ({
   };
 
   const onCancel = () => {
-    // onCancelCreateThread();
     showModal();
     setQuillContent("");
     setCurrentPost({});
@@ -633,7 +614,6 @@ const ForumComponent = ({
 
   return (
     <Fragment>
-      {/* <CampInfoBar payload={payload} /> */}
       {router?.pathname === "/forum/[topic]/[camp]/threads" ? (
         <ForumUIList
           onSearch={onSearch}
@@ -657,6 +637,7 @@ const ForumComponent = ({
           form={form}
         />
       ) : null}
+
       {router?.pathname === "/forum/[topic]/[camp]/threads/create" ? (
         <ForumUICreate
           isThreadUpdate={false}
@@ -669,6 +650,7 @@ const ForumComponent = ({
           payload={payload}
         />
       ) : null}
+
       {router?.pathname === "/forum/[topic]/[camp]/threads/edit/[tId]" ? (
         <ForumUICreate
           isThreadUpdate={true}
@@ -681,6 +663,7 @@ const ForumComponent = ({
           payload={payload}
         />
       ) : null}
+
       {router?.pathname === "/forum/[topic]/[camp]/threads/[id]" ? (
         <ForumUIPost
           nickNameList={nickNameList}

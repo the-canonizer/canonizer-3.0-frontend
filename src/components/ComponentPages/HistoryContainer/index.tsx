@@ -7,8 +7,10 @@ import InfiniteScroll from "react-infinite-scroller";
 
 import styles from "./campHistory.module.scss";
 
-import { getHistoryApi } from "../../../network/api/history";
-import { getTreesApi } from "src/network/api/campDetailApi";
+import {
+  getHistoryApi,
+  getCheckCampStatus,
+} from "../../../network/api/history";
 import { getAllUsedNickNames } from "../../../network/api/campDetailApi";
 import CustomSkelton from "../../common/customSkelton";
 
@@ -90,9 +92,13 @@ function HistoryContainer() {
         });
         setNickName(response?.data);
       }
-      let res = await getTreesApi(reqBodyForService);
+      // let res = await getTreesApi(reqBodyForService);
+      let res = await getCheckCampStatus({
+        topic_num: router?.query?.camp?.at(0)?.split("-")?.at(0),
+        camp_num: router?.query?.camp?.at(1)?.split("-")?.at(0) || 1,
+      });
       setLoadingIndicator(false);
-      setParentarchived(res?.treeData[1]?.is_archive);
+      setParentarchived(res?.data?.is_archive);
     }
     if (!isTreesApiCallStop) {
       getTreeApiCall();
