@@ -84,6 +84,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
   const dispatch = useDispatch();
   const showTreeSkeltonRef = useRef(false);
   const {
+    algorithms,
     asof,
     asofdate,
     algorithm,
@@ -94,6 +95,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
     campExist,
     viewThisVersionCheck,
   } = useSelector((state: RootState) => ({
+    algorithms: state.homePage?.algorithms,
     asofdate: state.filters?.filterObject?.asofdate,
     algorithm: state.filters?.filterObject?.algorithm,
     newsFeed: state?.topicDetails?.newsFeed,
@@ -160,6 +162,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
           per_page: 4,
           page: 1,
         };
+        if (!(algorithms?.length > 0)) await getCanonizedAlgorithmsApi();
         await Promise.all([
           dispatch(setCampSupportingTree({})),
           getNewsFeedApi(reqBody),
@@ -167,7 +170,6 @@ const TopicDetails = ({ serverSideCall }: any) => {
           getCurrentCampRecordApi(reqBody),
           getCanonizedCampStatementApi(reqBody),
           getHistoryApi(reqBodyForCampData, "1", "statement"),
-          getCanonizedAlgorithmsApi(),
           getTreesApi(reqBodyForService),
         ]);
       } else if (serverSideCall.current) {
