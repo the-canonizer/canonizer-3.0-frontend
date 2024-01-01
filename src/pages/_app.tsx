@@ -26,12 +26,7 @@ interface CustomPageProps {
   canonical_url: string;
 }
 
-function WrappedApp({
-  Component,
-  pageProps,
-  meta,
-  canonical_url,
-}: AppProps<CustomPageProps>) {
+function WrappedApp({ Component, pageProps, meta, canonical_url }: any) {
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated, isAuthenticatedRef] = useState(
     !!(getCookies() as any)?.loginToken
