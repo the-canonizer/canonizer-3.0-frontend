@@ -55,7 +55,7 @@ function WrappedApp({
     };
 
     fetchToken();
-  }, [router.pathname, +router.query.camp?.at(1).split("-")[0]]);
+  }, [router.pathname, +router.query?.camp?.at(1)?.split("-")[0]]);
 
   return isAuthenticatedRef.current && !!(getCookies() as any)?.loginToken ? (
     <CookiesProvider>
