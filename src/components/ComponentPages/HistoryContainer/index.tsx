@@ -53,6 +53,7 @@ function HistoryContainer() {
     setDiscardChange(!discardChange);
   };
   const historyOf = router?.asPath.split("/")[1];
+  console.log("aa", historyOf);
 
   const count = useRef(1);
   const didmount = useRef(false);
@@ -188,7 +189,10 @@ function HistoryContainer() {
       }
 
       if (res?.status_code == 200) {
-        let liveCard = res?.data?.items?.find((obj) => obj.status == "live");
+        let liveCard =
+          historyOf == "camp"
+            ? res?.data?.items?.find((obj) => obj.status == "live")
+            : res?.data?.details?.liveCamp;
         let parentIsOneLevel = res?.data?.details?.parent_is_one_level;
         let _isOneLevel = liveCard?.is_one_level || parentIsOneLevel;
         let _isDisabled =
