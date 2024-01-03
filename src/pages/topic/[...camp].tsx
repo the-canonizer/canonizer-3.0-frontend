@@ -78,7 +78,7 @@ const TopicDetailsPage = ({
 
 export async function getServerSideProps({ req, query }) {
   let topicNum = query?.camp[0]?.split("-")[0];
-  let campNum = query?.camp[1]?.split("-")[0] ?? 1;
+  let campNum = query?.camp[1]?.split("-")[0] || 1;
 
   const currentDate = new Date().valueOf();
   const reqBodyForService = {
