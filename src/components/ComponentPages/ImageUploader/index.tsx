@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { UploadOutlined } from "@ant-design/icons";
-import { Modal, Upload, message } from "antd";
+import { DownOutlined, EditOutlined, UploadOutlined } from "@ant-design/icons";
+import { Button, Dropdown, Modal, Space, Upload, message } from "antd";
 import type { RcFile, UploadProps } from "antd/es/upload";
 import type { UploadFile } from "antd/es/upload/interface";
 import {
@@ -134,20 +134,76 @@ const ImageUploader: React.FC = () => {
     </div>
   );
 
+  const updateProfilePicture = async (e) => {
+    let newFileList = e.fileList;
+    const lastFile = e.fileList[e.fileList.length - 1];
+
+    if (lastFile) {
+      const validationStatus = await validateImage(
+        lastFile.originFileObj as File
+      );
+      if (validationStatus !== null) {
+        // setFileList(newFileList);
+        try {
+          const formData = new FormData();
+          formData.append("profile_picture", lastFile.originFileObj as File);
+          const response = await uploadProfileImage(formData);
+          const imageUrl = response.data.profile_picture;
+          dispatch(setProfilePicture(imageUrl));
+          message.success("Upload successful");
+        } catch (error) {
+          message.error("Upload failed");
+        }
+      } else {
+        // Remove the invalid file from the fileList
+        newFileList.pop();
+        setFileList(newFileList);
+      }
+    }
+  };
+  const items = [
+    {
+      key: "1",
+      label: (
+        <Upload
+          multiple={false}
+          onChange={(e) => {
+            updateProfilePicture(e);
+          }}
+        >
+          <div>Update</div>
+        </Upload>
+      ),
+    },
+  ];
+
   return (
     <>
-      <Upload
-        className="picture-upload"
-        listType="picture-card"
-        accept="image/*"
-        fileList={fileList}
-        onPreview={handlePreview}
-        onChange={handleChange}
-        onRemove={handleDelete}
-        showUploadList={{ showRemoveIcon: true }}
-      >
-        {fileList.length >= 1 ? null : uploadButton}
-      </Upload>
+      <div className="upload-wrap">
+        <Upload
+          className="picture-upload"
+          listType="picture-card"
+          accept="image/*"
+          fileList={fileList}
+          onPreview={handlePreview}
+          onChange={handleChange}
+          onRemove={handleDelete}
+          showUploadList={{ showRemoveIcon: true }}
+        >
+          {fileList.length >= 1 ? null : uploadButton}
+        </Upload>
+        <Dropdown
+          menu={{
+            items,
+          }}
+        >
+          <a onClick={(e) => e.preventDefault()}>
+            <Button size="small">
+              <EditOutlined />
+            </Button>
+          </a>
+        </Dropdown>
+      </div>
       <Modal
         visible={isPreviewVisible}
         title={previewTitle}
