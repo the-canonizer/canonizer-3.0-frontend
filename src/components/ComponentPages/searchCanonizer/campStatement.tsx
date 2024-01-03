@@ -7,7 +7,7 @@ import { RootState } from "src/store";
 import moment from "moment";
 import { Empty, Pagination } from "antd";
 import { setPageNumber } from "src/store/slices/searchSlice";
-import CustomSkelton from "@/components/common/customSkelton";
+import CustomSkelton from "../../common/customSkelton";
 
 const CampStatementSearch = () => {
   const { searchDataAll } = useSelector((state: RootState) => ({
