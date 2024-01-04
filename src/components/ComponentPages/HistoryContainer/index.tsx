@@ -45,6 +45,7 @@ function HistoryContainer() {
   const [agreecheck, setAgreeCheck] = useState(false);
   const [discardChange, setDiscardChange] = useState(false);
   const [parentarchived, setParentarchived] = useState(0);
+  const [directarchived, setDirectarchived] = useState(0);
 
   const changeAgree = () => {
     setAgreeCheck(!agreecheck);
@@ -204,6 +205,7 @@ function HistoryContainer() {
           _isOneLevel,
           is_archive,
         });
+        setDirectarchived(liveCard?.direct_archive);
         setParentarchived(liveCard?.is_archive);
         dispatch(
           setCurrentCamp({
@@ -411,6 +413,7 @@ function HistoryContainer() {
             unarchiveChangeSubmitted={
               campHistory?.details?.unarchive_change_submitted
             }
+            directarchived={directarchived}
           />
         );
       })

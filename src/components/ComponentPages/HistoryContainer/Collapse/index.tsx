@@ -63,6 +63,7 @@ function HistoryCollapse({
   callManageCampApi,
   parentArchived,
   unarchiveChangeSubmitted,
+  directarchived,
 }: any) {
   const router = useRouter();
   const [commited, setCommited] = useState(false);
@@ -430,8 +431,10 @@ function HistoryCollapse({
                       (campHistoryItems?.at(0)?.status == "live" &&
                         campHistoryItems?.at(0)?.is_archive == 1 &&
                         campStatement.status == "old") ||
-                      (parentArchived == 1 &&
-                        campHistoryItems[0]?.camp_num != 1) ||
+                      !(
+                        (parentArchived == 1 && directarchived == 1) ||
+                        (parentArchived == 0 && directarchived == 0)
+                      ) ||
                       (campHistoryItems?.at(0)?.is_archive == 1 &&
                         campHistoryItems?.at(0)?.status == "live" &&
                         campStatement.status == "objected")
