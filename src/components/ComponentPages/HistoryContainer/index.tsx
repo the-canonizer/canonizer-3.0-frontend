@@ -204,7 +204,7 @@ function HistoryContainer() {
           _isOneLevel,
           is_archive,
         });
-        setParentarchived(res?.data?.details?.topic?.is_archive);
+        setParentarchived(liveCard?.is_archive);
         dispatch(
           setCurrentCamp({
             parentIsOneLevel,
