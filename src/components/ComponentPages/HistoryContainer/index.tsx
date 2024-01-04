@@ -54,7 +54,6 @@ function HistoryContainer() {
     setDiscardChange(!discardChange);
   };
   const historyOf = router?.asPath.split("/")[1];
-  console.log("aa", historyOf);
 
   const count = useRef(1);
   const didmount = useRef(false);
@@ -199,12 +198,6 @@ function HistoryContainer() {
         let _isDisabled =
           res?.data?.details?.parent_is_disabled || liveCard?.is_disabled;
         let is_archive = liveCard?.is_archive;
-        console.log("tsat => ", {
-          parentIsOneLevel,
-          _isDisabled,
-          _isOneLevel,
-          is_archive,
-        });
         setDirectarchived(liveCard?.direct_archive);
         setParentarchived(liveCard?.is_archive);
         dispatch(
