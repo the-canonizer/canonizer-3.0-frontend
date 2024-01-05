@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
 import moment from "moment";
-import CustomSkelton from "@/components/common/customSkelton";
+import CustomSkelton from "../../common/customSkelton";
 
 const Search = () => {
   const { searchData } = useSelector((state: RootState) => ({
