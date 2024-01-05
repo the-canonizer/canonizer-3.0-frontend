@@ -1,8 +1,6 @@
 import { Fragment, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
-// import { useCookies } from "react-cookie";
-// import dynamic from "next/dynamic";
 
 import Layout from "src/hoc/layout";
 import HomePageContainer from "src/components/ComponentPages/Home";
@@ -28,6 +26,7 @@ function Home({ current_date, hotTopicData }: any) {
     getCanonizedWhatsNewContentApi();
   }, []);
   /* eslint-enable */
+
   useEffect(() => {
     let queries = router?.query;
     if ("namespace" in queries) {

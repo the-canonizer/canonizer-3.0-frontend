@@ -170,6 +170,10 @@ const FilterWithTree = ({
       delete router.query.canon;
     }
 
+    if (!router.query.canon && String(router.query.canon) === "0") {
+      delete router.query.canon;
+    }
+
     if (asof === "default") {
       delete router.query.asof;
     }
@@ -202,7 +206,18 @@ const FilterWithTree = ({
       filterObject?.algorithm !== "blind_popularity" ||
       campScoreValue !== 10
     ) {
-      onChangeRoute();
+      onChangeRoute(
+        +router.query.score || filteredScore || 0,
+        (
+          router.query.algo ||
+          filterObject?.algorithm ||
+          "blind_popularity"
+        )?.toString(),
+        (router.query.asof || filterObject?.asof || "default")?.toString(),
+        +router.query.asofdate || filterObject?.asofdate,
+        +router.query.canon,
+        viewThisVersion
+      );
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

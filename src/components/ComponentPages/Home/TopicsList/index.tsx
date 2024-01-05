@@ -136,7 +136,7 @@ const TopicsList = () => {
     setNameSpaceId(id);
     setSelectedNameSpace(nameSpace?.children);
 
-    if (nameSpace?.children?.toLowerCase() !== "/general/") {
+    if (id?.toString() !== "1") {
       router.query.canon = id;
       delete router?.query?.namespace;
       router?.replace(router, undefined, { shallow: true });
