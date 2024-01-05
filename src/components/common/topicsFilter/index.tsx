@@ -168,6 +168,10 @@ const CreateTopic = () => {
       delete router.query.asof;
     }
 
+    if (!query?.canon) {
+      delete router.query.canon;
+    }
+
     if (algorithm === "blind_popularity") {
       delete router.query.algo;
     }
