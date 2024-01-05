@@ -11,6 +11,7 @@ import {
   getHistoryApi,
   getCheckCampStatus,
 } from "../../../network/api/history";
+import { getTreesApi } from "src/network/api/campDetailApi";
 import { getAllUsedNickNames } from "../../../network/api/campDetailApi";
 import CustomSkelton from "../../common/customSkelton";
 
@@ -44,6 +45,7 @@ function HistoryContainer() {
   const [agreecheck, setAgreeCheck] = useState(false);
   const [discardChange, setDiscardChange] = useState(false);
   const [parentarchived, setParentarchived] = useState(0);
+  const [directarchived, setDirectarchived] = useState(0);
 
   const changeAgree = () => {
     setAgreeCheck(!agreecheck);
@@ -54,6 +56,7 @@ function HistoryContainer() {
   const historyOf = router?.asPath.split("/")[1];
 
   const count = useRef(1);
+  const didmount = useRef(false);
 
   const { history, currentCampNode, tree, asofdate, asof, algorithm } =
     useSelector((state: RootState) => ({
@@ -93,12 +96,14 @@ function HistoryContainer() {
         setNickName(response?.data);
       }
       // let res = await getTreesApi(reqBodyForService);
-      let res = await getCheckCampStatus({
-        topic_num: router?.query?.camp?.at(0)?.split("-")?.at(0),
-        camp_num: router?.query?.camp?.at(1)?.split("-")?.at(0) || 1,
-      });
+      // let res = await getCheckCampStatus({
+      //   topic_num: router?.query?.camp?.at(0)?.split("-")?.at(0),
+      //   camp_num: router?.query?.camp?.at(1)?.split("-")?.at(0) || 1,
+      // });
+
       setLoadingIndicator(false);
-      setParentarchived(res?.data?.is_archive);
+      // setParentarchived(res?.data?.is_archive);
+      // setParentarchived(res?.treeData[1]?.is_archive);
     }
     if (!isTreesApiCallStop) {
       getTreeApiCall();
@@ -106,39 +111,39 @@ function HistoryContainer() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [asofdate, algorithm, +router?.query?.camp?.at(1)?.split("-")[0]]);
 
-  const dispatchData = (data, isDisabled = 0, isOneLevel = 0) => {
-    const keys = Object.keys(data);
-    for (let i = 0; i < keys.length; i++) {
-      const item = keys[i];
-      const parentIsOneLevel = isOneLevel;
-      let _isOneLevel = data[item].is_one_level == 1 || isOneLevel == 1 ? 1 : 0;
-      let _isDisabled = data[item].is_disabled == 1 || isDisabled == 1 ? 1 : 0;
+  // const dispatchData = (data, isDisabled = 0, isOneLevel = 0) => {
+  //   const keys = Object.keys(data);
+  //   for (let i = 0; i < keys.length; i++) {
+  //     const item = keys[i];
+  //     const parentIsOneLevel = isOneLevel;
+  //     let _isOneLevel = data[item].is_one_level == 1 || isOneLevel == 1 ? 1 : 0;
+  //     let _isDisabled = data[item].is_disabled == 1 || isDisabled == 1 ? 1 : 0;
 
-      if (
-        data[item].camp_id === +router?.query?.camp?.at(1)?.split("-")?.at(0)
-      ) {
-        dispatch(
-          setCurrentCamp({
-            ...data[item],
-            parentIsOneLevel,
-            _isDisabled,
-            _isOneLevel,
-          })
-        );
-        break;
-      }
-      if (data[item].children) {
-        dispatchData(data[item].children, _isDisabled, _isOneLevel);
-      }
-    }
-  };
+  //     if (
+  //       data[item].camp_id === +router?.query?.camp?.at(1)?.split("-")?.at(0)
+  //     ) {
+  //       dispatch(
+  //         setCurrentCamp({
+  //           ...data[item],
+  //           parentIsOneLevel,
+  //           _isDisabled,
+  //           _isOneLevel,
+  //         })
+  //       );
+  //       break;
+  //     }
+  //     if (data[item].children) {
+  //       dispatchData(data[item].children, _isDisabled, _isOneLevel);
+  //     }
+  //   }
+  // };
 
-  useEffect(() => {
-    if (tree != null) {
-      dispatchData(tree);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tree]);
+  // useEffect(() => {
+  //   if (tree != null) {
+  //     dispatchData(tree);
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [tree]);
 
   useEffect(() => {
     setCampHistory(history);
@@ -182,6 +187,30 @@ function HistoryContainer() {
           router?.push(router?.asPath?.replace("camp/history", "topic"));
         }
       }
+
+      if (res?.status_code == 200) {
+        let liveCard =
+          historyOf == "camp"
+            ? res?.data?.items?.find((obj) => obj.status == "live")
+            : res?.data?.details?.liveCamp;
+        let parentIsOneLevel = res?.data?.details?.parent_is_one_level;
+        let _isOneLevel = liveCard?.is_one_level || parentIsOneLevel;
+        let _isDisabled =
+          res?.data?.details?.parent_is_disabled || liveCard?.is_disabled;
+        let is_archive = liveCard?.is_archive;
+        setDirectarchived(liveCard?.direct_archive);
+        setParentarchived(liveCard?.is_archive);
+        dispatch(
+          setCurrentCamp({
+            parentIsOneLevel,
+            _isDisabled,
+            _isOneLevel,
+            is_archive,
+          })
+        );
+      }
+
+      didMount.current = true;
       if (!res?.data || !res?.data?.last_page) {
         setLoadMoreItems(false);
         setLoadingIndicator(false);
@@ -377,6 +406,7 @@ function HistoryContainer() {
             unarchiveChangeSubmitted={
               campHistory?.details?.unarchive_change_submitted
             }
+            directarchived={directarchived}
           />
         );
       })
