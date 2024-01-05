@@ -422,7 +422,9 @@ const TopicsList = () => {
     dispatch(setCurrentCheckSupportStatus(""));
     dispatch(setCheckSupportExistsData(""));
     dispatch(setManageSupportStatusCheck(false));
-    getCanonizedNameSpacesApi();
+    if (!(nameSpaces?.length > 0)) {
+      getCanonizedNameSpacesApi();
+    }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

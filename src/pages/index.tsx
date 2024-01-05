@@ -9,7 +9,7 @@ import {
   setFilterCanonizedTopics,
   setCurrentDate,
 } from "src/store/slices/filtersSlice";
-import { GetUserProfileInfo } from "src/network/api/userApi";
+import { GetUserProfileInfo, createToken } from "src/network/api/userApi";
 import { setAuthToken, setLoggedInUser } from "src/store/slices/authSlice";
 import { setHotTopic } from "src/store/slices/hotTopicSlice";
 import { GetHotTopicDetails } from "src/network/api/topicAPI";
@@ -83,8 +83,15 @@ function Home({ current_date, hotTopicData }: any) {
 
 export async function getServerSideProps({ req }) {
   const currentDate = new Date().valueOf();
+  let token = null;
+  if (req.cookies["loginToken"]) {
+    token = req.cookies["loginToken"];
+  } else {
+    const response = await createToken();
+    token = response?.access_token;
+  }
 
-  const resData = await GetHotTopicDetails(req.cookies["loginToken"] as string);
+  const resData = await GetHotTopicDetails(token as string);
 
   return {
     props: {

@@ -7,7 +7,7 @@ import { RootState } from "src/store";
 import { Empty, Pagination } from "antd";
 import Link from "next/link";
 import { setPageNumber } from "src/store/slices/searchSlice";
-import CustomSkelton from "@/components/common/customSkelton";
+import CustomSkelton from "../../common/customSkelton";
 
 const CampSearch = () => {
   const [currentPage, setCurrentPage] = useState(1);

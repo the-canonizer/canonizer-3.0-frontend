@@ -1,8 +1,10 @@
-import { isServer } from "src/utils/generalUtility";
+import { getCookies, isServer } from "src/utils/generalUtility";
 import K from "../../constants";
-import { store } from "../../store";
+import { store } from "src/store";
+import { createToken } from "../api/userApi";
 
 export default class Request {
+  static counter = 0;
   url: string = "";
   method: string = "";
   body: any;
@@ -16,17 +18,27 @@ export default class Request {
     headers = {},
     token = null
   ) {
-    const state = store.getState();
-    const { auth } = state;
-
     let bearerToken = "";
-    if (isServer && token) {
+    const cc: any = getCookies();
+    if (token) {
+      //coming from server side use it
       bearerToken = token;
-    } else if (auth?.loggedInUser) {
-      token ? (bearerToken = token) : (bearerToken = auth?.loggedInUser?.token);
     } else {
-      bearerToken = auth?.authToken;
+      const cc: any = getCookies();
+
+      if (cc?.loginToken) {
+        bearerToken = cc.loginToken;
+      } else if (!relativeURL?.includes("client-token")) {
+        Request.counter++;
+        // create token
+        (async () => {
+          const res = await createToken();
+          bearerToken = res?.data?.access_token;
+        })();
+      }
     }
+
+    // let bearerToken = token || cc?.loginToken;
 
     headers = {
       ...(defaultHeaderType === K.Network.Header.Type.Json ||
@@ -35,6 +47,7 @@ export default class Request {
         : K.Network.Header.Authorization()),
       ...headers,
     };
+
     this.url = relativeURL;
     this.method = method;
     this.body = body;

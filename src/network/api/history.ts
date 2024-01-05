@@ -14,28 +14,9 @@ export const getHistoryApi = async (
   historyOf: string,
   loginToken = null
 ) => {
-  let token;
-  if (isServer()) {
-    if (loginToken) {
-      token = loginToken;
-    } else {
-      const response = await createToken();
-      token = response?.access_token;
-    }
-  } else {
-    let state = await store.getState();
-    const { auth } = state,
-      tc = localStorage?.getItem("auth_token");
-    token = auth?.loggedInUser?.token || auth?.authToken || auth?.token || tc;
-
-    if (!token) {
-      const response = await createToken();
-      token = response?.access_token;
-    }
-  }
   try {
     const history = await NetworkCall.fetch(
-      historyRequest.getHistory(reqBody, token, historyOf),
+      historyRequest.getHistory(reqBody, loginToken, historyOf),
       false
     );
     if (pageNumber == 1) {

@@ -7,7 +7,7 @@ import { RootState } from "src/store";
 import Link from "next/link";
 import { Empty, Pagination } from "antd";
 import { setPageNumber } from "src/store/slices/searchSlice";
-import CustomSkelton from "@/components/common/customSkelton";
+import CustomSkelton from "../../common/customSkelton";
 
 const NicknameSearch = () => {
   const { searchDataAll } = useSelector((state: RootState) => ({

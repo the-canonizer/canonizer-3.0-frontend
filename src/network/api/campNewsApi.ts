@@ -4,12 +4,10 @@ import { campNewsRequest } from "../request/campNewsRequest";
 import { store } from "../../store";
 import { setCampNewsToEdit } from "../../../src/store/slices/news";
 
-export const addNewsFeedApi = async (body) => {
-  let state = store.getState();
-  const { auth } = state;
+export const addNewsFeedApi = async (body, loginToken = null) => {
   try {
     const editNewsData = await NetworkCall.fetch(
-      campNewsRequest.addNewsFeed(body, auth?.loggedInUser?.token)
+      campNewsRequest.addNewsFeed(body, loginToken)
     );
     return editNewsData;
   } catch (error) {
@@ -18,12 +16,10 @@ export const addNewsFeedApi = async (body) => {
   }
 };
 
-export const getEditCampNewsFeedApi = async (body) => {
-  let state = store.getState();
-  const { auth } = state;
+export const getEditCampNewsFeedApi = async (body, loginToken = null) => {
   try {
     const editNewsData = await NetworkCall.fetch(
-      campNewsRequest.getEditCampNewsFeed(body, auth?.loggedInUser?.token)
+      campNewsRequest.getEditCampNewsFeed(body, loginToken)
     );
     let res = editNewsData?.data;
     store.dispatch(setCampNewsToEdit((res && res[0]) || {}));
@@ -33,12 +29,10 @@ export const getEditCampNewsFeedApi = async (body) => {
   }
 };
 
-export const updateNewsFeedApi = async (body) => {
-  let state = store.getState();
-  const { auth } = state;
+export const updateNewsFeedApi = async (body, loginToken = null) => {
   try {
     const editNewsData = await NetworkCall.fetch(
-      campNewsRequest.updateNewsFeed(body, auth?.loggedInUser?.token)
+      campNewsRequest.updateNewsFeed(body, loginToken)
     );
     return editNewsData;
   } catch (error) {
@@ -49,12 +43,10 @@ export const updateNewsFeedApi = async (body) => {
   }
 };
 
-export const deleteNewsFeedApi = async (body) => {
-  let state = store.getState();
-  const { auth } = state;
+export const deleteNewsFeedApi = async (body, loginToken = null) => {
   try {
     const editNewsData = await NetworkCall.fetch(
-      campNewsRequest.deleteNewsFeed(body, auth?.loggedInUser?.token)
+      campNewsRequest.deleteNewsFeed(body, loginToken)
     );
     return editNewsData;
   } catch (error) {

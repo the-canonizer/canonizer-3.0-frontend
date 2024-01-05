@@ -1,6 +1,7 @@
 import axios from "axios";
-import K from "../constants";
 import { trackPromise } from "react-promise-tracker";
+
+import K from "../constants";
 import { camelCaseKeys } from "../utils/generalUtility";
 import { logout } from "./api/userApi";
 import { store } from "../store";
@@ -23,6 +24,7 @@ export default class NetworkCall {
         },
       });
     };
+
     try {
       const response: any = useLoading
         ? await trackPromise(axiosCall())

@@ -1,19 +1,21 @@
 import NetworkCall from "../networkCall";
 import NotificationRequests from "../request/notificationsRequests";
 import { handleError } from "../../utils/generalUtility";
-import { store } from "../../store";
+
 import { setData, setHeaderData } from "../../store/slices/notificationSlice";
+import { store } from "src/store";
 import md5 from "md5";
 import axios from "axios";
 
 export const getLists = async (
   page: number = 1,
   per_page: number = 5,
-  is_seen: number = 0
+  is_seen: number = 0,
+  loginToken = null
 ) => {
   try {
     const res = await NetworkCall.fetch(
-      NotificationRequests.getNotification(page, per_page, is_seen),
+      NotificationRequests.getNotification(page, per_page, is_seen, loginToken),
       false
     );
 
@@ -42,11 +44,12 @@ export const getGravatarPicApi = async (email) => {
 export const getNotificationsList = async (
   page: number = 1,
   per_page: number = 50,
+  loginToken = null,
   is_seen: number = 1
 ) => {
   try {
     const res = await NetworkCall.fetch(
-      NotificationRequests.getNotification(page, per_page, is_seen),
+      NotificationRequests.getNotification(page, per_page, is_seen, loginToken),
       false
     );
 

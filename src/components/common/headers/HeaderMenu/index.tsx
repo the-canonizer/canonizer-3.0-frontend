@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useMemo, useState } from "react";
+import React, { Fragment, useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
@@ -309,7 +309,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
                         </div>
 
                         <div className="d-flex flex-wrap w-100 mb-1">
-                          <p className={styles.search_heading_top}>
+                          <div>
                             {!!prefix && (
                               <div
                                 className={styles.inner_html_prefix}
@@ -328,7 +328,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
                                 dangerouslySetInnerHTML={{ __html: suffix }}
                               ></div>
                             )}
-                          </p>
+                          </div>
                         </div>
                         {/* {" "} */}
 
@@ -504,7 +504,6 @@ const HeaderMenu = ({ loggedUser }: any) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedUser]);
-
   useEffect(() => {
     if (inputSearch || searchValue) {
       getGlobalSearchCanonizerNav(searchValue, false);

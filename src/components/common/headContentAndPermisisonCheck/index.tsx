@@ -1,13 +1,12 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
 
 import HeadContent from "./headContent";
 import PermissionsForPages from "../../../permissions";
 import usePermission from "../../../hooks/usePermissions";
 import useAuthentication from "../../../hooks/isUserAuthenticated";
-import { RootState } from "src/store";
 import { createToken } from "src/network/api/userApi";
+import { getCookies } from "src/utils/generalUtility";
 
 type HeadContentComponentProps = {
   componentName: string;
@@ -23,23 +22,17 @@ const HeadContentAndPermissionComponent = ({
   const router = useRouter();
   const pageRoute = process.env.NEXT_PUBLIC_BASE_URL + router?.asPath;
 
-  const { authToken } = useSelector((state: RootState) => ({
-    authToken: state.auth.authToken,
-  }));
-
   const { isAllowed } = usePermission();
   const { isUserAuthenticated } = useAuthentication();
 
-  const getToken = async () => {
-    if (!authToken) {
-      await createToken();
-    }
-  };
+  // const getToken = async () => {
+  //   const cc: any = getCookies();
+  //   if (!cc?.loginToken) await createToken();
+  // };
 
-  useEffect(() => {
-    getToken();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [authToken]);
+  // useEffect(() => {
+  //   getToken();
+  // }, [router]);
 
   useEffect(() => {
     //Check permission

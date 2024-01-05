@@ -1,7 +1,9 @@
-import React, { Fragment } from "react";
-import App, { AppContext, AppInitialProps } from "next/app";
+import React, { useEffect } from "react";
+import useState from "react-usestateref";
+import App, { AppContext, AppInitialProps, AppProps } from "next/app";
 import { Provider } from "react-redux";
 import { CookiesProvider } from "react-cookie";
+import { useRouter } from "next/router";
 
 import "antd/dist/antd.css";
 
@@ -16,37 +18,70 @@ import HeadContentAndPermissionComponent from "../components/common/headContentA
 import { store, wrapper } from "../store";
 import { metaTagsApi } from "src/network/api/metaTagsAPI";
 import { checkTopicCampExistAPICall } from "src/network/api/campDetailApi";
+import { getCookies } from "src/utils/generalUtility";
+import { createToken } from "src/network/api/userApi";
 
-class WrappedApp extends App<AppInitialProps> {
-  public render() {
-    const { Component, pageProps, meta, canonical_url } = this.props as any;
-
-    return (
-      <Fragment>
-        <CookiesProvider>
-          <Provider store={store}>
-            <ErrorBoundary>
-              <HeadContentAndPermissionComponent
-                componentName={Component.displayName || Component.name}
-                metaContent={meta}
-                canonical={canonical_url}
-              />
-              <Component {...pageProps} />
-            </ErrorBoundary>
-          </Provider>
-        </CookiesProvider>
-      </Fragment>
-    );
-  }
+interface CustomPageProps {
+  meta: any;
+  canonical_url: string;
 }
 
-// Only uncomment this method if you have blocking data requirements for
-// every single page in your application. This disables the ability to
-// perform automatic static optimization, causing every page in your app to
-// be server-side rendered.
-//
+function WrappedApp({ Component, pageProps, meta, canonical_url }: any) {
+  const router = useRouter();
+  const [isAuthenticated, setIsAuthenticated, isAuthenticatedRef] = useState(
+    !!(getCookies() as any)?.loginToken
+  );
+
+  useEffect(() => {
+    const fetchToken = async () => {
+      if (!(getCookies() as any)?.loginToken) {
+        setIsAuthenticated(false);
+      }
+
+      if (!isAuthenticatedRef.current) {
+        try {
+          await createToken();
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        } finally {
+          setIsAuthenticated(true);
+        }
+      }
+    };
+
+    fetchToken();
+  }, [router.pathname, +router.query?.camp?.at(1)?.split("-")[0]]);
+
+  return isAuthenticatedRef.current && !!(getCookies() as any)?.loginToken ? (
+    <CookiesProvider>
+      <Provider store={store}>
+        <ErrorBoundary>
+          <HeadContentAndPermissionComponent
+            componentName={Component.displayName || Component.name}
+            metaContent={meta}
+            canonical={canonical_url}
+          />
+          <Component {...pageProps} />
+        </ErrorBoundary>
+      </Provider>
+    </CookiesProvider>
+  ) : (
+    <></>
+  );
+}
 
 let timeout;
+// export async function getServerSideProps(...rest) {
+//   console.log("🚀 ~ file: _app.tsx:106 ~ getServerSideProps ~ rest:", rest);
+
+//   return {
+//     props: {
+//       meta: "",
+//       canonical_url: "",
+//     },
+//   };
+// }
+
 WrappedApp.getInitialProps = async (appContext: AppContext) => {
   // calls page's `getInitialProps` and fills `appProps.pageProps`
   const appProps = await App.getInitialProps(appContext);
@@ -80,7 +115,7 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
 
   const req = {
     page_name:
-      componentName == "SocialLoginCallbackPage" ? "Home" : componentName,
+      componentName === "SocialLoginCallbackPage" ? "Home" : componentName,
     keys: {
       topic_num: appContext.router?.asPath.includes("forum")
         ? path?.topic?.toLocaleString().split("-")[0]
@@ -346,9 +381,4 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
   return { ...appProps, meta: metaData, returnURL: returnData, canonical_url };
 };
 
-// const googleAPIKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
-//export default wrapper.withRedux(MyApp);
-// export default scriptLoader([
-//   `https://maps.googleapis.com/maps/api/js?key=${googleAPIKey}&libraries=places`,
-// ])
 export default wrapper.withRedux(WrappedApp);
