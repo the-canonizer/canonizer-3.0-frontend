@@ -169,11 +169,13 @@ const ManageSupport = () => {
         dispatch(setCheckSupportExistsData({}));
         dispatch(setCheckSupportExistsData(response.data));
         getCanonizedNicknameList();
-        getActiveSupportTopicList(
-          response.data.warning,
-          response.data.support_flag,
-          campReff
-        );
+        if (isUserAuthenticated) {
+          getActiveSupportTopicList(
+            response.data.warning,
+            response.data.support_flag,
+            campReff
+          );
+        }
         setSubmitButtonDisable(false);
       }
       if (manageSupportStatusCheck && response.data.disable_submit) {

@@ -3,15 +3,10 @@ import NetworkCall from "../networkCall";
 import TermsAndPrivacyRequest from "../request/termsAndPrivacyRequest";
 import { createToken } from "./userApi";
 
-export const getTermsAndServicesContent = async (tc = "") => {
-  let token = tc;
-  if (!tc) {
-    const response = await createToken();
-    token = response?.access_token;
-  }
+export const getTermsAndServicesContent = async (loginToken = null) => {
   try {
     const res = await NetworkCall.fetch(
-      TermsAndPrivacyRequest.getTermsAndServicesContent(token)
+      TermsAndPrivacyRequest.getTermsAndServicesContent(loginToken)
     );
 
     return res.data;
@@ -19,15 +14,10 @@ export const getTermsAndServicesContent = async (tc = "") => {
     handleError(error);
   }
 };
-export const getPrivacyPolicyContent = async (tc = "") => {
-  let token = tc;
-  if (!tc) {
-    const response = await createToken();
-    token = response?.access_token;
-  }
+export const getPrivacyPolicyContent = async (loginToken = null) => {
   try {
     const res = await NetworkCall.fetch(
-      TermsAndPrivacyRequest.getPrivacyPolicyContent(token)
+      TermsAndPrivacyRequest.getPrivacyPolicyContent(loginToken)
     );
 
     return res.data;

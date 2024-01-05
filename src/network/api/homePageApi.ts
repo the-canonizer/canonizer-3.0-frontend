@@ -34,15 +34,14 @@ export const getCanonizedTopicsApi = async (reqBody, loadMore = false) => {
 };
 
 export const getCanonizedNameSpacesApi = async (tc = "") => {
-  let token = tc;
-  if (!tc) {
-    const response = await createToken();
-    token = response?.access_token;
-  }
-
+  // let token = tc;
+  // if (!tc) {
+  //   const response = await createToken();
+  //   token = response?.access_token;
+  // }
   try {
     const nameSpaces = await NetworkCall.fetch(
-      HomePageRequests.getCanonizedNameSpaces(token)
+      HomePageRequests.getCanonizedNameSpaces(tc)
     );
     store.dispatch(setCanonizedNameSpaces(nameSpaces));
     return nameSpaces;
@@ -54,24 +53,12 @@ export const getCanonizedNameSpacesApi = async (tc = "") => {
 export const getRecentActivitiesApi = async (
   reqBody,
   loadMore = false,
-  topicType
+  topicType,
+  loginToken = null
 ) => {
   try {
-    let state = await store.getState();
-
-    const { auth } = state,
-      tc = localStorage?.getItem("auth_token");
-
-    let token =
-      auth?.loggedInUser?.token || auth?.authToken || auth?.token || tc;
-
-    if (!token) {
-      const response = await createToken();
-      token = response?.access_token;
-    }
-
     const recentActivities = await NetworkCall.fetch(
-      HomePageRequests.getCanonizedRecentActivities(reqBody, token),
+      HomePageRequests.getCanonizedRecentActivities(reqBody, loginToken),
       false
     );
     if (loadMore) {
@@ -88,16 +75,16 @@ export const getRecentActivitiesApi = async (
   }
 };
 
-export const getCanonizedAlgorithmsApi = async (tc = "") => {
-  let token = tc;
-  if (!tc) {
-    const response = await createToken();
-    token = response?.access_token;
-  }
+export const getCanonizedAlgorithmsApi = async (loginToken = null) => {
+  // let token = tc;
+  // if (!tc) {
+  //   const response = await createToken();
+  //   token = response?.access_token;
+  // }
 
   try {
     const algorithms = await NetworkCall.fetch(
-      HomePageRequests.getCanonizedAlgorithms(token),
+      HomePageRequests.getCanonizedAlgorithms(loginToken),
       false
     );
     store.dispatch(setCanonizedAlgorithms(algorithms));
@@ -108,15 +95,15 @@ export const getCanonizedAlgorithmsApi = async (tc = "") => {
 };
 
 export const getCanonizedWhatsNewContentApi = async (tc = "") => {
-  let token = tc;
-  if (!tc) {
-    const response = await createToken();
-    token = response?.access_token;
-  }
+  // let token = tc;
+  // if (!tc) {
+  //   const response = await createToken();
+  //   token = response?.access_token;
+  // }
 
   try {
     const whatsNew = await NetworkCall.fetch(
-      HomePageRequests.getCanonizedWhatsNewContent(token)
+      HomePageRequests.getCanonizedWhatsNewContent(tc)
     );
     store.dispatch(setWhatsNewContent(whatsNew?.data));
     return whatsNew?.data;
