@@ -93,7 +93,6 @@ const CampTreeCard = ({
   const dispatch = useDispatch();
   const didMount = useRef(false);
 
-  // const eventLinePath = router?.asPath.replace("topic", "eventline");
   const [treeExpandValue, setTreeExpandValue] = useState<any>(campWithScore);
 
   const prevTreeValueRef = useRef(campWithScore || 10);

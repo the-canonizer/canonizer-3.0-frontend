@@ -193,6 +193,14 @@ const CreateTopic = () => {
   };
 
   useEffect(() => {
+    if (router.query.canon) {
+      dispatch(
+        setFilterCanonizedTopics({
+          namespace_id: router.query.canon,
+        })
+      );
+    }
+
     if (
       String(filterObject?.filterByScore) !== "0" ||
       String(filterObject?.namespace_id) !== "1" ||
@@ -212,6 +220,7 @@ const CreateTopic = () => {
         viewThisVersion
       );
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

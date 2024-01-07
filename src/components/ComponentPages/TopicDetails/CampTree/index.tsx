@@ -29,6 +29,7 @@ const CampTree = ({
     topicRecord,
     filterObject,
     viewThisVersion,
+    is_camp_archive_checked,
   } = useSelector((state: RootState) => ({
     tree: state?.topicDetails?.tree,
     filterByScore: state.filters?.filterObject?.filterByScore,
@@ -37,8 +38,6 @@ const CampTree = ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
     filterObject: state?.filters?.filterObject,
     viewThisVersion: state?.filters?.viewThisVersionCheck,
-  }));
-  const { is_camp_archive_checked } = useSelector((state: RootState) => ({
     is_camp_archive_checked: state?.utils?.archived_checkbox,
   }));
 
@@ -47,8 +46,6 @@ const CampTree = ({
   const [uniqueKeys, setUniqueKeys] = useState([]);
   const [showScoreBars, setShowScoreBars] = useState(false);
   const [selectedExpand, setSelectedExpand] = useState([]);
-  // const [autoExpandParent, setAutoExpandParent] = useState(true);
-  // const [selectedNodeID, setSelectedNodeID] = useState(1);
   const [scoreFilter, setScoreFilter] = useState(filterByScore);
   const [includeReview, setIncludeReview] = useState(
     review == "review" ? true : false
@@ -109,6 +106,7 @@ const CampTree = ({
     } else return childExpandTree;
     return childExpandTree;
   };
+  
   const mergeArray = (arry1 = [], arry2 = []) => {
     const mergedSet = new Set([...arry1.map(String), ...arry2.map(String)]);
     const output = Array.from(mergedSet).sort((x, y) =>

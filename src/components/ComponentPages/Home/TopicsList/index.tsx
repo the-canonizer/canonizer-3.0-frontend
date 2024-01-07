@@ -157,14 +157,7 @@ const TopicsList = () => {
       })
     );
   };
-  // const checkTopics = (topics)=>{
-  //   let archive =
-  //   if(topics?.length > 0 && !is_camp_archive_checked){
-  //     topics?.forEach(element => {
-  //       if(element.item.is_archive)
-  //     });
-  //   }
-  // }
+
   useEffect(() => {
     if (String(filterNameSpaceId) !== "1") {
       router.query.canon = String(filterNameSpaceId);
@@ -176,10 +169,9 @@ const TopicsList = () => {
   }, []);
 
   useEffect(() => {
-    const q = router?.query;
-    if (q?.canon) {
+    if (filterNameSpaceId) {
       const filteredName = nameSpacesList?.filter((n) => {
-        if (n?.id == q?.canon) {
+        if (n?.id == filterNameSpaceId) {
           return n;
         }
       });
@@ -195,7 +187,7 @@ const TopicsList = () => {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router, nameSpacesList]);
+  }, [filterNameSpaceId, nameSpacesList]);
 
   useEffect(() => {
     setSelectedNameSpace(filterNameSpace);
@@ -246,15 +238,16 @@ const TopicsList = () => {
     // onlyMyTopicsCheck.current,
     is_camp_archive_checked,
   ]);
-  useEffect(() => {
-    if (inputSearch.length > 0 || search.length > 0) {
-      // setClear(true);
-    } else {
-      // setClear(false);
-    }
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // useEffect(() => {
+  // if (inputSearch.length > 0 || search.length > 0) {
+  // setClear(true);
+  // } else {
+  // setClear(false);
+  // }
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   // const handlesearch = (e) => {
   //   if (e.target.value.length > 0) {
