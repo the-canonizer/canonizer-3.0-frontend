@@ -189,10 +189,7 @@ function HistoryContainer() {
       }
 
       if (res?.status_code == 200) {
-        let liveCard =
-          historyOf == "camp"
-            ? res?.data?.items?.find((obj) => obj.status == "live")
-            : res?.data?.details?.liveCamp;
+        let liveCard = res?.data?.details?.liveCamp;
         let parentIsOneLevel = res?.data?.details?.parent_is_one_level;
         let _isOneLevel = liveCard?.is_one_level || parentIsOneLevel;
         let _isDisabled =
@@ -380,34 +377,36 @@ function HistoryContainer() {
     campHistory && campHistory?.items?.length ? (
       campHistory?.items?.map((campHistoryData, index) => {
         return (
-          <HistoryCollapse
-            collapseKeys={getCollapseKeys(campHistoryData, index)}
-            key={index}
-            campStatement={campHistoryData}
-            onSelectCompare={onSelectCompare}
-            userNickNameData={nickName}
-            ifIamSupporter={campHistory?.details?.ifIamSupporter}
-            ifSupportDelayed={campHistory?.details?.ifSupportDelayed}
-            ifIAmExplicitSupporter={
-              campHistory?.details?.ifIAmExplicitSupporter
-            }
-            topicNamespaceId={campHistory?.details?.topic?.namespace_id}
-            changeAgree={changeAgree}
-            changeDiscard={changeDiscard}
-            isDisabledCheck={
-              selectedTopic.length >= 2 &&
-              !selectedTopic?.includes(campHistoryData?.id)
-            }
-            isChecked={selectedTopic?.includes(campHistoryData?.id)}
-            setIsTreesApiCallStop={setIsTreesApiCallStop}
-            campHistoryItems={campHistory?.items}
-            callManageCampApi={callManageCampApi}
-            parentArchived={parentarchived}
-            unarchiveChangeSubmitted={
-              campHistory?.details?.unarchive_change_submitted
-            }
-            directarchived={directarchived}
-          />
+          <>
+            <HistoryCollapse
+              collapseKeys={getCollapseKeys(campHistoryData, index)}
+              key={index}
+              campStatement={campHistoryData}
+              onSelectCompare={onSelectCompare}
+              userNickNameData={nickName}
+              ifIamSupporter={campHistory?.details?.ifIamSupporter}
+              ifSupportDelayed={campHistory?.details?.ifSupportDelayed}
+              ifIAmExplicitSupporter={
+                campHistory?.details?.ifIAmExplicitSupporter
+              }
+              topicNamespaceId={campHistory?.details?.topic?.namespace_id}
+              changeAgree={changeAgree}
+              changeDiscard={changeDiscard}
+              isDisabledCheck={
+                selectedTopic.length >= 2 &&
+                !selectedTopic?.includes(campHistoryData?.id)
+              }
+              isChecked={selectedTopic?.includes(campHistoryData?.id)}
+              setIsTreesApiCallStop={setIsTreesApiCallStop}
+              campHistoryItems={campHistory?.items}
+              callManageCampApi={callManageCampApi}
+              parentArchived={parentarchived}
+              unarchiveChangeSubmitted={
+                campHistory?.details?.unarchive_change_submitted
+              }
+              directarchived={directarchived}
+            />
+          </>
         );
       })
     ) : (
