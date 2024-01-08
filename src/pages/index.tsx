@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 
@@ -73,11 +73,9 @@ function Home({ current_date, hotTopicData }: any) {
   }, []);
 
   return (
-    <Fragment>
-      <Layout>
-        <HomePageContainer />
-      </Layout>
-    </Fragment>
+    <Layout>
+      <HomePageContainer />
+    </Layout>
   );
 }
 
@@ -96,7 +94,7 @@ export async function getServerSideProps({ req }) {
   return {
     props: {
       current_date: currentDate,
-      hotTopicData: resData?.data || null,
+      hotTopicData: resData?.data ? resData?.data : null,
     },
   };
 }

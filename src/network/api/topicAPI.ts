@@ -75,8 +75,13 @@ export const GetHotTopicDetails = async (token: string) => {
     );
 
     if (res.status_code === 200) {
-      store.dispatch(setHotTopic(res?.data));
+      store.dispatch(setHotTopic(res?.data || null));
     }
+
+    if (res.status_code === 400) {
+      store.dispatch(setHotTopic(null));
+    }
+
     return res;
   } catch (err) {
     return err?.error?.data;
