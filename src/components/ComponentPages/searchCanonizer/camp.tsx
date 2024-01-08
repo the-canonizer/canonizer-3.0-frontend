@@ -19,7 +19,7 @@ const CampSearch = () => {
     searchMetaData: state?.searchSlice?.searchMetaData,
   }));
   const { loading } = useSelector((state: RootState) => ({
-    loading: state?.loading?.loading,
+    loading: state?.loading?.searchLoading,
   }));
   const dispatch = useDispatch();
   const pageChange = (pageNumber) => {

@@ -54,7 +54,7 @@ describe("Search heading", () => {
     const campHeading = screen.getByTestId("camp_statment_heading");
     expect(campHeading).toBeInTheDocument();
   });
-  it("render all search heading", async() => {
+  it("render all search heading", async () => {
     render(<Search />);
     const allTopicHeading = screen.getByTestId("all_topic_heading");
     const allNickNameHeading = screen.getByTestId("all_nick_name_heading");
@@ -63,12 +63,12 @@ describe("Search heading", () => {
       "all_camp_statement_heading"
     );
 
-   await waitFor(()=>{
-    expect(allTopicHeading).toBeInTheDocument();
-    expect(allNickNameHeading).toBeInTheDocument();
-    expect(allCampHeading).toBeInTheDocument();
-    expect(allCampStatementHeading).toBeInTheDocument();
-    })
+    await waitFor(() => {
+      expect(allTopicHeading).toBeInTheDocument();
+      expect(allNickNameHeading).toBeInTheDocument();
+      expect(allCampHeading).toBeInTheDocument();
+      expect(allCampStatementHeading).toBeInTheDocument();
+    });
   });
   it("render nick name search heading", () => {
     render(<NicknameSearch />);

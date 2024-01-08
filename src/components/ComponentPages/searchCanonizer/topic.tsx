@@ -18,7 +18,7 @@ const TopicSearch = () => {
   }));
 
   const { loading } = useSelector((state: RootState) => ({
-    loading: state?.loading?.loading,
+    loading: state?.loading?.searchLoading,
   }));
 
   const [currentPage, setCurrentPage] = useState(1);
