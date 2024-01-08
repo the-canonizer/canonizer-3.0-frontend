@@ -213,6 +213,7 @@ const PostForm = ({
                   className={`${styles.submit_btn}`}
                   id="submit-btn"
                   data-testid="submit-btn"
+                  disabled={isLoading}
                 >
                   Submit
                 </Button>

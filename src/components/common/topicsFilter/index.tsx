@@ -229,9 +229,8 @@ const CreateTopic = () => {
   }, [filteredAsOfDate]);
 
   useEffect(() => {
-    getCanonizedAlgorithmsApi();
+    if (!(algorithms?.length > 0)) getCanonizedAlgorithmsApi();
   }, []);
-
   const selectAlgorithm = (value) => {
     setCookie("canAlgo", value, {
       path: "/",

@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "src/store";
 import { Empty, Pagination } from "antd";
 import { setPageNumber } from "src/store/slices/searchSlice";
-import CustomSkelton from "@/components/common/customSkelton";
+import CustomSkelton from "../../common/customSkelton";
 
 const TopicSearch = () => {
   const { searchDataAll } = useSelector((state: RootState) => ({

@@ -12,6 +12,7 @@ import { getThreadsList } from "../../../../../network/api/campForumApi";
 import { useRouter } from "next/router";
 import Layout from "../../../../../hoc/layout";
 import CampForumComponent from "../../../../../components/ComponentPages/CampForum";
+import { createToken } from "src/network/api/userApi";
 
 function CampForumListPage({ topicRecord, campRecord, threadList }: any) {
   const router = useRouter();
@@ -56,9 +57,17 @@ export async function getServerSideProps({ req, resolvedUrl }) {
         ? parseFloat(req.cookies["asofDate"])
         : Date.now() / 1000,
   };
+  let token = null;
+  if (req.cookies["loginToken"]) {
+    token = req.cookies["loginToken"];
+  } else {
+    const response = await createToken();
+    token = response?.access_token;
+  }
+
   const [topicRecord, campRecord, threadList] = await Promise.all([
-    getCurrentTopicRecordApi(reqBody, req.cookies["authToken"]),
-    getCurrentCampRecordApi(reqBody, req.cookies["authToken"]),
+    getCurrentTopicRecordApi(reqBody, token),
+    getCurrentCampRecordApi(reqBody, token),
     getThreadsList(q),
   ]);
 

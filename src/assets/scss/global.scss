@@ -2952,3 +2952,22 @@ div[role="option"]::before {
     border-radius: 50%;
   }
 }
+.upload-wrap {
+  position: relative;
+  .ant-dropdown-trigger {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    z-index: 10;
+    color: black;
+    font-size: 20px;
+  }
+  .ant-upload-list-item-info {
+    border: 1px solid #2c6cb5;
+  }
+  .ant-btn-default {
+    border-color: #2c6cb5;
+    color: #2c6cb5;
+    background-color: #f8f8f8;
+  }
+}
