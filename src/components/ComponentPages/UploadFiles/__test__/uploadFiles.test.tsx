@@ -167,9 +167,7 @@ const fileLists = [
   },
 ];
 jest.mock("src/network/api/userApi", () => ({
-  uploadFile: jest.fn() .mockReturnValue(
-    Promise.resolve({ status_code: 200,})
-  ),
+  uploadFile: jest.fn().mockReturnValue(Promise.resolve({ status_code: 200 })),
   deleteFolderApi: jest.fn(),
   deleteUploadFileApi: jest.fn(),
   getFileInsideFolderApi: jest
@@ -205,7 +203,7 @@ const store2 = mockStore({
   ui: {
     dragBox: false,
     folderOpen: true,
-    visibleUploadOptions:true
+    visibleUploadOptions: true,
   },
 });
 
@@ -218,7 +216,6 @@ const store3 = mockStore({
 });
 const store4 = mockStore({
   ui: {
-    
     visibleUploadOptions: true,
   },
 });
@@ -328,15 +325,15 @@ describe("Upload file page", () => {
     // })
   });
   it("render add_file_btn", async () => {
-    const {container, getByTestId, getByText } = render(
-    <Provider store={store4}>
-      <UploadFiles/>
-    </Provider>
+    const { container, getByTestId, getByText } = render(
+      <Provider store={store4}>
+        <UploadFiles />
+      </Provider>
     );
     await waitFor(() => {
-     const uploadBtn = screen.getByTestId("upload_btn")
-     fireEvent.click(uploadBtn)
+      const uploadBtn = screen.getByTestId("upload_btn");
+      fireEvent.click(uploadBtn);
+    });
   });
-});
 });
 afterEach(cleanup);
