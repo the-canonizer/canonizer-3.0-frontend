@@ -432,6 +432,9 @@ function HistoryCollapse({
                         campHistoryItems?.at(0)?.is_archive == 1 &&
                         campStatement.status == "old") ||
                       (parentArchived == 1 && directarchived == 0) ||
+                      (parentArchived == 1 &&
+                        directarchived == 1 &&
+                        historyOf == "topic") ||
                       (campHistoryItems?.at(0)?.is_archive == 1 &&
                         campHistoryItems?.at(0)?.status == "live" &&
                         campStatement.status == "objected")
