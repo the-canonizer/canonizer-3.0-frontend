@@ -68,7 +68,7 @@ const persistConfig = {
     "topicDetails",
     "utils",
     "recentActivities",
-    "hotTopic",
+    // "hotTopic",
   ],
 };
 

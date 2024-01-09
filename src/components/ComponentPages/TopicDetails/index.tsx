@@ -468,30 +468,18 @@ const TopicDetails = ({ serverSideCall }: any) => {
           />
         </aside>
 
-        <Fragment>
-          <div className={styles.pageContent + " pageContentWrap"}>
-            {(tree && tree["1"]?.is_valid_as_of_time) || asof == "default" ? (
-              <CampInfoBar
-                isTopicPage={true}
-                payload={{
-                  topic_num: +router?.query?.camp[0]?.split("-")[0],
-                  camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
-                }}
-                getCheckSupportStatus={getCheckSupportStatus}
-              />
-            ) : (
-              <CampInfoBar
-                payload={{
-                  topic_num: +router?.query?.camp[0]?.split("-")[0],
-                  camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
-                }}
-                isTopicHistoryPage={true}
-                getCheckSupportStatus={getCheckSupportStatus}
-              />
-            )}
-            <InfoBar
-              onCreateCamp={onCreateCamp}
+        <div className={styles.pageContent + " pageContentWrap"}>
+          {(tree && tree["1"]?.is_valid_as_of_time) || asof == "default" ? (
+            <CampInfoBar
               isTopicPage={true}
+              payload={{
+                topic_num: +router?.query?.camp[0]?.split("-")[0],
+                camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
+              }}
+              getCheckSupportStatus={getCheckSupportStatus}
+            />
+          ) : (
+            <CampInfoBar
               payload={{
                 topic_num: +router?.query?.camp[0]?.split("-")[0],
                 camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
@@ -499,167 +487,164 @@ const TopicDetails = ({ serverSideCall }: any) => {
               isTopicHistoryPage={true}
               getCheckSupportStatus={getCheckSupportStatus}
             />
-            {/* <CampTreeCard
-                getTreeLoadingIndicator={getTreeLoadingIndicator}
-                scrollToCampStatement={scrollToCampStatement}
-                setTotalCampScoreForSupportTree={
-                  setTotalCampScoreForSupportTree
-                }
-                setSupportTreeForCamp={setSupportTreeForCamp}
-                backGroundColorClass={backGroundColorClass}
-              /> */}
+          )}
+          <InfoBar
+            onCreateCamp={onCreateCamp}
+            isTopicPage={true}
+            payload={{
+              topic_num: +router?.query?.camp[0]?.split("-")[0],
+              camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
+            }}
+            isTopicHistoryPage={true}
+            getCheckSupportStatus={getCheckSupportStatus}
+          />
 
-            {isClient &&
-              tree &&
-              (!tree["1"]?.is_valid_as_of_time ||
-                (tree["1"]?.is_valid_as_of_time &&
-                  !(
-                    tree["1"]?.created_date <=
-                    (asof == "default" || asof == "review"
-                      ? Date.now() / 1000
-                      : asofdate)
-                  ))) && (
-                <div className={styles.imageWrapper}>
-                  <div>
-                    <Image
-                      preview={false}
-                      alt="No topic created"
-                      src={"/images/empty-img-default.png"}
-                      fallback={fallBackSrc}
-                      width={200}
-                      id="forgot-modal-img"
-                    />
-                    <p>
-                      The topic was created on
-                      <AntLink
-                        onClick={() => {
-                          onCreateTreeDate();
-                        }}
-                      >
-                        {" "}
-                        {
-                          new Date((tree && tree["1"]?.created_date) * 1000)
-                            .toLocaleString()
-                            ?.split(",")[0]
-                        }
-                      </AntLink>
-                    </p>
-                  </div>
+          {isClient &&
+            tree &&
+            (!tree["1"]?.is_valid_as_of_time ||
+              (tree["1"]?.is_valid_as_of_time &&
+                !(
+                  tree["1"]?.created_date <=
+                  (asof == "default" || asof == "review"
+                    ? Date.now() / 1000
+                    : asofdate)
+                ))) && (
+              <div className={styles.imageWrapper}>
+                <div>
+                  <Image
+                    preview={false}
+                    alt="No topic created"
+                    src={"/images/empty-img-default.png"}
+                    fallback={fallBackSrc}
+                    width={200}
+                    id="forgot-modal-img"
+                  />
+                  <p>
+                    The topic was created on
+                    <AntLink
+                      onClick={() => {
+                        onCreateTreeDate();
+                      }}
+                    >
+                      {" "}
+                      {
+                        new Date((tree && tree["1"]?.created_date) * 1000)
+                          .toLocaleString()
+                          ?.split(",")[0]
+                      }
+                    </AntLink>
+                  </p>
                 </div>
-              )}
-
-            {((isClient &&
-              tree &&
-              tree["1"]?.is_valid_as_of_time &&
-              tree["1"]?.created_date <=
-                (asof == "default" || asof == "review"
-                  ? Date.now() / 1000
-                  : asofdate)) ||
-              asof == "default") && (
-              <Fragment>
-                {campExist
-                  ? campExist?.camp_exist
-                  : true && (
-                      <Fragment>
-                        <CampStatementCard
-                          loadingIndicator={loadingIndicator}
-                          backGroundColorClass={backGroundColorClass}
-                        />
-
-                        <SupportTreeCard
-                          loadingIndicator={loadingIndicator}
-                          handleLoadMoreSupporters={handleLoadMoreSupporters}
-                          getCheckSupportStatus={getCheckSupportStatus}
-                          removeApiSupport={removeApiSupport}
-                          // fetchTotalScore={fetchTotalScore}
-                          totalSupportScore={totalSupportScore}
-                          totalFullSupportScore={totalFullSupportScore}
-                          removeSupport={removeSupport}
-                          topicList={topicList}
-                          removeSupportForDelegate={removeSupportForDelegate}
-                          isSupportTreeCardModal={isSupportTreeCardModal}
-                          setIsSupportTreeCardModal={setIsSupportTreeCardModal}
-                          isDelegateSupportTreeCardModal={
-                            isDelegateSupportTreeCardModal
-                          }
-                          setIsDelegateSupportTreeCardModal={
-                            setIsDelegateSupportTreeCardModal
-                          }
-                          handleSupportTreeCardCancel={
-                            handleSupportTreeCardCancel
-                          }
-                          removeSupportSpinner={removeSupportSpinner}
-                          supportTreeForCamp={supportTreeForCamp}
-                          totalCampScoreForSupportTree={
-                            totalCampScoreForSupportTree
-                          }
-                          backGroundColorClass={backGroundColorClass}
-                        />
-
-                        <CurrentTopicCard
-                          loadingIndicator={loadingIndicator}
-                          backGroundColorClass={backGroundColorClass}
-                        />
-                        <CurrentCampCard
-                          loadingIndicator={loadingIndicator}
-                          backGroundColorClass={backGroundColorClass}
-                        />
-
-                        <Row gutter={15} className={styles.bottomRow}>
-                          <Col xs={24} sm={24} md={12} lg={12} xl={12} xxl={12}>
-                            <CampRecentActivities />
-                          </Col>
-                          <Col xs={24} sm={24} md={12} lg={12} xl={12} xxl={12}>
-                            <Spin
-                              spinning={loadingIndicator}
-                              size="large"
-                              wrapperClassName="newfeedCardSpinner"
-                            >
-                              <NewsFeedsCard newsFeed={newsFeed} />
-                            </Spin>
-                          </Col>
-                        </Row>
-                      </Fragment>
-                    )}
-              </Fragment>
+              </div>
             )}
 
-            {((tree &&
-              tree["1"]?.is_valid_as_of_time &&
-              tree["1"]?.created_date <=
-                (asof == "default" || asof == "review"
-                  ? Date.now() / 1000
-                  : asofdate)) ||
-              asof == "default") &&
-              campExist &&
-              !campExist?.camp_exist && (
-                <Fragment>
-                  <Alert
-                    className="alert-camp-created-on"
-                    message="The camp was first created on"
-                    type="info"
-                    description={
-                      <span>
-                        <AntLink
-                          onClick={() => {
-                            onCreateCampDate();
-                          }}
-                        >
-                          {
-                            new Date(
-                              (campExist && campExist?.created_at) * 1000
-                            )
-                              .toLocaleString()
-                              ?.split(",")[0]
-                          }
-                        </AntLink>
-                      </span>
-                    }
-                  />
-                </Fragment>
-              )}
-          </div>
-        </Fragment>
+          {((isClient &&
+            tree &&
+            tree["1"]?.is_valid_as_of_time &&
+            tree["1"]?.created_date <=
+              (asof == "default" || asof == "review"
+                ? Date.now() / 1000
+                : asofdate)) ||
+            asof == "default") && (
+            <Fragment>
+              {campExist
+                ? campExist?.camp_exist
+                : true && (
+                    <Fragment>
+                      <CampStatementCard
+                        loadingIndicator={loadingIndicator}
+                        backGroundColorClass={backGroundColorClass}
+                      />
+
+                      <SupportTreeCard
+                        loadingIndicator={loadingIndicator}
+                        handleLoadMoreSupporters={handleLoadMoreSupporters}
+                        getCheckSupportStatus={getCheckSupportStatus}
+                        removeApiSupport={removeApiSupport}
+                        // fetchTotalScore={fetchTotalScore}
+                        totalSupportScore={totalSupportScore}
+                        totalFullSupportScore={totalFullSupportScore}
+                        removeSupport={removeSupport}
+                        topicList={topicList}
+                        removeSupportForDelegate={removeSupportForDelegate}
+                        isSupportTreeCardModal={isSupportTreeCardModal}
+                        setIsSupportTreeCardModal={setIsSupportTreeCardModal}
+                        isDelegateSupportTreeCardModal={
+                          isDelegateSupportTreeCardModal
+                        }
+                        setIsDelegateSupportTreeCardModal={
+                          setIsDelegateSupportTreeCardModal
+                        }
+                        handleSupportTreeCardCancel={
+                          handleSupportTreeCardCancel
+                        }
+                        removeSupportSpinner={removeSupportSpinner}
+                        supportTreeForCamp={supportTreeForCamp}
+                        totalCampScoreForSupportTree={
+                          totalCampScoreForSupportTree
+                        }
+                        backGroundColorClass={backGroundColorClass}
+                      />
+
+                      <CurrentTopicCard
+                        loadingIndicator={loadingIndicator}
+                        backGroundColorClass={backGroundColorClass}
+                      />
+                      <CurrentCampCard
+                        loadingIndicator={loadingIndicator}
+                        backGroundColorClass={backGroundColorClass}
+                      />
+
+                      <Row gutter={15} className={styles.bottomRow}>
+                        <Col xs={24} sm={24} md={12} lg={12} xl={12} xxl={12}>
+                          <CampRecentActivities />
+                        </Col>
+                        <Col xs={24} sm={24} md={12} lg={12} xl={12} xxl={12}>
+                          <Spin
+                            spinning={loadingIndicator}
+                            size="large"
+                            wrapperClassName="newfeedCardSpinner"
+                          >
+                            <NewsFeedsCard newsFeed={newsFeed} />
+                          </Spin>
+                        </Col>
+                      </Row>
+                    </Fragment>
+                  )}
+            </Fragment>
+          )}
+
+          {((tree &&
+            tree["1"]?.is_valid_as_of_time &&
+            tree["1"]?.created_date <=
+              (asof == "default" || asof == "review"
+                ? Date.now() / 1000
+                : asofdate)) ||
+            asof == "default") &&
+            campExist &&
+            !campExist?.camp_exist && (
+              <Alert
+                className="alert-camp-created-on"
+                message="The camp was first created on"
+                type="info"
+                description={
+                  <span>
+                    <AntLink
+                      onClick={() => {
+                        onCreateCampDate();
+                      }}
+                    >
+                      {
+                        new Date((campExist && campExist?.created_at) * 1000)
+                          .toLocaleString()
+                          ?.split(",")[0]
+                      }
+                    </AntLink>
+                  </span>
+                }
+              />
+            )}
+        </div>
       </div>
       <BackTop />
     </Fragment>
