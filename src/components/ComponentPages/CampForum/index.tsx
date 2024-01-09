@@ -26,6 +26,7 @@ import {
 } from "../../../network/api/campDetailApi";
 import { setThread, setPost } from "../../../store/slices/campForumSlice";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
+import { createToken } from "src/network/api/userApi";
 
 const ForumComponent = ({
   threadlist = [],
@@ -54,6 +55,7 @@ const ForumComponent = ({
   const [loading, setLoading] = useState(false);
   const [postLoading, setPostLoading] = useState(false);
   const [threadDetailsLoading, setthreadDetailsLoading] = useState(false);
+  const [createdAt, setCreatedAt] = useState(null);
   const [perPage] = useState(10);
   const [postperPage] = useState(10);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -65,15 +67,23 @@ const ForumComponent = ({
     setIsLoggedIn(isUserAuthenticated);
   }, [isUserAuthenticated]);
 
-  const { campRecord, asof, asofdate, algorithm, currentThread, currentPost } =
-    useSelector((state: RootState) => ({
-      campRecord: state?.topicDetails?.currentCampRecord,
-      asof: state?.filters?.filterObject?.asof,
-      asofdate: state.filters?.filterObject?.asofdate,
-      algorithm: state.filters?.filterObject?.algorithm,
-      currentThread: state.forum.currentThread,
-      currentPost: state.forum.currentPost,
-    }));
+  const {
+    campRecord,
+    asof,
+    asofdate,
+    algorithm,
+    currentThread,
+    currentPost,
+    authToken,
+  } = useSelector((state: any) => ({
+    campRecord: state?.topicDetails?.currentCampRecord,
+    asof: state?.filters?.filterObject?.asof,
+    asofdate: state.filters?.filterObject?.asofdate,
+    algorithm: state.filters?.filterObject?.algorithm,
+    currentThread: state.forum.currentThread,
+    currentPost: state.forum.currentPost,
+    authToken: state.auth.authToken,
+  }));
 
   const setCurrentThread = (data) => dispatch(setThread(data));
 
@@ -153,7 +163,17 @@ const ForumComponent = ({
       setthreadDetailsLoading(true);
       setPostLoading(true);
 
-      const res = await getThreadData(id, topic_num, camp_num);
+      let token = null;
+      if (authToken) {
+        token = authToken;
+      } else {
+        const response = await createToken();
+        token = response?.access_token;
+      }
+
+      const res = await getThreadData(id, topic_num, camp_num, token);
+
+      setCreatedAt(res.data.created_at);
 
       if (res?.data?.status_code === 404) {
         message.error(res?.data?.error || "Something went wrong ");
@@ -479,7 +499,7 @@ const ForumComponent = ({
     const q = router?.query,
       threadId = q?.id;
 
-    if (threadId && didMountList.current) {
+    if (threadId || didMountList.current) {
       threadDetails();
     } else didMountList.current = true;
 
@@ -688,6 +708,7 @@ const ForumComponent = ({
           payload={payload}
           showModal={showModal}
           isModalOpen={isModalOpen}
+          createdAt={createdAt}
         />
       ) : null}
     </Fragment>
