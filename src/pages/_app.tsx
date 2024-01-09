@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import useState from "react-usestateref";
-import App, { AppContext, AppInitialProps, AppProps } from "next/app";
+import App, { AppContext } from "next/app";
 import { Provider } from "react-redux";
 import { CookiesProvider } from "react-cookie";
 import { useRouter } from "next/router";
@@ -21,14 +21,9 @@ import { checkTopicCampExistAPICall } from "src/network/api/campDetailApi";
 import { getCookies } from "src/utils/generalUtility";
 import { createToken } from "src/network/api/userApi";
 
-interface CustomPageProps {
-  meta: any;
-  canonical_url: string;
-}
-
 function WrappedApp({ Component, pageProps, meta, canonical_url }: any) {
   const router = useRouter();
-  const [isAuthenticated, setIsAuthenticated, isAuthenticatedRef] = useState(
+  const [_isAuthenticated, setIsAuthenticated, isAuthenticatedRef] = useState(
     !!(getCookies() as any)?.loginToken
   );
 
@@ -60,6 +55,7 @@ function WrappedApp({ Component, pageProps, meta, canonical_url }: any) {
             componentName={Component.displayName || Component.name}
             metaContent={meta}
             canonical={canonical_url}
+            {...pageProps}
           />
           <Component {...pageProps} />
         </ErrorBoundary>
@@ -71,17 +67,6 @@ function WrappedApp({ Component, pageProps, meta, canonical_url }: any) {
 }
 
 let timeout;
-// export async function getServerSideProps(...rest) {
-//   console.log("🚀 ~ file: _app.tsx:106 ~ getServerSideProps ~ rest:", rest);
-
-//   return {
-//     props: {
-//       meta: "",
-//       canonical_url: "",
-//     },
-//   };
-// }
-
 WrappedApp.getInitialProps = async (appContext: AppContext) => {
   // calls page's `getInitialProps` and fills `appProps.pageProps`
   const appProps = await App.getInitialProps(appContext);
