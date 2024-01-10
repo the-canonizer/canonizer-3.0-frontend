@@ -33,6 +33,7 @@ function HistoryContainer() {
   const router = useRouter();
   const dispatch = useDispatch();
   const didMount = useRef(false);
+  const didMountCall = useRef(false);
 
   const [activeTab, setActiveTab] = useState("all");
 
@@ -150,12 +151,15 @@ function HistoryContainer() {
   }, [history]);
 
   useEffect(() => {
-    const asynCall = async () => {
-      setLoadMoreItems(true);
-      count.current = 1;
-      await campStatementApiCall();
-    };
-    asynCall();
+    if (didMountCall.current) {
+      const asynCall = async () => {
+        setLoadMoreItems(true);
+        count.current = 1;
+        await campStatementApiCall();
+      };
+      asynCall();
+    }
+    didMountCall.current = true;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab, agreecheck, discardChange, isUserAuthenticated]);
   useEffect(() => {
