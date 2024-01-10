@@ -13,7 +13,7 @@ const Search = () => {
     searchData: state?.searchSlice?.searchData,
   }));
   const { loading } = useSelector((state: RootState) => ({
-    loading: state?.loading?.loading,
+    loading: state?.loading?.searchLoading,
   }));
   const covertToTime = (unixTime) => {
     return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");

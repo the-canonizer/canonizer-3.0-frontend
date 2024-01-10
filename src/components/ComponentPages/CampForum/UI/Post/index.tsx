@@ -34,6 +34,7 @@ const PostUI = ({
   threadDetailsLoading,
   isModalOpen,
   showModal,
+  createdAt,
 }: any) => (
   <Fragment>
     <Card
@@ -72,7 +73,7 @@ const PostUI = ({
           ) : (
             <Fragment>
               <Text id="thread-create-label">{`Thread Created at ${moment(
-                getTime(currentThread["created_at"])
+                getTime(createdAt)
               ).format("MMM Do YYYY, h:mm:ss a")}`}</Text>{" "}
               |{" "}
               <Text id="started-by-label">
