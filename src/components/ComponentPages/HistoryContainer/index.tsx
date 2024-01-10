@@ -151,15 +151,12 @@ function HistoryContainer() {
   }, [history]);
 
   useEffect(() => {
-    if (didMountCall.current) {
-      const asynCall = async () => {
-        setLoadMoreItems(true);
-        count.current = 1;
-        await campStatementApiCall();
-      };
-      asynCall();
-    }
-    didMountCall.current = true;
+    const asynCall = async () => {
+      setLoadMoreItems(true);
+      count.current = 1;
+      await campStatementApiCall();
+    };
+    asynCall();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab, agreecheck, discardChange, isUserAuthenticated]);
   useEffect(() => {
@@ -576,6 +573,7 @@ function HistoryContainer() {
               renderCampHistories
             ) : (
               <InfiniteScroll
+                initialLoad={false}
                 loadMore={!loadingIndicator && campStatementApiCall}
                 hasMore={loadMoreItems}
                 loader={loader}
