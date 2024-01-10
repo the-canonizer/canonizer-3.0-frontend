@@ -2971,3 +2971,10 @@ div[role="option"]::before {
     background-color: #f8f8f8;
   }
 }
+
+.edit-profile-picture {
+  left: 50%;
+  bottom: 36px;
+  border-radius: 15px;
+  z-index: 10;
+}

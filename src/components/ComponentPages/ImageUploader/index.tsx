@@ -134,10 +134,8 @@ const ImageUploader: React.FC = () => {
     </div>
   );
 
-  const updateProfilePicture = async (e) => {
-    let newFileList = e.fileList;
-    const lastFile = e.fileList[e.fileList.length - 1];
-
+  const updateProfilePicture = async ({ fileList: newFileList }) => {
+    const lastFile = newFileList[newFileList.length - 1];
     if (lastFile) {
       const validationStatus = await validateImage(
         lastFile.originFileObj as File
@@ -192,17 +190,19 @@ const ImageUploader: React.FC = () => {
         >
           {fileList.length >= 1 ? null : uploadButton}
         </Upload>
-        <Dropdown
-          menu={{
-            items,
-          }}
-        >
-          <a onClick={(e) => e.preventDefault()}>
-            <Button size="small">
+        {fileList.length >= 1 ? (
+          <Upload
+            fileList={fileList}
+            multiple={false}
+            accept="image/*"
+            showUploadList={false}
+            onChange={updateProfilePicture}
+          >
+            <Button size="small" className="edit-profile-picture">
               <EditOutlined />
             </Button>
-          </a>
-        </Dropdown>
+          </Upload>
+        ) : null}
       </div>
       <Modal
         visible={isPreviewVisible}

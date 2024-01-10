@@ -307,7 +307,10 @@ describe("TimelineSlider", () => {
   test("renders the component with correct data", async () => {
     render(
       <Provider store={store1}>
-        <TimeLine setTimelineDescript={jest.fn()} />
+        <TimeLine
+          setTimelineDescript={jest.fn()}
+          setLoadingEvents={jest.fn()}
+        />
       </Provider>
     );
 
@@ -320,7 +323,10 @@ describe("TimeLine", () => {
     render(
       <Provider store={store}>
         {" "}
-        <TimeLine setTimelineDescript={jest.fn()} />
+        <TimeLine
+          setTimelineDescript={jest.fn()}
+          setLoadingEvents={jest.fn()}
+        />
       </Provider>
     );
     expect(screen.getByTestId("time-bar-control")).toBeInTheDocument();
