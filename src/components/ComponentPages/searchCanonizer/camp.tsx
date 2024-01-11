@@ -28,7 +28,7 @@ const CampSearch = () => {
   };
   useEffect(() => {
     pageChange(currentPage);
-  });
+  },[searchDataAll?.camp]);
   const showEmpty = (msg) => {
     return <Empty description={msg} />;
   };
