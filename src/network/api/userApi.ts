@@ -109,6 +109,7 @@ export const logout = async (error = "", status = null, count: number = 1) => {
     document.cookie =
       "loginToken=; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
     store.dispatch(setHeaderData({ count: 0, list: [] }));
+    await createToken();
     return res;
   } catch (error) {
     store.dispatch(logoutUser());
