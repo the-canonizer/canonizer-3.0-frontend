@@ -408,7 +408,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
                     <>
                       <li style={{ cursor: "default" }}>
                         <div className="d-flex flex-wrap">
-                          <Link href={`/${x.link}`}>
+                          <Link href={`${x.link}`}>
                             <a>
                               {!!prefix && (
                                 <label style={{ cursor: "pointer" }}>
