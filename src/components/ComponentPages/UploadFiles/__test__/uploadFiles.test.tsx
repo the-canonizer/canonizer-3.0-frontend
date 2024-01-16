@@ -1,5 +1,6 @@
 import {
   fireEvent,
+  getByText,
   render,
   screen,
   waitFor,
@@ -14,24 +15,176 @@ import CreateFolder from "../CreateFolder";
 jest.mock("src/hooks/isUserAuthenticated", () =>
   jest.fn(() => ({ isUserAuthenticated: true }))
 );
-
+const fileLists = [
+  {
+    created_at: 1650894718,
+    deleted_at: null,
+    file_id: "can-lmLrBLqFe",
+    file_name: "Third.jpg",
+    file_path:
+      "https://canonizer-public-file.s3.us-east-2.amazonaws.com/TWFsaWExMTM0TWFsaWE%3D_1650894717_713566.jpg",
+    short_code_path:
+      "https://canonizer-public-file.s3.us-east-2.amazonaws.com/TWFsaWExMTM0TWFsaWE%3D_1650894717_713566.jpg",
+    file_type: "image/jpeg",
+    folder_id: null,
+    id: 132,
+    short_code: "can-lmLrBLqFe",
+    type: "file",
+    updated_at: 1650894718,
+    user_id: 1134,
+  },
+  {
+    created_at: 1650894719,
+    deleted_at: null,
+    file_id: "can-lmLrBLqFe",
+    file_name: "Third1.jpg",
+    file_path:
+      "https://canonizer-public-file.s3.us-east-2.amazonaws.com/TWFsaWExMTM0TWFsaWE%3D_1650894717_713566.jpg",
+    short_code_path:
+      "https://canonizer-public-file.s3.us-east-2.amazonaws.com/TWFsaWExMTM0TWFsaWE%3D_1650894717_713566.jpg",
+    file_type: "text/plain",
+    folder_id: null,
+    id: 132,
+    short_code: "can-lmLrBLqFe",
+    type: "file",
+    updated_at: 1650894718,
+    user_id: 1134,
+  },
+  {
+    created_at: 1650894728,
+    deleted_at: null,
+    file_id: "can-lmLrBLqFe",
+    file_name: "Third2.jpg",
+    file_path:
+      "https://canonizer-public-file.s3.us-east-2.amazonaws.com/TWFsaWExMTM0TWFsaWE%3D_1650894717_713566.jpg",
+    short_code_path:
+      "https://canonizer-public-file.s3.us-east-2.amazonaws.com/TWFsaWExMTM0TWFsaWE%3D_1650894717_713566.jpg",
+    file_type: "application/pdf",
+    folder_id: null,
+    id: 132,
+    short_code: "can-lmLrBLqFe",
+    type: "file",
+    updated_at: 1650894718,
+    user_id: 1134,
+  },
+  {
+    created_at: 1651209637,
+    deleted_at: null,
+    id: 109,
+    name: "can",
+    type: "folder",
+    updated_at: 1651209637,
+    uploads_count: 0,
+    user_id: 1134,
+  },
+  {
+    created_at: 1650894768,
+    deleted_at: null,
+    file_id: "can-lmLrBLqFe",
+    file_name: "nop.jpg",
+    file_path:
+      "https://canonizer-public-file.s3.us-east-2.amazonaws.com/TWFsaWExMTM0TWFsaWE%3D_1650894717_713566.jpg",
+    short_code_path:
+      "https://canonizer-public-file.s3.us-east-2.amazonaws.com/TWFsaWExMTM0TWFsaWE%3D_1650894717_713566.jpg",
+    file_type: "application/msword",
+    folder_id: null,
+    id: 132,
+    short_code: "can-lmLrBLqFe",
+    type: "file",
+    updated_at: 1650894719,
+    user_id: 1184,
+  },
+  {
+    created_at: 1650894768,
+    deleted_at: null,
+    file_id: "can-lmLrBpqFe",
+    file_name: "nop.jpg",
+    file_path:
+      "https://canonizer-public-file.s3.us-east-2.amazonaws.com/TWFsaWExMTM0TWFsaWE%3D_1650894717_713566.jpg",
+    short_code_path:
+      "https://canonizer-public-file.s3.us-east-2.amazonaws.com/TWFsaWExMTM0TWFsaWE%3D_1650894717_713566.jpg",
+    file_type: "application/msword",
+    folder_id: null,
+    id: 142,
+    short_code: "can-lmLrBLqFe",
+    type: "file",
+    updated_at: 1650894719,
+    user_id: 1184,
+  },
+  {
+    created_at: 1650895768,
+    deleted_at: null,
+    file_id: "can-lmLrBLlFe",
+    file_name: "nop.jpg",
+    file_path:
+      "https://canonizer-public-file.s3.us-east-2.amazonaws.com/TWFsaWExMTM0TWFsaWE%3D_1650894717_713566.jpg",
+    short_code_path:
+      "https://canonizer-public-file.s3.us-east-2.amazonaws.com/TWFsaWExMTM0TWFsaWE%3D_1650894717_713566.jpg",
+    file_type: "application/json",
+    folder_id: null,
+    id: 132,
+    short_code: "can-lmLrBLqFe",
+    type: "file",
+    updated_at: 1650894719,
+    user_id: 1184,
+  },
+  {
+    created_at: 1650885768,
+    deleted_at: null,
+    file_id: "can-lmLkBLlFe",
+    file_name: "nope.jpg",
+    file_path:
+      "https://canonizer-public-file.s3.us-east-2.amazonaws.com/TWFsaWExMTM0TWFsaWE%3D_1650894717_713566.jpg",
+    short_code_path:
+      "https://canonizer-public-file.s3.us-east-2.amazonaws.com/TWFsaWExMTM0TWFsaWE%3D_1650894717_713566.jpg",
+    file_type: "application/vnd.ms-excel.sheet.macroEnabled.12",
+    folder_id: null,
+    id: 152,
+    short_code: "can-lmLrBLqFe",
+    type: "file",
+    updated_at: 1650894719,
+    user_id: 1184,
+  },
+  {
+    created_at: 1650885768,
+    deleted_at: null,
+    file_id: "can-lmLkBLlFe",
+    file_name: "nope.jpg",
+    file_path:
+      "https://canonizer-public-file.s3.us-east-2.amazonaws.com/TWFsaWExMTM0TWFsaWE%3D_1650894717_713566.jpg",
+    short_code_path:
+      "https://canonizer-public-file.s3.us-east-2.amazonaws.com/TWFsaWExMTM0TWFsaWE%3D_1650894717_713566.jpg",
+    file_type: "application/vnd.ms-powerpoint.template.macroEnabled.12",
+    folder_id: null,
+    id: 162,
+    short_code: "can-llLrBLqFe",
+    type: "file",
+    updated_at: 1650894119,
+    user_id: 1184,
+  },
+];
 jest.mock("src/network/api/userApi", () => ({
   uploadFile: jest.fn(),
   deleteFolderApi: jest.fn(),
   deleteUploadFileApi: jest.fn(),
   getFileInsideFolderApi: jest
     .fn()
-    .mockReturnValue(Promise.resolve({ success: true })),
-  getUploadFileAndFolder: jest.fn(() =>
-    Promise.resolve({ data: { files: [], folders: [] } })
+    .mockReturnValue(
+      Promise.resolve({ success: true, status_code: 200, data: { id: 1 } })
+    ),
+  getUploadFileAndFolder: jest.fn((v) =>
+    Promise.resolve({
+      data: { files: fileLists, folders: [{ ...v, type: "folder" }] },
+    })
   ),
 }));
 const mockState = {
   ui: {
-    // dragBox,
+    dragBox: false,
     // disabledCreateFolderBtn,
     visibleUploadOptions: true,
     addButton: true,
+    folderOpen: true,
   },
 };
 
@@ -46,189 +199,17 @@ jest.mock("next/router", () => ({
   useRouter: jest.fn(),
 }));
 
-// const fileLists = [
-//   {
-//     created_at: 1650894718,
-//     deleted_at: null,
-//     file_id: "can-lmLrBLqFe",
-//     file_name: "Third.jpg",
-//     file_path:
-//       "https://canonizer-public-file.s3.us-east-2.amazonaws.com/TWFsaWExMTM0TWFsaWE%3D_1650894717_713566.jpg",
-//     short_code_path:
-//       "https://canonizer-public-file.s3.us-east-2.amazonaws.com/TWFsaWExMTM0TWFsaWE%3D_1650894717_713566.jpg",
-//     file_type: "image/jpeg",
-//     folder_id: null,
-//     id: 132,
-//     short_code: "can-lmLrBLqFe",
-//     type: "file",
-//     updated_at: 1650894718,
-//     user_id: 1134,
-//   },
-//   {
-//     created_at: 1650894719,
-//     deleted_at: null,
-//     file_id: "can-lmLrBLqFe",
-//     file_name: "Third1.jpg",
-//     file_path:
-//       "https://canonizer-public-file.s3.us-east-2.amazonaws.com/TWFsaWExMTM0TWFsaWE%3D_1650894717_713566.jpg",
-//     short_code_path:
-//       "https://canonizer-public-file.s3.us-east-2.amazonaws.com/TWFsaWExMTM0TWFsaWE%3D_1650894717_713566.jpg",
-//     file_type: "text/plain",
-//     folder_id: null,
-//     id: 132,
-//     short_code: "can-lmLrBLqFe",
-//     type: "file",
-//     updated_at: 1650894718,
-//     user_id: 1134,
-//   },
-//   {
-//     created_at: 1650894728,
-//     deleted_at: null,
-//     file_id: "can-lmLrBLqFe",
-//     file_name: "Third2.jpg",
-//     file_path:
-//       "https://canonizer-public-file.s3.us-east-2.amazonaws.com/TWFsaWExMTM0TWFsaWE%3D_1650894717_713566.jpg",
-//     short_code_path:
-//       "https://canonizer-public-file.s3.us-east-2.amazonaws.com/TWFsaWExMTM0TWFsaWE%3D_1650894717_713566.jpg",
-//     file_type: "application/pdf",
-//     folder_id: null,
-//     id: 132,
-//     short_code: "can-lmLrBLqFe",
-//     type: "file",
-//     updated_at: 1650894718,
-//     user_id: 1134,
-//   },
-//   {
-//     created_at: 1651209637,
-//     deleted_at: null,
-//     id: 109,
-//     name: "can",
-//     type: "folder",
-//     updated_at: 1651209637,
-//     uploads_count: 0,
-//     user_id: 1134,
-//   },
-//   {
-//     created_at: 1650894768,
-//     deleted_at: null,
-//     file_id: "can-lmLrBLqFe",
-//     file_name: "nop.jpg",
-//     file_path:
-//       "https://canonizer-public-file.s3.us-east-2.amazonaws.com/TWFsaWExMTM0TWFsaWE%3D_1650894717_713566.jpg",
-//     short_code_path:
-//       "https://canonizer-public-file.s3.us-east-2.amazonaws.com/TWFsaWExMTM0TWFsaWE%3D_1650894717_713566.jpg",
-//     file_type: "application/msword",
-//     folder_id: null,
-//     id: 132,
-//     short_code: "can-lmLrBLqFe",
-//     type: "file",
-//     updated_at: 1650894719,
-//     user_id: 1184,
-//   },
-//   {
-//     created_at: 1650894768,
-//     deleted_at: null,
-//     file_id: "can-lmLrBpqFe",
-//     file_name: "nop.jpg",
-//     file_path:
-//       "https://canonizer-public-file.s3.us-east-2.amazonaws.com/TWFsaWExMTM0TWFsaWE%3D_1650894717_713566.jpg",
-//     short_code_path:
-//       "https://canonizer-public-file.s3.us-east-2.amazonaws.com/TWFsaWExMTM0TWFsaWE%3D_1650894717_713566.jpg",
-//     file_type: "application/msword",
-//     folder_id: null,
-//     id: 142,
-//     short_code: "can-lmLrBLqFe",
-//     type: "file",
-//     updated_at: 1650894719,
-//     user_id: 1184,
-//   },
-//   {
-//     created_at: 1650895768,
-//     deleted_at: null,
-//     file_id: "can-lmLrBLlFe",
-//     file_name: "nop.jpg",
-//     file_path:
-//       "https://canonizer-public-file.s3.us-east-2.amazonaws.com/TWFsaWExMTM0TWFsaWE%3D_1650894717_713566.jpg",
-//     short_code_path:
-//       "https://canonizer-public-file.s3.us-east-2.amazonaws.com/TWFsaWExMTM0TWFsaWE%3D_1650894717_713566.jpg",
-//     file_type: "application/json",
-//     folder_id: null,
-//     id: 132,
-//     short_code: "can-lmLrBLqFe",
-//     type: "file",
-//     updated_at: 1650894719,
-//     user_id: 1184,
-//   },
-//   {
-//     created_at: 1650885768,
-//     deleted_at: null,
-//     file_id: "can-lmLkBLlFe",
-//     file_name: "nope.jpg",
-//     file_path:
-//       "https://canonizer-public-file.s3.us-east-2.amazonaws.com/TWFsaWExMTM0TWFsaWE%3D_1650894717_713566.jpg",
-//     short_code_path:
-//       "https://canonizer-public-file.s3.us-east-2.amazonaws.com/TWFsaWExMTM0TWFsaWE%3D_1650894717_713566.jpg",
-//     file_type: "application/vnd.ms-excel.sheet.macroEnabled.12",
-//     folder_id: null,
-//     id: 152,
-//     short_code: "can-lmLrBLqFe",
-//     type: "file",
-//     updated_at: 1650894719,
-//     user_id: 1184,
-//   },
-//   {
-//     created_at: 1650885768,
-//     deleted_at: null,
-//     file_id: "can-lmLkBLlFe",
-//     file_name: "nope.jpg",
-//     file_path:
-//       "https://canonizer-public-file.s3.us-east-2.amazonaws.com/TWFsaWExMTM0TWFsaWE%3D_1650894717_713566.jpg",
-//     short_code_path:
-//       "https://canonizer-public-file.s3.us-east-2.amazonaws.com/TWFsaWExMTM0TWFsaWE%3D_1650894717_713566.jpg",
-//     file_type: "application/vnd.ms-powerpoint.template.macroEnabled.12",
-//     folder_id: null,
-//     id: 162,
-//     short_code: "can-llLrBLqFe",
-//     type: "file",
-//     updated_at: 1650894119,
-//     user_id: 1184,
-//   },
-// ];
-
-// const createNewFolder = {
-//   created_at: 1686299789,
-//   id: 2,
-//   name: "frust",
-//   updated_at: 161616556,
-//   user_id: 362,
-// };
-// function createMockRouter() {
-//   return {
-//     showDrageBox: true,
-//   };
-// }
-
 describe("Upload file page", () => {
   it("upload files api render folder", async () => {
-    // jest.mock("react", () => ({
-    //   ...jest.requireActual('react'),
-    //   useState: ()=> [true,jest.fn()],
-    // }));
     render(<UploadFiles />);
     await waitFor(() => {
-      // expect(container).toMatchSnapshot();
       expect(screen.getByTestId("cancel_btn")).toBeInTheDocument();
       fireEvent.click(screen.getByTestId("cancel_btn"));
-      // expect(screen.getByText(fileLists[1].created_at)).toBeInTheDocument();
-      // expect(screen.getByText(fileLists[1].deleted_at)).toBeInTheDocument();
-      // expect(screen.getByText(fileLists[1].name)).toBeInTheDocument();
-      // expect(screen.getByText(fileLists[1].uploads_count)).toBeInTheDocument();
-      // expect(screen.getByText(fileLists[1].id)).toBeInTheDocument();
-      // expect(screen.getByText(fileLists[1].type)).toBeInTheDocument();
-      // expect(screen.getByText(fileLists[1].updated_at)).toBeInTheDocument();
-      // expect(screen.getByText(fileLists[1].user_id)).toBeInTheDocument();
+      expect(screen.getByTestId("handle_x_btn")).toBeInTheDocument();
+      fireEvent.click(screen.getByTestId("handle_x_btn"));
     });
   });
+
   it("render useState is working", () => {
     render(<UploadFiles />);
     const TestComponent = () => {
@@ -317,6 +298,22 @@ describe("Upload file page", () => {
 
     await fireEvent.change(inputEl, { target: { value: "ABCD" } });
     // await userEvent.tab();
+  });
+  it("create new folder test", async () => {
+    const { container, getAllByText, getAllByTestId, getAllByPlaceholderText } =
+      render(<UploadFiles />);
+    await waitFor(() => {
+      const add_folder_element = screen.getAllByTestId("addAFileBtn")[1];
+      expect(add_folder_element).toBeInTheDocument();
+      // fireEvent.click(add_folder_element[0])
+    });
+    // await waitFor(() => {
+    //   const change_name_input = getAllByPlaceholderText("Enter name of the Folder")
+    //   // expect(change_name_input[0]).toBeInTheDocument()
+    //   fireEvent.change(change_name_input[0], { target: { value: "Test Folder 1" } })
+    //   const create_button = getAllByText("Create")
+    //   fireEvent.click(create_button[0])
+    // })
   });
 });
 afterEach(cleanup);

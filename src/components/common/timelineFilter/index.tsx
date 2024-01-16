@@ -5,15 +5,14 @@ import {
   // Button,
   Collapse,
   Select,
-  Input,
+
   // DatePicker,
-  Popover,
 } from "antd";
-import { LeftOutlined } from "@ant-design/icons";
+
 import { RootState } from "../../../store";
 import { useDispatch, useSelector } from "react-redux";
 
-const { Title, Text, Paragraph } = Typography;
+const { Title, Paragraph } = Typography;
 const { Panel } = Collapse;
 const { Option } = Select;
 
@@ -26,18 +25,18 @@ import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
 // import FullScoreCheckbox from "../../ComponentPages/FullScoreCheckbox";
 // import useAuthentication from "src/hooks/isUserAuthenticated";
 
-const infoContent = (
-  <>
-    <div className={styles.infoText}>
-      <Title level={5}>Score Value Filter </Title>
-      <p>
-        This option filters down the camp list with a score value greater than
-        the entered value. By default, the score value filter is 0, displaying
-        all camps.
-      </p>
-    </div>
-  </>
-);
+// const infoContent = (
+//   <>
+//     <div className={styles.infoText}>
+//       <Title level={5}>Score Value Filter </Title>
+//       <p>
+//         This option filters down the camp list with a score value greater than
+//         the entered value. By default, the score value filter is 0, displaying
+//         all camps.
+//       </p>
+//     </div>
+//   </>
+// );
 
 // const asContent = (
 //   <>
@@ -98,7 +97,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
   //   router?.push("/create/topic");
   // };
 
-  const { algorithms, filteredScore, selectedAlgorithm, loading } = useSelector(
+  const { algorithms, selectedAlgorithm, loading } = useSelector(
     (state: RootState) => ({
       algorithms: state.homePage?.algorithms,
       filteredScore: state?.filters?.filterObject?.filterByScore,
@@ -107,8 +106,8 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
     })
   );
 
-  const [timer, setTimer] = useState(null);
-  const [inputValue, setInputValue] = useState(filteredScore);
+  // const [timer, setTimer] = useState(null);
+  // const [inputValue, setInputValue] = useState(filteredScore);
   const [isLoading, setIsLoading] = useState(loading);
 
   // /////////////////////////////////////////////////////////////////////////
@@ -140,22 +139,22 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
     );
   };
 
-  const filterOnScore = (e) => {
-    const { value } = e.target;
-    setInputValue(value);
-    clearTimeout(timer);
-    const reg = /^-?\d*(\.\d*)?$/;
-    if ((!isNaN(value) && reg.test(value)) || value === "") {
-      const newTimer = setTimeout(() => {
-        dispatch(
-          setFilterCanonizedTopics({
-            filterByScore: value,
-          })
-        );
-      }, 1000);
-      setTimer(newTimer);
-    }
-  };
+  // const filterOnScore = (e) => {
+  //   const { value } = e.target;
+  //   // setInputValue(value);
+  //   clearTimeout(timer);
+  //   const reg = /^-?\d*(\.\d*)?$/;
+  //   if ((!isNaN(value) && reg.test(value)) || value === "") {
+  //     const newTimer = setTimeout(() => {
+  //       dispatch(
+  //         setFilterCanonizedTopics({
+  //           filterByScore: value,
+  //         })
+  //       );
+  //     }, 1000);
+  //     setTimer(newTimer);
+  //   }
+  // };
 
   return (
     <>
@@ -213,7 +212,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
             <Paragraph className={styles.algoInfo}>
               {/* <i className="icon-fish-bones"></i> Algorithm Information */}
             </Paragraph>
-            <div className={styles.filter}>
+            {/* <div className={styles.filter}>
               <Text className={styles.filterText}>Filter</Text>
               <LeftOutlined className={styles.LeftOutlined} />
               <Input
@@ -229,7 +228,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
               >
                 <i className="icon-info"></i>
               </Popover>
-            </div>
+            </div> */}
           </Panel>
         </Collapse>
       </div>

@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { Layout, Menu, Dropdown, Button, Space } from "antd";
+import { Layout, Menu, Dropdown, Button, Space, Avatar } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
 
@@ -20,11 +20,14 @@ import {
 import Notifications from "../notification";
 import useAuthentication from "src/hooks/isUserAuthenticated";
 import {
+  getGravatarPicApi,
   getLists,
   markNotificationRead,
 } from "src/network/api/notificationAPI";
 import { setManageSupportStatusCheck } from "src/store/slices/campDetailSlice";
 import HeaderMenu from "../HeaderMenu";
+import Image from "next/image";
+import ProfileInfoTab from "./profileInfoTab";
 
 const { Header } = Layout;
 
@@ -35,6 +38,8 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
   }));
 
   const { isUserAuthenticated } = useAuthentication();
+  const [isGravatarImage, setIsGravatarImage] = useState(false);
+  const [loadingImage, setLoadingImage] = useState(false);
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -80,10 +85,11 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
   }, [router]);
 
   const logOut = async () => {
-    const res = await logout();
-    if (res?.status_code === 200) {
-      router?.push("/");
-    }
+    // const res =
+    await logout();
+    // if (res?.status_code === 200) {
+    //   router?.push("/");
+    // }
   };
 
   const onClick = ({ key }) => {
@@ -118,9 +124,20 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
       </Menu.Item>
     </Menu>
   );
+  const getGravatarImage = async (email) => {
+    setLoadingImage(true);
+    let data = await getGravatarPicApi(email);
+    if (data?.status == 200) {
+      setIsGravatarImage(true);
+    }
+    setLoadingImage(false);
+  };
 
   useEffect(() => {
     setLoggedUser(loggedInUser);
+    if (isUserAuthenticated && loggedInUser && !loggedInUser?.profile_picture) {
+      getGravatarImage(loggedInUser?.email);
+    }
   }, [loggedInUser]);
 
   return (
@@ -145,37 +162,14 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
             <HeaderMenu loggedUser={loggedUser} />
 
             {!isLoginPage ? (
-              <Fragment>
-                <div className={styles.btnsLoginRegister}>
-                  <div className="hdrUserdropdown">
-                    <Space size="large">
-                      <i className="icon-user"></i>{" "}
-                      <div>
-                        {loggedUser ? loggedUser["first_name"] : ""}{" "}
-                        {loggedUser ? loggedUser["last_name"] : ""}
-                      </div>
-                    </Space>
-                  </div>
-                </div>
-                <div className={`mobile_tag ${styles.mobMenuWithIcons}`}>
-                  <Link href="/settings">
-                    <a onClick={toggleMobNav}>
-                      <SettingOutlined />
-                      Account Settings
-                    </a>
-                  </Link>
-                  <Link href="/settings?tab=supported_camps" passHref>
-                    <a onClick={toggleMobNav}>
-                      <CheckCircleOutlined />
-                      Supported Camps
-                    </a>
-                  </Link>
-                  <a onClick={logOut}>
-                    <LogoutOutlined />
-                    Log Out
-                  </a>
-                </div>
-              </Fragment>
+              <ProfileInfoTab
+                isGravatarImage={isGravatarImage}
+                loadingImage={loadingImage}
+                loggedUser={loggedUser}
+                toggleMobNav={toggleMobNav}
+                logOut={logOut}
+                isMobile={true}
+              />
             ) : null}
           </div>
 
@@ -184,38 +178,15 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
             key="right-area"
           >
             {!isLoginPage ? (
-              <div className={styles.btnsLoginRegister} key="registerbtnarea">
-                <div className="hdrUserdropdown" key="hdrUserdropdown">
-                  <Space size={40}>
-                    <div className={styles.not_2}>
-                      <Notifications />
-                    </div>
-                    <Dropdown
-                      overlay={menu}
-                      trigger={["click"]}
-                      placement="bottomLeft"
-                    >
-                      <Space size="small">
-                        <i className="icon-user"></i>{" "}
-                        <a
-                          className="ant-dropdown-link"
-                          onClick={(e) => e.preventDefault()}
-                        >
-                          {loggedUser ? loggedUser["first_name"] : ""}{" "}
-                          {loggedUser ? loggedUser["last_name"] : ""}
-                        </a>
-                        <DownOutlined
-                          style={{
-                            fontSize: "15px",
-                            color: "#fff",
-                            cursor: "pointer",
-                          }}
-                        />
-                      </Space>
-                    </Dropdown>
-                  </Space>
-                </div>
-              </div>
+              <ProfileInfoTab
+                isGravatarImage={isGravatarImage}
+                loadingImage={loadingImage}
+                loggedUser={loggedUser}
+                toggleMobNav={toggleMobNav}
+                logOut={logOut}
+                isMobile={false}
+                menu={menu}
+              />
             ) : null}
             <div className={styles.iconMobMenu}>
               {!isLoginPage ? (

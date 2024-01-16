@@ -45,6 +45,8 @@ class WrappedApp extends App<AppInitialProps> {
 // perform automatic static optimization, causing every page in your app to
 // be server-side rendered.
 //
+
+let timeout;
 WrappedApp.getInitialProps = async (appContext: AppContext) => {
   // calls page's `getInitialProps` and fills `appProps.pageProps`
   const appProps = await App.getInitialProps(appContext);
@@ -105,7 +107,14 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
     author: "",
   };
 
-  const metaResults = await metaTagsApi(req);
+  let metaResults;
+  if (timeout) timeout = clearTimeout(timeout);
+
+  if (!timeout) {
+    timeout = setTimeout(async () => {
+      metaResults = await metaTagsApi(req);
+    }, 1500);
+  }
   const metaData =
     metaResults?.status_code == 200 ? metaResults.data : defaultTags;
 
@@ -123,6 +132,7 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
    * /stmt.asp/2/2
    * /[anything].asp/dadsa
    * /secure/upload.asp
+   * /secure/email_camp.asp/88/6/3
    *
    */
 
@@ -218,6 +228,27 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
           `/topic/${topic_num}/${camp_num}`,
           +topic_num,
           +camp_num,
+          "topic"
+        );
+      }
+    } else if (aspath?.includes("email_camp.asp")) {
+      const replaced = aspath.replace(".asp", "");
+      let spilitedPath = replaced?.split("/");
+      const topic = +spilitedPath[spilitedPath?.length - 3]?.split("-")[0],
+        camp = +spilitedPath[spilitedPath?.length - 2]?.split("-")[0] ?? 1,
+        threadId = +spilitedPath[spilitedPath?.length - 1];
+      if (threadId) {
+        returnData = await redirect(
+          `/forum/${topic}/${camp}/threads/${threadId}`,
+          topic,
+          camp,
+          "topic"
+        );
+      } else {
+        returnData = await redirect(
+          `/forum/${topic}/${camp}/threads`,
+          topic,
+          camp,
           "topic"
         );
       }

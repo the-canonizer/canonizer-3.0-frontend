@@ -45,26 +45,45 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
         disabled
         header={
           <>
-            <h3>{K?.exceptionalMessages?.campStatementHeading}</h3>
-            {campStatement[0]?.in_review_changes > 0 ? (
-              <Popover
-                content={
-                  "Some changes are currently under review in this camp statement."
-                }
-                placement="topLeft"
-                className={styles.infoIcon}
-              >
-                <Image
-                  className="change-icon"
-                  width={20}
-                  height={20}
-                  src="/images/change-icon.svg"
-                  alt=""
-                />
-              </Popover>
-            ) : (
-              ""
-            )}
+            <h3 className="cmp-title">
+              {K?.exceptionalMessages?.campStatementHeading}
+            </h3>
+            <div className="cmp-change-icon">
+              {campStatement[0]?.in_review_changes > 0 ? (
+                <div
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    router.push(
+                      `/statement/history/${replaceSpecialCharacters(
+                        router?.query?.camp[0],
+                        "-"
+                      )}/${replaceSpecialCharacters(
+                        router?.query?.camp[1] ?? "1-Agreement",
+                        "-"
+                      )}`
+                    );
+                  }}
+                >
+                  <Popover
+                    content={
+                      "Some changes are currently under review in this camp statement."
+                    }
+                    placement="topLeft"
+                    className={styles.infoIcon}
+                  >
+                    <Image
+                      // className="change-icon"
+                      width={20}
+                      height={20}
+                      src="/images/change-icon.svg"
+                      alt=""
+                    />
+                  </Popover>
+                </div>
+              ) : (
+                ""
+              )}
+            </div>
           </>
         }
         key="1"
@@ -80,7 +99,7 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
       >
         <Paragraph>
           <div className={styles.campStatement}>
-            {campStatement?.length ? (
+            {campStatement?.length && campStatement[0]?.parsed_value ? (
               <div
                 dangerouslySetInnerHTML={{
                   __html: campStatement[0]?.parsed_value,

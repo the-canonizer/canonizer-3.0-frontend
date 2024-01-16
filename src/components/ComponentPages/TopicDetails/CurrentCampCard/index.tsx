@@ -60,27 +60,47 @@ const CurrentCampCard = ({ loadingIndicator, backGroundColorClass }: any) => {
         className={`header-bg-color-change ${backGroundColorClass}`}
         header={
           <>
-            <h3>{K?.exceptionalMessages?.campRecordHeading}</h3>
-            {campRecord?.in_review_changes > 0 ? (
-              // <img className="change-icon" src="/images/change-icon.svg" />
-              <Popover
-                content={
-                  "Some changes are currently under review in this camp."
-                }
-                placement="topLeft"
-                className={styles.infoIcon}
-              >
-                <Image
-                  className="change-icon"
-                  src={"/images/change-icon.svg"}
-                  alt=""
-                  width={20}
-                  height={20}
-                />
-              </Popover>
-            ) : (
-              ""
-            )}
+            <h3 className="cmp-title">
+              {K?.exceptionalMessages?.campRecordHeading}
+            </h3>
+            <div className="cmp-change-icon">
+              {campRecord?.in_review_changes > 0 ? (
+                // <img className="change-icon" src="/images/change-icon.svg" />
+                <div
+                  onClick={(e) => {
+                    e.stopPropagation();
+
+                    router?.push(
+                      `/camp/history/${replaceSpecialCharacters(
+                        router?.query?.camp[0],
+                        "-"
+                      )}/${replaceSpecialCharacters(
+                        router?.query?.camp[1] ?? "1-Agreement",
+                        "-"
+                      )}`
+                    );
+                  }}
+                >
+                  <Popover
+                    content={
+                      "Some changes are currently under review in this camp."
+                    }
+                    placement="topLeft"
+                    className={styles.infoIcon}
+                  >
+                    <Image
+                      // className="change-icon"
+                      src={"/images/change-icon.svg"}
+                      alt=""
+                      width={20}
+                      height={20}
+                    />
+                  </Popover>
+                </div>
+              ) : (
+                ""
+              )}
+            </div>
           </>
         }
         key="1"
@@ -120,9 +140,7 @@ const CurrentCampCard = ({ loadingIndicator, backGroundColorClass }: any) => {
                                 : description.key == "camp_about_nick_name"
                                 ? campRecord?.camp_about_nick_id
                                 : ""
-                            }?topicnum=${campRecord?.topic_num || ""}&campnum=${
-                              campRecord?.camp_num || ""
-                            }&canon=${topicRecord?.namespace_id || ""}`}
+                            }?canon=${topicRecord?.namespace_id || ""}`}
                             passHref
                           >
                             <a>{campRecord[description.key]}</a>

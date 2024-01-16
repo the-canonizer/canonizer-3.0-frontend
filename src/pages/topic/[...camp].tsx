@@ -14,6 +14,7 @@ import {
   setCurrentTopicRecord,
   setCurrentCampRecord,
 } from "../../store/slices/campDetailSlice";
+import { formatTheDate } from "src/utils/generalUtility";
 import { setHistory } from "../../store/slices/campDetailSlice";
 import Layout from "src/hoc/layout";
 
@@ -24,6 +25,7 @@ import { setCurrentDate } from "src/store/slices/filtersSlice";
 import { useEffect, useRef } from "react";
 import DataNotFound from "@/components/ComponentPages/DataNotFound";
 import { formatTheDate } from "src/utils/generalUtility";
+
 
 const TopicDetailsPage = ({
   current_date,
@@ -50,10 +52,24 @@ const TopicDetailsPage = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  let ErrorStatus =
+    tree?.status_code == 404 ||
+    (tree?.status_code == 422 &&
+      (!tree?.error?.camp_num ||
+        (tree?.error?.camp_num && tree?.error?.topic_num)))
+      ? "Topic"
+      : "Camp";
+
   return (
     <Layout>
-      {tree?.status_code == 404 || campRecord?.status_code == 404 ? (
-        <DataNotFound isTopic={tree?.status_code == 404 ? true : false} />
+      {tree?.status_code == 404 ||
+      (tree?.status_code == 422 &&
+        (campRecord?.status_code == 404 || campRecord?.status_code == 400)) ? (
+        <DataNotFound
+          name={ErrorStatus}
+          message={`${ErrorStatus} not found`}
+          backURL={"/"}
+        />
       ) : (
         <TopicDetails serverSideCall={serverSideCall} />
       )}

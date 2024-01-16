@@ -98,6 +98,7 @@ export const logout = async (error = "", status = null, count: number = 1) => {
     document.cookie =
       "loginToken=; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
     store.dispatch(setHeaderData({ count: 0, list: [] }));
+    await createToken();
     return res;
   } catch (error) {
     store.dispatch(logoutUser());
@@ -162,6 +163,22 @@ export const changePassword = async (values: object) => {
   const res = await NetworkCall.fetch(
     UserRequest.changePassword(values, auth.loggedInUser.token)
     //UserRequest.changePassword(values, auth.token)
+  );
+  return res;
+};
+
+export const uploadProfileImage = async (reqbody) => {
+  const { auth } = store.getState();
+  const res = await NetworkCall.fetch(
+    UserRequest.uploadProfileImage(reqbody, auth.loggedInUser.id)
+  );
+  return res;
+};
+
+export const deleteProfileImage = () => {
+  const { auth } = store.getState();
+  const res = NetworkCall.fetch(
+    UserRequest.deleteProfileImage(auth.loggedInUser.id)
   );
   return res;
 };

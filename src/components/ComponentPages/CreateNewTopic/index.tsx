@@ -108,6 +108,7 @@ const CreateNewTopic = ({
       setOptions(oldOptions);
       setIsLoading(false);
       dispatch(setShowDrawer(true));
+      return;
     }
 
     if (res && res.status_code === 400) {

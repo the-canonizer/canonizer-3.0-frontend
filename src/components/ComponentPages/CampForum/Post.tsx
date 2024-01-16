@@ -1,5 +1,3 @@
-// import { Spin } from "antd";
-
 import Post from "./UI/Post";
 import ThreadSidebar from "./UI/sidebar";
 import CampInfoBar from "../TopicDetails/CampInfoBar";
@@ -25,12 +23,13 @@ const Threads = ({
   postperPage,
   threadDetailsLoading,
   payload,
+  isModalOpen,
+  showModal,
 }: any) => (
   <div className="d-flex">
     <ThreadSidebar />
     <div className="pageContentWrap">
-      <CampInfoBar payload={payload} />
-      {/* <Spin spinning={isLoading} size="large"> */}
+      <CampInfoBar payload={payload} isForumPage={true} />
       <Post
         onFinishPost={onFinishPost}
         onCancel={onCancel}
@@ -51,8 +50,9 @@ const Threads = ({
         isLoading={isLoading}
         postperPage={postperPage}
         threadDetailsLoading={threadDetailsLoading}
+        isModalOpen={isModalOpen}
+        showModal={showModal}
       />
-      {/* </Spin> */}
     </div>
   </div>
 );
