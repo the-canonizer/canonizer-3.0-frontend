@@ -29,6 +29,7 @@ import {
 } from "../../../../store/slices/campDetailSlice";
 import { getNickNameList } from "../../../../network/api/userApi";
 import SupportRemovedModal from "src/components/common/supportRemovedModal";
+import ManageSupport from "../../ManageSupport";
 
 const { Paragraph } = Typography;
 const { Panel } = Collapse;
@@ -91,7 +92,18 @@ const SupportTreeCard = ({
   const [modalData, setModalData] = useState<any>({});
   const [delegateNickNameId, setDelegateNickNameId] = useState<number>();
   const [currentAlgo, setCurrentAlgo] = useState<string>("");
-
+  //-------------add model on topic detail page---------
+  const [isModalOpenSupportCamps, setIsModalOpenSupportCamps] = useState(false);
+  const showModalSupportCamps = () => {
+    setIsModalOpenSupportCamps(true);
+  };
+  const handleOkSupportCamps = () => {
+    setIsModalOpenSupportCamps(false);
+  };
+  const handleCancelSupportCamps = () => {
+    setIsModalOpenSupportCamps(false);
+  };
+  //----------------------------------------------
   useEffect(() => {
     const filteredAlgo = algorithms?.filter(
       (a: { algorithm_key: string }) =>
@@ -142,6 +154,7 @@ const SupportTreeCard = ({
   const handleClickSupportCheck = () => {
     dispatch(setManageSupportUrlLink(manageSupportPath));
     dispatch(setManageSupportStatusCheck(true));
+    setIsModalOpenSupportCamps(true);
   };
 
   const manageSupportPath = router?.asPath.replace("/topic/", "/support/");
@@ -402,21 +415,22 @@ const SupportTreeCard = ({
             className="topicDetailsCollapseFooter"
             onClick={handleClickSupportCheck}
           >
-            <Link href={manageSupportPath}>
-              <a>
-                <CustomButton
-                  className="btn-orange"
-                  disabled={asof == "bydate" || campRecord?.is_archive == 1}
-                  id="manage-support-btn"
-                >
-                  {/* {K?.exceptionalMessages?.directJoinSupport} */}
-                  {getCheckSupportStatus?.is_delegator == 1 ||
-                  getCheckSupportStatus?.support_flag != 1
-                    ? K?.exceptionalMessages?.directJoinSupport
-                    : K?.exceptionalMessages?.manageSupport}
-                </CustomButton>
-              </a>
-            </Link>
+            {/* <Link href={manageSupportPath}>
+              <a> */}
+            <CustomButton
+              className="btn-orange"
+              disabled={asof == "bydate" || campRecord?.is_archive == 1}
+              id="manage-support-btn"
+            >
+              {/* {K?.exceptionalMessages?.directJoinSupport} */}
+              {getCheckSupportStatus?.is_delegator == 1 ||
+              getCheckSupportStatus?.support_flag != 1
+                ? K?.exceptionalMessages?.directJoinSupport
+                : K?.exceptionalMessages?.manageSupport}
+              +"sdas"
+            </CustomButton>
+            {/* </a>
+            </Link> */}
           </div>
         </Panel>
       </Collapse>
@@ -512,6 +526,19 @@ const SupportTreeCard = ({
           </Form.Item>
         </Form>
       </Modal>
+      {/* -------------------------------------model on topic detail page  */}
+      <Modal
+        className={styles.modal_cross}
+        title="Support Camps"
+        open={isModalOpenSupportCamps}
+        onOk={handleOkSupportCamps}
+        onCancel={handleCancelSupportCamps}
+        // footer={null}
+        closeIcon={<CloseCircleOutlined />}
+      >
+        <ManageSupport />
+      </Modal>
+      {/* ------------------------------------------------- */}
     </>
   );
 };

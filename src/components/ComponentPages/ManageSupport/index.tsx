@@ -48,13 +48,14 @@ const ManageSupport = () => {
   const [unableToFindCamp, setUnableToFindCamp] = useState<boolean>(false);
   const [updatePostion, setUpdatePostion] = useState<boolean>(false);
   const [submitButtonDisable, setSubmitButtonDisable] = useState(false);
+
   const [
     getManageSupportLoadingIndicator,
     setGetManageSupportLoadingIndicator,
   ] = useState(false);
   //get NickName List Data
   const getCanonizedNicknameList = async () => {
-    const topicNum = router?.query?.manageSupport?.at(0)?.split("-")?.at(0);
+    const topicNum = router?.query?.camp?.at(0)?.split("-")?.at(0);
     const body = { topic_num: topicNum };
 
     let res = await getAllUsedNickNames(topicNum && body);
@@ -64,8 +65,8 @@ const ManageSupport = () => {
   };
   //get Data for CurrentCampName from Api
   const reqBody = {
-    topic_num: +router?.query?.manageSupport?.at(0)?.split("-")?.at(0),
-    camp_num: +router?.query?.manageSupport?.at(1)?.split("-")?.at(0),
+    topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
+    camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
     as_of: asof,
     as_of_date:
       asof == "default" || asof == "review"
@@ -104,8 +105,8 @@ const ManageSupport = () => {
   const CheckDelegatedOrDirect =
     currentDelegatedSupportedClick.delegatedSupportClick;
   const reqBodyData: any = {
-    topic_num: +router?.query?.manageSupport?.[0]?.split("-")[0],
-    camp_num: +router?.query?.manageSupport?.[1]?.split("-")[0],
+    topic_num: +router?.query?.camp?.[0]?.split("-")[0],
+    camp_num: +router?.query?.camp?.[1]?.split("-")[0],
   };
   const getDelegateId = router.asPath?.substring(
     router.asPath.lastIndexOf("_") + 1
@@ -237,8 +238,8 @@ const ManageSupport = () => {
   };
 
   //get data from url
-  const topicNum = router?.query?.manageSupport?.at(0)?.split("-")?.at(0);
-  const campNum = router?.query?.manageSupport?.at(1)?.split("-")?.at(0);
+  const topicNum = router?.query?.camp?.at(0)?.split("-")?.at(0);
+  const campNum = router?.query?.camp?.at(1)?.split("-")?.at(0);
   //const camp_Name = router?.query?.manageSupport?.at(1)?.split(/-(.*)/s);
 
   //replace use to - change to space
@@ -374,7 +375,7 @@ const ManageSupport = () => {
     let topicNumId =
       manageSupportRevertData.length > 0
         ? manageSupportRevertData[0].topic_num
-        : router?.query?.manageSupport?.at(0)?.split("-")?.at(0);
+        : router?.query?.camp?.at(0)?.split("-")?.at(0);
     //order Update
     const filteredManageSupportList = manageSupportList.filter((obj) => {
       return !obj.dis;
@@ -509,14 +510,14 @@ const ManageSupport = () => {
         {/* <Sidebar /> */}
       </aside>
       <div className="pageContentWrap">
-        <CampInfoBar
+        {/* <CampInfoBar
           isTopicPage={true}
           payload={{
             topic_num: router?.query?.manageSupport?.at(0)?.split("-")?.at(0),
             camp_num:
               router?.query?.manageSupport?.at(1)?.split("-")?.at(0) ?? "1",
           }}
-        />
+        /> */}
         {campRecord && (
           <ManageSupportUI
             nickNameList={nickNameList}

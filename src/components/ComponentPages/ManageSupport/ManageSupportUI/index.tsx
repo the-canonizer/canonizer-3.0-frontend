@@ -93,8 +93,8 @@ const ManageSupportUI = ({
   const warningForDirecteSupportedCamps =
     "You are directly supporting one or more camps under this topic. If you continue your direct support will be removed.";
   const reqBodyData = {
-    topic_num: +router?.query?.manageSupport[0]?.split("-")[0],
-    camp_num: +router?.query?.manageSupport[1]?.split("-")[0],
+    topic_num: +router?.query?.camp[0]?.split("-")[0],
+    camp_num: +router?.query?.camp[1]?.split("-")[0],
   };
 
   // const topicNum = router?.query?.manageSupport?.at(0)?.split("-")?.at(0);
