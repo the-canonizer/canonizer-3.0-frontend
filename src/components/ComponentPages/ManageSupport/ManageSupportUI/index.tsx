@@ -27,7 +27,6 @@ const ManageSupportUI = ({
   setManageSupportList,
   parentSupportDataList,
   getSupportStatusData,
-  cancelManageRoute,
   submitNickNameSupportCamps,
   selectedtNickname,
   setSelectedtNickname,
@@ -37,6 +36,7 @@ const ManageSupportUI = ({
   getManageSupportLoadingIndicator,
   setGetManageSupportLoadingIndicator,
   topicSupportListData,
+  handleCancelSupportCamps,
 }: any) => {
   const [tagsArrayList, setTagsArrayList] = useState([]);
   const [isTagDragged, setIsTagDragged] = useState(false);
@@ -169,13 +169,14 @@ const ManageSupportUI = ({
     // }
     const response = await removeSupportedCamps(supportedCampsRemove);
     if (response && response.status_code == 200) {
-      let manageSupportPath = router?.asPath?.replace("/support/", "/topic/");
-      if (manageSupportPath?.lastIndexOf("_") > -1)
-        manageSupportPath = manageSupportPath.substring(
-          0,
-          manageSupportPath?.lastIndexOf("_")
-        );
-      router?.push(manageSupportPath);
+      // let manageSupportPath = router?.asPath?.replace("/support/", "/topic/");
+      // if (manageSupportPath?.lastIndexOf("_") > -1)
+      //   manageSupportPath = manageSupportPath.substring(
+      //     0,
+      //     manageSupportPath?.lastIndexOf("_")
+      //   );
+      // router?.push(manageSupportPath);
+      handleCancelSupportCamps();
     }
   };
 
@@ -220,18 +221,20 @@ const ManageSupportUI = ({
     };
     let addedRes = await addSupport(addSupportId);
     if (addedRes && addedRes.status_code == 200) {
-      let manageSupportPath = router?.asPath?.replace("/support/", "/topic/");
+      // let manageSupportPath = router?.asPath?.replace("/support/", "/topic/");
       // if (manageSupportPath.lastIndexOf("_") > -1)
       //   manageSupportPath = manageSupportPath.substring(
       //     0,
       //     manageSupportPath.lastIndexOf("_")
       //   );
-      router?.push(manageSupportPath);
+      // router?.push(manageSupportPath);
+      handleCancelSupportCamps();
     }
   };
 
   const CheckDelegatedOrDirect =
     currentDelegatedSupportedClick.delegatedSupportClick;
+  // const [CheckDelegatedOrDirect, setCheckDelegatedOrDirect] = useState(null);
 
   useEffect(() => {
     if (nickNameList?.length > 0) {
@@ -239,6 +242,12 @@ const ManageSupportUI = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nickNameList]);
+
+  // useEffect(() => {
+  //   setCheckDelegatedOrDirect(
+  //     currentDelegatedSupportedClick.delegatedSupportClick
+  //   );
+  // }, [currentDelegatedSupportedClick.delegatedSupportClick]);
 
   useEffect(() => {
     if (manageSupportList && manageSupportList.length > 0) {
@@ -296,13 +305,13 @@ const ManageSupportUI = ({
     />
   ) : (
     <>
-      <Card
+      <div
         className={styles.card_width}
-        title={
-          <div className={styles.main_card_title}>
-            {messages.labels.SupportedCamps}
-          </div>
-        }
+        // title={
+        //   <div className={styles.main_card_title}>
+        //     {messages.labels.SupportedCamps}
+        //   </div>
+        // }
       >
         {(CheckDelegatedOrDirect &&
           currentGetCheckSupportExistsData.is_confirm &&
@@ -531,14 +540,14 @@ const ManageSupportUI = ({
                 id="cancelBtn"
                 htmlType="button"
                 className={styles.cancel_Btn}
-                onClick={cancelManageRoute}
+                onClick={() => handleCancelSupportCamps()}
               >
                 Cancel
               </Button>
             </div>
           </Card>
         </div>
-      </Card>
+      </div>
 
       {/* modal data */}
       {/* <Modal

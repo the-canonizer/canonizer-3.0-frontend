@@ -92,18 +92,28 @@ const SupportTreeCard = ({
   const [modalData, setModalData] = useState<any>({});
   const [delegateNickNameId, setDelegateNickNameId] = useState<number>();
   const [currentAlgo, setCurrentAlgo] = useState<string>("");
-  //-------------add model on topic detail page---------
+  const [selectNickId, setSelectNickId] = useState(null);
   const [isModalOpenSupportCamps, setIsModalOpenSupportCamps] = useState(false);
+  const [componentKey, setComponentKey] = useState(0);
+  const [mainComponentKey, setMainComponentKey] = useState(0);
+  const [
+    getManageSupportLoadingIndicator,
+    setGetManageSupportLoadingIndicator,
+  ] = useState(false);
   const showModalSupportCamps = () => {
+    setComponentKey(componentKey + 1);
     setIsModalOpenSupportCamps(true);
   };
   const handleOkSupportCamps = () => {
     setIsModalOpenSupportCamps(false);
   };
-  const handleCancelSupportCamps = () => {
+  const handleCancelSupportCamps = async () => {
     setIsModalOpenSupportCamps(false);
+    setGetManageSupportLoadingIndicator(true);
+    setSelectNickId(null);
+    setTimeout(() => setMainComponentKey(mainComponentKey + 1), 500);
+    // setComponentKey2(componentKey2 + 1);
   };
-  //----------------------------------------------
   useEffect(() => {
     const filteredAlgo = algorithms?.filter(
       (a: { algorithm_key: string }) =>
@@ -137,10 +147,10 @@ const SupportTreeCard = ({
     dispatch(setManageSupportStatusCheck(false));
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [mainComponentKey]);
 
   //Delegate Support Camp
-  const handleDelegatedClick = () => {
+  const handleDelegatedClick = (data) => {
     if (isUserAuthenticated) {
       dispatch(setManageSupportStatusCheck(true));
       dispatch(
@@ -148,13 +158,16 @@ const SupportTreeCard = ({
           delegatedSupportClick: true,
         })
       );
+      setSelectNickId(data);
+      showModalSupportCamps();
     }
   };
 
   const handleClickSupportCheck = () => {
     dispatch(setManageSupportUrlLink(manageSupportPath));
     dispatch(setManageSupportStatusCheck(true));
-    setIsModalOpenSupportCamps(true);
+    setSelectNickId(null);
+    showModalSupportCamps();
   };
 
   const manageSupportPath = router?.asPath.replace("/topic/", "/support/");
@@ -240,11 +253,7 @@ const SupportTreeCard = ({
                         {/* {data[item].score?.toFixed(2)} */}
                       </span>
                       {!userNickNameList.includes(data[item].nick_name_id) ? (
-                        <Link
-                          href={
-                            manageSupportPath + `_${data[item].nick_name_id}`
-                          }
-                        >
+                        <>
                           {loggedInUserDelegate ||
                           (loggedInUserChild &&
                             delegateNickNameId !=
@@ -268,7 +277,11 @@ const SupportTreeCard = ({
                                   disabled={
                                     asof == "bydate" || !isUserAuthenticated
                                   }
-                                  onClick={handleDelegatedClick}
+                                  onClick={() =>
+                                    handleDelegatedClick(
+                                      data[item].nick_name_id
+                                    )
+                                  }
                                   className="delegate-support-style"
                                 >
                                   {"Delegate Your Support"}
@@ -276,7 +289,7 @@ const SupportTreeCard = ({
                               </a>
                             </Popover>
                           )}
-                        </Link>
+                        </>
                       ) : (
                         <a>
                           <Button
@@ -526,19 +539,27 @@ const SupportTreeCard = ({
           </Form.Item>
         </Form>
       </Modal>
-      {/* -------------------------------------model on topic detail page  */}
+
       <Modal
         className={styles.modal_cross}
         title="Support Camps"
         open={isModalOpenSupportCamps}
         onOk={handleOkSupportCamps}
         onCancel={handleCancelSupportCamps}
-        // footer={null}
+        footer={null}
         closeIcon={<CloseCircleOutlined />}
+        width={700}
       >
-        <ManageSupport />
+        <ManageSupport
+          handleCancelSupportCamps={handleCancelSupportCamps}
+          selectNickId={selectNickId}
+          componentKey={componentKey}
+          setGetManageSupportLoadingIndicator={
+            setGetManageSupportLoadingIndicator
+          }
+          getManageSupportLoadingIndicator={getManageSupportLoadingIndicator}
+        />
       </Modal>
-      {/* ------------------------------------------------- */}
     </>
   );
 };

@@ -27,7 +27,13 @@ const ManageSupportUI = dynamic(async () => await import("./ManageSupportUI"), {
   ssr: false,
 });
 
-const ManageSupport = () => {
+const ManageSupport = ({
+  handleCancelSupportCamps,
+  selectNickId: getDelegateId,
+  componentKey,
+  setGetManageSupportLoadingIndicator,
+  getManageSupportLoadingIndicator,
+}) => {
   const { asof, asofdate } = useSelector((state: RootState) => ({
     asofdate: state.filters?.filterObject?.asofdate,
     asof: state?.filters?.filterObject?.asof,
@@ -49,10 +55,6 @@ const ManageSupport = () => {
   const [updatePostion, setUpdatePostion] = useState<boolean>(false);
   const [submitButtonDisable, setSubmitButtonDisable] = useState(false);
 
-  const [
-    getManageSupportLoadingIndicator,
-    setGetManageSupportLoadingIndicator,
-  ] = useState(false);
   //get NickName List Data
   const getCanonizedNicknameList = async () => {
     const topicNum = router?.query?.camp?.at(0)?.split("-")?.at(0);
@@ -108,9 +110,9 @@ const ManageSupport = () => {
     topic_num: +router?.query?.camp?.[0]?.split("-")[0],
     camp_num: +router?.query?.camp?.[1]?.split("-")[0],
   };
-  const getDelegateId = router.asPath?.substring(
-    router.asPath.lastIndexOf("_") + 1
-  );
+  // const getDelegateId = router.asPath?.substring(
+  //   router.asPath.lastIndexOf("_") + 1
+  // );
 
   if (CheckDelegatedOrDirect && getDelegateId)
     reqBodyData.delegated_nick_name_id = getDelegateId;
@@ -153,11 +155,17 @@ const ManageSupport = () => {
       }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isUserAuthenticated, reqBodyData.topic_num, campRecord?.camp_name]);
+  }, [
+    isUserAuthenticated,
+    reqBodyData.topic_num,
+    campRecord?.camp_name,
+    componentKey,
+  ]);
   const GetCheckStatusData = async (campReff: any) => {
     let response = await GetCheckSupportExists(queryParams(reqBodyData));
     if (response && response?.status_code === 404) {
-      router?.push(router?.asPath?.replace("support", "topic"));
+      // router?.push(router?.asPath?.replace("support", "topic"));
+      handleCancelSupportCamps();
     }
     if (response && response.status_code === 200) {
       if (response.data?.remove_camps)
@@ -353,17 +361,17 @@ const ManageSupport = () => {
   //   : manageSupportPath;
 
   //Cancel Button
-  const cancelManageRoute = () => {
-    let manageSupportPath1 = manageSupportUrlLink?.replace(
-      "/support/",
-      "/topic/"
-    );
-    if (manageSupportPath || manageSupportPath1) {
-      router?.push(
-        CheckDelegatedOrDirect ? manageSupportPath : manageSupportPath1
-      );
-    }
-  };
+  // const cancelManageRoute = () => {
+  // let manageSupportPath1 = manageSupportUrlLink?.replace(
+  //   "/support/",
+  //   "/topic/"
+  // );
+  // if (manageSupportPath || manageSupportPath1) {
+  //   router?.push(
+  //     CheckDelegatedOrDirect ? manageSupportPath : manageSupportPath1
+  //   );
+  // }
+  // };
 
   //Submit NickName Supported Camps
   const submitNickNameSupportCamps = async (reasonData) => {
@@ -489,7 +497,8 @@ const ManageSupport = () => {
       if (res && res.status_code == 200) {
         message.success(res.message);
         //After Submit page is redirect to previous
-        router?.push(manageSupportPath);
+        // router?.push(manageSupportPath);
+        handleCancelSupportCamps();
       } else {
         setSubmitButtonDisable(false);
       }
@@ -498,7 +507,8 @@ const ManageSupport = () => {
       if (res && res.status_code == 200) {
         message.success(res.message);
         //After Submit page is redirect to previous
-        router?.push(manageSupportPath);
+        // router?.push(manageSupportPath);
+        handleCancelSupportCamps();
       } else {
         setSubmitButtonDisable(false);
       }
@@ -530,7 +540,7 @@ const ManageSupport = () => {
             parentSupportDataList={parentSupportDataList}
             getSupportStatusData={getSupportStatusData}
             submitNickNameSupportCamps={submitNickNameSupportCamps}
-            cancelManageRoute={cancelManageRoute}
+            // cancelManageRoute={cancelManageRoute}
             setSelectedtNickname={setSelectedtNickname}
             selectedtNickname={selectedtNickname}
             submitButtonDisable={submitButtonDisable}
@@ -545,6 +555,7 @@ const ManageSupport = () => {
               setGetManageSupportLoadingIndicator
             }
             topicSupportListData={topicSupportListData}
+            handleCancelSupportCamps={handleCancelSupportCamps}
           />
         )}
       </div>
