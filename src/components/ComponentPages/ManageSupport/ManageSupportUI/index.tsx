@@ -176,7 +176,7 @@ const ManageSupportUI = ({
       //     manageSupportPath?.lastIndexOf("_")
       //   );
       // router?.push(manageSupportPath);
-      handleCancelSupportCamps();
+      handleCancelSupportCamps({ isCallApiStatus: true });
     }
   };
 
@@ -228,7 +228,7 @@ const ManageSupportUI = ({
       //     manageSupportPath.lastIndexOf("_")
       //   );
       // router?.push(manageSupportPath);
-      handleCancelSupportCamps();
+      handleCancelSupportCamps({ isCallApiStatus: true });
     }
   };
 
@@ -540,7 +540,9 @@ const ManageSupportUI = ({
                 id="cancelBtn"
                 htmlType="button"
                 className={styles.cancel_Btn}
-                onClick={() => handleCancelSupportCamps()}
+                onClick={() =>
+                  handleCancelSupportCamps({ isCallApiStatus: false })
+                }
               >
                 Cancel
               </Button>

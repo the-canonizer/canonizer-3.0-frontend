@@ -30,6 +30,7 @@ import {
 import { getNickNameList } from "../../../../network/api/userApi";
 import SupportRemovedModal from "src/components/common/supportRemovedModal";
 import ManageSupport from "../../ManageSupport";
+import { getTreesApi } from "src/network/api/campDetailApi";
 
 const { Paragraph } = Typography;
 const { Panel } = Collapse;
@@ -66,6 +67,7 @@ const SupportTreeCard = ({
   isDelegateSupportTreeCardModal,
   setIsDelegateSupportTreeCardModal,
   backGroundColorClass,
+  getCheckStatusAPI,
 }: any) => {
   const {
     currentGetCheckSupportExistsData,
@@ -74,6 +76,8 @@ const SupportTreeCard = ({
     campRecord,
     filterData,
     algorithms,
+    algorithm,
+    asofdate,
   } = useSelector((state: RootState) => ({
     currentGetCheckSupportExistsData:
       state.topicDetails.currentGetCheckSupportExistsData,
@@ -82,6 +86,8 @@ const SupportTreeCard = ({
     campRecord: state?.topicDetails?.currentCampRecord,
     filterData: state?.filters?.filterObject,
     algorithms: state.homePage?.algorithms,
+    algorithm: state.filters?.filterObject?.algorithm,
+    asofdate: state.filters?.filterObject?.asofdate,
   }));
   const { isUserAuthenticated } = isAuth();
 
@@ -107,9 +113,27 @@ const SupportTreeCard = ({
   const handleOkSupportCamps = () => {
     setIsModalOpenSupportCamps(false);
   };
-  const handleCancelSupportCamps = async () => {
+  const handleCancelSupportCamps = async ({ isCallApiStatus = false }) => {
     setIsModalOpenSupportCamps(false);
     setGetManageSupportLoadingIndicator(true);
+
+    if (isCallApiStatus == true) {
+      await getCheckStatusAPI();
+    }
+    if (isCallApiStatus == true) {
+      const reqBodyForService = {
+        topic_num: +router?.query?.camp[0]?.split("-")[0],
+        camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
+        asOf: asof,
+        asofdate:
+          asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
+        algorithm: algorithm,
+        update_all: 1,
+        fetch_topic_history: +router?.query?.topic_history,
+      };
+      getTreesApi(reqBodyForService);
+    }
+
     setSelectNickId(null);
     setTimeout(() => setMainComponentKey(mainComponentKey + 1), 500);
     // setComponentKey2(componentKey2 + 1);
@@ -545,7 +569,7 @@ const SupportTreeCard = ({
         title="Support Camps"
         open={isModalOpenSupportCamps}
         onOk={handleOkSupportCamps}
-        onCancel={handleCancelSupportCamps}
+        // onCancel={handleCancelSupportCamps}
         footer={null}
         closeIcon={<CloseCircleOutlined />}
         width={700}
@@ -558,6 +582,7 @@ const SupportTreeCard = ({
             setGetManageSupportLoadingIndicator
           }
           getManageSupportLoadingIndicator={getManageSupportLoadingIndicator}
+          getCheckStatusAPI={getCheckStatusAPI}
         />
       </Modal>
     </>

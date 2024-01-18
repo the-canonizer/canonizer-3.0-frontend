@@ -33,6 +33,7 @@ const ManageSupport = ({
   componentKey,
   setGetManageSupportLoadingIndicator,
   getManageSupportLoadingIndicator,
+  getCheckStatusAPI,
 }) => {
   const { asof, asofdate } = useSelector((state: RootState) => ({
     asofdate: state.filters?.filterObject?.asofdate,
@@ -165,7 +166,7 @@ const ManageSupport = ({
     let response = await GetCheckSupportExists(queryParams(reqBodyData));
     if (response && response?.status_code === 404) {
       // router?.push(router?.asPath?.replace("support", "topic"));
-      handleCancelSupportCamps();
+      handleCancelSupportCamps({ isCallApiStatus: false });
     }
     if (response && response.status_code === 200) {
       if (response.data?.remove_camps)
@@ -498,7 +499,7 @@ const ManageSupport = ({
         message.success(res.message);
         //After Submit page is redirect to previous
         // router?.push(manageSupportPath);
-        handleCancelSupportCamps();
+        handleCancelSupportCamps({ isCallApiStatus: true });
       } else {
         setSubmitButtonDisable(false);
       }
@@ -508,7 +509,7 @@ const ManageSupport = ({
         message.success(res.message);
         //After Submit page is redirect to previous
         // router?.push(manageSupportPath);
-        handleCancelSupportCamps();
+        handleCancelSupportCamps({ isCallApiStatus: false });
       } else {
         setSubmitButtonDisable(false);
       }
@@ -556,6 +557,7 @@ const ManageSupport = ({
             }
             topicSupportListData={topicSupportListData}
             handleCancelSupportCamps={handleCancelSupportCamps}
+            getCheckStatusAPI={getCheckStatusAPI}
           />
         )}
       </div>

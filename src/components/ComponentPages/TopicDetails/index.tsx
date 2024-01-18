@@ -268,6 +268,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
       getTreesApi(reqBodyForService);
       // fetchTotalScore();
     }
+    setRemoveSupportSpinner(false);
   };
   const removeSupportForDelegate = async (reasonData = {}) => {
     const removeEntireData = {
@@ -291,6 +292,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
     let res = await removeSupportedCampsEntireTopic(removeEntireData);
     if (res && res.status_code == 200) {
       message.success(res.message);
+      setRemoveSupportSpinner(false);
       setIsSupportTreeCardModal(false);
       setIsDelegateSupportTreeCardModal(false);
       GetCheckStatusData();
@@ -584,6 +586,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
                           totalCampScoreForSupportTree
                         }
                         backGroundColorClass={backGroundColorClass}
+                        getCheckStatusAPI={GetCheckStatusData}
                       />
 
                       <CurrentTopicCard
