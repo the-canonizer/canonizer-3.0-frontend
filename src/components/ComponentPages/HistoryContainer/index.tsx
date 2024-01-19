@@ -346,7 +346,7 @@ function HistoryContainer() {
     if (campHistory?.items?.length >= 3) {
       count.current = 1;
     }
-    updateCampApi(reqBody);
+    await updateCampApi(reqBody);
     await campStatementApiCall();
     setLoadingIndicator(false);
     // await commitChanges()
