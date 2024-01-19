@@ -251,7 +251,7 @@ const UploadFileUI = ({
           data-testid="test2"
           onClick={() => {
             window.location.href =
-              process.env.NEXT_PUBLIC_BASE_ADMIN_IMAGES_URL + item.file_path;
+              process.env.NEXT_PUBLIC_BASE_IMAGES_URL + item.file_path;
           }}
         >
           <span className={styles.menu_item}>
@@ -334,9 +334,7 @@ const UploadFileUI = ({
             return (
               <Image
                 alt="uploaded-file"
-                src={
-                  process.env.NEXT_PUBLIC_BASE_ADMIN_IMAGES_URL + obj.file_path
-                }
+                src={process.env.NEXT_PUBLIC_BASE_IMAGES_URL + obj.file_path}
                 height={150}
                 width={140}
               />
@@ -552,7 +550,7 @@ const UploadFileUI = ({
                         className={styles.menu_item}
                         onClick={() => {
                           window.location.href =
-                            process.env.NEXT_PUBLIC_BASE_ADMIN_IMAGES_URL +
+                            process.env.NEXT_PUBLIC_BASE_IMAGES_URL +
                             obj.file_path;
                         }}
                       >
@@ -741,7 +739,7 @@ const UploadFileUI = ({
             <div className={styles.imageFiles}>
               {displayImage(
                 item,
-                process.env.NEXT_PUBLIC_BASE_ADMIN_IMAGES_URL + item.file_path
+                process.env.NEXT_PUBLIC_BASE_IMAGES_URL + item.file_path
               )}
             </div>
             <h3 className="BoxcopyWrap">
@@ -1500,8 +1498,7 @@ const UploadFileUI = ({
                 id="modalImageId"
                 alt={imageStatus}
                 src={
-                  process.env.NEXT_PUBLIC_BASE_ADMIN_IMAGES_URL +
-                  preview.previewPath
+                  process.env.NEXT_PUBLIC_BASE_IMAGES_URL + preview.previewPath
                 }
                 width={470}
                 height={470}
