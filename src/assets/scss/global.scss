@@ -2954,20 +2954,42 @@ div[role="option"]::before {
 }
 .upload-wrap {
   position: relative;
-  .ant-dropdown-trigger {
-    position: absolute;
-    bottom: 8px;
-    left: 50%;
-    z-index: 10;
-    color: black;
-    font-size: 20px;
-  }
   .ant-upload-list-item-info {
     border: 1px solid #2c6cb5;
   }
   .ant-btn-default {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    z-index: 10;
+    font-size: 20px;
     border-color: #2c6cb5;
     color: #2c6cb5;
     background-color: #f8f8f8;
+    padding: 0 5px;
+    height: auto;
+    min-height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    svg {
+      width: 16px;
+    }
   }
+}
+
+.slider-skeleton {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  span:first-child {
+    display: flex;
+    gap: 10px;
+  }
+  br {
+    display: none;
+  }
+}
+.skeleton-slider2 {
+  margin: 15px 0;
 }

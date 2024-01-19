@@ -310,7 +310,8 @@
 
   @media screen and (min-width: 1025px) {
     [class*="ant-select-single"] {
-      max-width: 58% !important;
+      // max-width: 58% !important;
+      max-width: calc(100% - 157px) !important;
     }
   }
 }
@@ -399,8 +400,8 @@
       width: 40% !important;
     }
     @media screen and (min-width: 576px) and (max-width: 1200px) {
-      max-width: inherit;
-      width: 48.5%;
+      max-width: 50% !important;
+      width: 39% !important;
       margin-top: 10px;
       margin-left: 0;
     }
@@ -415,8 +416,8 @@
       width: 270px;
     }
     @media screen and (min-width: 576px) and (max-width: 1200px) {
-      max-width: inherit;
-      width: 48.5%;
+      max-width: 50% !important;
+      width: 49%;
     }
   }
 }

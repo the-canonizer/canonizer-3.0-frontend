@@ -28,7 +28,7 @@ const CampStatementSearch = () => {
   };
   useEffect(() => {
     pageChange(currentPage);
-  });
+  },[searchDataAll?.statement]);
   const covertToTime = (unixTime) => {
     return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
   };
