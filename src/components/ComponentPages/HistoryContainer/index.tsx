@@ -33,6 +33,7 @@ function HistoryContainer() {
   const router = useRouter();
   const dispatch = useDispatch();
   const didMount = useRef(false);
+  const didMountCall = useRef(false);
 
   const [activeTab, setActiveTab] = useState("all");
 
@@ -572,6 +573,7 @@ function HistoryContainer() {
               renderCampHistories
             ) : (
               <InfiniteScroll
+                initialLoad={false}
                 loadMore={!loadingIndicator && campStatementApiCall}
                 hasMore={loadMoreItems}
                 loader={loader}
