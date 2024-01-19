@@ -408,7 +408,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
                     <>
                       <li style={{ cursor: "default" }}>
                         <div className="d-flex flex-wrap">
-                          <Link href={`/${x.link}`}>
+                          <Link href={`${x.link}`}>
                             <a>
                               {!!prefix && (
                                 <label style={{ cursor: "pointer" }}>
@@ -573,9 +573,11 @@ const HeaderMenu = ({ loggedUser }: any) => {
       ) {
         dispatch(setSearchDataAll(response?.data?.data));
         dispatch(setSearchMetaData(response?.data?.meta_data));
-        dispatch(setSearchLoadingAction(false));
+        // dispatch(setSearchLoadingAction(false));
       }
     }
+    dispatch(setSearchLoadingAction(false));
+
   };
   const getGlobalSearchCanonizer = async (queryString, onPresEnter) => {
     // dispatch(setLoadingAction(true))
@@ -588,7 +590,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
       setSearchCampStatement(response.data.data.statement);
       setSearchNickname(response.data.data.nickname);
       if (onPresEnter) {
-        dispatch(setSearchLoadingAction(true));
+        // dispatch(setSearchLoadingAction(true));
         dispatch(setSearchData(response?.data?.data));
         dispatch(setSearchLoadingAction(false));
       }

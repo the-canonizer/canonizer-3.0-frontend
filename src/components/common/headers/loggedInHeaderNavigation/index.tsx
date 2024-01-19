@@ -56,6 +56,9 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
     }
   };
 
+  const isMobile = window.matchMedia('(min-width: 1280px)').matches;
+
+
   useEffect(() => {
     if (!list?.length) {
       getListData();
@@ -159,7 +162,7 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
               <CloseOutlined />
             </Button>
 
-            <HeaderMenu loggedUser={loggedUser} />
+            {isMobile==true?<HeaderMenu loggedUser={loggedUser} />:<></>}
 
             {!isLoginPage ? (
               <ProfileInfoTab

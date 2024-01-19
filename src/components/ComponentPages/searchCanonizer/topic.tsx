@@ -22,8 +22,6 @@ const TopicSearch = () => {
   }));
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [seleteonIndicator, setSeleteonIndicator] = useState(false);
-
   const dispatch = useDispatch();
 
   const pageChange = (pageNumber) => {
