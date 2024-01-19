@@ -2977,3 +2977,19 @@ div[role="option"]::before {
     }
   }
 }
+
+.slider-skeleton {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  span:first-child {
+    display: flex;
+    gap: 10px;
+  }
+  br {
+    display: none;
+  }
+}
+.skeleton-slider2 {
+  margin: 15px 0;
+}
