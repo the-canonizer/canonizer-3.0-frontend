@@ -464,7 +464,6 @@ const SupportTreeCard = ({
               getCheckSupportStatus?.support_flag != 1
                 ? K?.exceptionalMessages?.directJoinSupport
                 : K?.exceptionalMessages?.manageSupport}
-              +"sdas"
             </CustomButton>
             {/* </a>
             </Link> */}
