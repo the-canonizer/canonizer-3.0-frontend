@@ -587,6 +587,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
                         }
                         backGroundColorClass={backGroundColorClass}
                         getCheckStatusAPI={GetCheckStatusData}
+                        GetActiveSupportTopic={GetActiveSupportTopic}
                       />
 
                       <CurrentTopicCard
