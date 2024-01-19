@@ -84,8 +84,8 @@ const CreateTopicFromUI = ({
                 label={
                   <Fragment>
                     {labels.cr_topic_name}
-                    <span>(Limit 30 Chars)</span>
                     <span className="required">*</span>
+                    <span>(Limit 30 Chars)</span>
                   </Fragment>
                 }
                 name="topic_name"

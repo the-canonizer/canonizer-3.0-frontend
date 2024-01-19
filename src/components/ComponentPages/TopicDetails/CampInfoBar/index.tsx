@@ -302,8 +302,8 @@ const TimelineInfoBar = ({
               <Typography.Paragraph
                 className={"mb-0 " + styles.topicTitleStyle}
               >
-                <span className="normal mr-1">
-                  {!isTopicHistoryPage ? "Camp :" : ""}{" "}
+                <span className="normal">
+                  {!isTopicHistoryPage ? "Camp :" : ""}
                 </span>
                 {loadingIndicator ? (
                   <CustomSkelton
@@ -330,7 +330,7 @@ const TimelineInfoBar = ({
                         >
                           <a>
                             <span className={styles.slashStyle}>
-                              {index !== 0 && <DoubleRightOutlined />}{" "}
+                              {index !== 0 && <DoubleRightOutlined />}
                             </span>
                             <span
                               className={
