@@ -145,11 +145,9 @@ export const register = async (values: object) => {
 
 export const verifyOtp = async (values: object) => {
   try {
-    const authToken = await createToken();
+    // const authToken = await createToken();
 
-    const res = await NetworkCall.fetch(
-      UserRequest.verifyUser(values, authToken?.access_token)
-    );
+    const res = await NetworkCall.fetch(UserRequest.verifyUser(values));
 
     let payload = {
       ...res.data.user,
@@ -501,10 +499,8 @@ export const updateNickName = async (values: object, id: string) => {
 
 export const resendOTPForRegistration = async (values: object) => {
   try {
-    const authToken = await createToken();
-
     const res = await NetworkCall.fetch(
-      UserRequest.resendOTPForRegistration(values, authToken?.access_token)
+      UserRequest.resendOTPForRegistration(values)
     );
 
     return res;
