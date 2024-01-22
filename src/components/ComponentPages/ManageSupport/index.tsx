@@ -514,6 +514,7 @@ const ManageSupport = ({
         setSubmitButtonDisable(false);
       }
     }
+    handleCancelSupportCamps({ isCallApiStatus: true });
   };
   return (
     <>

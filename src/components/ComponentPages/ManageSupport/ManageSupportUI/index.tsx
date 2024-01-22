@@ -540,9 +540,9 @@ const ManageSupportUI = ({
                 id="cancelBtn"
                 htmlType="button"
                 className={styles.cancel_Btn}
-                onClick={() =>
-                  handleCancelSupportCamps({ isCallApiStatus: false })
-                }
+                onClick={() => {
+                  handleCancelSupportCamps({ isCallApiStatus: false });
+                }}
               >
                 Cancel
               </Button>

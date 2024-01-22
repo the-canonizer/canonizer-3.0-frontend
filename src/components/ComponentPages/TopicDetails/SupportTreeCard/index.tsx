@@ -135,7 +135,6 @@ const SupportTreeCard = ({
         fetch_topic_history: +router?.query?.topic_history,
       };
       await getTreesApi(reqBodyForService);
-      GetActiveSupportTopicList();
       GetActiveSupportTopic(topicNum && { topic_num: topicNum });
     }
 
@@ -573,7 +572,7 @@ const SupportTreeCard = ({
         title="Support Camps"
         open={isModalOpenSupportCamps}
         onOk={handleOkSupportCamps}
-        // onCancel={handleCancelSupportCamps}
+        onCancel={() => handleCancelSupportCamps({ isCallApiStatus: false })}
         footer={null}
         closeIcon={<CloseCircleOutlined />}
         width={700}
