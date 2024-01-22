@@ -28,7 +28,7 @@ const NicknameSearch = () => {
   };
   useEffect(() => {
     pageChange(currentPage);
-  },[searchDataAll?.nickname]);
+  }, [searchDataAll?.nickname]);
   const showEmpty = (msg) => {
     return <Empty description={msg} />;
   };

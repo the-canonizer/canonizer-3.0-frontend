@@ -7,15 +7,19 @@ import ArchivedCampMsg from "../../ArchivedCampMsg";
 import TopicCreationBTN from "../TopicCreationBTN";
 import HeaderMenu from "../HeaderMenu";
 const LoggedInHeader = () => {
-  const isMobile = window.matchMedia('(min-width: 1280px)').matches;
+  const isMobile = window.matchMedia("(min-width: 1280px)").matches;
   return (
     <React.Fragment>
       <LoggedInHeaderNavigation></LoggedInHeaderNavigation>
-      {isMobile == false?<section className="Mob_View">
-        <div className="search_header">
-          <HeaderMenu />
-        </div>
-      </section>:<></>}
+      {isMobile == false ? (
+        <section className="Mob_View">
+          <div className="search_header">
+            <HeaderMenu />
+          </div>
+        </section>
+      ) : (
+        <></>
+      )}
       <SearchSection />
       <div className="topicMobBTN">
         <TopicCreationBTN key="create-topic-area" />
