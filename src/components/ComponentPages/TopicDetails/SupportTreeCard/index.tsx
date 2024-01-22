@@ -69,6 +69,7 @@ const SupportTreeCard = ({
   backGroundColorClass,
   getCheckStatusAPI,
   GetActiveSupportTopic,
+  GetActiveSupportTopicList,
 }: any) => {
   const {
     currentGetCheckSupportExistsData,
@@ -134,6 +135,7 @@ const SupportTreeCard = ({
         fetch_topic_history: +router?.query?.topic_history,
       };
       await getTreesApi(reqBodyForService);
+      GetActiveSupportTopicList();
       GetActiveSupportTopic(topicNum && { topic_num: topicNum });
     }
 
