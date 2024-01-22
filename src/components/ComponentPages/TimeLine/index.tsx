@@ -117,20 +117,29 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
   };
   return (
     <React.Fragment>
-      <TimelineSlider
-        mockData={mockData}
-        setStart={setStart}
-        start={start}
-        setTimelineDescript={setTimelineDescript}
-        handleEventSelection={handleEventSelection}
-        animationSpeed={animationSpeed}
-        setAnimationSpeed={setAnimationSpeed}
-        iteration={iteration}
-        setIteration={setIteration}
-        handleForwardOrBackord={handleForwardOrBackord}
-        isPlaying={isPlaying}
-        setIsPlaying={setIsPlaying}
-      />
+      {loading || !data ? (
+        <CustomSkelton
+          skeltonFor="playButtons"
+          bodyCount={4}
+          isButton={false}
+          stylingClass=""
+        />
+      ) : (
+        <TimelineSlider
+          mockData={mockData}
+          setStart={setStart}
+          start={start}
+          setTimelineDescript={setTimelineDescript}
+          handleEventSelection={handleEventSelection}
+          animationSpeed={animationSpeed}
+          setAnimationSpeed={setAnimationSpeed}
+          iteration={iteration}
+          setIteration={setIteration}
+          handleForwardOrBackord={handleForwardOrBackord}
+          isPlaying={isPlaying}
+          setIsPlaying={setIsPlaying}
+        />
+      )}
       <div className="evenline-bars">
         {loading || !data ? (
           <CustomSkelton

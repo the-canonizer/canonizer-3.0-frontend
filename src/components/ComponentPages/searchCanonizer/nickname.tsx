@@ -28,7 +28,7 @@ const NicknameSearch = () => {
   };
   useEffect(() => {
     pageChange(currentPage);
-  });
+  },[searchDataAll?.nickname]);
   const showEmpty = (msg) => {
     return <Empty description={msg} />;
   };
@@ -61,7 +61,7 @@ const NicknameSearch = () => {
                       return (
                         <>
                           <li>
-                            <Link href={`/${x?.link}`}>
+                            <Link href={`${x?.link}`}>
                               <a>
                                 <label style={{ cursor: "pointer" }}>
                                   {x?.type_value}

@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { DownOutlined, EditOutlined, UploadOutlined } from "@ant-design/icons";
-import { Button, Dropdown, Modal, Space, Upload, message } from "antd";
+import React, { Fragment, useEffect, useState } from "react";
+import { EditOutlined, UploadOutlined } from "@ant-design/icons";
+import { Button, Modal, Tooltip, Upload, message } from "antd";
 import type { RcFile, UploadProps } from "antd/es/upload";
 import type { UploadFile } from "antd/es/upload/interface";
+import { useDispatch, useSelector } from "react-redux";
+
 import {
   deleteProfileImage,
   uploadProfileImage,
 } from "src/network/api/userApi";
-import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "src/store";
 import { setProfilePicture } from "src/store/slices/authSlice";
 
-// const MAX_IMAGE_SIZE_MB = 5; // Maximum image size in megabytes
 const MAX_IMAGE_WIDTH = 1000; // Maximum image width in pixels
 const MAX_IMAGE_HEIGHT = 1000; // Maximum image height in pixels
 
@@ -176,7 +176,7 @@ const ImageUploader: React.FC = () => {
   ];
 
   return (
-    <>
+    <Fragment>
       <div className="upload-wrap">
         <Upload
           className="picture-upload"
@@ -198,9 +198,11 @@ const ImageUploader: React.FC = () => {
             showUploadList={false}
             onChange={updateProfilePicture}
           >
-            <Button size="small" className="edit-profile-picture">
-              <EditOutlined />
-            </Button>
+            <Tooltip title="Update" key="update-btn" placement="bottom">
+              <Button size="small">
+                <EditOutlined />
+              </Button>
+            </Tooltip>
           </Upload>
         ) : null}
       </div>
@@ -216,7 +218,7 @@ const ImageUploader: React.FC = () => {
           src={previewImage}
         />
       </Modal>
-    </>
+    </Fragment>
   );
 };
 
