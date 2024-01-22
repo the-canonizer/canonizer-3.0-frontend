@@ -30,7 +30,6 @@ const ManageSupportUI = dynamic(async () => await import("./ManageSupportUI"), {
 const ManageSupport = ({
   handleCancelSupportCamps,
   selectNickId: getDelegateId,
-  componentKey,
   setGetManageSupportLoadingIndicator,
   getManageSupportLoadingIndicator,
   getCheckStatusAPI,
@@ -156,12 +155,7 @@ const ManageSupport = ({
       }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    isUserAuthenticated,
-    reqBodyData.topic_num,
-    campRecord?.camp_name,
-    componentKey,
-  ]);
+  }, [isUserAuthenticated, reqBodyData.topic_num, campRecord?.camp_name]);
   const GetCheckStatusData = async (campReff: any) => {
     let response = await GetCheckSupportExists(queryParams(reqBodyData));
     if (response && response?.status_code === 404) {

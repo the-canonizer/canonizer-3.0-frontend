@@ -103,14 +103,12 @@ const SupportTreeCard = ({
   const [currentAlgo, setCurrentAlgo] = useState<string>("");
   const [selectNickId, setSelectNickId] = useState(null);
   const [isModalOpenSupportCamps, setIsModalOpenSupportCamps] = useState(false);
-  const [componentKey, setComponentKey] = useState(0);
   const [mainComponentKey, setMainComponentKey] = useState(0);
   const [
     getManageSupportLoadingIndicator,
     setGetManageSupportLoadingIndicator,
   ] = useState(false);
   const showModalSupportCamps = () => {
-    setComponentKey(componentKey + 1);
     setIsModalOpenSupportCamps(true);
   };
   const handleOkSupportCamps = () => {
@@ -577,7 +575,6 @@ const SupportTreeCard = ({
         <ManageSupport
           handleCancelSupportCamps={handleCancelSupportCamps}
           selectNickId={selectNickId}
-          componentKey={componentKey}
           setGetManageSupportLoadingIndicator={
             setGetManageSupportLoadingIndicator
           }
