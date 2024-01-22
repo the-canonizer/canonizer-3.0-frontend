@@ -145,11 +145,9 @@ export const register = async (values: object) => {
 
 export const verifyOtp = async (values: object) => {
   try {
-    const authToken = await createToken();
+    // const authToken = await createToken();
 
-    const res = await NetworkCall.fetch(
-      UserRequest.verifyUser(values, authToken?.access_token)
-    );
+    const res = await NetworkCall.fetch(UserRequest.verifyUser(values));
 
     let payload = {
       ...res.data.user,
@@ -319,12 +317,6 @@ export const UpdateUserProfileInfo = async (values: object) => {
         birthday: value.data.birthday,
         email: value.data.email,
       };
-
-      document.cookie =
-        "loginToken=" +
-        value?.data.auth?.access_token +
-        "; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
-
       store.dispatch(setLoggedInUser(payload));
       return value;
     })
@@ -501,10 +493,8 @@ export const updateNickName = async (values: object, id: string) => {
 
 export const resendOTPForRegistration = async (values: object) => {
   try {
-    const authToken = await createToken();
-
     const res = await NetworkCall.fetch(
-      UserRequest.resendOTPForRegistration(values, authToken?.access_token)
+      UserRequest.resendOTPForRegistration(values)
     );
 
     return res;

@@ -76,6 +76,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
   const [isDelegateSupportTreeCardModal, setIsDelegateSupportTreeCardModal] =
     useState(false);
   const [removeSupportSpinner, setRemoveSupportSpinner] = useState(false);
+  const [isRemovingSupport, setIsRemovingSupport] = useState(false);
   const [backGroundColorClass, setBackGroundColorClass] = useState("default");
   const [totalCampScoreForSupportTree, setTotalCampScoreForSupportTree] =
     useState<number>(null);
@@ -206,6 +207,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
   };
 
   const removeApiSupport = async (supportedId, reasonData = {}) => {
+    setIsRemovingSupport(true);
     const supportedCampsRemove = {
       topic_num: reqBodyData.topic_num,
       remove_camps: [reqBodyData.camp_num],
@@ -229,16 +231,18 @@ const TopicDetails = ({ serverSideCall }: any) => {
 
     const res = await removeSupportedCamps(supportedCampsRemove);
     if (res && res.status_code == 200) {
-      setRemoveSupportSpinner(false);
       message.success(res.message);
       setIsSupportTreeCardModal(false);
       GetCheckStatusData();
       // getCanonizedCampSupportingTreeApi(reqBody, algorithm);
-      getTreesApi(reqBodyForService);
+      await getTreesApi(reqBodyForService);
+      setRemoveSupportSpinner(false);
       // fetchTotalScore();
+      setIsRemovingSupport(false);
     }
   };
   const removeSupport = async (supportedId, reasonData = {}) => {
+    setIsRemovingSupport(true);
     const RemoveSupportId = {
       topic_num: reqBodyData.topic_num,
       add_camp: {},
@@ -263,17 +267,19 @@ const TopicDetails = ({ serverSideCall }: any) => {
 
     let res = await addSupport(RemoveSupportId);
     if (res && res.status_code == 200) {
-      setRemoveSupportSpinner(false);
       message.success(res.message);
       setIsSupportTreeCardModal(false);
       GetCheckStatusData();
       // getCanonizedCampSupportingTreeApi(reqBody, algorithm);
-      getTreesApi(reqBodyForService);
+      await getTreesApi(reqBodyForService);
+      setRemoveSupportSpinner(false);
+      setIsRemovingSupport(false);
       // fetchTotalScore();
     }
     setRemoveSupportSpinner(false);
   };
   const removeSupportForDelegate = async (reasonData = {}) => {
+    setIsRemovingSupport(true);
     const removeEntireData = {
       topic_num: topicList[0].topic_num,
       nick_name_id: topicList[0].nick_name_id,
@@ -300,7 +306,9 @@ const TopicDetails = ({ serverSideCall }: any) => {
       setIsDelegateSupportTreeCardModal(false);
       GetCheckStatusData();
       // getCanonizedCampSupportingTreeApi(reqBody, algorithm);
-      getTreesApi(reqBodyForService);
+      await getTreesApi(reqBodyForService);
+      setIsRemovingSupport(false);
+      setRemoveSupportSpinner(false);
       // fetchTotalScore();
     }
   };
@@ -563,6 +571,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
 
                       <SupportTreeCard
                         loadingIndicator={loadingIndicator}
+                        isRemovingSupport={isRemovingSupport}
                         handleLoadMoreSupporters={handleLoadMoreSupporters}
                         getCheckSupportStatus={getCheckSupportStatus}
                         removeApiSupport={removeApiSupport}

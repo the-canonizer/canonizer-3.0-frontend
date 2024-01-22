@@ -66,7 +66,7 @@ export default class UserRequest extends Request {
     );
   }
 
-  static verifyUser(values, authToken) {
+  static verifyUser(values) {
     const body = {
       client_id: process.env.NEXT_PUBLIC_AUTH_CLIENT_PASSWORD_ID,
       client_secret: process.env.NEXT_PUBLIC_AUTH_CLIENT_PASSWORD_SECRET,
@@ -78,8 +78,7 @@ export default class UserRequest extends Request {
       K.Network.Method.POST,
       body,
       K.Network.Header.Type.Json,
-      {},
-      authToken
+      {}
     );
   }
 
@@ -327,14 +326,13 @@ export default class UserRequest extends Request {
   }
 
   // resend otp for registration
-  static resendOTPForRegistration(body, token) {
+  static resendOTPForRegistration(body) {
     return new Request(
       K.Network.URL.ResendOTPForRegistration,
       K.Network.Method.POST,
       body,
       K.Network.Header.Type.Json,
-      {},
-      token
+      {}
     );
   }
 

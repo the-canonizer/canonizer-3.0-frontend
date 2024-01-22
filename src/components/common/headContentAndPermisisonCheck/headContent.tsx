@@ -1,7 +1,7 @@
 import React from "react";
 import Head from "next/head";
 
-import schemas from "./schemaContent";
+import schemaGet, { schemas } from "./schemaContent";
 
 type HeadContentProps = {
   description: string;
@@ -41,8 +41,11 @@ function HeadContent({
 
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: schemas[componentName] }}
-      />
+        dangerouslySetInnerHTML={{
+          __html:
+            schemaGet(componentName, title, route) || schemas[componentName],
+        }}
+      ></script>
 
       <meta charSet="utf-8" />
       <meta name="title" content={title} />

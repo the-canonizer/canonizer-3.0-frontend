@@ -33,6 +33,7 @@ function HistoryContainer() {
   const router = useRouter();
   const dispatch = useDispatch();
   const didMount = useRef(false);
+  const didMountCall = useRef(false);
 
   const [activeTab, setActiveTab] = useState("all");
 
@@ -345,7 +346,7 @@ function HistoryContainer() {
     if (campHistory?.items?.length >= 3) {
       count.current = 1;
     }
-    updateCampApi(reqBody);
+    await updateCampApi(reqBody);
     await campStatementApiCall();
     setLoadingIndicator(false);
     // await commitChanges()
@@ -572,6 +573,7 @@ function HistoryContainer() {
               renderCampHistories
             ) : (
               <InfiniteScroll
+                initialLoad={false}
                 loadMore={!loadingIndicator && campStatementApiCall}
                 hasMore={loadMoreItems}
                 loader={loader}

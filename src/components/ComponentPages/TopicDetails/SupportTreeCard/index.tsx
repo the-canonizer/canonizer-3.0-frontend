@@ -53,6 +53,7 @@ const supportContent = (
 
 const SupportTreeCard = ({
   loadingIndicator,
+  isRemovingSupport,
   getCheckSupportStatus,
   removeApiSupport,
   removeSupport,
@@ -322,7 +323,7 @@ const SupportTreeCard = ({
                         <a>
                           <Button
                             id="supportTreeRemoveSupport"
-                            disabled={asof == "bydate"}
+                            disabled={asof == "bydate" || isRemovingSupport}
                             onClick={() => {
                               currentGetCheckSupportExistsData.is_delegator
                                 ? setIsDelegateSupportTreeCardModal(true)
@@ -334,7 +335,7 @@ const SupportTreeCard = ({
                             }}
                             className="delegate-support-style"
                           >
-                            {"Remove Your Support"}
+                            Remove Your Support
                           </Button>
                         </a>
                       )}
@@ -356,7 +357,6 @@ const SupportTreeCard = ({
           );
         }
       }
-      //return <TreeNode key={data[item].key} {...data[item]} />;
     });
   };
 
@@ -406,11 +406,9 @@ const SupportTreeCard = ({
           }
           key="1"
           extra={
-            <Fragment>
-              <Popover content={supportContent} placement="left">
-                <i className="icon-info tooltip-icon-style"></i>
-              </Popover>
-            </Fragment>
+            <Popover content={supportContent} placement="left">
+              <i className="icon-info tooltip-icon-style"></i>
+            </Popover>
           }
         >
           <Paragraph>
@@ -444,7 +442,6 @@ const SupportTreeCard = ({
               ghost
               className="load-more-btn"
               onClick={() => {
-                // handleLoadMoreSupporters();
                 setLoadMore(!loadMore);
               }}
             >

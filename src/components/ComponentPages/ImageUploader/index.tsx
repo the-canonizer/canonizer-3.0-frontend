@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { DownOutlined, EditOutlined, UploadOutlined } from "@ant-design/icons";
-import { Button, Dropdown, Modal, Space, Upload, message } from "antd";
+import React, { Fragment, useEffect, useState } from "react";
+import { EditOutlined, UploadOutlined } from "@ant-design/icons";
+import { Button, Modal, Tooltip, Upload, message } from "antd";
 import type { RcFile, UploadProps } from "antd/es/upload";
 import type { UploadFile } from "antd/es/upload/interface";
+import { useDispatch, useSelector } from "react-redux";
+
 import {
   deleteProfileImage,
   uploadProfileImage,
 } from "src/network/api/userApi";
-import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "src/store";
 import { setProfilePicture } from "src/store/slices/authSlice";
 
-// const MAX_IMAGE_SIZE_MB = 5; // Maximum image size in megabytes
 const MAX_IMAGE_WIDTH = 1000; // Maximum image width in pixels
 const MAX_IMAGE_HEIGHT = 1000; // Maximum image height in pixels
 
@@ -134,51 +134,51 @@ const ImageUploader: React.FC = () => {
     </div>
   );
 
-  const updateProfilePicture = async (e) => {
-    let newFileList = e.fileList;
-    const lastFile = e.fileList[e.fileList.length - 1];
+  // const updateProfilePicture = async (e) => {
+  //   let newFileList = e.fileList;
+  //   const lastFile = e.fileList[e.fileList.length - 1];
 
-    if (lastFile) {
-      const validationStatus = await validateImage(
-        lastFile.originFileObj as File
-      );
-      if (validationStatus !== null) {
-        // setFileList(newFileList);
-        try {
-          const formData = new FormData();
-          formData.append("profile_picture", lastFile.originFileObj as File);
-          const response = await uploadProfileImage(formData);
-          const imageUrl = response.data.profile_picture;
-          dispatch(setProfilePicture(imageUrl));
-          message.success("Upload successful");
-        } catch (error) {
-          message.error("Upload failed");
-        }
-      } else {
-        // Remove the invalid file from the fileList
-        newFileList.pop();
-        setFileList(newFileList);
-      }
-    }
-  };
-  const items = [
-    {
-      key: "1",
-      label: (
-        <Upload
-          multiple={false}
-          onChange={(e) => {
-            updateProfilePicture(e);
-          }}
-        >
-          <div>Update</div>
-        </Upload>
-      ),
-    },
-  ];
+  //   if (lastFile) {
+  //     const validationStatus = await validateImage(
+  //       lastFile.originFileObj as File
+  //     );
+  //     if (validationStatus !== null) {
+  //       // setFileList(newFileList);
+  //       try {
+  //         const formData = new FormData();
+  //         formData.append("profile_picture", lastFile.originFileObj as File);
+  //         const response = await uploadProfileImage(formData);
+  //         const imageUrl = response.data.profile_picture;
+  //         dispatch(setProfilePicture(imageUrl));
+  //         message.success("Upload successful");
+  //       } catch (error) {
+  //         message.error("Upload failed");
+  //       }
+  //     } else {
+  //       // Remove the invalid file from the fileList
+  //       newFileList.pop();
+  //       setFileList(newFileList);
+  //     }
+  //   }
+  // };
+  // const items = [
+  //   {
+  //     key: "1",
+  //     label: (
+  //       <Upload
+  //         multiple={false}
+  //         onChange={(e) => {
+  //           updateProfilePicture(e);
+  //         }}
+  //       >
+  //         <div>Update</div>
+  //       </Upload>
+  //     ),
+  //   },
+  // ];
 
   return (
-    <>
+    <Fragment>
       <div className="upload-wrap">
         <Upload
           className="picture-upload"
@@ -191,18 +191,12 @@ const ImageUploader: React.FC = () => {
           showUploadList={{ showRemoveIcon: true }}
         >
           {fileList.length >= 1 ? null : uploadButton}
-        </Upload>
-        <Dropdown
-          menu={{
-            items,
-          }}
-        >
-          <a onClick={(e) => e.preventDefault()}>
+          <Tooltip title="Update" key="update-btn" placement="bottom">
             <Button size="small">
               <EditOutlined />
             </Button>
-          </a>
-        </Dropdown>
+          </Tooltip>
+        </Upload>
       </div>
       <Modal
         visible={isPreviewVisible}
@@ -216,7 +210,7 @@ const ImageUploader: React.FC = () => {
           src={previewImage}
         />
       </Modal>
-    </>
+    </Fragment>
   );
 };
 

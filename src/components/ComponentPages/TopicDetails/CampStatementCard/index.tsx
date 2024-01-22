@@ -99,7 +99,7 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
       >
         <Paragraph>
           <div className={styles.campStatement}>
-            {campStatement?.length ? (
+            {campStatement?.length && campStatement[0]?.parsed_value ? (
               <div
                 dangerouslySetInnerHTML={{
                   __html: `<div class="ck-content">${campStatement[0]?.parsed_value}</div>`,
