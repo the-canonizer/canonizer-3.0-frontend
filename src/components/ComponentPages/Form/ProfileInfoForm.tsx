@@ -73,6 +73,7 @@ function ProfileInfoForm({
   const selectAfter = (val, prvtPblc) => {
     return (
       <Select
+        data-testid="selectAfterHandleselectAfter"
         defaultValue={prvtPblc}
         className="select-after"
         onChange={handleselectAfter(val)}
@@ -89,7 +90,9 @@ function ProfileInfoForm({
     loading,
   }) => (
     <div>
+      {console.log(suggestions,"sugg")}
       <Input
+        data-testid="auto_complete"
         id="selectAddress_1"
         addonAfter={selectAfter("address_1", publicOrPrivate("address_1"))}
         placeholder={messages.placeholders.addressLine1}
@@ -128,7 +131,6 @@ function ProfileInfoForm({
   );
 
   const [loaded, setLoaded] = useState(false);
-
   useEffect(() => {
     const scripttag = document.createElement("script");
     scripttag.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_API_KEY}&libraries=places`;
@@ -283,6 +285,7 @@ function ProfileInfoForm({
                         </Form.Item>
                         <Form.Item>
                           <Select
+                            data-testid ="handleselectAfter"
                             size="large"
                             defaultValue={publicOrPrivate("birthday")}
                             onChange={handleselectAfter("birthday")}
