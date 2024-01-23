@@ -3,9 +3,10 @@ import ManageSupports from "../../components/ComponentPages/ManageSupport";
 
 function ManageSupport() {
   return (
-    <Layout>
-      <ManageSupports />
-    </Layout>
+    <></>
+    // <Layout>
+    // <ManageSupports />
+    // </Layout>
   );
 }
 ManageSupport.displayName = "ManageSupport";
