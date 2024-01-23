@@ -3,7 +3,6 @@ const BaseCanonizerApiUrl = process.env.NEXT_PUBLIC_BASE_API_URL;
 const BaseImagesURL = process.env.NEXT_PUBLIC_BASE_IMAGES_URL;
 const BaseVideosURL = process.env.NEXT_PUBLIC_BASE_VIDEOS_URL;
 // const BaseCanonizerDevApiUrl = process.env.NEXT_PUBLIC_BASE_API_DEV_URL;
-const BaseCanonizerDevApiUrl = process.env.NEXT_PUBLIC_BASE_API_DEV_URL;
 const NetworkConstants = {
   URL: {
     BaseImagesURL,
@@ -94,7 +93,7 @@ const NetworkConstants = {
     //GlobalSearchUploadedFile
     GlobalSearchUploadedFile: `${BaseCanonizerApiUrl}/global-search-uploaded-files`,
     //Canonizer Global Search
-    canonizerGlobalSearch: `${BaseCanonizerDevApiUrl}/search`,
+    canonizerGlobalSearch: `${BaseCanonizerApiUrl}/search`,
     //AllSupportedCampsList
     AllSupportedCampsList: `${BaseCanonizerApiUrl}/user/supports/`,
 
