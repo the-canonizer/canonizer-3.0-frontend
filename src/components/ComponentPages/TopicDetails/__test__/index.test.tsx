@@ -111,7 +111,7 @@ describe("TopicDetails", () => {
       </Provider>
     );
     expect(screen.getByText(/show archived camps/i)).toBeInTheDocument();
-    expect(container.getElementsByTagName("button")).toHaveLength(1);
+    expect(container.getElementsByTagName("button")).toHaveLength(2);
     expect(container.getElementsByTagName("textarea")).toHaveLength(0);
     expect(container.getElementsByTagName("input")).toHaveLength(8);
     // expect(container.getElementsByTagName("a")).toHaveLength(1);
