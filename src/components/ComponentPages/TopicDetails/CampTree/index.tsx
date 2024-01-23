@@ -106,7 +106,7 @@ const CampTree = ({
     } else return childExpandTree;
     return childExpandTree;
   };
-  
+
   const mergeArray = (arry1 = [], arry2 = []) => {
     const mergedSet = new Set([...arry1.map(String), ...arry2.map(String)]);
     const output = Array.from(mergedSet).sort((x, y) =>

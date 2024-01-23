@@ -22,10 +22,10 @@ import { getCookies } from "src/utils/generalUtility";
 import { createToken } from "src/network/api/userApi";
 
 function WrappedApp({ Component, pageProps, meta, canonical_url }: any) {
-  const router = useRouter();
-  const [_isAuthenticated, setIsAuthenticated, isAuthenticatedRef] = useState(
-    !!(getCookies() as any)?.loginToken
-  );
+  const router = useRouter(),
+    [_isAuthenticated, setIsAuthenticated, isAuthenticatedRef] = useState(
+      !!(getCookies() as any)?.loginToken
+    );
 
   useEffect(() => {
     const fetchToken = async () => {
@@ -45,7 +45,11 @@ function WrappedApp({ Component, pageProps, meta, canonical_url }: any) {
     };
 
     fetchToken();
-  }, [router.pathname, +router.query?.camp?.at(1)?.split("-")[0]]);
+  }, [
+    router.pathname,
+    +router.query?.camp?.at(1)?.split("-")[0],
+    !!(getCookies() as any)?.loginToken,
+  ]);
 
   return isAuthenticatedRef.current && !!(getCookies() as any)?.loginToken ? (
     <CookiesProvider>
@@ -363,7 +367,12 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
     appContext.ctx.res.end();
   }
 
-  return { ...appProps, meta: metaData, returnURL: returnData, canonical_url };
+  return {
+    ...appProps,
+    meta: metaData,
+    returnURL: returnData,
+    canonical_url,
+  };
 };
 
 export default wrapper.withRedux(WrappedApp);

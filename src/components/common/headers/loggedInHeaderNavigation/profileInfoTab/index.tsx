@@ -1,7 +1,6 @@
-import React, { Fragment, useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import { Layout, Menu, Dropdown, Button, Space, Avatar } from "antd";
-import { useDispatch, useSelector } from "react-redux";
+import React, { Fragment } from "react";
+import { Dropdown, Space, Avatar } from "antd";
+import { useSelector } from "react-redux";
 import { RootState } from "../../../../../store";
 import styles from "../../siteHeader.module.scss";
 import Link from "next/link";
@@ -24,9 +23,8 @@ const ProfileInfoTab = ({
   isMobile,
   menu = <></>,
 }) => {
-  const { loggedInUser, list } = useSelector((state: RootState) => ({
+  const { loggedInUser } = useSelector((state: RootState) => ({
     loggedInUser: state.auth.loggedInUser,
-    list: state.notifications.headerNotification.list,
   }));
   let dataMain = (
     <Space size={isMobile ? "small" : "large"}>

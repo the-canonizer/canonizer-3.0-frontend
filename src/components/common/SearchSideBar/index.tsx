@@ -33,7 +33,7 @@ export default function SearchSideBar() {
                 className={
                   router?.asPath.includes("/search?") ? "active" : "btn"
                 }
-                disabled={router.pathname == "/search" ?true:false}
+                disabled={router.pathname == "/search" ? true : false}
               >
                 <a>All</a>
               </Button>
@@ -49,7 +49,7 @@ export default function SearchSideBar() {
                 className={
                   router?.asPath.includes("/search/topic?") ? "active" : "btn"
                 }
-                disabled={router.pathname == "/search/topic" ?true:false}
+                disabled={router.pathname == "/search/topic" ? true : false}
               >
                 <i className="icon-topic"></i>
                 <a>Topic</a>
@@ -66,7 +66,7 @@ export default function SearchSideBar() {
                 className={
                   router?.asPath.includes("/search/camp?") ? "active" : "btn"
                 }
-                disabled={router.pathname == "/search/camp" ?true:false}
+                disabled={router.pathname == "/search/camp" ? true : false}
               >
                 <i className="icon-camp"></i>
                 <a>Camp</a>
@@ -85,7 +85,9 @@ export default function SearchSideBar() {
                     ? "active"
                     : "btn"
                 }
-                disabled={router.pathname == "/search/camp_statement" ?true:false}
+                disabled={
+                  router.pathname == "/search/camp_statement" ? true : false
+                }
               >
                 <i className="icon-camp"></i>
                 <a>Camp Statement</a>
@@ -104,7 +106,7 @@ export default function SearchSideBar() {
                     ? "active"
                     : "btn"
                 }
-                disabled={router.pathname == "/search/nickname" ?true:false}
+                disabled={router.pathname == "/search/nickname" ? true : false}
               >
                 <Image
                   className={styles.nickname_icon}

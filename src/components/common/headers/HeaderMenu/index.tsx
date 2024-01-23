@@ -577,7 +577,6 @@ const HeaderMenu = ({ loggedUser }: any) => {
       }
     }
     dispatch(setSearchLoadingAction(false));
-
   };
   const getGlobalSearchCanonizer = async (queryString, onPresEnter) => {
     // dispatch(setLoadingAction(true))
