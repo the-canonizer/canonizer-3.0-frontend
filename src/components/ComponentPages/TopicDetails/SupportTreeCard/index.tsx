@@ -571,6 +571,7 @@ const SupportTreeCard = ({
         footer={null}
         closeIcon={<CloseCircleOutlined />}
         width={700}
+        destroyOnClose={true}
       >
         <ManageSupport
           handleCancelSupportCamps={handleCancelSupportCamps}
