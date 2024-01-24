@@ -338,11 +338,8 @@ function HistoryCollapse({
                           onClick={() => {
                             let isModelPop = !isUserAuthenticated
                               ? true
-                              : (!campStatement?.ifIAmExplicitSupporter &&
-                                  campStatement?.ifIamSupporter == 0) ||
-                                (parentArchived == 1 &&
-                                  directarchived == 1 &&
-                                  historyOf == "topic")
+                              : !campStatement?.ifIAmExplicitSupporter &&
+                                campStatement?.ifIamSupporter == 0
                               ? true
                               : false;
                             if (isModelPop) {
@@ -365,10 +362,7 @@ function HistoryCollapse({
                                     campStatement?.ifIamSupporter == 0) ||
                                   (campHistoryItems[0]?.is_archive == 1 &&
                                     campHistoryItems[0]?.status == "live" &&
-                                    campStatement.status == "objected") ||
-                                  (parentArchived == 1 &&
-                                    directarchived == 1 &&
-                                    historyOf == "topic")
+                                    campStatement.status == "objected")
                                 ? true
                                 : false
                             )
