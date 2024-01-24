@@ -3,8 +3,7 @@ import { useRouter } from "next/router";
 import { Form, message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 
-import { RootState } from "../../../store";
-import useIsUserAuthenticated from "../../../hooks/isUserAuthenticated";
+import useIsUserAuthenticated from "src/hooks/isUserAuthenticated";
 import ForumUIList from "./List";
 import ForumUICreate from "./Create";
 import ForumUIPost from "./Post";
@@ -18,13 +17,13 @@ import {
   getPostsList,
   deletePost,
   getThreadData,
-} from "../../../network/api/campForumApi";
+} from "src/network/api/campForumApi";
 import {
   getAllUsedNickNames,
   getCurrentCampRecordApi,
   getCurrentTopicRecordApi,
-} from "../../../network/api/campDetailApi";
-import { setThread, setPost } from "../../../store/slices/campForumSlice";
+} from "src/network/api/campDetailApi";
+import { setThread, setPost } from "src/store/slices/campForumSlice";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
 import { createToken } from "src/network/api/userApi";
 
@@ -37,7 +36,8 @@ const ForumComponent = ({
   const { isUserAuthenticated } = useIsUserAuthenticated();
   const didMount = useRef(false);
   const didMountList = useRef(false);
-  const didMountPost = useRef(false);
+  const didMountPost = useRef(false),
+    reRenderRef = useRef(0);
 
   const [paramsList, setParamsList] = useState({});
   const [threadList, setThreadList] = useState(threadlist || []);
@@ -176,7 +176,7 @@ const ForumComponent = ({
       setCreatedAt(res.data.created_at);
 
       if (res?.data?.status_code === 404) {
-        message.error(res?.data?.error || "Something went wrong ");
+        message?.error(res?.data?.error || "Something went wrong ");
         setCurrentThread({});
       }
 
@@ -346,18 +346,6 @@ const ForumComponent = ({
     const topic_num = topicArr?.shift();
     const type = queries["by"] as string;
 
-    if (router?.pathname === "/forum/[topic]/[camp]/threads") {
-      let timer = 0;
-
-      if (timer) {
-        clearTimeout(timer);
-        timer = 0;
-      }
-      timer = window.setTimeout(async () => {
-        getThreads(camp_num, topic_num, type, page, searchQuery);
-      }, 800);
-    }
-
     if (
       router?.pathname === "/forum/[topic]/[camp]/threads/create" ||
       router?.pathname === "/forum/[topic]/[camp]/threads/edit/[tId]" ||
@@ -365,8 +353,24 @@ const ForumComponent = ({
     ) {
       fetchNickNameList(topic_num);
     }
+
+    if (
+      router?.pathname === "/forum/[topic]/[camp]/threads" &&
+      router?.isReady
+    ) {
+      if (reRenderRef?.current) {
+        clearTimeout(reRenderRef?.current);
+        reRenderRef.current = 0;
+      }
+
+      if (!reRenderRef?.current) {
+        reRenderRef.current = window.setTimeout(async () => {
+          getThreads(camp_num, topic_num, type, page, searchQuery);
+        }, 950);
+      }
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router, page, searchQuery, isLoggedIn]);
+  }, [router?.pathname, page, searchQuery, isLoggedIn]);
 
   const onCancelCreateThread = () => {
     const queries = router?.query;

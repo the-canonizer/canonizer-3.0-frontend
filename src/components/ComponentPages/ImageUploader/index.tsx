@@ -134,48 +134,46 @@ const ImageUploader: React.FC = () => {
     </div>
   );
 
-  // const updateProfilePicture = async (e) => {
-  //   let newFileList = e.fileList;
-  //   const lastFile = e.fileList[e.fileList.length - 1];
-
-  //   if (lastFile) {
-  //     const validationStatus = await validateImage(
-  //       lastFile.originFileObj as File
-  //     );
-  //     if (validationStatus !== null) {
-  //       // setFileList(newFileList);
-  //       try {
-  //         const formData = new FormData();
-  //         formData.append("profile_picture", lastFile.originFileObj as File);
-  //         const response = await uploadProfileImage(formData);
-  //         const imageUrl = response.data.profile_picture;
-  //         dispatch(setProfilePicture(imageUrl));
-  //         message.success("Upload successful");
-  //       } catch (error) {
-  //         message.error("Upload failed");
-  //       }
-  //     } else {
-  //       // Remove the invalid file from the fileList
-  //       newFileList.pop();
-  //       setFileList(newFileList);
-  //     }
-  //   }
-  // };
-  // const items = [
-  //   {
-  //     key: "1",
-  //     label: (
-  //       <Upload
-  //         multiple={false}
-  //         onChange={(e) => {
-  //           updateProfilePicture(e);
-  //         }}
-  //       >
-  //         <div>Update</div>
-  //       </Upload>
-  //     ),
-  //   },
-  // ];
+  const updateProfilePicture = async ({ fileList: newFileList }) => {
+    const lastFile = newFileList[newFileList.length - 1];
+    if (lastFile) {
+      const validationStatus = await validateImage(
+        lastFile.originFileObj as File
+      );
+      if (validationStatus !== null) {
+        // setFileList(newFileList);
+        try {
+          const formData = new FormData();
+          formData.append("profile_picture", lastFile.originFileObj as File);
+          const response = await uploadProfileImage(formData);
+          const imageUrl = response.data.profile_picture;
+          dispatch(setProfilePicture(imageUrl));
+          message.success("Upload successful");
+        } catch (error) {
+          message.error("Upload failed");
+        }
+      } else {
+        // Remove the invalid file from the fileList
+        newFileList.pop();
+        setFileList(newFileList);
+      }
+    }
+  };
+  const items = [
+    {
+      key: "1",
+      label: (
+        <Upload
+          multiple={false}
+          onChange={(e) => {
+            updateProfilePicture(e);
+          }}
+        >
+          <div>Update</div>
+        </Upload>
+      ),
+    },
+  ];
 
   return (
     <Fragment>
@@ -191,12 +189,22 @@ const ImageUploader: React.FC = () => {
           showUploadList={{ showRemoveIcon: true }}
         >
           {fileList.length >= 1 ? null : uploadButton}
-          <Tooltip title="Update" key="update-btn" placement="bottom">
-            <Button size="small">
-              <EditOutlined />
-            </Button>
-          </Tooltip>
         </Upload>
+        {fileList.length >= 1 ? (
+          <Upload
+            fileList={fileList}
+            multiple={false}
+            accept="image/*"
+            showUploadList={false}
+            onChange={updateProfilePicture}
+          >
+            <Tooltip title="Update" key="update-btn" placement="bottom">
+              <Button size="small">
+                <EditOutlined />
+              </Button>
+            </Tooltip>
+          </Upload>
+        ) : null}
       </div>
       <Modal
         visible={isPreviewVisible}

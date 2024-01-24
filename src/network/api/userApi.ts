@@ -40,10 +40,8 @@ export const createToken = async () => {
 
 export const login = async (email: string, password: string) => {
   try {
-    const authToken = await createToken();
-
     const res = await NetworkCall.fetch(
-      UserRequest.loginUser(email, password, authToken?.access_token)
+      UserRequest.loginUser(email, password, (getCookies() as any)?.loginToken)
     );
 
     store.dispatch(setAuthToken(res.data.auth?.access_token));
@@ -109,7 +107,6 @@ export const logout = async (error = "", status = null, count: number = 1) => {
     document.cookie =
       "loginToken=; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
     store.dispatch(setHeaderData({ count: 0, list: [] }));
-    await createToken();
     return res;
   } catch (error) {
     store.dispatch(logoutUser());
@@ -121,10 +118,8 @@ export const logout = async (error = "", status = null, count: number = 1) => {
 
 export const register = async (values: object) => {
   try {
-    const authToken = await createToken();
-
     const res = await NetworkCall.fetch(
-      UserRequest.registerUser(values, authToken?.access_token)
+      UserRequest.registerUser(values, (getCookies() as any)?.loginToken)
     );
 
     return res;
@@ -145,8 +140,6 @@ export const register = async (values: object) => {
 
 export const verifyOtp = async (values: object) => {
   try {
-    // const authToken = await createToken();
-
     const res = await NetworkCall.fetch(UserRequest.verifyUser(values));
 
     let payload = {
@@ -197,10 +190,8 @@ export const deleteProfileImage = () => {
 // social login path
 export const socialLogin = async (values: object) => {
   try {
-    const authToken = await createToken();
-
     const res = await NetworkCall.fetch(
-      UserRequest.userSocialLogin(values, authToken?.access_token)
+      UserRequest.userSocialLogin(values, (getCookies() as any)?.loginToken)
     );
 
     return res;
@@ -213,16 +204,6 @@ export const socialLoginCallback = async (values: object, router) => {
   const state = store.getState();
 
   try {
-    // let token = null;
-    // let authToken = null;
-
-    // if (state.auth.token) {
-    //   token = state?.auth?.token;
-    // } else {
-    //   authToken = await createToken();
-    //   token = authToken?.access_token;
-    // }
-
     const cc: any = getCookies();
     let token = cc?.loginToken;
 
@@ -272,9 +253,8 @@ export const socialLoginCallback = async (values: object, router) => {
 
 export const getCountryCodes = async () => {
   try {
-    const authToken = await createToken();
     const res = await NetworkCall.fetch(
-      UserRequest.getCountryCodes(authToken?.access_token)
+      UserRequest.getCountryCodes((getCookies() as any)?.loginToken)
     );
 
     return res;
@@ -398,10 +378,11 @@ export const GetLanguageList = async () => {
 // forgot password
 export const forgotPasswordSendOTP = async (values: object) => {
   try {
-    const authToken = await createToken();
-
     const res = await NetworkCall.fetch(
-      UserRequest.forgotPasswordSendOTP(values, authToken?.access_token)
+      UserRequest.forgotPasswordSendOTP(
+        values,
+        (getCookies() as any)?.loginToken
+      )
     );
 
     return res;
@@ -412,10 +393,11 @@ export const forgotPasswordSendOTP = async (values: object) => {
 
 export const forgotPasswordVerifyOTP = async (values: object) => {
   try {
-    const authToken = await createToken();
-
     const res = await NetworkCall.fetch(
-      UserRequest.forgotPasswordVerifyOTP(values, authToken?.access_token)
+      UserRequest.forgotPasswordVerifyOTP(
+        values,
+        (getCookies() as any)?.loginToken
+      )
     );
 
     return res;
@@ -426,10 +408,11 @@ export const forgotPasswordVerifyOTP = async (values: object) => {
 
 export const forgotPasswordUpdate = async (values: object) => {
   try {
-    const authToken = await createToken();
-
     const res = await NetworkCall.fetch(
-      UserRequest.forgotPasswordUpdatePassword(values, authToken?.access_token)
+      UserRequest.forgotPasswordUpdatePassword(
+        values,
+        (getCookies() as any)?.loginToken
+      )
     );
 
     return res;

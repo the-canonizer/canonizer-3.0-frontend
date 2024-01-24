@@ -89,7 +89,7 @@ function HistoryContainer() {
 
   useEffect(() => {
     async function getTreeApiCall() {
-      setLoadingIndicator(true);
+      // setLoadingIndicator(true);
       if (isUserAuthenticated) {
         let response = await getAllUsedNickNames({
           topic_num: router?.query?.camp?.at(0)?.split("-")[0],
@@ -102,7 +102,7 @@ function HistoryContainer() {
       //   camp_num: router?.query?.camp?.at(1)?.split("-")?.at(0) || 1,
       // });
 
-      setLoadingIndicator(false);
+      // setLoadingIndicator(false);
       // setParentarchived(res?.data?.is_archive);
       // setParentarchived(res?.treeData[1]?.is_archive);
     }
@@ -182,10 +182,13 @@ function HistoryContainer() {
       if (res?.status_code == 404 || res?.status_code == 400) {
         if (router?.pathname == "/topic/history/[...camp]") {
           router?.push(router?.asPath?.replace("topic/history", "topic"));
+          return;
         } else if (router?.pathname == "/statement/history/[...camp]") {
           router?.push(router?.asPath?.replace("statement/history", "topic"));
+          return;
         } else if (router?.pathname == "/camp/history/[...camp]") {
           router?.push(router?.asPath?.replace("camp/history", "topic"));
+          return;
         }
       }
 

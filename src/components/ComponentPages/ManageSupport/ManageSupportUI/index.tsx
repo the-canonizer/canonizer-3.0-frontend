@@ -27,7 +27,6 @@ const ManageSupportUI = ({
   setManageSupportList,
   parentSupportDataList,
   getSupportStatusData,
-  cancelManageRoute,
   submitNickNameSupportCamps,
   selectedtNickname,
   setSelectedtNickname,
@@ -37,6 +36,7 @@ const ManageSupportUI = ({
   getManageSupportLoadingIndicator,
   setGetManageSupportLoadingIndicator,
   topicSupportListData,
+  handleCancelSupportCamps,
 }: any) => {
   const [tagsArrayList, setTagsArrayList] = useState([]);
   const [isTagDragged, setIsTagDragged] = useState(false);
@@ -93,8 +93,8 @@ const ManageSupportUI = ({
   const warningForDirecteSupportedCamps =
     "You are directly supporting one or more camps under this topic. If you continue your direct support will be removed.";
   const reqBodyData = {
-    topic_num: +router?.query?.manageSupport[0]?.split("-")[0],
-    camp_num: +router?.query?.manageSupport[1]?.split("-")[0],
+    topic_num: +router?.query?.camp[0]?.split("-")[0],
+    camp_num: +router?.query?.camp[1]?.split("-")[0],
   };
 
   // const topicNum = router?.query?.manageSupport?.at(0)?.split("-")?.at(0);
@@ -169,13 +169,14 @@ const ManageSupportUI = ({
     // }
     const response = await removeSupportedCamps(supportedCampsRemove);
     if (response && response.status_code == 200) {
-      let manageSupportPath = router?.asPath?.replace("/support/", "/topic/");
-      if (manageSupportPath?.lastIndexOf("_") > -1)
-        manageSupportPath = manageSupportPath.substring(
-          0,
-          manageSupportPath?.lastIndexOf("_")
-        );
-      router?.push(manageSupportPath);
+      // let manageSupportPath = router?.asPath?.replace("/support/", "/topic/");
+      // if (manageSupportPath?.lastIndexOf("_") > -1)
+      //   manageSupportPath = manageSupportPath.substring(
+      //     0,
+      //     manageSupportPath?.lastIndexOf("_")
+      //   );
+      // router?.push(manageSupportPath);
+      handleCancelSupportCamps({ isCallApiStatus: true });
     }
   };
 
@@ -220,18 +221,20 @@ const ManageSupportUI = ({
     };
     let addedRes = await addSupport(addSupportId);
     if (addedRes && addedRes.status_code == 200) {
-      let manageSupportPath = router?.asPath?.replace("/support/", "/topic/");
+      // let manageSupportPath = router?.asPath?.replace("/support/", "/topic/");
       // if (manageSupportPath.lastIndexOf("_") > -1)
       //   manageSupportPath = manageSupportPath.substring(
       //     0,
       //     manageSupportPath.lastIndexOf("_")
       //   );
-      router?.push(manageSupportPath);
+      // router?.push(manageSupportPath);
+      handleCancelSupportCamps({ isCallApiStatus: true });
     }
   };
 
   const CheckDelegatedOrDirect =
     currentDelegatedSupportedClick.delegatedSupportClick;
+  // const [CheckDelegatedOrDirect, setCheckDelegatedOrDirect] = useState(null);
 
   useEffect(() => {
     if (nickNameList?.length > 0) {
@@ -239,6 +242,12 @@ const ManageSupportUI = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nickNameList]);
+
+  // useEffect(() => {
+  //   setCheckDelegatedOrDirect(
+  //     currentDelegatedSupportedClick.delegatedSupportClick
+  //   );
+  // }, [currentDelegatedSupportedClick.delegatedSupportClick]);
 
   useEffect(() => {
     if (manageSupportList && manageSupportList.length > 0) {
@@ -296,13 +305,13 @@ const ManageSupportUI = ({
     />
   ) : (
     <>
-      <Card
+      <div
         className={styles.card_width}
-        title={
-          <div className={styles.main_card_title}>
-            {messages.labels.SupportedCamps}
-          </div>
-        }
+        // title={
+        //   <div className={styles.main_card_title}>
+        //     {messages.labels.SupportedCamps}
+        //   </div>
+        // }
       >
         {(CheckDelegatedOrDirect &&
           currentGetCheckSupportExistsData.is_confirm &&
@@ -531,14 +540,16 @@ const ManageSupportUI = ({
                 id="cancelBtn"
                 htmlType="button"
                 className={styles.cancel_Btn}
-                onClick={cancelManageRoute}
+                onClick={() => {
+                  handleCancelSupportCamps({ isCallApiStatus: false });
+                }}
               >
                 Cancel
               </Button>
             </div>
           </Card>
         </div>
-      </Card>
+      </div>
 
       {/* modal data */}
       {/* <Modal

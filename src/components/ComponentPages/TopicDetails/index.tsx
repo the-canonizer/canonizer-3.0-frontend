@@ -107,6 +107,18 @@ const TopicDetails = ({ serverSideCall }: any) => {
     campExist: state?.topicDetails?.tree && state?.topicDetails?.tree[1],
     viewThisVersionCheck: state?.filters?.viewThisVersionCheck,
   }));
+  const GetActiveSupportTopicList = async () => {
+    const topicNum = router?.query?.camp?.at(0)?.split("-")?.at(0);
+    const body = { topic_num: topicNum };
+    if (isUserAuthenticated) {
+      const reponse = await GetActiveSupportTopic(topicNum && body);
+      if (reponse?.status_code == 200) {
+        setTopicList(reponse?.data);
+      }
+    }
+    setGetTreeLoadingIndicator(false);
+    setLoadingIndicator(false);
+  };
 
   // const reqBody = {
   //   topic_num: +router?.query?.camp[0]?.split("-")[0],
@@ -181,16 +193,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
       }
       // getCanonizedCampSupportingTreeApi(reqBody, algorithm);
 
-      const topicNum = router?.query?.camp?.at(0)?.split("-")?.at(0);
-      const body = { topic_num: topicNum };
-      if (isUserAuthenticated) {
-        const reponse = await GetActiveSupportTopic(topicNum && body);
-        if (reponse?.status_code == 200) {
-          setTopicList(reponse?.data);
-        }
-      }
-      setGetTreeLoadingIndicator(false);
-      setLoadingIndicator(false);
+      GetActiveSupportTopicList();
     }
 
     getTreeApiCall();
@@ -273,6 +276,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
       setIsRemovingSupport(false);
       // fetchTotalScore();
     }
+    setRemoveSupportSpinner(false);
   };
   const removeSupportForDelegate = async (reasonData = {}) => {
     setIsRemovingSupport(true);
@@ -297,6 +301,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
     let res = await removeSupportedCampsEntireTopic(removeEntireData);
     if (res && res.status_code == 200) {
       message.success(res.message);
+      setRemoveSupportSpinner(false);
       setIsSupportTreeCardModal(false);
       setIsDelegateSupportTreeCardModal(false);
       GetCheckStatusData();
@@ -593,6 +598,9 @@ const TopicDetails = ({ serverSideCall }: any) => {
                           totalCampScoreForSupportTree
                         }
                         backGroundColorClass={backGroundColorClass}
+                        getCheckStatusAPI={GetCheckStatusData}
+                        GetActiveSupportTopic={GetActiveSupportTopic}
+                        GetActiveSupportTopicList={GetActiveSupportTopicList}
                       />
 
                       <CurrentTopicCard

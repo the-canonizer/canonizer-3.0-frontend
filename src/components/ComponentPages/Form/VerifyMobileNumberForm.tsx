@@ -96,6 +96,7 @@ function VerifyMobileNumberForm({
                   {...messages.phoneNumberRule}
                 >
                   <Input
+                    data-testid="handleMobileNumberChange"
                     id="phoneNumber"
                     type="number"
                     placeholder={messages.placeholders.phoneNumber}
@@ -126,6 +127,7 @@ function VerifyMobileNumberForm({
                   {...messages.mobileCarrierRule}
                 >
                   <Select
+                    data-testid="mobileCarrier"
                     showSearch
                     placeholder={messages.placeholders.mobileCarrier}
                     optionFilterProp="children"
@@ -154,7 +156,7 @@ function VerifyMobileNumberForm({
                   type="primary"
                   className="Profile_btn ant-btn ant-btn-orange ant-btn-lg"
                   htmlType="submit"
-                  data-testid="submitButton"
+                  data-testid="verify_btn"
                   tabIndex={3}
                 >
                   Verify
@@ -178,6 +180,7 @@ function VerifyMobileNumberForm({
             >
               <p>OTP has been sent on your phone number.</p>
               <Input
+                data-testid="handle_Change_OTP"
                 id="otpInput"
                 placeholder={messages.placeholders.otp}
                 value={otp}
