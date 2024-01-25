@@ -198,12 +198,11 @@ const TimelineInfoBar = ({
             : "1-Agreement",
         ];
         router.query = { ...router?.query, ...query };
-        // router.replace(router, null, { shallow: true });
+        router.replace(router, null, { shallow: true });
       }
       setBreadCrumbRes(res?.data);
       setLoadingIndicator(false);
     }
-
     if (payload && Object.keys(payload).length > 0) {
       getBreadCrumbApiCall();
     }
