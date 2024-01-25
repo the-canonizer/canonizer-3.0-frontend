@@ -19,7 +19,6 @@ export default class Request {
     token = null
   ) {
     let bearerToken = "";
-    const cc: any = getCookies();
     if (token) {
       //coming from server side use it
       bearerToken = token;
@@ -33,6 +32,7 @@ export default class Request {
         // create token
         (async () => {
           const res = await createToken();
+
           bearerToken = res?.data?.access_token;
         })();
       }
