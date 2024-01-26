@@ -104,6 +104,7 @@ const SupportTreeCard = ({
   const [selectNickId, setSelectNickId] = useState(null);
   const [isModalOpenSupportCamps, setIsModalOpenSupportCamps] = useState(false);
   const [mainComponentKey, setMainComponentKey] = useState(0);
+  const [loadingIndicatorSupport, setLoadingIndicatorSupport] = useState(false);
   const [
     getManageSupportLoadingIndicator,
     setGetManageSupportLoadingIndicator,
@@ -117,6 +118,7 @@ const SupportTreeCard = ({
   const handleCancelSupportCamps = async ({ isCallApiStatus = false }) => {
     setIsModalOpenSupportCamps(false);
     setGetManageSupportLoadingIndicator(true);
+    setLoadingIndicatorSupport(true);
 
     if (isCallApiStatus == true) {
       await getCheckStatusAPI();
@@ -138,6 +140,7 @@ const SupportTreeCard = ({
     }
 
     setSelectNickId(null);
+    setLoadingIndicatorSupport(false);
     setTimeout(() => setMainComponentKey(mainComponentKey + 1), 500);
     // setComponentKey2(componentKey2 + 1);
   };
@@ -374,7 +377,7 @@ const SupportTreeCard = ({
 
   // remove support popup added.
 
-  return loadingIndicator ? (
+  return loadingIndicator || loadingIndicatorSupport ? (
     <CustomSkelton
       skeltonFor="card"
       titleName='Support Tree for "Agreement" Camp'

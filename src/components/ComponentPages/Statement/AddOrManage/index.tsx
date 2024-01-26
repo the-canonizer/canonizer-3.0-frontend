@@ -133,7 +133,11 @@ export default function AddOrManage({ add }: any) {
   const [editCampStatementData, setEditCampStatementData] = useState("");
   // const [statementResponseDisable, setStatementResponseDisable] =
   //   useState(false);
-
+  const [existedTopic, setExistedTopic] = useState({
+    data: null,
+    url: "",
+    status: false,
+  });
   const [form] = Form.useForm();
   let objection = router?.query?.statement?.at(0)?.split("-")[1] == "objection";
   let update = router?.query?.statement?.at(0)?.split("-")[1] == "update";
@@ -269,6 +273,26 @@ export default function AddOrManage({ add }: any) {
       res = await updateTopicApi(reqBody);
       if (res.status_code == 200) {
         // setStatementResponseDisable(true);
+      }
+
+      if (res?.status_code == 400) {
+        let url = null;
+
+        if ("existed_topic_reference" in res.error) {
+          let topicId = res?.error?.existed_topic_reference?.topic_num;
+          let topicName = replaceSpecialCharacters(
+            res?.error?.existed_topic_reference?.topic_name,
+            "_"
+          );
+          url = `/topic/${topicId}-${topicName}/1-Agreement`;
+
+          setExistedTopic({
+            ...existedTopic,
+            data: res?.error?.topic_name,
+            url: url,
+            status: true,
+          });
+        }
       }
     }
 
@@ -627,6 +651,11 @@ export default function AddOrManage({ add }: any) {
   };
 
   const handleformvalues = () => {
+    setExistedTopic({
+      data: null,
+      url: "",
+      status: false,
+    });
     let initialFormStatus = {
       statement: "",
       edit_summary: "",
@@ -956,6 +985,14 @@ export default function AddOrManage({ add }: any) {
                             <Input disabled={objection} maxLength={30} />
                           )}
                         </Form.Item>
+                        {existedTopic?.status == true && (
+                          <a
+                            className={styles.topicNameWarning}
+                            onClick={() => router.push(existedTopic?.url)}
+                          >
+                            {existedTopic?.data}
+                          </a>
+                        )}
                       </Col>
                       {/* Name space -------------------------------------------------------------------- */}
                       {!objection && (

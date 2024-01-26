@@ -4,6 +4,7 @@ import { Card, Form, Input, Button, Select, Row, Col } from "antd";
 import messages from "../../../../messages";
 import styles from "./createNewTopic.module.scss";
 import { changeSlashToArrow } from "src/utils/generalUtility";
+import { useRouter } from "next/router";
 
 const { Option } = Select;
 
@@ -23,7 +24,9 @@ const CreateTopicFromUI = ({
   nameSpaces,
   nickNameList,
   onCancel,
+  existedTopic,
 }: any) => {
+  const router = useRouter();
   const CardTitle = (
     <span className={styles.cardTitle} data-testid="head">
       Create Topic
@@ -97,6 +100,16 @@ const CreateTopicFromUI = ({
                   maxLength={30}
                 />
               </Form.Item>
+              {existedTopic?.status && (
+                <a
+                  onClick={() => {
+                    router.push(existedTopic?.data);
+                  }}
+                  className={styles.topicExistsMessage}
+                >
+                  Topic Already Exists
+                </a>
+              )}
               {nameSpaces ? (
                 <Form.Item
                   label={
