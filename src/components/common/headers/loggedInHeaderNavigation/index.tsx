@@ -70,6 +70,7 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
     const res = await markNotificationRead(id);
     if (res && res.status_code === 200) {
       delete router?.query?.from;
+      delete router?.query?.n_type;
       // router?.query.from = "";
       router?.replace(router);
     }

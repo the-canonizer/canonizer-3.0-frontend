@@ -10,7 +10,7 @@ import {
   setLogout,
 } from "../../store/slices/authSlice";
 import { showMultiUserModal, updateStatus } from "../../store/slices/uiSlice";
-import { setValue } from "../../store/slices/utilsSlice";
+// import { setValue } from "../../store/slices/utilsSlice";
 import NetworkCall from "../networkCall";
 import UserRequest from "../request/userRequest";
 import { store } from "../../store";
@@ -93,10 +93,10 @@ export const logout = async (error = "", status = null, count: number = 1) => {
       return true;
     }
 
-    if (!isServer()) {
-      localStorage.setItem("logout_type", "true");
-      store.dispatch(setValue({ label: "logout_type", value: true }));
-    }
+    // if (!isServer()) {
+    //   localStorage.setItem("logout_type", "true");
+    //   store.dispatch(setValue({ label: "logout_type", value: true }));
+    // }
 
     let res = await NetworkCall.fetch(UserRequest.logoutCall(auth.token));
 
@@ -107,6 +107,9 @@ export const logout = async (error = "", status = null, count: number = 1) => {
     document.cookie =
       "loginToken=; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
     store.dispatch(setHeaderData({ count: 0, list: [] }));
+    if (!(getCookies() as any)?.loginToken) {
+      createToken();
+    }
     return res;
   } catch (error) {
     store.dispatch(logoutUser());
