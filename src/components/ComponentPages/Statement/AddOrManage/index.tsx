@@ -975,11 +975,14 @@ export default function AddOrManage({ add }: any) {
                           ) : (
                             <Select
                               showSearch
+                              value={campLeaderData[0]?.nick_name_id}
                               size={"large"}
                               placeholder="Camp Leader"
                               // data-id="parent-camp"
                               disabled={objection}
                               optionFilterProp="children"
+                              allowClear={true}
+                              defaultValue={campLeaderData[0]?.nick_name_id}
                               onChange={() => {
                                 setSubmitIsDisable(false);
                               }}
