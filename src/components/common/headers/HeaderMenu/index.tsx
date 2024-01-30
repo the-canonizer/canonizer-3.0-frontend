@@ -1,10 +1,4 @@
-import React, {
-  Fragment,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import React, { Fragment, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,12 +17,8 @@ import {
   setSearchValue,
   setSearchDataAll,
 } from "src/store/slices/searchSlice";
-import { key } from "localforage";
 import CustomSkelton from "../../customSkelton";
-import {
-  setLoadingAction,
-  setSearchLoadingAction,
-} from "src/store/slices/loading";
+import { setSearchLoadingAction } from "src/store/slices/loading";
 
 const HeaderMenu = ({ loggedUser }: any) => {
   const [inputSearch, setInputSearch] = useState("");
@@ -45,9 +35,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
   const { pageNumber } = useSelector((state: RootState) => ({
     pageNumber: state?.searchSlice?.pageNumber,
   }));
-  const { searchDataAll } = useSelector((state: RootState) => ({
-    searchDataAll: state?.searchSlice?.searchDataAll,
-  }));
+
   const router = useRouter();
 
   const dispatch = useDispatch();

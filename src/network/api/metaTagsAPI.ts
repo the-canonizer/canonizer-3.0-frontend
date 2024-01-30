@@ -1,6 +1,5 @@
 import NetworkCall from "../networkCall";
 import MetaTagsRequest from "../request/metaTagsRequest";
-import { createToken } from "./userApi";
 
 export const metaTagsApi = async (body, loginToken = null) => {
   try {

@@ -25,7 +25,6 @@ import {
 } from "src/network/api/campDetailApi";
 import { setThread, setPost } from "src/store/slices/campForumSlice";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
-import { createToken } from "src/network/api/userApi";
 
 const ForumComponent = ({
   threadlist = [],
@@ -67,23 +66,15 @@ const ForumComponent = ({
     setIsLoggedIn(isUserAuthenticated);
   }, [isUserAuthenticated]);
 
-  const {
-    campRecord,
-    asof,
-    asofdate,
-    algorithm,
-    currentThread,
-    currentPost,
-    authToken,
-  } = useSelector((state: any) => ({
-    campRecord: state?.topicDetails?.currentCampRecord,
-    asof: state?.filters?.filterObject?.asof,
-    asofdate: state.filters?.filterObject?.asofdate,
-    algorithm: state.filters?.filterObject?.algorithm,
-    currentThread: state.forum.currentThread,
-    currentPost: state.forum.currentPost,
-    authToken: state.auth.authToken,
-  }));
+  const { campRecord, asof, asofdate, algorithm, currentThread, currentPost } =
+    useSelector((state: any) => ({
+      campRecord: state?.topicDetails?.currentCampRecord,
+      asof: state?.filters?.filterObject?.asof,
+      asofdate: state.filters?.filterObject?.asofdate,
+      algorithm: state.filters?.filterObject?.algorithm,
+      currentThread: state.forum.currentThread,
+      currentPost: state.forum.currentPost,
+    }));
 
   const setCurrentThread = (data) => dispatch(setThread(data));
 
@@ -163,15 +154,7 @@ const ForumComponent = ({
       setthreadDetailsLoading(true);
       setPostLoading(true);
 
-      let token = null;
-      if (authToken) {
-        token = authToken;
-      } else {
-        const response = await createToken();
-        token = response?.access_token;
-      }
-
-      const res = await getThreadData(id, topic_num, camp_num, token);
+      const res = await getThreadData(id, topic_num, camp_num);
 
       setCreatedAt(res.data.created_at);
 

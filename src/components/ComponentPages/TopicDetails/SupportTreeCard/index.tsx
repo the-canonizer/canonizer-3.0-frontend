@@ -197,6 +197,22 @@ const SupportTreeCard = ({
     showModalSupportCamps();
   };
 
+  useEffect(() => {
+    const q: any = router?.query;
+    if (
+      q &&
+      q.from &&
+      q.from.includes("notify_") &&
+      q?.n_type?.toLowerCase() === "support"
+    ) {
+      const fArr = (q.from as String).split("_");
+      if (+fArr[1]) {
+        handleClickSupportCheck();
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router]);
+
   const manageSupportPath = router?.asPath.replace("/topic/", "/support/");
 
   const { campSupportingTree, asof } = useSelector((state: RootState) => ({
@@ -439,9 +455,7 @@ const SupportTreeCard = ({
               type="primary"
               ghost
               className="load-more-btn"
-              onClick={() => {
-                setLoadMore(!loadMore);
-              }}
+              onClick={() => setLoadMore(!loadMore)}
             >
               {!loadMore ? "Load More" : "Load Less"}
             </CustomButton>

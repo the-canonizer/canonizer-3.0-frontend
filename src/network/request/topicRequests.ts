@@ -9,9 +9,6 @@ export default class TopicRequest extends Request {
   }
 
   static createTopic(body) {
-    let state = store.getState();
-    const { auth } = state;
-
     const cc: any = getCookies();
 
     return new Request(

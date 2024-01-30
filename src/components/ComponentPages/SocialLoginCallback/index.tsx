@@ -51,12 +51,12 @@ function SocialLoginCallback() {
         }
       }
 
-      if (response && response.status_code === 422) {
+      if (response && response?.status_code === 422) {
         openModal();
         dispatch(setValue({ label: "social_login_keys", value: data }));
       }
 
-      if (response && response.status_code === 423) {
+      if (response && response?.status_code === 423) {
         openNameModal();
 
         dispatch(
