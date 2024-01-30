@@ -1,5 +1,5 @@
-import Layout from "../../../hoc/layout";
-import SocialLoginCallback from "../../../components/ComponentPages/SocialLoginCallback";
+import Layout from "src/hoc/layout";
+import SocialLoginCallback from "src/components/ComponentPages/SocialLoginCallback";
 
 function SocialLoginCallbackPage() {
   return (
