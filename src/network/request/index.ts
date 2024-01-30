@@ -1,6 +1,5 @@
-import { getCookies, isServer } from "src/utils/generalUtility";
+import { getCookies } from "src/utils/generalUtility";
 import K from "../../constants";
-import { store } from "src/store";
 import { createToken } from "../api/userApi";
 
 export default class Request {

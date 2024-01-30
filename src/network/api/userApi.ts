@@ -204,8 +204,6 @@ export const socialLogin = async (values: object) => {
 };
 
 export const socialLoginCallback = async (values: object, router) => {
-  const state = store.getState();
-
   try {
     const cc: any = getCookies();
     let token = cc?.loginToken;

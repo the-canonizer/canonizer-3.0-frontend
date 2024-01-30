@@ -23,6 +23,7 @@ import { createToken } from "src/network/api/userApi";
 
 function WrappedApp({ Component, pageProps, meta, canonical_url }: any) {
   const router = useRouter(),
+    // eslint-disable-next-line
     [_isAuthenticated, setIsAuthenticated, isAuthenticatedRef] = useState(
       !!(getCookies() as any)?.loginToken
     );
@@ -37,6 +38,7 @@ function WrappedApp({ Component, pageProps, meta, canonical_url }: any) {
         try {
           await createToken();
         } catch (error) {
+          // eslint-disable-next-line
           console.error("Error fetching data:", error);
         } finally {
           setIsAuthenticated(true);
