@@ -33,6 +33,10 @@ const CreateNewTopic = ({
   const [initialValue, setInitialValues] = useState(testInitialValue);
   const [options, setOptions] = useState([...messages.preventCampLabel]);
   const [isLoading, setIsLoading] = useState(false);
+  const [existedTopic, setExistedTopic] = useState({
+    data: null,
+    status: false,
+  });
 
   const router = useRouter();
   const dispatch = useDispatch();
@@ -56,17 +60,17 @@ const CreateNewTopic = ({
 
   const onFinish = async (values: any) => {
     setIsLoading(true);
-    if (!values.topic_name?.trim()) {
-      form.setFields([
-        {
-          name: "topic_name",
-          value: "",
-        },
-      ]);
-      form.validateFields(["topic_name"]);
-      setIsLoading(false);
-      return true;
-    }
+    // if (!values.topic_name?.trim()) {
+    //   form.setFields([
+    //     {
+    //       name: "topic_name",
+    //       value: "",
+    //     },
+    //   ]);
+    //   form.validateFields(["topic_name"]);
+    //   setIsLoading(false);
+    //   return true;
+    // }
 
     const body = {
       topic_name: values.topic_name?.trim(),
@@ -112,18 +116,35 @@ const CreateNewTopic = ({
     }
 
     if (res && res.status_code === 400) {
+      let url = null;
       if (res?.error) {
         const errors_key = Object.keys(res.error);
 
         if (errors_key.length) {
+          if ("existed_topic_reference" in res.error) {
+            let topicId = res?.error?.existed_topic_reference?.topic_num;
+            let topicName = replaceSpecialCharacters(
+              res?.error?.existed_topic_reference?.topic_name,
+              "_"
+            );
+            url = `/topic/${topicId}-${topicName}/1-Agreement`;
+
+            setExistedTopic({
+              status: true,
+              data: url,
+            });
+          }
+
           errors_key.forEach((key) => {
-            form.setFields([
-              {
-                name: key,
-                value: values[key],
-                errors: [res.error[key]],
-              },
-            ]);
+            if (key !== "topic_name") {
+              form.setFields([
+                {
+                  name: key,
+                  value: values[key],
+                  errors: [res.error[key]],
+                },
+              ]);
+            }
           });
         }
       }
@@ -166,6 +187,7 @@ const CreateNewTopic = ({
         nickNameList={nickNameList}
         onCancel={onCancel}
         isLoading={isLoading}
+        existedTopic={existedTopic}
       />
     </Fragment>
   );

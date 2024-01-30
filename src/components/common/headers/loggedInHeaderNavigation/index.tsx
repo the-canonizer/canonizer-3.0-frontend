@@ -1,6 +1,6 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { Layout, Menu, Dropdown, Button, Space, Avatar } from "antd";
+import { Layout, Menu, Button } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
 
@@ -12,7 +12,6 @@ import Logo from "../logoHeader";
 import {
   MenuOutlined,
   CloseOutlined,
-  DownOutlined,
   SettingOutlined,
   LogoutOutlined,
   CheckCircleOutlined,
@@ -26,7 +25,6 @@ import {
 } from "src/network/api/notificationAPI";
 import { setManageSupportStatusCheck } from "src/store/slices/campDetailSlice";
 import HeaderMenu from "../HeaderMenu";
-import Image from "next/image";
 import ProfileInfoTab from "./profileInfoTab";
 
 const { Header } = Layout;
@@ -70,6 +68,7 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
     const res = await markNotificationRead(id);
     if (res && res.status_code === 200) {
       delete router?.query?.from;
+      delete router?.query?.n_type;
       // router?.query.from = "";
       router?.replace(router);
     }

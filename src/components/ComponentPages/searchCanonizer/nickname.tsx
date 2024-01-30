@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import SearchSideBar from "../../common/SearchSideBar";
 import styles from "./search.module.scss";
-// import AdvanceFilter from "../../common/AdvanceSearchFilter";
+import AdvanceFilter from "../../common/AdvanceSearchFilter";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "src/store";
 import Link from "next/link";
@@ -43,7 +43,7 @@ const NicknameSearch = () => {
         <div className={styles.card}>
           <div className="d-flex mb-2 align-items-center flex-wrap relative">
             <h4 data-testid="nickname_heading">Nickname</h4>
-            {/* <AdvanceFilter /> */}
+            <AdvanceFilter />
           </div>
           {loading ? (
             <CustomSkelton

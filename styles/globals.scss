@@ -585,6 +585,7 @@ img {
         padding: 0 !important;
         min-height: inherit;
         background-color: transparent;
+        cursor: default;
         span
         {
           display: flex;
@@ -705,4 +706,24 @@ img {
 } 
 .ant-select-item-option-content > div > span {
   display: block !important;
+}
+.nicknameAdvanceFilter 
+{
+  input {
+    width: 100%;
+    padding: 5px 10px;
+    border: #d9d9d9 1px solid;
+    height: 40px;
+  }
+  label {
+    width: 100%;
+    font-weight: bold;
+    color: #4484ce;
+    margin-bottom: 5px;
+  }
+}
+
+.advanceFilter.NicknameadvanceFilter  .ant-collapse-content {
+  max-width: 320px;
+  padding: 9px 15px;
 }

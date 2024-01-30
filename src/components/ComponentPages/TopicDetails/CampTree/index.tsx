@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Tree, Tooltip, Popover, Typography } from "antd";
 import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "../../../../store";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import ProgressBar from "@ramonak/react-progress-bar";
+
 import styles from "../topicDetails.module.scss";
 
+import useAuthentication from "src/hooks/isUserAuthenticated";
+import { RootState } from "../../../../store";
 import { setCurrentCamp } from "../../../../store/slices/filtersSlice";
 import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
-import useAuthentication from "src/hooks/isUserAuthenticated";
-import ProgressBar from "@ramonak/react-progress-bar";
 
 const { TreeNode } = Tree;
 
@@ -602,7 +603,7 @@ const CampTree = ({
                 title="You have subscribed to the entire topic."
                 key="camp_subscribed_icon"
               >
-                <small>
+                <small style={{ alignSelf: "center", marginLeft: "10px" }}>
                   <i className="icon-subscribe text-primary"></i>
                 </small>
               </Tooltip>

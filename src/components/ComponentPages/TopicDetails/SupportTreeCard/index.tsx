@@ -104,6 +104,7 @@ const SupportTreeCard = ({
   const [selectNickId, setSelectNickId] = useState(null);
   const [isModalOpenSupportCamps, setIsModalOpenSupportCamps] = useState(false);
   const [mainComponentKey, setMainComponentKey] = useState(0);
+  const [loadingIndicatorSupport, setLoadingIndicatorSupport] = useState(false);
   const [
     getManageSupportLoadingIndicator,
     setGetManageSupportLoadingIndicator,
@@ -117,6 +118,7 @@ const SupportTreeCard = ({
   const handleCancelSupportCamps = async ({ isCallApiStatus = false }) => {
     setIsModalOpenSupportCamps(false);
     setGetManageSupportLoadingIndicator(true);
+    setLoadingIndicatorSupport(true);
 
     if (isCallApiStatus == true) {
       await getCheckStatusAPI();
@@ -134,10 +136,11 @@ const SupportTreeCard = ({
         fetch_topic_history: +router?.query?.topic_history,
       };
       await getTreesApi(reqBodyForService);
-      GetActiveSupportTopic(topicNum && { topic_num: topicNum });
+      GetActiveSupportTopicList();
     }
 
     setSelectNickId(null);
+    setLoadingIndicatorSupport(false);
     setTimeout(() => setMainComponentKey(mainComponentKey + 1), 500);
     // setComponentKey2(componentKey2 + 1);
   };
@@ -196,6 +199,22 @@ const SupportTreeCard = ({
     setSelectNickId(null);
     showModalSupportCamps();
   };
+
+  useEffect(() => {
+    const q: any = router?.query;
+    if (
+      q &&
+      q.from &&
+      q.from.includes("notify_") &&
+      q?.n_type?.toLowerCase() === "support"
+    ) {
+      const fArr = (q.from as String).split("_");
+      if (+fArr[1]) {
+        handleClickSupportCheck();
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router]);
 
   const manageSupportPath = router?.asPath.replace("/topic/", "/support/");
 
@@ -374,7 +393,7 @@ const SupportTreeCard = ({
 
   // remove support popup added.
 
-  return loadingIndicator ? (
+  return loadingIndicator || loadingIndicatorSupport ? (
     <CustomSkelton
       skeltonFor="card"
       titleName='Support Tree for "Agreement" Camp'
@@ -439,9 +458,7 @@ const SupportTreeCard = ({
               type="primary"
               ghost
               className="load-more-btn"
-              onClick={() => {
-                setLoadMore(!loadMore);
-              }}
+              onClick={() => setLoadMore(!loadMore)}
             >
               {!loadMore ? "Load More" : "Load Less"}
             </CustomButton>

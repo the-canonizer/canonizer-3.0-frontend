@@ -20,9 +20,8 @@ import styles from "../siteHeader.module.scss";
 
 import { firebaseCloudMessaging } from "src/firebaseConfig/firebase";
 import Lists from "src/components/ComponentPages/Notifications/UI/List";
-import { updateFCMToken } from "src/network/api/notificationAPI";
+import { updateFCMToken, getLists } from "src/network/api/notificationAPI";
 import { RootState } from "src/store";
-import { getLists } from "../../../../network/api/notificationAPI";
 
 import Fav from "./icon";
 
@@ -117,32 +116,8 @@ const Notifications = () => {
   function getMessage() {
     const messaging = firebase.messaging();
     if ("serviceWorker" in navigator && "PushManager" in window) {
-      // () => handleClickPushNotification(message?.data?.url)
-      // navigator.serviceWorker.addEventListener("message", async (event) => {
-      //   const url = event?.data.data["gcm.notification.url"];
-
-      //   notification.open({
-      //     message: event?.data?.notification?.title,
-      //     description: event?.data?.notification?.body,
-      //     icon: <Fav />,
-      //     onClick: () => {
-      //       router?.push({ pathname: url });
-      //     },
-      //   });
-      // await getListData();
-      // });
-
       messaging.onMessage((message) => {
         const url = message.data["gcm.notification.url"];
-
-        // const title = message.notification.title;
-
-        // const options = {
-        //   body: message.notification.body,
-        //   icon: message?.notification["icon"],
-        // };
-
-        // new Notification(title, options);
 
         notification.open({
           message: message?.notification?.title,

@@ -9,6 +9,7 @@ import styles from "../siteHeader.module.scss";
 import Logo from "../logoHeader";
 import SearchSection from "../../searchSection";
 import LoginModal from "../../../ComponentPages/Login/loginModal";
+import RegistrationModal from "src/components/ComponentPages/Registration/registrationModal";
 import { showLoginModal } from "../../../../store/slices/uiSlice";
 import ForgotModal from "../../../ComponentPages/ForgotPassword/forgotPasswordModal";
 import DisclaimerMsg from "../../disclaimer";
@@ -117,6 +118,7 @@ const LoggedOutHeader = () => {
       </div>
       <DisclaimerMsg />
       <LoginModal />
+      <RegistrationModal />
       <ForgotModal />
     </React.Fragment>
   );
