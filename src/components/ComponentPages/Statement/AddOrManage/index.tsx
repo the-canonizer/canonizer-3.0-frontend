@@ -115,6 +115,7 @@ export default function AddOrManage({ add }: any) {
   const [submitIsDisable, setSubmitIsDisable] = useState(true);
   const [submitIsDisableCheck, setSubmitIsDisableCheck] = useState(true);
   const [nickNameData, setNickNameData] = useState([]);
+  const [campLeaderData, setCampLeaderData] = useState([]);
   const [screenLoading, setScreenLoading] = useState(false);
   const [initialFormValues, setInitialFormValues] = useState({});
   const [payloadBreadCrumb, setPayloadBreadCrumb] = useState({
@@ -252,6 +253,10 @@ export default function AddOrManage({ add }: any) {
           : null,
       old_parent_camp_num:
         manageFormOf == "camp" ? editInfo?.camp?.parent_camp_num : null,
+      camp_leader_nick_id:
+        values?.camp_leader_nick_id && manageFormOf == "camp"
+          ? values?.camp_leader_nick_id
+          : null,
     };
     let res;
     if (manageFormOf == "camp") {
@@ -383,6 +388,12 @@ export default function AddOrManage({ add }: any) {
               camp_num: res?.data?.camp?.camp_num ?? "1",
               topic_num: res?.data?.camp?.topic_num,
             });
+          }
+          if (
+            res?.status_code == 200 &&
+            res?.data?.eligible_camp_leaders?.length > 0
+          ) {
+            setCampLeaderData(res?.data?.eligible_camp_leaders);
           }
         } else if (manageFormOf == "topic") {
           res = await getEditTopicApi(getDataPayload);
@@ -915,6 +926,55 @@ export default function AddOrManage({ add }: any) {
                             )}
                           </Form.Item>
                         )}
+                      </Col>
+
+                      {/* Camp Leader =================================================================== */}
+
+                      <Col xs={24} sm={24} xl={12}>
+                        <Form.Item
+                          className={styles.formItem}
+                          label={<>Camp Leader</>}
+                          name="camp_leader_nick_id"
+                        >
+                          {screenLoading ? (
+                            <CustomSkelton
+                              skeltonFor="list"
+                              bodyCount={1}
+                              stylingClass="listSkeleton"
+                              isButton={false}
+                            />
+                          ) : (
+                            <Select
+                              showSearch
+                              size={"large"}
+                              placeholder="Camp Leader"
+                              // data-id="parent-camp"
+                              disabled={objection}
+                              optionFilterProp="children"
+                              onChange={() => {
+                                setSubmitIsDisable(false);
+                              }}
+                              filterOption={(input, option) =>
+                                (
+                                  (option?.children as any)?.props?.children ??
+                                  ""
+                                )
+                                  .toLowerCase()
+                                  .includes(input.toLowerCase())
+                              }
+                            >
+                              {campLeaderData?.length > 0 &&
+                                campLeaderData?.map((lead) => (
+                                  <Select.Option
+                                    value={lead.nick_name_id}
+                                    key={lead?.nick_name_id}
+                                  >
+                                    {lead?.nick_name}
+                                  </Select.Option>
+                                ))}
+                            </Select>
+                          )}
+                        </Form.Item>
                       </Col>
                     </>
                   )}

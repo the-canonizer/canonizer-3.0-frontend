@@ -121,6 +121,9 @@ const CampHistory = ({ campStatement, topicNamespaceId }: any) => {
           </span>
         </Title>
       )}
+      <Title level={5}>
+        Camp Leader : <span>{campStatement?.camp_leader_nick_name}</span>
+      </Title>
     </>
   );
 };
