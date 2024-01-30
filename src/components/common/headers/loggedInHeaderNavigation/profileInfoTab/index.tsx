@@ -53,6 +53,7 @@ const ProfileInfoTab = ({
             justifyContent: "center",
             alignItems: "center",
             fontSize: `${isMobile ? "12px" : ""}`,
+            cursor:"pointer"
           }}
           size={isMobile ? "small" : "default"}
         >
