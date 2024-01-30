@@ -198,8 +198,8 @@ const TimelineInfoBar = ({
             ? `${breadCampId}-${replaceSpecialCharacters(breadCampName, "-")}`
             : "1-Agreement",
         ];
-        router.query = { ...router?.query, ...query };
-        router.replace(router, null, { shallow: true });
+        // router.query = { ...router?.query, ...query };
+        // router.replace(router, null, { shallow: true });
       }
       setBreadCrumbRes(res?.data);
       setLoadingIndicator(false);
