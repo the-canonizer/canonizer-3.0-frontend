@@ -134,7 +134,7 @@ const SupportTreeCard = ({
         fetch_topic_history: +router?.query?.topic_history,
       };
       await getTreesApi(reqBodyForService);
-      GetActiveSupportTopic(topicNum && { topic_num: topicNum });
+      GetActiveSupportTopicList();
     }
 
     setSelectNickId(null);
