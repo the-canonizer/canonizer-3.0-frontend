@@ -43,4 +43,8 @@ export const currentCampRecordConstants = [
     label: "Parent Camp",
     key: "parent_camp_name",
   },
+  {
+    label: "Camp Leader",
+    key: "camp_about_nick_name",
+  },
 ];

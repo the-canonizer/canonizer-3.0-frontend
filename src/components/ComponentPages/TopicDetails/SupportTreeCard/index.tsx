@@ -10,6 +10,7 @@ import {
   Modal,
   Form,
   Spin,
+  Image,
 } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
@@ -275,6 +276,16 @@ const SupportTreeCard = ({
                           "treeListItemTitle " + styles.treeListItemTitle
                         }
                       > */}
+
+                      {data[item].camp_leader && (
+                        <Image
+                          preview={false}
+                          alt="camp-leader-crown"
+                          src={"/images/camp-leader.png"}
+                          width={20}
+                          className={styles.campLeaderCrown}
+                        />
+                      )}
                       <Link
                         href={{
                           pathname: `/user/supports/${data[item].nick_name_id}`,
