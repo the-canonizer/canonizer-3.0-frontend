@@ -51,7 +51,7 @@ export default function AdvanceFilter() {
   });
 
   return (
-    <div className="advanceFilter">
+    <div  className=  {router.pathname !== "/search/nickname"?"advanceFilter" : "NicknameadvanceFilter advanceFilter"} >
       <Collapse
         className={`${styles.cardAccordian} topicListFilterCardCollapse`}
         expandIconPosition="right"
@@ -83,7 +83,7 @@ export default function AdvanceFilter() {
             <CloseCircleOutlined />
           </div>
 
-          <div className="row">
+         {  router.pathname !== "/search/nickname"?<div className="row">
             <div className="col-sm-6">
               <h4>Canonizer</h4>
               <label>Canonizer Algorithm:</label>
@@ -113,7 +113,11 @@ export default function AdvanceFilter() {
               <Radio>Search live</Radio>
               <Radio>Search historical</Radio>
             </div>
-          </div>
+          </div>:
+          <div className="nicknameAdvanceFilter">
+            <label>Search for Topic or Camp </label>
+            <input placeholder="Search a keyword"></input>
+          </div>}
           {/* <div>
                  <AutoComplete
               popupClassName="certain-category-search-dropdown"

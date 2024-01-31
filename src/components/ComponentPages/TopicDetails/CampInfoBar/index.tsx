@@ -6,8 +6,9 @@ import { DoubleRightOutlined, DoubleLeftOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import moment from "moment";
 
-import { RootState } from "src/store";
 import styles from "../topicDetails.module.scss";
+
+import { RootState } from "src/store";
 import CustomSkelton from "src/components/common/customSkelton";
 import { setManageSupportStatusCheck } from "src/store/slices/campDetailSlice";
 import { getCampBreadCrumbApi } from "src/network/api/campDetailApi";
@@ -197,13 +198,12 @@ const TimelineInfoBar = ({
             ? `${breadCampId}-${replaceSpecialCharacters(breadCampName, "-")}`
             : "1-Agreement",
         ];
-        router.query = { ...router?.query, ...query };
+        // router.query = { ...router?.query, ...query };
         // router.replace(router, null, { shallow: true });
       }
       setBreadCrumbRes(res?.data);
       setLoadingIndicator(false);
     }
-
     if (payload && Object.keys(payload).length > 0) {
       getBreadCrumbApiCall();
     }
@@ -292,7 +292,7 @@ const TimelineInfoBar = ({
                   title="You have subscribed to the entire topic."
                   key="camp_subscribed_icon"
                 >
-                  <small>
+                  <small style={{ alignSelf: "center", marginLeft: "10px" }}>
                     <i className="icon-subscribe text-primary"></i>
                   </small>
                 </Tooltip>

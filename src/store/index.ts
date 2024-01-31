@@ -69,6 +69,7 @@ const persistConfig = {
     "utils",
     "recentActivities",
     "homePage",
+    "searchSlice",
     // "hotTopic",
   ],
 };

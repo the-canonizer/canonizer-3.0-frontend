@@ -1,6 +1,5 @@
-import { getCookies, isServer } from "src/utils/generalUtility";
+import { getCookies } from "src/utils/generalUtility";
 import K from "../../constants";
-import { store } from "src/store";
 import { createToken } from "../api/userApi";
 
 export default class Request {
@@ -19,7 +18,6 @@ export default class Request {
     token = null
   ) {
     let bearerToken = "";
-    const cc: any = getCookies();
     if (token) {
       //coming from server side use it
       bearerToken = token;
@@ -33,6 +31,7 @@ export default class Request {
         // create token
         (async () => {
           const res = await createToken();
+
           bearerToken = res?.data?.access_token;
         })();
       }
