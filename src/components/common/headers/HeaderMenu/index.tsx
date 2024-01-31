@@ -514,7 +514,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedUser]);
   useEffect(() => {
-    if (inputSearch || searchValue) {
+    if ((inputSearch || searchValue) && router.pathname.includes('/search')) {
       getGlobalSearchCanonizerNav(searchValue, false);
     }
   }, [pageNumber, router.pathname]);
