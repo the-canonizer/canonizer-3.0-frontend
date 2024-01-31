@@ -464,13 +464,11 @@ const SupportTreeCard = ({
             </CustomButton>
           )}
 
-          <div
-            className="topicDetailsCollapseFooter"
-            onClick={handleClickSupportCheck}
-          >
+          <div className="topicDetailsCollapseFooter">
             {/* <Link href={manageSupportPath}>
               <a> */}
             <CustomButton
+              onClick={handleClickSupportCheck}
               className="btn-orange"
               disabled={asof == "bydate" || campRecord?.is_archive == 1}
               id="manage-support-btn"
