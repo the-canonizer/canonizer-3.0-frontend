@@ -277,15 +277,6 @@ const SupportTreeCard = ({
                         }
                       > */}
 
-                      {data[item].camp_leader && (
-                        <Image
-                          preview={false}
-                          alt="camp-leader-crown"
-                          src={"/images/camp-leader.png"}
-                          width={20}
-                          className={styles.campLeaderCrown}
-                        />
-                      )}
                       <Link
                         href={{
                           pathname: `/user/supports/${data[item].nick_name_id}`,
@@ -298,6 +289,16 @@ const SupportTreeCard = ({
                           {data[item].support_order}:{data[item].nick_name}
                         </a>
                       </Link>
+
+                      {!data[item].camp_leader && (
+                        <Image
+                          preview={false}
+                          alt="camp-leader-crown"
+                          src={"/images/camp-leader.png"}
+                          width={20}
+                          className={styles.campLeaderCrown}
+                        />
+                      )}
                       {/* </span> */}
                       <span
                         className={
