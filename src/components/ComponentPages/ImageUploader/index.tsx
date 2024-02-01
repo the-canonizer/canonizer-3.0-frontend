@@ -1,6 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { EditOutlined, UploadOutlined } from "@ant-design/icons";
 import { Button, Modal, Tooltip, Upload, message } from "antd";
+import ImgCrop from "antd-img-crop";
 import type { RcFile, UploadProps } from "antd/es/upload";
 import type { UploadFile } from "antd/es/upload/interface";
 import { useDispatch, useSelector } from "react-redux";
@@ -178,32 +179,36 @@ const ImageUploader: React.FC = () => {
   return (
     <Fragment>
       <div className="upload-wrap">
-        <Upload
-          className="picture-upload"
-          listType="picture-card"
-          accept="image/*"
-          fileList={fileList}
-          onPreview={handlePreview}
-          onChange={handleChange}
-          onRemove={handleDelete}
-          showUploadList={{ showRemoveIcon: true }}
-        >
-          {fileList.length >= 1 ? null : uploadButton}
-        </Upload>
-        {fileList.length >= 1 ? (
+        <ImgCrop aspectSlider rotationSlider>
           <Upload
-            fileList={fileList}
-            multiple={false}
+            className="picture-upload"
+            listType="picture-card"
             accept="image/*"
-            showUploadList={false}
-            onChange={updateProfilePicture}
+            fileList={fileList}
+            onPreview={handlePreview}
+            onChange={handleChange}
+            onRemove={handleDelete}
+            showUploadList={{ showRemoveIcon: true }}
           >
-            <Tooltip title="Update" key="update-btn" placement="bottom">
-              <Button size="small">
-                <EditOutlined />
-              </Button>
-            </Tooltip>
+            {fileList.length >= 1 ? null : uploadButton}
           </Upload>
+        </ImgCrop>
+        {fileList.length >= 1 ? (
+          <ImgCrop aspectSlider rotationSlider>
+            <Upload
+              fileList={fileList}
+              multiple={false}
+              accept="image/*"
+              showUploadList={false}
+              onChange={updateProfilePicture}
+            >
+              <Tooltip title="Update" key="update-btn" placement="bottom">
+                <Button size="small">
+                  <EditOutlined />
+                </Button>
+              </Tooltip>
+            </Upload>
+          </ImgCrop>
         ) : null}
       </div>
       <Modal
