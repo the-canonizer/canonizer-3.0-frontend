@@ -40,6 +40,7 @@ const LoggedOutHeader = () => {
   };
 
   const openRegistrationModal = () => router.push("/registration");
+  const isMobile = window.matchMedia("(min-width: 1280px)").matches;
 
   return (
     <React.Fragment>
@@ -107,11 +108,12 @@ const LoggedOutHeader = () => {
           key="toggle-btn"
         ></div>
       </Header>
+      {isMobile == false?
       <section className="Mob_View">
         <div className="search_header">
           <HeaderMenu />
         </div>
-      </section>
+      </section>:<></>}
       <SearchSection />
       <div className="topicMobBTN">
         <TopicCreationBTN key="create-topic-area" />
