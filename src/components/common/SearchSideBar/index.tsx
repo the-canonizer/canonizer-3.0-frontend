@@ -6,11 +6,15 @@ import Image from "next/image";
 import filter from "src/assets/image/face.png";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
+import CustomSkelton from "../customSkelton";
 
 export default function SearchSideBar() {
   const router = useRouter();
   let { searchValue } = useSelector((state: RootState) => ({
     searchValue: state?.searchSlice?.searchValue,
+  }));
+  const { loading } = useSelector((state: RootState) => ({
+    loading: state?.loading?.searchLoading,
   }));
 
   const campRoute = () => {
@@ -20,7 +24,12 @@ export default function SearchSideBar() {
   return (
     <>
       <div className="leftSideBar_Card noFilter">
-        {
+        {loading?<CustomSkelton
+              skeltonFor="list"
+              bodyCount={5}
+              stylingClass="listSkeleton"
+              isButton={false}
+            />:
           <div className="search_tabs">
             <Link
               href={{

@@ -98,10 +98,9 @@ const HeaderMenu = ({ loggedUser }: any) => {
                 const index = x.type_value?.toLowerCase().indexOf(
                   searchValue
                     ?.toLowerCase()
-                    .replace(/^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/g, " ")
+                    // .replace(/^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/g, " ")
                     .trim()
                 );
-
                  {
                   const length = searchValue.length;
                   const prefix = x.type_value.substring(0, index);
@@ -188,7 +187,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
                 const index = x.type_value?.toLowerCase().indexOf(
                   searchValue
                     ?.toLowerCase()
-                    .replace(/^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/g, " ")
+                    // .replace(/^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/g, " ")
                     .trim()
                 );
                 {
@@ -286,7 +285,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
                 const index = x.type_value?.toLowerCase().indexOf(
                   searchValue
                     ?.toLowerCase()
-                    .replace(/^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/g, " ")
+                    // .replace(/^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/g, " ")
                     .trim()
                 );
                 {
@@ -383,10 +382,9 @@ const HeaderMenu = ({ loggedUser }: any) => {
                 const index = x.type_value?.toLowerCase().indexOf(
                   searchValue
                     ?.toLowerCase()
-                    .replace(/^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/g, " ")
+                    // .replace(/^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/g, " ")
                     .trim()
                 );
-
                 {
                   const length = searchValue.length;
                   const prefix = x.type_value.substring(0, index);
