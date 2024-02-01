@@ -31,7 +31,10 @@ import {
 import { getNickNameList } from "../../../../network/api/userApi";
 import SupportRemovedModal from "src/components/common/supportRemovedModal";
 import ManageSupport from "../../ManageSupport";
-import { getTreesApi } from "src/network/api/campDetailApi";
+import {
+  getCurrentCampRecordApi,
+  getTreesApi,
+} from "src/network/api/campDetailApi";
 
 const { Paragraph } = Typography;
 const { Panel } = Collapse;
@@ -98,6 +101,8 @@ const SupportTreeCard = ({
   const router = useRouter();
 
   const [userNickNameList, setUserNickNameList] = useState([]);
+
+  const [signModalOpen, setSignModalOpen] = useState(false);
   const [loadMore, setLoadMore] = useState(false);
   const [modalData, setModalData] = useState<any>({});
   const [delegateNickNameId, setDelegateNickNameId] = useState<number>();
@@ -242,6 +247,37 @@ const SupportTreeCard = ({
     });
   };
 
+  const SignModal = () => {
+    let topic_num: any = router?.query?.camp[0]?.split("-")[0];
+    let camp_num: any = router?.query?.camp[1]?.split("-")[0] ?? 1;
+
+    let reqBody = {
+      topic_num,
+      camp_num,
+      nick_id: selectNickId,
+    };
+
+    const onOk = async () => {
+      await getCurrentCampRecordApi(reqBody);
+      setSignModalOpen(false);
+    };
+
+    return (
+      <Modal
+        title="Confirmation"
+        open={signModalOpen}
+        onOk={() => {
+          onOk();
+        }}
+        onCancel={() => {
+          setSignModalOpen(false);
+        }}
+      >
+        <h3>{"Are you sure you want to sign ?"}</h3>
+      </Modal>
+    );
+  };
+
   const supportLength = 15;
   const renderTreeNodes = (
     data: any,
@@ -290,7 +326,7 @@ const SupportTreeCard = ({
                         </a>
                       </Link>
 
-                      {!data[item].camp_leader && (
+                      {data[item].camp_leader && (
                         <Image
                           preview={false}
                           alt="camp-leader-crown"
@@ -475,24 +511,32 @@ const SupportTreeCard = ({
               {!loadMore ? "Load More" : "Load Less"}
             </CustomButton>
           )}
-
           <div className="topicDetailsCollapseFooter">
             {/* <Link href={manageSupportPath}>
               <a> */}
-            <CustomButton
-              onClick={handleClickSupportCheck}
-              className="btn-orange"
-              disabled={asof == "bydate" || campRecord?.is_archive == 1}
-              id="manage-support-btn"
+            <div onClick={handleClickSupportCheck}>
+              <CustomButton
+                className="btn-orange"
+                disabled={asof == "bydate" || campRecord?.is_archive == 1}
+                id="manage-support-btn"
+              >
+                {/* {K?.exceptionalMessages?.directJoinSupport} */}
+                {getCheckSupportStatus?.is_delegator == 1 ||
+                getCheckSupportStatus?.support_flag != 1
+                  ? K?.exceptionalMessages?.directJoinSupport
+                  : K?.exceptionalMessages?.manageSupport}
+              </CustomButton>
+            </div>
+            <div
+              onClick={() => {
+                setSignModalOpen(true);
+              }}
             >
-              {/* {K?.exceptionalMessages?.directJoinSupport} */}
-              {getCheckSupportStatus?.is_delegator == 1 ||
-              getCheckSupportStatus?.support_flag != 1
-                ? K?.exceptionalMessages?.directJoinSupport
-                : K?.exceptionalMessages?.manageSupport}
-            </CustomButton>
+              <CustomButton className="btn-green">{"Sign"}</CustomButton>
+            </div>
             {/* </a>
             </Link> */}
+            {SignModal()}
           </div>
         </Panel>
       </Collapse>
