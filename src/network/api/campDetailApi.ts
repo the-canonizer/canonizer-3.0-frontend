@@ -89,6 +89,19 @@ export const getCurrentTopicRecordApi = async (reqBody, loginToken = null) => {
   }
 };
 
+export const campSignApi = async (reqBody, loginToken = null) => {
+  try {
+    const campSign = await NetworkCall.fetch(
+      TreeRequest.campSignRequest(reqBody, loginToken),
+      false
+    );
+
+    return campSign?.data;
+  } catch (error) {
+    // message.error(error.message);
+  }
+};
+
 export const getCurrentCampRecordApi = async (reqBody, loginToken = null) => {
   try {
     const currentCampRecord = await NetworkCall.fetch(

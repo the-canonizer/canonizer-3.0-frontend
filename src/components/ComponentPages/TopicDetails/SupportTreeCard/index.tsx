@@ -32,6 +32,7 @@ import { getNickNameList } from "../../../../network/api/userApi";
 import SupportRemovedModal from "src/components/common/supportRemovedModal";
 import ManageSupport from "../../ManageSupport";
 import {
+  campSignApi,
   getCurrentCampRecordApi,
   getTreesApi,
 } from "src/network/api/campDetailApi";
@@ -258,7 +259,7 @@ const SupportTreeCard = ({
     };
 
     const onOk = async () => {
-      await getCurrentCampRecordApi(reqBody);
+      await campSignApi(reqBody);
       setSignModalOpen(false);
     };
 
