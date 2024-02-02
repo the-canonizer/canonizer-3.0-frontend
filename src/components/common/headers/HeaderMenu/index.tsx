@@ -672,7 +672,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
                 setInputSearch(e.target.value);
                 setSearchVal(e.target.value);
                 debounceFn.cancel();
-                debounceFn(e.target.value, false);
+                if (e?.target?.value) debounceFn(e.target.value, false);
               }}
               onPressEnter={(e) => {
                 // localStorage.setItem("searchValue",(e.target as HTMLTextAreaElement).value)
