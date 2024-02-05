@@ -112,7 +112,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
                         <Link href={`/${x.link}`}>
                           <a>
                             {!!prefix && (
-                              <label style={{ cursor: "pointer" }}>
+                              <label style={{ cursor: "pointer", fontSize: "1.17em"}}>
                                 {prefix}
                               </label>
                             )}
@@ -120,12 +120,13 @@ const HeaderMenu = ({ loggedUser }: any) => {
                               style={{
                                 cursor: "pointer",
                                 backgroundColor: "#fef2d2",
+                                fontSize: "1.17em"
                               }}
                             >
                               {match}
                             </label>
                             {!!suffix && (
-                              <label style={{ cursor: "pointer" }}>
+                              <label style={{ cursor: "pointer", fontSize: "1.17em"}}>
                                 {suffix}
                               </label>
                             )}
@@ -202,7 +203,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
                           <a className={styles.camp_heading_color}>
                             {" "}
                             {!!prefix && (
-                              <label style={{ cursor: "pointer" }}>
+                              <label style={{ cursor: "pointer", fontSize: "1.17em" }}>
                                 {prefix}
                               </label>
                             )}
@@ -210,12 +211,13 @@ const HeaderMenu = ({ loggedUser }: any) => {
                               style={{
                                 cursor: "pointer",
                                 backgroundColor: "#fef2d2",
+                                fontSize: "1.17em"
                               }}
                             >
                               {match}
                             </label>
                             {!!suffix && (
-                              <label style={{ cursor: "pointer" }}>
+                              <label style={{ cursor: "pointer" ,fontSize: "1.17em"}}>
                                 {suffix}
                               </label>
                             )}
@@ -397,7 +399,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
                           <Link href={`${x.link}`}>
                             <a>
                               {!!prefix && (
-                                <label style={{ cursor: "pointer" }}>
+                                <label style={{ cursor: "pointer",fontSize: "1.17em" }}>
                                   {prefix}
                                 </label>
                               )}
@@ -405,12 +407,13 @@ const HeaderMenu = ({ loggedUser }: any) => {
                                 style={{
                                   cursor: "pointer",
                                   backgroundColor: "#fef2d2",
+                                  fontSize: "1.17em"
                                 }}
                               >
                                 {match}
                               </label>
                               {!!suffix && (
-                                <label style={{ cursor: "pointer" }}>
+                                <label style={{ cursor: "pointer" ,fontSize: "1.17em"}}>
                                   {suffix}
                                 </label>
                               )}
