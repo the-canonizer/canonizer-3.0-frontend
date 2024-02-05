@@ -102,7 +102,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
                     .trim()
                 );
 
-                if (index !== -1) {
+                 {
                   const length = searchValue.length;
                   const prefix = x.type_value.substring(0, index);
                   const suffix = x.type_value.substring(index + length);
@@ -191,7 +191,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
                     .replace(/^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/g, " ")
                     .trim()
                 );
-                if (index !== -1) {
+                {
                   const length = searchValue.length;
                   const prefix = x.type_value.substring(0, index);
                   const suffix = x.type_value.substring(index + length);
@@ -289,7 +289,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
                     .replace(/^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/g, " ")
                     .trim()
                 );
-                if (index !== -1) {
+                {
                   const length = searchValue.length;
                   const prefix = x.type_value.substring(0, index);
                   const suffix = x.type_value.substring(index + length);
@@ -387,7 +387,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
                     .trim()
                 );
 
-                if (index !== -1) {
+                {
                   const length = searchValue.length;
                   const prefix = x.type_value.substring(0, index);
                   const suffix = x.type_value.substring(index + length);
@@ -514,7 +514,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedUser]);
   useEffect(() => {
-    if (inputSearch || searchValue) {
+    if ((inputSearch || searchValue) && router.pathname.includes('/search')) {
       getGlobalSearchCanonizerNav(searchValue, false);
     }
   }, [pageNumber, router.pathname]);

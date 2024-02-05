@@ -42,6 +42,7 @@
     "@types/webpack-env": "1.15.2",
     "@zeit/next-typescript": "^1.1.1",
     "antd": "^4.17.3",
+    "antd-img-crop": "^4.21.0",
     "axios": "^0.24.0",
     "babel-jest": "^29.5.0",
     "babel-plugin-import": "^1.13.3",
