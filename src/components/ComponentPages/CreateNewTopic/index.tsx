@@ -110,7 +110,7 @@ const CreateNewTopic = ({
         op.disable = false;
       });
       setOptions(oldOptions);
-      setIsLoading(false);
+
       dispatch(setShowDrawer(true));
       return;
     }
@@ -148,8 +148,8 @@ const CreateNewTopic = ({
           });
         }
       }
-      setIsLoading(false);
     }
+    setIsLoading(false);
   };
 
   const storeFilterClear = () => {
