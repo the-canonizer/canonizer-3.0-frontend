@@ -31,6 +31,7 @@ const CampTree = ({
     filterObject,
     viewThisVersion,
     is_camp_archive_checked,
+    campRecord,
   } = useSelector((state: RootState) => ({
     tree: state?.topicDetails?.tree,
     filterByScore: state.filters?.filterObject?.filterByScore,
@@ -40,6 +41,7 @@ const CampTree = ({
     filterObject: state?.filters?.filterObject,
     viewThisVersion: state?.filters?.viewThisVersionCheck,
     is_camp_archive_checked: state?.utils?.archived_checkbox,
+    campRecord: state?.topicDetails?.currentCampRecord,
   }));
 
   let childExpandTree = [];
@@ -308,6 +310,7 @@ const CampTree = ({
             : setTotalCampScoreForSupportTree(data[item].score);
         }
       }
+
       if (data[item].children) {
         if (data[item].score >= scoreFilter) {
           return data[item].is_archive == 0 ||
@@ -460,7 +463,8 @@ const CampTree = ({
                   +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1) &&
                   _isDisabled == 0 &&
                   parentIsOneLevel == 0 &&
-                  _isArchive == 0 && (
+                  _isArchive == 0 &&
+                  campRecord?.is_archive == 0 && (
                     <TreeNode
                       key={"custom"}
                       title={
