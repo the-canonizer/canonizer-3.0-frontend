@@ -31,6 +31,7 @@ import { getNickNameList } from "../../../../network/api/userApi";
 import SupportRemovedModal from "src/components/common/supportRemovedModal";
 import ManageSupport from "../../ManageSupport";
 import { getTreesApi } from "src/network/api/campDetailApi";
+import { setIsSupportModal } from "src/store/slices/topicSlice";
 
 const { Paragraph } = Typography;
 const { Panel } = Collapse;
@@ -81,6 +82,7 @@ const SupportTreeCard = ({
     algorithms,
     algorithm,
     asofdate,
+    isModalOpenSupportCamps,
   } = useSelector((state: RootState) => ({
     currentGetCheckSupportExistsData:
       state.topicDetails.currentGetCheckSupportExistsData,
@@ -91,6 +93,7 @@ const SupportTreeCard = ({
     algorithms: state.homePage?.algorithms,
     algorithm: state.filters?.filterObject?.algorithm,
     asofdate: state.filters?.filterObject?.asofdate,
+    isModalOpenSupportCamps: state?.topic?.isModalOpenSupportCamps,
   }));
   const { isUserAuthenticated } = isAuth();
 
@@ -102,7 +105,6 @@ const SupportTreeCard = ({
   const [delegateNickNameId, setDelegateNickNameId] = useState<number>();
   const [currentAlgo, setCurrentAlgo] = useState<string>("");
   const [selectNickId, setSelectNickId] = useState(null);
-  const [isModalOpenSupportCamps, setIsModalOpenSupportCamps] = useState(false);
   const [mainComponentKey, setMainComponentKey] = useState(0);
   const [loadingIndicatorSupport, setLoadingIndicatorSupport] = useState(false);
   const [
@@ -110,13 +112,13 @@ const SupportTreeCard = ({
     setGetManageSupportLoadingIndicator,
   ] = useState(false);
   const showModalSupportCamps = () => {
-    setIsModalOpenSupportCamps(true);
+    dispatch(setIsSupportModal(true));
   };
   const handleOkSupportCamps = () => {
-    setIsModalOpenSupportCamps(false);
+    dispatch(setIsSupportModal(false));
   };
   const handleCancelSupportCamps = async ({ isCallApiStatus = false }) => {
-    setIsModalOpenSupportCamps(false);
+    dispatch(setIsSupportModal(false));
     setGetManageSupportLoadingIndicator(true);
     setLoadingIndicatorSupport(true);
 
@@ -465,22 +467,17 @@ const SupportTreeCard = ({
           )}
 
           <div className="topicDetailsCollapseFooter">
-            {/* <Link href={manageSupportPath}>
-              <a> */}
             <CustomButton
               onClick={handleClickSupportCheck}
               className="btn-orange"
               disabled={asof == "bydate" || campRecord?.is_archive == 1}
               id="manage-support-btn"
             >
-              {/* {K?.exceptionalMessages?.directJoinSupport} */}
               {getCheckSupportStatus?.is_delegator == 1 ||
               getCheckSupportStatus?.support_flag != 1
                 ? K?.exceptionalMessages?.directJoinSupport
                 : K?.exceptionalMessages?.manageSupport}
             </CustomButton>
-            {/* </a>
-            </Link> */}
           </div>
         </Panel>
       </Collapse>

@@ -12,7 +12,10 @@ import { Dropdown, Menu, Button } from "antd";
 import K from "../../../../constants";
 import CustomSkelton from "../../../common/customSkelton";
 
-import { setManageSupportStatusCheck } from "../../../../store/slices/campDetailSlice";
+import {
+  setManageSupportStatusCheck,
+  setManageSupportUrlLink,
+} from "../../../../store/slices/campDetailSlice";
 
 import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
 import {
@@ -27,6 +30,7 @@ import {
 } from "../../../../utils/generalUtility";
 import SocialShareUI from "../../../common/socialShare";
 import GenerateModal from "src/components/common/generateScript";
+import { setIsSupportModal } from "src/store/slices/topicSlice";
 
 const CodeIcon = () => (
   <svg
@@ -106,8 +110,12 @@ const InfoBar = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const manageSupportPath = router?.asPath.replace("/topic/", "/support/");
+
   const handleClickSupportCheck = () => {
+    dispatch(setManageSupportUrlLink(manageSupportPath));
     dispatch(setManageSupportStatusCheck(true));
+    dispatch(setIsSupportModal(true));
   };
 
   const onCampForumClick = () => {
@@ -117,6 +125,7 @@ const InfoBar = ({
       }/threads`,
     });
   };
+
   const campOrTopicScribe = async (isTopic: Boolean) => {
     const reqBodyForService = {
       topic_num: +router?.query?.camp?.[0]?.split("-")[0],
@@ -138,6 +147,7 @@ const InfoBar = ({
       getTreesApi(reqBodyForService);
     }
   };
+
   const campForumDropdownMenu = (
     <Menu className={styles.campForumDropdownMenu}>
       {isUserAuthenticated && is_admin && (
@@ -230,19 +240,26 @@ const InfoBar = ({
         disabled={asof == "bydate" || campRecord?.is_archive}
       >
         {isTopicPage && (
-          <Link href={router?.asPath?.replace("/topic/", "/support/")}>
-            <a>
-              <div
-                className="topicDetailsCollapseFooter"
-                onClick={handleClickSupportCheck}
-              >
-                {/* {K?.exceptionalMessages?.directJoinSupport} */}
-                {getCheckSupportStatus?.is_delegator == 1 ||
-                getCheckSupportStatus?.support_flag != 1
-                  ? K?.exceptionalMessages?.directJoinSupport
-                  : K?.exceptionalMessages?.manageSupport}
-              </div>
-            </a>
+          <Link
+            href="#"
+            onClick={(e) => {
+              e?.preventDefault();
+              e?.stopPropagation();
+            }}
+          >
+            <div
+              className="topicDetailsCollapseFooter"
+              onClick={(e) => {
+                e?.preventDefault();
+                e?.stopPropagation();
+                handleClickSupportCheck();
+              }}
+            >
+              {getCheckSupportStatus?.is_delegator == 1 ||
+              getCheckSupportStatus?.support_flag != 1
+                ? K?.exceptionalMessages?.directJoinSupport
+                : K?.exceptionalMessages?.manageSupport}
+            </div>
           </Link>
         )}
       </Menu.Item>
