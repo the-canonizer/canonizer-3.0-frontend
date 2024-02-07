@@ -36,6 +36,7 @@ import {
   getCurrentCampRecordApi,
   getTreesApi,
 } from "src/network/api/campDetailApi";
+import SignCamp from "./SignCamp";
 
 const { Paragraph } = Typography;
 const { Panel } = Collapse;
@@ -249,32 +250,21 @@ const SupportTreeCard = ({
   };
 
   const SignModal = () => {
-    let topic_num: any = router?.query?.camp[0]?.split("-")[0];
-    let camp_num: any = router?.query?.camp[1]?.split("-")[0] ?? 1;
-
-    let reqBody = {
-      topic_num,
-      camp_num,
-      nick_id: selectNickId,
-    };
-
-    const onOk = async () => {
-      await campSignApi(reqBody);
-      setSignModalOpen(false);
-    };
-
     return (
       <Modal
-        title="Confirmation"
+        title="Sign Camp"
         open={signModalOpen}
-        onOk={() => {
-          onOk();
-        }}
+        className={styles.modal_cross}
+        footer={null}
+        closeIcon={<CloseCircleOutlined />}
         onCancel={() => {
           setSignModalOpen(false);
         }}
       >
-        <h3>{"Are you sure you want to sign ?"}</h3>
+        <SignCamp
+          setSignModalOpen={setSignModalOpen}
+          setLoadingIndicatorSupport={setLoadingIndicatorSupport}
+        />
       </Modal>
     );
   };
