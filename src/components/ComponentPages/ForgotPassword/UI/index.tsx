@@ -62,7 +62,7 @@ function ForgotPasswordUI({
               id="forgot-modal-note"
             >
               Don&apos;t worry, it happens. Let us know the email address you
-              signed up
+              signed up{" "}
               <span className={styles.otpNoteSupport}>
                 with and we&apos;ll send you an email with instructions.
               </span>
