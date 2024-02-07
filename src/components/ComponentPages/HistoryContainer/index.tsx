@@ -7,11 +7,7 @@ import InfiniteScroll from "react-infinite-scroller";
 
 import styles from "./campHistory.module.scss";
 
-import {
-  getHistoryApi,
-  getCheckCampStatus,
-} from "../../../network/api/history";
-import { getTreesApi } from "src/network/api/campDetailApi";
+import { getHistoryApi } from "../../../network/api/history";
 import { getAllUsedNickNames } from "../../../network/api/campDetailApi";
 import CustomSkelton from "../../common/customSkelton";
 
@@ -33,7 +29,6 @@ function HistoryContainer() {
   const router = useRouter();
   const dispatch = useDispatch();
   const didMount = useRef(false);
-  const didMountCall = useRef(false);
 
   const [activeTab, setActiveTab] = useState("all");
 
@@ -57,7 +52,6 @@ function HistoryContainer() {
   const historyOf = router?.asPath.split("/")[1];
 
   const count = useRef(1);
-  const didmount = useRef(false);
 
   const { history, currentCampNode, tree, asofdate, asof, algorithm } =
     useSelector((state: RootState) => ({
@@ -77,74 +71,21 @@ function HistoryContainer() {
     camp_num: router?.query?.camp?.at(1)?.split("-")?.at(0) ?? "1",
     topic_num: router?.query?.camp?.at(0)?.split("-")?.at(0),
   };
-  const reqBodyForService = {
-    topic_num: router?.query?.camp?.at(0)?.split("-")?.at(0),
-    camp_num: router?.query?.camp?.at(1)?.split("-")?.at(0) || 1,
-    asOf: asof,
-    asofdate:
-      asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
-    algorithm: algorithm,
-    update_all: 1,
-  };
 
   useEffect(() => {
     async function getTreeApiCall() {
-      // setLoadingIndicator(true);
       if (isUserAuthenticated) {
         let response = await getAllUsedNickNames({
           topic_num: router?.query?.camp?.at(0)?.split("-")[0],
         });
         setNickName(response?.data);
       }
-      // let res = await getTreesApi(reqBodyForService);
-      // let res = await getCheckCampStatus({
-      //   topic_num: router?.query?.camp?.at(0)?.split("-")?.at(0),
-      //   camp_num: router?.query?.camp?.at(1)?.split("-")?.at(0) || 1,
-      // });
-
-      // setLoadingIndicator(false);
-      // setParentarchived(res?.data?.is_archive);
-      // setParentarchived(res?.treeData[1]?.is_archive);
     }
     if (!isTreesApiCallStop) {
       getTreeApiCall();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [asofdate, algorithm, +router?.query?.camp?.at(1)?.split("-")[0]]);
-
-  // const dispatchData = (data, isDisabled = 0, isOneLevel = 0) => {
-  //   const keys = Object.keys(data);
-  //   for (let i = 0; i < keys.length; i++) {
-  //     const item = keys[i];
-  //     const parentIsOneLevel = isOneLevel;
-  //     let _isOneLevel = data[item].is_one_level == 1 || isOneLevel == 1 ? 1 : 0;
-  //     let _isDisabled = data[item].is_disabled == 1 || isDisabled == 1 ? 1 : 0;
-
-  //     if (
-  //       data[item].camp_id === +router?.query?.camp?.at(1)?.split("-")?.at(0)
-  //     ) {
-  //       dispatch(
-  //         setCurrentCamp({
-  //           ...data[item],
-  //           parentIsOneLevel,
-  //           _isDisabled,
-  //           _isOneLevel,
-  //         })
-  //       );
-  //       break;
-  //     }
-  //     if (data[item].children) {
-  //       dispatchData(data[item].children, _isDisabled, _isOneLevel);
-  //     }
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   if (tree != null) {
-  //     dispatchData(tree);
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [tree]);
 
   useEffect(() => {
     setCampHistory(history);
@@ -232,10 +173,6 @@ function HistoryContainer() {
   const handleTabButton = async (tabName) => {
     setActiveTab(tabName);
   };
-
-  // const topicRoute = () => {
-  //   setLoadingIndicator(true);
-  // };
 
   const campRoute = () => {
     setLoadingIndicator(true);
