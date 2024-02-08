@@ -76,6 +76,7 @@ function HistoryCollapse({
   const [modal1Open, setModal1Open] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [supporters, setSupporters] = useState([]);
+  const [loadingChanges, setLoadingChanges] = useState(false);
   const dispatch = useDispatch();
   const { isUserAuthenticated } = useAuthentication();
   const handleViewThisVersion = (goLiveTime) => {
@@ -102,6 +103,7 @@ function HistoryCollapse({
   // };
 
   const commitChanges = async () => {
+    setLoadingChanges(true);
     let reqBody = {
       type: historyOf,
       id: campStatement?.id,
@@ -123,10 +125,12 @@ function HistoryCollapse({
       setCommited(true);
     }
     changeAgree();
+    setLoadingChanges(false);
     // await getTreesApi(reqBodyForService);
   };
 
   const discardChanges = async () => {
+    setLoadingChanges(true);
     let reqBody = {
       type: historyOf,
       id: campStatement?.id,
@@ -136,9 +140,11 @@ function HistoryCollapse({
       setCommited(true);
     }
     changeDiscard();
+    setLoadingChanges(false);
   };
 
   const agreeWithChange = async () => {
+    setLoadingChanges(true);
     setIsSelectChecked(true);
     let reqBody = {
       record_id: campStatement.id,
@@ -157,6 +163,7 @@ function HistoryCollapse({
     }
 
     changeAgree();
+    setLoadingChanges(false);
   };
 
   let historyTitle = () => {
@@ -548,7 +555,7 @@ function HistoryCollapse({
                         type="primary"
                         onClick={commitChanges}
                         id={`commit-change-${campStatement?.id}`}
-                        disabled={loading}
+                        disabled={loadingChanges}
                       >
                         Commit Change
                       </Button>
@@ -558,7 +565,7 @@ function HistoryCollapse({
                         danger
                         onClick={() => cancelConfirm()}
                         id={`commit-change-${campStatement?.id}`}
-                        disabled={loading}
+                        disabled={loadingChanges}
                       >
                         Cancel
                       </Button>
@@ -568,7 +575,7 @@ function HistoryCollapse({
               {campStatement?.status == "in_review" &&
                 (!campStatement?.grace_period || commited) && (
                   <div className={styles.campStatementCollapseButtons}>
-                    <Spin spinning={loading} size="default">
+                    <Spin spinning={loadingChanges} size="default">
                       {" "}
                       <div className={styles.infoText}>
                         {!!(
