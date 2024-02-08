@@ -349,7 +349,8 @@ function HistoryCollapse({
                                   campStatement?.ifIamSupporter == 0) ||
                                 (parentArchived == 1 &&
                                   directarchived == 1 &&
-                                  historyOf == "topic")
+                                  historyOf == "topic") ||
+                                (parentArchived == 1 && directarchived == 0)
                               ? true
                               : false;
                             if (isModelPop) {
@@ -375,7 +376,8 @@ function HistoryCollapse({
                                     campStatement.status == "objected") ||
                                   (parentArchived == 1 &&
                                     directarchived == 1 &&
-                                    historyOf == "topic")
+                                    historyOf == "topic") ||
+                                  (parentArchived == 1 && directarchived == 0)
                                 ? true
                                 : false
                             )
@@ -717,6 +719,9 @@ function HistoryCollapse({
                               defaultChecked={campStatement?.agreed_to_change}
                               className={
                                 styles.campSelectCheckbox + " agreed-text"
+                              }
+                              disabled={
+                                parentArchived == 1 && directarchived == 0
                               }
                               onChange={agreeWithChange}
                             >
