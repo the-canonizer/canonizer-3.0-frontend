@@ -407,6 +407,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
             setTotalCampScoreForSupportTree={setTotalCampScoreForSupportTree}
             setSupportTreeForCamp={setSupportTreeForCamp}
             backGroundColorClass={backGroundColorClass}
+            loadingIndicator={loadingIndicator}
           />
         </aside>
 

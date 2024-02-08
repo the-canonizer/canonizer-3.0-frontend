@@ -224,7 +224,6 @@ const SupportTreeCard = ({
     campSupportingTree: supportTreeForCamp,
     asof: state?.filters?.filterObject?.asof,
   }));
-
   useEffect(() => {
     if (campSupportingTree?.length > 0) {
       getDelegateNicknameId(campSupportingTree);
@@ -323,7 +322,7 @@ const SupportTreeCard = ({
                                 <Button
                                   id="supportTreeDelegateYourSupport"
                                   disabled={
-                                    asof == "bydate" || !isUserAuthenticated
+                                    asof == "bydate" || !isUserAuthenticated || campRecord?.is_archive == 1
                                   }
                                   onClick={() =>
                                     handleDelegatedClick(
