@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Layout, Menu, Button } from "antd";
 import { useDispatch, useSelector } from "react-redux";
@@ -163,14 +163,18 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
             {isMobile == true ? <HeaderMenu loggedUser={loggedUser} /> : <></>}
 
             {!isLoginPage ? (
-              <ProfileInfoTab
-                isGravatarImage={isGravatarImage}
-                loadingImage={loadingImage}
-                loggedUser={loggedUser}
-                toggleMobNav={toggleMobNav}
-                logOut={logOut}
-                isMobile={true}
-              />
+              <Fragment>
+                {!isMobile && <HeaderMenu loggedUser={loggedUser} />}
+
+                <ProfileInfoTab
+                  isGravatarImage={isGravatarImage}
+                  loadingImage={loadingImage}
+                  loggedUser={loggedUser}
+                  toggleMobNav={toggleMobNav}
+                  logOut={logOut}
+                  isMobile={true}
+                />
+              </Fragment>
             ) : null}
           </div>
 

@@ -7,8 +7,8 @@ import InfiniteScroll from "react-infinite-scroller";
 
 import styles from "./campHistory.module.scss";
 
-import { getHistoryApi } from "../../../network/api/history";
-import { getAllUsedNickNames } from "../../../network/api/campDetailApi";
+import { getHistoryApi } from "src/network/api/history";
+import { getAllUsedNickNames } from "src/network/api/campDetailApi";
 import CustomSkelton from "../../common/customSkelton";
 
 import HistoryCollapse from "./Collapse";
@@ -16,11 +16,11 @@ import { RootState } from "src/store";
 import CampInfoBar from "../TopicDetails/CampInfoBar";
 import CreateNewCampButton from "../../common/button/createNewCampBtn";
 import { setCurrentCamp } from "src/store/slices/filtersSlice";
-import useIsUserAuthenticated from "../../../hooks/isUserAuthenticated";
+import useIsUserAuthenticated from "src/hooks/isUserAuthenticated";
 
-import { store } from "../../../store";
-import { setTree } from "../../../store/slices/campDetailSlice";
-import { updateCampApi } from "../../../network/api/campManageStatementApi";
+import { store } from "src/store";
+import { setTree } from "src/store/slices/campDetailSlice";
+import { updateCampApi } from "src/network/api/campManageStatementApi";
 
 const { Title } = Typography;
 

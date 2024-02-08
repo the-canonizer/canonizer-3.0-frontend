@@ -146,19 +146,6 @@ const HeaderMenu = ({ loggedUser }: any) => {
                     </>
                   );
                 }
-                // return (
-                //   <>
-                //     <li style={{ cursor: "default" }}>
-                //       <Link href={`/${x.link}`}>
-                //         <a>
-                //           <label style={{ cursor: "pointer" }}>
-                //             {x.type_value}
-                //           </label>
-                //         </a>
-                //       </Link>
-                //     </li>
-                //   </>
-                // );
               })}
             </ul>
             {searchTopics?.length ? (
