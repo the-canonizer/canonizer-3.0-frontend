@@ -29,6 +29,7 @@ import {
   changeSlashToArrow,
 } from "src/utils/generalUtility";
 import CustomSkelton from "../../../common/customSkelton";
+import SortTopics from "../../SortingTopics";
 // import { CloseCircleOutlined } from "@ant-design/icons";
 // import { clearAllListeners } from "@reduxjs/toolkit";
 
@@ -531,6 +532,8 @@ const TopicsList = () => {
             )}
           </div>
         )}
+        <SortTopics/>
+
       </div>
 
       <div
