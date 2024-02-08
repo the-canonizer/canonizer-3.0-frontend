@@ -14,6 +14,7 @@ export default function HomeSideBar({
   getTreeLoadingIndicator,
   scrollToCampStatement,
   setTotalCampScoreForSupportTree,
+  loadingIndicator,
   setSupportTreeForCamp,
   backGroundColorClass,
   isForumPage = false,
@@ -94,6 +95,7 @@ export default function HomeSideBar({
               setSupportTreeForCamp={setSupportTreeForCamp}
               backGroundColorClass={backGroundColorClass}
               isForumPage={isForumPage}
+              loadingIndicator={loadingIndicator}
             />
           </Drawer>
         </Fragment>

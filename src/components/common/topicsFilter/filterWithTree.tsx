@@ -75,6 +75,7 @@ const FilterWithTree = ({
   setTotalCampScoreForSupportTree,
   setSupportTreeForCamp,
   backGroundColorClass,
+  loadingIndicator,
   isForumPage = false,
 }: any) => {
   const [isDatePicker, setIsDatePicker] = useState(false);
@@ -474,7 +475,7 @@ const FilterWithTree = ({
                     (algo) => algo.algorithm_key == selectedAlgorithm
                   )[0]?.algorithm_label
                 }
-                disabled={loading}
+                disabled={loadingIndicator}
                 id="algo_dropdown"
               >
                 {algorithms?.map((algo) => {
@@ -505,7 +506,7 @@ const FilterWithTree = ({
                   size="large"
                   onChange={filterOnScore}
                   value={inputValue}
-                  disabled={loading}
+                  disabled={loadingIndicator}
                   id="filter_input"
                 />
                 <Popover
@@ -519,9 +520,9 @@ const FilterWithTree = ({
             </Col>
             <Col md={24}>
               <div className={styles.scoreCheckbox}>
-                <FullScoreCheckbox />
+                <FullScoreCheckbox loadingIndicator={loadingIndicator} />
               </div>
-              <ArchivedCampCheckBox />
+              <ArchivedCampCheckBox loadingIndicator={loadingIndicator} />
             </Col>
             <Col md={24}>
               <div className={`${styles.algo_title} ${styles.title}`}>
@@ -540,7 +541,7 @@ const FilterWithTree = ({
                 <Radio.Group
                   onChange={onChange}
                   value={value}
-                  disabled={loading}
+                  disabled={loadingIndicator}
                   className={styles.radioBtns}
                   id="radio_group"
                 >
