@@ -31,12 +31,17 @@ import {
 import { getNickNameList } from "../../../../network/api/userApi";
 import SupportRemovedModal from "src/components/common/supportRemovedModal";
 import ManageSupport from "../../ManageSupport";
+<<<<<<< HEAD
 import {
   campSignApi,
   getCurrentCampRecordApi,
   getTreesApi,
 } from "src/network/api/campDetailApi";
 import SignCamp from "./SignCamp";
+=======
+import { getTreesApi } from "src/network/api/campDetailApi";
+import { setIsSupportModal } from "src/store/slices/topicSlice";
+>>>>>>> 3ba5b4b98f2d83b5a862d3ef8dd882c6c2d5e722
 
 const { Paragraph } = Typography;
 const { Panel } = Collapse;
@@ -87,6 +92,7 @@ const SupportTreeCard = ({
     algorithms,
     algorithm,
     asofdate,
+    isModalOpenSupportCamps,
   } = useSelector((state: RootState) => ({
     currentGetCheckSupportExistsData:
       state.topicDetails.currentGetCheckSupportExistsData,
@@ -97,6 +103,7 @@ const SupportTreeCard = ({
     algorithms: state.homePage?.algorithms,
     algorithm: state.filters?.filterObject?.algorithm,
     asofdate: state.filters?.filterObject?.asofdate,
+    isModalOpenSupportCamps: state?.topic?.isModalOpenSupportCamps,
   }));
   const { isUserAuthenticated } = isAuth();
 
@@ -110,7 +117,6 @@ const SupportTreeCard = ({
   const [delegateNickNameId, setDelegateNickNameId] = useState<number>();
   const [currentAlgo, setCurrentAlgo] = useState<string>("");
   const [selectNickId, setSelectNickId] = useState(null);
-  const [isModalOpenSupportCamps, setIsModalOpenSupportCamps] = useState(false);
   const [mainComponentKey, setMainComponentKey] = useState(0);
   const [loadingIndicatorSupport, setLoadingIndicatorSupport] = useState(false);
   const [
@@ -118,13 +124,13 @@ const SupportTreeCard = ({
     setGetManageSupportLoadingIndicator,
   ] = useState(false);
   const showModalSupportCamps = () => {
-    setIsModalOpenSupportCamps(true);
+    dispatch(setIsSupportModal(true));
   };
   const handleOkSupportCamps = () => {
-    setIsModalOpenSupportCamps(false);
+    dispatch(setIsSupportModal(false));
   };
   const handleCancelSupportCamps = async ({ isCallApiStatus = false }) => {
-    setIsModalOpenSupportCamps(false);
+    dispatch(setIsSupportModal(false));
     setGetManageSupportLoadingIndicator(true);
     setLoadingIndicatorSupport(true);
 
@@ -230,7 +236,6 @@ const SupportTreeCard = ({
     campSupportingTree: supportTreeForCamp,
     asof: state?.filters?.filterObject?.asof,
   }));
-
   useEffect(() => {
     if (campSupportingTree?.length > 0) {
       getDelegateNicknameId(campSupportingTree);
@@ -360,7 +365,7 @@ const SupportTreeCard = ({
                                 <Button
                                   id="supportTreeDelegateYourSupport"
                                   disabled={
-                                    asof == "bydate" || !isUserAuthenticated
+                                    asof == "bydate" || !isUserAuthenticated || campRecord?.is_archive == 1
                                   }
                                   onClick={() =>
                                     handleDelegatedClick(
@@ -502,6 +507,7 @@ const SupportTreeCard = ({
               {!loadMore ? "Load More" : "Load Less"}
             </CustomButton>
           )}
+<<<<<<< HEAD
           <div className="topicDetailsSupportCollapseFooter">
             {/* <Link href={manageSupportPath}>
               <a> */}
@@ -528,6 +534,21 @@ const SupportTreeCard = ({
             {/* </a>
             </Link> */}
             {SignModal()}
+=======
+
+          <div className="topicDetailsCollapseFooter">
+            <CustomButton
+              onClick={handleClickSupportCheck}
+              className="btn-orange"
+              disabled={asof == "bydate" || campRecord?.is_archive == 1}
+              id="manage-support-btn"
+            >
+              {getCheckSupportStatus?.is_delegator == 1 ||
+              getCheckSupportStatus?.support_flag != 1
+                ? K?.exceptionalMessages?.directJoinSupport
+                : K?.exceptionalMessages?.manageSupport}
+            </CustomButton>
+>>>>>>> 3ba5b4b98f2d83b5a862d3ef8dd882c6c2d5e722
           </div>
         </Panel>
       </Collapse>

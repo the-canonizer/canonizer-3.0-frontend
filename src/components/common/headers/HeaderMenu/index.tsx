@@ -98,11 +98,10 @@ const HeaderMenu = ({ loggedUser }: any) => {
                 const index = x.type_value?.toLowerCase().indexOf(
                   searchValue
                     ?.toLowerCase()
-                    .replace(/^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/g, " ")
+                    // .replace(/^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/g, " ")
                     .trim()
                 );
-
-                 {
+                {
                   const length = searchValue.length;
                   const prefix = x.type_value.substring(0, index);
                   const suffix = x.type_value.substring(index + length);
@@ -113,7 +112,12 @@ const HeaderMenu = ({ loggedUser }: any) => {
                         <Link href={`/${x.link}`}>
                           <a>
                             {!!prefix && (
-                              <label style={{ cursor: "pointer" }}>
+                              <label
+                                style={{
+                                  cursor: "pointer",
+                                  fontSize: "1.17em",
+                                }}
+                              >
                                 {prefix}
                               </label>
                             )}
@@ -121,12 +125,18 @@ const HeaderMenu = ({ loggedUser }: any) => {
                               style={{
                                 cursor: "pointer",
                                 backgroundColor: "#fef2d2",
+                                fontSize: "1.17em",
                               }}
                             >
                               {match}
                             </label>
                             {!!suffix && (
-                              <label style={{ cursor: "pointer" }}>
+                              <label
+                                style={{
+                                  cursor: "pointer",
+                                  fontSize: "1.17em",
+                                }}
+                              >
                                 {suffix}
                               </label>
                             )}
@@ -136,19 +146,6 @@ const HeaderMenu = ({ loggedUser }: any) => {
                     </>
                   );
                 }
-                // return (
-                //   <>
-                //     <li style={{ cursor: "default" }}>
-                //       <Link href={`/${x.link}`}>
-                //         <a>
-                //           <label style={{ cursor: "pointer" }}>
-                //             {x.type_value}
-                //           </label>
-                //         </a>
-                //       </Link>
-                //     </li>
-                //   </>
-                // );
               })}
             </ul>
             {searchTopics?.length ? (
@@ -188,7 +185,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
                 const index = x.type_value?.toLowerCase().indexOf(
                   searchValue
                     ?.toLowerCase()
-                    .replace(/^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/g, " ")
+                    // .replace(/^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/g, " ")
                     .trim()
                 );
                 {
@@ -203,7 +200,12 @@ const HeaderMenu = ({ loggedUser }: any) => {
                           <a className={styles.camp_heading_color}>
                             {" "}
                             {!!prefix && (
-                              <label style={{ cursor: "pointer" }}>
+                              <label
+                                style={{
+                                  cursor: "pointer",
+                                  fontSize: "1.17em",
+                                }}
+                              >
                                 {prefix}
                               </label>
                             )}
@@ -211,12 +213,18 @@ const HeaderMenu = ({ loggedUser }: any) => {
                               style={{
                                 cursor: "pointer",
                                 backgroundColor: "#fef2d2",
+                                fontSize: "1.17em",
                               }}
                             >
                               {match}
                             </label>
                             {!!suffix && (
-                              <label style={{ cursor: "pointer" }}>
+                              <label
+                                style={{
+                                  cursor: "pointer",
+                                  fontSize: "1.17em",
+                                }}
+                              >
                                 {suffix}
                               </label>
                             )}
@@ -286,7 +294,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
                 const index = x.type_value?.toLowerCase().indexOf(
                   searchValue
                     ?.toLowerCase()
-                    .replace(/^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/g, " ")
+                    // .replace(/^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/g, " ")
                     .trim()
                 );
                 {
@@ -383,10 +391,9 @@ const HeaderMenu = ({ loggedUser }: any) => {
                 const index = x.type_value?.toLowerCase().indexOf(
                   searchValue
                     ?.toLowerCase()
-                    .replace(/^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/g, " ")
+                    // .replace(/^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/g, " ")
                     .trim()
                 );
-
                 {
                   const length = searchValue.length;
                   const prefix = x.type_value.substring(0, index);
@@ -399,7 +406,12 @@ const HeaderMenu = ({ loggedUser }: any) => {
                           <Link href={`${x.link}`}>
                             <a>
                               {!!prefix && (
-                                <label style={{ cursor: "pointer" }}>
+                                <label
+                                  style={{
+                                    cursor: "pointer",
+                                    fontSize: "1.17em",
+                                  }}
+                                >
                                   {prefix}
                                 </label>
                               )}
@@ -407,12 +419,18 @@ const HeaderMenu = ({ loggedUser }: any) => {
                                 style={{
                                   cursor: "pointer",
                                   backgroundColor: "#fef2d2",
+                                  fontSize: "1.17em",
                                 }}
                               >
                                 {match}
                               </label>
                               {!!suffix && (
-                                <label style={{ cursor: "pointer" }}>
+                                <label
+                                  style={{
+                                    cursor: "pointer",
+                                    fontSize: "1.17em",
+                                  }}
+                                >
                                   {suffix}
                                 </label>
                               )}
@@ -514,7 +532,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedUser]);
   useEffect(() => {
-    if ((inputSearch || searchValue) && router.pathname.includes('/search')) {
+    if ((inputSearch || searchValue) && router.pathname.includes("/search")) {
       getGlobalSearchCanonizerNav(searchValue, false);
     }
   }, [pageNumber, router.pathname]);
@@ -674,7 +692,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
                 setInputSearch(e.target.value);
                 setSearchVal(e.target.value);
                 debounceFn.cancel();
-                debounceFn(e.target.value, false);
+                if (e?.target?.value) debounceFn(e.target.value, false);
               }}
               onPressEnter={(e) => {
                 // localStorage.setItem("searchValue",(e.target as HTMLTextAreaElement).value)

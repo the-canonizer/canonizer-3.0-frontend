@@ -90,7 +90,7 @@ function ProfileInfoForm({
     loading,
   }) => (
     <div>
-      {console.log(suggestions,"sugg")}
+      {console.log(suggestions, "sugg")}
       <Input
         data-testid="auto_complete"
         id="selectAddress_1"
@@ -285,7 +285,7 @@ function ProfileInfoForm({
                         </Form.Item>
                         <Form.Item>
                           <Select
-                            data-testid ="handleselectAfter"
+                            data-testid="handleselectAfter"
                             size="large"
                             defaultValue={publicOrPrivate("birthday")}
                             onChange={handleselectAfter("birthday")}

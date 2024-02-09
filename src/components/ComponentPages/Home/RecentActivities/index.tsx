@@ -317,6 +317,7 @@ export default function RecentActivities() {
                             {activity?.activity?.description}
                             <br />
                             <Tooltip
+                              placement={"topLeft"}
                               title={
                                 decodedProperties?.topic_name
                                   ? `Topic: ${decodedProperties?.topic_name}` +
@@ -403,6 +404,7 @@ export default function RecentActivities() {
                             {activity?.activity?.description}
                             <br />
                             <Tooltip
+                              placement={"topLeft"}
                               title={
                                 // decodedProperties?.topic_name
                                 //   ? `Topic: ${decodedProperties?.topic_name}` +
