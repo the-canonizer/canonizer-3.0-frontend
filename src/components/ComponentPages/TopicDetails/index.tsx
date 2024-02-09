@@ -120,24 +120,6 @@ const TopicDetails = ({ serverSideCall }: any) => {
     setLoadingIndicator(false);
   };
 
-  // const reqBody = {
-  //   topic_num: +router?.query?.camp[0]?.split("-")[0],
-  //   camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
-  //   as_of: asof,
-  //   as_of_date:
-  //     asof == "default" || asof == "review"
-  //       ? Date.now() / 1000
-  //       : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
-  // };
-  // const reqBody = {
-  //   topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
-  //   camp_num: +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1),
-  //   as_of: asof,
-  //   as_of_date:
-  //     asof == "default" || asof == "review"
-  //       ? Date.now() / 1000
-  //       : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
-  // };
   useEffect(() => {
     async function getTreeApiCall() {
       if (!showTreeSkeltonRef) {
@@ -191,7 +173,6 @@ const TopicDetails = ({ serverSideCall }: any) => {
       } else {
         didMount.current = true;
       }
-      // getCanonizedCampSupportingTreeApi(reqBody, algorithm);
 
       GetActiveSupportTopicList();
     }
@@ -234,10 +215,8 @@ const TopicDetails = ({ serverSideCall }: any) => {
       message.success(res.message);
       setIsSupportTreeCardModal(false);
       GetCheckStatusData();
-      // getCanonizedCampSupportingTreeApi(reqBody, algorithm);
       await getTreesApi(reqBodyForService);
       setRemoveSupportSpinner(false);
-      // fetchTotalScore();
       setIsRemovingSupport(false);
     }
   };
@@ -270,11 +249,9 @@ const TopicDetails = ({ serverSideCall }: any) => {
       message.success(res.message);
       setIsSupportTreeCardModal(false);
       GetCheckStatusData();
-      // getCanonizedCampSupportingTreeApi(reqBody, algorithm);
       await getTreesApi(reqBodyForService);
       setRemoveSupportSpinner(false);
       setIsRemovingSupport(false);
-      // fetchTotalScore();
     }
     setRemoveSupportSpinner(false);
   };
@@ -305,37 +282,11 @@ const TopicDetails = ({ serverSideCall }: any) => {
       setIsSupportTreeCardModal(false);
       setIsDelegateSupportTreeCardModal(false);
       GetCheckStatusData();
-      // getCanonizedCampSupportingTreeApi(reqBody, algorithm);
       await getTreesApi(reqBodyForService);
       setIsRemovingSupport(false);
       setRemoveSupportSpinner(false);
-      // fetchTotalScore();
     }
   };
-
-  // const totalScoreData = {
-  //   topic_num: +router?.query?.camp[0]?.split("-")[0],
-  //   camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
-  //   asOf: asof,
-  //   asofdate:
-  //     asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
-  //   algorithm: algorithm,
-  // };
-
-  // const fetchTotalScore = async () => {
-  //   const CampTotalScore = {
-  //     topic_num: totalScoreData.topic_num,
-  //     camp_num: totalScoreData.camp_num,
-  //     asOf: totalScoreData.asOf,
-  //     asofdate: totalScoreData.asofdate,
-  //     algorithm: totalScoreData.algorithm,
-  //   };
-  //   let response = await SupportTreeTotalScore(CampTotalScore);
-  //   if (response && response.status_code == 200) {
-  //     setTotalSupportScore(response.data.score);
-  //     setTotalFullSupportScore(response.data.full_score);
-  //   }
-  // };
 
   const GetCheckStatusData = async () => {
     let response = await GetCheckSupportExists(queryParams(reqBodyData));
@@ -351,7 +302,6 @@ const TopicDetails = ({ serverSideCall }: any) => {
         )
       );
       dispatch(setCheckSupportExistsData(response.data));
-      // dispatch(setManageSupportStatusCheck(true));
     }
   };
   const handleSupportTreeCardCancel = () => {
@@ -374,16 +324,11 @@ const TopicDetails = ({ serverSideCall }: any) => {
     myRefToCampStatement.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const handleLoadMoreSupporters = async () => {
-    // const reqBody = { topic_num: 45, camp_num: 1 };
-    //await getCanonizedCampSupportingTreeApi(reqBody, algorithm, true);
-  };
+  const handleLoadMoreSupporters = async () => {};
 
   const setCurrentTopics = (data) => dispatch(setCurrentTopic(data));
 
   const onCreateCamp = () => {
-    // const queryParams = router?.query;
-
     const data = {
       message: null,
       topic_num: topicRecord?.topic_num,
@@ -405,22 +350,6 @@ const TopicDetails = ({ serverSideCall }: any) => {
 
     setCurrentTopics(data);
   };
-
-  // const onCampForumClick = async () => {
-  //   const topicName = await topicRecord?.topic_name?.replaceAll(" ", "-"),
-  //     topicNum = topicRecord?.topic_num,
-  //     campName = await campRecord?.camp_name?.replaceAll(" ", "-"),
-  //     campNum = campRecord?.camp_num;
-
-  //   if (topicName && topicNum && campName && campNum) {
-  //     router?.push({
-  //       pathname: `/forum/${topicNum}-${replaceSpecialCharacters(
-  //         topicName,
-  //         "-"
-  //       )}/${campNum}-${replaceSpecialCharacters(campName, "-")}/threads`,
-  //     });
-  //   }
-  // };
 
   useEffect(() => {
     const q = router?.query;
