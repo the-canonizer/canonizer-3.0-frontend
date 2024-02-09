@@ -31,17 +31,9 @@ import {
 import { getNickNameList } from "../../../../network/api/userApi";
 import SupportRemovedModal from "src/components/common/supportRemovedModal";
 import ManageSupport from "../../ManageSupport";
-<<<<<<< HEAD
-import {
-  campSignApi,
-  getCurrentCampRecordApi,
-  getTreesApi,
-} from "src/network/api/campDetailApi";
 import SignCamp from "./SignCamp";
-=======
 import { getTreesApi } from "src/network/api/campDetailApi";
 import { setIsSupportModal } from "src/store/slices/topicSlice";
->>>>>>> 3ba5b4b98f2d83b5a862d3ef8dd882c6c2d5e722
 
 const { Paragraph } = Typography;
 const { Panel } = Collapse;
@@ -365,7 +357,9 @@ const SupportTreeCard = ({
                                 <Button
                                   id="supportTreeDelegateYourSupport"
                                   disabled={
-                                    asof == "bydate" || !isUserAuthenticated || campRecord?.is_archive == 1
+                                    asof == "bydate" ||
+                                    !isUserAuthenticated ||
+                                    campRecord?.is_archive == 1
                                   }
                                   onClick={() =>
                                     handleDelegatedClick(
