@@ -502,7 +502,7 @@ const SupportTreeCard = ({
               {!loadMore ? "Load More" : "Load Less"}
             </CustomButton>
           )}
-          <div className="topicDetailsCollapseFooter">
+          <div className="topicDetailsSupportCollapseFooter">
             {/* <Link href={manageSupportPath}>
               <a> */}
             <div onClick={handleClickSupportCheck}>
