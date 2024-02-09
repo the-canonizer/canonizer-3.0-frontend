@@ -507,7 +507,6 @@ const SupportTreeCard = ({
               {!loadMore ? "Load More" : "Load Less"}
             </CustomButton>
           )}
-<<<<<<< HEAD
           <div className="topicDetailsSupportCollapseFooter">
             {/* <Link href={manageSupportPath}>
               <a> */}
@@ -534,21 +533,6 @@ const SupportTreeCard = ({
             {/* </a>
             </Link> */}
             {SignModal()}
-=======
-
-          <div className="topicDetailsCollapseFooter">
-            <CustomButton
-              onClick={handleClickSupportCheck}
-              className="btn-orange"
-              disabled={asof == "bydate" || campRecord?.is_archive == 1}
-              id="manage-support-btn"
-            >
-              {getCheckSupportStatus?.is_delegator == 1 ||
-              getCheckSupportStatus?.support_flag != 1
-                ? K?.exceptionalMessages?.directJoinSupport
-                : K?.exceptionalMessages?.manageSupport}
-            </CustomButton>
->>>>>>> 3ba5b4b98f2d83b5a862d3ef8dd882c6c2d5e722
           </div>
         </Panel>
       </Collapse>
