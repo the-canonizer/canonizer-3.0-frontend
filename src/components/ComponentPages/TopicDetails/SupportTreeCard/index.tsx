@@ -322,7 +322,9 @@ const SupportTreeCard = ({
                                 <Button
                                   id="supportTreeDelegateYourSupport"
                                   disabled={
-                                    asof == "bydate" || !isUserAuthenticated || campRecord?.is_archive == 1
+                                    asof == "bydate" ||
+                                    !isUserAuthenticated ||
+                                    campRecord?.is_archive == 1
                                   }
                                   onClick={() =>
                                     handleDelegatedClick(
@@ -451,7 +453,7 @@ const SupportTreeCard = ({
               {campSupportingTree && renderTreeNodes(campSupportingTree)}
             </Tree>
           ) : (
-            <p>No supporters of this camp</p>
+            <p>No direct supporters of this camp</p>
           )}
 
           {campSupportingTree?.length > supportLength && (
