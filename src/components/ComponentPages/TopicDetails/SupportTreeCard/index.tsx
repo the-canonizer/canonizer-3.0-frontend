@@ -110,7 +110,7 @@ const SupportTreeCard = ({
   const [
     getManageSupportLoadingIndicator,
     setGetManageSupportLoadingIndicator,
-  ] = useState(false);
+  ] = useState(true);
   const showModalSupportCamps = () => {
     dispatch(setIsSupportModal(true));
   };
@@ -322,7 +322,9 @@ const SupportTreeCard = ({
                                 <Button
                                   id="supportTreeDelegateYourSupport"
                                   disabled={
-                                    asof == "bydate" || !isUserAuthenticated || campRecord?.is_archive == 1
+                                    asof == "bydate" ||
+                                    !isUserAuthenticated ||
+                                    campRecord?.is_archive == 1
                                   }
                                   onClick={() =>
                                     handleDelegatedClick(
