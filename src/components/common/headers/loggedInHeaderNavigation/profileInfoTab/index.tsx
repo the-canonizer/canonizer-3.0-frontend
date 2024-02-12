@@ -68,10 +68,10 @@ const ProfileInfoTab = ({
         </div>
       ) : (
         <>
-          <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
+          {/* <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
             {loggedUser ? loggedUser["first_name"] : ""}{" "}
             {loggedUser ? loggedUser["last_name"] : ""}
-          </a>
+          </a> */}
           <DownOutlined
             style={{
               fontSize: "15px",

@@ -110,7 +110,7 @@ const SupportTreeCard = ({
   const [
     getManageSupportLoadingIndicator,
     setGetManageSupportLoadingIndicator,
-  ] = useState(false);
+  ] = useState(true);
   const showModalSupportCamps = () => {
     dispatch(setIsSupportModal(true));
   };
