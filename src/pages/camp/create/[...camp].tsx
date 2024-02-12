@@ -1,33 +1,22 @@
 import { useDispatch } from "react-redux";
 import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
 import { setCanonizedAlgorithms } from "src/store/slices/homePageSlice";
-import CreateNewCamp from "../../../components/ComponentPages/CreateNewCamp";
+import CreateNewCamp from "src/components/ComponentPages/CreateNewCamp";
 
-import Layout from "../../../hoc/layout";
-import { createToken } from "src/network/api/userApi";
+import Layout from "src/hoc/layout";
 
 const CreateNewCampPage = ({ algorithms }: any) => {
   const dispatch = useDispatch();
 
   dispatch(setCanonizedAlgorithms(algorithms));
   return (
-    <>
-      <Layout routeName={"create-camp"}>
-        <CreateNewCamp />
-      </Layout>
-    </>
+    <Layout routeName={"create-camp"}>
+      <CreateNewCamp />
+    </Layout>
   );
 };
 
-export async function getServerSideProps({ req }) {
-  let token = null;
-  if (req.cookies["loginToken"]) {
-    token = req.cookies["loginToken"];
-  } else {
-    const response = await createToken();
-    token = response?.access_token;
-  }
-
+export async function getServerSideProps() {
   const canonizedAlgorithms = await getCanonizedAlgorithmsApi();
 
   return {

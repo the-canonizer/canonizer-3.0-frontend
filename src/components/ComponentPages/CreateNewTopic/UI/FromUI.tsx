@@ -101,14 +101,16 @@ const CreateTopicFromUI = ({
                 />
               </Form.Item>
               {existedTopic?.status && (
-                <a
-                  onClick={() => {
-                    router.push(existedTopic?.data);
-                  }}
-                  className={styles.topicExistsMessage}
-                >
-                  Topic Already Exists
-                </a>
+                <div className={styles.topicExistsMessage}>
+                  <a
+                    onClick={() => {
+                      router.push(existedTopic?.data);
+                    }}
+                    className={styles.topicExistsMessage}
+                  >
+                    Topic Already Exists
+                  </a>
+                </div>
               )}
               {nameSpaces ? (
                 <Form.Item

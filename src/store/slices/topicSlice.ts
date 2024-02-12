@@ -11,6 +11,7 @@ export const topicSlice = createSlice({
       message: null,
       submitter_nick_id: null,
     },
+    isModalOpenSupportCamps: false,
   },
   reducers: {
     setCurrentTopic: (state, action) => {
@@ -33,9 +34,13 @@ export const topicSlice = createSlice({
         submitter_nick_id: null,
       };
     },
+    setIsSupportModal: (state, action) => {
+      state.isModalOpenSupportCamps = action.payload;
+    },
   },
 });
 
-export const { setCurrentTopic, resetCurrentTopic } = topicSlice.actions;
+export const { setCurrentTopic, resetCurrentTopic, setIsSupportModal } =
+  topicSlice.actions;
 
 export default topicSlice.reducer;

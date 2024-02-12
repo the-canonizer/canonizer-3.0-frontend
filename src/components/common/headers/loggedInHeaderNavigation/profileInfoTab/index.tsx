@@ -53,7 +53,7 @@ const ProfileInfoTab = ({
             justifyContent: "center",
             alignItems: "center",
             fontSize: `${isMobile ? "12px" : ""}`,
-            cursor:"pointer"
+            cursor: "pointer",
           }}
           size={isMobile ? "small" : "default"}
         >
@@ -68,10 +68,10 @@ const ProfileInfoTab = ({
         </div>
       ) : (
         <>
-          <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
+          {/* <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
             {loggedUser ? loggedUser["first_name"] : ""}{" "}
             {loggedUser ? loggedUser["last_name"] : ""}
-          </a>
+          </a> */}
           <DownOutlined
             style={{
               fontSize: "15px",
