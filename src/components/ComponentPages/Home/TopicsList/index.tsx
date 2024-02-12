@@ -226,13 +226,10 @@ const TopicsList = () => {
     await getCanonizedTopicsApi(reqBody, loadMore);
     setLoadMoreIndicator(false);
   }
+
   const onSearch = (value) => {
     setInputSearch(value.trim());
-    dispatch(
-      setFilterCanonizedTopics({
-        search: value || "",
-      })
-    );
+    dispatch(setFilterCanonizedTopics({ search: value || "" }));
     setShowSearchDropdown(false);
   };
 
@@ -240,6 +237,7 @@ const TopicsList = () => {
     setSearchedResult([]);
     setSearchLoading(true);
     const value = event.target.value?.trim();
+    console.log("🚀 ~ handleKeyUpSearch ~ value:", value);
     if (value) {
       setAllowClear(true);
       setSearchTerm(value);
@@ -273,6 +271,9 @@ const TopicsList = () => {
       setSearchLoading(false);
       if (res) {
         setSearchedResult(res?.topic);
+        setTimeout(() => {
+          inputRef?.current?.focus();
+        }, 400);
       }
     } catch (error) {
       // console.error("Error:", error);
@@ -287,6 +288,7 @@ const TopicsList = () => {
     if (throttled) {
       clearTimeout(throttled);
     }
+
     inputRef.current?.focus();
 
     throttled = setTimeout(() => {
@@ -450,13 +452,14 @@ const TopicsList = () => {
                 }, 300);
               }}
               onFocus={() => {
-                if (!inputSearch) {
-                  setSearchTerm(inputSearch);
-                }
+                // if (!inputSearch) {
+                //   setSearchTerm(inputSearch);
+                // }
                 setSearchLoading(false);
                 setShowSearchDropdown(true);
               }}
             />
+
             {showSearchDropdown && searchTerm && (
               <div className={styles.dropdown_list}>
                 <ul>
