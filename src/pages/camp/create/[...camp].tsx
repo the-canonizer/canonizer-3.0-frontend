@@ -16,7 +16,7 @@ const CreateNewCampPage = ({ algorithms }: any) => {
   );
 };
 
-export async function getServerSideProps({ req }) {
+export async function getServerSideProps() {
   const canonizedAlgorithms = await getCanonizedAlgorithmsApi();
 
   return {
