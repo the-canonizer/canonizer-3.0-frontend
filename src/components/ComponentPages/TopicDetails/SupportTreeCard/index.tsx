@@ -11,6 +11,7 @@ import {
   Form,
   Spin,
   Image,
+  Tooltip,
 } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
@@ -354,22 +355,29 @@ const SupportTreeCard = ({
                               }
                             >
                               <a>
-                                <Button
-                                  id="supportTreeDelegateYourSupport"
-                                  disabled={
-                                    asof == "bydate" ||
-                                    !isUserAuthenticated ||
-                                    campRecord?.is_archive == 1
+                                <Tooltip
+                                  title={
+                                    "This will delegate your support to the selected supporter"
                                   }
-                                  onClick={() =>
-                                    handleDelegatedClick(
-                                      data[item].nick_name_id
-                                    )
-                                  }
-                                  className="delegate-support-style"
+                                  placement={"right"}
                                 >
-                                  {"Delegate Your Support"}
-                                </Button>
+                                  <Button
+                                    id="supportTreeDelegateYourSupport"
+                                    disabled={
+                                      asof == "bydate" ||
+                                      !isUserAuthenticated ||
+                                      campRecord?.is_archive == 1
+                                    }
+                                    onClick={() =>
+                                      handleDelegatedClick(
+                                        data[item].nick_name_id
+                                      )
+                                    }
+                                    className="delegate-support-style"
+                                  >
+                                    {"Delegate Your Support"}
+                                  </Button>
+                                </Tooltip>
                               </a>
                             </Popover>
                           )}
@@ -522,7 +530,12 @@ const SupportTreeCard = ({
                 setSignModalOpen(true);
               }}
             >
-              <CustomButton className="btn-green">{"Sign"}</CustomButton>
+              <Tooltip
+                title={"This will delegate your support to the camp leader"}
+                placement={"topRight"}
+              >
+                <CustomButton className="btn-green">{"Sign"}</CustomButton>
+              </Tooltip>
             </div>
             {/* </a>
             </Link> */}
