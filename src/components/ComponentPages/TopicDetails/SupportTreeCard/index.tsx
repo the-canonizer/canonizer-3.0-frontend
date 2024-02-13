@@ -114,7 +114,7 @@ const SupportTreeCard = ({
   const [
     getManageSupportLoadingIndicator,
     setGetManageSupportLoadingIndicator,
-  ] = useState(false);
+  ] = useState(true);
   const showModalSupportCamps = () => {
     dispatch(setIsSupportModal(true));
   };
@@ -488,7 +488,7 @@ const SupportTreeCard = ({
               {campSupportingTree && renderTreeNodes(campSupportingTree)}
             </Tree>
           ) : (
-            <p>No supporters of this camp</p>
+            <p>No direct supporters of this camp</p>
           )}
 
           {campSupportingTree?.length > supportLength && (
