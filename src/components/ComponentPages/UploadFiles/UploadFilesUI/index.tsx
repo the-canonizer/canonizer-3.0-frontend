@@ -250,8 +250,7 @@ const UploadFileUI = ({
         <Menu.Item
           data-testid="test2"
           onClick={() => {
-            window.location.href =
-              process.env.NEXT_PUBLIC_BASE_IMAGES_URL + item.file_path;
+            window.location.href = `${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/${item.file_path}`;
           }}
         >
           <span className={styles.menu_item}>
@@ -334,7 +333,7 @@ const UploadFileUI = ({
             return (
               <Image
                 alt="uploaded-file"
-                src={process.env.NEXT_PUBLIC_BASE_IMAGES_URL + obj.file_path}
+                src={`${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/${obj.file_path}`}
                 height={150}
                 width={140}
               />
@@ -549,9 +548,7 @@ const UploadFileUI = ({
                       <div
                         className={styles.menu_item}
                         onClick={() => {
-                          window.location.href =
-                            process.env.NEXT_PUBLIC_BASE_IMAGES_URL +
-                            obj.file_path;
+                          window.location.href = `${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/${obj.file_path}`;
                         }}
                       >
                         <Image
@@ -739,7 +736,7 @@ const UploadFileUI = ({
             <div className={styles.imageFiles}>
               {displayImage(
                 item,
-                process.env.NEXT_PUBLIC_BASE_IMAGES_URL + item.file_path
+                `${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/${item.file_path}`
               )}
             </div>
             <h3 className="BoxcopyWrap">
@@ -1497,9 +1494,7 @@ const UploadFileUI = ({
                 className="modal--img"
                 id="modalImageId"
                 alt={imageStatus}
-                src={
-                  process.env.NEXT_PUBLIC_BASE_IMAGES_URL + preview.previewPath
-                }
+                src={`${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/${preview.previewPath}`}
                 width={470}
                 height={470}
                 onLoad={handleImageLoaded}
