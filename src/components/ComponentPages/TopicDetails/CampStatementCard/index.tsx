@@ -48,8 +48,8 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
             <h3 className="cmp-title">
               {K?.exceptionalMessages?.campStatementHeading}
             </h3>
-            <div className="cmp-change-icon">
-              {campStatement[0]?.in_review_changes > 0 ? (
+            <div className="cmp-change-icon" style={{display:"inline-block"}}>
+              {campStatement[0]?.in_review_changes > 0 || history.items?.[0].status == "in_review"  ? (
                 <div
                   onClick={(e) => {
                     e.stopPropagation();
