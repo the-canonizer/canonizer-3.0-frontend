@@ -70,6 +70,7 @@ const TimelineInfoBar = ({
   useEffect(() => {
     if (isTopicPage) {
       dispatch(setManageSupportStatusCheck(false));
+      breadCrumbRes;
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -204,23 +205,16 @@ const TimelineInfoBar = ({
       setBreadCrumbRes(res?.data);
       setLoadingIndicator(false);
     }
+
     if (payload && Object.keys(payload).length > 0) {
       getBreadCrumbApiCall();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router?.asPath]);
+  }, [router?.asPath, filterObject]);
 
   return (
     <>
       <div className={styles.topicDetailContentHead + " " + styles.info_bar_n}>
-        {/* {loadingIndicator ? (
-          <CustomSkelton
-            skeltonFor="list"
-            bodyCount={1}
-            stylingClass=""
-            isButton={false}
-          /> */}
-
         <Spin spinning={false}>
           <div className={styles.topicDetailContentHead_Left}>
             {isForumPage ? (
@@ -287,7 +281,7 @@ const TimelineInfoBar = ({
               ) : (
                 "N/A"
               )}
-              {!!topicSubscriptionID && (
+              {breadCrumbRes && !!topicSubscriptionID && (
                 <Tooltip
                   title="You have subscribed to the entire topic."
                   key="camp_subscribed_icon"
