@@ -98,7 +98,7 @@ export const campSignApi = async (reqBody, loginToken = null) => {
 
     return campSign;
   } catch (error) {
-    // message.error(error.message);
+    message.error(error?.error?.data?.message);
   }
 };
 
