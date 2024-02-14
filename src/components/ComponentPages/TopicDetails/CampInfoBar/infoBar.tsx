@@ -237,7 +237,7 @@ const InfoBar = ({
       </Menu.Item>
       <Menu.Item
         icon={<HeartOutlined />}
-        disabled={asof == "bydate" || campRecord?.is_archive}
+        disabled={asof == "bydate" || campRecord?.is_archive || !isUserAuthenticated}
       >
         {isTopicPage && (
           <Link
