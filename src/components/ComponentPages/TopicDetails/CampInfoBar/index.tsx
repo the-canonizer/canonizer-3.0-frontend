@@ -341,16 +341,20 @@ const TimelineInfoBar = ({
                     "N/A"
                   )
                 ) : null}
-                {!!campSubscriptionID && !isTopicHistoryPage && (
-                  <Tooltip
-                    title="You have subscribed to this camp."
-                    key="camp_subscribed_icon"
-                  >
-                    <small style={{ alignSelf: "center", marginLeft: "10px" }}>
-                      <i className="icon-subscribe text-primary"></i>
-                    </small>
-                  </Tooltip>
-                )}
+                {breadCrumbRes &&
+                  !!campSubscriptionID &&
+                  !isTopicHistoryPage && (
+                    <Tooltip
+                      title="You have subscribed to this camp."
+                      key="camp_subscribed_icon"
+                    >
+                      <small
+                        style={{ alignSelf: "center", marginLeft: "10px" }}
+                      >
+                        <i className="icon-subscribe text-primary"></i>
+                      </small>
+                    </Tooltip>
+                  )}
               </Typography.Paragraph>
             </div>
           </div>

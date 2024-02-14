@@ -31,6 +31,7 @@ import {
 import SocialShareUI from "../../../common/socialShare";
 import GenerateModal from "src/components/common/generateScript";
 import { setIsSupportModal } from "src/store/slices/topicSlice";
+import { showLoginModal } from "src/store/slices/uiSlice";
 
 const CodeIcon = () => (
   <svg
@@ -113,9 +114,13 @@ const InfoBar = ({
   const manageSupportPath = router?.asPath.replace("/topic/", "/support/");
 
   const handleClickSupportCheck = () => {
-    dispatch(setManageSupportUrlLink(manageSupportPath));
-    dispatch(setManageSupportStatusCheck(true));
-    dispatch(setIsSupportModal(true));
+    if (isUserAuthenticated) {
+      dispatch(setManageSupportUrlLink(manageSupportPath));
+      dispatch(setManageSupportStatusCheck(true));
+      dispatch(setIsSupportModal(true));
+    } else {
+      dispatch(showLoginModal());
+    }
   };
 
   const onCampForumClick = () => {
