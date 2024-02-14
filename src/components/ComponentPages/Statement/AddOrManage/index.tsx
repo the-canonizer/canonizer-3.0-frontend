@@ -475,6 +475,7 @@ export default function AddOrManage({ add }: any) {
               parent_camp_num: res?.data?.camp?.parent_camp_num,
               camp_name: res?.data?.camp?.camp_name,
               keywords: res?.data?.camp?.key_words,
+              camp_leader_nick_id: res?.data?.camp?.camp_leader_nick_id,
               camp_about_url: res?.data?.camp?.camp_about_url,
               camp_about_nick_name:
                 res?.data?.camp?.camp_about_nick_id > 0
@@ -975,17 +976,10 @@ export default function AddOrManage({ add }: any) {
                           ) : (
                             <Select
                               showSearch
-                              value={campLeaderData[0]?.nick_name_id}
                               size={"large"}
                               placeholder="Camp Leader"
-                              // data-id="parent-camp"
-                              disabled={objection}
                               optionFilterProp="children"
                               allowClear={true}
-                              defaultValue={campLeaderData[0]?.nick_name_id}
-                              onChange={() => {
-                                setSubmitIsDisable(false);
-                              }}
                               filterOption={(input, option) =>
                                 (
                                   (option?.children as any)?.props?.children ??
