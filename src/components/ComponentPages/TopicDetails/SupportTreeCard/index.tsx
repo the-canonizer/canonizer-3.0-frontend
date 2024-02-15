@@ -343,7 +343,7 @@ const SupportTreeCard = ({
                         <a>
                           <Button
                             id="supportTreeRemoveSupport"
-                            disabled={asof == "bydate" || isRemovingSupport}
+                            disabled={asof == "bydate" || isRemovingSupport || !isUserAuthenticated || campRecord.is_archive}
                             onClick={() => {
                               currentGetCheckSupportExistsData.is_delegator
                                 ? setIsDelegateSupportTreeCardModal(true)
