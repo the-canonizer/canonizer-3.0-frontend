@@ -95,6 +95,9 @@ const SupportTreeCard = ({
     asofdate: state.filters?.filterObject?.asofdate,
     isModalOpenSupportCamps: state?.topic?.isModalOpenSupportCamps,
   }));
+  const { manageSupportStatusCheck } = useSelector((state: RootState) => ({
+    manageSupportStatusCheck: state.topicDetails.manageSupportStatusCheck,
+  }));
   const { isUserAuthenticated } = isAuth();
 
   const router = useRouter();
@@ -169,6 +172,9 @@ const SupportTreeCard = ({
   useEffect(() => {
     if (isUserAuthenticated) {
       getNickNameListData();
+    }
+    if(manageSupportStatusCheck == false){
+      dispatch(setIsSupportModal(false))
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
