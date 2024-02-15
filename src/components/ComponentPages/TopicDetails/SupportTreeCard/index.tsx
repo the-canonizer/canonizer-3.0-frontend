@@ -346,40 +346,33 @@ const SupportTreeCard = ({
                           ) > -1 ? (
                             ""
                           ) : (
-                            <Popover
+                            <Tooltip
                               placement="right"
-                              content={
+                              title={
                                 !isUserAuthenticated
                                   ? "Log in to participate"
-                                  : ""
+                                  : "This will delegate your support to the selected supporter"
                               }
                             >
                               <a>
-                                <Tooltip
-                                  title={
-                                    "This will delegate your support to the selected supporter"
+                                <Button
+                                  id="supportTreeDelegateYourSupport"
+                                  disabled={
+                                    asof == "bydate" ||
+                                    !isUserAuthenticated ||
+                                    campRecord?.is_archive == 1
                                   }
-                                  placement={"right"}
+                                  onClick={() =>
+                                    handleDelegatedClick(
+                                      data[item].nick_name_id
+                                    )
+                                  }
+                                  className="delegate-support-style"
                                 >
-                                  <Button
-                                    id="supportTreeDelegateYourSupport"
-                                    disabled={
-                                      asof == "bydate" ||
-                                      !isUserAuthenticated ||
-                                      campRecord?.is_archive == 1
-                                    }
-                                    onClick={() =>
-                                      handleDelegatedClick(
-                                        data[item].nick_name_id
-                                      )
-                                    }
-                                    className="delegate-support-style"
-                                  >
-                                    {"Delegate Your Support"}
-                                  </Button>
-                                </Tooltip>
+                                  {"Delegate Your Support"}
+                                </Button>
                               </a>
-                            </Popover>
+                            </Tooltip>
                           )}
                         </>
                       ) : (

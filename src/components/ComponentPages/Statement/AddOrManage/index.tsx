@@ -961,46 +961,48 @@ export default function AddOrManage({ add }: any) {
                       {/* Camp Leader =================================================================== */}
 
                       <Col xs={24} sm={24} xl={12}>
-                        <Form.Item
-                          className={styles.formItem}
-                          label={<>Camp Leader</>}
-                          name="camp_leader_nick_id"
-                        >
-                          {screenLoading ? (
-                            <CustomSkelton
-                              skeltonFor="list"
-                              bodyCount={1}
-                              stylingClass="listSkeleton"
-                              isButton={false}
-                            />
-                          ) : (
-                            <Select
-                              showSearch
-                              size={"large"}
-                              placeholder="Camp Leader"
-                              optionFilterProp="children"
-                              allowClear={true}
-                              filterOption={(input, option) =>
-                                (
-                                  (option?.children as any)?.props?.children ??
-                                  ""
-                                )
-                                  .toLowerCase()
-                                  .includes(input.toLowerCase())
-                              }
-                            >
-                              {campLeaderData?.length > 0 &&
-                                campLeaderData?.map((lead) => (
-                                  <Select.Option
-                                    value={lead.nick_name_id}
-                                    key={lead?.nick_name_id}
-                                  >
-                                    {lead?.nick_name}
-                                  </Select.Option>
-                                ))}
-                            </Select>
-                          )}
-                        </Form.Item>
+                        {!objection && (
+                          <Form.Item
+                            className={styles.formItem}
+                            label={<>Camp Leader</>}
+                            name="camp_leader_nick_id"
+                          >
+                            {screenLoading ? (
+                              <CustomSkelton
+                                skeltonFor="list"
+                                bodyCount={1}
+                                stylingClass="listSkeleton"
+                                isButton={false}
+                              />
+                            ) : (
+                              <Select
+                                showSearch
+                                size={"large"}
+                                placeholder="Camp Leader"
+                                optionFilterProp="children"
+                                allowClear={true}
+                                filterOption={(input, option) =>
+                                  (
+                                    (option?.children as any)?.props
+                                      ?.children ?? ""
+                                  )
+                                    .toLowerCase()
+                                    .includes(input.toLowerCase())
+                                }
+                              >
+                                {campLeaderData?.length > 0 &&
+                                  campLeaderData?.map((lead) => (
+                                    <Select.Option
+                                      value={lead.nick_name_id}
+                                      key={lead?.nick_name_id}
+                                    >
+                                      {lead?.nick_name}
+                                    </Select.Option>
+                                  ))}
+                              </Select>
+                            )}
+                          </Form.Item>
+                        )}
                       </Col>
                     </>
                   )}
