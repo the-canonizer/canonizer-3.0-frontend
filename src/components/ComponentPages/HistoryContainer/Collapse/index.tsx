@@ -350,9 +350,9 @@ function HistoryCollapse({
                                 (parentArchived == 1 &&
                                   directarchived == 1 &&
                                   historyOf == "topic") ||
-                                (parentArchived == 1 && directarchived == 0) ||
-                                !campStatement?.camp_leader_can_object
-                              ? true
+                                (parentArchived == 1 && directarchived == 0)
+                              ? // ||!campStatement?.camp_leader_can_object
+                                true
                               : false;
                             if (isModelPop) {
                               setModal1Open(true);
@@ -378,10 +378,9 @@ function HistoryCollapse({
                                   (parentArchived == 1 &&
                                     directarchived == 1 &&
                                     historyOf == "topic") ||
-                                  (parentArchived == 1 &&
-                                    directarchived == 0) ||
-                                  !campStatement?.camp_leader_can_object
-                                ? true
+                                  (parentArchived == 1 && directarchived == 0)
+                                ? // ||!campStatement?.camp_leader_can_object
+                                  true
                                 : false
                             )
                               ? "disable-style"
@@ -705,10 +704,10 @@ function HistoryCollapse({
                         campStatement?.ifIAmExplicitSupporter
                       ) &&
                         isUserAuthenticated &&
-                        !(
-                          historyOf == "camp" &&
-                          !campStatement?.camp_leader_can_object
-                        ) &&
+                        // !(
+                        //   historyOf == "camp" &&
+                        //   !campStatement?.camp_leader_can_object
+                        // ) &&
                         !campStatement?.isAuthor && (
                           <Spin
                             indicator={
