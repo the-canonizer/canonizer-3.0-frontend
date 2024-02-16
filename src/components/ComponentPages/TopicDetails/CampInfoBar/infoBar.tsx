@@ -115,7 +115,15 @@ const InfoBar = ({
   const handleClickSupportCheck = () => {
     dispatch(setManageSupportUrlLink(manageSupportPath));
     dispatch(setManageSupportStatusCheck(true));
-    dispatch(setIsSupportModal(true));
+    if(!isUserAuthenticated ){
+    dispatch(setIsSupportModal(false));
+    }else if(isUserAuthenticated && asof == "bydate"){
+    dispatch(setIsSupportModal(false));
+    }else if(isUserAuthenticated && campRecord?.is_archive){
+    dispatch(setIsSupportModal(false));
+    }else{
+      dispatch(setIsSupportModal(true));
+    }
   };
 
   const onCampForumClick = () => {
