@@ -251,6 +251,7 @@ const InfoBar = ({
               e?.preventDefault();
               e?.stopPropagation();
             }}
+            // disabled={asof == "bydate" || campRecord?.is_archive}
           >
             <div
               className="topicDetailsCollapseFooter"
@@ -258,6 +259,10 @@ const InfoBar = ({
                 e?.preventDefault();
                 e?.stopPropagation();
                 handleClickSupportCheck();
+              }}
+              style={{
+                pointerEvents:
+                  asof == "bydate" || campRecord?.is_archive ? "none" : "all",
               }}
             >
               {getCheckSupportStatus?.is_delegator == 1 ||
