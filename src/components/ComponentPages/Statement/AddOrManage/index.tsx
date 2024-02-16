@@ -475,6 +475,7 @@ export default function AddOrManage({ add }: any) {
               parent_camp_num: res?.data?.camp?.parent_camp_num,
               camp_name: res?.data?.camp?.camp_name,
               keywords: res?.data?.camp?.key_words,
+              camp_leader_nick_id: res?.data?.camp?.camp_leader_nick_id,
               camp_about_url: res?.data?.camp?.camp_about_url,
               camp_about_nick_name:
                 res?.data?.camp?.camp_about_nick_id > 0
@@ -960,53 +961,48 @@ export default function AddOrManage({ add }: any) {
                       {/* Camp Leader =================================================================== */}
 
                       <Col xs={24} sm={24} xl={12}>
-                        <Form.Item
-                          className={styles.formItem}
-                          label={<>Camp Leader</>}
-                          name="camp_leader_nick_id"
-                        >
-                          {screenLoading ? (
-                            <CustomSkelton
-                              skeltonFor="list"
-                              bodyCount={1}
-                              stylingClass="listSkeleton"
-                              isButton={false}
-                            />
-                          ) : (
-                            <Select
-                              showSearch
-                              value={campLeaderData[0]?.nick_name_id}
-                              size={"large"}
-                              placeholder="Camp Leader"
-                              // data-id="parent-camp"
-                              disabled={objection}
-                              optionFilterProp="children"
-                              allowClear={true}
-                              defaultValue={campLeaderData[0]?.nick_name_id}
-                              onChange={() => {
-                                setSubmitIsDisable(false);
-                              }}
-                              filterOption={(input, option) =>
-                                (
-                                  (option?.children as any)?.props?.children ??
-                                  ""
-                                )
-                                  .toLowerCase()
-                                  .includes(input.toLowerCase())
-                              }
-                            >
-                              {campLeaderData?.length > 0 &&
-                                campLeaderData?.map((lead) => (
-                                  <Select.Option
-                                    value={lead.nick_name_id}
-                                    key={lead?.nick_name_id}
-                                  >
-                                    {lead?.nick_name}
-                                  </Select.Option>
-                                ))}
-                            </Select>
-                          )}
-                        </Form.Item>
+                        {!objection && (
+                          <Form.Item
+                            className={styles.formItem}
+                            label={<>Camp Leader</>}
+                            name="camp_leader_nick_id"
+                          >
+                            {screenLoading ? (
+                              <CustomSkelton
+                                skeltonFor="list"
+                                bodyCount={1}
+                                stylingClass="listSkeleton"
+                                isButton={false}
+                              />
+                            ) : (
+                              <Select
+                                showSearch
+                                size={"large"}
+                                placeholder="Camp Leader"
+                                optionFilterProp="children"
+                                allowClear={true}
+                                filterOption={(input, option) =>
+                                  (
+                                    (option?.children as any)?.props
+                                      ?.children ?? ""
+                                  )
+                                    .toLowerCase()
+                                    .includes(input.toLowerCase())
+                                }
+                              >
+                                {campLeaderData?.length > 0 &&
+                                  campLeaderData?.map((lead) => (
+                                    <Select.Option
+                                      value={lead.nick_name_id}
+                                      key={lead?.nick_name_id}
+                                    >
+                                      {lead?.nick_name}
+                                    </Select.Option>
+                                  ))}
+                              </Select>
+                            )}
+                          </Form.Item>
+                        )}
                       </Col>
                     </>
                   )}

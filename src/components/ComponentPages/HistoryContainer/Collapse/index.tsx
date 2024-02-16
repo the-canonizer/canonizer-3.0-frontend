@@ -350,7 +350,8 @@ function HistoryCollapse({
                                 (parentArchived == 1 &&
                                   directarchived == 1 &&
                                   historyOf == "topic") ||
-                                (parentArchived == 1 && directarchived == 0)
+                                (parentArchived == 1 && directarchived == 0) ||
+                                !campStatement?.camp_leader_can_object
                               ? true
                               : false;
                             if (isModelPop) {
@@ -377,7 +378,9 @@ function HistoryCollapse({
                                   (parentArchived == 1 &&
                                     directarchived == 1 &&
                                     historyOf == "topic") ||
-                                  (parentArchived == 1 && directarchived == 0)
+                                  (parentArchived == 1 &&
+                                    directarchived == 0) ||
+                                  !campStatement?.camp_leader_can_object
                                 ? true
                                 : false
                             )
@@ -702,6 +705,10 @@ function HistoryCollapse({
                         campStatement?.ifIAmExplicitSupporter
                       ) &&
                         isUserAuthenticated &&
+                        !(
+                          historyOf == "camp" &&
+                          !campStatement?.camp_leader_can_object
+                        ) &&
                         !campStatement?.isAuthor && (
                           <Spin
                             indicator={

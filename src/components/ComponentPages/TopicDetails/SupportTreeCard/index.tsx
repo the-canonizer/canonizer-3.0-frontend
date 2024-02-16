@@ -11,6 +11,7 @@ import {
   Form,
   Spin,
   Image,
+  Tooltip,
 } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
@@ -345,12 +346,12 @@ const SupportTreeCard = ({
                           ) > -1 ? (
                             ""
                           ) : (
-                            <Popover
+                            <Tooltip
                               placement="right"
-                              content={
+                              title={
                                 !isUserAuthenticated
                                   ? "Log in to participate"
-                                  : ""
+                                  : "This will delegate your support to the selected supporter"
                               }
                             >
                               <a>
@@ -371,7 +372,7 @@ const SupportTreeCard = ({
                                   {"Delegate Your Support"}
                                 </Button>
                               </a>
-                            </Popover>
+                            </Tooltip>
                           )}
                         </>
                       ) : (
@@ -522,7 +523,12 @@ const SupportTreeCard = ({
                 setSignModalOpen(true);
               }}
             >
-              <CustomButton className="btn-green">{"Sign"}</CustomButton>
+              <Tooltip
+                title={"This will delegate your support to the camp leader"}
+                placement={"topRight"}
+              >
+                <CustomButton className="btn-green">{"Sign"}</CustomButton>
+              </Tooltip>
             </div>
             {/* </a>
             </Link> */}
