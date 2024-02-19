@@ -3003,3 +3003,9 @@ div[role="option"]::before {
 .user-profile-wrap {
   width: 100%;
 }
+.text-underline {
+  text-decoration: underline;
+  &:hover {
+    text-decoration: underline;
+  }
+}

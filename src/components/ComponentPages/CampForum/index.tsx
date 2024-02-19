@@ -353,7 +353,7 @@ const ForumComponent = ({
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router?.pathname, page, searchQuery, isLoggedIn]);
+  }, [router?.query, page, searchQuery, isLoggedIn]);
 
   const onCancelCreateThread = () => {
     const queries = router?.query;
