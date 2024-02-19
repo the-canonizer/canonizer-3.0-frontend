@@ -159,7 +159,9 @@ const ForumComponent = ({
       setCreatedAt(res.data.created_at);
 
       if (res?.data?.status_code === 404) {
-        message?.error(res?.data?.error || "Something went wrong ");
+        message?.error(
+          res?.data?.error?.thread_id?.at(0) || "Something went wrong"
+        );
         setCurrentThread({});
       }
 
@@ -486,7 +488,7 @@ const ForumComponent = ({
     const q = router?.query,
       threadId = q?.id;
 
-    if (threadId || didMountList.current) {
+    if (threadId && didMountList.current) {
       threadDetails();
     } else didMountList.current = true;
 
