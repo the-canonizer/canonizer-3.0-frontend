@@ -108,7 +108,9 @@ const TopicsList = () => {
   const [isReview, setIsReview] = useState(asof == "review");
   const [inputSearch, setInputSearch] = useState(search || "");
 
-  const [nameSpaceId, setNameSpaceId] = useState(filterNameSpaceId || "");
+  const [nameSpaceId, setNameSpaceId] = useState(
+    Number(filterNameSpaceId) || 1
+  );
 
   const [loadMoreIndicator, setLoadMoreIndicator] = useState(false);
   const [getTopicsLoadingIndicator, setGetTopicsLoadingIndicator] =
@@ -123,7 +125,7 @@ const TopicsList = () => {
   const [allowClear, setAllowClear] = useState(false);
 
   const selectNameSpace = (id, nameSpace) => {
-    setNameSpaceId(id);
+    setNameSpaceId(Number(id));
     setSelectedNameSpace(nameSpace?.children);
 
     if (id?.toString() !== "1") {
@@ -181,7 +183,7 @@ const TopicsList = () => {
 
   useEffect(() => {
     setSelectedNameSpace(filterNameSpace);
-    setNameSpaceId(filterNameSpaceId);
+    setNameSpaceId(Number(filterNameSpaceId));
     setInputSearch(search.trim());
     setNameSpacesList(nameSpaces);
   }, [filterNameSpace, filterNameSpaceId, search, nameSpaces, is_archive]);
