@@ -11,7 +11,11 @@ function ReasonsActivity({ CurrentItem }) {
       <br />
       <span>
         Citation Link:-{" "}
-        <a href={getProperties(CurrentItem)?.citation_link} target="_blank">
+        <a
+          href={getProperties(CurrentItem)?.citation_link}
+          target="_blank"
+          rel="noreferrer"
+        >
           {getProperties(CurrentItem)?.citation_link}
         </a>
       </span>
