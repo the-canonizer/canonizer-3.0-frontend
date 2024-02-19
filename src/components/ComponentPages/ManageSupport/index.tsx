@@ -173,7 +173,7 @@ const ManageSupport = ({
         dispatch(setCheckSupportExistsData({}));
         dispatch(setCheckSupportExistsData(response.data));
         getCanonizedNicknameList();
-        if (isUserAuthenticated) {
+        if (isUserAuthenticated && !CheckDelegatedOrDirect) {
           getActiveSupportTopicList(
             response.data.warning,
             response.data.support_flag,

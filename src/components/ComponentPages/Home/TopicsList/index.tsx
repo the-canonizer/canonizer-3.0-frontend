@@ -30,6 +30,9 @@ import {
   changeSlashToArrow,
 } from "src/utils/generalUtility";
 import CustomSkelton from "../../../common/customSkelton";
+import SortTopics from "../../SortingTopics";
+// import { CloseCircleOutlined } from "@ant-design/icons";
+// import { clearAllListeners } from "@reduxjs/toolkit";
 
 const antIcon = <LoadingOutlined spin />;
 const { Title, Text, Paragraph } = Typography;
@@ -91,6 +94,13 @@ const TopicsList = () => {
   const { is_camp_archive_checked } = useSelector((state: RootState) => ({
     is_camp_archive_checked: state?.utils?.archived_checkbox,
   }));
+  const { sortLatestTopic,sortScoreViewTopic } = useSelector(
+    (state: RootState) => ({
+        sortLatestTopic: state?.utils?.sortLatestTopic,
+        sortScoreViewTopic: state?.utils?.sortScoreViewTopic,
+      loading: state?.loading?.loading,
+    })
+  );
   const [topicsData, setTopicsData] = useState(canonizedTopics);
   const [nameSpacesList, setNameSpacesList] = useState(nameSpaces);
   const [backGroundColorClass, setBackGroundColorClass] = useState("default");
@@ -205,6 +215,8 @@ const TopicsList = () => {
     inputSearch,
     is_camp_archive_checked,
     onlyMyTopicsCheck,
+    sortLatestTopic,
+    sortScoreViewTopic
   ]);
 
   async function getTopicsApiCallWithReqBody(loadMore = false) {
@@ -222,6 +234,7 @@ const TopicsList = () => {
       // archive:archeived?1:0,
       user_email: onlyMyTopicsCheck ? userEmail : "",
       is_archive: is_camp_archive_checked ? 1 : 0,
+      sort : sortLatestTopic ?true :false
     };
     await getCanonizedTopicsApi(reqBody, loadMore);
     setLoadMoreIndicator(false);
@@ -486,6 +499,8 @@ const TopicsList = () => {
             )}
           </div>
         )}
+        <SortTopics/>
+
       </div>
 
       <div
