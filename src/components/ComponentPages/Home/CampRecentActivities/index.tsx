@@ -87,7 +87,7 @@ export default function CampRecentActivities() {
                     description={
                       <Fragment>
                         <ReasonsActivity CurrentItem={item} />
-                        <br />
+                        {item?.log_name === "support" && <br />}
                         {covertToTime(item?.updated_at)}
                       </Fragment>
                     }

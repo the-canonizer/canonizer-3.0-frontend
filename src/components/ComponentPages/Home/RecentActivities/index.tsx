@@ -380,7 +380,6 @@ export default function RecentActivities() {
                       <div className={styles.reasonsText}>
                         <ReasonsActivity CurrentItem={activity?.activity} />
                       </div>
-                      <br />
                     </List.Item>
                   );
                 }}
