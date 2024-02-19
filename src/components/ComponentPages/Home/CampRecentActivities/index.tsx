@@ -12,6 +12,7 @@ import { getTopicActivityLogApi } from "../../../../network/api/campDetailApi";
 import K from "../../../../constants";
 import CustomSkelton from "../../../common/customSkelton";
 import { RootState } from "src/store";
+import ReasonsActivity from "src/components/common/SupportReasonActivity";
 
 const { Text } = Typography;
 const { Panel } = Collapse;
@@ -65,28 +66,6 @@ export default function CampRecentActivities() {
           }
           className={"activities " + styles.campActivities}
           key="1"
-          // extra={
-          //   <Fragment>
-          //     {userData?.is_admin ? (
-          //       <Link
-          //         href={{
-          //           pathname: "/activities",
-          //           query: {
-          //             topic_num: router?.query?.camp[0]?.split("-")[0],
-          //             camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
-          //           },
-          //         }}
-          //       >
-          //         <a className={styles.viewAllLink}>
-          //           <Text>View All</Text>
-          //           <i className="icon-angle-right"></i>
-          //         </a>
-          //       </Link>
-          //     ) : (
-          //       ""
-          //     )}
-          //   </Fragment>
-          // }
         >
           {loadingIndicator ? (
             <CustomSkelton
@@ -105,7 +84,13 @@ export default function CampRecentActivities() {
                   <List.Item.Meta
                     avatar={<BellFilled className={styles.bellIcon} />}
                     title={item?.description}
-                    description={covertToTime(item?.updated_at)}
+                    description={
+                      <Fragment>
+                        <ReasonsActivity CurrentItem={item} />
+                        <br />
+                        {covertToTime(item?.updated_at)}
+                      </Fragment>
+                    }
                     className={styles.listItem}
                   />
                 </List.Item>

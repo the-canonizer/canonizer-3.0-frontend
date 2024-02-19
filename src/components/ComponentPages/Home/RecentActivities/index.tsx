@@ -14,6 +14,8 @@ import useAuthentication from "../../../../hooks/isUserAuthenticated";
 import CustomSkelton from "../../../common/customSkelton";
 import { setIsChecked } from "src/store/slices/recentActivitiesSlice";
 import { getTopicActivityLogApi } from "src/network/api/campDetailApi";
+// import { getProperties } from "src/utils/generalUtility";
+import ReasonsActivity from "src/components/common/SupportReasonActivity";
 
 const antIcon = <LoadingOutlined spin />;
 
@@ -309,6 +311,14 @@ export default function RecentActivities() {
                   );
                   return (
                     <List.Item className={styles.listItem}>
+                      {/* <Text className={styles.text}>
+                        <AntLink
+                          href={decodedProperties?.url?.replace(/\s+/g, "-")}
+                        >
+                          {activity?.activity?.description}
+                        </AntLink>
+                        <ReasonsActivity CurrentItem={activity?.activity} />
+                      </Text> */}
                       <AntLink
                         href={decodedProperties?.url?.replace(/\s+/g, "-")}
                       >
@@ -367,6 +377,10 @@ export default function RecentActivities() {
                           </Text>
                         </>
                       </AntLink>
+                      <div className={styles.reasonsText}>
+                        <ReasonsActivity CurrentItem={activity?.activity} />
+                      </div>
+                      <br />
                     </List.Item>
                   );
                 }}
