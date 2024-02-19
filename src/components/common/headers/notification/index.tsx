@@ -35,7 +35,9 @@ const Notifications = () => {
       list: state.notifications.headerNotification.list,
     };
   });
-
+  const { manageSupportStatusCheck } = useSelector((state: RootState) => ({
+    manageSupportStatusCheck: state.topicDetails.manageSupportStatusCheck,
+  }));
   const router = useRouter();
 
   const updateToken = async (tc: string) => {
@@ -179,7 +181,7 @@ const Notifications = () => {
       <Dropdown
         menu={{}}
         // overlay={notificationDropdown}
-        dropdownRender={() => notificationDropdown}
+        dropdownRender={() => !manageSupportStatusCheck?notificationDropdown:""}
         trigger={["click"]}
         placement="bottomRight"
         onOpenChange={getNotofications}
