@@ -308,6 +308,10 @@ export const topicNameRule = {
       max: 30,
       message: validations.topiNameMax30,
     },
+    {
+      pattern: /[^ \s]/,
+      message: "Enter a valid Topic Name",
+    },
     emojiValidation(patterns.emoji_restrication),
   ],
 };
