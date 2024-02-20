@@ -355,3 +355,12 @@ export const getCookies = function () {
     return cookies;
   }
 };
+
+export const getProperties = (item) => {
+  if (item?.log_name === "support") {
+    const parsedData = JSON.parse(item?.properties);
+    return parsedData;
+  }
+
+  return null;
+};
