@@ -32,6 +32,7 @@ import SupportRemovedModal from "src/components/common/supportRemovedModal";
 import ManageSupport from "../../ManageSupport";
 import { getTreesApi } from "src/network/api/campDetailApi";
 import { setIsSupportModal } from "src/store/slices/topicSlice";
+import { showLoginModal } from "src/store/slices/uiSlice";
 
 const { Paragraph } = Typography;
 const { Panel } = Collapse;
@@ -202,10 +203,14 @@ const SupportTreeCard = ({
   };
 
   const handleClickSupportCheck = () => {
-    dispatch(setManageSupportUrlLink(manageSupportPath));
-    dispatch(setManageSupportStatusCheck(true));
-    setSelectNickId(null);
-    showModalSupportCamps();
+    if (isUserAuthenticated) {
+      dispatch(setManageSupportUrlLink(manageSupportPath));
+      dispatch(setManageSupportStatusCheck(true));
+      setSelectNickId(null);
+      showModalSupportCamps();
+    } else {
+      dispatch(showLoginModal());
+    }
   };
 
   useEffect(() => {

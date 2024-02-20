@@ -32,6 +32,7 @@ import {
 import SocialShareUI from "../../../common/socialShare";
 import GenerateModal from "src/components/common/generateScript";
 import { setIsSupportModal } from "src/store/slices/topicSlice";
+import { showLoginModal } from "src/store/slices/uiSlice";
 
 const CodeIcon = () => (
   <svg
@@ -118,6 +119,7 @@ const InfoBar = ({
     dispatch(setManageSupportStatusCheck(true));
     if (!isUserAuthenticated) {
       dispatch(setIsSupportModal(false));
+      dispatch(showLoginModal());
     } else if (isUserAuthenticated && asof == "bydate") {
       dispatch(setIsSupportModal(false));
     } else if (isUserAuthenticated && campRecord?.is_archive) {
@@ -257,6 +259,7 @@ const InfoBar = ({
               e?.preventDefault();
               e?.stopPropagation();
             }}
+            // disabled={asof == "bydate" || campRecord?.is_archive}
           >
             <div
               className="topicDetailsCollapseFooter"
@@ -264,6 +267,10 @@ const InfoBar = ({
                 e?.preventDefault();
                 e?.stopPropagation();
                 handleClickSupportCheck();
+              }}
+              style={{
+                pointerEvents:
+                  asof == "bydate" || campRecord?.is_archive ? "none" : "all",
               }}
             >
               {getCheckSupportStatus?.is_delegator == 1 ||

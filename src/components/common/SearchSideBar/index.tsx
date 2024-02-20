@@ -24,12 +24,14 @@ export default function SearchSideBar() {
   return (
     <>
       <div className="leftSideBar_Card noFilter">
-        {loading?<CustomSkelton
-              skeltonFor="list"
-              bodyCount={5}
-              stylingClass="listSkeleton"
-              isButton={false}
-            />:
+        {loading ? (
+          <CustomSkelton
+            skeltonFor="list"
+            bodyCount={5}
+            stylingClass="listSkeleton"
+            isButton={false}
+          />
+        ) : (
           <div className="search_tabs">
             <Link
               href={{
@@ -129,7 +131,7 @@ export default function SearchSideBar() {
               </Button>
             </Link>
           </div>
-        }
+        )}
       </div>
     </>
   );
