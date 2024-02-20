@@ -114,12 +114,17 @@ const InfoBar = ({
   const manageSupportPath = router?.asPath.replace("/topic/", "/support/");
 
   const handleClickSupportCheck = () => {
-    if (isUserAuthenticated) {
-      dispatch(setManageSupportUrlLink(manageSupportPath));
-      dispatch(setManageSupportStatusCheck(true));
-      dispatch(setIsSupportModal(true));
-    } else {
+    dispatch(setManageSupportUrlLink(manageSupportPath));
+    dispatch(setManageSupportStatusCheck(true));
+    if (!isUserAuthenticated) {
+      dispatch(setIsSupportModal(false));
       dispatch(showLoginModal());
+    } else if (isUserAuthenticated && asof == "bydate") {
+      dispatch(setIsSupportModal(false));
+    } else if (isUserAuthenticated && campRecord?.is_archive) {
+      dispatch(setIsSupportModal(false));
+    } else {
+      dispatch(setIsSupportModal(true));
     }
   };
 
@@ -242,7 +247,9 @@ const InfoBar = ({
       </Menu.Item>
       <Menu.Item
         icon={<HeartOutlined />}
-        disabled={asof == "bydate" || campRecord?.is_archive}
+        disabled={
+          asof == "bydate" || campRecord?.is_archive || !isUserAuthenticated
+        }
       >
         {isTopicPage && (
           <Link

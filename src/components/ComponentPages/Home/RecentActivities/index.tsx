@@ -266,6 +266,13 @@ export default function RecentActivities() {
     dispatch(setIsChecked(!isChecked));
   };
 
+  const handleTextOverflow = (text) => {
+    let str = convert(text?.replace(/<img[^>]*>/gi, ""), {
+      wordwrap: 130,
+    });
+    return str?.length > 90 ? str?.substring(0, 90) + "..." : str;
+  };
+
   return (
     <>
       <div className={`${styles.listCard} recentActivities_listWrap`}>
@@ -348,15 +355,9 @@ export default function RecentActivities() {
                                     (decodedProperties?.camp_name
                                       ? ` | Camp: ${decodedProperties?.camp_name}`
                                       : "")
-                                  : convert(
-                                      decodedProperties?.description?.replace(
-                                        /<img[^>]*>/gi,
-                                        ""
-                                      ),
-                                      {
-                                        wordwrap: 130,
-                                      }
-                                    ).substring(0, 90) + "..."
+                                  : handleTextOverflow(
+                                      decodedProperties?.description
+                                    )
                               }
                             >
                               {decodedProperties?.topic_name
@@ -439,15 +440,10 @@ export default function RecentActivities() {
                                 //       ? ` | Camp: ${decodedProperties?.camp_name}`
                                 //       : "")
                                 //   :
-                                convert(
-                                  decodedProperties?.description?.replace(
-                                    /<img[^>]*>/gi,
-                                    ""
-                                  ),
-                                  {
-                                    wordwrap: 130,
-                                  }
-                                ).substring(0, 90) + "..."
+
+                                handleTextOverflow(
+                                  decodedProperties?.description
+                                )
                               }
                             >
                               {

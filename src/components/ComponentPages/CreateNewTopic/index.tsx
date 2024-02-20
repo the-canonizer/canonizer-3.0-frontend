@@ -37,6 +37,7 @@ const CreateNewTopic = ({
     data: null,
     status: false,
   });
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
 
   const router = useRouter();
   const dispatch = useDispatch();
@@ -59,6 +60,7 @@ const CreateNewTopic = ({
   }, [isUserAuthenticated]);
 
   const onFinish = async (values: any) => {
+    setIsFormSubmitted(true);
     setIsLoading(true);
     // if (!values.topic_name?.trim()) {
     //   form.setFields([
@@ -188,6 +190,8 @@ const CreateNewTopic = ({
         onCancel={onCancel}
         isLoading={isLoading}
         existedTopic={existedTopic}
+        isFormSubmitted={isFormSubmitted}
+        setIsFormSubmitted={setIsFormSubmitted}
       />
     </Fragment>
   );

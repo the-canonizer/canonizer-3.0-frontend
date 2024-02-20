@@ -30,6 +30,9 @@ import {
   changeSlashToArrow,
 } from "src/utils/generalUtility";
 import CustomSkelton from "../../../common/customSkelton";
+import SortTopics from "../../SortingTopics";
+// import { CloseCircleOutlined } from "@ant-design/icons";
+// import { clearAllListeners } from "@reduxjs/toolkit";
 
 const antIcon = <LoadingOutlined spin />;
 const { Title, Text, Paragraph } = Typography;
@@ -91,6 +94,13 @@ const TopicsList = () => {
   const { is_camp_archive_checked } = useSelector((state: RootState) => ({
     is_camp_archive_checked: state?.utils?.archived_checkbox,
   }));
+  const { sortLatestTopic,sortScoreViewTopic } = useSelector(
+    (state: RootState) => ({
+        sortLatestTopic: state?.utils?.sortLatestTopic,
+        sortScoreViewTopic: state?.utils?.sortScoreViewTopic,
+      loading: state?.loading?.loading,
+    })
+  );
   const [topicsData, setTopicsData] = useState(canonizedTopics);
   const [nameSpacesList, setNameSpacesList] = useState(nameSpaces);
   const [backGroundColorClass, setBackGroundColorClass] = useState("default");
@@ -98,7 +108,9 @@ const TopicsList = () => {
   const [isReview, setIsReview] = useState(asof == "review");
   const [inputSearch, setInputSearch] = useState(search || "");
 
-  const [nameSpaceId, setNameSpaceId] = useState(filterNameSpaceId || "");
+  const [nameSpaceId, setNameSpaceId] = useState(
+    Number(filterNameSpaceId) || 1
+  );
 
   const [loadMoreIndicator, setLoadMoreIndicator] = useState(false);
   const [getTopicsLoadingIndicator, setGetTopicsLoadingIndicator] =
@@ -113,7 +125,7 @@ const TopicsList = () => {
   const [allowClear, setAllowClear] = useState(false);
 
   const selectNameSpace = (id, nameSpace) => {
-    setNameSpaceId(id);
+    setNameSpaceId(Number(id));
     setSelectedNameSpace(nameSpace?.children);
 
     if (id?.toString() !== "1") {
@@ -171,7 +183,7 @@ const TopicsList = () => {
 
   useEffect(() => {
     setSelectedNameSpace(filterNameSpace);
-    setNameSpaceId(filterNameSpaceId);
+    setNameSpaceId(Number(filterNameSpaceId));
     setInputSearch(search.trim());
     setNameSpacesList(nameSpaces);
   }, [filterNameSpace, filterNameSpaceId, search, nameSpaces, is_archive]);
@@ -205,6 +217,8 @@ const TopicsList = () => {
     inputSearch,
     is_camp_archive_checked,
     onlyMyTopicsCheck,
+    sortLatestTopic,
+    sortScoreViewTopic
   ]);
 
   async function getTopicsApiCallWithReqBody(loadMore = false) {
@@ -222,6 +236,7 @@ const TopicsList = () => {
       // archive:archeived?1:0,
       user_email: onlyMyTopicsCheck ? userEmail : "",
       is_archive: is_camp_archive_checked ? 1 : 0,
+      sort : sortLatestTopic ?true :false
     };
     await getCanonizedTopicsApi(reqBody, loadMore);
     setLoadMoreIndicator(false);
@@ -486,6 +501,8 @@ const TopicsList = () => {
             )}
           </div>
         )}
+        <SortTopics/>
+
       </div>
 
       <div

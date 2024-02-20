@@ -33,6 +33,7 @@ const ManageSupport = ({
   setGetManageSupportLoadingIndicator,
   getManageSupportLoadingIndicator,
   getCheckStatusAPI,
+  isManageSupportPage=true,
 }) => {
   const { asof, asofdate } = useSelector((state: RootState) => ({
     asofdate: state.filters?.filterObject?.asofdate,
@@ -147,7 +148,7 @@ const ManageSupport = ({
 
           getActiveSupportTopicList(null, null, campRef.current);
           setSubmitButtonDisable(false);
-          dispatch(setManageSupportStatusCheck(false));
+          dispatch(setManageSupportStatusCheck(true));
         }
         // else {
         GetCheckStatusData(campRef);
@@ -173,7 +174,7 @@ const ManageSupport = ({
         dispatch(setCheckSupportExistsData({}));
         dispatch(setCheckSupportExistsData(response.data));
         getCanonizedNicknameList();
-        if (isUserAuthenticated) {
+        if (isUserAuthenticated && !CheckDelegatedOrDirect) {
           getActiveSupportTopicList(
             response.data.warning,
             response.data.support_flag,
