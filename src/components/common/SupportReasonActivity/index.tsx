@@ -5,20 +5,30 @@ import { getProperties } from "src/utils/generalUtility";
 function ReasonsActivity({ CurrentItem }) {
   return CurrentItem?.log_name === "support" ? (
     <Fragment>
-      <span>Reason:- {getProperties(CurrentItem)?.reason}</span>
-      <br />
-      <span>Summary:- {getProperties(CurrentItem)?.reason_summary}</span>
-      <br />
-      <span>
-        Citation Link:-{" "}
-        <a
-          href={getProperties(CurrentItem)?.citation_link}
-          target="_blank"
-          rel="noreferrer"
-        >
-          {getProperties(CurrentItem)?.citation_link}
-        </a>
-      </span>
+      {getProperties(CurrentItem)?.reason ? (
+        <span>Reason:- {getProperties(CurrentItem)?.reason}</span>
+      ) : null}
+      {getProperties(CurrentItem)?.reason_summary ? (
+        <Fragment>
+          <br />
+          <span>Summary:- {getProperties(CurrentItem)?.reason_summary}</span>
+        </Fragment>
+      ) : null}
+      {getProperties(CurrentItem)?.citation_link ? (
+        <Fragment>
+          <br />
+          <span>
+            Citation Link:-{" "}
+            <a
+              href={getProperties(CurrentItem)?.citation_link}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {getProperties(CurrentItem)?.citation_link}
+            </a>
+          </span>
+        </Fragment>
+      ) : null}
     </Fragment>
   ) : null;
 }

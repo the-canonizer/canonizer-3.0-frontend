@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useState } from "react";
-import { List, Typography, Collapse } from "antd";
+import { List, Typography, Collapse, Popover } from "antd";
 import { useRouter } from "next/router";
 import { BellFilled } from "@ant-design/icons";
 import moment from "moment";
@@ -83,14 +83,21 @@ export default function CampRecentActivities() {
                 <List.Item className={styles.activitiesList}>
                   <List.Item.Meta
                     avatar={<BellFilled className={styles.bellIcon} />}
-                    title={item?.description}
-                    description={
+                    title={
                       <Fragment>
-                        <ReasonsActivity CurrentItem={item} />
-                        {item?.log_name === "support" && <br />}
-                        {covertToTime(item?.updated_at)}
+                        {item?.description}{" "}
+                        {item?.log_name === "support" && (
+                          <Popover
+                            content={<ReasonsActivity CurrentItem={item} />}
+                            placement="top"
+                            className={styles.algoInfoIcon}
+                          >
+                            <i className="icon-info"></i>
+                          </Popover>
+                        )}
                       </Fragment>
                     }
+                    description={covertToTime(item?.updated_at)}
                     className={styles.listItem}
                   />
                 </List.Item>
@@ -115,9 +122,7 @@ export default function CampRecentActivities() {
                   <i className="icon-angle-right"></i>
                 </a>
               </Link>
-            ) : (
-              ""
-            )}
+            ) : null}
           </div>
         </Panel>
       </Collapse>

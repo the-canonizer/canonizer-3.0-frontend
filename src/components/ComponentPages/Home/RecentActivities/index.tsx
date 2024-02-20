@@ -1,5 +1,14 @@
 import { useEffect, useMemo, useState, Fragment } from "react";
-import { Tabs, Typography, List, Button, Spin, Tooltip, Switch } from "antd";
+import {
+  Tabs,
+  Typography,
+  List,
+  Button,
+  Spin,
+  Tooltip,
+  Switch,
+  Popover,
+} from "antd";
 import { useRouter } from "next/router";
 import { LoadingOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
@@ -311,20 +320,25 @@ export default function RecentActivities() {
                   );
                   return (
                     <List.Item className={styles.listItem}>
-                      {/* <Text className={styles.text}>
-                        <AntLink
-                          href={decodedProperties?.url?.replace(/\s+/g, "-")}
-                        >
-                          {activity?.activity?.description}
-                        </AntLink>
-                        <ReasonsActivity CurrentItem={activity?.activity} />
-                      </Text> */}
                       <AntLink
                         href={decodedProperties?.url?.replace(/\s+/g, "-")}
                       >
                         <>
                           <Text className={styles.text}>
-                            {activity?.activity?.description}
+                            {activity?.activity?.description}{" "}
+                            <Popover
+                              content={
+                                <div className={styles.reasonsText}>
+                                  <ReasonsActivity
+                                    CurrentItem={activity?.activity}
+                                  />
+                                </div>
+                              }
+                              placement="top"
+                              className={styles.algoInfoIcon}
+                            >
+                              <i className="icon-info"></i>
+                            </Popover>
                             <br />
                             <Tooltip
                               placement={"topLeft"}
@@ -377,9 +391,9 @@ export default function RecentActivities() {
                           </Text>
                         </>
                       </AntLink>
-                      <div className={styles.reasonsText}>
+                      {/* <div className={styles.reasonsText}>
                         <ReasonsActivity CurrentItem={activity?.activity} />
-                      </div>
+                      </div> */}
                     </List.Item>
                   );
                 }}
