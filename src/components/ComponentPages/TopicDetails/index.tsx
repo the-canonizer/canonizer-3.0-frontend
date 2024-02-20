@@ -411,7 +411,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
           />
         </aside>
 
-        <div className={styles.pageContent + " pageContentWrap"}>
+        <div className={styles.pageContent + " pageContentWrap"} id="printWrap">
           {(tree && tree["1"]?.is_valid_as_of_time) || asof == "default" ? (
             <CampInfoBar
               isTopicPage={true}
@@ -542,7 +542,10 @@ const TopicDetails = ({ serverSideCall }: any) => {
                         backGroundColorClass={backGroundColorClass}
                       />
 
-                      <Row gutter={15} className={styles.bottomRow}>
+                      <Row
+                        gutter={15}
+                        className={`${styles.bottomRow} printHIde`}
+                      >
                         <Col xs={24} sm={24} md={12} lg={12} xl={12} xxl={12}>
                           <CampRecentActivities />
                         </Col>

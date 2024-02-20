@@ -136,7 +136,7 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
   }, [loggedInUser]);
 
   return (
-    <Header className={styles.wrap}>
+    <Header className={`${styles.wrap} printHIde`}>
       <Logo />
       <div className={`${styles.navWrap} ${isActive && styles.showMobMenu}`}>
         <div className={styles.mobLogoIcon}>

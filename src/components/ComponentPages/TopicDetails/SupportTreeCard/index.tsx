@@ -173,8 +173,8 @@ const SupportTreeCard = ({
     if (isUserAuthenticated) {
       getNickNameListData();
     }
-    if(manageSupportStatusCheck == false){
-      dispatch(setIsSupportModal(false))
+    if (manageSupportStatusCheck == false) {
+      dispatch(setIsSupportModal(false));
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -324,7 +324,7 @@ const SupportTreeCard = ({
                                   : ""
                               }
                             >
-                              <a>
+                              <a className="printHIde">
                                 <Button
                                   id="supportTreeDelegateYourSupport"
                                   disabled={
@@ -346,10 +346,15 @@ const SupportTreeCard = ({
                           )}
                         </>
                       ) : (
-                        <a>
+                        <a className="printHIde">
                           <Button
                             id="supportTreeRemoveSupport"
-                            disabled={asof == "bydate" || isRemovingSupport || !isUserAuthenticated || campRecord.is_archive}
+                            disabled={
+                              asof == "bydate" ||
+                              isRemovingSupport ||
+                              !isUserAuthenticated ||
+                              campRecord.is_archive
+                            }
                             onClick={() => {
                               currentGetCheckSupportExistsData.is_delegator
                                 ? setIsDelegateSupportTreeCardModal(true)
@@ -473,10 +478,10 @@ const SupportTreeCard = ({
             </CustomButton>
           )}
 
-          <div className="topicDetailsCollapseFooter">
+          <div className="topicDetailsCollapseFooter printHIde">
             <CustomButton
               onClick={handleClickSupportCheck}
-              className="btn-orange"
+              className="btn-orange printHIde"
               disabled={asof == "bydate" || campRecord?.is_archive == 1}
               id="manage-support-btn"
             >
