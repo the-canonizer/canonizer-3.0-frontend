@@ -711,8 +711,9 @@ function HistoryCollapse({
                         campStatement?.ifIAmExplicitSupporter
                       ) &&
                         isUserAuthenticated &&
-                        historyOf == "camp" &&
-                        !campStatement?.ifICanAgreeAndObject &&
+                        (historyOf == "camp"
+                          ? campStatement?.ifICanAgreeAndObject
+                          : true) &&
                         // !(
                         //   historyOf == "camp" &&
                         //   !campStatement?.camp_leader_can_object
