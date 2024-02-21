@@ -350,7 +350,9 @@ function HistoryCollapse({
                                 (parentArchived == 1 &&
                                   directarchived == 1 &&
                                   historyOf == "topic") ||
-                                (parentArchived == 1 && directarchived == 0)
+                                (parentArchived == 1 && directarchived == 0) ||
+                                (historyOf == "camp" &&
+                                  !campStatement?.ifICanAgreeAndObject)
                               ? // ||!campStatement?.camp_leader_can_object
                                 true
                               : false;
@@ -378,7 +380,12 @@ function HistoryCollapse({
                                   (parentArchived == 1 &&
                                     directarchived == 1 &&
                                     historyOf == "topic") ||
-                                  (parentArchived == 1 && directarchived == 0)
+                                  (parentArchived == 1 &&
+                                    directarchived == 0) ||
+                                  (historyOf == "camp" &&
+                                    !campStatement?.ifICanAgreeAndObject) ||
+                                  (historyOf == "camp" &&
+                                    !campStatement?.ifICanAgreeAndObject)
                                 ? // ||!campStatement?.camp_leader_can_object
                                   true
                                 : false

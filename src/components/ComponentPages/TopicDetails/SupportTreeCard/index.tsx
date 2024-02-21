@@ -179,8 +179,8 @@ const SupportTreeCard = ({
     if (isUserAuthenticated) {
       getNickNameListData();
     }
-    if(manageSupportStatusCheck == false){
-      dispatch(setIsSupportModal(false))
+    if (manageSupportStatusCheck == false) {
+      dispatch(setIsSupportModal(false));
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -269,6 +269,7 @@ const SupportTreeCard = ({
         onCancel={() => {
           setSignModalOpen(false);
         }}
+        destroyOnClose={true}
       >
         <SignCamp
           setSignModalOpen={setSignModalOpen}
@@ -390,7 +391,12 @@ const SupportTreeCard = ({
                         <a>
                           <Button
                             id="supportTreeRemoveSupport"
-                            disabled={asof == "bydate" || isRemovingSupport || !isUserAuthenticated || campRecord.is_archive}
+                            disabled={
+                              asof == "bydate" ||
+                              isRemovingSupport ||
+                              !isUserAuthenticated ||
+                              campRecord.is_archive
+                            }
                             onClick={() => {
                               currentGetCheckSupportExistsData.is_delegator
                                 ? setIsDelegateSupportTreeCardModal(true)
