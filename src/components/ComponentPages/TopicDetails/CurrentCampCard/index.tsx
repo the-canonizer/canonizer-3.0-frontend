@@ -54,7 +54,7 @@ const CurrentCampCard = ({ loadingIndicator, backGroundColorClass }: any) => {
       accordion={true}
       defaultActiveKey={[]}
       expandIconPosition="right"
-      className="topicDetailsCollapse"
+      className="topicDetailsCollapse currentCampRecords"
     >
       <Panel
         className={`header-bg-color-change ${backGroundColorClass}`}
@@ -171,8 +171,8 @@ const CurrentCampCard = ({ loadingIndicator, backGroundColorClass }: any) => {
             }
           })}
         </Descriptions>
-        <div className="topicDetailsCollapseFooter">
-          <CustomButton className="btn-green" id="manage-camp-btn">
+        <div className="topicDetailsCollapseFooter printHIde">
+          <CustomButton className="btn-green printHIde" id="manage-camp-btn">
             <Link
               href={`/camp/history/${replaceSpecialCharacters(
                 router?.query?.camp[0],
@@ -181,8 +181,11 @@ const CurrentCampCard = ({ loadingIndicator, backGroundColorClass }: any) => {
                 router?.query?.camp[1] ?? "1-Agreement",
                 "-"
               )}`}
+              className="printHIde"
             >
-              <a>{K?.exceptionalMessages?.manageCampButton} </a>
+              <a className="printHIde">
+                {K?.exceptionalMessages?.manageCampButton}{" "}
+              </a>
             </Link>
           </CustomButton>
         </div>

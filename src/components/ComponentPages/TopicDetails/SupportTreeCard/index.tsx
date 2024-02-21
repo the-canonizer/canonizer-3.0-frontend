@@ -366,7 +366,7 @@ const SupportTreeCard = ({
                                   : "This will delegate your support to the selected supporter"
                               }
                             >
-                              <a>
+                              <a className="printHIde">
                                 <Button
                                   id="supportTreeDelegateYourSupport"
                                   disabled={
@@ -388,7 +388,7 @@ const SupportTreeCard = ({
                           )}
                         </>
                       ) : (
-                        <a>
+                        <a className="printHIde">
                           <Button
                             id="supportTreeRemoveSupport"
                             disabled={
