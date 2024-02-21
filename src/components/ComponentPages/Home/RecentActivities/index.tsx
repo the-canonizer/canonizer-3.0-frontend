@@ -1,5 +1,14 @@
 import { useEffect, useMemo, useState, Fragment } from "react";
-import { Tabs, Typography, List, Button, Spin, Tooltip, Switch } from "antd";
+import {
+  Tabs,
+  Typography,
+  List,
+  Button,
+  Spin,
+  Tooltip,
+  Switch,
+  Popover,
+} from "antd";
 import { useRouter } from "next/router";
 import { LoadingOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,6 +23,8 @@ import useAuthentication from "../../../../hooks/isUserAuthenticated";
 import CustomSkelton from "../../../common/customSkelton";
 import { setIsChecked } from "src/store/slices/recentActivitiesSlice";
 import { getTopicActivityLogApi } from "src/network/api/campDetailApi";
+// import { getProperties } from "src/utils/generalUtility";
+import ReasonsActivity from "src/components/common/SupportReasonActivity";
 
 const antIcon = <LoadingOutlined spin />;
 
@@ -255,6 +266,13 @@ export default function RecentActivities() {
     dispatch(setIsChecked(!isChecked));
   };
 
+  const handleTextOverflow = (text) => {
+    let str = convert(text?.replace(/<img[^>]*>/gi, ""), {
+      wordwrap: 130,
+    });
+    return str?.length > 90 ? str?.substring(0, 90) + "..." : str;
+  };
+
   return (
     <>
       <div className={`${styles.listCard} recentActivities_listWrap`}>
@@ -314,7 +332,20 @@ export default function RecentActivities() {
                       >
                         <>
                           <Text className={styles.text}>
-                            {activity?.activity?.description}
+                            {activity?.activity?.description}{" "}
+                            <Popover
+                              content={
+                                <div className={styles.reasonsText}>
+                                  <ReasonsActivity
+                                    CurrentItem={activity?.activity}
+                                  />
+                                </div>
+                              }
+                              placement="top"
+                              className={styles.algoInfoIcon}
+                            >
+                              <i className="icon-info"></i>
+                            </Popover>
                             <br />
                             <Tooltip
                               placement={"topLeft"}
@@ -324,15 +355,9 @@ export default function RecentActivities() {
                                     (decodedProperties?.camp_name
                                       ? ` | Camp: ${decodedProperties?.camp_name}`
                                       : "")
-                                  : convert(
-                                      decodedProperties?.description?.replace(
-                                        /<img[^>]*>/gi,
-                                        ""
-                                      ),
-                                      {
-                                        wordwrap: 130,
-                                      }
-                                    ).substring(0, 90) + "..."
+                                  : handleTextOverflow(
+                                      decodedProperties?.description
+                                    )
                               }
                             >
                               {decodedProperties?.topic_name
@@ -367,6 +392,9 @@ export default function RecentActivities() {
                           </Text>
                         </>
                       </AntLink>
+                      {/* <div className={styles.reasonsText}>
+                        <ReasonsActivity CurrentItem={activity?.activity} />
+                      </div> */}
                     </List.Item>
                   );
                 }}
@@ -412,15 +440,10 @@ export default function RecentActivities() {
                                 //       ? ` | Camp: ${decodedProperties?.camp_name}`
                                 //       : "")
                                 //   :
-                                convert(
-                                  decodedProperties?.description?.replace(
-                                    /<img[^>]*>/gi,
-                                    ""
-                                  ),
-                                  {
-                                    wordwrap: 130,
-                                  }
-                                ).substring(0, 90) + "..."
+
+                                handleTextOverflow(
+                                  decodedProperties?.description
+                                )
                               }
                             >
                               {

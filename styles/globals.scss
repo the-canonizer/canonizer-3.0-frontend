@@ -366,7 +366,7 @@ img {
     }
     .ant-collapse-content {
       position: absolute;
-      top: 100%;
+      top: 40px;
       width: 100%;
       max-width: 550px;
       right: 0;
@@ -726,4 +726,30 @@ img {
 .advanceFilter.NicknameadvanceFilter  .ant-collapse-content {
   max-width: 320px;
   padding: 9px 15px;
+}
+.ant-collapse-content-box::after {
+  content: "";
+  position: absolute;
+  top: -17px;
+  right: 20px;
+  width: 0;
+  height: 0;
+  border: 9px solid #fff;
+  border-top-color: transparent;
+  border-left-color: transparent;
+  z-index: 1;
+  border-right-color: transparent;
+}
+.ant-collapse-content-box::before {
+  content: "";
+  position: absolute;
+  top: -21px;
+  right: 19px;
+  width: 0;
+  height: 0;
+  border: 11px solid #EAECEF;
+  border-top-color: transparent;
+  border-left-color: transparent;
+  z-index: 1;
+  border-right-color: transparent;
 }

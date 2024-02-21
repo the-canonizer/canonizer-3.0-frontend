@@ -138,6 +138,7 @@ export default function AddOrManage({ add }: any) {
     data: null,
     url: "",
     status: false,
+    topicName: "",
   });
   const [form] = Form.useForm();
   let objection = router?.query?.statement?.at(0)?.split("-")[1] == "objection";
@@ -296,6 +297,7 @@ export default function AddOrManage({ add }: any) {
             data: res?.error?.topic_name,
             url: url,
             status: true,
+            topicName: topicName,
           });
         }
       }
@@ -664,6 +666,7 @@ export default function AddOrManage({ add }: any) {
 
   const handleformvalues = () => {
     setExistedTopic({
+      ...existedTopic,
       data: null,
       url: "",
       status: false,
@@ -1044,14 +1047,20 @@ export default function AddOrManage({ add }: any) {
                             <Input disabled={objection} maxLength={30} />
                           )}
                         </Form.Item>
-                        {existedTopic?.status == true && (
-                          <a
-                            className={styles.topicNameWarning}
-                            onClick={() => router.push(existedTopic?.url)}
-                          >
-                            {existedTopic?.data}
-                          </a>
-                        )}
+                        {existedTopic?.status == true &&
+                          existedTopic.topicName && (
+                            <div className={styles.topicNameWarning}>
+                              The topic titled{" "}
+                              <a
+                                href={existedTopic?.url}
+                                className="text-underline"
+                                target="__blank"
+                              >
+                                {existedTopic?.topicName}
+                              </a>{" "}
+                              already exists. Please enter a different name.
+                            </div>
+                          )}
                       </Col>
                       {/* Name space -------------------------------------------------------------------- */}
                       {!objection && (

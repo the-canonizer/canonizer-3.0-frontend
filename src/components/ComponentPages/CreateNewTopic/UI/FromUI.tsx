@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { Card, Form, Input, Button, Select, Row, Col } from "antd";
 
 import messages from "../../../../messages";
@@ -25,6 +25,8 @@ const CreateTopicFromUI = ({
   nickNameList,
   onCancel,
   existedTopic,
+  isFormSubmitted,
+  setIsFormSubmitted,
 }: any) => {
   const router = useRouter();
   const CardTitle = (
@@ -32,6 +34,7 @@ const CreateTopicFromUI = ({
       Create Topic
     </span>
   );
+  const [topicName, setTopicName] = useState("");
 
   return (
     <Fragment>
@@ -98,18 +101,25 @@ const CreateTopicFromUI = ({
                   placeholder={placeholders.topicName}
                   size={"large"}
                   maxLength={30}
+                  onChange={(e) => {
+                    setTopicName(e.target.value);
+                    setIsFormSubmitted(false);
+                  }}
                 />
               </Form.Item>
-              {existedTopic?.status && (
+              {existedTopic?.status && topicName && isFormSubmitted && (
                 <div className={styles.topicExistsMessage}>
-                  <a
-                    onClick={() => {
-                      router.push(existedTopic?.data);
-                    }}
-                    className={styles.topicExistsMessage}
-                  >
-                    Topic Already Exists
-                  </a>
+                  <span>
+                    The topic titled{" "}
+                    <a
+                      href={existedTopic?.data}
+                      className="text-underline"
+                      target="__blank"
+                    >
+                      {topicName}
+                    </a>{" "}
+                    already exists. Please enter a different name.
+                  </span>
                 </div>
               )}
               {nameSpaces ? (
