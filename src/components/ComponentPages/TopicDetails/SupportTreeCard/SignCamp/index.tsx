@@ -106,7 +106,7 @@ const SignCamp = ({ setSignModalOpen, setLoadingIndicatorSupport }: any) => {
         {signCampData ? (
           <>
             <span className={styles.warning} id="getSupportStatusDataWarning">
-              <strong> Warning! </strong>
+              <strong> {signCampData?.warning_type}! </strong>
               {signCampData?.warning}
             </span>
             <Col md={12}>
