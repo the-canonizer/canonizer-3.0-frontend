@@ -333,19 +333,22 @@ export default function RecentActivities() {
                         <>
                           <Text className={styles.text}>
                             {activity?.activity?.description}{" "}
-                            <Popover
-                              content={
-                                <div className={styles.reasonsText}>
-                                  <ReasonsActivity
-                                    CurrentItem={activity?.activity}
-                                  />
-                                </div>
-                              }
-                              placement="top"
-                              className={styles.algoInfoIcon}
-                            >
-                              <i className="icon-info"></i>
-                            </Popover>
+                            {console.log('---',activity?.activity?.log_name)}
+                            {activity?.activity?.log_name === "support" && (
+                              <Popover
+                                content={
+                                  <div className={styles.reasonsText}>
+                                    <ReasonsActivity
+                                      CurrentItem={activity?.activity}
+                                    />
+                                  </div>
+                                }
+                                placement="top"
+                                className={styles.algoInfoIcon}
+                              >
+                                <i className="icon-info"></i>
+                              </Popover>
+                            )}
                             <br />
                             <Tooltip
                               placement={"topLeft"}
