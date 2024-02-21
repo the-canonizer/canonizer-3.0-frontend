@@ -8,7 +8,7 @@ const googleSearch = process.env.NEXT_PUBLIC_SITE_NAME;
 const SearchSection = () => {
   return (
     <>
-      <section className={styles.wrap}>
+      <section className={`${styles.wrap} printHIde`}>
         <div className={styles.container}>
           <form
             method="get"

@@ -39,7 +39,7 @@ const CurrentTopicCard = ({ loadingIndicator, backGroundColorClass }: any) => {
     <Collapse
       defaultActiveKey={[]}
       expandIconPosition="right"
-      className="topicDetailsCollapse"
+      className="topicDetailsCollapse printHIde"
     >
       <Panel
         className={`header-bg-color-change ${backGroundColorClass}`}
