@@ -333,7 +333,7 @@ export default function RecentActivities() {
                         <>
                           <Text className={styles.text}>
                             {activity?.activity?.description}{" "}
-                            {console.log('---',activity?.activity?.log_name)}
+                            
                             {activity?.activity?.log_name === "support" && (
                               <Popover
                                 content={
