@@ -10,7 +10,6 @@ import {
   setLogout,
 } from "../../store/slices/authSlice";
 import { showMultiUserModal, updateStatus } from "../../store/slices/uiSlice";
-// import { setValue } from "../../store/slices/utilsSlice";
 import NetworkCall from "../networkCall";
 import UserRequest from "../request/userRequest";
 import { store } from "../../store";
@@ -93,23 +92,24 @@ export const logout = async (error = "", status = null, count: number = 1) => {
       return true;
     }
 
-    // if (!isServer()) {
-    //   localStorage.setItem("logout_type", "true");
-    //   store.dispatch(setValue({ label: "logout_type", value: true }));
-    // }
-
     let res = await NetworkCall.fetch(UserRequest.logoutCall(auth.token));
 
-    store.dispatch(setLogout());
-    store.dispatch(setIsChecked(false));
-    store.dispatch(logoutUser());
-    store.dispatch(removeAuthToken());
-    document.cookie =
-      "loginToken=; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
-    store.dispatch(setHeaderData({ count: 0, list: [] }));
-    if (!(getCookies() as any)?.loginToken) {
-      createToken();
+    if (res?.status_code === 200) {
+      document.cookie =
+        "loginToken=; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
+
+      if (!(getCookies() as any)?.loginToken) {
+        const tRes = await createToken();
+        if (tRes?.access_token) {
+          store.dispatch(setLogout());
+          store.dispatch(setIsChecked(false));
+          store.dispatch(logoutUser());
+          store.dispatch(removeAuthToken());
+          store.dispatch(setHeaderData({ count: 0, list: [] }));
+        }
+      }
     }
+
     return res;
   } catch (error) {
     store.dispatch(logoutUser());
@@ -162,14 +162,10 @@ export const verifyOtp = async (values: object) => {
 };
 
 export const changePassword = async (values: object) => {
-  // let state = store.getState();
-  // const { auth } = state;
-
   const cc: any = getCookies();
 
   const res = await NetworkCall.fetch(
     UserRequest.changePassword(values, cc?.loginToken)
-    //UserRequest.changePassword(values, auth.token)
   );
   return res;
 };

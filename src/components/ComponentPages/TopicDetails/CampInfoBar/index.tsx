@@ -12,7 +12,7 @@ import { RootState } from "src/store";
 import CustomSkelton from "src/components/common/customSkelton";
 import { setManageSupportStatusCheck } from "src/store/slices/campDetailSlice";
 import { getCampBreadCrumbApi } from "src/network/api/campDetailApi";
-import { replaceSpecialCharacters } from "src/utils/generalUtility";
+import { getCookies, replaceSpecialCharacters } from "src/utils/generalUtility";
 
 const TimelineInfoBar = ({
   payload = null,
@@ -206,11 +206,14 @@ const TimelineInfoBar = ({
       setLoadingIndicator(false);
     }
 
-    if (payload && Object.keys(payload).length > 0) {
+    if (
+      (payload && Object.keys(payload).length > 0,
+      !!(getCookies() as any)?.loginToken)
+    ) {
       getBreadCrumbApiCall();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router?.asPath, filterObject]);
+  }, [router?.asPath, filterObject, !!(getCookies() as any)?.loginToken]);
 
   return (
     <>
