@@ -59,6 +59,9 @@ export const filtersSlice = createSlice({
     setOnlyMyTopic: (state, action) => {
       state.onlyMyTopicsCheck = action.payload;
     },
+    setRemoveFilters: (state, action) => {
+      state.filterObject = action.payload;
+    },
   },
 });
 
@@ -72,6 +75,7 @@ export const {
   setCampWithScorevalue,
   setShowForumDrawer,
   setOnlyMyTopic,
+  setRemoveFilters,
 } = filtersSlice.actions;
 
 export default filtersSlice.reducer;

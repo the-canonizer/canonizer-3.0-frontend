@@ -22,6 +22,7 @@ import {
   MoreOutlined,
   FileTextOutlined,
   HeartOutlined,
+  PrinterOutlined,
 } from "@ant-design/icons";
 import Link from "next/link";
 import {
@@ -156,6 +157,38 @@ const InfoBar = ({
     if (result?.status_code === 200) {
       getTreesApi(reqBodyForService);
     }
+  };
+
+  const onPrint = () => {
+    const hiddenElem = document.querySelector(".currentCampRecords"),
+      insideDiv = hiddenElem?.querySelector(".ant-collapse-item"),
+      header: any = hiddenElem?.querySelector(".ant-collapse-header");
+
+    if (!insideDiv?.classList?.contains("ant-collapse-item-active")) {
+      header.click();
+    }
+
+    setTimeout(() => {
+      if (insideDiv?.classList?.contains("ant-collapse-item-active")) {
+        header.click();
+      }
+    }, 5000);
+  };
+
+  useEffect(() => {
+    window.onbeforeprint = () => onPrint();
+  }, []);
+
+  const onPrintCamp = (e) => {
+    e?.preventDefault();
+    e?.stopPropagation();
+
+    onPrint();
+
+    setTimeout(() => {
+      window.focus();
+      window.print();
+    }, 100);
   };
 
   const campForumDropdownMenu = (
@@ -364,6 +397,19 @@ const InfoBar = ({
           />
         )}
       </Menu.Item>
+      <Menu.Item
+        icon={
+          <span className={styles.svgIconCode}>
+            <PrinterOutlined />
+          </span>
+        }
+      >
+        {isTopicPage && (
+          <a onClick={onPrintCamp}>
+            <span>Print</span>
+          </a>
+        )}
+      </Menu.Item>
     </Menu>
   );
 
@@ -374,125 +420,141 @@ const InfoBar = ({
   }, [router?.pathname]);
 
   return (
-    <>
-      <div
-        className={`${styles.topicDetailContentHead} ${styles.inforBarHEad}`}
-      >
-        <Spin spinning={false}>
-          <div
-            className={`${styles.topicDetailContentHead_Left} ${styles.rightPanel}`}
-          >
-            <div className="btnsWrap">
-              {isCampBtnVisible &&
-              currentCampNode?._isDisabled == 0 &&
-              currentCampNode?.parentIsOneLevel == 0 &&
-              campRecord?.is_archive == 0 ? (
-                <Tooltip
-                  title={
-                    tree && !tree["1"]?.is_valid_as_of_time
-                      ? K.exceptionalMessages.createNewCampTooltipMsg
-                      : ""
-                  }
-                >
-                  <Button
-                    className="btn"
-                    size="large"
-                    disabled={
-                      (tree && !tree["1"]?.is_valid_as_of_time) ||
-                      (campExist && !campExist?.camp_exist)
-                        ? true
-                        : false
-                    }
-                    onClick={onCreateCamp}
-                  >
-                    <i className="icon-camp"></i> Create New Camp
-                  </Button>
-                </Tooltip>
-              ) : null}
-            </div>
-            <div
-              className={`${styles.topicDetailContentHead_Right} ${styles.leftPanel}`}
-            >
-              <Typography.Paragraph
-                className={"mb-0 campInfoRight " + styles.topicTitleStyle}
+    <div
+      className={`${styles.topicDetailContentHead} ${styles.inforBarHEad} printHIde`}
+    >
+      <Spin spinning={false}>
+        <div
+          className={`${styles.topicDetailContentHead_Left} ${styles.rightPanel}`}
+        >
+          <div className="btnsWrap">
+            {isCampBtnVisible &&
+            currentCampNode?._isDisabled == 0 &&
+            currentCampNode?.parentIsOneLevel == 0 &&
+            campRecord?.is_archive == 0 ? (
+              <Tooltip
+                title={
+                  tree && !tree["1"]?.is_valid_as_of_time
+                    ? K.exceptionalMessages.createNewCampTooltipMsg
+                    : ""
+                }
               >
-                {isTopicPage && (
-                  <Fragment>
-                    {loadingIndicator ? (
-                      <>
-                        <div className="socail-skeleton mr-3">
-                          <CustomSkelton
-                            skeltonFor="list"
-                            bodyCount={1}
-                            stylingClass="skeleton-item"
-                            isButton={false}
-                            circle={true}
-                          />
-                          <CustomSkelton
-                            skeltonFor="list"
-                            bodyCount={1}
-                            stylingClass="skeleton-item"
-                            isButton={false}
-                            circle={true}
-                          />
-                          <CustomSkelton
-                            skeltonFor="list"
-                            bodyCount={1}
-                            stylingClass="skeleton-item"
-                            isButton={false}
-                            circle={true}
-                          />
-                        </div>
-                      </>
-                    ) : (
-                      <div className="cam-social-ot">
-                        <SocialShareUI
-                          campName={campRecord?.camp_name}
-                          campUrl={!isServer() && window?.location?.href}
-                        />
-                      </div>
-                    )}
-                    {loadingIndicator ? (
+                <Button
+                  className="btn"
+                  size="large"
+                  disabled={
+                    (tree && !tree["1"]?.is_valid_as_of_time) ||
+                    (campExist && !campExist?.camp_exist)
+                      ? true
+                      : false
+                  }
+                  onClick={onCreateCamp}
+                >
+                  <i className="icon-camp"></i> Create New Camp
+                </Button>
+              </Tooltip>
+            ) : null}
+          </div>
+          <div
+            className={`${styles.topicDetailContentHead_Right} ${styles.leftPanel}`}
+          >
+            <Typography.Paragraph
+              className={"mb-0 campInfoRight " + styles.topicTitleStyle}
+            >
+              {isTopicPage && (
+                <Fragment>
+                  {loadingIndicator ? (
+                    <div className="socail-skeleton mr-3">
                       <CustomSkelton
                         skeltonFor="list"
                         bodyCount={1}
-                        stylingClass="header-skeleton-btn"
+                        stylingClass="skeleton-item"
                         isButton={false}
+                        circle={true}
                       />
-                    ) : (
-                      <>
-                        <Button
-                          type="primary"
-                          className={styles.btnCampForum}
-                          onClick={onCampForumClick}
-                          id="camp-forum-btn"
-                        >
-                          Camp Forum
-                        </Button>
+                    </div>
+                  ) : (
+                    <div className="cam-social-ot">
+                      <Button
+                        className={styles.shareIcon}
+                        onClick={onPrintCamp}
+                      >
+                        <span>Print</span> <PrinterOutlined />
+                      </Button>
+                    </div>
+                  )}
+                  {loadingIndicator ? (
+                    <div className="socail-skeleton mr-3">
+                      <CustomSkelton
+                        skeltonFor="list"
+                        bodyCount={1}
+                        stylingClass="skeleton-item"
+                        isButton={false}
+                        circle={true}
+                      />
+                      <CustomSkelton
+                        skeltonFor="list"
+                        bodyCount={1}
+                        stylingClass="skeleton-item"
+                        isButton={false}
+                        circle={true}
+                      />
+                      <CustomSkelton
+                        skeltonFor="list"
+                        bodyCount={1}
+                        stylingClass="skeleton-item"
+                        isButton={false}
+                        circle={true}
+                      />
+                    </div>
+                  ) : (
+                    <div className="cam-social-ot">
+                      <SocialShareUI
+                        campName={campRecord?.camp_name}
+                        campUrl={!isServer() && window?.location?.href}
+                      />
+                    </div>
+                  )}
+                  {loadingIndicator ? (
+                    <CustomSkelton
+                      skeltonFor="list"
+                      bodyCount={1}
+                      stylingClass="header-skeleton-btn"
+                      isButton={false}
+                    />
+                  ) : (
+                    <>
+                      <Button
+                        type="primary"
+                        className={styles.btnCampForum}
+                        onClick={onCampForumClick}
+                        id="camp-forum-btn"
+                      >
+                        Camp Forum
+                      </Button>
 
-                        <Dropdown
-                          className={styles.campForumDropdown}
-                          placement="bottomRight"
-                          overlay={campForumDropdownMenu}
-                          trigger={["click"]}
+                      <Dropdown
+                        className={styles.campForumDropdown}
+                        placement="bottomRight"
+                        overlay={campForumDropdownMenu}
+                        trigger={["click"]}
+                      >
+                        <a
+                          className={styles.iconMore}
+                          onClick={(e) => e.preventDefault()}
                         >
-                          <a
-                            className={styles.iconMore}
-                            onClick={(e) => e.preventDefault()}
-                          >
-                            <MoreOutlined />
-                          </a>
-                        </Dropdown>
-                      </>
-                    )}
-                  </Fragment>
-                )}
-              </Typography.Paragraph>
-            </div>
+                          <MoreOutlined />
+                        </a>
+                      </Dropdown>
+                    </>
+                  )}
+                </Fragment>
+              )}
+            </Typography.Paragraph>
           </div>
-        </Spin>
-      </div>
-    </>
+        </div>
+      </Spin>
+    </div>
   );
 };
 

@@ -89,7 +89,10 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
   const logOut = async () => await logout();
 
   const onClick = ({ key }) => {
-    if (key == 3) logOut();
+    if (key == 3) {
+      router.push("/browse", null, { shallow: true });
+      logOut();
+    }
   };
 
   const menu = (
@@ -136,7 +139,7 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
   }, [loggedInUser]);
 
   return (
-    <Header className={styles.wrap}>
+    <Header className={`${styles.wrap} printHIde`}>
       <Logo />
       <div className={`${styles.navWrap} ${isActive && styles.showMobMenu}`}>
         <div className={styles.mobLogoIcon}>

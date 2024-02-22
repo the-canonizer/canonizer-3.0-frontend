@@ -217,7 +217,7 @@ const TimelineInfoBar = ({
 
   return (
     <>
-      <div className={styles.topicDetailContentHead + " " + styles.info_bar_n}>
+      <div className={styles.topicDetailContentHead + " printHIde " + styles.info_bar_n}>
         <Spin spinning={false}>
           <div className={styles.topicDetailContentHead_Left}>
             {isForumPage ? (

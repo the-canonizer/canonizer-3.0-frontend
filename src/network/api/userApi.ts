@@ -13,7 +13,10 @@ import { showMultiUserModal, updateStatus } from "../../store/slices/uiSlice";
 import NetworkCall from "../networkCall";
 import UserRequest from "../request/userRequest";
 import { store } from "../../store";
-import { setFilterCanonizedTopics } from "../../store/slices/filtersSlice";
+import {
+  setFilterCanonizedTopics,
+  setRemoveFilters,
+} from "../../store/slices/filtersSlice";
 import { setHeaderData } from "src/store/slices/notificationSlice";
 import { setIsChecked } from "src/store/slices/recentActivitiesSlice";
 
@@ -81,6 +84,21 @@ export const logout = async (error = "", status = null, count: number = 1) => {
       store.dispatch(updateStatus(status));
       store.dispatch(setHeaderData({ count: 0, list: [] }));
       store.dispatch(setIsChecked(false));
+      store.dispatch(
+        setRemoveFilters({
+          page_number: 1,
+          page_size: 15,
+          nameSpace: "/General/",
+          namespace_id: "1",
+          asofdate: Date.now() / 1000,
+          asof: "default",
+          filterByScore: 0,
+          algorithm: "blind_popularity",
+          search: "",
+          includeReview: false,
+          is_archive: 0,
+        })
+      );
 
       if (+state.ui.apiStatus === +status) {
         return;

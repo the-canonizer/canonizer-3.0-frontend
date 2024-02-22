@@ -397,7 +397,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
         <aside
           className={
             styles.miniSide +
-            " topicPageNewLayoutSidebar leftSideBar miniSideBar"
+            " topicPageNewLayoutSidebar leftSideBar miniSideBar printHIde"
           }
         >
           <SideBar
@@ -411,7 +411,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
           />
         </aside>
 
-        <div className={styles.pageContent + " pageContentWrap"}>
+        <div className={styles.pageContent + " pageContentWrap"} id="printWrap">
           {(tree && tree["1"]?.is_valid_as_of_time) || asof == "default" ? (
             <CampInfoBar
               isTopicPage={true}
@@ -452,7 +452,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
                     ? Date.now() / 1000
                     : asofdate)
                 ))) && (
-              <div className={styles.imageWrapper}>
+              <div className={`printHIde ${styles.imageWrapper}`}>
                 <div>
                   <Image
                     preview={false}
@@ -537,12 +537,16 @@ const TopicDetails = ({ serverSideCall }: any) => {
                         loadingIndicator={loadingIndicator}
                         backGroundColorClass={backGroundColorClass}
                       />
+                      
                       <CurrentCampCard
                         loadingIndicator={loadingIndicator}
                         backGroundColorClass={backGroundColorClass}
                       />
 
-                      <Row gutter={15} className={styles.bottomRow}>
+                      <Row
+                        gutter={15}
+                        className={`${styles.bottomRow} printHIde`}
+                      >
                         <Col xs={24} sm={24} md={12} lg={12} xl={12} xxl={12}>
                           <CampRecentActivities />
                         </Col>
@@ -571,7 +575,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
             campExist &&
             !campExist?.camp_exist && (
               <Alert
-                className="alert-camp-created-on"
+                className="alert-camp-created-on printHIde"
                 message="The camp was first created on"
                 type="info"
                 description={
@@ -593,7 +597,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
             )}
         </div>
       </div>
-      <BackTop />
+      <BackTop className="printHIde" />
     </Fragment>
   );
 };
