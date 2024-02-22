@@ -725,8 +725,8 @@ img {
 // print camp strat
 @media print {
   @page {
-    size: A4 landscape;
-    orientation: landscape;
+    size: A4 portrait;
+    orientation: portrait;
   }
 
   body {
@@ -736,13 +736,26 @@ img {
   body * {
     visibility: hidden;
   }
+
   #printWrap,
   #printWrap * {
     visibility: visible;
   }
+
+  #printWrap:last-child {
+    page-break-after: auto;
+  }
+
   .printHIde {
     display: none !important;
     visibility: hidden;
+    opacity: 0 !important;
+    width: 0 !important;
+    min-width: 0 !important;
+    max-width: 0 !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
   }
 }
 // print camp end

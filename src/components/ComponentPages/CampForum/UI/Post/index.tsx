@@ -73,7 +73,7 @@ const PostUI = ({
           ) : (
             <Fragment>
               <Text id="thread-create-label">{`Thread Created at ${moment(
-                getTime(createdAt)
+                getTime(createdAt || currentThread?.created_at)
               ).format("MMM Do YYYY, h:mm:ss a")}`}</Text>{" "}
               |{" "}
               <Text id="started-by-label">

@@ -159,6 +159,38 @@ const InfoBar = ({
     }
   };
 
+  const onPrint = () => {
+    const hiddenElem = document.querySelector(".currentCampRecords"),
+      insideDiv = hiddenElem?.querySelector(".ant-collapse-item"),
+      header: any = hiddenElem?.querySelector(".ant-collapse-header");
+
+    if (!insideDiv?.classList?.contains("ant-collapse-item-active")) {
+      header.click();
+    }
+
+    setTimeout(() => {
+      if (insideDiv?.classList?.contains("ant-collapse-item-active")) {
+        header.click();
+      }
+    }, 5000);
+  };
+
+  useEffect(() => {
+    window.onbeforeprint = () => onPrint();
+  }, []);
+
+  const onPrintCamp = (e) => {
+    e?.preventDefault();
+    e?.stopPropagation();
+
+    onPrint();
+
+    setTimeout(() => {
+      window.focus();
+      window.print();
+    }, 100);
+  };
+
   const campForumDropdownMenu = (
     <Menu className={styles.campForumDropdownMenu}>
       {isUserAuthenticated && is_admin && (
@@ -365,6 +397,19 @@ const InfoBar = ({
           />
         )}
       </Menu.Item>
+      <Menu.Item
+        icon={
+          <span className={styles.svgIconCode}>
+            <PrinterOutlined />
+          </span>
+        }
+      >
+        {isTopicPage && (
+          <a onClick={onPrintCamp}>
+            <span>Print</span>
+          </a>
+        )}
+      </Menu.Item>
     </Menu>
   );
 
@@ -373,51 +418,6 @@ const InfoBar = ({
       setIsCampBtnVisible(true);
     }
   }, [router?.pathname]);
-
-  const onPrintCamp = (e) => {
-    e?.preventDefault();
-    e?.stopPropagation();
-
-    const head = document.querySelector("head"),
-      table = document.getElementById("printWrap"),
-      hiddenElem = document.querySelector(".currentCampRecords"),
-      hdht = head?.outerHTML,
-      tbht = table?.outerHTML,
-      defaultSpecs = ["fullscreen=no", "titlebar=yes", "scrollbars=yes"],
-      defaultName = "_blank",
-      insideDiv = hiddenElem?.querySelector(".ant-collapse-item");
-
-    insideDiv.classList.add("ant-collapse-item-active");
-
-    setTimeout(() => {
-      insideDiv.classList.remove("ant-collapse-item-active");
-    }, 2000);
-
-    const WinPrint = window.open("", defaultName, defaultSpecs?.join(","));
-
-    WinPrint.document.write(
-      `<!DOCTYPE html>
-          <html>
-            <head>
-              <title>${window.document.title}</title>
-            </head>
-            <body>
-              ${tbht}
-            </body>
-          </html>`
-    );
-
-    WinPrint.document.getElementsByTagName("head")[0].innerHTML = hdht;
-
-    setTimeout(() => {
-      WinPrint.document.close();
-      WinPrint.focus();
-      WinPrint.print();
-      setTimeout(function () {
-        WinPrint.close();
-      }, 1);
-    }, 1000);
-  };
 
   return (
     <div
