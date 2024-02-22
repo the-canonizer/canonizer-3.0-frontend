@@ -159,27 +159,34 @@ const InfoBar = ({
     }
   };
 
+  const onPrint = () => {
+    const hiddenElem = document.querySelector(".currentCampRecords"),
+      insideDiv = hiddenElem?.querySelector(".ant-collapse-item"),
+      header: any = hiddenElem?.querySelector(".ant-collapse-header");
+
+    if (!insideDiv?.classList?.contains("ant-collapse-item-active")) {
+      header.click();
+    }
+
+    setTimeout(() => {
+      if (insideDiv?.classList?.contains("ant-collapse-item-active")) {
+        header.click();
+      }
+    }, 5000);
+  };
+
+  useEffect(() => {
+    window.onbeforeprint = () => onPrint();
+  }, []);
+
   const onPrintCamp = (e) => {
     e?.preventDefault();
     e?.stopPropagation();
 
-    const hiddenElem = document.querySelector(".currentCampRecords"),
-      insideDiv = hiddenElem?.querySelector(".ant-collapse-item"),
-      insideConDiv = hiddenElem?.querySelector(".ant-collapse-content");
-
-    insideDiv.classList.add("ant-collapse-item-active");
-    insideConDiv.classList.add("ant-collapse-content-active");
-    insideConDiv.classList.remove("ant-collapse-content-inactive");
-    insideConDiv.classList.remove("ant-collapse-content-hidden");
+    onPrint();
 
     setTimeout(() => {
-      insideDiv.classList.remove("ant-collapse-item-active");
-      insideConDiv.classList.remove("ant-collapse-content-active");
-      insideConDiv.classList.add("ant-collapse-content-inactive");
-      insideConDiv.classList.add("ant-collapse-content-hidden");
-    }, 5000);
-
-    setTimeout(() => {
+      window.focus();
       window.print();
     }, 100);
   };

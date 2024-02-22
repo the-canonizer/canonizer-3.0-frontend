@@ -84,7 +84,7 @@ function Footer() {
 
   return (
     <Fragment>
-      <footer className={styles.wrap}>
+      <footer className={`printHIde ${styles.wrap}`}>
         <div className={styles.container}>
           <Row>
             <Col xs={24} sm={10} md={7} lg={6}>

@@ -397,7 +397,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
         <aside
           className={
             styles.miniSide +
-            " topicPageNewLayoutSidebar leftSideBar miniSideBar"
+            " topicPageNewLayoutSidebar leftSideBar miniSideBar printHIde"
           }
         >
           <SideBar
@@ -452,7 +452,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
                     ? Date.now() / 1000
                     : asofdate)
                 ))) && (
-              <div className={styles.imageWrapper}>
+              <div className={`printHIde ${styles.imageWrapper}`}>
                 <div>
                   <Image
                     preview={false}
@@ -537,6 +537,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
                         loadingIndicator={loadingIndicator}
                         backGroundColorClass={backGroundColorClass}
                       />
+                      
                       <CurrentCampCard
                         loadingIndicator={loadingIndicator}
                         backGroundColorClass={backGroundColorClass}
@@ -574,7 +575,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
             campExist &&
             !campExist?.camp_exist && (
               <Alert
-                className="alert-camp-created-on"
+                className="alert-camp-created-on printHIde"
                 message="The camp was first created on"
                 type="info"
                 description={
@@ -596,7 +597,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
             )}
         </div>
       </div>
-      <BackTop />
+      <BackTop className="printHIde" />
     </Fragment>
   );
 };
