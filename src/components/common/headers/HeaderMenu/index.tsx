@@ -77,6 +77,20 @@ const HeaderMenu = ({ loggedUser }: any) => {
   const showEmpty = (msg) => {
     return <Empty description={msg} />;
   };
+  const Highlighted = ({text = '', highlight = ''}) => {
+    if (!highlight.trim()) {
+      return <label>{text}</label>
+    }
+    const regex = new RegExp(`(${highlight})`, 'gi')
+    const parts =text.split(regex)
+    return (
+      <>
+         {parts.map((part, i) => (
+             regex.test(part) ? <mark className={styles.highlighter} key={i}>{part}</mark> : <label className={styles.highlighter}  key={i}>{part}</label>
+         ))}
+     </>
+    )
+ }
 
   const searchValueLength = 30;
 
@@ -99,47 +113,15 @@ const HeaderMenu = ({ loggedUser }: any) => {
                   searchValue
                     ?.toLowerCase()
                     // .replace(/^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/g, " ")
-                    .trim()
                 );
                 {
                   const length = searchValue.length;
-                  const prefix = x.type_value.substring(0, index);
-                  const suffix = x.type_value.substring(index + length);
-                  const match = x.type_value.substring(index, index + length);
                   return (
                     <>
                       <li style={{ cursor: "default" }}>
                         <Link href={`/${x.link}`}>
                           <a>
-                            {!!prefix && (
-                              <label
-                                style={{
-                                  cursor: "pointer",
-                                  fontSize: "1.17em",
-                                }}
-                              >
-                                {prefix}
-                              </label>
-                            )}
-                            <label
-                              style={{
-                                cursor: "pointer",
-                                backgroundColor: "#fef2d2",
-                                fontSize: "1.17em",
-                              }}
-                            >
-                              {match}
-                            </label>
-                            {!!suffix && (
-                              <label
-                                style={{
-                                  cursor: "pointer",
-                                  fontSize: "1.17em",
-                                }}
-                              >
-                                {suffix}
-                              </label>
-                            )}
+                              <Highlighted text={x.type_value} highlight={searchValue}/>
                           </a>
                         </Link>
                       </li>
@@ -189,45 +171,13 @@ const HeaderMenu = ({ loggedUser }: any) => {
                     .trim()
                 );
                 {
-                  const length = searchValue.length;
-                  const prefix = x.type_value.substring(0, index);
-                  const suffix = x.type_value.substring(index + length);
-                  const match = x.type_value.substring(index, index + length);
                   return (
                     <>
                       <li style={{ cursor: "default" }}>
                         <Link href={`/${jsonData[0][1]?.camp_link}`}>
                           <a className={styles.camp_heading_color}>
                             {" "}
-                            {!!prefix && (
-                              <label
-                                style={{
-                                  cursor: "pointer",
-                                  fontSize: "1.17em",
-                                }}
-                              >
-                                {prefix}
-                              </label>
-                            )}
-                            <label
-                              style={{
-                                cursor: "pointer",
-                                backgroundColor: "#fef2d2",
-                                fontSize: "1.17em",
-                              }}
-                            >
-                              {match}
-                            </label>
-                            {!!suffix && (
-                              <label
-                                style={{
-                                  cursor: "pointer",
-                                  fontSize: "1.17em",
-                                }}
-                              >
-                                {suffix}
-                              </label>
-                            )}
+                              <Highlighted text={x.type_value} highlight={searchValue}/>
                           </a>
                         </Link>
 
@@ -298,10 +248,20 @@ const HeaderMenu = ({ loggedUser }: any) => {
                     .trim()
                 );
                 {
-                  const length = searchValue.length;
-                  const prefix = x.type_value.substring(0, index);
-                  const suffix = x.type_value.substring(index + length);
-                  const match = x.type_value.substring(index, index + length);
+                  const Highlighted = ({text = '', highlight = ''}) => {
+                    if (!highlight.trim()) {
+                      return <span>{text}</span>
+                    }
+                    const regex = new RegExp(`(${highlight})`, 'gi')
+                    const parts =text.split(regex)
+                    return (
+                      <>
+                         {parts.filter(part => part).map((part, i) => (
+                             regex.test(part) ? <mark  className={styles.highlighter} key={i} dangerouslySetInnerHTML={{__html:part}}></mark> : <label className={styles.highlighter} key={i} dangerouslySetInnerHTML={{__html:part}}></label>
+                         ))}
+                     </>
+                    )
+                 }
                   return (
                     <>
                       <li style={{ cursor: "default" }}>
@@ -321,27 +281,9 @@ const HeaderMenu = ({ loggedUser }: any) => {
                             {covertToTime(x?.go_live_time)}
                           </div>
                         </div>
-
                         <div className="d-flex flex-wrap w-100 mb-1">
                           <div>
-                            {!!prefix && (
-                              <div
-                                className={styles.inner_html_prefix}
-                                dangerouslySetInnerHTML={{ __html: prefix }}
-                              ></div>
-                            )}
-                            &nbsp;
-                            <div
-                              className={styles.inner_html_match}
-                              dangerouslySetInnerHTML={{ __html: match }}
-                            ></div>
-                            &nbsp;
-                            {!!suffix && (
-                              <div
-                                className={styles.inner_html_prefix}
-                                dangerouslySetInnerHTML={{ __html: suffix }}
-                              ></div>
-                            )}
+                                <Highlighted text={x.type_value} highlight={searchValue}/>
                           </div>
                         </div>
                         {/* {" "} */}
@@ -395,45 +337,13 @@ const HeaderMenu = ({ loggedUser }: any) => {
                     .trim()
                 );
                 {
-                  const length = searchValue.length;
-                  const prefix = x.type_value.substring(0, index);
-                  const suffix = x.type_value.substring(index + length);
-                  const match = x.type_value.substring(index, index + length);
                   return (
                     <>
                       <li style={{ cursor: "default" }}>
                         <div className="d-flex flex-wrap">
                           <Link href={`${x.link}`}>
                             <a>
-                              {!!prefix && (
-                                <label
-                                  style={{
-                                    cursor: "pointer",
-                                    fontSize: "1.17em",
-                                  }}
-                                >
-                                  {prefix}
-                                </label>
-                              )}
-                              <label
-                                style={{
-                                  cursor: "pointer",
-                                  backgroundColor: "#fef2d2",
-                                  fontSize: "1.17em",
-                                }}
-                              >
-                                {match}
-                              </label>
-                              {!!suffix && (
-                                <label
-                                  style={{
-                                    cursor: "pointer",
-                                    fontSize: "1.17em",
-                                  }}
-                                >
-                                  {suffix}
-                                </label>
-                              )}
+                                <Highlighted text={x.type_value} highlight={searchValue}/>
                             </a>
                           </Link>
                           <span className="ml_auto suppport_camps">

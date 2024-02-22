@@ -280,3 +280,15 @@ export const checkTopicCampExistAPICall = async (
     handleError(err);
   }
 };
+export const CheckCampSignApiCall = async (topic_num, camp_num) => {
+  let queryParams = {
+    topic_num,
+    camp_num,
+  };
+  try {
+    const res = await NetworkCall.fetch(TreeRequest.CheckCampSign(queryParams));
+    return res;
+  } catch (err) {
+    return err;
+  }
+};

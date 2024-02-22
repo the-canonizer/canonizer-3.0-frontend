@@ -15,9 +15,10 @@ import Link from "next/link";
 import styles from "./advanceSearchFilter.module.scss";
 import { Fragment } from "react";
 import filter from "src/assets/image/filter.svg";
+import upArrow from "src/assets/image/ant-design--caret-up-filled.svg"
 import Image from "next/image";
 import { LeftOutlined } from "@ant-design/icons";
-import { CloseCircleOutlined } from "@ant-design/icons";
+import { CloseCircleOutlined,CaretUpOutlined } from "@ant-design/icons";
 
 export default function AdvanceFilter() {
   const { Panel } = Collapse;
@@ -61,11 +62,7 @@ export default function AdvanceFilter() {
       <Collapse
         className={`${styles.cardAccordian} topicListFilterCardCollapse`}
         expandIconPosition="right"
-        expandIcon={() => (
-          <div className={styles.collapseIcon}>
-            <i className="icon-angle-up"></i>
-          </div>
-        )}
+        expandIcon={({ isActive }) => <CaretUpOutlined rotate={isActive ? 180 : 180} />}
         bordered={false}
         // defaultActiveKey={["1", "2", "3"]}
         // accordion={false}

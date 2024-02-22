@@ -9,6 +9,8 @@ const defaultValue = {
   redirect_tab_setting: "",
   score_checkbox: false,
   archived_checkbox: false,
+  sortLatestTopic:false,
+  sortScoreViewTopic:false,
   reasonData: {},
 };
 
@@ -30,6 +32,12 @@ export const utilsSlice = createSlice({
     setArchivedCheckBox: (state, action) => {
       state.archived_checkbox = action.payload;
     },
+    setSortLatestTopic: (state, action) => {
+      state.sortLatestTopic = action.payload;
+    },
+    setScoreViewTopic: (state, action) => {
+      state.sortScoreViewTopic = action.payload;
+    },
   },
 });
 
@@ -38,6 +46,8 @@ export const {
   setScoreCheckBox,
   setReasonData,
   setArchivedCheckBox,
+  setSortLatestTopic,
+  setScoreViewTopic,
 } = utilsSlice.actions;
 
 export default utilsSlice.reducer;

@@ -35,6 +35,7 @@ import ManageSupport from "../../ManageSupport";
 import SignCamp from "./SignCamp";
 import { getTreesApi } from "src/network/api/campDetailApi";
 import { setIsSupportModal } from "src/store/slices/topicSlice";
+import { showLoginModal } from "src/store/slices/uiSlice";
 
 const { Paragraph } = Typography;
 const { Panel } = Collapse;
@@ -97,6 +98,9 @@ const SupportTreeCard = ({
     algorithm: state.filters?.filterObject?.algorithm,
     asofdate: state.filters?.filterObject?.asofdate,
     isModalOpenSupportCamps: state?.topic?.isModalOpenSupportCamps,
+  }));
+  const { manageSupportStatusCheck } = useSelector((state: RootState) => ({
+    manageSupportStatusCheck: state.topicDetails.manageSupportStatusCheck,
   }));
   const { isUserAuthenticated } = isAuth();
 
@@ -175,6 +179,9 @@ const SupportTreeCard = ({
     if (isUserAuthenticated) {
       getNickNameListData();
     }
+    if (manageSupportStatusCheck == false) {
+      dispatch(setIsSupportModal(false));
+    }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isUserAuthenticated]);
@@ -201,10 +208,14 @@ const SupportTreeCard = ({
   };
 
   const handleClickSupportCheck = () => {
-    dispatch(setManageSupportUrlLink(manageSupportPath));
-    dispatch(setManageSupportStatusCheck(true));
-    setSelectNickId(null);
-    showModalSupportCamps();
+    if (isUserAuthenticated) {
+      dispatch(setManageSupportUrlLink(manageSupportPath));
+      dispatch(setManageSupportStatusCheck(true));
+      setSelectNickId(null);
+      showModalSupportCamps();
+    } else {
+      dispatch(showLoginModal());
+    }
   };
 
   useEffect(() => {
@@ -258,6 +269,7 @@ const SupportTreeCard = ({
         onCancel={() => {
           setSignModalOpen(false);
         }}
+        destroyOnClose={true}
       >
         <SignCamp
           setSignModalOpen={setSignModalOpen}
@@ -354,7 +366,7 @@ const SupportTreeCard = ({
                                   : "This will delegate your support to the selected supporter"
                               }
                             >
-                              <a>
+                              <a className="printHIde">
                                 <Button
                                   id="supportTreeDelegateYourSupport"
                                   disabled={
@@ -376,10 +388,15 @@ const SupportTreeCard = ({
                           )}
                         </>
                       ) : (
-                        <a>
+                        <a className="printHIde">
                           <Button
                             id="supportTreeRemoveSupport"
-                            disabled={asof == "bydate" || isRemovingSupport}
+                            disabled={
+                              asof == "bydate" ||
+                              isRemovingSupport ||
+                              !isUserAuthenticated ||
+                              campRecord.is_archive
+                            }
                             onClick={() => {
                               currentGetCheckSupportExistsData.is_delegator
                                 ? setIsDelegateSupportTreeCardModal(true)

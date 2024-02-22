@@ -114,7 +114,9 @@ function HistoryContainer() {
       const reqBody = {
         topic_num: router?.query.camp[0].split("-")[0],
         camp_num:
-          historyOf != "topic" ? router?.query.camp[1].split("-")[0] : 1,
+          historyOf != "topic"
+            ? router?.query.camp?.at(1)?.split("-")?.at(0) || 1
+            : 1,
         type: activeTab,
         per_page: 4,
         page: count.current,

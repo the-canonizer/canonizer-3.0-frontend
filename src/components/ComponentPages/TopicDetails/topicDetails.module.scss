@@ -461,3 +461,24 @@
   margin-right: 14%;
   margin-bottom: 18%;
 }
+.shareIcon {
+  font-size: 14px;
+  font-weight: 700;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: transparent !important;
+  outline: none !important;
+  padding: 0;
+  border: none !important;
+  box-shadow: none !important;
+  color: #1890ff;
+  margin-right: 22px;
+  span {
+    &:first-child {
+      margin-right: 0px;
+    }
+  }
+}

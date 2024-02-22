@@ -174,6 +174,8 @@ const NetworkConstants = {
     //supportTreeAndScoreCount
     SupportTree: `${BaseCanonizerApiUrl}/support-and-score-count`,
 
+    CampSignCheck: `${BaseCanonizerApiUrl}/camp/sign/check`,
+
     //removeSupportedCamps
     RemoveCamps: `${BaseCanonizerApiUrl}/support/update`,
 
