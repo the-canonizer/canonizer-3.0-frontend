@@ -81,7 +81,8 @@ const HeaderMenu = ({ loggedUser }: any) => {
     if (!highlight.trim()) {
       return <label>{text}</label>
     }
-    const regex = new RegExp(`(${highlight})`, 'gi')
+    const escapedHighlight = highlight.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+    const regex = new RegExp(`(${escapedHighlight})`, 'gi');
     const parts =text.split(regex)
     return (
       <>
@@ -252,7 +253,8 @@ const HeaderMenu = ({ loggedUser }: any) => {
                     if (!highlight.trim()) {
                       return <span>{text}</span>
                     }
-                    const regex = new RegExp(`(${highlight})`, 'gi')
+                    const escapedHighlight = highlight.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+                    const regex = new RegExp(`(${escapedHighlight})`, 'gi');
                     const parts =text.split(regex)
                     return (
                       <>
