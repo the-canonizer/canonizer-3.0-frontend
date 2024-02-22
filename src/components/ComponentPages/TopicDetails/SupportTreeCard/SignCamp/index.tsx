@@ -93,6 +93,14 @@ const SignCamp = ({ setSignModalOpen, setLoadingIndicatorSupport }: any) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const validationTypeColor = (type) => {
+    if(type === 'info'){
+      return styles.info
+    }else if (type === 'warning') {
+      return styles.warning
+    }
+  }
+
   return loadingNickname ? (
     <CustomSkelton
       skeltonFor="manageSupportCard"
@@ -105,9 +113,11 @@ const SignCamp = ({ setSignModalOpen, setLoadingIndicatorSupport }: any) => {
       <div>
         {signCampData ? (
           <>
-            <span className={styles.warning} id="getSupportStatusDataWarning">
-              <strong> {signCampData?.warning_type}! </strong>
-              {signCampData?.warning}
+            <span className={validationTypeColor(signCampData?.warning_type)} id="getSupportStatusDataWarning">
+              <strong> 
+                {signCampData?.warning_type[0]?.toUpperCase()+signCampData?.warning_type.substr(1)}! 
+              </strong>
+              {" "+signCampData?.warning}
             </span>
             <Col md={12}>
               {signCampData?.data?.remove_camps?.map((tag) => {
