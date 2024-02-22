@@ -89,7 +89,10 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
   const logOut = async () => await logout();
 
   const onClick = ({ key }) => {
-    if (key == 3) logOut();
+    if (key == 3) {
+      router.push("/browse", null, { shallow: true });
+      logOut();
+    }
   };
 
   const menu = (
