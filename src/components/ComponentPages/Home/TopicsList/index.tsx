@@ -516,7 +516,7 @@ const TopicsList = () => {
             <div className={styles.footer}>
               {router?.asPath.includes("/browse")
                 ? LoadMoreTopics
-                : ViewAllTopics}
+                : topicsData && topicsData?.topics?.length>=15? ViewAllTopics: null}
             </div>
           }
           bordered
