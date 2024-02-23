@@ -77,12 +77,14 @@
     "react-places-autocomplete": "^7.3.0",
     "react-promise-tracker": "^2.1.0",
     "react-redux": "^7.2.6",
+    "react-slick": "^0.30.2",
     "react-usestateref": "^1.0.8",
     "redux": "4.0.5",
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.4.2",
     "sanitize-html": "^2.7.0",
-    "sass": "^1.44.0"
+    "sass": "^1.44.0",
+    "slick-carousel": "^1.8.1"
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^13.4.9",

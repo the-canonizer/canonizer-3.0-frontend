@@ -90,6 +90,7 @@ export async function getServerSideProps({ req }) {
   }
 
   const resData = await GetHotTopicDetails(token as string);
+  console.log("🚀 ~ getServerSideProps ~ resData:", resData);
 
   return {
     props: {

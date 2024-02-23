@@ -84,9 +84,7 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
                     />
                   </Popover>
                 </div>
-              ) : (
-                ""
-              )}
+              ) : null}
             </div>
           </>
         }
