@@ -120,7 +120,7 @@ const SignCamp = ({ setSignModalOpen, setLoadingIndicatorSupport }: any) => {
               {" "+signCampData?.warning}
             </span>
             <Col md={12}>
-              {signCampData?.data?.remove_camps?.map((tag) => {
+              {signCampData?.remove_camps?.map((tag) => {
                 return (
                   <Tag
                     data-testid="camp_name"
