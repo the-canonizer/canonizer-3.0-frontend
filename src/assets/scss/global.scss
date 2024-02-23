@@ -2669,9 +2669,14 @@ div[role="option"]::before {
 }
 
 .topics-list-card-header {
-  padding: 15px;
+  padding: 15px 10px;
   display: flex;
-  gap: 1rem;
+  
+  gap: 8px;
+  @media screen and (max-width: 1300px)
+  {
+    flex-wrap: wrap;
+  }
 
   @media screen and (min-width: 768px) {
     justify-content: space-between;
@@ -2685,12 +2690,15 @@ div[role="option"]::before {
   .ant-select.ant-select-lg {
     margin-right: auto;
 
-    @media screen and (min-width: 768px) {
-      margin-left: 15px;
+    
+      @media screen and (min-width: 768px) {
+      margin-left: 0px;
       max-width: 100%;
       width: 100%;
     }
-
+    @media screen and (max-width: 1500px) {
+      margin-left: 0;
+    }
     @media screen and (max-width: 767px) {
       width: 100%;
     }

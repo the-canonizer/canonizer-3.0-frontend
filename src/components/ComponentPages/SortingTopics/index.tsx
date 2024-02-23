@@ -66,7 +66,7 @@ const SortTopics =()=>{
         <Dropdown menu={{ items }} trigger={['click']}>
           <a onClick={(e) => e.preventDefault()} className={styles.sort_topic}>
             <span>
-              {sortLatestTopic?"Latest":sortScoreViewTopic? "Score Value":"Sort by"}
+              {sortLatestTopic?"Latest":sortScoreViewTopic? "Score Value":"Sort"}
             <Image
              width={20}
              height={20}

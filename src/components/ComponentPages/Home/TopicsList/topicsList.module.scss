@@ -308,10 +308,10 @@
   // overflow-x: hidden;
   position: relative;
 
-  @media screen and (min-width: 1025px) {
+  @media screen and (min-width: 991px) {
     [class*="ant-select-single"] {
       // max-width: 58% !important;
-      max-width: calc(100% - 157px) !important;
+      max-width: calc(100% - 255px) !important;
     }
   }
 }
@@ -394,7 +394,7 @@
       width: 100%;
     }
     @media screen and (min-width: 1350px) {
-      width: 40% !important;
+      width: 31% !important;
     }
     @media screen and (min-width: 1200px) and (max-width: 1350px) {
       width: 40% !important;
