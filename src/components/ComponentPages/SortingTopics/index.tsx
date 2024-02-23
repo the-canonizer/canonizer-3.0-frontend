@@ -24,7 +24,6 @@ const SortTopics =()=>{
       );
       const router = useRouter()
 
-      console.log(sortLatestTopic,sortScoreViewTopic,"sort")
 
       useEffect(()=>{
         if(router.pathname == "/"){

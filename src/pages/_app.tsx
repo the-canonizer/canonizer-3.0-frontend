@@ -24,7 +24,7 @@ import { createToken } from "src/network/api/userApi";
 function WrappedApp({ Component, pageProps, meta, canonical_url }: any) {
   const router = useRouter(),
     // eslint-disable-next-line
-    [_isAuthenticated, setIsAuthenticated, isAuthenticatedRef] = useState(
+    [_, setIsAuthenticated, isAuthenticatedRef] = useState(
       !!(getCookies() as any)?.loginToken
     );
 
@@ -32,9 +32,6 @@ function WrappedApp({ Component, pageProps, meta, canonical_url }: any) {
     const fetchToken = async () => {
       if (!(getCookies() as any)?.loginToken) {
         setIsAuthenticated(false);
-      }
-
-      if (!isAuthenticatedRef.current) {
         try {
           await createToken();
         } catch (error) {
@@ -67,9 +64,7 @@ function WrappedApp({ Component, pageProps, meta, canonical_url }: any) {
         </ErrorBoundary>
       </Provider>
     </CookiesProvider>
-  ) : (
-    <></>
-  );
+  ) : null;
 }
 
 let timeout;

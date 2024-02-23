@@ -34,11 +34,6 @@ export const getCanonizedTopicsApi = async (reqBody, loadMore = false) => {
 };
 
 export const getCanonizedNameSpacesApi = async (tc = "") => {
-  // let token = tc;
-  // if (!tc) {
-  //   const response = await createToken();
-  //   token = response?.access_token;
-  // }
   try {
     const nameSpaces = await NetworkCall.fetch(
       HomePageRequests.getCanonizedNameSpaces(tc)
@@ -76,12 +71,6 @@ export const getRecentActivitiesApi = async (
 };
 
 export const getCanonizedAlgorithmsApi = async (loginToken = null) => {
-  // let token = tc;
-  // if (!tc) {
-  //   const response = await createToken();
-  //   token = response?.access_token;
-  // }
-
   try {
     const algorithms = await NetworkCall.fetch(
       HomePageRequests.getCanonizedAlgorithms(loginToken),
@@ -95,12 +84,6 @@ export const getCanonizedAlgorithmsApi = async (loginToken = null) => {
 };
 
 export const getCanonizedWhatsNewContentApi = async (tc = "") => {
-  // let token = tc;
-  // if (!tc) {
-  //   const response = await createToken();
-  //   token = response?.access_token;
-  // }
-
   try {
     const whatsNew = await NetworkCall.fetch(
       HomePageRequests.getCanonizedWhatsNewContent(tc)
