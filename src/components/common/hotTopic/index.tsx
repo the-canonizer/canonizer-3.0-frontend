@@ -23,7 +23,7 @@ function HotTopic() {
   }));
 
   const settings = {
-    autoplay: false,
+    autoplay: true,
     dots: true,
     arrows: true,
     infinite: true,
