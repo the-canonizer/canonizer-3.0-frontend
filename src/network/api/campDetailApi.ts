@@ -89,6 +89,19 @@ export const getCurrentTopicRecordApi = async (reqBody, loginToken = null) => {
   }
 };
 
+export const campSignApi = async (reqBody, loginToken = null) => {
+  try {
+    const campSign = await NetworkCall.fetch(
+      TreeRequest.campSignRequest(reqBody, loginToken),
+      false
+    );
+
+    return campSign;
+  } catch (error) {
+    message.error(error?.error?.data?.message);
+  }
+};
+
 export const getCurrentCampRecordApi = async (reqBody, loginToken = null) => {
   try {
     const currentCampRecord = await NetworkCall.fetch(
@@ -265,5 +278,17 @@ export const checkTopicCampExistAPICall = async (
     return res;
   } catch (err) {
     handleError(err);
+  }
+};
+export const CheckCampSignApiCall = async (topic_num, camp_num) => {
+  let queryParams = {
+    topic_num,
+    camp_num,
+  };
+  try {
+    const res = await NetworkCall.fetch(TreeRequest.CheckCampSign(queryParams));
+    return res;
+  } catch (err) {
+    return err;
   }
 };

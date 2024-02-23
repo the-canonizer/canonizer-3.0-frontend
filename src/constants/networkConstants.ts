@@ -64,6 +64,7 @@ const NetworkConstants = {
     subscribeToCamp: `${BaseCanonizerApiUrl}/camp/subscription`,
     GetCampBreadCrumb: `${BaseCanonizerApiUrl}/get-camp-breadcrumb`,
     GetTopicActivityLog: `${BaseCanonizerApiUrl}/get-camp-activity-log`,
+    CampSign: `${BaseCanonizerApiUrl}/camp/sign`,
     // resend otp for registration
     ResendOTPForRegistration: `${BaseCanonizerApiUrl}/user/resend-otp`,
 
@@ -172,6 +173,8 @@ const NetworkConstants = {
 
     //supportTreeAndScoreCount
     SupportTree: `${BaseCanonizerApiUrl}/support-and-score-count`,
+
+    CampSignCheck: `${BaseCanonizerApiUrl}/camp/sign/check`,
 
     //removeSupportedCamps
     RemoveCamps: `${BaseCanonizerApiUrl}/support/update`,

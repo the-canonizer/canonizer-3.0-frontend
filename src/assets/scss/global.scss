@@ -2016,6 +2016,43 @@ del.diffmod img {
     }
   }
 
+  .topicDetailsSupportCollapseFooter {
+    display: flex;
+    justify-content: space-between;
+    border-top: #f0f0f0 1px solid;
+    margin: 20px -20px 0 -20px;
+    padding: 20px 20px 0 20px;
+
+    .ant-btn {
+      display: flex;
+      align-items: center;
+      padding: 8px 22px;
+      height: 38px;
+      color: #fff;
+      font-weight: 500;
+      border: none;
+
+      &:disabled {
+        color: rgba(0, 0, 0, 0.25);
+      }
+
+      @media screen and (min-width: 576px) {
+        &:not(:last-child) {
+          margin-right: 28px;
+        }
+      }
+
+      @media screen and (max-width: 575px) {
+        width: 100%;
+        justify-content: center;
+
+        & + .ant-btn {
+          margin-top: 0.5rem;
+        }
+      }
+    }
+  }
+
   .topicDetailsNewsFeedsList {
     margin: 0;
     padding-left: 20px;
