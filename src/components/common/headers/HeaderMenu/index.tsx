@@ -87,7 +87,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
     return (
       <>
          {parts.map((part, i) => (
-             regex.test(part) ? <mark className={styles.highlighter} key={i}>{part}</mark> : <label className={styles.highlighter}  key={i}>{part}</label>
+             regex.test(part) ? <mark className={styles.highlighter} key={i}>{part}</mark> : <label style={{cursor:"pointer", fontWeight:"bold"}} className={styles.highlighter}  key={i}>{part}</label>
          ))}
      </>
     )
@@ -249,7 +249,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
                     .trim()
                 );
                 {
-                  const Highlighted = ({text = '', highlight = ''}) => {
+                  const HighlightedForCampStatement = ({text = '', highlight = ''}) => {
                     if (!highlight.trim()) {
                       return <span>{text}</span>
                     }
@@ -259,7 +259,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
                     return (
                       <>
                          {parts.filter(part => part).map((part, i) => (
-                             regex.test(part) ? <mark  className={styles.highlighter} key={i} dangerouslySetInnerHTML={{__html:part}}></mark> : <label className={styles.highlighter} key={i} dangerouslySetInnerHTML={{__html:part}}></label>
+                             regex.test(part) ? <mark  className={styles.highlighterforCampStatement} key={i} dangerouslySetInnerHTML={{__html:part}}></mark> : <label className={styles.highlighterforCampStatement} key={i} dangerouslySetInnerHTML={{__html:part}}></label>
                          ))}
                      </>
                     )
@@ -285,7 +285,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
                         </div>
                         <div className="d-flex flex-wrap w-100 mb-1">
                           <div>
-                                <Highlighted text={x.type_value} highlight={searchValue}/>
+                                <HighlightedForCampStatement text={x.type_value} highlight={searchValue}/>
                           </div>
                         </div>
                         {/* {" "} */}
