@@ -46,6 +46,7 @@ function WrappedApp({ Component, pageProps, meta, canonical_url }: any) {
     };
 
     fetchToken();
+    // eslint-disable-next-line
   }, [
     router.pathname,
     +router.query?.camp?.at(1)?.split("-")[0],

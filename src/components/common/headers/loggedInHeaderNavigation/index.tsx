@@ -136,6 +136,7 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
     if (isUserAuthenticated && loggedInUser && !loggedInUser?.profile_picture) {
       getGravatarImage(loggedInUser?.email);
     }
+    //eslint-disable-next-line
   }, [loggedInUser]);
 
   return (
