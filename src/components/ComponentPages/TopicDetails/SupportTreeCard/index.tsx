@@ -10,8 +10,6 @@ import {
   Modal,
   Form,
   Spin,
-  Image,
-  Tooltip,
 } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
@@ -32,7 +30,6 @@ import {
 import { getNickNameList } from "../../../../network/api/userApi";
 import SupportRemovedModal from "src/components/common/supportRemovedModal";
 import ManageSupport from "../../ManageSupport";
-import SignCamp from "./SignCamp";
 import { getTreesApi } from "src/network/api/campDetailApi";
 import { setIsSupportModal } from "src/store/slices/topicSlice";
 import { showLoginModal } from "src/store/slices/uiSlice";
@@ -107,8 +104,6 @@ const SupportTreeCard = ({
   const router = useRouter();
 
   const [userNickNameList, setUserNickNameList] = useState([]);
-
-  const [signModalOpen, setSignModalOpen] = useState(false);
   const [loadMore, setLoadMore] = useState(false);
   const [modalData, setModalData] = useState<any>({});
   const [delegateNickNameId, setDelegateNickNameId] = useState<number>();
@@ -258,27 +253,6 @@ const SupportTreeCard = ({
     });
   };
 
-  const SignModal = () => {
-    return (
-      <Modal
-        title="Sign Camp"
-        open={signModalOpen}
-        className={styles.modal_cross}
-        footer={null}
-        closeIcon={<CloseCircleOutlined />}
-        onCancel={() => {
-          setSignModalOpen(false);
-        }}
-        destroyOnClose={true}
-      >
-        <SignCamp
-          setSignModalOpen={setSignModalOpen}
-          setLoadingIndicatorSupport={setLoadingIndicatorSupport}
-        />
-      </Modal>
-    );
-  };
-
   const supportLength = 15;
   const renderTreeNodes = (
     data: any,
@@ -313,7 +287,6 @@ const SupportTreeCard = ({
                           "treeListItemTitle " + styles.treeListItemTitle
                         }
                       > */}
-
                       <Link
                         href={{
                           pathname: `/user/supports/${data[item].nick_name_id}`,
@@ -326,16 +299,6 @@ const SupportTreeCard = ({
                           {data[item].support_order}:{data[item].nick_name}
                         </a>
                       </Link>
-
-                      {data[item].camp_leader && (
-                        <Image
-                          preview={false}
-                          alt="camp-leader-crown"
-                          src={"/images/camp-leader.png"}
-                          width={20}
-                          className={styles.campLeaderCrown}
-                        />
-                      )}
                       {/* </span> */}
                       <span
                         className={
@@ -358,12 +321,12 @@ const SupportTreeCard = ({
                           ) > -1 ? (
                             ""
                           ) : (
-                            <Tooltip
+                            <Popover
                               placement="right"
-                              title={
+                              content={
                                 !isUserAuthenticated
                                   ? "Log in to participate"
-                                  : "This will delegate your support to the selected supporter"
+                                  : ""
                               }
                             >
                               <a className="printHIde">
@@ -384,7 +347,7 @@ const SupportTreeCard = ({
                                   {"Delegate Your Support"}
                                 </Button>
                               </a>
-                            </Tooltip>
+                            </Popover>
                           )}
                         </>
                       ) : (
@@ -519,37 +482,19 @@ const SupportTreeCard = ({
               {!loadMore ? "Load More" : "Load Less"}
             </CustomButton>
           )}
-          <div className="topicDetailsSupportCollapseFooter">
-            {/* <Link href={manageSupportPath}>
-              <a> */}
-            <div onClick={handleClickSupportCheck}>
-              <CustomButton
-                className="btn-orange"
-                disabled={asof == "bydate" || campRecord?.is_archive == 1}
-                id="manage-support-btn"
-              >
-                {/* {K?.exceptionalMessages?.directJoinSupport} */}
-                {getCheckSupportStatus?.is_delegator == 1 ||
-                getCheckSupportStatus?.support_flag != 1
-                  ? K?.exceptionalMessages?.directJoinSupport
-                  : K?.exceptionalMessages?.manageSupport}
-              </CustomButton>
-            </div>
-            <div
-              onClick={() => {
-                setSignModalOpen(true);
-              }}
+
+          <div className="topicDetailsCollapseFooter printHIde">
+            <CustomButton
+              onClick={handleClickSupportCheck}
+              className="btn-orange printHIde"
+              disabled={asof == "bydate" || campRecord?.is_archive == 1}
+              id="manage-support-btn"
             >
-              <Tooltip
-                title={"This will delegate your support to the camp leader"}
-                placement={"topRight"}
-              >
-                <CustomButton className="btn-green">{"Sign"}</CustomButton>
-              </Tooltip>
-            </div>
-            {/* </a>
-            </Link> */}
-            {SignModal()}
+              {getCheckSupportStatus?.is_delegator == 1 ||
+              getCheckSupportStatus?.support_flag != 1
+                ? K?.exceptionalMessages?.directJoinSupport
+                : K?.exceptionalMessages?.manageSupport}
+            </CustomButton>
           </div>
         </Panel>
       </Collapse>

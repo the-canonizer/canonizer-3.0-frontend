@@ -350,11 +350,8 @@ function HistoryCollapse({
                                 (parentArchived == 1 &&
                                   directarchived == 1 &&
                                   historyOf == "topic") ||
-                                (parentArchived == 1 && directarchived == 0) ||
-                                (historyOf == "camp" &&
-                                  !campStatement?.ifICanAgreeAndObject)
-                              ? // ||!campStatement?.camp_leader_can_object
-                                true
+                                (parentArchived == 1 && directarchived == 0)
+                              ? true
                               : false;
                             if (isModelPop) {
                               setModal1Open(true);
@@ -380,14 +377,8 @@ function HistoryCollapse({
                                   (parentArchived == 1 &&
                                     directarchived == 1 &&
                                     historyOf == "topic") ||
-                                  (parentArchived == 1 &&
-                                    directarchived == 0) ||
-                                  (historyOf == "camp" &&
-                                    !campStatement?.ifICanAgreeAndObject) ||
-                                  (historyOf == "camp" &&
-                                    !campStatement?.ifICanAgreeAndObject)
-                                ? // ||!campStatement?.camp_leader_can_object
-                                  true
+                                  (parentArchived == 1 && directarchived == 0)
+                                ? true
                                 : false
                             )
                               ? "disable-style"
@@ -647,10 +638,7 @@ function HistoryCollapse({
                               campStatement?.total_supporters -
                                 campStatement?.agreed_supporters ==
                                 1 &&
-                              !campStatement?.agreed_to_change &&
-                              (historyOf == "camp"
-                                ? campStatement?.ifICanAgreeAndObject
-                                : true) && (
+                              !campStatement?.agreed_to_change && (
                                 <>
                                   , Since you are the last hold out, the instant
                                   you agree, this will go live.
@@ -714,13 +702,6 @@ function HistoryCollapse({
                         campStatement?.ifIAmExplicitSupporter
                       ) &&
                         isUserAuthenticated &&
-                        (historyOf == "camp"
-                          ? campStatement?.ifICanAgreeAndObject
-                          : true) &&
-                        // !(
-                        //   historyOf == "camp" &&
-                        //   !campStatement?.camp_leader_can_object
-                        // ) &&
                         !campStatement?.isAuthor && (
                           <Spin
                             indicator={
