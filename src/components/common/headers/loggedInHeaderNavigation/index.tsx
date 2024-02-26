@@ -86,10 +86,18 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
-  const logOut = async () => await logout();
+  const logOut = async () => {
+    const res = await logout();
+
+    if (res?.status_code === 200) {
+      router.push(router, null, { shallow: true });
+    }
+  };
 
   const onClick = ({ key }) => {
-    if (key == 3) logOut();
+    if (key == 3) {
+      logOut();
+    }
   };
 
   const menu = (
@@ -133,6 +141,7 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
     if (isUserAuthenticated && loggedInUser && !loggedInUser?.profile_picture) {
       getGravatarImage(loggedInUser?.email);
     }
+    //eslint-disable-next-line
   }, [loggedInUser]);
 
   return (

@@ -24,7 +24,6 @@ const SortTopics =()=>{
       );
       const router = useRouter()
 
-      console.log(sortLatestTopic,sortScoreViewTopic,"sort")
 
       useEffect(()=>{
         if(router.pathname == "/"){
@@ -45,12 +44,9 @@ const SortTopics =()=>{
         {
           key: '1',
           label: (
-            <Link href={"/browse"}>
-                <a onClick={onLatestTopic}>
+                <span onClick={onLatestTopic}>
                     Latest
-                </a>
-            </Link>
-            
+                </span>            
           ),
         },
         {
@@ -59,11 +55,9 @@ const SortTopics =()=>{
         {
             key: '2',
             label: (
-            <Link href={"/browse"}>
-                <a onClick={onScoreViewTopic}>
-                    Sort view
-                </a>
-            </Link>
+                <span onClick={onScoreViewTopic}>
+                    Score Value
+                </span>
             ),
           },
       ];
@@ -72,7 +66,7 @@ const SortTopics =()=>{
         <Dropdown menu={{ items }} trigger={['click']}>
           <a onClick={(e) => e.preventDefault()} className={styles.sort_topic}>
             <span>
-              {sortLatestTopic?"Latest":sortScoreViewTopic?"Sort view":"Sort by"}
+              {sortLatestTopic?"Latest":sortScoreViewTopic? "Score Value":"Sort"}
             <Image
              width={20}
              height={20}

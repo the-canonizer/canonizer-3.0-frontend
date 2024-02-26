@@ -53,7 +53,7 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
               style={{ display: "inline-block" }}
             >
               {campStatement[0]?.in_review_changes > 0 ||
-              history.items?.[0].status == "in_review" ? (
+              history.items?.[0]?.status == "in_review" ? (
                 <div
                   onClick={(e) => {
                     e.stopPropagation();
@@ -84,9 +84,7 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
                     />
                   </Popover>
                 </div>
-              ) : (
-                ""
-              )}
+              ) : null}
             </div>
           </>
         }

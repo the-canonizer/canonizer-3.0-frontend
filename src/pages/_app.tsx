@@ -6,6 +6,8 @@ import { CookiesProvider } from "react-cookie";
 import { useRouter } from "next/router";
 
 import "antd/dist/antd.css";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 import "../../styles/globals.scss";
 import "../../styles/variables.less";
@@ -24,7 +26,7 @@ import { createToken } from "src/network/api/userApi";
 function WrappedApp({ Component, pageProps, meta, canonical_url }: any) {
   const router = useRouter(),
     // eslint-disable-next-line
-    [_isAuthenticated, setIsAuthenticated, isAuthenticatedRef] = useState(
+    [_, setIsAuthenticated, isAuthenticatedRef] = useState(
       !!(getCookies() as any)?.loginToken
     );
 
@@ -32,9 +34,6 @@ function WrappedApp({ Component, pageProps, meta, canonical_url }: any) {
     const fetchToken = async () => {
       if (!(getCookies() as any)?.loginToken) {
         setIsAuthenticated(false);
-      }
-
-      if (!isAuthenticatedRef.current) {
         try {
           await createToken();
         } catch (error) {
@@ -47,6 +46,7 @@ function WrappedApp({ Component, pageProps, meta, canonical_url }: any) {
     };
 
     fetchToken();
+    // eslint-disable-next-line
   }, [
     router.pathname,
     +router.query?.camp?.at(1)?.split("-")[0],
@@ -67,9 +67,7 @@ function WrappedApp({ Component, pageProps, meta, canonical_url }: any) {
         </ErrorBoundary>
       </Provider>
     </CookiesProvider>
-  ) : (
-    <></>
-  );
+  ) : null;
 }
 
 let timeout;

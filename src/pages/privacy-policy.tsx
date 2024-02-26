@@ -6,11 +6,9 @@ import { createToken } from "src/network/api/userApi";
 
 function PrivacyPolicy({ privacyPolicyContent }: any) {
   return (
-    <>
-      <Layout>
-        <TermsAndPrivacy termsAndPrivacyContent={privacyPolicyContent} />
-      </Layout>
-    </>
+    <Layout>
+      <TermsAndPrivacy termsAndPrivacyContent={privacyPolicyContent} />
+    </Layout>
   );
 }
 export async function getStaticProps() {

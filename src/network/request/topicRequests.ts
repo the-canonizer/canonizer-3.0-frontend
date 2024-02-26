@@ -1,6 +1,5 @@
 import K from "../../constants";
 import Request from ".";
-import { store } from "../../store";
 import { getCookies } from "src/utils/generalUtility";
 
 export default class TopicRequest extends Request {

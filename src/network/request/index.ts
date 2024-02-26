@@ -37,8 +37,6 @@ export default class Request {
       }
     }
 
-    // let bearerToken = token || cc?.loginToken;
-
     headers = {
       ...(defaultHeaderType === K.Network.Header.Type.Json ||
       defaultHeaderType === K.Network.Header.Type.formData
