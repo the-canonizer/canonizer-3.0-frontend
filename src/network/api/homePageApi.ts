@@ -14,7 +14,6 @@ import {
   pushToThreads,
   pushToTopics,
 } from "../../store/slices/recentActivitiesSlice";
-import { createToken } from "./userApi";
 
 export const getCanonizedTopicsApi = async (reqBody, loadMore = false) => {
   try {

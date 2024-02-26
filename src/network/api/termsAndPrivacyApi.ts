@@ -1,7 +1,6 @@
 import { handleError } from "../../utils/generalUtility";
 import NetworkCall from "../networkCall";
 import TermsAndPrivacyRequest from "../request/termsAndPrivacyRequest";
-import { createToken } from "./userApi";
 
 export const getTermsAndServicesContent = async (loginToken = null) => {
   try {
