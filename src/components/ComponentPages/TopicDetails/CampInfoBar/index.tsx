@@ -215,6 +215,24 @@ const TimelineInfoBar = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router?.asPath, filterObject, !!(getCookies() as any)?.loginToken]);
 
+  useEffect(()=>{
+    updateUrl()
+  },[breadCrumbRes])
+
+  const updateUrl = () => {
+    let topicFromURL = router?.query?.camp && router?.query?.camp[0].split("-")
+
+    if(router?.query?.camp){
+      let topicIdFromURL = topicFromURL[0];
+      let topicName = breadCrumbRes?.topic_name;
+  
+      let redirectionURL = `/topic/${topicIdFromURL}-${replaceSpecialCharacters(topicName,"-")}/1-Agreement`;
+  
+      router.replace(redirectionURL, null, { shallow: true });  
+    }
+  }
+
+
   return (
     <>
       <div className={styles.topicDetailContentHead + " printHIde " + styles.info_bar_n}>
