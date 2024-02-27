@@ -182,15 +182,7 @@ const TimelineInfoBar = ({
           res?.data?.bread_crumb?.length - 1
         )?.camp_name;
         let breadTopicName = res?.data?.topic_name;
-        let queryCamp = {
-          camp: [
-            `${breadTopicId}-${replaceSpecialCharacters(breadTopicName, "-")}`,
-
-            breadCampId
-              ? `${breadCampId}-${replaceSpecialCharacters(breadCampName, "-")}`
-              : "1-Agreement",
-          ],
-        };
+      
         let query = getQueryParams()?.query;
         query.camp = [
           `${breadTopicId}-${replaceSpecialCharacters(breadTopicName, "-")}`,
@@ -430,7 +422,7 @@ const TimelineInfoBar = ({
                           >
                             Event Line
                           </Button> : null
-                      } 
+                      }
                       <Dropdown
                         className={styles.campForumDropdown}
                         placement="bottomRight"

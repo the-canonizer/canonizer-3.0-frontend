@@ -8,11 +8,10 @@ import styles from "./archivedCamps.module.scss";
 
 import { RootState } from "src/store";
 import {
-  // setScoreCheckBox,
   setArchivedCheckBox,
 } from "src/store/slices/utilsSlice";
 
-const ArchivedCampCheckBox = ({ loadingIndicator = false }) => {
+const ArchivedCampCheckBox = ({ loadingIndicator = false }:any) => {
   const router = useRouter();
   const { is_camp_archive_checked, loading } = useSelector(
     (state: RootState) => ({

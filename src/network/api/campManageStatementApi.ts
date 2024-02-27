@@ -1,7 +1,7 @@
 import NetworkCall from "../networkCall";
 import { message } from "antd";
 import { campManageStatementRequest } from "../request/campManageStatementRequest";
-import { store } from "../../store";
+
 export const getEditStatementApi = async (body, loginToken = null) => {
   try {
     const res = await NetworkCall.fetch(

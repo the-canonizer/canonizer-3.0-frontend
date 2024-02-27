@@ -2,7 +2,7 @@ import { Fragment } from "react";
 
 import { getProperties } from "src/utils/generalUtility";
 
-function ReasonsActivity({ CurrentItem }) {
+function ReasonsActivity({ CurrentItem }: any) {
   return CurrentItem?.log_name === "support" ? (
     <Fragment>
       {getProperties(CurrentItem)?.reason ? (

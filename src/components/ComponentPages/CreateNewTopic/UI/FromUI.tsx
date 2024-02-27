@@ -4,7 +4,6 @@ import { Card, Form, Input, Button, Select, Row, Col } from "antd";
 import messages from "../../../../messages";
 import styles from "./createNewTopic.module.scss";
 import { changeSlashToArrow } from "src/utils/generalUtility";
-import { useRouter } from "next/router";
 
 const { Option } = Select;
 
@@ -28,7 +27,6 @@ const CreateTopicFromUI = ({
   isFormSubmitted,
   setIsFormSubmitted,
 }: any) => {
-  const router = useRouter();
   const CardTitle = (
     <span className={styles.cardTitle} data-testid="head">
       Create Topic

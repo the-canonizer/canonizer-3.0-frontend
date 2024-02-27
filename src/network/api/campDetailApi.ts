@@ -2,8 +2,6 @@ import {
   setTree,
   setNewsFeed,
   setCampStatement,
-  setCampSupportingTree,
-  pushToCampSupportingTree,
   setCurrentTopicRecord,
   setCurrentCampRecord,
   setCurrentTopicRecordSubscriptionId,
@@ -15,7 +13,6 @@ import TreeRequest from "../request/campDetailRequest";
 import { message } from "antd";
 import { store } from "../../store";
 import { handleError } from "../../utils/generalUtility";
-import { createToken, SupportTreeAndScoreCount } from "./userApi";
 
 export const getTreesApi = async (reqBody) => {
   try {
