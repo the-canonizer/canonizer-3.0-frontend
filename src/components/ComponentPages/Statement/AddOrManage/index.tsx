@@ -50,6 +50,9 @@ import {
   changeSlashToArrow,
 } from "src/utils/generalUtility";
 import DataNotFound from "../../DataNotFound/dataNotFound";
+import Link from "next/link";
+import { RootState } from "src/store";
+import { useSelector } from "react-redux";
 
 //Ckeditor
 const Editorckl = dynamic(() => import("../../../common/editorck"), {
@@ -107,6 +110,11 @@ const { campAboutUrlRule, summaryRule, keywordsRule, patterns } = messages;
 export default function AddOrManage({ add }: any) {
   const { isUserAuthenticated } = useAuthentication();
   const router = useRouter();
+  const { filterObject } = useSelector(
+    (state: RootState) => ({
+      filterObject: state?.filters?.filterObject,
+    })
+  );
   const [notFoundStatus, setNotFoundStatus] = useState({
     status: false,
     name: "",
@@ -116,6 +124,7 @@ export default function AddOrManage({ add }: any) {
   const [submitIsDisableCheck, setSubmitIsDisableCheck] = useState(true);
   const [nickNameData, setNickNameData] = useState([]);
   const [campLeaderData, setCampLeaderData] = useState([]);
+  const [currentCampLeader, setCurrentCampLeader] = useState(null);
   const [screenLoading, setScreenLoading] = useState(false);
   const [initialFormValues, setInitialFormValues] = useState({});
   const [payloadBreadCrumb, setPayloadBreadCrumb] = useState({
@@ -463,6 +472,7 @@ export default function AddOrManage({ add }: any) {
       };
       const result = await getAllUsedNickNames(reqBody);
       if (result?.status_code == 200) {
+        setCurrentCampLeader(result?.data[0])
         let fieldSValuesForForm = add
           ? {
               nick_name: result?.data?.at(0)?.id,
@@ -971,7 +981,21 @@ export default function AddOrManage({ add }: any) {
                         {!objection && (
                           <Form.Item
                             className={styles.formItem}
-                            label={<>Camp Leader</>}
+                            label={
+                            <> 
+                              <span style={{marginRight:'4px'}}>
+                                Camp Leader  
+                              </span>
+                              <Link href={`/user/supports/${currentCampLeader?.id}?canon=${filterObject.namespace_id}`}>
+                              <a>
+                                ({currentCampLeader?.nick_name} 
+                              </a> 
+                              </Link>
+                              <span className={styles.small}>
+                                  is a current camp leader
+                              </span> )
+                              </>
+                            }
                             name="camp_leader_nick_id"
                           >
                             {screenLoading ? (
