@@ -82,7 +82,7 @@ const TopicsList = () => {
     nameSpaces: state.homePage?.nameSpaces,
     filterNameSpace: state?.filters?.filterObject?.nameSpace,
     userEmail: state?.auth?.loggedInUser?.email,
-    filterNameSpaceId: state?.filters?.filterObject?.namespace_id,
+    filterNameSpaceId: String(state?.filters?.filterObject?.namespace_id),
     search: state?.filters?.filterObject?.search,
     is_checked: state?.utils?.score_checkbox,
     is_archive: state?.filters?.filterObject?.is_archive,
@@ -94,10 +94,10 @@ const TopicsList = () => {
   const { is_camp_archive_checked } = useSelector((state: RootState) => ({
     is_camp_archive_checked: state?.utils?.archived_checkbox,
   }));
-  const { sortLatestTopic,sortScoreViewTopic } = useSelector(
+  const { sortLatestTopic, sortScoreViewTopic } = useSelector(
     (state: RootState) => ({
-        sortLatestTopic: state?.utils?.sortLatestTopic,
-        sortScoreViewTopic: state?.utils?.sortScoreViewTopic,
+      sortLatestTopic: state?.utils?.sortLatestTopic,
+      sortScoreViewTopic: state?.utils?.sortScoreViewTopic,
       loading: state?.loading?.loading,
     })
   );
@@ -109,7 +109,7 @@ const TopicsList = () => {
   const [inputSearch, setInputSearch] = useState(search || "");
 
   const [nameSpaceId, setNameSpaceId] = useState(
-    Number(filterNameSpaceId) || 1
+    String(filterNameSpaceId) || "1"
   );
 
   const [loadMoreIndicator, setLoadMoreIndicator] = useState(false);
@@ -125,7 +125,7 @@ const TopicsList = () => {
   const [allowClear, setAllowClear] = useState(false);
 
   const selectNameSpace = (id, nameSpace) => {
-    setNameSpaceId(Number(id));
+    setNameSpaceId(String(id));
     setSelectedNameSpace(nameSpace?.children);
 
     if (id?.toString() !== "1") {
@@ -144,7 +144,7 @@ const TopicsList = () => {
 
     dispatch(
       setFilterCanonizedTopics({
-        namespace_id: id,
+        namespace_id: String(id),
         nameSpace: nameSpace?.children,
       })
     );
@@ -172,7 +172,7 @@ const TopicsList = () => {
         dispatch(
           setFilterCanonizedTopics({
             nameSpace: filteredName[0]?.label,
-            namespace_id: filteredName[0]?.id,
+            namespace_id: String(filteredName[0]?.id),
           })
         );
       }
@@ -183,7 +183,7 @@ const TopicsList = () => {
 
   useEffect(() => {
     setSelectedNameSpace(filterNameSpace);
-    setNameSpaceId(Number(filterNameSpaceId));
+    setNameSpaceId(String(filterNameSpaceId));
     setInputSearch(search.trim());
     setNameSpacesList(nameSpaces);
   }, [filterNameSpace, filterNameSpaceId, search, nameSpaces, is_archive]);
@@ -218,7 +218,7 @@ const TopicsList = () => {
     is_camp_archive_checked,
     onlyMyTopicsCheck,
     sortLatestTopic,
-    sortScoreViewTopic
+    sortScoreViewTopic,
   ]);
 
   async function getTopicsApiCallWithReqBody(loadMore = false) {
@@ -227,7 +227,7 @@ const TopicsList = () => {
       algorithm: algorithm,
       asofdate:
         asof == ("default" || asof == "review") ? Date.now() / 1000 : asofdate,
-      namespace_id: nameSpaceId,
+      namespace_id: String(nameSpaceId),
       page_number: pageNumberRef.current,
       page_size: 15,
       search: inputSearch,
@@ -236,7 +236,7 @@ const TopicsList = () => {
       // archive:archeived?1:0,
       user_email: onlyMyTopicsCheck ? userEmail : "",
       is_archive: is_camp_archive_checked ? 1 : 0,
-      sort : sortLatestTopic ?true :false
+      sort: sortLatestTopic ? true : false,
     };
     await getCanonizedTopicsApi(reqBody, loadMore);
     setLoadMoreIndicator(false);
@@ -273,7 +273,7 @@ const TopicsList = () => {
           asof == ("default" || asof == "review")
             ? Date.now() / 1000
             : asofdate,
-        namespace_id: nameSpaceId,
+        namespace_id: String(nameSpaceId),
         page_number: pageNumberRef.current,
         page_size: 15,
         search: value,
@@ -501,8 +501,7 @@ const TopicsList = () => {
             )}
           </div>
         )}
-        <SortTopics/>
-
+        <SortTopics />
       </div>
 
       <div
