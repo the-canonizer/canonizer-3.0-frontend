@@ -419,7 +419,11 @@ export default function AddOrManage({ add }: any) {
             res?.status_code == 200 &&
             res?.data?.eligible_camp_leaders?.length > 0
           ) {
-            setCampLeaderData(res?.data?.eligible_camp_leaders);
+            let obj = {
+              nick_name_id: null,
+              nick_name:'No Camp Leader'
+            }
+            setCampLeaderData([obj,...res?.data?.eligible_camp_leaders]);
           }
         } else if (manageFormOf == "topic") {
           res = await getEditTopicApi(getDataPayload);
