@@ -443,9 +443,15 @@ const HeaderMenu = ({ loggedUser }: any) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedUser]);
+  const [preventInitialRender, setPreventInitialRender] = useState(true);
   useEffect(() => {
-    if ((inputSearch || searchValue) && router.pathname.includes("/search")) {
+    if(preventInitialRender && pageNumber !== 1) setPreventInitialRender(false);
+    else if ((inputSearch || searchValue) && router.pathname.includes("/search")) {
       getGlobalSearchCanonizerNav(searchValue, false);
+    }
+    setPreventInitialRender(false);
+    return ()=> {
+      setPreventInitialRender(true);
     }
   }, [pageNumber, router.pathname]);
   const getGlobalSearchCanonizerNav = async (queryString, onPresEnter) => {
