@@ -328,6 +328,13 @@ const SupportTreeCard = ({
                       </Link>
 
                       {data[item].camp_leader && (
+                      <Popover 
+                        content={
+                          <>
+                          {data[item].nick_name} is a camp leader
+                          </>
+                        }
+                      >
                         <Image
                           preview={false}
                           alt="camp-leader-crown"
@@ -335,6 +342,7 @@ const SupportTreeCard = ({
                           width={20}
                           className={styles.campLeaderCrown}
                         />
+                      </Popover>
                       )}
                       {/* </span> */}
                       <span
