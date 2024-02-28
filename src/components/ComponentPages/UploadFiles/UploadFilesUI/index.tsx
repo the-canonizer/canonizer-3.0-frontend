@@ -963,7 +963,10 @@ const UploadFileUI = ({
             </div>
           </Dropdown>
           <div className={styles.imageFiles}>
-            {displayImage(file, file.short_code_path)}
+            {displayImage(
+              file,
+              `${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/${file.file_path}`
+            )}
           </div>
           <h3 className="BoxcopyWrap">
             <span className="value">{subStringData(file.file_name)}</span>

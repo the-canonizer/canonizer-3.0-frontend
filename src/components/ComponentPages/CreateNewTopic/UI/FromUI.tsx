@@ -26,6 +26,7 @@ const CreateTopicFromUI = ({
   existedTopic,
   isFormSubmitted,
   setIsFormSubmitted,
+  setExistedTopic,
 }: any) => {
   const CardTitle = (
     <span className={styles.cardTitle} data-testid="head">
@@ -102,6 +103,10 @@ const CreateTopicFromUI = ({
                   onChange={(e) => {
                     setTopicName(e.target.value);
                     setIsFormSubmitted(false);
+                    setExistedTopic({
+                      status: false,
+                      data: "",
+                    })
                   }}
                 />
               </Form.Item>
