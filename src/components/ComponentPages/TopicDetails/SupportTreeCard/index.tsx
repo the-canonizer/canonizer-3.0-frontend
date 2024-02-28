@@ -552,7 +552,7 @@ const SupportTreeCard = ({
                 title={"This will delegate your support to the camp leader"}
                 placement={"topRight"}
               >
-                <CustomButton className="btn-green">{"Sign"}</CustomButton>
+                <CustomButton className="btn-green" disabled={campSupportingTree && campSupportingTree[0]?.camp_leader? true : false}>{"Sign"}</CustomButton>
               </Tooltip>
             </div>
             {/* </a>
