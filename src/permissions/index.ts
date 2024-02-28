@@ -54,6 +54,31 @@ const PermissionsForPages: PermissionsObj = {
     isPermissionRequired: false,
     permissionName: "editNews",
   },
+  CampForumCreatePage: {
+    isAuthenticationRequired: true,
+    isPermissionRequired: false,
+    permissionName: "createThread",
+  },
+  CreateNewStatement: {
+    isAuthenticationRequired: true,
+    isPermissionRequired: false,
+    permissionName: "createStatement",
+  },
+  ManageStatementPage: {
+    isAuthenticationRequired: true,
+    isPermissionRequired: false,
+    permissionName: "manageStatement",
+  },
+  ManageCampPage: {
+    isAuthenticationRequired: true,
+    isPermissionRequired: false,
+    permissionName: "manageCamp",
+  },
+  ManageTopicPage: {
+    isAuthenticationRequired: true,
+    isPermissionRequired: false,
+    permissionName: "manageTopic",
+  },
   AddNewsPage: {
     isAuthenticationRequired: true,
     isPermissionRequired: false,
