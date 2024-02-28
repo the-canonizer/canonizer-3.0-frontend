@@ -9,7 +9,6 @@ import {
 } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { store } from "../../../../store";
-import moment from "moment";
 
 import userEvent from "@testing-library/user-event";
 import { NextRouter } from "next/router";

@@ -258,6 +258,7 @@ const CreateTopic = () => {
 
   useEffect(() => {
     if (!(algorithms?.length > 0)) getCanonizedAlgorithmsApi();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const selectAlgorithm = (value) => {
     setCookie("canAlgo", value, { path: "/" });

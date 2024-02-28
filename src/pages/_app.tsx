@@ -46,12 +46,13 @@ function WrappedApp({ Component, pageProps, meta, canonical_url }: any) {
     };
 
     fetchToken();
-    // eslint-disable-next-line
+    /* eslint-disable */
   }, [
     router.pathname,
     +router.query?.camp?.at(1)?.split("-")[0],
     !!(getCookies() as any)?.loginToken,
   ]);
+  /* eslint-enable */
 
   return isAuthenticatedRef.current && !!(getCookies() as any)?.loginToken ? (
     <CookiesProvider>

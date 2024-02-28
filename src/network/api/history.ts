@@ -1,4 +1,4 @@
-import { handleError, isServer } from "../../utils/generalUtility";
+import { handleError } from "../../utils/generalUtility";
 import { store } from "../../store";
 import {
   pushToCampHistory,
@@ -6,7 +6,6 @@ import {
 } from "../../store/slices/campDetailSlice";
 import NetworkCall from "../networkCall";
 import historyRequest from "../request/historyRequest";
-import { createToken } from "./userApi";
 
 export const getHistoryApi = async (
   reqBody,
