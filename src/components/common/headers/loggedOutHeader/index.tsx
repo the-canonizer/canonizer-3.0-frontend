@@ -15,6 +15,8 @@ import ForgotModal from "../../../ComponentPages/ForgotPassword/forgotPasswordMo
 import DisclaimerMsg from "../../disclaimer";
 import HeaderMenu from "../HeaderMenu";
 import TopicCreationBTN from "../TopicCreationBTN";
+import ArchivedCampMsg from "../../ArchivedCampMsg";
+
 
 const { Header } = Layout;
 
@@ -122,6 +124,7 @@ const LoggedOutHeader = () => {
         <TopicCreationBTN key="create-topic-area" />
       </div>
       <DisclaimerMsg />
+      <ArchivedCampMsg />
       <LoginModal />
       <RegistrationModal />
       <ForgotModal />
