@@ -27,6 +27,7 @@ const CreateTopicFromUI = ({
   existedTopic,
   isFormSubmitted,
   setIsFormSubmitted,
+  setExistedTopic,
 }: any) => {
   const router = useRouter();
   const CardTitle = (
@@ -104,6 +105,10 @@ const CreateTopicFromUI = ({
                   onChange={(e) => {
                     setTopicName(e.target.value);
                     setIsFormSubmitted(false);
+                    setExistedTopic({
+                      status: false,
+                      data: "",
+                    })
                   }}
                 />
               </Form.Item>

@@ -192,6 +192,7 @@ const CreateNewTopic = ({
         existedTopic={existedTopic}
         isFormSubmitted={isFormSubmitted}
         setIsFormSubmitted={setIsFormSubmitted}
+        setExistedTopic={setExistedTopic}
       />
     </Fragment>
   );
