@@ -236,10 +236,12 @@ const SupportTreeCard = ({
 
   const manageSupportPath = router?.asPath.replace("/topic/", "/support/");
 
-  const { campSupportingTree, asof } = useSelector((state: RootState) => ({
+  const { campSupportingTree, asof, userNickNames } = useSelector((state: RootState) => ({
     campSupportingTree: supportTreeForCamp,
     asof: state?.filters?.filterObject?.asof,
+    userNickNames: state?.auth?.userNickNames,
   }));
+
   useEffect(() => {
     if (campSupportingTree?.length > 0) {
       getDelegateNicknameId(campSupportingTree);
@@ -548,12 +550,22 @@ const SupportTreeCard = ({
                 setSignModalOpen(true);
               }}
             >
-              <Tooltip
-                title={"This will delegate your support to the camp leader"}
-                placement={"topRight"}
-              >
-                <CustomButton className="btn-green" disabled={campSupportingTree && campSupportingTree[0]?.camp_leader? true : false}>{"Sign"}</CustomButton>
-              </Tooltip>
+              {
+                campSupportingTree && campSupportingTree?.at(0)?.camp_leader &&
+                userNickNames.some(obj => obj?.id === campSupportingTree.at(0)?.nick_name_id)?
+                <>
+                    <CustomButton className="btn-green" disabled={true}>{"Sign"}</CustomButton>
+                </>:
+                <>
+                  <Tooltip
+                    title={"This will delegate your support to the camp leader"}
+                    placement={"topRight"}
+                  >
+                    <CustomButton className="btn-green">{"Sign"}</CustomButton>
+                  </Tooltip>
+                </>
+              }
+              
             </div>
             {/* </a>
             </Link> */}

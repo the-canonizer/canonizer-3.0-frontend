@@ -11,6 +11,7 @@ import {
   showRegistrationModal,
 } from "src/store/slices/uiSlice";
 import {
+  getNickNameList,
   login,
   resendOTPForRegistration,
   verifyOtp,
@@ -21,6 +22,7 @@ import OTPVerify from "../Registration/UI/otp";
 import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
 import { setValue } from "src/store/slices/utilsSlice";
 import messages from "src/messages";
+import { setUserNickNames } from "src/store/slices/authSlice";
 
 const Login = ({ isModal, isTest = false }: any) => {
   const remember = useSelector((state: RootState) => state.utils.remember_me);
@@ -50,6 +52,14 @@ const Login = ({ isModal, isTest = false }: any) => {
   const openForgotPasswordModal = () => dispatch(showForgotModal());
   const openRegistration = () => dispatch(showRegistrationModal());
 
+  const fetchNickNameList = async () => {
+    let response = await getNickNameList();
+    if (response && response?.status_code === 200) {
+      dispatch(setUserNickNames(response?.data))
+    }
+  };
+
+
   const onFinish = async (values: any) => {
     setFormData({ email: values.username });
 
@@ -76,6 +86,7 @@ const Login = ({ isModal, isTest = false }: any) => {
         })
       );
       form.resetFields();
+      fetchNickNameList()
 
       closeModal();
 
