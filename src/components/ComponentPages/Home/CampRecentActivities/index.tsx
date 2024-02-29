@@ -13,6 +13,7 @@ import K from "../../../../constants";
 import CustomSkelton from "../../../common/customSkelton";
 import { RootState } from "src/store";
 import ReasonsActivity from "src/components/common/SupportReasonActivity";
+import { getProperties } from "src/utils/generalUtility";
 
 const { Text } = Typography;
 const { Panel } = Collapse;
@@ -86,15 +87,16 @@ export default function CampRecentActivities() {
                     title={
                       <Fragment>
                         {item?.description}{" "}
-                        {item?.log_name === "support" && (
-                          <Popover
-                            content={<ReasonsActivity CurrentItem={item} />}
-                            placement="top"
-                            className={styles.algoInfoIcon}
-                          >
-                            <i className="icon-info"></i>
-                          </Popover>
-                        )}
+                        {item?.log_name === "support" &&
+                          getProperties(item)?.reason && (
+                            <Popover
+                              content={<ReasonsActivity CurrentItem={item} />}
+                              placement="top"
+                              className={styles.algoInfoIcon}
+                            >
+                              <i className="icon-info"></i>
+                            </Popover>
+                          )}
                       </Fragment>
                     }
                     description={covertToTime(item?.updated_at)}
