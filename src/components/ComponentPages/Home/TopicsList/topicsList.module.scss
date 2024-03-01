@@ -5,7 +5,7 @@
   margin-bottom: 16px;
   &:not(.homePageCardList) {
     @media screen and (min-width: 768px) {
-      height: calc(100% - 72px);
+      // height: calc(100% - 140px);
     }
     @media screen and (max-width: 767px) {
       height: calc(100% - 160px);

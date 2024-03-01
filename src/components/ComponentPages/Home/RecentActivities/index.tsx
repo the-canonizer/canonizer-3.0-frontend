@@ -23,7 +23,7 @@ import useAuthentication from "../../../../hooks/isUserAuthenticated";
 import CustomSkelton from "../../../common/customSkelton";
 import { setIsChecked } from "src/store/slices/recentActivitiesSlice";
 import { getTopicActivityLogApi } from "src/network/api/campDetailApi";
-// import { getProperties } from "src/utils/generalUtility";
+import { getProperties } from "src/utils/generalUtility";
 import ReasonsActivity from "src/components/common/SupportReasonActivity";
 
 const antIcon = <LoadingOutlined spin />;
@@ -333,22 +333,22 @@ export default function RecentActivities() {
                         <>
                           <Text className={styles.text}>
                             {activity?.activity?.description}{" "}
-                            
-                            {activity?.activity?.log_name === "support" && (
-                              <Popover
-                                content={
-                                  <div className={styles.reasonsText}>
-                                    <ReasonsActivity
-                                      CurrentItem={activity?.activity}
-                                    />
-                                  </div>
-                                }
-                                placement="top"
-                                className={styles.algoInfoIcon}
-                              >
-                                <i className="icon-info"></i>
-                              </Popover>
-                            )}
+                            {activity?.activity?.log_name === "support" &&
+                              getProperties(activity?.activity)?.reason && (
+                                <Popover
+                                  content={
+                                    <div className={styles.reasonsText}>
+                                      <ReasonsActivity
+                                        CurrentItem={activity?.activity}
+                                      />
+                                    </div>
+                                  }
+                                  placement="top"
+                                  className={styles.algoInfoIcon}
+                                >
+                                  <i className="icon-info"></i>
+                                </Popover>
+                              )}
                             <br />
                             <Tooltip
                               placement={"topLeft"}
@@ -378,16 +378,6 @@ export default function RecentActivities() {
                                     }
                                   )}
                             </Tooltip>
-                            {/* {decodedProperties?.description?.length > 100 ? (
-                                <Tooltip title={decodedProperties?.description}>
-                                  {decodedProperties?.description?.substring(
-                                    0,
-                                    97
-                                  ) + "..."}
-                                </Tooltip>
-                              ) : (
-                                decodedProperties?.description
-                              )} */}
                           </Text>
                           <Text className={styles.secondary} type="secondary">
                             <i className="icon-calendar"></i>
@@ -395,9 +385,6 @@ export default function RecentActivities() {
                           </Text>
                         </>
                       </AntLink>
-                      {/* <div className={styles.reasonsText}>
-                        <ReasonsActivity CurrentItem={activity?.activity} />
-                      </div> */}
                     </List.Item>
                   );
                 }}
