@@ -72,23 +72,31 @@ const PostUI = ({
             />
           ) : (
             <Fragment>
-              <Text id="thread-create-label">{`Thread Created at ${moment(
-                getTime(createdAt || currentThread?.created_at)
-              ).format("MMM Do YYYY, h:mm:ss a")}`}</Text>{" "}
-              |{" "}
-              <Text id="started-by-label">
-                Started by{" "}
-                <Link
-                  href={`/user/supports/${
-                    currentThread["creation_nick_name_id"] || ""
-                  }?canon=${currentThread["namespace_id"] || 1}`}
-                  passHref
-                >
-                  <a className={styles.by}>
-                    {currentThread["creation_nick_name"]}
-                  </a>
-                </Link>
-              </Text>
+              {createdAt || currentThread?.created_at && (
+                <>
+                  <Text id="thread-create-label">{`Thread Created at ${moment(
+                    getTime(createdAt || currentThread?.created_at)
+                  ).format("MMM Do YYYY, h:mm:ss a")}`}</Text>{" "}
+                  |{" "}
+                </>
+              )}
+              {currentThread["creation_nick_name"] && (
+                <>
+                  <Text id="started-by-label">
+                    Started by{" "}
+                    <Link
+                      href={`/user/supports/${
+                        currentThread["creation_nick_name_id"] || ""
+                      }?canon=${currentThread["namespace_id"] || 1}`}
+                      passHref
+                    >
+                      <a className={styles.by}>
+                        {currentThread["creation_nick_name"]}
+                      </a>
+                    </Link>
+                  </Text>
+                </>
+              )}
             </Fragment>
           )}
         </div>
