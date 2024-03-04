@@ -2634,10 +2634,9 @@ div[role="option"]::before {
 .topics-list-card-header {
   padding: 15px 10px;
   display: flex;
-  
+
   gap: 8px;
-  @media screen and (max-width: 1300px)
-  {
+  @media screen and (max-width: 1300px) {
     flex-wrap: wrap;
   }
 
@@ -2653,8 +2652,7 @@ div[role="option"]::before {
   .ant-select.ant-select-lg {
     margin-right: auto;
 
-    
-      @media screen and (min-width: 768px) {
+    @media screen and (min-width: 768px) {
       margin-left: 0px;
       max-width: 100%;
       width: 100%;
@@ -3015,5 +3013,42 @@ div[role="option"]::before {
   text-decoration: underline;
   &:hover {
     text-decoration: underline;
+  }
+}
+
+.topicDetailsSupportCollapseFooter {
+  display: flex;
+  justify-content: space-between;
+  border-top: #f0f0f0 1px solid;
+  margin: 20px -20px 0 -20px;
+  padding: 20px 20px 0 20px;
+
+  .ant-btn {
+    display: flex;
+    align-items: center;
+    padding: 8px 22px;
+    height: 38px;
+    color: #fff;
+    font-weight: 500;
+    border: none;
+
+    &:disabled {
+      color: rgba(0, 0, 0, 0.25);
+    }
+
+    @media screen and (min-width: 576px) {
+      &:not(:last-child) {
+        margin-right: 28px;
+      }
+    }
+
+    @media screen and (max-width: 575px) {
+      width: 100%;
+      justify-content: center;
+
+      & + .ant-btn {
+        margin-top: 0.5rem;
+      }
+    }
   }
 }

@@ -548,7 +548,7 @@ const SupportTreeCard = ({
             >
               {campSupportingTree &&
               campSupportingTree?.at(0)?.camp_leader &&
-              userNickNames.some(
+              userNickNames?.some(
                 (obj) => obj?.id === campSupportingTree.at(0)?.nick_name_id
               ) ? (
                 <>
@@ -568,7 +568,7 @@ const SupportTreeCard = ({
               )}
             </div>
             {/* </a>
-            </Link> */}
+        </Link> */}
             {SignModal()}
           </div>
         </Panel>

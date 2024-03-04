@@ -94,12 +94,12 @@ const SignCamp = ({ setSignModalOpen, setLoadingIndicatorSupport }: any) => {
   }, []);
 
   const validationTypeColor = (type) => {
-    if(type === 'info'){
-      return styles.info
-    }else if (type === 'warning') {
-      return styles.warning
+    if (type === "info") {
+      return styles.info;
+    } else if (type === "warning") {
+      return styles.warning;
     }
-  }
+  };
 
   return loadingNickname ? (
     <CustomSkelton
@@ -113,11 +113,16 @@ const SignCamp = ({ setSignModalOpen, setLoadingIndicatorSupport }: any) => {
       <div>
         {signCampData ? (
           <>
-            <span className={validationTypeColor(signCampData?.warning_type)} id="getSupportStatusDataWarning">
-              <strong> 
-                {signCampData?.warning_type[0]?.toUpperCase()+signCampData?.warning_type.substr(1)}! 
+            <span
+              className={validationTypeColor(signCampData?.warning_type)}
+              id="getSupportStatusDataWarning"
+            >
+              <strong>
+                {signCampData?.warning_type[0]?.toUpperCase() +
+                  signCampData?.warning_type.substr(1)}
+                !
               </strong>
-              {" "+signCampData?.warning}
+              {" " + signCampData?.warning}
             </span>
             <Col md={12}>
               {signCampData?.remove_camps?.map((tag) => {
