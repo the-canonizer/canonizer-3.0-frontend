@@ -604,18 +604,15 @@ const SupportTreeCard = ({
         width={700}
         destroyOnClose={true}
       >
-        <>
-          <h1>wedfwef</h1>
-          <ManageSupport
-            handleCancelSupportCamps={handleCancelSupportCamps}
-            selectNickId={selectNickId}
-            setGetManageSupportLoadingIndicator={
-              setGetManageSupportLoadingIndicator
-            }
-            getManageSupportLoadingIndicator={getManageSupportLoadingIndicator}
-            getCheckStatusAPI={getCheckStatusAPI}
-          />
-        </>
+        <ManageSupport
+          handleCancelSupportCamps={handleCancelSupportCamps}
+          selectNickId={selectNickId}
+          setGetManageSupportLoadingIndicator={
+            setGetManageSupportLoadingIndicator
+          }
+          getManageSupportLoadingIndicator={getManageSupportLoadingIndicator}
+          getCheckStatusAPI={getCheckStatusAPI}
+        />
       </Modal>
     </>
   );
