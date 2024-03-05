@@ -1,8 +1,8 @@
-import { Descriptions, Collapse, Popover } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import moment from "moment";
+import { Descriptions, Collapse, Popover } from "antd";
 
 import Image from "next/image";
 
@@ -40,6 +40,7 @@ const CurrentCampCard = ({ loadingIndicator, backGroundColorClass }: any) => {
   const covertToTime = (unixTime) => {
     return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
   };
+  console.log("asd", currentCampRecordConstants);
 
   return loadingIndicator ? (
     <CustomSkelton
@@ -128,7 +129,8 @@ const CurrentCampCard = ({ loadingIndicator, backGroundColorClass }: any) => {
                         : "No"
                       : campRecord &&
                         (description.key == "submitter_nick_name" ||
-                          description.key == "camp_about_nick_name")
+                          description.key == "camp_about_nick_name" ||
+                          description.key == "camp_leader_nick_name")
                       ? campRecord &&
                         history &&
                         (campRecord[description.key] !=
@@ -139,6 +141,8 @@ const CurrentCampCard = ({ loadingIndicator, backGroundColorClass }: any) => {
                                 ? campRecord?.submitter_nick_id
                                 : description.key == "camp_about_nick_name"
                                 ? campRecord?.camp_about_nick_id
+                                : description.key == "camp_leader_nick_name"
+                                ? campRecord?.camp_leader_nick_id
                                 : ""
                             }?canon=${topicRecord?.namespace_id || ""}`}
                             passHref
