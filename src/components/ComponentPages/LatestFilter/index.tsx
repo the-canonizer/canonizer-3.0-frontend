@@ -34,7 +34,7 @@ const LatestFilter = ()=>{
           selectedAsOf: state?.filters?.filterObject?.asof,
         })
       );
-      const lable = algorithms.find((obj)=>{
+      const lable = algorithms?.find((obj)=>{
         return obj.algorithm_key == selectedAlgorithm
       })
       const onChangeRoute = (
@@ -60,19 +60,19 @@ const LatestFilter = ()=>{
         if (viewversion) {
           query.viewversion = "1";
         }
-    
-        router.query = { ...router?.query, ...query };
+    if(router){
+        router.query = { ...router?.query, ...query }}
     
         if (asof !== "bydate") {
-          delete router.query.asofdate;
+          delete router?.query.asofdate;
         }
     
         if (String(filterByScore) === "0") {
-          delete router.query.score;
+          delete router?.query.score;
         }
     
         if (String(namespace_id) === "1") {
-          delete router.query.canon;
+          delete router?.query.canon;
         }
     
         if (!namespace_id && String(namespace_id) === "0") {
@@ -80,31 +80,31 @@ const LatestFilter = ()=>{
         }
     
         if (asof === "default") {
-          delete router.query.asof;
+          delete router?.query.asof;
         }
     
         if (!query?.canon) {
-          delete router.query.canon;
+          delete router?.query.canon;
         }
     
         if (algorithm === "blind_popularity") {
-          delete router.query.algo;
+          delete router?.query.algo;
         }
     
         if (String(campScoreValue) === "10") {
-          delete router.query.filter;
+          delete router?.query.filter;
         }
     
         if (
-          router.query.filter === "undefined" ||
-          router.query.filter === undefined ||
-          router.query.filter === "null" ||
-          router.query.filter === null
+          router?.query.filter === "undefined" ||
+          router?.query.filter === undefined ||
+          router?.query.filter === "null" ||
+          router?.query.filter === null
         ) {
-          delete router.query.filter;
+          delete router?.query.filter;
         }
     
-        router.replace(router, null, { shallow: true });
+        router?.replace(router, null, { shallow: true });
       };
       const momentObject = moment.unix(current_date_filter / 1000); 
       const formattedDate = momentObject.format('YYYY-MM-DD');
@@ -164,24 +164,24 @@ const LatestFilter = ()=>{
       }
     return (
     <div className={styles.selected_filter_area}>
-      {(router.query.algo&&selectedAlgorithm && lable?.algorithm_label !==undefined)||is_camp_archive_checked||is_checked||selectedAsOf== "bydate"||includeReview||filteredScore != 0?<span>
-      <label className={styles.selected_filter_heading}>
+      {(router?.query?.algo&&selectedAlgorithm && lable?.algorithm_label !==undefined)||is_camp_archive_checked||is_checked||selectedAsOf== "bydate"||includeReview||filteredScore != 0?<span>
+      <label className={styles.selected_filter_heading} data-testid="Selected filter">
         Selected filter
     </label>
-    <span className={styles.clear_all_filter} onClick={clearAllFilter}>
+    <span className={styles.clear_all_filter} onClick={clearAllFilter} data-testid="clear_all">
             (Clear All)
         </span>
         </span>:""}
 
-  <Space size={[0, 18]} wrap>
-    {router.query.algo&&selectedAlgorithm && lable?.algorithm_label !==undefined?<Tag icon={<CloseOutlined onClick={()=>{algoRevert()}}/>}>{lable?.algorithm_label}</Tag>:""}
-    {is_camp_archive_checked?<Tag icon={<CloseOutlined onClick={()=>{dispatch(setArchivedCheckBox(false))}} />}>Show archived camps</Tag>:""}
-    {is_checked?<Tag icon={<CloseOutlined onClick={()=>{dispatch(setScoreCheckBox(false))}} />}>100% of canonized score</Tag>:""}
-    {selectedAsOf == "bydate"?<Tag icon={<CloseOutlined onClick={filterForAsofDate} />}>{`As of date: ${formattedDate}`}</Tag>:""}
-    {includeReview?<Tag icon={<CloseOutlined onClick={filterForAsofDate}/>}>{`Include review`}</Tag>:""}
-    {filteredScore != 0?<Tag icon={<CloseOutlined  onClick={filterscore}/>}>{`Score < ${filteredScore}`}</Tag>:""}
-  </Space>
-        </div>
+    <Space size={[0, 18]} wrap>
+      {router?.query?.algo&&selectedAlgorithm && lable?.algorithm_label !==undefined?<Tag icon={<CloseOutlined onClick={()=>{algoRevert()}}/>}>{lable?.algorithm_label}</Tag>:""}
+      {is_camp_archive_checked?<Tag icon={<CloseOutlined onClick={()=>{dispatch(setArchivedCheckBox(false))}} data-testid="close_icon_archived_camps"/>}data-testid="archived_camps">Show archived camps</Tag>:""}
+      {is_checked?<Tag icon={<CloseOutlined onClick={()=>{dispatch(setScoreCheckBox(false))}} data-testid="close_icon_100%_of_canonized_score"/>} data-testid="100%_of_canonized_score">100% of canonized score</Tag>:""}
+      {selectedAsOf == "bydate"?<Tag icon={<CloseOutlined onClick={filterForAsofDate}  data-testid="close_icon_as_of_date"/>} data-testid="asOfDate">{`As of date: ${formattedDate}`}</Tag>:""}
+      {includeReview?<Tag icon={<CloseOutlined onClick={filterForAsofDate} data-testid="close_icon_include_review"/>} data-testid="include_review">{`Include review`}</Tag>:""}
+      {filteredScore != 0?<Tag icon={<CloseOutlined  onClick={filterscore} data-testid="close_icon_Score"/>} data-testid="Score">{`Score < ${filteredScore}`}</Tag>:""}
+    </Space>
+  </div>
     )
 }
 

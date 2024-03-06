@@ -44,9 +44,11 @@ const SortTopics =()=>{
         {
           key: '1',
           label: (
-                <span onClick={onLatestTopic}>
+            <a onClick={onLatestTopic}>
+                <div >
                     Latest
-                </span>            
+                </div>  
+                </a>          
           ),
         },
         {
@@ -55,9 +57,11 @@ const SortTopics =()=>{
         {
             key: '2',
             label: (
-                <span onClick={onScoreViewTopic}>
+              <a onClick={onScoreViewTopic}>
+                <div>
                     Score Value
-                </span>
+                </div>
+                </a>
             ),
           },
       ];
