@@ -304,14 +304,7 @@ export const UpdateUserProfileInfo = async (values: object) => {
         phone_number: value.data.phone_number,
         birthday: value.data.birthday,
         email: value.data.email,
-        token: auth.loggedInUser.token,
-        refresh_token: auth.loggedInUser.refresh_token,
       };
-      document.cookie =
-        "loginToken=" +
-        value?.data.auth?.access_token +
-        "; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
-
       store.dispatch(setLoggedInUser(payload));
       return value;
     })
