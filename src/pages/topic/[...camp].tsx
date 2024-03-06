@@ -14,7 +14,6 @@ import {
   setCurrentTopicRecord,
   setCurrentCampRecord,
 } from "../../store/slices/campDetailSlice";
-import { formatTheDate } from "src/utils/generalUtility";
 import { setHistory } from "../../store/slices/campDetailSlice";
 import Layout from "src/hoc/layout";
 
@@ -23,9 +22,8 @@ import { getHistoryApi } from "../../network/api/history";
 import TopicDetails from "src/components/ComponentPages/TopicDetails";
 import { setCurrentDate } from "src/store/slices/filtersSlice";
 import { useEffect, useRef } from "react";
-import DataNotFound from "@/components/ComponentPages/DataNotFound";
+import DataNotFound from "@/components/ComponentPages/DataNotFound/dataNotFound";
 import { formatTheDate } from "src/utils/generalUtility";
-
 
 const TopicDetailsPage = ({
   current_date,
