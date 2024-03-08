@@ -48,9 +48,7 @@ export async function getServerSideProps() {
   const currentDate = new Date().valueOf();
 
   return {
-    props: {
-      current_date: currentDate,
-    },
+    props: { current_date: currentDate, },
   };
 }
 

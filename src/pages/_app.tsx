@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import useState from "react-usestateref";
-import App, { AppContext } from "next/app";
+import App, { AppContext, AppInitialProps, AppProps } from 'next/app'
 import { Provider } from "react-redux";
 import { CookiesProvider } from "react-cookie";
 import { useRouter } from "next/router";
@@ -23,7 +23,9 @@ import { checkTopicCampExistAPICall } from "src/network/api/campDetailApi";
 import { getCookies } from "src/utils/generalUtility";
 import { createToken } from "src/network/api/userApi";
 
-function WrappedApp({ Component, pageProps, meta, canonical_url }: any) {
+type AppOwnProps = { meta: any, canonical_url: string, returnURL: string }
+
+function WrappedApp({ Component, pageProps, meta, canonical_url }: AppProps & AppOwnProps) {
   const router = useRouter(),
     // eslint-disable-next-line
     [_, setIsAuthenticated, isAuthenticatedRef] = useState(
@@ -54,25 +56,54 @@ function WrappedApp({ Component, pageProps, meta, canonical_url }: any) {
   ]);
   /* eslint-enable */
 
-  return isAuthenticatedRef.current && !!(getCookies() as any)?.loginToken ? (
-    <CookiesProvider>
-      <Provider store={store}>
-        <ErrorBoundary>
-          <HeadContentAndPermissionComponent
-            componentName={Component.displayName || Component.name}
-            metaContent={meta}
-            canonical={canonical_url}
-            {...pageProps}
-          />
-          <Component {...pageProps} />
-        </ErrorBoundary>
-      </Provider>
-    </CookiesProvider>
-  ) : null;
+  return <CookiesProvider>
+    <Provider store={store}>
+      <ErrorBoundary>
+        <HeadContentAndPermissionComponent
+          componentName={Component.displayName || Component.name}
+          metaContent={meta}
+          canonical={canonical_url}
+          {...pageProps}
+        />
+        {
+          isAuthenticatedRef?.current && !!(getCookies() as any)?.loginToken ?
+            <Component {...pageProps} /> : <p>Loading...</p>
+        }
+      </ErrorBoundary>
+    </Provider>
+  </CookiesProvider>
 }
 
 let timeout;
-WrappedApp.getInitialProps = async (appContext: AppContext) => {
+const getTagData = async (req, ctx) => {
+  const defaultTags = {
+    page_name: "Home",
+    title: "Build consensus by canonizing what you believe is right",
+    description:
+      "Bringing the world together by canonizing what you believe is right. Your thoughts are processed through our pattented algorithims in a qualified & quantified camp where others can see, join & together change the world.",
+    author: "",
+  };
+
+  let metaData = defaultTags;
+  let metaResults;
+
+  if (timeout) timeout = clearTimeout(timeout);
+
+  if (!timeout) {
+    // if(req?.)
+    // timeout = await setTimeout(async () => {
+    metaResults = await metaTagsApi(req);
+    metaData = metaResults?.data;
+    return metaData
+    // }, 900);
+  }
+
+  // console.log(req, 'metaResults-RES----', metaResults)
+
+  return metaData
+}
+
+WrappedApp.getInitialProps = async (appContext: AppContext): Promise<AppOwnProps & AppInitialProps> => {
   // calls page's `getInitialProps` and fills `appProps.pageProps`
   const appProps = await App.getInitialProps(appContext);
 
@@ -82,6 +113,7 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
     0,
     appContext?.router?.asPath.lastIndexOf("/")
   );
+
   let path;
 
   if (prePath == "/manage/camp") {
@@ -113,8 +145,8 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
       camp_num: appContext.router?.asPath.includes("forum")
         ? path?.camp?.toLocaleString().split("-")[0]
         : path?.camp?.length > 1
-        ? path?.camp[1].split("-")[0]
-        : "1",
+          ? path?.camp[1].split("-")[0]
+          : "1",
       forum_num:
         appContext.router?.query?.camp?.length > 2
           ? Object.keys(appContext.router?.query)?.length > 2
@@ -124,24 +156,9 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
     },
   };
 
-  const defaultTags = {
-    page_name: "Home",
-    title: "Build consensus by canonizing what you believe is right",
-    description:
-      "Bringing the world together by canonizing what you believe is right. Your thoughts are processed through our pattented algorithims in a qualified & quantified camp where others can see, join & together change the world.",
-    author: "",
-  };
+  const metaData = await getTagData(req, appContext);
 
-  let metaResults;
-  if (timeout) timeout = clearTimeout(timeout);
-
-  if (!timeout) {
-    timeout = setTimeout(async () => {
-      metaResults = await metaTagsApi(req);
-    }, 1500);
-  }
-  const metaData =
-    metaResults?.status_code == 200 ? metaResults.data : defaultTags;
+  // console.log('metaData----', metaData, 'componentName----', componentName)
 
   /**
    *
@@ -236,13 +253,13 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
       if (nickname) {
         returnData = await redirect(
           "/user/supports/" +
-            nickname +
-            "?topicnum=" +
-            topic_num +
-            "&campnum=" +
-            camp_num +
-            "&canon=" +
-            canon,
+          nickname +
+          "?topicnum=" +
+          topic_num +
+          "&campnum=" +
+          camp_num +
+          "&canon=" +
+          canon,
           +topic_num,
           +camp_num,
           "nickname",
