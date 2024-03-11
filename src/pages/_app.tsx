@@ -67,7 +67,7 @@ function WrappedApp({ Component, pageProps, meta, canonical_url }: AppProps & Ap
         />
         {
           isAuthenticatedRef?.current && !!(getCookies() as any)?.loginToken ?
-            <Component {...pageProps} /> : <p>Loading...</p>
+            <Component {...pageProps} /> : null
         }
       </ErrorBoundary>
     </Provider>
