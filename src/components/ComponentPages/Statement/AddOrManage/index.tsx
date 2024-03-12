@@ -265,6 +265,8 @@ export default function AddOrManage({ add }: any) {
           : null,
       old_parent_camp_num:
         manageFormOf == "camp" ? editInfo?.camp?.parent_camp_num : null,
+      camp_leader_nick_id:
+        manageFormOf == "camp" ? values?.camp_leader_nick_id ?? null : null,
     };
     let res;
     if (manageFormOf == "camp") {
@@ -491,6 +493,7 @@ export default function AddOrManage({ add }: any) {
                   ? res?.data?.camp?.camp_about_nick_id
                   : null,
               edit_summary: update ? res?.data?.camp?.note : null,
+              camp_leader_nick_id: res?.data?.camp?.camp_leader_nick_id,
             }
           : manageFormOf == "topic"
           ? {
@@ -1005,7 +1008,7 @@ export default function AddOrManage({ add }: any) {
                                 size={"large"}
                                 placeholder="Camp Leader"
                                 optionFilterProp="children"
-                                allowClear={true}
+                                allowClear={false}
                                 filterOption={(input, option) =>
                                   (
                                     (option?.children as any)?.props

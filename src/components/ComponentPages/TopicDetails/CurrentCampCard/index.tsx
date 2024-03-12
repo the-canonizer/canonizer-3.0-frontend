@@ -40,7 +40,6 @@ const CurrentCampCard = ({ loadingIndicator, backGroundColorClass }: any) => {
   const covertToTime = (unixTime) => {
     return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
   };
-  console.log("asd", currentCampRecordConstants);
 
   return loadingIndicator ? (
     <CustomSkelton
