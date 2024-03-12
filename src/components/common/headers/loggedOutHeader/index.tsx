@@ -68,7 +68,7 @@ const LoggedOutHeader = () => {
               className={styles.btnLogin}
               onClick={openLoginModal}
             >
-              <i className="icon-user"></i> Login
+              <i className="icon-user"></i> Log In
             </Button>
             <Button
               className={styles.btnRegister}

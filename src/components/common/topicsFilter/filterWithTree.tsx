@@ -471,7 +471,7 @@ const FilterWithTree = ({
                   )[0]?.algorithm_label
                 }
                 onChange={selectAlgorithm}
-                value={
+                value={!router.query.algo ?algorithms[0].algorithm_label:
                   algorithms?.filter(
                     (algo) => algo.algorithm_key == selectedAlgorithm
                   )[0]?.algorithm_label
@@ -506,7 +506,7 @@ const FilterWithTree = ({
                 <Input
                   size="large"
                   onChange={filterOnScore}
-                  value={inputValue}
+                  value={filteredScore == 0?filterObject.filterByScore:inputValue}
                   disabled={loadingIndicator}
                   id="filter_input"
                 />

@@ -54,37 +54,35 @@ const CreateTopicFromUI = ({
         >
           <Row gutter={16}>
             <Col xs={24} sm={12}>
-              {nickNameList.length ? (
-                <Form.Item
-                  label={
-                    <>
-                      {labels.cr_nick_name}
-                      <span className="required">*</span>
-                    </>
-                  }
-                  name="nick_name"
-                  {...nickNmRule}
-                  extra={labels.cr_nick_name_sp}
-                  initialValue={nickNameList[0]?.id}
+              <Form.Item
+                label={
+                  <>
+                    {labels.cr_nick_name}
+                    <span className="required">*</span>
+                  </>
+                }
+                name="nick_name"
+                {...nickNmRule}
+                extra={labels.cr_nick_name_sp}
+                initialValue={nickNameList[0]?.id}
+              >
+                <Select
+                  placeholder={placeholders.nickName}
+                  allowClear
+                  size={"large"}
+                  defaultValue={nickNameList[0]?.id}
+                  data-id="nick-name"
+                  showSearch
+                  optionFilterProp="children"
                 >
-                  <Select
-                    placeholder={placeholders.nickName}
-                    allowClear
-                    size={"large"}
-                    defaultValue={nickNameList[0]?.id}
-                    data-id="nick-name"
-                    showSearch
-                    optionFilterProp="children"
-                  >
-                    {nickNameList.map((nick) => (
-                      <Option key={nick.id} value={nick.id}>
-                        {nick.nick_name}
-                      </Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-              ) : null}
-
+                  {nickNameList.map((nick) => (
+                    <Option key={nick.id} value={nick.id}>
+                      {nick.nick_name}
+                    </Option>
+                  ))}
+                </Select>
+              </Form.Item>
+              
               <Form.Item
                 label={
                   <Fragment>
