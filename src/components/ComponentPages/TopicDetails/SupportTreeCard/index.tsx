@@ -549,10 +549,7 @@ const SupportTreeCard = ({
               }}
             >
               {campSupportingTree &&
-              campSupportingTree?.at(0)?.camp_leader &&
-              userNickNames?.some(
-                (obj) => obj?.id === campSupportingTree.at(0)?.nick_name_id
-              ) ? (
+               campSupportingTree?.some(obj => obj["camp_leader"] === true) ?(
                 <>
                   <CustomButton className="btn-green" disabled={true}>
                     {"Sign"}
