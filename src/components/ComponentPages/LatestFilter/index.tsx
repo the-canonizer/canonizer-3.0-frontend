@@ -161,6 +161,7 @@ const LatestFilter = ()=>{
         dispatch(setArchivedCheckBox(false))
         dispatch(setArchivedCheckBox(false))
         filterForAsofDate()
+        algoRevert()
       }
     return (
     <div className={styles.selected_filter_area}>
