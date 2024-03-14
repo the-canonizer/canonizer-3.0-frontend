@@ -84,6 +84,7 @@ const SupportTreeCard = ({
     algorithm,
     asofdate,
     isModalOpenSupportCamps,
+    selectedAlgorithm,
   } = useSelector((state: RootState) => ({
     currentGetCheckSupportExistsData:
       state.topicDetails.currentGetCheckSupportExistsData,
@@ -95,6 +96,7 @@ const SupportTreeCard = ({
     algorithm: state.filters?.filterObject?.algorithm,
     asofdate: state.filters?.filterObject?.asofdate,
     isModalOpenSupportCamps: state?.topic?.isModalOpenSupportCamps,
+    selectedAlgorithm: state?.filters?.filterObject?.algorithm,
   }));
   const { manageSupportStatusCheck } = useSelector((state: RootState) => ({
     manageSupportStatusCheck: state.topicDetails.manageSupportStatusCheck,
@@ -153,11 +155,10 @@ const SupportTreeCard = ({
   useEffect(() => {
     const filteredAlgo = algorithms?.filter(
       (a: { algorithm_key: string }) =>
-        a.algorithm_key === (filterData?.algorithm || router?.query?.algo)
+        a.algorithm_key === (selectedAlgorithm || router?.query?.algo)
     );
-
     if (filteredAlgo?.length) setCurrentAlgo(filteredAlgo[0]?.algorithm_label);
-  }, [algorithms, router?.query?.algo, filterData?.algorithm]);
+  }, [algorithms, router?.query?.algo, selectedAlgorithm]);
 
   const dispatch = useDispatch();
   const arr = [];
@@ -213,23 +214,21 @@ const SupportTreeCard = ({
     }
   };
 
-  // useEffect(() => {
-  //   const q: any = router?.query;
-  //   if (
-  //     q &&
-  //     q.from &&
-  //     q.from.includes("notify_") &&
-  //     q?.n_type?.toLowerCase() === "support"
-  //   ) {
-  //     const fArr = (q.from as String).split("_");
-  //     if (+fArr[1]) {
-  //       console.log("bbb1");
-
-  //       handleClickSupportCheck();
-  //     }
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [router]);
+  useEffect(() => {
+    const q: any = router?.query;
+    if (
+      q &&
+      q.from &&
+      q.from.includes("notify_") &&
+      q?.n_type?.toLowerCase() === "support"
+    ) {
+      const fArr = (q.from as String).split("_");
+      if (+fArr[1]) {
+        handleClickSupportCheck();
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router]);
 
   const manageSupportPath = router?.asPath.replace("/topic/", "/support/");
 
@@ -254,7 +253,6 @@ const SupportTreeCard = ({
       }
     });
   };
-
   const supportLength = 15;
   const renderTreeNodes = (
     data: any,
@@ -438,7 +436,7 @@ const SupportTreeCard = ({
                 {campRecord?.camp_name}&quot; Camp
               </h3>
               <h5 className={styles.algoLabel}>
-                ( Based on: &quot;{currentAlgo}&quot; )
+                ( Based on: &quot;{router?.query?.algo ?currentAlgo:algorithms[0].algorithm_label}&quot; )
               </h5>
             </Fragment>
           }
