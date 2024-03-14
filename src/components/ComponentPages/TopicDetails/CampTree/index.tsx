@@ -166,7 +166,7 @@ const CampTree = ({
     let keyexistSession =
       sesionexpandkeys &&
       tree?.at(0) &&
-      sesionexpandkeys.find(
+      sesionexpandkeys?.find(
         (age) => age.topic_id == tree?.at(0)["1"]?.topic_id
       );
 
@@ -207,7 +207,7 @@ const CampTree = ({
       setDefaultExpandKeys(expandKeys);
       setUniqueKeys(uniquekeyss);
       if (tree?.at(0)) {
-        let index = sesionexpandkeys.findIndex(
+        let index = sesionexpandkeys?.findIndex(
           (item) => item.topic_id === tree?.at(0)["1"]?.topic_id
         );
         if (index !== -1) {
