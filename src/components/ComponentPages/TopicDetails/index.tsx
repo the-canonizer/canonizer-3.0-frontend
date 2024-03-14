@@ -410,7 +410,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
   useEffect(() => {
     setIsClient(true);
   }, []);
-  const lable = algorithms.find((obj)=>{
+  const lable = algorithms?.find((obj)=>{
     return obj.algorithm_key == selectedAlgorithm
   })
 
