@@ -90,10 +90,10 @@ const ImageUploader: React.FC = () => {
   }) => {
     const lastFile = newFileList[newFileList.length - 1];
     if (lastFile) {
-      const validationStatus = await validateImage(
-        lastFile.originFileObj as File
-      );
-      if (validationStatus !== null) {
+      // const validationStatus = await validateImage(
+      //   lastFile.originFileObj as File
+      // );
+      // if (validationStatus !== null) {
         // setFileList(newFileList);
         try {
           const formData = new FormData();
@@ -103,13 +103,14 @@ const ImageUploader: React.FC = () => {
           dispatch(setProfilePicture(imageUrl));
           message.success("Upload successful");
         } catch (error) {
-          message.error("Upload failed");
+          // message.error("Upload failed");
+          message.error(error?.error?.data?.error?.profile_picture[0])
         }
-      } else {
-        // Remove the invalid file from the fileList
-        newFileList.pop();
-        setFileList(newFileList);
-      }
+      // } else {
+      //   // Remove the invalid file from the fileList
+      //   newFileList.pop();
+      //   setFileList(newFileList);
+      // }
     }
   };
 
@@ -138,10 +139,10 @@ const ImageUploader: React.FC = () => {
   const updateProfilePicture = async ({ fileList: newFileList }) => {
     const lastFile = newFileList[newFileList.length - 1];
     if (lastFile) {
-      const validationStatus = await validateImage(
-        lastFile.originFileObj as File
-      );
-      if (validationStatus !== null) {
+      // const validationStatus = await validateImage(
+      //   lastFile.originFileObj as File
+      // );
+      // if (validationStatus !== null) {
         // setFileList(newFileList);
         try {
           const formData = new FormData();
@@ -151,13 +152,14 @@ const ImageUploader: React.FC = () => {
           dispatch(setProfilePicture(imageUrl));
           message.success("Upload successful");
         } catch (error) {
-          message.error("Upload failed");
+          // message.error("Upload failed");
+          message.error(error?.error?.data?.error?.profile_picture[0])
         }
-      } else {
-        // Remove the invalid file from the fileList
-        newFileList.pop();
-        setFileList(newFileList);
-      }
+      // } else {
+      //   // Remove the invalid file from the fileList
+      //   newFileList.pop();
+      //   setFileList(newFileList);
+      // }
     }
   };
   const items = [
