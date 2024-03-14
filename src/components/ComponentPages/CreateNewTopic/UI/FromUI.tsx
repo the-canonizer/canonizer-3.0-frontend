@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { Card, Form, Input, Button, Select, Row, Col } from "antd";
 
 import messages from "../../../../messages";
@@ -23,12 +23,17 @@ const CreateTopicFromUI = ({
   nameSpaces,
   nickNameList,
   onCancel,
+  existedTopic,
+  isFormSubmitted,
+  setIsFormSubmitted,
+  setExistedTopic,
 }: any) => {
   const CardTitle = (
     <span className={styles.cardTitle} data-testid="head">
       Create Topic
     </span>
   );
+  const [topicName, setTopicName] = useState("");
 
   return (
     <Fragment>
@@ -49,43 +54,41 @@ const CreateTopicFromUI = ({
         >
           <Row gutter={16}>
             <Col xs={24} sm={12}>
-              {nickNameList.length ? (
-                <Form.Item
-                  label={
-                    <>
-                      {labels.cr_nick_name}
-                      <span className="required">*</span>
-                    </>
-                  }
-                  name="nick_name"
-                  {...nickNmRule}
-                  extra={labels.cr_nick_name_sp}
-                  initialValue={nickNameList[0]?.id}
+              <Form.Item
+                label={
+                  <>
+                    {labels.cr_nick_name}
+                    <span className="required">*</span>
+                  </>
+                }
+                name="nick_name"
+                {...nickNmRule}
+                extra={labels.cr_nick_name_sp}
+                initialValue={nickNameList[0]?.id}
+              >
+                <Select
+                  placeholder={placeholders.nickName}
+                  allowClear
+                  size={"large"}
+                  defaultValue={nickNameList[0]?.id}
+                  data-id="nick-name"
+                  showSearch
+                  optionFilterProp="children"
                 >
-                  <Select
-                    placeholder={placeholders.nickName}
-                    allowClear
-                    size={"large"}
-                    defaultValue={nickNameList[0]?.id}
-                    data-id="nick-name"
-                    showSearch
-                    optionFilterProp="children"
-                  >
-                    {nickNameList.map((nick) => (
-                      <Option key={nick.id} value={nick.id}>
-                        {nick.nick_name}
-                      </Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-              ) : null}
-
+                  {nickNameList.map((nick) => (
+                    <Option key={nick.id} value={nick.id}>
+                      {nick.nick_name}
+                    </Option>
+                  ))}
+                </Select>
+              </Form.Item>
+              
               <Form.Item
                 label={
                   <Fragment>
                     {labels.cr_topic_name}
-                    <span>(Limit 30 Chars)</span>
                     <span className="required">*</span>
+                    <span>(Limit 30 Chars)</span>
                   </Fragment>
                 }
                 name="topic_name"
@@ -95,8 +98,31 @@ const CreateTopicFromUI = ({
                   placeholder={placeholders.topicName}
                   size={"large"}
                   maxLength={30}
+                  onChange={(e) => {
+                    setTopicName(e.target.value);
+                    setIsFormSubmitted(false);
+                    setExistedTopic({
+                      status: false,
+                      data: "",
+                    })
+                  }}
                 />
               </Form.Item>
+              {existedTopic?.status && topicName && isFormSubmitted && (
+                <div className={styles.topicExistsMessage}>
+                  <span>
+                    The topic titled{" "}
+                    <a
+                      href={existedTopic?.data}
+                      className="text-underline"
+                      target="__blank"
+                    >
+                      {topicName}
+                    </a>{" "}
+                    already exists. Please enter a different name.
+                  </span>
+                </div>
+              )}
               {nameSpaces ? (
                 <Form.Item
                   label={

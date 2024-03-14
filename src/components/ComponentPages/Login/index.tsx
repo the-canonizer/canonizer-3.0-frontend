@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { Form } from "antd";
@@ -36,16 +36,9 @@ const Login = ({ isModal, isTest = false }: any) => {
   const dispatch = useDispatch<AppDispatch>();
   const [form] = Form.useForm();
   const [otpForm] = Form.useForm();
+  const didMount = useRef(false);
 
   useEffect(() => setRememberValue(remember), [remember]);
-
-  // useEffect(() => {
-  //   if (rememberValue) {
-  //     form.setFieldsValue({ username: rememberValue.username });
-  //     form.setFieldsValue({ password: rememberValue.password });
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [rememberValue]);
 
   const closeModal = () => {
     dispatch(hideLoginModal());
@@ -85,16 +78,14 @@ const Login = ({ isModal, isTest = false }: any) => {
       );
       form.resetFields();
 
-      isModal ? closeModal() : "";
+      closeModal();
 
-      if (router?.query.returnUrl) {
-        router?.push(`${router?.query.returnUrl}`);
+      if (router?.query?.returnUrl) {
+        router?.push(`${router?.query?.returnUrl}`);
+      } else if (router?.pathname === "/login") {
+        router?.push("/");
       } else {
-        if (router?.pathname == "/login") {
-          router?.push("/");
-        } else {
-          closeModal();
-        }
+        closeModal();
       }
     }
 
@@ -111,6 +102,15 @@ const Login = ({ isModal, isTest = false }: any) => {
     }
   };
 
+  useEffect(() => {
+    if (didMount?.current) {
+      if (formData?.email && isOtpScreen) {
+        setFormData({ email: '' });
+        setIsOtpScreen(false);
+      }
+    } else didMount.current = true
+  }, [router])
+
   const onOTPClick = async (e) => {
     e.preventDefault();
     const emailPhone = form.getFieldValue("username");
@@ -119,6 +119,7 @@ const Login = ({ isModal, isTest = false }: any) => {
       let formBody = { email: emailPhone };
 
       const res = await resendOTPForRegistration(formBody);
+
       if (res && res.status_code === 200) {
         setFormData({ email: emailPhone });
         setIsOtpScreen(true);
@@ -145,14 +146,13 @@ const Login = ({ isModal, isTest = false }: any) => {
       if (res && res.status_code === 200) {
         otpForm.resetFields();
         setIsOtpScreen(false);
-        isModal ? closeModal() : "";
+
+        closeModal();
 
         if (router?.query.returnUrl) {
           router?.push(`${router?.query.returnUrl}`);
-        } else {
-          if (!router?.pathname?.includes("/forum/")) {
-            router?.push("/");
-          }
+        } else if (!router?.pathname?.includes("/forum/")) {
+          router?.push("/");
         }
       }
     } else {

@@ -25,6 +25,7 @@ const Threads = ({
   payload,
   isModalOpen,
   showModal,
+  createdAt,
 }: any) => (
   <div className="d-flex">
     <ThreadSidebar />
@@ -52,6 +53,7 @@ const Threads = ({
         threadDetailsLoading={threadDetailsLoading}
         isModalOpen={isModalOpen}
         showModal={showModal}
+        createdAt={createdAt}
       />
     </div>
   </div>

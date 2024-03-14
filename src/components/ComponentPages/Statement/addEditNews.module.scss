@@ -137,6 +137,7 @@
       box-shadow: none;
       border-color: transparent;
       font-size: 14px;
+      height: 38px;
 
       &:hover {
         background-color: darken(#4484ce, 7%);
@@ -186,4 +187,15 @@
 .reactInnerDraftBox {
   height: 100%;
   width: 100%;
+}
+.topicNameWarning {
+  color: #ef5e5e;
+  margin-bottom: 2%;
+}
+.topicNameWarning {
+  color: #ef5e5e;
+  margin-bottom: 2%;
+  font-size: 12px;
+  line-height: 14px;
+  font-weight: normal;
 }

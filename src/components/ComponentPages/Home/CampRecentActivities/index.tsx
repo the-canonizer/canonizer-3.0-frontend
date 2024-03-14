@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useState } from "react";
-import { List, Typography, Collapse } from "antd";
+import { List, Typography, Collapse, Popover } from "antd";
 import { useRouter } from "next/router";
 import { BellFilled } from "@ant-design/icons";
 import moment from "moment";
@@ -12,6 +12,8 @@ import { getTopicActivityLogApi } from "../../../../network/api/campDetailApi";
 import K from "../../../../constants";
 import CustomSkelton from "../../../common/customSkelton";
 import { RootState } from "src/store";
+import ReasonsActivity from "src/components/common/SupportReasonActivity";
+import { getProperties } from "src/utils/generalUtility";
 
 const { Text } = Typography;
 const { Panel } = Collapse;
@@ -65,28 +67,6 @@ export default function CampRecentActivities() {
           }
           className={"activities " + styles.campActivities}
           key="1"
-          // extra={
-          //   <Fragment>
-          //     {userData?.is_admin ? (
-          //       <Link
-          //         href={{
-          //           pathname: "/activities",
-          //           query: {
-          //             topic_num: router?.query?.camp[0]?.split("-")[0],
-          //             camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
-          //           },
-          //         }}
-          //       >
-          //         <a className={styles.viewAllLink}>
-          //           <Text>View All</Text>
-          //           <i className="icon-angle-right"></i>
-          //         </a>
-          //       </Link>
-          //     ) : (
-          //       ""
-          //     )}
-          //   </Fragment>
-          // }
         >
           {loadingIndicator ? (
             <CustomSkelton
@@ -104,7 +84,21 @@ export default function CampRecentActivities() {
                 <List.Item className={styles.activitiesList}>
                   <List.Item.Meta
                     avatar={<BellFilled className={styles.bellIcon} />}
-                    title={item?.description}
+                    title={
+                      <Fragment>
+                        {item?.description}{" "}
+                        {item?.log_name === "support" &&
+                          getProperties(item)?.reason && (
+                            <Popover
+                              content={<ReasonsActivity CurrentItem={item} />}
+                              placement="top"
+                              className={styles.algoInfoIcon}
+                            >
+                              <i className="icon-info"></i>
+                            </Popover>
+                          )}
+                      </Fragment>
+                    }
                     description={covertToTime(item?.updated_at)}
                     className={styles.listItem}
                   />
@@ -130,9 +124,7 @@ export default function CampRecentActivities() {
                   <i className="icon-angle-right"></i>
                 </a>
               </Link>
-            ) : (
-              ""
-            )}
+            ) : null}
           </div>
         </Panel>
       </Collapse>

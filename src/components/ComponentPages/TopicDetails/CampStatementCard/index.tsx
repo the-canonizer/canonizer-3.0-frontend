@@ -48,8 +48,12 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
             <h3 className="cmp-title">
               {K?.exceptionalMessages?.campStatementHeading}
             </h3>
-            <div className="cmp-change-icon">
-              {campStatement[0]?.in_review_changes > 0 ? (
+            <div
+              className="cmp-change-icon"
+              style={{ display: "inline-block" }}
+            >
+              {campStatement[0]?.in_review_changes > 0 ||
+              history.items?.[0]?.status == "in_review" ? (
                 <div
                   onClick={(e) => {
                     e.stopPropagation();
@@ -80,9 +84,7 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
                     />
                   </Popover>
                 </div>
-              ) : (
-                ""
-              )}
+              ) : null}
             </div>
           </>
         }
@@ -102,7 +104,7 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
             {campStatement?.length && campStatement[0]?.parsed_value ? (
               <div
                 dangerouslySetInnerHTML={{
-                  __html: campStatement[0]?.parsed_value,
+                  __html: `<div class="ck-content">${campStatement[0]?.parsed_value}</div>`,
                 }}
               />
             ) : (
@@ -111,10 +113,10 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
           </div>
         </Paragraph>
 
-        <div className="topicDetailsCollapseFooter">
+        <div className="topicDetailsCollapseFooter printHIde">
           <CustomButton
             disabled={campRecord?.is_archive == 1 ? true : false}
-            className="btn-green"
+            className="btn-green printHIde"
             id="add-camp-statement-btn"
           >
             <Link
@@ -135,8 +137,9 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
                       "-"
                     )}`
               }
+              className="printHIde"
             >
-              <a>
+              <a className="printHIde">
                 {history?.items?.length > 0
                   ? K?.exceptionalMessages?.manageCampStatementButton
                   : K?.exceptionalMessages?.addCampStatementButton}

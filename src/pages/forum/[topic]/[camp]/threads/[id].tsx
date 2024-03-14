@@ -18,6 +18,7 @@ import Layout from "../../../../../hoc/layout";
 import CampForumComponent from "../../../../../components/ComponentPages/CampForum";
 import DataNotFound from "@/components/ComponentPages/DataNotFound/dataNotFound";
 import { setThread } from "src/store/slices/campForumSlice";
+import { createToken } from "src/network/api/userApi";
 
 function CampForumPostPage({
   topicRecord,
@@ -69,7 +70,20 @@ export async function getServerSideProps({ req, resolvedUrl }) {
         : Date.now() / 1000,
   };
 
-  const threadRes = await getThreadData(id, String(topicNum), String(campNum));
+  let token = null;
+  if (req.cookies["loginToken"]) {
+    token = req.cookies["loginToken"];
+  } else {
+    const response = await createToken();
+    token = response?.access_token;
+  }
+
+  const threadRes = await getThreadData(
+    id,
+    String(topicNum),
+    String(campNum),
+    token
+  );
 
   if (threadRes?.data?.status_code === 404) {
     return {

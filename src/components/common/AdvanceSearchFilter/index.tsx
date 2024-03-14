@@ -15,9 +15,10 @@ import Link from "next/link";
 import styles from "./advanceSearchFilter.module.scss";
 import { Fragment } from "react";
 import filter from "src/assets/image/filter.svg";
+import upArrow from "src/assets/image/ant-design--caret-up-filled.svg"
 import Image from "next/image";
 import { LeftOutlined } from "@ant-design/icons";
-import { CloseCircleOutlined } from "@ant-design/icons";
+import { CloseCircleOutlined,CaretUpOutlined } from "@ant-design/icons";
 
 export default function AdvanceFilter() {
   const { Panel } = Collapse;
@@ -51,15 +52,17 @@ export default function AdvanceFilter() {
   });
 
   return (
-    <div className="advanceFilter">
+    <div
+      className={
+        router.pathname !== "/search/nickname"
+          ? "advanceFilter"
+          : "NicknameadvanceFilter advanceFilter"
+      }
+    >
       <Collapse
         className={`${styles.cardAccordian} topicListFilterCardCollapse`}
         expandIconPosition="right"
-        expandIcon={() => (
-          <div className={styles.collapseIcon}>
-            <i className="icon-angle-up"></i>
-          </div>
-        )}
+        expandIcon={({ isActive }) => <CaretUpOutlined rotate={isActive ? 180 : 180} />}
         bordered={false}
         // defaultActiveKey={["1", "2", "3"]}
         // accordion={false}
@@ -83,37 +86,44 @@ export default function AdvanceFilter() {
             <CloseCircleOutlined />
           </div>
 
-          <div className="row">
-            <div className="col-sm-6">
-              <h4>Canonizer</h4>
-              <label>Canonizer Algorithm:</label>
-              <Select className="w-100">
-                <Select.Option>123</Select.Option>
-              </Select>
-              <Link href={"#"}>
-                <a className="Algorithm">Algorithm Information</a>
-              </Link>
-              <div className="score-box">
-                <label>Score</label>
+          {router.pathname !== "/search/nickname" ? (
+            <div className="row">
+              <div className="col-sm-6">
+                <h4>Canonizer</h4>
+                <label>Canonizer Algorithm:</label>
+                <Select className="w-100">
+                  <Select.Option>123</Select.Option>
+                </Select>
+                <Link href={"#"}>
+                  <a className="Algorithm">Algorithm Information</a>
+                </Link>
+                <div className="score-box">
+                  <label>Score</label>
 
-                <LeftOutlined className={styles.LeftOutlined} />
-                <Input size="large" value={1} />
-                <Popover
-                  content={"infoContent"}
-                  placement="right"
-                  className={styles.infoIcon}
-                >
-                  <i className="icon-info"></i>
-                </Popover>
+                  <LeftOutlined className={styles.LeftOutlined} />
+                  <Input size="large" value={1} />
+                  <Popover
+                    content={"infoContent"}
+                    placement="right"
+                    className={styles.infoIcon}
+                  >
+                    <i className="icon-info"></i>
+                  </Popover>
+                </div>
+              </div>
+              <div className="col-sm-6">
+                <h4>Search Type</h4>
+                <Radio>Search include review</Radio>
+                <Radio>Search live</Radio>
+                <Radio>Search historical</Radio>
               </div>
             </div>
-            <div className="col-sm-6">
-              <h4>Search Type</h4>
-              <Radio>Search include review</Radio>
-              <Radio>Search live</Radio>
-              <Radio>Search historical</Radio>
+          ) : (
+            <div className="nicknameAdvanceFilter">
+              <label>Search for Topic or Camp </label>
+              <input placeholder="Search a keyword"></input>
             </div>
-          </div>
+          )}
           {/* <div>
                  <AutoComplete
               popupClassName="certain-category-search-dropdown"

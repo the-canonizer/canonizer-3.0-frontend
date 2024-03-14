@@ -2,8 +2,8 @@ import { useState, Fragment, useEffect } from "react";
 import { useSelector } from "react-redux";
 
 import NotificationsListUI from "./UI";
-import { getNotificationsList } from "../../../network/api/notificationAPI";
-import { RootState } from "../../../store";
+import { getNotificationsList } from "src/network/api/notificationAPI";
+import { RootState } from "src/store";
 
 const SettingsUI = () => {
   const [page, setPage] = useState(1);

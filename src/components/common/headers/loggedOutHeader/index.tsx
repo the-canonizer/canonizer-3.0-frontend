@@ -9,11 +9,14 @@ import styles from "../siteHeader.module.scss";
 import Logo from "../logoHeader";
 import SearchSection from "../../searchSection";
 import LoginModal from "../../../ComponentPages/Login/loginModal";
+import RegistrationModal from "src/components/ComponentPages/Registration/registrationModal";
 import { showLoginModal } from "../../../../store/slices/uiSlice";
 import ForgotModal from "../../../ComponentPages/ForgotPassword/forgotPasswordModal";
 import DisclaimerMsg from "../../disclaimer";
 import HeaderMenu from "../HeaderMenu";
 import TopicCreationBTN from "../TopicCreationBTN";
+import ArchivedCampMsg from "../../ArchivedCampMsg";
+
 
 const { Header } = Layout;
 
@@ -39,10 +42,11 @@ const LoggedOutHeader = () => {
   };
 
   const openRegistrationModal = () => router.push("/registration");
+  const isMobile = window.matchMedia("(min-width: 1280px)").matches;
 
   return (
     <React.Fragment>
-      <Header className={styles.wrap} data-testid="loggedOutHeader">
+      <Header className={`${styles.wrap} printHIde`} data-testid="loggedOutHeader">
         <Logo />
         <div className={`${styles.navWrap} ${isActive && styles.showMobMenu}`}>
           <div className={styles.mobLogoIcon}>
@@ -64,7 +68,7 @@ const LoggedOutHeader = () => {
               className={styles.btnLogin}
               onClick={openLoginModal}
             >
-              <i className="icon-user"></i> Login
+              <i className="icon-user"></i> Log In
             </Button>
             <Button
               className={styles.btnRegister}
@@ -106,17 +110,23 @@ const LoggedOutHeader = () => {
           key="toggle-btn"
         ></div>
       </Header>
-      <section className="Mob_View">
-        <div className="search_header">
-          <HeaderMenu />
-        </div>
-      </section>
+      {isMobile == false ? (
+        <section className="Mob_View">
+          <div className="search_header">
+            <HeaderMenu />
+          </div>
+        </section>
+      ) : (
+        <></>
+      )}
       <SearchSection />
       <div className="topicMobBTN">
         <TopicCreationBTN key="create-topic-area" />
       </div>
       <DisclaimerMsg />
+      <ArchivedCampMsg />
       <LoginModal />
+      <RegistrationModal />
       <ForgotModal />
     </React.Fragment>
   );

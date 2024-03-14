@@ -24,7 +24,7 @@ const { Panel } = Collapse;
 const { Option } = Select;
 
 import styles from "./topicListFilter.module.scss";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { setFilterCanonizedTopics } from "../../../store/slices/filtersSlice";
 import K from "../../../constants";
 import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
@@ -160,8 +160,16 @@ const CreateTopic = () => {
       delete router.query.canon;
     }
 
+    if (!namespace_id && String(namespace_id) === "0") {
+      delete router.query.canon;
+    }
+
     if (asof === "default") {
       delete router.query.asof;
+    }
+
+    if (!query?.canon) {
+      delete router.query.canon;
     }
 
     if (algorithm === "blind_popularity") {
@@ -181,24 +189,44 @@ const CreateTopic = () => {
       delete router.query.filter;
     }
 
-    Router.replace(router, null, { shallow: true });
+    router.replace(router, null, { shallow: true });
   };
 
   useEffect(() => {
+    if (router.query.canon) {
+      dispatch(
+        setFilterCanonizedTopics({
+          namespace_id: router.query.canon,
+        })
+      );
+    }
+
     if (
       String(filterObject?.filterByScore) !== "0" ||
       String(filterObject?.namespace_id) !== "1" ||
       filterObject?.asof !== "default" ||
       filterObject?.algorithm !== "blind_popularity"
     ) {
-      onChangeRoute();
+      onChangeRoute(
+        +router.query.score || filteredScore || 0,
+        (
+          router.query.algo ||
+          filterObject?.algorithm ||
+          "blind_popularity"
+        )?.toString(),
+        (router.query.asof || filterObject?.asof || "default")?.toString(),
+        +router.query.asofdate || filterObject?.asofdate,
+        +router.query.canon,
+        viewThisVersion
+      );
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (!didMount.current) {
-      let aa = removeEmptyValues({
+      let aa: any = removeEmptyValues({
         filterByScore: `${router.query.score}` || `${filteredScore}` || "0",
         asofdate: +router.query.asofdate || filterObject?.asofdate,
         asof: router.query.asof || filterObject?.asof || "default",
@@ -229,18 +257,12 @@ const CreateTopic = () => {
   }, [filteredAsOfDate]);
 
   useEffect(() => {
-    getCanonizedAlgorithmsApi();
+    if (!(algorithms?.length > 0)) getCanonizedAlgorithmsApi();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
   const selectAlgorithm = (value) => {
-    setCookie("canAlgo", value, {
-      path: "/",
-    });
-    dispatch(
-      setFilterCanonizedTopics({
-        algorithm: value,
-      })
-    );
+    setCookie("canAlgo", value, { path: "/" });
+    dispatch(setFilterCanonizedTopics({ algorithm: value }));
     onChangeRoute(
       filterObject?.filterByScore,
       value,
@@ -384,200 +406,194 @@ const CreateTopic = () => {
   function momentDateObject(e) {
     return e?._d;
   }
+
   return (
-    <>
-      <div className="leftSideBar_Card">
-        <Collapse
-          className={`${styles.cardAccordian} topicListFilterCardCollapse topicFilterBorderRemove`}
-          expandIconPosition="right"
-          expandIcon={() => (
-            <div className={styles.collapseIcon}>
-              <i className="icon-angle-up"></i>
-            </div>
-          )}
-          bordered={false}
-          defaultActiveKey={["1", "2", "3"]}
-        >
-          <Panel
-            header={<span className={styles.title}>Canonizer</span>}
-            key="1"
+    <div className="leftSideBar_Card">
+      <Collapse
+        className={`${styles.cardAccordian} topicListFilterCardCollapse topicFilterBorderRemove`}
+        expandIconPosition="right"
+        expandIcon={() => (
+          <div className={styles.collapseIcon}>
+            <i className="icon-angle-up"></i>
+          </div>
+        )}
+        bordered={false}
+        defaultActiveKey={["1", "2", "3"]}
+      >
+        <Panel header={<span className={styles.title}>Canonizer</span>} key="1">
+          <div className={styles.algo_title}>
+            <Title level={5} className={styles.algoText}>
+              Canonizer Algorithm:
+            </Title>
+            <Popover content="Algorithm Information" placement="top">
+              {router?.asPath.includes("/topic") ? (
+                <a href={K?.Network?.URL?.algoInfoUrl}>Algorithm Information</a>
+              ) : (
+                <Link href={K?.Network?.URL?.algoInfoUrl}>
+                  <a>Algorithm Information</a>
+                </Link>
+              )}
+            </Popover>
+          </div>
+          <Select
+            size="large"
+            showSearch
+            optionFilterProp="children"
+            className={styles.algoSelect}
+            defaultValue={
+              algorithms?.filter(
+                (algo) => algo.algorithm_key == selectedAlgorithm
+              )[0]?.algorithm_label
+            }
+            onChange={selectAlgorithm}
+            value={
+              algorithms?.filter(
+                (algo) => algo.algorithm_key == selectedAlgorithm
+              )[0]?.algorithm_label
+            }
+            disabled={loading}
           >
-            <div className={styles.algo_title}>
-              <Title level={5} className={styles.algoText}>
-                Canonizer Algorithm:
-              </Title>
-              <Popover content="Algorithm Information" placement="top">
-                {router?.asPath.includes("/topic") ? (
-                  <a href={K?.Network?.URL?.algoInfoUrl}>
-                    Algorithm Information
-                  </a>
-                ) : (
-                  <Link href={K?.Network?.URL?.algoInfoUrl}>
-                    <a>Algorithm Information</a>
-                  </Link>
-                )}
-              </Popover>
-            </div>
-            <Select
+            {algorithms?.map((algo) => {
+              return (
+                <Option key={algo.id} value={algo.algorithm_key}>
+                  {algo.algorithm_label}
+                </Option>
+              );
+            })}
+          </Select>
+          <Paragraph className={styles.algoInfo}>
+            {/* <i className="icon-fish-bones"></i> Algorithm Information */}
+          </Paragraph>
+          <div className={styles.filter}>
+            <Text className={styles.filterText}>Filter</Text>
+            <LeftOutlined className={styles.LeftOutlined} />
+            <Input
               size="large"
-              showSearch
-              optionFilterProp="children"
-              className={styles.algoSelect}
-              defaultValue={
-                algorithms?.filter(
-                  (algo) => algo.algorithm_key == selectedAlgorithm
-                )[0]?.algorithm_label
-              }
-              onChange={selectAlgorithm}
-              value={
-                algorithms?.filter(
-                  (algo) => algo.algorithm_key == selectedAlgorithm
-                )[0]?.algorithm_label
-              }
+              onChange={filterOnScore}
+              value={inputValue}
               disabled={loading}
+            />
+            <Popover
+              content={infoContent}
+              placement="right"
+              className={styles.infoIcon}
             >
-              {algorithms?.map((algo) => {
-                return (
-                  <Option key={algo.id} value={algo.algorithm_key}>
-                    {algo.algorithm_label}
-                  </Option>
-                );
-              })}
-            </Select>
-            <Paragraph className={styles.algoInfo}>
-              {/* <i className="icon-fish-bones"></i> Algorithm Information */}
-            </Paragraph>
-            <div className={styles.filter}>
-              <Text className={styles.filterText}>Filter</Text>
-              <LeftOutlined className={styles.LeftOutlined} />
-              <Input
-                size="large"
-                onChange={filterOnScore}
-                value={inputValue}
-                disabled={loading}
-              />
-              <Popover
-                content={infoContent}
-                placement="right"
-                className={styles.infoIcon}
-              >
-                <i className="icon-info"></i>
-              </Popover>
-            </div>
+              <i className="icon-info"></i>
+            </Popover>
+          </div>
 
-            <div className={styles.scoreCheckbox}>
-              <FullScoreCheckbox />
-            </div>
+          <div className={styles.scoreCheckbox}>
+            <FullScoreCheckbox />
+          </div>
 
-            <div className={styles.scoreCheckbox}>
-              <ArchivedCampCheckBox />
-            </div>
-          </Panel>
-          {panelColorRef.current && (
-            <Panel
-              className={`header-bg-color-change radio-group-sider  ${panelColorRef?.current}`}
-              header={
-                <span className={styles.title}>
-                  As Of
-                  <Popover content={asContent} placement="right">
-                    <i className="icon-info"></i>
-                  </Popover>
-                </span>
-              }
-              key="2"
-            >
-              <Radio.Group onChange={onChange} value={value} disabled={loading}>
-                <Space direction="vertical" style={{ gap: "12px" }}>
-                  <Radio
-                    className={styles.radio + " topicFilterRadio"}
-                    value={1}
-                    onClick={() => {
-                      dispatch(setViewThisVersion(false));
-                      setCookie("asof", "review", {
-                        path: "/",
-                      });
-                      dispatch(
-                        setIsReviewCanonizedTopics({
-                          includeReview: true,
-                          asof: "review",
-                          asofdate: Date.now() / 1000,
-                        })
-                      );
-                      onChangeRoute(
-                        filterObject?.filterByScore,
-                        filterObject?.algorithm,
-                        "review",
-                        Date.now() / 1000,
-                        filterObject?.namespace_id,
-                        viewThisVersion
-                      );
-                    }}
-                  >
-                    Include review
-                  </Radio>
-                  <Radio
-                    className={styles.radio + " topicFilterRadio"}
-                    value={2}
-                    onClick={() => {
-                      dispatch(setViewThisVersion(false));
-                      setCookie("asof", "default", {
-                        path: "/",
-                      });
-                      dispatch(
-                        setFilterCanonizedTopics({
-                          asofdate: Date.now() / 1000,
-                          asof: "default",
-                        })
-                      );
-                      onChangeRoute(
-                        filterObject?.filterByScore,
-                        filterObject?.algorithm,
-                        "default",
-                        Date.now() / 1000,
-                        filterObject?.namespace_id,
-                        viewThisVersion
-                      );
-                    }}
-                  >
-                    Default
-                  </Radio>
-                  <Radio
-                    className={styles.radio + " topicFilterRadio"}
-                    value={3}
-                    onClick={() => {
-                      dispatch(setViewThisVersion(false));
-                      handleAsOfClick();
-                    }}
-                  >
-                    As of date
-                  </Radio>
-                </Space>
-              </Radio.Group>
-              <DatePicker
-                disabled={
-                  !loading
-                    ? isDatePicker || selectedAsOf == "bydate"
-                      ? false
-                      : true
+          <div className={styles.scoreCheckbox}>
+            <ArchivedCampCheckBox />
+          </div>
+        </Panel>
+        {panelColorRef.current && (
+          <Panel
+            className={`header-bg-color-change radio-group-sider  ${panelColorRef?.current}`}
+            header={
+              <span className={styles.title}>
+                As Of
+                <Popover content={asContent} placement="right">
+                  <i className="icon-info"></i>
+                </Popover>
+              </span>
+            }
+            key="2"
+          >
+            <Radio.Group onChange={onChange} value={value} disabled={loading}>
+              <Space direction="vertical" style={{ gap: "12px" }}>
+                <Radio
+                  className={styles.radio + " topicFilterRadio"}
+                  value={1}
+                  onClick={() => {
+                    dispatch(setViewThisVersion(false));
+                    setCookie("asof", "review", {
+                      path: "/",
+                    });
+                    dispatch(
+                      setIsReviewCanonizedTopics({
+                        includeReview: true,
+                        asof: "review",
+                        asofdate: Date.now() / 1000,
+                      })
+                    );
+                    onChangeRoute(
+                      filterObject?.filterByScore,
+                      filterObject?.algorithm,
+                      "review",
+                      Date.now() / 1000,
+                      filterObject?.namespace_id,
+                      viewThisVersion
+                    );
+                  }}
+                >
+                  Include review
+                </Radio>
+                <Radio
+                  className={styles.radio + " topicFilterRadio"}
+                  value={2}
+                  onClick={() => {
+                    dispatch(setViewThisVersion(false));
+                    setCookie("asof", "default", {
+                      path: "/",
+                    });
+                    dispatch(
+                      setFilterCanonizedTopics({
+                        asofdate: Date.now() / 1000,
+                        asof: "default",
+                      })
+                    );
+                    onChangeRoute(
+                      filterObject?.filterByScore,
+                      filterObject?.algorithm,
+                      "default",
+                      Date.now() / 1000,
+                      filterObject?.namespace_id,
+                      viewThisVersion
+                    );
+                  }}
+                >
+                  Default
+                </Radio>
+                <Radio
+                  className={styles.radio + " topicFilterRadio"}
+                  value={3}
+                  onClick={() => {
+                    dispatch(setViewThisVersion(false));
+                    handleAsOfClick();
+                  }}
+                >
+                  As of date
+                </Radio>
+              </Space>
+            </Radio.Group>
+            <DatePicker
+              disabled={
+                !loading
+                  ? isDatePicker || selectedAsOf == "bydate"
+                    ? false
                     : true
-                }
-                format="YYYY-MM-DD"
-                defaultValue={moment(current_date_filter * 1000)}
-                value={moment(selectedAsOFDate * 1000)}
-                suffixIcon={<i className="icon-calendar"></i>}
-                size={"large"}
-                className={`${styles.date} w-100`}
-                onChange={pickDate}
-                inputReadOnly={true}
-                disabledDate={(current) =>
-                  current && current > moment(current_date_filter).endOf("day")
-                }
-              />
-            </Panel>
-          )}
-        </Collapse>
-      </div>
-    </>
+                  : true
+              }
+              format="YYYY-MM-DD"
+              defaultValue={moment(current_date_filter * 1000)}
+              value={moment(selectedAsOFDate * 1000)}
+              suffixIcon={<i className="icon-calendar"></i>}
+              size={"large"}
+              className={`${styles.date} w-100`}
+              onChange={pickDate}
+              inputReadOnly={true}
+              disabledDate={(current) =>
+                current && current > moment(current_date_filter).endOf("day")
+              }
+            />
+          </Panel>
+        )}
+      </Collapse>
+    </div>
   );
 };
 

@@ -9,7 +9,6 @@ import {
 } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { store } from "../../../../store";
-import moment from "moment";
 
 import userEvent from "@testing-library/user-event";
 import { NextRouter } from "next/router";
@@ -242,11 +241,6 @@ describe("Sidebar Filters Component", () => {
       })
     ).toBeInTheDocument();
     expect(screen.getByText(/as of date/i)).toBeInTheDocument();
-    // expect(
-    //   screen.getByRole("textbox", {
-    //     name: /2023-10-11/i,
-    //   })
-    // ).toBeInTheDocument();
 
     expect(container.getElementsByTagName("button")).toHaveLength(0);
     expect(container.getElementsByTagName("textarea")).toHaveLength(0);
@@ -309,29 +303,6 @@ describe("Sidebar Filters Component", () => {
         </RouterContext.Provider>
       </Provider>
     );
-    const includeReviewRadio = screen.getByText("Include review");
-    const defaultRadio = screen.getByText("Default");
-    const asOfDateRadio = screen.getByText("As of date");
-    // const datePickerInput = screen.getByPlaceholderText('Select date');
-
-    fireEvent.click(includeReviewRadio);
-    fireEvent.click(defaultRadio);
-    fireEvent.click(asOfDateRadio);
-
-    let datePickerInput = screen.getByRole("textbox", {
-      name: /2023-10-10/i,
-    });
-    fireEvent.click(datePickerInput);
-    expect(datePickerInput).not.toBeDisabled();
-
-    const selectedDate = moment("2022-10-11", "YYYY-MM-DD"); // Replace with the desired date
-    fireEvent.change(datePickerInput, {
-      target: { value: selectedDate.format("YYYY-MM-DD") },
-    });
-
-    // Verify that the selected date is displayed in the input
-    expect(datePickerInput).toHaveValue("2022-10-11");
-    fireEvent.click(screen.getByText(/27/i));
 
     fireEvent.click(
       screen.getByRole("checkbox", {

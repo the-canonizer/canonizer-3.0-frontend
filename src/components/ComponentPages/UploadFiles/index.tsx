@@ -63,13 +63,13 @@ const UploadFiles = () => {
   const disabledResetBtn = () => dispatch(resetBtnDisabled());
   const enabledResetBtn = () => dispatch(resetBtnEnabled());
 
-  const openFolder = useSelector((state: RootState) => state.ui.folderOpen);
+  const openFolder = useSelector((state: RootState) => state?.ui?.folderOpen);
 
   const { folderId } = useSelector((state: RootState) => ({
-    folderId: state.ui.folderId,
+    folderId: state.ui?.folderId,
   }));
   const loggedInUser = useSelector(
-    (state: RootState) => state.auth.loggedInUser
+    (state: RootState) => state?.auth?.loggedInUser
   );
 
   const [input, setInput] = useState("");

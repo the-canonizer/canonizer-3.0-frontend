@@ -5,16 +5,17 @@ import { BackTop } from "antd";
 import { Typography, List, Select, Tag, Input, Button, Popover } from "antd";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../../../store";
+import { RootState } from "src/store";
 import {
   getCanonizedNameSpacesApi,
   getCanonizedTopicsApi,
   getCanonizedTopicsForSuggestion,
-} from "../../../../network/api/homePageApi";
+} from "src/network/api/homePageApi";
 import {
   setFilterCanonizedTopics,
+  setOnlyMyTopic,
   setShowDrawer,
-} from "../../../../store/slices/filtersSlice";
+} from "src/store/slices/filtersSlice";
 import styles from "./topicsList.module.scss";
 import { Spin, Checkbox } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
@@ -29,6 +30,7 @@ import {
   changeSlashToArrow,
 } from "src/utils/generalUtility";
 import CustomSkelton from "../../../common/customSkelton";
+import SortTopics from "../../SortingTopics";
 // import { CloseCircleOutlined } from "@ant-design/icons";
 // import { clearAllListeners } from "@reduxjs/toolkit";
 
@@ -37,19 +39,17 @@ const { Title, Text, Paragraph } = Typography;
 const { Search } = Input;
 
 const infoContent = (
-  <>
-    <div className={styles.namespacesPopover}>
-      <Title level={5}>Canon</Title>
-      <p>
-        Canons are a set of topics created for specific organizations and cities
-        to separate topics exclusively for them from the topics of general
-        interest. To get a canon created for your organization, contact{" "}
-        <Link href="mailto:support@canonizer.com">
-          <a>support@canonizer.com</a>
-        </Link>
-      </p>
-    </div>
-  </>
+  <div className={styles.namespacesPopover}>
+    <Title level={5}>Canon</Title>
+    <p>
+      Canons are a set of topics created for specific organizations and cities
+      to separate topics exclusively for them from the topics of general
+      interest. To get a canon created for your organization, contact{" "}
+      <Link href="mailto:support@canonizer.com">
+        <a>support@canonizer.com</a>
+      </Link>
+    </p>
+  </div>
 );
 
 const TopicsList = () => {
@@ -71,11 +71,9 @@ const TopicsList = () => {
     search,
     is_checked,
     is_archive,
-
+    onlyMyTopicsCheck,
     loading,
-    // archeived
   } = useSelector((state: RootState) => ({
-    // archeived: state.utils?.archived_checkbox,
     canonizedTopics: state.homePage?.canonizedTopicsData,
     asofdate: state.filters?.filterObject?.asofdate,
     asof: state.filters?.filterObject?.asof,
@@ -84,32 +82,40 @@ const TopicsList = () => {
     nameSpaces: state.homePage?.nameSpaces,
     filterNameSpace: state?.filters?.filterObject?.nameSpace,
     userEmail: state?.auth?.loggedInUser?.email,
-    filterNameSpaceId: state?.filters?.filterObject?.namespace_id,
+    filterNameSpaceId: String(state?.filters?.filterObject?.namespace_id),
     search: state?.filters?.filterObject?.search,
     is_checked: state?.utils?.score_checkbox,
     is_archive: state?.filters?.filterObject?.is_archive,
     filterObject: state?.filters?.filterObject,
     viewThisVersion: state?.filters?.viewThisVersionCheck,
     loading: state?.loading?.loading,
+    onlyMyTopicsCheck: state?.filters?.onlyMyTopicsCheck,
   }));
   const { is_camp_archive_checked } = useSelector((state: RootState) => ({
     is_camp_archive_checked: state?.utils?.archived_checkbox,
   }));
+  const { sortLatestTopic, sortScoreViewTopic } = useSelector(
+    (state: RootState) => ({
+      sortLatestTopic: state?.utils?.sortLatestTopic,
+      sortScoreViewTopic: state?.utils?.sortScoreViewTopic,
+      loading: state?.loading?.loading,
+    })
+  );
   const [topicsData, setTopicsData] = useState(canonizedTopics);
   const [nameSpacesList, setNameSpacesList] = useState(nameSpaces);
   const [backGroundColorClass, setBackGroundColorClass] = useState("default");
 
   const [isReview, setIsReview] = useState(asof == "review");
   const [inputSearch, setInputSearch] = useState(search || "");
-  // const [archiveSearch, setArchiveSearch] = useState(is_archive || 0);
 
-  const [nameSpaceId, setNameSpaceId] = useState(filterNameSpaceId || "");
+  const [nameSpaceId, setNameSpaceId] = useState(
+    String(filterNameSpaceId) || "1"
+  );
 
   const [loadMoreIndicator, setLoadMoreIndicator] = useState(false);
   const [getTopicsLoadingIndicator, setGetTopicsLoadingIndicator] =
     useState(false);
   const [selectedNameSpace, setSelectedNameSpace] = useState(filterNameSpace);
-  // const [clear, setClear] = useState(false);
   const [showSearchDropdown, setShowSearchDropdown] = useState(false);
   const [searchLoading, setSearchLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -118,25 +124,11 @@ const TopicsList = () => {
   const inputRef = useRef(null);
   const [allowClear, setAllowClear] = useState(false);
 
-  let onlyMyTopicsCheck = useRef();
-
-  const formatnamespace = (namespace, reverse = false) => {
-    if (reverse) {
-      let addslash = `/${namespace}/`;
-      addslash = addslash?.replace(/-/g, " > ");
-      return addslash;
-    } else {
-      let removednamespace = namespace?.replace(/^\/|\/$/g, "");
-      removednamespace = removednamespace?.replace(/ > /g, "-");
-      return removednamespace;
-    }
-  };
-
   const selectNameSpace = (id, nameSpace) => {
-    setNameSpaceId(id);
+    setNameSpaceId(String(id));
     setSelectedNameSpace(nameSpace?.children);
 
-    if (nameSpace?.children?.toLowerCase() !== "/general/") {
+    if (id?.toString() !== "1") {
       router.query.canon = id;
       delete router?.query?.namespace;
       router?.replace(router, undefined, { shallow: true });
@@ -152,22 +144,15 @@ const TopicsList = () => {
 
     dispatch(
       setFilterCanonizedTopics({
-        namespace_id: id,
+        namespace_id: String(id),
         nameSpace: nameSpace?.children,
       })
     );
   };
-  // const checkTopics = (topics)=>{
-  //   let archive =
-  //   if(topics?.length > 0 && !is_camp_archive_checked){
-  //     topics?.forEach(element => {
-  //       if(element.item.is_archive)
-  //     });
-  //   }
-  // }
+
   useEffect(() => {
-    if (filterNameSpace?.toLowerCase() !== "/general/") {
-      router.query.canon = formatnamespace(filterNameSpace);
+    if (String(filterNameSpaceId) !== "1") {
+      router.query.canon = String(filterNameSpaceId);
       delete router.query?.namespace;
       router.replace(router, undefined, { shallow: true });
     }
@@ -176,10 +161,9 @@ const TopicsList = () => {
   }, []);
 
   useEffect(() => {
-    const q = router?.query;
-    if (q?.canon) {
+    if (filterNameSpaceId) {
       const filteredName = nameSpacesList?.filter((n) => {
-        if (n?.id == q?.canon) {
+        if (n?.id == filterNameSpaceId) {
           return n;
         }
       });
@@ -188,19 +172,18 @@ const TopicsList = () => {
         dispatch(
           setFilterCanonizedTopics({
             nameSpace: filteredName[0]?.label,
-            namespace_id: filteredName[0]?.id,
+            namespace_id: String(filteredName[0]?.id),
           })
         );
       }
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router, nameSpacesList]);
+  }, [filterNameSpaceId, nameSpacesList]);
 
   useEffect(() => {
     setSelectedNameSpace(filterNameSpace);
-    setNameSpaceId(filterNameSpaceId);
-    // setArchiveSearch(is_archive);
+    setNameSpaceId(String(filterNameSpaceId));
     setInputSearch(search.trim());
     setNameSpacesList(nameSpaces);
   }, [filterNameSpace, filterNameSpaceId, search, nameSpaces, is_archive]);
@@ -221,20 +204,9 @@ const TopicsList = () => {
       await getTopicsApiCallWithReqBody();
       setGetTopicsLoadingIndicator(false);
     }
-    // if (
-    //   didMount.current ||
-    //   !(
-    //     router?.query?.asof != filterObject?.asof ||
-    //     router?.query?.algo != filterObject?.algorithm ||
-    //     +router?.query?.score != filterByScore
-    //   ) ||
-    //   (router?.query?.algo == undefined &&
-    //     router?.query?.asof == undefined &&
-    //     router?.query?.score == undefined)
-    // ) {
+
     getTopicsApiCall();
-    // }
-    // didMount.current = true;
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     asofdate,
@@ -243,52 +215,36 @@ const TopicsList = () => {
     nameSpaceId,
     filterByScore,
     inputSearch,
-    // onlyMyTopicsCheck.current,
     is_camp_archive_checked,
+    onlyMyTopicsCheck,
+    sortLatestTopic,
+    sortScoreViewTopic,
   ]);
-  useEffect(() => {
-    if (inputSearch.length > 0 || search.length > 0) {
-      // setClear(true);
-    } else {
-      // setClear(false);
-    }
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // const handlesearch = (e) => {
-  //   if (e.target.value.length > 0) {
-  //     setClear(true);
-  //   } else {
-  //     setClear(false);
-  //   }
-  // };
   async function getTopicsApiCallWithReqBody(loadMore = false) {
     loadMore ? setPageNumber(pageNumber + 1) : setPageNumber(1);
     const reqBody = {
       algorithm: algorithm,
       asofdate:
         asof == ("default" || asof == "review") ? Date.now() / 1000 : asofdate,
-      namespace_id: nameSpaceId,
+      namespace_id: String(nameSpaceId),
       page_number: pageNumberRef.current,
       page_size: 15,
       search: inputSearch,
       filter: filterByScore,
       asof: asof,
       // archive:archeived?1:0,
-      user_email: onlyMyTopicsCheck.current ? userEmail : "",
+      user_email: onlyMyTopicsCheck ? userEmail : "",
       is_archive: is_camp_archive_checked ? 1 : 0,
+      sort: sortLatestTopic ? true : false,
     };
     await getCanonizedTopicsApi(reqBody, loadMore);
     setLoadMoreIndicator(false);
   }
+
   const onSearch = (value) => {
     setInputSearch(value.trim());
-    dispatch(
-      setFilterCanonizedTopics({
-        search: value || "",
-      })
-    );
+    dispatch(setFilterCanonizedTopics({ search: value || "" }));
     setShowSearchDropdown(false);
   };
 
@@ -296,6 +252,7 @@ const TopicsList = () => {
     setSearchedResult([]);
     setSearchLoading(true);
     const value = event.target.value?.trim();
+    console.log("🚀 ~ handleKeyUpSearch ~ value:", value);
     if (value) {
       setAllowClear(true);
       setSearchTerm(value);
@@ -316,19 +273,22 @@ const TopicsList = () => {
           asof == ("default" || asof == "review")
             ? Date.now() / 1000
             : asofdate,
-        namespace_id: nameSpaceId,
+        namespace_id: String(nameSpaceId),
         page_number: pageNumberRef.current,
         page_size: 15,
         search: value,
         filter: filterByScore,
         asof: asof,
-        user_email: onlyMyTopicsCheck.current ? userEmail : "",
+        user_email: onlyMyTopicsCheck ? userEmail : "",
         // is_archive: is_camp_archive_checked ? 1 : 0,
       };
       const res = await getCanonizedTopicsForSuggestion(reqBody);
       setSearchLoading(false);
       if (res) {
         setSearchedResult(res?.topic);
+        setTimeout(() => {
+          inputRef?.current?.focus();
+        }, 400);
       }
     } catch (error) {
       // console.error("Error:", error);
@@ -343,6 +303,7 @@ const TopicsList = () => {
     if (throttled) {
       clearTimeout(throttled);
     }
+
     inputRef.current?.focus();
 
     throttled = setTimeout(() => {
@@ -406,9 +367,9 @@ const TopicsList = () => {
 
   const handleCheckbox = async (e) => {
     setGetTopicsLoadingIndicator(true);
-    onlyMyTopicsCheck.current = e.target.checked;
-
-    await getTopicsApiCallWithReqBody();
+    // onlyMyTopicsCheck = e.target.checked;
+    dispatch(setOnlyMyTopic(e.target.checked));
+    // await getTopicsApiCallWithReqBody();
     setGetTopicsLoadingIndicator(false);
   };
 
@@ -422,7 +383,9 @@ const TopicsList = () => {
     dispatch(setCurrentCheckSupportStatus(""));
     dispatch(setCheckSupportExistsData(""));
     dispatch(setManageSupportStatusCheck(false));
-    getCanonizedNameSpacesApi();
+    if (!(nameSpaces?.length > 0)) {
+      getCanonizedNameSpacesApi();
+    }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -481,6 +444,7 @@ const TopicsList = () => {
             className={styles.checkboxOnlyMyTopics}
             onChange={handleCheckbox}
             disabled={loading}
+            checked={onlyMyTopicsCheck}
           >
             Only My Topics
           </Checkbox>
@@ -503,13 +467,14 @@ const TopicsList = () => {
                 }, 300);
               }}
               onFocus={() => {
-                if (!inputSearch) {
-                  setSearchTerm(inputSearch);
-                }
+                // if (!inputSearch) {
+                //   setSearchTerm(inputSearch);
+                // }
                 setSearchLoading(false);
                 setShowSearchDropdown(true);
               }}
             />
+
             {showSearchDropdown && searchTerm && (
               <div className={styles.dropdown_list}>
                 <ul>
@@ -536,6 +501,7 @@ const TopicsList = () => {
             )}
           </div>
         )}
+        <SortTopics />
       </div>
 
       <div

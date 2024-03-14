@@ -5,7 +5,7 @@ import moment from "moment";
 
 import styles from "./Notifications.module.scss";
 
-import { getTime } from "../../../../utils/generalUtility";
+import { getTime } from "src/utils/generalUtility";
 
 export default function NotificationList({
   list,
@@ -18,7 +18,7 @@ export default function NotificationList({
       dataSource={list}
       className={styles.list}
       id="list-items"
-      renderItem={(item) => (
+      renderItem={(item: any) => (
         <List.Item
           id={"list-item-" + item["id"]}
           key={"list-item-" + item["id"]}
@@ -32,11 +32,15 @@ export default function NotificationList({
             title={
               <Link
                 href={{
-                  pathname: item["url"]
-                    ?.replace("#statement", "")
-                    ?.replaceAll(" ", "-"),
+                  pathname:
+                    item?.notification_type?.toLowerCase() === "support"
+                      ? item?.url?.replace("/support/", "/topic/")
+                      : item["url"]
+                          ?.replace("#statement", "")
+                          ?.replaceAll(" ", "-"),
                   query: {
                     from: "notify_" + item["id"],
+                    n_type: item?.notification_type?.toLowerCase(),
                   },
                 }}
               >

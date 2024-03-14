@@ -3,8 +3,7 @@ import { useRouter } from "next/router";
 import { Form, message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 
-import { RootState } from "../../../store";
-import useIsUserAuthenticated from "../../../hooks/isUserAuthenticated";
+import useIsUserAuthenticated from "src/hooks/isUserAuthenticated";
 import ForumUIList from "./List";
 import ForumUICreate from "./Create";
 import ForumUIPost from "./Post";
@@ -17,18 +16,14 @@ import {
   updatePost,
   getPostsList,
   deletePost,
-  // getThreadData,
-} from "../../../network/api/campForumApi";
+  getThreadData,
+} from "src/network/api/campForumApi";
 import {
   getAllUsedNickNames,
   getCurrentCampRecordApi,
   getCurrentTopicRecordApi,
-} from "../../../network/api/campDetailApi";
-import {
-  // setThread,
-  setPost,
-} from "../../../store/slices/campForumSlice";
-// import CampInfoBar from "../TopicDetails/CampInfoBar";
+} from "src/network/api/campDetailApi";
+import { setThread, setPost } from "src/store/slices/campForumSlice";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
 
 const ForumComponent = ({
@@ -39,8 +34,9 @@ const ForumComponent = ({
 
   const { isUserAuthenticated } = useIsUserAuthenticated();
   const didMount = useRef(false);
-  // const didMountList = useRef(false);
-  const didMountPost = useRef(false);
+  const didMountList = useRef(false);
+  const didMountPost = useRef(false),
+    reRenderRef = useRef(0);
 
   const [paramsList, setParamsList] = useState({});
   const [threadList, setThreadList] = useState(threadlist || []);
@@ -58,6 +54,7 @@ const ForumComponent = ({
   const [loading, setLoading] = useState(false);
   const [postLoading, setPostLoading] = useState(false);
   const [threadDetailsLoading, setthreadDetailsLoading] = useState(false);
+  const [createdAt, setCreatedAt] = useState(null);
   const [perPage] = useState(10);
   const [postperPage] = useState(10);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -70,7 +67,7 @@ const ForumComponent = ({
   }, [isUserAuthenticated]);
 
   const { campRecord, asof, asofdate, algorithm, currentThread, currentPost } =
-    useSelector((state: RootState) => ({
+    useSelector((state: any) => ({
       campRecord: state?.topicDetails?.currentCampRecord,
       asof: state?.filters?.filterObject?.asof,
       asofdate: state.filters?.filterObject?.asofdate,
@@ -79,7 +76,7 @@ const ForumComponent = ({
       currentPost: state.forum.currentPost,
     }));
 
-  // const setCurrentThread = (data) => dispatch(setThread(data));
+  const setCurrentThread = (data) => dispatch(setThread(data));
 
   const setCurrentPost = (data) => dispatch(setPost(data));
 
@@ -144,37 +141,41 @@ const ForumComponent = ({
     }
   };
 
-  // const threadDetails = async () => {
-  //   const queries = router?.query;
-  //   const campArr = (queries.camp as string).split("-");
-  //   const camp_num = campArr.shift();
-  //   const topicArr = (queries?.topic as string)?.split("-");
-  //   const topic_num = topicArr?.shift(),
-  //     q = router?.query,
-  //     id = q?.id as string;
+  const threadDetails = async () => {
+    const queries = router?.query;
+    const campArr = (queries.camp as string).split("-");
+    const camp_num = campArr.shift();
+    const topicArr = (queries?.topic as string)?.split("-");
+    const topic_num = topicArr?.shift(),
+      q = router?.query,
+      id = q?.id as string;
 
-  //   try {
-  //     setthreadDetailsLoading(true);
-  //     setPostLoading(true);
+    try {
+      setthreadDetailsLoading(true);
+      setPostLoading(true);
 
-  //     const res = await getThreadData(id, topic_num, camp_num);
+      const res = await getThreadData(id, topic_num, camp_num);
 
-  //     if (res?.data?.status_code === 404) {
-  //       message.error(res?.data?.error || "Something went wrong ");
-  //       setCurrentThread({});
-  //     }
+      setCreatedAt(res.data.created_at);
 
-  //     if (res && res?.status_code === 200) {
-  //       const data = res.data;
-  //       setCurrentThread(data);
-  //     }
-  //   } catch (error) {
-  //     // handle errors
-  //   } finally {
-  //     setPostLoading(false);
-  //     setthreadDetailsLoading(false);
-  //   }
-  // };
+      if (res?.data?.status_code === 404) {
+        message?.error(
+          res?.data?.error?.thread_id?.at(0) || "Something went wrong"
+        );
+        setCurrentThread({});
+      }
+
+      if (res && res?.status_code === 200) {
+        const data = res.data;
+        setCurrentThread(data);
+      }
+    } catch (error) {
+      // handle errors
+    } finally {
+      setPostLoading(false);
+      setthreadDetailsLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (router && router?.query && didMount.current) {
@@ -217,7 +218,6 @@ const ForumComponent = ({
   }, [campRecord]);
 
   // start thread List section
-
   const onSearch = (v: string) => {
     setSearchQuery(v.trim());
   };
@@ -271,8 +271,6 @@ const ForumComponent = ({
 
     if (type !== queries.by) {
       setLoading(true);
-      // setTotalRecords(0);
-      // setThreadList([]);
       setPage(1);
       queries.by = type;
       router?.push(router, undefined, { shallow: true });
@@ -296,11 +294,9 @@ const ForumComponent = ({
       )}/threads/edit/${item.id}`,
     });
   };
-
   // end thread list section
 
   // create thread start
-
   const [form] = Form.useForm();
 
   const showModal = () => {
@@ -335,18 +331,6 @@ const ForumComponent = ({
     const topic_num = topicArr?.shift();
     const type = queries["by"] as string;
 
-    if (router?.pathname === "/forum/[topic]/[camp]/threads") {
-      let timer = 0;
-
-      if (timer) {
-        clearTimeout(timer);
-        timer = 0;
-      }
-      timer = window.setTimeout(async () => {
-        getThreads(camp_num, topic_num, type, page, searchQuery);
-      }, 800);
-    }
-
     if (
       router?.pathname === "/forum/[topic]/[camp]/threads/create" ||
       router?.pathname === "/forum/[topic]/[camp]/threads/edit/[tId]" ||
@@ -354,8 +338,24 @@ const ForumComponent = ({
     ) {
       fetchNickNameList(topic_num);
     }
+
+    if (
+      router?.pathname === "/forum/[topic]/[camp]/threads" &&
+      router?.isReady
+    ) {
+      if (reRenderRef?.current) {
+        clearTimeout(reRenderRef?.current);
+        reRenderRef.current = 0;
+      }
+
+      if (!reRenderRef?.current) {
+        reRenderRef.current = window.setTimeout(async () => {
+          getThreads(camp_num, topic_num, type, page, searchQuery);
+        }, 950);
+      }
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router, page, searchQuery, isLoggedIn]);
+  }, [router?.query, page, searchQuery, isLoggedIn]);
 
   const onCancelCreateThread = () => {
     const queries = router?.query;
@@ -482,22 +482,18 @@ const ForumComponent = ({
   // create thread start
 
   //  post section start
-
   const [formPost] = Form.useForm();
 
   useEffect(() => {
-    // const queries = router?.query;
-    // const campArr = (queries.camp as string).split("-");
-    // const camp_num = campArr.shift();
-    // const topicArr = (queries?.topic as string)?.split("-");
-    // const topic_num = topicArr?.shift();
-    // const q = router?.query,
-    //   threadId = q?.id;
-    // if (threadId) {
-    //   threadDetails(threadId, topic_num, camp_num);
-    // }
+    const q = router?.query,
+      threadId = q?.id;
+
+    if (threadId && didMountList.current) {
+      threadDetails();
+    } else didMountList.current = true;
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router]);
+  }, [isLoggedIn]);
 
   useEffect(() => {
     const q = router?.query,
@@ -509,11 +505,9 @@ const ForumComponent = ({
       didMountPost.current = true;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router?.query?.id, ppage]);
+  }, [router?.query?.id, ppage, isLoggedIn]);
 
   const onContentChange = (v) => {
-    // v = v.replace(/(^|>)\s+|\s+(?=<|$)/g, "$1");
-
     setQuillContent(v);
     setIsError(false);
   };
@@ -593,10 +587,7 @@ const ForumComponent = ({
 
   const onThreadEdit = ({ text, others }) => {
     setThreadUpdateOthers(others);
-    // setInitialValues({ threadName: text?.text });
-    form.setFieldsValue({
-      threadName: text,
-    });
+    form.setFieldsValue({ threadName: text });
     showModal();
   };
 
@@ -614,7 +605,6 @@ const ForumComponent = ({
   };
 
   const onCancel = () => {
-    // onCancelCreateThread();
     showModal();
     setQuillContent("");
     setCurrentPost({});
@@ -633,7 +623,6 @@ const ForumComponent = ({
 
   return (
     <Fragment>
-      {/* <CampInfoBar payload={payload} /> */}
       {router?.pathname === "/forum/[topic]/[camp]/threads" ? (
         <ForumUIList
           onSearch={onSearch}
@@ -657,6 +646,7 @@ const ForumComponent = ({
           form={form}
         />
       ) : null}
+
       {router?.pathname === "/forum/[topic]/[camp]/threads/create" ? (
         <ForumUICreate
           isThreadUpdate={false}
@@ -669,6 +659,7 @@ const ForumComponent = ({
           payload={payload}
         />
       ) : null}
+
       {router?.pathname === "/forum/[topic]/[camp]/threads/edit/[tId]" ? (
         <ForumUICreate
           isThreadUpdate={true}
@@ -681,6 +672,7 @@ const ForumComponent = ({
           payload={payload}
         />
       ) : null}
+
       {router?.pathname === "/forum/[topic]/[camp]/threads/[id]" ? (
         <ForumUIPost
           nickNameList={nickNameList}
@@ -705,6 +697,7 @@ const ForumComponent = ({
           payload={payload}
           showModal={showModal}
           isModalOpen={isModalOpen}
+          createdAt={createdAt}
         />
       ) : null}
     </Fragment>

@@ -24,6 +24,7 @@ import TopicDetails from "src/components/ComponentPages/TopicDetails";
 import { setCurrentDate } from "src/store/slices/filtersSlice";
 import { useEffect, useRef } from "react";
 import DataNotFound from "@/components/ComponentPages/DataNotFound/dataNotFound";
+import { createToken } from "src/network/api/userApi";
 
 const TopicDetailsPage = ({
   current_date,
@@ -67,6 +68,7 @@ const TopicDetailsPage = ({
           name={ErrorStatus}
           message={`${ErrorStatus} not found`}
           backURL={"/"}
+          goBack={true}
         />
       ) : (
         <TopicDetails serverSideCall={serverSideCall} />
@@ -77,7 +79,8 @@ const TopicDetailsPage = ({
 
 export async function getServerSideProps({ req, query }) {
   let topicNum = query?.camp[0]?.split("-")[0];
-  let campNum = query?.camp[1]?.split("-")[0] ?? 1;
+  let campNum = query?.camp[1]?.split("-")[0] || 1;
+  let token = null;
 
   const currentDate = new Date().valueOf();
   const reqBodyForService = {
@@ -111,6 +114,13 @@ export async function getServerSideProps({ req, query }) {
     page: 1,
   };
 
+  if (req.cookies["loginToken"]) {
+    token = req.cookies["loginToken"];
+  } else {
+    const response = await createToken();
+    token = response?.access_token;
+  }
+
   const [
     newsFeed,
     topicRecord,
@@ -119,16 +129,11 @@ export async function getServerSideProps({ req, query }) {
     statementHistory,
     tree,
   ] = await Promise.all([
-    getNewsFeedApi(reqBody, req.cookies["loginToken"]),
-    getCurrentTopicRecordApi(reqBody, req.cookies["loginToken"]),
-    getCurrentCampRecordApi(reqBody, req.cookies["loginToken"]),
-    getCanonizedCampStatementApi(reqBody, req.cookies["loginToken"]),
-    getHistoryApi(
-      reqBodyForCampData,
-      "1",
-      "statement",
-      req.cookies["loginToken"]
-    ),
+    getNewsFeedApi(reqBody, token),
+    getCurrentTopicRecordApi(reqBody, token),
+    getCurrentCampRecordApi(reqBody, token),
+    getCanonizedCampStatementApi(reqBody, token),
+    getHistoryApi(reqBodyForCampData, "1", "statement", token),
     getTreesApi(reqBodyForService),
   ]);
 

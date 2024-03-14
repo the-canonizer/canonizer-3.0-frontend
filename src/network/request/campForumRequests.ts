@@ -78,7 +78,12 @@ export default class TreeRequest extends Request {
     );
   }
 
-  static getThreadDetails(id: string, topic_num: string, camp_num: string) {
+  static getThreadDetails(
+    id: string,
+    topic_num: string,
+    camp_num: string,
+    token = ""
+  ) {
     return new Request(
       K.Network.URL.GetThreadData +
         id +
@@ -86,7 +91,8 @@ export default class TreeRequest extends Request {
       K.Network.Method.GET,
       null,
       K.Network.Header.Type.Json,
-      {}
+      {},
+      token
     );
   }
 }

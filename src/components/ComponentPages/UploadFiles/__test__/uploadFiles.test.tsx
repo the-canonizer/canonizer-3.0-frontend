@@ -11,6 +11,9 @@ import { useRouter } from "next/router";
 import { cleanup, renderHook } from "@testing-library/react-hooks";
 import { message } from "antd";
 import CreateFolder from "../CreateFolder";
+import configureMockStore from "redux-mock-store";
+import { Provider } from "react-redux";
+import { labels } from "src/messages/label";
 
 jest.mock("src/hooks/isUserAuthenticated", () =>
   jest.fn(() => ({ isUserAuthenticated: true }))
@@ -164,13 +167,13 @@ const fileLists = [
   },
 ];
 jest.mock("src/network/api/userApi", () => ({
-  uploadFile: jest.fn(),
+  uploadFile: jest.fn().mockReturnValue(Promise.resolve({ status_code: 200 })),
   deleteFolderApi: jest.fn(),
   deleteUploadFileApi: jest.fn(),
   getFileInsideFolderApi: jest
     .fn()
     .mockReturnValue(
-      Promise.resolve({ success: true, status_code: 200, data: { id: 1 } })
+      Promise.resolve({ success: true, status_code: 200, data: [{ id: 1 }] })
     ),
   getUploadFileAndFolder: jest.fn((v) =>
     Promise.resolve({
@@ -178,95 +181,57 @@ jest.mock("src/network/api/userApi", () => ({
     })
   ),
 }));
-const mockState = {
+const mockStore = configureMockStore();
+const store1 = mockStore({
+  ui: {
+    dragBox: false,
+    crossBtn: true,
+    visibleUploadOptions: true,
+    folderOpen: false,
+  },
+});
+const store1sub1 = mockStore({
+  ui: {
+    dragBox: false,
+    crossBtn: true,
+    visibleUploadOptions: true,
+    folderOpen: true,
+  },
+});
+
+const store2 = mockStore({
+  ui: {
+    dragBox: false,
+    folderOpen: true,
+    visibleUploadOptions: true,
+  },
+});
+
+const store3 = mockStore({
   ui: {
     dragBox: false,
     // disabledCreateFolderBtn,
-    visibleUploadOptions: true,
     addButton: true,
-    folderOpen: true,
   },
-};
+});
+const store4 = mockStore({
+  ui: {
+    visibleUploadOptions: true,
+  },
+});
 
-jest.mock("react-redux", () => ({
-  ...jest.requireActual("react-redux"),
-  useDispatch: () => jest.fn(),
-  useSelector: () =>
-    jest.fn().mockImplementation((callback) => callback(mockState)),
-}));
+// jest.mock("react-redux", () => ({
+//   ...jest.requireActual("react-redux"),
+//   useDispatch: () => jest.fn(),
+//   useSelector: () =>
+//     jest.fn().mockImplementation((callback) => callback(mockState)),
+// }));
 
 jest.mock("next/router", () => ({
   useRouter: jest.fn(),
 }));
 
 describe("Upload file page", () => {
-  it("upload files api render folder", async () => {
-    render(<UploadFiles />);
-    await waitFor(() => {
-      expect(screen.getByTestId("cancel_btn")).toBeInTheDocument();
-      fireEvent.click(screen.getByTestId("cancel_btn"));
-      expect(screen.getByTestId("handle_x_btn")).toBeInTheDocument();
-      fireEvent.click(screen.getByTestId("handle_x_btn"));
-    });
-  });
-
-  it("render useState is working", () => {
-    render(<UploadFiles />);
-    const TestComponent = () => {
-      const [isActive, setIsActive] = useState(false);
-
-      const toggleActive = () => {
-        setIsActive(!isActive);
-      };
-
-      return (
-        <div>
-          <p>{isActive ? "Active" : "Inactive"}</p>
-          <button onClick={toggleActive}>Toggle</button>
-        </div>
-      );
-    };
-
-    const { getByText } = render(<TestComponent />);
-
-    const statusElement = getByText("Inactive");
-    const toggleButton = getByText("Toggle");
-
-    expect(statusElement.textContent).toBe("Inactive");
-
-    fireEvent.click(toggleButton);
-
-    expect(statusElement.textContent).toBe("Active");
-
-    fireEvent.click(toggleButton);
-
-    expect(statusElement.textContent).toBe("Inactive");
-  });
-
-  it("path is working with use router", () => {
-    render(<UploadFiles />);
-    const mockedRouter = {
-      pathname: "/about",
-    };
-
-    // Setting up the mocked useRouter implementation
-    useRouter.mockImplementation(() => mockedRouter);
-
-    const { result } = renderHook(() => useRouter());
-
-    expect(result.current.pathname).toBe("/about");
-  });
-  it("Message component displays correct content", () => {
-    render(<UploadFiles />);
-    const messageContent = "Test message";
-
-    // Render the Message component
-    message.success(messageContent);
-
-    // Assert that the message content is displayed
-    const messageElement = screen.getByText(messageContent);
-    expect(messageElement).toBeInTheDocument();
-  });
   it("onChange updates state correctly", async () => {
     const editModal = true,
       // createFolderForm = jest.fn(),
@@ -299,12 +264,56 @@ describe("Upload file page", () => {
     await fireEvent.change(inputEl, { target: { value: "ABCD" } });
     // await userEvent.tab();
   });
-  it("create new folder test", async () => {
-    const { container, getAllByText, getAllByTestId, getAllByPlaceholderText } =
-      render(<UploadFiles />);
+  it("upload files api render folder", async () => {
+    render(
+      <Provider store={store1}>
+        <UploadFiles />
+      </Provider>
+    );
     await waitFor(() => {
-      const add_folder_element = screen.getAllByTestId("addAFileBtn")[1];
+      expect(screen.getByTestId("cancel_btn")).toBeInTheDocument();
+      fireEvent.click(screen.getByTestId("cancel_btn"));
+      expect(screen.getByTestId("handle_x_btn")).toBeInTheDocument();
+      fireEvent.click(screen.getByTestId("handle_x_btn"));
+    });
+  });
+  it("upload files api render open folder", async () => {
+    render(
+      <Provider store={store1sub1}>
+        <UploadFiles />
+      </Provider>
+    );
+    await waitFor(() => {
+      expect(screen.getByTestId("cancel_btn")).toBeInTheDocument();
+      fireEvent.click(screen.getByTestId("cancel_btn"));
+      expect(screen.getByTestId("handle_x_btn")).toBeInTheDocument();
+      fireEvent.click(screen.getByTestId("handle_x_btn"));
+    });
+  });
+
+  it("upload files api render close folder", async () => {
+    render(
+      <Provider store={store2}>
+        <UploadFiles />
+      </Provider>
+    );
+    await waitFor(() => {
+      expect(screen.getByTestId("arrow_outlined")).toBeInTheDocument();
+      fireEvent.click(screen.getByTestId("arrow_outlined"));
+    });
+  });
+
+  it("Add a file test", async () => {
+    const { container, getAllByText, getAllByTestId, getAllByPlaceholderText } =
+      render(
+        <Provider store={store3}>
+          <UploadFiles />
+        </Provider>
+      );
+    await waitFor(() => {
+      const add_folder_element = screen.getByTestId("addAFileBtn");
       expect(add_folder_element).toBeInTheDocument();
+      fireEvent.click(add_folder_element);
       // fireEvent.click(add_folder_element[0])
     });
     // await waitFor(() => {
@@ -314,6 +323,17 @@ describe("Upload file page", () => {
     //   const create_button = getAllByText("Create")
     //   fireEvent.click(create_button[0])
     // })
+  });
+  it("render add_file_btn", async () => {
+    const { container, getByTestId, getByText } = render(
+      <Provider store={store4}>
+        <UploadFiles />
+      </Provider>
+    );
+    await waitFor(() => {
+      const uploadBtn = screen.getByTestId("upload_btn");
+      fireEvent.click(uploadBtn);
+    });
   });
 });
 afterEach(cleanup);

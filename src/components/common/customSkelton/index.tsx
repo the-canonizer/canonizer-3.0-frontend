@@ -155,7 +155,7 @@ const CustomSkelton = ({
     >
       <Skeleton className={styles[stylingClass]} count={bodyCount} />
     </Card>
-  ) :skeltonFor == "profileInfoForm" ? (
+  ) : skeltonFor == "profileInfoForm" ? (
     <Form layout="vertical">
       <Row gutter={30}>
         <Col md={12}>
@@ -199,13 +199,20 @@ const CustomSkelton = ({
         </Col>
       </Row>
     </div>
-  ) :skeltonFor == "search" ? (
+  ) : skeltonFor == "playButtons" ? (
+    <>
+      <div className="slider-skeleton">
+        <Skeleton className="inr" count={bodyCount} width={20} height={25} />
+      </div>
+      <Skeleton className="skeleton-slider2" />
+    </>
+  ) : skeltonFor == "search" ? (
     <Skeleton
       className={styles.search_skeleton}
       count={bodyCount}
       circle={circle}
     />
-  ): (
+  ) : (
     /* eslint-disable */
     (skeltonFor = "cardForUploadFile" ? (
       <Card

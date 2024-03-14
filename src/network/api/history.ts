@@ -1,4 +1,4 @@
-import { handleError, isServer } from "../../utils/generalUtility";
+import { handleError } from "../../utils/generalUtility";
 import { store } from "../../store";
 import {
   pushToCampHistory,
@@ -6,7 +6,6 @@ import {
 } from "../../store/slices/campDetailSlice";
 import NetworkCall from "../networkCall";
 import historyRequest from "../request/historyRequest";
-import { createToken } from "./userApi";
 
 export const getHistoryApi = async (
   reqBody,
@@ -14,28 +13,9 @@ export const getHistoryApi = async (
   historyOf: string,
   loginToken = null
 ) => {
-  let token;
-  if (isServer()) {
-    if (loginToken) {
-      token = loginToken;
-    } else {
-      const response = await createToken();
-      token = response?.access_token;
-    }
-  } else {
-    let state = await store.getState();
-    const { auth } = state,
-      tc = localStorage?.getItem("auth_token");
-    token = auth?.loggedInUser?.token || auth?.authToken || auth?.token || tc;
-
-    if (!token) {
-      const response = await createToken();
-      token = response?.access_token;
-    }
-  }
   try {
     const history = await NetworkCall.fetch(
-      historyRequest.getHistory(reqBody, token, historyOf),
+      historyRequest.getHistory(reqBody, loginToken, historyOf),
       false
     );
     if (pageNumber == 1) {
@@ -59,6 +39,18 @@ export const getChangeSupporters = async (reqBody) => {
   try {
     const res = await NetworkCall.fetch(
       historyRequest.changeSupporters(reqBody),
+      false
+    );
+    return res;
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+export const getCheckCampStatus = async (reqBody) => {
+  try {
+    const res = await NetworkCall.fetch(
+      historyRequest.checkCampStatus(reqBody),
       false
     );
     return res;

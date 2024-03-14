@@ -16,7 +16,7 @@ import DataNotFound from "../../DataNotFound/dataNotFound";
 
 const UserProfile = () => {
   const { isUserAuthenticated } = useAuthentication();
-  const token = useSelector((state: RootState) => state.auth.authToken);
+  const token = useSelector((state: RootState) => state.auth.token);
 
   const [profileData, setProfileData] = useState({} as any);
   const [userSupportedCampsList, setUserSupportedCampsList] = useState([]);

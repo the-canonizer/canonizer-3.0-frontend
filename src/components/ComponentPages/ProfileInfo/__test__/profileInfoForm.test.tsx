@@ -11,7 +11,7 @@ import messages from "../../../../messages";
 import ProfileInfo from "..";
 import { useRouter } from "next/router";
 
-import { renderHook } from "@testing-library/react-hooks";
+import { act, renderHook } from "@testing-library/react-hooks";
 import { Input } from "antd";
 // GetAlgorithmsList: jest.fn();
 // import {
@@ -39,7 +39,7 @@ const userProfileData = {
   default_algo: "blind_popularity",
   email: "ABC@talentelgia.in",
   fcm_token: null,
-  first_name: "ABC",
+  first_name: "Vikas",
   gender: "male",
   id: 1,
   is_active: 1,
@@ -102,14 +102,87 @@ const languageList = [
     name: "Spain",
   },
 ];
+const userInfo = {
+  id: 1235,
+  first_name: "Vikas",
+  middle_name: null,
+  last_name: "Rana",
+  email: "vikas.rana@talentelgia.in",
+  address_1: "home town",
+  address_2: null,
+  city: null,
+  state: null,
+  postal_code: 123456,
+  country: null,
+  phone_number: null,
+  mobile_carrier: "",
+  mobile_verified: 0,
+  update_time: null,
+  join_time: null,
+  language: null,
+  birthday: "28-12-1998",
+  gender: null,
+  private_flags: null,
+  default_algo: "blind_popularity",
+  type: "user",
+  otp: 123456,
+  status: 1,
+  is_active: 1,
+  country_code: null,
+  profile_picture: null,
+};
 jest.mock("next/router", () => ({
   useRouter: jest.fn(),
 }));
+jest.mock("react-places-autocomplete", () => {
+  const geocodeByAddress = jest.fn((address) =>
+    Promise.resolve([
+      {
+        address_components: [
+          { types: ["locality"], long_name: "Abc " },
+          { types: ["administrative_area_level_1"], long_name: "EFG " },
+          { types: ["country"], long_name: "India " },
+        ],
+      },
+    ])
+  );
+  const geocodeByPlaceId = jest.fn(() =>
+    Promise.resolve([
+      {
+        address_components: [{ types: "" }],
+      },
+    ])
+  );
+  const PlacesAutoCompleteMock = jest.fn(({ values, onChange, onSelect }) => (
+    <div>
+      <input
+        type="text"
+        value={values}
+        onChange={(e) => onChange(e.target.value)}
+        data-testid="autocomplete-input"
+      />
+      <button
+        onClick={() => {
+          onSelect("India", "28");
+        }}
+        data-testid="autocomplete-select"
+      >
+        Select
+      </button>
+    </div>
+  ));
+  return {
+    __esModule: true,
+    default: PlacesAutoCompleteMock,
+    geocodeByAddress: geocodeByAddress,
+    geocodeByPlaceId: geocodeByPlaceId,
+  };
+});
 jest.mock("src/network/api/userApi", () => ({
   UpdateUserProfileInfo: jest.fn(() =>
     Promise.resolve({ data: {}, status_code: 200 })
   ),
-  SendOTP: jest.fn(() => Promise.resolve({ data: {}, status_code: 200 })),
+  SendOTP: jest.fn(() => Promise.resolve({ data: userInfo, status_code: 200 })),
   GetMobileCarrier: jest.fn(() =>
     Promise.resolve({ data: mobileCarrierData, status_code: 200 })
   ),
@@ -120,16 +193,9 @@ jest.mock("src/network/api/userApi", () => ({
   GetLanguageList: jest.fn(() =>
     Promise.resolve({ data: languageList, status_code: 200 })
   ),
-  GetUserProfileInfo: jest.fn().mockReturnValue(
-    Promise.resolve({
-      data: {
-        phone_number: 12321312312,
-        mobile_carrier: "sdc",
-        birthday: "01-01-20",
-        postalCode: 411021,
-      },
-      success: true,
-    })
+
+  GetUserProfileInfo: jest.fn(() =>
+    Promise.resolve({ data: userProfileData, status_code: 200 })
   ),
   getUploadFileAndFolder: jest.fn(() =>
     Promise.resolve({ data: {}, status_code: 200 })
@@ -498,12 +564,44 @@ describe("UserProfile", () => {
 });
 
 describe("Profileinfo", () => {
-  it("update info", async () => {
-    const { getAllByTestId } = render(<ProfileInfo></ProfileInfo>);
-
+  it("MyComponent test", async () => {
+    await act(async () => {
+      render(<ProfileInfo />);
+    });
+    const loadEvent = new Event("load");
     await waitFor(() => {
-      const update_button = getAllByTestId("submitButton");
-      fireEvent.click(update_button[1]);
+      const update_button = screen.getAllByText("Update");
+      const scripts = document.querySelectorAll(
+        '[src*="https://maps.googleapis.com/maps/api/js?key="]'
+      );
+      expect(scripts[0]).toBeInTheDocument();
+      scripts[0].dispatchEvent(loadEvent);
+      const handleselectAfter = screen.getAllByTestId(
+        "handleMobileNumberChange"
+      );
+      expect(handleselectAfter[0]).toBeInTheDocument();
+      fireEvent.change(handleselectAfter[0], { target: { value: 9988556633 } });
+      const selectAfterHandleselectAfter = screen.getAllByTestId(
+        "selectAfterHandleselectAfter"
+      );
+      expect(selectAfterHandleselectAfter[0]).toBeInTheDocument();
+      fireEvent.click(selectAfterHandleselectAfter[0]);
+      const autocompleteselect = screen.getAllByTestId("autocomplete-select");
+      expect(autocompleteselect[0]).toBeInTheDocument();
+      fireEvent.click(autocompleteselect[0]);
+      // const verify = screen.getAllByTestId("verify_btn");
+      // expect(verify[0]).toBeInTheDocument();
+      // fireEvent.submit(verify[0]);
+      // const handleChangeOTP = screen.getByTestId("handle_Change_OTP");
+      // expect(handleChangeOTP).toBeInTheDocument();
+      // fireEvent.change(handleChangeOTP[0], { target: { value: 998855 } });
+      const auto_complete = screen.getAllByTestId("autocomplete-input");
+      expect(auto_complete[0]).toBeInTheDocument();
+      fireEvent.change(auto_complete[0], { target: { value: "India" } });
+      // const inputText = screen.getAllByText("India")
+      // expect(inputText[0]).toBeInTheDocument()
+      fireEvent.submit(update_button[0]);
+      expect(update_button[0]).toBeInTheDocument();
     });
   });
 });

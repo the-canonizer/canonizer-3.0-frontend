@@ -50,6 +50,16 @@ export default class CampStatementHistoryRequest extends Request {
     );
   }
 
+  static checkCampStatus(body) {
+    return new Request(
+      K.Network.URL.CheckCampStatus,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {}
+    );
+  }
+
   static statementCompare(body) {
     return new Request(
       K.Network.URL.CompareStatement,

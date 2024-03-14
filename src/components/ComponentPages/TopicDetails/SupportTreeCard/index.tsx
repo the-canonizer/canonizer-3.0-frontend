@@ -29,6 +29,10 @@ import {
 } from "../../../../store/slices/campDetailSlice";
 import { getNickNameList } from "../../../../network/api/userApi";
 import SupportRemovedModal from "src/components/common/supportRemovedModal";
+import ManageSupport from "../../ManageSupport";
+import { getTreesApi } from "src/network/api/campDetailApi";
+import { setIsSupportModal } from "src/store/slices/topicSlice";
+import { showLoginModal } from "src/store/slices/uiSlice";
 
 const { Paragraph } = Typography;
 const { Panel } = Collapse;
@@ -51,6 +55,7 @@ const supportContent = (
 
 const SupportTreeCard = ({
   loadingIndicator,
+  isRemovingSupport,
   getCheckSupportStatus,
   removeApiSupport,
   removeSupport,
@@ -65,6 +70,9 @@ const SupportTreeCard = ({
   isDelegateSupportTreeCardModal,
   setIsDelegateSupportTreeCardModal,
   backGroundColorClass,
+  getCheckStatusAPI,
+  GetActiveSupportTopic,
+  GetActiveSupportTopicList,
 }: any) => {
   const {
     currentGetCheckSupportExistsData,
@@ -73,6 +81,9 @@ const SupportTreeCard = ({
     campRecord,
     filterData,
     algorithms,
+    algorithm,
+    asofdate,
+    isModalOpenSupportCamps,
   } = useSelector((state: RootState) => ({
     currentGetCheckSupportExistsData:
       state.topicDetails.currentGetCheckSupportExistsData,
@@ -81,6 +92,12 @@ const SupportTreeCard = ({
     campRecord: state?.topicDetails?.currentCampRecord,
     filterData: state?.filters?.filterObject,
     algorithms: state.homePage?.algorithms,
+    algorithm: state.filters?.filterObject?.algorithm,
+    asofdate: state.filters?.filterObject?.asofdate,
+    isModalOpenSupportCamps: state?.topic?.isModalOpenSupportCamps,
+  }));
+  const { manageSupportStatusCheck } = useSelector((state: RootState) => ({
+    manageSupportStatusCheck: state.topicDetails.manageSupportStatusCheck,
   }));
   const { isUserAuthenticated } = isAuth();
 
@@ -91,7 +108,48 @@ const SupportTreeCard = ({
   const [modalData, setModalData] = useState<any>({});
   const [delegateNickNameId, setDelegateNickNameId] = useState<number>();
   const [currentAlgo, setCurrentAlgo] = useState<string>("");
+  const [selectNickId, setSelectNickId] = useState(null);
+  const [mainComponentKey, setMainComponentKey] = useState(0);
+  const [loadingIndicatorSupport, setLoadingIndicatorSupport] = useState(false);
+  const [
+    getManageSupportLoadingIndicator,
+    setGetManageSupportLoadingIndicator,
+  ] = useState(true);
+  const showModalSupportCamps = () => {
+    dispatch(setIsSupportModal(true));
+  };
+  const handleOkSupportCamps = () => {
+    dispatch(setIsSupportModal(false));
+  };
+  const handleCancelSupportCamps = async ({ isCallApiStatus = false }) => {
+    dispatch(setIsSupportModal(false));
+    setGetManageSupportLoadingIndicator(true);
+    setLoadingIndicatorSupport(true);
 
+    if (isCallApiStatus == true) {
+      await getCheckStatusAPI();
+    }
+    if (isCallApiStatus == true) {
+      const topicNum = router?.query?.camp?.at(0)?.split("-")?.at(0);
+      const reqBodyForService = {
+        topic_num: +router?.query?.camp[0]?.split("-")[0],
+        camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
+        asOf: asof,
+        asofdate:
+          asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
+        algorithm: algorithm,
+        update_all: 1,
+        fetch_topic_history: +router?.query?.topic_history,
+      };
+      await getTreesApi(reqBodyForService);
+      GetActiveSupportTopicList();
+    }
+
+    setSelectNickId(null);
+    setLoadingIndicatorSupport(false);
+    setTimeout(() => setMainComponentKey(mainComponentKey + 1), 500);
+    // setComponentKey2(componentKey2 + 1);
+  };
   useEffect(() => {
     const filteredAlgo = algorithms?.filter(
       (a: { algorithm_key: string }) =>
@@ -116,6 +174,9 @@ const SupportTreeCard = ({
     if (isUserAuthenticated) {
       getNickNameListData();
     }
+    if (manageSupportStatusCheck == false) {
+      dispatch(setIsSupportModal(false));
+    }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isUserAuthenticated]);
@@ -125,10 +186,10 @@ const SupportTreeCard = ({
     dispatch(setManageSupportStatusCheck(false));
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [mainComponentKey]);
 
   //Delegate Support Camp
-  const handleDelegatedClick = () => {
+  const handleDelegatedClick = (data) => {
     if (isUserAuthenticated) {
       dispatch(setManageSupportStatusCheck(true));
       dispatch(
@@ -136,13 +197,39 @@ const SupportTreeCard = ({
           delegatedSupportClick: true,
         })
       );
+      setSelectNickId(data);
+      showModalSupportCamps();
     }
   };
 
   const handleClickSupportCheck = () => {
-    dispatch(setManageSupportUrlLink(manageSupportPath));
-    dispatch(setManageSupportStatusCheck(true));
+    if (isUserAuthenticated) {
+      dispatch(setManageSupportUrlLink(manageSupportPath));
+      dispatch(setManageSupportStatusCheck(true));
+      setSelectNickId(null);
+      showModalSupportCamps();
+    } else {
+      dispatch(showLoginModal());
+    }
   };
+
+  // useEffect(() => {
+  //   const q: any = router?.query;
+  //   if (
+  //     q &&
+  //     q.from &&
+  //     q.from.includes("notify_") &&
+  //     q?.n_type?.toLowerCase() === "support"
+  //   ) {
+  //     const fArr = (q.from as String).split("_");
+  //     if (+fArr[1]) {
+  //       console.log("bbb1");
+
+  //       handleClickSupportCheck();
+  //     }
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [router]);
 
   const manageSupportPath = router?.asPath.replace("/topic/", "/support/");
 
@@ -150,7 +237,6 @@ const SupportTreeCard = ({
     campSupportingTree: supportTreeForCamp,
     asof: state?.filters?.filterObject?.asof,
   }));
-
   useEffect(() => {
     if (campSupportingTree?.length > 0) {
       getDelegateNicknameId(campSupportingTree);
@@ -227,11 +313,7 @@ const SupportTreeCard = ({
                         {/* {data[item].score?.toFixed(2)} */}
                       </span>
                       {!userNickNameList.includes(data[item].nick_name_id) ? (
-                        <Link
-                          href={
-                            manageSupportPath + `_${data[item].nick_name_id}`
-                          }
-                        >
+                        <>
                           {loggedInUserDelegate ||
                           (loggedInUserChild &&
                             delegateNickNameId !=
@@ -249,13 +331,19 @@ const SupportTreeCard = ({
                                   : ""
                               }
                             >
-                              <a>
+                              <a className="printHIde">
                                 <Button
                                   id="supportTreeDelegateYourSupport"
                                   disabled={
-                                    asof == "bydate" || !isUserAuthenticated
+                                    asof == "bydate" ||
+                                    !isUserAuthenticated ||
+                                    campRecord?.is_archive == 1
                                   }
-                                  onClick={handleDelegatedClick}
+                                  onClick={() =>
+                                    handleDelegatedClick(
+                                      data[item].nick_name_id
+                                    )
+                                  }
                                   className="delegate-support-style"
                                 >
                                   {"Delegate Your Support"}
@@ -263,12 +351,17 @@ const SupportTreeCard = ({
                               </a>
                             </Popover>
                           )}
-                        </Link>
+                        </>
                       ) : (
-                        <a>
+                        <a className="printHIde">
                           <Button
                             id="supportTreeRemoveSupport"
-                            disabled={asof == "bydate"}
+                            disabled={
+                              asof == "bydate" ||
+                              isRemovingSupport ||
+                              !isUserAuthenticated ||
+                              campRecord.is_archive
+                            }
                             onClick={() => {
                               currentGetCheckSupportExistsData.is_delegator
                                 ? setIsDelegateSupportTreeCardModal(true)
@@ -280,7 +373,7 @@ const SupportTreeCard = ({
                             }}
                             className="delegate-support-style"
                           >
-                            {"Remove Your Support"}
+                            Remove Your Support
                           </Button>
                         </a>
                       )}
@@ -302,7 +395,6 @@ const SupportTreeCard = ({
           );
         }
       }
-      //return <TreeNode key={data[item].key} {...data[item]} />;
     });
   };
 
@@ -322,7 +414,7 @@ const SupportTreeCard = ({
 
   // remove support popup added.
 
-  return loadingIndicator ? (
+  return loadingIndicator || loadingIndicatorSupport ? (
     <CustomSkelton
       skeltonFor="card"
       titleName='Support Tree for "Agreement" Camp'
@@ -352,11 +444,9 @@ const SupportTreeCard = ({
           }
           key="1"
           extra={
-            <Fragment>
-              <Popover content={supportContent} placement="left">
-                <i className="icon-info tooltip-icon-style"></i>
-              </Popover>
-            </Fragment>
+            <Popover content={supportContent} placement="left">
+              <i className="icon-info tooltip-icon-style"></i>
+            </Popover>
           }
         >
           <Paragraph>
@@ -381,7 +471,7 @@ const SupportTreeCard = ({
               {campSupportingTree && renderTreeNodes(campSupportingTree)}
             </Tree>
           ) : (
-            <p>No supporters of this camp</p>
+            <p>No direct supporters of this camp</p>
           )}
 
           {campSupportingTree?.length > supportLength && (
@@ -389,34 +479,24 @@ const SupportTreeCard = ({
               type="primary"
               ghost
               className="load-more-btn"
-              onClick={() => {
-                // handleLoadMoreSupporters();
-                setLoadMore(!loadMore);
-              }}
+              onClick={() => setLoadMore(!loadMore)}
             >
               {!loadMore ? "Load More" : "Load Less"}
             </CustomButton>
           )}
 
-          <div
-            className="topicDetailsCollapseFooter"
-            onClick={handleClickSupportCheck}
-          >
-            <Link href={manageSupportPath}>
-              <a>
-                <CustomButton
-                  className="btn-orange"
-                  disabled={asof == "bydate" || campRecord?.is_archive == 1}
-                  id="manage-support-btn"
-                >
-                  {/* {K?.exceptionalMessages?.directJoinSupport} */}
-                  {getCheckSupportStatus?.is_delegator == 1 ||
-                  getCheckSupportStatus?.support_flag != 1
-                    ? K?.exceptionalMessages?.directJoinSupport
-                    : K?.exceptionalMessages?.manageSupport}
-                </CustomButton>
-              </a>
-            </Link>
+          <div className="topicDetailsCollapseFooter printHIde">
+            <CustomButton
+              onClick={handleClickSupportCheck}
+              className="btn-orange printHIde"
+              disabled={asof == "bydate" || campRecord?.is_archive == 1}
+              id="manage-support-btn"
+            >
+              {getCheckSupportStatus?.is_delegator == 1 ||
+              getCheckSupportStatus?.support_flag != 1
+                ? K?.exceptionalMessages?.directJoinSupport
+                : K?.exceptionalMessages?.manageSupport}
+            </CustomButton>
           </div>
         </Panel>
       </Collapse>
@@ -511,6 +591,28 @@ const SupportTreeCard = ({
             </Spin>
           </Form.Item>
         </Form>
+      </Modal>
+
+      <Modal
+        className={styles.modal_cross}
+        title="Support Camps"
+        open={isModalOpenSupportCamps}
+        onOk={handleOkSupportCamps}
+        onCancel={() => handleCancelSupportCamps({ isCallApiStatus: false })}
+        footer={null}
+        closeIcon={<CloseCircleOutlined />}
+        width={700}
+        destroyOnClose={true}
+      >
+        <ManageSupport
+          handleCancelSupportCamps={handleCancelSupportCamps}
+          selectNickId={selectNickId}
+          setGetManageSupportLoadingIndicator={
+            setGetManageSupportLoadingIndicator
+          }
+          getManageSupportLoadingIndicator={getManageSupportLoadingIndicator}
+          getCheckStatusAPI={getCheckStatusAPI}
+        />
       </Modal>
     </>
   );

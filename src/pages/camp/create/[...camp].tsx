@@ -1,20 +1,18 @@
 import { useDispatch } from "react-redux";
 import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
 import { setCanonizedAlgorithms } from "src/store/slices/homePageSlice";
-import CreateNewCamp from "../../../components/ComponentPages/CreateNewCamp";
+import CreateNewCamp from "src/components/ComponentPages/CreateNewCamp";
 
-import Layout from "../../../hoc/layout";
+import Layout from "src/hoc/layout";
 
 const CreateNewCampPage = ({ algorithms }: any) => {
   const dispatch = useDispatch();
 
   dispatch(setCanonizedAlgorithms(algorithms));
   return (
-    <>
-      <Layout routeName={"create-camp"}>
-        <CreateNewCamp />
-      </Layout>
-    </>
+    <Layout routeName={"create-camp"}>
+      <CreateNewCamp />
+    </Layout>
   );
 };
 

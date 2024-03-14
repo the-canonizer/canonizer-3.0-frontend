@@ -5,7 +5,7 @@
   margin-bottom: 16px;
   &:not(.homePageCardList) {
     @media screen and (min-width: 768px) {
-      height: calc(100% - 72px);
+      // height: calc(100% - 140px);
     }
     @media screen and (max-width: 767px) {
       height: calc(100% - 160px);
@@ -308,9 +308,10 @@
   // overflow-x: hidden;
   position: relative;
 
-  @media screen and (min-width: 1025px) {
+  @media screen and (min-width: 991px) {
     [class*="ant-select-single"] {
-      max-width: 58% !important;
+      // max-width: 58% !important;
+      max-width: calc(100% - 255px) !important;
     }
   }
 }
@@ -393,14 +394,14 @@
       width: 100%;
     }
     @media screen and (min-width: 1350px) {
-      width: 40% !important;
+      width: 31% !important;
     }
     @media screen and (min-width: 1200px) and (max-width: 1350px) {
       width: 40% !important;
     }
     @media screen and (min-width: 576px) and (max-width: 1200px) {
-      max-width: inherit;
-      width: 48.5%;
+      max-width: 50% !important;
+      width: 39% !important;
       margin-top: 10px;
       margin-left: 0;
     }
@@ -415,8 +416,8 @@
       width: 270px;
     }
     @media screen and (min-width: 576px) and (max-width: 1200px) {
-      max-width: inherit;
-      width: 48.5%;
+      max-width: 50% !important;
+      width: 49%;
     }
   }
 }

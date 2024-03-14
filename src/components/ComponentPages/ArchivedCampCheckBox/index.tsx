@@ -2,19 +2,23 @@ import { Checkbox } from "antd";
 import type { CheckboxChangeEvent } from "antd/es/checkbox";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 import styles from "./archivedCamps.module.scss";
 
 import { RootState } from "src/store";
 import {
-  // setScoreCheckBox,
   setArchivedCheckBox,
 } from "src/store/slices/utilsSlice";
 
-const ArchivedCampCheckBox = () => {
-  const { is_camp_archive_checked } = useSelector((state: RootState) => ({
-    is_camp_archive_checked: state?.utils?.archived_checkbox,
-  }));
+const ArchivedCampCheckBox = ({ loadingIndicator = false }:any) => {
+  const router = useRouter();
+  const { is_camp_archive_checked, loading } = useSelector(
+    (state: RootState) => ({
+      is_camp_archive_checked: state?.utils?.archived_checkbox,
+      loading: state?.loading?.loading,
+    })
+  );
   const [isChecked, setIsChecked] = useState(is_camp_archive_checked);
 
   const dispatch = useDispatch();
@@ -34,7 +38,13 @@ const ArchivedCampCheckBox = () => {
 
   return (
     <div className={styles.archived_checkbox}>
-      <Checkbox onChange={onChange} checked={isChecked}>
+      <Checkbox
+        disabled={
+          !router?.asPath?.includes("topic") ? loading : loadingIndicator
+        }
+        onChange={onChange}
+        checked={isChecked}
+      >
         Show archived camps
       </Checkbox>
     </div>

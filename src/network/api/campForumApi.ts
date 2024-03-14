@@ -98,11 +98,12 @@ export const deletePost = async (id) => {
 export const getThreadData = async (
   thread_id: string,
   topic_num: string,
-  camp_num: string
+  camp_num: string,
+  token: string = ""
 ) => {
   try {
     const response = await NetworkCall.fetch(
-      ForumRequests.getThreadDetails(thread_id, topic_num, camp_num),
+      ForumRequests.getThreadDetails(thread_id, topic_num, camp_num, token),
       false
     );
 

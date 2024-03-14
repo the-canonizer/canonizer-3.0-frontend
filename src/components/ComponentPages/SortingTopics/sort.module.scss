@@ -1,0 +1,17 @@
+.sort_topic{
+    order: 4;
+    min-width: 75px;
+    color: black;
+    min-width: 110px;
+    span{
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        justify-content: flex-end;
+        margin-right: 5px;
+    }
+}
+
+.score_value_align{
+    min-width: 103px;
+}

@@ -45,7 +45,7 @@ const UserProfileDetails = ({
                       />
                     </div>
                   )}
-                  <Row gutter={30}>
+                  <Row gutter={30} className="user-profile-wrap">
                     {profileData?.first_name || profileData?.last_name ? (
                       <Col md={12} sm={12} xs={12}>
                         <label className={styles.userProfileLabel}>

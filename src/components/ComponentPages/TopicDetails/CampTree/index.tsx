@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Tree, Tooltip, Popover, Typography } from "antd";
 import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "../../../../store";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import ProgressBar from "@ramonak/react-progress-bar";
+
 import styles from "../topicDetails.module.scss";
 
+import useAuthentication from "src/hooks/isUserAuthenticated";
+import { RootState } from "../../../../store";
 import { setCurrentCamp } from "../../../../store/slices/filtersSlice";
 import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
-import useAuthentication from "src/hooks/isUserAuthenticated";
-import ProgressBar from "@ramonak/react-progress-bar";
 
 const { TreeNode } = Tree;
 
@@ -29,6 +30,8 @@ const CampTree = ({
     topicRecord,
     filterObject,
     viewThisVersion,
+    is_camp_archive_checked,
+    campRecord,
   } = useSelector((state: RootState) => ({
     tree: state?.topicDetails?.tree,
     filterByScore: state.filters?.filterObject?.filterByScore,
@@ -37,9 +40,8 @@ const CampTree = ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
     filterObject: state?.filters?.filterObject,
     viewThisVersion: state?.filters?.viewThisVersionCheck,
-  }));
-  const { is_camp_archive_checked } = useSelector((state: RootState) => ({
     is_camp_archive_checked: state?.utils?.archived_checkbox,
+    campRecord: state?.topicDetails?.currentCampRecord,
   }));
 
   let childExpandTree = [];
@@ -47,8 +49,6 @@ const CampTree = ({
   const [uniqueKeys, setUniqueKeys] = useState([]);
   const [showScoreBars, setShowScoreBars] = useState(false);
   const [selectedExpand, setSelectedExpand] = useState([]);
-  // const [autoExpandParent, setAutoExpandParent] = useState(true);
-  // const [selectedNodeID, setSelectedNodeID] = useState(1);
   const [scoreFilter, setScoreFilter] = useState(filterByScore);
   const [includeReview, setIncludeReview] = useState(
     review == "review" ? true : false
@@ -109,6 +109,7 @@ const CampTree = ({
     } else return childExpandTree;
     return childExpandTree;
   };
+
   const mergeArray = (arry1 = [], arry2 = []) => {
     const mergedSet = new Set([...arry1.map(String), ...arry2.map(String)]);
     const output = Array.from(mergedSet).sort((x, y) =>
@@ -309,6 +310,7 @@ const CampTree = ({
             : setTotalCampScoreForSupportTree(data[item].score);
         }
       }
+
       if (data[item].children) {
         if (data[item].score >= scoreFilter) {
           return data[item].is_archive == 0 ||
@@ -461,7 +463,8 @@ const CampTree = ({
                   +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1) &&
                   _isDisabled == 0 &&
                   parentIsOneLevel == 0 &&
-                  _isArchive == 0 && (
+                  _isArchive == 0 &&
+                  campRecord?.is_archive == 0 && (
                     <TreeNode
                       key={"custom"}
                       title={
@@ -564,6 +567,7 @@ const CampTree = ({
                 viewThisVersion ? "&viewversion=1" : ""
               }`}
               className={styles.boldBreadcrumb}
+              replace
             >
               <a
                 className={`${
@@ -603,7 +607,7 @@ const CampTree = ({
                 title="You have subscribed to the entire topic."
                 key="camp_subscribed_icon"
               >
-                <small>
+                <small style={{ alignSelf: "center", marginLeft: "10px" }}>
                   <i className="icon-subscribe text-primary"></i>
                 </small>
               </Tooltip>

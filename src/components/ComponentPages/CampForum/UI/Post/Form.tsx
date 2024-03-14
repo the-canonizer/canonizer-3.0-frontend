@@ -1,5 +1,5 @@
 import dynamic from "next/dynamic";
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import { Form, Button, Select, Row, Col, Typography, Modal } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -213,6 +213,7 @@ const PostForm = ({
                   className={`${styles.submit_btn}`}
                   id="submit-btn"
                   data-testid="submit-btn"
+                  disabled={isLoading}
                 >
                   Submit
                 </Button>
