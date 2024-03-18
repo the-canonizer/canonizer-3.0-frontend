@@ -351,7 +351,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
                           <span className="ml_auto suppport_camps">
                             Supported camps:{" "}
                             <strong className={styles.yellow_color}>
-                              {x.support_count}
+                              {x.support_count == ""? 0 :x.support_count}
                             </strong>{" "}
                           </span>
                         </div>
@@ -573,7 +573,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
         </ul>
       </nav>
 
-      <div className="search_header">
+      {!process.env.NEXT_PUBLIC_NEW_SEARCH_BAR?<div className="search_header">
         <AutoComplete
           popupClassName="certain-category-search-dropdown"
           dropdownMatchSelectWidth={false}
@@ -625,7 +625,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
             />
           </div>
         </AutoComplete>
-      </div>
+      </div>:""}
     </Fragment>
   );
 };
