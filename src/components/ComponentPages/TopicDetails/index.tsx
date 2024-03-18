@@ -517,7 +517,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
                 ? campExist?.camp_exist
                 : true && (
                     <Fragment>
-                      {(router.query.algo&&selectedAlgorithm && lable?.algorithm_label !==undefined)||is_camp_archive_checked||is_checked||selectedAsOf== "bydate"||includeReview||filteredScore != 0?<LatestFilter/>:""}
+                      {(router.query.algo&&selectedAlgorithm && lable?.algorithm_label !==undefined)||is_camp_archive_checked||is_checked||selectedAsOf== "bydate"||(includeReview || router?.query?.asof === "review")||filteredScore != 0?<LatestFilter/>:""}
                       <CampStatementCard
                         loadingIndicator={loadingIndicator}
                         backGroundColorClass={backGroundColorClass}
