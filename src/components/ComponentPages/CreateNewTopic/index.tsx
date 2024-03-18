@@ -50,6 +50,7 @@ const CreateNewTopic = ({
     if (response && response.status_code === 200) {
       setNickNameList(response.data);
       setInitialValues({ nick_name: response.data[0]?.id });
+      form.setFieldValue("nick_name", response.data[0]?.id);
     }
   };
 
