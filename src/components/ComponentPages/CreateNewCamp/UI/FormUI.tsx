@@ -17,6 +17,7 @@ import PreventSubCamps from "../../../common/preventSubCampCheckbox";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
 import { useRouter } from "next/router";
+import DataNotFound from "../../DataNotFound/dataNotFound";
 
 const { Option } = Select;
 const { Text } = Typography;
@@ -66,6 +67,9 @@ const CreateCampFormUI = ({
 
   return (
     <Fragment>
+      {
+        (parentCamp.some(obj => obj["camp_num"] === topicData?.camp_num)) ?
+         <>
       <Card
         title={CardTitle}
         className={`can-card-style ${styles.form_card}`}
@@ -359,6 +363,18 @@ const CreateCampFormUI = ({
           </div>
         </Form>
       </Card>
+         </>
+         :
+         <>
+         <DataNotFound
+          name={"404"}
+          message={`${"404"} Camp not found`}
+          backURL={"/"}
+          goBack={true}
+        />
+         </>
+      }
+      
     </Fragment>
   );
 };
