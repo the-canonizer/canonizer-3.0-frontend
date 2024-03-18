@@ -471,9 +471,9 @@ const FilterWithTree = ({
                   )[0]?.algorithm_label
                 }
                 onChange={selectAlgorithm}
-                value={!router.query.algo ?algorithms[0].algorithm_label:
+                value={!router.query?.algo ? algorithms && algorithms[0]?.algorithm_label:
                   algorithms?.filter(
-                    (algo) => algo.algorithm_key == selectedAlgorithm
+                    (algo) => algo?.algorithm_key == selectedAlgorithm
                   )[0]?.algorithm_label
                 }
                 disabled={loadingIndicator}

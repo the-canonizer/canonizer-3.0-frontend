@@ -163,6 +163,7 @@ const LatestFilter = ()=>{
         filterForAsofDate()
         algoRevert()
       }
+      let filteredDate = moment(filteredAsOfDate * 1000).format("YYYY-MM-DD");
     return (
     <div className={styles.selected_filter_area}>
       {(router?.query?.algo&&selectedAlgorithm && lable?.algorithm_label !==undefined)||is_camp_archive_checked||is_checked||selectedAsOf== "bydate"||includeReview||filteredScore != 0?<span>
@@ -178,7 +179,7 @@ const LatestFilter = ()=>{
       {router?.query?.algo&&selectedAlgorithm && lable?.algorithm_label !==undefined?<Tag icon={<CloseOutlined onClick={()=>{algoRevert()}}/>}>{lable?.algorithm_label}</Tag>:""}
       {is_camp_archive_checked?<Tag icon={<CloseOutlined onClick={()=>{dispatch(setArchivedCheckBox(false))}} data-testid="close_icon_archived_camps"/>}data-testid="archived_camps">Show archived camps</Tag>:""}
       {is_checked?<Tag icon={<CloseOutlined onClick={()=>{dispatch(setScoreCheckBox(false))}} data-testid="close_icon_100%_of_canonized_score"/>} data-testid="100%_of_canonized_score">100% of canonized score</Tag>:""}
-      {selectedAsOf == "bydate"?<Tag icon={<CloseOutlined onClick={filterForAsofDate}  data-testid="close_icon_as_of_date"/>} data-testid="asOfDate">{`As of date: ${formattedDate}`}</Tag>:""}
+      {selectedAsOf == "bydate"?<Tag icon={<CloseOutlined onClick={filterForAsofDate}  data-testid="close_icon_as_of_date"/>} data-testid="asOfDate">{`As of date: ${filteredDate}`}</Tag>:""}
       {includeReview?<Tag icon={<CloseOutlined onClick={filterForAsofDate} data-testid="close_icon_include_review"/>} data-testid="include_review">{`Include review`}</Tag>:""}
       {filteredScore != 0?<Tag icon={<CloseOutlined  onClick={filterscore} data-testid="close_icon_Score"/>} data-testid="Score">{`Score < ${filteredScore}`}</Tag>:""}
     </Space>
