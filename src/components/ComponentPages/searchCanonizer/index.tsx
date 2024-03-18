@@ -224,7 +224,7 @@ const Search = () => {
                             <span className={styles.ml_auto}>
                               Supported camps:{" "}
                               <strong className={styles.yellow_color}>
-                                {x.support_count}
+                                {x.support_count == "" ? 0 : x.support_count}
                               </strong>{" "}
                             </span>
                           </li>
