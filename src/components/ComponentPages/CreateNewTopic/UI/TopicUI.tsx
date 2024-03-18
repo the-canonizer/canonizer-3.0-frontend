@@ -35,6 +35,7 @@ const CreateNewTopicUI = ({
             isFormSubmitted={isFormSubmitted}
             setIsFormSubmitted={setIsFormSubmitted}
             setExistedTopic={setExistedTopic}
+            isLoading={isLoading}
           />
         </Spin>
       </div>

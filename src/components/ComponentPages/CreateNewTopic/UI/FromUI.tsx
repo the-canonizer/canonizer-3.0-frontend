@@ -27,6 +27,7 @@ const CreateTopicFromUI = ({
   isFormSubmitted,
   setIsFormSubmitted,
   setExistedTopic,
+  isLoading,
 }: any) => {
   const CardTitle = (
     <span className={styles.cardTitle} data-testid="head">
@@ -82,7 +83,7 @@ const CreateTopicFromUI = ({
                   ))}
                 </Select>
               </Form.Item>
-              
+
               <Form.Item
                 label={
                   <Fragment>
@@ -104,7 +105,7 @@ const CreateTopicFromUI = ({
                     setExistedTopic({
                       status: false,
                       data: "",
-                    })
+                    });
                   }}
                 />
               </Form.Item>
@@ -184,6 +185,7 @@ const CreateTopicFromUI = ({
               className={`${styles.submit_btn}`}
               id="create-topic-btn"
               data-testid="create-topic-btn"
+              disabled={isLoading}
             >
               Create Topic
             </Button>

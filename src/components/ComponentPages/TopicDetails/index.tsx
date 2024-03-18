@@ -96,7 +96,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
     tree,
     campExist,
     viewThisVersionCheck,
-    selectedAlgorithm
+    selectedAlgorithm,
   } = useSelector((state: RootState) => ({
     algorithms: state.homePage?.algorithms,
     asofdate: state.filters?.filterObject?.asofdate,
@@ -110,23 +110,32 @@ const TopicDetails = ({ serverSideCall }: any) => {
     viewThisVersionCheck: state?.filters?.viewThisVersionCheck,
     selectedAlgorithm: state?.filters?.filterObject?.algorithm,
   }));
-  const { is_camp_archive_checked,is_checked,filteredAsOfDate,includeReview,filteredScore,current_date_filter,filterObject,viewThisVersion,campScoreValue,selectedAsOf} = useSelector(
-    (state: RootState) => ({
-      is_camp_archive_checked: state?.utils?.archived_checkbox,
-      loading: state?.loading?.loading,
-      is_checked: state?.utils?.score_checkbox,
-      filteredAsOfDate: state?.filters?.filterObject?.asofdate,
-      includeReview: state?.filters?.filterObject?.includeReview,
-      filteredScore: state?.filters?.filterObject?.filterByScore,
-      selectedAlgorithm: state?.filters?.filterObject?.algorithm,
-      algorithms: state.homePage?.algorithms,
-      current_date_filter: state?.filters?.current_date,
-      filterObject: state?.filters?.filterObject,
-      viewThisVersion: state?.filters?.viewThisVersionCheck,
-      campScoreValue: state?.filters?.campWithScoreValue,
-      selectedAsOf: state?.filters?.filterObject?.asof,
-    })
-  );
+  const {
+    is_camp_archive_checked,
+    is_checked,
+    filteredAsOfDate,
+    includeReview,
+    filteredScore,
+    current_date_filter,
+    filterObject,
+    viewThisVersion,
+    campScoreValue,
+    selectedAsOf,
+  } = useSelector((state: RootState) => ({
+    is_camp_archive_checked: state?.utils?.archived_checkbox,
+    loading: state?.loading?.loading,
+    is_checked: state?.utils?.score_checkbox,
+    filteredAsOfDate: state?.filters?.filterObject?.asofdate,
+    includeReview: state?.filters?.filterObject?.includeReview,
+    filteredScore: state?.filters?.filterObject?.filterByScore,
+    selectedAlgorithm: state?.filters?.filterObject?.algorithm,
+    algorithms: state.homePage?.algorithms,
+    current_date_filter: state?.filters?.current_date,
+    filterObject: state?.filters?.filterObject,
+    viewThisVersion: state?.filters?.viewThisVersionCheck,
+    campScoreValue: state?.filters?.campWithScoreValue,
+    selectedAsOf: state?.filters?.filterObject?.asof,
+  }));
   const GetActiveSupportTopicList = async () => {
     const topicNum = router?.query?.camp?.at(0)?.split("-")?.at(0);
     const body = { topic_num: topicNum };
@@ -410,9 +419,9 @@ const TopicDetails = ({ serverSideCall }: any) => {
   useEffect(() => {
     setIsClient(true);
   }, []);
-  const lable = algorithms.find((obj)=>{
-    return obj.algorithm_key == selectedAlgorithm
-  })
+  const lable = algorithms?.find((obj) => {
+    return obj.algorithm_key == selectedAlgorithm;
+  });
 
   return (
     <Fragment>
@@ -517,7 +526,18 @@ const TopicDetails = ({ serverSideCall }: any) => {
                 ? campExist?.camp_exist
                 : true && (
                     <Fragment>
-                      {(router.query.algo&&selectedAlgorithm && lable?.algorithm_label !==undefined)||is_camp_archive_checked||is_checked||selectedAsOf== "bydate"||includeReview||filteredScore != 0?<LatestFilter/>:""}
+                      {(router.query.algo &&
+                        selectedAlgorithm &&
+                        lable?.algorithm_label !== undefined) ||
+                      is_camp_archive_checked ||
+                      is_checked ||
+                      selectedAsOf == "bydate" ||
+                      includeReview ||
+                      filteredScore != 0 ? (
+                        <LatestFilter />
+                      ) : (
+                        ""
+                      )}
                       <CampStatementCard
                         loadingIndicator={loadingIndicator}
                         backGroundColorClass={backGroundColorClass}
@@ -561,7 +581,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
                         loadingIndicator={loadingIndicator}
                         backGroundColorClass={backGroundColorClass}
                       />
-                      
+
                       <CurrentCampCard
                         loadingIndicator={loadingIndicator}
                         backGroundColorClass={backGroundColorClass}
