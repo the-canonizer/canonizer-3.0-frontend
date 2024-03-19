@@ -429,7 +429,7 @@ describe("nicknames", () => {
   });
 
   it("render editnickname modal", async () => {
-    const { getAllByText, getByText, container, getByTestId } = render(
+    const { getAllByText } = render(
       <NickName></NickName>
     );
     render(

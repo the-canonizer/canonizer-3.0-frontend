@@ -1,9 +1,9 @@
-import { CloseCircleOutlined, CloseOutlined } from "@ant-design/icons";
+import { CloseOutlined } from "@ant-design/icons";
 import { Space, Tag } from "antd";
 import moment from "moment";
 import { useSelector,useDispatch } from "react-redux";
 import { RootState } from "src/store";
-import { setFilterCanonizedTopics, setRemoveFilters, setViewThisVersion } from "src/store/slices/filtersSlice";
+import { setFilterCanonizedTopics, setViewThisVersion } from "src/store/slices/filtersSlice";
 import {
     setScoreCheckBox,
     setArchivedCheckBox,
@@ -106,8 +106,8 @@ const LatestFilter = ()=>{
     
         router?.replace(router, null, { shallow: true });
       };
-      const momentObject = moment.unix(current_date_filter / 1000); 
-      const formattedDate = momentObject.format('YYYY-MM-DD');
+
+      
       const filterForAsofDate = ()=>{
         dispatch(setViewThisVersion(false));
         dispatch(
