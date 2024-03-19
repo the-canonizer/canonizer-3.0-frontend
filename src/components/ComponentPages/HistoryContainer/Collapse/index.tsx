@@ -40,7 +40,6 @@ import CampHistory from "./campHistory";
 import TopicHistory from "./topicHistory";
 import useAuthentication from "../../../../hooks/isUserAuthenticated";
 import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
-import { getTreesApi } from "src/network/api/campDetailApi";
 
 import { setViewThisVersion } from "src/store/slices/filtersSlice";
 
@@ -69,9 +68,6 @@ function HistoryCollapse({
   const router = useRouter();
   const [commited, setCommited] = useState(false);
   const [isSelectChecked, setIsSelectChecked] = useState(false);
-  const { loading } = useSelector((state: RootState) => ({
-    loading: state?.loading?.loading,
-  }));
   const [collapseKey, setCollapseKey] = useState(collapseKeys);
 
   const [modal1Open, setModal1Open] = useState(false);
@@ -111,15 +107,6 @@ function HistoryCollapse({
       id: campStatement?.id,
       old_parent_camp_num: campStatement?.old_parent_camp_num ?? null,
       parent_camp_num: campStatement?.parent_camp_num ?? null,
-    };
-    const reqBodyForService = {
-      topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
-      camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0) || 1,
-      asOf: asof,
-      asofdate:
-        asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
-      algorithm: algorithm,
-      update_all: 1,
     };
 
     let res = await changeCommitStatement(reqBody);

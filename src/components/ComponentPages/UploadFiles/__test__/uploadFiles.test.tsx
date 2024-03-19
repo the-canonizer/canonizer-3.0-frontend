@@ -5,7 +5,6 @@ import {
   waitFor,
 } from "../../../../utils/testUtils";
 import UploadFiles from "..";
-import { useRouter } from "next/router";
 import { cleanup } from "@testing-library/react-hooks";
 import CreateFolder from "../CreateFolder";
 import configureMockStore from "redux-mock-store";
@@ -300,7 +299,7 @@ describe("Upload file page", () => {
   });
 
   it("Add a file test", async () => {
-    const { container, getAllByText, getAllByTestId, getAllByPlaceholderText } =
+
       render(
         <Provider store={store3}>
           <UploadFiles />
@@ -321,7 +320,8 @@ describe("Upload file page", () => {
     // })
   });
   it("render add_file_btn", async () => {
-    const { container, getByTestId, getByText } = render(
+
+    render(
       <Provider store={store4}>
         <UploadFiles />
       </Provider>
