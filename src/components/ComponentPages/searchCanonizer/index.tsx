@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import SearchSideBar from "../../common/SearchSideBar";
 import styles from "./search.module.scss";
-import { Empty, List, Tag } from "antd";
+import { Empty } from "antd";
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
