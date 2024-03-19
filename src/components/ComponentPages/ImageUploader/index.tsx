@@ -13,9 +13,6 @@ import {
 import { RootState } from "src/store";
 import { setProfilePicture } from "src/store/slices/authSlice";
 
-const MAX_IMAGE_WIDTH = 1000; // Maximum image width in pixels
-const MAX_IMAGE_HEIGHT = 1000; // Maximum image height in pixels
-
 const getBase64 = (file: RcFile): Promise<string> =>
   new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -120,21 +117,6 @@ const ImageUploader: React.FC = () => {
         }
     }
   };
-  const items = [
-    {
-      key: "1",
-      label: (
-        <Upload
-          multiple={false}
-          onChange={(e) => {
-            updateProfilePicture(e);
-          }}
-        >
-          <div>Update</div>
-        </Upload>
-      ),
-    },
-  ];
 
   return (
     <Fragment>
