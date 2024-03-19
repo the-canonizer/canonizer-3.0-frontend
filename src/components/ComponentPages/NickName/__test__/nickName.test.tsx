@@ -415,7 +415,7 @@ describe("Nickname test cases", () => {
 
 describe("nicknames", () => {
   it("close add nickname modal", async () => {
-    const { getAllByText, getByTestId, container } = render(
+    const { getAllByText, getByTestId } = render(
       <NickName></NickName>
     );
     await waitFor(async () => {

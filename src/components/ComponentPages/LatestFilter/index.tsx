@@ -14,10 +14,7 @@ import styles from "./latestFilter.module.scss"
 const LatestFilter = ()=>{
   const router = useRouter();
     const dispatch = useDispatch()
-    const { campRecord } = useSelector((state: RootState) => ({
-        campRecord: state?.topicDetails?.currentCampRecord,
-      }));
-      const {algorithms,selectedAlgorithm, is_camp_archive_checked,is_checked,filteredAsOfDate,includeReview,filteredScore,current_date_filter,filterObject,viewThisVersion,campScoreValue,selectedAsOf} = useSelector(
+      const {algorithms,selectedAlgorithm, is_camp_archive_checked,is_checked,filteredAsOfDate,includeReview,filteredScore,filterObject,viewThisVersion,campScoreValue,selectedAsOf} = useSelector(
         (state: RootState) => ({
           is_camp_archive_checked: state?.utils?.archived_checkbox,
           loading: state?.loading?.loading,
@@ -27,7 +24,6 @@ const LatestFilter = ()=>{
           filteredScore: state?.filters?.filterObject?.filterByScore,
           selectedAlgorithm: state?.filters?.filterObject?.algorithm,
           algorithms: state.homePage?.algorithms,
-          current_date_filter: state?.filters?.current_date,
           filterObject: state?.filters?.filterObject,
           viewThisVersion: state?.filters?.viewThisVersionCheck,
           campScoreValue: state?.filters?.campWithScoreValue,

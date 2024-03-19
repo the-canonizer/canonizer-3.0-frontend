@@ -86,10 +86,8 @@ function HistoryCollapse({
       })
     );
   };
-  const { asofdate, asof, algorithm, namespace_id, changeGoneLive } = useSelector(
+  const { algorithm, namespace_id, changeGoneLive } = useSelector(
     (state: RootState) => ({
-      asofdate: state.filters?.filterObject?.asofdate,
-      asof: state?.filters?.filterObject?.asof,
       algorithm: state.filters?.filterObject?.algorithm,
       namespace_id: state.filters?.filterObject?.namespace_id,
       changeGoneLive: state?.topicDetails?.changeGoneLive,
