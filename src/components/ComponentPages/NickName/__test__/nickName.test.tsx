@@ -1,7 +1,5 @@
 import {
   fireEvent,
-  getAllByTestId,
-  getByText,
   render,
   screen,
   waitFor,

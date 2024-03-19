@@ -38,6 +38,7 @@ export default function SearchSideBar() {
                 pathname: "/search",
                 query: { q: searchValue },
               }}
+              passHref
             >
               <Button
                 size="large"
@@ -54,6 +55,7 @@ export default function SearchSideBar() {
                 pathname: "/search/topic",
                 query: { q: searchValue },
               }}
+              passHref
             >
               <Button
                 size="large"
@@ -71,6 +73,7 @@ export default function SearchSideBar() {
                 pathname: "/search/camp",
                 query: { q: searchValue },
               }}
+              passHref
             >
               <Button
                 size="large"
@@ -88,6 +91,7 @@ export default function SearchSideBar() {
                 pathname: "/search/camp_statement",
                 query: { q: searchValue },
               }}
+              passHref
             >
               <Button
                 size="large"
@@ -109,6 +113,7 @@ export default function SearchSideBar() {
                 pathname: "/search/nickname",
                 query: { q: searchValue },
               }}
+              passHref
             >
               <Button
                 size="large"
