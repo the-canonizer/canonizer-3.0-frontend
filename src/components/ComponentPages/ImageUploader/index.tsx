@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React, { Fragment, useEffect, useState } from "react";
 import { EditOutlined, UploadOutlined } from "@ant-design/icons";
 import { Button, Modal, Tooltip, Upload, message } from "antd";
