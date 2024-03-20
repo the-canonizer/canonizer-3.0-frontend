@@ -10,7 +10,7 @@ import { RootState } from "src/store";
 import { setScoreCheckBox } from "src/store/slices/utilsSlice";
 
 type propVal = {
-  loadingIndicator: boolean;
+  loadingIndicator?: boolean;
 };
 
 const FullScoreCheckbox = ({ loadingIndicator = false }: propVal) => {
