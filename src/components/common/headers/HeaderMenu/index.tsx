@@ -573,7 +573,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
         </ul>
       </nav>
 
-      {!process.env.NEXT_PUBLIC_NEW_SEARCH_BAR?<div className="search_header">
+      <div className="search_header">
         <AutoComplete
           popupClassName="certain-category-search-dropdown"
           dropdownMatchSelectWidth={false}
@@ -625,7 +625,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
             />
           </div>
         </AutoComplete>
-      </div>:""}
+      </div>
     </Fragment>
   );
 };
