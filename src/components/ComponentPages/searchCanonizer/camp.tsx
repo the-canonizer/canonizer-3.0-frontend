@@ -43,7 +43,7 @@ const CampSearch = () => {
         <div className={styles.card}>
           <div className="d-flex mb-2 align-items-center flex-wrap relative">
             <h4 data-testid="camp_heading">Camp</h4>
-            <AdvanceFilter />
+            {/* <AdvanceFilter /> */}
           </div>
           {loading ? (
             <CustomSkelton
