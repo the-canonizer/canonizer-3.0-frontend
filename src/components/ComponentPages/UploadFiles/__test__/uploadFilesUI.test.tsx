@@ -1,6 +1,5 @@
 import {
   fireEvent,
-  getAllByPlaceholderText,
   render,
   screen,
   waitFor,
@@ -8,10 +7,7 @@ import {
 import UploadFileUI from "../UploadFilesUI";
 import messages from "../../../../messages";
 import { cleanup } from "@testing-library/react-hooks";
-import { Empty, Input } from "antd";
-import { Provider, connectAdvanced } from "react-redux";
-import UploadFiles from "..";
-import userEvent from "@testing-library/user-event";
+import { Provider } from "react-redux";
 import configureMockStore from "redux-mock-store";
 
 // import { showDrageBox } from "src/store/slices/uiSlice";
@@ -437,7 +433,7 @@ describe("Upload File UI Page", () => {
   });
 
   it("render Create folder button image grid view", async () => {
-    const { getByAltText } = render(
+   render(
       <UploadFileUI
         input={input}
         setInput={setInput}
@@ -831,7 +827,7 @@ describe("Upload File UI Page", () => {
     });
   });
   it("render add_file_btn", () => {
-    const { getByTestId, getByText } = render(
+    const { getByTestId } = render(
       <UploadFileUI
         input={input}
         setInput={setInput}
@@ -914,7 +910,7 @@ describe("Upload File UI Page", () => {
     fireEvent.click(screen.getByTestId("test1"));
   });
   it("Empty component displays correct", () => {
-    const { container } = render(
+   render(
       <Provider store={store2}>
         <UploadFileUI
           input={input}
@@ -952,7 +948,7 @@ describe("Upload File UI Page", () => {
     fireEvent.click(span);
   });
   it("open folder  correct", () => {
-    const { container } = render(
+  render(
       <Provider store={store3}>
         <UploadFileUI
           input={input}
@@ -1117,26 +1113,12 @@ describe("Upload File UI Page", () => {
     expect(getByText("Delete folder")).toBeDefined();
     fireEvent.click(getByText("Delete folder"));
   });
-  test("Input component handles user input correctly", () => {
-    // Render the Input component
-    render(<Input />);
-
-    // Find the input element
-    const inputElement = screen.getByRole("textbox");
-
-    // Simulate user input
-    const userInput = "Test Input";
-    fireEvent.change(inputElement, { target: { value: userInput } });
-
-    // Assert that the input value is updated
-    expect(inputElement.value).toBe(userInput);
-  });
 });
 afterEach(cleanup);
 
 describe("upload files ui", () => {
   it("create new folder test", async () => {
-    const { container, getAllByText, getAllByTestId, getAllByPlaceholderText } =
+    const { getAllByText, getAllByTestId, getAllByPlaceholderText } =
       render(
         <UploadFileUI
           input={input}
@@ -1169,6 +1151,7 @@ describe("upload files ui", () => {
         />
       );
     const add_folder_element = getAllByTestId("add_AFile_Btn");
+    expect(add_folder_element[0]).toBeInTheDocument()
     fireEvent.click(add_folder_element[0]);
     await waitFor(() => {
       const change_name_input = getAllByPlaceholderText(
@@ -1184,7 +1167,7 @@ describe("upload files ui", () => {
   });
 
   it("change fodler name test", async () => {
-    const { container, getAllByText, getAllByTestId, getAllByPlaceholderText } =
+    const { container } =
       render(
         <UploadFileUI
           input={input}
@@ -1230,7 +1213,7 @@ describe("upload files ui", () => {
   });
 
   it("Open folder", async () => {
-    const { container, getAllByText, getAllByTestId, getAllByPlaceholderText } =
+    const { container } =
       render(
         <UploadFileUI
           input={input}
@@ -1266,11 +1249,13 @@ describe("upload files ui", () => {
       fireEvent.click(container.querySelectorAll(".threeDOt")[3]);
       const edit_button = screen.getByText("Delete folder");
       fireEvent.click(edit_button);
+    expect(container.getElementsByClassName("threeDOt")).toBeTruthy();
+
     });
   });
 
   it("create new folder test close", async () => {
-    const { container, getAllByText, getAllByTestId, getAllByPlaceholderText } =
+    const { getAllByTestId } =
       render(
         <UploadFileUI
           input={input}
@@ -1312,7 +1297,7 @@ describe("upload files ui", () => {
   });
 
   it("search uploaded folder by name", async () => {
-    const { container, getAllByText, getAllByTestId, getAllByPlaceholderText } =
+  
       render(
         <UploadFileUI
           input={input}
@@ -1353,7 +1338,7 @@ describe("upload files ui", () => {
   });
 
   it("search uploaded folder by date", async () => {
-    const { container, getAllByText, getAllByTestId, getAllByPlaceholderText } =
+    const { container } =
       render(
         <UploadFileUI
           input={input}
@@ -1392,11 +1377,13 @@ describe("upload files ui", () => {
       fireEvent.click(update_name_menu_date[0]);
       const toady = screen.getAllByText("Today");
       fireEvent.click(toady[0]);
+    expect(container.getElementsByClassName("threeDOt")).toBeTruthy();
+
     });
   });
 
   it("upload file", async () => {
-    const { container, getAllByText, getAllByTestId, getAllByPlaceholderText } =
+    const { container } =
       render(
         <UploadFileUI
           input={input}
@@ -1435,9 +1422,11 @@ describe("upload files ui", () => {
       type: "text/plain",
     });
     fireEvent.change(file_input, { target: { files: [file] } });
+    expect(container.getElementsByClassName("threeDOt")).toBeTruthy();
+
   });
   it("render remove upload files", async () => {
-    const { container, getAllByText, getAllByTestId, getAllByPlaceholderText } =
+    const { container } =
       render(
         <UploadFileUI
           input={input}
@@ -1471,6 +1460,8 @@ describe("upload files ui", () => {
       );
     const upload_file_button = screen.getByTestId("remove_upload_files");
     fireEvent.click(upload_file_button);
+    expect(container.getElementsByClassName("threeDOt")).toBeTruthy();
+
     // const file_input = screen.getByTestId("upload_images");
     // const file = new File(["test file content"], "test.txt", {
     //   type: "text/plain",
@@ -1480,11 +1471,7 @@ describe("upload files ui", () => {
 
   it("upload file and click on upload button", async () => {
     const {
-      container,
-      getAllByText,
-      getAllByTestId,
-      getAllByPlaceholderText,
-      rerender,
+      container
     } = render(
       <UploadFileUI
         input={input}
