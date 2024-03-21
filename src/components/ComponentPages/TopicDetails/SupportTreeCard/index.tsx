@@ -266,7 +266,7 @@ const SupportTreeCard = ({
   const isCampLeader = () => {
     let campLeaderId = campSupportingTree?.find(obj => obj["camp_leader"] === true)?.nick_name_id;
     let campLeaderExist = false
-    userNickNames.map((nk)=>{
+    campLeaderId && userNickNames.map((nk)=>{
       if(nk.id === campLeaderId){
         campLeaderExist == true
       }
