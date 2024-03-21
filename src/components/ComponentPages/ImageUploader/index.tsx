@@ -63,37 +63,11 @@ const ImageUploader: React.FC = () => {
     );
   };
 
-  const validateImage = async (file: File): Promise<string | null> => {
-    return new Promise((resolve) => {
-      const img = new Image();
-      img.onload = () => {
-        // Validate image dimensions
-        if (img.width > MAX_IMAGE_WIDTH || img.height > MAX_IMAGE_HEIGHT) {
-          message.error(
-            `Image dimensions should be within ${MAX_IMAGE_WIDTH}x${MAX_IMAGE_HEIGHT} pixels.`
-          );
-          resolve(null);
-        } else {
-          resolve("valid");
-        }
-      };
-      img.onerror = () => {
-        message.error("Invalid image file.");
-        resolve(null);
-      };
-      img.src = URL.createObjectURL(file);
-    });
-  };
-
   const handleChange: UploadProps["onChange"] = async ({
     fileList: newFileList,
   }) => {
     const lastFile = newFileList[newFileList.length - 1];
     if (lastFile) {
-      const validationStatus = await validateImage(
-        lastFile.originFileObj as File
-      );
-      if (validationStatus !== null) {
         // setFileList(newFileList);
         try {
           const formData = new FormData();
@@ -103,13 +77,8 @@ const ImageUploader: React.FC = () => {
           dispatch(setProfilePicture(imageUrl));
           message.success("Upload successful");
         } catch (error) {
-          message.error("Upload failed");
+          message.error(error?.error?.data?.error?.profile_picture[0])
         }
-      } else {
-        // Remove the invalid file from the fileList
-        newFileList.pop();
-        setFileList(newFileList);
-      }
     }
   };
 
@@ -138,10 +107,6 @@ const ImageUploader: React.FC = () => {
   const updateProfilePicture = async ({ fileList: newFileList }) => {
     const lastFile = newFileList[newFileList.length - 1];
     if (lastFile) {
-      const validationStatus = await validateImage(
-        lastFile.originFileObj as File
-      );
-      if (validationStatus !== null) {
         // setFileList(newFileList);
         try {
           const formData = new FormData();
@@ -151,13 +116,8 @@ const ImageUploader: React.FC = () => {
           dispatch(setProfilePicture(imageUrl));
           message.success("Upload successful");
         } catch (error) {
-          message.error("Upload failed");
+          message.error(error?.error?.data?.error?.profile_picture[0])
         }
-      } else {
-        // Remove the invalid file from the fileList
-        newFileList.pop();
-        setFileList(newFileList);
-      }
     }
   };
   const items = [
