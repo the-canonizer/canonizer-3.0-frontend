@@ -190,6 +190,7 @@ describe("directsupported camps", () => {
 
     await waitFor(async () => {
       const remove_button = getAllByText("Remove Support");
+      expect(remove_button[0]).toBeInTheDocument()
       fireEvent.click(remove_button[0]);
       const cancel_button = getAllByText("Cancel");
       fireEvent.click(cancel_button[0]);
@@ -202,6 +203,7 @@ describe("directsupported camps", () => {
 
     await waitFor(async () => {
       const remove_button = getAllByText("Remove Support");
+      expect(remove_button[0]).toBeInTheDocument()
       fireEvent.click(remove_button[0]);
       const cancel_button = getAllByText("Remove");
       fireEvent.click(cancel_button[0]);
@@ -214,6 +216,7 @@ describe("directsupported camps", () => {
 
     await waitFor(async () => {
       const remove_button = getAllByTestId("handle_close");
+      expect(remove_button[0]).toBeInTheDocument()
       fireEvent.click(remove_button[0]);
       const save_changes = getAllByText("Save Changes");
       fireEvent.click(save_changes[0]);
@@ -226,6 +229,7 @@ describe("directsupported camps", () => {
     );
     await waitFor(async () => {
       const remove_button = getAllByTestId("handle_close");
+      expect(remove_button[0]).toBeInTheDocument()
       fireEvent.click(remove_button[0]);
       const save_changes = getAllByText("Revert");
       fireEvent.click(save_changes[0]);

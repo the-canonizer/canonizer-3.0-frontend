@@ -71,7 +71,6 @@ const SupportTreeCard = ({
   setIsDelegateSupportTreeCardModal,
   backGroundColorClass,
   getCheckStatusAPI,
-  GetActiveSupportTopic,
   GetActiveSupportTopicList,
 }: any) => {
   const {
@@ -79,7 +78,6 @@ const SupportTreeCard = ({
     is_checked,
     topicRecord,
     campRecord,
-    filterData,
     algorithms,
     algorithm,
     asofdate,
@@ -132,7 +130,6 @@ const SupportTreeCard = ({
       await getCheckStatusAPI();
     }
     if (isCallApiStatus == true) {
-      const topicNum = router?.query?.camp?.at(0)?.split("-")?.at(0);
       const reqBodyForService = {
         topic_num: +router?.query?.camp[0]?.split("-")[0],
         camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),

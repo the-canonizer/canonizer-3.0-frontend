@@ -1,11 +1,10 @@
-import { CloseCircleOutlined, CloseOutlined } from "@ant-design/icons";
+import { CloseOutlined } from "@ant-design/icons";
 import { Space, Tag } from "antd";
 import moment from "moment";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "src/store";
 import {
   setFilterCanonizedTopics,
-  setRemoveFilters,
   setViewThisVersion,
 } from "src/store/slices/filtersSlice";
 import {
@@ -18,9 +17,6 @@ import styles from "./latestFilter.module.scss";
 const LatestFilter = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { campRecord } = useSelector((state: RootState) => ({
-    campRecord: state?.topicDetails?.currentCampRecord,
-  }));
   const {
     algorithms,
     selectedAlgorithm,
@@ -29,7 +25,6 @@ const LatestFilter = () => {
     filteredAsOfDate,
     includeReview,
     filteredScore,
-    current_date_filter,
     filterObject,
     viewThisVersion,
     campScoreValue,
@@ -122,8 +117,7 @@ const LatestFilter = () => {
 
     router?.replace(router, null, { shallow: true });
   };
-  const momentObject = moment.unix(current_date_filter / 1000);
-  const formattedDate = momentObject.format("YYYY-MM-DD");
+
   const filterForAsofDate = () => {
     dispatch(setViewThisVersion(false));
     dispatch(

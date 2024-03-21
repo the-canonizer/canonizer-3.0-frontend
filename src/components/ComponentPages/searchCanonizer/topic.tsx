@@ -30,6 +30,7 @@ const TopicSearch = () => {
   };
   useEffect(() => {
     pageChange(currentPage);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchDataAll?.topic]);
   const showEmpty = (msg) => {
     return <Empty description={msg} />;
