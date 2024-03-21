@@ -44,7 +44,10 @@
       justify-content: space-between;
       border: none;
       padding-top: 0;
-
+      @media screen and (max-width: 767px) {
+        flex-wrap: wrap;
+        gap: 10px;
+      }
       [class="btnsWrap"] {
         display: flex;
         button {
@@ -83,6 +86,7 @@
             width: 100%;
             display: flex;
             justify-content: space-between;
+            flex-wrap: wrap;
           }
         }
       }
