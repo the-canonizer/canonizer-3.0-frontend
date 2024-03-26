@@ -53,14 +53,12 @@ function HistoryContainer() {
 
   const count = useRef(1);
 
-  const { history, currentCampNode, tree, asofdate, asof, algorithm } =
+  const { history, currentCampNode, asofdate, algorithm } =
     useSelector((state: RootState) => ({
       history: state?.topicDetails?.history,
       currentCampRecord: state.topicDetails.currentCampRecord,
       currentCampNode: state?.filters?.selectedCampNode,
-      tree: state?.topicDetails?.tree?.at(0),
       asofdate: state.filters?.filterObject?.asofdate,
-      asof: state?.filters?.filterObject?.asof,
       algorithm: state.filters?.filterObject?.algorithm,
     }));
 

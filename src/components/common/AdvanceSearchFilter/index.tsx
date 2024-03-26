@@ -5,6 +5,8 @@ import {
   Popover,
   Radio,
   Select,
+
+  // Typography,
 } from "antd";
 import Link from "next/link";
 import styles from "./advanceSearchFilter.module.scss";
@@ -15,7 +17,35 @@ import { CloseCircleOutlined,CaretDownOutlined } from "@ant-design/icons";
 
 export default function AdvanceFilter() {
   const { Panel } = Collapse;
+  // const { Title, Text, Paragraph } = Typography;
+  // const { Search } = Input;
+
   const router = useRouter();
+  // const campRoute = () => {
+  //   router?.push("/search/topic");
+  // };
+  // const renderTitle = (icon: any, title: string) => (
+  //   <span>
+  //     {icon}
+  //     {title}
+  //   </span>
+  // );
+
+  // const renderItem = (title: any) => ({
+  //   value: title,
+  //   label: (
+  //     <div
+  //       style={{
+  //         display: "flex",
+  //         justifyContent: "space-between",
+  //       }}
+  //     >
+  //       {title}
+  //       <span>{/* <UserOutlined /> */}</span>
+  //     </div>
+  //   ),
+  // });
+
   return (
     <div
       className={

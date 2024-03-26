@@ -299,6 +299,10 @@ describe("Upload file page", () => {
   });
 
   it("Add a file test", async () => {
+<<<<<<< HEAD
+
+=======
+>>>>>>> 29989dfff07a1f263b7567e13df5aab0ebb5b5a2
       render(
         <Provider store={store3}>
           <UploadFiles />

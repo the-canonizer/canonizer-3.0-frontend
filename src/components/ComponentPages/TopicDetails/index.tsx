@@ -110,20 +110,15 @@ const TopicDetails = ({ serverSideCall }: any) => {
     viewThisVersionCheck: state?.filters?.viewThisVersionCheck,
     selectedAlgorithm: state?.filters?.filterObject?.algorithm,
   }));
-  const { is_camp_archive_checked,is_checked,filteredAsOfDate,includeReview,filteredScore,current_date_filter,filterObject,viewThisVersion,campScoreValue,selectedAsOf} = useSelector(
+  const { is_camp_archive_checked,is_checked,includeReview,filteredScore,selectedAsOf} = useSelector(
     (state: RootState) => ({
       is_camp_archive_checked: state?.utils?.archived_checkbox,
       loading: state?.loading?.loading,
       is_checked: state?.utils?.score_checkbox,
-      filteredAsOfDate: state?.filters?.filterObject?.asofdate,
       includeReview: state?.filters?.filterObject?.includeReview,
       filteredScore: state?.filters?.filterObject?.filterByScore,
       selectedAlgorithm: state?.filters?.filterObject?.algorithm,
       algorithms: state.homePage?.algorithms,
-      current_date_filter: state?.filters?.current_date,
-      filterObject: state?.filters?.filterObject,
-      viewThisVersion: state?.filters?.viewThisVersionCheck,
-      campScoreValue: state?.filters?.campWithScoreValue,
       selectedAsOf: state?.filters?.filterObject?.asof,
     })
   );
