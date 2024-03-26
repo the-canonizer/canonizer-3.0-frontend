@@ -20,6 +20,15 @@ import {
 import CustomSkelton from "../../customSkelton";
 import { setSearchLoadingAction } from "src/store/slices/loading";
 
+interface HighlightedForCampStatementProps {
+  text?: string;
+  highlight: string;
+}
+interface HighlightedProps {
+  text?: string;
+  highlight: string;
+}
+
 const HeaderMenu = ({ loggedUser }: any) => {
   const [inputSearch, setInputSearch] = useState("");
   const [searchTopics, setSearchTopics] = useState([]);
@@ -77,11 +86,11 @@ const HeaderMenu = ({ loggedUser }: any) => {
   const showEmpty = (msg) => {
     return <Empty description={msg} />;
   };
-  const Highlighted = ({text = '', highlight = ''}) => {
+  const Highlighted: React.FC<HighlightedProps> = ({text = '', highlight = ''}) => {
     if (!highlight.trim()) {
       return <label>{text}</label>
     }
-    const escapedHighlight = highlight.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+    const escapedHighlight = highlight.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
     const regex = new RegExp(`(${escapedHighlight})`, 'gi');
     const parts =text.split(regex)
     return (
@@ -110,13 +119,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
           <div className={styles.search_lists}>
             <ul>
               {searchTopics?.slice(0, 5)?.map((x) => {
-                const index = x.type_value?.toLowerCase().indexOf(
-                  searchValue
-                    ?.toLowerCase()
-                    // .replace(/^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/g, " ")
-                );
                 {
-                  const length = searchValue.length;
                   return (
                     <>
                       <li style={{ cursor: "default" }}>
@@ -164,12 +167,6 @@ const HeaderMenu = ({ loggedUser }: any) => {
                     return accumulator;
                   },
                   []
-                );
-                const index = x.type_value?.toLowerCase().indexOf(
-                  searchValue
-                    ?.toLowerCase()
-                    // .replace(/^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/g, " ")
-                    .trim()
                 );
                 {
                   return (
@@ -242,18 +239,12 @@ const HeaderMenu = ({ loggedUser }: any) => {
                   },
                   []
                 );
-                const index = x.type_value?.toLowerCase().indexOf(
-                  searchValue
-                    ?.toLowerCase()
-                    // .replace(/^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/g, " ")
-                    .trim()
-                );
                 {
-                  const HighlightedForCampStatement = ({text = '', highlight = ''}) => {
+                  const HighlightedForCampStatement: React.FC<HighlightedForCampStatementProps>  = ({text = '', highlight = ''}) => {
                     if (!highlight.trim()) {
                       return <span>{text}</span>
                     }
-                    const escapedHighlight = highlight.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+                    const escapedHighlight = highlight.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
                     const regex = new RegExp(`(${escapedHighlight})`, 'gi');
                     const parts =text.split(regex)
                     return (
@@ -332,12 +323,6 @@ const HeaderMenu = ({ loggedUser }: any) => {
           <div className={styles.search_lists}>
             <ul>
               {searchNickname?.slice(0, 5)?.map((x) => {
-                const index = x.type_value?.toLowerCase().indexOf(
-                  searchValue
-                    ?.toLowerCase()
-                    // .replace(/^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/g, " ")
-                    .trim()
-                );
                 {
                   return (
                     <>
@@ -447,14 +432,15 @@ const HeaderMenu = ({ loggedUser }: any) => {
   useEffect(() => {
     if(preventInitialRender && pageNumber !== 1) setPreventInitialRender(false);
     else if ((inputSearch || searchValue) && router.pathname.includes("/search")) {
-      getGlobalSearchCanonizerNav(searchValue, false);
+      getGlobalSearchCanonizerNav(searchValue);
     }
     setPreventInitialRender(false);
     return ()=> {
       setPreventInitialRender(true);
     }
+     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pageNumber, router.pathname]);
-  const getGlobalSearchCanonizerNav = async (queryString, onPresEnter) => {
+  const getGlobalSearchCanonizerNav = async (queryString) => {
     let queryParamObj: any = {
       term: queryString,
       size: 20,
@@ -527,7 +513,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
     getGlobalSearchCanonizer(searchValue, true);
   };
 
-  const handlePress = (e) => {
+  const handlePress = () => {
     setInputSearch("");
     setSearchVal("");
     router.push({
@@ -535,7 +521,9 @@ const HeaderMenu = ({ loggedUser }: any) => {
       query: { q: searchValue },
     });
   };
-  const debounceFn = useMemo(() => debounce(getGlobalSearchCanonizer, 500), []);
+  const debounceFn = useMemo(() => debounce(getGlobalSearchCanonizer, 500), 
+   // eslint-disable-next-line react-hooks/exhaustive-deps
+  []);
   return (
     <Fragment>
       <nav className={styles.nav}>
@@ -573,7 +561,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
         </ul>
       </nav>
 
-      {!process.env.NEXT_PUBLIC_NEW_SEARCH_BAR?<div className="search_header">
+      {process.env.NEXT_PUBLIC_NEW_SEARCH_BAR?<div className="search_header">
         <AutoComplete
           popupClassName="certain-category-search-dropdown"
           dropdownMatchSelectWidth={false}
@@ -615,7 +603,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
               onPressEnter={(e) => {
                 // localStorage.setItem("searchValue",(e.target as HTMLTextAreaElement).value)
                 // !router.asPath.includes("/search") ? handlePress(e) : "";
-                handlePress(e);
+                handlePress();
                 if ((e.target as HTMLTextAreaElement).value)
                   getGlobalSearchCanonizer(
                     (e.target as HTMLTextAreaElement).value,

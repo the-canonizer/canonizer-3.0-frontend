@@ -1,19 +1,14 @@
 import {
   fireEvent,
-  getByText,
   render,
   screen,
   waitFor,
 } from "../../../../utils/testUtils";
 import UploadFiles from "..";
-import { useState } from "react";
-import { useRouter } from "next/router";
-import { cleanup, renderHook } from "@testing-library/react-hooks";
-import { message } from "antd";
+import { cleanup } from "@testing-library/react-hooks";
 import CreateFolder from "../CreateFolder";
 import configureMockStore from "redux-mock-store";
 import { Provider } from "react-redux";
-import { labels } from "src/messages/label";
 
 jest.mock("src/hooks/isUserAuthenticated", () =>
   jest.fn(() => ({ isUserAuthenticated: true }))
@@ -304,7 +299,6 @@ describe("Upload file page", () => {
   });
 
   it("Add a file test", async () => {
-    const { container, getAllByText, getAllByTestId, getAllByPlaceholderText } =
       render(
         <Provider store={store3}>
           <UploadFiles />
@@ -325,7 +319,7 @@ describe("Upload file page", () => {
     // })
   });
   it("render add_file_btn", async () => {
-    const { container, getByTestId, getByText } = render(
+    const { container } = render(
       <Provider store={store4}>
         <UploadFiles />
       </Provider>
@@ -333,6 +327,8 @@ describe("Upload file page", () => {
     await waitFor(() => {
       const uploadBtn = screen.getByTestId("upload_btn");
       fireEvent.click(uploadBtn);
+    expect(container.getElementsByClassName("threeDOt")).toBeTruthy();
+
     });
   });
 });
