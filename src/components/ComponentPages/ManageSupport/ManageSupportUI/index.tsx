@@ -45,14 +45,17 @@ const ManageSupportUI = ({
   // const [topicSupportList, setTopicSupportList] = useState([]);
   const [removeCampsSupport, setRemoveCampsSupport] = useState(false);
 
-  const { currentDelegatedSupportedClick, currentGetCheckSupportExistsData,campRecord } =
-    useSelector((state: RootState) => ({
-      currentDelegatedSupportedClick:
-        state.supportTreeCard.currentDelegatedSupportedClick,
-      currentGetCheckSupportExistsData:
-        state.topicDetails.currentGetCheckSupportExistsData,
-        campRecord: state?.topicDetails?.currentCampRecord,
-    }));
+  const {
+    currentDelegatedSupportedClick,
+    currentGetCheckSupportExistsData,
+    campRecord,
+  } = useSelector((state: RootState) => ({
+    currentDelegatedSupportedClick:
+      state.supportTreeCard.currentDelegatedSupportedClick,
+    currentGetCheckSupportExistsData:
+      state.topicDetails.currentGetCheckSupportExistsData,
+    campRecord: state?.topicDetails?.currentCampRecord,
+  }));
 
   const router = useRouter();
 
@@ -531,7 +534,8 @@ const ManageSupportUI = ({
                 }
                 disabled={
                   submitButtonDisable ||
-                  currentGetCheckSupportExistsData.disable_submit ||campRecord.is_archive == 1
+                  currentGetCheckSupportExistsData.disable_submit ||
+                  campRecord.is_archive == 1
                 }
               >
                 Submit

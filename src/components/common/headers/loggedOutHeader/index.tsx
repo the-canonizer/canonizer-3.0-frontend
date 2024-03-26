@@ -17,7 +17,6 @@ import HeaderMenu from "../HeaderMenu";
 import TopicCreationBTN from "../TopicCreationBTN";
 import ArchivedCampMsg from "../../ArchivedCampMsg";
 
-
 const { Header } = Layout;
 
 const LoggedOutHeader = () => {
@@ -46,7 +45,10 @@ const LoggedOutHeader = () => {
 
   return (
     <React.Fragment>
-      <Header className={`${styles.wrap} printHIde`} data-testid="loggedOutHeader">
+      <Header
+        className={`${styles.wrap} printHIde`}
+        data-testid="loggedOutHeader"
+      >
         <Logo />
         <div className={`${styles.navWrap} ${isActive && styles.showMobMenu}`}>
           <div className={styles.mobLogoIcon}>
