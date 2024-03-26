@@ -184,7 +184,6 @@ const TopicDetails = ({ serverSideCall }: any) => {
           getCurrentTopicRecordApi(reqBody),
           getCurrentCampRecordApi(reqBody),
           getCanonizedCampStatementApi(reqBody),
-          getHistoryApi(reqBodyForCampData, "1", "statement"),
           getTreesApi(reqBodyForService),
         ]);
       } else if (serverSideCall.current) {
