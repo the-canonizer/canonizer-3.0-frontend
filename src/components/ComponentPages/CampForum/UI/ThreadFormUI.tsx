@@ -15,6 +15,7 @@ const CreateThreadForm = ({
   initialValue,
   nickNameList,
   isThreadUpdate,
+  isLoading
 }: any) => {
   const CardTitle = (
     <span className={styles.cardTitle}>
@@ -125,6 +126,7 @@ const CreateThreadForm = ({
               className={`${styles.submit_btn}`}
               id="submit-btn"
               data-testid="submit-btn"
+              disabled={isLoading}
             >
               Submit
             </Button>
