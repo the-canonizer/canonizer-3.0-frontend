@@ -18,6 +18,7 @@ import { replaceSpecialCharacters } from "src/utils/generalUtility";
 import isAuth from "../../../hooks/isUserAuthenticated";
 import { setShowDrawer } from "src/store/slices/filtersSlice";
 import { RootState } from "src/store";
+import DataNotFound from "../DataNotFound/dataNotFound";
 
 const CreateNewCamp = ({
   nickNames = [],
@@ -36,6 +37,7 @@ const CreateNewCamp = ({
   const [nickNameList, setNickNameList] = useState(nickNames);
   const [initialValue, setInitialValues] = useState(initialValues);
   const [parentCamp, setParentCamps] = useState(parentCamps);
+  const [campExist, setCampExist] = useState(true);
   const [campNickName, setCampNickName] = useState(campNickNames);
   const [params, setParams] = useState({});
   const [options, setOptions] = useState([...messages.preventCampLabel]);
@@ -114,6 +116,11 @@ const CreateNewCamp = ({
     let res = await getAllParentsCamp(body);
     if (res && res.status_code === 200) {
       setParentCamps(res.data);
+      if (res?.data?.length > 0) {
+        setCampExist(
+          res?.data?.some((parent) => parent?.camp_num == q?.camp_num)
+        );
+      }
     }
     setIsLoading(false);
   };
@@ -260,20 +267,29 @@ const CreateNewCamp = ({
 
   return (
     <Fragment>
-      <CreateNewCampUI
-        onFinish={onFinish}
-        onCancel={onCancel}
-        form={form}
-        initialValue={initialValue}
-        topicData={params}
-        nickNameList={nickNameList}
-        parentCamp={parentCamp}
-        campNickName={campNickName}
-        options={options}
-        onCheckboxChange={onCheckboxChange}
-        onParentCampChange={onParentCampChange}
-        isLoading={isLoading}
-      />
+      {campExist ? (
+        <CreateNewCampUI
+          onFinish={onFinish}
+          onCancel={onCancel}
+          form={form}
+          initialValue={initialValue}
+          topicData={params}
+          nickNameList={nickNameList}
+          parentCamp={parentCamp}
+          campNickName={campNickName}
+          options={options}
+          onCheckboxChange={onCheckboxChange}
+          onParentCampChange={onParentCampChange}
+          isLoading={isLoading}
+        />
+      ) : (
+        <DataNotFound
+          name={"Camp"}
+          message={"Camp not found"}
+          backURL={"/"}
+          goBack={true}
+        />
+      )}
     </Fragment>
   );
 };

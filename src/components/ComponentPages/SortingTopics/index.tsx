@@ -4,7 +4,6 @@ import Image from "next/image";
 import SortActiveTopicIcon from "../../../assets/image/sort-active-ico.svg";
 import SortTopicIcon from "../../../assets/image/sort-ico.svg";
 import styles from "../../ComponentPages/SortingTopics/sort.module.scss";
-
 import { setScoreViewTopic, setSortLatestTopic } from "src/store/slices/utilsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "src/store";
@@ -28,6 +27,7 @@ const SortTopics =()=>{
             dispatch(setScoreViewTopic(false));
             dispatch(setSortLatestTopic(false));
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
       },[])
     const dispatch = useDispatch()
       const onLatestTopic = () => {

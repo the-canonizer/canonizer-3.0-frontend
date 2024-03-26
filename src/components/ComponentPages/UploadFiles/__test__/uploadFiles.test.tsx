@@ -299,7 +299,10 @@ describe("Upload file page", () => {
   });
 
   it("Add a file test", async () => {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 29989dfff07a1f263b7567e13df5aab0ebb5b5a2
       render(
         <Provider store={store3}>
           <UploadFiles />
@@ -320,8 +323,7 @@ describe("Upload file page", () => {
     // })
   });
   it("render add_file_btn", async () => {
-
-    render(
+    const { container } = render(
       <Provider store={store4}>
         <UploadFiles />
       </Provider>
@@ -329,6 +331,8 @@ describe("Upload file page", () => {
     await waitFor(() => {
       const uploadBtn = screen.getByTestId("upload_btn");
       fireEvent.click(uploadBtn);
+    expect(container.getElementsByClassName("threeDOt")).toBeTruthy();
+
     });
   });
 });

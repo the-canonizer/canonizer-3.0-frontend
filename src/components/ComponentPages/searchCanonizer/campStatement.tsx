@@ -28,6 +28,7 @@ const CampStatementSearch = () => {
   };
   useEffect(() => {
     pageChange(currentPage);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchDataAll?.statement]);
   const covertToTime = (unixTime) => {
     return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");

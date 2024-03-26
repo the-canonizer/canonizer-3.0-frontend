@@ -28,6 +28,7 @@ const NicknameSearch = () => {
   };
   useEffect(() => {
     pageChange(currentPage);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchDataAll?.nickname]);
   const showEmpty = (msg) => {
     return <Empty description={msg} />;

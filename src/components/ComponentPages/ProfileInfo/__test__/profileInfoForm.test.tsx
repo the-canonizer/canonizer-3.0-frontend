@@ -135,7 +135,7 @@ jest.mock("next/router", () => ({
   useRouter: jest.fn(),
 }));
 jest.mock("react-places-autocomplete", () => {
-  const geocodeByAddress = jest.fn((address) =>
+  const geocodeByAddress = jest.fn(() =>
     Promise.resolve([
       {
         address_components: [

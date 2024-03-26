@@ -61,25 +61,6 @@ const ImageUploader: React.FC = () => {
     );
   };
 
-  const handleChange: UploadProps["onChange"] = async ({
-    fileList: newFileList,
-  }) => {
-    const lastFile = newFileList[newFileList.length - 1];
-    if (lastFile) {
-        // setFileList(newFileList);
-        try {
-          const formData = new FormData();
-          formData.append("profile_picture", lastFile.originFileObj as File);
-          const response = await uploadProfileImage(formData);
-          const imageUrl = response.data.profile_picture;
-          dispatch(setProfilePicture(imageUrl));
-          message.success("Upload successful");
-        } catch (error) {
-          message.error(error?.error?.data?.error?.profile_picture[0])
-        }
-    }
-  };
-
   const handleDelete = async (file: UploadFile) => {
     try {
       await deleteProfileImage();
@@ -102,34 +83,30 @@ const ImageUploader: React.FC = () => {
     </div>
   );
 
-  const updateProfilePicture = async ({ fileList: newFileList }) => {
-    const lastFile = newFileList[newFileList.length - 1];
-    if (lastFile) {
-        // setFileList(newFileList);
-        try {
-          const formData = new FormData();
-          formData.append("profile_picture", lastFile.originFileObj as File);
-          const response = await uploadProfileImage(formData);
-          const imageUrl = response.data.profile_picture;
-          dispatch(setProfilePicture(imageUrl));
-          message.success("Upload successful");
-        } catch (error) {
-          message.error(error?.error?.data?.error?.profile_picture[0])
-        }
+  const onModalOk = async(file) => {
+    console.log("Ok File",file)
+    try {
+      const formData = new FormData();
+      formData.append("profile_picture", file as File);
+      const response = await uploadProfileImage(formData);
+      const imageUrl = response.data.profile_picture;
+      dispatch(setProfilePicture(imageUrl));
+      message.success("Upload successful");
+    } catch (error) {
+      message.error(error?.error?.data?.error?.profile_picture[0])
     }
   };
 
   return (
     <Fragment>
       <div className="upload-wrap">
-        <ImgCrop aspectSlider rotationSlider>
+        <ImgCrop aspectSlider rotationSlider onModalOk={(file)=>onModalOk(file)}>
           <Upload
             className="picture-upload"
             listType="picture-card"
             accept="image/*"
             fileList={fileList}
             onPreview={handlePreview}
-            onChange={handleChange}
             onRemove={handleDelete}
             showUploadList={{ showRemoveIcon: true }}
           >
@@ -137,13 +114,12 @@ const ImageUploader: React.FC = () => {
           </Upload>
         </ImgCrop>
         {fileList.length >= 1 ? (
-          <ImgCrop aspectSlider rotationSlider>
+          <ImgCrop aspectSlider rotationSlider onModalOk={(file)=>onModalOk(file)}>
             <Upload
               fileList={fileList}
               multiple={false}
               accept="image/*"
               showUploadList={false}
-              onChange={updateProfilePicture}
             >
               <Tooltip title="Update" key="update-btn" placement="bottom">
                 <Button size="small">

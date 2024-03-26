@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 // import ManageSupportUI from "./ManageSupportUI";
 import { message } from "antd";
-import CampInfoBar from "../TopicDetails/CampInfoBar";
 import dynamic from "next/dynamic";
 import {
   getAllUsedNickNames,
@@ -33,8 +32,7 @@ const ManageSupport = ({
   setGetManageSupportLoadingIndicator,
   getManageSupportLoadingIndicator,
   getCheckStatusAPI,
-  isManageSupportPage=true,
-}:any) => {
+}: any) => {
   const { asof, asofdate } = useSelector((state: RootState) => ({
     asofdate: state.filters?.filterObject?.asofdate,
     asof: state?.filters?.filterObject?.asof,
@@ -77,9 +75,6 @@ const ManageSupport = ({
         : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
   };
   //Support page Link Url
-  const { manageSupportUrlLink } = useSelector((state: RootState) => ({
-    manageSupportUrlLink: state.topicDetails.manageSupportUrlLink,
-  }));
   const { currentDelegatedSupportedClick } = useSelector(
     (state: RootState) => ({
       currentDelegatedSupportedClick:

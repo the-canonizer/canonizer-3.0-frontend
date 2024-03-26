@@ -420,6 +420,7 @@ describe("nicknames", () => {
     );
     await waitFor(async () => {
       const add_button = getAllByText("Add New Nickname");
+      expect(add_button[0]).toBeInTheDocument();
       fireEvent.click(add_button[0]);
       const chec_close = await getByTestId("addnicknamemodal");
       const modal_contetn =
@@ -447,6 +448,7 @@ describe("nicknames", () => {
     );
     await waitFor(async () => {
       const edit_button = await getAllByText("edit");
+      expect(edit_button[0]).toBeInTheDocument()
       fireEvent.click(edit_button[0]);
     });
   });
