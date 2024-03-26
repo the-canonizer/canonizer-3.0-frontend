@@ -66,15 +66,23 @@ const ForumComponent = ({
     setIsLoggedIn(isUserAuthenticated);
   }, [isUserAuthenticated]);
 
-  const { campRecord, asof, asofdate, algorithm, currentThread, currentPost } =
-    useSelector((state: any) => ({
-      campRecord: state?.topicDetails?.currentCampRecord,
-      asof: state?.filters?.filterObject?.asof,
-      asofdate: state.filters?.filterObject?.asofdate,
-      algorithm: state.filters?.filterObject?.algorithm,
-      currentThread: state.forum.currentThread,
-      currentPost: state.forum.currentPost,
-    }));
+  const {
+    campRecord,
+    asof,
+    asofdate,
+    algorithm,
+    currentThread,
+    currentPost,
+    topicRecord,
+  } = useSelector((state: any) => ({
+    campRecord: state?.topicDetails?.currentCampRecord,
+    topicRecord: state?.topicDetails?.currentTopicRecord,
+    asof: state?.filters?.filterObject?.asof,
+    asofdate: state.filters?.filterObject?.asofdate,
+    algorithm: state.filters?.filterObject?.algorithm,
+    currentThread: state.forum.currentThread,
+    currentPost: state.forum.currentPost,
+  }));
 
   const setCurrentThread = (data) => dispatch(setThread(data));
 
@@ -399,19 +407,19 @@ const ForumComponent = ({
       if (q.tId) {
         const body = {
           title: values.thread_title?.trim(),
-          topic_num: paramsList["topic_num"],
-          camp_num: paramsList["camp_num"],
-          camp_name: paramsList["camp_name"],
+          topic_num: paramsList["topic_num"] || topicRecord?.topic_num,
+          camp_num: paramsList["camp_num"] || campRecord?.camp_num,
+          camp_name: paramsList["camp_name"] || campRecord?.camp_name,
         };
         res = await updateThread(body, +q.tId);
       } else {
         const body = {
           title: values.thread_title?.trim(),
           nick_name: values.nick_name,
-          camp_num: paramsList["camp_num"],
-          topic_num: paramsList["topic_num"],
-          topic_name: paramsList["topic"],
-          camp_name: paramsList["camp_name"],
+          camp_num: paramsList["camp_num"] || campRecord?.camp_num,
+          camp_name: paramsList["camp_name"] || campRecord?.camp_name,
+          topic_num: paramsList["topic_num"] || topicRecord?.topic_num,
+          topic_name: paramsList["topic"] || topicRecord?.topic_name,
         };
         res = await createThread(body);
       }
@@ -458,9 +466,9 @@ const ForumComponent = ({
       if (threadUpdateOthers?.id) {
         const body = {
           title: values?.threadName?.trim(),
-          topic_num: paramsList["topic_num"],
-          camp_num: paramsList["camp_num"],
-          camp_name: paramsList["camp_name"],
+          topic_num: paramsList["topic_num"] || topicRecord?.topic_num,
+          camp_num: paramsList["camp_num"] || campRecord?.camp_num,
+          camp_name: paramsList["camp_name"] || campRecord?.camp_name,
         };
         res = await updateThread(body, +threadUpdateOthers?.id);
 
