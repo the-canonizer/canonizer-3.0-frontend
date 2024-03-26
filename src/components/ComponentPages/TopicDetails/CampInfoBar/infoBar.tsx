@@ -292,6 +292,7 @@ const InfoBar = ({
               e?.stopPropagation();
             }}
             // disabled={asof == "bydate" || campRecord?.is_archive}
+            passHref
           >
             <div
               className="topicDetailsCollapseFooter"

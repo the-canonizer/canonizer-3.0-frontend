@@ -82,7 +82,7 @@ const CreateTopicFromUI = ({
                   ))}
                 </Select>
               </Form.Item>
-              
+
               <Form.Item
                 label={
                   <Fragment>
@@ -104,7 +104,7 @@ const CreateTopicFromUI = ({
                     setExistedTopic({
                       status: false,
                       data: "",
-                    })
+                    });
                   }}
                 />
               </Form.Item>

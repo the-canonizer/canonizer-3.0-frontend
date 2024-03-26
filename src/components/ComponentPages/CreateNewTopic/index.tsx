@@ -58,22 +58,12 @@ const CreateNewTopic = ({
     if (isUserAuthenticated) {
       fetchNickNameList();
     }
+    // eslint-disable-next-line
   }, [isUserAuthenticated]);
 
   const onFinish = async (values: any) => {
     setIsFormSubmitted(true);
     setIsLoading(true);
-    // if (!values.topic_name?.trim()) {
-    //   form.setFields([
-    //     {
-    //       name: "topic_name",
-    //       value: "",
-    //     },
-    //   ]);
-    //   form.validateFields(["topic_name"]);
-    //   setIsLoading(false);
-    //   return true;
-    // }
 
     const body = {
       topic_name: values.topic_name?.trim(),

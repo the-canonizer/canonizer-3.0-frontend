@@ -196,9 +196,7 @@ describe("ManageSupportUI", () => {
     ).toBeTruthy();
   });
   it("suppor remove modal", () => {
-    const { getAllByTestId } = render(
-      <ManageSupport></ManageSupport>
-    );
+    const { getAllByTestId } = render(<ManageSupport></ManageSupport>);
     const remove_all_button = getAllByTestId("support-remove-modal")[0];
     expect(remove_all_button).toBeInTheDocument();
     fireEvent.click(remove_all_button);

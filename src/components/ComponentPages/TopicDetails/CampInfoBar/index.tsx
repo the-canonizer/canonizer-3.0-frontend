@@ -184,7 +184,7 @@ const TimelineInfoBar = ({
           res?.data?.bread_crumb?.length - 1
         )?.camp_name;
         let breadTopicName = res?.data?.topic_name;
-      
+
         let query = getQueryParams()?.query;
         query.camp = [
           `${breadTopicId}-${replaceSpecialCharacters(breadTopicName, "-")}`,
@@ -207,11 +207,20 @@ const TimelineInfoBar = ({
       getBreadCrumbApiCall();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router?.asPath, filterObject, !!(getCookies() as any)?.loginToken, changeGoneLive]);
+  }, [
+    router?.asPath,
+    filterObject,
+    !!(getCookies() as any)?.loginToken,
+    changeGoneLive,
+  ]);
 
   return (
     <>
-      <div className={styles.topicDetailContentHead + " printHIde " + styles.info_bar_n}>
+      <div
+        className={
+          styles.topicDetailContentHead + " printHIde " + styles.info_bar_n
+        }
+      >
         <Spin spinning={false}>
           <div className={styles.topicDetailContentHead_Left}>
             {isForumPage ? (

@@ -68,17 +68,17 @@ const ImageUploader: React.FC = () => {
   }) => {
     const lastFile = newFileList[newFileList.length - 1];
     if (lastFile) {
-        // setFileList(newFileList);
-        try {
-          const formData = new FormData();
-          formData.append("profile_picture", lastFile.originFileObj as File);
-          const response = await uploadProfileImage(formData);
-          const imageUrl = response.data.profile_picture;
-          dispatch(setProfilePicture(imageUrl));
-          message.success("Upload successful");
-        } catch (error) {
-          message.error(error?.error?.data?.error?.profile_picture[0])
-        }
+      // setFileList(newFileList);
+      try {
+        const formData = new FormData();
+        formData.append("profile_picture", lastFile.originFileObj as File);
+        const response = await uploadProfileImage(formData);
+        const imageUrl = response.data.profile_picture;
+        dispatch(setProfilePicture(imageUrl));
+        message.success("Upload successful");
+      } catch (error) {
+        message.error(error?.error?.data?.error?.profile_picture[0]);
+      }
     }
   };
 
@@ -107,17 +107,17 @@ const ImageUploader: React.FC = () => {
   const updateProfilePicture = async ({ fileList: newFileList }) => {
     const lastFile = newFileList[newFileList.length - 1];
     if (lastFile) {
-        // setFileList(newFileList);
-        try {
-          const formData = new FormData();
-          formData.append("profile_picture", lastFile.originFileObj as File);
-          const response = await uploadProfileImage(formData);
-          const imageUrl = response.data.profile_picture;
-          dispatch(setProfilePicture(imageUrl));
-          message.success("Upload successful");
-        } catch (error) {
-          message.error(error?.error?.data?.error?.profile_picture[0])
-        }
+      // setFileList(newFileList);
+      try {
+        const formData = new FormData();
+        formData.append("profile_picture", lastFile.originFileObj as File);
+        const response = await uploadProfileImage(formData);
+        const imageUrl = response.data.profile_picture;
+        dispatch(setProfilePicture(imageUrl));
+        message.success("Upload successful");
+      } catch (error) {
+        message.error(error?.error?.data?.error?.profile_picture[0]);
+      }
     }
   };
   const items = [

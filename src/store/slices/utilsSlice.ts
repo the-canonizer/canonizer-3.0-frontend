@@ -9,8 +9,8 @@ const defaultValue = {
   redirect_tab_setting: "",
   score_checkbox: false,
   archived_checkbox: false,
-  sortLatestTopic:false,
-  sortScoreViewTopic:false,
+  sortLatestTopic: false,
+  sortScoreViewTopic: false,
   reasonData: {},
 };
 

@@ -1,17 +1,11 @@
 import { useRouter } from "next/router";
-import {
-  Collapse,
-  Input,
-  Popover,
-  Radio,
-  Select,
-} from "antd";
+import { Collapse, Input, Popover, Radio, Select } from "antd";
 import Link from "next/link";
 import styles from "./advanceSearchFilter.module.scss";
 import filter from "src/assets/image/filter.svg";
 import Image from "next/image";
 import { LeftOutlined } from "@ant-design/icons";
-import { CloseCircleOutlined,CaretDownOutlined } from "@ant-design/icons";
+import { CloseCircleOutlined, CaretDownOutlined } from "@ant-design/icons";
 
 export default function AdvanceFilter() {
   const { Panel } = Collapse;
@@ -27,7 +21,9 @@ export default function AdvanceFilter() {
       <Collapse
         className={`${styles.cardAccordian} topicListFilterCardCollapse`}
         expandIconPosition="right"
-        expandIcon={({ isActive }) => <CaretDownOutlined rotate={isActive ? 180 : 180} />}
+        expandIcon={({ isActive }) => (
+          <CaretDownOutlined rotate={isActive ? 180 : 180} />
+        )}
         bordered={false}
         // defaultActiveKey={["1", "2", "3"]}
         // accordion={false}

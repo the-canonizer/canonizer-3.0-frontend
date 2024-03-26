@@ -36,9 +36,7 @@ const ProfileInfoTab = ({
           size={isMobile ? "small" : "default"}
         />
       ) : isGravatarImage && !loadingImage ? (
-
         loggedInUser?.email && (
-
           <Avatar
             src={`https://www.gravatar.com/avatar/${md5(
               loggedInUser?.email

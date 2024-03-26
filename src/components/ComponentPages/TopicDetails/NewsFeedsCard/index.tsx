@@ -205,7 +205,8 @@ const NewsFeedsCard = ({ newsFeed }: any) => {
                                 </>
                               }
                             >
-                              {" "}<DeleteOutlined />
+                              {" "}
+                              <DeleteOutlined />
                             </Tooltip>
                           ))
                         // : (

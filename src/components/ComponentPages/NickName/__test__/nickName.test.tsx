@@ -415,9 +415,7 @@ describe("Nickname test cases", () => {
 
 describe("nicknames", () => {
   it("close add nickname modal", async () => {
-    const { getAllByText, getByTestId } = render(
-      <NickName></NickName>
-    );
+    const { getAllByText, getByTestId } = render(<NickName></NickName>);
     await waitFor(async () => {
       const add_button = getAllByText("Add New Nickname");
       expect(add_button[0]).toBeInTheDocument();
@@ -430,9 +428,7 @@ describe("nicknames", () => {
   });
 
   it("render editnickname modal", async () => {
-    const { getAllByText } = render(
-      <NickName></NickName>
-    );
+    const { getAllByText } = render(<NickName></NickName>);
     render(
       <NickNameUI
         addEditTitle={addEditTitle}
@@ -448,7 +444,7 @@ describe("nicknames", () => {
     );
     await waitFor(async () => {
       const edit_button = await getAllByText("edit");
-      expect(edit_button[0]).toBeInTheDocument()
+      expect(edit_button[0]).toBeInTheDocument();
       fireEvent.click(edit_button[0]);
     });
   });

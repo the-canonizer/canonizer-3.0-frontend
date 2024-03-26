@@ -105,11 +105,12 @@ const Login = ({ isModal, isTest = false }: any) => {
   useEffect(() => {
     if (didMount?.current) {
       if (formData?.email && isOtpScreen) {
-        setFormData({ email: '' });
+        setFormData({ email: "" });
         setIsOtpScreen(false);
       }
-    } else didMount.current = true
-  }, [router])
+    } else didMount.current = true;
+    //eslint-disable-next-line
+  }, [router]);
 
   const onOTPClick = async (e) => {
     e.preventDefault();
