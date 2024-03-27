@@ -333,7 +333,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isUserAuthenticated, router, algorithm]);
+  }, [isUserAuthenticated || router || algorithm]);
 
   useEffect(() => {
     setBackGroundColorClass(asof);
