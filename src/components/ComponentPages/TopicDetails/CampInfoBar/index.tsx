@@ -207,7 +207,7 @@ const TimelineInfoBar = ({
       getBreadCrumbApiCall();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router?.asPath, filterObject, !!(getCookies() as any)?.loginToken, changeGoneLive]);
+  }, [router?.asPath || filterObject, !!(getCookies() as any)?.loginToken, changeGoneLive]);
 
   return (
     <>
