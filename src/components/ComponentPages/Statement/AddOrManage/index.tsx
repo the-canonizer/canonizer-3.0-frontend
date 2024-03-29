@@ -71,11 +71,11 @@ const EditorToolbarItems = [
   "alignment",
   "todoList",
   "|",
-  "fontSize",
+  // "fontSize",
   "fontColor",
-  "fontBackgroundColor",
-  "highlight",
-  "fontFamily",
+  // "fontBackgroundColor",
+  // "highlight",
+  // "fontFamily",
   "|",
   "indent",
   "outdent",
@@ -1227,6 +1227,7 @@ export default function AddOrManage({ add }: any) {
                                 />
                               ) : (
                                 <Select
+                                  allowClear	
                                   size={"large"}
                                   placeholder="--Select Camp About Nickname"
                                   // data-id="parent-camp"

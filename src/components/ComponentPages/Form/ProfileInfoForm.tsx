@@ -90,7 +90,6 @@ function ProfileInfoForm({
     loading,
   }) => (
     <div>
-      {console.log(suggestions, "sugg")}
       <Input
         data-testid="auto_complete"
         id="selectAddress_1"

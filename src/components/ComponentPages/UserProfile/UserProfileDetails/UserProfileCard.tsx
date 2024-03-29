@@ -42,7 +42,6 @@ export const UserProfileCard = ({
 
   const router = useRouter();
 
-  const reqBody = { campNum: +router?.query?.supports?.[0] };
   useEffect(() => {
     pageChange(1, 5);
     // eslint-disable-next-line react-hooks/exhaustive-deps

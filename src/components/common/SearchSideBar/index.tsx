@@ -17,10 +17,6 @@ export default function SearchSideBar() {
     loading: state?.loading?.searchLoading,
   }));
 
-  const campRoute = () => {
-    router?.push("/search/topic");
-  };
-
   return (
     <>
       <div className="leftSideBar_Card noFilter">
@@ -39,6 +35,7 @@ export default function SearchSideBar() {
                 query: { q: searchValue },
               }}
             >
+              <a>
               <Button
                 size="large"
                 className={
@@ -46,8 +43,9 @@ export default function SearchSideBar() {
                 }
                 disabled={router.pathname == "/search" ? true : false}
               >
-                <a>All</a>
+                All
               </Button>
+              </a>
             </Link>
             <Link
               href={{
@@ -55,6 +53,7 @@ export default function SearchSideBar() {
                 query: { q: searchValue },
               }}
             >
+              <a>
               <Button
                 size="large"
                 className={
@@ -65,6 +64,7 @@ export default function SearchSideBar() {
                 <i className="icon-topic"></i>
                 <a>Topic</a>
               </Button>
+              </a>
             </Link>
             <Link
               href={{
@@ -72,6 +72,7 @@ export default function SearchSideBar() {
                 query: { q: searchValue },
               }}
             >
+              <a>
               <Button
                 size="large"
                 className={
@@ -82,6 +83,7 @@ export default function SearchSideBar() {
                 <i className="icon-camp"></i>
                 <a>Camp</a>
               </Button>
+              </a>
             </Link>
             <Link
               href={{
@@ -89,6 +91,7 @@ export default function SearchSideBar() {
                 query: { q: searchValue },
               }}
             >
+              <a>
               <Button
                 size="large"
                 className={
@@ -103,6 +106,7 @@ export default function SearchSideBar() {
                 <i className="icon-camp"></i>
                 <a>Camp Statement</a>
               </Button>
+              </a>
             </Link>
             <Link
               href={{
@@ -110,6 +114,7 @@ export default function SearchSideBar() {
                 query: { q: searchValue },
               }}
             >
+              <a>
               <Button
                 size="large"
                 className={
@@ -129,6 +134,7 @@ export default function SearchSideBar() {
                 />
                 <a>Nickname</a>
               </Button>
+              </a>
             </Link>
           </div>
         )}

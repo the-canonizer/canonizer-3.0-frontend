@@ -1,6 +1,5 @@
-import { Provider, useSelector } from "react-redux";
-import Search from ".";
-import { fireEvent, render, screen, waitFor } from "../../../utils/testUtils";
+import { Provider } from "react-redux";
+import { fireEvent, render, screen } from "../../../utils/testUtils";
 import LatestFilter from ".";
 import configureMockStore from "redux-mock-store";
 
