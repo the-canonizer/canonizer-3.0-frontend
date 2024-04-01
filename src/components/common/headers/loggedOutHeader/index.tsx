@@ -119,7 +119,7 @@ const LoggedOutHeader = () => {
       ) : (
         <></>
       )}
-      <SearchSection />
+      {/* <SearchSection /> */}
       <div className="topicMobBTN">
         <TopicCreationBTN key="create-topic-area" />
       </div>
