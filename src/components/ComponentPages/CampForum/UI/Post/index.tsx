@@ -79,14 +79,13 @@ const PostUI = ({
                     getTime(createdAt)
                   ).format("MMM Do YYYY, h:mm:ss a")}`}</Text>{" "}
                   |{" "}
-                </>:
+                </>: currentThread?.created_at?
                 <>
                   <Text id="thread-create-label">{`Thread Created at ${moment(
                     getTime(currentThread?.created_at)
                   ).format("MMM Do YYYY, h:mm:ss a")}`}</Text>{" "}
                   |{" "}
-                </>
-              }
+                </> : null }
               {currentThread["creation_nick_name"] && (
                 <>
                   <Text id="started-by-label">
