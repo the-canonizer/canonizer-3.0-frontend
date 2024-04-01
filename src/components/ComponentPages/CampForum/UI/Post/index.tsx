@@ -75,7 +75,7 @@ const PostUI = ({
               {
                 createdAt?
                 <>
-                  <Text id="thread-create-label">{`Thread Created at ${moment(
+                  <Text id="thread-create-label">{`Thread Created on ${moment(
                     getTime(createdAt)
                   ).format("MMM Do YYYY, h:mm:ss a")}`}</Text>{" "}
                   |{" "}
