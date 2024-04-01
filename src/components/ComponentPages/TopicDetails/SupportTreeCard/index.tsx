@@ -433,7 +433,11 @@ const SupportTreeCard = ({
                 {campRecord?.camp_name}&quot; Camp
               </h3>
               <h5 className={styles.algoLabel}>
-                ( Based on: &quot;{router?.query?.algo ?currentAlgo:algorithms[0].algorithm_label}&quot; )
+                ( Based on: &quot;
+                {router?.query?.algo
+                  ? currentAlgo
+                  : algorithms?.at(0)?.algorithm_label}
+                &quot; )
               </h5>
             </Fragment>
           }
