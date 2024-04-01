@@ -44,6 +44,7 @@ const CreateCampFormUI = ({
   options,
   onCheckboxChange,
   onParentCampChange,
+  isLoading,
 }: any) => {
   const router = useRouter();
   const { campRecord } = useSelector((state: RootState) => ({
@@ -341,6 +342,7 @@ const CreateCampFormUI = ({
               className={`${styles.submit_btn}`}
               data-testid="btn"
               id="crate-camp-btn"
+              disabled={isLoading}
             >
               Create Camp
             </Button>

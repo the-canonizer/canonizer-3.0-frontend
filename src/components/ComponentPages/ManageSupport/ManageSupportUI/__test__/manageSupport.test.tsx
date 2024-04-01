@@ -4,10 +4,8 @@ import {
   screen,
   waitFor,
 } from "../../../../../utils/testUtils";
-import messages from "../../../../../messages";
 import ManageSupport from "../..";
 
-const { labels } = messages;
 const nickNameList = [
   {
     create_time: "1970-01-01",
@@ -57,20 +55,6 @@ const manageSupportList = [
     topic_num: 10,
   },
 ];
-const clearAllChanges = jest.fn();
-const removeAll = jest.fn();
-const handleClose = jest.fn();
-const checked = true;
-const setManageSupportList = [],
-  parentSupportDataList = [],
-  getSupportStatusData = null,
-  submitNickNameSupportCamps = jest.fn(),
-  cancelManageRoute = jest.fn(),
-  setSelectedtNickname = jest.fn(),
-  selectedtNickname = "",
-  setUpdatePostion = jest.fn();
-const submitButtonDisable = false;
-const unableToFindCamp = false;
 const campRecord = {
   camp_about_nick_id: 0,
   camp_about_nick_name: "joy",
@@ -213,17 +197,6 @@ describe("Manage support", () => {
       expect(screen.getByText(nickNameList[0].private)).toBeInTheDocument();
     });
   });
-  // it("render handle close function", async () => {
-  //   render(<ManageSupport />);
-  //   await waitFor(() => {
-  //     const clickOnCamp = screen.getAllByTestId("styles_Bluecolor")[0];
-  //     expect(clickOnCamp).toBeInTheDocument();
-  //     fireEvent.click(clickOnCamp);
-  //     const closeCircle = screen.getAllByTestId("close")[0];
-  //     expect(closeCircle).toBeInTheDocument();
-  //     fireEvent.click(closeCircle);
-  //   });
-  // });
   it("render camp record", async () => {
     await render(<ManageSupport />);
     waitFor(async () => {
@@ -276,24 +249,4 @@ describe("Manage support ui cancle or submit button", () => {
       container.getElementsByClassName("ant-select-selection-item")
     ).toBeTruthy();
   });
-
-  // it("click on clear all changes button", () => {
-  //   const { getAllByText, container } = render(<ManageSupport></ManageSupport>);
-  //   const clear_all_button = getAllByText("Clear all changes")[0];
-  //   fireEvent.click(clear_all_button);
-  //   expect(
-  //     container.getElementsByClassName("ant-select-selection-item")
-  //   ).toBeTruthy();
-  // });
-
-  // it("click on remove all changes button", () => {
-  //   const { getAllByTestId, container } = render(
-  //     <ManageSupport></ManageSupport>
-  //   );
-  //   const remove_all_button = getAllByTestId("checkbox")[0];
-  //   fireEvent.click(remove_all_button);
-  //   expect(
-  //     container.getElementsByClassName("ManageSupport_checkbox__DQcrk")
-  //   ).toBeTruthy();
-  // });
 });

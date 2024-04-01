@@ -29,6 +29,7 @@ const Threads = ({
             initialValue={initialValue}
             nickNameList={nickNameList}
             isThreadUpdate={isThreadUpdate}
+            isLoading={isLoading}
           />
         </Spin>
       </div>
