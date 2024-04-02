@@ -68,7 +68,7 @@ const LoggedOutHeader = () => {
               className={styles.btnLogin}
               onClick={openLoginModal}
             >
-              <i className="icon-user"></i> Login
+              <i className="icon-user"></i> Log In
             </Button>
             <Button
               className={styles.btnRegister}
@@ -119,7 +119,7 @@ const LoggedOutHeader = () => {
       ) : (
         <></>
       )}
-      <SearchSection />
+      {/* <SearchSection /> */}
       <div className="topicMobBTN">
         <TopicCreationBTN key="create-topic-area" />
       </div>

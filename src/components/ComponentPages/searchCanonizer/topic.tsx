@@ -30,6 +30,7 @@ const TopicSearch = () => {
   };
   useEffect(() => {
     pageChange(currentPage);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchDataAll?.topic]);
   const showEmpty = (msg) => {
     return <Empty description={msg} />;
@@ -66,7 +67,7 @@ const TopicSearch = () => {
                           <li>
                             <Link href={`/${x?.link}`}>
                               <a>
-                                <label>{x?.type_value}</label>
+                                <label  style={{ cursor: "pointer" }}>{x?.type_value}</label>
                               </a>
                             </Link>
 

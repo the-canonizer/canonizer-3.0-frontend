@@ -8,7 +8,7 @@ import Layout from "src/hoc/layout";
 const CreateNewCampPage = ({ algorithms }: any) => {
   const dispatch = useDispatch();
 
-  dispatch(setCanonizedAlgorithms(algorithms));
+  // dispatch(setCanonizedAlgorithms(algorithms));
   return (
     <Layout routeName={"create-camp"}>
       <CreateNewCamp />

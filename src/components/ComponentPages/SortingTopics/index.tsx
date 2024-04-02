@@ -1,11 +1,9 @@
-import { Dropdown, Menu, Space } from "antd";
+import { Dropdown } from "antd";
 import type { MenuProps } from 'antd';
 import Image from "next/image";
 import SortActiveTopicIcon from "../../../assets/image/sort-active-ico.svg";
 import SortTopicIcon from "../../../assets/image/sort-ico.svg";
 import styles from "../../ComponentPages/SortingTopics/sort.module.scss";
-
-import Link from "next/link";
 import { setScoreViewTopic, setSortLatestTopic } from "src/store/slices/utilsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "src/store";
@@ -15,11 +13,10 @@ import { useEffect } from "react";
 
 
 const SortTopics =()=>{
-    const { sortLatestTopic,sortScoreViewTopic, loading } = useSelector(
+    const { sortLatestTopic,sortScoreViewTopic } = useSelector(
         (state: RootState) => ({
             sortLatestTopic: state?.utils?.sortLatestTopic,
             sortScoreViewTopic: state?.utils?.sortScoreViewTopic,
-          loading: state?.loading?.loading,
         })
       );
       const router = useRouter()
@@ -30,6 +27,7 @@ const SortTopics =()=>{
             dispatch(setScoreViewTopic(false));
             dispatch(setSortLatestTopic(false));
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
       },[])
     const dispatch = useDispatch()
       const onLatestTopic = () => {
@@ -44,9 +42,11 @@ const SortTopics =()=>{
         {
           key: '1',
           label: (
-                <span onClick={onLatestTopic}>
+            <a onClick={onLatestTopic}>
+                <div >
                     Latest
-                </span>            
+                </div>  
+                </a>          
           ),
         },
         {
@@ -55,9 +55,11 @@ const SortTopics =()=>{
         {
             key: '2',
             label: (
-                <span onClick={onScoreViewTopic}>
+              <a onClick={onScoreViewTopic}>
+                <div>
                     Score Value
-                </span>
+                </div>
+                </a>
             ),
           },
       ];

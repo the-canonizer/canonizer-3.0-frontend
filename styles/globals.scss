@@ -695,6 +695,15 @@ img {
   max-width: 320px;
   padding: 9px 15px;
 }
+.ant-collapse-content-box {
+  position: relative;
+}
+
+.topicDetailsCollapse .ant-collapse-content-box::after,
+.topicDetailsCollapse .ant-collapse-content-box::before{
+  display: none;
+}
+
 .ant-collapse-content-box::after {
   content: "";
   position: absolute;
@@ -758,4 +767,17 @@ img {
     max-height: 0 !important;
   }
 }
+
+.latestFilter_selected_filter_area__gfpfi span.ant-tag {
+  padding: 3px 10px;
+  color: #000;
+  display: inline-flex;
+  align-items: center;
+  border-color: #AEBBCB;
+}
+.flex-wrap 
+{
+  flex-wrap: wrap;
+}
+
 // print camp end

@@ -74,7 +74,6 @@ const SupportTreeCard = ({
   setIsDelegateSupportTreeCardModal,
   backGroundColorClass,
   getCheckStatusAPI,
-  GetActiveSupportTopic,
   GetActiveSupportTopicList,
 }: any) => {
   const {
@@ -82,11 +81,11 @@ const SupportTreeCard = ({
     is_checked,
     topicRecord,
     campRecord,
-    filterData,
     algorithms,
     algorithm,
     asofdate,
     isModalOpenSupportCamps,
+    selectedAlgorithm,
   } = useSelector((state: RootState) => ({
     currentGetCheckSupportExistsData:
       state.topicDetails.currentGetCheckSupportExistsData,
@@ -98,6 +97,7 @@ const SupportTreeCard = ({
     algorithm: state.filters?.filterObject?.algorithm,
     asofdate: state.filters?.filterObject?.asofdate,
     isModalOpenSupportCamps: state?.topic?.isModalOpenSupportCamps,
+    selectedAlgorithm: state?.filters?.filterObject?.algorithm,
   }));
   const { manageSupportStatusCheck } = useSelector((state: RootState) => ({
     manageSupportStatusCheck: state.topicDetails.manageSupportStatusCheck,
@@ -134,7 +134,6 @@ const SupportTreeCard = ({
       await getCheckStatusAPI();
     }
     if (isCallApiStatus == true) {
-      const topicNum = router?.query?.camp?.at(0)?.split("-")?.at(0);
       const reqBodyForService = {
         topic_num: +router?.query?.camp[0]?.split("-")[0],
         camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
@@ -157,11 +156,10 @@ const SupportTreeCard = ({
   useEffect(() => {
     const filteredAlgo = algorithms?.filter(
       (a: { algorithm_key: string }) =>
-        a.algorithm_key === (filterData?.algorithm || router?.query?.algo)
+        a.algorithm_key === (selectedAlgorithm || router?.query?.algo)
     );
-
     if (filteredAlgo?.length) setCurrentAlgo(filteredAlgo[0]?.algorithm_label);
-  }, [algorithms, router?.query?.algo, filterData?.algorithm]);
+  }, [algorithms, router?.query?.algo, selectedAlgorithm]);
 
   const dispatch = useDispatch();
   const arr = [];
@@ -470,7 +468,7 @@ const SupportTreeCard = ({
         className="topicDetailsCollapse"
       >
         <Panel
-          className={`header-bg-color-change ${backGroundColorClass}`}
+          className={`position-relative header-bg-color-change ${backGroundColorClass}`}
           header={
             <Fragment>
               <h3>
@@ -478,7 +476,11 @@ const SupportTreeCard = ({
                 {campRecord?.camp_name}&quot; Camp
               </h3>
               <h5 className={styles.algoLabel}>
-                ( Based on: &quot;{currentAlgo}&quot; )
+                ( Based on: &quot;
+                {router?.query?.algo
+                  ? currentAlgo
+                  : algorithms?.at(0)?.algorithm_label}
+                &quot; )
               </h5>
             </Fragment>
           }
@@ -489,7 +491,7 @@ const SupportTreeCard = ({
             </Popover>
           }
         >
-          <Paragraph>
+          <Paragraph className="position-relative">
             Total Support for This Camp (including sub-camps):
             <span className="number-style">
               {totalCampScoreForSupportTree?.toFixed(2)}

@@ -123,6 +123,7 @@ const UploadFileUI = ({
   const [editModal, setEditModal] = useState(false);
   const [editModalId, setEditModalId] = useState("");
   const [filteredList, setFilteredList] = useState([]);
+  const [deleteLoading, setDeleteLoading] = useState(false);
   const [preview, setPreview] = useState({
     previewVisible: false,
     previewPath: "",
@@ -1399,6 +1400,7 @@ const UploadFileUI = ({
                         className="contentValue"
                         dataSource={filteredArray()}
                         columns={columns}
+                        pagination={{hideOnSinglePage:true}}
                       />
                     </div>
                   ) : (
@@ -1581,12 +1583,14 @@ const UploadFileUI = ({
           >
             <Button
               data-testid="remove_files"
-              onClick={() => {
-                removeFiles(
+              onClick={async () => {
+                setDeleteLoading(true);
+                await removeFiles(
                   removeFileData.keyParam,
                   removeFileData.obj,
                   removeFileData.fileLists
                 );
+                setDeleteLoading(false);
                 //keyParam, obj, fileLists
               }}
               type="primary"
@@ -1594,6 +1598,7 @@ const UploadFileUI = ({
                 marginTop: 10,
                 marginRight: 10,
               }}
+              loading={deleteLoading}
               className="ant-btn ant-btn-orange"
             >
               Delete

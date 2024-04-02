@@ -9,7 +9,7 @@ import styles from "./fullScore.module.scss";
 import { RootState } from "src/store";
 import { setScoreCheckBox } from "src/store/slices/utilsSlice";
 
-const FullScoreCheckbox = ({ loadingIndicator = false }) => {
+const FullScoreCheckbox = ({ loadingIndicator = false }:any) => {
   const router = useRouter();
   const { is_checked, loading } = useSelector((state: RootState) => ({
     is_checked: state?.utils?.score_checkbox,

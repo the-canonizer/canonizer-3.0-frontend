@@ -48,6 +48,7 @@ const { Panel } = Collapse;
 const { Title } = Typography;
 
 import { ExclamationCircleFilled } from "@ant-design/icons";
+import { setChangeGoneLive } from "src/store/slices/campDetailSlice";
 function HistoryCollapse({
   collapseKeys,
   userNickNameData,
@@ -89,12 +90,13 @@ function HistoryCollapse({
       })
     );
   };
-  const { asofdate, asof, algorithm, namespace_id } = useSelector(
+  const { asofdate, asof, algorithm, namespace_id, changeGoneLive } = useSelector(
     (state: RootState) => ({
       asofdate: state.filters?.filterObject?.asofdate,
       asof: state?.filters?.filterObject?.asof,
       algorithm: state.filters?.filterObject?.algorithm,
       namespace_id: state.filters?.filterObject?.namespace_id,
+      changeGoneLive: state?.topicDetails?.changeGoneLive,
     })
   );
   const historyOf = router?.asPath.split("/")[1];
@@ -123,6 +125,7 @@ function HistoryCollapse({
     let res = await changeCommitStatement(reqBody);
     if (res?.status_code === 200) {
       setCommited(true);
+      dispatch(setChangeGoneLive(!changeGoneLive))
     }
     changeAgree();
     setLoadingChanges(false);
@@ -156,6 +159,7 @@ function HistoryCollapse({
     };
     let res = await agreeToChangeApi(reqBody);
     if (res?.status_code == 200) {
+      dispatch(setChangeGoneLive(!changeGoneLive))
       res?.data?.is_submitted
         ? message.success(res?.message)
         : message?.error(res?.message);

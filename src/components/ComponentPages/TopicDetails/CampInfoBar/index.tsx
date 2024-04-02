@@ -38,6 +38,7 @@ const TimelineInfoBar = ({
     viewThisVersion,
     filterObject,
     campScoreValue,
+    changeGoneLive,
   } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
     campRecord: state?.topicDetails?.currentCampRecord,
@@ -46,6 +47,7 @@ const TimelineInfoBar = ({
     viewThisVersion: state?.filters?.viewThisVersionCheck,
     filterObject: state?.filters?.filterObject,
     campScoreValue: state?.filters?.campWithScoreValue,
+    changeGoneLive: state?.topicDetails?.changeGoneLive,
   }));
 
   const [campSubscriptionID, setCampSubscriptionID] = useState(
@@ -205,7 +207,7 @@ const TimelineInfoBar = ({
       getBreadCrumbApiCall();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router?.asPath, filterObject, !!(getCookies() as any)?.loginToken]);
+  }, [router?.asPath || filterObject, !!(getCookies() as any)?.loginToken, changeGoneLive]);
 
   return (
     <>
