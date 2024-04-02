@@ -259,6 +259,17 @@ const SupportTreeCard = ({
     });
   };
 
+  const isCampLeader = () => {
+    let campLeaderId = campSupportingTree?.find(obj => obj["camp_leader"] === true)?.nick_name_id;
+    let campLeaderExist = false
+    campLeaderId && userNickNames.map((nk)=>{
+      if(nk.id === campLeaderId){
+        campLeaderExist == true
+      }
+    })
+    return campLeaderExist;
+  }
+
   const SignModal = () => {
     return (
       <Modal
@@ -548,11 +559,7 @@ const SupportTreeCard = ({
                 setSignModalOpen(true);
               }}
             >
-              {campSupportingTree &&
-              campSupportingTree?.at(0)?.camp_leader &&
-              userNickNames?.some(
-                (obj) => obj?.id === campSupportingTree.at(0)?.nick_name_id
-              ) ? (
+              {isCampLeader() ?(
                 <>
                   <CustomButton className="btn-green" disabled={true}>
                     {"Sign"}
