@@ -193,7 +193,6 @@ const TopicDetails = ({ serverSideCall }: any) => {
           getCurrentTopicRecordApi(reqBody),
           getCurrentCampRecordApi(reqBody),
           getCanonizedCampStatementApi(reqBody),
-          getHistoryApi(reqBodyForCampData, "1", "statement"),
           getTreesApi(reqBodyForService),
         ]);
       } else if (serverSideCall.current) {
@@ -343,7 +342,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isUserAuthenticated, router, algorithm]);
+  }, [isUserAuthenticated || router || algorithm]);
 
   useEffect(() => {
     setBackGroundColorClass(asof);

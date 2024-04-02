@@ -425,7 +425,7 @@ const SupportTreeCard = ({
         className="topicDetailsCollapse"
       >
         <Panel
-          className={`header-bg-color-change ${backGroundColorClass}`}
+          className={`position-relative header-bg-color-change ${backGroundColorClass}`}
           header={
             <Fragment>
               <h3>
@@ -436,7 +436,7 @@ const SupportTreeCard = ({
                 ( Based on: &quot;
                 {router?.query?.algo
                   ? currentAlgo
-                  : algorithms[0].algorithm_label}
+                  : algorithms?.at(0)?.algorithm_label}
                 &quot; )
               </h5>
             </Fragment>
@@ -448,7 +448,7 @@ const SupportTreeCard = ({
             </Popover>
           }
         >
-          <Paragraph>
+          <Paragraph className="position-relative">
             Total Support for This Camp (including sub-camps):
             <span className="number-style">
               {totalCampScoreForSupportTree?.toFixed(2)}
