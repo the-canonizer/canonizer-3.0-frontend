@@ -401,6 +401,10 @@ const TopicDetails = ({ serverSideCall }: any) => {
         asof: "bydate",
       })
     );
+    router.query.asofdate = `${
+      Date.parse(moment.unix(tree["1"]?.created_date).endOf("day")["_d"]) / 1000
+    }`;
+    router?.push(router, null, { shallow: true });
   };
 
   const onCreateCampDate = () => {

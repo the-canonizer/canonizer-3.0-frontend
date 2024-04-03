@@ -160,6 +160,7 @@ const TimelineInfoBar = ({
 
   useEffect(() => {
     setPayloadData(payload);
+
     async function getBreadCrumbApiCall() {
       setLoadingIndicator(true);
       let reqBody = {
@@ -171,8 +172,8 @@ const TimelineInfoBar = ({
             ? Date.now() / 1000
             : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
       };
-      let res = await getCampBreadCrumbApi(reqBody);
 
+      let res = await getCampBreadCrumbApi(reqBody);
       if (res?.status_code == 200 && router?.pathname == "/topic/[...camp]") {
         let breadTopicId = res?.data?.bread_crumb?.at(
           res?.data?.bread_crumb?.length - 1
@@ -206,6 +207,7 @@ const TimelineInfoBar = ({
     ) {
       getBreadCrumbApiCall();
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     router?.asPath || filterObject,
