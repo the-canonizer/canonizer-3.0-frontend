@@ -307,7 +307,7 @@ const SupportTreeCard = ({
                           : data[item].score?.toFixed(2)}
                         {/* {data[item].score?.toFixed(2)} */}
                       </span>
-                      {!userNickNameList.includes(data[item].nick_name_id) ? (
+                      {userNickNameList?.length>0 &&!userNickNameList.includes(data[item].nick_name_id) ? (
                         <>
                           {loggedInUserDelegate ||
                           (loggedInUserChild &&
@@ -378,6 +378,7 @@ const SupportTreeCard = ({
                 key={data[item].camp_id}
                 data={{ ...data[item], parentIsOneLevel, isDisabled }}
               >
+  
                 {renderTreeNodes(
                   data[item].delegates,
                   isDisabled,
