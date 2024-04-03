@@ -68,11 +68,11 @@
     }
   }
   .advanceuser {
-    font-size: 12px;
-    font-weight: normal;
-    line-height: 14px;
-    letter-spacing: 0px;
-    color: #ef5e5e;
+    // font-size: 12px;
+    // font-weight: normal;
+    // line-height: 14px;
+    // letter-spacing: 0px;
+    color: #ff4d4f;
     opacity: 1;
     margin-top: 35px;
     margin-bottom: 15px;
@@ -176,4 +176,16 @@
   line-height: 14px;
   margin-bottom: 20px;
   font-weight: normal;
+}
+
+.customErrorMessage{
+  color: #ff4d4f;
+  margin-top: -20px;
+  margin-bottom: 20px
+}
+
+.customErrorMessage{
+  color: #ff4d4f;
+  margin-top: -20px;
+  margin-bottom: 20px
 }

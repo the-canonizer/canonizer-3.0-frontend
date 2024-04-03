@@ -63,7 +63,7 @@ const CreateTopicFromUI = ({
                 }
                 name="nick_name"
                 {...nickNmRule}
-                extra={labels.cr_nick_name_sp}
+                // extra={labels.cr_nick_name_sp}
                 initialValue={nickNameList[0]?.id}
               >
                 <Select
@@ -82,6 +82,7 @@ const CreateTopicFromUI = ({
                   ))}
                 </Select>
               </Form.Item>
+              <div className={styles.customErrorMessage}>{labels.cr_nick_name_sp}</div>
               
               <Form.Item
                 label={
@@ -109,7 +110,7 @@ const CreateTopicFromUI = ({
                 />
               </Form.Item>
               {existedTopic?.status && topicName && isFormSubmitted && (
-                <div className={styles.topicExistsMessage}>
+                <div className={styles.customErrorMessage}>
                   <span>
                     The topic titled{" "}
                     <a
