@@ -262,11 +262,12 @@ const SupportTreeCard = ({
   const isCampLeader = () => {
     let campLeaderId = campSupportingTree?.find(obj => obj["camp_leader"] === true)?.nick_name_id;
     let campLeaderExist = false
-    campLeaderId && userNickNames.map((nk)=>{
-      if(nk.id === campLeaderId){
-        campLeaderExist == true
+    
+    if (isUserAuthenticated) {
+      if(campLeaderId && userNickNames){
+        campLeaderExist = !!(userNickNames.find(obj => obj.id === campLeaderId))
       }
-    })
+    }
     return campLeaderExist;
   }
 
@@ -556,14 +557,25 @@ const SupportTreeCard = ({
             </div>
             <div
               onClick={() => {
-                setSignModalOpen(true);
+                if(isUserAuthenticated){
+                  setSignModalOpen(true);
+                }else{
+                  dispatch(showLoginModal());
+                }
               }}
             >
               {isCampLeader() ?(
                 <>
-                  <CustomButton className="btn-green" disabled={true}>
+                <Popover
+                 content={isUserAuthenticated? "You can`t sign a petition twice" : "Log in to participate"}
+                >
+                <a className="printHIde">
+                  <Button className="btn-green" disabled={true} onClick={()=>dispatch(showLoginModal())}>
                     {"Sign"}
-                  </CustomButton>
+                  </Button>
+
+                   </a>
+                </Popover>
                 </>
               ) : (
                 <>
