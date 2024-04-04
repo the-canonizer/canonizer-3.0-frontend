@@ -85,7 +85,10 @@ const InfoBar = ({
     campExist: state?.topicDetails?.tree && state?.topicDetails?.tree[1],
     campStatement: state?.topicDetails?.campStatement,
   }));
-
+  const { manageSupportStatusCheck } = useSelector((state: RootState) => ({
+    manageSupportStatusCheck: state.topicDetails.manageSupportStatusCheck,
+  }));
+  
   const [campSubscriptionID, setCampSubscriptionID] = useState(
     campRecord?.subscriptionId
   );
@@ -538,7 +541,7 @@ const InfoBar = ({
                       <Dropdown
                         className={styles.campForumDropdown}
                         placement="bottomRight"
-                        overlay={campForumDropdownMenu}
+                        dropdownRender={() => !manageSupportStatusCheck?campForumDropdownMenu:""}
                         trigger={["click"]}
                       >
                         <a
