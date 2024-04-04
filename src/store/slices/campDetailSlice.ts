@@ -136,7 +136,7 @@ export const {
   setManageSupportStatusCheck,
   setManageSupportUrlLink,
   setRemovedReasons,
-  setChangeGoneLive
+  setChangeGoneLive,
 } = treeSlice.actions;
 
 export default treeSlice.reducer;

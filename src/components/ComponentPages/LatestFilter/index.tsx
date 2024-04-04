@@ -13,6 +13,7 @@ import {
 } from "src/store/slices/utilsSlice";
 import { useRouter } from "next/router";
 import styles from "./latestFilter.module.scss";
+import { getTreesApi } from "src/network/api/campDetailApi";
 
 const LatestFilter = () => {
   const router = useRouter();
@@ -29,6 +30,10 @@ const LatestFilter = () => {
     viewThisVersion,
     campScoreValue,
     selectedAsOf,
+    asof,
+    algorithm,
+    viewThisVersionCheck,
+    asofdate
   } = useSelector((state: RootState) => ({
     is_camp_archive_checked: state?.utils?.archived_checkbox,
     loading: state?.loading?.loading,
@@ -43,6 +48,10 @@ const LatestFilter = () => {
     viewThisVersion: state?.filters?.viewThisVersionCheck,
     campScoreValue: state?.filters?.campWithScoreValue,
     selectedAsOf: state?.filters?.filterObject?.asof,
+    asof: state?.filters?.filterObject?.asof,
+    algorithm: state.filters?.filterObject?.algorithm,
+    asofdate: state.filters?.filterObject?.asofdate,
+    viewThisVersionCheck: state?.filters?.viewThisVersionCheck,
   }));
   const lable = algorithms?.find((obj) => {
     return obj.algorithm_key == selectedAlgorithm;
@@ -160,7 +169,22 @@ const LatestFilter = () => {
       viewThisVersion
     );
   };
-  const clearAllFilter = () => {
+  const reqBodyForService = {
+    topic_num: router?.query?.camp[0]?.split("-")[0],
+    camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
+    asOf: asof,
+    asofdate:
+      asof == "default" || asof == "review"
+        ? Date.now() / 1000
+        : asofdate,
+    algorithm: "blind_popularity",
+    update_all: 1,
+    fetch_topic_history: viewThisVersionCheck ? 1 : null,
+  };
+  const revertScore = ()=>{
+     getTreesApi(reqBodyForService)
+  }
+  const clearAllFilter = async() => {
     dispatch(setArchivedCheckBox(false));
     dispatch(setScoreCheckBox(false));
     dispatch(
@@ -174,6 +198,7 @@ const LatestFilter = () => {
     if (router?.query?.algo && selectedAlgorithm) {
       algoRevert();
     }
+    revertScore()
   };
   let filteredDate = moment(filteredAsOfDate * 1000).format("YYYY-MM-DD");
   return (
@@ -215,6 +240,7 @@ const LatestFilter = () => {
               <CloseOutlined
                 onClick={() => {
                   algoRevert();
+                  revertScore()
                 }}
               />
             }

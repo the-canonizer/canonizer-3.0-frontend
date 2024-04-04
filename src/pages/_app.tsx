@@ -119,8 +119,8 @@ function WrappedApp({
   );
 }
 
-let timeout;
-const getTagData = async (req, ctx) => {
+let lastAppName: string = "";
+const getTagData = async (req) => {
   const defaultTags = {
     page_name: "Home",
     title: "Build consensus by canonizing what you believe is right",
@@ -132,18 +132,14 @@ const getTagData = async (req, ctx) => {
   let metaData = defaultTags;
   let metaResults;
 
-  if (timeout) timeout = clearTimeout(timeout);
-
-  if (!timeout) {
-    // if(req?.)
-    // timeout = await setTimeout(async () => {
+  if (
+    req?.page_name?.trim()?.toLowerCase() !== lastAppName?.trim()?.toLowerCase()
+  ) {
+    lastAppName = req?.page_name?.trim()?.toLowerCase();
     metaResults = await metaTagsApi(req);
     metaData = metaResults?.data;
     return metaData;
-    // }, 900);
   }
-
-  // console.log(req, 'metaResults-RES----', metaResults)
 
   return metaData;
 };
@@ -203,7 +199,7 @@ WrappedApp.getInitialProps = async (
     },
   };
 
-  const metaData = await getTagData(req, appContext);
+  const metaData = await getTagData(req);
 
   // console.log(aspath'metaData----', metaData, 'componentName----', componentName)
 
