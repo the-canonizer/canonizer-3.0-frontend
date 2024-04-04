@@ -567,7 +567,10 @@ const SupportTreeCard = ({
               {isCampLeader() ?(
                 <>
                 <Popover
-                 content={isUserAuthenticated? "You can`t sign a petition twice" : "Log in to participate"}
+                  overlayStyle={{
+                    width: "20%"
+                  }}
+                 content={isUserAuthenticated? "You can't sign the petition in this camp, because you are the current camp leader of this camp." : "Log in to participate"}
                 >
                 <a className="printHIde">
                   <Button className="btn-green" disabled={true} onClick={()=>dispatch(showLoginModal())}>
