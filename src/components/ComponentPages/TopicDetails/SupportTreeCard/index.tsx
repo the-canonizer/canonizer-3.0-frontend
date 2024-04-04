@@ -302,7 +302,7 @@ const SupportTreeCard = ({
                           "treeListItemNumber " + styles.treeListItemNumber
                         }
                       >
-                        {is_checked && isUserAuthenticated
+                        {campRecord.is_archive?0:is_checked && isUserAuthenticated
                           ? data[item].full_score?.toFixed(2)
                           : data[item].score?.toFixed(2)}
                         {/* {data[item].score?.toFixed(2)} */}
@@ -451,7 +451,7 @@ const SupportTreeCard = ({
           <Paragraph className="position-relative">
             Total Support for This Camp (including sub-camps):
             <span className="number-style">
-              {totalCampScoreForSupportTree?.toFixed(2)}
+              {campRecord.is_archive?0:totalCampScoreForSupportTree?.toFixed(2)}
             </span>
           </Paragraph>
 
