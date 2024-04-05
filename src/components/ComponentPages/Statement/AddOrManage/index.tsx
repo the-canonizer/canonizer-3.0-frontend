@@ -743,8 +743,6 @@ export default function AddOrManage({ add }: any) {
     if (manageFormOf == "topic") {
       fetchNameSpaceList();
     }
-    console.log("campLeaderData",campLeaderData)
-    console.log("res",campLeaderData.find((CL)=>CL.camp_leader===true))
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [originalData]);
@@ -987,7 +985,7 @@ export default function AddOrManage({ add }: any) {
                                 <Link
                                   href={`/user/supports/${currentCampLeader?.id}?canon=${filterObject.namespace_id}`}
                                 >
-                                  <a> {campLeaderData.find((CL)=>CL?.camp_leader===true)?.nick_name}</a>
+                                  <a> {campLeaderData && campLeaderData?.find((CL)=>CL?.camp_leader===true)?.nick_name}</a>
                                 </Link>
                                 <span className={styles.small}>
                                   is a current camp leader
