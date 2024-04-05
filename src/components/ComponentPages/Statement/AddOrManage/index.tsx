@@ -985,7 +985,9 @@ export default function AddOrManage({ add }: any) {
                                 <Link
                                   href={`/user/supports/${currentCampLeader?.id}?canon=${filterObject.namespace_id}`}
                                 >
+                                  <>(
                                   <a> {campLeaderData && campLeaderData?.find((CL)=>CL?.camp_leader===true)?.nick_name}</a>
+                                  </>
                                 </Link>
                                 <span className={styles.small}>
                                   is a current camp leader
