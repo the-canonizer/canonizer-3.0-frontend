@@ -94,7 +94,8 @@ const HeaderMenu = ({ loggedUser }: any) => {
       return <label>{text}</label>;
     }
     const escapedHighlight = highlight.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
-    const regex = new RegExp(`(${escapedHighlight})`, "gi");
+    const words = highlight.split(/\s+/).map(word => word.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&"));
+    const regex = new RegExp(`\\b(${words.join('|')})\\b`, "gi");
     const parts = text.split(regex);
     return (
       <>
@@ -271,7 +272,8 @@ const HeaderMenu = ({ loggedUser }: any) => {
                       /[-/\\^$*+?.()|[\]{}]/g,
                       "\\$&"
                     );
-                    const regex = new RegExp(`(${escapedHighlight})`, "gi");
+                    const words = highlight.split(/\s+/).map(word => word.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&"));
+                    const regex = new RegExp(`\\b(${words.join('|')})\\b`, "gi");
                     const parts = text.split(regex);
                     return (
                       <>
@@ -305,8 +307,8 @@ const HeaderMenu = ({ loggedUser }: any) => {
                           >
                             <h3 className="m-0">
                               {jsonData?.length > 1
-                                ? jsonData?.[0]?.[1]?.camp_name
-                                : jsonData?.[0]?.[1]?.topic_name}
+                                ? <HighlightedForCampStatement text={jsonData?.[0]?.[1]?.camp_name} highlight={searchValue}/>
+                                : <HighlightedForCampStatement text={jsonData?.[0]?.[1]?.topic_name} highlight={searchValue}/>}
                             </h3>
                           </a>
                           <div style={{ marginLeft: "auto" }}>

@@ -452,7 +452,7 @@ const SupportTreeCard = ({
           <Paragraph className="position-relative">
             Total Support for This Camp (including sub-camps):
             <span className="number-style">
-              {campRecord.is_archive?0:totalCampScoreForSupportTree?.toFixed(2)}
+              {campRecord?.is_archive?0:totalCampScoreForSupportTree?.toFixed(2)}
             </span>
           </Paragraph>
 
