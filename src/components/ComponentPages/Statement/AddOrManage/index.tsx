@@ -979,18 +979,16 @@ export default function AddOrManage({ add }: any) {
                             className={styles.formItem}
                             label={
                               <>
-                                <span style={{ marginRight: "4px" }}>
-                                  Camp Leader
+                                <span style={{ marginRight: "1px" }}>
+                                  Camp Leader (
                                 </span>
                                 <Link
                                   href={`/user/supports/${currentCampLeader?.id}?canon=${filterObject.namespace_id}`}
                                 >
-                                  <>(
-                                  <a> {campLeaderData && campLeaderData?.find((CL)=>CL?.camp_leader===true)?.nick_name}</a>
-                                  </>
+                                  <a>{campLeaderData && campLeaderData?.find((CL)=>CL?.camp_leader===true)?.nick_name}</a>
                                 </Link>
                                 <span className={styles.small}>
-                                  is a current camp leader
+                                  is a currently a camp leader
                                 </span>{" "}
                                 )
                               </>
