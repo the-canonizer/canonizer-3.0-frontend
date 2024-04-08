@@ -979,15 +979,7 @@ export default function AddOrManage({ add }: any) {
                             className={styles.formItem}
                             label={
                               <>
-                                {(campLeaderData.length == 0) ?
-                                  <>
-                                    <span style={{ marginRight: "1px" }}>
-                                      Camp Leader
-                                    </span>
-                                    <span className={styles.small}>
-                                      (No one is currently camp leader)
-                                    </span>{" "}
-                                  </> :
+                                {(campLeaderData && campLeaderData?.find((CL) => CL?.camp_leader === true)) ?
                                   <>
                                     <span style={{ marginRight: "1px" }}>
                                       Camp Leader
@@ -1004,6 +996,14 @@ export default function AddOrManage({ add }: any) {
                                       is a currently a camp leader
                                     </span>{" "}
                                     )
+                                  </> :
+                                  <>
+                                    <span style={{ marginRight: "1px" }}>
+                                      Camp Leader
+                                    </span>
+                                    <span className={styles.small}>
+                                      (No one is currently camp leader)
+                                    </span>{" "}
                                   </>}
                               </>
                             }
