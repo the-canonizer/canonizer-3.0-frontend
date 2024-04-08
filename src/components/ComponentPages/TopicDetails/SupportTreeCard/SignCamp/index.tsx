@@ -118,7 +118,7 @@ const SignCamp = ({ setSignModalOpen, setLoadingIndicatorSupport }: any) => {
               id="getSupportStatusDataWarning"
             >
               <strong>
-                {signCampData?.warning_type[0]?.toUpperCase() +
+                {signCampData?.warning_type && signCampData?.warning_type[0]?.toUpperCase() +
                   signCampData?.warning_type.substr(1)}
                 !
               </strong>
