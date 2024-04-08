@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import useState from "react-usestateref";
-import App, { AppContext, AppInitialProps, AppProps } from 'next/app'
+import App, { AppContext, AppInitialProps, AppProps } from "next/app";
 import { Provider } from "react-redux";
 import { CookiesProvider } from "react-cookie";
 import { useRouter } from "next/router";
@@ -22,10 +22,16 @@ import { metaTagsApi } from "src/network/api/metaTagsAPI";
 import { checkTopicCampExistAPICall } from "src/network/api/campDetailApi";
 import { getCookies } from "src/utils/generalUtility";
 import { createToken } from "src/network/api/userApi";
+import CustomSkelton from "@/components/common/customSkelton";
 
-type AppOwnProps = { meta: any, canonical_url: string, returnURL: string }
+type AppOwnProps = { meta: any; canonical_url: string; returnURL: string };
 
-function WrappedApp({ Component, pageProps, meta, canonical_url }: AppProps & AppOwnProps) {
+function WrappedApp({
+  Component,
+  pageProps,
+  meta,
+  canonical_url,
+}: AppProps & AppOwnProps) {
   const router = useRouter(),
     // eslint-disable-next-line
     [_, setIsAuthenticated, isAuthenticatedRef] = useState(
@@ -56,22 +62,24 @@ function WrappedApp({ Component, pageProps, meta, canonical_url }: AppProps & Ap
   ]);
   /* eslint-enable */
 
-  return <CookiesProvider>
-    <Provider store={store}>
-      <ErrorBoundary>
-        <HeadContentAndPermissionComponent
-          componentName={Component.displayName || Component.name}
-          metaContent={meta}
-          canonical={canonical_url}
-          {...pageProps}
-        />
-        {
-          isAuthenticatedRef?.current && !!(getCookies() as any)?.loginToken ?
-            <Component {...pageProps} /> : <p>Loading...</p>
-        }
-      </ErrorBoundary>
-    </Provider>
-  </CookiesProvider>
+  return (
+    <CookiesProvider>
+      <Provider store={store}>
+        <ErrorBoundary>
+          <HeadContentAndPermissionComponent
+            componentName={Component.displayName || Component.name}
+            metaContent={meta}
+            canonical={canonical_url}
+            {...pageProps}
+          />
+          {isAuthenticatedRef?.current &&
+          !!(getCookies() as any)?.loginToken ? (
+            <Component {...pageProps} />
+          ) : null}
+        </ErrorBoundary>
+      </Provider>
+    </CookiesProvider>
+  );
 }
 
 let timeout;
@@ -94,16 +102,18 @@ const getTagData = async (req, ctx) => {
     // timeout = await setTimeout(async () => {
     metaResults = await metaTagsApi(req);
     metaData = metaResults?.data;
-    return metaData
+    return metaData;
     // }, 900);
   }
 
   // console.log(req, 'metaResults-RES----', metaResults)
 
-  return metaData
-}
+  return metaData;
+};
 
-WrappedApp.getInitialProps = async (appContext: AppContext): Promise<AppOwnProps & AppInitialProps> => {
+WrappedApp.getInitialProps = async (
+  appContext: AppContext
+): Promise<AppOwnProps & AppInitialProps> => {
   // calls page's `getInitialProps` and fills `appProps.pageProps`
   const appProps = await App.getInitialProps(appContext);
 
@@ -145,8 +155,8 @@ WrappedApp.getInitialProps = async (appContext: AppContext): Promise<AppOwnProps
       camp_num: appContext.router?.asPath.includes("forum")
         ? path?.camp?.toLocaleString().split("-")[0]
         : path?.camp?.length > 1
-          ? path?.camp[1].split("-")[0]
-          : "1",
+        ? path?.camp[1].split("-")[0]
+        : "1",
       forum_num:
         appContext.router?.query?.camp?.length > 2
           ? Object.keys(appContext.router?.query)?.length > 2
@@ -253,13 +263,13 @@ WrappedApp.getInitialProps = async (appContext: AppContext): Promise<AppOwnProps
       if (nickname) {
         returnData = await redirect(
           "/user/supports/" +
-          nickname +
-          "?topicnum=" +
-          topic_num +
-          "&campnum=" +
-          camp_num +
-          "&canon=" +
-          canon,
+            nickname +
+            "?topicnum=" +
+            topic_num +
+            "&campnum=" +
+            camp_num +
+            "&canon=" +
+            canon,
           +topic_num,
           +camp_num,
           "nickname",
