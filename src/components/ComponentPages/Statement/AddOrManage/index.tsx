@@ -979,18 +979,32 @@ export default function AddOrManage({ add }: any) {
                             className={styles.formItem}
                             label={
                               <>
-                                <span style={{ marginRight: "1px" }}>
-                                  Camp Leader (
-                                </span>
-                                <Link
-                                  href={`/user/supports/${currentCampLeader?.id}?canon=${filterObject.namespace_id}`}
-                                >
-                                  <a>{campLeaderData && campLeaderData?.find((CL)=>CL?.camp_leader===true)?.nick_name}</a>
-                                </Link>
-                                <span className={styles.small}>
-                                  is a currently a camp leader
-                                </span>{" "}
-                                )
+                                {(campLeaderData.length == 0) ?
+                                  <>
+                                    <span style={{ marginRight: "1px" }}>
+                                      Camp Leader
+                                    </span>
+                                    <span className={styles.small}>
+                                      (No one is currently camp leader)
+                                    </span>{" "}
+                                  </> :
+                                  <>
+                                    <span style={{ marginRight: "1px" }}>
+                                      Camp Leader
+                                    </span>
+                                    <span className={styles.small}>
+                                      (
+                                    </span>
+                                    <Link
+                                      href={`/user/supports/${currentCampLeader?.id}?canon=${filterObject.namespace_id}`}
+                                    >
+                                      <a>{campLeaderData && campLeaderData?.find((CL) => CL?.camp_leader === true)?.nick_name}</a>
+                                    </Link>
+                                    <span className={styles.small}>
+                                      is a currently a camp leader
+                                    </span>{" "}
+                                    )
+                                  </>}
                               </>
                             }
                             name="camp_leader_nick_id"
