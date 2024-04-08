@@ -117,7 +117,11 @@ const HeaderMenu = ({ loggedUser }: any) => {
       </>
     );
   };
-
+  function replaceSpecialCharactersInLink(link) {
+    // Replace each special character with a series of hyphens
+    // return link.replace(/[-\\^$*+?.()|%#|[\]{}]/g, "-");
+    return link.replace(/[-\\^$*+?.()|%#|[\]{}@]/g, "-");
+}
   const searchValueLength = 30;
  const advanceSearchValueLength = 100
   const options = [
@@ -139,7 +143,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
                   return (
                     <>
                       <li style={{ cursor: "default" }}>
-                        <Link href={`/${x.link}`}>
+                        <Link href={`/${replaceSpecialCharactersInLink(x.link)}`}>
                           <a>
                             <Highlighted
                               text={x.type_value}
@@ -491,7 +495,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
       setPreventInitialRender(true);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pageNumber, router.pathname]);
+  }, [pageNumber, router?.pathname]);
   const getGlobalSearchCanonizerNav = async (queryString) => {
     let queryParamObj: any = {
       term: queryString,
