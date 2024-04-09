@@ -96,7 +96,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
     tree,
     campExist,
     viewThisVersionCheck,
-    selectedAlgorithm
+    selectedAlgorithm,
   } = useSelector((state: RootState) => ({
     algorithms: state.homePage?.algorithms,
     asofdate: state.filters?.filterObject?.asofdate,
@@ -328,7 +328,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isUserAuthenticated, router, algorithm]);
+  }, [isUserAuthenticated || router || algorithm]);
 
   useEffect(() => {
     setBackGroundColorClass(asof);
@@ -387,6 +387,10 @@ const TopicDetails = ({ serverSideCall }: any) => {
         asof: "bydate",
       })
     );
+    router.query.asofdate = `${
+      Date.parse(moment.unix(tree["1"]?.created_date).endOf("day")["_d"]) / 1000
+    }`;
+    router?.push(router, null, { shallow: true });
   };
 
   const onCreateCampDate = () => {
@@ -404,9 +408,9 @@ const TopicDetails = ({ serverSideCall }: any) => {
   useEffect(() => {
     setIsClient(true);
   }, []);
-  const lable = algorithms?.find((obj)=>{
-    return obj.algorithm_key == selectedAlgorithm
-  })
+  const lable = algorithms?.find((obj) => {
+    return obj.algorithm_key == selectedAlgorithm;
+  });
 
   return (
     <Fragment>
@@ -511,7 +515,19 @@ const TopicDetails = ({ serverSideCall }: any) => {
                 ? campExist?.camp_exist
                 : true && (
                     <Fragment>
-                      {(router.query.algo&&selectedAlgorithm && lable?.algorithm_label !==undefined)||is_camp_archive_checked||is_checked||selectedAsOf== "bydate"||(includeReview || router?.query?.asof === "review")||filteredScore != 0?<LatestFilter/>:""}
+                      {(router.query.algo &&
+                        selectedAlgorithm &&
+                        lable?.algorithm_label !== undefined) ||
+                      is_camp_archive_checked ||
+                      is_checked ||
+                      selectedAsOf == "bydate" ||
+                      includeReview ||
+                      router?.query?.asof === "review" ||
+                      filteredScore != 0 ? (
+                        <LatestFilter />
+                      ) : (
+                        ""
+                      )}
                       <CampStatementCard
                         loadingIndicator={loadingIndicator}
                         backGroundColorClass={backGroundColorClass}
@@ -555,7 +571,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
                         loadingIndicator={loadingIndicator}
                         backGroundColorClass={backGroundColorClass}
                       />
-                      
+
                       <CurrentCampCard
                         loadingIndicator={loadingIndicator}
                         backGroundColorClass={backGroundColorClass}

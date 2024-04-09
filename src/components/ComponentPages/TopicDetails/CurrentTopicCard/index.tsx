@@ -20,9 +20,11 @@ const { Panel } = Collapse;
 
 const CurrentTopicCard = ({ loadingIndicator, backGroundColorClass }: any) => {
   const router = useRouter();
-  const { topicRecord } = useSelector((state: RootState) => ({
+  const { topicRecord, campRecord } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
+    campRecord: state?.topicDetails?.currentCampRecord,
   }));
+
   const covertToTime = (unixTime) => {
     return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
   };
@@ -50,7 +52,8 @@ const CurrentTopicCard = ({ loadingIndicator, backGroundColorClass }: any) => {
             </h3>
 
             <div className="cmp-change-icon">
-              {topicRecord?.in_review_changes > 0 ? (
+              {topicRecord?.in_review_changes > 0 &&
+              campRecord?.is_archive == 0 ? (
                 // <img className="change-icon" src="/images/change-icon.svg" />
                 <div
                   onClick={(e) => {

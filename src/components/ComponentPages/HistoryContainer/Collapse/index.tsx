@@ -91,8 +91,7 @@ function HistoryCollapse({
       algorithm: state.filters?.filterObject?.algorithm,
       namespace_id: state.filters?.filterObject?.namespace_id,
       changeGoneLive: state?.topicDetails?.changeGoneLive,
-    })
-  );
+    }));
   const historyOf = router?.asPath.split("/")[1];
   // const covertToTime = (unixTime) => {
   //   return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
@@ -110,7 +109,7 @@ function HistoryCollapse({
     let res = await changeCommitStatement(reqBody);
     if (res?.status_code === 200) {
       setCommited(true);
-      dispatch(setChangeGoneLive(!changeGoneLive))
+      dispatch(setChangeGoneLive(!changeGoneLive));
     }
     changeAgree();
     setLoadingChanges(false);
@@ -144,7 +143,7 @@ function HistoryCollapse({
     };
     let res = await agreeToChangeApi(reqBody);
     if (res?.status_code == 200) {
-      dispatch(setChangeGoneLive(!changeGoneLive))
+      dispatch(setChangeGoneLive(!changeGoneLive));
       res?.data?.is_submitted
         ? message.success(res?.message)
         : message?.error(res?.message);

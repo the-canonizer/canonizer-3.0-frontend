@@ -37,15 +37,15 @@ export default function SearchSideBar() {
               passHref
             >
               <a>
-              <Button
-                size="large"
-                className={
-                  router?.asPath.includes("/search?") ? "active" : "btn"
-                }
-                disabled={router.pathname == "/search" ? true : false}
-              >
-                All
-              </Button>
+                <Button
+                  size="large"
+                  className={
+                    router?.asPath.includes("/search?") ? "active" : "btn"
+                  }
+                  disabled={router?.pathname == "/search" ? true : false}
+                >
+                  All
+                </Button>
               </a>
             </Link>
             <Link
@@ -56,16 +56,16 @@ export default function SearchSideBar() {
               passHref
             >
               <a>
-              <Button
-                size="large"
-                className={
-                  router?.asPath.includes("/search/topic?") ? "active" : "btn"
-                }
-                disabled={router.pathname == "/search/topic" ? true : false}
-              >
-                <i className="icon-topic"></i>
-                <a>Topic</a>
-              </Button>
+                <Button
+                  size="large"
+                  className={
+                    router?.asPath.includes("/search/topic?") ? "active" : "btn"
+                  }
+                  disabled={router?.pathname == "/search/topic" ? true : false}
+                >
+                  <i className="icon-topic"></i>
+                  <a>Topic</a>
+                </Button>
               </a>
             </Link>
             <Link
@@ -76,16 +76,16 @@ export default function SearchSideBar() {
               passHref
             >
               <a>
-              <Button
-                size="large"
-                className={
-                  router?.asPath.includes("/search/camp?") ? "active" : "btn"
-                }
-                disabled={router.pathname == "/search/camp" ? true : false}
-              >
-                <i className="icon-camp"></i>
-                <a>Camp</a>
-              </Button>
+                <Button
+                  size="large"
+                  className={
+                    router?.asPath.includes("/search/camp?") ? "active" : "btn"
+                  }
+                  disabled={router?.pathname == "/search/camp" ? true : false}
+                >
+                  <i className="icon-camp"></i>
+                  <a>Camp</a>
+                </Button>
               </a>
             </Link>
             <Link
@@ -96,20 +96,20 @@ export default function SearchSideBar() {
               passHref
             >
               <a>
-              <Button
-                size="large"
-                className={
-                  router?.asPath.includes("/search/camp_statement?")
-                    ? "active"
-                    : "btn"
-                }
-                disabled={
-                  router.pathname == "/search/camp_statement" ? true : false
-                }
-              >
-                <i className="icon-camp"></i>
-                <a>Camp Statement</a>
-              </Button>
+                <Button
+                  size="large"
+                  className={
+                    router?.asPath.includes("/search/camp_statement?")
+                      ? "active"
+                      : "btn"
+                  }
+                  disabled={
+                    router?.pathname == "/search/camp_statement" ? true : false
+                  }
+                >
+                  <i className="icon-camp"></i>
+                  <a>Camp Statement</a>
+                </Button>
               </a>
             </Link>
             <Link
@@ -120,25 +120,27 @@ export default function SearchSideBar() {
               passHref
             >
               <a>
-              <Button
-                size="large"
-                className={
-                  router?.asPath.includes("/search/nickname?")
-                    ? "active"
-                    : "btn"
-                }
-                disabled={router.pathname == "/search/nickname" ? true : false}
-              >
-                <Image
-                  className={styles.nickname_icon}
-                  id="nick_name"
-                  alt="face Image"
-                  src={filter}
-                  width={15}
-                  height={15}
-                />
-                <a>Nickname</a>
-              </Button>
+                <Button
+                  size="large"
+                  className={
+                    router?.asPath.includes("/search/nickname?")
+                      ? "active"
+                      : "btn"
+                  }
+                  disabled={
+                    router?.pathname == "/search/nickname" ? true : false
+                  }
+                >
+                  <Image
+                    className={styles.nickname_icon}
+                    id="nick_name"
+                    alt="face Image"
+                    src={filter}
+                    width={15}
+                    height={15}
+                  />
+                  <a>Nickname</a>
+                </Button>
               </a>
             </Link>
           </div>

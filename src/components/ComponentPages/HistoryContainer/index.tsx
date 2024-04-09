@@ -83,7 +83,12 @@ function HistoryContainer() {
       getTreeApiCall();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isUserAuthenticated,asofdate, algorithm, +router?.query?.camp?.at(1)?.split("-")[0]]);
+  }, [
+    isUserAuthenticated,
+    asofdate,
+    algorithm,
+    +router?.query?.camp?.at(1)?.split("-")[0],
+  ]);
 
   useEffect(() => {
     setCampHistory(history);

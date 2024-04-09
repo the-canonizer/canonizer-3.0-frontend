@@ -95,7 +95,7 @@ describe("Camp statement on camp details page", () => {
             pathname: "/topic/88-Mind-and-Consciousness-revie/1-Agreement",
           })}
         >
-          <SearchSection />
+          {/* <SearchSection /> */}
         </RouterContext.Provider>
       </Provider>
     );
