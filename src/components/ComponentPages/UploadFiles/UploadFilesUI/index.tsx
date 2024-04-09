@@ -1400,7 +1400,7 @@ const UploadFileUI = ({
                         className="contentValue"
                         dataSource={filteredArray()}
                         columns={columns}
-                        pagination={{hideOnSinglePage:true}}
+                        pagination={{ hideOnSinglePage: true }}
                       />
                     </div>
                   ) : (

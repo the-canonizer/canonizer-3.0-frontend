@@ -19,8 +19,9 @@ export default function HomeSideBar({
   backGroundColorClass,
   isForumPage = false,
 }: any) {
-  const { drawerShow } = useSelector((state: RootState) => ({
+  const { drawerShow, isModalOpenSupportCamps } = useSelector((state: RootState) => ({
     drawerShow: state?.filters?.showDrawer,
+    isModalOpenSupportCamps: state?.topic?.isModalOpenSupportCamps,
   }));
 
   const [drawerIsVisible, setDrawerIsVisible] = useState(drawerShow);
@@ -64,6 +65,7 @@ export default function HomeSideBar({
             type="primary"
             onClick={showDrawer}
             className={`btnFilter drawerBtn ${isDrawerOpen}`}
+            style={{zIndex: isModalOpenSupportCamps? 1: null}}
           >
             Consensus Tree{" "}
             <p className="arrow">

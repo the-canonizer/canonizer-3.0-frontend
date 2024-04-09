@@ -26,6 +26,7 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
       campRecord: state?.topicDetails?.currentCampRecord,
     })
   );
+
   return loadingIndicator || !campStatement ? (
     <CustomSkelton
       skeltonFor="card"
@@ -52,7 +53,8 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
               className="cmp-change-icon"
               style={{ display: "inline-block" }}
             >
-              {campStatement[0]?.in_review_changes > 0 ? (
+              {campStatement[0]?.in_review_changes > 0 &&
+              campRecord?.is_archive == 0 ? (
                 <div
                   onClick={(e) => {
                     e.stopPropagation();
