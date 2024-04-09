@@ -20,6 +20,15 @@ import {
 import CustomSkelton from "../../customSkelton";
 import { setSearchLoadingAction } from "src/store/slices/loading";
 
+interface HighlightedForCampStatementProps {
+  text?: string;
+  highlight: string;
+}
+interface HighlightedProps {
+  text?: string;
+  highlight: string;
+}
+
 const HeaderMenu = ({ loggedUser }: any) => {
   const [inputSearch, setInputSearch] = useState("");
   const [searchTopics, setSearchTopics] = useState([]);
@@ -77,24 +86,44 @@ const HeaderMenu = ({ loggedUser }: any) => {
   const showEmpty = (msg) => {
     return <Empty description={msg} />;
   };
-  const Highlighted = ({text = '', highlight = ''}) => {
+  const Highlighted: React.FC<HighlightedProps> = ({
+    text = "",
+    highlight = "",
+  }) => {
     if (!highlight.trim()) {
-      return <label>{text}</label>
+      return <label>{text}</label>;
     }
-    const escapedHighlight = highlight.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-    const regex = new RegExp(`(${escapedHighlight})`, 'gi');
-    const parts =text.split(regex)
+    const escapedHighlight = highlight.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
+    const words = highlight.split(/\s+/).map(word => word.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&"));
+    const regex = new RegExp(`\\b(${words.join('|')})\\b`, "gi");
+    const parts = text.split(regex);
     return (
       <>
-         {parts.map((part, i) => (
-             regex.test(part) ? <mark className={styles.highlighter} key={i}>{part}</mark> : <label style={{cursor:"pointer", fontWeight:"bold"}} className={styles.highlighter}  key={i}>{part}</label>
-         ))}
-     </>
-    )
- }
-
+        {parts.map((part, i) =>
+          regex.test(part) ? (
+            <mark className={styles.highlighter} key={i}>
+              {part}
+            </mark>
+          ) : (
+            <label
+              style={{ cursor: "pointer", fontWeight: "bold" }}
+              className={styles.highlighter}
+              key={i}
+            >
+              {part}
+            </label>
+          )
+        )}
+      </>
+    );
+  };
+  function replaceSpecialCharactersInLink(link) {
+    // Replace each special character with a series of hyphens
+    // return link.replace(/[-\\^$*+?.()|%#|[\]{}]/g, "-");
+    return link.replace(/[-\\^$*+?.()|%#|[\]{}@]/g, "-");
+}
   const searchValueLength = 30;
-
+ const advanceSearchValueLength = 100
   const options = [
     {
       label: renderTitle(
@@ -110,19 +139,16 @@ const HeaderMenu = ({ loggedUser }: any) => {
           <div className={styles.search_lists}>
             <ul>
               {searchTopics?.slice(0, 5)?.map((x) => {
-                const index = x.type_value?.toLowerCase().indexOf(
-                  searchValue
-                    ?.toLowerCase()
-                    // .replace(/^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/g, " ")
-                );
                 {
-                  const length = searchValue.length;
                   return (
                     <>
                       <li style={{ cursor: "default" }}>
-                        <Link href={`/${x.link}`}>
+                        <Link href={`/${replaceSpecialCharactersInLink(x.link)}`}>
                           <a>
-                              <Highlighted text={x.type_value} highlight={searchValue}/>
+                            <Highlighted
+                              text={x.type_value}
+                              highlight={searchValue}
+                            />
                           </a>
                         </Link>
                       </li>
@@ -165,12 +191,6 @@ const HeaderMenu = ({ loggedUser }: any) => {
                   },
                   []
                 );
-                const index = x.type_value?.toLowerCase().indexOf(
-                  searchValue
-                    ?.toLowerCase()
-                    // .replace(/^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/g, " ")
-                    .trim()
-                );
                 {
                   return (
                     <>
@@ -178,7 +198,10 @@ const HeaderMenu = ({ loggedUser }: any) => {
                         <Link href={`/${jsonData[0][1]?.camp_link}`}>
                           <a className={styles.camp_heading_color}>
                             {" "}
-                              <Highlighted text={x.type_value} highlight={searchValue}/>
+                            <Highlighted
+                              text={x.type_value}
+                              highlight={searchValue}
+                            />
                           </a>
                         </Link>
 
@@ -242,28 +265,42 @@ const HeaderMenu = ({ loggedUser }: any) => {
                   },
                   []
                 );
-                const index = x.type_value?.toLowerCase().indexOf(
-                  searchValue
-                    ?.toLowerCase()
-                    // .replace(/^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/g, " ")
-                    .trim()
-                );
                 {
-                  const HighlightedForCampStatement = ({text = '', highlight = ''}) => {
+                  const HighlightedForCampStatement: React.FC<
+                    HighlightedForCampStatementProps
+                  > = ({ text = "", highlight = "" }) => {
                     if (!highlight.trim()) {
-                      return <span>{text}</span>
+                      return <span>{text}</span>;
                     }
-                    const escapedHighlight = highlight.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-                    const regex = new RegExp(`(${escapedHighlight})`, 'gi');
-                    const parts =text.split(regex)
+                    const escapedHighlight = highlight.replace(
+                      /[-/\\^$*+?.()|[\]{}]/g,
+                      "\\$&"
+                    );
+                    const words = highlight.split(/\s+/).map(word => word.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&"));
+                    const regex = new RegExp(`\\b(${words.join('|')})\\b`, "gi");
+                    const parts = text.split(regex);
                     return (
                       <>
-                         {parts.filter(part => part).map((part, i) => (
-                             regex.test(part) ? <mark  className={styles.highlighterforCampStatement} key={i} dangerouslySetInnerHTML={{__html:part}}></mark> : <label className={styles.highlighterforCampStatement} key={i} dangerouslySetInnerHTML={{__html:part}}></label>
-                         ))}
-                     </>
-                    )
-                 }
+                        {parts
+                          .filter((part) => part)
+                          .map((part, i) =>
+                            regex.test(part) ? (
+                              <mark
+                                className={styles.highlighterforCampStatement}
+                                key={i}
+                                dangerouslySetInnerHTML={{ __html: part }}
+                              ></mark>
+                            ) : (
+                              <label
+                                className={styles.highlighterforCampStatement}
+                                key={i}
+                                dangerouslySetInnerHTML={{ __html: part }}
+                              ></label>
+                            )
+                          )}
+                      </>
+                    );
+                  };
                   return (
                     <>
                       <li style={{ cursor: "default" }}>
@@ -274,8 +311,8 @@ const HeaderMenu = ({ loggedUser }: any) => {
                           >
                             <h3 className="m-0">
                               {jsonData?.length > 1
-                                ? jsonData?.[0]?.[1]?.camp_name
-                                : jsonData?.[0]?.[1]?.topic_name}
+                                ? <HighlightedForCampStatement text={jsonData?.[0]?.[1]?.camp_name} highlight={searchValue}/>
+                                : <HighlightedForCampStatement text={jsonData?.[0]?.[1]?.topic_name} highlight={searchValue}/>}
                             </h3>
                           </a>
                           <div style={{ marginLeft: "auto" }}>
@@ -285,7 +322,10 @@ const HeaderMenu = ({ loggedUser }: any) => {
                         </div>
                         <div className="d-flex flex-wrap w-100 mb-1">
                           <div>
-                                <HighlightedForCampStatement text={x.type_value} highlight={searchValue}/>
+                            <HighlightedForCampStatement
+                              text={x.type_value}
+                              highlight={searchValue}
+                            />
                           </div>
                         </div>
                         {/* {" "} */}
@@ -332,12 +372,6 @@ const HeaderMenu = ({ loggedUser }: any) => {
           <div className={styles.search_lists}>
             <ul>
               {searchNickname?.slice(0, 5)?.map((x) => {
-                const index = x.type_value?.toLowerCase().indexOf(
-                  searchValue
-                    ?.toLowerCase()
-                    // .replace(/^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/g, " ")
-                    .trim()
-                );
                 {
                   return (
                     <>
@@ -345,13 +379,16 @@ const HeaderMenu = ({ loggedUser }: any) => {
                         <div className="d-flex flex-wrap">
                           <Link href={`${x.link}`}>
                             <a>
-                                <Highlighted text={x.type_value} highlight={searchValue}/>
+                              <Highlighted
+                                text={x.type_value}
+                                highlight={searchValue}
+                              />
                             </a>
                           </Link>
                           <span className="ml_auto suppport_camps">
                             Supported camps:{" "}
                             <strong className={styles.yellow_color}>
-                              {x.support_count == ""? 0 :x.support_count}
+                              {x.support_count == "" ? 0 : x.support_count}
                             </strong>{" "}
                           </span>
                         </div>
@@ -445,16 +482,21 @@ const HeaderMenu = ({ loggedUser }: any) => {
   }, [loggedUser]);
   const [preventInitialRender, setPreventInitialRender] = useState(true);
   useEffect(() => {
-    if(preventInitialRender && pageNumber !== 1) setPreventInitialRender(false);
-    else if ((inputSearch || searchValue) && router.pathname.includes("/search")) {
-      getGlobalSearchCanonizerNav(searchValue, false);
+    if (preventInitialRender && pageNumber !== 1)
+      setPreventInitialRender(false);
+    else if (
+      (inputSearch || searchValue) &&
+      router.pathname.includes("/search")
+    ) {
+      getGlobalSearchCanonizerNav(searchValue);
     }
     setPreventInitialRender(false);
-    return ()=> {
+    return () => {
       setPreventInitialRender(true);
-    }
-  }, [pageNumber, router.pathname]);
-  const getGlobalSearchCanonizerNav = async (queryString, onPresEnter) => {
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pageNumber, router?.pathname]);
+  const getGlobalSearchCanonizerNav = async (queryString) => {
     let queryParamObj: any = {
       term: queryString,
       size: 20,
@@ -527,7 +569,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
     getGlobalSearchCanonizer(searchValue, true);
   };
 
-  const handlePress = (e) => {
+  const handlePress = () => {
     setInputSearch("");
     setSearchVal("");
     router.push({
@@ -535,7 +577,11 @@ const HeaderMenu = ({ loggedUser }: any) => {
       query: { q: searchValue },
     });
   };
-  const debounceFn = useMemo(() => debounce(getGlobalSearchCanonizer, 500), []);
+  const debounceFn = useMemo(
+    () => debounce(getGlobalSearchCanonizer, 500),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
   return (
     <Fragment>
       <nav className={styles.nav}>
@@ -573,7 +619,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
         </ul>
       </nav>
 
-      {!process.env.NEXT_PUBLIC_NEW_SEARCH_BAR?<div className="search_header">
+      {process.env.NEXT_PUBLIC_NEW_SEARCH_BAR?<div className="search_header">
         <AutoComplete
           popupClassName="certain-category-search-dropdown"
           dropdownMatchSelectWidth={false}
@@ -590,7 +636,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
               ? options
               : no
           }
-          value={searchVal}
+          value={searchVal.length > advanceSearchValueLength ?searchVal.substring(0,advanceSearchValueLength):searchVal}
         >
           <div>
             <Button>
@@ -599,13 +645,13 @@ const HeaderMenu = ({ loggedUser }: any) => {
             <Input
               size="large"
               placeholder="Search for"
-              value={searchVal}
+              value={searchVal.length > advanceSearchValueLength ?searchVal.substring(0,advanceSearchValueLength):searchVal}
               type="text"
               name="search"
               // prefix={<button className={styles.new_search_btn} disabled > <i className="icon-search" /></button>}
               onChange={(e) => {
                 // localStorage.setItem("searchValue", e.target.value);
-                setLoadingSekelton(true);
+                setLoadingSekelton(true)
                 dispatch(setSearchValue(e.target.value));
                 setInputSearch(e.target.value);
                 setSearchVal(e.target.value);
@@ -615,7 +661,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
               onPressEnter={(e) => {
                 // localStorage.setItem("searchValue",(e.target as HTMLTextAreaElement).value)
                 // !router.asPath.includes("/search") ? handlePress(e) : "";
-                handlePress(e);
+                handlePress();
                 if ((e.target as HTMLTextAreaElement).value)
                   getGlobalSearchCanonizer(
                     (e.target as HTMLTextAreaElement).value,

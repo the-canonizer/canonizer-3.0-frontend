@@ -108,6 +108,7 @@ const CampTreeCard = ({
         asof: "bydate",
       })
     );
+    router?.push(router, null, { shallow: true });
   };
 
   const handleChange = (value) => {

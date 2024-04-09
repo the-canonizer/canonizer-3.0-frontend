@@ -1,7 +1,5 @@
 import {
   fireEvent,
-  getAllByTestId,
-  getByText,
   render,
   screen,
   waitFor,
@@ -417,11 +415,10 @@ describe("Nickname test cases", () => {
 
 describe("nicknames", () => {
   it("close add nickname modal", async () => {
-    const { getAllByText, getByTestId, container } = render(
-      <NickName></NickName>
-    );
+    const { getAllByText, getByTestId } = render(<NickName></NickName>);
     await waitFor(async () => {
       const add_button = getAllByText("Add New Nickname");
+      expect(add_button[0]).toBeInTheDocument();
       fireEvent.click(add_button[0]);
       const chec_close = await getByTestId("addnicknamemodal");
       const modal_contetn =
@@ -431,9 +428,7 @@ describe("nicknames", () => {
   });
 
   it("render editnickname modal", async () => {
-    const { getAllByText, getByText, container, getByTestId } = render(
-      <NickName></NickName>
-    );
+    const { getAllByText } = render(<NickName></NickName>);
     render(
       <NickNameUI
         addEditTitle={addEditTitle}
@@ -449,6 +444,7 @@ describe("nicknames", () => {
     );
     await waitFor(async () => {
       const edit_button = await getAllByText("edit");
+      expect(edit_button[0]).toBeInTheDocument();
       fireEvent.click(edit_button[0]);
     });
   });

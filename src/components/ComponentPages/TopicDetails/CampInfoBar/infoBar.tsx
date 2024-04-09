@@ -66,26 +66,29 @@ const InfoBar = ({
     topicRecord,
     campRecord,
     is_admin,
-    history,
     asofdate,
     asof,
     algorithm,
     currentCampNode,
     tree,
     campExist,
+    campStatement,
   } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
     campRecord: state?.topicDetails?.currentCampRecord,
     is_admin: state?.auth?.loggedInUser?.is_admin,
-    history: state?.topicDetails?.history,
     asofdate: state.filters?.filterObject?.asofdate,
     algorithm: state.filters?.filterObject?.algorithm,
     asof: state?.filters?.filterObject?.asof,
     currentCampNode: state?.filters?.selectedCampNode,
     tree: state?.topicDetails?.tree && state?.topicDetails?.tree[0],
     campExist: state?.topicDetails?.tree && state?.topicDetails?.tree[1],
+    campStatement: state?.topicDetails?.campStatement,
   }));
-
+  const { manageSupportStatusCheck } = useSelector((state: RootState) => ({
+    manageSupportStatusCheck: state.topicDetails.manageSupportStatusCheck,
+  }));
+  
   const [campSubscriptionID, setCampSubscriptionID] = useState(
     campRecord?.subscriptionId
   );
@@ -292,6 +295,7 @@ const InfoBar = ({
               e?.stopPropagation();
             }}
             // disabled={asof == "bydate" || campRecord?.is_archive}
+            passHref
           >
             <div
               className="topicDetailsCollapseFooter"
@@ -350,7 +354,7 @@ const InfoBar = ({
         {isTopicPage && (
           <Link
             href={
-              history?.items?.length > 0
+              campStatement?.length > 0
                 ? `/statement/history/${replaceSpecialCharacters(
                     router?.query?.camp
                       ? router?.query?.camp[0]
@@ -376,7 +380,7 @@ const InfoBar = ({
             }
           >
             <a>
-              {history?.items?.length > 0
+              {campStatement?.length > 0
                 ? K?.exceptionalMessages?.manageCampStatementButton
                 : K?.exceptionalMessages?.addCampStatementButton}
             </a>
@@ -431,7 +435,8 @@ const InfoBar = ({
             {isCampBtnVisible &&
             currentCampNode?._isDisabled == 0 &&
             currentCampNode?.parentIsOneLevel == 0 &&
-            campRecord?.is_archive == 0 ? (
+            (campRecord?.is_archive == 0 ||
+              campRecord?.is_archive == undefined) ? (
               <Tooltip
                 title={
                   tree && !tree["1"]?.is_valid_as_of_time
@@ -536,7 +541,7 @@ const InfoBar = ({
                       <Dropdown
                         className={styles.campForumDropdown}
                         placement="bottomRight"
-                        overlay={campForumDropdownMenu}
+                        dropdownRender={() => !manageSupportStatusCheck?campForumDropdownMenu:""}
                         trigger={["click"]}
                       >
                         <a

@@ -26,6 +26,7 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
       campRecord: state?.topicDetails?.currentCampRecord,
     })
   );
+
   return loadingIndicator || !campStatement ? (
     <CustomSkelton
       skeltonFor="card"
@@ -52,8 +53,8 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
               className="cmp-change-icon"
               style={{ display: "inline-block" }}
             >
-              {campStatement[0]?.in_review_changes > 0 ||
-              history.items?.[0]?.status == "in_review" ? (
+              {campStatement[0]?.in_review_changes > 0 &&
+              campRecord?.is_archive == 0 ? (
                 <div
                   onClick={(e) => {
                     e.stopPropagation();
@@ -121,7 +122,7 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
           >
             <Link
               href={
-                history?.items?.length > 0
+                campStatement?.length > 0
                   ? `/statement/history/${replaceSpecialCharacters(
                       router?.query?.camp[0],
                       "-"
@@ -140,7 +141,7 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
               className="printHIde"
             >
               <a className="printHIde">
-                {history?.items?.length > 0
+                {campStatement?.length > 0
                   ? K?.exceptionalMessages?.manageCampStatementButton
                   : K?.exceptionalMessages?.addCampStatementButton}
               </a>

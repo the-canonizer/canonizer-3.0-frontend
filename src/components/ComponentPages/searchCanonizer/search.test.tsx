@@ -1,4 +1,3 @@
-import { useSelector } from "react-redux";
 import Search from ".";
 import { render, screen, waitFor } from "../../../utils/testUtils";
 import CampSearch from "./camp";
@@ -6,15 +5,6 @@ import CampStatementSearch from "./campStatement";
 import NicknameSearch from "./nickname";
 import TopicSearch from "./topic";
 
-const mockState = {
-  camp: [
-    {
-      name: "abc",
-    },
-  ],
-  // dragBox,
-  // disabledCreateFolderBtn,
-};
 //   jest.mock("react-redux", () => ({
 //     ...jest.requireActual("react-redux"),
 //     useSelector: jest.fn().mockImplementation(() => {

@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import SearchSideBar from "../../common/SearchSideBar";
 import styles from "./search.module.scss";
-import { Empty, List, Tag } from "antd";
+import { Empty } from "antd";
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
@@ -21,6 +21,11 @@ const Search = () => {
   const showEmpty = (msg) => {
     return <Empty description={msg} />;
   };
+  function replaceSpecialCharactersInLink(link) {
+    // Replace each special character with a series of hyphens
+    // return link.replace(/[-\\^$*+?.()|%#|[\]{}]/g, "-");
+    return link.replace(/[-\\^$*+?.()|%#|[\]{}@]/g, "-");
+}
   return (
     <Fragment>
       <aside className="leftSideBar miniSideBar">
@@ -54,7 +59,7 @@ const Search = () => {
                       return (
                         <>
                           <li>
-                            <Link href={x.link}>
+                            <Link href={replaceSpecialCharactersInLink(x?.link)}>
                               <a>
                                 <label style={{ cursor: "pointer" }}>
                                   {x.type_value}

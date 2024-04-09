@@ -1,8 +1,9 @@
 import React from "react";
 import Link from "next/link";
+import { useSelector } from "react-redux";
 
 import styles from "./createTopic.module.scss";
-import { useSelector } from "react-redux";
+
 import { RootState } from "src/store";
 
 const TopicCreationBTN = () => {
