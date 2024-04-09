@@ -302,12 +302,12 @@ const SupportTreeCard = ({
                           "treeListItemNumber " + styles.treeListItemNumber
                         }
                       >
-                        {is_checked && isUserAuthenticated
+                        {campRecord.is_archive?0:is_checked && isUserAuthenticated
                           ? data[item].full_score?.toFixed(2)
                           : data[item].score?.toFixed(2)}
                         {/* {data[item].score?.toFixed(2)} */}
                       </span>
-                      {!userNickNameList.includes(data[item].nick_name_id) ? (
+                      {userNickNameList?.length>0 &&!userNickNameList.includes(data[item].nick_name_id) ? (
                         <>
                           {loggedInUserDelegate ||
                           (loggedInUserChild &&
@@ -378,6 +378,7 @@ const SupportTreeCard = ({
                 key={data[item].camp_id}
                 data={{ ...data[item], parentIsOneLevel, isDisabled }}
               >
+  
                 {renderTreeNodes(
                   data[item].delegates,
                   isDisabled,
@@ -425,7 +426,7 @@ const SupportTreeCard = ({
         className="topicDetailsCollapse"
       >
         <Panel
-          className={`header-bg-color-change ${backGroundColorClass}`}
+          className={`position-relative header-bg-color-change ${backGroundColorClass}`}
           header={
             <Fragment>
               <h3>
@@ -433,7 +434,11 @@ const SupportTreeCard = ({
                 {campRecord?.camp_name}&quot; Camp
               </h3>
               <h5 className={styles.algoLabel}>
-                ( Based on: &quot;{router?.query?.algo ?currentAlgo:algorithms[0].algorithm_label}&quot; )
+                ( Based on: &quot;
+                {router?.query?.algo
+                  ? currentAlgo
+                  : algorithms?.at(0)?.algorithm_label}
+                &quot; )
               </h5>
             </Fragment>
           }
@@ -444,10 +449,10 @@ const SupportTreeCard = ({
             </Popover>
           }
         >
-          <Paragraph>
+          <Paragraph className="position-relative">
             Total Support for This Camp (including sub-camps):
             <span className="number-style">
-              {totalCampScoreForSupportTree?.toFixed(2)}
+              {campRecord?.is_archive?0:totalCampScoreForSupportTree?.toFixed(2)}
             </span>
           </Paragraph>
 

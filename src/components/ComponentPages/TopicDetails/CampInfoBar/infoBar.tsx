@@ -85,7 +85,10 @@ const InfoBar = ({
     campExist: state?.topicDetails?.tree && state?.topicDetails?.tree[1],
     campStatement: state?.topicDetails?.campStatement,
   }));
-
+  const { manageSupportStatusCheck } = useSelector((state: RootState) => ({
+    manageSupportStatusCheck: state.topicDetails.manageSupportStatusCheck,
+  }));
+  
   const [campSubscriptionID, setCampSubscriptionID] = useState(
     campRecord?.subscriptionId
   );
@@ -292,6 +295,7 @@ const InfoBar = ({
               e?.stopPropagation();
             }}
             // disabled={asof == "bydate" || campRecord?.is_archive}
+            passHref
           >
             <div
               className="topicDetailsCollapseFooter"
@@ -431,7 +435,8 @@ const InfoBar = ({
             {isCampBtnVisible &&
             currentCampNode?._isDisabled == 0 &&
             currentCampNode?.parentIsOneLevel == 0 &&
-            campRecord?.is_archive == 0 ? (
+            (campRecord?.is_archive == 0 ||
+              campRecord?.is_archive == undefined) ? (
               <Tooltip
                 title={
                   tree && !tree["1"]?.is_valid_as_of_time
@@ -536,7 +541,7 @@ const InfoBar = ({
                       <Dropdown
                         className={styles.campForumDropdown}
                         placement="bottomRight"
-                        overlay={campForumDropdownMenu}
+                        dropdownRender={() => !manageSupportStatusCheck?campForumDropdownMenu:""}
                         trigger={["click"]}
                       >
                         <a

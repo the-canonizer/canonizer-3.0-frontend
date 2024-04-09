@@ -39,8 +39,8 @@ const ExceptionalMessageConstants = {
   objectedModalMsgForMoreInfo:
     "For more information about disagreement, please read topic:",
   campStatementHeading: "Camp Statement",
-  topicRecordHeading: "Current Topic Record",
-  campRecordHeading: "Current Camp Record",
+  topicRecordHeading: "Topic Meta Information",
+  campRecordHeading: "Camp Meta Information",
 };
 
 export default ExceptionalMessageConstants;

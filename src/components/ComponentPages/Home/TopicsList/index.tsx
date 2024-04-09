@@ -31,8 +31,6 @@ import {
 } from "src/utils/generalUtility";
 import CustomSkelton from "../../../common/customSkelton";
 import SortTopics from "../../SortingTopics";
-// import { CloseCircleOutlined } from "@ant-design/icons";
-// import { clearAllListeners } from "@reduxjs/toolkit";
 
 const antIcon = <LoadingOutlined spin />;
 const { Title, Text, Paragraph } = Typography;
@@ -252,7 +250,6 @@ const TopicsList = () => {
     setSearchedResult([]);
     setSearchLoading(true);
     const value = event.target.value?.trim();
-    console.log("🚀 ~ handleKeyUpSearch ~ value:", value);
     if (value) {
       setAllowClear(true);
       setSearchTerm(value);
@@ -515,7 +512,7 @@ const TopicsList = () => {
             <div className={styles.footer}>
               {router?.asPath.includes("/browse")
                 ? LoadMoreTopics
-                : ViewAllTopics}
+                : topicsData && topicsData?.topics?.length>=15? ViewAllTopics: null}
             </div>
           }
           bordered

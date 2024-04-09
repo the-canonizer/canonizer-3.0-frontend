@@ -299,11 +299,11 @@ describe("Upload file page", () => {
   });
 
   it("Add a file test", async () => {
-      render(
-        <Provider store={store3}>
-          <UploadFiles />
-        </Provider>
-      );
+    render(
+      <Provider store={store3}>
+        <UploadFiles />
+      </Provider>
+    );
     await waitFor(() => {
       const add_folder_element = screen.getByTestId("addAFileBtn");
       expect(add_folder_element).toBeInTheDocument();
@@ -327,8 +327,7 @@ describe("Upload file page", () => {
     await waitFor(() => {
       const uploadBtn = screen.getByTestId("upload_btn");
       fireEvent.click(uploadBtn);
-    expect(container.getElementsByClassName("threeDOt")).toBeTruthy();
-
+      expect(container.getElementsByClassName("threeDOt")).toBeTruthy();
     });
   });
 });
