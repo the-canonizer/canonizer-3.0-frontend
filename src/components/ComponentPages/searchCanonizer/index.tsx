@@ -21,6 +21,11 @@ const Search = () => {
   const showEmpty = (msg) => {
     return <Empty description={msg} />;
   };
+  function replaceSpecialCharactersInLink(link) {
+    // Replace each special character with a series of hyphens
+    // return link.replace(/[-\\^$*+?.()|%#|[\]{}]/g, "-");
+    return link.replace(/[-\\^$*+?.()|%#|[\]{}@]/g, "-");
+}
   return (
     <Fragment>
       <aside className="leftSideBar miniSideBar">
@@ -54,7 +59,7 @@ const Search = () => {
                       return (
                         <>
                           <li>
-                            <Link href={x.link}>
+                            <Link href={replaceSpecialCharactersInLink(x?.link)}>
                               <a>
                                 <label style={{ cursor: "pointer" }}>
                                   {x.type_value}

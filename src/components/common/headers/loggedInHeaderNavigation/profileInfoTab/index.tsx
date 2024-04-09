@@ -32,6 +32,9 @@ const ProfileInfoTab = ({
 
       {loggedInUser?.profile_picture && !loadingImage ? (
         <Avatar
+        style={{
+          cursor: "pointer",
+        }}
           src={loggedInUser?.profile_picture}
           size={isMobile ? "small" : "default"}
         />
