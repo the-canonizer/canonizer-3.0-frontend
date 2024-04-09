@@ -74,14 +74,14 @@ const PostUI = ({
             <Fragment>
               {createdAt ? (
                 <Fragment>
-                  <Text id="thread-create-label">{`Thread Created at ${moment(
+                  <Text id="thread-create-label">{`Thread Created on ${moment(
                     getTime(createdAt)
                   ).format("MMM Do YYYY, h:mm:ss a")}`}</Text>{" "}
                   |{" "}
                 </Fragment>
               ) : currentThread?.created_at ? (
                 <Fragment>
-                  <Text id="thread-create-label">{`Thread Created at ${moment(
+                  <Text id="thread-create-label">{`Thread Created on ${moment(
                     getTime(currentThread?.created_at)
                   ).format("MMM Do YYYY, h:mm:ss a")}`}</Text>{" "}
                   |{" "}

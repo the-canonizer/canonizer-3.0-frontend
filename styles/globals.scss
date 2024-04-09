@@ -700,7 +700,7 @@ img {
 }
 
 .topicDetailsCollapse .ant-collapse-content-box::after,
-.topicDetailsCollapse .ant-collapse-content-box::before{
+.topicDetailsCollapse .ant-collapse-content-box::before {
   display: none;
 }
 
@@ -729,6 +729,7 @@ img {
   border-left-color: transparent;
   z-index: 1;
   border-right-color: transparent;
+  opacity: 0;
 }
 
 // print camp strat
@@ -773,10 +774,9 @@ img {
   color: #000;
   display: inline-flex;
   align-items: center;
-  border-color: #AEBBCB;
+  border-color: #aebbcb;
 }
-.flex-wrap 
-{
+.flex-wrap {
   flex-wrap: wrap;
 }
 
