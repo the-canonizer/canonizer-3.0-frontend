@@ -10,8 +10,9 @@ import { setPageNumber } from "src/store/slices/searchSlice";
 import CustomSkelton from "../../common/customSkelton";
 
 const TopicSearch = () => {
-  const { searchDataAll } = useSelector((state: RootState) => ({
+  const { searchDataAll,searchData } = useSelector((state: RootState) => ({
     searchDataAll: state?.searchSlice?.searchDataAll,
+    searchData: state?.searchSlice?.searchData,
   }));
   const { searchMetaData } = useSelector((state: RootState) => ({
     searchMetaData: state?.searchSlice?.searchMetaData,
@@ -20,7 +21,6 @@ const TopicSearch = () => {
   const { loading } = useSelector((state: RootState) => ({
     loading: state?.loading?.searchLoading,
   }));
-
   const [currentPage, setCurrentPage] = useState(1);
   const dispatch = useDispatch();
 

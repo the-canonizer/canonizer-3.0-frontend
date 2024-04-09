@@ -4,9 +4,10 @@ import Link from "next/link";
 import styles from "./searchSideBar.module.scss";
 import Image from "next/image";
 import filter from "src/assets/image/face.png";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "src/store";
 import CustomSkelton from "../customSkelton";
+import { setClickAdvanceFilterOption } from "src/store/slices/searchSlice";
 
 export default function SearchSideBar() {
   const router = useRouter();
@@ -16,6 +17,11 @@ export default function SearchSideBar() {
   const { loading } = useSelector((state: RootState) => ({
     loading: state?.loading?.searchLoading,
   }));
+
+  const campRoute = () => {
+    router?.push("/search/topic");
+  };
+  const dispatch = useDispatch()
 
   return (
     <>
@@ -114,29 +120,26 @@ export default function SearchSideBar() {
                 query: { q: searchValue },
               }}
             >
-              <a>
-                <Button
-                  size="large"
-                  className={
-                    router?.asPath.includes("/search/nickname?")
-                      ? "active"
-                      : "btn"
-                  }
-                  disabled={
-                    router?.pathname == "/search/nickname" ? true : false
-                  }
-                >
-                  <Image
-                    className={styles.nickname_icon}
-                    id="nick_name"
-                    alt="face Image"
-                    src={filter}
-                    width={15}
-                    height={15}
-                  />
-                  <a>Nickname</a>
-                </Button>
-              </a>
+              <Button
+                size="large"
+                className={
+                  router?.asPath.includes("/search/nickname?")
+                    ? "active"
+                    : "btn"
+                }
+                disabled={router.pathname == "/search/nickname" ? true : false}
+                onClick={(()=>{ dispatch(setClickAdvanceFilterOption(false))})}
+              >
+                <Image
+                  className={styles.nickname_icon}
+                  id="nick_name"
+                  alt="face Image"
+                  src={filter}
+                  width={15}
+                  height={15}
+                />
+                <a>Nickname</a>
+              </Button>
             </Link>
           </div>
         )}
