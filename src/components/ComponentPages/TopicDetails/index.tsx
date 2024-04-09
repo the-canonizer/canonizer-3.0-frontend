@@ -342,7 +342,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isUserAuthenticated, router, algorithm]);
+  }, [isUserAuthenticated || router || algorithm]);
 
   useEffect(() => {
     setBackGroundColorClass(asof);
@@ -401,6 +401,10 @@ const TopicDetails = ({ serverSideCall }: any) => {
         asof: "bydate",
       })
     );
+    router.query.asofdate = `${
+      Date.parse(moment.unix(tree["1"]?.created_date).endOf("day")["_d"]) / 1000
+    }`;
+    router?.push(router, null, { shallow: true });
   };
 
   const onCreateCampDate = () => {
@@ -419,6 +423,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
     setIsClient(true);
   }, []);
 <<<<<<< HEAD
+<<<<<<< HEAD
   const lable = algorithms?.find((obj) => {
     return obj.algorithm_key == selectedAlgorithm;
   });
@@ -427,6 +432,11 @@ const TopicDetails = ({ serverSideCall }: any) => {
     return obj.algorithm_key == selectedAlgorithm
   })
 >>>>>>> 29989dfff07a1f263b7567e13df5aab0ebb5b5a2
+=======
+  const lable = algorithms?.find((obj) => {
+    return obj.algorithm_key == selectedAlgorithm;
+  });
+>>>>>>> 44a80e42d92c13ca72c8182dbbd6ef6caac848e0
 
   return (
     <Fragment>
@@ -531,8 +541,20 @@ const TopicDetails = ({ serverSideCall }: any) => {
                 ? campExist?.camp_exist
                 : true && (
                     <Fragment>
-                      {(router.query.algo&&selectedAlgorithm && lable?.algorithm_label !==undefined)||is_camp_archive_checked||is_checked||selectedAsOf== "bydate"
-                      ||(includeReview || router?.query?.asof === "review")||filteredScore != 0?<LatestFilter/>:""}
+
+                      {(router.query.algo &&
+                        selectedAlgorithm &&
+                        lable?.algorithm_label !== undefined) ||
+                      is_camp_archive_checked ||
+                      is_checked ||
+                      selectedAsOf == "bydate" ||
+                      includeReview ||
+                      router?.query?.asof === "review" ||
+                      filteredScore != 0 ? (
+                        <LatestFilter />
+                      ) : (
+                        ""
+                      )}
                       <CampStatementCard
                         loadingIndicator={loadingIndicator}
                         backGroundColorClass={backGroundColorClass}

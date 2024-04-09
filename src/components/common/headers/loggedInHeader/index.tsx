@@ -21,7 +21,7 @@ const LoggedInHeader = () => {
       ) : (
         <></>
       )}
-      <SearchSection />
+      {/* <SearchSection /> */}
       <div className="topicMobBTN">
         <TopicCreationBTN key="create-topic-area" />
       </div>

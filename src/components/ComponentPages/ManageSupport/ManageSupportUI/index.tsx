@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Card, Tag, Select, Button, Col, Form } from "antd";
 import { DraggableArea } from "react-draggable-tags";
 import { CloseCircleOutlined } from "@ant-design/icons";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 
 import styles from "../ManageSupportUI/ManageSupport.module.scss";
@@ -14,6 +14,7 @@ import { addSupport, removeSupportedCamps } from "src/network/api/userApi";
 import CustomSkelton from "src/components/common/customSkelton";
 import SupportRemovedModal from "src/components/common/supportRemovedModal";
 import My404 from "../../404";
+import { setIsSupportModal } from "src/store/slices/topicSlice";
 
 const { placeholders } = messages;
 
@@ -45,17 +46,20 @@ const ManageSupportUI = ({
   // const [topicSupportList, setTopicSupportList] = useState([]);
   const [removeCampsSupport, setRemoveCampsSupport] = useState(false);
 
-  const { currentDelegatedSupportedClick, currentGetCheckSupportExistsData,campRecord } =
-    useSelector((state: RootState) => ({
-      currentDelegatedSupportedClick:
-        state.supportTreeCard.currentDelegatedSupportedClick,
-      currentGetCheckSupportExistsData:
-        state.topicDetails.currentGetCheckSupportExistsData,
-        campRecord: state?.topicDetails?.currentCampRecord,
-    }));
+  const {
+    currentDelegatedSupportedClick,
+    currentGetCheckSupportExistsData,
+    campRecord,
+  } = useSelector((state: RootState) => ({
+    currentDelegatedSupportedClick:
+      state.supportTreeCard.currentDelegatedSupportedClick,
+    currentGetCheckSupportExistsData:
+      state.topicDetails.currentGetCheckSupportExistsData,
+    campRecord: state?.topicDetails?.currentCampRecord,
+  }));
 
   const router = useRouter();
-
+const dispatch = useDispatch()
   const [removeForm] = Form.useForm();
   // const openPopup = () => setIsSupportTreeCardModal(true);
   const closePopup = () => {};
@@ -446,6 +450,7 @@ const ManageSupportUI = ({
                           onClick={(e) => {
                             e.preventDefault();
                             window.location.href = tag.link;
+                            dispatch(setIsSupportModal(false))
                           }}
                         >
                           {tag?.camp_name}
@@ -531,7 +536,8 @@ const ManageSupportUI = ({
                 }
                 disabled={
                   submitButtonDisable ||
-                  currentGetCheckSupportExistsData.disable_submit ||campRecord.is_archive == 1
+                  currentGetCheckSupportExistsData.disable_submit ||
+                  campRecord.is_archive == 1
                 }
               >
                 Submit

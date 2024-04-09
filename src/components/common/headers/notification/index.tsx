@@ -181,7 +181,9 @@ const Notifications = () => {
       <Dropdown
         menu={{}}
         // overlay={notificationDropdown}
-        dropdownRender={() => !manageSupportStatusCheck?notificationDropdown:""}
+        dropdownRender={() =>
+          !manageSupportStatusCheck ? notificationDropdown : ""
+        }
         trigger={["click"]}
         placement="bottomRight"
         onOpenChange={getNotofications}

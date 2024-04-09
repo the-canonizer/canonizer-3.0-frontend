@@ -12,7 +12,7 @@ describe("Camp tree card on camp details page", () => {
         <CurrentCampCard />
       </Provider>
     );
-    expect(screen.getByText(/current camp record/i)).toBeInTheDocument();
+    expect(screen.getByText(/Camp Meta Information/i)).toBeInTheDocument();
     expect(container.getElementsByTagName("button")).toHaveLength(0);
     expect(container.getElementsByTagName("textarea")).toHaveLength(0);
     expect(container.getElementsByTagName("input")).toHaveLength(0);

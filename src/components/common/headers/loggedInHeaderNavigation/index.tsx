@@ -90,7 +90,7 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
     const res = await logout();
 
     if (res?.status_code === 200) {
-      router.push(router, null, { shallow: true });
+      router.push("/", null, { shallow: true });
     }
   };
 
