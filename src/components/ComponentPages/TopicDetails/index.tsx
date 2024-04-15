@@ -314,9 +314,9 @@ const TopicDetails = ({ serverSideCall }: any) => {
         setCurrentCheckSupportStatus(
           response.data.warning ? response.data.warning : ""
         )
-      );
-      dispatch(setCheckSupportExistsData(response.data));
-    }
+        );
+        dispatch(setCheckSupportExistsData(response.data));
+      }
   };
   const handleSupportTreeCardCancel = () => {
     setIsSupportTreeCardModal(false);
@@ -328,7 +328,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isUserAuthenticated || router || algorithm]);
+  }, [isUserAuthenticated || router || algorithm, router.query.camp.at(1)]);
 
   useEffect(() => {
     setBackGroundColorClass(asof);
