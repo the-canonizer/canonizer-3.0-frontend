@@ -718,6 +718,7 @@ img {
   border-left-color: transparent;
   z-index: 1;
   border-right-color: transparent;
+  display: none;
 }
 .ant-collapse-content-box::before {
   content: "";
