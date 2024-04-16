@@ -408,21 +408,10 @@ const TopicDetails = ({ serverSideCall }: any) => {
   useEffect(() => {
     setIsClient(true);
   }, []);
-<<<<<<< HEAD
-<<<<<<< HEAD
+
   const lable = algorithms?.find((obj) => {
     return obj.algorithm_key == selectedAlgorithm;
   });
-=======
-  const lable = algorithms?.find((obj)=>{
-    return obj.algorithm_key == selectedAlgorithm
-  })
->>>>>>> 29989dfff07a1f263b7567e13df5aab0ebb5b5a2
-=======
-  const lable = algorithms?.find((obj) => {
-    return obj.algorithm_key == selectedAlgorithm;
-  });
->>>>>>> 44a80e42d92c13ca72c8182dbbd6ef6caac848e0
 
   return (
     <Fragment>
