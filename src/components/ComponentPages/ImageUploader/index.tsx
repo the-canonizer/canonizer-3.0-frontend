@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React, { Fragment, useEffect, useState } from "react";
 import { EditOutlined, UploadOutlined } from "@ant-design/icons";
 import { Button, Modal, Tooltip, Upload, message } from "antd";
@@ -14,9 +15,6 @@ import { RootState } from "src/store";
 import { setProfilePicture } from "src/store/slices/authSlice";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Spin } from "antd";
-
-const MAX_IMAGE_WIDTH = 1000; // Maximum image width in pixels
-const MAX_IMAGE_HEIGHT = 1000; // Maximum image height in pixels
 
 const getBase64 = (file: RcFile): Promise<string> =>
   new Promise((resolve, reject) => {

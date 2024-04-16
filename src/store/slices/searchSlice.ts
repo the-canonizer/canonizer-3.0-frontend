@@ -24,6 +24,11 @@ export const searchSlice = createSlice({
     },
     searchValue: "",
     pageNumber: 1,
+    searchQueryValue :"",
+    selectedTopicFromAdvnaceFilterNickname: [],
+    selectNicknameIdFromGetApi : [],
+    selectNickNameIdFromDirectSupportTree :[],
+    clickAdvanceFilterOption:false
   },
   reducers: {
     setSearchData: (state, action) => {
@@ -57,6 +62,21 @@ export const searchSlice = createSlice({
     setPageNumber: (state, action) => {
       state.pageNumber = action.payload;
     },
+    setSearchQueryValue: (state, action) => {
+      state.searchQueryValue = action.payload;
+    },
+    setSelectedTopicFromAdvnaceFilterNickname: (state, action) => {
+      state.selectedTopicFromAdvnaceFilterNickname = action.payload;
+    },
+    setSelectNicknameIdFromGetApi: (state, action) => {
+      state.selectNicknameIdFromGetApi = action.payload;
+    },
+    setClickAdvanceFilterOption: (state, action) => {
+      state.clickAdvanceFilterOption = action.payload;
+    },
+    setSelectNickNameIdFromDirectSupportTree: (state, action) => {
+      state.selectNickNameIdFromDirectSupportTree = action.payload;
+    },
   },
 });
 
@@ -66,6 +86,11 @@ export const {
   setPageNumber,
   setSearchDataAll,
   setSearchMetaData,
+  setSearchQueryValue,
+  setSelectedTopicFromAdvnaceFilterNickname,
+  setSelectNicknameIdFromGetApi,
+  setClickAdvanceFilterOption,
+  setSelectNickNameIdFromDirectSupportTree
 } = searchSlice.actions;
 
 export default searchSlice.reducer;

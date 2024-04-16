@@ -35,6 +35,7 @@ import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
 import FullScoreCheckbox from "../../ComponentPages/FullScoreCheckbox";
 import ArchivedCampCheckBox from "src/components/ComponentPages/ArchivedCampCheckBox";
 import CampTreeCard from "src/components/ComponentPages/TopicDetails/CampTreeCard";
+import { getTreesApi } from "src/network/api/campDetailApi";
 
 const infoContent = (
   <>
@@ -99,6 +100,10 @@ const FilterWithTree = ({
     filterObject,
     viewThisVersion,
     campScoreValue,
+    asof,
+    viewThisVersionCheck,
+    asofdate,
+    algorithm
   } = useSelector((state: RootState) => ({
     algorithms: state.homePage?.algorithms,
     filteredScore: state?.filters?.filterObject?.filterByScore,
@@ -110,6 +115,10 @@ const FilterWithTree = ({
     filterObject: state?.filters?.filterObject,
     viewThisVersion: state?.filters?.viewThisVersionCheck,
     campScoreValue: state?.filters?.campWithScoreValue,
+    asof: state?.filters?.filterObject?.asof,
+    viewThisVersionCheck: state?.filters?.viewThisVersionCheck,
+    asofdate: state.filters?.filterObject?.asofdate,
+    algorithm: state.filters?.filterObject?.algorithm,
   }));
 
   const [value, setValue] = useState(
@@ -269,7 +278,21 @@ const FilterWithTree = ({
     if (!(algorithms?.length > 0)) getCanonizedAlgorithmsApi();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
+  const reqBodyForService = {
+    topic_num: router?.query?.camp[0]?.split("-")[0],
+    camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
+    asOf: asof,
+    asofdate:
+      asof == "default" || asof == "review"
+        ? Date.now() / 1000
+        : asofdate,
+    algorithm: algorithm,
+    update_all: 1,
+    fetch_topic_history: viewThisVersionCheck ? 1 : null,
+  };
+  const revertScore = ()=>{
+     getTreesApi(reqBodyForService)
+  }
   const selectAlgorithm = (value) => {
     setCookie("canAlgo", value, {
       path: "/",
@@ -287,8 +310,8 @@ const FilterWithTree = ({
       filterObject?.namespace_id,
       viewThisVersion
     );
+    revertScore()
   };
-
   const onChange = (e) => {
     if (e.target.value === 3) {
       setIsDatePicker(true);

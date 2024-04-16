@@ -9,8 +9,9 @@ import moment from "moment";
 import CustomSkelton from "../../common/customSkelton";
 
 const Search = () => {
-  const { searchData } = useSelector((state: RootState) => ({
+  const { searchData,searchDataAll } = useSelector((state: RootState) => ({
     searchData: state?.searchSlice?.searchData,
+    searchDataAll:state?.searchSlice?.searchDataAll,
   }));
   const { loading } = useSelector((state: RootState) => ({
     loading: state?.loading?.searchLoading,
@@ -55,7 +56,7 @@ const Search = () => {
                 )}
                 <div className={styles.search_lists}>
                   <ul>
-                    {searchData?.topic?.slice(0, 5).map((x) => {
+                    {searchData?.topic?.slice(0, 5)?.map((x) => {
                       return (
                         <>
                           <li>
@@ -83,7 +84,7 @@ const Search = () => {
                 )}
                 <div className={styles.search_lists}>
                   <ul>
-                    {searchData?.camp?.slice(0, 5).map((x) => {
+                    {searchData?.camp?.slice(0, 5)?.map((x) => {
                       const jsonData = JSON.parse(
                         x.breadcrumb_data
                       ) as Array<any>;
@@ -141,7 +142,7 @@ const Search = () => {
                 )}
                 <div className={styles.search_lists}>
                   <ul>
-                    {searchData?.statement?.slice(0, 5).map((x) => {
+                    {searchData?.statement?.slice(0, 5)?.map((x) => {
                       const jsonData = JSON.parse(
                         x.breadcrumb_data
                       ) as Array<any>;
@@ -214,7 +215,7 @@ const Search = () => {
                 )}
                 <div className={styles.search_lists}>
                   <ul>
-                    {searchData?.nickname?.slice(0, 5).map((x) => {
+                    {searchData?.nickname?.slice(0, 5)?.map((x) => {
                       return (
                         <>
                           <li>
