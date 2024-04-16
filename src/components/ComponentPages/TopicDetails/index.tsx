@@ -408,6 +408,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
   useEffect(() => {
     setIsClient(true);
   }, []);
+
   const lable = algorithms?.find((obj) => {
     return obj.algorithm_key == selectedAlgorithm;
   });
@@ -515,6 +516,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
                 ? campExist?.camp_exist
                 : true && (
                     <Fragment>
+
                       {(router.query.algo &&
                         selectedAlgorithm &&
                         lable?.algorithm_label !== undefined) ||
