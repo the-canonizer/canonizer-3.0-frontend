@@ -110,32 +110,18 @@ const TopicDetails = ({ serverSideCall }: any) => {
     viewThisVersionCheck: state?.filters?.viewThisVersionCheck,
     selectedAlgorithm: state?.filters?.filterObject?.algorithm,
   }));
-  const {
-    is_camp_archive_checked,
-    is_checked,
-    filteredAsOfDate,
-    includeReview,
-    filteredScore,
-    current_date_filter,
-    filterObject,
-    viewThisVersion,
-    campScoreValue,
-    selectedAsOf,
-  } = useSelector((state: RootState) => ({
-    is_camp_archive_checked: state?.utils?.archived_checkbox,
-    loading: state?.loading?.loading,
-    is_checked: state?.utils?.score_checkbox,
-    filteredAsOfDate: state?.filters?.filterObject?.asofdate,
-    includeReview: state?.filters?.filterObject?.includeReview,
-    filteredScore: state?.filters?.filterObject?.filterByScore,
-    selectedAlgorithm: state?.filters?.filterObject?.algorithm,
-    algorithms: state.homePage?.algorithms,
-    current_date_filter: state?.filters?.current_date,
-    filterObject: state?.filters?.filterObject,
-    viewThisVersion: state?.filters?.viewThisVersionCheck,
-    campScoreValue: state?.filters?.campWithScoreValue,
-    selectedAsOf: state?.filters?.filterObject?.asof,
-  }));
+  const { is_camp_archive_checked,is_checked,includeReview,filteredScore,selectedAsOf} = useSelector(
+    (state: RootState) => ({
+      is_camp_archive_checked: state?.utils?.archived_checkbox,
+      loading: state?.loading?.loading,
+      is_checked: state?.utils?.score_checkbox,
+      includeReview: state?.filters?.filterObject?.includeReview,
+      filteredScore: state?.filters?.filterObject?.filterByScore,
+      selectedAlgorithm: state?.filters?.filterObject?.algorithm,
+      algorithms: state.homePage?.algorithms,
+      selectedAsOf: state?.filters?.filterObject?.asof,
+    })
+  );
   const GetActiveSupportTopicList = async () => {
     const topicNum = router?.query?.camp?.at(0)?.split("-")?.at(0);
     const body = { topic_num: topicNum };
@@ -328,9 +314,9 @@ const TopicDetails = ({ serverSideCall }: any) => {
         setCurrentCheckSupportStatus(
           response.data.warning ? response.data.warning : ""
         )
-      );
-      dispatch(setCheckSupportExistsData(response.data));
-    }
+        );
+        dispatch(setCheckSupportExistsData(response.data));
+      }
   };
   const handleSupportTreeCardCancel = () => {
     setIsSupportTreeCardModal(false);
@@ -342,7 +328,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isUserAuthenticated || router || algorithm]);
+  }, [isUserAuthenticated || router || algorithm, router.query.camp.at(1)]);
 
   useEffect(() => {
     setBackGroundColorClass(asof);

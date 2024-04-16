@@ -22,7 +22,7 @@ const ProfileInfoTab = ({
   logOut,
   isMobile,
   menu = <></>,
-}) => {
+}:any) => {
   const { loggedInUser } = useSelector((state: RootState) => ({
     loggedInUser: state.auth.loggedInUser,
   }));

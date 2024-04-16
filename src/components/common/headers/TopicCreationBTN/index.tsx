@@ -5,8 +5,10 @@ import { useSelector } from "react-redux";
 import styles from "./createTopic.module.scss";
 
 import { RootState } from "src/store";
+import { useRouter } from "next/router";
 
 const TopicCreationBTN = () => {
+  const router = useRouter();
   const { authenticated } = useSelector((state: RootState) => ({
     authenticated: state.auth.authenticated,
   }));
@@ -30,7 +32,12 @@ const TopicCreationBTN = () => {
         </>
       ) : (
         <>
-          <div className="ant-btn">
+          <button
+            className="ant-btn"
+            onClick={() => {
+              router.push("/login", null, { shallow: true });
+            }}
+          >
             {
               <img
                 src="/images/topic-icon-orange.svg"
@@ -39,7 +46,7 @@ const TopicCreationBTN = () => {
               />
             }
             Create Topic
-          </div>
+          </button>
         </>
       )}
     </div>

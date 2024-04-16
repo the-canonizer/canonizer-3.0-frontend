@@ -16,6 +16,7 @@ import {
   setSearchMetaData,
   setSearchValue,
   setSearchDataAll,
+  setClickAdvanceFilterOption,
 } from "src/store/slices/searchSlice";
 import CustomSkelton from "../../customSkelton";
 import { setSearchLoadingAction } from "src/store/slices/loading";
@@ -44,7 +45,6 @@ const HeaderMenu = ({ loggedUser }: any) => {
   const { pageNumber } = useSelector((state: RootState) => ({
     pageNumber: state?.searchSlice?.pageNumber,
   }));
-
   const router = useRouter();
 
   const dispatch = useDispatch();
