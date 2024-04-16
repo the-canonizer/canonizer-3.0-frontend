@@ -52,7 +52,7 @@ const TopicSearch = () => {
         <div className={styles.card}>
           <div className="d-flex mb-2 align-items-center flex-wrap relative">
             <h4 data-testid="topic_heading">Topic</h4>
-            <AdvanceFilter />
+            {/* <AdvanceFilter /> */}
           </div>
           {loading ? (
             <CustomSkelton
