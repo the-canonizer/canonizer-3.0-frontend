@@ -35,7 +35,11 @@ const TopicCreationBTN = () => {
           <button
             className="ant-btn"
             onClick={() => {
-              router.push("/login", null, { shallow: true });
+              const returnUrl = "/create/topic";
+              router.push({
+                pathname: "/login",
+                query: { returnUrl },
+              }, null, { shallow: true });
             }}
           >
             {
