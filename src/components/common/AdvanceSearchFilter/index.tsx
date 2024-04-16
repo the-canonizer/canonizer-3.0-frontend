@@ -161,7 +161,7 @@ export default function AdvanceFilter() {
   return (
     <div
       className={
-        router.pathname !== "/search/nickname"
+        router?.pathname !== "/search/nickname"
           ? "advanceFilter"
           : "NicknameadvanceFilter advanceFilter"
       }
@@ -195,7 +195,7 @@ export default function AdvanceFilter() {
             <CloseCircleOutlined />
           </div> */}
 
-          {router.pathname !== "/search/nickname" ? (
+          {router?.pathname !== "/search/nickname" ? (
             <div className="row">
               <div className="col-sm-6">
                 <h4>Canonizer</h4>
