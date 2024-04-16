@@ -64,7 +64,8 @@ const CurrentCampCard = ({ loadingIndicator, backGroundColorClass }: any) => {
               {K?.exceptionalMessages?.campRecordHeading}
             </h3>
             <div className="cmp-change-icon">
-              {campRecord?.in_review_changes > 0 ? (
+              {campRecord?.in_review_changes > 0 &&
+              campRecord?.is_archive == 0 ? (
                 // <img className="change-icon" src="/images/change-icon.svg" />
                 <div
                   onClick={(e) => {
