@@ -302,7 +302,7 @@ const ManageSupport = ({
           setManageSupportList(manageSupportArr);
         } else {
           setManageSupportList([
-            ...fiterSupportedCamps,
+            // ...fiterSupportedCamps,
             ...manageSupportArr,
             ...resultFilterSupportCamp,
           ]);
