@@ -9,12 +9,12 @@ import { useRouter } from "next/router";
 
 const TopicCreationBTN = () => {
   const router = useRouter();
-  const { loggedInUser } = useSelector((state: RootState) => ({
-    loggedInUser: state.auth.loggedInUser,
+  const { authenticated } = useSelector((state: RootState) => ({
+    authenticated: state.auth.authenticated,
   }));
   return (
     <div className={styles.topicBTN} key="topic-btn-area">
-      {loggedInUser ? (
+      {authenticated ? (
         <>
           <Link href="/create/topic" key="create-topic-btn">
             <a className="ant-btn">
