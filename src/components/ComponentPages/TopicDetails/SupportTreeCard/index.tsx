@@ -205,7 +205,7 @@ const SupportTreeCard = ({
       dispatch(setManageSupportUrlLink(manageSupportPath));
       dispatch(setManageSupportStatusCheck(true));
       setSelectNickId(null);
-      // showModalSupportCamps();
+      showModalSupportCamps();
     } else {
       dispatch(showLoginModal());
     }
