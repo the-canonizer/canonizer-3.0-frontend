@@ -125,6 +125,7 @@ export default function SearchSideBar() {
               }}
               passHref
             >
+              <a>
               <Button
                 size="large"
                 className={
@@ -145,6 +146,7 @@ export default function SearchSideBar() {
                 />
                 <a>Nickname</a>
               </Button>
+              </a>
             </Link>
           </div>
         )}
