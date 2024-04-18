@@ -13,7 +13,7 @@ import {
 import { LeftOutlined } from "@ant-design/icons";
 import { RootState } from "../../../store";
 import { useDispatch, useSelector } from "react-redux";
-import { setIsReviewCanonizedTopics } from "../../../store/slices/filtersSlice";
+import { setIsReviewCanonizedTopics, setSelectAlgoBrowsePage } from "../../../store/slices/filtersSlice";
 import Link from "next/link";
 
 import { useCookies } from "react-cookie";
@@ -263,6 +263,7 @@ const CreateTopic = () => {
   const selectAlgorithm = (value) => {
     setCookie("canAlgo", value, { path: "/" });
     dispatch(setFilterCanonizedTopics({ algorithm: value }));
+    dispatch(setSelectAlgoBrowsePage(true))
     onChangeRoute(
       filterObject?.filterByScore,
       value,
