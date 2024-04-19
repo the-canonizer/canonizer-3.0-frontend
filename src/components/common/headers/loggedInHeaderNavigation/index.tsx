@@ -29,6 +29,14 @@ import ProfileInfoTab from "./profileInfoTab";
 
 const { Header } = Layout;
 
+export const logOut = async (router) => {
+  const res = await logout();
+
+  if (res?.status_code === 200) {
+    router.push("/", null, { shallow: true });
+  }
+};
+
 const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
   const { loggedInUser, list } = useSelector((state: RootState) => ({
     loggedInUser: state.auth.loggedInUser,
@@ -86,17 +94,9 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
-  const logOut = async () => {
-    const res = await logout();
-
-    if (res?.status_code === 200) {
-      router.push("/", null, { shallow: true });
-    }
-  };
-
   const onClick = ({ key }) => {
     if (key == 3) {
-      logOut();
+      logOut(router);
     }
   };
 
