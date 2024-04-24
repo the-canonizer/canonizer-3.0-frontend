@@ -215,6 +215,16 @@ const TimelineInfoBar = ({
     changeGoneLive,
   ]);
 
+  useEffect(()=>{
+    let topicName = router?.query?.camp.at(0).split("-").at(1)
+    let topicId = router?.query?.camp.at(0).split("-").at(0);
+    let URL = `/topic/${topicId}-${replaceSpecialCharacters(breadCrumbRes?.topic_name,"-")}/1-Agreement`;
+    
+    if(breadCrumbRes && topicName != breadCrumbRes?.topic_name){
+      router.push(URL, null, { shallow: true });
+    }
+  },[breadCrumbRes])
+
   return (
     <>
       <div
