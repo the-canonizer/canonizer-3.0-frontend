@@ -357,7 +357,7 @@ const SupportTreeCard = ({
                           "treeListItemNumber " + styles.treeListItemNumber
                         }
                       >
-                        {campRecord.is_archive?0:is_checked && isUserAuthenticated
+                        {campRecord?.is_archive?0:is_checked && isUserAuthenticated
                           ? data[item].full_score?.toFixed(2)
                           : data[item].score?.toFixed(2)}
                         {/* {data[item].score?.toFixed(2)} */}
@@ -410,7 +410,7 @@ const SupportTreeCard = ({
                               asof == "bydate" ||
                               isRemovingSupport ||
                               !isUserAuthenticated ||
-                              campRecord.is_archive
+                              campRecord?.is_archive
                             }
                             onClick={() => {
                               currentGetCheckSupportExistsData.is_delegator

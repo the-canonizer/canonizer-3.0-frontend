@@ -93,6 +93,8 @@ const NetworkConstants = {
     GlobalSearchUploadedFile: `${BaseCanonizerApiUrl}/global-search-uploaded-files`,
     //Canonizer Global Search
     canonizerGlobalSearch: `${BaseCanonizerApiUrl}/search`,
+    //Advance Filter Search
+    advanceFilterSearch: `${BaseCanonizerApiUrl}/search-filter`,
     //AllSupportedCampsList
     AllSupportedCampsList: `${BaseCanonizerApiUrl}/user/supports/`,
 

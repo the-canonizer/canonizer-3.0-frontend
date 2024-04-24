@@ -196,6 +196,23 @@ export const uploadProfileImage = async (reqbody) => {
   return res;
 };
 
+export const AdvanceFilterSeacrhApi = async (body) => {
+  try {
+    const res = await NetworkCall.fetch(UserRequest.AdvanceFilterSeacrh(body));
+    return res;
+  } catch (err) {
+    handleError(err);
+    if (
+      err &&
+      err.error &&
+      err.error.data &&
+      err.error.data.status_code === 400
+    ) {
+      return err.error.data;
+    }
+  }
+};
+
 export const deleteProfileImage = () => {
   const { auth } = store.getState();
   const res = NetworkCall.fetch(

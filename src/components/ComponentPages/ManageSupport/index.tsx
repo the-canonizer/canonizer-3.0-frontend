@@ -32,7 +32,8 @@ const ManageSupport = ({
   setGetManageSupportLoadingIndicator,
   getManageSupportLoadingIndicator,
   getCheckStatusAPI,
-}: any) => {
+  isManageSupportPage=true,
+}:any) => {
   const { asof, asofdate } = useSelector((state: RootState) => ({
     asofdate: state.filters?.filterObject?.asofdate,
     asof: state?.filters?.filterObject?.asof,

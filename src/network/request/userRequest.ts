@@ -627,4 +627,14 @@ export default class UserRequest extends Request {
       authToken
     );
   }
+
+  static AdvanceFilterSeacrh(body) {
+    return new Request(
+      K.Network.URL.advanceFilterSearch,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {}
+    );
+  }
 }
