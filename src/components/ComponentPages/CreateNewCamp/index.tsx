@@ -16,7 +16,7 @@ import messages from "../../../messages";
 import CreateNewCampUI from "./UI/CampUI";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
 import isAuth from "../../../hooks/isUserAuthenticated";
-import { setShowDrawer } from "src/store/slices/filtersSlice";
+import { setIsReviewCanonizedTopics, setShowDrawer } from "src/store/slices/filtersSlice";
 import { RootState } from "src/store";
 import DataNotFound from "../DataNotFound/dataNotFound";
 
@@ -136,6 +136,10 @@ const CreateNewCamp = ({
 
   const onFinish = async (values: any) => {
     setIsLoading(true);
+    dispatch(setIsReviewCanonizedTopics({
+      asofdate: Date.now() / 1000,
+      asof: "default",
+    }));
     if (!values.camp_name?.trim()) {
       form.setFields([
         {
