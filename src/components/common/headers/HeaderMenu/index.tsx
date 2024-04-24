@@ -323,7 +323,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
                         <div className="d-flex flex-wrap w-100 mb-1">
                           <div>
                             <HighlightedForCampStatement
-                              text={x.type_value}
+                              text={x.type_value.replace(/<p>/g, "")}
                               highlight={searchValue}
                             />
                           </div>

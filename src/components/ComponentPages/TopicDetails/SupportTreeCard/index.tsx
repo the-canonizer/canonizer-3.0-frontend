@@ -205,11 +205,14 @@ const SupportTreeCard = ({
   };
 
   const handleClickSupportCheck = () => {
+    const q: any = router?.query;
     if (isUserAuthenticated) {
       dispatch(setManageSupportUrlLink(manageSupportPath));
       dispatch(setManageSupportStatusCheck(true));
       setSelectNickId(null);
-      showModalSupportCamps();
+      q &&
+      q.from &&
+      q.from.includes("notify_") ? null : showModalSupportCamps();
     } else {
       dispatch(showLoginModal());
     }
