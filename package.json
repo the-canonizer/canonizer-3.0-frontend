@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "dev": "sh bin/dev.sh",
-    "build": "sh bin/build.sh",
+    "build": "sh bin/build.sh && node ./update-build.mjs",
     "start": "sh bin/start.sh",
     "lint": "next lint",
     "format": "prettier --write \"src/**/*.{ts,tsx}\"",
