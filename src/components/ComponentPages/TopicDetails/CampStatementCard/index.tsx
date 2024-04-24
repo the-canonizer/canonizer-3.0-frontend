@@ -36,10 +36,27 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
       isButton={false}
     />
   ) : (
+    <div onClick={(e) => {
+      e.stopPropagation();
+      if (campStatement[0]?.in_review_changes > 0 &&
+        campRecord?.is_archive == 0 ){
+          router.push(
+            `/statement/history/${replaceSpecialCharacters(
+              router?.query?.camp[0],
+              "-"
+            )}/${replaceSpecialCharacters(
+              router?.query?.camp[1] ?? "1-Agreement",
+              "-"
+            )}`
+          );
+        }
+    }}>
     <Collapse
       defaultActiveKey={["1"]}
       expandIconPosition="right"
       className="topicDetailsCollapse"
+      style={{ cursor: campStatement[0]?.in_review_changes > 0 &&
+        campRecord?.is_archive == 0?"pointer": null}}
     >
       <Panel
         className={`campStatementPanel header-bg-color-change ${backGroundColorClass}`}
@@ -56,18 +73,6 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
               {campStatement[0]?.in_review_changes > 0 &&
               campRecord?.is_archive == 0 ? (
                 <div
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    router.push(
-                      `/statement/history/${replaceSpecialCharacters(
-                        router?.query?.camp[0],
-                        "-"
-                      )}/${replaceSpecialCharacters(
-                        router?.query?.camp[1] ?? "1-Agreement",
-                        "-"
-                      )}`
-                    );
-                  }}
                 >
                   <Popover
                     content={
@@ -150,6 +155,7 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
         </div>
       </Panel>
     </Collapse>
+    </div>
   );
 };
 export default CampStatementCard;
