@@ -261,14 +261,18 @@ const SupportTreeCard = ({
 
   const isCampLeader = () => {
     let campLeaderId = campSupportingTree?.find(obj => obj["camp_leader"] === true)?.nick_name_id;
-    let campLeaderExist = false
+    let delegatorId = campSupportingTree?.find(obj => obj["camp_leader"] === true)?.delegates?.at(0)?.nick_name_id;
+    
+    let campLeaderExist = false;
+    let delegateSupportExist = false;
     
     if (isUserAuthenticated) {
       if(campLeaderId && userNickNames){
         campLeaderExist = !!(userNickNames.find(obj => obj.id === campLeaderId))
+        delegateSupportExist = !!(userNickNames.find(obj => obj.id === delegatorId))
       }
     }
-    return campLeaderExist;
+    return campLeaderExist || delegateSupportExist;
   }
 
   const SignModal = () => {
