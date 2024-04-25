@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "src/store";
 import {
   setFilterCanonizedTopics,
+  setSelectAlgoBrowsePage,
   setViewThisVersion,
 } from "src/store/slices/filtersSlice";
 import {
@@ -14,6 +15,7 @@ import {
 import { useRouter } from "next/router";
 import styles from "./latestFilter.module.scss";
 import { getTreesApi } from "src/network/api/campDetailApi";
+import { useEffect } from "react";
 
 const LatestFilter = () => {
   const router = useRouter();
@@ -33,7 +35,8 @@ const LatestFilter = () => {
     asof,
     algorithm,
     viewThisVersionCheck,
-    asofdate
+    asofdate,
+    selectAlgoBrowsePage
   } = useSelector((state: RootState) => ({
     is_camp_archive_checked: state?.utils?.archived_checkbox,
     loading: state?.loading?.loading,
@@ -52,6 +55,7 @@ const LatestFilter = () => {
     algorithm: state.filters?.filterObject?.algorithm,
     asofdate: state.filters?.filterObject?.asofdate,
     viewThisVersionCheck: state?.filters?.viewThisVersionCheck,
+    selectAlgoBrowsePage:state?.filters?.selectAlgoBrowsePage,
   }));
   const lable = algorithms?.find((obj) => {
     return obj.algorithm_key == selectedAlgorithm;
@@ -168,6 +172,7 @@ const LatestFilter = () => {
       filterObject?.namespace_id,
       viewThisVersion
     );
+    dispatch(setFilterCanonizedTopics({ algorithm: "blind_popularity" }));
   };
   const reqBodyForService = {
     topic_num: router?.query?.camp[0]?.split("-")[0],
@@ -184,7 +189,27 @@ const LatestFilter = () => {
   const revertScore = ()=>{
      getTreesApi(reqBodyForService)
   }
+  const reqBody = {
+    topic_num: router?.query?.camp[0]?.split("-")[0],
+    camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
+    asOf: asof,
+    asofdate:
+      asof == "default" || asof == "review"
+        ? Date.now() / 1000
+        : asofdate,
+    algorithm: algorithm,
+    update_all: 1,
+    fetch_topic_history: viewThisVersionCheck ? 1 : null,
+  };
+  const revertScoreAndAlgo = ()=>{
+     getTreesApi(reqBody)
+  }
+
+  useEffect(()=>{
+    revertScoreAndAlgo()
+  },[selectAlgoBrowsePage])
   const clearAllFilter = async() => {
+    dispatch(setSelectAlgoBrowsePage(false))
     dispatch(setArchivedCheckBox(false));
     dispatch(setScoreCheckBox(false));
     dispatch(
@@ -192,6 +217,7 @@ const LatestFilter = () => {
         filterByScore: 0,
       })
     );
+    dispatch(setFilterCanonizedTopics({ algorithm: "blind_popularity" }));
     dispatch(setArchivedCheckBox(false));
     dispatch(setArchivedCheckBox(false));
     filterForAsofDate();
