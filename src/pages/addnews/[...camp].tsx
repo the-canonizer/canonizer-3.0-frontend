@@ -8,6 +8,7 @@ function AddNewsPage() {
       <Layout>
         <aside className="leftSideBar miniSideBar topicPageNewLayoutSidebar">
           <SideBarNoFilter />
+          <p></p>
         </aside>
         <div className="pageContentWrap">
           <Add edit={false} />
