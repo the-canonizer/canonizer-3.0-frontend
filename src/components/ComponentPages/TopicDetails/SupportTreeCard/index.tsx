@@ -114,6 +114,8 @@ const SupportTreeCard = ({
   const [currentAlgo, setCurrentAlgo] = useState<string>("");
   const [selectNickId, setSelectNickId] = useState(null);
   const [mainComponentKey, setMainComponentKey] = useState(0);
+  const [campLeaderID, setCampLeaderId] = useState(null);
+  const [delegatorID, setDelegatorID] = useState(null);
   const [loadingIndicatorSupport, setLoadingIndicatorSupport] = useState(false);
   const [
     getManageSupportLoadingIndicator,
@@ -262,6 +264,15 @@ const SupportTreeCard = ({
     });
   };
 
+  useEffect(()=>{
+    let campLeaderId = (campSupportingTree?.find(obj => obj["camp_leader"] === true)?.nick_name_id);
+    let delegatorId = (campSupportingTree?.find(obj => obj["camp_leader"] === true)?.delegates?.at(0)?.nick_name_id);
+
+    setCampLeaderId(campLeaderId)
+    setDelegatorID(delegatorId)
+  
+  },[campSupportingTree, campLeaderID, delegatorID])
+
   const isCampLeader = () => {
     let campLeaderId = campSupportingTree?.find(obj => obj["camp_leader"] === true)?.nick_name_id;
     let delegatorId = campSupportingTree?.find(obj => obj["camp_leader"] === true)?.delegates?.at(0)?.nick_name_id;
@@ -276,6 +287,16 @@ const SupportTreeCard = ({
       }
     }
     return campLeaderExist || delegateSupportExist;
+  }
+
+  const renderPopupMsg = () => {
+    if(isUserAuthenticated && delegatorID){
+      return "You can't sign the petition in this camp, because you have signed the current camp leader"
+    }else if(isUserAuthenticated && campLeaderID){
+      return "You can't sign the petition in this camp, because you are the current camp leader" 
+    }else{
+      return "Log in to participate"
+    }
   }
 
   const SignModal = () => {
@@ -578,7 +599,7 @@ const SupportTreeCard = ({
                   overlayStyle={{
                     width: "20%"
                   }}
-                 content={isUserAuthenticated? "You can't sign the petition in this camp, because you are the current camp leader of this camp." : "Log in to participate"}
+                 content={renderPopupMsg()}
                 >
                 <a className="printHIde">
                   <Button className="btn-green" disabled={true} onClick={()=>dispatch(showLoginModal())}>
