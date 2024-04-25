@@ -593,9 +593,6 @@ const SupportTreeCard = ({
               {isCampLeader() ?(
                 <>
                 <Popover
-                  overlayStyle={{
-                    width: "20%"
-                  }}
                  content={renderPopupMsg()}
                 >
                 <a className="printHIde">
