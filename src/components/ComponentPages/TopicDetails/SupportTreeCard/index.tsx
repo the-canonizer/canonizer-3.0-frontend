@@ -288,7 +288,7 @@ const SupportTreeCard = ({
 
   const renderPopupMsg = () => {
     if(isUserAuthenticated && delegatorID){
-      return "You can't sign the petition in this camp, because you have signed the current camp leader"
+      return "You've already signed to the camp leader"
     }else if(isUserAuthenticated && campLeaderID){
       return "You can't sign the petition in this camp, because you are the current camp leader" 
     }else{
