@@ -146,7 +146,7 @@ const Search = () => {
                       const jsonData = JSON.parse(
                         x.breadcrumb_data
                       ) as Array<any>;
-                      const parsedData = jsonData.reduce(
+                      const parsedData = jsonData?.reduce(
                         (accumulator, currentVal, index) => {
                           const accIndex = index + 1;
                           accumulator[index] = {
@@ -163,9 +163,9 @@ const Search = () => {
                       return (
                         <>
                           <li>
-                            <a href={jsonData[0][1]?.camp_link}>
+                            <a href={jsonData?.[0]?.[1]?.camp_link}>
                               <h3 className={styles.statement_heading}>
-                                {jsonData.length > 1
+                                {jsonData?.length > 1
                                   ? jsonData?.[0]?.[1]?.camp_name
                                   : jsonData?.[0]?.[1]?.topic_name}
                               </h3>
@@ -185,7 +185,7 @@ const Search = () => {
                               ></div>
                             </div>
                             <div className={styles.tags_all}>
-                              {parsedData.reverse().map((obj, index) => {
+                              {parsedData?.reverse().map((obj, index) => {
                                 return (
                                   <>
                                     <a
