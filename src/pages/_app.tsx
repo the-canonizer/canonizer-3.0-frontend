@@ -23,7 +23,6 @@ import { metaTagsApi } from "src/network/api/metaTagsAPI";
 import { checkTopicCampExistAPICall } from "src/network/api/campDetailApi";
 import { getCookies } from "src/utils/generalUtility";
 import { createToken } from "src/network/api/userApi";
-import withClearCache from "src/components/common/ClearCache/ClearCache";
 
 type AppOwnProps = { meta: any; canonical_url: string; returnURL: string };
 
@@ -436,7 +435,6 @@ WrappedApp.getInitialProps = async (
     canonical_url,
   };
 };
-console.log('App ====>')
 export default wrapper.withRedux(WrappedApp);
 
 // const ClearCacheApp = withClearCache(WrappedApp);
