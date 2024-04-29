@@ -95,7 +95,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
     }
     const escapedHighlight = highlight.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
     const words = highlight.split(/\s+/).map(word => word.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&"));
-    const regex = new RegExp(`\\b(${words.join('|')})\\b`, "gi");
+    const regex = new RegExp(`(${words.join('|')})`, "gi");
     const parts = text.split(regex);
     return (
       <>
