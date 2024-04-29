@@ -437,6 +437,6 @@ WrappedApp.getInitialProps = async (
   };
 };
 
-const ClearCacheApp = withClearCache(WrappedApp)
+// const ClearCacheApp = withClearCache(WrappedApp)
 
-export default wrapper.withRedux(ClearCacheApp);
+export default wrapper.withRedux(WrappedApp);
