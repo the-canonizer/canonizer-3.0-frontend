@@ -283,13 +283,14 @@ const SupportTreeCard = ({
         delegateSupportExist = !!(userNickNames.find(obj => obj.id === delegatorID))
       }
     }
-    return campLeaderExist || delegateSupportExist;
+    return {campLeaderExist , delegateSupportExist};
   }
 
   const renderPopupMsg = () => {
-    if(isUserAuthenticated && delegatorID){
+    let {campLeaderExist , delegateSupportExist} = isCampLeader();
+    if(isUserAuthenticated && delegateSupportExist){
       return "You've already signed to the camp leader"
-    }else if(isUserAuthenticated && campLeaderID){
+    }else if(isUserAuthenticated && campLeaderExist){
       return "You can't sign the petition in this camp, because you are the current camp leader" 
     }else{
       return "Log in to participate"
@@ -590,7 +591,7 @@ const SupportTreeCard = ({
                 }
               }}
             >
-              {isCampLeader() ?(
+              {isCampLeader()?.campLeaderExist || isCampLeader()?.delegateSupportExist ?(
                 <>
                 <Popover
                  content={renderPopupMsg()}
