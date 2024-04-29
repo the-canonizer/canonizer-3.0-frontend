@@ -436,6 +436,7 @@ WrappedApp.getInitialProps = async (
     canonical_url,
   };
 };
+console.log('App ====>')
 export default wrapper.withRedux(WrappedApp);
 
 // const ClearCacheApp = withClearCache(WrappedApp);
