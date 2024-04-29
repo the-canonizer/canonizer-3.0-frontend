@@ -988,7 +988,7 @@ export default function AddOrManage({ add }: any) {
                                       (
                                     </span>
                                     <Link
-                                      href={`/user/supports/${currentCampLeader?.id}?canon=${filterObject.namespace_id}`}
+                                      href={`/user/supports/${campLeaderData && campLeaderData?.find((CL) => CL?.camp_leader === true)?.nick_name_id}}?canon=${filterObject.namespace_id}`}
                                     >
                                       <a>{campLeaderData && campLeaderData?.find((CL) => CL?.camp_leader === true)?.nick_name}</a>
                                     </Link>
