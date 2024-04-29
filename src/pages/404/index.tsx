@@ -2,6 +2,7 @@ import Layout from "src/hoc/layout";
 import My404 from "src/components/ComponentPages/404";
 
 const My404Page = () => {
+  //
   return (
     <Layout>
       <My404 />
