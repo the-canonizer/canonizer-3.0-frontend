@@ -23,6 +23,8 @@ import { metaTagsApi } from "src/network/api/metaTagsAPI";
 import { checkTopicCampExistAPICall } from "src/network/api/campDetailApi";
 import { getCookies } from "src/utils/generalUtility";
 import { createToken } from "src/network/api/userApi";
+import moment from "moment";
+import { logOut } from "@/components/common/headers/loggedInHeaderNavigation";
 
 type AppOwnProps = { meta: any; canonical_url: string; returnURL: string };
 
@@ -37,6 +39,54 @@ function WrappedApp({
     [_, setIsAuthenticated, isAuthenticatedRef] = useState(
       !!(getCookies() as any)?.loginToken
     );
+    const [isLatestBuildDate, setIsLatestBuildDate] = useState(false);
+
+    const buildDateGreaterThan = (latestDate, currentDate) => {
+      const momLatestDateTime = moment(latestDate);
+      const momCurrentDateTime = moment(currentDate);
+    
+      if (momLatestDateTime.isAfter(momCurrentDateTime)) {
+        return true;
+      } else {
+        return false;
+      }
+    };
+
+    const refreshCacheAndReload = () => {
+      localStorage.clear();
+      logOut(router)
+      if (caches) {
+        caches.keys().then((names) => {
+          for (const name of names) {
+            caches.delete(name);
+          }
+        });
+      }
+    };
+
+
+  useEffect(()=>{
+    fetch("/meta.json")
+    .then((response) => response.json())
+    .then((meta) => {
+      const latestVersionDate = meta.buildDate;
+      const currentVersionDate = localStorage.getItem("build_number");
+
+      const shouldForceRefresh = buildDateGreaterThan(
+        latestVersionDate,
+        +currentVersionDate ?? 0
+      );
+      
+      if (shouldForceRefresh) {
+        setIsLatestBuildDate(false);
+        refreshCacheAndReload();
+        localStorage.setItem("build_number", latestVersionDate);
+      } else {
+        setIsLatestBuildDate(true);
+      }
+    });
+
+  },[])
 
   useEffect(() => {
     const fetchToken = async () => {
@@ -436,7 +486,3 @@ WrappedApp.getInitialProps = async (
   };
 };
 export default wrapper.withRedux(WrappedApp);
-
-// const ClearCacheApp = withClearCache(WrappedApp);
-
-// export default wrapper.withRedux(ClearCacheApp);
