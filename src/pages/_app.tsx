@@ -44,11 +44,8 @@ function WrappedApp({
       const momLatestDateTime = moment(latestDate);
       const momCurrentDateTime = moment(currentDate);
     
-      if (momLatestDateTime.isAfter(momCurrentDateTime)) {
-        return true;
-      } else {
-        return false;
-      }
+      
+        return !!(momLatestDateTime.isAfter(momCurrentDateTime));
     };
 
     const refreshCacheAndReload = () => {
