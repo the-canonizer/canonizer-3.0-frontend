@@ -310,7 +310,7 @@ const SupportTreeCard = ({
                           : data[item].score?.toFixed(2)}
                         {/* {data[item].score?.toFixed(2)} */}
                       </span>
-                      {userNickNameList?.length>0 &&!userNickNameList.includes(data[item].nick_name_id) ? (
+                      {userNickNameList?.length>0 &&!userNickNameList.includes(data[item].nick_name_id)  || !isUserAuthenticated? (
                         <>
                           {loggedInUserDelegate ||
                           (loggedInUserChild &&
