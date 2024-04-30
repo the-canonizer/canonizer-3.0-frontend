@@ -21,6 +21,7 @@ import OTPVerify from "../Registration/UI/otp";
 import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
 import { setValue } from "src/store/slices/utilsSlice";
 import messages from "src/messages";
+import { setManageSupportStatusCheck } from "src/store/slices/campDetailSlice";
 
 const Login = ({ isModal, isTest = false }: any) => {
   const remember = useSelector((state: RootState) => state.utils.remember_me);
@@ -42,7 +43,7 @@ const Login = ({ isModal, isTest = false }: any) => {
 
   const closeModal = () => {
     dispatch(hideLoginModal());
-
+    dispatch(setManageSupportStatusCheck(false))
     isOtpScreen ? otpForm.resetFields() : form.resetFields();
     setIsOtpScreen(false);
     setErrorMsg("");
