@@ -39,7 +39,6 @@ function WrappedApp({
     [_, setIsAuthenticated, isAuthenticatedRef] = useState(
       !!(getCookies() as any)?.loginToken
     );
-    const [isLatestBuildDate, setIsLatestBuildDate] = useState(false);
 
     const buildDateGreaterThan = (latestDate, currentDate) => {
       const momLatestDateTime = moment(latestDate);
@@ -54,7 +53,6 @@ function WrappedApp({
 
     const refreshCacheAndReload = () => {
       localStorage.clear();
-      logOut(router)
       if (caches) {
         caches.keys().then((names) => {
           for (const name of names) {
@@ -62,6 +60,7 @@ function WrappedApp({
           }
         });
       }
+      logOut(router)
     };
 
 
@@ -78,11 +77,8 @@ function WrappedApp({
       );
       
       if (shouldForceRefresh) {
-        setIsLatestBuildDate(false);
         refreshCacheAndReload();
         localStorage.setItem("build_number", latestVersionDate);
-      } else {
-        setIsLatestBuildDate(true);
       }
     });
 
