@@ -24,6 +24,9 @@ export default function HomeSideBar({
     isModalOpenSupportCamps: state?.topic?.isModalOpenSupportCamps,
   }));
 
+  console.log('isModalOpenSupportCamps---',isModalOpenSupportCamps);
+  
+
   const [drawerIsVisible, setDrawerIsVisible] = useState(drawerShow);
   const [isDrawerOpen, setIsDrawerOpen] = useState("");
 

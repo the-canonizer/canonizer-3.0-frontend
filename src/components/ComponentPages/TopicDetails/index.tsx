@@ -52,7 +52,6 @@ import {
   removeSupportedCampsEntireTopic,
 } from "src/network/api/userApi";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
-// import { SupportTreeTotalScore } from "src/network/api/campDetailApi";
 import InfoBar from "./CampInfoBar/infoBar";
 import { fallBackSrc } from "src/assets/data-images";
 import LatestFilter from "../LatestFilter";
@@ -66,9 +65,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
   const [loadingIndicator, setLoadingIndicator] = useState(false);
   const [getTreeLoadingIndicator, setGetTreeLoadingIndicator] = useState(false);
   const [getCheckSupportStatus, setGetCheckSupportStatus] = useState({});
-  // const [totalSupportScore, setTotalSupportScore] = useState<number>(0);
   const totalSupportScore = 0;
-  // const [totalFullSupportScore, setTotalFullSupportScore] = useState<number>(0);
   const totalFullSupportScore = 0;
   const [topicList, setTopicList] = useState([]);
   const [isSupportTreeCardModal, setIsSupportTreeCardModal] = useState(false);

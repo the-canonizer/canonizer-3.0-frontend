@@ -294,7 +294,6 @@ const InfoBar = ({
               e?.preventDefault();
               e?.stopPropagation();
             }}
-            // disabled={asof == "bydate" || campRecord?.is_archive}
             passHref
           >
             <div
