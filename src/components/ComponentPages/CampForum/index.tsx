@@ -84,8 +84,6 @@ const ForumComponent = ({
     currentPost: state.forum.currentPost,
   }));
 
-  console.log(campRecord, "topicRecord-----", topicRecord);
-
   const setCurrentThread = (data) => dispatch(setThread(data));
 
   const setCurrentPost = (data) => dispatch(setPost(data));
@@ -472,7 +470,7 @@ const ForumComponent = ({
           camp_num: paramsList["camp_num"] || campRecord?.camp_num,
           camp_name: campRecord?.camp_name,
         };
-        
+
         res = await updateThread(body, +threadUpdateOthers?.id);
 
         if (res && res.status_code === 200) {
