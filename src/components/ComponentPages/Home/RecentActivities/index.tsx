@@ -423,36 +423,19 @@ export default function RecentActivities() {
                             <br />
                             <Tooltip
                               placement={"topLeft"}
-                              title={
-                                // decodedProperties?.topic_name
-                                //   ? `Topic: ${decodedProperties?.topic_name}` +
-                                //     (decodedProperties?.camp_name
-                                //       ? ` | Camp: ${decodedProperties?.camp_name}`
-                                //       : "")
-                                //   :
-
-                                handleTextOverflow(
-                                  decodedProperties?.description
-                                )
-                              }
+                              title={handleTextOverflow(
+                                decodedProperties?.description
+                              )}
                             >
-                              {
-                                // decodedProperties?.topic_name
-                                //   ? `Topic: ${decodedProperties?.topic_name}` +
-                                //     (decodedProperties?.camp_name
-                                //       ? ` | Camp: ${decodedProperties?.camp_name}`
-                                //       : "")
-                                //   :
-                                convert(
-                                  decodedProperties?.description?.replace(
-                                    /<img[^>]*>/gi,
-                                    ""
-                                  ),
-                                  {
-                                    wordwrap: 130,
-                                  }
-                                )
-                              }
+                              {convert(
+                                decodedProperties?.description?.replace(
+                                  /<img[^>]*>/gi,
+                                  ""
+                                ),
+                                {
+                                  wordwrap: 130,
+                                }
+                              )}
                             </Tooltip>
                           </Text>
                           <Text className={styles.secondary} type="secondary">
