@@ -84,7 +84,7 @@ const ForumComponent = ({
     currentPost: state.forum.currentPost,
   }));
 
-  console.log("topicRecord-----", topicRecord);
+  console.log(campRecord, "topicRecord-----", topicRecord);
 
   const setCurrentThread = (data) => dispatch(setThread(data));
 
@@ -470,8 +470,9 @@ const ForumComponent = ({
           title: values?.threadName?.trim(),
           topic_num: paramsList["topic_num"] || topicRecord?.topic_num,
           camp_num: paramsList["camp_num"] || campRecord?.camp_num,
-          camp_name: paramsList["camp_name"] || campRecord?.camp_name,
+          camp_name: campRecord?.camp_name,
         };
+        
         res = await updateThread(body, +threadUpdateOthers?.id);
 
         if (res && res.status_code === 200) {
@@ -551,8 +552,8 @@ const ForumComponent = ({
       thread_id: +q.id,
       camp_num: +camp_num,
       topic_num: +topic_num,
-      topic_name: topicArr.join(" "),
-      camp_name: campArr.join(" "),
+      topic_name: topicRecord?.topic_name,
+      camp_name: campRecord?.camp_name,
     };
 
     let res = null;
