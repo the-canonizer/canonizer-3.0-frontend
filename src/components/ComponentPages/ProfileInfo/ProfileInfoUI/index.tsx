@@ -1,16 +1,14 @@
 import React from "react";
+
 import styles from "./ProfileInfo.module.scss";
-import VerifyMobileNumber from "../../Form/VerifyMobileNumberForm";
+
 import ProfileInfoForm from "../../Form/ProfileInfoForm";
 
 function ProfileInfoUI({
   form,
   mobileCarrier,
   onFinish,
-  // onFinishFailed,
   formVerify,
-  // onVerifyClick,
-  // onOTPBtnClick,
   isOTPModalVisible,
   handleOTPCancel,
   otp,
@@ -29,25 +27,10 @@ function ProfileInfoUI({
   userProfileSkeletonV,
   setIsOTPModalVisible,
   setOTP,
+  setToggleVerifyButton,
 }: any) {
   return (
     <section className={styles.profileInfo_wrapper}>
-      <VerifyMobileNumber
-        mobileCarrier={mobileCarrier}
-        formVerify={formVerify}
-        // onVerifyClick={onVerifyClick}
-        // onOTPBtnClick={onOTPBtnClick}
-        isOTPModalVisible={isOTPModalVisible}
-        setIsOTPModalVisible={setIsOTPModalVisible}
-        handleOTPCancel={handleOTPCancel}
-        otp={otp}
-        handleChangeOTP={handleChangeOTP}
-        toggleVerifyButton={toggleVerifyButton}
-        handleMobileNumberChange={handleMobileNumberChange}
-        userProfileSkeletonV={userProfileSkeletonV}
-        setOTP={setOTP}
-      />
-
       <ProfileInfoForm
         form={form}
         onFinish={onFinish}
@@ -60,6 +43,18 @@ function ProfileInfoUI({
         address={address}
         disableButton={disableButton}
         postalCodeDisable={postalCodeDisable}
+        mobileCarrier={mobileCarrier}
+        handleMobileNumberChange={handleMobileNumberChange}
+        toggleVerifyButton={toggleVerifyButton}
+        formVerify={formVerify}
+        isOTPModalVisible={isOTPModalVisible}
+        handleOTPCancel={handleOTPCancel}
+        otp={otp}
+        handleChangeOTP={handleChangeOTP}
+        userProfileSkeletonV={userProfileSkeletonV}
+        setIsOTPModalVisible={setIsOTPModalVisible}
+        setOTP={setOTP}
+        setToggleVerifyButton={setToggleVerifyButton}
       />
     </section>
   );
