@@ -200,6 +200,19 @@ const InfoBar = ({
 
   const campForumDropdownMenu = (
     <Menu className={styles.campForumDropdownMenu}>
+      <Menu.Item
+        icon={
+          <span className={styles.svgIconCode}>
+            <StockOutlined />
+          </span>
+        }
+      >
+        {isTopicPage && (
+          <a onClick={eventLinePath}>
+            <span>Event Line</span>
+          </a>
+        )}
+      </Menu.Item>
       {isUserAuthenticated && is_admin && (
         <Menu.Item key="0" icon={<i className="icon-newspaper"></i>}>
           {router?.pathname == "/support/[...manageSupport]" ? (
@@ -410,19 +423,6 @@ const InfoBar = ({
         {isTopicPage && (
           <a onClick={onPrintCamp}>
             <span>Print</span>
-          </a>
-        )}
-      </Menu.Item>
-      <Menu.Item
-        icon={
-          <span className={styles.svgIconCode}>
-            <StockOutlined />
-          </span>
-        }
-      >
-        {isTopicPage && (
-          <a onClick={eventLinePath}>
-            <span>Event Line</span>
           </a>
         )}
       </Menu.Item>
