@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Tree, Tooltip, Popover, Typography } from "antd";
+import { Tree, Tooltip, Popover, Typography, Button } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -534,6 +534,9 @@ const CampTree = ({
     let uniqueArraytoString = uniqueArray.map(String);
     return uniqueArraytoString;
   };
+  const eventLinePath = () => {
+    router?.push(router?.asPath.replace("topic", "eventline"));
+  };
 
   return tree?.at(0) ? (
     (showTree && tree?.at(0)["1"]?.title != "" && defaultExpandKeys) ||
@@ -542,7 +545,18 @@ const CampTree = ({
         <Typography.Paragraph
           className={`${styles.topicTitleStyle} ${styles.topicTitle}`}
         >
+          <div className="event-line-wrapper">
           <span className="normal">Topic : </span>
+          <Button
+                            type="primary"
+                            size="small"
+                            onClick={eventLinePath}
+                            className={styles.btnCampForum}
+                            id="camp-forum-btn"
+                          >
+                            Event Line
+                          </Button>
+          </div>
           {tree?.length && tree[0] ? (
             <Link
               href={`${

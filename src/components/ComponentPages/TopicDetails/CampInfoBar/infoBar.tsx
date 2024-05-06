@@ -23,6 +23,7 @@ import {
   FileTextOutlined,
   HeartOutlined,
   PrinterOutlined,
+  StockOutlined
 } from "@ant-design/icons";
 import Link from "next/link";
 import {
@@ -138,6 +139,9 @@ const InfoBar = ({
         router?.query?.camp[1] || "1"
       }/threads`,
     });
+  };
+  const eventLinePath = () => {
+    router?.push(router?.asPath.replace("topic", "eventline"));
   };
 
   const campOrTopicScribe = async (isTopic: Boolean) => {
@@ -406,6 +410,19 @@ const InfoBar = ({
         {isTopicPage && (
           <a onClick={onPrintCamp}>
             <span>Print</span>
+          </a>
+        )}
+      </Menu.Item>
+      <Menu.Item
+        icon={
+          <span className={styles.svgIconCode}>
+            <StockOutlined />
+          </span>
+        }
+      >
+        {isTopicPage && (
+          <a onClick={eventLinePath}>
+            <span>Event Line</span>
           </a>
         )}
       </Menu.Item>
