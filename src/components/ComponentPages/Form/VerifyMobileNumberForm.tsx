@@ -125,7 +125,7 @@ function VerifyMobileNumberForm({
                         style={{ marginLeft: "5px" }}
                       >
                         {" "}
-                        (for mobile otp verification)
+                        (for mobile OTP verification)
                       </span>
                     </>
                   }
