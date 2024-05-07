@@ -1,8 +1,22 @@
 import { useState, useEffect, useRef, Fragment } from "react";
-import { Button, Popover, Spin, Tooltip, Typography, Dropdown, Menu } from "antd";
+import {
+  Button,
+  Popover,
+  Spin,
+  Tooltip,
+  Typography,
+  Dropdown,
+  Menu,
+} from "antd";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
-import { DoubleRightOutlined, DoubleLeftOutlined, HeartOutlined, FileTextOutlined, MoreOutlined } from "@ant-design/icons";
+import {
+  DoubleRightOutlined,
+  DoubleLeftOutlined,
+  HeartOutlined,
+  FileTextOutlined,
+  MoreOutlined,
+} from "@ant-design/icons";
 import Link from "next/link";
 import moment from "moment";
 
@@ -11,12 +25,14 @@ import styles from "../topicDetails.module.scss";
 import { RootState } from "src/store";
 import CustomSkelton from "src/components/common/customSkelton";
 import { setManageSupportStatusCheck } from "src/store/slices/campDetailSlice";
-import { getCampBreadCrumbApi, getTreesApi, subscribeToCampApi } from "src/network/api/campDetailApi";
+import {
+  getCampBreadCrumbApi,
+  getTreesApi,
+  subscribeToCampApi,
+} from "src/network/api/campDetailApi";
 import { getCookies, replaceSpecialCharacters } from "src/utils/generalUtility";
 import SocialShareUI from "../../../common/socialShare";
-import {
-  isServer,
-} from "../../../../utils/generalUtility";
+import { isServer } from "../../../../utils/generalUtility";
 import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
 import K from "src/constants";
 import GenerateModal from "src/components/common/generateScript";
@@ -34,7 +50,6 @@ const CodeIcon = () => (
     <line x1="34" y1="22" x2="30" y2="42" />
   </svg>
 );
-
 
 const TimelineInfoBar = ({
   payload = null,
@@ -124,9 +139,9 @@ const TimelineInfoBar = ({
     });
   };
 
-  const eventLinePath = () => {
-    router?.push(router?.asPath.replace("topic", "eventline"));
-  };
+  // const eventLinePath = () => {
+  //   router?.push(router?.asPath.replace("topic", "eventline"));
+  // };
   const eventLinePath2 = () => {
     router.push(router.asPath.replace("support", "eventline"));
   };
@@ -256,7 +271,7 @@ const TimelineInfoBar = ({
 
     if (
       (payload && Object.keys(payload).length > 0,
-        !!(getCookies() as any)?.loginToken)
+      !!(getCookies() as any)?.loginToken)
     ) {
       getBreadCrumbApiCall();
     }
@@ -328,9 +343,10 @@ const TimelineInfoBar = ({
             <Typography.Paragraph
               className={
                 "mb-0 " +
-                `${loadingIndicator
-                  ? styles.topicTitleSkeleton
-                  : styles.topicTitleStyle
+                `${
+                  loadingIndicator
+                    ? styles.topicTitleSkeleton
+                    : styles.topicTitleStyle
                 }`
               }
             >
@@ -344,11 +360,12 @@ const TimelineInfoBar = ({
                 />
               ) : isTopicHistoryPage ? (
                 <Link
-                  href={`/topic/${payload?.topic_num
-                    }-${replaceSpecialCharacters(
-                      breadCrumbRes?.topic_name,
-                      "-"
-                    )}/1-Agreement?${getQueryParams()?.returnQuery}`}
+                  href={`/topic/${
+                    payload?.topic_num
+                  }-${replaceSpecialCharacters(
+                    breadCrumbRes?.topic_name,
+                    "-"
+                  )}/1-Agreement?${getQueryParams()?.returnQuery}`}
                 >
                   <a className={styles.boldBreadcrumb}>
                     {breadCrumbRes?.topic_name}
@@ -391,14 +408,15 @@ const TimelineInfoBar = ({
                     breadCrumbRes?.bread_crumb?.map((camp, index) => {
                       return (
                         <Link
-                          href={`/topic/${payloadData?.topic_num
-                            }-${replaceSpecialCharacters(
-                              breadCrumbRes?.topic_name,
-                              "-"
-                            )}/${camp?.camp_num}-${replaceSpecialCharacters(
-                              camp?.camp_name,
-                              "-"
-                            )}?${getQueryParams()?.returnQuery}`}
+                          href={`/topic/${
+                            payloadData?.topic_num
+                          }-${replaceSpecialCharacters(
+                            breadCrumbRes?.topic_name,
+                            "-"
+                          )}/${camp?.camp_num}-${replaceSpecialCharacters(
+                            camp?.camp_name,
+                            "-"
+                          )}?${getQueryParams()?.returnQuery}`}
                           key={index}
                         >
                           <a>
@@ -454,17 +472,16 @@ const TimelineInfoBar = ({
                     />
                   ) : (
                     <>
-                      {
-                        router.pathname != "/support/[...manageSupport]" ?
-                          <Button
-                            type="primary"
-                            onClick={eventLinePath}
-                            className={styles.btnCampForum}
-                            id="camp-forum-btn"
-                          >
-                            Event Line
-                          </Button> : null
-                      }
+                      {/* {router.pathname != "/support/[...manageSupport]" ? (
+                        <Button
+                          type="primary"
+                          onClick={eventLinePath}
+                          className={styles.btnCampForum}
+                          id="camp-forum-btn"
+                        >
+                          Event Line 
+                        </Button>
+                      ) : null} */}
                     </>
                   )}
                 </Fragment>
