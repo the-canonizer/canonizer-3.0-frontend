@@ -465,6 +465,11 @@ const HeaderMenu = ({ loggedUser }: any) => {
       linkTitle: "Help",
       id: 3,
     },
+    {
+      link: "/videos",
+      linkTitle: "Videos",
+      id: 6,
+    },
   ];
 
   const [mockLinks, setMockLinks] = useState(links);
