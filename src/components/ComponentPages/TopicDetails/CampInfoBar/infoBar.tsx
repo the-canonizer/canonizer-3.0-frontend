@@ -197,9 +197,7 @@ const InfoBar = ({
       window.print();
     }, 100);
   };
-  const eventLinePath = () => {
-    router?.push(router?.asPath.replace("topic", "eventline"));
-  };
+
   const campForumDropdownMenu = (
     <Menu className={styles.campForumDropdownMenu}>
       <Menu.Item
