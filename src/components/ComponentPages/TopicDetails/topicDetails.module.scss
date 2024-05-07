@@ -140,6 +140,18 @@
     }
     .btnCampForum {
       margin-right: 20px;
+      margin-left: 10px;
+      background-color: #4484ce;
+      box-shadow: none;
+      border-color: transparent;
+      font-size: 14px;
+
+      &:hover {
+        background-color: darken(#4484ce, 7%);
+      }
+    }
+    .btnEventLine {
+      margin-right: 10px;
       margin-left: 20px;
       background-color: #4484ce;
       box-shadow: none;
