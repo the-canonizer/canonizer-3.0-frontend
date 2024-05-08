@@ -16,22 +16,37 @@
   border-color: transparent;
   .ant-card-cover {
     padding: 8px 8px 0;
-    position: relative;
 
-    img {
-      border-radius: 4px;
-      height: 200px;
-    }
-    .play-btn {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 3rem;
-      opacity: 0;
-      color: #ffffff;
-      transition: 0.4s;
-    }
+.img-wrapper {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  overflow: hidden;
+  &::after {
+    content: "";
+    display: block;
+    padding-top: 56.25%;
+  }
+
+  img {
+    border-radius: 4px;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+  .play-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 3rem;
+    opacity: 0;
+    color: #ffffff;
+    transition: 0.4s;
+  }
+}
   }
   &:hover {
     cursor: pointer;
@@ -39,8 +54,10 @@
     opacity: 99;
     border: 1px solid #0fa76533;
     border-radius: 4px;
-    .play-btn {
-      opacity: 1;
+    .img-wrapper {
+      .play-btn {
+        opacity: 1;
+      }
     }
   }
   .ant-card-body {

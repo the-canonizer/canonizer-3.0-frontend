@@ -159,7 +159,7 @@ const VideosPage = () => {
                                   onCardClick(e, video);
                                 }}
                                 cover={
-                                  <>
+                                  <div className="img-wrapper">
                                     <img
                                       alt=""
                                       src={
@@ -168,7 +168,7 @@ const VideosPage = () => {
                                       }
                                     />
                                     <CaretRightOutlined className="play-btn" />
-                                  </>
+                                  </div>
                                 }
                               >
                                 <Meta title={video?.title} />
