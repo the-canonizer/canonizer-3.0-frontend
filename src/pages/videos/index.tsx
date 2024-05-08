@@ -92,7 +92,7 @@ const VideosPage = () => {
 
   const onCardClick = (e, video) => {
     e.stopPropagation();
-    router.push(`videos/${video.id}-consciousness/${replaceSpecialCharacters(video.title, "-")}`);
+    router.push(`videos/1-consciousness/${video.id}-${replaceSpecialCharacters(video.title, "-")}`);
   };
 
   const getVideoCategories = async () => {
