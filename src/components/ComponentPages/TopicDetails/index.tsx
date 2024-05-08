@@ -52,7 +52,6 @@ import {
   removeSupportedCampsEntireTopic,
 } from "src/network/api/userApi";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
-// import { SupportTreeTotalScore } from "src/network/api/campDetailApi";
 import InfoBar from "./CampInfoBar/infoBar";
 import { fallBackSrc } from "src/assets/data-images";
 import LatestFilter from "../LatestFilter";
@@ -66,9 +65,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
   const [loadingIndicator, setLoadingIndicator] = useState(false);
   const [getTreeLoadingIndicator, setGetTreeLoadingIndicator] = useState(false);
   const [getCheckSupportStatus, setGetCheckSupportStatus] = useState({});
-  // const [totalSupportScore, setTotalSupportScore] = useState<number>(0);
   const totalSupportScore = 0;
-  // const [totalFullSupportScore, setTotalFullSupportScore] = useState<number>(0);
   const totalFullSupportScore = 0;
   const [topicList, setTopicList] = useState([]);
   const [isSupportTreeCardModal, setIsSupportTreeCardModal] = useState(false);
@@ -96,7 +93,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
     tree,
     campExist,
     viewThisVersionCheck,
-    selectedAlgorithm
+    selectedAlgorithm,
   } = useSelector((state: RootState) => ({
     algorithms: state.homePage?.algorithms,
     asofdate: state.filters?.filterObject?.asofdate,
@@ -110,20 +107,15 @@ const TopicDetails = ({ serverSideCall }: any) => {
     viewThisVersionCheck: state?.filters?.viewThisVersionCheck,
     selectedAlgorithm: state?.filters?.filterObject?.algorithm,
   }));
-  const { is_camp_archive_checked,is_checked,filteredAsOfDate,includeReview,filteredScore,current_date_filter,filterObject,viewThisVersion,campScoreValue,selectedAsOf} = useSelector(
+  const { is_camp_archive_checked,is_checked,includeReview,filteredScore,selectedAsOf} = useSelector(
     (state: RootState) => ({
       is_camp_archive_checked: state?.utils?.archived_checkbox,
       loading: state?.loading?.loading,
       is_checked: state?.utils?.score_checkbox,
-      filteredAsOfDate: state?.filters?.filterObject?.asofdate,
       includeReview: state?.filters?.filterObject?.includeReview,
       filteredScore: state?.filters?.filterObject?.filterByScore,
       selectedAlgorithm: state?.filters?.filterObject?.algorithm,
       algorithms: state.homePage?.algorithms,
-      current_date_filter: state?.filters?.current_date,
-      filterObject: state?.filters?.filterObject,
-      viewThisVersion: state?.filters?.viewThisVersionCheck,
-      campScoreValue: state?.filters?.campWithScoreValue,
       selectedAsOf: state?.filters?.filterObject?.asof,
     })
   );
@@ -184,7 +176,6 @@ const TopicDetails = ({ serverSideCall }: any) => {
           getCurrentTopicRecordApi(reqBody),
           getCurrentCampRecordApi(reqBody),
           getCanonizedCampStatementApi(reqBody),
-          getHistoryApi(reqBodyForCampData, "1", "statement"),
           getTreesApi(reqBodyForService),
         ]);
       } else if (serverSideCall.current) {
@@ -200,7 +191,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
     getTreeApiCall();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [asofdate, algorithm, +(router?.query?.camp[1]?.split("-")[0] ?? 1)]);
+  }, [asofdate, algorithm, +(router?.query?.camp[1]?.split("-")[0] ?? 1),router]);
 
   const reqBodyData = {
     topic_num: +router?.query?.camp[0]?.split("-")[0],
@@ -320,9 +311,9 @@ const TopicDetails = ({ serverSideCall }: any) => {
         setCurrentCheckSupportStatus(
           response.data.warning ? response.data.warning : ""
         )
-      );
-      dispatch(setCheckSupportExistsData(response.data));
-    }
+        );
+        dispatch(setCheckSupportExistsData(response.data));
+      }
   };
   const handleSupportTreeCardCancel = () => {
     setIsSupportTreeCardModal(false);
@@ -334,7 +325,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isUserAuthenticated, router, algorithm]);
+  }, [isUserAuthenticated || router || algorithm, router.query.camp.at(1)]);
 
   useEffect(() => {
     setBackGroundColorClass(asof);
@@ -393,6 +384,10 @@ const TopicDetails = ({ serverSideCall }: any) => {
         asof: "bydate",
       })
     );
+    router.query.asofdate = `${
+      Date.parse(moment.unix(tree["1"]?.created_date).endOf("day")["_d"]) / 1000
+    }`;
+    router?.push(router, null, { shallow: true });
   };
 
   const onCreateCampDate = () => {
@@ -410,9 +405,10 @@ const TopicDetails = ({ serverSideCall }: any) => {
   useEffect(() => {
     setIsClient(true);
   }, []);
-  const lable = algorithms?.find((obj)=>{
-    return obj.algorithm_key == selectedAlgorithm
-  })
+
+  const lable = algorithms?.find((obj) => {
+    return obj.algorithm_key == selectedAlgorithm;
+  });
 
   return (
     <Fragment>
@@ -517,7 +513,20 @@ const TopicDetails = ({ serverSideCall }: any) => {
                 ? campExist?.camp_exist
                 : true && (
                     <Fragment>
-                      {(router.query.algo&&selectedAlgorithm && lable?.algorithm_label !==undefined)||is_camp_archive_checked||is_checked||selectedAsOf== "bydate"||includeReview||filteredScore != 0?<LatestFilter/>:""}
+
+                      {(router.query.algo &&
+                        selectedAlgorithm &&
+                        lable?.algorithm_label !== undefined) ||
+                      is_camp_archive_checked ||
+                      is_checked ||
+                      selectedAsOf == "bydate" ||
+                      includeReview ||
+                      router?.query?.asof === "review" ||
+                      filteredScore != 0 ? (
+                        <LatestFilter />
+                      ) : (
+                        ""
+                      )}
                       <CampStatementCard
                         loadingIndicator={loadingIndicator}
                         backGroundColorClass={backGroundColorClass}
@@ -561,7 +570,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
                         loadingIndicator={loadingIndicator}
                         backGroundColorClass={backGroundColorClass}
                       />
-                      
+
                       <CurrentCampCard
                         loadingIndicator={loadingIndicator}
                         backGroundColorClass={backGroundColorClass}

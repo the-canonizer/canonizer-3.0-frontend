@@ -37,6 +37,13 @@ const EmailPopup = ({ isModal = false }: any) => {
   const closeModal = () => {
     dispatch(hideSocialEmailPopup());
 
+    if (
+      router?.pathname === "/login/[provider]/callback" ||
+      router?.pathname === "/auth/[provider]"
+    ) {
+      router?.push("/");
+    }
+
     form.resetFields();
     setIsOTP(false);
     setIsResend(false);

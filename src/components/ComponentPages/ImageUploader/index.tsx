@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React, { Fragment, useEffect, useState } from "react";
 import { EditOutlined, UploadOutlined } from "@ant-design/icons";
 import { Button, Modal, Tooltip, Upload, message } from "antd";
@@ -12,9 +13,8 @@ import {
 } from "src/network/api/userApi";
 import { RootState } from "src/store";
 import { setProfilePicture } from "src/store/slices/authSlice";
-
-const MAX_IMAGE_WIDTH = 1000; // Maximum image width in pixels
-const MAX_IMAGE_HEIGHT = 1000; // Maximum image height in pixels
+import { LoadingOutlined } from "@ant-design/icons";
+import { Spin } from "antd";
 
 const getBase64 = (file: RcFile): Promise<string> =>
   new Promise((resolve, reject) => {
@@ -29,6 +29,7 @@ const ImageUploader: React.FC = () => {
   const [previewImage, setPreviewImage] = useState("");
   const [previewTitle, setPreviewTitle] = useState("");
   const [fileList, setFileList] = useState<UploadFile[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const dispatch = useDispatch();
 
@@ -63,35 +64,18 @@ const ImageUploader: React.FC = () => {
     );
   };
 
-
-  const handleChange: UploadProps["onChange"] = async ({
-    fileList: newFileList,
-  }) => {
-    const lastFile = newFileList[newFileList.length - 1];
-    if (lastFile) {
-        // setFileList(newFileList);
-        try {
-          const formData = new FormData();
-          formData.append("profile_picture", lastFile.originFileObj as File);
-          const response = await uploadProfileImage(formData);
-          const imageUrl = response.data.profile_picture;
-          dispatch(setProfilePicture(imageUrl));
-          message.success("Upload successful");
-        } catch (error) {
-          message.error(message.error(error?.error?.data?.error?.profile_picture[0]));
-        }
-    }
-  };
-
   const handleDelete = async (file: UploadFile) => {
+    setLoading(true);
     try {
       await deleteProfileImage();
       const updatedFileList = fileList.filter((f) => f.uid !== file.uid);
       setFileList(updatedFileList);
       dispatch(setProfilePicture(null));
+      setLoading(false);
       message.success("Image deleted successfully");
     } catch (error) {
       setFileList([]);
+      setLoading(false);
       message.error("Failed to delete image");
     }
   };
@@ -105,63 +89,88 @@ const ImageUploader: React.FC = () => {
     </div>
   );
 
-  const updateProfilePicture = async ({ fileList: newFileList }) => {
-    const lastFile = newFileList[newFileList.length - 1];
-    if (lastFile) {
-        // setFileList(newFileList);
-        try {
-          const formData = new FormData();
-          formData.append("profile_picture", lastFile.originFileObj as File);
-          const response = await uploadProfileImage(formData);
-          const imageUrl = response.data.profile_picture;
-          dispatch(setProfilePicture(imageUrl));
-          message.success("Upload successful");
-        } catch (error) {
-          message.error(message.error(error?.error?.data?.error?.profile_picture[0]));
-        }
+  const onModalOk = async (file) => {
+    setLoading(true);
+    try {
+      const formData = new FormData();
+      formData.append("profile_picture", file as File);
+      const response = await uploadProfileImage(formData);
+      const imageUrl = response.data.profile_picture;
+      dispatch(setProfilePicture(imageUrl));
+      setLoading(false);
+      message.success("Upload successful");
+    } catch (error) {
+      setLoading(false);
+      message.error(error?.error?.data?.error?.profile_picture[0]);
     }
   };
-  const items = [
-    {
-      key: "1",
-      label: (
-        <Upload
-          multiple={false}
-          onChange={(e) => {
-            updateProfilePicture(e);
-          }}
-        >
-          <div>Update</div>
-        </Upload>
-      ),
-    },
-  ];
 
   return (
     <Fragment>
       <div className="upload-wrap">
-        <ImgCrop aspectSlider rotationSlider>
-          <Upload
-            className="picture-upload"
-            listType="picture-card"
-            accept="image/*"
-            fileList={fileList}
-            onPreview={handlePreview}
-            onChange={handleChange}
-            onRemove={handleDelete}
-            showUploadList={{ showRemoveIcon: true }}
+        {fileList.length == 1 && !loading ? (
+          <>
+            <ImgCrop
+              aspectSlider
+              rotationSlider
+              onModalOk={(file) => onModalOk(file)}
+            >
+              <Upload
+                className="picture-upload"
+                listType="picture-card"
+                accept="image/*"
+                fileList={fileList}
+                onPreview={handlePreview}
+                onRemove={handleDelete}
+                showUploadList={{ showRemoveIcon: true }}
+              >
+                {fileList.length >= 1 ? null : uploadButton}
+              </Upload>
+            </ImgCrop>
+          </>
+        ) : loading ? (
+          <div style={{ padding: "50px" }}>
+            <Spin
+              indicator={
+                <LoadingOutlined
+                  style={{
+                    fontSize: 24,
+                  }}
+                  spin
+                />
+              }
+            />
+          </div>
+        ) : (
+          <ImgCrop
+            aspectSlider
+            rotationSlider
+            onModalOk={(file) => onModalOk(file)}
           >
-            {fileList.length >= 1 ? null : uploadButton}
-          </Upload>
-        </ImgCrop>
-        {fileList.length >= 1 ? (
-          <ImgCrop aspectSlider rotationSlider>
+            <Upload
+              className="picture-upload"
+              listType="picture-card"
+              accept="image/*"
+              fileList={fileList}
+              onPreview={handlePreview}
+              onRemove={handleDelete}
+              showUploadList={{ showRemoveIcon: true }}
+            >
+              {fileList.length >= 1 ? null : uploadButton}
+            </Upload>
+          </ImgCrop>
+        )}
+        {fileList.length >= 1 && !loading ? (
+          <ImgCrop
+            aspectSlider
+            rotationSlider
+            onModalOk={(file) => onModalOk(file)}
+          >
             <Upload
               fileList={fileList}
               multiple={false}
               accept="image/*"
               showUploadList={false}
-              onChange={updateProfilePicture}
             >
               <Tooltip title="Update" key="update-btn" placement="bottom">
                 <Button size="small">

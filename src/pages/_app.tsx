@@ -18,6 +18,7 @@ import "../assets/editorcss/editor.css";
 import ErrorBoundary from "../hoc/ErrorBoundary";
 import HeadContentAndPermissionComponent from "../components/common/headContentAndPermisisonCheck";
 import { store, wrapper } from "../store";
+
 import { metaTagsApi } from "src/network/api/metaTagsAPI";
 import { checkTopicCampExistAPICall } from "src/network/api/campDetailApi";
 import { getCookies } from "src/utils/generalUtility";
@@ -40,6 +41,15 @@ function WrappedApp({
 
   useEffect(() => {
     const fetchToken = async () => {
+      if (router?.asPath) {
+        let pre_route =
+          JSON.parse(localStorage.getItem("router_history")) || [];
+        let his_route = [...pre_route, router.asPath];
+        if (his_route?.length < 6) {
+          localStorage.setItem("router_history", JSON.stringify(his_route));
+        }
+      }
+
       if (!(getCookies() as any)?.loginToken) {
         setIsAuthenticated(false);
         try {
@@ -62,6 +72,34 @@ function WrappedApp({
   ]);
   /* eslint-enable */
 
+  useEffect(() => {
+    let isRouting = false;
+
+    const startRouting = () => {
+      isRouting = true;
+    };
+
+    const handleTabClose = (event) => {
+      if (!isRouting) {
+        // Your custom logic here
+        console.log("Tab is closing");
+        // Prevent the tab from closing, if necessary
+        event.preventDefault();
+        event.returnValue = "";
+        localStorage.removeItem("router_history");
+      }
+    };
+
+    // Listen to route change start events
+    router.events.on("routeChangeStart", startRouting);
+
+    // Cleanup function
+    return () => {
+      router.events.off("routeChangeStart", startRouting);
+      window.removeEventListener("beforeunload", handleTabClose);
+    };
+  }, [router.events]);
+
   return (
     <CookiesProvider>
       <Provider store={store}>
@@ -82,8 +120,8 @@ function WrappedApp({
   );
 }
 
-let timeout;
-const getTagData = async (req, ctx) => {
+let lastAppName: string = "";
+const getTagData = async (req) => {
   const defaultTags = {
     page_name: "Home",
     title: "Build consensus by canonizing what you believe is right",
@@ -95,18 +133,14 @@ const getTagData = async (req, ctx) => {
   let metaData = defaultTags;
   let metaResults;
 
-  if (timeout) timeout = clearTimeout(timeout);
-
-  if (!timeout) {
-    // if(req?.)
-    // timeout = await setTimeout(async () => {
+  if (
+    req?.page_name?.trim()?.toLowerCase() !== lastAppName?.trim()?.toLowerCase()
+  ) {
+    lastAppName = req?.page_name?.trim()?.toLowerCase();
     metaResults = await metaTagsApi(req);
     metaData = metaResults?.data;
     return metaData;
-    // }, 900);
   }
-
-  // console.log(req, 'metaResults-RES----', metaResults)
 
   return metaData;
 };
@@ -166,9 +200,9 @@ WrappedApp.getInitialProps = async (
     },
   };
 
-  const metaData = await getTagData(req, appContext);
+  const metaData = await getTagData(req);
 
-  // console.log('metaData----', metaData, 'componentName----', componentName)
+  // console.log(aspath'metaData----', metaData, 'componentName----', componentName)
 
   /**
    *
@@ -404,3 +438,7 @@ WrappedApp.getInitialProps = async (
 };
 
 export default wrapper.withRedux(WrappedApp);
+
+// const ClearCacheApp = withClearCache(WrappedApp);
+
+// export default wrapper.withRedux(ClearCacheApp);

@@ -71,7 +71,6 @@ const SupportTreeCard = ({
   setIsDelegateSupportTreeCardModal,
   backGroundColorClass,
   getCheckStatusAPI,
-  GetActiveSupportTopic,
   GetActiveSupportTopicList,
 }: any) => {
   const {
@@ -79,7 +78,6 @@ const SupportTreeCard = ({
     is_checked,
     topicRecord,
     campRecord,
-    filterData,
     algorithms,
     algorithm,
     asofdate,
@@ -132,7 +130,6 @@ const SupportTreeCard = ({
       await getCheckStatusAPI();
     }
     if (isCallApiStatus == true) {
-      const topicNum = router?.query?.camp?.at(0)?.split("-")?.at(0);
       const reqBodyForService = {
         topic_num: +router?.query?.camp[0]?.split("-")[0],
         camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
@@ -204,11 +201,14 @@ const SupportTreeCard = ({
   };
 
   const handleClickSupportCheck = () => {
+    const q: any = router?.query;
     if (isUserAuthenticated) {
       dispatch(setManageSupportUrlLink(manageSupportPath));
       dispatch(setManageSupportStatusCheck(true));
       setSelectNickId(null);
-      showModalSupportCamps();
+      q &&
+      q.from &&
+      q.from.includes("notify_") ? null : showModalSupportCamps();
     } else {
       dispatch(showLoginModal());
     }
@@ -305,12 +305,12 @@ const SupportTreeCard = ({
                           "treeListItemNumber " + styles.treeListItemNumber
                         }
                       >
-                        {is_checked && isUserAuthenticated
+                        {campRecord?.is_archive?0:is_checked && isUserAuthenticated
                           ? data[item].full_score?.toFixed(2)
                           : data[item].score?.toFixed(2)}
                         {/* {data[item].score?.toFixed(2)} */}
                       </span>
-                      {!userNickNameList.includes(data[item].nick_name_id) ? (
+                      {userNickNameList?.length>0 &&!userNickNameList.includes(data[item].nick_name_id)  || !isUserAuthenticated? (
                         <>
                           {loggedInUserDelegate ||
                           (loggedInUserChild &&
@@ -358,7 +358,7 @@ const SupportTreeCard = ({
                               asof == "bydate" ||
                               isRemovingSupport ||
                               !isUserAuthenticated ||
-                              campRecord.is_archive
+                              campRecord?.is_archive
                             }
                             onClick={() => {
                               currentGetCheckSupportExistsData.is_delegator
@@ -381,6 +381,7 @@ const SupportTreeCard = ({
                 key={data[item].camp_id}
                 data={{ ...data[item], parentIsOneLevel, isDisabled }}
               >
+  
                 {renderTreeNodes(
                   data[item].delegates,
                   isDisabled,
@@ -409,13 +410,14 @@ const SupportTreeCard = ({
     setModalData({});
     removeForm.resetFields();
   };
+  let title = `Support Tree for "${campRecord?.camp_name}" Camp`
 
   // remove support popup added.
 
   return loadingIndicator || loadingIndicatorSupport ? (
     <CustomSkelton
       skeltonFor="card"
-      titleName='Support Tree for "Agreement" Camp'
+      titleName={title}
       bodyCount={3}
       stylingClass="test"
       isButton={false}
@@ -428,7 +430,7 @@ const SupportTreeCard = ({
         className="topicDetailsCollapse"
       >
         <Panel
-          className={`header-bg-color-change ${backGroundColorClass}`}
+          className={`position-relative header-bg-color-change ${backGroundColorClass}`}
           header={
             <Fragment>
               <h3>
@@ -451,10 +453,10 @@ const SupportTreeCard = ({
             </Popover>
           }
         >
-          <Paragraph>
+          <Paragraph className="position-relative">
             Total Support for This Camp (including sub-camps):
             <span className="number-style">
-              {totalCampScoreForSupportTree?.toFixed(2)}
+              {campRecord?.is_archive?0:totalCampScoreForSupportTree?.toFixed(2)}
             </span>
           </Paragraph>
 

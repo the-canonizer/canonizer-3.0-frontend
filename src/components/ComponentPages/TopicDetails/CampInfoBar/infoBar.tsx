@@ -66,24 +66,27 @@ const InfoBar = ({
     topicRecord,
     campRecord,
     is_admin,
-    history,
     asofdate,
     asof,
     algorithm,
     currentCampNode,
     tree,
     campExist,
+    campStatement,
   } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
     campRecord: state?.topicDetails?.currentCampRecord,
     is_admin: state?.auth?.loggedInUser?.is_admin,
-    history: state?.topicDetails?.history,
     asofdate: state.filters?.filterObject?.asofdate,
     algorithm: state.filters?.filterObject?.algorithm,
     asof: state?.filters?.filterObject?.asof,
     currentCampNode: state?.filters?.selectedCampNode,
     tree: state?.topicDetails?.tree && state?.topicDetails?.tree[0],
     campExist: state?.topicDetails?.tree && state?.topicDetails?.tree[1],
+    campStatement: state?.topicDetails?.campStatement,
+  }));
+  const { manageSupportStatusCheck } = useSelector((state: RootState) => ({
+    manageSupportStatusCheck: state.topicDetails.manageSupportStatusCheck,
   }));
 
   const [campSubscriptionID, setCampSubscriptionID] = useState(
@@ -190,22 +193,20 @@ const InfoBar = ({
       window.print();
     }, 100);
   };
-
+  const eventLinePath = () => {
+    router?.push(router?.asPath.replace("topic", "eventline"));
+  };
   const campForumDropdownMenu = (
     <Menu className={styles.campForumDropdownMenu}>
       {isUserAuthenticated && is_admin && (
         <Menu.Item key="0" icon={<i className="icon-newspaper"></i>}>
           {router?.pathname == "/support/[...manageSupport]" ? (
             <Link href={router?.asPath.replace("support", "addnews")}>
-              <a rel="noopener noreferrer" href="/add-news">
-                Add News
-              </a>
+              Add News
             </Link>
           ) : (
             <Link href={router?.asPath.replace("topic", "addnews")}>
-              <a rel="noopener noreferrer" href="/add-news">
-                Add News
-              </a>
+              Add News
             </Link>
           )}
         </Menu.Item>
@@ -291,7 +292,7 @@ const InfoBar = ({
               e?.preventDefault();
               e?.stopPropagation();
             }}
-            // disabled={asof == "bydate" || campRecord?.is_archive}
+            passHref
           >
             <div
               className="topicDetailsCollapseFooter"
@@ -350,7 +351,7 @@ const InfoBar = ({
         {isTopicPage && (
           <Link
             href={
-              history?.items?.length > 0
+              campStatement?.length > 0
                 ? `/statement/history/${replaceSpecialCharacters(
                     router?.query?.camp
                       ? router?.query?.camp[0]
@@ -376,7 +377,7 @@ const InfoBar = ({
             }
           >
             <a>
-              {history?.items?.length > 0
+              {campStatement?.length > 0
                 ? K?.exceptionalMessages?.manageCampStatementButton
                 : K?.exceptionalMessages?.addCampStatementButton}
             </a>
@@ -431,7 +432,8 @@ const InfoBar = ({
             {isCampBtnVisible &&
             currentCampNode?._isDisabled == 0 &&
             currentCampNode?.parentIsOneLevel == 0 &&
-            campRecord?.is_archive == 0 ? (
+            (campRecord?.is_archive == 0 ||
+              campRecord?.is_archive == undefined) ? (
               <Tooltip
                 title={
                   tree && !tree["1"]?.is_valid_as_of_time
@@ -526,6 +528,14 @@ const InfoBar = ({
                     <>
                       <Button
                         type="primary"
+                        onClick={eventLinePath}
+                        className={styles.btnEventLine}
+                        id="camp-forum-btn"
+                      >
+                        Event Line
+                      </Button>
+                      <Button
+                        type="primary"
                         className={styles.btnCampForum}
                         onClick={onCampForumClick}
                         id="camp-forum-btn"
@@ -536,7 +546,9 @@ const InfoBar = ({
                       <Dropdown
                         className={styles.campForumDropdown}
                         placement="bottomRight"
-                        overlay={campForumDropdownMenu}
+                        dropdownRender={() =>
+                          !manageSupportStatusCheck ? campForumDropdownMenu : ""
+                        }
                         trigger={["click"]}
                       >
                         <a

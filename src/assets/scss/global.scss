@@ -14,6 +14,10 @@ body {
   background-color: #f8f8f8 !important;
 }
 
+.position-relative {
+  position: relative;
+}
+
 .diffdel {
   display: inline !important;
   text-decoration: line-through !important;
@@ -284,7 +288,6 @@ del.diffmod img {
 
     @media screen and (max-width: 991px) {
       width: 100%;
-
       & + .pageContentWrap {
         width: 100%;
         margin: 0;

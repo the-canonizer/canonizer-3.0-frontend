@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import SearchSideBar from "../../common/SearchSideBar";
 import styles from "./search.module.scss";
-import { Empty, List, Tag } from "antd";
+import { Empty } from "antd";
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
@@ -9,8 +9,9 @@ import moment from "moment";
 import CustomSkelton from "../../common/customSkelton";
 
 const Search = () => {
-  const { searchData } = useSelector((state: RootState) => ({
+  const { searchData,searchDataAll } = useSelector((state: RootState) => ({
     searchData: state?.searchSlice?.searchData,
+    searchDataAll:state?.searchSlice?.searchDataAll,
   }));
   const { loading } = useSelector((state: RootState) => ({
     loading: state?.loading?.searchLoading,
@@ -21,6 +22,11 @@ const Search = () => {
   const showEmpty = (msg) => {
     return <Empty description={msg} />;
   };
+  function replaceSpecialCharactersInLink(link) {
+    // Replace each special character with a series of hyphens
+    // return link.replace(/[-\\^$*+?.()|%#|[\]{}]/g, "-");
+    return link.replace(/[-\\^$*+?.()|%#|[\]{}@]/g, "-");
+}
   return (
     <Fragment>
       <aside className="leftSideBar miniSideBar">
@@ -50,11 +56,11 @@ const Search = () => {
                 )}
                 <div className={styles.search_lists}>
                   <ul>
-                    {searchData?.topic?.slice(0, 5).map((x) => {
+                    {searchData?.topic?.slice(0, 5)?.map((x) => {
                       return (
                         <>
                           <li>
-                            <Link href={x.link}>
+                            <Link href={replaceSpecialCharactersInLink(x?.link)}>
                               <a>
                                 <label style={{ cursor: "pointer" }}>
                                   {x.type_value}
@@ -78,7 +84,7 @@ const Search = () => {
                 )}
                 <div className={styles.search_lists}>
                   <ul>
-                    {searchData?.camp?.slice(0, 5).map((x) => {
+                    {searchData?.camp?.slice(0, 5)?.map((x) => {
                       const jsonData = JSON.parse(
                         x.breadcrumb_data
                       ) as Array<any>;
@@ -136,7 +142,7 @@ const Search = () => {
                 )}
                 <div className={styles.search_lists}>
                   <ul>
-                    {searchData?.statement?.slice(0, 5).map((x) => {
+                    {searchData?.statement?.slice(0, 5)?.map((x) => {
                       const jsonData = JSON.parse(
                         x.breadcrumb_data
                       ) as Array<any>;
@@ -209,7 +215,7 @@ const Search = () => {
                 )}
                 <div className={styles.search_lists}>
                   <ul>
-                    {searchData?.nickname?.slice(0, 5).map((x) => {
+                    {searchData?.nickname?.slice(0, 5)?.map((x) => {
                       return (
                         <>
                           <li>

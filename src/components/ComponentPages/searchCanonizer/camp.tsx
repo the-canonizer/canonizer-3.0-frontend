@@ -28,6 +28,7 @@ const CampSearch = () => {
   };
   useEffect(() => {
     pageChange(currentPage);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchDataAll?.camp]);
   const showEmpty = (msg) => {
     return <Empty description={msg} />;

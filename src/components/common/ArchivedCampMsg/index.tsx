@@ -3,7 +3,6 @@ import { Card } from "antd";
 import styles from "./archive.module.scss";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
-import useAuthentication from "src/hooks/isUserAuthenticated";
 import { useRouter } from "next/router";
 
 const ArchivedCampMsg = () => {

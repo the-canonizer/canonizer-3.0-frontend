@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   Row,
   Col,
@@ -11,13 +12,16 @@ import {
   Space,
 } from "antd";
 import moment from "moment";
+import PlacesAutocomplete from "react-places-autocomplete";
+
+import style from "./style.module.scss";
+
 import styles from "../ProfileInfo/ProfileInfoUI/ProfileInfo.module.scss";
 import messages from "../../../messages";
-import PlacesAutocomplete from "react-places-autocomplete";
 import CustomSkelton from "../../common/customSkelton";
-import { useEffect, useState } from "react";
 import ImageUploader from "../../ComponentPages/ImageUploader";
-import style from "./style.module.scss";
+import VerifyMobileNumber from "./VerifyMobileNumberForm";
+
 const { Title } = Typography;
 const { Option } = Select;
 
@@ -33,6 +37,18 @@ function ProfileInfoForm({
   address,
   disableButton,
   postalCodeDisable,
+  mobileCarrier,
+  handleMobileNumberChange,
+  formVerify,
+  isOTPModalVisible,
+  setIsOTPModalVisible,
+  handleOTPCancel,
+  handleChangeOTP,
+  toggleVerifyButton,
+  userProfileSkeletonV,
+  setOTP,
+  otp,
+  setToggleVerifyButton,
 }: any) {
   // eslint-disable-next-line no-unused-vars
   const [gmapsLoaded, setgmapsLoaded] = useState(false);
@@ -90,7 +106,6 @@ function ProfileInfoForm({
     loading,
   }) => (
     <div>
-      {console.log(suggestions, "sugg")}
       <Input
         data-testid="auto_complete"
         id="selectAddress_1"
@@ -131,6 +146,7 @@ function ProfileInfoForm({
   );
 
   const [loaded, setLoaded] = useState(false);
+
   useEffect(() => {
     const scripttag = document.createElement("script");
     scripttag.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_API_KEY}&libraries=places`;
@@ -264,7 +280,7 @@ function ProfileInfoForm({
                     </Form.Item>
                   </Col>
                   <Col md={24}>
-                    <Form.Item label="Date of Birth">
+                    <Form.Item label="Date of Birth" className="mb-0">
                       <Input.Group compact className={styles.date_picker}>
                         <Form.Item
                           name="birthday"
@@ -303,6 +319,20 @@ function ProfileInfoForm({
                 </Row>
               </Col>
             </Row>
+            <VerifyMobileNumber
+              mobileCarrier={mobileCarrier}
+              formVerify={formVerify}
+              isOTPModalVisible={isOTPModalVisible}
+              setIsOTPModalVisible={setIsOTPModalVisible}
+              handleOTPCancel={handleOTPCancel}
+              otp={otp}
+              handleChangeOTP={handleChangeOTP}
+              toggleVerifyButton={toggleVerifyButton}
+              handleMobileNumberChange={handleMobileNumberChange}
+              userProfileSkeletonV={userProfileSkeletonV}
+              setOTP={setOTP}
+              setToggleVerifyButton={setToggleVerifyButton}
+            />
           </div>
         </div>
         <div className={styles.section_two}>

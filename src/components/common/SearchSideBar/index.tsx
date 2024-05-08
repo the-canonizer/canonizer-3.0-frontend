@@ -4,9 +4,10 @@ import Link from "next/link";
 import styles from "./searchSideBar.module.scss";
 import Image from "next/image";
 import filter from "src/assets/image/face.png";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "src/store";
 import CustomSkelton from "../customSkelton";
+import { setClickAdvanceFilterOption } from "src/store/slices/searchSlice";
 
 export default function SearchSideBar() {
   const router = useRouter();
@@ -20,6 +21,7 @@ export default function SearchSideBar() {
   const campRoute = () => {
     router?.push("/search/topic");
   };
+  const dispatch = useDispatch()
 
   return (
     <>
@@ -38,78 +40,92 @@ export default function SearchSideBar() {
                 pathname: "/search",
                 query: { q: searchValue },
               }}
+              passHref
             >
-              <Button
-                size="large"
-                className={
-                  router?.asPath.includes("/search?") ? "active" : "btn"
-                }
-                disabled={router.pathname == "/search" ? true : false}
-              >
-                <a>All</a>
-              </Button>
+              <a>
+                <Button
+                  size="large"
+                  className={
+                    router?.asPath.includes("/search?") ? "active" : "btn"
+                  }
+                  disabled={router?.pathname == "/search" ? true : false}
+                >
+                  All
+                </Button>
+              </a>
             </Link>
             <Link
               href={{
                 pathname: "/search/topic",
                 query: { q: searchValue },
               }}
+              passHref
             >
-              <Button
-                size="large"
-                className={
-                  router?.asPath.includes("/search/topic?") ? "active" : "btn"
-                }
-                disabled={router.pathname == "/search/topic" ? true : false}
-              >
-                <i className="icon-topic"></i>
-                <a>Topic</a>
-              </Button>
+              <a>
+                <Button
+                  size="large"
+                  className={
+                    router?.asPath.includes("/search/topic?") ? "active" : "btn"
+                  }
+                  disabled={router?.pathname == "/search/topic" ? true : false}
+                >
+                  <i className="icon-topic"></i>
+                  <a>Topic</a>
+                </Button>
+              </a>
             </Link>
             <Link
               href={{
                 pathname: "/search/camp",
                 query: { q: searchValue },
               }}
+              passHref
             >
-              <Button
-                size="large"
-                className={
-                  router?.asPath.includes("/search/camp?") ? "active" : "btn"
-                }
-                disabled={router.pathname == "/search/camp" ? true : false}
-              >
-                <i className="icon-camp"></i>
-                <a>Camp</a>
-              </Button>
+              <a>
+                <Button
+                  size="large"
+                  className={
+                    router?.asPath.includes("/search/camp?") ? "active" : "btn"
+                  }
+                  disabled={router?.pathname == "/search/camp" ? true : false}
+                >
+                  <i className="icon-camp"></i>
+                  <a>Camp</a>
+                </Button>
+              </a>
             </Link>
             <Link
               href={{
                 pathname: "/search/camp_statement",
                 query: { q: searchValue },
               }}
+              passHref
             >
-              <Button
-                size="large"
-                className={
-                  router?.asPath.includes("/search/camp_statement?")
-                    ? "active"
-                    : "btn"
-                }
-                disabled={
-                  router.pathname == "/search/camp_statement" ? true : false
-                }
-              >
-                <i className="icon-camp"></i>
-                <a>Camp Statement</a>
-              </Button>
+              <a>
+                <Button
+                  size="large"
+                  className={
+                    router?.asPath.includes("/search/camp_statement?")
+                      ? "active"
+                      : "btn"
+                  }
+                  disabled={
+                    router?.pathname == "/search/camp_statement" ? true : false
+                  }
+                >
+                  <i className="icon-camp"></i>
+                  <a>Camp Statement</a>
+                </Button>
+              </a>
             </Link>
             <Link
               href={{
                 pathname: "/search/nickname",
                 query: { q: searchValue },
               }}
+              passHref
             >
+              <a>
               <Button
                 size="large"
                 className={
@@ -118,6 +134,7 @@ export default function SearchSideBar() {
                     : "btn"
                 }
                 disabled={router.pathname == "/search/nickname" ? true : false}
+                onClick={(()=>{ dispatch(setClickAdvanceFilterOption(false))})}
               >
                 <Image
                   className={styles.nickname_icon}
@@ -129,6 +146,7 @@ export default function SearchSideBar() {
                 />
                 <a>Nickname</a>
               </Button>
+              </a>
             </Link>
           </div>
         )}

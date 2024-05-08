@@ -694,10 +694,15 @@ img {
 .advanceFilter.NicknameadvanceFilter .ant-collapse-content {
   max-width: 320px;
   padding: 9px 15px;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2196078431);
+  z-index: 9;
+}
+.ant-collapse-content-box {
+  position: relative;
 }
 
 .topicDetailsCollapse .ant-collapse-content-box::after,
-.topicDetailsCollapse .ant-collapse-content-box::before{
+.topicDetailsCollapse .ant-collapse-content-box::before {
   display: none;
 }
 
@@ -713,6 +718,7 @@ img {
   border-left-color: transparent;
   z-index: 1;
   border-right-color: transparent;
+  display: none;
 }
 .ant-collapse-content-box::before {
   content: "";
@@ -726,6 +732,7 @@ img {
   border-left-color: transparent;
   z-index: 1;
   border-right-color: transparent;
+  opacity: 0;
 }
 
 // print camp strat
@@ -770,11 +777,90 @@ img {
   color: #000;
   display: inline-flex;
   align-items: center;
-  border-color: #AEBBCB;
+  border-color: #aebbcb;
 }
-.flex-wrap 
-{
+.flex-wrap {
   flex-wrap: wrap;
 }
 
 // print camp end
+.certain-category-search-dropdown.advance-search-dropdown.ant-select-dropdown{
+  max-width: 300px !important;
+  }
+
+.advance_filter_dropdown {
+  padding: 10px 0px;
+  max-height: 300px;
+  overflow: auto;
+}
+.search_outer{
+  label {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-weight: 600;
+    color: #a2acb9;
+  }
+  ul{
+    padding-left: 0;
+    list-style: none;
+    font-size: 12px;
+    li{
+      padding: 5px 0;
+      border-bottom: 1px solid #ededed;
+      a{
+        color: #0f2a4d;
+        font-weight: bold;
+        cursor: pointer;
+        font-size: 1.17em;
+      }
+      >div{
+        >a{
+          font-size: 12px;
+          color: #096dd9;
+          font-weight: normal;
+          line-height: normal;
+        }
+      }
+    }
+  }
+}
+
+
+.nicknameAdvanceFilter {
+  .ant-select {
+    width: 100%;
+}
+  > footer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #f3f4f5;
+    border-top: 1px solid #eee;
+  }
+  .ant-collapse-content{
+    z-index: 99;
+  }
+}
+.ant_tags .ant-tag  {
+  display: flex;
+  gap: 10px;
+  background: var(--unnamed-color-ffffff) 0% 0% no-repeat padding-box;
+  background: #FFFFFF 0% 0% no-repeat padding-box;
+  box-shadow: 3px 3px 0px #3F4F5B14;
+  border: 1px solid #E3E3E3;
+  align-items: center;
+  padding: 4px 10px;
+  color: #4484CE;
+  font-size: 16px;
+  font-weight: 600;
+}
+.ant_tags .ant-tag div
+{
+  color: #B7BABF;
+}

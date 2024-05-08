@@ -22,7 +22,7 @@ const ProfileInfoTab = ({
   logOut,
   isMobile,
   menu = <></>,
-}) => {
+}:any) => {
   const { loggedInUser } = useSelector((state: RootState) => ({
     loggedInUser: state.auth.loggedInUser,
   }));
@@ -32,13 +32,14 @@ const ProfileInfoTab = ({
 
       {loggedInUser?.profile_picture && !loadingImage ? (
         <Avatar
+        style={{
+          cursor: "pointer",
+        }}
           src={loggedInUser?.profile_picture}
           size={isMobile ? "small" : "default"}
         />
       ) : isGravatarImage && !loadingImage ? (
-
         loggedInUser?.email && (
-
           <Avatar
             src={`https://www.gravatar.com/avatar/${md5(
               loggedInUser?.email

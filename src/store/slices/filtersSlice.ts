@@ -23,6 +23,7 @@ export const filtersSlice = createSlice({
     showForumDrawer: false,
     campWithScoreValue: 10,
     onlyMyTopicsCheck: false,
+    selectAlgoBrowsePage: false
   },
   reducers: {
     setFilterCanonizedTopics: (state, action) => {
@@ -62,6 +63,9 @@ export const filtersSlice = createSlice({
     setRemoveFilters: (state, action) => {
       state.filterObject = action.payload;
     },
+    setSelectAlgoBrowsePage: (state, action) => {
+      state.selectAlgoBrowsePage = action.payload;
+    },
   },
 });
 
@@ -76,6 +80,7 @@ export const {
   setShowForumDrawer,
   setOnlyMyTopic,
   setRemoveFilters,
+  setSelectAlgoBrowsePage
 } = filtersSlice.actions;
 
 export default filtersSlice.reducer;
