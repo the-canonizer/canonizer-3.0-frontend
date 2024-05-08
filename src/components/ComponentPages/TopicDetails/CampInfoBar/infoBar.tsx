@@ -23,6 +23,7 @@ import {
   FileTextOutlined,
   HeartOutlined,
   PrinterOutlined,
+  StockOutlined
 } from "@ant-design/icons";
 import Link from "next/link";
 import {
@@ -139,6 +140,9 @@ const InfoBar = ({
       }/threads`,
     });
   };
+  const eventLinePath = () => {
+    router?.push(router?.asPath.replace("topic", "eventline"));
+  };
 
   const campOrTopicScribe = async (isTopic: Boolean) => {
     const reqBodyForService = {
@@ -193,11 +197,22 @@ const InfoBar = ({
       window.print();
     }, 100);
   };
-  const eventLinePath = () => {
-    router?.push(router?.asPath.replace("topic", "eventline"));
-  };
+
   const campForumDropdownMenu = (
     <Menu className={styles.campForumDropdownMenu}>
+      <Menu.Item
+        icon={
+          <span className={styles.svgIconCode}>
+            <StockOutlined />
+          </span>
+        }
+      >
+        {isTopicPage && (
+          <a onClick={eventLinePath}>
+            <span>Event Line</span>
+          </a>
+        )}
+      </Menu.Item>
       {isUserAuthenticated && is_admin && (
         <Menu.Item key="0" icon={<i className="icon-newspaper"></i>}>
           {router?.pathname == "/support/[...manageSupport]" ? (
