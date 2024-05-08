@@ -36,8 +36,8 @@ function Layout(props: any) {
             {props.children}{" "}
           </div>
 
-          {!router?.asPath.includes("eventline") ||
-          router?.asPath.includes("videos")
+          {!(router?.asPath.includes("eventline") ||
+          router?.asPath.includes("videos"))
           && (
             <aside className={styles.rightSidebar}>
               <GoogleAd
