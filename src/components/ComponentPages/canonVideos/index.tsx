@@ -259,17 +259,22 @@ export default function CanonVideos() {
               />
             ) : (
               <ul>
-                {Object.values(videos)?.map((video) => (
-                  <li
-                    className={video.id === selectedVideoId ? "active" : ""}
-                    onClick={() => handleVideoSelection(video)}
-                    key={video?.id}
-                    data-testid={video?.title}
-                  >
-                    <img src={VideoThumbnail.src} alt="" />
-                    {video?.title}
-                  </li>
-                ))}
+                {Object.values(videos)?.map((video) => {
+                  return (
+                    <li
+                      className={video.id === selectedVideoId ? "active" : ""}
+                      onClick={() => handleVideoSelection(video)}
+                      key={video?.id}
+                      data-testid={video?.title}
+                    >
+                      <img
+                        src={`${BaseVideosURL}/${video?.thumbnail}`}
+                        alt=""
+                      />
+                      {video?.title}
+                    </li>
+                  );
+                })}
               </ul>
             )}
             <div className="video-formats">
