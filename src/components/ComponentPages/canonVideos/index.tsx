@@ -266,10 +266,12 @@ export default function CanonVideos() {
                       onClick={() => handleVideoSelection(video)}
                       key={video?.id}
                       data-testid={video?.title}
+                      style={{display:'flex', alignItems:'center',}}
                     >
                       <img
                         src={`${BaseVideosURL}/${video?.thumbnail}`}
                         alt=""
+                        style={{minHeight:'50px'}}
                       />
                       {video?.title}
                     </li>
