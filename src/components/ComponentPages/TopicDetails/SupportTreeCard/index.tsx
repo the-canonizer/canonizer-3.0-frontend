@@ -410,13 +410,14 @@ const SupportTreeCard = ({
     setModalData({});
     removeForm.resetFields();
   };
+  let title = `Support Tree for "${campRecord?.camp_name}" Camp`
 
   // remove support popup added.
 
   return loadingIndicator || loadingIndicatorSupport ? (
     <CustomSkelton
       skeltonFor="card"
-      titleName='Support Tree for "Agreement" Camp'
+      titleName={title}
       bodyCount={3}
       stylingClass="test"
       isButton={false}
