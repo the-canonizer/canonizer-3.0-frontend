@@ -94,8 +94,10 @@ const HeaderMenu = ({ loggedUser }: any) => {
       return <label>{text}</label>;
     }
     const escapedHighlight = highlight.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
-    const words = highlight.split(/\s+/).map(word => word.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&"));
-    const regex = new RegExp(`(${words.join('|')})`, "gi");
+    const words = highlight
+      .split(/\s+/)
+      .map((word) => word.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&"));
+    const regex = new RegExp(`(${words.join("|")})`, "gi");
     const parts = text.split(regex);
     return (
       <>
@@ -121,9 +123,9 @@ const HeaderMenu = ({ loggedUser }: any) => {
     // Replace each special character with a series of hyphens
     // return link.replace(/[-\\^$*+?.()|%#|[\]{}]/g, "-");
     return link.replace(/[-\\^$*+?.()|%#|[\]{}@]/g, "-");
-}
+  }
   const searchValueLength = 30;
- const advanceSearchValueLength = 100
+  const advanceSearchValueLength = 100;
   const options = [
     {
       label: renderTitle(
@@ -143,7 +145,9 @@ const HeaderMenu = ({ loggedUser }: any) => {
                   return (
                     <>
                       <li style={{ cursor: "default" }}>
-                        <Link href={`/${replaceSpecialCharactersInLink(x.link)}`}>
+                        <Link
+                          href={`/${replaceSpecialCharactersInLink(x.link)}`}
+                        >
                           <a>
                             <Highlighted
                               text={x.type_value}
@@ -276,8 +280,15 @@ const HeaderMenu = ({ loggedUser }: any) => {
                       /[-/\\^$*+?.()|[\]{}]/g,
                       "\\$&"
                     );
-                    const words = highlight.split(/\s+/).map(word => word.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&"));
-                    const regex = new RegExp(`\\b(${words.join('|')})\\b`, "gi");
+                    const words = highlight
+                      .split(/\s+/)
+                      .map((word) =>
+                        word.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&")
+                      );
+                    const regex = new RegExp(
+                      `\\b(${words.join("|")})\\b`,
+                      "gi"
+                    );
                     const parts = text.split(regex);
                     return (
                       <>
@@ -310,9 +321,17 @@ const HeaderMenu = ({ loggedUser }: any) => {
                             href={`/${jsonData?.[0]?.[1]?.camp_link}`}
                           >
                             <h3 className="m-0">
-                              {jsonData?.length > 1
-                                ? <HighlightedForCampStatement text={jsonData?.[0]?.[1]?.camp_name} highlight={searchValue}/>
-                                : <HighlightedForCampStatement text={jsonData?.[0]?.[1]?.topic_name} highlight={searchValue}/>}
+                              {jsonData?.length > 1 ? (
+                                <HighlightedForCampStatement
+                                  text={jsonData?.[0]?.[1]?.camp_name}
+                                  highlight={searchValue}
+                                />
+                              ) : (
+                                <HighlightedForCampStatement
+                                  text={jsonData?.[0]?.[1]?.topic_name}
+                                  highlight={searchValue}
+                                />
+                              )}
                             </h3>
                           </a>
                           <div style={{ marginLeft: "auto" }}>
@@ -624,59 +643,64 @@ const HeaderMenu = ({ loggedUser }: any) => {
         </ul>
       </nav>
 
-      {process.env.NEXT_PUBLIC_NEW_SEARCH_BAR?<div className="search_header">
-        <AutoComplete
-          popupClassName="certain-category-search-dropdown"
-          dropdownMatchSelectWidth={false}
-          // className={"search_header"}
-          options={
-            inputSearch == ""
-              ? []
-              : loadingSekelton
-              ? loader
-              : searchTopics?.length ||
-                searchCamps?.length ||
-                searchCampStatement?.length ||
-                searchNickname?.length
-              ? options
-              : no
-          }
-          value={searchVal.length > advanceSearchValueLength ?searchVal.substring(0,advanceSearchValueLength):searchVal}
-        >
-          <div>
-            <Button>
-              <i className="icon-search"></i>
-            </Button>
-            <Input
-              size="large"
-              placeholder="Search for"
-              value={searchVal.length > advanceSearchValueLength ?searchVal.substring(0,advanceSearchValueLength):searchVal}
-              type="text"
-              name="search"
-              // prefix={<button className={styles.new_search_btn} disabled > <i className="icon-search" /></button>}
-              onChange={(e) => {
-                // localStorage.setItem("searchValue", e.target.value);
-                setLoadingSekelton(true)
-                dispatch(setSearchValue(e.target.value));
-                setInputSearch(e.target.value);
-                setSearchVal(e.target.value);
-                debounceFn.cancel();
-                if (e?.target?.value) debounceFn(e.target.value, false);
-              }}
-              onPressEnter={(e) => {
-                // localStorage.setItem("searchValue",(e.target as HTMLTextAreaElement).value)
-                // !router.asPath.includes("/search") ? handlePress(e) : "";
-                handlePress();
-                if ((e.target as HTMLTextAreaElement).value)
-                  getGlobalSearchCanonizer(
-                    (e.target as HTMLTextAreaElement).value,
-                    true
-                  );
-              }}
-            />
-          </div>
-        </AutoComplete>
-      </div>:""}
+      {process.env.NEXT_PUBLIC_NEW_SEARCH_BAR ? (
+        <div className="search_header">
+          <AutoComplete
+            popupClassName="certain-category-search-dropdown"
+            dropdownMatchSelectWidth={false}
+            options={
+              inputSearch == ""
+                ? []
+                : loadingSekelton
+                ? loader
+                : searchTopics?.length ||
+                  searchCamps?.length ||
+                  searchCampStatement?.length ||
+                  searchNickname?.length
+                ? options
+                : no
+            }
+            value={
+              searchVal.length > advanceSearchValueLength
+                ? searchVal.substring(0, advanceSearchValueLength)
+                : searchVal
+            }
+          >
+            <div>
+              <Button>
+                <i className="icon-search"></i>
+              </Button>
+              <Input
+                size="large"
+                placeholder="Search for"
+                value={
+                  searchVal.length > advanceSearchValueLength
+                    ? searchVal.substring(0, advanceSearchValueLength)
+                    : searchVal
+                }
+                type="text"
+                name="search"
+                onChange={(e) => {
+                  setLoadingSekelton(true);
+                  dispatch(setSearchValue(e.target.value));
+                  setInputSearch(e.target.value);
+                  setSearchVal(e.target.value);
+                  debounceFn.cancel();
+                  if (e?.target?.value) debounceFn(e.target.value, false);
+                }}
+                onPressEnter={(e) => {
+                  handlePress();
+                  if ((e.target as HTMLTextAreaElement).value)
+                    getGlobalSearchCanonizer(
+                      (e.target as HTMLTextAreaElement).value,
+                      true
+                    );
+                }}
+              />
+            </div>
+          </AutoComplete>
+        </div>
+      ) : null}
     </Fragment>
   );
 };

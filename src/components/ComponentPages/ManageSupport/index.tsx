@@ -160,9 +160,11 @@ const ManageSupport = ({
       handleCancelSupportCamps({ isCallApiStatus: false });
     }
     if (response && response.status_code === 200) {
-      if (response.data?.remove_camps)
+      if (response.data?.remove_camps){
         setParentSupportDataList(response.data.remove_camps);
 
+        dispatch(setCheckSupportExistsData(response.data))
+      }
       if (!manageSupportStatusCheck || CheckDelegatedOrDirect) {
         response.data.warning;
         response.data.support_flag;

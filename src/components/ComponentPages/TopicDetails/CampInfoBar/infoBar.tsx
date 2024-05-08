@@ -88,7 +88,7 @@ const InfoBar = ({
   const { manageSupportStatusCheck } = useSelector((state: RootState) => ({
     manageSupportStatusCheck: state.topicDetails.manageSupportStatusCheck,
   }));
-  
+
   const [campSubscriptionID, setCampSubscriptionID] = useState(
     campRecord?.subscriptionId
   );
@@ -193,18 +193,20 @@ const InfoBar = ({
       window.print();
     }, 100);
   };
-
+  const eventLinePath = () => {
+    router?.push(router?.asPath.replace("topic", "eventline"));
+  };
   const campForumDropdownMenu = (
     <Menu className={styles.campForumDropdownMenu}>
       {isUserAuthenticated && is_admin && (
         <Menu.Item key="0" icon={<i className="icon-newspaper"></i>}>
           {router?.pathname == "/support/[...manageSupport]" ? (
             <Link href={router?.asPath.replace("support", "addnews")}>
-                Add News
+              Add News
             </Link>
           ) : (
             <Link href={router?.asPath.replace("topic", "addnews")}>
-                Add News
+              Add News
             </Link>
           )}
         </Menu.Item>
@@ -526,6 +528,14 @@ const InfoBar = ({
                     <>
                       <Button
                         type="primary"
+                        onClick={eventLinePath}
+                        className={styles.btnEventLine}
+                        id="camp-forum-btn"
+                      >
+                        Event Line
+                      </Button>
+                      <Button
+                        type="primary"
                         className={styles.btnCampForum}
                         onClick={onCampForumClick}
                         id="camp-forum-btn"
@@ -536,7 +546,9 @@ const InfoBar = ({
                       <Dropdown
                         className={styles.campForumDropdown}
                         placement="bottomRight"
-                        dropdownRender={() => !manageSupportStatusCheck?campForumDropdownMenu:""}
+                        dropdownRender={() =>
+                          !manageSupportStatusCheck ? campForumDropdownMenu : ""
+                        }
                         trigger={["click"]}
                       >
                         <a
