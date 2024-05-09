@@ -597,8 +597,6 @@ const CampTree = ({
               type="primary"
               size="small"
               onClick={eventLinePath}
-              className={styles.btnCampForum}
-              id="camp-forum-btn"
             >
               Event Line
             </Button>
