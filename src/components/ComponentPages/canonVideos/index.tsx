@@ -169,7 +169,7 @@ export default function CanonVideos() {
             }
           }
         } else {
-          setVideoResolution(data?.data[0]?.resolutions[0]?.link);
+          setVideoResolution(data?.data?.at(0)?.videos?.at(0)?.resolutions?.at(0)?.link);
         }
       }
       setLoader(false);
@@ -227,7 +227,7 @@ export default function CanonVideos() {
     format: string | string[],
     t: string | string[]
   ) {
-    router.query.video = [router?.query?.video[0], chapter];
+    router.query.video = [router?.query?.video?.at(0), chapter];
     router.query.format = format;
     if (t) {
       router.query.t = t;
