@@ -86,8 +86,8 @@ export default function getSchemas(componentName, topicName = "", url = "") {
     schema = `{
     "@context": "https://schema.org/",
     "@type": "WebSite",
-    "name": ${topicName},
-    "url": ${url},
+    "name": "${topicName}",
+    "url": "${url}",
     "potentialAction": {
       "@type": "SearchAction",
       "target": "{search_term_string}",
@@ -99,7 +99,7 @@ export default function getSchemas(componentName, topicName = "", url = "") {
     "@context": "https://schema.org/",
     "@type": "WebSite",
     "name": "Canonizer Camp Forum",
-    "url": ${url},
+    "url": "${url}",
     "potentialAction": {
       "@type": "SearchAction",
       "target": "{search_term_string}",
@@ -111,7 +111,7 @@ export default function getSchemas(componentName, topicName = "", url = "") {
     "@context": "https://schema.org/",
     "@type": "WebSite",
     "name": "Canonizer Statement",
-    "url": ${url},
+    "url": "${url}",
     "potentialAction": {
       "@type": "SearchAction",
       "target": "{search_term_string}",
