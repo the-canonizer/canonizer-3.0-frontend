@@ -8,12 +8,20 @@ import { RootState } from "src/store";
 import { Empty, Pagination } from "antd";
 import { setPageNumber } from "src/store/slices/searchSlice";
 import CustomSkelton from "../../common/customSkelton";
+import { useRouter } from "next/router";
+import { replaceSpecialCharacters } from "src/utils/generalUtility";
 
 const TopicSearch = () => {
-  const { searchDataAll,searchData } = useSelector((state: RootState) => ({
-    searchDataAll: state?.searchSlice?.searchDataAll,
-    searchData: state?.searchSlice?.searchData,
-  }));
+  const { searchDataAll, searchData, selectedTopicFromAdvanceFilterAlgorithm,asof,filterByScore,algorithm } =
+    useSelector((state: RootState) => ({
+      searchDataAll: state?.searchSlice?.searchDataAll,
+      searchData: state?.searchSlice?.searchData,
+      selectedTopicFromAdvanceFilterAlgorithm:
+        state?.searchSlice?.selectedTopicFromAdvanceFilterAlgorithm,
+        asof: state.filters?.filterObject?.asof,
+        filterByScore: state.filters?.filterObject?.filterByScore,
+        algorithm: state.filters?.filterObject?.algorithm,
+    }));
   const { searchMetaData } = useSelector((state: RootState) => ({
     searchMetaData: state?.searchSlice?.searchMetaData,
   }));
@@ -22,6 +30,8 @@ const TopicSearch = () => {
     loading: state?.loading?.searchLoading,
   }));
   const [currentPage, setCurrentPage] = useState(1);
+  const [isReview, setIsReview] = useState(asof == "review");
+
   const dispatch = useDispatch();
 
   const pageChange = (pageNumber) => {
@@ -38,8 +48,20 @@ const TopicSearch = () => {
   function replaceSpecialCharactersInLink(link) {
     // Replace each special character with a series of hyphens
     // return link.replace(/[-\\^$*+?.()|%#|[\]{}]/g, "-");
-    return link.replace(/[-\\^$*+?.()|%#|[\]{}@]/g, "-");
-}
+    return link?.replace(/[-\\^$*+?.()|%#|[\]{}@]/g, "-");
+  }
+  const router = useRouter();
+  const mapTopicList = () => {
+    if (router?.query?.algo) {
+      selectedTopicFromAdvanceFilterAlgorithm;
+    } else {
+      searchDataAll.topic;
+    }
+  };
+  useEffect(() => {
+    setIsReview(asof == "review");
+    // setBackGroundColorClass(asof);
+  }, [asof]);
   return (
     <Fragment>
       <aside className="leftSideBar miniSideBar">
@@ -52,7 +74,7 @@ const TopicSearch = () => {
         <div className={styles.card}>
           <div className="d-flex mb-2 align-items-center flex-wrap relative">
             <h4 data-testid="topic_heading">Topic</h4>
-            {/* <AdvanceFilter /> */}
+            <AdvanceFilter />
           </div>
           {loading ? (
             <CustomSkelton
@@ -65,27 +87,65 @@ const TopicSearch = () => {
             <div className={styles.search_lists}>
               {searchDataAll.topic?.length ? (
                 <div>
-                  <ul>
-                    {searchDataAll.topic.map((x) => {
-                      return (
-                        <>
-                          <li>
-                            <Link href={`/${replaceSpecialCharactersInLink(x?.link)}`}>
-                              <a>
-                                <label style={{ cursor: "pointer" }}>
-                                  {x?.type_value}
-                                </label>
-                              </a>
-                            </Link>
+                  
+                  {router?.query?.algo || router?.query?.score || isReview || asof == "bydate" ? (
+                   selectedTopicFromAdvanceFilterAlgorithm?.length? <div>
+                    <ul>
+                      {selectedTopicFromAdvanceFilterAlgorithm?.map((x) => {
+                        return (
+                          <>
+                            <li>
+                              <Link
+                                href={`/topic/${
+                                  x?.topic_num
+                                }-${replaceSpecialCharacters(
+                                 x?.topic_name,
+                                  "-"
+                                )}/1-Agreement`}
+                              >
+                                <a>
+                                  <label style={{ cursor: "pointer" }}>
+                                    {x?.topic_name}
+                                  </label>
+                                </a>
+                              </Link>
 
-                            <span className={styles.ml_auto}>
-                              {x.namespace}
-                            </span>
-                          </li>
-                        </>
-                      );
-                    })}
-                  </ul>
+                              <span className={styles.ml_auto}>
+                                {x.namespace}
+                              </span>
+                            </li>
+                          </>
+                        );
+                      })}
+                    </ul>
+                    </div> : showEmpty("No Data Found")
+                  ) : (
+                    <ul>
+                      {searchDataAll.topic.map((x) => {
+                        return (
+                          <>
+                            <li>
+                              <Link
+                                href={`/${replaceSpecialCharactersInLink(
+                                  x?.link
+                                )}`}
+                              >
+                                <a>
+                                  <label style={{ cursor: "pointer" }}>
+                                    {x?.type_value}
+                                  </label>
+                                </a>
+                              </Link>
+
+                              <span className={styles.ml_auto}>
+                                {x.namespace}
+                              </span>
+                            </li>
+                          </>
+                        );
+                      })}
+                    </ul>
+                  )}
                 </div>
               ) : (
                 showEmpty("No Data Found")
@@ -94,7 +154,7 @@ const TopicSearch = () => {
           )}
           <Pagination
             hideOnSinglePage={true}
-            total={searchMetaData.total}
+            total={asof == "review" || asof == "bydate" || filterByScore || algorithm !== "blind_popularity" ?(selectedTopicFromAdvanceFilterAlgorithm?.length):(searchMetaData.total)}
             pageSize={20}
             onChange={pageChange}
             showSizeChanger={false}
