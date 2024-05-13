@@ -154,7 +154,7 @@ const TopicSearch = () => {
           )}
           <Pagination
             hideOnSinglePage={true}
-            total={asof == "review" || asof == "bydate" || filterByScore || algorithm !== "blind_popularity" ?(selectedTopicFromAdvanceFilterAlgorithm?.length):(searchMetaData.total)}
+            total={asof == "review" || asof == "bydate" || filterByScore !=0 || algorithm !== "blind_popularity" ?(selectedTopicFromAdvanceFilterAlgorithm?.length):(searchMetaData.total)}
             pageSize={20}
             onChange={pageChange}
             showSizeChanger={false}

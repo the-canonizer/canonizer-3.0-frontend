@@ -11,8 +11,12 @@ import { setClickAdvanceFilterOption } from "src/store/slices/searchSlice";
 
 export default function SearchSideBar() {
   const router = useRouter();
-  let { searchValue } = useSelector((state: RootState) => ({
+  let { searchValue,filterByScore,algorithm,asof,asofdate } = useSelector((state: RootState) => ({
     searchValue: state?.searchSlice?.searchValue,
+    filterByScore: state.filters?.filterObject?.filterByScore,
+    algorithm: state.filters?.filterObject?.algorithm,
+    asof: state?.filters?.filterObject?.asof,
+    asofdate: state.filters?.filterObject?.asofdate,
   }));
   const { loading } = useSelector((state: RootState) => ({
     loading: state?.loading?.searchLoading,
@@ -57,8 +61,14 @@ export default function SearchSideBar() {
             <Link
               href={{
                 pathname: "/search/topic",
-                query: { q: searchValue },
+                query: { q: searchValue ,
+                  ...(filterByScore !=0 && { score: filterByScore }), 
+                  ...(algorithm !== "blind_popularity" && {algo:algorithm}) ,
+                  ...(asof !== "default" &&{asof:asof}),
+                  ...(asof == "bydate" && {asofdate:asofdate})
+                },
               }}
+              
               passHref
             >
               <a>
@@ -77,7 +87,12 @@ export default function SearchSideBar() {
             <Link
               href={{
                 pathname: "/search/camp",
-                query: { q: searchValue },
+                query: { q: searchValue ,
+                  ...(filterByScore !=0 && { score: filterByScore }), 
+                  ...(algorithm !== "blind_popularity" && {algo:algorithm}) ,
+                  ...(asof !== "default" &&{asof:asof}),
+                  ...(asof == "bydate" && {asofdate:asofdate})
+                },
               }}
               passHref
             >

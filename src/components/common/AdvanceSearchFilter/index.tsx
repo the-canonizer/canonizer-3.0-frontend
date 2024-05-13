@@ -329,8 +329,8 @@ let stringCampArray = findCampId?.map(element => element.toString());
     asof:asof,
     score:filterByScore,
     }
-    const response = await AdvanceFilterSeacrhApi(rebody);
-  dispatch(setSelectedTopicFromAdvanceFilterAlgorithm(response?.data?.camp))
+  const response = await AdvanceFilterSeacrhApi(rebody);
+  dispatch(setSelectedTopicFromAdvanceFilterAlgorithm(response?.data?.topic))
     // setLoadMoreIndicator(false);
   }
   async function getCampsApiCallWithReqBody() {
