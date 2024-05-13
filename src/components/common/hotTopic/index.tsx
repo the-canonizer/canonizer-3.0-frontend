@@ -28,15 +28,10 @@ function HotTopic() {
     arrows: true,
     infinite: true,
     speed: 500,
-    // autoplaySpeed: 1000,
     slidesToShow: 1,
     slidesToScroll: 1,
     className: styles.sliderCls,
-    // centerPadding: "20px",
     dotsClass: styles.sliderDotsCls,
-    // responsive: [
-    //   { breakpoint: 1024, settings: { slidesToShow: 1, slidesToScroll: 1 } },
-    // ],
   };
 
   return (

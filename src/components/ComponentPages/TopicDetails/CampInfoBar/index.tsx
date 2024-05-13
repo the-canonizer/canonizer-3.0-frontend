@@ -1,8 +1,22 @@
-import { useState, useEffect, useRef } from "react";
-import { Button, Popover, Spin, Tooltip, Typography } from "antd";
+import { useState, useEffect, useRef, Fragment } from "react";
+import {
+  Button,
+  Popover,
+  Spin,
+  Tooltip,
+  Typography,
+  Dropdown,
+  Menu,
+} from "antd";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
-import { DoubleRightOutlined, DoubleLeftOutlined } from "@ant-design/icons";
+import {
+  DoubleRightOutlined,
+  DoubleLeftOutlined,
+  HeartOutlined,
+  FileTextOutlined,
+  MoreOutlined,
+} from "@ant-design/icons";
 import Link from "next/link";
 import moment from "moment";
 
@@ -11,15 +25,40 @@ import styles from "../topicDetails.module.scss";
 import { RootState } from "src/store";
 import CustomSkelton from "src/components/common/customSkelton";
 import { setManageSupportStatusCheck } from "src/store/slices/campDetailSlice";
-import { getCampBreadCrumbApi } from "src/network/api/campDetailApi";
+import {
+  getCampBreadCrumbApi,
+  getTreesApi,
+  subscribeToCampApi,
+} from "src/network/api/campDetailApi";
 import { getCookies, replaceSpecialCharacters } from "src/utils/generalUtility";
+import SocialShareUI from "../../../common/socialShare";
+import { isServer } from "../../../../utils/generalUtility";
+import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
+import K from "src/constants";
+import GenerateModal from "src/components/common/generateScript";
+
+const CodeIcon = () => (
+  <svg
+    viewBox="0 0 64 64"
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    stroke="#000000"
+  >
+    <rect x="8" y="12" width="48" height="40" />
+    <polyline points="40 40 48 32 40 24" />
+    <polyline points="24 24 16 32 24 40" />
+    <line x1="34" y1="22" x2="30" y2="42" />
+  </svg>
+);
 
 const TimelineInfoBar = ({
   payload = null,
   isTopicPage = false,
   isTopicHistoryPage = false,
   isForumPage = false,
+  getCheckSupportStatus = null,
 }: any) => {
+  const { isUserAuthenticated } = useAuthentication();
   const dispatch = useDispatch();
   const [loadingIndicator, setLoadingIndicator] = useState(false);
   const [payloadData, setPayloadData] = useState(payload);
@@ -33,21 +72,25 @@ const TimelineInfoBar = ({
   const {
     topicRecord,
     campRecord,
+    is_admin,
     asofdate,
     asof,
     viewThisVersion,
     filterObject,
     campScoreValue,
     changeGoneLive,
+    algorithm,
   } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
     campRecord: state?.topicDetails?.currentCampRecord,
+    is_admin: state?.auth?.loggedInUser?.is_admin,
     asofdate: state.filters?.filterObject?.asofdate,
     asof: state?.filters?.filterObject?.asof,
     viewThisVersion: state?.filters?.viewThisVersionCheck,
     filterObject: state?.filters?.filterObject,
     campScoreValue: state?.filters?.campWithScoreValue,
     changeGoneLive: state?.topicDetails?.changeGoneLive,
+    algorithm: state.filters?.filterObject?.algorithm,
   }));
 
   const [campSubscriptionID, setCampSubscriptionID] = useState(
@@ -57,6 +100,10 @@ const TimelineInfoBar = ({
   const [topicSubscriptionID, setTopicSubscriptionID] = useState(
     topicRecord?.topicSubscriptionId
   );
+
+  const handleClickSupportCheck = () => {
+    dispatch(setManageSupportStatusCheck(true));
+  };
 
   useEffect(() => {
     if (isTopicPage) {
@@ -77,6 +124,27 @@ const TimelineInfoBar = ({
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const onCampForumClick = () => {
+    const topicName = topicRecord?.topic_name?.replaceAll(" ", "-");
+    const campName = campRecord?.camp_name?.replaceAll(" ", "-");
+    router?.push({
+      pathname: `/forum/${topicRecord?.topic_num}-${replaceSpecialCharacters(
+        topicName,
+        "-"
+      )}/${campRecord?.camp_num}-${replaceSpecialCharacters(
+        campName,
+        "-"
+      )}/threads`,
+    });
+  };
+
+  // const eventLinePath = () => {
+  //   router?.push(router?.asPath.replace("topic", "eventline"));
+  // };
+  const eventLinePath2 = () => {
+    router.push(router.asPath.replace("support", "eventline"));
+  };
 
   const objectToQueryString = (obj) => {
     const keys = Object.keys(obj);
@@ -214,6 +282,28 @@ const TimelineInfoBar = ({
     !!(getCookies() as any)?.loginToken,
     changeGoneLive,
   ]);
+
+  const campOrTopicScribe = async (isTopic: Boolean) => {
+    const reqBodyForService = {
+      topic_num: +router?.query?.camp?.[0]?.split("-")[0],
+      camp_num: +(router?.query?.camp?.[1]?.split("-")[0] ?? 1),
+      asOf: asof,
+      asofdate:
+        asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
+      algorithm: algorithm,
+      update_all: 1,
+    };
+    const reqBody = {
+      topic_num: campRecord.topic_num ?? payload?.topic_num,
+      camp_num: isTopic ? 0 : campRecord.camp_num,
+      checked: isTopic ? !topicSubscriptionID : !campSubscriptionID,
+      subscription_id: isTopic ? topicSubscriptionID : campSubscriptionID,
+    };
+    let result = await subscribeToCampApi(reqBody, isTopic);
+    if (result?.status_code === 200) {
+      getTreesApi(reqBodyForService);
+    }
+  };
 
   return (
     <>
@@ -366,46 +456,12 @@ const TimelineInfoBar = ({
             </div>
           </div>
 
-          {/* <div className={styles.topicDetailContentHead_Right}>
+           <div className={styles.topicDetailContentHead_Right}>
             <Typography.Paragraph
               className={"mb-0 campInfoRight " + styles.topicTitleStyle}
             >
               {isTopicPage && (
                 <Fragment>
-                  {loadingIndicator ? (
-                    <>
-                      <div className="socail-skeleton mr-3">
-                        <CustomSkelton
-                          skeltonFor="list"
-                          bodyCount={1}
-                          stylingClass="skeleton-item"
-                          isButton={false}
-                          circle={true}
-                        />
-                        <CustomSkelton
-                          skeltonFor="list"
-                          bodyCount={1}
-                          stylingClass="skeleton-item"
-                          isButton={false}
-                          circle={true}
-                        />
-                        <CustomSkelton
-                          skeltonFor="list"
-                          bodyCount={1}
-                          stylingClass="skeleton-item"
-                          isButton={false}
-                          circle={true}
-                        />
-                      </div>
-                    </>
-                  ) : (
-                    <div className="cam-social-ot">
-                      <SocialShareUI
-                        campName={campRecord?.camp_name}
-                        campUrl={!isServer() && window?.location?.href}
-                      />
-                    </div>
-                  )}
                   {loadingIndicator ? (
                     <CustomSkelton
                       skeltonFor="list"
@@ -416,44 +472,22 @@ const TimelineInfoBar = ({
                     />
                   ) : (
                     <>
-                      <Button
-                        type="primary"
-                        className={styles.btnCampForum}
-                        onClick={onCampForumClick}
-                        id="camp-forum-btn"
-                      >
-                        Camp Forum
-                      </Button>
-                      {/* {
-                        router.pathname != "/support/[...manageSupport]" ?
-                          <Button
-                            type="primary"
-                            onClick={eventLinePath}
-                            className={styles.btnCampForum}
-                            id="camp-forum-btn"
-                          >
-                            Event Line
-                          </Button> : null
-                      }
-                      <Dropdown
-                        className={styles.campForumDropdown}
-                        placement="bottomRight"
-                        overlay={campForumDropdownMenu}
-                        trigger={["click"]}
-                      >
-                        <a
-                          className={styles.iconMore}
-                          onClick={(e) => e.preventDefault()}
+                      {/* {router.pathname != "/support/[...manageSupport]" ? (
+                        <Button
+                          type="primary"
+                          onClick={eventLinePath}
+                          className={styles.btnCampForum}
+                          id="camp-forum-btn"
                         >
-                          <MoreOutlined />
-                        </a>
-                      </Dropdown>
+                          Event Line 
+                        </Button>
+                      ) : null} */}
                     </>
                   )}
                 </Fragment>
               )}
             </Typography.Paragraph>
-          </div> */}
+          </div> 
         </Spin>
       </div>
     </>
