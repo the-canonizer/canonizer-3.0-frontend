@@ -350,7 +350,7 @@ const TimelineInfoBar = ({
                 }`
               }
             >
-              <span className="normal">Topic : </span>
+              {breadCrumbRes?.topic_name && <span className="normal">Topic : </span>}
               {loadingIndicator ? (
                 <CustomSkelton
                   skeltonFor="list"
