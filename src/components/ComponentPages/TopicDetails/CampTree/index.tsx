@@ -526,7 +526,12 @@ const CampTree = ({
     return uniqueArraytoString;
   };
   const eventLinePath = () => {
-    router?.push(router?.asPath.replace("topic", "eventline"));
+    if(router?.asPath.includes("topic")){
+      router?.push(router?.asPath.replace("topic", "eventline"));
+    }
+    else if(router?.asPath.includes("forum")){
+      router?.push(router?.asPath.replace("forum", "eventline"));
+    }
   };
 
   return tree?.at(0) ? (
