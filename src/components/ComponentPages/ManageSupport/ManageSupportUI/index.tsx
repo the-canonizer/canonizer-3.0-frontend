@@ -510,6 +510,9 @@ const dispatch = useDispatch()
               }}
               showSearch
               optionFilterProp="children"
+              getPopupContainer={(triggerNode) => {
+                return triggerNode.parentNode;
+              }}
             >
               {nickNameList?.map((nick) => {
                 return (
