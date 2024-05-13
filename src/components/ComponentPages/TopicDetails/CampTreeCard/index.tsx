@@ -161,15 +161,9 @@ const CampTreeCard = ({
 
   return (
     <>
+    
       {tree &&
-        (!tree["1"]?.is_valid_as_of_time ||
-          (tree["1"]?.is_valid_as_of_time &&
-            !(
-              tree["1"]?.created_date <=
-              (asof == "default" || asof == "review"
-                ? Date.now() / 1000
-                : asofdate)
-            ))) && (
+        !tree["1"]?.is_valid_as_of_time && (
           <div className={styles.imageWrapper}>
             <div>
               <Image

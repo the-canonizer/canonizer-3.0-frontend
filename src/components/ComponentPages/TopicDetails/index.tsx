@@ -461,16 +461,28 @@ const TopicDetails = ({ serverSideCall }: any) => {
             getCheckSupportStatus={getCheckSupportStatus}
           />
 
+          {/* {console.log('===> topic details', {
+            "isClient": isClient,
+            "tree": tree,
+            "!tree[1]?.is_valid_as_of_time ": !tree["1"]?.is_valid_as_of_time,
+
+            "OR" : "||",
+
+            "valid_as_of_time" : tree["1"]?.is_valid_as_of_time,
+
+            "negation_condition":
+            !(
+              tree["1"]?.created_date <=
+              (asof == "default" || asof == "review"
+                ? Date.now() / 1000
+                : asofdate)
+            ),
+            "asof": asof,
+          })} */}
+
           {isClient &&
             tree &&
-            (!tree["1"]?.is_valid_as_of_time ||
-              (tree["1"]?.is_valid_as_of_time &&
-                !(
-                  tree["1"]?.created_date <=
-                  (asof == "default" || asof == "review"
-                    ? Date.now() / 1000
-                    : asofdate)
-                ))) && (
+            !tree["1"]?.is_valid_as_of_time && (
               <div className={`printHIde ${styles.imageWrapper}`}>
                 <div>
                   <Image
