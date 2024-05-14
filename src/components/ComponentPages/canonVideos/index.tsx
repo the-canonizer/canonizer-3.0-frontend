@@ -24,32 +24,32 @@ export default function CanonVideos() {
 
   const router = useRouter();
 
-  // useEffect(() => {
-  //   if (router?.route === "/videos/consciousness") {
-  //     let { chapter, ...restq }: any = { ...router.query };
+  useEffect(() => {
+    if (router?.route === "/videos/consciousness") {
+      let { chapter, ...restq }: any = { ...router.query };
 
-  //     let route = router.pathname + "/introduction";
+      let route = router.pathname + "/introduction";
 
-  //     if (chapter) {
-  //       route =
-  //         router.pathname +
-  //         "/" +
-  //         spaceChangeToDash(replaceString(chapter as string, true));
-  //     }
+      if (chapter) {
+        route =
+          router.pathname +
+          "/" +
+          spaceChangeToDash(replaceString(chapter as string, true));
+      }
 
-  //     router.push(
-  //       {
-  //         pathname: route,
-  //         query: {
-  //           ...restq,
-  //         },
-  //       },
-  //       null,
-  //       { shallow: true }
-  //     );
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
+      router.push(
+        {
+          pathname: route,
+          query: {
+            ...restq,
+          },
+        },
+        null,
+        { shallow: true }
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const replaceString = (text: string, reverse: boolean = false) => {
     if (reverse) {
@@ -169,7 +169,9 @@ export default function CanonVideos() {
             }
           }
         } else {
-          setVideoResolution(data?.data?.at(0)?.videos?.at(0)?.resolutions?.at(0)?.link);
+          setVideoResolution(
+            data?.data?.at(0)?.videos?.at(0)?.resolutions?.at(0)?.link
+          );
         }
       }
       setLoader(false);
@@ -227,16 +229,24 @@ export default function CanonVideos() {
     format: string | string[],
     t: string | string[]
   ) {
-    router.query.video = [router?.query?.video?.at(0), chapter];
+    const isSpecialChapter = router.query.video?.[0] === "1-consciousness";
+
+    router.query.video = isSpecialChapter
+      ? [router.query.video?.[0], chapter]
+      : [chapter];
     router.query.format = format;
+    let asPath = `/videos/consciousness/${chapter}?format=${format}`;
     if (t) {
       router.query.t = t;
+      asPath += `&t=${t}`;
     } else {
       // eslint-disable-next-line no-unused-vars
       const { t, ...rest } = router?.query;
       router.query = rest;
     }
-    router?.push(router, null, { shallow: true });
+    isSpecialChapter
+      ? router?.push(router, null, { shallow: true })
+      : router.push(router.pathname, asPath, { shallow: true });
   }
 
   return (
@@ -266,12 +276,12 @@ export default function CanonVideos() {
                       onClick={() => handleVideoSelection(video)}
                       key={video?.id}
                       data-testid={video?.title}
-                      style={{display:'flex', alignItems:'center',}}
+                      style={{ display: "flex", alignItems: "center" }}
                     >
                       <img
                         src={`${BaseVideosURL}/${video?.thumbnail}`}
                         alt=""
-                        style={{minHeight:'50px'}}
+                        style={{ minHeight: "50px" }}
                       />
                       {video?.title}
                     </li>
