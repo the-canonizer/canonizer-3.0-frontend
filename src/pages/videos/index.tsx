@@ -163,7 +163,7 @@ const VideosPage = () => {
                                     <img
                                       alt=""
                                       src={
-                                        "https://canonizer-public-file.s3.us-east-2.amazonaws.com/videos/consciousness/" +
+                                        process.env.NEXT_PUBLIC_BASE_VIDEOS_URL +"videos/consciousness/" +
                                         video.thumbnail
                                       }
                                     />
