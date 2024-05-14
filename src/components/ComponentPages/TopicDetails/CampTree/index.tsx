@@ -460,7 +460,10 @@ const CampTree = ({
                 }}
               >
                 {data[item].camp_id ===
-                  +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1) &&
+                  +(Array.isArray(router?.query?.camp)
+                    ? router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1
+                    : (router?.query?.camp as string)?.split("-")?.at(0) ??
+                      1) &&
                   _isDisabled == 0 &&
                   parentIsOneLevel == 0 &&
                   _isArchive == 0 &&
@@ -472,19 +475,32 @@ const CampTree = ({
                           <Link
                             href={{
                               pathname: `/camp/create/${replaceSpecialCharacters(
-                                router?.query.camp[0],
+                                Array.isArray(router?.query?.camp)
+                                  ? router?.query.camp[0]
+                                  : (router?.query?.topic as string),
                                 "-"
                               )}/${
                                 router?.query.camp[1]
                                   ? replaceSpecialCharacters(
-                                      router?.query.camp[1],
+                                      Array.isArray(router?.query.camp)
+                                        ? router?.query.camp[1]
+                                        : router?.query.camp,
                                       "-"
                                     )
                                   : 1
                               }`,
                             }}
                           >
-                            <a>{`<Start new supporting camp here>`} </a>
+                            <a
+                              onClick={() => {
+                                localStorage.setItem(
+                                  "topicPath",
+                                  router?.pathname
+                                );
+                              }}
+                            >
+                              {`<Start new supporting camp here>`}{" "}
+                            </a>
                           </Link>
                         </p>
                       }
