@@ -540,15 +540,7 @@ const InfoBar = ({
                       isButton={false}
                     />
                   ) : (
-                    <>
-                      <Button
-                        type="primary"
-                        onClick={eventLinePath}
-                        className={styles.btnEventLine}
-                        id="camp-forum-btn"
-                      >
-                        Event Line
-                      </Button>
+                    <>                  
                       <Button
                         type="primary"
                         className={styles.btnCampForum}
