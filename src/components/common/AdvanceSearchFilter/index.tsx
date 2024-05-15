@@ -111,14 +111,17 @@ const panelColorRef = useRef(null);
   const findNicknameId = searchDataAll.nickname?.map((obj) => {
     return obj.id;
   });
-  const findTopicId = searchDataAll.camp?.map((obj) => {
-    return obj.topic_num;
-  });
+
+const findTopicId = searchDataAll.camp?.map((obj) => {
+  return obj.topic_num;
+});
 
 let stringTopicArray = findTopicId?.map(element => element.toString());
-  const findCampId = searchDataAll.camp?.map((obj) => {
+
+const findCampId = searchDataAll.camp?.map((obj) => {
     return obj.camp_num;
-  });
+});
+
 let stringCampArray = findCampId?.map(element => element.toString());
 
   const [timer, setTimer] = useState(null);
@@ -478,11 +481,16 @@ let stringCampArray = findCampId?.map(element => element.toString());
   useEffect(() => {
     if(router.pathname == "/search/topic"){
     getTopicsApiCallWithReqBody()
-    }if(router.pathname == "/search/camp"){
+    }else if(router.pathname == "/search/camp" && stringCampArray && stringTopicArray){
     getCampsApiCallWithReqBody()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [asof,filterByScore,algorithm]);
+  useEffect(()=> {
+    if(router.pathname == "/search/camp" && stringCampArray && stringTopicArray){
+      getCampsApiCallWithReqBody()
+    }
+  }, [searchDataAll])
   const handleCollapseChange = (key) => {
     setActive(key);
     // Do something with the collapsed key
