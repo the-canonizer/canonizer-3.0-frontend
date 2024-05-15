@@ -3055,3 +3055,21 @@ div[role="option"]::before {
     }
   }
 }
+.event-line-wrapper{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4;
+  button{
+    width: auto !important;
+    background-color: rgb(248, 157, 21);
+    border-color: rgb(248, 157, 21) !important;
+    color: #fff !important;
+    &:hover,&:focus{
+    background-color: rgb(248, 157, 21);
+    border-color: rgb(248, 157, 21) !important;
+
+
+    }
+  }
+}

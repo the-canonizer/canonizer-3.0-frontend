@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Tree, Tooltip, Popover, Typography } from "antd";
+import { Tree, Tooltip, Popover, Typography, Button } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -166,7 +166,7 @@ const CampTree = ({
     let keyexistSession =
       sesionexpandkeys &&
       tree?.at(0) &&
-      sesionexpandkeys.find(
+      sesionexpandkeys?.find(
         (age) => age.topic_id == tree?.at(0)["1"]?.topic_id
       );
 
@@ -207,7 +207,7 @@ const CampTree = ({
       setDefaultExpandKeys(expandKeys);
       setUniqueKeys(uniquekeyss);
       if (tree?.at(0)) {
-        let index = sesionexpandkeys.findIndex(
+        let index = sesionexpandkeys?.findIndex(
           (item) => item.topic_id === tree?.at(0)["1"]?.topic_id
         );
         if (index !== -1) {
@@ -534,6 +534,9 @@ const CampTree = ({
     let uniqueArraytoString = uniqueArray.map(String);
     return uniqueArraytoString;
   };
+  const eventLinePath = () => {
+    router?.push(router?.asPath.replace("topic", "eventline"));
+  };
 
   return tree?.at(0) ? (
     (showTree && tree?.at(0)["1"]?.title != "" && defaultExpandKeys) ||
@@ -542,79 +545,91 @@ const CampTree = ({
         <Typography.Paragraph
           className={`${styles.topicTitleStyle} ${styles.topicTitle}`}
         >
-          <span className="normal">Topic : </span>
-          {tree?.length && tree[0] ? (
-            <Link
-              href={`${
-                includeReview
-                  ? isForumPage
-                    ? tree[0]["1"]?.review_link
-                        ?.replace("#statement", "")
-                        ?.replace("/topic/", "/forum/") + "/threads"
-                    : tree[0]["1"]?.review_link?.replace("#statement", "")
-                  : isForumPage
-                  ? tree[0]["1"]?.link
-                      ?.replace("#statement", "")
-                      ?.replace("/topic/", "/forum/") + "/threads"
-                  : tree[0]["1"]?.link?.replace("#statement", "")
-              }?filter=${treeExpandValue}&score=${filterByScore}&algo=${
-                filterObject?.algorithm
-              }${
-                filterObject?.asof == "bydate"
-                  ? "&asofdate=" + filterObject?.asofdate
-                  : ""
-              }&asof=${filterObject?.asof}&canon=${filterObject?.namespace_id}${
-                viewThisVersion ? "&viewversion=1" : ""
-              }`}
-              className={styles.boldBreadcrumb}
-              replace
-            >
-              <a
-                className={`${
-                  tree[0]["1"].is_archive == 1
-                    ? `font-weight-bold tra ${styles.archive_grey}`
-                    : tree[0]["1"]?.camp_id ==
-                        router?.query?.camp?.at(1)?.split("-")?.at(0) ?? "1"
-                    ? `font-weight-bold ${styles.activeCamp}`
-                    : ""
-                } ${
-                  isForumPage &&
-                  tree[0]["1"]?.camp_id ==
-                    ((router?.query?.camp as string)?.split("-")?.at(0) ?? "1")
-                    ? `font-weight-bold forumActive ${styles.activeCamp}`
-                    : ""
-                }`}
-              >
-                {tree[0]["1"].is_archive == 1 ? (
-                  <Popover content="Archived Camp">
-                    {includeReview
-                      ? tree[0]["1"]?.review_title
-                      : tree[0]["1"]?.title}
-                  </Popover>
-                ) : includeReview ? (
-                  tree[0]["1"]?.review_title
+          <div className="event-line-wrapper">
+            <div>
+              <span className="normal">Topic : </span>
+              {tree?.length && tree[0] ? (
+                <Link
+                  href={`${
+                    includeReview
+                      ? isForumPage
+                        ? tree[0]["1"]?.review_link
+                            ?.replace("#statement", "")
+                            ?.replace("/topic/", "/forum/") + "/threads"
+                        : tree[0]["1"]?.review_link?.replace("#statement", "")
+                      : isForumPage
+                      ? tree[0]["1"]?.link
+                          ?.replace("#statement", "")
+                          ?.replace("/topic/", "/forum/") + "/threads"
+                      : tree[0]["1"]?.link?.replace("#statement", "")
+                  }?filter=${treeExpandValue}&score=${filterByScore}&algo=${
+                    filterObject?.algorithm
+                  }${
+                    filterObject?.asof == "bydate"
+                      ? "&asofdate=" + filterObject?.asofdate
+                      : ""
+                  }&asof=${filterObject?.asof}&canon=${
+                    filterObject?.namespace_id
+                  }${viewThisVersion ? "&viewversion=1" : ""}`}
+                  className={styles.boldBreadcrumb}
+                  replace
+                >
+                  <a
+                    className={`${
+                      tree[0]["1"].is_archive == 1
+                        ? `font-weight-bold tra ${styles.archive_grey}`
+                        : tree[0]["1"]?.camp_id ==
+                            router?.query?.camp?.at(1)?.split("-")?.at(0) ?? "1"
+                        ? `font-weight-bold ${styles.activeCamp}`
+                        : ""
+                    } ${
+                      isForumPage &&
+                      tree[0]["1"]?.camp_id ==
+                        ((router?.query?.camp as string)?.split("-")?.at(0) ??
+                          "1")
+                        ? `font-weight-bold forumActive ${styles.activeCamp}`
+                        : ""
+                    }`}
+                  >
+                    {tree[0]["1"].is_archive == 1 ? (
+                      <Popover content="Archived Camp">
+                        {includeReview
+                          ? tree[0]["1"]?.review_title
+                          : tree[0]["1"]?.title}
+                      </Popover>
+                    ) : includeReview ? (
+                      tree[0]["1"]?.review_title
+                    ) : (
+                      tree[0]["1"]?.title
+                    )}
+                  </a>
+                </Link>
+              ) : (
+                ""
+              )}{" "}
+              <span className={styles.subScriptionIcon}>
+                {isUserAuthenticated && !!topicRecord?.topicSubscriptionId ? (
+                  <Tooltip
+                    title="You have subscribed to the entire topic."
+                    key="camp_subscribed_icon"
+                  >
+                    <small style={{ alignSelf: "center", marginLeft: "10px" }}>
+                      <i className="icon-subscribe text-primary"></i>
+                    </small>
+                  </Tooltip>
                 ) : (
-                  tree[0]["1"]?.title
+                  ""
                 )}
-              </a>
-            </Link>
-          ) : (
-            ""
-          )}{" "}
-          <span className={styles.subScriptionIcon}>
-            {isUserAuthenticated && !!topicRecord?.topicSubscriptionId ? (
-              <Tooltip
-                title="You have subscribed to the entire topic."
-                key="camp_subscribed_icon"
-              >
-                <small style={{ alignSelf: "center", marginLeft: "10px" }}>
-                  <i className="icon-subscribe text-primary"></i>
-                </small>
-              </Tooltip>
-            ) : (
-              ""
-            )}
-          </span>
+              </span>
+            </div>
+            <Button
+              type="primary"
+              size="small"
+              onClick={eventLinePath}
+            >
+              Event Line
+            </Button>
+          </div>
         </Typography.Paragraph>
         <Tree
           showLine={{ showLeafIcon: false }}

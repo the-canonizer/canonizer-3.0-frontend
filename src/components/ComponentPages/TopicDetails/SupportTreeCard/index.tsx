@@ -388,7 +388,7 @@ const SupportTreeCard = ({
                           : data[item].score?.toFixed(2)}
                         {/* {data[item].score?.toFixed(2)} */}
                       </span>
-                      {userNickNameList?.length>0 &&!userNickNameList.includes(data[item].nick_name_id) ? (
+                      {userNickNameList?.length>0 &&!userNickNameList.includes(data[item].nick_name_id)  || !isUserAuthenticated? (
                         <>
                           {loggedInUserDelegate ||
                           (loggedInUserChild &&
@@ -488,13 +488,14 @@ const SupportTreeCard = ({
     setModalData({});
     removeForm.resetFields();
   };
+  let title = `Support Tree for "${campRecord?.camp_name}" Camp`
 
   // remove support popup added.
 
   return loadingIndicator || loadingIndicatorSupport ? (
     <CustomSkelton
       skeltonFor="card"
-      titleName='Support Tree for "Agreement" Camp'
+      titleName={title}
       bodyCount={3}
       stylingClass="test"
       isButton={false}

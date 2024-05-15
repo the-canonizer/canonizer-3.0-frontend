@@ -7,10 +7,10 @@ export const formValidationTypes = () => {
 
 export const phoneNumberRule = {
   rules: [
-    {
-      required: true,
-      message: validations.phoneNumber,
-    },
+    // {
+    //   required: true,
+    //   message: validations.phoneNumber,
+    // },
     {
       min: 10,
       message: validations.phoneMinLength,
@@ -19,15 +19,31 @@ export const phoneNumberRule = {
       max: 10,
       message: validations.phoneMaxLength,
     },
+    ({ getFieldValue }) => ({
+      validator(_, value) {
+        const carrierVal = getFieldValue("mobile_carrier");
+        if (carrierVal && !value) {
+          return Promise.reject(new Error(validations.phoneNumber));
+        }
+      },
+    }),
   ],
 };
 
 export const mobileCarrierRule = {
   rules: [
-    {
-      required: true,
-      message: validations.mobileCarrier,
-    },
+    // {
+    //   required: true,
+    //   message: validations.mobileCarrier,
+    // },
+    ({ getFieldValue }) => ({
+      validator(_, value) {
+        const phoneVal = getFieldValue("phone_number");
+        if (phoneVal && !value) {
+          return Promise.reject(new Error(validations.mobileCarrier));
+        }
+      },
+    }),
   ],
 };
 

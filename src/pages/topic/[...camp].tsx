@@ -45,10 +45,8 @@ const TopicDetailsPage = ({
     dispatch(setCurrentCampRecord(campRecord?.campData));
     dispatch(setCampStatement(campStatement));
     dispatch(setHistory(statementHistory));
-    // dispatch(setCanonizedAlgorithms(canonizedAlgorithms));
     dispatch(setTree(tree?.status_code == 200 ? [tree?.treeData] : []));
     dispatch(setCurrentDate(current_date));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   let ErrorStatus =
@@ -62,7 +60,8 @@ const TopicDetailsPage = ({
   return (
     <Layout>
       {tree?.status_code == 404 ||
-      ((campRecord?.status_code == 404 || campRecord?.status_code == 400)) ? (
+      campRecord?.status_code == 404 ||
+      campRecord?.status_code == 400 ? (
         <DataNotFound
           name={ErrorStatus}
           message={`${ErrorStatus} not found`}
