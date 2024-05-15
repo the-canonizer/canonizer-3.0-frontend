@@ -1,3 +1,4 @@
+import styles from "./timeline.module.scss";
 import React, { useEffect, useState } from "react";
 import RacingBarChart from "./RacingBarChart";
 import useInterval from "./useInterval";
@@ -8,10 +9,22 @@ import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store/index.js";
 import CustomSkelton from "../../common/customSkelton";
-import { Empty } from "antd";
+import { Empty, Radio, Space, Typography, Tooltip, Popover, Button, message} from "antd";
+import type { RadioChangeEvent } from 'antd';
+import { ShareAltOutlined } from "@ant-design/icons";
+import { FacebookShareButton, LinkedinShareButton, TwitterShareButton } from "next-share";
+import FacebookIcon from '../../../assets/image/facebook.png';
+import TwitterIcon from '../../../assets/image/twitter.png';
+import LinkedinIcon from '../../../assets/image/linkedin.png';
+import CopyLinkIcon from '../../../assets/image/copy-link.png';
+import CheckIcon from '../../../assets/image/check.png';
+import { isServer } from "src/utils/generalUtility";
+
 // const getRandomIndex = (array) => {
 //   return Math.floor(array.length * Math.random());
 // };
+
+const { Title , Paragraph } = Typography;
 
 function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
   const [loading, setLoading] = useState(false);
@@ -21,10 +34,15 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
   // const [eventDescription, setEventDescription] = useState("");
   const [animationSpeed, setAnimationSpeed] = useState(1000);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [value, setValue] = useState(1);
   const router = useRouter();
 
   const events = mockData && Object.keys(mockData).sort();
   const [data, setData] = useState([]);
+  const [URL, setURL] = useState(router?.asPath);
+  const [linkCopied, setLinkCopied] = useState(false);
+  const [asOfTime,setAsOfTime] = useState(null);
+
   const { algorithm, score, asofdate, asof } = useSelector(
     (state: RootState) => ({
       algorithm: state.filters?.filterObject?.algorithm,
@@ -33,6 +51,13 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
       asof: state?.filters?.filterObject?.asof,
     })
   );
+
+  useEffect(()=>{
+    setTimeout(()=>{
+      setLinkCopied(false)
+    },1000)
+  },[linkCopied])
+
   useEffect(() => {
     async function apiCall() {
       const data = await getEventLineApi({
@@ -99,7 +124,7 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
 
   const handleEventSelection = (index) => {
     setData(
-      mockData[events[index]].payload_response?.filter(
+      mockData[events[index]]?.payload_response?.filter(
         (item) => item.score >= score
       )
     );
@@ -115,6 +140,71 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
     );
     // setEventDescription(mockData[events[iteration]].event?.message);
   };
+
+  const onChange = (e: RadioChangeEvent) => {
+    console.log('radio checked', e.target.value);
+    setValue(e.target.value);
+  };
+
+  const content = (
+    <div className={styles.popoverWrapper}>
+      <Title level={5}>Share</Title>
+    <Radio.Group onChange={onChange} value={value}>
+    <Space direction="vertical">
+      <Radio value={1} onChange={(e)=>setURL(router?.asPath)}>Copy URL</Radio>
+      <Radio value={2} onChange={(e)=> {}}>Copy URL at Current Time</Radio>
+    </Space>
+  </Radio.Group>
+  <Space align={"center"} className={styles.shareLink} >
+    <Title level={5}> Share Link to: </Title>
+    <Space>
+        <FacebookShareButton
+         url={!isServer() && window?.location?.href+URL}
+         hashtag={`#${!isServer() && window?.location?.hostname}`}
+        >
+          <Tooltip title="Share On Facebook">
+            <img src={FacebookIcon.src} className={styles.cursorPointer}/>
+          </Tooltip>
+        </FacebookShareButton>
+      
+        <TwitterShareButton url={URL}>
+          <Tooltip title="Share On Twitter">
+          <img src={TwitterIcon.src} className={styles.cursorPointer}/>
+          </Tooltip>
+        </TwitterShareButton>
+        
+        <LinkedinShareButton url={URL}>
+          <Tooltip title="Share On Linkedin">
+          <img src={LinkedinIcon.src} className={styles.cursorPointer}/>
+          </Tooltip>
+        </LinkedinShareButton> 
+
+        {
+          linkCopied?
+          <>
+            <Tooltip title="Link Copied">
+              <img src={CheckIcon.src} className={styles.cursorPointer}/>
+            </Tooltip>
+          </>:
+          <>
+            <Tooltip title="Copy Link">
+              <div 
+                onClick={() => {{
+                  navigator.clipboard.writeText(!isServer() && window?.location?.href+`asoftime=${asOfTime}`),
+                    setLinkCopied(true)
+                }}}>
+                <img src={CopyLinkIcon.src} className={styles.cursorPointer} />
+              </div>
+            </Tooltip>
+          </>
+        }
+      </Space>
+  </Space>
+  </div>
+  );
+  console.log("URL =======|||",URL, asOfTime)
+
+
   return (
     <React.Fragment>
       {loading || !data ? (
@@ -125,6 +215,10 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
           stylingClass=""
         />
       ) : (
+        <>
+        <Popover content={content} trigger="click" placement="bottomRight" >
+            <Button type="primary" size="middle" className={styles.btnShareURL} ghost icon={<ShareAltOutlined />}>Share</Button>
+        </Popover>
         <TimelineSlider
           mockData={mockData}
           setStart={setStart}
@@ -138,7 +232,12 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
           handleForwardOrBackord={handleForwardOrBackord}
           isPlaying={isPlaying}
           setIsPlaying={setIsPlaying}
+          url={URL}
+          setURL={setURL}
+          asOfTime={asOfTime}
+          setAsOfTime={setAsOfTime}
         />
+        </>
       )}
       <div className="evenline-bars">
         {loading || !data ? (
