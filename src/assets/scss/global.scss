@@ -2251,6 +2251,9 @@ div[role="option"]::before {
 
 .Profile_btn {
   min-width: 150px;
+  @media screen and (max-width: 1580px) {
+    min-width: auto;
+  }
 }
 
 .tab--card > .ant-card-head {
@@ -2637,10 +2640,9 @@ div[role="option"]::before {
 .topics-list-card-header {
   padding: 15px 10px;
   display: flex;
-  
+
   gap: 8px;
-  @media screen and (max-width: 1300px)
-  {
+  @media screen and (max-width: 1300px) {
     flex-wrap: wrap;
   }
 
@@ -2656,8 +2658,7 @@ div[role="option"]::before {
   .ant-select.ant-select-lg {
     margin-right: auto;
 
-    
-      @media screen and (min-width: 768px) {
+    @media screen and (min-width: 768px) {
       margin-left: 0px;
       max-width: 100%;
       width: 100%;
@@ -3020,21 +3021,20 @@ div[role="option"]::before {
     text-decoration: underline;
   }
 }
-.event-line-wrapper{
+.event-line-wrapper {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 4;
-  button{
+  button {
     width: auto !important;
     background-color: rgb(248, 157, 21);
     border-color: rgb(248, 157, 21) !important;
     color: #fff !important;
-    &:hover,&:focus{
-    background-color: rgb(248, 157, 21);
-    border-color: rgb(248, 157, 21) !important;
-
-
+    &:hover,
+    &:focus {
+      background-color: rgb(248, 157, 21);
+      border-color: rgb(248, 157, 21) !important;
     }
   }
 }
