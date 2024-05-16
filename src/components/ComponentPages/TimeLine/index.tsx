@@ -144,12 +144,26 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
   const onChange = (e: RadioChangeEvent) => {
     console.log('radio checked', e.target.value);
     setValue(e.target.value);
-    if(e.target.value==1){
-      setURL('')
-    }else{
-      setURL(`?asoftime=${asOfTime}`)
+    
+    if (e.target.value == 1){
+      setURL(!isServer() && window?.location?.href)
+    }else if(e.target.value == 2){
+      setURL(!isServer() && window?.location?.href+`?asoftime=${asOfTime}`)
     }
   };
+
+  const copyHandler = () => {
+    if (value == 1){
+      setURL(!isServer() && window?.location?.href)
+      navigator.clipboard.writeText(!isServer() && window?.location?.href),
+      setLinkCopied(true)
+    }else if(value == 2){
+      setURL(!isServer() && window?.location?.href+`?asoftime=${asOfTime}`)
+      navigator.clipboard.writeText(!isServer() && window?.location?.href+`?asoftime=${asOfTime}`),
+      setLinkCopied(true)
+    }
+    
+  }
 
   const content = (
     <div className={styles.popoverWrapper}>
@@ -165,7 +179,7 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
     <Title level={5}> Share Link to: </Title>
     <Space>
         <FacebookShareButton
-         url={!isServer() && window?.location?.href+URL}
+         url={URL}
          hashtag={`#${!isServer() && window?.location?.hostname}`}
         >
           <Tooltip title="Share On Facebook">
@@ -173,13 +187,13 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
           </Tooltip>
         </FacebookShareButton>
       
-        <TwitterShareButton url={!isServer() && window?.location?.href+URL}>
+        <TwitterShareButton url={URL}>
           <Tooltip title="Share On Twitter">
           <img src={TwitterIcon.src} className={styles.cursorPointer}/>
           </Tooltip>
         </TwitterShareButton>
         
-        <LinkedinShareButton url={!isServer() && window?.location?.href+URL}>
+        <LinkedinShareButton url={URL}>
           <Tooltip title="Share On Linkedin">
           <img src={LinkedinIcon.src} className={styles.cursorPointer}/>
           </Tooltip>
@@ -195,10 +209,7 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
           <>
             <Tooltip title="Copy Link">
               <div 
-                onClick={() => {{
-                  navigator.clipboard.writeText(!isServer() && window?.location?.href+URL),
-                    setLinkCopied(true)
-                }}}>
+                onClick={() => copyHandler()}>
                 <img src={CopyLinkIcon.src} className={styles.cursorPointer} />
               </div>
             </Tooltip>
