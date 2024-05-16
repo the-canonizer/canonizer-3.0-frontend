@@ -33,8 +33,6 @@ function TimelineSlider({
   handleForwardOrBackord,
   isPlaying,
   setIsPlaying,
-  URL,
-  setURL,
   asOfTime,
   setAsOfTime
 }: any) {
@@ -43,8 +41,6 @@ function TimelineSlider({
   const [intervalId, setIntervalId] = useState(null);
 
   const [speedBar, setSpeedBar] = useState(false);
-  // const [URL,setURL] = useState(null);
-  // const [asOfTime,setAsOfTime] = useState(null);
 
   useEffect(()=>{
       if(router?.asPath.includes("asoftime")){
@@ -57,7 +53,8 @@ function TimelineSlider({
         setIteration(iterationKey)
         handleEventSelection(iterationKey)
       }
-  },[])
+      mockData && asOfTime == null && setAsOfTime(Object.keys(mockData)[0]?.split("_")[1])
+  },[asOfTime])
 
   const handleClick = () => {
     setStart(!start);
@@ -104,14 +101,12 @@ function TimelineSlider({
 
     {Object.keys(mockData)?.map((key) => {
         //Search the current iteration in data
-        {key?.split("_")[2] == newValue && (setURL(`/${router?.asPath}?asoftime=${ key?.split("_")[1]}`))}
         {key?.split("_")[2] == newValue && (setAsOfTime(key?.split("_")[1]))}
     })}
 
     setIteration(newValue);
     handleEventSelection(newValue);
   };
-  console.log('iteration',iteration)
 
   const handleSpeedChange = (playbackSpeed) => {
     if (playbackSpeed == 0) {
