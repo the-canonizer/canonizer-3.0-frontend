@@ -279,7 +279,7 @@ export default function CanonVideos() {
                       style={{ display: "flex", alignItems: "center" }}
                     >
                       <img
-                        src={`${BaseVideosURL}/${video?.thumbnail}`}
+                        src={`${process.env.NEXT_PUBLIC_BETA_URL}files/videos/consciousness/${video?.thumbnail}`}
                         alt=""
                         style={{ minHeight: "50px" }}
                       />

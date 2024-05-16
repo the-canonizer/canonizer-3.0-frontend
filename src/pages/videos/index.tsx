@@ -67,7 +67,7 @@ const VideosPage = () => {
                                     <img
                                       alt=""
                                       src={
-                                        process.env.NEXT_PUBLIC_BASE_VIDEOS_URL + "videos/consciousness/" +
+                                        process.env.NEXT_PUBLIC_BETA_URL + "files/videos/consciousness/" +
                                         video.thumbnail
                                       }
                                     />
