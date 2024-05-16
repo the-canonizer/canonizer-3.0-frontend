@@ -142,7 +142,6 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
   };
 
   const onChange = (e: RadioChangeEvent) => {
-    console.log('radio checked', e.target.value);
     setValue(e.target.value);
     
     if (e.target.value == 1){
@@ -219,8 +218,6 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
   </Space>
   </div>
   );
-  console.log("URL =======|||",URL, asOfTime)
-
 
   return (
     <React.Fragment>
