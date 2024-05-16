@@ -1,16 +1,20 @@
+/* eslint-disable @next/next/no-img-element */
 import React, { Fragment, useEffect, useRef, useState } from "react";
-import { RadioChangeEvent, Typography, Radio } from "antd";
+import { RadioChangeEvent, Typography, Radio, Card } from "antd";
 import { useRouter } from "next/router";
 
 import styles from "./style.module.scss";
 
 import K from "src/constants";
-import { getVideosContentApi } from "src/network/api/videos";
+import { getVideosApi, getVideosContentApi } from "src/network/api/videos";
 import CustomSkelton from "../../common/customSkelton";
+import VideoThumbnail from "../../../assets/image/video-thumbnail.jpg";
 
 const { Title } = Typography;
 
 export default function CanonVideos() {
+  const BaseVideosURL = `${K.Network.URL?.BaseVideosURL}videos/consciousness`;
+
   const playeref = useRef<any>({});
   const [videos, setVideos] = useState([]);
   const [selectedVideoId, setSelectedVideoId] = useState(1);
@@ -90,8 +94,7 @@ export default function CanonVideos() {
     setVideoResolution(videodata?.resolutions[0]?.link);
 
     const node = document.getElementsByTagName("video")[0];
-    node.src =
-      K.Network.URL?.BaseVideosURL + "/" + videodata?.resolutions[0]?.link;
+    node.src = BaseVideosURL + "/" + videodata?.resolutions.at(0)?.link;
     node.play();
   };
 
@@ -109,7 +112,7 @@ export default function CanonVideos() {
 
     const node = document.getElementsByTagName("video")[0];
     if (node) {
-      node.src = K.Network.URL?.BaseVideosURL + "/" + e.target.value;
+      node.src = BaseVideosURL + "/" + e.target.value;
       node.play();
     }
   };
@@ -117,18 +120,21 @@ export default function CanonVideos() {
   useEffect(() => {
     const q = router.query;
 
+    // let categoryId = router?.query?.video?.at(0).split("-")[0];
+    // let categoryName = router?.query?.video?.at(0).split("-")[1];
+
     async function getTreeApiCall() {
       setLoader(true);
-      let data = await getVideosContentApi();
+      let data = await getVideosApi();
 
       if (data?.status_code == 200) {
-        setVideos(data?.data);
+        setVideos(data?.data[0]?.videos);
 
-        const videoss = data?.data;
+        const videoss = data?.data[0]?.videos;
 
-        if (q?.chapter || q?.format) {
+        if (q?.video?.at(1) || q?.format) {
           const videoTitle = replaceString(
-            spaceChangeToDash(q?.chapter as string, true),
+            spaceChangeToDash(q?.video?.at(1) as string, true),
             true
           );
           const filteredVideo = Object.values(videoss)?.filter((video) => {
@@ -159,11 +165,13 @@ export default function CanonVideos() {
 
             const node = document.getElementsByTagName("video")[0];
             if (node) {
-              node.src = K.Network.URL?.BaseVideosURL + "/" + resLink;
+              node.src = BaseVideosURL + "/" + resLink;
             }
           }
         } else {
-          setVideoResolution(data?.data[0]?.resolutions[0]?.link);
+          setVideoResolution(
+            data?.data?.at(0)?.videos?.at(0)?.resolutions?.at(0)?.link
+          );
         }
       }
       setLoader(false);
@@ -217,137 +225,161 @@ export default function CanonVideos() {
   }, []);
 
   function addQueryParams(
-    chapter: string | string[],
+    chapter: string,
     format: string | string[],
     t: string | string[]
   ) {
-    router.query.chapter = chapter;
+    const isSpecialChapter = router.query.video?.[0] === "1-consciousness";
+
+    router.query.video = isSpecialChapter
+      ? [router.query.video?.[0], chapter]
+      : [chapter];
     router.query.format = format;
+    let asPath = `/videos/consciousness/${chapter}?format=${format}`;
     if (t) {
       router.query.t = t;
+      asPath += `&t=${t}`;
     } else {
       // eslint-disable-next-line no-unused-vars
       const { t, ...rest } = router?.query;
       router.query = rest;
     }
-    router?.push(router, null, { shallow: true });
+    isSpecialChapter
+      ? router?.push(router, null, { shallow: true })
+      : router.push(router.pathname, asPath, { shallow: true });
   }
 
   return (
     <Fragment>
-      <div className="w-100 pt-4 pb-4 ">
-        <Title className={`text-center ${styles.pageTitle}`} level={1}>
-          Consciousness: Not a Hard Problem, Just a Color Problem
-        </Title>
-      </div>
-      <div className={styles.videosContainer}>
-        <div className={styles.sideBarWrap}>
-          {loader ? (
-            <CustomSkelton
-              skeltonFor="list"
-              bodyCount={7}
-              stylingClass=""
-              isButton={false}
-              action={false}
-              title={false}
-              data-testid="skeleton"
-            />
-          ) : (
-            <ul>
-              {Object.values(videos)?.map((video) => (
-                <li
-                  className={video.id === selectedVideoId ? styles.active : ""}
-                  onClick={() => handleVideoSelection(video)}
-                  key={video?.id}
-                  data-testid={video?.title}
-                >
-                  {video?.title}
-                </li>
-              ))}
-            </ul>
-          )}
-          <div>
-            <Title level={5}>Video Format:</Title>
-
-            {videos && !loader ? (
-              <Radio.Group
-                className={styles.radioGroup}
-                value={videoResolution}
-              >
-                {videos[selectedVideoId - 1]?.resolutions?.map(
-                  (data: {
-                    id: React.Key;
-                    link: string;
-                    title:
-                      | boolean
-                      | React.ReactChild
-                      | React.ReactFragment
-                      | React.ReactPortal;
-                  }) => {
-                    return (
-                      <Radio
-                        key={data?.id}
-                        value={data?.link}
-                        checked={videoResolution === data?.link}
-                        onChange={(e) => onChange(e, data?.title as string)}
-                        data-testid={data?.link}
-                      >
-                        {data?.title}
-                      </Radio>
-                    );
-                  }
-                )}
-              </Radio.Group>
-            ) : (
+      <Card
+        title=" Consciousness: Not a Hard Problem, Just a Color Problem"
+        className="video-parent-card w-100"
+      >
+        <div className={`video-container ${styles.videosContainer}`}>
+          <div className={`side-bar-wrap ${styles.sideBarWrap}`}>
+            {loader ? (
               <CustomSkelton
                 skeltonFor="list"
-                bodyCount={3}
+                bodyCount={7}
                 stylingClass=""
                 isButton={false}
                 action={false}
                 title={false}
+                data-testid="skeleton"
+              />
+            ) : (
+              <ul>
+                {Object.values(videos)?.map((video) => {
+                  return (
+                    <li
+                      className={video.id === selectedVideoId ? "active" : ""}
+                      onClick={() => handleVideoSelection(video)}
+                      key={video?.id}
+                      data-testid={video?.title}
+                      style={{ display: "flex", alignItems: "center" }}
+                    >
+                      <img
+                        src={`${BaseVideosURL}/${video?.thumbnail}`}
+                        alt=""
+                        style={{ minHeight: "50px" }}
+                      />
+                      {video?.title}
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+            <div className="video-formats">
+              <Title level={5}>Video Format:</Title>
+
+              {videos && !loader ? (
+                <Radio.Group
+                  className={styles.radioGroup}
+                  value={videoResolution}
+                >
+                  {videos[selectedVideoId - 1]?.resolutions?.map(
+                    (data: {
+                      id: React.Key;
+                      link: string;
+                      title:
+                        | boolean
+                        | React.ReactChild
+                        | React.ReactFragment
+                        | React.ReactPortal;
+                    }) => {
+                      return (
+                        <Radio
+                          key={data?.id}
+                          value={data?.link}
+                          checked={videoResolution === data?.link}
+                          onChange={(e) => onChange(e, data?.title as string)}
+                          data-testid={data?.link}
+                        >
+                          {data?.title}
+                        </Radio>
+                      );
+                    }
+                  )}
+                </Radio.Group>
+              ) : (
+                <CustomSkelton
+                  skeltonFor="list"
+                  bodyCount={3}
+                  stylingClass=""
+                  isButton={false}
+                  action={false}
+                  title={false}
+                />
+              )}
+            </div>
+          </div>
+          <Card
+            className={`video-player-card ${styles.videoPlayer}`}
+            data-testid="videoPlayer"
+          >
+            {videos && videoResolution ? (
+              <>
+                <video
+                  onTimeUpdate={updateTime}
+                  width={"100%"}
+                  height={"auto"}
+                  controls
+                  ref={playeref}
+                >
+                  <source
+                    data-testid="playerId"
+                    src={BaseVideosURL + "/" + videoResolution}
+                    type="video/mp4"
+                  />
+                  <track
+                    kind="chapters"
+                    label="Locations"
+                    src={"/subs/" + vttPath() + ".vtt"}
+                    default
+                  ></track>
+                </video>
+                <div
+                  className={`video-chap-content ${styles.vttComtainer}`}
+                  dangerouslySetInnerHTML={{ __html: topic }}
+                ></div>
+              </>
+            ) : (
+              <CustomSkelton
+                bodyCount
+                stylingClass
+                isButton
+                height={400}
+                skeltonFor="video"
               />
             )}
-          </div>
+          </Card>
         </div>
-        <div className={styles.videoPlayer} data-testid="videoPlayer">
-          {videos && videoResolution ? (
-            <>
-              <video
-                onTimeUpdate={updateTime}
-                width={"100%"}
-                height={"auto"}
-                controls
-                ref={playeref}
-              >
-                <source
-                  data-testid="playerId"
-                  src={K.Network.URL?.BaseVideosURL + "/" + videoResolution}
-                  type="video/mp4"
-                />
-                <track
-                  kind="chapters"
-                  label="Locations"
-                  src={"/subs/" + vttPath() + ".vtt"}
-                  default
-                ></track>
-              </video>
-              <div
-                className={`video-chap-content ${styles.vttComtainer}`}
-                dangerouslySetInnerHTML={{ __html: topic }}
-              ></div>
-            </>
-          ) : (
-            <CustomSkelton
-              bodyCount
-              stylingClass
-              isButton
-              height={400}
-              skeltonFor="video"
-            />
-          )}
-        </div>
-      </div>
+      </Card>
+      {/* <div className="w-100 pt-4 pb-4 ">
+        <Title className={`text-center ${styles.pageTitle}`} level={1}>
+          Consciousness: Not a Hard Problem, Just a Color Problem
+        </Title>
+      </div> */}
     </Fragment>
   );
 }
