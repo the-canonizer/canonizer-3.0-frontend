@@ -145,21 +145,45 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
     setValue(e.target.value);
     
     if (e.target.value == 1){
-      setURL(!isServer() && window?.location?.href)
+      if(router.asPath.includes("eventId")){
+        setURL(!isServer() && window?.location?.href?.split("?")[0])
+      }else{
+        setURL(!isServer() && window?.location?.href)
+      }
     }else if(e.target.value == 2){
-      setURL(!isServer() && window?.location?.href+`?eventId=${eventId}`)
+      if(router.asPath.includes("eventId")){
+        setURL(!isServer() && window?.location?.href?.split("?")[0]+`?eventId=${router.query.eventId}`)
+      }else{
+        setURL(!isServer() && window?.location?.href+`?eventId=${eventId}`)
+      }
     }
   };
 
   const copyHandler = () => {
-    if (value == 1){
-      setURL(!isServer() && window?.location?.href)
-      navigator.clipboard.writeText(!isServer() && window?.location?.href),
-      setLinkCopied(true)
-    }else if(value == 2){
-      setURL(!isServer() && window?.location?.href+`?eventId=${eventId}`)
-      navigator.clipboard.writeText(!isServer() && window?.location?.href+`?eventId=${eventId}`),
-      setLinkCopied(true)
+    if (value == 1) {
+      if(router.asPath.includes("eventId")){
+        //event id is present in URL
+        setURL(!isServer() && window?.location?.href?.split("?")[0])
+        navigator.clipboard.writeText(!isServer() && window?.location?.href?.split("?")[0]),
+        setLinkCopied(true)
+      }else{
+        //event id is not present in URL
+        setURL(!isServer() && window?.location?.href)
+        navigator.clipboard.writeText(!isServer() && window?.location?.href),
+        setLinkCopied(true)
+      }
+    } else if (value == 2){
+      if(router.asPath.includes("eventId")){
+        //event id is present in URL
+        setURL(!isServer() && window?.location?.href?.split("?")[0]+`?eventId=${router.query.eventId}`)
+        navigator.clipboard.writeText(window?.location?.href?.split("?")[0]+`?eventId=${router.query.eventId}`),
+        setLinkCopied(true)
+      }else{
+        //event id is not present in URL
+        setURL(!isServer() && window?.location?.href+`?eventId=${eventId}`)
+        navigator.clipboard.writeText(!isServer() && window?.location?.href+`?eventId=${eventId}`),
+        setLinkCopied(true)
+      }
     }
   }
 

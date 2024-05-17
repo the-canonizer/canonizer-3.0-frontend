@@ -50,7 +50,7 @@ function TimelineSlider({
 
       if(router.asPath.includes("?") && router?.asPath.includes("eventId")){
         const newQueryParams = {
-          eventId: router?.query?.eventId? router?.query?.eventId: eventId,
+          eventId: eventId,
         };
         const currentQueryParams = router.query;
         const updatedQueryParams = {
