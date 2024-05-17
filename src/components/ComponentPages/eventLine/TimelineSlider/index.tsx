@@ -33,8 +33,8 @@ function TimelineSlider({
   handleForwardOrBackord,
   isPlaying,
   setIsPlaying,
-  asOfTime,
-  setAsOfTime
+  eventId,
+  setEventId
 }: any) {
   const router = useRouter();
 
@@ -43,18 +43,28 @@ function TimelineSlider({
   const [speedBar, setSpeedBar] = useState(false);
 
   useEffect(()=>{
-      if(router?.asPath.includes("asoftime")){
-        let iterationKey = null;
-        Object.keys(mockData).map((key) => {
-          key.split("_")[1] == router?.query?.asoftime ?  (
-            iterationKey =  key.split("_")[2]
-          ) : null
-        })
-        setIteration(iterationKey)
-        handleEventSelection(iterationKey)
+      if(router?.asPath.includes("eventId")){
+        setIteration(router?.query?.eventId);
+        handleEventSelection(router?.query?.eventId);
       }
-      mockData && asOfTime == null && setAsOfTime(Object.keys(mockData)[0]?.split("_")[1])
-  },[asOfTime])
+
+      if(router.asPath.includes("?") && router?.asPath.includes("eventId")){
+        const newQueryParams = {
+          eventId: router?.query?.eventId? router?.query?.eventId: eventId,
+        };
+        const currentQueryParams = router.query;
+        const updatedQueryParams = {
+          ...currentQueryParams,
+          ...newQueryParams,
+        }
+        const newUrl = {
+          pathname: router.pathname,
+          query: updatedQueryParams,
+        };
+        eventId && router.push(newUrl)
+      }
+
+  },[eventId, router?.query?.eventId])
 
   const handleClick = () => {
     setStart(!start);
@@ -101,7 +111,7 @@ function TimelineSlider({
 
     {Object.keys(mockData)?.map((key) => {
         //Search the current iteration in data
-        {key?.split("_")[2] == newValue && (setAsOfTime(key?.split("_")[1]))}
+        key?.split("_")[2] == newValue && (setEventId(key?.split("_")[2])) 
     })}
 
     setIteration(newValue);

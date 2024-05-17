@@ -41,7 +41,7 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
   const [data, setData] = useState([]);
   const [URL, setURL] = useState('');
   const [linkCopied, setLinkCopied] = useState(false);
-  const [asOfTime,setAsOfTime] = useState(null);
+  const [eventId,setEventId] = useState(0);
 
   const { algorithm, score, asofdate, asof } = useSelector(
     (state: RootState) => ({
@@ -56,7 +56,7 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
     setTimeout(()=>{
       setLinkCopied(false)
     },1000)
-  },[linkCopied, asOfTime])
+  },[linkCopied, eventId, value])
 
   useEffect(() => {
     async function apiCall() {
@@ -147,7 +147,7 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
     if (e.target.value == 1){
       setURL(!isServer() && window?.location?.href)
     }else if(e.target.value == 2){
-      setURL(!isServer() && window?.location?.href+`?asoftime=${asOfTime}`)
+      setURL(!isServer() && window?.location?.href+`?eventId=${eventId}`)
     }
   };
 
@@ -157,11 +157,10 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
       navigator.clipboard.writeText(!isServer() && window?.location?.href),
       setLinkCopied(true)
     }else if(value == 2){
-      setURL(!isServer() && window?.location?.href+`?asoftime=${asOfTime}`)
-      navigator.clipboard.writeText(!isServer() && window?.location?.href+`?asoftime=${asOfTime}`),
+      setURL(!isServer() && window?.location?.href+`?eventId=${eventId}`)
+      navigator.clipboard.writeText(!isServer() && window?.location?.href+`?eventId=${eventId}`),
       setLinkCopied(true)
     }
-    
   }
 
   const content = (
@@ -218,6 +217,7 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
   </Space>
   </div>
   );
+  console.log('event Id',eventId)
 
   return (
     <React.Fragment>
@@ -246,8 +246,8 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
           handleForwardOrBackord={handleForwardOrBackord}
           isPlaying={isPlaying}
           setIsPlaying={setIsPlaying}
-          asOfTime={asOfTime}
-          setAsOfTime={setAsOfTime}
+          eventId={eventId}
+          setEventId={setEventId}
         />
         </>
       )}
