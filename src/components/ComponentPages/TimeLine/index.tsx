@@ -230,11 +230,8 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
           </>:
           <>
             <Tooltip title="Copy Link">
-              <div 
-                onClick={() => copyHandler()}>
-                <img src={CopyLinkIcon.src} className={styles.cursorPointer} />
-              </div>
-            </Tooltip>
+            <img src={CopyLinkIcon.src} className={styles.cursorPointer}  onClick={() => copyHandler()}/>
+          </Tooltip>
           </>
         }
       </Space>
