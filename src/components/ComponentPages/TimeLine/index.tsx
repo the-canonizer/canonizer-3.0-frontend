@@ -221,7 +221,6 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
           </Tooltip>
         </LinkedinShareButton> 
 
-
         {
           linkCopied?
           <>
