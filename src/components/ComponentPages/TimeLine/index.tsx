@@ -188,13 +188,12 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
       <Title level={5}>Share</Title>
     <Radio.Group onChange={onChange} value={value}>
     <Space direction="vertical">
-      <Radio value={1}>Copy URL</Radio>
-      <Radio value={2}>
-        Copy URL at Current Time</Radio>
+      <Radio value={1}>Eventline URL</Radio>
+      <Radio value={2}>Current Event URL</Radio>
     </Space>
   </Radio.Group>
   <Space align={"center"} className={styles.shareLink} >
-    <Title level={5}> Share Link to: </Title>
+    <Title level={5}> Share Link To: </Title>
     <Space>
         <FacebookShareButton
          url={URL}
@@ -254,7 +253,7 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
         />
       ) : (
         <>
-        <Popover content={content} trigger="click" placement="bottomRight" open={true}>
+        <Popover content={content} trigger="click" placement="bottomRight" >
             <Button type="primary" size="middle" className={styles.btnShareURL} ghost icon={<ShareAltOutlined />}>Share</Button>
         </Popover>
         <TimelineSlider

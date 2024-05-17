@@ -72,6 +72,7 @@ function TimelineSlider({
       clearInterval(intervalId);
       setIntervalId(null);
       setIsPlaying(false);
+      setEventId(iteration)
     } else {
       const id = setInterval(() => {
         if (isPlaying && start) {
@@ -81,6 +82,7 @@ function TimelineSlider({
 
       setIntervalId(id);
       setIsPlaying(true);
+      setEventId(iteration)
     }
   };
   const handleClickForward = () => {
@@ -88,6 +90,7 @@ function TimelineSlider({
     setStart(false);
     if (Object.keys(mockData).length - 1 !== iteration) {
       setIteration(iteration + 1);
+      setEventId(iteration + 1)
 
       handleForwardOrBackord(iteration + 1);
     }
@@ -100,6 +103,7 @@ function TimelineSlider({
     setStart(false);
     if (iteration > 0) {
       setIteration(iteration - 1);
+      setEventId(iteration - 1)
 
       handleForwardOrBackord(iteration - 1);
     }
