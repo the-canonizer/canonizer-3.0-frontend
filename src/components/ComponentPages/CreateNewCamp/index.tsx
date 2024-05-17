@@ -170,9 +170,8 @@ const CreateNewCamp = ({
       );
 
       const { camp } = router?.query;
-
-      router?.push(
-        `/topic/${replaceSpecialCharacters(camp[0], "-")}/${
+      const returnPath = localStorage.getItem("topicPath"),
+        defPath = `/topic/${replaceSpecialCharacters(camp[0], "-")}/${
           res?.data?.camp_num
         }-${replaceSpecialCharacters(
           values.camp_name,
@@ -183,8 +182,25 @@ const CreateNewCamp = ({
             : ""
         }&asof=${filterObject?.asof}&canon=${filterObject?.namespace_id}${
           viewThisVersion ? "&viewversion=1" : ""
-        }`
-      );
+        }`;
+
+      let pathToPush = defPath;
+
+      if (returnPath === "/forum/[topic]/[camp]/threads/[id]") {
+        pathToPush = `/forum/${camp[0]}/${
+          res?.data?.camp_num
+        }-${replaceSpecialCharacters(values.camp_name, "-")}/threads`;
+      } else if (returnPath === "/forum/[topic]/[camp]/threads") {
+        pathToPush = `/forum/${camp[0]}/${
+          res?.data?.camp_num
+        }-${replaceSpecialCharacters(values.camp_name, "-")}/threads`;
+      } else if (returnPath === "/forum/[topic]/[camp]/threads/create") {
+        pathToPush = `/forum/${camp[0]}/${
+          res?.data?.camp_num
+        }-${replaceSpecialCharacters(values.camp_name, "-")}/threads/create`;
+      }
+
+      router?.push(pathToPush);
 
       const oldOptions = [...options];
       await oldOptions.map((op) => {
@@ -193,6 +209,7 @@ const CreateNewCamp = ({
       });
       setOptions(oldOptions);
       dispatch(setShowDrawer(true));
+      localStorage.removeItem("topicPath");
       return;
     }
 
@@ -219,8 +236,8 @@ const CreateNewCamp = ({
 
   const onCancel = () => {
     const { camp } = router?.query;
-    router?.push(
-      `/topic/${replaceSpecialCharacters(
+    const returnPath = localStorage.getItem("topicPath"),
+      defPath = `/topic/${replaceSpecialCharacters(
         camp[0],
         "-"
       )}/${replaceSpecialCharacters(
@@ -232,8 +249,20 @@ const CreateNewCamp = ({
           : ""
       }&asof=${filterObject?.asof}&canon=${filterObject?.namespace_id}${
         viewThisVersion ? "&viewversion=1" : ""
-      }`
-    );
+      }`;
+
+    let pathToPush = defPath;
+
+    if (returnPath === "/forum/[topic]/[camp]/threads/[id]") {
+      pathToPush = `/forum/${camp[0]}/${camp[1]}/threads`;
+    } else if (returnPath === "/forum/[topic]/[camp]/threads") {
+      pathToPush = `/forum/${camp[0]}/${camp[1]}/threads`;
+    } else if (returnPath === "/forum/[topic]/[camp]/threads/create") {
+      pathToPush = `/forum/${camp[0]}/${camp[1]}/threads/create`;
+    }
+
+    router?.push(pathToPush);
+    localStorage.removeItem("topicPath");
   };
 
   // checkbox

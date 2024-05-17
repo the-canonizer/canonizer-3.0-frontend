@@ -318,21 +318,23 @@ function ProfileInfoForm({
                   </Col>
                 </Row>
               </Col>
+              <Col md={24}>
+                <VerifyMobileNumber
+                  mobileCarrier={mobileCarrier}
+                  formVerify={formVerify}
+                  isOTPModalVisible={isOTPModalVisible}
+                  setIsOTPModalVisible={setIsOTPModalVisible}
+                  handleOTPCancel={handleOTPCancel}
+                  otp={otp}
+                  handleChangeOTP={handleChangeOTP}
+                  toggleVerifyButton={toggleVerifyButton}
+                  handleMobileNumberChange={handleMobileNumberChange}
+                  userProfileSkeletonV={userProfileSkeletonV}
+                  setOTP={setOTP}
+                  setToggleVerifyButton={setToggleVerifyButton}
+                />
+              </Col>
             </Row>
-            <VerifyMobileNumber
-              mobileCarrier={mobileCarrier}
-              formVerify={formVerify}
-              isOTPModalVisible={isOTPModalVisible}
-              setIsOTPModalVisible={setIsOTPModalVisible}
-              handleOTPCancel={handleOTPCancel}
-              otp={otp}
-              handleChangeOTP={handleChangeOTP}
-              toggleVerifyButton={toggleVerifyButton}
-              handleMobileNumberChange={handleMobileNumberChange}
-              userProfileSkeletonV={userProfileSkeletonV}
-              setOTP={setOTP}
-              setToggleVerifyButton={setToggleVerifyButton}
-            />
           </div>
         </div>
         <div className={styles.section_two}>
