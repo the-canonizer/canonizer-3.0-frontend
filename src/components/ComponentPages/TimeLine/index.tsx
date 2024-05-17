@@ -253,7 +253,7 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
         />
       ) : (
         <>
-        <Popover content={content} trigger="click" placement="bottomRight" >
+        <Popover content={content} trigger="click" placement="leftBottom" >
             <Button type="primary" size="middle" className={styles.btnShareURL} ghost icon={<ShareAltOutlined />}>Share</Button>
         </Popover>
         <TimelineSlider
