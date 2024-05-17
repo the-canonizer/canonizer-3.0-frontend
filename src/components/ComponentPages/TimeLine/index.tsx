@@ -164,24 +164,20 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
       if(router.asPath.includes("eventId")){
         //event id is present in URL
         setURL(!isServer() && window?.location?.href?.split("?")[0])
-        navigator.clipboard.writeText(!isServer() && window?.location?.href?.split("?")[0]),
         setLinkCopied(true)
       }else{
         //event id is not present in URL
         setURL(!isServer() && window?.location?.href)
-        navigator.clipboard.writeText(!isServer() && window?.location?.href),
         setLinkCopied(true)
       }
     } else if (value == 2){
       if(router.asPath.includes("eventId")){
         //event id is present in URL
         setURL(!isServer() && window?.location?.href?.split("?")[0]+`?eventId=${router.query.eventId}`)
-        navigator.clipboard.writeText(window?.location?.href?.split("?")[0]+`?eventId=${router.query.eventId}`),
         setLinkCopied(true)
       }else{
         //event id is not present in URL
         setURL(!isServer() && window?.location?.href+`?eventId=${eventId}`)
-        navigator.clipboard.writeText(!isServer() && window?.location?.href+`?eventId=${eventId}`),
         setLinkCopied(true)
       }
     }
@@ -229,9 +225,16 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
             </Tooltip>
           </>:
           <>
-            <Tooltip title="Copy Link">
-            <img src={CopyLinkIcon.src} className={styles.cursorPointer}  onClick={() => copyHandler()}/>
-          </Tooltip>
+          <Paragraph
+          className={styles.typographyLink}
+                    copyable={{
+                      text: URL,
+                      icon: <img src={CopyLinkIcon.src} className={styles.cursorPointer}  onClick={() => copyHandler()}/>,
+                    }}
+
+                  >
+            
+          </Paragraph>
           </>
         }
       </Space>
@@ -251,7 +254,7 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
         />
       ) : (
         <>
-        <Popover content={content} trigger="click" placement="bottomRight" >
+        <Popover content={content} trigger="click" placement="bottomRight" open={true}>
             <Button type="primary" size="middle" className={styles.btnShareURL} ghost icon={<ShareAltOutlined />}>Share</Button>
         </Popover>
         <TimelineSlider

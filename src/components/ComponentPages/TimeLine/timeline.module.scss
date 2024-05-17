@@ -54,3 +54,9 @@
 .popoverWrapper {
   width: 320px;
 }
+.typographyLink {
+  margin-bottom: 0 !important;
+  .ant-typography-copy {
+    display: none;
+  }
+}
