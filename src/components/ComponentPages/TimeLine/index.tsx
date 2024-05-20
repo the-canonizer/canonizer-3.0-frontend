@@ -55,32 +55,9 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
   useEffect(()=>{
     setTimeout(()=>{
       setLinkCopied(false)
-    },1000)
+    },1300)
   },[linkCopied, eventId, value])
 
-  useEffect(()=>{
-    if (value == 1) {
-      if(router.asPath.includes("eventId")){
-        //event id is present in URL
-        setURL(!isServer() && window?.location?.href?.split("?")[0])
-        setLinkCopied(true)
-      }else{
-        //event id is not present in URL
-        setURL(!isServer() && window?.location?.href)
-        setLinkCopied(true)
-      }
-    } else if (value == 2){
-      if(router.asPath.includes("eventId")){
-        //event id is present in URL
-        setURL(!isServer() && window?.location?.href?.split("?")[0]+`?eventId=${eventId}`)
-        setLinkCopied(true)
-      }else{
-        //event id is not present in URL
-        setURL(!isServer() && window?.location?.href+`?eventId=${eventId}`)
-        setLinkCopied(true)
-      }
-    }
-  },[])
 
   useEffect(() => {
     async function apiCall() {
