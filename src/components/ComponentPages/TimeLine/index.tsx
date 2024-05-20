@@ -72,7 +72,7 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
     } else if (value == 2){
       if(router.asPath.includes("eventId")){
         //event id is present in URL
-        setURL(!isServer() && window?.location?.href?.split("?")[0]+`?eventId=${router.query.eventId}`)
+        setURL(!isServer() && window?.location?.href?.split("?")[0]+`?eventId=${eventId}`)
         setLinkCopied(true)
       }else{
         //event id is not present in URL
@@ -176,7 +176,7 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
       }
     }else if(e.target.value == 2){
       if(router.asPath.includes("eventId")){
-        setURL(!isServer() && window?.location?.href?.split("?")[0]+`?eventId=${router.query.eventId}`)
+        setURL(!isServer() && window?.location?.href?.split("?")[0]+`?eventId=${eventId}`)
       }else{
         setURL(!isServer() && window?.location?.href+`?eventId=${eventId}`)
       }
@@ -197,7 +197,7 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
     } else if (value == 2){
       if(router.asPath.includes("eventId")){
         //event id is present in URL
-        setURL(!isServer() && window?.location?.href?.split("?")[0]+`?eventId=${router.query.eventId}`)
+        setURL(!isServer() && window?.location?.href?.split("?")[0]+`?eventId=${eventId}`)
         setLinkCopied(true)
       }else{
         //event id is not present in URL
