@@ -20,6 +20,9 @@ import {
 } from "src/store/slices/searchSlice";
 import CustomSkelton from "../../customSkelton";
 import { setSearchLoadingAction } from "src/store/slices/loading";
+import filter from "src/assets/image/face.png";
+import Image from "next/image";
+
 
 interface HighlightedForCampStatementProps {
   text?: string;
@@ -93,12 +96,11 @@ const HeaderMenu = ({ loggedUser }: any) => {
     if (!highlight.trim()) {
       return <label>{text}</label>;
     }
-    const hasTextAfterSpace = /\s/.test(highlight.trim());
-    const escapedHighlight = highlight.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
-    const words = highlight.split(/\s+/).map(word => word.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&"));
-    const joinSeparator = hasTextAfterSpace ? "|" : ""; // Decide join separator based on presence of text after space
-    const regex = new RegExp(`(${words.join(joinSeparator)})`, "gi");
-    const parts = text.split(regex);
+    const highlightWords = highlight.trim().split(/\s+/); // Split the highlight string into individual words
+  const escapedHighlightWords = highlightWords.map(word => word.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&"));
+  const regexPattern = highlightWords.length > -1 ? `(${escapedHighlightWords.join('|')})` : escapedHighlightWords[0];
+  const regex = new RegExp(regexPattern, "gi");
+  const parts = text.split(regex);
     return (
       <>
         {parts.map((part, i) =>
@@ -380,7 +382,14 @@ const HeaderMenu = ({ loggedUser }: any) => {
     {
       label: renderTitle(
         searchNickname && searchNickname?.length ? (
-          <i className="icon-camp"></i>
+          <Image
+                  className={styles.nickname_icon}
+                  id="nick_name"
+                  alt="face Image"
+                  src={filter}
+                  width={15}
+                  height={15}
+                />
         ) : (
           ""
         ),

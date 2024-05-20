@@ -529,7 +529,7 @@ let stringCampArray = findCampId?.map(element => element.toString());
         bordered={false}
         activeKey={active}
         onChange={handleCollapseChange}
-        // accordion={searchVal ?false:true}
+        accordion={false}
       >
         <Panel
           header={
@@ -545,6 +545,7 @@ let stringCampArray = findCampId?.map(element => element.toString());
             </span>
           }
           key={"1"}
+          disabled={searchDataAll?.nickname?.length || searchDataAll?.topic?.length||searchDataAll?.camp?.length||searchDataAll?.statement?.length ? false: true}
         >
           <div className="advance_close">
             <CloseCircleOutlined onClick={handleClosePanel} />
@@ -593,7 +594,7 @@ let stringCampArray = findCampId?.map(element => element.toString());
 
                   <LeftOutlined className={styles.LeftOutlined} />
                   <Input size="large" value={inputValue} onChange={filterOnScore}/>
-                  <Popover
+              <Popover
               content={infoContent}
               placement="right"
               className={styles.infoIcon}
