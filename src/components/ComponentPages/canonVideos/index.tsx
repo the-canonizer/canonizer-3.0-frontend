@@ -132,9 +132,9 @@ export default function CanonVideos() {
 
         const videoss = data?.data[0]?.videos;
 
-        if (q?.video?.at(1) || q?.format) {
+        if (q?.video?.at(1) || q?.format || q?.chapter) {
           const videoTitle = replaceString(
-            spaceChangeToDash(q?.video?.at(1) as string, true),
+            spaceChangeToDash(q?.video?.at(1) ?? q?.chapter as string, true),
             true
           );
           const filteredVideo = Object.values(videoss)?.filter((video) => {
