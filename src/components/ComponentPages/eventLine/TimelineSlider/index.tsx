@@ -48,21 +48,21 @@ function TimelineSlider({
         handleEventSelection(router?.query?.eventId);
       }
 
-      if(router.asPath.includes("?") && router?.asPath.includes("eventId")){
-        const newQueryParams = {
-          eventId: eventId,
-        };
-        const currentQueryParams = router.query;
-        const updatedQueryParams = {
-          ...currentQueryParams,
-          ...newQueryParams,
-        }
-        const newUrl = {
-          pathname: router.pathname,
-          query: updatedQueryParams,
-        };
-        eventId && router.push(newUrl)
-      }
+      // if(router.asPath.includes("?") && router?.asPath.includes("eventId")){
+      //   const newQueryParams = {
+      //     eventId: eventId,
+      //   };
+      //   const currentQueryParams = router.query;
+      //   const updatedQueryParams = {
+      //     ...currentQueryParams,
+      //     ...newQueryParams,
+      //   }
+      //   const newUrl = {
+      //     pathname: router.pathname,
+      //     query: updatedQueryParams,
+      //   };
+      //   eventId && router.push(newUrl)
+      // }
 
   },[eventId, router?.query?.eventId])
 
