@@ -503,7 +503,6 @@ const ManageSupport = ({
       if (res && res.status_code == 200) {
         message.success(res.message);
         getTopicActivityLogCall()
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //After Submit page is redirect to previous
         // router?.push(manageSupportPath);
         handleCancelSupportCamps({ isCallApiStatus: true });
@@ -515,7 +514,6 @@ const ManageSupport = ({
       if (res && res.status_code == 200) {
         message.success(res.message);
         getTopicActivityLogCall()
-        // /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //After Submit page is redirect to previous
         // router?.push(manageSupportPath);
         handleCancelSupportCamps({ isCallApiStatus: false });
