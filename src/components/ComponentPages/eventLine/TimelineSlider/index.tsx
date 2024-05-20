@@ -34,7 +34,9 @@ function TimelineSlider({
   isPlaying,
   setIsPlaying,
   eventId,
-  setEventId
+  setEventId,
+  value,
+  setValue
 }: any) {
   const router = useRouter();
   const didMount = useRef(false);
@@ -73,6 +75,7 @@ function TimelineSlider({
       setIsPlaying(true);
       setEventId(iteration)
     }
+    setValue(0)
   };
   const handleClickForward = () => {
     setIsPlaying(false);
@@ -80,6 +83,7 @@ function TimelineSlider({
     if (Object.keys(mockData).length - 1 !== iteration) {
       setIteration(iteration + 1);
       setEventId(iteration + 1)
+      setValue(0)
 
       handleForwardOrBackord(iteration + 1);
     }
@@ -93,6 +97,7 @@ function TimelineSlider({
     if (iteration > 0) {
       setIteration(iteration - 1);
       setEventId(iteration - 1)
+      setValue(0)
 
       handleForwardOrBackord(iteration - 1);
     }
@@ -101,6 +106,7 @@ function TimelineSlider({
     if (Object.keys(mockData).length == newValue) {
       setIsPlaying(false);
     }
+    setValue(0)
 
     {Object.keys(mockData)?.map((key) => {
         //Search the current iteration in data

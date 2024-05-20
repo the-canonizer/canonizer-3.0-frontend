@@ -34,7 +34,7 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
   // const [eventDescription, setEventDescription] = useState("");
   const [animationSpeed, setAnimationSpeed] = useState(1000);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [value, setValue] = useState(1);
+  const [value, setValue] = useState(0);
   const router = useRouter();
 
   const events = mockData && Object.keys(mockData).sort();
@@ -264,7 +264,6 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
   </Space>
   </div>
   );
-  console.log('event Id',eventId)
 
   return (
     <React.Fragment>
@@ -295,6 +294,8 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
           setIsPlaying={setIsPlaying}
           eventId={eventId}
           setEventId={setEventId}
+          value={value}
+          setValue={setValue}
         />
         </>
       )}
