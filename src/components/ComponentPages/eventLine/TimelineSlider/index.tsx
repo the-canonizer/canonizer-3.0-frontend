@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Slider, Popover, Typography } from "antd";
 import {
   CaretRightOutlined,
@@ -37,34 +37,23 @@ function TimelineSlider({
   setEventId
 }: any) {
   const router = useRouter();
+  const didMount = useRef(false);
 
   const [intervalId, setIntervalId] = useState(null);
 
   const [speedBar, setSpeedBar] = useState(false);
 
   useEffect(()=>{
+    if (!didMount.current) {
       if(router?.asPath.includes("eventId")){
-        setIteration(router?.query?.eventId);
-        handleEventSelection(router?.query?.eventId);
+        setIteration(+router?.query?.eventId);
+        handleEventSelection(+router?.query?.eventId);
       }
+      didMount.current = true;
+    }
 
-      // if(router.asPath.includes("?") && router?.asPath.includes("eventId")){
-      //   const newQueryParams = {
-      //     eventId: eventId,
-      //   };
-      //   const currentQueryParams = router.query;
-      //   const updatedQueryParams = {
-      //     ...currentQueryParams,
-      //     ...newQueryParams,
-      //   }
-      //   const newUrl = {
-      //     pathname: router.pathname,
-      //     query: updatedQueryParams,
-      //   };
-      //   eventId && router.push(newUrl)
-      // }
 
-  },[eventId, router?.query?.eventId])
+  },[eventId])
 
   const handleClick = () => {
     setStart(!start);
