@@ -59,13 +59,18 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
   },[linkCopied, eventId, value])
 
   useEffect(()=>{
-    if(router.asPath.includes("eventId")){
-      //event id is present in URL
-      setURL(!isServer() && window?.location?.href?.split("?")[0])
-    }else{
-      //event id is not present in URL
-      setURL(!isServer() && window?.location?.href)
-    }
+    if(value == 1){
+      if(router.asPath.includes("?")){
+        setURL(!isServer() && window?.location?.href?.split("?")[0])
+      }else{
+        setURL(!isServer() && window?.location?.href)
+      }
+    }else if(value == 2){
+      if(router.asPath.includes("?")){
+        setURL(updateEventId(window?.location?.href,eventId))
+      }else{
+        setURL(window?.location?.href+`?eventId=${eventId}`)
+      }}
   },[])
 
 
@@ -152,43 +157,56 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
     // setEventDescription(mockData[events[iteration]].event?.message);
   };
 
+  const updateEventId = (url, newValue) => {
+    let urlParts = url.split("?");
+    let baseUrl = urlParts[0];
+    let params = urlParts[1].split("&");
+
+    for (let i = 0; i < params.length; i++) {
+        let paramParts = params[i].split("=");
+        if (paramParts[0] === "eventId") {
+            paramParts[1] = newValue;
+            params[i] = paramParts.join("=");
+            break; // Found eventId, no need to continue looping
+        }
+    }
+
+    return baseUrl + "?" + params.join("&");
+}
+
   const onChange = (e: RadioChangeEvent) => {
     setValue(e.target.value);
-    
-    if (e.target.value == 1){
-      if(router.asPath.includes("eventId")){
+
+    if(e.target.value == 1){
+      if(router.asPath.includes("?")){
         setURL(!isServer() && window?.location?.href?.split("?")[0])
       }else{
         setURL(!isServer() && window?.location?.href)
       }
     }else if(e.target.value == 2){
-      if(router.asPath.includes("eventId")){
-        setURL(!isServer() && window?.location?.href?.split("?")[0]+`?eventId=${eventId}`)
+      if(router.asPath.includes("?")){
+        setURL(updateEventId(window?.location?.href,eventId))
       }else{
-        setURL(!isServer() && window?.location?.href+`?eventId=${eventId}`)
+        setURL(window?.location?.href+`?eventId=${eventId}`)
       }
     }
   };
 
   const copyHandler = () => {
-    if (value == 1) {
-      if(router.asPath.includes("eventId")){
-        //event id is present in URL
+    if(value == 1){
+      if(router.asPath.includes("?")){
         setURL(!isServer() && window?.location?.href?.split("?")[0])
         setLinkCopied(true)
       }else{
-        //event id is not present in URL
         setURL(!isServer() && window?.location?.href)
         setLinkCopied(true)
       }
-    } else if (value == 2){
-      if(router.asPath.includes("eventId")){
-        //event id is present in URL
-        setURL(!isServer() && window?.location?.href?.split("?")[0]+`?eventId=${eventId}`)
+    }else if(value == 2){
+      if(router.asPath.includes("?") && router.asPath.includes("eventId")){
+        setURL(updateEventId(window?.location?.href,eventId))
         setLinkCopied(true)
       }else{
-        //event id is not present in URL
-        setURL(!isServer() && window?.location?.href+`?eventId=${eventId}`)
+        setURL(window?.location?.href+`?eventId=${eventId}`)
         setLinkCopied(true)
       }
     }

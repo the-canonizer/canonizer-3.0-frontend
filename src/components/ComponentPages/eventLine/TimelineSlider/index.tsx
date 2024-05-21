@@ -50,6 +50,7 @@ function TimelineSlider({
       if(router?.asPath.includes("eventId")){
         setIteration(+router?.query?.eventId);
         handleEventSelection(+router?.query?.eventId);
+        setEventId(+router?.query?.eventId)
       }
       didMount.current = true;
     }
