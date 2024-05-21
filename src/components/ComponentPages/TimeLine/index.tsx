@@ -236,7 +236,7 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
               className={styles.typographyLink}
               copyable={{
               text: URL,
-              icon: [<img src={CopyLinkIcon.src}  onClick={() => copyHandler()}/> , <img src={CheckIcon.src} /> ]}}
+              icon: [<img src={CopyLinkIcon.src} style={{verticalAlign: "baseline"}}  onClick={() => copyHandler()}/> , <img src={CheckIcon.src} style={{verticalAlign: "baseline"}} /> ]}}
               >
             </Paragraph>
           </>
