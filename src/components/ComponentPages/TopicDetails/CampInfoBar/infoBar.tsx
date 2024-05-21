@@ -23,7 +23,7 @@ import {
   FileTextOutlined,
   HeartOutlined,
   PrinterOutlined,
-  StockOutlined
+  StockOutlined,
 } from "@ant-design/icons";
 import Link from "next/link";
 import {
@@ -86,6 +86,7 @@ const InfoBar = ({
     campExist: state?.topicDetails?.tree && state?.topicDetails?.tree[1],
     campStatement: state?.topicDetails?.campStatement,
   }));
+
   const { manageSupportStatusCheck } = useSelector((state: RootState) => ({
     manageSupportStatusCheck: state.topicDetails.manageSupportStatusCheck,
   }));
@@ -93,6 +94,7 @@ const InfoBar = ({
   const [campSubscriptionID, setCampSubscriptionID] = useState(
     campRecord?.subscriptionId
   );
+
   const [topicSubscriptionID, setTopicSubscriptionID] = useState(
     topicRecord?.topicSubscriptionId
   );
@@ -140,6 +142,7 @@ const InfoBar = ({
       }/threads`,
     });
   };
+
   const eventLinePath = () => {
     router?.push(router?.asPath.replace("topic", "eventline"));
   };
@@ -540,7 +543,7 @@ const InfoBar = ({
                       isButton={false}
                     />
                   ) : (
-                    <>                  
+                    <>
                       <Button
                         type="primary"
                         className={styles.btnCampForum}
@@ -557,6 +560,7 @@ const InfoBar = ({
                           !manageSupportStatusCheck ? campForumDropdownMenu : ""
                         }
                         trigger={["click"]}
+                        destroyPopupOnHide={true}
                       >
                         <a
                           className={styles.iconMore}
