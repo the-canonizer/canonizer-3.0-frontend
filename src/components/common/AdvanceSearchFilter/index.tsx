@@ -32,6 +32,7 @@ import {
   setSelectedTopicFromAdvanceFilterAlgorithm,
   setSelectedCampFromAdvanceFilterAlgorithm,
   setSelectedTopicFromAdvnaceFilterNickname,
+  setSelectedStatementFromAdvanceFilterAlgorithm,
 } from "src/store/slices/searchSlice";
 import debounce from "lodash/debounce";
 import { getTreesApi } from "src/network/api/campDetailApi";
@@ -46,6 +47,7 @@ export default function AdvanceFilter() {
   const [searchVal, setSearchVal] = useState("");
   const [searchTopics, setSearchTopics] = useState([]);
   const [searchCamps, setSearchCamps] = useState([]);
+  const [isSelectClicked, setIsSelectClicked] = useState(false);
   
   
 
@@ -105,8 +107,10 @@ const panelColorRef = useRef(null);
     selectedCampFromAdvanceFilterAlgorithm:
         state?.searchSlice?.selectedCampFromAdvanceFilterAlgorithm,
   }));
-  const { searchDataAll } = useSelector((state: RootState) => ({
+  const { searchDataAll ,searchData} = useSelector((state: RootState) => ({
     searchDataAll: state?.searchSlice?.searchDataAll,
+    searchData: state?.searchSlice?.searchData,
+
   }));
   const findNicknameId = searchDataAll.nickname?.map((obj) => {
     return obj.id;
@@ -123,6 +127,17 @@ const findCampId = searchDataAll.camp?.map((obj) => {
 });
 
 let stringCampArray = findCampId?.map(element => element.toString());
+const findTopicId1 = searchData.camp?.map((obj) => {
+  return obj.topic_num;
+});
+
+let stringTopicArray1 = findTopicId1?.map(element => element.toString());
+
+const findCampId1 = searchData.camp?.map((obj) => {
+    return obj.camp_num;
+});
+
+let stringCampArray1 = findCampId1?.map(element => element.toString());
 
   const [timer, setTimer] = useState(null);
   const [inputValue, setInputValue] = useState(
@@ -137,7 +152,7 @@ let stringCampArray = findCampId?.map(element => element.toString());
   const [active,setActive] = useState([])
   const infoContent = (
     <>
-      <div className={styles.infoText}>
+      <div className={styles.infoTextWidthBox }>
         <Title level={5}>Score Value Filter </Title>
         <p>
           This option filters down the camp list with a score value greater than
@@ -352,6 +367,23 @@ let stringCampArray = findCampId?.map(element => element.toString());
   dispatch(setSelectedCampFromAdvanceFilterAlgorithm(response?.data?.camp))
     // setLoadMoreIndicator(false);
   }
+
+  async function getStatementApiCallWithReqBody() {
+    // loadMore ? setPageNumber(pageNumber + 1) : setPageNumber(1);
+    const rebody={
+      type:"statement",
+      search: "",
+      query: "",
+      algo: algorithm,
+      asof:asof,
+      score:filterByScore,
+      camp_ids: stringCampArray1,
+      topic_ids: stringTopicArray1,
+    }
+  const response = await AdvanceFilterSeacrhApi(rebody);
+  dispatch(setSelectedStatementFromAdvanceFilterAlgorithm(response?.data?.statement))
+    // setLoadMoreIndicator(false);
+  }
   const filterOnScore = (e) => {
     const { value } = e.target;
     setInputValue(value);
@@ -483,7 +515,10 @@ let stringCampArray = findCampId?.map(element => element.toString());
     getTopicsApiCallWithReqBody()
     }else if(router.pathname == "/search/camp" && stringCampArray && stringTopicArray){
     getCampsApiCallWithReqBody()
+    }else  if(router.pathname == "/search/camp_statement" && stringCampArray1 && stringTopicArray1){
+      getStatementApiCallWithReqBody()
     }
+   
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [asof,filterByScore,algorithm]);
   useEffect(()=> {
@@ -491,6 +526,7 @@ let stringCampArray = findCampId?.map(element => element.toString());
       getCampsApiCallWithReqBody()
     }
   }, [searchDataAll])
+ 
   const handleCollapseChange = (key) => {
     setActive(key);
     // Do something with the collapsed key
@@ -499,19 +535,30 @@ let stringCampArray = findCampId?.map(element => element.toString());
     setActive([]); 
   };
   const panelRef = useRef(null);
+  const selectRef = useRef(null)
+  const handleClickOutside = (event) => {
+    if (isSelectClicked) {
+      setIsSelectClicked(false); // Reset the flag and return early
+      return;
+    }
+    
+    if (
+      panelRef.current &&
+      !panelRef.current.contains(event.target) &&
+      !event.target.closest('.ant-select')
+    ) {
+      setActive([]); // Close the panel if click occurs outside of it
+    }
+  };
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (panelRef.current && !panelRef.current.contains(event.target)) {
-        setActive([]); // Close the panel if click occurs outside of it
-      }
-    };
-
+  
+ 
     document.addEventListener('mousedown', handleClickOutside);
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, []);
+  }, [isSelectClicked]);
   return (
     <div ref={panelRef}
       className={
@@ -557,6 +604,7 @@ let stringCampArray = findCampId?.map(element => element.toString());
                 <h4>Canonizer</h4>
                 <label>Canonizer Algorithm:</label>
             <Select
+            ref={selectRef}
             size="large"
             showSearch
             optionFilterProp="children"
@@ -572,11 +620,15 @@ let stringCampArray = findCampId?.map(element => element.toString());
                 (algo) => algo.algorithm_key == selectedAlgorithm
               )[0]?.algorithm_label
             }
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsSelectClicked(true); // Set the flag when Select is clicked
+            }}
             // disabled={loading}
           >
             {algorithms?.map((algo) => {
               return (
-                <Option key={algo.id} value={algo.algorithm_key}>
+                <Option  key={algo.id} value={algo.algorithm_key}>
                   {algo.algorithm_label}
                 </Option>
               );
@@ -680,12 +732,16 @@ let stringCampArray = findCampId?.map(element => element.toString());
               value={moment(selectedAsOFDate * 1000)}
               suffixIcon={<i className="icon-calendar"></i>}
               size={"large"}
-              className={`${styles.date} w-100`}
+              className={`${styles.date} w-100 mt-10`}
               onChange={pickDate}
               inputReadOnly={true}
               disabledDate={(current) =>
                 current && current > moment(current_date_filter).endOf("day")
               }
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsSelectClicked(true); // Set the flag when Select is clicked
+              }}
             />
               </div>
             </div>

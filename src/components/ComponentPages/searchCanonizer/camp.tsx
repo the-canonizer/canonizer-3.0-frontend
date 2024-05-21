@@ -52,7 +52,7 @@ const CampSearch = () => {
   }, [asof]);
 
   useEffect(() => {
-    if(asof == "review" || asof == "bydate" || filterByScore || algorithm !== "blind_popularity"){
+    if(asof == "review" || asof == "bydate" || filterByScore !=0 || algorithm !== "blind_popularity"){
     pageChange1(1,20)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -65,6 +65,7 @@ const CampSearch = () => {
       selectedCampFromAdvanceFilterAlgorithm?.slice(startingPosition, endingPosition)
     );
   };
+
   return (
     <Fragment>
       <aside className="leftSideBar miniSideBar">
@@ -197,10 +198,9 @@ const CampSearch = () => {
 
           <Pagination
             hideOnSinglePage={true}
-            // total={selectedCampFromAdvanceFilterAlgorithm?.length}
             total={asof == "review" || asof == "bydate" || filterByScore !=0 || algorithm !== "blind_popularity" ?(selectedCampFromAdvanceFilterAlgorithm?.length):(searchMetaData.total)}
             pageSize={20}
-            onChange={asof == "review" || asof == "bydate" || filterByScore || algorithm !== "blind_popularity"?pageChange1:pageChange}
+            onChange={asof == "review" || asof == "bydate" || filterByScore !=0 || algorithm !== "blind_popularity"?pageChange1:pageChange}
             showSizeChanger={false}
           />
         </div>

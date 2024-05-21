@@ -100,6 +100,8 @@ const mapNickNameList = (selectNicknameIdFromGetApi,findNicknameId,filterNicknam
       <div className="pageContentWrap">
         <div className={styles.card}>        
           <div className="d-flex mb-2 align-items-center flex-wrap relative ant_tags">
+          <h4 className="m-0" data-testid="nickname_heading">Nickname</h4>
+         
           {clickAdvanceFilterOption?<Space size={[0, 18]} wrap>
           {/* <Tag onClose={()=>{handleTagClose()}}>{selectedTopicFromAdvnaceFilterNickname}</Tag> */}
           {selectedTopicFromAdvnaceFilterNickname.map((topic, index) => (
@@ -111,9 +113,7 @@ const mapNickNameList = (selectNicknameIdFromGetApi,findNicknameId,filterNicknam
             <AdvanceFilter />
           </div>
           
-          <div className="mb-2">
-            <h4 className="m-0" data-testid="nickname_heading">Nickname</h4>
-          </div>
+        
          
           {loading ? (
             <CustomSkelton
