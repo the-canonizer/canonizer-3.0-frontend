@@ -58,6 +58,16 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
     },1300)
   },[linkCopied, eventId, value])
 
+  useEffect(()=>{
+    if(router.asPath.includes("eventId")){
+      //event id is present in URL
+      setURL(!isServer() && window?.location?.href?.split("?")[0])
+    }else{
+      //event id is not present in URL
+      setURL(!isServer() && window?.location?.href)
+    }
+  },[])
+
 
   useEffect(() => {
     async function apiCall() {
