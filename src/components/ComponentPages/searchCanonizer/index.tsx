@@ -9,9 +9,9 @@ import moment from "moment";
 import CustomSkelton from "../../common/customSkelton";
 
 const Search = () => {
-  const { searchData,searchDataAll } = useSelector((state: RootState) => ({
+  const { searchData, searchDataAll } = useSelector((state: RootState) => ({
     searchData: state?.searchSlice?.searchData,
-    searchDataAll:state?.searchSlice?.searchDataAll,
+    searchDataAll: state?.searchSlice?.searchDataAll,
   }));
   const { loading } = useSelector((state: RootState) => ({
     loading: state?.loading?.searchLoading,
@@ -26,7 +26,7 @@ const Search = () => {
     // Replace each special character with a series of hyphens
     // return link.replace(/[-\\^$*+?.()|%#|[\]{}]/g, "-");
     return link.replace(/[-\\^$*+?.()|%#|[\]{}@]/g, "-");
-}
+  }
   return (
     <Fragment>
       <aside className="leftSideBar miniSideBar">
@@ -60,7 +60,9 @@ const Search = () => {
                       return (
                         <>
                           <li>
-                            <Link href={replaceSpecialCharactersInLink(x?.link)}>
+                            <Link
+                              href={replaceSpecialCharactersInLink(x?.link)}
+                            >
                               <a>
                                 <label style={{ cursor: "pointer" }}>
                                   {x.type_value}

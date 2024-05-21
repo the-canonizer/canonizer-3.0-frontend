@@ -638,11 +638,7 @@ const CampTree = ({
                 )}
               </span>
             </div>
-            <Button
-              type="primary"
-              size="small"
-              onClick={eventLinePath}
-            >
+            <Button type="primary" size="small" onClick={eventLinePath}>
               Event Line
             </Button>
           </div>

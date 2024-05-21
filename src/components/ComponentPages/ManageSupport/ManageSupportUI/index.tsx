@@ -59,7 +59,7 @@ const ManageSupportUI = ({
   }));
 
   const router = useRouter();
-const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [removeForm] = Form.useForm();
   // const openPopup = () => setIsSupportTreeCardModal(true);
   const closePopup = () => {};
@@ -450,7 +450,7 @@ const dispatch = useDispatch()
                           onClick={(e) => {
                             e.preventDefault();
                             window.location.href = tag.link;
-                            dispatch(setIsSupportModal(false))
+                            dispatch(setIsSupportModal(false));
                           }}
                         >
                           {tag?.camp_name}

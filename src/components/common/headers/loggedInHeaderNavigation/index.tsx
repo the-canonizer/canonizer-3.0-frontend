@@ -33,7 +33,7 @@ export const logOut = async (router) => {
   const res = await logout();
 
   if (res?.status_code === 200) {
-    router?.push("/", null, { shallow: true });
+    // router?.push("/", null, { shallow: true });
   }
 };
 

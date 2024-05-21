@@ -43,7 +43,7 @@ const Login = ({ isModal, isTest = false }: any) => {
 
   const closeModal = () => {
     dispatch(hideLoginModal());
-    dispatch(setManageSupportStatusCheck(false))
+    dispatch(setManageSupportStatusCheck(false));
     isOtpScreen ? otpForm.resetFields() : form.resetFields();
     setIsOtpScreen(false);
     setErrorMsg("");

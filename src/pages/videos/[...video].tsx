@@ -1,13 +1,13 @@
-import CanonVideos from '@/components/ComponentPages/canonVideos'
+import CanonVideos from "@/components/ComponentPages/canonVideos";
 import Layout from "src/hoc/layout";
-import React from 'react'
+import React from "react";
 
 function Video() {
-    return (
-        <Layout>
-            <CanonVideos />
-        </Layout>
-    )
+  return (
+    <Layout>
+      <CanonVideos />
+    </Layout>
+  );
 }
 
-export default Video
+export default Video;

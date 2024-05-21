@@ -19,7 +19,7 @@ const VideosPage = () => {
   const router = useRouter();
   const [categories, setCategories] = useState(null);
   const [loader, setLoader] = useState(false);
-  
+
   const onCardClick = (e, video) => {
     e.stopPropagation();
     router.push(
@@ -41,11 +41,8 @@ const VideosPage = () => {
   return (
     <Layout routeName={"video"}>
       <div className="pageContentWrap">
-
         {loader ? (
-            <CustomSkeleton
-              skeltonFor="videos"
-            />
+          <CustomSkeleton skeltonFor="videos" />
         ) : (
           <>
             {categories?.map((category) => {
@@ -67,7 +64,8 @@ const VideosPage = () => {
                                     <img
                                       alt=""
                                       src={
-                                        process.env.NEXT_PUBLIC_BETA_URL + "files/videos/consciousness/" +
+                                        process.env.NEXT_PUBLIC_BETA_URL +
+                                        "files/videos/consciousness/" +
                                         video.thumbnail
                                       }
                                     />

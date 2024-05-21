@@ -206,9 +206,9 @@ const SupportTreeCard = ({
       dispatch(setManageSupportUrlLink(manageSupportPath));
       dispatch(setManageSupportStatusCheck(true));
       setSelectNickId(null);
-      q &&
-      q.from &&
-      q.from.includes("notify_") ? null : showModalSupportCamps();
+      q && q.from && q.from.includes("notify_")
+        ? null
+        : showModalSupportCamps();
     } else {
       dispatch(showLoginModal());
     }
@@ -305,12 +305,16 @@ const SupportTreeCard = ({
                           "treeListItemNumber " + styles.treeListItemNumber
                         }
                       >
-                        {campRecord?.is_archive?0:is_checked && isUserAuthenticated
+                        {campRecord?.is_archive
+                          ? 0
+                          : is_checked && isUserAuthenticated
                           ? data[item].full_score?.toFixed(2)
                           : data[item].score?.toFixed(2)}
                         {/* {data[item].score?.toFixed(2)} */}
                       </span>
-                      {userNickNameList?.length>0 &&!userNickNameList.includes(data[item].nick_name_id)  || !isUserAuthenticated? (
+                      {(userNickNameList?.length > 0 &&
+                        !userNickNameList.includes(data[item].nick_name_id)) ||
+                      !isUserAuthenticated ? (
                         <>
                           {loggedInUserDelegate ||
                           (loggedInUserChild &&
@@ -381,7 +385,6 @@ const SupportTreeCard = ({
                 key={data[item].camp_id}
                 data={{ ...data[item], parentIsOneLevel, isDisabled }}
               >
-  
                 {renderTreeNodes(
                   data[item].delegates,
                   isDisabled,
@@ -410,7 +413,7 @@ const SupportTreeCard = ({
     setModalData({});
     removeForm.resetFields();
   };
-  let title = `Support Tree for "${campRecord?.camp_name}" Camp`
+  let title = `Support Tree for "${campRecord?.camp_name}" Camp`;
 
   // remove support popup added.
 
@@ -456,7 +459,9 @@ const SupportTreeCard = ({
           <Paragraph className="position-relative">
             Total Support for This Camp (including sub-camps):
             <span className="number-style">
-              {campRecord?.is_archive?0:totalCampScoreForSupportTree?.toFixed(2)}
+              {campRecord?.is_archive
+                ? 0
+                : totalCampScoreForSupportTree?.toFixed(2)}
             </span>
           </Paragraph>
 

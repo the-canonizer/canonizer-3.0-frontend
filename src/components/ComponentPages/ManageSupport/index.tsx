@@ -32,8 +32,8 @@ const ManageSupport = ({
   setGetManageSupportLoadingIndicator,
   getManageSupportLoadingIndicator,
   getCheckStatusAPI,
-  isManageSupportPage=true,
-}:any) => {
+  isManageSupportPage = true,
+}: any) => {
   const { asof, asofdate } = useSelector((state: RootState) => ({
     asofdate: state.filters?.filterObject?.asofdate,
     asof: state?.filters?.filterObject?.asof,
@@ -160,10 +160,10 @@ const ManageSupport = ({
       handleCancelSupportCamps({ isCallApiStatus: false });
     }
     if (response && response.status_code === 200) {
-      if (response.data?.remove_camps){
+      if (response.data?.remove_camps) {
         setParentSupportDataList(response.data.remove_camps);
 
-        dispatch(setCheckSupportExistsData(response.data))
+        dispatch(setCheckSupportExistsData(response.data));
       }
       if (!manageSupportStatusCheck || CheckDelegatedOrDirect) {
         response.data.warning;
