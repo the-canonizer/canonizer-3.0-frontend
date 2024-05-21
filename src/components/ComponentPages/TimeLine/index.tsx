@@ -215,19 +215,19 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
          hashtag={`#${!isServer() && window?.location?.hostname}`}
         >
           <Tooltip title="Share On Facebook">
-            <FacebookIcon size={29} round/>
+            <FacebookIcon size={27} round/>
           </Tooltip>
         </FacebookShareButton>
       
         <TwitterShareButton url={URL}>
           <Tooltip title="Share On Twitter">
-           <TwitterIcon size={29} round/>
+           <TwitterIcon size={27} round/>
           </Tooltip>
         </TwitterShareButton>
         
         <LinkedinShareButton url={URL}>
           <Tooltip title="Share On Linkedin">
-            <LinkedinIcon size={29} round/>
+            <LinkedinIcon size={27} round/>
           </Tooltip>
         </LinkedinShareButton> 
           <>
