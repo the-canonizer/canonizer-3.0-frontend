@@ -12,10 +12,7 @@ import CustomSkelton from "../../common/customSkelton";
 import { Empty, Radio, Space, Typography, Tooltip, Popover, Button, message} from "antd";
 import type { RadioChangeEvent } from 'antd';
 import { ShareAltOutlined } from "@ant-design/icons";
-import { FacebookShareButton, LinkedinShareButton, TwitterShareButton } from "next-share";
-import FacebookIcon from '../../../assets/image/facebook.png';
-import TwitterIcon from '../../../assets/image/twitter.png';
-import LinkedinIcon from '../../../assets/image/linkedin.png';
+import { FacebookShareButton, LinkedinShareButton, TwitterShareButton, FacebookIcon, TwitterIcon, LinkedinIcon } from "next-share";
 import CopyLinkIcon from '../../../assets/image/copy-link.png';
 import CheckIcon from '../../../assets/image/check.png';
 import { isServer } from "src/utils/generalUtility";
@@ -218,33 +215,30 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
          hashtag={`#${!isServer() && window?.location?.hostname}`}
         >
           <Tooltip title="Share On Facebook">
-            <img src={FacebookIcon.src} className={styles.cursorPointer}/>
+            <FacebookIcon size={29} round/>
           </Tooltip>
         </FacebookShareButton>
       
         <TwitterShareButton url={URL}>
           <Tooltip title="Share On Twitter">
-          <img src={TwitterIcon.src} className={styles.cursorPointer}/>
+           <TwitterIcon size={29} round/>
           </Tooltip>
         </TwitterShareButton>
         
         <LinkedinShareButton url={URL}>
           <Tooltip title="Share On Linkedin">
-          <img src={LinkedinIcon.src} className={styles.cursorPointer}/>
+            <LinkedinIcon size={29} round/>
           </Tooltip>
         </LinkedinShareButton> 
           <>
-          <Paragraph
-          disabled
-          className={styles.typographyLink}
-          copyable={{
-            text: URL,
-            icon: [<img src={CopyLinkIcon.src} className={styles.cursorPointer}  onClick={() => copyHandler()}/> , <img src={CheckIcon.src} className={styles.cursorPointer} /> ]
-                    }}
-
-                  >
-            
-          </Paragraph>
+            <Paragraph
+              disabled
+              className={styles.typographyLink}
+              copyable={{
+              text: URL,
+              icon: [<img src={CopyLinkIcon.src}  onClick={() => copyHandler()}/> , <img src={CheckIcon.src} /> ]}}
+              >
+            </Paragraph>
           </>
       </Space>
   </Space>
