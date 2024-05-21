@@ -29,7 +29,7 @@ import ProfileInfoTab from "./profileInfoTab";
 
 const { Header } = Layout;
 
-export const logOut = async (router) => {
+export const logOut = async (_router) => {
   const res = await logout();
 
   if (res?.status_code === 200) {
