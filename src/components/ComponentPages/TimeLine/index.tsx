@@ -57,10 +57,15 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
       }
     }else if(value == 2){
       if(router.asPath.includes("?")){
-        setURL(updateEventId(window?.location?.href,eventId))
+        if(router.asPath.includes("eventId")){
+          setURL(updateEventId(window?.location?.href,eventId))
+        }else{
+          setURL(window?.location?.href+`&eventId=${eventId}`)
+        }
       }else{
         setURL(window?.location?.href+`?eventId=${eventId}`)
-      }}
+      }
+    }
   },[eventId, value])
 
 
@@ -175,7 +180,11 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
       }
     }else if(e.target.value == 2){
       if(router.asPath.includes("?")){
-        setURL(updateEventId(window?.location?.href,eventId))
+        if(router.asPath.includes("eventId")){
+          setURL(updateEventId(window?.location?.href,eventId))
+        }else{
+          setURL(window?.location?.href+`&eventId=${eventId}`)
+        }
       }else{
         setURL(window?.location?.href+`?eventId=${eventId}`)
       }
@@ -190,8 +199,12 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
         setURL(!isServer() && window?.location?.href)
       }
     }else if(value == 2){
-      if(router.asPath.includes("?") && router.asPath.includes("eventId")){
-        setURL(updateEventId(window?.location?.href,eventId))
+      if(router.asPath.includes("?")){
+        if(router.asPath.includes("eventId")){
+          setURL(updateEventId(window?.location?.href,eventId))
+        }else{
+          setURL(window?.location?.href+`&eventId=${eventId}`)
+        }
       }else{
         setURL(window?.location?.href+`?eventId=${eventId}`)
       }
