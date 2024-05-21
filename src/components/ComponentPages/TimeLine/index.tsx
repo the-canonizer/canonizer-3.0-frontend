@@ -40,7 +40,6 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
   const events = mockData && Object.keys(mockData).sort();
   const [data, setData] = useState([]);
   const [URL, setURL] = useState('');
-  const [linkCopied, setLinkCopied] = useState(false);
   const [eventId,setEventId] = useState(0);
 
   const { algorithm, score, asofdate, asof } = useSelector(
@@ -51,12 +50,6 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
       asof: state?.filters?.filterObject?.asof,
     })
   );
-
-  useEffect(()=>{
-    setTimeout(()=>{
-      setLinkCopied(false)
-    },1300)
-  },[linkCopied, eventId, value])
 
   useEffect(()=>{
     if(value == 1){
@@ -71,7 +64,7 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
       }else{
         setURL(window?.location?.href+`?eventId=${eventId}`)
       }}
-  },[])
+  },[eventId, value])
 
 
   useEffect(() => {
@@ -196,18 +189,14 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
     if(value == 1){
       if(router.asPath.includes("?")){
         setURL(!isServer() && window?.location?.href?.split("?")[0])
-        setLinkCopied(true)
       }else{
         setURL(!isServer() && window?.location?.href)
-        setLinkCopied(true)
       }
     }else if(value == 2){
       if(router.asPath.includes("?") && router.asPath.includes("eventId")){
         setURL(updateEventId(window?.location?.href,eventId))
-        setLinkCopied(true)
       }else{
         setURL(window?.location?.href+`?eventId=${eventId}`)
-        setLinkCopied(true)
       }
     }
   }
@@ -244,27 +233,19 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
           <img src={LinkedinIcon.src} className={styles.cursorPointer}/>
           </Tooltip>
         </LinkedinShareButton> 
-
-        {
-          linkCopied?
-          <>
-            <Tooltip title="Link Copied">
-              <img src={CheckIcon.src} className={styles.cursorPointer}/>
-            </Tooltip>
-          </>:
           <>
           <Paragraph
+          disabled
           className={styles.typographyLink}
-                    copyable={{
-                      text: URL,
-                      icon: <img src={CopyLinkIcon.src} className={styles.cursorPointer}  onClick={() => copyHandler()}/>,
+          copyable={{
+            text: URL,
+            icon: [<img src={CopyLinkIcon.src} className={styles.cursorPointer}  onClick={() => copyHandler()}/> , <img src={CheckIcon.src} className={styles.cursorPointer} /> ]
                     }}
 
                   >
             
           </Paragraph>
           </>
-        }
       </Space>
   </Space>
   </div>
