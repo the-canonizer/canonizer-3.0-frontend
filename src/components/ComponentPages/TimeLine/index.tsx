@@ -232,11 +232,10 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
         </LinkedinShareButton> 
           <>
             <Paragraph
-              disabled
               className={styles.typographyLink}
               copyable={{
               text: URL,
-              icon: [<img src={CopyLinkIcon.src} style={{verticalAlign: "baseline"}}  onClick={() => copyHandler()}/> , <img src={CheckIcon.src} style={{verticalAlign: "baseline"}} /> ]}}
+              icon: [<img src={CopyLinkIcon.src} key="1" style={{verticalAlign: "baseline"}}  onClick={() => copyHandler()}/> , <img src={CheckIcon.src} key="2" style={{verticalAlign: "baseline"}} /> ]}}
               >
             </Paragraph>
           </>
