@@ -179,7 +179,7 @@ function VerifyMobileNumberForm({
                 </Form.Item>
               </Col>
               <Col md={4}>
-                <Form.Item label="&nbsp;">
+                <Form.Item label="&nbsp;" className={styles.btnLayout}>
                   {!toggleVerifyButton ? (
                     <Button
                       id="verifyBtn"

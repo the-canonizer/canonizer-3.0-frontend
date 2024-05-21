@@ -277,7 +277,7 @@ const TopicsList = () => {
         filter: filterByScore,
         asof: asof,
         user_email: onlyMyTopicsCheck ? userEmail : "",
-        // is_archive: is_camp_archive_checked ? 1 : 0,
+        is_archive: is_camp_archive_checked ? 1 : 0,
       };
       const res = await getCanonizedTopicsForSuggestion(reqBody);
       setSearchLoading(false);

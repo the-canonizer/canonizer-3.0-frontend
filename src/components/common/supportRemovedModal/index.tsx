@@ -80,6 +80,9 @@ const SupportRemovedModal = ({
                 showSearch
                 optionFilterProp="children"
                 onChange={onSelectChange}
+                getPopupContainer={(triggerNode) => {
+                  return triggerNode.parentNode;
+                }}
               >
                 <Option key="select" value={null}>
                   Select reason
