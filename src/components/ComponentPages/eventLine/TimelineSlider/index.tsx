@@ -13,11 +13,15 @@ import { useRouter } from "next/router";
 const { Title } = Typography;
 
 const marks = {
-  0: "0.5x",
-  26: "0.75x",
-  50: "1x(Normal)",
-  75: "1.25x",
-  100: "1.5x",
+  0: "0.1x",
+  12.5: "0.25x",
+  25.0: "0.5x",
+  37.5: "0.75x",
+  50.0:"1x",
+  62.5:"2.5x",
+  75.0:"5x",
+  87.5:"7.5x",
+  100:"10x"
 };
 
 function TimelineSlider({
@@ -119,17 +123,38 @@ function TimelineSlider({
   };
 
   const handleSpeedChange = (playbackSpeed) => {
-    if (playbackSpeed == 0) {
-      setAnimationSpeed(1500);
-    } else if (playbackSpeed == 26) {
-      setAnimationSpeed(1250);
-    } else if (playbackSpeed == 50) {
-      setAnimationSpeed(1000);
-    } else if (playbackSpeed == 75) {
-      setAnimationSpeed(750);
-    } else if (playbackSpeed == 100) {
-      setAnimationSpeed(500);
+    switch (playbackSpeed) {
+      case 0:
+        setAnimationSpeed(1350)
+        break;
+      case 12.5:
+        setAnimationSpeed(1200)
+        break;
+      case 25.0:
+        setAnimationSpeed(1050)
+        break;
+      case 37.5:
+        setAnimationSpeed(900)
+        break;
+      case 50.0:
+        setAnimationSpeed(750)
+        break;
+      case 62.5:
+        setAnimationSpeed(600)
+        break;
+      case 75.0:
+        setAnimationSpeed(450)
+        break;
+      case 87.5:
+        setAnimationSpeed(300) 
+        break;
+      case 100:
+        setAnimationSpeed(150)  
+      break;   
+    default:
+      // do nothing
     }
+
     setSpeedBar(false);
   };
 
