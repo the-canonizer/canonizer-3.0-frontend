@@ -551,7 +551,13 @@ const CampTree = ({
     return uniqueArraytoString;
   };
   const eventLinePath = () => {
-    router?.push(router?.asPath.replace("topic", "eventline"));
+    let topicId = tree && tree[0][1]?.topic_id;
+    let topicName = tree && tree[0][1]?.title;
+    let campId = tree && tree[0][1]?.camp_id;
+
+    let URL = `/eventline/${topicId}-${replaceSpecialCharacters(topicName,"-")}/${campId}`
+
+    router.push(URL)
   };
 
   return tree?.at(0) ? (
