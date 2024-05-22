@@ -17,7 +17,6 @@ import { handleError } from "../../utils/generalUtility";
 export const getTreesApi = async (reqBody) => {
   try {
     const trees = await NetworkCall.fetch(TreeRequest.getTrees(reqBody), false);
-
     store.dispatch(setTree(trees?.data || []));
     return {
       treeData: trees?.data?.at(0),
