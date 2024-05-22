@@ -121,6 +121,31 @@ const CampHistory = ({ campStatement, topicNamespaceId }: any) => {
           </span>
         </Title>
       )}
+      <Title level={5}>
+        Camp Leader :{" "}
+        <span>
+          { campStatement && campStatement?.camp_leader_nick_name ? 
+            <>
+              <Link
+                href={{
+                  pathname: `/user/supports/${
+                    campStatement?.camp_leader_nick_id || ""
+                  }`,
+                  query: {
+                    canon: topicNamespaceId || "",
+                  },
+                }}
+                passHref
+              >
+                <a>{campStatement?.camp_leader_nick_name}</a>
+              </Link>
+            </> 
+          : <>
+            No
+          </> 
+        }
+        </span>
+      </Title>
     </>
   );
 };
