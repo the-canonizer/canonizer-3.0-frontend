@@ -642,6 +642,7 @@ const CampTree = ({
               type="primary"
               size="small"
               onClick={eventLinePath}
+              id="event-line-btn"
             >
               Event Line
             </Button>
