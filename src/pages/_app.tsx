@@ -66,8 +66,7 @@ function WrappedApp({
     .then((response) => response.json())
     .then((meta) => {
       const latestVersionDate = meta.buildDate;
-      // const currentVersionDate = localStorage.getItem("build_number");
-      let currentVersionDate = (getCookies() as any)?.build_number
+      const currentVersionDate = localStorage.getItem("build_number");
 
       const shouldForceRefresh = buildDateGreaterThan(
         latestVersionDate,
@@ -76,11 +75,8 @@ function WrappedApp({
       
       if (shouldForceRefresh) {
         refreshCacheAndReload();
-        // localStorage.setItem("build_number", latestVersionDate);
-        document.cookie =
-        "build_number=" +
-        latestVersionDate+
-        "; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
+        localStorage.setItem("build_number", latestVersionDate);
+        
       }
     });
 
