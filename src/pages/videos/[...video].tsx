@@ -1,6 +1,7 @@
+import React from "react";
+
 import CanonVideos from "@/components/ComponentPages/canonVideos";
 import Layout from "src/hoc/layout";
-import React from "react";
 
 function Video() {
   return (
@@ -10,4 +11,5 @@ function Video() {
   );
 }
 
+Video.displayName = "VideosPage";
 export default Video;

@@ -14,8 +14,9 @@ import {
   // getCanonizedCampSupportingTreeApi,
   getCurrentTopicRecordApi,
   getCurrentCampRecordApi,
+  getTopicActivityLogApi,
 } from "src/network/api/campDetailApi";
-import { RootState } from "src/store";
+import { RootState, store } from "src/store";
 import SideBar from "../Home/SideBar";
 import CampStatementCard from "./CampStatementCard";
 import CampInfoBar from "./CampInfoBar";
@@ -55,6 +56,7 @@ import { replaceSpecialCharacters } from "src/utils/generalUtility";
 import InfoBar from "./CampInfoBar/infoBar";
 import { fallBackSrc } from "src/assets/data-images";
 import LatestFilter from "../LatestFilter";
+import { setCampActivityData } from "src/store/slices/recentActivitiesSlice";
 
 const { Link: AntLink } = Typography;
 
@@ -135,6 +137,15 @@ const TopicDetails = ({ serverSideCall }: any) => {
     setGetTreeLoadingIndicator(false);
     setLoadingIndicator(false);
   };
+
+  async function getTopicActivityLogCall() {
+    let reqBody = {
+      topic_num: router?.query?.camp[0]?.split("-")[0],
+      camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
+    };
+    let res = await getTopicActivityLogApi(reqBody);
+    store.dispatch(setCampActivityData(res?.data?.items));
+  }
 
   useEffect(() => {
     async function getTreeApiCall() {
@@ -236,6 +247,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
       setIsSupportTreeCardModal(false);
       GetCheckStatusData();
       await getTreesApi(reqBodyForService);
+      getTopicActivityLogCall();
       setRemoveSupportSpinner(false);
       setIsRemovingSupport(false);
     }
@@ -270,6 +282,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
       setIsSupportTreeCardModal(false);
       GetCheckStatusData();
       await getTreesApi(reqBodyForService);
+      getTopicActivityLogCall();
       setRemoveSupportSpinner(false);
       setIsRemovingSupport(false);
     }
@@ -302,6 +315,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
       setIsSupportTreeCardModal(false);
       setIsDelegateSupportTreeCardModal(false);
       GetCheckStatusData();
+      getTopicActivityLogCall();
       await getTreesApi(reqBodyForService);
       setIsRemovingSupport(false);
       setRemoveSupportSpinner(false);

@@ -8,13 +8,15 @@ import { useRouter } from "next/router";
 import styles from "../ManageSupportUI/ManageSupport.module.scss";
 
 import messages from "../../../../messages";
-import { RootState } from "src/store";
+import { RootState, store } from "src/store";
 import { addSupport, removeSupportedCamps } from "src/network/api/userApi";
 // import { GetActiveSupportTopic } from "src/network/api/topicAPI";
 import CustomSkelton from "src/components/common/customSkelton";
 import SupportRemovedModal from "src/components/common/supportRemovedModal";
 import My404 from "../../404";
 import { setIsSupportModal } from "src/store/slices/topicSlice";
+import { setCampActivityData } from "src/store/slices/recentActivitiesSlice";
+import { getTopicActivityLogApi } from "src/network/api/campDetailApi";
 
 const { placeholders } = messages;
 
@@ -123,6 +125,15 @@ const ManageSupportUI = ({
 
   const nickNameIDValue = nickNameloop?.[0]?.id;
 
+  async function getTopicActivityLogCall() {
+    let reqBody = {
+      topic_num: router?.query?.camp[0]?.split("-")[0],
+      camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
+    };
+    let res = await getTopicActivityLogApi(reqBody);
+    store.dispatch(setCampActivityData(res?.data?.items));
+  }
+
   useEffect(() => {
     // (async () => {
     //   const topicList = await GetActiveSupportTopic(topicNum && body);
@@ -182,6 +193,7 @@ const ManageSupportUI = ({
       //   );
       // router?.push(manageSupportPath);
       handleCancelSupportCamps({ isCallApiStatus: true });
+      getTopicActivityLogCall();
     }
   };
 
@@ -234,6 +246,7 @@ const ManageSupportUI = ({
       //   );
       // router?.push(manageSupportPath);
       handleCancelSupportCamps({ isCallApiStatus: true });
+      getTopicActivityLogCall();
     }
   };
 

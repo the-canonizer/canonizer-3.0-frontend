@@ -22,8 +22,12 @@ const VideosPage = () => {
 
   const onCardClick = (e, video) => {
     e.stopPropagation();
+    router.query.video_id = video.id;
     router.push(
-      `videos/1-consciousness/${replaceSpecialCharacters(video.title, "-")}`
+      `videos/1-consciousness/${video?.id}-${replaceSpecialCharacters(
+        video.title,
+        "-"
+      )}`
     );
   };
 
@@ -91,6 +95,6 @@ const VideosPage = () => {
   );
 };
 
-VideosPage.displayName = "VideosPage";
+VideosPage.displayName = "VideoListingPage";
 
 export default VideosPage;

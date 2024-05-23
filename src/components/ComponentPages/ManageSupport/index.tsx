@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import {
   getAllUsedNickNames,
   getCurrentCampRecordApi,
+  getTopicActivityLogApi,
 } from "src/network/api/campDetailApi";
 import { useRouter } from "next/router";
 import {
@@ -13,7 +14,7 @@ import {
 } from "src/network/api/topicAPI";
 import { addDelegateSupportCamps, addSupport } from "src/network/api/userApi";
 import isAuth from "../../../hooks/isUserAuthenticated";
-import { RootState } from "src/store";
+import { RootState, store } from "src/store";
 import { useDispatch, useSelector } from "react-redux";
 import queryParams from "src/utils/queryParams";
 import {
@@ -21,6 +22,7 @@ import {
   setManageSupportStatusCheck,
 } from "src/store/slices/campDetailSlice";
 import moment from "moment";
+import { setCampActivityData } from "src/store/slices/recentActivitiesSlice";
 
 const ManageSupportUI = dynamic(async () => await import("./ManageSupportUI"), {
   ssr: false,
@@ -132,6 +134,16 @@ const ManageSupport = ({
   //     : "";
   // },[])
   //isUserAuthenticated
+
+  async function getTopicActivityLogCall() {
+    let reqBody = {
+      topic_num: router?.query?.camp[0]?.split("-")[0],
+      camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
+    };
+    let res = await getTopicActivityLogApi(reqBody);
+    store.dispatch(setCampActivityData(res?.data?.items));
+  }
+
   useEffect(() => {
     (async () => {
       if (isUserAuthenticated) {
@@ -490,6 +502,7 @@ const ManageSupport = ({
       let res = await addDelegateSupportCamps(addDelegatedSupport);
       if (res && res.status_code == 200) {
         message.success(res.message);
+        getTopicActivityLogCall();
         //After Submit page is redirect to previous
         // router?.push(manageSupportPath);
         handleCancelSupportCamps({ isCallApiStatus: true });
@@ -500,6 +513,7 @@ const ManageSupport = ({
       let res = await addSupport(addSupportId);
       if (res && res.status_code == 200) {
         message.success(res.message);
+        getTopicActivityLogCall();
         //After Submit page is redirect to previous
         // router?.push(manageSupportPath);
         handleCancelSupportCamps({ isCallApiStatus: false });

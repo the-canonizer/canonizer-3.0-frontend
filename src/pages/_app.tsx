@@ -197,6 +197,10 @@ WrappedApp.getInitialProps = async (
             ? appContext.router?.query?.id
             : null
           : null,
+      video_id:
+        appContext?.ctx?.query && componentName === "VideosPage"
+          ? appContext?.ctx?.query?.video[1]?.split("-")?.[0]
+          : null,
     },
   };
 
