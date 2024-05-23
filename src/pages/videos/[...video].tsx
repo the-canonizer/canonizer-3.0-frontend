@@ -9,5 +9,5 @@ function Video() {
         </Layout>
     )
 }
-
+Video.displayName = "VideosPage";
 export default Video
