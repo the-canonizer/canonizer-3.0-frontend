@@ -325,7 +325,7 @@ const TopicsList = () => {
     e.preventDefault();
     if (value?.trim()) {
       setInputSearch(value?.trim());
-      setSearchTerm(value?.trim());
+      // setSearchTerm(value?.trim());
       setShowSearchDropdown(false);
     }
   };
