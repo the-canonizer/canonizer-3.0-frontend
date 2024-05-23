@@ -993,7 +993,7 @@ export default function AddOrManage({ add }: any) {
                                       <a>{campLeaderData && campLeaderData?.find((CL) => CL?.camp_leader === true)?.nick_name}</a>
                                     </Link>
                                     <span className={styles.small}>
-                                      is a currently a camp leader
+                                      is currently the camp leader
                                     </span>{" "}
                                     )
                                   </> :
