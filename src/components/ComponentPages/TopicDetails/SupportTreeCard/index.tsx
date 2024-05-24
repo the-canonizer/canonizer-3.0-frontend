@@ -313,6 +313,7 @@ const SupportTreeCard = ({
         <SignCamp
           setSignModalOpen={setSignModalOpen}
           setLoadingIndicatorSupport={setLoadingIndicatorSupport}
+          getCheckStatusAPI={getCheckStatusAPI}
         />
       </Modal>
     );
