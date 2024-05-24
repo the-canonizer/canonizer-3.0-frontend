@@ -199,6 +199,12 @@ const NetworkConstants = {
     GetXMLData: `${BaseCanonizerApiUrl}/sitemaps`,
     CheckTopicCampExist: `${BaseCanonizerApiUrl}/notify-if-url-not-exist`,
     GetHotTopic: `${BaseCanonizerApiUrl}/hot-topic`,
+
+    // Email Update
+    ChangeEmailRequest : `${BaseCanonizerApiUrl}/change-email-request`,
+    EmailChangeVerification:`${BaseCanonizerApiUrl}/emailchange-verify-otp`,
+    UpdateNewEmailRequest : `${BaseCanonizerApiUrl}/update-email-request`,
+    ReplaceExistOneUpdateNewEmail : `${BaseCanonizerApiUrl}/update-email`
   },
   Method: {
     GET: "GET",

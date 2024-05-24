@@ -637,4 +637,45 @@ export default class UserRequest extends Request {
       {}
     );
   }
+
+  static changeEmailRequest(authToken) {
+    return new Request(
+      K.Network.URL.ChangeEmailRequest,
+      K.Network.Method.GET,
+      {},
+      K.Network.Header.Type.Json,
+      {},
+      authToken
+    );
+  }
+
+  static emailChangeVerificationOTP(body) {
+    return new Request(
+      K.Network.URL.EmailChangeVerification,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {}
+    );
+  }
+
+  static updateNewEmail(body) {
+    return new Request(
+      K.Network.URL.UpdateNewEmailRequest,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {}
+    );
+  }
+
+  static replaceAndUpdateEmail(body) {
+    return new Request(
+      K.Network.URL.ReplaceExistOneUpdateNewEmail,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {}
+    );
+  }
 }
