@@ -565,6 +565,8 @@ const TopicsList = () => {
                             item?.topic_name
                           )}
                         </Text>
+                        {/* displays views there */}
+                        {" "}{"3K"}
                         <Tag className={styles.tag}>
                           {/* // ? item?.topic_full_score // : item?.full_score?.toFixed(2) */}
                           {is_checked

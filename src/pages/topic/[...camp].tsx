@@ -25,6 +25,10 @@ import { setCurrentDate } from "src/store/slices/filtersSlice";
 import { useEffect, useRef } from "react";
 import DataNotFound from "@/components/ComponentPages/DataNotFound/dataNotFound";
 import { createToken } from "src/network/api/userApi";
+import { argon2id } from "hash-wasm";
+import { serialize, parse } from 'cookie';
+
+
 
 const TopicDetailsPage = ({
   current_date,
@@ -47,7 +51,7 @@ const TopicDetailsPage = ({
     dispatch(setHistory(statementHistory));
     dispatch(setTree(tree?.status_code == 200 ? [tree?.treeData] : []));
     dispatch(setCurrentDate(current_date));
-  }, []);
+  }, []); 
 
   let ErrorStatus =
     tree?.status_code == 404 ||
@@ -75,7 +79,65 @@ const TopicDetailsPage = ({
   );
 };
 
-export async function getServerSideProps({ req, query }) {
+export async function getServerSideProps({ req, query,res }) {
+
+let hashValue
+let cookies
+//////////////////////////////////////////////function generate hash value///////////////////////////////////
+  async function run() {
+    const salt = Buffer.from("kjshfjhfkkfuriuYHYUHUHUYUyyihuHUY"); // Convert salt string to a buffer
+    const asOfData = 
+      query?.asofdate && query?.asof == "bydate"
+        ? parseFloat(query?.asofdate)
+        : Date.now() / 1000;
+     
+      
+    const data = asOfData + "teVJDEFLRNGENG";
+
+    // console.log( salt, data);
+
+    const hash = await argon2id({
+      password: data,
+      salt, // pass the salt buffer
+      parallelism: 1,
+      iterations: 2,
+      memorySize: 16, 
+      hashLength: 16, // output size = 16 bytes
+      outputType: "encoded" // return standard encoded string containing parameters needed to verify the key
+    });
+
+    ////////////////////////////////////////////////////////////////////////////////////
+
+    const parts = hash.split('$');
+     hashValue = parts[parts.length - 1];
+     
+    console.log("hashValue",hashValue);
+
+     cookies = parse(req.headers.cookie || '');
+
+    console.log("cookies============",cookies);
+    
+    if (!cookies['view']) {
+
+  const expirationTime = new Date(Date.now() + 60 * 1000); // Current time + 1 minute
+  const cookieOptions = {
+    expires: expirationTime,
+    httpOnly: true, // Prevents JavaScript access to the cookie
+    path: '/', // Set the path to the root directory
+  };
+
+    const cookieValue = serialize('view', hashValue, cookieOptions);
+   res.setHeader('Set-Cookie', cookieValue);
+    }
+
+
+    console.log("cookies=2",cookies);
+    
+    
+    
+  }
+  await run();
+
   let topicNum = query?.camp[0]?.split("-")[0];
   let campNum = query?.camp[1]?.split("-")[0] || 1;
   let token = null;
@@ -92,7 +154,11 @@ export async function getServerSideProps({ req, query }) {
     algorithm: query?.algo || "blind_popularity",
     update_all: 1,
     fetch_topic_history: query?.viewversion == "1" ? 1 : null,
+    view:hashValue,
   };
+
+  console.log("reqBodyForService",reqBodyForService);
+  
 
   const reqBody = {
     topic_num: topicNum,
