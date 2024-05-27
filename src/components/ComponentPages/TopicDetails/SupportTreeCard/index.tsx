@@ -285,6 +285,10 @@ const SupportTreeCard = ({
     }
     return {campLeaderExist , delegateSupportExist};
   }
+  
+  const checkSupportAndCampLeader = (arr) => {
+    return arr?.some(item => (item.support_order >= 1));
+  }
 
   const renderPopupMsg = () => {
     let {campLeaderExist , delegateSupportExist} = isCampLeader();
@@ -292,7 +296,10 @@ const SupportTreeCard = ({
       return "You've already signed to the camp leader"
     }else if(isUserAuthenticated && campLeaderExist){
       return "You can't sign the petition in this camp, because you are the current camp leader" 
-    }else{
+    }else if(checkSupportAndCampLeader){
+      return "Couldn`t Sign! This camp is not your first choice"
+    }
+    else{
       return "Log in to participate"
     }
   }
@@ -592,7 +599,9 @@ const SupportTreeCard = ({
                 }
               }}
             >
-              {isCampLeader()?.campLeaderExist || isCampLeader()?.delegateSupportExist ?(
+              {isCampLeader()?.campLeaderExist || 
+               isCampLeader()?.delegateSupportExist || 
+               checkSupportAndCampLeader(campSupportingTree) ?(
                 <>
                 <Popover
                  content={renderPopupMsg()}
