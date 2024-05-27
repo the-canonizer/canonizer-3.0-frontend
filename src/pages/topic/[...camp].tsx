@@ -27,6 +27,7 @@ import DataNotFound from "@/components/ComponentPages/DataNotFound/dataNotFound"
 import { createToken } from "src/network/api/userApi";
 import { argon2id } from "hash-wasm";
 import { serialize, parse } from 'cookie';
+import { setCookie } from 'cookies-next';
 
 
 
@@ -119,15 +120,17 @@ let cookies
     
     if (!cookies['view']) {
 
-  const expirationTime = new Date(Date.now() + 60 * 1000); // Current time + 1 minute
+  const expirationTime:any = new Date(Date.now() + 60 * 1000); // Current time + 1 minute
   const cookieOptions = {
     expires: expirationTime,
     httpOnly: true, // Prevents JavaScript access to the cookie
     path: '/', // Set the path to the root directory
   };
 
-    const cookieValue = serialize('view', hashValue, cookieOptions);
-   res.setHeader('Set-Cookie', cookieValue);
+  //   const cookieValue = serialize('view', hashValue, cookieOptions);
+  //  res.setHeader('Set-Cookie', cookieValue);
+  setCookie('hashed_value', hashValue, { req, res, maxAge: expirationTime });
+
     }
 
 
