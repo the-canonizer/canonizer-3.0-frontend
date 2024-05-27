@@ -598,7 +598,10 @@ const SupportTreeCard = ({
                  content={renderPopupMsg()}
                 >
                 <a className="printHIde">
-                  <Button className="btn-green" disabled={true} onClick={()=>dispatch(showLoginModal())}>
+                  <Button className="btn-green"
+                   disabled={true}
+                   onClick={()=>dispatch(showLoginModal())}                  
+                   >
                     {"Sign"}
                   </Button>
 
@@ -611,7 +614,9 @@ const SupportTreeCard = ({
                     title={"This will delegate your support to the camp leader"}
                     placement={"topRight"}
                   >
-                    <CustomButton className="btn-green">{"Sign"}</CustomButton>
+                    <CustomButton className="btn-green"
+                      disabled={asof == "bydate" || campRecord?.is_archive == 1}
+                    >{"Sign"}</CustomButton>
                   </Tooltip>
                 </>
               )}
