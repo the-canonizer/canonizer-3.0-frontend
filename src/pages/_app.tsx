@@ -132,10 +132,17 @@ const getTagData = async (req) => {
 
   let metaData = defaultTags;
   let metaResults;
-
-  if (
-    req?.page_name?.trim()?.toLowerCase() !== lastAppName?.trim()?.toLowerCase()
-  ) {
+  if (["LoginPage"].includes(req?.page_name)) {
+    if (
+      req?.page_name?.trim()?.toLowerCase() !==
+      lastAppName?.trim()?.toLowerCase()
+    ) {
+      lastAppName = req?.page_name?.trim()?.toLowerCase();
+      metaResults = await metaTagsApi(req);
+      metaData = metaResults?.data;
+      return metaData;
+    }
+  } else {
     lastAppName = req?.page_name?.trim()?.toLowerCase();
     metaResults = await metaTagsApi(req);
     metaData = metaResults?.data;
