@@ -50,6 +50,9 @@ import {
   changeSlashToArrow,
 } from "src/utils/generalUtility";
 import DataNotFound from "../../DataNotFound/dataNotFound";
+import Link from "next/link";
+import { RootState } from "src/store";
+import { useSelector } from "react-redux";
 
 //Ckeditor
 const Editorckl = dynamic(() => import("../../../common/editorck"), {
@@ -107,6 +110,9 @@ const { campAboutUrlRule, summaryRule, keywordsRule, patterns } = messages;
 export default function AddOrManage({ add }: any) {
   const { isUserAuthenticated } = useAuthentication();
   const router = useRouter();
+  const { filterObject } = useSelector((state: RootState) => ({
+    filterObject: state?.filters?.filterObject,
+  }));
   const [notFoundStatus, setNotFoundStatus] = useState({
     status: false,
     name: "",
@@ -115,6 +121,8 @@ export default function AddOrManage({ add }: any) {
   const [submitIsDisable, setSubmitIsDisable] = useState(true);
   const [submitIsDisableCheck, setSubmitIsDisableCheck] = useState(true);
   const [nickNameData, setNickNameData] = useState([]);
+  const [campLeaderData, setCampLeaderData] = useState([]);
+  const [currentCampLeader, setCurrentCampLeader] = useState(null);
   const [screenLoading, setScreenLoading] = useState(false);
   const [initialFormValues, setInitialFormValues] = useState({});
   const [payloadBreadCrumb, setPayloadBreadCrumb] = useState({
@@ -257,6 +265,8 @@ export default function AddOrManage({ add }: any) {
           : null,
       old_parent_camp_num:
         manageFormOf == "camp" ? editInfo?.camp?.parent_camp_num : null,
+      camp_leader_nick_id:
+        manageFormOf == "camp" ? values?.camp_leader_nick_id ?? null : null,
     };
     let res;
     if (manageFormOf == "camp") {
@@ -410,6 +420,16 @@ export default function AddOrManage({ add }: any) {
               topic_num: res?.data?.camp?.topic_num,
             });
           }
+          if (
+            res?.status_code == 200 &&
+            res?.data?.eligible_camp_leaders?.length > 0
+          ) {
+            let obj = {
+              nick_name_id: null,
+              nick_name: "No Camp Leader",
+            };
+            setCampLeaderData([obj, ...res?.data?.eligible_camp_leaders]);
+          }
         } else if (manageFormOf == "topic") {
           res = await getEditTopicApi(getDataPayload);
           if (
@@ -448,6 +468,7 @@ export default function AddOrManage({ add }: any) {
       };
       const result = await getAllUsedNickNames(reqBody);
       if (result?.status_code == 200) {
+        setCurrentCampLeader(result?.data[0]);
         let fieldSValuesForForm = add
           ? {
               nick_name: result?.data?.at(0)?.id,
@@ -472,6 +493,7 @@ export default function AddOrManage({ add }: any) {
                   ? res?.data?.camp?.camp_about_nick_id
                   : null,
               edit_summary: update ? res?.data?.camp?.note : null,
+              camp_leader_nick_id: res?.data?.camp?.camp_leader_nick_id,
             }
           : manageFormOf == "topic"
           ? {
@@ -944,6 +966,82 @@ export default function AddOrManage({ add }: any) {
                               />
                             ) : (
                               <Input />
+                            )}
+                          </Form.Item>
+                        )}
+                      </Col>
+
+                      {/* Camp Leader =================================================================== */}
+
+                      <Col xs={24} sm={24} xl={12}>
+                        {!objection && (
+                          <Form.Item
+                            className={styles.formItem}
+                            label={
+                              <>
+                                {(campLeaderData && campLeaderData?.find((CL) => CL?.camp_leader === true)) ?
+                                  <>
+                                    <span style={{ marginRight: "1px" }}>
+                                      Camp Leader
+                                    </span>
+                                    <span className={styles.small}>
+                                      (
+                                    </span>
+                                    <Link
+                                      href={`/user/supports/${campLeaderData && campLeaderData?.find((CL) => CL?.camp_leader === true)?.nick_name_id}?canon=${filterObject.namespace_id}`}
+                                    >
+                                      <a>{campLeaderData && campLeaderData?.find((CL) => CL?.camp_leader === true)?.nick_name}</a>
+                                    </Link>
+                                    <span className={styles.small}>
+                                      is currently the camp leader
+                                    </span>{" "}
+                                    )
+                                  </> :
+                                  <>
+                                    <span style={{ marginRight: "1px" }}>
+                                      Camp Leader
+                                    </span>
+                                    <span className={styles.small}>
+                                      (No one is currently camp leader)
+                                    </span>{" "}
+                                  </>}
+                              </>
+                            }
+                            name="camp_leader_nick_id"
+                          >
+                            {screenLoading ? (
+                              <CustomSkelton
+                                skeltonFor="list"
+                                bodyCount={1}
+                                stylingClass="listSkeleton"
+                                isButton={false}
+                              />
+                            ) : (
+                              <Select
+                                showSearch
+                                size={"large"}
+                                placeholder="Camp Leader"
+                                optionFilterProp="children"
+                                allowClear={false}
+                                filterOption={(input, option) =>
+                                  (
+                                    (option?.children as any)?.props
+                                      ?.children ?? ""
+                                  )
+                                    .toLowerCase()
+                                    .includes(input.toLowerCase())
+                                }
+                              >
+                                {campLeaderData?.length > 0 &&
+                                  campLeaderData?.map((lead) => (
+                                    <Select.Option
+                                      value={lead.nick_name_id}
+                                      key={lead?.nick_name_id}
+                                    >
+                                      {lead?.nick_name}
+                                    </Select.Option>
+                                  ))}
+                              </Select>
                             )}
                           </Form.Item>
                         )}

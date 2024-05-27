@@ -87,7 +87,8 @@ export default function CanonVideos() {
     addQueryParams(
       spaceChangeToDash(videodata?.title),
       videodata?.resolutions[0]?.title?.split(" ")[0],
-      null
+      null,
+      videodata?.id
     );
 
     setSelectedVideoId(videodata?.id);
@@ -106,7 +107,9 @@ export default function CanonVideos() {
       addQueryParams(
         spaceChangeToDash(filtredVides[0].title),
         format?.split(" ")[0],
-        null
+        null,
+        filtredVides[0]?.id
+
       );
     }
 
@@ -132,9 +135,11 @@ export default function CanonVideos() {
 
         const videoss = data?.data[0]?.videos;
 
-        if (q?.video?.at(1) || q?.format) {
+        if (q?.video?.at(1) || q?.format || q?.chapter) {
+          const title = (q?.video?.at(1) || "").split("-");
+          const join = title[0] == "" ? q?.video?.at(1) : title.slice(1).join(" ");
           const videoTitle = replaceString(
-            spaceChangeToDash(q?.video?.at(1) as string, true),
+            spaceChangeToDash(join ?? q?.chapter as string, true),
             true
           );
           const filteredVideo = Object.values(videoss)?.filter((video) => {
@@ -202,11 +207,11 @@ export default function CanonVideos() {
       if (filtredVides && filtredVides.length) {
         const splitedarray = videoResolution?.split("_");
         const format = splitedarray[splitedarray?.length - 1]?.split(".")[0];
-
         addQueryParams(
           spaceChangeToDash(replaceString(filtredVides[0].title)),
           format,
-          playeref?.current?.currentTime
+          playeref?.current?.currentTime,
+          filtredVides[0]?.id
         );
       }
     }
@@ -227,7 +232,8 @@ export default function CanonVideos() {
   function addQueryParams(
     chapter: string,
     format: string | string[],
-    t: string | string[]
+    t: string | string[],
+    videoId: string[]
   ) {
     const isSpecialChapter = router.query.video?.[0] === "1-consciousness";
 
@@ -235,7 +241,8 @@ export default function CanonVideos() {
       ? [router.query.video?.[0], chapter]
       : [chapter];
     router.query.format = format;
-    let asPath = `/videos/consciousness/${chapter}?format=${format}`;
+    router.query.video_id = String(videoId);
+    let asPath = isSpecialChapter ? `/videos/1-consciousness/${videoId}-${chapter}?format=${format}` : `/videos/consciousness/${chapter}?format=${format}`;
     if (t) {
       router.query.t = t;
       asPath += `&t=${t}`;
@@ -244,9 +251,10 @@ export default function CanonVideos() {
       const { t, ...rest } = router?.query;
       router.query = rest;
     }
-    isSpecialChapter
-      ? router?.push(router, null, { shallow: true })
-      : router.push(router.pathname, asPath, { shallow: true });
+    // isSpecialChapter
+    //   ? router?.push(router, null, { shallow: true })
+    // :
+    router.push(router.pathname, asPath, { shallow: true });
   }
 
   return (
@@ -302,10 +310,10 @@ export default function CanonVideos() {
                       id: React.Key;
                       link: string;
                       title:
-                        | boolean
-                        | React.ReactChild
-                        | React.ReactFragment
-                        | React.ReactPortal;
+                      | boolean
+                      | React.ReactChild
+                      | React.ReactFragment
+                      | React.ReactPortal;
                     }) => {
                       return (
                         <Radio

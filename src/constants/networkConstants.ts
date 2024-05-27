@@ -177,6 +177,8 @@ const NetworkConstants = {
 
     //removeSupportedCamps
     RemoveCamps: `${BaseCanonizerApiUrl}/support/update`,
+    CampSignCheck: `${BaseCanonizerApiUrl}/camp/sign/check`,
+    CampSign: `${BaseCanonizerApiUrl}/camp/sign`,
 
     UpdateToken: `${BaseCanonizerApiUrl}/update-fcm-token`,
 
