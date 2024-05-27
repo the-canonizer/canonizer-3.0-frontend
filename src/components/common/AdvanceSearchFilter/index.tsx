@@ -346,6 +346,10 @@ let stringCampArray1 = findCampId1?.map(element => element.toString());
     algo: algorithm,
     asof:asof,
     score:filterByScore,
+    asofdate:
+    asof == "default" || asof == "review"
+      ? Date.now() / 1000
+      : asofdate,
     }
   const response = await AdvanceFilterSeacrhApi(rebody);
   dispatch(setSelectedTopicFromAdvanceFilterAlgorithm(response?.data?.topic))
@@ -362,6 +366,10 @@ let stringCampArray1 = findCampId1?.map(element => element.toString());
     score:filterByScore,
     camp_ids: stringCampArray,
     topic_ids: stringTopicArray,
+    asofdate:
+    asof == "default" || asof == "review"
+      ? Date.now() / 1000
+      : asofdate,
     }
   const response = await AdvanceFilterSeacrhApi(rebody);
   dispatch(setSelectedCampFromAdvanceFilterAlgorithm(response?.data?.camp))
@@ -379,6 +387,10 @@ let stringCampArray1 = findCampId1?.map(element => element.toString());
       score:filterByScore,
       camp_ids: stringCampArray1,
       topic_ids: stringTopicArray1,
+      asofdate:
+      asof == "default" || asof == "review"
+        ? Date.now() / 1000
+        : asofdate,
     }
   const response = await AdvanceFilterSeacrhApi(rebody);
   dispatch(setSelectedStatementFromAdvanceFilterAlgorithm(response?.data?.statement))
@@ -520,7 +532,7 @@ let stringCampArray1 = findCampId1?.map(element => element.toString());
     }
    
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [asof,filterByScore,algorithm]);
+  }, [asof,filterByScore,algorithm,asofdate]);
   useEffect(()=> {
     if(router.pathname == "/search/camp" && stringCampArray && stringTopicArray){
       getCampsApiCallWithReqBody()
