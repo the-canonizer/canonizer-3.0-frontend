@@ -36,7 +36,7 @@ const LatestFilter = () => {
     algorithm,
     viewThisVersionCheck,
     asofdate,
-    selectAlgoBrowsePage
+    selectAlgoBrowsePage,
   } = useSelector((state: RootState) => ({
     is_camp_archive_checked: state?.utils?.archived_checkbox,
     loading: state?.loading?.loading,
@@ -55,7 +55,7 @@ const LatestFilter = () => {
     algorithm: state.filters?.filterObject?.algorithm,
     asofdate: state.filters?.filterObject?.asofdate,
     viewThisVersionCheck: state?.filters?.viewThisVersionCheck,
-    selectAlgoBrowsePage:state?.filters?.selectAlgoBrowsePage,
+    selectAlgoBrowsePage: state?.filters?.selectAlgoBrowsePage,
   }));
   const lable = algorithms?.find((obj) => {
     return obj.algorithm_key == selectedAlgorithm;
@@ -179,37 +179,33 @@ const LatestFilter = () => {
     camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
     asOf: asof,
     asofdate:
-      asof == "default" || asof == "review"
-        ? Date.now() / 1000
-        : asofdate,
+      asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
     algorithm: "blind_popularity",
     update_all: 1,
     fetch_topic_history: viewThisVersionCheck ? 1 : null,
   };
-  const revertScore = ()=>{
-     getTreesApi(reqBodyForService)
-  }
+  const revertScore = () => {
+    getTreesApi(reqBodyForService);
+  };
   const reqBody = {
     topic_num: router?.query?.camp[0]?.split("-")[0],
     camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
     asOf: asof,
     asofdate:
-      asof == "default" || asof == "review"
-        ? Date.now() / 1000
-        : asofdate,
+      asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
     algorithm: algorithm,
     update_all: 1,
     fetch_topic_history: viewThisVersionCheck ? 1 : null,
   };
-  const revertScoreAndAlgo = ()=>{
-     getTreesApi(reqBody)
-  }
+  const revertScoreAndAlgo = () => {
+    getTreesApi(reqBody);
+  };
 
-  useEffect(()=>{
-    revertScoreAndAlgo()
-  },[selectAlgoBrowsePage])
-  const clearAllFilter = async() => {
-    dispatch(setSelectAlgoBrowsePage(false))
+  useEffect(() => {
+    revertScoreAndAlgo();
+  }, [selectAlgoBrowsePage]);
+  const clearAllFilter = async () => {
+    dispatch(setSelectAlgoBrowsePage(false));
     dispatch(setArchivedCheckBox(false));
     dispatch(setScoreCheckBox(false));
     dispatch(
@@ -224,7 +220,7 @@ const LatestFilter = () => {
     if (router?.query?.algo && selectedAlgorithm) {
       algoRevert();
     }
-    revertScore()
+    revertScore();
   };
   let filteredDate = moment(filteredAsOfDate * 1000).format("YYYY-MM-DD");
   return (
@@ -266,7 +262,7 @@ const LatestFilter = () => {
               <CloseOutlined
                 onClick={() => {
                   algoRevert();
-                  revertScore()
+                  revertScore();
                 }}
               />
             }

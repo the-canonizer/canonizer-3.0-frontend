@@ -61,7 +61,7 @@ const ManageSupportUI = ({
   }));
 
   const router = useRouter();
-const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [removeForm] = Form.useForm();
   // const openPopup = () => setIsSupportTreeCardModal(true);
   const closePopup = () => {};
@@ -131,7 +131,7 @@ const dispatch = useDispatch()
       camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
     };
     let res = await getTopicActivityLogApi(reqBody);
-    store.dispatch(setCampActivityData(res?.data?.items)); 
+    store.dispatch(setCampActivityData(res?.data?.items));
   }
 
   useEffect(() => {
@@ -193,7 +193,7 @@ const dispatch = useDispatch()
       //   );
       // router?.push(manageSupportPath);
       handleCancelSupportCamps({ isCallApiStatus: true });
-       getTopicActivityLogCall()
+      getTopicActivityLogCall();
     }
   };
 
@@ -240,14 +240,14 @@ const dispatch = useDispatch()
     if (addedRes && addedRes.status_code == 200) {
       // let manageSupportPath = router?.asPath?.replace("/support/", "/topic/");
       // if (manageSupportPath.lastIndexOf("_") > -1)
-        //   manageSupportPath = manageSupportPath.substring(
-          //     0,
-          //     manageSupportPath.lastIndexOf("_")
-          //   );
-          // router?.push(manageSupportPath);
-          handleCancelSupportCamps({ isCallApiStatus: true });
-          getTopicActivityLogCall();
-        }
+      //   manageSupportPath = manageSupportPath.substring(
+      //     0,
+      //     manageSupportPath.lastIndexOf("_")
+      //   );
+      // router?.push(manageSupportPath);
+      handleCancelSupportCamps({ isCallApiStatus: true });
+      getTopicActivityLogCall();
+    }
   };
 
   const CheckDelegatedOrDirect =
@@ -463,7 +463,7 @@ const dispatch = useDispatch()
                           onClick={(e) => {
                             e.preventDefault();
                             window.location.href = tag.link;
-                            dispatch(setIsSupportModal(false))
+                            dispatch(setIsSupportModal(false));
                           }}
                         >
                           {tag?.camp_name}

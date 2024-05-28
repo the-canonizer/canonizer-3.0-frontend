@@ -36,27 +36,27 @@ import {
 } from "src/store/slices/searchSlice";
 import debounce from "lodash/debounce";
 import { getTreesApi } from "src/network/api/campDetailApi";
-import { setFilterCanonizedTopics, setIsReviewCanonizedTopics, setViewThisVersion } from "../../../store/slices/filtersSlice";
+import {
+  setFilterCanonizedTopics,
+  setIsReviewCanonizedTopics,
+  setViewThisVersion,
+} from "../../../store/slices/filtersSlice";
 import { getCanonizedTopicsApi } from "src/network/api/homePageApi";
 import moment from "moment";
 import K from "../../../constants";
-
-
 
 export default function AdvanceFilter() {
   const [searchVal, setSearchVal] = useState("");
   const [searchTopics, setSearchTopics] = useState([]);
   const [searchCamps, setSearchCamps] = useState([]);
-  const [isSelectClicked, setIsSelectClicked] = useState(false);
-  
-  
 
+  const [isSelectClicked, setIsSelectClicked] = useState(false);
   const { Panel } = Collapse;
   const { Title, Text, Paragraph } = Typography;
   const { Search } = Input;
-const { Option } = Select;
-const router = useRouter();
-const panelColorRef = useRef(null);
+  const { Option } = Select;
+  const router = useRouter();
+  const panelColorRef = useRef(null);
   let {
     searchValue,
     searchQueryValue,
@@ -80,7 +80,7 @@ const panelColorRef = useRef(null);
     current_date_filter,
     filteredAsOfDate,
     loading,
-    selectedCampFromAdvanceFilterAlgorithm
+    selectedCampFromAdvanceFilterAlgorithm,
   } = useSelector((state: RootState) => ({
     searchValue: state?.searchSlice?.searchValue,
     searchQueryValue: state?.searchSlice?.searchQueryValue,
@@ -105,7 +105,7 @@ const panelColorRef = useRef(null);
     filteredAsOfDate: state?.filters?.filterObject?.asofdate,
     loading: state?.loading?.loading,
     selectedCampFromAdvanceFilterAlgorithm:
-        state?.searchSlice?.selectedCampFromAdvanceFilterAlgorithm,
+      state?.searchSlice?.selectedCampFromAdvanceFilterAlgorithm,
   }));
   const { searchDataAll ,searchData} = useSelector((state: RootState) => ({
     searchDataAll: state?.searchSlice?.searchDataAll,
@@ -139,6 +139,7 @@ const findCampId1 = searchData.camp?.map((obj) => {
 
 let stringCampArray1 = findCampId1?.map(element => element.toString());
 
+
   const [timer, setTimer] = useState(null);
   const [inputValue, setInputValue] = useState(
     router.query.score || filteredScore
@@ -149,7 +150,7 @@ let stringCampArray1 = findCampId1?.map(element => element.toString());
   const [selectedAsOFDate, setSelectedAsOFDate] = useState(filteredAsOfDate);
   const [datePickerValue, setDatePickerValue] = useState(null);
   const [isDatePicker, setIsDatePicker] = useState(false);
-  const [active,setActive] = useState([])
+  const [active, setActive] = useState([]);
   const infoContent = (
     <>
       <div className={styles.infoTextWidthBox }>
@@ -231,29 +232,35 @@ let stringCampArray1 = findCampId1?.map(element => element.toString());
     const treeData = response?.treeData;
     const children = treeData && treeData["1"] && treeData["1"].children;
     const getChildren = children
-      ? Object.values(response?.treeData?.["1"]?.children).map((value:MyObjectType) => {
-          return {
-            campId: value?.camp_id,
-            supportTree: value?.support_tree,
-          };
-        })
+      ? Object.values(response?.treeData?.["1"]?.children).map(
+          (value: MyObjectType) => {
+            return {
+              campId: value?.camp_id,
+              supportTree: value?.support_tree,
+            };
+          }
+        )
       : [];
-    const supportTree = response?.treeData['1'].support_tree;
-    const getNIcknameIdFromDirectSupportTree =supportTree.map((obj)=>{
-      return obj.nick_name_id
-    })
+    const supportTree = response?.treeData["1"].support_tree;
+    const getNIcknameIdFromDirectSupportTree = supportTree.map((obj) => {
+      return obj.nick_name_id;
+    });
     const filtercampId = getChildren?.reduce((acc, obj) => {
-        if (obj.campId === camp_num) {
-            acc = obj.supportTree;
-        }
-        return acc;
+      if (obj.campId === camp_num) {
+        acc = obj.supportTree;
+      }
+      return acc;
     }, []);
-    
+
     const getNickId = filtercampId?.map((obj) => {
       return obj.nick_name_id;
-    });  
+    });
     dispatch(setSelectNicknameIdFromGetApi(getNickId));
-    dispatch(setSelectNickNameIdFromDirectSupportTree(getNIcknameIdFromDirectSupportTree))
+    dispatch(
+      setSelectNickNameIdFromDirectSupportTree(
+        getNIcknameIdFromDirectSupportTree
+      )
+    );
   };
   const onChangeRoute = (
     filterByScore = filterObject?.filterByScore,
@@ -544,7 +551,7 @@ let stringCampArray1 = findCampId1?.map(element => element.toString());
     // Do something with the collapsed key
   };
   const handleClosePanel = () => {
-    setActive([]); 
+    setActive([]);
   };
   const panelRef = useRef(null);
   const selectRef = useRef(null)
@@ -563,16 +570,14 @@ let stringCampArray1 = findCampId1?.map(element => element.toString());
     }
   };
   useEffect(() => {
-  
- 
     document.addEventListener('mousedown', handleClickOutside);
-
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isSelectClicked]);
   return (
-    <div ref={panelRef}
+    <div
+      ref={panelRef}
       className={
         router?.pathname !== "/search/nickname"
           ? "advanceFilter"
@@ -653,6 +658,7 @@ let stringCampArray1 = findCampId1?.map(element => element.toString());
                   <a>Algorithm Information</a>
                 </Link>
               )}
+
                 <div className="score-box">
                   <label>Score</label>
 
@@ -665,71 +671,70 @@ let stringCampArray1 = findCampId1?.map(element => element.toString());
             >
               <i className="icon-info"></i>
             </Popover>
+
                 </div>
               </div>
               <div className="col-sm-6">
                 <h4>Search Type</h4>
                 <Radio.Group onChange={onChange} value={value}>
-                <Radio
-                  value={1}
-                  onClick={() => {
-                    dispatch(setViewThisVersion(false));
-                    dispatch(
-                      setIsReviewCanonizedTopics({
-                        includeReview: true,
-                        asof: "review",
-                        asofdate: Date.now() / 1000,
-                      })
-                    );
-                    onChangeRoute(
-                      filterObject?.filterByScore,
-                      filterObject?.algorithm,
-                      "review",
-                      Date.now() / 1000,
-                      filterObject?.namespace_id,
-                      viewThisVersion
-                    );
-                    // getTopicsApiCallWithReqBody()
-
-                  }}
-                >
-                 Search include review
-                </Radio>
-                <Radio
-                  className={styles.radio + " topicFilterRadio"}
-                  value={2}
-                  onClick={() => {
-                    dispatch(setViewThisVersion(false));
-                    dispatch(
-                      setFilterCanonizedTopics({
-                        asofdate: Date.now() / 1000,
-                        asof: "default",
-                      })
-                    );
-                    onChangeRoute(
-                      filterObject?.filterByScore,
-                      filterObject?.algorithm,
-                      "default",
-                      Date.now() / 1000,
-                      filterObject?.namespace_id,
-                      viewThisVersion
-                    );
-                  }}
-                >
-                  Default
-                </Radio>
-                <Radio
-                  className={styles.radio + " topicFilterRadio"}
-                  value={3}
-                  onClick={() => {
-                    dispatch(setViewThisVersion(false));
-                    handleAsOfClick();
-                    // getTopicsApiCallWithReqBody()
-
-                  }}
-                >
-                  Search historical
-                </Radio>
+                  <Radio
+                    value={1}
+                    onClick={() => {
+                      dispatch(setViewThisVersion(false));
+                      dispatch(
+                        setIsReviewCanonizedTopics({
+                          includeReview: true,
+                          asof: "review",
+                          asofdate: Date.now() / 1000,
+                        })
+                      );
+                      onChangeRoute(
+                        filterObject?.filterByScore,
+                        filterObject?.algorithm,
+                        "review",
+                        Date.now() / 1000,
+                        filterObject?.namespace_id,
+                        viewThisVersion
+                      );
+                      // getTopicsApiCallWithReqBody()
+                    }}
+                  >
+                    Search include review
+                  </Radio>
+                  <Radio
+                    className={styles.radio + " topicFilterRadio"}
+                    value={2}
+                    onClick={() => {
+                      dispatch(setViewThisVersion(false));
+                      dispatch(
+                        setFilterCanonizedTopics({
+                          asofdate: Date.now() / 1000,
+                          asof: "default",
+                        })
+                      );
+                      onChangeRoute(
+                        filterObject?.filterByScore,
+                        filterObject?.algorithm,
+                        "default",
+                        Date.now() / 1000,
+                        filterObject?.namespace_id,
+                        viewThisVersion
+                      );
+                    }}
+                  >
+                    Default
+                  </Radio>
+                  <Radio
+                    className={styles.radio + " topicFilterRadio"}
+                    value={3}
+                    onClick={() => {
+                      dispatch(setViewThisVersion(false));
+                      handleAsOfClick();
+                      // getTopicsApiCallWithReqBody()
+                    }}
+                  >
+                    Search historical
+                  </Radio>
                 </Radio.Group>
                 <DatePicker
               disabled={
@@ -755,6 +760,7 @@ let stringCampArray1 = findCampId1?.map(element => element.toString());
                 setIsSelectClicked(true); // Set the flag when Select is clicked
               }}
             />
+
               </div>
             </div>
           ) : (
@@ -771,170 +777,175 @@ let stringCampArray1 = findCampId1?.map(element => element.toString());
                 }}
                 placeholder="Search a Keyword"
               />
-              {searchTopics.length || searchCamps.length?<div className="advance_filter_dropdown">
-                {searchVal ? (
-                  <div className="search_outer">
-                    {searchTopics.length ? (
-                      <label>
-                        <i className="icon-topic"></i>
-                        <span>Topic</span>
-                      </label>
-                    ) : (
-                      ""
-                    )}
-                    <div className={styles.search_list}>
-                      <ul>
-                        {searchTopics?.map((x: any) => {
-                          {
-                            const reqBodyForService = {
-                              topic_num: x.topic_num,
-                              camp_num: x.camp_num,
-                              asOf: asof,
-                              asofdate:
-                                asof == "default" || asof == "review"
-                                  ? Date.now() / 1000
-                                  : asofdate,
-                              algorithm: algorithm,
-                              update_all: 1,
-                              fetch_topic_history: viewThisVersionCheck
-                                ? 1
-                                : null,
-                            };
-                            return (
-                              <>
-                                <li style={{ cursor: "default" }}>
-                                  <a
-                                    onClick={() => {
-                                      dispatch(
-                                        setClickAdvanceFilterOption(true)
-                                      );
-                                      handleItemClick(x.title);
-                                      getNicknameFromSupportTree(
-                                        reqBodyForService,
-                                        x.camp_num
-                                      );
-                                    }}
-                                  >
-                                    <Highlighted
-                                      text={x.title}
-                                      highlight={searchVal}
-                                    />
-                                  </a>
-                                  {/* </Link> */}
-                                </li>
-                              </>
-                            );
-                          }
-                        })}
-                      </ul>
-                    </div>
-                  </div>
-                ) : (
-                  ""
-                )}
-
-                {searchVal ? (
-                  <div className="search_outer">
-                    {searchCamps.length ? (
-                      <label>
-                        <i className="icon-camp"></i>
-                        <span>camp</span>
-                      </label>
-                    ) : (
-                      ""
-                    )}
-                    <div className={styles.search_lists}>
-                      <ul>
-                        {searchCamps?.slice(0, 5)?.map((x) => {
-                          const jsonData = JSON.parse(
-                            x.breadcrumb
-                          ) as Array<any>;
-                          const parsedData = jsonData.reduce(
-                            (accumulator, currentVal, index) => {
-                              const accIndex = index + 1;
-                              accumulator[index] = {
-                                camp_name:
-                                  currentVal[accIndex]?.camp_name == "Agreement"
-                                    ? currentVal[accIndex]?.topic_name
-                                    : currentVal[accIndex]?.camp_name,
-                                camp_link: currentVal[accIndex]?.camp_link,
+              {searchTopics.length || searchCamps.length ? (
+                <div className="advance_filter_dropdown">
+                  {searchVal ? (
+                    <div className="search_outer">
+                      {searchTopics.length ? (
+                        <label>
+                          <i className="icon-topic"></i>
+                          <span>Topic</span>
+                        </label>
+                      ) : (
+                        ""
+                      )}
+                      <div className={styles.search_list}>
+                        <ul>
+                          {searchTopics?.map((x: any) => {
+                            {
+                              const reqBodyForService = {
+                                topic_num: x.topic_num,
+                                camp_num: x.camp_num,
+                                asOf: asof,
+                                asofdate:
+                                  asof == "default" || asof == "review"
+                                    ? Date.now() / 1000
+                                    : asofdate,
+                                algorithm: algorithm,
+                                update_all: 1,
+                                fetch_topic_history: viewThisVersionCheck
+                                  ? 1
+                                  : null,
                               };
-                              return accumulator;
-                            },
-                            []
-                          );
-                          {
-                            const reqBodyForService = {
-                              topic_num: x.topic_num,
-                              camp_num: x.camp_num,
-                              asOf: asof,
-                              asofdate:
-                                asof == "default" || asof == "review"
-                                  ? Date.now() / 1000
-                                  : asofdate,
-                              algorithm: algorithm,
-                              update_all: 1,
-                              fetch_topic_history: viewThisVersionCheck
-                                ? 1
-                                : null,
-                            };
-                            return (
-                              <>
-                                <li style={{ cursor: "default" }}>
-                                  <a
-                                    className={styles.camp_heading_color}
-                                    onClick={() => {
-                                      dispatch(
-                                        setClickAdvanceFilterOption(true)
-                                      );
-                                      handleItemClick(x.title);
-                                      getNicknameFromSupportTree(
-                                        reqBodyForService,
-                                        x.camp_num
-                                      )                                     
-                                    }}
-                                  >
-                                    {" "}
-                                    <Highlighted
-                                      text={x.title}
-                                      highlight={searchVal}
-                                    />
-                                  </a>
-                                  <div
-                                    className={
-                                      styles.tags_all_search_camp_statement
-                                    }
-                                  >
-                                    {parsedData
-                                      ?.reverse()
-                                      ?.map((obj, index) => {
-                                        return (
-                                          <a
-                                            href={`/${obj.camp_link}`}
-                                            key={`/${obj.camp_link}`}
-                                          >
-                                            {obj.camp_name}
-                                            {index < parsedData?.length - 1
-                                              ? "/ "
-                                              : ""}
-                                          </a>
+                              return (
+                                <>
+                                  <li style={{ cursor: "default" }}>
+                                    <a
+                                      onClick={() => {
+                                        dispatch(
+                                          setClickAdvanceFilterOption(true)
                                         );
-                                      })}
-                                  </div>
-                                </li>
-                              </>
-                            );
-                          }
-                        })}
-                      </ul>
+                                        handleItemClick(x.title);
+                                        getNicknameFromSupportTree(
+                                          reqBodyForService,
+                                          x.camp_num
+                                        );
+                                      }}
+                                    >
+                                      <Highlighted
+                                        text={x.title}
+                                        highlight={searchVal}
+                                      />
+                                    </a>
+                                    {/* </Link> */}
+                                  </li>
+                                </>
+                              );
+                            }
+                          })}
+                        </ul>
+                      </div>
                     </div>
-                  </div>
-                ) : (
-                  ""
-                )}
-              </div>:<div>
-              {searchVal?<Empty description={"No data found"}/>:""}
-                </div>}
+                  ) : (
+                    ""
+                  )}
+
+                  {searchVal ? (
+                    <div className="search_outer">
+                      {searchCamps.length ? (
+                        <label>
+                          <i className="icon-camp"></i>
+                          <span>camp</span>
+                        </label>
+                      ) : (
+                        ""
+                      )}
+                      <div className={styles.search_lists}>
+                        <ul>
+                          {searchCamps?.slice(0, 5)?.map((x) => {
+                            const jsonData = JSON.parse(
+                              x.breadcrumb
+                            ) as Array<any>;
+                            const parsedData = jsonData.reduce(
+                              (accumulator, currentVal, index) => {
+                                const accIndex = index + 1;
+                                accumulator[index] = {
+                                  camp_name:
+                                    currentVal[accIndex]?.camp_name ==
+                                    "Agreement"
+                                      ? currentVal[accIndex]?.topic_name
+                                      : currentVal[accIndex]?.camp_name,
+                                  camp_link: currentVal[accIndex]?.camp_link,
+                                };
+                                return accumulator;
+                              },
+                              []
+                            );
+                            {
+                              const reqBodyForService = {
+                                topic_num: x.topic_num,
+                                camp_num: x.camp_num,
+                                asOf: asof,
+                                asofdate:
+                                  asof == "default" || asof == "review"
+                                    ? Date.now() / 1000
+                                    : asofdate,
+                                algorithm: algorithm,
+                                update_all: 1,
+                                fetch_topic_history: viewThisVersionCheck
+                                  ? 1
+                                  : null,
+                              };
+                              return (
+                                <>
+                                  <li style={{ cursor: "default" }}>
+                                    <a
+                                      className={styles.camp_heading_color}
+                                      onClick={() => {
+                                        dispatch(
+                                          setClickAdvanceFilterOption(true)
+                                        );
+                                        handleItemClick(x.title);
+                                        getNicknameFromSupportTree(
+                                          reqBodyForService,
+                                          x.camp_num
+                                        );
+                                      }}
+                                    >
+                                      {" "}
+                                      <Highlighted
+                                        text={x.title}
+                                        highlight={searchVal}
+                                      />
+                                    </a>
+                                    <div
+                                      className={
+                                        styles.tags_all_search_camp_statement
+                                      }
+                                    >
+                                      {parsedData
+                                        ?.reverse()
+                                        ?.map((obj, index) => {
+                                          return (
+                                            <a
+                                              href={`/${obj.camp_link}`}
+                                              key={`/${obj.camp_link}`}
+                                            >
+                                              {obj.camp_name}
+                                              {index < parsedData?.length - 1
+                                                ? "/ "
+                                                : ""}
+                                            </a>
+                                          );
+                                        })}
+                                    </div>
+                                  </li>
+                                </>
+                              );
+                            }
+                          })}
+                        </ul>
+                      </div>
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                </div>
+              ) : (
+                <div>
+                  {searchVal ? <Empty description={"No data found"} /> : ""}
+                </div>
+              )}
             </div>
           )}
         </Panel>

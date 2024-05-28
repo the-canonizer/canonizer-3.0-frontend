@@ -24,7 +24,7 @@ export const searchSlice = createSlice({
     },
     searchValue: "",
     pageNumber: 1,
-    searchQueryValue :"",
+    searchQueryValue: "",
     selectedTopicFromAdvnaceFilterNickname: [],
     selectNicknameIdFromGetApi : [],
     selectNickNameIdFromDirectSupportTree :[],
