@@ -16,14 +16,15 @@ const EventLine = () => {
 
   return (
     <>
-      {router?.asPath.includes("history") ?
+      {router?.asPath.includes("history") ? (
         <DataNotFound
           name={"Page"}
           message={`${"Page"} not found`}
           backURL={"/"}
           goBack={true}
         />
-        : <>
+      ) : (
+        <>
           <div className={styles.topicDetailContentWrap}>
             <TimelineInfoBar />
 
@@ -36,7 +37,9 @@ const EventLine = () => {
 
             <>
               <div
-                className={styles.pageContent + " pageContentWrap timelineContent"}
+                className={
+                  styles.pageContent + " pageContentWrap timelineContent"
+                }
               >
                 {" "}
                 <Collapse
@@ -58,7 +61,8 @@ const EventLine = () => {
               <Events timelineDescript={timelineDescript} />
             </aside> */}
           </div>
-        </>}
+        </>
+      )}
 
       <BackTop />
     </>

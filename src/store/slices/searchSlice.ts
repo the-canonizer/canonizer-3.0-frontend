@@ -24,13 +24,13 @@ export const searchSlice = createSlice({
     },
     searchValue: "",
     pageNumber: 1,
-    searchQueryValue :"",
+    searchQueryValue: "",
     selectedTopicFromAdvnaceFilterNickname: [],
-    selectNicknameIdFromGetApi : [],
-    selectNickNameIdFromDirectSupportTree :[],
-    clickAdvanceFilterOption:false,
-    selectedTopicFromAdvanceFilterAlgorithm:[],
-    selectedCampFromAdvanceFilterAlgorithm:[]
+    selectNicknameIdFromGetApi: [],
+    selectNickNameIdFromDirectSupportTree: [],
+    clickAdvanceFilterOption: false,
+    selectedTopicFromAdvanceFilterAlgorithm: [],
+    selectedCampFromAdvanceFilterAlgorithm: [],
   },
   reducers: {
     setSearchData: (state, action) => {
@@ -100,7 +100,7 @@ export const {
   setClickAdvanceFilterOption,
   setSelectNickNameIdFromDirectSupportTree,
   setSelectedTopicFromAdvanceFilterAlgorithm,
-  setSelectedCampFromAdvanceFilterAlgorithm
+  setSelectedCampFromAdvanceFilterAlgorithm,
 } = searchSlice.actions;
 
 export default searchSlice.reducer;

@@ -124,7 +124,7 @@ const CampHistory = ({ campStatement, topicNamespaceId }: any) => {
       <Title level={5}>
         Camp Leader :{" "}
         <span>
-          { campStatement && campStatement?.camp_leader_nick_name ? 
+          {campStatement && campStatement?.camp_leader_nick_name ? (
             <>
               <Link
                 href={{
@@ -139,11 +139,10 @@ const CampHistory = ({ campStatement, topicNamespaceId }: any) => {
               >
                 <a>{campStatement?.camp_leader_nick_name}</a>
               </Link>
-            </> 
-          : <>
-            No
-          </> 
-        }
+            </>
+          ) : (
+            <>No</>
+          )}
         </span>
       </Title>
     </>

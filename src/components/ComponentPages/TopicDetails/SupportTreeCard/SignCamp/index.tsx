@@ -118,9 +118,9 @@ const SignCamp = ({ setSignModalOpen, setLoadingIndicatorSupport, getCheckStatus
               className={validationTypeColor(signCampData?.warning_type)}
               id="getSupportStatusDataWarning"
             >
-            <div
+              <div
                 dangerouslySetInnerHTML={{ __html: signCampData?.warning }}
-            ></div>
+              ></div>
             </span>
             <Col md={12}>
               {signCampData?.remove_camps?.map((tag) => {
