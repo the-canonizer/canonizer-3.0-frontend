@@ -555,9 +555,12 @@ const CampTree = ({
     let topicName = tree && tree[0][1]?.title;
     let campId = tree && tree[0][1]?.camp_id;
 
-    let URL = `/eventline/${topicId}-${replaceSpecialCharacters(topicName,"-")}/${campId}`
+    let URL = `/eventline/${topicId}-${replaceSpecialCharacters(
+      topicName,
+      "-"
+    )}/${campId}`;
 
-    router.push(URL)
+    router.push(URL);
   };
 
   return tree?.at(0) ? (

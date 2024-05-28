@@ -973,3 +973,75 @@ export const globalSearchCanonizer = async (reqbody) => {
     }
   }
 };
+
+export const getChangeEmailRequest = async () => {
+  let state = store.getState();
+  const { auth } = state;
+  try {
+    const res = await NetworkCall.fetch(
+      UserRequest.changeEmailRequest(auth?.token)
+    );
+    return res;
+  } catch (err) {
+    handleError(err);
+    if (
+      err &&
+      err.error &&
+      err.error.data &&
+      err.error.data.status_code === 400
+    ) {
+      return err.error.data;
+    }
+  }
+};
+
+export const EmailChangeVerificationOTP = async (body) => {
+  try {
+    const res = await NetworkCall.fetch(UserRequest.emailChangeVerificationOTP(body));
+    return res;
+  } catch (err) {
+    handleError(err);
+    if (
+      err &&
+      err.error &&
+      err.error.data &&
+      err.error.data.status_code === 400
+    ) {
+      return err.error.data;
+    }
+  }
+};
+
+export const UpdateNewEmailVerification = async (body) => {
+  try {
+    const res = await NetworkCall.fetch(UserRequest.updateNewEmail(body));
+    return res;
+  } catch (err) {
+    handleError(err);
+    if (
+      err &&
+      err.error &&
+      err.error.data &&
+      err.error.data.status_code === 400
+    ) {
+      return err.error.data;
+    }
+  }
+};
+
+export const ReplaceAndUpdateNewEmail = async (body) => {
+  try {
+    const res = await NetworkCall.fetch(UserRequest.replaceAndUpdateEmail(body));
+    return res;
+  } catch (err) {
+    handleError(err);
+    if (
+      err &&
+      err.error &&
+      err.error.data &&
+      err.error.data.status_code === 400
+    ) {
+      return err.error.data;
+    }
+  }
+};

@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import styles from "../siteHeader.module.scss";
 
 import Logo from "../logoHeader";
-import SearchSection from "../../searchSection";
+// import SearchSection from "../../searchSection";
 import LoginModal from "../../../ComponentPages/Login/loginModal";
 import RegistrationModal from "src/components/ComponentPages/Registration/registrationModal";
 import { showLoginModal } from "../../../../store/slices/uiSlice";
@@ -122,9 +122,11 @@ const LoggedOutHeader = () => {
         <></>
       )}
       {/* <SearchSection /> */}
-      <div className="topicMobBTN">
-        <TopicCreationBTN key="create-topic-area" />
-      </div>
+      {!router?.asPath?.includes("/create/topic") ? (
+        <div className="topicMobBTN">
+          <TopicCreationBTN key="create-topic-area" />
+        </div>
+      ) : null}
       <DisclaimerMsg />
       <ArchivedCampMsg />
       <LoginModal />

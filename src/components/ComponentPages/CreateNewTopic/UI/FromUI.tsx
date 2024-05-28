@@ -83,8 +83,10 @@ const CreateTopicFromUI = ({
                   ))}
                 </Select>
               </Form.Item>
-              <div className={styles.customErrorMessage}>{labels.cr_nick_name_sp}</div>
-              
+              <div className={styles.customErrorMessage}>
+                {labels.cr_nick_name_sp}
+              </div>
+
               <Form.Item
                 label={
                   <Fragment>

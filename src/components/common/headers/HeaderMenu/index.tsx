@@ -95,7 +95,9 @@ const HeaderMenu = ({ loggedUser }: any) => {
     }
     const hasTextAfterSpace = /\s/.test(highlight.trim());
     const escapedHighlight = highlight.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
-    const words = highlight.split(/\s+/).map(word => word.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&"));
+    const words = highlight
+      .split(/\s+/)
+      .map((word) => word.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&"));
     const joinSeparator = hasTextAfterSpace ? "|" : ""; // Decide join separator based on presence of text after space
     const regex = new RegExp(`(${words.join(joinSeparator)})`, "gi");
     const parts = text.split(regex);
