@@ -109,18 +109,22 @@ const TopicDetails = ({ serverSideCall }: any) => {
     viewThisVersionCheck: state?.filters?.viewThisVersionCheck,
     selectedAlgorithm: state?.filters?.filterObject?.algorithm,
   }));
-  const { is_camp_archive_checked,is_checked,includeReview,filteredScore,selectedAsOf} = useSelector(
-    (state: RootState) => ({
-      is_camp_archive_checked: state?.utils?.archived_checkbox,
-      loading: state?.loading?.loading,
-      is_checked: state?.utils?.score_checkbox,
-      includeReview: state?.filters?.filterObject?.includeReview,
-      filteredScore: state?.filters?.filterObject?.filterByScore,
-      selectedAlgorithm: state?.filters?.filterObject?.algorithm,
-      algorithms: state.homePage?.algorithms,
-      selectedAsOf: state?.filters?.filterObject?.asof,
-    })
-  );
+  const {
+    is_camp_archive_checked,
+    is_checked,
+    includeReview,
+    filteredScore,
+    selectedAsOf,
+  } = useSelector((state: RootState) => ({
+    is_camp_archive_checked: state?.utils?.archived_checkbox,
+    loading: state?.loading?.loading,
+    is_checked: state?.utils?.score_checkbox,
+    includeReview: state?.filters?.filterObject?.includeReview,
+    filteredScore: state?.filters?.filterObject?.filterByScore,
+    selectedAlgorithm: state?.filters?.filterObject?.algorithm,
+    algorithms: state.homePage?.algorithms,
+    selectedAsOf: state?.filters?.filterObject?.asof,
+  }));
   const GetActiveSupportTopicList = async () => {
     const topicNum = router?.query?.camp?.at(0)?.split("-")?.at(0);
     const body = { topic_num: topicNum };
@@ -140,7 +144,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
       camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
     };
     let res = await getTopicActivityLogApi(reqBody);
-    store.dispatch(setCampActivityData(res?.data?.items)); 
+    store.dispatch(setCampActivityData(res?.data?.items));
   }
 
   useEffect(() => {
@@ -202,7 +206,12 @@ const TopicDetails = ({ serverSideCall }: any) => {
     getTreeApiCall();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [asofdate, algorithm, +(router?.query?.camp[1]?.split("-")[0] ?? 1),router]);
+  }, [
+    asofdate,
+    algorithm,
+    +(router?.query?.camp[1]?.split("-")[0] ?? 1),
+    router,
+  ]);
 
   const reqBodyData = {
     topic_num: +router?.query?.camp[0]?.split("-")[0],
@@ -238,7 +247,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
       setIsSupportTreeCardModal(false);
       GetCheckStatusData();
       await getTreesApi(reqBodyForService);
-      getTopicActivityLogCall()
+      getTopicActivityLogCall();
       setRemoveSupportSpinner(false);
       setIsRemovingSupport(false);
     }
@@ -273,7 +282,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
       setIsSupportTreeCardModal(false);
       GetCheckStatusData();
       await getTreesApi(reqBodyForService);
-      getTopicActivityLogCall()
+      getTopicActivityLogCall();
       setRemoveSupportSpinner(false);
       setIsRemovingSupport(false);
     }
@@ -306,7 +315,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
       setIsSupportTreeCardModal(false);
       setIsDelegateSupportTreeCardModal(false);
       GetCheckStatusData();
-      getTopicActivityLogCall()
+      getTopicActivityLogCall();
       await getTreesApi(reqBodyForService);
       setIsRemovingSupport(false);
       setRemoveSupportSpinner(false);
@@ -325,9 +334,9 @@ const TopicDetails = ({ serverSideCall }: any) => {
         setCurrentCheckSupportStatus(
           response.data.warning ? response.data.warning : ""
         )
-        );
-        dispatch(setCheckSupportExistsData(response.data));
-      }
+      );
+      dispatch(setCheckSupportExistsData(response.data));
+    }
   };
   const handleSupportTreeCardCancel = () => {
     setIsSupportTreeCardModal(false);
@@ -475,48 +484,43 @@ const TopicDetails = ({ serverSideCall }: any) => {
             getCheckSupportStatus={getCheckSupportStatus}
           />
 
-          {isClient &&
-            tree &&
-            !tree["1"]?.is_valid_as_of_time && (
-              <div className={`printHIde ${styles.imageWrapper}`}>
-                <div>
-                  <Image
-                    preview={false}
-                    alt="No topic created"
-                    src={"/images/empty-img-default.png"}
-                    fallback={fallBackSrc}
-                    width={200}
-                    id="forgot-modal-img"
-                  />
-                  <p>
-                    The topic was created on
-                    <AntLink
-                      onClick={() => {
-                        onCreateTreeDate();
-                      }}
-                    >
-                      {" "}
-                      {
-                        new Date((tree && tree["1"]?.created_date) * 1000)
-                          .toLocaleString()
-                          ?.split(",")[0]
-                      }
-                    </AntLink>
-                  </p>
-                </div>
+          {isClient && tree && !tree["1"]?.is_valid_as_of_time && (
+            <div className={`printHIde ${styles.imageWrapper}`}>
+              <div>
+                <Image
+                  preview={false}
+                  alt="No topic created"
+                  src={"/images/empty-img-default.png"}
+                  fallback={fallBackSrc}
+                  width={200}
+                  id="forgot-modal-img"
+                />
+                <p>
+                  The topic was created on
+                  <AntLink
+                    onClick={() => {
+                      onCreateTreeDate();
+                    }}
+                  >
+                    {" "}
+                    {
+                      new Date((tree && tree["1"]?.created_date) * 1000)
+                        .toLocaleString()
+                        ?.split(",")[0]
+                    }
+                  </AntLink>
+                </p>
               </div>
-            )}
+            </div>
+          )}
 
-          {(isClient &&
-            tree &&
-            tree["1"]?.is_valid_as_of_time  ||
+          {((isClient && tree && tree["1"]?.is_valid_as_of_time) ||
             asof == "default") && (
             <Fragment>
               {campExist
                 ? campExist?.camp_exist
                 : true && (
                     <Fragment>
-
                       {(router.query.algo &&
                         selectedAlgorithm &&
                         lable?.algorithm_label !== undefined) ||
@@ -601,9 +605,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
             </Fragment>
           )}
 
-          {(tree &&
-            tree["1"]?.is_valid_as_of_time  ||
-            asof == "default") &&
+          {((tree && tree["1"]?.is_valid_as_of_time) || asof == "default") &&
             campExist &&
             !campExist?.camp_exist && (
               <Alert
