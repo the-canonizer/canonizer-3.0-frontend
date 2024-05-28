@@ -111,6 +111,7 @@ export default function CanonVideos() {
           displayCurrentQuality: true,
           vjsIconClass: 'vjs-icon-cog',
           placementIndex: 15,
+          overrideNative: true
         });
   
         playerRef.current.on('loadedmetadata', () => {
