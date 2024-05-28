@@ -36,9 +36,10 @@ function Layout(props: any) {
             {props.children}{" "}
           </div>
 
-          {!(router?.asPath.includes("eventline") ||
-          router?.asPath.includes("videos"))
-          && (
+          {!(
+            router?.asPath.includes("eventline") ||
+            router?.asPath.includes("videos")
+          ) && (
             <aside className={styles.rightSidebar}>
               <GoogleAd
                 ad_client={process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT}
