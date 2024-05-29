@@ -364,3 +364,33 @@ export const getProperties = (item) => {
 
   return null;
 };
+
+
+export function formatViews(num) {
+  if (num === 0) {
+      return '0';
+  }
+  let suffixes = ["", "K", "M", "B", "T"];
+  let suffixIndex = 0;
+  while (num >= 1000 && suffixIndex < suffixes.length - 1) {
+      num /= 1000;
+      suffixIndex++;
+  }
+  let formattedNum = num.toFixed(1);
+  if (formattedNum.endsWith('.0')) {
+      formattedNum = formattedNum.slice(0, -2);
+  }
+
+  return formattedNum + suffixes[suffixIndex];
+}
+export function numberWithCommas(x) {
+  let numStr = x.toString();
+
+  let parts = numStr.split('.');
+
+  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+  return parts.join('.');
+}
+
+

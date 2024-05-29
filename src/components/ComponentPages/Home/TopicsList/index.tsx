@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import useState from "react-usestateref";
 import { useRouter } from "next/router";
-import { BackTop } from "antd";
+import { BackTop, Image, Tooltip } from "antd";
 import { Typography, List, Select, Tag, Input, Button, Popover } from "antd";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
@@ -28,9 +28,12 @@ import {
 import {
   replaceSpecialCharacters,
   changeSlashToArrow,
+  formatViews,
+  numberWithCommas,
 } from "src/utils/generalUtility";
 import CustomSkelton from "../../../common/customSkelton";
 import SortTopics from "../../SortingTopics";
+import barchart from "../../../../assets/image/barchart.png"
 
 const antIcon = <LoadingOutlined spin />;
 const { Title, Text, Paragraph } = Typography;
@@ -398,9 +401,8 @@ const TopicsList = () => {
   return (
     <>
       <div
-        className={`header-bg-color-change ${backGroundColorClass} topics-list-card-header ${
-          styles.head
-        } ${router?.asPath.includes("/browse") ? styles.browsePage : ""}`}
+        className={`header-bg-color-change ${backGroundColorClass} topics-list-card-header ${styles.head
+          } ${router?.asPath.includes("/browse") ? styles.browsePage : ""}`}
       >
         <Title level={3}>
           Select Canon
@@ -502,9 +504,8 @@ const TopicsList = () => {
       </div>
 
       <div
-        className={`${styles.card} ${
-          router?.asPath.includes("/browse") ? "" : styles.homePageCardList
-        }`}
+        className={`${styles.card} ${router?.asPath.includes("/browse") ? "" : styles.homePageCardList
+          }`}
       >
         <List
           className={styles.wrap}
@@ -512,7 +513,7 @@ const TopicsList = () => {
             <div className={styles.footer}>
               {router?.asPath.includes("/browse")
                 ? LoadMoreTopics
-                : topicsData && topicsData?.topics?.length>=15? ViewAllTopics: null}
+                : topicsData && topicsData?.topics?.length >= 15 ? ViewAllTopics : null}
             </div>
           }
           bordered
@@ -532,13 +533,13 @@ const TopicsList = () => {
                     href={`/topic/${item?.topic_id}-${replaceSpecialCharacters(
                       isReview
                         ? item?.tree_structure &&
-                            item?.tree_structure[1]?.review_title
+                        item?.tree_structure[1]?.review_title
                         : item?.topic_name,
                       "-"
                     )}/1-Agreement`}
                   >
                     {!item.is_archive ||
-                    (item.is_archive && is_camp_archive_checked) ? (
+                      (item.is_archive && is_camp_archive_checked) ? (
                       <a
                         onClick={() => {
                           handleTopicClick();
@@ -555,7 +556,7 @@ const TopicsList = () => {
                             <Popover content="Archived Topic">
                               {isReview
                                 ? item?.tree_structure &&
-                                  item?.tree_structure[1].review_title
+                                item?.tree_structure[1].review_title
                                 : item?.topic_name}
                             </Popover>
                           ) : isReview ? (
@@ -565,8 +566,16 @@ const TopicsList = () => {
                             item?.topic_name
                           )}
                         </Text>
-                        {/* displays views there */}
-                        {" "}{"3K"}
+                        {" "}
+                        <Tooltip title={numberWithCommas(item?.camp_views)} placement="bottom">
+                        <Image
+                          width={17}
+                          height={17}
+                          preview={false}
+                          src={barchart.src}
+                          />
+                        <Text className={styles.barchartText}>{formatViews(item?.camp_views)}</Text>
+                          </Tooltip>
                         <Tag className={styles.tag}>
                           {/* // ? item?.topic_full_score // : item?.full_score?.toFixed(2) */}
                           {is_checked
@@ -585,7 +594,7 @@ const TopicsList = () => {
                         <Popover content="Archived Topic">
                           {isReview
                             ? item?.tree_structure &&
-                              item?.tree_structure[1].review_title
+                            item?.tree_structure[1].review_title
                             : item?.topic_name}
                         </Popover>
                       ) : isReview ? (

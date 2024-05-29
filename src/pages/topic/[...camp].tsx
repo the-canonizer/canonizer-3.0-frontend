@@ -26,7 +26,7 @@ import { useEffect, useRef } from "react";
 import DataNotFound from "@/components/ComponentPages/DataNotFound/dataNotFound";
 import { createToken } from "src/network/api/userApi";
 import { argon2id } from "hash-wasm";
-import { serialize, parse } from 'cookie';
+import { parse } from 'cookie';
 
 
 
@@ -51,21 +51,21 @@ const TopicDetailsPage = ({
     dispatch(setHistory(statementHistory));
     dispatch(setTree(tree?.status_code == 200 ? [tree?.treeData] : []));
     dispatch(setCurrentDate(current_date));
-  }, []); 
+  }, []);
 
   let ErrorStatus =
     tree?.status_code == 404 ||
-    (tree?.status_code == 422 &&
-      (!tree?.error?.camp_num ||
-        (tree?.error?.camp_num && tree?.error?.topic_num)))
+      (tree?.status_code == 422 &&
+        (!tree?.error?.camp_num ||
+          (tree?.error?.camp_num && tree?.error?.topic_num)))
       ? "Topic"
       : "Camp";
 
   return (
     <Layout>
       {tree?.status_code == 404 ||
-      campRecord?.status_code == 404 ||
-      campRecord?.status_code == 400 ? (
+        campRecord?.status_code == 404 ||
+        campRecord?.status_code == 400 ? (
         <DataNotFound
           name={ErrorStatus}
           message={`${ErrorStatus} not found`}
@@ -79,64 +79,45 @@ const TopicDetailsPage = ({
   );
 };
 
-export async function getServerSideProps({ req, query,res }) {
+export async function getServerSideProps({ req, query, res }) {
 
-let hashValue
-let cookies
-//////////////////////////////////////////////function generate hash value///////////////////////////////////
-  async function run() {
-    const salt = Buffer.from("kjshfjhfkkfuriuYHYUHUHUYUyyihuHUY"); // Convert salt string to a buffer
-    const asOfData = 
+  let hashValue
+  let cookies
+  async function generateHashValue() {
+    const salt = Buffer.from("kjshfjhfkkfuriuYHYUHUHUYUyyihuHUY");
+    const asOfData =
       query?.asofdate && query?.asof == "bydate"
         ? parseFloat(query?.asofdate)
         : Date.now() / 1000;
-     
-      
-    const data = asOfData + "teVJDEFLRNGENG";
 
-    // console.log( salt, data);
+    const data = Math.ceil(asOfData)
 
     const hash = await argon2id({
-      password: data,
-      salt, // pass the salt buffer
-      parallelism: 1,
-      iterations: 2,
-      memorySize: 16, 
-      hashLength: 16, // output size = 16 bytes
-      outputType: "encoded" // return standard encoded string containing parameters needed to verify the key
+      password: data.toString(),
+      salt,
+      parallelism: parseInt(process.env.NEXT_PUBLIC_PARALLELISM),
+      iterations: parseInt(process.env.NEXT_PUBLIC_ITERATIONS),
+      memorySize: parseInt(process.env.NEXT_PUBLIC_MEMORYSIZE),
+      hashLength: parseInt(process.env.NEXT_PUBLIC_HASHLENGTH),
+      outputType: "encoded"
     });
 
-    ////////////////////////////////////////////////////////////////////////////////////
-
     const parts = hash.split('$');
-     hashValue = parts[parts.length - 1];
-     
-    console.log("hashValue",hashValue);
+    hashValue = "$" + parts[parts.length - 2] + "$" + parts[parts.length - 1];
 
-     cookies = parse(req.headers.cookie || '');
 
-    console.log("cookies============",cookies);
-    
-    if (!cookies['view']) {
+    cookies = parse(req.headers.cookie || '');
 
-  const expirationTime = new Date(Date.now() + 60 * 1000); // Current time + 1 minute
-  const cookieOptions = {
-    expires: expirationTime,
-    httpOnly: true, // Prevents JavaScript access to the cookie
-    path: '/', // Set the path to the root directory
-  };
-
-    const cookieValue = serialize('view', hashValue, cookieOptions);
-   res.setHeader('Set-Cookie', cookieValue);
+    if (!cookies['viewValue']) {
+      const expirationDate = new Date(Date.now() + 60 * 1000);
+      const expires = expirationDate.toUTCString();
+      const cookieValue = `viewValue=${hashValue}; expires=${expires}; path=/`;
+      res.setHeader('Set-Cookie', cookieValue);
     }
 
 
-    console.log("cookies=2",cookies);
-    
-    
-    
   }
-  await run();
+  await generateHashValue();
 
   let topicNum = query?.camp[0]?.split("-")[0];
   let campNum = query?.camp[1]?.split("-")[0] || 1;
@@ -147,18 +128,16 @@ let cookies
     topic_num: topicNum,
     camp_num: campNum,
     asOf: query?.asof ?? "default",
-    asofdate:
+    asofdate: Math.ceil(
       query?.asofdate && query?.asof == "bydate"
         ? parseFloat(query?.asofdate)
-        : Date.now() / 1000,
+        : Date.now() / 1000),
     algorithm: query?.algo || "blind_popularity",
     update_all: 1,
     fetch_topic_history: query?.viewversion == "1" ? 1 : null,
-    view:hashValue,
+    view: req.cookies['viewValue'] ? req.cookies['viewValue'] : null
+    // view: hashValue,
   };
-
-  console.log("reqBodyForService",reqBodyForService);
-  
 
   const reqBody = {
     topic_num: topicNum,
