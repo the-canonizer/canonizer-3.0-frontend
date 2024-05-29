@@ -383,10 +383,10 @@ export function formatViews(num) {
 
   return formattedNum + suffixes[suffixIndex];
 }
-export function numberWithCommas(x) {
-  let numStr = x.toString();
+export function numberWithCommas(number) {
+  let numStr = number.toString();
 
-  let parts = numStr.split('.');
+  let parts = numStr?.split('.');
 
   parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
