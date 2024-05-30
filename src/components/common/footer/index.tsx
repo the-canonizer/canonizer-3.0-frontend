@@ -92,7 +92,7 @@ function Footer() {
                 <Link href="/">
                   <a>
                     <Image
-                      src={`${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/site-images/logo.svg`}
+                      src={`/images/logo.svg`}
                       alt="Canonizer"
                       width={142}
                       height={26}

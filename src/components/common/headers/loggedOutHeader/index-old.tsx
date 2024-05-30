@@ -16,7 +16,6 @@ import DisclaimerMsg from "../../disclaimer";
 import HeaderMenu from "../HeaderMenu";
 import TopicCreationBTN from "../TopicCreationBTN";
 import ArchivedCampMsg from "../../ArchivedCampMsg";
-import SearchHeader from "../search";
 
 const { Header } = Layout;
 
@@ -46,10 +45,12 @@ const LoggedOutHeader = () => {
 
   return (
     <React.Fragment>
-      <div className="flex justify-between items-center z-10 overflow-hidden">
+      <Header
+        className={`${styles.wrap} printHIde`}
+        data-testid="loggedOutHeader"
+      >
         <Logo />
-        <SearchHeader />
-        {/* <div className={`${styles.navWrap} ${isActive && styles.showMobMenu}`}>
+        <div className={`${styles.navWrap} ${isActive && styles.showMobMenu}`}>
           <div className={styles.mobLogoIcon}>
             <Logo />
           </div>
@@ -78,9 +79,9 @@ const LoggedOutHeader = () => {
               <i className="icon-user-plus"></i> Register
             </Button>
           </div>
-        </div> */}
+        </div>
 
-        {/* <div className={styles.right} key="right-panel">
+        <div className={styles.right} key="right-panel">
           <div className={styles.btnsLoginRegister} key="btns-area">
             <Button
               type="link"
@@ -103,15 +104,15 @@ const LoggedOutHeader = () => {
               <MenuOutlined />
             </Button>
           </div>
-        </div> */}
+        </div>
 
-        {/* <div
+        <div
           className={`${styles.mobNavBG} ${isActive && styles.mobNavBGshow}`}
           onClick={toggleMobNav}
           key="toggle-btn"
-        ></div> */}
-      </div>
-      {/* {isMobile == false ? (
+        ></div>
+      </Header>
+      {isMobile == false ? (
         <section className="Mob_View">
           <div className="search_header">
             <HeaderMenu />
@@ -119,16 +120,16 @@ const LoggedOutHeader = () => {
         </section>
       ) : (
         <></>
-      )} */}
+      )}
       {/* <SearchSection /> */}
-      {/* <div className="topicMobBTN">
+      <div className="topicMobBTN">
         <TopicCreationBTN key="create-topic-area" />
-      </div> */}
-      {/* <DisclaimerMsg />
+      </div>
+      <DisclaimerMsg />
       <ArchivedCampMsg />
       <LoginModal />
       <RegistrationModal />
-      <ForgotModal /> */}
+      <ForgotModal />
     </React.Fragment>
   );
 };

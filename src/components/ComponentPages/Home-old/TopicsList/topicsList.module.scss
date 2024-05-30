@@ -1,0 +1,423 @@
+.card {
+  padding: 15px;
+  background-color: #fff;
+  border: solid 1px #f0f0f0;
+  margin-bottom: 16px;
+  &:not(.homePageCardList) {
+    @media screen and (min-width: 768px) {
+      // height: calc(100% - 140px);
+    }
+    @media screen and (max-width: 767px) {
+      height: auto;
+    }
+  }
+}
+
+.wrap {
+  border: none;
+  > div:first-child {
+    padding: 0;
+    border-bottom: none;
+  }
+  .head {
+    margin-bottom: 18px;
+    overflow: hidden;
+    flex-wrap: wrap;
+    overflow-x: hidden;
+    @media screen and (min-width: 576px) {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    h3 {
+      display: flex;
+      align-items: center;
+      font-size: 18px;
+      color: #1c1b24;
+      margin-bottom: 0;
+      white-space: nowrap;
+      i {
+        margin-left: 5px;
+        color: #d1d4db;
+      }
+    }
+    .checkboxOnlyMyTopics {
+      white-space: nowrap;
+      @media screen and (max-width: 400px) {
+        margin-top: 1rem;
+      }
+      @media screen and (min-width: 1200px) and (max-width: 1350px) {
+        margin: 0;
+      }
+      @media screen and (min-width: 401px) and (max-width: 1200px) {
+        position: absolute;
+        right: 0;
+        top: 0.2rem;
+      }
+      @media screen and (min-width: 1200px) {
+        order: 2;
+        margin: 0 10px 0 15px;
+      }
+    }
+    .dropdown {
+      max-width: 100%;
+      border: 1px solid #d9d9d9;
+      font-size: 13px;
+      width: 100%;
+      > div:first-child {
+        height: 40px !important;
+        border: none;
+        // border: solid 1px #d9d9d9 !important;
+      }
+      @media screen and (max-width: 992px) {
+        width: 100%;
+      }
+      @media screen and (max-width: 767px) {
+        margin-top: 10px;
+      }
+    }
+    &:not(.browsePage) {
+      @media screen and (min-width: 1200px) and (max-width: 1499px) {
+        // flex-wrap: wrap;
+      }
+      h3 {
+        @media screen and (min-width: 1200px) and (max-width: 1499px) {
+          width: 100%;
+        }
+      }
+      .dropdown {
+        @media screen and (min-width: 576px) {
+          max-width: 225px;
+          width: 100%;
+        }
+        @media screen and (max-width: 992px) {
+          // width: 100%;
+        }
+        @media screen and (min-width: 1200px) and (max-width: 1499px) {
+          width: 100%;
+          max-width: inherit;
+          margin-top: 5px;
+        }
+      }
+    }
+    &.browsePage {
+      @media screen and (max-width: 1200px) {
+        flex-wrap: wrap;
+      }
+      @media screen and (max-width: 767px) {
+        display: grid;
+        .checkboxOnlyMyTopics {
+          order: 3;
+          margin-top: 10px;
+        }
+        .dropdown {
+          margin-top: 1rem;
+        }
+      }
+      & > h3 {
+        @media screen and (max-width: 1200px) {
+          width: 100%;
+        }
+      }
+      .dropdown {
+        max-width: 100%;
+        @media screen and (min-width: 576px) {
+          max-width: 225px;
+          width: 100%;
+        }
+        @media screen and (min-width: 1200px) {
+          margin-right: auto;
+          margin-left: 20px;
+        }
+        @media screen and (min-width: 1200px) and (max-width: 1350px) {
+          max-width: 180px;
+        }
+        @media screen and (min-width: 576px) and (max-width: 1200px) {
+          max-width: inherit;
+          width: 48.5%;
+          margin-top: 10px;
+          margin-left: 0;
+        }
+        @media screen and (max-width: 992px) {
+          // width: 100%;
+        }
+      }
+      .inputSearchTopic {
+        @media screen and (min-width: 1200px) {
+          max-width: 275px;
+          width: 28%;
+          order: 3;
+        }
+        @media screen and (min-width: 1200px) and (max-width: 1350px) {
+          width: 20%;
+        }
+        @media screen and (min-width: 576px) and (max-width: 1200px) {
+          max-width: inherit;
+          width: 48.5%;
+        }
+        @media screen and (max-width: 1200px) {
+          margin-top: 10px;
+        }
+        & > span {
+          & > span {
+            position: relative;
+            display: block;
+            & > span:first-child {
+              padding: 8px 50px 8px 15px;
+              & > span {
+                background-color: #fff;
+                position: absolute;
+                z-index: 2;
+                right: 35px;
+                top: 50%;
+                transform: translateY(-50%);
+              }
+              &:hover {
+                span {
+                  z-index: 20;
+                }
+              }
+            }
+            & > span:last-child {
+              position: absolute;
+              right: 5px;
+              top: 50%;
+              display: block;
+              left: inherit;
+              width: 32px;
+              z-index: 1;
+              background: transparent;
+              transform: translateY(-50%);
+              button {
+                border: 0;
+                background: transparent;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  li {
+    &.item {
+      border: 0;
+      // padding: 0;
+      display: flex;
+      align-items: center;
+      padding-top: 8px;
+      padding-bottom: 8px;
+      font-size: 14px;
+      line-height: 21px;
+      width: 100%;
+      border: solid 1px #f0f0f0;
+      background-color: #fff;
+      box-shadow: 3px 3px rgba(63, 79, 91, 8%);
+      transition: all 0.5s;
+      &:hover {
+        background-color: #f9f9f9;
+        .copyable {
+          opacity: 1;
+        }
+      }
+      .copyable {
+        margin-bottom: 0;
+        font-size: 1rem;
+        opacity: 0;
+        transition: all ease-in-out 0.4s;
+      }
+      @media screen and (min-width: 768px) {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+      @media screen and (max-width: 767px) {
+        justify-content: space-between;
+        padding-left: 15px;
+        padding-right: 15px;
+      }
+      & + li {
+        margin-top: 8px;
+      }
+      @media screen and (max-width: 767px) {
+        // font-size: 1rem;
+      }
+      a {
+        color: #0f2a4d;
+      }
+      .text {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        color: #0f2a4d;
+      }
+      .tag {
+        margin: 0;
+        border-radius: 4px;
+        line-height: 1.7;
+        font-size: 10px;
+        font-weight: 400;
+        color: #fff;
+        border: none;
+        background-color: #f89d15;
+        margin-left: 12px;
+      }
+      &:last-child {
+        border-bottom: none !important;
+      }
+    }
+  }
+  .footer {
+    .viewAll {
+      position: relative;
+      font-size: 13px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      border: 0;
+      padding: 0;
+      &:after {
+        display: none;
+      }
+      span {
+        color: #4484ce;
+      }
+      & > span {
+        border-bottom: #4484ce 1px solid;
+      }
+      & > div {
+        margin-top: 3px;
+        margin-left: 5px;
+        span {
+          font-size: 16px;
+        }
+      }
+      i {
+        font-size: 13px;
+        margin-left: 7px;
+        color: #4484ce;
+      }
+      &:hover,
+      &:active,
+      &:focus {
+        box-shadow: none;
+      }
+    }
+  }
+}
+.head {
+  // overflow-x: hidden;
+  position: relative;
+
+  @media screen and (min-width: 991px) {
+    [class*="ant-select-single"] {
+      // max-width: 58% !important;
+      max-width: calc(100% - 255px) !important;
+    }
+  }
+}
+.namespacesPopover {
+  max-width: 350px;
+}
+.archive_topic {
+  padding-right: 12px;
+  color: #6a6a6a;
+}
+
+.inputSearchTopic {
+  position: relative;
+}
+
+.dropdown_list {
+  width: 100%;
+  box-shadow: 0 0 8px 2px rgba($color: #000000, $alpha: 0.1);
+  border: none;
+  border-radius: 0.25rem;
+  background-color: #fff;
+  position: absolute;
+  z-index: 10;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 2px;
+  max-height: 250px;
+  overflow: auto;
+  padding: 10px 0;
+
+  .searLoader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    li {
+      padding: 5px 10px;
+      border-bottom: 1px solid #f1f1f1;
+      cursor: pointer;
+
+      &:first-child {
+        padding-top: 0;
+      }
+
+      &:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+      }
+    }
+  }
+
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #888;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+}
+
+.browsePage {
+  .dropdown {
+    max-width: 100%;
+    @media screen and (min-width: 576px) {
+      max-width: 225px;
+      width: 100%;
+    }
+    @media screen and (min-width: 1350px) {
+      width: 31% !important;
+    }
+    @media screen and (min-width: 1200px) and (max-width: 1350px) {
+      width: 40% !important;
+    }
+    @media screen and (min-width: 576px) and (max-width: 1200px) {
+      max-width: 50% !important;
+      width: 39% !important;
+      margin-top: 10px;
+      margin-left: 0;
+    }
+  }
+  .inputSearchTopic {
+    @media screen and (min-width: 1200px) {
+      max-width: 275px;
+      width: 28%;
+      order: 3;
+    }
+    @media screen and (min-width: 1200px) and (max-width: 1350px) {
+      width: 270px;
+    }
+    @media screen and (min-width: 576px) and (max-width: 1200px) {
+      max-width: 50% !important;
+      width: 49%;
+    }
+  }
+}
