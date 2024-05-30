@@ -103,7 +103,7 @@ const FilterWithTree = ({
     asof,
     viewThisVersionCheck,
     asofdate,
-    algorithm
+    algorithm,
   } = useSelector((state: RootState) => ({
     algorithms: state.homePage?.algorithms,
     filteredScore: state?.filters?.filterObject?.filterByScore,
@@ -283,16 +283,14 @@ const FilterWithTree = ({
     camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
     asOf: asof,
     asofdate:
-      asof == "default" || asof == "review"
-        ? Date.now() / 1000
-        : asofdate,
+      asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
     algorithm: algorithm,
     update_all: 1,
     fetch_topic_history: viewThisVersionCheck ? 1 : null,
   };
-  const revertScore = ()=>{
-     getTreesApi(reqBodyForService)
-  }
+  const revertScore = () => {
+    getTreesApi(reqBodyForService);
+  };
   const selectAlgorithm = (value) => {
     setCookie("canAlgo", value, {
       path: "/",
@@ -310,7 +308,7 @@ const FilterWithTree = ({
       filterObject?.namespace_id,
       viewThisVersion
     );
-    revertScore()
+    revertScore();
   };
   const onChange = (e) => {
     if (e.target.value === 3) {
