@@ -430,7 +430,7 @@ export function formatViews(num) {
         index++;
     }
 
-    return numeral(num).format(formats[index]) + suffixes[index];
+    return numeral(num)?.format(formats[index]) + suffixes[index];
 }
 
 
