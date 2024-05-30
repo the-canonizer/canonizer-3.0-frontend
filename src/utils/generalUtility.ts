@@ -1,5 +1,7 @@
+import { logOut } from "@/components/common/headers/loggedInHeaderNavigation";
 import { message } from "antd";
 import moment from "moment";
+import numeral from 'numeral';
 
 export const handleError = (error, log = false) => {
   log ? window.console.log(error) : "";
@@ -365,23 +367,70 @@ export const getProperties = (item) => {
   return null;
 };
 
+export const buildDateGreaterThan = (latestDate, currentDate) => {
+  const momLatestDateTime = moment(latestDate);
+  const momCurrentDateTime = moment(currentDate);
+
+  return !!(momLatestDateTime.isAfter(momCurrentDateTime));
+};
+
+export const refreshCacheAndReload = (router) => {
+    localStorage.clear();
+    console.log("caches ===>",caches)
+    if (caches) {
+      caches.keys().then((names) => {
+        for (const name of names) {
+          caches.delete(name);
+        }
+      });
+  }
+  logOut(router)
+};
+
+export const updateLatestBuildNo = (router) =>{
+  let buildDate= null;
+  const currentVersionDate = (getCookies() as any)?.build_number;
+  console.log("currentVersionDate", currentVersionDate)
+  let shouldForceRefresh = null;
+
+  fetch("/meta.json")
+  .then((response) => response.json())
+  .then((meta) => {
+    buildDate = meta.buildDate;
+
+    shouldForceRefresh = buildDateGreaterThan(
+      meta.buildDate,
+      +currentVersionDate ?? 0
+    );
+  })
+  
+
+  if(shouldForceRefresh){
+    refreshCacheAndReload(router)
+    localStorage.setItem("build_number", buildDate);
+    document.cookie =
+          "build_number=" +
+          buildDate +
+          "; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/"; 
+  }
+}
+
 
 export function formatViews(num) {
-  if (num === 0) {
-      return '0';
-  }
-  let suffixes = ["", "K", "M", "B", "T"];
-  let suffixIndex = 0;
-  while (num >= 1000 && suffixIndex < suffixes.length - 1) {
-      num /= 1000;
-      suffixIndex++;
-  }
-  let formattedNum = num.toFixed(1);
-  if (formattedNum.endsWith('.0')) {
-      formattedNum = formattedNum.slice(0, -2);
-  }
+    if (num === 0) {
+        return '0';
+    }
 
-  return formattedNum + suffixes[suffixIndex];
+    const formats = ['0', '0.0a', '0.0a', '0.0a'];
+    const suffixes = ['', 'K', 'M', 'B'];
+
+    let index = 0;
+    while (num >= 1000 && index < suffixes.length - 1) {
+        num /= 1000;
+        index++;
+    }
+
+    return numeral(num).format(formats[index]) + suffixes[index];
 }
 
 

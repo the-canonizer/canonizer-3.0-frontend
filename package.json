@@ -68,6 +68,7 @@
     "next-redux-wrapper": "6.0.0",
     "next-share": "^0.27.0",
     "next-useragent": "^2.8.0",
+    "numeral": "^2.0.6",
     "postcss": "^8.4.5",
     "raw-loader": "4",
     "react": "17.0.2",
