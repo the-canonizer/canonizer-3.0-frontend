@@ -384,7 +384,7 @@ export function formatViews(num) {
   return formattedNum + suffixes[suffixIndex];
 }
 export function numberWithCommas(number) {
-  let numStr = number.toString();
+  let numStr = number?.toString();
 
   let parts = numStr?.split('.');
 
