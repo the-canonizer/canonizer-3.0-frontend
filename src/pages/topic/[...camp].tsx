@@ -43,6 +43,7 @@ const TopicDetailsPage = ({
   const serverSideCall = useRef(serverCall || false);
   const dispatch = useDispatch();
 
+
   useEffect(() => {
     dispatch(setNewsFeed(newsFeed));
     dispatch(setCurrentTopicRecord(topicRecord));
@@ -52,6 +53,8 @@ const TopicDetailsPage = ({
     dispatch(setTree(tree?.status_code == 200 ? [tree?.treeData] : []));
     dispatch(setCurrentDate(current_date));
   }, []);
+
+
 
   let ErrorStatus =
     tree?.status_code == 404 ||
@@ -79,46 +82,60 @@ const TopicDetailsPage = ({
   );
 };
 
+function parseCookies(cookiesString) {
+  const cookiesArray = cookiesString.split('; ');
+  const cookiesObject = {};
+
+  cookiesArray.forEach(cookie => {
+    const [key, value] = cookie.split('=');
+    cookiesObject[key] = value;
+  });
+
+  return cookiesObject;
+}
+
 export async function getServerSideProps({ req, query, res }) {
 
-  // let hashValue
-  // let cookies
-  // async function generateHashValue() {
-  //   const salt = Buffer.from("kjshfjhfkkfuriuYHYUHUHUYUyyihuHUY");
-  //   const asOfData =
-  //     query?.asofdate && query?.asof == "bydate"
-  //       ? parseFloat(query?.asofdate)
-  //       : Date.now() / 1000;
+  let hashValue
+  let cookies
+  async function generateHashValue() {
+    const salt = Buffer.from("kjshfjhfkkfuriuYHYUHUHUYUyyihuHUY");
+    const asOfData =
+      query?.asofdate && query?.asof == "bydate"
+        ? parseFloat(query?.asofdate)
+        : Date.now() / 1000;
 
-  //   const data = Math.ceil(asOfData)
+    const data = Math.ceil(asOfData)
 
-  //   const hash = await argon2id({
-  //     password: data.toString(),
-  //     salt,
-  //     parallelism: parseInt(process.env.NEXT_PUBLIC_PARALLELISM),
-  //     iterations: parseInt(process.env.NEXT_PUBLIC_ITERATIONS),
-  //     memorySize: parseInt(process.env.NEXT_PUBLIC_MEMORYSIZE),
-  //     hashLength: parseInt(process.env.NEXT_PUBLIC_HASHLENGTH),
-  //     outputType: "encoded"
-  //   });
+    const hash = await argon2id({
+      password: data.toString(),
+      salt,
+      parallelism: parseInt(process.env.NEXT_PUBLIC_PARALLELISM),
+      iterations: parseInt(process.env.NEXT_PUBLIC_ITERATIONS),
+      memorySize: parseInt(process.env.NEXT_PUBLIC_MEMORYSIZE),
+      hashLength: parseInt(process.env.NEXT_PUBLIC_HASHLENGTH),
+      outputType: "encoded"
+    });
 
-  //   const parts = hash.split('$');
-  //   hashValue = "$" + parts[parts.length - 2] + "$" + parts[parts.length - 1];
-
-
-  //   cookies = parse(req.headers.cookie || '');
-
-  //   if (!cookies['viewValue']) {
-  //     const expirationInSeconds = parseInt(process.env.NEXT_PUBLIC_EXPIRATIONDATE); 
-  //     const expirationDate = new Date(Date.now() + expirationInSeconds * 1000); 
-  //     const expires = expirationDate.toUTCString();
-  //     const cookieValue = `viewValue=${hashValue}; expires=${expires}; path=/`;
-  //     res.setHeader('Set-Cookie', cookieValue);
-  //   }    
+    const parts = hash.split('$');
+    hashValue = "$" + parts[parts.length - 2] + "$" + parts[parts.length - 1];
 
 
-  // }
-  // await generateHashValue();
+    // cookies = parse(req.headers.cookie || '');
+    let cookiesString = req.headers.cookie || '';
+    cookies = req.headers.cookie ? parseCookies(cookiesString) : '';
+
+    if (!cookies['viewValue']) {
+      const expirationInSeconds = parseInt(process.env.NEXT_PUBLIC_EXPIRATIONDATE);
+      const expirationDate = new Date(Date.now() + expirationInSeconds * 1000);
+      const expires = expirationDate.toUTCString();
+      const cookieValue = `viewValue=${hashValue}; expires=${expires}; path=/`;
+      res.setHeader('Set-Cookie', cookieValue);
+    }
+
+
+  }
+  await generateHashValue();
 
   let topicNum = query?.camp[0]?.split("-")[0];
   let campNum = query?.camp[1]?.split("-")[0] || 1;
@@ -136,7 +153,7 @@ export async function getServerSideProps({ req, query, res }) {
     algorithm: query?.algo || "blind_popularity",
     update_all: 1,
     fetch_topic_history: query?.viewversion == "1" ? 1 : null,
-    // view: req.cookies['viewValue'] ? req.cookies['viewValue'] : hashValue
+    view: req.cookies['viewValue'] ? req.cookies['viewValue'] : hashValue
   };
 
   const reqBody = {
