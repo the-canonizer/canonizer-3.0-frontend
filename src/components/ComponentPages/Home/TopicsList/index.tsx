@@ -29,7 +29,6 @@ import {
   replaceSpecialCharacters,
   changeSlashToArrow,
   formatViews,
-  numberWithCommas,
 } from "src/utils/generalUtility";
 import CustomSkelton from "../../../common/customSkelton";
 import SortTopics from "../../SortingTopics";
@@ -58,6 +57,7 @@ const TopicsList = () => {
   const [pageNumber, setPageNumber, pageNumberRef] = useState(1);
   const dispatch = useDispatch();
   const { isUserAuthenticated } = useAuthentication();
+  const commaNumber = require('comma-number')
 
   const {
     canonizedTopics,
@@ -569,7 +569,7 @@ const TopicsList = () => {
                           )}
                         </Text>
                         {" "}
-                        <Tooltip title={numberWithCommas(item?.camp_views)} placement="bottom">
+                        <Tooltip title={commaNumber(item?.camp_views)} placement="bottom">
                         <Image
                           width={17}
                           height={17}

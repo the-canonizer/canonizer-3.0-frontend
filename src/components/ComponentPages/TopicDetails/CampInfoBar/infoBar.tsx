@@ -31,7 +31,7 @@ import {
   replaceSpecialCharacters,
   isServer,
   formatViews,
-  numberWithCommas,
+  
 } from "../../../../utils/generalUtility";
 import SocialShareUI from "../../../common/socialShare";
 import GenerateModal from "src/components/common/generateScript";
@@ -65,6 +65,8 @@ const InfoBar = ({
   const [isCampBtnVisible, setIsCampBtnVisible] = useState(false);
   const didMount = useRef(false);
   const router = useRouter();
+  const commaNumber = require('comma-number')
+
 
   const {
     topicRecord,
@@ -485,7 +487,7 @@ const InfoBar = ({
               className={"mb-0 campInfoRight " + styles.topicTitleStyle}
             >
              
-              <Tooltip title={numberWithCommas(tree[1]?.camp_views)} placement="bottom"> 
+              <Tooltip title={commaNumber(tree[1]?.camp_views)} placement="bottom"> 
               <div className="barchart">
               <Image
                 width={11}
