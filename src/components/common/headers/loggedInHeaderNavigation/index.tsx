@@ -3,12 +3,6 @@ import { useRouter } from "next/router";
 import { Layout, Menu, Button } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
-
-import styles from "../siteHeader.module.scss";
-
-import { logout } from "../../../../network/api/userApi";
-import { RootState } from "../../../../store";
-import Logo from "../logoHeader";
 import {
   MenuOutlined,
   CloseOutlined,
@@ -16,6 +10,12 @@ import {
   LogoutOutlined,
   CheckCircleOutlined,
 } from "@ant-design/icons";
+
+import styles from "../siteHeader.module.scss";
+
+import { logout } from "../../../../network/api/userApi";
+import { RootState } from "../../../../store";
+import Logo from "../logoHeader";
 import Notifications from "../notification";
 import useAuthentication from "src/hooks/isUserAuthenticated";
 import {
@@ -29,12 +29,13 @@ import ProfileInfoTab from "./profileInfoTab";
 
 const { Header } = Layout;
 
-export const logOut = async (router) => {
-  const res = await logout();
+export const logOut = async (_router) => {
+  // const res =
+  await logout();
 
-  if (res?.status_code === 200) {
-    router?.push("/", null, { shallow: true });
-  }
+  // if (res?.status_code === 200) {
+  // router?.push("/", null, { shallow: true });
+  // }
 };
 
 const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {

@@ -34,8 +34,8 @@ const ManageSupport = ({
   setGetManageSupportLoadingIndicator,
   getManageSupportLoadingIndicator,
   getCheckStatusAPI,
-  isManageSupportPage=true,
-}:any) => {
+  isManageSupportPage = true,
+}: any) => {
   const { asof, asofdate } = useSelector((state: RootState) => ({
     asofdate: state.filters?.filterObject?.asofdate,
     asof: state?.filters?.filterObject?.asof,
@@ -135,15 +135,15 @@ const ManageSupport = ({
   // },[])
   //isUserAuthenticated
 
-  async function getTopicActivityLogCall() { 
+  async function getTopicActivityLogCall() {
     let reqBody = {
       topic_num: router?.query?.camp[0]?.split("-")[0],
       camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
     };
     let res = await getTopicActivityLogApi(reqBody);
-    store.dispatch(setCampActivityData(res?.data?.items)); 
+    store.dispatch(setCampActivityData(res?.data?.items));
   }
-  
+
   useEffect(() => {
     (async () => {
       if (isUserAuthenticated) {
@@ -172,10 +172,10 @@ const ManageSupport = ({
       handleCancelSupportCamps({ isCallApiStatus: false });
     }
     if (response && response.status_code === 200) {
-      if (response.data?.remove_camps){
+      if (response.data?.remove_camps) {
         setParentSupportDataList(response.data.remove_camps);
 
-        dispatch(setCheckSupportExistsData(response.data))
+        dispatch(setCheckSupportExistsData(response.data));
       }
       if (!manageSupportStatusCheck || CheckDelegatedOrDirect) {
         response.data.warning;
@@ -502,7 +502,7 @@ const ManageSupport = ({
       let res = await addDelegateSupportCamps(addDelegatedSupport);
       if (res && res.status_code == 200) {
         message.success(res.message);
-        getTopicActivityLogCall()
+        getTopicActivityLogCall();
         //After Submit page is redirect to previous
         // router?.push(manageSupportPath);
         handleCancelSupportCamps({ isCallApiStatus: true });
@@ -513,7 +513,7 @@ const ManageSupport = ({
       let res = await addSupport(addSupportId);
       if (res && res.status_code == 200) {
         message.success(res.message);
-        getTopicActivityLogCall()
+        getTopicActivityLogCall();
         //After Submit page is redirect to previous
         // router?.push(manageSupportPath);
         handleCancelSupportCamps({ isCallApiStatus: false });

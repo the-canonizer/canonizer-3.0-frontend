@@ -6,9 +6,8 @@ import { useRouter } from "next/router";
 import styles from "./style.module.scss";
 
 import K from "src/constants";
-import { getVideosApi, getVideosContentApi } from "src/network/api/videos";
+import { getVideosApi } from "src/network/api/videos";
 import CustomSkelton from "../../common/customSkelton";
-import VideoThumbnail from "../../../assets/image/video-thumbnail.jpg";
 
 const { Title } = Typography;
 
@@ -109,7 +108,6 @@ export default function CanonVideos() {
         format?.split(" ")[0],
         null,
         filtredVides[0]?.id
-
       );
     }
 
@@ -123,9 +121,6 @@ export default function CanonVideos() {
   useEffect(() => {
     const q = router.query;
 
-    // let categoryId = router?.query?.video?.at(0).split("-")[0];
-    // let categoryName = router?.query?.video?.at(0).split("-")[1];
-
     async function getTreeApiCall() {
       setLoader(true);
       let data = await getVideosApi();
@@ -137,9 +132,10 @@ export default function CanonVideos() {
 
         if (q?.video?.at(1) || q?.format || q?.chapter) {
           const title = (q?.video?.at(1) || "").split("-");
-          const join = title[0] == "" ? q?.video?.at(1) : title.slice(1).join(" ");
+          const join =
+            title[0] == "" ? q?.video?.at(1) : title.slice(1).join(" ");
           const videoTitle = replaceString(
-            spaceChangeToDash(join ?? q?.chapter as string, true),
+            spaceChangeToDash(join ?? (q?.chapter as string), true),
             true
           );
           const filteredVideo = Object.values(videoss)?.filter((video) => {
@@ -242,7 +238,9 @@ export default function CanonVideos() {
       : [chapter];
     router.query.format = format;
     router.query.video_id = String(videoId);
-    let asPath = isSpecialChapter ? `/videos/1-consciousness/${videoId}-${chapter}?format=${format}` : `/videos/consciousness/${chapter}?format=${format}`;
+    let asPath = isSpecialChapter
+      ? `/videos/1-consciousness/${videoId}-${chapter}?format=${format}`
+      : `/videos/consciousness/${chapter}?format=${format}`;
     if (t) {
       router.query.t = t;
       asPath += `&t=${t}`;
@@ -310,10 +308,10 @@ export default function CanonVideos() {
                       id: React.Key;
                       link: string;
                       title:
-                      | boolean
-                      | React.ReactChild
-                      | React.ReactFragment
-                      | React.ReactPortal;
+                        | boolean
+                        | React.ReactChild
+                        | React.ReactFragment
+                        | React.ReactPortal;
                     }) => {
                       return (
                         <Radio
@@ -383,11 +381,6 @@ export default function CanonVideos() {
           </Card>
         </div>
       </Card>
-      {/* <div className="w-100 pt-4 pb-4 ">
-        <Title className={`text-center ${styles.pageTitle}`} level={1}>
-          Consciousness: Not a Hard Problem, Just a Color Problem
-        </Title>
-      </div> */}
     </Fragment>
   );
 }

@@ -122,7 +122,6 @@ function WrappedApp({
 
 let lastAppName: string = "";
 const getTagData = async (req) => {
-  
   const defaultTags = {
     page_name: "Home",
     title: "Build consensus by canonizing what you believe is right",
@@ -198,8 +197,10 @@ WrappedApp.getInitialProps = async (
             ? appContext.router?.query?.id
             : null
           : null,
-        video_id: appContext?.ctx?.query && componentName === "VideosPage"  ? appContext?.ctx?.query?.video[1]?.split("-")?.[0] : null   
-             
+      video_id:
+        appContext?.ctx?.query && componentName === "VideosPage"
+          ? appContext?.ctx?.query?.video[1]?.split("-")?.[0]
+          : null,
     },
   };
 
