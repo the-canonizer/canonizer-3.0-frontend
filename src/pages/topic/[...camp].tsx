@@ -14,7 +14,7 @@ import {
   setCurrentTopicRecord,
   setCurrentCampRecord,
 } from "../../store/slices/campDetailSlice";
-import { formatTheDate } from "src/utils/generalUtility";
+import { formatTheDate, parseCookies } from "src/utils/generalUtility";
 import { setHistory } from "../../store/slices/campDetailSlice";
 import Layout from "src/hoc/layout";
 
@@ -26,7 +26,6 @@ import { useEffect, useRef } from "react";
 import DataNotFound from "@/components/ComponentPages/DataNotFound/dataNotFound";
 import { createToken } from "src/network/api/userApi";
 import { argon2id } from "hash-wasm";
-// import { parse } from 'cookie';
 
 
 
@@ -43,7 +42,6 @@ const TopicDetailsPage = ({
   const serverSideCall = useRef(serverCall || false);
   const dispatch = useDispatch();
 
-
   useEffect(() => {
     dispatch(setNewsFeed(newsFeed));
     dispatch(setCurrentTopicRecord(topicRecord));
@@ -53,8 +51,6 @@ const TopicDetailsPage = ({
     dispatch(setTree(tree?.status_code == 200 ? [tree?.treeData] : []));
     dispatch(setCurrentDate(current_date));
   }, []);
-
-
 
   let ErrorStatus =
     tree?.status_code == 404 ||
@@ -82,17 +78,6 @@ const TopicDetailsPage = ({
   );
 };
 
-function parseCookies(cookiesString) {
-  const cookiesArray = cookiesString.split('; ');
-  const cookiesObject = {};
-
-  cookiesArray.forEach(cookie => {
-    const [key, value] = cookie.split('=');
-    cookiesObject[key] = value;
-  });
-
-  return cookiesObject;
-}
 
 export async function getServerSideProps({ req, query, res }) {
 
@@ -120,8 +105,6 @@ export async function getServerSideProps({ req, query, res }) {
     const parts = hash.split('$');
     hashValue = "$" + parts[parts.length - 2] + "$" + parts[parts.length - 1];
 
-
-    // cookies = parse(req.headers.cookie || '');
     let cookiesString = req.headers.cookie || '';
     cookies = req.headers.cookie ? parseCookies(cookiesString) : '';
 
@@ -133,8 +116,8 @@ export async function getServerSideProps({ req, query, res }) {
       res.setHeader('Set-Cookie', cookieValue);
     }
 
-
   }
+  
   await generateHashValue();
 
   let topicNum = query?.camp[0]?.split("-")[0];
