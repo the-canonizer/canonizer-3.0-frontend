@@ -1163,7 +1163,9 @@ del.diffmod img {
   margin-left: 10px;
 }
 
-.delegate-support-style {
+.delegate-support-style,
+.delegate-support-style button
+{
   padding: 2px 7px;
   font-size: 11px;
   border-radius: 6px;
@@ -1181,7 +1183,12 @@ del.diffmod img {
     color: rgba(0, 0, 0, 0.5);
   }
 }
-
+.delegate-support-style {
+&.remove-support {
+  margin-left: 0;
+  background-color: transparent!important;
+}
+}
 .ant-breadcrumb-separator {
   margin: 0;
   color: #2e68db;

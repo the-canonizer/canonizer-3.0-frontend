@@ -418,7 +418,7 @@ const SupportTreeCard = ({
                                   : ""
                               }
                             >
-                              <a className="printHIde">
+                              {/* <a className="printHIde"> */}
                                 <Button
                                   id="supportTreeDelegateYourSupport"
                                   disabled={
@@ -431,11 +431,14 @@ const SupportTreeCard = ({
                                       data[item].nick_name_id
                                     )
                                   }
-                                  className="delegate-support-style"
+                                  className={
+                                    asof == "bydate" ||
+                                    !isUserAuthenticated ||
+                                    campRecord?.is_archive == 1 ? "delegate-support-style remove-support" : "delegate-support-style"}
                                 >
                                   {"Delegate Your Support"}
                                 </Button>
-                              </a>
+                              {/* </a> */}
                             </Popover>
                           )}
                         </>
