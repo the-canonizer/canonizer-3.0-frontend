@@ -487,14 +487,14 @@ const InfoBar = ({
               className={"mb-0 campInfoRight " + styles.topicTitleStyle}
             >
              
-              <Tooltip title={commaNumber(tree[1]?.camp_views)} placement="bottom"> 
+              <Tooltip title={tree && tree[1]?.camp_views ? commaNumber(tree[1]?.camp_views): 0} placement="bottom"> 
               <div className="barchart">
               <Image
                 width={11}
                 preview={false}
                 src={barchart.src}
                 />
-              <Typography>{formatViews(tree[1]?.camp_views)}</Typography>
+              <Typography>{tree && tree[1]?.camp_views ? formatViews(tree[1]?.camp_views):0}</Typography>
               </div>
                 </Tooltip>
               {isTopicPage && (
