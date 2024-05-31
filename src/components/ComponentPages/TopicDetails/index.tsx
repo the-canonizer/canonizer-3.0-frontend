@@ -240,6 +240,12 @@ const TopicDetails = ({ serverSideCall }: any) => {
       fetch_topic_history: +router?.query?.topic_history,
     };
     setRemoveSupportSpinner(true);
+    let reqBody = { 
+      as_of: asof, 
+      as_of_date: asofdate, 
+      topic_num: +router?.query?.camp[0]?.split("-")[0], 
+      camp_num: +router?.query?.camp[1]?.split("-")[0], 
+    }
 
     const res = await removeSupportedCamps(supportedCampsRemove);
     if (res && res.status_code == 200) {
@@ -248,6 +254,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
       GetCheckStatusData();
       await getTreesApi(reqBodyForService);
       getTopicActivityLogCall();
+      await getCurrentCampRecordApi(reqBody)
       setRemoveSupportSpinner(false);
       setIsRemovingSupport(false);
     }
@@ -276,6 +283,13 @@ const TopicDetails = ({ serverSideCall }: any) => {
     };
     setRemoveSupportSpinner(true);
 
+    let reqBody = { 
+      as_of: asof, 
+      as_of_date: asofdate, 
+      topic_num: +router?.query?.camp[0]?.split("-")[0], 
+      camp_num: +router?.query?.camp[1]?.split("-")[0], 
+    }
+
     let res = await addSupport(RemoveSupportId);
     if (res && res.status_code == 200) {
       message.success(res.message);
@@ -283,6 +297,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
       GetCheckStatusData();
       await getTreesApi(reqBodyForService);
       getTopicActivityLogCall();
+      await getCurrentCampRecordApi(reqBody)
       setRemoveSupportSpinner(false);
       setIsRemovingSupport(false);
     }

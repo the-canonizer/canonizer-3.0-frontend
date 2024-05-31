@@ -32,7 +32,7 @@ import {
 import { getNickNameList } from "../../../../network/api/userApi";
 import SupportRemovedModal from "src/components/common/supportRemovedModal";
 import ManageSupport from "../../ManageSupport";
-import { getTreesApi } from "src/network/api/campDetailApi";
+import { getCurrentCampRecordApi, getTreesApi } from "src/network/api/campDetailApi";
 import { setIsSupportModal } from "src/store/slices/topicSlice";
 import { showLoginModal } from "src/store/slices/uiSlice";
 import SignCamp from "./SignCamp";
@@ -489,12 +489,22 @@ const SupportTreeCard = ({
 
   const [removeForm] = Form.useForm();
 
-  const onRemoveFinish = (values) => {
+  const onRemoveFinish = async (values) => {
     currentGetCheckSupportExistsData.is_delegator
       ? removeSupportForDelegate(values)
       : topicList.length <= 1
       ? removeApiSupport(modalData?.nick_name_id, values)
       : removeSupport(modalData?.nick_name_id, values);
+
+    
+      let reqBody = { 
+        as_of: asof, 
+        as_of_date: asofdate, 
+        topic_num: +router?.query?.camp[0]?.split("-")[0], 
+        camp_num: +router?.query?.camp[1]?.split("-")[0], 
+      }
+    await getCurrentCampRecordApi(reqBody)
+
     setModalData({});
     removeForm.resetFields();
   };
