@@ -24,6 +24,8 @@ import { checkTopicCampExistAPICall } from "src/network/api/campDetailApi";
 import { getCookies } from "src/utils/generalUtility";
 import { createToken } from "src/network/api/userApi";
 import CustomSkelton from "@/components/common/customSkelton";
+import { logOut } from "@/components/common/headers/loggedInHeaderNavigation";
+import moment from "moment";
 
 type AppOwnProps = { meta: any; canonical_url: string; returnURL: string };
 
@@ -38,7 +40,66 @@ function WrappedApp({
     [_, setIsAuthenticated, isAuthenticatedRef] = useState(
       !!(getCookies() as any)?.loginToken
     );
-
+  
+    const buildDateGreaterThan = (latestDate, currentDate) => {
+      const momLatestDateTime = moment(latestDate);
+      const momCurrentDateTime = moment(currentDate);
+   
+      return !!(momLatestDateTime.isAfter(momCurrentDateTime));
+    };
+ 
+ 
+   const refreshCacheAndReload = () => {
+      localStorage.clear();
+     
+      const cookies = document.cookie.split("; ");
+        for (let cookie of cookies) {
+          const eqPos = cookie.indexOf("=");
+          const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+          document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
+        }
+ 
+ 
+        if (window?.caches) {
+          window.caches.keys().then((names) => {
+            for (const name of names) {
+              caches.delete(name);
+            }
+          });
+      }
+   
+      logOut(router)
+    };
+ 
+ 
+ 
+ 
+  useEffect(()=>{
+    fetch("/meta.json")
+    .then((response) => response.json())
+    .then((meta) => {
+      console.log('meta ===>', meta);
+        const latestVersionDate = meta?.buildDate;
+        const currentVersionDate = localStorage.getItem("build_number");
+        
+        const shouldForceRefresh = buildDateGreaterThan(
+          meta?.buildDate,
+          +currentVersionDate ?? 0
+        );
+         if (shouldForceRefresh) {
+          refreshCacheAndReload();
+          localStorage.setItem("build_number", meta?.buildDate);
+        }
+         console.log('cache',{
+          shouldForceRefresh: shouldForceRefresh,
+          latestVersionDate: meta?.buildDate,
+          currentVersionDate: +currentVersionDate??0
+        })
+  
+    });
+ 
+  },[])
+ 
   useEffect(() => {
     const fetchToken = async () => {
       if (router?.asPath) {
