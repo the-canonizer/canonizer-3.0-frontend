@@ -135,35 +135,19 @@ const NicknameSearch = () => {
       <div className="pageContentWrap">
         <div className={styles.card}>
           <div className="d-flex mb-2 align-items-center flex-wrap relative ant_tags">
-            {clickAdvanceFilterOption ? (
-              <Space size={[0, 18]} wrap>
-                {/* <Tag onClose={()=>{handleTagClose()}}>{selectedTopicFromAdvnaceFilterNickname}</Tag> */}
-                {selectedTopicFromAdvnaceFilterNickname.map((topic, index) => (
-                  <Tag key={index}>
-                    {topic}{" "}
-                    <div>
-                      <CloseCircleOutlined
-                        onClick={() => {
-                          dispatch(setClickAdvanceFilterOption(false));
-                          handleTagClose(topic);
-                        }}
-                      />
-                    </div>
-                  </Tag>
-                ))}
-              </Space>
-            ) : (
-              ""
-            )}
+          <h4 className="m-0" data-testid="nickname_heading">Nickname</h4>
+         
+          {clickAdvanceFilterOption?<Space size={[0, 18]} wrap>
+          {/* <Tag onClose={()=>{handleTagClose()}}>{selectedTopicFromAdvnaceFilterNickname}</Tag> */}
+          {selectedTopicFromAdvnaceFilterNickname.map((topic, index) => (
+          <Tag key={index} >
+            {topic} <div><CloseCircleOutlined onClick={()=>{dispatch(setClickAdvanceFilterOption(false));handleTagClose(topic)}}/></div>
+          </Tag>
+        ))}
+          </Space>:""}
             <AdvanceFilter />
           </div>
-
-          <div className="mb-2">
-            <h4 className="m-0" data-testid="nickname_heading">
-              Nickname
-            </h4>
-          </div>
-
+          
           {loading ? (
             <CustomSkelton
               skeltonFor="list"
