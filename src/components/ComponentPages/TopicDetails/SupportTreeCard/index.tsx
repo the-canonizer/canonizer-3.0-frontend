@@ -294,13 +294,13 @@ const SupportTreeCard = ({
   };
 
   const renderPopupMsg = () => {
-    let { campLeaderExist, delegateSupportExist } = isCampLeader();
-    if (isUserAuthenticated && delegateSupportExist) {
-      return "You've already signed to the camp leader";
-    } else if (isUserAuthenticated && campLeaderExist) {
-      return "You can't sign the petition in this camp, because you are the current camp leader";
-    } else {
-      return "Log in to participate";
+    let {campLeaderExist , delegateSupportExist} = isCampLeader();
+    if(isUserAuthenticated && delegateSupportExist){
+      return "You've already signed to the camp leader"
+    }else if(isUserAuthenticated && campLeaderExist){
+      return "Current camp leader can`t sign the petition" 
+    }else{
+      return "Log in to participate"
     }
   };
 
