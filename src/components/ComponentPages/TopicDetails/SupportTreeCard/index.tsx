@@ -394,21 +394,21 @@ const SupportTreeCard = ({
                         {campRecord?.is_archive
                           ? 0
                           : is_checked && isUserAuthenticated
-                          ? data[item].full_score?.toFixed(2)
-                          : data[item].score?.toFixed(2)}
+                            ? data[item].full_score?.toFixed(2)
+                            : data[item].score?.toFixed(2)}
                         {/* {data[item].score?.toFixed(2)} */}
                       </span>
                       {(userNickNameList?.length > 0 &&
                         !userNickNameList.includes(data[item].nick_name_id)) ||
-                      !isUserAuthenticated ? (
+                        !isUserAuthenticated ? (
                         <>
                           {loggedInUserDelegate ||
-                          (loggedInUserChild &&
-                            delegateNickNameId !=
+                            (loggedInUserChild &&
+                              delegateNickNameId !=
                               data[item].delegate_nick_name_id) ||
-                          data[item].delegates?.findIndex((obj) =>
-                            userNickNameList.includes(obj.nick_name_id)
-                          ) > -1 ? (
+                            data[item].delegates?.findIndex((obj) =>
+                              userNickNameList.includes(obj.nick_name_id)
+                            ) > -1 ? (
                             ""
                           ) : (
                             <Popover
@@ -420,22 +420,26 @@ const SupportTreeCard = ({
                               }
                             >
                               <a className="printHIde">
-                                <Button
-                                  id="supportTreeDelegateYourSupport"
-                                  disabled={
-                                    asof == "bydate" ||
-                                    !isUserAuthenticated ||
-                                    campRecord?.is_archive == 1
-                                  }
-                                  onClick={() =>
-                                    handleDelegatedClick(
-                                      data[item].nick_name_id
-                                    )
-                                  }
-                                  className="delegate-support-style"
+                                <Tooltip
+                                  title="This will delegate your support to the selected supporter"
+                                  placement="right"
                                 >
-                                  {"Delegate Your Support"}
-                                </Button>
+                                  <Button
+                                    id="supportTreeDelegateYourSupport"
+                                    disabled={
+                                      asof === "bydate" ||
+                                      !isUserAuthenticated ||
+                                      campRecord?.is_archive === 1
+                                    }
+                                    onClick={() =>
+                                      handleDelegatedClick(data[item].nick_name_id)
+                                    }
+                                    className="delegate-support-style"
+                                  >
+                                    {"Delegate Your Support"}
+                                  </Button>
+                                </Tooltip>
+
                               </a>
                             </Popover>
                           )}
@@ -454,8 +458,8 @@ const SupportTreeCard = ({
                               currentGetCheckSupportExistsData.is_delegator
                                 ? setIsDelegateSupportTreeCardModal(true)
                                 : topicList.length <= 1
-                                ? setIsSupportTreeCardModal(true)
-                                : setIsSupportTreeCardModal(true);
+                                  ? setIsSupportTreeCardModal(true)
+                                  : setIsSupportTreeCardModal(true);
 
                               setModalData(data[item]);
                             }}
@@ -494,8 +498,8 @@ const SupportTreeCard = ({
     currentGetCheckSupportExistsData.is_delegator
       ? removeSupportForDelegate(values)
       : topicList.length <= 1
-      ? removeApiSupport(modalData?.nick_name_id, values)
-      : removeSupport(modalData?.nick_name_id, values);
+        ? removeApiSupport(modalData?.nick_name_id, values)
+        : removeSupport(modalData?.nick_name_id, values);
     setModalData({});
     removeForm.resetFields();
   };
@@ -591,7 +595,7 @@ const SupportTreeCard = ({
               >
                 {/* {K?.exceptionalMessages?.directJoinSupport} */}
                 {getCheckSupportStatus?.is_delegator == 1 ||
-                getCheckSupportStatus?.support_flag != 1
+                  getCheckSupportStatus?.support_flag != 1
                   ? K?.exceptionalMessages?.directJoinSupport
                   : K?.exceptionalMessages?.manageSupport}
               </CustomButton>
@@ -606,7 +610,7 @@ const SupportTreeCard = ({
               }}
             >
               {isCampLeader()?.campLeaderExist ||
-              isCampLeader()?.delegateSupportExist ? (
+                isCampLeader()?.delegateSupportExist ? (
                 <>
                   <Popover content={renderPopupMsg()}>
                     <a className="printHIde">
@@ -702,8 +706,8 @@ const SupportTreeCard = ({
                     currentGetCheckSupportExistsData.is_delegator
                       ? removeSupportForDelegate()
                       : topicList.length <= 1
-                      ? removeApiSupport(modalData?.nick_name_id)
-                      : removeSupport(modalData?.nick_name_id);
+                        ? removeApiSupport(modalData?.nick_name_id)
+                        : removeSupport(modalData?.nick_name_id);
                     setModalData({});
                   }}
                   type="primary"
