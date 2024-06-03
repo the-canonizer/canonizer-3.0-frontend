@@ -15,7 +15,7 @@ import {
 
 const { placeholders } = messages;
 
-const SignCamp = ({ setSignModalOpen, setLoadingIndicatorSupport }: any) => {
+const SignCamp = ({ setSignModalOpen, setLoadingIndicatorSupport, getCheckStatusAPI }: any) => {
   const router = useRouter();
 
   const topic_num: any = router?.query?.camp[0]?.split("-")[0];
@@ -79,6 +79,7 @@ const SignCamp = ({ setSignModalOpen, setLoadingIndicatorSupport }: any) => {
         fetch_topic_history: +router?.query?.topic_history,
       };
       await getTreesApi(reqBodyForService);
+      await getCheckStatusAPI()
     }
     setSignModalOpen(false);
     setLoadingNickname(false);
