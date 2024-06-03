@@ -10,9 +10,10 @@ import {
 
 import styles from "./social-login.module.scss";
 
-import { socialLogin } from "src/network/api/userApi";
+import { getNickNameList, socialLogin } from "src/network/api/userApi";
 import { setValue } from "src/store/slices/utilsSlice";
 import CustomSkeleton from "../customSkelton";
+import { setUserNickNames } from "src/store/slices/authSlice";
 
 const { Text } = Typography;
 
@@ -20,7 +21,12 @@ export default function SocialLoginUi({ isNotLogin = false }: any) {
   const [isLoading, setIsLoading] = useState(false);
 
   const dispatch = useDispatch();
-
+  const fetchNickNameList = async () => {
+    let response = await getNickNameList();
+      dispatch(setUserNickNames(response?.data));
+  }
+  
+  
   // social login api call
   const onSocialLogin = async (
     provider: any,
@@ -32,7 +38,8 @@ export default function SocialLoginUi({ isNotLogin = false }: any) {
     let body = { provider };
     const res = await socialLogin(body);
     try {
-      if (res.data) {
+      if (res.data) {  
+        fetchNickNameList()
         if (isNotLogin) {
           dispatch(setValue({ label: "redirect_type", value: true }));
         }

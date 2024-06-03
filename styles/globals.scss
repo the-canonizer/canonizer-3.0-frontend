@@ -638,8 +638,8 @@ img {
 
 .advance_close {
   position: absolute;
-  right: 10px;
-  top: 10px;
+  right: 0px;
+  top: 6px;
 }
 
 .certain-category-search-dropdown.ant-select-dropdown
@@ -864,6 +864,16 @@ img {
 .ant_tags .ant-tag div
 {
   color: #B7BABF;
+}
+.infoTextWidthBox{
+  max-width: 300px;
+}
+.mt-10 
+{
+  margin-top: 10px;
+}
+.ant-empty-image{
+  margin-top: 10px;
 }
 
 .modal_parent{
