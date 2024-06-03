@@ -285,6 +285,7 @@ function HistoryContainer() {
     is_disabled: 0,
     is_one_level: 0,
     is_archive: 0,
+    camp_leader_nick_id: null,
   };
   const callManageCampApi = async () => {
     // window.location.reload()
