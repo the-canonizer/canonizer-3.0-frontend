@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import useState from "react-usestateref";
 import { useRouter } from "next/router";
-import { BackTop } from "antd";
+import { BackTop, Image, Tooltip } from "antd";
 import { Typography, List, Select, Tag, Input, Button, Popover } from "antd";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
@@ -28,9 +28,11 @@ import {
 import {
   replaceSpecialCharacters,
   changeSlashToArrow,
+  formatViews,
 } from "src/utils/generalUtility";
 import CustomSkelton from "../../../common/customSkelton";
 import SortTopics from "../../SortingTopics";
+import barchart from "../../../../assets/image/barchart.png"
 
 const antIcon = <LoadingOutlined spin />;
 const { Title, Text, Paragraph } = Typography;
@@ -55,6 +57,7 @@ const TopicsList = () => {
   const [pageNumber, setPageNumber, pageNumberRef] = useState(1);
   const dispatch = useDispatch();
   const { isUserAuthenticated } = useAuthentication();
+  const commaNumber = require('comma-number')
 
   const {
     canonizedTopics,
@@ -567,6 +570,16 @@ const TopicsList = () => {
                             item?.topic_name
                           )}
                         </Text>
+                        {" "}
+                        <Tooltip title={item && commaNumber(item?.camp_views)} placement="bottom">
+                        <Image
+                          width={17}
+                          height={17}
+                          preview={false}
+                          src={barchart.src}
+                          />
+                        <Text className={styles.barchartText}>{item && formatViews(item?.camp_views)}</Text>
+                          </Tooltip>
                         <Tag className={styles.tag}>
                           {/* // ? item?.topic_full_score // : item?.full_score?.toFixed(2) */}
                           {is_checked
