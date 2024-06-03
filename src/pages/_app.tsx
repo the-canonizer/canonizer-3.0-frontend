@@ -74,10 +74,8 @@ function WrappedApp({
           });
       }
    
-      logOut(router)
-    };
- 
- 
+  };
+
  
  
   useEffect(()=>{
