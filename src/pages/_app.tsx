@@ -145,6 +145,7 @@ const getTagData = async (req) => {
   return metaData;
 };
 
+
 WrappedApp.getInitialProps = async (
   appContext: AppContext
 ): Promise<AppOwnProps & AppInitialProps> => {
