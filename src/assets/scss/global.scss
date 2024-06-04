@@ -3076,3 +3076,9 @@ div[role="option"]::before {
     }
   }
 }
+
+@media screen and (max-width: 575px) {
+  .leftSideBar.miniSideBar {
+    width: auto;
+}
+}

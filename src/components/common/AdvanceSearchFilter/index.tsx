@@ -32,6 +32,7 @@ import {
   setSelectedTopicFromAdvanceFilterAlgorithm,
   setSelectedCampFromAdvanceFilterAlgorithm,
   setSelectedTopicFromAdvnaceFilterNickname,
+  setSelectedStatementFromAdvanceFilterAlgorithm,
 } from "src/store/slices/searchSlice";
 import debounce from "lodash/debounce";
 import { getTreesApi } from "src/network/api/campDetailApi";
@@ -49,6 +50,7 @@ export default function AdvanceFilter() {
   const [searchTopics, setSearchTopics] = useState([]);
   const [searchCamps, setSearchCamps] = useState([]);
 
+  const [isSelectClicked, setIsSelectClicked] = useState(false);
   const { Panel } = Collapse;
   const { Title, Text, Paragraph } = Typography;
   const { Search } = Input;
@@ -105,21 +107,38 @@ export default function AdvanceFilter() {
     selectedCampFromAdvanceFilterAlgorithm:
       state?.searchSlice?.selectedCampFromAdvanceFilterAlgorithm,
   }));
-  const { searchDataAll } = useSelector((state: RootState) => ({
+  const { searchDataAll ,searchData} = useSelector((state: RootState) => ({
     searchDataAll: state?.searchSlice?.searchDataAll,
+    searchData: state?.searchSlice?.searchData,
+
   }));
   const findNicknameId = searchDataAll.nickname?.map((obj) => {
     return obj.id;
   });
-  const findTopicId = searchDataAll.camp?.map((obj) => {
-    return obj.topic_num;
-  });
 
-  let stringTopicArray = findTopicId?.map((element) => element.toString());
-  const findCampId = searchDataAll.camp?.map((obj) => {
+const findTopicId = searchDataAll.camp?.map((obj) => {
+  return obj.topic_num;
+});
+
+let stringTopicArray = findTopicId?.map(element => element.toString());
+
+const findCampId = searchDataAll.camp?.map((obj) => {
     return obj.camp_num;
-  });
-  let stringCampArray = findCampId?.map((element) => element.toString());
+});
+
+let stringCampArray = findCampId?.map(element => element.toString());
+const findTopicId1 = searchData.camp?.map((obj) => {
+  return obj.topic_num;
+});
+
+let stringTopicArray1 = findTopicId1?.map(element => element.toString());
+
+const findCampId1 = searchData.camp?.map((obj) => {
+    return obj.camp_num;
+});
+
+let stringCampArray1 = findCampId1?.map(element => element.toString());
+
 
   const [timer, setTimer] = useState(null);
   const [inputValue, setInputValue] = useState(
@@ -134,7 +153,7 @@ export default function AdvanceFilter() {
   const [active, setActive] = useState([]);
   const infoContent = (
     <>
-      <div className={styles.infoText}>
+      <div className={styles.infoTextWidthBox }>
         <Title level={5}>Score Value Filter </Title>
         <p>
           This option filters down the camp list with a score value greater than
@@ -327,32 +346,61 @@ export default function AdvanceFilter() {
 
   async function getTopicsApiCallWithReqBody() {
     // loadMore ? setPageNumber(pageNumber + 1) : setPageNumber(1);
-    const rebody = {
-      type: "topic",
-      search: searchValue,
-      query: "",
-      algo: algorithm,
-      asof: asof,
-      score: filterByScore,
-    };
-    const response = await AdvanceFilterSeacrhApi(rebody);
-    dispatch(setSelectedTopicFromAdvanceFilterAlgorithm(response?.data?.topic));
+    const rebody={
+    type: "topic",
+    search: searchValue,
+    query: "",
+    algo: algorithm,
+    asof:asof,
+    score:filterByScore,
+    asofdate:
+    asof == "default" || asof == "review"
+      ? Date.now() / 1000
+      : asofdate,
+    }
+  const response = await AdvanceFilterSeacrhApi(rebody);
+  dispatch(setSelectedTopicFromAdvanceFilterAlgorithm(response?.data?.topic))
     // setLoadMoreIndicator(false);
   }
   async function getCampsApiCallWithReqBody() {
     // loadMore ? setPageNumber(pageNumber + 1) : setPageNumber(1);
-    const rebody = {
-      type: "camp",
+    const rebody={
+    type:"camp",
+    search: "",
+    query: "",
+    algo: algorithm,
+    asof:asof,
+    score:filterByScore,
+    camp_ids: stringCampArray,
+    topic_ids: stringTopicArray,
+    asofdate:
+    asof == "default" || asof == "review"
+      ? Date.now() / 1000
+      : asofdate,
+    }
+  const response = await AdvanceFilterSeacrhApi(rebody);
+  dispatch(setSelectedCampFromAdvanceFilterAlgorithm(response?.data?.camp))
+    // setLoadMoreIndicator(false);
+  }
+
+  async function getStatementApiCallWithReqBody() {
+    // loadMore ? setPageNumber(pageNumber + 1) : setPageNumber(1);
+    const rebody={
+      type:"statement",
       search: "",
       query: "",
       algo: algorithm,
-      asof: asof,
-      score: filterByScore,
-      camp_ids: stringCampArray,
-      topic_ids: stringTopicArray,
-    };
-    const response = await AdvanceFilterSeacrhApi(rebody);
-    dispatch(setSelectedCampFromAdvanceFilterAlgorithm(response?.data?.camp));
+      asof:asof,
+      score:filterByScore,
+      camp_ids: stringCampArray1,
+      topic_ids: stringTopicArray1,
+      asofdate:
+      asof == "default" || asof == "review"
+        ? Date.now() / 1000
+        : asofdate,
+    }
+  const response = await AdvanceFilterSeacrhApi(rebody);
+  dispatch(setSelectedStatementFromAdvanceFilterAlgorithm(response?.data?.statement))
     // setLoadMoreIndicator(false);
   }
   const filterOnScore = (e) => {
@@ -482,14 +530,22 @@ export default function AdvanceFilter() {
   }, [filteredAsOfDate]);
 
   useEffect(() => {
-    if (router.pathname == "/search/topic") {
-      getTopicsApiCallWithReqBody();
+    if(router.pathname == "/search/topic"){
+    getTopicsApiCallWithReqBody()
+    }else if(router.pathname == "/search/camp" && stringCampArray && stringTopicArray){
+    getCampsApiCallWithReqBody()
+    }else  if(router.pathname == "/search/camp_statement" && stringCampArray1 && stringTopicArray1){
+      getStatementApiCallWithReqBody()
     }
-    if (router.pathname == "/search/camp") {
-      getCampsApiCallWithReqBody();
-    }
+   
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [asof, filterByScore, algorithm]);
+  }, [asof,filterByScore,algorithm,asofdate]);
+  useEffect(()=> {
+    if(router.pathname == "/search/camp" && stringCampArray && stringTopicArray){
+      getCampsApiCallWithReqBody()
+    }
+  }, [searchDataAll])
+ 
   const handleCollapseChange = (key) => {
     setActive(key);
     // Do something with the collapsed key
@@ -498,19 +554,27 @@ export default function AdvanceFilter() {
     setActive([]);
   };
   const panelRef = useRef(null);
+  const selectRef = useRef(null)
+  const handleClickOutside = (event) => {
+    if (isSelectClicked) {
+      setIsSelectClicked(false); // Reset the flag and return early
+      return;
+    }
+    
+    if (
+      panelRef.current &&
+      !panelRef.current.contains(event.target) &&
+      !event.target.closest('.ant-select')
+    ) {
+      setActive([]); // Close the panel if click occurs outside of it
+    }
+  };
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (panelRef.current && !panelRef.current.contains(event.target)) {
-        setActive([]); // Close the panel if click occurs outside of it
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-
+    document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [isSelectClicked]);
   return (
     <div
       ref={panelRef}
@@ -529,7 +593,7 @@ export default function AdvanceFilter() {
         bordered={false}
         activeKey={active}
         onChange={handleCollapseChange}
-        // accordion={searchVal ?false:true}
+        accordion={false}
       >
         <Panel
           header={
@@ -545,6 +609,7 @@ export default function AdvanceFilter() {
             </span>
           }
           key={"1"}
+          disabled={searchDataAll?.nickname?.length || searchDataAll?.topic?.length||searchDataAll?.camp?.length||searchDataAll?.statement?.length ? false: true}
         >
           <div className="advance_close">
             <CloseCircleOutlined onClick={handleClosePanel} />
@@ -555,57 +620,58 @@ export default function AdvanceFilter() {
               <div className="col-sm-6">
                 <h4>Canonizer</h4>
                 <label>Canonizer Algorithm:</label>
-                <Select
-                  size="large"
-                  showSearch
-                  optionFilterProp="children"
-                  className={"w-100"}
-                  defaultValue={
-                    algorithms?.filter(
-                      (algo) => algo.algorithm_key == selectedAlgorithm
-                    )[0]?.algorithm_label
-                  }
-                  onChange={selectAlgorithm}
-                  value={
-                    algorithms?.filter(
-                      (algo) => algo.algorithm_key == selectedAlgorithm
-                    )[0]?.algorithm_label
-                  }
-                  // disabled={loading}
-                >
-                  {algorithms?.map((algo) => {
-                    return (
-                      <Option key={algo.id} value={algo.algorithm_key}>
-                        {algo.algorithm_label}
-                      </Option>
-                    );
-                  })}
-                </Select>
-                {router?.asPath.includes("/topic") ? (
-                  <a href={K?.Network?.URL?.algoInfoUrl}>
-                    Algorithm Information
-                  </a>
-                ) : (
-                  <Link href={K?.Network?.URL?.algoInfoUrl}>
-                    <a>Algorithm Information</a>
-                  </Link>
-                )}
+            <Select
+            ref={selectRef}
+            size="large"
+            showSearch
+            optionFilterProp="children"
+            className={"w-100"}
+            defaultValue={
+              algorithms?.filter(
+                (algo) => algo.algorithm_key == selectedAlgorithm
+              )[0]?.algorithm_label
+            }
+            onChange={selectAlgorithm}
+            value={
+              algorithms?.filter(
+                (algo) => algo.algorithm_key == selectedAlgorithm
+              )[0]?.algorithm_label
+            }
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsSelectClicked(true); // Set the flag when Select is clicked
+            }}
+            // disabled={loading}
+          >
+            {algorithms?.map((algo) => {
+              return (
+                <Option  key={algo.id} value={algo.algorithm_key}>
+                  {algo.algorithm_label}
+                </Option>
+              );
+            })}
+          </Select>
+          {router?.asPath.includes("/topic") ? (
+                <a href={K?.Network?.URL?.algoInfoUrl}>Algorithm Information</a>
+              ) : (
+                <Link href={K?.Network?.URL?.algoInfoUrl}>
+                  <a>Algorithm Information</a>
+                </Link>
+              )}
+
                 <div className="score-box">
                   <label>Score</label>
 
                   <LeftOutlined className={styles.LeftOutlined} />
-                  <Input
-                    size="large"
-                    value={inputValue}
-                    onChange={filterOnScore}
-                  />
-                  <Popover
-                    content={infoContent}
-                    placement="right"
-                    className={styles.infoIcon}
-                  >
-                    <i className="icon-info"></i>
-                  </Popover>
+                  <Input size="large" value={inputValue} onChange={filterOnScore}/>
+              <Popover
+              content={infoContent}
+              placement="right"
+              className={styles.infoIcon}
+            >
+              <i className="icon-info"></i>
+            </Popover>
+
                 </div>
               </div>
               <div className="col-sm-6">
@@ -671,26 +737,30 @@ export default function AdvanceFilter() {
                   </Radio>
                 </Radio.Group>
                 <DatePicker
-                  disabled={
-                    !loading
-                      ? isDatePicker || selectedAsOf == "bydate"
-                        ? false
-                        : true
-                      : true
-                  }
-                  format="YYYY-MM-DD"
-                  defaultValue={moment(current_date_filter * 1000)}
-                  value={moment(selectedAsOFDate * 1000)}
-                  suffixIcon={<i className="icon-calendar"></i>}
-                  size={"large"}
-                  className={`${styles.date} w-100`}
-                  onChange={pickDate}
-                  inputReadOnly={true}
-                  disabledDate={(current) =>
-                    current &&
-                    current > moment(current_date_filter).endOf("day")
-                  }
-                />
+              disabled={
+                !loading
+                  ? isDatePicker || selectedAsOf == "bydate"
+                    ? false
+                    : true
+                  : true
+              }
+              format="YYYY-MM-DD"
+              defaultValue={moment(current_date_filter * 1000)}
+              value={moment(selectedAsOFDate * 1000)}
+              suffixIcon={<i className="icon-calendar"></i>}
+              size={"large"}
+              className={`${styles.date} w-100 mt-10`}
+              onChange={pickDate}
+              inputReadOnly={true}
+              disabledDate={(current) =>
+                current && current > moment(current_date_filter).endOf("day")
+              }
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsSelectClicked(true); // Set the flag when Select is clicked
+              }}
+            />
+
               </div>
             </div>
           ) : (
