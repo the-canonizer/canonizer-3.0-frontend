@@ -1,7 +1,6 @@
-import React, { Fragment, useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import { Layout, Menu, Dropdown, Button, Space, Avatar } from "antd";
-import { useDispatch, useSelector } from "react-redux";
+import React, { Fragment } from "react";
+import { Dropdown, Space, Avatar } from "antd";
+import { useSelector } from "react-redux";
 import { RootState } from "../../../../../store";
 import styles from "../../siteHeader.module.scss";
 import Link from "next/link";
@@ -23,10 +22,9 @@ const ProfileInfoTab = ({
   logOut,
   isMobile,
   menu = <></>,
-}) => {
-  const { loggedInUser, list } = useSelector((state: RootState) => ({
+}: any) => {
+  const { loggedInUser } = useSelector((state: RootState) => ({
     loggedInUser: state.auth.loggedInUser,
-    list: state.notifications.headerNotification.list,
   }));
   let dataMain = (
     <Space size={isMobile ? "small" : "large"}>
@@ -34,15 +32,20 @@ const ProfileInfoTab = ({
 
       {loggedInUser?.profile_picture && !loadingImage ? (
         <Avatar
+          style={{
+            cursor: "pointer",
+          }}
           src={loggedInUser?.profile_picture}
           size={isMobile ? "small" : "default"}
         />
       ) : isGravatarImage && !loadingImage ? (
-        <Avatar
-          src={`https://www.gravatar.com/avatar/${md5(
-            loggedInUser?.email
-          )}.png`}
-        />
+        loggedInUser?.email && (
+          <Avatar
+            src={`https://www.gravatar.com/avatar/${md5(
+              loggedInUser?.email
+            )}.png`}
+          />
+        )
       ) : (
         <Avatar
           style={{
@@ -53,6 +56,7 @@ const ProfileInfoTab = ({
             justifyContent: "center",
             alignItems: "center",
             fontSize: `${isMobile ? "12px" : ""}`,
+            cursor: "pointer",
           }}
           size={isMobile ? "small" : "default"}
         >
@@ -67,10 +71,10 @@ const ProfileInfoTab = ({
         </div>
       ) : (
         <>
-          <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
+          {/* <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
             {loggedUser ? loggedUser["first_name"] : ""}{" "}
             {loggedUser ? loggedUser["last_name"] : ""}
-          </a>
+          </a> */}
           <DownOutlined
             style={{
               fontSize: "15px",

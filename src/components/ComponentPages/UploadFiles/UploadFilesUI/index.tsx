@@ -123,6 +123,7 @@ const UploadFileUI = ({
   const [editModal, setEditModal] = useState(false);
   const [editModalId, setEditModalId] = useState("");
   const [filteredList, setFilteredList] = useState([]);
+  const [deleteLoading, setDeleteLoading] = useState(false);
   const [preview, setPreview] = useState({
     previewVisible: false,
     previewPath: "",
@@ -221,7 +222,7 @@ const UploadFileUI = ({
       {imageRegexData.test(item.file_type) ? (
         <Menu.Item
           data-testid="test1"
-          onClick={() =>
+          onClick={() => {
             setPreview({
               previewVisible: true,
               previewName:
@@ -232,8 +233,8 @@ const UploadFileUI = ({
               prevShort: item.short_code_path,
               previewCopyShortCode: item.short_code,
               previewCreatedAt: item.created_at,
-            })
-          }
+            });
+          }}
         >
           <span className={styles.menu_item}>
             <Image
@@ -250,7 +251,7 @@ const UploadFileUI = ({
         <Menu.Item
           data-testid="test2"
           onClick={() => {
-            window.location.href = item.file_path;
+            window.location.href = `${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/${item.file_path}`;
           }}
         >
           <span className={styles.menu_item}>
@@ -333,7 +334,7 @@ const UploadFileUI = ({
             return (
               <Image
                 alt="uploaded-file"
-                src={obj.file_path}
+                src={`${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/${obj.file_path}`}
                 height={150}
                 width={140}
               />
@@ -524,7 +525,7 @@ const UploadFileUI = ({
                     {imageRegexData.test(obj.file_type) ? (
                       <div
                         className={styles.menu_item}
-                        onClick={() =>
+                        onClick={() => {
                           setPreview({
                             previewVisible: true,
                             previewName: obj.file_name,
@@ -532,8 +533,8 @@ const UploadFileUI = ({
                             prevShort: obj.short_code_path,
                             previewCopyShortCode: obj.short_code,
                             previewCreatedAt: obj.created_at,
-                          })
-                        }
+                          });
+                        }}
                       >
                         {" "}
                         <Image
@@ -548,7 +549,7 @@ const UploadFileUI = ({
                       <div
                         className={styles.menu_item}
                         onClick={() => {
-                          window.location.href = obj.file_path;
+                          window.location.href = `${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/${obj.file_path}`;
                         }}
                       >
                         <Image
@@ -734,7 +735,10 @@ const UploadFileUI = ({
               </div>
             </Dropdown>
             <div className={styles.imageFiles}>
-              {displayImage(item, item.file_path)}
+              {displayImage(
+                item,
+                `${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/${item.file_path}`
+              )}
             </div>
             <h3 className="BoxcopyWrap">
               <span className="value">
@@ -960,7 +964,10 @@ const UploadFileUI = ({
             </div>
           </Dropdown>
           <div className={styles.imageFiles}>
-            {displayImage(file, file.short_code_path)}
+            {displayImage(
+              file,
+              `${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/${file.file_path}`
+            )}
           </div>
           <h3 className="BoxcopyWrap">
             <span className="value">{subStringData(file.file_name)}</span>
@@ -1393,6 +1400,7 @@ const UploadFileUI = ({
                         className="contentValue"
                         dataSource={filteredArray()}
                         columns={columns}
+                        pagination={{ hideOnSinglePage: true }}
                       />
                     </div>
                   ) : (
@@ -1491,7 +1499,7 @@ const UploadFileUI = ({
                 className="modal--img"
                 id="modalImageId"
                 alt={imageStatus}
-                src={preview.previewPath}
+                src={`${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/${preview.previewPath}`}
                 width={470}
                 height={470}
                 onLoad={handleImageLoaded}
@@ -1575,12 +1583,14 @@ const UploadFileUI = ({
           >
             <Button
               data-testid="remove_files"
-              onClick={() => {
-                removeFiles(
+              onClick={async () => {
+                setDeleteLoading(true);
+                await removeFiles(
                   removeFileData.keyParam,
                   removeFileData.obj,
                   removeFileData.fileLists
                 );
+                setDeleteLoading(false);
                 //keyParam, obj, fileLists
               }}
               type="primary"
@@ -1588,6 +1598,7 @@ const UploadFileUI = ({
                 marginTop: 10,
                 marginRight: 10,
               }}
+              loading={deleteLoading}
               className="ant-btn ant-btn-orange"
             >
               Delete

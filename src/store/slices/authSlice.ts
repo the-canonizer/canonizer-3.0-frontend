@@ -6,18 +6,18 @@ export const authSlice = createSlice({
     id: null,
     loggedInUser: null,
     authenticated: false,
-    authToken: null,
     token: "",
     authRefreshToken: null,
     permissions: [""],
     socialUsers: [],
+    userNickNames: null,
   },
   reducers: {
     setAuthToken: (state, action) => {
-      state.authToken = action.payload;
+      state.token = action.payload;
     },
     removeAuthToken: (state) => {
-      state.authToken = null;
+      state.token = null;
     },
     setProfilePicture: (state, action) => {
       state.loggedInUser.profile_picture = action.payload;
@@ -32,7 +32,6 @@ export const authSlice = createSlice({
       state.loggedInUser = null;
       state.token = null;
       state.authenticated = false;
-      state.authToken = null;
       state.authRefreshToken = null;
       state.socialUsers = [];
     },
@@ -47,6 +46,9 @@ export const authSlice = createSlice({
       // But, as we have taken care of this particular "logout" action
       // in rootReducer, we can use it to CLEAR the complete Redux Store's state
     },
+    setUserNickNames: (state, action) => {
+      state.userNickNames = action.payload;
+    },
   },
 });
 
@@ -59,6 +61,7 @@ export const {
   setSocialUsers,
   removeSocialUsers,
   setLogout,
+  setUserNickNames,
 } = authSlice.actions;
 
 export default authSlice.reducer;

@@ -23,11 +23,12 @@ export const createTopic = async (body) => {
   }
 };
 
-export const GetActiveSupportTopic = async (body) => {
+export const GetActiveSupportTopic = async (body, loginToken = null) => {
   try {
     const res = await NetworkCall.fetch(
-      TopicRequest.GetActiveSupportTopic(body)
+      TopicRequest.GetActiveSupportTopic(body, loginToken)
     );
+
     return res;
   } catch (err) {
     if (
@@ -44,12 +45,10 @@ export const GetActiveSupportTopic = async (body) => {
   }
 };
 
-export const GetCheckSupportExists = async (reqbody) => {
-  let state = store.getState();
-  const { auth } = state;
+export const GetCheckSupportExists = async (reqbody, loginToken = null) => {
   try {
     const res = await NetworkCall.fetch(
-      TopicRequest.GetCheckSupportExists(reqbody, auth.loggedInUser?.token)
+      TopicRequest.GetCheckSupportExists(reqbody, loginToken)
     );
     return res;
   } catch (err) {
@@ -76,8 +75,13 @@ export const GetHotTopicDetails = async (token: string) => {
     );
 
     if (res.status_code === 200) {
-      store.dispatch(setHotTopic(res?.data));
+      store.dispatch(setHotTopic(res?.data || null));
     }
+
+    if (res.status_code === 400) {
+      store.dispatch(setHotTopic(null));
+    }
+
     return res;
   } catch (err) {
     return err?.error?.data;

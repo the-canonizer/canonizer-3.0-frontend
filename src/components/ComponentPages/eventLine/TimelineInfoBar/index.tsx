@@ -1,16 +1,15 @@
 import { Button, Spin, Typography } from "antd";
 import { useRouter } from "next/router";
-// import { useState } from "react";
-import { RootState } from "src/store";
 import { useSelector, useDispatch } from "react-redux";
-import styles from "../topicDetails.module.scss";
 import { ArrowLeftOutlined } from "@ant-design/icons";
-import CustomSkelton from "../../../common/customSkelton";
+
+import styles from "../topicDetails.module.scss";
+
+import { RootState } from "src/store";
 import { setTopicName } from "src/store/slices/campDetailSlice";
+import CustomSkelton from "../../../common/customSkelton";
 
 const CampInfoBar = () => {
-  // const [loadingIndicator, setLoadingIndicator] = useState(false);
-
   const dispatch = useDispatch();
   const { topic_name, loading } = useSelector((state: RootState) => ({
     topic_name: state?.topicDetails?.topic_name,

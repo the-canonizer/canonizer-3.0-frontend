@@ -1,19 +1,14 @@
 import {
   fireEvent,
-  getByText,
   render,
   screen,
   waitFor,
 } from "../../../../utils/testUtils";
 import UploadFiles from "..";
-import { useState } from "react";
-import { useRouter } from "next/router";
-import { cleanup, renderHook } from "@testing-library/react-hooks";
-import { message } from "antd";
+import { cleanup } from "@testing-library/react-hooks";
 import CreateFolder from "../CreateFolder";
 import configureMockStore from "redux-mock-store";
 import { Provider } from "react-redux";
-import { labels } from "src/messages/label";
 
 jest.mock("src/hooks/isUserAuthenticated", () =>
   jest.fn(() => ({ isUserAuthenticated: true }))
@@ -167,9 +162,7 @@ const fileLists = [
   },
 ];
 jest.mock("src/network/api/userApi", () => ({
-  uploadFile: jest.fn() .mockReturnValue(
-    Promise.resolve({ status_code: 200,})
-  ),
+  uploadFile: jest.fn().mockReturnValue(Promise.resolve({ status_code: 200 })),
   deleteFolderApi: jest.fn(),
   deleteUploadFileApi: jest.fn(),
   getFileInsideFolderApi: jest
@@ -205,7 +198,7 @@ const store2 = mockStore({
   ui: {
     dragBox: false,
     folderOpen: true,
-    visibleUploadOptions:true
+    visibleUploadOptions: true,
   },
 });
 
@@ -218,7 +211,6 @@ const store3 = mockStore({
 });
 const store4 = mockStore({
   ui: {
-    
     visibleUploadOptions: true,
   },
 });
@@ -307,12 +299,11 @@ describe("Upload file page", () => {
   });
 
   it("Add a file test", async () => {
-    const { container, getAllByText, getAllByTestId, getAllByPlaceholderText } =
-      render(
-        <Provider store={store3}>
-          <UploadFiles />
-        </Provider>
-      );
+    render(
+      <Provider store={store3}>
+        <UploadFiles />
+      </Provider>
+    );
     await waitFor(() => {
       const add_folder_element = screen.getByTestId("addAFileBtn");
       expect(add_folder_element).toBeInTheDocument();
@@ -328,15 +319,16 @@ describe("Upload file page", () => {
     // })
   });
   it("render add_file_btn", async () => {
-    const {container, getByTestId, getByText } = render(
-    <Provider store={store4}>
-      <UploadFiles/>
-    </Provider>
+    const { container } = render(
+      <Provider store={store4}>
+        <UploadFiles />
+      </Provider>
     );
     await waitFor(() => {
-     const uploadBtn = screen.getByTestId("upload_btn")
-     fireEvent.click(uploadBtn)
+      const uploadBtn = screen.getByTestId("upload_btn");
+      fireEvent.click(uploadBtn);
+      expect(container.getElementsByClassName("threeDOt")).toBeTruthy();
+    });
   });
-});
 });
 afterEach(cleanup);

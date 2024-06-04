@@ -12,6 +12,10 @@ const CreateNewTopicUI = ({
   nickNameList,
   onCancel,
   isLoading,
+  existedTopic,
+  isFormSubmitted,
+  setIsFormSubmitted,
+  setExistedTopic,
 }: any) => {
   return (
     <Fragment>
@@ -27,6 +31,11 @@ const CreateNewTopicUI = ({
             nameSpaces={nameSpaces}
             nickNameList={nickNameList}
             onCancel={onCancel}
+            existedTopic={existedTopic}
+            isFormSubmitted={isFormSubmitted}
+            setIsFormSubmitted={setIsFormSubmitted}
+            setExistedTopic={setExistedTopic}
+            isLoading={isLoading}
           />
         </Spin>
       </div>

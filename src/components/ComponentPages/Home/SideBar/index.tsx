@@ -14,13 +14,17 @@ export default function HomeSideBar({
   getTreeLoadingIndicator,
   scrollToCampStatement,
   setTotalCampScoreForSupportTree,
+  loadingIndicator,
   setSupportTreeForCamp,
   backGroundColorClass,
   isForumPage = false,
 }: any) {
-  const { drawerShow } = useSelector((state: RootState) => ({
-    drawerShow: state?.filters?.showDrawer,
-  }));
+  const { drawerShow, isModalOpenSupportCamps } = useSelector(
+    (state: RootState) => ({
+      drawerShow: state?.filters?.showDrawer,
+      isModalOpenSupportCamps: state?.topic?.isModalOpenSupportCamps,
+    })
+  );
 
   const [drawerIsVisible, setDrawerIsVisible] = useState(drawerShow);
   const [isDrawerOpen, setIsDrawerOpen] = useState("");
@@ -63,6 +67,7 @@ export default function HomeSideBar({
             type="primary"
             onClick={showDrawer}
             className={`btnFilter drawerBtn ${isDrawerOpen}`}
+            style={{ zIndex: isModalOpenSupportCamps ? 1 : null }}
           >
             Consensus Tree{" "}
             <p className="arrow">
@@ -94,6 +99,7 @@ export default function HomeSideBar({
               setSupportTreeForCamp={setSupportTreeForCamp}
               backGroundColorClass={backGroundColorClass}
               isForumPage={isForumPage}
+              loadingIndicator={loadingIndicator}
             />
           </Drawer>
         </Fragment>

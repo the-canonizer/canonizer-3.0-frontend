@@ -40,7 +40,6 @@ import CampHistory from "./campHistory";
 import TopicHistory from "./topicHistory";
 import useAuthentication from "../../../../hooks/isUserAuthenticated";
 import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
-import { getTreesApi } from "src/network/api/campDetailApi";
 
 import { setViewThisVersion } from "src/store/slices/filtersSlice";
 
@@ -48,6 +47,7 @@ const { Panel } = Collapse;
 const { Title } = Typography;
 
 import { ExclamationCircleFilled } from "@ant-design/icons";
+import { setChangeGoneLive } from "src/store/slices/campDetailSlice";
 function HistoryCollapse({
   collapseKeys,
   userNickNameData,
@@ -63,18 +63,17 @@ function HistoryCollapse({
   callManageCampApi,
   parentArchived,
   unarchiveChangeSubmitted,
+  directarchived,
 }: any) {
   const router = useRouter();
   const [commited, setCommited] = useState(false);
   const [isSelectChecked, setIsSelectChecked] = useState(false);
-  const { loading } = useSelector((state: RootState) => ({
-    loading: state?.loading?.loading,
-  }));
   const [collapseKey, setCollapseKey] = useState(collapseKeys);
 
   const [modal1Open, setModal1Open] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [supporters, setSupporters] = useState([]);
+  const [loadingChanges, setLoadingChanges] = useState(false);
   const dispatch = useDispatch();
   const { isUserAuthenticated } = useAuthentication();
   const handleViewThisVersion = (goLiveTime) => {
@@ -87,12 +86,11 @@ function HistoryCollapse({
       })
     );
   };
-  const { asofdate, asof, algorithm, namespace_id } = useSelector(
+  const { algorithm, namespace_id, changeGoneLive } = useSelector(
     (state: RootState) => ({
-      asofdate: state.filters?.filterObject?.asofdate,
-      asof: state?.filters?.filterObject?.asof,
       algorithm: state.filters?.filterObject?.algorithm,
       namespace_id: state.filters?.filterObject?.namespace_id,
+      changeGoneLive: state?.topicDetails?.changeGoneLive,
     })
   );
   const historyOf = router?.asPath.split("/")[1];
@@ -101,31 +99,26 @@ function HistoryCollapse({
   // };
 
   const commitChanges = async () => {
+    setLoadingChanges(true);
     let reqBody = {
       type: historyOf,
       id: campStatement?.id,
       old_parent_camp_num: campStatement?.old_parent_camp_num ?? null,
       parent_camp_num: campStatement?.parent_camp_num ?? null,
     };
-    const reqBodyForService = {
-      topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
-      camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0) || 1,
-      asOf: asof,
-      asofdate:
-        asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
-      algorithm: algorithm,
-      update_all: 1,
-    };
 
     let res = await changeCommitStatement(reqBody);
     if (res?.status_code === 200) {
       setCommited(true);
+      dispatch(setChangeGoneLive(!changeGoneLive));
     }
     changeAgree();
-    await getTreesApi(reqBodyForService);
+    setLoadingChanges(false);
+    // await getTreesApi(reqBodyForService);
   };
 
   const discardChanges = async () => {
+    setLoadingChanges(true);
     let reqBody = {
       type: historyOf,
       id: campStatement?.id,
@@ -135,9 +128,11 @@ function HistoryCollapse({
       setCommited(true);
     }
     changeDiscard();
+    setLoadingChanges(false);
   };
 
   const agreeWithChange = async () => {
+    setLoadingChanges(true);
     setIsSelectChecked(true);
     let reqBody = {
       record_id: campStatement.id,
@@ -149,6 +144,7 @@ function HistoryCollapse({
     };
     let res = await agreeToChangeApi(reqBody);
     if (res?.status_code == 200) {
+      dispatch(setChangeGoneLive(!changeGoneLive));
       res?.data?.is_submitted
         ? message.success(res?.message)
         : message?.error(res?.message);
@@ -156,6 +152,7 @@ function HistoryCollapse({
     }
 
     changeAgree();
+    setLoadingChanges(false);
   };
 
   let historyTitle = () => {
@@ -313,9 +310,7 @@ function HistoryCollapse({
               </div>
               {(!campStatement?.grace_period || commited) && (
                 <div className={styles.campStatementCollapseButtons}>
-                  {(campStatement?.status == "in_review" ||
-                    (campStatement?.status == "objected" &&
-                      historyOf != "statement")) && (
+                  {(campStatement?.status == "in_review" ) && (
                     <>
                       <Tooltip
                         title={
@@ -333,12 +328,17 @@ function HistoryCollapse({
                       >
                         <Button
                           type="primary"
+                          disabled={!campStatement?.ifICanAgreeAndObject}
                           id={`object-change-${campStatement?.id}`}
                           onClick={() => {
                             let isModelPop = !isUserAuthenticated
                               ? true
-                              : !campStatement?.ifIAmExplicitSupporter &&
-                                campStatement?.ifIamSupporter == 0
+                              : (!campStatement?.ifIAmExplicitSupporter &&
+                                  campStatement?.ifIamSupporter == 0) ||
+                                (parentArchived == 1 &&
+                                  directarchived == 1 &&
+                                  historyOf == "topic") ||
+                                (parentArchived == 1 && directarchived == 0)
                               ? true
                               : false;
                             if (isModelPop) {
@@ -361,7 +361,11 @@ function HistoryCollapse({
                                     campStatement?.ifIamSupporter == 0) ||
                                   (campHistoryItems[0]?.is_archive == 1 &&
                                     campHistoryItems[0]?.status == "live" &&
-                                    campStatement.status == "objected")
+                                    campStatement.status == "objected") ||
+                                  (parentArchived == 1 &&
+                                    directarchived == 1 &&
+                                    historyOf == "topic") ||
+                                  (parentArchived == 1 && directarchived == 0)
                                 ? true
                                 : false
                             )
@@ -430,8 +434,10 @@ function HistoryCollapse({
                       (campHistoryItems?.at(0)?.status == "live" &&
                         campHistoryItems?.at(0)?.is_archive == 1 &&
                         campStatement.status == "old") ||
+                      (parentArchived == 1 && directarchived == 0) ||
                       (parentArchived == 1 &&
-                        campHistoryItems[0]?.camp_num != 1) ||
+                        directarchived == 1 &&
+                        historyOf == "topic") ||
                       (campHistoryItems?.at(0)?.is_archive == 1 &&
                         campHistoryItems?.at(0)?.status == "live" &&
                         campStatement.status == "objected")
@@ -539,7 +545,7 @@ function HistoryCollapse({
                         type="primary"
                         onClick={commitChanges}
                         id={`commit-change-${campStatement?.id}`}
-                        disabled={loading}
+                        disabled={loadingChanges}
                       >
                         Commit Change
                       </Button>
@@ -549,7 +555,7 @@ function HistoryCollapse({
                         danger
                         onClick={() => cancelConfirm()}
                         id={`commit-change-${campStatement?.id}`}
-                        disabled={loading}
+                        disabled={loadingChanges}
                       >
                         Cancel
                       </Button>
@@ -559,7 +565,7 @@ function HistoryCollapse({
               {campStatement?.status == "in_review" &&
                 (!campStatement?.grace_period || commited) && (
                   <div className={styles.campStatementCollapseButtons}>
-                    <Spin spinning={loading} size="default">
+                    <Spin spinning={loadingChanges} size="default">
                       {" "}
                       <div className={styles.infoText}>
                         {!!(
@@ -701,6 +707,9 @@ function HistoryCollapse({
                               defaultChecked={campStatement?.agreed_to_change}
                               className={
                                 styles.campSelectCheckbox + " agreed-text"
+                              }
+                              disabled={
+                                !campStatement?.ifICanAgreeAndObject || parentArchived == 1 && directarchived == 0
                               }
                               onChange={agreeWithChange}
                             >

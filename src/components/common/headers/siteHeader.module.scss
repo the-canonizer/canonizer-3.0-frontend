@@ -334,6 +334,7 @@
     background: #f89d15;
     border-color: #f89d15;
   }
+  margin-right: 20px;
 }
 
 .menuItems {
@@ -411,18 +412,28 @@
   border-bottom: 2px solid #ededed;
   margin: 0 0 8px;
 }
-.logo_in_header{
+.logo_in_header {
   cursor: pointer;
 }
-.new_search_btn{
+.new_search_btn {
   background-color: transparent;
   border: none;
 }
-.inner_html_prefix{
+.inner_html_prefix {
   display: inline-block;
 }
-.inner_html_match{
+.inner_html_match {
   background-color: #fef2d2;
   display: inline-block;
 }
 
+.highlighter {
+  padding-right: 0;
+  font-weight: bold;
+  color: #0F2A4D;
+  font-size: 1.17em;
+}
+
+.highlighterforCampStatement{
+  padding-right: 0;
+}

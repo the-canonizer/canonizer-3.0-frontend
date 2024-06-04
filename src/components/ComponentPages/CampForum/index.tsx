@@ -3,8 +3,7 @@ import { useRouter } from "next/router";
 import { Form, message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 
-import { RootState } from "../../../store";
-import useIsUserAuthenticated from "../../../hooks/isUserAuthenticated";
+import useIsUserAuthenticated from "src/hooks/isUserAuthenticated";
 import ForumUIList from "./List";
 import ForumUICreate from "./Create";
 import ForumUIPost from "./Post";
@@ -18,13 +17,13 @@ import {
   getPostsList,
   deletePost,
   getThreadData,
-} from "../../../network/api/campForumApi";
+} from "src/network/api/campForumApi";
 import {
   getAllUsedNickNames,
   getCurrentCampRecordApi,
   getCurrentTopicRecordApi,
-} from "../../../network/api/campDetailApi";
-import { setThread, setPost } from "../../../store/slices/campForumSlice";
+} from "src/network/api/campDetailApi";
+import { setThread, setPost } from "src/store/slices/campForumSlice";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
 
 const ForumComponent = ({
@@ -36,7 +35,8 @@ const ForumComponent = ({
   const { isUserAuthenticated } = useIsUserAuthenticated();
   const didMount = useRef(false);
   const didMountList = useRef(false);
-  const didMountPost = useRef(false);
+  const didMountPost = useRef(false),
+    reRenderRef = useRef(0);
 
   const [paramsList, setParamsList] = useState({});
   const [threadList, setThreadList] = useState(threadlist || []);
@@ -54,6 +54,7 @@ const ForumComponent = ({
   const [loading, setLoading] = useState(false);
   const [postLoading, setPostLoading] = useState(false);
   const [threadDetailsLoading, setthreadDetailsLoading] = useState(false);
+  const [createdAt, setCreatedAt] = useState(null);
   const [perPage] = useState(10);
   const [postperPage] = useState(10);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -65,15 +66,23 @@ const ForumComponent = ({
     setIsLoggedIn(isUserAuthenticated);
   }, [isUserAuthenticated]);
 
-  const { campRecord, asof, asofdate, algorithm, currentThread, currentPost } =
-    useSelector((state: RootState) => ({
-      campRecord: state?.topicDetails?.currentCampRecord,
-      asof: state?.filters?.filterObject?.asof,
-      asofdate: state.filters?.filterObject?.asofdate,
-      algorithm: state.filters?.filterObject?.algorithm,
-      currentThread: state.forum.currentThread,
-      currentPost: state.forum.currentPost,
-    }));
+  const {
+    campRecord,
+    asof,
+    asofdate,
+    algorithm,
+    currentThread,
+    currentPost,
+    topicRecord,
+  } = useSelector((state: any) => ({
+    campRecord: state?.topicDetails?.currentCampRecord,
+    topicRecord: state?.topicDetails?.currentTopicRecord,
+    asof: state?.filters?.filterObject?.asof,
+    asofdate: state.filters?.filterObject?.asofdate,
+    algorithm: state.filters?.filterObject?.algorithm,
+    currentThread: state.forum.currentThread,
+    currentPost: state.forum.currentPost,
+  }));
 
   const setCurrentThread = (data) => dispatch(setThread(data));
 
@@ -155,8 +164,12 @@ const ForumComponent = ({
 
       const res = await getThreadData(id, topic_num, camp_num);
 
+      setCreatedAt(res.data.created_at);
+
       if (res?.data?.status_code === 404) {
-        message.error(res?.data?.error || "Something went wrong ");
+        message?.error(
+          res?.data?.error?.thread_id?.at(0) || "Something went wrong"
+        );
         setCurrentThread({});
       }
 
@@ -326,18 +339,6 @@ const ForumComponent = ({
     const topic_num = topicArr?.shift();
     const type = queries["by"] as string;
 
-    if (router?.pathname === "/forum/[topic]/[camp]/threads") {
-      let timer = 0;
-
-      if (timer) {
-        clearTimeout(timer);
-        timer = 0;
-      }
-      timer = window.setTimeout(async () => {
-        getThreads(camp_num, topic_num, type, page, searchQuery);
-      }, 800);
-    }
-
     if (
       router?.pathname === "/forum/[topic]/[camp]/threads/create" ||
       router?.pathname === "/forum/[topic]/[camp]/threads/edit/[tId]" ||
@@ -345,8 +346,24 @@ const ForumComponent = ({
     ) {
       fetchNickNameList(topic_num);
     }
+
+    if (
+      router?.pathname === "/forum/[topic]/[camp]/threads" &&
+      router?.isReady
+    ) {
+      if (reRenderRef?.current) {
+        clearTimeout(reRenderRef?.current);
+        reRenderRef.current = 0;
+      }
+
+      if (!reRenderRef?.current) {
+        reRenderRef.current = window.setTimeout(async () => {
+          getThreads(camp_num, topic_num, type, page, searchQuery);
+        }, 950);
+      }
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router, page, searchQuery, isLoggedIn]);
+  }, [router?.query, page, searchQuery, isLoggedIn]);
 
   const onCancelCreateThread = () => {
     const queries = router?.query;
@@ -390,19 +407,19 @@ const ForumComponent = ({
       if (q.tId) {
         const body = {
           title: values.thread_title?.trim(),
-          topic_num: paramsList["topic_num"],
-          camp_num: paramsList["camp_num"],
-          camp_name: paramsList["camp_name"],
+          topic_num: paramsList["topic_num"] || topicRecord?.topic_num,
+          camp_num: paramsList["camp_num"] || campRecord?.camp_num,
+          camp_name: paramsList["camp_name"] || campRecord?.camp_name,
         };
         res = await updateThread(body, +q.tId);
       } else {
         const body = {
           title: values.thread_title?.trim(),
           nick_name: values.nick_name,
-          camp_num: paramsList["camp_num"],
-          topic_num: paramsList["topic_num"],
-          topic_name: paramsList["topic"],
-          camp_name: paramsList["camp_name"],
+          camp_num: paramsList["camp_num"] || campRecord?.camp_num,
+          camp_name: paramsList["camp_name"] || campRecord?.camp_name,
+          topic_num: paramsList["topic_num"] || topicRecord?.topic_num,
+          topic_name: paramsList["topic"] || topicRecord?.topic_name,
         };
         res = await createThread(body);
       }
@@ -449,10 +466,11 @@ const ForumComponent = ({
       if (threadUpdateOthers?.id) {
         const body = {
           title: values?.threadName?.trim(),
-          topic_num: paramsList["topic_num"],
-          camp_num: paramsList["camp_num"],
-          camp_name: paramsList["camp_name"],
+          topic_num: paramsList["topic_num"] || topicRecord?.topic_num,
+          camp_num: paramsList["camp_num"] || campRecord?.camp_num,
+          camp_name: campRecord?.camp_name,
         };
+
         res = await updateThread(body, +threadUpdateOthers?.id);
 
         if (res && res.status_code === 200) {
@@ -532,8 +550,8 @@ const ForumComponent = ({
       thread_id: +q.id,
       camp_num: +camp_num,
       topic_num: +topic_num,
-      topic_name: topicArr.join(" "),
-      camp_name: campArr.join(" "),
+      topic_name: topicRecord?.topic_name,
+      camp_name: campRecord?.camp_name,
     };
 
     let res = null;
@@ -688,6 +706,7 @@ const ForumComponent = ({
           payload={payload}
           showModal={showModal}
           isModalOpen={isModalOpen}
+          createdAt={createdAt}
         />
       ) : null}
     </Fragment>

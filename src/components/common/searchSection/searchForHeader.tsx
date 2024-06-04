@@ -10,7 +10,7 @@ const { Search } = Input;
 const SearchSectionForHeader = () => {
   return (
     <>
-      <section className={`${styles.wrap} ${styles.wrapHeader}`}>
+      <section className={`${styles.wrap} ${styles.wrapHeader} printHIde`}>
         <div className={styles.container}>
           <form
             method="get"

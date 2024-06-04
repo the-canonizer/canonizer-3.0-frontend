@@ -7,11 +7,8 @@ import InfiniteScroll from "react-infinite-scroller";
 
 import styles from "./campHistory.module.scss";
 
-import {
-  getHistoryApi,
-  getCheckCampStatus,
-} from "../../../network/api/history";
-import { getAllUsedNickNames } from "../../../network/api/campDetailApi";
+import { getHistoryApi } from "src/network/api/history";
+import { getAllUsedNickNames } from "src/network/api/campDetailApi";
 import CustomSkelton from "../../common/customSkelton";
 
 import HistoryCollapse from "./Collapse";
@@ -19,11 +16,11 @@ import { RootState } from "src/store";
 import CampInfoBar from "../TopicDetails/CampInfoBar";
 import CreateNewCampButton from "../../common/button/createNewCampBtn";
 import { setCurrentCamp } from "src/store/slices/filtersSlice";
-import useIsUserAuthenticated from "../../../hooks/isUserAuthenticated";
+import useIsUserAuthenticated from "src/hooks/isUserAuthenticated";
 
-import { store } from "../../../store";
-import { setTree } from "../../../store/slices/campDetailSlice";
-import { updateCampApi } from "../../../network/api/campManageStatementApi";
+import { store } from "src/store";
+import { setTree } from "src/store/slices/campDetailSlice";
+import { updateCampApi } from "src/network/api/campManageStatementApi";
 
 const { Title } = Typography;
 
@@ -44,6 +41,7 @@ function HistoryContainer() {
   const [agreecheck, setAgreeCheck] = useState(false);
   const [discardChange, setDiscardChange] = useState(false);
   const [parentarchived, setParentarchived] = useState(0);
+  const [directarchived, setDirectarchived] = useState(0);
 
   const changeAgree = () => {
     setAgreeCheck(!agreecheck);
@@ -55,16 +53,15 @@ function HistoryContainer() {
 
   const count = useRef(1);
 
-  const { history, currentCampNode, tree, asofdate, asof, algorithm } =
-    useSelector((state: RootState) => ({
+  const { history, currentCampNode, asofdate, algorithm } = useSelector(
+    (state: RootState) => ({
       history: state?.topicDetails?.history,
       currentCampRecord: state.topicDetails.currentCampRecord,
       currentCampNode: state?.filters?.selectedCampNode,
-      tree: state?.topicDetails?.tree?.at(0),
       asofdate: state.filters?.filterObject?.asofdate,
-      asof: state?.filters?.filterObject?.asof,
       algorithm: state.filters?.filterObject?.algorithm,
-    }));
+    })
+  );
 
   const [isTreesApiCallStop, setIsTreesApiCallStop] = useState(false);
   const [loadingIndicator, setLoadingIndicator] = useState(false);
@@ -73,72 +70,26 @@ function HistoryContainer() {
     camp_num: router?.query?.camp?.at(1)?.split("-")?.at(0) ?? "1",
     topic_num: router?.query?.camp?.at(0)?.split("-")?.at(0),
   };
-  const reqBodyForService = {
-    topic_num: router?.query?.camp?.at(0)?.split("-")?.at(0),
-    camp_num: router?.query?.camp?.at(1)?.split("-")?.at(0) || 1,
-    asOf: asof,
-    asofdate:
-      asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
-    algorithm: algorithm,
-    update_all: 1,
-  };
 
   useEffect(() => {
     async function getTreeApiCall() {
-      setLoadingIndicator(true);
       if (isUserAuthenticated) {
         let response = await getAllUsedNickNames({
           topic_num: router?.query?.camp?.at(0)?.split("-")[0],
         });
         setNickName(response?.data);
       }
-      // let res = await getTreesApi(reqBodyForService);
-      let res = await getCheckCampStatus({
-        topic_num: router?.query?.camp?.at(0)?.split("-")?.at(0),
-        camp_num: router?.query?.camp?.at(1)?.split("-")?.at(0) || 1,
-      });
-      setLoadingIndicator(false);
-      setParentarchived(res?.data?.is_archive);
     }
     if (!isTreesApiCallStop) {
       getTreeApiCall();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [asofdate, algorithm, +router?.query?.camp?.at(1)?.split("-")[0]]);
-
-  const dispatchData = (data, isDisabled = 0, isOneLevel = 0) => {
-    const keys = Object.keys(data);
-    for (let i = 0; i < keys.length; i++) {
-      const item = keys[i];
-      const parentIsOneLevel = isOneLevel;
-      let _isOneLevel = data[item].is_one_level == 1 || isOneLevel == 1 ? 1 : 0;
-      let _isDisabled = data[item].is_disabled == 1 || isDisabled == 1 ? 1 : 0;
-
-      if (
-        data[item].camp_id === +router?.query?.camp?.at(1)?.split("-")?.at(0)
-      ) {
-        dispatch(
-          setCurrentCamp({
-            ...data[item],
-            parentIsOneLevel,
-            _isDisabled,
-            _isOneLevel,
-          })
-        );
-        break;
-      }
-      if (data[item].children) {
-        dispatchData(data[item].children, _isDisabled, _isOneLevel);
-      }
-    }
-  };
-
-  useEffect(() => {
-    if (tree != null) {
-      dispatchData(tree);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tree]);
+  }, [
+    isUserAuthenticated,
+    asofdate,
+    algorithm,
+    +router?.query?.camp?.at(1)?.split("-")[0],
+  ]);
 
   useEffect(() => {
     setCampHistory(history);
@@ -167,7 +118,9 @@ function HistoryContainer() {
       const reqBody = {
         topic_num: router?.query.camp[0].split("-")[0],
         camp_num:
-          historyOf != "topic" ? router?.query.camp[1].split("-")[0] : 1,
+          historyOf != "topic"
+            ? router?.query.camp?.at(1)?.split("-")?.at(0) || 1
+            : 1,
         type: activeTab,
         per_page: 4,
         page: count.current,
@@ -176,12 +129,36 @@ function HistoryContainer() {
       if (res?.status_code == 404 || res?.status_code == 400) {
         if (router?.pathname == "/topic/history/[...camp]") {
           router?.push(router?.asPath?.replace("topic/history", "topic"));
+          return;
         } else if (router?.pathname == "/statement/history/[...camp]") {
           router?.push(router?.asPath?.replace("statement/history", "topic"));
+          return;
         } else if (router?.pathname == "/camp/history/[...camp]") {
           router?.push(router?.asPath?.replace("camp/history", "topic"));
+          return;
         }
       }
+
+      if (res?.status_code == 200) {
+        let liveCard = res?.data?.details?.liveCamp;
+        let parentIsOneLevel = res?.data?.details?.parent_is_one_level;
+        let _isOneLevel = liveCard?.is_one_level || parentIsOneLevel;
+        let _isDisabled =
+          res?.data?.details?.parent_is_disabled || liveCard?.is_disabled;
+        let is_archive = liveCard?.is_archive;
+        setDirectarchived(liveCard?.direct_archive);
+        setParentarchived(liveCard?.is_archive);
+        dispatch(
+          setCurrentCamp({
+            parentIsOneLevel,
+            _isDisabled,
+            _isOneLevel,
+            is_archive,
+          })
+        );
+      }
+
+      didMount.current = true;
       if (!res?.data || !res?.data?.last_page) {
         setLoadMoreItems(false);
         setLoadingIndicator(false);
@@ -202,10 +179,6 @@ function HistoryContainer() {
   const handleTabButton = async (tabName) => {
     setActiveTab(tabName);
   };
-
-  // const topicRoute = () => {
-  //   setLoadingIndicator(true);
-  // };
 
   const campRoute = () => {
     setLoadingIndicator(true);
@@ -312,6 +285,7 @@ function HistoryContainer() {
     is_disabled: 0,
     is_one_level: 0,
     is_archive: 0,
+    camp_leader_nick_id: null,
   };
   const callManageCampApi = async () => {
     // window.location.reload()
@@ -319,7 +293,7 @@ function HistoryContainer() {
     if (campHistory?.items?.length >= 3) {
       count.current = 1;
     }
-    updateCampApi(reqBody);
+    await updateCampApi(reqBody);
     await campStatementApiCall();
     setLoadingIndicator(false);
     // await commitChanges()
@@ -351,33 +325,36 @@ function HistoryContainer() {
     campHistory && campHistory?.items?.length ? (
       campHistory?.items?.map((campHistoryData, index) => {
         return (
-          <HistoryCollapse
-            collapseKeys={getCollapseKeys(campHistoryData, index)}
-            key={index}
-            campStatement={campHistoryData}
-            onSelectCompare={onSelectCompare}
-            userNickNameData={nickName}
-            ifIamSupporter={campHistory?.details?.ifIamSupporter}
-            ifSupportDelayed={campHistory?.details?.ifSupportDelayed}
-            ifIAmExplicitSupporter={
-              campHistory?.details?.ifIAmExplicitSupporter
-            }
-            topicNamespaceId={campHistory?.details?.topic?.namespace_id}
-            changeAgree={changeAgree}
-            changeDiscard={changeDiscard}
-            isDisabledCheck={
-              selectedTopic.length >= 2 &&
-              !selectedTopic?.includes(campHistoryData?.id)
-            }
-            isChecked={selectedTopic?.includes(campHistoryData?.id)}
-            setIsTreesApiCallStop={setIsTreesApiCallStop}
-            campHistoryItems={campHistory?.items}
-            callManageCampApi={callManageCampApi}
-            parentArchived={parentarchived}
-            unarchiveChangeSubmitted={
-              campHistory?.details?.unarchive_change_submitted
-            }
-          />
+          <>
+            <HistoryCollapse
+              collapseKeys={getCollapseKeys(campHistoryData, index)}
+              key={index}
+              campStatement={campHistoryData}
+              onSelectCompare={onSelectCompare}
+              userNickNameData={nickName}
+              ifIamSupporter={campHistory?.details?.ifIamSupporter}
+              ifSupportDelayed={campHistory?.details?.ifSupportDelayed}
+              ifIAmExplicitSupporter={
+                campHistory?.details?.ifIAmExplicitSupporter
+              }
+              topicNamespaceId={campHistory?.details?.topic?.namespace_id}
+              changeAgree={changeAgree}
+              changeDiscard={changeDiscard}
+              isDisabledCheck={
+                selectedTopic.length >= 2 &&
+                !selectedTopic?.includes(campHistoryData?.id)
+              }
+              isChecked={selectedTopic?.includes(campHistoryData?.id)}
+              setIsTreesApiCallStop={setIsTreesApiCallStop}
+              campHistoryItems={campHistory?.items}
+              callManageCampApi={callManageCampApi}
+              parentArchived={parentarchived}
+              unarchiveChangeSubmitted={
+                campHistory?.details?.unarchive_change_submitted
+              }
+              directarchived={directarchived}
+            />
+          </>
         );
       })
     ) : (
@@ -543,6 +520,7 @@ function HistoryContainer() {
               renderCampHistories
             ) : (
               <InfiniteScroll
+                initialLoad={false}
                 loadMore={!loadingIndicator && campStatementApiCall}
                 hasMore={loadMoreItems}
                 loader={loader}

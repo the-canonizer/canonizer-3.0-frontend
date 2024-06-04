@@ -1,22 +1,21 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { Layout, Menu, Dropdown, Button, Space, Avatar } from "antd";
+import { Layout, Menu, Button } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
+import {
+  MenuOutlined,
+  CloseOutlined,
+  SettingOutlined,
+  LogoutOutlined,
+  CheckCircleOutlined,
+} from "@ant-design/icons";
 
 import styles from "../siteHeader.module.scss";
 
 import { logout } from "../../../../network/api/userApi";
 import { RootState } from "../../../../store";
 import Logo from "../logoHeader";
-import {
-  MenuOutlined,
-  CloseOutlined,
-  DownOutlined,
-  SettingOutlined,
-  LogoutOutlined,
-  CheckCircleOutlined,
-} from "@ant-design/icons";
 import Notifications from "../notification";
 import useAuthentication from "src/hooks/isUserAuthenticated";
 import {
@@ -26,10 +25,18 @@ import {
 } from "src/network/api/notificationAPI";
 import { setManageSupportStatusCheck } from "src/store/slices/campDetailSlice";
 import HeaderMenu from "../HeaderMenu";
-import Image from "next/image";
 import ProfileInfoTab from "./profileInfoTab";
 
 const { Header } = Layout;
+
+export const logOut = async (_router) => {
+  // const res =
+  await logout();
+
+  // if (res?.status_code === 200) {
+  // router?.push("/", null, { shallow: true });
+  // }
+};
 
 const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
   const { loggedInUser, list } = useSelector((state: RootState) => ({
@@ -56,6 +63,9 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
     }
   };
 
+  const isMobile = window.matchMedia("(min-width: 1280px)").matches;
+  const isSmallMobile = window.matchMedia("(max-width: 575px)").matches;
+
   useEffect(() => {
     if (!list?.length) {
       getListData();
@@ -68,6 +78,7 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
     const res = await markNotificationRead(id);
     if (res && res.status_code === 200) {
       delete router?.query?.from;
+      delete router?.query?.n_type;
       // router?.query.from = "";
       router?.replace(router);
     }
@@ -75,8 +86,8 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
 
   useEffect(() => {
     const q = router?.query;
-    if (q && q.from && q.from.includes("notify_")) {
-      const fArr = (q.from as String).split("_");
+    if (q?.from && q?.from.includes("notify_")) {
+      const fArr = String(q?.from).split("_");
       if (+fArr[1]) {
         onNotifyClick(+fArr[1]);
       }
@@ -84,17 +95,9 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
-  const logOut = async () => {
-    // const res =
-    await logout();
-    // if (res?.status_code === 200) {
-    //   router?.push("/");
-    // }
-  };
-
   const onClick = ({ key }) => {
     if (key == 3) {
-      logOut();
+      logOut(router);
     }
   };
 
@@ -124,6 +127,7 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
       </Menu.Item>
     </Menu>
   );
+
   const getGravatarImage = async (email) => {
     setLoadingImage(true);
     let data = await getGravatarPicApi(email);
@@ -138,30 +142,31 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
     if (isUserAuthenticated && loggedInUser && !loggedInUser?.profile_picture) {
       getGravatarImage(loggedInUser?.email);
     }
+    //eslint-disable-next-line
   }, [loggedInUser]);
 
   return (
-    <>
-      <React.Fragment>
-        <Header className={styles.wrap}>
+    <Header className={`${styles.wrap} printHIde`}>
+      <Logo />
+      <div className={`${styles.navWrap} ${isActive && styles.showMobMenu}`}>
+        <div className={styles.mobLogoIcon}>
           <Logo />
-          <div
-            className={`${styles.navWrap} ${isActive && styles.showMobMenu}`}
-          >
-            <div className={styles.mobLogoIcon}>
-              <Logo />
-            </div>
-            <Button
-              size="large"
-              className={`${styles.btnCloseMobMenu} mb-4 float-right`}
-              onClick={toggleMobNav}
-            >
-              <CloseOutlined />
-            </Button>
+        </div>
+        <Button
+          size="large"
+          className={`${styles.btnCloseMobMenu} mb-4 float-right`}
+          onClick={toggleMobNav}
+        >
+          <CloseOutlined />
+        </Button>
 
-            <HeaderMenu loggedUser={loggedUser} />
+        {isMobile == true ? <HeaderMenu loggedUser={loggedUser} /> : <></>}
 
-            {!isLoginPage ? (
+        {!isLoginPage ? (
+          <Fragment>
+            {!isMobile && <HeaderMenu loggedUser={loggedUser} />}
+
+            {isSmallMobile && (
               <ProfileInfoTab
                 isGravatarImage={isGravatarImage}
                 loadingImage={loadingImage}
@@ -170,43 +175,43 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
                 logOut={logOut}
                 isMobile={true}
               />
-            ) : null}
-          </div>
+            )}
+          </Fragment>
+        ) : null}
+      </div>
 
-          <div
-            className={`${styles.right} ${!isLoginPage ? styles.onlogin : ""}`}
-            key="right-area"
-          >
-            {!isLoginPage ? (
-              <ProfileInfoTab
-                isGravatarImage={isGravatarImage}
-                loadingImage={loadingImage}
-                loggedUser={loggedUser}
-                toggleMobNav={toggleMobNav}
-                logOut={logOut}
-                isMobile={false}
-                menu={menu}
-              />
-            ) : null}
-            <div className={styles.iconMobMenu}>
-              {!isLoginPage ? (
-                <div className={styles.mob_noti}>
-                  <Notifications />
-                </div>
-              ) : null}
-              <Button size="middle" onClick={toggleMobNav} key="outnline-btn">
-                <MenuOutlined />
-              </Button>
+      <div
+        className={`${styles.right} ${!isLoginPage ? styles.onlogin : ""}`}
+        key="right-area"
+      >
+        {!isLoginPage ? (
+          <ProfileInfoTab
+            isGravatarImage={isGravatarImage}
+            loadingImage={loadingImage}
+            loggedUser={loggedUser}
+            toggleMobNav={toggleMobNav}
+            logOut={logOut}
+            isMobile={false}
+            menu={menu}
+          />
+        ) : null}
+        <div className={styles.iconMobMenu}>
+          {!isLoginPage ? (
+            <div className={styles.mob_noti}>
+              <Notifications />
             </div>
-          </div>
-          <div
-            className={`${styles.mobNavBG} ${isActive && styles.mobNavBGshow}`}
-            onClick={toggleMobNav}
-            key="toggle-menu"
-          ></div>
-        </Header>
-      </React.Fragment>
-    </>
+          ) : null}
+          <Button size="middle" onClick={toggleMobNav} key="outnline-btn">
+            <MenuOutlined />
+          </Button>
+        </div>
+      </div>
+      <div
+        className={`${styles.mobNavBG} ${isActive && styles.mobNavBGshow}`}
+        onClick={toggleMobNav}
+        key="toggle-menu"
+      ></div>
+    </Header>
   );
 };
 

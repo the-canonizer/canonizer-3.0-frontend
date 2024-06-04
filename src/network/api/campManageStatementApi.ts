@@ -1,17 +1,11 @@
 import NetworkCall from "../networkCall";
 import { message } from "antd";
 import { campManageStatementRequest } from "../request/campManageStatementRequest";
-import { store } from "../../store";
 
-export const getEditStatementApi = async (body) => {
-  let state = store.getState();
-  const { auth } = state;
+export const getEditStatementApi = async (body, loginToken = null) => {
   try {
     const res = await NetworkCall.fetch(
-      campManageStatementRequest.getEditStatement(
-        body,
-        auth?.loggedInUser?.token
-      ),
+      campManageStatementRequest.getEditStatement(body, loginToken),
       false
     );
     return res;
@@ -20,12 +14,10 @@ export const getEditStatementApi = async (body) => {
     return error?.error?.data;
   }
 };
-export const getEditCampApi = async (body) => {
-  let state = store.getState();
-  const { auth } = state;
+export const getEditCampApi = async (body, loginToken = null) => {
   try {
     const res = await NetworkCall.fetch(
-      campManageStatementRequest.getEditCamp(body, auth?.loggedInUser?.token),
+      campManageStatementRequest.getEditCamp(body, loginToken),
       false
     );
     return res;
@@ -35,12 +27,10 @@ export const getEditCampApi = async (body) => {
   }
 };
 
-export const getEditTopicApi = async (body) => {
-  let state = store.getState();
-  const { auth } = state;
+export const getEditTopicApi = async (body, loginToken = null) => {
   try {
     const res = await NetworkCall.fetch(
-      campManageStatementRequest.getEditTopic(body, auth?.loggedInUser?.token),
+      campManageStatementRequest.getEditTopic(body, loginToken),
       false
     );
     return res;
@@ -59,15 +49,10 @@ export const getParseCampStatementApi = async (body) => {
     return error;
   }
 };
-export const updateStatementApi = async (body) => {
-  let state = store.getState();
-  const { auth } = state;
+export const updateStatementApi = async (body, loginToken = null) => {
   try {
     const res = await NetworkCall.fetch(
-      campManageStatementRequest.updateStatement(
-        body,
-        auth?.loggedInUser?.token
-      )
+      campManageStatementRequest.updateStatement(body, loginToken)
     );
     return res;
   } catch (error) {
@@ -75,12 +60,10 @@ export const updateStatementApi = async (body) => {
     return error?.error?.data;
   }
 };
-export const updateCampApi = async (body) => {
-  let state = store.getState();
-  const { auth } = state;
+export const updateCampApi = async (body, loginToken = null) => {
   try {
     const res = await NetworkCall.fetch(
-      campManageStatementRequest.updateCamp(body, auth?.loggedInUser?.token)
+      campManageStatementRequest.updateCamp(body, loginToken)
     );
     return res;
   } catch (error) {
@@ -89,16 +72,14 @@ export const updateCampApi = async (body) => {
   }
 };
 
-export const updateTopicApi = async (body) => {
-  let state = store.getState();
-  const { auth } = state;
+export const updateTopicApi = async (body, loginToken = null) => {
   try {
     const res = await NetworkCall.fetch(
-      campManageStatementRequest.updateTopic(body, auth?.loggedInUser?.token)
+      campManageStatementRequest.updateTopic(body, loginToken)
     );
     return res;
   } catch (error) {
-    message.error(error?.error?.data?.message);
+    // message.error(error?.error?.data?.message);
     return error?.error?.data;
   }
 };

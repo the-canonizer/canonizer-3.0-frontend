@@ -1,40 +1,120 @@
 .hotopicCard {
-  margin-bottom: 20px;
+  margin-bottom: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 8px;
   [class="ant-card-head"] {
     border: none;
     [class*="ant-card-head-wrapper"] {
       width: 100%;
       justify-content: center;
+      flex-flow: row;
+      flex-wrap: nowrap;
+      padding-top: 20px;
+      text-align: left;
       [class="ant-card-head-title"] {
         font-size: 20px;
         margin: 0;
         padding: 0;
-        padding-top: 20px;
         font-weight: 600;
+        width: calc(100% - 140px);
+      }
+      [class*="ant-card-extra"] {
+        width: 120px;
+        text-align: right;
       }
     }
   }
+  [class*="ant-card-body"] {
+    padding-top: 15px;
+    padding-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+    height: 300px;
+  }
+  .cont {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+    .texts {
+      position: absolute;
+      width: 100%;
+      max-height: 150px;
+      z-index: 2;
+      top: auto;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba($color: #000000, $alpha: 0.75);
+      color: #fff;
+      padding: 20px;
+      display: flex;
+      flex-flow: column;
+      height: auto;
+
+      &.bgWhite {
+        background-color: white;
+        color: #000;
+        height: 100%;
+        max-height: 100%;
+        justify-content: center;
+
+        .links {
+          color: #0524e9;
+          &:hover {
+            color: #3249db;
+          }
+        }
+      }
+
+      p {
+        &:empty {
+          display: none;
+        }
+      }
+    }
+    .imgLink {
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      object-position: top;
+    }
+  }
+
+  .date {
+    text-align: right;
+    font-style: italic;
+    position: relative;
+    right: 15px;
+    top: 0px;
+    font-size: 14px;
+    text-transform: capitalize;
+    font-weight: 500;
+  }
+
   .imageSection {
     position: relative;
+    width: 100%;
+    height: 100%;
     img {
       border-radius: 2px;
       object-fit: cover;
       object-position: center;
     }
-    .date {
-      text-align: right;
-      font-style: italic;
-      position: absolute;
-      right: 0;
-      top: -30px;
-      font-size: 14px;
-      text-transform: capitalize;
-      font-weight: 500;
-    }
     .imageLabel {
       font-size: 14px;
-      margin: 20px 0 15px;
-      display: block;
+      margin: 0;
+      overflow: hidden;
+      width: 100%;
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      word-wrap: break-word;
+      word-break: break-all;
+      white-space: wrap;
     }
   }
   .content_area {
@@ -46,5 +126,78 @@
     .contenCon {
       font-size: 14px;
     }
+  }
+  .links {
+    margin-top: 15px;
+    width: 130px;
+    align-self: end;
+    padding: 5px 10px;
+    text-align: center;
+    border-radius: 5px;
+    color: #fff;
+    transition: all 0.3s;
+    &:hover {
+      color: #0524e9;
+    }
+  }
+}
+
+.sliderCls {
+  margin-bottom: 20px;
+  [class*="slick-track"] {
+    display: flex !important;
+  }
+
+  [class*="slick-slide"] {
+    height: inherit !important;
+
+    & > div {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  .sliderDotsCls {
+    list-style: none;
+    display: flex !important;
+    justify-content: center;
+    padding: 0;
+    margin: 20px 0;
+    li {
+      button {
+        width: 10px;
+        height: 10px;
+        overflow: hidden;
+        border-radius: 50%;
+        display: block;
+        box-shadow: none;
+        outline: linen;
+        border: 1px solid #0524e9;
+        position: static;
+        color: #fff;
+        background-color: #fff;
+        padding: 0;
+      }
+      &[class*="slick-active"] {
+        button {
+          background-color: #0524e9;
+          color: #0524e9;
+        }
+      }
+      &:not(:last-child) {
+        margin-right: 10px;
+      }
+    }
+  }
+  [class*="slick-arrow"] {
+    z-index: 100;
+    &::before {
+      color: #9aa5e7;
+    }
+  }
+  [class*="slick-prev"] {
+    left: 0;
+  }
+  [class*="slick-next"] {
+    right: 0;
   }
 }

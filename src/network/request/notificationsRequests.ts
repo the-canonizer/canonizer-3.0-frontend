@@ -6,13 +6,19 @@ export default class NotificationRequest extends Request {
     super(params);
   }
 
-  static getNotification(page: number, per_page: number, is_seen: number) {
+  static getNotification(
+    page: number,
+    per_page: number,
+    is_seen: number,
+    token
+  ) {
     return new Request(
       `${K.Network.URL.GetList}?page=${page}&per_page=${per_page}&is_seen=${is_seen}`,
       K.Network.Method.GET,
       null,
       K.Network.Header.Type.Json,
-      {}
+      {},
+      token
     );
   }
 

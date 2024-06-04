@@ -25,8 +25,9 @@ const Threads = ({
   payload,
   isModalOpen,
   showModal,
+  createdAt,
 }: any) => (
-  <div className="d-flex">
+  <div className="d-flex flex-wrap">
     <ThreadSidebar />
     <div className="pageContentWrap">
       <CampInfoBar payload={payload} isForumPage={true} />
@@ -52,6 +53,7 @@ const Threads = ({
         threadDetailsLoading={threadDetailsLoading}
         isModalOpen={isModalOpen}
         showModal={showModal}
+        createdAt={createdAt}
       />
     </div>
   </div>

@@ -1,8 +1,8 @@
-import { Descriptions, Collapse, Popover } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import moment from "moment";
+import { Descriptions, Collapse, Popover } from "antd";
 
 import Image from "next/image";
 
@@ -54,7 +54,7 @@ const CurrentCampCard = ({ loadingIndicator, backGroundColorClass }: any) => {
       accordion={true}
       defaultActiveKey={[]}
       expandIconPosition="right"
-      className="topicDetailsCollapse"
+      className="topicDetailsCollapse currentCampRecords"
     >
       <Panel
         className={`header-bg-color-change ${backGroundColorClass}`}
@@ -64,7 +64,8 @@ const CurrentCampCard = ({ loadingIndicator, backGroundColorClass }: any) => {
               {K?.exceptionalMessages?.campRecordHeading}
             </h3>
             <div className="cmp-change-icon">
-              {campRecord?.in_review_changes > 0 ? (
+              {campRecord?.in_review_changes > 0 &&
+              campRecord?.is_archive == 0 ? (
                 // <img className="change-icon" src="/images/change-icon.svg" />
                 <div
                   onClick={(e) => {
@@ -128,7 +129,8 @@ const CurrentCampCard = ({ loadingIndicator, backGroundColorClass }: any) => {
                         : "No"
                       : campRecord &&
                         (description.key == "submitter_nick_name" ||
-                          description.key == "camp_about_nick_name")
+                          description.key == "camp_about_nick_name" ||
+                          description.key == "camp_leader_nick_name")
                       ? campRecord &&
                         history &&
                         (campRecord[description.key] !=
@@ -139,6 +141,8 @@ const CurrentCampCard = ({ loadingIndicator, backGroundColorClass }: any) => {
                                 ? campRecord?.submitter_nick_id
                                 : description.key == "camp_about_nick_name"
                                 ? campRecord?.camp_about_nick_id
+                                : description.key == "camp_leader_nick_name"
+                                ? campRecord?.camp_leader_nick_id
                                 : ""
                             }?canon=${topicRecord?.namespace_id || ""}`}
                             passHref
@@ -168,8 +172,8 @@ const CurrentCampCard = ({ loadingIndicator, backGroundColorClass }: any) => {
             }
           })}
         </Descriptions>
-        <div className="topicDetailsCollapseFooter">
-          <CustomButton className="btn-green" id="manage-camp-btn">
+        <div className="topicDetailsCollapseFooter printHIde">
+          <CustomButton className="btn-green printHIde" id="manage-camp-btn">
             <Link
               href={`/camp/history/${replaceSpecialCharacters(
                 router?.query?.camp[0],
@@ -178,8 +182,11 @@ const CurrentCampCard = ({ loadingIndicator, backGroundColorClass }: any) => {
                 router?.query?.camp[1] ?? "1-Agreement",
                 "-"
               )}`}
+              className="printHIde"
             >
-              <a>{K?.exceptionalMessages?.manageCampButton} </a>
+              <a className="printHIde">
+                {K?.exceptionalMessages?.manageCampButton}{" "}
+              </a>
             </Link>
           </CustomButton>
         </div>

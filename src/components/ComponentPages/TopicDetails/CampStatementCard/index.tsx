@@ -26,6 +26,7 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
       campRecord: state?.topicDetails?.currentCampRecord,
     })
   );
+
   return loadingIndicator || !campStatement ? (
     <CustomSkelton
       skeltonFor="card"
@@ -48,8 +49,12 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
             <h3 className="cmp-title">
               {K?.exceptionalMessages?.campStatementHeading}
             </h3>
-            <div className="cmp-change-icon">
-              {campStatement[0]?.in_review_changes > 0 ? (
+            <div
+              className="cmp-change-icon"
+              style={{ display: "inline-block" }}
+            >
+              {campStatement[0]?.in_review_changes > 0 &&
+              campRecord?.is_archive == 0 ? (
                 <div
                   onClick={(e) => {
                     e.stopPropagation();
@@ -80,9 +85,7 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
                     />
                   </Popover>
                 </div>
-              ) : (
-                ""
-              )}
+              ) : null}
             </div>
           </>
         }
@@ -99,10 +102,10 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
       >
         <Paragraph>
           <div className={styles.campStatement}>
-            {campStatement?.length ? (
+            {campStatement?.length && campStatement[0]?.parsed_value ? (
               <div
                 dangerouslySetInnerHTML={{
-                  __html: campStatement[0]?.parsed_value,
+                  __html: `<div class="ck-content">${campStatement[0]?.parsed_value}</div>`,
                 }}
               />
             ) : (
@@ -111,15 +114,15 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
           </div>
         </Paragraph>
 
-        <div className="topicDetailsCollapseFooter">
+        <div className="topicDetailsCollapseFooter printHIde">
           <CustomButton
             disabled={campRecord?.is_archive == 1 ? true : false}
-            className="btn-green"
+            className="btn-green printHIde"
             id="add-camp-statement-btn"
           >
             <Link
               href={
-                history?.items?.length > 0
+                campStatement?.length > 0
                   ? `/statement/history/${replaceSpecialCharacters(
                       router?.query?.camp[0],
                       "-"
@@ -135,9 +138,10 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
                       "-"
                     )}`
               }
+              className="printHIde"
             >
-              <a>
-                {history?.items?.length > 0
+              <a className="printHIde">
+                {campStatement?.length > 0
                   ? K?.exceptionalMessages?.manageCampStatementButton
                   : K?.exceptionalMessages?.addCampStatementButton}
               </a>

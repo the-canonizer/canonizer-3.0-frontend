@@ -90,7 +90,7 @@ describe("Camp statement on camp details page", () => {
     expect(screen.getByText(/camp :/i)).toBeInTheDocument();
 
     await waitFor(() => {
-      expect(screen.getByText(/n\/a/i)).toBeInTheDocument();
+      screen.getAllByText(/n\/a/i);
     });
   });
 

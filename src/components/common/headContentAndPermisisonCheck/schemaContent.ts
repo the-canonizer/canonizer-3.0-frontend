@@ -1,5 +1,5 @@
 /* eslint-disable */
-export default {
+export const schemas = {
   Home: `{
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -79,3 +79,47 @@ export default {
 };
 
 /* eslint-enable */
+
+export default function getSchemas(componentName, topicName = "", url = "") {
+  let schema;
+  if (componentName === "TopicDetailsPage") {
+    schema = `{
+    "@context": "https://schema.org/",
+    "@type": "WebSite",
+    "name": "${topicName}",
+    "url": "${url}",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "{search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }`;
+  } else if (componentName === "CampForumListPage") {
+    schema = `{
+    "@context": "https://schema.org/",
+    "@type": "WebSite",
+    "name": "Canonizer Camp Forum",
+    "url": "${url}",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "{search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }`;
+  } else if (componentName === "StatementHistoryPage") {
+    schema = `{
+    "@context": "https://schema.org/",
+    "@type": "WebSite",
+    "name": "Canonizer Statement",
+    "url": "${url}",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "{search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }`;
+  } else {
+    schema = schemas[componentName];
+  }
+  return schema;
+}

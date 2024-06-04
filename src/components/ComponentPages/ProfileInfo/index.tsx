@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
-import moment from "moment";
-import { Form, message } from "antd";
-import isAuth from "../../../hooks/isUserAuthenticated";
-
-import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
-
 import { useDispatch } from "react-redux";
+import { Form, message } from "antd";
+import { geocodeByAddress, geocodeByPlaceId } from "react-places-autocomplete";
+import moment from "moment";
 
+import isAuth from "../../../hooks/isUserAuthenticated";
+import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
 import {
   GetUserProfileInfo,
   UpdateUserProfileInfo,
@@ -15,8 +14,8 @@ import {
   GetLanguageList,
 } from "../../../network/api/userApi";
 import ProfileInfoUI from "./ProfileInfoUI";
-import { geocodeByAddress, geocodeByPlaceId } from "react-places-autocomplete";
 import { formatDate } from "../../common/FormatDate";
+
 type UpdateAddress = {
   city?: string;
   state?: string;
@@ -24,6 +23,7 @@ type UpdateAddress = {
   postal_code?: string;
   email?: string;
 };
+
 const ProfileInfo = () => {
   const [form] = Form.useForm();
   const [formVerify] = Form.useForm();
@@ -66,17 +66,7 @@ const ProfileInfo = () => {
   const isPublicOrPrivate = (field_value) => {
     return privateList.includes(field_value) ? 0 : 1;
   };
-  // function formatDate(date) {
-  //   var d = new Date(date),
-  //     month = "" + (d.getMonth() + 1),
-  //     day = "" + d.getDate(),
-  //     year = d.getFullYear();
 
-  //   if (month.length < 2) month = "0" + month;
-  //   if (day.length < 2) day = "0" + day;
-
-  //   return [year, month, day].join("-");
-  // }
   //on update profile click
   const onFinish = async (values: any) => {
     let birthday = values.birthday?._d;
@@ -133,9 +123,6 @@ const ProfileInfo = () => {
   };
 
   const { isUserAuthenticated } = isAuth();
-
-  // const onFinishFailed = (errorInfo) => {
-  // };
 
   //Send OTP to mobile number
   // const onVerifyClick = async (values: any) => {
@@ -374,6 +361,7 @@ const ProfileInfo = () => {
       userProfileSkeleton={userProfileSkeleton}
       userProfileSkeletonV={userProfileSkeletonV}
       setOTP={setOTP}
+      setToggleVerifyButton={setToggleVerifyButton}
     />
   );
 };

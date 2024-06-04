@@ -16,10 +16,22 @@ import {
   setSearchMetaData,
   setSearchValue,
   setSearchDataAll,
+  setClickAdvanceFilterOption,
 } from "src/store/slices/searchSlice";
-import { key } from "localforage";
 import CustomSkelton from "../../customSkelton";
-import { setLoadingAction } from "src/store/slices/loading";
+import { setSearchLoadingAction } from "src/store/slices/loading";
+import filter from "src/assets/image/face.png";
+import Image from "next/image";
+
+
+interface HighlightedForCampStatementProps {
+  text?: string;
+  highlight: string;
+}
+interface HighlightedProps {
+  text?: string;
+  highlight: string;
+}
 
 const HeaderMenu = ({ loggedUser }: any) => {
   const [inputSearch, setInputSearch] = useState("");
@@ -35,9 +47,6 @@ const HeaderMenu = ({ loggedUser }: any) => {
   }));
   const { pageNumber } = useSelector((state: RootState) => ({
     pageNumber: state?.searchSlice?.pageNumber,
-  }));
-  const { searchDataAll } = useSelector((state: RootState) => ({
-    searchDataAll: state?.searchSlice?.searchDataAll,
   }));
   const router = useRouter();
 
@@ -80,9 +89,45 @@ const HeaderMenu = ({ loggedUser }: any) => {
   const showEmpty = (msg) => {
     return <Empty description={msg} />;
   };
-
+  const Highlighted: React.FC<HighlightedProps> = ({
+    text = "",
+    highlight = "",
+  }) => {
+    if (!highlight.trim()) {
+      return <label>{text}</label>;
+    }
+    const highlightWords = highlight.trim().split(/\s+/); // Split the highlight string into individual words
+  const escapedHighlightWords = highlightWords.map(word => word.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&"));
+  const regexPattern = highlightWords.length > -1 ? `(${escapedHighlightWords.join('|')})` : escapedHighlightWords[0];
+  const regex = new RegExp(regexPattern, "gi");
+  const parts = text.split(regex);
+    return (
+      <>
+        {parts.map((part, i) =>
+          regex.test(part) ? (
+            <mark className={styles.highlighter} key={i}>
+              {part}
+            </mark>
+          ) : (
+            <label
+              style={{ cursor: "pointer", fontWeight: "bold" }}
+              className={styles.highlighter}
+              key={i}
+            >
+              {part}
+            </label>
+          )
+        )}
+      </>
+    );
+  };
+  function replaceSpecialCharactersInLink(link) {
+    // Replace each special character with a series of hyphens
+    // return link.replace(/[-\\^$*+?.()|%#|[\]{}]/g, "-");
+    return link.replace(/[-\\^$*+?.()|%#|[\]{}@]/g, "-");
+  }
   const searchValueLength = 30;
-
+  const advanceSearchValueLength = 100;
   const options = [
     {
       label: renderTitle(
@@ -98,57 +143,24 @@ const HeaderMenu = ({ loggedUser }: any) => {
           <div className={styles.search_lists}>
             <ul>
               {searchTopics?.slice(0, 5)?.map((x) => {
-                const index = x.type_value
-                  ?.toLowerCase()
-                  .indexOf(searchValue?.toLowerCase().trim());
-
-                if (index !== -1) {
-                  const length = searchValue.length;
-                  const prefix = x.type_value.substring(0, index);
-                  const suffix = x.type_value.substring(index + length);
-                  const match = x.type_value.substring(index, index + length);
+                {
                   return (
                     <>
                       <li style={{ cursor: "default" }}>
-                        <Link href={`/${x.link}`}>
+                        <Link
+                          href={`/${replaceSpecialCharactersInLink(x.link)}`}
+                        >
                           <a>
-                            {!!prefix && (
-                              <label style={{ cursor: "pointer" }}>
-                                {prefix}
-                              </label>
-                            )}
-                            <label
-                              style={{
-                                cursor: "pointer",
-                                backgroundColor: "#fef2d2",
-                              }}
-                            >
-                              {match}
-                            </label>
-                            {!!suffix && (
-                              <label style={{ cursor: "pointer" }}>
-                                {suffix}
-                              </label>
-                            )}
+                            <Highlighted
+                              text={x.type_value}
+                              highlight={searchValue}
+                            />
                           </a>
                         </Link>
                       </li>
                     </>
                   );
                 }
-                // return (
-                //   <>
-                //     <li style={{ cursor: "default" }}>
-                //       <Link href={`/${x.link}`}>
-                //         <a>
-                //           <label style={{ cursor: "pointer" }}>
-                //             {x.type_value}
-                //           </label>
-                //         </a>
-                //       </Link>
-                //     </li>
-                //   </>
-                // );
               })}
             </ul>
             {searchTopics?.length ? (
@@ -185,38 +197,17 @@ const HeaderMenu = ({ loggedUser }: any) => {
                   },
                   []
                 );
-                const index = x.type_value
-                  ?.toLowerCase()
-                  .indexOf(searchValue?.toLowerCase().trim());
-                if (index !== -1) {
-                  const length = searchValue.length;
-                  const prefix = x.type_value.substring(0, index);
-                  const suffix = x.type_value.substring(index + length);
-                  const match = x.type_value.substring(index, index + length);
+                {
                   return (
                     <>
                       <li style={{ cursor: "default" }}>
                         <Link href={`/${jsonData[0][1]?.camp_link}`}>
                           <a className={styles.camp_heading_color}>
                             {" "}
-                            {!!prefix && (
-                              <label style={{ cursor: "pointer" }}>
-                                {prefix}
-                              </label>
-                            )}
-                            <label
-                              style={{
-                                cursor: "pointer",
-                                backgroundColor: "#fef2d2",
-                              }}
-                            >
-                              {match}
-                            </label>
-                            {!!suffix && (
-                              <label style={{ cursor: "pointer" }}>
-                                {suffix}
-                              </label>
-                            )}
+                            <Highlighted
+                              text={x.type_value}
+                              highlight={searchValue}
+                            />
                           </a>
                         </Link>
 
@@ -280,14 +271,49 @@ const HeaderMenu = ({ loggedUser }: any) => {
                   },
                   []
                 );
-                const index = x.type_value
-                  ?.toLowerCase()
-                  .indexOf(searchValue?.toLowerCase().trim());
-                if (index !== -1) {
-                  const length = searchValue.length;
-                  const prefix = x.type_value.substring(0, index);
-                  const suffix = x.type_value.substring(index + length);
-                  const match = x.type_value.substring(index, index + length);
+                {
+                  const HighlightedForCampStatement: React.FC<
+                    HighlightedForCampStatementProps
+                  > = ({ text = "", highlight = "" }) => {
+                    if (!highlight.trim()) {
+                      return <span>{text}</span>;
+                    }
+                    const escapedHighlight = highlight.replace(
+                      /[-/\\^$*+?.()|[\]{}]/g,
+                      "\\$&"
+                    );
+                    const words = highlight
+                      .split(/\s+/)
+                      .map((word) =>
+                        word.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&")
+                      );
+                    const regex = new RegExp(
+                      `\\b(${words.join("|")})\\b`,
+                      "gi"
+                    );
+                    const parts = text.split(regex);
+                    return (
+                      <>
+                        {parts
+                          .filter((part) => part)
+                          .map((part, i) =>
+                            regex.test(part) ? (
+                              <mark
+                                className={styles.highlighterforCampStatement}
+                                key={i}
+                                dangerouslySetInnerHTML={{ __html: part }}
+                              ></mark>
+                            ) : (
+                              <label
+                                className={styles.highlighterforCampStatement}
+                                key={i}
+                                dangerouslySetInnerHTML={{ __html: part }}
+                              ></label>
+                            )
+                          )}
+                      </>
+                    );
+                  };
                   return (
                     <>
                       <li style={{ cursor: "default" }}>
@@ -297,9 +323,17 @@ const HeaderMenu = ({ loggedUser }: any) => {
                             href={`/${jsonData?.[0]?.[1]?.camp_link}`}
                           >
                             <h3 className="m-0">
-                              {jsonData?.length > 1
-                                ? jsonData?.[0]?.[1]?.camp_name
-                                : jsonData?.[0]?.[1]?.topic_name}
+                              {jsonData?.length > 1 ? (
+                                <HighlightedForCampStatement
+                                  text={jsonData?.[0]?.[1]?.camp_name}
+                                  highlight={searchValue}
+                                />
+                              ) : (
+                                <HighlightedForCampStatement
+                                  text={jsonData?.[0]?.[1]?.topic_name}
+                                  highlight={searchValue}
+                                />
+                              )}
                             </h3>
                           </a>
                           <div style={{ marginLeft: "auto" }}>
@@ -307,28 +341,13 @@ const HeaderMenu = ({ loggedUser }: any) => {
                             {covertToTime(x?.go_live_time)}
                           </div>
                         </div>
-
                         <div className="d-flex flex-wrap w-100 mb-1">
-                          <p className={styles.search_heading_top}>
-                            {!!prefix && (
-                              <div
-                                className={styles.inner_html_prefix}
-                                dangerouslySetInnerHTML={{ __html: prefix }}
-                              ></div>
-                            )}
-                            &nbsp;
-                            <div
-                              className={styles.inner_html_match}
-                              dangerouslySetInnerHTML={{ __html: match }}
-                            ></div>
-                            &nbsp;
-                            {!!suffix && (
-                              <div
-                                className={styles.inner_html_prefix}
-                                dangerouslySetInnerHTML={{ __html: suffix }}
-                              ></div>
-                            )}
-                          </p>
+                          <div>
+                            <HighlightedForCampStatement
+                              text={x.type_value.replace(/<p>/g, "")}
+                              highlight={searchValue}
+                            />
+                          </div>
                         </div>
                         {/* {" "} */}
 
@@ -363,7 +382,14 @@ const HeaderMenu = ({ loggedUser }: any) => {
     {
       label: renderTitle(
         searchNickname && searchNickname?.length ? (
-          <i className="icon-camp"></i>
+          <Image
+                  className={styles.nickname_icon}
+                  id="nick_name"
+                  alt="face Image"
+                  src={filter}
+                  width={15}
+                  height={15}
+                />
         ) : (
           ""
         ),
@@ -374,45 +400,23 @@ const HeaderMenu = ({ loggedUser }: any) => {
           <div className={styles.search_lists}>
             <ul>
               {searchNickname?.slice(0, 5)?.map((x) => {
-                const index = x.type_value
-                  ?.toLowerCase()
-                  .indexOf(searchValue?.toLowerCase().trim());
-
-                if (index !== -1) {
-                  const length = searchValue.length;
-                  const prefix = x.type_value.substring(0, index);
-                  const suffix = x.type_value.substring(index + length);
-                  const match = x.type_value.substring(index, index + length);
+                {
                   return (
                     <>
                       <li style={{ cursor: "default" }}>
                         <div className="d-flex flex-wrap">
-                          <Link href={`/${x.link}`}>
+                          <Link href={`${x.link}`}>
                             <a>
-                              {!!prefix && (
-                                <label style={{ cursor: "pointer" }}>
-                                  {prefix}
-                                </label>
-                              )}
-                              <label
-                                style={{
-                                  cursor: "pointer",
-                                  backgroundColor: "#fef2d2",
-                                }}
-                              >
-                                {match}
-                              </label>
-                              {!!suffix && (
-                                <label style={{ cursor: "pointer" }}>
-                                  {suffix}
-                                </label>
-                              )}
+                              <Highlighted
+                                text={x.type_value}
+                                highlight={searchValue}
+                              />
                             </a>
                           </Link>
                           <span className="ml_auto suppport_camps">
                             Supported camps:{" "}
                             <strong className={styles.yellow_color}>
-                              {x.support_count}
+                              {x.support_count == "" ? 0 : x.support_count}
                             </strong>{" "}
                           </span>
                         </div>
@@ -489,6 +493,11 @@ const HeaderMenu = ({ loggedUser }: any) => {
       linkTitle: "Help",
       id: 3,
     },
+    {
+      link: "/videos",
+      linkTitle: "Videos",
+      id: 6,
+    },
   ];
 
   const [mockLinks, setMockLinks] = useState(links);
@@ -504,13 +513,23 @@ const HeaderMenu = ({ loggedUser }: any) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedUser]);
-
+  const [preventInitialRender, setPreventInitialRender] = useState(true);
   useEffect(() => {
-    if (inputSearch || searchValue) {
-      getGlobalSearchCanonizerNav(searchValue, false);
+    if (preventInitialRender && pageNumber !== 1)
+      setPreventInitialRender(false);
+    else if (
+      (inputSearch || searchValue) &&
+      router.pathname.includes("/search")
+    ) {
+      getGlobalSearchCanonizerNav(searchValue);
     }
-  }, [pageNumber, router.pathname]);
-  const getGlobalSearchCanonizerNav = async (queryString, onPresEnter) => {
+    setPreventInitialRender(false);
+    return () => {
+      setPreventInitialRender(true);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pageNumber, router?.pathname]);
+  const getGlobalSearchCanonizerNav = async (queryString) => {
     let queryParamObj: any = {
       term: queryString,
       size: 20,
@@ -538,7 +557,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
         queryParamObj.type = "all";
         break;
     }
-    dispatch(setLoadingAction(true));
+    dispatch(setSearchLoadingAction(true));
     let response = await globalSearchCanonizer(queryParams(queryParamObj));
     if (response) {
       setSearchTopics(response.data.data.topic);
@@ -553,9 +572,10 @@ const HeaderMenu = ({ loggedUser }: any) => {
       ) {
         dispatch(setSearchDataAll(response?.data?.data));
         dispatch(setSearchMetaData(response?.data?.meta_data));
-        dispatch(setLoadingAction(false));
+        // dispatch(setSearchLoadingAction(false));
       }
     }
+    dispatch(setSearchLoadingAction(false));
   };
   const getGlobalSearchCanonizer = async (queryString, onPresEnter) => {
     // dispatch(setLoadingAction(true))
@@ -568,9 +588,9 @@ const HeaderMenu = ({ loggedUser }: any) => {
       setSearchCampStatement(response.data.data.statement);
       setSearchNickname(response.data.data.nickname);
       if (onPresEnter) {
-        dispatch(setLoadingAction(true));
+        // dispatch(setSearchLoadingAction(true));
         dispatch(setSearchData(response?.data?.data));
-        dispatch(setLoadingAction(false));
+        dispatch(setSearchLoadingAction(false));
       }
       setLoadingSekelton(false);
     }
@@ -582,7 +602,7 @@ const HeaderMenu = ({ loggedUser }: any) => {
     getGlobalSearchCanonizer(searchValue, true);
   };
 
-  const handlePress = (e) => {
+  const handlePress = () => {
     setInputSearch("");
     setSearchVal("");
     router.push({
@@ -590,7 +610,11 @@ const HeaderMenu = ({ loggedUser }: any) => {
       query: { q: searchValue },
     });
   };
-  const debounceFn = useMemo(() => debounce(getGlobalSearchCanonizer, 500), []);
+  const debounceFn = useMemo(
+    () => debounce(getGlobalSearchCanonizer, 500),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
   return (
     <Fragment>
       <nav className={styles.nav}>
@@ -628,59 +652,64 @@ const HeaderMenu = ({ loggedUser }: any) => {
         </ul>
       </nav>
 
-      <div className="search_header">
-        <AutoComplete
-          popupClassName="certain-category-search-dropdown"
-          dropdownMatchSelectWidth={false}
-          // className={"search_header"}
-          options={
-            inputSearch == ""
-              ? []
-              : loadingSekelton
-              ? loader
-              : searchTopics?.length ||
-                searchCamps?.length ||
-                searchCampStatement?.length ||
-                searchNickname?.length
-              ? options
-              : no
-          }
-          value={searchVal}
-        >
-          <div>
-            <Button>
-              <i className="icon-search"></i>
-            </Button>
-            <Input
-              size="large"
-              placeholder="Search for"
-              value={searchVal}
-              type="text"
-              name="search"
-              // prefix={<button className={styles.new_search_btn} disabled > <i className="icon-search" /></button>}
-              onChange={(e) => {
-                // localStorage.setItem("searchValue", e.target.value);
-                setLoadingSekelton(true);
-                dispatch(setSearchValue(e.target.value));
-                setInputSearch(e.target.value);
-                setSearchVal(e.target.value);
-                debounceFn.cancel();
-                debounceFn(e.target.value, false);
-              }}
-              onPressEnter={(e) => {
-                // localStorage.setItem("searchValue",(e.target as HTMLTextAreaElement).value)
-                // !router.asPath.includes("/search") ? handlePress(e) : "";
-                handlePress(e);
-                if ((e.target as HTMLTextAreaElement).value)
-                  getGlobalSearchCanonizer(
-                    (e.target as HTMLTextAreaElement).value,
-                    true
-                  );
-              }}
-            />
-          </div>
-        </AutoComplete>
-      </div>
+      {process.env.NEXT_PUBLIC_NEW_SEARCH_BAR ? (
+        <div className="search_header">
+          <AutoComplete
+            popupClassName="certain-category-search-dropdown"
+            dropdownMatchSelectWidth={false}
+            options={
+              inputSearch == ""
+                ? []
+                : loadingSekelton
+                ? loader
+                : searchTopics?.length ||
+                  searchCamps?.length ||
+                  searchCampStatement?.length ||
+                  searchNickname?.length
+                ? options
+                : no
+            }
+            value={
+              searchVal.length > advanceSearchValueLength
+                ? searchVal.substring(0, advanceSearchValueLength)
+                : searchVal
+            }
+          >
+            <div>
+              <Button>
+                <i className="icon-search"></i>
+              </Button>
+              <Input
+                size="large"
+                placeholder="Search for"
+                value={
+                  searchVal.length > advanceSearchValueLength
+                    ? searchVal.substring(0, advanceSearchValueLength)
+                    : searchVal
+                }
+                type="text"
+                name="search"
+                onChange={(e) => {
+                  setLoadingSekelton(true);
+                  dispatch(setSearchValue(e.target.value));
+                  setInputSearch(e.target.value);
+                  setSearchVal(e.target.value);
+                  debounceFn.cancel();
+                  if (e?.target?.value) debounceFn(e.target.value, false);
+                }}
+                onPressEnter={(e) => {
+                  handlePress();
+                  if ((e.target as HTMLTextAreaElement).value)
+                    getGlobalSearchCanonizer(
+                      (e.target as HTMLTextAreaElement).value,
+                      true
+                    );
+                }}
+              />
+            </div>
+          </AutoComplete>
+        </div>
+      ) : null}
     </Fragment>
   );
 };

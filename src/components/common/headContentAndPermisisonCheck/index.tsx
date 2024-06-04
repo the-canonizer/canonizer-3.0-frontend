@@ -1,13 +1,10 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
 
 import HeadContent from "./headContent";
 import PermissionsForPages from "../../../permissions";
 import usePermission from "../../../hooks/usePermissions";
 import useAuthentication from "../../../hooks/isUserAuthenticated";
-import { RootState } from "src/store";
-import { createToken } from "src/network/api/userApi";
 
 type HeadContentComponentProps = {
   componentName: string;
@@ -19,27 +16,13 @@ const HeadContentAndPermissionComponent = ({
   componentName,
   metaContent,
   canonical,
+  ...rest
 }: HeadContentComponentProps) => {
   const router = useRouter();
   const pageRoute = process.env.NEXT_PUBLIC_BASE_URL + router?.asPath;
 
-  const { authToken } = useSelector((state: RootState) => ({
-    authToken: state.auth.authToken,
-  }));
-
   const { isAllowed } = usePermission();
   const { isUserAuthenticated } = useAuthentication();
-
-  const getToken = async () => {
-    if (!authToken) {
-      await createToken();
-    }
-  };
-
-  useEffect(() => {
-    getToken();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [authToken]);
 
   useEffect(() => {
     //Check permission
@@ -50,18 +33,11 @@ const HeadContentAndPermissionComponent = ({
       permission && permission.isPermissionRequired ? true : false;
 
     //redirect if authentication is required and user is not loggedIn
-
     if (requiredAuthentication && !isUserAuthenticated) {
-      const lgt = localStorage.getItem("logout_type");
-      if (lgt == "true") {
-        router?.push("/");
-      } else {
-        router?.push({
-          pathname: "/login",
-          query: { returnUrl: router?.asPath },
-        });
-      }
-      localStorage.removeItem("logout_type");
+      router?.push({
+        pathname: "/login",
+        query: { returnUrl: router?.asPath },
+      });
     }
 
     //redirect if user doesn't have specific permission to view that page
@@ -69,6 +45,15 @@ const HeadContentAndPermissionComponent = ({
       router?.push("/required-permission");
     }
   }, [componentName, isUserAuthenticated, isAllowed, router]);
+
+  useEffect(() => {
+    //redirect if authentication is required and user is not loggedIn
+    // const lgt = localStorage.getItem("logout_type");
+    // if (lgt == "true") {
+    //   localStorage.removeItem("logout_type");
+    //   router?.push("/");
+    // }
+  }, [isUserAuthenticated]);
 
   return (
     <HeadContent
@@ -78,6 +63,7 @@ const HeadContentAndPermissionComponent = ({
       author={metaContent?.author}
       componentName={componentName}
       canonical={canonical}
+      {...rest}
     />
   );
 };

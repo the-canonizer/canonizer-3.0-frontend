@@ -22,6 +22,8 @@ export const filtersSlice = createSlice({
     showDrawer: false,
     showForumDrawer: false,
     campWithScoreValue: 10,
+    onlyMyTopicsCheck: false,
+    selectAlgoBrowsePage: false,
   },
   reducers: {
     setFilterCanonizedTopics: (state, action) => {
@@ -43,7 +45,6 @@ export const filtersSlice = createSlice({
     setViewThisVersion: (state, action) => {
       state.viewThisVersionCheck = action.payload;
     },
-
     setCurrentDate: (state, action) => {
       state.current_date = action.payload;
     },
@@ -55,6 +56,15 @@ export const filtersSlice = createSlice({
     },
     setShowForumDrawer: (state, action) => {
       state.showForumDrawer = action.payload;
+    },
+    setOnlyMyTopic: (state, action) => {
+      state.onlyMyTopicsCheck = action.payload;
+    },
+    setRemoveFilters: (state, action) => {
+      state.filterObject = action.payload;
+    },
+    setSelectAlgoBrowsePage: (state, action) => {
+      state.selectAlgoBrowsePage = action.payload;
     },
   },
 });
@@ -68,6 +78,9 @@ export const {
   setShowDrawer,
   setCampWithScorevalue,
   setShowForumDrawer,
+  setOnlyMyTopic,
+  setRemoveFilters,
+  setSelectAlgoBrowsePage,
 } = filtersSlice.actions;
 
 export default filtersSlice.reducer;

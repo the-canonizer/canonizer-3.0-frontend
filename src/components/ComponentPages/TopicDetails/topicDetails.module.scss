@@ -44,7 +44,10 @@
       justify-content: space-between;
       border: none;
       padding-top: 0;
-
+      @media screen and (max-width: 767px) {
+        flex-wrap: wrap;
+        gap: 10px;
+      }
       [class="btnsWrap"] {
         display: flex;
         button {
@@ -83,6 +86,7 @@
             width: 100%;
             display: flex;
             justify-content: space-between;
+            flex-wrap: wrap;
           }
         }
       }
@@ -136,6 +140,18 @@
     }
     .btnCampForum {
       margin-right: 20px;
+      margin-left: 10px;
+      background-color: #4484ce;
+      box-shadow: none;
+      border-color: transparent;
+      font-size: 14px;
+
+      &:hover {
+        background-color: darken(#4484ce, 7%);
+      }
+    }
+    .btnEventLine {
+      margin-right: 10px;
       margin-left: 20px;
       background-color: #4484ce;
       box-shadow: none;
@@ -454,4 +470,31 @@
 
 .topicTitle {
   margin-bottom: 20px;
+}
+
+.campLeaderCrown {
+  margin-left: 14%;
+  margin-right: 14%;
+  margin-bottom: 18%;
+}
+.shareIcon {
+  font-size: 14px;
+  font-weight: 700;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: transparent !important;
+  outline: none !important;
+  padding: 0;
+  border: none !important;
+  box-shadow: none !important;
+  color: #1890ff;
+  margin-right: 22px;
+  span {
+    &:first-child {
+      margin-right: 0px;
+    }
+  }
 }

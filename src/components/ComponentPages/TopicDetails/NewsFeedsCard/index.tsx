@@ -195,7 +195,7 @@ const NewsFeedsCard = ({ newsFeed }: any) => {
                             <Tooltip
                               title={
                                 <>
-                                  This news is inherited from
+                                  This news is inherited from{" "}
                                   <Link
                                     href={news?.parent_camp_url}
                                     id="inherit-btn"
@@ -205,6 +205,7 @@ const NewsFeedsCard = ({ newsFeed }: any) => {
                                 </>
                               }
                             >
+                              {" "}
                               <DeleteOutlined />
                             </Tooltip>
                           ))

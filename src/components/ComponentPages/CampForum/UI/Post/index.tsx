@@ -34,6 +34,7 @@ const PostUI = ({
   threadDetailsLoading,
   isModalOpen,
   showModal,
+  createdAt,
 }: any) => (
   <Fragment>
     <Card
@@ -71,23 +72,38 @@ const PostUI = ({
             />
           ) : (
             <Fragment>
-              <Text id="thread-create-label">{`Thread Created at ${moment(
-                getTime(currentThread["created_at"])
-              ).format("MMM Do YYYY, h:mm:ss a")}`}</Text>{" "}
-              |{" "}
-              <Text id="started-by-label">
-                Started by{" "}
-                <Link
-                  href={`/user/supports/${
-                    currentThread["creation_nick_name_id"] || ""
-                  }?canon=${currentThread["namespace_id"] || 1}`}
-                  passHref
-                >
-                  <a className={styles.by}>
-                    {currentThread["creation_nick_name"]}
-                  </a>
-                </Link>
-              </Text>
+              {createdAt ? (
+                <Fragment>
+                  <Text id="thread-create-label">{`Thread Created on ${moment(
+                    getTime(createdAt)
+                  ).format("MMM Do YYYY, h:mm:ss a")}`}</Text>{" "}
+                  |{" "}
+                </Fragment>
+              ) : currentThread?.created_at ? (
+                <Fragment>
+                  <Text id="thread-create-label">{`Thread Created on ${moment(
+                    getTime(currentThread?.created_at)
+                  ).format("MMM Do YYYY, h:mm:ss a")}`}</Text>{" "}
+                  |{" "}
+                </Fragment>
+              ) : null}
+              {currentThread["creation_nick_name"] && (
+                <>
+                  <Text id="started-by-label">
+                    Started by{" "}
+                    <Link
+                      href={`/user/supports/${
+                        currentThread["creation_nick_name_id"] || ""
+                      }?canon=${currentThread["namespace_id"] || 1}`}
+                      passHref
+                    >
+                      <a className={styles.by}>
+                        {currentThread["creation_nick_name"]}
+                      </a>
+                    </Link>
+                  </Text>
+                </>
+              )}
             </Fragment>
           )}
         </div>

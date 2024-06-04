@@ -14,7 +14,7 @@ import {
   setCurrentTopicRecord,
   setCurrentCampRecord,
 } from "../../store/slices/campDetailSlice";
-import { formatTheDate } from "src/utils/generalUtility";
+import { formatTheDate, replaceSpecialCharacters } from "src/utils/generalUtility";
 import { setHistory } from "../../store/slices/campDetailSlice";
 import Layout from "src/hoc/layout";
 
@@ -24,8 +24,8 @@ import TopicDetails from "src/components/ComponentPages/TopicDetails";
 import { setCurrentDate } from "src/store/slices/filtersSlice";
 import { useEffect, useRef } from "react";
 import DataNotFound from "@/components/ComponentPages/DataNotFound/dataNotFound";
-import { replaceSpecialCharacters } from "src/utils/generalUtility";
-import Router, { useRouter } from "next/router";
+import { createToken } from "src/network/api/userApi";
+import { useRouter } from "next/router";
 
 const TopicDetailsPage = ({
   current_date,
@@ -65,10 +65,8 @@ const TopicDetailsPage = ({
     dispatch(setCurrentCampRecord(campRecord?.campData));
     dispatch(setCampStatement(campStatement));
     dispatch(setHistory(statementHistory));
-    // dispatch(setCanonizedAlgorithms(canonizedAlgorithms));
     dispatch(setTree(tree?.status_code == 200 ? [tree?.treeData] : []));
     dispatch(setCurrentDate(current_date));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   let ErrorStatus =
@@ -82,12 +80,13 @@ const TopicDetailsPage = ({
   return (
     <Layout>
       {tree?.status_code == 404 ||
-      (tree?.status_code == 422 &&
-        (campRecord?.status_code == 404 || campRecord?.status_code == 400)) ? (
+      campRecord?.status_code == 404 ||
+      campRecord?.status_code == 400 ? (
         <DataNotFound
           name={ErrorStatus}
           message={`${ErrorStatus} not found`}
           backURL={"/"}
+          goBack={true}
         />
       ) : (
         <TopicDetails serverSideCall={serverSideCall} />
@@ -98,7 +97,8 @@ const TopicDetailsPage = ({
 
 export async function getServerSideProps({ req, query }) {
   let topicNum = query?.camp[0]?.split("-")[0];
-  let campNum = query?.camp[1]?.split("-")[0] ?? 1;
+  let campNum = query?.camp[1]?.split("-")[0] || 1;
+  let token = null;
 
   const currentDate = new Date().valueOf();
   const reqBodyForService = {
@@ -132,6 +132,13 @@ export async function getServerSideProps({ req, query }) {
     page: 1,
   };
 
+  if (req.cookies["loginToken"]) {
+    token = req.cookies["loginToken"];
+  } else {
+    const response = await createToken();
+    token = response?.access_token;
+  }
+
   const [
     newsFeed,
     topicRecord,
@@ -140,16 +147,11 @@ export async function getServerSideProps({ req, query }) {
     statementHistory,
     tree,
   ] = await Promise.all([
-    getNewsFeedApi(reqBody, req.cookies["loginToken"]),
-    getCurrentTopicRecordApi(reqBody, req.cookies["loginToken"]),
-    getCurrentCampRecordApi(reqBody, req.cookies["loginToken"]),
-    getCanonizedCampStatementApi(reqBody, req.cookies["loginToken"]),
-    getHistoryApi(
-      reqBodyForCampData,
-      "1",
-      "statement",
-      req.cookies["loginToken"]
-    ),
+    getNewsFeedApi(reqBody, token),
+    getCurrentTopicRecordApi(reqBody, token),
+    getCurrentCampRecordApi(reqBody, token),
+    getCanonizedCampStatementApi(reqBody, token),
+    getHistoryApi(reqBodyForCampData, "1", "statement", token),
     getTreesApi(reqBodyForService),
   ]);
 

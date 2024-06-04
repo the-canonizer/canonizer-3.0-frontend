@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { Form } from "antd";
@@ -11,6 +11,7 @@ import {
   showRegistrationModal,
 } from "src/store/slices/uiSlice";
 import {
+  getNickNameList,
   login,
   resendOTPForRegistration,
   verifyOtp,
@@ -21,6 +22,8 @@ import OTPVerify from "../Registration/UI/otp";
 import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
 import { setValue } from "src/store/slices/utilsSlice";
 import messages from "src/messages";
+import { setUserNickNames } from "src/store/slices/authSlice";
+import { setManageSupportStatusCheck } from "src/store/slices/campDetailSlice";
 
 const Login = ({ isModal, isTest = false }: any) => {
   const remember = useSelector((state: RootState) => state.utils.remember_me);
@@ -36,20 +39,13 @@ const Login = ({ isModal, isTest = false }: any) => {
   const dispatch = useDispatch<AppDispatch>();
   const [form] = Form.useForm();
   const [otpForm] = Form.useForm();
+  const didMount = useRef(false);
 
   useEffect(() => setRememberValue(remember), [remember]);
 
-  // useEffect(() => {
-  //   if (rememberValue) {
-  //     form.setFieldsValue({ username: rememberValue.username });
-  //     form.setFieldsValue({ password: rememberValue.password });
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [rememberValue]);
-
   const closeModal = () => {
     dispatch(hideLoginModal());
-
+    dispatch(setManageSupportStatusCheck(false));
     isOtpScreen ? otpForm.resetFields() : form.resetFields();
     setIsOtpScreen(false);
     setErrorMsg("");
@@ -57,6 +53,13 @@ const Login = ({ isModal, isTest = false }: any) => {
 
   const openForgotPasswordModal = () => dispatch(showForgotModal());
   const openRegistration = () => dispatch(showRegistrationModal());
+
+  const fetchNickNameList = async () => {
+    let response = await getNickNameList();
+    if (response && response?.status_code === 200) {
+      dispatch(setUserNickNames(response?.data));
+    }
+  };
 
   const onFinish = async (values: any) => {
     setFormData({ email: values.username });
@@ -84,17 +87,16 @@ const Login = ({ isModal, isTest = false }: any) => {
         })
       );
       form.resetFields();
+      fetchNickNameList();
 
-      isModal ? closeModal() : "";
+      closeModal();
 
-      if (router?.query.returnUrl) {
-        router?.push(`${router?.query.returnUrl}`);
+      if (router?.query?.returnUrl) {
+        router?.push(`${router?.query?.returnUrl}`);
+      } else if (router?.pathname === "/login") {
+        router?.push("/");
       } else {
-        if (router?.pathname == "/login") {
-          router?.push("/");
-        } else {
-          closeModal();
-        }
+        closeModal();
       }
     }
 
@@ -111,6 +113,16 @@ const Login = ({ isModal, isTest = false }: any) => {
     }
   };
 
+  useEffect(() => {
+    if (didMount?.current) {
+      if (formData?.email && isOtpScreen) {
+        setFormData({ email: "" });
+        setIsOtpScreen(false);
+      }
+    } else didMount.current = true;
+    //eslint-disable-next-line
+  }, [router]);
+
   const onOTPClick = async (e) => {
     e.preventDefault();
     const emailPhone = form.getFieldValue("username");
@@ -119,6 +131,7 @@ const Login = ({ isModal, isTest = false }: any) => {
       let formBody = { email: emailPhone };
 
       const res = await resendOTPForRegistration(formBody);
+
       if (res && res.status_code === 200) {
         setFormData({ email: emailPhone });
         setIsOtpScreen(true);
@@ -145,14 +158,13 @@ const Login = ({ isModal, isTest = false }: any) => {
       if (res && res.status_code === 200) {
         otpForm.resetFields();
         setIsOtpScreen(false);
-        isModal ? closeModal() : "";
+
+        closeModal();
 
         if (router?.query.returnUrl) {
           router?.push(`${router?.query.returnUrl}`);
-        } else {
-          if (!router?.pathname?.includes("/forum/")) {
-            router?.push("/");
-          }
+        } else if (!router?.pathname?.includes("/forum/")) {
+          router?.push("/");
         }
       }
     } else {

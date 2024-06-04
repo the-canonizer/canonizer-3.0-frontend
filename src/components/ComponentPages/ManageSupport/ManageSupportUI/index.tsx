@@ -2,18 +2,21 @@ import React, { useState, useEffect } from "react";
 import { Card, Tag, Select, Button, Col, Form } from "antd";
 import { DraggableArea } from "react-draggable-tags";
 import { CloseCircleOutlined } from "@ant-design/icons";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 
 import styles from "../ManageSupportUI/ManageSupport.module.scss";
 
 import messages from "../../../../messages";
-import { RootState } from "src/store";
+import { RootState, store } from "src/store";
 import { addSupport, removeSupportedCamps } from "src/network/api/userApi";
 // import { GetActiveSupportTopic } from "src/network/api/topicAPI";
 import CustomSkelton from "src/components/common/customSkelton";
 import SupportRemovedModal from "src/components/common/supportRemovedModal";
 import My404 from "../../404";
+import { setIsSupportModal } from "src/store/slices/topicSlice";
+import { setCampActivityData } from "src/store/slices/recentActivitiesSlice";
+import { getCurrentCampRecordApi, getTopicActivityLogApi } from "src/network/api/campDetailApi";
 
 const { placeholders } = messages;
 
@@ -27,7 +30,6 @@ const ManageSupportUI = ({
   setManageSupportList,
   parentSupportDataList,
   getSupportStatusData,
-  cancelManageRoute,
   submitNickNameSupportCamps,
   selectedtNickname,
   setSelectedtNickname,
@@ -37,6 +39,7 @@ const ManageSupportUI = ({
   getManageSupportLoadingIndicator,
   setGetManageSupportLoadingIndicator,
   topicSupportListData,
+  handleCancelSupportCamps,
 }: any) => {
   const [tagsArrayList, setTagsArrayList] = useState([]);
   const [isTagDragged, setIsTagDragged] = useState(false);
@@ -45,16 +48,24 @@ const ManageSupportUI = ({
   // const [topicSupportList, setTopicSupportList] = useState([]);
   const [removeCampsSupport, setRemoveCampsSupport] = useState(false);
 
-  const { currentDelegatedSupportedClick, currentGetCheckSupportExistsData } =
-    useSelector((state: RootState) => ({
-      currentDelegatedSupportedClick:
-        state.supportTreeCard.currentDelegatedSupportedClick,
-      currentGetCheckSupportExistsData:
-        state.topicDetails.currentGetCheckSupportExistsData,
-    }));
+  const {
+    currentDelegatedSupportedClick,
+    currentGetCheckSupportExistsData,
+    campRecord,
+    asof,
+    asofdate,
+  } = useSelector((state: RootState) => ({
+    currentDelegatedSupportedClick:
+      state.supportTreeCard.currentDelegatedSupportedClick,
+    currentGetCheckSupportExistsData:
+      state.topicDetails.currentGetCheckSupportExistsData,
+    campRecord: state?.topicDetails?.currentCampRecord,
+    asof: state?.filters?.filterObject?.asof, 
+    asofdate: state?.filters?.filterObject?.asofdate,
+  }));
 
   const router = useRouter();
-
+  const dispatch = useDispatch();
   const [removeForm] = Form.useForm();
   // const openPopup = () => setIsSupportTreeCardModal(true);
   const closePopup = () => {};
@@ -93,8 +104,8 @@ const ManageSupportUI = ({
   const warningForDirecteSupportedCamps =
     "You are directly supporting one or more camps under this topic. If you continue your direct support will be removed.";
   const reqBodyData = {
-    topic_num: +router?.query?.manageSupport[0]?.split("-")[0],
-    camp_num: +router?.query?.manageSupport[1]?.split("-")[0],
+    topic_num: +router?.query?.camp[0]?.split("-")[0],
+    camp_num: +router?.query?.camp[1]?.split("-")[0],
   };
 
   // const topicNum = router?.query?.manageSupport?.at(0)?.split("-")?.at(0);
@@ -117,6 +128,15 @@ const ManageSupportUI = ({
   });
 
   const nickNameIDValue = nickNameloop?.[0]?.id;
+
+  async function getTopicActivityLogCall() {
+    let reqBody = {
+      topic_num: router?.query?.camp[0]?.split("-")[0],
+      camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
+    };
+    let res = await getTopicActivityLogApi(reqBody);
+    store.dispatch(setCampActivityData(res?.data?.items));
+  }
 
   useEffect(() => {
     // (async () => {
@@ -169,13 +189,23 @@ const ManageSupportUI = ({
     // }
     const response = await removeSupportedCamps(supportedCampsRemove);
     if (response && response.status_code == 200) {
-      let manageSupportPath = router?.asPath?.replace("/support/", "/topic/");
-      if (manageSupportPath?.lastIndexOf("_") > -1)
-        manageSupportPath = manageSupportPath.substring(
-          0,
-          manageSupportPath?.lastIndexOf("_")
-        );
-      router?.push(manageSupportPath);
+      // let manageSupportPath = router?.asPath?.replace("/support/", "/topic/");
+      // if (manageSupportPath?.lastIndexOf("_") > -1)
+      //   manageSupportPath = manageSupportPath.substring(
+      //     0,
+      //     manageSupportPath?.lastIndexOf("_")
+      //   );
+      // router?.push(manageSupportPath);
+      let reqBody = { 
+        as_of: asof, 
+        as_of_date: asofdate, 
+        topic_num: +router?.query?.camp[0]?.split("-")[0], 
+        camp_num: +router?.query?.camp[1]?.split("-")[0], 
+      }
+      getCurrentCampRecordApi(reqBody)
+
+      handleCancelSupportCamps({ isCallApiStatus: true });
+      getTopicActivityLogCall();
     }
   };
 
@@ -220,18 +250,21 @@ const ManageSupportUI = ({
     };
     let addedRes = await addSupport(addSupportId);
     if (addedRes && addedRes.status_code == 200) {
-      let manageSupportPath = router?.asPath?.replace("/support/", "/topic/");
+      // let manageSupportPath = router?.asPath?.replace("/support/", "/topic/");
       // if (manageSupportPath.lastIndexOf("_") > -1)
       //   manageSupportPath = manageSupportPath.substring(
       //     0,
       //     manageSupportPath.lastIndexOf("_")
       //   );
-      router?.push(manageSupportPath);
+      // router?.push(manageSupportPath);
+      handleCancelSupportCamps({ isCallApiStatus: true });
+      getTopicActivityLogCall();
     }
   };
 
   const CheckDelegatedOrDirect =
     currentDelegatedSupportedClick.delegatedSupportClick;
+  // const [CheckDelegatedOrDirect, setCheckDelegatedOrDirect] = useState(null);
 
   useEffect(() => {
     if (nickNameList?.length > 0) {
@@ -239,6 +272,12 @@ const ManageSupportUI = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nickNameList]);
+
+  // useEffect(() => {
+  //   setCheckDelegatedOrDirect(
+  //     currentDelegatedSupportedClick.delegatedSupportClick
+  //   );
+  // }, [currentDelegatedSupportedClick.delegatedSupportClick]);
 
   useEffect(() => {
     if (manageSupportList && manageSupportList.length > 0) {
@@ -296,13 +335,13 @@ const ManageSupportUI = ({
     />
   ) : (
     <>
-      <Card
+      <div
         className={styles.card_width}
-        title={
-          <div className={styles.main_card_title}>
-            {messages.labels.SupportedCamps}
-          </div>
-        }
+        // title={
+        //   <div className={styles.main_card_title}>
+        //     {messages.labels.SupportedCamps}
+        //   </div>
+        // }
       >
         {(CheckDelegatedOrDirect &&
           currentGetCheckSupportExistsData.is_confirm &&
@@ -436,6 +475,7 @@ const ManageSupportUI = ({
                           onClick={(e) => {
                             e.preventDefault();
                             window.location.href = tag.link;
+                            dispatch(setIsSupportModal(false));
                           }}
                         >
                           {tag?.camp_name}
@@ -495,6 +535,9 @@ const ManageSupportUI = ({
               }}
               showSearch
               optionFilterProp="children"
+              getPopupContainer={(triggerNode) => {
+                return triggerNode.parentNode;
+              }}
             >
               {nickNameList?.map((nick) => {
                 return (
@@ -517,11 +560,12 @@ const ManageSupportUI = ({
                     ? checkNickNameSupportCamps
                     : removeCampsSupport
                     ? checkNickNameSupportCamps
-                    : addRemoveApi
+                    : addRemoveApi     
                 }
                 disabled={
                   submitButtonDisable ||
-                  currentGetCheckSupportExistsData.disable_submit
+                  currentGetCheckSupportExistsData.disable_submit ||
+                  campRecord.is_archive == 1
                 }
               >
                 Submit
@@ -531,14 +575,16 @@ const ManageSupportUI = ({
                 id="cancelBtn"
                 htmlType="button"
                 className={styles.cancel_Btn}
-                onClick={cancelManageRoute}
+                onClick={() => {
+                  handleCancelSupportCamps({ isCallApiStatus: false });
+                }}
               >
                 Cancel
               </Button>
             </div>
           </Card>
         </div>
-      </Card>
+      </div>
 
       {/* modal data */}
       {/* <Modal

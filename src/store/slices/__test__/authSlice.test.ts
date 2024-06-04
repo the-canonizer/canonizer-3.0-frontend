@@ -18,7 +18,7 @@ describe("authSlice", () => {
       id: null,
       loggedInUser: null,
       authenticated: false,
-      authToken: null,
+
       token: "",
       authRefreshToken: null,
       permissions: [""],
@@ -28,13 +28,13 @@ describe("authSlice", () => {
 
   it("should handle setAuthToken", () => {
     const newState = authReducer(initialState, setAuthToken("newToken"));
-    expect(newState.authToken).toEqual("newToken");
+    expect(newState.token).toEqual("newToken");
   });
 
   it("should handle removeAuthToken", () => {
     const stateWithToken = { ...initialState, authToken: "existingToken" };
     const newState = authReducer(stateWithToken, removeAuthToken());
-    expect(newState.authToken).toEqual(null);
+    expect(newState.token).toEqual(null);
   });
 
   it("should handle setProfilePicture", () => {
@@ -79,7 +79,7 @@ describe("authSlice", () => {
     expect(newState.loggedInUser).toEqual(null);
     expect(newState.token).toEqual(null);
     expect(newState.authenticated).toEqual(false);
-    expect(newState.authToken).toEqual(null);
+
     expect(newState.authRefreshToken).toEqual(null);
     expect(newState.socialUsers).toEqual([]);
   });

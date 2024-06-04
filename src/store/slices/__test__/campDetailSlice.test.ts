@@ -101,17 +101,17 @@ describe("treeSlice", () => {
   it("should handle setCurrentTopicRecord", () => {
     const newState = treeReducer(
       initialState,
-      setCurrentTopicRecord("your current topic record")
+      setCurrentTopicRecord("your topic meta information")
     );
-    expect(newState.currentTopicRecord).toEqual("your current topic record");
+    expect(newState.currentTopicRecord).toEqual("your topic meta information");
   });
 
   it("should handle setCurrentCampRecord", () => {
     const newState = treeReducer(
       initialState,
-      setCurrentCampRecord("your current camp record")
+      setCurrentCampRecord("your camp meta information")
     );
-    expect(newState.currentCampRecord).toEqual("your current camp record");
+    expect(newState.currentCampRecord).toEqual("your camp meta information");
   });
 
   it("should handle setHistory", () => {

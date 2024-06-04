@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Card, Tag, Select, BackTop, Pagination } from "antd";
 import Link from "next/link";
@@ -42,8 +42,10 @@ export const UserProfileCard = ({
 
   const router = useRouter();
 
-  const reqBody = { campNum: +router?.query?.supports?.[0] };
-
+  useEffect(() => {
+    pageChange(1, 5);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userSupportedCampsList?.[0]?.topic]);
   const pageChange = (pageNumber, pageSize) => {
     setStartingPosition((pageNumber - 1) * pageSize);
     setEndingPosition((pageNumber - 1) * pageSize + pageSize);

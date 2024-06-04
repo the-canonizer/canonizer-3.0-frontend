@@ -24,6 +24,14 @@ export const searchSlice = createSlice({
     },
     searchValue: "",
     pageNumber: 1,
+    searchQueryValue: "",
+    selectedTopicFromAdvnaceFilterNickname: [],
+    selectNicknameIdFromGetApi : [],
+    selectNickNameIdFromDirectSupportTree :[],
+    clickAdvanceFilterOption:false,
+    selectedTopicFromAdvanceFilterAlgorithm:[],
+    selectedCampFromAdvanceFilterAlgorithm:[],
+    selectedStatementFromAdvanceFilterAlgorithm:[]
   },
   reducers: {
     setSearchData: (state, action) => {
@@ -57,6 +65,30 @@ export const searchSlice = createSlice({
     setPageNumber: (state, action) => {
       state.pageNumber = action.payload;
     },
+    setSearchQueryValue: (state, action) => {
+      state.searchQueryValue = action.payload;
+    },
+    setSelectedTopicFromAdvnaceFilterNickname: (state, action) => {
+      state.selectedTopicFromAdvnaceFilterNickname = action.payload;
+    },
+    setSelectNicknameIdFromGetApi: (state, action) => {
+      state.selectNicknameIdFromGetApi = action.payload;
+    },
+    setClickAdvanceFilterOption: (state, action) => {
+      state.clickAdvanceFilterOption = action.payload;
+    },
+    setSelectNickNameIdFromDirectSupportTree: (state, action) => {
+      state.selectNickNameIdFromDirectSupportTree = action.payload;
+    },
+    setSelectedTopicFromAdvanceFilterAlgorithm: (state, action) => {
+      state.selectedTopicFromAdvanceFilterAlgorithm = action.payload;
+    },
+    setSelectedCampFromAdvanceFilterAlgorithm: (state, action) => {
+      state.selectedCampFromAdvanceFilterAlgorithm = action.payload;
+    },
+    setSelectedStatementFromAdvanceFilterAlgorithm: (state, action) => {
+      state.selectedStatementFromAdvanceFilterAlgorithm = action.payload;
+    },
   },
 });
 
@@ -66,6 +98,14 @@ export const {
   setPageNumber,
   setSearchDataAll,
   setSearchMetaData,
+  setSearchQueryValue,
+  setSelectedTopicFromAdvnaceFilterNickname,
+  setSelectNicknameIdFromGetApi,
+  setClickAdvanceFilterOption,
+  setSelectNickNameIdFromDirectSupportTree,
+  setSelectedTopicFromAdvanceFilterAlgorithm,
+  setSelectedCampFromAdvanceFilterAlgorithm,
+  setSelectedStatementFromAdvanceFilterAlgorithm
 } = searchSlice.actions;
 
 export default searchSlice.reducer;

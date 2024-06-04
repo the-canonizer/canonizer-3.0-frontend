@@ -1,6 +1,6 @@
 import { message } from "antd";
 
-import { handleError, isServer } from "../../utils/generalUtility";
+import { getCookies, handleError, isServer } from "../../utils/generalUtility";
 import {
   setAuthToken,
   removeAuthToken,
@@ -10,19 +10,30 @@ import {
   setLogout,
 } from "../../store/slices/authSlice";
 import { showMultiUserModal, updateStatus } from "../../store/slices/uiSlice";
-import { setValue } from "../../store/slices/utilsSlice";
 import NetworkCall from "../networkCall";
 import UserRequest from "../request/userRequest";
 import { store } from "../../store";
-import { setFilterCanonizedTopics } from "../../store/slices/filtersSlice";
+import {
+  setFilterCanonizedTopics,
+  setRemoveFilters,
+} from "../../store/slices/filtersSlice";
 import { setHeaderData } from "src/store/slices/notificationSlice";
 import { setIsChecked } from "src/store/slices/recentActivitiesSlice";
 
 export const createToken = async () => {
   try {
     const token = await NetworkCall.fetch(UserRequest.createToken());
+
+    if (!isServer()) {
+      document.cookie =
+        "loginToken=" +
+        token?.data?.access_token +
+        "; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
+      localStorage.setItem("auth_token", token?.data?.access_token);
+    }
+
     store.dispatch(setAuthToken(token?.data?.access_token));
-    localStorage.setItem("auth_token", token?.data?.access_token);
+
     return token.data;
   } catch (error) {
     handleError(error);
@@ -31,21 +42,21 @@ export const createToken = async () => {
 
 export const login = async (email: string, password: string) => {
   try {
-    const authToken = await createToken();
-
     const res = await NetworkCall.fetch(
-      UserRequest.loginUser(email, password, authToken?.access_token)
+      UserRequest.loginUser(email, password, (getCookies() as any)?.loginToken)
     );
 
-    let payload = {
-      ...res.data.user,
-      token: res.data.auth?.access_token,
-      refresh_token: res.data?.auth?.refresh_token,
-    };
+    store.dispatch(setAuthToken(res.data.auth?.access_token));
+
     document.cookie =
       "loginToken=" +
       res.data.auth?.access_token +
       "; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
+
+    let payload = {
+      ...res.data.user,
+    };
+
     store.dispatch(setLoggedInUser(payload));
 
     return res;
@@ -73,6 +84,21 @@ export const logout = async (error = "", status = null, count: number = 1) => {
       store.dispatch(updateStatus(status));
       store.dispatch(setHeaderData({ count: 0, list: [] }));
       store.dispatch(setIsChecked(false));
+      store.dispatch(
+        setRemoveFilters({
+          page_number: 1,
+          page_size: 15,
+          nameSpace: "/General/",
+          namespace_id: "1",
+          asofdate: Date.now() / 1000,
+          asof: "default",
+          filterByScore: 0,
+          algorithm: "blind_popularity",
+          search: "",
+          includeReview: false,
+          is_archive: 0,
+        })
+      );
 
       if (+state.ui.apiStatus === +status) {
         return;
@@ -84,20 +110,24 @@ export const logout = async (error = "", status = null, count: number = 1) => {
       return true;
     }
 
-    if (!isServer()) {
-      localStorage.setItem("logout_type", "true");
-      store.dispatch(setValue({ label: "logout_type", value: true }));
-    }
-
     let res = await NetworkCall.fetch(UserRequest.logoutCall(auth.token));
 
-    store.dispatch(setLogout());
-    store.dispatch(setIsChecked(false));
-    store.dispatch(logoutUser());
-    store.dispatch(removeAuthToken());
-    document.cookie =
-      "loginToken=; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
-    store.dispatch(setHeaderData({ count: 0, list: [] }));
+    if (res?.status_code === 200) {
+      document.cookie =
+        "loginToken=; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
+
+      if (!(getCookies() as any)?.loginToken) {
+        const tRes = await createToken();
+        if (tRes?.access_token) {
+          store.dispatch(setLogout());
+          store.dispatch(setIsChecked(false));
+          store.dispatch(logoutUser());
+          store.dispatch(removeAuthToken());
+          store.dispatch(setHeaderData({ count: 0, list: [] }));
+        }
+      }
+    }
+
     return res;
   } catch (error) {
     store.dispatch(logoutUser());
@@ -109,10 +139,8 @@ export const logout = async (error = "", status = null, count: number = 1) => {
 
 export const register = async (values: object) => {
   try {
-    const authToken = await createToken();
-
     const res = await NetworkCall.fetch(
-      UserRequest.registerUser(values, authToken?.access_token)
+      UserRequest.registerUser(values, (getCookies() as any)?.loginToken)
     );
 
     return res;
@@ -133,17 +161,12 @@ export const register = async (values: object) => {
 
 export const verifyOtp = async (values: object) => {
   try {
-    const authToken = await createToken();
-
-    const res = await NetworkCall.fetch(
-      UserRequest.verifyUser(values, authToken?.access_token)
-    );
+    const res = await NetworkCall.fetch(UserRequest.verifyUser(values));
 
     let payload = {
       ...res.data.user,
-      token: res.data.auth?.access_token,
-      refresh_token: res.data?.auth?.refresh_token,
     };
+
     document.cookie =
       "loginToken=" +
       res.data.auth?.access_token +
@@ -157,11 +180,10 @@ export const verifyOtp = async (values: object) => {
 };
 
 export const changePassword = async (values: object) => {
-  let state = store.getState();
-  const { auth } = state;
+  const cc: any = getCookies();
+
   const res = await NetworkCall.fetch(
-    UserRequest.changePassword(values, auth.loggedInUser.token)
-    //UserRequest.changePassword(values, auth.token)
+    UserRequest.changePassword(values, cc?.loginToken)
   );
   return res;
 };
@@ -172,6 +194,23 @@ export const uploadProfileImage = async (reqbody) => {
     UserRequest.uploadProfileImage(reqbody, auth.loggedInUser.id)
   );
   return res;
+};
+
+export const AdvanceFilterSeacrhApi = async (body) => {
+  try {
+    const res = await NetworkCall.fetch(UserRequest.AdvanceFilterSeacrh(body));
+    return res;
+  } catch (err) {
+    handleError(err);
+    if (
+      err &&
+      err.error &&
+      err.error.data &&
+      err.error.data.status_code === 400
+    ) {
+      return err.error.data;
+    }
+  }
 };
 
 export const deleteProfileImage = () => {
@@ -185,10 +224,8 @@ export const deleteProfileImage = () => {
 // social login path
 export const socialLogin = async (values: object) => {
   try {
-    const authToken = await createToken();
-
     const res = await NetworkCall.fetch(
-      UserRequest.userSocialLogin(values, authToken?.access_token)
+      UserRequest.userSocialLogin(values, (getCookies() as any)?.loginToken)
     );
 
     return res;
@@ -198,18 +235,9 @@ export const socialLogin = async (values: object) => {
 };
 
 export const socialLoginCallback = async (values: object, router) => {
-  const state = store.getState();
-
   try {
-    let token = null;
-    let authToken = null;
-
-    if (state.auth.token) {
-      token = state.auth.token;
-    } else {
-      authToken = await createToken();
-      token = authToken?.access_token;
-    }
+    const cc: any = getCookies();
+    let token = cc?.loginToken;
 
     const res = await NetworkCall.fetch(
       UserRequest.userSocialLoginCallback(values, token)
@@ -217,8 +245,6 @@ export const socialLoginCallback = async (values: object, router) => {
 
     let payload = {
       ...res.data.user,
-      token: res.data.auth?.access_token,
-      refresh_token: res.data?.auth?.refresh_token,
     };
     document.cookie = "loginToken=" + res.data.auth?.access_token + ";path=/";
     store.dispatch(setLoggedInUser(payload));
@@ -259,9 +285,8 @@ export const socialLoginCallback = async (values: object, router) => {
 
 export const getCountryCodes = async () => {
   try {
-    const authToken = await createToken();
     const res = await NetworkCall.fetch(
-      UserRequest.getCountryCodes(authToken?.access_token)
+      UserRequest.getCountryCodes((getCookies() as any)?.loginToken)
     );
 
     return res;
@@ -277,7 +302,7 @@ export const GetUserProfileInfo = async (token = "") => {
   if (token) {
     tcn = token;
   } else {
-    tcn = auth.loggedInUser?.token;
+    tcn = auth?.token;
   }
   const res = await NetworkCall.fetch(UserRequest.GetUserProfileInfo(tcn))
     .then((value) => {
@@ -293,7 +318,7 @@ export const UpdateUserProfileInfo = async (values: object) => {
   let state = store.getState();
   const { auth } = state;
   const res = await NetworkCall.fetch(
-    UserRequest.UpdateUserProfileInfo(values, auth.loggedInUser.token)
+    UserRequest.UpdateUserProfileInfo(values, auth?.token)
   )
     .then((value) => {
       let payload = {
@@ -303,14 +328,7 @@ export const UpdateUserProfileInfo = async (values: object) => {
         phone_number: value.data.phone_number,
         birthday: value.data.birthday,
         email: value.data.email,
-        token: auth.loggedInUser.token,
-        refresh_token: auth.loggedInUser.refresh_token,
       };
-      document.cookie =
-        "loginToken=" +
-        value?.data.auth?.access_token +
-        "; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
-
       store.dispatch(setLoggedInUser(payload));
       return value;
     })
@@ -323,9 +341,7 @@ export const UpdateUserProfileInfo = async (values: object) => {
 export const GetMobileCarrier = async () => {
   let state = store.getState();
   const { auth } = state;
-  const res = await NetworkCall.fetch(
-    UserRequest.GetMobileCarrier(auth.loggedInUser?.token)
-  )
+  const res = await NetworkCall.fetch(UserRequest.GetMobileCarrier(auth?.token))
     .then((value) => {
       return value;
     })
@@ -338,9 +354,7 @@ export const GetMobileCarrier = async () => {
 export const SendOTP = async (values: object) => {
   let state = store.getState();
   const { auth } = state;
-  const res = await NetworkCall.fetch(
-    UserRequest.SendOTP(values, auth.loggedInUser.token)
-  )
+  const res = await NetworkCall.fetch(UserRequest.SendOTP(values, auth.token))
     .then((value) => {
       return value;
     })
@@ -354,7 +368,7 @@ export const VerifyOTP = async (values: object) => {
   let state = store.getState();
   const { auth } = state;
   const res = await NetworkCall.fetch(
-    UserRequest.VerifyOTP(values, auth.loggedInUser.token)
+    UserRequest.VerifyOTP(values, auth?.token)
   )
     .then((value) => {
       return value;
@@ -369,7 +383,7 @@ export const GetAlgorithmsList = async () => {
   let state = store.getState();
   const { auth } = state;
   const res = await NetworkCall.fetch(
-    UserRequest.GetAlgorithmsList(auth.loggedInUser?.token)
+    UserRequest.GetAlgorithmsList(auth?.token)
   )
     .then((value) => {
       return value;
@@ -383,9 +397,7 @@ export const GetAlgorithmsList = async () => {
 export const GetLanguageList = async () => {
   let state = store.getState();
   const { auth } = state;
-  const res = await NetworkCall.fetch(
-    UserRequest.GetLanguageList(auth.loggedInUser?.token)
-  )
+  const res = await NetworkCall.fetch(UserRequest.GetLanguageList(auth?.token))
     .then((value) => {
       return value;
     })
@@ -398,10 +410,11 @@ export const GetLanguageList = async () => {
 // forgot password
 export const forgotPasswordSendOTP = async (values: object) => {
   try {
-    const authToken = await createToken();
-
     const res = await NetworkCall.fetch(
-      UserRequest.forgotPasswordSendOTP(values, authToken?.access_token)
+      UserRequest.forgotPasswordSendOTP(
+        values,
+        (getCookies() as any)?.loginToken
+      )
     );
 
     return res;
@@ -412,10 +425,11 @@ export const forgotPasswordSendOTP = async (values: object) => {
 
 export const forgotPasswordVerifyOTP = async (values: object) => {
   try {
-    const authToken = await createToken();
-
     const res = await NetworkCall.fetch(
-      UserRequest.forgotPasswordVerifyOTP(values, authToken?.access_token)
+      UserRequest.forgotPasswordVerifyOTP(
+        values,
+        (getCookies() as any)?.loginToken
+      )
     );
 
     return res;
@@ -426,10 +440,11 @@ export const forgotPasswordVerifyOTP = async (values: object) => {
 
 export const forgotPasswordUpdate = async (values: object) => {
   try {
-    const authToken = await createToken();
-
     const res = await NetworkCall.fetch(
-      UserRequest.forgotPasswordUpdatePassword(values, authToken?.access_token)
+      UserRequest.forgotPasswordUpdatePassword(
+        values,
+        (getCookies() as any)?.loginToken
+      )
     );
 
     return res;
@@ -443,7 +458,7 @@ export const addNickName = async (values: object) => {
   const { auth } = state;
 
   const res = await NetworkCall.fetch(
-    UserRequest.addNickName(values, auth.loggedInUser.token)
+    UserRequest.addNickName(values, auth?.token)
   )
     .then((value) => {
       return value;
@@ -456,12 +471,16 @@ export const addNickName = async (values: object) => {
 };
 
 export const getNickNameList = async () => {
-  let state = store.getState();
-  const { auth } = state;
+  let state = await store.getState();
 
-  const res = await NetworkCall.fetch(
-    UserRequest.getNickNameList(auth.loggedInUser?.token)
-  )
+  const cc: any = getCookies();
+
+  const { auth } = state,
+    tc = cc?.loginToken;
+
+  let token = auth?.token || tc;
+
+  const res = await NetworkCall.fetch(UserRequest.getNickNameList(token))
     .then((value) => {
       return value;
     })
@@ -476,7 +495,7 @@ export const updateNickName = async (values: object, id: string) => {
   const { auth } = state;
 
   const res = await NetworkCall.fetch(
-    UserRequest.updateNickName(values, auth.loggedInUser.token, id)
+    UserRequest.updateNickName(values, auth?.token, id)
   )
     .then((value) => {
       return value;
@@ -489,10 +508,8 @@ export const updateNickName = async (values: object, id: string) => {
 
 export const resendOTPForRegistration = async (values: object) => {
   try {
-    const authToken = await createToken();
-
     const res = await NetworkCall.fetch(
-      UserRequest.resendOTPForRegistration(values, authToken?.access_token)
+      UserRequest.resendOTPForRegistration(values)
     );
 
     return res;
@@ -506,7 +523,7 @@ export const getDirectSupportedCampsList = async () => {
   const { auth } = state;
 
   const res = await NetworkCall.fetch(
-    UserRequest.getDirectSupportedCampsList(auth?.loggedInUser?.token)
+    UserRequest.getDirectSupportedCampsList(auth?.token)
   )
     .then((value) => {
       return value;
@@ -523,7 +540,7 @@ export const removeSupportedCampsEntireTopic = async (body) => {
   const { auth } = state;
 
   const res = await NetworkCall.fetch(
-    UserRequest.removeSupportedCampsEntireTopic(body, auth.loggedInUser.token)
+    UserRequest.removeSupportedCampsEntireTopic(body, auth?.token)
   )
     .then((value) => {
       return value;
@@ -540,7 +557,7 @@ export const removeOrUpdateDirectSupportCamps = async (body) => {
   const { auth } = state;
 
   const res = await NetworkCall.fetch(
-    UserRequest.removeOrUpdateDirectSupportCamps(body, auth.loggedInUser.token)
+    UserRequest.removeOrUpdateDirectSupportCamps(body, auth?.token)
   )
     .then((value) => {
       return value;
@@ -555,9 +572,7 @@ export const addSupport = async (body) => {
   let state = store.getState();
   const { auth } = state;
 
-  const res = await NetworkCall.fetch(
-    UserRequest.addSupport(body, auth.loggedInUser.token)
-  )
+  const res = await NetworkCall.fetch(UserRequest.addSupport(body, auth?.token))
     .then((value) => {
       return value;
     })
@@ -573,7 +588,7 @@ export const addDelegateSupportCamps = async (body) => {
   const { auth } = state;
 
   const res = await NetworkCall.fetch(
-    UserRequest.addDelegatedSupport(body, auth.loggedInUser.token)
+    UserRequest.addDelegatedSupport(body, auth?.token)
   )
     .then((value) => {
       return value;
@@ -589,7 +604,7 @@ export const getDelegatedSupportCampsList = async () => {
   const { auth } = state;
 
   const res = await NetworkCall.fetch(
-    UserRequest.getDelegatedSupportCampsList(auth.loggedInUser?.token)
+    UserRequest.getDelegatedSupportCampsList(auth?.token)
   )
     .then((value) => {
       return value;
@@ -605,7 +620,7 @@ export const userSocialAccountsList = async () => {
 
   try {
     const res = await NetworkCall.fetch(
-      UserRequest.userSocialAccountsList(state.auth.token)
+      UserRequest.userSocialAccountsList(state?.auth?.token)
     );
 
     return res;
@@ -619,7 +634,7 @@ export const userSocialAccountDelete = async (id: string) => {
 
   try {
     const res = await NetworkCall.fetch(
-      UserRequest.userSocialAccountDelete(state.auth.token, id)
+      UserRequest.userSocialAccountDelete(state?.auth?.token, id)
     );
 
     return res;
@@ -632,7 +647,7 @@ export const socialLoginLinkUser = async (values: object) => {
   const state = store.getState();
 
   try {
-    let token = state.auth.token;
+    let token = state?.auth?.token;
 
     const res = await NetworkCall.fetch(
       UserRequest.SocialLinkUser(values, token)
@@ -664,7 +679,7 @@ export const deactivateUser = async (body: object) => {
 
   try {
     const res = await NetworkCall.fetch(
-      UserRequest.UserDeactivate(body, state.auth.token)
+      UserRequest.UserDeactivate(body, state?.auth?.token)
     );
 
     return res;
@@ -678,7 +693,7 @@ export const uploadFile = async (body) => {
   const { auth } = state;
   try {
     const res = await NetworkCall.fetch(
-      UserRequest.UploadFile(body, auth.loggedInUser?.token)
+      UserRequest.UploadFile(body, auth?.token)
     );
     return res;
   } catch (err) {
@@ -699,7 +714,7 @@ export const getUploadFileAndFolder = async () => {
   const { auth } = state;
   try {
     const res = await NetworkCall.fetch(
-      UserRequest.GetUploadFileAndFolder(auth.loggedInUser?.token)
+      UserRequest.GetUploadFileAndFolder(auth?.token)
     );
     return res;
   } catch (err) {
@@ -719,7 +734,7 @@ export const createFolderApi = async (body) => {
   const { auth } = state;
   try {
     const res = await NetworkCall.fetch(
-      UserRequest.CreateFolder(body, auth.loggedInUser?.token)
+      UserRequest.CreateFolder(body, auth?.token)
     );
     return res;
   } catch (err) {
@@ -740,7 +755,7 @@ export const deleteFolderApi = async (id) => {
   const { auth } = state;
   try {
     const res = await NetworkCall.fetch(
-      UserRequest.DeleteFolder(id, auth.loggedInUser?.token)
+      UserRequest.DeleteFolder(id, auth?.token)
     );
     return res;
   } catch (err) {
@@ -761,7 +776,7 @@ export const deleteUploadFileApi = async (id) => {
   const { auth } = state;
   try {
     const res = await NetworkCall.fetch(
-      UserRequest.DeleteUploadFile(id, auth.loggedInUser?.token)
+      UserRequest.DeleteUploadFile(id, auth?.token)
     );
     return res;
   } catch (err) {
@@ -782,7 +797,7 @@ export const getFileInsideFolderApi = async (id) => {
   const { auth } = state;
   try {
     const res = await NetworkCall.fetch(
-      UserRequest.GetFileInsideAFolder(id, auth.loggedInUser?.token)
+      UserRequest.GetFileInsideAFolder(id, auth?.token)
     );
     return res;
   } catch (err) {
@@ -845,8 +860,6 @@ export const verifyEmailOnSocial = async (body) => {
 
     let payload = {
       ...res.data.user,
-      token: res.data.auth?.access_token,
-      refresh_token: res.data?.auth?.refresh_token,
     };
     document.cookie =
       "loginToken=" +
@@ -924,7 +937,7 @@ export const globalSearchUploadFiles = async (reqbody) => {
   const { auth } = state;
   try {
     const res = await NetworkCall.fetch(
-      UserRequest.GlobalSearchUploadedFiles(reqbody, auth.loggedInUser?.token)
+      UserRequest.GlobalSearchUploadedFiles(reqbody, auth?.token)
     );
     return res;
   } catch (err) {
@@ -947,6 +960,78 @@ export const globalSearchCanonizer = async (reqbody) => {
     const res = await NetworkCall.fetch(
       UserRequest.CanonizerGlobalSearch(reqbody, auth.loggedInUser?.token)
     );
+    return res;
+  } catch (err) {
+    handleError(err);
+    if (
+      err &&
+      err.error &&
+      err.error.data &&
+      err.error.data.status_code === 400
+    ) {
+      return err.error.data;
+    }
+  }
+};
+
+export const getChangeEmailRequest = async () => {
+  let state = store.getState();
+  const { auth } = state;
+  try {
+    const res = await NetworkCall.fetch(
+      UserRequest.changeEmailRequest(auth?.token)
+    );
+    return res;
+  } catch (err) {
+    handleError(err);
+    if (
+      err &&
+      err.error &&
+      err.error.data &&
+      err.error.data.status_code === 400
+    ) {
+      return err.error.data;
+    }
+  }
+};
+
+export const EmailChangeVerificationOTP = async (body) => {
+  try {
+    const res = await NetworkCall.fetch(UserRequest.emailChangeVerificationOTP(body));
+    return res;
+  } catch (err) {
+    handleError(err);
+    if (
+      err &&
+      err.error &&
+      err.error.data &&
+      err.error.data.status_code === 400
+    ) {
+      return err.error.data;
+    }
+  }
+};
+
+export const UpdateNewEmailVerification = async (body) => {
+  try {
+    const res = await NetworkCall.fetch(UserRequest.updateNewEmail(body));
+    return res;
+  } catch (err) {
+    handleError(err);
+    if (
+      err &&
+      err.error &&
+      err.error.data &&
+      err.error.data.status_code === 400
+    ) {
+      return err.error.data;
+    }
+  }
+};
+
+export const ReplaceAndUpdateNewEmail = async (body) => {
+  try {
+    const res = await NetworkCall.fetch(UserRequest.replaceAndUpdateEmail(body));
     return res;
   } catch (err) {
     handleError(err);

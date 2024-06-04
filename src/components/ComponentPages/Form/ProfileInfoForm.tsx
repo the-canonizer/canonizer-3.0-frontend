@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   Row,
   Col,
@@ -9,15 +10,21 @@ import {
   DatePicker,
   Radio,
   Space,
+  Modal,
 } from "antd";
 import moment from "moment";
+import PlacesAutocomplete from "react-places-autocomplete";
+
+import style from "./style.module.scss";
+
 import styles from "../ProfileInfo/ProfileInfoUI/ProfileInfo.module.scss";
 import messages from "../../../messages";
-import PlacesAutocomplete from "react-places-autocomplete";
 import CustomSkelton from "../../common/customSkelton";
-import { useEffect, useState } from "react";
 import ImageUploader from "../../ComponentPages/ImageUploader";
-import style from "./style.module.scss";
+import VerifyMobileNumber from "./VerifyMobileNumberForm";
+import { EmailChangeVerificationOTP, ReplaceAndUpdateNewEmail, UpdateNewEmailVerification, getChangeEmailRequest } from "src/network/api/userApi";
+import { FormOutlined } from "@ant-design/icons";
+
 const { Title } = Typography;
 const { Option } = Select;
 
@@ -33,9 +40,31 @@ function ProfileInfoForm({
   address,
   disableButton,
   postalCodeDisable,
+  mobileCarrier,
+  handleMobileNumberChange,
+  formVerify,
+  isOTPModalVisible,
+  setIsOTPModalVisible,
+  handleOTPCancel,
+  handleChangeOTP,
+  toggleVerifyButton,
+  userProfileSkeletonV,
+  setOTP,
+  otp,
+  setToggleVerifyButton,
 }: any) {
   // eslint-disable-next-line no-unused-vars
   const [gmapsLoaded, setgmapsLoaded] = useState(false);
+  const [open,setOpen] = useState(false)
+  const [newEmailId,setNewEmailId] = useState(false)
+  const [step, setStep] = useState(0);
+  const [generatedOtp, setGeneratedOtp] = useState("");
+  const [updatedEmail, setUpdatedEmail] = useState("");
+  const [newEmailOtp, setNewEmailOtp] = useState("");
+
+
+
+
   useEffect(() => {
     setgmapsLoaded(true);
   }, []);
@@ -73,6 +102,7 @@ function ProfileInfoForm({
   const selectAfter = (val, prvtPblc) => {
     return (
       <Select
+        data-testid="selectAfterHandleselectAfter"
         defaultValue={prvtPblc}
         className="select-after"
         onChange={handleselectAfter(val)}
@@ -90,6 +120,7 @@ function ProfileInfoForm({
   }) => (
     <div>
       <Input
+        data-testid="auto_complete"
         id="selectAddress_1"
         addonAfter={selectAfter("address_1", publicOrPrivate("address_1"))}
         placeholder={messages.placeholders.addressLine1}
@@ -138,11 +169,84 @@ function ProfileInfoForm({
       document.body.removeChild(scripttag);
     };
   }, []);
+  const handleCancel = () => {
+    setOpen(false);
+    setStep(0)
+  };
 
+  const getEmailChaneRequest = async()=>{
+    await getChangeEmailRequest()
+  }
+
+  const verifyEmail = async()=>{
+    const reBody = {
+      request_change:true,
+      verify_email: false,
+      otp:generatedOtp
+    }
+    try {
+      const response = await EmailChangeVerificationOTP(reBody);
+      return response.status_code;
+    } catch (error) {
+      console.error("Verification failed", error);
+      return null;
+    }
+  }
+
+  const updateNewEmail = async()=>{
+    const reqBody ={
+      email:updatedEmail
+    }
+    try {
+      const response = await UpdateNewEmailVerification(reqBody);
+      return response.status_code;
+    } catch (error) {
+      console.error("Verification failed", error);
+      return null;
+    }
+  }
+
+  const replaceAndUpdateNewEmail = async()=>{
+    const reqbody = {
+      email:updatedEmail,
+      set_primary:1,
+      otp:newEmailOtp
+    }
+    try {
+      const response = await ReplaceAndUpdateNewEmail(reqbody)
+      return response.status_code;
+    } catch (error) {
+      console.error("Verification failed", error);
+      return null;
+    }
+  }
+console.log(step,"step")
+const handleClick = async () => {
+  if (step === 1) {
+    const statusCode = await verifyEmail();
+    if (statusCode == 200) {
+      setUpdatedEmail("")
+      setStep(2);
+    }
+  } else if (step === 2) {
+    const statusCode = await updateNewEmail();
+    if (statusCode == 200) {
+      setStep(3);
+    }
+  } else if (step === 3) {
+    const statusCode = await replaceAndUpdateNewEmail();
+    if (statusCode ==200 ) {
+      setStep(4);
+    }
+  }else if (step === 4) {
+    setOpen(false); // Close the modal
+  }
+};
   // @ts-ignore
   if (privateFlags != "loading")
     return (
-      <Form
+  <div>
+     <Form
         name="profileInfo"
         form={form}
         onFinish={onFinish}
@@ -245,10 +349,15 @@ function ProfileInfoForm({
                 <Row>
                   <Col md={24}>
                     <Form.Item
+                    className="email-icon"
                       name="email"
                       label={messages.labels.email}
                       {...messages.emailRule}
                     >
+                     
+                      <FormOutlined className="email-edit-icon" onClick={()=>{getEmailChaneRequest();setOpen(true);setNewEmailId(false); setStep(1);setGeneratedOtp("")}} />
+                     
+                    
                       <Input
                         id="email"
                         addonAfter={selectAfter(
@@ -259,10 +368,12 @@ function ProfileInfoForm({
                         size="large"
                         disabled
                       />
+                  
+                      
                     </Form.Item>
                   </Col>
                   <Col md={24}>
-                    <Form.Item label="Date of Birth">
+                    <Form.Item label="Date of Birth" className="mb-0">
                       <Input.Group compact className={styles.date_picker}>
                         <Form.Item
                           name="birthday"
@@ -283,6 +394,7 @@ function ProfileInfoForm({
                         </Form.Item>
                         <Form.Item>
                           <Select
+                            data-testid="handleselectAfter"
                             size="large"
                             defaultValue={publicOrPrivate("birthday")}
                             onChange={handleselectAfter("birthday")}
@@ -298,6 +410,22 @@ function ProfileInfoForm({
                     </Form.Item>
                   </Col>
                 </Row>
+              </Col>
+              <Col md={24}>
+                <VerifyMobileNumber
+                  mobileCarrier={mobileCarrier}
+                  formVerify={formVerify}
+                  isOTPModalVisible={isOTPModalVisible}
+                  setIsOTPModalVisible={setIsOTPModalVisible}
+                  handleOTPCancel={handleOTPCancel}
+                  otp={otp}
+                  handleChangeOTP={handleChangeOTP}
+                  toggleVerifyButton={toggleVerifyButton}
+                  handleMobileNumberChange={handleMobileNumberChange}
+                  userProfileSkeletonV={userProfileSkeletonV}
+                  setOTP={setOTP}
+                  setToggleVerifyButton={setToggleVerifyButton}
+                />
               </Col>
             </Row>
           </div>
@@ -433,6 +561,41 @@ function ProfileInfoForm({
           </Button>
         </Form.Item>
       </Form>
+      <Modal
+          open={open}
+          onCancel={handleCancel}
+          footer={null}
+          closable={false}
+        >
+          <div className="modal_parent">
+          <h3>{step === 2?"Verify New Email Id":step === 4?"Success":"Update Email Id"}</h3>
+          <div className="otp-btn">
+          {step === 1?<div className="opt-btn-child">
+           <p>Please enter the OTP sent to your Registered Email ID</p>
+           <Input placeholder="Enter OTP Code" value={generatedOtp} onChange={(e)=>{setGeneratedOtp(e?.target?.value)}}/>
+          </div>: step === 2?
+           <div className="opt-btn-child">
+           <p className="m-0 new-email-id">New Email ID</p>
+           <Input placeholder="Enter New Email ID" value={updatedEmail} onChange={(e)=>{setUpdatedEmail(e?.target?.value)}}/>
+           </div>: step === 3?  
+           <div className="opt-btn-child">
+            <p>Please enter the OTP sent to your New Email ID</p>
+            <Input placeholder="Enter OTP Code" value={newEmailOtp} onChange={(e)=>{setNewEmailOtp(e?.target?.value)}}/>
+          </div>: step === 4 ?
+          <div className="last-step-modal">
+            <p>Your Email ID has been updated to</p>
+           <h3>{updatedEmail}</h3> 
+          </div>:""}
+          <Button onClick={handleClick}>{step === 3?"Submit":step == 4 ?"Ok":"Continue"}</Button>
+          </div>
+         
+          </div>
+         
+          
+          
+        </Modal>
+  </div>
+     
     );
   else
     return (

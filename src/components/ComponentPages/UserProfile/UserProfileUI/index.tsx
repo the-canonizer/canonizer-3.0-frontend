@@ -16,7 +16,7 @@ import DataNotFound from "../../DataNotFound/dataNotFound";
 
 const UserProfile = () => {
   const { isUserAuthenticated } = useAuthentication();
-  const token = useSelector((state: RootState) => state.auth.authToken);
+  const token = useSelector((state: RootState) => state.auth.token);
 
   const [profileData, setProfileData] = useState({} as any);
   const [userSupportedCampsList, setUserSupportedCampsList] = useState([]);
@@ -84,7 +84,7 @@ const UserProfile = () => {
     const userId = router?.query?.supports?.[0];
     const namespace_name_id = dropdownNameSpaceList
       ? dropdownNameSpaceList
-      : router?.query?.canon;
+      : router?.query?.canon ?? router?.query?.namespace;
     // if (dropdownNameSpaceList) {
     const query = `${userId}?namespace=${namespace_name_id}`;
     UserSupportedCampsListApi(query);

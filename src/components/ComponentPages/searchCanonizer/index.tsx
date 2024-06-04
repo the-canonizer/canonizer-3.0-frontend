@@ -1,19 +1,20 @@
 import React, { Fragment } from "react";
 import SearchSideBar from "../../common/SearchSideBar";
 import styles from "./search.module.scss";
-import { Empty, List, Tag } from "antd";
+import { Empty } from "antd";
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
 import moment from "moment";
-import CustomSkelton from "@/components/common/customSkelton";
+import CustomSkelton from "../../common/customSkelton";
 
 const Search = () => {
-  const { searchData } = useSelector((state: RootState) => ({
+  const { searchData, searchDataAll } = useSelector((state: RootState) => ({
     searchData: state?.searchSlice?.searchData,
+    searchDataAll: state?.searchSlice?.searchDataAll,
   }));
   const { loading } = useSelector((state: RootState) => ({
-    loading: state?.loading?.loading,
+    loading: state?.loading?.searchLoading,
   }));
   const covertToTime = (unixTime) => {
     return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
@@ -21,6 +22,11 @@ const Search = () => {
   const showEmpty = (msg) => {
     return <Empty description={msg} />;
   };
+  function replaceSpecialCharactersInLink(link) {
+    // Replace each special character with a series of hyphens
+    // return link.replace(/[-\\^$*+?.()|%#|[\]{}]/g, "-");
+    return link.replace(/[-\\^$*+?.()|%#|[\]{}@]/g, "-");
+  }
   return (
     <Fragment>
       <aside className="leftSideBar miniSideBar">
@@ -50,11 +56,13 @@ const Search = () => {
                 )}
                 <div className={styles.search_lists}>
                   <ul>
-                    {searchData?.topic?.slice(0, 5).map((x) => {
+                    {searchData?.topic?.slice(0, 5)?.map((x) => {
                       return (
                         <>
                           <li>
-                            <Link href={x.link}>
+                            <Link
+                              href={replaceSpecialCharactersInLink(x?.link)}
+                            >
                               <a>
                                 <label style={{ cursor: "pointer" }}>
                                   {x.type_value}
@@ -78,7 +86,7 @@ const Search = () => {
                 )}
                 <div className={styles.search_lists}>
                   <ul>
-                    {searchData?.camp?.slice(0, 5).map((x) => {
+                    {searchData?.camp?.slice(0, 5)?.map((x) => {
                       const jsonData = JSON.parse(
                         x.breadcrumb_data
                       ) as Array<any>;
@@ -136,11 +144,11 @@ const Search = () => {
                 )}
                 <div className={styles.search_lists}>
                   <ul>
-                    {searchData?.statement?.slice(0, 5).map((x) => {
+                    {searchData?.statement?.slice(0, 5)?.map((x) => {
                       const jsonData = JSON.parse(
                         x.breadcrumb_data
                       ) as Array<any>;
-                      const parsedData = jsonData.reduce(
+                      const parsedData = jsonData?.reduce(
                         (accumulator, currentVal, index) => {
                           const accIndex = index + 1;
                           accumulator[index] = {
@@ -157,9 +165,9 @@ const Search = () => {
                       return (
                         <>
                           <li>
-                            <a href={jsonData[0][1]?.camp_link}>
+                            <a href={jsonData?.[0]?.[1]?.camp_link}>
                               <h3 className={styles.statement_heading}>
-                                {jsonData.length > 1
+                                {jsonData?.length > 1
                                   ? jsonData?.[0]?.[1]?.camp_name
                                   : jsonData?.[0]?.[1]?.topic_name}
                               </h3>
@@ -179,7 +187,7 @@ const Search = () => {
                               ></div>
                             </div>
                             <div className={styles.tags_all}>
-                              {parsedData.reverse().map((obj, index) => {
+                              {parsedData?.reverse().map((obj, index) => {
                                 return (
                                   <>
                                     <a
@@ -209,7 +217,7 @@ const Search = () => {
                 )}
                 <div className={styles.search_lists}>
                   <ul>
-                    {searchData?.nickname?.slice(0, 5).map((x) => {
+                    {searchData?.nickname?.slice(0, 5)?.map((x) => {
                       return (
                         <>
                           <li>
@@ -224,7 +232,7 @@ const Search = () => {
                             <span className={styles.ml_auto}>
                               Supported camps:{" "}
                               <strong className={styles.yellow_color}>
-                                {x.support_count}
+                                {x.support_count == "" ? 0 : x.support_count}
                               </strong>{" "}
                             </span>
                           </li>

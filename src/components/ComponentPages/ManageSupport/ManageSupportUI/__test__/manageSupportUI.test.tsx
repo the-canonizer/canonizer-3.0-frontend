@@ -73,29 +73,6 @@ const setManageSupportList = [],
   setUpdatePostion = jest.fn();
 const submitButtonDisable = false;
 const unableToFindCamp = false;
-const campRecord = {
-  camp_about_nick_id: 0,
-  camp_about_nick_name: "joy",
-  camp_about_url: "",
-  camp_name: "Test Camp name",
-  camp_num: 0,
-  direct_archive: 0,
-  flag: 0,
-  go_live_time: 1685597186,
-  // is_archive: 0,
-  is_disabled: 0,
-  is_one_level: 0,
-  key_words: "",
-  nick_name: "",
-  note: 0,
-  parentCamps: [
-    {
-      camp_name: "Test Camp name",
-      camp_num: 1,
-      topic_num: 23,
-    },
-  ],
-};
 
 const manageSupport = ["abc-name", "def-age"];
 jest.mock("next/router", () => ({
@@ -219,9 +196,7 @@ describe("ManageSupportUI", () => {
     ).toBeTruthy();
   });
   it("suppor remove modal", () => {
-    const { getAllByTestId, container } = render(
-      <ManageSupport></ManageSupport>
-    );
+    const { getAllByTestId } = render(<ManageSupport></ManageSupport>);
     const remove_all_button = getAllByTestId("support-remove-modal")[0];
     expect(remove_all_button).toBeInTheDocument();
     fireEvent.click(remove_all_button);

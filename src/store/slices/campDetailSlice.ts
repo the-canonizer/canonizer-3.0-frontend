@@ -36,6 +36,7 @@ export const treeSlice = createSlice({
       disable_submit: null,
     },
     removedReasons: null,
+    changeGoneLive: false,
   },
   reducers: {
     setTree: (state, action) => {
@@ -111,6 +112,9 @@ export const treeSlice = createSlice({
     setRemovedReasons: (state, action) => {
       state.removedReasons = action.payload;
     },
+    setChangeGoneLive: (state, action) => {
+      state.changeGoneLive = action.payload;
+    },
   },
 });
 
@@ -132,6 +136,7 @@ export const {
   setManageSupportStatusCheck,
   setManageSupportUrlLink,
   setRemovedReasons,
+  setChangeGoneLive,
 } = treeSlice.actions;
 
 export default treeSlice.reducer;

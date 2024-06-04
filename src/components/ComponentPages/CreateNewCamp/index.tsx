@@ -18,6 +18,7 @@ import { replaceSpecialCharacters } from "src/utils/generalUtility";
 import isAuth from "../../../hooks/isUserAuthenticated";
 import { setShowDrawer } from "src/store/slices/filtersSlice";
 import { RootState } from "src/store";
+import DataNotFound from "../DataNotFound/dataNotFound";
 
 const CreateNewCamp = ({
   nickNames = [],
@@ -36,6 +37,7 @@ const CreateNewCamp = ({
   const [nickNameList, setNickNameList] = useState(nickNames);
   const [initialValue, setInitialValues] = useState(initialValues);
   const [parentCamp, setParentCamps] = useState(parentCamps);
+  const [campExist, setCampExist] = useState(true);
   const [campNickName, setCampNickName] = useState(campNickNames);
   const [params, setParams] = useState({});
   const [options, setOptions] = useState([...messages.preventCampLabel]);
@@ -114,6 +116,11 @@ const CreateNewCamp = ({
     let res = await getAllParentsCamp(body);
     if (res && res.status_code === 200) {
       setParentCamps(res.data);
+      if (res?.data?.length > 0) {
+        setCampExist(
+          res?.data?.some((parent) => parent?.camp_num == q?.camp_num)
+        );
+      }
     }
     setIsLoading(false);
   };
@@ -163,9 +170,8 @@ const CreateNewCamp = ({
       );
 
       const { camp } = router?.query;
-
-      router?.push(
-        `/topic/${replaceSpecialCharacters(camp[0], "-")}/${
+      const returnPath = localStorage.getItem("topicPath"),
+        defPath = `/topic/${replaceSpecialCharacters(camp[0], "-")}/${
           res?.data?.camp_num
         }-${replaceSpecialCharacters(
           values.camp_name,
@@ -176,8 +182,25 @@ const CreateNewCamp = ({
             : ""
         }&asof=${filterObject?.asof}&canon=${filterObject?.namespace_id}${
           viewThisVersion ? "&viewversion=1" : ""
-        }`
-      );
+        }`;
+
+      let pathToPush = defPath;
+
+      if (returnPath === "/forum/[topic]/[camp]/threads/[id]") {
+        pathToPush = `/forum/${camp[0]}/${
+          res?.data?.camp_num
+        }-${replaceSpecialCharacters(values.camp_name, "-")}/threads`;
+      } else if (returnPath === "/forum/[topic]/[camp]/threads") {
+        pathToPush = `/forum/${camp[0]}/${
+          res?.data?.camp_num
+        }-${replaceSpecialCharacters(values.camp_name, "-")}/threads`;
+      } else if (returnPath === "/forum/[topic]/[camp]/threads/create") {
+        pathToPush = `/forum/${camp[0]}/${
+          res?.data?.camp_num
+        }-${replaceSpecialCharacters(values.camp_name, "-")}/threads/create`;
+      }
+
+      router?.push(pathToPush);
 
       const oldOptions = [...options];
       await oldOptions.map((op) => {
@@ -186,6 +209,7 @@ const CreateNewCamp = ({
       });
       setOptions(oldOptions);
       dispatch(setShowDrawer(true));
+      localStorage.removeItem("topicPath");
       return;
     }
 
@@ -212,8 +236,8 @@ const CreateNewCamp = ({
 
   const onCancel = () => {
     const { camp } = router?.query;
-    router?.push(
-      `/topic/${replaceSpecialCharacters(
+    const returnPath = localStorage.getItem("topicPath"),
+      defPath = `/topic/${replaceSpecialCharacters(
         camp[0],
         "-"
       )}/${replaceSpecialCharacters(
@@ -225,8 +249,20 @@ const CreateNewCamp = ({
           : ""
       }&asof=${filterObject?.asof}&canon=${filterObject?.namespace_id}${
         viewThisVersion ? "&viewversion=1" : ""
-      }`
-    );
+      }`;
+
+    let pathToPush = defPath;
+
+    if (returnPath === "/forum/[topic]/[camp]/threads/[id]") {
+      pathToPush = `/forum/${camp[0]}/${camp[1]}/threads`;
+    } else if (returnPath === "/forum/[topic]/[camp]/threads") {
+      pathToPush = `/forum/${camp[0]}/${camp[1]}/threads`;
+    } else if (returnPath === "/forum/[topic]/[camp]/threads/create") {
+      pathToPush = `/forum/${camp[0]}/${camp[1]}/threads/create`;
+    }
+
+    router?.push(pathToPush);
+    localStorage.removeItem("topicPath");
   };
 
   // checkbox
@@ -260,20 +296,29 @@ const CreateNewCamp = ({
 
   return (
     <Fragment>
-      <CreateNewCampUI
-        onFinish={onFinish}
-        onCancel={onCancel}
-        form={form}
-        initialValue={initialValue}
-        topicData={params}
-        nickNameList={nickNameList}
-        parentCamp={parentCamp}
-        campNickName={campNickName}
-        options={options}
-        onCheckboxChange={onCheckboxChange}
-        onParentCampChange={onParentCampChange}
-        isLoading={isLoading}
-      />
+      {campExist ? (
+        <CreateNewCampUI
+          onFinish={onFinish}
+          onCancel={onCancel}
+          form={form}
+          initialValue={initialValue}
+          topicData={params}
+          nickNameList={nickNameList}
+          parentCamp={parentCamp}
+          campNickName={campNickName}
+          options={options}
+          onCheckboxChange={onCheckboxChange}
+          onParentCampChange={onParentCampChange}
+          isLoading={isLoading}
+        />
+      ) : (
+        <DataNotFound
+          name={"Camp"}
+          message={"Camp not found"}
+          backURL={"/"}
+          goBack={true}
+        />
+      )}
     </Fragment>
   );
 };

@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 // import ManageSupportUI from "./ManageSupportUI";
 import { message } from "antd";
-import CampInfoBar from "../TopicDetails/CampInfoBar";
 import dynamic from "next/dynamic";
 import {
   getAllUsedNickNames,
   getCurrentCampRecordApi,
+  getTopicActivityLogApi,
 } from "src/network/api/campDetailApi";
 import { useRouter } from "next/router";
 import {
@@ -14,7 +14,7 @@ import {
 } from "src/network/api/topicAPI";
 import { addDelegateSupportCamps, addSupport } from "src/network/api/userApi";
 import isAuth from "../../../hooks/isUserAuthenticated";
-import { RootState } from "src/store";
+import { RootState, store } from "src/store";
 import { useDispatch, useSelector } from "react-redux";
 import queryParams from "src/utils/queryParams";
 import {
@@ -22,12 +22,20 @@ import {
   setManageSupportStatusCheck,
 } from "src/store/slices/campDetailSlice";
 import moment from "moment";
+import { setCampActivityData } from "src/store/slices/recentActivitiesSlice";
 
 const ManageSupportUI = dynamic(async () => await import("./ManageSupportUI"), {
   ssr: false,
 });
 
-const ManageSupport = () => {
+const ManageSupport = ({
+  handleCancelSupportCamps,
+  selectNickId: getDelegateId,
+  setGetManageSupportLoadingIndicator,
+  getManageSupportLoadingIndicator,
+  getCheckStatusAPI,
+  isManageSupportPage = true,
+}: any) => {
   const { asof, asofdate } = useSelector((state: RootState) => ({
     asofdate: state.filters?.filterObject?.asofdate,
     asof: state?.filters?.filterObject?.asof,
@@ -48,13 +56,10 @@ const ManageSupport = () => {
   const [unableToFindCamp, setUnableToFindCamp] = useState<boolean>(false);
   const [updatePostion, setUpdatePostion] = useState<boolean>(false);
   const [submitButtonDisable, setSubmitButtonDisable] = useState(false);
-  const [
-    getManageSupportLoadingIndicator,
-    setGetManageSupportLoadingIndicator,
-  ] = useState(false);
+
   //get NickName List Data
   const getCanonizedNicknameList = async () => {
-    const topicNum = router?.query?.manageSupport?.at(0)?.split("-")?.at(0);
+    const topicNum = router?.query?.camp?.at(0)?.split("-")?.at(0);
     const body = { topic_num: topicNum };
 
     let res = await getAllUsedNickNames(topicNum && body);
@@ -64,8 +69,8 @@ const ManageSupport = () => {
   };
   //get Data for CurrentCampName from Api
   const reqBody = {
-    topic_num: +router?.query?.manageSupport?.at(0)?.split("-")?.at(0),
-    camp_num: +router?.query?.manageSupport?.at(1)?.split("-")?.at(0),
+    topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
+    camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
     as_of: asof,
     as_of_date:
       asof == "default" || asof == "review"
@@ -73,9 +78,6 @@ const ManageSupport = () => {
         : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
   };
   //Support page Link Url
-  const { manageSupportUrlLink } = useSelector((state: RootState) => ({
-    manageSupportUrlLink: state.topicDetails.manageSupportUrlLink,
-  }));
   const { currentDelegatedSupportedClick } = useSelector(
     (state: RootState) => ({
       currentDelegatedSupportedClick:
@@ -104,12 +106,12 @@ const ManageSupport = () => {
   const CheckDelegatedOrDirect =
     currentDelegatedSupportedClick.delegatedSupportClick;
   const reqBodyData: any = {
-    topic_num: +router?.query?.manageSupport?.[0]?.split("-")[0],
-    camp_num: +router?.query?.manageSupport?.[1]?.split("-")[0],
+    topic_num: +router?.query?.camp?.[0]?.split("-")[0],
+    camp_num: +router?.query?.camp?.[1]?.split("-")[0],
   };
-  const getDelegateId = router.asPath?.substring(
-    router.asPath.lastIndexOf("_") + 1
-  );
+  // const getDelegateId = router.asPath?.substring(
+  //   router.asPath.lastIndexOf("_") + 1
+  // );
 
   if (CheckDelegatedOrDirect && getDelegateId)
     reqBodyData.delegated_nick_name_id = getDelegateId;
@@ -132,6 +134,16 @@ const ManageSupport = () => {
   //     : "";
   // },[])
   //isUserAuthenticated
+
+  async function getTopicActivityLogCall() {
+    let reqBody = {
+      topic_num: router?.query?.camp[0]?.split("-")[0],
+      camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
+    };
+    let res = await getTopicActivityLogApi(reqBody);
+    store.dispatch(setCampActivityData(res?.data?.items));
+  }
+
   useEffect(() => {
     (async () => {
       if (isUserAuthenticated) {
@@ -144,7 +156,7 @@ const ManageSupport = () => {
 
           getActiveSupportTopicList(null, null, campRef.current);
           setSubmitButtonDisable(false);
-          dispatch(setManageSupportStatusCheck(false));
+          dispatch(setManageSupportStatusCheck(true));
         }
         // else {
         GetCheckStatusData(campRef);
@@ -156,12 +168,15 @@ const ManageSupport = () => {
   const GetCheckStatusData = async (campReff: any) => {
     let response = await GetCheckSupportExists(queryParams(reqBodyData));
     if (response && response?.status_code === 404) {
-      router?.push(router?.asPath?.replace("support", "topic"));
+      // router?.push(router?.asPath?.replace("support", "topic"));
+      handleCancelSupportCamps({ isCallApiStatus: false });
     }
     if (response && response.status_code === 200) {
-      if (response.data?.remove_camps)
+      if (response.data?.remove_camps) {
         setParentSupportDataList(response.data.remove_camps);
 
+        dispatch(setCheckSupportExistsData(response.data));
+      }
       if (!manageSupportStatusCheck || CheckDelegatedOrDirect) {
         response.data.warning;
         response.data.support_flag;
@@ -169,11 +184,13 @@ const ManageSupport = () => {
         dispatch(setCheckSupportExistsData({}));
         dispatch(setCheckSupportExistsData(response.data));
         getCanonizedNicknameList();
-        getActiveSupportTopicList(
-          response.data.warning,
-          response.data.support_flag,
-          campReff
-        );
+        if (isUserAuthenticated && !CheckDelegatedOrDirect) {
+          getActiveSupportTopicList(
+            response.data.warning,
+            response.data.support_flag,
+            campReff
+          );
+        }
         setSubmitButtonDisable(false);
       }
       if (manageSupportStatusCheck && response.data.disable_submit) {
@@ -235,8 +252,8 @@ const ManageSupport = () => {
   };
 
   //get data from url
-  const topicNum = router?.query?.manageSupport?.at(0)?.split("-")?.at(0);
-  const campNum = router?.query?.manageSupport?.at(1)?.split("-")?.at(0);
+  const topicNum = router?.query?.camp?.at(0)?.split("-")?.at(0);
+  const campNum = router?.query?.camp?.at(1)?.split("-")?.at(0);
   //const camp_Name = router?.query?.manageSupport?.at(1)?.split(/-(.*)/s);
 
   //replace use to - change to space
@@ -299,7 +316,7 @@ const ManageSupport = () => {
           setManageSupportList(manageSupportArr);
         } else {
           setManageSupportList([
-            ...fiterSupportedCamps,
+            // ...fiterSupportedCamps,
             ...manageSupportArr,
             ...resultFilterSupportCamp,
           ]);
@@ -350,17 +367,17 @@ const ManageSupport = () => {
   //   : manageSupportPath;
 
   //Cancel Button
-  const cancelManageRoute = () => {
-    let manageSupportPath1 = manageSupportUrlLink?.replace(
-      "/support/",
-      "/topic/"
-    );
-    if (manageSupportPath || manageSupportPath1) {
-      router?.push(
-        CheckDelegatedOrDirect ? manageSupportPath : manageSupportPath1
-      );
-    }
-  };
+  // const cancelManageRoute = () => {
+  // let manageSupportPath1 = manageSupportUrlLink?.replace(
+  //   "/support/",
+  //   "/topic/"
+  // );
+  // if (manageSupportPath || manageSupportPath1) {
+  //   router?.push(
+  //     CheckDelegatedOrDirect ? manageSupportPath : manageSupportPath1
+  //   );
+  // }
+  // };
 
   //Submit NickName Supported Camps
   const submitNickNameSupportCamps = async (reasonData) => {
@@ -372,7 +389,7 @@ const ManageSupport = () => {
     let topicNumId =
       manageSupportRevertData.length > 0
         ? manageSupportRevertData[0].topic_num
-        : router?.query?.manageSupport?.at(0)?.split("-")?.at(0);
+        : router?.query?.camp?.at(0)?.split("-")?.at(0);
     //order Update
     const filteredManageSupportList = manageSupportList.filter((obj) => {
       return !obj.dis;
@@ -485,8 +502,10 @@ const ManageSupport = () => {
       let res = await addDelegateSupportCamps(addDelegatedSupport);
       if (res && res.status_code == 200) {
         message.success(res.message);
+        getTopicActivityLogCall();
         //After Submit page is redirect to previous
-        router?.push(manageSupportPath);
+        // router?.push(manageSupportPath);
+        handleCancelSupportCamps({ isCallApiStatus: true });
       } else {
         setSubmitButtonDisable(false);
       }
@@ -494,12 +513,15 @@ const ManageSupport = () => {
       let res = await addSupport(addSupportId);
       if (res && res.status_code == 200) {
         message.success(res.message);
+        getTopicActivityLogCall();
         //After Submit page is redirect to previous
-        router?.push(manageSupportPath);
+        // router?.push(manageSupportPath);
+        handleCancelSupportCamps({ isCallApiStatus: false });
       } else {
         setSubmitButtonDisable(false);
       }
     }
+    handleCancelSupportCamps({ isCallApiStatus: true });
   };
   return (
     <>
@@ -507,14 +529,14 @@ const ManageSupport = () => {
         {/* <Sidebar /> */}
       </aside>
       <div className="pageContentWrap">
-        <CampInfoBar
+        {/* <CampInfoBar
           isTopicPage={true}
           payload={{
             topic_num: router?.query?.manageSupport?.at(0)?.split("-")?.at(0),
             camp_num:
               router?.query?.manageSupport?.at(1)?.split("-")?.at(0) ?? "1",
           }}
-        />
+        /> */}
         {campRecord && (
           <ManageSupportUI
             nickNameList={nickNameList}
@@ -527,7 +549,7 @@ const ManageSupport = () => {
             parentSupportDataList={parentSupportDataList}
             getSupportStatusData={getSupportStatusData}
             submitNickNameSupportCamps={submitNickNameSupportCamps}
-            cancelManageRoute={cancelManageRoute}
+            // cancelManageRoute={cancelManageRoute}
             setSelectedtNickname={setSelectedtNickname}
             selectedtNickname={selectedtNickname}
             submitButtonDisable={submitButtonDisable}
@@ -542,6 +564,8 @@ const ManageSupport = () => {
               setGetManageSupportLoadingIndicator
             }
             topicSupportListData={topicSupportListData}
+            handleCancelSupportCamps={handleCancelSupportCamps}
+            getCheckStatusAPI={getCheckStatusAPI}
           />
         )}
       </div>

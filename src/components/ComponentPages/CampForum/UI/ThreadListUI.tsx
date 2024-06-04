@@ -40,7 +40,6 @@ const ThreadListUI = ({
   current,
   total,
   filterThread,
-  onEditClick,
   paramsList,
   isLoading,
   isModalOpen = false,
@@ -270,9 +269,8 @@ const ThreadListUI = ({
                       {isLog && paramsList.by === "my" ? (
                         <Tooltip title="edit">
                           <a
-                            onClick={(e) => {
+                            onClick={() => {
                               onThreadEdit({ text, others });
-                              // onEditClick(e, others);
                             }}
                             className="linkCss"
                             data-testid="edit_btn"

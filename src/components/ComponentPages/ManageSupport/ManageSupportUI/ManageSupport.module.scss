@@ -121,6 +121,7 @@
 .card_width {
   flex: 1;
   margin-right: 8px;
+  width: 135%;
 }
 
 .card_heading {
@@ -160,6 +161,19 @@
   display: inline-block;
   width: 100%;
   color: #80141f;
+}
+.info {
+  background-color: #dbeefc;
+  border-color: #f8d7da;
+  position: relative;
+  padding: 8px 15px;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+  font-size: 13px;
+  display: inline-block;
+  width: 100%;
+  color: black;
 }
 .hrtag {
   display: inline-block;
@@ -223,5 +237,16 @@
     .clear_Btn {
       margin-top: 10px;
     }
+  }
+}
+@media screen and (max-width: 1100px) {
+  .card_width {
+    width: 137%;
+  }
+}
+
+@media screen and (max-width: 998px) {
+  .card_width {
+    width: 98%;
   }
 }

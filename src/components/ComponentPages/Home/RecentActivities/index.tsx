@@ -1,5 +1,14 @@
 import { useEffect, useMemo, useState, Fragment } from "react";
-import { Tabs, Typography, List, Button, Spin, Tooltip, Switch } from "antd";
+import {
+  Tabs,
+  Typography,
+  List,
+  Button,
+  Spin,
+  Tooltip,
+  Switch,
+  Popover,
+} from "antd";
 import { useRouter } from "next/router";
 import { LoadingOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,6 +23,8 @@ import useAuthentication from "../../../../hooks/isUserAuthenticated";
 import CustomSkelton from "../../../common/customSkelton";
 import { setIsChecked } from "src/store/slices/recentActivitiesSlice";
 import { getTopicActivityLogApi } from "src/network/api/campDetailApi";
+import { getProperties } from "src/utils/generalUtility";
+import ReasonsActivity from "src/components/common/SupportReasonActivity";
 
 const antIcon = <LoadingOutlined spin />;
 
@@ -255,6 +266,13 @@ export default function RecentActivities() {
     dispatch(setIsChecked(!isChecked));
   };
 
+  const handleTextOverflow = (text) => {
+    let str = convert(text?.replace(/<img[^>]*>/gi, ""), {
+      wordwrap: 130,
+    });
+    return str?.length > 90 ? str?.substring(0, 90) + "..." : str;
+  };
+
   return (
     <>
       <div className={`${styles.listCard} recentActivities_listWrap`}>
@@ -314,24 +332,35 @@ export default function RecentActivities() {
                       >
                         <>
                           <Text className={styles.text}>
-                            {activity?.activity?.description}
+                            {activity?.activity?.description}{" "}
+                            {activity?.activity?.log_name === "support" &&
+                              getProperties(activity?.activity)?.reason && (
+                                <Popover
+                                  content={
+                                    <div className={styles.reasonsText}>
+                                      <ReasonsActivity
+                                        CurrentItem={activity?.activity}
+                                      />
+                                    </div>
+                                  }
+                                  placement="top"
+                                  className={styles.algoInfoIcon}
+                                >
+                                  <i className="icon-info"></i>
+                                </Popover>
+                              )}
                             <br />
                             <Tooltip
+                              placement={"topLeft"}
                               title={
                                 decodedProperties?.topic_name
                                   ? `Topic: ${decodedProperties?.topic_name}` +
                                     (decodedProperties?.camp_name
                                       ? ` | Camp: ${decodedProperties?.camp_name}`
                                       : "")
-                                  : convert(
-                                      decodedProperties?.description?.replace(
-                                        /<img[^>]*>/gi,
-                                        ""
-                                      ),
-                                      {
-                                        wordwrap: 130,
-                                      }
-                                    ).substring(0, 90) + "..."
+                                  : handleTextOverflow(
+                                      decodedProperties?.description
+                                    )
                               }
                             >
                               {decodedProperties?.topic_name
@@ -349,16 +378,6 @@ export default function RecentActivities() {
                                     }
                                   )}
                             </Tooltip>
-                            {/* {decodedProperties?.description?.length > 100 ? (
-                                <Tooltip title={decodedProperties?.description}>
-                                  {decodedProperties?.description?.substring(
-                                    0,
-                                    97
-                                  ) + "..."}
-                                </Tooltip>
-                              ) : (
-                                decodedProperties?.description
-                              )} */}
                           </Text>
                           <Text className={styles.secondary} type="secondary">
                             <i className="icon-calendar"></i>
@@ -403,41 +422,20 @@ export default function RecentActivities() {
                             {activity?.activity?.description}
                             <br />
                             <Tooltip
-                              title={
-                                // decodedProperties?.topic_name
-                                //   ? `Topic: ${decodedProperties?.topic_name}` +
-                                //     (decodedProperties?.camp_name
-                                //       ? ` | Camp: ${decodedProperties?.camp_name}`
-                                //       : "")
-                                //   :
-                                convert(
-                                  decodedProperties?.description?.replace(
-                                    /<img[^>]*>/gi,
-                                    ""
-                                  ),
-                                  {
-                                    wordwrap: 130,
-                                  }
-                                ).substring(0, 90) + "..."
-                              }
+                              placement={"topLeft"}
+                              title={handleTextOverflow(
+                                decodedProperties?.description
+                              )}
                             >
-                              {
-                                // decodedProperties?.topic_name
-                                //   ? `Topic: ${decodedProperties?.topic_name}` +
-                                //     (decodedProperties?.camp_name
-                                //       ? ` | Camp: ${decodedProperties?.camp_name}`
-                                //       : "")
-                                //   :
-                                convert(
-                                  decodedProperties?.description?.replace(
-                                    /<img[^>]*>/gi,
-                                    ""
-                                  ),
-                                  {
-                                    wordwrap: 130,
-                                  }
-                                )
-                              }
+                              {convert(
+                                decodedProperties?.description?.replace(
+                                  /<img[^>]*>/gi,
+                                  ""
+                                ),
+                                {
+                                  wordwrap: 130,
+                                }
+                              )}
                             </Tooltip>
                           </Text>
                           <Text className={styles.secondary} type="secondary">

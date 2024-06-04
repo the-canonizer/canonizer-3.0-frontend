@@ -1,4 +1,5 @@
 @import "./fonts";
+@import "./video";
 @import "./speed-controller";
 
 :root {
@@ -12,6 +13,10 @@ body {
     "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
     "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
   background-color: #f8f8f8 !important;
+}
+
+.position-relative {
+  position: relative;
 }
 
 .diffdel {
@@ -284,7 +289,6 @@ del.diffmod img {
 
     @media screen and (max-width: 991px) {
       width: 100%;
-
       & + .pageContentWrap {
         width: 100%;
         margin: 0;
@@ -2248,6 +2252,9 @@ div[role="option"]::before {
 
 .Profile_btn {
   min-width: 150px;
+  @media screen and (max-width: 1580px) {
+    min-width: auto;
+  }
 }
 
 .tab--card > .ant-card-head {
@@ -2632,9 +2639,13 @@ div[role="option"]::before {
 }
 
 .topics-list-card-header {
-  padding: 15px;
+  padding: 15px 10px;
   display: flex;
-  gap: 1rem;
+
+  gap: 8px;
+  @media screen and (max-width: 1300px) {
+    flex-wrap: wrap;
+  }
 
   @media screen and (min-width: 768px) {
     justify-content: space-between;
@@ -2649,11 +2660,13 @@ div[role="option"]::before {
     margin-right: auto;
 
     @media screen and (min-width: 768px) {
-      margin-left: 15px;
+      margin-left: 0px;
       max-width: 100%;
       width: 100%;
     }
-
+    @media screen and (max-width: 1500px) {
+      margin-left: 0;
+    }
     @media screen and (max-width: 767px) {
       width: 100%;
     }
@@ -2888,7 +2901,7 @@ div[role="option"]::before {
 .topicDeskBTN {
   display: block;
   // background: red;
-  @media screen and (max-width: 1080px) {
+  @media screen and (max-width: 1200px) {
     margin-right: 0;
     display: none;
   }
@@ -2951,4 +2964,121 @@ div[role="option"]::before {
     background-color: transparent;
     border-radius: 50%;
   }
+}
+.upload-wrap {
+  position: relative;
+  .ant-upload-list-item-info {
+    border: 1px solid #2c6cb5;
+  }
+  .ant-btn-default {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    z-index: 10;
+    font-size: 20px;
+    border-color: #2c6cb5;
+    color: #2c6cb5;
+    background-color: #f8f8f8;
+    padding: 0 5px;
+    height: auto;
+    min-height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    svg {
+      width: 16px;
+    }
+  }
+}
+
+.edit-profile-picture {
+  left: 50%;
+  bottom: 36px;
+  border-radius: 15px;
+  z-index: 10;
+}
+.slider-skeleton {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  span:first-child {
+    display: flex;
+    gap: 10px;
+  }
+  br {
+    display: none;
+  }
+}
+.skeleton-slider2 {
+  margin: 15px 0;
+}
+
+.user-profile-wrap {
+  width: 100%;
+}
+.text-underline {
+  text-decoration: underline;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.topicDetailsSupportCollapseFooter {
+  display: flex;
+  justify-content: space-between;
+  border-top: #f0f0f0 1px solid;
+  margin: 20px -20px 0 -20px;
+  padding: 20px 20px 0 20px;
+
+  .ant-btn {
+    display: flex;
+    align-items: center;
+    padding: 8px 22px;
+    height: 38px;
+    color: #fff;
+    font-weight: 500;
+    border: none;
+
+    &:disabled {
+      color: rgba(0, 0, 0, 0.25);
+    }
+
+    @media screen and (min-width: 576px) {
+      &:not(:last-child) {
+        margin-right: 28px;
+      }
+    }
+
+    @media screen and (max-width: 575px) {
+      width: 100%;
+      justify-content: center;
+
+      & + .ant-btn {
+        margin-top: 0.5rem;
+      }
+    }
+  }
+}
+.event-line-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4;
+  button {
+    width: auto !important;
+    background-color: rgb(248, 157, 21);
+    border-color: rgb(248, 157, 21) !important;
+    color: #fff !important;
+    &:hover,
+    &:focus {
+      background-color: rgb(248, 157, 21);
+      border-color: rgb(248, 157, 21) !important;
+    }
+  }
+}
+
+@media screen and (max-width: 575px) {
+  .leftSideBar.miniSideBar {
+    width: auto;
+}
 }

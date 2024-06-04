@@ -1,9 +1,13 @@
-import React, { Fragment } from "react";
-import App, { AppContext, AppInitialProps } from "next/app";
+import React, { useEffect } from "react";
+import useState from "react-usestateref";
+import App, { AppContext, AppInitialProps, AppProps } from "next/app";
 import { Provider } from "react-redux";
 import { CookiesProvider } from "react-cookie";
+import { useRouter } from "next/router";
 
 import "antd/dist/antd.css";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 import "../../styles/globals.scss";
 import "../../styles/variables.less";
@@ -14,40 +18,136 @@ import "../assets/editorcss/editor.css";
 import ErrorBoundary from "../hoc/ErrorBoundary";
 import HeadContentAndPermissionComponent from "../components/common/headContentAndPermisisonCheck";
 import { store, wrapper } from "../store";
+
 import { metaTagsApi } from "src/network/api/metaTagsAPI";
 import { checkTopicCampExistAPICall } from "src/network/api/campDetailApi";
+import { getCookies } from "src/utils/generalUtility";
+import { createToken } from "src/network/api/userApi";
+import CustomSkelton from "@/components/common/customSkelton";
 
-class WrappedApp extends App<AppInitialProps> {
-  public render() {
-    const { Component, pageProps, meta, canonical_url } = this.props as any;
+type AppOwnProps = { meta: any; canonical_url: string; returnURL: string };
 
-    return (
-      <Fragment>
-        <CookiesProvider>
-          <Provider store={store}>
-            <ErrorBoundary>
-              <HeadContentAndPermissionComponent
-                componentName={Component.displayName || Component.name}
-                metaContent={meta}
-                canonical={canonical_url}
-              />
-              <Component {...pageProps} />
-            </ErrorBoundary>
-          </Provider>
-        </CookiesProvider>
-      </Fragment>
+function WrappedApp({
+  Component,
+  pageProps,
+  meta,
+  canonical_url,
+}: AppProps & AppOwnProps) {
+  const router = useRouter(),
+    // eslint-disable-next-line
+    [_, setIsAuthenticated, isAuthenticatedRef] = useState(
+      !!(getCookies() as any)?.loginToken
     );
-  }
+
+  useEffect(() => {
+    const fetchToken = async () => {
+      if (router?.asPath) {
+        let pre_route =
+          JSON.parse(localStorage.getItem("router_history")) || [];
+        let his_route = [...pre_route, router.asPath];
+        if (his_route?.length < 6) {
+          localStorage.setItem("router_history", JSON.stringify(his_route));
+        }
+      }
+
+      if (!(getCookies() as any)?.loginToken) {
+        setIsAuthenticated(false);
+        try {
+          await createToken();
+        } catch (error) {
+          // eslint-disable-next-line
+          console.error("Error fetching data:", error);
+        } finally {
+          setIsAuthenticated(true);
+        }
+      }
+    };
+
+    fetchToken();
+    /* eslint-disable */
+  }, [
+    router.pathname,
+    +router.query?.camp?.at(1)?.split("-")[0],
+    !!(getCookies() as any)?.loginToken,
+  ]);
+  /* eslint-enable */
+
+  useEffect(() => {
+    let isRouting = false;
+
+    const startRouting = () => {
+      isRouting = true;
+    };
+
+    const handleTabClose = (event) => {
+      if (!isRouting) {
+        // Your custom logic here
+        console.log("Tab is closing");
+        // Prevent the tab from closing, if necessary
+        event.preventDefault();
+        event.returnValue = "";
+        localStorage.removeItem("router_history");
+      }
+    };
+
+    // Listen to route change start events
+    router.events.on("routeChangeStart", startRouting);
+
+    // Cleanup function
+    return () => {
+      router.events.off("routeChangeStart", startRouting);
+      window.removeEventListener("beforeunload", handleTabClose);
+    };
+  }, [router.events]);
+
+  return (
+    <CookiesProvider>
+      <Provider store={store}>
+        <ErrorBoundary>
+          <HeadContentAndPermissionComponent
+            componentName={Component.displayName || Component.name}
+            metaContent={meta}
+            canonical={canonical_url}
+            {...pageProps}
+          />
+          {isAuthenticatedRef?.current &&
+          !!(getCookies() as any)?.loginToken ? (
+            <Component {...pageProps} />
+          ) : null}
+        </ErrorBoundary>
+      </Provider>
+    </CookiesProvider>
+  );
 }
 
-// Only uncomment this method if you have blocking data requirements for
-// every single page in your application. This disables the ability to
-// perform automatic static optimization, causing every page in your app to
-// be server-side rendered.
-//
+let lastAppName: string = "";
+const getTagData = async (req) => {
+  const defaultTags = {
+    page_name: "Home",
+    title: "Build consensus by canonizing what you believe is right",
+    description:
+      "Bringing the world together by canonizing what you believe is right. Your thoughts are processed through our pattented algorithims in a qualified & quantified camp where others can see, join & together change the world.",
+    author: "",
+  };
 
-let timeout;
-WrappedApp.getInitialProps = async (appContext: AppContext) => {
+  let metaData = defaultTags;
+  let metaResults;
+
+  if (
+    req?.page_name?.trim()?.toLowerCase() !== lastAppName?.trim()?.toLowerCase()
+  ) {
+    lastAppName = req?.page_name?.trim()?.toLowerCase();
+    metaResults = await metaTagsApi(req);
+    metaData = metaResults?.data;
+    return metaData;
+  }
+
+  return metaData;
+};
+
+WrappedApp.getInitialProps = async (
+  appContext: AppContext
+): Promise<AppOwnProps & AppInitialProps> => {
   // calls page's `getInitialProps` and fills `appProps.pageProps`
   const appProps = await App.getInitialProps(appContext);
 
@@ -57,6 +157,7 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
     0,
     appContext?.router?.asPath.lastIndexOf("/")
   );
+
   let path;
 
   if (prePath == "/manage/camp") {
@@ -80,7 +181,7 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
 
   const req = {
     page_name:
-      componentName == "SocialLoginCallbackPage" ? "Home" : componentName,
+      componentName === "SocialLoginCallbackPage" ? "Home" : componentName,
     keys: {
       topic_num: appContext.router?.asPath.includes("forum")
         ? path?.topic?.toLocaleString().split("-")[0]
@@ -96,27 +197,16 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
             ? appContext.router?.query?.id
             : null
           : null,
+      video_id:
+        appContext?.ctx?.query && componentName === "VideosPage"
+          ? appContext?.ctx?.query?.video[1]?.split("-")?.[0]
+          : null,
     },
   };
 
-  const defaultTags = {
-    page_name: "Home",
-    title: "Build consensus by canonizing what you believe is right",
-    description:
-      "Bringing the world together by canonizing what you believe is right. Your thoughts are processed through our pattented algorithims in a qualified & quantified camp where others can see, join & together change the world.",
-    author: "",
-  };
+  const metaData = await getTagData(req);
 
-  let metaResults;
-  if (timeout) timeout = clearTimeout(timeout);
-
-  if (!timeout) {
-    timeout = setTimeout(async () => {
-      metaResults = await metaTagsApi(req);
-    }, 1500);
-  }
-  const metaData =
-    metaResults?.status_code == 200 ? metaResults.data : defaultTags;
+  // console.log(aspath'metaData----', metaData, 'componentName----', componentName)
 
   /**
    *
@@ -343,12 +433,16 @@ WrappedApp.getInitialProps = async (appContext: AppContext) => {
     appContext.ctx.res.end();
   }
 
-  return { ...appProps, meta: metaData, returnURL: returnData, canonical_url };
+  return {
+    ...appProps,
+    meta: metaData,
+    returnURL: returnData,
+    canonical_url,
+  };
 };
 
-// const googleAPIKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
-//export default wrapper.withRedux(MyApp);
-// export default scriptLoader([
-//   `https://maps.googleapis.com/maps/api/js?key=${googleAPIKey}&libraries=places`,
-// ])
 export default wrapper.withRedux(WrappedApp);
+
+// const ClearCacheApp = withClearCache(WrappedApp);
+
+// export default wrapper.withRedux(ClearCacheApp);

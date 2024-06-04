@@ -2,6 +2,8 @@
   overflow: hidden;
   .contentWrap {
     padding: 16px 15px;
+    min-height: calc(100vh - 397px);
+
     @media screen and (min-width: 768px) {
       display: flex;
     }
@@ -106,8 +108,11 @@
     }
   }
   .rightSidebar {
-    @media screen and (min-width: 768px) {
+    @media screen and (min-width: 820px) {
       width: 180px;
+    }
+    @media screen and (max-width: 820px) {
+      display: none;
     }
     /* @media screen and (max-width: 991px) {
       width: 100%;

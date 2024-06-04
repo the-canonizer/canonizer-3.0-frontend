@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Tree, Tooltip, Popover, Typography } from "antd";
+import { Tree, Tooltip, Popover, Typography, Button } from "antd";
 import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "../../../../store";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import ProgressBar from "@ramonak/react-progress-bar";
+
 import styles from "../topicDetails.module.scss";
 
+import useAuthentication from "src/hooks/isUserAuthenticated";
+import { RootState } from "../../../../store";
 import { setCurrentCamp } from "../../../../store/slices/filtersSlice";
 import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
-import useAuthentication from "src/hooks/isUserAuthenticated";
-import ProgressBar from "@ramonak/react-progress-bar";
 
 const { TreeNode } = Tree;
 
@@ -29,6 +30,8 @@ const CampTree = ({
     topicRecord,
     filterObject,
     viewThisVersion,
+    is_camp_archive_checked,
+    campRecord,
   } = useSelector((state: RootState) => ({
     tree: state?.topicDetails?.tree,
     filterByScore: state.filters?.filterObject?.filterByScore,
@@ -37,9 +40,8 @@ const CampTree = ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
     filterObject: state?.filters?.filterObject,
     viewThisVersion: state?.filters?.viewThisVersionCheck,
-  }));
-  const { is_camp_archive_checked } = useSelector((state: RootState) => ({
     is_camp_archive_checked: state?.utils?.archived_checkbox,
+    campRecord: state?.topicDetails?.currentCampRecord,
   }));
 
   let childExpandTree = [];
@@ -47,8 +49,6 @@ const CampTree = ({
   const [uniqueKeys, setUniqueKeys] = useState([]);
   const [showScoreBars, setShowScoreBars] = useState(false);
   const [selectedExpand, setSelectedExpand] = useState([]);
-  // const [autoExpandParent, setAutoExpandParent] = useState(true);
-  // const [selectedNodeID, setSelectedNodeID] = useState(1);
   const [scoreFilter, setScoreFilter] = useState(filterByScore);
   const [includeReview, setIncludeReview] = useState(
     review == "review" ? true : false
@@ -109,6 +109,7 @@ const CampTree = ({
     } else return childExpandTree;
     return childExpandTree;
   };
+
   const mergeArray = (arry1 = [], arry2 = []) => {
     const mergedSet = new Set([...arry1.map(String), ...arry2.map(String)]);
     const output = Array.from(mergedSet).sort((x, y) =>
@@ -165,7 +166,7 @@ const CampTree = ({
     let keyexistSession =
       sesionexpandkeys &&
       tree?.at(0) &&
-      sesionexpandkeys.find(
+      sesionexpandkeys?.find(
         (age) => age.topic_id == tree?.at(0)["1"]?.topic_id
       );
 
@@ -206,7 +207,7 @@ const CampTree = ({
       setDefaultExpandKeys(expandKeys);
       setUniqueKeys(uniquekeyss);
       if (tree?.at(0)) {
-        let index = sesionexpandkeys.findIndex(
+        let index = sesionexpandkeys?.findIndex(
           (item) => item.topic_id === tree?.at(0)["1"]?.topic_id
         );
         if (index !== -1) {
@@ -309,6 +310,7 @@ const CampTree = ({
             : setTotalCampScoreForSupportTree(data[item].score);
         }
       }
+
       if (data[item].children) {
         if (data[item].score >= scoreFilter) {
           return data[item].is_archive == 0 ||
@@ -458,10 +460,14 @@ const CampTree = ({
                 }}
               >
                 {data[item].camp_id ===
-                  +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1) &&
+                  +(Array.isArray(router?.query?.camp)
+                    ? router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1
+                    : (router?.query?.camp as string)?.split("-")?.at(0) ??
+                      1) &&
                   _isDisabled == 0 &&
                   parentIsOneLevel == 0 &&
-                  _isArchive == 0 && (
+                  _isArchive == 0 &&
+                  campRecord?.is_archive == 0 && (
                     <TreeNode
                       key={"custom"}
                       title={
@@ -469,19 +475,32 @@ const CampTree = ({
                           <Link
                             href={{
                               pathname: `/camp/create/${replaceSpecialCharacters(
-                                router?.query.camp[0],
+                                Array.isArray(router?.query?.camp)
+                                  ? router?.query.camp[0]
+                                  : (router?.query?.topic as string),
                                 "-"
                               )}/${
                                 router?.query.camp[1]
                                   ? replaceSpecialCharacters(
-                                      router?.query.camp[1],
+                                      Array.isArray(router?.query.camp)
+                                        ? router?.query.camp[1]
+                                        : router?.query.camp,
                                       "-"
                                     )
                                   : 1
                               }`,
                             }}
                           >
-                            <a>{`<Start new supporting camp here>`} </a>
+                            <a
+                              onClick={() => {
+                                localStorage.setItem(
+                                  "topicPath",
+                                  router?.pathname
+                                );
+                              }}
+                            >
+                              {`<Start new supporting camp here>`}{" "}
+                            </a>
                           </Link>
                         </p>
                       }
@@ -531,6 +550,18 @@ const CampTree = ({
     let uniqueArraytoString = uniqueArray.map(String);
     return uniqueArraytoString;
   };
+  const eventLinePath = () => {
+    let topicId = tree && tree[0][1]?.topic_id;
+    let topicName = tree && tree[0][1]?.title;
+    let campId = tree && tree[0][1]?.camp_id;
+
+    let URL = `/eventline/${topicId}-${replaceSpecialCharacters(
+      topicName,
+      "-"
+    )}/${campId}`;
+
+    router.push(URL);
+  };
 
   return tree?.at(0) ? (
     (showTree && tree?.at(0)["1"]?.title != "" && defaultExpandKeys) ||
@@ -539,78 +570,92 @@ const CampTree = ({
         <Typography.Paragraph
           className={`${styles.topicTitleStyle} ${styles.topicTitle}`}
         >
-          <span className="normal">Topic : </span>
-          {tree?.length && tree[0] ? (
-            <Link
-              href={`${
-                includeReview
-                  ? isForumPage
-                    ? tree[0]["1"]?.review_link
-                        ?.replace("#statement", "")
-                        ?.replace("/topic/", "/forum/") + "/threads"
-                    : tree[0]["1"]?.review_link?.replace("#statement", "")
-                  : isForumPage
-                  ? tree[0]["1"]?.link
-                      ?.replace("#statement", "")
-                      ?.replace("/topic/", "/forum/") + "/threads"
-                  : tree[0]["1"]?.link?.replace("#statement", "")
-              }?filter=${treeExpandValue}&score=${filterByScore}&algo=${
-                filterObject?.algorithm
-              }${
-                filterObject?.asof == "bydate"
-                  ? "&asofdate=" + filterObject?.asofdate
-                  : ""
-              }&asof=${filterObject?.asof}&canon=${filterObject?.namespace_id}${
-                viewThisVersion ? "&viewversion=1" : ""
-              }`}
-              className={styles.boldBreadcrumb}
-            >
-              <a
-                className={`${
-                  tree[0]["1"].is_archive == 1
-                    ? `font-weight-bold tra ${styles.archive_grey}`
-                    : tree[0]["1"]?.camp_id ==
-                        router?.query?.camp?.at(1)?.split("-")?.at(0) ?? "1"
-                    ? `font-weight-bold ${styles.activeCamp}`
-                    : ""
-                } ${
-                  isForumPage &&
-                  tree[0]["1"]?.camp_id ==
-                    ((router?.query?.camp as string)?.split("-")?.at(0) ?? "1")
-                    ? `font-weight-bold forumActive ${styles.activeCamp}`
-                    : ""
-                }`}
-              >
-                {tree[0]["1"].is_archive == 1 ? (
-                  <Popover content="Archived Camp">
-                    {includeReview
-                      ? tree[0]["1"]?.review_title
-                      : tree[0]["1"]?.title}
-                  </Popover>
-                ) : includeReview ? (
-                  tree[0]["1"]?.review_title
+          <div className="event-line-wrapper">
+            <div>
+              <span className="normal">Topic : </span>
+              {tree?.length && tree[0] ? (
+                <Link
+                  href={`${
+                    includeReview
+                      ? isForumPage
+                        ? tree[0]["1"]?.review_link
+                            ?.replace("#statement", "")
+                            ?.replace("/topic/", "/forum/") + "/threads"
+                        : tree[0]["1"]?.review_link?.replace("#statement", "")
+                      : isForumPage
+                      ? tree[0]["1"]?.link
+                          ?.replace("#statement", "")
+                          ?.replace("/topic/", "/forum/") + "/threads"
+                      : tree[0]["1"]?.link?.replace("#statement", "")
+                  }?filter=${treeExpandValue}&score=${filterByScore}&algo=${
+                    filterObject?.algorithm
+                  }${
+                    filterObject?.asof == "bydate"
+                      ? "&asofdate=" + filterObject?.asofdate
+                      : ""
+                  }&asof=${filterObject?.asof}&canon=${
+                    filterObject?.namespace_id
+                  }${viewThisVersion ? "&viewversion=1" : ""}`}
+                  className={styles.boldBreadcrumb}
+                  replace
+                >
+                  <a
+                    className={`${
+                      tree[0]["1"].is_archive == 1
+                        ? `font-weight-bold tra ${styles.archive_grey}`
+                        : tree[0]["1"]?.camp_id ==
+                            router?.query?.camp?.at(1)?.split("-")?.at(0) ?? "1"
+                        ? `font-weight-bold ${styles.activeCamp}`
+                        : ""
+                    } ${
+                      isForumPage &&
+                      tree[0]["1"]?.camp_id ==
+                        ((router?.query?.camp as string)?.split("-")?.at(0) ??
+                          "1")
+                        ? `font-weight-bold forumActive ${styles.activeCamp}`
+                        : ""
+                    }`}
+                  >
+                    {tree[0]["1"].is_archive == 1 ? (
+                      <Popover content="Archived Camp">
+                        {includeReview
+                          ? tree[0]["1"]?.review_title
+                          : tree[0]["1"]?.title}
+                      </Popover>
+                    ) : includeReview ? (
+                      tree[0]["1"]?.review_title
+                    ) : (
+                      tree[0]["1"]?.title
+                    )}
+                  </a>
+                </Link>
+              ) : (
+                ""
+              )}{" "}
+              <span className={styles.subScriptionIcon}>
+                {isUserAuthenticated && !!topicRecord?.topicSubscriptionId ? (
+                  <Tooltip
+                    title="You have subscribed to the entire topic."
+                    key="camp_subscribed_icon"
+                  >
+                    <small style={{ alignSelf: "center", marginLeft: "10px" }}>
+                      <i className="icon-subscribe text-primary"></i>
+                    </small>
+                  </Tooltip>
                 ) : (
-                  tree[0]["1"]?.title
+                  ""
                 )}
-              </a>
-            </Link>
-          ) : (
-            ""
-          )}{" "}
-          <span className={styles.subScriptionIcon}>
-            {isUserAuthenticated && !!topicRecord?.topicSubscriptionId ? (
-              <Tooltip
-                title="You have subscribed to the entire topic."
-                key="camp_subscribed_icon"
-              >
-                <small>
-                  <i className="icon-subscribe text-primary"></i>
-                </small>
-              </Tooltip>
-            ) : (
-              ""
-            )}
-          </span>
+              </span>
+            </div>
+            <Button
+              type="primary"
+              size="small"
+              onClick={eventLinePath}
+              id="event-line-btn"
+            >
+              Event Line
+            </Button>
+          </div>
         </Typography.Paragraph>
         <Tree
           showLine={{ showLeafIcon: false }}
