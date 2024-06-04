@@ -155,7 +155,8 @@ const TopicDetails = ({ serverSideCall }: any) => {
   const topic_Name = result?.split("-")?.join(" ");
 
   if(tree && (tree[1]?.topic_id == parts[0] && tree[1]?.title != topic_Name)){
-    let asPath=tree[1]?.link    
+    // let asPath=tree[1]?.link
+    const asPath = `${tree[1].topic_id}-${tree[1].title}/1-Agreement`;    
      router.push(router.pathname,asPath)
  }    
   },[router?.query?.camp,tree])
