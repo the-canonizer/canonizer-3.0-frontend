@@ -85,7 +85,11 @@
     "redux-thunk": "^2.4.2",
     "sanitize-html": "^2.7.0",
     "sass": "^1.44.0",
-    "slick-carousel": "^1.8.1"
+    "slick-carousel": "^1.8.1",
+    "argon2": "^0.40.1",
+    "comma-number": "^2.1.0",
+    "hash-wasm": "4.5.0",
+    "numeral": "^2.0.6"
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^13.4.9",
