@@ -14,7 +14,7 @@ import {
   setCurrentTopicRecord,
   setCurrentCampRecord,
 } from "../../store/slices/campDetailSlice";
-import { formatTheDate, parseCookies } from "src/utils/generalUtility";
+import { formatTheDate, parseCookies, replaceSpecialCharacters } from "src/utils/generalUtility";
 import { setHistory } from "../../store/slices/campDetailSlice";
 import Layout from "src/hoc/layout";
 
@@ -26,6 +26,7 @@ import { useEffect, useRef } from "react";
 import DataNotFound from "@/components/ComponentPages/DataNotFound/dataNotFound";
 import { createToken } from "src/network/api/userApi";
 import { argon2id } from "hash-wasm";
+import { useRouter } from "next/router";
 
 
 const TopicDetailsPage = ({
@@ -40,8 +41,27 @@ const TopicDetailsPage = ({
 }: any) => {
   const serverSideCall = useRef(serverCall || false);
   const dispatch = useDispatch();
+  const router = useRouter();
 
   useEffect(() => {
+    let query = {
+      camp: [
+        `${topicRecord?.topic_num}-${replaceSpecialCharacters(
+          topicRecord?.topic_name,
+          "-"
+        )}`,
+        `${
+          campRecord?.campData?.camp_num
+            ? `${campRecord?.campData?.camp_num}-${replaceSpecialCharacters(
+                campRecord?.campData?.camp_name,
+                "-"
+              )}`
+            : "1-Agreement"
+        }`,
+      ],
+    };
+    router.query = { ...router?.query, ...query };
+    router.replace(router, null, { shallow: true });
     dispatch(setNewsFeed(newsFeed));
     dispatch(setCurrentTopicRecord(topicRecord));
     dispatch(setCurrentCampRecord(campRecord?.campData));
