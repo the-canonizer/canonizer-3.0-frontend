@@ -16,7 +16,7 @@ import SupportRemovedModal from "src/components/common/supportRemovedModal";
 import My404 from "../../404";
 import { setIsSupportModal } from "src/store/slices/topicSlice";
 import { setCampActivityData } from "src/store/slices/recentActivitiesSlice";
-import { getTopicActivityLogApi } from "src/network/api/campDetailApi";
+import { getCurrentCampRecordApi, getTopicActivityLogApi } from "src/network/api/campDetailApi";
 
 const { placeholders } = messages;
 
@@ -52,12 +52,16 @@ const ManageSupportUI = ({
     currentDelegatedSupportedClick,
     currentGetCheckSupportExistsData,
     campRecord,
+    asof,
+    asofdate,
   } = useSelector((state: RootState) => ({
     currentDelegatedSupportedClick:
       state.supportTreeCard.currentDelegatedSupportedClick,
     currentGetCheckSupportExistsData:
       state.topicDetails.currentGetCheckSupportExistsData,
     campRecord: state?.topicDetails?.currentCampRecord,
+    asof: state?.filters?.filterObject?.asof, 
+    asofdate: state?.filters?.filterObject?.asofdate,
   }));
 
   const router = useRouter();
@@ -192,6 +196,14 @@ const ManageSupportUI = ({
       //     manageSupportPath?.lastIndexOf("_")
       //   );
       // router?.push(manageSupportPath);
+      let reqBody = { 
+        as_of: asof, 
+        as_of_date: asofdate, 
+        topic_num: +router?.query?.camp[0]?.split("-")[0], 
+        camp_num: +router?.query?.camp[1]?.split("-")[0], 
+      }
+      getCurrentCampRecordApi(reqBody)
+
       handleCancelSupportCamps({ isCallApiStatus: true });
       getTopicActivityLogCall();
     }
@@ -548,7 +560,7 @@ const ManageSupportUI = ({
                     ? checkNickNameSupportCamps
                     : removeCampsSupport
                     ? checkNickNameSupportCamps
-                    : addRemoveApi
+                    : addRemoveApi     
                 }
                 disabled={
                   submitButtonDisable ||
