@@ -147,6 +147,19 @@ const TopicDetails = ({ serverSideCall }: any) => {
     store.dispatch(setCampActivityData(res?.data?.items));
   }
 
+
+  useEffect(()=>{
+
+  const parts = router?.query?.camp[0]?.split("-");
+  const result = parts?.slice(1)?.join("-");
+  const topic_Name = result?.split("-")?.join(" ");
+
+  if(tree && (tree[1]?.topic_id == parts[0] && tree[1]?.title != topic_Name)){
+    let asPath=tree[1]?.link    
+     router.push(router.pathname,asPath)
+ }    
+  },[router?.query?.camp,tree])
+
   useEffect(() => {
     async function getTreeApiCall() {
       if (!showTreeSkeltonRef) {
@@ -368,6 +381,18 @@ const TopicDetails = ({ serverSideCall }: any) => {
   useEffect(() => {
     setBackGroundColorClass(asof);
   }, [asof]);
+
+// const bread_crumb=res?.data?.bread_crumb[0]
+
+  // function replaceSpacesWithHyphens(title) {
+  //   return title.replace(/\s+/g, '-');
+  // }
+  
+
+  // let asPath=`/${bread_crumb?.topic_num}-${replaceSpacesWithHyphens(res?.data?.topic_name)}/${bread_crumb?.camp_num}-${bread_crumb?.camp_name}`
+  // router.push(router.pathname,asPath)
+  
+
 
   const scrollToCampStatement = () => {
     myRefToCampStatement.current?.scrollIntoView({ behavior: "smooth" });

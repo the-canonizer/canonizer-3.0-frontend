@@ -43,25 +43,26 @@ const TopicDetailsPage = ({
   const dispatch = useDispatch();
   const router = useRouter();
 
+
   useEffect(() => {
-    let query = {
-      camp: [
-        `${topicRecord?.topic_num}-${replaceSpecialCharacters(
-          topicRecord?.topic_name,
-          "-"
-        )}`,
-        `${
-          campRecord?.campData?.camp_num
-            ? `${campRecord?.campData?.camp_num}-${replaceSpecialCharacters(
-                campRecord?.campData?.camp_name,
-                "-"
-              )}`
-            : "1-Agreement"
-        }`,
-      ],
-    };
-    router.query = { ...router?.query, ...query };
-    router.replace(router, null, { shallow: true });
+    // let query = {
+    //   camp: [
+    //     `${topicRecord?.topic_num}-${replaceSpecialCharacters(
+    //       topicRecord?.topic_name,
+    //       "-"
+    //     )}`,
+    //     `${
+    //       campRecord?.campData?.camp_num
+    //         ? `${campRecord?.campData?.camp_num}-${replaceSpecialCharacters(
+    //             campRecord?.campData?.camp_name,
+    //             "-"
+    //           )}`
+    //         : "1-Agreement"
+    //     }`,
+    //   ],
+    // };
+    // router.query = { ...router?.query, ...query };
+    // router.replace(router, null, { shallow: true });
     dispatch(setNewsFeed(newsFeed));
     dispatch(setCurrentTopicRecord(topicRecord));
     dispatch(setCurrentCampRecord(campRecord?.campData));
