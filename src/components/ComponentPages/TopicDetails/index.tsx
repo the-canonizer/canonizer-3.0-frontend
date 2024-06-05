@@ -458,18 +458,16 @@ const TopicDetails = ({ serverSideCall }: any) => {
   }, []);
 
 
-  useEffect(()=>{
-
+  useEffect(() => {
     const parts = router?.query?.camp[0]?.split("-");
     const result = parts?.slice(1)?.join("-");
     const topic_Name = result?.split("-")?.join(" ");
-  
-    if(tree && (tree[1]?.topic_id == parts[0] && tree[1]?.title != topic_Name)){
-      // let asPath=tree[1]?.link
-      const asPath = `${tree[1].topic_id}-${replaceSpecialCharacters(tree[1].title, "-")}/1-Agreement`;    
-       router.push(router.pathname,asPath)
-   }    
-    },[])
+
+    if (tree && (tree[1]?.topic_id == parts[0] && tree[1]?.title != topic_Name)) {
+        const asPath = `${tree[1].topic_id}-${replaceSpecialCharacters(tree[1].title, "-")}/1-Agreement`;
+        router.replace(router.pathname, asPath);
+    }
+}, [router?.query?.camp, tree]);
 
   const lable = algorithms?.find((obj) => {
     return obj.algorithm_key == selectedAlgorithm;
