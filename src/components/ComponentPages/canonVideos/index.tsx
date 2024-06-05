@@ -475,19 +475,14 @@ export default function CanonVideos() {
               <>
                 {
                   isHlsVideo ? <>
-                    {
-                      true ?<> 
+
                       <h3>HLS Player</h3>
                       {/* <HlsPlayer src={"https://canon-hls.s3.us-east-2.amazonaws.com/output_multiple_formats/perceiving_a_strawberry.m3u8"} 
                         width={"100%"}
                         onTimeUpdate={updateTime}
                       /> */}
                             <VideoPlayer src="https://canon-hls.s3.us-east-2.amazonaws.com/output_multiple_formats/perceiving_a_strawberry.m3u8" autoPlay={true} />
-
-                      </>:<> 
-                       {/* video js */}
-                      </>
-                    }
+                     
                   </>:<>
                     <h3>HTML Player</h3>
                     <video
