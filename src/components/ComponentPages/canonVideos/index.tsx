@@ -137,8 +137,11 @@ export default function CanonVideos() {
   
     return (
       <div>
-        <video ref={playerRef} className="video-js vjs-default-skin"  
-         width={"100%"}
+        <video 
+          onTimeUpdate={updateTime}
+          ref={playerRef} 
+          className="video-js vjs-default-skin"  
+          width={"100%"}
         >
           <track
             kind="chapters"
