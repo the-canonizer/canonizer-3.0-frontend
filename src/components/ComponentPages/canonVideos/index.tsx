@@ -101,8 +101,8 @@ export default function CanonVideos() {
     const playerRef = useRef(null);
   
     useEffect(() => {
-      if (videoRef.current) {
-        playerRef.current = videojs(videoRef.current, {
+      if (playerRef.current) {
+        playerRef.current = videojs(playerRef.current, {
           autoplay: autoPlay,
           controls: true,
           responsive: true,
@@ -137,7 +137,9 @@ export default function CanonVideos() {
   
     return (
       <div>
-        <video ref={playerRef} className="video-js vjs-default-skin" >
+        <video ref={playerRef} className="video-js vjs-default-skin"  
+         width={"100%"}
+        >
           <track
             kind="chapters"
             label="Locations"
