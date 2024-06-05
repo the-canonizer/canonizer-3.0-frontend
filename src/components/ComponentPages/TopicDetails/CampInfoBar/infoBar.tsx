@@ -1,4 +1,4 @@
-import { Spin, Tooltip, Typography } from "antd";
+import { Image, Spin, Tooltip, Typography } from "antd";
 import { useRouter } from "next/router";
 import { useState, useEffect, useRef, Fragment } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -16,6 +16,7 @@ import {
   setManageSupportStatusCheck,
   setManageSupportUrlLink,
 } from "../../../../store/slices/campDetailSlice";
+import barchart from "../../../../assets/image/barchart-view.svg";
 
 import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
 import {
@@ -29,6 +30,7 @@ import Link from "next/link";
 import {
   replaceSpecialCharacters,
   isServer,
+  formatViews,
 } from "../../../../utils/generalUtility";
 import SocialShareUI from "../../../common/socialShare";
 import GenerateModal from "src/components/common/generateScript";
@@ -62,6 +64,8 @@ const InfoBar = ({
   const [isCampBtnVisible, setIsCampBtnVisible] = useState(false);
   const didMount = useRef(false);
   const router = useRouter();
+  const commaNumber = require('comma-number')
+
 
   const {
     topicRecord,
@@ -481,6 +485,17 @@ const InfoBar = ({
             <Typography.Paragraph
               className={"mb-0 campInfoRight " + styles.topicTitleStyle}
             >
+
+              <Tooltip title={tree && tree[1]?.camp_views ? commaNumber(tree[1]?.camp_views): 0} placement="bottom"> 
+              <div className="barchart">
+              <Image
+                width={11}
+                preview={false}
+                src={barchart.src}
+                />
+              <Typography>{tree && tree[1]?.camp_views ? formatViews(tree[1]?.camp_views):0}</Typography>
+              </div>
+                </Tooltip>
               {isTopicPage && (
                 <Fragment>
                   {loadingIndicator ? (

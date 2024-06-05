@@ -1188,6 +1188,23 @@ del.diffmod img {
   font-size: 18px;
 }
 
+
+.barchart {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  .ant-image {
+    position: relative;
+    top:-2px;
+  }
+  .ant-typography {
+    font-size: 14px;
+    font-weight: 500;
+    color: #868686;
+  }
+}
+
+
 .ant-descriptions-item-container {
   @media screen and (max-width: 576px) {
     flex-direction: column;
