@@ -34,61 +34,6 @@ export default function CanonVideos() {
 
   const router = useRouter();
 
-  const HlsPlayer = ({ src, autoPlay = false ,width,onTimeUpdate}) => {
-    const hls = new Hls();
-
-    useEffect(() => {
-      if (Hls.isSupported()) {
-        hls.loadSource(src);
-        hls.attachMedia(playeref.current);
-        hls.on(Hls.Events.MANIFEST_PARSED, () => {
-          if (autoPlay) {
-            playeref.current.play();
-          }
-        });
-
-        // Hls.Events.LEVEL_SWITCHED event to log changes in video quality.
-        hls.on(Hls.Events.LEVEL_SWITCHED, (event, data) => {
-          const level = hls.levels[data.level];
-          console.log(`Switched to level: ${data.level}, Resolution: ${level.width}x${level.height}, Bitrate: ${level.bitrate}`);
-        });
-
-        // event Hls.Events.LEVEL_LOADING which is triggered before loading a new level. 
-        // This can be used to log bandwidth-related information.
-        hls.on(Hls.Events.LEVEL_LOADING, (event, data) => {
-          const level = hls.levels[data.level];
-          console.log(`Loading level: ${data.level}, Resolution: ${level.width}x${level.height}, Bitrate: ${level.bitrate}`);
-        });
-        
-        //Logs the estimated bandwidth after each fragment is loaded, 
-        // providing insight into how the player is adapting to network conditions
-        hls.on(Hls.Events.FRAG_LOADED, (event, data) => {
-          const currentTime = playeref.current.currentTime;
-          const bandwidthEstimate = hls.bandwidthEstimate;
-          console.log(`Fragment loaded at time: ${currentTime}, Estimated bandwidth: ${bandwidthEstimate} bps`);
-        });
-
-      } else if (playeref.current.canPlayType('application/vnd.apple.mpegurl')) {
-        playeref.current.src = src;
-        if (autoPlay) {
-          playeref.current.play();
-        }
-
-        playeref.current.addEventListener('loadedmetadata', () => {
-          console.log(`Loaded HLS stream with resolution: ${playeref.current.videoWidth}x${playeref.current.videoHeight}`);
-        });
-      }
-  
-      return () => {
-        if (hls) {
-          hls.destroy();
-        }
-      };
-    }, [src, autoPlay]);
-  
-    return <video ref={playeref} controls width={width} onTimeUpdate={onTimeUpdate}/>;
-  };
-
   const VideoPlayer = ({ src, autoPlay = false }) => {
     const videoRef = useRef(null);
     const playerRef = useRef(null);
@@ -313,6 +258,7 @@ export default function CanonVideos() {
   }, []);
 
   function updateTime() {
+    console.log("update Time called",playeref?.current)
     if (
       playeref?.current?.textTracks[0]?.activeCues &&
       topic != playeref?.current?.textTracks[0]?.activeCues[0]?.text
@@ -382,6 +328,86 @@ export default function CanonVideos() {
     // :
     router.push(router.pathname, asPath, { shallow: true });
   }
+
+  const HlsPlayer = ({ 
+    onTimeUpdate,
+    width,
+    height,
+    controls,
+    playeref,
+    src,
+    autoPlay = false
+  }) => {
+    const hls = new Hls();
+
+    useEffect(() => {
+      if (Hls.isSupported()) {
+        hls.loadSource(src);
+        hls.attachMedia(playeref.current);
+        hls.on(Hls.Events.MANIFEST_PARSED, () => {
+          if (autoPlay) {
+            playeref.current.play();
+          }
+        });
+
+        // Hls.Events.LEVEL_SWITCHED event to log changes in video quality.
+        hls.on(Hls.Events.LEVEL_SWITCHED, (event, data) => {
+          const level = hls.levels[data.level];
+          console.log(`Switched to level: ${data.level}, Resolution: ${level.width}x${level.height}, Bitrate: ${level.bitrate}`);
+        });
+
+        // event Hls.Events.LEVEL_LOADING which is triggered before loading a new level. 
+        // This can be used to log bandwidth-related information.
+        hls.on(Hls.Events.LEVEL_LOADING, (event, data) => {
+          const level = hls.levels[data.level];
+          console.log(`Loading level: ${data.level}, Resolution: ${level.width}x${level.height}, Bitrate: ${level.bitrate}`);
+        });
+        
+        //Logs the estimated bandwidth after each fragment is loaded, 
+        // providing insight into how the player is adapting to network conditions
+        hls.on(Hls.Events.FRAG_LOADED, (event, data) => {
+          const currentTime = playeref.current.currentTime;
+          const bandwidthEstimate = hls.bandwidthEstimate;
+          console.log(`Fragment loaded at time: ${currentTime}, Estimated bandwidth: ${bandwidthEstimate} bps`);
+        });
+
+      } else if (playeref.current.canPlayType('application/vnd.apple.mpegurl')) {
+        playeref.current.src = src;
+        if (autoPlay) {
+          playeref.current.play();
+        }
+
+        playeref.current.addEventListener('loadedmetadata', () => {
+          console.log(`Loaded HLS stream with resolution: ${playeref.current.videoWidth}x${playeref.current.videoHeight}`);
+        });
+      }
+  
+      return () => {
+        if (hls) {
+          hls.destroy();
+        }
+      };
+    }, [src, autoPlay]);
+  
+    return <>
+            <video 
+              onTimeUpdate={()=>onTimeUpdate()}
+              width={width}
+              height={height} 
+              controls={controls} 
+              ref={playeref} 
+            >
+            <track
+              kind="chapters"
+              label="Locations"
+              src={"/subs/" + vttPath() + ".vtt"}
+              default
+              >
+            </track>
+          </video>
+        </>;
+  };
+  console.log("topic ===>",playeref)
 
   return (
     <Fragment>
@@ -475,19 +501,16 @@ export default function CanonVideos() {
               <>
                 {
                   isHlsVideo ? <>
-                    {
-                      true ?<> 
                       <h3>HLS Player</h3>
-                      {/* <HlsPlayer src={"https://canon-hls.s3.us-east-2.amazonaws.com/output_multiple_formats/perceiving_a_strawberry.m3u8"} 
-                        width={"100%"}
+                      <HlsPlayer 
                         onTimeUpdate={updateTime}
-                      /> */}
-                            <VideoPlayer src="https://canon-hls.s3.us-east-2.amazonaws.com/output_multiple_formats/perceiving_a_strawberry.m3u8" autoPlay={true} />
-
-                      </>:<> 
-                       {/* video js */}
-                      </>
-                    }
+                        width={"100%"}
+                        height={"auto"}
+                        controls
+                        playeref={playeref}
+                        src={"https://canon-hls.s3.us-east-2.amazonaws.com/output_multiple_formats/perceiving_a_strawberry.m3u8"} 
+                      />
+                    {/* <VideoPlayer src="https://canon-hls.s3.us-east-2.amazonaws.com/output_multiple_formats/perceiving_a_strawberry.m3u8" autoPlay={true} /> */}
                   </>:<>
                     <h3>HTML Player</h3>
                     <video
