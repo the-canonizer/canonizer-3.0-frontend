@@ -86,14 +86,7 @@ export default function CanonVideos() {
       };
     }, [src, autoPlay]);
   
-    return <video ref={playeref} controls width={width} onTimeUpdate={onTimeUpdate}>
-              <track
-                kind="chapters"
-                label="Locations"
-                src={"/subs/" + vttPath() + ".vtt"}
-                default>
-              </track>
-            </video>;
+    return <video ref={playeref} controls width={width} onTimeUpdate={onTimeUpdate}/>;
   };
 
   const VideoPlayer = ({ src, autoPlay = false }) => {
@@ -101,8 +94,8 @@ export default function CanonVideos() {
     const playerRef = useRef(null);
   
     useEffect(() => {
-      if (playerRef.current) {
-        playerRef.current = videojs(playerRef.current, {
+      if (videoRef.current) {
+        playerRef.current = videojs(videoRef.current, {
           autoplay: autoPlay,
           controls: true,
           responsive: true,
@@ -137,19 +130,7 @@ export default function CanonVideos() {
   
     return (
       <div>
-        <video 
-          onTimeUpdate={updateTime}
-          ref={playerRef} 
-          className="video-js vjs-default-skin"  
-          width={"100%"}
-        >
-          <track
-            kind="chapters"
-            label="Locations"
-            src={"/subs/" + vttPath() + ".vtt"}
-            default>
-          </track>
-        </video>
+        <video ref={videoRef} className="video-js vjs-default-skin" />
       </div>
     );
   };
@@ -324,7 +305,6 @@ export default function CanonVideos() {
       setTopic(playeref?.current?.textTracks[0]?.activeCues[0]?.text);
     }
   }
-  console.log("Topic ===>",topic);
 
   function vttPath() {
     let path = videoResolution?.split("_");
@@ -480,12 +460,19 @@ export default function CanonVideos() {
               <>
                 {
                   isHlsVideo ? <>
+                    {
+                      true ?<> 
                       <h3>HLS Player</h3>
                       {/* <HlsPlayer src={"https://canon-hls.s3.us-east-2.amazonaws.com/output_multiple_formats/perceiving_a_strawberry.m3u8"} 
                         width={"100%"}
                         onTimeUpdate={updateTime}
                       /> */}
-                    <VideoPlayer src="https://canon-hls.s3.us-east-2.amazonaws.com/output_multiple_formats/perceiving_a_strawberry.m3u8" autoPlay={true} />
+                            <VideoPlayer src="https://canon-hls.s3.us-east-2.amazonaws.com/output_multiple_formats/perceiving_a_strawberry.m3u8" autoPlay={true} />
+
+                      </>:<> 
+                       {/* video js */}
+                      </>
+                    }
                   </>:<>
                     <h3>HTML Player</h3>
                     <video
