@@ -1,95 +1,65 @@
 import { Layout } from "antd";
-import { Fragment } from "react";
-import { useRouter } from "next/router";
 
 import styles from "./layout.module.scss";
 
-import useAuthentication from "src/hooks/isUserAuthenticated";
-import LoggedInHeader from "src/components/common/headers/loggedInHeader";
-import LoggedOutHeader from "src/components/common/headers/loggedOutHeader";
+import LoggedOutHeader from "src/components/common/headers/mainHeader";
 import FooterComp from "src/components/common/footer";
-import GoogleAd from "src/components/googleAds";
+// import GoogleAd from "src/components/googleAds";
 
-const { Header, Footer, Sider, Content } = Layout;
+const { Header, Footer } = Layout;
 
 function CustomLayout(props: any) {
-  const router = useRouter();
+  const getCls = () => {
+    if (props?.leftSidebar && props?.rightSidebar) {
+      return styles.withBothsideBar;
+    }
 
-  const { isUserAuthenticated } = useAuthentication();
+    if (props?.leftSidebar) {
+      return styles.withLeftsideBar;
+    }
+
+    if (props?.rightSidebar) {
+      return styles.withRightsideBar;
+    }
+
+    return "";
+  };
 
   return (
-    <Fragment>
-      <Layout className={`w-100 ${styles.pageWrap}`}>
-        {props?.campInfoBar ? props?.campInfoBar : null}
-        <Header
-          className={`px-3.5 bg-white shadow-lg printHIde`}
-          data-testid="loggedOutHeader"
-        >
-          <LoggedOutHeader />
-        </Header>
-        <Layout className={`${styles.contentWrap}`}>
-          {props?.leftSidebar ? (
-            <Sider className={styles.leftSidebar}>
-              <GoogleAd
-                ad_client={process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT}
-                ad_slot={process.env.NEXT_PUBLIC_GOOGLE_ADS_RIGHT_SLOT}
-              />
-            </Sider>
-          ) : null}
-          <Content className={`${styles.contentArea}`}>
-            {props.children}
-          </Content>
-          {props?.rightSidebar ? (
-            <Sider className={styles.rightSidebar}>
-              <GoogleAd
-                ad_client={process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT}
-                ad_slot={process.env.NEXT_PUBLIC_GOOGLE_ADS_RIGHT_SLOT}
-              />
-            </Sider>
-          ) : null}
-        </Layout>
-        <Footer className={`p-0 ${styles.footerArea}`}>
-          <FooterComp />
-        </Footer>
+    <Layout className={`w-100`}>
+      <Header
+        className={`px-4 h-auto bg-white shadow-lg mb-4 printHIde`}
+        data-testid="loggedOutHeader"
+      >
+        <LoggedOutHeader />
+      </Header>
+
+      {props?.afterHeader ? (
+        <div className="px-4 my-3">{props?.afterHeader}</div>
+      ) : null}
+
+      <Layout className={`px-4 max-w-full ${styles.contentArea}`}>
+        {props?.leftSidebar ? (
+          <aside className={`mr-5 ${styles.leftSidebar}`}>
+            {props?.leftSidebar}
+          </aside>
+        ) : null}
+
+        <main className={`${styles.contentBox} ${getCls()}`}>
+          {props.children}
+        </main>
+
+        {props?.rightSidebar ? (
+          <aside className={`ml-5 ${styles.rightSidebar}`}>
+            {props?.rightSidebar}
+          </aside>
+        ) : null}
       </Layout>
 
-      <br />
-      <hr />
-      <hr />
-      <br />
-
-      <div className={styles.pageWrap}>
-        {isUserAuthenticated ? <LoggedInHeader /> : <LoggedOutHeader />}
-        {props?.campInfoBar ? props?.campInfoBar : null}
-        <div className={styles.contentWrap}>
-          <div
-            className={
-              styles.contentArea +
-              " " +
-              styles.eventListArea +
-              " " +
-              `${
-                router?.asPath.includes("timelinetest")
-                  ? styles.timelineLayout
-                  : ""
-              }`
-            }
-          >
-            {props.children}{" "}
-          </div>
-
-          {!router?.asPath.includes("eventline") && (
-            <aside className={styles.rightSidebar}>
-              <GoogleAd
-                ad_client={process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT}
-                ad_slot={process.env.NEXT_PUBLIC_GOOGLE_ADS_RIGHT_SLOT}
-              />
-            </aside>
-          )}
-        </div>
+      <Footer className={`p-0`}>
         <FooterComp />
-      </div>
-    </Fragment>
+      </Footer>
+    </Layout>
   );
 }
 

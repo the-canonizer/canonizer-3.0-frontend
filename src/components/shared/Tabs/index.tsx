@@ -1,11 +1,14 @@
-import { Tag } from "antd";
+import { Tabs } from "antd";
 
-const Tabs = ({ className = "", icon = "", ...props }: any) => {
+const CustomTabs = ({ className = "", ...props }: any) => {
   return (
-    <Tag className={`text-base text-black font-normal ${className}`} icon={icon} {...props}>
+    <Tabs
+      className={`text-base text-black font-normal ${className}`}
+      {...props}
+    >
       {props?.children}
-    </Tag>
+    </Tabs>
   );
 };
 
-export default Tabs;
+export default CustomTabs;

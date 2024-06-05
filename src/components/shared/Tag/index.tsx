@@ -1,6 +1,6 @@
 import { Tag } from "antd";
 
-const Headings = ({ className = "", icon = "", ...props }: any) => {
+const Tags = ({ className = "", icon = "", ...props }: any) => {
   return (
     <Tag className={`text-base text-black font-normal ${className}`} icon={icon} {...props}>
       {props?.children}
@@ -8,4 +8,4 @@ const Headings = ({ className = "", icon = "", ...props }: any) => {
   );
 };
 
-export default Headings;
+export default Tags;

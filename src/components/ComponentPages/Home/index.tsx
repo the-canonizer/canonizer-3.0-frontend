@@ -1,47 +1,59 @@
 import { Row, Col } from "antd";
-import dynamic from "next/dynamic";
 
 import useAuthentication from "../../../hooks/isUserAuthenticated";
-import HotTopic from "src/components/common/hotTopic";
 
-const SideBar = dynamic(() => import("./SideBar"));
-const TopicsList = dynamic(() => import("./TopicsList"));
-const RecentActivities = dynamic(() => import("./RecentActivities"));
-const HelpCard = dynamic(() => import("./HelpCard"));
+import Layout from "src/hoc/layout";
+import WelcomeContent from "./WelcomeArea";
+import FeaturedTopic from "./FeaturedTopic";
+import CategoriesList from "./CategoriesList";
+import HotTopics from "./HotTopics";
+import TrandingTopics from "./TrandingTopic";
+import WhatsNew from "./WhatsNew";
+import PreferedTopics from "./PreferedTopic";
+import RecentActivities from "./RecentActivities";
 
 const HomePageContainer = () => {
   const { isUserAuthenticated } = useAuthentication();
 
   return (
-    <>
-      <aside className="leftSideBar miniSideBar" data-testid="sideBar">
-        <SideBar />
-      </aside>
-      <div className="pageContentWrap">
-        <Row gutter={8}>
-          <Col xs={24} sm={24} xl={24} data-testid="hotTopicColumn">
-            <HotTopic />
-          </Col>
-          <Col xs={24} sm={24} xl={12} data-testid="topicsList">
-            <TopicsList />
-          </Col>
-          {isUserAuthenticated && (
-            <Col xs={24} sm={24} xl={12} data-testid="recentActivities">
-              <RecentActivities />
-            </Col>
+    <Layout
+      afterHeader={<WelcomeContent />}
+      rightSidebar={
+        <div className="pt-4">
+          <div className="mb-6">
+            <TrandingTopics />
+          </div>
+
+          {isUserAuthenticated ? (
+            <div className="mb-4">
+              <RecentActivities isUserAuthenticated={isUserAuthenticated} />
+            </div>
+          ) : (
+            <div className="mb-4">
+              <WhatsNew />
+            </div>
           )}
-          <Col
-            xs={24}
-            sm={24}
-            xl={isUserAuthenticated ? 24 : 12}
-            className={isUserAuthenticated && "logged-in-view"}
-            data-testid="helpCard"
-          >
-            <HelpCard />
+        </div>
+      }
+    >
+      <Row className="pt-4 w-100">
+        <Col md={24} className="mb-6">
+          <FeaturedTopic />
+        </Col>
+        {isUserAuthenticated ? (
+          <Col md={24} className="mb-6">
+            <PreferedTopics />
           </Col>
-        </Row>
-      </div>
-    </>
+        ) : null}
+        <Col md={24} className="mb-6">
+          <CategoriesList />
+        </Col>
+        <Col md={24} className="mb-6">
+          <HotTopics />
+        </Col>
+        <Col md={12}></Col>
+      </Row>
+    </Layout>
   );
 };
 

@@ -3,7 +3,7 @@ import { Image } from "antd";
 
 const LogoHeader = () => {
   return (
-    <div className="w-auto h-auto flex items-center">
+    <div className="w-auto h-auto flex items-center cursor-pointer">
       <Link href="/" className="w-full max-w-full">
         <Image
           src={`/images/logo.svg`}

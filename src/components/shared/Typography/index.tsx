@@ -1,35 +1,33 @@
 import { Typography } from "antd";
 
-const { Title } = Typography;
-
-const Headings = ({ className = "", ...rest }: any) => {
-  if (rest.h1) {
+const Headings = ({ className = "", h1, h2, h3, ...rest }: any) => {
+  if (h1) {
     return (
-      <Title className={`text-xl text-black ${className}`} {...rest}>
+      <h1 className={`text-xl text-black font-medium ${className}`} {...rest}>
         {rest?.children}
-      </Title>
+      </h1>
     );
   }
-  if (rest.h2) {
+  if (h2) {
     return (
-      <Title className={`text-large text-black ${className}`} {...rest}>
+      <h2 className={`text-large text-black ${className}`} {...rest}>
         {rest?.children}
-      </Title>
+      </h2>
     );
   }
 
-  if (rest.h3) {
+  if (h3) {
     return (
-      <Title className={`text-medium text-black ${className}`} {...rest}>
+      <h3 className={`text-medium text-black ${className}`} {...rest}>
         {rest?.children}
-      </Title>
+      </h3>
     );
   }
 
   return (
-    <Title className={`text-base text-black ${className}`} {...rest}>
+    <Typography.Title className={`text-base text-black ${className}`} {...rest}>
       {rest?.children}
-    </Title>
+    </Typography.Title>
   );
 };
 

@@ -17,38 +17,24 @@ import HeaderMenu from "../HeaderMenu";
 import TopicCreationBTN from "../TopicCreationBTN";
 import ArchivedCampMsg from "../../ArchivedCampMsg";
 import SearchHeader from "../search";
+import useAuthentication from "src/hooks/isUserAuthenticated";
 
 const { Header } = Layout;
 
 const LoggedOutHeader = () => {
-  const dispatch = useDispatch();
-  const router = useRouter();
+  const { isUserAuthenticated } = useAuthentication();
 
-  const [isActive, setActive] = useState(false);
-
-  const toggleMobNav = () => {
-    setActive(!isActive);
-  };
-
-  const openLoginModal = () => {
-    if (
-      router?.asPath?.includes("/login") ||
-      router?.asPath?.includes("/registration")
-    ) {
-      router.push("/login");
-    } else {
-      dispatch(showLoginModal());
-    }
-  };
-
-  const openRegistrationModal = () => router.push("/registration");
   const isMobile = window.matchMedia("(min-width: 1280px)").matches;
 
   return (
     <React.Fragment>
-      <div className="flex justify-between items-center z-10 overflow-hidden">
+      <div className="flex justify-start items-center z-10 w-100 py-2">
         <Logo />
-        <SearchHeader />
+        <SearchHeader className="ml-5" />
+        <HeaderMenu
+          className="ml-auto"
+          isUserAuthenticated={isUserAuthenticated}
+        />
         {/* <div className={`${styles.navWrap} ${isActive && styles.showMobMenu}`}>
           <div className={styles.mobLogoIcon}>
             <Logo />

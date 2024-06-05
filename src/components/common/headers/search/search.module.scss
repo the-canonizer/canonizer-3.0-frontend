@@ -1,0 +1,95 @@
+.searchCategories {
+  padding: 0;
+  border-radius: 10px;
+  [class*="ant-select-item ant-select-item-group"] {
+    display: none;
+  }
+  [class*="ant-select-item-option"] {
+    padding: 5px;
+    [class*="ant-select-item-option-active"] {
+      background-color: white;
+      padding: 5px;
+    }
+  }
+  [class*="ant-select-item-option-active"] {
+    &:not([class*="ant-select-item-option-disabled"]) {
+      background-color: white;
+      padding: 5px;
+    }
+  }
+  [class*="ant-tabs-nav"] {
+    [class*="ant-tabs-nav-wrap"] {
+      padding: 0 15px;
+      [class*="ant-tabs-nav-list"] {
+        justify-content: space-between;
+        width: 100%;
+        [class*="ant-tabs-tab"] {
+          [class*="ant-tabs-tab-btn"] {
+            color: #242b37;
+            font-weight: 600;
+            transition: all 0.3s;
+          }
+          &[class*="ant-tabs-tab-active"] {
+            [class*="ant-tabs-tab-btn"] {
+              color: #5482c8;
+              font-weight: 600;
+            }
+          }
+          & + [class*="ant-tabs-tab"] {
+            margin: 0 0 0 35px;
+          }
+        }
+      }
+    }
+  }
+  [class*="rc-virtual-list-holder"] {
+    max-height: 100% !important;
+    overflow: hidden !important;
+    [class*="rc-virtual-list-holder-inner"] {
+      padding: 0;
+    }
+  }
+  [class*="ant-tabs-content-holder"] {
+    overflow: hidden auto;
+    max-height: 500px;
+    padding-right: 20px;
+    white-space: break-spaces;
+    padding: 0 15px;
+
+    &::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      background: #888;
+      &:hover {
+        background: #555;
+      }
+    }
+  }
+  .ItemCard {
+    [class*="ant-card-head"] {
+      border: none;
+      [class*="ant-card-head-title"] {
+        margin: 0;
+        padding: 10px 0;
+      }
+    }
+    [class*="ant-card-body"] {
+      padding: 10px 10px;
+    }
+  }
+  .searchInput {
+    [class*="ant-input-wrapper ant-input-group"] {
+      [class*="ant-input-group-addon"] {
+        background: transparent !important;
+      }
+    }
+  }
+}

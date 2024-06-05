@@ -8,6 +8,7 @@ const HelpCard = () => {
   const { whatsNew } = useSelector((state: RootState) => ({
     whatsNew: state.homePage?.whatsNew,
   }));
+
   return (
     <Fragment>
       {whatsNew && (

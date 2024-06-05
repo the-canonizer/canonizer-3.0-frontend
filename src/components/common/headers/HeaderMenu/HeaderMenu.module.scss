@@ -1,0 +1,21 @@
+.NavWrap {
+  ul {
+    .listItem {
+      position: relative;
+      &:not(:last-child) {
+        &::before {
+          position: absolute;
+          content: "|";
+          top: 0;
+          left: 0;
+          color: darkgray;
+        }
+      }
+      &:first-child {
+        &::before {
+          display: none;
+        }
+      }
+    }
+  }
+}
