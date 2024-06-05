@@ -130,10 +130,25 @@ export default function CanonVideos() {
   
     return (
       <div>
-        <video ref={videoRef} className="video-js vjs-default-skin" />
+        <video 
+          ref={videoRef} 
+          className="video-js vjs-default-skin"                       
+          onTimeUpdate={updateTime}
+          width={"100%"}
+          height={"auto"}
+        >
+          <track
+          kind="chapters"
+          label="Locations"
+          src={"/subs/" + vttPath() + ".vtt"}
+          default
+          ></track>
+        </video>
       </div>
     );
   };
+
+  console.log("topic ===>",topic)
 
   useEffect(() => {
     if (router?.route === "/videos/consciousness") {
