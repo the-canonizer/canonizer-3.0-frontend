@@ -86,7 +86,14 @@ export default function CanonVideos() {
       };
     }, [src, autoPlay]);
   
-    return <video ref={playeref} controls width={width} onTimeUpdate={onTimeUpdate}/>;
+    return <video ref={playeref} controls width={width} onTimeUpdate={onTimeUpdate}>
+              <track
+                kind="chapters"
+                label="Locations"
+                src={"/subs/" + vttPath() + ".vtt"}
+                default>
+              </track>
+            </video>;
   };
 
   const VideoPlayer = ({ src, autoPlay = false }) => {
@@ -130,7 +137,7 @@ export default function CanonVideos() {
   
     return (
       <div>
-        <video ref={videoRef} className="video-js vjs-default-skin" >
+        <video ref={playerRef} className="video-js vjs-default-skin" >
           <track
             kind="chapters"
             label="Locations"
@@ -312,6 +319,7 @@ export default function CanonVideos() {
       setTopic(playeref?.current?.textTracks[0]?.activeCues[0]?.text);
     }
   }
+  console.log("Topic ===>",topic);
 
   function vttPath() {
     let path = videoResolution?.split("_");
@@ -468,11 +476,11 @@ export default function CanonVideos() {
                 {
                   isHlsVideo ? <>
                       <h3>HLS Player</h3>
-                      <HlsPlayer src={"https://canon-hls.s3.us-east-2.amazonaws.com/output_multiple_formats/perceiving_a_strawberry.m3u8"} 
+                      {/* <HlsPlayer src={"https://canon-hls.s3.us-east-2.amazonaws.com/output_multiple_formats/perceiving_a_strawberry.m3u8"} 
                         width={"100%"}
                         onTimeUpdate={updateTime}
-                      />
-                    {/* <VideoPlayer src="https://canon-hls.s3.us-east-2.amazonaws.com/output_multiple_formats/perceiving_a_strawberry.m3u8" autoPlay={true} /> */}
+                      /> */}
+                    <VideoPlayer src="https://canon-hls.s3.us-east-2.amazonaws.com/output_multiple_formats/perceiving_a_strawberry.m3u8" autoPlay={true} />
                   </>:<>
                     <h3>HTML Player</h3>
                     <video
