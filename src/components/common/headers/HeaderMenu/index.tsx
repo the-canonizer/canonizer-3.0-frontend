@@ -1,29 +1,42 @@
 import { Fragment, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { Button, Menu } from "antd";
+import {
+  CheckCircleOutlined,
+  LogoutOutlined,
+  MenuOutlined,
+  SettingOutlined,
+} from "@ant-design/icons";
+import { useSelector } from "react-redux";
 
 import styles from "./HeaderMenu.module.scss";
 
 import CreateTopic from "@/components/shared/Buttons/TopicCreationButton";
 import JoinCanonizer from "@/components/shared/Buttons/JoinCanoizerButton";
 import ProfileInfoTab from "./profileInfo";
-import { useSelector } from "react-redux";
 import { RootState } from "src/store";
 import Notifications from "../notification";
-import { Menu } from "antd";
-import {
-  CheckCircleOutlined,
-  LogoutOutlined,
-  SettingOutlined,
-} from "@ant-design/icons";
 import { logout } from "src/network/api/userApi";
 import { getGravatarPicApi } from "src/network/api/notificationAPI";
 
 const menuItems = [
   {
+    link: "/",
+    linkTitle: "Home",
+    id: 1,
+    isMobile: true,
+  },
+  {
     link: "/browse",
     linkTitle: "Browse",
-    id: 1,
+    id: 2,
+  },
+  {
+    link: "/browse",
+    linkTitle: "Start a Topic",
+    id: 3,
+    isMobile: true,
   },
   // {
   //   link: process.env.NEXT_PUBLIC_BLOG_URL,
@@ -34,7 +47,13 @@ const menuItems = [
   {
     link: "/topic/132-Help/1-Agreement?is_tree_open=1",
     linkTitle: "Help",
-    id: 3,
+    id: 4,
+  },
+  {
+    link: "/topic/132-Help/1-Agreement?is_tree_open=1",
+    linkTitle: "Settings",
+    id: 5,
+    isMobile: true,
   },
 ];
 
@@ -56,9 +75,13 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
 
   const [isGravatarImage, setIsGravatarImage] = useState(false);
   const [loadingImage, setLoadingImage] = useState(false);
+  const [isActive, setActive] = useState(false);
 
   const ListItem = ({ cls = "", ...props }) => (
-    <li className={`flex-auto px-3 ${styles.listItem} ${cls}`} key={props.key}>
+    <li
+      className={`flex-auto px-3 md:before:hidden md:after:hidden ${styles.listItem} ${cls}`}
+      key={props.key}
+    >
       {props?.children}
     </li>
   );
@@ -84,38 +107,44 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
   }, [loggedInUser]);
 
   const menu = (
-    <Menu onClick={onClick} className="">
-      <Menu.Item key="0">
+    <Menu onClick={onClick}>
+      <Menu.Item key="0" className="hover:text-hblue">
         <Link href="/settings" passHref>
-          <a>
-            <SettingOutlined />
+          <a className="text-14 font-medium hover:text-hblue">
+            <SettingOutlined className="mr-1" />
             Account Settings
           </a>
         </Link>
       </Menu.Item>
       <Menu.Divider />
-      <Menu.Item key="1">
+      <Menu.Item key="1" className="hover:text-hblue">
         <Link href="/settings?tab=supported_camps" passHref>
-          <a>
-            <CheckCircleOutlined />
+          <a className="text-14 font-medium ">
+            <CheckCircleOutlined className="mr-1" />
             Supported Camps
           </a>
         </Link>
       </Menu.Item>
       <Menu.Divider />
-      <Menu.Item key="3">
-        <LogoutOutlined />
+      <Menu.Item key="3" className="text-14 font-medium hover:text-hblue">
+        <LogoutOutlined className="mr-1" />
         Log Out
       </Menu.Item>
     </Menu>
   );
 
+  const toggleMobNav = () => {
+    setActive(!isActive);
+  };
+
   return (
     <Fragment>
-      <nav className={`${styles.NavWrap} ${className}`}>
-        <ul className="flex text-base font-inter font-medium ">
+      <nav className={`${styles.NavWrap} md:shadow-md ${className}`}>
+        <ul className="flex text-base font-inter font-medium md:flex-col">
           <ListItem
-            cls={`${router?.asPath === "/create/topic" ? styles.active : ""}`}
+            cls={`${
+              router?.asPath === "/create/topic" ? styles.active : ""
+            } md:hidden`}
             key="create-topic-li"
           >
             <CreateTopic
@@ -130,7 +159,9 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
           {menuItems?.map((item, idx) => {
             return (
               <ListItem
-                cls={router?.asPath === item.link ? styles.active : ""}
+                cls={`${router?.asPath === item.link ? styles.active : ""} ${
+                  item?.isMobile ? "hidden md:block" : ""
+                }`}
                 key={item.id + "_" + item.link + "___" + idx}
               >
                 <Link href={item.link}>
@@ -142,13 +173,13 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
           {isUserAuthenticated ? (
             <ListItem
               key="notification-li"
-              cls="after:content-['|'] after:absolute after:ml-[10px] after:text-[darkgray]"
+              cls="after:content-['|'] after:absolute after:ml-[10px] after:text-[darkgray] md:hidden"
             >
               <Notifications />
             </ListItem>
           ) : null}
           {isUserAuthenticated ? (
-            <ListItem key="profile-li">
+            <ListItem key="profile-li" cls="md:hidden">
               <ProfileInfoTab
                 isGravatarImage={isGravatarImage}
                 loadingImage={loadingImage}
@@ -160,12 +191,38 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
               />
             </ListItem>
           ) : (
-            <ListItem key="Join-canonizer-li">
+            <ListItem key="Join-canonizer-li" cls="md:hidden">
               <JoinCanonizer />
             </ListItem>
           )}
         </ul>
       </nav>
+      {isUserAuthenticated ? (
+        <div key="notification-li-mobile" className="hidden md:block mr-2">
+          <Notifications />
+        </div>
+      ) : null}
+      {isUserAuthenticated ? (
+        <div key="profile-li-mobile" className="hidden md:block">
+          <ProfileInfoTab
+            isGravatarImage={isGravatarImage}
+            loadingImage={loadingImage}
+            loggedUser={loggedInUser}
+            toggleMobNav={""}
+            logOut={""}
+            isMobile={false}
+            menu={menu}
+          />
+        </div>
+      ) : null}
+      <Button
+        size="middle"
+        className="border-0 p-0 hidden md:block ml-2"
+        onClick={toggleMobNav}
+        key="outnline-btn"
+      >
+        <MenuOutlined className="text-medium" />
+      </Button>
     </Fragment>
   );
 };

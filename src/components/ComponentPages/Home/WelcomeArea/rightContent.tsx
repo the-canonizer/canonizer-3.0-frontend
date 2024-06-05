@@ -5,7 +5,7 @@ import PrimaryButton from "@/components/shared/Buttons/PrimariButton";
 
 const RightContent = ({ isUserAuthenticated }) => {
   return (
-    <div className="pr-96 text-center bg-white w-full h-full pt-3">
+    <div className="pr-96 text-center bg-white w-full h-full pt-3 md:mt-4 md:h-auto md:pb-4">
       <Typography.Paragraph className="m-0 text-medium font-bold font-inter">
         {isUserAuthenticated ? "For Existing Users" : "For Guest User"}
       </Typography.Paragraph>

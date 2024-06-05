@@ -85,10 +85,15 @@
       padding: 10px 10px;
     }
   }
-  .searchInput {
-    [class*="ant-input-wrapper ant-input-group"] {
-      [class*="ant-input-group-addon"] {
-        background: transparent !important;
+}
+.searchInput {
+  [class*="ant-input-wrapper"] {
+    [class*="ant-input-group-addon"] {
+      background: transparent !important;
+      border: 1px solid #d9d9d9 !important;
+      button {
+        padding: 0;
+        margin: 0;
       }
     }
   }

@@ -50,11 +50,11 @@ const LeftContent = ({ isUserAuthenticated }) => {
       </Typography.Paragraph>
       {isUserAuthenticated ? (
         <TopicCreateButton
-          className="w-4/12 h-[50px] text-base bg-blue px-3 rounded-lg text-white hover:bg-hblue hover:text-white flex items-center justify-center font-medium"
+          className="w-4/12 h-[50px] text-base bg-blue px-3 rounded-lg text-white hover:bg-hblue hover:text-white flex items-center justify-center font-medium lg:w-8/12 md:w-6/12"
           isWithIcon={true}
         />
       ) : (
-        <PrimaryButton className="w-4/12 h-[50px] text-base">
+        <PrimaryButton className="w-4/12 h-[50px] text-base lg:w-8/12 md:w-6/12">
           Browse More <ArrowRightOutlined />
         </PrimaryButton>
       )}

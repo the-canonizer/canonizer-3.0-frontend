@@ -18,4 +18,18 @@
       }
     }
   }
+  @media screen and (max-width: 992px) {
+    position: fixed;
+    width: 80%;
+    height: 100%;
+    background: #fff;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    margin: 0;
+    ul {
+      li {
+      }
+    }
+  }
 }

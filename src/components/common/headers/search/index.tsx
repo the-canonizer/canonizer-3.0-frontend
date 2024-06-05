@@ -9,6 +9,7 @@ import {
   EyeOutlined,
   FlagOutlined,
   RightOutlined,
+  SearchOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 
@@ -308,59 +309,72 @@ const HeaderSearch = ({ className = "" }: any) => {
   const debounceFn = useMemo(() => debounce(getGlobalSearchCanonizer, 500), []);
 
   return (
-    <AutoComplete
-      popupClassName={`max-w-2xl w-full bg-white ${styles.searchCategories}`}
-      dropdownMatchSelectWidth={false}
-      // defaultOpen={true}
-      // open={true}
-      options={
-        inputSearch == ""
-          ? []
-          : loadingSekelton
-          ? loader
-          : searchTopics?.length ||
-            searchCamps?.length ||
-            searchCampStatement?.length ||
-            searchNickname?.length
-          ? options
-          : no
-      }
-      value={
-        searchVal.length > advanceSearchValueLength
-          ? searchVal.substring(0, advanceSearchValueLength)
-          : searchVal
-      }
-    >
-      <div className={`w-auto h-auto flex items-center ${className}`}>
-        <SearchInputs
-          placeholder="Search via keyword"
-          value={
-            searchVal.length > advanceSearchValueLength
-              ? searchVal.substring(0, advanceSearchValueLength)
-              : searchVal
-          }
-          className={styles.searchInput}
-          autoFocus
-          name="search"
-          onChange={(e) => {
-            setLoadingSekelton(true);
-            dispatch(setSearchValue(e.target.value));
-            setInputSearch(e.target.value);
-            setSearchVal(e.target.value);
-            debounceFn.cancel();
-            if (e?.target?.value) debounceFn(e.target.value, false);
-          }}
-          onPressEnter={(e) => {
-            handlePress();
-            if ((e.target as HTMLTextAreaElement).value)
-              getGlobalSearchCanonizer(
-                (e.target as HTMLTextAreaElement).value,
-                true
-              );
-          }}
-        />
+    <Fragment>
+      {/* <div className="md:hidden"> */}
+      <AutoComplete
+        popupClassName={`max-w-2xl w-full bg-white ${styles.searchCategories} md:*:hidden`}
+        dropdownMatchSelectWidth={false}
+        // defaultOpen={true}
+        // open={true}
+        options={
+          inputSearch == ""
+            ? []
+            : loadingSekelton
+            ? loader
+            : searchTopics?.length ||
+              searchCamps?.length ||
+              searchCampStatement?.length ||
+              searchNickname?.length
+            ? options
+            : no
+        }
+        value={
+          searchVal.length > advanceSearchValueLength
+            ? searchVal.substring(0, advanceSearchValueLength)
+            : searchVal
+        }
+      >
+        <div
+          className={`w-auto h-auto flex items-center ${className} md:*:hidden`}
+        >
+          <SearchInputs
+            placeholder="Search via keyword"
+            value={
+              searchVal.length > advanceSearchValueLength
+                ? searchVal.substring(0, advanceSearchValueLength)
+                : searchVal
+            }
+            className={styles.searchInput}
+            autoFocus
+            name="search"
+            onChange={(e) => {
+              setLoadingSekelton(true);
+              dispatch(setSearchValue(e.target.value));
+              setInputSearch(e.target.value);
+              setSearchVal(e.target.value);
+              debounceFn.cancel();
+              if (e?.target?.value) debounceFn(e.target.value, false);
+            }}
+            onPressEnter={(e) => {
+              handlePress();
+              if ((e.target as HTMLTextAreaElement).value)
+                getGlobalSearchCanonizer(
+                  (e.target as HTMLTextAreaElement).value,
+                  true
+                );
+            }}
+          />
+        </div>
+      </AutoComplete>
+      {/* </div> */}
+      <div className="hidden md:block ml-auto">
+        <Link href="/search">
+          <a className="text-medium text-black hover:text-blue">
+            <SearchOutlined />
+          </a>
+        </Link>
       </div>
-    </AutoComplete>
+    </Fragment>
   );
 };
 

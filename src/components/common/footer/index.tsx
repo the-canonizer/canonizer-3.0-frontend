@@ -5,11 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useSelector } from "react-redux";
 
-import styles from "./siteFooter.module.scss";
-
 import { RootState } from "src/store";
-
-const { Title } = Typography;
 
 function Footer() {
   const router = useRouter();
@@ -133,7 +129,7 @@ function Footer() {
               </ul> */}
           </Col>
           <Col xs={24} sm={14} md={10} lg={10}>
-            <Row gutter={20} className="px-0 md:px-6">
+            <Row gutter={20} className="px-6">
               <Col xs={24} md={12} className="text-white">
                 <Typography.Paragraph className="text-base text-semibold text-white">
                   Explore

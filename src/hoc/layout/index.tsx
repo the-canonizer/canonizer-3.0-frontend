@@ -2,9 +2,9 @@ import { Layout } from "antd";
 
 import styles from "./layout.module.scss";
 
-import LoggedOutHeader from "src/components/common/headers/mainHeader";
+import MainHeader from "src/components/common/headers/mainHeader";
 import FooterComp from "src/components/common/footer";
-// import GoogleAd from "src/components/googleAds";
+import GoogleAd from "src/components/googleAds";
 
 const { Header, Footer } = Layout;
 
@@ -29,9 +29,9 @@ function CustomLayout(props: any) {
     <Layout className={`w-100`}>
       <Header
         className={`px-4 h-auto bg-white shadow-lg mb-4 printHIde`}
-        data-testid="loggedOutHeader"
+        data-testid="main_header"
       >
-        <LoggedOutHeader />
+        <MainHeader />
       </Header>
 
       {props?.afterHeader ? (
@@ -55,7 +55,12 @@ function CustomLayout(props: any) {
           </aside>
         ) : null}
       </Layout>
-
+      <div className="ad_area p-4">
+        <GoogleAd
+          ad_client={process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT}
+          ad_slot={process.env.NEXT_PUBLIC_GOOGLE_ADS_RIGHT_SLOT}
+        />
+      </div>
       <Footer className={`p-0`}>
         <FooterComp />
       </Footer>
