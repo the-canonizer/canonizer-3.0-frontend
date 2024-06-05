@@ -41,7 +41,7 @@ const PreferedTopics = () => {
       <div className="mt-1">
         <Row gutter={20} className="items-stretch">
           {topicData?.map((ft) => (
-            <Col md={8} className="mb-4 h-full">
+            <Col md={8} className="mb-4 h-full" key={ft?.id}>
               <CommonCard className="border-0 h-full">
                 <div className="flex justify-between pb-2 align-center">
                   <Typography.Paragraph className="m-0 text-medium font-bold font-inter">

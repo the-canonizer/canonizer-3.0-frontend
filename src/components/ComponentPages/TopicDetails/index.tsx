@@ -16,7 +16,7 @@ import {
   getCurrentCampRecordApi,
 } from "src/network/api/campDetailApi";
 import { RootState } from "src/store";
-import SideBar from "../Home/SideBar";
+import SideBar from "../Home-old/SideBar";
 import CampStatementCard from "./CampStatementCard";
 import CampInfoBar from "./CampInfoBar";
 import styles from "./topicDetails.module.scss";
@@ -44,7 +44,7 @@ import {
 
 import { getHistoryApi } from "../../../network/api/history";
 
-import CampRecentActivities from "../Home/CampRecentActivities";
+import CampRecentActivities from "../Home-old/CampRecentActivities";
 
 import {
   addSupport,

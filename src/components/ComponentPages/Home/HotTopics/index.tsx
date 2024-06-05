@@ -41,10 +41,7 @@ const HotTopics = () => {
     <Fragment>
       <Row gutter={15}>
         <Col md={12} className="mb-3">
-          <Headings
-            level={5}
-            className="mb-0 text-base font-bold uppercase"
-          >
+          <Headings level={5} className="mb-0 text-base font-bold uppercase">
             Hot Topics{" "}
             <Popover content="Hot Topics" placement="top" className="">
               <InfoCircleOutlined />
@@ -63,7 +60,7 @@ const HotTopics = () => {
       <div className="mt-1">
         <Slider {...settings}>
           {topicData?.map((ft) => (
-            <CommonCard className="border-0 h-100">
+            <CommonCard className="border-0 h-100" key={ft?.id}>
               <div className="flex justify-between pb-2 align-center">
                 <Typography.Paragraph className="m-0 text-medium font-bold font-inter">
                   {ft?.title}

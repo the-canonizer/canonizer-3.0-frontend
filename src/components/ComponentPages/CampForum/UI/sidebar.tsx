@@ -2,7 +2,7 @@ import { Fragment, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 
-import HomeSideBar from "src/components/ComponentPages/Home/SideBar";
+import HomeSideBar from "src/components/ComponentPages/Home-old/SideBar";
 import { RootState } from "src/store";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
 import { getTreesApi } from "src/network/api/campDetailApi";

@@ -1,5 +1,5 @@
 // import { useRouter } from "next/router";
-import SideBarTimeline from "../Home/SideBarTimeline";
+import SideBarTimeline from "../Home-old/SideBarTimeline";
 import TimelineInfoBar from "./TimelineInfoBar/index";
 import styles from "./topicDetails.module.scss";
 import { BackTop, Collapse } from "antd";

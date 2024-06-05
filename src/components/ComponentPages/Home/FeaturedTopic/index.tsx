@@ -54,7 +54,10 @@ const FeaturedTopic = () => {
       <div className="">
         <Slider {...settings}>
           {topicData?.map((ft) => (
-            <CommonCard className="pr-96 hover:*:bg-gr hover:*:shadow-none">
+            <CommonCard
+              className="pr-96 hover:*:bg-gr hover:*:shadow-none"
+              key={ft?.id}
+            >
               <Row gutter={20}>
                 <Col md={10}>
                   <Image

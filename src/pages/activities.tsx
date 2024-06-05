@@ -1,7 +1,7 @@
 import { Row, Col } from "antd";
 
 import Layout from "../hoc/layout";
-import SideBarNoFilter from "../components/ComponentPages/Home/SideBarNoFilter";
+import SideBarNoFilter from "../components/ComponentPages/Home-old/SideBarNoFilter";
 import RecentActivities from "../components/ComponentPages/Home/RecentActivities";
 
 const RecentActivitiesPage = () => {
@@ -14,7 +14,7 @@ const RecentActivitiesPage = () => {
         <div className="pageContentWrap">
           <Row gutter={16}>
             <Col xs={24} sm={24} xl={24}>
-              <RecentActivities />
+              <RecentActivities isUserAuthenticated={undefined} />
             </Col>
           </Row>
         </div>

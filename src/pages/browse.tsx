@@ -4,8 +4,8 @@ import { useDispatch } from "react-redux";
 import { Row, Col } from "antd";
 
 import Layout from "../hoc/layout";
-import SideBar from "../components/ComponentPages/Home/SideBar";
-import TopicsList from "../components/ComponentPages/Home/TopicsList";
+import SideBar from "../components/ComponentPages/Home-old/SideBar";
+import TopicsList from "../components/ComponentPages/Home-old/TopicsList";
 import { setCurrentDate, setOnlyMyTopic } from "src/store/slices/filtersSlice";
 
 const BrowsePage = ({ current_date }: any) => {

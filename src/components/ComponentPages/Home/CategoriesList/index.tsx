@@ -42,7 +42,7 @@ const CategoriesList = () => {
 
       <div className="mt-3 px-0">
         {["#F7E9F5", "#E9EEF9", "#F7EAEA", "#EDF3E6"]?.map((cat) => (
-          <Tooltip title={cat}>
+          <Tooltip title={cat} key={cat}>
             <Tags
               className="rounded-[5px] py-1 px-4 border-0 text-black bg-blue"
               icon={<FlagOutlined />}

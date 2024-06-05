@@ -5,7 +5,7 @@ import styles from "./layout.module.scss";
 
 import useAuthentication from "src/hooks/isUserAuthenticated";
 import LoggedInHeader from "src/components/common/headers/loggedInHeader";
-import LoggedOutHeader from "src/components/common/headers/loggedOutHeader";
+// import LoggedOutHeader from "src/components/common/headers/loggedOutHeader";
 import Footer from "src/components/common/footer";
 import GoogleAd from "src/components/googleAds";
 
@@ -17,7 +17,7 @@ function Layout(props: any) {
   return (
     <Fragment>
       <div className={styles.pageWrap}>
-        {isUserAuthenticated ? <LoggedInHeader /> : <LoggedOutHeader />}
+        {isUserAuthenticated ? <LoggedInHeader /> : <LoggedInHeader />}
         {props?.campInfoBar ? props?.campInfoBar : null}
         <div className={styles.contentWrap}>
           <div

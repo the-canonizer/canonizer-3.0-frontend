@@ -1,5 +1,5 @@
 import Add from "../../components/ComponentPages/News/AddOrEdit";
-import SideBarNoFilter from "../../components/ComponentPages/Home/SideBarNoFilter";
+import SideBarNoFilter from "../../components/ComponentPages/Home-old/SideBarNoFilter";
 import Layout from "../../hoc/layout";
 
 function AddNewsPage() {

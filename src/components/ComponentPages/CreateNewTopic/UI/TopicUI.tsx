@@ -2,7 +2,7 @@ import { Fragment } from "react";
 import { Spin } from "antd";
 
 import FromUI from "./FromUI";
-import Sidebar from "../../Home/SideBarNoFilter";
+import Sidebar from "../../Home-old/SideBarNoFilter";
 
 const CreateNewTopicUI = ({
   onFinish,
