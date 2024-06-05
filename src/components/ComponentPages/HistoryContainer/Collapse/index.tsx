@@ -328,7 +328,7 @@ function HistoryCollapse({
                       >
                         <Button
                           type="primary"
-                          disabled={!campStatement?.ifICanAgreeAndObject}
+                          // disabled={!campStatement?.ifICanAgreeAndObject}
                           id={`object-change-${campStatement?.id}`}
                           onClick={() => {
                             let isModelPop = !isUserAuthenticated
@@ -709,7 +709,8 @@ function HistoryCollapse({
                                 styles.campSelectCheckbox + " agreed-text"
                               }
                               disabled={
-                                !campStatement?.ifICanAgreeAndObject || parentArchived == 1 && directarchived == 0
+                                // !campStatement?.ifICanAgreeAndObject || 
+                                parentArchived == 1 && directarchived == 0
                               }
                               onChange={agreeWithChange}
                             >
