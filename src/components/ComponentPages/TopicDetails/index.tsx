@@ -159,7 +159,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
     const asPath = `${tree[1].topic_id}-${replaceSpecialCharacters(tree[1].title, "-")}/1-Agreement`;    
      router.push(router.pathname,asPath)
  }    
-  },[router?.query?.camp,tree])
+  },[])
 
   useEffect(() => {
     async function getTreeApiCall() {
