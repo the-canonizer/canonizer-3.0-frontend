@@ -1,4 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
+import Hls from 'hls.js';
+
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { RadioChangeEvent, Typography, Radio, Card } from "antd";
 import { useRouter } from "next/router";
@@ -6,8 +8,16 @@ import { useRouter } from "next/router";
 import styles from "./style.module.scss";
 
 import K from "src/constants";
-import { getVideosApi } from "src/network/api/videos";
+import { getVideosApi, getVideosContentApi } from "src/network/api/videos";
 import CustomSkelton from "../../common/customSkelton";
+import VideoThumbnail from "../../../assets/image/video-thumbnail.jpg";
+import videojs from 'video.js';
+import 'video.js/dist/video-js.css';
+import videojsHlsQualitySelector from 'videojs-hls-quality-selector';
+
+// Register the plugin with video.js
+videojs.registerPlugin('hlsQualitySelector', videojsHlsQualitySelector);
+
 
 const { Title } = Typography;
 
@@ -20,8 +30,125 @@ export default function CanonVideos() {
   const [topic, setTopic] = useState("");
   const [loader, setLoader] = useState(false);
   const [videoResolution, setVideoResolution] = useState("");
+  const [isHlsVideo, setIsHlsVideo] = useState(true);
 
   const router = useRouter();
+
+  const HlsPlayer = ({ src, autoPlay = false ,width,onTimeUpdate}) => {
+    const hls = new Hls();
+
+    useEffect(() => {
+      if (Hls.isSupported()) {
+        hls.loadSource(src);
+        hls.attachMedia(playeref.current);
+        hls.on(Hls.Events.MANIFEST_PARSED, () => {
+          if (autoPlay) {
+            playeref.current.play();
+          }
+        });
+
+        // Hls.Events.LEVEL_SWITCHED event to log changes in video quality.
+        hls.on(Hls.Events.LEVEL_SWITCHED, (event, data) => {
+          const level = hls.levels[data.level];
+          console.log(`Switched to level: ${data.level}, Resolution: ${level.width}x${level.height}, Bitrate: ${level.bitrate}`);
+        });
+
+        // event Hls.Events.LEVEL_LOADING which is triggered before loading a new level. 
+        // This can be used to log bandwidth-related information.
+        hls.on(Hls.Events.LEVEL_LOADING, (event, data) => {
+          const level = hls.levels[data.level];
+          console.log(`Loading level: ${data.level}, Resolution: ${level.width}x${level.height}, Bitrate: ${level.bitrate}`);
+        });
+        
+        //Logs the estimated bandwidth after each fragment is loaded, 
+        // providing insight into how the player is adapting to network conditions
+        hls.on(Hls.Events.FRAG_LOADED, (event, data) => {
+          const currentTime = playeref.current.currentTime;
+          const bandwidthEstimate = hls.bandwidthEstimate;
+          console.log(`Fragment loaded at time: ${currentTime}, Estimated bandwidth: ${bandwidthEstimate} bps`);
+        });
+
+      } else if (playeref.current.canPlayType('application/vnd.apple.mpegurl')) {
+        playeref.current.src = src;
+        if (autoPlay) {
+          playeref.current.play();
+        }
+
+        playeref.current.addEventListener('loadedmetadata', () => {
+          console.log(`Loaded HLS stream with resolution: ${playeref.current.videoWidth}x${playeref.current.videoHeight}`);
+        });
+      }
+  
+      return () => {
+        if (hls) {
+          hls.destroy();
+        }
+      };
+    }, [src, autoPlay]);
+  
+    return <video ref={playeref} controls width={width} onTimeUpdate={onTimeUpdate}/>;
+  };
+
+  const VideoPlayer = ({ src, autoPlay = false }) => {
+    const videoRef = useRef(null);
+    const playerRef = useRef(null);
+  
+    useEffect(() => {
+      if (videoRef.current) {
+        playerRef.current = videojs(videoRef.current, {
+          autoplay: autoPlay,
+          controls: true,
+          responsive: true,
+          fluid: true,
+          sources: [{
+            src,
+            type: 'application/x-mpegURL'
+          }]
+        });
+  
+        // Initialize the quality selector
+        playerRef.current.hlsQualitySelector({
+          displayCurrentQuality: true,
+          vjsIconClass: 'vjs-icon-cog',
+          placementIndex: 15,
+          overrideNative: true
+        });
+  
+        playerRef.current.on('loadedmetadata', () => {
+          if (autoPlay) {
+            playerRef.current.play();
+          }
+        });
+  
+        return () => {
+          if (playerRef.current) {
+            playerRef.current.dispose();
+          }
+        };
+      }
+    }, [src, autoPlay]);
+  
+    return (
+      <div>
+        <video 
+          ref={videoRef} 
+          className="video-js vjs-default-skin"                       
+          onTimeUpdate={updateTime}
+          width={"100%"}
+          height={"auto"}
+        >
+          <track
+          kind="chapters"
+          label="Locations"
+          src={"/subs/" + vttPath() + ".vtt"}
+          default
+          ></track>
+        </video>
+      </div>
+    );
+  };
+
+  console.log("topic ===>",topic)
 
   useEffect(() => {
     if (router?.route === "/videos/consciousness") {
@@ -108,6 +235,7 @@ export default function CanonVideos() {
         format?.split(" ")[0],
         null,
         filtredVides[0]?.id
+
       );
     }
 
@@ -121,6 +249,9 @@ export default function CanonVideos() {
   useEffect(() => {
     const q = router.query;
 
+    // let categoryId = router?.query?.video?.at(0).split("-")[0];
+    // let categoryName = router?.query?.video?.at(0).split("-")[1];
+
     async function getTreeApiCall() {
       setLoader(true);
       let data = await getVideosApi();
@@ -132,10 +263,9 @@ export default function CanonVideos() {
 
         if (q?.video?.at(1) || q?.format || q?.chapter) {
           const title = (q?.video?.at(1) || "").split("-");
-          const join =
-            title[0] == "" ? q?.video?.at(1) : title.slice(1).join(" ");
+          const join = title[0] == "" ? q?.video?.at(1) : title.slice(1).join(" ");
           const videoTitle = replaceString(
-            spaceChangeToDash(join ?? (q?.chapter as string), true),
+            spaceChangeToDash(join ?? q?.chapter as string, true),
             true
           );
           const filteredVideo = Object.values(videoss)?.filter((video) => {
@@ -238,9 +368,7 @@ export default function CanonVideos() {
       : [chapter];
     router.query.format = format;
     router.query.video_id = String(videoId);
-    let asPath = isSpecialChapter
-      ? `/videos/1-consciousness/${videoId}-${chapter}?format=${format}`
-      : `/videos/consciousness/${chapter}?format=${format}`;
+    let asPath = isSpecialChapter ? `/videos/1-consciousness/${videoId}-${chapter}?format=${format}` : `/videos/consciousness/${chapter}?format=${format}`;
     if (t) {
       router.query.t = t;
       asPath += `&t=${t}`;
@@ -308,10 +436,10 @@ export default function CanonVideos() {
                       id: React.Key;
                       link: string;
                       title:
-                        | boolean
-                        | React.ReactChild
-                        | React.ReactFragment
-                        | React.ReactPortal;
+                      | boolean
+                      | React.ReactChild
+                      | React.ReactFragment
+                      | React.ReactPortal;
                     }) => {
                       return (
                         <Radio
@@ -345,25 +473,44 @@ export default function CanonVideos() {
           >
             {videos && videoResolution ? (
               <>
-                <video
-                  onTimeUpdate={updateTime}
-                  width={"100%"}
-                  height={"auto"}
-                  controls
-                  ref={playeref}
-                >
-                  <source
-                    data-testid="playerId"
-                    src={BaseVideosURL + "/" + videoResolution}
-                    type="video/mp4"
-                  />
-                  <track
-                    kind="chapters"
-                    label="Locations"
-                    src={"/subs/" + vttPath() + ".vtt"}
-                    default
-                  ></track>
-                </video>
+                {
+                  isHlsVideo ? <>
+                    {
+                      true ?<> 
+                      <h3>HLS Player</h3>
+                      {/* <HlsPlayer src={"https://canon-hls.s3.us-east-2.amazonaws.com/output_multiple_formats/perceiving_a_strawberry.m3u8"} 
+                        width={"100%"}
+                        onTimeUpdate={updateTime}
+                      /> */}
+                            <VideoPlayer src="https://canon-hls.s3.us-east-2.amazonaws.com/output_multiple_formats/perceiving_a_strawberry.m3u8" autoPlay={true} />
+
+                      </>:<> 
+                       {/* video js */}
+                      </>
+                    }
+                  </>:<>
+                    <h3>HTML Player</h3>
+                    <video
+                      onTimeUpdate={updateTime}
+                      width={"100%"}
+                      height={"auto"}
+                      controls
+                      ref={playeref}
+                    >
+                      <source
+                        data-testid="playerId"
+                        src={BaseVideosURL + "/" + videoResolution}
+                        type="video/mp4"
+                      />
+                      <track
+                        kind="chapters"
+                        label="Locations"
+                        src={"/subs/" + vttPath() + ".vtt"}
+                        default
+                      ></track>
+                    </video>
+                  </>
+                }
                 <div
                   className={`video-chap-content ${styles.vttComtainer}`}
                   dangerouslySetInnerHTML={{ __html: topic }}
@@ -381,6 +528,11 @@ export default function CanonVideos() {
           </Card>
         </div>
       </Card>
+      {/* <div className="w-100 pt-4 pb-4 ">
+        <Title className={`text-center ${styles.pageTitle}`} level={1}>
+          Consciousness: Not a Hard Problem, Just a Color Problem
+        </Title>
+      </div> */}
     </Fragment>
   );
 }
