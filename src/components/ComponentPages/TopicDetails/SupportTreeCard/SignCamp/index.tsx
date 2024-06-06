@@ -10,6 +10,7 @@ import {
   CheckCampSignApiCall,
   campSignApi,
   getAllUsedNickNames,
+  getCurrentCampRecordApi,
   getTreesApi,
 } from "src/network/api/campDetailApi";
 
@@ -78,7 +79,16 @@ const SignCamp = ({ setSignModalOpen, setLoadingIndicatorSupport, getCheckStatus
         update_all: 1,
         fetch_topic_history: +router?.query?.topic_history,
       };
+
+      let reqBody = { 
+        as_of: asof, 
+        as_of_date: asofdate, 
+        topic_num: +router?.query?.camp[0]?.split("-")[0], 
+        camp_num: +router?.query?.camp[1]?.split("-")[0], 
+      }
       await getTreesApi(reqBodyForService);
+      await getCurrentCampRecordApi(reqBody)
+      
       await getCheckStatusAPI()
     }
     setSignModalOpen(false);

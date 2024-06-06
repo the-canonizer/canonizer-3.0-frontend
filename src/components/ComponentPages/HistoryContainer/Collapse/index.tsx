@@ -310,9 +310,7 @@ function HistoryCollapse({
               </div>
               {(!campStatement?.grace_period || commited) && (
                 <div className={styles.campStatementCollapseButtons}>
-                  {(campStatement?.status == "in_review" ||
-                    (campStatement?.status == "objected" &&
-                      historyOf != "statement")) && (
+                  {(campStatement?.status == "in_review" ) && (
                     <>
                       <Tooltip
                         title={
