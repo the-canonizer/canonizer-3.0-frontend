@@ -427,10 +427,7 @@ const SupportTreeCard = ({
                               }
                             >
                               <a className="printHIde">
-                                {/* <Tooltip
-                                  title="This will delegate your support to the selected supporter"
-                                  placement="right"
-                                > */}
+                                
                                   <Button
                                     id="supportTreeDelegateYourSupport"
                                     disabled={
