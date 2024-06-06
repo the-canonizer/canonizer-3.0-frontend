@@ -115,8 +115,7 @@ const TopicSearch = () => {
             <div className={styles.search_lists}>
               {searchDataAll.topic?.length ? (
                 <div>
-                  {router?.query?.algo ||
-                  router?.query?.score ||
+                  {
                   isReview ||
                   asof == "bydate" ? (
                     selectedTopicFromAdvanceFilterAlgorithm?.length ? (
