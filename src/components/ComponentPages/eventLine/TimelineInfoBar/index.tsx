@@ -10,13 +10,16 @@ import { setTopicName } from "src/store/slices/campDetailSlice";
 import CustomSkelton from "../../../common/customSkelton";
 
 const CampInfoBar = () => {
+  const router = useRouter();
   const dispatch = useDispatch();
   const { topic_name, loading } = useSelector((state: RootState) => ({
     topic_name: state?.topicDetails?.topic_name,
     loading: state?.loading?.loading,
   }));
-  const router = useRouter();
 
+
+  let camp = router?.query?.camp[0] || '';
+  let urlTopicName = camp.substring(camp.indexOf("-") + 1).replace(/-/g, ' ');
   return (
     <>
       <div className={styles.topicDetailContentHead}>
@@ -44,7 +47,7 @@ const CampInfoBar = () => {
               }
             >
               {" "}
-              {!topic_name || loading ? (
+              {loading ? (
                 <CustomSkelton
                   skeltonFor="list"
                   bodyCount={1}
@@ -52,7 +55,7 @@ const CampInfoBar = () => {
                   isButton={false}
                 />
               ) : (
-                <span className="bold"> Topic : {topic_name}</span>
+                <span className="bold"> Topic : {urlTopicName ? urlTopicName : topic_name}</span>
               )}
             </Typography.Paragraph>
           </div>
