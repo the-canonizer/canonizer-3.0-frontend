@@ -31,8 +31,37 @@ export default function CanonVideos() {
   const [loader, setLoader] = useState(false);
   const [videoResolution, setVideoResolution] = useState("");
   const [isHlsVideo, setIsHlsVideo] = useState(true);
+  const [links, setLinks] = useState([]);
 
   const router = useRouter();
+
+  function vttPath() {
+    let path = videoResolution?.split("_");
+    let finalPath = path?.splice(0, path.length - 1)?.join("_");
+    return finalPath;
+  }
+
+  const fetchVTT = async () => {
+      try {
+        if(videoResolution){
+          const response = await fetch("/subs/"+vttPath()+".vtt");
+          const text = await response.text();
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(text, 'text/html');
+          const linkElements = doc.querySelectorAll('a');
+          const extractedLinks = Array.from(linkElements).map(link => ({
+              href: link.href,
+              text: link.textContent
+          }));
+          setLinks(extractedLinks);}
+      } catch (error) {
+          console.error('Error fetching or parsing VTT file:', error);
+      }
+  };
+
+  useEffect(() => {
+    fetchVTT();
+}, [router?.asPath,videoResolution]);
 
   const VideoPlayer = ({ src, autoPlay = false }) => {
     const videoRef = useRef(null);
@@ -93,7 +122,6 @@ export default function CanonVideos() {
     );
   };
 
-  console.log("topic ===>",topic)
 
   useEffect(() => {
     if (router?.route === "/videos/consciousness") {
@@ -258,19 +286,15 @@ export default function CanonVideos() {
   }, []);
 
   function updateTime() {
-    console.log("update Time called",playeref?.current)
-    if (
-      playeref?.current?.textTracks[0]?.activeCues &&
-      topic != playeref?.current?.textTracks[0]?.activeCues[0]?.text
-    ) {
-      setTopic(playeref?.current?.textTracks[0]?.activeCues[0]?.text);
+    console.log("update Time called",playeref?.current?.textTracks)
+    if(!isHlsVideo){
+      if (
+        playeref?.current?.textTracks[0]?.activeCues &&
+        topic != playeref?.current?.textTracks[0]?.activeCues[0]?.text
+      ) {
+        setTopic(playeref?.current?.textTracks[0]?.activeCues[0]?.text);
+      }
     }
-  }
-
-  function vttPath() {
-    let path = videoResolution?.split("_");
-    let finalPath = path?.splice(0, path.length - 1)?.join("_");
-    return finalPath;
   }
 
   useEffect(() => {
@@ -338,8 +362,11 @@ export default function CanonVideos() {
     src,
     autoPlay = false
   }) => {
-    const hls = new Hls();
-
+    let config = {
+      enableWebVTT: true,
+    }
+    const hls = new Hls(config);
+    
     useEffect(() => {
       if (Hls.isSupported()) {
         hls.loadSource(src);
@@ -407,7 +434,6 @@ export default function CanonVideos() {
           </video>
         </>;
   };
-  console.log("topic ===>",playeref)
 
   return (
     <Fragment>
@@ -502,15 +528,24 @@ export default function CanonVideos() {
                 {
                   isHlsVideo ? <>
                       <h3>HLS Player</h3>
-                      <HlsPlayer 
+                      {/* <HlsPlayer 
                         onTimeUpdate={updateTime}
                         width={"100%"}
                         height={"auto"}
                         controls
                         playeref={playeref}
                         src={"https://canon-hls.s3.us-east-2.amazonaws.com/output_multiple_formats/perceiving_a_strawberry.m3u8"} 
-                      />
-                    {/* <VideoPlayer src="https://canon-hls.s3.us-east-2.amazonaws.com/output_multiple_formats/perceiving_a_strawberry.m3u8" autoPlay={true} /> */}
+                      /> */}
+
+                    <VideoPlayer src="https://canon-hls.s3.us-east-2.amazonaws.com/output_multiple_formats/perceiving_a_strawberry.m3u8" autoPlay={true} />
+
+                    <div style={{marginTop:'2%'}}>
+                      {
+                        links?.map((item,index)=>{
+                          return <a href={item?.href}><p>{item?.text}</p></a>
+                        })
+                      }
+                    </div>
                   </>:<>
                     <h3>HTML Player</h3>
                     <video
@@ -532,12 +567,12 @@ export default function CanonVideos() {
                         default
                       ></track>
                     </video>
+                    <div
+                      className={`video-chap-content ${styles.vttComtainer}`}
+                      dangerouslySetInnerHTML={{ __html: topic }}
+                    ></div>
                   </>
                 }
-                <div
-                  className={`video-chap-content ${styles.vttComtainer}`}
-                  dangerouslySetInnerHTML={{ __html: topic }}
-                ></div>
               </>
             ) : (
               <CustomSkelton
