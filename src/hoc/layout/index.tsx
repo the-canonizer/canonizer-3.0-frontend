@@ -38,19 +38,17 @@ function CustomLayout(props: any) {
         <div className="px-4 my-3">{props?.afterHeader}</div>
       ) : null}
 
-      <Layout className={`px-4 max-w-full ${styles.contentArea}`}>
+      <Layout className={`px-4 max-w-full ${styles.contentArea} ${getCls()}`}>
         {props?.leftSidebar ? (
-          <aside className={`mr-5 ${styles.leftSidebar}`}>
+          <aside className={`mr-5 ${styles.leftSidebar} md:mr-0`}>
             {props?.leftSidebar}
           </aside>
         ) : null}
 
-        <main className={`${styles.contentBox} ${getCls()}`}>
-          {props.children}
-        </main>
+        <main className={`${styles.contentBox}`}>{props.children}</main>
 
         {props?.rightSidebar ? (
-          <aside className={`ml-5 ${styles.rightSidebar}`}>
+          <aside className={`ml-5 ${styles.rightSidebar} md:ml-0`}>
             {props?.rightSidebar}
           </aside>
         ) : null}

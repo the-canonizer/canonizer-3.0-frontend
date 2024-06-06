@@ -18,7 +18,7 @@
       }
     }
   }
-  @media screen and (max-width: 992px) {
+  @media screen and (max-width: 1024px) {
     position: fixed;
     width: 80%;
     height: 100%;
@@ -27,10 +27,30 @@
     left: 0;
     z-index: 100;
     margin: 0;
+    padding: 30px 30px;
+    transform: translateX(-500em);
+    transition: all 0.3s;
+    &.open {
+      transform: translateX(0);
+    }
     ul {
+      z-index: 1000;
       li {
-        
+        &.active {
+          background: var(--gr);
+
+          a {
+            color: var(--hblue);
+          }
+        }
       }
     }
+  }
+}
+
+.active {
+  color: var(--hblue);
+  a {
+    color: var(--hblue);
   }
 }

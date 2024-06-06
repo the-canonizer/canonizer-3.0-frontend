@@ -55,11 +55,11 @@ const FeaturedTopic = () => {
         <Slider {...settings}>
           {topicData?.map((ft) => (
             <CommonCard
-              className="pr-96 hover:*:bg-gr hover:*:shadow-none"
+              className="hover:*:bg-gr hover:*:shadow-none lg:w-full"
               key={ft?.id}
             >
-              <Row gutter={20}>
-                <Col md={10}>
+              <Row gutter={20} className="w-full">
+                <Col lg={10} md={24} xs={24}>
                   <Image
                     className="w-full rounded-lg h-auto object-cover "
                     preview={false}
@@ -68,7 +68,7 @@ const FeaturedTopic = () => {
                     src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
                   />
                 </Col>
-                <Col md={14} className="flex flex-col">
+                <Col lg={14} md={24} className="flex flex-col lg:mt-3">
                   <div className="flex justify-between pb-2 align-center">
                     <Typography.Paragraph className="m-0 text-medium font-bold font-inter">
                       {ft?.title}
@@ -108,7 +108,7 @@ const FeaturedTopic = () => {
                     }}
                   ></div>
                   <div className="flex justify-between pt-3 mt-auto">
-                    <div className="text-left flex">
+                    <div className="text-left flex sm:flex-col">
                       <Popover content="Share Topic" placement="top">
                         <Typography.Paragraph className="bg-transparent border-0 p-0 hover:bg-transparent focus:bg-transparent flex items-center leading-1 mb-0 mr-3">
                           <FlagOutlined className="text-black p-1 text-medium" />

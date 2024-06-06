@@ -14,15 +14,15 @@
   --font-family-asap: "Asap", sans-serif;
   --font-family-inter: "Inter", sans-serif;
   --yellow: #f89d15;
-  --blue: "#5482C8",
-  --hblue: "#326DC7",
-  --green: "#4EB966",
-  --red: "#E46B6B",
-  --black: "#242B37",
-  --orange: "#F19C39",
-  --white: "#fff",
-  --disabled: "#AAB2BF",
-  --gr: "#F7F8FC",
+  --blue: #5482c8;
+  --hblue: #326dc7;
+  --green: #4eb966;
+  --red: #e46b6b;
+  --black: #242b37;
+  --orange: #f19c39;
+  --white: #fff;
+  --disabled: #aab2bf;
+  --gr: #f7f8fc;
 }
 
 body {
@@ -77,16 +77,24 @@ body {
   [class*="slick-next"] {
     right: 0;
   }
-  &.hotTopicSlider{
-    .hotTopicDots{
-display: none !important;
+  &.hotTopicSlider {
+    .hotTopicDots {
+      display: none !important;
     }
-   .slick-track{
-    display: flex !important;
-  }
+    .slick-track {
+      display: flex !important;
+    }
     .slick-slide {
       padding: 10px 15px;
       height: auto !important;
+    }
+  }
+  @media screen and (max-width: 600px) {
+    padding-bottom: 30px;
+    .featuredDots {
+      top: calc(100% - 30px);
+      right: 0;
+      left: 0;
     }
   }
 }

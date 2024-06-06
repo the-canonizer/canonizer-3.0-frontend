@@ -1,12 +1,18 @@
 import { Fragment, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Button, Menu } from "antd";
+import { Button, Menu, Typography } from "antd";
 import {
   CheckCircleOutlined,
   LogoutOutlined,
   MenuOutlined,
   SettingOutlined,
+  HomeOutlined,
+  QuestionCircleOutlined,
+  PlusOutlined,
+  GlobalOutlined,
+  CloseOutlined,
+  ArrowRightOutlined,
 } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 
@@ -19,6 +25,7 @@ import { RootState } from "src/store";
 import Notifications from "../notification";
 import { logout } from "src/network/api/userApi";
 import { getGravatarPicApi } from "src/network/api/notificationAPI";
+import Logo from "../logoHeader";
 
 const menuItems = [
   {
@@ -26,17 +33,20 @@ const menuItems = [
     linkTitle: "Home",
     id: 1,
     isMobile: true,
+    icon: <HomeOutlined />,
   },
   {
     link: "/browse",
     linkTitle: "Browse",
     id: 2,
+    icon: <GlobalOutlined />,
   },
   {
-    link: "/browse",
+    link: "/create/topic",
     linkTitle: "Start a Topic",
     id: 3,
     isMobile: true,
+    icon: <PlusOutlined />,
   },
   // {
   //   link: process.env.NEXT_PUBLIC_BLOG_URL,
@@ -48,12 +58,14 @@ const menuItems = [
     link: "/topic/132-Help/1-Agreement?is_tree_open=1",
     linkTitle: "Help",
     id: 4,
+    icon: <QuestionCircleOutlined />,
   },
   {
-    link: "/topic/132-Help/1-Agreement?is_tree_open=1",
+    link: "/settings",
     linkTitle: "Settings",
     id: 5,
     isMobile: true,
+    icon: <SettingOutlined />,
   },
 ];
 
@@ -68,9 +80,8 @@ export const logOut = async (router) => {
 const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
   const router = useRouter();
 
-  const { loggedInUser, list } = useSelector((state: RootState) => ({
+  const { loggedInUser } = useSelector((state: RootState) => ({
     loggedInUser: state.auth.loggedInUser,
-    list: state.notifications.headerNotification.list,
   }));
 
   const [isGravatarImage, setIsGravatarImage] = useState(false);
@@ -79,7 +90,7 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
 
   const ListItem = ({ cls = "", ...props }) => (
     <li
-      className={`flex-auto px-3 md:before:hidden md:after:hidden ${styles.listItem} ${cls}`}
+      className={`flex-auto px-3 lg:before:hidden lg:after:hidden rounded-lg ${styles.listItem} ${cls}`}
       key={props.key}
     >
       {props?.children}
@@ -139,12 +150,49 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
 
   return (
     <Fragment>
-      <nav className={`${styles.NavWrap} md:shadow-md ${className}`}>
-        <ul className="flex text-base font-inter font-medium md:flex-col">
+      <nav
+        className={`${
+          styles.NavWrap
+        } lg:shadow-md ${className} [:root:--hblue:text-hblue] ${
+          isActive ? styles.open : ""
+        }`}
+      >
+        <div className="hidden lg:flex justify-between items-center">
+          <Logo />
+          <Button
+            size="middle"
+            className="border-0 p-0 hidden lg:block ml-2"
+            onClick={toggleMobNav}
+            key="outnline-btn"
+          >
+            <CloseOutlined className="text-medium" />
+          </Button>
+        </div>
+        {!isUserAuthenticated ? (
+          <div className="hidden lg:flex justify-between items-center mt-5 overflow-hidden py-3 text-center gap-[30px]">
+            <Link href="/register">
+              <a className="h-[50px] leading-[0] flex items-center justify-center bg-blue hover:bg-hblue px-3 py-1 rounded-lg w-2/4 text-center text-base font-medium font-inter text-white hover:text-white">
+                Register
+                <ArrowRightOutlined className="ml-2" />
+              </a>
+            </Link>
+            <Link href="/login">
+              <a className="h-[50px] leading-[0] flex items-center justify-center px-3 py-1 rounded-lg w-2/4 text-center text-base font-medium font-inter text-black border-2 border-blue hover:text-blue hover:border-hblue">
+                Login
+                <ArrowRightOutlined className="ml-2" />
+              </a>
+            </Link>
+          </div>
+        ) : (
+          <Typography.Paragraph className="font-medium text-base h-[30px] hidden lg:block">
+            Hi {loggedInUser?.first_name}!
+          </Typography.Paragraph>
+        )}
+        <ul className="flex text-base font-inter font-medium lg:flex-col lg:mt-4">
           <ListItem
             cls={`${
               router?.asPath === "/create/topic" ? styles.active : ""
-            } md:hidden`}
+            } lg:hidden`}
             key="create-topic-li"
           >
             <CreateTopic
@@ -160,12 +208,15 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
             return (
               <ListItem
                 cls={`${router?.asPath === item.link ? styles.active : ""} ${
-                  item?.isMobile ? "hidden md:block" : ""
+                  item?.isMobile ? "hidden lg:block" : ""
                 }`}
                 key={item.id + "_" + item.link + "___" + idx}
               >
                 <Link href={item.link}>
-                  <a className="hover:text-hblue">{item.linkTitle}</a>
+                  <a className="hover:text-hblue flex">
+                    <span className="hidden lg:block mr-2">{item?.icon}</span>
+                    {item.linkTitle}
+                  </a>
                 </Link>
               </ListItem>
             );
@@ -173,13 +224,13 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
           {isUserAuthenticated ? (
             <ListItem
               key="notification-li"
-              cls="after:content-['|'] after:absolute after:ml-[10px] after:text-[darkgray] md:hidden"
+              cls="after:content-['|'] after:absolute after:ml-[10px] after:text-[darkgray] lg:hidden"
             >
               <Notifications />
             </ListItem>
           ) : null}
           {isUserAuthenticated ? (
-            <ListItem key="profile-li" cls="md:hidden">
+            <ListItem key="profile-li" cls="lg:hidden">
               <ProfileInfoTab
                 isGravatarImage={isGravatarImage}
                 loadingImage={loadingImage}
@@ -191,19 +242,19 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
               />
             </ListItem>
           ) : (
-            <ListItem key="Join-canonizer-li" cls="md:hidden">
+            <ListItem key="Join-canonizer-li" cls="lg:hidden">
               <JoinCanonizer />
             </ListItem>
           )}
         </ul>
       </nav>
       {isUserAuthenticated ? (
-        <div key="notification-li-mobile" className="hidden md:block mr-2">
+        <div key="notification-li-mobile" className="hidden lg:block mr-2 lg:ml-auto md:ml-1">
           <Notifications />
         </div>
       ) : null}
       {isUserAuthenticated ? (
-        <div key="profile-li-mobile" className="hidden md:block">
+        <div key="profile-li-mobile" className="hidden lg:block">
           <ProfileInfoTab
             isGravatarImage={isGravatarImage}
             loadingImage={loadingImage}
@@ -217,7 +268,7 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
       ) : null}
       <Button
         size="middle"
-        className="border-0 p-0 hidden md:block ml-2"
+        className="border-0 p-0 hidden lg:block ml-2"
         onClick={toggleMobNav}
         key="outnline-btn"
       >

@@ -345,7 +345,6 @@ const HeaderSearch = ({ className = "" }: any) => {
                 : searchVal
             }
             className={styles.searchInput}
-            autoFocus
             name="search"
             onChange={(e) => {
               setLoadingSekelton(true);
@@ -367,7 +366,7 @@ const HeaderSearch = ({ className = "" }: any) => {
         </div>
       </AutoComplete>
       {/* </div> */}
-      <div className="hidden md:block ml-auto">
+      <div className="hidden md:block ml-auto mr-1">
         <Link href="/search">
           <a className="text-medium text-black hover:text-blue">
             <SearchOutlined />

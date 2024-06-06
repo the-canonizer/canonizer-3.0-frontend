@@ -30,7 +30,7 @@ const LeftContent = ({ isUserAuthenticated }) => {
   }));
 
   return (
-    <div className="pr-96">
+    <div className="pr-0">
       <Typography.Paragraph className="m-0 text-base font-bold font-inter">
         {isUserAuthenticated
           ? getGreet() + ", " + loggedInUser?.first_name + "!"
@@ -50,11 +50,11 @@ const LeftContent = ({ isUserAuthenticated }) => {
       </Typography.Paragraph>
       {isUserAuthenticated ? (
         <TopicCreateButton
-          className="w-4/12 h-[50px] text-base bg-blue px-3 rounded-lg text-white hover:bg-hblue hover:text-white flex items-center justify-center font-medium lg:w-8/12 md:w-6/12"
+          className="w-4/12 h-[50px] text-base bg-blue px-3 rounded-lg text-white hover:bg-hblue hover:text-white flex items-center justify-center font-medium lg:w-8/12 md:w-6/12 sm:w-full"
           isWithIcon={true}
         />
       ) : (
-        <PrimaryButton className="w-4/12 h-[50px] text-base lg:w-8/12 md:w-6/12">
+        <PrimaryButton className="w-4/12 h-[50px] text-base lg:w-8/12 md:w-6/12 sm:w-full">
           Browse More <ArrowRightOutlined />
         </PrimaryButton>
       )}

@@ -68,12 +68,12 @@ const RecentActivities = ({ isUserAuthenticated }) => {
   return (
     <Fragment>
       <Row gutter={15} className="mt-5">
-        <Col md={12} className="mb-3">
+        <Col md={12} sm={12} xs={12} className="mb-3">
           <Headings level={5} className="mb-0 text-base font-bold uppercase">
             Recent activities
           </Headings>
         </Col>
-        <Col md={12} className="text-right">
+        <Col md={12} sm={12} xs={12} className="text-right">
           <Link href="">
             <a className="text-blue hover:text-hblue text-medium font-inter">
               See More

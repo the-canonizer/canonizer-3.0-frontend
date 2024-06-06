@@ -82,7 +82,7 @@ function Footer() {
     <Fragment>
       <footer className={`printHIde bg-black px-4 py-4`}>
         <Row gutter={20}>
-          <Col xs={24} sm={10} md={7} lg={8}>
+          <Col xs={24} sm={24} md={7} lg={8}>
             <div className="mb-3">
               <Link href="/">
                 <a>
@@ -128,10 +128,10 @@ function Footer() {
                 </li>
               </ul> */}
           </Col>
-          <Col xs={24} sm={14} md={10} lg={10}>
-            <Row gutter={20} className="px-6">
-              <Col xs={24} md={12} className="text-white">
-                <Typography.Paragraph className="text-base text-semibold text-white">
+          <Col xs={24} sm={24} md={10} lg={10}>
+            <Row gutter={20} className="px-6 sm:px-0 sm:py-4">
+              <Col xs={12} md={12} className="text-white">
+                <Typography.Paragraph className="text-base text-bold text-white">
                   Explore
                 </Typography.Paragraph>
                 <ul>
@@ -154,8 +154,8 @@ function Footer() {
                   ))}
                 </ul>
               </Col>
-              <Col xs={24} md={12} className="text-white">
-                <Typography.Paragraph className="text-base text-semibold text-white">
+              <Col xs={12} md={12} className="text-white">
+                <Typography.Paragraph className="text-base text-bold text-white">
                   Learn More{" "}
                 </Typography.Paragraph>
                 <ul>
@@ -182,13 +182,13 @@ function Footer() {
               </Col>
             </Row>
           </Col>
-          <Col xs={24} sm={12} md={7} lg={6}>
+          <Col xs={24} sm={24} md={7} lg={6}>
             <div className="bg-zinc-500 rounded-lg px-3 py-4">
               <Typography.Paragraph className="text-14 text-white">
                 Comments and Questions:
               </Typography.Paragraph>
               <Link href="mailto:support@canonizer.com">
-                <a className="text-white text-medium font-medium">
+                <a className="text-white text-medium font-medium break-words">
                   <i className="icon-envelope mr-1 text-base"></i>{" "}
                   <span className="underline">support@canonizer.com</span>
                 </a>

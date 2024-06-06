@@ -35,12 +35,26 @@ const HotTopics = () => {
     slidesToScroll: 1,
     className: "featuresSlider hotTopicSlider",
     dotsClass: "featuredDots hotTopicDots my-[20px] justify-center",
+    responsive: [
+      {
+        breakpoint: 1200,
+        settings: {
+          slidesToShow: 2,
+        },
+      },
+      {
+        breakpoint: 992,
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+    ],
   };
 
   return (
     <Fragment>
       <Row gutter={15}>
-        <Col md={12} className="mb-3">
+        <Col md={12} sm={12} xs={12} className="mb-3">
           <Headings level={5} className="mb-0 text-base font-bold uppercase">
             Hot Topics{" "}
             <Popover content="Hot Topics" placement="top" className="">
@@ -48,7 +62,7 @@ const HotTopics = () => {
             </Popover>
           </Headings>
         </Col>
-        <Col md={12} className="text-right">
+        <Col md={12} sm={12} xs={12} className="text-right">
           <Link href="">
             <a className="text-blue hover:text-hblue text-medium font-inter">
               See More
@@ -92,8 +106,8 @@ const HotTopics = () => {
                   }),
                 }}
               ></div>
-              <div className="flex justify-between pt-3 mt-auto">
-                <div className="text-left flex">
+              <div className="flex justify-between pt-3 mt-auto sm:flex-col">
+                <div className="text-left flex sm:flex-col">
                   <Popover content="Share Topic" placement="top">
                     <Typography.Paragraph className="bg-transparent border-0 p-0 hover:bg-transparent focus:bg-transparent flex items-center leading-1 mb-0 mr-3">
                       <FlagOutlined className="text-black p-1 text-medium" />

@@ -16,7 +16,7 @@ const LoggedOutHeader = () => {
         <Logo />
         <SearchHeader className="ml-5" />
         <HeaderMenu
-          className="ml-auto md:ml-1"
+          className="ml-auto lg:ml-1"
           isUserAuthenticated={isUserAuthenticated}
         />
       </div>

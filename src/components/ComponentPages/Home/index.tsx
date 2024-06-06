@@ -11,28 +11,33 @@ import TrandingTopics from "./TrandingTopic";
 import WhatsNew from "./WhatsNew";
 import PreferedTopics from "./PreferedTopic";
 import RecentActivities from "./RecentActivities";
+import { useIsMobile } from "src/hooks/useIsMobile";
 
 const HomePageContainer = () => {
   const { isUserAuthenticated } = useAuthentication();
+  const isMobile = useIsMobile();
+  console.log("isMobile---", isMobile);
 
   return (
     <Layout
       afterHeader={<WelcomeContent />}
       rightSidebar={
-        <div className="pt-4">
-          <div className="mb-6">
-            <TrandingTopics />
-          </div>
+        <div className="pt-4 sm:pt-0">
+          {!isMobile ? (
+            <div className="mb-6">
+              <TrandingTopics />
+            </div>
+          ) : null}
 
           {isUserAuthenticated ? (
             <div className="mb-4">
               <RecentActivities isUserAuthenticated={isUserAuthenticated} />
             </div>
-          ) : (
-            <div className="mb-4">
-              <WhatsNew />
-            </div>
-          )}
+          ) : null}
+
+          <div className="mb-4">
+            <WhatsNew />
+          </div>
         </div>
       }
     >
@@ -40,6 +45,11 @@ const HomePageContainer = () => {
         <Col md={24} className="mb-6">
           <FeaturedTopic />
         </Col>
+        {isMobile ? (
+          <Col md={24} xs={24} className="mb-6">
+            <TrandingTopics />
+          </Col>
+        ) : null}
         {isUserAuthenticated ? (
           <Col md={24} className="mb-6">
             <PreferedTopics />
@@ -48,7 +58,7 @@ const HomePageContainer = () => {
         <Col md={24} className="mb-6">
           <CategoriesList />
         </Col>
-        <Col md={24} className="mb-6">
+        <Col md={24} className="mb-6 sm:mb-2">
           <HotTopics />
         </Col>
         <Col md={12}></Col>

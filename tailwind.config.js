@@ -6,12 +6,14 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     screens: {
-      xsm: { max: "640px" },
-      sm: { max: "768px" },
-      md: { max: "992px" },
-      lg: { max: "1024px" },
-      xl: { max: "1280px" },
+      "3xlMin": { min: "1600px" },
       "2xl": { max: "1536px" },
+      "1xl": { max: "1450px" },
+      xl: { max: "1280px" },
+      lg: { max: "1024px" },
+      md: { max: "992px" },
+      sm: { max: "768px" },
+      xsm: { max: "640px" },
     },
     fontFamily: {
       inter: '"Inter", sans-serif',
@@ -45,15 +47,15 @@ module.exports = {
       contain: "contain",
       ...theme("spacing"),
     }),
-    spacing: {
-      1: "8px",
-      2: "12px",
-      3: "16px",
-      4: "24px",
-      5: "32px",
-      6: "48px",
-    },
     extend: {
+      spacing: {
+        1: "8px",
+        2: "12px",
+        3: "16px",
+        4: "24px",
+        5: "32px",
+        6: "48px",
+      },
       colors: {
         blue: "#5482C8",
         hblue: "#326DC7",
