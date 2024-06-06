@@ -542,7 +542,7 @@ export default function CanonVideos() {
                     <div style={{marginTop:'2%'}}>
                       {
                         links?.map((item,index)=>{
-                          return <a href={item?.href}><p>{item?.text}</p></a>
+                          return <a href={item?.href} key={item?.index}><p>{item?.text}</p></a>
                         })
                       }
                     </div>
