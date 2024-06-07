@@ -28,8 +28,8 @@ import {
 } from "src/store/slices/searchSlice";
 import CustomSkelton from "../../customSkelton";
 import { setSearchLoadingAction } from "src/store/slices/loading";
-import SearchInputs from "@/components/shared/FormInputs/search";
-import CustomTabs from "@/components/shared/Tabs";
+import SearchInputs from "src/components/shared/FormInputs/search";
+import CustomTabs from "src/components/shared/Tabs";
 
 const getHighlightedText = (text, highlight) => {
   const parts = text.split(new RegExp(`(${highlight})`, "gi"));

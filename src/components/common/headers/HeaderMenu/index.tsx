@@ -18,8 +18,8 @@ import { useSelector } from "react-redux";
 
 import styles from "./HeaderMenu.module.scss";
 
-import CreateTopic from "@/components/shared/Buttons/TopicCreationButton";
-import JoinCanonizer from "@/components/shared/Buttons/JoinCanoizerButton";
+import CreateTopic from "src/components/shared/Buttons/TopicCreationButton";
+import JoinCanonizer from "src/components/shared/Buttons/JoinCanoizerButton";
 import ProfileInfoTab from "./profileInfo";
 import { RootState } from "src/store";
 import Notifications from "../notification";
