@@ -46,7 +46,7 @@ const CampInfoBar = () => {
               }
             >
               {" "}
-              {!topic_name || loading ? (
+              { loading ? (
                 <CustomSkelton
                   skeltonFor="list"
                   bodyCount={1}
