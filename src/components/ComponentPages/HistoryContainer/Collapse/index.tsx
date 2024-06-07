@@ -310,9 +310,7 @@ function HistoryCollapse({
               </div>
               {(!campStatement?.grace_period || commited) && (
                 <div className={styles.campStatementCollapseButtons}>
-                  {(campStatement?.status == "in_review" ||
-                    (campStatement?.status == "objected" &&
-                      historyOf != "statement")) && (
+                  {(campStatement?.status == "in_review" ) && (
                     <>
                       <Tooltip
                         title={
@@ -330,6 +328,7 @@ function HistoryCollapse({
                       >
                         <Button
                           type="primary"
+                          disabled={!campStatement?.ifICanAgreeAndObject}
                           id={`object-change-${campStatement?.id}`}
                           onClick={() => {
                             let isModelPop = !isUserAuthenticated
@@ -710,7 +709,7 @@ function HistoryCollapse({
                                 styles.campSelectCheckbox + " agreed-text"
                               }
                               disabled={
-                                parentArchived == 1 && directarchived == 0
+                                !campStatement?.ifICanAgreeAndObject || parentArchived == 1 && directarchived == 0
                               }
                               onChange={agreeWithChange}
                             >
