@@ -23,7 +23,8 @@ import { metaTagsApi } from "src/network/api/metaTagsAPI";
 import { checkTopicCampExistAPICall } from "src/network/api/campDetailApi";
 import { getCookies } from "src/utils/generalUtility";
 import { createToken } from "src/network/api/userApi";
-import CustomSkelton from "@/components/common/customSkelton";
+// import CustomSkelton from "@/components/common/customSkelton";
+// import { ConfigProvider } from "antd";
 
 type AppOwnProps = { meta: any; canonical_url: string; returnURL: string };
 
@@ -110,10 +111,12 @@ function WrappedApp({
             canonical={canonical_url}
             {...pageProps}
           />
-          {isAuthenticatedRef?.current &&
-          !!(getCookies() as any)?.loginToken ? (
-            <Component {...pageProps} />
-          ) : null}
+          {/* <ConfigProvider theme={}> */}
+            {isAuthenticatedRef?.current &&
+            !!(getCookies() as any)?.loginToken ? (
+              <Component {...pageProps} />
+            ) : null}
+          {/* </ConfigProvider> */}
         </ErrorBoundary>
       </Provider>
     </CookiesProvider>

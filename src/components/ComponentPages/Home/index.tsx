@@ -1,47 +1,69 @@
 import { Row, Col } from "antd";
-import dynamic from "next/dynamic";
 
 import useAuthentication from "../../../hooks/isUserAuthenticated";
-import HotTopic from "src/components/common/hotTopic";
 
-const SideBar = dynamic(() => import("./SideBar"));
-const TopicsList = dynamic(() => import("./TopicsList"));
-const RecentActivities = dynamic(() => import("./RecentActivities"));
-const HelpCard = dynamic(() => import("./HelpCard"));
+import Layout from "src/hoc/layout";
+import WelcomeContent from "./WelcomeArea";
+import FeaturedTopic from "./FeaturedTopic";
+import CategoriesList from "./CategoriesList";
+import HotTopics from "./HotTopics";
+import TrandingTopics from "./TrandingTopic";
+import WhatsNew from "./WhatsNew";
+import PreferedTopics from "./PreferedTopic";
+import RecentActivities from "./RecentActivities";
+import { useIsMobile } from "src/hooks/useIsMobile";
 
 const HomePageContainer = () => {
   const { isUserAuthenticated } = useAuthentication();
+  const isMobile = useIsMobile();
+  console.log("isMobile---", isMobile);
 
   return (
-    <>
-      <aside className="leftSideBar miniSideBar" data-testid="sideBar">
-        <SideBar />
-      </aside>
-      <div className="pageContentWrap">
-        <Row gutter={8}>
-          <Col xs={24} sm={24} xl={24} data-testid="hotTopicColumn">
-            <HotTopic />
+    <Layout
+      afterHeader={<WelcomeContent />}
+      rightSidebar={
+        <div className="pt-4 sm:pt-0" data-testid="sideBar">
+          {!isMobile ? (
+            <div className="mb-6" data-testid="topicsList">
+              <TrandingTopics />
+            </div>
+          ) : null}
+
+          {isUserAuthenticated ? (
+            <div className="mb-4" data-testid="recentActivities">
+              <RecentActivities isUserAuthenticated={isUserAuthenticated} />
+            </div>
+          ) : null}
+
+          <div className="mb-4" data-testid="helpCard">
+            <WhatsNew />
+          </div>
+        </div>
+      }
+    >
+      <Row className="pt-4 w-100" data-testid="featuredTopic">
+        <Col md={24} className="mb-6">
+          <FeaturedTopic />
+        </Col>
+        {isMobile ? (
+          <Col md={24} xs={24} className="mb-6">
+            <TrandingTopics />
           </Col>
-          <Col xs={24} sm={24} xl={12} data-testid="topicsList">
-            <TopicsList />
+        ) : null}
+        {isUserAuthenticated ? (
+          <Col md={24} className="mb-6" data-testid="preferedTopic">
+            <PreferedTopics />
           </Col>
-          {isUserAuthenticated && (
-            <Col xs={24} sm={24} xl={12} data-testid="recentActivities">
-              <RecentActivities />
-            </Col>
-          )}
-          <Col
-            xs={24}
-            sm={24}
-            xl={isUserAuthenticated ? 24 : 12}
-            className={isUserAuthenticated && "logged-in-view"}
-            data-testid="helpCard"
-          >
-            <HelpCard />
-          </Col>
-        </Row>
-      </div>
-    </>
+        ) : null}
+        <Col md={24} className="mb-6" data-testid="categoriesList">
+          <CategoriesList />
+        </Col>
+        <Col md={24} className="mb-6 sm:mb-2" data-testid="hotTopics">
+          <HotTopics />
+        </Col>
+        <Col md={12}></Col>
+      </Row>
+    </Layout>
   );
 };
 

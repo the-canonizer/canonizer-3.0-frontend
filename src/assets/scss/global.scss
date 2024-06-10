@@ -1,17 +1,102 @@
+// tailwind imports
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+// inter font
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
+
 @import "./fonts";
 @import "./speed-controller";
 
 :root {
   --primary: #4484ce;
   --font-family-asap: "Asap", sans-serif;
+  --font-family-inter: "Inter", sans-serif;
   --yellow: #f89d15;
+  --blue: #5482c8;
+  --hblue: #326dc7;
+  --green: #4eb966;
+  --red: #e46b6b;
+  --black: #242b37;
+  --orange: #f19c39;
+  --white: #fff;
+  --disabled: #aab2bf;
+  --gr: #f7f8fc;
 }
 
 body {
-  font-family: "Asap", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
     "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
-  background-color: #f8f8f8 !important;
+  background: #fff;
+}
+
+.featuresSlider {
+  .featuredDots {
+    display: flex !important;
+    position: absolute;
+    top: -55px;
+    right: 0;
+    li {
+      button {
+        width: 10px;
+        height: 10px;
+        overflow: hidden;
+        border-radius: 50%;
+        display: block;
+        box-shadow: none;
+        outline: linen;
+        border: 1px solid #0524e9;
+        position: static;
+        color: #fff;
+        background-color: #fff;
+        padding: 0;
+      }
+      &[class*="slick-active"] {
+        button {
+          background-color: #0524e9;
+          color: #0524e9;
+        }
+      }
+      &:not(:last-child) {
+        margin-right: 10px;
+      }
+    }
+  }
+  [class*="slick-arrow"] {
+    z-index: 100;
+    // top: 0;
+    &::before {
+      color: #9aa5e7;
+    }
+  }
+  [class*="slick-prev"] {
+    left: 0;
+  }
+  [class*="slick-next"] {
+    right: 0;
+  }
+  &.hotTopicSlider {
+    .hotTopicDots {
+      display: none !important;
+    }
+    .slick-track {
+      display: flex !important;
+    }
+    .slick-slide {
+      padding: 10px 15px;
+      height: auto !important;
+    }
+  }
+  @media screen and (max-width: 600px) {
+    padding-bottom: 30px;
+    .featuredDots {
+      top: calc(100% - 30px);
+      right: 0;
+      left: 0;
+    }
+  }
 }
 
 .position-relative {
@@ -2637,10 +2722,9 @@ div[role="option"]::before {
 .topics-list-card-header {
   padding: 15px 10px;
   display: flex;
-  
+
   gap: 8px;
-  @media screen and (max-width: 1300px)
-  {
+  @media screen and (max-width: 1300px) {
     flex-wrap: wrap;
   }
 
@@ -2656,8 +2740,7 @@ div[role="option"]::before {
   .ant-select.ant-select-lg {
     margin-right: auto;
 
-    
-      @media screen and (min-width: 768px) {
+    @media screen and (min-width: 768px) {
       margin-left: 0px;
       max-width: 100%;
       width: 100%;
@@ -3020,21 +3103,20 @@ div[role="option"]::before {
     text-decoration: underline;
   }
 }
-.event-line-wrapper{
+.event-line-wrapper {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 4;
-  button{
+  button {
     width: auto !important;
     background-color: rgb(248, 157, 21);
     border-color: rgb(248, 157, 21) !important;
     color: #fff !important;
-    &:hover,&:focus{
-    background-color: rgb(248, 157, 21);
-    border-color: rgb(248, 157, 21) !important;
-
-
+    &:hover,
+    &:focus {
+      background-color: rgb(248, 157, 21);
+      border-color: rgb(248, 157, 21) !important;
     }
   }
 }

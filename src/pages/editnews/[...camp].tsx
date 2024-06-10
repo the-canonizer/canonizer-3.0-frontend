@@ -1,6 +1,6 @@
 import Add from "../../components/ComponentPages/News/AddOrEdit";
 import Layout from "../../hoc/layout";
-import SideBarNoFilter from "../../components/ComponentPages/Home/SideBarNoFilter";
+import SideBarNoFilter from "../../components/ComponentPages/Home-old/SideBarNoFilter";
 import React from "react";
 
 const EditNewsPage = () => {

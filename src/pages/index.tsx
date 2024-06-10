@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 
-import Layout from "src/hoc/layout";
 import HomePageContainer from "src/components/ComponentPages/Home";
 import { getCanonizedWhatsNewContentApi } from "src/network/api/homePageApi";
 import {
@@ -72,11 +71,7 @@ function Home({ current_date, hotTopicData }: any) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return (
-    <Layout>
-      <HomePageContainer />
-    </Layout>
-  );
+  return <HomePageContainer />;
 }
 
 export async function getServerSideProps({ req }) {

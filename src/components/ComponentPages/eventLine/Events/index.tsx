@@ -9,7 +9,7 @@ import { setFilterCanonizedTopics } from "../../../../store/slices/filtersSlice"
 // import styles from "./topicDetails.module.scss";
 import Link from "next/link";
 import { RootState } from "src/store";
-import activityStyle from "../../Home/CampRecentActivities/campRecentActivities.module.scss";
+import activityStyle from "../../Home-old/CampRecentActivities/campRecentActivities.module.scss";
 import CustomSkelton from "../../../common/customSkelton";
 const Events = ({ timelineDescript, loadingEvents }: any) => {
   const dispatch = useDispatch();

@@ -16,11 +16,11 @@ import localforage from "localforage";
 import firebase from "firebase/app";
 import { useSelector } from "react-redux";
 
-import styles from "../siteHeader.module.scss";
+import styles from "./notification.module.scss";
 
 import { firebaseCloudMessaging } from "src/firebaseConfig/firebase";
 import Lists from "src/components/ComponentPages/Notifications/UI/List";
-import { updateFCMToken, getLists } from "src/network/api/notificationAPI";
+import { updateFCMToken } from "src/network/api/notificationAPI";
 import { RootState } from "src/store";
 
 import Fav from "./icon";
@@ -35,9 +35,7 @@ const Notifications = () => {
       list: state.notifications.headerNotification.list,
     };
   });
-  const { manageSupportStatusCheck } = useSelector((state: RootState) => ({
-    manageSupportStatusCheck: state.topicDetails.manageSupportStatusCheck,
-  }));
+
   const router = useRouter();
 
   const updateToken = async (tc: string) => {
@@ -135,17 +133,16 @@ const Notifications = () => {
 
   const notificationDropdown = (
     <Card
-      className={styles.notificationCard}
+      className={`z-50 padding-[15px] relative ${styles.notificationCard}`}
       title={
         <Fragment>
-          <Typography.Title
-            className={styles.notTitle}
-            level={4}
+          <Typography.Paragraph
+            className="text-[12px] uppercase font-medium text-[#9ca3af]"
             id="notification-title"
           >
             notifications
-          </Typography.Title>
-          <Typography.Text className={styles.notificationEBTN}>
+          </Typography.Paragraph>
+          <Typography.Text className="flex items-center justify-between w-full">
             <small data-testid="enable-text">Enable push notification </small>
             {isLoading ? (
               <Spin size="small" />
@@ -170,32 +167,23 @@ const Notifications = () => {
     </Card>
   );
 
-  const getNotofications = async (e) => {
-    if (e) {
-      await getLists(1, 5, 1);
-    }
-  };
-
   return (
     <Fragment>
       <Dropdown
         menu={{}}
-        // overlay={notificationDropdown}
-        dropdownRender={() =>
-          !manageSupportStatusCheck ? notificationDropdown : ""
-        }
+        overlay={notificationDropdown}
         trigger={["click"]}
         placement="bottomRight"
-        onOpenChange={getNotofications}
+        className="z-50"
       >
         <Badge
           count={count}
           color="orange"
           size="small"
-          className={styles.badgeCls}
+          className="text-medium text-blue font-medium cursor-pointer"
           data-testid="clickable"
         >
-          <BellOutlined className={styles.bellIcon} />
+          <BellOutlined className="" />
         </Badge>
       </Dropdown>
     </Fragment>

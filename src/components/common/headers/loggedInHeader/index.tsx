@@ -15,7 +15,7 @@ const LoggedInHeader = () => {
       {isMobile == false ? (
         <section className="Mob_View">
           <div className="search_header">
-            <HeaderMenu />
+            <HeaderMenu isUserAuthenticated={undefined} />
           </div>
         </section>
       ) : (

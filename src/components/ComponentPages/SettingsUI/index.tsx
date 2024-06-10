@@ -13,7 +13,7 @@ import DelegatedSupportCamps from "../DelegatedSupportCamps";
 import SocialOauth from "../socialAuthVerification";
 import SubscriptionsList from "../SubscriptionsList";
 import messages from "../../../messages";
-import Sidebar from "../Home/SideBarNoFilter";
+import Sidebar from "../Home-old/SideBarNoFilter";
 
 const { TabPane } = Tabs;
 const tabList = [

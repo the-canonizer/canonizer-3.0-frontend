@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import Sidebar from "../Home/SideBarNoFilter";
+import Sidebar from "../Home-old/SideBarNoFilter";
 
 import styles from "./UserProfileUI/UserProfile.module.scss";
 

@@ -1,6 +1,7 @@
 import { render, screen, cleanup } from "@testing-library/react";
-import HomePageContainer from "../index";
 import { Provider } from "react-redux";
+
+import HomePageContainer from "../index";
 import { store } from "src/store";
 
 window.matchMedia =
@@ -15,7 +16,7 @@ window.matchMedia =
 
 afterEach(cleanup);
 
-jest.mock("../../../../hooks/isUserAuthenticated", () => ({
+jest.mock("src/hooks/isUserAuthenticated", () => ({
   __esModule: true,
   default: jest.fn(() => ({ isUserAuthenticated: true })),
 }));
@@ -68,10 +69,13 @@ describe("HomePageContainer", () => {
     );
     const recentActivitiesElement = screen.getByTestId("recentActivities");
     expect(recentActivitiesElement).toBeInTheDocument();
+
+    const PreferedTopics = screen.getByTestId("preferedTopic");
+    expect(PreferedTopics).toBeInTheDocument();
   });
 
   test("does not render RecentActivities component when user is not authenticated", () => {
-    jest.mock("../../../../hooks/isUserAuthenticated", () => ({
+    jest.mock("src/hooks/isUserAuthenticated", () => ({
       __esModule: true,
       default: jest.fn(() => ({ isUserAuthenticated: false })),
     }));
@@ -88,11 +92,20 @@ describe("HomePageContainer", () => {
   test("renders HelpCard component", () => {
     render(
       <Provider store={store}>
-        {" "}
         <HomePageContainer />
       </Provider>
     );
     const helpCardElement = screen.getByTestId("helpCard");
+    expect(helpCardElement).toBeInTheDocument();
+  });
+
+  test("renders hottopic component", () => {
+    render(
+      <Provider store={store}>
+        <HomePageContainer />
+      </Provider>
+    );
+    const helpCardElement = screen.getByTestId("hotTopics");
     expect(helpCardElement).toBeInTheDocument();
   });
 });

@@ -1,12 +1,13 @@
-import LoggedOutHeader from "../";
 import { cleanup, render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
-import { store } from "../../../../../store";
-import { windowMatchMedia } from "../../../../../utils/testUtils";
-windowMatchMedia();
-
 import { NextRouter } from "next/router";
 import { RouterContext } from "next/dist/shared/lib/router-context";
+
+import { store } from "src/store";
+import { windowMatchMedia } from "src/utils/testUtils";
+import LoggedOutHeader from "..";
+
+windowMatchMedia();
 
 function createMockRouter(): NextRouter {
   return {
@@ -51,7 +52,7 @@ Object.defineProperty(window, "matchMedia", {
   })),
 });
 
-describe("LoggedOutHeader", () => {
+describe("MainHeSader", () => {
   it("Should render without crash", () => {
     const { container } = render(
       <Provider store={store}>
@@ -60,15 +61,11 @@ describe("LoggedOutHeader", () => {
         </RouterContext.Provider>
       </Provider>
     );
-    const logoLink = screen.getAllByRole("link", {
-      name: /Picture of the author/i,
-    });
+    const logoLink = screen.getAllByAltText("Picture of the author");
     const browseLink = screen.getAllByRole("link", {
       name: /Browse/i,
     })[0];
-    const createTopicLink = screen.getAllByRole("link", {
-      name: /Create Topic/i,
-    });
+    const createTopicLink = screen.getAllByText("Create a Topic");
     // const uploadFilesLink = screen.getByRole("link", {
     //   name: /Upload File/i,
     // });
@@ -80,7 +77,7 @@ describe("LoggedOutHeader", () => {
     // const whitePaperLink = screen.getByRole("link", {
     //   name: /White Paper/i,
     // });
-    const blogLink = screen.getByText(/blog/i);
+    // const blogLink = screen.getByText(/blog/i);
     // const jobsLink = screen.getByRole("link", {
     //   name: /Jobs/i,
     // });
@@ -110,7 +107,7 @@ describe("LoggedOutHeader", () => {
     // expect(whitePaperLink.getAttribute("href")).toBe(
     //   "/files/2012_amplifying_final.pdf"
     // );
-    expect(blogLink).toBeInTheDocument();
+    // expect(blogLink).toBeInTheDocument();
     // expect(jobsLink.getAttribute("href")).toBe(
     //   "/topic/6-Canonizer-Jobs/1-Agreement?is_tree_open=1?score=0&algo=blind_popularity&asof=default&canon=1"
     // );

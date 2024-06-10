@@ -1,0 +1,56 @@
+.NavWrap {
+  ul {
+    .listItem {
+      position: relative;
+      &:not(:last-child) {
+        &::before {
+          position: absolute;
+          content: "|";
+          top: 0;
+          left: 0;
+          color: darkgray;
+        }
+      }
+      &:first-child {
+        &::before {
+          display: none;
+        }
+      }
+    }
+  }
+  @media screen and (max-width: 1024px) {
+    position: fixed;
+    width: 80%;
+    height: 100%;
+    background: #fff;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    margin: 0;
+    padding: 30px 30px;
+    transform: translateX(-500em);
+    transition: all 0.3s;
+    &.open {
+      transform: translateX(0);
+    }
+    ul {
+      z-index: 1000;
+      li {
+        &.active {
+          background: var(--gr);
+
+          a {
+            color: var(--hblue);
+          }
+        }
+      }
+    }
+  }
+}
+
+.active {
+  color: var(--hblue);
+  a {
+    color: var(--hblue);
+  }
+}
