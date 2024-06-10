@@ -618,8 +618,7 @@ const SupportTreeCard = ({
                   : K?.exceptionalMessages?.manageSupport}
               </CustomButton>
             </div>
-            <
-            >
+            <>
               {isCampLeader()?.campLeaderExist || 
                isCampLeader()?.delegateSupportExist || 
                checkSupportAndCampLeader(campSupportingTree) ?(
