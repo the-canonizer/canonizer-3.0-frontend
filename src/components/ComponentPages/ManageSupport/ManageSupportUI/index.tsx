@@ -16,7 +16,7 @@ import SupportRemovedModal from "src/components/common/supportRemovedModal";
 import My404 from "../../404";
 import { setIsSupportModal } from "src/store/slices/topicSlice";
 import { setCampActivityData } from "src/store/slices/recentActivitiesSlice";
-import { getTopicActivityLogApi } from "src/network/api/campDetailApi";
+import { getCurrentCampRecordApi, getTopicActivityLogApi } from "src/network/api/campDetailApi";
 
 const { placeholders } = messages;
 
@@ -52,16 +52,20 @@ const ManageSupportUI = ({
     currentDelegatedSupportedClick,
     currentGetCheckSupportExistsData,
     campRecord,
+    asof,
+    asofdate,
   } = useSelector((state: RootState) => ({
     currentDelegatedSupportedClick:
       state.supportTreeCard.currentDelegatedSupportedClick,
     currentGetCheckSupportExistsData:
       state.topicDetails.currentGetCheckSupportExistsData,
     campRecord: state?.topicDetails?.currentCampRecord,
+    asof: state?.filters?.filterObject?.asof, 
+    asofdate: state?.filters?.filterObject?.asofdate,
   }));
 
   const router = useRouter();
-const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [removeForm] = Form.useForm();
   // const openPopup = () => setIsSupportTreeCardModal(true);
   const closePopup = () => {};
@@ -131,7 +135,7 @@ const dispatch = useDispatch()
       camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
     };
     let res = await getTopicActivityLogApi(reqBody);
-    store.dispatch(setCampActivityData(res?.data?.items)); 
+    store.dispatch(setCampActivityData(res?.data?.items));
   }
 
   useEffect(() => {
@@ -192,8 +196,16 @@ const dispatch = useDispatch()
       //     manageSupportPath?.lastIndexOf("_")
       //   );
       // router?.push(manageSupportPath);
+      let reqBody = { 
+        as_of: asof, 
+        as_of_date: asofdate, 
+        topic_num: +router?.query?.camp[0]?.split("-")[0], 
+        camp_num: +router?.query?.camp[1]?.split("-")[0], 
+      }
+      getCurrentCampRecordApi(reqBody)
+
       handleCancelSupportCamps({ isCallApiStatus: true });
-       getTopicActivityLogCall()
+      getTopicActivityLogCall();
     }
   };
 
@@ -240,14 +252,14 @@ const dispatch = useDispatch()
     if (addedRes && addedRes.status_code == 200) {
       // let manageSupportPath = router?.asPath?.replace("/support/", "/topic/");
       // if (manageSupportPath.lastIndexOf("_") > -1)
-        //   manageSupportPath = manageSupportPath.substring(
-          //     0,
-          //     manageSupportPath.lastIndexOf("_")
-          //   );
-          // router?.push(manageSupportPath);
-          handleCancelSupportCamps({ isCallApiStatus: true });
-          getTopicActivityLogCall();
-        }
+      //   manageSupportPath = manageSupportPath.substring(
+      //     0,
+      //     manageSupportPath.lastIndexOf("_")
+      //   );
+      // router?.push(manageSupportPath);
+      handleCancelSupportCamps({ isCallApiStatus: true });
+      getTopicActivityLogCall();
+    }
   };
 
   const CheckDelegatedOrDirect =
@@ -463,7 +475,7 @@ const dispatch = useDispatch()
                           onClick={(e) => {
                             e.preventDefault();
                             window.location.href = tag.link;
-                            dispatch(setIsSupportModal(false))
+                            dispatch(setIsSupportModal(false));
                           }}
                         >
                           {tag?.camp_name}
@@ -548,7 +560,7 @@ const dispatch = useDispatch()
                     ? checkNickNameSupportCamps
                     : removeCampsSupport
                     ? checkNickNameSupportCamps
-                    : addRemoveApi
+                    : addRemoveApi     
                 }
                 disabled={
                   submitButtonDisable ||

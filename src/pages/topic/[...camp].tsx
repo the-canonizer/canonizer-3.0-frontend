@@ -14,7 +14,10 @@ import {
   setCurrentTopicRecord,
   setCurrentCampRecord,
 } from "../../store/slices/campDetailSlice";
-import { formatTheDate } from "src/utils/generalUtility";
+import {
+  formatTheDate,
+  replaceSpecialCharacters,
+} from "src/utils/generalUtility";
 import { setHistory } from "../../store/slices/campDetailSlice";
 import Layout from "src/hoc/layout";
 
@@ -36,8 +39,8 @@ const TopicDetailsPage = ({
   tree,
   serverCall,
 }: any) => {
-  const serverSideCall = useRef(serverCall || false);
   const dispatch = useDispatch();
+  const serverSideCall = useRef(serverCall || false);
 
   useEffect(() => {
     dispatch(setNewsFeed(newsFeed));
@@ -75,9 +78,35 @@ const TopicDetailsPage = ({
   );
 };
 
+function buildSearchQuery(query) {
+  let queryStr: any = {};
+
+  if (query?.algo) {
+    queryStr.algo = query.algo;
+  }
+  if (query?.asof) {
+    queryStr.asof = query.asof;
+  }
+  if (query?.asofdate && query?.asof === "bydate") {
+    queryStr.asof = query.asof;
+    queryStr.asofdate = query.asofdate;
+  }
+  if (query?.viewversion) {
+    queryStr.viewversion = query.viewversion;
+  }
+  if (query?.is_tree_open) {
+    queryStr.is_tree_open = query.is_tree_open;
+  }
+
+  const searchParams = new URLSearchParams(queryStr);
+  return searchParams.toString();
+}
+
 export async function getServerSideProps({ req, query }) {
   let topicNum = query?.camp[0]?.split("-")[0];
   let campNum = query?.camp[1]?.split("-")[0] || 1;
+  let topicName = query?.camp[0];
+  let campName = query?.camp[1];
   let token = null;
 
   const currentDate = new Date().valueOf();
@@ -134,6 +163,39 @@ export async function getServerSideProps({ req, query }) {
     getHistoryApi(reqBodyForCampData, "1", "statement", token),
     getTreesApi(reqBodyForService),
   ]);
+
+  const resTopicName = topicRecord?.topic_name?.replaceAll(" ", "-");
+  const resCampName = campRecord?.campData?.camp_name?.replaceAll(" ", "-");
+
+  const currentUrl = "/topic/" + topicName + "/" + campName;
+  let resUrl = `/topic/${topicRecord?.topic_num}-${replaceSpecialCharacters(
+    resTopicName,
+    "-"
+  )}/${campRecord?.campData?.camp_num}-${replaceSpecialCharacters(
+    resCampName,
+    "-"
+  )}`;
+
+  if (currentUrl !== resUrl) {
+    let queryStr: any = buildSearchQuery(query);
+
+    return {
+      redirect: {
+        permanent: false,
+        destination: `${resUrl}${queryStr ? "?" + queryStr : ""}`,
+      },
+      props: {
+        current_date: currentDate,
+        newsFeed: newsFeed || [],
+        topicRecord: topicRecord || {},
+        campRecord: campRecord || {},
+        campStatement: campStatement || [],
+        statementHistory: statementHistory?.data || {},
+        tree: tree || [],
+        serverCall: true,
+      },
+    };
+  }
 
   return {
     props: {

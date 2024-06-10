@@ -113,6 +113,7 @@ export default function AddOrManage({ add }: any) {
   const { filterObject } = useSelector((state: RootState) => ({
     filterObject: state?.filters?.filterObject,
   }));
+  const { topicRecord } = useSelector((state: RootState) => ({topicRecord: state?.topicDetails?.currentTopicRecord }));
   const [notFoundStatus, setNotFoundStatus] = useState({
     status: false,
     name: "",
@@ -979,24 +980,36 @@ export default function AddOrManage({ add }: any) {
                             className={styles.formItem}
                             label={
                               <>
-                                {(campLeaderData && campLeaderData?.find((CL) => CL?.camp_leader === true)) ?
+                                {campLeaderData &&
+                                campLeaderData?.find(
+                                  (CL) => CL?.camp_leader === true
+                                ) ? (
                                   <>
                                     <span style={{ marginRight: "1px" }}>
                                       Camp Leader
                                     </span>
-                                    <span className={styles.small}>
-                                      (
-                                    </span>
+                                    <span className={styles.small}>(</span>
                                     <Link
-                                      href={`/user/supports/${campLeaderData && campLeaderData?.find((CL) => CL?.camp_leader === true)?.nick_name_id}?canon=${filterObject.namespace_id}`}
+                                      href={`/user/supports/${
+                                        campLeaderData &&
+                                        campLeaderData?.find(
+                                          (CL) => CL?.camp_leader === true
+                                        )?.nick_name_id
+                                      }?canon=${topicRecord?.namespace_id ? topicRecord?.namespace_id : filterObject?.namespace_id}`}
                                     >
-                                      <a>{campLeaderData && campLeaderData?.find((CL) => CL?.camp_leader === true)?.nick_name}</a>
+                                      <a>
+                                        {campLeaderData &&
+                                          campLeaderData?.find(
+                                            (CL) => CL?.camp_leader === true
+                                          )?.nick_name}
+                                      </a>
                                     </Link>
                                     <span className={styles.small}>
                                       is currently the camp leader
                                     </span>{" "}
                                     )
-                                  </> :
+                                  </>
+                                ) : (
                                   <>
                                     <span style={{ marginRight: "1px" }}>
                                       Camp Leader
@@ -1004,7 +1017,8 @@ export default function AddOrManage({ add }: any) {
                                     <span className={styles.small}>
                                       (No one is currently camp leader)
                                     </span>{" "}
-                                  </>}
+                                  </>
+                                )}
                               </>
                             }
                             name="camp_leader_nick_id"
@@ -1325,7 +1339,7 @@ export default function AddOrManage({ add }: any) {
                                 />
                               ) : (
                                 <Select
-                                  allowClear	
+                                  allowClear
                                   size={"large"}
                                   placeholder="--Select Camp About Nickname"
                                   // data-id="parent-camp"

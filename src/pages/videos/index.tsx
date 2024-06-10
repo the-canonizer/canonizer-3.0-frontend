@@ -19,12 +19,15 @@ const VideosPage = () => {
   const router = useRouter();
   const [categories, setCategories] = useState(null);
   const [loader, setLoader] = useState(false);
-  
+
   const onCardClick = (e, video) => {
     e.stopPropagation();
-    router.query.video_id=video.id
+    router.query.video_id = video.id;
     router.push(
-      `videos/1-consciousness/${video?.id}-${replaceSpecialCharacters(video.title, "-")}`
+      `videos/1-consciousness/${video?.id}-${replaceSpecialCharacters(
+        video.title,
+        "-"
+      )}`
     );
   };
 
@@ -42,11 +45,8 @@ const VideosPage = () => {
   return (
     <Layout routeName={"video"}>
       <div className="pageContentWrap">
-
         {loader ? (
-            <CustomSkeleton
-              skeltonFor="videos"
-            />
+          <CustomSkeleton skeltonFor="videos" />
         ) : (
           <>
             {categories?.map((category) => {
@@ -68,7 +68,8 @@ const VideosPage = () => {
                                     <img
                                       alt=""
                                       src={
-                                        process.env.NEXT_PUBLIC_BETA_URL + "files/videos/consciousness/" +
+                                        process.env.NEXT_PUBLIC_BETA_URL +
+                                        "files/videos/consciousness/" +
                                         video.thumbnail
                                       }
                                     />

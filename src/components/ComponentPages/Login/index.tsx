@@ -45,7 +45,7 @@ const Login = ({ isModal, isTest = false }: any) => {
 
   const closeModal = () => {
     dispatch(hideLoginModal());
-    dispatch(setManageSupportStatusCheck(false))
+    dispatch(setManageSupportStatusCheck(false));
     isOtpScreen ? otpForm.resetFields() : form.resetFields();
     setIsOtpScreen(false);
     setErrorMsg("");
@@ -57,10 +57,9 @@ const Login = ({ isModal, isTest = false }: any) => {
   const fetchNickNameList = async () => {
     let response = await getNickNameList();
     if (response && response?.status_code === 200) {
-      dispatch(setUserNickNames(response?.data))
+      dispatch(setUserNickNames(response?.data));
     }
   };
-
 
   const onFinish = async (values: any) => {
     setFormData({ email: values.username });
@@ -88,7 +87,7 @@ const Login = ({ isModal, isTest = false }: any) => {
         })
       );
       form.resetFields();
-      fetchNickNameList()
+      fetchNickNameList();
 
       closeModal();
 

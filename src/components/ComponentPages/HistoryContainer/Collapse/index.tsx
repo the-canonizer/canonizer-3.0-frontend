@@ -91,7 +91,8 @@ function HistoryCollapse({
       algorithm: state.filters?.filterObject?.algorithm,
       namespace_id: state.filters?.filterObject?.namespace_id,
       changeGoneLive: state?.topicDetails?.changeGoneLive,
-    }));
+    })
+  );
   const historyOf = router?.asPath.split("/")[1];
   // const covertToTime = (unixTime) => {
   //   return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
@@ -309,9 +310,7 @@ function HistoryCollapse({
               </div>
               {(!campStatement?.grace_period || commited) && (
                 <div className={styles.campStatementCollapseButtons}>
-                  {(campStatement?.status == "in_review" ||
-                    (campStatement?.status == "objected" &&
-                      historyOf != "statement")) && (
+                  {(campStatement?.status == "in_review" ) && (
                     <>
                       <Tooltip
                         title={

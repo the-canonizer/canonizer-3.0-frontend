@@ -17,11 +17,11 @@ const marks = {
   12.5: "0.25x",
   25.0: "0.5x",
   37.5: "0.75x",
-  50.0:"1x",
-  62.5:"2.5x",
-  75.0:"5x",
-  87.5:"7.5x",
-  100:"10x"
+  50.0: "1x",
+  62.5: "2.5x",
+  75.0: "5x",
+  87.5: "7.5x",
+  100: "10x",
 };
 
 function TimelineSlider({
@@ -40,7 +40,7 @@ function TimelineSlider({
   eventId,
   setEventId,
   value,
-  setValue
+  setValue,
 }: any) {
   const router = useRouter();
   const didMount = useRef(false);
@@ -49,18 +49,16 @@ function TimelineSlider({
 
   const [speedBar, setSpeedBar] = useState(false);
 
-  useEffect(()=>{
+  useEffect(() => {
     if (!didMount.current) {
-      if(router?.asPath.includes("eventId")){
+      if (router?.asPath.includes("eventId")) {
         setIteration(+router?.query?.eventId);
         handleEventSelection(+router?.query?.eventId);
-        setEventId(+router?.query?.eventId)
+        setEventId(+router?.query?.eventId);
       }
       didMount.current = true;
     }
-
-
-  },[eventId])
+  }, [eventId]);
 
   const handleClick = () => {
     setStart(!start);
@@ -68,7 +66,7 @@ function TimelineSlider({
       clearInterval(intervalId);
       setIntervalId(null);
       setIsPlaying(false);
-      setEventId(iteration)
+      setEventId(iteration);
     } else {
       const id = setInterval(() => {
         if (isPlaying && start) {
@@ -78,17 +76,17 @@ function TimelineSlider({
 
       setIntervalId(id);
       setIsPlaying(true);
-      setEventId(iteration)
+      setEventId(iteration);
     }
-    setValue(1)
+    setValue(1);
   };
   const handleClickForward = () => {
     setIsPlaying(false);
     setStart(false);
     if (Object.keys(mockData).length - 1 !== iteration) {
       setIteration(iteration + 1);
-      setEventId(iteration + 1)
-      setValue(1)
+      setEventId(iteration + 1);
+      setValue(1);
 
       handleForwardOrBackord(iteration + 1);
     }
@@ -101,8 +99,8 @@ function TimelineSlider({
     setStart(false);
     if (iteration > 0) {
       setIteration(iteration - 1);
-      setEventId(iteration - 1)
-      setValue(1)
+      setEventId(iteration - 1);
+      setValue(1);
 
       handleForwardOrBackord(iteration - 1);
     }
@@ -111,12 +109,14 @@ function TimelineSlider({
     if (Object.keys(mockData).length == newValue) {
       setIsPlaying(false);
     }
-    setValue(1)
+    setValue(1);
 
-    {Object.keys(mockData)?.map((key) => {
+    {
+      Object.keys(mockData)?.map((key) => {
         //Search the current iteration in data
-        key?.split("_")[2] == newValue && (setEventId(key?.split("_")[2])) 
-    })}
+        key?.split("_")[2] == newValue && setEventId(key?.split("_")[2]);
+      });
+    }
 
     setIteration(newValue);
     handleEventSelection(newValue);
@@ -125,33 +125,33 @@ function TimelineSlider({
   const handleSpeedChange = (playbackSpeed) => {
     switch (playbackSpeed) {
       case 0:
-        setAnimationSpeed(1350)
+        setAnimationSpeed(1350);
         break;
       case 12.5:
-        setAnimationSpeed(1200)
+        setAnimationSpeed(1200);
         break;
       case 25.0:
-        setAnimationSpeed(1050)
+        setAnimationSpeed(1050);
         break;
       case 37.5:
-        setAnimationSpeed(900)
+        setAnimationSpeed(900);
         break;
       case 50.0:
-        setAnimationSpeed(750)
+        setAnimationSpeed(750);
         break;
       case 62.5:
-        setAnimationSpeed(600)
+        setAnimationSpeed(600);
         break;
       case 75.0:
-        setAnimationSpeed(450)
+        setAnimationSpeed(450);
         break;
       case 87.5:
-        setAnimationSpeed(300) 
+        setAnimationSpeed(300);
         break;
       case 100:
-        setAnimationSpeed(150)  
-      break;   
-    default:
+        setAnimationSpeed(150);
+        break;
+      default:
       // do nothing
     }
 
