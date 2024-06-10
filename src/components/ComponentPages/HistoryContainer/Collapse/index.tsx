@@ -686,7 +686,7 @@ function HistoryCollapse({
                           />
                         )}
                       </Modal>
-                      {!!(
+                      {(campStatement?.ifICanAgreeAndObject || campStatement?.ifICanAgreeAndObject ==undefined) && !!(
                         campStatement?.ifIamSupporter != 0 ||
                         campStatement?.ifIAmExplicitSupporter
                       ) &&
