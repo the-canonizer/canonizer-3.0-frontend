@@ -618,7 +618,7 @@ function HistoryCollapse({
                             {campStatement?.agreed_supporters} out of{" "}
                             {campStatement?.total_supporters} required
                             supporters have agreed
-                            {!!(
+                            {(campStatement?.ifICanAgreeAndObject || campStatement?.ifICanAgreeAndObject ==undefined) && !!(
                               campStatement?.ifIamSupporter != 0 ||
                               campStatement?.ifIAmExplicitSupporter
                             ) &&
@@ -627,7 +627,7 @@ function HistoryCollapse({
                               campStatement?.total_supporters -
                                 campStatement?.agreed_supporters ==
                                 1 &&
-                              !campStatement?.agreed_to_change && (
+                                (
                                 <>
                                   , Since you are the last hold out, the instant
                                   you agree, this will go live.
