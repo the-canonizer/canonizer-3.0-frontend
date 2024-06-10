@@ -10,10 +10,10 @@ const WelcomeContent = () => {
   return (
     <Layout className="bg-gr rounded-lg p-4">
       <Row gutter={20}>
-        <Col lg={12}>
+        <Col lg={12} data-testid="leftContent">
           <LeftContent isUserAuthenticated={isUserAuthenticated} />
         </Col>
-        <Col lg={12} className="md:w-full">
+        <Col lg={12} className="md:w-full" data-testid="rightContent">
           <RightContent isUserAuthenticated={isUserAuthenticated} />
         </Col>
       </Row>

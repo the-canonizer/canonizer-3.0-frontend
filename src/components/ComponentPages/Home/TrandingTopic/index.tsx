@@ -6,13 +6,13 @@ import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { useCookies } from "react-cookie";
 
-import Headings from "@/components/shared/Typography";
-import CommonCard from "@/components/shared/Card";
+import Headings from "src/components/shared/Typography";
+import CommonCard from "src/components/shared/Card";
 import { RootState } from "src/store";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
 import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
 import { getCanonizedTopicsApi } from "src/network/api/homePageApi";
-import CustomSkelton from "@/components/common/customSkelton";
+import CustomSkelton from "src/components/common/customSkelton";
 
 const { Option } = Select;
 
@@ -114,10 +114,7 @@ const TrandingTopics = () => {
     <Fragment>
       <Row gutter={15}>
         <Col md={12} sm={12} xs={12} className="mb-3">
-          <Headings
-            level={5}
-            className="mb-0 text-base font-bold uppercase"
-          >
+          <Headings level={5} className="mb-0 text-base font-bold uppercase">
             TRENDING TOPICS
           </Headings>
         </Col>
@@ -131,7 +128,10 @@ const TrandingTopics = () => {
       </Row>
 
       <div className="">
-        <CommonCard className="border-0 h-100 hover:*:bg-gr focus:*:bg-gr">
+        <CommonCard
+          className="border-0 h-100 hover:*:bg-gr focus:*:bg-gr"
+          data-testid="algoSelect"
+        >
           <Select
             size="large"
             showSearch
@@ -197,7 +197,8 @@ const TrandingTopics = () => {
                       <a
                         onClick={() => {
                           handleTopicClick();
-                        }} className="hover:*:hblue"
+                        }}
+                        className="hover:*:hblue"
                       >
                         <Typography.Text
                           className={

@@ -69,6 +69,9 @@ describe("HomePageContainer", () => {
     );
     const recentActivitiesElement = screen.getByTestId("recentActivities");
     expect(recentActivitiesElement).toBeInTheDocument();
+
+    const PreferedTopics = screen.getByTestId("preferedTopic");
+    expect(PreferedTopics).toBeInTheDocument();
   });
 
   test("does not render RecentActivities component when user is not authenticated", () => {
@@ -93,6 +96,16 @@ describe("HomePageContainer", () => {
       </Provider>
     );
     const helpCardElement = screen.getByTestId("helpCard");
+    expect(helpCardElement).toBeInTheDocument();
+  });
+
+  test("renders hottopic component", () => {
+    render(
+      <Provider store={store}>
+        <HomePageContainer />
+      </Provider>
+    );
+    const helpCardElement = screen.getByTestId("hotTopics");
     expect(helpCardElement).toBeInTheDocument();
   });
 });

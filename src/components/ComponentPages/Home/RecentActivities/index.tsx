@@ -4,11 +4,11 @@ import { useSelector } from "react-redux";
 import Link from "next/link";
 import { convert } from "html-to-text";
 
-import Headings from "@/components/shared/Typography";
-import CommonCard from "@/components/shared/Card";
+import Headings from "src/components/shared/Typography";
+import CommonCard from "src/components/shared/Card";
 import { RootState } from "src/store";
 import { getRecentActivitiesApi } from "src/network/api/homePageApi";
-import CustomSkelton from "@/components/common/customSkelton";
+import CustomSkelton from "src/components/common/customSkelton";
 
 const covertToTime = (unixTime) => {
   let uTime = new Date(unixTime * 1000);

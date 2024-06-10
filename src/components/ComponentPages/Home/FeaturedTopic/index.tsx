@@ -14,9 +14,9 @@ import dynamic from "next/dynamic";
 import { useSelector } from "react-redux";
 import sanitizeHtml from "sanitize-html";
 
-import PrimaryButton from "@/components/shared/Buttons/PrimariButton";
-import Headings from "@/components/shared/Typography";
-import CommonCard from "@/components/shared/Card";
+import PrimaryButton from "src/components/shared/Buttons/PrimariButton";
+import Headings from "src/components/shared/Typography";
+import CommonCard from "src/components/shared/Card";
 import { RootState } from "src/store";
 
 const Slider = dynamic(() => import("react-slick"), { ssr: false });

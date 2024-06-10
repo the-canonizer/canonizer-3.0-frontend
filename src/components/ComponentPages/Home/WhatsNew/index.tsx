@@ -2,8 +2,8 @@ import { Fragment } from "react";
 import { Row, Col } from "antd";
 import { useSelector } from "react-redux";
 
-import Headings from "@/components/shared/Typography";
-import CommonCard from "@/components/shared/Card";
+import Headings from "src/components/shared/Typography";
+import CommonCard from "src/components/shared/Card";
 import { RootState } from "src/store";
 
 const WhatsNew = () => {

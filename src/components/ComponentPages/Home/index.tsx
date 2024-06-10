@@ -22,26 +22,26 @@ const HomePageContainer = () => {
     <Layout
       afterHeader={<WelcomeContent />}
       rightSidebar={
-        <div className="pt-4 sm:pt-0">
+        <div className="pt-4 sm:pt-0" data-testid="sideBar">
           {!isMobile ? (
-            <div className="mb-6">
+            <div className="mb-6" data-testid="topicsList">
               <TrandingTopics />
             </div>
           ) : null}
 
           {isUserAuthenticated ? (
-            <div className="mb-4">
+            <div className="mb-4" data-testid="recentActivities">
               <RecentActivities isUserAuthenticated={isUserAuthenticated} />
             </div>
           ) : null}
 
-          <div className="mb-4">
+          <div className="mb-4" data-testid="helpCard">
             <WhatsNew />
           </div>
         </div>
       }
     >
-      <Row className="pt-4 w-100">
+      <Row className="pt-4 w-100" data-testid="featuredTopic">
         <Col md={24} className="mb-6">
           <FeaturedTopic />
         </Col>
@@ -51,14 +51,14 @@ const HomePageContainer = () => {
           </Col>
         ) : null}
         {isUserAuthenticated ? (
-          <Col md={24} className="mb-6">
+          <Col md={24} className="mb-6" data-testid="preferedTopic">
             <PreferedTopics />
           </Col>
         ) : null}
-        <Col md={24} className="mb-6">
+        <Col md={24} className="mb-6" data-testid="categoriesList">
           <CategoriesList />
         </Col>
-        <Col md={24} className="mb-6 sm:mb-2">
+        <Col md={24} className="mb-6 sm:mb-2" data-testid="hotTopics">
           <HotTopics />
         </Col>
         <Col md={12}></Col>

@@ -1,9 +1,9 @@
 import { Typography } from "antd";
 import { ArrowRightOutlined } from "@ant-design/icons";
 
-import Headings from "@/components/shared/Typography";
-import PrimaryButton from "@/components/shared/Buttons/PrimariButton";
-import TopicCreateButton from "@/components/shared/Buttons/TopicCreationButton";
+import Headings from "src/components/shared/Typography";
+import PrimaryButton from "src/components/shared/Buttons/PrimariButton";
+import TopicCreateButton from "src/components/shared/Buttons/TopicCreationButton";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
 

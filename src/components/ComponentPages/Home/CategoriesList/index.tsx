@@ -3,8 +3,8 @@ import { Popover, Row, Col, Tooltip } from "antd";
 import { InfoCircleOutlined, FlagOutlined } from "@ant-design/icons";
 import Link from "next/link";
 
-import Headings from "@/components/shared/Typography";
-import Tags from "@/components/shared/Tag";
+import Headings from "src/components/shared/Typography";
+import Tags from "src/components/shared/Tag";
 
 const CategoriesList = () => {
   return (

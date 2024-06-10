@@ -1,7 +1,7 @@
 import { Typography } from "antd";
 import { PlayCircleFilled } from "@ant-design/icons";
 
-import PrimaryButton from "@/components/shared/Buttons/PrimariButton";
+import PrimaryButton from "src/components/shared/Buttons/PrimariButton";
 
 const RightContent = ({ isUserAuthenticated }) => {
   return (
