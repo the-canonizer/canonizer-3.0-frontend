@@ -65,8 +65,6 @@ export default function SearchSideBar() {
                 pathname: "/search/topic",
                 query: {
                   q: searchValue,
-                  ...(filterByScore != 0 && { score: filterByScore }),
-                  ...(algorithm !== "blind_popularity" && { algo: algorithm }),
                   ...(asof !== "default" && { asof: asof }),
                   ...(asof == "bydate" && { asofdate: asofdate }),
                 },
@@ -91,8 +89,6 @@ export default function SearchSideBar() {
                 pathname: "/search/camp",
                 query: {
                   q: searchValue,
-                  ...(filterByScore != 0 && { score: filterByScore }),
-                  ...(algorithm !== "blind_popularity" && { algo: algorithm }),
                   ...(asof !== "default" && { asof: asof }),
                   ...(asof == "bydate" && { asofdate: asofdate }),
                 },

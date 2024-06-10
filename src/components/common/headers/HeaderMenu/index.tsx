@@ -122,10 +122,33 @@ const HeaderMenu = ({ loggedUser }: any) => {
     );
   };
   function replaceSpecialCharactersInLink(link) {
-    // Replace each special character with a series of hyphens
-    // return link.replace(/[-\\^$*+?.()|%#|[\]{}]/g, "-");
-    return link.replace(/[-\\^$*+?.()|%#|[\]{}@]/g, "-");
+    // Replace each special character (excluding slashes) with a hyphen
+    link = link.replace(/[-\\^$*+?.()|%#@[\]{}]/g, "-");
+  
+    // Define the "/topic/" string
+    let topicString = "/topic/";
+    let topicIndex = link.indexOf(topicString);
+    if (topicIndex === 1) {
+      // If '/topic/' is not found, return the modified link with special characters replaced
+      return link;
+    }
+  
+    // Find the index of the last slash in the link
+    let lastSlashIndex = link.lastIndexOf('/');
+    
+    // Extract parts of the URL
+    let beforeTopic = link.substring(0, topicIndex + topicString.length); // '/topic/' part
+    let betweenTopicAndLast = link.substring(topicIndex + topicString.length, lastSlashIndex);
+    let afterLastSlash = link.substring(lastSlashIndex);
+  
+    // Replace slashes in the part between '/topic/' and the last slash with hyphens
+    betweenTopicAndLast = betweenTopicAndLast.replace(/\//g, "-");
+  
+    // Reconstruct the final link
+    let finalLink = beforeTopic + betweenTopicAndLast + afterLastSlash;
+    return finalLink;
   }
+  
   const searchValueLength = 30;
   const advanceSearchValueLength = 100;
   const options = [
