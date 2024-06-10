@@ -618,15 +618,7 @@ const SupportTreeCard = ({
                   : K?.exceptionalMessages?.manageSupport}
               </CustomButton>
             </div>
-            <div
-              onClick={() => {
-                if (isUserAuthenticated) {
-                  setSignModalOpen(true);
-                } else {
-                  dispatch(showLoginModal());
-                }
-              }}
-            >
+            <>
               {isCampLeader()?.campLeaderExist || 
                isCampLeader()?.delegateSupportExist || 
                checkSupportAndCampLeader(campSupportingTree) ?(
@@ -636,7 +628,13 @@ const SupportTreeCard = ({
                       <Button
                         className="btn-green"
                         disabled={true}
-                        onClick={() => dispatch(showLoginModal())}
+                         onClick={() => {
+                            if (isUserAuthenticated) {
+                              setSignModalOpen(true);
+                            } else {
+                              dispatch(showLoginModal());
+                            }
+                          }}
                       >
                         {"Sign"}
                       </Button>
@@ -651,11 +649,18 @@ const SupportTreeCard = ({
                   >
                     <CustomButton className="btn-green"
                       disabled={asof == "bydate" || campRecord?.is_archive == 1}
+                      onClick={() => {
+                        if (isUserAuthenticated) {
+                          setSignModalOpen(true);
+                        } else {
+                          dispatch(showLoginModal());
+                        }
+                      }}
                     >{"Sign"}</CustomButton>
                   </Tooltip>
                 </>
               )}
-            </div>
+            </>
             {/* </a>
         </Link> */}
             {SignModal()}
