@@ -87,7 +87,7 @@ const BrowsePage = ({ current_date }: any) => {
 
   return (
     <Layout routeName={"browse"}>
-      <div className="browse-wrapper">
+      <div className="browse-wrapper pb-4">
         <Title level={2} className="browse-title">
           Browse Canonizer’s topics
         </Title>

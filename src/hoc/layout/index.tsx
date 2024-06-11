@@ -5,10 +5,13 @@ import styles from "./layout.module.scss";
 import MainHeader from "src/components/common/headers/mainHeader";
 import FooterComp from "src/components/common/footer";
 import GoogleAd from "src/components/googleAds";
+import { useRouter } from "next/router";
 
 const { Header, Footer } = Layout;
 
 function CustomLayout(props: any) {
+  const router = useRouter();
+
   const getCls = () => {
     if (props?.leftSidebar && props?.rightSidebar) {
       return styles.withBothsideBar;
@@ -53,12 +56,17 @@ function CustomLayout(props: any) {
           </aside>
         ) : null}
       </Layout>
-      <div className="ad_area p-4">
-        <GoogleAd
-          ad_client={process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT}
-          ad_slot={process.env.NEXT_PUBLIC_GOOGLE_ADS_RIGHT_SLOT}
-        />
-      </div>
+      {
+        !router?.asPath.includes("eventline") ||
+        !router?.asPath.includes("browse") && (
+          <div className="ad_area p-4">
+            <GoogleAd
+              ad_client={process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT}
+              ad_slot={process.env.NEXT_PUBLIC_GOOGLE_ADS_RIGHT_SLOT}
+            />
+          </div>
+        )
+      }
       <Footer className={`p-0`}>
         <FooterComp />
       </Footer>
