@@ -523,6 +523,10 @@ const ManageSupport = ({
     }
     handleCancelSupportCamps({ isCallApiStatus: true });
   };
+
+  useEffect(()=>{
+    dispatch(setManageSupportStatusCheck(false));
+  },[])
   return (
     <>
       <aside className="leftSideBar miniSideBar topicPageNewLayoutSidebar bg-white">
