@@ -3120,3 +3120,57 @@ div[role="option"]::before {
     }
   }
 }
+
+.browse-wrapper {
+  .browse-title {
+    @apply text-[2rem] mb-0;
+  }
+  .ant-divider {
+    @apply my-8 border-[#CCD4E7];
+  }
+  .browse-actions {
+    @apply flex items-end justify-between gap-1 mb-[3.688rem];
+    .ant-form {
+      .ant-form-item-required {
+        @apply text-[#69748B] text-sm;
+      }
+    }
+    .browse-dropdown {
+      @apply mb-0;
+      .ant-btn-compact-first-item {
+        @apply min-w-[340px] text-start;
+      }
+    }
+  }
+  .browse-card {
+    @apply ease-in-out duration-300 cursor-pointer bg-[#F7F8FC] rounded-lg border-transparent;
+    &:hover {
+      @apply hover:shadow-[0px_10px_20px_0px_#31507233] hover:bg-white;
+      .ant-card-body {
+        .btn-right {
+          @apply opacity-100;
+        }
+      }
+    }
+    .ant-card-body {
+      @apply p-[1.25rem];
+      .card-decription {
+        @apply text-[#242B37] my-[1.25rem];
+      }
+      .btn-right {
+        @apply text-[#5482C8] opacity-0;
+      }
+    }
+  }
+  .browse-pagination {
+    @apply flex;
+    .ant-pagination-total-text {
+      @apply mr-auto;
+    }
+    .ant-pagination-options {
+      @apply ml-auto;
+    }
+  }
+}
+
+
