@@ -156,7 +156,7 @@ const ManageSupport = ({
 
           getActiveSupportTopicList(null, null, campRef.current);
           setSubmitButtonDisable(false);
-          dispatch(setManageSupportStatusCheck(true));
+          // dispatch(setManageSupportStatusCheck(true));
         }
         // else {
         GetCheckStatusData(campRef);
