@@ -16,10 +16,9 @@ const CampInfoBar = () => {
     topic_name: state?.topicDetails?.topic_name,
     loading: state?.loading?.loading,
   }));
+  const camp = router?.query?.camp[0] || "";
+  const urlTopicName = camp.substring(camp.indexOf("-") + 1).replace(/-/g, " ");
 
-
-  let camp = router?.query?.camp[0] || '';
-  let urlTopicName = camp.substring(camp.indexOf("-") + 1).replace(/-/g, ' ');
   return (
     <>
       <div className={styles.topicDetailContentHead}>
@@ -47,7 +46,7 @@ const CampInfoBar = () => {
               }
             >
               {" "}
-              {loading ? (
+              { loading ? (
                 <CustomSkelton
                   skeltonFor="list"
                   bodyCount={1}
@@ -55,7 +54,10 @@ const CampInfoBar = () => {
                   isButton={false}
                 />
               ) : (
-                <span className="bold"> Topic : {urlTopicName ? urlTopicName : topic_name}</span>
+                <span className="bold">
+                  {" "}
+                  Topic : {urlTopicName ? urlTopicName : topic_name}
+                </span>
               )}
             </Typography.Paragraph>
           </div>

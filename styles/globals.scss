@@ -360,7 +360,7 @@ img {
     position: absolute;
     top: 40px;
     width: 100%;
-    max-width: 550px;
+    max-width: 300px;
     right: 0;
     background: #fbfbfb !important;
     padding: 25px 30px;
@@ -368,7 +368,7 @@ img {
     z-index: 2;
   }
   .row {
-    display: flex;
+    // display: flex;
     flex-wrap: wrap;
     margin: 0 -15px;
     .col-sm-6 {
@@ -378,6 +378,13 @@ img {
   }
   .ant-collapse-content-box h4 {
     font-size: 16px;
+    font-weight: 600;
+    background: #4484ce;
+    color: #fff;
+    padding-left: 5px;
+  }
+  .ant-collapse-content-box h3 {
+    font-size: 14px;
     font-weight: 600;
     color: #4484ce;
   }
