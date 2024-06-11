@@ -113,7 +113,6 @@ const ImageUploader: React.FC = () => {
       }
     }
   };
-
   return (
     <Fragment>
       <div className="upload-wrap">
