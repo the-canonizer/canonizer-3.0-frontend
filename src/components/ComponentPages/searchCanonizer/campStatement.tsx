@@ -87,7 +87,7 @@ const CampStatementSearch = () => {
             <div className={styles.search_lists}>
               {searchDataAll.statement?.length ? (
                 <div>
-                  {router?.query?.algo || router?.query?.score || isReview || asof == "bydate"? 
+                  {isReview || asof == "bydate"? 
                   <div>
                     {selectedStatementFromAdvanceFilterAlgorithm?.length?<ul>
                     {displayList?.map((x) => {
@@ -230,9 +230,9 @@ const CampStatementSearch = () => {
           )}
           <Pagination
             hideOnSinglePage={true}
-            total={asof == "review" || asof == "bydate" || filterByScore !=0 || algorithm !== "blind_popularity" ?(selectedStatementFromAdvanceFilterAlgorithm?.length):(searchMetaData.total)}
+            total={asof == "review" || asof == "bydate" ?(selectedStatementFromAdvanceFilterAlgorithm?.length):(searchMetaData.total)}
             pageSize={20}
-            onChange={asof == "review" || asof == "bydate" || filterByScore !=0 || algorithm !== "blind_popularity"?pageChange1:pageChange}
+            onChange={asof == "review" || asof == "bydate"?pageChange1:pageChange}
             showSizeChanger={false}
           />
         </div>
