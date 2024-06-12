@@ -564,7 +564,7 @@ const InfoBar = ({
                       >
                         <a
                           className={styles.iconMore}
-                          onClick={(e) => e.preventDefault()}
+                          onClick={(e) => {e.preventDefault(); dispatch(setManageSupportStatusCheck(false))}}
                         >
                           <MoreOutlined />
                         </a>
