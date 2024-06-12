@@ -14,7 +14,7 @@ import VideoThumbnail from "../../../assets/image/video-thumbnail.jpg";
 import videojs from 'video.js';
 import 'video.js/dist/video-js.css';
 import videojsHlsQualitySelector from 'videojs-hls-quality-selector';
-import VideoPlayer from './VideoPlayer';
+import VideoPlayer from '@/components/common/HLSPlayer';
 
 // Register the plugin with video.js
 videojs.registerPlugin('hlsQualitySelector', videojsHlsQualitySelector);

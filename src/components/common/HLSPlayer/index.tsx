@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import Hls from 'hls.js';
-import styles from "./style.module.scss";
+import styles from "./styles.module.scss";
 
 const VideoPlayer = ({ videoSrc, vttSrc }) => {
   const videoRef = useRef(null);
@@ -96,7 +96,7 @@ const VideoPlayer = ({ videoSrc, vttSrc }) => {
       />
         {currentCue && (
             <div 
-                className={`video-chap-content ${styles.vttComtainer}`} 
+                className={`video-chap-content ${styles.vttContainer}`} 
                 dangerouslySetInnerHTML={{ __html: currentCue?.text }} 
             />
 
