@@ -14,6 +14,7 @@ import VideoThumbnail from "../../../assets/image/video-thumbnail.jpg";
 import videojs from 'video.js';
 import 'video.js/dist/video-js.css';
 import videojsHlsQualitySelector from 'videojs-hls-quality-selector';
+import VideoPlayer from './VideoPlayer';
 
 // Register the plugin with video.js
 videojs.registerPlugin('hlsQualitySelector', videojsHlsQualitySelector);
@@ -31,7 +32,6 @@ export default function CanonVideos() {
   const [loader, setLoader] = useState(false);
   const [videoResolution, setVideoResolution] = useState("");
   const [isHlsVideo, setIsHlsVideo] = useState(true);
-  const [links, setLinks] = useState([]);
 
   const router = useRouter();
 
@@ -40,89 +40,6 @@ export default function CanonVideos() {
     let finalPath = path?.splice(0, path.length - 1)?.join("_");
     return finalPath;
   }
-
-  const fetchVTT = async () => {
-      try {
-        if(videoResolution){
-          const response = await fetch("/subs/"+vttPath()+".vtt");
-          const text = await response.text();
-          const parser = new DOMParser();
-          const doc = parser.parseFromString(text, 'text/html');
-          const linkElements = doc.querySelectorAll('a');
-          const extractedLinks = Array.from(linkElements).map(link => ({
-              href: link.href,
-              text: link.textContent
-          }));
-          setLinks(extractedLinks);}
-      } catch (error) {
-          console.error('Error fetching or parsing VTT file:', error);
-      }
-  };
-
-  useEffect(() => {
-    fetchVTT();
-}, [router?.asPath,videoResolution]);
-
-  const VideoPlayer = ({ src, autoPlay = false }) => {
-    const videoRef = useRef(null);
-    const playerRef = useRef(null);
-  
-    useEffect(() => {
-      if (videoRef.current) {
-        playerRef.current = videojs(videoRef.current, {
-          autoplay: autoPlay,
-          controls: true,
-          responsive: true,
-          fluid: true,
-          sources: [{
-            src,
-            type: 'application/x-mpegURL'
-          }]
-        });
-  
-        // Initialize the quality selector
-        playerRef.current.hlsQualitySelector({
-          displayCurrentQuality: true,
-          vjsIconClass: 'vjs-icon-cog',
-          placementIndex: 15,
-          overrideNative: true
-        });
-  
-        playerRef.current.on('loadedmetadata', () => {
-          if (autoPlay) {
-            playerRef.current.play();
-          }
-        });
-  
-        return () => {
-          if (playerRef.current) {
-            playerRef.current.dispose();
-          }
-        };
-      }
-    }, [src, autoPlay]);
-  
-    return (
-      <div>
-        <video 
-          ref={videoRef} 
-          className="video-js vjs-big-play-centered"                       
-          onTimeUpdate={updateTime}
-          width={"100%"}
-          height={"auto"}
-        >
-          <track
-            kind="chapters"
-            label="Locations"
-            src={"/subs/" + vttPath() + ".vtt"}
-            default>
-          </track>
-        </video>
-      </div>
-    );
-  };
-
-
 
   useEffect(() => {
     if (router?.route === "/videos/consciousness") {
@@ -287,14 +204,11 @@ export default function CanonVideos() {
   }, []);
 
   function updateTime() {
-    console.log("update Time called",playeref?.current?.textTracks)
-    if(!isHlsVideo){
-      if (
-        playeref?.current?.textTracks[0]?.activeCues &&
-        topic != playeref?.current?.textTracks[0]?.activeCues[0]?.text
-      ) {
-        setTopic(playeref?.current?.textTracks[0]?.activeCues[0]?.text);
-      }
+    if (
+      playeref?.current?.textTracks[0]?.activeCues &&
+      topic != playeref?.current?.textTracks[0]?.activeCues[0]?.text
+    ) {
+      setTopic(playeref?.current?.textTracks[0]?.activeCues[0]?.text);
     }
   }
 
@@ -353,88 +267,6 @@ export default function CanonVideos() {
     // :
     router.push(router.pathname, asPath, { shallow: true });
   }
-
-  const HlsPlayer = ({ 
-    onTimeUpdate,
-    width,
-    height,
-    controls,
-    playeref,
-    src,
-    autoPlay = false
-  }) => {
-    let config = {
-      enableWebVTT: true,
-    }
-    const hls = new Hls(config);
-    
-    useEffect(() => {
-      if (Hls.isSupported()) {
-        hls.loadSource(src);
-        hls.attachMedia(playeref.current);
-        hls.on(Hls.Events.MANIFEST_PARSED, () => {
-          if (autoPlay) {
-            playeref.current.play();
-          }
-        });
-
-        // Hls.Events.LEVEL_SWITCHED event to log changes in video quality.
-        hls.on(Hls.Events.LEVEL_SWITCHED, (event, data) => {
-          const level = hls.levels[data.level];
-          console.log(`Switched to level: ${data.level}, Resolution: ${level.width}x${level.height}, Bitrate: ${level.bitrate}`);
-        });
-
-        // event Hls.Events.LEVEL_LOADING which is triggered before loading a new level. 
-        // This can be used to log bandwidth-related information.
-        hls.on(Hls.Events.LEVEL_LOADING, (event, data) => {
-          const level = hls.levels[data.level];
-          console.log(`Loading level: ${data.level}, Resolution: ${level.width}x${level.height}, Bitrate: ${level.bitrate}`);
-        });
-        
-        //Logs the estimated bandwidth after each fragment is loaded, 
-        // providing insight into how the player is adapting to network conditions
-        hls.on(Hls.Events.FRAG_LOADED, (event, data) => {
-          const currentTime = playeref.current.currentTime;
-          const bandwidthEstimate = hls.bandwidthEstimate;
-          console.log(`Fragment loaded at time: ${currentTime}, Estimated bandwidth: ${bandwidthEstimate} bps`);
-        });
-
-      } else if (playeref.current.canPlayType('application/vnd.apple.mpegurl')) {
-        playeref.current.src = src;
-        if (autoPlay) {
-          playeref.current.play();
-        }
-
-        playeref.current.addEventListener('loadedmetadata', () => {
-          console.log(`Loaded HLS stream with resolution: ${playeref.current.videoWidth}x${playeref.current.videoHeight}`);
-        });
-      }
-  
-      return () => {
-        if (hls) {
-          hls.destroy();
-        }
-      };
-    }, [src, autoPlay]);
-  
-    return <>
-            <video 
-              onTimeUpdate={()=>onTimeUpdate()}
-              width={width}
-              height={height} 
-              controls={controls} 
-              ref={playeref} 
-            >
-            <track
-              kind="chapters"
-              label="Locations"
-              src={"/subs/" + vttPath() + ".vtt"}
-              default
-              >
-            </track>
-          </video>
-        </>;
-  };
 
   return (
     <Fragment>
@@ -529,24 +361,10 @@ export default function CanonVideos() {
                 {
                   isHlsVideo ? <>
                       <h3>HLS Player</h3>
-                      {/* <HlsPlayer 
-                        onTimeUpdate={updateTime}
-                        width={"100%"}
-                        height={"auto"}
-                        controls
-                        playeref={playeref}
-                        src={"https://canon-hls.s3.us-east-2.amazonaws.com/output_multiple_formats/perceiving_a_strawberry.m3u8"} 
-                      /> */}
-
-                    <VideoPlayer src="https://canon-hls.s3.us-east-2.amazonaws.com/output_multiple_formats/perceiving_a_strawberry.m3u8" autoPlay={true} />
-
-                    <div style={{marginTop:'2%'}}>
-                      {
-                        links?.map((item,index)=>{
-                          return <a href={item?.href} key={item?.index}><p>{item?.text}</p></a>
-                        })
-                      }
-                    </div>
+                      <VideoPlayer
+                        videoSrc="https://canon-hls.s3.us-east-2.amazonaws.com/output_multiple_formats/perceiving_a_strawberry.m3u8"
+                        vttSrc={"/subs/" + vttPath() + ".vtt"}
+                      />
                   </>:<>
                     <h3>HTML Player</h3>
                     <video
