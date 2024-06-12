@@ -389,8 +389,6 @@ const CampTree = ({
                                   ? "Agreement"
                                   : data[item]?.title}
                               </Popover>
-                            ) : includeReview ? (
-                              data[item]?.review_title
                             ) : data[item].camp_id === 1 ? (
                               "Agreement"
                             ) : (
@@ -621,8 +619,8 @@ const CampTree = ({
                         {includeReview
                           ? tree[0]["1"]?.review_title
                           : tree[0]["1"]?.title}
-                      </Popover>
-                    ) : includeReview ? (
+                      </Popover>                    
+                      ) : includeReview ? (
                       tree[0]["1"]?.review_title
                     ) : (
                       tree[0]["1"]?.title
