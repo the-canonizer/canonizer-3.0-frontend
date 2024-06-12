@@ -147,19 +147,18 @@ const TopicDetails = ({ serverSideCall }: any) => {
     store.dispatch(setCampActivityData(res?.data?.items));
   }
 
+  //   useEffect(()=>{
 
-//   useEffect(()=>{
+  //   const parts = router?.query?.camp[0]?.split("-");
+  //   const result = parts?.slice(1)?.join("-");
+  //   const topic_Name = result?.split("-")?.join(" ");
 
-//   const parts = router?.query?.camp[0]?.split("-");
-//   const result = parts?.slice(1)?.join("-");
-//   const topic_Name = result?.split("-")?.join(" ");
-
-//   if(tree && (tree[1]?.topic_id == parts[0] && tree[1]?.title != topic_Name)){
-//     // let asPath=tree[1]?.link
-//     const asPath = `${tree[1].topic_id}-${replaceSpecialCharacters(tree[1].title, "-")}/1-Agreement`;    
-//      router.push(router.pathname,asPath)
-//  }    
-//   },[router?.query?.camp,tree])
+  //   if(tree && (tree[1]?.topic_id == parts[0] && tree[1]?.title != topic_Name)){
+  //     // let asPath=tree[1]?.link
+  //     const asPath = `${tree[1].topic_id}-${replaceSpecialCharacters(tree[1].title, "-")}/1-Agreement`;
+  //      router.push(router.pathname,asPath)
+  //  }
+  //   },[router?.query?.camp,tree])
 
   useEffect(() => {
     async function getTreeApiCall() {
@@ -254,12 +253,12 @@ const TopicDetails = ({ serverSideCall }: any) => {
       fetch_topic_history: +router?.query?.topic_history,
     };
     setRemoveSupportSpinner(true);
-    let reqBody = { 
-      as_of: asof, 
-      as_of_date: asofdate, 
-      topic_num: +router?.query?.camp[0]?.split("-")[0], 
-      camp_num: +router?.query?.camp[1]?.split("-")[0], 
-    }
+    let reqBody = {
+      as_of: asof,
+      as_of_date: asofdate,
+      topic_num: +router?.query?.camp[0]?.split("-")[0],
+      camp_num: +router?.query?.camp[1]?.split("-")[0],
+    };
 
     const res = await removeSupportedCamps(supportedCampsRemove);
     if (res && res.status_code == 200) {
@@ -268,7 +267,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
       GetCheckStatusData();
       await getTreesApi(reqBodyForService);
       getTopicActivityLogCall();
-      await getCurrentCampRecordApi(reqBody)
+      await getCurrentCampRecordApi(reqBody);
       setRemoveSupportSpinner(false);
       setIsRemovingSupport(false);
     }
@@ -297,12 +296,12 @@ const TopicDetails = ({ serverSideCall }: any) => {
     };
     setRemoveSupportSpinner(true);
 
-    let reqBody = { 
-      as_of: asof, 
-      as_of_date: asofdate, 
-      topic_num: +router?.query?.camp[0]?.split("-")[0], 
-      camp_num: +router?.query?.camp[1]?.split("-")[0], 
-    }
+    let reqBody = {
+      as_of: asof,
+      as_of_date: asofdate,
+      topic_num: +router?.query?.camp[0]?.split("-")[0],
+      camp_num: +router?.query?.camp[1]?.split("-")[0],
+    };
 
     let res = await addSupport(RemoveSupportId);
     if (res && res.status_code == 200) {
@@ -311,7 +310,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
       GetCheckStatusData();
       await getTreesApi(reqBodyForService);
       getTopicActivityLogCall();
-      await getCurrentCampRecordApi(reqBody)
+      await getCurrentCampRecordApi(reqBody);
       setRemoveSupportSpinner(false);
       setIsRemovingSupport(false);
     }
@@ -383,17 +382,14 @@ const TopicDetails = ({ serverSideCall }: any) => {
     setBackGroundColorClass(asof);
   }, [asof]);
 
-// const bread_crumb=res?.data?.bread_crumb[0]
+  // const bread_crumb=res?.data?.bread_crumb[0]
 
   // function replaceSpacesWithHyphens(title) {
   //   return title.replace(/\s+/g, '-');
   // }
-  
 
   // let asPath=`/${bread_crumb?.topic_num}-${replaceSpacesWithHyphens(res?.data?.topic_name)}/${bread_crumb?.camp_num}-${bread_crumb?.camp_name}`
   // router.push(router.pathname,asPath)
-  
-
 
   const scrollToCampStatement = () => {
     myRefToCampStatement.current?.scrollIntoView({ behavior: "smooth" });
