@@ -214,11 +214,7 @@ const TimelineInfoBar = ({
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    router?.asPath || filterObject,
-    !!(getCookies() as any)?.loginToken,
-    changeGoneLive,
-  ]);
+  }, [!!(getCookies() as any)?.loginToken, changeGoneLive]);
 
   return (
     <>
