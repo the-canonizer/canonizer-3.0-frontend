@@ -362,7 +362,7 @@ export default function CanonVideos() {
                   isHlsVideo ? <>
                       <h3>HLS Player</h3>
                       <VideoPlayer
-                        videoSrc="https://canon-hls.s3.us-east-2.amazonaws.com/output_multiple_formats/perceiving_a_strawberry.m3u8"
+                        videoSrc="https://dsnxf08s3yojj.cloudfront.net/output_multiple_formats/perceiving_a_strawberry.m3u8"
                         vttSrc={"/subs/" + vttPath() + ".vtt"}
                       />
                   </>:<>
