@@ -52,6 +52,7 @@ function ProfileInfoForm({
   setOTP,
   otp,
   setToggleVerifyButton,
+  viewEmail
 }: any) {
   // eslint-disable-next-line no-unused-vars
   const [gmapsLoaded, setgmapsLoaded] = useState(false);
@@ -366,6 +367,7 @@ const handleClick = async () => {
                         )}
                         placeholder={messages.placeholders.email}
                         size="large"
+                        value={viewEmail}
                         disabled
                       />
                   
