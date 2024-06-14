@@ -410,9 +410,9 @@ const SupportTreeCard = ({
                           {loggedInUserDelegate ||
                             (loggedInUserChild &&
                               delegateNickNameId !=
-                              data[item].delegate_nick_name_id) ||
-                            data[item].delegates?.findIndex((obj) =>
-                              userNickNameList.includes(obj.nick_name_id)
+                              data[item]?.delegate_nick_name_id) ||
+                            data[item]?.delegates?.findIndex((obj) =>
+                              userNickNameList?.includes(obj.nick_name_id)
                             ) > -1 ? (
                             ""
                           ) : (
