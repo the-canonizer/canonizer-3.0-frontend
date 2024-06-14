@@ -328,7 +328,7 @@ function HistoryCollapse({
                       >
                         <Button
                           type="primary"
-                          // disabled={!campStatement?.ifICanAgreeAndObject}
+                          disabled={historyOf == "camp" ? !campStatement?.ifICanAgreeAndObject :false}
                           id={`object-change-${campStatement?.id}`}
                           onClick={() => {
                             let isModelPop = !isUserAuthenticated
@@ -617,7 +617,7 @@ function HistoryCollapse({
                             {campStatement?.agreed_supporters} out of{" "}
                             {campStatement?.total_supporters} required
                             supporters have agreed
-                            {!!(
+                            {(campStatement?.ifICanAgreeAndObject || campStatement?.ifICanAgreeAndObject ==undefined) && !!(
                               campStatement?.ifIamSupporter != 0 ||
                               campStatement?.ifIAmExplicitSupporter
                             ) &&
@@ -685,7 +685,7 @@ function HistoryCollapse({
                           />
                         )}
                       </Modal>
-                      {!!(
+                      {(campStatement?.ifICanAgreeAndObject || campStatement?.ifICanAgreeAndObject ==undefined) && !!(
                         campStatement?.ifIamSupporter != 0 ||
                         campStatement?.ifIAmExplicitSupporter
                       ) &&
@@ -709,7 +709,7 @@ function HistoryCollapse({
                                 styles.campSelectCheckbox + " agreed-text"
                               }
                               disabled={
-                                // !campStatement?.ifICanAgreeAndObject || 
+                                historyOf == "camp" ? !campStatement?.ifICanAgreeAndObject :false ||
                                 parentArchived == 1 && directarchived == 0
                               }
                               onChange={agreeWithChange}
