@@ -16,7 +16,6 @@ import { useIsMobile } from "src/hooks/useIsMobile";
 const HomePageContainer = () => {
   const { isUserAuthenticated } = useAuthentication();
   const isMobile = useIsMobile();
-  console.log("isMobile---", isMobile);
 
   return (
     <Layout

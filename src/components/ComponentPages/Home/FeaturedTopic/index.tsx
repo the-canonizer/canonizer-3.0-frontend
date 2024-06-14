@@ -80,7 +80,7 @@ const FeaturedTopic = () => {
                         </PrimaryButton>
                       </Popover>
                       <PrimaryButton className="bg-transparent border-0 p-0 hover:bg-transparent focus:bg-transparent">
-                        <MoreOutlined className="text-black p-1 text-medium" />
+                        <MoreOutlined className="text-black p-1 text-medium font-bold" />
                       </PrimaryButton>
                     </div>
                   </div>
@@ -107,8 +107,8 @@ const FeaturedTopic = () => {
                       }),
                     }}
                   ></div>
-                  <div className="flex justify-between pt-3 mt-auto">
-                    <div className="text-left flex sm:flex-col">
+                  <div className="flex justify-between pt-3 mt-auto lg:flex-col">
+                    <div className="text-left flex lg:flex-col sm:flex-col">
                       <Popover content="Share Topic" placement="top">
                         <Typography.Paragraph className="bg-transparent border-0 p-0 hover:bg-transparent focus:bg-transparent flex items-center leading-1 mb-0 mr-3">
                           <FlagOutlined className="text-black p-1 text-medium" />

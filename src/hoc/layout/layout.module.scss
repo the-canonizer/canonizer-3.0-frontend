@@ -1,3 +1,6 @@
+$sidebar_width: 500px;
+$sidebar_width_small: 350px;
+
 .contentArea {
   display: flex;
   overflow: hidden;
@@ -12,20 +15,43 @@
 
   .rightSidebar,
   .leftSidebar {
-    width: 450px;
+    width: $sidebar_width;
     transition: width 0.3s ease;
   }
 
   &.withRightsideBar .contentBox {
-    width: calc(100% - 450px);
+    width: calc(100% - $sidebar_width);
   }
 
   &.withLeftsideBar .contentBox {
-    width: calc(100% - 450px);
+    width: calc(100% - $sidebar_width);
   }
 
   &.withBothsideBar .contentBox {
-    width: calc(100% - 900px);
+    width: calc(100% - $sidebar_width * 2);
+  }
+
+  @media screen and (max-width: 1024px) {
+    .contentBox {
+      width: 100%;
+    }
+
+    &.withRightsideBar .contentBox {
+      width: calc(100% - $sidebar_width_small);
+    }
+
+    &.withLeftsideBar .contentBox {
+      width: calc(100% - $sidebar_width_small);
+    }
+
+    &.withBothsideBar .contentBox {
+      width: calc(100% - $sidebar_width_small * 2);
+    }
+
+    .rightSidebar,
+    .leftSidebar {
+      width: $sidebar_width_small;
+    }
   }
 
   @media screen and (max-width: 992px) {

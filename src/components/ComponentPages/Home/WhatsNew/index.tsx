@@ -15,18 +15,18 @@ const WhatsNew = () => {
     <Fragment>
       <Row gutter={15} className="mt-5">
         <Col md={24} className="mb-3">
-          <Headings
-            level={5}
-            className="mb-0 text-base font-bold uppercase"
-          >
+          <Headings level={5} className="mb-0 text-base font-bold uppercase">
             WHAT’S NEW AT CANONIZER?
           </Headings>
         </Col>
       </Row>
 
       <div className="">
-        <CommonCard className="border-0 h-100 hover:*:bg-gr focus:*:bg-gr">
-          <div dangerouslySetInnerHTML={{ __html: whatsNew }}></div>
+        <CommonCard className="border-0 h-100 hover:*:bg-gr hover:*:shadow-0 focus:*:bg-gr hover:*:text-black text-black">
+          <div
+            className="text-black"
+            dangerouslySetInnerHTML={{ __html: whatsNew }}
+          ></div>
         </CommonCard>
       </div>
     </Fragment>

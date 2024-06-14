@@ -120,7 +120,7 @@ const TrandingTopics = () => {
         </Col>
         <Col md={12} sm={12} xs={12} className="text-right">
           <Link href="">
-            <a className="text-blue hover:text-hblue text-medium font-inter">
+            <a className="text-blue hover:text-hblue text-base font-inter">
               See More
             </a>
           </Link>
@@ -174,13 +174,13 @@ const TrandingTopics = () => {
             />
           ) : (
             <List
-              className="mt-1 rounded-lg"
+              className="mt-0 rounded-lg"
               size="small"
               bordered
               dataSource={topicsData?.topics}
               renderItem={(item: any) => (
                 <List.Item
-                  className="font-inter text-base font-medium"
+                  className="font-inter text-base font-medium bg-white"
                   id={`topic-${item?.topic_id}`}
                 >
                   <Link
@@ -223,7 +223,7 @@ const TrandingTopics = () => {
                         </Typography.Text>
                         <Tag
                           className={
-                            "bg-orange text-white border-0 rounded-[5px] ml-1 inline-flex py-[3px] flex items-center"
+                            "bg-orange text-white border-0 rounded-[5px] ml-1 inline-flex py-[3px] flex items-center text-base md:text-[12px]"
                           }
                         >
                           <svg

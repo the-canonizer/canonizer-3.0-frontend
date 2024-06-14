@@ -45,7 +45,7 @@ const LeftContent = ({ isUserAuthenticated }) => {
       )}
       <Typography.Paragraph className="text-base font-inter font-normal mb-3">
         {isUserAuthenticated
-          ? "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+          ? "Here are some quick stats for you -"
           : "A consensus building and tracking system and decision making tool you can use for Dynamic Surveying."}
       </Typography.Paragraph>
       {isUserAuthenticated ? (

@@ -55,6 +55,12 @@ const menuItems = [
   //   external: true,
   // },
   {
+    link: "/videos",
+    linkTitle: "Videos",
+    id: 6,
+    icon: <QuestionCircleOutlined />,
+  },
+  {
     link: "/topic/132-Help/1-Agreement?is_tree_open=1",
     linkTitle: "Help",
     id: 4,
@@ -249,7 +255,10 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
         </ul>
       </nav>
       {isUserAuthenticated ? (
-        <div key="notification-li-mobile" className="hidden lg:block mr-2 lg:ml-auto md:ml-1">
+        <div
+          key="notification-li-mobile"
+          className="hidden lg:block mr-2 lg:ml-auto md:ml-1"
+        >
           <Notifications />
         </div>
       ) : null}

@@ -75,7 +75,7 @@ const RecentActivities = ({ isUserAuthenticated }) => {
         </Col>
         <Col md={12} sm={12} xs={12} className="text-right">
           <Link href="">
-            <a className="text-blue hover:text-hblue text-medium font-inter">
+            <a className="text-blue hover:text-hblue text-base font-inter">
               See More
             </a>
           </Link>
@@ -104,7 +104,7 @@ const RecentActivities = ({ isUserAuthenticated }) => {
                 // console.log("decodedProperties----", decodedProperties);
                 return (
                   <List.Item
-                    className="font-inter text-base font-medium"
+                    className="font-inter text-base font-medium bg-white"
                     id={`topic-${item?.topic_id}`}
                   >
                     <Link href={decodedProperties?.url?.replace(/\s+/g, "-")}>
