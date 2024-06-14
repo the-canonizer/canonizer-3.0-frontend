@@ -420,14 +420,11 @@ const SupportTreeCard = ({
                               content={
                                 !isUserAuthenticated
                                   ? "Log in to participate"
-                                  : ""
+                                  : "This will delegate your support to the selected supporter"
                               }
                             >
                               <a className="printHIde">
-                                <Tooltip
-                                  title="This will delegate your support to the selected supporter"
-                                  placement="right"
-                                >
+                                
                                   <Button
                                     id="supportTreeDelegateYourSupport"
                                     disabled={
@@ -442,7 +439,6 @@ const SupportTreeCard = ({
                                   >
                                     {"Delegate Your Support"}
                                   </Button>
-                                </Tooltip>
 
                               </a>
                             </Popover>
