@@ -210,7 +210,8 @@ const SupportTreeCard = ({
     const q: any = router?.query;
     if (isUserAuthenticated) {
       dispatch(setManageSupportUrlLink(manageSupportPath));
-      dispatch(setManageSupportStatusCheck(true));
+      // dispatch(setManageSupportStatusCheck(true));
+      setGetManageSupportLoadingIndicator(false)
       setSelectNickId(null);
       q && q.from && q.from.includes("notify_")
         ? null

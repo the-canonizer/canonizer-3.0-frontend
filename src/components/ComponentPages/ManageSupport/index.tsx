@@ -156,7 +156,7 @@ const ManageSupport = ({
 
           getActiveSupportTopicList(null, null, campRef.current);
           setSubmitButtonDisable(false);
-          dispatch(setManageSupportStatusCheck(true));
+          // dispatch(setManageSupportStatusCheck(true));
         }
         // else {
         GetCheckStatusData(campRef);
@@ -523,6 +523,10 @@ const ManageSupport = ({
     }
     handleCancelSupportCamps({ isCallApiStatus: true });
   };
+
+  useEffect(()=>{
+    dispatch(setManageSupportStatusCheck(false));
+  },[])
   return (
     <>
       <aside className="leftSideBar miniSideBar topicPageNewLayoutSidebar bg-white">
