@@ -310,7 +310,7 @@ function HistoryCollapse({
               </div>
               {(!campStatement?.grace_period || commited) && (
                 <div className={styles.campStatementCollapseButtons}>
-                  {(campStatement?.status == "in_review" ) && (
+                  {campStatement?.status == "in_review" && (
                     <>
                       <Tooltip
                         title={
@@ -328,8 +328,11 @@ function HistoryCollapse({
                       >
                         <Button
                           type="primary"
-                          disabled={historyOf == "camp"?!campStatement?.ifICanAgreeAndObject :false}
-                          // disabled={campStatement?.isAuthor}
+                          disabled={
+                            historyOf == "camp"
+                              ? !campStatement?.ifICanAgreeAndObject
+                              : false
+                          }
                           id={`object-change-${campStatement?.id}`}
                           onClick={() => {
                             let isModelPop = !isUserAuthenticated
@@ -618,16 +621,18 @@ function HistoryCollapse({
                             {campStatement?.agreed_supporters} out of{" "}
                             {campStatement?.total_supporters} required
                             supporters have agreed
-                            {(campStatement?.ifICanAgreeAndObject || campStatement?.ifICanAgreeAndObject ==undefined) && !!(
-                              campStatement?.ifIamSupporter != 0 ||
-                              campStatement?.ifIAmExplicitSupporter
-                            ) &&
+                            {(campStatement?.ifICanAgreeAndObject ||
+                              campStatement?.ifICanAgreeAndObject ==
+                                undefined) &&
+                              !!(
+                                campStatement?.ifIamSupporter != 0 ||
+                                campStatement?.ifIAmExplicitSupporter
+                              ) &&
                               isUserAuthenticated &&
                               !campStatement?.isAuthor &&
                               campStatement?.total_supporters -
                                 campStatement?.agreed_supporters ==
-                                1 &&
-                                (
+                                1 && (
                                 <>
                                   , Since you are the last hold out, the instant
                                   you agree, this will go live.
@@ -686,10 +691,12 @@ function HistoryCollapse({
                           />
                         )}
                       </Modal>
-                      {(campStatement?.ifICanAgreeAndObject || campStatement?.ifICanAgreeAndObject ==undefined) && !!(
-                        campStatement?.ifIamSupporter != 0 ||
-                        campStatement?.ifIAmExplicitSupporter
-                      ) &&
+                      {(campStatement?.ifICanAgreeAndObject ||
+                        campStatement?.ifICanAgreeAndObject == undefined) &&
+                        !!(
+                          campStatement?.ifIamSupporter != 0 ||
+                          campStatement?.ifIAmExplicitSupporter
+                        ) &&
                         isUserAuthenticated &&
                         !campStatement?.isAuthor && (
                           <Spin
@@ -710,9 +717,11 @@ function HistoryCollapse({
                                 styles.campSelectCheckbox + " agreed-text"
                               }
                               disabled={
-                                historyOf == "camp" ? !campStatement?.ifICanAgreeAndObject :false ||
-                                // !campStatement?.isAuthor || 
-                                parentArchived == 1 && directarchived == 0
+                                historyOf == "camp"
+                                  ? !campStatement?.ifICanAgreeAndObject
+                                  : false ||
+                                    // !campStatement?.isAuthor ||
+                                    (parentArchived == 1 && directarchived == 0)
                               }
                               onChange={agreeWithChange}
                             >

@@ -183,7 +183,7 @@ const ManageSupport = ({
         //Api's call for list
         dispatch(setCheckSupportExistsData({}));
         dispatch(setCheckSupportExistsData(response.data));
-        getCanonizedNicknameList();
+        // getCanonizedNicknameList();
         if (isUserAuthenticated && !CheckDelegatedOrDirect) {
           getActiveSupportTopicList(
             response.data.warning,
