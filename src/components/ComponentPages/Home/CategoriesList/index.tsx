@@ -27,7 +27,7 @@ const CategoriesList = () => {
         </Col>
       </Row>
 
-      <div className="mt-2 px-0">
+      <div className="mt-0 px-0">
         {["#F7E9F5", "#E9EEF9", "#F7EAEA", "#EDF3E6"]?.map((cat) => (
           <Tooltip title={cat} key={cat}>
             <Tags

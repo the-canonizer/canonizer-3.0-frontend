@@ -1,10 +1,11 @@
 import { Typography } from "antd";
 import { ArrowRightOutlined } from "@ant-design/icons";
+import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
 
 import Headings from "src/components/shared/Typography";
 import PrimaryButton from "src/components/shared/Buttons/PrimariButton";
 import TopicCreateButton from "src/components/shared/Buttons/TopicCreationButton";
-import { useSelector } from "react-redux";
 import { RootState } from "src/store";
 
 const getGreet = () => {
@@ -25,9 +26,16 @@ const getGreet = () => {
 };
 
 const LeftContent = ({ isUserAuthenticated }) => {
+  const router = useRouter();
+
   const { loggedInUser } = useSelector((state: RootState) => ({
     loggedInUser: state.auth.loggedInUser,
   }));
+
+  const onBrowseClick = (e) => {
+    e?.preventDefault();
+    router?.push({ pathname: "/browse" });
+  };
 
   return (
     <div className="pr-0">
@@ -54,7 +62,10 @@ const LeftContent = ({ isUserAuthenticated }) => {
           isWithIcon={true}
         />
       ) : (
-        <PrimaryButton className="w-4/12 h-[50px] text-base lg:w-8/12 md:w-6/12 sm:w-full">
+        <PrimaryButton
+          className="w-4/12 h-[50px] text-base lg:w-8/12 md:w-6/12 sm:w-full"
+          onClick={onBrowseClick}
+        >
           Browse More <ArrowRightOutlined />
         </PrimaryButton>
       )}

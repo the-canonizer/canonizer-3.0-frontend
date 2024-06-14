@@ -71,7 +71,7 @@ const HotTopics = () => {
         </Col>
       </Row>
 
-      <div className="mt-1">
+      <div className="mt-0">
         <Slider {...settings}>
           {topicData?.map((ft) => (
             <CommonCard className="border-0 h-100" key={ft?.id}>
