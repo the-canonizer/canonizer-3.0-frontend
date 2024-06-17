@@ -154,7 +154,6 @@ const ManageSupport = ({
 
   const GetCheckStatusData = async (campReff: any) => {
     let response = await GetCheckSupportExists(queryParams(reqBodyData));
-    console.log("GetCheckStatusData---", response);
 
     if (response && response?.status_code === 404) {
       handleCancelSupportCamps({ isCallApiStatus: false });
