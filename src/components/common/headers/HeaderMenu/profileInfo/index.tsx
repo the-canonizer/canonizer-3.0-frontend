@@ -45,6 +45,7 @@ const ProfileInfo = ({
             alignItems: "center",
             fontSize: `${isMobile ? "12px" : ""}`,
             cursor: "pointer",
+            marginBottom: "-10px",
           }}
           size={isMobile ? "small" : "default"}
         >

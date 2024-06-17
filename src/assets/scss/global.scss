@@ -32,6 +32,14 @@ body {
   background: #fff;
 }
 
+.fullHeightCard {
+  height: 100%;
+  .ant-card-body {
+    height: 100%;
+    display: grid;
+  }
+}
+
 .featuresSlider {
   .featuredDots {
     display: flex !important;

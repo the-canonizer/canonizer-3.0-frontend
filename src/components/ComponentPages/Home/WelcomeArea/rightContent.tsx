@@ -1,15 +1,27 @@
 import { Typography } from "antd";
 import { PlayCircleFilled } from "@ant-design/icons";
+import { useRouter } from "next/router";
 
 import PrimaryButton from "src/components/shared/Buttons/PrimariButton";
 
 const RightContent = ({ isUserAuthenticated }) => {
+  const router = useRouter();
+
+  const onPlayClick=(e)=>{
+    e?.preventDefault()
+    router?.push({pathname:'/videos/consciousness'})
+  }
+
   return (
-    <div className="pr-0 sm:pr-0 text-center bg-white w-full h-full pt-3 md:mt-4 md:h-auto md:pb-4">
+    <div
+      className={`pr-0 sm:pr-0 text-center w-full h-full pt-3 md:mt-4 md:h-auto md:pb-4 ${
+        isUserAuthenticated ? "bg-transparent" : "bg-white"
+      } z-[1000] relative`}
+    >
       <Typography.Paragraph className="m-0 text-medium font-bold font-inter">
         {isUserAuthenticated ? "For Existing Users" : "For Guest User"}
       </Typography.Paragraph>
-      <PrimaryButton className="w-auto h-auto leading-null p-0 rounded-full bg-transparent border-0 hover:bg-transparent focus:bg-transparent mb-3">
+      <PrimaryButton className="w-auto h-auto leading-null p-0 rounded-full bg-transparent border-0 hover:bg-transparent focus:bg-transparent mb-3" onClick={onPlayClick}>
         <PlayCircleFilled
           className={`p-0 ${
             isUserAuthenticated ? "text-red" : "text-blue"

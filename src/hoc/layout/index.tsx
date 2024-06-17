@@ -28,17 +28,17 @@ function CustomLayout(props: any) {
   return (
     <Layout className={`w-100`}>
       <Header
-        className={`px-4 h-auto bg-white shadow-lg mb-4 printHIde`}
+        className={`px-6 md:px-4 h-auto bg-white shadow-lg mb-4 printHIde`}
         data-testid="main_header"
       >
         <MainHeader />
       </Header>
 
       {props?.afterHeader ? (
-        <div className="px-4 my-3">{props?.afterHeader}</div>
+        <div className="px-6 md:px-4 my-3">{props?.afterHeader}</div>
       ) : null}
 
-      <Layout className={`px-4 max-w-full ${styles.contentArea} ${getCls()}`}>
+      <Layout className={`px-6 md:px-4 max-w-full ${styles.contentArea} ${getCls()}`}>
         {props?.leftSidebar ? (
           <aside className={`mr-5 ${styles.leftSidebar} md:mr-0`}>
             {props?.leftSidebar}

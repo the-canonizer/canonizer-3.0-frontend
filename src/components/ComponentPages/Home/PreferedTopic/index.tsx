@@ -31,7 +31,7 @@ const PreferedTopics = () => {
         </Col>
         <Col md={12} sm={12} xs={12} className="text-right">
           <Link href="">
-            <a className="text-blue hover:text-hblue text-medium font-inter">
+            <a className="text-blue hover:text-hblue text-base font-inter">
               See More
             </a>
           </Link>
@@ -40,16 +40,18 @@ const PreferedTopics = () => {
 
       <div className="mt-1">
         <Row gutter={20} className="items-stretch">
-          {topicData?.map((ft) => (
+          {topicData?.slice(0, 6)?.map((ft) => (
             <Col
               xl={8}
               lg={12}
               md={24}
               xs={24}
-              className="mb-4 h-full"
+              className="mb-4 self-stretch h-[250px] xl:h-full"
               key={ft?.id}
             >
-              <CommonCard className="border-0 h-full">
+              <CommonCard
+                className={`border-0 h-full hover:*:shadow-lg fullHeightCard`}
+              >
                 <div className="flex justify-between pb-2 align-center">
                   <Typography.Paragraph className="m-0 text-medium font-bold font-inter">
                     {ft?.title}
@@ -81,8 +83,8 @@ const PreferedTopics = () => {
                     }),
                   }}
                 ></div>
-                <div className="flex justify-between pt-3 mt-auto sm:flex-col">
-                  <div className="text-left flex sm:flex-col">
+                <div className="flex justify-between pt-3 mt-auto xl:flex-col sm:flex-col">
+                  <div className="text-left flex xl:flex-col sm:flex-col">
                     <Popover content="Share Topic" placement="top">
                       <Typography.Paragraph className="bg-transparent border-0 p-0 hover:bg-transparent focus:bg-transparent flex items-center leading-1 mb-0 mr-3">
                         <FlagOutlined className="text-black p-1 text-medium" />

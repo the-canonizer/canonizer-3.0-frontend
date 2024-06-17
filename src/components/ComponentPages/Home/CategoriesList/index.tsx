@@ -20,14 +20,14 @@ const CategoriesList = () => {
         </Col>
         <Col md={12} sm={12} xs={12} className="text-right">
           <Link href="">
-            <a className="text-blue hover:text-hblue text-medium font-inter">
+            <a className="text-blue hover:text-hblue text-base font-inter">
               See More
             </a>
           </Link>
         </Col>
       </Row>
 
-      <div className="mt-2 px-0">
+      <div className="mt-0 px-0">
         {["#F7E9F5", "#E9EEF9", "#F7EAEA", "#EDF3E6"]?.map((cat) => (
           <Tooltip title={cat} key={cat}>
             <Tags
