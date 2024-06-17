@@ -307,8 +307,8 @@ const TopicDetails = ({ serverSideCall }: any) => {
     setIsRemovingSupport(true);
     const removeEntireData = {
       topic_num: topicList[0].topic_num,
-      nick_name_id: topicList[0].nick_name_id,
-      delegated_nick_name_id: topicList[0].delegate_nick_name_id,
+      nick_name_id: topicList[0]?.nick_name_id,
+      delegated_nick_name_id: topicList[0]?.delegate_nick_name_id,
       ...reasonData,
     };
     const reqBodyForService = {
