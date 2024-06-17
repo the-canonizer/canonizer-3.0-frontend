@@ -5,7 +5,6 @@ import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 
-// import ManageSupportUI from "./ManageSupportUI";
 import {
   getAllUsedNickNames,
   getCurrentCampRecordApi,
@@ -57,8 +56,9 @@ const ManageSupport = ({
   }));
 
   const dispatch = useDispatch();
-  const { isUserAuthenticated } = isAuth();
   const router = useRouter();
+
+  const { isUserAuthenticated } = isAuth();
 
   const [nickNameList, setNickNameList] = useState([]);
   const [topicSupportListData, setTopicSupportListData] = useState([]);
@@ -73,6 +73,7 @@ const ManageSupport = ({
   const [unableToFindCamp, setUnableToFindCamp] = useState<boolean>(false);
   const [updatePostion, setUpdatePostion] = useState<boolean>(false);
   const [submitButtonDisable, setSubmitButtonDisable] = useState(false);
+  const [isSubmitRequire, setIsSubmitRequire] = useState(false);
 
   //get NickName List Data
   const getCanonizedNicknameList = async () => {
@@ -81,7 +82,6 @@ const ManageSupport = ({
 
     let res = await getAllUsedNickNames(topicNum && body);
 
-    console.log("----nick[]NAMES {RES}----", res, body);
     if (res && res.status_code == 200) {
       setNickNameList(res.data);
     }
@@ -134,7 +134,10 @@ const ManageSupport = ({
       if (isUserAuthenticated) {
         setUpdatePostion(false);
         await refSetter(reqBody);
+
+        // get nickname list for support
         await getCanonizedNicknameList();
+
         if (manageSupportStatusCheck) {
           setGetManageSupportLoadingIndicator(true);
           setGetManageSupportLoadingIndicator(false);
@@ -151,6 +154,8 @@ const ManageSupport = ({
 
   const GetCheckStatusData = async (campReff: any) => {
     let response = await GetCheckSupportExists(queryParams(reqBodyData));
+    console.log("GetCheckStatusData---", response);
+
     if (response && response?.status_code === 404) {
       handleCancelSupportCamps({ isCallApiStatus: false });
     }
@@ -539,6 +544,8 @@ const ManageSupport = ({
             topicSupportListData={topicSupportListData}
             handleCancelSupportCamps={handleCancelSupportCamps}
             getCheckStatusAPI={getCheckStatusAPI}
+            isSubmitRequire={isSubmitRequire}
+            setIsSubmitRequire={setIsSubmitRequire}
           />
         )}
       </div>
