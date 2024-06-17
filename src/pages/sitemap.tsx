@@ -14,14 +14,17 @@ const { Text } = Typography;
 const SitemapPage = () => {
   const router = useRouter();
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setIsLoading(true);
-    router?.replace("/sitemap.xml");
-    setIsLoading(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    const navigateToSitemap = async () => {
+      await router.replace("/sitemap.xml");
+      setIsLoading(false);
+    };
+
+    navigateToSitemap();
+  }, [router]);
+  
 
   if (isLoading) {
     return (
