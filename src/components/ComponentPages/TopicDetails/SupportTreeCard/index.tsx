@@ -278,9 +278,6 @@ const SupportTreeCard = ({
     const campLeaderId = campLeader?.nick_name_id;
     const delegatorId = campLeader?.delegates?.[0]?.nick_name_id;
 
-    console.log("campLeaderId----", campLeaderId);
-    console.log("delegatorId----", delegatorId);
-
     setCampLeaderId(campLeaderId);
     setDelegatorID(delegatorId);
   }, [campSupportingTree]);
