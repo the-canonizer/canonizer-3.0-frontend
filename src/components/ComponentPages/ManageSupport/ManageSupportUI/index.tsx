@@ -349,6 +349,41 @@ const ManageSupportUI = ({
     );
   }
 
+  /**
+   * 
+   *  (!isSubmitRequire &&
+                currentGetCheckSupportExistsData?.support_flag == "1") ||
+              submitButtonDisable ||
+              currentGetCheckSupportExistsData.disable_submit ||
+              campRecord.is_archive == 1
+
+   */
+  const isDisabled = () => {
+    const supportFlag = currentGetCheckSupportExistsData?.support_flag;
+    const isDelegator = currentGetCheckSupportExistsData?.is_delegator;
+    const disableSubmit = currentGetCheckSupportExistsData?.disable_submit;
+
+    if (!isSubmitRequire && (supportFlag == "1" || supportFlag == "0")) {
+      if (CheckDelegatedOrDirect && !isDelegator) {
+        return false;
+      }
+
+      if (!CheckDelegatedOrDirect && isDelegator) {
+        return false;
+      }
+
+      if (supportFlag == "1") {
+        return true;
+      }
+    }
+
+    if (submitButtonDisable || disableSubmit || campRecord.is_archive == 1) {
+      return true;
+    }
+
+    return false;
+  };
+
   return (
     <div className={styles.card_width}>
       {(CheckDelegatedOrDirect &&
@@ -555,13 +590,7 @@ const ManageSupportUI = ({
                   ? checkNickNameSupportCamps
                   : addRemoveApi
               }
-              disabled={
-                (!isSubmitRequire &&
-                  currentGetCheckSupportExistsData?.support_flag == "1") ||
-                submitButtonDisable ||
-                currentGetCheckSupportExistsData.disable_submit ||
-                campRecord.is_archive == 1
-              }
+              disabled={isDisabled()}
             >
               {currentGetCheckSupportExistsData?.support_flag == "1"
                 ? "Update"

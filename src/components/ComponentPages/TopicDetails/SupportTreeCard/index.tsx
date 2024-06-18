@@ -278,29 +278,9 @@ const SupportTreeCard = ({
     const campLeaderId = campLeader?.nick_name_id;
     const delegatorId = campLeader?.delegates?.[0]?.nick_name_id;
 
-    console.log("campLeaderId----", campLeaderId);
-    console.log("delegatorId----", delegatorId);
-
     setCampLeaderId(campLeaderId);
     setDelegatorID(delegatorId);
   }, [campSupportingTree]);
-
-  // useEffect(() => {
-  //   let campLeaderId = campSupportingTree?.find(
-  //     (obj) => obj["camp_leader"] === true
-  //   )?.nick_name_id;
-
-  //   console.log("campLeaderId----", campLeaderId);
-
-  //   let delegatorId = campSupportingTree
-  //     ?.find((obj) => obj["camp_leader"] === true)
-  //     ?.delegates?.at(0)?.nick_name_id;
-
-  //   console.log("delegatorId----", delegatorId);
-
-  //   setCampLeaderId(campLeaderId);
-  //   setDelegatorID(delegatorId);
-  // }, [campSupportingTree, campLeaderID, delegatorID]);
 
   const isCampLeader = () => {
     let campLeaderExist = false;
@@ -438,11 +418,10 @@ const SupportTreeCard = ({
                           (loggedInUserChild &&
                             delegateNickNameId !=
                               data[item]?.delegate_nick_name_id) ||
-                          data[item]?.delegates?.findIndex((obj) =>
-                            userNickNameList?.includes(obj?.nick_name_id)
-                          ) > -1 ? (
-                            ""
-                          ) : (
+                          (Array.isArray(data[item]?.delegates) &&
+                            data[item].delegates.findIndex((obj) =>
+                              userNickNameList?.includes(obj?.nick_name_id)
+                            ) > -1) ? null : (
                             <Popover
                               placement="right"
                               content={
