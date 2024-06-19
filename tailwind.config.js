@@ -67,7 +67,8 @@ module.exports = {
         white: "#fff",
         disabled: "#AAB2BF",
         gr: "#F7F8FC",
-        lighc: "#777F93",
+        light: "#777F93",
+        greyBg: "#F4F5FA",
       },
       borderRadius: {
         10: "10px",

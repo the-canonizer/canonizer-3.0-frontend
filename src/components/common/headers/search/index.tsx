@@ -86,6 +86,7 @@ const HeaderSearch = ({ className = "" }: any) => {
   const [searchNickname, setSearchNickname] = useState([]);
   const [searchVal, setSearchVal] = useState("");
   const [loadingSekelton, setLoadingSekelton] = useState(true);
+  const [isFullWidth, setIsFullWidth] = useState(false);
 
   useEffect(() => {
     if (searchValue?.length == 0) {
@@ -335,7 +336,15 @@ const HeaderSearch = ({ className = "" }: any) => {
         }
         onFocus={(e) => {
           console.log("eee--", e);
+          setIsFullWidth(true);
         }}
+        onBlur={(e) => {
+          console.log("eee--", e);
+          setIsFullWidth(false);
+        }}
+        className={`ml-5 transition-all delay-300 [&>div]:!border-0 ${
+          isFullWidth ? styles.widthScroll : ""
+        }`}
       >
         <div
           className={`w-auto h-auto flex items-center ${className} md:*:hidden`}
@@ -427,7 +436,7 @@ const TopicItems = ({ searchTopics, searchValue }) => (
                       </Link>
                     </Typography.Paragraph>
                   </Popover>
-                  <Typography.Paragraph className="m-0 text-lighc font-medium font-inter flex items-center">
+                  <Typography.Paragraph className="m-0 text-light font-medium font-inter flex items-center">
                     <EyeOutlined className="text-black p-1 text-medium" /> 123
                   </Typography.Paragraph>
                 </div>

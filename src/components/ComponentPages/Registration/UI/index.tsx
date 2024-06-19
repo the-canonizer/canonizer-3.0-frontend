@@ -1,15 +1,21 @@
 import React, { Fragment } from "react";
 import { useRouter } from "next/router";
-import { Row, Col, Typography, Form, Input, Button, Select } from "antd";
-import { CloseCircleOutlined, ArrowRightOutlined } from "@ant-design/icons";
+import { Row, Col, Typography, Form, Button, Select, Card } from "antd";
+import {
+  UserOutlined,
+  ArrowRightOutlined,
+  MailOutlined,
+  PhoneOutlined,
+  LockOutlined,
+} from "@ant-design/icons";
 
-import styles from "./Registration.module.scss";
+import messages from "src/messages";
+import SocialLoginButton from "src/components/common/socialLogin";
+import LogoHeader from "src/components/common/headers/logoHeader";
+import Inputs from "src/components/shared/FormInputs";
+import PrimaryButton from "@/components/shared/Buttons/PrimariButton";
 
-import messages from "../../../../messages";
-import SocialLoginButton from "../../../common/socialLogin";
-import FormItem from "../../../common/formElements";
-
-const { Title, Text } = Typography;
+const { Title, Text, Paragraph } = Typography;
 const { Option } = Select;
 
 declare global {
@@ -25,6 +31,7 @@ function RegistrationUi({
   closeModal,
   country,
   openLogin,
+  isDisabled,
 }: any) {
   const router = useRouter();
 
@@ -66,7 +73,7 @@ function RegistrationUi({
   };
 
   return (
-    <section className={styles.signup_wrapper}>
+    <Card className="rounded-lg" bordered={false}>
       <Form
         form={form}
         name="registration"
@@ -77,27 +84,29 @@ function RegistrationUi({
         validateTrigger={messages.formValidationTypes()}
         autoComplete="off"
       >
-        <Title level={2} className={styles.titles} id="registration-title">
-          Register Now On Canonizer
-        </Title>
-        {isModal && (
-          <Button
-            shape="circle"
-            type="link"
-            className={styles.close_btn}
-            onClick={closeModal}
-            icon={<CloseCircleOutlined />}
-            id="register-modal-close-btn"
-          />
-        )}
-        <div className={styles.section_one}>
+        <div className="flex justify-center items-center text-center flex-col mb-4">
+          <LogoHeader />
+          <Title
+            level={4}
+            className="mt-4 text-base text-black font-medium"
+            id="registration-title"
+          >
+            Create your account
+          </Title>
+          <Paragraph className="text-muted text-14 text-light font-regular">
+            All fields are mandatory.
+          </Paragraph>
+        </div>
+
+        <div className="">
           <Row gutter={30}>
             <Col md={12} style={{ width: "100%" }}>
-              <FormItem
+              <Inputs
                 name="first_name"
                 label={
                   <Fragment>
-                    {messages.labels.firstName} <span>(Limit 100 Chars)</span>
+                    {messages.labels.firstName}
+                    {/* <span>(Limit 100 Chars)</span> */}
                     <span className="required">*</span>
                   </Fragment>
                 }
@@ -107,16 +116,17 @@ function RegistrationUi({
                   e.key === " " && e.keyCode === 32 && e.preventDefault()
                 }
                 maxLength={100}
+                prefix={<UserOutlined />}
               />
             </Col>
 
             <Col md={12} style={{ width: "100%" }}>
-              <FormItem
+              <Inputs
                 name="last_name"
                 label={
                   <Fragment>
                     {messages.labels.lastName}
-                    <span>(Limit 100 Chars)</span>
+                    {/* <span>(Limit 100 Chars)</span> */}
                     <span className="required">*</span>
                   </Fragment>
                 }
@@ -126,15 +136,16 @@ function RegistrationUi({
                   e.key === " " && e.keyCode === 32 && e.preventDefault()
                 }
                 maxLength={100}
+                prefix={<UserOutlined />}
               />
             </Col>
             <Col md={12} style={{ width: "100%" }}>
-              <FormItem
+              <Inputs
                 name="email"
                 label={
                   <Fragment>
                     {messages.labels.email}
-                    <span>(Limit 255 Chars)</span>
+                    {/* <span>(Limit 255 Chars)</span> */}
                     <span className="required">*</span>
                   </Fragment>
                 }
@@ -144,98 +155,102 @@ function RegistrationUi({
                   e.key === " " && e.keyCode === 32 && e.preventDefault()
                 }
                 maxLength={255}
+                prefix={<MailOutlined />}
+                type="email"
               />
             </Col>
             <Col md={12} style={{ width: "100%" }}>
-              <Form.Item
+              <Inputs
                 name="phone"
-                label={messages.labels.phone}
+                label={
+                  <Fragment>
+                    {messages.labels.phone}
+                    {/* <span>(Limit 100 Chars)</span> */}
+                    <span className="required">*</span>
+                  </Fragment>
+                }
                 {...messages.phoneRule}
-                className={styles.phoneInput}
-              >
-                <Input
-                  type="tel"
-                  addonBefore={prefixSelector}
-                  style={{ width: "100%" }}
-                  className={`${styles.phoneInput} numberInput`}
-                  placeholder={messages.placeholders.phone}
-                  autoComplete="off"
-                  maxLength={10}
-                  onKeyDown={(e) =>
-                    e.key === " " && e.keyCode === 32 && e.preventDefault()
-                  }
-                />
-              </Form.Item>
+                type="tel"
+                addonBefore={prefixSelector}
+                // addonAfter={prefixSelector}
+                placeholder={messages.placeholders.phone}
+                maxLength={10}
+                onKeyDown={(e) =>
+                  e.key === " " && e.keyCode === 32 && e.preventDefault()
+                }
+                prefix={<PhoneOutlined />}
+                inputMode="tel"
+                inputClassName={`numberInput [&>*]:h-[40px] [&_.ant-input-affix-wrapper]:h-full`}
+              />
             </Col>
             <Col md={12} style={{ width: "100%" }}>
-              <Form.Item
+              <Inputs
                 name="password"
                 label={
-                  <>
+                  <Fragment>
                     {messages.labels.password}
                     <span className="required">*</span>
-                  </>
+                  </Fragment>
                 }
                 {...messages.passwordRule}
-              >
-                <Input.Password
-                  className={styles.passwordInput}
-                  type="password"
-                  placeholder={messages.placeholders.password}
-                  autoComplete="off"
-                />
-              </Form.Item>
+                type="password"
+                placeholder={messages.placeholders.password}
+                prefix={<LockOutlined />}
+                inputMode="password"
+              />
             </Col>
             <Col md={{ span: 12 }} style={{ width: "100%" }}>
-              <Form.Item
+              <Inputs
                 name="confirm"
                 label={
-                  <>
+                  <Fragment>
                     {messages.labels.confirmPassword}
                     <span className="required">*</span>
-                  </>
+                  </Fragment>
                 }
                 dependencies={["password"]}
                 {...messages.confirmPasswordRule}
-              >
-                <Input.Password
-                  className={styles.passwordInput}
-                  type="password"
-                  placeholder={messages.placeholders.confirmPassword}
-                  autoComplete="off"
-                />
-              </Form.Item>
+                type="password"
+                placeholder={messages.placeholders.confirmPassword}
+                prefix={<LockOutlined />}
+                inputMode="password"
+              />
             </Col>
           </Row>
         </div>
 
-        <Form.Item>
-          <Button
+        <Form.Item className="text-center">
+          <PrimaryButton
             type="primary"
             htmlType="submit"
-            className="login-form-button"
+            className="h-[40px] text-base rounded-md !w-6/12"
             block
             data-testid="submitButton"
-            style={{ marginTop: "20px" }}
             id="register-btn"
+            disabled={isDisabled}
           >
-            Register Now <ArrowRightOutlined />
-          </Button>
+            Sign Up <ArrowRightOutlined />
+          </PrimaryButton>
         </Form.Item>
 
-        <Form.Item style={{ marginBottom: "15px" }}>
+        <Form.Item className="my-5">
           <SocialLoginButton isNotLogin={true} />
         </Form.Item>
-        <Form.Item noStyle>
-          <Text className={styles.ft_link} id="already-text">
+        <Form.Item className="text-center">
+          <Text className="text-base font-semibold" id="already-text">
             Already have an account?{" "}
-            <a href="#" onClick={onLoginClick} id="already-text-link">
-              Login Here
+            <a
+              href="#"
+              onClick={onLoginClick}
+              className="text-blue hover:text-hblue"
+              id="already-text-link"
+            >
+              Login
             </a>
           </Text>
         </Form.Item>
       </Form>
-    </section>
+    </Card>
   );
 }
 

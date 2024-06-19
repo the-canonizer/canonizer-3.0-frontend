@@ -18,6 +18,7 @@ export default function NotificationList({
       dataSource={list}
       className={styles.list}
       id="list-items"
+      locale={{ emptyText: "You don’t have any notifications right now. Enable push notifications to stay updated." }}
       renderItem={(item: any) => (
         <List.Item
           id={"list-item-" + item["id"]}

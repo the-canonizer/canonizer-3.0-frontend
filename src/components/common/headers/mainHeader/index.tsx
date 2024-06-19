@@ -14,7 +14,7 @@ const LoggedOutHeader = () => {
     <Fragment>
       <div className="flex justify-start items-center z-10 w-100 py-2">
         <Logo />
-        <SearchHeader className="ml-5" />
+        <SearchHeader />
         <HeaderMenu
           className="ml-auto lg:ml-1"
           isUserAuthenticated={isUserAuthenticated}

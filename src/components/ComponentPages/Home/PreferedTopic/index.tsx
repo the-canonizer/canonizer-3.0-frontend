@@ -8,8 +8,8 @@ import {
   RightOutlined,
 } from "@ant-design/icons";
 import Link from "next/link";
-import { useSelector } from "react-redux";
 import sanitizeHtml from "sanitize-html";
+import { useSelector } from "react-redux";
 
 import Headings from "src/components/shared/Typography";
 import CommonCard from "src/components/shared/Card";
@@ -31,7 +31,7 @@ const PreferedTopics = () => {
         </Col>
         <Col md={12} sm={12} xs={12} className="text-right">
           <Link href="">
-            <a className="text-blue hover:text-hblue text-base font-inter">
+            <a className="text-blue hover:text-hblue text-14 font-inter font-medium">
               See More
             </a>
           </Link>
@@ -95,7 +95,7 @@ const PreferedTopics = () => {
                         </Link>
                       </Typography.Paragraph>
                     </Popover>
-                    <Typography.Paragraph className="m-0 text-lighc font-medium font-inter flex items-center">
+                    <Typography.Paragraph className="m-0 text-light font-medium font-inter flex items-center">
                       <EyeOutlined className="text-black p-1 text-medium" /> 123
                     </Typography.Paragraph>
                   </div>

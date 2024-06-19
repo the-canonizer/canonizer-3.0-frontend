@@ -12,8 +12,7 @@ const LoginPage = () => {
 
   useEffect(() => {
     isUserAuthenticated && router?.push("/");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isUserAuthenticated]);
 
   return (
     <Layout initialProps={undefined} initialState={undefined}>

@@ -74,8 +74,8 @@ const RecentActivities = ({ isUserAuthenticated }) => {
           </Headings>
         </Col>
         <Col md={12} sm={12} xs={12} className="text-right">
-          <Link href="">
-            <a className="text-blue hover:text-hblue text-base font-inter">
+          <Link href="/activities">
+            <a className="text-blue hover:text-hblue text-14 font-inter font-medium">
               See More
             </a>
           </Link>
@@ -96,6 +96,7 @@ const RecentActivities = ({ isUserAuthenticated }) => {
               className="mt-1 rounded-lg"
               size="small"
               bordered
+              locale={{ emptyText: "No activity available." }}
               dataSource={recentActivities?.topics}
               renderItem={(item: any) => {
                 const decodedProperties = JSON.parse(

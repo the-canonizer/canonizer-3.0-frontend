@@ -1,6 +1,6 @@
 import { Row, Col } from "antd";
 
-import useAuthentication from "../../../hooks/isUserAuthenticated";
+import useAuthentication from "src/hooks/isUserAuthenticated";
 
 import Layout from "src/hoc/layout";
 import WelcomeContent from "./WelcomeArea";

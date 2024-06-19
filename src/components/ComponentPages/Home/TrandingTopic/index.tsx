@@ -11,7 +11,10 @@ import CommonCard from "src/components/shared/Card";
 import { RootState } from "src/store";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
 import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
-import { getCanonizedTopicsApi } from "src/network/api/homePageApi";
+import {
+  getCanonizedAlgorithmsApi,
+  getCanonizedTopicsApi,
+} from "src/network/api/homePageApi";
 import CustomSkelton from "src/components/common/customSkelton";
 
 const { Option } = Select;
@@ -51,14 +54,11 @@ const TrandingTopics = () => {
   }));
 
   const [topicsData, setTopicsData] = useState(canonizedTopics);
-  const [isReview, setIsReview] = useState(asof == "review");
-  const [nameSpaceId, setNameSpaceId] = useState(
-    String(filterNameSpaceId) || "1"
-  );
+  const [isReview] = useState(asof == "review");
+  const [nameSpaceId] = useState(String(filterNameSpaceId) || "1");
   const [pageNumber, setPageNumber, pageNumberRef] = useState(1);
   const [loadMoreIndicator, setLoadMoreIndicator] = useState(false);
 
-  // eslint-disable-next-line no-unused-vars
   const [_cookie, setCookie] = useCookies(["canAlgo", "asof", "asofDate"]);
 
   useEffect(() => {
@@ -74,8 +74,8 @@ const TrandingTopics = () => {
       asofdate:
         asof == ("default" || asof == "review") ? Date.now() / 1000 : asofdate,
       namespace_id: String(nameSpaceId),
-      page_number: pageNumberRef.current,
-      page_size: 15,
+      page_number: "1",
+      page_size: 10,
       search: "",
       filter: filterByScore,
       asof: asof,
@@ -105,10 +105,32 @@ const TrandingTopics = () => {
     getTopicsApiCallWithReqBody();
   };
 
-  const handleTopicClick = () => {
-    // setGetTopicsLoadingIndicator(true);
-    // dispatch(setShowDrawer(true));
+  const handleTopicClick = () => {};
+
+  useEffect(() => {
+    async function getTopicsApiCall() {
+      await getTopicsApiCallWithReqBody();
+    }
+
+    getTopicsApiCall();
+  }, [
+    asofdate,
+    asof,
+    algorithm,
+    nameSpaceId,
+    filterByScore,
+    is_camp_archive_checked,
+    onlyMyTopicsCheck,
+    sortLatestTopic,
+  ]);
+
+  const fetchNameSpaceList = async () => {
+    await getCanonizedAlgorithmsApi();
   };
+
+  useEffect(() => {
+    fetchNameSpaceList();
+  }, []);
 
   return (
     <Fragment>
@@ -118,13 +140,13 @@ const TrandingTopics = () => {
             TRENDING TOPICS
           </Headings>
         </Col>
-        {/* <Col md={12} sm={12} xs={12} className="text-right">
-          <Link href="">
-            <a className="text-blue hover:text-hblue text-base font-inter">
+        <Col md={12} sm={12} xs={12} className="text-right">
+          <Link href="/browse">
+            <a className="text-blue hover:text-hblue text-14 font-inter font-medium">
               See More
             </a>
           </Link>
-        </Col> */}
+        </Col>
       </Row>
 
       <div className="">
@@ -178,9 +200,10 @@ const TrandingTopics = () => {
               size="small"
               bordered
               dataSource={topicsData?.topics}
+              locale={{ emptyText: "No topic available." }}
               renderItem={(item: any) => (
                 <List.Item
-                  className="font-inter text-base font-medium bg-white"
+                  className="font-inter text-14 font-medium bg-white hover:bg-greyBg"
                   id={`topic-${item?.topic_id}`}
                 >
                   <Link
@@ -223,7 +246,7 @@ const TrandingTopics = () => {
                         </Typography.Text>
                         <Tag
                           className={
-                            "bg-orange text-white border-0 rounded-[5px] ml-1 inline-flex py-[3px] flex items-center text-base md:text-[12px]"
+                            "bg-orange text-white border-0 rounded-[5px] ml-1 inline-flex py-[2px] flex items-center text-12"
                           }
                         >
                           <svg

@@ -3,9 +3,9 @@ import { useRouter } from "next/router";
 import { Card } from "antd";
 import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 
-import Registration from "../components/ComponentPages/Registration";
-import Layout from "../hoc/layout";
-import useAuthentication from "../hooks/isUserAuthenticated";
+import Registration from "../../components/ComponentPages/Registration";
+import Layout from "../../hoc/layout";
+import useAuthentication from "../../hooks/isUserAuthenticated";
 
 const RegistrationPage = () => {
   const router = useRouter();

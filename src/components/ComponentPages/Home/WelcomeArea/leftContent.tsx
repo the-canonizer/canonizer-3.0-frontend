@@ -39,7 +39,11 @@ const LeftContent = ({ isUserAuthenticated }) => {
 
   return (
     <div className="pr-0">
-      <Typography.Paragraph className="m-0 text-base font-bold font-inter">
+      <Typography.Paragraph
+        className={`m-0 ${isUserAuthenticated ? 'text-[24px]' : "text-base"} font-${
+          isUserAuthenticated ? "semibold" : "medium"
+        } font-inter leading-[1]`}
+      >
         {isUserAuthenticated
           ? getGreet() + ", " + loggedInUser?.first_name + "!"
           : "Welcome to"}
@@ -51,19 +55,23 @@ const LeftContent = ({ isUserAuthenticated }) => {
       ) : (
         <br />
       )}
-      <Typography.Paragraph className="text-base font-inter font-normal mb-3">
+      <Typography.Paragraph
+        className={`text-base font-inter font-normal mb-3 ${
+          isUserAuthenticated ? "-mt-1" : "mt-3"
+        }`}
+      >
         {isUserAuthenticated
-          ? "Here are some quick stats for you -"
+          ? "Welcome back! Explore topics, build consensus, and track conclusions on the go."
           : "A consensus building and tracking system and decision making tool you can use for Dynamic Surveying."}
       </Typography.Paragraph>
       {isUserAuthenticated ? (
         <TopicCreateButton
-          className="w-4/12 h-[50px] text-base bg-blue px-3 rounded-lg text-white hover:bg-hblue hover:text-white flex items-center justify-center font-medium lg:w-8/12 md:w-6/12 sm:w-full"
+          className="w-4/12 h-[50px] text-base bg-blue px-3 rounded-lg text-white hover:bg-hblue hover:text-white flex items-center justify-center font-medium lg:w-8/12 md:w-6/12 sm:w-full mt-5"
           isWithIcon={true}
         />
       ) : (
         <PrimaryButton
-          className="w-4/12 h-[50px] text-base lg:w-8/12 md:w-6/12 sm:w-full"
+          className="w-4/12 h-[50px] text-base lg:w-8/12 md:w-6/12 sm:w-full mt-3"
           onClick={onBrowseClick}
         >
           Browse More <ArrowRightOutlined />

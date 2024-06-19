@@ -5,7 +5,6 @@ import styles from "./layout.module.scss";
 
 import useAuthentication from "src/hooks/isUserAuthenticated";
 import LoggedInHeader from "src/components/common/headers/loggedInHeader";
-// import LoggedOutHeader from "src/components/common/headers/loggedOutHeader";
 import Footer from "src/components/common/footer";
 import GoogleAd from "src/components/googleAds";
 

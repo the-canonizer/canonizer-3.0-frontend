@@ -26,19 +26,23 @@ function CustomLayout(props: any) {
   };
 
   return (
-    <Layout className={`w-100`}>
-      <Header
-        className={`px-6 md:px-4 h-auto bg-white shadow-lg mb-4 printHIde`}
-        data-testid="main_header"
-      >
-        <MainHeader />
-      </Header>
+    <Layout className={`w-100 ${props?.className}`}>
+      {!props?.withOutHeader ? (
+        <Header
+          className={`px-6 md:px-4 h-auto bg-white shadow-lg mb-4 printHIde`}
+          data-testid="main_header"
+        >
+          <MainHeader />
+        </Header>
+      ) : null}
 
       {props?.afterHeader ? (
         <div className="px-6 md:px-4 my-3">{props?.afterHeader}</div>
       ) : null}
 
-      <Layout className={`px-6 md:px-4 max-w-full ${styles.contentArea} ${getCls()}`}>
+      <Layout
+        className={`px-6 md:px-4 max-w-full ${styles.contentArea} ${getCls()}`}
+      >
         {props?.leftSidebar ? (
           <aside className={`mr-5 ${styles.leftSidebar} md:mr-0`}>
             {props?.leftSidebar}
@@ -53,12 +57,12 @@ function CustomLayout(props: any) {
           </aside>
         ) : null}
       </Layout>
-      <div className="ad_area p-4">
+      {/* <div className="ad_area p-4">
         <GoogleAd
           ad_client={process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT}
           ad_slot={process.env.NEXT_PUBLIC_GOOGLE_ADS_RIGHT_SLOT}
         />
-      </div>
+      </div> */}
       <Footer className={`p-0`}>
         <FooterComp />
       </Footer>
