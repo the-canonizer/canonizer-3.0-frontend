@@ -200,6 +200,7 @@ const TrandingTopics = () => {
               size="small"
               bordered
               dataSource={topicsData?.topics}
+              locale={{ emptyText: "No topic available." }}
               renderItem={(item: any) => (
                 <List.Item
                   className="font-inter text-14 font-medium bg-white hover:bg-greyBg"

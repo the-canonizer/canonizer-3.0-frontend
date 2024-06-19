@@ -18,6 +18,7 @@ export default function NotificationList({
       dataSource={list}
       className={styles.list}
       id="list-items"
+      locale={{ emptyText: "No notification available." }}
       renderItem={(item: any) => (
         <List.Item
           id={"list-item-" + item["id"]}

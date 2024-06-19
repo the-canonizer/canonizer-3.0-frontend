@@ -96,6 +96,7 @@ const RecentActivities = ({ isUserAuthenticated }) => {
               className="mt-1 rounded-lg"
               size="small"
               bordered
+              locale={{ emptyText: "No activity available." }}
               dataSource={recentActivities?.topics}
               renderItem={(item: any) => {
                 const decodedProperties = JSON.parse(
