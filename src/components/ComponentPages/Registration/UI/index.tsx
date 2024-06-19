@@ -88,7 +88,7 @@ function RegistrationUi({
           <LogoHeader />
           <Title
             level={4}
-            className="mt-4 text-base text-black font-medium"
+            className="mt-4 text-14 text-black font-medium"
             id="registration-title"
           >
             Create your account
@@ -223,7 +223,7 @@ function RegistrationUi({
           <PrimaryButton
             type="primary"
             htmlType="submit"
-            className="h-[40px] text-base rounded-md !w-6/12"
+            className="h-[40px] text-14 rounded-md !w-6/12"
             block
             data-testid="submitButton"
             id="register-btn"
@@ -237,7 +237,7 @@ function RegistrationUi({
           <SocialLoginButton isNotLogin={true} />
         </Form.Item>
         <Form.Item className="text-center">
-          <Text className="text-base font-semibold" id="already-text">
+          <Text className="text-14 font-semibold" id="already-text">
             Already have an account?{" "}
             <a
               href="#"

@@ -33,7 +33,7 @@ const RightContent = ({ isUserAuthenticated }) => {
           } text-2xl`}
         />
       </PrimaryButton>
-      <Typography.Paragraph className="text-base font-inter font-normal mb-3">
+      <Typography.Paragraph className="text-14 font-inter font-normal mb-3">
         {isUserAuthenticated
           ? "show them how to use to it’s maximum potential"
           : "explain what Canonizer is at a beginner level, and how it can be used"}

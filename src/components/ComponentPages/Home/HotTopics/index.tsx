@@ -55,7 +55,7 @@ const HotTopics = () => {
     <Fragment>
       <Row gutter={15}>
         <Col md={12} sm={12} xs={12} className="mb-3">
-          <Headings level={5} className="mb-0 text-base font-bold uppercase">
+          <Headings level={5} className="mb-0 text-14 font-bold uppercase">
             Hot Topics{" "}
             <Popover content="Hot Topics" placement="top" className="">
               <InfoCircleOutlined />
@@ -84,7 +84,7 @@ const HotTopics = () => {
                 </div>
               </div>
               <div
-                className="text-base font-inter font-normal mb-3 text-black opacity-80 leading-26 overflow-hidden line-clamp-4"
+                className="text-14 font-inter font-normal mb-3 text-black opacity-80 leading-26 overflow-hidden line-clamp-4"
                 dangerouslySetInnerHTML={{
                   __html: sanitizeHtml(ft?.description, {
                     allowedAttributes: {
@@ -112,7 +112,7 @@ const HotTopics = () => {
                     <Typography.Paragraph className="bg-transparent border-0 p-0 hover:bg-transparent focus:bg-transparent flex items-center leading-1 mb-0 mr-3">
                       <FlagOutlined className="text-black p-1 text-medium" />
                       <Link href="">
-                        <a className="text-blue text-base font-inter font-medium hover:hblue">
+                        <a className="text-blue text-14 font-inter font-medium hover:hblue">
                           General
                         </a>
                       </Link>

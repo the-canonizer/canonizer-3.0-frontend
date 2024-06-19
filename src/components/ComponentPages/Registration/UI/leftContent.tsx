@@ -16,12 +16,12 @@ const LeftContent = () => {
     <div className="w-full h-full flex flex-col">
       <Button
         type="link"
-        className="h-[50px] text-base w-2/12 text-black flex items-center justify-start text-base font-medium p-0 mb-4"
+        className="h-[50px] text-14 w-2/12 text-black flex items-center justify-start text-14 font-medium p-0 mb-4"
         onClick={onBrowseClick}
       >
         <LeftOutlined /> Go Back
       </Button>
-      <Typography.Paragraph className="m-0 text-base font-bold font-inter">
+      <Typography.Paragraph className="m-0 text-14 font-bold font-inter">
         Welcome to
       </Typography.Paragraph>
       <Headings h1 className="mb-1 leading-[1.1]">

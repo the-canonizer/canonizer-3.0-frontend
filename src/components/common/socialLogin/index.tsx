@@ -46,7 +46,7 @@ export default function SocialLoginUi({ isNotLogin = false }: any) {
   return (
     <div className={styles.wrapper + " text-center"}>
       <Text
-        className="text-base font-regular text-center"
+        className="text-14 font-regular text-center"
         id="social-login-title"
       >
         {`${isNotLogin ? "Register" : "Login"} via social accounts-`}
