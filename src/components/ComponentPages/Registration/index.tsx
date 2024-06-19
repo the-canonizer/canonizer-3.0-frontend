@@ -41,10 +41,6 @@ const Registration = ({ isModal }: any) => {
   );
 
   const onFinish = async (values: any, captchaKey: string) => {
-    setTimeout(() => {
-      Promise.resolve("hello");
-    }, 3000);
-    return;
     if (captchaKey) {
       let formBody = {
         first_name: values.first_name?.trim(),
