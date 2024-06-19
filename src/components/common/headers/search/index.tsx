@@ -193,7 +193,7 @@ const HeaderSearch = ({ className = "" }: any) => {
 
   const no = [
     {
-      options: [renderItem(showEmpty("No Data Found"))],
+      options: [renderItem(showEmpty("No results found. Try searching by using a different keyword."))],
     },
   ];
 
