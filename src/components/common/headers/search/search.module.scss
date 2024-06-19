@@ -123,3 +123,11 @@
     }
   }
 }
+
+.widthScroll {
+  transition: width 0.3s;
+  width: 50%;
+  @media screen and (max-width: 1024) {
+    width: auto;
+  }
+}

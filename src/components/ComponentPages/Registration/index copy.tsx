@@ -1,28 +1,42 @@
-import { useCallback, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
-import { Form, message, Row, Col, Card } from "antd";
+import { Form, message } from "antd";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 import RegistrationUi from "./UI";
+import OTPVerify from "./UI/otp";
 import {
   hideRegistrationModal,
   showLoginModal,
 } from "src/store/slices/uiSlice";
-import { register, getCountryCodes } from "src/network/api/userApi";
+import {
+  register,
+  verifyOtp,
+  getCountryCodes,
+  resendOTPForRegistration,
+} from "src/network/api/userApi";
 import { AppDispatch } from "src/store";
-import Spinner from "src/components/common/spinner/spinner";
-import LeftContent from "./UI/leftContent";
+import Spinner from "../../common/spinner/spinner";
 
-const Registration = ({ isModal }: any) => {
+const Registration = ({ isModal, isTest = false }: any) => {
+  const [isOtpScreen, setIsOtpScreen] = useState(isTest);
+  const [isResend, setIsResend] = useState(false);
   const [country, setCountry] = useState([]);
+  const [formData, setFormData] = useState({ email: "" });
+  const [failedMsg, setFailedMsg] = useState("");
 
   const dispatch = useDispatch<AppDispatch>(),
+    router = useRouter(),
     [form] = Form.useForm(),
+    [otpForm] = Form.useForm(),
     { executeRecaptcha } = useGoogleReCaptcha();
 
   const closeModal = () => {
     dispatch(hideRegistrationModal());
-    form.resetFields();
+
+    isOtpScreen ? otpForm.resetFields() : form.resetFields();
+    setIsOtpScreen(false);
   };
 
   const openLogin = () => dispatch(showLoginModal());
@@ -37,15 +51,13 @@ const Registration = ({ isModal }: any) => {
         onFinish(values, gReCaptchaToken);
       });
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [executeRecaptcha]
   );
 
   const onFinish = async (values: any, captchaKey: string) => {
-    setTimeout(() => {
-      Promise.resolve("hello");
-    }, 3000);
-    return;
     if (captchaKey) {
+      setFormData(values);
       let formBody = {
         first_name: values.first_name?.trim(),
         last_name: values.last_name?.trim(),
@@ -59,10 +71,14 @@ const Registration = ({ isModal }: any) => {
 
       let res = await register(formBody);
 
+      if (res && res.status_code === 403) {
+        setIsOtpScreen(true);
+        setIsResend(true);
+        setFailedMsg(res.message);
+      }
       if (res && res.status_code === 406) {
         message.error(res.message);
       }
-
       if (res && res.status_code === 400) {
         if (res?.error) {
           const errors_key = Object.keys(res.error);
@@ -95,7 +111,42 @@ const Registration = ({ isModal }: any) => {
       if (res && res.status_code === 200) {
         form.resetFields();
         message.success(res.message);
+        setIsOtpScreen(true);
       }
+    }
+  };
+
+  const onOTPSubmit = async (values: any) => {
+    let formBody = {
+      username: formData.email?.trim(),
+      otp: values.otp?.trim(),
+      is_login: 0,
+    };
+
+    if (values.otp?.trim()) {
+      let res = await verifyOtp(formBody);
+
+      if (res) {
+        setFailedMsg(res.message);
+      }
+
+      if (res && res.status_code === 200) {
+        otpForm.resetFields();
+
+        setIsOtpScreen(false);
+        isModal ? closeModal() : "";
+
+        router?.push({
+          pathname: "/settings",
+          query: {
+            tab: "profile",
+          },
+        });
+      }
+    } else {
+      otpForm.resetFields();
+
+      otpForm.validateFields(["otp"]);
     }
   };
 
@@ -138,28 +189,43 @@ const Registration = ({ isModal }: any) => {
 
   useEffect(() => {
     getCodes();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // on resend click
+  const onResendClick = async () => {
+    let formBody = {
+      email: formData.email,
+    };
+
+    await resendOTPForRegistration(formBody);
+  };
+
   return (
-    <Spinner>
-      <Card bordered={false} className="bg-greyBg mt-10">
-        <Row gutter={20}>
-          <Col lg={12} md={12} xs={24}>
-            <LeftContent />
-          </Col>
-          <Col lg={12} md={12} xs={24}>
-            <RegistrationUi
-              form={form}
-              onFinish={handleSumitForm}
-              closeModal={closeModal}
-              isModal={isModal}
-              country={country}
-              openLogin={openLogin}
-            />
-          </Col>
-        </Row>
-      </Card>
-    </Spinner>
+    <Fragment>
+      <Spinner>
+        {isOtpScreen ? (
+          <OTPVerify
+            form={otpForm}
+            onFinish={onOTPSubmit}
+            closeModal={closeModal}
+            isModal={isModal}
+            isResend={isResend}
+            failedMsg={failedMsg}
+            onResendClick={onResendClick}
+          />
+        ) : (
+          <RegistrationUi
+            form={form}
+            onFinish={handleSumitForm}
+            closeModal={closeModal}
+            isModal={isModal}
+            country={country}
+            openLogin={openLogin}
+          />
+        )}
+      </Spinner>
+    </Fragment>
   );
 };
 

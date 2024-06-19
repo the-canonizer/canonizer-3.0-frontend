@@ -58,6 +58,7 @@ const FeaturedTopic = () => {
               className="hover:*:bg-gr hover:*:shadow-none lg:w-full"
               key={ft?.id}
             >
+              {console.log("---ft", ft?.file_full_path)}
               <Row gutter={20} className="w-full">
                 <Col lg={10} md={24} xs={24}>
                   <Image
@@ -65,7 +66,7 @@ const FeaturedTopic = () => {
                     preview={false}
                     height={250}
                     width={"100%"}
-                    src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+                    src={ft?.file_full_path || "/images/dummy-images.png"}
                   />
                 </Col>
                 <Col lg={14} md={24} className="flex flex-col lg:mt-3">
@@ -79,7 +80,7 @@ const FeaturedTopic = () => {
                           <ShareAltOutlined className="text-black p-1 text-medium" />
                         </PrimaryButton>
                       </Popover>
-                      <PrimaryButton className="bg-transparent border-0 p-0 hover:bg-transparent focus:bg-transparent">
+                      <PrimaryButton className="bg-transparent border-0 p-0 hover:bg-transparent focus:bg-transparent ml-3">
                         <MoreOutlined className="text-black p-1 text-medium font-bold" />
                       </PrimaryButton>
                     </div>
@@ -119,7 +120,7 @@ const FeaturedTopic = () => {
                           </Link>
                         </Typography.Paragraph>
                       </Popover>
-                      <Typography.Paragraph className="m-0 text-lighc font-medium font-inter flex items-center">
+                      <Typography.Paragraph className="m-0 text-light font-medium font-inter flex items-center">
                         <EyeOutlined className="text-black p-1 text-medium" />{" "}
                         123
                       </Typography.Paragraph>

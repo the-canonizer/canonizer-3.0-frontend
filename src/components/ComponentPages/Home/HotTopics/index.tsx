@@ -64,7 +64,7 @@ const HotTopics = () => {
         </Col>
         <Col md={12} sm={12} xs={12} className="text-right">
           <Link href="">
-            <a className="text-blue hover:text-hblue text-base font-inter">
+            <a className="text-blue hover:text-hblue text-14 font-inter font-medium">
               See More
             </a>
           </Link>
@@ -106,8 +106,8 @@ const HotTopics = () => {
                   }),
                 }}
               ></div>
-              <div className="flex justify-between pt-3 mt-auto xl:flex-col sm:flex-col">
-                <div className="text-left flex xl:flex-col sm:flex-col">
+              <div className="flex justify-between pt-3 mt-auto 1xl:flex-col">
+                <div className="text-left flex 2xl:flex-col sm:flex-col">
                   <Popover content="Share Topic" placement="top">
                     <Typography.Paragraph className="bg-transparent border-0 p-0 hover:bg-transparent focus:bg-transparent flex items-center leading-1 mb-0 mr-3">
                       <FlagOutlined className="text-black p-1 text-medium" />
@@ -118,7 +118,7 @@ const HotTopics = () => {
                       </Link>
                     </Typography.Paragraph>
                   </Popover>
-                  <Typography.Paragraph className="m-0 text-lighc font-medium font-inter flex items-center">
+                  <Typography.Paragraph className="m-0 text-light font-medium font-inter flex items-center">
                     <EyeOutlined className="text-black p-1 text-medium" /> 123
                   </Typography.Paragraph>
                 </div>
