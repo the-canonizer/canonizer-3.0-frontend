@@ -15,7 +15,7 @@ const WhatsNew = () => {
     <Fragment>
       <Row gutter={15} className="mt-5">
         <Col md={24} className="mb-3">
-          <Headings level={5} className="mb-0 text-base font-bold uppercase">
+          <Headings level={5} className="mb-0 text-14 font-bold uppercase">
             WHAT’S NEW AT CANONIZER?
           </Headings>
         </Col>

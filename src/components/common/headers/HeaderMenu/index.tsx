@@ -177,24 +177,24 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
         {!isUserAuthenticated ? (
           <div className="hidden lg:flex justify-between items-center mt-5 overflow-hidden py-3 text-center gap-[30px]">
             <Link href="/register">
-              <a className="h-[50px] leading-[0] flex items-center justify-center bg-blue hover:bg-hblue px-3 py-1 rounded-lg w-2/4 text-center text-base font-medium font-inter text-white hover:text-white">
+              <a className="h-[50px] leading-[0] flex items-center justify-center bg-blue hover:bg-hblue px-3 py-1 rounded-lg w-2/4 text-center text-14 font-medium font-inter text-white hover:text-white">
                 Register
                 <ArrowRightOutlined className="ml-2" />
               </a>
             </Link>
             <Link href="/login">
-              <a className="h-[50px] leading-[0] flex items-center justify-center px-3 py-1 rounded-lg w-2/4 text-center text-base font-medium font-inter text-black border-2 border-blue hover:text-blue hover:border-hblue">
+              <a className="h-[50px] leading-[0] flex items-center justify-center px-3 py-1 rounded-lg w-2/4 text-center text-14 font-medium font-inter text-black border-2 border-blue hover:text-blue hover:border-hblue">
                 Login
                 <ArrowRightOutlined className="ml-2" />
               </a>
             </Link>
           </div>
         ) : (
-          <Typography.Paragraph className="font-medium text-base h-[30px] hidden lg:block">
+          <Typography.Paragraph className="font-medium text-14 h-[30px] hidden lg:block">
             Hi {loggedInUser?.first_name}!
           </Typography.Paragraph>
         )}
-        <ul className="flex text-base font-inter font-medium lg:flex-col lg:mt-4">
+        <ul className="flex text-14 font-inter font-medium lg:flex-col lg:mt-4">
           <ListItem
             cls={`${
               router?.asPath === "/create/topic" ? styles.active : ""

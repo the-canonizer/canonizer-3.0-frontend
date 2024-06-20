@@ -25,7 +25,7 @@ const Headings = ({ className = "", h1, h2, h3, ...rest }: any) => {
   }
 
   return (
-    <Typography.Title className={`text-base text-black ${className}`} {...rest}>
+    <Typography.Title className={`text-14 text-black ${className}`} {...rest}>
       {rest?.children}
     </Typography.Title>
   );

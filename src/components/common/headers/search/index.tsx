@@ -173,7 +173,7 @@ const HeaderSearch = ({ className = "" }: any) => {
           <CustomTabs
             defaultActiveKey="1"
             items={items}
-            className="text-base font-normal font-inter"
+            className="text-14 font-normal font-inter"
           />
         ),
       ],
@@ -430,7 +430,7 @@ const TopicItems = ({ searchTopics, searchValue }) => (
                     <Typography.Paragraph className="bg-transparent border-0 p-0 hover:bg-transparent focus:bg-transparent flex items-center leading-1 mb-0 mr-3">
                       <FlagOutlined className="text-black p-1 text-medium" />
                       <Link href="">
-                        <a className="text-blue text-base font-inter font-medium hover:hblue">
+                        <a className="text-blue text-14 font-inter font-medium hover:hblue">
                           General
                         </a>
                       </Link>
@@ -514,7 +514,7 @@ const CampItems = ({ searchCamps, searchValue }) => (
                         </svg>
                         Topic:
                         <Link href="">
-                          <a className="text-blue text-base font-inter font-medium hover:hblue ml-1">
+                          <a className="text-blue text-14 font-inter font-medium hover:hblue ml-1">
                             topic name
                           </a>
                         </Link>
@@ -621,7 +621,7 @@ const CampStatementsItems = ({ searchCampStatement, searchValue }) => (
                 </svg>
                 Topic:
                 <Link href={`/${jsonData[0][1]?.camp_link}`}>
-                  <a className="text-blue text-base font-inter font-medium hover:hblue ml-1">
+                  <a className="text-blue text-14 font-inter font-medium hover:hblue ml-1">
                     {getHighlightedText(
                       jsonData?.[0]?.[1]?.topic_name,
                       searchValue
@@ -691,7 +691,7 @@ const FooterItems = ({ searchValue, handleSearchfor }) => (
     <Link href={{ pathname: "/search", query: { q: searchValue } }}>
       <a
         onClick={() => handleSearchfor()}
-        className="text-base font-inter font-semibold"
+        className="text-14 font-inter font-semibold"
       >
         View All Results
       </a>

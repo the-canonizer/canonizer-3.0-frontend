@@ -131,7 +131,7 @@ function Footer() {
           <Col xs={24} sm={24} md={10} lg={10}>
             <Row gutter={20} className="px-6 sm:px-0 sm:py-4">
               <Col xs={12} md={12} className="text-white">
-                <Typography.Paragraph className="text-base text-bold text-white">
+                <Typography.Paragraph className="text-14 text-bold text-white">
                   Explore
                 </Typography.Paragraph>
                 <ul>
@@ -155,7 +155,7 @@ function Footer() {
                 </ul>
               </Col>
               <Col xs={12} md={12} className="text-white">
-                <Typography.Paragraph className="text-base text-bold text-white">
+                <Typography.Paragraph className="text-14 text-bold text-white">
                   Learn More{" "}
                 </Typography.Paragraph>
                 <ul>
@@ -189,7 +189,7 @@ function Footer() {
               </Typography.Paragraph>
               <Link href="mailto:support@canonizer.com">
                 <a className="text-white text-medium font-medium break-words">
-                  <i className="icon-envelope mr-1 text-base"></i>{" "}
+                  <i className="icon-envelope mr-1 text-14"></i>{" "}
                   <span className="underline">support@canonizer.com</span>
                 </a>
               </Link>

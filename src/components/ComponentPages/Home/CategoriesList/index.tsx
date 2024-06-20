@@ -17,7 +17,7 @@ const CategoriesList = () => {
     <Fragment>
       <Row gutter={15}>
         <Col md={12} sm={12} xs={12} className="mb-3">
-          <Headings level={5} className="mb-0 text-base font-bold uppercase">
+          <Headings level={5} className="mb-0 text-14 font-bold uppercase">
             List of Categories{" "}
             <Popover content="List of Categories" placement="top" className="">
               <InfoCircleOutlined />

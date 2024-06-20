@@ -3,7 +3,7 @@ import { Tabs } from "antd";
 const CustomTabs = ({ className = "", ...props }: any) => {
   return (
     <Tabs
-      className={`text-base text-black font-normal ${className}`}
+      className={`text-14 text-black font-normal ${className}`}
       {...props}
     >
       {props?.children}

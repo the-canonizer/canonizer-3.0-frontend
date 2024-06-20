@@ -69,7 +69,7 @@ const RecentActivities = ({ isUserAuthenticated }) => {
     <Fragment>
       <Row gutter={15} className="mt-5">
         <Col md={12} sm={12} xs={12} className="mb-3">
-          <Headings level={5} className="mb-0 text-base font-bold uppercase">
+          <Headings level={5} className="mb-0 text-14 font-bold uppercase">
             Recent activities
           </Headings>
         </Col>
@@ -105,12 +105,12 @@ const RecentActivities = ({ isUserAuthenticated }) => {
                 // console.log("decodedProperties----", decodedProperties);
                 return (
                   <List.Item
-                    className="font-inter text-base font-medium bg-white"
+                    className="font-inter text-14 font-medium bg-white"
                     id={`topic-${item?.topic_id}`}
                   >
                     <Link href={decodedProperties?.url?.replace(/\s+/g, "-")}>
                       <a className="hover:*:hblue">
-                        <Typography.Paragraph className="text-black text-base font-normal mb-0">
+                        <Typography.Paragraph className="text-black text-14 font-normal mb-0">
                           {item?.activity?.description}{" "}
                           {/* <Typography.Text className="font-medium text-blue">
                           {decodedProperties?.topic_name
@@ -128,7 +128,7 @@ const RecentActivities = ({ isUserAuthenticated }) => {
                               )}
                         </Typography.Text> */}
                         </Typography.Paragraph>
-                        <Typography.Paragraph className="text-black text-base font-normal mb-0">
+                        <Typography.Paragraph className="text-black text-14 font-normal mb-0">
                           <Tooltip
                             placement={"topLeft"}
                             title={
