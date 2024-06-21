@@ -234,10 +234,10 @@ export async function getServerSideProps({ req, query, res }) {
   let resUrl = `/topic/${topicRecord?.topic_num}-${replaceSpecialCharacters(
     resTopicName,
     "-"
-  )}/${campRecord?.campData?.camp_num}-${replaceSpecialCharacters(
+  )}/${campRecord?.campData?.camp_num ? campRecord?.campData?.camp_num: 1}-${resCampName ? replaceSpecialCharacters(
     resCampName,
     "-"
-  )}`;
+  ): "Agreement"}`;
 
   if (currentUrl !== resUrl) {
     let queryStr: any = buildSearchQuery(query);
