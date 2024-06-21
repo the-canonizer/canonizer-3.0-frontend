@@ -32,7 +32,10 @@ import {
 import { getNickNameList } from "../../../../network/api/userApi";
 import SupportRemovedModal from "src/components/common/supportRemovedModal";
 import ManageSupport from "../../ManageSupport";
-import { getCurrentCampRecordApi, getTreesApi } from "src/network/api/campDetailApi";
+import {
+  getCurrentCampRecordApi,
+  getTreesApi,
+} from "src/network/api/campDetailApi";
 import { setIsSupportModal } from "src/store/slices/topicSlice";
 import { showLoginModal } from "src/store/slices/uiSlice";
 import SignCamp from "./SignCamp";
@@ -211,7 +214,7 @@ const SupportTreeCard = ({
     if (isUserAuthenticated) {
       dispatch(setManageSupportUrlLink(manageSupportPath));
       // dispatch(setManageSupportStatusCheck(true));
-      setGetManageSupportLoadingIndicator(false)
+      setGetManageSupportLoadingIndicator(false);
       setSelectNickId(null);
       q && q.from && q.from.includes("notify_")
         ? null
@@ -266,16 +269,18 @@ const SupportTreeCard = ({
   };
 
   useEffect(() => {
-    let campLeaderId = campSupportingTree?.find(
-      (obj) => obj["camp_leader"] === true
-    )?.nick_name_id;
-    let delegatorId = campSupportingTree
-      ?.find((obj) => obj["camp_leader"] === true)
-      ?.delegates?.at(0)?.nick_name_id;
+    if (!campSupportingTree) return;
+
+    const campLeader = campSupportingTree.find(
+      (obj) => obj.camp_leader === true
+    );
+
+    const campLeaderId = campLeader?.nick_name_id;
+    const delegatorId = campLeader?.delegates?.[0]?.nick_name_id;
 
     setCampLeaderId(campLeaderId);
     setDelegatorID(delegatorId);
-  }, [campSupportingTree, campLeaderID, delegatorID]);
+  }, [campSupportingTree]);
 
   const isCampLeader = () => {
     let campLeaderExist = false;
@@ -291,21 +296,21 @@ const SupportTreeCard = ({
         );
       }
     }
-    return {campLeaderExist , delegateSupportExist};
-  }
-  
+    return { campLeaderExist, delegateSupportExist };
+  };
+
   const checkSupportAndCampLeader = (arr) => {
-    return arr?.some(item => (item?.support_order >= 1));
-  }
+    return arr?.some((item) => item?.support_order >= 1);
+  };
 
   const renderPopupMsg = () => {
-    let {campLeaderExist , delegateSupportExist} = isCampLeader();
-    if(isUserAuthenticated && delegateSupportExist){
-      return "You've already signed to the camp leader"
-    }else if(isUserAuthenticated && campLeaderExist){
-      return "Current camp leader can`t sign the petition" 
-    }else{
-        return "Log in to participate"
+    let { campLeaderExist, delegateSupportExist } = isCampLeader();
+    if (isUserAuthenticated && delegateSupportExist) {
+      return "You've already signed to the camp leader";
+    } else if (isUserAuthenticated && campLeaderExist) {
+      return "Current camp leader can`t sign the petition";
+    } else {
+      return "Log in to participate";
     }
   };
 
@@ -339,7 +344,7 @@ const SupportTreeCard = ({
     loggedInUserChild = false
   ) => {
     return Object.keys(data).map((item, index) => {
-      if (userNickNameList.includes(data[item].nick_name_id))
+      if (userNickNameList?.includes(data[item]?.nick_name_id))
         loggedInUserChild = true;
       const parentIsOneLevel = isOneLevel;
       isOneLevel = data[item].is_one_level == 1 || isOneLevel == 1 ? 1 : 0;
@@ -366,7 +371,7 @@ const SupportTreeCard = ({
                       > */}
                       <Link
                         href={{
-                          pathname: `/user/supports/${data[item].nick_name_id}`,
+                          pathname: `/user/supports/${data[item]?.nick_name_id}`,
                           query: {
                             canon: topicRecord?.namespace_id,
                           },
@@ -377,9 +382,11 @@ const SupportTreeCard = ({
                         </a>
                       </Link>
 
-                      {data[item].camp_leader && (
+                      {data[item]?.camp_leader && (
                         <Popover
-                          content={<>{data[item].nick_name} is a camp leader</>}
+                          content={
+                            <>{data[item]?.nick_name} is a camp leader</>
+                          }
                         >
                           <Image
                             preview={false}
@@ -399,23 +406,22 @@ const SupportTreeCard = ({
                         {campRecord?.is_archive
                           ? 0
                           : is_checked && isUserAuthenticated
-                            ? data[item].full_score?.toFixed(2)
-                            : data[item].score?.toFixed(2)}
+                          ? data[item].full_score?.toFixed(2)
+                          : data[item].score?.toFixed(2)}
                         {/* {data[item].score?.toFixed(2)} */}
                       </span>
                       {(userNickNameList?.length > 0 &&
-                        !userNickNameList.includes(data[item].nick_name_id)) ||
-                        !isUserAuthenticated ? (
+                        !userNickNameList.includes(data[item]?.nick_name_id)) ||
+                      !isUserAuthenticated ? (
                         <>
                           {loggedInUserDelegate ||
-                            (loggedInUserChild &&
-                              delegateNickNameId !=
-                              data[item].delegate_nick_name_id) ||
-                            data[item].delegates?.findIndex((obj) =>
-                              userNickNameList.includes(obj.nick_name_id)
-                            ) > -1 ? (
-                            ""
-                          ) : (
+                          (loggedInUserChild &&
+                            delegateNickNameId !=
+                              data[item]?.delegate_nick_name_id) ||
+                          (Array.isArray(data[item]?.delegates) &&
+                            data[item].delegates.findIndex((obj) =>
+                              userNickNameList?.includes(obj?.nick_name_id)
+                            ) > -1) ? null : (
                             <Popover
                               placement="right"
                               content={
@@ -425,22 +431,22 @@ const SupportTreeCard = ({
                               }
                             >
                               <a className="printHIde">
-                                
-                                  <Button
-                                    id="supportTreeDelegateYourSupport"
-                                    disabled={
-                                      asof === "bydate" ||
-                                      !isUserAuthenticated ||
-                                      campRecord?.is_archive === 1
-                                    }
-                                    onClick={() =>
-                                      handleDelegatedClick(data[item].nick_name_id)
-                                    }
-                                    className="delegate-support-style"
-                                  >
-                                    {"Delegate Your Support"}
-                                  </Button>
-
+                                <Button
+                                  id="supportTreeDelegateYourSupport"
+                                  disabled={
+                                    asof === "bydate" ||
+                                    !isUserAuthenticated ||
+                                    campRecord?.is_archive === 1
+                                  }
+                                  onClick={() =>
+                                    handleDelegatedClick(
+                                      data[item]?.nick_name_id
+                                    )
+                                  }
+                                  className="delegate-support-style"
+                                >
+                                  {"Delegate Your Support"}
+                                </Button>
                               </a>
                             </Popover>
                           )}
@@ -459,8 +465,8 @@ const SupportTreeCard = ({
                               currentGetCheckSupportExistsData.is_delegator
                                 ? setIsDelegateSupportTreeCardModal(true)
                                 : topicList.length <= 1
-                                  ? setIsSupportTreeCardModal(true)
-                                  : setIsSupportTreeCardModal(true);
+                                ? setIsSupportTreeCardModal(true)
+                                : setIsSupportTreeCardModal(true);
 
                               setModalData(data[item]);
                             }}
@@ -480,7 +486,7 @@ const SupportTreeCard = ({
                   data[item].delegates,
                   isDisabled,
                   isOneLevel,
-                  userNickNameList.includes(data[item].nick_name_id),
+                  userNickNameList.includes(data[item]?.nick_name_id),
                   loggedInUserChild
                 )}
               </TreeNode>
@@ -502,15 +508,13 @@ const SupportTreeCard = ({
       ? removeApiSupport(modalData?.nick_name_id, values)
       : removeSupport(modalData?.nick_name_id, values);
 
-    
-      let reqBody = { 
-        as_of: asof, 
-        as_of_date: asofdate, 
-        topic_num: +router?.query?.camp[0]?.split("-")[0], 
-        camp_num: +router?.query?.camp[1]?.split("-")[0], 
-      }
-    await getCurrentCampRecordApi(reqBody)
-
+    let reqBody = {
+      as_of: asof,
+      as_of_date: asofdate,
+      topic_num: +router?.query?.camp[0]?.split("-")[0],
+      camp_num: +router?.query?.camp[1]?.split("-")[0],
+    };
+    await getCurrentCampRecordApi(reqBody);
 
     setModalData({});
     removeForm.resetFields();
@@ -607,27 +611,27 @@ const SupportTreeCard = ({
               >
                 {/* {K?.exceptionalMessages?.directJoinSupport} */}
                 {getCheckSupportStatus?.is_delegator == 1 ||
-                  getCheckSupportStatus?.support_flag != 1
+                getCheckSupportStatus?.support_flag != 1
                   ? K?.exceptionalMessages?.directJoinSupport
                   : K?.exceptionalMessages?.manageSupport}
               </CustomButton>
             </div>
             <>
-              {isCampLeader()?.campLeaderExist || 
-               isCampLeader()?.delegateSupportExist  ?(
+              {isCampLeader()?.campLeaderExist ||
+              isCampLeader()?.delegateSupportExist ? (
                 <>
                   <Popover content={renderPopupMsg()}>
                     <a className="printHIde">
                       <Button
                         className="btn-green"
                         disabled={true}
-                         onClick={() => {
-                            if (isUserAuthenticated) {
-                              setSignModalOpen(true);
-                            } else {
-                              dispatch(showLoginModal());
-                            }
-                          }}
+                        onClick={() => {
+                          if (isUserAuthenticated) {
+                            setSignModalOpen(true);
+                          } else {
+                            dispatch(showLoginModal());
+                          }
+                        }}
                       >
                         {"Sign"}
                       </Button>
@@ -640,7 +644,8 @@ const SupportTreeCard = ({
                     title={"This will delegate your support to the camp leader"}
                     placement={"topRight"}
                   >
-                    <CustomButton className="btn-green"
+                    <CustomButton
+                      className="btn-green"
                       disabled={asof == "bydate" || campRecord?.is_archive == 1}
                       onClick={() => {
                         if (isUserAuthenticated) {
@@ -649,7 +654,9 @@ const SupportTreeCard = ({
                           dispatch(showLoginModal());
                         }
                       }}
-                    >{"Sign"}</CustomButton>
+                    >
+                      {"Sign"}
+                    </CustomButton>
                   </Tooltip>
                 </>
               )}
@@ -723,8 +730,8 @@ const SupportTreeCard = ({
                     currentGetCheckSupportExistsData.is_delegator
                       ? removeSupportForDelegate()
                       : topicList.length <= 1
-                        ? removeApiSupport(modalData?.nick_name_id)
-                        : removeSupport(modalData?.nick_name_id);
+                      ? removeApiSupport(modalData?.nick_name_id)
+                      : removeSupport(modalData?.nick_name_id);
                     setModalData({});
                   }}
                   type="primary"
