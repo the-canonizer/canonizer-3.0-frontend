@@ -1,10 +1,13 @@
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import { Popover, Row, Col, Tooltip } from "antd";
 import { InfoCircleOutlined, FlagOutlined } from "@ant-design/icons";
 import Link from "next/link";
+import { useSelector } from "react-redux";
 
 import Headings from "src/components/shared/Typography";
 import Tags from "src/components/shared/Tag";
+import { RootState } from "src/store";
+import { getAllTags } from "src/network/api/tagsApi";
 
 const colors = ["#F7E9F5", "#E9EEF9", "#F7EAEA", "#EDF3E6"];
 
@@ -13,6 +16,18 @@ const getRandomColor = () => {
 };
 
 const CategoriesList = () => {
+  const { tags } = useSelector((state: RootState) => ({
+    tags: state?.tag?.tags,
+  }));
+
+  const getTags = async () => {
+    await getAllTags();
+  };
+
+  useEffect(() => {
+    getTags();
+  }, []);
+
   return (
     <Fragment>
       <Row gutter={15}>
@@ -34,31 +49,14 @@ const CategoriesList = () => {
       </Row>
 
       <div className="mt-0 px-0">
-        {[
-          "Health",
-          "Terminology",
-          "Religion",
-          "Family",
-          "Buddhism",
-          "Catholicism",
-          "Islam",
-          "Hinduism",
-          "Artificial Intelligece",
-          "Mormon",
-          "Mind",
-          "Physics",
-          "Biology",
-          "Astrology",
-          "Nuclear Physics",
-          "WikiLeaks",
-        ]?.map((cat) => (
-          <Tooltip title={cat} key={cat}>
+        {tags?.map((cat) => (
+          <Tooltip title={cat?.title} key={cat?.id}>
             <Tags
               className="rounded-[5px] py-1 px-5 border-0 text-black bg-blue mt-0 mb-3"
               icon={<FlagOutlined />}
               color={colors[getRandomColor()]}
             >
-              {cat}
+              {cat?.title}
             </Tags>
           </Tooltip>
         ))}

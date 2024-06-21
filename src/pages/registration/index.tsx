@@ -12,10 +12,10 @@ const RegistrationPage = () => {
 
   useEffect(() => {
     isUserAuthenticated && router?.push("/");
-  }, [isUserAuthenticated]);
+  }, []);
 
   return (
-    <Layout withOutHeader={true} className="bg-greyBg">
+    <Layout withOutHeader={true} className="bg-greyBg min-h-screen">
       <GoogleReCaptchaProvider
         reCaptchaKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
         scriptProps={{

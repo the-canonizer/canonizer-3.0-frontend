@@ -1,17 +1,9 @@
-import { useRouter } from "next/router";
 import { Typography, Image, Button } from "antd";
 import { LeftOutlined } from "@ant-design/icons";
 
 import Headings from "src/components/shared/Typography";
 
-const LeftContent = () => {
-  const router = useRouter();
-
-  const onBrowseClick = (e) => {
-    e?.preventDefault();
-    router?.back();
-  };
-
+const LeftContent = ({ onBrowseClick }) => {
   return (
     <div className="w-full h-full flex flex-col">
       <Button

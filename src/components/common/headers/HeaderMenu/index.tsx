@@ -196,7 +196,7 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
         )}
         <ul className="flex text-14 font-inter font-medium lg:flex-col lg:mt-4">
           <ListItem
-            cls={`${
+            cls={`create-topic-header-link ${
               router?.asPath === "/create/topic" ? styles.active : ""
             } lg:hidden`}
             key="create-topic-li"
@@ -215,6 +215,10 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
               <ListItem
                 cls={`${router?.asPath === item.link ? styles.active : ""} ${
                   item?.isMobile ? "hidden lg:block" : ""
+                } ${
+                  item.linkTitle?.toLowerCase() === "start a topic"
+                    ? "create-topic-header-link"
+                    : ""
                 }`}
                 key={item.id + "_" + item.link + "___" + idx}
               >
@@ -277,7 +281,7 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
       ) : null}
       <Button
         size="middle"
-        className="border-0 p-0 hidden lg:block ml-2"
+        className="border-0 p-0 hidden lg:block lg:ml-auto md:ml-2"
         onClick={toggleMobNav}
         key="outnline-btn"
       >

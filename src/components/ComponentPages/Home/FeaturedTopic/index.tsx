@@ -27,6 +27,8 @@ const FeaturedTopic = () => {
     topicData: state?.hotTopic?.topicData,
   }));
 
+  console.log("topicData---", topicData);
+
   const settings = {
     autoplay: false,
     dots: true,

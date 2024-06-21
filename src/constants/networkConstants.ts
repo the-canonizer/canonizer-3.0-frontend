@@ -196,6 +196,10 @@ const NetworkConstants = {
     GetXMLData: `${BaseCanonizerApiUrl}/sitemaps`,
     CheckTopicCampExist: `${BaseCanonizerApiUrl}/notify-if-url-not-exist`,
     GetHotTopic: `${BaseCanonizerApiUrl}/hot-topic`,
+
+    // categories
+    GetTagsList: `${BaseCanonizerApiUrl}/get-tags-list`,
+    SavePrefCats: `${BaseCanonizerApiUrl}/create/user/tags`,
   },
   Method: {
     GET: "GET",

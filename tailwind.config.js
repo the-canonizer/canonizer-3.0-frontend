@@ -33,14 +33,6 @@ module.exports = {
       26: "26px",
       null: "0px",
     },
-    opacity: {
-      0: "0",
-      20: "0.2",
-      40: "0.4",
-      60: "0.6",
-      80: "0.8",
-      100: "1",
-    },
     backgroundSize: ({ theme }) => ({
       auto: "auto",
       cover: "cover",
@@ -56,6 +48,14 @@ module.exports = {
         5: "32px",
         6: "48px",
       },
+      opacity: {
+        0: "0",
+        20: "0.2",
+        40: "0.4",
+        60: "0.6",
+        80: "0.8",
+        100: "1",
+      },
       colors: {
         blue: "#5482C8",
         hblue: "#326DC7",
@@ -69,6 +69,9 @@ module.exports = {
         gr: "#F7F8FC",
         light: "#777F93",
         greyBg: "#F4F5FA",
+        greyBr: "#CCD4E7",
+        greyBr2: "#696E78",
+        green30: "#2EAD4A4D",
       },
       borderRadius: {
         10: "10px",
@@ -77,9 +80,6 @@ module.exports = {
         DEFAULT: ".25rem",
         lg: ".5rem",
         full: "9999px",
-      },
-      screens: {
-        "3xl": "1600px",
       },
     },
   },

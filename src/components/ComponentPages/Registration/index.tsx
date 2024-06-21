@@ -2,30 +2,25 @@ import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Form, message, Row, Col, Card } from "antd";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import { useRouter } from "next/router";
 
 import RegistrationUi from "./UI";
-import {
-  hideRegistrationModal,
-  showLoginModal,
-} from "src/store/slices/uiSlice";
 import { register, getCountryCodes } from "src/network/api/userApi";
 import { AppDispatch } from "src/store";
 import Spinner from "src/components/common/spinner/spinner";
 import LeftContent from "./UI/leftContent";
+import { setEmailForOTP } from "src/store/slices/authSlice";
 
-const Registration = ({ isModal }: any) => {
-  const [country, setCountry] = useState([]);
+const Registration = () => {
+  const [country, setCountry] = useState([]),
+    [isDisabled, setIsDisabled] = useState(true);
 
   const dispatch = useDispatch<AppDispatch>(),
+    router = useRouter(),
     [form] = Form.useForm(),
     { executeRecaptcha } = useGoogleReCaptcha();
 
-  const closeModal = () => {
-    dispatch(hideRegistrationModal());
-    form.resetFields();
-  };
-
-  const openLogin = () => dispatch(showLoginModal());
+  const values = Form.useWatch([], form);
 
   const handleSumitForm = useCallback(
     (values) => {
@@ -39,6 +34,13 @@ const Registration = ({ isModal }: any) => {
     },
     [executeRecaptcha]
   );
+
+  useEffect(() => {
+    form
+      .validateFields({ validateOnly: true })
+      .then(() => setIsDisabled(true))
+      .catch(() => setIsDisabled(false));
+  }, [form, values]);
 
   const onFinish = async (values: any, captchaKey: string) => {
     if (captchaKey) {
@@ -89,8 +91,10 @@ const Registration = ({ isModal }: any) => {
       }
 
       if (res && res.status_code === 200) {
-        form.resetFields();
         message.success(res.message);
+        dispatch(setEmailForOTP(values.email?.trim()));
+        form.resetFields();
+        router?.push({ pathname: "/registration/otp" });
       }
     }
   };
@@ -136,21 +140,31 @@ const Registration = ({ isModal }: any) => {
     getCodes();
   }, []);
 
+  const onBrowseClick = (e) => {
+    e?.preventDefault();
+    router?.back();
+  };
+
   return (
     <Spinner>
-      <Card bordered={false} className="bg-greyBg mt-10">
+      <Card bordered={false} className="bg-greyBg mt-10 sm:mt-0">
         <Row gutter={20}>
-          <Col lg={12} md={12} xs={24}>
-            <LeftContent />
+          <Col lg={12} md={12} xs={24} className="sm:hidden">
+            <LeftContent onBrowseClick={onBrowseClick} />
           </Col>
-          <Col lg={12} md={12} xs={24}>
+          <Col
+            lg={12}
+            md={12}
+            xs={24}
+            sm={24}
+            className="sm:w-full sm:max-w-full sm:flex-[100%]"
+          >
             <RegistrationUi
               form={form}
               onFinish={handleSumitForm}
-              closeModal={closeModal}
-              isModal={isModal}
               country={country}
-              openLogin={openLogin}
+              isDisabled={isDisabled}
+              onBrowseClick={onBrowseClick}
             />
           </Col>
         </Row>

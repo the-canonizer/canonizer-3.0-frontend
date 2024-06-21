@@ -29,7 +29,7 @@ const WelcomeContent = () => {
         </Col>
         <Col
           lg={12}
-          className={`md:w-full z-1 ${
+          className={`md:w-full z-0 ${
             isUserAuthenticated
               ? "relative before:content-[''] before:w-full before:h-full before:absolute before:block before:bg-[url('/images/middle-vector.svg')] before:bg-no-repeat before:bottom-[-25px] before:left-[-200px] 1xl:before:left-[-300px] lg:before:left-auto lg:before:right-[-30px] lg:before:bg-right lg:before:bg-[length:200px_200px] lg:before:bottom-[-65px] md:before:w-[200px] "
               : ""

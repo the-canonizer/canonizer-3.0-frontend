@@ -10,6 +10,8 @@ export const authSlice = createSlice({
     authRefreshToken: null,
     permissions: [""],
     socialUsers: [],
+    emailForOtp: null,
+    isNewUser: false,
   },
   reducers: {
     setAuthToken: (state, action) => {
@@ -40,10 +42,16 @@ export const authSlice = createSlice({
     removeSocialUsers: (state) => {
       state.socialUsers = [];
     },
+    setIsNewUser: (state, action) => {
+      state.isNewUser = action.payload;
+    },
     setLogout: () => {
       // From here we can take action only at this "auth" state
       // But, as we have taken care of this particular "logout" action
       // in rootReducer, we can use it to CLEAR the complete Redux Store's state
+    },
+    setEmailForOTP: (state, action) => {
+      state.emailForOtp = action.payload;
     },
   },
 });
@@ -57,6 +65,8 @@ export const {
   setSocialUsers,
   removeSocialUsers,
   setLogout,
+  setEmailForOTP,
+  setIsNewUser,
 } = authSlice.actions;
 
 export default authSlice.reducer;

@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { Row, Col } from "antd";
 
 import useAuthentication from "src/hooks/isUserAuthenticated";
@@ -18,51 +19,54 @@ const HomePageContainer = () => {
   const isMobile = useIsMobile();
 
   return (
-    <Layout
-      afterHeader={<WelcomeContent />}
-      rightSidebar={
-        <div className="pt-4 sm:pt-0" data-testid="sideBar">
-          {!isMobile ? (
-            <div className="mb-6" data-testid="topicsList">
-              <TrandingTopics />
-            </div>
-          ) : null}
+    <Fragment>
+      <Layout
+        afterHeader={<WelcomeContent />}
+        rightSidebar={
+          <div className="pt-4 sm:pt-0" data-testid="sideBar">
+            {!isMobile ? (
+              <div className="mb-6" data-testid="topicsList">
+                <TrandingTopics />
+              </div>
+            ) : null}
 
-          {isUserAuthenticated ? (
-            <div className="mb-4" data-testid="recentActivities">
-              <RecentActivities isUserAuthenticated={isUserAuthenticated} />
-            </div>
-          ) : null}
+            {isUserAuthenticated ? (
+              <div className="mb-4" data-testid="recentActivities">
+                <RecentActivities isUserAuthenticated={isUserAuthenticated} />
+              </div>
+            ) : null}
 
-          <div className="mb-4" data-testid="helpCard">
-            <WhatsNew />
+            <div className="mb-4" data-testid="helpCard">
+              <WhatsNew />
+            </div>
           </div>
-        </div>
-      }
-    >
-      <Row className="pt-4 w-100" data-testid="featuredTopic">
-        <Col md={24} className="mb-6">
-          <FeaturedTopic />
-        </Col>
-        {isMobile ? (
-          <Col md={24} xs={24} className="mb-6">
-            <TrandingTopics />
+        }
+      >
+        <Row className="pt-4 w-100" data-testid="featuredTopic">
+          <Col md={24} className="mb-6">
+            <FeaturedTopic />
           </Col>
-        ) : null}
-        {isUserAuthenticated ? (
-          <Col md={24} className="mb-6" data-testid="preferedTopic">
-            <PreferedTopics />
+          {isMobile ? (
+            <Col md={24} xs={24} className="mb-6">
+              <TrandingTopics />
+            </Col>
+          ) : null}
+          {isUserAuthenticated ? (
+            <Col md={24} className="mb-6" data-testid="preferedTopic">
+              <PreferedTopics />
+            </Col>
+          ) : null}
+          <Col md={24} className="mb-6" data-testid="categoriesList">
+            <CategoriesList />
           </Col>
-        ) : null}
-        <Col md={24} className="mb-6" data-testid="categoriesList">
-          <CategoriesList />
-        </Col>
-        <Col md={24} className="mb-6 sm:mb-2" data-testid="hotTopics">
-          <HotTopics />
-        </Col>
-        <Col md={12}></Col>
-      </Row>
-    </Layout>
+          <Col md={24} className="mb-6 sm:mb-2" data-testid="hotTopics">
+            <HotTopics />
+          </Col>
+          <Col md={12}></Col>
+        </Row>
+      </Layout>
+      {/* <Tour open={open} onClose={() => setOpen(false)} steps={steps} /> */}
+    </Fragment>
   );
 };
 

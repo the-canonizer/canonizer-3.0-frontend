@@ -75,11 +75,11 @@ export const GetHotTopicDetails = async (token: string) => {
     );
 
     if (res.status_code === 200) {
-      store.dispatch(setHotTopic(res?.data || null));
+      store.dispatch(setHotTopic(res?.data?.data || null));
     }
 
     if (res.status_code === 400) {
-      store.dispatch(setHotTopic(null));
+      store.dispatch(setHotTopic([]));
     }
 
     return res;

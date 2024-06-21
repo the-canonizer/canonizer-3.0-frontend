@@ -1,6 +1,7 @@
-import { useEffect } from "react";
+import { Fragment, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
+import dynamic from "next/dynamic";
 
 import HomePageContainer from "src/components/ComponentPages/Home";
 import { getCanonizedWhatsNewContentApi } from "src/network/api/homePageApi";
@@ -12,6 +13,10 @@ import { GetUserProfileInfo, createToken } from "src/network/api/userApi";
 import { setAuthToken, setLoggedInUser } from "src/store/slices/authSlice";
 import { setHotTopic } from "src/store/slices/hotTopicSlice";
 import { GetHotTopicDetails } from "src/network/api/topicAPI";
+
+const Tour = dynamic(() => import("src/components/ComponentPages/Home/Tour"), {
+  ssr: false,
+});
 
 function Home({ current_date, hotTopicData }: any) {
   const dispatch = useDispatch();
@@ -71,7 +76,12 @@ function Home({ current_date, hotTopicData }: any) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return <HomePageContainer />;
+  return (
+    <Fragment>
+      <HomePageContainer />
+      <Tour />
+    </Fragment>
+  );
 }
 
 export async function getServerSideProps({ req }) {
@@ -89,7 +99,7 @@ export async function getServerSideProps({ req }) {
   return {
     props: {
       current_date: currentDate,
-      hotTopicData: resData?.data ? resData?.data : null,
+      hotTopicData: resData?.data?.data ? resData?.data?.data : null,
     },
   };
 }
