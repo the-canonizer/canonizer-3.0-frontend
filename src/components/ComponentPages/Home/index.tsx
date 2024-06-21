@@ -32,7 +32,7 @@ const HomePageContainer = () => {
 
             {isUserAuthenticated ? (
               <div className="mb-4" data-testid="recentActivities">
-                <RecentActivities isUserAuthenticated={isUserAuthenticated} />
+                <RecentActivities />
               </div>
             ) : null}
 

@@ -1,25 +1,25 @@
 import { Fragment } from "react";
-import { Popover, Typography, Row, Col, Avatar, Tooltip } from "antd";
-import {
-  EyeOutlined,
-  FlagOutlined,
-  UserOutlined,
-  AntDesignOutlined,
-  RightOutlined,
-} from "@ant-design/icons";
+import { Typography, Row, Col } from "antd";
+import { RightOutlined } from "@ant-design/icons";
 import Link from "next/link";
-import sanitizeHtml from "sanitize-html";
 import { useSelector } from "react-redux";
 
 import Headings from "src/components/shared/Typography";
 import CommonCard from "src/components/shared/Card";
 import { RootState } from "src/store";
+import AvatarGroup from "src/components/shared/AvaratGroup";
+import ViewCounts from "src/components/shared/ViewsCount";
+import NameSpaceLabel from "src/components/shared/NameSpaceLabel";
+import CardDescription from "../HotTopics/descriptions";
 
 const PreferedTopics = () => {
-  /* eslint-enable */
   const { topicData } = useSelector((state: RootState) => ({
-    topicData: state?.hotTopic?.topicData,
+    topicData: state?.hotTopic?.preferedTopic,
   }));
+
+  if (!topicData?.length) {
+    return null;
+  }
 
   return (
     <Fragment>
@@ -54,71 +54,27 @@ const PreferedTopics = () => {
               >
                 <div className="flex justify-between pb-2 align-center">
                   <Typography.Paragraph className="m-0 text-medium font-bold font-inter">
-                    {ft?.title}
+                    {ft?.topic_name}
                   </Typography.Paragraph>
                   <div className="hidden hover:block">
                     <RightOutlined className="text-black p-1 text-medium" />
                   </div>
                 </div>
-                <div
-                  className="text-14 font-inter font-normal mb-3 text-black opacity-80 leading-26 overflow-hidden line-clamp-4"
-                  dangerouslySetInnerHTML={{
-                    __html: sanitizeHtml(ft?.description, {
-                      allowedAttributes: {
-                        "*": [
-                          "class",
-                          "id",
-                          "href",
-                          "align",
-                          "alt",
-                          "center",
-                          "bgcolor",
-                          "src",
-                          "title",
-                          "style",
-                          "rel",
-                          "target",
-                        ],
-                      },
-                    }),
-                  }}
-                ></div>
+                <CardDescription description={ft?.statement?.value} />
                 <div className="flex justify-between pt-3 mt-auto xl:flex-col sm:flex-col">
-                  <div className="text-left flex xl:flex-col sm:flex-col">
-                    <Popover content="Share Topic" placement="top">
-                      <Typography.Paragraph className="bg-transparent border-0 p-0 hover:bg-transparent focus:bg-transparent flex items-center leading-1 mb-0 mr-3">
-                        <FlagOutlined className="text-black p-1 text-medium" />
-                        <Link href="">
-                          <a className="text-blue text-14 font-inter font-medium hover:hblue">
-                            General
-                          </a>
-                        </Link>
-                      </Typography.Paragraph>
-                    </Popover>
-                    <Typography.Paragraph className="m-0 text-light font-medium font-inter flex items-center">
-                      <EyeOutlined className="text-black p-1 text-medium" /> 123
-                    </Typography.Paragraph>
+                  <div className="text-left flex flex-col">
+                    <NameSpaceLabel namespace={ft?.namespace} />
+                    <ViewCounts views={ft?.views} />
                   </div>
-                  <Avatar.Group
-                    maxCount={4}
+                  <AvatarGroup
+                    avatars={ft?.supporterData}
+                    size="large"
+                    maxCount={3}
                     maxStyle={{
                       color: "#f56a00",
                       backgroundColor: "#fde3cf",
                     }}
-                  >
-                    <Avatar src="https://api.dicebear.com/7.x/miniavs/svg?seed=3" />
-                    <Avatar style={{ backgroundColor: "#f56a00" }}>K</Avatar>
-                    <Tooltip title="Ant User" placement="top">
-                      <Avatar
-                        style={{ backgroundColor: "#87d068" }}
-                        icon={<UserOutlined />}
-                      />
-                    </Tooltip>
-                    <Avatar
-                      style={{ backgroundColor: "#1677ff" }}
-                      icon={<AntDesignOutlined />}
-                    />
-                  </Avatar.Group>
+                  />
                 </div>
               </CommonCard>
             </Col>

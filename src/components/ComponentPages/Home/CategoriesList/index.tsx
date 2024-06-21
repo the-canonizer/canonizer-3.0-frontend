@@ -21,12 +21,16 @@ const CategoriesList = () => {
   }));
 
   const getTags = async () => {
-    await getAllTags();
+    await getAllTags(1, 25);
   };
 
   useEffect(() => {
     getTags();
   }, []);
+
+  if (!tags?.length) {
+    return null;
+  }
 
   return (
     <Fragment>

@@ -38,7 +38,7 @@ const Preferences = () => {
   };
 
   const getTags = async () => {
-    await getAllTags();
+    await getAllTags(1, 999999999999999999999999999999999);
   };
 
   useEffect(() => {
