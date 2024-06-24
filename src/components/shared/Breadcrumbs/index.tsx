@@ -8,7 +8,7 @@ const Breadcrumbs = ({
 }: any) => {
   return (
     <Breadcrumb
-      className={`text-14 text-black font-normal ${className}`}
+      className={`text-sm text-canBlack font-normal ${className}`}
       separator={separator}
       {...props}
     />

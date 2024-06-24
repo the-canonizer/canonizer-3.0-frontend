@@ -10,21 +10,14 @@ const LoggedOutHeader = () => {
 
   return (
     <Fragment>
-      <div className="flex justify-start items-center z-10 w-100 py-2">
+      <div className="flex justify-start items-center z-10 w-100 py-5">
         <Logo />
         <SearchHeader className="header-search-bar" />
         <HeaderMenu
-          className="ml-auto lg:ml-1"
+          className="ml-1 lg:ml-auto"
           isUserAuthenticated={isUserAuthenticated}
         />
       </div>
-
-      {/* <SearchSection /> */}
-      {/* <DisclaimerMsg />
-      <ArchivedCampMsg />
-      <LoginModal />
-      <RegistrationModal />
-      <ForgotModal /> */}
     </Fragment>
   );
 };

@@ -23,46 +23,45 @@ const HomePageContainer = () => {
       <Layout
         afterHeader={<WelcomeContent />}
         rightSidebar={
-          <div className="pt-4 sm:pt-0" data-testid="sideBar">
+          <div className="md:mt-9" data-testid="sideBar">
             {!isMobile ? (
-              <div className="mb-6" data-testid="topicsList">
+              <div className="mb-10" data-testid="topicsList">
                 <TrandingTopics />
               </div>
             ) : null}
 
             {isUserAuthenticated ? (
-              <div className="mb-4" data-testid="recentActivities">
+              <div className="mb-10" data-testid="recentActivities">
                 <RecentActivities />
               </div>
             ) : null}
 
-            <div className="mb-4" data-testid="helpCard">
+            <div className="mb-10" data-testid="helpCard">
               <WhatsNew />
             </div>
           </div>
         }
       >
         <Row className="pt-4 w-100" data-testid="featuredTopic">
-          <Col md={24} className="mb-6">
+          <Col md={24} className="mb-10">
             <FeaturedTopic />
           </Col>
           {isMobile ? (
-            <Col md={24} xs={24} className="mb-6">
+            <Col md={24} xs={24} className="mb-10">
               <TrandingTopics />
             </Col>
           ) : null}
           {isUserAuthenticated ? (
-            <Col md={24} className="mb-6" data-testid="preferedTopic">
+            <Col md={24} className="mb-10" data-testid="preferedTopic">
               <PreferedTopics />
             </Col>
           ) : null}
-          <Col md={24} className="mb-6" data-testid="categoriesList">
+          <Col md={24} className="mb-10" data-testid="categoriesList">
             <CategoriesList />
           </Col>
-          <Col md={24} className="mb-6 sm:mb-2" data-testid="hotTopics">
+          <Col md={24} className="mb-10" data-testid="hotTopics">
             <HotTopics />
           </Col>
-          <Col md={12}></Col>
         </Row>
       </Layout>
       {/* <Tour open={open} onClose={() => setOpen(false)} steps={steps} /> */}

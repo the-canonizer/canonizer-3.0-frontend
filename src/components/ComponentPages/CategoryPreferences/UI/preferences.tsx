@@ -14,14 +14,14 @@ export default function PreferencesUI({ onChange, tags, onFinish, onSkip }) {
       <div className="flex justify-center items-center text-center flex-col mb-4 relative">
         <Title
           level={4}
-          className="mt-4 text-14 text-black font-medium"
+          className="mt-4 text-sm text-canBlack font-medium"
           id="registration-title"
         >
           Select your preferred categories
         </Title>
         <Button
           type="link"
-          className="text-black text-14 opacity-50 absolute right-0 top-0 hocus:blue hocus:opacity-100 md:hidden"
+          className="text-canBlack text-sm opacity-50 absolute right-0 top-0 hocus:blue hocus:opacity-100 md:hidden"
           onClick={onSkip}
         >
           Skip
@@ -44,7 +44,7 @@ export default function PreferencesUI({ onChange, tags, onFinish, onSkip }) {
       <PrimaryButton
         type="primary"
         htmlType="button"
-        className="h-[40px] text-14 rounded-md !w-4/12 m-auto flex justify-center items-center sm:!w-full"
+        className="h-[40px] text-sm rounded-md !w-4/12 m-auto flex justify-center items-center sm:!w-full"
         block
         data-testid="submitButton"
         id="otp-btn"
@@ -55,7 +55,7 @@ export default function PreferencesUI({ onChange, tags, onFinish, onSkip }) {
       </PrimaryButton>
       <Button
         type="link"
-        className="text-black text-14 opacity-50 absolute right-0 top-0 hocus:blue hocus:opacity-100 hidden md:block"
+        className="text-canBlack text-sm opacity-50 absolute right-0 top-0 hocus:blue hocus:opacity-100 hidden md:block"
         onClick={onSkip}
       >
         Skip

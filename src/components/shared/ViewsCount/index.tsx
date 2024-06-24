@@ -36,7 +36,7 @@ const ViewCounts = ({ views = 0, loading = false, ...restProps }) => {
       className="m-0 text-light font-medium font-inter flex items-center"
       {...restProps}
     >
-      <EyeOutlined className="text-black p-1 text-medium" />{" "}
+      <EyeOutlined className="text-canBlack p-1 text-medium" />{" "}
       {!views || views == 0 ? "-" : formatNumber(views)}
     </Typography.Paragraph>
   );

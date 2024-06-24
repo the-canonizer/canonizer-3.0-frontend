@@ -39,7 +39,7 @@ const ProfileInfo = ({
           style={{
             border: "1px solid #fff",
             color: "#fff",
-            backgroundColor: "#4484ce",
+            backgroundColor: "#5482C8",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
@@ -58,12 +58,10 @@ const ProfileInfo = ({
 
   return (
     <Fragment>
-      <div className="" key="profile_area">
-        <div className="hdrUserdropdown" key="user_dropdown">
-          <Dropdown overlay={menu} trigger={["click"]} placement="bottomLeft">
-            {dataMain}
-          </Dropdown>
-        </div>
+      <div className="mt-0 lg:-mt-2 mr-2" key="profile_area">
+        <Dropdown overlay={menu} trigger={["click"]} placement="bottomLeft">
+          {dataMain}
+        </Dropdown>
       </div>
     </Fragment>
   );

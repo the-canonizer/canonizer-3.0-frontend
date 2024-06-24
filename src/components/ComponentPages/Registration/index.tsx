@@ -147,18 +147,12 @@ const Registration = () => {
 
   return (
     <Spinner>
-      <Card bordered={false} className="bg-greyBg mt-10 sm:mt-0">
+      <Card bordered={false} className="bg-canGrey1 mt-0 lg:mt-10">
         <Row gutter={20}>
-          <Col lg={12} md={12} xs={24} className="sm:hidden">
+          <Col lg={12} md={12} xl={12} xs={24} className="hidden lg:block">
             <LeftContent onBrowseClick={onBrowseClick} />
           </Col>
-          <Col
-            lg={12}
-            md={12}
-            xs={24}
-            sm={24}
-            className="sm:w-full sm:max-w-full sm:flex-[100%]"
-          >
+          <Col lg={12} md={12} xl={12}>
             <RegistrationUi
               form={form}
               onFinish={handleSumitForm}

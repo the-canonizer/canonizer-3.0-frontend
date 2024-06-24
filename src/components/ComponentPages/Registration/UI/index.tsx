@@ -81,7 +81,7 @@ function RegistrationUi({
         <div className="flex justify-center items-center text-center flex-col mb-4">
           <Button
             type="link"
-            className="h-[50px] text-14 w-2/12 text-black flex items-center justify-start text-14 font-medium p-0 mb-4 hidden sm:block sm:self-start"
+            className="h-[50px] text-sm w-2/12 text-canBlack flex items-center justify-start text-sm font-medium p-0 mb-4 hidden lg:hidden self-start"
             onClick={onBrowseClick}
           >
             <LeftOutlined /> Go Back
@@ -89,12 +89,12 @@ function RegistrationUi({
           <LogoHeader />
           <Title
             level={4}
-            className="mt-4 text-14 text-black font-medium"
+            className="mt-4 text-sm text-canBlack font-medium"
             id="registration-title"
           >
             Create your account
           </Title>
-          <Paragraph className="text-muted text-14 text-light font-regular">
+          <Paragraph className="text-muted text-sm text-light font-regular">
             All fields are mandatory.
           </Paragraph>
         </div>
@@ -167,7 +167,7 @@ function RegistrationUi({
                   <Fragment>
                     {messages.labels.phone}
                     {/* <span>(Limit 100 Chars)</span> */}
-                    <span className="required">*</span>
+                    {/* <span className="required">*</span> */}
                   </Fragment>
                 }
                 rules={messages.phoneRule}
@@ -224,7 +224,7 @@ function RegistrationUi({
           <PrimaryButton
             type="primary"
             htmlType="submit"
-            className="h-[40px] text-14 rounded-md !w-6/12"
+            className="h-[40px] text-sm rounded-md !w-6/12"
             block
             data-testid="submitButton"
             id="register-btn"
@@ -238,12 +238,12 @@ function RegistrationUi({
           <SocialLoginButton isNotLogin={true} />
         </Form.Item>
         <Form.Item className="text-center">
-          <Text className="text-14 font-semibold" id="already-text">
+          <Text className="text-sm font-semibold" id="already-text">
             Already have an account?{" "}
             <a
               href="#"
               onClick={onLoginClick}
-              className="text-blue hover:text-hblue"
+              className="text-canBlue hover:text-canHoverBlue"
               id="already-text-link"
             >
               Login

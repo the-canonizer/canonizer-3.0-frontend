@@ -91,7 +91,7 @@ const RegistrationOTP = () => {
   return (
     <Fragment>
       <Spinner>
-        <Card bordered={false} className="bg-greyBg mt-10 h-full sm:mt-0">
+        <Card bordered={false} className="bg-canGrey1 mt-10 h-full sm:mt-0">
           <Row gutter={20}>
             <Col lg={12} md={12} xs={24} className="sm:hidden">
               <LeftContent onBrowseClick={onBrowseClick} />
