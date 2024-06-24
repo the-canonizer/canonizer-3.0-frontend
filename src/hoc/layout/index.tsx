@@ -5,10 +5,13 @@ import styles from "./layout.module.scss";
 import MainHeader from "src/components/common/headers/mainHeader";
 import FooterComp from "src/components/common/footer";
 import GoogleAd from "src/components/googleAds";
+import { useRouter } from "next/router";
 
 const { Header, Footer } = Layout;
 
 function CustomLayout(props: any) {
+  const router = useRouter();
+
   const getCls = () => {
     if (props?.leftSidebar && props?.rightSidebar) {
       return styles.withBothsideBar;
