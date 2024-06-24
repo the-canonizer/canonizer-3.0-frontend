@@ -92,7 +92,7 @@ describe("Registration page", () => {
     render(
       <Provider store={store1}>
         <RouterContext.Provider value={createMockRouter({})}>
-          <Registration isModal={false} />
+          <Registration />
         </RouterContext.Provider>
       </Provider>
     );
@@ -110,10 +110,11 @@ describe("Registration page", () => {
     });
 
     let heading = screen.getByRole("heading", {
-      name: /Register Now on Canonizer/i,
+      name: /Create your account/i,
     });
     expect(heading).toBeInTheDocument();
     expect(screen.getByText("Already have an account?")).toBeVisible();
+    expect(screen.getByText("All fields are mandatory.")).toBeVisible();
     expect(screen.getByText("Login Here")).toBeVisible();
     expect(screen.getByText(labels.firstName)).toBeInTheDocument();
     expect(screen.getByText(labels.lastName)).toBeInTheDocument();
@@ -169,7 +170,7 @@ describe("Registration page", () => {
     render(
       <Provider store={store1}>
         <RouterContext.Provider value={createMockRouter({})}>
-          <Registration isModal={false} />
+          <Registration />
         </RouterContext.Provider>
       </Provider>
     );
@@ -243,7 +244,7 @@ describe("Registration page", () => {
     render(
       <Provider store={store1}>
         <RouterContext.Provider value={createMockRouter({})}>
-          <Registration isModal={false} isTest={true} />
+          <Registration isTest={true} />
         </RouterContext.Provider>
       </Provider>
     );
@@ -278,7 +279,7 @@ describe("Registration page", () => {
     render(
       <Provider store={store1}>
         <RouterContext.Provider value={createMockRouter({})}>
-          <Registration isModal={false} />
+          <Registration />
         </RouterContext.Provider>
       </Provider>
     );
@@ -335,7 +336,7 @@ describe("Registration page", () => {
     render(
       <Provider store={store1}>
         <RouterContext.Provider value={createMockRouter({})}>
-          <Registration isModal={false} />
+          <Registration />
         </RouterContext.Provider>
       </Provider>
     );
@@ -387,7 +388,7 @@ describe("Registration page", () => {
     render(
       <Provider store={store1}>
         <RouterContext.Provider value={createMockRouter({})}>
-          <Registration isModal={false} />
+          <Registration />
         </RouterContext.Provider>
       </Provider>
     );

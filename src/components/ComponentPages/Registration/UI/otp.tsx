@@ -1,29 +1,31 @@
-import { Image, Typography, Form, Input, Button } from "antd";
+import { Image, Typography, Form, Card, Button } from "antd";
 import {
-  CloseCircleOutlined,
   ArrowRightOutlined,
+  LeftOutlined,
   RedoOutlined,
 } from "@ant-design/icons";
 
-import styles from "./Registration.module.scss";
-
-import messages from "../../../../messages";
-import { fallBackSrc } from "../../../../assets/data-images";
+import messages from "src/messages";
+import { fallBackSrc } from "src/assets/data-images";
+import LogoHeader from "src/components/common/headers/logoHeader";
+import PrimaryButton from "src/components/shared/Buttons/PrimariButton";
+import Inputs from "src/components/shared/FormInputs";
+import SecondaryButton from "src/components/shared/Buttons/SecondaryButton";
 
 const { Title, Text } = Typography;
 
 export default function OTPVerify({
   form,
   onFinish,
-  isModal,
-  closeModal,
   isResend,
   failedMsg,
   onResendClick,
+  isDisabled,
+  onBrowseClick,
   logMsg = "",
-}: any) {
+}) {
   return (
-    <section className={styles.signup_wrapper + " " + styles.textCenter}>
+    <Card className="rounded-lg" bordered={false}>
       <Form
         form={form}
         name="registration"
@@ -33,21 +35,26 @@ export default function OTPVerify({
         scrollToFirstError
         validateTrigger={messages.formValidationTypes()}
       >
-        <Title level={2} className={styles.titles} id="otp-title-text">
-          Log In One Time Verification Code
-        </Title>
-        {isModal && (
+        <div className="flex justify-center items-center text-center flex-col mb-4">
           <Button
-            shape="circle"
             type="link"
-            className={styles.close_btn}
-            onClick={closeModal}
-            icon={<CloseCircleOutlined />}
-            id="modal-close-btn"
-          />
-        )}
-        <div className={styles.section_one}>
-          <div className={styles.imageWrapper}>
+            className="h-[50px] text-14 w-2/12 text-black flex items-center justify-start text-14 font-medium p-0 mb-4 hidden sm:block sm:self-start"
+            onClick={onBrowseClick}
+          >
+            <LeftOutlined /> Go Back
+          </Button>
+          <LogoHeader />
+          <Title
+            level={4}
+            className="mt-4 text-14 text-black font-medium"
+            id="registration-title"
+          >
+            Log In One Time Verification Code
+          </Title>
+        </div>
+
+        <div className="">
+          <div className="text-center my-3">
             <Image
               preview={false}
               alt="otp"
@@ -56,47 +63,50 @@ export default function OTPVerify({
               id="otp-modal-image"
             />
           </div>
-          <Text type="danger" className={styles.otpNote} id="otp-note-text">
+          <Text
+            type="danger"
+            className="text-center text-14 block mb-4"
+            id="otp-note-text"
+          >
             {isResend ? failedMsg : logMsg ? logMsg : messages?.labels?.regOtp}
           </Text>
-          <Form.Item
+          <Inputs
             name="otp"
             style={{ textAlign: "center" }}
-            {...messages.otpRule}
-          >
-            <Input
-              className={styles.otpInput}
-              placeholder={messages.placeholders.otp}
-              min={6}
-              max={6}
-            />
-          </Form.Item>
+            rules={messages.otpRule}
+            placeholder={messages.placeholders.otp}
+            min={6}
+            max={6}
+            maxLength={6}
+            wrapperClassName="w-6/12 mx-auto block sm:w-full"
+          />
         </div>
         <Form.Item>
           {isResend && (
-            <Button
-              type="primary"
+            <SecondaryButton
+              type="text"
               htmlType="button"
-              className={styles.resetOTP}
+              className="h-[40px] text-14 rounded-md !w-auto m-auto flex justify-center items-center mb-4 sm:!w-full"
               block
               onClick={onResendClick}
               id="resent-otp-btn"
             >
               Resend OTP <RedoOutlined />
-            </Button>
+            </SecondaryButton>
           )}
-          <Button
+          <PrimaryButton
             type="primary"
             htmlType="submit"
-            className={styles["login-form-button"]}
+            className="h-[40px] text-14 rounded-md !w-4/12 m-auto flex justify-center items-center sm:!w-full"
             block
             data-testid="submitButton"
-            id="submit-otp-btn"
+            id="otp-btn"
+            disabled={!isDisabled}
           >
             Submit <ArrowRightOutlined />
-          </Button>
+          </PrimaryButton>
         </Form.Item>
       </Form>
-    </section>
+    </Card>
   );
 }

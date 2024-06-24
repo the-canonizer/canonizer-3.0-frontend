@@ -171,11 +171,13 @@ export const verifyOtp = async (values: object) => {
       "loginToken=" +
       res.data.auth?.access_token +
       "; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
+      
     store.dispatch(setLoggedInUser(payload));
 
     return res;
   } catch (err) {
     handleError(err);
+    return err.error.data;
   }
 };
 

@@ -1,23 +1,31 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import { Card } from "antd";
 import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
+import { useDispatch, useSelector } from "react-redux";
 
-import Registration from "../../components/ComponentPages/Registration";
-import Layout from "../../hoc/layout";
-import useAuthentication from "../../hooks/isUserAuthenticated";
+import RegistrationOTP from "src/components/ComponentPages/Registration/OTP";
+import Layout from "src/hoc/layout";
+import { setEmailForOTP } from "src/store/slices/authSlice";
+import { RootState } from "src/store";
 
 const RegistrationPage = () => {
-  const router = useRouter();
-  const { isUserAuthenticated } = useAuthentication();
+  const { emailForOtp } = useSelector((state: RootState) => ({
+    emailForOtp: state?.auth?.emailForOtp,
+  }));
+
+  const dispatch = useDispatch(),
+    router = useRouter();
 
   useEffect(() => {
-    isUserAuthenticated && router?.push("/");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (!emailForOtp) {
+      router?.push({ pathname: "/registration" });
+    }
+
+    return () => dispatch(setEmailForOTP(null));
   }, []);
 
   return (
-    <Layout initialProps={undefined} initialState={undefined}>
+    <Layout withOutHeader={true} className="bg-greyBg min-h-screen">
       <GoogleReCaptchaProvider
         reCaptchaKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
         scriptProps={{
@@ -27,20 +35,7 @@ const RegistrationPage = () => {
           nonce: undefined,
         }}
       >
-        <aside className="leftSideBar miniSideBar topicPageNewLayoutSidebar"></aside>
-        <div className="pageContentWrap">
-          <Card
-            bordered={false}
-            className={`login-container ${
-              router?.asPath?.includes("/login") ||
-              router?.asPath?.includes("/registration")
-                ? "fill-width"
-                : ""
-            }`}
-          >
-            <Registration isModal={false} />
-          </Card>
-        </div>
+        <RegistrationOTP />
       </GoogleReCaptchaProvider>
     </Layout>
   );

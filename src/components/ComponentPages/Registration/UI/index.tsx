@@ -1,19 +1,20 @@
-import React, { Fragment } from "react";
+import { Fragment } from "react";
 import { useRouter } from "next/router";
-import { Row, Col, Typography, Form, Button, Select, Card } from "antd";
+import { Row, Col, Typography, Form, Select, Card, Button } from "antd";
 import {
   UserOutlined,
   ArrowRightOutlined,
   MailOutlined,
   PhoneOutlined,
   LockOutlined,
+  LeftOutlined,
 } from "@ant-design/icons";
 
 import messages from "src/messages";
 import SocialLoginButton from "src/components/common/socialLogin";
 import LogoHeader from "src/components/common/headers/logoHeader";
 import Inputs from "src/components/shared/FormInputs";
-import PrimaryButton from "@/components/shared/Buttons/PrimariButton";
+import PrimaryButton from "src/components/shared/Buttons/PrimariButton";
 
 const { Title, Text, Paragraph } = Typography;
 const { Option } = Select;
@@ -27,12 +28,10 @@ declare global {
 function RegistrationUi({
   form,
   onFinish,
-  isModal,
-  closeModal,
   country,
-  openLogin,
   isDisabled,
-}: any) {
+  onBrowseClick,
+}) {
   const router = useRouter();
 
   const prefixSelector = (
@@ -64,12 +63,7 @@ function RegistrationUi({
 
   const onLoginClick = (e) => {
     e.preventDefault();
-    if (isModal) {
-      closeModal();
-      openLogin();
-    } else {
-      router?.push("/login");
-    }
+    router?.push("/login");
   };
 
   return (
@@ -85,6 +79,13 @@ function RegistrationUi({
         autoComplete="off"
       >
         <div className="flex justify-center items-center text-center flex-col mb-4">
+          <Button
+            type="link"
+            className="h-[50px] text-14 w-2/12 text-black flex items-center justify-start text-14 font-medium p-0 mb-4 hidden sm:block sm:self-start"
+            onClick={onBrowseClick}
+          >
+            <LeftOutlined /> Go Back
+          </Button>
           <LogoHeader />
           <Title
             level={4}
@@ -169,7 +170,7 @@ function RegistrationUi({
                     <span className="required">*</span>
                   </Fragment>
                 }
-                {...messages.phoneRule}
+                rules={messages.phoneRule}
                 type="tel"
                 addonBefore={prefixSelector}
                 // addonAfter={prefixSelector}
@@ -192,7 +193,7 @@ function RegistrationUi({
                     <span className="required">*</span>
                   </Fragment>
                 }
-                {...messages.passwordRule}
+                rules={messages.passwordRule}
                 type="password"
                 placeholder={messages.placeholders.password}
                 prefix={<LockOutlined />}
@@ -209,7 +210,7 @@ function RegistrationUi({
                   </Fragment>
                 }
                 dependencies={["password"]}
-                {...messages.confirmPasswordRule}
+                rules={messages.confirmPasswordRule}
                 type="password"
                 placeholder={messages.placeholders.confirmPassword}
                 prefix={<LockOutlined />}
@@ -227,7 +228,7 @@ function RegistrationUi({
             block
             data-testid="submitButton"
             id="register-btn"
-            disabled={isDisabled}
+            disabled={!isDisabled}
           >
             Sign Up <ArrowRightOutlined />
           </PrimaryButton>
