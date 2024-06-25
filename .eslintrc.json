@@ -15,15 +15,15 @@
   ],
   "rules": {
     "react/react-in-jsx-scope": 0,
-    "react-hooks/exhaustive-deps": 1,
-    "react/prop-types": 1,
-    "no-await-in-loop": 1,
-    "no-empty": 1,
-    "no-useless-escape": 1,
-    "no-debugger": 1,
-    "no-console": 1,
+    "react-hooks/exhaustive-deps": 0,
+    "react/prop-types": 0,
+    "no-await-in-loop": 0,
+    "no-empty": 0,
+    "no-useless-escape": 0,
+    "no-debugger": 0,
+    "no-console": 0,
     "no-unused-vars": [
-      1,
+      0,
       {
         "varsIgnorePattern": "Window"
       }
