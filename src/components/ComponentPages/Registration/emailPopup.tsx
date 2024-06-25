@@ -1,18 +1,18 @@
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { Form } from "antd";
 
 import EmailConfirmation from "./UI/email";
-import { hideSocialEmailPopup } from "../../../store/slices/uiSlice";
+import { hideSocialEmailPopup } from "src/store/slices/uiSlice";
 import {
   resendOTPForRegistration,
   SendOTPForVerify,
   verifyEmailOnSocial,
-} from "../../../network/api/userApi";
-import { AppDispatch, RootState } from "../../../store";
-import { setValue } from "../../../store/slices/utilsSlice";
-import Spinner from "../../common/spinner/spinner";
+} from "src/network/api/userApi";
+import { AppDispatch, RootState } from "src/store";
+import { setValue } from "src/store/slices/utilsSlice";
+import CustomSpinner from "components/shared/CustomSpinner";
 
 const EmailPopup = ({ isModal = false }: any) => {
   const { socialKeys, rdType } = useSelector((state: RootState) => ({
@@ -24,7 +24,8 @@ const EmailPopup = ({ isModal = false }: any) => {
   const [isResend, setIsResend] = useState(false);
   const [formData, setFormData] = useState({ email: "" });
   const [socialLoginKeys, setSocialLoginKeys] = useState(socialKeys);
-  const [redirectType, setRedirectType] = useState(rdType);
+  const [redirectType, setRedirectType] = useState(rdType),
+    [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
@@ -51,6 +52,7 @@ const EmailPopup = ({ isModal = false }: any) => {
 
   const onSubmit = async (values: any) => {
     setFormData(values);
+    setLoading(true);
 
     let formBody = {
       email: values?.email?.trim(),
@@ -67,9 +69,11 @@ const EmailPopup = ({ isModal = false }: any) => {
 
       setIsOTP(true);
     }
+    setLoading(false);
   };
 
   const onOTPSubmit = async (values: any) => {
+    setLoading(true);
     let body = {
       email: formData.email?.trim(),
       otp: values.otp?.trim(),
@@ -106,6 +110,7 @@ const EmailPopup = ({ isModal = false }: any) => {
 
       form.validateFields(["otp"]);
     }
+    setLoading(false);
   };
 
   // on resend click
@@ -118,19 +123,17 @@ const EmailPopup = ({ isModal = false }: any) => {
   };
 
   return (
-    <Fragment>
-      <Spinner>
-        <EmailConfirmation
-          form={form}
-          onFinish={isOTP ? onOTPSubmit : onSubmit}
-          closeModal={closeModal}
-          isModal={isModal}
-          isOTP={isOTP}
-          onResendClick={onResendClick}
-          isResend={isResend}
-        />
-      </Spinner>
-    </Fragment>
+    <CustomSpinner key="registration-spinner" spinning={loading}>
+      <EmailConfirmation
+        form={form}
+        onFinish={isOTP ? onOTPSubmit : onSubmit}
+        closeModal={closeModal}
+        isModal={isModal}
+        isOTP={isOTP}
+        onResendClick={onResendClick}
+        isResend={isResend}
+      />
+    </CustomSpinner>
   );
 };
 

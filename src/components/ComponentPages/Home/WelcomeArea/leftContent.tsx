@@ -40,7 +40,7 @@ const LeftContent = ({ isUserAuthenticated }) => {
   return (
     <div className="pr-0">
       <Typography.Paragraph
-        className={`m-0 ${isUserAuthenticated ? 'text-[24px]' : "text-sm"} font-${
+        className={`m-0 ${isUserAuthenticated ? 'text-lg' : "text-md"} font-${
           isUserAuthenticated ? "semibold" : "medium"
         } font-inter leading-[1]`}
       >

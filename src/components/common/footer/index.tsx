@@ -80,7 +80,7 @@ function Footer() {
 
   return (
     <Fragment>
-      <footer className={`printHIde bg-canBlack px-4 py-4`}>
+      <footer className={`printHIde bg-canBlack px-4 md:px-7 py-4`}>
         <Row gutter={20}>
           <Col xs={24} sm={24} md={7} lg={8}>
             <div className="mb-3">

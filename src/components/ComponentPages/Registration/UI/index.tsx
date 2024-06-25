@@ -1,13 +1,12 @@
 import { Fragment } from "react";
 import { useRouter } from "next/router";
-import { Row, Col, Typography, Form, Select, Card, Button } from "antd";
+import { Row, Col, Typography, Form, Select, Card } from "antd";
 import {
   UserOutlined,
   ArrowRightOutlined,
   MailOutlined,
   PhoneOutlined,
   LockOutlined,
-  LeftOutlined,
 } from "@ant-design/icons";
 
 import messages from "src/messages";
@@ -15,6 +14,7 @@ import SocialLoginButton from "src/components/common/socialLogin";
 import LogoHeader from "src/components/common/headers/logoHeader";
 import Inputs from "src/components/shared/FormInputs";
 import PrimaryButton from "src/components/shared/Buttons/PrimariButton";
+import RegistrationUiGoBack from "./goBack";
 
 const { Title, Text, Paragraph } = Typography;
 const { Option } = Select;
@@ -79,13 +79,7 @@ function RegistrationUi({
         autoComplete="off"
       >
         <div className="flex justify-center items-center text-center flex-col mb-4">
-          <Button
-            type="link"
-            className="h-[50px] text-sm w-2/12 text-canBlack flex items-center justify-start text-sm font-medium p-0 mb-4 hidden lg:hidden self-start"
-            onClick={onBrowseClick}
-          >
-            <LeftOutlined /> Go Back
-          </Button>
+          <RegistrationUiGoBack onBrowseClick={onBrowseClick} />
           <LogoHeader />
           <Title
             level={4}
@@ -224,7 +218,7 @@ function RegistrationUi({
           <PrimaryButton
             type="primary"
             htmlType="submit"
-            className="h-[40px] text-sm rounded-md !w-6/12"
+            className="h-[40px] text-sm rounded-md !w-8/12 lg:!w-4/12"
             block
             data-testid="submitButton"
             id="register-btn"

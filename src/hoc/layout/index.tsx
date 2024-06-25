@@ -4,6 +4,10 @@ import styles from "./layout.module.scss";
 
 import MainHeader from "src/components/common/headers/mainHeader";
 import FooterComp from "src/components/common/footer";
+import LoginModal from "src/components/ComponentPages/Login/loginModal";
+import RegistrationModal from "src/components/ComponentPages/Registration/registrationModal";
+import DisclaimerMsg from "src/components/common/disclaimer";
+import ArchivedCampMsg from "src/components/common/ArchivedCampMsg";
 // import GoogleAd from "src/components/googleAds";
 
 const { Header, Footer } = Layout;
@@ -39,6 +43,11 @@ function CustomLayout(props: any) {
       {props?.afterHeader ? (
         <div className="px-4 md:px-7 my-3">{props?.afterHeader}</div>
       ) : null}
+
+      <DisclaimerMsg />
+      <ArchivedCampMsg />
+      <LoginModal />
+      <RegistrationModal />
 
       <Layout
         className={`px-4 md:px-7 max-w-full ${styles.contentArea} ${getCls()}`}
