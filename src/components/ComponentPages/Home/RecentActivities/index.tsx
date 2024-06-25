@@ -209,7 +209,7 @@ export default function RecentActivities() {
             href={{ pathname: "/activities", query: { tabName: selectedTab } }}
             as="/activities"
           >
-            <a className="font-semibold text-blue flex items-center">
+            <a className="font-semibold text-canBlue flex items-center">
               <Text>{ViewAllName}</Text>
               <i className="icon-angle-right ml-1"></i>
             </a>
@@ -228,7 +228,7 @@ export default function RecentActivities() {
           {pageNumber < recentActivities?.numOfPages && (
             <div className="text-center">
               <Button
-                className="font-semibold text-blue flex items-center"
+                className="font-semibold text-canBlue flex items-center"
                 onClick={() => {
                   setLoadMoreIndicator(true);
                   if (router?.query?.topic_num && router?.query?.camp_num) {
@@ -266,32 +266,32 @@ export default function RecentActivities() {
   return (
     <Fragment>
       <Row gutter={15} className="mt-5">
-        <Col md={12} sm={12} xs={12} className="mb-3">
-          <Headings level={5} className="mb-0 text-14 font-bold uppercase">
+        <Col md={12} sm={12} xs={24} className="mb-3">
+          <Headings level={5} className="mb-0 text-sm font-bold uppercase">
             Recent activities
           </Headings>
         </Col>
-        <Col md={12} sm={12} xs={12} className="text-right">
+        <Col md={12} sm={12} xs={24} className="text-right">
           <Link href="/activities">
-            <a className="text-blue hover:text-hblue text-14 font-inter font-medium">
+            <a className="text-canBlue hover:text-canHoverBlue text-sm font-inter font-medium">
               See More
             </a>
           </Link>
         </Col>
       </Row>
       <div className="">
-        <CommonCard className="border-0 h-100 hover:*:bg-gr focus:*:bg-gr">
+        <CommonCard className="border-0 h-100 hover:*:bg-canGray focus:*:bg-canGray">
           {userData?.is_admin &&
           !router?.query?.camp_num &&
           !router?.query?.topic_num ? (
-            <Typography.Paragraph className="text-14 flex items-center justify-between">
+            <Typography.Paragraph className="text-sm flex items-center justify-between">
               <span>Show all user activities</span>
               {isShowAllLoading ? (
                 <Spin size="small" />
               ) : (
                 <Switch
                   checked={isChecked}
-                  className="text-14"
+                  className="text-sm"
                   size="small"
                   onChange={onChange}
                 />
@@ -338,13 +338,13 @@ export default function RecentActivities() {
                         activity?.activity?.properties
                       );
                       return (
-                        <List.Item className="font-inter text-14 font-medium bg-white w-full px-2">
+                        <List.Item className="font-inter text-sm font-medium bg-white w-full px-2">
                           <AntLink
                             href={decodedProperties?.url?.replace(/\s+/g, "-")}
                             className="w-full"
                           >
                             <Fragment>
-                              <Text className="text-black text-14 font-normal mb-0">
+                              <Text className="text-canBlack text-sm font-normal mb-0">
                                 {activity?.activity?.description}{" "}
                                 {activity?.activity?.log_name === "support" &&
                                   getProperties(activity?.activity)?.reason && (
@@ -357,13 +357,13 @@ export default function RecentActivities() {
                                         </div>
                                       }
                                       placement="top"
-                                      className="pointer text-greyBr"
+                                      className="pointer text-canGrey2"
                                     >
                                       <i className="icon-info"></i>
                                     </Popover>
                                   )}
                                 <br />
-                                <Text className="text-blue font-medium">
+                                <Text className="text-canBlue font-medium">
                                   <Tooltip
                                     placement={"topLeft"}
                                     title={
@@ -437,12 +437,12 @@ export default function RecentActivities() {
                       );
 
                       return (
-                        <List.Item className="font-inter text-14 font-medium bg-white w-full px-2">
+                        <List.Item className="font-inter text-sm font-medium bg-white w-full px-2">
                           <Link href={decodeUrlLink(activity)} passHref>
                             <a className="hover:*:hblue w-full">
-                              <Text className="text-black text-14 font-normal mb-0 block w-full">
+                              <Text className="text-canBlack text-sm font-normal mb-0 block w-full">
                                 {activity?.activity?.description}{" "}
-                                <Text className="text-blue font-medium">
+                                <Text className="text-canBlue font-medium">
                                   <Tooltip
                                     placement={"topLeft"}
                                     title={handleTextOverflow(

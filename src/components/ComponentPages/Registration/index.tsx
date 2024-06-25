@@ -7,13 +7,14 @@ import { useRouter } from "next/router";
 import RegistrationUi from "./UI";
 import { register, getCountryCodes } from "src/network/api/userApi";
 import { AppDispatch } from "src/store";
-import Spinner from "src/components/common/spinner/spinner";
 import LeftContent from "./UI/leftContent";
 import { setEmailForOTP } from "src/store/slices/authSlice";
+import CustomSpinner from "components/shared/CustomSpinner";
 
 const Registration = () => {
   const [country, setCountry] = useState([]),
-    [isDisabled, setIsDisabled] = useState(true);
+    [isDisabled, setIsDisabled] = useState(true),
+    [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch<AppDispatch>(),
     router = useRouter(),
@@ -43,6 +44,7 @@ const Registration = () => {
   }, [form, values]);
 
   const onFinish = async (values: any, captchaKey: string) => {
+    setLoading(true);
     if (captchaKey) {
       let formBody = {
         first_name: values.first_name?.trim(),
@@ -97,6 +99,7 @@ const Registration = () => {
         router?.push({ pathname: "/registration/otp" });
       }
     }
+    setLoading(false);
   };
 
   const sort_unique = (arr: Object[]) => {
@@ -128,12 +131,14 @@ const Registration = () => {
   };
 
   const getCodes = async () => {
+    setLoading(true);
     let response = await getCountryCodes();
     if (response && response.status_code === 200) {
       const codes_list = sort_unique(response.data);
 
       setCountry(codes_list);
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -146,19 +151,13 @@ const Registration = () => {
   };
 
   return (
-    <Spinner>
-      <Card bordered={false} className="bg-greyBg mt-10 sm:mt-0">
+    <CustomSpinner key="registration-spinner" spinning={loading}>
+      <Card bordered={false} className="bg-canGrey1 mt-0 lg:mt-10">
         <Row gutter={20}>
-          <Col lg={12} md={12} xs={24} className="sm:hidden">
+          <Col lg={12} md={24} xl={12} xs={24} className="hidden lg:block">
             <LeftContent onBrowseClick={onBrowseClick} />
           </Col>
-          <Col
-            lg={12}
-            md={12}
-            xs={24}
-            sm={24}
-            className="sm:w-full sm:max-w-full sm:flex-[100%]"
-          >
+          <Col lg={12} md={24} xl={12}>
             <RegistrationUi
               form={form}
               onFinish={handleSumitForm}
@@ -169,7 +168,7 @@ const Registration = () => {
           </Col>
         </Row>
       </Card>
-    </Spinner>
+    </CustomSpinner>
   );
 };
 

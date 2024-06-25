@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { Card, Col, Form, Row, message } from "antd";
@@ -6,9 +6,9 @@ import { Card, Col, Form, Row, message } from "antd";
 import OTPVerify from "./UI/otp";
 import { verifyOtp, resendOTPForRegistration } from "src/network/api/userApi";
 import { AppDispatch, RootState } from "src/store";
-import Spinner from "src/components/common/spinner/spinner";
 import LeftContent from "./UI/leftContent";
 import { setEmailForOTP, setIsNewUser } from "src/store/slices/authSlice";
+import CustomSpinner from "components/shared/CustomSpinner";
 
 const RegistrationOTP = () => {
   const { emailForOtp } = useSelector((state: RootState) => ({
@@ -17,7 +17,8 @@ const RegistrationOTP = () => {
 
   const [isResend, setIsResend] = useState(false),
     [failedMsg, setFailedMsg] = useState(""),
-    [isDisabled, setIsDisabled] = useState(true);
+    [isDisabled, setIsDisabled] = useState(true),
+    [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch<AppDispatch>(),
     router = useRouter(),
@@ -33,6 +34,7 @@ const RegistrationOTP = () => {
   }, [otpForm, values]);
 
   const onOTPSubmit = async (values: any) => {
+    setLoading(true);
     let formBody = {
       username: emailForOtp?.trim(),
       otp: values.otp?.trim(),
@@ -72,15 +74,18 @@ const RegistrationOTP = () => {
       otpForm.resetFields();
       otpForm.validateFields(["otp"]);
     }
+    setLoading(false);
   };
 
   const onResendClick = async () => {
+    setLoading(true);
     const res = await resendOTPForRegistration({ email: emailForOtp });
 
     if (res && res.status_code === 200) {
       message.success(res.message);
       setIsResend(false);
     }
+    setLoading(false);
   };
 
   const onBrowseClick = (e) => {
@@ -89,34 +94,26 @@ const RegistrationOTP = () => {
   };
 
   return (
-    <Fragment>
-      <Spinner>
-        <Card bordered={false} className="bg-greyBg mt-10 h-full sm:mt-0">
-          <Row gutter={20}>
-            <Col lg={12} md={12} xs={24} className="sm:hidden">
-              <LeftContent onBrowseClick={onBrowseClick} />
-            </Col>
-            <Col
-              lg={12}
-              md={12}
-              xs={24}
-              sm={24}
-              className="sm:w-full sm:max-w-full sm:flex-[100%]"
-            >
-              <OTPVerify
-                form={otpForm}
-                onFinish={onOTPSubmit}
-                isResend={isResend}
-                failedMsg={failedMsg}
-                onResendClick={onResendClick}
-                isDisabled={isDisabled}
-                onBrowseClick={onBrowseClick}
-              />
-            </Col>
-          </Row>
-        </Card>
-      </Spinner>
-    </Fragment>
+    <CustomSpinner key="registration-spinner" spinning={loading}>
+      <Card bordered={false} className="bg-canGrey1 mt-0 lg:mt-10 h-full">
+        <Row gutter={20}>
+          <Col lg={12} md={24} xl={12} xs={24} className="hidden lg:block">
+            <LeftContent onBrowseClick={onBrowseClick} />
+          </Col>
+          <Col lg={12} md={24} xl={12} xs={24}>
+            <OTPVerify
+              form={otpForm}
+              onFinish={onOTPSubmit}
+              isResend={isResend}
+              failedMsg={failedMsg}
+              onResendClick={onResendClick}
+              isDisabled={isDisabled}
+              onBrowseClick={onBrowseClick}
+            />
+          </Col>
+        </Row>
+      </Card>
+    </CustomSpinner>
   );
 };
 

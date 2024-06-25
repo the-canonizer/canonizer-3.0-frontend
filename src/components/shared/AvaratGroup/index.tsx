@@ -28,7 +28,7 @@ const AvatarGroup = ({
     <div className="relative">
       <Avatar.Group maxCount={maxCount} {...restProps}>
         {avatars?.map((av) => (
-          <SingleAvatar user={av} />
+          <SingleAvatar user={av} key={av?.id} />
         ))}
       </Avatar.Group>
     </div>

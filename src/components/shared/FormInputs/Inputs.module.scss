@@ -5,7 +5,7 @@
     border-bottom-right-radius: 0;
     height: 44px;
     &:hover {
-      border-color: var(--hblue);
+      border-color: var(--canHoverBlue);
     }
   }
   [class*="ant-input-wrapper ant-input-group"] {

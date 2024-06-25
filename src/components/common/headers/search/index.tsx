@@ -173,7 +173,7 @@ const HeaderSearch = ({ className = "" }: any) => {
           <CustomTabs
             defaultActiveKey="1"
             items={items}
-            className="text-14 font-normal font-inter"
+            className="text-sm font-normal font-inter"
           />
         ),
       ],
@@ -313,7 +313,7 @@ const HeaderSearch = ({ className = "" }: any) => {
     <Fragment>
       {/* <div className="md:hidden"> */}
       <AutoComplete
-        popupClassName={`max-w-2xl w-full bg-white ${styles.searchCategories} md:*:hidden`}
+        popupClassName={`max-w-2xl w-full bg-white ${styles.searchCategories} !hidden md:!flex`}
         dropdownMatchSelectWidth={false}
         // defaultOpen={true}
         // open={true}
@@ -347,7 +347,7 @@ const HeaderSearch = ({ className = "" }: any) => {
         }`}
       >
         <div
-          className={`w-auto h-auto flex items-center ${className} md:*:hidden`}
+          className={`w-auto h-auto !hidden items-center ${className} md:!flex`}
         >
           <SearchInputs
             placeholder="Search via keyword"
@@ -377,9 +377,9 @@ const HeaderSearch = ({ className = "" }: any) => {
           />
         </div>
       </AutoComplete>
-      <div className="hidden md:block ml-auto mr-1">
+      <div className="block md:hidden ml-auto mr-3">
         <Link href="/search">
-          <a className="text-medium text-black hover:text-blue">
+          <a className="text-lg text-canBlack hover:text-canBlue">
             <SearchOutlined />
           </a>
         </Link>
@@ -412,7 +412,7 @@ const AllItems = ({
 );
 
 const TopicItems = ({ searchTopics, searchValue }) => (
-  <Card className={`border-0 h-100 bg-gr ${styles.ItemCard}`} title="Topic(s)">
+  <Card className={`border-0 h-100 bg-canGray ${styles.ItemCard}`} title="Topic(s)">
     <List
       size="small"
       dataSource={searchTopics?.slice(0, 5)}
@@ -428,16 +428,16 @@ const TopicItems = ({ searchTopics, searchValue }) => (
                 <div className="text-left flex">
                   <Popover content="Share Topic" placement="top">
                     <Typography.Paragraph className="bg-transparent border-0 p-0 hover:bg-transparent focus:bg-transparent flex items-center leading-1 mb-0 mr-3">
-                      <FlagOutlined className="text-black p-1 text-medium" />
+                      <FlagOutlined className="text-canBlack p-1 text-medium" />
                       <Link href="">
-                        <a className="text-blue text-14 font-inter font-medium hover:hblue">
+                        <a className="text-canBlue text-sm font-inter font-medium hover:hblue">
                           General
                         </a>
                       </Link>
                     </Typography.Paragraph>
                   </Popover>
                   <Typography.Paragraph className="m-0 text-light font-medium font-inter flex items-center">
-                    <EyeOutlined className="text-black p-1 text-medium" /> 123
+                    <EyeOutlined className="text-canBlack p-1 text-medium" /> 123
                   </Typography.Paragraph>
                 </div>
               </span>
@@ -451,7 +451,7 @@ const TopicItems = ({ searchTopics, searchValue }) => (
 );
 
 const CampItems = ({ searchCamps, searchValue }) => (
-  <Card className={`border-0 h-100 bg-gr ${styles.ItemCard}`} title="Camp(s)">
+  <Card className={`border-0 h-100 bg-canGray ${styles.ItemCard}`} title="Camp(s)">
     <List
       size="small"
       dataSource={searchCamps?.slice(0, 5)}
@@ -514,7 +514,7 @@ const CampItems = ({ searchCamps, searchValue }) => (
                         </svg>
                         Topic:
                         <Link href="">
-                          <a className="text-blue text-14 font-inter font-medium hover:hblue ml-1">
+                          <a className="text-canBlue text-sm font-inter font-medium hover:hblue ml-1">
                             topic name
                           </a>
                         </Link>
@@ -544,7 +544,7 @@ const CampItems = ({ searchCamps, searchValue }) => (
 
 const CampStatementsItems = ({ searchCampStatement, searchValue }) => (
   <Card
-    className={`border-0 h-100 bg-gr ${styles.ItemCard}`}
+    className={`border-0 h-100 bg-canGray ${styles.ItemCard}`}
     title="Camp Statement(s)"
   >
     <List
@@ -578,7 +578,7 @@ const CampStatementsItems = ({ searchCampStatement, searchValue }) => (
             <div className="">
               <Typography.Paragraph className="bg-transparent border-0 p-0 flex items-center leading-1 mb-0 mr-3">
                 <Link href={`/${jsonData[0][1]?.camp_link}`}>
-                  <a className="flex justify-between w-full items-start *text-black">
+                  <a className="flex justify-between w-full items-start *text-canBlack">
                     {getHighlightedText(
                       jsonData?.[0]?.[1]?.camp_name,
                       searchValue
@@ -621,7 +621,7 @@ const CampStatementsItems = ({ searchCampStatement, searchValue }) => (
                 </svg>
                 Topic:
                 <Link href={`/${jsonData[0][1]?.camp_link}`}>
-                  <a className="text-blue text-14 font-inter font-medium hover:hblue ml-1">
+                  <a className="text-canBlue text-sm font-inter font-medium hover:hblue ml-1">
                     {getHighlightedText(
                       jsonData?.[0]?.[1]?.topic_name,
                       searchValue
@@ -650,7 +650,7 @@ const CampStatementsItems = ({ searchCampStatement, searchValue }) => (
 
 const NickNamesItems = ({ searchNickname, searchValue }) => (
   <Card
-    className={`border-0 h-100 bg-gr ${styles.ItemCard}`}
+    className={`border-0 h-100 bg-canGray ${styles.ItemCard}`}
     title="Nickname(s)"
   >
     <List
@@ -691,7 +691,7 @@ const FooterItems = ({ searchValue, handleSearchfor }) => (
     <Link href={{ pathname: "/search", query: { q: searchValue } }}>
       <a
         onClick={() => handleSearchfor()}
-        className="text-14 font-inter font-semibold"
+        className="text-sm font-inter font-semibold"
       >
         View All Results
       </a>

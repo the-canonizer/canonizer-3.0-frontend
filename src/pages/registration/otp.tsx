@@ -25,7 +25,7 @@ const RegistrationPage = () => {
   }, []);
 
   return (
-    <Layout withOutHeader={true} className="bg-greyBg min-h-screen">
+    <Layout withOutHeader={true} className="bg-canGrey1 min-h-screen">
       <GoogleReCaptchaProvider
         reCaptchaKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
         scriptProps={{

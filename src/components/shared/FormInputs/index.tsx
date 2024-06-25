@@ -18,7 +18,7 @@ const Inputs = ({
 }: any) => {
   return (
     <Form.Item
-      className={`font-14 text-black font-medium ${wrapperClassName}`}
+      className={`font-14 text-canBlack font-medium ${wrapperClassName}`}
       name={name}
       label={label}
       data-id={dataid}
@@ -31,7 +31,7 @@ const Inputs = ({
           addonBefore={addonBefore}
           type={type}
           placeholder={placeholder}
-          className={`text-black font-normal h-[40px] ${inputClassName}`}
+          className={`text-canBlack font-normal h-[40px] ${inputClassName}`}
           autoComplete="off"
           onKeyDown={onKeyDown}
           maxLength={maxLength}
@@ -44,7 +44,7 @@ const Inputs = ({
           addonBefore={addonBefore}
           type={type}
           placeholder={placeholder}
-          className={`text-black font-normal h-[40px] ${inputClassName}`}
+          className={`text-canBlack font-normal h-[40px] ${inputClassName}`}
           autoComplete="off"
           onKeyDown={onKeyDown}
           maxLength={maxLength}

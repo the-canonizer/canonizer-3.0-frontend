@@ -16,7 +16,7 @@ const CardDescription = ({ description, loading = false }) => {
 
   if (!description) {
     return (
-      <div className="text-14 font-inter font-normal mb-3 text-black opacity-80 leading-26 overflow-hidden line-clamp-4">
+      <div className="text-sm font-inter font-normal mb-3 text-canBlack opacity-80">
         No description available
       </div>
     );
@@ -24,7 +24,7 @@ const CardDescription = ({ description, loading = false }) => {
 
   return (
     <div
-      className="text-14 font-inter font-normal mb-3 pb-3 overflow-hidden h-full text-black opacity-80 leading-26 line-clamp-4"
+      className="text-sm font-inter font-normal overflow-hidden text-canBlack opacity-80 line-clamp-4	"
       dangerouslySetInnerHTML={{
         __html: sanitizeHtml(description, {
           allowedAttributes: {

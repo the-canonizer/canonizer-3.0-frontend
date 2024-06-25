@@ -43,7 +43,7 @@ const Login = ({ isModal, isTest = false }: any) => {
 
   const closeModal = () => {
     dispatch(hideLoginModal());
-    dispatch(setManageSupportStatusCheck(false))
+    dispatch(setManageSupportStatusCheck(false));
     isOtpScreen ? otpForm.resetFields() : form.resetFields();
     setIsOtpScreen(false);
     setErrorMsg("");
@@ -177,12 +177,12 @@ const Login = ({ isModal, isTest = false }: any) => {
           <OTPVerify
             form={otpForm}
             onFinish={onOTPSubmit}
-            closeModal={closeModal}
-            isModal={isModal}
             isResend={isResend}
             failedMsg={failedMsg}
             onResendClick={onResendClick}
             logMsg={messages?.labels?.otLabel}
+            isDisabled={undefined}
+            onBrowseClick={undefined}
           />
         ) : (
           <LoginUI

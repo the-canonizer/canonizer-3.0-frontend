@@ -40,7 +40,7 @@ const LeftContent = ({ isUserAuthenticated }) => {
   return (
     <div className="pr-0">
       <Typography.Paragraph
-        className={`m-0 ${isUserAuthenticated ? 'text-[24px]' : "text-14"} font-${
+        className={`m-0 ${isUserAuthenticated ? 'text-lg' : "text-md"} font-${
           isUserAuthenticated ? "semibold" : "medium"
         } font-inter leading-[1]`}
       >
@@ -56,7 +56,7 @@ const LeftContent = ({ isUserAuthenticated }) => {
         <br />
       )}
       <Typography.Paragraph
-        className={`text-14 font-inter font-normal mb-3 ${
+        className={`text-sm font-inter font-normal mb-3 ${
           isUserAuthenticated ? "-mt-1" : "mt-3"
         }`}
       >
@@ -66,12 +66,12 @@ const LeftContent = ({ isUserAuthenticated }) => {
       </Typography.Paragraph>
       {isUserAuthenticated ? (
         <TopicCreateButton
-          className="w-4/12 h-[50px] text-14 bg-blue px-3 rounded-lg text-white hover:bg-hblue hover:text-white flex items-center justify-center font-medium lg:w-8/12 md:w-6/12 sm:w-full mt-5"
+          className="w-6/12 h-[50px] text-sm bg-canBlue px-3 rounded-xl text-white hover:bg-canHoverBlue hover:text-white flex items-center justify-center font-medium md:w-4/12 mt-5"
           isWithIcon={true}
         />
       ) : (
         <PrimaryButton
-          className="w-4/12 h-[50px] text-14 lg:w-8/12 md:w-6/12 sm:w-full mt-3"
+          className="w-6/12 h-[50px] text-sm md:w-4/12 mt-3"
           onClick={onBrowseClick}
         >
           Browse More <ArrowRightOutlined />

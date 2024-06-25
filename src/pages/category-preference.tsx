@@ -3,7 +3,7 @@ import Preferences from "src/components/ComponentPages/CategoryPreferences";
 
 const RegistrationUserPreferences = () => {
   return (
-    <Layout className="bg-greyBg min-h-screen">
+    <Layout className="bg-canGrey1 min-h-screen">
       <Preferences />
     </Layout>
   );

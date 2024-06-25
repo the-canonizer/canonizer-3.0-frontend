@@ -14,26 +14,26 @@ const RightContent = ({ isUserAuthenticated }) => {
 
   return (
     <div
-      className={`pr-0 sm:pr-0 text-center ${
-        isUserAuthenticated ? "w-[70%] ml-auto" : "w-full"
-      } h-full pt-3 md:mt-4 md:h-auto md:pb-4 ${
+      className={`pr-0 text-center ${
+        isUserAuthenticated ? "lg:w-[70%] ml-auto" : "w-full"
+      } h-auto pt-3 mt-4 md:mt-0 md:h-full md:pb-0 pb-4 ${
         isUserAuthenticated ? "bg-white" : "bg-white"
       } z-[1000] relative rounded-xl`}
     >
-      <Typography.Paragraph className="m-0 text-medium font-medium font-inter">
+      <Typography.Paragraph className="m-0 text-xl font-inter">
         {isUserAuthenticated ? "For Existing Users" : "For Guest User"}
       </Typography.Paragraph>
       <PrimaryButton
-        className="w-auto h-auto leading-null p-0 rounded-full bg-transparent border-0 hover:bg-transparent focus:bg-transparent mb-3"
+        className="w-auto h-auto leading-0 p-0 rounded-full !bg-transparent border-0 mb-3"
         onClick={onPlayClick}
       >
         <PlayCircleFilled
-          className={`p-0 ${
-            isUserAuthenticated ? "text-red" : "text-blue"
-          } text-2xl`}
+          className={`${
+            isUserAuthenticated ? "text-canRed" : "text-canBlue"
+          } text-5xl`}
         />
       </PrimaryButton>
-      <Typography.Paragraph className="text-14 font-inter font-normal mb-3">
+      <Typography.Paragraph className="text-sm font-inter font-normal mb-3">
         {isUserAuthenticated
           ? "show them how to use to it’s maximum potential"
           : "explain what Canonizer is at a beginner level, and how it can be used"}

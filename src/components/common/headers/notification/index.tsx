@@ -180,7 +180,7 @@ const Notifications = () => {
           count={count}
           color="orange"
           size="small"
-          className="text-medium text-blue font-medium cursor-pointer"
+          className="text-xl text-canBlue font-medium cursor-pointer"
           data-testid="clickable"
         >
           <BellOutlined className="" />
