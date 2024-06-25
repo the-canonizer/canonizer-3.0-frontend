@@ -38,7 +38,7 @@ const HotTopics = () => {
 
       <Row className="mt-4" gutter={20}>
         {topicData?.map((ft) => (
-          <Col md={12} lg={8} xs={24} sm={24} className="mb-3">
+          <Col md={12} lg={8} xs={24} sm={24} className="mb-3" key={ft?.id}>
             <CommonCard
               className="border-0 h-full hocus:shadow-lg [&_.rightArrow]:hover:block mainCard hocus:bg-white mb-4 [&_.ant-card-body]:flex [&_.ant-card-body]:flex-col [&_.ant-card-body]:h-full"
               key={ft?.id}
