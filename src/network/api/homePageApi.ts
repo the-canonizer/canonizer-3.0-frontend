@@ -14,6 +14,7 @@ import {
   pushToThreads,
   pushToTopics,
 } from "../../store/slices/recentActivitiesSlice";
+import { staticData } from "src/constants/staticData";
 
 export const getCanonizedTopicsApi = async (reqBody, loadMore = false) => {
   try {
@@ -21,6 +22,7 @@ export const getCanonizedTopicsApi = async (reqBody, loadMore = false) => {
       HomePageRequests.getCanonizedTopics(reqBody),
       false
     );
+    // const topics=staticData
     if (loadMore) {
       store.dispatch(pushToCanonizedTopics(topics?.data));
     } else {
