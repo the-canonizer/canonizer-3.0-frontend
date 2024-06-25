@@ -114,7 +114,7 @@ export async function getServerSideProps({ req }) {
   return {
     props: {
       current_date: currentDate,
-      hotTopicData: resData?.data?.items ? resData?.data?.items : null,
+      hotTopicData: resData?.data?.items ? resData?.data?.items : [],
       featuredData: featuredData?.data?.items
         ? featuredData?.data?.items
         : null,
