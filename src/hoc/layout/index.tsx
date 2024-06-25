@@ -4,7 +4,6 @@ import styles from "./layout.module.scss";
 
 import MainHeader from "src/components/common/headers/mainHeader";
 import FooterComp from "src/components/common/footer";
-import GoogleAd from "src/components/googleAds";
 import { useRouter } from "next/router";
 import LoginModal from "src/components/ComponentPages/Login/loginModal";
 import RegistrationModal from "src/components/ComponentPages/Registration/registrationModal";
