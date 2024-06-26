@@ -618,51 +618,44 @@ const SupportTreeCard = ({
                   : K?.exceptionalMessages?.manageSupport}
               </CustomButton>
             </div>
-            <>
-              {isCampLeader()?.campLeaderExist ||
-              isCampLeader()?.delegateSupportExist ? (
-                <>
-                  <Popover content={renderPopupMsg()}>
-                    <a className="printHIde">
-                      <Button
-                        className="btn-green"
-                        disabled={true}
-                        onClick={() => {
-                          if (isUserAuthenticated) {
-                            setSignModalOpen(true);
-                          } else {
-                            dispatch(showLoginModal());
-                          }
-                        }}
-                      >
-                        {"Sign"}
-                      </Button>
-                    </a>
-                  </Popover>
-                </>
-              ) : (
-                <>
-                  <Tooltip
-                    title={"This will delegate your support to the camp leader"}
-                    placement={"topRight"}
-                  >
-                    <CustomButton
-                      className="btn-green"
-                      disabled={asof == "bydate" || campRecord?.is_archive == 1}
-                      onClick={() => {
-                        if (isUserAuthenticated) {
-                          setSignModalOpen(true);
-                        } else {
-                          dispatch(showLoginModal());
-                        }
-                      }}
-                    >
-                      {"Sign"}
-                    </CustomButton>
-                  </Tooltip>
-                </>
-              )}
-            </>
+            {isCampLeader()?.campLeaderExist ||
+            isCampLeader()?.delegateSupportExist ? (
+              <Popover content={renderPopupMsg}>
+                <Button
+                  className="btn-green printHIde"
+                  disabled={true}
+                  onClick={() => {
+                    if (isUserAuthenticated) {
+                      setSignModalOpen(true);
+                    } else {
+                      dispatch(showLoginModal());
+                    }
+                  }}
+                >
+                  Sign
+                </Button>
+              </Popover>
+            ) : (
+              <Tooltip
+                title="This will delegate your support to the camp leader"
+                placement="topRight"
+              >
+                <CustomButton
+                  className="btn-green"
+                  disabled={asof === "bydate" || campRecord?.is_archive === 1}
+                  onClick={() => {
+                    if (isUserAuthenticated) {
+                      setSignModalOpen(true);
+                    } else {
+                      dispatch(showLoginModal());
+                    }
+                  }}
+                >
+                  Sign
+                </CustomButton>
+              </Tooltip>
+            )}
+
             {/* </a>
         </Link> */}
             {SignModal()}
