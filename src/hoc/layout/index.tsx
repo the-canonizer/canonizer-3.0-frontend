@@ -4,7 +4,7 @@ import styles from "./layout.module.scss";
 
 import MainHeader from "src/components/common/headers/mainHeader";
 import FooterComp from "src/components/common/footer";
-import LoginModal from "src/components/ComponentPages/Login/loginModal";
+// import LoginModal from "src/components/ComponentPages/Login/loginModal";
 import RegistrationModal from "src/components/ComponentPages/Registration/registrationModal";
 import DisclaimerMsg from "src/components/common/disclaimer";
 import ArchivedCampMsg from "src/components/common/ArchivedCampMsg";
@@ -46,7 +46,7 @@ function CustomLayout(props: any) {
 
       <DisclaimerMsg />
       <ArchivedCampMsg />
-      <LoginModal />
+      {/* <LoginModal /> */}
       <RegistrationModal />
 
       <Layout
