@@ -49,7 +49,6 @@ function CustomLayout(props: any) {
 
       <DisclaimerMsg />
       <ArchivedCampMsg />
-      <LoginModal />
       <RegistrationModal />
 
       <Layout

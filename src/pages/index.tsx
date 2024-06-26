@@ -109,15 +109,11 @@ export async function getServerSideProps({ req }) {
   const featuredData = await GetFeaturedTopicDetails(token as string);
   const prefData = await GetPreferedTopicDetails(token as string);
 
-  console.log("resData---", resData);
-
   return {
     props: {
       current_date: currentDate,
       hotTopicData: resData?.data?.items ? resData?.data?.items : [],
-      featuredData: featuredData?.data?.items
-        ? featuredData?.data?.items
-        : null,
+      featuredData: featuredData?.data?.items ? featuredData?.data?.items : [],
       prefData: prefData?.data?.items ? prefData?.data?.items : null,
     },
   };

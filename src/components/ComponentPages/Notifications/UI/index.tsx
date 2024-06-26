@@ -1,11 +1,12 @@
-import { Fragment } from "react";
-import { Card, Typography, Pagination } from "antd";
+import { Typography, Pagination, Button } from "antd";
+import { LeftOutlined } from "@ant-design/icons";
 
 import styles from "./Notifications.module.scss";
 
-import SideBar from "../../CampForum/UI/sidebar";
 import Lists from "./List";
-import CustomSkelton from "../../../common/customSkelton";
+import CustomSkelton from "components/common/customSkelton";
+import CommonCards from "components/shared/Card";
+import { Fragment } from "react";
 
 const { Title } = Typography;
 
@@ -16,20 +17,40 @@ const NotificationsListUI = ({
   onViewMoreClick,
   total,
   per_page,
-}: any) => {
+  onBackClick,
+  onAllReadClick,
+}) => {
   return (
-    <Fragment>
-      <SideBar />
-      <div className="pageContentWrap">
-        <Card
-          title={
-            <Title level={3} className={styles.cardTitle}>
-              Notifications
-            </Title>
-          }
-          className={styles.notify_card}
-          id="card-title"
-        >
+    <CommonCards
+      title={
+        <Title level={3} className="flex justify-start items-center">
+          <Button
+            onClick={onBackClick}
+            type="link"
+            className="p-0 text-xl flex justify-center items-center mr-2 text-canBlack hover:text-canBlue"
+          >
+            <LeftOutlined />
+          </Button>
+          Notifications
+        </Title>
+      }
+      className="bg-white mb-6 border-0 [&_.ant-card-head]:border-0"
+      id="card-title"
+      extra={
+        <Fragment>
+          <Button
+            onClick={onAllReadClick}
+            type="link"
+            className="mr-2 text-canBlue hover:text-canHoverBlue font-medium text-lg"
+          >
+            Mark all as read
+          </Button>
+        </Fragment>
+      }
+    >
+      <div className="grid">
+        <div className=""></div>
+        <div className="">
           {isLoading ? (
             <CustomSkelton
               skeltonFor="list"
@@ -56,9 +77,9 @@ const NotificationsListUI = ({
               }
             />
           )}
-        </Card>
+        </div>
       </div>
-    </Fragment>
+    </CommonCards>
   );
 };
 

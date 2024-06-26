@@ -19,7 +19,7 @@ const { Text } = Typography;
 function HotTopic() {
   /* eslint-enable */
   const { topicData } = useSelector((state: RootState) => ({
-    topicData: state?.hotTopic?.topicData?.items,
+    topicData: state?.hotTopic?.topicData,
   }));
 
   const settings = {

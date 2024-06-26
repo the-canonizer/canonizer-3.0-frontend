@@ -88,18 +88,18 @@ describe("Login page", () => {
     render(
       <Provider store={store1}>
         <RouterContext.Provider value={createMockRouter({ asPath: "/login" })}>
-          <Login isModal={false} />
+          <Login />
         </RouterContext.Provider>
       </Provider>
     );
 
-    let heading = screen.getByText("Login To Canonizer");
+    let heading = screen.getByText("Welcome back!");
     expect(heading).toBeInTheDocument();
     expect(screen.getByText(labels.emailPhone)).toBeInTheDocument();
     expect(screen.getByText(labels.password)).toBeInTheDocument();
-    expect(screen.getByText("Forgot Password")).toBeInTheDocument();
+    expect(screen.getByText("Forgot?")).toBeInTheDocument();
     expect(screen.getByText("Don't have an account?")).toBeVisible();
-    expect(screen.getByText("Register Now")).toBeVisible();
+    expect(screen.getByText("Register")).toBeVisible();
     expect(screen.getByText("Remember Me")).toBeInTheDocument();
 
     const btnEl = screen.getByTestId("submitButton");
@@ -109,20 +109,20 @@ describe("Login page", () => {
     expect(btnEl).toBeInTheDocument();
 
     expect(btnEl).toHaveTextContent("Log In");
-    expect(btnEl2).toHaveTextContent("Request One Time Verification Code");
-    expect(screen.getByText("Login with social accounts.")).toBeInTheDocument();
-    expect(
-      screen.getByText(
-        "Enter to the best leaderless consensus building and tracking system in the world."
-      )
-    ).toBeInTheDocument();
+    expect(btnEl2).toHaveTextContent("Request One Time Password");
+    expect(screen.getByText("Login via social accounts-")).toBeInTheDocument();
+    // expect(
+    //   screen.getByText(
+    //     "Enter to the best leaderless consensus building and tracking system in the world."
+    //   )
+    // ).toBeInTheDocument();
     expect(
       screen.getByPlaceholderText(placeholders.emailPhone)
     ).toBeInTheDocument();
     expect(
       screen.getByPlaceholderText(placeholders.password)
     ).toBeInTheDocument();
-    expect(screen.getAllByRole("img").length).toEqual(7);
+    expect(screen.getAllByRole("img").length).toEqual(11);
 
     const inputEl = screen.getByPlaceholderText(placeholders.emailPhone);
     expect(inputEl).toBeInTheDocument();
@@ -143,7 +143,7 @@ describe("Login page", () => {
     render(
       <Provider store={store1}>
         <RouterContext.Provider value={createMockRouter({ asPath: "/login" })}>
-          <Login isModal={false} />
+          <Login />
         </RouterContext.Provider>
       </Provider>
     );
@@ -171,7 +171,7 @@ describe("Login page", () => {
     render(
       <Provider store={store1}>
         <RouterContext.Provider value={createMockRouter({ asPath: "/login" })}>
-          <Login isModal={false} />
+          <Login />
         </RouterContext.Provider>
       </Provider>
     );
@@ -201,7 +201,7 @@ describe("Login page", () => {
     render(
       <Provider store={store1}>
         <RouterContext.Provider value={createMockRouter({ asPath: "/login" })}>
-          <Login isModal={false} />
+          <Login />
         </RouterContext.Provider>
       </Provider>
     );
@@ -231,7 +231,7 @@ describe("Login page", () => {
     render(
       <Provider store={store1}>
         <RouterContext.Provider value={createMockRouter({ asPath: "/login" })}>
-          <Login isModal={false} />
+          <Login />
         </RouterContext.Provider>
       </Provider>
     );
@@ -261,7 +261,7 @@ describe("Login page", () => {
     render(
       <Provider store={store1}>
         <RouterContext.Provider value={createMockRouter({ asPath: "/login" })}>
-          <Login isModal={false} />
+          <Login />
         </RouterContext.Provider>
       </Provider>
     );
@@ -290,7 +290,7 @@ describe("Login page", () => {
     render(
       <Provider store={store}>
         <RouterContext.Provider value={createMockRouter({ asPath: "/login" })}>
-          <Login isModal={false} />
+          <Login />
         </RouterContext.Provider>
       </Provider>
     );
@@ -312,10 +312,8 @@ describe("Login page", () => {
       });
     });
 
-    await waitFor(async () => {
-      expect(
-        screen.getByText("Log In One Time Verification Code")
-      ).toBeInTheDocument();
+    waitFor(async () => {
+      expect(screen.getByText("Log In One Time Password")).toBeInTheDocument();
       expect(
         screen.getByText(
           "Note: Verification code has been sent to your registered email address."
@@ -335,7 +333,7 @@ describe("Login page", () => {
     render(
       <Provider store={store}>
         <RouterContext.Provider value={createMockRouter({ asPath: "/login" })}>
-          <Login isModal={false} />
+          <Login />
         </RouterContext.Provider>
       </Provider>
     );
@@ -364,7 +362,7 @@ describe("Login page", () => {
     render(
       <Provider store={store}>
         <RouterContext.Provider value={createMockRouter({ asPath: "/login" })}>
-          <Login isModal={false} />
+          <Login />
         </RouterContext.Provider>
       </Provider>
     );

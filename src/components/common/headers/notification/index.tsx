@@ -1,34 +1,15 @@
-import React, { Fragment, useState, useEffect } from "react";
-import {
-  Dropdown,
-  Badge,
-  Card,
-  Typography,
-  Switch,
-  notification,
-  Spin,
-  message,
-} from "antd";
+import { Fragment } from "react";
+import { Dropdown, Badge, Card, Typography } from "antd";
 import Link from "next/link";
 import { BellOutlined } from "@ant-design/icons";
-import { useRouter } from "next/router";
-import localforage from "localforage";
-import firebase from "firebase/app";
 import { useSelector } from "react-redux";
 
-import styles from "./notification.module.scss";
-
-import { firebaseCloudMessaging } from "src/firebaseConfig/firebase";
 import Lists from "src/components/ComponentPages/Notifications/UI/List";
-import { updateFCMToken } from "src/network/api/notificationAPI";
 import { RootState } from "src/store";
 
-import Fav from "./icon";
+import NotificationSwitch from "./switch";
 
 const Notifications = () => {
-  const [checked, setChecked] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-
   const { count, list } = useSelector((state: RootState) => {
     return {
       count: state.notifications.headerNotification.count,
@@ -36,130 +17,28 @@ const Notifications = () => {
     };
   });
 
-  const router = useRouter();
-
-  const updateToken = async (tc: string) => {
-    await updateFCMToken(tc);
-  };
-
-  useEffect(() => {
-    async function setToken() {
-      try {
-        const token = await firebaseCloudMessaging.init();
-        const token2 = await localforage.getItem("fcm_token");
-
-        if (token || token2) {
-          localforage.setItem("fcm_token", token2);
-          setChecked(true);
-          getMessage();
-        }
-      } catch (error) {
-        // log error or whateever you do
-      }
-    }
-
-    setToken();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const onSwitch = async (st: any, event: { stopPropagation: () => void }) => {
-    setIsLoading(true);
-    event.stopPropagation();
-
-    if (st) {
-      const registration = await navigator.serviceWorker.ready;
-
-      const messaging = firebase.messaging();
-
-      if ("serviceWorker" in navigator && "PushManager" in window) {
-        try {
-          const status = await Notification.requestPermission();
-          if (status === "granted") {
-            const fcm_token = await messaging.getToken({
-              vapidKey: process.env.NEXT_PUBLIC_FCM_CERTIFICATE_KEY,
-              serviceWorkerRegistration: registration,
-            });
-
-            if (fcm_token) {
-              await localforage.setItem("fcm_token", fcm_token);
-              await updateToken(fcm_token);
-              setChecked(true);
-              getMessage();
-              setIsLoading(false);
-            } else {
-              message.info("Something went wrong!");
-              setIsLoading(false);
-            }
-          } else {
-            message.info("Notification permission denied!");
-            setIsLoading(false);
-          }
-        } catch (error) {
-          message.error("Failed to request notification permission:", error);
-        } finally {
-          setIsLoading(false);
-        }
-      } else {
-        message.error(
-          "Something went wrong or Push notification is not supported in this device."
-        );
-        setIsLoading(false);
-      }
-    } else {
-      await localforage.removeItem("fcm_token");
-      await updateToken("disabled");
-      setChecked(false);
-      setIsLoading(false);
-    }
-  };
-
-  function getMessage() {
-    const messaging = firebase.messaging();
-    if ("serviceWorker" in navigator && "PushManager" in window) {
-      messaging.onMessage((message) => {
-        const url = message.data["gcm.notification.url"];
-
-        notification.open({
-          message: message?.notification?.title,
-          description: message?.notification?.body,
-          icon: <Fav />,
-          onClick: () => {
-            router?.push(url);
-          },
-        });
-      });
-    }
-  }
-
   const notificationDropdown = (
     <Card
-      className={`z-50 padding-[15px] relative ${styles.notificationCard}`}
+      className={`z-50 p-4 rounded-lg relative max-w-screen-sm min-w-80 w-96 [&_.ant-card-head]:p-0 [&_.ant-card-head-title]:w-full [&_.ant-card-head-title]:py-0 [&_.ant-card-body]:p-0`}
       title={
-        <Fragment>
+        <div className="grid grid-cols-2 justify-betweens items-center w-full">
           <Typography.Paragraph
-            className="text-[12px] uppercase font-medium text-[#9ca3af]"
+            className="text-base capitalize font-medium text-canBlack mb-0 block"
             id="notification-title"
           >
             notifications
           </Typography.Paragraph>
-          <Typography.Text className="flex items-center justify-between w-full">
-            <small data-testid="enable-text">Enable push notification </small>
-            {isLoading ? (
-              <Spin size="small" />
-            ) : (
-              <Switch
-                size="small"
-                checked={checked}
-                onClick={onSwitch}
-                onChange={(e, e1) => e1.stopPropagation()}
-              />
-            )}
-          </Typography.Text>
-        </Fragment>
+          <NotificationSwitch />
+        </div>
       }
       actions={[
         <Link href="/notifications" passHref key="view_all">
-          <a id="view-all-btn">View All</a>
+          <a
+            id="view-all-btn"
+            className="!text-canBlack font-medium hover:!text-canBlue"
+          >
+            View All
+          </a>
         </Link>,
       ]}
     >

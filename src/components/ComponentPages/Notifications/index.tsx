@@ -1,9 +1,10 @@
-import { useState, Fragment, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
 import NotificationsListUI from "./UI";
 import { getNotificationsList } from "src/network/api/notificationAPI";
 import { RootState } from "src/store";
+import CustomSpinner from "components/shared/CustomSpinner";
 
 const SettingsUI = () => {
   const [page, setPage] = useState(1);
@@ -37,8 +38,16 @@ const SettingsUI = () => {
     setPage(p);
   };
 
+  const onBackClick = (e) => {
+    e?.preventDefault();
+  };
+
+  const onAllReadClick = (e) => {
+    e?.preventDefault();
+  };
+
   return (
-    <Fragment>
+    <CustomSpinner key="notification-spinner" spinning={isLoading}>
       <NotificationsListUI
         list={list}
         isLoading={isLoading}
@@ -46,8 +55,10 @@ const SettingsUI = () => {
         onViewMoreClick={onViewMoreClick}
         total={total}
         per_page={per_page}
+        onBackClick={onBackClick}
+        onAllReadClick={onAllReadClick}
       />
-    </Fragment>
+    </CustomSpinner>
   );
 };
 export default SettingsUI;
