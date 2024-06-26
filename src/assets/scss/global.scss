@@ -3137,7 +3137,7 @@ div[role="option"]::before {
     @apply my-8 border-[#CCD4E7];
   }
   .browse-actions {
-    @apply flex items-end justify-between gap-1 mb-[3.688rem] md:;
+    @apply flex items-end justify-between gap-1 mb-[3.688rem];
     .ant-form {
       .ant-form-item-required {
         @apply text-[#69748B] text-sm;
