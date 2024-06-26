@@ -3,9 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 export const hotTopicSlice = createSlice({
   name: "hotTopic",
   initialState: {
-    topicData: {
-      items: [],
-    },
+    topicData: [],
     featuredTopic: [],
     preferedTopic: [],
   },

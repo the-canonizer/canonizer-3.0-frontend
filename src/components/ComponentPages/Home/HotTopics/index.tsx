@@ -14,7 +14,7 @@ import SectionHeading from "../FeaturedTopic/sectionsHeading";
 
 const HotTopics = () => {
   const { topicData } = useSelector((state: RootState) => ({
-    topicData: state?.hotTopic?.topicData?.items,
+    topicData: state?.hotTopic?.topicData,
   }));
 
   if (!topicData?.length) {
