@@ -39,6 +39,7 @@ import {
 import { setIsSupportModal } from "src/store/slices/topicSlice";
 import { showLoginModal } from "src/store/slices/uiSlice";
 import SignCamp from "./SignCamp";
+import { setUserNickNames } from "src/store/slices/authSlice";
 
 const { Paragraph } = Typography;
 const { Panel } = Collapse;
@@ -175,6 +176,7 @@ const SupportTreeCard = ({
       arr.push(value.id);
     });
     setUserNickNameList(arr);
+    dispatch(setUserNickNames(arr))
   };
 
   useEffect(() => {
