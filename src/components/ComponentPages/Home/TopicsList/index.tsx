@@ -1,5 +1,6 @@
 import {
   AntDesignOutlined,
+  CloseOutlined,
   DownOutlined,
   EyeOutlined,
   FlagOutlined,
@@ -126,10 +127,6 @@ const TopicsList = () => {
 
   console.log("====================================");
   console.log("canonizedTopics", canonizedTopics);
-  console.log("====================================");
-
-  console.log("====================================");
-  console.log("nameSpacesList", nameSpacesList);
   console.log("====================================");
 
   const infoContent = (
@@ -398,9 +395,6 @@ const TopicsList = () => {
               >
                 <Select
                   size="large"
-                  style={{
-                    width: 390,
-                  }}
                   virtual={true}
                   showSearch
                   placeholder="Select a person"
@@ -431,62 +425,31 @@ const TopicsList = () => {
                 </Select>
               </Form.Item>
             </Form>
-            <Space>
-              {/* <div className={styles.inputSearchTopic}> */}
+            <div className="search-wrapper">
               <Search
-                key={inputSearch}
                 size="large"
-                placeholder="Search via keyword"
-                allowClear={allowClear}
-                // className={styles.topic}
-                defaultValue={inputSearch}
+                className="browse-search"
+                placeholder="input search text"
                 onSearch={onSearch}
-                onChange={handleKeyUpSearch}
-                ref={inputRef}
-                disabled={loading}
-                onBlur={() => {
-                  setTimeout(() => {
-                    setShowSearchDropdown(false);
-                  }, 300);
-                }}
-                onFocus={() => {
-                  // if (!inputSearch) {
-                  //   setSearchTerm(inputSearch);
-                  // }
-                  setSearchLoading(false);
-                  setShowSearchDropdown(true);
-                }}
               />
-              {/* <div className={styles.dropdown_list}> */}
-              <ul>
-                {searchLoading ? (
-                  // <li className={styles.searLoader}>
-                  <LoadingOutlined spin />
-                ) : // </li>
-                searchedResult?.length > 0 ? (
-                  searchedResult?.map((t, i) => (
-                    <li
-                      key={i}
-                      onClick={hanldeTopicNameClick.bind(this, t?.topic_name)}
-                    >
-                      {t?.topic_name}
-                    </li>
-                  ))
-                ) : searchTerm ? (
-                  <li>No Data</li>
-                ) : (
-                  ""
-                )}
-              </ul>
-              {/* </div> */}
-              {/* </div> */}
-              {/* <Button size="large" className="flex items-center rounded-md">
-              Sort By
-              <SortDescendingOutlined />
-            </Button> */}
               <SortTopics />
-            </Space>
+            </div>
           </div>
+          {!allowClear && (
+            <div className="search-response">
+              <p>3 results Found</p>
+              <Button
+                type="link"
+                danger
+                className="btn-clear"
+                onClick={() => setAllowClear(false)}
+              >
+                Clear all
+                <CloseOutlined />
+              </Button>
+            </div>
+          )}
+
           <Row gutter={[24, 24]}>
             {canonizedTopics?.topics?.map((item, index) => (
               <Col key={index} xs={24} sm={24} md={12}>
