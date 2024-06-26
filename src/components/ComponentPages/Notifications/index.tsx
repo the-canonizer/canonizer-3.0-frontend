@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import { useRouter } from "next/router";
 
 import NotificationsListUI from "./UI";
 import { getNotificationsList } from "src/network/api/notificationAPI";
@@ -7,9 +8,11 @@ import { RootState } from "src/store";
 import CustomSpinner from "components/shared/CustomSpinner";
 
 const SettingsUI = () => {
+  const router = useRouter();
+
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const per_page = 50;
 
@@ -20,7 +23,8 @@ const SettingsUI = () => {
   });
 
   const getList = async (p) => {
-    const res = await getNotificationsList(p, per_page);
+    setIsLoading(true);
+    const res = await getNotificationsList(p, -1);
     if (res && res?.status_code == 200) {
       setTotal(res?.data?.total_rows);
     }
@@ -46,6 +50,17 @@ const SettingsUI = () => {
     e?.preventDefault();
   };
 
+  const onFilterClick = (e, type) => {
+    e?.preventDefault();
+    router.query.filter = type;
+
+    if (router?.query?.filter === "0") {
+      delete router.query.filter;
+    }
+
+    router.push(router, null, { shallow: true });
+  };
+
   return (
     <CustomSpinner key="notification-spinner" spinning={isLoading}>
       <NotificationsListUI
@@ -57,6 +72,8 @@ const SettingsUI = () => {
         per_page={per_page}
         onBackClick={onBackClick}
         onAllReadClick={onAllReadClick}
+        router={router}
+        onFilterClick={onFilterClick}
       />
     </CustomSpinner>
   );

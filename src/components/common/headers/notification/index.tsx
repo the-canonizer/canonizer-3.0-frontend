@@ -28,7 +28,7 @@ const Notifications = () => {
           >
             notifications
           </Typography.Paragraph>
-          <NotificationSwitch />
+          <NotificationSwitch key="notificatoin-popup-switch" />
         </div>
       }
       actions={[
