@@ -52,4 +52,6 @@ jobs:
               -Dsonar.projectKey=canonizer-3.0-frontend \
               -Dsonar.sources=. \
               -Dsonar.host.url=http://110.39.11.117:9033 \
-              -Dsonar.login=sqp_f81c80af93a57be5d4de83a24e1f9ef55a003049
+              -Dsonar.login=sqp_f81c80af93a57be5d4de83a24e1f9ef55a003049;
+            cd /home/sonar/the-canonizer/reports/;
+            python3 canonizer-3.0-frontend-report.py
