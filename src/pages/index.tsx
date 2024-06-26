@@ -87,8 +87,6 @@ function Home({ current_date, hotTopicData, featuredData, prefData }: any) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Test commit
-
   return (
     <Fragment>
       <HomePageContainer />
