@@ -135,20 +135,28 @@ const CurrentCampCard = ({ loadingIndicator, backGroundColorClass }: any) => {
                         history &&
                         (campRecord[description.key] !=
                         "Nickname not associated." ? (
-                          <Link
-                            href={`/user/supports/${
-                              description.key == "submitter_nick_name"
-                                ? campRecord?.submitter_nick_id
-                                : description.key == "camp_about_nick_name"
-                                ? campRecord?.camp_about_nick_id
-                                : description.key == "camp_leader_nick_name"
-                                ? campRecord?.camp_leader_nick_id
-                                : ""
-                            }?canon=${topicRecord?.namespace_id || ""}`}
-                            passHref
-                          >
-                            <a>{campRecord[description.key]}</a>
-                          </Link>
+                          <>
+                          {
+                            campRecord[description.key] !=="" ? <>
+                            <Link
+                              href={`/user/supports/${
+                                description.key == "submitter_nick_name"
+                                  ? campRecord?.submitter_nick_id
+                                  : description.key == "camp_about_nick_name"
+                                  ? campRecord?.camp_about_nick_id
+                                  : description.key == "camp_leader_nick_name"
+                                  ? campRecord?.camp_leader_nick_id
+                                  : ""
+                              }?canon=${topicRecord?.namespace_id || ""}`}
+                              passHref
+                            >
+                              <a>{campRecord[description.key]}</a>
+                            </Link>
+                            </> :<>
+                              No
+                            </>
+                          }
+                          </>
                         ) : (
                           campRecord[description.key]
                         ))

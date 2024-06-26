@@ -70,6 +70,7 @@ const TopicDetailsPage = ({
     dispatch(setHistory(statementHistory));
     dispatch(setTree(tree?.status_code == 200 ? [tree?.treeData] : []));
     dispatch(setCurrentDate(current_date));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   let ErrorStatus =

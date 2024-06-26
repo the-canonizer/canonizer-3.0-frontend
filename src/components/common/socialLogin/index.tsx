@@ -21,10 +21,6 @@ export default function SocialLoginUi({ isNotLogin = false }: any) {
   const [isLoading, setIsLoading] = useState(false);
 
   const dispatch = useDispatch();
-  const fetchNickNameList = async () => {
-    let response = await getNickNameList();
-      dispatch(setUserNickNames(response?.data));
-  }
   
   
   // social login api call
@@ -39,7 +35,6 @@ export default function SocialLoginUi({ isNotLogin = false }: any) {
     const res = await socialLogin(body);
     try {
       if (res.data) {  
-        fetchNickNameList()
         if (isNotLogin) {
           dispatch(setValue({ label: "redirect_type", value: true }));
         }

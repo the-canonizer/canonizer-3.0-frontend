@@ -119,7 +119,7 @@ const Notifications = () => {
     const messaging = firebase.messaging();
     if ("serviceWorker" in navigator && "PushManager" in window) {
       messaging.onMessage((message) => {
-        const url = message.data["gcm.notification.url"];
+        const url = message?.data?.url;
 
         notification.open({
           message: message?.notification?.title,

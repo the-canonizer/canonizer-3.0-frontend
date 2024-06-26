@@ -8,6 +8,7 @@ import {
   logoutUser,
   setSocialUsers,
   setLogout,
+  setUserNickNames,
 } from "../../store/slices/authSlice";
 import { showMultiUserModal, updateStatus } from "../../store/slices/uiSlice";
 import NetworkCall from "../networkCall";
@@ -99,6 +100,7 @@ export const logout = async (error = "", status = null, count: number = 1) => {
           is_archive: 0,
         })
       );
+      store.dispatch(setUserNickNames(null))
 
       if (+state.ui.apiStatus === +status) {
         return;
