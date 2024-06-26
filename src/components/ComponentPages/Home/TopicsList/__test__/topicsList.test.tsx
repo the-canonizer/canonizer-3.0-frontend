@@ -3,6 +3,7 @@
 import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react";
 import TopicsList from "./TopicsList"; // Adjust the import path as needed
+import { useSelector } from "react-redux";
 
 // Mock useSelector and useDispatch
 jest.mock("react-redux", () => ({

@@ -1,16 +1,5 @@
-import {
-  AntDesignOutlined,
-  CloseOutlined,
-  DownOutlined,
-  EyeOutlined,
-  FlagOutlined,
-  LoadingOutlined,
-  RightOutlined,
-  SearchOutlined,
-  SortDescendingOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
-import { Dropdown, Menu, Select } from "antd";
+import { CloseOutlined, EyeOutlined, FlagOutlined } from "@ant-design/icons";
+import { Menu, Select } from "antd";
 import Link from "next/link";
 import {
   Row,
@@ -30,10 +19,7 @@ import {
   Pagination,
 } from "antd";
 import { useEffect, useRef, useState } from "react";
-import {
-  getCanonizedTopicsApi,
-  getCanonizedTopicsForSuggestion,
-} from "src/network/api/homePageApi";
+import { getCanonizedTopicsApi } from "src/network/api/homePageApi";
 import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "src/store";
@@ -42,14 +28,9 @@ import useAuthentication from "src/hooks/isUserAuthenticated";
 import { changeSlashToArrow } from "src/utils/generalUtility";
 import SortTopics from "components/ComponentPages/SortingTopics";
 import CustomSkelton from "components/common/customSkelton";
+import AvatarGroup from "components/shared/AvaratGroup";
 const { Title } = Typography;
 const { Search } = Input;
-const onChange = (value) => {
-  console.log(`selected ${value}`);
-};
-const onSearch = (value) => {
-  console.log("search:", value);
-};
 
 const TopicsList = () => {
   const router = useRouter();
@@ -118,16 +99,11 @@ const TopicsList = () => {
   const [showSearchDropdown, setShowSearchDropdown] = useState(false);
   const [searchLoading, setSearchLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [searchedResult, setSearchedResult] = useState([]);
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(10);
 
   const inputRef = useRef(null);
   const [allowClear, setAllowClear] = useState(false);
-
-  console.log("====================================");
-  console.log("canonizedTopics", canonizedTopics);
-  console.log("====================================");
 
   const infoContent = (
     <div
@@ -276,49 +252,17 @@ const TopicsList = () => {
   };
 
   const handleKeyUpSearch = (event: any) => {
-    setSearchedResult([]);
     setSearchLoading(true);
     const value = event.target.value?.trim();
     if (value) {
       setAllowClear(true);
       setSearchTerm(value);
-      setShowSearchDropdown(true);
+      // setShowSearchDropdown(true);
     } else {
       setAllowClear(false);
       setSearchTerm("");
-      setSearchedResult([]);
-      setShowSearchDropdown(false);
-    }
-  };
 
-  const onSearchInput = async (value: string) => {
-    try {
-      const reqBody = {
-        algorithm: algorithm,
-        asofdate:
-          asof == ("default" || asof == "review")
-            ? Date.now() / 1000
-            : asofdate,
-        namespace_id: String(nameSpaceId),
-        page_number: 1,
-        page_size: 15,
-        search: value,
-        filter: filterByScore,
-        asof: asof,
-        user_email: onlyMyTopicsCheck ? userEmail : "",
-        // is_archive: is_camp_archive_checked ? 1 : 0,
-      };
-      const res = await getCanonizedTopicsForSuggestion(reqBody);
-      setSearchLoading(false);
-      if (res) {
-        setSearchedResult(res?.topic);
-        setTimeout(() => {
-          inputRef?.current?.focus();
-        }, 400);
-      }
-    } catch (error) {
-      // console.error("Error:", error);
-      /**/
+      // setShowSearchDropdown(false);
     }
   };
 
@@ -334,7 +278,7 @@ const TopicsList = () => {
 
     throttled = setTimeout(() => {
       if (searchTerm?.trim()) {
-        onSearchInput(searchTerm);
+        onSearch(searchTerm);
       }
     }, 800);
 
@@ -427,22 +371,31 @@ const TopicsList = () => {
             </Form>
             <div className="search-wrapper">
               <Search
+                key={inputSearch}
                 size="large"
                 className="browse-search"
-                placeholder="input search text"
+                placeholder="Search via keyword"
+                defaultValue={inputSearch}
+                // value={searchTerm}
                 onSearch={onSearch}
+                onChange={handleKeyUpSearch}
+                ref={inputRef}
+                disabled={loading}
               />
               <SortTopics />
             </div>
           </div>
-          {!allowClear && (
+          {allowClear && (
             <div className="search-response">
-              <p>3 results Found</p>
+              <p>{topicsData?.topics?.length} results Found</p>
               <Button
                 type="link"
                 danger
                 className="btn-clear"
-                onClick={() => setAllowClear(false)}
+                onClick={() => {
+                  setAllowClear(false);
+                  setInputSearch("");
+                }}
               >
                 Clear all
                 <CloseOutlined />
@@ -451,11 +404,11 @@ const TopicsList = () => {
           )}
 
           <Row gutter={[24, 24]}>
-            {canonizedTopics?.topics?.map((item, index) => (
+            {topicsData?.topics?.map((item: any, index) => (
               <Col key={index} xs={24} sm={24} md={12}>
                 <Card className="browse-card">
                   <div className="mb-2.5 flex justify-between">
-                    <p className="font-medium">{item.topic_name}</p>
+                    <p className="font-medium">{item?.topic_name}</p>
                     <Button
                       className="btn-right"
                       type="link"
@@ -483,9 +436,7 @@ const TopicsList = () => {
                     </svg>
                     {item?.topic_score?.toFixed(2)}
                   </Tag>
-                  <p className="card-description">
-                    {item.description || "No description available"}
-                  </p>
+                  <p className="card-description">{item.statement}</p>
                   <List className="">
                     <List.Item className="w-full flex font-medium p-0">
                       <div className="flex justify-between gap-3 w-full items-start flex-wrap">
@@ -503,10 +454,10 @@ const TopicsList = () => {
                           </Popover>
                           <Typography.Paragraph className="m-0 text-lighc font-medium font-inter flex items-center cursor-pointer">
                             <EyeOutlined className="text-[#242B37] p-1 text-base" />
-                            {item?.views ? item?.views : 0}
+                            {item?.camp_views}
                           </Typography.Paragraph>
                         </div>
-                        <Avatar.Group
+                        {/* <Avatar.Group
                           maxCount={4}
                           maxPopoverTrigger="click"
                           // size="large"
@@ -516,7 +467,7 @@ const TopicsList = () => {
                             cursor: "pointer",
                           }}
                         >
-                          {/* {item?.avatar.map((avatarUrl, index) => (
+                          {item?.avatar.map((avatarUrl, index) => (
                           <Avatar
                             key={index}
                             src={avatarUrl}
@@ -524,8 +475,8 @@ const TopicsList = () => {
                             size={32}
                             style={{ backgroundColor: "#87d068" }}
                           />
-                        ))} */}
-                          {/* <Tooltip title="User 1" placement="top">
+                        ))}
+                          <Tooltip title="User 1" placement="top">
                           <Avatar size={32}>K</Avatar>
                         </Tooltip>
                         <Tooltip title="User 2" placement="top">
@@ -533,8 +484,19 @@ const TopicsList = () => {
                         </Tooltip>
                         <Tooltip title="Ant User" placement="top">
                           <Avatar size={32} icon={<UserOutlined />} />
-                        </Tooltip> */}
-                        </Avatar.Group>
+                        </Tooltip>
+                        </Avatar.Group> */}
+                        <AvatarGroup
+                          avatars={item.tree_structure[1].support_tree.map(
+                            (support) => support.user
+                          )}
+                          size="large"
+                          maxCount={4}
+                          maxStyle={{
+                            color: "#f56a00",
+                            backgroundColor: "#fde3cf",
+                          }}
+                        />
                       </div>
                     </List.Item>
                   </List>
