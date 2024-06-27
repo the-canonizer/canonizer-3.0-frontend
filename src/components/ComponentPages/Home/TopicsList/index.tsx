@@ -553,6 +553,7 @@ const TopicsList = () => {
                             cursor: "pointer",
                           }}
                         >
+                          {/* hi */}
                           {/* {item?.avatar.map((avatarUrl, index) => (
                           <Avatar
                             key={index}
