@@ -3128,7 +3128,6 @@ div[role="option"]::before {
     }
   }
 }
-
 .browse-wrapper {
   .browse-title {
     @apply text-[2rem] mb-0;
@@ -3137,23 +3136,47 @@ div[role="option"]::before {
     @apply my-8 border-[#CCD4E7];
   }
   .browse-actions {
-    @apply flex items-end justify-between gap-1 mb-[3.688rem] md:;
+    @apply flex md:items-end justify-between gap-4 mb-9 max-md:flex-col;
     .ant-form {
       .ant-form-item-required {
         @apply text-[#69748B] text-sm;
       }
     }
+    .ant-select-selector {
+      @apply rounded-md;
+    }
+    .search-wrapper {
+      @apply flex gap-4;
+      .browse-search {
+        @apply md:max-w-[350px] w-full;
+        .ant-input {
+          @apply rounded-tl-md rounded-bl-md;
+        }
+        .ant-input-group-addon {
+          .ant-input-search-button {
+            @apply rounded-tr-md rounded-br-md;
+          }
+        }
+      }
+    }
+
     .browse-dropdown {
       @apply mb-0;
       .ant-btn-compact-first-item {
         @apply min-w-[340px] text-start;
       }
-      .ant-select{
-        @apply w-100 max-w-[390px] ;
-        .ant-select-selector{
+      .ant-select {
+        @apply w-[390px] max-md:w-full;
+        .ant-select-selector {
           @apply rounded-md;
         }
       }
+    }
+  }
+  .search-response {
+    @apply flex gap-4 items-center mb-9 font-semibold;
+    .btn-clear {
+      @apply flex gap-1 items-center font-semibold;
     }
   }
   .browse-card {
@@ -3186,5 +3209,4 @@ div[role="option"]::before {
     }
   }
 }
-
 
