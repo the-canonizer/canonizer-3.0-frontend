@@ -67,7 +67,7 @@ const NetworkConstants = {
     ResendOTPForRegistration: `${BaseCanonizerApiUrl}/user/resend-otp`,
 
     // HomePage
-    GetCanonizedTopics: `${BaseCanonizerServiceUrl}/api/v1/topic/getAll`,
+    GetCanonizedTopics: `${BaseCanonizerServiceUrl}/api/v2/topic/getAll`,
 
     GetCanonizedNameSpaces: `${BaseCanonizerApiUrl}/get-all-namespaces`,
     GetWhatsNewContent: `${BaseCanonizerApiUrl}/get-whats-new-content`,

@@ -19,12 +19,7 @@ export const homePageSlice = createSlice({
         numOfPages: action.payload?.number_of_pages,
       };
     },
-    pushToCanonizedTopics: (state, action) => {
-      state.canonizedTopicsData = {
-        ...state.canonizedTopicsData,
-        topics: [...state.canonizedTopicsData.topics, ...action.payload.topic],
-      };
-    },
+   
 
     setCanonizedNameSpaces: (state, action) => {
       state.nameSpaces = action.payload?.data;
@@ -42,7 +37,6 @@ export const {
   setCanonizedTopics,
   setCanonizedNameSpaces,
   setWhatsNewContent,
-  pushToCanonizedTopics,
   setCanonizedAlgorithms,
 } = homePageSlice.actions;
 

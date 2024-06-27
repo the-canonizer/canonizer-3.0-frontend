@@ -4,8 +4,6 @@ import { useDispatch } from "react-redux";
 import { Typography } from "antd";
 
 import Layout from "../hoc/layout";
-// import SideBar from "../components/ComponentPages/Home-old/SideBar";
-// import TopicsList from "../components/ComponentPages/Home-old/TopicsList";
 import TopicsList from "../components/ComponentPages/Home/TopicsList";
 import { setCurrentDate, setOnlyMyTopic } from "src/store/slices/filtersSlice";
 

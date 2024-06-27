@@ -1,6 +1,5 @@
 import { message } from "antd";
 import moment from "moment";
-import numeral from 'numeral';
 
 export const handleError = (error, log = false) => {
   log ? window.console.log(error) : "";
@@ -367,20 +366,4 @@ export const getProperties = (item) => {
 };
 
 
-
-export function formatViews(num) {
-  if (num === 0) {
-      return '0';
-  }
-
-  const formats = ['0', '0.0a', '0.0a', '0.0a'];
-  const suffixes = ['', 'K', 'M', 'B'];
-
-  let index = 0;
-  while (num >= 1000 && index < suffixes.length - 1) {
-      num /= 1000;
-      index++;
-  }
-
-  return numeral(num)?.format(formats[index]) + suffixes[index];
-}
+ 

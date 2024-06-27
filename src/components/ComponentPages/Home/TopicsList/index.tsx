@@ -1,5 +1,5 @@
-import { CloseOutlined, EyeOutlined, FlagOutlined } from "@ant-design/icons";
-import { Menu, Select } from "antd";
+import { CloseOutlined, RightOutlined } from "@ant-design/icons";
+import { Select } from "antd";
 import Link from "next/link";
 import {
   Row,
@@ -9,13 +9,7 @@ import {
   Form,
   Input,
   Button,
-  Space,
-  Card,
   Tag,
-  Popover,
-  List,
-  Tooltip,
-  Avatar,
   Pagination,
 } from "antd";
 import { useEffect, useRef, useState } from "react";
@@ -24,11 +18,14 @@ import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "src/store";
 import { useRouter } from "next/router";
-import useAuthentication from "src/hooks/isUserAuthenticated";
+import CommonCard from "src/components/shared/Card";
 import { changeSlashToArrow } from "src/utils/generalUtility";
 import SortTopics from "components/ComponentPages/SortingTopics";
 import CustomSkelton from "components/common/customSkelton";
 import AvatarGroup from "components/shared/AvaratGroup";
+import ViewCounts from "components/shared/ViewsCount";
+import CardDescription from "../HotTopics/descriptions";
+import NameSpaceLabel from "components/shared/NameSpaceLabel";
 const { Title } = Typography;
 const { Search } = Input;
 
@@ -36,7 +33,6 @@ const TopicsList = () => {
   const router = useRouter();
 
   const dispatch = useDispatch();
-  const { isUserAuthenticated } = useAuthentication();
 
   const {
     canonizedTopics,
@@ -49,7 +45,6 @@ const TopicsList = () => {
     userEmail,
     filterNameSpaceId,
     search,
-    is_checked,
     is_archive,
     onlyMyTopicsCheck,
     loading,
@@ -71,9 +66,6 @@ const TopicsList = () => {
     loading: state?.loading?.loading,
     onlyMyTopicsCheck: state?.filters?.onlyMyTopicsCheck,
   }));
-  const { is_camp_archive_checked } = useSelector((state: RootState) => ({
-    is_camp_archive_checked: state?.utils?.archived_checkbox,
-  }));
   const { sortLatestTopic, sortScoreViewTopic } = useSelector(
     (state: RootState) => ({
       sortLatestTopic: state?.utils?.sortLatestTopic,
@@ -83,27 +75,18 @@ const TopicsList = () => {
   );
   const [topicsData, setTopicsData] = useState(canonizedTopics);
   const [nameSpacesList, setNameSpacesList] = useState(nameSpaces);
-  const [backGroundColorClass, setBackGroundColorClass] = useState("default");
-
-  const [isReview, setIsReview] = useState(asof == "review");
   const [inputSearch, setInputSearch] = useState(search || "");
-
   const [nameSpaceId, setNameSpaceId] = useState(
     String(filterNameSpaceId) || "1"
   );
-
-  const [loadMoreIndicator, setLoadMoreIndicator] = useState(false);
-  const [getTopicsLoadingIndicator, setGetTopicsLoadingIndicator] =
-    useState(false);
   const [selectedNameSpace, setSelectedNameSpace] = useState(filterNameSpace);
-  const [showSearchDropdown, setShowSearchDropdown] = useState(false);
-  const [searchLoading, setSearchLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(10);
-
+  const [totalTopics, setTotalTopics] = useState<any[]>([]);
   const inputRef = useRef(null);
   const [allowClear, setAllowClear] = useState(false);
+  const showTotal = (total) => `Total ${total} items`;
 
   const infoContent = (
     <div
@@ -152,6 +135,47 @@ const TopicsList = () => {
     );
   };
 
+  async function getTopicsApiCallWithReqBody(loadMore = false) {
+    const reqBody = {
+      algorithm: algorithm,
+      asofdate:
+        asof == ("default" || asof == "review") ? Date.now() / 1000 : asofdate,
+      namespace_id: String(nameSpaceId),
+      page_number: pageNumber,
+      page_size: pageSize,
+      search: inputSearch,
+      filter: 0,
+      asof: asof,
+      user_email: onlyMyTopicsCheck ? userEmail : "",
+      is_archive: 0,
+      sort: sortLatestTopic ? true : false,
+      page: "browse",
+    };
+    const response = await getCanonizedTopicsApi(reqBody, loadMore);
+    setTotalTopics(response);
+  }
+
+  function getNameById(id) {
+    const namespace = nameSpacesList.find((item) => item.id === id);
+    return namespace ? namespace.name : null;
+  }
+
+  const onSearch = (value) => {
+    setInputSearch(value.trim());
+    dispatch(setFilterCanonizedTopics({ search: value || "" }));
+  };
+
+  const handleKeyUpSearch = (event: any) => {
+    const value = event.target.value?.trim();
+    if (value) {
+      setAllowClear(true);
+      setSearchTerm(value);
+    } else {
+      setAllowClear(false);
+      setSearchTerm("");
+    }
+  };
+
   useEffect(() => {
     if (String(filterNameSpaceId) !== "1") {
       router.query.canon = String(filterNameSpaceId);
@@ -183,89 +207,6 @@ const TopicsList = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filterNameSpaceId, nameSpacesList]);
 
-  useEffect(() => {
-    setSelectedNameSpace(filterNameSpace);
-    setNameSpaceId(String(filterNameSpaceId));
-    setInputSearch(search.trim());
-    setNameSpacesList(nameSpaces);
-  }, [filterNameSpace, filterNameSpaceId, search, nameSpaces, is_archive]);
-
-  useEffect(() => {
-    setTopicsData(canonizedTopics);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [canonizedTopics?.topics]);
-
-  useEffect(() => {
-    setIsReview(asof == "review");
-    setBackGroundColorClass(asof);
-  }, [asof]);
-
-  useEffect(() => {
-    async function getTopicsApiCall() {
-      setGetTopicsLoadingIndicator(true);
-      await getTopicsApiCallWithReqBody();
-      setGetTopicsLoadingIndicator(false);
-    }
-
-    getTopicsApiCall();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    asofdate,
-    asof,
-    algorithm,
-    nameSpaceId,
-    filterByScore,
-    inputSearch,
-    is_camp_archive_checked,
-    onlyMyTopicsCheck,
-    sortLatestTopic,
-    sortScoreViewTopic,
-    pageSize,
-    pageNumber,
-  ]);
-
-  async function getTopicsApiCallWithReqBody(loadMore = false) {
-    const reqBody = {
-      algorithm: algorithm,
-      asofdate:
-        asof == ("default" || asof == "review") ? Date.now() / 1000 : asofdate,
-      namespace_id: String(nameSpaceId),
-      page_number: pageNumber,
-      page_size: pageSize,
-      search: inputSearch,
-      filter: filterByScore,
-      asof: asof,
-      // archive:archeived?1:0,
-      user_email: onlyMyTopicsCheck ? userEmail : "",
-      is_archive: is_camp_archive_checked ? 1 : 0,
-      sort: sortLatestTopic ? true : false,
-    };
-    await getCanonizedTopicsApi(reqBody, loadMore);
-    setLoadMoreIndicator(false);
-  }
-
-  const onSearch = (value) => {
-    setInputSearch(value.trim());
-    dispatch(setFilterCanonizedTopics({ search: value || "" }));
-    setShowSearchDropdown(false);
-  };
-
-  const handleKeyUpSearch = (event: any) => {
-    setSearchLoading(true);
-    const value = event.target.value?.trim();
-    if (value) {
-      setAllowClear(true);
-      setSearchTerm(value);
-      // setShowSearchDropdown(true);
-    } else {
-      setAllowClear(false);
-      setSearchTerm("");
-
-      // setShowSearchDropdown(false);
-    }
-  };
-
   /* eslint-disable */
   let throttled: NodeJS.Timeout | null = null;
 
@@ -291,32 +232,40 @@ const TopicsList = () => {
   }, [searchTerm]);
   /* eslint-enable */
 
-  const hanldeTopicNameClick = (
-    value: string,
-    e: { preventDefault: () => void }
-  ) => {
-    e.preventDefault();
-    if (value?.trim()) {
-      setInputSearch(value?.trim());
-      setSearchTerm(value?.trim());
-      setShowSearchDropdown(false);
+  useEffect(() => {
+    setSelectedNameSpace(filterNameSpace);
+    setNameSpaceId(String(filterNameSpaceId));
+    setInputSearch(search.trim());
+    setNameSpacesList(nameSpaces);
+  }, [filterNameSpace, filterNameSpaceId, search, nameSpaces, is_archive]);
+
+  useEffect(() => {
+    setTopicsData(canonizedTopics);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [canonizedTopics?.topics]);
+
+  useEffect(() => {
+    async function getTopicsApiCall() {
+      await getTopicsApiCallWithReqBody();
     }
-  };
-  const handleMenuClick = (item) => {
-    console.log("Clicked:", item);
-  };
 
-  const menu = (
-    <Menu onClick={handleMenuClick}>
-      {nameSpacesList?.map((item) => (
-        <Menu.Item key={item.id}>
-          <Tooltip title={item.name}>{item.name}</Tooltip>
-        </Menu.Item>
-      ))}
-    </Menu>
-  );
+    getTopicsApiCall();
 
-  const showTotal = (total) => `Total ${total} items`;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    asofdate,
+    asof,
+    algorithm,
+    nameSpaceId,
+    filterByScore,
+    inputSearch,
+    onlyMyTopicsCheck,
+    sortLatestTopic,
+    sortScoreViewTopic,
+    pageSize,
+    pageNumber,
+  ]);
+
   return (
     <>
       {loading ? (
@@ -385,37 +334,43 @@ const TopicsList = () => {
               <SortTopics />
             </div>
           </div>
-          {allowClear && (
-            <div className="search-response">
-              <p>{topicsData?.topics?.length} results Found</p>
-              <Button
-                type="link"
-                danger
-                className="btn-clear"
-                onClick={() => {
-                  setAllowClear(false);
-                  setInputSearch("");
-                }}
-              >
-                Clear all
-                <CloseOutlined />
-              </Button>
-            </div>
-          )}
+          {allowClear ||
+            (inputSearch.length > 0 && (
+              <div className="search-response">
+                <p>{topicsData?.topics?.length} results Found</p>
+                <Button
+                  type="link"
+                  danger
+                  className="btn-clear"
+                  onClick={() => {
+                    setAllowClear(false);
+                    setInputSearch("");
+                  }}
+                >
+                  Clear all
+                  <CloseOutlined />
+                </Button>
+              </div>
+            ))}
 
           <Row gutter={[24, 24]}>
-            {topicsData?.topics?.map((item: any, index) => (
+            {topicsData?.topics?.map((ft: any, index) => (
               <Col key={index} xs={24} sm={24} md={12}>
-                <Card className="browse-card">
-                  <div className="mb-2.5 flex justify-between">
-                    <p className="font-medium">{item?.topic_name}</p>
-                    <Button
-                      className="btn-right"
-                      type="link"
-                      size="small"
-                      icon={<i className="icon-angle-right"></i>}
-                    />
-                  </div>
+                <CommonCard className="browse-card" key={ft?.id}>
+                  <Link
+                    href={{
+                      pathname: `/topic/${ft?.topic_num}-${
+                        ft?.topic_name || ""
+                      }/${ft?.camp_num || 1}-${ft?.camp_name || "Agreement"}`,
+                    }}
+                  >
+                    <a className="flex justify-between pb-3 items-center">
+                      <Typography.Paragraph className="m-0 text-base font-medium font-inter">
+                        {ft?.topic_name}
+                      </Typography.Paragraph>
+                      <RightOutlined className="text-canBlue font-bold hidden rightArrow" />
+                    </a>
+                  </Link>
                   <Tag
                     className={
                       "bg-canOrange text-white border-0 rounded-[5px] ml-1 inline-flex py-[2px] flex items-center text-12"
@@ -434,80 +389,38 @@ const TopicsList = () => {
                         fill="#fff"
                       />
                     </svg>
-                    {item?.topic_score?.toFixed(2)}
+                    {ft?.topic_score?.toFixed(2)}
                   </Tag>
-                  <p className="card-description">{item.statement}</p>
-                  <List className="">
-                    <List.Item className="w-full flex font-medium p-0">
-                      <div className="flex justify-between gap-3 w-full items-start flex-wrap">
-                        <div className="text-left flex">
-                          <Popover content="Share Topic" placement="top">
-                            <Typography.Paragraph className="bg-transparent border-0 p-0 hover:bg-transparent focus:bg-transparent flex items-center leading-1 mb-0 mr-3">
-                              <FlagOutlined className="text-[#242B37] p-1 text-base" />
-                              <a
-                                href=""
-                                className="text-blue text-base font-inter font-medium hover:hblue"
-                              >
-                                General
-                              </a>
-                            </Typography.Paragraph>
-                          </Popover>
-                          <Typography.Paragraph className="m-0 text-lighc font-medium font-inter flex items-center cursor-pointer">
-                            <EyeOutlined className="text-[#242B37] p-1 text-base" />
-                            {item?.camp_views}
-                          </Typography.Paragraph>
-                        </div>
-                        {/* <Avatar.Group
-                          maxCount={4}
-                          maxPopoverTrigger="click"
-                          // size="large"
-                          maxStyle={{
-                            color: "#f56a00",
-                            backgroundColor: "#fde3cf",
-                            cursor: "pointer",
-                          }}
-                        >
-                          {item?.avatar.map((avatarUrl, index) => (
-                          <Avatar
-                            key={index}
-                            src={avatarUrl}
-                            alt={`Avatar ${index}`}
-                            size={32}
-                            style={{ backgroundColor: "#87d068" }}
-                          />
-                        ))}
-                          <Tooltip title="User 1" placement="top">
-                          <Avatar size={32}>K</Avatar>
-                        </Tooltip>
-                        <Tooltip title="User 2" placement="top">
-                          <Avatar size={32}>M</Avatar>
-                        </Tooltip>
-                        <Tooltip title="Ant User" placement="top">
-                          <Avatar size={32} icon={<UserOutlined />} />
-                        </Tooltip>
-                        </Avatar.Group> */}
-                        <AvatarGroup
-                          avatars={item.tree_structure[1].support_tree.map(
-                            (support) => support.user
-                          )}
-                          size="large"
-                          maxCount={4}
-                          maxStyle={{
-                            color: "#f56a00",
-                            backgroundColor: "#fde3cf",
-                          }}
-                        />
-                      </div>
-                    </List.Item>
-                  </List>
-                </Card>
+                  <div className="card-description">
+                    <CardDescription description={ft?.statement} />
+                  </div>
+                  <div className="flex justify-between mt-auto pt-3 mt-auto flex-row md:flex-row lg:flex-col 2xl:flex-row">
+                    <div className="text-left flex ">
+                      <NameSpaceLabel
+                        namespace={getNameById(ft?.namespace_id)}
+                      />
+                      <ViewCounts views={ft?.camp_views} />
+                    </div>
+                    <AvatarGroup
+                      avatars={ft?.tree_structure[1]?.support_tree?.map(
+                        (support) => support.user
+                      )}
+                      size="large"
+                      maxCount={3}
+                      maxStyle={{
+                        color: "#f56a00",
+                        backgroundColor: "#fde3cf",
+                      }}
+                    />
+                  </div>
+                </CommonCard>
               </Col>
             ))}
           </Row>
           <Pagination
             className="browse-pagination mt-14"
             size="small"
-            total={850}
+            total={totalTopics?.total_count}
             current={pageNumber}
             pageSize={pageSize}
             showTotal={showTotal}
