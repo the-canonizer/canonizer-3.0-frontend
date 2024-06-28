@@ -50,6 +50,7 @@ const SingleAvatar = ({ user }) => {
       return (
         <Avatar style={{ backgroundColor: "#5482C8" }}>
           {user?.first_name?.charAt(0)}
+          {user?.last_name?.charAt(0)}
         </Avatar>
       );
     }

@@ -242,44 +242,30 @@ const CustomSkelton = ({
     />
   ) : skeltonFor == "browse" ? (
     <>
-      <div className="browse-wrapper pb-4">
-        <Skeleton width={500} height={35} />
-        <Divider />
-        <div className="browse-actions">
-          <Form layout="vertical">
-            <Skeleton style={{ width: 150, height: 25 }} />
-            <Skeleton style={{ width: 400, height: 40 }} />
-          </Form>
-          <Space>
-            <Skeleton style={{ width: 35, height: 40 }} />
-            <Skeleton style={{ width: 130, height: 40 }} />
-          </Space>
-        </div>
-        <Row gutter={[24, 24]}>
-          {[...Array(8)].map((_, index) => (
-            <Col key={index} xs={24} sm={24} md={12}>
-              <Card className="browse-card">
-                <div className="mb-2.5 flex justify-between">
-                  <Skeleton style={{ width: 300 }} />
-                </div>
-                <Skeleton style={{ width: 100 }} />
-                <Skeleton style={{ width: 800 }} />
-                <List className="">
-                  <List.Item className="w-full flex font-medium p-0">
-                    <div className="flex justify-between gap-3 w-full items-start flex-wrap">
-                      <div className="text-left flex">
-                        <Skeleton style={{ width: 130 }} />
-                        <Skeleton style={{ width: 40 }} />
-                      </div>
-                      <Skeleton />
+      <Row gutter={[24, 24]}>
+        {[...Array(8)].map((_, index) => (
+          <Col key={index} xs={24} sm={24} md={12}>
+            <Card className="browse-card">
+              <div className="mb-2.5 flex justify-between">
+                <Skeleton style={{ width: 300 }} />
+              </div>
+              <Skeleton style={{ width: 100 }} />
+              <Skeleton style={{ width: 800 }} />
+              <List className="">
+                <List.Item className="w-full flex font-medium p-0">
+                  <div className="flex justify-between gap-3 w-full items-start flex-wrap">
+                    <div className="text-left flex">
+                      <Skeleton style={{ width: 130 }} />
+                      <Skeleton style={{ width: 40 }} />
                     </div>
-                  </List.Item>
-                </List>
-              </Card>
-            </Col>
-          ))}
-        </Row>
-      </div>
+                    <Skeleton />
+                  </div>
+                </List.Item>
+              </List>
+            </Card>
+          </Col>
+        ))}
+      </Row>
     </>
   ) : (
     /* eslint-disable */

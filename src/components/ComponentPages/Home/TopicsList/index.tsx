@@ -19,7 +19,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "src/store";
 import { useRouter } from "next/router";
 import CommonCard from "src/components/shared/Card";
-import { changeSlashToArrow } from "src/utils/generalUtility";
+import {
+  changeSlashToArrow,
+  replaceSpecialCharacters,
+} from "src/utils/generalUtility";
 import SortTopics from "components/ComponentPages/SortingTopics";
 import CustomSkelton from "components/common/customSkelton";
 import AvatarGroup from "components/shared/AvaratGroup";
@@ -31,7 +34,6 @@ const { Search } = Input;
 
 const TopicsList = () => {
   const router = useRouter();
-
   const dispatch = useDispatch();
 
   const {
@@ -45,7 +47,6 @@ const TopicsList = () => {
     userEmail,
     filterNameSpaceId,
     search,
-    is_archive,
     onlyMyTopicsCheck,
     loading,
   } = useSelector((state: RootState) => ({
@@ -60,7 +61,6 @@ const TopicsList = () => {
     filterNameSpaceId: String(state?.filters?.filterObject?.namespace_id),
     search: state?.filters?.filterObject?.search,
     is_checked: state?.utils?.score_checkbox,
-    is_archive: state?.filters?.filterObject?.is_archive,
     filterObject: state?.filters?.filterObject,
     viewThisVersion: state?.filters?.viewThisVersionCheck,
     loading: state?.loading?.loading,
@@ -83,7 +83,7 @@ const TopicsList = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(10);
-  const [totalTopics, setTotalTopics] = useState<any[]>([]);
+  const [totalTopics, setTotalTopics] = useState<any>([]);
   const inputRef = useRef(null);
   const [allowClear, setAllowClear] = useState(false);
   const showTotal = (total) => `Total ${total} items`;
@@ -135,7 +135,7 @@ const TopicsList = () => {
     );
   };
 
-  async function getTopicsApiCallWithReqBody(loadMore = false) {
+  async function getTopicsApiCallWithReqBody() {
     const reqBody = {
       algorithm: algorithm,
       asofdate:
@@ -151,7 +151,7 @@ const TopicsList = () => {
       sort: sortLatestTopic ? true : false,
       page: "browse",
     };
-    const response = await getCanonizedTopicsApi(reqBody, loadMore);
+    const response = await getCanonizedTopicsApi(reqBody);
     setTotalTopics(response);
   }
 
@@ -167,9 +167,10 @@ const TopicsList = () => {
 
   const handleKeyUpSearch = (event: any) => {
     const value = event.target.value?.trim();
-    if (value) {
+    if (value.length > 0) {
       setAllowClear(true);
       setSearchTerm(value);
+      setPageNumber(1);
     } else {
       setAllowClear(false);
       setSearchTerm("");
@@ -186,26 +187,26 @@ const TopicsList = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    if (filterNameSpaceId) {
-      const filteredName = nameSpacesList?.filter((n) => {
-        if (n?.id == filterNameSpaceId) {
-          return n;
-        }
-      });
+  // useEffect(() => {
+  //   if (filterNameSpaceId) {
+  //     const filteredName = nameSpacesList?.filter((n) => {
+  //       if (n?.id == filterNameSpaceId) {
+  //         return n;
+  //       }
+  //     });
 
-      if (filteredName && filteredName.length) {
-        dispatch(
-          setFilterCanonizedTopics({
-            nameSpace: filteredName[0]?.label,
-            namespace_id: String(filteredName[0]?.id),
-          })
-        );
-      }
-    }
+  //     if (filteredName && filteredName.length) {
+  //       dispatch(
+  //         setFilterCanonizedTopics({
+  //           nameSpace: filteredName[0]?.label,
+  //           namespace_id: String(filteredName[0]?.id),
+  //         })
+  //       );
+  //     }
+  //   }
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filterNameSpaceId, nameSpacesList]);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [filterNameSpaceId, nameSpacesList]);
 
   /* eslint-disable */
   let throttled: NodeJS.Timeout | null = null;
@@ -237,7 +238,7 @@ const TopicsList = () => {
     setNameSpaceId(String(filterNameSpaceId));
     setInputSearch(search.trim());
     setNameSpacesList(nameSpaces);
-  }, [filterNameSpace, filterNameSpaceId, search, nameSpaces, is_archive]);
+  }, [filterNameSpace, filterNameSpaceId, search, nameSpaces]);
 
   useEffect(() => {
     setTopicsData(canonizedTopics);
@@ -253,13 +254,8 @@ const TopicsList = () => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    asofdate,
-    asof,
-    algorithm,
     nameSpaceId,
-    filterByScore,
     inputSearch,
-    onlyMyTopicsCheck,
     sortLatestTopic,
     sortScoreViewTopic,
     pageSize,
@@ -268,99 +264,94 @@ const TopicsList = () => {
 
   return (
     <>
-      {loading ? (
-        <>
-          <CustomSkelton skeltonFor="browse" />
-        </>
-      ) : (
-        <div className="browse-wrapper pb-4">
-          <Title level={2} className="browse-title">
-            Browse Canonizer’s topics
-          </Title>
-          <Divider />
-          <div className="browse-actions">
-            <Form layout="vertical">
-              <Form.Item
-                className="browse-dropdown"
-                label="Filter by Canon"
-                required
-                tooltip={infoContent}
-              >
-                <Select
-                  size="large"
-                  virtual={true}
-                  showSearch
-                  placeholder="Select a person"
-                  optionFilterProp="children"
-                  onChange={selectNameSpace}
-                  defaultValue={changeSlashToArrow(selectedNameSpace)}
-                  value={changeSlashToArrow(selectedNameSpace)}
-                  disabled={loading}
-                >
-                  {nameSpacesList?.map((item) => {
-                    return (
-                      <Select.Option
-                        id={`name-space-${item.id}`}
-                        key={item.id}
-                        value={item.id}
-                      >
-                        {changeSlashToArrow(item.label)}
-                      </Select.Option>
-                    );
-                  })}
-                  <Select.Option
-                    id="name-space-custom"
-                    key="custom-key"
-                    value=""
-                  >
-                    All
-                  </Select.Option>
-                </Select>
-              </Form.Item>
-            </Form>
-            <div className="search-wrapper">
-              <Search
-                key={inputSearch}
+      <div className="browse-wrapper pb-4">
+        <Title level={2} className="browse-title">
+          Browse Canonizer’s Topics
+        </Title>
+        <Divider />
+        <div className="browse-actions">
+          <Form layout="vertical">
+            <Form.Item
+              className="browse-dropdown"
+              label="Filter By Canon"
+              required
+              tooltip={infoContent}
+            >
+              <Select
                 size="large"
-                className="browse-search"
-                placeholder="Search via keyword"
-                defaultValue={inputSearch}
-                // value={searchTerm}
-                onSearch={onSearch}
-                onChange={handleKeyUpSearch}
-                ref={inputRef}
+                virtual={true}
+                showSearch
+                placeholder="Select a person"
+                optionFilterProp="children"
+                onChange={selectNameSpace}
+                defaultValue={changeSlashToArrow(selectedNameSpace)}
+                value={changeSlashToArrow(selectedNameSpace)}
                 disabled={loading}
-              />
-              <SortTopics />
-            </div>
+              >
+                {nameSpacesList?.map((item) => {
+                  return (
+                    <Select.Option
+                      id={`name-space-${item.id}`}
+                      key={item.id}
+                      value={item.id}
+                    >
+                      {changeSlashToArrow(item.label)}
+                    </Select.Option>
+                  );
+                })}
+                <Select.Option id="name-space-custom" key="custom-key" value="">
+                  All
+                </Select.Option>
+              </Select>
+            </Form.Item>
+          </Form>
+          <div className="search-wrapper">
+            <Search
+              key={inputSearch}
+              size="large"
+              className="browse-search"
+              placeholder="Search via keyword"
+              defaultValue={inputSearch}
+              // value={searchTerm}
+              onSearch={onSearch}
+              onChange={handleKeyUpSearch}
+              ref={inputRef}
+              disabled={loading}
+            />
+            <SortTopics />
           </div>
-          {allowClear ||
-            (inputSearch.length > 0 && (
-              <div className="search-response">
-                <p>{topicsData?.topics?.length} results Found</p>
-                <Button
-                  type="link"
-                  danger
-                  className="btn-clear"
-                  onClick={() => {
-                    setAllowClear(false);
-                    setInputSearch("");
-                  }}
-                >
-                  Clear all
-                  <CloseOutlined />
-                </Button>
-              </div>
-            ))}
-
+        </div>
+        {allowClear ||
+          (inputSearch.length > 0 && (
+            <div className="search-response">
+              <p>{topicsData?.topics?.length} results Found</p>
+              <Button
+                type="link"
+                danger
+                className="btn-clear"
+                onClick={() => {
+                  setAllowClear(false);
+                  setInputSearch("");
+                }}
+              >
+                Clear all
+                <CloseOutlined />
+              </Button>
+            </div>
+          ))}
+        {loading ? (
+          <>
+            <CustomSkelton skeltonFor="browse" />
+          </>
+        ) : (
           <Row gutter={[24, 24]}>
             {topicsData?.topics?.map((ft: any, index) => (
               <Col key={index} xs={24} sm={24} md={12}>
                 <CommonCard className="browse-card" key={ft?.id}>
                   <Link
                     href={{
-                      pathname: `/topic/${ft?.topic_num}-${
-                        ft?.topic_name || ""
+                      pathname: `/topic/${ft?.topic_id}-${
+                        replaceSpecialCharacters(ft?.topic_name, "-") || ""
                       }/${ft?.camp_num || 1}-${ft?.camp_name || "Agreement"}`,
                     }}
                   >
@@ -369,6 +360,12 @@ const TopicsList = () => {
                         {ft?.topic_name}
                       </Typography.Paragraph>
                       <RightOutlined className="text-canBlue font-bold hidden rightArrow" />
+                      <Button
+                        className="btn-right"
+                        type="link"
+                        size="small"
+                        icon={<i className="icon-angle-right"></i>}
+                      />
                     </a>
                   </Link>
                   <Tag
@@ -417,20 +414,20 @@ const TopicsList = () => {
               </Col>
             ))}
           </Row>
-          <Pagination
-            className="browse-pagination mt-14"
-            size="small"
-            total={totalTopics?.total_count}
-            current={pageNumber}
-            pageSize={pageSize}
-            showTotal={showTotal}
-            pageSizeOptions={[10, 16]}
-            showSizeChanger
-            showQuickJumper
-            onChange={handlePageChange}
-          />
-        </div>
-      )}
+        )}
+        <Pagination
+          className="browse-pagination mt-14"
+          size="small"
+          total={totalTopics?.total_count}
+          current={pageNumber}
+          pageSize={pageSize}
+          showTotal={showTotal}
+          pageSizeOptions={[10, 16]}
+          showSizeChanger
+          showQuickJumper
+          onChange={handlePageChange}
+        />
+      </div>
     </>
   );
 };
