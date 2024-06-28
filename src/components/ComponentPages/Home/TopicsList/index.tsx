@@ -186,6 +186,13 @@ const TopicsList = () => {
     }
   };
 
+  const handleClear = () => {
+    setAllowClear(false);
+    setInputSearch("");
+    setPageNumber(1);
+    dispatch(setFilterCanonizedTopics({ search: "" }));
+  };
+
   useEffect(() => {
     if (String(filterNameSpaceId) !== "1") {
       router.query.canon = String(filterNameSpaceId);
@@ -317,12 +324,7 @@ const TopicsList = () => {
               type="link"
               danger
               className="btn-clear"
-              onClick={() => {
-                setAllowClear(false);
-                setInputSearch("");
-                setPageNumber(1);
-                dispatch(setFilterCanonizedTopics({ search: "" }));
-              }}
+              onClick={() => handleClear()}
             >
               Clear all
               <CloseOutlined />
