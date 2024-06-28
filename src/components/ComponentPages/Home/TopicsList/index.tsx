@@ -91,13 +91,11 @@ const TopicsList = () => {
   const inputRef = useRef(null);
   const [allowClear, setAllowClear] = useState(false);
   const [isCanonChange, setIsCanonChange] = useState(false);
+  const [isBrowsing, setIsBrowsing] = useState(true);
   const showTotal = (total) => `Total ${total} items`;
 
   const infoContent = (
-    <div
-      className="max-w-[300px] w-full"
-      // className={styles.namespacesPopover}
-    >
+    <div className="max-w-[300px] w-full">
       <Title level={5}>Canon</Title>
       <p>
         Canons are a set of topics created for specific organizations and cities
@@ -196,27 +194,6 @@ const TopicsList = () => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  // useEffect(() => {
-  //   if (filterNameSpaceId) {
-  //     const filteredName = nameSpacesList?.filter((n) => {
-  //       if (n?.id == filterNameSpaceId) {
-  //         return n;
-  //       }
-  //     });
-
-  //     if (filteredName && filteredName.length) {
-  //       dispatch(
-  //         setFilterCanonizedTopics({
-  //           nameSpace: filteredName[0]?.label,
-  //           namespace_id: String(filteredName[0]?.id),
-  //         })
-  //       );
-  //     }
-  //   }
-
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [filterNameSpaceId, nameSpacesList]);
 
   /* eslint-disable */
   let throttled: NodeJS.Timeout | null = null;
@@ -332,25 +309,25 @@ const TopicsList = () => {
             <SortTopics />
           </div>
         </div>
-        {allowClear ||
-          (search.length > 0 && (
-            <div className="search-response">
-              <p>{totalTopics?.total_count} Results Found</p>
-              <Button
-                type="link"
-                danger
-                className="btn-clear"
-                onClick={() => {
-                  setAllowClear(false);
-                  setInputSearch("");
-                  setPageNumber(1);
-                }}
-              >
-                Clear all
-                <CloseOutlined />
-              </Button>
-            </div>
-          ))}
+        {allowClear && search.length > 0 && (
+          <div className="search-response">
+            <p>{totalTopics?.total_count} Results Found</p>
+            <Button
+              type="link"
+              danger
+              className="btn-clear"
+              onClick={() => {
+                setAllowClear(false);
+                setInputSearch("");
+                setPageNumber(1);
+                dispatch(setFilterCanonizedTopics({ search: "" }));
+              }}
+            >
+              Clear all
+              <CloseOutlined />
+            </Button>
+          </div>
+        )}
         {loading ? (
           <>
             <CustomSkelton skeltonFor="browse" />
@@ -364,7 +341,7 @@ const TopicsList = () => {
                     href={{
                       pathname: `/topic/${ft?.topic_id}-${
                         replaceSpecialCharacters(ft?.topic_name, "-") || ""
-                      }/${ft?.camp_num || 1}-${ft?.camp_name || "Agreement"}`,
+                      }/1-Agreement`,
                     }}
                   >
                     <a className="flex justify-between mb-2.5 items-center">
@@ -401,7 +378,10 @@ const TopicsList = () => {
                     {ft?.topic_score?.toFixed(2)}
                   </Tag>
                   <div className="card-description mt-3">
-                    <CardDescription description={ft?.statement} />
+                    <CardDescription
+                      description={ft?.statement}
+                      isBrowsing={isBrowsing}
+                    />
                   </div>
                   <div className="flex justify-between mt-auto mt-3 mt-auto flex-row md:flex-row lg:flex-col 2xl:flex-row">
                     <div className="text-left flex ">
