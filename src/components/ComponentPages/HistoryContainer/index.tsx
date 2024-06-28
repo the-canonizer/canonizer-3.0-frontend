@@ -1,86 +1,25 @@
-import { useEffect, useState, useRef } from "react";
 import {
-  Typography,
-  Button,
-  List,
-  Radio,
-  Breadcrumb,
-  Card,
-  Divider,
   Badge,
+  Breadcrumb,
+  Button,
+  Card,
   Checkbox,
   Collapse,
-  Tooltip,
+  Divider,
   Tag,
+  Tooltip,
+  Typography,
 } from "antd";
-import type { CheckboxChangeEvent } from "antd/es/checkbox";
-import { useRouter } from "next/router";
-import { useSelector, useDispatch } from "react-redux";
-import InfiniteScroll from "react-infinite-scroller";
 
-import styles from "./campHistory.module.scss";
-
-import { getHistoryApi } from "src/network/api/history";
-import { getAllUsedNickNames } from "src/network/api/campDetailApi";
-import CustomSkelton from "../../common/customSkelton";
-
-import HistoryCollapse from "./Collapse";
-import { RootState } from "src/store";
-import CampInfoBar from "../TopicDetails/CampInfoBar";
-import CreateNewCampButton from "../../common/button/createNewCampBtn";
-import { setCurrentCamp } from "src/store/slices/filtersSlice";
-import useIsUserAuthenticated from "src/hooks/isUserAuthenticated";
-
-import { store } from "src/store";
-import { setTree } from "src/store/slices/campDetailSlice";
-import { updateCampApi } from "src/network/api/campManageStatementApi";
 import {
-  DeleteOutlined,
-  DownOutlined,
-  DownloadOutlined,
-  EditOutlined,
   EyeOutlined,
   HomeOutlined,
   InfoCircleOutlined,
   LeftOutlined,
-  UpOutlined,
 } from "@ant-design/icons";
 
 const { Title } = Typography;
-// const Collapse = ({
-//   children,
-//   collapsedHeight = 0,
-//   expanded = false,
-//   duration = 300,
-//   opacity = 0,
-// }) => {
-//   const [isOpen, setIsOpen] = useState(expanded);
-//   const contentRef = useRef(null);
 
-//   const toggleCollapse = () => {
-//     setIsOpen(!isOpen);
-//   };
-
-//   return (
-//     <div className="collapse-container">
-//       <button onClick={toggleCollapse} className="collapse-toggle">
-//         {isOpen ? "Collapse" : "Expand"}
-//       </button>
-//       <div
-//         className="collapse-content"
-//         ref={contentRef}
-//         style={{
-//           maxHeight: isOpen
-//             ? `${contentRef.current.scrollHeight}px`
-//             : `${collapsedHeight}px`,
-//           transition: `max-height ${duration}ms ease-in-out opacity-0`,
-//         }}
-//       >
-//         hellooooo
-//       </div>
-//     </div>
-//   );
-// };
 const onChange = (e) => {
   console.log(`checked = ${e.target.checked}`);
 };
