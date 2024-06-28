@@ -29,6 +29,7 @@ module.exports = {
   plugins: [
     require("@tailwindcss/aspect-ratio"),
     require("@tailwindcss/container-queries"),
+    require("tailwind-scrollbar")({ nocompatible: true, preferredStrategy: 'pseudoelements' }),
     plugin(function ({ addVariant }) {
       addVariant("optional", "&:optional");
       addVariant("hocus", ["&:hover", "&:focus"]);

@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import md5 from "md5";
 
 import { RootState } from "src/store";
+import { DownOutlined } from "@ant-design/icons";
 
 const ProfileInfo = ({
   isGravatarImage,
@@ -22,6 +23,7 @@ const ProfileInfo = ({
         <Avatar
           style={{
             cursor: "pointer",
+            marginBottom: "-10px",
           }}
           src={loggedInUser?.profile_picture}
           size={isMobile ? "small" : "default"}
@@ -29,6 +31,7 @@ const ProfileInfo = ({
       ) : isGravatarImage && !loadingImage ? (
         loggedInUser?.email && (
           <Avatar
+            style={{ marginBottom: "-10px" }}
             src={`https://www.gravatar.com/avatar/${md5(
               loggedInUser?.email
             )}.png`}
@@ -60,7 +63,12 @@ const ProfileInfo = ({
     <Fragment>
       <div className="mt-0 lg:-mt-2 mr-2" key="profile_area">
         <Dropdown overlay={menu} trigger={["click"]} placement="bottomLeft">
-          {dataMain}
+          <a onClick={(e) => e.preventDefault()}>
+            <Space>
+              {dataMain}
+              <DownOutlined className="text-canLight" />
+            </Space>
+          </a>
         </Dropdown>
       </div>
     </Fragment>

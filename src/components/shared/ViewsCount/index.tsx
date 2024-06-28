@@ -19,7 +19,12 @@ function formatNumber(num) {
   return num.toString();
 }
 
-const ViewCounts = ({ views = 0, loading = false, ...restProps }) => {
+const ViewCounts = ({
+  views = 0,
+  loading = false,
+  className = "",
+  ...restProps
+}) => {
   if (loading) {
     return (
       <CustomSkelton
@@ -33,7 +38,7 @@ const ViewCounts = ({ views = 0, loading = false, ...restProps }) => {
 
   return (
     <Typography.Paragraph
-      className="m-0 text-light font-medium font-inter flex items-center"
+      className={`m-0 !text-canLight font-medium font-inter flex items-center ${className}`}
       {...restProps}
     >
       <EyeOutlined className="text-canBlack p-1 text-medium" />{" "}

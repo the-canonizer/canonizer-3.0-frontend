@@ -436,7 +436,7 @@ const TopicItems = ({ searchTopics, searchValue }) => (
                       </Link>
                     </Typography.Paragraph>
                   </Popover>
-                  <Typography.Paragraph className="m-0 text-light font-medium font-inter flex items-center">
+                  <Typography.Paragraph className="m-0 text-canLight font-medium font-inter flex items-center">
                     <EyeOutlined className="text-canBlack p-1 text-medium" /> 123
                   </Typography.Paragraph>
                 </div>

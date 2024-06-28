@@ -16,7 +16,7 @@ const CardDescription = ({ description, loading = false }) => {
 
   if (!description) {
     return (
-      <div className="text-sm font-inter font-normal mb-3 text-canBlack opacity-80">
+      <div className="text-sm font-inter font-normal mb-3 text-canBlack opacity-80 italic">
         No description available
       </div>
     );

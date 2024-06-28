@@ -241,7 +241,7 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
           {isUserAuthenticated ? (
             <ListItem
               key="notification-li"
-              cls="after:content-['|'] after:absolute after:ml-[10px] after:text-[darkgray] hidden lg:block after:!hidden"
+              cls="after:content-['|'] after:absolute after:ml-[10px] after:text-[darkgray] hidden lg:block after:!hidden before:!top-[5px]"
             >
               <Notifications />
             </ListItem>

@@ -13,6 +13,7 @@ import {
 } from "src/network/api/homePageApi";
 import CustomSkelton from "src/components/common/customSkelton";
 import SectionHeading from "../FeaturedTopic/sectionsHeading";
+import SeeMoreLInk from "../FeaturedTopic/seeMoreLink";
 
 const { Option } = Select;
 
@@ -80,11 +81,7 @@ const TrandingTopics = () => {
           />
         </Col>
         <Col md={12} sm={12} xs={24} className="text-right">
-          <Link href="/browse">
-            <a className="text-canBlue hover:text-canHoverBlue text-sm font-inter font-medium">
-              See More
-            </a>
-          </Link>
+          <SeeMoreLInk href="/browse" />
         </Col>
       </Row>
 
@@ -94,7 +91,7 @@ const TrandingTopics = () => {
             size="large"
             showSearch
             optionFilterProp="children"
-            className="w-full"
+            className="w-full [&_.ant-select-selector]:!rounded-lg"
             defaultValue={
               algorithms?.filter((algo) => algo?.algorithm_key == algoValue)[0]
                 ?.algorithm_label
@@ -128,7 +125,7 @@ const TrandingTopics = () => {
             />
           ) : (
             <List
-              className="mt-0 rounded-lg"
+              className="rounded-lg mt-1 border-1 overflow-hidden"
               size="small"
               bordered
               dataSource={topicsData?.topics}

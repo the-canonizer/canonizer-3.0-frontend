@@ -62,9 +62,13 @@ export const getNotificationsList = async (
         })
       );
     }
+
     return res;
   } catch (error) {
     handleError(error);
+    store.dispatch(setData([]));
+    store.dispatch(setHeaderData({ count: 0, list: [] }));
+    return error.error.data;
   }
 };
 
