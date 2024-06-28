@@ -46,10 +46,10 @@ const FeaturedTopic = () => {
               className="bg-canGray w-full p-0 [&>.ant-card-body]:p-5"
               key={ft?.id}
             >
-              <Row gutter={20} className="w-full">
+              <Row gutter={20} className="w-full min-w-full max-w-full">
                 <Col lg={10} md={24} xs={24}>
                   <Image
-                    className="w-full rounded-lg h-auto object-cover h-full min-h-60 max-h-72"
+                    className="w-full rounded-lg h-auto object-cover h-full min-h-28 md:min-h-60 max-h-48 md:max-h-72"
                     preview={false}
                     height={"100%"}
                     width={"100%"}
@@ -57,7 +57,12 @@ const FeaturedTopic = () => {
                     rootClassName="h-full"
                   />
                 </Col>
-                <Col lg={14} md={24} className="flex flex-col mt-3 lg:mt-0">
+                <Col
+                  lg={14}
+                  md={24}
+                  xs={24}
+                  className="flex flex-col mt-3 lg:mt-0"
+                >
                   <div className="flex justify-between pb-2 align-center">
                     <Typography.Paragraph className="m-0 text-xl font-bold font-inter">
                       {ft?.title}

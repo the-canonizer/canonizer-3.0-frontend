@@ -88,7 +88,7 @@ function RegistrationUi({
           >
             Create your account
           </Title>
-          <Paragraph className="text-muted text-sm text-light font-regular">
+          <Paragraph className="text-muted text-sm text-canLight font-regular">
             All fields are mandatory.
           </Paragraph>
         </div>

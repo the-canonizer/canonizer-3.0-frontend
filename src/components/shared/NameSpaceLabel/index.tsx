@@ -27,9 +27,9 @@ const NameSpaceLabel = ({ namespace, loading = false, ...restProps }) => {
         className="!bg-transparent border-0 p-0 flex items-center leading-1 mb-0 mr-3"
         {...restProps}
       >
-        <FlagOutlined className="text-canBlack p-1 text-medium" />
+        <FlagOutlined className="text-canLight p-1 text-medium" />
         <Link href="#">
-          <a className="text-canBlue text-sm font-inter font-medium hover:canHoverBlue">
+          <a className="!text-canBlue text-sm font-inter font-medium hover:!canHoverBlue">
             {changeSlashToArrow(namespace)}
           </a>
         </Link>
