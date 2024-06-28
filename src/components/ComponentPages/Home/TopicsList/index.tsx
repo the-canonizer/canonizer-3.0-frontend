@@ -118,6 +118,7 @@ const TopicsList = () => {
     setIsCanonChange(true);
     setNameSpaceId(String(id));
     setSelectedNameSpace(nameSpace?.children);
+    setPageNumber(1);
 
     if (id?.toString() !== "1") {
       router.query.canon = id;
