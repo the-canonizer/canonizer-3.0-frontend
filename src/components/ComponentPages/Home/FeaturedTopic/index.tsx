@@ -43,11 +43,11 @@ const FeaturedTopic = () => {
         <Slider {...settings}>
           {topicData?.map((ft) => (
             <CommonCard
-              className="bg-canGray w-full p-0 [&>.ant-card-body]:p-5"
+              className="bg-canGray w-full p-0 [&>.ant-card-body]:p-0 xl:[&>.ant-card-body]:p-5"
               key={ft?.id}
             >
-              <Row gutter={20} className="w-full min-w-full max-w-full">
-                <Col lg={10} md={24} xs={24}>
+              <Row gutter={0} className="w-full min-w-full max-w-full relative">
+                <Col xl={10} lg={24} md={24} xs={24}>
                   <Image
                     className="w-full rounded-lg h-auto object-cover h-full min-h-28 md:min-h-60 max-h-48 md:max-h-72"
                     preview={false}
@@ -58,10 +58,11 @@ const FeaturedTopic = () => {
                   />
                 </Col>
                 <Col
-                  lg={14}
+                  xl={14}
+                  lg={24}
                   md={24}
                   xs={24}
-                  className="flex flex-col mt-3 lg:mt-0"
+                  className="flex flex-col mt-3 xl:mt-0 md:pl-4 px-3 pb-5  xl:px-5 xl:pb-0 static"
                 >
                   <div className="flex justify-between pb-2 align-center">
                     <Typography.Paragraph className="m-0 text-xl font-bold font-inter">
@@ -82,7 +83,9 @@ const FeaturedTopic = () => {
                   <div className="flex justify-between pt-3 mt-auto flex-col lg:flex-row">
                     <div className="text-left flex flex-col sm:flex-row">
                       <NameSpaceLabel namespace={ft?.namespace} />
-                      <ViewCounts views={ft?.views} />
+                      <div className="absolute top-2 right-2 px-2 rounded-md bg-canBlack lg:static lg:bg-transparent lg:px-0 lg:flex">
+                        <ViewCounts views={ft?.views} />
+                      </div>
                     </div>
                     <AvatarGroup
                       avatars={ft?.supporterData}
