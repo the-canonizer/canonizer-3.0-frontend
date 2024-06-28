@@ -1,5 +1,9 @@
-import { CloseOutlined, RightOutlined } from "@ant-design/icons";
-import { Select } from "antd";
+import {
+  CloseOutlined,
+  InfoCircleOutlined,
+  RightOutlined,
+} from "@ant-design/icons";
+import { Popover, Select } from "antd";
 import Link from "next/link";
 import {
   Row,
@@ -86,21 +90,24 @@ const TopicsList = () => {
   const [totalTopics, setTotalTopics] = useState<any>([]);
   const inputRef = useRef(null);
   const [allowClear, setAllowClear] = useState(false);
+  const [isCanonChange, setIsCanonChange] = useState(false);
   const showTotal = (total) => `Total ${total} items`;
 
   const infoContent = (
     <div
-    // className={styles.namespacesPopover}
+      className="max-w-[300px] w-full"
+      // className={styles.namespacesPopover}
     >
       <Title level={5}>Canon</Title>
       <p>
         Canons are a set of topics created for specific organizations and cities
         to separate topics exclusively for them from the topics of general
         interest. To get a canon created for your organization, contact{" "}
-        <Link href="mailto:support@canonizer.com">
-          <a>support@canonizer.com</a>
-        </Link>
       </p>
+
+      <a className="text-[#096dd9]" href="mailto:support@canonizer.com">
+        support@canonizer.com
+      </a>
     </div>
   );
 
@@ -110,6 +117,7 @@ const TopicsList = () => {
   };
 
   const selectNameSpace = (id, nameSpace) => {
+    setIsCanonChange(true);
     setNameSpaceId(String(id));
     setSelectedNameSpace(nameSpace?.children);
 
@@ -141,7 +149,7 @@ const TopicsList = () => {
       asofdate:
         asof == ("default" || asof == "review") ? Date.now() / 1000 : asofdate,
       namespace_id: String(nameSpaceId),
-      page_number: pageNumber,
+      page_number: isCanonChange ? 1 : pageNumber,
       page_size: pageSize,
       search: inputSearch,
       filter: 0,
@@ -161,19 +169,21 @@ const TopicsList = () => {
   }
 
   const onSearch = (value) => {
+    setIsCanonChange(true);
     setInputSearch(value.trim());
     dispatch(setFilterCanonizedTopics({ search: value || "" }));
+    setAllowClear(true);
   };
 
   const handleKeyUpSearch = (event: any) => {
     const value = event.target.value?.trim();
     if (value.length > 0) {
-      setAllowClear(true);
+      setIsCanonChange(true);
       setSearchTerm(value);
-      setPageNumber(1);
+      setAllowClear(true);
     } else {
-      setAllowClear(false);
       setSearchTerm("");
+      setAllowClear(false);
     }
   };
 
@@ -271,12 +281,13 @@ const TopicsList = () => {
         <Divider />
         <div className="browse-actions">
           <Form layout="vertical">
-            <Form.Item
-              className="browse-dropdown"
-              label="Filter By Canon"
-              required
-              tooltip={infoContent}
-            >
+            <Form.Item className="browse-dropdown">
+              <div className="filter-popover-wrapper">
+                <p>Filter By Canon</p>
+                <Popover placement="right" content={infoContent}>
+                  <InfoCircleOutlined />
+                </Popover>
+              </div>
               <Select
                 size="large"
                 virtual={true}
@@ -322,9 +333,9 @@ const TopicsList = () => {
           </div>
         </div>
         {allowClear ||
-          (inputSearch.length > 0 && (
+          (search.length > 0 && (
             <div className="search-response">
-              <p>{topicsData?.topics?.length} results Found</p>
+              <p>{totalTopics?.total_count} Results Found</p>
               <Button
                 type="link"
                 danger
@@ -332,6 +343,7 @@ const TopicsList = () => {
                 onClick={() => {
                   setAllowClear(false);
                   setInputSearch("");
+                  setPageNumber(1);
                 }}
               >
                 Clear all
@@ -355,7 +367,7 @@ const TopicsList = () => {
                       }/${ft?.camp_num || 1}-${ft?.camp_name || "Agreement"}`,
                     }}
                   >
-                    <a className="flex justify-between pb-3 items-center">
+                    <a className="flex justify-between mb-2.5 items-center">
                       <Typography.Paragraph className="m-0 text-base font-medium font-inter">
                         {ft?.topic_name}
                       </Typography.Paragraph>
@@ -370,7 +382,7 @@ const TopicsList = () => {
                   </Link>
                   <Tag
                     className={
-                      "bg-canOrange text-white border-0 rounded-[5px] ml-1 inline-flex py-[2px] flex items-center text-12"
+                      "bg-canOrange text-white border-0 rounded-[5px] ml-0 inline-flex py-[2px] flex items-center text-12"
                     }
                   >
                     <svg
@@ -388,10 +400,10 @@ const TopicsList = () => {
                     </svg>
                     {ft?.topic_score?.toFixed(2)}
                   </Tag>
-                  <div className="card-description">
+                  <div className="card-description mt-3">
                     <CardDescription description={ft?.statement} />
                   </div>
-                  <div className="flex justify-between mt-auto pt-3 mt-auto flex-row md:flex-row lg:flex-col 2xl:flex-row">
+                  <div className="flex justify-between mt-auto mt-3 mt-auto flex-row md:flex-row lg:flex-col 2xl:flex-row">
                     <div className="text-left flex ">
                       <NameSpaceLabel
                         namespace={getNameById(ft?.namespace_id)}
@@ -419,6 +431,8 @@ const TopicsList = () => {
           className="browse-pagination mt-14"
           size="small"
           total={totalTopics?.total_count}
+          defaultCurrent={1}
+          defaultPageSize={10}
           current={pageNumber}
           pageSize={pageSize}
           showTotal={showTotal}

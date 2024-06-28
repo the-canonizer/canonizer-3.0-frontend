@@ -3180,7 +3180,7 @@ div[role="option"]::before {
     }
   }
   .browse-card {
-    @apply ease-in-out duration-300 cursor-pointer bg-[#F7F8FC] rounded-lg border-transparent;
+    @apply ease-in-out duration-300 cursor-pointer bg-[#F7F8FC] rounded-lg border-transparent h-full;
     &:hover {
       @apply hover:shadow-[0px_10px_20px_0px_#31507233] hover:bg-white;
       .ant-card-body {
@@ -3191,8 +3191,8 @@ div[role="option"]::before {
     }
     .ant-card-body {
       @apply p-[1.25rem];
-      .card-decription {
-        @apply text-[#242B37] my-[1.25rem];
+      .card-description {
+        @apply text-[#242B37];
       }
       .btn-right {
         @apply text-[#5482C8] opacity-0;
@@ -3207,6 +3207,12 @@ div[role="option"]::before {
     .ant-pagination-options {
       @apply ml-auto;
     }
+  }
+}
+.filter-popover-wrapper{
+  @apply flex items-center gap-3 mb-2 text-[#777F93] ;
+  .ant-popover-inner-content{
+    @apply max-w-[300px] w-full ;
   }
 }
 
