@@ -110,6 +110,7 @@ const TopicsList = () => {
   );
 
   const handlePageChange = (newPageNumber, newPageSize) => {
+    setIsCanonChange(false);
     setPageNumber(newPageNumber);
     setPageSize(newPageSize);
   };
@@ -310,7 +311,7 @@ const TopicsList = () => {
               defaultValue={inputSearch}
               // value={searchTerm}
               onSearch={onSearch}
-              onChange={handleKeyUpSearch}
+              // onChange={handleKeyUpSearch}
               ref={inputRef}
               disabled={loading}
             />
@@ -410,20 +411,22 @@ const TopicsList = () => {
             ))}
           </Row>
         )}
-        <Pagination
-          className="browse-pagination mt-14"
-          size="small"
-          total={totalTopics?.total_count}
-          defaultCurrent={1}
-          defaultPageSize={10}
-          current={pageNumber}
-          pageSize={pageSize}
-          showTotal={showTotal}
-          pageSizeOptions={[10, 16]}
-          showSizeChanger
-          showQuickJumper
-          onChange={handlePageChange}
-        />
+        {totalTopics?.total_count > 10 && (
+          <Pagination
+            className="browse-pagination mt-14"
+            size="small"
+            total={totalTopics?.total_count}
+            defaultCurrent={1}
+            defaultPageSize={10}
+            current={pageNumber}
+            pageSize={pageSize}
+            showTotal={showTotal}
+            pageSizeOptions={[10, 16]}
+            showSizeChanger
+            onChange={handlePageChange}
+            disabled={loading}
+          />
+        )}
       </div>
     </>
   );

@@ -45,23 +45,6 @@ const SortTopics = () => {
     dispatch(setSortLatestTopic(false));
   };
 
-  // Dropdown menu items
-  // const dropdownMenuItems = [
-  //   {
-  //     key: "latest",
-  //     label: "Latest",
-  //     onClick: handleLatestTopic,
-  //   },
-  //   {
-  //     type: "divider",
-  //   },
-  //   {
-  //     key: "scoreValue",
-  //     label: "Score Value",
-  //     onClick: handleScoreViewTopic,
-  //   },
-  // ];
-
   return (
     <div className={styles.sortContainer}>
       {/* Select component for sorting */}
@@ -88,47 +71,6 @@ const SortTopics = () => {
         <Select.Option value="Latest">Latest</Select.Option>
         <Select.Option value="ScoreValue">Score Value</Select.Option>
       </Select>
-      {/* Dropdown for mobile or additional options */}
-      {/* <Dropdown
-        overlay={
-          <div className={styles.dropdownMenu}>
-            {dropdownMenuItems.map((item) =>
-              item.type === "divider" ? (
-                <div key={item.key} className={styles.dropdownDivider} />
-              ) : (
-                <a key={item.key} onClick={item.onClick}>
-                  {item.label}
-                </a>
-              )
-            )}
-          </div>
-        }
-        trigger={["click"]}
-      >
-        <a
-          href="#"
-          onClick={(e) => e.preventDefault()}
-          className={styles.sortTopic}
-        >
-          <span>
-            {sortLatestTopic
-              ? "Latest"
-              : sortScoreViewTopic
-              ? "Score Value"
-              : "Sort"}
-            <Image
-              width={20}
-              height={20}
-              alt="sort"
-              src={
-                sortLatestTopic || sortScoreViewTopic
-                  ? SortActiveTopicIcon
-                  : SortTopicIcon
-              }
-            />
-          </span>
-        </a>
-      </Dropdown> */}
     </div>
   );
 };
