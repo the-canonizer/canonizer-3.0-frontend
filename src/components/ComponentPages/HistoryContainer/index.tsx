@@ -24,12 +24,16 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useRef, useState } from "react";
 import { RootState } from "src/store";
 import useIsUserAuthenticated from "src/hooks/isUserAuthenticated";
-import { getAllUsedNickNames } from "src/network/api/campDetailApi";
+import { getAllUsedNickNames, getCampBreadCrumbApi } from "src/network/api/campDetailApi";
 import { store } from "src/store";
 import { setTree } from "src/store/slices/campDetailSlice";
 import { getHistoryApi } from "src/network/api/history";
 import { setCurrentCamp } from "src/store/slices/filtersSlice";
 import HistoryCollapse from "./Collapse";
+import { getCookies, replaceSpecialCharacters } from "src/utils/generalUtility";
+import InfiniteScroll from "react-infinite-scroller";
+import CustomSkelton from "../../common/customSkelton";
+import moment from "moment";
 
 const { Title } = Typography;
 
@@ -44,20 +48,60 @@ function HistoryContainer() {
   const router = useRouter();
   const dispatch = useDispatch();
   const didMount = useRef(false);
-  
+
   const [activeTab, setActiveTab] = useState("all");
-  
+
   const [nickName, setNickName] = useState([]);
   const [selectedTopic, setSelectedTopic] = useState([]);
   const [selectedTopicStatus, setSelectedTopicStatus] = useState([]);
-  
+
   const [isAbs, setIsAbs] = useState(false);
   const [loadMoreItems, setLoadMoreItems] = useState(true);
   const [agreecheck, setAgreeCheck] = useState(false);
   const [discardChange, setDiscardChange] = useState(false);
   const [parentarchived, setParentarchived] = useState(0);
   const [directarchived, setDirectarchived] = useState(0);
-  
+  const [breadCrumbRes, setBreadCrumbRes] = useState({
+    topic_name: "",
+    bread_crumb: [],
+  });
+  const [currentFilterCount, setCurrentFilterCount] = useState(null)
+
+  const {
+    asof,
+  } = useSelector((state: RootState) => ({
+    asof: state?.filters?.filterObject?.asof,
+  }));
+
+
+  useEffect(() => {
+    async function getBreadCrumbApiCall() {
+      setLoadingIndicator(true);
+      let reqBody = {
+        topic_num: payload?.topic_num,
+        camp_num: payload?.camp_num,
+        as_of: router?.pathname == "/topic/[...camp]" ? asof : "default",
+        as_of_date:
+          asof == "default" || asof == "review"
+            ? Date.now() / 1000
+            : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
+      };
+
+      let res = await getCampBreadCrumbApi(reqBody);
+      setBreadCrumbRes(res?.data);
+      setLoadingIndicator(false);
+    }
+
+    if (
+      (payload && Object.keys(payload).length > 0,
+        !!(getCookies() as any)?.loginToken)
+    ) {
+      getBreadCrumbApiCall();
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const changeAgree = () => {
     setAgreeCheck(!agreecheck);
   };
@@ -65,9 +109,9 @@ function HistoryContainer() {
     setDiscardChange(!discardChange);
   };
   const historyOf = router?.asPath.split("/")[1];
-  
+
   const count = useRef(1);
-  
+
   const { history, currentCampNode, asofdate, algorithm } = useSelector(
     (state: RootState) => ({
       history: state?.topicDetails?.history,
@@ -77,7 +121,7 @@ function HistoryContainer() {
       algorithm: state.filters?.filterObject?.algorithm,
     })
   );
-  
+
   const [isTreesApiCallStop, setIsTreesApiCallStop] = useState(false);
   const [loadingIndicator, setLoadingIndicator] = useState(false);
   const [campHistory, setCampHistory] = useState(history);
@@ -85,7 +129,7 @@ function HistoryContainer() {
     camp_num: router?.query?.camp?.at(1)?.split("-")?.at(0) ?? "1",
     topic_num: router?.query?.camp?.at(0)?.split("-")?.at(0),
   };
-  
+
   useEffect(() => {
     async function getTreeApiCall() {
       if (isUserAuthenticated) {
@@ -105,11 +149,11 @@ function HistoryContainer() {
     algorithm,
     +router?.query?.camp?.at(1)?.split("-")[0],
   ]);
-  
+
   useEffect(() => {
     setCampHistory(history);
   }, [history]);
-  
+
   useEffect(() => {
     const asynCall = async () => {
       setLoadMoreItems(true);
@@ -126,7 +170,7 @@ function HistoryContainer() {
       };
     } else didMount.current = true;
   }, []);
-  
+
   const campStatementApiCall = async () => {
     try {
       setLoadingIndicator(true);
@@ -153,7 +197,7 @@ function HistoryContainer() {
           return;
         }
       }
-  
+
       if (res?.status_code == 200) {
         let liveCard = res?.data?.details?.liveCamp;
         let parentIsOneLevel = res?.data?.details?.parent_is_one_level;
@@ -171,8 +215,9 @@ function HistoryContainer() {
             is_archive,
           })
         );
+        setCurrentFilterCount(res?.data?.items?.length)
       }
-  
+
       didMount.current = true;
       if (!res?.data || !res?.data?.last_page) {
         setLoadMoreItems(false);
@@ -184,31 +229,31 @@ function HistoryContainer() {
       } else {
         count.current = count.current + 1;
       }
-  
+
       setLoadingIndicator(false);
     } catch (error) {
       /**/
     }
   };
-  
+
   const handleTabButton = async (tabName) => {
     setActiveTab(tabName);
   };
-  
+
   const campRoute = () => {
     setLoadingIndicator(true);
   };
-  
+
   const onSelectCompare = ({ id, status }, e: CheckboxChangeEvent) => {
     let oldTopics = [...selectedTopic];
     let oldTopicsStatus = [...selectedTopicStatus];
-  
+
     if (e.target.checked && !oldTopics.includes(id)) {
       oldTopics.push(id);
     } else {
       oldTopics = oldTopics.filter((item) => item !== id);
     }
-  
+
     if (e.target.checked && !oldTopicsStatus.includes(`${id}_${status}`)) {
       oldTopicsStatus.push(`${id}_${status}`);
     } else {
@@ -219,31 +264,28 @@ function HistoryContainer() {
     setSelectedTopic(oldTopics);
     setSelectedTopicStatus(oldTopicsStatus);
   };
-  
+
   const onCompareClick = () => {
     router?.push({
-      pathname: `/statement/compare/${router?.query.camp[0]}/${
-        router?.query.camp[1] ? router?.query.camp[1] : "1-Agreement"
-      }`,
+      pathname: `/statement/compare/${router?.query.camp[0]}/${router?.query.camp[1] ? router?.query.camp[1] : "1-Agreement"
+        }`,
       query: {
         statements: selectedTopic[0] + "_" + selectedTopic[1],
         from:
           historyOf == "statement"
             ? "statement"
             : historyOf == "camp"
-            ? "camp"
-            : "topic",
+              ? "camp"
+              : "topic",
         status: selectedTopicStatus.join("-"),
       },
     });
   };
-  
-  const loader = <></>;
-  
+
   let historyTitle = () => {
     let title: string;
     if (historyOf == "statement") {
-      title = "Camp Statement History";
+      title = "Statement History";
     } else if (historyOf == "camp") {
       title = "Camp History";
     } else if (historyOf == "topic") {
@@ -251,7 +293,7 @@ function HistoryContainer() {
     }
     return title;
   };
-  
+
   const NoRecordsMessage = () => {
     let title: string;
     if (historyOf == "statement") {
@@ -265,8 +307,9 @@ function HistoryContainer() {
       <h2
         style={{
           display: "flex",
-          justifyContent: "center",
-          margin: "20px 0px",
+          // justifyContent: "center",
+          alignItems:"center",
+          margin: "20px 500px",
         }}
       >
         {title}
@@ -293,9 +336,9 @@ function HistoryContainer() {
     key_words: campHistory?.items?.[0]?.key_words,
     camp_about_url: campHistory?.items?.[0]?.camp_about_url,
     camp_about_nick_id: null,
-  
+
     parent_camp_num: campHistory?.items?.[0]?.parent_camp_num,
-  
+
     old_parent_camp_num: campHistory?.items?.[0]?.old_parent_camp_num,
     is_disabled: 0,
     is_one_level: 0,
@@ -303,7 +346,6 @@ function HistoryContainer() {
     camp_leader_nick_id: campHistory?.items?.[0]?.camp_leader_nick_id,
   };
   const callManageCampApi = async () => {
-    // window.location.reload()
     setLoadingIndicator(true);
     if (campHistory?.items?.length >= 3) {
       count.current = 1;
@@ -311,14 +353,14 @@ function HistoryContainer() {
     await updateCampApi(reqBody);
     await campStatementApiCall();
     setLoadingIndicator(false);
-    // await commitChanges()
   };
+  
   const getCollapseKeys = (campHistoryData, index) => {
     let key = "";
     let oldstatements = campHistory?.items?.filter(
       (campHistoryData) => campHistoryData?.status == "old"
     );
-  
+
     if (
       campHistoryData?.status == "live" ||
       campHistory?.items?.length <= 3 ||
@@ -332,16 +374,16 @@ function HistoryContainer() {
     if (historyOf != "statement") {
       key = "1";
     }
-  
+
     return key;
   };
-  
+
   const renderCampHistories =
     campHistory && campHistory?.items?.length ? (
       campHistory?.items?.map((campHistoryData, index) => {
         return (
           <>
-            {/* <HistoryCollapse
+            <HistoryCollapse
               collapseKeys={getCollapseKeys(campHistoryData, index)}
               key={index}
               campStatement={campHistoryData}
@@ -368,12 +410,12 @@ function HistoryContainer() {
                 campHistory?.details?.unarchive_change_submitted
               }
               directarchived={directarchived}
-            /> */}
+            />
           </>
         );
       })
     ) : (
-      <NoRecordsMessage />
+        <NoRecordsMessage />
     );
 
   return (
@@ -391,16 +433,24 @@ function HistoryContainer() {
           </Breadcrumb.Item>
           <Breadcrumb.Item href="">(Canon) General</Breadcrumb.Item>
           <Breadcrumb.Item href="">
-            Topic: Representationalist Books
+            Topic:  {breadCrumbRes && breadCrumbRes?.topic_name}
           </Breadcrumb.Item>
-          <Breadcrumb.Item>Topic History</Breadcrumb.Item>
+          <Breadcrumb.Item>{
+            historyTitle() == "Statement History" ? "Statement" :
+              historyTitle() == "Topic History" ? "Topic" :
+                historyTitle() == "Camp History" ? "Camp" : null
+          } History</Breadcrumb.Item>
         </Breadcrumb>
         <Button
           size="large"
           type="primary"
           className="flex items-center justify-center rounded-[10px] max-lg:hidden gap-3.5 leading-none"
         >
-          Update Current Statement
+          Update Current {
+            historyTitle() == "Statement History" ? "Statement" :
+              historyTitle() == "Topic History" ? "Topic" :
+                historyTitle() == "Camp History" ? "Camp" : null
+          }
           <i className="icon-edit"></i>
         </Button>
       </div>
@@ -411,461 +461,75 @@ function HistoryContainer() {
             className="text-2xl text-[#242B37] p-1 mb-16 flex items-center max-lg:hidden leading-none"
             icon={<LeftOutlined />}
           >
-            Camp Statement History
+            {historyTitle()}
           </Button>
           <Title level={5} className="mb-6">
-            Statements Based On Status
+            {historyTitle().toUpperCase()} BASED ON STATUS
           </Title>
           <div className="sider-btn">
-            <Button size="large" className="btn-all active">
-              View all (3)
+            <Button size="large" className={`btn-all ${activeTab == "all" ? " active" : null}`}
+              onClick={() => {
+                handleTabButton("all");
+              }}>
+              View all {activeTab == "all" && currentFilterCount}
             </Button>
-            <Button size="large" className="btn-objected">
-              Objected (1)
+            <Button size="large" className={`btn-objected ${activeTab == "objected" ? " active" : null}`}
+              onClick={() => {
+                handleTabButton("objected");
+              }}
+            >
+              Objected  {activeTab == "objected" && currentFilterCount}
             </Button>
-            <Button size="large" className="btn-live">
-              Live (1)
+            <Button size="large" className={`btn-live ${activeTab == "live" ? " active" : null}`}
+              onClick={() => {
+                handleTabButton("live");
+              }}
+            >
+              Live {activeTab == "live" && currentFilterCount}
             </Button>
-            <Button size="large" className="btn-pending">
-              Pending (1)
+            <Button size="large" className={`btn-pending ${activeTab == "in_review" ? " active" : null}`}
+              onClick={() => {
+                handleTabButton("in_review");
+              }}
+            >
+              Pending {activeTab == "in_review" && currentFilterCount}
             </Button>
-            <Button size="large" className="btn-previous">
-              Previous (0)
+            <Button size="large" className={`btn-previous  ${activeTab == "old" ? " active" : null}`}
+              onClick={() => {
+                handleTabButton("old");
+              }}
+            >
+              Previous {activeTab == "old" && currentFilterCount}
             </Button>
           </div>
-          <Button
-            size="large"
-            className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none mt-12"
-          >
-            Compare Statements
-            <i className="icon-compare-statement"></i>
-          </Button>
-        </div>
-        <Card className="ch-content" bordered={false}>
-          <div className="cn-wrapper pending-wrapper">
-            <div className="badge-wrapper">
-              <Badge
-                className="cn-dot-badge ch-dot-history"
-                color=""
-                text={
-                  <>
-                    16 Feb 2024,<span>04:36 PM</span>
-                  </>
-                }
-              />
-              <div className="tooltip-count">
-                <Tooltip title="prompt text">
-                  <InfoCircleOutlined />
-                </Tooltip>
-                <p>Grace period countdown</p>
-                <Tag
-                  className={
-                    "bg-[#5482C833] border-0 rounded-md inline-flex py-[3px] items-center"
-                  }
-                >
-                  00:51:12
-                </Tag>
-              </div>
-            </div>
-            <Checkbox className="mb-5 ch-checkbox" onChange={onChange}>
-              Select to compare
-            </Checkbox>
-            <Card className="cn-card">
-              <Collapse
-                expandIconPosition="end"
-                className="ch-collapse"
-                defaultActiveKey={["0"]}
-                expandIcon={({ isActive }) =>
-                  isActive ? (
-                    <i className="icon-up-arrow"></i>
-                  ) : (
-                    <i className="icon-down-arrow"></i>
-                  )
-                }
-                ghost
+          {
+            historyOf === "topic" && (
+              <Button
+                size="large"
+                className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none mt-12"
+                onClick={()=> onCompareClick()}
               >
-                <Panel header="" key="1">
-                  <div>
-                    <h5 className="font-semibold text-[#F19C39] mb-3">
-                      Statement
-                    </h5>
-                    <p className="text-[#242B37] pb-5">
-                      Contemporary philosophy of mind unfortunately has been
-                      burdened for decades with a residual philosophical
-                      behaviorism and intellectualized naive realism. Unpacking
-                      these terms, the fashionable behaviorism gical nonentity.{" "}
-                    </p>
-                  </div>
-                </Panel>
-              </Collapse>
+                Compare Topics
+                <i className="icon-compare-statement"></i>
+              </Button>
+            )
+          }
+          {
+            historyOf === "camp" && (
+              <Button
+                size="large"
+                className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none mt-12"
+                onClick={()=> onCompareClick()}
+              >
+                Compare Camps
+                <i className="icon-compare-statement"></i>
+              </Button>
+            )
+          }
+        </div>
 
-              <p className="font-semibold mb-2.5">Updates</p>
-              <p>
-                Category:<span>Test</span>
-              </p>
-              <p>
-                Edit summary:<span>Minor tweaks</span>
-              </p>
-              <p>
-                Camp about URL:<a> www.thisisalink.com</a>
-              </p>
-              <p>
-                Camp about Nickname: <span>Jane</span>
-              </p>
-              <p>
-                Submitter nickname:<span>Mary Ann</span>
-              </p>
-              <p>
-                Disable additional sub-camps:<span>No</span>
-              </p>
-              <p>
-                Single level Camps only:<span>Minor tweaks</span>
-              </p>
-              <p>
-                Camp archived:<span> Jane Doe</span>
-              </p>
-              <p>
-                Submitted on:<span> 16 Feb 2024, 04:36 PM</span>
-              </p>
-              <p>
-                Going live on :<span>17 Feb 2024, 04:36 PM</span>
-              </p>
-              <Divider className="border-[#242B3733] my-[1.125rem]" />
-              <div className="cn-footer-btn">
-                <div className="cn-card-btn">
-                  <Button
-                    size="large"
-                    type="primary"
-                    className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none"
-                  >
-                    Commit Changes
-                    <i className="icon-upload"></i>
-                  </Button>
-                  <Button
-                    size="large"
-                    className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none"
-                  >
-                    Edit Statement
-                    <i className="icon-edit"></i>
-                  </Button>
-                </div>
-                <div className="cn-link-btn">
-                  <Button
-                    size="large"
-                    type="link"
-                    icon={<EyeOutlined />}
-                    className="flex items-center justify-center rounded-[10px] leading-none text-[#242B37]"
-                  >
-                    Preview Camp
-                  </Button>
-                  <Button
-                    type="link"
-                    danger
-                    size="large"
-                    icon={<i className="icon-delete"></i>}
-                    className="flex items-center justify-center gap-2 rounded-[10px] leading-none"
-                  >
-                    Delete
-                  </Button>
-                </div>
-              </div>
-            </Card>
-          </div>
-          {/* <div className="cn-wrapper live-wrapper">
-            <div className="badge-wrapper">
-              <Badge
-                className="cn-dot-badge ch-dot-history"
-                color=""
-                text={
-                  <>
-                    16 Feb 2024,<span>04:36 PM</span>
-                  </>
-                }
-              />
-              <div className="tooltip-count">
-                <Tooltip title="prompt text">
-                  <InfoCircleOutlined />
-                </Tooltip>
-                <p>Grace period countdown</p>
-                <Tag
-                  className={
-                    "bg-[#5482C833] border-0 rounded-md inline-flex py-[3px] items-center"
-                  }
-                >
-                  00:51:12
-                </Tag>
-              </div>
-            </div>
-            <Checkbox className="mb-5 ch-checkbox" onChange={onChange}>
-              Select to compare
-            </Checkbox>
-            <Card className="cn-card">
-              <p className="font-semibold mb-2.5">Updates</p>
-              <p>
-                Category:<span>Test</span>
-              </p>
-              <p>
-                Edit summary:<span>Minor tweaks</span>
-              </p>
-              <p>
-                Camp about URL:<a> www.thisisalink.com</a>
-              </p>
-              <p>
-                Camp about Nickname: <span>Jane</span>
-              </p>
-              <p>
-                Submitter nickname:<span>Mary Ann</span>
-              </p>
-              <p>
-                Disable additional sub-camps:<span>No</span>
-              </p>
-              <p>
-                Single level Camps only:<span>Minor tweaks</span>
-              </p>
-              <p>
-                Camp archived:<span> Jane Doe</span>
-              </p>
-              <p>
-                Submitted on:<span> 16 Feb 2024, 04:36 PM</span>
-              </p>
-              <p>
-                Going live on :<span>17 Feb 2024, 04:36 PM</span>
-              </p>
-              <Divider className="border-[#242B3733] my-[1.125rem]" />
-              <div className="cn-footer-btn">
-                <div className="cn-card-btn">
-                  <Button
-                    size="large"
-                    type="primary"
-                    className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none"
-                  >
-                    Commit Changes
-                    <i className="icon-upload"></i>
-                  </Button>
-                  <Button
-                    size="large"
-                    className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none"
-                  >
-                    Edit Statement
-                    <i className="icon-edit"></i>
-                  </Button>
-                </div>
-                <div className="cn-link-btn">
-                  <Button
-                    size="large"
-                    type="link"
-                    icon={<EyeOutlined />}
-                    className="flex items-center justify-center rounded-[10px] leading-none text-[#242B37]"
-                  >
-                    Preview Camp
-                  </Button>
-                  <Button
-                    type="link"
-                    danger
-                    size="large"
-                    icon={<i className="icon-delete"></i>}
-                    className="flex items-center justify-center gap-2 rounded-[10px] leading-none"
-                  >
-                    Delete
-                  </Button>
-                </div>
-              </div>
-            </Card>
-          </div> */}
-          {/* <div className="cn-wrapper previous-wrapper">
-            <div className="badge-wrapper">
-              <Badge
-                className="cn-dot-badge ch-dot-history"
-                color=""
-                text={
-                  <>
-                    16 Feb 2024,<span>04:36 PM</span>
-                  </>
-                }
-              />
-              <div className="tooltip-count">
-                <Tooltip title="prompt text">
-                  <InfoCircleOutlined />
-                </Tooltip>
-                <p>Grace period countdown</p>
-                <Tag
-                  className={
-                    "bg-[#5482C833] border-0 rounded-md inline-flex py-[3px] items-center"
-                  }
-                >
-                  00:51:12
-                </Tag>
-              </div>
-            </div>
-            <Checkbox className="mb-5 ch-checkbox" onChange={onChange}>
-              Select to compare
-            </Checkbox>
-            <Card className="cn-card">
-              <p className="font-semibold mb-2.5">Updates</p>
-              <p>
-                Category:<span>Test</span>
-              </p>
-              <p>
-                Edit summary:<span>Minor tweaks</span>
-              </p>
-              <p>
-                Camp about URL:<a> www.thisisalink.com</a>
-              </p>
-              <p>
-                Camp about Nickname: <span>Jane</span>
-              </p>
-              <p>
-                Submitter nickname:<span>Mary Ann</span>
-              </p>
-              <p>
-                Disable additional sub-camps:<span>No</span>
-              </p>
-              <p>
-                Single level Camps only:<span>Minor tweaks</span>
-              </p>
-              <p>
-                Camp archived:<span> Jane Doe</span>
-              </p>
-              <p>
-                Submitted on:<span> 16 Feb 2024, 04:36 PM</span>
-              </p>
-              <p>
-                Going live on :<span>17 Feb 2024, 04:36 PM</span>
-              </p>
-              <Divider className="border-[#242B3733] my-[1.125rem]" />
-              <div className="cn-footer-btn">
-                <div className="cn-card-btn">
-                  <Button
-                    size="large"
-                    type="primary"
-                    className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none"
-                  >
-                    Commit Changes
-                    <i className="icon-upload"></i>
-                  </Button>
-                  <Button
-                    size="large"
-                    className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none"
-                  >
-                    Edit Statement
-                    <i className="icon-edit"></i>
-                  </Button>
-                </div>
-                <div className="cn-link-btn">
-                  <Button
-                    size="large"
-                    type="link"
-                    icon={<EyeOutlined />}
-                    className="flex items-center justify-center rounded-[10px] leading-none text-[#242B37]"
-                  >
-                    Preview Camp
-                  </Button>
-                  <Button
-                    type="link"
-                    danger
-                    size="large"
-                    icon={<i className="icon-delete"></i>}
-                    className="flex items-center justify-center gap-2 rounded-[10px] leading-none"
-                  >
-                    Delete
-                  </Button>
-                </div>
-              </div>
-            </Card>
-          </div> */}
-          {/* <div className="cn-wrapper objected-wrapper">
-            <div className="badge-wrapper">
-              <Badge
-                className="cn-dot-badge ch-dot-history"
-                color=""
-                text={
-                  <>
-                    16 Feb 2024,<span>04:36 PM</span>
-                  </>
-                }
-              />
-              <div className="tooltip-count">
-                <Tooltip title="prompt text">
-                  <InfoCircleOutlined />
-                </Tooltip>
-                <p>Grace period countdown</p>
-                <Tag
-                  className={
-                    "bg-[#5482C833] border-0 rounded-md inline-flex py-[3px] items-center"
-                  }
-                >
-                  00:51:12
-                </Tag>
-              </div>
-            </div>
-            <Checkbox className="mb-5 ch-checkbox" onChange={onChange}>
-              Select to compare
-            </Checkbox>
-            <Card className="cn-card">
-              <p className="font-semibold mb-2.5">Updates</p>
-              <p>
-                Category:<span>Test</span>
-              </p>
-              <p>
-                Edit summary:<span>Minor tweaks</span>
-              </p>
-              <p>
-                Camp about URL:<a> www.thisisalink.com</a>
-              </p>
-              <p>
-                Camp about Nickname: <span>Jane</span>
-              </p>
-              <p>
-                Submitter nickname:<span>Mary Ann</span>
-              </p>
-              <p>
-                Disable additional sub-camps:<span>No</span>
-              </p>
-              <p>
-                Single level Camps only:<span>Minor tweaks</span>
-              </p>
-              <p>
-                Camp archived:<span> Jane Doe</span>
-              </p>
-              <p>
-                Submitted on:<span> 16 Feb 2024, 04:36 PM</span>
-              </p>
-              <p>
-                Going live on :<span>17 Feb 2024, 04:36 PM</span>
-              </p>
-              <Divider className="border-[#242B3733] my-[1.125rem]" />
-              <div className="cn-footer-btn">
-                <div className="cn-card-btn">
-                  <Button
-                    size="large"
-                    type="primary"
-                    className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none"
-                  >
-                    Commit Changes
-                    <i className="icon-upload"></i>
-                  </Button>
-                  <Button
-                    size="large"
-                    className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none"
-                  >
-                    Edit Statement
-                    <i className="icon-edit"></i>
-                  </Button>
-                </div>
-                <div className="cn-link-btn">
-                  <Button
-                    size="large"
-                    type="link"
-                    icon={<EyeOutlined />}
-                    className="flex items-center justify-center rounded-[10px] leading-none text-[#242B37]"
-                  >
-                    Preview Camp
-                  </Button>
-                </div>
-              </div>
-            </Card>
-          </div> */}
-        </Card>
+        {renderCampHistories}
+
       </div>
     </>
   );
