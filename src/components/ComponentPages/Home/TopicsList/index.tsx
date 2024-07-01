@@ -423,6 +423,7 @@ const TopicsList = () => {
             showTotal={showTotal}
             pageSizeOptions={[10, 16]}
             showSizeChanger
+            showQuickJumper
             onChange={handlePageChange}
             disabled={loading}
           />
