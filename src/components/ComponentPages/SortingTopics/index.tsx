@@ -59,7 +59,7 @@ const SortTopics = () => {
             ? "Latest"
             : sortScoreViewTopic
             ? "ScoreValue"
-            : undefined
+            : "ScoreValue"
         }
         onChange={(value) => {
           if (value === "Latest") {
