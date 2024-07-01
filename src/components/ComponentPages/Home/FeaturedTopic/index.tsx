@@ -64,11 +64,11 @@ const FeaturedTopic = () => {
                   xs={24}
                   className="flex flex-col mt-3 xl:mt-0 md:pl-4 px-3 pb-5  xl:px-5 xl:pb-0 static"
                 >
-                  <div className="flex justify-between pb-2 align-center">
-                    <Typography.Paragraph className="m-0 text-xl font-bold font-inter">
+                  <div className="flex justify-between pb-2 align-center z-100 relative -ml-4 -mr-4 lg:ml-0 lg:mr-0">
+                    <Typography.Paragraph className="m-0 text-xl font-bold font-inter absolute -top-16 left-0 right-0 text-white px-3 py-2 flex bg-canBlack w-full lg:bg-transparent lg:static lg:px-0 lg:py-0 lg:text-canBlack">
                       {ft?.title}
                     </Typography.Paragraph>
-                    <div className="">
+                    <div className="hidden lg:flex">
                       <Popover content="Share Topic" placement="top">
                         <PrimaryButton className="bg-transparent border-0 p-0 hover:bg-transparent focus:bg-transparent">
                           <ShareAltOutlined className="text-canBlack p-1 text-xl" />
@@ -80,7 +80,7 @@ const FeaturedTopic = () => {
                     </div>
                   </div>
                   <CardDescription description={ft?.description} />
-                  <div className="flex justify-between pt-3 mt-auto flex-col lg:flex-row">
+                  <div className="flex justify-between pt-3 mt-auto">
                     <div className="text-left flex flex-col sm:flex-row">
                       <NameSpaceLabel namespace={ft?.namespace} />
                       <div className="absolute top-2 right-2 px-2 rounded-md bg-canBlack lg:static lg:bg-transparent lg:px-0 lg:flex">
