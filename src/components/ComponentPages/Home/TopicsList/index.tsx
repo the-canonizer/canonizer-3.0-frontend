@@ -17,7 +17,10 @@ import {
   Pagination,
 } from "antd";
 import { useEffect, useRef, useState } from "react";
-import { getCanonizedTopicsApi } from "src/network/api/homePageApi";
+import {
+  getCanonizedNameSpacesApi,
+  getCanonizedTopicsApi,
+} from "src/network/api/homePageApi";
 import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "src/store";
@@ -33,6 +36,7 @@ import AvatarGroup from "components/shared/AvaratGroup";
 import ViewCounts from "components/shared/ViewsCount";
 import CardDescription from "../HotTopics/descriptions";
 import NameSpaceLabel from "components/shared/NameSpaceLabel";
+import CustomPagination from "components/shared/CustomPagination/intex";
 const { Title } = Typography;
 const { Search } = Input;
 
@@ -210,29 +214,21 @@ const TopicsList = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  /* eslint-disable */
-  let throttled: NodeJS.Timeout | null = null;
-
   useEffect(() => {
-    if (throttled) {
-      clearTimeout(throttled);
+    if (inputSearch) {
+      setAllowClear(true);
+    }
+    if (!(nameSpaces?.length > 0)) {
+      getCanonizedNameSpacesApi();
     }
 
-    inputRef.current?.focus();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-    throttled = setTimeout(() => {
-      if (searchTerm?.trim()) {
-        onSearch(searchTerm);
-      }
-    }, 800);
+  useEffect(() => {
+    inputRef.current!.focus();
+  }, [searchTerm, onSearch]);
 
-    return () => {
-      if (throttled) {
-        clearTimeout(throttled);
-        throttled = null;
-      }
-    };
-  }, [searchTerm]);
   /* eslint-enable */
 
   useEffect(() => {
@@ -428,20 +424,13 @@ const TopicsList = () => {
           </Row>
         )}
         {totalTopics?.total_count > 10 && (
-          <Pagination
-            className="browse-pagination mt-14"
-            size="small"
-            total={totalTopics?.total_count}
-            defaultCurrent={1}
-            defaultPageSize={10}
-            current={pageNumber}
+          <CustomPagination
+            totalTopics={totalTopics?.total_count}
+            pageNumber={pageNumber}
             pageSize={pageSize}
             showTotal={showTotal}
-            pageSizeOptions={[10, 16]}
-            showSizeChanger
-            showQuickJumper
-            onChange={handlePageChange}
-            disabled={loading}
+            loading={loading}
+            handlePageChange={handlePageChange}
           />
         )}
       </div>
