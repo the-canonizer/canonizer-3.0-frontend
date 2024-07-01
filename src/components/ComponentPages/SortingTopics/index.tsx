@@ -51,7 +51,7 @@ const SortTopics = () => {
       <Select
         size="large"
         className="browse-filters"
-        suffixIcon={<SortDescendingOutlined />}
+        suffixIcon={<i className="icon-sort"></i>}
         style={{ width: 150 }}
         placeholder="Sort By"
         value={

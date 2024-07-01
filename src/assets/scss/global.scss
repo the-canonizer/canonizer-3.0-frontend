@@ -3136,7 +3136,7 @@ div[role="option"]::before {
     @apply my-8 border-[#CCD4E7];
   }
   .browse-actions {
-    @apply flex md:items-end justify-between gap-4 mb-9 max-md:flex-col;
+    @apply flex md:items-end justify-between gap-4 mb-[3.75rem] max-md:flex-col;
     .ant-form {
       .ant-form-item-required {
         @apply text-[#69748B] text-sm;
@@ -3145,6 +3145,9 @@ div[role="option"]::before {
     .browse-filters{
     .ant-select-selector {
       @apply rounded-md;
+      .ant-select-selection-item{
+        @apply text-[1rem] font-medium text-[#242B37];
+      }
       }
       .ant-select-arrow{
         .anticon,i{
@@ -3205,7 +3208,7 @@ div[role="option"]::before {
         @apply text-[#5482C8] opacity-0;
       }
       .browse-card-footer{
-        @apply flex justify-between mt-auto mt-3 mt-auto flex-row md:flex-row lg:flex-col 2xl:flex-row ;
+        @apply flex justify-between mt-auto mt-3 mt-auto flex-row  ;
         .browse-avatar{
          .ant-avatar{
           &:not(:first-child) {

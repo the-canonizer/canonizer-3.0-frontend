@@ -415,7 +415,7 @@ const TopicsList = () => {
                           )
                         }
                         size="large"
-                        maxCount={3}
+                        maxCount={4}
                         maxStyle={{
                           color: "#f56a00",
                           backgroundColor: "#fde3cf",
