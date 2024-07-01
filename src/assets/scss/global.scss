@@ -3203,9 +3203,11 @@ div[role="option"]::before {
   }
 }
 .cn-wrapper {
-  @apply lg:ml-5;
-  + .cn-wrapper {
-    @apply mt-10;
+  &.csh-wrapper {
+    @apply lg:ml-5;
+    + .csh-wrapper {
+      @apply mt-10;
+    }
   }
   &.pending-wrapper {
     .cn-dot-badge {

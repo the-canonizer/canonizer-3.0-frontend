@@ -92,7 +92,7 @@ function HistoryContainer() {
           </Button>
         </div>
         <Card className="ch-content" bordered={false}>
-          <div className="cn-wrapper pending-wrapper">
+          <div className="csh-wrapper cn-wrapper pending-wrapper">
             <div className="badge-wrapper">
               <Badge
                 className="cn-dot-badge ch-dot-history"
@@ -221,7 +221,7 @@ function HistoryContainer() {
               </div>
             </Card>
           </div>
-          <div className="cn-wrapper live-wrapper">
+          <div className="csh-wrapper cn-wrapper live-wrapper">
             <div className="badge-wrapper">
               <Badge
                 className="cn-dot-badge ch-dot-history"
@@ -322,7 +322,7 @@ function HistoryContainer() {
               </div>
             </Card>
           </div>
-          <div className="cn-wrapper previous-wrapper">
+          <div className="csh-wrapper cn-wrapper previous-wrapper">
             <div className="badge-wrapper">
               <Badge
                 className="cn-dot-badge ch-dot-history"
@@ -423,7 +423,7 @@ function HistoryContainer() {
               </div>
             </Card>
           </div>
-          <div className="cn-wrapper objected-wrapper">
+          <div className="csh-wrapper cn-wrapper objected-wrapper">
             <div className="badge-wrapper">
               <Badge
                 className="cn-dot-badge ch-dot-history"
