@@ -28,7 +28,7 @@ const Notifications = () => {
           >
             notifications
           </Typography.Paragraph>
-          <NotificationSwitch />
+          <NotificationSwitch key="notificatoin-popup-switch" />
         </div>
       }
       actions={[
@@ -62,7 +62,7 @@ const Notifications = () => {
           className="text-xl text-canBlue font-medium cursor-pointer"
           data-testid="clickable"
         >
-          <BellOutlined className="" />
+          <BellOutlined />
         </Badge>
       </Dropdown>
     </Fragment>

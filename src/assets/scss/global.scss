@@ -55,7 +55,7 @@ body {
         display: block;
         box-shadow: none;
         outline: linen;
-        border: 1px solid #0524e9;
+        border: 1px solid var(--canBlue);
         position: static;
         color: #fff;
         background-color: #fff;
@@ -63,8 +63,8 @@ body {
       }
       &[class*="slick-active"] {
         button {
-          background-color: #0524e9;
-          color: #0524e9;
+          background-color: var(--canBlue);
+          color: var(--canBlue);
         }
       }
       &:not(:last-child) {

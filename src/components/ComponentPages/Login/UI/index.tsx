@@ -45,7 +45,7 @@ const LoginUi = ({
           >
             Welcome back!
           </Title>
-          <Paragraph className="text-muted text-sm text-light font-regular">
+          <Paragraph className="text-muted text-sm text-canLight font-regular">
             All fields are mandatory.
           </Paragraph>
           {errorMsg && (

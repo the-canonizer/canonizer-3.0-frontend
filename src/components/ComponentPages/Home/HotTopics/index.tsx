@@ -11,6 +11,7 @@ import NameSpaceLabel from "src/components/shared/NameSpaceLabel";
 import AvatarGroup from "src/components/shared/AvaratGroup";
 import CardDescription from "./descriptions";
 import SectionHeading from "../FeaturedTopic/sectionsHeading";
+import SeeMoreLInk from "../FeaturedTopic/seeMoreLink";
 
 const HotTopics = () => {
   const { topicData } = useSelector((state: RootState) => ({
@@ -28,11 +29,7 @@ const HotTopics = () => {
           <SectionHeading title="Hot Topics" infoContent="Hot Topics" />
         </Col>
         <Col md={12} sm={12} xs={24} className="text-right">
-          <Link href="#">
-            <a className="text-canBlue hover:text-canHoverBlue text-sm font-inter font-medium">
-              See More
-            </a>
-          </Link>
+          <SeeMoreLInk />
         </Col>
       </Row>
 
@@ -61,7 +58,7 @@ const HotTopics = () => {
               <div className="flex justify-between mt-auto pt-3 mt-auto flex-row md:flex-row lg:flex-col 2xl:flex-row">
                 <div className="text-left flex flex-col">
                   <NameSpaceLabel namespace={ft?.namespace} />
-                  <ViewCounts views={ft?.views} />
+                  <ViewCounts views={ft?.views} className="!mt-2" />
                 </div>
                 <AvatarGroup
                   avatars={ft?.supporterData}

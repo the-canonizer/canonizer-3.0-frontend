@@ -1,7 +1,6 @@
 import { Fragment } from "react";
 import { Typography, Row, Col } from "antd";
 import { RightOutlined } from "@ant-design/icons";
-import Link from "next/link";
 import { useSelector } from "react-redux";
 
 import CommonCard from "src/components/shared/Card";
@@ -11,6 +10,7 @@ import ViewCounts from "src/components/shared/ViewsCount";
 import NameSpaceLabel from "src/components/shared/NameSpaceLabel";
 import CardDescription from "../HotTopics/descriptions";
 import SectionHeading from "../FeaturedTopic/sectionsHeading";
+import SeeMoreLInk from "../FeaturedTopic/seeMoreLink";
 
 const PreferedTopics = () => {
   const { topicData } = useSelector((state: RootState) => ({
@@ -31,11 +31,7 @@ const PreferedTopics = () => {
           />
         </Col>
         <Col md={12} sm={12} xs={24} className="text-right">
-          <Link href="#">
-            <a className="text-canBlue hover:text-canHoverBlue text-sm font-inter font-medium">
-              See More
-            </a>
-          </Link>
+          <SeeMoreLInk />
         </Col>
       </Row>
 

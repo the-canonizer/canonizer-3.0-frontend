@@ -1,13 +1,13 @@
 import { Fragment, useEffect } from "react";
 import { Row, Col, Tooltip } from "antd";
 import { FlagOutlined } from "@ant-design/icons";
-import Link from "next/link";
 import { useSelector } from "react-redux";
 
 import Tags from "src/components/shared/Tag";
 import { RootState } from "src/store";
 import { getAllTags } from "src/network/api/tagsApi";
 import SectionHeading from "../FeaturedTopic/sectionsHeading";
+import SeeMoreLInk from "../FeaturedTopic/seeMoreLink";
 
 const colors = ["#F7E9F5", "#E9EEF9", "#F7EAEA", "#EDF3E6"];
 
@@ -42,11 +42,7 @@ const CategoriesList = () => {
           />
         </Col>
         <Col md={12} sm={12} xs={24} className="text-right">
-          <Link href="#">
-            <a className="text-canBlue hover:text-canHoverBlue text-sm font-inter font-medium">
-              See More
-            </a>
-          </Link>
+          <SeeMoreLInk />
         </Col>
       </Row>
 
