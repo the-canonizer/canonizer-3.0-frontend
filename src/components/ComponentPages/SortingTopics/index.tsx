@@ -50,6 +50,7 @@ const SortTopics = () => {
       {/* Select component for sorting */}
       <Select
         size="large"
+        className="browse-filters"
         suffixIcon={<SortDescendingOutlined />}
         style={{ width: 150 }}
         placeholder="Sort By"
