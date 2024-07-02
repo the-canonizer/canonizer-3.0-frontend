@@ -2,17 +2,19 @@ import { Fragment, useEffect } from "react";
 import { Row, Col, Tooltip } from "antd";
 import { FlagOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
+import Link from "next/link";
 
 import Tags from "src/components/shared/Tag";
 import { RootState } from "src/store";
 import { getAllTags } from "src/network/api/tagsApi";
 import SectionHeading from "../FeaturedTopic/sectionsHeading";
 import SeeMoreLInk from "../FeaturedTopic/seeMoreLink";
+import { useIsMobile } from "src/hooks/useIsMobile";
 
 const colors = ["#F7E9F5", "#E9EEF9", "#F7EAEA", "#EDF3E6"];
 
-const getRandomColor = () => {
-  return Math.floor(Math.random() * colors?.length);
+export const getRandomColor = () => {
+  return colors[Math.floor(Math.random() * colors?.length)];
 };
 
 const CategoriesList = () => {
@@ -20,17 +22,21 @@ const CategoriesList = () => {
     tags: state?.tag?.tags,
   }));
 
+  const isMobile = useIsMobile();
+
   const getTags = async () => {
-    await getAllTags(1, 25);
+    await getAllTags();
   };
 
   useEffect(() => {
     getTags();
   }, []);
 
-  if (!tags?.length) {
+  if (!tags || tags.length === 0) {
     return null;
   }
+
+  const renderedTags = tags.slice(0, isMobile ? 5 : 25);
 
   return (
     <Fragment>
@@ -42,22 +48,29 @@ const CategoriesList = () => {
           />
         </Col>
         <Col md={12} sm={12} xs={24} className="text-right">
-          <SeeMoreLInk />
+          <SeeMoreLInk href="/categories" />
         </Col>
       </Row>
 
       <div className="mt-3">
-        {tags?.map((cat) => (
+        {renderedTags?.map((cat) => (
           <Tooltip title={cat?.title} key={cat?.id}>
             <Tags
               className="rounded-[5px] py-1 px-5 border-0 text-canBlack bg-canBlue mt-0 mb-3"
               icon={<FlagOutlined />}
-              color={colors[getRandomColor()]}
+              color={getRandomColor()}
             >
               {cat?.title}
             </Tags>
           </Tooltip>
         ))}
+        {isMobile ? (
+          <Link href="/categories" key="moretag">
+            <a className="text-canBlack font-semibold">
+              +{tags?.length - 5} more
+            </a>
+          </Link>
+        ) : null}
       </div>
     </Fragment>
   );

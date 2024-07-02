@@ -42,7 +42,7 @@ const ViewCounts = ({
       {...restProps}
     >
       <EyeOutlined className="text-canLight p-1 text-medium" />{" "}
-      {!views || views == 0 ? "-" : formatNumber(views)}
+      {!views || views == 0 ? 0 : formatNumber(views)}
     </Typography.Paragraph>
   );
 };
