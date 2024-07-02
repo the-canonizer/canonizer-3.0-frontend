@@ -251,7 +251,14 @@ function HistoryCollapse({
                 !!campStatement?.grace_period &&
                 moment.now() < campStatement?.submit_time * 1000 + 3600000 && (
                   <>
-                    <Tooltip title="prompt text">
+                    <Tooltip title={` Note: This countdown timer is the grace period in which
+                      you can make minor changes to your
+                      ${historyOf == "topic"
+                        ? "topic"
+                        : historyOf == "camp"
+                        ? "camp"
+                        : "statement"}
+                      before other direct supporters are notified.`}>
                       <InfoCircleOutlined />
                     </Tooltip>
 
