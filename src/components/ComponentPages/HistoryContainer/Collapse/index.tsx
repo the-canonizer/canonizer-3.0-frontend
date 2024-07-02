@@ -336,221 +336,109 @@ function HistoryCollapse({
 
             {(!campStatement?.grace_period || commited) && (
               <>
-                {(campStatement?.status == "in_review" ||
-                  (campStatement?.status == "objected" &&
-                    historyOf != "statement")) && (
-                    <>
-                      <Tooltip
-                        title={
-                          (
-                            !isUserAuthenticated
-                              ? true
-                              : !campStatement?.ifIAmExplicitSupporter &&
-                                campStatement?.ifIamSupporter == 0
-                                ? true
-                                : false
-                          )
-                            ? K?.exceptionalMessages?.objectedTooltipMsg
-                            : ""
-                        }
-                        >
+                {(campStatement?.status == "in_review") && (
+                  <>
+                    {/* object btn */}
+                    <div className="cn-footer-btn">
+                      <div className="cn-card-btn">
                         <Button
-                          type="primary"
                           size="large"
-                          id={`object-change-${campStatement?.id}`}
-                          onClick={() => {
-                            let isModelPop = !isUserAuthenticated
-                              ? true
-                              : (!campStatement?.ifIAmExplicitSupporter &&
-                                campStatement?.ifIamSupporter == 0) ||
-                                (parentArchived == 1 &&
-                                  directarchived == 1 &&
-                                  historyOf == "topic") ||
-                                (parentArchived == 1 && directarchived == 0)
-                                ? true
-                                : false;
-                            if (isModelPop) {
-                              setModal1Open(true);
-                            } else {
-                              router?.push(
-                                historyOf == "camp"
-                                  ? `/manage/camp/${campStatement?.id}-objection`
-                                  : historyOf == "topic"
-                                    ? `/manage/topic/${campStatement?.id}-objection`
-                                    : `/manage/statement/${campStatement?.id}-objection`
-                              );
-                            }
-                          }}
-                          className={`flex items-center justify-center rounded-[10px] gap-3.5 leading-none ${(
-                            !isUserAuthenticated
-                              ? true
-                              : (!campStatement?.ifIAmExplicitSupporter &&
-                                campStatement?.ifIamSupporter == 0) ||
-                                (campHistoryItems[0]?.is_archive == 1 &&
-                                  campHistoryItems[0]?.status == "live" &&
-                                  campStatement.status == "objected") ||
-                                (parentArchived == 1 &&
-                                  directarchived == 1 &&
-                                  historyOf == "topic") ||
-                                (parentArchived == 1 && directarchived == 0)
-                                ? true
-                                : false
-                          )
-                            ? "disable-style"
-                            : ""
-                            } ${styles.campUpdateButton}`}
+                          type="primary"
+                          className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none px-10"
                         >
                           Object
                         </Button>
-                      </Tooltip>
-                      <Modal
-                        title={K?.exceptionalMessages?.objectedModelTitle}
-                        style={{
-                          top: 20,
-                        }}
-                        centered
-                        okText="Close"
-                        visible={modal1Open}
-                        footer={[
-                          <Button
-                            key="submit"
-                            danger
-                            type="primary"
-                            onClick={() => setModal1Open(false)}
-                          >
-                            Close
-                          </Button>,
-                        ]}
-                        onCancel={() => setModal1Open(false)}
-                      >
-                        <p>{K?.exceptionalMessages?.objectedModalMsg}</p>
-                        <p>
-                          {K?.exceptionalMessages?.objectedModalMsgForMoreInfo}
-                        </p>
-                        <Link href="/topic/132-Help/4-Disagreement?is_tree_open=1">
-                          <a style={{ fontSize: "16px" }}>
-                            https://canonizer.com/topic/132-Help/4-Disagreement
-                          </a>
-                        </Link>
-                      </Modal>
-                    </>
-                   )
-                  } 
+                      </div>
+                      <div className="cn-link-btn">
+                        <Button
+                          type="link"
+                          danger
+                          size="large"
+                          icon={<i className="icon-delete"></i>}
+                          className="flex items-center justify-center gap-2 rounded-[10px] leading-none"
+                        >
+                          Delete
+                        </Button>
+                      </div>
+                    </div>
 
+                    {/* modal */}
+                  </>)}
+                {/* Submit Statement Update Based On This */}
+                {/* View this version */}
                 <div className="cn-footer-btn">
                   <div className="cn-card-btn">
                     <Button
                       size="large"
                       type="primary"
-                      className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none px-10"
-                      onClick={() => {
-                        campStatement?.is_archive == 1 &&
-                          campStatement?.status == "live"
-                          ? !isUserAuthenticated
-                            ? router?.push({
-                              pathname: "/login",
-                              query: {
-                                returnUrl: `/manage/${historyOf}/${campStatement?.id}`,
-                              },
-                            })
-                            : callManageCampApi()
-                          : submitUpdateRedirect(historyOf);
-                      }}
-                      disabled={
-                        unarchiveChangeSubmitted ||
-                          (campHistoryItems[0]?.status == "in_review" &&
-                            !commited &&
-                            !!campHistoryItems[0]?.grace_period) ||
-                          (campHistoryItems?.at(0)?.status == "live" &&
-                            campHistoryItems?.at(0)?.is_archive == 1 &&
-                            campStatement.status == "old") ||
-                          (parentArchived == 1 && directarchived == 0) ||
-                          (parentArchived == 1 &&
-                            directarchived == 1 &&
-                            historyOf == "topic") ||
-                          (campHistoryItems?.at(0)?.is_archive == 1 &&
-                            campHistoryItems?.at(0)?.status == "live" &&
-                            campStatement.status == "objected")
-                          ? true
-                          : false
-                      }
+                      className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none w-100"
                     >
-                     {historyOf == "camp" &&
-                      campStatement?.is_archive == 1 &&
-                      campStatement?.status == "live"
-                      ? "Un-Archive This Camp"
-                      : historyOf == "topic"
-                        ? "Submit Based On This"
-                        : historyOf == "camp"
-                          ? "Submit Based On This"
-                          : "Submit Based On This"}
+                      Submit Based on This
                       <i className="icon-upload"></i>
-                    </Button>
-                    <Button
-                      size="large"
-                      id={`view-this-version-${campStatement?.id}`}
-                      className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none"
-                      onClick={() =>
-                        handleViewThisVersion(campStatement?.go_live_time)
-                      }
-                    >
-                      <Link
-                        href={`/topic/${replaceSpecialCharacters(
-                          historyOf == "topic"
-                            ? replaceSpecialCharacters(
-                              campStatement?.topic_num +
-                              "-" +
-                              campStatement?.topic_name?.replace(/ /g, "-"),
-                              "-"
-                            )
-                            : router?.query?.camp?.at(0),
-                          "-"
-                        ) +
-                          "/" +
-                          (historyOf != "topic"
-                            ? historyOf == "camp"
-                              ? replaceSpecialCharacters(
-                                campStatement?.camp_num +
-                                "-" +
-                                campStatement?.camp_name?.replace(/ /g, "-"),
-                                "-"
-                              )
-                              : replaceSpecialCharacters(
-                                router?.query?.camp?.at(1),
-                                "-"
-                              )
-                            : "1-Agreement")
-                          }?algo=${algorithm}&asofdate=${campStatement?.go_live_time
-                          }&asof=bydate&canon=${namespace_id}&viewversion=${1}`}
-                      >
-                        View Version
-                      </Link>
-                      <i className="icon-edit"></i>
                     </Button>
                   </div>
                   <div className="cn-link-btn">
-                    {/* <Button
+                    <Button
                       size="large"
                       type="link"
                       icon={<EyeOutlined />}
                       className="flex items-center justify-center rounded-[10px] leading-none text-[#242B37]"
                     >
                       Preview Camp
-                    </Button> */}
-                    <Button
-                      type="link"
-                      danger
-                      size="large"
-                      icon={<i className="icon-delete"></i>}
-                      className="flex items-center justify-center gap-2 rounded-[10px] leading-none"
-                      onClick={() => cancelConfirm()}
-                    >
-                      Delete
                     </Button>
                   </div>
                 </div>
               </>
             )}
+
+            {campStatement?.status == "in_review" &&
+              !commited &&
+              !!campStatement?.grace_period &&
+              moment.now() < campStatement?.submit_time * 1000 + 3600000 && (
+                <>
+                  <div className="cn-footer-btn">
+                    <div className="cn-card-btn">
+                      <Button
+                        size="large"
+                        type="primary"
+                        className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none"
+                      >
+                        Commit Changes
+                        <i className="icon-upload"></i>
+                      </Button>
+                      <Button
+                        size="large"
+                        className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none"
+                      >
+                        Edit {
+                          historyOf == "statement" ? "Statement" :
+                            historyOf == "topic" ? " Topic" :
+                              historyOf == "camp" ? " Camp" : null}
+                        <i className="icon-edit"></i>
+                      </Button>
+                    </div>
+                    <div className="cn-link-btn">
+                      <Button
+                        size="large"
+                        type="link"
+                        icon={<EyeOutlined />}
+                        className="flex items-center justify-center rounded-[10px] leading-none text-[#242B37]"
+                      >
+                        Preview Camp
+                      </Button>
+                      <Button
+                        type="link"
+                        danger
+                        size="large"
+                        icon={<i className="icon-delete"></i>}
+                        className="flex items-center justify-center gap-2 rounded-[10px] leading-none"
+                      >
+                        Delete
+                      </Button>
+                    </div>
+                  </div>
+                </>
+              )}
           </Card>
         </div>
       </Card>
