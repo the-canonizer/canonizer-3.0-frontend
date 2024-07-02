@@ -221,7 +221,6 @@ function HistoryCollapse({
 
   return (
     <>
-      <Card className="ch-content" bordered={false}>
         <div className={`cn-wrapper csh-wrapper
         ${campStatement?.status == "live" ? "live-wrapper" :
             campStatement?.status == "in_review" ? "pending-wrapper" :
@@ -351,7 +350,32 @@ function HistoryCollapse({
                         <Button
                           size="large"
                           type="primary"
+                          id={`object-change-${campStatement?.id}`}
                           className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none px-10"
+                          disabled={historyOf == "camp" ? !campStatement?.ifICanAgreeAndObject :false}
+                          onClick={() => {
+                            let isModelPop = !isUserAuthenticated
+                              ? true
+                              : (!campStatement?.ifIAmExplicitSupporter &&
+                                  campStatement?.ifIamSupporter == 0) ||
+                                (parentArchived == 1 &&
+                                  directarchived == 1 &&
+                                  historyOf == "topic") ||
+                                (parentArchived == 1 && directarchived == 0)
+                              ? true
+                              : false;
+                            if (isModelPop) {
+                              setModal1Open(true);
+                            } else {
+                              router?.push(
+                                historyOf == "camp"
+                                  ? `/manage/camp/${campStatement?.id}-objection`
+                                  : historyOf == "topic"
+                                  ? `/manage/topic/${campStatement?.id}-objection`
+                                  : `/manage/statement/${campStatement?.id}-objection`
+                              );
+                            }
+                          }}
                         >
                           Object
                         </Button>
@@ -564,7 +588,6 @@ function HistoryCollapse({
               )}
           </Card>
         </div>
-      </Card>
     </>
   );
 }

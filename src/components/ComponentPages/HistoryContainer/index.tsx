@@ -526,7 +526,9 @@ function HistoryContainer() {
               )
             }
           </div>
+          <Card className="ch-content" bordered={false}>
             {renderCampHistories}
+          </Card>
         </div>
       </div>
     </>
