@@ -454,7 +454,7 @@ function HistoryContainer() {
           <i className="icon-edit"></i>
         </Button>
       </div>
-      
+
       <div className="ch-wrapper">
         <div className="ch-history">
           <div className="statement-status-sider">
@@ -463,7 +463,7 @@ function HistoryContainer() {
               className="text-2xl text-[#242B37] p-1 mb-14 gap-5 flex items-center max-lg:hidden leading-none"
               icon={<i className="icon-back"></i>}
             >
-               {historyTitle()}
+              {historyTitle()}
             </Button>
             <Title level={5} className="mb-6">
               {historyTitle().toUpperCase()} BASED ON STATUS
@@ -505,6 +505,11 @@ function HistoryContainer() {
                 <Button
                   size="large"
                   className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none mt-12"
+                  disabled={
+                    !(
+                      selectedTopic.length >= 2 &&
+                      !selectedTopic?.includes(campHistory && campHistory["id"])
+                    )}
                   onClick={onCompareClick}
                 >
                   Compare Topics
@@ -518,6 +523,11 @@ function HistoryContainer() {
                 <Button
                   size="large"
                   className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none mt-12"
+                  disabled={
+                    !(
+                      selectedTopic.length >= 2 &&
+                      !selectedTopic?.includes(campHistory && campHistory["id"])
+                    )}
                   onClick={onCompareClick}
                 >
                   Compare Camps
@@ -527,7 +537,18 @@ function HistoryContainer() {
             }
           </div>
           <Card className="ch-content" bordered={false}>
-            {renderCampHistories}
+            {activeTab === "live" ? (
+              renderCampHistories
+            ) : (
+              <InfiniteScroll
+                initialLoad={false}
+                loadMore={!loadingIndicator && campStatementApiCall}
+                hasMore={loadMoreItems}
+                loader={<></>}
+              >
+                {renderCampHistories}
+              </InfiniteScroll>
+            )}
           </Card>
         </div>
       </div>
