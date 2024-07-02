@@ -1,8 +1,4 @@
-import { Dropdown, Select } from "antd";
-import Image from "next/image";
-import { SortDescendingOutlined } from "@ant-design/icons";
-import SortActiveTopicIcon from "../../../assets/image/sort-active-ico.svg";
-import SortTopicIcon from "../../../assets/image/sort-ico.svg";
+import { Select } from "antd";
 import styles from "../../ComponentPages/SortingTopics/sort.module.scss";
 import {
   setScoreViewTopic,

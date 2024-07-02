@@ -96,7 +96,6 @@ const TopicsList = () => {
   const [allowClear, setAllowClear] = useState(false);
   const [isCanonChange, setIsCanonChange] = useState(false);
   const [isBrowsing, setIsBrowsing] = useState(true);
-  const showTotal = (total) => `Total ${total} items`;
 
   const infoContent = (
     <div className="max-w-[300px] w-full">
@@ -112,8 +111,6 @@ const TopicsList = () => {
       </a>
     </div>
   );
-
-  console.log("selectedNameSpace", selectedNameSpace);
 
   const handlePageChange = (newPageNumber, newPageSize) => {
     setIsCanonChange(false);
@@ -428,7 +425,6 @@ const TopicsList = () => {
             totalTopics={totalTopics?.total_count}
             pageNumber={pageNumber}
             pageSize={pageSize}
-            showTotal={showTotal}
             loading={loading}
             handlePageChange={handlePageChange}
           />

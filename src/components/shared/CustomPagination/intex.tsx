@@ -5,11 +5,11 @@ const CustomPagination = ({
   totalTopics,
   pageNumber,
   pageSize,
-  showTotal,
   loading,
   handlePageChange,
 }) => {
   const [quickJumperValue, setQuickJumperValue] = useState("");
+  const showTotal = (total) => `Total ${total} items`;
 
   const handleQuickJumperChange = (e) => {
     const value = e.target.value;
