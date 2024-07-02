@@ -22,7 +22,7 @@ const ProfileInfoTab = ({
   logOut,
   isMobile,
   menu = <></>,
-}:any) => {
+}: any) => {
   const { loggedInUser } = useSelector((state: RootState) => ({
     loggedInUser: state.auth.loggedInUser,
   }));
@@ -32,9 +32,9 @@ const ProfileInfoTab = ({
 
       {loggedInUser?.profile_picture && !loadingImage ? (
         <Avatar
-        style={{
-          cursor: "pointer",
-        }}
+          style={{
+            cursor: "pointer",
+          }}
           src={loggedInUser?.profile_picture}
           size={isMobile ? "small" : "default"}
         />
@@ -60,7 +60,8 @@ const ProfileInfoTab = ({
           }}
           size={isMobile ? "small" : "default"}
         >
-          {loggedUser["first_name"].charAt(0).toUpperCase() +
+          {loggedUser &&
+            loggedUser["first_name"].charAt(0).toUpperCase() + loggedUser &&
             loggedUser["last_name"].charAt(0).toUpperCase()}
         </Avatar>
       )}

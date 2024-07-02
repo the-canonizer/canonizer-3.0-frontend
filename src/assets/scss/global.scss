@@ -55,7 +55,7 @@ body {
         display: block;
         box-shadow: none;
         outline: linen;
-        border: 1px solid #0524e9;
+        border: 1px solid var(--canBlue);
         position: static;
         color: #fff;
         background-color: #fff;
@@ -63,8 +63,8 @@ body {
       }
       &[class*="slick-active"] {
         button {
-          background-color: #0524e9;
-          color: #0524e9;
+          background-color: var(--canBlue);
+          color: var(--canBlue);
         }
       }
       &:not(:last-child) {
@@ -3146,66 +3146,71 @@ div[role="option"]::before {
     }
   }
 }
-.ch-history {
-  @apply bg-white max-lg:flex-col flex gap-5 py-10;
+.ch-wrapper {
+  @apply py-10;
+  .ch-history {
+    @apply bg-white max-lg:flex-col flex gap-5;
 
-  .statement-status-sider {
-    @apply lg:w-[320px];
+    .statement-status-sider {
+      @apply lg:w-[320px];
 
-    h5 {
-      @apply text-[#242B37] text-[1.125rem] mb-7;
-    }
-    .sider-btn {
-      @apply flex items-center gap-4 flex-wrap;
-      button {
-        @apply rounded-[10px] font-medium;
-        &.btn-all {
-          @apply border-[#5482C8] hover:text-[#5482C8] focus:text-[#5482C8];
-          &.active {
-            @apply bg-[#5482C8] text-white;
+      h5 {
+        @apply text-[#242B37] text-[1.125rem] mb-7;
+      }
+      .sider-btn {
+        @apply flex items-center gap-4 flex-wrap;
+        button {
+          @apply rounded-[10px] font-medium;
+          &.btn-all {
+            @apply border-[#5482C8] hover:text-[#5482C8] focus:text-[#5482C8];
+            &.active {
+              @apply bg-[#5482C8] text-white;
+            }
           }
-        }
-        &.btn-objected {
-          @apply border-[#E46B6B] hover:text-[#E46B6B] focus:text-[#E46B6B];
-          &.active {
-            @apply bg-[#E46B6B] text-white;
+          &.btn-objected {
+            @apply border-[#E46B6B] hover:text-[#E46B6B] focus:text-[#E46B6B];
+            &.active {
+              @apply bg-[#E46B6B] text-white;
+            }
           }
-        }
-        &.btn-live {
-          @apply border-[#4EB966] hover:text-[#4EB966] focus:text-[#4EB966];
-          &.active {
-            @apply bg-[#4EB966] text-white;
+          &.btn-live {
+            @apply border-[#4EB966] hover:text-[#4EB966] focus:text-[#4EB966];
+            &.active {
+              @apply bg-[#4EB966] text-white;
+            }
           }
-        }
-        &.btn-pending {
-          @apply border-[#F19C39] hover:text-[#F19C39] focus:text-[#F19C39];
-          &.active {
-            @apply bg-[#F19C39] text-white;
+          &.btn-pending {
+            @apply border-[#F19C39] hover:text-[#F19C39] focus:text-[#F19C39];
+            &.active {
+              @apply bg-[#F19C39] text-white;
+            }
           }
-        }
-        &.btn-previous {
-          @apply border-[#4786CB] hover:text-[#4786CB] focus:text-[#4786CB];
-          &.active {
-            @apply bg-[#4786CB] text-white;
+          &.btn-previous {
+            @apply border-[#4786CB] hover:text-[#4786CB] focus:text-[#4786CB];
+            &.active {
+              @apply bg-[#4786CB] text-white;
+            }
           }
         }
       }
     }
-  }
-  .ch-content {
-    @apply bg-[#F4F5FA] rounded-lg w-full;
-    &::after {
-      @apply max-lg:hidden absolute top-12 left-8 bottom-8 block content-[''] w-[1px] p-0 bg-gray-300 transition-colors duration-300;
-    }
-    & > .ant-card-body {
-      @apply p-8;
+    .ch-content {
+      @apply bg-[#F4F5FA] rounded-lg w-full;
+      &::after {
+        @apply max-lg:hidden absolute top-12 left-8 bottom-8 block content-[''] w-[1px] p-0 bg-gray-300 transition-colors duration-300;
+      }
+      & > .ant-card-body {
+        @apply p-8;
+      }
     }
   }
 }
 .cn-wrapper {
-  @apply lg:ml-5;
-  + .cn-wrapper {
-    @apply mt-10;
+  &.csh-wrapper {
+    @apply lg:ml-5;
+    + .csh-wrapper {
+      @apply mt-10;
+    }
   }
   &.pending-wrapper {
     .cn-dot-badge {

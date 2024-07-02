@@ -308,7 +308,7 @@ function HistoryContainer() {
         style={{
           display: "flex",
           // justifyContent: "center",
-          alignItems:"center",
+          alignItems: "center",
           margin: "20px 500px",
         }}
       >
@@ -354,7 +354,7 @@ function HistoryContainer() {
     await campStatementApiCall();
     setLoadingIndicator(false);
   };
-  
+
   const getCollapseKeys = (campHistoryData, index) => {
     let key = "";
     let oldstatements = campHistory?.items?.filter(
@@ -415,7 +415,7 @@ function HistoryContainer() {
         );
       })
     ) : (
-        <NoRecordsMessage />
+      <NoRecordsMessage />
     );
 
   return (
@@ -454,82 +454,80 @@ function HistoryContainer() {
           <i className="icon-edit"></i>
         </Button>
       </div>
-      <div className="ch-history">
-        <div className="statement-status-sider">
-          <Button
-            type="link"
-            className="text-2xl text-[#242B37] p-1 mb-16 flex items-center max-lg:hidden leading-none"
-            icon={<LeftOutlined />}
-          >
-            {historyTitle()}
-          </Button>
-          <Title level={5} className="mb-6">
-            {historyTitle().toUpperCase()} BASED ON STATUS
-          </Title>
-          <div className="sider-btn">
-            <Button size="large" className={`btn-all ${activeTab == "all" ? " active" : null}`}
-              onClick={() => {
-                handleTabButton("all");
-              }}>
-              View all {activeTab == "all" && currentFilterCount}
-            </Button>
-            <Button size="large" className={`btn-objected ${activeTab == "objected" ? " active" : null}`}
-              onClick={() => {
-                handleTabButton("objected");
-              }}
+      
+      <div className="ch-wrapper">
+        <div className="ch-history">
+          <div className="statement-status-sider">
+            <Button
+              type="link"
+              className="text-2xl text-[#242B37] p-1 mb-14 gap-5 flex items-center max-lg:hidden leading-none"
+              icon={<i className="icon-back"></i>}
             >
-              Objected  {activeTab == "objected" && currentFilterCount}
+               {historyTitle()}
             </Button>
-            <Button size="large" className={`btn-live ${activeTab == "live" ? " active" : null}`}
-              onClick={() => {
-                handleTabButton("live");
-              }}
-            >
-              Live {activeTab == "live" && currentFilterCount}
-            </Button>
-            <Button size="large" className={`btn-pending ${activeTab == "in_review" ? " active" : null}`}
-              onClick={() => {
-                handleTabButton("in_review");
-              }}
-            >
-              Pending {activeTab == "in_review" && currentFilterCount}
-            </Button>
-            <Button size="large" className={`btn-previous  ${activeTab == "old" ? " active" : null}`}
-              onClick={() => {
-                handleTabButton("old");
-              }}
-            >
-              Previous {activeTab == "old" && currentFilterCount}
-            </Button>
+            <Title level={5} className="mb-6">
+              {historyTitle().toUpperCase()} BASED ON STATUS
+            </Title>
+            <div className="sider-btn">
+              <Button size="large" className={`btn-all ${activeTab == "all" ? " active" : null}`}
+                onClick={() => {
+                  handleTabButton("all");
+                }}>
+                View all {activeTab == "all" && currentFilterCount}
+              </Button>
+              <Button size="large" className={`btn-objected ${activeTab == "objected" ? " active" : null}`}
+                onClick={() => {
+                  handleTabButton("objected");
+                }}>
+                Objected {activeTab == "objected" && currentFilterCount}
+              </Button>
+              <Button size="large" className={`btn-live ${activeTab == "live" ? " active" : null}`}
+                onClick={() => {
+                  handleTabButton("live");
+                }}>
+                Live {activeTab == "live" && currentFilterCount}
+              </Button>
+              <Button size="large" className={`btn-pending ${activeTab == "in_review" ? " active" : null}`}
+                onClick={() => {
+                  handleTabButton("in_review");
+                }}>
+                Pending {activeTab == "in_review" && currentFilterCount}
+              </Button>
+              <Button size="large" className={`btn-previous  ${activeTab == "old" ? " active" : null}`}
+                onClick={() => {
+                  handleTabButton("old");
+                }}>
+                Previous {activeTab == "old" && currentFilterCount}
+              </Button>
+            </div>
+            {
+              historyOf === "topic" && (
+                <Button
+                  size="large"
+                  className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none mt-12"
+                  onClick={onCompareClick}
+                >
+                  Compare Topics
+                  <i className="icon-compare-statement"></i>
+                </Button>
+              )
+            }
+
+            {
+              historyOf === "camp" && (
+                <Button
+                  size="large"
+                  className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none mt-12"
+                  onClick={onCompareClick}
+                >
+                  Compare Camps
+                  <i className="icon-compare-statement"></i>
+                </Button>
+              )
+            }
           </div>
-          {
-            historyOf === "topic" && (
-              <Button
-                size="large"
-                className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none mt-12"
-                onClick={()=> onCompareClick()}
-              >
-                Compare Topics
-                <i className="icon-compare-statement"></i>
-              </Button>
-            )
-          }
-          {
-            historyOf === "camp" && (
-              <Button
-                size="large"
-                className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none mt-12"
-                onClick={()=> onCompareClick()}
-              >
-                Compare Camps
-                <i className="icon-compare-statement"></i>
-              </Button>
-            )
-          }
+            {renderCampHistories}
         </div>
-
-        {renderCampHistories}
-
       </div>
     </>
   );

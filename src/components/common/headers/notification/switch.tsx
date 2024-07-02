@@ -36,7 +36,6 @@ const NotificationSwitch = () => {
     }
 
     setToken();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSwitch = async (st: any, event: { stopPropagation: () => void }) => {
@@ -110,7 +109,9 @@ const NotificationSwitch = () => {
 
   return (
     <Typography.Text className="flex items-center justify-between text-muted text-sm">
-      <small data-testid="enable-text" className="block mr-2">Enable push notification </small>
+      <small data-testid="enable-text" className="block mr-2">
+        Enable push notification{" "}
+      </small>
       {isLoading ? (
         <Spin size="small" />
       ) : (

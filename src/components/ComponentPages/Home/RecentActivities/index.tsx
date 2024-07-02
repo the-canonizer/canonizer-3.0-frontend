@@ -27,6 +27,7 @@ import { getProperties } from "src/utils/generalUtility";
 import ReasonsActivity from "src/components/common/SupportReasonActivity";
 import Headings from "components/shared/Typography";
 import CommonCard from "src/components/shared/Card";
+import SeeMoreLInk from "../FeaturedTopic/seeMoreLink";
 
 const antIcon = <LoadingOutlined spin />;
 
@@ -272,15 +273,11 @@ export default function RecentActivities() {
           </Headings>
         </Col>
         <Col md={12} sm={12} xs={24} className="text-right">
-          <Link href="/activities">
-            <a className="text-canBlue hover:text-canHoverBlue text-sm font-inter font-medium">
-              See More
-            </a>
-          </Link>
+          <SeeMoreLInk href="/activities" />
         </Col>
       </Row>
-      <div className="">
-        <CommonCard className="border-0 h-100 hover:*:bg-canGray focus:*:bg-canGray">
+      <div className="mt-2">
+        <CommonCard className="border-0 h-100 hocus:!bg-canGray">
           {userData?.is_admin &&
           !router?.query?.camp_num &&
           !router?.query?.topic_num ? (
@@ -300,7 +297,7 @@ export default function RecentActivities() {
           ) : null}
           <div className="bg-white border p-2 rounded-lg">
             <Tabs
-              className={`[&_.ant-tabs-nav]:mb-0 [&_.ant-tabs-nav-wrap]:w-full [&_.ant-tabs-nav-wrap]:justify-center [&_.ant-tabs-nav-list]:justify-evenly [&_.ant-tabs-nav-list]:w-full px-2 ${
+              className={`[&_.ant-tabs-nav]:mb-0 [&_.ant-tabs-nav-wrap]:w-full [&_.ant-tabs-nav-wrap]:justify-center [&_.ant-tabs-nav-list]:justify-evenly [&_.ant-tabs-nav-list]:w-full px-2 [&_.ant-tabs-tab-btn]:!text-canBlue ${
                 router?.query?.camp_num && router?.query?.topic_num
                   ? "hidden"
                   : ""
@@ -341,7 +338,7 @@ export default function RecentActivities() {
                         <List.Item className="font-inter text-sm font-medium bg-white w-full px-2">
                           <AntLink
                             href={decodedProperties?.url?.replace(/\s+/g, "-")}
-                            className="w-full"
+                            className="w-full !text-canBlue hover:!text-canHoverBlue"
                           >
                             <Fragment>
                               <Text className="text-canBlack text-sm font-normal mb-0">
@@ -439,7 +436,7 @@ export default function RecentActivities() {
                       return (
                         <List.Item className="font-inter text-sm font-medium bg-white w-full px-2">
                           <Link href={decodeUrlLink(activity)} passHref>
-                            <a className="hover:*:hblue w-full">
+                            <a className="w-full !text-canBlue hover:!text-canHoverBlue">
                               <Text className="text-canBlack text-sm font-normal mb-0 block w-full">
                                 {activity?.activity?.description}{" "}
                                 <Text className="text-canBlue font-medium">

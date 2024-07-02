@@ -222,11 +222,11 @@ function HistoryCollapse({
   return (
     <>
       <Card className="ch-content" bordered={false}>
-        <div className={`cn-wrapper 
+        <div className={`cn-wrapper csh-wrapper
         ${campStatement?.status == "live" ? "live-wrapper" :
             campStatement?.status == "in_review" ? "pending-wrapper" :
               campStatement?.status == "not_live" ? "objected-wrapper" :
-                campStatement?.status == "old" ? "previous-wrapper" : null} `}>
+                campStatement?.status == "old" ? "previous-wrapper" : null}`}>
           <div className="badge-wrapper">
             <Badge
               className="cn-dot-badge ch-dot-history"

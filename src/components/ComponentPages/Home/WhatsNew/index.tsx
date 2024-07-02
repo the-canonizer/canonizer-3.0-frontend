@@ -23,7 +23,7 @@ const WhatsNew = () => {
         </Col>
       </Row>
 
-      <div className="mt-4">
+      <div className="mt-3">
         <CommonCard className="border-0 h-100 text-canBlack">
           <div
             className="text-canBlack"
