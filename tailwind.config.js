@@ -48,6 +48,9 @@ module.exports = {
       ...theme("spacing"),
     }),
     extend: {
+      boxShadow: {
+        'camp-light': '0 10px 20px 0px rgba(49, 80, 114, 0.2)',
+      },
       spacing: {
         1: "8px",
         2: "12px",

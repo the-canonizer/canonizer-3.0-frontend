@@ -11,6 +11,11 @@ import useAuthentication from "src/hooks/isUserAuthenticated";
 import { RootState } from "../../../../store";
 import { setCurrentCamp } from "../../../../store/slices/filtersSlice";
 import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
+import {
+  setCampSupportingTree,
+  setCheckSupportExistsData,
+  setCurrentCheckSupportStatus,
+} from "src/store/slices/campDetailSlice";
 
 const { TreeNode } = Tree;
 
@@ -43,7 +48,6 @@ const CampTree = ({
     is_camp_archive_checked: state?.utils?.archived_checkbox,
     campRecord: state?.topicDetails?.currentCampRecord,
   }));
-
   let childExpandTree = [];
   const [defaultExpandKeys, setDefaultExpandKeys] = useState([]);
   const [uniqueKeys, setUniqueKeys] = useState([]);
@@ -69,7 +73,6 @@ const CampTree = ({
     }
   };
   const { isUserAuthenticated, userID } = useAuthentication();
-
   const showSelectedCamp = (data, select_camp, campExist) => {
     Object?.keys(data).map((item) => {
       if (data[item].children) {
@@ -285,7 +288,6 @@ const CampTree = ({
     let sortedData = Object.keys(data)
       .map((key) => [Number(key), data[key]])
       .sort((a, b) => b[1].score - a[1].score);
-
     return sortedData.map((itemWithData) => {
       let item = itemWithData[0];
       const parentIsOneLevel = isOneLevel;
@@ -300,6 +302,7 @@ const CampTree = ({
           is_checked && isUserAuthenticated
             ? setTotalCampScoreForSupportTree(data[item].full_score)
             : setTotalCampScoreForSupportTree(data[item].score);
+
         }
       } else {
         if (data[item]?.camp_id == 1) {

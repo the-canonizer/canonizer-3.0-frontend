@@ -7,6 +7,8 @@ import {
   Typography,
   Dropdown,
   Menu,
+  Row,
+  Col,
 } from "antd";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
@@ -19,6 +21,7 @@ import {
 } from "@ant-design/icons";
 import Link from "next/link";
 import moment from "moment";
+import Image from "next/image";
 
 import styles from "../topicDetails.module.scss";
 
@@ -30,12 +33,17 @@ import {
   getTreesApi,
   subscribeToCampApi,
 } from "src/network/api/campDetailApi";
-import { getCookies, replaceSpecialCharacters } from "src/utils/generalUtility";
+import {
+  changeSlashToArrow,
+  getCookies,
+  replaceSpecialCharacters,
+} from "src/utils/generalUtility";
 import SocialShareUI from "../../../common/socialShare";
 import { isServer } from "../../../../utils/generalUtility";
 import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
 import K from "src/constants";
 import GenerateModal from "src/components/common/generateScript";
+import CustomButton from "@/components/common/button";
 
 const CodeIcon = () => (
   <svg
@@ -80,6 +88,7 @@ const TimelineInfoBar = ({
     campScoreValue,
     changeGoneLive,
     algorithm,
+    campStatement,
   } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
     campRecord: state?.topicDetails?.currentCampRecord,
@@ -91,6 +100,7 @@ const TimelineInfoBar = ({
     campScoreValue: state?.filters?.campWithScoreValue,
     changeGoneLive: state?.topicDetails?.changeGoneLive,
     algorithm: state.filters?.filterObject?.algorithm,
+    campStatement: state?.topicDetails?.campStatement,
   }));
 
   const [campSubscriptionID, setCampSubscriptionID] = useState(
@@ -125,6 +135,7 @@ const TimelineInfoBar = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const isMobile = window.matchMedia("(min-width: 1024.98px)").matches;
   const onCampForumClick = () => {
     const topicName = topicRecord?.topic_name?.replaceAll(" ", "-");
     const campName = campRecord?.camp_name?.replaceAll(" ", "-");
@@ -305,6 +316,176 @@ const TimelineInfoBar = ({
     }
   };
 
+  const covertToTime = (unixTime) => {
+    return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
+  };
+
+  const title = (
+    <div className="popover_header">
+      <span>Topic name :</span>
+      <p className=""> {topicRecord && topicRecord?.topic_name}</p>
+    </div>
+  );
+  const content = (
+    <div className="popoverParent">
+      <Row gutter={1}>
+        <Col md={12} sm={12} xs={12} className="mb-3 d-flex flex-col">
+          <span>Author</span>
+          <span className="author-name">James Steve</span>
+        </Col>
+        <Col md={12} sm={12} xs={12} className="mb-3 d-flex flex-col">
+          <span className="popover-fontStyle">Submitted On : </span>
+          <span className="submitted-on">
+            {" "}
+            {topicRecord && covertToTime(topicRecord?.submit_time)}
+          </span>
+        </Col>
+        <Col md={12} sm={12} xs={12} className="mb-3 d-flex flex-col">
+          <span className="popover-fontStyle">Submitted By</span>
+          <span className="author-name-by">James Steve</span>
+        </Col>
+        <Col md={12} sm={12} xs={12} className="mb-3 d-flex flex-col">
+          <span className="popover-fontStyle">Go Live Time : </span>
+          <span className="submitted-on">
+            {" "}
+            {topicRecord && covertToTime(topicRecord?.go_live_time)}
+          </span>
+        </Col>
+        <Col md={12} sm={12} xs={12} className="d-flex flex-col">
+          <span className="popover-fontStyle">Canon : </span>
+          <span className="submitted-on">
+            {" "}
+            {topicRecord && changeSlashToArrow(topicRecord?.namespace_name)}
+          </span>
+        </Col>
+      </Row>
+
+      <hr className="horizontal_line" />
+      <CustomButton className="customButton-popover">
+        {isTopicPage && (
+          <Link
+            href={`/topic/history/${replaceSpecialCharacters(
+              router?.query?.camp
+                ? router?.query?.camp[0]
+                : router?.query?.manageSupport?.at(0),
+              "-"
+            )}`}
+          >
+            <a className="flex items-center justify-center gap-3 text-base font-medium leading-[]">
+              {K?.exceptionalMessages?.manageTopicButton}
+              <Image
+                src="/images/manage-btn-icon.svg"
+                alt="svg"
+                className="icon-topic"
+                height={24}
+                width={24}
+              />
+            </a>
+          </Link>
+        )}
+      </CustomButton>
+    </div>
+  );
+  const title2 = (
+    <div className="popover_header">
+      <span>Camp name :</span>
+      <p> {campRecord && campRecord?.camp_name}</p>
+    </div>
+  );
+  const contentForCamp = (
+    <div className="popoverParent">
+      <Row gutter={5}>
+        <Col md={12} sm={12} xs={12} className="mb-3 d-flex flex-col">
+          <span className="popover-fontStyle">Submitter</span>
+          <span className="author-name">James Steve</span>
+        </Col>
+        <Col md={12} sm={12} xs={12} className="mb-3 d-flex flex-col">
+          <span className="popover-fontStyle">Submitted On : </span>
+          <span className="submitted-on">
+            {campRecord && covertToTime(campRecord?.submit_time)}
+          </span>
+        </Col>
+        <Col md={12} sm={12} xs={12} className="mb-3 d-flex flex-col">
+          <span className="popover-fontStyle">Camp about nickname : </span>
+          <span className="submitted-on">
+            {campRecord && campRecord.camp_about_nick_name}
+          </span>
+        </Col>
+        <Col md={12} sm={12} xs={12} className="mb-3 d-flex flex-col">
+          <span className="popover-fontStyle">Camp about URL : </span>
+          <span className="submitted-on">
+            {campRecord && campRecord.camp_about_url}
+          </span>
+        </Col>
+        <Col md={12} sm={12} xs={12} className="mb-3 d-flex flex-col">
+          <span className="popover-fontStyle">Single level camps only : </span>
+          <span className="submitted-on">
+            {campRecord && campRecord.is_one_level == 0 ? "No" : "Yes"}
+          </span>
+        </Col>
+        <Col md={12} sm={12} xs={12} className="mb-3 d-flex flex-col">
+          <span className="popover-fontStyle">
+            Disable aditional sub camps:{" "}
+          </span>
+          <span className="submitted-on">
+            {campRecord && campRecord.is_disabled == 0 ? "No" : "Yes"}
+          </span>
+        </Col>
+        <Col md={12} sm={12} xs={12} className="mb-3 d-flex flex-col">
+          <span className="popover-fontStyle">Camp archive:</span>
+          <span className="submitted-on">
+            {" "}
+            {campRecord && campRecord.is_archive == 0 ? "No" : "Yes"}
+          </span>
+        </Col>
+        <Col md={12} sm={12} xs={12} className="mb-3 d-flex flex-col">
+          <span className="popover-fontStyle">Go live time:</span>
+          <span className="submitted-on">
+            {" "}
+            {campRecord && covertToTime(campRecord?.go_live_time)}
+          </span>
+        </Col>
+        <Col md={12} sm={12} xs={12} className=" d-flex flex-col">
+          <span className="popover-fontStyle">canon:</span>
+          <span className="submitted-on">
+            {" "}
+            {campRecord && campRecord.is_archive}
+          </span>
+        </Col>
+        <Col md={12} sm={12} xs={12} className=" d-flex flex-col">
+          <span className="popover-fontStyle">Topic :</span>
+          <span className="submitted-on">
+            {campRecord && campRecord.topic_num}
+          </span>
+        </Col>
+      </Row>
+
+      <hr className="horizontal_line" />
+      <CustomButton className="customButton-popover">
+        {isTopicPage && (
+          <Link
+            href={`/topic/history/${replaceSpecialCharacters(
+              router?.query?.camp
+                ? router?.query?.camp[0]
+                : router?.query?.manageSupport?.at(0),
+              "-"
+            )}`}
+          >
+           <a className="flex items-center justify-center gap-3 text-base font-medium leading-[]">
+              {K?.exceptionalMessages?.manageCampButton}
+              <Image
+                src="/images/manage-btn-icon.svg"
+                alt="svg"
+                className="icon-topic"
+                height={24}
+                width={24}
+              />
+            </a>
+          </Link>
+        )}
+      </CustomButton>
+    </div>
+  );
   return (
     <>
       <div
@@ -340,109 +521,91 @@ const TimelineInfoBar = ({
             ) : (
               ""
             )}
-            <Typography.Paragraph
-              className={
-                "mb-0 " +
-                `${
-                  loadingIndicator
-                    ? styles.topicTitleSkeleton
-                    : styles.topicTitleStyle
-                }`
-              }
-            >
-              <span className="normal">Topic : </span>
-              {loadingIndicator ? (
-                <CustomSkelton
-                  skeltonFor="list"
-                  bodyCount={1}
-                  stylingClass="topic-skeleton"
-                  isButton={false}
-                />
-              ) : isTopicHistoryPage ? (
-                <Link
-                  href={`/topic/${
-                    payload?.topic_num
-                  }-${replaceSpecialCharacters(
-                    breadCrumbRes?.topic_name,
-                    "-"
-                  )}/1-Agreement?${getQueryParams()?.returnQuery}`}
+
+            {isMobile ? (
+              <div className="d-flex desktop-view">
+                <Typography.Paragraph
+                  className={
+                    "mb-0 " +
+                    `${
+                      loadingIndicator
+                        ? styles.topicTitleSkeleton
+                        : styles.topicTitleStyle
+                    }`
+                  }
                 >
-                  <a className={styles.boldBreadcrumb}>
-                    {breadCrumbRes?.topic_name}
-                  </a>
-                </Link>
-              ) : breadCrumbRes ? (
-                <span className={styles.boldBreadcrumb}>
-                  {breadCrumbRes?.topic_name}
-                </span>
-              ) : (
-                "N/A"
-              )}
-              {breadCrumbRes && !!topicSubscriptionID && (
-                <Tooltip
-                  title="You have subscribed to the entire topic."
-                  key="camp_subscribed_icon"
-                >
-                  <small style={{ alignSelf: "center", marginLeft: "10px" }}>
-                    <i className="icon-subscribe text-primary"></i>
-                  </small>
-                </Tooltip>
-              )}
-            </Typography.Paragraph>
-            <div className={styles.breadcrumbLinks}>
-              <Typography.Paragraph
-                className={"mb-0 " + styles.topicTitleStyle}
-              >
-                <span className="normal">
-                  {!isTopicHistoryPage ? "Camp :" : ""}
-                </span>
-                {loadingIndicator ? (
-                  <CustomSkelton
-                    skeltonFor="list"
-                    bodyCount={1}
-                    stylingClass="topic-skeleton"
-                    isButton={false}
-                  />
-                ) : !isTopicHistoryPage ? (
-                  breadCrumbRes ? (
-                    breadCrumbRes?.bread_crumb?.map((camp, index) => {
-                      return (
+                  <span className={styles.topicBreadcrums}>
+                    <Image
+                      src="/images/home-icon.svg"
+                      alt="svg"
+                      height={21}
+                      width={17}
+                    />
+                    <Image
+                      src="/images/arrow-bread.svg"
+                      alt="svg"
+                      height={12}
+                      width={6}
+                    />
+                    (Canon) General{" "}
+                    <Image
+                      src="/images/arrow-bread.svg"
+                      alt="svg"
+                      height={12}
+                      width={6}
+                    />
+                  </span>
+                  <Popover
+                    content={content}
+                    title={title}
+                    className="title-popover"
+                  >
+                    <div className={styles.topicnameBreadcrum}>
+                      <span className="normal">Topic :</span>
+
+                      {loadingIndicator ? (
+                        <CustomSkelton
+                          skeltonFor="list"
+                          bodyCount={1}
+                          stylingClass="topic-skeleton"
+                          isButton={false}
+                        />
+                      ) : isTopicHistoryPage ? (
                         <Link
                           href={`/topic/${
-                            payloadData?.topic_num
+                            payload?.topic_num
                           }-${replaceSpecialCharacters(
                             breadCrumbRes?.topic_name,
                             "-"
-                          )}/${camp?.camp_num}-${replaceSpecialCharacters(
-                            camp?.camp_name,
-                            "-"
-                          )}?${getQueryParams()?.returnQuery}`}
-                          key={index}
+                          )}/1-Agreement?${getQueryParams()?.returnQuery}`}
                         >
-                          <a>
-                            <span className={styles.slashStyle}>
-                              {index !== 0 && <DoubleRightOutlined />}
-                            </span>
-                            <span
-                              className={
-                                breadCrumbRes?.bread_crumb.length - 1 == index
-                                  ? styles.greenIndicateText
-                                  : styles.boldBreadcrumb
-                              }
-                            >{`${camp?.camp_name}`}</span>
+                          <a className={styles.boldBreadcrumb}>
+                            {breadCrumbRes?.topic_name}
                           </a>
                         </Link>
-                      );
-                    })
-                  ) : (
-                    "N/A"
-                  )
-                ) : null}
-                {breadCrumbRes &&
-                  !!campSubscriptionID &&
-                  !isTopicHistoryPage && (
+                      ) : breadCrumbRes ? (
+                        <span className={styles.boldBreadcrumb}>
+                          {breadCrumbRes?.topic_name}
+                        </span>
+                      ) : (
+                        "N/A"
+                      )}
+                      <span className="d-flex">
+                        {" "}
+                        <Image
+                          src="/images/circle-info-bread.svg"
+                          alt="svg"
+                          className="icon-topic"
+                          height={16}
+                          width={16}
+                        />
+                      </span>
+                    </div>
+                  </Popover>
+
+                  {breadCrumbRes && !!topicSubscriptionID && (
                     <Tooltip
-                      title="You have subscribed to this camp."
+                      title="You have subscribed to the entire topic."
                       key="camp_subscribed_icon"
                     >
                       <small
@@ -452,11 +615,348 @@ const TimelineInfoBar = ({
                       </small>
                     </Tooltip>
                   )}
-              </Typography.Paragraph>
+                </Typography.Paragraph>
+                <div className={styles.breadcrumbLinks}>
+                  <Typography.Paragraph
+                    className={"mb-0 " + styles.topicTitleStyle}
+                  >
+                    <Image
+                      src="/images/arrow-bread.svg"
+                      alt="svg"
+                      className="icon-topic"
+                      height={12}
+                      width={6}
+                    />
+
+                    <div className={styles.campContent}>
+                      <span className="normal">
+                        {!isTopicHistoryPage ? "Camp :" : ""}
+                      </span>
+                      {loadingIndicator ? (
+                        <CustomSkelton
+                          skeltonFor="list"
+                          bodyCount={1}
+                          stylingClass="topic-skeleton"
+                          isButton={false}
+                        />
+                      ) : !isTopicHistoryPage ? (
+                        breadCrumbRes ? (
+                          breadCrumbRes?.bread_crumb?.map((camp, index) => {
+                            return (
+                              <Link
+                                href={`/topic/${
+                                  payloadData?.topic_num
+                                }-${replaceSpecialCharacters(
+                                  breadCrumbRes?.topic_name,
+                                  "-"
+                                )}/${camp?.camp_num}-${replaceSpecialCharacters(
+                                  camp?.camp_name,
+                                  "-"
+                                )}?${getQueryParams()?.returnQuery}`}
+                                key={index}
+                              >
+                                <a>
+                                  <span className={styles.slashStyle}>
+                                    {index !== 0 && <DoubleRightOutlined />}
+                                  </span>
+                                  <span
+                                    className={
+                                      breadCrumbRes?.bread_crumb.length - 1 ==
+                                      index
+                                        ? styles.greenIndicateText
+                                        : styles.boldBreadcrumb
+                                    }
+                                  >
+                                    <Popover
+                                      content={contentForCamp}
+                                      title={title2}
+                                    >{`${camp?.camp_name}`}</Popover>
+                                  </span>
+                                </a>
+                              </Link>
+                            );
+                          })
+                        ) : (
+                          "N/A"
+                        )
+                      ) : null}
+                      {breadCrumbRes &&
+                        !!campSubscriptionID &&
+                        !isTopicHistoryPage && (
+                          <Tooltip
+                            title="You have subscribed to this camp."
+                            key="camp_subscribed_icon"
+                          >
+                            <small
+                              style={{
+                                alignSelf: "center",
+                                marginLeft: "10px",
+                              }}
+                            >
+                              <i className="icon-subscribe text-primary"></i>
+                            </small>
+                          </Tooltip>
+                        )}
+                      <span className="d-flex">
+                        {" "}
+                        <Image
+                          src="/images/circle-info-bread.svg"
+                          alt="svg"
+                          className="icon-topic"
+                          height={16}
+                          width={16}
+                        />
+                      </span>
+                    </div>
+                  </Typography.Paragraph>
+                </div>
+              </div>
+            ) : (
+              <div className="d-flex mobile-view gap-5px">
+                <Typography.Paragraph
+                  className={
+                    "mb-0 " +
+                    `${
+                      loadingIndicator
+                        ? styles.topicTitleSkeleton
+                        : styles.topicTitleStyle
+                    }`
+                  }
+                >
+                  <span className={styles.topicBreadcrums}>
+                    <Image
+                      src="/images/home-icon.svg"
+                      alt="svg"
+                      height={21}
+                      width={17}
+                    />
+                    <Image
+                      src="/images/arrow-bread.svg"
+                      alt="svg"
+                      height={12}
+                      width={6}
+                    />
+                    <span className="home-link text-[#777F93] text-xs font-normal leading-[18px]">
+                      {" "}
+                      General
+                    </span>
+                    <Image
+                      src="/images/arrow-bread.svg"
+                      alt="svg"
+                      height={12}
+                      width={6}
+                    />
+                  </span>
+                  <Popover
+                    content={content}
+                    title={title}
+                    className="title-popover"
+                  >
+                    <div className={styles.topicnameBreadcrum}>
+                      <span className="normal text-[#777F93] text-xs leading-[18px] font-normal">
+                        Topic :
+                      </span>
+
+                      {loadingIndicator ? (
+                        <CustomSkelton
+                          skeltonFor="list"
+                          bodyCount={1}
+                          stylingClass="topic-skeleton"
+                          isButton={false}
+                        />
+                      ) : isTopicHistoryPage ? (
+                        <Link
+                          href={`/topic/${
+                            payload?.topic_num
+                          }-${replaceSpecialCharacters(
+                            breadCrumbRes?.topic_name,
+                            "-"
+                          )}/1-Agreement?${getQueryParams()?.returnQuery}`}
+                        >
+                          <a className="normal text-[#777F93] text-[12px] leading-[18px] font-normal text-ellipsis">
+                            {breadCrumbRes?.topic_name}
+                          </a>
+                        </Link>
+                      ) : breadCrumbRes ? (
+                        <span className={styles.boldBreadcrumb}>
+                          {breadCrumbRes?.topic_name}
+                        </span>
+                      ) : (
+                        "N/A"
+                      )}
+                      {/* <span className="d-flex">
+                      {" "}
+                      <Image
+                        src="/images/circle-info-bread.svg"
+                        alt="svg"
+                        className="icon-topic"
+                        height={16}
+                        width={16}
+                      />
+                    </span> */}
+                    </div>
+                  </Popover>
+
+                  {breadCrumbRes && !!topicSubscriptionID && (
+                    <Tooltip
+                      title="You have subscribed to the entire topic."
+                      key="camp_subscribed_icon"
+                    >
+                      <small
+                        style={{ alignSelf: "center", marginLeft: "10px" }}
+                      >
+                        <i className="icon-subscribe text-primary"></i>
+                      </small>
+                    </Tooltip>
+                  )}
+                </Typography.Paragraph>
+                <div className={styles.breadcrumbLinks}>
+                  <Typography.Paragraph
+                    className={"mb-0 " + styles.topicTitleStyle}
+                  >
+                    <Image
+                      src="/images/arrow-bread.svg"
+                      alt="svg"
+                      className="icon-topic"
+                      height={12}
+                      width={6}
+                    />
+
+                    <div className="flex items-center">
+                      <span className="normal text-[#4EB966]">
+                        {isTopicHistoryPage ? "Camp :" : ""}
+                      </span>
+                      {loadingIndicator ? (
+                        <CustomSkelton
+                          skeltonFor="list"
+                          bodyCount={1}
+                          stylingClass="topic-skeleton"
+                          isButton={false}
+                        />
+                      ) : isTopicHistoryPage ? (
+                        breadCrumbRes ? (
+                          breadCrumbRes?.bread_crumb?.map((camp, index) => {
+                            return (
+                              <Link
+                                href={`/topic/${
+                                  payloadData?.topic_num
+                                }-${replaceSpecialCharacters(
+                                  breadCrumbRes?.topic_name,
+                                  "-"
+                                )}/${camp?.camp_num}-${replaceSpecialCharacters(
+                                  camp?.camp_name,
+                                  "-"
+                                )}?${getQueryParams()?.returnQuery}`}
+                                key={index}
+                              >
+                                <a className="text-[12px] text-[#4EB966]">
+                                  <span className={styles.slashStyle}>
+                                    {index !== 0 && <DoubleRightOutlined />}
+                                  </span>
+
+                                  {`${camp?.camp_name}`}
+                                </a>
+                              </Link>
+                            );
+                          })
+                        ) : (
+                          "N/A"
+                        )
+                      ) : null}
+                      {breadCrumbRes &&
+                        !!campSubscriptionID &&
+                        !isTopicHistoryPage && (
+                          <Tooltip
+                            title="You have subscribed to this camp."
+                            key="camp_subscribed_icon"
+                          >
+                            <small
+                              style={{
+                                alignSelf: "center",
+                                marginLeft: "10px",
+                              }}
+                            >
+                              <i className="icon-subscribe text-primary"></i>
+                            </small>
+                          </Tooltip>
+                        )}
+                      <span className="d-flex">
+                        {" "}
+                        {/* <Image
+                        src="/images/circle-info-bread.svg"
+                        alt="svg"
+                        className="icon-topic"
+                        height={16}
+                        width={16}
+                      /> */}
+                      </span>
+                    </div>
+                  </Typography.Paragraph>
+                </div>
+              </div>
+            )}
+
+            <div className={styles.createNewcamp}>
+              {campStatement.length > 0 ? (
+                <div className="topicDetailsCollapseFooter printHIde camp">
+                  <CustomButton
+                    disabled={campRecord?.is_archive == 1 ? true : false}
+                    className=" printHIde manage_camp_btn sm:hidden md:hidden hidden lg:flex"
+                    id="add-camp-statement-btn"
+                  >
+                    <Link
+                      href={
+                        campStatement?.length > 0
+                          ? `/statement/history/${replaceSpecialCharacters(
+                              router?.query?.camp[0],
+                              "-"
+                            )}/${replaceSpecialCharacters(
+                              router?.query?.camp[1] ?? "1-Agreement",
+                              "-"
+                            )}`
+                          : `/create/statement/${replaceSpecialCharacters(
+                              router?.query?.camp[0],
+                              "-"
+                            )}/${replaceSpecialCharacters(
+                              router?.query?.camp[1] ?? "1-Agreement",
+                              "-"
+                            )}`
+                      }
+                      className="printHIde"
+                    >
+                      <a className="printHIde flex items-center gap-2">
+                        {K?.exceptionalMessages?.manageCampStatementButton}
+                        <Image
+                          src="/images/manage-btn-icon.svg"
+                          alt=""
+                          height={24}
+                          width={24}
+                        />
+                      </a>
+                    </Link>
+                  </CustomButton>
+                </div>
+              ) : (
+                ""
+              )}
+
+              <Button
+                className="btn sm:hidden create-new-camp-btn"
+                size="large"
+              >
+                Create New Camp
+                <Image
+                  src="/images/Icon-plus.svg"
+                  alt="svg"
+                  className="icon-topic"
+                  height={16}
+                  width={16}
+                />
+              </Button>
             </div>
           </div>
 
-           <div className={styles.topicDetailContentHead_Right}>
+          <div className={styles.topicDetailContentHead_Right}>
             <Typography.Paragraph
               className={"mb-0 campInfoRight " + styles.topicTitleStyle}
             >
@@ -487,7 +987,7 @@ const TimelineInfoBar = ({
                 </Fragment>
               )}
             </Typography.Paragraph>
-          </div> 
+          </div>
         </Spin>
       </div>
     </>

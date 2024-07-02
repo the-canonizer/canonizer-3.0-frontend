@@ -33,6 +33,8 @@ import ManageSupport from "../../ManageSupport";
 import { getTreesApi } from "src/network/api/campDetailApi";
 import { setIsSupportModal } from "src/store/slices/topicSlice";
 import { showLoginModal } from "src/store/slices/uiSlice";
+import Image from "next/image";
+import support_image from "../../../../../public/images/support-tree-avatar.svg";
 
 const { Paragraph } = Typography;
 const { Panel } = Collapse;
@@ -206,9 +208,9 @@ const SupportTreeCard = ({
       dispatch(setManageSupportUrlLink(manageSupportPath));
       dispatch(setManageSupportStatusCheck(true));
       setSelectNickId(null);
-      q &&
-      q.from &&
-      q.from.includes("notify_") ? null : showModalSupportCamps();
+      q && q.from && q.from.includes("notify_")
+        ? null
+        : showModalSupportCamps();
     } else {
       dispatch(showLoginModal());
     }
@@ -236,6 +238,8 @@ const SupportTreeCard = ({
     campSupportingTree: supportTreeForCamp,
     asof: state?.filters?.filterObject?.asof,
   }));
+  console.log(campSupportingTree, "plooo");
+
   useEffect(() => {
     if (campSupportingTree?.length > 0) {
       getDelegateNicknameId(campSupportingTree);
@@ -277,40 +281,58 @@ const SupportTreeCard = ({
               <TreeNode
                 title={
                   <>
-                    <div
-                      className={
-                        "treeListItem " + styles.topicDetailsTreeListItem
-                      }
-                    >
+                    <div className="group">
                       {/* <span
                         className={
                           "treeListItemTitle " + styles.treeListItemTitle
                         }
                       > */}
-                      <Link
-                        href={{
-                          pathname: `/user/supports/${data[item].nick_name_id}`,
-                          query: {
-                            canon: topicRecord?.namespace_id,
-                          },
-                        }}
-                      >
-                        <a className={styles.Bluecolor}>
-                          {data[item].support_order}:{data[item].nick_name}
-                        </a>
-                      </Link>
+                      <div className="flex gap-1 items-center  boder-b py-[10px] w-full ">
+                        <Link
+                          href={{
+                            pathname: `/user/supports/${data[item].nick_name_id}`,
+                            query: {
+                              canon: topicRecord?.namespace_id,
+                            },
+                          }}
+                        >
+                          <a className="flex gap-1 items-center">
+                           <span className="text-[#242B37] text-base font-medium"> #{data[item].support_order}{" "}</span>
+                            <div className="w-[32px] h-[32px] rounded-full overflow-hidden">
+                              <Image
+                                src={support_image}
+                                alt="svg"
+                                height={32}
+                                width={32}
+                              />
+                            </div>{" "}
+                           <span className="text-[#242B37] text-base font-medium"> {data[item].nick_name}</span>
+                          </a>
+                        </Link>
+
+                        <div className="flex bg-[#F19C39] px-[11px] py-[5px] rounded-[5px] gap-1 items-center">
+                          <Image
+                            src="/images/hand-icon.svg"
+                            alt="svg"
+                            height={15}
+                            width={12}
+                          />
+                          <span className="text-sm text-white font-medium flex items-center leading-[16px]">
+                            {campRecord?.is_archive
+                              ? 0
+                              : is_checked && isUserAuthenticated
+                              ? data[item].full_score?.toFixed(2)
+                              : data[item].score?.toFixed(2)}
+                            {/* {data[item].score?.toFixed(2)} */}
+                          </span>
+                        </div>
+                      </div>
+
                       {/* </span> */}
-                      <span
-                        className={
-                          "treeListItemNumber " + styles.treeListItemNumber
-                        }
-                      >
-                        {campRecord?.is_archive?0:is_checked && isUserAuthenticated
-                          ? data[item].full_score?.toFixed(2)
-                          : data[item].score?.toFixed(2)}
-                        {/* {data[item].score?.toFixed(2)} */}
-                      </span>
-                      {userNickNameList?.length>0 &&!userNickNameList.includes(data[item].nick_name_id)  || !isUserAuthenticated? (
+
+                      {(userNickNameList?.length > 0 &&
+                        !userNickNameList.includes(data[item].nick_name_id)) ||
+                      !isUserAuthenticated ? (
                         <>
                           {loggedInUserDelegate ||
                           (loggedInUserChild &&
@@ -329,7 +351,7 @@ const SupportTreeCard = ({
                                   : ""
                               }
                             >
-                              <a className="printHIde">
+                              <a className="printHIde custom-btn">
                                 <Button
                                   id="supportTreeDelegateYourSupport"
                                   disabled={
@@ -342,16 +364,23 @@ const SupportTreeCard = ({
                                       data[item].nick_name_id
                                     )
                                   }
-                                  className="delegate-support-style"
+                                  className="mb-2 flex items-center gap-1 justify-center bg-[#E1EDFE] text-[#5482C8] text-base rounded-[10px] font-medium h-[44px] w-full "
                                 >
-                                  {"Delegate Your Support"}
+                                   <Image
+                                    src="/images/user-minus-regular.svg"
+                                    alt="svg"
+                                    height={24}
+                                    width={24}
+                                  />
+                                  {"Delegate Your Suppport"}
+                                 
                                 </Button>
                               </a>
                             </Popover>
                           )}
                         </>
                       ) : (
-                        <a className="printHIde">
+                        <a className="printHIde  custom-btn">
                           <Button
                             id="supportTreeRemoveSupport"
                             disabled={
@@ -369,8 +398,14 @@ const SupportTreeCard = ({
 
                               setModalData(data[item]);
                             }}
-                            className="delegate-support-style"
+                            className="mb-2 flex items-center gap-1 justify-center bg-[#F4E5E5] text-[#E46B6B] text-base rounded-[10px] font-medium h-[44px] w-full"
                           >
+                              <Image
+                                    src="/images/user-minus-red.svg"
+                                    alt="svg"
+                                    height={24}
+                                    width={24}
+                                  />
                             Remove Your Support
                           </Button>
                         </a>
@@ -381,7 +416,6 @@ const SupportTreeCard = ({
                 key={data[item].camp_id}
                 data={{ ...data[item], parentIsOneLevel, isDisabled }}
               >
-  
                 {renderTreeNodes(
                   data[item].delegates,
                   isDisabled,
@@ -410,7 +444,7 @@ const SupportTreeCard = ({
     setModalData({});
     removeForm.resetFields();
   };
-  let title = `Support Tree for "${campRecord?.camp_name}" Camp`
+  let title = `Support Tree for "${campRecord?.camp_name}" Camp`;
 
   // remove support popup added.
 
@@ -424,41 +458,20 @@ const SupportTreeCard = ({
     />
   ) : (
     <>
-      <Collapse
-        defaultActiveKey={["1"]}
-        expandIconPosition="right"
+      <div
+        // defaultActiveKey={["1"]}
+        // expandIconPosition="right"
         className="topicDetailsCollapse"
       >
-        <Panel
-          className={`position-relative header-bg-color-change ${backGroundColorClass}`}
-          header={
-            <Fragment>
-              <h3>
-                Support Tree for &quot;
-                {campRecord?.camp_name}&quot; Camp
-              </h3>
-              <h5 className={styles.algoLabel}>
-                ( Based on: &quot;
-                {router?.query?.algo
-                  ? currentAlgo
-                  : algorithms?.at(0)?.algorithm_label}
-                &quot; )
-              </h5>
-            </Fragment>
-          }
-          key="1"
-          extra={
-            <Popover content={supportContent} placement="left">
-              <i className="icon-info tooltip-icon-style"></i>
-            </Popover>
-          }
-        >
-          <Paragraph className="position-relative">
+        <div className=" support-tree-sec">
+          {/* <Paragraph className="position-relative">
             Total Support for This Camp (including sub-camps):
             <span className="number-style">
-              {campRecord?.is_archive?0:totalCampScoreForSupportTree?.toFixed(2)}
+              {campRecord?.is_archive
+                ? 0
+                : totalCampScoreForSupportTree?.toFixed(2)}
             </span>
-          </Paragraph>
+          </Paragraph> */}
 
           {campSupportingTree?.length > 0 ? (
             <Tree
@@ -475,7 +488,10 @@ const SupportTreeCard = ({
               {campSupportingTree && renderTreeNodes(campSupportingTree)}
             </Tree>
           ) : (
-            <p>No direct supporters of this camp</p>
+            <p>
+              {" "}
+              {campSupportingTree?.length}No direct supporters of this camp
+            </p>
           )}
 
           {campSupportingTree?.length > supportLength && (
@@ -488,22 +504,27 @@ const SupportTreeCard = ({
               {!loadMore ? "Load More" : "Load Less"}
             </CustomButton>
           )}
-
-          <div className="topicDetailsCollapseFooter printHIde">
-            <CustomButton
-              onClick={handleClickSupportCheck}
-              className="btn-orange printHIde"
-              disabled={asof == "bydate" || campRecord?.is_archive == 1}
-              id="manage-support-btn"
-            >
-              {getCheckSupportStatus?.is_delegator == 1 ||
-              getCheckSupportStatus?.support_flag != 1
-                ? K?.exceptionalMessages?.directJoinSupport
-                : K?.exceptionalMessages?.manageSupport}
-            </CustomButton>
-          </div>
-        </Panel>
-      </Collapse>
+        </div>
+        <div className="topicDetailsCollapseFooter printHIde mt-3 w-full">
+          <CustomButton
+            onClick={handleClickSupportCheck}
+            className="w-full justify-center bg-[#4EB966] h-[44px] px-[45px] text-white flex items-center rounded-[10px] font-medium text-base gap-2"
+            disabled={asof == "bydate" || campRecord?.is_archive == 1}
+            id="manage-support-btn"
+          >
+            {getCheckSupportStatus?.is_delegator == 1 ||
+            getCheckSupportStatus?.support_flag != 1
+              ? K?.exceptionalMessages?.directJoinSupport
+              : K?.exceptionalMessages?.manageSupport}
+            <Image
+              src="/images/hand-icon.svg"
+              alt="svg"
+              height={24}
+              width={24}
+            />
+          </CustomButton>
+        </div>
+      </div>
 
       <Modal
         className={styles.modal_cross}

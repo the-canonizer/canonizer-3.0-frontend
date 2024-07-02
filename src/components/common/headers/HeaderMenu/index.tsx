@@ -54,12 +54,12 @@ const menuItems = [
   //   id: 5,
   //   external: true,
   // },
-  {
-    link: "/videos/consciousness",
-    linkTitle: "Videos",
-    id: 6,
-    icon: <QuestionCircleOutlined />,
-  },
+  // {
+  //   link: "/videos/consciousness",
+  //   linkTitle: "Videos",
+  //   id: 6,
+  //   icon: <QuestionCircleOutlined />,
+  // },
   {
     link: "/topic/132-Help/1-Agreement?is_tree_open=1",
     linkTitle: "Help",
@@ -96,7 +96,7 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
 
   const ListItem = ({ cls = "", ...props }) => (
     <li
-      className={`flex-auto px-3 lg:before:hidden lg:after:hidden rounded-lg ${styles.listItem} ${cls}`}
+      className={`flex-auto px-2 lg:px-2 md:px-2 sm:px-2 lg:before:hidden lg:after:hidden rounded-lg ${styles.listItem} ${cls}`}
       key={props.key}
     >
       {props?.children}
@@ -194,6 +194,7 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
             Hi {loggedInUser?.first_name}!
           </Typography.Paragraph>
         )}
+
         <ul className="flex text-base font-inter font-medium lg:flex-col lg:mt-4">
           <ListItem
             cls={`${
@@ -204,7 +205,7 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
             <CreateTopic
               className={
                 isUserAuthenticated
-                  ? `border-[1px] px-3 py-2 rounded-lg border-blue`
+                  ? `border-[1px] lg:px-3 py-2 rounded-lg border-blue`
                   : `hover:text-hblue`
               }
               isWithIcon={isUserAuthenticated}
@@ -230,13 +231,13 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
           {isUserAuthenticated ? (
             <ListItem
               key="notification-li"
-              cls="after:content-['|'] after:absolute after:ml-[10px] after:text-[darkgray] lg:hidden"
+              cls="after:content-['|'] after:absolute after:ml-[10px] after:text-[darkgray] "
             >
               <Notifications />
             </ListItem>
           ) : null}
           {isUserAuthenticated ? (
-            <ListItem key="profile-li" cls="lg:hidden">
+            <ListItem key="profile-li" cls="sm:hidden md:hidden hidden">
               <ProfileInfoTab
                 isGravatarImage={isGravatarImage}
                 loadingImage={loadingImage}
@@ -257,13 +258,13 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
       {isUserAuthenticated ? (
         <div
           key="notification-li-mobile"
-          className="hidden lg:block mr-2 lg:ml-auto md:ml-1"
+          className="sm:hidden md:hiiden hidden mr-2 lg:ml-auto md:ml-1"
         >
           <Notifications />
         </div>
       ) : null}
       {isUserAuthenticated ? (
-        <div key="profile-li-mobile" className="hidden lg:block">
+        <div key="profile-li-mobile" className="sm:hidden md:hidden lg:hidden">
           <ProfileInfoTab
             isGravatarImage={isGravatarImage}
             loadingImage={loadingImage}

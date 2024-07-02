@@ -49,7 +49,7 @@ const LoggedOutHeader = () => {
         className={`${styles.wrap} printHIde`}
         data-testid="loggedOutHeader"
       >
-        <Logo />
+        {/* <Logo /> */}
         <div className={`${styles.navWrap} ${isActive && styles.showMobMenu}`}>
           <div className={styles.mobLogoIcon}>
             <Logo />
