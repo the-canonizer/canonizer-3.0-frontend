@@ -8,16 +8,8 @@ const CustomPagination = ({
   loading,
   handlePageChange,
 }) => {
-  const [quickJumperValue, setQuickJumperValue] = useState("");
   const showTotal = (total) => `Total ${total} items`;
 
-  const handleQuickJumperChange = (e) => {
-    const value = e.target.value;
-
-    if (/^\d*$/.test(value) && parseInt(value) > 0) {
-      setQuickJumperValue(value);
-    }
-  };
   return (
     <div>
       <Pagination
@@ -35,11 +27,6 @@ const CustomPagination = ({
         onChange={handlePageChange}
         onShowSizeChange={handlePageChange}
         disabled={loading}
-      />
-      <input
-        type="number"
-        value={quickJumperValue}
-        onChange={handleQuickJumperChange}
       />
     </div>
   );
