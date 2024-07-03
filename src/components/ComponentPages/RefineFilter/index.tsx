@@ -5,7 +5,7 @@ import { RootState } from 'src/store';
 import {
     setOpenDrawer
   } from "../../../store/slices/campDetailSlice";
-import FilterWithTree from '@/components/common/topicsFilter/filterWithTree';
+import FilterWithTree from "../../common/topicsFilter/filterWithTree";
 
 const RefineFilter=() => {
   const [open, setOpen] = useState(false);

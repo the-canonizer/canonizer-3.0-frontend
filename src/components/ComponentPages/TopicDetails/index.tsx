@@ -58,7 +58,7 @@ import { fallBackSrc } from "src/assets/data-images";
 import LatestFilter from "../LatestFilter";
 import Campforum from "../CampForumTopicDetails";
 import SiblingCamps from "../SiblingCamps";
-import CampDisclaimer from "@/components/common/CampDisclaimer";
+import CampDisclaimer from "../../common/CampDisclaimer";
 
 const { Link: AntLink } = Typography;
 

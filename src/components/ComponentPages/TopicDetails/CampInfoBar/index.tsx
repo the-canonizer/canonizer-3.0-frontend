@@ -43,7 +43,7 @@ import { isServer } from "../../../../utils/generalUtility";
 import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
 import K from "src/constants";
 import GenerateModal from "src/components/common/generateScript";
-import CustomButton from "@/components/common/button";
+import CustomButton from "../../../common/button";
 
 const CodeIcon = () => (
   <svg

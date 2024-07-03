@@ -38,7 +38,7 @@ import { showLoginModal } from "src/store/slices/uiSlice";
 import RefineFilter from "../../RefineFilter";
 import LatestFilter from "../../LatestFilter";
 import Image from "next/image";
-import CampDisclaimer from "@/components/common/CampDisclaimer";
+import CampDisclaimer from "../../../common/CampDisclaimer"
 
 const CodeIcon = () => (
   <svg
