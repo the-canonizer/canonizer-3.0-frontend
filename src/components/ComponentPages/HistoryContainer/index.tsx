@@ -381,7 +381,7 @@ function HistoryContainer() {
   };
 
   const renderCampHistories =
-    campHistory && campHistory?.items?.length ? (
+    campHistory && campHistory?.items?.length && (
       campHistory?.items?.map((campHistoryData, index) => {
         return (
           <>
@@ -416,9 +416,7 @@ function HistoryContainer() {
           </>
         );
       })
-    ) : (
-      <NoRecordsMessage />
-    );
+    )
 
   return (
     <>
@@ -504,20 +502,34 @@ function HistoryContainer() {
               )
             }
           </div>
-          <div className="ch-content lg:w-[calc(100%-320px)] p-8 bg-[#F4F5FA] rounded-lg max-md:w-full relative">
-            {activeTab === "live" ? (
-              renderCampHistories
-            ) : (
-              <InfiniteScroll
-                initialLoad={false}
-                loadMore={!loadingIndicator && campStatementApiCall}
-                hasMore={loadMoreItems}
-                loader={<></>}
-              >
-                {renderCampHistories}
-              </InfiniteScroll>
-            )}
-          </div>
+          {activeTab === "live" ? (
+            <>
+              {campHistory && campHistory?.items?.length > 0 ?
+                <div className="ch-content lg:w-[calc(100%-320px)] p-8 bg-[#F4F5FA] rounded-lg max-md:w-full relative">
+                  {renderCampHistories}
+                </div> : <>
+                  <NoRecordsMessage />
+                </>
+              }
+            </>
+          ) : (
+            <>
+              {campHistory && campHistory?.items?.length > 0 ?
+                <div className="ch-content lg:w-[calc(100%-320px)] p-8 bg-[#F4F5FA] rounded-lg max-md:w-full relative">
+                  <InfiniteScroll
+                    initialLoad={false}
+                    loadMore={!loadingIndicator && campStatementApiCall}
+                    hasMore={loadMoreItems}
+                    loader={<></>}
+                  >
+                    {renderCampHistories}
+                  </InfiniteScroll>
+                </div> : <>
+                  <NoRecordsMessage />
+                </>
+              }
+            </>
+          )}
         </div>
       </div>
     </>
