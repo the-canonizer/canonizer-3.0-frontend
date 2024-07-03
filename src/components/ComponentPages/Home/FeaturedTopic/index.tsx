@@ -22,7 +22,7 @@ const FeaturedTopic = () => {
   }));
 
   const settings = {
-    autoplay: false,
+    autoplay: true,
     dots: true,
     arrows: false,
     infinite: false,

@@ -16,14 +16,13 @@ const Category = ({ onBackClick, tag }) => {
     setBgColor(getRandomColor()?.toLowerCase());
   }, []);
 
-  const bg = "bg-[" + bgColor + "]";
-
-  // console.log("tagtagtagtag----", tag);
-
   return (
     <CommonCards
       title={
-        <Paragraph className={`flex items-center pl-5 capitalize ${bg}`}>
+        <Paragraph
+          className={`flex items-center pl-5 capitalize py-2 pr-5 rounded-r-md`}
+          style={{ backgroundColor: bgColor }}
+        >
           <FlagOutlined className="text-canLight p-1 text-medium" />
           <Link href="#">
             <a className="!text-canBlack text-lg font-inter font-medium hover:!canHoverBlue">
@@ -32,7 +31,7 @@ const Category = ({ onBackClick, tag }) => {
           </Link>
         </Paragraph>
       }
-      className={`bg-white border-1 [&_.ant-card-head]:border-0 transition duration-300 [&_.ant-card-extra]:hidden [&_.ant-card-extra]:transition [&_.ant-card-extra]:duration-300 [&_.ant-card-extra]:hover:block [&_.ant-card-head]:pl-0 hocus:shadow-md [&_.ant-card-head-title]:${bg}`}
+      className={`bg-white border-1 [&_.ant-card-head]:border-0 transition duration-300 [&_.ant-card-extra]:hidden [&_.ant-card-extra]:transition [&_.ant-card-extra]:duration-300 [&_.ant-card-extra]:hover:block [&_.ant-card-head]:pl-0 hocus:shadow-md [&_.ant-card-head-title]:w-10/12 [&_.ant-card-head-title]:md:w-8/12`}
       id="card-title"
       extra={
         <Button
@@ -46,10 +45,10 @@ const Category = ({ onBackClick, tag }) => {
     >
       <Paragraph className="text-sm font-medium text-canBlack font-inter">
         <Text className="font-semibold text-base">{tag?.total_topics}</Text>
-        <Text> Topics</Text>
+        <Text> Topic(s)</Text>
       </Paragraph>
       <Paragraph className="text-sm font-medium text-canBlack mb-0">
-        <Text className="font-semibold text-base">{tag?.total_topics}</Text>
+        <Text className="font-semibold text-base">{tag?.total_users}</Text>
         <Text> People have contributed</Text>
       </Paragraph>
     </CommonCards>

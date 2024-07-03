@@ -1,14 +1,15 @@
-import { Typography, Button, Row, Col } from "antd";
+import { Typography, Button, Row, Col, Input } from "antd";
 import { LeftOutlined, SearchOutlined } from "@ant-design/icons";
 
 import CommonCards from "components/shared/Card";
 import NotificationSwitch from "components/common/headers/notification/switch";
-import SecondaryButton from "components/shared/Buttons/SecondaryButton";
-import SortIcon from "./sortIcon";
 import Category from "./singleCat";
 import Paginations from "components/shared/Paginations";
+import SortByDropdown from "./sortByDropdown";
+import SearchBar from "./searchBar";
 
 const { Title, Paragraph } = Typography;
+const { Search } = Input;
 
 const CatsList = ({
   onBackClick,
@@ -19,8 +20,9 @@ const CatsList = ({
   onPageChange,
   pageSize,
   current,
-  onSearchClick,
   onSort,
+  onSearchChange,
+  onSearchKeyUp,
 }) => {
   return (
     <CommonCards
@@ -65,12 +67,11 @@ const CatsList = ({
           </Paragraph>
         </Col>
         <Col lg={12} className="flex justify-end items-center">
-          <SecondaryButton className="inline-flex mr-3" onClick={onSearchClick}>
-            <SearchOutlined />
-          </SecondaryButton>
-          <SecondaryButton className="inline-flex" onClick={onSort}>
-            Sort By <SortIcon />
-          </SecondaryButton>
+          <SearchBar
+            onSearchChange={onSearchChange}
+            onSearchKeyUp={onSearchKeyUp}
+          />
+          <SortByDropdown onSort={onSort} />
         </Col>
       </Row>
 

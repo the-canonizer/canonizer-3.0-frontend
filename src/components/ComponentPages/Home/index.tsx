@@ -13,17 +13,23 @@ import WhatsNew from "./WhatsNew";
 import PreferedTopics from "./PreferedTopic";
 import RecentActivities from "./RecentActivities";
 import { useIsMobile } from "src/hooks/useIsMobile";
+import { useSelector } from "react-redux";
+import { RootState } from "src/store";
 
 const HomePageContainer = () => {
   const { isUserAuthenticated } = useAuthentication();
   const isMobile = useIsMobile();
+
+  const { preferedTopic } = useSelector((state: RootState) => ({
+    preferedTopic: state?.hotTopic?.preferedTopic,
+  }));
 
   return (
     <Fragment>
       <Layout
         afterHeader={<WelcomeContent />}
         rightSidebar={
-          <div className="md:mt-9" data-testid="sideBar">
+          <div className="md:mt-3" data-testid="sideBar">
             {!isMobile ? (
               <div className="mb-10" data-testid="topicsList">
                 <TrandingTopics />
@@ -51,7 +57,7 @@ const HomePageContainer = () => {
               <TrandingTopics />
             </Col>
           ) : null}
-          {isUserAuthenticated ? (
+          {isUserAuthenticated && preferedTopic?.length ? (
             <Col md={24} className="mb-10" data-testid="preferedTopic">
               <PreferedTopics />
             </Col>

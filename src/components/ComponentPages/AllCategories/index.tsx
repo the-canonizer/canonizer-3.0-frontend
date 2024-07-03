@@ -22,7 +22,7 @@ const AllCats = () => {
   const [page, setPage] = useState(1);
   const [totalTags, setTotalTags] = useState(0);
   const [search, setSearch] = useState("");
-  const [sortBy, setSortBy] = useState("desc");
+  const [sortBy, setSortBy] = useState("asc");
 
   useEffect(() => {
     setTagList(tags);
@@ -32,7 +32,6 @@ const AllCats = () => {
     setIsLoading(true);
     const res = await getAllTags(page, perPage, search, sortBy as any);
     if (res?.status_code === 200) {
-      // console.log("res---", res);
       const resData = res?.data;
       setPage(resData?.current_page);
       setPerPage(resData?.per_page);
@@ -55,9 +54,21 @@ const AllCats = () => {
     setPerPage(pageSize);
   };
 
-  const onSort = (e) => {
+  const onSort = (e, type) => {
     e?.preventDefault();
-    setSortBy((prev) => (prev === "desc" ? "asc" : "desc"));
+    setSortBy(type);
+  };
+
+  const onSearchClick = (e) => {
+    // const val = e?.target?.value;
+    // setSearch(val);
+  };
+
+  const onSearchKeyUp = (e) => {
+    if (e?.which == 13) {
+      const val = e?.target?.value;
+      setSearch(val);
+    }
   };
 
   return (
@@ -71,8 +82,9 @@ const AllCats = () => {
         onPageChange={onPageChange}
         pageSize={perPage}
         current={page}
-        onSearchClick={undefined}
+        onSearchChange={onSearchClick}
         onSort={onSort}
+        onSearchKeyUp={onSearchKeyUp}
       />
     </CustomSpinner>
   );
