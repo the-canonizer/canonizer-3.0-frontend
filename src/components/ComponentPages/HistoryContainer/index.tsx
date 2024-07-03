@@ -385,43 +385,39 @@ function HistoryContainer() {
       campHistory?.items?.map((campHistoryData, index) => {
         return (
           <>
-            <div className="ch-content lg:w-[calc(100%-320px)] p-8 bg-[#F4F5FA] rounded-lg max-md:w-full relative">
-              <HistoryCollapse
-                collapseKeys={getCollapseKeys(campHistoryData, index)}
-                key={index}
-                campStatement={campHistoryData}
-                onSelectCompare={onSelectCompare}
-                userNickNameData={nickName}
-                ifIamSupporter={campHistory?.details?.ifIamSupporter}
-                ifSupportDelayed={campHistory?.details?.ifSupportDelayed}
-                ifIAmExplicitSupporter={
-                  campHistory?.details?.ifIAmExplicitSupporter
-                }
-                topicNamespaceId={campHistory?.details?.topic?.namespace_id}
-                changeAgree={changeAgree}
-                changeDiscard={changeDiscard}
-                isDisabledCheck={
-                  selectedTopic.length >= 2 &&
-                  !selectedTopic?.includes(campHistoryData?.id)
-                }
-                isChecked={selectedTopic?.includes(campHistoryData?.id)}
-                setIsTreesApiCallStop={setIsTreesApiCallStop}
-                campHistoryItems={campHistory?.items}
-                callManageCampApi={callManageCampApi}
-                parentArchived={parentarchived}
-                unarchiveChangeSubmitted={
-                  campHistory?.details?.unarchive_change_submitted
-                }
-                directarchived={directarchived}
-              />
-            </div>
+            <HistoryCollapse
+              collapseKeys={getCollapseKeys(campHistoryData, index)}
+              key={index}
+              campStatement={campHistoryData}
+              onSelectCompare={onSelectCompare}
+              userNickNameData={nickName}
+              ifIamSupporter={campHistory?.details?.ifIamSupporter}
+              ifSupportDelayed={campHistory?.details?.ifSupportDelayed}
+              ifIAmExplicitSupporter={
+                campHistory?.details?.ifIAmExplicitSupporter
+              }
+              topicNamespaceId={campHistory?.details?.topic?.namespace_id}
+              changeAgree={changeAgree}
+              changeDiscard={changeDiscard}
+              isDisabledCheck={
+                selectedTopic.length >= 2 &&
+                !selectedTopic?.includes(campHistoryData?.id)
+              }
+              isChecked={selectedTopic?.includes(campHistoryData?.id)}
+              setIsTreesApiCallStop={setIsTreesApiCallStop}
+              campHistoryItems={campHistory?.items}
+              callManageCampApi={callManageCampApi}
+              parentArchived={parentarchived}
+              unarchiveChangeSubmitted={
+                campHistory?.details?.unarchive_change_submitted
+              }
+              directarchived={directarchived}
+            />
           </>
         );
       })
     ) : (
-      <div style={{marginTop:'15%'}}>
-        <NoRecordsMessage />
-      </div>
+      <NoRecordsMessage />
     );
 
   return (
@@ -508,18 +504,20 @@ function HistoryContainer() {
               )
             }
           </div>
-          {activeTab === "live" ? (
-            renderCampHistories
-          ) : (
-            <InfiniteScroll
-              initialLoad={false}
-              loadMore={!loadingIndicator && campStatementApiCall}
-              hasMore={loadMoreItems}
-              loader={<></>}
-            >
-              {renderCampHistories}
-            </InfiniteScroll>
-          )}
+          <div className="ch-content lg:w-[calc(100%-320px)] p-8 bg-[#F4F5FA] rounded-lg max-md:w-full relative">
+            {activeTab === "live" ? (
+              renderCampHistories
+            ) : (
+              <InfiniteScroll
+                initialLoad={false}
+                loadMore={!loadingIndicator && campStatementApiCall}
+                hasMore={loadMoreItems}
+                loader={<></>}
+              >
+                {renderCampHistories}
+              </InfiniteScroll>
+            )}
+          </div>
         </div>
       </div>
     </>
