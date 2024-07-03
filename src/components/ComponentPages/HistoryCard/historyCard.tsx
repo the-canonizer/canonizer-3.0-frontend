@@ -216,7 +216,13 @@ function HistoryCard({
 
   return (
     <>
-      <div className="csh-wrapper cn-wrapper pending-wrapper">
+      <div className={`csh-wrapper cn-wrapper 
+         ${
+            campStatement?.status == "live" ? "live-wrapper" :
+            campStatement?.status == "in_review" ? "pending-wrapper" :
+            campStatement?.status == "objected" ? "objected-wrapper" :
+            campStatement?.status == "old" ? "previous-wrapper" : null} 
+        `}>
         <div className="badge-wrapper">
           <Badge
             className="cn-dot-badge ch-dot-history"
@@ -333,7 +339,7 @@ function HistoryCard({
                 type="primary"
                 id={`object-change-${campStatement?.id}`}
                 className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none"
-                onClick={() => {}}
+                onClick={() => { }}
               >
                 Commit Changes
                 <i className="icon-upload"></i>
@@ -351,7 +357,7 @@ function HistoryCard({
               <Button
                 size="large"
                 type="link"
-                icon={<EyeOutlined />}
+                icon={<EyeOutlined className="mr-1" />}
                 id={`view-this-version-${campStatement?.id}`}
                 className="flex items-center justify-center rounded-[10px] leading-none text-[#242B37]"
                 onClick={() =>
