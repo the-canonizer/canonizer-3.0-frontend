@@ -217,11 +217,10 @@ function HistoryCard({
   return (
     <>
       <div className={`csh-wrapper cn-wrapper 
-         ${
-            campStatement?.status == "live" ? "live-wrapper" :
-            campStatement?.status == "in_review" ? "pending-wrapper" :
+         ${campStatement?.status == "live" ? "live-wrapper" :
+          campStatement?.status == "in_review" ? "pending-wrapper" :
             campStatement?.status == "objected" ? "objected-wrapper" :
-            campStatement?.status == "old" ? "previous-wrapper" : null} 
+              campStatement?.status == "old" ? "previous-wrapper" : null} 
         `}>
         <div className="badge-wrapper">
           <Badge
@@ -338,8 +337,9 @@ function HistoryCard({
                 size="large"
                 type="primary"
                 id={`object-change-${campStatement?.id}`}
-                className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none"
-                onClick={() => { }}
+                className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none w-100"
+                disabled={loadingChanges}
+                onClick={commitChanges}
               >
                 Commit Changes
                 <i className="icon-upload"></i>
@@ -349,7 +349,20 @@ function HistoryCard({
                 id={`edit-change-${campStatement?.id}`}
                 className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none"
               >
-                Edit Statement
+                <Link
+                  href={
+                    historyOf == "camp"
+                      ? `/manage/camp/${campStatement?.id}-update`
+                      : historyOf == "topic"
+                        ? `/manage/topic/${campStatement?.id}-update`
+                        : `/manage/statement/${campStatement?.id}-update`
+                  }
+                >
+                  {`Edit ${historyOf == "statement" ? "Statement" :
+                      historyOf == "topic" ? "Topic" :
+                        historyOf == "camp" ? "Camp" :
+                          null}`}
+                </Link>
                 <i className="icon-edit"></i>
               </Button>
             </div>
