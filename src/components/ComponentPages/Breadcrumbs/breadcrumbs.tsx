@@ -11,7 +11,7 @@ function Breadcrumbs() {
           className="cn-breadcrumbs"
           separator={
             <>
-              <i className="icon-angle-right"></i>
+              <i className="icon-angle-right-arrow"></i>
             </>
           }
         >

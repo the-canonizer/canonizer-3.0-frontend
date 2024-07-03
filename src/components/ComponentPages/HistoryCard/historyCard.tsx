@@ -6,6 +6,7 @@ import {
   Checkbox,
   Collapse,
   Divider,
+  Space,
   Tag,
   Tooltip,
   Typography,
@@ -21,6 +22,8 @@ import {
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { CheckboxChangeEvent } from "antd/lib/checkbox";
+import HistoryCardModal from "./historyCardDrawer";
+import HistoryCardDrawer from "./historyCardDrawer";
 // import "./historyCard.scss";
 
 const { Title } = Typography;
@@ -164,6 +167,24 @@ function HistoryCard() {
             Going live on :<span>17 Feb 2024, 04:36 PM</span>
           </p>
           <Divider className="border-[#242B3733] my-[1.125rem]" />
+          <div className="agreement-wrapper">
+            <div className="flex flex-col">
+              <Checkbox onChange={onChange}>Agree With Change</Checkbox>
+              <Space>
+                <HistoryCardDrawer /> 1 out of 2 required supporters have
+                agreed.
+              </Space>
+            </div>
+            <Button
+              type="link"
+              danger
+              size="large"
+              icon={<i className="icon-delete"></i>}
+              className="flex items-center justify-center gap-2 rounded-[10px] leading-none p-0"
+            >
+              Object
+            </Button>
+          </div>
           <div className="cn-footer-btn">
             <div className="cn-card-btn">
               <Button

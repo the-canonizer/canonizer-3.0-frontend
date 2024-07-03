@@ -3206,137 +3206,179 @@ div[role="option"]::before {
     }
   }
 }
-.cn-wrapper {
-  &.csh-wrapper {
-    @apply lg:ml-5;
-    + .csh-wrapper {
-      @apply mt-10;
-    }
-  }
-  &.pending-wrapper {
-    .cn-dot-badge {
-      .ant-badge-status-dot {
-        @apply bg-[#F19C39] shadow-[0px_0px_6px_2px_#F19C39];
-      }
-    }
-    .cn-card {
-      &::after {
-        @apply border-t-[#f19c39];
-      }
-    }
-  }
-  &.live-wrapper {
-    .cn-dot-badge {
-      .ant-badge-status-dot {
-        @apply bg-[#5482C8] shadow-[0px_0px_6px_2px_#5482C8];
-      }
-    }
-    .cn-card {
-      &::after {
-        @apply border-t-[#5482C8];
-      }
-    }
-  }
-  &.previous-wrapper {
-    .cn-dot-badge {
-      .ant-badge-status-dot {
-        @apply bg-[#4786CB] shadow-[0px_0px_6px_2px_#4786CB];
-      }
-    }
-    .cn-card {
-      &::after {
-        @apply border-t-[#4786CB];
-      }
-    }
-  }
-  &.objected-wrapper {
-    .cn-dot-badge {
-      .ant-badge-status-dot {
-        @apply bg-[#E46B6B] shadow-[0px_0px_6px_2px_#E46B6B];
-      }
-    }
-    .cn-card {
-      &::after {
-        @apply border-t-[#E46B6B];
-      }
-    }
-  }
-  .badge-wrapper {
-    @apply flex justify-between gap-1.5 mb-[1.25rem] max-lg:flex-col;
-    .tooltip-count {
-      @apply flex items-center gap-1.5;
-    }
-  }
-  .ch-checkbox {
-    span {
-      + span {
-        @apply font-medium text-[#242B37] self-center;
-      }
-    }
-    .ant-checkbox-checked {
-      @apply after:rounded-md;
-    }
-    .ant-checkbox-checked {
-      .ant-checkbox-inner {
-        @apply bg-[#5482C8];
-      }
-    }
-    .ant-checkbox-inner {
-      @apply rounded-md border-[#5482C8] after:h-[7px] after:h-[13px] w-[22px] h-[22px];
-    }
-  }
+// .cn-wrapper {
+//   &.csh-wrapper {
+//     @apply lg:ml-5;
+//     + .csh-wrapper {
+//       @apply mt-10;
+//     }
+//   }
+//   &.pending-wrapper {
+//     .cn-dot-badge {
+//       .ant-badge-status-dot {
+//         @apply bg-[#F19C39] shadow-[0px_0px_6px_2px_#F19C39];
+//       }
+//     }
+//     .cn-card {
+//       &::after {
+//         @apply border-t-[#f19c39];
+//       }
+//     }
+//   }
+//   &.live-wrapper {
+//     .cn-dot-badge {
+//       .ant-badge-status-dot {
+//         @apply bg-[#5482C8] shadow-[0px_0px_6px_2px_#5482C8];
+//       }
+//     }
+//     .cn-card {
+//       &::after {
+//         @apply border-t-[#5482C8];
+//       }
+//     }
+//   }
+//   &.previous-wrapper {
+//     .cn-dot-badge {
+//       .ant-badge-status-dot {
+//         @apply bg-[#4786CB] shadow-[0px_0px_6px_2px_#4786CB];
+//       }
+//     }
+//     .cn-card {
+//       &::after {
+//         @apply border-t-[#4786CB];
+//       }
+//     }
+//   }
+//   &.objected-wrapper {
+//     .cn-dot-badge {
+//       .ant-badge-status-dot {
+//         @apply bg-[#E46B6B] shadow-[0px_0px_6px_2px_#E46B6B];
+//       }
+//     }
+//     .cn-card {
+//       &::after {
+//         @apply border-t-[#E46B6B];
+//       }
+//     }
+//   }
+//   .badge-wrapper {
+//     @apply flex justify-between gap-1.5 mb-[1.25rem] max-lg:flex-col;
+//     .tooltip-count {
+//       @apply flex items-center gap-1.5;
+//     }
+//   }
+//   .ch-checkbox {
+//     span {
+//       + span {
+//         @apply font-medium text-[#242B37] self-center;
+//       }
+//     }
+//     .ant-checkbox-checked {
+//       @apply after:rounded-md;
+//     }
+//     .ant-checkbox-checked {
+//       .ant-checkbox-inner {
+//         @apply bg-[#5482C8];
+//       }
+//     }
+//     .ant-checkbox-inner {
+//       @apply rounded-md border-[#5482C8] after:h-[7px] after:h-[13px] w-[22px] h-[22px];
+//     }
+//   }
 
-  .cn-dot-badge {
-    @apply flex items-center;
-    &.ch-dot-history {
-      @apply lg:ml-[-26px] z-10;
-    }
-    .ant-badge-status-dot {
-      @apply w-[12px] h-[12px];
-    }
-    .ant-badge-status-text {
-      @apply text-[1.5rem] font-medium;
-      span {
-        @apply text-[#242B3780] text-base ml-1;
-      }
-    }
-  }
-  .cn-card {
-    @apply rounded-xl border-[#CCD4E7] relative;
-    .ch-collapse {
-      .ant-collapse-header {
-        @apply absolute right-0 z-30;
-      }
-      .ant-collapse-content-box {
-        @apply p-0 border-b border-[#242B3733] mb-5;
-      }
-    }
-    p {
-      @apply text-sm text-[#242B37];
-      span {
-        @apply font-semibold ml-0.5;
-      }
-      a {
-        @apply text-[#5482C8] underline;
-      }
-    }
-    &::after {
-      @apply content-[''] block absolute top-0 border-r-[36px] border-r-transparent border-t-[36px] rounded-tl-xl;
-    }
-    .cn-footer-btn {
-      @apply flex gap-4 justify-between max-xl:flex-col;
-      .cn-card-btn {
-        @apply flex gap-3 max-xl:order-2 max-sm:flex-col;
-        button {
-          @apply sm:w-[50%];
+//   .cn-dot-badge {
+//     @apply flex items-center;
+//     &.ch-dot-history {
+//       @apply lg:ml-[-26px] z-10;
+//     }
+//     .ant-badge-status-dot {
+//       @apply w-[12px] h-[12px];
+//     }
+//     .ant-badge-status-text {
+//       @apply text-[1.5rem] font-medium;
+//       span {
+//         @apply text-[#242B3780] text-base ml-1;
+//       }
+//     }
+//   }
+//   .cn-card {
+//     @apply rounded-xl border-[#CCD4E7] relative;
+//     .ch-collapse {
+//       .ant-collapse-header {
+//         @apply absolute right-0 z-30;
+//       }
+//       .ant-collapse-content-box {
+//         @apply p-0 border-b border-[#242B3733] mb-5;
+//       }
+//     }
+//     p {
+//       @apply text-sm text-[#242B37];
+//       span {
+//         @apply font-semibold ml-0.5;
+//       }
+//       a {
+//         @apply text-[#5482C8] underline;
+//       }
+//     }
+//     &::after {
+//       @apply content-[''] block absolute top-0 border-r-[36px] border-r-transparent border-t-[36px] rounded-tl-xl;
+//     }
+//     .cn-footer-btn {
+//       @apply flex gap-4 justify-between max-xl:flex-col;
+//       .cn-card-btn {
+//         @apply flex gap-3 max-xl:order-2 max-sm:flex-col;
+//         button {
+//           @apply sm:w-[50%];
+//         }
+//       }
+//       .cn-link-btn {
+//         @apply flex max-xl:border-b border-[#242B3733] max-xl:pb-[1.125rem] max-xl:justify-center text-center;
+//         button {
+//           + button {
+//             @apply ml-auto;
+//           }
+//         }
+//       }
+//     }
+//   }
+// }
+
+.ch-drawer {
+  .ant-drawer-body {
+    @apply p-11;
+    .ch-modal-tabs {
+      .ant-tabs-nav {
+        @apply mb-6;
+        .ant-tabs-tab {
+          @apply text-base;
+          + .ant-tabs-tab {
+            @apply ml-14;
+          }
+          &.ant-tabs-tab-active {
+            .ant-tabs-tab-btn {
+              @apply text-[#5482C8] font-semibold;
+            }
+          }
+        }
+        .ant-tabs-ink-bar {
+          @apply bg-[#5482C8] h-[3px] rounded-tl-[6px] rounded-tr-[6px];
         }
       }
-      .cn-link-btn {
-        @apply flex max-xl:border-b border-[#242B3733] max-xl:pb-[1.125rem] max-xl:justify-center text-center;
-        button {
-          + button {
-            @apply ml-auto;
-          }
+    }
+    .agree-list {
+      @apply rounded-xl;
+      &.nt-agree {
+        .ant-list-header {
+          @apply bg-[#E46B6B33];
+        }
+      }
+
+      .ant-list-header {
+        @apply p-3.5 font-medium text-base text-[#242B37] bg-[#4EB96633] uppercase rounded-tl-xl rounded-tr-xl;
+      }
+      .ant-list-items {
+        .ant-list-item {
+          @apply py-3 px-5;
         }
       }
     }
