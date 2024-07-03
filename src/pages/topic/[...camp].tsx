@@ -172,12 +172,12 @@ export async function getServerSideProps({ req, query }) {
   let resUrl = `/topic/${topicRecord?.topic_num}-${replaceSpecialCharacters(
     resTopicName,
     "-"
-  )}/${campRecord?.campData?.camp_num ? campRecord?.campData?.camp_num : 1}-${resCampName ? replaceSpecialCharacters(
+  )}/${campRecord?.campData?.camp_num}-${replaceSpecialCharacters(
     resCampName,
     "-"
-  ) : "Agreement"}`;
+  )}`;
 
-  if (topicRecord && campRecord && currentUrl !== resUrl) {
+  if (topicRecord && campRecord?.status_code == 200 && currentUrl !== resUrl) {
     let queryStr: any = buildSearchQuery(query);
 
     return {
