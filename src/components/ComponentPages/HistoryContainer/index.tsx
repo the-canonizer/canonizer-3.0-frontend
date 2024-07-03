@@ -20,7 +20,6 @@ import {
 import { updateCampApi } from "src/network/api/campManageStatementApi";
 import type { CheckboxChangeEvent } from "antd/es/checkbox";
 import { useRouter } from "next/router";
-// <<<<<<< HEAD
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useRef, useState } from "react";
 import { RootState } from "src/store";
@@ -35,13 +34,9 @@ import { getCookies, replaceSpecialCharacters } from "src/utils/generalUtility";
 import InfiniteScroll from "react-infinite-scroller";
 import CustomSkelton from "../../common/customSkelton";
 import moment from "moment";
-
-// =======
-// import { useState } from "react";
-// import { CheckboxChangeEvent } from "antd/lib/checkbox";
 import Breadcrumbs from "../Breadcrumbs/breadcrumbs";
 import HistoryCard from "../HistoryCard/historyCard";
-// >>>>>>> 6295bae02b56a35df3922f07d9bf6f8fa6f709ec
+
 const { Title } = Typography;
 
 const onChange = (e) => {
