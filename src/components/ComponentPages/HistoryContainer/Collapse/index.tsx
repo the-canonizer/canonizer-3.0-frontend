@@ -222,10 +222,11 @@ function HistoryCollapse({
   return (
     <>
       <div className={`cn-wrapper csh-wrapper
-        ${campStatement?.status == "live" ? "live-wrapper" :
-          campStatement?.status == "in_review" ? "pending-wrapper" :
-            campStatement?.status == "not_live" ? "objected-wrapper" :
-              campStatement?.status == "old" ? "previous-wrapper" : null}`}>
+             ${campStatement?.status == "live" ? "live-wrapper" :
+               campStatement?.status == "in_review" ? "pending-wrapper" :
+               campStatement?.status == "objected" ? "objected-wrapper" :
+               campStatement?.status == "old" ? "previous-wrapper" : null} 
+          `}>
         <div className="badge-wrapper">
           <Badge
             className="cn-dot-badge ch-dot-history"
@@ -340,7 +341,7 @@ function HistoryCollapse({
 
           <Divider className="border-[#242B3733] my-[1.125rem]" />
 
-          {(!campStatement?.grace_period || commited ) && (
+          {(!campStatement?.grace_period || commited) && (
             <>
               {(campStatement?.status == "in_review") && (
                 <>
@@ -352,7 +353,7 @@ function HistoryCollapse({
                         type="primary"
                         id={`object-change-${campStatement?.id}`}
                         className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none px-10"
-                        disabled={historyOf == "camp" ? !campStatement?.ifICanAgreeAndObject :false}
+                        disabled={historyOf == "camp" ? !campStatement?.ifICanAgreeAndObject : false}
                         onClick={() => {
                           let isModelPop = !isUserAuthenticated
                             ? true

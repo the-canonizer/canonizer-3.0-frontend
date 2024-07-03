@@ -217,7 +217,7 @@ function HistoryContainer() {
             is_archive,
           })
         );
-        setCurrentFilterCount(res?.data?.items?.length)
+        setCurrentFilterCount(res?.data?.total_rows)
       }
 
       didMount.current = true;
