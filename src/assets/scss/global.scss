@@ -8,6 +8,8 @@
 
 @import "./fonts";
 @import "./speed-controller";
+@import "../../components/ComponentPages/Breadcrumbs/breadcrumbs.scss";
+@import "../../components/ComponentPages/HistoryCard/historyCard.scss";
 
 :root {
   --primary: #4484ce;
@@ -3128,24 +3130,24 @@ div[role="option"]::before {
     }
   }
 }
-.cn-breadcrumbs {
-  @apply bg-[#F4F5FAB2] p-[1.5rem] rounded-[1.25rem] flex items-center justify-between gap-2;
-  ol {
-    @apply items-center;
-    li,
-    a {
-      @apply text-[#242B37];
-    }
-    li {
-      &:last-child {
-        @apply font-semibold;
-      }
-    }
-    .ant-breadcrumb-separator {
-      @apply text-[12px] mx-[1.25rem] text-[#242B37];
-    }
-  }
-}
+// .cn-breadcrumbs {
+//   @apply bg-[#F4F5FAB2] p-[1.5rem] rounded-[1.25rem] flex items-center justify-between gap-2;
+//   ol {
+//     @apply items-center;
+//     li,
+//     a {
+//       @apply text-[#242B37];
+//     }
+//     li {
+//       &:last-child {
+//         @apply font-semibold;
+//       }
+//     }
+//     .ant-breadcrumb-separator {
+//       @apply text-[12px] mx-[1.25rem] text-[#242B37];
+//     }
+//   }
+// }
 .ch-wrapper {
   @apply py-10;
   .ch-history {
@@ -3195,7 +3197,6 @@ div[role="option"]::before {
       }
     }
     .ch-content {
-      @apply bg-[#F4F5FA] rounded-lg w-full;
       &::after {
         @apply max-lg:hidden absolute top-12 left-8 bottom-8 block content-[''] w-[1px] p-0 bg-gray-300 transition-colors duration-300;
       }

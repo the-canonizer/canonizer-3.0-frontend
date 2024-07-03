@@ -23,6 +23,8 @@ import styles from "./index.module.scss";
 import CampInfoBar from "../../TopicDetails/CampInfoBar";
 import CustomSkelton from "../../../common/customSkelton";
 import { changeSlashToArrow } from "src/utils/generalUtility";
+import Breadcrumbs from "components/ComponentPages/Breadcrumbs/breadcrumbs";
+import HistoryCard from "components/ComponentPages/HistoryCard/historyCard";
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -74,7 +76,7 @@ function CompareStatementUI({
 
   return (
     <>
-      <div className="cn-breadcrumbs">
+      {/* <div className="cn-breadcrumbs">
         <Breadcrumb
           separator={
             <>
@@ -91,7 +93,9 @@ function CompareStatementUI({
           </Breadcrumb.Item>
           <Breadcrumb.Item>Topic History</Breadcrumb.Item>
         </Breadcrumb>
-      </div>
+      </div> */}
+      <Breadcrumbs />
+
       <div className="ch-wrapper">
         <Button
           type="link"
@@ -101,6 +105,14 @@ function CompareStatementUI({
           Topic History Comparison
         </Button>
         <Row gutter={[60, 60]}>
+          <Col xs={24} md={12}>
+            <HistoryCard />
+          </Col>
+          <Col xs={24} md={12}>
+            <HistoryCard />
+          </Col>
+        </Row>
+        {/* <Row gutter={[60, 60]}>
           <Col xs={24} md={12}>
             <div className="cn-wrapper live-wrapper">
               <div className="badge-wrapper">
@@ -257,7 +269,7 @@ function CompareStatementUI({
               </Card>
             </div>
           </Col>
-        </Row>
+        </Row> */}
       </div>
     </>
   );

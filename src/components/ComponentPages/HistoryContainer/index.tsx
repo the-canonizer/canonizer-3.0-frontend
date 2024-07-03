@@ -20,6 +20,7 @@ import {
 import { updateCampApi } from "src/network/api/campManageStatementApi";
 import type { CheckboxChangeEvent } from "antd/es/checkbox";
 import { useRouter } from "next/router";
+// <<<<<<< HEAD
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useRef, useState } from "react";
 import { RootState } from "src/store";
@@ -35,6 +36,12 @@ import InfiniteScroll from "react-infinite-scroller";
 import CustomSkelton from "../../common/customSkelton";
 import moment from "moment";
 
+// =======
+// import { useState } from "react";
+// import { CheckboxChangeEvent } from "antd/lib/checkbox";
+import Breadcrumbs from "../Breadcrumbs/breadcrumbs";
+import HistoryCard from "../HistoryCard/historyCard";
+// >>>>>>> 6295bae02b56a35df3922f07d9bf6f8fa6f709ec
 const { Title } = Typography;
 
 const onChange = (e) => {
@@ -420,41 +427,7 @@ function HistoryContainer() {
 
   return (
     <>
-      <div className="cn-breadcrumbs">
-        <Breadcrumb
-          separator={
-            <>
-              <i className="icon-angle-right"></i>
-            </>
-          }
-        >
-          <Breadcrumb.Item href="">
-            <HomeOutlined />
-          </Breadcrumb.Item>
-          <Breadcrumb.Item href="">(Canon) General</Breadcrumb.Item>
-          <Breadcrumb.Item href="">
-            Topic:  {breadCrumbRes && breadCrumbRes?.topic_name}
-          </Breadcrumb.Item>
-          <Breadcrumb.Item>{
-            historyTitle() == "Statement History" ? "Statement" :
-              historyTitle() == "Topic History" ? "Topic" :
-                historyTitle() == "Camp History" ? "Camp" : null
-          } History</Breadcrumb.Item>
-        </Breadcrumb>
-        <Button
-          size="large"
-          type="primary"
-          className="flex items-center justify-center rounded-[10px] max-lg:hidden gap-3.5 leading-none"
-        >
-          Update Current {
-            historyTitle() == "Statement History" ? "Statement" :
-              historyTitle() == "Topic History" ? "Topic" :
-                historyTitle() == "Camp History" ? "Camp" : null
-          }
-          <i className="icon-edit"></i>
-        </Button>
-      </div>
-
+      <Breadcrumbs />
       <div className="ch-wrapper">
         <div className="ch-history">
           <div className="statement-status-sider">
@@ -536,7 +509,7 @@ function HistoryContainer() {
               )
             }
           </div>
-          <Card className="ch-content" bordered={false}>
+          <div className="ch-content lg:w-[calc(100%-320px)] p-8 bg-[#F4F5FA] rounded-lg max-md:w-full relative">
             {activeTab === "live" ? (
               renderCampHistories
             ) : (
@@ -549,7 +522,7 @@ function HistoryContainer() {
                 {renderCampHistories}
               </InfiniteScroll>
             )}
-          </Card>
+          </div>
         </div>
       </div>
     </>
