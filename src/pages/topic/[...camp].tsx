@@ -55,17 +55,17 @@ const TopicDetailsPage = ({
 
   let ErrorStatus =
     tree?.status_code == 404 ||
-    (tree?.status_code == 422 &&
-      (!tree?.error?.camp_num ||
-        (tree?.error?.camp_num && tree?.error?.topic_num)))
+      (tree?.status_code == 422 &&
+        (!tree?.error?.camp_num ||
+          (tree?.error?.camp_num && tree?.error?.topic_num)))
       ? "Topic"
       : "Camp";
 
   return (
     <Layout>
       {tree?.status_code == 404 ||
-      campRecord?.status_code == 404 ||
-      campRecord?.status_code == 400 ? (
+        campRecord?.status_code == 404 ||
+        campRecord?.status_code == 400 ? (
         <DataNotFound
           name={ErrorStatus}
           message={`${ErrorStatus} not found`}
@@ -172,12 +172,12 @@ export async function getServerSideProps({ req, query }) {
   let resUrl = `/topic/${topicRecord?.topic_num}-${replaceSpecialCharacters(
     resTopicName,
     "-"
-  )}/${campRecord?.campData?.camp_num ? campRecord?.campData?.camp_num: 1}-${resCampName ? replaceSpecialCharacters(
+  )}/${campRecord?.campData?.camp_num ? campRecord?.campData?.camp_num : 1}-${resCampName ? replaceSpecialCharacters(
     resCampName,
     "-"
-  ): "Agreement"}`;
+  ) : "Agreement"}`;
 
-  if (currentUrl !== resUrl) {
+  if (topicRecord && campRecord && currentUrl !== resUrl) {
     let queryStr: any = buildSearchQuery(query);
 
     return {
