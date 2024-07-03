@@ -1,17 +1,18 @@
 import { Fragment } from "react";
-import { Popover, Typography, Row, Col, Image } from "antd";
-import { ShareAltOutlined, MoreOutlined } from "@ant-design/icons";
+import { Typography, Row, Col, Image } from "antd";
 import dynamic from "next/dynamic";
 import { useSelector } from "react-redux";
 
-import PrimaryButton from "src/components/shared/Buttons/PrimariButton";
-import CommonCard from "src/components/shared/Card";
 import { RootState } from "src/store";
+import { isServer } from "src/utils/generalUtility";
+import CommonCard from "src/components/shared/Card";
 import AvatarGroup from "src/components/shared/AvaratGroup";
 import ViewCounts from "src/components/shared/ViewsCount";
 import NameSpaceLabel from "src/components/shared/NameSpaceLabel";
 import CardDescription from "../HotTopics/descriptions";
 import SectionHeading from "./sectionsHeading";
+import SocialShare from "components/shared/ShareTopic";
+import TopicOptions from "components/shared/TopicOptions";
 
 const Slider = dynamic(() => import("react-slick"), { ssr: false });
 
@@ -21,7 +22,7 @@ const FeaturedTopic = () => {
   }));
 
   const settings = {
-    autoplay: false,
+    autoplay: true,
     dots: true,
     arrows: false,
     infinite: false,
@@ -62,21 +63,19 @@ const FeaturedTopic = () => {
                   lg={24}
                   md={24}
                   xs={24}
-                  className="flex flex-col mt-3 xl:mt-0 md:pl-4 px-3 pb-5  xl:px-5 xl:pb-0 static"
+                  className="flex flex-col mt-3 xl:mt-0 md:pl-4 px-3 pb-5 xl:px-5 xl:pb-0 static"
                 >
                   <div className="flex justify-between pb-2 align-center z-100 relative -ml-4 -mr-4 lg:ml-0 lg:mr-0">
                     <Typography.Paragraph className="m-0 text-xl font-bold font-inter absolute -top-16 left-0 right-0 text-white px-3 py-2 flex bg-canBlack w-full lg:bg-transparent lg:static lg:px-0 lg:py-0 lg:text-canBlack">
                       {ft?.title}
                     </Typography.Paragraph>
-                    <div className="hidden lg:flex">
-                      <Popover content="Share Topic" placement="top">
-                        <PrimaryButton className="bg-transparent border-0 p-0 hover:bg-transparent focus:bg-transparent">
-                          <ShareAltOutlined className="text-canBlack p-1 text-xl" />
-                        </PrimaryButton>
-                      </Popover>
-                      <PrimaryButton className="bg-transparent border-0 p-0 hover:bg-transparent focus:bg-transparent ml-3">
-                        <MoreOutlined className="text-canBlack p-1 text-xl font-bold" />
-                      </PrimaryButton>
+                    <div className="hidden lg:flex items-center justify-center">
+                      <SocialShare
+                        key={ft?.id}
+                        campName={ft?.camp_name}
+                        campUrl={!isServer() && window?.location?.href}
+                      />
+                      <TopicOptions eventLineHref={""} />
                     </div>
                   </div>
                   <CardDescription description={ft?.description} />

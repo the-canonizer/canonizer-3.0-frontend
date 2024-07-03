@@ -32,6 +32,26 @@ export default class NotificationRequest extends Request {
     );
   }
 
+  static markAllReadNotification(body: { ids: any[] }) {
+    return new Request(
+      K.Network.URL.MarkAllRead,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {}
+    );
+  }
+
+  static deleteAllNotification(body: { ids: any[] }) {
+    return new Request(
+      K.Network.URL.DeleteAll,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {}
+    );
+  }
+
   static updateNotificationToken(body) {
     return new Request(
       K.Network.URL.UpdateToken,

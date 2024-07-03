@@ -25,9 +25,9 @@ import { setIsChecked } from "src/store/slices/recentActivitiesSlice";
 import { getTopicActivityLogApi } from "src/network/api/campDetailApi";
 import { getProperties } from "src/utils/generalUtility";
 import ReasonsActivity from "src/components/common/SupportReasonActivity";
-import Headings from "components/shared/Typography";
 import CommonCard from "src/components/shared/Card";
 import SeeMoreLInk from "../FeaturedTopic/seeMoreLink";
+import SectionHeading from "../FeaturedTopic/sectionsHeading";
 
 const antIcon = <LoadingOutlined spin />;
 
@@ -266,18 +266,20 @@ export default function RecentActivities() {
 
   return (
     <Fragment>
-      <Row gutter={15} className="mt-5">
-        <Col md={12} sm={12} xs={24} className="mb-3">
-          <Headings level={5} className="mb-0 text-sm font-bold uppercase">
-            Recent activities
-          </Headings>
+      <Row gutter={15}>
+        <Col md={12} sm={12} xs={24}>
+          <SectionHeading
+            title="Recent activities"
+            infoContent=""
+            icon={null}
+          />
         </Col>
         <Col md={12} sm={12} xs={24} className="text-right">
           <SeeMoreLInk href="/activities" />
         </Col>
       </Row>
-      <div className="mt-2">
-        <CommonCard className="border-0 h-100 hocus:!bg-canGray">
+      <div className="mt-3">
+        <CommonCard className="border-0 h-100 hocus:!bg-canGray !bg-white [&_.ant-card-body]:p-0 [&_.ant-card-body]:lg:p-[24px] lg:!bg-canGray">
           {userData?.is_admin &&
           !router?.query?.camp_num &&
           !router?.query?.topic_num ? (
