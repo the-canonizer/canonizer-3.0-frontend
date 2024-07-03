@@ -12,7 +12,7 @@ const SiblingCamps = () => {
                         Is WikiLeaks Good?
                       </h3>
                       <p className="font-normal text-[#242B37]  leading-[26px] mb-[13px] text-base ">
-                        Lorem Ipsum is simply dummy text of the printing and
+                        Lorem Ipsum is simply dummy text of the printing and
                         typesetting industry..
                       </p>
                       <div className="flex justify-between">
@@ -70,7 +70,7 @@ const SiblingCamps = () => {
                         Is WikiLeaks Good?
                       </h3>
                       <p className="font-normal text-[#242B37]  leading-[26px] mb-[13px] text-base ">
-                        Lorem Ipsum is simply dummy text of the printing and
+                        Lorem Ipsum is simply dummy text of the printing and
                         typesetting industry..
                       </p>
                       <div className="flex justify-between">
@@ -128,7 +128,7 @@ const SiblingCamps = () => {
                         Is WikiLeaks Good?
                       </h3>
                       <p className="font-normal text-[#242B37]  leading-[26px] mb-[13px] text-base ">
-                        Lorem Ipsum is simply dummy text of the printing and
+                        Lorem Ipsum is simply dummy text of the printing and
                         typesetting industry..
                       </p>
                       <div className="flex justify-between">
