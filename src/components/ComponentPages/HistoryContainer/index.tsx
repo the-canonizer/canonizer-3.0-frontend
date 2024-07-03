@@ -21,6 +21,8 @@ import {
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { CheckboxChangeEvent } from "antd/lib/checkbox";
+import Breadcrumbs from "../Breadcrumbs/breadcrumbs";
+import HistoryCard from "../HistoryCard/historyCard";
 const { Title } = Typography;
 
 const onChange = (e) => {
@@ -75,7 +77,7 @@ function HistoryContainer() {
   };
   return (
     <>
-      <div className="cn-breadcrumbs">
+      {/* <div className="cn-breadcrumbs">
         <Breadcrumb
           separator={
             <>
@@ -100,7 +102,8 @@ function HistoryContainer() {
           Update Current Statement
           <i className="icon-edit"></i>
         </Button>
-      </div>
+      </div> */}
+      <Breadcrumbs />
       <div className="ch-wrapper">
         <div className="ch-history">
           <div className="statement-status-sider">
@@ -140,8 +143,9 @@ function HistoryContainer() {
               <i className="icon-compare-statement"></i>
             </Button>
           </div>
-          <Card className="ch-content" bordered={false}>
-            <div className="csh-wrapper cn-wrapper pending-wrapper">
+          <div className="ch-content lg:w-[calc(100%-320px)] p-8 bg-[#F4F5FA] rounded-lg max-md:w-full relative">
+            <HistoryCard />
+            {/* <div className="csh-wrapper cn-wrapper pending-wrapper">
               <div className="badge-wrapper">
                 <Badge
                   className="cn-dot-badge ch-dot-history"
@@ -564,8 +568,8 @@ function HistoryContainer() {
                   </div>
                 </div>
               </Card>
-            </div>
-          </Card>
+            </div> */}
+          </div>
         </div>
       </div>
     </>
