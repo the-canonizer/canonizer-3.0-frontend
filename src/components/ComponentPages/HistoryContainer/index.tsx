@@ -428,6 +428,7 @@ function HistoryContainer() {
               type="link"
               className="text-2xl text-[#242B37] p-1 mb-14 gap-5 flex items-center max-lg:hidden leading-none"
               icon={<i className="icon-back"></i>}
+              onClick={()=>{router?.back()}}
             >
               {historyTitle()}
             </Button>
