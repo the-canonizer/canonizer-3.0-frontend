@@ -115,6 +115,9 @@
     &::after {
       @apply content-[''] block absolute top-0 border-r-[36px] border-r-transparent border-t-[36px] rounded-tl-xl;
     }
+    .agreement-wrapper {
+      @apply flex align-top justify-between;
+    }
     .cn-footer-btn {
       @apply flex gap-4 justify-between max-xl:flex-col;
       .cn-card-btn {

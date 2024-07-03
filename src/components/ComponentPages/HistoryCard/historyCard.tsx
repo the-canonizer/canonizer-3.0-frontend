@@ -6,6 +6,7 @@ import {
   Checkbox,
   Collapse,
   Divider,
+  Space,
   Tag,
   Tooltip,
   Typography,
@@ -26,6 +27,8 @@ import { useEffect, useRef, useState } from "react";
 import { CheckboxChangeEvent } from "antd/lib/checkbox";
 import { useDispatch, useSelector } from "react-redux";
 import useAuthentication from "src/hooks/isUserAuthenticated";
+import HistoryCardModal from "./historyCardDrawer";
+import HistoryCardDrawer from "./historyCardDrawer";
 // import "./historyCard.scss";
 import { setFilterCanonizedTopics, setViewThisVersion } from "src/store/slices/filtersSlice";
 import { RootState } from "src/store";
@@ -331,6 +334,24 @@ function HistoryCard({
           )}
 
           <Divider className="border-[#242B3733] my-[1.125rem]" />
+          <div className="agreement-wrapper">
+            <div className="flex flex-col">
+              <Checkbox onChange={onChange}>Agree With Change</Checkbox>
+              <Space>
+                <HistoryCardDrawer /> 1 out of 2 required supporters have
+                agreed.
+              </Space>
+            </div>
+            <Button
+              type="link"
+              danger
+              size="large"
+              icon={<i className="icon-delete"></i>}
+              className="flex items-center justify-center gap-2 rounded-[10px] leading-none p-0"
+            >
+              Object
+            </Button>
+          </div>
           <div className="cn-footer-btn">
             <div className="cn-card-btn">
               <Button
