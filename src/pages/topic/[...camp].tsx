@@ -23,7 +23,7 @@ import { getHistoryApi } from "../../network/api/history";
 import TopicDetails from "src/components/ComponentPages/TopicDetails";
 import { setCurrentDate } from "src/store/slices/filtersSlice";
 import { useEffect, useRef } from "react";
-import DataNotFound from "@/components/ComponentPages/DataNotFound/dataNotFound";
+import DataNotFound from "src/components/ComponentPages/DataNotFound/dataNotFound";
 import { createToken } from "src/network/api/userApi";
 
 const TopicDetailsPage = ({

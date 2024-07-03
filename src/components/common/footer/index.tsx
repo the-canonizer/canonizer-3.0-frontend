@@ -80,7 +80,7 @@ function Footer() {
 
   return (
     <Fragment>
-      <footer className={`printHIde bg-black px-4 py-4`}>
+      <footer className={`printHIde bg-canBlack px-4 md:px-7 py-4`}>
         <Row gutter={20}>
           <Col xs={24} sm={24} md={7} lg={8}>
             <div className="mb-3">
@@ -96,7 +96,7 @@ function Footer() {
                 </a>
               </Link>
             </div>
-            <p className="text-14 font-inter font-normal text-white">
+            <p className="text-sm font-inter font-normal text-white">
               Canonizer is an
               <a
                 href="https://github.com/the-canonizer/canonizer-3.0-frontend"
@@ -112,7 +112,7 @@ function Footer() {
                 <a className="font-semibold underline">Join us!</a>
               </Link>
             </p>
-            <p className="font-semibold text-white text-14 mt-3">
+            <p className="font-semibold text-white text-sm mt-3">
               Patent: US 8,160,970 B2
             </p>
             {/* <ul className={styles.privacyTerms}>
@@ -131,12 +131,12 @@ function Footer() {
           <Col xs={24} sm={24} md={10} lg={10}>
             <Row gutter={20} className="px-6 sm:px-0 sm:py-4">
               <Col xs={12} md={12} className="text-white">
-                <Typography.Paragraph className="text-base text-bold text-white">
+                <Typography.Paragraph className="text-sm text-bold text-white">
                   Explore
                 </Typography.Paragraph>
                 <ul>
                   {mockLinks?.map((item) => (
-                    <li key={item.id} className="text-14 font-normal">
+                    <li key={item.id} className="text-sm font-normal">
                       {item?.external ? (
                         <a
                           href={item.link}
@@ -155,13 +155,13 @@ function Footer() {
                 </ul>
               </Col>
               <Col xs={12} md={12} className="text-white">
-                <Typography.Paragraph className="text-base text-bold text-white">
+                <Typography.Paragraph className="text-sm text-bold text-white">
                   Learn More{" "}
                 </Typography.Paragraph>
                 <ul>
                   {mockLinks2?.map((item) => {
                     return (
-                      <li key={item.id} className="text-14 font-normal">
+                      <li key={item.id} className="text-sm font-normal">
                         {router?.asPath.includes("/topic") || item.external ? (
                           <a
                             href={item.link}
@@ -184,19 +184,19 @@ function Footer() {
           </Col>
           <Col xs={24} sm={24} md={7} lg={6}>
             <div className="bg-zinc-500 rounded-lg px-3 py-4">
-              <Typography.Paragraph className="text-14 text-white">
+              <Typography.Paragraph className="text-sm text-white">
                 Comments and Questions:
               </Typography.Paragraph>
               <Link href="mailto:support@canonizer.com">
                 <a className="text-white text-medium font-medium break-words">
-                  <i className="icon-envelope mr-1 text-base"></i>{" "}
+                  <i className="icon-envelope mr-1 text-sm"></i>{" "}
                   <span className="underline">support@canonizer.com</span>
                 </a>
               </Link>
             </div>
           </Col>
         </Row>
-        <div className="border-t-[1px] pt-3 mt-4 text-center text-14 text-white opacity-[0.5]">
+        <div className="border-t-[1px] pt-3 mt-4 text-center text-sm text-white opacity-[0.5]">
           <p className="m-0">
             Copyright owned by the volunteers contributing to the system and its
             contents (2006 - {new Date().getFullYear()})

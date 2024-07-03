@@ -20,20 +20,24 @@ const WelcomeContent = () => {
 
   return (
     <Layout
-      className="bg-gr rounded-lg p-4"
+      className="bg-canGray rounded-lg p-6"
       style={isUserAuthenticated ? bgmain : null}
     >
-      <Row gutter={20}>
+      <Row
+        gutter={20}
+        className={`z-0 ${
+          isUserAuthenticated
+            ? "relative before:content-[''] z-1 before:w-full before:h-full before:absolute before:block before:bg-[url('/images/middle-vector.svg')] before:bg-no-repeat before:bottom-[-25px] before:left-[50%] before:translate-x-[-50%] before:w-full before:bg-[length:200px_200px] lg:before:bg-[length:300px_200px] before:bg-right-top md:before:bg-center lg:before:bg-center"
+            : ""
+        }`}
+      >
         <Col lg={12} md={24} data-testid="leftContent">
           <LeftContent isUserAuthenticated={isUserAuthenticated} />
         </Col>
         <Col
           lg={12}
-          className={`md:w-full z-1 ${
-            isUserAuthenticated
-              ? "relative before:content-[''] before:w-full before:h-full before:absolute before:block before:bg-[url('/images/middle-vector.svg')] before:bg-no-repeat before:bottom-[-25px] before:left-[-200px] 1xl:before:left-[-300px] lg:before:left-auto lg:before:right-[-30px] lg:before:bg-right lg:before:bg-[length:200px_200px] lg:before:bottom-[-65px] md:before:w-[200px] "
-              : ""
-          }`}
+          md={24}
+          className={`hidden md:block mt-4 lg:mt-0`}
           data-testid="rightContent"
         >
           <RightContent isUserAuthenticated={isUserAuthenticated} />

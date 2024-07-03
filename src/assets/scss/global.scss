@@ -14,15 +14,15 @@
   --font-family-asap: "Asap", sans-serif;
   --font-family-inter: "Inter", sans-serif;
   --yellow: #f89d15;
-  --blue: #5482c8;
-  --hblue: #326dc7;
+  --canBlue: #5482c8;
+  --canHoverBlue: #326dc7;
   --green: #4eb966;
   --red: #e46b6b;
-  --black: #242b37;
+  --canBlack: #242b37;
   --orange: #f19c39;
   --white: #fff;
   --disabled: #aab2bf;
-  --gr: #f7f8fc;
+  --canGray: #f7f8fc;
 }
 
 body {
@@ -55,7 +55,7 @@ body {
         display: block;
         box-shadow: none;
         outline: linen;
-        border: 1px solid #0524e9;
+        border: 1px solid var(--canBlue);
         position: static;
         color: #fff;
         background-color: #fff;
@@ -63,8 +63,8 @@ body {
       }
       &[class*="slick-active"] {
         button {
-          background-color: #0524e9;
-          color: #0524e9;
+          background-color: var(--canBlue);
+          color: var(--canBlue);
         }
       }
       &:not(:last-child) {
@@ -281,7 +281,7 @@ del.diffmod img {
 }
 
 .btn {
-  &-blue {
+  &-canBlue {
     background-color: #4484ce;
 
     &:hover,
@@ -838,8 +838,8 @@ del.diffmod img {
   position: relative;
 
   .icon-user {
-    height: 30px;
-    width: 30px;
+    // height: 30px;
+    // width: 30px;
     line-height: 28px;
     background-color: #e6e9f1;
     color: #647488;

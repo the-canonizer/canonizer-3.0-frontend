@@ -41,11 +41,12 @@
     ul {
       z-index: 1000;
       li {
+        padding: 10px 20px;
         &.active {
-          background: var(--gr);
+          background: var(--canGray);
 
           a {
-            color: var(--hblue);
+            color: var(--canHoverBlue);
           }
         }
       }
@@ -54,8 +55,8 @@
 }
 
 .active {
-  color: var(--hblue);
+  color: var(--canHoverBlue);
   a {
-    color: var(--hblue);
+    color: var(--canHoverBlue);
   }
 }

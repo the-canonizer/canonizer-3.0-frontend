@@ -53,4 +53,26 @@ export default class TopicRequest extends Request {
       token
     );
   }
+  //GetPreferedTopic
+  static GetPreferedTopic(token: string = "") {
+    return new Request(
+      K.Network.URL.GetPrefTopic,
+      K.Network.Method.GET,
+      {},
+      K.Network.Header.Type.Json,
+      {},
+      token
+    );
+  }
+  // GetFeaturedTopic
+  static GetFeaturedTopic(token: string = "") {
+    return new Request(
+      K.Network.URL.GetFeaturedTopic,
+      K.Network.Method.GET,
+      {},
+      K.Network.Header.Type.Json,
+      {},
+      token
+    );
+  }
 }

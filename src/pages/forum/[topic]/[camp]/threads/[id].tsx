@@ -6,17 +6,14 @@ import {
   getCurrentTopicRecordApi,
   getCurrentCampRecordApi,
 } from "src/network/api/campDetailApi";
-import {
-  getPostsList,
-  getThreadData,
-} from "../../../../../network/api/campForumApi";
+import { getPostsList, getThreadData } from "src/network/api/campForumApi";
 import {
   setCurrentTopicRecord,
   setCurrentCampRecord,
-} from "../../../../..//store/slices/campDetailSlice";
+} from "src/store/slices/campDetailSlice";
 import Layout from "../../../../../hoc/layout";
 import CampForumComponent from "../../../../../components/ComponentPages/CampForum";
-import DataNotFound from "@/components/ComponentPages/DataNotFound/dataNotFound";
+import DataNotFound from "src/components/ComponentPages/DataNotFound/dataNotFound";
 import { setThread } from "src/store/slices/campForumSlice";
 import { createToken } from "src/network/api/userApi";
 

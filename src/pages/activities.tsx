@@ -14,7 +14,7 @@ const RecentActivitiesPage = () => {
         <div className="pageContentWrap">
           <Row gutter={16}>
             <Col xs={24} sm={24} xl={24}>
-              <RecentActivities isUserAuthenticated={undefined} />
+              <RecentActivities />
             </Col>
           </Row>
         </div>

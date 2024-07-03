@@ -2,9 +2,9 @@ import { Fragment } from "react";
 import { Row, Col } from "antd";
 import { useSelector } from "react-redux";
 
-import Headings from "src/components/shared/Typography";
 import CommonCard from "src/components/shared/Card";
 import { RootState } from "src/store";
+import SectionHeading from "../FeaturedTopic/sectionsHeading";
 
 const WhatsNew = () => {
   const { whatsNew } = useSelector((state: RootState) => ({
@@ -13,18 +13,20 @@ const WhatsNew = () => {
 
   return (
     <Fragment>
-      <Row gutter={15} className="mt-5">
-        <Col md={24} className="mb-3">
-          <Headings level={5} className="mb-0 text-base font-bold uppercase">
-            WHAT’S NEW AT CANONIZER?
-          </Headings>
+      <Row gutter={15}>
+        <Col md={24}>
+          <SectionHeading
+            title=" WHAT’S NEW AT CANONIZER?"
+            infoContent=""
+            icon={null}
+          />
         </Col>
       </Row>
 
-      <div className="">
-        <CommonCard className="border-0 h-100 hover:*:bg-gr hover:*:shadow-0 focus:*:bg-gr hover:*:text-black text-black">
+      <div className="mt-3">
+        <CommonCard className="border-0 h-100 text-canBlack">
           <div
-            className="text-black"
+            className="text-canBlack"
             dangerouslySetInnerHTML={{ __html: whatsNew }}
           ></div>
         </CommonCard>

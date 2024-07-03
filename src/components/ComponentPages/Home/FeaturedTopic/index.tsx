@@ -1,37 +1,30 @@
 import { Fragment } from "react";
-import { Popover, Typography, Row, Col, Image, Avatar, Tooltip } from "antd";
-import {
-  InfoCircleOutlined,
-  ShareAltOutlined,
-  MoreOutlined,
-  EyeOutlined,
-  FlagOutlined,
-  UserOutlined,
-  AntDesignOutlined,
-} from "@ant-design/icons";
-import Link from "next/link";
+import { Popover, Typography, Row, Col, Image } from "antd";
+import { ShareAltOutlined, MoreOutlined } from "@ant-design/icons";
 import dynamic from "next/dynamic";
 import { useSelector } from "react-redux";
-import sanitizeHtml from "sanitize-html";
 
 import PrimaryButton from "src/components/shared/Buttons/PrimariButton";
-import Headings from "src/components/shared/Typography";
 import CommonCard from "src/components/shared/Card";
 import { RootState } from "src/store";
+import AvatarGroup from "src/components/shared/AvaratGroup";
+import ViewCounts from "src/components/shared/ViewsCount";
+import NameSpaceLabel from "src/components/shared/NameSpaceLabel";
+import CardDescription from "../HotTopics/descriptions";
+import SectionHeading from "./sectionsHeading";
 
 const Slider = dynamic(() => import("react-slick"), { ssr: false });
 
 const FeaturedTopic = () => {
-  /* eslint-enable */
   const { topicData } = useSelector((state: RootState) => ({
-    topicData: state?.hotTopic?.topicData,
+    topicData: state?.hotTopic?.featuredTopic,
   }));
 
   const settings = {
     autoplay: false,
     dots: true,
     arrows: false,
-    infinite: true,
+    infinite: false,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
@@ -39,112 +32,69 @@ const FeaturedTopic = () => {
     dotsClass: "featuredDots my-[20px] justify-center",
   };
 
+  if (!topicData?.length) {
+    return null;
+  }
+
   return (
     <Fragment>
-      <Row gutter={15}>
-        <Col md={12} className="mb-3">
-          <Headings level={5} className="text-base font-bold uppercase mb-0">
-            FEATURED TOPICS{" "}
-            <Popover content="FEATURED TOPICS" placement="top" className="">
-              <InfoCircleOutlined />
-            </Popover>
-          </Headings>
-        </Col>
-      </Row>
-      <div className="">
+      <SectionHeading title="FEATURED TOPICS" infoContent="FEATURED TOPICS" />
+      <div className="mt-4">
         <Slider {...settings}>
           {topicData?.map((ft) => (
             <CommonCard
-              className="hover:*:bg-gr hover:*:shadow-none lg:w-full"
+              className="bg-canGray w-full p-0 [&>.ant-card-body]:p-0 xl:[&>.ant-card-body]:p-5"
               key={ft?.id}
             >
-              <Row gutter={20} className="w-full">
-                <Col lg={10} md={24} xs={24}>
+              <Row gutter={0} className="w-full min-w-full max-w-full relative">
+                <Col xl={10} lg={24} md={24} xs={24}>
                   <Image
-                    className="w-full rounded-lg h-auto object-cover "
+                    className="w-full rounded-lg h-auto object-cover h-full min-h-28 md:min-h-60 max-h-48 md:max-h-72"
                     preview={false}
-                    height={250}
+                    height={"100%"}
                     width={"100%"}
-                    src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+                    src={ft?.file_full_path}
+                    rootClassName="h-full"
                   />
                 </Col>
-                <Col lg={14} md={24} className="flex flex-col lg:mt-3">
-                  <div className="flex justify-between pb-2 align-center">
-                    <Typography.Paragraph className="m-0 text-medium font-bold font-inter">
+                <Col
+                  xl={14}
+                  lg={24}
+                  md={24}
+                  xs={24}
+                  className="flex flex-col mt-3 xl:mt-0 md:pl-4 px-3 pb-5  xl:px-5 xl:pb-0 static"
+                >
+                  <div className="flex justify-between pb-2 align-center z-100 relative -ml-4 -mr-4 lg:ml-0 lg:mr-0">
+                    <Typography.Paragraph className="m-0 text-xl font-bold font-inter absolute -top-16 left-0 right-0 text-white px-3 py-2 flex bg-canBlack w-full lg:bg-transparent lg:static lg:px-0 lg:py-0 lg:text-canBlack">
                       {ft?.title}
                     </Typography.Paragraph>
-                    <div className="">
+                    <div className="hidden lg:flex">
                       <Popover content="Share Topic" placement="top">
                         <PrimaryButton className="bg-transparent border-0 p-0 hover:bg-transparent focus:bg-transparent">
-                          <ShareAltOutlined className="text-black p-1 text-medium" />
+                          <ShareAltOutlined className="text-canBlack p-1 text-xl" />
                         </PrimaryButton>
                       </Popover>
-                      <PrimaryButton className="bg-transparent border-0 p-0 hover:bg-transparent focus:bg-transparent">
-                        <MoreOutlined className="text-black p-1 text-medium font-bold" />
+                      <PrimaryButton className="bg-transparent border-0 p-0 hover:bg-transparent focus:bg-transparent ml-3">
+                        <MoreOutlined className="text-canBlack p-1 text-xl font-bold" />
                       </PrimaryButton>
                     </div>
                   </div>
-                  <div
-                    className="text-base font-inter font-normal mb-3 text-black opacity-80 leading-26 overflow-hidden line-clamp-4"
-                    dangerouslySetInnerHTML={{
-                      __html: sanitizeHtml(ft?.description, {
-                        allowedAttributes: {
-                          "*": [
-                            "class",
-                            "id",
-                            "href",
-                            "align",
-                            "alt",
-                            "center",
-                            "bgcolor",
-                            "src",
-                            "title",
-                            "style",
-                            "rel",
-                            "target",
-                          ],
-                        },
-                      }),
-                    }}
-                  ></div>
-                  <div className="flex justify-between pt-3 mt-auto lg:flex-col">
-                    <div className="text-left flex lg:flex-col sm:flex-col">
-                      <Popover content="Share Topic" placement="top">
-                        <Typography.Paragraph className="bg-transparent border-0 p-0 hover:bg-transparent focus:bg-transparent flex items-center leading-1 mb-0 mr-3">
-                          <FlagOutlined className="text-black p-1 text-medium" />
-                          <Link href="">
-                            <a className="text-blue text-base font-inter font-medium hover:hblue">
-                              General
-                            </a>
-                          </Link>
-                        </Typography.Paragraph>
-                      </Popover>
-                      <Typography.Paragraph className="m-0 text-lighc font-medium font-inter flex items-center">
-                        <EyeOutlined className="text-black p-1 text-medium" />{" "}
-                        123
-                      </Typography.Paragraph>
+                  <CardDescription description={ft?.description} />
+                  <div className="flex justify-between pt-3 mt-auto">
+                    <div className="text-left flex flex-col sm:flex-row">
+                      <NameSpaceLabel namespace={ft?.namespace} />
+                      <div className="absolute top-2 right-2 px-2 rounded-md bg-canBlack lg:static lg:bg-transparent lg:px-0 lg:flex">
+                        <ViewCounts views={ft?.views} />
+                      </div>
                     </div>
-                    <Avatar.Group
-                      maxCount={4}
+                    <AvatarGroup
+                      avatars={ft?.supporterData}
                       size="large"
                       maxStyle={{
                         color: "#f56a00",
                         backgroundColor: "#fde3cf",
                       }}
-                    >
-                      <Avatar src="https://api.dicebear.com/7.x/miniavs/svg?seed=3" />
-                      <Avatar style={{ backgroundColor: "#f56a00" }}>K</Avatar>
-                      <Tooltip title="Ant User" placement="top">
-                        <Avatar
-                          style={{ backgroundColor: "#87d068" }}
-                          icon={<UserOutlined />}
-                        />
-                      </Tooltip>
-                      <Avatar
-                        style={{ backgroundColor: "#1677ff" }}
-                        icon={<AntDesignOutlined />}
-                      />
-                    </Avatar.Group>
+                    />
                   </div>
                 </Col>
               </Row>

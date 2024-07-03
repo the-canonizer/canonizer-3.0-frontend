@@ -2,7 +2,11 @@ import NetworkCall from "../networkCall";
 import TopicRequest from "../request/topicRequests";
 import { handleError } from "../../utils/generalUtility";
 import { store } from "src/store";
-import { setHotTopic } from "src/store/slices/hotTopicSlice";
+import {
+  setFeaturedTopic,
+  setHotTopic,
+  setPrefTopic,
+} from "src/store/slices/hotTopicSlice";
 
 export const createTopic = async (body) => {
   try {
@@ -68,18 +72,50 @@ export const GetCheckSupportExists = async (reqbody, loginToken = null) => {
 
 export const GetHotTopicDetails = async (token: string) => {
   try {
-    let state = store.getState();
-    const { auth } = state;
-    const res = await NetworkCall.fetch(
-      TopicRequest.GetHotTopic(token || auth.loggedInUser?.token)
-    );
+    const res = await NetworkCall.fetch(TopicRequest.GetHotTopic(token));
 
     if (res.status_code === 200) {
-      store.dispatch(setHotTopic(res?.data || null));
+      store.dispatch(setHotTopic(res?.data?.items || []));
     }
 
     if (res.status_code === 400) {
-      store.dispatch(setHotTopic(null));
+      store.dispatch(setHotTopic([]));
+    }
+
+    return res;
+  } catch (err) {
+    return err?.error?.data;
+  }
+};
+
+export const GetPreferedTopicDetails = async (token: string) => {
+  try {
+    const res = await NetworkCall.fetch(TopicRequest.GetPreferedTopic(token));
+
+    if (res.status_code === 200) {
+      store.dispatch(setPrefTopic(res?.data?.items || []));
+    }
+
+    if (res.status_code === 400) {
+      store.dispatch(setPrefTopic([]));
+    }
+
+    return res;
+  } catch (err) {
+    return err?.error?.data;
+  }
+};
+
+export const GetFeaturedTopicDetails = async (token: string) => {
+  try {
+    const res = await NetworkCall.fetch(TopicRequest.GetFeaturedTopic(token));
+
+    if (res.status_code === 200) {
+      store.dispatch(setFeaturedTopic(res?.data?.items || []));
+    }
+
+    if (res.status_code === 400) {
+      store.dispatch(setFeaturedTopic([]));
     }
 
     return res;

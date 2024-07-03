@@ -1,45 +1,27 @@
-import { Fragment, useCallback, useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Form, message } from "antd";
+import { Form, message, Row, Col, Card } from "antd";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import { useRouter } from "next/router";
 
 import RegistrationUi from "./UI";
-import OTPVerify from "./UI/otp";
-import {
-  hideRegistrationModal,
-  showLoginModal,
-} from "src/store/slices/uiSlice";
-import {
-  register,
-  verifyOtp,
-  getCountryCodes,
-  resendOTPForRegistration,
-} from "src/network/api/userApi";
+import { register, getCountryCodes } from "src/network/api/userApi";
 import { AppDispatch } from "src/store";
-import Spinner from "../../common/spinner/spinner";
+import LeftContent from "./UI/leftContent";
+import { setEmailForOTP } from "src/store/slices/authSlice";
+import CustomSpinner from "components/shared/CustomSpinner";
 
-const Registration = ({ isModal, isTest = false }: any) => {
-  const [isOtpScreen, setIsOtpScreen] = useState(isTest);
-  const [isResend, setIsResend] = useState(false);
-  const [country, setCountry] = useState([]);
-  const [formData, setFormData] = useState({ email: "" });
-  const [failedMsg, setFailedMsg] = useState("");
+const Registration = () => {
+  const [country, setCountry] = useState([]),
+    [isDisabled, setIsDisabled] = useState(true),
+    [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch<AppDispatch>(),
     router = useRouter(),
     [form] = Form.useForm(),
-    [otpForm] = Form.useForm(),
     { executeRecaptcha } = useGoogleReCaptcha();
 
-  const closeModal = () => {
-    dispatch(hideRegistrationModal());
-
-    isOtpScreen ? otpForm.resetFields() : form.resetFields();
-    setIsOtpScreen(false);
-  };
-
-  const openLogin = () => dispatch(showLoginModal());
+  const values = Form.useWatch([], form);
 
   const handleSumitForm = useCallback(
     (values) => {
@@ -51,13 +33,19 @@ const Registration = ({ isModal, isTest = false }: any) => {
         onFinish(values, gReCaptchaToken);
       });
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [executeRecaptcha]
   );
 
+  useEffect(() => {
+    form
+      .validateFields({ validateOnly: true })
+      .then(() => setIsDisabled(true))
+      .catch(() => setIsDisabled(false));
+  }, [form, values]);
+
   const onFinish = async (values: any, captchaKey: string) => {
+    setLoading(true);
     if (captchaKey) {
-      setFormData(values);
       let formBody = {
         first_name: values.first_name?.trim(),
         last_name: values.last_name?.trim(),
@@ -71,14 +59,10 @@ const Registration = ({ isModal, isTest = false }: any) => {
 
       let res = await register(formBody);
 
-      if (res && res.status_code === 403) {
-        setIsOtpScreen(true);
-        setIsResend(true);
-        setFailedMsg(res.message);
-      }
       if (res && res.status_code === 406) {
         message.error(res.message);
       }
+
       if (res && res.status_code === 400) {
         if (res?.error) {
           const errors_key = Object.keys(res.error);
@@ -109,45 +93,13 @@ const Registration = ({ isModal, isTest = false }: any) => {
       }
 
       if (res && res.status_code === 200) {
-        form.resetFields();
         message.success(res.message);
-        setIsOtpScreen(true);
+        dispatch(setEmailForOTP(values.email?.trim()));
+        form.resetFields();
+        router?.push({ pathname: "/registration/otp" });
       }
     }
-  };
-
-  const onOTPSubmit = async (values: any) => {
-    let formBody = {
-      username: formData.email?.trim(),
-      otp: values.otp?.trim(),
-      is_login: 0,
-    };
-
-    if (values.otp?.trim()) {
-      let res = await verifyOtp(formBody);
-
-      if (res) {
-        setFailedMsg(res.message);
-      }
-
-      if (res && res.status_code === 200) {
-        otpForm.resetFields();
-
-        setIsOtpScreen(false);
-        isModal ? closeModal() : "";
-
-        router?.push({
-          pathname: "/settings",
-          query: {
-            tab: "profile",
-          },
-        });
-      }
-    } else {
-      otpForm.resetFields();
-
-      otpForm.validateFields(["otp"]);
-    }
+    setLoading(false);
   };
 
   const sort_unique = (arr: Object[]) => {
@@ -179,53 +131,44 @@ const Registration = ({ isModal, isTest = false }: any) => {
   };
 
   const getCodes = async () => {
+    setLoading(true);
     let response = await getCountryCodes();
     if (response && response.status_code === 200) {
       const codes_list = sort_unique(response.data);
 
       setCountry(codes_list);
     }
+    setLoading(false);
   };
 
   useEffect(() => {
     getCodes();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // on resend click
-  const onResendClick = async () => {
-    let formBody = {
-      email: formData.email,
-    };
-
-    await resendOTPForRegistration(formBody);
+  const onBrowseClick = (e) => {
+    e?.preventDefault();
+    router?.back();
   };
 
   return (
-    <Fragment>
-      <Spinner>
-        {isOtpScreen ? (
-          <OTPVerify
-            form={otpForm}
-            onFinish={onOTPSubmit}
-            closeModal={closeModal}
-            isModal={isModal}
-            isResend={isResend}
-            failedMsg={failedMsg}
-            onResendClick={onResendClick}
-          />
-        ) : (
-          <RegistrationUi
-            form={form}
-            onFinish={handleSumitForm}
-            closeModal={closeModal}
-            isModal={isModal}
-            country={country}
-            openLogin={openLogin}
-          />
-        )}
-      </Spinner>
-    </Fragment>
+    <CustomSpinner key="registration-spinner" spinning={loading}>
+      <Card bordered={false} className="bg-canGrey1 mt-0 lg:mt-10">
+        <Row gutter={20}>
+          <Col lg={12} md={24} xl={12} xs={24} className="hidden lg:block">
+            <LeftContent onBrowseClick={onBrowseClick} />
+          </Col>
+          <Col lg={12} md={24} xl={12}>
+            <RegistrationUi
+              form={form}
+              onFinish={handleSumitForm}
+              country={country}
+              isDisabled={isDisabled}
+              onBrowseClick={onBrowseClick}
+            />
+          </Col>
+        </Row>
+      </Card>
+    </CustomSpinner>
   );
 };
 
