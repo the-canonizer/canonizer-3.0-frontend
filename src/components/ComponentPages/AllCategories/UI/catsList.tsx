@@ -60,7 +60,7 @@ const CatsList = ({
           </Paragraph>
           <Paragraph className="text-sm opacity-80 text-black font-normal mb-0">
             Every conversation has to have a context, a group that it belongs
-            to. Category is that group that lorem Ipsum is simply dummy text of
+            to. Category is that group that lorem Ipsum is simply dummy text of
             the printing and typesetting industry.
           </Paragraph>
         </Col>
@@ -77,7 +77,7 @@ const CatsList = ({
 
       <div className="grid grid-cols-[repeat(auto-fill,minmax(350px,_1fr))] gap-6">
         {tags?.map((tag) => (
-          <Category onBackClick={undefined} tag={tag} />
+          <Category onBackClick={undefined} key={tag?.id} tag={tag} />
         ))}
       </div>
 

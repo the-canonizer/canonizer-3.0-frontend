@@ -7,7 +7,7 @@ const SearchBars = ({ onSearchChange, onSearchKeyUp }) => {
     document.querySelector(".searchInput")?.classList?.toggle("active");
     document.querySelector(".searchWrap")?.classList?.toggle("active");
 
-    document.querySelector(".searchInput")?.focus();
+    (document.querySelector(".searchInput") as HTMLInputElement)?.focus();
   };
 
   return (

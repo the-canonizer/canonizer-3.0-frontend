@@ -213,7 +213,7 @@ export default function RecentActivities() {
   };
 
   const ViewAllTopics = (isTopic) => {
-    return;
+    return null;
     // const ViewAllName = isTopic ? "View All Topics" : "View All Threads";
     // return (
     //   recentActivities?.topics?.length > 0 && (
