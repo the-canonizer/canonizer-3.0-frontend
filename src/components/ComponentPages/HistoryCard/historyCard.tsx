@@ -342,7 +342,7 @@ function HistoryCard({
             <div className="flex flex-col">
               {campStatement?.status == "in_review" &&
                 (!campStatement?.grace_period || commited) && (<>
-                  {(campStatement?.ifICanAgreeAndObject || campStatement?.ifICanAgreeAndObject == undefined) && !!(
+                  {!!(
                     campStatement?.ifIamSupporter != 0 ||
                     campStatement?.ifIAmExplicitSupporter
                   ) &&
