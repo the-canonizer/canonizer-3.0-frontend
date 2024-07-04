@@ -338,8 +338,9 @@ function HistoryCard({
             <div className="flex flex-col">
               <Checkbox onChange={onChange}>Agree With Change</Checkbox>
               <Space>
-                <HistoryCardDrawer /> 1 out of 2 required supporters have
-                agreed.
+                <HistoryCardDrawer
+                  displayText={"1 out of 2 required supporters have agreed."}
+                />
               </Space>
             </div>
             <Button
@@ -380,9 +381,9 @@ function HistoryCard({
                   }
                 >
                   {`Edit ${historyOf == "statement" ? "Statement" :
-                      historyOf == "topic" ? "Topic" :
-                        historyOf == "camp" ? "Camp" :
-                          null}`}
+                    historyOf == "topic" ? "Topic" :
+                      historyOf == "camp" ? "Camp" :
+                        null}`}
                 </Link>
                 <i className="icon-edit"></i>
               </Button>

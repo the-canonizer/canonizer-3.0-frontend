@@ -4,7 +4,9 @@ import { useState } from "react";
 
 const { Title } = Typography;
 
-function HistoryCardDrawer() {
+function HistoryCardDrawer({
+  displayText
+}: any) {
   const [open, setOpen] = useState(false);
   const showDrawer = () => {
     setOpen(true);
@@ -21,7 +23,7 @@ function HistoryCardDrawer() {
     "Jane Doe",
   ];
   return (
-    <>
+    <div onClick={open ? onClose : showDrawer}>
       <Button type="link" className="p-0" onClick={showDrawer}>
         <i className="icon-info-light"></i>
       </Button>
@@ -63,7 +65,8 @@ function HistoryCardDrawer() {
           </Tabs.TabPane>
         </Tabs>
       </Drawer>
-    </>
+      {displayText}
+    </div>
   );
 }
 
