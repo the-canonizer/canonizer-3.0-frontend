@@ -20,12 +20,12 @@
   &.live-wrapper {
     .cn-dot-badge {
       .ant-badge-status-dot {
-        @apply bg-[#5482C8] shadow-[0px_0px_6px_2px_#5482C8];
+        @apply bg-[#4EB966] shadow-[0px_0px_6px_2px_#4EB966];
       }
     }
     .cn-card {
       &::after {
-        @apply border-t-[#5482C8];
+        @apply border-t-[#4EB966];
       }
     }
   }
@@ -54,7 +54,7 @@
     }
   }
   .badge-wrapper {
-    @apply flex justify-between gap-1.5 mb-[1.25rem] max-lg:flex-col;
+    @apply flex justify-between gap-1.5 mb-5 max-lg:flex-col;
     .tooltip-count {
       @apply flex items-center gap-1.5;
     }
@@ -116,10 +116,33 @@
       @apply content-[''] block absolute top-0 border-r-[36px] border-r-transparent border-t-[36px] rounded-tl-xl;
     }
     .agreement-wrapper {
-      @apply flex align-top justify-between;
+      @apply flex flex-col border-t border-t-[#242B3733] pt-[1.125rem] mt-[1.125rem];
+      .ant-checkbox-wrapper {
+        @apply mb-2;
+        .ant-checkbox {
+          &.ant-checkbox-checked {
+            @apply after:border-[#4EB966];
+            .ant-checkbox-inner {
+              @apply bg-[#4EB966];
+            }
+          }
+          .ant-checkbox-inner {
+            @apply border-[#4EB966];
+          }
+        }
+        span {
+          @apply text-[#4EB966] font-medium text-base;
+        }
+      }
+      .ant-space {
+        @apply items-start;
+        p {
+          @apply italic text-[#777F93] mt-1;
+        }
+      }
     }
     .cn-footer-btn {
-      @apply flex gap-4 justify-between max-xl:flex-col;
+      @apply flex gap-4 justify-between max-xl:flex-col border-t border-t-[#242B3733] pt-[1.125rem] mt-[1.125rem];
       .cn-card-btn {
         @apply flex gap-3 max-xl:order-2 max-sm:flex-col;
         button {

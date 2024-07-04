@@ -337,108 +337,91 @@ function HistoryCard({
             />
           )}
 
-          <Divider className="border-[#242B3733] my-[1.125rem]" />
           <div className="agreement-wrapper">
-            <div className="flex flex-col">
+            {campStatement?.status == "in_review" &&
+              (!campStatement?.grace_period || commited) && (<>
+                {!!(
+                  campStatement?.ifIamSupporter != 0 ||
+                  campStatement?.ifIAmExplicitSupporter
+                ) &&
+                  isUserAuthenticated &&
+                  !campStatement?.isAuthor && (<>
+                    <Checkbox
+                      defaultChecked={campStatement?.agreed_to_change}
+                      disabled={
+                        // historyOf == "camp" ? !campStatement?.ifICanAgreeAndObject : false ||
+                        parentArchived == 1 && directarchived == 0
+                      }
+                      onChange={agreeWithChange}>Agree With Change
+                    </Checkbox>
+                  </>)}
+              </>)}
+            <Space>
+
               {campStatement?.status == "in_review" &&
                 (!campStatement?.grace_period || commited) && (<>
                   {!!(
                     campStatement?.ifIamSupporter != 0 ||
-                    campStatement?.ifIAmExplicitSupporter
-                  ) &&
-                    isUserAuthenticated &&
-                    !campStatement?.isAuthor && (<>
-                      <Checkbox
-                        defaultChecked={campStatement?.agreed_to_change}
-                        disabled={
-                          // historyOf == "camp" ? !campStatement?.ifICanAgreeAndObject : false ||
-                          parentArchived == 1 && directarchived == 0
+                    campStatement?.ifIAmExplicitSupporter ||
+                    campStatement?.isAuthor
+                  ) && (<>
+                    <HistoryCardDrawer
+                      onClick={async () => {
+                        let req = {
+                          topic_num: router?.query.camp[0].split("-")[0],
+                          camp_num:
+                            historyOf == "topic"
+                              ? 1
+                              : router?.query.camp[1].split("-")[0],
+                          change_id: campStatement?.id,
+                          type: historyOf,
+                        };
+                        let res = await getChangeSupporters(req);
+                        if (res.status_code == 200) {
+                          let supportersData = res?.data.supporters?.map(
+                            (data, key) => {
+                              return {
+                                key: key,
+                                status: data?.agreed,
+                                nickNameData: {
+                                  name: data?.nick_name,
+                                  path: `/user/supports/${data?.id || ""
+                                    }?canon=${topicNamespaceId || ""}`,
+                                },
+                              };
+                            }
+                          );
+                          setSupporters(supportersData);
                         }
-                        onChange={agreeWithChange}>I agree with this{" "}
-                        {historyOf == "camp"
-                          ? "camp"
-                          : historyOf == "topic"
-                            ? "topic"
-                            : "statement"}{" "}
-                        change</Checkbox>
-                    </>)}
-                </>)}
-              <Space>
-
-                {campStatement?.status == "in_review" &&
-                  (!campStatement?.grace_period || commited) && (<>
-                    {!!(
-                      campStatement?.ifIamSupporter != 0 ||
-                      campStatement?.ifIAmExplicitSupporter ||
-                      campStatement?.isAuthor
-                    ) && (<>
-                      <HistoryCardDrawer
-                        onClick={async () => {
-                          let req = {
-                            topic_num: router?.query.camp[0].split("-")[0],
-                            camp_num:
-                              historyOf == "topic"
-                                ? 1
-                                : router?.query.camp[1].split("-")[0],
-                            change_id: campStatement?.id,
-                            type: historyOf,
-                          };
-                          let res = await getChangeSupporters(req);
-                          if (res.status_code == 200) {
-                            let supportersData = res?.data.supporters?.map(
-                              (data, key) => {
-                                return {
-                                  key: key,
-                                  status: data?.agreed,
-                                  nickNameData: {
-                                    name: data?.nick_name,
-                                    path: `/user/supports/${data?.id || ""
-                                      }?canon=${topicNamespaceId || ""}`,
-                                  },
-                                };
-                              }
-                            );
-                            setSupporters(supportersData);
-                          }
-                          setIsModalOpen(true);
-                        }}
-                        displayText={<>
-                          {campStatement?.agreed_supporters} out of{" "}
-                          {campStatement?.total_supporters} required
-                          supporters have agreed
-                          {(campStatement?.ifICanAgreeAndObject || campStatement?.ifICanAgreeAndObject == undefined) && !!(
-                            campStatement?.ifIamSupporter != 0 ||
-                            campStatement?.ifIAmExplicitSupporter
-                          ) &&
-                            isUserAuthenticated &&
-                            !campStatement?.isAuthor &&
-                            campStatement?.total_supporters -
-                            campStatement?.agreed_supporters ==
-                            1 &&
-                            !campStatement?.agreed_to_change && (
-                              <>
-                                , Since you are the last hold out, the instant
-                                you agree, this will go live.
-                              </>
-                            )}
-                        </>}
-                        agreedSupporters={supporters?.filter((obj) => obj?.status === true)}
-                        notAgreedSupporters={supporters?.filter((obj) => obj?.status === false)}
-                      />
-                    </>)}
+                        setIsModalOpen(true);
+                      }}
+                      displayText={<>
+                        {campStatement?.agreed_supporters} out of{" "}
+                        {campStatement?.total_supporters} required
+                        supporters have agreed
+                        {(campStatement?.ifICanAgreeAndObject || campStatement?.ifICanAgreeAndObject == undefined) && !!(
+                          campStatement?.ifIamSupporter != 0 ||
+                          campStatement?.ifIAmExplicitSupporter
+                        ) &&
+                          isUserAuthenticated &&
+                          !campStatement?.isAuthor &&
+                          campStatement?.total_supporters -
+                          campStatement?.agreed_supporters ==
+                          1 &&
+                          !campStatement?.agreed_to_change && (
+                            <>
+                              , Since you are the last hold out, the instant
+                              you agree, this will go live.
+                            </>
+                          )}
+                      </>}
+                      agreedSupporters={supporters?.filter((obj) => obj?.status === true)}
+                      notAgreedSupporters={supporters?.filter((obj) => obj?.status === false)}
+                    />
                   </>)}
+                </>)}
 
-              </Space>
-            </div>
-            {/* <Button
-              type="link"
-              danger
-              size="large"
-              icon={<i className="icon-delete"></i>}
-              className="flex items-center justify-center gap-2 rounded-[10px] leading-none p-0"
-            >
-              Object
-            </Button> */}
+            </Space>
           </div>
 
           {(!campStatement?.grace_period || commited) && (
@@ -485,50 +468,48 @@ function HistoryCard({
                     Edit Based On This
                     <i className="icon-edit"></i>
                   </Button>
-
-                  {(campStatement?.status == "in_review") && (
-                    <>
-                      <Button
-                        size="large"
-                        type="primary"
-                        // disabled={historyOf == "camp" ? !campStatement?.ifICanAgreeAndObject : false}
-                        id={`object-change-${campStatement?.id}`}
-                        className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none w-100"
-                        onClick={() => {
-                          let isModelPop = !isUserAuthenticated
-                            ? true
-                            : (!campStatement?.ifIAmExplicitSupporter &&
-                              campStatement?.ifIamSupporter == 0) ||
-                              (parentArchived == 1 &&
-                                directarchived == 1 &&
-                                historyOf == "topic") ||
-                              (parentArchived == 1 && directarchived == 0)
+                  {
+                    (campStatement?.status == "in_review") && (
+                      <>
+                        <Button
+                          size="large"
+                          // disabled={historyOf == "camp" ? !campStatement?.ifICanAgreeAndObject : false}
+                          id={`object-change-${campStatement?.id}`}
+                          className="flex items-center bg-[#E46B6B1A] border-[#E46B6B] hover:border-[#E46B6B] hover:text-[#E46B6B] focus:text-[#E46B6B] focus:border-[#E46B6B] justify-center rounded-[10px] gap-3.5 leading-none"
+                          onClick={() => {
+                            let isModelPop = !isUserAuthenticated
                               ? true
-                              : false;
-                          if (isModelPop) {
-                            setModal1Open(true);
-                          } else {
-                            router?.push(
-                              historyOf == "camp"
-                                ? `/manage/camp/${campStatement?.id}-objection`
-                                : historyOf == "topic"
-                                  ? `/manage/topic/${campStatement?.id}-objection`
-                                  : `/manage/statement/${campStatement?.id}-objection`
-                            );
-                          }
-                        }}
-                      >
-                        Object Changes
-                        <i className="icon-edit"></i>
-                      </Button>
-                    </>
-                  )}
+                              : (!campStatement?.ifIAmExplicitSupporter &&
+                                campStatement?.ifIamSupporter == 0) ||
+                                (parentArchived == 1 &&
+                                  directarchived == 1 &&
+                                  historyOf == "topic") ||
+                                (parentArchived == 1 && directarchived == 0)
+                                ? true
+                                : false;
+                            if (isModelPop) {
+                              setModal1Open(true);
+                            } else {
+                              router?.push(
+                                historyOf == "camp"
+                                  ? `/manage/camp/${campStatement?.id}-objection`
+                                  : historyOf == "topic"
+                                    ? `/manage/topic/${campStatement?.id}-objection`
+                                    : `/manage/statement/${campStatement?.id}-objection`
+                              );
+                            }
+                          }}
+                        >
+                          Objected Changes
+                          <i className="icon-thumb-down text-[#E46B6B]"></i>
+                        </Button>
+                      </>)
+                  }
                 </div>
                 <div className="cn-link-btn">
                   <Button
                     size="large"
                     type="link"
-                    icon={<EyeOutlined className="mr-1" />}
                     id={`view-this-version-${campStatement?.id}`}
                     className="flex items-center justify-center rounded-[10px] leading-none text-[#242B37]"
                     onClick={() =>
@@ -566,66 +547,67 @@ function HistoryCard({
                     >
                       View Version
                     </Link>
+                    <EyeOutlined className="ml-2" />
                   </Button>
                 </div>
               </div>
             </>
           )}
 
-
-          {
-            campStatement?.status == "in_review" &&
+          {campStatement?.status == "in_review" &&
             !commited &&
             !!campStatement?.grace_period &&
-            moment.now() < campStatement?.submit_time * 1000 + 3600000 && (<>
-              <div className="cn-footer-btn">
-                <div className="cn-card-btn">
-                  <Button
-                    size="large"
-                    type="primary"
-                    className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none"
-                    onClick={commitChanges}
-                    id={`commit-change-${campStatement?.id}`}
-                    disabled={loadingChanges}
-                  >
-                    Commit Changes
-                    <i className="icon-upload"></i>
-                  </Button>
-                  <Button
-                    size="large"
-                    id={`edit-change-${campStatement?.id}`}
-                    className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none"
-                  >
-                    <Link
-                      href={
-                        historyOf == "camp"
-                          ? `/manage/camp/${campStatement?.id}-update`
-                          : historyOf == "topic"
-                            ? `/manage/topic/${campStatement?.id}-update`
-                            : `/manage/statement/${campStatement?.id}-update`
-                      }
+            moment.now() < campStatement?.submit_time * 1000 + 3600000 && (
+              <>
+                <div className="cn-footer-btn">
+                  <div className="cn-card-btn">
+                    <Button
+                      size="large"
+                      type="primary"
+                      id={`commit-change-${campStatement?.id}`}
+                      className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none"
+                      onClick={commitChanges}
+                      disabled={loadingChanges}
                     >
-                      Edit Change
-                    </Link>
-                    <i className="icon-edit"></i>
-                  </Button>
+                      Commit Changes
+                      <i className="icon-upload"></i>
+                    </Button>
+                    <Button
+                      size="large"
+                      id={`edit-change-${campStatement?.id}`}
+                      className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none"
+                    >
+                      <Link
+                        href={
+                          historyOf == "camp"
+                            ? `/manage/camp/${campStatement?.id}-update`
+                            : historyOf == "topic"
+                              ? `/manage/topic/${campStatement?.id}-update`
+                              : `/manage/statement/${campStatement?.id}-update`
+                        }
+                      >
+                        Edit Change
+                      </Link>
+                      <i className="icon-edit"></i>
+                    </Button>
+                  </div>
+                  <div className="cn-link-btn">
+                    <Button
+                      type="link"
+                      danger
+                      size="large"
+                      id={`commit-change-${campStatement?.id}`}
+                      className="flex items-center justify-center gap-2 rounded-[10px] leading-none"
+                      onClick={() => cancelConfirm()}
+                      disabled={loadingChanges}
+                    >
+                      Delete
+                      <i className="icon-delete"></i>
+                    </Button>
+                  </div>
                 </div>
-                <div className="cn-link-btn">
-                  <Button
-                    type="link"
-                    danger
-                    size="large"
-                    icon={<i className="icon-delete"></i>}
-                    id={`commit-change-${campStatement?.id}`}
-                    className="flex items-center justify-center gap-2 rounded-[10px] leading-none"
-                    onClick={() => cancelConfirm()}
-                    disabled={loadingChanges}
-                  >
-                    Delete
-                  </Button>
-                </div>
-              </div>
-            </>)
+              </>
+            )
           }
         </Card>
       </div>
