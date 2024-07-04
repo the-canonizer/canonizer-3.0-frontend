@@ -441,6 +441,7 @@ function HistoryContainer() {
                 campHistory?.details?.unarchive_change_submitted
               }
               directarchived={directarchived}
+              historyState={historyOf}
             />
           </>
         );

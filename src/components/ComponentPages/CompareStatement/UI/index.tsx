@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { useRouter } from "next/router";
 import {
   Typography,
@@ -43,6 +43,8 @@ function CompareStatementUI({
   liveStatement,
   itemsStatus,
 }: any) {
+
+  const [compareMode, setCompareMode] = useState(true)
   const router = useRouter();
   const s1 = statements?.at(0) || {},
     s2 = statements?.at(1) || {},
@@ -76,7 +78,37 @@ function CompareStatementUI({
 
   return (
     <>
-      {/* <div className="cn-breadcrumbs">
+      <Breadcrumbs compareMode={compareMode} />
+
+      <div className="ch-wrapper">
+        <Button onClick={getBackUrl}
+          type="link"
+          className="text-2xl text-[#242B37] p-1 mb-14 gap-5 flex items-center max-lg:hidden leading-none"
+          icon={<i className="icon-back"></i>}
+        >
+          Topic History Comparison
+        </Button>
+        <Row gutter={[60, 60]}>
+          <Col xs={24} md={12}>
+            <HistoryCard compareMode={compareMode} comparisonData={s1} />
+          </Col>
+          <Col xs={24} md={12}>
+            <HistoryCard compareMode={compareMode} comparisonData={s2} />
+          </Col>
+          <Col xs={24} md={24}>
+            <HistoryCard compareMode={compareMode} comparisonData={liveStatement} />
+          </Col>
+        </Row>
+      </div>
+    </>
+  );
+}
+
+export default CompareStatementUI;
+
+
+
+{/* <div className="cn-breadcrumbs">
         <Breadcrumb
           separator={
             <>
@@ -94,25 +126,9 @@ function CompareStatementUI({
           <Breadcrumb.Item>Topic History</Breadcrumb.Item>
         </Breadcrumb>
       </div> */}
-      <Breadcrumbs />
 
-      <div className="ch-wrapper">
-        <Button
-          type="link"
-          className="text-2xl text-[#242B37] p-1 mb-14 gap-5 flex items-center max-lg:hidden leading-none"
-          icon={<i className="icon-back"></i>}
-        >
-          Topic History Comparison
-        </Button>
-        <Row gutter={[60, 60]}>
-          <Col xs={24} md={12}>
-            <HistoryCard />
-          </Col>
-          <Col xs={24} md={12}>
-            <HistoryCard />
-          </Col>
-        </Row>
-        {/* <Row gutter={[60, 60]}>
+
+{/* <Row gutter={[60, 60]}>
           <Col xs={24} md={12}>
             <div className="cn-wrapper live-wrapper">
               <div className="badge-wrapper">
@@ -270,9 +286,3 @@ function CompareStatementUI({
             </div>
           </Col>
         </Row> */}
-      </div>
-    </>
-  );
-}
-
-export default CompareStatementUI;
