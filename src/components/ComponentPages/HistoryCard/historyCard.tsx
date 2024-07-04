@@ -326,12 +326,12 @@ function HistoryCard({
                 <Panel header="" key="1">
                   <div>
                     <h5 className="font-semibold text-[#F19C39] mb-3">Statement</h5>
-                    <p className="text-[#242B37] pb-5">
-                      Contemporary philosophy of mind unfortunately has been
-                      burdened for decades with a residual philosophical behaviorism
-                      and intellectualized naive realism. Unpacking these terms, the
-                      fashionable behaviorism gical nonentity.{" "}
-                    </p>
+                    <div
+                      className="text-[#242B37] pb-5"
+                      dangerouslySetInnerHTML={{
+                        __html: campStatement?.parsed_value,
+                      }}>
+                    </div>
                   </div>
                 </Panel>
               </Collapse>
@@ -373,7 +373,7 @@ function HistoryCard({
             <div className="flex flex-col">
               {campStatement?.status == "in_review" &&
                 (!campStatement?.grace_period || commited) && (<>
-                  {(campStatement?.ifICanAgreeAndObject || campStatement?.ifICanAgreeAndObject == undefined) && !!(
+                  {!!(
                     campStatement?.ifIamSupporter != 0 ||
                     campStatement?.ifIAmExplicitSupporter
                   ) &&
@@ -382,8 +382,8 @@ function HistoryCard({
                       <Checkbox
                         defaultChecked={campStatement?.agreed_to_change}
                         disabled={
-                          historyOf == "camp" ? !campStatement?.ifICanAgreeAndObject : false ||
-                            parentArchived == 1 && directarchived == 0
+                          // historyOf == "camp" ? !campStatement?.ifICanAgreeAndObject : false ||
+                          parentArchived == 1 && directarchived == 0
                         }
                         onChange={agreeWithChange}>I agree with this{" "}
                         {historyOf == "camp"
@@ -522,7 +522,7 @@ function HistoryCard({
                       <Button
                         size="large"
                         type="primary"
-                        disabled={historyOf == "camp" ? !campStatement?.ifICanAgreeAndObject : false}
+                        // disabled={historyOf == "camp" ? !campStatement?.ifICanAgreeAndObject : false}
                         id={`object-change-${campStatement?.id}`}
                         className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none w-100"
                         onClick={() => {
