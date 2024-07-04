@@ -10,7 +10,7 @@ import { useSelector } from "react-redux";
 import moment from "moment";
 import { getCookies } from "src/utils/generalUtility";
 
-function Breadcrumbs() {
+function Breadcrumbs({ compareMode = false }) {
 
   const router = useRouter();
   const historyOf = router?.asPath.split("/")[1];
@@ -101,19 +101,21 @@ function Breadcrumbs() {
                 historyTitle() == "Camp History" ? "Camp" : null
           } History</Breadcrumb.Item>
         </Breadcrumb>
-        <Button
-          size="large"
-          type="primary"
-          className="flex items-center justify-center rounded-[10px] max-lg:hidden gap-3.5 leading-none"
-        >
-          Update Current {
-            historyTitle() == "Statement History" ? "Statement" :
-              historyTitle() == "Topic History" ? "Topic" :
-                historyTitle() == "Camp History" ? "Camp" : null
-          }
-          <i className="icon-edit"></i>
-        </Button>
-      </div>
+        {!compareMode &&
+          <Button
+            size="large"
+            type="primary"
+            className="flex items-center justify-center rounded-[10px] max-lg:hidden gap-3.5 leading-none"
+          >
+            Update Current {
+              historyTitle() == "Statement History" ? "Statement" :
+                historyTitle() == "Topic History" ? "Topic" :
+                  historyTitle() == "Camp History" ? "Camp" : null
+            }
+            <i className="icon-edit"></i>
+          </Button>
+        }
+      </div >
     </>
   );
 }

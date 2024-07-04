@@ -68,6 +68,10 @@ function HistoryCard({
   parentArchived,
   unarchiveChangeSubmitted,
   directarchived,
+  compareMode = false,
+  comparisonData = null,
+  historyState = null,
+
 }: any) {
   const router = useRouter();
   const [commited, setCommited] = useState(false);
@@ -218,7 +222,7 @@ function HistoryCard({
   };
 
   const covertToTime = (unixTime) => {
-    return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
+    return moment(unixTime * 1000).format("DD MMM YYYY, hh:mm:ss A");
   };
 
   return (
@@ -235,16 +239,30 @@ function HistoryCard({
             color=""
             text={
               <>
-                {campStatement?.status == "live" ? (<>
-                  {covertToTime(campStatement?.go_live_time).split(",")[0]}
-                  ,<span> {covertToTime(campStatement?.go_live_time).split(",")[1]}</span>
-                </>) : (<>
-                  {covertToTime(campStatement?.submit_time).split(",")[0]}
-                  ,<span> {covertToTime(campStatement?.submit_time).split(",")[1]}</span>
-                </>)}
+                {compareMode ? (
+                  <>
+                    {covertToTime(comparisonData?.submit_time).split(",")[0]}
+                    ,<span> {covertToTime(comparisonData?.submit_time).split(",")[1]}</span>
+                  </>
+                ) : (
+                  <>
+                    {campStatement?.status === "live" ? (
+                      <>
+                        {covertToTime(campStatement?.go_live_time).split(",")[0]}
+                        ,<span> {covertToTime(campStatement?.go_live_time).split(",")[1]}</span>
+                      </>
+                    ) : (
+                      <>
+                        {covertToTime(campStatement?.submit_time).split(",")[0]}
+                        ,<span> {covertToTime(campStatement?.submit_time).split(",")[1]}</span>
+                      </>
+                    )}
+                  </>
+                )}
               </>
             }
           />
+
           {
             campStatement &&
             campStatement?.status == "in_review" &&
@@ -277,18 +295,21 @@ function HistoryCard({
             )
           }
         </div>
-        <Checkbox className="mb-5 ch-checkbox"
-          id={`select-to-compare-${campStatement?.id}`}
-          onChange={onSelectCompare?.bind(this, campStatement)}
-          disabled={isDisabledCheck}
-          defaultChecked={isChecked}
-          key={campStatement?.id}
-        >
-          Select to compare
-        </Checkbox>
+        {!compareMode &&
+
+          <Checkbox className="mb-5 ch-checkbox"
+            id={`select-to-compare-${campStatement?.id}`}
+            onChange={onSelectCompare?.bind(this, campStatement)}
+            disabled={isDisabledCheck}
+            defaultChecked={isChecked}
+            key={campStatement?.id}
+          >
+            Select to compare
+          </Checkbox>
+        }
         <Card className="cn-card">
           {
-            historyOf == "statement" && (
+            historyOf == "statement" || historyState == "statement" && (
               <Collapse
                 expandIconPosition="end"
                 className="ch-collapse"
@@ -317,20 +338,30 @@ function HistoryCard({
             )
           }
 
-          {historyOf == "statement" && (
+          {
+
+          }
+          {compareMode && (
+            <CampHistory
+              campStatement={comparisonData}
+              topicNamespaceId={topicNamespaceId}
+            />
+          )}
+
+          {!compareMode && historyOf == "statement" && (
             <StatementHistory
               campStatement={campStatement}
               topicNamespaceId={topicNamespaceId}
             />
           )}
 
-          {historyOf == "camp" && (
+          {!compareMode && historyOf == "camp" && (
             <CampHistory
               campStatement={campStatement}
               topicNamespaceId={topicNamespaceId}
             />
           )}
-          {historyOf == "topic" && (
+          {!compareMode && historyOf == "topic" && (
             <TopicHistory
               campStatement={campStatement}
               topicNamespaceId={topicNamespaceId}
@@ -441,7 +472,7 @@ function HistoryCard({
             </Button> */}
           </div>
 
-          {(!campStatement?.grace_period || commited) && (
+          {!compareMode && (!campStatement?.grace_period || commited) && (
             <>
               <div className="cn-footer-btn">
                 <div className="cn-card-btn">
@@ -465,7 +496,7 @@ function HistoryCard({
                     }}
                     disabled={
                       unarchiveChangeSubmitted ||
-                        (campHistoryItems[0]?.status == "in_review" &&
+                        (campHistoryItems && campHistoryItems[0]?.status == "in_review" &&
                           !commited &&
                           !!campHistoryItems[0]?.grace_period) ||
                         (campHistoryItems?.at(0)?.status == "live" &&
@@ -628,7 +659,7 @@ function HistoryCard({
             </>)
           }
         </Card>
-      </div>
+      </div >
     </>
   );
 }
