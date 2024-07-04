@@ -11,7 +11,10 @@ import {
   Tooltip,
   Typography,
   message,
-  Modal
+  Modal,
+  Spin,
+  Table,
+  Tabs
 } from "antd";
 
 import {
@@ -20,6 +23,7 @@ import {
   HomeOutlined,
   InfoCircleOutlined,
   LeftOutlined,
+  LoadingOutlined,
 } from "@ant-design/icons";
 
 import { useRouter } from "next/router";
@@ -32,7 +36,7 @@ import HistoryCardDrawer from "./historyCardDrawer";
 // import "./historyCard.scss";
 import { setFilterCanonizedTopics, setViewThisVersion } from "src/store/slices/filtersSlice";
 import { RootState } from "src/store";
-import { agreeToChangeApi, changeCommitStatement, discardStatement } from "src/network/api/history";
+import { agreeToChangeApi, changeCommitStatement, discardStatement, getChangeSupporters } from "src/network/api/history";
 import { setChangeGoneLive } from "src/store/slices/campDetailSlice";
 import Link from "next/link";
 import moment from "moment";
@@ -336,11 +340,92 @@ function HistoryCard({
           <Divider className="border-[#242B3733] my-[1.125rem]" />
           <div className="agreement-wrapper">
             <div className="flex flex-col">
-              <Checkbox onChange={onChange}>Agree With Change</Checkbox>
+              {campStatement?.status == "in_review" &&
+                (!campStatement?.grace_period || commited) && (<>
+                  {(campStatement?.ifICanAgreeAndObject || campStatement?.ifICanAgreeAndObject == undefined) && !!(
+                    campStatement?.ifIamSupporter != 0 ||
+                    campStatement?.ifIAmExplicitSupporter
+                  ) &&
+                    isUserAuthenticated &&
+                    !campStatement?.isAuthor && (<>
+                      <Checkbox
+                        defaultChecked={campStatement?.agreed_to_change}
+                        disabled={
+                          historyOf == "camp" ? !campStatement?.ifICanAgreeAndObject : false ||
+                            parentArchived == 1 && directarchived == 0
+                        }
+                        onChange={agreeWithChange}>I agree with this{" "}
+                        {historyOf == "camp"
+                          ? "camp"
+                          : historyOf == "topic"
+                            ? "topic"
+                            : "statement"}{" "}
+                        change</Checkbox>
+                    </>)}
+                </>)}
               <Space>
-                <HistoryCardDrawer
-                  displayText={"1 out of 2 required supporters have agreed."}
-                />
+
+                {campStatement?.status == "in_review" &&
+                  (!campStatement?.grace_period || commited) && (<>
+                    {!!(
+                      campStatement?.ifIamSupporter != 0 ||
+                      campStatement?.ifIAmExplicitSupporter ||
+                      campStatement?.isAuthor
+                    ) && (<>
+                      <HistoryCardDrawer
+                        onClick={async () => {
+                          let req = {
+                            topic_num: router?.query.camp[0].split("-")[0],
+                            camp_num:
+                              historyOf == "topic"
+                                ? 1
+                                : router?.query.camp[1].split("-")[0],
+                            change_id: campStatement?.id,
+                            type: historyOf,
+                          };
+                          let res = await getChangeSupporters(req);
+                          if (res.status_code == 200) {
+                            let supportersData = res?.data.supporters?.map(
+                              (data, key) => {
+                                return {
+                                  key: key,
+                                  status: data?.agreed,
+                                  nickNameData: {
+                                    name: data?.nick_name,
+                                    path: `/user/supports/${data?.id || ""
+                                      }?canon=${topicNamespaceId || ""}`,
+                                  },
+                                };
+                              }
+                            );
+                            setSupporters(supportersData);
+                          }
+                          setIsModalOpen(true);
+                        }}
+                        displayText={<>
+                          {campStatement?.agreed_supporters} out of{" "}
+                          {campStatement?.total_supporters} required
+                          supporters have agreed
+                          {(campStatement?.ifICanAgreeAndObject || campStatement?.ifICanAgreeAndObject == undefined) && !!(
+                            campStatement?.ifIamSupporter != 0 ||
+                            campStatement?.ifIAmExplicitSupporter
+                          ) &&
+                            isUserAuthenticated &&
+                            !campStatement?.isAuthor &&
+                            campStatement?.total_supporters -
+                            campStatement?.agreed_supporters ==
+                            1 &&
+                            !campStatement?.agreed_to_change && (
+                              <>
+                                , Since you are the last hold out, the instant
+                                you agree, this will go live.
+                              </>
+                            )}
+                        </>}
+                      />
+                    </>)}
+                  </>)}
+
               </Space>
             </div>
             {/* <Button

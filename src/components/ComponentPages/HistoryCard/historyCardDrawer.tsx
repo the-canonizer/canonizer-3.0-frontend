@@ -5,10 +5,12 @@ import { useState } from "react";
 const { Title } = Typography;
 
 function HistoryCardDrawer({
+  onClick,
   displayText
 }: any) {
   const [open, setOpen] = useState(false);
   const showDrawer = () => {
+    onClick()
     setOpen(true);
   };
   const onClose = () => {
