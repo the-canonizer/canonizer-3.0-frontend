@@ -466,25 +466,25 @@ function HistoryContainer() {
               {historyTitle().toUpperCase()} BASED ON STATUS
             </Title>
             <div className="sider-btn">
-              <Button size="large" className={`btn-all ${activeTab == "all" ? " active" : null}`}
+              <Button size="large" className={`btn-all min-w-[133px] ${activeTab == "all" ? " active" : null}`}
                 onClick={() => {
                   handleTabButton("all");
                 }}>
                 View all {activeTab == "all" && currentFilterCount}
               </Button>
-              <Button size="large" className={`btn-objected ${activeTab == "objected" ? " active" : null}`}
+              <Button size="large" className={`btn-objected min-w-[133px] ${activeTab == "objected" ? " active" : null}`}
                 onClick={() => {
                   handleTabButton("objected");
                 }}>
-                Objected {activeTab == "objected" && currentFilterCount}
+                Objected  {activeTab == "objected" && currentFilterCount}
               </Button>
-              <Button size="large" className={`btn-live ${activeTab == "live" ? " active" : null}`}
+              <Button size="large" className={`btn-live min-w-[133px] ${activeTab == "live" ? " active" : null}`}
                 onClick={() => {
                   handleTabButton("live");
                 }}>
                 Live {activeTab == "live" && currentFilterCount}
               </Button>
-              <Button size="large" className={`btn-pending ${activeTab == "in_review" ? " active" : null}`}
+              <Button size="large" className={`btn-pending min-w-[133px] ${activeTab == "in_review" ? " active" : null}`}
                 onClick={() => {
                   handleTabButton("in_review");
                 }}>
