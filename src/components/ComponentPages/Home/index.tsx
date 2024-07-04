@@ -31,41 +31,41 @@ const HomePageContainer = () => {
         rightSidebar={
           <div className="md:mt-3" data-testid="sideBar">
             {!isMobile ? (
-              <div className="mb-10" data-testid="topicsList">
+              <div className="mb-14" data-testid="topicsList">
                 <TrandingTopics />
               </div>
             ) : null}
 
             {isUserAuthenticated ? (
-              <div className="mb-10" data-testid="recentActivities">
+              <div className="mb-14" data-testid="recentActivities">
                 <RecentActivities />
               </div>
             ) : null}
 
-            <div className="mb-10" data-testid="helpCard">
+            <div className="mb-14" data-testid="helpCard">
               <WhatsNew />
             </div>
           </div>
         }
       >
         <Row className="pt-4 w-100" data-testid="featuredTopic">
-          <Col md={24} className="mb-10">
+          <Col md={24} className="mb-20">
             <FeaturedTopic />
           </Col>
           {isMobile ? (
-            <Col md={24} xs={24} className="mb-10">
+            <Col md={24} xs={24} className="mb-20">
               <TrandingTopics />
             </Col>
           ) : null}
           {isUserAuthenticated && preferedTopic?.length ? (
-            <Col md={24} className="mb-10" data-testid="preferedTopic">
+            <Col md={24} className="mb-20" data-testid="preferedTopic">
               <PreferedTopics />
             </Col>
           ) : null}
-          <Col md={24} className="mb-10" data-testid="categoriesList">
+          <Col md={24} className="mb-20" data-testid="categoriesList">
             <CategoriesList />
           </Col>
-          <Col md={24} className="mb-10" data-testid="hotTopics">
+          <Col md={24} className="mb-20" data-testid="hotTopics">
             <HotTopics />
           </Col>
         </Row>

@@ -41,13 +41,13 @@ const CategoriesList = () => {
   return (
     <Fragment>
       <Row gutter={15}>
-        <Col md={12} sm={12} xs={24}>
+        <Col md={12} sm={12} xs={12}>
           <SectionHeading
             title="List of Categories"
             infoContent="List of Categories"
           />
         </Col>
-        <Col md={12} sm={12} xs={24} className="text-right">
+        <Col md={12} sm={12} xs={12} className="text-right">
           <SeeMoreLInk href="/categories" />
         </Col>
       </Row>
@@ -56,7 +56,7 @@ const CategoriesList = () => {
         {renderedTags?.map((cat) => (
           <Tooltip title={cat?.title} key={cat?.id}>
             <Tags
-              className="rounded-[5px] py-1 px-5 border-0 text-canBlack bg-canBlue mt-0 mb-3"
+              className="rounded-[5px] py-2 px-4 border-0 text-canBlack bg-canBlue mt-0 mb-3"
               icon={<FlagOutlined />}
               color={getRandomColor()}
             >

@@ -43,9 +43,9 @@ export default class TopicRequest extends Request {
     );
   }
   //GetHotTopic
-  static GetHotTopic(token: string = "") {
+  static GetHotTopic(page, parPage, token: string = "") {
     return new Request(
-      K.Network.URL.GetHotTopic,
+      K.Network.URL.GetHotTopic + `?page=${page}&per_page=${parPage}`,
       K.Network.Method.GET,
       {},
       K.Network.Header.Type.Json,

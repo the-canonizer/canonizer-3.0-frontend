@@ -15,6 +15,7 @@ import CustomSkelton from "src/components/common/customSkelton";
 import SectionHeading from "../FeaturedTopic/sectionsHeading";
 import SeeMoreLInk from "../FeaturedTopic/seeMoreLink";
 import HandIcon from "./handIcon";
+import { DownOutlined } from "@ant-design/icons";
 
 const { Option } = Select;
 
@@ -74,14 +75,14 @@ const TrandingTopics = () => {
   return (
     <Fragment>
       <Row gutter={15}>
-        <Col md={12} sm={12} xs={24}>
+        <Col md={12} sm={12} xs={12}>
           <SectionHeading
             title="TRENDING TOPICS"
             infoContent="TRENDING TOPICS"
             icon={null}
           />
         </Col>
-        <Col md={12} sm={12} xs={24} className="text-right">
+        <Col md={12} sm={12} xs={12} className="text-right">
           <SeeMoreLInk href="/browse" />
         </Col>
       </Row>
@@ -94,8 +95,9 @@ const TrandingTopics = () => {
           <Select
             size="large"
             showSearch
+            suffixIcon={<DownOutlined />}
             optionFilterProp="children"
-            className="w-full [&_.ant-select-selector]:!rounded-lg"
+            className="w-full [&_.ant-select-selector]:!rounded-lg [&_.ant-select-arrow]:text-canBlack [&_.ant-select-selector]:!px-4"
             defaultValue={
               algorithms?.filter((algo) => algo?.algorithm_key == algoValue)[0]
                 ?.algorithm_label
@@ -138,7 +140,7 @@ const TrandingTopics = () => {
               }}
               renderItem={(item: any) => (
                 <List.Item
-                  className="font-inter text-sm font-medium bg-white hover:bg-canGrey1"
+                  className="font-inter text-sm font-medium bg-white hover:bg-canGrey1 !px-3.5 !py-4"
                   id={`topic-${item?.topic_id}`}
                 >
                   <Link
