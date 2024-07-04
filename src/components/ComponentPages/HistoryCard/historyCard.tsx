@@ -489,7 +489,32 @@ function HistoryCard({
                       <Button
                         size="large"
                         type="primary"
+                        disabled={historyOf == "camp" ? !campStatement?.ifICanAgreeAndObject :false}
+                        id={`object-change-${campStatement?.id}`}
                         className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none w-100"
+                        onClick={() => {
+                          let isModelPop = !isUserAuthenticated
+                            ? true
+                            : (!campStatement?.ifIAmExplicitSupporter &&
+                                campStatement?.ifIamSupporter == 0) ||
+                              (parentArchived == 1 &&
+                                directarchived == 1 &&
+                                historyOf == "topic") ||
+                              (parentArchived == 1 && directarchived == 0)
+                            ? true
+                            : false;
+                          if (isModelPop) {
+                            setModal1Open(true);
+                          } else {
+                            router?.push(
+                              historyOf == "camp"
+                                ? `/manage/camp/${campStatement?.id}-objection`
+                                : historyOf == "topic"
+                                ? `/manage/topic/${campStatement?.id}-objection`
+                                : `/manage/statement/${campStatement?.id}-objection`
+                            );
+                          }
+                        }}
                       >
                         Object Changes
                         <i className="icon-edit"></i>
