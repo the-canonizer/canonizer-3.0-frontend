@@ -75,7 +75,6 @@ const AllCats = () => {
     <CustomSpinner key="registration-spinner" spinning={isLoading}>
       <CatsList
         onBackClick={onBackClick}
-        onAllReadClick={undefined}
         isMobile={isMobile}
         tags={tagList}
         total={totalTags}
