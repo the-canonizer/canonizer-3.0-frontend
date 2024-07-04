@@ -337,92 +337,93 @@ function HistoryCard({
             />
           )}
 
-          <div className="agreement-wrapper">
-            {campStatement?.status == "in_review" &&
-              (!campStatement?.grace_period || commited) && (<>
-                {!!(
-                  campStatement?.ifIamSupporter != 0 ||
-                  campStatement?.ifIAmExplicitSupporter
-                ) &&
-                  isUserAuthenticated &&
-                  !campStatement?.isAuthor && (<>
-                    <Checkbox
-                      defaultChecked={campStatement?.agreed_to_change}
-                      disabled={
-                        // historyOf == "camp" ? !campStatement?.ifICanAgreeAndObject : false ||
-                        parentArchived == 1 && directarchived == 0
-                      }
-                      onChange={agreeWithChange}>Agree With Change
-                    </Checkbox>
-                  </>)}
-              </>)}
-            <Space>
-
-              {campStatement?.status == "in_review" &&
-                (!campStatement?.grace_period || commited) && (<>
+          {
+            campStatement?.status == "in_review" &&
+            (!campStatement?.grace_period || commited) && (
+              <>
+                <div className="agreement-wrapper">
                   {!!(
                     campStatement?.ifIamSupporter != 0 ||
-                    campStatement?.ifIAmExplicitSupporter ||
-                    campStatement?.isAuthor
-                  ) && (<>
-                    <HistoryCardDrawer
-                      onClick={async () => {
-                        let req = {
-                          topic_num: router?.query.camp[0].split("-")[0],
-                          camp_num:
-                            historyOf == "topic"
-                              ? 1
-                              : router?.query.camp[1].split("-")[0],
-                          change_id: campStatement?.id,
-                          type: historyOf,
-                        };
-                        let res = await getChangeSupporters(req);
-                        if (res.status_code == 200) {
-                          let supportersData = res?.data.supporters?.map(
-                            (data, key) => {
-                              return {
-                                key: key,
-                                status: data?.agreed,
-                                nickNameData: {
-                                  name: data?.nick_name,
-                                  path: `/user/supports/${data?.id || ""
-                                    }?canon=${topicNamespaceId || ""}`,
-                                },
-                              };
-                            }
-                          );
-                          setSupporters(supportersData);
+                    campStatement?.ifIAmExplicitSupporter
+                  ) &&
+                    isUserAuthenticated &&
+                    !campStatement?.isAuthor && (<>
+                      <Checkbox
+                        defaultChecked={campStatement?.agreed_to_change}
+                        disabled={
+                          // historyOf == "camp" ? !campStatement?.ifICanAgreeAndObject : false ||
+                          parentArchived == 1 && directarchived == 0
                         }
-                        setIsModalOpen(true);
-                      }}
-                      displayText={<>
-                        {campStatement?.agreed_supporters} out of{" "}
-                        {campStatement?.total_supporters} required
-                        supporters have agreed
-                        {(campStatement?.ifICanAgreeAndObject || campStatement?.ifICanAgreeAndObject == undefined) && !!(
-                          campStatement?.ifIamSupporter != 0 ||
-                          campStatement?.ifIAmExplicitSupporter
-                        ) &&
-                          isUserAuthenticated &&
-                          !campStatement?.isAuthor &&
-                          campStatement?.total_supporters -
-                          campStatement?.agreed_supporters ==
-                          1 &&
-                          !campStatement?.agreed_to_change && (
-                            <>
-                              , Since you are the last hold out, the instant
-                              you agree, this will go live.
-                            </>
-                          )}
-                      </>}
-                      agreedSupporters={supporters?.filter((obj) => obj?.status === true)}
-                      notAgreedSupporters={supporters?.filter((obj) => obj?.status === false)}
-                    />
-                  </>)}
-                </>)}
+                        onChange={agreeWithChange}>Agree With Change
+                      </Checkbox>
+                    </>)}
+                  <Space>
 
-            </Space>
-          </div>
+                    {!!(
+                      campStatement?.ifIamSupporter != 0 ||
+                      campStatement?.ifIAmExplicitSupporter ||
+                      campStatement?.isAuthor
+                    ) && (<>
+                      <HistoryCardDrawer
+                        onClick={async () => {
+                          let req = {
+                            topic_num: router?.query.camp[0].split("-")[0],
+                            camp_num:
+                              historyOf == "topic"
+                                ? 1
+                                : router?.query.camp[1].split("-")[0],
+                            change_id: campStatement?.id,
+                            type: historyOf,
+                          };
+                          let res = await getChangeSupporters(req);
+                          if (res.status_code == 200) {
+                            let supportersData = res?.data.supporters?.map(
+                              (data, key) => {
+                                return {
+                                  key: key,
+                                  status: data?.agreed,
+                                  nickNameData: {
+                                    name: data?.nick_name,
+                                    path: `/user/supports/${data?.id || ""
+                                      }?canon=${topicNamespaceId || ""}`,
+                                  },
+                                };
+                              }
+                            );
+                            setSupporters(supportersData);
+                          }
+                          setIsModalOpen(true);
+                        }}
+                        displayText={<>
+                          {campStatement?.agreed_supporters} out of{" "}
+                          {campStatement?.total_supporters} required
+                          supporters have agreed
+                          {(campStatement?.ifICanAgreeAndObject || campStatement?.ifICanAgreeAndObject == undefined) && !!(
+                            campStatement?.ifIamSupporter != 0 ||
+                            campStatement?.ifIAmExplicitSupporter
+                          ) &&
+                            isUserAuthenticated &&
+                            !campStatement?.isAuthor &&
+                            campStatement?.total_supporters -
+                            campStatement?.agreed_supporters ==
+                            1 &&
+                            !campStatement?.agreed_to_change && (
+                              <>
+                                , Since you are the last hold out, the instant
+                                you agree, this will go live.
+                              </>
+                            )}
+                        </>}
+                        agreedSupporters={supporters?.filter((obj) => obj?.status === true)}
+                        notAgreedSupporters={supporters?.filter((obj) => obj?.status === false)}
+                      />
+                    </>)}
+                  </Space>
+                </div>
+              </>
+            )
+          }
+
 
           {(!campStatement?.grace_period || commited) && (
             <>
