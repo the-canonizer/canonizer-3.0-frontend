@@ -38,7 +38,7 @@ const CampHistory = ({ campStatement, topicNamespaceId }: any) => {
                 </span>
             </p>
             <p>
-                Camp about Nickname: 
+                Camp about Nickname:
                 <span>
                     <Link
                         href={`/user/supports/${campStatement?.camp_about_nick_id || ""
