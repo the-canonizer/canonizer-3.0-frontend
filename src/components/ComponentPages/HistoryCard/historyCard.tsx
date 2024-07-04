@@ -351,7 +351,7 @@ function HistoryCard({
                       <Checkbox
                         defaultChecked={campStatement?.agreed_to_change}
                         disabled={
-                          historyOf == "camp" ? !campStatement?.ifICanAgreeAndObject : false ||
+                          // historyOf == "camp" ? !campStatement?.ifICanAgreeAndObject : false ||
                             parentArchived == 1 && directarchived == 0
                         }
                         onChange={agreeWithChange}>I agree with this{" "}
@@ -491,7 +491,7 @@ function HistoryCard({
                       <Button
                         size="large"
                         type="primary"
-                        disabled={historyOf == "camp" ? !campStatement?.ifICanAgreeAndObject : false}
+                        // disabled={historyOf == "camp" ? !campStatement?.ifICanAgreeAndObject : false}
                         id={`object-change-${campStatement?.id}`}
                         className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none w-100"
                         onClick={() => {
