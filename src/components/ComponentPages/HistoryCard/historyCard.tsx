@@ -343,7 +343,7 @@ function HistoryCard({
                 />
               </Space>
             </div>
-            <Button
+            {/* <Button
               type="link"
               danger
               size="large"
@@ -351,100 +351,87 @@ function HistoryCard({
               className="flex items-center justify-center gap-2 rounded-[10px] leading-none p-0"
             >
               Object
-            </Button>
+            </Button> */}
           </div>
-          <div className="cn-footer-btn">
-            <div className="cn-card-btn">
-              <Button
-                size="large"
-                type="primary"
-                id={`object-change-${campStatement?.id}`}
-                className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none w-100"
-                disabled={loadingChanges}
-                onClick={commitChanges}
-              >
-                Commit Changes
-                <i className="icon-upload"></i>
-              </Button>
-              <Button
-                size="large"
-                id={`edit-change-${campStatement?.id}`}
-                className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none"
-              >
-                <Link
-                  href={
-                    historyOf == "camp"
-                      ? `/manage/camp/${campStatement?.id}-update`
-                      : historyOf == "topic"
-                        ? `/manage/topic/${campStatement?.id}-update`
-                        : `/manage/statement/${campStatement?.id}-update`
-                  }
-                >
-                  {`Edit ${historyOf == "statement" ? "Statement" :
-                    historyOf == "topic" ? "Topic" :
-                      historyOf == "camp" ? "Camp" :
-                        null}`}
-                </Link>
-                <i className="icon-edit"></i>
-              </Button>
-            </div>
-            <div className="cn-link-btn">
-              <Button
-                size="large"
-                type="link"
-                icon={<EyeOutlined className="mr-1" />}
-                id={`view-this-version-${campStatement?.id}`}
-                className="flex items-center justify-center rounded-[10px] leading-none text-[#242B37]"
-                onClick={() =>
-                  handleViewThisVersion(campStatement?.go_live_time)
-                }
-              >
-                <Link
-                  href={`/topic/${replaceSpecialCharacters(
-                    historyOf == "topic"
-                      ? replaceSpecialCharacters(
-                        campStatement?.topic_num +
-                        "-" +
-                        campStatement?.topic_name?.replace(/ /g, "-"),
-                        "-"
-                      )
-                      : router?.query?.camp?.at(0),
-                    "-"
-                  ) +
-                    "/" +
-                    (historyOf != "topic"
-                      ? historyOf == "camp"
-                        ? replaceSpecialCharacters(
-                          campStatement?.camp_num +
-                          "-" +
-                          campStatement?.camp_name?.replace(/ /g, "-"),
-                          "-"
-                        )
-                        : replaceSpecialCharacters(
-                          router?.query?.camp?.at(1),
-                          "-"
-                        )
-                      : "1-Agreement")
-                    }?algo=${algorithm}&asofdate=${campStatement?.go_live_time
-                    }&asof=bydate&canon=${namespace_id}&viewversion=${1}`}
-                >
-                  View Version
-                </Link>
-              </Button>
-              <Button
-                type="link"
-                danger
-                size="large"
-                icon={<i className="icon-delete"></i>}
-                id={`commit-change-${campStatement?.id}`}
-                className="flex items-center justify-center gap-2 rounded-[10px] leading-none"
-                disabled={loadingChanges}
-                onClick={() => cancelConfirm()}
-              >
-                Delete
-              </Button>
-            </div>
-          </div>
+
+          {(!campStatement?.grace_period || commited) && (
+            <>
+              <div className="cn-footer-btn">
+                <div className="cn-card-btn">
+                  <Button
+                    size="large"
+                    type="primary"
+                    className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none w-100"
+                  >
+                    Edit Based On This
+                    <i className="icon-edit"></i>
+                  </Button>
+
+                  {(campStatement?.status == "in_review") && (
+                    <>
+                      <Button
+                        size="large"
+                        type="primary"
+                        className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none w-100"
+                      >
+                        Object Changes
+                        <i className="icon-edit"></i>
+                      </Button>
+                    </>
+                  )}
+                </div>
+                <div className="cn-link-btn">
+                  <Button
+                    size="large"
+                    type="link"
+                    icon={<EyeOutlined />}
+                    className="flex items-center justify-center rounded-[10px] leading-none text-[#242B37]"
+                  >
+                    View Version
+                  </Button>
+                </div>
+              </div>
+            </>
+          )}
+
+
+          {
+            campStatement?.status == "in_review" &&
+            !commited &&
+            !!campStatement?.grace_period &&
+            moment.now() < campStatement?.submit_time * 1000 + 3600000 && (<>
+              <div className="cn-footer-btn">
+                <div className="cn-card-btn">
+                  <Button
+                    size="large"
+                    type="primary"
+                    className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none"
+                  >
+                    Commit Changes
+                    <i className="icon-upload"></i>
+                  </Button>
+                  <Button
+                    size="large"
+                    className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none"
+                  >
+                    Edit Statement
+                    <i className="icon-edit"></i>
+                  </Button>
+                </div>
+                <div className="cn-link-btn">
+                  <Button
+                    type="link"
+                    danger
+                    size="large"
+                    icon={<i className="icon-delete"></i>}
+                    className="flex items-center justify-center gap-2 rounded-[10px] leading-none"
+                  >
+                    Delete
+                  </Button>
+                </div>
+              </div>
+            </>)
+          }
         </Card>
       </div>
     </>
