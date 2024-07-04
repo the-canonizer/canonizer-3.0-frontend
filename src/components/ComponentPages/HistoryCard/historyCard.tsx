@@ -305,12 +305,12 @@ function HistoryCard({
                 <Panel header="" key="1">
                   <div>
                     <h5 className="font-semibold text-[#F19C39] mb-3">Statement</h5>
-                    <p className="text-[#242B37] pb-5">
-                      Contemporary philosophy of mind unfortunately has been
-                      burdened for decades with a residual philosophical behaviorism
-                      and intellectualized naive realism. Unpacking these terms, the
-                      fashionable behaviorism gical nonentity.{" "}
-                    </p>
+                    <div
+                      className="text-[#242B37] pb-5"
+                      dangerouslySetInnerHTML={{
+                        __html: campStatement?.parsed_value,
+                      }}>
+                    </div>
                   </div>
                 </Panel>
               </Collapse>
@@ -352,7 +352,7 @@ function HistoryCard({
                         defaultChecked={campStatement?.agreed_to_change}
                         disabled={
                           // historyOf == "camp" ? !campStatement?.ifICanAgreeAndObject : false ||
-                            parentArchived == 1 && directarchived == 0
+                          parentArchived == 1 && directarchived == 0
                         }
                         onChange={agreeWithChange}>I agree with this{" "}
                         {historyOf == "camp"
