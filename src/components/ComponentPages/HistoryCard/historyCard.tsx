@@ -422,6 +422,8 @@ function HistoryCard({
                               </>
                             )}
                         </>}
+                        agreedSupporters={supporters?.filter((obj) => obj?.status === true)}
+                        notAgreedSupporters={supporters?.filter((obj) => obj?.status === false)}
                       />
                     </>)}
                   </>)}

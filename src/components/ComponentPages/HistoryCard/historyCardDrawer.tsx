@@ -6,7 +6,9 @@ const { Title } = Typography;
 
 function HistoryCardDrawer({
   onClick,
-  displayText
+  displayText,
+  agreedSupporters=[],
+  notAgreedSupporters=[],
 }: any) {
   const [open, setOpen] = useState(false);
   const showDrawer = () => {
@@ -51,8 +53,8 @@ function HistoryCardDrawer({
               header={<div>Nickname </div>}
               footer={false}
               bordered
-              dataSource={data}
-              renderItem={(item) => <List.Item>{item}</List.Item>}
+              dataSource={agreedSupporters}
+              renderItem={(item:any) => <List.Item>{item?.nickNameData?.name}</List.Item>}
             />
           </Tabs.TabPane>
           <Tabs.TabPane tab="Not Agreed" key="2">
@@ -61,8 +63,8 @@ function HistoryCardDrawer({
               header={<div>Nickname </div>}
               footer={false}
               bordered
-              dataSource={data}
-              renderItem={(item) => <List.Item>{item}</List.Item>}
+              dataSource={notAgreedSupporters}
+              renderItem={(item:any) => <List.Item>{item?.nickNameData?.name}</List.Item>}
             />
           </Tabs.TabPane>
         </Tabs>
