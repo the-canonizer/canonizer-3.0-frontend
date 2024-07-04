@@ -118,16 +118,16 @@ function HistoryContainer() {
               Statements Based On Status
             </Title>
             <div className="sider-btn">
-              <Button size="large" className="btn-all active">
+              <Button size="large" className="btn-all min-w-[133px] active">
                 View all (3)
               </Button>
-              <Button size="large" className="btn-objected">
+              <Button size="large" className="btn-objected min-w-[133px]">
                 Objected (1)
               </Button>
-              <Button size="large" className="btn-live">
+              <Button size="large" className="btn-live min-w-[133px]">
                 Live (1)
               </Button>
-              <Button size="large" className="btn-pending">
+              <Button size="large" className="btn-pending min-w-[133px]">
                 Pending (1)
               </Button>
               <Button size="large" className="btn-previous">

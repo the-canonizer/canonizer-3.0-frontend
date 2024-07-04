@@ -166,24 +166,16 @@ function HistoryCard() {
           <p>
             Going live on :<span>17 Feb 2024, 04:36 PM</span>
           </p>
-          <Divider className="border-[#242B3733] my-[1.125rem]" />
           <div className="agreement-wrapper">
-            <div className="flex flex-col">
-              <Checkbox onChange={onChange}>Agree With Change</Checkbox>
-              <Space>
-                <HistoryCardDrawer /> 1 out of 2 required supporters have
-                agreed.
-              </Space>
-            </div>
-            <Button
-              type="link"
-              danger
-              size="large"
-              icon={<i className="icon-delete"></i>}
-              className="flex items-center justify-center gap-2 rounded-[10px] leading-none p-0"
-            >
-              Object
-            </Button>
+            <Checkbox onChange={onChange}>Agree With Change</Checkbox>
+            <Space>
+              <HistoryCardDrawer />
+              <p>
+                <u>1 out of 2 required supporters have agreed.</u>
+                Since you are the last hold-out, the moment you agree, the camp
+                will go live.
+              </p>
+            </Space>
           </div>
           <div className="cn-footer-btn">
             <div className="cn-card-btn">
@@ -202,24 +194,31 @@ function HistoryCard() {
                 Edit Statement
                 <i className="icon-edit"></i>
               </Button>
+              <Button
+                size="large"
+                className="flex items-center bg-[#E46B6B1A] border-[#E46B6B] hover:border-[#E46B6B] hover:text-[#E46B6B] focus:text-[#E46B6B] focus:border-[#E46B6B] justify-center rounded-[10px] gap-3.5 leading-none"
+              >
+                Objected Changes
+                <i className="icon-thumb-down text-[#E46B6B]"></i>
+              </Button>
             </div>
             <div className="cn-link-btn">
               <Button
                 size="large"
                 type="link"
-                icon={<EyeOutlined />}
                 className="flex items-center justify-center rounded-[10px] leading-none text-[#242B37]"
               >
-                Preview Camp
+                View version
+                <EyeOutlined />
               </Button>
               <Button
                 type="link"
                 danger
                 size="large"
-                icon={<i className="icon-delete"></i>}
                 className="flex items-center justify-center gap-2 rounded-[10px] leading-none"
               >
                 Delete
+                <i className="icon-delete"></i>
               </Button>
             </div>
           </div>
