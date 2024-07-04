@@ -446,7 +446,39 @@ function HistoryCard({
                   <Button
                     size="large"
                     type="primary"
+                    id={`submit-update-${campStatement?.id}`}
                     className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none w-100"
+                    onClick={() => {
+                      campStatement?.is_archive == 1 &&
+                      campStatement?.status == "live"
+                        ? !isUserAuthenticated
+                          ? router?.push({
+                              pathname: "/login",
+                              query: {
+                                returnUrl: `/manage/${historyOf}/${campStatement?.id}`,
+                              },
+                            })
+                          : callManageCampApi()
+                        : submitUpdateRedirect(historyOf);
+                    }}
+                    disabled={
+                      unarchiveChangeSubmitted ||
+                      (campHistoryItems[0]?.status == "in_review" &&
+                        !commited &&
+                        !!campHistoryItems[0]?.grace_period) ||
+                      (campHistoryItems?.at(0)?.status == "live" &&
+                        campHistoryItems?.at(0)?.is_archive == 1 &&
+                        campStatement.status == "old") ||
+                      (parentArchived == 1 && directarchived == 0) ||
+                      (parentArchived == 1 &&
+                        directarchived == 1 &&
+                        historyOf == "topic") ||
+                      (campHistoryItems?.at(0)?.is_archive == 1 &&
+                        campHistoryItems?.at(0)?.status == "live" &&
+                        campStatement.status == "objected")
+                        ? true
+                        : false
+                    }
                   >
                     Edit Based On This
                     <i className="icon-edit"></i>
@@ -469,10 +501,46 @@ function HistoryCard({
                   <Button
                     size="large"
                     type="link"
-                    icon={<EyeOutlined />}
+                    icon={<EyeOutlined className="mr-1"/>}
+                    id={`view-this-version-${campStatement?.id}`}
                     className="flex items-center justify-center rounded-[10px] leading-none text-[#242B37]"
+                    onClick={() =>
+                      handleViewThisVersion(campStatement?.go_live_time)
+                    }
                   >
-                    View Version
+                     <Link
+                      href={`/topic/${
+                        replaceSpecialCharacters(
+                          historyOf == "topic"
+                            ? replaceSpecialCharacters(
+                                campStatement?.topic_num +
+                                  "-" +
+                                  campStatement?.topic_name?.replace(/ /g, "-"),
+                                "-"
+                              )
+                            : router?.query?.camp?.at(0),
+                          "-"
+                        ) +
+                        "/" +
+                        (historyOf != "topic"
+                          ? historyOf == "camp"
+                            ? replaceSpecialCharacters(
+                                campStatement?.camp_num +
+                                  "-" +
+                                  campStatement?.camp_name?.replace(/ /g, "-"),
+                                "-"
+                              )
+                            : replaceSpecialCharacters(
+                                router?.query?.camp?.at(1),
+                                "-"
+                              )
+                          : "1-Agreement")
+                      }?algo=${algorithm}&asofdate=${
+                        campStatement?.go_live_time
+                      }&asof=bydate&canon=${namespace_id}&viewversion=${1}`}
+                    >
+                      View Version
+                    </Link>
                   </Button>
                 </div>
               </div>
