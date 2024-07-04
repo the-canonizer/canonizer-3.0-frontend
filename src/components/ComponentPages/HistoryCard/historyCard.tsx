@@ -465,7 +465,7 @@ function HistoryCard({
                     }}
                     disabled={
                       unarchiveChangeSubmitted ||
-                        (campHistoryItems[0]?.status == "in_review" &&
+                        (campHistoryItems && campHistoryItems[0]?.status == "in_review" &&
                           !commited &&
                           !!campHistoryItems[0]?.grace_period) ||
                         (campHistoryItems?.at(0)?.status == "live" &&
