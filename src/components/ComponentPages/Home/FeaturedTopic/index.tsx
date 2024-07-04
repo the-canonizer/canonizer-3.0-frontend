@@ -22,15 +22,28 @@ const FeaturedTopic = () => {
   }));
 
   const settings = {
-    autoplay: true,
+    autoplay: false,
     dots: true,
     arrows: false,
-    infinite: false,
+    infinite: true,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
+    centerPadding: "16px",
     className: "featuresSlider",
     dotsClass: "featuredDots my-[20px] justify-center",
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          // slidesToShow: 1,
+          // slidesToScroll: 1,
+          // centerMode: true,
+          // infinite: false,
+          // centerPadding: "20px",
+        },
+      },
+    ],
   };
 
   if (!topicData?.length) {
@@ -40,15 +53,21 @@ const FeaturedTopic = () => {
   return (
     <Fragment>
       <SectionHeading title="FEATURED TOPICS" infoContent="FEATURED TOPICS" />
-      <div className="mt-4">
+      <div className="mt-4]">
         <Slider {...settings}>
           {topicData?.map((ft) => (
             <CommonCard
-              className="bg-canGray w-full p-0 [&>.ant-card-body]:p-0 xl:[&>.ant-card-body]:p-5"
+              className="bg-canGray w-full p-0 [&>.ant-card-body]:p-0 xl:[&>.ant-card-body]:py-5 xl:[&>.ant-card-body]:px-8"
               key={ft?.id}
             >
               <Row gutter={0} className="w-full min-w-full max-w-full relative">
-                <Col xl={10} lg={24} md={24} xs={24}>
+                <Col
+                  xl={8}
+                  lg={24}
+                  md={24}
+                  xs={24}
+                  className="before:content-[''] before:bg-custom-gradient relative before:absolute before:w-full before:h-full z-0 before:z-10 lg:before:hidden"
+                >
                   <Image
                     className="w-full rounded-lg h-auto object-cover h-full min-h-28 md:min-h-60 max-h-48 md:max-h-72"
                     preview={false}
@@ -59,17 +78,17 @@ const FeaturedTopic = () => {
                   />
                 </Col>
                 <Col
-                  xl={14}
+                  xl={16}
                   lg={24}
                   md={24}
                   xs={24}
-                  className="flex flex-col mt-3 xl:mt-0 md:pl-4 px-3 pb-5 xl:px-5 xl:pb-0 static"
+                  className="flex flex-col mt-3 xl:mt-0 md:pl-4 px-3 pb-5 xl:px-7 xl:pb-0 static xl:!pr-0"
                 >
-                  <div className="flex justify-between pb-2 align-center z-100 relative -ml-4 -mr-4 lg:ml-0 lg:mr-0">
-                    <Typography.Paragraph className="m-0 text-xl font-bold font-inter absolute -top-16 left-0 right-0 text-white px-3 py-2 flex bg-canBlack w-full lg:bg-transparent lg:static lg:px-0 lg:py-0 lg:text-canBlack">
+                  <div className="flex justify-between pb-4 align-center z-100 relative -ml-4 -mr-4 lg:ml-0 lg:mr-0">
+                    <Typography.Paragraph className="m-0 text-base lg:text-xl font-medium lg:font-bold font-inter absolute -top-14 left-1 right-0 text-white px-3 py-0 !mb-0 flex w-full lg:static lg:px-0 lg:py-0 lg:text-canBlack">
                       {ft?.title}
                     </Typography.Paragraph>
-                    <div className="hidden lg:flex items-center justify-center">
+                    <div className="hidden lg:flex items-start justify-center">
                       <SocialShare
                         key={ft?.id}
                         campName={ft?.camp_name}

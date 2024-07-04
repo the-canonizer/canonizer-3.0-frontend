@@ -48,22 +48,22 @@ body {
     right: 0;
     li {
       button {
-        width: 10px;
-        height: 10px;
-        overflow: hidden;
-        border-radius: 50%;
         display: block;
         box-shadow: none;
-        outline: linen;
-        border: 1px solid var(--canBlue);
+        border: 1px solid transparent;
         position: static;
-        color: #fff;
-        background-color: #fff;
+        color: var(--canBlack);
         padding: 0;
+        font-size: 14px;
+        font-weight: 400;
+        padding: 0 4px;
+        border-radius: 3px;
+        transition: all 0.3s;
       }
       &[class*="slick-active"] {
         button {
-          background-color: var(--canBlue);
+          font-weight: 600;
+          border: 1px solid var(--canBlue);
           color: var(--canBlue);
         }
       }
@@ -2310,20 +2310,20 @@ body {
 //   cursor: not-allowed;
 // }
 
-// .ant-form-item-label
-//   > label.ant-form-item-required:not(
-//     .ant-form-item-required-mark-optional
-//   )::before {
-//   display: none;
-// }
+.ant-form-item-label
+  > label.ant-form-item-required:not(
+    .ant-form-item-required-mark-optional
+  )::before {
+  display: none;
+}
 
-// .ant-form-item-required {
-//   .required {
-//     color: red !important;
-//     margin-left: 3px;
-//     display: inline-block;
-//   }
-// }
+.ant-form-item-required {
+  .required {
+    color: red !important;
+    margin-left: 3px;
+    display: inline-block;
+  }
+}
 
 // .dropdown {
 //   position: absolute;

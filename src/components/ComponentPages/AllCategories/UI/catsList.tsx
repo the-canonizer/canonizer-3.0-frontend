@@ -1,19 +1,16 @@
-import { Typography, Button, Row, Col, Input } from "antd";
-import { LeftOutlined, SearchOutlined } from "@ant-design/icons";
+import { Typography, Button, Row, Col } from "antd";
+import { LeftOutlined } from "@ant-design/icons";
 
 import CommonCards from "components/shared/Card";
-import NotificationSwitch from "components/common/headers/notification/switch";
 import Category from "./singleCat";
 import Paginations from "components/shared/Paginations";
 import SortByDropdown from "./sortByDropdown";
 import SearchBar from "./searchBar";
 
 const { Title, Paragraph } = Typography;
-const { Search } = Input;
 
 const CatsList = ({
   onBackClick,
-  onAllReadClick,
   isMobile,
   tags,
   total,
@@ -38,19 +35,20 @@ const CatsList = ({
           List of Categories
         </Title>
       }
-      className="bg-white mb-6 border-0 [&_.ant-card-head]:border-0"
+      className={`bg-white mb-6 border-0 [&_.ant-card-head]:border-0 mainCard ${
+        isMobile
+          ? "[&.mainCard>.ant-card-head>.ant-card-head-wrapper]:flex-col [&.mainCard>.ant-card-head>.ant-card-head-wrapper>.ant-card-extra]:w-full [&.mainCard>.ant-card-head>.ant-card-head-wrapper>.ant-card-extra]:text-right [&.mainCard>.ant-card-head>.ant-card-head-wrapper>.ant-card-head-title]:w-full [&.mainCard>.ant-card-head>.ant-card-head-wrapper>.ant-card-head-title]:h-full"
+          : ""
+      }`}
       id="card-title"
       extra={
         isMobile ? (
-          <div className="flex justify-between items-center">
-            <Button
-              onClick={onAllReadClick}
-              type="link"
-              className="text-canBlue hover:text-canHoverBlue font-medium text-md mr-10 py-0"
-            >
-              Mark all as read
-            </Button>
-            <NotificationSwitch key="notificatoin-page-switch" />
+          <div className="flex justify-end">
+            <SearchBar
+              onSearchChange={onSearchChange}
+              onSearchKeyUp={onSearchKeyUp}
+            />
+            <SortByDropdown onSort={onSort} />
           </div>
         ) : null
       }
@@ -66,13 +64,15 @@ const CatsList = ({
             the printing and typesetting industry.
           </Paragraph>
         </Col>
-        <Col lg={12} className="flex justify-end items-center">
-          <SearchBar
-            onSearchChange={onSearchChange}
-            onSearchKeyUp={onSearchKeyUp}
-          />
-          <SortByDropdown onSort={onSort} />
-        </Col>
+        {!isMobile && (
+          <Col lg={12} className="flex justify-end items-center">
+            <SearchBar
+              onSearchChange={onSearchChange}
+              onSearchKeyUp={onSearchKeyUp}
+            />
+            <SortByDropdown onSort={onSort} />
+          </Col>
+        )}
       </Row>
 
       <div className="grid grid-cols-[repeat(auto-fill,minmax(350px,_1fr))] gap-6">

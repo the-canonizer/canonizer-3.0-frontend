@@ -70,9 +70,11 @@ export const GetCheckSupportExists = async (reqbody, loginToken = null) => {
   }
 };
 
-export const GetHotTopicDetails = async (token: string) => {
+export const GetHotTopicDetails = async (page, perPage, token: string) => {
   try {
-    const res = await NetworkCall.fetch(TopicRequest.GetHotTopic(token));
+    const res = await NetworkCall.fetch(
+      TopicRequest.GetHotTopic(page, perPage, token)
+    );
 
     if (res.status_code === 200) {
       store.dispatch(setHotTopic(res?.data?.items || []));

@@ -23,13 +23,21 @@ module.exports = {
         canGrey2: "#CCD4E7",
         canGrey3: "#696E78",
         canLight: "#777F93",
+        canBlue2: "#D0D8F4",
+      },
+      backgroundImage: {
+        "custom-gradient":
+          "linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000000 100%)",
       },
     },
   },
   plugins: [
     require("@tailwindcss/aspect-ratio"),
     require("@tailwindcss/container-queries"),
-    require("tailwind-scrollbar")({ nocompatible: true, preferredStrategy: 'pseudoelements' }),
+    require("tailwind-scrollbar")({
+      nocompatible: true,
+      preferredStrategy: "pseudoelements",
+    }),
     plugin(function ({ addVariant }) {
       addVariant("optional", "&:optional");
       addVariant("hocus", ["&:hover", "&:focus"]);

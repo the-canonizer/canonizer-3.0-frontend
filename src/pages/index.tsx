@@ -105,7 +105,7 @@ export async function getServerSideProps({ req }) {
     token = response?.access_token;
   }
 
-  const resData = await GetHotTopicDetails(token as string);
+  const resData = await GetHotTopicDetails(1, 6, token as string);
   const featuredData = await GetFeaturedTopicDetails(token as string);
   const prefData = await GetPreferedTopicDetails(token as string);
 

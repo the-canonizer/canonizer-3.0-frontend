@@ -16,7 +16,7 @@ const RightContent = ({ isUserAuthenticated }) => {
     <div
       className={`pr-0 text-center ${
         isUserAuthenticated ? "lg:w-[70%] ml-auto" : "w-full"
-      } h-auto pt-3 mt-4 md:mt-0 md:h-full md:pb-0 pb-4 ${
+      } h-auto py-6 mt-4 md:mt-0 md:h-full ${
         isUserAuthenticated ? "bg-white" : "bg-white"
       } z-[1000] relative rounded-xl`}
     >
