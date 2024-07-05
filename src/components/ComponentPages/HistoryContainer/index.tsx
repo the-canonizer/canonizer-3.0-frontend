@@ -492,7 +492,7 @@ function HistoryContainer() {
                 }}>
                 Pending {activeTab == "in_review" && currentFilterCount}
               </Button>
-              <Button size="large" className={`btn-previous  ${activeTab == "old" ? " active" : null}`}
+              <Button size="large" className={`btn-previous min-w-[133px] ${activeTab == "old" ? " active" : null}`}
                 onClick={() => {
                   handleTabButton("old");
                 }}>
