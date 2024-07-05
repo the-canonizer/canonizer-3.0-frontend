@@ -21,7 +21,7 @@ function CompareStatement() {
   useEffect(() => setIsLoggedIn(isUserAuthenticated), [isUserAuthenticated]);
 
   const getStatement = async (ids) => {
-    // setIsLoading(true);
+    setIsLoading(true);
     const reqBody = {
       ids,
       topic_num: +router?.query.routes?.at(0)?.split("-")[0],
