@@ -28,7 +28,7 @@ function HistoryCardDrawer({
   ];
   return (
     <div onClick={open ? onClose : showDrawer} className="flex gap-2 cursor-pointer" >
-      <Button type="link" className="p-0 flex gap-2 cursor-pointer" onClick={showDrawer}>
+      <Button type="link" className="p-0 flex mt-0.5 gap-2 cursor-pointer" onClick={showDrawer}>
         <i className="icon-info-light"></i>
       </Button>
       <Drawer
