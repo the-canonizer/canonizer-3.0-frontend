@@ -44,6 +44,7 @@ import StatementHistory from "../HistoryContainer/Collapse/statementHistory";
 import CampHistory from "../HistoryContainer/Collapse/campHistory";
 import TopicHistory from "../HistoryContainer/Collapse/topicHistory";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
+import HistoryComparison from "../HistoryContainer/Collapse/historyComparison";
 
 const { Title } = Typography;
 
@@ -104,6 +105,8 @@ function HistoryCard({
   // const covertToTime = (unixTime) => {
   //   return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
   // };
+
+
 
   const commitChanges = async () => {
     setLoadingChanges(true);
@@ -342,9 +345,10 @@ function HistoryCard({
 
           }
           {compareMode && (
-            <CampHistory
+            <HistoryComparison
               campStatement={comparisonData}
               topicNamespaceId={topicNamespaceId}
+              historyState={historyState}
             />
           )}
 
