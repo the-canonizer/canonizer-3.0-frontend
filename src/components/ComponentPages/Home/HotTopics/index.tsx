@@ -25,19 +25,19 @@ const HotTopics = () => {
   return (
     <Fragment>
       <Row gutter={15}>
-        <Col md={12} sm={12} xs={24}>
+        <Col md={12} sm={12} xs={12}>
           <SectionHeading title="Hot Topics" infoContent="Hot Topics" />
         </Col>
-        <Col md={12} sm={12} xs={24} className="text-right">
+        <Col md={12} sm={12} xs={12} className="text-right">
           <SeeMoreLInk />
         </Col>
       </Row>
 
-      <Row className="mt-4" gutter={20}>
+      <Row className="mt-4" gutter={[24, 24]}>
         {topicData?.map((ft) => (
-          <Col md={12} lg={8} xs={24} sm={24} className="mb-3" key={ft?.id}>
+          <Col md={12} lg={8} xs={24} sm={24} key={ft?.id}>
             <CommonCard
-              className="border-0 h-full hocus:shadow-lg [&_.rightArrow]:hover:block mainCard hocus:bg-white mb-4 [&_.ant-card-body]:flex [&_.ant-card-body]:flex-col [&_.ant-card-body]:h-full"
+              className="border-0 h-full transition duration-300 hocus:shadow-lg [&_.rightArrow]:hover:block mainCard hocus:bg-white [&_.ant-card-body]:flex [&_.ant-card-body]:flex-col [&_.ant-card-body]:h-full"
               key={ft?.id}
             >
               <Link

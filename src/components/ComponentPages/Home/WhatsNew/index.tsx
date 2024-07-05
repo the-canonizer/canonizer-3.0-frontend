@@ -24,7 +24,7 @@ const WhatsNew = () => {
       </Row>
 
       <div className="mt-3">
-        <CommonCard className="border-0 h-100 text-canBlack">
+        <CommonCard className="border-0 h-100 text-canBlack bg-white [&_.ant-card-body]:p-0 [&_.ant-card-body]:lg:p-[24px] lg:bg-canGray">
           <div
             className="text-canBlack"
             dangerouslySetInnerHTML={{ __html: whatsNew }}

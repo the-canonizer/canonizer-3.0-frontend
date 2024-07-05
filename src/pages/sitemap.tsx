@@ -31,17 +31,18 @@ const SitemapPage = () => {
   );
 };
 
-export const getStaticProps = async () => {
-  if (process.env.NEXT_PUBLIC_ENVIRONMENT === "production") {
-    const XMLData = await getSitemapXML();
-    const data = XMLData?.data || {},
-      keys = Object.keys(data);
+export const getServerSideProps = async () => {
+  try {
+    if (process.env.NEXT_PUBLIC_ENVIRONMENT === "production") {
+      const XMLData = await getSitemapXML();
+      const data = XMLData?.data || {},
+        keys = Object.keys(data);
 
-    let sitemap = "";
+      let sitemap = "";
 
-    keys.forEach((key) => {
-      if (key == "index") {
-        sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+      keys.forEach((key) => {
+        if (key == "index") {
+          sitemap = `<?xml version="1.0" encoding="UTF-8"?>
       <?xml-stylesheet type="text/xsl" href="sitemap-css/main-sitemap.xsl"?>
       <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
         ${data[key]
@@ -60,12 +61,12 @@ export const getStaticProps = async () => {
           .join("")}
       </sitemapindex>
       `;
-        fs.writeFileSync(`public/sitemap.xml`, sitemap, {
-          encoding: "utf8",
-          flag: "w",
-        });
-      } else {
-        sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+          fs.writeFileSync(`public/sitemap.xml`, sitemap, {
+            encoding: "utf8",
+            flag: "w",
+          });
+        } else {
+          sitemap = `<?xml version="1.0" encoding="UTF-8"?>
       <?xml-stylesheet type="text/xsl" href="sitemap-css/main-sitemap.xsl"?>
       <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd http://www.google.com/schemas/sitemap-image/1.1 http://www.google.com/schemas/sitemap-image/1.1/sitemap-image.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
         ${data[key]
@@ -84,23 +85,26 @@ export const getStaticProps = async () => {
           .join("")}
       </urlset>
       `;
-        fs.writeFileSync(`public/${key}`, sitemap, {
-          encoding: "utf8",
-          flag: "w",
-        });
-      }
-    });
+          fs.writeFileSync(`public/${key}`, sitemap, {
+            encoding: "utf8",
+            flag: "w",
+          });
+        }
+      });
 
-    if (!XMLData) {
-      return {
-        notFound: true,
-      };
+      if (!XMLData) {
+        return { notFound: true };
+      }
     }
+
+    return {
+      props: {},
+      revalidate: 1296000,
+    };
+  } catch (error) {
+    console.error("Error generating sitemap:", error);
+    return { notFound: true };
   }
-  return {
-    props: {},
-    revalidate: 1296000,
-  };
 };
 
 SitemapPage.displayName = "SitemapPage";

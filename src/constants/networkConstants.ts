@@ -166,6 +166,8 @@ const NetworkConstants = {
     // notification list
     GetList: `${BaseCanonizerApiUrl}/notification-list`,
     MarkRead: `${BaseCanonizerApiUrl}/notification-is-read/update/`,
+    MarkAllRead: `${BaseCanonizerApiUrl}/notification/read/all`,
+    DeleteAll: `${BaseCanonizerApiUrl}/notification/delete/all`,
 
     //Get Active support topic
     GetActiveSupportTopic: `${BaseCanonizerApiUrl}/topic-support-list`,
