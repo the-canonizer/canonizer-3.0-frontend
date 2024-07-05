@@ -26,7 +26,6 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
       campRecord: state?.topicDetails?.currentCampRecord,
     })
   );
-
   return loadingIndicator || !campStatement ? (
     <CustomSkelton
       skeltonFor="card"
@@ -36,7 +35,140 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
       isButton={false}
     />
   ) : (
-    <Collapse
+    <>
+      <div className="camp-agrrement-new mb-3">
+        <div>
+          <div className="camp-agreement-header d-flex items-center mb-3">
+            <h3 className="cmp-title">
+              {K?.exceptionalMessages?.campStatementHeading}
+            </h3>
+            <Image
+              src="/images/circle-info-bread.svg"
+              alt="svg"
+              className="icon-topic"
+              height={16}
+              width={16}
+            />
+          </div>
+          <div className="d-flex items-center justify-start gap-6 camp-header-content">
+            <div className="d-flex items-center">
+              <Image
+                src="/images/calendar-camp.svg"
+                alt="svg"
+                className="icon-topic"
+                height={16}
+                width={16}
+              />
+              <p>Last update: 2 Jan 2024, 03:45 PM</p>
+            </div>
+            <div className="d-flex items-center gap-1">
+              <Image
+                src="/images/eye-regular-new.svg"
+                alt="svg"
+                className="icon-topic"
+                height={16}
+                width={16}
+              />
+              <span>1</span>
+            </div>
+          </div>
+          <hr className="my-3" />
+          <div className="flex items-center flex-col justify-center pt-10">
+            <Paragraph>
+              <div className={styles.campStatement}>
+                {campStatement?.length && campStatement[0]?.parsed_value ? (
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: `<div class="ck-content">${campStatement[0]?.parsed_value}</div>`,
+                    }}
+                  />
+                ) : (
+                  K?.exceptionalMessages?.campStatement
+                )}
+              </div>
+            </Paragraph>
+
+            <div className="topicDetailsCollapseFooter printHIde camp">
+             {campStatement?.length <= 0 ? <CustomButton
+                disabled={campRecord?.is_archive == 1 ? true : false}
+                className="btn-green printHIde flex items-center justify-center"
+                id="add-camp-statement-btn"
+              >
+                <Link
+                  href={
+                    campStatement?.length < 0
+                      ? `/statement/history/${replaceSpecialCharacters(
+                          router?.query?.camp[0],
+                          "-"
+                        )}/${replaceSpecialCharacters(
+                          router?.query?.camp[1] ?? "1-Agreement",
+                          "-"
+                        )}`
+                      : `/create/statement/${replaceSpecialCharacters(
+                          router?.query?.camp[0],
+                          "-"
+                        )}/${replaceSpecialCharacters(
+                          router?.query?.camp[1] ?? "1-Agreement",
+                          "-"
+                        )}`
+                  }
+                  className="printHIde"
+                >
+                 <a className="printHIde gap-2  flex items-center justify-center text-base font-medium">
+                      {K?.exceptionalMessages?.addCampStatementButton}
+                      <Image
+                        src="/images/manage-btn-icon.svg"
+                        alt="svg"
+                        className="icon-topic"
+                        height={24}
+                        width={24}
+                      />
+                    </a>
+                </Link>
+              </CustomButton>
+              :
+              <CustomButton
+                disabled={campRecord?.is_archive == 1 ? true : false}
+                className="btn-green printHIde hidden lg:hidden sm:flex md:flex items-center justify-center"
+                id="add-camp-statement-btn"
+              >
+                <Link
+                  href={
+                    campStatement?.length > 0
+                      ? `/statement/history/${replaceSpecialCharacters(
+                          router?.query?.camp[0],
+                          "-"
+                        )}/${replaceSpecialCharacters(
+                          router?.query?.camp[1] ?? "1-Agreement",
+                          "-"
+                        )}`
+                      : `/create/statement/${replaceSpecialCharacters(
+                          router?.query?.camp[0],
+                          "-"
+                        )}/${replaceSpecialCharacters(
+                          router?.query?.camp[1] ?? "1-Agreement",
+                          "-"
+                        )}`
+                  }
+                  className="printHIde"
+                >
+                   <a className="printHIde gap-2  flex items-center justify-center text-base font-medium">
+                      {K?.exceptionalMessages?.manageCampStatementButton}
+                      <Image
+                        src="/images/manage-btn-icon.svg"
+                        alt="svg"
+                        className="icon-topic"
+                        height={24}
+                        width={24}
+                      />
+                    </a>
+                </Link>
+              </CustomButton>}
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* <Collapse
       defaultActiveKey={["1"]}
       expandIconPosition="right"
       className="topicDetailsCollapse"
@@ -149,7 +281,8 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
           </CustomButton>
         </div>
       </Panel>
-    </Collapse>
+    </Collapse> */}
+    </>
   );
 };
 export default CampStatementCard;

@@ -14,6 +14,7 @@ import CustomSkelton from "../../../common/customSkelton";
 import { RootState } from "src/store";
 import ReasonsActivity from "src/components/common/SupportReasonActivity";
 import { getProperties } from "src/utils/generalUtility";
+import Image from "next/image";
 
 const { Text } = Typography;
 const { Panel } = Collapse;
@@ -54,7 +55,88 @@ export default function CampRecentActivities() {
 
   return (
     <Fragment>
-      <Collapse
+      <div className="camp_activity_new">
+        <h3 className="mb-[20px] uppercase text-base font-semibold text-[#242B37]">
+          Camp activities
+        </h3>
+      </div>
+      <div className="camp-recent bg-[#F7F8FC] py-[30px] px-[20px] rounded-[12px]">
+        <div className="camp-recent-child d-flex justify-center flex-col items-center ">
+          <div className="d-flex flex-col gap-1 w-full">
+            {loadingIndicator ? (
+              <CustomSkelton
+                skeltonFor="list"
+                bodyCount={7}
+                stylingClass="listSkeleton"
+                isButton={false}
+              />
+            ) : data ? (
+              <List
+                itemLayout="horizontal"
+                className="activeListWrap"
+                dataSource={data}
+                renderItem={(item) => (
+                  <List.Item className={styles.activitiesList}>
+                    <List.Item.Meta
+                      avatar={<BellFilled className={styles.bellIcon} />}
+                      title={
+                        <div>
+                          <h4 className="text-base leading-[24px] mb-[10px] font-normal"> {item?.description}</h4>{" "}
+
+                          {item?.log_name === "support" &&
+                            getProperties(item)?.reason && (
+                              <Popover
+                                content={<ReasonsActivity CurrentItem={item} />}
+                                placement="top"
+                                className={styles.algoInfoIcon}
+                              >
+                                <i className="icon-info"></i>
+                              </Popover>
+                            )}
+                        </div>
+
+                      }
+                      description={<p className="text-xs font-normal leading-[15px] text-opacity-50">{covertToTime(item?.updated_at)}</p>}
+                      className={styles.listItem}
+                    />
+                  </List.Item>
+                )}
+              />
+            ) : (
+              <div className="flex items-center justify-center gap-3 flex-col pt-3">
+                {K?.exceptionalMessages?.noRecentActivityFound}
+                <Image
+              src="/images/no-activity.svg"
+              alt="svg"
+              className="icon-topic"
+              height={81}
+              width={118}
+            />
+              </div>
+            )}
+          </div>
+
+          <div className={styles.footerLink}>
+            {userData?.is_admin && hasShowViewAll ? (
+              <Link
+                href={{
+                  pathname: "/activities",
+                  query: {
+                    topic_num: router?.query?.camp[0]?.split("-")[0],
+                    camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
+                  },
+                }}
+              >
+                <a className={styles.viewAllLink}>
+                  <Text>View All</Text>
+                  <i className="icon-angle-right"></i>
+                </a>
+              </Link>
+            ) : null}
+          </div>
+        </div>
+      </div>
+      {/* <Collapse
         defaultActiveKey={["1"]}
         expandIconPosition="right"
         className="topicDetailsCollapse news-feeds"
@@ -62,7 +144,7 @@ export default function CampRecentActivities() {
         <Panel
           header={
             <h3 className="text-orange card_heading">
-              Current Camp Recent Activities
+               Camp  Activities
             </h3>
           }
           className={"activities " + styles.campActivities}
@@ -75,7 +157,7 @@ export default function CampRecentActivities() {
               stylingClass="listSkeleton"
               isButton={false}
             />
-          ) : data ? (
+          ) : !data ? (
             <List
               itemLayout="horizontal"
               className="activeListWrap"
@@ -127,7 +209,7 @@ export default function CampRecentActivities() {
             ) : null}
           </div>
         </Panel>
-      </Collapse>
+      </Collapse>  */}
     </Fragment>
   );
 }

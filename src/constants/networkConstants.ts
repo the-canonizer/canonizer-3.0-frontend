@@ -1,5 +1,6 @@
 const BaseCanonizerServiceUrl = process.env.NEXT_PUBLIC_BASE_SERVICE_URL;
 const BaseCanonizerApiUrl = process.env.NEXT_PUBLIC_BASE_API_URL;
+const DummyUrl = process.env.NEXT_PUBLIC_BASE_DUMMY_URL;
 const BaseImagesURL = process.env.NEXT_PUBLIC_BASE_IMAGES_URL;
 const BaseVideosURL = process.env.NEXT_PUBLIC_BASE_VIDEOS_URL;
 const NetworkConstants = {
@@ -129,6 +130,7 @@ const NetworkConstants = {
     PostList: `${BaseCanonizerApiUrl}/post/list`,
     PostDelete: `${BaseCanonizerApiUrl}/post/delete`,
     GetThreadData: `${BaseCanonizerApiUrl}/thread/`,
+    GetTopFiveThreadData: `${DummyUrl}/thread/latest5`,
 
     //camp news feed add edit update
     GetEditCampNewsFeed: `${BaseCanonizerApiUrl}/edit-camp-newsfeed`,
@@ -164,6 +166,8 @@ const NetworkConstants = {
     // notification list
     GetList: `${BaseCanonizerApiUrl}/notification-list`,
     MarkRead: `${BaseCanonizerApiUrl}/notification-is-read/update/`,
+    MarkAllRead: `${BaseCanonizerApiUrl}/notification/read/all`,
+    DeleteAll: `${BaseCanonizerApiUrl}/notification/delete/all`,
 
     //Get Active support topic
     GetActiveSupportTopic: `${BaseCanonizerApiUrl}/topic-support-list`,

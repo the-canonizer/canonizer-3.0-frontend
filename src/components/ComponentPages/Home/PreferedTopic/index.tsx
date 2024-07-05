@@ -24,13 +24,13 @@ const PreferedTopics = () => {
   return (
     <Fragment>
       <Row gutter={15}>
-        <Col md={12} sm={12} xs={24}>
+        <Col md={12} sm={12} xs={12}>
           <SectionHeading
             title="Your preferred topics"
             infoContent="Your preferred topics"
           />
         </Col>
-        <Col md={12} sm={12} xs={24} className="text-right">
+        <Col md={12} sm={12} xs={12} className="text-right">
           <SeeMoreLInk />
         </Col>
       </Row>

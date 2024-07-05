@@ -101,10 +101,11 @@
     }
     [class*="ant-input-group-addon"] {
       border-radius: 0px 10px 10px 0px;
-      border-color: #ccd4e7;
+      // border-color: #ccd4e7;
       display: flex;
       background: transparent !important;
-      border: 1px solid #d9d9d9 !important;
+      // border: 1px solid #ccd4e7 !important;
+      border: none !important;
       height: 44px !important;
       width: 50px !important;
       button {

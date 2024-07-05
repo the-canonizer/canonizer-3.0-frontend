@@ -29,7 +29,7 @@ export default function NotificationList({
           <List.Item.Meta
             avatar={
               <Badge
-                dot={item["is_read"] === 0}
+                dot={item["is_seen"] === 0}
                 className="bg-[#5482C833] w-[30px] h-[30px] rounded-full grid items-center justify-center"
               >
                 <BellOutlined className="text-white text-lg" />
