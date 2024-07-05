@@ -470,7 +470,7 @@ function HistoryCard({
                     size="large"
                     type="primary"
                     id={`submit-update-${campStatement?.id}`}
-                    className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none"
+                    className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none w-full"
                     onClick={() => {
                       campStatement?.is_archive == 1 &&
                         campStatement?.status == "live"
