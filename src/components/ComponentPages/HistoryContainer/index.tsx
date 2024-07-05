@@ -6,6 +6,7 @@ import {
   Checkbox,
   Collapse,
   Divider,
+  Empty,
   Tag,
   Tooltip,
   Typography,
@@ -382,7 +383,7 @@ function HistoryContainer() {
 
   const renderCampHistories =
     campHistory && campHistory?.items?.length && (
-      campHistory?.items?.map((campHistoryData, index) => {
+      [campHistory?.items]?.map((campHistoryData, index) => {
         return (
           <>
             {/* <HistoryCollapse
@@ -490,7 +491,7 @@ function HistoryContainer() {
                 }}>
                 Pending {activeTab == "in_review" && currentFilterCount}
               </Button>
-              <Button size="large" className={`btn-previous  ${activeTab == "old" ? " active" : null}`}
+              <Button size="large" className={`btn-previous min-w-[133px]  ${activeTab == "old" ? " active" : null}`}
                 onClick={() => {
                   handleTabButton("old");
                 }}>
@@ -535,18 +536,21 @@ function HistoryContainer() {
           </div>
           {activeTab === "live" ? (
             <>
-              {campHistory && campHistory?.items?.length > 0 ?
-                <div className="ch-content lg:w-[calc(100%-320px)] p-8 bg-[#F4F5FA] rounded-lg max-md:w-full relative">
-                  {renderCampHistories}
-                </div> : <>
-                  <NoRecordsMessage />
-                </>
-              }
+              <div className={`ch-content ${campHistory && campHistory?.items?.length == 0 && "no-data-wrapper"} lg:w-[calc(100%-320px)] p-8 bg-[#F4F5FA] rounded-lg max-md:w-full relative`}>
+                {campHistory && campHistory?.items?.length > 0 ?
+
+                  { renderCampHistories }
+                  : <>
+                    <Empty />
+                  </>
+                }
+              </div>
+
             </>
           ) : (
             <>
-              {campHistory && campHistory?.items?.length > 0 ?
-                <div className="ch-content lg:w-[calc(100%-320px)] p-8 bg-[#F4F5FA] rounded-lg max-md:w-full relative">
+              <div className={`ch-content ${campHistory && campHistory?.items?.length == 0 && "no-data-wrapper"} lg:w-[calc(100%-320px)] p-8 bg-[#F4F5FA] rounded-lg max-md:w-full relative`}>
+                {campHistory && campHistory?.items?.length > 0 ?
                   <InfiniteScroll
                     initialLoad={false}
                     loadMore={!loadingIndicator && campStatementApiCall}
@@ -555,10 +559,11 @@ function HistoryContainer() {
                   >
                     {renderCampHistories}
                   </InfiniteScroll>
-                </div> : <>
-                  <NoRecordsMessage />
-                </>
-              }
+                  : <>
+                    <Empty />
+                  </>
+                }
+              </div>
             </>
           )}
         </div>

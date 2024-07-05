@@ -3197,6 +3197,9 @@ div[role="option"]::before {
       }
     }
     .ch-content {
+      &.no-data-wrapper{
+        @apply after:hidden flex items-center justify-center ;
+      }
       &::after {
         @apply max-lg:hidden absolute top-12 left-8 bottom-8 block content-[''] w-[1px] p-0 bg-gray-300 transition-colors duration-300;
       }

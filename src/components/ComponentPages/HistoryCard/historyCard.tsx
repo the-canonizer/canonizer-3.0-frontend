@@ -429,11 +429,13 @@ function HistoryCard({
                           }
                           setIsModalOpen(true);
                         }}
-                        displayText={<>
+                        displayText={<p>
+                          <u>
                           {campStatement?.agreed_supporters} out of{" "}
                           {campStatement?.total_supporters} required
                           supporters have agreed
-                          {(campStatement?.ifICanAgreeAndObject || campStatement?.ifICanAgreeAndObject == undefined) && !!(
+                          </u>
+                          {/* {(campStatement?.ifICanAgreeAndObject || campStatement?.ifICanAgreeAndObject == undefined) && !!(
                             campStatement?.ifIamSupporter != 0 ||
                             campStatement?.ifIAmExplicitSupporter
                           ) &&
@@ -442,13 +444,13 @@ function HistoryCard({
                             campStatement?.total_supporters -
                             campStatement?.agreed_supporters ==
                             1 &&
-                            !campStatement?.agreed_to_change && (
+                            !campStatement?.agreed_to_change && ( */}
                               <>
                                 , Since you are the last hold out, the instant
                                 you agree, this will go live.
                               </>
-                            )}
-                        </>}
+                            {/* )} */}
+                        </p>}
                         agreedSupporters={supporters?.filter((obj) => obj?.status === true)}
                         notAgreedSupporters={supporters?.filter((obj) => obj?.status === false)}
                       />
@@ -468,7 +470,7 @@ function HistoryCard({
                     size="large"
                     type="primary"
                     id={`submit-update-${campStatement?.id}`}
-                    className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none w-100"
+                    className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none"
                     onClick={() => {
                       campStatement?.is_archive == 1 &&
                         campStatement?.status == "live"
@@ -536,7 +538,7 @@ function HistoryCard({
                             }
                           }}
                         >
-                          Objected Changes
+                          Object Changes
                           <i className="icon-thumb-down text-[#E46B6B]"></i>
                         </Button>
                       </>)
