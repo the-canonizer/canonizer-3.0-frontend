@@ -446,20 +446,21 @@ function HistoryCard({
                           {campStatement?.total_supporters} required
                           supporters have agreed
                           </u>
-                          {/* {(campStatement?.ifICanAgreeAndObject || campStatement?.ifICanAgreeAndObject == undefined) && !!(
+                          {(campStatement?.ifICanAgreeAndObject || campStatement?.ifICanAgreeAndObject == undefined) && !!(
                             campStatement?.ifIamSupporter != 0 ||
                             campStatement?.ifIAmExplicitSupporter
                           ) &&
-	@@ -442,13 +444,13 @@ function HistoryCard({
+                            isUserAuthenticated &&
+                            !campStatement?.isAuthor &&
                             campStatement?.total_supporters -
                             campStatement?.agreed_supporters ==
                             1 &&
-                            !campStatement?.agreed_to_change && ( */}
+                            !campStatement?.agreed_to_change && (
                               <>
                                 , Since you are the last hold out, the instant
                                 you agree, this will go live.
                               </>
-                            {/* )} */}
+                            )}
                         </p>}
                         agreedSupporters={supporters?.filter((obj) => obj?.status === true)}
                         notAgreedSupporters={supporters?.filter((obj) => obj?.status === false)}
