@@ -67,6 +67,7 @@ function HistoryContainer() {
   });
   const [currentFilterCount, setCurrentFilterCount] = useState(null)
   const [totalCount, setTotalCount] = useState<any>([]);
+  const [liveRecordId, setLiveRecordId] = useState<any>(null);
 
   const {
     asof,
@@ -222,6 +223,7 @@ function HistoryContainer() {
         );
         setCurrentFilterCount(res?.data?.total_rows)
         setTotalCount(res?.data?.total_counts)
+        setLiveRecordId(res?.data?.live_record_id)
       }
 
       didMount.current = true;
@@ -454,7 +456,7 @@ function HistoryContainer() {
 
   return (
     <>
-      <Breadcrumbs />
+      <Breadcrumbs updateId={liveRecordId}/>
       <div className="ch-wrapper">
         <div className="ch-history">
           <div className="statement-status-sider">

@@ -10,7 +10,7 @@ import { useSelector } from "react-redux";
 import moment from "moment";
 import { getCookies } from "src/utils/generalUtility";
 
-function Breadcrumbs({ compareMode = false }) {
+function Breadcrumbs({ compareMode = false, updateId }) {
 
   const router = useRouter();
   const historyOf = router?.asPath.split("/")[1];
@@ -77,6 +77,12 @@ function Breadcrumbs({ compareMode = false }) {
     return title;
   };
 
+  const updateCurrentRecord = () => {
+    router.push(
+      `/manage/${historyOf}/${updateId}`
+    );
+  }
+
   return (
     <>
       <div className="max-md:mx-[-1rem] max-md:shadow-[0px_10px_10px_0px_#0000001A] md:bg-[#F4F5FAB2] p-[1.5rem] md:rounded-[1.25rem] flex items-center justify-between gap-2 ">
@@ -106,11 +112,13 @@ function Breadcrumbs({ compareMode = false }) {
             size="large"
             type="primary"
             className="flex items-center justify-center rounded-[10px] max-lg:hidden gap-3.5 leading-none"
+            onClick={()=>updateCurrentRecord()}
           >
-            Update Current {
-              historyTitle() == "Statement History" ? "Statement" :
-                historyTitle() == "Topic History" ? "Topic" :
-                  historyTitle() == "Camp History" ? "Camp" : null
+              Update Current 
+            {
+              historyTitle() == "Statement History" ? " Statement" :
+                historyTitle() == "Topic History" ? " Topic" :
+                  historyTitle() == "Camp History" ? " Camp" : null
             }
             <i className="icon-edit"></i>
           </Button>
