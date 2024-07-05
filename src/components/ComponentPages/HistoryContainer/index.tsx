@@ -66,6 +66,7 @@ function HistoryContainer() {
     bread_crumb: [],
   });
   const [currentFilterCount, setCurrentFilterCount] = useState(null)
+  const [totalCount, setTotalCount] = useState<any>([]);
 
   const {
     asof,
@@ -220,6 +221,7 @@ function HistoryContainer() {
           })
         );
         setCurrentFilterCount(res?.data?.total_rows)
+        setTotalCount(res?.data?.total_counts)
       }
 
       didMount.current = true;
@@ -472,31 +474,31 @@ function HistoryContainer() {
                 onClick={() => {
                   handleTabButton("all");
                 }}>
-                View all {activeTab == "all" && (<span className="ml-1">({currentFilterCount})</span>)}
+                View all <span className="ml-1">({totalCount?.total_changes || 0}) </span>
               </Button>
               <Button size="large" className={`btn-objected min-w-[133px] ${activeTab == "objected" ? " active" : null}`}
                 onClick={() => {
                   handleTabButton("objected");
                 }}>
-                Objected  {activeTab == "objected" && (<span className="ml-1">({currentFilterCount})</span>)}
+                Objected <span className="ml-1">({totalCount?.objected_changes || 0}) </span>
               </Button>
               <Button size="large" className={`btn-live min-w-[133px] ${activeTab == "live" ? " active" : null}`}
                 onClick={() => {
                   handleTabButton("live");
                 }}>
-                Live {activeTab == "live" && (<span className="ml-1">({currentFilterCount})</span>)}
+                Live <span className="ml-1">({totalCount?.live_changes || 0}) </span>
               </Button>
               <Button size="large" className={`btn-pending min-w-[133px] ${activeTab == "in_review" ? " active" : null}`}
                 onClick={() => {
                   handleTabButton("in_review");
                 }}>
-                Pending {activeTab == "in_review" && (<span className="ml-1">({currentFilterCount})</span>)}
+                Pending <span className="ml-1">({totalCount?.in_review_changes || 0}) </span>
               </Button>
               <Button size="large" className={`btn-previous min-w-[133px] ${activeTab == "old" ? " active" : null}`}
                 onClick={() => {
                   handleTabButton("old");
                 }}>
-                Previous {activeTab == "old" && (<span className="ml-1">({currentFilterCount})</span>)}
+                Previous <span className="ml-1">({totalCount?.old_changes || 0}) </span>
               </Button>
             </div>
             {
