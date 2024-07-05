@@ -39,9 +39,7 @@ import HistoryCard from "../HistoryCard/historyCard";
 
 const { Title } = Typography;
 
-const onChange = (e) => {
-  console.log(`checked = ${e.target.checked}`);
-};
+
 const { Panel } = Collapse;
 
 function HistoryContainer() {
@@ -74,6 +72,10 @@ function HistoryContainer() {
   } = useSelector((state: RootState) => ({
     asof: state?.filters?.filterObject?.asof,
   }));
+
+
+
+
 
 
   useEffect(() => {

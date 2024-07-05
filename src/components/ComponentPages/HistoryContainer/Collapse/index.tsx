@@ -223,9 +223,9 @@ function HistoryCollapse({
     <>
       <div className={`cn-wrapper csh-wrapper
              ${campStatement?.status == "live" ? "live-wrapper" :
-               campStatement?.status == "in_review" ? "pending-wrapper" :
-               campStatement?.status == "objected" ? "objected-wrapper" :
-               campStatement?.status == "old" ? "previous-wrapper" : null} 
+          campStatement?.status == "in_review" ? "pending-wrapper" :
+            campStatement?.status == "objected" ? "objected-wrapper" :
+              campStatement?.status == "old" ? "previous-wrapper" : null} 
           `}>
         <div className="badge-wrapper">
           <Badge

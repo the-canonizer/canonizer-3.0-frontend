@@ -48,9 +48,6 @@ import HistoryComparison from "../HistoryContainer/Collapse/historyComparison";
 
 const { Title } = Typography;
 
-const onChange = (e) => {
-  console.log(`checked = ${e.target.checked}`);
-};
 const { Panel } = Collapse;
 
 function HistoryCard({
@@ -72,6 +69,8 @@ function HistoryCard({
   compareMode = false,
   comparisonData = null,
   historyState = null,
+  status = null,
+
 
 }: any) {
   const router = useRouter();
@@ -105,6 +104,23 @@ function HistoryCard({
   // const covertToTime = (unixTime) => {
   //   return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
   // };
+
+
+  const getStatusClass = (status: any) => {
+    switch (status) {
+      case "live":
+        return "live-wrapper";
+      case "in_review":
+        return "pending-wrapper";
+      case "objected":
+        return "objected-wrapper";
+      case "old":
+        return "previous-wrapper";
+      default:
+        return "";
+    }
+  };
+
 
 
 
@@ -228,14 +244,10 @@ function HistoryCard({
     return moment(unixTime * 1000).format("DD MMM YYYY, hh:mm:ss A");
   };
 
+
   return (
     <>
-      <div className={`csh-wrapper cn-wrapper 
-         ${campStatement?.status == "live" ? "live-wrapper" :
-          campStatement?.status == "in_review" ? "pending-wrapper" :
-            campStatement?.status == "objected" ? "objected-wrapper" :
-              campStatement?.status == "old" ? "previous-wrapper" : null} 
-        `}>
+      <div className={`csh-wrapper cn-wrapper ${compareMode ? getStatusClass(status) : getStatusClass(campStatement?.status)}`}>
         <div className="badge-wrapper">
           <Badge
             className="cn-dot-badge ch-dot-history"
@@ -348,7 +360,6 @@ function HistoryCard({
             <HistoryComparison
               campStatement={comparisonData}
               topicNamespaceId={topicNamespaceId}
-              historyState={historyState}
             />
           )}
 

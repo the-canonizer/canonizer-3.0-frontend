@@ -22,7 +22,7 @@ import styles from "./index.module.scss";
 
 import CampInfoBar from "../../TopicDetails/CampInfoBar";
 import CustomSkelton from "../../../common/customSkelton";
-import { changeSlashToArrow } from "src/utils/generalUtility";
+import { capitalizeFirstLetter, changeSlashToArrow } from "src/utils/generalUtility";
 import Breadcrumbs from "components/ComponentPages/Breadcrumbs/breadcrumbs";
 import HistoryCard from "components/ComponentPages/HistoryCard/historyCard";
 
@@ -43,6 +43,7 @@ function CompareStatementUI({
   liveStatement,
   itemsStatus,
 }: any) {
+
 
   const [compareMode, setCompareMode] = useState(true)
   const router = useRouter();
@@ -72,10 +73,6 @@ function CompareStatementUI({
     }
   };
 
-  const covertToTime = (unixTime) => {
-    return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
-  };
-
   return (
     <>
       <Breadcrumbs compareMode={compareMode} />
@@ -86,17 +83,17 @@ function CompareStatementUI({
           className="text-2xl text-[#242B37] p-1 mb-14 gap-5 flex items-center max-lg:hidden leading-none"
           icon={<i className="icon-back"></i>}
         >
-          Topic History Comparison
+          {router?.query?.from && capitalizeFirstLetter(router?.query?.from)} History Comparison
         </Button>
         <Row gutter={[60, 60]}>
           <Col xs={24} md={12}>
-            <HistoryCard compareMode={compareMode} comparisonData={s1} />
+            <HistoryCard compareMode={compareMode} comparisonData={s1} status={itemsStatus[s1?.id]} />
           </Col>
           <Col xs={24} md={12}>
-            <HistoryCard compareMode={compareMode} comparisonData={s2} />
+            <HistoryCard compareMode={compareMode} comparisonData={s2} status={itemsStatus[s2?.id]} />
           </Col>
           <Col xs={24} md={24}>
-            <HistoryCard compareMode={compareMode} comparisonData={liveStatement} />
+            <HistoryCard compareMode={compareMode} comparisonData={liveStatement} status={liveStatement?.status} />
           </Col>
         </Row>
       </div>
