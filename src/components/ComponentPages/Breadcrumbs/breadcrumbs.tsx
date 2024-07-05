@@ -10,7 +10,7 @@ import { useSelector } from "react-redux";
 import moment from "moment";
 import { getCookies } from "src/utils/generalUtility";
 
-function Breadcrumbs({ compareMode = false, updateId }) {
+function Breadcrumbs({ compareMode = false, updateId }:any) {
 
   const router = useRouter();
   const historyOf = router?.asPath.split("/")[1];
