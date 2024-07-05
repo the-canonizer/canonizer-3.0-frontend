@@ -146,7 +146,7 @@
       .cn-card-btn {
         @apply flex gap-3 max-xl:order-2 max-sm:flex-col;
         button {
-          @apply sm:w-[50%];
+          @apply sm:grow;
         }
       }
       .cn-link-btn {

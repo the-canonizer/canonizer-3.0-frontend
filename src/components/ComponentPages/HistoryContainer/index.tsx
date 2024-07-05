@@ -472,31 +472,31 @@ function HistoryContainer() {
                 onClick={() => {
                   handleTabButton("all");
                 }}>
-                View all {activeTab == "all" && currentFilterCount}
+                View all {activeTab == "all" && (<span className="ml-1">({currentFilterCount})</span>)}
               </Button>
               <Button size="large" className={`btn-objected min-w-[133px] ${activeTab == "objected" ? " active" : null}`}
                 onClick={() => {
                   handleTabButton("objected");
                 }}>
-                Objected  {activeTab == "objected" && currentFilterCount}
+                Objected  {activeTab == "objected" && (<span className="ml-1">({currentFilterCount})</span>)}
               </Button>
               <Button size="large" className={`btn-live min-w-[133px] ${activeTab == "live" ? " active" : null}`}
                 onClick={() => {
                   handleTabButton("live");
                 }}>
-                Live {activeTab == "live" && currentFilterCount}
+                Live {activeTab == "live" && (<span className="ml-1">({currentFilterCount})</span>)}
               </Button>
               <Button size="large" className={`btn-pending min-w-[133px] ${activeTab == "in_review" ? " active" : null}`}
                 onClick={() => {
                   handleTabButton("in_review");
                 }}>
-                Pending {activeTab == "in_review" && currentFilterCount}
+                Pending {activeTab == "in_review" && (<span className="ml-1">({currentFilterCount})</span>)}
               </Button>
               <Button size="large" className={`btn-previous min-w-[133px] ${activeTab == "old" ? " active" : null}`}
                 onClick={() => {
                   handleTabButton("old");
                 }}>
-                Previous {activeTab == "old" && currentFilterCount}
+                Previous {activeTab == "old" && (<span className="ml-1">({currentFilterCount})</span>)}
               </Button>
             </div>
             {

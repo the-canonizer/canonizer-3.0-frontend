@@ -163,7 +163,7 @@ function HistoryCard({
     let reqBody = {
       record_id: campStatement.id,
       topic_num: router?.query.camp[0].split("-")[0],
-      camp_num: historyOf == "topic" ? 1 : router?.query.camp[1].split("-")[0],
+      camp_num: historyOf == "topic" ? 1 : router?.query.camp && router?.query.camp[1].split("-")[0],
       change_for: historyOf,
       nick_name_id: userNickNameData[0]?.id,
       user_agreed: campStatement?.agreed_to_change ? 0 : 1,
@@ -440,26 +440,27 @@ function HistoryCard({
                           }
                           setIsModalOpen(true);
                         }}
-                        displayText={<>
+                        displayText={<p>
+                          <u>
                           {campStatement?.agreed_supporters} out of{" "}
                           {campStatement?.total_supporters} required
                           supporters have agreed
-                          {(campStatement?.ifICanAgreeAndObject || campStatement?.ifICanAgreeAndObject == undefined) && !!(
+                          </u>
+                          {/* {(campStatement?.ifICanAgreeAndObject || campStatement?.ifICanAgreeAndObject == undefined) && !!(
                             campStatement?.ifIamSupporter != 0 ||
                             campStatement?.ifIAmExplicitSupporter
                           ) &&
-                            isUserAuthenticated &&
-                            !campStatement?.isAuthor &&
+	@@ -442,13 +444,13 @@ function HistoryCard({
                             campStatement?.total_supporters -
                             campStatement?.agreed_supporters ==
                             1 &&
-                            !campStatement?.agreed_to_change && (
+                            !campStatement?.agreed_to_change && ( */}
                               <>
                                 , Since you are the last hold out, the instant
                                 you agree, this will go live.
                               </>
-                            )}
-                        </>}
+                            {/* )} */}
+                        </p>}
                         agreedSupporters={supporters?.filter((obj) => obj?.status === true)}
                         notAgreedSupporters={supporters?.filter((obj) => obj?.status === false)}
                       />
@@ -522,7 +523,7 @@ function HistoryCard({
                           size="large"
                           // disabled={historyOf == "camp" ? !campStatement?.ifICanAgreeAndObject : false}
                           id={`object-change-${campStatement?.id}`}
-                          className="flex items-center bg-[#E46B6B1A] border-[#E46B6B] hover:border-[#E46B6B] hover:text-[#E46B6B] focus:text-[#E46B6B] focus:border-[#E46B6B] justify-center rounded-[10px] gap-3.5 leading-none"
+                          className="flex items-center bg-[#E46B6B1A] border-[#E46B6B] hover:border-[#E46B6B] hover:text-[#E46B6B] focus:text-[#E46B6B] focus:border-[#E46B6B] justify-center rounded-[10px] gap-3.5 leading-none w-100"
                           onClick={() => {
                             let isModelPop = !isUserAuthenticated
                               ? true
@@ -547,7 +548,7 @@ function HistoryCard({
                             }
                           }}
                         >
-                          Objected Changes
+                          Object Changes
                           <i className="icon-thumb-down text-[#E46B6B]"></i>
                         </Button>
                       </>)
