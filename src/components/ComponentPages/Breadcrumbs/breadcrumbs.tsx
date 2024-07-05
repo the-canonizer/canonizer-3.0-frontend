@@ -26,6 +26,7 @@ function Breadcrumbs({ compareMode = false, updateId }:any) {
     })
   );
 
+  
   let payload = history && {
     camp_num: router?.query?.camp?.at(1)?.split("-")?.at(0) ?? "1",
     topic_num: router?.query?.camp?.at(0)?.split("-")?.at(0),
