@@ -22,6 +22,7 @@ export const treeSlice = createSlice({
       },
     },
     manageSupportStatusCheck: false,
+    openDrawer:false,
     manageSupportUrlLink: null,
     CurrentCheckSupportStatus: null,
     currentGetCheckSupportExistsData: {
@@ -90,6 +91,9 @@ export const treeSlice = createSlice({
     setManageSupportStatusCheck: (state, action) => {
       state.manageSupportStatusCheck = action.payload;
     },
+    setOpenDrawer: (state, action) => {
+      state.openDrawer = action.payload;
+    },
     setManageSupportUrlLink: (state, action) => {
       state.manageSupportUrlLink = action.payload;
     },
@@ -134,6 +138,7 @@ export const {
   setCurrentCheckSupportStatus,
   setCheckSupportExistsData,
   setManageSupportStatusCheck,
+  setOpenDrawer,
   setManageSupportUrlLink,
   setRemovedReasons,
   setChangeGoneLive,

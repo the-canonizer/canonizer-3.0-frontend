@@ -15,6 +15,7 @@ import CustomSkelton from "../../../common/customSkelton";
 import {
   setManageSupportStatusCheck,
   setManageSupportUrlLink,
+  setOpenDrawer
 } from "../../../../store/slices/campDetailSlice";
 
 import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
@@ -34,6 +35,10 @@ import SocialShareUI from "../../../common/socialShare";
 import GenerateModal from "src/components/common/generateScript";
 import { setIsSupportModal } from "src/store/slices/topicSlice";
 import { showLoginModal } from "src/store/slices/uiSlice";
+import RefineFilter from "../../RefineFilter";
+import LatestFilter from "../../LatestFilter";
+import Image from "next/image";
+import CampDisclaimer from "../../../common/CampDisclaimer"
 
 const CodeIcon = () => (
   <svg
@@ -48,6 +53,8 @@ const CodeIcon = () => (
     <line x1="34" y1="22" x2="30" y2="42" />
   </svg>
 );
+
+
 
 const InfoBar = ({
   payload = null,
@@ -74,6 +81,13 @@ const InfoBar = ({
     tree,
     campExist,
     campStatement,
+    selectedAlgorithm,
+    is_camp_archive_checked,
+    filteredScore,
+    includeReview,
+    is_checked,
+    selectedAsOf,
+    algorithms
   } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
     campRecord: state?.topicDetails?.currentCampRecord,
@@ -85,11 +99,18 @@ const InfoBar = ({
     tree: state?.topicDetails?.tree && state?.topicDetails?.tree[0],
     campExist: state?.topicDetails?.tree && state?.topicDetails?.tree[1],
     campStatement: state?.topicDetails?.campStatement,
+    selectedAlgorithm: state?.filters?.filterObject?.algorithm,
+    is_camp_archive_checked: state?.utils?.archived_checkbox,
+    includeReview: state?.filters?.filterObject?.includeReview,
+    filteredScore: state?.filters?.filterObject?.filterByScore,
+    is_checked: state?.utils?.score_checkbox,
+    selectedAsOf: state?.filters?.filterObject?.asof,
+    algorithms: state.homePage?.algorithms,
   }));
   const { manageSupportStatusCheck } = useSelector((state: RootState) => ({
     manageSupportStatusCheck: state.topicDetails.manageSupportStatusCheck,
   }));
-
+  const isMobile = window.matchMedia("(min-width: 1280px)").matches;
   const [campSubscriptionID, setCampSubscriptionID] = useState(
     campRecord?.subscriptionId
   );
@@ -197,7 +218,9 @@ const InfoBar = ({
       window.print();
     }, 100);
   };
-
+  const showDrawer = () => {
+   dispatch(setOpenDrawer(true))
+  };
   const campForumDropdownMenu = (
     <Menu className={styles.campForumDropdownMenu}>
       <Menu.Item
@@ -434,7 +457,9 @@ const InfoBar = ({
       setIsCampBtnVisible(true);
     }
   }, [router?.pathname]);
-
+  const lable = algorithms?.find((obj) => {
+    return obj.algorithm_key == selectedAlgorithm;
+  });
   return (
     <div
       className={`${styles.topicDetailContentHead} ${styles.inforBarHEad} printHIde`}
@@ -443,7 +468,7 @@ const InfoBar = ({
         <div
           className={`${styles.topicDetailContentHead_Left} ${styles.rightPanel}`}
         >
-          <div className="btnsWrap">
+          <div className="btnsWrap w-full">
             {isCampBtnVisible &&
             currentCampNode?._isDisabled == 0 &&
             currentCampNode?.parentIsOneLevel == 0 &&
@@ -456,7 +481,7 @@ const InfoBar = ({
                     : ""
                 }
               >
-                <Button
+                {/* <Button
                   className="btn"
                   size="large"
                   disabled={
@@ -468,7 +493,32 @@ const InfoBar = ({
                   onClick={onCreateCamp}
                 >
                   <i className="icon-camp"></i> Create New Camp
+                </Button> */}
+                <div>{!isMobile && <CampDisclaimer />}</div> 
+                 <div className="flex gap-2 flex-wrap  mt-2">
+                <Button onClick={showDrawer} className="py-[10px] px-[22px] refine w-auto refine-btn text-base font-medium  flex items-center justify-center">
+                  Refine Filter
+                  <Image
+                      src="/images/filter-con.svg"
+                      alt="svg"
+                      height={24}
+                      width={24}
+                    />
                 </Button>
+                     {(router.query.algo &&
+                        selectedAlgorithm &&
+                        lable?.algorithm_label !== undefined) ||
+                      is_camp_archive_checked ||
+                      is_checked ||
+                      selectedAsOf == "bydate" ||
+                      includeReview ||
+                      router?.query?.asof === "review" ||
+                      filteredScore != 0 ? (
+                        <LatestFilter />
+                      ) : (
+                        ""
+                      )}
+                </div>
               </Tooltip>
             ) : null}
           </div>
@@ -480,7 +530,7 @@ const InfoBar = ({
             >
               {isTopicPage && (
                 <Fragment>
-                  {loadingIndicator ? (
+                  {/* {loadingIndicator ? (
                     <div className="socail-skeleton mr-3">
                       <CustomSkelton
                         skeltonFor="list"
@@ -573,8 +623,10 @@ const InfoBar = ({
                           <MoreOutlined />
                         </a>
                       </Dropdown>
+                     
                     </>
-                  )}
+                  )} */}
+                  <RefineFilter/>
                 </Fragment>
               )}
             </Typography.Paragraph>

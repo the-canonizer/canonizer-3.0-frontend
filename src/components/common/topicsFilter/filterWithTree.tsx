@@ -11,8 +11,11 @@ import {
   Popover,
   Row,
   Col,
+  Button,
 } from "antd";
 import { LeftOutlined } from "@ant-design/icons";
+import Image from "next/image";
+
 import { RootState } from "../../../store";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsReviewCanonizedTopics } from "../../../store/slices/filtersSlice";
@@ -36,6 +39,7 @@ import FullScoreCheckbox from "../../ComponentPages/FullScoreCheckbox";
 import ArchivedCampCheckBox from "src/components/ComponentPages/ArchivedCampCheckBox";
 import CampTreeCard from "src/components/ComponentPages/TopicDetails/CampTreeCard";
 import { getTreesApi } from "src/network/api/campDetailApi";
+import { setOpenDrawer } from "../../../store/slices/campDetailSlice";
 
 const infoContent = (
   <>
@@ -82,6 +86,7 @@ const FilterWithTree = ({
   const [isDatePicker, setIsDatePicker] = useState(false);
 
   const [datePickerValue, setDatePickerValue] = useState(null);
+  const [selectedValue, setSelectedValue] = useState(null);
 
   const dispatch = useDispatch();
   const router = useRouter();
@@ -103,7 +108,7 @@ const FilterWithTree = ({
     asof,
     viewThisVersionCheck,
     asofdate,
-    algorithm
+    algorithm,
   } = useSelector((state: RootState) => ({
     algorithms: state.homePage?.algorithms,
     filteredScore: state?.filters?.filterObject?.filterByScore,
@@ -283,16 +288,14 @@ const FilterWithTree = ({
     camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
     asOf: asof,
     asofdate:
-      asof == "default" || asof == "review"
-        ? Date.now() / 1000
-        : asofdate,
+      asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
     algorithm: algorithm,
     update_all: 1,
     fetch_topic_history: viewThisVersionCheck ? 1 : null,
   };
-  const revertScore = ()=>{
-     getTreesApi(reqBodyForService)
-  }
+  const revertScore = () => {
+    getTreesApi(reqBodyForService);
+  };
   const selectAlgorithm = (value) => {
     setCookie("canAlgo", value, {
       path: "/",
@@ -310,7 +313,7 @@ const FilterWithTree = ({
       filterObject?.namespace_id,
       viewThisVersion
     );
-    revertScore()
+    revertScore();
   };
   const onChange = (e) => {
     if (e.target.value === 3) {
@@ -445,7 +448,55 @@ const FilterWithTree = ({
   function momentDateObject(e) {
     return e?._d;
   }
-
+  const handleRadioClick = (value) => {
+    setSelectedValue(value);
+  };
+  const handleApplyClick = () => {
+    if (selectedValue === 2) {
+      dispatch(setViewThisVersion(false));
+      setCookie("asof", "default", { path: "/" });
+      dispatch(
+        setFilterCanonizedTopics({
+          asofdate: Date.now() / 1000,
+          asof: "default",
+        })
+      );
+      onChangeRoute(
+        filterObject?.filterByScore,
+        filterObject?.algorithm,
+        "default",
+        Date.now() / 1000,
+        filterObject?.namespace_id,
+        viewThisVersion
+      );
+    }else if(selectedValue === 1){
+      dispatch(setViewThisVersion(false));
+      setCookie("asof", "review", {
+        path: "/",
+      });
+      dispatch(
+        setIsReviewCanonizedTopics({
+          includeReview: true,
+          asof: "review",
+          asofdate: Date.now() / 1000,
+        })
+      );
+      onChangeRoute(
+        filterObject?.filterByScore,
+        filterObject?.algorithm,
+        "review",
+        Date.now() / 1000,
+        filterObject?.namespace_id,
+        viewThisVersion
+      );
+    }else if(selectedValue === 3){
+      dispatch(setViewThisVersion(false));
+      handleAsOfClick();
+    }
+  };
+  const onClose = () => {
+    dispatch(setOpenDrawer(false));
+  };
   return (
     <div className="leftSideBar_Card drawer_card">
       <Collapse
@@ -459,31 +510,47 @@ const FilterWithTree = ({
           header={null}
           key="1"
         >
-          <Row gutter={20} className={styles.filterRow}>
-            <Col xs={12}>
-              <div className={styles.algo_title}>
+          <Row gutter={20} >
+            <Col xs={24}>
+              <div className="algo_title_new">
                 <Title level={5} className={styles.algoText}>
-                  Canonizer Algorithm:{"  "}
+                  Select Canonizer Algorithm:{"  "}{" "}
                   <Popover
                     content="Algorithm Information"
                     placement="top"
                     className={styles.algoInfoIcon}
                   >
                     {router?.asPath.includes("/topic") ? (
-                      <a href={K?.Network?.URL?.algoInfoUrl}>
-                        <i className="icon-info"></i>
+                      <a
+                        href={K?.Network?.URL?.algoInfoUrl}
+                        className="d-flex items-center "
+                      >
+                        {/* <i className="icon-info"></i>  */}
+                        <Image
+                          src="/images/circle-info-bread.svg"
+                          alt="svg"
+                          className="icon-topic"
+                          height={16}
+                          width={16}
+                        />
                       </a>
                     ) : (
                       <Link href={K?.Network?.URL?.algoInfoUrl}>
                         <a>
-                          <i className="icon-info"></i>
+                          {/* <i className="icon-info"></i>  */}
+                          <Image
+                            src="/images/circle-info-bread.svg"
+                            alt="svg"
+                            className="icon-topic"
+                            height={16}
+                            width={16}
+                          />
                         </a>
                       </Link>
                     )}
                   </Popover>
                 </Title>
-              </div>
-              <Select
+                <Select
                 size="large"
                 showSearch
                 optionFilterProp="children"
@@ -516,18 +583,33 @@ const FilterWithTree = ({
                   );
                 })}
               </Select>
+              </div>
+            
             </Col>
             <Col
-              xs={12}
+              className=""
+              xs={24}
               style={{
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "flex-end",
               }}
             >
-              <div className={styles.filter}>
-                <Text className={styles.filterText}>Filter</Text>
-                <LeftOutlined className={styles.LeftOutlined} />
+              <div className="score_value">
+                <Text className={styles.filterText}>
+                  <p className="d-flex items-center gap-1">
+                    {" "}
+                    Score value{" "}
+                    <Image
+                      src="/images/circle-info-bread.svg"
+                      alt="svg"
+                      className="icon-topic"
+                      height={16}
+                      width={16}
+                    />
+                  </p>{" "}
+                </Text>
+                {/* <LeftOutlined className={styles.LeftOutlined} />  */}
                 <Input
                   size="large"
                   onChange={filterOnScore}
@@ -542,26 +624,32 @@ const FilterWithTree = ({
                   placement="right"
                   className={styles.infoIcon}
                 >
-                  <i className="icon-info"></i>
+                  {/* <i className="icon-info"></i>  */}
                 </Popover>
               </div>
             </Col>
-            <Col md={24}>
+            {/* <Col md={24} className="mt-5">
               <div className={styles.scoreCheckbox}>
                 <FullScoreCheckbox loadingIndicator={loadingIndicator} />
               </div>
               <ArchivedCampCheckBox loadingIndicator={loadingIndicator} />
-            </Col>
-            <Col md={24}>
-              <div className={`${styles.algo_title} ${styles.title}`}>
+            </Col> */}
+            <Col xs={24} className="">
+              {/* <div className={`${styles.algo_title} ${styles.title}`}> */}
+              <div className="as-of-div">
                 <Title level={5} className={styles.algoText}>
                   As Of
                   <Popover content={asContent} placement="right">
-                    <i className="icon-info"></i>
+                    <Image
+                      src="/images/circle-info-bread.svg"
+                      alt="svg"
+                      className="icon-topic"
+                      height={16}
+                      width={16}
+                    />
                   </Popover>
                 </Title>
-              </div>
-              <Space
+                <Space
                 direction="horizontal"
                 style={{ gap: "12px", width: "100%" }}
                 className={styles.radioInputs}
@@ -573,95 +661,67 @@ const FilterWithTree = ({
                   className={styles.radioBtns}
                   id="radio_group"
                 >
-                  <Space direction="horizontal" style={{ gap: "12px" }}>
-                    <Radio
-                      className={styles.radio + " topicFilterRadio"}
-                      value={1}
-                      onClick={() => {
-                        dispatch(setViewThisVersion(false));
-                        setCookie("asof", "review", {
-                          path: "/",
-                        });
-                        dispatch(
-                          setIsReviewCanonizedTopics({
-                            includeReview: true,
-                            asof: "review",
-                            asofdate: Date.now() / 1000,
-                          })
-                        );
-                        onChangeRoute(
-                          filterObject?.filterByScore,
-                          filterObject?.algorithm,
-                          "review",
-                          Date.now() / 1000,
-                          filterObject?.namespace_id,
-                          viewThisVersion
-                        );
-                      }}
-                      id="review_input"
-                    >
-                      Include review
-                    </Radio>
+                  <Space
+                    direction="horizontal"
+                    style={{
+                      gap: "12px",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "flex-start",
+                    }}
+                  >
                     <Radio
                       className={styles.radio + " topicFilterRadio"}
                       value={2}
-                      onClick={() => {
-                        dispatch(setViewThisVersion(false));
-                        setCookie("asof", "default", {
-                          path: "/",
-                        });
-                        dispatch(
-                          setFilterCanonizedTopics({
-                            asofdate: Date.now() / 1000,
-                            asof: "default",
-                          })
-                        );
-                        onChangeRoute(
-                          filterObject?.filterByScore,
-                          filterObject?.algorithm,
-                          "default",
-                          Date.now() / 1000,
-                          filterObject?.namespace_id,
-                          viewThisVersion
-                        );
-                      }}
+                     onClick={()=>{handleRadioClick(2)}}
                       id="default_input"
                     >
                       Default
                     </Radio>
                     <Radio
                       className={styles.radio + " topicFilterRadio"}
-                      value={3}
+                      style={{ width: "100%" }}
+                      value={1}
                       onClick={() => {
-                        dispatch(setViewThisVersion(false));
-                        handleAsOfClick();
+                        handleRadioClick(1)
                       }}
-                      id="as_input"
+                      id="review_input"
                     >
-                      As of date
+                      Include review
                     </Radio>
-                  </Space>
-                </Radio.Group>
-                <div className="d-flex">
-                  <DatePicker
-                    disabled={
-                      isDatePicker || selectedAsOf == "bydate" ? false : true
-                    }
-                    format="YYYY-MM-DD"
-                    defaultValue={moment(current_date_filter * 1000)}
-                    value={moment(selectedAsOFDate * 1000)}
-                    suffixIcon={<i className="icon-calendar"></i>}
-                    size={"large"}
-                    className={`${styles.date} ${styles.dates} w-100`}
-                    onChange={pickDate}
-                    inputReadOnly={true}
-                    disabledDate={(current) =>
-                      current &&
-                      current > moment(current_date_filter).endOf("day")
-                    }
-                    id="date_input"
-                  />
-                  <Popover
+                    <div className="d-flex justify-between items-center">
+                      <Radio
+                        className={styles.radio + " topicFilterRadio"}
+                        value={3}
+                        onClick={() => {
+                          handleRadioClick(3)
+                        }}
+                        id="as_input"
+                      >
+                        Set Custom date
+                      </Radio>
+                      <div className="d-flex">
+                        <DatePicker
+                          disabled={
+                            isDatePicker || selectedAsOf == "bydate"
+                              ? false
+                              : true
+                          }
+                          format="YYYY-MM-DD"
+                          defaultValue={moment(current_date_filter * 1000)}
+                          value={moment(selectedAsOFDate * 1000)}
+                          suffixIcon={<i className="icon-calendar"></i>}
+                          size={"large"}
+                          className={`${styles.date} ${styles.dates} w-100`}
+                          onChange={pickDate}
+                          inputReadOnly={true}
+                          disabledDate={(current) =>
+                            current &&
+                            current > moment(current_date_filter).endOf("day")
+                          }
+                          id="date_input"
+                        />
+                        {/* <Popover
                     content={""}
                     placement="right"
                     className={styles.infoIcon}
@@ -670,13 +730,20 @@ const FilterWithTree = ({
                       className="icon-info"
                       style={{ visibility: "hidden", width: "40px" }}
                     ></i>
-                  </Popover>
-                </div>
+                  </Popover> */}
+                      </div>
+                    </div>
+                  </Space>
+
+                </Radio.Group>
               </Space>
+              </div>
+             
             </Col>
             <Col md={24}>
-              <div className={styles.treeContainer}>
-                <CampTreeCard
+              <div className={styles.treeContainer} style={{visibility: "hidden", height: 0}}> 
+                {/* this visibility style is for temprory purpose for refine filter */}
+                 <CampTreeCard
                   getTreeLoadingIndicator={getTreeLoadingIndicator}
                   scrollToCampStatement={scrollToCampStatement}
                   setTotalCampScoreForSupportTree={
@@ -685,9 +752,30 @@ const FilterWithTree = ({
                   backGroundColorClass={backGroundColorClass}
                   setSupportTreeForCamp={setSupportTreeForCamp}
                   isForumPage={isForumPage}
-                />
+                /> 
               </div>
             </Col>
+
+            
+              <Col xs={24} className=" refine-drawer-mobile sm:p-0 ">
+                <div className="flex items-center justify-between sm:gap-0 lg:gap-2 btn-parent relative lg:px-1 sm:px-0 ">
+                  <Button className="btnCancel" onClick={onClose}>
+                    Cancel
+                  </Button>
+                  
+                  <Button className="btnApplyfilters" onClick={handleApplyClick}>
+                    Apply
+                    <Image
+                      src="/images/filterbtn-icon.svg"
+                      alt="svg"
+                      className="icon-topic"
+                      height={24}
+                      width={24}
+                    />
+                  </Button>
+                </div>
+              </Col>
+          
           </Row>
         </Panel>
       </Collapse>

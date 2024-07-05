@@ -29,16 +29,15 @@ function CustomLayout(props: any) {
   };
 
   return (
-    <Layout className={`w-100 ${props?.className}`}>
-      {!props?.withOutHeader ? (
-        <Header
-          className={`px-4 md:px-7 h-auto bg-white shadow-lg mb-10 printHIde`}
-          data-testid="main_header"
-        >
-          <MainHeader />
-        </Header>
-      ) : null}
 
+    <Layout className={`w-100`}>
+      <Header
+        className={`px-6 md:px-4 h-auto bg-white shadow-lg  mb-4 md:mb-4 printHIde sm:mb-0 xs:mb-0`}
+        data-testid="main_header"
+      >
+        <MainHeader />
+        
+      </Header>
       {props?.afterHeader ? (
         <div className="px-4 md:px-7 my-3 mb-10">{props?.afterHeader}</div>
       ) : null}
