@@ -6,6 +6,7 @@ import {
   Checkbox,
   Collapse,
   Divider,
+  Empty,
   Tag,
   Tooltip,
   Typography,
@@ -544,9 +545,9 @@ function HistoryContainer() {
               {campHistory && campHistory?.items?.length > 0 ?
                 <div className="ch-content lg:w-[calc(100%-320px)] p-8 bg-[#F4F5FA] rounded-lg max-md:w-full relative">
                   {renderCampHistories}
-                </div> : <>
-                  <NoRecordsMessage />
-                </>
+                </div> : <div className="no-data-wrapper ch-content lg:w-[calc(100%-320px)] p-8 bg-[#F4F5FA] rounded-lg max-md:w-full relative">
+                  <Empty />
+                </div>
               }
             </>
           ) : (
@@ -561,9 +562,9 @@ function HistoryContainer() {
                   >
                     {renderCampHistories}
                   </InfiniteScroll>
-                </div> : <>
-                  <NoRecordsMessage />
-                </>
+                </div> : <div className="no-data-wrapper ch-content lg:w-[calc(100%-320px)] p-8 bg-[#F4F5FA] rounded-lg max-md:w-full relative">
+                  <Empty />
+                </div>
               }
             </>
           )}
