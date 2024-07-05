@@ -144,7 +144,7 @@ function HistoryCard({
     let reqBody = {
       record_id: campStatement.id,
       topic_num: router?.query.camp[0].split("-")[0],
-      camp_num: historyOf == "topic" ? 1 : router?.query.camp[1].split("-")[0],
+      camp_num: historyOf == "topic" ? 1 : router?.query.camp && router?.query.camp[1].split("-")[0],
       change_for: historyOf,
       nick_name_id: userNickNameData[0]?.id,
       user_agreed: campStatement?.agreed_to_change ? 0 : 1,
