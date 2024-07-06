@@ -21,15 +21,15 @@ $sidebar_width_small: 350px;
   }
 
   &.withRightsideBar .contentBox {
-    width: calc(100% - $sidebar_width);
+    width: calc(100% - ($sidebar_width + 50px));
   }
 
   &.withLeftsideBar .contentBox {
-    width: calc(100% - $sidebar_width);
+    width: calc(100% - ($sidebar_width + 50px));
   }
 
   &.withBothsideBar .contentBox {
-    width: calc(100% - $sidebar_width * 2);
+    width: calc(100% - ($sidebar_width + 50px) * 2);
   }
 
   @media screen and (max-width: 1024px) {

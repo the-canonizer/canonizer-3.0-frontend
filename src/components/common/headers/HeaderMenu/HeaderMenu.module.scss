@@ -16,6 +16,11 @@
           display: none;
         }
       }
+      &:nth-child(3) {
+        &::before {
+          display: none;
+        }
+      }
     }
   }
   @media screen and (max-width: 1024px) {
@@ -30,6 +35,8 @@
     padding: 30px 30px;
     transform: translateX(-500em);
     transition: all 0.3s;
+    display: flex;
+    flex-flow: column;
     &.open {
       transform: translateX(0);
     }

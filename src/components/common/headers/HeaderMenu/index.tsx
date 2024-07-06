@@ -13,6 +13,8 @@ import {
   GlobalOutlined,
   CloseOutlined,
   ArrowRightOutlined,
+  VideoCameraOutlined,
+  BellOutlined,
 } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 
@@ -27,6 +29,7 @@ import { logout } from "src/network/api/userApi";
 import { getGravatarPicApi } from "src/network/api/notificationAPI";
 import Logo from "../logoHeader";
 import { useIsMobile } from "src/hooks/useIsMobile";
+import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 
 const menuItems = [
   {
@@ -42,25 +45,26 @@ const menuItems = [
     id: 2,
     icon: <GlobalOutlined />,
   },
-  {
-    link: "/create/topic",
-    linkTitle: "Start a Topic",
-    id: 3,
-    isMobile: true,
-    icon: <PlusOutlined />,
-  },
+  // {
+  //   link: "/create/topic",
+  //   linkTitle: "Start a Topic",
+  //   id: 3,
+  //   isMobile: true,
+  //   icon: <PlusOutlined />,
+  // },
   // {
   //   link: process.env.NEXT_PUBLIC_BLOG_URL,
   //   linkTitle: "Blog",
   //   id: 5,
   //   external: true,
   // },
-  {
-    link: "/videos/consciousness",
-    linkTitle: "Videos",
-    id: 6,
-    icon: <QuestionCircleOutlined />,
-  },
+  // {
+  //   link: "/videos/consciousness",
+  //   linkTitle: "Videos",
+  //   id: 6,
+  //   icon: <QuestionCircleOutlined />,
+  // },
+
   {
     link: "/topic/132-Help/1-Agreement?is_tree_open=1",
     linkTitle: "Help",
@@ -68,11 +72,24 @@ const menuItems = [
     icon: <QuestionCircleOutlined />,
   },
   {
+    link: "/topic/132-Help/1-Agreement?is_tree_open=1",
+    linkTitle: "Notifications",
+    id: 4,
+    icon: <BellOutlined />,
+  },
+  {
     link: "/settings",
     linkTitle: "Settings",
     id: 5,
     isMobile: true,
     icon: <SettingOutlined />,
+  },
+  {
+    link: "/settings?tab=supported_camps",
+    linkTitle: "Supported Camps",
+    id: 5,
+    isMobile: true,
+    icon: <CheckCircleOutlined />,
   },
 ];
 
@@ -98,6 +115,7 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
 
   const ListItem = ({ cls = "", ...props }) => (
     <li
+      // className={`flex-auto px-2 lg:px-2 md:px-2 sm:px-2 lg:before:hidden lg:after:hidden rounded-lg ${styles.listItem} ${cls}`} //vikas changes
       className={`flex-auto px-3 before:hidden after:hidden lg:before:block lg:after:block rounded-lg ${styles.listItem} ${cls}`}
       key={props.key}
     >
@@ -159,6 +177,11 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
     setActive(!isActive);
   };
 
+  const onSignOutClick = (e) => {
+    e?.preventDefault();
+    logOut(router);
+  };
+
   return (
     <Fragment>
       <nav
@@ -194,22 +217,22 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
               </a>
             </Link>
           </div>
-        ) : (
-          <Typography.Paragraph className="font-semibold mt-4 text-sm h-[30px] block lg:hidden">
-            Hi {loggedInUser?.first_name}!
-          </Typography.Paragraph>
-        )}
+        ) : null}
         <ul className="flex text-sm font-inter font-medium flex-col lg:flex-row lg:items-center mt-4 lg:mt-0">
           <ListItem
             cls={`create-topic-header-link ${
               router?.asPath === "/create/topic" ? styles.active : ""
-            } hidden lg:flex`}
+            } ${isMobile ? "mb-5 !pl-0" : ""}`}
             key="create-topic-li"
           >
             <CreateTopic
               className={
                 isUserAuthenticated
-                  ? `border-[1px] px-3 py-2 rounded-lg border-canBlue`
+
+                  ? `border-[1px] px-3 py-2 rounded-lg border-canBlue bg-[#98B7E61A] ${
+                      isMobile ? "bg-canBlue text-white rounded-md" : ""
+                    }`
+
                   : `hover:text-canHoverBlue`
               }
               isWithIcon={isUserAuthenticated}
@@ -223,6 +246,11 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
                 } ${
                   item.linkTitle?.toLowerCase() === "start a topic"
                     ? "create-topic-header-link"
+                    : ""
+                } ${
+                  isUserAuthenticated &&
+                  item.linkTitle?.toLowerCase() === "browse"
+                    ? "before:!hidden after:!hidden"
                     : ""
                 }`}
                 key={item.id + "_" + item.link + "___" + idx}
@@ -241,12 +269,13 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
           {isUserAuthenticated ? (
             <ListItem
               key="notification-li"
-              cls="after:content-['|'] after:absolute after:ml-[10px] after:text-[darkgray] hidden lg:block after:!hidden before:!top-[5px]"
+              cls="after:content-['|'] after:absolute after:ml-[10px] after:text-[darkgray] hidden lg:block after:top-[5px] after:right-0 before:!top-[5px]"
             >
               <Notifications />
             </ListItem>
           ) : null}
           {isUserAuthenticated ? (
+            // <ListItem key="profile-li" cls="sm:hidden md:hidden hidden"> //vikas changes
             <ListItem
               key="profile-li"
               cls="hidden lg:flex justify-center items-center !pr-0"
@@ -267,8 +296,39 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
             </ListItem>
           )}
         </ul>
+        {isMobile ? (
+          <div className="mt-auto flex justify-between items-center">
+            <div className="flex items-center">
+              <ProfileInfoTab
+                isGravatarImage={isGravatarImage}
+                loadingImage={loadingImage}
+                loggedUser={loggedInUser}
+                toggleMobNav={""}
+                logOut={""}
+                isMobile={false}
+                menu={menu}
+                withoutDropdown={true}
+              />
+              <div className="ml-3">
+                <Typography.Paragraph className="font-medium text-canBlack !mb-0 text-sm h-auto block lg:hidden">
+                  {loggedInUser?.first_name} {loggedInUser?.last_name}
+                </Typography.Paragraph>
+                <Typography.Paragraph className="font-medium text-canLight !mb-0 text-xs h-auto block lg:hidden">
+                  {loggedInUser?.email}!
+                </Typography.Paragraph>
+              </div>
+            </div>
+            <Button
+              type="link"
+              className="bg-[#E46B6B1A] text-canRed flex items-center justify-center"
+              onClick={onSignOutClick}
+            >
+              <LogoutOutlined className="text-lg" />
+            </Button>
+          </div>
+        ) : null}
       </nav>
-      {isMobile ? (
+      {/* {isMobile ? (
         isUserAuthenticated ? (
           <Fragment>
             <div
@@ -290,7 +350,7 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
             </div>
           </Fragment>
         ) : null
-      ) : null}
+      ) : null} */}
       <Button
         size="middle"
         className="border-0 p-0 block -mt-2 lg:hidden ml-2 md:ml-0"

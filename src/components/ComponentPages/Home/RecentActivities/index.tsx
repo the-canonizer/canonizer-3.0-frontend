@@ -25,9 +25,9 @@ import { setIsChecked } from "src/store/slices/recentActivitiesSlice";
 import { getTopicActivityLogApi } from "src/network/api/campDetailApi";
 import { getProperties } from "src/utils/generalUtility";
 import ReasonsActivity from "src/components/common/SupportReasonActivity";
-import Headings from "components/shared/Typography";
 import CommonCard from "src/components/shared/Card";
 import SeeMoreLInk from "../FeaturedTopic/seeMoreLink";
+import SectionHeading from "../FeaturedTopic/sectionsHeading";
 
 const antIcon = <LoadingOutlined spin />;
 
@@ -192,32 +192,44 @@ export default function RecentActivities() {
   }
 
   const covertToTime = (unixTime) => {
+    // let uTime = new Date(unixTime * 1000);
+    // var year = uTime.getFullYear();
+    // var month = uTime.toDateString().split(" ")[1];
+    // var date = uTime.getDate();
+    // var time = uTime.toLocaleTimeString();
+    // var convertedTime = month + " " + date + ", " + year + ", " + time;
+    // return " " + convertedTime;
+
     let uTime = new Date(unixTime * 1000);
-    var year = uTime.getFullYear();
-    var month = uTime.toDateString().split(" ")[1];
-    var date = uTime.getDate();
-    var time = uTime.toLocaleTimeString();
-    var convertedTime = month + " " + date + ", " + year + ", " + time;
-    return " " + convertedTime;
+    let formattedTime = new Intl.DateTimeFormat("en-US", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    }).format(uTime);
+    return formattedTime.replace(",", "").replace(" at", ",");
   };
 
   const ViewAllTopics = (isTopic) => {
-    const ViewAllName = isTopic ? "View All Topics" : "View All Threads";
-    return (
-      recentActivities?.topics?.length > 0 && (
-        <div className="flex justify-end">
-          <Link
-            href={{ pathname: "/activities", query: { tabName: selectedTab } }}
-            as="/activities"
-          >
-            <a className="font-semibold text-canBlue flex items-center">
-              <Text>{ViewAllName}</Text>
-              <i className="icon-angle-right ml-1"></i>
-            </a>
-          </Link>
-        </div>
-      )
-    );
+    return null;
+    // const ViewAllName = isTopic ? "View All Topics" : "View All Threads";
+    // return (
+    //   recentActivities?.topics?.length > 0 && (
+    //     <div className="flex justify-end">
+    //       <Link
+    //         href={{ pathname: "/activities", query: { tabName: selectedTab } }}
+    //         as="/activities"
+    //       >
+    //         <a className="font-semibold text-canBlue flex items-center">
+    //           <Text>{ViewAllName}</Text>
+    //           <i className="icon-angle-right ml-1"></i>
+    //         </a>
+    //       </Link>
+    //     </div>
+    //   )
+    // );
   };
 
   const LoadMoreTopics = (topicType) => {
@@ -266,18 +278,20 @@ export default function RecentActivities() {
 
   return (
     <Fragment>
-      <Row gutter={15} className="mt-5">
-        <Col md={12} sm={12} xs={24} className="mb-3">
-          <Headings level={5} className="mb-0 text-sm font-bold uppercase">
-            Recent activities
-          </Headings>
+      <Row gutter={15}>
+        <Col md={12} sm={12} xs={12}>
+          <SectionHeading
+            title="Recent activities"
+            infoContent=""
+            icon={null}
+          />
         </Col>
-        <Col md={12} sm={12} xs={24} className="text-right">
+        <Col md={12} sm={12} xs={12} className="text-right">
           <SeeMoreLInk href="/activities" />
         </Col>
       </Row>
-      <div className="mt-2">
-        <CommonCard className="border-0 h-100 hocus:!bg-canGray">
+      <div className="mt-3">
+        <CommonCard className="border-0 h-100 hocus:!bg-canGray !bg-white [&_.ant-card-body]:p-0 [&_.ant-card-body]:lg:p-[24px] lg:!bg-canGray">
           {userData?.is_admin &&
           !router?.query?.camp_num &&
           !router?.query?.topic_num ? (
@@ -297,7 +311,7 @@ export default function RecentActivities() {
           ) : null}
           <div className="bg-white border p-2 rounded-lg">
             <Tabs
-              className={`[&_.ant-tabs-nav]:mb-0 [&_.ant-tabs-nav-wrap]:w-full [&_.ant-tabs-nav-wrap]:justify-center [&_.ant-tabs-nav-list]:justify-evenly [&_.ant-tabs-nav-list]:w-full px-2 [&_.ant-tabs-tab-btn]:!text-canBlue ${
+              className={`[&_.ant-tabs-nav]:mb-0 [&_.ant-tabs-nav-wrap]:w-full [&_.ant-tabs-nav-wrap]:justify-center [&_.ant-tabs-nav-list]:justify-evenly [&_.ant-tabs-nav-list]:w-full px-2 [&_.ant-tabs-tab-btn]:!text-canBlue [&_.ant-tabs-tab-btn]:!px-4 [&_.ant-tabs-ink-bar]:!h-[3px] ${
                 router?.query?.camp_num && router?.query?.topic_num
                   ? "hidden"
                   : ""
@@ -392,10 +406,9 @@ export default function RecentActivities() {
                                 </Text>
                               </Text>
                               <Text
-                                className="text-balack opacity-[0.5] font-normal font-inter text-[12px] block mt-1"
+                                className="text-canBlack opacity-[0.5] font-normal font-inter text-[12px] block mt-1"
                                 type="secondary"
                               >
-                                <i className="icon-calendar mr-1"></i>
                                 {covertToTime(activity.updated_at)}
                               </Text>
                             </Fragment>
@@ -459,10 +472,9 @@ export default function RecentActivities() {
                                 </Text>
                               </Text>
                               <Text
-                                className="text-balack opacity-[0.5] font-normal font-inter text-[12px] block mt-1"
+                                className="text-canBlack opacity-[0.5] font-normal font-inter text-[12px] block mt-1"
                                 type="secondary"
                               >
-                                <i className="icon-calendar mr-1"></i>
                                 {covertToTime(activity.updated_at)}
                               </Text>
                             </a>

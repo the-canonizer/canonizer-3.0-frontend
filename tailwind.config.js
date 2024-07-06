@@ -9,6 +9,17 @@ module.exports = {
       inter: '"Inter", sans-serif',
     },
     extend: {
+      boxShadow: {
+        'camp-light': '0 10px 20px 0px rgba(49, 80, 114, 0.2)',
+      },
+      spacing: {
+        1: "8px",
+        2: "12px",
+        3: "16px",
+        4: "24px",
+        5: "32px",
+        6: "48px",
+      },
       colors: {
         canBlue: "#5482C8",
         canHoverBlue: "#326DC7",
@@ -23,6 +34,11 @@ module.exports = {
         canGrey2: "#CCD4E7",
         canGrey3: "#696E78",
         canLight: "#777F93",
+        canBlue2: "#D0D8F4",
+      },
+      backgroundImage: {
+        "custom-gradient":
+          "linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000000 100%)",
       },
       screens: {
         sm: "576px",
@@ -45,7 +61,10 @@ module.exports = {
   plugins: [
     require("@tailwindcss/aspect-ratio"),
     require("@tailwindcss/container-queries"),
-    require("tailwind-scrollbar")({ nocompatible: true, preferredStrategy: 'pseudoelements' }),
+    require("tailwind-scrollbar")({
+      nocompatible: true,
+      preferredStrategy: "pseudoelements",
+    }),
     plugin(function ({ addVariant }) {
       addVariant("optional", "&:optional");
       addVariant("hocus", ["&:hover", "&:focus"]);

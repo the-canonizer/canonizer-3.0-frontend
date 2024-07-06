@@ -1,4 +1,4 @@
-import { Typography, Button, Row, Col } from "antd";
+import { Typography, Button, Row, Col, Popover } from "antd";
 import { DeleteOutlined, LeftOutlined } from "@ant-design/icons";
 
 import Lists from "./List";
@@ -14,7 +14,7 @@ const getCount = (data) => {
   let unreadCount = 0;
 
   data.forEach((notification) => {
-    if (notification.is_read === 1) {
+    if (notification.is_seen === 1) {
       readCount++;
     } else {
       unreadCount++;
@@ -26,6 +26,7 @@ const getCount = (data) => {
 
 const NotificationsListUI = ({
   list,
+  rendredNotsList,
   isLoading,
   onBackClick,
   onAllReadClick,
@@ -65,13 +66,20 @@ const NotificationsListUI = ({
       id="card-title"
       extra={
         <div className="flex justify-between items-center">
-          <Button
-            onClick={onAllReadClick}
-            type="link"
-            className="text-canBlue hover:text-canHoverBlue font-medium text-md mr-10 py-0"
+          <Popover
+            content={
+              unreadCount === 0 ? "currently no unread notifications" : ""
+            }
           >
-            Mark all as read
-          </Button>
+            <Button
+              onClick={onAllReadClick}
+              type="link"
+              className="text-canBlue hover:text-canHoverBlue font-medium text-md mr-10 py-0"
+              disabled={unreadCount === 0}
+            >
+              Mark all as read
+            </Button>
+          </Popover>
           <NotificationSwitch key="notificatoin-page-switch" />
         </div>
       }
@@ -116,17 +124,26 @@ const NotificationsListUI = ({
                 isButton={false}
               />
             ) : (
-              <Lists list={list} isFooter={false} LoadMoreTopics={null} />
+              <Lists
+                list={rendredNotsList}
+                isFooter={false}
+                LoadMoreTopics={null}
+              />
             )}
           </div>
-          <Button
-            onClick={onAllDelete}
-            type="link"
-            className="text-canRed hover:text-canOrange font-medium text-md mt-4 py-0 float-right flex items-center justify-center"
+          <Popover
+            content={list?.length === 0 ? "currently no notification" : ""}
           >
-            <DeleteOutlined />
-            Delete All Notifications
-          </Button>
+            <Button
+              onClick={onAllDelete}
+              type="link"
+              className="text-canRed hover:text-canOrange font-medium text-md mt-4 py-0 float-right flex items-center justify-center"
+              disabled={list?.length === 0}
+            >
+              <DeleteOutlined />
+              Delete All Notifications
+            </Button>
+          </Popover>
         </Col>
       </Row>
     </CommonCards>

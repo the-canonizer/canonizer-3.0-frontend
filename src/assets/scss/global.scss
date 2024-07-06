@@ -579,6 +579,7 @@ del.diffmod img {
     &.drawer_card {
       padding: 0;
       border: none;
+      height: 100%;
     }
   }
 
@@ -3013,6 +3014,7 @@ div[role="option"]::before {
 .layout_pageWrap__Yr98j .layout_contentArea__WiOLg.layout_eventListArea__WsP_p {
   display: flex;
   flex-wrap: wrap;
+  position: relative;
 }
 
 .layout_pageWrap__Yr98j .layout_contentArea__WiOLg {
@@ -3383,4 +3385,141 @@ div[role="option"]::before {
       }
     }
   }
+}
+
+@media screen and (max-width: 767px) {
+  .topicDetails_breadcrumbLinks__7BG2D{
+    margin-left: 5px;
+  }
+  .ant-drawer-body:has(.drawer_card) {
+    padding: 0 !important;
+  }
+  .topicDetails_topicDetailContentHead__ADZg_.topicDetails_inforBarHEad__MYFjt.printHIde{
+   
+    padding-top: 30px !important;
+}
+  .btn-parent {
+    button {
+      width: 50%;
+    }
+    .topicListFilter_cardAccordian__60JTB,
+    .topicListFilterCardCollapse.ant-collapse .ant-collapse-item,
+    .ant-row.topicListFilter_filterRow__pqywv {
+      height: 100%;
+    }
+
+    .ant-collapse-content.ant-collapse-content-active {
+      height: 100%;
+    }
+    .ant-collapse-content-box {
+      height: 100%;
+    }
+    .ant-drawer-body {
+      padding: 0;
+    }
+    .ant-drawer-body {
+      padding-bottom: 0px !important;
+    }
+  }
+
+  .btn-parent {
+    .btnApplyfilters {
+      border: none !important;
+      border-radius: 0px;
+      height: 67px;
+      background: #5482c8;
+      color: #fff !important;
+    }
+
+    .btnCancel {
+      border-top: 1px solid #dde2ee !important;
+      border-bottom: none !important;
+      border-right: none !important;
+      border-left: none !important;
+
+      border-radius: 0px;
+      height: 67px;
+    }
+  }
+
+  .custom-collapse .ant-drawer-content {
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+  }
+}
+
+
+
+.algo_title_new {
+  border-bottom: 1px solid #dde2ee;
+  margin-bottom: 15px;
+  padding: 20px 20px;
+}
+.score_value {
+  margin-bottom: 15px;
+  padding: 10px 20px 30px 20px;
+  width: 100%;
+  border-bottom: 1px solid #dde2ee;
+}
+.as-of-div{
+  margin-bottom: 15px;
+  padding: 10px 20px 30px 20px;
+  width: 100%;
+}
+
+ 
+    .manage_camp_btn {
+      border: 1px solid #5482c8;
+      height: 40px !important;
+      padding: 10px 13px;
+
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      //styleName: Heading/H3/Medium;
+      font-family: Inter;
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 22px;
+      text-align: center;
+      color: #242b37;
+      background: #5482c8 !important;
+
+      // &:first-child {
+      //   background: #5482c8 !important;
+        color: #fff;
+
+      //   align-items: center;
+      // }
+    }
+  
+
+  .create-new-camp-btn {
+    border: 1px solid #5482c8;
+
+    padding: 10px 13px;
+
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    //styleName: Heading/H3/Medium;
+    font-family: Inter;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 22px;
+    text-align: center;
+    color: #242b37;
+    background: rgba(152, 183, 230, 0.1);
+  }
+
+
+
+@media  (min-width:1024px) and (max-width:1150px) {
+  .ant-select-single.ant-select-customize-input .ant-select-selector .ant-select-selection-search {
+    position: static;
+    width: 60%;
+}
+  
 }
