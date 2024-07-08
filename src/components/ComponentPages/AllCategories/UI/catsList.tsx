@@ -3,9 +3,9 @@ import { LeftOutlined } from "@ant-design/icons";
 
 import CommonCards from "components/shared/Card";
 import Category from "./singleCat";
-import Paginations from "components/shared/Paginations";
+// import Paginations from "components/shared/Paginations";
 import SortByDropdown from "./sortByDropdown";
-import SearchBar from "./searchBar";
+// import SearchBar from "./searchBar";
 
 const { Title, Paragraph } = Typography;
 
@@ -13,13 +13,13 @@ const CatsList = ({
   onBackClick,
   isMobile,
   tags,
-  total,
-  onPageChange,
-  pageSize,
-  current,
+  // total,
+  // onPageChange,
+  // pageSize,
+  // current,
   onSort,
-  onSearchChange,
-  onSearchKeyUp,
+  // onSearchChange,
+  // onSearchKeyUp,
 }) => {
   return (
     <CommonCards
@@ -37,17 +37,17 @@ const CatsList = ({
       }
       className={`bg-white mb-6 border-0 [&_.ant-card-head]:border-0 mainCard ${
         isMobile
-          ? "[&.mainCard>.ant-card-head>.ant-card-head-wrapper]:flex-col [&.mainCard>.ant-card-head>.ant-card-head-wrapper>.ant-card-extra]:w-full [&.mainCard>.ant-card-head>.ant-card-head-wrapper>.ant-card-extra]:text-right [&.mainCard>.ant-card-head>.ant-card-head-wrapper>.ant-card-head-title]:w-full [&.mainCard>.ant-card-head>.ant-card-head-wrapper>.ant-card-head-title]:h-full"
+          ? "[&.mainCard>.ant-card-head>.ant-card-head-wrapper]:flex-col [&.mainCard>.ant-card-head>.ant-card-head-wrapper]:sm:flex-row [&.mainCard>.ant-card-head>.ant-card-head-wrapper>.ant-card-extra]:sm:w-4/12 [&.mainCard>.ant-card-head>.ant-card-head-wrapper>.ant-card-extra]:text-right [&.mainCard>.ant-card-head>.ant-card-head-wrapper>.ant-card-head-title]:w-full [&.mainCard>.ant-card-head>.ant-card-head-wrapper>.ant-card-head-title]:sm:w-8/12 [&.mainCard>.ant-card-head>.ant-card-head-wrapper>.ant-card-head-title]:h-full"
           : ""
       }`}
       id="card-title"
       extra={
         isMobile ? (
           <div className="flex justify-end">
-            <SearchBar
+            {/* <SearchBar
               onSearchChange={onSearchChange}
               onSearchKeyUp={onSearchKeyUp}
-            />
+            /> */}
             <SortByDropdown onSort={onSort} />
           </div>
         ) : null
@@ -66,10 +66,10 @@ const CatsList = ({
         </Col>
         {!isMobile && (
           <Col lg={12} className="flex justify-end items-center">
-            <SearchBar
+            {/* <SearchBar
               onSearchChange={onSearchChange}
               onSearchKeyUp={onSearchKeyUp}
-            />
+            /> */}
             <SortByDropdown onSort={onSort} />
           </Col>
         )}
@@ -81,7 +81,7 @@ const CatsList = ({
         ))}
       </div>
 
-      <Paginations
+      {/* <Paginations
         total={total}
         showSizeChanger
         showQuickJumper
@@ -92,7 +92,7 @@ const CatsList = ({
         onChange={onPageChange}
         current={current}
         pageSizeOptions={[12, 24, 48, 96, 200]}
-      />
+      /> */}
     </CommonCards>
   );
 };
