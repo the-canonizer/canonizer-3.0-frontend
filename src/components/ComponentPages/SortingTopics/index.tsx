@@ -16,8 +16,8 @@ const SortTopics = () => {
   // State from Redux
   const { sortLatestTopic, sortScoreViewTopic } = useSelector(
     (state: RootState) => ({
-      sortLatestTopic: state.utils.sortLatestTopic,
-      sortScoreViewTopic: state.utils.sortScoreViewTopic,
+      sortLatestTopic: state?.utils?.sortLatestTopic,
+      sortScoreViewTopic: state?.utils?.sortScoreViewTopic,
     })
   );
 
