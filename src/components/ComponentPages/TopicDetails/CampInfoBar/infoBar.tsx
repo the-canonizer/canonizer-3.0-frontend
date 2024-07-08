@@ -15,6 +15,7 @@ import CustomSkelton from "../../../common/customSkelton";
 import {
   setManageSupportStatusCheck,
   setManageSupportUrlLink,
+  setOpenConsensusTreePopup,
   setOpenDrawer
 } from "../../../../store/slices/campDetailSlice";
 
@@ -117,7 +118,9 @@ const InfoBar = ({
   const [topicSubscriptionID, setTopicSubscriptionID] = useState(
     topicRecord?.topicSubscriptionId
   );
-
+  const { openConsensusTreePopup } = useSelector((state: RootState) => ({
+    openConsensusTreePopup: state.topicDetails.openConsensusTreePopup,
+  }));
   useEffect(() => {
     if (isTopicPage) {
       if (didMount.current) {
@@ -221,6 +224,9 @@ const InfoBar = ({
   const showDrawer = () => {
    dispatch(setOpenDrawer(true))
   };
+  const showConsensusTree = () => {
+    dispatch(setOpenConsensusTreePopup(!openConsensusTreePopup))
+   };
   const campForumDropdownMenu = (
     <Menu className={styles.campForumDropdownMenu}>
       <Menu.Item
@@ -496,6 +502,15 @@ const InfoBar = ({
                 </Button> */}
                 <div>{!isMobile && <CampDisclaimer />}</div> 
                  <div className="flex gap-2 flex-wrap  mt-2">
+                 <Button onClick={showConsensusTree} className="text-[#242B37] border border-[#CCD4E7] py-[10px] px-[22px] refine w-auto refine-btn text-base font-medium  flex items-center justify-center bg-[#F8F8FC]">
+                 Consesnus Tree
+                 <Image
+                      src="/images/caret-icon.svg"
+                      alt="svg"
+                      height={7}
+                      width={14}
+                    />
+                </Button>
                 <Button onClick={showDrawer} className="py-[10px] px-[22px] refine w-auto refine-btn text-base font-medium  flex items-center justify-center">
                   Refine Filter
                   <Image
