@@ -81,6 +81,39 @@ const CampHistory = ({ campStatement, topicNamespaceId }: any) => {
             <p>
                 Going live on :<span>{covertToTime(campStatement?.go_live_time)}</span>
             </p>
+            {!!campStatement?.parent_camp_name && (
+                <p>
+                    Parent Camp :
+                    <span>
+                        {campStatement?.parent_camp_name}
+                    </span>
+                </p>
+            )}
+            <p>
+                Keywords :
+                <span>
+                    {campStatement?.key_words}
+                </span>
+            </p>
+            {campStatement?.object_reason && (
+                <p>
+                    Object Reason : <span>{campStatement?.object_reason}</span>
+                </p>
+            )}
+            {campStatement?.objector_nick_name && (
+                <p>
+                    Objector Nickname :
+                    <span>
+                        <Link
+                            href={`/user/supports/${campStatement?.objector_nick_id || ""
+                                }?canon=${topicNamespaceId || ""}`}
+                            passHref
+                        >
+                            <a>{campStatement?.objector_nick_name}</a>
+                        </Link>
+                    </span>
+                </p>
+            )}
         </>
     );
 };

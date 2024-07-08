@@ -38,6 +38,25 @@ const TopicHistory = ({ campStatement, topicNamespaceId }: any) => {
           </Link>
         </span>
       </p>
+      {campStatement?.object_reason && (
+        <p>
+          Object Reason :<span> {campStatement?.object_reason}</span>
+        </p>
+      )}
+      {campStatement?.objector_nick_name && (
+        <p>
+          Objector Nickname :
+          <span>
+            <Link
+              href={`/user/supports/${campStatement?.objector_nick_id || ""
+                }?canon=${topicNamespaceId || ""}`}
+              passHref
+            >
+              <a> {campStatement?.objector_nick_name}</a>
+            </Link>
+          </span>
+        </p>
+      )}
       <p>
         Going live on :<span>{covertToTime(campStatement?.go_live_time)}</span>
       </p>
