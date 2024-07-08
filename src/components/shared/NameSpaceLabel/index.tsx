@@ -24,7 +24,7 @@ const NameSpaceLabel = ({ namespace, loading = false, ...restProps }) => {
   return (
     <Popover content={changeSlashToArrow(namespace)} placement="top">
       <Typography.Paragraph
-        className="!bg-transparent border-0 p-0 flex items-center leading-1 mb-0 mr-3"
+        className="!bg-transparent border-0 p-0 flex items-center leading-1 !mb-0 mr-3"
         {...restProps}
       >
         <FlagOutlined className="text-canLight p-1 text-medium" />

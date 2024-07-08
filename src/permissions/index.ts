@@ -84,6 +84,11 @@ const PermissionsForPages: PermissionsObj = {
     isPermissionRequired: false,
     permissionName: "addNews",
   },
+  AllCategories: {
+    isAuthenticationRequired: true,
+    isPermissionRequired: false,
+    permissionName: "all_categories",
+  },
 };
 
 export default PermissionsForPages;

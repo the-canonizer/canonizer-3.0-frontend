@@ -9,17 +9,19 @@ export const getAllTags = async (
   search_term = "",
   sort_by: "asc" | "desc" = "desc"
 ) => {
+  const body: any = { search_term, sort_by };
+  if (page) body.page = page;
+  if (per_page) body.per_page = per_page;
+
   try {
-    const res = await NetworkCall.fetch(
-      TagsRequests.getTags(page, per_page, search_term, sort_by),
-      false
-    );
+    const res = await NetworkCall.fetch(TagsRequests.getTags(body), false);
 
     store.dispatch(setTags(res?.data?.items));
 
-    return res?.data;
+    return res;
   } catch (error) {
     store.dispatch(setTags([]));
+    return error?.error?.data;
   }
 };
 

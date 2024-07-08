@@ -34,7 +34,7 @@
 }
 
 .activitiesList {
-  padding: 6px 0;
+  padding: 16px 0;
   position: relative;
   & > div {
     & > div:first-child {
@@ -52,11 +52,11 @@
     }
     & > div:nth-child(2) {
       h4 {
-        color: #384152;
-        margin-bottom: 0px;
-        line-height: 16px;
-        font-weight: 600;
-        font-size: 12px;
+        // color: #384152;
+        // margin-bottom: 0px;
+        // line-height: 16px;
+        // font-weight: 600;
+        // font-size: 12px;
       }
       div:last-child {
         color: #9fa0a3;

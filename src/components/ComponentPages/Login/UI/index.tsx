@@ -54,7 +54,7 @@ const LoginUi = ({
             </Text>
           )}
         </div>
-        <div className="w-10/12 lg:w-8/12 m-auto">
+        <div className="w-full lg:w-8/12 m-auto">
           <Inputs
             name="username"
             label={
@@ -135,11 +135,10 @@ const LoginUi = ({
             {`Don't have an account? `}
             <a
               onClick={onRegister}
-              style={{ fontWeight: "bold" }}
               id="dont-account-link-tag"
               data-testid="dont-account-link-tag"
+              className="!text-canBlue font-medium"
             >
-              {" "}
               Register
             </a>
           </Text>

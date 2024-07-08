@@ -1,0 +1,51 @@
+.wrap {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  background: #fff;
+  border: 1px solid #ccd4e7;
+  border-radius: 5px;
+  transition: all 0.5s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+
+.input {
+  border: 0;
+  background: transparent;
+  width: 0;
+  outline: none;
+  font-size: 18px;
+  color: #fff;
+  font-style: italic;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.wrap .fa {
+  color: var(--canBlack);
+  cursor: pointer;
+}
+
+.wrap {
+  &[class*="active"] {
+    width: 250px;
+    transition: all 0.5s ease;
+  }
+}
+
+.input {
+  color: var(--canBlack);
+  font-size: 14px;
+  &[class*="active"] {
+    width: calc(100% - 18px);
+    transition: all 0.5s 0.8s ease;
+  }
+}
+
+.input::placeholder {
+  color: #ccd4e7;
+  font-size: 14px;
+}
