@@ -11,6 +11,8 @@ import NameSpaceLabel from "src/components/shared/NameSpaceLabel";
 import CardDescription from "../HotTopics/descriptions";
 import SectionHeading from "../FeaturedTopic/sectionsHeading";
 import SeeMoreLInk from "../FeaturedTopic/seeMoreLink";
+import Link from "next/link";
+import { replaceSpecialCharacters } from "src/utils/generalUtility";
 
 const PreferedTopics = () => {
   const { topicData } = useSelector((state: RootState) => ({
@@ -43,9 +45,21 @@ const PreferedTopics = () => {
                 className={`border-0 h-full hover:*:shadow-lg fullHeightCard`}
               >
                 <div className="flex justify-between pb-2 align-center">
-                  <Typography.Paragraph className="m-0 text-base font-medium font-inter">
-                    {ft?.topic_name}
-                  </Typography.Paragraph>
+                  <Link
+                    href={`/topic/${ft?.topic_num}-${replaceSpecialCharacters(
+                      ft?.topic_name,
+                      "-"
+                    )}/${ft?.camp_num}-${replaceSpecialCharacters(
+                      ft?.camp_name,
+                      "-"
+                    )}`}
+                  >
+                    <a>
+                      <Typography.Paragraph className="m-0 text-base font-medium font-inter">
+                        {ft?.topic_name}
+                      </Typography.Paragraph>
+                    </a>
+                  </Link>
                   <div className="hidden hover:block">
                     <RightOutlined className="text-canBlack p-1 text-medium" />
                   </div>

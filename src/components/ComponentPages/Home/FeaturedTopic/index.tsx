@@ -2,9 +2,10 @@ import { Fragment } from "react";
 import { Typography, Row, Col, Image } from "antd";
 import dynamic from "next/dynamic";
 import { useSelector } from "react-redux";
+import Link from "next/link";
 
 import { RootState } from "src/store";
-import { isServer } from "src/utils/generalUtility";
+import { isServer, replaceSpecialCharacters } from "src/utils/generalUtility";
 import CommonCard from "src/components/shared/Card";
 import AvatarGroup from "src/components/shared/AvaratGroup";
 import ViewCounts from "src/components/shared/ViewsCount";
@@ -12,7 +13,7 @@ import NameSpaceLabel from "src/components/shared/NameSpaceLabel";
 import CardDescription from "../HotTopics/descriptions";
 import SectionHeading from "./sectionsHeading";
 import SocialShare from "components/shared/ShareTopic";
-import TopicOptions from "components/shared/TopicOptions";
+// import TopicOptions from "components/shared/TopicOptions";
 
 const Slider = dynamic(() => import("react-slick"), { ssr: false });
 
@@ -68,14 +69,26 @@ const FeaturedTopic = () => {
                   xs={24}
                   className="before:content-[''] before:bg-custom-gradient relative before:absolute before:w-full before:h-full z-0 before:z-10 lg:before:hidden"
                 >
-                  <Image
-                    className="w-full rounded-lg h-auto object-cover h-full min-h-28 md:min-h-60 max-h-48 md:max-h-72"
-                    preview={false}
-                    height={"100%"}
-                    width={"100%"}
-                    src={ft?.file_full_path}
-                    rootClassName="h-full"
-                  />
+                  <Link
+                    href={`/topic/${ft?.topic_num}-${replaceSpecialCharacters(
+                      ft?.topic_name,
+                      "-"
+                    )}/${ft?.camp_num}-${replaceSpecialCharacters(
+                      ft?.camp_name,
+                      "-"
+                    )}`}
+                  >
+                    <a>
+                      <Image
+                        className="w-full rounded-lg h-auto object-cover h-full min-h-28 md:min-h-60 max-h-48 md:max-h-72"
+                        preview={false}
+                        height={"100%"}
+                        width={"100%"}
+                        src={ft?.file_full_path}
+                        rootClassName="h-full"
+                      />
+                    </a>
+                  </Link>
                 </Col>
                 <Col
                   xl={16}
@@ -85,16 +98,28 @@ const FeaturedTopic = () => {
                   className="flex flex-col mt-3 xl:mt-0 md:pl-4 px-3 pb-5 xl:px-7 xl:pb-0 static xl:!pr-0"
                 >
                   <div className="flex justify-between pb-4 align-center z-100 relative -ml-4 -mr-4 lg:ml-0 lg:mr-0">
-                    <Typography.Paragraph className="m-0 text-base lg:text-xl font-medium lg:font-bold font-inter absolute -top-14 left-1 right-0 text-white px-3 py-0 !mb-0 flex w-full lg:static lg:px-0 lg:py-0 lg:text-canBlack">
-                      {ft?.title}
-                    </Typography.Paragraph>
+                    <Link
+                      href={`/topic/${ft?.topic_num}-${replaceSpecialCharacters(
+                        ft?.topic_name,
+                        "-"
+                      )}/${ft?.camp_num}-${replaceSpecialCharacters(
+                        ft?.camp_name,
+                        "-"
+                      )}`}
+                    >
+                      <a>
+                        <Typography.Paragraph className="m-0 text-base lg:text-xl font-medium lg:font-bold font-inter absolute -top-14 left-1 right-0 text-white px-3 py-0 !mb-0 flex w-full lg:static lg:px-0 lg:py-0 lg:text-canBlack">
+                          {ft?.title}
+                        </Typography.Paragraph>
+                      </a>
+                    </Link>
                     <div className="hidden lg:flex items-start justify-center">
                       <SocialShare
                         key={ft?.id}
                         campName={ft?.camp_name}
                         campUrl={!isServer() && window?.location?.href}
                       />
-                      <TopicOptions eventLineHref={""} />
+                      {/* <TopicOptions eventLineHref={""} /> */}
                     </div>
                   </div>
                   <CardDescription description={ft?.description} />
