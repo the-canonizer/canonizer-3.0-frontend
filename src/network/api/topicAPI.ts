@@ -90,9 +90,15 @@ export const GetHotTopicDetails = async (page, perPage, token: string) => {
   }
 };
 
-export const GetPreferedTopicDetails = async (token: string) => {
+export const GetPreferedTopicDetails = async (
+  page = 1,
+  perPage = 6,
+  token: string
+) => {
   try {
-    const res = await NetworkCall.fetch(TopicRequest.GetPreferedTopic(token));
+    const res = await NetworkCall.fetch(
+      TopicRequest.GetPreferedTopic(page, perPage, token)
+    );
 
     if (res.status_code === 200) {
       store.dispatch(setPrefTopic(res?.data?.items || []));

@@ -9,7 +9,6 @@ import {
   SettingOutlined,
   HomeOutlined,
   QuestionCircleOutlined,
-  PlusOutlined,
   GlobalOutlined,
   CloseOutlined,
   ArrowRightOutlined,
@@ -29,7 +28,6 @@ import { logout } from "src/network/api/userApi";
 import { getGravatarPicApi } from "src/network/api/notificationAPI";
 import Logo from "../logoHeader";
 import { useIsMobile } from "src/hooks/useIsMobile";
-import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 
 const menuItems = [
   {
@@ -76,6 +74,8 @@ const menuItems = [
     linkTitle: "Notifications",
     id: 4,
     icon: <BellOutlined />,
+    isAuthReq: true,
+    isMobile: true,
   },
   {
     link: "/settings",
@@ -83,6 +83,7 @@ const menuItems = [
     id: 5,
     isMobile: true,
     icon: <SettingOutlined />,
+    isAuthReq: true,
   },
   {
     link: "/settings?tab=supported_camps",
@@ -90,6 +91,7 @@ const menuItems = [
     id: 5,
     isMobile: true,
     icon: <CheckCircleOutlined />,
+    isAuthReq: true,
   },
 ];
 
@@ -232,8 +234,11 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
                   ? `border-[1px] px-3 py-2 rounded-lg border-canBlue bg-[#98B7E61A] ${
                       isMobile ? "bg-canBlue text-white rounded-md" : ""
                     }`
-
-                  : `hover:text-canHoverBlue`
+                  : `hover:text-canHoverBlue] ${
+                      isMobile
+                        ? "bg-canBlue text-white rounded-md px-3 py-2"
+                        : ""
+                    }`
               }
               isWithIcon={isUserAuthenticated}
             />
@@ -252,7 +257,7 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
                   item.linkTitle?.toLowerCase() === "browse"
                     ? "before:!hidden after:!hidden"
                     : ""
-                }`}
+                } ${item?.isAuthReq && !isUserAuthenticated ? "hidden" : ""}`}
                 key={item.id + "_" + item.link + "___" + idx}
               >
                 <Link href={item.link}>
@@ -296,7 +301,7 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
             </ListItem>
           )}
         </ul>
-        {isMobile ? (
+        {isMobile && isUserAuthenticated ? (
           <div className="mt-auto flex justify-between items-center">
             <div className="flex items-center">
               <ProfileInfoTab
@@ -353,7 +358,7 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
       ) : null} */}
       <Button
         size="middle"
-        className="border-0 p-0 block -mt-2 lg:hidden ml-2 md:ml-0"
+        className="border-0 p-0 block -mt-2 lg:hidden ml-2 md:ml-auto"
         onClick={toggleMobNav}
         key="outnline-btn"
       >
