@@ -741,7 +741,7 @@ const FilterWithTree = ({
              
             </Col>
             <Col md={24}>
-              <div className={styles.treeContainer} style={{visibility: "hidden", height: 0}}> 
+              <div className={styles.treeContainer}> 
                 {/* this visibility style is for temprory purpose for refine filter */}
                  <CampTreeCard
                   getTreeLoadingIndicator={getTreeLoadingIndicator}

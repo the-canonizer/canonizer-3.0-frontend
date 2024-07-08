@@ -71,6 +71,21 @@ export const latestThread = async (queries) => {
   }
 };
 
+export const getSiblingCamp = async (queries) => {
+  try {
+    const response = await NetworkCall.fetch(
+      ForumRequests.siblingCamps(queries),
+      false
+    );
+
+    return response;
+  } catch (error) {
+    // handleError(error);
+
+    return error?.error?.data;
+  }
+};
+
 export const updatePost = async (body, id) => {
   try {
     const response = await NetworkCall.fetch(

@@ -130,7 +130,7 @@ const NetworkConstants = {
     PostList: `${BaseCanonizerApiUrl}/post/list`,
     PostDelete: `${BaseCanonizerApiUrl}/post/delete`,
     GetThreadData: `${BaseCanonizerApiUrl}/thread/`,
-    GetTopFiveThreadData: `${DummyUrl}/thread/latest5`,
+    GetTopFiveThreadData: `${BaseCanonizerApiUrl}/thread/latest5`,
 
     //camp news feed add edit update
     GetEditCampNewsFeed: `${BaseCanonizerApiUrl}/edit-camp-newsfeed`,
@@ -202,6 +202,9 @@ const NetworkConstants = {
     GetHotTopic: `${BaseCanonizerApiUrl}/hot-topic`,
     GetPrefTopic: `${BaseCanonizerApiUrl}/preferred-topic`,
     GetFeaturedTopic: `${BaseCanonizerApiUrl}/featured-topic`,
+
+    //Sibling camps
+    GetSiblingCamp : `${BaseCanonizerApiUrl}/get-sibling-camps`,
 
     // categories
     GetTagsList: `${BaseCanonizerApiUrl}/get-tags-list`,
