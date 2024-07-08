@@ -167,24 +167,20 @@ const TopicsList = () => {
   }
 
   function getNameById(id) {
-    if (!Array.isArray(nameSpacesList)) {
-      return null;
-    }
-
-    const namespace = nameSpacesList.find((item) => item.id === id);
-    return namespace ? namespace.name : null;
+    const namespace = nameSpacesList?.length && nameSpacesList?.find((item) => item?.id === id);
+    return nameSpacesList?.length ? namespace?.name : null;
   }
 
   const onSearch = (value) => {
     setIsCanonChange(true);
-    setInputSearch(value.trim());
+    setInputSearch(value?.trim());
     dispatch(setFilterCanonizedTopics({ search: value || "" }));
     setAllowClear(true);
   };
 
   const handleKeyUpSearch = (event: any) => {
     const value = event.target.value?.trim();
-    if (value.length > 0) {
+    if (value?.length > 0) {
       setIsCanonChange(true);
       setSearchTerm(value);
       setAllowClear(true);
@@ -288,11 +284,11 @@ const TopicsList = () => {
                   nameSpacesList?.map((item) => {
                     return (
                       <Select.Option
-                        id={`name-space-${item.id}`}
-                        key={item.id}
-                        value={item.id}
+                        id={`name-space-${item?.id}`}
+                        key={item?.id}
+                        value={item?.id}
                       >
-                        {changeSlashToArrow(item.label)}
+                        {changeSlashToArrow(item?.label)}
                       </Select.Option>
                     );
                   })}
@@ -318,7 +314,7 @@ const TopicsList = () => {
             <SortTopics />
           </div>
         </div>
-        {allowClear && search.length > 0 && (
+        {allowClear && search?.length > 0 && (
           <div className="search-response">
             <p>{totalTopics?.total_count} Results Found</p>
             <Button
@@ -344,9 +340,8 @@ const TopicsList = () => {
                   <CommonCard className="browse-card" key={ft?.id}>
                     <Link
                       href={{
-                        pathname: `/topic/${ft?.topic_id}-${
-                          replaceSpecialCharacters(ft?.topic_name, "-") || ""
-                        }/1-Agreement`,
+                        pathname: `/topic/${ft?.topic_id}-${replaceSpecialCharacters(ft?.topic_name, "-") || ""
+                          }/1-Agreement`,
                       }}
                     >
                       <a className="flex justify-between mb-2.5 items-center">
@@ -404,7 +399,7 @@ const TopicsList = () => {
                         avatars={
                           ft?.tree_structure &&
                           ft?.tree_structure[1]?.support_tree?.map(
-                            (support) => support.user
+                            (support) => support?.user
                           )
                         }
                         size="large"

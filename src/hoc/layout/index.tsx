@@ -4,8 +4,6 @@ import styles from "./layout.module.scss";
 
 import MainHeader from "src/components/common/headers/mainHeader";
 import FooterComp from "src/components/common/footer";
-import { useRouter } from "next/router";
-import LoginModal from "src/components/ComponentPages/Login/loginModal";
 import RegistrationModal from "src/components/ComponentPages/Registration/registrationModal";
 import DisclaimerMsg from "src/components/common/disclaimer";
 import ArchivedCampMsg from "src/components/common/ArchivedCampMsg";
@@ -14,7 +12,6 @@ import ArchivedCampMsg from "src/components/common/ArchivedCampMsg";
 const { Header, Footer } = Layout;
 
 function CustomLayout(props: any) {
-  const router = useRouter();
 
   const getCls = () => {
     if (props?.leftSidebar && props?.rightSidebar) {
@@ -40,7 +37,6 @@ function CustomLayout(props: any) {
         data-testid="main_header"
       >
         <MainHeader />
-        
       </Header>
       {props?.afterHeader ? (
         <div className="px-4 md:px-7 my-3 mb-10">{props?.afterHeader}</div>
