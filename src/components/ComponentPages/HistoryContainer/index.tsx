@@ -62,11 +62,6 @@ function HistoryContainer() {
   const [discardChange, setDiscardChange] = useState(false);
   const [parentarchived, setParentarchived] = useState(0);
   const [directarchived, setDirectarchived] = useState(0);
-  const [breadCrumbRes, setBreadCrumbRes] = useState({
-    topic_name: "",
-    bread_crumb: [],
-  });
-  const [currentFilterCount, setCurrentFilterCount] = useState(null)
   const [totalCount, setTotalCount] = useState<any>([]);
   const [liveRecordId, setLiveRecordId] = useState<any>(null);
 
@@ -76,38 +71,6 @@ function HistoryContainer() {
     asof: state?.filters?.filterObject?.asof,
   }));
 
-
-
-
-
-
-  useEffect(() => {
-    async function getBreadCrumbApiCall() {
-      setLoadingIndicator(true);
-      let reqBody = {
-        topic_num: payload?.topic_num,
-        camp_num: payload?.camp_num,
-        as_of: router?.pathname == "/topic/[...camp]" ? asof : "default",
-        as_of_date:
-          asof == "default" || asof == "review"
-            ? Date.now() / 1000
-            : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
-      };
-
-      let res = await getCampBreadCrumbApi(reqBody);
-      setBreadCrumbRes(res?.data);
-      setLoadingIndicator(false);
-    }
-
-    if (
-      (payload && Object.keys(payload).length > 0,
-        !!(getCookies() as any)?.loginToken)
-    ) {
-      getBreadCrumbApiCall();
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const changeAgree = () => {
     setAgreeCheck(!agreecheck);
@@ -222,7 +185,6 @@ function HistoryContainer() {
             is_archive,
           })
         );
-        setCurrentFilterCount(res?.data?.total_rows)
         setTotalCount(res?.data?.total_counts)
         setLiveRecordId(res?.data?.live_record_id)
       }
@@ -352,7 +314,7 @@ function HistoryContainer() {
     is_disabled: 0,
     is_one_level: 0,
     is_archive: 0,
-    camp_leader_nick_id: campHistory?.items?.[0]?.camp_leader_nick_id,
+    camp_leader_nick_id: campHistory && campHistory?.items?.at(0)?.camp_leader_nick_id,
   };
   const callManageCampApi = async () => {
     setLoadingIndicator(true);

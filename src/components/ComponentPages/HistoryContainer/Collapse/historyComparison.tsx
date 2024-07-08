@@ -22,16 +22,8 @@ const HistoryComparison = ({ campStatement, topicNamespaceId }: any) => {
         }
     };
 
-    console.log("router", router?.query?.routes[0]);
-
-
     const topicName = router?.query?.routes[0]
     const topic_name = topicName.split('-').slice(1).join(' ');
-
-    console.log("historyOf", historyOf);
-
-
-
 
     return (
         <>
