@@ -101,10 +101,6 @@ function HistoryCard({
       changeGoneLive: state?.topicDetails?.changeGoneLive,
     }));
   const historyOf = router?.asPath.split("/")[1];
-  // const covertToTime = (unixTime) => {
-  //   return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
-  // };
-
 
   const getStatusClass = (status: any) => {
     switch (status) {
@@ -181,19 +177,6 @@ function HistoryCard({
     setLoadingChanges(false);
   };
 
-  let historyTitle = () => {
-    let title: string;
-
-    if (historyOf == "statement") {
-      title = "Statement";
-    } else if (historyOf == "camp") {
-      title = "Camp Name";
-    } else if (historyOf == "topic") {
-      title = "Topic Name";
-    }
-    return title;
-  };
-
   const submitUpdateRedirect = (historyOf: string) => {
     if (!isUserAuthenticated) {
       router?.push({
@@ -205,29 +188,6 @@ function HistoryCard({
     }
   };
 
-  const columns = [
-    {
-      title: "Nick Name",
-      dataIndex: "nickNameData",
-      render: (text) => (
-        <Link href={text?.path} passHref>
-          <a>{text?.name}</a>
-        </Link>
-      ),
-    },
-    {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-      render: (tag) => {
-        return (
-          <Tag color={tag ? "geekblue" : "volcano"} key={tag}>
-            {tag ? "Agreed" : "Not Agreed"}
-          </Tag>
-        );
-      },
-    },
-  ];
   const cancelConfirm = () => {
     Modal.confirm({
       title: "Do you want to discard this commit?",
