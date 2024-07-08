@@ -12,6 +12,7 @@ import ArchivedCampMsg from "src/components/common/ArchivedCampMsg";
 const { Header, Footer } = Layout;
 
 function CustomLayout(props: any) {
+
   const getCls = () => {
     if (props?.leftSidebar && props?.rightSidebar) {
       return styles.withBothsideBar;
@@ -36,7 +37,6 @@ function CustomLayout(props: any) {
         data-testid="main_header"
       >
         <MainHeader />
-        
       </Header>
       {props?.afterHeader ? (
         <div className="px-4 md:px-7 my-3 mb-10">{props?.afterHeader}</div>
