@@ -338,7 +338,7 @@ function HistoryCard({
             (!campStatement?.grace_period || commited) && (
               <>
                 <div className="agreement-wrapper">
-                  {!!(
+                  {(campStatement?.ifICanAgreeAndObject || campStatement?.ifICanAgreeAndObject == undefined) && !!(
                     campStatement?.ifIamSupporter != 0 ||
                     campStatement?.ifIAmExplicitSupporter
                   ) &&
@@ -392,9 +392,9 @@ function HistoryCard({
                         }}
                         displayText={<p>
                           <u>
-                          {campStatement?.agreed_supporters} out of{" "}
-                          {campStatement?.total_supporters} required
-                          supporters have agreed
+                            {campStatement?.agreed_supporters} out of{" "}
+                            {campStatement?.total_supporters} required
+                            supporters have agreed
                           </u>
                           {(campStatement?.ifICanAgreeAndObject || campStatement?.ifICanAgreeAndObject == undefined) && !!(
                             campStatement?.ifIamSupporter != 0 ||
