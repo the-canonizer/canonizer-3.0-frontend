@@ -104,11 +104,11 @@ export async function getServerSideProps({ req, query, res }) {
       outputType: "encoded"
     });
 
-    const parts = hash.split('$');
-    hashValue = "$" + parts[parts.length - 2] + "$" + parts[parts.length - 1];
+    const parts = hash?.split('$');
+    hashValue = "$" + parts[parts?.length - 2] + "$" + parts[parts?.length - 1];
 
     let cookiesString = req.headers.cookie || '';
-    cookies = parseCookies(cookiesString); // Parse cookies into an object
+    cookies = parseCookies(cookiesString);
 
     if (!cookies[cookieKey] || !(cookieKey in cookies)) {
       const expirationInSeconds = parseInt(process.env.NEXT_PUBLIC_EXPIRATIONDATE);
@@ -138,10 +138,6 @@ export async function getServerSideProps({ req, query, res }) {
     fetch_topic_history: query?.viewversion == "1" ? 1 : null,
     view: req.cookies[cookieKey] ? req.cookies[cookieKey] : hashValue
   };
-
-  console.log('====================================');
-  console.log("reqBodyForService", reqBodyForService);
-  console.log('====================================');
 
   const reqBody = {
     topic_num: topicNum,

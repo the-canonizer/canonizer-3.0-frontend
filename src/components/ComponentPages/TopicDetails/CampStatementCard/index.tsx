@@ -65,16 +65,7 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
               <p>Last update: 2 Jan 2024, 03:45 PM</p>
             </div>
             <div className="d-flex items-center gap-1">
-              {/* <Image
-                src="/images/eye-regular-new.svg"
-                alt="svg"
-                className="icon-topic"
-                height={16}
-                width={16}
-              />
-
-              <span>{tree[1]?.camp_views ? formatNumber(tree[1]?.camp_views) : 0}</span> */}
-              <ViewCounts views={tree[1]?.camp_views ? tree[1]?.camp_views : 0} />
+              <ViewCounts views={tree[1]?.camp_views} />
             </div>
           </div>
           <hr className="my-3" />
