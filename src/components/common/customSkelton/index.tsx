@@ -61,13 +61,13 @@ const CustomSkelton = ({
       actions={
         action
           ? [
-              <div key={0} className={styles.cardSkeleton_actions}>
-                <Skeleton
-                  className={styles.cardSkeleton_actions_button}
-                  count={1}
-                />
-              </div>,
-            ]
+            <div key={0} className={styles.cardSkeleton_actions}>
+              <Skeleton
+                className={styles.cardSkeleton_actions_button}
+                count={1}
+              />
+            </div>,
+          ]
           : []
       }
       title={
@@ -227,6 +227,23 @@ const CustomSkelton = ({
         </Col>
       </Row>
     </div>
+  ) : skeltonFor == "comparisonPage" ? (
+    <div className="ch-wrapper">
+      <Row gutter={[60, 60]}>
+        <Col xs={24} md={12}>
+          <Skeleton style={{ height: 36 }} />
+          <Skeleton style={{ height: 320 }} />
+        </Col>
+        <Col xs={24} md={12}>
+          <Skeleton style={{ height: 36 }} />
+          <Skeleton style={{ height: 320 }} />
+        </Col>
+        <Col xs={24} md={24}>
+          <Skeleton style={{ height: 36 }} />
+          <Skeleton style={{ height: 320 }} />
+        </Col>
+      </Row>
+    </div>
   ) : skeltonFor == "playButtons" ? (
     <>
       <div className="slider-skeleton">
@@ -287,7 +304,7 @@ const CustomSkelton = ({
         </div>
       </Card>
     ) : /* eslint-enable */
-    null)
+      null)
   );
 };
 

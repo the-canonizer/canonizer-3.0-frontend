@@ -1,0 +1,19 @@
+.cn-breadcrumbs {
+  //   @apply bg-[#F4F5FAB2] p-[1.5rem] rounded-[1.25rem] flex items-center justify-between gap-2;
+  ol {
+    @apply items-center;
+    li,
+    a {
+      @apply md:text-[#242B37] max-md:text-[#777F93];
+    }
+    li {
+      &:last-child {
+        @apply font-semibold max-md:text-[#4EB966];
+      }
+      @apply max-md:text-xs;
+    }
+    .ant-breadcrumb-separator {
+      @apply md:text-xs max-md:text-[10px] max-md:mx-[6px] md:mx-[1.25rem] md:text-[#242B37] max-md:text-[#777F93];
+    }
+  }
+}

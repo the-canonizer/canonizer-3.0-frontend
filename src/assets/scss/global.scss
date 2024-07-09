@@ -8,6 +8,8 @@
 
 @import "./fonts";
 @import "./speed-controller";
+@import "../../components/ComponentPages/Breadcrumbs/breadcrumbs.scss";
+@import "../../components/ComponentPages/HistoryCard/historyCard.scss";
 
 :root {
   --primary: #4484ce;
@@ -3255,6 +3257,111 @@ div[role="option"]::before {
   }
 }
 
+
+.ch-wrapper {
+  @apply py-10;
+  .ch-history {
+    @apply bg-white max-lg:flex-col flex gap-5;
+
+    .statement-status-sider {
+      @apply lg:w-[320px];
+
+      h5 {
+        @apply text-[#242B37] text-[1.125rem] mb-7;
+      }
+      .sider-btn {
+        @apply flex items-center gap-4 flex-wrap;
+        button {
+          @apply rounded-[10px] font-medium;
+          &.btn-all {
+            @apply border-[#5482C8] hover:text-[#5482C8] focus:text-[#5482C8];
+            &.active {
+              @apply bg-[#5482C8] text-white;
+            }
+          }
+          &.btn-objected {
+            @apply border-[#E46B6B] hover:text-[#E46B6B] focus:text-[#E46B6B];
+            &.active {
+              @apply bg-[#E46B6B] text-white;
+            }
+          }
+          &.btn-live {
+            @apply border-[#4EB966] hover:text-[#4EB966] focus:text-[#4EB966];
+            &.active {
+              @apply bg-[#4EB966] text-white;
+            }
+          }
+          &.btn-pending {
+            @apply border-[#F19C39] hover:text-[#F19C39] focus:text-[#F19C39];
+            &.active {
+              @apply bg-[#F19C39] text-white;
+            }
+          }
+          &.btn-previous {
+            @apply border-[#4786CB] hover:text-[#4786CB] focus:text-[#4786CB];
+            &.active {
+              @apply bg-[#4786CB] text-white;
+            }
+          }
+        }
+      }
+    }
+    .ch-content {
+      &.no-data-wrapper{
+        @apply after:hidden flex items-center justify-center ;
+      }
+      &::after {
+        @apply max-lg:hidden absolute top-12 left-8 bottom-8 block content-[''] w-[1px] p-0 bg-gray-300 transition-colors duration-300;
+      }
+      & > .ant-card-body {
+        @apply p-8;
+      }
+    }
+  }
+}
+
+
+.ch-drawer {
+  .ant-drawer-body {
+    @apply p-11;
+    .ch-modal-tabs {
+      .ant-tabs-nav {
+        @apply mb-6;
+        .ant-tabs-tab {
+          @apply text-base;
+          + .ant-tabs-tab {
+            @apply ml-14;
+          }
+          &.ant-tabs-tab-active {
+            .ant-tabs-tab-btn {
+              @apply text-[#5482C8] font-semibold;
+            }
+          }
+        }
+        .ant-tabs-ink-bar {
+          @apply bg-[#5482C8] h-[3px] rounded-tl-[6px] rounded-tr-[6px];
+        }
+      }
+    }
+    .agree-list {
+      @apply rounded-xl;
+      &.nt-agree {
+        .ant-list-header {
+          @apply bg-[#E46B6B33];
+        }
+      }
+
+      .ant-list-header {
+        @apply p-3.5 font-medium text-base text-[#242B37] bg-[#4EB96633] uppercase rounded-tl-xl rounded-tr-xl;
+      }
+      .ant-list-items {
+        .ant-list-item {
+          @apply py-3 px-5;
+        }
+      }
+    }
+  }
+}
 
 @media screen and (max-width: 767px) {
   .topicDetails_breadcrumbLinks__7BG2D{

@@ -1,5 +1,12 @@
+import { Typography } from "antd";
 import moment from "moment";
 import Link from "next/link";
+
+import styles from ".././campHistory.module.scss";
+
+import { changeSlashToArrow } from "src/utils/generalUtility";
+
+const { Title } = Typography;
 
 const TopicHistory = ({ campStatement, topicNamespaceId }: any) => {
   const covertToTime = (unixTime) => {
@@ -7,22 +14,18 @@ const TopicHistory = ({ campStatement, topicNamespaceId }: any) => {
   };
   return (
     <>
-      <p className="font-semibold mb-2.5">Updates</p>
-      <p>
-        Topic Name:<span>{campStatement?.topic_name}</span>
-      </p>
-      <p>
-        Canon:<span>{campStatement?.canon}</span>
-      </p>
-      <p>
-        Edit summary:<span>{campStatement?.note}</span>
-      </p>
-
-      <p>
-        Submitted on:<span>{covertToTime(campStatement?.submit_time)}</span>
-      </p>
-      <p>
-        Submitted by:
+      <Title level={5}>
+        Edit Summary :{" "}
+        <span className={styles.updateSurveyPrj}>{campStatement?.note}</span>
+      </Title>
+      <Title level={5}>
+        Canon : <span>{changeSlashToArrow(campStatement?.namespace)}</span>
+      </Title>
+      <Title level={5}>
+        Submitted On : <span>{covertToTime(campStatement?.submit_time)}</span>
+      </Title>
+      <Title level={5}>
+        Submitter Nickname :{" "}
         <span>
           <Link
             href={{
@@ -37,14 +40,18 @@ const TopicHistory = ({ campStatement, topicNamespaceId }: any) => {
             <a>{campStatement?.submitter_nick_name}</a>
           </Link>
         </span>
-      </p>
+      </Title>
+      <Title level={5}>
+        Go Live Time : <span>{covertToTime(campStatement?.go_live_time)}</span>
+      </Title>
+
       {campStatement?.object_reason && (
-        <p>
+        <Title level={5}>
           Object Reason :<span> {campStatement?.object_reason}</span>
-        </p>
+        </Title>
       )}
       {campStatement?.objector_nick_name && (
-        <p>
+        <Title level={5}>
           Objector Nickname :
           <span>
             <Link
@@ -55,11 +62,9 @@ const TopicHistory = ({ campStatement, topicNamespaceId }: any) => {
               <a> {campStatement?.objector_nick_name}</a>
             </Link>
           </span>
-        </p>
+          <span>{campStatement?.objector_nick_name}</span>
+        </Title>
       )}
-      <p>
-        Going live on :<span>{covertToTime(campStatement?.go_live_time)}</span>
-      </p>
     </>
   );
 };

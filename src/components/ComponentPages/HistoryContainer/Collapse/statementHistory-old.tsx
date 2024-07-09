@@ -11,20 +11,21 @@ const StatementHistory = ({ campStatement, topicNamespaceId }: any) => {
   };
   return (
     <>
-      <p className="font-semibold mb-2.5">Updates</p>
-      <p>
-        Edit Summary:<span>{campStatement?.note}</span>
-      </p>
-      <p>
-        Submitted on:<span>{covertToTime(campStatement?.submit_time)}</span>
-      </p>
-      <p>
-        Submitted by:
+      <Title level={5}>
+        Edit Summary :{" "}
+        <span className={styles.updateSurveyPrj}>{campStatement?.note}</span>
+      </Title>
+      <Title level={5}>
+        Submitted On : <span>{covertToTime(campStatement?.submit_time)}</span>
+      </Title>
+      <Title level={5}>
+        Submitter Nickname :{" "}
         <span>
           <Link
             href={{
-              pathname: `/user/supports/${campStatement?.submitter_nick_id || ""
-                }`,
+              pathname: `/user/supports/${
+                campStatement?.submitter_nick_id || ""
+              }`,
               query: {
                 canon: topicNamespaceId || "",
               },
@@ -34,14 +35,14 @@ const StatementHistory = ({ campStatement, topicNamespaceId }: any) => {
             <a>{campStatement?.submitter_nick_name}</a>
           </Link>
         </span>
-      </p>
+      </Title>
       {campStatement?.object_reason && (
-        <p>
+        <Title level={5}>
           Object Reason : <span>{campStatement?.object_reason}</span>
-        </p>
+        </Title>
       )}
       {campStatement?.objector_nick_name && (
-        <p>
+        <Title level={5}>
           {K?.exceptionalMessages?.objectorNickNameHeading}
           <span>
             <Link
@@ -53,12 +54,11 @@ const StatementHistory = ({ campStatement, topicNamespaceId }: any) => {
               <a>{campStatement?.objector_nick_name}</a>
             </Link>
           </span>
-        </p>
+        </Title>
       )}
-
-      <p>
-        Going live on :<span>{covertToTime(campStatement?.go_live_time)}</span>
-      </p>
+      <Title level={5}>
+        Go Live Time : <span>{covertToTime(campStatement?.go_live_time)}</span>
+      </Title>
     </>
   );
 };

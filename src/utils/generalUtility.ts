@@ -365,5 +365,6 @@ export const getProperties = (item) => {
   return null;
 };
 
+export const capitalizeFirstLetter = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 
  
