@@ -1,4 +1,20 @@
-import { Card, Col, Form, Row } from "antd";
+import {
+  Avatar,
+  Button,
+  Card,
+  Col,
+  Divider,
+  Dropdown,
+  Form,
+  List,
+  Pagination,
+  Popover,
+  Row,
+  Space,
+  Tag,
+  Tooltip,
+  Typography,
+} from "antd";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 // import FormItem from "../formElements";
@@ -9,6 +25,18 @@ import PostCustomSkelton from "./postCard";
 import SubscriptionCustomSkelton from "./subscriptionCard";
 import DelegateCardSkeleton from "./delegateCard";
 import UserProfileCardSkeleton from "./userProfileSupportCars";
+import Title from "antd/lib/skeleton/Title";
+import {
+  AntDesignOutlined,
+  DownOutlined,
+  EyeOutlined,
+  FlagOutlined,
+  SearchOutlined,
+  SortDescendingOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
+import Link from "next/link";
+import SkeletonAvatar from "antd/lib/skeleton/Avatar";
 
 const CustomSkelton = ({
   titleName = "",
@@ -33,13 +61,13 @@ const CustomSkelton = ({
       actions={
         action
           ? [
-              <div key={0} className={styles.cardSkeleton_actions}>
-                <Skeleton
-                  className={styles.cardSkeleton_actions_button}
-                  count={1}
-                />
-              </div>,
-            ]
+            <div key={0} className={styles.cardSkeleton_actions}>
+              <Skeleton
+                className={styles.cardSkeleton_actions_button}
+                count={1}
+              />
+            </div>,
+          ]
           : []
       }
       title={
@@ -199,6 +227,23 @@ const CustomSkelton = ({
         </Col>
       </Row>
     </div>
+  ) : skeltonFor == "comparisonPage" ? (
+    <div className="ch-wrapper">
+      <Row gutter={[60, 60]}>
+        <Col xs={24} md={12}>
+          <Skeleton style={{ height: 36 }} />
+          <Skeleton style={{ height: 320 }} />
+        </Col>
+        <Col xs={24} md={12}>
+          <Skeleton style={{ height: 36 }} />
+          <Skeleton style={{ height: 320 }} />
+        </Col>
+        <Col xs={24} md={24}>
+          <Skeleton style={{ height: 36 }} />
+          <Skeleton style={{ height: 320 }} />
+        </Col>
+      </Row>
+    </div>
   ) : skeltonFor == "playButtons" ? (
     <>
       <div className="slider-skeleton">
@@ -212,6 +257,33 @@ const CustomSkelton = ({
       count={bodyCount}
       circle={circle}
     />
+  ) : skeltonFor == "browse" ? (
+    <>
+      <Row gutter={[24, 24]}>
+        {[...Array(8)].map((_, index) => (
+          <Col key={index} xs={24} sm={24} md={12}>
+            <Card className="browse-card">
+              <div className="mb-2.5 flex justify-between">
+                <Skeleton style={{ width: 300 }} />
+              </div>
+              <Skeleton style={{ width: 100 }} />
+              <Skeleton style={{ width: 800 }} />
+              <List className="">
+                <List.Item className="w-full flex font-medium p-0">
+                  <div className="flex justify-between gap-3 w-full items-start flex-wrap">
+                    <div className="text-left flex">
+                      <Skeleton style={{ width: 130 }} />
+                      <Skeleton style={{ width: 40 }} />
+                    </div>
+                    <Skeleton />
+                  </div>
+                </List.Item>
+              </List>
+            </Card>
+          </Col>
+        ))}
+      </Row>
+    </>
   ) : (
     /* eslint-disable */
     (skeltonFor = "cardForUploadFile" ? (
@@ -232,7 +304,7 @@ const CustomSkelton = ({
         </div>
       </Card>
     ) : /* eslint-enable */
-    null)
+      null)
   );
 };
 

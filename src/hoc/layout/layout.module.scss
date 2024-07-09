@@ -1,11 +1,12 @@
-$sidebar_width: 500px;
-$sidebar_width_small: 350px;
+$sidebar_width: 25%;
+$sidebar_width_small: 30%;
 
 .contentArea {
   display: flex;
   overflow: hidden;
   flex-direction: row;
   flex-wrap: nowrap;
+  min-height: calc(100vh - 347px);
 
   .contentBox {
     width: 100%;

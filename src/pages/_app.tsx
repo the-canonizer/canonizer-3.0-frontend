@@ -112,10 +112,10 @@ function WrappedApp({
             {...pageProps}
           />
           {/* <ConfigProvider theme={}> */}
-            {isAuthenticatedRef?.current &&
-            !!(getCookies() as any)?.loginToken ? (
-              <Component {...pageProps} />
-            ) : null}
+          {isAuthenticatedRef?.current &&
+          !!(getCookies() as any)?.loginToken ? (
+            <Component {...pageProps} />
+          ) : null}
           {/* </ConfigProvider> */}
         </ErrorBoundary>
       </Provider>

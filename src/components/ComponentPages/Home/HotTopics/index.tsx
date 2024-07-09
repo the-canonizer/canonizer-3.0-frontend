@@ -11,7 +11,7 @@ import NameSpaceLabel from "src/components/shared/NameSpaceLabel";
 import AvatarGroup from "src/components/shared/AvaratGroup";
 import CardDescription from "./descriptions";
 import SectionHeading from "../FeaturedTopic/sectionsHeading";
-import SeeMoreLInk from "../FeaturedTopic/seeMoreLink";
+// import SeeMoreLInk from "../FeaturedTopic/seeMoreLink";
 
 const HotTopics = () => {
   const { topicData } = useSelector((state: RootState) => ({
@@ -28,9 +28,9 @@ const HotTopics = () => {
         <Col md={12} sm={12} xs={12}>
           <SectionHeading title="Hot Topics" infoContent="Hot Topics" />
         </Col>
-        <Col md={12} sm={12} xs={12} className="text-right">
+        {/* <Col md={12} sm={12} xs={12} className="text-right">
           <SeeMoreLInk />
-        </Col>
+        </Col> */}
       </Row>
 
       <Row className="mt-4" gutter={[24, 24]}>
@@ -42,9 +42,8 @@ const HotTopics = () => {
             >
               <Link
                 href={{
-                  pathname: `/topic/${ft?.topic_num}-${ft?.topic_name || ""}/${
-                    ft?.camp_num || 1
-                  }-${ft?.camp_name || "Agreement"}`,
+                  pathname: `/topic/${ft?.topic_num}-${ft?.topic_name || ""}/${ft?.camp_num || 1
+                    }-${ft?.camp_name || "Agreement"}`,
                 }}
               >
                 <a className="flex justify-between pb-3 items-center">

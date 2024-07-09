@@ -7,7 +7,7 @@ import { RootState } from "src/store";
 import styles from "../topicDetails.module.scss";
 import K from "../../../../constants";
 import moment from "moment";
-import { formatNumber, replaceSpecialCharacters } from "../../../../utils/generalUtility";
+import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
 import CustomSkelton from "../../../common/customSkelton";
 import Image from "next/image";
 import ViewCounts from "components/shared/ViewsCount";

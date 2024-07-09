@@ -18,10 +18,10 @@ const AllCats = () => {
 
   const [tagList, setTagList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [perPage, setPerPage] = useState(12);
-  const [page, setPage] = useState(1);
-  const [totalTags, setTotalTags] = useState(0);
-  const [search, setSearch] = useState("");
+  const [perPage] = useState(12);
+  const [page] = useState(1);
+  // const [totalTags, setTotalTags] = useState(0);
+  const [search] = useState("");
   const [sortBy, setSortBy] = useState("asc");
 
   useEffect(() => {
@@ -30,12 +30,12 @@ const AllCats = () => {
 
   const getTags = async () => {
     setIsLoading(true);
-    const res = await getAllTags(page, perPage, search, sortBy as any);
+    const res = await getAllTags(null, null, search, sortBy as any);
     if (res?.status_code === 200) {
-      const resData = res?.data;
-      setPage(resData?.current_page);
-      setPerPage(resData?.per_page);
-      setTotalTags(resData?.total_rows);
+      // const resData = res?.data;
+      // setPage(resData?.current_page);
+      // setPerPage(resData?.per_page);
+      // setTotalTags(resData?.total_rows);
     }
     setIsLoading(false);
   };
@@ -49,27 +49,27 @@ const AllCats = () => {
     router?.back();
   };
 
-  const onPageChange = (page, pageSize) => {
-    setPage(page);
-    setPerPage(pageSize);
-  };
+  // const onPageChange = (page, pageSize) => {
+  //   setPage(page);
+  //   setPerPage(pageSize);
+  // };
 
   const onSort = (e, type) => {
     e?.preventDefault();
     setSortBy(type);
   };
 
-  const onSearchClick = (e) => {
-    // const val = e?.target?.value;
-    // setSearch(val);
-  };
+  // const onSearchClick = (e) => {
+  //   // const val = e?.target?.value;
+  //   // setSearch(val);
+  // };
 
-  const onSearchKeyUp = (e) => {
-    if (e?.which == 13) {
-      const val = e?.target?.value;
-      setSearch(val);
-    }
-  };
+  // const onSearchKeyUp = (e) => {
+  //   if (e?.which == 13) {
+  //     const val = e?.target?.value;
+  //     setSearch(val);
+  //   }
+  // };
 
   return (
     <CustomSpinner key="registration-spinner" spinning={isLoading}>
@@ -77,13 +77,13 @@ const AllCats = () => {
         onBackClick={onBackClick}
         isMobile={isMobile}
         tags={tagList}
-        total={totalTags}
-        onPageChange={onPageChange}
-        pageSize={perPage}
-        current={page}
-        onSearchChange={onSearchClick}
+        // total={totalTags}
+        // onPageChange={onPageChange}
+        // pageSize={perPage}
+        // current={page}
+        // onSearchChange={onSearchClick}
         onSort={onSort}
-        onSearchKeyUp={onSearchKeyUp}
+        // onSearchKeyUp={onSearchKeyUp}
       />
     </CustomSpinner>
   );
