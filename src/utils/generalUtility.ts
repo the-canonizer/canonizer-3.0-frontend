@@ -364,3 +364,21 @@ export const getProperties = (item) => {
 
   return null;
 };
+
+
+
+
+export function parseCookies(cookiesString) {
+  const cookiesArray = cookiesString.split('; ');
+  const cookiesObject = {};
+  
+  
+  cookiesArray.forEach(cookie => {
+    const [key, value] = cookie.split('=');
+    cookiesObject[key] = value;
+  });
+  
+  
+  return cookiesObject;
+  }
+

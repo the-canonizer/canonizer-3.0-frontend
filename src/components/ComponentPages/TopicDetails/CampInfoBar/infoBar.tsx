@@ -61,7 +61,7 @@ const InfoBar = ({
   payload = null,
   isTopicPage = false,
   getCheckSupportStatus = null,
-  onCreateCamp = () => {},
+  onCreateCamp = () => { },
 }: any) => {
   const { isUserAuthenticated } = useAuthentication();
 
@@ -159,9 +159,8 @@ const InfoBar = ({
 
   const onCampForumClick = () => {
     router?.push({
-      pathname: `/forum/${router?.query?.camp[0]}/${
-        router?.query?.camp[1] || "1"
-      }/threads`,
+      pathname: `/forum/${router?.query?.camp[0]}/${router?.query?.camp[1] || "1"
+        }/threads`,
     });
   };
   const eventLinePath = () => {
@@ -222,11 +221,11 @@ const InfoBar = ({
     }, 100);
   };
   const showDrawer = () => {
-   dispatch(setOpenDrawer(true))
+    dispatch(setOpenDrawer(true))
   };
   const showConsensusTree = () => {
     dispatch(setOpenConsensusTreePopup(!openConsensusTreePopup))
-   };
+  };
   const campForumDropdownMenu = (
     <Menu className={styles.campForumDropdownMenu}>
       <Menu.Item
@@ -258,9 +257,8 @@ const InfoBar = ({
       <Menu.Item
         icon={
           <i
-            className={`icon-subscribe ${
-              !!topicSubscriptionID && "text-primary"
-            }`}
+            className={`icon-subscribe ${!!topicSubscriptionID && "text-primary"
+              }`}
           ></i>
         }
         onClick={() => {
@@ -282,14 +280,13 @@ const InfoBar = ({
       <Menu.Item
         icon={
           <i
-            className={`icon-subscribe ${
-              !!campSubscriptionID && "text-primary"
-            }`}
+            className={`icon-subscribe ${!!campSubscriptionID && "text-primary"
+              }`}
           ></i>
         }
         disabled={
           (!!campSubscriptionID && campRecord?.flag == 2) ||
-          campRecord?.length == 0
+            campRecord?.length == 0
             ? true
             : false
         }
@@ -351,7 +348,7 @@ const InfoBar = ({
               }}
             >
               {getCheckSupportStatus?.is_delegator == 1 ||
-              getCheckSupportStatus?.support_flag != 1
+                getCheckSupportStatus?.support_flag != 1
                 ? K?.exceptionalMessages?.directJoinSupport
                 : K?.exceptionalMessages?.manageSupport}
             </div>
@@ -397,27 +394,27 @@ const InfoBar = ({
             href={
               campStatement?.length > 0
                 ? `/statement/history/${replaceSpecialCharacters(
-                    router?.query?.camp
-                      ? router?.query?.camp[0]
-                      : router?.query?.manageSupport[0],
-                    "-"
-                  )}/${replaceSpecialCharacters(
-                    router?.query?.camp
-                      ? router?.query?.camp[1] ?? "1-Agreement"
-                      : router?.query?.manageSupport[1],
-                    "-"
-                  )}`
+                  router?.query?.camp
+                    ? router?.query?.camp[0]
+                    : router?.query?.manageSupport[0],
+                  "-"
+                )}/${replaceSpecialCharacters(
+                  router?.query?.camp
+                    ? router?.query?.camp[1] ?? "1-Agreement"
+                    : router?.query?.manageSupport[1],
+                  "-"
+                )}`
                 : `/create/statement/${replaceSpecialCharacters(
-                    router?.query?.camp
-                      ? router?.query?.camp[0]
-                      : router?.query?.manageSupport?.at(0),
-                    "-"
-                  )}/${replaceSpecialCharacters(
-                    router?.query?.camp
-                      ? router?.query?.camp[1] ?? "1-Agreement"
-                      : router?.query?.manageSupport?.at(1),
-                    "-"
-                  )}`
+                  router?.query?.camp
+                    ? router?.query?.camp[0]
+                    : router?.query?.manageSupport?.at(0),
+                  "-"
+                )}/${replaceSpecialCharacters(
+                  router?.query?.camp
+                    ? router?.query?.camp[1] ?? "1-Agreement"
+                    : router?.query?.manageSupport?.at(1),
+                  "-"
+                )}`
             }
           >
             <a>
@@ -476,10 +473,10 @@ const InfoBar = ({
         >
           <div className="btnsWrap w-full">
             {isCampBtnVisible &&
-            currentCampNode?._isDisabled == 0 &&
-            currentCampNode?.parentIsOneLevel == 0 &&
-            (campRecord?.is_archive == 0 ||
-              campRecord?.is_archive == undefined) ? (
+              currentCampNode?._isDisabled == 0 &&
+              currentCampNode?.parentIsOneLevel == 0 &&
+              (campRecord?.is_archive == 0 ||
+                campRecord?.is_archive == undefined) ? (
               <Tooltip
                 title={
                   tree && !tree["1"]?.is_valid_as_of_time
@@ -500,39 +497,39 @@ const InfoBar = ({
                 >
                   <i className="icon-camp"></i> Create New Camp
                 </Button> */}
-                <div>{!isMobile && <CampDisclaimer />}</div> 
-                 <div className="flex gap-2 flex-wrap  mt-2">
-                 <Button onClick={showConsensusTree} className="text-[#242B37] border border-[#CCD4E7] py-[10px] px-[22px] refine w-auto refine-btn text-base font-medium  flex items-center justify-center bg-[#F8F8FC]">
-                 Consesnus Tree
-                 <Image
+                <div>{!isMobile && <CampDisclaimer />}</div>
+                <div className="flex gap-2 flex-wrap  mt-2">
+                  <Button onClick={showConsensusTree} className="text-[#242B37] border border-[#CCD4E7] py-[10px] px-[22px] refine w-auto refine-btn text-base font-medium  flex items-center justify-center bg-[#F8F8FC]">
+                    Consesnus Tree
+                    <Image
                       src="/images/caret-icon.svg"
                       alt="svg"
                       height={7}
                       width={14}
                     />
-                </Button>
-                <Button onClick={showDrawer} className="py-[10px] px-[22px] refine w-auto refine-btn text-base font-medium  flex items-center justify-center">
-                  Refine Filter
-                  <Image
+                  </Button>
+                  <Button onClick={showDrawer} className="py-[10px] px-[22px] refine w-auto refine-btn text-base font-medium  flex items-center justify-center">
+                    Refine Filter
+                    <Image
                       src="/images/filter-con.svg"
                       alt="svg"
                       height={24}
                       width={24}
                     />
-                </Button>
-                     {(router.query.algo &&
-                        selectedAlgorithm &&
-                        lable?.algorithm_label !== undefined) ||
-                      is_camp_archive_checked ||
-                      is_checked ||
-                      selectedAsOf == "bydate" ||
-                      includeReview ||
-                      router?.query?.asof === "review" ||
-                      filteredScore != 0 ? (
-                        <LatestFilter />
-                      ) : (
-                        ""
-                      )}
+                  </Button>
+                  {(router.query.algo &&
+                    selectedAlgorithm &&
+                    lable?.algorithm_label !== undefined) ||
+                    is_camp_archive_checked ||
+                    is_checked ||
+                    selectedAsOf == "bydate" ||
+                    includeReview ||
+                    router?.query?.asof === "review" ||
+                    filteredScore != 0 ? (
+                    <LatestFilter />
+                  ) : (
+                    ""
+                  )}
                 </div>
               </Tooltip>
             ) : null}
@@ -641,7 +638,7 @@ const InfoBar = ({
                      
                     </>
                   )} */}
-                  <RefineFilter/>
+                  <RefineFilter />
                 </Fragment>
               )}
             </Typography.Paragraph>
