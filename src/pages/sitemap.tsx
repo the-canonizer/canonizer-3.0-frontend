@@ -17,6 +17,7 @@ const SitemapPage = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    setIsLoading(true);
     const navigateToSitemap = async () => {
       await router.replace("/sitemap.xml");
       setIsLoading(false);
@@ -24,25 +25,6 @@ const SitemapPage = () => {
 
     navigateToSitemap();
   }, [router]);
-  
-
-  if (isLoading) {
-    return (
-      <Layout initialProps={undefined} initialState={undefined}>
-        <Card
-          bordered={false}
-          style={{ height: "50vh", textAlign: "center", width: "100%" }}
-        >
-          <CustomSkelton
-            skeltonFor="list"
-            bodyCount={5}
-            stylingClass="listSkeleton"
-            isButton={false}
-          />
-        </Card>
-      </Layout>
-    );
-  }
 
   return (
     <Fragment>
@@ -51,7 +33,18 @@ const SitemapPage = () => {
           bordered={false}
           style={{ height: "50vh", textAlign: "center", width: "100%" }}
         >
-          <Text>This page generates a sitemap.xml file in every 15 days.</Text>
+          {isLoading ? (
+            <CustomSkelton
+              skeltonFor="list"
+              bodyCount={5}
+              stylingClass="listSkeleton"
+              isButton={false}
+            />
+          ) : (
+            <Text>
+              This page generates a sitemap.xml file in every 15 days.
+            </Text>
+          )}
         </Card>
       </Layout>
     </Fragment>
