@@ -367,4 +367,21 @@ export const getProperties = (item) => {
 
 export const capitalizeFirstLetter = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 
+export const historyTitle = (historyOf) => {
+  switch (historyOf) {
+    case "statement":
+      return "Statement History";
+    case "topic":
+      return "Topic History";
+    case "camp":
+      return "Camp History";
+    default:
+      return "";
+  }
+};
+
+export const convertToTime = (unixTime) => {
+  return moment(unixTime * 1000).format("DD MMM YYYY, hh:mm:ss A");
+}
+
  

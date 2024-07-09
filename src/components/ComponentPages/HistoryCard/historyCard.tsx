@@ -43,8 +43,9 @@ import moment from "moment";
 import StatementHistory from "../HistoryContainer/Collapse/statementHistory";
 import CampHistory from "../HistoryContainer/Collapse/campHistory";
 import TopicHistory from "../HistoryContainer/Collapse/topicHistory";
-import { replaceSpecialCharacters } from "src/utils/generalUtility";
+import { convertToTime, replaceSpecialCharacters } from "src/utils/generalUtility";
 import HistoryComparison from "../HistoryContainer/Collapse/historyComparison";
+import Timer from "../Timer";
 
 const { Title } = Typography;
 
@@ -117,9 +118,6 @@ function HistoryCard({
     }
   };
 
-
-
-
   const commitChanges = async () => {
     setLoadingChanges(true);
     let reqBody = {
@@ -158,10 +156,10 @@ function HistoryCard({
     setIsSelectChecked(true);
     let reqBody = {
       record_id: campStatement.id,
-      topic_num: router?.query.camp[0].split("-")[0],
-      camp_num: historyOf == "topic" ? 1 : router?.query.camp && router?.query.camp[1].split("-")[0],
+      topic_num: router?.query.camp?.at(0).split("-")?.at(0),
+      camp_num: historyOf == "topic" ? 1 : router?.query.camp && router?.query.camp?.at(1).split("-")?.at(0),
       change_for: historyOf,
-      nick_name_id: userNickNameData[0]?.id,
+      nick_name_id: userNickNameData?.at(0)?.id,
       user_agreed: campStatement?.agreed_to_change ? 0 : 1,
     };
     let res = await agreeToChangeApi(reqBody);
@@ -200,11 +198,6 @@ function HistoryCard({
     });
   };
 
-  const covertToTime = (unixTime) => {
-    return moment(unixTime * 1000).format("DD MMM YYYY, hh:mm:ss A");
-  };
-
-
   return (
     <>
       <div className={`csh-wrapper cn-wrapper ${compareMode ? getStatusClass(status) : getStatusClass(campStatement?.status)}`}>
@@ -216,20 +209,20 @@ function HistoryCard({
               <>
                 {compareMode ? (
                   <>
-                    {covertToTime(comparisonData?.submit_time).split(",")[0]}
-                    ,<span> {covertToTime(comparisonData?.submit_time).split(",")[1]}</span>
+                    {convertToTime(comparisonData?.submit_time).split(",")?.at(0)}
+                    ,<span> {convertToTime(comparisonData?.submit_time).split(",")?.at(1)}</span>
                   </>
                 ) : (
                   <>
                     {campStatement?.status === "live" ? (
                       <>
-                        {covertToTime(campStatement?.go_live_time).split(",")[0]}
-                        ,<span> {covertToTime(campStatement?.go_live_time).split(",")[1]}</span>
+                        {convertToTime(campStatement?.go_live_time).split(",")?.at(0)}
+                        ,<span> {convertToTime(campStatement?.go_live_time).split(",")?.at(1)}</span>
                       </>
                     ) : (
                       <>
-                        {covertToTime(campStatement?.submit_time).split(",")[0]}
-                        ,<span> {covertToTime(campStatement?.submit_time).split(",")[1]}</span>
+                        {convertToTime(campStatement?.submit_time).split(",")?.at(0)}
+                        ,<span> {convertToTime(campStatement?.submit_time).split(",")?.at(1)}</span>
                       </>
                     )}
                   </>
@@ -313,9 +306,6 @@ function HistoryCard({
             )
           }
 
-          {
-
-          }
           {compareMode && (
             <HistoryComparison
               campStatement={comparisonData}
@@ -625,87 +615,3 @@ function HistoryCard({
 }
 
 export default HistoryCard;
-
-const Timer = ({ unixTime, setCommited }: any) => {
-  const [minutes, setMinutes] = useState(0);
-  const [seconds, setSeconds] = useState(0);
-  const [hours, setHours] = useState(0);
-  const didMount = useRef(false);
-
-  useEffect(() => {
-    if (didMount.current) {
-      let myInterval = setInterval(() => {
-        if (hours > 0) {
-          setHours(hours - 1);
-        }
-        if (seconds > 0) {
-          setSeconds(seconds - 1);
-        }
-        if (hours === 0) {
-          if (seconds === 0) {
-            if (minutes === 0) {
-              setCommited(true);
-              clearInterval(myInterval);
-            } else {
-              setMinutes(minutes - 1);
-              setSeconds(59);
-            }
-          }
-        } else {
-          setMinutes(59);
-          setSeconds(59);
-        }
-      }, 1000);
-      return () => {
-        clearInterval(myInterval);
-      };
-    }
-  });
-
-  const timeall = () => {
-    if (moment.now() < unixTime * 1000 + 3600000) {
-      let resetSecLim = Math.floor(
-        (unixTime * 1000 + 3600000 - moment.now() + 53000) / 1000
-      );
-      let resetMinLim = Math.floor(resetSecLim / 60) % 60;
-      if (resetMinLim >= 59 && resetSecLim % 60 >= 55) {
-        convertMsToTime(3600000);
-      } else {
-        convertMsToTime(unixTime * 1000 + 3600000 - moment.now());
-      }
-    }
-  };
-  function convertMsToTime(milliseconds) {
-    let seconds = Math.floor(milliseconds / 1000);
-    let minutes = Math.floor(seconds / 60);
-    let hours = Math.floor(minutes / 60);
-    seconds = seconds % 60;
-    minutes = minutes % 60;
-    hours = hours % 24;
-    setHours(hours);
-    setMinutes(minutes);
-    setSeconds(seconds);
-    return `${hours}:${minutes}:${seconds}`;
-  }
-  useEffect(() => {
-    timeall();
-    didMount.current = true;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [unixTime]);
-
-  return (
-    <div>
-      {hours === -1 && minutes === -1 && seconds === -1 ? (
-        <span> 00:00:00 </span>
-      ) : (
-        <span>
-          {" "}
-          {hours < 10 ? `0${hours}` : hours}:
-          {minutes < 10 ? `0${minutes}` : minutes}:
-          {seconds < 10 ? `0${seconds}` : seconds}
-        </span>
-      )}
-    </div>
-  );
-};
-export { Timer };
