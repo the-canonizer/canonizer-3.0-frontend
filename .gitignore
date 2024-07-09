@@ -10,7 +10,6 @@
 
 # Configuration Files
 /config
-next.config.js
 
 # next.js
 /.next/
