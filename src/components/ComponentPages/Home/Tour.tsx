@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import JoyRide, { CallBackProps } from "react-joyride";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -30,6 +31,12 @@ const Tour = () => {
       dispatch(setIsNewUser(false));
     }
   };
+
+  useEffect(() => {
+    return () => {
+      dispatch(setIsNewUser(false));
+    };
+  }, []);
 
   return isShowTour ? (
     <JoyRide

@@ -39,13 +39,13 @@ function CustomLayout(props: any) {
         </Header>
       ) : null}
 
-      {props?.afterHeader ? (
-        <div className="px-4 md:px-7 my-3 mb-10">{props?.afterHeader}</div>
-      ) : null}
-
       <DisclaimerMsg />
       <ArchivedCampMsg />
       <RegistrationModal />
+
+      {props?.afterHeader ? (
+        <div className="px-4 md:px-7 my-3 mb-10">{props?.afterHeader}</div>
+      ) : null}
 
       <Layout
         className={`px-4 md:px-7 max-w-full ${styles.contentArea} ${getCls()}`}
