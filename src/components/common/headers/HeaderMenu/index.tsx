@@ -56,12 +56,13 @@ const menuItems = [
   //   id: 5,
   //   external: true,
   // },
-  {
-    link: "/videos/consciousness",
-    linkTitle: "Videos",
-    id: 6,
-    icon: <VideoCameraOutlined />,
-  },
+  // {
+  //   link: "/videos/consciousness",
+  //   linkTitle: "Videos",
+  //   id: 6,
+  //   icon: <QuestionCircleOutlined />,
+  // },
+
   {
     link: "/topic/132-Help/1-Agreement?is_tree_open=1",
     linkTitle: "Help",
@@ -116,6 +117,7 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
 
   const ListItem = ({ cls = "", ...props }) => (
     <li
+      // className={`flex-auto px-2 lg:px-2 md:px-2 sm:px-2 lg:before:hidden lg:after:hidden rounded-lg ${styles.listItem} ${cls}`} //vikas changes
       className={`flex-auto px-3 before:hidden after:hidden lg:before:block lg:after:block rounded-lg ${styles.listItem} ${cls}`}
       key={props.key}
     >
@@ -228,6 +230,7 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
             <CreateTopic
               className={
                 isUserAuthenticated
+
                   ? `border-[1px] px-3 py-2 rounded-lg border-canBlue bg-[#98B7E61A] ${
                       isMobile ? "bg-canBlue text-white rounded-md" : ""
                     }`
@@ -277,6 +280,7 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
             </ListItem>
           ) : null}
           {isUserAuthenticated ? (
+            // <ListItem key="profile-li" cls="sm:hidden md:hidden hidden"> //vikas changes
             <ListItem
               key="profile-li"
               cls="hidden lg:flex justify-center items-center !pr-0"

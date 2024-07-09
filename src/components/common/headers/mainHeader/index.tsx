@@ -4,20 +4,45 @@ import Logo from "../logoHeader";
 import HeaderMenu from "../HeaderMenu";
 import SearchHeader from "../search";
 import useAuthentication from "src/hooks/isUserAuthenticated";
+import Router, { useRouter } from "next/router";
+import Image from "next/image";
 
 const LoggedOutHeader = () => {
   const { isUserAuthenticated } = useAuthentication();
 
+  const isMobile = window.matchMedia("(min-width: 1024.98px)").matches;
+  const router = useRouter();
+
+  // const isMobile = window.matchMedia("(min-width: 1280px)").matches;
+console.log(isMobile,  router,"joooooo")
   return (
     <Fragment>
-      <div className="flex justify-start items-center z-10 w-100 py-5">
-        <Logo />
-        <SearchHeader className="header-search-bar" />
+     <div className="flex sm:justify-between md:justify-between justify-between items-center z-10 w-100 py-2">
+        {/* {!isMobile && router?.pathname == "/topic/[...camp]" && (
+          <h3 className=" text-[18px] text-[#242B37] leading-[26px] font-medium flex items-center">
+            <Image src="/images/left-caret.svg" alt="" height={24} width={24} />
+            Camp Details</h3>
+        )} */}
+        {/* {isMobile == true && router?.pathname == "/topic/[...camp]" ?  <Logo /> : ""} */}
+        {<Logo/>}
+
+        {isMobile && router?.pathname == "/topic/[...camp]" && (
+          <SearchHeader className="ml-5" />
+        )}
+
         <HeaderMenu
           className="ml-1 lg:ml-auto"
           isUserAuthenticated={isUserAuthenticated}
         />
-      </div>
+      </div>  
+    
+
+      {/* <SearchSection /> */}
+      {/* <DisclaimerMsg />
+      <ArchivedCampMsg />
+      <LoginModal />
+      <RegistrationModal />
+      <ForgotModal /> */}
     </Fragment>
   );
 };

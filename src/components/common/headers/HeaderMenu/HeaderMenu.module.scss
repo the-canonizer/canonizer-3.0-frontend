@@ -16,6 +16,11 @@
           display: none;
         }
       }
+      &:nth-child(3) {
+        &::before {
+          display: none;
+        }
+      }
     }
   }
   @media screen and (max-width: 1024px) {

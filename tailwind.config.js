@@ -9,6 +9,17 @@ module.exports = {
       inter: '"Inter", sans-serif',
     },
     extend: {
+      boxShadow: {
+        'camp-light': '0 10px 20px 0px rgba(49, 80, 114, 0.2)',
+      },
+      spacing: {
+        1: "8px",
+        2: "12px",
+        3: "16px",
+        4: "24px",
+        5: "32px",
+        6: "48px",
+      },
       colors: {
         canBlue: "#5482C8",
         canHoverBlue: "#326DC7",
@@ -28,6 +39,22 @@ module.exports = {
       backgroundImage: {
         "custom-gradient":
           "linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000000 100%)",
+      },
+      screens: {
+        sm: "576px",
+        // => @media (min-width: 576px) { ... }
+
+        md: "768px",
+        // => @media (min-width: 768px) { ... }
+
+        lg: "992px",
+        // => @media (min-width: 992px) { ... }
+
+        xl: "1200px",
+        // => @media (min-width: 1200px) { ... }
+
+        "2xl": "1600px",
+        // => @media (min-width: 1600px) { ... }
       },
     },
   },

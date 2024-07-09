@@ -13,6 +13,7 @@ import styles from "./social-share.module.scss";
 import { isServer } from "../../../utils/generalUtility";
 import { Fragment } from "react";
 import { Dropdown, Menu } from "antd";
+import Image from "next/image";
 
 const SocialShare = ({ campUrl, campName }: any) => {
   const campForumDropdownMenu = (
@@ -48,7 +49,12 @@ const SocialShare = ({ campUrl, campName }: any) => {
         trigger={["click"]}
       >
         <a className={styles.shareIcon} onClick={(e) => e.preventDefault()}>
-          <span>Share</span> <ShareAltOutlined />
+                    <Image
+                      src="/images/share-icon.svg"
+                      alt="svg"
+                      height={24}
+                      width={24}
+                    />
         </a>
       </Dropdown>
     </Fragment>
