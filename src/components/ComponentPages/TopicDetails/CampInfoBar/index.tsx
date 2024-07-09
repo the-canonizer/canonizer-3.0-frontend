@@ -897,7 +897,7 @@ const TimelineInfoBar = ({
             )}
 
             <div className={styles.createNewcamp}>
-              {campStatement.length > 0 ? (
+              {campStatement?.length > 0 ? (
                 <div className="topicDetailsCollapseFooter printHIde camp">
                   <CustomButton
                     disabled={campRecord?.is_archive == 1 ? true : false}
