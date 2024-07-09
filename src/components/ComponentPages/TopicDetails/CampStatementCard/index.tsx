@@ -65,7 +65,7 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
               <p>Last update: 2 Jan 2024, 03:45 PM</p>
             </div>
             <div className="d-flex items-center gap-1">
-              <ViewCounts views={tree[1]?.camp_views} />
+              <ViewCounts views={tree[1] && tree[1]?.camp_views} />
             </div>
           </div>
           <hr className="my-3" />
