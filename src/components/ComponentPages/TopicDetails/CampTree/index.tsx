@@ -16,6 +16,7 @@ import {
   setCheckSupportExistsData,
   setCurrentCheckSupportStatus,
 } from "src/store/slices/campDetailSlice";
+import { DownOutlined } from "@ant-design/icons";
 
 const { TreeNode } = Tree;
 
@@ -319,6 +320,7 @@ const CampTree = ({
             (data[item].is_archive != 0 && is_camp_archive_checked == true) ? (
             <>
               <TreeNode
+               switcherIcon={<DownOutlined />}
                 title={
                   <div
                     style={{ overflowX: "auto", overflowY: "clip" }}
@@ -498,7 +500,7 @@ const CampTree = ({
           return null;
         }
       }
-      return <TreeNode key={data[item].key} {...data[item]} />;
+      return <TreeNode key={data[item].key} {...data[item]}  />;
     });
   };
 
@@ -539,7 +541,7 @@ const CampTree = ({
         <Typography.Paragraph
           className={`${styles.topicTitleStyle} ${styles.topicTitle}`}
         >
-          <div className="event-line-wrapper">
+          {/* <div className="event-line-wrapper">
             <div>
               <span className="normal">Topic : </span>
               {tree?.length && tree[0] ? (
@@ -605,7 +607,7 @@ const CampTree = ({
             >
               Event Line
             </Button>
-          </div>
+          </div> */}
           <span className={styles.subScriptionIcon}>
             {isUserAuthenticated && !!topicRecord?.topicSubscriptionId ? (
               <Tooltip

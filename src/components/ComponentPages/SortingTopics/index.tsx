@@ -1,8 +1,4 @@
-import { Dropdown } from "antd";
-import type { MenuProps } from "antd";
-import Image from "next/image";
-import SortActiveTopicIcon from "../../../assets/image/sort-active-ico.svg";
-import SortTopicIcon from "../../../assets/image/sort-ico.svg";
+import { Select } from "antd";
 import styles from "../../ComponentPages/SortingTopics/sort.module.scss";
 import {
   setScoreViewTopic,
@@ -14,74 +10,63 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 const SortTopics = () => {
+  const dispatch = useDispatch();
+  const router = useRouter();
+
+  // State from Redux
   const { sortLatestTopic, sortScoreViewTopic } = useSelector(
     (state: RootState) => ({
       sortLatestTopic: state?.utils?.sortLatestTopic,
       sortScoreViewTopic: state?.utils?.sortScoreViewTopic,
     })
   );
-  const router = useRouter();
 
+  // Reset sorting options when navigating to the home page
   useEffect(() => {
-    if (router.pathname == "/") {
+    if (router.pathname === "/") {
       dispatch(setScoreViewTopic(false));
       dispatch(setSortLatestTopic(false));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  const dispatch = useDispatch();
-  const onLatestTopic = () => {
+  }, [router.pathname]);
+
+  // Handlers for selecting sorting options
+  const handleLatestTopic = () => {
     dispatch(setSortLatestTopic(true));
     dispatch(setScoreViewTopic(false));
   };
-  const onScoreViewTopic = () => {
+
+  const handleScoreViewTopic = () => {
     dispatch(setScoreViewTopic(true));
     dispatch(setSortLatestTopic(false));
   };
-  const items: MenuProps["items"] = [
-    {
-      key: "1",
-      label: (
-        <a onClick={onLatestTopic}>
-          <div>Latest</div>
-        </a>
-      ),
-    },
-    {
-      type: "divider",
-    },
-    {
-      key: "2",
-      label: (
-        <a onClick={onScoreViewTopic}>
-          <div>Score Value</div>
-        </a>
-      ),
-    },
-  ];
 
   return (
-    <Dropdown menu={{ items }} trigger={["click"]}>
-      <a onClick={(e) => e.preventDefault()} className={styles.sort_topic}>
-        <span>
-          {sortLatestTopic
+    <div className={styles.sortContainer}>
+      {/* Select component for sorting */}
+      <Select
+        size="large"
+        className="browse-filters"
+        suffixIcon={<i className="icon-sort"></i>}
+        style={{ width: 150 }}
+        placeholder="Sort By"
+        value={
+          sortLatestTopic
             ? "Latest"
-            : sortScoreViewTopic
-            ? "Score Value"
-            : "Sort"}
-          <Image
-            width={20}
-            height={20}
-            alt="sort"
-            src={
-              sortLatestTopic || sortScoreViewTopic
-                ? SortActiveTopicIcon
-                : SortTopicIcon
-            }
-          />
-        </span>
-      </a>
-    </Dropdown>
+            : "ScoreValue"
+        }
+        onChange={(value) => {
+          if (value === "Latest") {
+            handleLatestTopic();
+          } else if (value === "ScoreValue") {
+            handleScoreViewTopic();
+          }
+        }}
+      >
+        <Select.Option value="Latest">Latest</Select.Option>
+        <Select.Option value="ScoreValue">Score Value</Select.Option>
+      </Select>
+    </div>
   );
 };
 

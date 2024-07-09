@@ -3,14 +3,15 @@ import { Button } from "antd";
 import { Image } from "antd";
 import { latestThread } from "src/network/api/campForumApi";
 import moment from "moment";
+import { useRouter } from "next/router";
 function Campforum() {
 const [thread,setThread]= useState([])
-
+const router = useRouter()
 const onFinishPost = async () => {
 
   const body = {
-    camp_num:"1",
-    topic_num:"1",
+    topic_num: router?.query?.camp[0]?.split("-")[0],
+    camp_num: router?.query?.camp[1]?.split("-")[0],
   };
 let response = await latestThread(body)
 setThread(response)
@@ -22,10 +23,9 @@ useEffect(()=>{
 const covertToTime = (unixTime) => {
   return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
 };
-
   return (
     <>
-    {thread.length < 0 ?(
+    {thread?.length < 0 ?(
        <div className="campfourm-nodata mb-[20px]">
        <h3 className="text-lg text-[#242B37] font-semibold mb-[20px] uppercase">
          Camp Forum
@@ -55,7 +55,7 @@ const covertToTime = (unixTime) => {
       </div>
 
       <div className=" bg-[#F7F8FC] py-[20px] px-[20px] rounded-[12px] flex flex-col  items-start justify-between">
-        {thread.map((obj,index)=>{
+        {thread?.length && thread?.map((obj,index)=>{
           return(
             <div key={index} className="cursor-pointer group flex justify-between w-full p-[12px] mb-[10px] hover:shadow-camp-light hover:bg-white hover:border-transparent hover:rounded-[10px]  border-b">
             <div>
