@@ -266,17 +266,14 @@ const LatestFilter = () => {
         selectedAlgorithm &&
         lable?.algorithm_label !== undefined ? (
           <Tag
-          className="bg-[#F0F2FA] rounded-full py-[8px] px-[14px] text-xs text-[#5482C8] leading-[14px] font-medium border-none flex items-center gap-1"
-            icon={
-              <CloseOutlined
+          className="bg-canLightGrey rounded-full py-2.5 px-3.5 text-xs text-canBlue leading-4 font-medium border-none flex items-center gap-1"
+          >
+            <CloseOutlined
                 onClick={() => {
                   algoRevert();
                   revertScore()
-                  
                 }}
               />
-            }
-          >
             {lable?.algorithm_label}
           </Tag>
         ) : (
@@ -284,7 +281,7 @@ const LatestFilter = () => {
         )}
         {is_camp_archive_checked ? (
           <Tag
-           className="bg-[#F0F2FA] rounded-full py-[8px] px-[14px] text-xs text-[#5482C8] leading-[14px] font-medium border-none flex items-center gap-1"
+           className="bg-canLightGrey rounded-full py-2.5 px-3.5 text-xs text-canBlue leading-4 font-medium border-none flex items-center gap-1"
             data-testid="archived_camps"
           > 
             Show archived camps
@@ -300,7 +297,7 @@ const LatestFilter = () => {
         )}
         {is_checked ? (
           <Tag
-           className="bg-[#F0F2FA] rounded-full py-[8px] px-[14px] text-xs text-[#5482C8] leading-[14px] font-medium border-none flex items-center gap-1"           
+           className="bg-canLightGrey rounded-full py-2.5 px-3.5 text-xs text-canBlue leading-4 font-medium border-none flex items-center gap-1"           
           >
             100% of canonized score
             <CloseOutlined
@@ -315,7 +312,7 @@ const LatestFilter = () => {
         )}
         {selectedAsOf == "bydate" ? (
           <Tag
-             className="bg-[#F0F2FA] rounded-full py-[6px] px-[14px] text-xs text-[#5482C8] leading-[14px] font-medium border-none flex items-center gap-1"
+             className="bg-canLightGrey rounded-full py-1 px-3.5 text-xs text-canBlue leading-4 font-medium border-none flex items-center gap-1"
             data-testid="asOfDate"
           >
              <Image
@@ -336,7 +333,7 @@ const LatestFilter = () => {
         )}
         {includeReview || router?.query?.asof == "review" ? (
           <Tag
-          className="bg-[#F0F2FA] rounded-full py-[8px] px-[14px] text-xs text-[#5482C8] leading-[14px] font-medium border-none flex items-center gap-1"
+          className="bg-canLightGrey rounded-full py-2.5 px-3.5 text-xs text-canBlue leading-4 font-medium border-none flex items-center gap-1"
         
             data-testid="include_review"
           >{`Include review`}
@@ -351,13 +348,7 @@ const LatestFilter = () => {
         )}
         {filteredScore != 0 ? (
           <Tag
-            className="bg-[#F0F2FA] rounded-full py-[8px] px-[14px] text-xs text-[#5482C8] leading-[14px] font-medium border-none flex items-center gap-1"
-            icon={
-              <CloseOutlined
-                onClick={filterscore}
-                data-testid="close_icon_Score"
-              />
-            }
+            className="bg-canLightGrey rounded-full py-2.5 px-3.5 text-xs text-canBlue leading-4 font-medium border-none flex items-center gap-1"
             data-testid="Score"
           >
             {`Score < ${filteredScore}`}

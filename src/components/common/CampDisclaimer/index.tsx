@@ -5,7 +5,7 @@ import SocialShareUI from "../socialShare";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
 import { Dropdown } from "antd";
-import DropDownMenu from "src/components/DropdownMenu";
+import DropDownMenu from "../../DropdownMenu";
 
 const CampDisclaimer = () => {
   const { campRecord, manageSupportStatusCheck } = useSelector((state: RootState) => ({

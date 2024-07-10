@@ -18,7 +18,7 @@ import {
 } from "src/network/api/campDetailApi";
 import { RootState } from "src/store";
 import SideBar from "../Home-old/SideBar";
-import CampStatementCard from "./CampStatementCard";
+import CampStatementCard from "../../ComponentPages/TopicDetails/CampStatementCard";
 import CampInfoBar from "./CampInfoBar";
 import styles from "./topicDetails.module.scss";
 // import CampTreeCard from "./CampTreeCard";
@@ -523,19 +523,19 @@ const TopicDetails = ({ serverSideCall }: any) => {
             getCheckSupportStatus={getCheckSupportStatus}
           />
           {openConsensusTreePopup == true ? (
-            <div className="bg-[#F7F8FC] py-[30px] px-[20px] rounded-[12px]">
-              <div className="border border-[#CCD4E7] bg-white rounded-[12px] p-[20px] w-[80%]">
+            <div className="bg-canGray py-7 px-5 rounded-lg">
+              <div className="border border-canGrey2 bg-white rounded-lg p-5 w-[80%]">
                 <div className="consensu-tree-section">
-                  <h3 className="mb-[30px] text-[#242B37] uppercase text-base font-semibold">
+                  <h3 className="mb-5 text-canBlack uppercase text-base font-semibold">
                     Consensus tree
                   </h3>
-                  <p className="text-sm  font-medium text-[#242B37]">
+                  <p className="text-sm  font-medium text-canBlack">
                     Collapse camps with support less than
                   </p>
 
                   <Select
-                    // className="!w-[200px] !mt-[10px] !mb-[20px] !rounded-[8px]   !shadow-none !border !border-[#CCD4E7]"
-                    className="[&_.ant-select-selector]:!bg-transparent !border !border-[#ccd4e7] !shadow-none rounded-[8px] !w-[200px] !mt-[10px] !mb-[20px]"
+                    // className="!w-[200px] !mt-[10px] !mb-[20px] !rounded-[8px]   !shadow-none !border !border-canGrey2"
+                    className="[&_.ant-select-selector]:!bg-transparent !border !border-canGrey2 !shadow-none rounded-md !w-[200px] !mt-2.5 !mb-5"
                     value={`${treeExpandValue}`}
                     defaultValue={`${treeExpandValue}`}
                     // style={{ width: 80, margin: "0 5px" }}
@@ -547,7 +547,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
                   <FullScoreCheckbox loadingIndicator={loadingIndicator} />
                 </div>
                 <ArchivedCampCheckBox loadingIndicator={loadingIndicator} />
-                <hr className="border-1 my-[30px] border-[#CCD4E7]" />
+                <hr className="border-1 my-7 border-canGrey2" />
                 <CampTree
                   scrollToCampStatement={scrollToCampStatement}
                   setTotalCampScoreForSupportTree={
@@ -608,12 +608,12 @@ const TopicDetails = ({ serverSideCall }: any) => {
                   </div> */}
 
                     <div className="support-tree-parent-box w-full">
-                      <div className="flex gap-2 items-center mb-[20px]">
-                        <h3 className="uppercase text-base font-semibold text-[#242B37]">
+                      <div className="flex gap-2 items-center mb-5">
+                        <h3 className="uppercase text-base font-semibold text-canBlack">
                           Support Tree
                           {/* {campRecord?.camp_name}&quot; Camp */}
                         </h3>
-                        <div className="handicon-badge py-[4px] px-[11px] bg-[#f19c39] rounded-[5px] inline-flex items-center">
+                        <div className="handicon-badge py-1 px-2.5 bg-canOrange rounded-md inline-flex items-center">
                           <Image
                             src="/images/hand-icon.svg"
                             alt="svg"
@@ -627,8 +627,8 @@ const TopicDetails = ({ serverSideCall }: any) => {
                           </span>
                         </div>
                       </div>
-                      <div className="bg-[#F7F8FC] py-[30px] px-[10px] lg:px-[20px] rounded-[12px]">
-                        <div className="border border-[#CCD4E7] bg-white rounded-[12px] lg:p-[20px] p-[10px]">
+                      <div className="bg-canGray py-7 px-2.5 lg:px-5 rounded-lg">
+                        <div className="border border-canGrey2 bg-white rounded-lg lg:p-5 p-2.5">
                           <SupportTreeCard
                             loadingIndicator={loadingIndicator}
                             isRemovingSupport={isRemovingSupport}
@@ -669,7 +669,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
                         </div>
                       </div>
                     </div>
-                    <div className="my-[60px]">
+                    <div className="my-16">
                       <CampRecentActivities />
                     </div>
                   </div>

@@ -56,11 +56,11 @@ export default function CampRecentActivities() {
   return (
     <Fragment>
       <div className="camp_activity_new">
-        <h3 className="mb-[20px] uppercase text-base font-semibold text-[#242B37]">
+        <h3 className="mb-5 uppercase text-base font-semibold text-canBlack">
           Camp activities
         </h3>
       </div>
-      <div className="camp-recent bg-[#F7F8FC] py-[30px] px-[20px] rounded-[12px]">
+      <div className="camp-recent bg-canGray py-7 px-5 rounded-lg">
         <div className="camp-recent-child d-flex justify-center flex-col items-center ">
           <div className="d-flex flex-col gap-1 w-full">
             {loadingIndicator ? (
@@ -73,15 +73,15 @@ export default function CampRecentActivities() {
             ) : data ? (
               <List
                 itemLayout="horizontal"
-                className="activeListWrap"
+                className="activeListWrap [&_.ant-list-item-meta-avatar]:!hidden"
                 dataSource={data}
                 renderItem={(item) => (
                   <List.Item className={styles.activitiesList}>
                     <List.Item.Meta
-                      avatar={<BellFilled className={styles.bellIcon} />}
+                      avatar={<BellFilled className={"hidden " + styles.bellIcon} />}
                       title={
                         <div>
-                          <h4 className="text-base leading-[24px] mb-[10px] font-normal"> {item?.description}</h4>{" "}
+                          <h4 className="text-base leading-[24px] mb-2.5 font-normal"> {item?.description}</h4>{" "}
 
                           {item?.log_name === "support" &&
                             getProperties(item)?.reason && (

@@ -499,7 +499,7 @@ const InfoBar = ({
                 </Button> */}
                 <div>{!isMobile && <CampDisclaimer />}</div> 
                  <div className="flex gap-2 mt-2 items-center lg:flex-nowrap flex-wrap">
-                 <Button onClick={showConsensusTree} className="text-[#242B37] border border-[#CCD4E7] py-[10px] lg:px-[22px] !h-[44px] !w-auto refine-btn !text-base font-medium  flex items-center justify-center gap-[10px] rounded-[10px]   bg-[#F8F8FC]">
+                 <Button onClick={showConsensusTree} className="text-canBlack border border-canGrey2 py-2.5 lg:px-5 !h-[44px] !w-auto refine-btn !text-base font-medium  flex items-center justify-center gap-2.5 rounded-lg   bg-canGray">
                  Consesnus Tree
                  <Image
                       src="/images/caret-icon.svg"
@@ -508,7 +508,7 @@ const InfoBar = ({
                       width={14}
                     />
                 </Button>
-                <Button onClick={showDrawer} className="text-[#242B37] py-[10px] lg:px-[22px] h-[34px] rounded-[10px] w-auto  text-base font-medium  flex items-center justify-center !border !border-[#242B37]">
+                <Button onClick={showDrawer} className="text-canBlack py-2.5 lg:px-5 h-[34px] rounded-lg w-auto  text-base font-medium  flex items-center justify-center !border !border-canBlack">
                   Refine Filter
                   <Image
                       src="/images/filter-con.svg"

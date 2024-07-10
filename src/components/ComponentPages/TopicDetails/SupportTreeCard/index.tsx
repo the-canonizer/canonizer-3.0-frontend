@@ -279,7 +279,7 @@ const SupportTreeCard = ({
           return (
             <>
               <TreeNode
-               className="[&_.ant-tree-node-content-wrapper]:!w-full lg:!px-[20px] px-[10px] !bg-transparent border-b hover:[&_.ant-tree-node-content-wrapper]:!bg-transparent !w-full"
+               className="[&_.ant-tree-node-content-wrapper]:!w-full lg:!px-5 px-2.5 !bg-transparent border-b hover:[&_.ant-tree-node-content-wrapper]:!bg-transparent !w-full"
                 title={
                   <>
                     <div className="group w-full">
@@ -288,7 +288,7 @@ const SupportTreeCard = ({
                           "treeListItemTitle " + styles.treeListItemTitle
                         }
                       > */}
-                      <div className="flex gap-1 items-center  boder-b py-[10px] w-full ">
+                      <div className="flex gap-1 items-center  boder-b py-2.5 w-full ">
                         <Link
                           href={{
                             pathname: `/user/supports/${data[item].nick_name_id}`,
@@ -298,7 +298,7 @@ const SupportTreeCard = ({
                           }}
                         >
                           <a className="flex gap-1 items-center">
-                           <span className="text-[#242B37] text-base font-medium"> #{data[item].support_order}{" "}</span>
+                           <span className="text-canBlack text-base font-medium"> #{data[item].support_order}{" "}</span>
                             <div className="w-[32px] h-[32px] rounded-full overflow-hidden">
                               <Image
                                 src={support_image}
@@ -307,7 +307,7 @@ const SupportTreeCard = ({
                                 width={32}
                               />
                             </div>{" "}
-                           <span className="text-[#242B37] lg:text-base text-xs font-medium"> {data[item].nick_name}</span>
+                           <span className="text-canBlack lg:text-base text-xs font-medium"> {data[item].nick_name}</span>
                          <br />
                          
                           </a>
@@ -315,7 +315,7 @@ const SupportTreeCard = ({
                         </Link>
                     
 
-                        <div className="flex bg-[#F19C39] px-[11px] py-[5px] rounded-[5px] gap-1 items-center">
+                        <div className="flex bg-canOrange px-2.5 py-1 rounded-md gap-1 items-center">
                           <Image
                             src="/images/hand-icon.svg"
                             alt="svg"
@@ -371,7 +371,7 @@ const SupportTreeCard = ({
                                       data[item].nick_name_id
                                     )
                                   }
-                                  className="hidden group-hover:flex mb-2  items-center gap-1 justify-center bg-[#E1EDFE] text-[#5482C8] text-base rounded-[10px] font-medium h-[44px] w-full "
+                                  className="hidden group-hover:flex mb-2  items-center gap-1 justify-center bg-canLightBlue text-canBlue text-base rounded-lg font-medium h-[44px] w-full "
                                 >
                                    <Image
                                     src="/images/user-minus-regular.svg"
@@ -405,7 +405,7 @@ const SupportTreeCard = ({
 
                               setModalData(data[item]);
                             }}
-                            className="mb-2 flex items-center gap-1 justify-center bg-[#F4E5E5] text-[#E46B6B] text-base rounded-[10px] font-medium h-[44px] w-full"
+                            className="mb-2 flex items-center gap-1 justify-center bg-canLightRed text-canRed text-base rounded-lg font-medium h-[44px] w-full"
                           >
                               <Image
                                     src="/images/user-minus-red.svg"
@@ -515,7 +515,7 @@ const SupportTreeCard = ({
         <div className="topicDetailsCollapseFooter printHIde mt-3 w-full">
           <CustomButton
             onClick={handleClickSupportCheck}
-            className="w-full justify-center bg-[#4EB966] h-[44px] px-[45px] text-white flex items-center rounded-[10px] font-medium text-base gap-2"
+            className="w-full justify-center bg-canGreen h-[44px] px-11 text-white flex items-center rounded-lg font-medium text-base gap-2"
             disabled={asof == "bydate" || campRecord?.is_archive == 1}
             id="manage-support-btn"
           >

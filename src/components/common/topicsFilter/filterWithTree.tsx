@@ -512,7 +512,7 @@ const FilterWithTree = ({
         >
           <Row gutter={20} >
             <Col xs={24}>
-              <div className="algo_title_new border-b border-[#dde2ee]  mb-[15px] p-[20px]">
+              <div className="algo_title_new border-b border-canGrey2  mb-3.5 p-5">
                 <Title level={5} className={styles.algoText}>
                   Select Canonizer Algorithm:{"  "}{" "}
                   <Popover
@@ -595,7 +595,7 @@ const FilterWithTree = ({
                 alignItems: "flex-end",
               }}
             >
-              <div className="score_value mb-[15px] pt-[10px] px-[20px] pb-[30px] w-full border-b border-[#dde2ee]">
+              <div className="score_value mb-3.5 pt-2.5 px-5 pb-7 w-full border-b border-canGrey2">
                 <Text className={styles.filterText}>
                   <p className="d-flex items-center gap-1">
                     {" "}
@@ -636,7 +636,7 @@ const FilterWithTree = ({
             </Col> */}
             <Col xs={24} className="">
                {/* <div className={`${styles.algo_title} ${styles.title}`}> / */}
-              <div className="as-of-div mb-[15px] pt-[10px] px-[20px] pb-[30px] w-full">
+              <div className="as-of-div mb-3.5 pt-2.5 px-5 pb-7 w-full">
                 <Title level={5} className={styles.algoText}>
                   As Of
                   <Popover content={asContent} placement="right">
@@ -759,11 +759,11 @@ const FilterWithTree = ({
             
               <Col xs={24} className=" refine-drawer-mobile overflow-hidden">
                 <div className="flex items-center justify-between sm:gap-0 lg:gap-2 btn-parent  lg:px-1 sm:px-0 fixed lg:static bottom-0 w-full">
-                  <Button className="btnCancel border-t border-[#5482C8] bg-[#98b7e6] bg-opacity-[.1] lg:rounded-[10px] lg:h-[44px] h-[67px]  " onClick={onClose}>
+                  <Button className="btnCancel border-t border-canBlue bg-transparent  lg:rounded-lg lg:h-[44px] h-[67px]  " onClick={onClose}>
                     Cancel
                   </Button>
                   
-                  <Button className="btnApplyfilters border-none lg:rounded-[10px] lg:h-[44px] h-[67px] bg-[#5482c8] !text-white" onClick={handleApplyClick}>
+                  <Button className="btnApplyfilters border-none lg:rounded-lg lg:h-[44px] h-[67px] bg-canBlue !text-white" onClick={handleApplyClick}>
                     Apply
                     <Image
                       src="/images/filterbtn-icon.svg"
