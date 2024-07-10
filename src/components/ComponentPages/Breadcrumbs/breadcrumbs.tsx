@@ -99,7 +99,7 @@ function Breadcrumbs({ compareMode = false, updateId }:any) {
             <i className="icon-home"></i>
           </Breadcrumb.Item>
           <Breadcrumb.Item href="">(Canon) General</Breadcrumb.Item>
-          <Breadcrumb.Item href="">
+          <Breadcrumb.Item href={`/topic/${router?.query?.camp.at(0)}/${router?.query?.camp.at(1)}`}>
             Topic:  {breadCrumbRes && breadCrumbRes?.topic_name}
           </Breadcrumb.Item>
           <Breadcrumb.Item>{
