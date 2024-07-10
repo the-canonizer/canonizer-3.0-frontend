@@ -82,6 +82,6 @@ function Timer({ unixTime, setCommited }: any) {
       )}
     </div>
   );
-};
+}
 
 export default Timer;
