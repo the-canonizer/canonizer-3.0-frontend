@@ -234,7 +234,7 @@ const CampTreeCard = ({
             key="1"
             extra={
               <>
-                <div
+                {!openDrawer?<div
                   className="ant-checkbox-wrapper"
                   onClick={(event) => {
                     event.stopPropagation();
@@ -249,7 +249,7 @@ const CampTreeCard = ({
                     options={scoreOptions}
                   />
                   <Text>of all support.</Text>
-                </div>
+                </div>:""}
               </>
             }
           >

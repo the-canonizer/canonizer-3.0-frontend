@@ -6,36 +6,39 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "src/store";
 import { setSiblingCampData } from "src/store/slices/campDetailSlice";
 const SiblingCamps = () => {
-  const [siblingCampsData,setSiblingCampsData] = useState([])
   const router = useRouter()
-  const { campStatement,siblingCampData } = useSelector(
+  const { campStatement,siblingCampData,history } = useSelector(
     (state: RootState) => ({
       campStatement: state?.topicDetails?.campStatement,
       siblingCampData:state?.topicDetails?.siblingCampData,
+      history: state?.topicDetails?.history,
     })
   );
+  const [siblingCampsData,setSiblingCampsData] = useState([])
+  const [campHistory, setCampHistory] = useState(history);
   const dispatch = useDispatch()
-  console.log(siblingCampData,"statement")
   const siblingCampsFunction = async()=>{
     let body = {
-       topic_num:88,
-      camp_num:1,
-      parent_camp_num:3
-
+      topic_num: router?.query?.camp[0]?.split("-")[0],
+      camp_num: router?.query?.camp[1]?.split("-")[0],
+      parent_camp_num:campHistory?.items?.[0]?.parent_camp_num ?? "0",
     }
     let response = await getSiblingCamp(body)
     setSiblingCampsData(response?.data)
     dispatch(setSiblingCampData(response?.data))
   }
-
+  
   useEffect(()=>{
     siblingCampsFunction()
   },[])
+  useEffect(() => {
+    setCampHistory(history);
+  }, [history]);
   return (
     <>
-      <div className="flex flex-col">
+      {siblingCampData?.length?<div className="flex flex-col">
                   <h3 className="font-semibold text-base text-[#242B37] uppercase">SIBLING CAMPS</h3>
-                  <div className="sibling-camps flex xl:flex-row sm:flex-col gap-4 my-[20px]">
+                  <div className="sibling-camps flex xl:flex-row lg:flex-row md:flex-row  flex-col gap-4 my-[20px]">
                     {siblingCampsData?.map((obj,index)=>{
                       return(
                         <div key={index} className="bg-[#F7F8FC] p-[20px] rounded-[12px]">
@@ -100,7 +103,7 @@ const SiblingCamps = () => {
                     })}
                    
                   </div>
-                </div>
+      </div>:""}
     </>
   )
 };

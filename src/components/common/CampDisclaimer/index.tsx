@@ -4,10 +4,13 @@ import { isServer } from "src/utils/generalUtility";
 import SocialShareUI from "../socialShare";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
+import { Dropdown } from "antd";
+import DropDownMenu from "src/components/DropdownMenu";
 
 const CampDisclaimer = () => {
-  const { campRecord } = useSelector((state: RootState) => ({
+  const { campRecord, manageSupportStatusCheck } = useSelector((state: RootState) => ({
     campRecord: state?.topicDetails?.currentCampRecord,
+    manageSupportStatusCheck: state.topicDetails.manageSupportStatusCheck,
   }));
   return (
     <div className="d-flex justify-between">
@@ -20,12 +23,27 @@ const CampDisclaimer = () => {
           />
         </div>
         <div className="flex-1 flex items-center">
+        <Dropdown
+          // className={styles.campForumDropdown}
+          placement="bottomRight"
+          dropdownRender={() =>
+            !manageSupportStatusCheck ?<DropDownMenu/>:""
+          }
+          trigger={["click"]}
+        >
+          <a
+            // className={styles.iconMore}
+            onClick={(e) => e.preventDefault()}
+          >
           <Image
-            src="/images/options-icon.svg"
-            alt="svg"
-            height={24}
-            width={24}
-          />
+        src="/images/options-icon.svg"
+        alt="svg"
+        height={24}
+        width={24}
+      />
+        </a>
+        </Dropdown>
+         
         </div>
       </div>
     </div>

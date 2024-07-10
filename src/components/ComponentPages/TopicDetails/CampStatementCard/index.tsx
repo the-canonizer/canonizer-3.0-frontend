@@ -26,6 +26,7 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
       campRecord: state?.topicDetails?.currentCampRecord,
     })
   );
+  console.log(covertToTime(1654514366),"statement")
   return loadingIndicator || !campStatement ? (
     <CustomSkelton
       skeltonFor="card"
@@ -36,10 +37,10 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
     />
   ) : (
     <>
-      <div className="camp-agrrement-new mb-3">
+      <div className="camp-agrrement-new mb-3 bg-[#F7F8FC] py-[30px] px-[25px] rounded-[12px] border-t-2 border-[#4eb966]">
         <div>
-          <div className="camp-agreement-header d-flex items-center mb-3">
-            <h3 className="cmp-title">
+          <div className="camp-agreement-header d-flex items-center mb-3 gap-2">
+            <h3 className="text-base text-[#242B37] text-left font-semibold ">
               {K?.exceptionalMessages?.campStatementHeading}
             </h3>
             <Image
@@ -59,7 +60,7 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
                 height={16}
                 width={16}
               />
-              <p>Last update: 2 Jan 2024, 03:45 PM</p>
+              <p className="text-xs font-normal text-[#242B3780] text-opacity-[50%]">Last update: {covertToTime(campStatement?.[0]?.go_live_time)}</p>
             </div>
             <div className="d-flex items-center gap-1">
               <Image
@@ -91,7 +92,7 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
             <div className="topicDetailsCollapseFooter printHIde camp">
              {campStatement?.length <= 0 ? <CustomButton
                 disabled={campRecord?.is_archive == 1 ? true : false}
-                className="btn-green printHIde flex items-center justify-center"
+                className=" printHIde flex items-center justify-center bg-[#5482c8] py-[20px] gap-2 rounded-[10px] w-[320px] text-base font-medium text-center text-white"
                 id="add-camp-statement-btn"
               >
                 <Link

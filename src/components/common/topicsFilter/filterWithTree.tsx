@@ -499,20 +499,20 @@ const FilterWithTree = ({
   };
   return (
     <div className="leftSideBar_Card drawer_card">
-      <Collapse
+      <div
         className={`${styles.cardAccordian} ${styles.cardWithDrawerAccordian} topicListFilterCardCollapse`}
-        expandIconPosition="right"
-        bordered={false}
-        defaultActiveKey={["1"]}
+        // expandIconPosition="right"
+        // bordered={false}
+        // defaultActiveKey={["1"]}
       >
-        <Panel
+        <div
           className={`header-bg-color-change radio-group-sider ${selectedAsOf}`}
-          header={null}
+          // header={null}
           key="1"
         >
           <Row gutter={20} >
             <Col xs={24}>
-              <div className="algo_title_new">
+              <div className="algo_title_new border-b border-[#dde2ee]  mb-[15px] p-[20px]">
                 <Title level={5} className={styles.algoText}>
                   Select Canonizer Algorithm:{"  "}{" "}
                   <Popover
@@ -525,7 +525,7 @@ const FilterWithTree = ({
                         href={K?.Network?.URL?.algoInfoUrl}
                         className="d-flex items-center "
                       >
-                        {/* <i className="icon-info"></i>  */}
+                        {/* {/ <i className="icon-info"></i>  /} */}
                         <Image
                           src="/images/circle-info-bread.svg"
                           alt="svg"
@@ -537,7 +537,7 @@ const FilterWithTree = ({
                     ) : (
                       <Link href={K?.Network?.URL?.algoInfoUrl}>
                         <a>
-                          {/* <i className="icon-info"></i>  */}
+                          {/* {/ <i className="icon-info"></i>  /} */}
                           <Image
                             src="/images/circle-info-bread.svg"
                             alt="svg"
@@ -595,7 +595,7 @@ const FilterWithTree = ({
                 alignItems: "flex-end",
               }}
             >
-              <div className="score_value">
+              <div className="score_value mb-[15px] pt-[10px] px-[20px] pb-[30px] w-full border-b border-[#dde2ee]">
                 <Text className={styles.filterText}>
                   <p className="d-flex items-center gap-1">
                     {" "}
@@ -609,7 +609,7 @@ const FilterWithTree = ({
                     />
                   </p>{" "}
                 </Text>
-                {/* <LeftOutlined className={styles.LeftOutlined} />  */}
+                {/* {/ <LeftOutlined className={styles.LeftOutlined} />  /} */}
                 <Input
                   size="large"
                   onChange={filterOnScore}
@@ -624,7 +624,7 @@ const FilterWithTree = ({
                   placement="right"
                   className={styles.infoIcon}
                 >
-                  {/* <i className="icon-info"></i>  */}
+                  {/* {/ <i className="icon-info"></i>  /} */}
                 </Popover>
               </div>
             </Col>
@@ -635,8 +635,8 @@ const FilterWithTree = ({
               <ArchivedCampCheckBox loadingIndicator={loadingIndicator} />
             </Col> */}
             <Col xs={24} className="">
-              {/* <div className={`${styles.algo_title} ${styles.title}`}> */}
-              <div className="as-of-div">
+               {/* <div className={`${styles.algo_title} ${styles.title}`}> / */}
+              <div className="as-of-div mb-[15px] pt-[10px] px-[20px] pb-[30px] w-full">
                 <Title level={5} className={styles.algoText}>
                   As Of
                   <Popover content={asContent} placement="right">
@@ -742,7 +742,7 @@ const FilterWithTree = ({
             </Col>
             <Col md={24}>
               <div className={styles.treeContainer}> 
-                {/* this visibility style is for temprory purpose for refine filter */}
+            
                  <CampTreeCard
                   getTreeLoadingIndicator={getTreeLoadingIndicator}
                   scrollToCampStatement={scrollToCampStatement}
@@ -757,13 +757,13 @@ const FilterWithTree = ({
             </Col>
 
             
-              <Col xs={24} className=" refine-drawer-mobile sm:p-0 ">
-                <div className="flex items-center justify-between sm:gap-0 lg:gap-2 btn-parent relative lg:px-1 sm:px-0 ">
-                  <Button className="btnCancel" onClick={onClose}>
+              <Col xs={24} className=" refine-drawer-mobile overflow-hidden">
+                <div className="flex items-center justify-between sm:gap-0 lg:gap-2 btn-parent  lg:px-1 sm:px-0 fixed lg:static bottom-0 w-full">
+                  <Button className="btnCancel border-t border-[#5482C8] bg-[#98b7e6] bg-opacity-[.1] lg:rounded-[10px] lg:h-[44px] h-[67px]  " onClick={onClose}>
                     Cancel
                   </Button>
                   
-                  <Button className="btnApplyfilters" onClick={handleApplyClick}>
+                  <Button className="btnApplyfilters border-none lg:rounded-[10px] lg:h-[44px] h-[67px] bg-[#5482c8] !text-white" onClick={handleApplyClick}>
                     Apply
                     <Image
                       src="/images/filterbtn-icon.svg"
@@ -777,8 +777,8 @@ const FilterWithTree = ({
               </Col>
           
           </Row>
-        </Panel>
-      </Collapse>
+        </div>
+      </div>
     </div>
   );
 };

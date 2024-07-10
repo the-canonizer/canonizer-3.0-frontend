@@ -205,7 +205,7 @@ const CampTree = ({
       if (treeExpandValue == prevTreeValueRef?.current) {
         uniquekeyss = mergeArray(
           uniquekeyss,
-          tree?.at(0)["1"]?.collapsedTreeCampIds
+          tree?.at(0)?.["1"]?.collapsedTreeCampIds
         );
       }
       setDefaultExpandKeys(expandKeys);

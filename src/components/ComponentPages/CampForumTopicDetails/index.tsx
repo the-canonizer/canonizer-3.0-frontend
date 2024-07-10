@@ -4,6 +4,7 @@ import { Image } from "antd";
 import { latestThread } from "src/network/api/campForumApi";
 import moment from "moment";
 import { useRouter } from "next/router";
+import Link from "next/link";
 function Campforum() {
 const [thread,setThread]= useState([])
 const router = useRouter()
@@ -23,9 +24,16 @@ useEffect(()=>{
 const covertToTime = (unixTime) => {
   return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
 };
+const onCampForumClick = () => {
+  router?.push({
+    pathname: `/forum/${router?.query?.camp[0]}/${
+      router?.query?.camp[1] || "1"
+    }/threads`,
+  });
+};
   return (
     <>
-    {thread?.length < 0 ?(
+    {thread?.length <= 0 ?(
        <div className="campfourm-nodata mb-[20px]">
        <h3 className="text-lg text-[#242B37] font-semibold mb-[20px] uppercase">
          Camp Forum
@@ -51,7 +59,7 @@ const covertToTime = (unixTime) => {
         <h3 className="text-lg text-[#242B37] font-semibold mb-[20px] uppercase">
           Camp Forum
         </h3>
-        <p className="text-base text-[#5482C8] font-medium">See All Threads</p>
+        <a onClick={onCampForumClick} className="text-base text-[#5482C8] font-medium">See All Threads</a>
       </div>
 
       <div className=" bg-[#F7F8FC] py-[20px] px-[20px] rounded-[12px] flex flex-col  items-start justify-between">
@@ -62,7 +70,7 @@ const covertToTime = (unixTime) => {
               <p className="mb-[6px] text-base text-[#242B37] text-ellipsis">
                {obj.body}
               </p>
-              <p className="text-[#242B3780] text-sm">{obj?.created_at_old}</p>
+              <p className="text-[#242B3780] text-sm">{covertToTime(obj?.created_at)}</p>
             </div>
             <div className="flex gap-5 items-center">
               <div className="flex gap-2">

@@ -279,9 +279,10 @@ const SupportTreeCard = ({
           return (
             <>
               <TreeNode
+               className="[&_.ant-tree-node-content-wrapper]:!w-full lg:!px-[20px] px-[10px] !bg-transparent border-b hover:[&_.ant-tree-node-content-wrapper]:!bg-transparent !w-full"
                 title={
                   <>
-                    <div className="group">
+                    <div className="group w-full">
                       {/* <span
                         className={
                           "treeListItemTitle " + styles.treeListItemTitle
@@ -306,9 +307,13 @@ const SupportTreeCard = ({
                                 width={32}
                               />
                             </div>{" "}
-                           <span className="text-[#242B37] text-base font-medium"> {data[item].nick_name}</span>
+                           <span className="text-[#242B37] lg:text-base text-xs font-medium"> {data[item].nick_name}</span>
+                         <br />
+                         
                           </a>
+                         
                         </Link>
+                    
 
                         <div className="flex bg-[#F19C39] px-[11px] py-[5px] rounded-[5px] gap-1 items-center">
                           <Image
@@ -317,7 +322,7 @@ const SupportTreeCard = ({
                             height={15}
                             width={12}
                           />
-                          <span className="text-sm text-white font-medium flex items-center leading-[16px]">
+                          <span className="lg:text-sm text-xs text-white font-medium flex items-center leading-[16px]">
                             {campRecord?.is_archive
                               ? 0
                               : is_checked && isUserAuthenticated
@@ -325,7 +330,9 @@ const SupportTreeCard = ({
                               : data[item].score?.toFixed(2)}
                             {/* {data[item].score?.toFixed(2)} */}
                           </span>
+                       
                         </div>
+                     
                       </div>
 
                       {/* </span> */}
@@ -351,7 +358,7 @@ const SupportTreeCard = ({
                                   : ""
                               }
                             >
-                              <a className="printHIde custom-btn">
+                              <a className="printHIde custom-btn group">
                                 <Button
                                   id="supportTreeDelegateYourSupport"
                                   disabled={
@@ -364,7 +371,7 @@ const SupportTreeCard = ({
                                       data[item].nick_name_id
                                     )
                                   }
-                                  className="mb-2 flex items-center gap-1 justify-center bg-[#E1EDFE] text-[#5482C8] text-base rounded-[10px] font-medium h-[44px] w-full "
+                                  className="hidden group-hover:flex mb-2  items-center gap-1 justify-center bg-[#E1EDFE] text-[#5482C8] text-base rounded-[10px] font-medium h-[44px] w-full "
                                 >
                                    <Image
                                     src="/images/user-minus-regular.svg"
@@ -380,7 +387,7 @@ const SupportTreeCard = ({
                           )}
                         </>
                       ) : (
-                        <a className="printHIde  custom-btn">
+                        <a className="printHIde  custom-btn hidden group-hover:flex">
                           <Button
                             id="supportTreeRemoveSupport"
                             disabled={

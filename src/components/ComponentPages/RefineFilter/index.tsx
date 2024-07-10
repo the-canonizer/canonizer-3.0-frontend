@@ -26,7 +26,8 @@ const RefineFilter=() => {
   };
   return (
     <>
-      <Drawer placement={!isMobile ? 'bottom' : 'right'} title="Refine" onClose={onClose} open={openDrawer} height={600} closable={false} className='custom-collapse'>
+      <Drawer placement={!isMobile ? 'bottom' : 'right'} title="Refine" onClose={onClose} open={openDrawer} height={600} closable={false} className='custom-collapse
+      [&_.ant-drawer-body]:!w-full [&_.ant-drawer-body]:p-0 [&_.ant-drawer-content]:!rounded-tl-[20px] md:[&_.ant-drawer-content]:!rounded-tl-[20px] xl:[&_.ant-drawer-content]:!rounded-tl-[0px] xl:[&_.ant-drawer-content]:!rounded-tr-[0px] lg:[&_.ant-drawer-content]:!rounded-tr-[0px] lg:[&_.ant-drawer-content]:!rounded-tl-[0px] [&_.ant-drawer-content]:!rounded-tr-[20px] [&_.ant-drawer-body]:overflow-hidden'>
        <FilterWithTree 
        getTreeLoadingIndicator={false}
        scrollToCampStatement={scrollToCampStatement}
