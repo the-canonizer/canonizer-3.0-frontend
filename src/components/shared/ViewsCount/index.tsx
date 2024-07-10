@@ -3,6 +3,7 @@ import { EyeOutlined } from "@ant-design/icons";
 
 import CustomSkelton from "src/components/common/customSkelton";
 
+
 function formatNumber(num) {
   if (num >= 1e9) {
     return (num / 1e9).toFixed(1).replace(/\.0$/, "") + "B";

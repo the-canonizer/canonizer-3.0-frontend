@@ -282,7 +282,7 @@ const TimelineInfoBar = ({
 
     if (
       (payload && Object.keys(payload).length > 0,
-      !!(getCookies() as any)?.loginToken)
+        !!(getCookies() as any)?.loginToken)
     ) {
       getBreadCrumbApiCall();
     }
@@ -471,7 +471,7 @@ const TimelineInfoBar = ({
               "-"
             )}`}
           >
-           <a className="flex items-center justify-center gap-3 text-base font-medium leading-[]">
+            <a className="flex items-center justify-center gap-3 text-base font-medium leading-[]">
               {K?.exceptionalMessages?.manageCampButton}
               <Image
                 src="/images/manage-btn-icon.svg"
@@ -527,10 +527,9 @@ const TimelineInfoBar = ({
                 <Typography.Paragraph
                   className={
                     "mb-0 " +
-                    `${
-                      loadingIndicator
-                        ? styles.topicTitleSkeleton
-                        : styles.topicTitleStyle
+                    `${loadingIndicator
+                      ? styles.topicTitleSkeleton
+                      : styles.topicTitleStyle
                     }`
                   }
                 >
@@ -572,12 +571,11 @@ const TimelineInfoBar = ({
                         />
                       ) : isTopicHistoryPage ? (
                         <Link
-                          href={`/topic/${
-                            payload?.topic_num
-                          }-${replaceSpecialCharacters(
-                            breadCrumbRes?.topic_name,
-                            "-"
-                          )}/1-Agreement?${getQueryParams()?.returnQuery}`}
+                          href={`/topic/${payload?.topic_num
+                            }-${replaceSpecialCharacters(
+                              breadCrumbRes?.topic_name,
+                              "-"
+                            )}/1-Agreement?${getQueryParams()?.returnQuery}`}
                         >
                           <a className={styles.boldBreadcrumb}>
                             {breadCrumbRes?.topic_name}
@@ -644,15 +642,14 @@ const TimelineInfoBar = ({
                           breadCrumbRes?.bread_crumb?.map((camp, index) => {
                             return (
                               <Link
-                                href={`/topic/${
-                                  payloadData?.topic_num
-                                }-${replaceSpecialCharacters(
-                                  breadCrumbRes?.topic_name,
-                                  "-"
-                                )}/${camp?.camp_num}-${replaceSpecialCharacters(
-                                  camp?.camp_name,
-                                  "-"
-                                )}?${getQueryParams()?.returnQuery}`}
+                                href={`/topic/${payloadData?.topic_num
+                                  }-${replaceSpecialCharacters(
+                                    breadCrumbRes?.topic_name,
+                                    "-"
+                                  )}/${camp?.camp_num}-${replaceSpecialCharacters(
+                                    camp?.camp_name,
+                                    "-"
+                                  )}?${getQueryParams()?.returnQuery}`}
                                 key={index}
                               >
                                 <a>
@@ -662,7 +659,7 @@ const TimelineInfoBar = ({
                                   <span
                                     className={
                                       breadCrumbRes?.bread_crumb.length - 1 ==
-                                      index
+                                        index
                                         ? styles.greenIndicateText
                                         : styles.boldBreadcrumb
                                     }
@@ -716,10 +713,9 @@ const TimelineInfoBar = ({
                 <Typography.Paragraph
                   className={
                     "mb-0 " +
-                    `${
-                      loadingIndicator
-                        ? styles.topicTitleSkeleton
-                        : styles.topicTitleStyle
+                    `${loadingIndicator
+                      ? styles.topicTitleSkeleton
+                      : styles.topicTitleStyle
                     }`
                   }
                 >
@@ -766,12 +762,11 @@ const TimelineInfoBar = ({
                         />
                       ) : isTopicHistoryPage ? (
                         <Link
-                          href={`/topic/${
-                            payload?.topic_num
-                          }-${replaceSpecialCharacters(
-                            breadCrumbRes?.topic_name,
-                            "-"
-                          )}/1-Agreement?${getQueryParams()?.returnQuery}`}
+                          href={`/topic/${payload?.topic_num
+                            }-${replaceSpecialCharacters(
+                              breadCrumbRes?.topic_name,
+                              "-"
+                            )}/1-Agreement?${getQueryParams()?.returnQuery}`}
                         >
                           <a className="normal text-[#777F93] text-[12px] leading-[18px] font-normal text-ellipsis">
                             {breadCrumbRes?.topic_name}
@@ -838,15 +833,14 @@ const TimelineInfoBar = ({
                           breadCrumbRes?.bread_crumb?.map((camp, index) => {
                             return (
                               <Link
-                                href={`/topic/${
-                                  payloadData?.topic_num
-                                }-${replaceSpecialCharacters(
-                                  breadCrumbRes?.topic_name,
-                                  "-"
-                                )}/${camp?.camp_num}-${replaceSpecialCharacters(
-                                  camp?.camp_name,
-                                  "-"
-                                )}?${getQueryParams()?.returnQuery}`}
+                                href={`/topic/${payloadData?.topic_num
+                                  }-${replaceSpecialCharacters(
+                                    breadCrumbRes?.topic_name,
+                                    "-"
+                                  )}/${camp?.camp_num}-${replaceSpecialCharacters(
+                                    camp?.camp_name,
+                                    "-"
+                                  )}?${getQueryParams()?.returnQuery}`}
                                 key={index}
                               >
                                 <a className="text-[12px] text-[#4EB966]">
@@ -908,19 +902,19 @@ const TimelineInfoBar = ({
                       href={
                         campStatement?.length > 0
                           ? `/statement/history/${replaceSpecialCharacters(
-                              router?.query?.camp[0],
-                              "-"
-                            )}/${replaceSpecialCharacters(
-                              router?.query?.camp[1] ?? "1-Agreement",
-                              "-"
-                            )}`
+                            router?.query?.camp[0],
+                            "-"
+                          )}/${replaceSpecialCharacters(
+                            router?.query?.camp[1] ?? "1-Agreement",
+                            "-"
+                          )}`
                           : `/create/statement/${replaceSpecialCharacters(
-                              router?.query?.camp[0],
-                              "-"
-                            )}/${replaceSpecialCharacters(
-                              router?.query?.camp[1] ?? "1-Agreement",
-                              "-"
-                            )}`
+                            router?.query?.camp[0],
+                            "-"
+                          )}/${replaceSpecialCharacters(
+                            router?.query?.camp[1] ?? "1-Agreement",
+                            "-"
+                          )}`
                       }
                       className="printHIde"
                     >

@@ -10,6 +10,7 @@ import moment from "moment";
 import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
 import CustomSkelton from "../../../common/customSkelton";
 import Image from "next/image";
+import ViewCounts from "components/shared/ViewsCount";
 
 const { Paragraph } = Typography;
 
@@ -19,13 +20,15 @@ const covertToTime = (unixTime) => {
 };
 const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
   const router = useRouter();
-  const { campRecord, campStatement, history } = useSelector(
+  const { campRecord, campStatement, history, tree } = useSelector(
     (state: RootState) => ({
       campStatement: state?.topicDetails?.campStatement,
       history: state?.topicDetails?.history,
       campRecord: state?.topicDetails?.currentCampRecord,
+      tree: state?.topicDetails?.tree && state?.topicDetails?.tree[0],
     })
   );
+
   return loadingIndicator || !campStatement ? (
     <CustomSkelton
       skeltonFor="card"
@@ -62,14 +65,7 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
               <p>Last update: 2 Jan 2024, 03:45 PM</p>
             </div>
             <div className="d-flex items-center gap-1">
-              <Image
-                src="/images/eye-regular-new.svg"
-                alt="svg"
-                className="icon-topic"
-                height={16}
-                width={16}
-              />
-              <span>1</span>
+              <ViewCounts views={tree[1] && tree[1]?.camp_views} />
             </div>
           </div>
           <hr className="my-3" />
@@ -89,7 +85,7 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
             </Paragraph>
 
             <div className="topicDetailsCollapseFooter printHIde camp">
-             {campStatement?.length <= 0 ? <CustomButton
+              {campStatement?.length <= 0 ? <CustomButton
                 disabled={campRecord?.is_archive == 1 ? true : false}
                 className="btn-green printHIde flex items-center justify-center"
                 id="add-camp-statement-btn"
@@ -98,61 +94,61 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
                   href={
                     campStatement?.length < 0
                       ? `/statement/history/${replaceSpecialCharacters(
-                          router?.query?.camp[0],
-                          "-"
-                        )}/${replaceSpecialCharacters(
-                          router?.query?.camp[1] ?? "1-Agreement",
-                          "-"
-                        )}`
+                        router?.query?.camp[0],
+                        "-"
+                      )}/${replaceSpecialCharacters(
+                        router?.query?.camp[1] ?? "1-Agreement",
+                        "-"
+                      )}`
                       : `/create/statement/${replaceSpecialCharacters(
-                          router?.query?.camp[0],
-                          "-"
-                        )}/${replaceSpecialCharacters(
-                          router?.query?.camp[1] ?? "1-Agreement",
-                          "-"
-                        )}`
+                        router?.query?.camp[0],
+                        "-"
+                      )}/${replaceSpecialCharacters(
+                        router?.query?.camp[1] ?? "1-Agreement",
+                        "-"
+                      )}`
                   }
                   className="printHIde"
                 >
-                 <a className="printHIde gap-2  flex items-center justify-center text-base font-medium">
-                      {K?.exceptionalMessages?.addCampStatementButton}
-                      <Image
-                        src="/images/manage-btn-icon.svg"
-                        alt="svg"
-                        className="icon-topic"
-                        height={24}
-                        width={24}
-                      />
-                    </a>
+                  <a className="printHIde gap-2  flex items-center justify-center text-base font-medium">
+                    {K?.exceptionalMessages?.addCampStatementButton}
+                    <Image
+                      src="/images/manage-btn-icon.svg"
+                      alt="svg"
+                      className="icon-topic"
+                      height={24}
+                      width={24}
+                    />
+                  </a>
                 </Link>
               </CustomButton>
-              :
-              <CustomButton
-                disabled={campRecord?.is_archive == 1 ? true : false}
-                className="btn-green printHIde hidden lg:hidden sm:flex md:flex items-center justify-center"
-                id="add-camp-statement-btn"
-              >
-                <Link
-                  href={
-                    campStatement?.length > 0
-                      ? `/statement/history/${replaceSpecialCharacters(
-                          router?.query?.camp[0],
-                          "-"
-                        )}/${replaceSpecialCharacters(
-                          router?.query?.camp[1] ?? "1-Agreement",
-                          "-"
-                        )}`
-                      : `/create/statement/${replaceSpecialCharacters(
-                          router?.query?.camp[0],
-                          "-"
-                        )}/${replaceSpecialCharacters(
-                          router?.query?.camp[1] ?? "1-Agreement",
-                          "-"
-                        )}`
-                  }
-                  className="printHIde"
+                :
+                <CustomButton
+                  disabled={campRecord?.is_archive == 1 ? true : false}
+                  className="btn-green printHIde hidden lg:hidden sm:flex md:flex items-center justify-center"
+                  id="add-camp-statement-btn"
                 >
-                   <a className="printHIde gap-2  flex items-center justify-center text-base font-medium">
+                  <Link
+                    href={
+                      campStatement?.length > 0
+                        ? `/statement/history/${replaceSpecialCharacters(
+                          router?.query?.camp[0],
+                          "-"
+                        )}/${replaceSpecialCharacters(
+                          router?.query?.camp[1] ?? "1-Agreement",
+                          "-"
+                        )}`
+                        : `/create/statement/${replaceSpecialCharacters(
+                          router?.query?.camp[0],
+                          "-"
+                        )}/${replaceSpecialCharacters(
+                          router?.query?.camp[1] ?? "1-Agreement",
+                          "-"
+                        )}`
+                    }
+                    className="printHIde"
+                  >
+                    <a className="printHIde gap-2  flex items-center justify-center text-base font-medium">
                       {K?.exceptionalMessages?.manageCampStatementButton}
                       <Image
                         src="/images/manage-btn-icon.svg"
@@ -162,8 +158,8 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
                         width={24}
                       />
                     </a>
-                </Link>
-              </CustomButton>}
+                  </Link>
+                </CustomButton>}
             </div>
           </div>
         </div>
