@@ -86,7 +86,7 @@ export async function getServerSideProps({ req, query, res }) {
   let cookies
   const cookieKey = topicNum + '.' + campNum;
   async function generateHashValue() {
-    const salt = Buffer.from("kjshfjhfkkfuriuYHYUHUHUYUyyihuHUY");
+    const salt = Buffer.from(process.env.NEXT_PUBLIC_SALT_KEY);
     const asOfData =
       query?.asofdate && query?.asof == "bydate"
         ? parseFloat(query?.asofdate)
