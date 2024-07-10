@@ -108,7 +108,7 @@ function Breadcrumbs({ compareMode = false, updateId }:any) {
                 historyTitle() == "Camp History" ? "Camp" : null
           } History</Breadcrumb.Item>
         </Breadcrumb>
-        {!compareMode &&
+        {!compareMode && updateId &&
           <Button
             size="large"
             type="primary"
