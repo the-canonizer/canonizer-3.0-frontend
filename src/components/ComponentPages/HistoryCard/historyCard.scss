@@ -1,6 +1,6 @@
 .cn-wrapper {
   &.csh-wrapper {
-    @apply lg:ml-5;
+    @apply lg:ml-[1.25rem];
     + .csh-wrapper {
       @apply mt-10;
     }

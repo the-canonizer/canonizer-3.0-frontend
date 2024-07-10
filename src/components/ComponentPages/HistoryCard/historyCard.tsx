@@ -277,7 +277,7 @@ function HistoryCard({
         }
         <Card className="cn-card">
           {
-            historyOf == "statement" || historyState == "statement" && (
+            historyOf == " statement " || historyState == "statement" && (
               <Collapse
                 expandIconPosition="end"
                 className="ch-collapse"
@@ -332,7 +332,7 @@ function HistoryCard({
               topicNamespaceId={topicNamespaceId}
             />
           )}
-
+          
           {
             campStatement?.status == "in_review" &&
             (!campStatement?.grace_period || commited) && (
