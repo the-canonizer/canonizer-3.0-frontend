@@ -10,8 +10,7 @@ import { useSelector } from "react-redux";
 import moment from "moment";
 import { getCookies } from "src/utils/generalUtility";
 
-function Breadcrumbs({ compareMode = false, updateId }:any) {
-
+function Breadcrumbs({ compareMode = false, updateId }: any) {
   const router = useRouter();
   const historyOf = router?.asPath.split("/")[1];
 
@@ -26,7 +25,6 @@ function Breadcrumbs({ compareMode = false, updateId }:any) {
     })
   );
 
-  
   let payload = history && {
     camp_num: router?.query?.camp?.at(1)?.split("-")?.at(0) ?? "1",
     topic_num: router?.query?.camp?.at(0)?.split("-")?.at(0),
@@ -42,8 +40,10 @@ function Breadcrumbs({ compareMode = false, updateId }:any) {
     async function getBreadCrumbApiCall() {
       setLoadingIndicator(true);
       let reqBody = {
-        topic_num: payload?.topic_num,
-        camp_num: payload?.camp_num,
+        topic_num: compareMode
+        ? router.query.routes?.at(0).split("-")?.at(0)
+        : payload?.topic_num,
+        camp_num:  payload?.camp_num,
         as_of: router?.pathname == "/topic/[...camp]" ? asof : "default",
         as_of_date:
           asof == "default" || asof == "review"
@@ -58,7 +58,7 @@ function Breadcrumbs({ compareMode = false, updateId }:any) {
 
     if (
       (payload && Object.keys(payload).length > 0,
-        !!(getCookies() as any)?.loginToken)
+      !!(getCookies() as any)?.loginToken)
     ) {
       getBreadCrumbApiCall();
     }
@@ -79,11 +79,9 @@ function Breadcrumbs({ compareMode = false, updateId }:any) {
   };
 
   const updateCurrentRecord = () => {
-    router.push(
-      `/manage/${historyOf}/${updateId}`
-    );
-  }
-
+    router.push(`/manage/${historyOf}/${updateId}`);
+  };
+  
   return (
     <>
       <div className="max-md:mx-[-1rem] max-md:shadow-[0px_10px_10px_0px_#0000001A] md:bg-[#F4F5FAB2] p-[1.5rem] md:rounded-[1.25rem] flex items-center justify-between gap-2 ">
@@ -99,32 +97,43 @@ function Breadcrumbs({ compareMode = false, updateId }:any) {
             <i className="icon-home"></i>
           </Breadcrumb.Item>
           <Breadcrumb.Item href="">(Canon) General</Breadcrumb.Item>
-          <Breadcrumb.Item href={`/topic/${router?.query?.camp.at(0)}/${router?.query?.camp.at(1)}`}>
-            Topic:  {breadCrumbRes && breadCrumbRes?.topic_name}
+          <Breadcrumb.Item
+            href={`/topic/${router?.query?.camp?.at(
+              0
+            )}/${router?.query?.camp?.at(1)}`}
+          >
+            Topic: {breadCrumbRes && breadCrumbRes?.topic_name}
           </Breadcrumb.Item>
-          <Breadcrumb.Item>{
-            historyTitle() == "Statement History" ? "Statement" :
-              historyTitle() == "Topic History" ? "Topic" :
-                historyTitle() == "Camp History" ? "Camp" : null
-          } History</Breadcrumb.Item>
+          <Breadcrumb.Item>
+            {historyTitle() == "Statement History"
+              ? "Statement"
+              : historyTitle() == "Topic History"
+              ? "Topic"
+              : historyTitle() == "Camp History"
+              ? "Camp"
+              : null}{" "}
+            History
+          </Breadcrumb.Item>
         </Breadcrumb>
-        {!compareMode && updateId &&
+        {!compareMode && updateId && (
           <Button
             size="large"
             type="primary"
             className="flex items-center justify-center rounded-[10px] max-lg:hidden gap-3.5 leading-none"
-            onClick={()=>updateCurrentRecord()}
+            onClick={() => updateCurrentRecord()}
           >
-              Update Current 
-            {
-              historyTitle() == "Statement History" ? " Statement" :
-                historyTitle() == "Topic History" ? " Topic" :
-                  historyTitle() == "Camp History" ? " Camp" : null
-            }
+            Update Current
+            {historyTitle() == "Statement History"
+              ? " Statement"
+              : historyTitle() == "Topic History"
+              ? " Topic"
+              : historyTitle() == "Camp History"
+              ? " Camp"
+              : null}
             <i className="icon-edit"></i>
           </Button>
-        }
-      </div >
+        )}
+      </div>
     </>
   );
 }

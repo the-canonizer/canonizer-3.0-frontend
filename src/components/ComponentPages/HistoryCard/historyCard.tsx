@@ -200,7 +200,7 @@ function HistoryCard({
 
   return (
     <>
-      <div className={`csh-wrapper cn-wrapper ${compareMode ? getStatusClass(status) : getStatusClass(campStatement?.status)}`}>
+      <div className={`${compareMode?"":"csh-wrapper"} cn-wrapper ${compareMode ? getStatusClass(status) : getStatusClass(campStatement?.status)}`}>
         <div className="badge-wrapper">
           <Badge
             className="cn-dot-badge ch-dot-history"
@@ -265,7 +265,7 @@ function HistoryCard({
         </div>
         {!compareMode &&
 
-          <Checkbox className="mb-5 ch-checkbox"
+          <Checkbox className="mb-[1.25rem] ch-checkbox"
             id={`select-to-compare-${campStatement?.id}`}
             onChange={onSelectCompare?.bind(this, campStatement)}
             disabled={isDisabledCheck}
@@ -278,7 +278,7 @@ function HistoryCard({
         <Card className="cn-card">
           {
             historyOf == " statement " || historyState == "statement" && (
-              <Collapse
+              <Collapse 
                 expandIconPosition="end"
                 className="ch-collapse"
                 defaultActiveKey={["0"]}
@@ -295,7 +295,7 @@ function HistoryCard({
                   <div>
                     <h5 className="font-semibold text-[#F19C39] mb-3">Statement</h5>
                     <div
-                      className="text-[#242B37] pb-5"
+                      className="text-[#242B37] pb-[1.25rem]"
                       dangerouslySetInnerHTML={{
                         __html: campStatement?.parsed_value,
                       }}>

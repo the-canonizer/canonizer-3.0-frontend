@@ -39,7 +39,7 @@ const HistoryComparison = ({ campStatement, topicNamespaceId }: any) => {
             <Title level={5} className="font-semibold mb-2.5">
                 Updates
             </Title>
-            <div className="mb-2">
+            <div>
                 {historyOf === "topic" && (
                     <>
                         <p>

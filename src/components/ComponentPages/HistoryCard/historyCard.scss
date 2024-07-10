@@ -1,6 +1,12 @@
 .cn-wrapper {
   &.csh-wrapper {
     @apply lg:ml-[1.25rem];
+    .badge-wrapper {
+      .ch-dot-history {
+        @apply lg:ml-[-26px] z-10;
+      
+      }
+    }
     + .csh-wrapper {
       @apply mt-10;
     }
@@ -54,7 +60,7 @@
     }
   }
   .badge-wrapper {
-    @apply flex justify-between gap-1.5 mb-5 max-lg:flex-col;
+    @apply flex justify-between gap-1.5 mb-[1.25rem] max-lg:flex-col;
     .tooltip-count {
       @apply flex items-center gap-1.5;
     }
@@ -80,16 +86,14 @@
 
   .cn-dot-badge {
     @apply flex items-center;
-    &.ch-dot-history {
-      @apply lg:ml-[-26px] z-10;
-    }
+   
     .ant-badge-status-dot {
       @apply w-[12px] h-[12px];
     }
     .ant-badge-status-text {
-      @apply text-[1.5rem] font-medium;
+      @apply text-[1.5rem] font-medium ml-[14px];
       span {
-        @apply text-[#242B3780] text-base ml-1;
+        @apply text-[#242B3780] text-base ml-[4px];
       }
     }
   }
