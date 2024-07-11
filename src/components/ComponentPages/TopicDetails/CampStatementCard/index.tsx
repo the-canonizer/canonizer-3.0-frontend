@@ -28,9 +28,6 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
       tree: state?.topicDetails?.tree && state?.topicDetails?.tree[0],
     })
   );
-
-  console.log("history-----", history);
-
   return loadingIndicator || !campStatement ? (
     <CustomSkelton
       skeltonFor="card"

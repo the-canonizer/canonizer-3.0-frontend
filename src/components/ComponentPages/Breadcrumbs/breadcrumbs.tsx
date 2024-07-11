@@ -40,7 +40,9 @@ function Breadcrumbs({ compareMode = false, updateId }: any) {
     async function getBreadCrumbApiCall() {
       setLoadingIndicator(true);
       let reqBody = {
-        topic_num: payload?.topic_num,
+        topic_num: compareMode
+          ? router.query.routes?.at(0).split("-")?.at(0)
+          : payload?.topic_num,
         camp_num: payload?.camp_num,
         as_of: router?.pathname == "/topic/[...camp]" ? asof : "default",
         as_of_date:
@@ -79,10 +81,9 @@ function Breadcrumbs({ compareMode = false, updateId }: any) {
   const updateCurrentRecord = () => {
     router.push(`/manage/${historyOf}/${updateId}`);
   };
-
   return (
     <>
-      <div className="max-md:mx-[-1rem] max-md:shadow-[0px_10px_10px_0px_#0000001A] md:bg-[#F4F5FAB2] p-[1.5rem] md:rounded-[1.25rem] flex items-center justify-between gap-2 ">
+      <div className="max-md:mx-[-1rem] max-md:shadow-[0px_10px_10px_0px_#0000001A] md:bg-canGrey1_Opacity70 p-[1.5rem] md:rounded-[1.25rem] flex items-center justify-between gap-2 ">
         <Breadcrumb
           className="cn-breadcrumbs"
           separator={
@@ -95,7 +96,11 @@ function Breadcrumbs({ compareMode = false, updateId }: any) {
             <i className="icon-home"></i>
           </Breadcrumb.Item>
           <Breadcrumb.Item href="">(Canon) General</Breadcrumb.Item>
-          <Breadcrumb.Item href="">
+          <Breadcrumb.Item
+            href={`/topic/${router?.query?.camp?.at(
+              0
+            )}/${router?.query?.camp?.at(1)}`}
+          >
             Topic: {breadCrumbRes && breadCrumbRes?.topic_name}
           </Breadcrumb.Item>
           <Breadcrumb.Item>
@@ -109,7 +114,7 @@ function Breadcrumbs({ compareMode = false, updateId }: any) {
             History
           </Breadcrumb.Item>
         </Breadcrumb>
-        {!compareMode && (
+        {!compareMode && updateId && (
           <Button
             size="large"
             type="primary"

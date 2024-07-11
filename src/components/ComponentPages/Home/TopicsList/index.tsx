@@ -14,7 +14,6 @@ import {
   Input,
   Button,
   Tag,
-  Pagination,
 } from "antd";
 import { useEffect, useRef, useState } from "react";
 import {
@@ -49,7 +48,6 @@ const TopicsList = () => {
     asofdate,
     asof,
     algorithm,
-    filterByScore,
     nameSpaces,
     filterNameSpace,
     userEmail,
@@ -62,7 +60,6 @@ const TopicsList = () => {
     asofdate: state.filters?.filterObject?.asofdate,
     asof: state.filters?.filterObject?.asof,
     algorithm: state.filters?.filterObject?.algorithm,
-    filterByScore: state.filters?.filterObject?.filterByScore,
     nameSpaces: state.homePage?.nameSpaces,
     filterNameSpace: state?.filters?.filterObject?.nameSpace,
     userEmail: state?.auth?.loggedInUser?.email,
@@ -179,17 +176,6 @@ const TopicsList = () => {
     setAllowClear(true);
   };
 
-  const handleKeyUpSearch = (event: any) => {
-    const value = event.target.value?.trim();
-    if (value?.length > 0) {
-      setIsCanonChange(true);
-      setSearchTerm(value);
-      setAllowClear(true);
-    } else {
-      setSearchTerm("");
-      setAllowClear(false);
-    }
-  };
 
   const handleClear = () => {
     setAllowClear(false);
@@ -306,9 +292,7 @@ const TopicsList = () => {
               className="browse-search"
               placeholder="Search via keyword"
               defaultValue={inputSearch}
-              // value={searchTerm}
               onSearch={onSearch}
-              // onChange={handleKeyUpSearch}
               ref={inputRef}
               disabled={loading}
             />
@@ -346,7 +330,7 @@ const TopicsList = () => {
                         }/1-Agreement`,
                       }}
                     >
-                      <a className="flex justify-between mb-2.5 items-center">
+                      <a className="flex justify-between items-center">
                         <Typography.Paragraph className="m-0 text-base font-medium font-inter">
                           {ft?.topic_name}
                         </Typography.Paragraph>

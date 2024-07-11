@@ -34,7 +34,11 @@ import { setTree } from "src/store/slices/campDetailSlice";
 import { getHistoryApi } from "src/network/api/history";
 import { setCurrentCamp } from "src/store/slices/filtersSlice";
 import HistoryCollapse from "./Collapse";
-import { getCookies, replaceSpecialCharacters } from "src/utils/generalUtility";
+import {
+  getCookies,
+  historyTitle,
+  replaceSpecialCharacters,
+} from "src/utils/generalUtility";
 import InfiniteScroll from "react-infinite-scroller";
 import CustomSkelton from "../../common/customSkelton";
 import moment from "moment";
@@ -103,7 +107,7 @@ function HistoryContainer() {
     async function getTreeApiCall() {
       if (isUserAuthenticated) {
         let response = await getAllUsedNickNames({
-          topic_num: router?.query?.camp?.at(0)?.split("-")[0],
+          topic_num: router?.query?.camp?.at(0)?.split("-")?.at(0),
         });
         setNickName(response?.data);
       }
@@ -241,7 +245,7 @@ function HistoryContainer() {
         router?.query.camp[1] ? router?.query.camp[1] : "1-Agreement"
       }`,
       query: {
-        statements: selectedTopic[0] + "_" + selectedTopic[1],
+        statements: selectedTopic?.at(0) + "_" + selectedTopic?.at(1),
         from:
           historyOf == "statement"
             ? "statement"
@@ -253,64 +257,30 @@ function HistoryContainer() {
     });
   };
 
-  let historyTitle = () => {
-    let title: string;
-    if (historyOf == "statement") {
-      title = "Statement History";
-    } else if (historyOf == "camp") {
-      title = "Camp History";
-    } else if (historyOf == "topic") {
-      title = "Topic History";
-    }
-    return title;
-  };
-
-  const NoRecordsMessage = () => {
-    let title: string;
-    if (historyOf == "statement") {
-      title = "No Camp Statement History Found";
-    } else if (historyOf == "camp") {
-      title = "No Camp History Found";
-    } else if (historyOf == "topic") {
-      title = "No Topic History Found";
-    }
-    return (
-      <h2
-        style={{
-          display: "flex",
-          // justifyContent: "center",
-          alignItems: "center",
-          margin: "20px 500px",
-        }}
-      >
-        {title}
-      </h2>
-    );
-  };
   let reqBody = {
-    topic_num: campHistory?.items?.[0]?.topic_num,
+    topic_num: campHistory?.items?.at(0)?.topic_num,
     topic_id: null,
     topic_name: null,
     namespace_id: null,
     statement_id: null,
-    camp_num: campHistory?.items?.[0]?.camp_num,
-    nick_name: nickName?.[0]?.id,
+    camp_num: campHistory?.items?.at(0)?.camp_num,
+    nick_name: nickName?.at(0)?.id,
     // nick_name_id:userNickNameData?.[0]?.n,
-    submitter: campHistory?.items?.[0]?.submitter_nick_id,
+    submitter: campHistory?.items?.at(0)?.submitter_nick_id,
     statement: "", //JSON.stringify(convertToRaw(contentState)),//values?.statement?.blocks[0].text.trim(),
     //statement: values?.statement?.trim(), //JSON.stringify(convertToRaw(contentState)),//values?.statement?.blocks[0].text.trim(),
     event_type: "update",
     objection_reason: null,
     statement_update: null,
-    camp_id: campHistory?.items?.[0]?.id,
-    camp_name: campHistory?.items?.[0]?.camp_name,
-    key_words: campHistory?.items?.[0]?.key_words,
-    camp_about_url: campHistory?.items?.[0]?.camp_about_url,
+    camp_id: campHistory?.items?.at(0)?.id,
+    camp_name: campHistory?.items?.at(0)?.camp_name,
+    key_words: campHistory?.items?.at(0)?.key_words,
+    camp_about_url: campHistory?.items?.at(0)?.camp_about_url,
     camp_about_nick_id: null,
 
-    parent_camp_num: campHistory?.items?.[0]?.parent_camp_num,
+    parent_camp_num: campHistory?.items?.at(0)?.parent_camp_num,
 
-    old_parent_camp_num: campHistory?.items?.[0]?.old_parent_camp_num,
+    old_parent_camp_num: campHistory?.items?.at(0)?.old_parent_camp_num,
     is_disabled: 0,
     is_one_level: 0,
     is_archive: 0,
@@ -400,13 +370,17 @@ function HistoryContainer() {
               className="text-2xl text-[#242B37] p-1 mb-14 gap-5 flex items-center max-lg:hidden leading-none"
               icon={<i className="icon-back"></i>}
               onClick={() => {
-                router?.back();
+                router.push(
+                  `/topic/${router?.query?.camp?.at(
+                    0
+                  )}/${router?.query?.camp?.at(1)}`
+                );
               }}
             >
-              {historyTitle()}
+              {historyTitle(historyOf)}
             </Button>
             <Title level={5} className="mb-6">
-              {historyTitle().toUpperCase()} BASED ON STATUS
+              {historyTitle(historyOf).toUpperCase()} BASED ON STATUS
             </Title>
             <div className="sider-btn">
               <Button

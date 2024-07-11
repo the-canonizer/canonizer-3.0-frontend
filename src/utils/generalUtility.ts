@@ -365,6 +365,9 @@ export const getProperties = (item) => {
   return null;
 };
 
+export const capitalizeFirstLetter = (str) =>
+  str.charAt(0).toUpperCase() + str.slice(1);
+
 export function parseCookies(cookiesString) {
   const cookiesArray = cookiesString?.split("; ");
   const cookiesObject = {};
@@ -377,5 +380,19 @@ export function parseCookies(cookiesString) {
   return cookiesObject;
 }
 
-export const capitalizeFirstLetter = (str) =>
-  str?.charAt(0)?.toUpperCase() + str?.slice(1);
+export const historyTitle = (historyOf) => {
+  switch (historyOf) {
+    case "statement":
+      return "Statement History";
+    case "topic":
+      return "Topic History";
+    case "camp":
+      return "Camp History";
+    default:
+      return "";
+  }
+};
+
+export const convertToTime = (unixTime) => {
+  return moment(unixTime * 1000).format("DD MMM YYYY, hh:mm:ss A");
+};
