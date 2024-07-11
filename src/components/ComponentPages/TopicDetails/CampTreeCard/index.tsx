@@ -79,16 +79,15 @@ const CampTreeCard = ({
   backGroundColorClass,
   isForumPage = false,
 }: any) => {
-  const { asof, asofdate, campWithScore, tree, campExist,openDrawer } = useSelector(
-    (state: RootState) => ({
+  const { asof, asofdate, campWithScore, tree, campExist, openDrawer } =
+    useSelector((state: RootState) => ({
       asofdate: state.filters?.filterObject?.asofdate,
       asof: state?.filters?.filterObject?.asof,
       campWithScore: state?.filters?.campWithScoreValue,
       tree: state?.topicDetails?.tree?.at(0),
       campExist: state?.topicDetails?.tree && state?.topicDetails?.tree[1],
       openDrawer: state.topicDetails.openDrawer,
-    })
-  );
+    }));
 
   const router = useRouter();
   const dispatch = useDispatch();
@@ -234,22 +233,26 @@ const CampTreeCard = ({
             key="1"
             extra={
               <>
-                {!openDrawer?<div
-                  className="ant-checkbox-wrapper"
-                  onClick={(event) => {
-                    event.stopPropagation();
-                  }}
-                >
-                  <Text>Collapse camps with less than</Text>
-                  <Select
-                    value={`${treeExpandValue}`}
-                    defaultValue={`${treeExpandValue}`}
-                    style={{ width: 80, margin: "0 5px" }}
-                    onChange={handleChange}
-                    options={scoreOptions}
-                  />
-                  <Text>of all support.</Text>
-                </div>:""}
+                {!openDrawer ? (
+                  <div
+                    className="ant-checkbox-wrapper"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                    }}
+                  >
+                    <Text>Collapse camps with less than</Text>
+                    <Select
+                      value={`${treeExpandValue}`}
+                      defaultValue={`${treeExpandValue}`}
+                      style={{ width: 80, margin: "0 5px" }}
+                      onChange={handleChange}
+                      options={scoreOptions}
+                    />
+                    <Text>of all support.</Text>
+                  </div>
+                ) : (
+                  ""
+                )}
               </>
             }
           >
@@ -260,20 +263,20 @@ const CampTreeCard = ({
                 isButton={false}
                 stylingClass=""
               />
+            ) : !openDrawer ? (
+              <CampTree
+                scrollToCampStatement={scrollToCampStatement}
+                setTotalCampScoreForSupportTree={
+                  setTotalCampScoreForSupportTree
+                }
+                setSupportTreeForCamp={setSupportTreeForCamp}
+                treeExpandValue={treeExpandValue}
+                setTreeExpandValue={setTreeExpandValue}
+                prevTreeValueRef={prevTreeValueRef}
+                isForumPage={isForumPage}
+              />
             ) : (
-              !openDrawer ? (
-                <CampTree
-                  scrollToCampStatement={scrollToCampStatement}
-                  setTotalCampScoreForSupportTree={setTotalCampScoreForSupportTree}
-                  setSupportTreeForCamp={setSupportTreeForCamp}
-                  treeExpandValue={treeExpandValue}
-                  setTreeExpandValue={setTreeExpandValue}
-                  prevTreeValueRef={prevTreeValueRef}
-                  isForumPage={isForumPage}
-                />
-              ) : (
-                ""
-              )
+              ""
             )}
           </Panel>
         </Collapse>

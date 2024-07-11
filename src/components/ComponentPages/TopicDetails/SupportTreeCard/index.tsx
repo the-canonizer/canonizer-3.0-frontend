@@ -279,7 +279,7 @@ const SupportTreeCard = ({
           return (
             <>
               <TreeNode
-               className="[&_.ant-tree-node-content-wrapper]:!w-full lg:!px-5 px-2.5 !bg-transparent border-b hover:[&_.ant-tree-node-content-wrapper]:!bg-transparent !w-full"
+                className="[&_.ant-tree-node-content-wrapper]:!w-full lg:!px-5 px-2.5 !bg-transparent border-b hover:[&_.ant-tree-node-content-wrapper]:!bg-transparent !w-full"
                 title={
                   <>
                     <div className="group w-full">
@@ -298,7 +298,10 @@ const SupportTreeCard = ({
                           }}
                         >
                           <a className="flex gap-1 items-center">
-                           <span className="text-canBlack text-base font-medium"> #{data[item].support_order}{" "}</span>
+                            <span className="text-canBlack text-base font-medium">
+                              {" "}
+                              #{data[item].support_order}{" "}
+                            </span>
                             <div className="w-[32px] h-[32px] rounded-full overflow-hidden">
                               <Image
                                 src={support_image}
@@ -307,13 +310,13 @@ const SupportTreeCard = ({
                                 width={32}
                               />
                             </div>{" "}
-                           <span className="text-canBlack lg:text-base text-xs font-medium"> {data[item].nick_name}</span>
-                         <br />
-                         
+                            <span className="text-canBlack lg:text-base text-xs font-medium">
+                              {" "}
+                              {data[item].nick_name}
+                            </span>
+                            <br />
                           </a>
-                         
                         </Link>
-                    
 
                         <div className="flex bg-canOrange px-2.5 py-1 rounded-md gap-1 items-center">
                           <Image
@@ -330,9 +333,7 @@ const SupportTreeCard = ({
                               : data[item].score?.toFixed(2)}
                             {/* {data[item].score?.toFixed(2)} */}
                           </span>
-                       
                         </div>
-                     
                       </div>
 
                       {/* </span> */}
@@ -373,14 +374,13 @@ const SupportTreeCard = ({
                                   }
                                   className="hidden group-hover:flex mb-2  items-center gap-1 justify-center bg-canLightBlue text-canBlue text-base rounded-lg font-medium h-[44px] w-full "
                                 >
-                                   <Image
+                                  <Image
                                     src="/images/user-minus-regular.svg"
                                     alt="svg"
                                     height={24}
                                     width={24}
                                   />
                                   {"Delegate Your Suppport"}
-                                 
                                 </Button>
                               </a>
                             </Popover>
@@ -407,12 +407,12 @@ const SupportTreeCard = ({
                             }}
                             className="mb-2 flex items-center gap-1 justify-center bg-canLightRed text-canRed text-base rounded-lg font-medium h-[44px] w-full"
                           >
-                              <Image
-                                    src="/images/user-minus-red.svg"
-                                    alt="svg"
-                                    height={24}
-                                    width={24}
-                                  />
+                            <Image
+                              src="/images/user-minus-red.svg"
+                              alt="svg"
+                              height={24}
+                              width={24}
+                            />
                             Remove Your Support
                           </Button>
                         </a>

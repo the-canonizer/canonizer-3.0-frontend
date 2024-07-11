@@ -15,7 +15,7 @@ const CreateThreadForm = ({
   initialValue,
   nickNameList,
   isThreadUpdate,
-  isLoading
+  isLoading,
 }: any) => {
   const CardTitle = (
     <span className={styles.cardTitle}>

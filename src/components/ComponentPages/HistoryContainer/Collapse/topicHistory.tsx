@@ -26,8 +26,9 @@ const TopicHistory = ({ campStatement, topicNamespaceId }: any) => {
         <span>
           <Link
             href={{
-              pathname: `/user/supports/${campStatement?.submitter_nick_id || ""
-                }`,
+              pathname: `/user/supports/${
+                campStatement?.submitter_nick_id || ""
+              }`,
               query: {
                 canon: topicNamespaceId || "",
               },
@@ -48,8 +49,9 @@ const TopicHistory = ({ campStatement, topicNamespaceId }: any) => {
           Objector Nickname :
           <span>
             <Link
-              href={`/user/supports/${campStatement?.objector_nick_id || ""
-                }?canon=${topicNamespaceId || ""}`}
+              href={`/user/supports/${
+                campStatement?.objector_nick_id || ""
+              }?canon=${topicNamespaceId || ""}`}
               passHref
             >
               <a> {campStatement?.objector_nick_name}</a>

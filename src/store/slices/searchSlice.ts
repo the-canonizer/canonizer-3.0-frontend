@@ -24,11 +24,11 @@ export const searchSlice = createSlice({
     },
     searchValue: "",
     pageNumber: 1,
-    searchQueryValue :"",
+    searchQueryValue: "",
     selectedTopicFromAdvnaceFilterNickname: [],
-    selectNicknameIdFromGetApi : [],
-    selectNickNameIdFromDirectSupportTree :[],
-    clickAdvanceFilterOption:false
+    selectNicknameIdFromGetApi: [],
+    selectNickNameIdFromDirectSupportTree: [],
+    clickAdvanceFilterOption: false,
   },
   reducers: {
     setSearchData: (state, action) => {
@@ -90,7 +90,7 @@ export const {
   setSelectedTopicFromAdvnaceFilterNickname,
   setSelectNicknameIdFromGetApi,
   setClickAdvanceFilterOption,
-  setSelectNickNameIdFromDirectSupportTree
+  setSelectNickNameIdFromDirectSupportTree,
 } = searchSlice.actions;
 
 export default searchSlice.reducer;

@@ -13,7 +13,7 @@ const WelcomeContent = () => {
         gutter={20}
         className={`z-0 ${
           isUserAuthenticated
-            ? "relative before:content-[''] z-1 before:w-full before:h-full before:absolute before:block before:bg-[url('/images/middle-vector.svg')] before:bg-no-repeat before:-bottom-5 before:left-[50%] before:translate-x-[-50%] before:w-full before:bg-[length:200px_200px] lg:before:bg-contain before:bg-right-top md:before:bg-center lg:before:bg-center"
+            ? "relative before:content-[''] z-1 before:w-full before:h-full before:absolute before:block before:bg-[url('/images/middle-vector.svg')] before:bg-no-repeat before:-bottom-12 before:left-[50%] before:translate-x-[-50%] before:w-full before:bg-[length:200px_200px] lg:before:bg-contain before:bg-right-top md:before:bg-center lg:before:bg-center"
             : ""
         }`}
       >

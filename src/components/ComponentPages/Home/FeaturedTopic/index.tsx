@@ -34,10 +34,10 @@ const FeaturedTopic = () => {
   return (
     <Fragment>
       <SectionHeading title="FEATURED TOPICS" infoContent="FEATURED TOPICS" />
-      <div className="mt-4]">
+      <div className="mt-4">
         <Slider {...settings}>
           {topicData?.map((ft) => (
-            <SingleTopicWithImage topic={ft} />
+            <SingleTopicWithImage topic={ft} key={ft?.id} />
           ))}
         </Slider>
       </div>

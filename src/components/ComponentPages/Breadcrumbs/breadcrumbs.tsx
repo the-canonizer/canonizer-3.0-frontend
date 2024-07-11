@@ -10,8 +10,7 @@ import { useSelector } from "react-redux";
 import moment from "moment";
 import { getCookies } from "src/utils/generalUtility";
 
-function Breadcrumbs({ compareMode = false, updateId }:any) {
-
+function Breadcrumbs({ compareMode = false, updateId }: any) {
   const router = useRouter();
   const historyOf = router?.asPath.split("/")[1];
 
@@ -26,7 +25,6 @@ function Breadcrumbs({ compareMode = false, updateId }:any) {
     })
   );
 
-  
   let payload = history && {
     camp_num: router?.query?.camp?.at(1)?.split("-")?.at(0) ?? "1",
     topic_num: router?.query?.camp?.at(0)?.split("-")?.at(0),
@@ -58,7 +56,7 @@ function Breadcrumbs({ compareMode = false, updateId }:any) {
 
     if (
       (payload && Object.keys(payload).length > 0,
-        !!(getCookies() as any)?.loginToken)
+      !!(getCookies() as any)?.loginToken)
     ) {
       getBreadCrumbApiCall();
     }
@@ -79,10 +77,8 @@ function Breadcrumbs({ compareMode = false, updateId }:any) {
   };
 
   const updateCurrentRecord = () => {
-    router.push(
-      `/manage/${historyOf}/${updateId}`
-    );
-  }
+    router.push(`/manage/${historyOf}/${updateId}`);
+  };
 
   return (
     <>
@@ -100,31 +96,38 @@ function Breadcrumbs({ compareMode = false, updateId }:any) {
           </Breadcrumb.Item>
           <Breadcrumb.Item href="">(Canon) General</Breadcrumb.Item>
           <Breadcrumb.Item href="">
-            Topic:  {breadCrumbRes && breadCrumbRes?.topic_name}
+            Topic: {breadCrumbRes && breadCrumbRes?.topic_name}
           </Breadcrumb.Item>
-          <Breadcrumb.Item>{
-            historyTitle() == "Statement History" ? "Statement" :
-              historyTitle() == "Topic History" ? "Topic" :
-                historyTitle() == "Camp History" ? "Camp" : null
-          } History</Breadcrumb.Item>
+          <Breadcrumb.Item>
+            {historyTitle() == "Statement History"
+              ? "Statement"
+              : historyTitle() == "Topic History"
+              ? "Topic"
+              : historyTitle() == "Camp History"
+              ? "Camp"
+              : null}{" "}
+            History
+          </Breadcrumb.Item>
         </Breadcrumb>
-        {!compareMode &&
+        {!compareMode && (
           <Button
             size="large"
             type="primary"
             className="flex items-center justify-center rounded-[10px] max-lg:hidden gap-3.5 leading-none"
-            onClick={()=>updateCurrentRecord()}
+            onClick={() => updateCurrentRecord()}
           >
-              Update Current 
-            {
-              historyTitle() == "Statement History" ? " Statement" :
-                historyTitle() == "Topic History" ? " Topic" :
-                  historyTitle() == "Camp History" ? " Camp" : null
-            }
+            Update Current
+            {historyTitle() == "Statement History"
+              ? " Statement"
+              : historyTitle() == "Topic History"
+              ? " Topic"
+              : historyTitle() == "Camp History"
+              ? " Camp"
+              : null}
             <i className="icon-edit"></i>
           </Button>
-        }
-      </div >
+        )}
+      </div>
     </>
   );
 }

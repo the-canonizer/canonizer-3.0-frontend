@@ -1,11 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
-import {
-  Typography,
-  Button,
-  Row,
-  Col,
-} from "antd";
+import { Typography, Button, Row, Col } from "antd";
 import styles from "./index.module.scss";
 
 import CustomSkelton from "../../../common/customSkelton";
@@ -30,9 +25,7 @@ function CompareStatementUI({
   liveStatement,
   itemsStatus,
 }: any) {
-
-
-  const [compareMode, setCompareMode] = useState(true)
+  const [compareMode, setCompareMode] = useState(true);
   const router = useRouter();
   const s1 = statements?.at(0) || {},
     s2 = statements?.at(1) || {},
@@ -63,34 +56,46 @@ function CompareStatementUI({
   return (
     <>
       <Breadcrumbs compareMode={compareMode} />
-      {isLoading ?
-        <CustomSkelton
-          skeltonFor="comparisonPage"
-        /> :
+      {isLoading ? (
+        <CustomSkelton skeltonFor="comparisonPage" />
+      ) : (
         <div className="ch-wrapper">
-          <Button onClick={getBackUrl}
+          <Button
+            onClick={getBackUrl}
             type="link"
             className="text-2xl text-[#242B37] p-1 mb-14 gap-5 flex items-center max-lg:hidden leading-none"
             icon={<i className="icon-back"></i>}
           >
-            {router?.query?.from && capitalizeFirstLetter(router?.query?.from)} History Comparison
+            {router?.query?.from && capitalizeFirstLetter(router?.query?.from)}{" "}
+            History Comparison
           </Button>
           <Row gutter={[60, 60]}>
             <Col xs={24} md={12}>
-              <HistoryCard compareMode={compareMode} comparisonData={s1} status={itemsStatus[s1?.id]} />
+              <HistoryCard
+                compareMode={compareMode}
+                comparisonData={s1}
+                status={itemsStatus[s1?.id]}
+              />
             </Col>
             <Col xs={24} md={12}>
-              <HistoryCard compareMode={compareMode} comparisonData={s2} status={itemsStatus[s2?.id]} />
+              <HistoryCard
+                compareMode={compareMode}
+                comparisonData={s2}
+                status={itemsStatus[s2?.id]}
+              />
             </Col>
             <Col xs={24} md={24}>
-              <HistoryCard compareMode={compareMode} comparisonData={liveStatement} status={liveStatement?.status} />
+              <HistoryCard
+                compareMode={compareMode}
+                comparisonData={liveStatement}
+                status={liveStatement?.status}
+              />
             </Col>
           </Row>
         </div>
-      }
+      )}
     </>
   );
 }
 
 export default CompareStatementUI;
-
