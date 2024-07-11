@@ -1,5 +1,6 @@
 const BaseCanonizerServiceUrl = process.env.NEXT_PUBLIC_BASE_SERVICE_URL;
 const BaseCanonizerApiUrl = process.env.NEXT_PUBLIC_BASE_API_URL;
+const DummyUrl = process.env.NEXT_PUBLIC_BASE_DUMMY_URL;
 const BaseImagesURL = process.env.NEXT_PUBLIC_BASE_IMAGES_URL;
 const BaseVideosURL = process.env.NEXT_PUBLIC_BASE_VIDEOS_URL;
 const NetworkConstants = {
@@ -67,7 +68,7 @@ const NetworkConstants = {
     ResendOTPForRegistration: `${BaseCanonizerApiUrl}/user/resend-otp`,
 
     // HomePage
-    GetCanonizedTopics: `${BaseCanonizerServiceUrl}/api/v1/topic/getAll`,
+    GetCanonizedTopics: `${BaseCanonizerServiceUrl}/api/v2/topic/getAll`,
 
     GetCanonizedNameSpaces: `${BaseCanonizerApiUrl}/get-all-namespaces`,
     GetWhatsNewContent: `${BaseCanonizerApiUrl}/get-whats-new-content`,
@@ -129,6 +130,7 @@ const NetworkConstants = {
     PostList: `${BaseCanonizerApiUrl}/post/list`,
     PostDelete: `${BaseCanonizerApiUrl}/post/delete`,
     GetThreadData: `${BaseCanonizerApiUrl}/thread/`,
+    GetTopFiveThreadData: `${BaseCanonizerApiUrl}/thread/latest5`,
 
     //camp news feed add edit update
     GetEditCampNewsFeed: `${BaseCanonizerApiUrl}/edit-camp-newsfeed`,
@@ -200,6 +202,9 @@ const NetworkConstants = {
     GetHotTopic: `${BaseCanonizerApiUrl}/hot-topic`,
     GetPrefTopic: `${BaseCanonizerApiUrl}/preferred-topic`,
     GetFeaturedTopic: `${BaseCanonizerApiUrl}/featured-topic`,
+
+    //Sibling camps
+    GetSiblingCamp : `${BaseCanonizerApiUrl}/get-sibling-camps`,
 
     // categories
     GetTagsList: `${BaseCanonizerApiUrl}/get-tags-list`,

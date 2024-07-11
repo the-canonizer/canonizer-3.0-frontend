@@ -37,6 +37,7 @@ const FullScoreCheckbox = ({ loadingIndicator = false }: propVal) => {
       <Checkbox
         onChange={onChange}
         checked={isChecked}
+        className="text-canBlack text-sm leading-[24px] font-medium"
         disabled={
           !router?.asPath?.includes("topic") ? loading : loadingIndicator
         }

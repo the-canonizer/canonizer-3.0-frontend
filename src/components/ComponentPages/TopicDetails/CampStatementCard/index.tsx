@@ -10,6 +10,7 @@ import moment from "moment";
 import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
 import CustomSkelton from "../../../common/customSkelton";
 import Image from "next/image";
+import ViewCounts from "components/shared/ViewsCount";
 
 const { Paragraph } = Typography;
 
@@ -19,11 +20,12 @@ const covertToTime = (unixTime) => {
 };
 const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
   const router = useRouter();
-  const { campRecord, campStatement, history } = useSelector(
+  const { campRecord, campStatement, history, tree } = useSelector(
     (state: RootState) => ({
       campStatement: state?.topicDetails?.campStatement,
       history: state?.topicDetails?.history,
       campRecord: state?.topicDetails?.currentCampRecord,
+      tree: state?.topicDetails?.tree && state?.topicDetails?.tree[0],
     })
   );
 
@@ -36,7 +38,133 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
       isButton={false}
     />
   ) : (
-    <Collapse
+    <>
+      <div className="camp-agrrement-new mb-3 bg-canGray py-8 px-6 rounded-lg border-t-2 border-canGeen">
+        <div>
+          <div className="camp-agreement-header d-flex items-center mb-3 gap-2">
+            <h3 className="text-base text-canBlack text-left font-semibold ">
+              {K?.exceptionalMessages?.campStatementHeading}
+            </h3>
+            <Image
+              src="/images/circle-info-bread.svg"
+              alt="svg"
+              className="icon-topic"
+              height={16}
+              width={16}
+            />
+          </div>
+          <div className="d-flex items-center justify-start gap-6 camp-header-content">
+            <div className="d-flex items-center">
+              <Image
+                src="/images/calendar-camp.svg"
+                alt="svg"
+                className="icon-topic"
+                height={16}
+                width={16}
+              />
+              <p className="text-xs font-normal text-canBlack text-opacity-80">Last update: {covertToTime(campStatement?.[0]?.go_live_time)}</p>
+            </div>
+            <div className="d-flex items-center gap-1">
+              <ViewCounts views={tree?.[1] && tree[1]?.camp_views} />
+            </div>
+          </div>
+          <hr className="my-3" />
+          <div className="flex items-center flex-col justify-center pt-10">
+            <Paragraph>
+              <div className={styles.campStatement}>
+                {campStatement?.length && campStatement[0]?.parsed_value ? (
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: `<div class="ck-content">${campStatement[0]?.parsed_value}</div>`,
+                    }}
+                  />
+                ) : (
+                  K?.exceptionalMessages?.campStatement
+                )}
+              </div>
+            </Paragraph>
+
+            <div className="topicDetailsCollapseFooter printHIde camp">
+              {campStatement?.length <= 0 ? <CustomButton
+                disabled={campRecord?.is_archive == 1 ? true : false}
+                className=" printHIde flex items-center justify-center bg-canBlue py-5 gap-2 rounded-lg w-[320px] text-base font-medium text-center text-white"
+                id="add-camp-statement-btn"
+              >
+                <Link
+                  href={
+                    campStatement?.length < 0
+                      ? `/statement/history/${replaceSpecialCharacters(
+                        router?.query?.camp[0],
+                        "-"
+                      )}/${replaceSpecialCharacters(
+                        router?.query?.camp[1] ?? "1-Agreement",
+                        "-"
+                      )}`
+                      : `/create/statement/${replaceSpecialCharacters(
+                        router?.query?.camp[0],
+                        "-"
+                      )}/${replaceSpecialCharacters(
+                        router?.query?.camp[1] ?? "1-Agreement",
+                        "-"
+                      )}`
+                  }
+                  className="printHIde"
+                >
+                  <a className="printHIde gap-2  flex items-center justify-center text-base font-medium">
+                    {K?.exceptionalMessages?.addCampStatementButton}
+                    <Image
+                      src="/images/manage-btn-icon.svg"
+                      alt="svg"
+                      className="icon-topic"
+                      height={24}
+                      width={24}
+                    />
+                  </a>
+                </Link>
+              </CustomButton>
+                :
+                <CustomButton
+                  disabled={campRecord?.is_archive == 1 ? true : false}
+                  className="btn-green printHIde hidden lg:hidden sm:flex md:flex items-center justify-center"
+                  id="add-camp-statement-btn"
+                >
+                  <Link
+                    href={
+                      campStatement?.length > 0
+                        ? `/statement/history/${replaceSpecialCharacters(
+                          router?.query?.camp[0],
+                          "-"
+                        )}/${replaceSpecialCharacters(
+                          router?.query?.camp[1] ?? "1-Agreement",
+                          "-"
+                        )}`
+                        : `/create/statement/${replaceSpecialCharacters(
+                          router?.query?.camp[0],
+                          "-"
+                        )}/${replaceSpecialCharacters(
+                          router?.query?.camp[1] ?? "1-Agreement",
+                          "-"
+                        )}`
+                    }
+                    className="printHIde"
+                  >
+                    <a className="printHIde gap-2  flex items-center justify-center text-base font-medium">
+                      {K?.exceptionalMessages?.manageCampStatementButton}
+                      <Image
+                        src="/images/manage-btn-icon.svg"
+                        alt="svg"
+                        className="icon-topic"
+                        height={24}
+                        width={24}
+                      />
+                    </a>
+                  </Link>
+                </CustomButton>}
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* <Collapse
       defaultActiveKey={["1"]}
       expandIconPosition="right"
       className="topicDetailsCollapse"
@@ -149,7 +277,8 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
           </CustomButton>
         </div>
       </Panel>
-    </Collapse>
+    </Collapse> */}
+    </>
   );
 };
 export default CampStatementCard;

@@ -56,7 +56,7 @@ const CategoriesList = () => {
         {renderedTags?.map((cat) => (
           <Tooltip title={cat?.title} key={cat?.id}>
             <Tags
-              className="rounded-[5px] py-2 px-4 border-0 text-canBlack bg-canBlue mt-0 mb-3"
+              className="rounded-lg py-3 px-6 border-0 text-canBlack bg-canBlue mt-0 mb-5"
               icon={<FlagOutlined />}
               color={getRandomColor()}
             >

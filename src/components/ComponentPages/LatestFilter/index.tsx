@@ -16,6 +16,9 @@ import { useRouter } from "next/router";
 import styles from "./latestFilter.module.scss";
 import { getTreesApi } from "src/network/api/campDetailApi";
 import { useEffect } from "react";
+import Image from "next/image";
+import calendarIcon from "../../../../public/images/calendar-icon.svg"
+
 
 const LatestFilter = () => {
   const router = useRouter();
@@ -228,8 +231,9 @@ const LatestFilter = () => {
   };
   let filteredDate = moment(filteredAsOfDate * 1000).format("YYYY-MM-DD");
   return (
-    <div className={styles.selected_filter_area}>
-      {(router?.query?.algo &&
+    // <div className={styles.selected_filter_area}>
+    <div className="flex">
+      {/* {(router?.query?.algo &&
         selectedAlgorithm &&
         lable?.algorithm_label !== undefined) ||
       is_camp_archive_checked ||
@@ -238,7 +242,7 @@ const LatestFilter = () => {
       includeReview ||
       router?.query?.asof == "review" ||
       filteredScore != 0 ? (
-        <span>
+        <span className="flex">
           <label
             className={styles.selected_filter_heading}
             data-testid="Selected filter"
@@ -255,22 +259,21 @@ const LatestFilter = () => {
         </span>
       ) : (
         ""
-      )}
+      )} */}
 
-      <Space size={[0, 18]} wrap>
+      <Space size={[0, 18]} wrap className="flex">
         {router?.query?.algo &&
         selectedAlgorithm &&
         lable?.algorithm_label !== undefined ? (
           <Tag
-            icon={
-              <CloseOutlined
+          className="bg-canLightGrey rounded-full py-2.5 px-3.5 text-xs text-canBlue leading-4 font-medium border-none flex items-center gap-1"
+          >
+            <CloseOutlined
                 onClick={() => {
                   algoRevert();
                   revertScore()
                 }}
               />
-            }
-          >
             {lable?.algorithm_label}
           </Tag>
         ) : (
@@ -278,74 +281,82 @@ const LatestFilter = () => {
         )}
         {is_camp_archive_checked ? (
           <Tag
-            icon={
-              <CloseOutlined
+           className="bg-canLightGrey rounded-full py-2.5 px-3.5 text-xs text-canBlue leading-4 font-medium border-none flex items-center gap-1"
+            data-testid="archived_camps"
+          > 
+            Show archived camps
+            <CloseOutlined
                 onClick={() => {
                   dispatch(setArchivedCheckBox(false));
                 }}
                 data-testid="close_icon_archived_camps"
               />
-            }
-            data-testid="archived_camps"
-          >
-            Show archived camps
           </Tag>
         ) : (
           ""
         )}
         {is_checked ? (
           <Tag
-            icon={
-              <CloseOutlined
-                onClick={() => {
-                  dispatch(setScoreCheckBox(false));
-                }}
-                data-testid="close_icon_100%_of_canonized_score"
-              />
-            }
-            data-testid="100%_of_canonized_score"
+           className="bg-canLightGrey rounded-full py-2.5 px-3.5 text-xs text-canBlue leading-4 font-medium border-none flex items-center gap-1"           
           >
             100% of canonized score
+            <CloseOutlined
+            onClick={() => {
+              dispatch(setScoreCheckBox(false));
+            }}
+            data-testid="close_icon_100%_of_canonized_score"
+          />
           </Tag>
         ) : (
           ""
         )}
         {selectedAsOf == "bydate" ? (
           <Tag
-            icon={
-              <CloseOutlined
+             className="bg-canLightGrey rounded-full py-1 px-3.5 text-xs text-canBlue leading-4 font-medium border-none flex items-center gap-1"
+            data-testid="asOfDate"
+          >
+             <Image
+                      src={calendarIcon}
+                      alt="svg"
+                      height={20}
+                      width={20}
+                    />
+             
+            {`${filteredDate}`}
+            <CloseOutlined
                 onClick={filterForAsofDate}
                 data-testid="close_icon_as_of_date"
               />
-            }
-            data-testid="asOfDate"
-          >{`As of date: ${filteredDate}`}</Tag>
+            </Tag>
         ) : (
           ""
         )}
         {includeReview || router?.query?.asof == "review" ? (
           <Tag
-            icon={
-              <CloseOutlined
+          className="bg-canLightGrey rounded-full py-2.5 px-3.5 text-xs text-canBlue leading-4 font-medium border-none flex items-center gap-1"
+        
+            data-testid="include_review"
+          >{`Include review`}
+           <CloseOutlined
                 onClick={filterForAsofDate}
                 data-testid="close_icon_include_review"
+                
               />
-            }
-            data-testid="include_review"
-          >{`Include review`}</Tag>
+          </Tag>
         ) : (
           ""
         )}
         {filteredScore != 0 ? (
           <Tag
-            icon={
-              <CloseOutlined
+            className="bg-canLightGrey rounded-full py-2.5 px-3.5 text-xs text-canBlue leading-4 font-medium border-none flex items-center gap-1"
+            data-testid="Score"
+          >
+            {`Score < ${filteredScore}`}
+            <CloseOutlined
                 onClick={filterscore}
                 data-testid="close_icon_Score"
               />
-            }
-            data-testid="Score"
-          >{`Score < ${filteredScore}`}</Tag>
+          </Tag>
         ) : (
           ""
         )}

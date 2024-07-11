@@ -1,3 +1,49 @@
 .ant-layout {
   background: var(---white);
 }
+
+.nicknameAdvanceFilter {
+  .ant-select {
+    width: 100%;
+  }
+  > footer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #f3f4f5;
+    border-top: 1px solid #eee;
+  }
+  .ant-collapse-content {
+    z-index: 99;
+  }
+}
+
+.ant_tags .ant-tag {
+  display: flex;
+  gap: 10px;
+  background: var(--unnamed-color-ffffff) 0% 0% no-repeat padding-box;
+  background: #ffffff 0% 0% no-repeat padding-box;
+  box-shadow: 3px 3px 0px #3f4f5b14;
+  border: 1px solid #e3e3e3;
+  align-items: center;
+  padding: 4px 10px;
+  color: #4484ce;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.ant_tags .ant-tag div {
+  color: #b7babf;
+}
+
+.ant-popover-inner:has(.popoverParent) {
+  width: 500px;
+  border-radius: 10px;
+  border: 1px solid rgba(204, 212, 231, 1);
+  padding: 15px 20px;
+}

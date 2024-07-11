@@ -20,7 +20,7 @@ const Category = ({ onBackClick, tag }) => {
     <CommonCards
       title={
         <Paragraph
-          className={`flex items-center pl-5 capitalize py-2 pr-5 rounded-r-md`}
+          className={`flex items-center pl-5 capitalize py-2 pr-5 rounded-r-lg`}
           style={{ backgroundColor: bgColor }}
         >
           <FlagOutlined className="text-canLight p-1 text-medium" />

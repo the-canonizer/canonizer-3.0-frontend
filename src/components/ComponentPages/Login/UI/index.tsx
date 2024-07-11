@@ -25,7 +25,10 @@ const LoginUi = ({
   onRegister,
 }) => {
   return (
-    <Card className="rounded-lg pb-3" bordered={false}>
+    <Card
+      className="rounded-lg pb-3 [&_.ant-card-body]:pb-4 mb-8"
+      bordered={false}
+    >
       <Form
         form={form}
         name="login_form"
@@ -105,7 +108,7 @@ const LoginUi = ({
           <PrimaryButton
             data-testid="submitButton"
             htmlType="submit"
-            className="h-[40px] text-sm rounded-md !w-10/12 lg:!w-8/12 mb-6 flex justify-center items-center"
+            className="h-[40px] text-sm rounded-lg !w-10/12 lg:!w-8/12 mb-6 flex justify-center items-center"
             id="login-btn"
             disabled={!isDisabled}
           >
@@ -113,7 +116,7 @@ const LoginUi = ({
           </PrimaryButton>
           <SecondaryButton
             htmlType="button"
-            className="h-[40px] text-sm rounded-md !w-10/12 lg:!w-8/12 flex justify-center items-center"
+            className="h-[40px] text-sm rounded-lg !w-10/12 lg:!w-8/12 flex justify-center items-center"
             onClick={onOTPClick}
             id="request-otp-btn"
             data-testid="request-otp-btn"

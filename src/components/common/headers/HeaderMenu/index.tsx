@@ -60,7 +60,7 @@ const menuItems = [
     link: "/videos/consciousness",
     linkTitle: "Videos",
     id: 6,
-    icon: <VideoCameraOutlined />,
+    icon: <QuestionCircleOutlined />,
   },
   {
     link: "/topic/132-Help/1-Agreement?is_tree_open=1",
@@ -220,20 +220,24 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
         ) : null}
         <ul className="flex text-sm font-inter font-medium flex-col lg:flex-row lg:items-center mt-4 lg:mt-0">
           <ListItem
-            cls={`create-topic-header-link ${
+            cls={`create-topic-header-link relative ${
               router?.asPath === "/create/topic" ? styles.active : ""
-            } ${isMobile ? "mb-5 !pl-0" : ""}`}
+            } ${isMobile ? "mb-5 !pl-0" : ""} ${
+              isUserAuthenticated
+                ? ""
+                : "after:content-['|'] after:absolute after:ml-[10px] after:text-[darkgray] flex after:top-0 after:right-0 after:left-auto"
+            }`}
             key="create-topic-li"
           >
             <CreateTopic
               className={
                 isUserAuthenticated
                   ? `border-[1px] px-3 py-2 rounded-lg border-canBlue bg-[#98B7E61A] ${
-                      isMobile ? "bg-canBlue text-white rounded-md" : ""
+                      isMobile ? "bg-canBlue text-white rounded-lg" : ""
                     }`
                   : `hover:text-canHoverBlue] ${
                       isMobile
-                        ? "bg-canBlue text-white rounded-md px-3 py-2"
+                        ? "bg-canBlue text-white rounded-lg px-3 py-2"
                         : ""
                     }`
               }
@@ -329,29 +333,6 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
           </div>
         ) : null}
       </nav>
-      {/* {isMobile ? (
-        isUserAuthenticated ? (
-          <Fragment>
-            <div
-              key="notification-li-mobile"
-              className="block lg:hidden mr-3 md:ml-auto lg:ml-0"
-            >
-              <Notifications />
-            </div>
-            <div key="profile-li-mobile" className="block lg:hidden">
-              <ProfileInfoTab
-                isGravatarImage={isGravatarImage}
-                loadingImage={loadingImage}
-                loggedUser={loggedInUser}
-                toggleMobNav={""}
-                logOut={""}
-                isMobile={false}
-                menu={menu}
-              />
-            </div>
-          </Fragment>
-        ) : null
-      ) : null} */}
       <Button
         size="middle"
         className="border-0 p-0 block -mt-2 lg:hidden ml-2 md:ml-auto"

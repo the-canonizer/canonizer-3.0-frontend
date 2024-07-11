@@ -8,9 +8,11 @@
 
 @import "./fonts";
 @import "./speed-controller";
+@import "../../components/ComponentPages/Breadcrumbs/breadcrumbs.scss";
+@import "../../components/ComponentPages/HistoryCard/historyCard.scss";
 
 :root {
-  --primary: #5482c8;
+  --primary: #4484ce;
   --font-family-asap: "Asap", sans-serif;
   --font-family-inter: "Inter", sans-serif;
   --yellow: #f89d15;
@@ -48,22 +50,22 @@ body {
     right: 0;
     li {
       button {
+        width: 10px;
+        height: 10px;
+        overflow: hidden;
+        border-radius: 50%;
         display: block;
         box-shadow: none;
-        border: 1px solid transparent;
+        outline: linen;
+        border: 1px solid var(--canBlue);
         position: static;
-        color: var(--canBlack);
+        color: #fff;
+        background-color: #fff;
         padding: 0;
-        font-size: 14px;
-        font-weight: 400;
-        padding: 0 4px;
-        border-radius: 3px;
-        transition: all 0.3s;
       }
       &[class*="slick-active"] {
         button {
-          font-weight: 600;
-          border: 1px solid var(--canBlue);
+          background-color: var(--canBlue);
           color: var(--canBlue);
         }
       }

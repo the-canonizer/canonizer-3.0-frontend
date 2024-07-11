@@ -6,6 +6,7 @@ $sidebar_width_small: 30%;
   overflow: hidden;
   flex-direction: row;
   flex-wrap: nowrap;
+  min-height: calc(100vh - 347px);
 
   .contentBox {
     width: 100%;
@@ -17,6 +18,14 @@ $sidebar_width_small: 30%;
   .leftSidebar {
     width: $sidebar_width;
     transition: width 0.3s ease;
+  }
+
+  .rightSidebar {
+    margin-left: 20px;
+  }
+
+  .leftSidebar {
+    margin-right: 20px;
   }
 
   &.withRightsideBar .contentBox {

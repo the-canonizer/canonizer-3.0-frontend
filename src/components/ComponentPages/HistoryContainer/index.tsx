@@ -1,31 +1,51 @@
-import { useEffect, useState, useRef } from "react";
-import { Typography, Button, List, Affix } from "antd";
+import {
+  Badge,
+  Breadcrumb,
+  Button,
+  Card,
+  Checkbox,
+  Collapse,
+  Divider,
+  Empty,
+  Tag,
+  Tooltip,
+  Typography,
+} from "antd";
+
+import {
+  EyeOutlined,
+  HomeOutlined,
+  InfoCircleOutlined,
+  LeftOutlined,
+} from "@ant-design/icons";
+import { updateCampApi } from "src/network/api/campManageStatementApi";
 import type { CheckboxChangeEvent } from "antd/es/checkbox";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
-import InfiniteScroll from "react-infinite-scroller";
-
-import styles from "./campHistory.module.scss";
-
-import { getHistoryApi } from "src/network/api/history";
-import { getAllUsedNickNames } from "src/network/api/campDetailApi";
-import CustomSkelton from "../../common/customSkelton";
-
-import HistoryCollapse from "./Collapse";
+import { useEffect, useRef, useState } from "react";
 import { RootState } from "src/store";
-import CampInfoBar from "../TopicDetails/CampInfoBar";
-import CreateNewCampButton from "../../common/button/createNewCampBtn";
-import { setCurrentCamp } from "src/store/slices/filtersSlice";
 import useIsUserAuthenticated from "src/hooks/isUserAuthenticated";
-
+import { getAllUsedNickNames, getCampBreadCrumbApi } from "src/network/api/campDetailApi";
 import { store } from "src/store";
 import { setTree } from "src/store/slices/campDetailSlice";
-import { updateCampApi } from "src/network/api/campManageStatementApi";
+import { getHistoryApi } from "src/network/api/history";
+import { setCurrentCamp } from "src/store/slices/filtersSlice";
+import HistoryCollapse from "./Collapse";
+import { getCookies, replaceSpecialCharacters } from "src/utils/generalUtility";
+import InfiniteScroll from "react-infinite-scroller";
+import CustomSkelton from "../../common/customSkelton";
+import moment from "moment";
+import Breadcrumbs from "../Breadcrumbs/breadcrumbs";
+import HistoryCard from "../HistoryCard/historyCard";
 
 const { Title } = Typography;
 
+
+const { Panel } = Collapse;
+
 function HistoryContainer() {
   const { isUserAuthenticated } = useIsUserAuthenticated();
+
   const router = useRouter();
   const dispatch = useDispatch();
   const didMount = useRef(false);
@@ -42,6 +62,15 @@ function HistoryContainer() {
   const [discardChange, setDiscardChange] = useState(false);
   const [parentarchived, setParentarchived] = useState(0);
   const [directarchived, setDirectarchived] = useState(0);
+  const [totalCount, setTotalCount] = useState<any>([]);
+  const [liveRecordId, setLiveRecordId] = useState<any>(null);
+
+  const {
+    asof,
+  } = useSelector((state: RootState) => ({
+    asof: state?.filters?.filterObject?.asof,
+  }));
+
 
   const changeAgree = () => {
     setAgreeCheck(!agreecheck);
@@ -53,14 +82,15 @@ function HistoryContainer() {
 
   const count = useRef(1);
 
-  const { history, currentCampNode, asofdate, algorithm } =
-    useSelector((state: RootState) => ({
+  const { history, currentCampNode, asofdate, algorithm } = useSelector(
+    (state: RootState) => ({
       history: state?.topicDetails?.history,
       currentCampRecord: state.topicDetails.currentCampRecord,
       currentCampNode: state?.filters?.selectedCampNode,
       asofdate: state.filters?.filterObject?.asofdate,
       algorithm: state.filters?.filterObject?.algorithm,
-    }));
+    })
+  );
 
   const [isTreesApiCallStop, setIsTreesApiCallStop] = useState(false);
   const [loadingIndicator, setLoadingIndicator] = useState(false);
@@ -155,6 +185,8 @@ function HistoryContainer() {
             is_archive,
           })
         );
+        setTotalCount(res?.data?.total_counts)
+        setLiveRecordId(res?.data?.live_record_id)
       }
 
       didMount.current = true;
@@ -206,28 +238,25 @@ function HistoryContainer() {
 
   const onCompareClick = () => {
     router?.push({
-      pathname: `/statement/compare/${router?.query.camp[0]}/${
-        router?.query.camp[1] ? router?.query.camp[1] : "1-Agreement"
-      }`,
+      pathname: `/statement/compare/${router?.query.camp[0]}/${router?.query.camp[1] ? router?.query.camp[1] : "1-Agreement"
+        }`,
       query: {
         statements: selectedTopic[0] + "_" + selectedTopic[1],
         from:
           historyOf == "statement"
             ? "statement"
             : historyOf == "camp"
-            ? "camp"
-            : "topic",
+              ? "camp"
+              : "topic",
         status: selectedTopicStatus.join("-"),
       },
     });
   };
 
-  const loader = <></>;
-
   let historyTitle = () => {
     let title: string;
     if (historyOf == "statement") {
-      title = "Camp Statement History";
+      title = "Statement History";
     } else if (historyOf == "camp") {
       title = "Camp History";
     } else if (historyOf == "topic") {
@@ -249,8 +278,9 @@ function HistoryContainer() {
       <h2
         style={{
           display: "flex",
-          justifyContent: "center",
-          margin: "20px 0px",
+          // justifyContent: "center",
+          alignItems: "center",
+          margin: "20px 500px",
         }}
       >
         {title}
@@ -284,9 +314,9 @@ function HistoryContainer() {
     is_disabled: 0,
     is_one_level: 0,
     is_archive: 0,
+    camp_leader_nick_id: campHistory && campHistory?.items?.at(0)?.camp_leader_nick_id,
   };
   const callManageCampApi = async () => {
-    // window.location.reload()
     setLoadingIndicator(true);
     if (campHistory?.items?.length >= 3) {
       count.current = 1;
@@ -294,8 +324,8 @@ function HistoryContainer() {
     await updateCampApi(reqBody);
     await campStatementApiCall();
     setLoadingIndicator(false);
-    // await commitChanges()
   };
+
   const getCollapseKeys = (campHistoryData, index) => {
     let key = "";
     let oldstatements = campHistory?.items?.filter(
@@ -320,11 +350,11 @@ function HistoryContainer() {
   };
 
   const renderCampHistories =
-    campHistory && campHistory?.items?.length ? (
+    campHistory && campHistory?.items?.length && (
       campHistory?.items?.map((campHistoryData, index) => {
         return (
           <>
-            <HistoryCollapse
+            <HistoryCard
               collapseKeys={getCollapseKeys(campHistoryData, index)}
               key={index}
               campStatement={campHistoryData}
@@ -351,185 +381,129 @@ function HistoryContainer() {
                 campHistory?.details?.unarchive_change_submitted
               }
               directarchived={directarchived}
+              historyState={historyOf}
             />
           </>
         );
       })
-    ) : (
-      <NoRecordsMessage />
-    );
-  return (
-    <div className={styles.wrap}>
-      <CampInfoBar
-        payload={payload}
-        isTopicHistoryPage={historyOf == "topic" ? true : false}
-      />
-      <div className={styles.btnGroup}>
-        {/* <CreateNewTopicButton className={styles.createBtn} click={topicRoute} /> */}
+    )
 
-        {historyOf !== "topic" &&
-        currentCampNode?._isDisabled == 0 &&
-        currentCampNode?.parentIsOneLevel == 0 &&
-        currentCampNode?.is_archive == 0 ? (
-          <CreateNewCampButton
-            className={styles.createBtn}
-            click={campRoute}
-            url={`/camp/create/${
-              router?.query.camp?.at(0) + "/" + router?.query.camp?.at(1)
-            }`}
-          />
-        ) : null}
-      </div>
-      <div className={styles.campStatementHistoryCard}>
-        <Affix
-          offsetTop={0}
-          style={{ position: isAbs ? "absolute" : "static", left: "16px" }}
-          onChange={setIsAbs}
-        >
-          <div className={styles.cshcHead}>
-            <div className={styles.cshcHeadFilterWrap}>
-              <Title level={4}>{historyTitle()}</Title>
-              {/* <Spin spinning={loadingIndicator} size="default"> */}
-              <List className={styles.cshcHeadFilter} size="small">
-                <List.Item
-                  className={`${styles.campStatementViewAll} ${
-                    styles.cshcHeadFilterItem
-                  } ${activeTab == "all" ? styles.active : null}`}
-                >
-                  <a
-                    onClick={() => {
-                      handleTabButton("all");
-                    }}
-                  >
-                    View All
-                  </a>
-                </List.Item>
-                <List.Item
-                  className={`${styles.campStatementObjected}  ${
-                    styles.cshcHeadFilterItem
-                  }  ${activeTab == "objected" ? styles.active : null}`}
-                >
-                  <a
-                    onClick={() => {
-                      handleTabButton("objected");
-                    }}
-                  >
-                    Objected
-                  </a>
-                </List.Item>
-                <List.Item
-                  className={`${styles.campStatementLive} ${
-                    styles.cshcHeadFilterItem
-                  } ${activeTab == "live" ? styles.active : null}`}
-                >
-                  <a
-                    onClick={() => {
-                      handleTabButton("live");
-                    }}
-                  >
-                    Live
-                  </a>
-                </List.Item>
-                <List.Item
-                  className={`${styles.campStatementNotLive} ${
-                    styles.cshcHeadFilterItem
-                  } ${activeTab == "in_review" ? styles.active : null}`}
-                >
-                  <a
-                    onClick={() => {
-                      handleTabButton("in_review");
-                    }}
-                  >
-                    Not Live
-                  </a>
-                </List.Item>
-                <List.Item
-                  className={`${styles.campStatementOld} ${
-                    styles.cshcHeadFilterItem
-                  } ${activeTab == "old" ? styles.active : null}`}
-                >
-                  <a
-                    onClick={() => {
-                      handleTabButton("old");
-                    }}
-                  >
-                    Old
-                  </a>
-                </List.Item>
-              </List>
-            </div>
+  return (
+    <>
+      <Breadcrumbs updateId={liveRecordId}/>
+      <div className="ch-wrapper">
+        <div className="ch-history">
+          <div className="statement-status-sider">
             <Button
-              disabled={
-                !(
-                  selectedTopic.length >= 2 &&
-                  !selectedTopic?.includes(campHistory && campHistory["id"])
-                )
-              }
-              className={styles.active}
-              id={`compare-${historyOf}`}
-              type="primary"
-              onClick={onCompareClick}
+              type="link"
+              className="text-2xl text-[#242B37] p-1 mb-14 gap-5 flex items-center max-lg:hidden leading-none"
+              icon={<i className="icon-back"></i>}
+              onClick={() => { router?.back() }}
             >
-              Compare{" "}
-              {historyOf == "topic"
-                ? "Topics"
-                : historyOf == "camp"
-                ? "Camps"
-                : "Statements"}
+              {historyTitle()}
             </Button>
+            <Title level={5} className="mb-6">
+              {historyTitle().toUpperCase()} BASED ON STATUS
+            </Title>
+            <div className="sider-btn">
+              <Button size="large" className={`btn-all min-w-[133px] ${activeTab == "all" ? " active" : null}`}
+                onClick={() => {
+                  handleTabButton("all");
+                }}>
+                View all <span className="ml-1">({totalCount?.total_changes || 0}) </span>
+              </Button>
+              <Button size="large" className={`btn-objected min-w-[133px] ${activeTab == "objected" ? " active" : null}`}
+                onClick={() => {
+                  handleTabButton("objected");
+                }}>
+                Objected <span className="ml-1">({totalCount?.objected_changes || 0}) </span>
+              </Button>
+              <Button size="large" className={`btn-live min-w-[133px] ${activeTab == "live" ? " active" : null}`}
+                onClick={() => {
+                  handleTabButton("live");
+                }}>
+                Live <span className="ml-1">({totalCount?.live_changes || 0}) </span>
+              </Button>
+              <Button size="large" className={`btn-pending min-w-[133px] ${activeTab == "in_review" ? " active" : null}`}
+                onClick={() => {
+                  handleTabButton("in_review");
+                }}>
+                Pending <span className="ml-1">({totalCount?.in_review_changes || 0}) </span>
+              </Button>
+              <Button size="large" className={`btn-previous min-w-[133px] ${activeTab == "old" ? " active" : null}`}
+                onClick={() => {
+                  handleTabButton("old");
+                }}>
+                Previous <span className="ml-1">({totalCount?.old_changes || 0}) </span>
+              </Button>
+            </div>
+            {
+              historyOf === "topic" && (
+                <Button
+                  size="large"
+                  className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none mt-12"
+                  disabled={
+                    !(
+                      selectedTopic.length >= 2 &&
+                      !selectedTopic?.includes(campHistory && campHistory["id"])
+                    )}
+                  onClick={onCompareClick}
+                >
+                  Compare Topics
+                  <i className="icon-compare-statement"></i>
+                </Button>
+              )
+            }
+
+            {
+              historyOf === "camp" && (
+                <Button
+                  size="large"
+                  className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none mt-12"
+                  disabled={
+                    !(
+                      selectedTopic.length >= 2 &&
+                      !selectedTopic?.includes(campHistory && campHistory["id"])
+                    )}
+                  onClick={onCompareClick}
+                >
+                  Compare Camps
+                  <i className="icon-compare-statement"></i>
+                </Button>
+              )
+            }
           </div>
-        </Affix>
-        <div style={{ paddingBottom: "20px" }}>
-          <div style={{ overflow: "auto" }}>
-            {loadingIndicator ? (
-              <>
-                <div className="px-3 py-2">
-                  <CustomSkelton
-                    skeltonFor="card"
-                    bodyCount={4}
-                    stylingClass="test"
-                    isButton={false}
-                    action={false}
-                    title={false}
-                  />
-                </div>{" "}
-                <div className="px-3 py-2">
-                  <CustomSkelton
-                    skeltonFor="card"
-                    bodyCount={4}
-                    stylingClass="test"
-                    isButton={false}
-                    action={false}
-                    title={false}
-                  />{" "}
+          {activeTab === "live" ? (
+            <>
+              {campHistory && campHistory?.items?.length > 0 ?
+                <div className="ch-content lg:w-[calc(100%-320px)] p-8 bg-[#F4F5FA] rounded-lg max-md:w-full relative">
+                  {renderCampHistories}
+                </div> : <div className="no-data-wrapper ch-content lg:w-[calc(100%-320px)] p-8 bg-[#F4F5FA] rounded-lg max-md:w-full relative">
+                  <Empty />
                 </div>
-                <div className="px-3 py-2">
-                  <CustomSkelton
-                    skeltonFor="card"
-                    bodyCount={4}
-                    stylingClass="test"
-                    isButton={false}
-                    action={false}
-                    title={false}
-                  />
+              }
+            </>
+          ) : (
+            <>
+              {campHistory && campHistory?.items?.length > 0 ?
+                <div className="ch-content lg:w-[calc(100%-320px)] p-8 bg-[#F4F5FA] rounded-lg max-md:w-full relative">
+                  <InfiniteScroll
+                    initialLoad={false}
+                    loadMore={!loadingIndicator && campStatementApiCall}
+                    hasMore={loadMoreItems}
+                    loader={<></>}
+                  >
+                    {renderCampHistories}
+                  </InfiniteScroll>
+                </div> : <div className="no-data-wrapper ch-content lg:w-[calc(100%-320px)] p-8 bg-[#F4F5FA] rounded-lg max-md:w-full relative">
+                  <Empty />
                 </div>
-              </>
-            ) : activeTab === "live" ? (
-              renderCampHistories
-            ) : (
-              <InfiniteScroll
-                initialLoad={false}
-                loadMore={!loadingIndicator && campStatementApiCall}
-                hasMore={loadMoreItems}
-                loader={loader}
-              >
-                {renderCampHistories}
-              </InfiniteScroll>
-            )}
-          </div>
+              }
+            </>
+          )}
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

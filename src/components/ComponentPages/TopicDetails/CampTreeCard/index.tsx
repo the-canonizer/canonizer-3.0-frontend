@@ -79,13 +79,14 @@ const CampTreeCard = ({
   backGroundColorClass,
   isForumPage = false,
 }: any) => {
-  const { asof, asofdate, campWithScore, tree, campExist } = useSelector(
+  const { asof, asofdate, campWithScore, tree, campExist,openDrawer } = useSelector(
     (state: RootState) => ({
       asofdate: state.filters?.filterObject?.asofdate,
       asof: state?.filters?.filterObject?.asof,
       campWithScore: state?.filters?.campWithScoreValue,
       tree: state?.topicDetails?.tree?.at(0),
       campExist: state?.topicDetails?.tree && state?.topicDetails?.tree[1],
+      openDrawer: state.topicDetails.openDrawer,
     })
   );
 
@@ -233,7 +234,7 @@ const CampTreeCard = ({
             key="1"
             extra={
               <>
-                <div
+                {!openDrawer?<div
                   className="ant-checkbox-wrapper"
                   onClick={(event) => {
                     event.stopPropagation();
@@ -248,7 +249,7 @@ const CampTreeCard = ({
                     options={scoreOptions}
                   />
                   <Text>of all support.</Text>
-                </div>
+                </div>:""}
               </>
             }
           >
@@ -260,17 +261,19 @@ const CampTreeCard = ({
                 stylingClass=""
               />
             ) : (
-              <CampTree
-                scrollToCampStatement={scrollToCampStatement}
-                setTotalCampScoreForSupportTree={
-                  setTotalCampScoreForSupportTree
-                }
-                setSupportTreeForCamp={setSupportTreeForCamp}
-                treeExpandValue={treeExpandValue}
-                setTreeExpandValue={setTreeExpandValue}
-                prevTreeValueRef={prevTreeValueRef}
-                isForumPage={isForumPage}
-              />
+              !openDrawer ? (
+                <CampTree
+                  scrollToCampStatement={scrollToCampStatement}
+                  setTotalCampScoreForSupportTree={setTotalCampScoreForSupportTree}
+                  setSupportTreeForCamp={setSupportTreeForCamp}
+                  treeExpandValue={treeExpandValue}
+                  setTreeExpandValue={setTreeExpandValue}
+                  prevTreeValueRef={prevTreeValueRef}
+                  isForumPage={isForumPage}
+                />
+              ) : (
+                ""
+              )
             )}
           </Panel>
         </Collapse>
