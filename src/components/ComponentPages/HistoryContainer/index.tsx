@@ -362,7 +362,7 @@ function HistoryContainer() {
           <div className="statement-status-sider">
             <Button
               type="link"
-              className="text-2xl text-[#242B37] p-1 mb-14 gap-5 flex items-center max-lg:hidden leading-none"
+              className="text-2xl text-canBlack p-1 mb-14 gap-5 flex items-center max-lg:hidden leading-none"
               icon={<i className="icon-back"></i>}
               onClick={() => { router.push(`/topic/${router?.query?.camp?.at(0)}/${router?.query?.camp?.at(1)}`); }}
             >

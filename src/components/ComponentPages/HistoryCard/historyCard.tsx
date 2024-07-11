@@ -251,7 +251,7 @@ function HistoryCard({
                 <p>Grace period countdown</p>
                 <Tag
                   className={
-                    "bg-[#5482C833] border-0 rounded-md inline-flex py-[3px] items-center"
+                    "bg-canBlue_Opacity20 border-0 rounded-md inline-flex py-[3px] items-center"
                   }
                 >
                   <Timer
@@ -293,9 +293,9 @@ function HistoryCard({
               >
                 <Panel header="" key="1">
                   <div>
-                    <h5 className="font-semibold text-[#F19C39] mb-3">Statement</h5>
+                    <h5 className="font-semibold text-canOrange mb-3">Statement</h5>
                     <div
-                      className="text-[#242B37] pb-[1.25rem]"
+                      className="text-canBlack pb-[1.25rem]"
                       dangerouslySetInnerHTML={{
                         __html: campStatement?.parsed_value,
                       }}>
@@ -468,13 +468,13 @@ function HistoryCard({
                     <i className="icon-edit"></i>
                   </Button>
                   {
-                    (campStatement?.status == "in_review") && (
+                     (campStatement?.status == "in_review") && (
                       <>
                         <Button
                           size="large"
                           // disabled={historyOf == "camp" ? !campStatement?.ifICanAgreeAndObject : false}
                           id={`object-change-${campStatement?.id}`}
-                          className="flex items-center bg-[#E46B6B1A] border-[#E46B6B] hover:border-[#E46B6B] hover:text-[#E46B6B] focus:text-[#E46B6B] focus:border-[#E46B6B] justify-center rounded-[10px] gap-3.5 leading-none w-100"
+                          className="flex items-center bg-canRed_Opacity10 border-canRed hover:border-canRed hover:text-canRed focus:text-canRed focus:border-canRed justify-center rounded-[10px] gap-3.5 leading-none w-100"
                           onClick={() => {
                             let isModelPop = !isUserAuthenticated
                               ? true
@@ -500,17 +500,18 @@ function HistoryCard({
                           }}
                         >
                           Object Changes
-                          <i className="icon-thumb-down text-[#E46B6B]"></i>
+                          <i className="icon-thumb-down text-canRed"></i>
                         </Button>
-                      </>)
-                  }
+                      </>
+                   )
+                   }
                 </div>
                 <div className="cn-link-btn">
                   <Button
                     size="large"
                     type="link"
                     id={`view-this-version-${campStatement?.id}`}
-                    className="flex items-center justify-center rounded-[10px] leading-none text-[#242B37]"
+                    className="flex items-center justify-center rounded-[10px] leading-none text-canBlack"
                     onClick={() =>
                       handleViewThisVersion(campStatement?.go_live_time)
                     }

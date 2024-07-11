@@ -41,7 +41,7 @@ function HistoryCardDrawer({
       >
         <Button
           type="link"
-          className="text-2xl text-[#242B37] p-0 mb-8 gap-5 flex items-center leading-none"
+          className="text-2xl text-canBlack p-0 mb-8 gap-5 flex items-center leading-none"
           icon={<i className="icon-back"></i>}
         >
           Support Status

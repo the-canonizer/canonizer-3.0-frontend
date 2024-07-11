@@ -22,10 +22,12 @@ module.exports = {
       },
       colors: {
         canBlue: "#5482C8",
+        canBlue_Opacity20:"#5482C833",
         canHoverBlue: "#326DC7",
         canGreen: "#4EB966",
         canGreen2: "#2EAD4A4D",
         canRed: "#E46B6B",
+        canRed_Opacity10: "#E46B6B1A",
         canBlack: "#242B37",
         canOrange: "#F19C39",
         canDisabled: "#AAB2BF",
