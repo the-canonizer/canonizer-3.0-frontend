@@ -442,9 +442,9 @@ function HistoryContainer() {
           {activeTab === "live" ? (
             <>
               {campHistory && campHistory?.items?.length > 0 ?
-                <div className="ch-content lg:w-[calc(100%-320px)] p-8 bg-[#F4F5FA] rounded-lg max-md:w-full relative">
+                <div className="ch-content lg:w-[calc(100%-320px)] p-8 bg-canGrey1 rounded-lg max-md:w-full relative">
                   {renderCampHistories}
-                </div> : <div className="no-data-wrapper ch-content lg:w-[calc(100%-320px)] p-8 bg-[#F4F5FA] rounded-lg max-md:w-full relative">
+                </div> : <div className="no-data-wrapper ch-content lg:w-[calc(100%-320px)] p-8 bg-canGrey1 rounded-lg max-md:w-full relative">
                   <Empty />
                 </div>
               }
@@ -452,7 +452,7 @@ function HistoryContainer() {
           ) : (
             <>
               {campHistory && campHistory?.items?.length > 0 ?
-                <div className="ch-content lg:w-[calc(100%-320px)] p-8 bg-[#F4F5FA] rounded-lg max-md:w-full relative">
+                <div className="ch-content lg:w-[calc(100%-320px)] p-8 bg-canGrey1 rounded-lg max-md:w-full relative">
                   <InfiniteScroll
                     initialLoad={false}
                     loadMore={!loadingIndicator && campStatementApiCall}
@@ -461,7 +461,7 @@ function HistoryContainer() {
                   >
                     {renderCampHistories}
                   </InfiniteScroll>
-                </div> : <div className="no-data-wrapper ch-content lg:w-[calc(100%-320px)] p-8 bg-[#F4F5FA] rounded-lg max-md:w-full relative">
+                </div> : <div className="no-data-wrapper ch-content lg:w-[calc(100%-320px)] p-8 bg-canGrey1 rounded-lg max-md:w-full relative">
                   <Empty />
                 </div>
               }

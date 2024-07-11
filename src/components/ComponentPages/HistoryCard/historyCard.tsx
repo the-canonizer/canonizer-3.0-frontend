@@ -564,7 +564,7 @@ function HistoryCard({
                       size="large"
                       type="primary"
                       id={`commit-change-${campStatement?.id}`}
-                      className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none"
+                      className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none min-w-[200px]"
                       onClick={commitChanges}
                       disabled={loadingChanges}
                     >
@@ -574,7 +574,7 @@ function HistoryCard({
                     <Button
                       size="large"
                       id={`edit-change-${campStatement?.id}`}
-                      className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none"
+                      className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none btn-light-primary min-w-[200px]"
                     >
                       <Link
                         href={

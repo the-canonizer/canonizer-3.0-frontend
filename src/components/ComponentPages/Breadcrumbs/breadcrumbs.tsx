@@ -84,7 +84,7 @@ function Breadcrumbs({ compareMode = false, updateId }: any) {
   
   return (
     <>
-      <div className="max-md:mx-[-1rem] max-md:shadow-[0px_10px_10px_0px_#0000001A] md:bg-[#F4F5FAB2] p-[1.5rem] md:rounded-[1.25rem] flex items-center justify-between gap-2 ">
+      <div className="max-md:mx-[-1rem] max-md:shadow-[0px_10px_10px_0px_#0000001A] md:bg-canGrey1_Opacity70 p-[1.5rem] md:rounded-[1.25rem] flex items-center justify-between gap-2 ">
         <Breadcrumb
           className="cn-breadcrumbs"
           separator={
