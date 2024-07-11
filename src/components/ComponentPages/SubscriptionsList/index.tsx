@@ -26,6 +26,7 @@ function SubscriptionsList({ isTestData = [] }: any) {
     if (res?.status_code === 200) {
       setSubscriptionsList(res?.data.items);
     }
+
     setIsLoading(false);
   };
 
@@ -44,8 +45,9 @@ function SubscriptionsList({ isTestData = [] }: any) {
     if (res && res["status_code"] === 200) {
       message.success(res?.data?.msg);
       setIsVisible(false);
-      getSubscriptionsList(query);
+      await getSubscriptionsList(query);
     }
+    
     setIsLoading(false);
   };
 
@@ -74,7 +76,7 @@ function SubscriptionsList({ isTestData = [] }: any) {
     setCamp({});
   };
 
-  const onRemove = (e) => {
+  const onRemove = async (e) => {
     e?.preventDefault();
     setIsDisabled(true);
     setIsLoading(true);
@@ -97,8 +99,9 @@ function SubscriptionsList({ isTestData = [] }: any) {
     }
 
     if (body) {
-      campOrTopicUnsubscribe(body);
+      await campOrTopicUnsubscribe(body);
     }
+
     setTimeout(() => {
       setIsDisabled(false);
       setIsLoading(false);

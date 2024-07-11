@@ -53,14 +53,15 @@ function HistoryContainer() {
 
   const count = useRef(1);
 
-  const { history, currentCampNode, asofdate, algorithm } =
-    useSelector((state: RootState) => ({
+  const { history, currentCampNode, asofdate, algorithm } = useSelector(
+    (state: RootState) => ({
       history: state?.topicDetails?.history,
       currentCampRecord: state.topicDetails.currentCampRecord,
       currentCampNode: state?.filters?.selectedCampNode,
       asofdate: state.filters?.filterObject?.asofdate,
       algorithm: state.filters?.filterObject?.algorithm,
-    }));
+    })
+  );
 
   const [isTreesApiCallStop, setIsTreesApiCallStop] = useState(false);
   const [loadingIndicator, setLoadingIndicator] = useState(false);
@@ -284,6 +285,7 @@ function HistoryContainer() {
     is_disabled: 0,
     is_one_level: 0,
     is_archive: 0,
+    camp_leader_nick_id: campHistory?.items?.[0]?.camp_leader_nick_id,
   };
   const callManageCampApi = async () => {
     // window.location.reload()

@@ -11,9 +11,15 @@ import { setClickAdvanceFilterOption } from "src/store/slices/searchSlice";
 
 export default function SearchSideBar() {
   const router = useRouter();
-  let { searchValue } = useSelector((state: RootState) => ({
-    searchValue: state?.searchSlice?.searchValue,
-  }));
+  let { searchValue, filterByScore, algorithm, asof, asofdate } = useSelector(
+    (state: RootState) => ({
+      searchValue: state?.searchSlice?.searchValue,
+      filterByScore: state.filters?.filterObject?.filterByScore,
+      algorithm: state.filters?.filterObject?.algorithm,
+      asof: state?.filters?.filterObject?.asof,
+      asofdate: state.filters?.filterObject?.asofdate,
+    })
+  );
   const { loading } = useSelector((state: RootState) => ({
     loading: state?.loading?.searchLoading,
   }));
@@ -21,7 +27,7 @@ export default function SearchSideBar() {
   const campRoute = () => {
     router?.push("/search/topic");
   };
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   return (
     <>
@@ -57,7 +63,11 @@ export default function SearchSideBar() {
             <Link
               href={{
                 pathname: "/search/topic",
-                query: { q: searchValue },
+                query: {
+                  q: searchValue,
+                  ...(asof !== "default" && { asof: asof }),
+                  ...(asof == "bydate" && { asofdate: asofdate }),
+                },
               }}
               passHref
             >
@@ -77,7 +87,11 @@ export default function SearchSideBar() {
             <Link
               href={{
                 pathname: "/search/camp",
-                query: { q: searchValue },
+                query: {
+                  q: searchValue,
+                  ...(asof !== "default" && { asof: asof }),
+                  ...(asof == "bydate" && { asofdate: asofdate }),
+                },
               }}
               passHref
             >
@@ -126,26 +140,30 @@ export default function SearchSideBar() {
               passHref
             >
               <a>
-              <Button
-                size="large"
-                className={
-                  router?.asPath.includes("/search/nickname?")
-                    ? "active"
-                    : "btn"
-                }
-                disabled={router.pathname == "/search/nickname" ? true : false}
-                onClick={(()=>{ dispatch(setClickAdvanceFilterOption(false))})}
-              >
-                <Image
-                  className={styles.nickname_icon}
-                  id="nick_name"
-                  alt="face Image"
-                  src={filter}
-                  width={15}
-                  height={15}
-                />
-                <a>Nickname</a>
-              </Button>
+                <Button
+                  size="large"
+                  className={
+                    router?.asPath.includes("/search/nickname?")
+                      ? "active"
+                      : "btn"
+                  }
+                  disabled={
+                    router.pathname == "/search/nickname" ? true : false
+                  }
+                  onClick={() => {
+                    dispatch(setClickAdvanceFilterOption(false));
+                  }}
+                >
+                  <Image
+                    className={styles.nickname_icon}
+                    id="nick_name"
+                    alt="face Image"
+                    src={filter}
+                    width={15}
+                    height={15}
+                  />
+                  <a>Nickname</a>
+                </Button>
               </a>
             </Link>
           </div>

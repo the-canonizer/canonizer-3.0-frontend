@@ -277,7 +277,7 @@ const TopicsList = () => {
         filter: filterByScore,
         asof: asof,
         user_email: onlyMyTopicsCheck ? userEmail : "",
-        // is_archive: is_camp_archive_checked ? 1 : 0,
+        is_archive: is_camp_archive_checked ? 1 : 0,
       };
       const res = await getCanonizedTopicsForSuggestion(reqBody);
       setSearchLoading(false);
@@ -325,7 +325,7 @@ const TopicsList = () => {
     e.preventDefault();
     if (value?.trim()) {
       setInputSearch(value?.trim());
-      setSearchTerm(value?.trim());
+      // setSearchTerm(value?.trim());
       setShowSearchDropdown(false);
     }
   };
@@ -512,7 +512,9 @@ const TopicsList = () => {
             <div className={styles.footer}>
               {router?.asPath.includes("/browse")
                 ? LoadMoreTopics
-                : topicsData && topicsData?.topics?.length>=15? ViewAllTopics: null}
+                : topicsData && topicsData?.topics?.length >= 15
+                ? ViewAllTopics
+                : null}
             </div>
           }
           bordered

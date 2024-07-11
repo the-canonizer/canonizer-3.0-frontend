@@ -14,8 +14,9 @@ import {
   // getCanonizedCampSupportingTreeApi,
   getCurrentTopicRecordApi,
   getCurrentCampRecordApi,
+  getTopicActivityLogApi,
 } from "src/network/api/campDetailApi";
-import { RootState } from "src/store";
+import { RootState, store } from "src/store";
 import SideBar from "../Home/SideBar";
 import CampStatementCard from "./CampStatementCard";
 import CampInfoBar from "./CampInfoBar";
@@ -55,6 +56,7 @@ import { replaceSpecialCharacters } from "src/utils/generalUtility";
 import InfoBar from "./CampInfoBar/infoBar";
 import { fallBackSrc } from "src/assets/data-images";
 import LatestFilter from "../LatestFilter";
+import { setCampActivityData } from "src/store/slices/recentActivitiesSlice";
 
 const { Link: AntLink } = Typography;
 
@@ -107,18 +109,22 @@ const TopicDetails = ({ serverSideCall }: any) => {
     viewThisVersionCheck: state?.filters?.viewThisVersionCheck,
     selectedAlgorithm: state?.filters?.filterObject?.algorithm,
   }));
-  const { is_camp_archive_checked,is_checked,includeReview,filteredScore,selectedAsOf} = useSelector(
-    (state: RootState) => ({
-      is_camp_archive_checked: state?.utils?.archived_checkbox,
-      loading: state?.loading?.loading,
-      is_checked: state?.utils?.score_checkbox,
-      includeReview: state?.filters?.filterObject?.includeReview,
-      filteredScore: state?.filters?.filterObject?.filterByScore,
-      selectedAlgorithm: state?.filters?.filterObject?.algorithm,
-      algorithms: state.homePage?.algorithms,
-      selectedAsOf: state?.filters?.filterObject?.asof,
-    })
-  );
+  const {
+    is_camp_archive_checked,
+    is_checked,
+    includeReview,
+    filteredScore,
+    selectedAsOf,
+  } = useSelector((state: RootState) => ({
+    is_camp_archive_checked: state?.utils?.archived_checkbox,
+    loading: state?.loading?.loading,
+    is_checked: state?.utils?.score_checkbox,
+    includeReview: state?.filters?.filterObject?.includeReview,
+    filteredScore: state?.filters?.filterObject?.filterByScore,
+    selectedAlgorithm: state?.filters?.filterObject?.algorithm,
+    algorithms: state.homePage?.algorithms,
+    selectedAsOf: state?.filters?.filterObject?.asof,
+  }));
   const GetActiveSupportTopicList = async () => {
     const topicNum = router?.query?.camp?.at(0)?.split("-")?.at(0);
     const body = { topic_num: topicNum };
@@ -131,6 +137,15 @@ const TopicDetails = ({ serverSideCall }: any) => {
     setGetTreeLoadingIndicator(false);
     setLoadingIndicator(false);
   };
+
+  async function getTopicActivityLogCall() {
+    let reqBody = {
+      topic_num: router?.query?.camp[0]?.split("-")[0],
+      camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
+    };
+    let res = await getTopicActivityLogApi(reqBody);
+    store.dispatch(setCampActivityData(res?.data?.items));
+  }
 
   useEffect(() => {
     async function getTreeApiCall() {
@@ -220,6 +235,12 @@ const TopicDetails = ({ serverSideCall }: any) => {
       fetch_topic_history: +router?.query?.topic_history,
     };
     setRemoveSupportSpinner(true);
+    let reqBody = { 
+      as_of: asof, 
+      as_of_date: asofdate, 
+      topic_num: +router?.query?.camp[0]?.split("-")[0], 
+      camp_num: +router?.query?.camp[1]?.split("-")[0], 
+    }
 
     const res = await removeSupportedCamps(supportedCampsRemove);
     if (res && res.status_code == 200) {
@@ -227,6 +248,8 @@ const TopicDetails = ({ serverSideCall }: any) => {
       setIsSupportTreeCardModal(false);
       GetCheckStatusData();
       await getTreesApi(reqBodyForService);
+      getTopicActivityLogCall();
+      await getCurrentCampRecordApi(reqBody)
       setRemoveSupportSpinner(false);
       setIsRemovingSupport(false);
     }
@@ -255,12 +278,21 @@ const TopicDetails = ({ serverSideCall }: any) => {
     };
     setRemoveSupportSpinner(true);
 
+    let reqBody = { 
+      as_of: asof, 
+      as_of_date: asofdate, 
+      topic_num: +router?.query?.camp[0]?.split("-")[0], 
+      camp_num: +router?.query?.camp[1]?.split("-")[0], 
+    }
+
     let res = await addSupport(RemoveSupportId);
     if (res && res.status_code == 200) {
       message.success(res.message);
       setIsSupportTreeCardModal(false);
       GetCheckStatusData();
       await getTreesApi(reqBodyForService);
+      getTopicActivityLogCall();
+      await getCurrentCampRecordApi(reqBody)
       setRemoveSupportSpinner(false);
       setIsRemovingSupport(false);
     }
@@ -270,8 +302,8 @@ const TopicDetails = ({ serverSideCall }: any) => {
     setIsRemovingSupport(true);
     const removeEntireData = {
       topic_num: topicList[0].topic_num,
-      nick_name_id: topicList[0].nick_name_id,
-      delegated_nick_name_id: topicList[0].delegate_nick_name_id,
+      nick_name_id: topicList[0]?.nick_name_id,
+      delegated_nick_name_id: topicList[0]?.delegate_nick_name_id,
       ...reasonData,
     };
     const reqBodyForService = {
@@ -293,6 +325,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
       setIsSupportTreeCardModal(false);
       setIsDelegateSupportTreeCardModal(false);
       GetCheckStatusData();
+      getTopicActivityLogCall();
       await getTreesApi(reqBodyForService);
       setIsRemovingSupport(false);
       setRemoveSupportSpinner(false);
@@ -311,9 +344,9 @@ const TopicDetails = ({ serverSideCall }: any) => {
         setCurrentCheckSupportStatus(
           response.data.warning ? response.data.warning : ""
         )
-        );
-        dispatch(setCheckSupportExistsData(response.data));
-      }
+      );
+      dispatch(setCheckSupportExistsData(response.data));
+    }
   };
   const handleSupportTreeCardCancel = () => {
     setIsSupportTreeCardModal(false);
@@ -461,59 +494,43 @@ const TopicDetails = ({ serverSideCall }: any) => {
             getCheckSupportStatus={getCheckSupportStatus}
           />
 
-          {isClient &&
-            tree &&
-            (!tree["1"]?.is_valid_as_of_time ||
-              (tree["1"]?.is_valid_as_of_time &&
-                !(
-                  tree["1"]?.created_date <=
-                  (asof == "default" || asof == "review"
-                    ? Date.now() / 1000
-                    : asofdate)
-                ))) && (
-              <div className={`printHIde ${styles.imageWrapper}`}>
-                <div>
-                  <Image
-                    preview={false}
-                    alt="No topic created"
-                    src={"/images/empty-img-default.png"}
-                    fallback={fallBackSrc}
-                    width={200}
-                    id="forgot-modal-img"
-                  />
-                  <p>
-                    The topic was created on
-                    <AntLink
-                      onClick={() => {
-                        onCreateTreeDate();
-                      }}
-                    >
-                      {" "}
-                      {
-                        new Date((tree && tree["1"]?.created_date) * 1000)
-                          .toLocaleString()
-                          ?.split(",")[0]
-                      }
-                    </AntLink>
-                  </p>
-                </div>
+          {isClient && tree && !tree["1"]?.is_valid_as_of_time && (
+            <div className={`printHIde ${styles.imageWrapper}`}>
+              <div>
+                <Image
+                  preview={false}
+                  alt="No topic created"
+                  src={"/images/empty-img-default.png"}
+                  fallback={fallBackSrc}
+                  width={200}
+                  id="forgot-modal-img"
+                />
+                <p>
+                  The topic was created on
+                  <AntLink
+                    onClick={() => {
+                      onCreateTreeDate();
+                    }}
+                  >
+                    {" "}
+                    {
+                      new Date((tree && tree["1"]?.created_date) * 1000)
+                        .toLocaleString()
+                        ?.split(",")[0]
+                    }
+                  </AntLink>
+                </p>
               </div>
-            )}
+            </div>
+          )}
 
-          {((isClient &&
-            tree &&
-            tree["1"]?.is_valid_as_of_time &&
-            tree["1"]?.created_date <=
-              (asof == "default" || asof == "review"
-                ? Date.now() / 1000
-                : asofdate)) ||
+          {((isClient && tree && tree["1"]?.is_valid_as_of_time) ||
             asof == "default") && (
             <Fragment>
               {campExist
                 ? campExist?.camp_exist
                 : true && (
                     <Fragment>
-
                       {(router.query.algo &&
                         selectedAlgorithm &&
                         lable?.algorithm_label !== undefined) ||
@@ -598,13 +615,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
             </Fragment>
           )}
 
-          {((tree &&
-            tree["1"]?.is_valid_as_of_time &&
-            tree["1"]?.created_date <=
-              (asof == "default" || asof == "review"
-                ? Date.now() / 1000
-                : asofdate)) ||
-            asof == "default") &&
+          {((tree && tree["1"]?.is_valid_as_of_time) || asof == "default") &&
             campExist &&
             !campExist?.camp_exist && (
               <Alert

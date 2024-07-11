@@ -161,51 +161,37 @@ const CampTreeCard = ({
 
   return (
     <>
-      {tree &&
-        (!tree["1"]?.is_valid_as_of_time ||
-          (tree["1"]?.is_valid_as_of_time &&
-            !(
-              tree["1"]?.created_date <=
-              (asof == "default" || asof == "review"
-                ? Date.now() / 1000
-                : asofdate)
-            ))) && (
-          <div className={styles.imageWrapper}>
-            <div>
-              <Image
-                preview={false}
-                alt="No topic created"
-                src={"/images/empty-img-default.png"}
-                fallback={fallBackSrc}
-                width={200}
-                id="forgot-modal-img"
-              />
-              <p>
-                The topic was created on
-                <AntLink
-                  onClick={() => {
-                    onCreateTreeDate();
-                  }}
-                >
-                  {" "}
-                  {
-                    new Date((tree && tree["1"]?.created_date) * 1000)
-                      .toLocaleString()
-                      ?.split(",")[0]
-                  }
-                </AntLink>
-              </p>
-            </div>
+      {tree && !tree["1"]?.is_valid_as_of_time && (
+        <div className={styles.imageWrapper}>
+          <div>
+            <Image
+              preview={false}
+              alt="No topic created"
+              src={"/images/empty-img-default.png"}
+              fallback={fallBackSrc}
+              width={200}
+              id="forgot-modal-img"
+            />
+            <p>
+              The topic was created on
+              <AntLink
+                onClick={() => {
+                  onCreateTreeDate();
+                }}
+              >
+                {" "}
+                {
+                  new Date((tree && tree["1"]?.created_date) * 1000)
+                    .toLocaleString()
+                    ?.split(",")[0]
+                }
+              </AntLink>
+            </p>
           </div>
-        )}
+        </div>
+      )}
 
-      {((tree &&
-        tree["1"]?.is_valid_as_of_time &&
-        tree["1"]?.created_date <=
-          (asof == "default" || asof == "review"
-            ? Date.now() / 1000
-            : asofdate)) ||
-        asof == "default") && (
+      {((tree && tree["1"]?.is_valid_as_of_time) || asof == "default") && (
         <Collapse
           defaultActiveKey={["1"]}
           expandIconPosition="right"
@@ -276,13 +262,7 @@ const CampTreeCard = ({
         </Collapse>
       )}
 
-      {((tree &&
-        tree["1"]?.is_valid_as_of_time &&
-        tree["1"]?.created_date <=
-          (asof == "default" || asof == "review"
-            ? Date.now() / 1000
-            : asofdate)) ||
-        asof == "default") &&
+      {((tree && tree["1"]?.is_valid_as_of_time) || asof == "default") &&
         campExist &&
         !campExist?.camp_exist && (
           <Fragment>

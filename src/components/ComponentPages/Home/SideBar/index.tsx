@@ -19,13 +19,12 @@ export default function HomeSideBar({
   backGroundColorClass,
   isForumPage = false,
 }: any) {
-  const { drawerShow, isModalOpenSupportCamps } = useSelector((state: RootState) => ({
-    drawerShow: state?.filters?.showDrawer,
-    isModalOpenSupportCamps: state?.topic?.isModalOpenSupportCamps,
-  }));
-
-  console.log('isModalOpenSupportCamps---',isModalOpenSupportCamps);
-  
+  const { drawerShow, isModalOpenSupportCamps } = useSelector(
+    (state: RootState) => ({
+      drawerShow: state?.filters?.showDrawer,
+      isModalOpenSupportCamps: state?.topic?.isModalOpenSupportCamps,
+    })
+  );
 
   const [drawerIsVisible, setDrawerIsVisible] = useState(drawerShow);
   const [isDrawerOpen, setIsDrawerOpen] = useState("");
@@ -68,7 +67,7 @@ export default function HomeSideBar({
             type="primary"
             onClick={showDrawer}
             className={`btnFilter drawerBtn ${isDrawerOpen}`}
-            style={{zIndex: isModalOpenSupportCamps? 1: null}}
+            style={{ zIndex: isModalOpenSupportCamps ? 1 : null }}
           >
             Consensus Tree{" "}
             <p className="arrow">

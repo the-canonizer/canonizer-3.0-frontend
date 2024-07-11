@@ -91,7 +91,8 @@ function HistoryCollapse({
       algorithm: state.filters?.filterObject?.algorithm,
       namespace_id: state.filters?.filterObject?.namespace_id,
       changeGoneLive: state?.topicDetails?.changeGoneLive,
-    }));
+    })
+  );
   const historyOf = router?.asPath.split("/")[1];
   // const covertToTime = (unixTime) => {
   //   return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
@@ -309,9 +310,7 @@ function HistoryCollapse({
               </div>
               {(!campStatement?.grace_period || commited) && (
                 <div className={styles.campStatementCollapseButtons}>
-                  {(campStatement?.status == "in_review" ||
-                    (campStatement?.status == "objected" &&
-                      historyOf != "statement")) && (
+                  {(campStatement?.status == "in_review" ) && (
                     <>
                       <Tooltip
                         title={
@@ -329,6 +328,7 @@ function HistoryCollapse({
                       >
                         <Button
                           type="primary"
+                          disabled={historyOf == "camp" ? !campStatement?.ifICanAgreeAndObject :false}
                           id={`object-change-${campStatement?.id}`}
                           onClick={() => {
                             let isModelPop = !isUserAuthenticated
@@ -617,7 +617,7 @@ function HistoryCollapse({
                             {campStatement?.agreed_supporters} out of{" "}
                             {campStatement?.total_supporters} required
                             supporters have agreed
-                            {!!(
+                            {(campStatement?.ifICanAgreeAndObject || campStatement?.ifICanAgreeAndObject ==undefined) && !!(
                               campStatement?.ifIamSupporter != 0 ||
                               campStatement?.ifIAmExplicitSupporter
                             ) &&
@@ -685,7 +685,7 @@ function HistoryCollapse({
                           />
                         )}
                       </Modal>
-                      {!!(
+                      {(campStatement?.ifICanAgreeAndObject || campStatement?.ifICanAgreeAndObject ==undefined) && !!(
                         campStatement?.ifIamSupporter != 0 ||
                         campStatement?.ifIAmExplicitSupporter
                       ) &&
@@ -709,6 +709,7 @@ function HistoryCollapse({
                                 styles.campSelectCheckbox + " agreed-text"
                               }
                               disabled={
+                                historyOf == "camp" ? !campStatement?.ifICanAgreeAndObject :false ||
                                 parentArchived == 1 && directarchived == 0
                               }
                               onChange={agreeWithChange}

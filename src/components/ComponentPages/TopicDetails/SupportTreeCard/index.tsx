@@ -10,6 +10,8 @@ import {
   Modal,
   Form,
   Spin,
+  Image,
+  Tooltip,
 } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
@@ -30,9 +32,13 @@ import {
 import { getNickNameList } from "../../../../network/api/userApi";
 import SupportRemovedModal from "src/components/common/supportRemovedModal";
 import ManageSupport from "../../ManageSupport";
-import { getTreesApi } from "src/network/api/campDetailApi";
+import {
+  getCurrentCampRecordApi,
+  getTreesApi,
+} from "src/network/api/campDetailApi";
 import { setIsSupportModal } from "src/store/slices/topicSlice";
 import { showLoginModal } from "src/store/slices/uiSlice";
+import SignCamp from "./SignCamp";
 
 const { Paragraph } = Typography;
 const { Panel } = Collapse;
@@ -103,6 +109,7 @@ const SupportTreeCard = ({
 
   const router = useRouter();
 
+  const [signModalOpen, setSignModalOpen] = useState(false);
   const [userNickNameList, setUserNickNameList] = useState([]);
   const [loadMore, setLoadMore] = useState(false);
   const [modalData, setModalData] = useState<any>({});
@@ -110,6 +117,8 @@ const SupportTreeCard = ({
   const [currentAlgo, setCurrentAlgo] = useState<string>("");
   const [selectNickId, setSelectNickId] = useState(null);
   const [mainComponentKey, setMainComponentKey] = useState(0);
+  const [campLeaderID, setCampLeaderId] = useState(null);
+  const [delegatorID, setDelegatorID] = useState(null);
   const [loadingIndicatorSupport, setLoadingIndicatorSupport] = useState(false);
   const [
     getManageSupportLoadingIndicator,
@@ -204,11 +213,12 @@ const SupportTreeCard = ({
     const q: any = router?.query;
     if (isUserAuthenticated) {
       dispatch(setManageSupportUrlLink(manageSupportPath));
-      dispatch(setManageSupportStatusCheck(true));
+      // dispatch(setManageSupportStatusCheck(true));
+      setGetManageSupportLoadingIndicator(false);
       setSelectNickId(null);
-      q &&
-      q.from &&
-      q.from.includes("notify_") ? null : showModalSupportCamps();
+      q && q.from && q.from.includes("notify_")
+        ? null
+        : showModalSupportCamps();
     } else {
       dispatch(showLoginModal());
     }
@@ -232,10 +242,14 @@ const SupportTreeCard = ({
 
   const manageSupportPath = router?.asPath.replace("/topic/", "/support/");
 
-  const { campSupportingTree, asof } = useSelector((state: RootState) => ({
-    campSupportingTree: supportTreeForCamp,
-    asof: state?.filters?.filterObject?.asof,
-  }));
+  const { campSupportingTree, asof, userNickNames } = useSelector(
+    (state: RootState) => ({
+      campSupportingTree: supportTreeForCamp,
+      asof: state?.filters?.filterObject?.asof,
+      userNickNames: state?.auth?.userNickNames,
+    })
+  );
+
   useEffect(() => {
     if (campSupportingTree?.length > 0) {
       getDelegateNicknameId(campSupportingTree);
@@ -253,6 +267,74 @@ const SupportTreeCard = ({
       }
     });
   };
+
+  useEffect(() => {
+    if (!campSupportingTree) return;
+
+    const campLeader = campSupportingTree.find(
+      (obj) => obj.camp_leader === true
+    );
+
+    const campLeaderId = campLeader?.nick_name_id;
+    const delegatorId = campLeader?.delegates?.[0]?.nick_name_id;
+
+    setCampLeaderId(campLeaderId);
+    setDelegatorID(delegatorId);
+  }, [campSupportingTree]);
+
+  const isCampLeader = () => {
+    let campLeaderExist = false;
+    let delegateSupportExist = false;
+
+    if (isUserAuthenticated) {
+      if (userNickNames) {
+        campLeaderExist = !!userNickNames.find(
+          (obj) => obj.id === campLeaderID
+        );
+        delegateSupportExist = !!userNickNames.find(
+          (obj) => obj.id === delegatorID
+        );
+      }
+    }
+    return { campLeaderExist, delegateSupportExist };
+  };
+
+  const checkSupportAndCampLeader = (arr) => {
+    return arr?.some((item) => item?.support_order >= 1);
+  };
+
+  const renderPopupMsg = () => {
+    let { campLeaderExist, delegateSupportExist } = isCampLeader();
+    if (isUserAuthenticated && delegateSupportExist) {
+      return "You've already signed to the camp leader";
+    } else if (isUserAuthenticated && campLeaderExist) {
+      return "Current camp leader can`t sign the petition";
+    } else {
+      return "Log in to participate";
+    }
+  };
+
+  const SignModal = () => {
+    return (
+      <Modal
+        title="Sign Camp"
+        open={signModalOpen}
+        className={styles.modal_cross}
+        footer={null}
+        closeIcon={<CloseCircleOutlined />}
+        onCancel={() => {
+          setSignModalOpen(false);
+        }}
+        destroyOnClose={true}
+      >
+        <SignCamp
+          setSignModalOpen={setSignModalOpen}
+          setLoadingIndicatorSupport={setLoadingIndicatorSupport}
+          getCheckStatusAPI={getCheckStatusAPI}
+        />
+      </Modal>
+    );
+  };
   const supportLength = 15;
   const renderTreeNodes = (
     data: any,
@@ -262,7 +344,7 @@ const SupportTreeCard = ({
     loggedInUserChild = false
   ) => {
     return Object.keys(data).map((item, index) => {
-      if (userNickNameList.includes(data[item].nick_name_id))
+      if (userNickNameList?.includes(data[item]?.nick_name_id))
         loggedInUserChild = true;
       const parentIsOneLevel = isOneLevel;
       isOneLevel = data[item].is_one_level == 1 || isOneLevel == 1 ? 1 : 0;
@@ -289,7 +371,7 @@ const SupportTreeCard = ({
                       > */}
                       <Link
                         href={{
-                          pathname: `/user/supports/${data[item].nick_name_id}`,
+                          pathname: `/user/supports/${data[item]?.nick_name_id}`,
                           query: {
                             canon: topicRecord?.namespace_id,
                           },
@@ -299,47 +381,66 @@ const SupportTreeCard = ({
                           {data[item].support_order}:{data[item].nick_name}
                         </a>
                       </Link>
+
+                      {data[item]?.camp_leader && (
+                        <Popover
+                          content={
+                            <>{data[item]?.nick_name} is a camp leader</>
+                          }
+                        >
+                          <Image
+                            preview={false}
+                            alt="camp-leader-crown"
+                            src={"/images/camp-leader.png"}
+                            width={20}
+                            className={styles.campLeaderCrown}
+                          />
+                        </Popover>
+                      )}
                       {/* </span> */}
                       <span
                         className={
                           "treeListItemNumber " + styles.treeListItemNumber
                         }
                       >
-                        {campRecord?.is_archive?0:is_checked && isUserAuthenticated
+                        {campRecord?.is_archive
+                          ? 0
+                          : is_checked && isUserAuthenticated
                           ? data[item].full_score?.toFixed(2)
                           : data[item].score?.toFixed(2)}
                         {/* {data[item].score?.toFixed(2)} */}
                       </span>
-                      {userNickNameList?.length>0 &&!userNickNameList.includes(data[item].nick_name_id)  || !isUserAuthenticated? (
+                      {(userNickNameList?.length > 0 &&
+                        !userNickNameList.includes(data[item]?.nick_name_id)) ||
+                      !isUserAuthenticated ? (
                         <>
                           {loggedInUserDelegate ||
                           (loggedInUserChild &&
                             delegateNickNameId !=
-                              data[item].delegate_nick_name_id) ||
-                          data[item].delegates?.findIndex((obj) =>
-                            userNickNameList.includes(obj.nick_name_id)
-                          ) > -1 ? (
-                            ""
-                          ) : (
+                              data[item]?.delegate_nick_name_id) ||
+                          (Array.isArray(data[item]?.delegates) &&
+                            data[item].delegates.findIndex((obj) =>
+                              userNickNameList?.includes(obj?.nick_name_id)
+                            ) > -1) ? null : (
                             <Popover
                               placement="right"
                               content={
                                 !isUserAuthenticated
                                   ? "Log in to participate"
-                                  : ""
+                                  : "This will delegate your support to the selected supporter"
                               }
                             >
                               <a className="printHIde">
                                 <Button
                                   id="supportTreeDelegateYourSupport"
                                   disabled={
-                                    asof == "bydate" ||
+                                    asof === "bydate" ||
                                     !isUserAuthenticated ||
-                                    campRecord?.is_archive == 1
+                                    campRecord?.is_archive === 1
                                   }
                                   onClick={() =>
                                     handleDelegatedClick(
-                                      data[item].nick_name_id
+                                      data[item]?.nick_name_id
                                     )
                                   }
                                   className="delegate-support-style"
@@ -381,12 +482,11 @@ const SupportTreeCard = ({
                 key={data[item].camp_id}
                 data={{ ...data[item], parentIsOneLevel, isDisabled }}
               >
-  
                 {renderTreeNodes(
                   data[item].delegates,
                   isDisabled,
                   isOneLevel,
-                  userNickNameList.includes(data[item].nick_name_id),
+                  userNickNameList.includes(data[item]?.nick_name_id),
                   loggedInUserChild
                 )}
               </TreeNode>
@@ -401,16 +501,25 @@ const SupportTreeCard = ({
 
   const [removeForm] = Form.useForm();
 
-  const onRemoveFinish = (values) => {
+  const onRemoveFinish = async (values) => {
     currentGetCheckSupportExistsData.is_delegator
       ? removeSupportForDelegate(values)
       : topicList.length <= 1
       ? removeApiSupport(modalData?.nick_name_id, values)
       : removeSupport(modalData?.nick_name_id, values);
+
+    let reqBody = {
+      as_of: asof,
+      as_of_date: asofdate,
+      topic_num: +router?.query?.camp[0]?.split("-")[0],
+      camp_num: +router?.query?.camp[1]?.split("-")[0],
+    };
+    await getCurrentCampRecordApi(reqBody);
+
     setModalData({});
     removeForm.resetFields();
   };
-  let title = `Support Tree for "${campRecord?.camp_name}" Camp`
+  let title = `Support Tree for "${campRecord?.camp_name}" Camp`;
 
   // remove support popup added.
 
@@ -456,7 +565,9 @@ const SupportTreeCard = ({
           <Paragraph className="position-relative">
             Total Support for This Camp (including sub-camps):
             <span className="number-style">
-              {campRecord?.is_archive?0:totalCampScoreForSupportTree?.toFixed(2)}
+              {campRecord?.is_archive
+                ? 0
+                : totalCampScoreForSupportTree?.toFixed(2)}
             </span>
           </Paragraph>
 
@@ -489,18 +600,70 @@ const SupportTreeCard = ({
             </CustomButton>
           )}
 
-          <div className="topicDetailsCollapseFooter printHIde">
-            <CustomButton
-              onClick={handleClickSupportCheck}
-              className="btn-orange printHIde"
-              disabled={asof == "bydate" || campRecord?.is_archive == 1}
-              id="manage-support-btn"
-            >
-              {getCheckSupportStatus?.is_delegator == 1 ||
-              getCheckSupportStatus?.support_flag != 1
-                ? K?.exceptionalMessages?.directJoinSupport
-                : K?.exceptionalMessages?.manageSupport}
-            </CustomButton>
+          <div className="topicDetailsSupportCollapseFooter">
+            {/* <Link href={manageSupportPath}>
+              <a> */}
+            <div onClick={handleClickSupportCheck}>
+              <CustomButton
+                className="btn-orange"
+                disabled={asof == "bydate" || campRecord?.is_archive == 1}
+                id="manage-support-btn"
+              >
+                {/* {K?.exceptionalMessages?.directJoinSupport} */}
+                {getCheckSupportStatus?.is_delegator == 1 ||
+                getCheckSupportStatus?.support_flag != 1
+                  ? K?.exceptionalMessages?.directJoinSupport
+                  : K?.exceptionalMessages?.manageSupport}
+              </CustomButton>
+            </div>
+            <>
+              {isCampLeader()?.campLeaderExist ||
+              isCampLeader()?.delegateSupportExist ? (
+                <>
+                  <Popover content={renderPopupMsg()}>
+                    <a className="printHIde">
+                      <Button
+                        className="btn-green"
+                        disabled={true}
+                        onClick={() => {
+                          if (isUserAuthenticated) {
+                            setSignModalOpen(true);
+                          } else {
+                            dispatch(showLoginModal());
+                          }
+                        }}
+                      >
+                        {"Sign"}
+                      </Button>
+                    </a>
+                  </Popover>
+                </>
+              ) : (
+                <>
+                  <Tooltip
+                    title={"This will delegate your support to the camp leader"}
+                    placement={"topRight"}
+                  >
+                    <CustomButton
+                      className="btn-green"
+                      disabled={asof == "bydate" || campRecord?.is_archive == 1}
+                      onClick={() => {
+                        if (isUserAuthenticated) {
+                          setSignModalOpen(true);
+                        } else {
+                          dispatch(showLoginModal());
+                        }
+                      }}
+                    >
+                      {"Sign"}
+                    </CustomButton>
+                  </Tooltip>
+                </>
+              )}
+            </>
+            {/* </a>
+        </Link> */}
+            {SignModal()}
           </div>
         </Panel>
       </Collapse>

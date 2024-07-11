@@ -360,14 +360,15 @@ img {
     position: absolute;
     top: 40px;
     width: 100%;
-    max-width: 550px;
+    max-width: 300px;
     right: 0;
     background: #fbfbfb !important;
     padding: 25px 30px;
     border: 1px solid #eaecef !important;
+    z-index: 2;
   }
   .row {
-    display: flex;
+    // display: flex;
     flex-wrap: wrap;
     margin: 0 -15px;
     .col-sm-6 {
@@ -377,6 +378,13 @@ img {
   }
   .ant-collapse-content-box h4 {
     font-size: 16px;
+    font-weight: 600;
+    background: #4484ce;
+    color: #fff;
+    padding-left: 5px;
+  }
+  .ant-collapse-content-box h3 {
+    font-size: 14px;
     font-weight: 600;
     color: #4484ce;
   }
@@ -637,8 +645,8 @@ img {
 
 .advance_close {
   position: absolute;
-  right: 10px;
-  top: 10px;
+  right: 0px;
+  top: 6px;
 }
 
 .certain-category-search-dropdown.ant-select-dropdown
@@ -863,4 +871,104 @@ img {
 .ant_tags .ant-tag div
 {
   color: #B7BABF;
+}
+.infoTextWidthBox{
+  max-width: 300px;
+}
+.mt-10 
+{
+  margin-top: 10px;
+}
+.ant-empty-image{
+  margin-top: 10px;
+}
+
+.modal_parent{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.modal_parent h3{
+  color: #4484ce;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.modal_parent p{
+  font-size: 14px;
+  color: #000;
+}
+.modal_parent .otp-btn{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 30px;
+  flex-direction: column;
+  width: 100%;
+ 
+  
+}
+.modal_parent .otp-btn button{
+  margin-top: 20px;
+  background: #f89d15;
+  color: #fff;
+border-radius: 3px;
+height: 40px;
+}
+
+.modal_parent .otp-btn button:hover{
+  background-color: #e28801;
+    border-color: #e28801;
+}
+.modal_parent .otp-btn button{
+  width: 85%;
+}
+.modal_parent .otp-btn input{
+  width: 85%;
+}
+.new-email-id{
+  align-self: flex-start;
+  padding-left: 31px;
+}
+
+.opt-btn-child{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+ width: 100%;
+  flex-direction: column;
+}
+
+.label-icon{
+  display: flex;
+  flex-direction: row;
+}
+.email-icon{
+  position: relative;
+}
+
+.email-edit-icon {
+  position: absolute;
+  top: -26px;
+  left: 40px;
+  color:#4484ce ;
+}
+
+.last-step-modal{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+.last-step-modal h3, .last-step-modal p{
+  margin: 0px;
+}
+
+.last-step-modal h3{
+  font-weight:400;
+  font-size: 16px;
 }
