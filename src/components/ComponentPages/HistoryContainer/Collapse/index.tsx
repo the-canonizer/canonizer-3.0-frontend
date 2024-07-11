@@ -20,7 +20,11 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState, useEffect, useRef, Fragment } from "react";
 
-import { EyeOutlined, InfoCircleOutlined, LoadingOutlined } from "@ant-design/icons";
+import {
+  EyeOutlined,
+  InfoCircleOutlined,
+  LoadingOutlined,
+} from "@ant-design/icons";
 import {
   changeCommitStatement,
   discardStatement,
@@ -93,7 +97,8 @@ function HistoryCollapse({
       algorithm: state.filters?.filterObject?.algorithm,
       namespace_id: state.filters?.filterObject?.namespace_id,
       changeGoneLive: state?.topicDetails?.changeGoneLive,
-    }));
+    })
+  );
   const historyOf = router?.asPath.split("/")[1];
   // const covertToTime = (unixTime) => {
   //   return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
@@ -221,44 +226,66 @@ function HistoryCollapse({
 
   return (
     <>
-      <div className={`cn-wrapper csh-wrapper
-             ${campStatement?.status == "live" ? "live-wrapper" :
-          campStatement?.status == "in_review" ? "pending-wrapper" :
-            campStatement?.status == "objected" ? "objected-wrapper" :
-              campStatement?.status == "old" ? "previous-wrapper" : null} 
-          `}>
+      <div
+        className={`cn-wrapper csh-wrapper
+             ${
+               campStatement?.status == "live"
+                 ? "live-wrapper"
+                 : campStatement?.status == "in_review"
+                 ? "pending-wrapper"
+                 : campStatement?.status == "objected"
+                 ? "objected-wrapper"
+                 : campStatement?.status == "old"
+                 ? "previous-wrapper"
+                 : null
+             } 
+          `}
+      >
         <div className="badge-wrapper">
           <Badge
             className="cn-dot-badge ch-dot-history"
             color=""
             text={
               <>
-                {campStatement?.status == "live" ? (<>
-                  {covertToTime(campStatement?.go_live_time).split(",")[0]}
-                  ,<span> {covertToTime(campStatement?.go_live_time).split(",")[1]}</span>
-                </>) : (<>
-                  {covertToTime(campStatement?.submit_time).split(",")[0]}
-                  ,<span> {covertToTime(campStatement?.submit_time).split(",")[1]}</span>
-                </>)}
+                {campStatement?.status == "live" ? (
+                  <>
+                    {covertToTime(campStatement?.go_live_time).split(",")[0]},
+                    <span>
+                      {" "}
+                      {covertToTime(campStatement?.go_live_time).split(",")[1]}
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    {covertToTime(campStatement?.submit_time).split(",")[0]},
+                    <span>
+                      {" "}
+                      {covertToTime(campStatement?.submit_time).split(",")[1]}
+                    </span>
+                  </>
+                )}
               </>
             }
           />
           <div className="tooltip-count">
-            {
-              campStatement &&
+            {campStatement &&
               campStatement?.status == "in_review" &&
               !commited &&
               !!campStatement?.grace_period &&
               moment.now() < campStatement?.submit_time * 1000 + 3600000 && (
                 <>
-                  <Tooltip title={` Note: This countdown timer is the grace period in which
+                  <Tooltip
+                    title={` Note: This countdown timer is the grace period in which
                       you can make minor changes to your
-                      ${historyOf == "topic"
-                      ? "topic"
-                      : historyOf == "camp"
-                        ? "camp"
-                        : "statement"}
-                      before other direct supporters are notified.`}>
+                      ${
+                        historyOf == "topic"
+                          ? "topic"
+                          : historyOf == "camp"
+                          ? "camp"
+                          : "statement"
+                      }
+                      before other direct supporters are notified.`}
+                  >
                     <InfoCircleOutlined />
                   </Tooltip>
 
@@ -277,7 +304,8 @@ function HistoryCollapse({
               )}
           </div>
         </div>
-        <Checkbox className="mb-5 ch-checkbox"
+        <Checkbox
+          className="mb-5 ch-checkbox"
           id={`select-to-compare-${campStatement?.id}`}
           onChange={onSelectCompare?.bind(this, campStatement)}
           disabled={isDisabledCheck}
@@ -287,37 +315,35 @@ function HistoryCollapse({
           Select to compare
         </Checkbox>
         <Card className="cn-card">
-          {
-            historyOf == "statement" && (
-              <Collapse
-                expandIconPosition="end"
-                className="ch-collapse"
-                defaultActiveKey={["0"]}
-                expandIcon={({ isActive }) =>
-                  isActive ? (
-                    <i className="icon-up-arrow"></i>
-                  ) : (
-                    <i className="icon-down-arrow"></i>
-                  )
-                }
-                ghost
-              >
-                <Panel header="" key="1">
-                  <div>
-                    <h5 className="font-semibold text-[#F19C39] mb-3">
-                      Statement
-                    </h5>
-                    <p className="text-[#242B37] pb-5">
-                      Contemporary philosophy of mind unfortunately has been
-                      burdened for decades with a residual philosophical
-                      behaviorism and intellectualized naive realism. Unpacking
-                      these terms, the fashionable behaviorism gical nonentity.{" "}
-                    </p>
-                  </div>
-                </Panel>
-              </Collapse>
-            )
-          }
+          {historyOf == "statement" && (
+            <Collapse
+              expandIconPosition="end"
+              className="ch-collapse"
+              defaultActiveKey={["0"]}
+              expandIcon={({ isActive }) =>
+                isActive ? (
+                  <i className="icon-up-arrow"></i>
+                ) : (
+                  <i className="icon-down-arrow"></i>
+                )
+              }
+              ghost
+            >
+              <Panel header="" key="1">
+                <div>
+                  <h5 className="font-semibold text-[#F19C39] mb-3">
+                    Statement
+                  </h5>
+                  <p className="text-[#242B37] pb-5">
+                    Contemporary philosophy of mind unfortunately has been
+                    burdened for decades with a residual philosophical
+                    behaviorism and intellectualized naive realism. Unpacking
+                    these terms, the fashionable behaviorism gical nonentity.{" "}
+                  </p>
+                </div>
+              </Panel>
+            </Collapse>
+          )}
 
           {historyOf == "statement" && (
             <StatementHistory
@@ -343,7 +369,7 @@ function HistoryCollapse({
 
           {(!campStatement?.grace_period || commited) && (
             <>
-              {(campStatement?.status == "in_review") && (
+              {campStatement?.status == "in_review" && (
                 <>
                   {/* object btn */}
                   <div className="cn-footer-btn">
@@ -353,18 +379,22 @@ function HistoryCollapse({
                         type="primary"
                         id={`object-change-${campStatement?.id}`}
                         className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none px-10"
-                        disabled={historyOf == "camp" ? !campStatement?.ifICanAgreeAndObject : false}
+                        disabled={
+                          historyOf == "camp"
+                            ? !campStatement?.ifICanAgreeAndObject
+                            : false
+                        }
                         onClick={() => {
                           let isModelPop = !isUserAuthenticated
                             ? true
                             : (!campStatement?.ifIAmExplicitSupporter &&
-                              campStatement?.ifIamSupporter == 0) ||
+                                campStatement?.ifIamSupporter == 0) ||
                               (parentArchived == 1 &&
                                 directarchived == 1 &&
                                 historyOf == "topic") ||
                               (parentArchived == 1 && directarchived == 0)
-                              ? true
-                              : false;
+                            ? true
+                            : false;
                           if (isModelPop) {
                             setModal1Open(true);
                           } else {
@@ -372,8 +402,8 @@ function HistoryCollapse({
                               historyOf == "camp"
                                 ? `/manage/camp/${campStatement?.id}-objection`
                                 : historyOf == "topic"
-                                  ? `/manage/topic/${campStatement?.id}-objection`
-                                  : `/manage/statement/${campStatement?.id}-objection`
+                                ? `/manage/topic/${campStatement?.id}-objection`
+                                : `/manage/statement/${campStatement?.id}-objection`
                             );
                           }
                         }}
@@ -398,11 +428,12 @@ function HistoryCollapse({
                   </div>
 
                   {/* modal */}
-                </>)}
+                </>
+              )}
               {/* Submit Statement Update Based On This */}
               {/* View this version */}
 
-              {(campStatement?.status !== "in_review") && (
+              {campStatement?.status !== "in_review" && (
                 <>
                   <div className="cn-footer-btn">
                     <div className="cn-card-btn">
@@ -412,32 +443,32 @@ function HistoryCollapse({
                         className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none w-100"
                         onClick={() => {
                           campStatement?.is_archive == 1 &&
-                            campStatement?.status == "live"
+                          campStatement?.status == "live"
                             ? !isUserAuthenticated
                               ? router?.push({
-                                pathname: "/login",
-                                query: {
-                                  returnUrl: `/manage/${historyOf}/${campStatement?.id}`,
-                                },
-                              })
+                                  pathname: "/login",
+                                  query: {
+                                    returnUrl: `/manage/${historyOf}/${campStatement?.id}`,
+                                  },
+                                })
                               : callManageCampApi()
                             : submitUpdateRedirect(historyOf);
                         }}
                         disabled={
                           unarchiveChangeSubmitted ||
-                            (campHistoryItems[0]?.status == "in_review" &&
-                              !commited &&
-                              !!campHistoryItems[0]?.grace_period) ||
-                            (campHistoryItems?.at(0)?.status == "live" &&
-                              campHistoryItems?.at(0)?.is_archive == 1 &&
-                              campStatement.status == "old") ||
-                            (parentArchived == 1 && directarchived == 0) ||
-                            (parentArchived == 1 &&
-                              directarchived == 1 &&
-                              historyOf == "topic") ||
-                            (campHistoryItems?.at(0)?.is_archive == 1 &&
-                              campHistoryItems?.at(0)?.status == "live" &&
-                              campStatement.status == "objected")
+                          (campHistoryItems[0]?.status == "in_review" &&
+                            !commited &&
+                            !!campHistoryItems[0]?.grace_period) ||
+                          (campHistoryItems?.at(0)?.status == "live" &&
+                            campHistoryItems?.at(0)?.is_archive == 1 &&
+                            campStatement.status == "old") ||
+                          (parentArchived == 1 && directarchived == 0) ||
+                          (parentArchived == 1 &&
+                            directarchived == 1 &&
+                            historyOf == "topic") ||
+                          (campHistoryItems?.at(0)?.is_archive == 1 &&
+                            campHistoryItems?.at(0)?.status == "live" &&
+                            campStatement.status == "objected")
                             ? true
                             : false
                         }
@@ -458,41 +489,49 @@ function HistoryCollapse({
                         }
                       >
                         <Link
-                          href={`/topic/${replaceSpecialCharacters(
-                            historyOf == "topic"
-                              ? replaceSpecialCharacters(
-                                campStatement?.topic_num +
-                                "-" +
-                                campStatement?.topic_name?.replace(/ /g, "-"),
-                                "-"
-                              )
-                              : router?.query?.camp?.at(0),
-                            "-"
-                          ) +
+                          href={`/topic/${
+                            replaceSpecialCharacters(
+                              historyOf == "topic"
+                                ? replaceSpecialCharacters(
+                                    campStatement?.topic_num +
+                                      "-" +
+                                      campStatement?.topic_name?.replace(
+                                        / /g,
+                                        "-"
+                                      ),
+                                    "-"
+                                  )
+                                : router?.query?.camp?.at(0),
+                              "-"
+                            ) +
                             "/" +
                             (historyOf != "topic"
                               ? historyOf == "camp"
                                 ? replaceSpecialCharacters(
-                                  campStatement?.camp_num +
-                                  "-" +
-                                  campStatement?.camp_name?.replace(/ /g, "-"),
-                                  "-"
-                                )
+                                    campStatement?.camp_num +
+                                      "-" +
+                                      campStatement?.camp_name?.replace(
+                                        / /g,
+                                        "-"
+                                      ),
+                                    "-"
+                                  )
                                 : replaceSpecialCharacters(
-                                  router?.query?.camp?.at(1),
-                                  "-"
-                                )
+                                    router?.query?.camp?.at(1),
+                                    "-"
+                                  )
                               : "1-Agreement")
-                            }?algo=${algorithm}&asofdate=${campStatement?.go_live_time
-                            }&asof=bydate&canon=${namespace_id}&viewversion=${1}`}
+                          }?algo=${algorithm}&asofdate=${
+                            campStatement?.go_live_time
+                          }&asof=bydate&canon=${namespace_id}&viewversion=${1}`}
                         >
                           View Version
                         </Link>
                       </Button>
                     </div>
                   </div>
-                </>)}
-
+                </>
+              )}
             </>
           )}
 
@@ -524,8 +563,8 @@ function HistoryCollapse({
                           historyOf == "camp"
                             ? `/manage/camp/${campStatement?.id}-update`
                             : historyOf == "topic"
-                              ? `/manage/topic/${campStatement?.id}-update`
-                              : `/manage/statement/${campStatement?.id}-update`
+                            ? `/manage/topic/${campStatement?.id}-update`
+                            : `/manage/statement/${campStatement?.id}-update`
                         }
                       >
                         Edit Change
@@ -545,33 +584,41 @@ function HistoryCollapse({
                       }
                     >
                       <Link
-                        href={`/topic/${replaceSpecialCharacters(
-                          historyOf == "topic"
-                            ? replaceSpecialCharacters(
-                              campStatement?.topic_num +
-                              "-" +
-                              campStatement?.topic_name?.replace(/ /g, "-"),
-                              "-"
-                            )
-                            : router?.query?.camp?.at(0),
-                          "-"
-                        ) +
+                        href={`/topic/${
+                          replaceSpecialCharacters(
+                            historyOf == "topic"
+                              ? replaceSpecialCharacters(
+                                  campStatement?.topic_num +
+                                    "-" +
+                                    campStatement?.topic_name?.replace(
+                                      / /g,
+                                      "-"
+                                    ),
+                                  "-"
+                                )
+                              : router?.query?.camp?.at(0),
+                            "-"
+                          ) +
                           "/" +
                           (historyOf != "topic"
                             ? historyOf == "camp"
                               ? replaceSpecialCharacters(
-                                campStatement?.camp_num +
-                                "-" +
-                                campStatement?.camp_name?.replace(/ /g, "-"),
-                                "-"
-                              )
+                                  campStatement?.camp_num +
+                                    "-" +
+                                    campStatement?.camp_name?.replace(
+                                      / /g,
+                                      "-"
+                                    ),
+                                  "-"
+                                )
                               : replaceSpecialCharacters(
-                                router?.query?.camp?.at(1),
-                                "-"
-                              )
+                                  router?.query?.camp?.at(1),
+                                  "-"
+                                )
                             : "1-Agreement")
-                          }?algo=${algorithm}&asofdate=${campStatement?.go_live_time
-                          }&asof=bydate&canon=${namespace_id}&viewversion=${1}`}
+                        }?algo=${algorithm}&asofdate=${
+                          campStatement?.go_live_time
+                        }&asof=bydate&canon=${namespace_id}&viewversion=${1}`}
                       >
                         View Version
                       </Link>

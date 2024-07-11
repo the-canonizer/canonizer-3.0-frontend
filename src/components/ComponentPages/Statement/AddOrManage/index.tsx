@@ -1227,7 +1227,7 @@ export default function AddOrManage({ add }: any) {
                                 />
                               ) : (
                                 <Select
-                                  allowClear	
+                                  allowClear
                                   size={"large"}
                                   placeholder="--Select Camp About Nickname"
                                   // data-id="parent-camp"

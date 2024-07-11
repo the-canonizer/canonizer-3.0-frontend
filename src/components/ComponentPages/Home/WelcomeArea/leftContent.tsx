@@ -67,7 +67,9 @@ const LeftContent = ({ isUserAuthenticated }) => {
       {isUserAuthenticated ? (
         <TopicCreateButton
           className={`w-6/12 h-[50px] text-sm bg-canBlue px-3 rounded-lg text-white hover:bg-canHoverBlue hover:text-white flex items-center justify-center font-medium md:w-4/12 mt-auto ${
-            isMobile ? "bg-transparent !text-canBlue px-0 w-5/12 !text-base !text-left" : ""
+            isMobile
+              ? "bg-transparent !text-canBlue px-0 w-5/12 !text-base !text-left"
+              : ""
           }`}
           isWithIcon={true}
         />

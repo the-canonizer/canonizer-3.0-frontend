@@ -282,7 +282,7 @@ const TimelineInfoBar = ({
 
     if (
       (payload && Object.keys(payload).length > 0,
-        !!(getCookies() as any)?.loginToken)
+      !!(getCookies() as any)?.loginToken)
     ) {
       getBreadCrumbApiCall();
     }
@@ -322,8 +322,13 @@ const TimelineInfoBar = ({
 
   const title = (
     <div className="popover_header">
-      <span className="text-xs text-canLight mb-1.5 font-normal">Topic name :</span>
-      <p className="font-bold mb-5 text-base text-canBlack"> {topicRecord && topicRecord?.topic_name}</p>
+      <span className="text-xs text-canLight mb-1.5 font-normal">
+        Topic name :
+      </span>
+      <p className="font-bold mb-5 text-base text-canBlack">
+        {" "}
+        {topicRecord && topicRecord?.topic_name}
+      </p>
     </div>
   );
   const content = (
@@ -345,7 +350,7 @@ const TimelineInfoBar = ({
         <Col md={12} sm={12} xs={12} className="mb-3 d-flex flex-col">
           <span className="text-xs text-canLight">Submitted By</span>
           <span className="text-canDarkBlack text-base font-semibold">
-          {topicRecord?.submitter_nick_name}
+            {topicRecord?.submitter_nick_name}
           </span>
         </Col>
         <Col md={12} sm={12} xs={12} className="mb-3 d-flex flex-col">
@@ -393,7 +398,10 @@ const TimelineInfoBar = ({
   const title2 = (
     <div className="popover_header">
       <span className="text-xs text-canLight mb-1">Camp name :</span>
-      <p className="font-bold mb-5 text-base text-canBlack"> {campRecord && campRecord?.camp_name}</p>
+      <p className="font-bold mb-5 text-base text-canBlack">
+        {" "}
+        {campRecord && campRecord?.camp_name}
+      </p>
     </div>
   );
   const contentForCamp = (
@@ -500,7 +508,7 @@ const TimelineInfoBar = ({
         }
       > */}
       <div className="bg-canGrey1  pt-3 pb-3 lg:px-6 lg:rounded-lg mb-7 ">
-        <Spin spinning={false} >
+        <Spin spinning={false}>
           <div className={styles.topicDetailContentHead_Left}>
             {isForumPage ? (
               <Popover
@@ -534,9 +542,10 @@ const TimelineInfoBar = ({
                 <Typography.Paragraph
                   className={
                     "mb-0 " +
-                    `${loadingIndicator
-                      ? styles.topicTitleSkeleton
-                      : styles.topicTitleStyle
+                    `${
+                      loadingIndicator
+                        ? styles.topicTitleSkeleton
+                        : styles.topicTitleStyle
                     }`
                   }
                 >
@@ -580,11 +589,12 @@ const TimelineInfoBar = ({
                         />
                       ) : isTopicHistoryPage ? (
                         <Link
-                          href={`/topic/${payload?.topic_num
-                            }-${replaceSpecialCharacters(
-                              breadCrumbRes?.topic_name,
-                              "-"
-                            )}/1-Agreement?${getQueryParams()?.returnQuery}`}
+                          href={`/topic/${
+                            payload?.topic_num
+                          }-${replaceSpecialCharacters(
+                            breadCrumbRes?.topic_name,
+                            "-"
+                          )}/1-Agreement?${getQueryParams()?.returnQuery}`}
                         >
                           <a className={styles.boldBreadcrumb}>
                             {breadCrumbRes?.topic_name}
@@ -623,7 +633,7 @@ const TimelineInfoBar = ({
                     </Tooltip>
                   )}
                 </Typography.Paragraph>
-                <div className={ styles.breadcrumbLinks}>
+                <div className={styles.breadcrumbLinks}>
                   <Typography.Paragraph
                     className={"mb-0 ml-5 " + styles.topicTitleStyle}
                   >
@@ -651,14 +661,15 @@ const TimelineInfoBar = ({
                           breadCrumbRes?.bread_crumb?.map((camp, index) => {
                             return (
                               <Link
-                                href={`/topic/${payloadData?.topic_num
-                                  }-${replaceSpecialCharacters(
-                                    breadCrumbRes?.topic_name,
-                                    "-"
-                                  )}/${camp?.camp_num}-${replaceSpecialCharacters(
-                                    camp?.camp_name,
-                                    "-"
-                                  )}?${getQueryParams()?.returnQuery}`}
+                                href={`/topic/${
+                                  payloadData?.topic_num
+                                }-${replaceSpecialCharacters(
+                                  breadCrumbRes?.topic_name,
+                                  "-"
+                                )}/${camp?.camp_num}-${replaceSpecialCharacters(
+                                  camp?.camp_name,
+                                  "-"
+                                )}?${getQueryParams()?.returnQuery}`}
                                 key={index}
                               >
                                 <a className="">
@@ -668,7 +679,7 @@ const TimelineInfoBar = ({
                                   <span
                                     className={
                                       breadCrumbRes?.bread_crumb.length - 1 ==
-                                        index
+                                      index
                                         ? styles.greenIndicateText
                                         : styles.boldBreadcrumb
                                     }
@@ -722,9 +733,10 @@ const TimelineInfoBar = ({
                 <Typography.Paragraph
                   className={
                     "mb-0 " +
-                    `${loadingIndicator
-                      ? styles.topicTitleSkeleton
-                      : styles.topicTitleStyle
+                    `${
+                      loadingIndicator
+                        ? styles.topicTitleSkeleton
+                        : styles.topicTitleStyle
                     }`
                   }
                 >
@@ -771,11 +783,12 @@ const TimelineInfoBar = ({
                         />
                       ) : isTopicHistoryPage ? (
                         <Link
-                          href={`/topic/${payload?.topic_num
-                            }-${replaceSpecialCharacters(
-                              breadCrumbRes?.topic_name,
-                              "-"
-                            )}/1-Agreement?${getQueryParams()?.returnQuery}`}
+                          href={`/topic/${
+                            payload?.topic_num
+                          }-${replaceSpecialCharacters(
+                            breadCrumbRes?.topic_name,
+                            "-"
+                          )}/1-Agreement?${getQueryParams()?.returnQuery}`}
                         >
                           <a className="normal text-canLight text-3 leading-5 font-normal text-ellipsis w-[50px] truncate">
                             {breadCrumbRes?.topic_name}
@@ -842,14 +855,15 @@ const TimelineInfoBar = ({
                           breadCrumbRes?.bread_crumb?.map((camp, index) => {
                             return (
                               <Link
-                                href={`/topic/${payloadData?.topic_num
-                                  }-${replaceSpecialCharacters(
-                                    breadCrumbRes?.topic_name,
-                                    "-"
-                                  )}/${camp?.camp_num}-${replaceSpecialCharacters(
-                                    camp?.camp_name,
-                                    "-"
-                                  )}?${getQueryParams()?.returnQuery}`}
+                                href={`/topic/${
+                                  payloadData?.topic_num
+                                }-${replaceSpecialCharacters(
+                                  breadCrumbRes?.topic_name,
+                                  "-"
+                                )}/${camp?.camp_num}-${replaceSpecialCharacters(
+                                  camp?.camp_name,
+                                  "-"
+                                )}?${getQueryParams()?.returnQuery}`}
                                 key={index}
                               >
                                 <a className="text-3 text-canGreen">
@@ -911,19 +925,19 @@ const TimelineInfoBar = ({
                       href={
                         campStatement?.length > 0
                           ? `/statement/history/${replaceSpecialCharacters(
-                            router?.query?.camp[0],
-                            "-"
-                          )}/${replaceSpecialCharacters(
-                            router?.query?.camp[1] ?? "1-Agreement",
-                            "-"
-                          )}`
+                              router?.query?.camp[0],
+                              "-"
+                            )}/${replaceSpecialCharacters(
+                              router?.query?.camp[1] ?? "1-Agreement",
+                              "-"
+                            )}`
                           : `/create/statement/${replaceSpecialCharacters(
-                            router?.query?.camp[0],
-                            "-"
-                          )}/${replaceSpecialCharacters(
-                            router?.query?.camp[1] ?? "1-Agreement",
-                            "-"
-                          )}`
+                              router?.query?.camp[0],
+                              "-"
+                            )}/${replaceSpecialCharacters(
+                              router?.query?.camp[1] ?? "1-Agreement",
+                              "-"
+                            )}`
                       }
                       className="printHIde"
                     >

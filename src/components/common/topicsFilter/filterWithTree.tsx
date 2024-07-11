@@ -469,7 +469,7 @@ const FilterWithTree = ({
         filterObject?.namespace_id,
         viewThisVersion
       );
-    }else if(selectedValue === 1){
+    } else if (selectedValue === 1) {
       dispatch(setViewThisVersion(false));
       setCookie("asof", "review", {
         path: "/",
@@ -489,7 +489,7 @@ const FilterWithTree = ({
         filterObject?.namespace_id,
         viewThisVersion
       );
-    }else if(selectedValue === 3){
+    } else if (selectedValue === 3) {
       dispatch(setViewThisVersion(false));
       handleAsOfClick();
     }
@@ -510,7 +510,7 @@ const FilterWithTree = ({
           // header={null}
           key="1"
         >
-          <Row gutter={20} >
+          <Row gutter={20}>
             <Col xs={24}>
               <div className="algo_title_new border-b border-canGrey2  mb-3.5 p-5">
                 <Title level={5} className={styles.algoText}>
@@ -551,40 +551,39 @@ const FilterWithTree = ({
                   </Popover>
                 </Title>
                 <Select
-                size="large"
-                showSearch
-                optionFilterProp="children"
-                className={styles.algoSelect}
-                defaultValue={
-                  algorithms?.filter(
-                    (algo) => algo?.algorithm_key == selectedAlgorithm
-                  )[0]?.algorithm_label
-                }
-                onChange={selectAlgorithm}
-                value={
-                  !router?.query?.algo
-                    ? algorithms && algorithms[0]?.algorithm_label
-                    : algorithms?.filter(
-                        (algo) => algo?.algorithm_key == selectedAlgorithm
-                      )[0]?.algorithm_label
-                }
-                disabled={loadingIndicator}
-                id="algo_dropdown"
-              >
-                {algorithms?.map((algo) => {
-                  return (
-                    <Option
-                      key={algo.id}
-                      value={algo.algorithm_key}
-                      id={"algo_drop_item_" + algo?.id}
-                    >
-                      {algo.algorithm_label}
-                    </Option>
-                  );
-                })}
-              </Select>
+                  size="large"
+                  showSearch
+                  optionFilterProp="children"
+                  className={styles.algoSelect}
+                  defaultValue={
+                    algorithms?.filter(
+                      (algo) => algo?.algorithm_key == selectedAlgorithm
+                    )[0]?.algorithm_label
+                  }
+                  onChange={selectAlgorithm}
+                  value={
+                    !router?.query?.algo
+                      ? algorithms && algorithms[0]?.algorithm_label
+                      : algorithms?.filter(
+                          (algo) => algo?.algorithm_key == selectedAlgorithm
+                        )[0]?.algorithm_label
+                  }
+                  disabled={loadingIndicator}
+                  id="algo_dropdown"
+                >
+                  {algorithms?.map((algo) => {
+                    return (
+                      <Option
+                        key={algo.id}
+                        value={algo.algorithm_key}
+                        id={"algo_drop_item_" + algo?.id}
+                      >
+                        {algo.algorithm_label}
+                      </Option>
+                    );
+                  })}
+                </Select>
               </div>
-            
             </Col>
             <Col
               className=""
@@ -635,7 +634,7 @@ const FilterWithTree = ({
               <ArchivedCampCheckBox loadingIndicator={loadingIndicator} />
             </Col> */}
             <Col xs={24} className="">
-               {/* <div className={`${styles.algo_title} ${styles.title}`}> / */}
+              {/* <div className={`${styles.algo_title} ${styles.title}`}> / */}
               <div className="as-of-div mb-3.5 pt-2.5 px-5 pb-7 w-full">
                 <Title level={5} className={styles.algoText}>
                   As Of
@@ -650,78 +649,80 @@ const FilterWithTree = ({
                   </Popover>
                 </Title>
                 <Space
-                direction="horizontal"
-                style={{ gap: "12px", width: "100%" }}
-                className={styles.radioInputs}
-              >
-                <Radio.Group
-                  onChange={onChange}
-                  value={value}
-                  disabled={loadingIndicator}
-                  className={styles.radioBtns}
-                  id="radio_group"
+                  direction="horizontal"
+                  style={{ gap: "12px", width: "100%" }}
+                  className={styles.radioInputs}
                 >
-                  <Space
-                    direction="horizontal"
-                    style={{
-                      gap: "12px",
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "flex-start",
-                    }}
+                  <Radio.Group
+                    onChange={onChange}
+                    value={value}
+                    disabled={loadingIndicator}
+                    className={styles.radioBtns}
+                    id="radio_group"
                   >
-                    <Radio
-                      className={styles.radio + " topicFilterRadio"}
-                      value={2}
-                     onClick={()=>{handleRadioClick(2)}}
-                      id="default_input"
-                    >
-                      Default
-                    </Radio>
-                    <Radio
-                      className={styles.radio + " topicFilterRadio"}
-                      style={{ width: "100%" }}
-                      value={1}
-                      onClick={() => {
-                        handleRadioClick(1)
+                    <Space
+                      direction="horizontal"
+                      style={{
+                        gap: "12px",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "flex-start",
                       }}
-                      id="review_input"
                     >
-                      Include review
-                    </Radio>
-                    <div className="d-flex justify-between items-center">
                       <Radio
                         className={styles.radio + " topicFilterRadio"}
-                        value={3}
+                        value={2}
                         onClick={() => {
-                          handleRadioClick(3)
+                          handleRadioClick(2);
                         }}
-                        id="as_input"
+                        id="default_input"
                       >
-                        Set Custom date
+                        Default
                       </Radio>
-                      <div className="d-flex">
-                        <DatePicker
-                          disabled={
-                            isDatePicker || selectedAsOf == "bydate"
-                              ? false
-                              : true
-                          }
-                          format="YYYY-MM-DD"
-                          defaultValue={moment(current_date_filter * 1000)}
-                          value={moment(selectedAsOFDate * 1000)}
-                          suffixIcon={<i className="icon-calendar"></i>}
-                          size={"large"}
-                          className={`${styles.date} ${styles.dates} w-100`}
-                          onChange={pickDate}
-                          inputReadOnly={true}
-                          disabledDate={(current) =>
-                            current &&
-                            current > moment(current_date_filter).endOf("day")
-                          }
-                          id="date_input"
-                        />
-                        {/* <Popover
+                      <Radio
+                        className={styles.radio + " topicFilterRadio"}
+                        style={{ width: "100%" }}
+                        value={1}
+                        onClick={() => {
+                          handleRadioClick(1);
+                        }}
+                        id="review_input"
+                      >
+                        Include review
+                      </Radio>
+                      <div className="d-flex justify-between items-center">
+                        <Radio
+                          className={styles.radio + " topicFilterRadio"}
+                          value={3}
+                          onClick={() => {
+                            handleRadioClick(3);
+                          }}
+                          id="as_input"
+                        >
+                          Set Custom date
+                        </Radio>
+                        <div className="d-flex">
+                          <DatePicker
+                            disabled={
+                              isDatePicker || selectedAsOf == "bydate"
+                                ? false
+                                : true
+                            }
+                            format="YYYY-MM-DD"
+                            defaultValue={moment(current_date_filter * 1000)}
+                            value={moment(selectedAsOFDate * 1000)}
+                            suffixIcon={<i className="icon-calendar"></i>}
+                            size={"large"}
+                            className={`${styles.date} ${styles.dates} w-100`}
+                            onChange={pickDate}
+                            inputReadOnly={true}
+                            disabledDate={(current) =>
+                              current &&
+                              current > moment(current_date_filter).endOf("day")
+                            }
+                            id="date_input"
+                          />
+                          {/* <Popover
                     content={""}
                     placement="right"
                     className={styles.infoIcon}
@@ -731,19 +732,16 @@ const FilterWithTree = ({
                       style={{ visibility: "hidden", width: "40px" }}
                     ></i>
                   </Popover> */}
+                        </div>
                       </div>
-                    </div>
-                  </Space>
-
-                </Radio.Group>
-              </Space>
+                    </Space>
+                  </Radio.Group>
+                </Space>
               </div>
-             
             </Col>
             <Col md={24}>
-              <div className={styles.treeContainer}> 
-            
-                 <CampTreeCard
+              <div className={styles.treeContainer}>
+                <CampTreeCard
                   getTreeLoadingIndicator={getTreeLoadingIndicator}
                   scrollToCampStatement={scrollToCampStatement}
                   setTotalCampScoreForSupportTree={
@@ -752,30 +750,34 @@ const FilterWithTree = ({
                   backGroundColorClass={backGroundColorClass}
                   setSupportTreeForCamp={setSupportTreeForCamp}
                   isForumPage={isForumPage}
-                /> 
+                />
               </div>
             </Col>
 
-            
-              <Col xs={24} className=" refine-drawer-mobile overflow-hidden">
-                <div className="flex items-center justify-between sm:gap-0 lg:gap-2 btn-parent  lg:px-1 sm:px-0 fixed lg:static bottom-0 w-full">
-                  <Button className="btnCancel border-t border-canBlue bg-transparent  lg:rounded-lg lg:h-[44px] h-[67px]  " onClick={onClose}>
-                    Cancel
-                  </Button>
-                  
-                  <Button className="btnApplyfilters border-none lg:rounded-lg lg:h-[44px] h-[67px] bg-canBlue !text-white" onClick={handleApplyClick}>
-                    Apply
-                    <Image
-                      src="/images/filterbtn-icon.svg"
-                      alt="svg"
-                      className="icon-topic"
-                      height={24}
-                      width={24}
-                    />
-                  </Button>
-                </div>
-              </Col>
-          
+            <Col xs={24} className=" refine-drawer-mobile overflow-hidden">
+              <div className="flex items-center justify-between sm:gap-0 lg:gap-2 btn-parent  lg:px-1 sm:px-0 fixed lg:static bottom-0 w-full">
+                <Button
+                  className="btnCancel border-t border-canBlue bg-transparent  lg:rounded-lg lg:h-[44px] h-[67px]  "
+                  onClick={onClose}
+                >
+                  Cancel
+                </Button>
+
+                <Button
+                  className="btnApplyfilters border-none lg:rounded-lg lg:h-[44px] h-[67px] bg-canBlue !text-white"
+                  onClick={handleApplyClick}
+                >
+                  Apply
+                  <Image
+                    src="/images/filterbtn-icon.svg"
+                    alt="svg"
+                    className="icon-topic"
+                    height={24}
+                    width={24}
+                  />
+                </Button>
+              </div>
+            </Col>
           </Row>
         </div>
       </div>

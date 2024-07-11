@@ -1,4 +1,9 @@
-import { FileTextOutlined, HeartOutlined, PrinterOutlined, StockOutlined } from "@ant-design/icons";
+import {
+  FileTextOutlined,
+  HeartOutlined,
+  PrinterOutlined,
+  StockOutlined,
+} from "@ant-design/icons";
 import { Menu, Tooltip } from "antd";
 import Link from "next/link";
 import { RootState } from "src/store";
@@ -11,68 +16,71 @@ import { replaceSpecialCharacters } from "src/utils/generalUtility";
 import K from "src/constants";
 import CodeIcon from "components/shared/TopicOptions/codeIcon";
 import GenerateModal from "components/common/generateScript";
-import { setManageSupportStatusCheck, setManageSupportUrlLink } from "src/store/slices/campDetailSlice";
+import {
+  setManageSupportStatusCheck,
+  setManageSupportUrlLink,
+} from "src/store/slices/campDetailSlice";
 import { setIsSupportModal } from "src/store/slices/topicSlice";
 import { showLoginModal } from "src/store/slices/uiSlice";
 import styles from "../ComponentPages/TopicDetails/topicDetails.module.scss";
 
-const DropDownMenu = ()=>{
-    const {
-        topicRecord,
-        campRecord,
-        is_admin,
-        asofdate,
-        asof,
-        algorithm,
-        currentCampNode,
-        tree,
-        campExist,
-        campStatement,
-        selectedAlgorithm,
-        is_camp_archive_checked,
-        filteredScore,
-        includeReview,
-        is_checked,
-        selectedAsOf,
-        algorithms,
-        currentGetCheckSupportExistsData
-      } = useSelector((state: RootState) => ({
-        topicRecord: state?.topicDetails?.currentTopicRecord,
-        campRecord: state?.topicDetails?.currentCampRecord,
-        is_admin: state?.auth?.loggedInUser?.is_admin,
-        asofdate: state.filters?.filterObject?.asofdate,
-        algorithm: state.filters?.filterObject?.algorithm,
-        asof: state?.filters?.filterObject?.asof,
-        currentCampNode: state?.filters?.selectedCampNode,
-        tree: state?.topicDetails?.tree && state?.topicDetails?.tree[0],
-        campExist: state?.topicDetails?.tree && state?.topicDetails?.tree[1],
-        campStatement: state?.topicDetails?.campStatement,
-        selectedAlgorithm: state?.filters?.filterObject?.algorithm,
-        is_camp_archive_checked: state?.utils?.archived_checkbox,
-        includeReview: state?.filters?.filterObject?.includeReview,
-        filteredScore: state?.filters?.filterObject?.filterByScore,
-        is_checked: state?.utils?.score_checkbox,
-        selectedAsOf: state?.filters?.filterObject?.asof,
-        algorithms: state.homePage?.algorithms,
-        currentGetCheckSupportExistsData:
+const DropDownMenu = () => {
+  const {
+    topicRecord,
+    campRecord,
+    is_admin,
+    asofdate,
+    asof,
+    algorithm,
+    currentCampNode,
+    tree,
+    campExist,
+    campStatement,
+    selectedAlgorithm,
+    is_camp_archive_checked,
+    filteredScore,
+    includeReview,
+    is_checked,
+    selectedAsOf,
+    algorithms,
+    currentGetCheckSupportExistsData,
+  } = useSelector((state: RootState) => ({
+    topicRecord: state?.topicDetails?.currentTopicRecord,
+    campRecord: state?.topicDetails?.currentCampRecord,
+    is_admin: state?.auth?.loggedInUser?.is_admin,
+    asofdate: state.filters?.filterObject?.asofdate,
+    algorithm: state.filters?.filterObject?.algorithm,
+    asof: state?.filters?.filterObject?.asof,
+    currentCampNode: state?.filters?.selectedCampNode,
+    tree: state?.topicDetails?.tree && state?.topicDetails?.tree[0],
+    campExist: state?.topicDetails?.tree && state?.topicDetails?.tree[1],
+    campStatement: state?.topicDetails?.campStatement,
+    selectedAlgorithm: state?.filters?.filterObject?.algorithm,
+    is_camp_archive_checked: state?.utils?.archived_checkbox,
+    includeReview: state?.filters?.filterObject?.includeReview,
+    filteredScore: state?.filters?.filterObject?.filterByScore,
+    is_checked: state?.utils?.score_checkbox,
+    selectedAsOf: state?.filters?.filterObject?.asof,
+    algorithms: state.homePage?.algorithms,
+    currentGetCheckSupportExistsData:
       state.topicDetails.currentGetCheckSupportExistsData,
-      }));
-      const [topicSubscriptionID, setTopicSubscriptionID] = useState(
-        topicRecord?.topicSubscriptionId
-      );
-      const [campSubscriptionID, setCampSubscriptionID] = useState(
-        campRecord?.subscriptionId
-      );
+  }));
+  const [topicSubscriptionID, setTopicSubscriptionID] = useState(
+    topicRecord?.topicSubscriptionId
+  );
+  const [campSubscriptionID, setCampSubscriptionID] = useState(
+    campRecord?.subscriptionId
+  );
   const didMount = useRef(false);
 
-      const eventLinePath = () => {
-        router?.push(router?.asPath.replace("topic", "eventline"));
-      };
-      const router = useRouter()
-      let payload = history && {
-        camp_num: router?.query?.camp?.at(1)?.split("-")?.at(0) ?? "1",
-        topic_num: router?.query?.camp?.at(0)?.split("-")?.at(0),
-      };
+  const eventLinePath = () => {
+    router?.push(router?.asPath.replace("topic", "eventline"));
+  };
+  const router = useRouter();
+  let payload = history && {
+    camp_num: router?.query?.camp?.at(1)?.split("-")?.at(0) ?? "1",
+    topic_num: router?.query?.camp?.at(0)?.split("-")?.at(0),
+  };
   const { isUserAuthenticated } = useAuthentication();
   const campOrTopicScribe = async (isTopic: Boolean) => {
     const reqBodyForService = {
@@ -109,7 +117,7 @@ const DropDownMenu = ()=>{
   useEffect(() => {
     window.onbeforeprint = () => onPrint();
   }, []);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const onPrint = () => {
     const hiddenElem = document.querySelector(".currentCampRecords"),
       insideDiv = hiddenElem?.querySelector(".ant-collapse-item"),
@@ -140,256 +148,259 @@ const DropDownMenu = ()=>{
       dispatch(setIsSupportModal(true));
     }
   };
-    let isTopicPage = router?.pathname?.split("/")[1];
-    useEffect(() => {
-        if (isTopicPage) {
-          if (didMount.current) {
-            setCampSubscriptionID(campRecord?.subscriptionId);
-            setTopicSubscriptionID(topicRecord?.topicSubscriptionId);
-          } else didMount.current = true;
-        }
-    
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-      }, [campRecord?.subscriptionId, topicRecord?.topicSubscriptionId]);
-      useEffect(() => {
-        if (isTopicPage) {
-          dispatch(setManageSupportStatusCheck(false));
-        }
-    
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-      }, [])
-  return(
+  let isTopicPage = router?.pathname?.split("/")[1];
+  useEffect(() => {
+    if (isTopicPage) {
+      if (didMount.current) {
+        setCampSubscriptionID(campRecord?.subscriptionId);
+        setTopicSubscriptionID(topicRecord?.topicSubscriptionId);
+      } else didMount.current = true;
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [campRecord?.subscriptionId, topicRecord?.topicSubscriptionId]);
+  useEffect(() => {
+    if (isTopicPage) {
+      dispatch(setManageSupportStatusCheck(false));
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  return (
     <div>
-          <Menu className={styles.campForumDropdownMenu}>
-          <Menu.Item
-            icon={
-              <span className={styles.svgIconCode}>
-                <StockOutlined />
-              </span>
-            }
-          >
-            {isTopicPage && (
-              <a onClick={eventLinePath}>
-                <span>Event Line</span>
-              </a>
-            )}
-          </Menu.Item>
-          {isUserAuthenticated && is_admin && (
-            <Menu.Item key="0" icon={<i className="icon-newspaper"></i>}>
-              {router?.pathname == "/support/[...manageSupport]" ? (
-                <Link href={router?.asPath.replace("support", "addnews")}>
-                  Add News
-                </Link>
-              ) : (
-                <Link href={router?.asPath.replace("topic", "addnews")}>
-                  Add News
-                </Link>
-              )}
-            </Menu.Item>
+      <Menu className={styles.campForumDropdownMenu}>
+        <Menu.Item
+          icon={
+            <span className={styles.svgIconCode}>
+              <StockOutlined />
+            </span>
+          }
+        >
+          {isTopicPage && (
+            <a onClick={eventLinePath}>
+              <span>Event Line</span>
+            </a>
           )}
-          <Menu.Item
-            icon={
-              <i
-                className={`icon-subscribe ${
-                  !!topicSubscriptionID && "text-primary"
-                }`}
-              ></i>
-            }
-            onClick={() => {
-              if (isUserAuthenticated) {
-                campOrTopicScribe(true);
-              } else {
-                // setLoadingIndicator(true);
-                router?.push({
-                  pathname: "/login",
-                  query: { returnUrl: router?.asPath },
-                });
-              }
-            }}
-          >
-            {topicSubscriptionID
-              ? " Unsubscribe to Entire Topic"
-              : " Subscribe to Entire Topic"}
-          </Menu.Item>
-          <Menu.Item
-            icon={
-              <i
-                className={`icon-subscribe ${
-                  !!campSubscriptionID && "text-primary"
-                }`}
-              ></i>
-            }
-            disabled={
-              (!!campSubscriptionID && campRecord?.flag == 2) ||
-              campRecord?.length == 0
-                ? true
-                : false
-            }
-            onClick={() => {
-              if (isUserAuthenticated) {
-                campOrTopicScribe(false);
-              } else {
-                // setLoadingIndicator(true);
-                router?.push({
-                  pathname: "/login",
-                  query: { returnUrl: router?.asPath },
-                });
-              }
-            }}
-          >
-            {!!campSubscriptionID && campRecord?.flag !== 2 ? (
-              "Unsubscribe to the Camp"
-            ) : !!campSubscriptionID && campRecord?.flag == 2 ? (
-              <Tooltip
-                title={`You are subscribed to ${campRecord?.subscriptionCampName}`}
-              >
-                Subscribe to the Camp
-              </Tooltip>
-            ) : campRecord?.length == 0 ? (
-              <Tooltip
-                title={`You can't modify history, please go to the current state. `}
-              >
-                Subscribe to the Camp
-              </Tooltip>
+        </Menu.Item>
+        {isUserAuthenticated && is_admin && (
+          <Menu.Item key="0" icon={<i className="icon-newspaper"></i>}>
+            {router?.pathname == "/support/[...manageSupport]" ? (
+              <Link href={router?.asPath.replace("support", "addnews")}>
+                Add News
+              </Link>
             ) : (
-              "Subscribe to the Camp"
+              <Link href={router?.asPath.replace("topic", "addnews")}>
+                Add News
+              </Link>
             )}
           </Menu.Item>
-          <Menu.Item
-            icon={<HeartOutlined />}
-            disabled={
-              asof == "bydate" || campRecord?.is_archive || !isUserAuthenticated
+        )}
+        <Menu.Item
+          icon={
+            <i
+              className={`icon-subscribe ${
+                !!topicSubscriptionID && "text-primary"
+              }`}
+            ></i>
+          }
+          onClick={() => {
+            if (isUserAuthenticated) {
+              campOrTopicScribe(true);
+            } else {
+              // setLoadingIndicator(true);
+              router?.push({
+                pathname: "/login",
+                query: { returnUrl: router?.asPath },
+              });
             }
-          >
-            {isTopicPage && (
-              <Link
-                href="#"
+          }}
+        >
+          {topicSubscriptionID
+            ? " Unsubscribe to Entire Topic"
+            : " Subscribe to Entire Topic"}
+        </Menu.Item>
+        <Menu.Item
+          icon={
+            <i
+              className={`icon-subscribe ${
+                !!campSubscriptionID && "text-primary"
+              }`}
+            ></i>
+          }
+          disabled={
+            (!!campSubscriptionID && campRecord?.flag == 2) ||
+            campRecord?.length == 0
+              ? true
+              : false
+          }
+          onClick={() => {
+            if (isUserAuthenticated) {
+              campOrTopicScribe(false);
+            } else {
+              // setLoadingIndicator(true);
+              router?.push({
+                pathname: "/login",
+                query: { returnUrl: router?.asPath },
+              });
+            }
+          }}
+        >
+          {!!campSubscriptionID && campRecord?.flag !== 2 ? (
+            "Unsubscribe to the Camp"
+          ) : !!campSubscriptionID && campRecord?.flag == 2 ? (
+            <Tooltip
+              title={`You are subscribed to ${campRecord?.subscriptionCampName}`}
+            >
+              Subscribe to the Camp
+            </Tooltip>
+          ) : campRecord?.length == 0 ? (
+            <Tooltip
+              title={`You can't modify history, please go to the current state. `}
+            >
+              Subscribe to the Camp
+            </Tooltip>
+          ) : (
+            "Subscribe to the Camp"
+          )}
+        </Menu.Item>
+        <Menu.Item
+          icon={<HeartOutlined />}
+          disabled={
+            asof == "bydate" || campRecord?.is_archive || !isUserAuthenticated
+          }
+        >
+          {isTopicPage && (
+            <Link
+              href="#"
+              onClick={(e) => {
+                e?.preventDefault();
+                e?.stopPropagation();
+              }}
+              passHref
+            >
+              <div
+                className="topicDetailsCollapseFooter"
                 onClick={(e) => {
                   e?.preventDefault();
                   e?.stopPropagation();
+                  handleClickSupportCheck();
                 }}
-                passHref
+                style={{
+                  pointerEvents:
+                    asof == "bydate" || campRecord?.is_archive ? "none" : "all",
+                }}
               >
-                <div
-                  className="topicDetailsCollapseFooter"
-                  onClick={(e) => {
-                    e?.preventDefault();
-                    e?.stopPropagation();
-                    handleClickSupportCheck();
-                  }}
-                  style={{
-                    pointerEvents:
-                      asof == "bydate" || campRecord?.is_archive ? "none" : "all",
-                  }}
-                >
-                  {currentGetCheckSupportExistsData?.is_delegator == 1 ||
-                  currentGetCheckSupportExistsData?.support_flag != 1
-                    ? K?.exceptionalMessages?.directJoinSupport
-                    : K?.exceptionalMessages?.manageSupport}
-                </div>
-              </Link>
-            )}
-          </Menu.Item>
-          <Menu.Item icon={<i className="icon-camp"></i>}>
-            {isTopicPage && (
-              <Link
-                href={`/camp/history/${replaceSpecialCharacters(
-                  router?.query?.camp
-                    ? router?.query?.camp[0]
-                    : router?.query?.manageSupport?.at(0),
-                  "-"
-                )}/${replaceSpecialCharacters(
-                  router?.query?.camp
-                    ? router?.query?.camp[1] ?? "1-Agreement"
-                    : router?.query?.manageSupport?.at(1),
-                  "-"
-                )}`}
-              >
-                <a>{K?.exceptionalMessages?.manageCampButton}</a>
-              </Link>
-            )}
-          </Menu.Item>
-          <Menu.Item icon={<i className="icon-topic"></i>}>
-            {isTopicPage && (
-              <Link
-                href={`/topic/history/${replaceSpecialCharacters(
-                  router?.query?.camp
-                    ? router?.query?.camp[0]
-                    : router?.query?.manageSupport?.at(0),
-                  "-"
-                )}`}
-              >
-                <a>{K?.exceptionalMessages?.manageTopicButton} </a>
-              </Link>
-            )}
-          </Menu.Item>
-          <Menu.Item icon={<FileTextOutlined />} disabled={campRecord?.is_archive}>
-            {isTopicPage && (
-              <Link
-                href={
-                  campStatement?.length > 0
-                    ? `/statement/history/${replaceSpecialCharacters(
-                        router?.query?.camp
-                          ? router?.query?.camp[0]
-                          : router?.query?.manageSupport[0],
-                        "-"
-                      )}/${replaceSpecialCharacters(
-                        router?.query?.camp
-                          ? router?.query?.camp[1] ?? "1-Agreement"
-                          : router?.query?.manageSupport[1],
-                        "-"
-                      )}`
-                    : `/create/statement/${replaceSpecialCharacters(
-                        router?.query?.camp
-                          ? router?.query?.camp[0]
-                          : router?.query?.manageSupport?.at(0),
-                        "-"
-                      )}/${replaceSpecialCharacters(
-                        router?.query?.camp
-                          ? router?.query?.camp[1] ?? "1-Agreement"
-                          : router?.query?.manageSupport?.at(1),
-                        "-"
-                      )}`
-                }
-              >
-                <a>
-                  {campStatement?.length > 0
-                    ? K?.exceptionalMessages?.manageCampStatementButton
-                    : K?.exceptionalMessages?.addCampStatementButton}
-                </a>
-              </Link>
-            )}
-          </Menu.Item>
-          <Menu.Item
-            icon={
-              <span className={styles.svgIconCode}>
-                <CodeIcon />
-              </span>
-            }
-          >
-            {isTopicPage && (
-              <GenerateModal
-                topic_num={payload?.topic_num}
-                camp_num={payload?.camp_num}
-              />
-            )}
-          </Menu.Item>
-          <Menu.Item
-            icon={
-              <span className={styles.svgIconCode}>
-                <PrinterOutlined />
-              </span>
-            }
-          >
-            {isTopicPage && (
-              <a onClick={onPrintCamp}>
-                <span>Print</span>
+                {currentGetCheckSupportExistsData?.is_delegator == 1 ||
+                currentGetCheckSupportExistsData?.support_flag != 1
+                  ? K?.exceptionalMessages?.directJoinSupport
+                  : K?.exceptionalMessages?.manageSupport}
+              </div>
+            </Link>
+          )}
+        </Menu.Item>
+        <Menu.Item icon={<i className="icon-camp"></i>}>
+          {isTopicPage && (
+            <Link
+              href={`/camp/history/${replaceSpecialCharacters(
+                router?.query?.camp
+                  ? router?.query?.camp[0]
+                  : router?.query?.manageSupport?.at(0),
+                "-"
+              )}/${replaceSpecialCharacters(
+                router?.query?.camp
+                  ? router?.query?.camp[1] ?? "1-Agreement"
+                  : router?.query?.manageSupport?.at(1),
+                "-"
+              )}`}
+            >
+              <a>{K?.exceptionalMessages?.manageCampButton}</a>
+            </Link>
+          )}
+        </Menu.Item>
+        <Menu.Item icon={<i className="icon-topic"></i>}>
+          {isTopicPage && (
+            <Link
+              href={`/topic/history/${replaceSpecialCharacters(
+                router?.query?.camp
+                  ? router?.query?.camp[0]
+                  : router?.query?.manageSupport?.at(0),
+                "-"
+              )}`}
+            >
+              <a>{K?.exceptionalMessages?.manageTopicButton} </a>
+            </Link>
+          )}
+        </Menu.Item>
+        <Menu.Item
+          icon={<FileTextOutlined />}
+          disabled={campRecord?.is_archive}
+        >
+          {isTopicPage && (
+            <Link
+              href={
+                campStatement?.length > 0
+                  ? `/statement/history/${replaceSpecialCharacters(
+                      router?.query?.camp
+                        ? router?.query?.camp[0]
+                        : router?.query?.manageSupport[0],
+                      "-"
+                    )}/${replaceSpecialCharacters(
+                      router?.query?.camp
+                        ? router?.query?.camp[1] ?? "1-Agreement"
+                        : router?.query?.manageSupport[1],
+                      "-"
+                    )}`
+                  : `/create/statement/${replaceSpecialCharacters(
+                      router?.query?.camp
+                        ? router?.query?.camp[0]
+                        : router?.query?.manageSupport?.at(0),
+                      "-"
+                    )}/${replaceSpecialCharacters(
+                      router?.query?.camp
+                        ? router?.query?.camp[1] ?? "1-Agreement"
+                        : router?.query?.manageSupport?.at(1),
+                      "-"
+                    )}`
+              }
+            >
+              <a>
+                {campStatement?.length > 0
+                  ? K?.exceptionalMessages?.manageCampStatementButton
+                  : K?.exceptionalMessages?.addCampStatementButton}
               </a>
-            )}
-          </Menu.Item>
-        </Menu>
+            </Link>
+          )}
+        </Menu.Item>
+        <Menu.Item
+          icon={
+            <span className={styles.svgIconCode}>
+              <CodeIcon />
+            </span>
+          }
+        >
+          {isTopicPage && (
+            <GenerateModal
+              topic_num={payload?.topic_num}
+              camp_num={payload?.camp_num}
+            />
+          )}
+        </Menu.Item>
+        <Menu.Item
+          icon={
+            <span className={styles.svgIconCode}>
+              <PrinterOutlined />
+            </span>
+          }
+        >
+          {isTopicPage && (
+            <a onClick={onPrintCamp}>
+              <span>Print</span>
+            </a>
+          )}
+        </Menu.Item>
+      </Menu>
     </div>
-  )
-}
+  );
+};
 
 export default DropDownMenu;

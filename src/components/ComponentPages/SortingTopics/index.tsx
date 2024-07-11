@@ -50,11 +50,7 @@ const SortTopics = () => {
         suffixIcon={<i className="icon-sort"></i>}
         style={{ width: 150 }}
         placeholder="Sort By"
-        value={
-          sortLatestTopic
-            ? "Latest"
-            : "ScoreValue"
-        }
+        value={sortLatestTopic ? "Latest" : "ScoreValue"}
         onChange={(value) => {
           if (value === "Latest") {
             handleLatestTopic();

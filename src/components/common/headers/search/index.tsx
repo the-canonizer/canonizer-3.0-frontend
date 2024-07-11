@@ -193,7 +193,13 @@ const HeaderSearch = ({ className = "" }: any) => {
 
   const no = [
     {
-      options: [renderItem(showEmpty("No results found. Try searching by using a different keyword."))],
+      options: [
+        renderItem(
+          showEmpty(
+            "No results found. Try searching by using a different keyword."
+          )
+        ),
+      ],
     },
   ];
 
@@ -412,7 +418,10 @@ const AllItems = ({
 );
 
 const TopicItems = ({ searchTopics, searchValue }) => (
-  <Card className={`border-0 h-100 bg-canGray ${styles.ItemCard}`} title="Topic(s)">
+  <Card
+    className={`border-0 h-100 bg-canGray ${styles.ItemCard}`}
+    title="Topic(s)"
+  >
     <List
       size="small"
       dataSource={searchTopics?.slice(0, 5)}
@@ -437,7 +446,8 @@ const TopicItems = ({ searchTopics, searchValue }) => (
                     </Typography.Paragraph>
                   </Popover>
                   <Typography.Paragraph className="m-0 text-canLight font-medium font-inter flex items-center">
-                    <EyeOutlined className="text-canBlack p-1 text-medium" /> 123
+                    <EyeOutlined className="text-canBlack p-1 text-medium" />{" "}
+                    123
                   </Typography.Paragraph>
                 </div>
               </span>
@@ -451,7 +461,10 @@ const TopicItems = ({ searchTopics, searchValue }) => (
 );
 
 const CampItems = ({ searchCamps, searchValue }) => (
-  <Card className={`border-0 h-100 bg-canGray ${styles.ItemCard}`} title="Camp(s)">
+  <Card
+    className={`border-0 h-100 bg-canGray ${styles.ItemCard}`}
+    title="Camp(s)"
+  >
     <List
       size="small"
       dataSource={searchCamps?.slice(0, 5)}

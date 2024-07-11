@@ -17,8 +17,7 @@ import styles from "./latestFilter.module.scss";
 import { getTreesApi } from "src/network/api/campDetailApi";
 import { useEffect } from "react";
 import Image from "next/image";
-import calendarIcon from "../../../../public/images/calendar-icon.svg"
-
+import calendarIcon from "../../../../public/images/calendar-icon.svg";
 
 const LatestFilter = () => {
   const router = useRouter();
@@ -39,7 +38,7 @@ const LatestFilter = () => {
     algorithm,
     viewThisVersionCheck,
     asofdate,
-    selectAlgoBrowsePage
+    selectAlgoBrowsePage,
   } = useSelector((state: RootState) => ({
     is_camp_archive_checked: state?.utils?.archived_checkbox,
     loading: state?.loading?.loading,
@@ -58,7 +57,7 @@ const LatestFilter = () => {
     algorithm: state.filters?.filterObject?.algorithm,
     asofdate: state.filters?.filterObject?.asofdate,
     viewThisVersionCheck: state?.filters?.viewThisVersionCheck,
-    selectAlgoBrowsePage:state?.filters?.selectAlgoBrowsePage,
+    selectAlgoBrowsePage: state?.filters?.selectAlgoBrowsePage,
   }));
   const lable = algorithms?.find((obj) => {
     return obj.algorithm_key == selectedAlgorithm;
@@ -182,37 +181,33 @@ const LatestFilter = () => {
     camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
     asOf: asof,
     asofdate:
-      asof == "default" || asof == "review"
-        ? Date.now() / 1000
-        : asofdate,
+      asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
     algorithm: "blind_popularity",
     update_all: 1,
     fetch_topic_history: viewThisVersionCheck ? 1 : null,
   };
-  const revertScore = ()=>{
-     getTreesApi(reqBodyForService)
-  }
+  const revertScore = () => {
+    getTreesApi(reqBodyForService);
+  };
   const reqBody = {
     topic_num: router?.query?.camp[0]?.split("-")[0],
     camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
     asOf: asof,
     asofdate:
-      asof == "default" || asof == "review"
-        ? Date.now() / 1000
-        : asofdate,
+      asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
     algorithm: algorithm,
     update_all: 1,
     fetch_topic_history: viewThisVersionCheck ? 1 : null,
   };
-  const revertScoreAndAlgo = ()=>{
-     getTreesApi(reqBody)
-  }
+  const revertScoreAndAlgo = () => {
+    getTreesApi(reqBody);
+  };
 
-  useEffect(()=>{
-    revertScoreAndAlgo()
-  },[selectAlgoBrowsePage])
-  const clearAllFilter = async() => {
-    dispatch(setSelectAlgoBrowsePage(false))
+  useEffect(() => {
+    revertScoreAndAlgo();
+  }, [selectAlgoBrowsePage]);
+  const clearAllFilter = async () => {
+    dispatch(setSelectAlgoBrowsePage(false));
     dispatch(setArchivedCheckBox(false));
     dispatch(setScoreCheckBox(false));
     dispatch(
@@ -227,7 +222,7 @@ const LatestFilter = () => {
     if (router?.query?.algo && selectedAlgorithm) {
       algoRevert();
     }
-    revertScore()
+    revertScore();
   };
   let filteredDate = moment(filteredAsOfDate * 1000).format("YYYY-MM-DD");
   return (
@@ -265,15 +260,13 @@ const LatestFilter = () => {
         {router?.query?.algo &&
         selectedAlgorithm &&
         lable?.algorithm_label !== undefined ? (
-          <Tag
-          className="bg-canLightGrey rounded-full py-2.5 px-3.5 text-xs text-canBlue leading-4 font-medium border-none flex items-center gap-1"
-          >
+          <Tag className="bg-canLightGrey rounded-full py-2.5 px-3.5 text-xs text-canBlue leading-4 font-medium border-none flex items-center gap-1">
             <CloseOutlined
-                onClick={() => {
-                  algoRevert();
-                  revertScore()
-                }}
-              />
+              onClick={() => {
+                algoRevert();
+                revertScore();
+              }}
+            />
             {lable?.algorithm_label}
           </Tag>
         ) : (
@@ -281,67 +274,59 @@ const LatestFilter = () => {
         )}
         {is_camp_archive_checked ? (
           <Tag
-           className="bg-canLightGrey rounded-full py-2.5 px-3.5 text-xs text-canBlue leading-4 font-medium border-none flex items-center gap-1"
+            className="bg-canLightGrey rounded-full py-2.5 px-3.5 text-xs text-canBlue leading-4 font-medium border-none flex items-center gap-1"
             data-testid="archived_camps"
-          > 
+          >
             Show archived camps
             <CloseOutlined
-                onClick={() => {
-                  dispatch(setArchivedCheckBox(false));
-                }}
-                data-testid="close_icon_archived_camps"
-              />
+              onClick={() => {
+                dispatch(setArchivedCheckBox(false));
+              }}
+              data-testid="close_icon_archived_camps"
+            />
           </Tag>
         ) : (
           ""
         )}
         {is_checked ? (
-          <Tag
-           className="bg-canLightGrey rounded-full py-2.5 px-3.5 text-xs text-canBlue leading-4 font-medium border-none flex items-center gap-1"           
-          >
+          <Tag className="bg-canLightGrey rounded-full py-2.5 px-3.5 text-xs text-canBlue leading-4 font-medium border-none flex items-center gap-1">
             100% of canonized score
             <CloseOutlined
-            onClick={() => {
-              dispatch(setScoreCheckBox(false));
-            }}
-            data-testid="close_icon_100%_of_canonized_score"
-          />
+              onClick={() => {
+                dispatch(setScoreCheckBox(false));
+              }}
+              data-testid="close_icon_100%_of_canonized_score"
+            />
           </Tag>
         ) : (
           ""
         )}
         {selectedAsOf == "bydate" ? (
           <Tag
-             className="bg-canLightGrey rounded-full py-1 px-3.5 text-xs text-canBlue leading-4 font-medium border-none flex items-center gap-1"
+            className="bg-canLightGrey rounded-full py-1 px-3.5 text-xs text-canBlue leading-4 font-medium border-none flex items-center gap-1"
             data-testid="asOfDate"
           >
-             <Image
-                      src={calendarIcon}
-                      alt="svg"
-                      height={20}
-                      width={20}
-                    />
-             
+            <Image src={calendarIcon} alt="svg" height={20} width={20} />
+
             {`${filteredDate}`}
             <CloseOutlined
-                onClick={filterForAsofDate}
-                data-testid="close_icon_as_of_date"
-              />
-            </Tag>
+              onClick={filterForAsofDate}
+              data-testid="close_icon_as_of_date"
+            />
+          </Tag>
         ) : (
           ""
         )}
         {includeReview || router?.query?.asof == "review" ? (
           <Tag
-          className="bg-canLightGrey rounded-full py-2.5 px-3.5 text-xs text-canBlue leading-4 font-medium border-none flex items-center gap-1"
-        
+            className="bg-canLightGrey rounded-full py-2.5 px-3.5 text-xs text-canBlue leading-4 font-medium border-none flex items-center gap-1"
             data-testid="include_review"
-          >{`Include review`}
-           <CloseOutlined
-                onClick={filterForAsofDate}
-                data-testid="close_icon_include_review"
-                
-              />
+          >
+            {`Include review`}
+            <CloseOutlined
+              onClick={filterForAsofDate}
+              data-testid="close_icon_include_review"
+            />
           </Tag>
         ) : (
           ""
@@ -353,9 +338,9 @@ const LatestFilter = () => {
           >
             {`Score < ${filteredScore}`}
             <CloseOutlined
-                onClick={filterscore}
-                data-testid="close_icon_Score"
-              />
+              onClick={filterscore}
+              data-testid="close_icon_Score"
+            />
           </Tag>
         ) : (
           ""

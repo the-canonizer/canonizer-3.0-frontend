@@ -3,7 +3,10 @@ import { Typography } from "antd";
 const Headings = ({ className = "", h1, h2, h3, ...rest }: any) => {
   if (h1) {
     return (
-      <h1 className={`text-5xl text-canBlack font-medium ${className}`} {...rest}>
+      <h1
+        className={`text-5xl text-canBlack font-medium ${className}`}
+        {...rest}
+      >
         {rest?.children}
       </h1>
     );
@@ -25,7 +28,10 @@ const Headings = ({ className = "", h1, h2, h3, ...rest }: any) => {
   }
 
   return (
-    <Typography.Title className={`text-sm text-canBlack ${className}`} {...rest}>
+    <Typography.Title
+      className={`text-sm text-canBlack ${className}`}
+      {...rest}
+    >
       {rest?.children}
     </Typography.Title>
   );

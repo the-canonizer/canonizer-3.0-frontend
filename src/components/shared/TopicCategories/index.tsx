@@ -21,7 +21,7 @@ const TopicCatsLabel = ({ tags, loading = false, ...restProps }) => {
     return null;
   }
 
-  const LinkItem = ({ text, link = "#" }) => (
+  const LinkItem = ({ text, link }) => (
     <Link href={link}>
       <a className="!text-canBlue text-sm font-inter font-medium hover:!canHoverBlue">
         {text}
@@ -38,7 +38,11 @@ const TopicCatsLabel = ({ tags, loading = false, ...restProps }) => {
       <Typography.Paragraph className="line-clamp-1 max-w-52 !mb-0">
         {tags.map((item, idx) => (
           <Fragment>
-            <LinkItem text={item?.title} link="!#" key={item?.id} />{" "}
+            <LinkItem
+              text={item?.title}
+              link={{ pathname: `/categories/${item?.id}` }}
+              key={item?.id}
+            />{" "}
             {idx !== tags?.length - 1 ? (
               <span className="!text-canBlue text-sm font-inter font-medium hover:!canHoverBlue mr-1">
                 ,

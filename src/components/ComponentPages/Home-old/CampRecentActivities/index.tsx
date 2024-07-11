@@ -78,11 +78,15 @@ export default function CampRecentActivities() {
                 renderItem={(item) => (
                   <List.Item className={styles.activitiesList}>
                     <List.Item.Meta
-                      avatar={<BellFilled className={"hidden " + styles.bellIcon} />}
+                      avatar={
+                        <BellFilled className={"hidden " + styles.bellIcon} />
+                      }
                       title={
                         <div>
-                          <h4 className="text-base leading-[24px] mb-2.5 font-normal"> {item?.description}</h4>{" "}
-
+                          <h4 className="text-base leading-[24px] mb-2.5 font-normal">
+                            {" "}
+                            {item?.description}
+                          </h4>{" "}
                           {item?.log_name === "support" &&
                             getProperties(item)?.reason && (
                               <Popover
@@ -94,9 +98,12 @@ export default function CampRecentActivities() {
                               </Popover>
                             )}
                         </div>
-
                       }
-                      description={<p className="text-xs font-normal leading-[15px] text-opacity-50">{covertToTime(item?.updated_at)}</p>}
+                      description={
+                        <p className="text-xs font-normal leading-[15px] text-opacity-50">
+                          {covertToTime(item?.updated_at)}
+                        </p>
+                      }
                       className={styles.listItem}
                     />
                   </List.Item>
@@ -106,12 +113,12 @@ export default function CampRecentActivities() {
               <div className="flex items-center justify-center gap-3 flex-col pt-3">
                 {K?.exceptionalMessages?.noRecentActivityFound}
                 <Image
-              src="/images/no-activity.svg"
-              alt="svg"
-              className="icon-topic"
-              height={81}
-              width={118}
-            />
+                  src="/images/no-activity.svg"
+                  alt="svg"
+                  className="icon-topic"
+                  height={81}
+                  width={118}
+                />
               </div>
             )}
           </div>

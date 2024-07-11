@@ -133,29 +133,35 @@ export default function AdvanceFilter() {
     const treeData = response?.treeData;
     const children = treeData && treeData["1"] && treeData["1"].children;
     const getChildren = children
-      ? Object.values(response?.treeData?.["1"]?.children).map((value:MyObjectType) => {
-          return {
-            campId: value?.camp_id,
-            supportTree: value?.support_tree,
-          };
-        })
+      ? Object.values(response?.treeData?.["1"]?.children).map(
+          (value: MyObjectType) => {
+            return {
+              campId: value?.camp_id,
+              supportTree: value?.support_tree,
+            };
+          }
+        )
       : [];
-    const supportTree = response?.treeData['1'].support_tree;
-    const getNIcknameIdFromDirectSupportTree =supportTree.map((obj)=>{
-      return obj.nick_name_id
-    })
+    const supportTree = response?.treeData["1"].support_tree;
+    const getNIcknameIdFromDirectSupportTree = supportTree.map((obj) => {
+      return obj.nick_name_id;
+    });
     const filtercampId = getChildren?.reduce((acc, obj) => {
-        if (obj.campId === camp_num) {
-            acc = obj.supportTree;
-        }
-        return acc;
+      if (obj.campId === camp_num) {
+        acc = obj.supportTree;
+      }
+      return acc;
     }, []);
-    
+
     const getNickId = filtercampId?.map((obj) => {
       return obj.nick_name_id;
-    });  
+    });
     dispatch(setSelectNicknameIdFromGetApi(getNickId));
-    dispatch(setSelectNickNameIdFromDirectSupportTree(getNIcknameIdFromDirectSupportTree))
+    dispatch(
+      setSelectNickNameIdFromDirectSupportTree(
+        getNIcknameIdFromDirectSupportTree
+      )
+    );
   };
 
   return (
@@ -241,170 +247,175 @@ export default function AdvanceFilter() {
                 }}
                 placeholder="Search a Keyword"
               />
-              {searchTopics.length || searchCamps.length?<div className="advance_filter_dropdown">
-                {searchVal ? (
-                  <div className="search_outer">
-                    {searchTopics.length ? (
-                      <label>
-                        <i className="icon-topic"></i>
-                        <span>Topic</span>
-                      </label>
-                    ) : (
-                      ""
-                    )}
-                    <div className={styles.search_list}>
-                      <ul>
-                        {searchTopics?.map((x: any) => {
-                          {
-                            const reqBodyForService = {
-                              topic_num: x.topic_num,
-                              camp_num: x.camp_num,
-                              asOf: asof,
-                              asofdate:
-                                asof == "default" || asof == "review"
-                                  ? Date.now() / 1000
-                                  : asofdate,
-                              algorithm: algorithm,
-                              update_all: 1,
-                              fetch_topic_history: viewThisVersionCheck
-                                ? 1
-                                : null,
-                            };
-                            return (
-                              <>
-                                <li style={{ cursor: "default" }}>
-                                  <a
-                                    onClick={() => {
-                                      dispatch(
-                                        setClickAdvanceFilterOption(true)
-                                      );
-                                      handleItemClick(x.title);
-                                      getNicknameFromSupportTree(
-                                        reqBodyForService,
-                                        x.camp_num
-                                      );
-                                    }}
-                                  >
-                                    <Highlighted
-                                      text={x.title}
-                                      highlight={searchVal}
-                                    />
-                                  </a>
-                                  {/* </Link> */}
-                                </li>
-                              </>
-                            );
-                          }
-                        })}
-                      </ul>
-                    </div>
-                  </div>
-                ) : (
-                  ""
-                )}
-
-                {searchVal ? (
-                  <div className="search_outer">
-                    {searchCamps.length ? (
-                      <label>
-                        <i className="icon-camp"></i>
-                        <span>camp</span>
-                      </label>
-                    ) : (
-                      ""
-                    )}
-                    <div className={styles.search_lists}>
-                      <ul>
-                        {searchCamps?.slice(0, 5)?.map((x) => {
-                          const jsonData = JSON.parse(
-                            x.breadcrumb
-                          ) as Array<any>;
-                          const parsedData = jsonData.reduce(
-                            (accumulator, currentVal, index) => {
-                              const accIndex = index + 1;
-                              accumulator[index] = {
-                                camp_name:
-                                  currentVal[accIndex]?.camp_name == "Agreement"
-                                    ? currentVal[accIndex]?.topic_name
-                                    : currentVal[accIndex]?.camp_name,
-                                camp_link: currentVal[accIndex]?.camp_link,
+              {searchTopics.length || searchCamps.length ? (
+                <div className="advance_filter_dropdown">
+                  {searchVal ? (
+                    <div className="search_outer">
+                      {searchTopics.length ? (
+                        <label>
+                          <i className="icon-topic"></i>
+                          <span>Topic</span>
+                        </label>
+                      ) : (
+                        ""
+                      )}
+                      <div className={styles.search_list}>
+                        <ul>
+                          {searchTopics?.map((x: any) => {
+                            {
+                              const reqBodyForService = {
+                                topic_num: x.topic_num,
+                                camp_num: x.camp_num,
+                                asOf: asof,
+                                asofdate:
+                                  asof == "default" || asof == "review"
+                                    ? Date.now() / 1000
+                                    : asofdate,
+                                algorithm: algorithm,
+                                update_all: 1,
+                                fetch_topic_history: viewThisVersionCheck
+                                  ? 1
+                                  : null,
                               };
-                              return accumulator;
-                            },
-                            []
-                          );
-                          {
-                            const reqBodyForService = {
-                              topic_num: x.topic_num,
-                              camp_num: x.camp_num,
-                              asOf: asof,
-                              asofdate:
-                                asof == "default" || asof == "review"
-                                  ? Date.now() / 1000
-                                  : asofdate,
-                              algorithm: algorithm,
-                              update_all: 1,
-                              fetch_topic_history: viewThisVersionCheck
-                                ? 1
-                                : null,
-                            };
-                            return (
-                              <>
-                                <li style={{ cursor: "default" }}>
-                                  <a
-                                    className={styles.camp_heading_color}
-                                    onClick={() => {
-                                      dispatch(
-                                        setClickAdvanceFilterOption(true)
-                                      );
-                                      handleItemClick(x.title);
-                                      getNicknameFromSupportTree(
-                                        reqBodyForService,
-                                        x.camp_num
-                                      )                                     
-                                    }}
-                                  >
-                                    {" "}
-                                    <Highlighted
-                                      text={x.title}
-                                      highlight={searchVal}
-                                    />
-                                  </a>
-                                  <div
-                                    className={
-                                      styles.tags_all_search_camp_statement
-                                    }
-                                  >
-                                    {parsedData
-                                      ?.reverse()
-                                      ?.map((obj, index) => {
-                                        return (
-                                          <a
-                                            href={`/${obj.camp_link}`}
-                                            key={`/${obj.camp_link}`}
-                                          >
-                                            {obj.camp_name}
-                                            {index < parsedData?.length - 1
-                                              ? "/ "
-                                              : ""}
-                                          </a>
+                              return (
+                                <>
+                                  <li style={{ cursor: "default" }}>
+                                    <a
+                                      onClick={() => {
+                                        dispatch(
+                                          setClickAdvanceFilterOption(true)
                                         );
-                                      })}
-                                  </div>
-                                </li>
-                              </>
-                            );
-                          }
-                        })}
-                      </ul>
+                                        handleItemClick(x.title);
+                                        getNicknameFromSupportTree(
+                                          reqBodyForService,
+                                          x.camp_num
+                                        );
+                                      }}
+                                    >
+                                      <Highlighted
+                                        text={x.title}
+                                        highlight={searchVal}
+                                      />
+                                    </a>
+                                    {/* </Link> */}
+                                  </li>
+                                </>
+                              );
+                            }
+                          })}
+                        </ul>
+                      </div>
                     </div>
-                  </div>
-                ) : (
-                  ""
-                )}
-              </div>:<div>
-              {searchVal?<Empty description={"No data found"}/>:""}
-                </div>}
+                  ) : (
+                    ""
+                  )}
+
+                  {searchVal ? (
+                    <div className="search_outer">
+                      {searchCamps.length ? (
+                        <label>
+                          <i className="icon-camp"></i>
+                          <span>camp</span>
+                        </label>
+                      ) : (
+                        ""
+                      )}
+                      <div className={styles.search_lists}>
+                        <ul>
+                          {searchCamps?.slice(0, 5)?.map((x) => {
+                            const jsonData = JSON.parse(
+                              x.breadcrumb
+                            ) as Array<any>;
+                            const parsedData = jsonData.reduce(
+                              (accumulator, currentVal, index) => {
+                                const accIndex = index + 1;
+                                accumulator[index] = {
+                                  camp_name:
+                                    currentVal[accIndex]?.camp_name ==
+                                    "Agreement"
+                                      ? currentVal[accIndex]?.topic_name
+                                      : currentVal[accIndex]?.camp_name,
+                                  camp_link: currentVal[accIndex]?.camp_link,
+                                };
+                                return accumulator;
+                              },
+                              []
+                            );
+                            {
+                              const reqBodyForService = {
+                                topic_num: x.topic_num,
+                                camp_num: x.camp_num,
+                                asOf: asof,
+                                asofdate:
+                                  asof == "default" || asof == "review"
+                                    ? Date.now() / 1000
+                                    : asofdate,
+                                algorithm: algorithm,
+                                update_all: 1,
+                                fetch_topic_history: viewThisVersionCheck
+                                  ? 1
+                                  : null,
+                              };
+                              return (
+                                <>
+                                  <li style={{ cursor: "default" }}>
+                                    <a
+                                      className={styles.camp_heading_color}
+                                      onClick={() => {
+                                        dispatch(
+                                          setClickAdvanceFilterOption(true)
+                                        );
+                                        handleItemClick(x.title);
+                                        getNicknameFromSupportTree(
+                                          reqBodyForService,
+                                          x.camp_num
+                                        );
+                                      }}
+                                    >
+                                      {" "}
+                                      <Highlighted
+                                        text={x.title}
+                                        highlight={searchVal}
+                                      />
+                                    </a>
+                                    <div
+                                      className={
+                                        styles.tags_all_search_camp_statement
+                                      }
+                                    >
+                                      {parsedData
+                                        ?.reverse()
+                                        ?.map((obj, index) => {
+                                          return (
+                                            <a
+                                              href={`/${obj.camp_link}`}
+                                              key={`/${obj.camp_link}`}
+                                            >
+                                              {obj.camp_name}
+                                              {index < parsedData?.length - 1
+                                                ? "/ "
+                                                : ""}
+                                            </a>
+                                          );
+                                        })}
+                                    </div>
+                                  </li>
+                                </>
+                              );
+                            }
+                          })}
+                        </ul>
+                      </div>
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                </div>
+              ) : (
+                <div>
+                  {searchVal ? <Empty description={"No data found"} /> : ""}
+                </div>
+              )}
             </div>
           )}
         </Panel>
