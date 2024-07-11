@@ -42,8 +42,9 @@ const HotTopics = () => {
             >
               <Link
                 href={{
-                  pathname: `/topic/${ft?.topic_num}-${ft?.topic_name || ""}/${ft?.camp_num || 1
-                    }-${ft?.camp_name || "Agreement"}`,
+                  pathname: `/topic/${ft?.topic_num}-${ft?.topic_name || ""}/${
+                    ft?.camp_num || 1
+                  }-${ft?.camp_name || "Agreement"}`,
                 }}
               >
                 <a className="flex justify-between pb-3 items-center">

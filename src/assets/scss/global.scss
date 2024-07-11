@@ -3206,7 +3206,7 @@ div[role="option"]::before {
     .ant-card-body {
       @apply p-[1.25rem];
       .card-description {
-        @apply text-[#242B37];
+        @apply text-[#242B37] min-h-[44px];
       }
       .btn-right {
         @apply text-[#5482C8] opacity-0;

@@ -31,6 +31,7 @@ module.exports = {
         canDisabled: "#AAB2BF",
         canGray: "#F7F8FC",
         canGrey1: "#F4F5FA",
+        canGrey1_Opacity70: "#F4F5FAB2",
         canGrey2: "#CCD4E7",
         canGrey3: "#696E78",
         canLight: "#777F93",
