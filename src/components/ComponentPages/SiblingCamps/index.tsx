@@ -6,8 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "src/store";
 import { setSiblingCampData } from "src/store/slices/campDetailSlice";
 const SiblingCamps = () => {
-  const router = useRouter()
-  const { campStatement,siblingCampData,history,campRecord } = useSelector(
+  const router = useRouter();
+  const { campStatement, siblingCampData, history, campRecord } = useSelector(
     (state: RootState) => ({
       campStatement: state?.topicDetails?.campStatement,
       siblingCampData: state?.topicDetails?.siblingCampData,
@@ -15,26 +15,27 @@ const SiblingCamps = () => {
       campRecord: state?.topicDetails?.currentCampRecord,
     })
   );
-  const secondToLastElement = campRecord.parentCamps[campRecord?.parentCamps.length - 2]
+  const secondToLastElement =
+    campRecord.parentCamps[campRecord?.parentCamps.length - 2];
   const parentCampNum = secondToLastElement ? secondToLastElement.camp_num : 1;
-  const [siblingCampsData,setSiblingCampsData] = useState([])
+  const [siblingCampsData, setSiblingCampsData] = useState([]);
   const [campHistory, setCampHistory] = useState(history);
   const dispatch = useDispatch();
   const siblingCampsFunction = async () => {
     let body = {
-      topic_num:88,
-      camp_num:1,
-      parent_camp_num:parentCampNum
-    }
-    console.log(body.parent_camp_num,"body")
-    let response = await getSiblingCamp(body)
-    setSiblingCampsData(response?.data)
-    dispatch(setSiblingCampData(response?.data))
-  }
-  
-  useEffect(()=>{
-    siblingCampsFunction()
-  },[])
+      topic_num: 88,
+      camp_num: 1,
+      parent_camp_num: parentCampNum,
+    };
+    console.log(body.parent_camp_num, "body");
+    let response = await getSiblingCamp(body);
+    setSiblingCampsData(response?.data);
+    dispatch(setSiblingCampData(response?.data));
+  };
+
+  useEffect(() => {
+    siblingCampsFunction();
+  }, []);
   useEffect(() => {
     setCampHistory(history);
   }, [history]);

@@ -673,7 +673,11 @@ const TimelineInfoBar = ({
                                 key={index}
                               >
                                 <a className="!text-canBlack">
-                                  <span className={styles.slashStyle + " !text-canBlack"}>
+                                  <span
+                                    className={
+                                      styles.slashStyle + " !text-canBlack"
+                                    }
+                                  >
                                     {index !== 0 && <DoubleRightOutlined />}
                                   </span>
                                   <span

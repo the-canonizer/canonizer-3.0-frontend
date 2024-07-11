@@ -18,7 +18,7 @@ import {
 } from "src/store/slices/campDetailSlice";
 import { DownOutlined } from "@ant-design/icons";
 import Image from "next/image";
-import arrow from "../../../../../public/images/caret-icon.svg"
+import arrow from "../../../../../public/images/caret-icon.svg";
 
 const { TreeNode } = Tree;
 
@@ -330,7 +330,8 @@ const CampTree = ({
                   >
                     <div
                       className={
-                        "treeListItem !my-2.5 " + styles.topicDetailsTreeListItem
+                        "treeListItem !my-2.5 " +
+                        styles.topicDetailsTreeListItem
                       }
                     >
                       <span
@@ -452,17 +453,19 @@ const CampTree = ({
                               : data[item].score?.toFixed(2)
                           }
                         /> */}
-                        
+
                         <Image
                           src="/images/hand-icon.svg"
                           alt="svg"
                           height={10}
                           width={8}
                         />
-                       <span className="text-xs text-white"> { is_checked
-                              ? data[item].full_score?.toFixed(2)
-                              : data[item].score?.toFixed(2)
-                          }</span>
+                        <span className="text-xs text-white">
+                          {" "}
+                          {is_checked
+                            ? data[item].full_score?.toFixed(2)
+                            : data[item].score?.toFixed(2)}
+                        </span>
                       </span>
                     </div>
                   </div>

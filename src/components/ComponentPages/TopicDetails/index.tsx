@@ -476,65 +476,69 @@ const TopicDetails = ({ serverSideCall }: any) => {
     <Fragment>
       <Layout
         rightSidebar={
-         ( !openConsensusTreePopup && <Fragment>
-            <div className="support-tree-parent-box w-full">
-              <div className="flex gap-2 items-center mb-5">
-                <h3 className="uppercase text-base font-semibold text-canBlack">
-                  Support Tree
-                </h3>
-                <div className="handicon-badge py-1 px-2.5 bg-canOrange rounded-md inline-flex items-center">
-                  <Image
-                    src="/images/hand-icon.svg"
-                    alt="svg"
-                    height={24}
-                    width={24}
-                  />
-                  <span className="text-white font-medium">
-                    {campRecord?.is_archive
-                      ? 0
-                      : totalCampScoreForSupportTree?.toFixed(2)}
-                  </span>
+          !openConsensusTreePopup && (
+            <Fragment>
+              <div className="support-tree-parent-box w-full">
+                <div className="flex gap-2 items-center mb-5">
+                  <h3 className="uppercase text-base font-semibold text-canBlack">
+                    Support Tree
+                  </h3>
+                  <div className="handicon-badge py-1 px-2.5 bg-canOrange rounded-md inline-flex items-center">
+                    <Image
+                      src="/images/hand-icon.svg"
+                      alt="svg"
+                      height={24}
+                      width={24}
+                    />
+                    <span className="text-white font-medium">
+                      {campRecord?.is_archive
+                        ? 0
+                        : totalCampScoreForSupportTree?.toFixed(2)}
+                    </span>
+                  </div>
+                </div>
+                <div className="bg-canGray py-7 px-2.5 lg:px-5 rounded-lg">
+                  <div className="border border-canGrey2 bg-white rounded-lg lg:p-5 p-2.5">
+                    <SupportTreeCard
+                      loadingIndicator={loadingIndicator}
+                      isRemovingSupport={isRemovingSupport}
+                      handleLoadMoreSupporters={handleLoadMoreSupporters}
+                      getCheckSupportStatus={getCheckSupportStatus}
+                      removeApiSupport={removeApiSupport}
+                      // fetchTotalScore={fetchTotalScore}
+                      totalSupportScore={totalSupportScore}
+                      totalFullSupportScore={totalFullSupportScore}
+                      removeSupport={removeSupport}
+                      topicList={topicList}
+                      removeSupportForDelegate={removeSupportForDelegate}
+                      isSupportTreeCardModal={isSupportTreeCardModal}
+                      setIsSupportTreeCardModal={setIsSupportTreeCardModal}
+                      isDelegateSupportTreeCardModal={
+                        isDelegateSupportTreeCardModal
+                      }
+                      setIsDelegateSupportTreeCardModal={
+                        setIsDelegateSupportTreeCardModal
+                      }
+                      handleSupportTreeCardCancel={handleSupportTreeCardCancel}
+                      removeSupportSpinner={removeSupportSpinner}
+                      supportTreeForCamp={supportTreeForCamp}
+                      totalCampScoreForSupportTree={
+                        totalCampScoreForSupportTree
+                      }
+                      backGroundColorClass={backGroundColorClass}
+                      getCheckStatusAPI={GetCheckStatusData}
+                      GetActiveSupportTopic={GetActiveSupportTopic}
+                      GetActiveSupportTopicList={GetActiveSupportTopicList}
+                    />
+                  </div>
                 </div>
               </div>
-              <div className="bg-canGray py-7 px-2.5 lg:px-5 rounded-lg">
-                <div className="border border-canGrey2 bg-white rounded-lg lg:p-5 p-2.5">
-                  <SupportTreeCard
-                    loadingIndicator={loadingIndicator}
-                    isRemovingSupport={isRemovingSupport}
-                    handleLoadMoreSupporters={handleLoadMoreSupporters}
-                    getCheckSupportStatus={getCheckSupportStatus}
-                    removeApiSupport={removeApiSupport}
-                    // fetchTotalScore={fetchTotalScore}
-                    totalSupportScore={totalSupportScore}
-                    totalFullSupportScore={totalFullSupportScore}
-                    removeSupport={removeSupport}
-                    topicList={topicList}
-                    removeSupportForDelegate={removeSupportForDelegate}
-                    isSupportTreeCardModal={isSupportTreeCardModal}
-                    setIsSupportTreeCardModal={setIsSupportTreeCardModal}
-                    isDelegateSupportTreeCardModal={
-                      isDelegateSupportTreeCardModal
-                    }
-                    setIsDelegateSupportTreeCardModal={
-                      setIsDelegateSupportTreeCardModal
-                    }
-                    handleSupportTreeCardCancel={handleSupportTreeCardCancel}
-                    removeSupportSpinner={removeSupportSpinner}
-                    supportTreeForCamp={supportTreeForCamp}
-                    totalCampScoreForSupportTree={totalCampScoreForSupportTree}
-                    backGroundColorClass={backGroundColorClass}
-                    getCheckStatusAPI={GetCheckStatusData}
-                    GetActiveSupportTopic={GetActiveSupportTopic}
-                    GetActiveSupportTopicList={GetActiveSupportTopicList}
-                  />
-                </div>
-              </div>
-            </div>
 
-            <div className="my-16">
-              <CampRecentActivities />
-            </div>
-          </Fragment>)
+              <div className="my-16">
+                <CampRecentActivities />
+              </div>
+            </Fragment>
+          )
         }
         afterHeader={
           <Fragment>

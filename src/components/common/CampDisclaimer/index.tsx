@@ -16,7 +16,9 @@ const CampDisclaimer = () => {
   );
   return (
     <div className="flex justify-between mb-3 items-center">
-      <h3 className="font-semibold text-canBlack text-base">CAMP: {campRecord?.camp_name}</h3>
+      <h3 className="font-semibold text-canBlack text-base">
+        CAMP: {campRecord?.camp_name}
+      </h3>
       <div className="flex gap-4 items-center">
         <div className="flex-1">
           <SocialShareUI
