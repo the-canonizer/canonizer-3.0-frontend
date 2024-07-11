@@ -1,11 +1,19 @@
 import { Typography, Button, Row, Col } from "antd";
 import { LeftOutlined } from "@ant-design/icons";
+import PropTypes from "prop-types";
 
 import CommonCards from "components/shared/Card";
 import Category from "./singleCat";
 import SortByDropdown from "./sortByDropdown";
 
 const { Title, Paragraph } = Typography;
+
+const propTypes = {
+  onBackClick: PropTypes.func,
+  isMobile: PropTypes.bool,
+  tags: PropTypes.array,
+  onSort: PropTypes.func,
+};
 
 const CatsList = ({ onBackClick, isMobile, tags, onSort }) => {
   return (
@@ -62,5 +70,7 @@ const CatsList = ({ onBackClick, isMobile, tags, onSort }) => {
     </CommonCards>
   );
 };
+
+CatsList.propTypes = propTypes;
 
 export default CatsList;
