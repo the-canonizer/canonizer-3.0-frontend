@@ -4,9 +4,9 @@ import Link from "next/link";
 
 import CommonCard from "src/components/shared/Card";
 import ViewCounts from "src/components/shared/ViewsCount";
-import NameSpaceLabel from "src/components/shared/NameSpaceLabel";
 import AvatarGroup from "src/components/shared/AvaratGroup";
 import CardDescription from "./descriptions";
+import TopicCatsLabel from "components/shared/TopicCategories";
 
 const SingleTopicCard = ({ topic }) => {
   if (!topic) {
@@ -35,7 +35,7 @@ const SingleTopicCard = ({ topic }) => {
       <CardDescription description={topic?.statement?.value} />
       <div className="flex justify-between mt-auto pt-5 mt-auto flex-row md:flex-row lg:flex-col 2xl:flex-row">
         <div className="text-letopic flex flex-col">
-          <NameSpaceLabel namespace={topic?.namespace} />
+          <TopicCatsLabel tags={topic?.topicTags} />
           <ViewCounts views={topic?.views} className="!mt-2" />
         </div>
         <AvatarGroup

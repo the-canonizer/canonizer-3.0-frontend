@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { useDispatch } from "react-redux";
 import {
   getCanonizedCampStatementApi,
@@ -59,7 +59,7 @@ const TopicDetailsPage = ({
       : "Camp";
 
   return (
-    <Layout>
+    <Fragment>
       {tree?.status_code == 404 ||
         campRecord?.status_code == 404 ||
         campRecord?.status_code == 400 ? (
@@ -72,7 +72,7 @@ const TopicDetailsPage = ({
       ) : (
         <TopicDetails serverSideCall={serverSideCall} />
       )}
-    </Layout>
+    </Fragment>
   );
 };
 

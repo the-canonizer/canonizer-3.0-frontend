@@ -5,9 +5,9 @@ import { isServer, replaceSpecialCharacters } from "src/utils/generalUtility";
 import CommonCard from "src/components/shared/Card";
 import AvatarGroup from "src/components/shared/AvaratGroup";
 import ViewCounts from "src/components/shared/ViewsCount";
-import NameSpaceLabel from "src/components/shared/NameSpaceLabel";
 import CardDescription from "../HotTopics/descriptions";
 import SocialShare from "components/shared/ShareTopic";
+import TopicCatsLabel from "components/shared/TopicCategories";
 
 const SingleTopicWithImage = ({ topic }) => {
   if (!topic) {
@@ -66,7 +66,7 @@ const SingleTopicWithImage = ({ topic }) => {
               )}`}
             >
               <a>
-                <Typography.Paragraph className="m-0 text-base lg:text-xl font-medium lg:font-bold font-inter absolute -top-14 left-1 right-0 text-white px-3 py-0 !mb-0 flex w-full lg:static lg:px-0 lg:py-0 lg:text-canBlack">
+                <Typography.Paragraph className="m-0 text-base lg:text-xl font-medium lg:font-bold font-inter absolute -top-14 left-1 right-0 text-white px-3 py-0 !mb-0 flex w-full lg:static lg:px-0 lg:py-0 lg:text-canBlack hover:!text-canHoverBlue">
                   {topic?.title}
                 </Typography.Paragraph>
               </a>
@@ -82,7 +82,7 @@ const SingleTopicWithImage = ({ topic }) => {
           <CardDescription description={topic?.description} />
           <div className="flex justify-between pt-3 mt-auto">
             <div className="text-left flex flex-col sm:flex-row">
-              <NameSpaceLabel namespace={topic?.namespace} />
+              <TopicCatsLabel tags={topic?.topicTags} />
               <div className="absolute top-2 right-2 px-2 rounded-md bg-canBlack lg:static lg:bg-transparent lg:px-0 lg:flex">
                 <ViewCounts views={topic?.views} />
               </div>
