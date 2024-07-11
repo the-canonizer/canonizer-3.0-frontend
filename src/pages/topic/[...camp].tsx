@@ -52,17 +52,17 @@ const TopicDetailsPage = ({
 
   let ErrorStatus =
     tree?.status_code == 404 ||
-      (tree?.status_code == 422 &&
-        (!tree?.error?.camp_num ||
-          (tree?.error?.camp_num && tree?.error?.topic_num)))
+    (tree?.status_code == 422 &&
+      (!tree?.error?.camp_num ||
+        (tree?.error?.camp_num && tree?.error?.topic_num)))
       ? "Topic"
       : "Camp";
 
   return (
     <Layout>
       {tree?.status_code == 404 ||
-        campRecord?.status_code == 404 ||
-        campRecord?.status_code == 400 ? (
+      campRecord?.status_code == 404 ||
+      campRecord?.status_code == 400 ? (
         <DataNotFound
           name={ErrorStatus}
           message={`${ErrorStatus} not found`}
@@ -122,7 +122,6 @@ export async function getServerSideProps({ req, query, res }) {
 
 
   await generateHashValue();
-
 
   const currentDate = new Date().valueOf();
   const reqBodyForService = {
