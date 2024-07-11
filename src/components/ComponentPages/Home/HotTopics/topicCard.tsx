@@ -32,7 +32,7 @@ const SingleTopicCard = ({ topic }) => {
           <RightOutlined className="text-canBlue font-bold hidden rightArrow" />
         </a>
       </Link>
-      <CardDescription description={topic?.statement?.value} />
+      <CardDescription description={topic?.statement?.parsed_value} />
       <div className="flex justify-between mt-auto pt-5 mt-auto flex-row md:flex-row lg:flex-col 2xl:flex-row">
         <div className="text-letopic flex flex-col">
           <TopicCatsLabel tags={topic?.topicTags} />
