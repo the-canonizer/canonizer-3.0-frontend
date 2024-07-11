@@ -25,7 +25,7 @@ const CategoriesList = () => {
   const isMobile = useIsMobile();
 
   const getTags = async () => {
-    await getAllTags();
+    await getAllTags(1, 20);
   };
 
   useEffect(() => {
