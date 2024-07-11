@@ -155,7 +155,7 @@ const TrandingTopics = () => {
                       </Typography.Text>
                       <Tag
                         className={
-                          "bg-canOrange text-white border-0 rounded-[5px] ml-1 inline-flex py-[2px] flex items-center text-12"
+                          "bg-canOrange text-white border-0 rounded-md ml-1 inline-flex py-[2px] flex items-center text-12"
                         }
                       >
                         <HandIcon />

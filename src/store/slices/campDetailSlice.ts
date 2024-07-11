@@ -22,8 +22,8 @@ export const treeSlice = createSlice({
       },
     },
     manageSupportStatusCheck: false,
-    openDrawer:false,
-    openConsensusTreePopup:false,
+    openDrawer: false,
+    openConsensusTreePopup: false,
     manageSupportUrlLink: null,
     CurrentCheckSupportStatus: null,
     currentGetCheckSupportExistsData: {
@@ -39,7 +39,7 @@ export const treeSlice = createSlice({
     },
     removedReasons: null,
     changeGoneLive: false,
-    siblingCampData:[]
+    siblingCampData: [],
   },
   reducers: {
     setTree: (state, action) => {
@@ -151,7 +151,7 @@ export const {
   setRemovedReasons,
   setChangeGoneLive,
   setSiblingCampData,
-  setOpenConsensusTreePopup
+  setOpenConsensusTreePopup,
 } = treeSlice.actions;
 
 export default treeSlice.reducer;

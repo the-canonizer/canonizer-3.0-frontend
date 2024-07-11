@@ -67,7 +67,7 @@ function RegistrationUi({
   };
 
   return (
-    <Card className="rounded-lg" bordered={false}>
+    <Card className="rounded-lg [&_.ant-card-body]:pb-3 mb-8" bordered={false}>
       <Form
         form={form}
         name="registration"
@@ -218,7 +218,7 @@ function RegistrationUi({
           <PrimaryButton
             type="primary"
             htmlType="submit"
-            className="h-[40px] text-sm rounded-md !w-8/12 lg:!w-4/12"
+            className="h-[40px] text-sm rounded-lg !w-8/12 lg:!w-4/12"
             block
             data-testid="submitButton"
             id="register-btn"

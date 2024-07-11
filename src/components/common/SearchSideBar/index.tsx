@@ -21,7 +21,7 @@ export default function SearchSideBar() {
   const campRoute = () => {
     router?.push("/search/topic");
   };
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   return (
     <>
@@ -126,26 +126,30 @@ export default function SearchSideBar() {
               passHref
             >
               <a>
-              <Button
-                size="large"
-                className={
-                  router?.asPath.includes("/search/nickname?")
-                    ? "active"
-                    : "btn"
-                }
-                disabled={router.pathname == "/search/nickname" ? true : false}
-                onClick={(()=>{ dispatch(setClickAdvanceFilterOption(false))})}
-              >
-                <Image
-                  className={styles.nickname_icon}
-                  id="nick_name"
-                  alt="face Image"
-                  src={filter}
-                  width={15}
-                  height={15}
-                />
-                <a>Nickname</a>
-              </Button>
+                <Button
+                  size="large"
+                  className={
+                    router?.asPath.includes("/search/nickname?")
+                      ? "active"
+                      : "btn"
+                  }
+                  disabled={
+                    router.pathname == "/search/nickname" ? true : false
+                  }
+                  onClick={() => {
+                    dispatch(setClickAdvanceFilterOption(false));
+                  }}
+                >
+                  <Image
+                    className={styles.nickname_icon}
+                    id="nick_name"
+                    alt="face Image"
+                    src={filter}
+                    width={15}
+                    height={15}
+                  />
+                  <a>Nickname</a>
+                </Button>
               </a>
             </Link>
           </div>

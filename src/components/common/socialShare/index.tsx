@@ -49,12 +49,12 @@ const SocialShare = ({ campUrl, campName }: any) => {
         trigger={["click"]}
       >
         <a className={styles.shareIcon} onClick={(e) => e.preventDefault()}>
-                    <Image
-                      src="/images/share-icon.svg"
-                      alt="svg"
-                      height={24}
-                      width={24}
-                    />
+          <Image
+            src="/images/share-icon.svg"
+            alt="svg"
+            height={24}
+            width={24}
+          />
         </a>
       </Dropdown>
     </Fragment>

@@ -21,7 +21,7 @@ export const getCanonizedTopicsApi = async (reqBody, loadMore = false) => {
       HomePageRequests.getCanonizedTopics(reqBody),
       false
     );
-    
+
     store.dispatch(setCanonizedTopics(topics?.data));
 
     return topics?.data;

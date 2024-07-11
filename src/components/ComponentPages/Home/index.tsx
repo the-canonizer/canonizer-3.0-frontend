@@ -1,5 +1,6 @@
 import { Fragment } from "react";
 import { Row, Col } from "antd";
+import { useSelector } from "react-redux";
 
 import useAuthentication from "src/hooks/isUserAuthenticated";
 
@@ -13,7 +14,6 @@ import WhatsNew from "./WhatsNew";
 import PreferedTopics from "./PreferedTopic";
 import RecentActivities from "./RecentActivities";
 import { useIsMobile } from "src/hooks/useIsMobile";
-import { useSelector } from "react-redux";
 import { RootState } from "src/store";
 
 const HomePageContainer = () => {

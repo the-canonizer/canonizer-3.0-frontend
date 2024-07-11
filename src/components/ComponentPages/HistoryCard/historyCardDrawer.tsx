@@ -7,12 +7,12 @@ const { Title } = Typography;
 function HistoryCardDrawer({
   onClick,
   displayText,
-  agreedSupporters=[],
-  notAgreedSupporters=[],
+  agreedSupporters = [],
+  notAgreedSupporters = [],
 }: any) {
   const [open, setOpen] = useState(false);
   const showDrawer = () => {
-    onClick()
+    onClick();
     setOpen(true);
   };
   const onClose = () => {
@@ -27,8 +27,15 @@ function HistoryCardDrawer({
     "Jane Doe",
   ];
   return (
-    <div onClick={open ? onClose : showDrawer} className="flex gap-2 cursor-pointer" >
-      <Button type="link" className="p-0 flex mt-0.5 gap-2 h-auto cursor-pointer" onClick={showDrawer}>
+    <div
+      onClick={open ? onClose : showDrawer}
+      className="flex gap-2 cursor-pointer"
+    >
+      <Button
+        type="link"
+        className="p-0 flex mt-0.5 gap-2 cursor-pointer"
+        onClick={showDrawer}
+      >
         <i className="icon-info-light"></i>
       </Button>
       <Drawer
@@ -54,7 +61,9 @@ function HistoryCardDrawer({
               footer={false}
               bordered
               dataSource={agreedSupporters}
-              renderItem={(item:any) => <List.Item>{item?.nickNameData?.name}</List.Item>}
+              renderItem={(item: any) => (
+                <List.Item>{item?.nickNameData?.name}</List.Item>
+              )}
             />
           </Tabs.TabPane>
           <Tabs.TabPane tab="Not Agreed" key="2">
@@ -64,7 +73,9 @@ function HistoryCardDrawer({
               footer={false}
               bordered
               dataSource={notAgreedSupporters}
-              renderItem={(item:any) => <List.Item>{item?.nickNameData?.name}</List.Item>}
+              renderItem={(item: any) => (
+                <List.Item>{item?.nickNameData?.name}</List.Item>
+              )}
             />
           </Tabs.TabPane>
         </Tabs>

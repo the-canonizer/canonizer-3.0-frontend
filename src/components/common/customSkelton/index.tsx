@@ -61,13 +61,13 @@ const CustomSkelton = ({
       actions={
         action
           ? [
-            <div key={0} className={styles.cardSkeleton_actions}>
-              <Skeleton
-                className={styles.cardSkeleton_actions_button}
-                count={1}
-              />
-            </div>,
-          ]
+              <div key={0} className={styles.cardSkeleton_actions}>
+                <Skeleton
+                  className={styles.cardSkeleton_actions_button}
+                  count={1}
+                />
+              </div>,
+            ]
           : []
       }
       title={
@@ -304,7 +304,7 @@ const CustomSkelton = ({
         </div>
       </Card>
     ) : /* eslint-enable */
-      null)
+    null)
   );
 };
 

@@ -26,13 +26,13 @@ const DeleteAllPopup = ({ onClose, onDelete, isOpen }) => {
       <div className="text-center mt-7">
         <SecondaryButton
           onClick={onClose}
-          className="rounded-md px-7 inline-flex items-center justify-center"
+          className="rounded-lg px-7 inline-flex items-center justify-center"
         >
           Go Back <ArrowLeftOutlined />
         </SecondaryButton>
         <PrimaryButton
           onClick={onDelete}
-          className="ml-4 rounded-md px-7 inline-flex items-center justify-center"
+          className="ml-4 rounded-lg px-7 inline-flex items-center justify-center"
         >
           Delete All <DeleteOutlined />
         </PrimaryButton>

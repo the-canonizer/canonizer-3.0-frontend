@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { Card, message } from "antd";
@@ -38,7 +38,7 @@ const Preferences = () => {
   };
 
   const getTags = async () => {
-    await getAllTags(1, 999999999999999999999999999999999);
+    await getAllTags();
   };
 
   useEffect(() => {
@@ -65,18 +65,16 @@ const Preferences = () => {
   };
 
   return (
-    <Fragment>
-      <Spinner>
-        <Card bordered={false}>
-          <PreferencesUI
-            onFinish={onFinish}
-            onChange={onChange}
-            tags={tags}
-            onSkip={onSkip}
-          />
-        </Card>
-      </Spinner>
-    </Fragment>
+    <Spinner>
+      <Card bordered={false}>
+        <PreferencesUI
+          onFinish={onFinish}
+          onChange={onChange}
+          tags={tags}
+          onSkip={onSkip}
+        />
+      </Card>
+    </Spinner>
   );
 };
 

@@ -365,19 +365,20 @@ export const getProperties = (item) => {
   return null;
 };
 
-export const capitalizeFirstLetter = (str) => str.charAt(0).toUpperCase() + str.slice(1);
+export const capitalizeFirstLetter = (str) =>
+  str.charAt(0).toUpperCase() + str.slice(1);
 
 export function parseCookies(cookiesString) {
-  const cookiesArray = cookiesString?.split('; ');
+  const cookiesArray = cookiesString?.split("; ");
   const cookiesObject = {};
 
-  cookiesArray?.forEach(cookie => {
-    const [key, value] = cookie?.split('=');
+  cookiesArray?.forEach((cookie) => {
+    const [key, value] = cookie?.split("=");
     cookiesObject[key] = value;
   });
 
   return cookiesObject;
-  }
+}
 
 export const historyTitle = (historyOf) => {
   switch (historyOf) {
@@ -394,6 +395,4 @@ export const historyTitle = (historyOf) => {
 
 export const convertToTime = (unixTime) => {
   return moment(unixTime * 1000).format("DD MMM YYYY, hh:mm:ss A");
-}
-
- 
+};
