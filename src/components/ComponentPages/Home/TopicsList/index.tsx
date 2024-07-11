@@ -344,7 +344,7 @@ const TopicsList = () => {
                           }/1-Agreement`,
                       }}
                     >
-                      <a className="flex justify-between mb-2.5 items-center">
+                      <a className="flex justify-between items-center">
                         <Typography.Paragraph className="m-0 text-base font-medium font-inter">
                           {ft?.topic_name}
                         </Typography.Paragraph>

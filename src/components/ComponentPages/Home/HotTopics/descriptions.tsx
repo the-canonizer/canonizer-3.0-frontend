@@ -21,9 +21,8 @@ const CardDescription = ({
   if (!description) {
     return (
       <div
-        className={`${
-          isBrowsing ? "text-base" : "text-sm"
-        } font-inter font-normal overflow-hidden text-canBlack opacity-80 line-clamp-4`}
+        className={`${isBrowsing ? "text-base" : "text-sm"
+          } font-inter font-normal overflow-hidden text-canBlack opacity-80 line-clamp-4`}
       >
         No description available
       </div>
@@ -32,9 +31,8 @@ const CardDescription = ({
 
   return (
     <div
-      className={`${
-        isBrowsing ? "text-base" : "text-sm"
-      } font-inter font-normal overflow-hidden text-canBlack opacity-80 line-clamp-4`}
+      className={`${isBrowsing ? "text-base" : "text-sm"
+        } font-inter font-normal overflow-hidden text-canBlack opacity-80 ${isBrowsing ? "line-clamp-2" : "line-clamp-4"} `}
       dangerouslySetInnerHTML={{
         __html: sanitizeHtml(description, {
           allowedAttributes: {
