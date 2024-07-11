@@ -10,6 +10,7 @@ import moment from "moment";
 import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
 import CustomSkelton from "../../../common/customSkelton";
 import Image from "next/image";
+import ViewCounts from "components/shared/ViewsCount";
 
 const { Paragraph } = Typography;
 
@@ -19,11 +20,12 @@ const covertToTime = (unixTime) => {
 };
 const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
   const router = useRouter();
-  const { campRecord, campStatement, history } = useSelector(
+  const { campRecord, campStatement, history, tree } = useSelector(
     (state: RootState) => ({
       campStatement: state?.topicDetails?.campStatement,
       history: state?.topicDetails?.history,
       campRecord: state?.topicDetails?.currentCampRecord,
+      tree: state?.topicDetails?.tree && state?.topicDetails?.tree[0],
     })
   );
   return loadingIndicator || !campStatement ? (
@@ -62,14 +64,7 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
               <p>Last update: 2 Jan 2024, 03:45 PM</p>
             </div>
             <div className="d-flex items-center gap-1">
-              <Image
-                src="/images/eye-regular-new.svg"
-                alt="svg"
-                className="icon-topic"
-                height={16}
-                width={16}
-              />
-              <span>1</span>
+              <ViewCounts views={tree[1] && tree[1]?.camp_views} />
             </div>
           </div>
           <hr className="my-3" />

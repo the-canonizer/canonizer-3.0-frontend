@@ -14,7 +14,7 @@ import {
   setCurrentTopicRecord,
   setCurrentCampRecord,
 } from "../../store/slices/campDetailSlice";
-import { formatTheDate } from "src/utils/generalUtility";
+import { formatTheDate, parseCookies } from "src/utils/generalUtility";
 import { setHistory } from "../../store/slices/campDetailSlice";
 import Layout from "src/hoc/layout";
 
@@ -25,6 +25,7 @@ import { setCurrentDate } from "src/store/slices/filtersSlice";
 import { useEffect, useRef } from "react";
 import DataNotFound from "src/components/ComponentPages/DataNotFound/dataNotFound";
 import { createToken } from "src/network/api/userApi";
+import { argon2id } from "hash-wasm";
 
 const TopicDetailsPage = ({
   current_date,
@@ -75,23 +76,66 @@ const TopicDetailsPage = ({
   );
 };
 
-export async function getServerSideProps({ req, query }) {
+export async function getServerSideProps({ req, query, res }) {
   let topicNum = query?.camp[0]?.split("-")[0];
   let campNum = query?.camp[1]?.split("-")[0] || 1;
   let token = null;
+
+
+  let hashValue
+  let cookies
+  const cookieKey = topicNum + '.' + campNum;
+  async function generateHashValue() {
+    const salt = Buffer.from(process.env.NEXT_PUBLIC_SALT_KEY);
+    const asOfData =
+      query?.asofdate && query?.asof == "bydate"
+        ? parseFloat(query?.asofdate)
+        : Date.now() / 1000;
+
+    const data = Math.ceil(asOfData)
+
+    const hash = await argon2id({
+      password: data.toString(),
+      salt,
+      parallelism: parseInt(process.env.NEXT_PUBLIC_PARALLELISM),
+      iterations: parseInt(process.env.NEXT_PUBLIC_ITERATIONS),
+      memorySize: parseInt(process.env.NEXT_PUBLIC_MEMORYSIZE),
+      hashLength: parseInt(process.env.NEXT_PUBLIC_HASHLENGTH),
+      outputType: "encoded"
+    });
+
+    const parts = hash?.split('$');
+    hashValue = "$" + parts[parts?.length - 2] + "$" + parts[parts?.length - 1];
+
+    let cookiesString = req.headers.cookie || '';
+    cookies = parseCookies(cookiesString);
+
+    if (!cookies[cookieKey] || !(cookieKey in cookies)) {
+      const expirationInSeconds = parseInt(process.env.NEXT_PUBLIC_EXPIRATIONDATE);
+      const expirationDate = new Date(Date.now() + expirationInSeconds * 1000);
+      const expires = expirationDate.toUTCString();
+      const cookieValue = `${hashValue}; expires=${expires}; path=/`;
+      res.setHeader('Set-Cookie', cookieKey + '=' + cookieValue);
+    }
+  }
+
+
+
+  await generateHashValue();
 
   const currentDate = new Date().valueOf();
   const reqBodyForService = {
     topic_num: topicNum,
     camp_num: campNum,
     asOf: query?.asof ?? "default",
-    asofdate:
+    asofdate: Math.ceil(
       query?.asofdate && query?.asof == "bydate"
         ? parseFloat(query?.asofdate)
-        : Date.now() / 1000,
+        : Date.now() / 1000),
     algorithm: query?.algo || "blind_popularity",
     update_all: 1,
     fetch_topic_history: query?.viewversion == "1" ? 1 : null,
+    view: req.cookies[cookieKey] ? req.cookies[cookieKey] : hashValue
   };
 
   const reqBody = {
