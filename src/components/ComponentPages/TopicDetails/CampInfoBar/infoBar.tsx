@@ -16,7 +16,7 @@ import {
   setManageSupportStatusCheck,
   setManageSupportUrlLink,
   setOpenConsensusTreePopup,
-  setOpenDrawer
+  setOpenDrawer,
 } from "../../../../store/slices/campDetailSlice";
 
 import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
@@ -25,7 +25,7 @@ import {
   FileTextOutlined,
   HeartOutlined,
   PrinterOutlined,
-  StockOutlined
+  StockOutlined,
 } from "@ant-design/icons";
 import Link from "next/link";
 import {
@@ -39,7 +39,7 @@ import { showLoginModal } from "src/store/slices/uiSlice";
 import RefineFilter from "../../RefineFilter";
 import LatestFilter from "../../LatestFilter";
 import Image from "next/image";
-import CampDisclaimer from "../../../common/CampDisclaimer"
+import CampDisclaimer from "../../../common/CampDisclaimer";
 
 const CodeIcon = () => (
   <svg
@@ -55,13 +55,11 @@ const CodeIcon = () => (
   </svg>
 );
 
-
-
 const InfoBar = ({
   payload = null,
   isTopicPage = false,
   getCheckSupportStatus = null,
-  onCreateCamp = () => { },
+  onCreateCamp = () => {},
 }: any) => {
   const { isUserAuthenticated } = useAuthentication();
 
@@ -88,7 +86,7 @@ const InfoBar = ({
     includeReview,
     is_checked,
     selectedAsOf,
-    algorithms
+    algorithms,
   } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
     campRecord: state?.topicDetails?.currentCampRecord,
@@ -159,8 +157,9 @@ const InfoBar = ({
 
   const onCampForumClick = () => {
     router?.push({
-      pathname: `/forum/${router?.query?.camp[0]}/${router?.query?.camp[1] || "1"
-        }/threads`,
+      pathname: `/forum/${router?.query?.camp[0]}/${
+        router?.query?.camp[1] || "1"
+      }/threads`,
     });
   };
   const eventLinePath = () => {
@@ -221,10 +220,10 @@ const InfoBar = ({
     }, 100);
   };
   const showDrawer = () => {
-    dispatch(setOpenDrawer(true))
+    dispatch(setOpenDrawer(true));
   };
   const showConsensusTree = () => {
-    dispatch(setOpenConsensusTreePopup(!openConsensusTreePopup))
+    dispatch(setOpenConsensusTreePopup(!openConsensusTreePopup));
   };
   const campForumDropdownMenu = (
     <Menu className={styles.campForumDropdownMenu}>
@@ -257,8 +256,9 @@ const InfoBar = ({
       <Menu.Item
         icon={
           <i
-            className={`icon-subscribe ${!!topicSubscriptionID && "text-primary"
-              }`}
+            className={`icon-subscribe ${
+              !!topicSubscriptionID && "text-primary"
+            }`}
           ></i>
         }
         onClick={() => {
@@ -280,13 +280,14 @@ const InfoBar = ({
       <Menu.Item
         icon={
           <i
-            className={`icon-subscribe ${!!campSubscriptionID && "text-primary"
-              }`}
+            className={`icon-subscribe ${
+              !!campSubscriptionID && "text-primary"
+            }`}
           ></i>
         }
         disabled={
           (!!campSubscriptionID && campRecord?.flag == 2) ||
-            campRecord?.length == 0
+          campRecord?.length == 0
             ? true
             : false
         }
@@ -348,7 +349,7 @@ const InfoBar = ({
               }}
             >
               {getCheckSupportStatus?.is_delegator == 1 ||
-                getCheckSupportStatus?.support_flag != 1
+              getCheckSupportStatus?.support_flag != 1
                 ? K?.exceptionalMessages?.directJoinSupport
                 : K?.exceptionalMessages?.manageSupport}
             </div>
@@ -394,27 +395,27 @@ const InfoBar = ({
             href={
               campStatement?.length > 0
                 ? `/statement/history/${replaceSpecialCharacters(
-                  router?.query?.camp
-                    ? router?.query?.camp[0]
-                    : router?.query?.manageSupport[0],
-                  "-"
-                )}/${replaceSpecialCharacters(
-                  router?.query?.camp
-                    ? router?.query?.camp[1] ?? "1-Agreement"
-                    : router?.query?.manageSupport[1],
-                  "-"
-                )}`
+                    router?.query?.camp
+                      ? router?.query?.camp[0]
+                      : router?.query?.manageSupport[0],
+                    "-"
+                  )}/${replaceSpecialCharacters(
+                    router?.query?.camp
+                      ? router?.query?.camp[1] ?? "1-Agreement"
+                      : router?.query?.manageSupport[1],
+                    "-"
+                  )}`
                 : `/create/statement/${replaceSpecialCharacters(
-                  router?.query?.camp
-                    ? router?.query?.camp[0]
-                    : router?.query?.manageSupport?.at(0),
-                  "-"
-                )}/${replaceSpecialCharacters(
-                  router?.query?.camp
-                    ? router?.query?.camp[1] ?? "1-Agreement"
-                    : router?.query?.manageSupport?.at(1),
-                  "-"
-                )}`
+                    router?.query?.camp
+                      ? router?.query?.camp[0]
+                      : router?.query?.manageSupport?.at(0),
+                    "-"
+                  )}/${replaceSpecialCharacters(
+                    router?.query?.camp
+                      ? router?.query?.camp[1] ?? "1-Agreement"
+                      : router?.query?.manageSupport?.at(1),
+                    "-"
+                  )}`
             }
           >
             <a>
@@ -473,10 +474,10 @@ const InfoBar = ({
         >
           <div className="btnsWrap w-full">
             {isCampBtnVisible &&
-              currentCampNode?._isDisabled == 0 &&
-              currentCampNode?.parentIsOneLevel == 0 &&
-              (campRecord?.is_archive == 0 ||
-                campRecord?.is_archive == undefined) ? (
+            currentCampNode?._isDisabled == 0 &&
+            currentCampNode?.parentIsOneLevel == 0 &&
+            (campRecord?.is_archive == 0 ||
+              campRecord?.is_archive == undefined) ? (
               <Tooltip
                 title={
                   tree && !tree["1"]?.is_valid_as_of_time
@@ -497,35 +498,44 @@ const InfoBar = ({
                 >
                   <i className="icon-camp"></i> Create New Camp
                 </Button> */}
-                <div>{!isMobile && <CampDisclaimer />}</div> 
-                 <div className="flex gap-2 mt-2 items-center lg:flex-nowrap flex-wrap">
-                 <Button onClick={showConsensusTree} className="text-canBlack border border-canGrey2 py-2.5 lg:px-5 !h-[44px] !w-auto refine-btn !text-base font-medium  flex items-center justify-center gap-2.5 rounded-lg   bg-canGray">
-                 Consesnus Tree
-                 <Image
+                <div>{!isMobile && <CampDisclaimer />}</div>
+                <div className="flex gap-5 mt-2 items-center lg:flex-nowrap flex-wrap">
+                  <Button
+                    onClick={showConsensusTree}
+                    className="text-canBlack border border-canGrey2 py-2.5 lg:px-5 !h-[44px] !w-auto refine-btn  lg:!text-base !text-sm font-medium  flex items-center justify-center gap-2.5 rounded-lg   bg-canGray"
+                  >
+                    Consesnus Tree
+                    <Image
                       src="/images/caret-icon.svg"
                       alt="svg"
                       height={7}
                       width={14}
                     />
-                </Button>
-                <Button onClick={showDrawer} className="text-canBlack py-2.5 lg:px-5 h-[34px] rounded-lg w-auto  text-base font-medium  flex items-center justify-center !border !border-canBlack">
-                  Refine Filter
-                  <Image
+                  </Button>
+                  <Button
+                    onClick={showDrawer}
+                    className="gap-5 relative text-canBlack py-2.5 lg:px-5 h-[34px] rounded-lg w-auto  lg:text-base text-sm font-medium  flex items-center justify-center !border !border-canGrey2"
+                  >
+                    <span>Refine</span>
+                    <Image
                       src="/images/filter-con.svg"
                       alt="svg"
                       height={24}
                       width={24}
                     />
+                    <div className="w-3.5 h-3.5 rounded-full bg-canRed absolute -top-1.5 -right-1.5">
+                      {" "}
+                    </div>
                   </Button>
                   {(router.query.algo &&
                     selectedAlgorithm &&
                     lable?.algorithm_label !== undefined) ||
-                    is_camp_archive_checked ||
-                    is_checked ||
-                    selectedAsOf == "bydate" ||
-                    includeReview ||
-                    router?.query?.asof === "review" ||
-                    filteredScore != 0 ? (
+                  is_camp_archive_checked ||
+                  is_checked ||
+                  selectedAsOf == "bydate" ||
+                  includeReview ||
+                  router?.query?.asof === "review" ||
+                  filteredScore != 0 ? (
                     <LatestFilter />
                   ) : (
                     ""

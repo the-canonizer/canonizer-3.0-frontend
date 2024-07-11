@@ -39,11 +39,11 @@ const ViewCounts = ({
 
   return (
     <Typography.Paragraph
-      className={`!m-0 !text-canLight font-medium font-inter flex items-center ${className}`}
+      className={`!m-0 !text-canLight font-medium font-inter flex items-center gap-2 ${className}`}
       {...restProps}
     >
-      <EyeOutlined className="text-canLight p-1 text-medium" />{" "}
-      {!views || views == 0 ? 0 : formatNumber(views)}
+      <EyeOutlined className="text-canLight  text-medium" />{" "}
+      <span>{!views || views == 0 ? 0 : formatNumber(views)}</span>
     </Typography.Paragraph>
   );
 };

@@ -54,7 +54,7 @@ const onCampForumClick = () => {
        </div>
      </div>
     ):(
-      <div className="campfourm-withdata mb-5">
+      <div className="campfourm-withdata mb-5 mt-5">
       <div className="flex justify-between">
         <h3 className="text-lg text-canBlack font-semibold mb-5 uppercase">
           Camp Forum

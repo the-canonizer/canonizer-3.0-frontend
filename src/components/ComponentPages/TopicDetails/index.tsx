@@ -476,7 +476,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
     <Fragment>
       <Layout
         rightSidebar={
-          <Fragment>
+         ( !openConsensusTreePopup && <Fragment>
             <div className="support-tree-parent-box w-full">
               <div className="flex gap-2 items-center mb-5">
                 <h3 className="uppercase text-base font-semibold text-canBlack">
@@ -530,10 +530,11 @@ const TopicDetails = ({ serverSideCall }: any) => {
                 </div>
               </div>
             </div>
+
             <div className="my-16">
               <CampRecentActivities />
             </div>
-          </Fragment>
+          </Fragment>)
         }
         afterHeader={
           <Fragment>

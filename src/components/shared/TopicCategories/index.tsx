@@ -17,7 +17,7 @@ const TopicCatsLabel = ({ tags, loading = false, ...restProps }) => {
     );
   }
 
-  if (!tags.length) {
+  if (!tags?.length) {
     return null;
   }
 

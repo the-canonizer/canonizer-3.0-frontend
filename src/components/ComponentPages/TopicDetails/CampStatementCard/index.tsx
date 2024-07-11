@@ -43,7 +43,7 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
     <>
       <div className="camp-agrrement-new mb-3 bg-canGray py-8 px-6 rounded-lg border-t-2 border-canGeen">
         <div>
-          <div className="camp-agreement-header d-flex items-center mb-3 gap-2">
+          <div className="camp-agreement-header flex items-center mb-3 gap-2">
             <h3 className="text-base text-canBlack text-left font-semibold ">
               {K?.exceptionalMessages?.campStatementHeading}
             </h3>
@@ -55,8 +55,8 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
               width={16}
             />
           </div>
-          <div className="d-flex items-center justify-start gap-6 camp-header-content">
-            <div className="d-flex items-center">
+          <div className="flex items-center justify-start gap-6 camp-header-content">
+            <div className="flex items-center gap-2">
               <Image
                 src="/images/calendar-camp.svg"
                 alt="svg"
@@ -68,7 +68,7 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
                 Last update: {covertToTime(campStatement?.[0]?.go_live_time)}
               </p>
             </div>
-            <div className="d-flex items-center gap-1">
+            <div className="flex items-center gap-2">
               <ViewCounts views={tree?.[1] && tree[1]?.camp_views} />
             </div>
           </div>

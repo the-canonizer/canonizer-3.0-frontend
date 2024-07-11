@@ -7,22 +7,26 @@ import { RootState } from "src/store";
 import { setSiblingCampData } from "src/store/slices/campDetailSlice";
 const SiblingCamps = () => {
   const router = useRouter()
-  const { campStatement,siblingCampData,history } = useSelector(
+  const { campStatement,siblingCampData,history,campRecord } = useSelector(
     (state: RootState) => ({
       campStatement: state?.topicDetails?.campStatement,
       siblingCampData:state?.topicDetails?.siblingCampData,
       history: state?.topicDetails?.history,
+      campRecord: state?.topicDetails?.currentCampRecord,
     })
   );
+  const secondToLastElement = campRecord.parentCamps[campRecord?.parentCamps.length - 2]
+  const parentCampNum = secondToLastElement ? secondToLastElement.camp_num : 1;
   const [siblingCampsData,setSiblingCampsData] = useState([])
   const [campHistory, setCampHistory] = useState(history);
   const dispatch = useDispatch()
   const siblingCampsFunction = async()=>{
     let body = {
-      topic_num: router?.query?.camp[0]?.split("-")[0],
-      camp_num: router?.query?.camp[1]?.split("-")[0],
-      parent_camp_num:campHistory?.items?.[0]?.parent_camp_num ?? "0",
+      topic_num:88,
+      camp_num:1,
+      parent_camp_num:parentCampNum
     }
+    console.log(body.parent_camp_num,"body")
     let response = await getSiblingCamp(body)
     setSiblingCampsData(response?.data)
     dispatch(setSiblingCampData(response?.data))
