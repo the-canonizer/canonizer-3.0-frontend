@@ -569,7 +569,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
           </Fragment>
         }
       >
-        <SideBar
+        {/* <SideBar
           onCreateCamp={onCreateCamp}
           getTreeLoadingIndicator={getTreeLoadingIndicator}
           scrollToCampStatement={scrollToCampStatement}
@@ -577,7 +577,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
           setSupportTreeForCamp={setSupportTreeForCamp}
           backGroundColorClass={backGroundColorClass}
           loadingIndicator={loadingIndicator}
-        />
+        /> */}
         {/* <div className="flex flex-wrap w-full"> */}
         {/* <aside
             className={
