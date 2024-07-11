@@ -373,7 +373,7 @@ const TimelineInfoBar = ({
             </div>
           </div>
 
-          <div className={styles.topicDetailContentHead_Right}>
+           <div className={styles.topicDetailContentHead_Right}>
             <Typography.Paragraph
               className={"mb-0 campInfoRight " + styles.topicTitleStyle}
             >
@@ -390,7 +390,7 @@ const TimelineInfoBar = ({
                 </Fragment>
               )}
             </Typography.Paragraph>
-          </div>
+          </div> 
         </Spin>
       </div>
     </>
