@@ -37,7 +37,7 @@ const TopicCatsLabel = ({ tags, loading = false, ...restProps }) => {
       <FlagOutlined className="text-canLight p-1 text-medium" />
       <Typography.Paragraph className="line-clamp-1 max-w-52 !mb-0">
         {tags.map((item, idx) => (
-          <Fragment>
+          <Fragment key={item?.id}>
             <LinkItem
               text={item?.title}
               link={{ pathname: `/categories/${item?.id}` }}

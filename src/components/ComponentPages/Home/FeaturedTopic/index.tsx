@@ -37,7 +37,7 @@ const FeaturedTopic = () => {
       <div className="mt-4">
         <Slider {...settings}>
           {topicData?.map((ft) => (
-            <SingleTopicWithImage topic={ft} />
+            <SingleTopicWithImage topic={ft} key={ft?.id} />
           ))}
         </Slider>
       </div>
