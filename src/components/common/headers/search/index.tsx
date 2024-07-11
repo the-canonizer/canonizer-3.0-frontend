@@ -335,11 +335,11 @@ const HeaderSearch = ({ className = "" }: any) => {
             : searchVal
         }
         onFocus={(e) => {
-          console.log("eee--", e);
+          // console.log("eee--", e);
           setIsFullWidth(true);
         }}
         onBlur={(e) => {
-          console.log("eee--", e);
+          // console.log("eee--", e);
           setIsFullWidth(false);
         }}
         className={`ml-5 transition-all delay-300 [&>div]:!border-0 ${

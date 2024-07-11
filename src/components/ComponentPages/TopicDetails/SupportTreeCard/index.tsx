@@ -238,7 +238,7 @@ const SupportTreeCard = ({
     campSupportingTree: supportTreeForCamp,
     asof: state?.filters?.filterObject?.asof,
   }));
-  console.log(campSupportingTree, "plooo");
+  // console.log(campSupportingTree, "plooo");
 
   useEffect(() => {
     if (campSupportingTree?.length > 0) {
