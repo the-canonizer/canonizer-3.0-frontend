@@ -335,7 +335,7 @@ function HistoryCard({
           
           {
             campStatement?.status == "in_review" &&
-            (!campStatement?.grace_period || commited) && (
+            (!campStatement?.grace_period || commited) && isUserAuthenticated && (
               <>
                 <div className="agreement-wrapper">
                   {(campStatement?.ifICanAgreeAndObject || campStatement?.ifICanAgreeAndObject == undefined) && !!(
