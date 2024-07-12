@@ -319,7 +319,7 @@ const HeaderSearch = ({ className = "" }: any) => {
     <Fragment>
       {/* <div className="md:hidden"> */}
       <AutoComplete
-        popupClassName={`max-w-2xl w-full bg-white ${styles.searchCategories} !hidden md:!flex`}
+        popupClassName={`max-w-2xl w-full bg-white ${styles.searchCategories} !hidden tab:!flex`}
         dropdownMatchSelectWidth={false}
         // defaultOpen={true}
         // open={true}
@@ -353,7 +353,7 @@ const HeaderSearch = ({ className = "" }: any) => {
         }`}
       >
         <div
-          className={`w-auto h-auto !hidden items-center ${className} md:!flex`}
+          className={`w-auto h-auto !hidden items-center ${className} tab:!flex`}
         >
           <SearchInputs
             placeholder="Search via keyword"
@@ -383,7 +383,7 @@ const HeaderSearch = ({ className = "" }: any) => {
           />
         </div>
       </AutoComplete>
-      <div className="block md:hidden ml-auto mr-3">
+      <div className="block tab:hidden ml-auto mr-3">
         <Link href="/search">
           <a className="text-lg text-canBlack hover:text-canBlue">
             <SearchOutlined />

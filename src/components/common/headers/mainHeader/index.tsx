@@ -13,11 +13,11 @@ const LoggedOutHeader = () => {
 
   return (
     <Fragment>
-      <div className="flex sm:justify-between md:justify-between justify-between items-center z-10 w-100 py-4">
+      <div className="flex md:justify-between justify-between items-center z-10 w-100 py-4">
         <Logo />
         <SearchHeader className="ml-5" />
         <HeaderMenu
-          className="ml-1 lg:ml-auto"
+          className="ml-1 tab:ml-auto"
           isUserAuthenticated={isUserAuthenticated}
         />
       </div>

@@ -16,7 +16,6 @@ import {
 } from "../../store/slices/campDetailSlice";
 import { formatTheDate, parseCookies } from "src/utils/generalUtility";
 import { setHistory } from "../../store/slices/campDetailSlice";
-import Layout from "src/hoc/layout";
 
 import { getHistoryApi } from "../../network/api/history";
 
