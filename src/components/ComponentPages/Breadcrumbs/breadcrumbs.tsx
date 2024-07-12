@@ -1,7 +1,4 @@
 import { Breadcrumb, Button } from "antd";
-// import "./breadcrumbs.scss";
-
-import { HomeOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { getCampBreadCrumbApi } from "src/network/api/campDetailApi";
 import { useRouter } from "next/router";
@@ -10,9 +7,9 @@ import { useSelector } from "react-redux";
 import moment from "moment";
 import { getCookies } from "src/utils/generalUtility";
 
-function Breadcrumbs({ compareMode = false, updateId }: any) {
+function Breadcrumbs({ compareMode = false, updateId = null, historyOF = null }: any) {
   const router = useRouter();
-  const historyOf = router?.asPath.split("/")[1];
+  const historyOf = compareMode ? historyOF : router?.asPath.split("/")[1];
 
   const { history, currentCampNode, asofdate, algorithm, asof } = useSelector(
     (state: RootState) => ({
@@ -58,7 +55,7 @@ function Breadcrumbs({ compareMode = false, updateId }: any) {
 
     if (
       (payload && Object.keys(payload).length > 0,
-      !!(getCookies() as any)?.loginToken)
+        !!(getCookies() as any)?.loginToken)
     ) {
       getBreadCrumbApiCall();
     }
@@ -81,6 +78,14 @@ function Breadcrumbs({ compareMode = false, updateId }: any) {
   const updateCurrentRecord = () => {
     router.push(`/manage/${historyOf}/${updateId}`);
   };
+
+  const { bread_crumb, topic_name } = breadCrumbRes;
+  const topicNum = bread_crumb?.at(0)?.topic_num;
+  const campNum = bread_crumb?.at(0)?.camp_num;
+  const campName = bread_crumb?.at(0)?.camp_name;
+  const formattedTopicName = topic_name.split(" ").join("-");
+  const href = `/topic/${topicNum}-${formattedTopicName}/${campNum}-${campName}`;
+
   return (
     <>
       <div className="max-md:mx-[-1rem] max-md:shadow-[0px_10px_10px_0px_#0000001A] md:bg-canGrey1_Opacity70 p-[1.5rem] md:rounded-[1.25rem] flex items-center justify-between gap-2 ">
@@ -92,25 +97,22 @@ function Breadcrumbs({ compareMode = false, updateId }: any) {
             </>
           }
         >
-          <Breadcrumb.Item href="">
+          <Breadcrumb.Item href="/">
             <i className="icon-home"></i>
           </Breadcrumb.Item>
           <Breadcrumb.Item href="">(Canon) General</Breadcrumb.Item>
-          <Breadcrumb.Item
-            href={`/topic/${router?.query?.camp?.at(
-              0
-            )}/${router?.query?.camp?.at(1)}`}
-          >
+          <Breadcrumb.Item href={href}>
             Topic: {breadCrumbRes && breadCrumbRes?.topic_name}
+
           </Breadcrumb.Item>
           <Breadcrumb.Item>
             {historyTitle() == "Statement History"
               ? "Statement"
               : historyTitle() == "Topic History"
-              ? "Topic"
-              : historyTitle() == "Camp History"
-              ? "Camp"
-              : null}{" "}
+                ? "Topic"
+                : historyTitle() == "Camp History"
+                  ? "Camp"
+                  : null}{" "}
             History
           </Breadcrumb.Item>
         </Breadcrumb>
@@ -125,10 +127,10 @@ function Breadcrumbs({ compareMode = false, updateId }: any) {
             {historyTitle() == "Statement History"
               ? " Statement"
               : historyTitle() == "Topic History"
-              ? " Topic"
-              : historyTitle() == "Camp History"
-              ? " Camp"
-              : null}
+                ? " Topic"
+                : historyTitle() == "Camp History"
+                  ? " Camp"
+                  : null}
             <i className="icon-edit"></i>
           </Button>
         )}

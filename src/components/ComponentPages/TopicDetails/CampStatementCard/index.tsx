@@ -65,8 +65,8 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
                 Last update: {covertToTime(campStatement?.[0]?.go_live_time)}
               </p>
             </div>
-            <div className="flex items-center gap-2">
-              <ViewCounts views={tree?.[1] && tree[1]?.camp_views} />
+            <div className="d-flex items-center gap-1">
+              <ViewCounts views={tree && tree[1]?.camp_views} />
             </div>
           </div>
           <hr className="my-3" />
@@ -86,87 +86,88 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
             </Paragraph>
 
             <div className="topicDetailsCollapseFooter printHIde camp">
-              {campStatement?.length <= 0 ? (
-                <CustomButton
-                  disabled={campRecord?.is_archive == 1 ? true : false}
-                  className=" printHIde flex items-center justify-center bg-canBlue py-5 gap-2 rounded-lg w-[320px] text-base font-medium text-center text-white"
-                  id="add-camp-statement-btn"
-                >
-                  <Link
-                    href={
-                      campStatement?.length < 0
-                        ? `/statement/history/${replaceSpecialCharacters(
-                            router?.query?.camp[0],
-                            "-"
-                          )}/${replaceSpecialCharacters(
-                            router?.query?.camp[1] ?? "1-Agreement",
-                            "-"
-                          )}`
-                        : `/create/statement/${replaceSpecialCharacters(
-                            router?.query?.camp[0],
-                            "-"
-                          )}/${replaceSpecialCharacters(
-                            router?.query?.camp[1] ?? "1-Agreement",
-                            "-"
-                          )}`
-                    }
-                    className="printHIde"
+              {
+                campStatement?.length <= 0 ? (
+                  <CustomButton
+                    disabled={campRecord?.is_archive == 1 ? true : false}
+                    className=" printHIde flex items-center justify-center bg-canBlue py-5 gap-2 rounded-lg w-[320px] text-base font-medium text-center text-white"
+                    id="add-camp-statement-btn"
                   >
-                    <a className="printHIde gap-2  flex items-center justify-center text-base font-medium">
-                      {K?.exceptionalMessages?.addCampStatementButton}
-                      <Image
-                        src="/images/manage-btn-icon.svg"
-                        alt="svg"
-                        className="icon-topic"
-                        height={24}
-                        width={24}
-                      />
-                    </a>
-                  </Link>
-                </CustomButton>
-              ) : (
-                <CustomButton
-                  disabled={campRecord?.is_archive == 1 ? true : false}
-                  className="btn-green printHIde hidden lg:hidden sm:flex md:flex items-center justify-center"
-                  id="add-camp-statement-btn"
-                >
-                  <Link
-                    href={
-                      campStatement?.length > 0
-                        ? `/statement/history/${replaceSpecialCharacters(
+                    <Link
+                      href={
+                        campStatement?.length < 0
+                          ? `/statement/history/${replaceSpecialCharacters(
                             router?.query?.camp[0],
                             "-"
                           )}/${replaceSpecialCharacters(
                             router?.query?.camp[1] ?? "1-Agreement",
                             "-"
                           )}`
-                        : `/create/statement/${replaceSpecialCharacters(
+                          : `/create/statement/${replaceSpecialCharacters(
                             router?.query?.camp[0],
                             "-"
                           )}/${replaceSpecialCharacters(
                             router?.query?.camp[1] ?? "1-Agreement",
                             "-"
                           )}`
-                    }
-                    className="printHIde"
+                      }
+                      className="printHIde"
+                    >
+                      <a className="printHIde gap-2  flex items-center justify-center text-base font-medium">
+                        {K?.exceptionalMessages?.addCampStatementButton}
+                        <Image
+                          src="/images/manage-btn-icon.svg"
+                          alt="svg"
+                          className="icon-topic"
+                          height={24}
+                          width={24}
+                        />
+                      </a>
+                    </Link>
+                  </CustomButton>
+                ) : (
+                  <CustomButton
+                    disabled={campRecord?.is_archive == 1 ? true : false}
+                    className="btn-green printHIde hidden lg:hidden sm:flex md:flex items-center justify-center"
+                    id="add-camp-statement-btn"
                   >
-                    <a className="printHIde gap-2  flex items-center justify-center text-base font-medium">
-                      {K?.exceptionalMessages?.manageCampStatementButton}
-                      <Image
-                        src="/images/manage-btn-icon.svg"
-                        alt="svg"
-                        className="icon-topic"
-                        height={24}
-                        width={24}
-                      />
-                    </a>
-                  </Link>
-                </CustomButton>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
+                    <Link
+                      href={
+                        campStatement?.length > 0
+                          ? `/statement/history/${replaceSpecialCharacters(
+                            router?.query?.camp[0],
+                            "-"
+                          )}/${replaceSpecialCharacters(
+                            router?.query?.camp[1] ?? "1-Agreement",
+                            "-"
+                          )}`
+                          : `/create/statement/${replaceSpecialCharacters(
+                            router?.query?.camp[0],
+                            "-"
+                          )}/${replaceSpecialCharacters(
+                            router?.query?.camp[1] ?? "1-Agreement",
+                            "-"
+                          )}`
+                      }
+                      className="printHIde"
+                    >
+                      <a className="printHIde gap-2  flex items-center justify-center text-base font-medium">
+                        {K?.exceptionalMessages?.manageCampStatementButton}
+                        <Image
+                          src="/images/manage-btn-icon.svg"
+                          alt="svg"
+                          className="icon-topic"
+                          height={24}
+                          width={24}
+                        />
+                      </a>
+                    </Link>
+                  </CustomButton >
+                )}
+            </div >
+          </div >
+        </div >
+      </div >
       {/* <Collapse
       defaultActiveKey={["1"]}
       expandIconPosition="right"

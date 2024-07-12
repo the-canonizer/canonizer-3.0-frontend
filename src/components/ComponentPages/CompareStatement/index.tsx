@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import HtmlDiff from "htmldiff-js";
-
-// import CompareStatementUI from "./UI/index-old";
-
 import { getCompareStatement } from "../../../network/api/history";
 import useAuthentication from "src/hooks/isUserAuthenticated";
 import CompareStatementUI from "./UI";
