@@ -342,7 +342,7 @@ const TimelineInfoBar = ({
         </Col>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
           <span className="text-xs text-canLight">Submitted On : </span>
-          <span className="text-base text-black">
+          <span className="text-base !text-black font-normal">
             {" "}
             {topicRecord && covertToTime(topicRecord?.submit_time)}
           </span>
@@ -409,7 +409,7 @@ const TimelineInfoBar = ({
       <Row gutter={5}>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
           <span className="text-xs text-canLight">Submitter</span>
-          <span className="author-name">{campRecord?.submitter_nick_name}</span>
+          <span className="author-name text-canBlue text-base font-semibold underline">{campRecord?.submitter_nick_name}</span>
         </Col>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
           <span className="text-xs text-canLight">Submitted On : </span>
