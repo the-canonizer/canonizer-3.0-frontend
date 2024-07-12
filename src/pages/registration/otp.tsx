@@ -22,6 +22,7 @@ const RegistrationPage = () => {
     }
 
     return () => dispatch(setEmailForOTP(null));
+    // eslint-disable-next-line
   }, []);
 
   return (

@@ -12,6 +12,7 @@ const RegistrationPage = () => {
 
   useEffect(() => {
     isUserAuthenticated && router?.push("/");
+    // eslint-disable-next-line
   }, []);
 
   return (

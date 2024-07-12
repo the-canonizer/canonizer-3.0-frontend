@@ -102,6 +102,7 @@ export const getServerSideProps = async () => {
       revalidate: 1296000,
     };
   } catch (error) {
+    // eslint-disable-next-line
     console.error("Error generating sitemap:", error);
     return { notFound: true };
   }
