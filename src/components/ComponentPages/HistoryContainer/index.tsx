@@ -321,43 +321,49 @@ function HistoryContainer() {
   };
 
   const renderCampHistories =
-    campHistory &&
-    campHistory?.items?.length &&
-    campHistory?.items?.map((campHistoryData, index) => {
-      return (
-        <>
-          <HistoryCard
-            collapseKeys={getCollapseKeys(campHistoryData, index)}
-            key={index}
-            campStatement={campHistoryData}
-            onSelectCompare={onSelectCompare}
-            userNickNameData={nickName}
-            ifIamSupporter={campHistory?.details?.ifIamSupporter}
-            ifSupportDelayed={campHistory?.details?.ifSupportDelayed}
-            ifIAmExplicitSupporter={
-              campHistory?.details?.ifIAmExplicitSupporter
-            }
-            topicNamespaceId={campHistory?.details?.topic?.namespace_id}
-            changeAgree={changeAgree}
-            changeDiscard={changeDiscard}
-            isDisabledCheck={
-              selectedTopic.length >= 2 &&
-              !selectedTopic?.includes(campHistoryData?.id)
-            }
-            isChecked={selectedTopic?.includes(campHistoryData?.id)}
-            setIsTreesApiCallStop={setIsTreesApiCallStop}
-            campHistoryItems={campHistory?.items}
-            callManageCampApi={callManageCampApi}
-            parentArchived={parentarchived}
-            unarchiveChangeSubmitted={
-              campHistory?.details?.unarchive_change_submitted
-            }
-            directarchived={directarchived}
-            historyState={historyOf}
-          />
-        </>
-      );
-    });
+    campHistory && campHistory?.items?.length && (
+      campHistory?.items?.map((campHistoryData, index) => {
+        return (
+          <>
+            <HistoryCard
+              collapseKeys={getCollapseKeys(campHistoryData, index)}
+              key={index}
+              campStatement={campHistoryData}
+              onSelectCompare={onSelectCompare}
+              userNickNameData={nickName}
+              ifIamSupporter={campHistory?.details?.ifIamSupporter}
+              ifSupportDelayed={campHistory?.details?.ifSupportDelayed}
+              ifIAmExplicitSupporter={
+                campHistory?.details?.ifIAmExplicitSupporter
+              }
+              topicNamespaceId={campHistory?.details?.topic?.namespace_id}
+              changeAgree={changeAgree}
+              changeDiscard={changeDiscard}
+              isDisabledCheck={
+                selectedTopic.length >= 2 &&
+                !selectedTopic?.includes(campHistoryData?.id)
+              }
+              isChecked={selectedTopic?.includes(campHistoryData?.id)}
+              setIsTreesApiCallStop={setIsTreesApiCallStop}
+              campHistoryItems={campHistory?.items}
+              callManageCampApi={callManageCampApi}
+              parentArchived={parentarchived}
+              unarchiveChangeSubmitted={
+                campHistory?.details?.unarchive_change_submitted
+              }
+              directarchived={directarchived}
+              historyState={historyOf}
+            />
+          </>
+        );
+      })
+    )
+  const handleBackButton = () => {
+    const topicDetails = router.query.camp?.at(0);
+    const campDetails = router.query.camp?.at(1);
+
+    router.push(`/topic/${topicDetails}/${campDetails}`);
+  }
 
   return (
     <>
@@ -369,13 +375,7 @@ function HistoryContainer() {
               type="link"
               className="text-2xl text-canBlack p-1 mb-14 gap-5 flex items-center max-lg:hidden leading-none"
               icon={<i className="icon-back"></i>}
-              onClick={() => {
-                router.push(
-                  `/topic/${router?.query?.camp?.at(
-                    0
-                  )}/${router?.query?.camp?.at(1)}`
-                );
-              }}
+              onClick={() => { handleBackButton() }}
             >
               {historyTitle(historyOf)}
             </Button>
