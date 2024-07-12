@@ -5,9 +5,9 @@ import Layout from "../../../hoc/layout";
 const StatementHistoryPage = () => {
   return (
     <>
-      <Layout>
+      {/* <Layout> */}
         <HistoryContainer />
-      </Layout>
+      {/* </Layout> */}
     </>
   );
 };

@@ -57,6 +57,7 @@ import {
 } from "src/utils/generalUtility";
 import HistoryComparison from "../HistoryContainer/Collapse/historyComparison";
 import Timer from "../Timer";
+import PrimaryButton from "components/shared/Buttons/PrimariButton";
 
 const { Title } = Typography;
 
@@ -487,7 +488,7 @@ function HistoryCard({
             <>
               <div className="cn-footer-btn">
                 <div className="cn-card-btn">
-                  <Button
+                  <PrimaryButton
                     size="large"
                     type="primary"
                     id={`submit-update-${campStatement?.id}`}
@@ -527,7 +528,7 @@ function HistoryCard({
                   >
                     Edit Based On This
                     <i className="icon-edit"></i>
-                  </Button>
+                  </PrimaryButton>
 
                   {
                      (campStatement?.status == "in_review") && (
@@ -625,7 +626,7 @@ function HistoryCard({
               <>
                 <div className="cn-footer-btn">
                   <div className="cn-card-btn">
-                    <Button
+                    <PrimaryButton
                       size="large"
                       type="primary"
                       id={`commit-change-${campStatement?.id}`}
@@ -635,7 +636,7 @@ function HistoryCard({
                     >
                       Commit Changes
                       <i className="icon-upload"></i>
-                    </Button>
+                    </PrimaryButton>
                     <Button
                       size="large"
                       id={`edit-change-${campStatement?.id}`}

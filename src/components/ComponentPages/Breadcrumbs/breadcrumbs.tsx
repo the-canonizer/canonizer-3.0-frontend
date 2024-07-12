@@ -9,6 +9,7 @@ import { RootState } from "src/store";
 import { useSelector } from "react-redux";
 import moment from "moment";
 import { getCookies } from "src/utils/generalUtility";
+import PrimaryButton from "components/shared/Buttons/PrimariButton";
 
 function Breadcrumbs({ compareMode = false, updateId }: any) {
   const router = useRouter();
@@ -115,7 +116,7 @@ function Breadcrumbs({ compareMode = false, updateId }: any) {
           </Breadcrumb.Item>
         </Breadcrumb>
         {!compareMode && updateId && (
-          <Button
+          <PrimaryButton
             size="large"
             type="primary"
             className="flex items-center justify-center rounded-[10px] max-lg:hidden gap-3.5 leading-none"
@@ -130,7 +131,7 @@ function Breadcrumbs({ compareMode = false, updateId }: any) {
               ? " Camp"
               : null}
             <i className="icon-edit"></i>
-          </Button>
+          </PrimaryButton>
         )}
       </div>
     </>
