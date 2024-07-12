@@ -66,7 +66,7 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
               </p>
             </div>
             <div className="flex items-center gap-2">
-              <ViewCounts views={tree?.[1] && tree[1]?.camp_views} />
+              <ViewCounts views={tree && tree[1]?.camp_views} />
             </div>
           </div>
           <hr className="my-3" />
@@ -96,19 +96,19 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
                     href={
                       campStatement?.length < 0
                         ? `/statement/history/${replaceSpecialCharacters(
-                            router?.query?.camp[0],
-                            "-"
-                          )}/${replaceSpecialCharacters(
-                            router?.query?.camp[1] ?? "1-Agreement",
-                            "-"
-                          )}`
+                          router?.query?.camp.at(0),
+                          "-"
+                        )}/${replaceSpecialCharacters(
+                          router?.query?.camp.at(1) ?? "1-Agreement",
+                          "-"
+                        )}`
                         : `/create/statement/${replaceSpecialCharacters(
-                            router?.query?.camp[0],
-                            "-"
-                          )}/${replaceSpecialCharacters(
-                            router?.query?.camp[1] ?? "1-Agreement",
-                            "-"
-                          )}`
+                          router?.query?.camp.at(0),
+                          "-"
+                        )}/${replaceSpecialCharacters(
+                          router?.query?.camp.at(1) ?? "1-Agreement",
+                          "-"
+                        )}`
                     }
                     className="printHIde"
                   >
@@ -134,19 +134,19 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
                     href={
                       campStatement?.length > 0
                         ? `/statement/history/${replaceSpecialCharacters(
-                            router?.query?.camp[0],
-                            "-"
-                          )}/${replaceSpecialCharacters(
-                            router?.query?.camp[1] ?? "1-Agreement",
-                            "-"
-                          )}`
+                          router?.query?.camp.at(0),
+                          "-"
+                        )}/${replaceSpecialCharacters(
+                          router?.query?.camp.at(1) ?? "1-Agreement",
+                          "-"
+                        )}`
                         : `/create/statement/${replaceSpecialCharacters(
-                            router?.query?.camp[0],
-                            "-"
-                          )}/${replaceSpecialCharacters(
-                            router?.query?.camp[1] ?? "1-Agreement",
-                            "-"
-                          )}`
+                          router?.query?.camp.at(0),
+                          "-"
+                        )}/${replaceSpecialCharacters(
+                          router?.query?.camp.at(1) ?? "1-Agreement",
+                          "-"
+                        )}`
                     }
                     className="printHIde"
                   >
