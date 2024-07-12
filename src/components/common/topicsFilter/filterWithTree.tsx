@@ -109,6 +109,7 @@ const FilterWithTree = ({
     viewThisVersionCheck,
     asofdate,
     algorithm,
+    openDrawer,
   } = useSelector((state: RootState) => ({
     algorithms: state.homePage?.algorithms,
     filteredScore: state?.filters?.filterObject?.filterByScore,
@@ -124,6 +125,7 @@ const FilterWithTree = ({
     viewThisVersionCheck: state?.filters?.viewThisVersionCheck,
     asofdate: state.filters?.filterObject?.asofdate,
     algorithm: state.filters?.filterObject?.algorithm,
+    openDrawer: state.topicDetails.openDrawer,
   }));
 
   const [value, setValue] = useState(
@@ -523,7 +525,7 @@ const FilterWithTree = ({
                     {router?.asPath.includes("/topic") ? (
                       <a
                         href={K?.Network?.URL?.algoInfoUrl}
-                        className="d-flex items-center "
+                        className="flex items-center "
                       >
                         {/* {/ <i className="icon-info"></i>  /} */}
                         <Image
@@ -596,7 +598,7 @@ const FilterWithTree = ({
             >
               <div className="score_value mb-3.5 pt-2.5 px-5 pb-7 w-full border-b border-canGrey2">
                 <Text className={styles.filterText}>
-                  <p className="d-flex items-center gap-1">
+                  <p className="flex items-center gap-1">
                     {" "}
                     Score value{" "}
                     <Image
@@ -690,7 +692,7 @@ const FilterWithTree = ({
                       >
                         Include review
                       </Radio>
-                      <div className="d-flex justify-between items-center">
+                      <div className="flex justify-between items-center">
                         <Radio
                           className={styles.radio + " topicFilterRadio"}
                           value={3}
@@ -701,7 +703,7 @@ const FilterWithTree = ({
                         >
                           Set Custom date
                         </Radio>
-                        <div className="d-flex">
+                        <div className="flex">
                           <DatePicker
                             disabled={
                               isDatePicker || selectedAsOf == "bydate"
@@ -739,8 +741,8 @@ const FilterWithTree = ({
                 </Space>
               </div>
             </Col>
-            <Col md={24}>
-              <div className={styles.treeContainer}>
+            <Col xs={24}>
+              { !openDrawer? <div className={styles.treeContainer}>
                 <CampTreeCard
                   getTreeLoadingIndicator={getTreeLoadingIndicator}
                   scrollToCampStatement={scrollToCampStatement}
@@ -751,30 +753,35 @@ const FilterWithTree = ({
                   setSupportTreeForCamp={setSupportTreeForCamp}
                   isForumPage={isForumPage}
                 />
-              </div>
+              </div>: ""} 
             </Col>
 
             <Col xs={24} className=" refine-drawer-mobile overflow-hidden">
-              <div className="flex items-center justify-between sm:gap-0 lg:gap-2 btn-parent  lg:px-1 sm:px-0 fixed lg:static bottom-0 w-full">
+              <div className="flex items-center justify-center sm:gap-0 lg:gap-2 btn-parent  lg:px-1 sm:px-0 fixed lg:static bottom-0 w-full">
                 <Button
-                  className="btnCancel border-t border-canBlue bg-transparent  lg:rounded-lg lg:h-[44px] h-[67px]  "
+                  className="btnCancel lg:!border-b lg:!border-t lg:!border-l lg:!border-r focus:!text-canblack hover:!text-canblack !border-t !border-b-0 !border-r-0 !border-l-0 lg:!border-canBlue border-[#DDE2EE] bg-transparent lg:rounded-lg lg:h-[44px] h-[67px] lg:px-14 lg:w-auto w-full "
                   onClick={onClose}
                 >
                   Cancel
                 </Button>
 
                 <Button
-                  className="btnApplyfilters border-none lg:rounded-lg lg:h-[44px] h-[67px] bg-canBlue !text-white"
+                  className="btnApplyfilters border-t lg:rounded-lg lg:h-[44px] h-[67px] bg-canBlue !text-white flex justify-center items-center lg:w-auto w-full gap-2.5 hover:!text-canBlack hover:!border hover:!border-canblack"
                   onClick={handleApplyClick}
                 >
-                  Apply
-                  <Image
+                 <span className="!flex gap-1 flex-row ">
+                 <span>Apply</span><span className="hidden lg:block">Filters</span>
+                 </span>
+                 <span className="!hidden lg:!block ">
+                 <Image
                     src="/images/filterbtn-icon.svg"
                     alt="svg"
-                    className="icon-topic"
+                    className="icon-topic "
                     height={24}
                     width={24}
                   />
+                 </span>
+                 
                 </Button>
               </div>
             </Col>

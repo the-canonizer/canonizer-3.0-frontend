@@ -34,7 +34,7 @@ function Campforum() {
     <>
       {thread?.length <= 0 ? (
         <div className="campfourm-nodata mb-5">
-          <h3 className="text-lg text-canBlack font-semibold mb-5 uppercase">
+          <h3 className="text-lg text-canBlack font-semibold uppercase">
             Camp Forum
           </h3>
           <div className="bg-canGray py-14 rounded-lg flex flex-col items-center justify-center">
@@ -53,9 +53,9 @@ function Campforum() {
           </div>
         </div>
       ) : (
-        <div className="campfourm-withdata mb-5">
-          <div className="flex justify-between">
-            <h3 className="text-lg text-canBlack font-semibold mb-5 uppercase">
+        <div className="campfourm-withdata">
+          <div className="flex justify-between lg:mb-6 mb-5">
+            <h3 className="text-lg text-canBlack font-semibold uppercase">
               Camp Forum
             </h3>
             <a
@@ -66,32 +66,52 @@ function Campforum() {
             </a>
           </div>
 
-          <div className=" bg-canGray py-5 px-5 rounded-lg flex flex-col  items-start justify-between">
+          <div className=" lg:bg-canGray lg:py-8  rounded-lg flex flex-col  items-start justify-between">
             {thread?.length &&
               thread?.map((obj, index) => {
                 return (
                   <div
                     key={index}
-                    className="cursor-pointer group flex justify-between w-full p-3  mb-2.5 hover:shadow-camp-light hover:bg-white hover:border-transparent hover:rounded-lg  border-b"
+                    className="bg-canGray lg:bg-transparent cursor-pointer last:border-none  py-3 px-5 group flex justify-between w-full hover:shadow-camp-light hover:bg-white hover:border-transparent hover:rounded-xl  lg:border-b lg:mb-0 mb-2.5 lg:rounded-none rounded-lg"
                   >
-                    <div>
-                      <p className="mb-1.5 text-base text-canBlack text-ellipsis">
+                    <div className="w-full">
+                      <p className="mb-1.5 text-base text-canBlack text-ellipsis font-medium">
                         {obj.body}
                       </p>
-                      <p className="text-canBlack text-opacity-80 text-sm">
-                        {covertToTime(obj?.created_at)}
-                      </p>
+                      <p className="text-canBlack text-opacity-80 lg:text-sm text-[10px] hidden lg:flex ">
+                            {covertToTime(obj?.created_at)}
+                          </p>
+                      <div className="">
+                        <div className="flex gap-2.5 items-center lg:hidden w-full justify-between">
+                        <p className="text-canBlack text-opacity-80 lg:text-sm text-[10px] flex-1 flex w-full whitespace-nowrap">
+                            {covertToTime(obj?.created_at)}
+                          </p>
+                          <div className="w-full flex justify-end gap-3">
+                            <Image
+                              src="/images/comment-icon.svg"
+                              alt="svg"
+                              height={24}
+                              width={24}
+                            />
+                            <p className="text-xs text-canLightBlack flex items-center gap-1 font-medium">
+                              {obj.post_count} <span> Replies</span>
+                            </p>
+                          </div>
+
+                          
+                        </div>
+                      </div>
                     </div>
-                    <div className="flex gap-5 items-center">
-                      <div className="flex gap-2">
+                    <div className=" gap-10 items-center hidden lg:flex">
+                      <div className="flex gap-2.5 items-center">
                         <Image
                           src="/images/comment-icon.svg"
                           alt="svg"
                           height={24}
                           width={24}
                         />
-                        <p className="text-xs text-canLightfont-medium">
-                          {obj.post_count}
+                        <p className="text-xs text-canLightBlack flex items-center gap-1 font-medium">
+                          {obj.post_count} <span> Replies</span>
                         </p>
                       </div>
 

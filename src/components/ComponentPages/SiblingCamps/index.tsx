@@ -23,8 +23,8 @@ const SiblingCamps = () => {
   const dispatch = useDispatch();
   const siblingCampsFunction = async () => {
     let body = {
-      topic_num: 88,
-      camp_num: 1,
+      topic_num: router?.query?.camp[0]?.split("-")[0],
+      camp_num: router?.query?.camp[1]?.split("-")[0],
       parent_camp_num: parentCampNum,
     };
     console.log(body.parent_camp_num, "body");
@@ -42,7 +42,7 @@ const SiblingCamps = () => {
   return (
     <>
       {siblingCampData?.length ? (
-        <div className="flex flex-col">
+        <div className="flex flex-col mt-14">
           <h3 className="font-semibold text-base text-canBlack uppercase">
             SIBLING CAMPS
           </h3>

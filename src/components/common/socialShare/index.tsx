@@ -52,8 +52,8 @@ const SocialShare = ({ campUrl, campName }: any) => {
           <Image
             src="/images/share-icon.svg"
             alt="svg"
-            height={24}
-            width={24}
+            height={16}
+            width={16}
           />
         </a>
       </Dropdown>

@@ -56,15 +56,16 @@ export default function CampRecentActivities() {
   return (
     <Fragment>
       <div className="camp_activity_new">
-        <h3 className="mb-5 uppercase text-base font-semibold text-canBlack">
+        <h3 className="lg:mb-6 mb-3 uppercase text-base font-semibold text-canBlack">
           Camp activities
         </h3>
       </div>
-      <div className="camp-recent bg-canGray py-7 px-5 rounded-lg">
-        <div className="camp-recent-child d-flex justify-center flex-col items-center ">
+      <div className="camp-recent lg:bg-canGray bg-transparent lg:py-8 lg:px-6 rounded-2xl">
+        <div className="camp-recent-child d-flex justify-center flex-col items-center bg-white px-8  rounded-xl border border-canGrey2 ">
           <div className="d-flex flex-col gap-1 w-full">
             {loadingIndicator ? (
               <CustomSkelton
+              className=""
                 skeltonFor="list"
                 bodyCount={7}
                 stylingClass="listSkeleton"
@@ -73,13 +74,13 @@ export default function CampRecentActivities() {
             ) : data ? (
               <List
                 itemLayout="horizontal"
-                className="activeListWrap [&_.ant-list-item-meta-avatar]:!hidden"
+                className="activeListWrap [&_.ant-list-item-meta-avatar]:!hidden [&_.ant-list-item]:!py-4"
                 dataSource={data}
                 renderItem={(item) => (
                   <List.Item className={styles.activitiesList}>
                     <List.Item.Meta
                       avatar={
-                        <BellFilled className={"hidden " + styles.bellIcon} />
+                        <BellFilled className={ styles.bellIcon} />
                       }
                       title={
                         <div>
