@@ -28,13 +28,15 @@ const SingleTopicWithImage = ({ topic }) => {
           className="before:content-[''] before:bg-custom-gradient relative before:absolute before:w-full before:h-full z-0 before:z-10 lg:before:hidden"
         >
           <Link
-            href={`/topic/${topic?.topic_num}-${replaceSpecialCharacters(
-              topic?.topic_name,
-              "-"
-            )}/${topic?.camp_num}-${replaceSpecialCharacters(
-              topic?.camp_name,
-              "-"
-            )}`}
+            href={{
+              pathname: `/topic/${topic?.topic_num}-${replaceSpecialCharacters(
+                topic?.topic_name,
+                "-"
+              )}/${topic?.camp_num}-${replaceSpecialCharacters(
+                topic?.camp_name,
+                "-"
+              )}`,
+            }}
           >
             <a>
               <Image

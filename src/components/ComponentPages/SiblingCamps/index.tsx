@@ -16,7 +16,7 @@ const SiblingCamps = () => {
     })
   );
   const secondToLastElement =
-    campRecord.parentCamps[campRecord?.parentCamps.length - 2];
+    campRecord?.parentCamps[campRecord?.parentCamps.length - 2];
   const parentCampNum = secondToLastElement ? secondToLastElement.camp_num : 1;
   const [siblingCampsData, setSiblingCampsData] = useState([]);
   const [campHistory, setCampHistory] = useState(history);

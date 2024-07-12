@@ -7,6 +7,7 @@ import ViewCounts from "src/components/shared/ViewsCount";
 import AvatarGroup from "src/components/shared/AvaratGroup";
 import CardDescription from "./descriptions";
 import TopicCatsLabel from "components/shared/TopicCategories";
+import { replaceSpecialCharacters } from "src/utils/generalUtility";
 
 const SingleTopicCard = ({ topic }) => {
   if (!topic) {
@@ -20,9 +21,11 @@ const SingleTopicCard = ({ topic }) => {
     >
       <Link
         href={{
-          pathname: `/topic/${topic?.topic_num}-${topic?.topic_name || ""}/${
-            topic?.camp_num || 1
-          }-${topic?.camp_name || "Agreement"}`,
+          pathname: `/topic/${topic?.topic_num}-${
+            replaceSpecialCharacters(topic?.topic_name, "-") || ""
+          }/${topic?.camp_num || 1}-${
+            replaceSpecialCharacters(topic?.camp_name, "-") || "Agreement"
+          }`,
         }}
       >
         <a className="flex justify-between pb-3 items-center">
