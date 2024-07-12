@@ -77,7 +77,7 @@ export default function OTPVerify({
             <SecondaryButton
               type="text"
               htmlType="button"
-              className="h-[40px] text-sm rounded-md !w-auto m-auto flex justify-center items-center mb-4 sm:!w-full"
+              className="h-[40px] text-sm rounded-lg !w-auto m-auto flex justify-center items-center mb-4 sm:!w-full"
               block
               onClick={onResendClick}
               id="resent-otp-btn"
@@ -88,7 +88,7 @@ export default function OTPVerify({
           <PrimaryButton
             type="primary"
             htmlType="submit"
-            className="h-[40px] text-sm rounded-md m-auto flex justify-center items-center !w-8/12 lg:!w-4/12"
+            className="h-[40px] text-sm rounded-lg m-auto flex justify-center items-center !w-8/12 lg:!w-4/12"
             block
             data-testid="submitButton"
             id="otp-btn"

@@ -20,6 +20,14 @@ $sidebar_width_small: 30%;
     transition: width 0.3s ease;
   }
 
+  .rightSidebar {
+    margin-left: 20px;
+  }
+
+  .leftSidebar {
+    margin-right: 20px;
+  }
+
   &.withRightsideBar .contentBox {
     width: calc(100% - ($sidebar_width + 50px));
   }

@@ -164,7 +164,8 @@ const TopicsList = () => {
   }
 
   function getNameById(id) {
-    const namespace = nameSpacesList?.length && nameSpacesList?.find((item) => item?.id === id);
+    const namespace =
+      nameSpacesList?.length && nameSpacesList?.find((item) => item?.id === id);
     return nameSpacesList?.length ? namespace?.name : null;
   }
 
@@ -324,8 +325,9 @@ const TopicsList = () => {
                   <CommonCard className="browse-card" key={ft?.id}>
                     <Link
                       href={{
-                        pathname: `/topic/${ft?.topic_id}-${replaceSpecialCharacters(ft?.topic_name, "-") || ""
-                          }/1-Agreement`,
+                        pathname: `/topic/${ft?.topic_id}-${
+                          replaceSpecialCharacters(ft?.topic_name, "-") || ""
+                        }/1-Agreement`,
                       }}
                     >
                       <a className="flex justify-between items-center">

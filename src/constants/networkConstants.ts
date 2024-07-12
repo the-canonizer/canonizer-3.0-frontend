@@ -204,7 +204,7 @@ const NetworkConstants = {
     GetFeaturedTopic: `${BaseCanonizerApiUrl}/featured-topic`,
 
     //Sibling camps
-    GetSiblingCamp : `${BaseCanonizerApiUrl}/get-sibling-camps`,
+    GetSiblingCamp: `${BaseCanonizerApiUrl}/get-sibling-camps`,
 
     // categories
     GetTagsList: `${BaseCanonizerApiUrl}/get-tags-list`,

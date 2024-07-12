@@ -41,9 +41,9 @@ function Breadcrumbs({ compareMode = false, updateId }: any) {
       setLoadingIndicator(true);
       let reqBody = {
         topic_num: compareMode
-        ? router.query.routes?.at(0).split("-")?.at(0)
-        : payload?.topic_num,
-        camp_num:  payload?.camp_num,
+          ? router.query.routes?.at(0).split("-")?.at(0)
+          : payload?.topic_num,
+        camp_num: payload?.camp_num,
         as_of: router?.pathname == "/topic/[...camp]" ? asof : "default",
         as_of_date:
           asof == "default" || asof == "review"
@@ -81,7 +81,6 @@ function Breadcrumbs({ compareMode = false, updateId }: any) {
   const updateCurrentRecord = () => {
     router.push(`/manage/${historyOf}/${updateId}`);
   };
-  
   return (
     <>
       <div className="max-md:mx-[-1rem] max-md:shadow-[0px_10px_10px_0px_#0000001A] md:bg-canGrey1_Opacity70 p-[1.5rem] md:rounded-[1.25rem] flex items-center justify-between gap-2 ">

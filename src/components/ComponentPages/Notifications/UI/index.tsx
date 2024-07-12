@@ -36,7 +36,7 @@ const NotificationsListUI = ({
 }) => {
   const getBtnClass = (btn) => {
     let baseClass =
-      "mb-5 rounded-lg py-2 min-h-[35px] h-full !text-canBlack text-base border-[#CCD4E780] hocus:bg-[#5482C833] hocus:border-[#5482C833]";
+      "mb-5 rounded-lg py-2 min-h-[35px] h-full !text-canBlack text-base border-[#CCD4E780] hocus:bg-[#5482C833] hocus:border-[#5482C833] max-h-[40px]";
     const { filter } = router?.query || {};
 
     if ((filter === undefined && btn === "") || filter === btn) {
@@ -62,7 +62,7 @@ const NotificationsListUI = ({
           Notifications
         </Title>
       }
-      className="bg-white mb-6 border-0 [&_.ant-card-head]:border-0"
+      className="bg-white mb-6 border-0 [&_.ant-card-head]:border-0 mb-8 [&_.ant-card-extra]:p-0"
       id="card-title"
       extra={
         <div className="flex justify-between items-center">
@@ -74,24 +74,22 @@ const NotificationsListUI = ({
             <Button
               onClick={onAllReadClick}
               type="link"
-              className="text-canBlue hover:text-canHoverBlue font-medium text-md mr-10 py-0"
+              className="text-canBlue hover:text-canHoverBlue font-medium text-md py-0"
               disabled={unreadCount === 0}
             >
               Mark all as read
             </Button>
           </Popover>
-          <NotificationSwitch key="notificatoin-page-switch" />
         </div>
       }
     >
       <Row gutter={20}>
-        <Col lg={4} md={6} xs={8}>
-          <div className="px-4">
+        <Col lg={4} md={6} xs={24}>
+          <div className="px-4 flex flex-col w-full h-full">
             <SecondaryButton
               onClick={(e) => onFilterClick(e, "0")}
               className={getBtnClass("")}
               block
-              disabled={list?.length === 0}
             >
               All ({list?.length})
             </SecondaryButton>
@@ -99,7 +97,6 @@ const NotificationsListUI = ({
               onClick={(e) => onFilterClick(e, "1")}
               className={getBtnClass("1")}
               block
-              disabled={readCount === 0}
             >
               Read ({readCount})
             </SecondaryButton>
@@ -107,13 +104,15 @@ const NotificationsListUI = ({
               onClick={(e) => onFilterClick(e, "2")}
               className={getBtnClass("2")}
               block
-              disabled={unreadCount === 0}
             >
               Unread ({unreadCount})
             </SecondaryButton>
+            <div className="mt-auto pb-14 [&_.ant-typography>small]:text-base [&_.ant-typography>small]:font-normal [&_.ant-typography>small]:text-canBlack [&_.ant-typography>small]:capitalize">
+              <NotificationSwitch key="notificatoin-page-switch" />
+            </div>
           </div>
         </Col>
-        <Col lg={18} md={22} xs={24}>
+        <Col lg={20} md={18} xs={24}>
           <div className="border rounded-lg py-4 px-6 w-full h-96 overflow-x-hidden overflow-y-auto scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar scrollbar-thumb-canGrey3 scrollbar-track-canGrey2 scrollbar-thin">
             {isLoading ? (
               <CustomSkelton
@@ -137,7 +136,7 @@ const NotificationsListUI = ({
             <Button
               onClick={onAllDelete}
               type="link"
-              className="text-canRed hover:text-canOrange font-medium text-md mt-4 py-0 float-right flex items-center justify-center"
+              className="text-canRed hover:text-canOrange font-medium text-md mt-3 py-0 float-right [&_.ant-btn]:flex [&_.ant-btn]:items-start [&_.ant-btn]:justify-center"
               disabled={list?.length === 0}
             >
               <DeleteOutlined />

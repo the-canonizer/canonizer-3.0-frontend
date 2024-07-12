@@ -92,7 +92,10 @@ const LoginOTP = () => {
 
   return (
     <CustomSpinner key="login-otp-spinner" spinning={loading}>
-      <Card bordered={false} className="bg-canGrey1 mt-0 lg:mt-10 h-full">
+      <Card
+        bordered={false}
+        className="bg-canGrey1 mt-0 lg:mt-10 h-full [&_.ant-card-body]:pb-0"
+      >
         <Row gutter={20}>
           <Col lg={12} md={24} xl={12} xs={24} className="hidden lg:block">
             <LeftContent onBrowseClick={onBrowseClick} />

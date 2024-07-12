@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { useDispatch } from "react-redux";
 import {
   getCanonizedCampStatementApi,
@@ -59,7 +59,7 @@ const TopicDetailsPage = ({
       : "Camp";
 
   return (
-    <Layout>
+    <Fragment>
       {tree?.status_code == 404 ||
       campRecord?.status_code == 404 ||
       campRecord?.status_code == 400 ? (
@@ -72,7 +72,7 @@ const TopicDetailsPage = ({
       ) : (
         <TopicDetails serverSideCall={serverSideCall} />
       )}
-    </Layout>
+    </Fragment>
   );
 };
 
@@ -81,10 +81,9 @@ export async function getServerSideProps({ req, query, res }) {
   let campNum = query?.camp[1]?.split("-")[0] || 1;
   let token = null;
 
-
-  let hashValue
-  let cookies
-  const cookieKey = topicNum + '.' + campNum;
+  let hashValue;
+  let cookies;
+  const cookieKey = topicNum + "." + campNum;
   async function generateHashValue() {
     const salt = Buffer.from(process.env.NEXT_PUBLIC_SALT_KEY);
     const asOfData =
@@ -92,7 +91,7 @@ export async function getServerSideProps({ req, query, res }) {
         ? parseFloat(query?.asofdate)
         : Date.now() / 1000;
 
-    const data = Math.ceil(asOfData)
+    const data = Math.ceil(asOfData);
 
     const hash = await argon2id({
       password: data.toString(),
@@ -101,25 +100,25 @@ export async function getServerSideProps({ req, query, res }) {
       iterations: parseInt(process.env.NEXT_PUBLIC_ITERATIONS),
       memorySize: parseInt(process.env.NEXT_PUBLIC_MEMORYSIZE),
       hashLength: parseInt(process.env.NEXT_PUBLIC_HASHLENGTH),
-      outputType: "encoded"
+      outputType: "encoded",
     });
 
-    const parts = hash?.split('$');
+    const parts = hash?.split("$");
     hashValue = "$" + parts[parts?.length - 2] + "$" + parts[parts?.length - 1];
 
-    let cookiesString = req.headers.cookie || '';
+    let cookiesString = req.headers.cookie || "";
     cookies = parseCookies(cookiesString);
 
     if (!cookies[cookieKey] || !(cookieKey in cookies)) {
-      const expirationInSeconds = parseInt(process.env.NEXT_PUBLIC_EXPIRATIONDATE);
+      const expirationInSeconds = parseInt(
+        process.env.NEXT_PUBLIC_EXPIRATIONDATE
+      );
       const expirationDate = new Date(Date.now() + expirationInSeconds * 1000);
       const expires = expirationDate.toUTCString();
       const cookieValue = `${hashValue}; expires=${expires}; path=/`;
-      res.setHeader('Set-Cookie', cookieKey + '=' + cookieValue);
+      res.setHeader("Set-Cookie", cookieKey + "=" + cookieValue);
     }
   }
-
-
 
   await generateHashValue();
 
@@ -131,11 +130,12 @@ export async function getServerSideProps({ req, query, res }) {
     asofdate: Math.ceil(
       query?.asofdate && query?.asof == "bydate"
         ? parseFloat(query?.asofdate)
-        : Date.now() / 1000),
+        : Date.now() / 1000
+    ),
     algorithm: query?.algo || "blind_popularity",
     update_all: 1,
     fetch_topic_history: query?.viewversion == "1" ? 1 : null,
-    view: req.cookies[cookieKey] ? req.cookies[cookieKey] : hashValue
+    view: req.cookies[cookieKey] ? req.cookies[cookieKey] : hashValue,
   };
 
   const reqBody = {

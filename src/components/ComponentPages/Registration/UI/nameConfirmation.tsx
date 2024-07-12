@@ -109,7 +109,7 @@ const NameConfirmation = ({
           <Button
             type="primary"
             htmlType="button"
-            className="h-[40px] text-sm rounded-md !w-auto m-auto flex justify-center items-center mb-4 sm:!w-full"
+            className="h-[40px] text-sm rounded-lg !w-auto m-auto flex justify-center items-center mb-4 sm:!w-full"
             block
             onClick={onResendClick}
             id="otp-send-btn"
@@ -121,7 +121,7 @@ const NameConfirmation = ({
         <Button
           type="primary"
           htmlType="submit"
-          className="h-[40px] text-sm rounded-md m-auto flex justify-center items-center !w-8/12 lg:!w-4/12"
+          className="h-[40px] text-sm rounded-lg m-auto flex justify-center items-center !w-8/12 lg:!w-4/12"
           block
           data-testid="submitButton"
           id="submit-btn"

@@ -282,7 +282,7 @@ const TimelineInfoBar = ({
 
     if (
       (payload && Object.keys(payload).length > 0,
-        !!(getCookies() as any)?.loginToken)
+      !!(getCookies() as any)?.loginToken)
     ) {
       getBreadCrumbApiCall();
     }
@@ -322,46 +322,55 @@ const TimelineInfoBar = ({
 
   const title = (
     <div className="popover_header">
-      <span>Topic name :</span>
-      <p className=""> {topicRecord && topicRecord?.topic_name}</p>
+      <span className="text-xs text-canLight mb-1.5 font-normal">
+        Topic name :
+      </span>
+      <p className="font-bold mb-5 text-base text-canBlack">
+        {" "}
+        {topicRecord && topicRecord?.topic_name}
+      </p>
     </div>
   );
   const content = (
     <div className="popoverParent">
       <Row gutter={1}>
-        <Col md={12} sm={12} xs={12} className="mb-3 d-flex flex-col">
+        <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
           <span>Author</span>
-          <span className="author-name">James Steve</span>
+          <span className="text-canBlue text-base font-semibold underline">
+            {topicRecord?.submitter_nick_name}
+          </span>
         </Col>
-        <Col md={12} sm={12} xs={12} className="mb-3 d-flex flex-col">
-          <span className="popover-fontStyle">Submitted On : </span>
-          <span className="submitted-on">
+        <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
+          <span className="text-xs text-canLight">Submitted On : </span>
+          <span className="text-base text-black">
             {" "}
             {topicRecord && covertToTime(topicRecord?.submit_time)}
           </span>
         </Col>
-        <Col md={12} sm={12} xs={12} className="mb-3 d-flex flex-col">
-          <span className="popover-fontStyle">Submitted By</span>
-          <span className="author-name-by">James Steve</span>
+        <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
+          <span className="text-xs text-canLight">Submitted By</span>
+          <span className="text-canDarkBlack text-base font-semibold">
+            {topicRecord?.submitter_nick_name}
+          </span>
         </Col>
-        <Col md={12} sm={12} xs={12} className="mb-3 d-flex flex-col">
-          <span className="popover-fontStyle">Go Live Time : </span>
-          <span className="submitted-on">
+        <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
+          <span className="text-xs text-canLight">Go Live Time : </span>
+          <span className="text-base text-black">
             {" "}
             {topicRecord && covertToTime(topicRecord?.go_live_time)}
           </span>
         </Col>
-        <Col md={12} sm={12} xs={12} className="d-flex flex-col">
-          <span className="popover-fontStyle">Canon : </span>
-          <span className="submitted-on">
+        <Col md={12} sm={12} xs={12} className="flex flex-col">
+          <span className="text-xs text-canLight">Canon : </span>
+          <span className="text-base text-black">
             {" "}
             {topicRecord && changeSlashToArrow(topicRecord?.namespace_name)}
           </span>
         </Col>
       </Row>
 
-      <hr className="horizontal_line" />
-      <CustomButton className="customButton-popover">
+      <hr className="horizontal_line my-5" />
+      <CustomButton className="customButton-popover mx-auto bg-canBlue text-white flex items-center justify-center py-3 px-7 rounded-lg text-base font-medium gap-2.5 h-[44px] ">
         {isTopicPage && (
           <Link
             href={`/topic/history/${replaceSpecialCharacters(
@@ -388,80 +397,85 @@ const TimelineInfoBar = ({
   );
   const title2 = (
     <div className="popover_header">
-      <span>Camp name :</span>
-      <p> {campRecord && campRecord?.camp_name}</p>
+      <span className="text-xs text-canLight mb-1">Camp name :</span>
+      <p className="font-bold mb-5 text-base text-canBlack">
+        {" "}
+        {campRecord && campRecord?.camp_name}
+      </p>
     </div>
   );
   const contentForCamp = (
     <div className="popoverParent">
       <Row gutter={5}>
-        <Col md={12} sm={12} xs={12} className="mb-3 d-flex flex-col">
-          <span className="popover-fontStyle">Submitter</span>
-          <span className="author-name">James Steve</span>
+        <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
+          <span className="text-xs text-canLight">Submitter</span>
+          <span className="author-name">{campRecord?.submitter_nick_name}</span>
         </Col>
-        <Col md={12} sm={12} xs={12} className="mb-3 d-flex flex-col">
-          <span className="popover-fontStyle">Submitted On : </span>
-          <span className="submitted-on">
+        <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
+          <span className="text-xs text-canLight">Submitted On : </span>
+          <span className="text-base text-black">
             {campRecord && covertToTime(campRecord?.submit_time)}
           </span>
         </Col>
-        <Col md={12} sm={12} xs={12} className="mb-3 d-flex flex-col">
-          <span className="popover-fontStyle">Camp about nickname : </span>
-          <span className="submitted-on">
+        <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
+          <span className="text-xs text-canLight">Camp about nickname : </span>
+          <span className="text-base text-black">
             {campRecord && campRecord.camp_about_nick_name}
           </span>
         </Col>
-        <Col md={12} sm={12} xs={12} className="mb-3 d-flex flex-col">
-          <span className="popover-fontStyle">Camp about URL : </span>
-          <span className="submitted-on">
+        <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
+          <span className="text-xs text-canLight">Camp about URL : </span>
+          <span className="text-base text-black">
             {campRecord && campRecord.camp_about_url}
           </span>
         </Col>
-        <Col md={12} sm={12} xs={12} className="mb-3 d-flex flex-col">
-          <span className="popover-fontStyle">Single level camps only : </span>
-          <span className="submitted-on">
+        <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
+          <span className="text-xs text-canLight">
+            Single level camps only :{" "}
+          </span>
+          <span className="text-base text-black">
             {campRecord && campRecord.is_one_level == 0 ? "No" : "Yes"}
           </span>
         </Col>
-        <Col md={12} sm={12} xs={12} className="mb-3 d-flex flex-col">
-          <span className="popover-fontStyle">
+        <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
+          <span className="text-xs text-canLight">
             Disable aditional sub camps:{" "}
           </span>
-          <span className="submitted-on">
+          <span className="text-base text-black">
             {campRecord && campRecord.is_disabled == 0 ? "No" : "Yes"}
           </span>
         </Col>
-        <Col md={12} sm={12} xs={12} className="mb-3 d-flex flex-col">
-          <span className="popover-fontStyle">Camp archive:</span>
-          <span className="submitted-on">
+        <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
+          <span className="text-xs text-canLight">Camp archive:</span>
+          <span className="text-base text-black">
             {" "}
             {campRecord && campRecord.is_archive == 0 ? "No" : "Yes"}
           </span>
         </Col>
-        <Col md={12} sm={12} xs={12} className="mb-3 d-flex flex-col">
-          <span className="popover-fontStyle">Go live time:</span>
-          <span className="submitted-on">
+        <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
+          <span className="text-xs text-canLight">Go live time:</span>
+          <span className="text-base text-black">
             {" "}
             {campRecord && covertToTime(campRecord?.go_live_time)}
           </span>
         </Col>
-        <Col md={12} sm={12} xs={12} className=" d-flex flex-col">
-          <span className="popover-fontStyle">canon:</span>
-          <span className="submitted-on">
+        <Col md={12} sm={12} xs={12} className=" flex flex-col">
+          <span className="text-xs text-canLight">canon:</span>
+          <span className="text-base text-black">
             {" "}
             {campRecord && campRecord.is_archive}
           </span>
         </Col>
-        <Col md={12} sm={12} xs={12} className=" d-flex flex-col">
-          <span className="popover-fontStyle">Topic :</span>
-          <span className="submitted-on">
+        <Col md={12} sm={12} xs={12} className=" flex flex-col">
+          <span className="text-xs text-canLight">Topic :</span>
+          <span className="text-base text-black">
             {campRecord && campRecord.topic_num}
           </span>
         </Col>
       </Row>
 
-      <hr className="horizontal_line" />
-      <CustomButton className="customButton-popover">
+      <hr className="horizontal_line my-5" />
+      <CustomButton className="customButton-popover customButton-popover mx-auto bg-canBlue text-white flex items-center justify-center py-3 px-7 rounded-lg text-base font-medium gap-2.5 h-[44px] ">
         {isTopicPage && (
           <Link
             href={`/topic/history/${replaceSpecialCharacters(
@@ -471,7 +485,7 @@ const TimelineInfoBar = ({
               "-"
             )}`}
           >
-            <a className="flex items-center justify-center gap-3 text-base font-medium leading-[]">
+            <a className="flex items-center justify-center gap-3 text-base font-medium">
               {K?.exceptionalMessages?.manageCampButton}
               <Image
                 src="/images/manage-btn-icon.svg"
@@ -488,11 +502,12 @@ const TimelineInfoBar = ({
   );
   return (
     <>
-      <div
+      {/* <div
         className={
           styles.topicDetailContentHead + " printHIde " + styles.info_bar_n
         }
-      >
+      > */}
+      <div className="bg-canGrey1  pt-3 pb-3 lg:px-6 lg:rounded-lg mb-7 ">
         <Spin spinning={false}>
           <div className={styles.topicDetailContentHead_Left}>
             {isForumPage ? (
@@ -523,17 +538,18 @@ const TimelineInfoBar = ({
             )}
 
             {isMobile ? (
-              <div className="d-flex desktop-view">
+              <div className="flex desktop-view">
                 <Typography.Paragraph
                   className={
-                    "mb-0 " +
-                    `${loadingIndicator
-                      ? styles.topicTitleSkeleton
-                      : styles.topicTitleStyle
+                    "!mb-0 " +
+                    `${
+                      loadingIndicator
+                        ? styles.topicTitleSkeleton
+                        : styles.topicTitleStyle
                     }`
                   }
                 >
-                  <span className={styles.topicBreadcrums}>
+                  <span className="flex items-center lg:gap-5 gap-1">
                     <Image
                       src="/images/home-icon.svg"
                       alt="svg"
@@ -559,8 +575,10 @@ const TimelineInfoBar = ({
                     title={title}
                     className="title-popover"
                   >
-                    <div className={styles.topicnameBreadcrum}>
-                      <span className="normal">Topic :</span>
+                    <div className="flex  items-center gap-1 ">
+                      <span className="font- text-base text-canBlack">
+                        Topic :
+                      </span>
 
                       {loadingIndicator ? (
                         <CustomSkelton
@@ -571,11 +589,12 @@ const TimelineInfoBar = ({
                         />
                       ) : isTopicHistoryPage ? (
                         <Link
-                          href={`/topic/${payload?.topic_num
-                            }-${replaceSpecialCharacters(
-                              breadCrumbRes?.topic_name,
-                              "-"
-                            )}/1-Agreement?${getQueryParams()?.returnQuery}`}
+                          href={`/topic/${
+                            payload?.topic_num
+                          }-${replaceSpecialCharacters(
+                            breadCrumbRes?.topic_name,
+                            "-"
+                          )}/1-Agreement?${getQueryParams()?.returnQuery}`}
                         >
                           <a className={styles.boldBreadcrumb}>
                             {breadCrumbRes?.topic_name}
@@ -588,7 +607,7 @@ const TimelineInfoBar = ({
                       ) : (
                         "N/A"
                       )}
-                      <span className="d-flex">
+                      <span className="flex">
                         {" "}
                         <Image
                           src="/images/circle-info-bread.svg"
@@ -616,7 +635,7 @@ const TimelineInfoBar = ({
                 </Typography.Paragraph>
                 <div className={styles.breadcrumbLinks}>
                   <Typography.Paragraph
-                    className={"mb-0 " + styles.topicTitleStyle}
+                    className={"!mb-0 ml-5 " + styles.topicTitleStyle}
                   >
                     <Image
                       src="/images/arrow-bread.svg"
@@ -626,8 +645,8 @@ const TimelineInfoBar = ({
                       width={6}
                     />
 
-                    <div className={styles.campContent}>
-                      <span className="normal">
+                    <div className="flex items-center gap-1">
+                      <span className="font-bold text-base text-canBlack">
                         {!isTopicHistoryPage ? "Camp :" : ""}
                       </span>
                       {loadingIndicator ? (
@@ -642,24 +661,29 @@ const TimelineInfoBar = ({
                           breadCrumbRes?.bread_crumb?.map((camp, index) => {
                             return (
                               <Link
-                                href={`/topic/${payloadData?.topic_num
-                                  }-${replaceSpecialCharacters(
-                                    breadCrumbRes?.topic_name,
-                                    "-"
-                                  )}/${camp?.camp_num}-${replaceSpecialCharacters(
-                                    camp?.camp_name,
-                                    "-"
-                                  )}?${getQueryParams()?.returnQuery}`}
+                                href={`/topic/${
+                                  payloadData?.topic_num
+                                }-${replaceSpecialCharacters(
+                                  breadCrumbRes?.topic_name,
+                                  "-"
+                                )}/${camp?.camp_num}-${replaceSpecialCharacters(
+                                  camp?.camp_name,
+                                  "-"
+                                )}?${getQueryParams()?.returnQuery}`}
                                 key={index}
                               >
-                                <a>
-                                  <span className={styles.slashStyle}>
+                                <a className="!text-canBlack">
+                                  <span
+                                    className={
+                                      styles.slashStyle + " !text-canBlack"
+                                    }
+                                  >
                                     {index !== 0 && <DoubleRightOutlined />}
                                   </span>
                                   <span
                                     className={
                                       breadCrumbRes?.bread_crumb.length - 1 ==
-                                        index
+                                      index
                                         ? styles.greenIndicateText
                                         : styles.boldBreadcrumb
                                     }
@@ -694,7 +718,7 @@ const TimelineInfoBar = ({
                             </small>
                           </Tooltip>
                         )}
-                      <span className="d-flex">
+                      <span className="flex">
                         {" "}
                         <Image
                           src="/images/circle-info-bread.svg"
@@ -709,17 +733,18 @@ const TimelineInfoBar = ({
                 </div>
               </div>
             ) : (
-              <div className="d-flex mobile-view gap-5px">
+              <div className="flex mobile-view gap-5px items-center">
                 <Typography.Paragraph
                   className={
-                    "mb-0 " +
-                    `${loadingIndicator
-                      ? styles.topicTitleSkeleton
-                      : styles.topicTitleStyle
+                    "!mb-0 " +
+                    `${
+                      loadingIndicator
+                        ? styles.topicTitleSkeleton
+                        : styles.topicTitleStyle
                     }`
                   }
                 >
-                  <span className={styles.topicBreadcrums}>
+                  <span className="flex items-center lg:gap-2 gap-1">
                     <Image
                       src="/images/home-icon.svg"
                       alt="svg"
@@ -732,7 +757,7 @@ const TimelineInfoBar = ({
                       height={12}
                       width={6}
                     />
-                    <span className="home-link text-[#777F93] text-xs font-normal leading-[18px]">
+                    <span className="home-link text-canLight text-xs font-normal leading-5 whitespace-nowrap">
                       {" "}
                       General
                     </span>
@@ -748,8 +773,8 @@ const TimelineInfoBar = ({
                     title={title}
                     className="title-popover"
                   >
-                    <div className={styles.topicnameBreadcrum}>
-                      <span className="normal text-[#777F93] text-xs leading-[18px] font-normal">
+                    <div className="flex  items-center gap-1 ">
+                      <span className="font- text-base text-canBlack whitespace-nowrap">
                         Topic :
                       </span>
 
@@ -762,24 +787,25 @@ const TimelineInfoBar = ({
                         />
                       ) : isTopicHistoryPage ? (
                         <Link
-                          href={`/topic/${payload?.topic_num
-                            }-${replaceSpecialCharacters(
-                              breadCrumbRes?.topic_name,
-                              "-"
-                            )}/1-Agreement?${getQueryParams()?.returnQuery}`}
+                          href={`/topic/${
+                            payload?.topic_num
+                          }-${replaceSpecialCharacters(
+                            breadCrumbRes?.topic_name,
+                            "-"
+                          )}/1-Agreement?${getQueryParams()?.returnQuery}`}
                         >
-                          <a className="normal text-[#777F93] text-[12px] leading-[18px] font-normal text-ellipsis">
+                          <a className="normal text-canLight text-3 leading-5 font-normal text-ellipsis w-[50px] truncate">
                             {breadCrumbRes?.topic_name}
                           </a>
                         </Link>
                       ) : breadCrumbRes ? (
-                        <span className={styles.boldBreadcrumb}>
+                        <span className="text-[17px] font-bold text-ellipsis w-[80px] lg:w-auto truncate ">
                           {breadCrumbRes?.topic_name}
                         </span>
                       ) : (
                         "N/A"
                       )}
-                      {/* <span className="d-flex">
+                      {/* <span className="flex">
                       {" "}
                       <Image
                         src="/images/circle-info-bread.svg"
@@ -807,7 +833,7 @@ const TimelineInfoBar = ({
                 </Typography.Paragraph>
                 <div className={styles.breadcrumbLinks}>
                   <Typography.Paragraph
-                    className={"mb-0 " + styles.topicTitleStyle}
+                    className={"!mb-0 " + styles.topicTitleStyle}
                   >
                     <Image
                       src="/images/arrow-bread.svg"
@@ -818,7 +844,7 @@ const TimelineInfoBar = ({
                     />
 
                     <div className="flex items-center">
-                      <span className="normal text-[#4EB966]">
+                      <span className="normal text-canGreen">
                         {isTopicHistoryPage ? "Camp :" : ""}
                       </span>
                       {loadingIndicator ? (
@@ -833,17 +859,18 @@ const TimelineInfoBar = ({
                           breadCrumbRes?.bread_crumb?.map((camp, index) => {
                             return (
                               <Link
-                                href={`/topic/${payloadData?.topic_num
-                                  }-${replaceSpecialCharacters(
-                                    breadCrumbRes?.topic_name,
-                                    "-"
-                                  )}/${camp?.camp_num}-${replaceSpecialCharacters(
-                                    camp?.camp_name,
-                                    "-"
-                                  )}?${getQueryParams()?.returnQuery}`}
+                                href={`/topic/${
+                                  payloadData?.topic_num
+                                }-${replaceSpecialCharacters(
+                                  breadCrumbRes?.topic_name,
+                                  "-"
+                                )}/${camp?.camp_num}-${replaceSpecialCharacters(
+                                  camp?.camp_name,
+                                  "-"
+                                )}?${getQueryParams()?.returnQuery}`}
                                 key={index}
                               >
-                                <a className="text-[12px] text-[#4EB966]">
+                                <a className="text-3 text-canGreen">
                                   <span className={styles.slashStyle}>
                                     {index !== 0 && <DoubleRightOutlined />}
                                   </span>
@@ -874,7 +901,7 @@ const TimelineInfoBar = ({
                             </small>
                           </Tooltip>
                         )}
-                      <span className="d-flex">
+                      <span className="flex ddddd">
                         {" "}
                         {/* <Image
                         src="/images/circle-info-bread.svg"
@@ -890,31 +917,31 @@ const TimelineInfoBar = ({
               </div>
             )}
 
-            <div className={styles.createNewcamp}>
+            <div className="flex items-center gap-3">
               {campStatement?.length > 0 ? (
                 <div className="topicDetailsCollapseFooter printHIde camp">
                   <CustomButton
                     disabled={campRecord?.is_archive == 1 ? true : false}
-                    className=" printHIde manage_camp_btn sm:hidden md:hidden hidden lg:flex"
+                    className=" printHIde manage_camp_btn sm:hidden md:hidden hidden lg:flex border border-canBlue !h-[40px] py-2.5 px-3 rounded-lg flex items-center gap-2.5 text-base font-medium leading-6 text-center  text-white bg-canBlue"
                     id="add-camp-statement-btn"
                   >
                     <Link
                       href={
                         campStatement?.length > 0
                           ? `/statement/history/${replaceSpecialCharacters(
-                            router?.query?.camp?.at(0),
-                            "-"
-                          )}/${replaceSpecialCharacters(
-                            router?.query?.camp?.at(1) ?? "1-Agreement",
-                            "-"
-                          )}`
+                              router?.query?.camp[0],
+                              "-"
+                            )}/${replaceSpecialCharacters(
+                              router?.query?.camp[1] ?? "1-Agreement",
+                              "-"
+                            )}`
                           : `/create/statement/${replaceSpecialCharacters(
-                            router?.query?.camp?.at(0),
-                            "-"
-                          )}/${replaceSpecialCharacters(
-                            router?.query?.camp?.at(1) ?? "1-Agreement",
-                            "-"
-                          )}`
+                              router?.query?.camp[0],
+                              "-"
+                            )}/${replaceSpecialCharacters(
+                              router?.query?.camp[1] ?? "1-Agreement",
+                              "-"
+                            )}`
                       }
                       className="printHIde"
                     >
@@ -935,7 +962,7 @@ const TimelineInfoBar = ({
               )}
 
               <Button
-                className="btn sm:hidden create-new-camp-btn"
+                className="btn hidden create-new-camp-btn border border-canBlue px-3 py-2.5 rounded-lg lg:flex items-center gap-2.5 text-base font-medium leading-6 text-center text-canBlack bg-transparent"
                 size="large"
               >
                 Create New Camp
@@ -950,7 +977,7 @@ const TimelineInfoBar = ({
             </div>
           </div>
 
-          <div className={styles.topicDetailContentHead_Right}>
+          {/* <div className={styles.topicDetailContentHead_Right}>
             <Typography.Paragraph
               className={"mb-0 campInfoRight " + styles.topicTitleStyle}
             >
@@ -966,7 +993,7 @@ const TimelineInfoBar = ({
                     />
                   ) : (
                     <>
-                      {/* {router.pathname != "/support/[...manageSupport]" ? (
+                      {router.pathname != "/support/[...manageSupport]" ? (
                         <Button
                           type="primary"
                           onClick={eventLinePath}
@@ -975,13 +1002,13 @@ const TimelineInfoBar = ({
                         >
                           Event Line 
                         </Button>
-                      ) : null} */}
+                      ) : null}
                     </>
                   )}
                 </Fragment>
               )}
             </Typography.Paragraph>
-          </div>
+          </div> */}
         </Spin>
       </div>
     </>

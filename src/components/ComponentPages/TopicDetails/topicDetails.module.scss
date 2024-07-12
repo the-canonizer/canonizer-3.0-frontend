@@ -303,14 +303,14 @@
     color: #0f2a4d;
     margin-left: 4px;
     a {
-      color: var(--primary);
+      // color: var(--primary);
       &:hover {
         font-weight: bold;
         color: #4484ce;
       }
       &.activeCamp {
         font-size: 16px;
-        color: #08b608 !important;
+        // color: #08b608 !important;
       }
     }
   }
@@ -415,7 +415,7 @@
 .greenIndicateText {
   // font-weight: 600;
   font-size: 18px;
-  color: #08b608;
+  // color: #08b608;
 }
 
 .campinfoSocialOt {

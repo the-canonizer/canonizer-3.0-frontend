@@ -26,13 +26,13 @@ const ReadPopup = ({ onClose, onRead, isOpen }) => {
       <div className="text-center mt-7">
         <SecondaryButton
           onClick={onClose}
-          className="rounded-md px-7 inline-flex items-center justify-center"
+          className="rounded-lg px-7 inline-flex items-center justify-center"
         >
           Cancel <ArrowLeftOutlined />
         </SecondaryButton>
         <PrimaryButton
           onClick={onRead}
-          className="ml-4 rounded-md px-7 inline-flex items-center justify-center"
+          className="ml-4 rounded-lg px-7 inline-flex items-center justify-center"
         >
           Mark Read All <ReadOutlined />
         </PrimaryButton>

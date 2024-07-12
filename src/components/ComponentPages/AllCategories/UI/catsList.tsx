@@ -1,26 +1,21 @@
 import { Typography, Button, Row, Col } from "antd";
 import { LeftOutlined } from "@ant-design/icons";
+import PropTypes from "prop-types";
 
 import CommonCards from "components/shared/Card";
 import Category from "./singleCat";
-// import Paginations from "components/shared/Paginations";
 import SortByDropdown from "./sortByDropdown";
-// import SearchBar from "./searchBar";
 
 const { Title, Paragraph } = Typography;
 
-const CatsList = ({
-  onBackClick,
-  isMobile,
-  tags,
-  // total,
-  // onPageChange,
-  // pageSize,
-  // current,
-  onSort,
-  // onSearchChange,
-  // onSearchKeyUp,
-}) => {
+const propTypes = {
+  onBackClick: PropTypes.func,
+  isMobile: PropTypes.bool,
+  tags: PropTypes.array,
+  onSort: PropTypes.func,
+};
+
+const CatsList = ({ onBackClick, isMobile, tags, onSort }) => {
   return (
     <CommonCards
       title={
@@ -44,10 +39,6 @@ const CatsList = ({
       extra={
         isMobile ? (
           <div className="flex justify-end">
-            {/* <SearchBar
-              onSearchChange={onSearchChange}
-              onSearchKeyUp={onSearchKeyUp}
-            /> */}
             <SortByDropdown onSort={onSort} />
           </div>
         ) : null
@@ -66,10 +57,6 @@ const CatsList = ({
         </Col>
         {!isMobile && (
           <Col lg={12} className="flex justify-end items-center">
-            {/* <SearchBar
-              onSearchChange={onSearchChange}
-              onSearchKeyUp={onSearchKeyUp}
-            /> */}
             <SortByDropdown onSort={onSort} />
           </Col>
         )}
@@ -77,24 +64,13 @@ const CatsList = ({
 
       <div className="grid grid-cols-[repeat(auto-fill,minmax(350px,_1fr))] gap-6">
         {tags?.map((tag) => (
-          <Category onBackClick={undefined} key={tag?.id} tag={tag} />
+          <Category key={tag?.id} tag={tag} />
         ))}
       </div>
-
-      {/* <Paginations
-        total={total}
-        showSizeChanger
-        showQuickJumper
-        current_page
-        pageSize={pageSize}
-        showTotal={(total) => `Total ${total} items`}
-        className="mt-16 flex !text-canBlack !text-sm [&>*]:!text-sm [&>*]:!font-normal [&_.ant-pagination-options]:!ml-auto [&_.ant-pagination-total-text]:mr-auto "
-        onChange={onPageChange}
-        current={current}
-        pageSizeOptions={[12, 24, 48, 96, 200]}
-      /> */}
     </CommonCards>
   );
 };
+
+CatsList.propTypes = propTypes;
 
 export default CatsList;

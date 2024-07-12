@@ -38,7 +38,7 @@ const SortByDropdown = ({ onSort }) => {
       menu={{ items }}
       trigger={["click"]}
       overlayClassName="rounded-lg overflow-hidden shadow-md [&_.ant-dropdown-menu]:w-24 [&_.ant-dropdown-menu]:pb-0 [&_.ant-dropdown-menu-item]:!py-2 [&_.ant-dropdown-menu-item]:!px-3 [&_.ant-dropdown-menu-item]:border-b-2 [&_.ant-dropdown-menu-title-content]:flex [&_.ant-dropdown-menu-title-content]:items-center [&_.ant-dropdown-menu-title-content]:justify-start"
-      className="ml-3 border-[1px] rounded-md overflow-hidden !text-canBlack w-auto flex py-1 px-3"
+      className="ml-3 border-[1px] rounded-lg overflow-hidden !text-canBlack w-auto flex py-1 px-3"
     >
       <a className="" onClick={(e) => e.preventDefault()}>
         Sort By <SortIcon />

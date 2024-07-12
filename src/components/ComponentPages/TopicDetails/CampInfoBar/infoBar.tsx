@@ -16,7 +16,7 @@ import {
   setManageSupportStatusCheck,
   setManageSupportUrlLink,
   setOpenConsensusTreePopup,
-  setOpenDrawer
+  setOpenDrawer,
 } from "../../../../store/slices/campDetailSlice";
 
 import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
@@ -25,7 +25,7 @@ import {
   FileTextOutlined,
   HeartOutlined,
   PrinterOutlined,
-  StockOutlined
+  StockOutlined,
 } from "@ant-design/icons";
 import Link from "next/link";
 import {
@@ -39,7 +39,7 @@ import { showLoginModal } from "src/store/slices/uiSlice";
 import RefineFilter from "../../RefineFilter";
 import LatestFilter from "../../LatestFilter";
 import Image from "next/image";
-import CampDisclaimer from "../../../common/CampDisclaimer"
+import CampDisclaimer from "../../../common/CampDisclaimer";
 
 const CodeIcon = () => (
   <svg
@@ -54,8 +54,6 @@ const CodeIcon = () => (
     <line x1="34" y1="22" x2="30" y2="42" />
   </svg>
 );
-
-
 
 const InfoBar = ({
   payload = null,
@@ -88,7 +86,7 @@ const InfoBar = ({
     includeReview,
     is_checked,
     selectedAsOf,
-    algorithms
+    algorithms,
   } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
     campRecord: state?.topicDetails?.currentCampRecord,
@@ -222,11 +220,11 @@ const InfoBar = ({
     }, 100);
   };
   const showDrawer = () => {
-   dispatch(setOpenDrawer(true))
+    dispatch(setOpenDrawer(true));
   };
   const showConsensusTree = () => {
-    dispatch(setOpenConsensusTreePopup(!openConsensusTreePopup))
-   };
+    dispatch(setOpenConsensusTreePopup(!openConsensusTreePopup));
+  };
   const campForumDropdownMenu = (
     <Menu className={styles.campForumDropdownMenu}>
       <Menu.Item
@@ -500,39 +498,48 @@ const InfoBar = ({
                 >
                   <i className="icon-camp"></i> Create New Camp
                 </Button> */}
-                <div>{!isMobile && <CampDisclaimer />}</div> 
-                 <div className="flex gap-2 flex-wrap  mt-2">
-                 <Button onClick={showConsensusTree} className="text-[#242B37] border border-[#CCD4E7] py-[10px] px-[22px] refine w-auto refine-btn text-base font-medium  flex items-center justify-center bg-[#F8F8FC]">
-                 Consesnus Tree
-                 <Image
+                <div>{!isMobile && <CampDisclaimer />}</div>
+                <div className="flex gap-5 mt-2 items-center lg:flex-nowrap flex-wrap">
+                  <Button
+                    onClick={showConsensusTree}
+                    className="text-canBlack border border-canGrey2 py-2.5 lg:px-5 !h-[44px] !w-auto refine-btn  lg:!text-base !text-sm font-medium  flex items-center justify-center gap-2.5 rounded-lg   bg-canGray"
+                  >
+                    Consesnus Tree
+                    <Image
                       src="/images/caret-icon.svg"
                       alt="svg"
                       height={7}
                       width={14}
                     />
-                </Button>
-                <Button onClick={showDrawer} className="py-[10px] px-[22px] refine w-auto refine-btn text-base font-medium  flex items-center justify-center">
-                  Refine Filter
-                  <Image
+                  </Button>
+                  <Button
+                    onClick={showDrawer}
+                    className="gap-5 relative text-canBlack py-2.5 lg:px-5 h-[34px] rounded-lg w-auto  lg:text-base text-sm font-medium  flex items-center justify-center !border !border-canGrey2"
+                  >
+                    <span>Refine</span>
+                    <Image
                       src="/images/filter-con.svg"
                       alt="svg"
                       height={24}
                       width={24}
                     />
-                </Button>
-                     {(router.query.algo &&
-                        selectedAlgorithm &&
-                        lable?.algorithm_label !== undefined) ||
-                      is_camp_archive_checked ||
-                      is_checked ||
-                      selectedAsOf == "bydate" ||
-                      includeReview ||
-                      router?.query?.asof === "review" ||
-                      filteredScore != 0 ? (
-                        <LatestFilter />
-                      ) : (
-                        ""
-                      )}
+                    <div className="w-3.5 h-3.5 rounded-full bg-canRed absolute -top-1.5 -right-1.5">
+                      {" "}
+                    </div>
+                  </Button>
+                  {(router.query.algo &&
+                    selectedAlgorithm &&
+                    lable?.algorithm_label !== undefined) ||
+                  is_camp_archive_checked ||
+                  is_checked ||
+                  selectedAsOf == "bydate" ||
+                  includeReview ||
+                  router?.query?.asof === "review" ||
+                  filteredScore != 0 ? (
+                    <LatestFilter />
+                  ) : (
+                    ""
+                  )}
                 </div>
               </Tooltip>
             ) : null}
@@ -641,7 +648,7 @@ const InfoBar = ({
                      
                     </>
                   )} */}
-                  <RefineFilter/>
+                  <RefineFilter />
                 </Fragment>
               )}
             </Typography.Paragraph>

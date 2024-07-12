@@ -152,7 +152,10 @@ const Registration = () => {
 
   return (
     <CustomSpinner key="registration-spinner" spinning={loading}>
-      <Card bordered={false} className="bg-canGrey1 mt-0 lg:mt-10 [&>.ant-card-body]:p-0 mb-7">
+      <Card
+        bordered={false}
+        className="bg-canGrey1 mt-0 lg:mt-10 [&>.ant-card-body]:p-0 [&_.ant-card-body]:pb-0"
+      >
         <Row gutter={20}>
           <Col lg={12} md={24} xl={12} xs={24} className="hidden lg:block">
             <LeftContent onBrowseClick={onBrowseClick} />

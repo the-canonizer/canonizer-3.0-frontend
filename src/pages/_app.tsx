@@ -83,7 +83,7 @@ function WrappedApp({
     const handleTabClose = (event) => {
       if (!isRouting) {
         // Your custom logic here
-        console.log("Tab is closing");
+        // console.log("Tab is closing");
         // Prevent the tab from closing, if necessary
         event.preventDefault();
         event.returnValue = "";

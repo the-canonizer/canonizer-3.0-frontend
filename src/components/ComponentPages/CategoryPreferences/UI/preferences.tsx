@@ -44,7 +44,7 @@ export default function PreferencesUI({ onChange, tags, onFinish, onSkip }) {
       <PrimaryButton
         type="primary"
         htmlType="button"
-        className="h-[40px] text-sm rounded-md !w-4/12 m-auto flex justify-center items-center sm:!w-full"
+        className="h-[40px] text-sm rounded-lg !w-full m-auto flex justify-center items-center sm:!w-4/12"
         block
         data-testid="submitButton"
         id="otp-btn"
