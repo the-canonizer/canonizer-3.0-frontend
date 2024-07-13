@@ -27,7 +27,10 @@ const Tour = () => {
   const handleJoyrideCallback = (data: CallBackProps) => {
     const { index } = data;
 
-    if (index === TOUR_STEPS?.length) {
+    console.log("index---", index);
+    if (index === TOUR_STEPS?.length - 1) {
+      console.log("inside if index---", index);
+
       dispatch(setIsNewUser(false));
     }
   };

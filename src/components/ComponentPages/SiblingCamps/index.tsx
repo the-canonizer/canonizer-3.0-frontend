@@ -20,6 +20,7 @@ const SiblingCamps = () => {
   const parentCampNum = secondToLastElement ? secondToLastElement.camp_num : 1;
   const [siblingCampsData, setSiblingCampsData] = useState([]);
   const [campHistory, setCampHistory] = useState(history);
+  const [isImageError, setIsImageError] = useState(false);
   const dispatch = useDispatch();
   const siblingCampsFunction = async () => {
     let body = {
@@ -27,7 +28,6 @@ const SiblingCamps = () => {
       camp_num: router?.query?.camp[1]?.split("-")[0],
       parent_camp_num: parentCampNum,
     };
-    console.log(body.parent_camp_num, "body");
     let response = await getSiblingCamp(body);
     setSiblingCampsData(response?.data);
     dispatch(setSiblingCampData(response?.data));
@@ -39,6 +39,9 @@ const SiblingCamps = () => {
   useEffect(() => {
     setCampHistory(history);
   }, [history]);
+  const handleImageError = () => {
+    setIsImageError(true);
+  };
   return (
     <>
       {siblingCampData?.length ? (
@@ -77,32 +80,29 @@ const SiblingCamps = () => {
                           width={24}
                         />
                         <p className="text-canLight text-base font-medium  leading-[22px]">
-                          123
+                          {obj?.views}
                         </p>
                       </div>
                     </div>
                     <div className="flex">
-                      <div className="z-0 w-[32px] h-[32px] rounded-full border-solid border-2 border-white flex justify-center items-center bg-canBlue2 overflow-hidden first:m-[0px]">
-                        <Image
-                          src="/images/sibling-user.png"
-                          alt="svg"
-                          height={32}
-                          width={32}
-                          className="object-cover"
-                        />
-                      </div>
-                      <div className="z-10 w-[32px] h-[32px] rounded-full border-2 border-white flex justify-center items-center bg-canBlue2 ml-3">
-                        T
-                      </div>
-                      <div className="z-10 w-[32px] h-[32px] rounded-full border-2 border-white flex justify-center items-center bg-canBlue2 ml-3">
-                        T
-                      </div>
-                      <div className="z-10 w-[32px] h-[32px] rounded-full border-2 border-white flex justify-center items-center bg-canBlue2 ml-3">
-                        T
-                      </div>
-                      <div className="z-10 w-[32px] h-[32px] rounded-full border-2 border-white flex justify-center items-center bg-canBlue2 ml-3">
-                        T
-                      </div>
+                      {obj.supporterData.map((val, index) => {
+                        return (
+                          <div
+                            key={index}
+                            className="z-0 w-[32px] h-[32px] rounded-full border-solid border-2 border-white flex justify-center items-center bg-canBlue2 overflow-hidden first:m-[0px]"
+                          >
+                            {!isImageError?(<Image
+                              src={val?.profile_picture_path}
+                              alt={ `${val?.first_name?.charAt(0)?.toUpperCase()}${val?.last_name?.charAt(0)?.toUpperCase()}`}
+                              height={32}
+                              width={32}
+                              className="object-cover"
+                              onError={handleImageError}
+                            />)
+                            :(`${val?.first_name?.charAt(0)?.toUpperCase()}${val?.last_name?.charAt(0)?.toUpperCase()}`)}
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
                 </div>

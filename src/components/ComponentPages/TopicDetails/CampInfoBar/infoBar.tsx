@@ -499,50 +499,50 @@ const InfoBar = ({
                   <i className="icon-camp"></i> Create New Camp
                 </Button> */}
                 <div>{!isMobile && <CampDisclaimer />}</div>
-                <div className="flex gap-5  items-center lg:flex-nowrap flex-wrap mb-14">
-                  <Button
-                    onClick={showConsensusTree}
-                    className="xl:w-[277px] text-canBlack border border-canGrey2 py-2.5 lg:px-5 !h-[44px]  refine-btn  lg:!text-base !text-sm font-medium  flex items-center justify-between gap-2.5 rounded-lg   bg-canGray"
-                  >
-                    Consesnus Tree
-                    <Image
-                      src="/images/caret-icon.svg"
-                      alt="svg"
-                      height={7}
-                      width={14}
-                    />
-                  </Button>
-                  <Button
-                    onClick={showDrawer}
-                    className="gap-5 relative text-canBlack py-2.5 lg:px-5 h-[34px] rounded-lg w-auto  lg:text-base text-sm font-medium  flex items-center justify-center !border !border-canGrey2"
-                  >
-                    <span>Refine</span>
-                    <Image
-                      src="/images/filter-con.svg"
-                      alt="svg"
-                      height={24}
-                      width={24}
-                    />
-                    <div className="w-3.5 h-3.5 rounded-full bg-canRed absolute -top-1.5 -right-1.5">
-                      {" "}
-                    </div>
-                  </Button>
-                  {(router.query.algo &&
-                    selectedAlgorithm &&
-                    lable?.algorithm_label !== undefined) ||
-                  is_camp_archive_checked ||
-                  is_checked ||
-                  selectedAsOf == "bydate" ||
-                  includeReview ||
-                  router?.query?.asof === "review" ||
-                  filteredScore != 0 ? (
-                    <LatestFilter />
-                  ) : (
-                    ""
-                  )}
-                </div>
               </Tooltip>
             ) : null}
+            <div className="flex gap-5  items-center lg:flex-nowrap flex-wrap mb-14">
+              <Button
+                onClick={showConsensusTree}
+                className="xl:w-[277px] text-canBlack border border-canGrey2 py-2.5 lg:px-5 !h-[44px]  refine-btn  lg:!text-base !text-sm font-medium  flex items-center justify-between gap-2.5 rounded-lg   bg-canGray"
+              >
+                Consesnus Tree
+                <Image
+                  src="/images/caret-icon.svg"
+                  alt="svg"
+                  height={7}
+                  width={14}
+                />
+              </Button>
+              <Button
+                onClick={showDrawer}
+                className="gap-5 relative text-canBlack py-2.5 lg:px-5 h-[34px] rounded-lg w-auto  lg:text-base text-sm font-medium  flex items-center justify-center !border !border-canGrey2"
+              >
+                <span>Refine</span>
+                <Image
+                  src="/images/filter-con.svg"
+                  alt="svg"
+                  height={24}
+                  width={24}
+                />
+                <div className="w-3.5 h-3.5 rounded-full bg-canRed absolute -top-1.5 -right-1.5">
+                  {" "}
+                </div>
+              </Button>
+              {(router.query.algo &&
+                selectedAlgorithm &&
+                lable?.algorithm_label !== undefined) ||
+              is_camp_archive_checked ||
+              is_checked ||
+              selectedAsOf == "bydate" ||
+              includeReview ||
+              router?.query?.asof === "review" ||
+              filteredScore != 0 ? (
+                <LatestFilter />
+              ) : (
+                ""
+              )}
+            </div>
           </div>
           <div
             className={`${styles.topicDetailContentHead_Right} ${styles.leftPanel}`}

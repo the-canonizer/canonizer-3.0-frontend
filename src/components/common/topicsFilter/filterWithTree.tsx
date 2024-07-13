@@ -132,6 +132,12 @@ const FilterWithTree = ({
     selectedAsOf == "default" ? 2 : selectedAsOf == "review" ? 1 : 3
   );
   const [selectedAsOFDate, setSelectedAsOFDate] = useState(filteredAsOfDate);
+  const [selectAlgo, setSelectAlgo] = useState(
+    algorithms?.filter((algo) => algo?.algorithm_key == selectedAlgorithm)[0]
+      ?.algorithm_label
+  );
+  const [selectScore, setSelectScore] = useState(0);
+
   const [timer, setTimer] = useState(null);
   const [inputValue, setInputValue] = useState(
     router.query.score || filteredScore
@@ -251,6 +257,18 @@ const FilterWithTree = ({
   }, []);
 
   useEffect(() => {
+    if (!router?.query?.algo) {
+      setSelectAlgo("blind_popularity");
+      if (!router?.query?.score) {
+        setSelectScore(0);
+      }
+      if (router?.query?.asof !== "bydate" || !router?.query?.asofdate) {
+        // selectedAsOf = "default"
+        handleRadioClick(2);
+      }
+    }
+  }, [openDrawer]);
+  useEffect(() => {
     if (!didMount.current) {
       let newObject = removeEmptyValues({
         filterByScore: router.query.score || `${filteredScore}` || "0",
@@ -291,30 +309,31 @@ const FilterWithTree = ({
     asOf: asof,
     asofdate:
       asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
-    algorithm: algorithm,
+    algorithm: selectAlgo,
     update_all: 1,
     fetch_topic_history: viewThisVersionCheck ? 1 : null,
   };
   const revertScore = () => {
     getTreesApi(reqBodyForService);
   };
+  console.log(selectAlgo, "algooo");
   const selectAlgorithm = (value) => {
     setCookie("canAlgo", value, {
       path: "/",
     });
     dispatch(
       setFilterCanonizedTopics({
-        algorithm: value,
+        algorithm: selectAlgo,
       })
     );
-    onChangeRoute(
-      filterObject?.filterByScore,
-      value,
-      filterObject?.asof,
-      filterObject?.asofdate,
-      filterObject?.namespace_id,
-      viewThisVersion
-    );
+    // onChangeRoute(
+    //   filterObject?.filterByScore,
+    //   value,
+    //   filterObject?.asof,
+    //   filterObject?.asofdate,
+    //   filterObject?.namespace_id,
+    //   viewThisVersion
+    // );
     revertScore();
   };
   const onChange = (e) => {
@@ -354,24 +373,24 @@ const FilterWithTree = ({
       path: "/",
     });
 
-    dispatch(
-      setFilterCanonizedTopics({
-        asofdate: IsoDateFormat,
-        asof: "bydate",
-      })
-    );
-    onChangeRoute(
-      filterObject?.filterByScore,
-      filterObject?.algorithm,
-      "bydate",
-      IsoDateFormat,
-      filterObject?.namespace_id,
-      viewThisVersion
-    );
+    // dispatch(
+    //   setFilterCanonizedTopics({
+    //     asofdate: IsoDateFormat,
+    //     asof: "bydate",
+    //   })
+    // );
+    // onChangeRoute(
+    //   filterObject?.filterByScore,
+    //   filterObject?.algorithm,
+    //   "bydate",
+    //   IsoDateFormat,
+    //   filterObject?.namespace_id,
+    //   viewThisVersion
+    // );
   };
 
-  const filterOnScore = (e) => {
-    const { value } = e.target;
+  const filterOnScore = (value) => {
+    // const { value } = e?.target;
     setInputValue(value);
     clearTimeout(timer);
     const reg = /^-?\d*(\.\d*)?$/;
@@ -382,14 +401,14 @@ const FilterWithTree = ({
             filterByScore: value,
           })
         );
-        onChangeRoute(
-          value,
-          filterObject?.algorithm,
-          filterObject?.asof,
-          filterObject?.asofdate,
-          filterObject?.namespace_id,
-          viewThisVersion
-        );
+        // onChangeRoute(
+        //   value,
+        //   selectAlgo,
+        //   filterObject?.asof,
+        //   filterObject?.asofdate,
+        //   filterObject?.namespace_id,
+        //   viewThisVersion
+        // );
       }, 1000);
       setTimer(newTimer);
     }
@@ -422,8 +441,8 @@ const FilterWithTree = ({
         })
       );
       onChangeRoute(
-        filterObject?.filterByScore,
-        filterObject?.algorithm,
+        selectScore,
+        selectAlgo,
         "bydate",
         Date.parse(dateValue) / 1000,
         filterObject?.namespace_id,
@@ -438,7 +457,7 @@ const FilterWithTree = ({
       );
       onChangeRoute(
         filterObject?.filterByScore,
-        filterObject?.algorithm,
+        selectAlgo,
         "bydate",
         Date.now() / 1000,
         filterObject?.namespace_id,
@@ -454,6 +473,8 @@ const FilterWithTree = ({
     setSelectedValue(value);
   };
   const handleApplyClick = () => {
+    filterOnScore(selectScore);
+    selectAlgorithm(selectAlgo);
     if (selectedValue === 2) {
       dispatch(setViewThisVersion(false));
       setCookie("asof", "default", { path: "/" });
@@ -464,8 +485,8 @@ const FilterWithTree = ({
         })
       );
       onChangeRoute(
-        filterObject?.filterByScore,
-        filterObject?.algorithm,
+        selectScore,
+        selectAlgo,
         "default",
         Date.now() / 1000,
         filterObject?.namespace_id,
@@ -484,8 +505,8 @@ const FilterWithTree = ({
         })
       );
       onChangeRoute(
-        filterObject?.filterByScore,
-        filterObject?.algorithm,
+        selectScore,
+        selectAlgo,
         "review",
         Date.now() / 1000,
         filterObject?.namespace_id,
@@ -498,6 +519,11 @@ const FilterWithTree = ({
   };
   const onClose = () => {
     dispatch(setOpenDrawer(false));
+  };
+
+  const handleChange = (event) => {
+    const value = event.target.value;
+    setSelectScore(Number(value));
   };
   return (
     <div className="leftSideBar_Card drawer_card">
@@ -562,13 +588,17 @@ const FilterWithTree = ({
                       (algo) => algo?.algorithm_key == selectedAlgorithm
                     )[0]?.algorithm_label
                   }
-                  onChange={selectAlgorithm}
+                  // onChange={selectAlgorithm}
+                  onChange={(algo) => {
+                    setSelectAlgo(algo);
+                  }}
                   value={
-                    !router?.query?.algo
-                      ? algorithms && algorithms[0]?.algorithm_label
-                      : algorithms?.filter(
-                          (algo) => algo?.algorithm_key == selectedAlgorithm
-                        )[0]?.algorithm_label
+                    selectAlgo
+                    // !router?.query?.algo
+                    //   ? algorithms && algorithms[0]?.algorithm_label
+                    //   : algorithms?.filter(
+                    //       (algo) => algo?.algorithm_key == selectedAlgorithm
+                    //     )[0]?.algorithm_label
                   }
                   disabled={loadingIndicator}
                   id="algo_dropdown"
@@ -613,9 +643,11 @@ const FilterWithTree = ({
                 {/* {/ <LeftOutlined className={styles.LeftOutlined} />  /} */}
                 <Input
                   size="large"
-                  onChange={filterOnScore}
+                  // onChange={filterOnScore}
+                  onChange={handleChange}
                   value={
-                    filteredScore == 0 ? filterObject.filterByScore : inputValue
+                    // filteredScore == 0 ? filterObject.filterByScore : inputValue
+                    selectScore
                   }
                   disabled={loadingIndicator}
                   id="filter_input"
