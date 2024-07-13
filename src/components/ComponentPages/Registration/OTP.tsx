@@ -95,7 +95,10 @@ const RegistrationOTP = () => {
 
   return (
     <CustomSpinner key="registration-spinner" spinning={loading}>
-      <Card bordered={false} className="bg-canGrey1 mt-0 lg:mt-10 h-full flex justify-center items-center [&>.ant-card-body]:p-0 [&>.ant-card-body]:w-full [&_.ant-card-body]:pb-0 min-h-full">
+      <Card
+        bordered={false}
+        className="bg-canGrey1 mt-0 lg:mt-10 h-full flex justify-center items-center [&>.ant-card-body]:p-0 [&>.ant-card-body]:w-full [&_.ant-card-body]:pb-0 min-h-full"
+      >
         <Row gutter={20}>
           <Col lg={12} md={24} xl={12} xs={24} className="hidden lg:block">
             <LeftContent onBrowseClick={onBrowseClick} />

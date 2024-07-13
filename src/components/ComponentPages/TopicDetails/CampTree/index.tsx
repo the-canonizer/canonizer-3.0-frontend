@@ -16,7 +16,7 @@ import {
   setCheckSupportExistsData,
   setCurrentCheckSupportStatus,
 } from "src/store/slices/campDetailSlice";
-import { DownOutlined } from "@ant-design/icons";
+import { DownOutlined, RightOutlined } from "@ant-design/icons";
 import Image from "next/image";
 import arrow from "../../../../../public/images/caret-icon.svg";
 
@@ -322,7 +322,9 @@ const CampTree = ({
             (data[item].is_archive != 0 && is_camp_archive_checked == true) ? (
             <>
               <TreeNode
-                switcherIcon={<Image src={arrow} height={10} width={10} />}
+                switcherIcon={({ expanded }) =>
+                  expanded ? <DownOutlined /> : <RightOutlined />
+                }
                 title={
                   <div
                     style={{ overflowX: "auto", overflowY: "clip" }}
