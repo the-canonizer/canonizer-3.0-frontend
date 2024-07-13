@@ -256,14 +256,7 @@ const CampTreeCard = ({
               </>
             }
           >
-            {getTreeLoadingIndicator || !tree ? (
-              <CustomSkelton
-                skeltonFor="tree"
-                bodyCount={4}
-                isButton={false}
-                stylingClass=""
-              />
-            ) : !openDrawer ? (
+            { !openDrawer ? (
               <CampTree
                 scrollToCampStatement={scrollToCampStatement}
                 setTotalCampScoreForSupportTree={

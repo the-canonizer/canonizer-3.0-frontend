@@ -499,10 +499,10 @@ const InfoBar = ({
                   <i className="icon-camp"></i> Create New Camp
                 </Button> */}
                 <div>{!isMobile && <CampDisclaimer />}</div>
-                <div className="flex gap-5 mt-2 items-center lg:flex-nowrap flex-wrap">
+                <div className="flex gap-5  items-center lg:flex-nowrap flex-wrap mb-14">
                   <Button
                     onClick={showConsensusTree}
-                    className="text-canBlack border border-canGrey2 py-2.5 lg:px-5 !h-[44px] !w-auto refine-btn  lg:!text-base !text-sm font-medium  flex items-center justify-center gap-2.5 rounded-lg   bg-canGray"
+                    className="xl:w-[277px] text-canBlack border border-canGrey2 py-2.5 lg:px-5 !h-[44px]  refine-btn  lg:!text-base !text-sm font-medium  flex items-center justify-between gap-2.5 rounded-lg   bg-canGray"
                   >
                     Consesnus Tree
                     <Image

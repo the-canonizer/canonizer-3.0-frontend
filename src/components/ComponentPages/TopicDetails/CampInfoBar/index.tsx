@@ -342,7 +342,7 @@ const TimelineInfoBar = ({
         </Col>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
           <span className="text-xs text-canLight">Submitted On : </span>
-          <span className="text-base text-black">
+          <span className="text-base !text-black font-normal">
             {" "}
             {topicRecord && covertToTime(topicRecord?.submit_time)}
           </span>
@@ -409,7 +409,7 @@ const TimelineInfoBar = ({
       <Row gutter={5}>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
           <span className="text-xs text-canLight">Submitter</span>
-          <span className="author-name">{campRecord?.submitter_nick_name}</span>
+          <span className="author-name text-canBlue text-base font-semibold underline">{campRecord?.submitter_nick_name}</span>
         </Col>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
           <span className="text-xs text-canLight">Submitted On : </span>
@@ -507,7 +507,7 @@ const TimelineInfoBar = ({
           styles.topicDetailContentHead + " printHIde " + styles.info_bar_n
         }
       > */}
-      <div className="bg-canGrey1  pt-3 pb-3 lg:px-6 lg:rounded-lg mb-7 ">
+      <div className="lg:bg-canGrey1 bg-white lg:py-6 py-3 lg:px-5 lg:rounded-xl mb-10 mt-7.5 mx-[-16px]  lg:mx-0 px-5 border-t border-[#EAECF0] shadow-mobile-b-shadow lg:shadow-none ">
         <Spin spinning={false}>
           <div className={styles.topicDetailContentHead_Left}>
             {isForumPage ? (
@@ -575,7 +575,7 @@ const TimelineInfoBar = ({
                     title={title}
                     className="title-popover"
                   >
-                    <div className="flex  items-center gap-1 ">
+                    <div className="flex  items-center gap-1.5">
                       <span className="font- text-base text-canBlack">
                         Topic :
                       </span>
@@ -645,7 +645,7 @@ const TimelineInfoBar = ({
                       width={6}
                     />
 
-                    <div className="flex items-center gap-1">
+                    <div className="flex items-center gap-1.5">
                       <span className="font-bold text-base text-canBlack">
                         {!isTopicHistoryPage ? "Camp :" : ""}
                       </span>
@@ -672,7 +672,7 @@ const TimelineInfoBar = ({
                                 )}?${getQueryParams()?.returnQuery}`}
                                 key={index}
                               >
-                                <a className="!text-canBlack">
+                                <a className="!text-canBlack flex">
                                   <span
                                     className={
                                       styles.slashStyle + " !text-canBlack"
@@ -691,7 +691,18 @@ const TimelineInfoBar = ({
                                     <Popover
                                       content={contentForCamp}
                                       title={title2}
-                                    >{`${camp?.camp_name}`}</Popover>
+                                    >
+                                      <div className="flex items-center gap-1.5">
+                                        <span className="lg:text-base text-xs font-semibold"> {`${camp?.camp_name}`}</span>
+                                        <Image
+                                          src="/images/circle-info-bread.svg"
+                                          alt="svg"
+                                          className="icon-topic"
+                                          height={16}
+                                          width={16}
+                                        />
+                                      </div>
+                                    </Popover>
                                   </span>
                                 </a>
                               </Link>
@@ -718,7 +729,7 @@ const TimelineInfoBar = ({
                             </small>
                           </Tooltip>
                         )}
-                      <span className="flex">
+                      {/* <span className="flex">
                         {" "}
                         <Image
                           src="/images/circle-info-bread.svg"
@@ -727,7 +738,7 @@ const TimelineInfoBar = ({
                           height={16}
                           width={16}
                         />
-                      </span>
+                      </span> */}
                     </div>
                   </Typography.Paragraph>
                 </div>
@@ -774,7 +785,7 @@ const TimelineInfoBar = ({
                     className="title-popover"
                   >
                     <div className="flex  items-center gap-1 ">
-                      <span className="font- text-base text-canBlack whitespace-nowrap">
+                      <span className="lg:font-normal lg:text-base text-xs lg:text-canBlack text-canLight whitespace-nowrap">
                         Topic :
                       </span>
 
@@ -794,12 +805,12 @@ const TimelineInfoBar = ({
                             "-"
                           )}/1-Agreement?${getQueryParams()?.returnQuery}`}
                         >
-                          <a className="normal text-canLight text-3 leading-5 font-normal text-ellipsis w-[50px] truncate">
+                          <a className="normal lg:text-canBlack lg:text-base text-xs leading-5 lg:font-normal text-canLight text-ellipsis w-[50px] truncate">
                             {breadCrumbRes?.topic_name}
                           </a>
                         </Link>
                       ) : breadCrumbRes ? (
-                        <span className="text-[17px] font-bold text-ellipsis w-[80px] lg:w-auto truncate ">
+                        <span className="lg:text-base text-xs font-normal text-ellipsis w-[80px] lg:w-auto truncate lg:text-canBlack text-canLight ">
                           {breadCrumbRes?.topic_name}
                         </span>
                       ) : (
@@ -962,10 +973,10 @@ const TimelineInfoBar = ({
               )}
 
               <Button
-                className="btn hidden create-new-camp-btn border border-canBlue px-3 py-2.5 rounded-lg lg:flex items-center gap-2.5 text-base font-medium leading-6 text-center text-canBlack bg-transparent"
+                className="btn hidden create-new-camp-btn border border-canBlue px-8 py-2.5 rounded-lg lg:flex items-center gap-2.5 text-base font-medium leading-6 text-center text-canBlack bg-transparent"
                 size="large"
               >
-                Create New Camp
+                Create Camp
                 <Image
                   src="/images/Icon-plus.svg"
                   alt="svg"

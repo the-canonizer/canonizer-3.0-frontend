@@ -526,8 +526,8 @@ const SupportTreeCard = ({
             <Image
               src="/images/hand-icon.svg"
               alt="svg"
-              height={24}
-              width={24}
+              height={16}
+              width={12}
             />
           </CustomButton>
         </div>
