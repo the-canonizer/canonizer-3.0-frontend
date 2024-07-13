@@ -6,7 +6,7 @@ const TopicHistoryPage = () => {
   return (
     <>
       {/* <Layout> */}
-        <HistoryContainer />
+      <HistoryContainer />
       {/* </Layout> */}
     </>
   );

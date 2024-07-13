@@ -6,7 +6,7 @@ const StatementHistoryPage = () => {
   return (
     <>
       {/* <Layout> */}
-        <HistoryContainer />
+      <HistoryContainer />
       {/* </Layout> */}
     </>
   );

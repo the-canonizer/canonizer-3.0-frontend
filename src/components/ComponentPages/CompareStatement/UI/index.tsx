@@ -55,7 +55,10 @@ function CompareStatementUI({
 
   return (
     <>
-      <Breadcrumbs compareMode={compareMode} historyOF={router && router?.query?.from} />
+      <Breadcrumbs
+        compareMode={compareMode}
+        historyOF={router && router?.query?.from}
+      />
       {isLoading ? (
         <CustomSkelton skeltonFor="comparisonPage" />
       ) : (

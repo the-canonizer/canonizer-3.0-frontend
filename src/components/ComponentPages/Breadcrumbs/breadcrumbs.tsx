@@ -57,7 +57,7 @@ function Breadcrumbs({ compareMode = false, updateId, historyOF = null }: any) {
 
     if (
       (payload && Object.keys(payload).length > 0,
-        !!(getCookies() as any)?.loginToken)
+      !!(getCookies() as any)?.loginToken)
     ) {
       getBreadCrumbApiCall();
     }
@@ -103,19 +103,17 @@ function Breadcrumbs({ compareMode = false, updateId, historyOF = null }: any) {
             <i className="icon-home"></i>
           </Breadcrumb.Item>
           <Breadcrumb.Item href="">(Canon) General</Breadcrumb.Item>
-          <Breadcrumb.Item
-            href={href}
-          >
+          <Breadcrumb.Item href={href}>
             Topic: {breadCrumbRes && breadCrumbRes?.topic_name}
           </Breadcrumb.Item>
           <Breadcrumb.Item>
             {historyTitle() == "Statement History"
               ? "Statement"
               : historyTitle() == "Topic History"
-                ? "Topic"
-                : historyTitle() == "Camp History"
-                  ? "Camp"
-                  : null}{" "}
+              ? "Topic"
+              : historyTitle() == "Camp History"
+              ? "Camp"
+              : null}{" "}
             History
           </Breadcrumb.Item>
         </Breadcrumb>
@@ -130,10 +128,10 @@ function Breadcrumbs({ compareMode = false, updateId, historyOF = null }: any) {
             {historyTitle() == "Statement History"
               ? " Statement"
               : historyTitle() == "Topic History"
-                ? " Topic"
-                : historyTitle() == "Camp History"
-                  ? " Camp"
-                  : null}
+              ? " Topic"
+              : historyTitle() == "Camp History"
+              ? " Camp"
+              : null}
             <i className="icon-edit"></i>
           </PrimaryButton>
         )}

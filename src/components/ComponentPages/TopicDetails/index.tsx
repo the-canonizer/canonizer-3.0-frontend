@@ -478,26 +478,26 @@ const TopicDetails = ({ serverSideCall }: any) => {
         rightSidebar={
           !openConsensusTreePopup && (
             <Fragment>
-              <div className="support-tree-parent-box w-full">
-                <div className="flex gap-2 items-center mb-5">
-                  <h3 className="uppercase text-base font-semibold text-canBlack">
+              <div className="support-tree-parent-box w-full mt-14 lg:mt-0">
+                <div className="flex gap-2 items-center mb-5 ">
+                  <h3 className="uppercase text-base font-semibold text-canBlack ">
                     Support Tree
                   </h3>
-                  <div className="handicon-badge py-1 px-2.5 bg-canOrange rounded-md inline-flex items-center">
+                  <div className="handicon-badge py-1 px-2.5 bg-canOrange rounded inline-flex items-center gap-1.5">
                     <Image
                       src="/images/hand-icon.svg"
                       alt="svg"
-                      height={24}
-                      width={24}
+                      height={15}
+                      width={12}
                     />
-                    <span className="text-white font-medium">
+                    <span className="text-white font-medium text-sm">
                       {campRecord?.is_archive
                         ? 0
                         : totalCampScoreForSupportTree?.toFixed(2)}
                     </span>
                   </div>
                 </div>
-                <div className="bg-canGray py-7 px-2.5 lg:px-5 rounded-lg">
+                <div className="bg-canGray py-7 px-2.5 lg:px-6 rounded-lg">
                   <div className="border border-canGrey2 bg-white rounded-lg lg:p-5 p-2.5">
                     <SupportTreeCard
                       loadingIndicator={loadingIndicator}

@@ -6,27 +6,35 @@ import { useSelector } from "react-redux";
 import { RootState } from "src/store";
 import { Dropdown } from "antd";
 import DropDownMenu from "../../DropdownMenu";
+import ViewCounts from "components/shared/ViewsCount";
 
 const CampDisclaimer = () => {
-  const { campRecord, manageSupportStatusCheck } = useSelector(
+  const { campRecord, manageSupportStatusCheck, tree } = useSelector(
     (state: RootState) => ({
       campRecord: state?.topicDetails?.currentCampRecord,
       manageSupportStatusCheck: state.topicDetails.manageSupportStatusCheck,
+      tree: state?.topicDetails?.tree && state?.topicDetails?.tree[0],
     })
   );
   return (
-    <div className="flex justify-between mb-3 items-center">
-      <h3 className="font-semibold text-canBlack text-base">
-        CAMP: {campRecord?.camp_name}
-      </h3>
-      <div className="flex gap-4 items-center">
-        <div className="flex-1">
+    <div className="flex justify-between mb-5 items-center">
+      <div className="flex gap-2.5 items-center">
+        <h3 className="font-semibold text-canBlack text-base uppercase">
+          CAMP: {campRecord?.camp_name}
+        </h3>
+        <div className="lg:flex items-center gap-2 hidden ">
+          <ViewCounts views={tree?.[1] && tree[1]?.camp_views} />
+        </div>
+      </div>
+
+      <div className="flex gap-7 items-center">
+        <div className="">
           <SocialShareUI
             campName={campRecord?.camp_name}
             campUrl={!isServer() && window?.location?.href}
           />
         </div>
-        <div className="flex-1 flex items-center">
+        <div className="">
           <Dropdown
             // className={styles.campForumDropdown}
             placement="bottomRight"
@@ -38,6 +46,7 @@ const CampDisclaimer = () => {
             <a
               // className={styles.iconMore}
               onClick={(e) => e.preventDefault()}
+              className="flex"
             >
               <Image
                 src="/images/options-icon.svg"

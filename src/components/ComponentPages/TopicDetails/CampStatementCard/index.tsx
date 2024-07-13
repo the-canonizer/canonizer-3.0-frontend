@@ -38,9 +38,9 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
     />
   ) : (
     <>
-      <div className="camp-agrrement-new mb-3 bg-canGray py-8 px-6 rounded-lg border-t-2 border-canGeen">
+      <div className="camp-agrrement-new mb-14 bg-canGray py-8 lg:px-6 px-4 rounded-lg border-t-6 !border-canGreen">
         <div>
-          <div className="camp-agreement-header flex items-center mb-3 gap-2">
+          <div className="camp-agreement-header flex items-center mb-5 gap-2">
             <h3 className="text-base text-canBlack text-left font-semibold ">
               {K?.exceptionalMessages?.campStatementHeading}
             </h3>
@@ -52,7 +52,7 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
               width={16}
             />
           </div>
-          <div className="flex items-center justify-start gap-6 camp-header-content">
+          <div className="flex items-center justify-start gap-6 camp-header-content lg:border-none border-t border-b border-canGrey2 lg:py-0 py-2 lg:mb-0 mb-5">
             <div className="flex items-center gap-2">
               <Image
                 src="/images/calendar-camp.svg"
@@ -65,13 +65,13 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
                 Last update: {covertToTime(campStatement?.[0]?.go_live_time)}
               </p>
             </div>
-            <div className="d-flex items-center gap-1">
-              <ViewCounts views={tree && tree[1]?.camp_views} />
+            <div className="flex items-center gap-2 lg:hidden ">
+              <ViewCounts views={tree?.[1] && tree[1]?.camp_views} />
             </div>
           </div>
-          <hr className="my-3" />
-          <div className="flex items-center flex-col justify-center pt-10">
-            <Paragraph>
+          <hr className="my-5 hidden lg:flex" />
+          <div className="flex items-center flex-col justify-center">
+            <Paragraph className="!m-0">
               <div className={styles.campStatement}>
                 {campStatement?.length && campStatement[0]?.parsed_value ? (
                   <div
@@ -96,19 +96,19 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
                     href={
                       campStatement?.length < 0
                         ? `/statement/history/${replaceSpecialCharacters(
-                          router?.query?.camp.at(0),
-                          "-"
-                        )}/${replaceSpecialCharacters(
-                          router?.query?.camp.at(1) ?? "1-Agreement",
-                          "-"
-                        )}`
+                            router?.query?.camp.at(0),
+                            "-"
+                          )}/${replaceSpecialCharacters(
+                            router?.query?.camp.at(1) ?? "1-Agreement",
+                            "-"
+                          )}`
                         : `/create/statement/${replaceSpecialCharacters(
-                          router?.query?.camp.at(0),
-                          "-"
-                        )}/${replaceSpecialCharacters(
-                          router?.query?.camp.at(1) ?? "1-Agreement",
-                          "-"
-                        )}`
+                            router?.query?.camp.at(0),
+                            "-"
+                          )}/${replaceSpecialCharacters(
+                            router?.query?.camp.at(1) ?? "1-Agreement",
+                            "-"
+                          )}`
                     }
                     className="printHIde"
                   >
@@ -134,19 +134,19 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
                     href={
                       campStatement?.length > 0
                         ? `/statement/history/${replaceSpecialCharacters(
-                          router?.query?.camp.at(0),
-                          "-"
-                        )}/${replaceSpecialCharacters(
-                          router?.query?.camp.at(1) ?? "1-Agreement",
-                          "-"
-                        )}`
+                            router?.query?.camp.at(0),
+                            "-"
+                          )}/${replaceSpecialCharacters(
+                            router?.query?.camp.at(1) ?? "1-Agreement",
+                            "-"
+                          )}`
                         : `/create/statement/${replaceSpecialCharacters(
-                          router?.query?.camp.at(0),
-                          "-"
-                        )}/${replaceSpecialCharacters(
-                          router?.query?.camp.at(1) ?? "1-Agreement",
-                          "-"
-                        )}`
+                            router?.query?.camp.at(0),
+                            "-"
+                          )}/${replaceSpecialCharacters(
+                            router?.query?.camp.at(1) ?? "1-Agreement",
+                            "-"
+                          )}`
                     }
                     className="printHIde"
                   >

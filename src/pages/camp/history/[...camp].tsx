@@ -6,7 +6,7 @@ const CampHistoryPage = () => {
   return (
     <>
       {/* <Layout> */}
-        <HistoryContainer />
+      <HistoryContainer />
       {/* </Layout> */}
     </>
   );
