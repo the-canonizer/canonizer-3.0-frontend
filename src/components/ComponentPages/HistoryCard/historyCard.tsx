@@ -327,7 +327,7 @@ function HistoryCard({
               <Collapse
                 expandIconPosition="end"
                 className="ch-collapse"
-                defaultActiveKey={["0"]}
+                defaultActiveKey={["1"]}
                 expandIcon={({ isActive }) =>
                   isActive ? (
                     <i className="icon-up-arrow"></i>
@@ -382,7 +382,7 @@ function HistoryCard({
 
           {campStatement?.status == "in_review" &&
             (!campStatement?.grace_period || commited) &&
-            isUserAuthenticated && (
+            isUserAuthenticated && (campStatement?.total_supporters>1) && (
               <>
                 <div className="agreement-wrapper">
                   {(campStatement?.ifICanAgreeAndObject ||

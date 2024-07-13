@@ -10,7 +10,7 @@ const TopicHistory = ({ campStatement, topicNamespaceId }: any) => {
       <p className="mb-[10px]">
         Topic Name:<span>{campStatement?.topic_name}</span>
       </p>
-      <p className="font-semibold mb-2.5">Updates</p>
+      <p className="font-semibold mb-2.5">UPDATES</p>
 
       <p>
         Canon:<span>{campStatement?.canon}</span>
