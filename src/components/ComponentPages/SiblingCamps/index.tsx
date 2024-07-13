@@ -20,6 +20,7 @@ const SiblingCamps = () => {
   const parentCampNum = secondToLastElement ? secondToLastElement.camp_num : 1;
   const [siblingCampsData, setSiblingCampsData] = useState([]);
   const [campHistory, setCampHistory] = useState(history);
+  const [isImageError, setIsImageError] = useState(false);
   const dispatch = useDispatch();
   const siblingCampsFunction = async () => {
     let body = {
@@ -38,6 +39,9 @@ const SiblingCamps = () => {
   useEffect(() => {
     setCampHistory(history);
   }, [history]);
+  const handleImageError = () => {
+    setIsImageError(true);
+  };
   return (
     <>
       {siblingCampData?.length ? (
@@ -87,13 +91,15 @@ const SiblingCamps = () => {
                             key={index}
                             className="z-0 w-[32px] h-[32px] rounded-full border-solid border-2 border-white flex justify-center items-center bg-canBlue2 overflow-hidden first:m-[0px]"
                           >
-                            <Image
+                            {!isImageError?(<Image
                               src={val?.profile_picture_path}
-                              alt="svg"
+                              alt={ `${val?.first_name?.charAt(0)?.toUpperCase()}${val?.last_name?.charAt(0)?.toUpperCase()}`}
                               height={32}
                               width={32}
                               className="object-cover"
-                            />
+                              onError={handleImageError}
+                            />)
+                            :(`${val?.first_name?.charAt(0)?.toUpperCase()}${val?.last_name?.charAt(0)?.toUpperCase()}`)}
                           </div>
                         );
                       })}
