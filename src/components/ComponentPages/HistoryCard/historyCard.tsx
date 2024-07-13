@@ -57,6 +57,7 @@ import {
 } from "src/utils/generalUtility";
 import HistoryComparison from "../HistoryContainer/Collapse/historyComparison";
 import Timer from "../Timer";
+import PrimaryButton from "components/shared/Buttons/PrimariButton";
 
 const { Title } = Typography;
 
@@ -297,7 +298,7 @@ function HistoryCard({
                 <p>Grace period countdown</p>
                 <Tag
                   className={
-                    "bg-[#5482C833] border-0 rounded-md inline-flex py-[3px] items-center"
+                    "bg-canBlue_Opacity20 border-0 rounded-md inline-flex py-[3px] items-center"
                   }
                 >
                   <Timer
@@ -338,11 +339,9 @@ function HistoryCard({
               >
                 <Panel header="" key="1">
                   <div>
-                    <h5 className="font-semibold text-[#F19C39] mb-3">
-                      Statement
-                    </h5>
+                    <h5 className="font-semibold text-canOrange mb-3">Statement</h5>
                     <div
-                      className="text-[#242B37] pb-[1.25rem]"
+                      className="text-canBlack pb-[1.25rem]"
                       dangerouslySetInnerHTML={{
                         __html: campStatement?.parsed_value,
                       }}
@@ -379,8 +378,10 @@ function HistoryCard({
             />
           )}
 
-          {campStatement?.status == "in_review" &&
-            (!campStatement?.grace_period || commited) && (
+          
+          {
+            campStatement?.status == "in_review" &&
+            (!campStatement?.grace_period || commited) && isUserAuthenticated && (
               <>
                 <div className="agreement-wrapper">
                   {(campStatement?.ifICanAgreeAndObject ||
@@ -487,7 +488,7 @@ function HistoryCard({
             <>
               <div className="cn-footer-btn">
                 <div className="cn-card-btn">
-                  <Button
+                  <PrimaryButton
                     size="large"
                     type="primary"
                     id={`submit-update-${campStatement?.id}`}
@@ -527,50 +528,53 @@ function HistoryCard({
                   >
                     Edit Based On This
                     <i className="icon-edit"></i>
-                  </Button>
-                  {campStatement?.status == "in_review" && (
-                    <>
-                      <Button
-                        size="large"
-                        // disabled={historyOf == "camp" ? !campStatement?.ifICanAgreeAndObject : false}
-                        id={`object-change-${campStatement?.id}`}
-                        className="flex items-center bg-[#E46B6B1A] border-[#E46B6B] hover:border-[#E46B6B] hover:text-[#E46B6B] focus:text-[#E46B6B] focus:border-[#E46B6B] justify-center rounded-[10px] gap-3.5 leading-none w-100"
-                        onClick={() => {
-                          let isModelPop = !isUserAuthenticated
-                            ? true
-                            : (!campStatement?.ifIAmExplicitSupporter &&
+                  </PrimaryButton>
+
+                  {
+                     (campStatement?.status == "in_review") && (
+                      <>
+                        <Button
+                          size="large"
+                          // disabled={historyOf == "camp" ? !campStatement?.ifICanAgreeAndObject : false}
+                          id={`object-change-${campStatement?.id}`}
+                          className="flex items-center bg-canRed_Opacity10 border-canRed hover:border-canRed hover:text-canRed focus:text-canRed focus:border-canRed justify-center rounded-[10px] gap-3.5 leading-none w-100"
+                          onClick={() => {
+                            let isModelPop = !isUserAuthenticated
+                              ? true
+                              : (!campStatement?.ifIAmExplicitSupporter &&
                                 campStatement?.ifIamSupporter == 0) ||
-                              (parentArchived == 1 &&
-                                directarchived == 1 &&
-                                historyOf == "topic") ||
-                              (parentArchived == 1 && directarchived == 0)
-                            ? true
-                            : false;
-                          if (isModelPop) {
-                            setModal1Open(true);
-                          } else {
-                            router?.push(
-                              historyOf == "camp"
-                                ? `/manage/camp/${campStatement?.id}-objection`
-                                : historyOf == "topic"
-                                ? `/manage/topic/${campStatement?.id}-objection`
-                                : `/manage/statement/${campStatement?.id}-objection`
-                            );
-                          }
-                        }}
-                      >
-                        Object Changes
-                        <i className="icon-thumb-down text-[#E46B6B]"></i>
-                      </Button>
-                    </>
-                  )}
+                                (parentArchived == 1 &&
+                                  directarchived == 1 &&
+                                  historyOf == "topic") ||
+                                (parentArchived == 1 && directarchived == 0)
+                                ? true
+                                : false;
+                            if (isModelPop) {
+                              setModal1Open(true);
+                            } else {
+                              router?.push(
+                                historyOf == "camp"
+                                  ? `/manage/camp/${campStatement?.id}-objection`
+                                  : historyOf == "topic"
+                                    ? `/manage/topic/${campStatement?.id}-objection`
+                                    : `/manage/statement/${campStatement?.id}-objection`
+                              );
+                            }
+                          }}
+                        >
+                          Object Changes
+                          <i className="icon-thumb-down text-canRed"></i>
+                        </Button>
+                      </>
+                   )}
+        
                 </div>
                 <div className="cn-link-btn">
                   <Button
                     size="large"
                     type="link"
                     id={`view-this-version-${campStatement?.id}`}
-                    className="flex items-center justify-center rounded-[10px] leading-none text-[#242B37]"
+                    className="flex items-center justify-center rounded-[10px] leading-none text-canBlack"
                     onClick={() =>
                       handleViewThisVersion(campStatement?.go_live_time)
                     }
@@ -622,7 +626,7 @@ function HistoryCard({
               <>
                 <div className="cn-footer-btn">
                   <div className="cn-card-btn">
-                    <Button
+                    <PrimaryButton
                       size="large"
                       type="primary"
                       id={`commit-change-${campStatement?.id}`}
@@ -632,7 +636,7 @@ function HistoryCard({
                     >
                       Commit Changes
                       <i className="icon-upload"></i>
-                    </Button>
+                    </PrimaryButton>
                     <Button
                       size="large"
                       id={`edit-change-${campStatement?.id}`}

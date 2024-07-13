@@ -65,7 +65,7 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
                 Last update: {covertToTime(campStatement?.[0]?.go_live_time)}
               </p>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="d-flex items-center gap-1">
               <ViewCounts views={tree && tree[1]?.camp_views} />
             </div>
           </div>

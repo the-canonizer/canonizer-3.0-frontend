@@ -1,4 +1,5 @@
 import { Button, Drawer, List, Modal, Tabs, Typography } from "antd";
+import Link from "next/link";
 
 import { useState } from "react";
 
@@ -18,14 +19,6 @@ function HistoryCardDrawer({
   const onClose = () => {
     setOpen(false);
   };
-  const data = [
-    "Jane Doe",
-    "Jane Doe",
-    "Jane Doe",
-    "Jane Doe",
-    "Jane Doe",
-    "Jane Doe",
-  ];
   return (
     <div
       onClick={open ? onClose : showDrawer}
@@ -48,7 +41,7 @@ function HistoryCardDrawer({
       >
         <Button
           type="link"
-          className="text-2xl text-[#242B37] p-0 mb-8 gap-5 flex items-center leading-none"
+          className="text-2xl text-canBlack p-0 mb-8 gap-5 flex items-center leading-none"
           icon={<i className="icon-back"></i>}
         >
           Support Status
@@ -61,9 +54,8 @@ function HistoryCardDrawer({
               footer={false}
               bordered
               dataSource={agreedSupporters}
-              renderItem={(item: any) => (
-                <List.Item>{item?.nickNameData?.name}</List.Item>
-              )}
+              renderItem={(item:any) => <List.Item><Link href={item && item?.nickNameData?.path}>{item?.nickNameData?.name}</Link></List.Item>}
+
             />
           </Tabs.TabPane>
           <Tabs.TabPane tab="Not Agreed" key="2">
@@ -73,9 +65,7 @@ function HistoryCardDrawer({
               footer={false}
               bordered
               dataSource={notAgreedSupporters}
-              renderItem={(item: any) => (
-                <List.Item>{item?.nickNameData?.name}</List.Item>
-              )}
+              renderItem={(item:any) => <List.Item><Link href={item && item?.nickNameData?.path}>{item?.nickNameData?.name}</Link></List.Item>}
             />
           </Tabs.TabPane>
         </Tabs>
