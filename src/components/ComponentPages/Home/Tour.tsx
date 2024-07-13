@@ -38,6 +38,8 @@ const Tour = () => {
     };
   }, []);
 
+  console.log("isShowTour----", isShowTour);
+
   return isShowTour ? (
     <JoyRide
       steps={TOUR_STEPS}
