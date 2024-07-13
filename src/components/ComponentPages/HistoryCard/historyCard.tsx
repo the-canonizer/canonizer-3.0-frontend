@@ -327,7 +327,7 @@ function HistoryCard({
               <Collapse
                 expandIconPosition="end"
                 className="ch-collapse"
-                defaultActiveKey={["0"]}
+                defaultActiveKey={["1"]}
                 expandIcon={({ isActive }) =>
                   isActive ? (
                     <i className="icon-up-arrow"></i>
