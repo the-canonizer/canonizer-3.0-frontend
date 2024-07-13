@@ -360,9 +360,11 @@ function HistoryContainer() {
     });
   const handleBackButton = () => {
     const topicDetails = router.query.camp?.at(0);
-    const campDetails = router.query.camp?.at(1);
+    const campDetails = router.query.camp?.at(1) ? router.query.camp?.at(1) : "1-Agreement";
 
-    router.push(`/topic/${topicDetails}/${campDetails}`);
+    if(topicDetails && campDetails){
+      router.push(`/topic/${topicDetails}/${campDetails}`);
+    }
   };
 
   return (
