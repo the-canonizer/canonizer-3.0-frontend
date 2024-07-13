@@ -502,6 +502,18 @@ const TimelineInfoBar = ({
       </CustomButton>
     </div>
   );
+
+  const campRoute = () => {
+    return `/camp/create/${
+      router?.query.camp?.at(0) + "/" + router?.query.camp?.at(1)
+    }`;
+  };
+  const handleClick = () => {
+    const camp0 = router?.query.camp?.[0] || "";
+    const camp1 = router?.query.camp?.[1] || "";
+    const link = `/camp/create/${camp0}/${camp1}`;
+    router.push(link);
+  };
   return (
     <>
       {/* <div
@@ -980,6 +992,7 @@ const TimelineInfoBar = ({
               <Button
                 className="btn hidden create-new-camp-btn border border-canBlue px-8 py-2.5 rounded-lg lg:flex items-center gap-2.5 text-base font-medium leading-6 text-center text-canBlack bg-transparent"
                 size="large"
+                onClick={handleClick}
               >
                 Create Camp
                 <Image
