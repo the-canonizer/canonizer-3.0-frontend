@@ -9,7 +9,6 @@ import Breadcrumbs from "components/ComponentPages/Breadcrumbs/breadcrumbs";
 import HistoryCard from "components/ComponentPages/HistoryCard/historyCard";
 
 const { Title, Text, Paragraph } = Typography;
-
 const validUrl = (url) => {
   try {
     new URL(url);
@@ -26,6 +25,7 @@ function CompareStatementUI({
   itemsStatus,
 }: any) {
   const [compareMode, setCompareMode] = useState(true);
+  const [currentVersion, setCurrentVersion] = useState(true);
   const router = useRouter();
   const s1 = statements?.at(0) || {},
     s2 = statements?.at(1) || {},
@@ -40,7 +40,7 @@ function CompareStatementUI({
     const query = router?.query;
     if (query.from === "topic") {
       router?.push({
-        pathname: `/topic/history/${router?.query?.routes[0]}}`,
+        pathname: `/topic/history/${router?.query?.routes[0]}/${router?.query?.routes[1]}`,
       });
     } else if (query.from === "statement") {
       router?.push({
@@ -92,6 +92,7 @@ function CompareStatementUI({
                 compareMode={compareMode}
                 comparisonData={liveStatement}
                 status={liveStatement?.status}
+                currentVersion={currentVersion}
               />
             </Col>
           </Row>

@@ -46,6 +46,7 @@
     "@zeit/next-typescript": "^1.1.1",
     "antd": "^4.17.3",
     "antd-img-crop": "^4.21.0",
+    "argon2": "^0.40.1",
     "autoprefixer": "^10.4.19",
     "axios": "^0.24.0",
     "babel-jest": "^29.5.0",
@@ -57,6 +58,7 @@
     "draftjs-to-html": "^0.9.1",
     "firebase": "^8.10.1",
     "global": "^4.4.0",
+    "hash-wasm": "4.5.0",
     "history": "^5.1.0",
     "html-to-draftjs": "^1.5.0",
     "html-to-text": "^9.0.3",
@@ -90,9 +92,7 @@
     "sanitize-html": "^2.7.0",
     "sass": "^1.44.0",
     "slick-carousel": "^1.8.1",
-    "tailwindcss": "^3.4.3",
-    "argon2": "^0.40.1",
-    "hash-wasm": "4.5.0"
+    "tailwindcss": "^3.4.3"
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^13.4.9",
