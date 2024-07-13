@@ -44,7 +44,7 @@ function CustomLayout(props: any) {
       <RegistrationModal />
 
       {props?.afterHeader ? (
-        <div className="px-4 md:px-7 my-3 mb-10">{props?.afterHeader}</div>
+        <div className="px-4 md:px-7 my-3 mt-10 mb-10">{props?.afterHeader}</div>
       ) : null}
 
       <Layout

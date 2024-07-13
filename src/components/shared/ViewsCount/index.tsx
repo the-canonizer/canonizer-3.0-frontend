@@ -1,5 +1,6 @@
 import { Typography } from "antd";
 import { EyeOutlined } from "@ant-design/icons";
+import PropTypes from "prop-types";
 
 import CustomSkelton from "src/components/common/customSkelton";
 
@@ -18,6 +19,12 @@ function formatNumber(num) {
   }
   return num.toString();
 }
+
+const propTypes = {
+  views: PropTypes.number,
+  loading: PropTypes.bool,
+  className: PropTypes.string,
+};
 
 const ViewCounts = ({
   views = 0,
@@ -46,5 +53,7 @@ const ViewCounts = ({
     </Typography.Paragraph>
   );
 };
+
+ViewCounts.propTypes = propTypes;
 
 export default ViewCounts;

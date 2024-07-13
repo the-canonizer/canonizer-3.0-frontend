@@ -242,17 +242,16 @@ function HistoryContainer() {
 
   const onCompareClick = () => {
     router?.push({
-      pathname: `/statement/compare/${router?.query.camp[0]}/${
-        router?.query.camp[1] ? router?.query.camp[1] : "1-Agreement"
-      }`,
+      pathname: `/statement/compare/${router?.query.camp[0]}/${router?.query.camp[1] ? router?.query.camp[1] : "1-Agreement"
+        }`,
       query: {
         statements: selectedTopic?.at(0) + "_" + selectedTopic?.at(1),
         from:
           historyOf == "statement"
             ? "statement"
             : historyOf == "camp"
-            ? "camp"
-            : "topic",
+              ? "camp"
+              : "topic",
         status: selectedTopicStatus.join("-"),
       },
     });
