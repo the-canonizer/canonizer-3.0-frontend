@@ -382,7 +382,7 @@ function HistoryCard({
 
           {campStatement?.status == "in_review" &&
             (!campStatement?.grace_period || commited) &&
-            isUserAuthenticated && (
+            isUserAuthenticated && (campStatement?.total_supporters>1) && (
               <>
                 <div className="agreement-wrapper">
                   {(campStatement?.ifICanAgreeAndObject ||
