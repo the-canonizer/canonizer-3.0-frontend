@@ -79,11 +79,11 @@ function Campforum() {
                         {obj.body}
                       </p>
                       <p className="text-canBlack text-opacity-80 lg:text-sm text-[10px] hidden lg:flex ">
-                            {covertToTime(obj?.created_at)}
-                          </p>
+                        {covertToTime(obj?.created_at)}
+                      </p>
                       <div className="">
                         <div className="flex gap-2.5 items-center lg:hidden w-full justify-between">
-                        <p className="text-canBlack text-opacity-80 lg:text-sm text-[10px] flex-1 flex w-full whitespace-nowrap">
+                          <p className="text-canBlack text-opacity-80 lg:text-sm text-[10px] flex-1 flex w-full whitespace-nowrap">
                             {covertToTime(obj?.created_at)}
                           </p>
                           <div className="w-full flex justify-end gap-3">
@@ -97,8 +97,6 @@ function Campforum() {
                               {obj.post_count} <span> Replies</span>
                             </p>
                           </div>
-
-                          
                         </div>
                       </div>
                     </div>

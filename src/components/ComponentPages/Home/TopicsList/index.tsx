@@ -5,16 +5,7 @@ import {
 } from "@ant-design/icons";
 import { Popover, Select } from "antd";
 import Link from "next/link";
-import {
-  Row,
-  Col,
-  Typography,
-  Divider,
-  Form,
-  Input,
-  Button,
-  Tag,
-} from "antd";
+import { Row, Col, Typography, Divider, Form, Input, Button, Tag } from "antd";
 import { useEffect, useRef, useState } from "react";
 import {
   getCanonizedNameSpacesApi,
@@ -175,7 +166,6 @@ const TopicsList = () => {
     dispatch(setFilterCanonizedTopics({ search: value || "" }));
     setAllowClear(true);
   };
-
 
   const handleClear = () => {
     setAllowClear(false);

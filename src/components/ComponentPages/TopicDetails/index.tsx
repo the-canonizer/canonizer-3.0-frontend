@@ -491,10 +491,9 @@ const TopicDetails = ({ serverSideCall }: any) => {
                       width={12}
                     />
                     <span className="text-white font-medium text-sm">
-                       {campRecord?.is_archive
+                      {campRecord?.is_archive
                         ? 0
-                        : totalCampScoreForSupportTree?.toFixed(2)} 
-                        
+                        : totalCampScoreForSupportTree?.toFixed(2)}
                     </span>
                   </div>
                 </div>

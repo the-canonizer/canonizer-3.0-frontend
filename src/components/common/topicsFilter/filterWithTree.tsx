@@ -742,18 +742,22 @@ const FilterWithTree = ({
               </div>
             </Col>
             <Col xs={24}>
-              { !openDrawer? <div className={styles.treeContainer}>
-                <CampTreeCard
-                  getTreeLoadingIndicator={getTreeLoadingIndicator}
-                  scrollToCampStatement={scrollToCampStatement}
-                  setTotalCampScoreForSupportTree={
-                    setTotalCampScoreForSupportTree
-                  }
-                  backGroundColorClass={backGroundColorClass}
-                  setSupportTreeForCamp={setSupportTreeForCamp}
-                  isForumPage={isForumPage}
-                />
-              </div>: ""} 
+              {!openDrawer ? (
+                <div className={styles.treeContainer}>
+                  <CampTreeCard
+                    getTreeLoadingIndicator={getTreeLoadingIndicator}
+                    scrollToCampStatement={scrollToCampStatement}
+                    setTotalCampScoreForSupportTree={
+                      setTotalCampScoreForSupportTree
+                    }
+                    backGroundColorClass={backGroundColorClass}
+                    setSupportTreeForCamp={setSupportTreeForCamp}
+                    isForumPage={isForumPage}
+                  />
+                </div>
+              ) : (
+                ""
+              )}
             </Col>
 
             <Col xs={24} className=" refine-drawer-mobile overflow-hidden">
@@ -769,19 +773,19 @@ const FilterWithTree = ({
                   className="btnApplyfilters border-t lg:rounded-lg lg:h-[44px] h-[67px] bg-canBlue !text-white flex justify-center items-center lg:w-auto w-full gap-2.5 hover:!text-canBlack hover:!border hover:!border-canblack"
                   onClick={handleApplyClick}
                 >
-                 <span className="!flex gap-1 flex-row ">
-                 <span>Apply</span><span className="hidden lg:block">Filters</span>
-                 </span>
-                 <span className="!hidden lg:!block ">
-                 <Image
-                    src="/images/filterbtn-icon.svg"
-                    alt="svg"
-                    className="icon-topic "
-                    height={24}
-                    width={24}
-                  />
-                 </span>
-                 
+                  <span className="!flex gap-1 flex-row ">
+                    <span>Apply</span>
+                    <span className="hidden lg:block">Filters</span>
+                  </span>
+                  <span className="!hidden lg:!block ">
+                    <Image
+                      src="/images/filterbtn-icon.svg"
+                      alt="svg"
+                      className="icon-topic "
+                      height={24}
+                      width={24}
+                    />
+                  </span>
                 </Button>
               </div>
             </Col>

@@ -54,8 +54,13 @@ function HistoryCardDrawer({
               footer={false}
               bordered
               dataSource={agreedSupporters}
-              renderItem={(item:any) => <List.Item><Link href={item && item?.nickNameData?.path}>{item?.nickNameData?.name}</Link></List.Item>}
-
+              renderItem={(item: any) => (
+                <List.Item>
+                  <Link href={item && item?.nickNameData?.path}>
+                    {item?.nickNameData?.name}
+                  </Link>
+                </List.Item>
+              )}
             />
           </Tabs.TabPane>
           <Tabs.TabPane tab="Not Agreed" key="2">
@@ -65,7 +70,13 @@ function HistoryCardDrawer({
               footer={false}
               bordered
               dataSource={notAgreedSupporters}
-              renderItem={(item:any) => <List.Item><Link href={item && item?.nickNameData?.path}>{item?.nickNameData?.name}</Link></List.Item>}
+              renderItem={(item: any) => (
+                <List.Item>
+                  <Link href={item && item?.nickNameData?.path}>
+                    {item?.nickNameData?.name}
+                  </Link>
+                </List.Item>
+              )}
             />
           </Tabs.TabPane>
         </Tabs>

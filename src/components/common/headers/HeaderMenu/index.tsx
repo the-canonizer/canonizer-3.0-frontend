@@ -264,7 +264,9 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
                 <Link href={item.link}>
                   <a className="hover:text-canHoverBlue flex">
                     {isMobile ? (
-                      <span className="block tab:hidden mr-2">{item?.icon}</span>
+                      <span className="block tab:hidden mr-2">
+                        {item?.icon}
+                      </span>
                     ) : null}
                     {item.linkTitle}
                   </a>

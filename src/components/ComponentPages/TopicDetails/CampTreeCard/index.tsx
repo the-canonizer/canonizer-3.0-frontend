@@ -256,7 +256,7 @@ const CampTreeCard = ({
               </>
             }
           >
-            { !openDrawer ? (
+            {!openDrawer ? (
               <CampTree
                 scrollToCampStatement={scrollToCampStatement}
                 setTotalCampScoreForSupportTree={

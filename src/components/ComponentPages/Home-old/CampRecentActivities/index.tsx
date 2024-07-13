@@ -65,7 +65,7 @@ export default function CampRecentActivities() {
           <div className="d-flex flex-col gap-1 w-full">
             {loadingIndicator ? (
               <CustomSkelton
-              className=""
+                className=""
                 skeltonFor="list"
                 bodyCount={7}
                 stylingClass="listSkeleton"
@@ -79,9 +79,7 @@ export default function CampRecentActivities() {
                 renderItem={(item) => (
                   <List.Item className={styles.activitiesList}>
                     <List.Item.Meta
-                      avatar={
-                        <BellFilled className={ styles.bellIcon} />
-                      }
+                      avatar={<BellFilled className={styles.bellIcon} />}
                       title={
                         <div>
                           <h4 className="text-base leading-[24px] mb-2.5 font-normal">

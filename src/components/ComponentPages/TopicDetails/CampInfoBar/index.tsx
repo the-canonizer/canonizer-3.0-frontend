@@ -409,7 +409,9 @@ const TimelineInfoBar = ({
       <Row gutter={5}>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
           <span className="text-xs text-canLight">Submitter</span>
-          <span className="author-name text-canBlue text-base font-semibold underline">{campRecord?.submitter_nick_name}</span>
+          <span className="author-name text-canBlue text-base font-semibold underline">
+            {campRecord?.submitter_nick_name}
+          </span>
         </Col>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
           <span className="text-xs text-canLight">Submitted On : </span>
@@ -693,7 +695,10 @@ const TimelineInfoBar = ({
                                       title={title2}
                                     >
                                       <div className="flex items-center gap-1.5">
-                                        <span className="lg:text-base text-xs font-semibold"> {`${camp?.camp_name}`}</span>
+                                        <span className="lg:text-base text-xs font-semibold">
+                                          {" "}
+                                          {`${camp?.camp_name}`}
+                                        </span>
                                         <Image
                                           src="/images/circle-info-bread.svg"
                                           alt="svg"
