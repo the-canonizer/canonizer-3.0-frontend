@@ -49,19 +49,19 @@ const SiblingCamps = () => {
           <h3 className="font-semibold text-base text-canBlack uppercase">
             SIBLING CAMPS
           </h3>
-          <div className="sibling-camps flex xl:flex-row lg:flex-row md:flex-row  flex-col gap-4 my-5">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 my-5">
             {siblingCampsData?.map((obj, index) => {
               return (
-                <div key={index} className="bg-canGray p-5 rounded-lg">
-                  <h3 className="text-base text-canBlack font-medium mb-3.5">
+                <div key={index} className="bg-canGray px-4 py-5 rounded-xl flex flex-col gap-5">
+                  <h3 className="text-base text-canBlack font-medium">
                     {obj?.camp_name}
                   </h3>
-                  <p className="font-normal text-canBlack  leading-[26px] mb-3 text-base ">
+                  <p className="text-canBlack opacity-80 text-base">
                     {obj?.statement}
                   </p>
-                  <div className="flex justify-between">
-                    <div>
-                      <div className="flex gap-1">
+                  <div className="flex items-center justify-between mt-auto gap-3 flex-wrap">
+                    <div className="flex flex-col gap-5">
+                      <div className="flex gap-1 items-center ">
                         <Image
                           src="/images/flagicon.svg"
                           alt="svg"
@@ -72,7 +72,7 @@ const SiblingCamps = () => {
                           {obj?.namespace}
                         </p>
                       </div>
-                      <div className="flex gap-1 mt-1">
+                      <div className="flex gap-1 items-center">
                         <Image
                           src="/images/eyeicon.svg"
                           alt="svg"
@@ -89,7 +89,7 @@ const SiblingCamps = () => {
                         return (
                           <div
                             key={index}
-                            className="z-0 w-[32px] h-[32px] rounded-full border-solid border-2 border-white flex justify-center items-center bg-canBlue2 overflow-hidden first:m-[0px]"
+                            className="z-0 w-[34px] h-[34px] rounded-full border-solid border-2 border-white flex justify-center items-center text-canBlack font-medium text-base bg-canBlue2 overflow-hidden -ml-4 first:m-[0px]"
                           >
                             {!isImageError?(<Image
                               src={val?.profile_picture_path}
@@ -104,6 +104,18 @@ const SiblingCamps = () => {
                         );
                       })}
                     </div>
+                    {/* <div className="flex">
+                      <div className="z-0 w-[32px] h-[32px] rounded-full border-solid border-2 border-white flex justify-center items-center bg-canBlue2 overflow-hidden first:m-[0px]">
+                        <Image
+                          src="/images/sibling-user.png"
+                          alt="svg"
+                          height={32}
+                          width={32}
+                          className="object-cover"
+                        />
+                      </div>
+                  
+                    </div> */}
                   </div>
                 </div>
               );

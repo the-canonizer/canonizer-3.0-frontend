@@ -72,6 +72,7 @@ import CampDisclaimer from "../../common/CampDisclaimer";
 import CampTree from "./CampTree";
 import FullScoreCheckbox from "../FullScoreCheckbox";
 import ArchivedCampCheckBox from "../ArchivedCampCheckBox";
+import { setOpenConsensusTreePopup } from "src/store/slices/hotTopicSlice";
 
 const { Link: AntLink } = Typography;
 
@@ -129,7 +130,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
     campWithScore: state?.filters?.campWithScoreValue,
   }));
   const { openConsensusTreePopup } = useSelector((state: RootState) => ({
-    openConsensusTreePopup: state.topicDetails.openConsensusTreePopup,
+    openConsensusTreePopup: state.hotTopic.openConsensusTreePopup,
   }));
 
   const [treeExpandValue, setTreeExpandValue] = useState<any>(campWithScore);
@@ -393,6 +394,12 @@ const TopicDetails = ({ serverSideCall }: any) => {
         dispatch(setShowDrawer(false));
       }
     }
+    dispatch(setOpenConsensusTreePopup(true))
+    // await getSupportTreeApi()
+    setTimeout(()=>{
+      dispatch(setOpenConsensusTreePopup(false))
+    },100);
+    
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
