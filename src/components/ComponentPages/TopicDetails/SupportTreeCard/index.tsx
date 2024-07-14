@@ -35,6 +35,7 @@ import { setIsSupportModal } from "src/store/slices/topicSlice";
 import { showLoginModal } from "src/store/slices/uiSlice";
 import Image from "next/image";
 import support_image from "../../../../../public/images/support-tree-avatar.svg";
+import { setOpenConsensusTreePopup } from "src/store/slices/hotTopicSlice";
 
 const { Paragraph } = Typography;
 const { Panel } = Collapse;
@@ -123,6 +124,19 @@ const SupportTreeCard = ({
   const handleOkSupportCamps = () => {
     dispatch(setIsSupportModal(false));
   };
+  const getSupportTreeApi = async()=> {
+    const reqBodyForService = {
+      topic_num: +router?.query?.camp[0]?.split("-")[0],
+      camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
+      asOf: asof,
+      asofdate:
+        asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
+      algorithm: algorithm,
+      update_all: 1,
+      fetch_topic_history: +router?.query?.topic_history,
+    };
+    await getTreesApi(reqBodyForService);
+  }
   const handleCancelSupportCamps = async ({ isCallApiStatus = false }) => {
     dispatch(setIsSupportModal(false));
     setGetManageSupportLoadingIndicator(true);
@@ -132,17 +146,7 @@ const SupportTreeCard = ({
       await getCheckStatusAPI();
     }
     if (isCallApiStatus == true) {
-      const reqBodyForService = {
-        topic_num: +router?.query?.camp[0]?.split("-")[0],
-        camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
-        asOf: asof,
-        asofdate:
-          asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
-        algorithm: algorithm,
-        update_all: 1,
-        fetch_topic_history: +router?.query?.topic_history,
-      };
-      await getTreesApi(reqBodyForService);
+      await getSupportTreeApi();
       GetActiveSupportTopicList();
     }
 
@@ -233,13 +237,10 @@ const SupportTreeCard = ({
   }, [router]);
 
   const manageSupportPath = router?.asPath.replace("/topic/", "/support/");
-
   const { campSupportingTree, asof } = useSelector((state: RootState) => ({
     campSupportingTree: supportTreeForCamp,
     asof: state?.filters?.filterObject?.asof,
   }));
-  // console.log(campSupportingTree, "plooo");
-
   useEffect(() => {
     if (campSupportingTree?.length > 0) {
       getDelegateNicknameId(campSupportingTree);
@@ -257,6 +258,20 @@ const SupportTreeCard = ({
       }
     });
   };
+  useEffect(()=>{
+    // setTimeout(()=>{
+    //   debugger;
+    //   dispatch(setOpenConsensusTreePopup(false))
+    // },100);
+    // debugger;
+    // (async()=>{
+    // dispatch(setOpenConsensusTreePopup(true))
+    // // await getSupportTreeApi()
+    // setTimeout(()=>{
+    //   dispatch(setOpenConsensusTreePopup(false))
+    // },100);
+    // })()
+  },[])
   const supportLength = 15;
   const renderTreeNodes = (
     data: any,

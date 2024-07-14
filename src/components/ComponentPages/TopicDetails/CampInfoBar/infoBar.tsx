@@ -15,10 +15,10 @@ import CustomSkelton from "../../../common/customSkelton";
 import {
   setManageSupportStatusCheck,
   setManageSupportUrlLink,
-  setOpenConsensusTreePopup,
+  // setOpenConsensusTreePopup,
   setOpenDrawer,
 } from "../../../../store/slices/campDetailSlice";
-
+import { setOpenConsensusTreePopup } from "../../../../store/slices/hotTopicSlice";
 import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
 import {
   MoreOutlined,
@@ -117,7 +117,7 @@ const InfoBar = ({
     topicRecord?.topicSubscriptionId
   );
   const { openConsensusTreePopup } = useSelector((state: RootState) => ({
-    openConsensusTreePopup: state.topicDetails.openConsensusTreePopup,
+    openConsensusTreePopup: state.hotTopic.openConsensusTreePopup,
   }));
   useEffect(() => {
     if (isTopicPage) {

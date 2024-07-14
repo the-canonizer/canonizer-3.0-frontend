@@ -23,7 +23,7 @@ export const treeSlice = createSlice({
     },
     manageSupportStatusCheck: false,
     openDrawer: false,
-    openConsensusTreePopup: false,
+    // openConsensusTreePopup: true,
     manageSupportUrlLink: null,
     CurrentCheckSupportStatus: null,
     currentGetCheckSupportExistsData: {
@@ -96,9 +96,9 @@ export const treeSlice = createSlice({
     setOpenDrawer: (state, action) => {
       state.openDrawer = action.payload;
     },
-    setOpenConsensusTreePopup: (state, action) => {
-      state.openConsensusTreePopup = action.payload;
-    },
+    // setOpenConsensusTreePopup: (state, action) => {
+    //   state.openConsensusTreePopup = action.payload;
+    // },
     setManageSupportUrlLink: (state, action) => {
       state.manageSupportUrlLink = action.payload;
     },
@@ -151,7 +151,7 @@ export const {
   setRemovedReasons,
   setChangeGoneLive,
   setSiblingCampData,
-  setOpenConsensusTreePopup,
+  // setOpenConsensusTreePopup,
 } = treeSlice.actions;
 
 export default treeSlice.reducer;
