@@ -1,6 +1,7 @@
 import { Typography } from "antd";
 import { RightOutlined } from "@ant-design/icons";
 import Link from "next/link";
+import PropTypes from "prop-types";
 
 import CommonCard from "src/components/shared/Card";
 import ViewCounts from "src/components/shared/ViewsCount";
@@ -8,6 +9,10 @@ import AvatarGroup from "src/components/shared/AvaratGroup";
 import CardDescription from "./descriptions";
 import TopicCatsLabel from "components/shared/TopicCategories";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
+
+const propTypes = {
+  topic: PropTypes.object,
+};
 
 const SingleTopicCard = ({ topic }) => {
   if (!topic) {
@@ -54,5 +59,7 @@ const SingleTopicCard = ({ topic }) => {
     </CommonCard>
   );
 };
+
+SingleTopicCard.propTypes = propTypes;
 
 export default SingleTopicCard;

@@ -1,3 +1,10 @@
+import PropTypes from "prop-types";
+
+const propTypes = {
+  fill: PropTypes.string,
+  className: PropTypes.string,
+};
+
 const HandIcon = ({ fill = "#fff", className = "mr-1" }) => {
   return (
     <svg
@@ -15,5 +22,7 @@ const HandIcon = ({ fill = "#fff", className = "mr-1" }) => {
     </svg>
   );
 };
+
+HandIcon.propTypes = propTypes;
 
 export default HandIcon;

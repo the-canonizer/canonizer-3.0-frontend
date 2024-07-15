@@ -1,3 +1,10 @@
+import PropTypes from "prop-types";
+
+const propTypes = {
+  fill: PropTypes.string,
+  className: PropTypes.string,
+};
+
 const SortIcon = ({ fill = "", className = "" }) => {
   return (
     <svg
@@ -15,5 +22,7 @@ const SortIcon = ({ fill = "", className = "" }) => {
     </svg>
   );
 };
+
+SortIcon.propTypes = propTypes;
 
 export default SortIcon;

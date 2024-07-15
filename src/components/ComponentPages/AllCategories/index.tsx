@@ -35,6 +35,7 @@ const AllCats = () => {
 
   useEffect(() => {
     getTags();
+    //eslint-disable-next-line
   }, [page, perPage, sortBy, search]);
 
   const onBackClick = (e) => {

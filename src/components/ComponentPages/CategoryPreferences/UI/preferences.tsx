@@ -1,5 +1,6 @@
 import { Typography, Card, Button } from "antd";
 import { ArrowRightOutlined } from "@ant-design/icons";
+import PropTypes from "prop-types";
 
 import PrimaryButton from "src/components/shared/Buttons/PrimariButton";
 import CustomCheckbox from "src/components/shared/FormInputs/checkbox";
@@ -8,7 +9,14 @@ const { Title } = Typography;
 
 const isDisabled = (data) => data?.some((d) => d?.checked);
 
-export default function PreferencesUI({ onChange, tags, onFinish, onSkip }) {
+const propTypes = {
+  onChange: PropTypes.func,
+  tags: PropTypes.array,
+  onFinish: PropTypes.func,
+  onSkip: PropTypes.func,
+};
+
+function PreferencesUI({ onChange, tags, onFinish, onSkip }) {
   return (
     <Card className="rounded-lg w-8/12 m-auto lg:w-full" bordered={false}>
       <div className="flex justify-center items-center text-center flex-col mb-4 relative">
@@ -63,3 +71,7 @@ export default function PreferencesUI({ onChange, tags, onFinish, onSkip }) {
     </Card>
   );
 }
+
+PreferencesUI.propTypes = propTypes;
+
+export default PreferencesUI;

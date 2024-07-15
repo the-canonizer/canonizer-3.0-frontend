@@ -1,6 +1,13 @@
 import sanitizeHtml from "sanitize-html";
+import PropTypes from "prop-types";
 
 import CustomSkelton from "src/components/common/customSkelton";
+
+const propTypes = {
+  description: PropTypes.string,
+  loading: PropTypes.bool,
+  isBrowsing: PropTypes.bool,
+};
 
 const CardDescription = ({
   description,
@@ -58,5 +65,7 @@ const CardDescription = ({
     ></div>
   );
 };
+
+CardDescription.propTypes = propTypes;
 
 export default CardDescription;

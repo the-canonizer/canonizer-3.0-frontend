@@ -1,5 +1,6 @@
 import { Typography, Row, Col, Image } from "antd";
 import Link from "next/link";
+import PropTypes from "prop-types";
 
 import { isServer, replaceSpecialCharacters } from "src/utils/generalUtility";
 import CommonCard from "src/components/shared/Card";
@@ -8,6 +9,10 @@ import ViewCounts from "src/components/shared/ViewsCount";
 import CardDescription from "../HotTopics/descriptions";
 import SocialShare from "components/shared/ShareTopic";
 import TopicCatsLabel from "components/shared/TopicCategories";
+
+const propTypes = {
+  topic: PropTypes.object,
+};
 
 const SingleTopicWithImage = ({ topic }) => {
   if (!topic) {
@@ -40,6 +45,7 @@ const SingleTopicWithImage = ({ topic }) => {
           >
             <a>
               <Image
+                alt={topic?.topic_name}
                 className="w-full rounded-lg h-auto object-cover h-full min-h-28 md:min-h-60 max-h-48 md:max-h-72"
                 preview={false}
                 height={"100%"}
@@ -105,5 +111,7 @@ const SingleTopicWithImage = ({ topic }) => {
     </CommonCard>
   );
 };
+
+SingleTopicWithImage.propTypes = propTypes;
 
 export default SingleTopicWithImage;

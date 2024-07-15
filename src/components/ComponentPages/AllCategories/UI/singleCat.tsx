@@ -2,11 +2,16 @@ import { useEffect, useState } from "react";
 import { Typography } from "antd";
 import { FlagOutlined, RightOutlined } from "@ant-design/icons";
 import Link from "next/link";
+import PropTypes from "prop-types";
 
 import CommonCards from "components/shared/Card";
 import { getRandomColor } from "components/ComponentPages/Home/CategoriesList";
 
 const { Paragraph, Text } = Typography;
+
+const propTypes = {
+  tag: PropTypes.object,
+};
 
 const Category = ({ tag }) => {
   const [bgColor, setBgColor] = useState("");
@@ -51,5 +56,7 @@ const Category = ({ tag }) => {
     </CommonCards>
   );
 };
+
+Category.propTypes = propTypes;
 
 export default Category;
