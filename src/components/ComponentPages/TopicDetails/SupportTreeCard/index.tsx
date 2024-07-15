@@ -124,7 +124,7 @@ const SupportTreeCard = ({
   const handleOkSupportCamps = () => {
     dispatch(setIsSupportModal(false));
   };
-  const getSupportTreeApi = async()=> {
+  const getSupportTreeApi = async () => {
     const reqBodyForService = {
       topic_num: +router?.query?.camp[0]?.split("-")[0],
       camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
@@ -136,7 +136,7 @@ const SupportTreeCard = ({
       fetch_topic_history: +router?.query?.topic_history,
     };
     await getTreesApi(reqBodyForService);
-  }
+  };
   const handleCancelSupportCamps = async ({ isCallApiStatus = false }) => {
     dispatch(setIsSupportModal(false));
     setGetManageSupportLoadingIndicator(true);
@@ -258,7 +258,7 @@ const SupportTreeCard = ({
       }
     });
   };
-  useEffect(()=>{
+  useEffect(() => {
     // setTimeout(()=>{
     //   debugger;
     //   dispatch(setOpenConsensusTreePopup(false))
@@ -271,7 +271,7 @@ const SupportTreeCard = ({
     //   dispatch(setOpenConsensusTreePopup(false))
     // },100);
     // })()
-  },[])
+  }, []);
   const supportLength = 15;
   const renderTreeNodes = (
     data: any,

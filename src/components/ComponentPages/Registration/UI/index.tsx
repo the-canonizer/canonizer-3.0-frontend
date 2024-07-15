@@ -237,7 +237,7 @@ function RegistrationUi({
             <a
               href="#"
               onClick={onLoginClick}
-              className="text-canBlue hover:text-canHoverBlue"
+              className="text-canBlue hover:text-canHoverBlue text-xl"
               id="already-text-link"
             >
               Login

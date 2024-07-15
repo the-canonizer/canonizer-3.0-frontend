@@ -27,10 +27,7 @@ const Tour = () => {
   const handleJoyrideCallback = (data: CallBackProps) => {
     const { index } = data;
 
-    console.log("index---", index);
     if (index === TOUR_STEPS?.length - 1) {
-      console.log("inside if index---", index);
-
       dispatch(setIsNewUser(false));
     }
   };
@@ -39,9 +36,8 @@ const Tour = () => {
     return () => {
       dispatch(setIsNewUser(false));
     };
+    // eslint-disable-next-linu
   }, []);
-
-  console.log("isShowTour----", isShowTour);
 
   return isShowTour ? (
     <JoyRide

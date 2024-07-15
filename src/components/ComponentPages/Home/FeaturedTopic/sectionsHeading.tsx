@@ -1,7 +1,14 @@
 import { Popover } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
+import PropTypes from "prop-types";
 
 import Headings from "src/components/shared/Typography";
+
+const propTypes = {
+  title: PropTypes.string,
+  infoContent: PropTypes.string,
+  icon: PropTypes.element,
+};
 
 const SectionHeading = ({
   title,
@@ -19,5 +26,7 @@ const SectionHeading = ({
     </Headings>
   );
 };
+
+SectionHeading.propTypes = propTypes;
 
 export default SectionHeading;

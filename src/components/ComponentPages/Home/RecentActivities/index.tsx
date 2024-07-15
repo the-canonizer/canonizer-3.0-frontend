@@ -72,10 +72,12 @@ export default function RecentActivities() {
 
   useEffect(() => {
     setRecentActivities(topicsData);
+    // eslint-disable-next-line
   }, [topicsData?.topics]);
 
   useEffect(() => {
     setRecentActivities(threadsData);
+    // eslint-disable-next-line
   }, [threadsData?.topics]);
 
   useEffect(() => {
@@ -94,6 +96,7 @@ export default function RecentActivities() {
       setGetTopicsLoadingIndicator(true);
       router?.push("/login");
     }
+    // eslint-disable-next-line
   }, [selectedTab, isChecked]);
 
   const handleTabChange = (key: string) => {
@@ -212,7 +215,8 @@ export default function RecentActivities() {
     return formattedTime.replace(",", "").replace(" at", ",");
   };
 
-  const ViewAllTopics = (isTopic) => {
+  // eslint-disable-next-line
+  const ViewAllTopics = (_isTopic) => {
     return null;
     // const ViewAllName = isTopic ? "View All Topics" : "View All Threads";
     // return (

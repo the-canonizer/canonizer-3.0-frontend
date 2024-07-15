@@ -1,9 +1,14 @@
 import { Dropdown } from "antd";
+import PropTypes from "prop-types";
 
 import type { MenuProps } from "antd";
 
 import SortIcon from "./sortIcon";
 import SecondaryButton from "components/shared/Buttons/SecondaryButton";
+
+const propTypes = {
+  onSort: PropTypes.func,
+};
 
 const SortByDropdown = ({ onSort }) => {
   const items: MenuProps["items"] = [
@@ -46,5 +51,7 @@ const SortByDropdown = ({ onSort }) => {
     </Dropdown>
   );
 };
+
+SortByDropdown.propTypes = propTypes;
 
 export default SortByDropdown;

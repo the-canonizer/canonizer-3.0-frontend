@@ -1,4 +1,10 @@
 import Link from "next/link";
+import PropTypes from "prop-types";
+
+const propTypes = {
+  title: PropTypes.string,
+  href: PropTypes.string,
+};
 
 const SeeMoreLInk = ({ title = "See More", href = "#" }) => {
   return (
@@ -9,5 +15,7 @@ const SeeMoreLInk = ({ title = "See More", href = "#" }) => {
     </Link>
   );
 };
+
+SeeMoreLInk.propTypes = propTypes;
 
 export default SeeMoreLInk;

@@ -394,12 +394,11 @@ const TopicDetails = ({ serverSideCall }: any) => {
         dispatch(setShowDrawer(false));
       }
     }
-    dispatch(setOpenConsensusTreePopup(true))
+    dispatch(setOpenConsensusTreePopup(true));
     // await getSupportTreeApi()
-    setTimeout(()=>{
-      dispatch(setOpenConsensusTreePopup(false))
-    },100);
-    
+    setTimeout(() => {
+      dispatch(setOpenConsensusTreePopup(false));
+    }, 100);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

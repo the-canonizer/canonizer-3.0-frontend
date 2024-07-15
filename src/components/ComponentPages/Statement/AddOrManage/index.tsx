@@ -730,9 +730,9 @@ export default function AddOrManage({ add }: any) {
       {notFoundStatus?.status ? (
         <DataNotFound name={notFoundStatus?.name} backURL={"/"} />
       ) : (
-        <div 
-          // className={styles.topicDetailContentWrap}
-          >
+        <div
+        // className={styles.topicDetailContentWrap}
+        >
           <aside className="leftSideBar miniSideBar topicPageNewLayoutSidebar">
             {/* <SideBarNoFilter /> */}
           </aside>
