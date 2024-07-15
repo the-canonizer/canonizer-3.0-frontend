@@ -6,7 +6,7 @@ export const hotTopicSlice = createSlice({
     topicData: [],
     featuredTopic: [],
     preferedTopic: [],
-    openConsensusTreePopup: false
+    openConsensusTreePopup: false,
   },
   reducers: {
     setHotTopic: (state, action) => {
@@ -24,7 +24,11 @@ export const hotTopicSlice = createSlice({
   },
 });
 
-export const { setHotTopic, setPrefTopic, setFeaturedTopic, setOpenConsensusTreePopup } =
-  hotTopicSlice.actions;
+export const {
+  setHotTopic,
+  setPrefTopic,
+  setFeaturedTopic,
+  setOpenConsensusTreePopup,
+} = hotTopicSlice.actions;
 
 export default hotTopicSlice.reducer;

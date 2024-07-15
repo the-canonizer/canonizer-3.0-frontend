@@ -52,7 +52,10 @@ const SiblingCamps = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 my-5">
             {siblingCampsData?.map((obj, index) => {
               return (
-                <div key={index} className="bg-canGray px-4 py-5 rounded-xl flex flex-col gap-5">
+                <div
+                  key={index}
+                  className="bg-canGray px-4 py-5 rounded-xl flex flex-col gap-5"
+                >
                   <h3 className="text-base text-canBlack font-medium">
                     {obj?.camp_name}
                   </h3>
@@ -91,15 +94,26 @@ const SiblingCamps = () => {
                             key={index}
                             className="z-0 w-[34px] h-[34px] rounded-full border-solid border-2 border-white flex justify-center items-center text-canBlack font-medium text-base bg-canBlue2 overflow-hidden -ml-4 first:m-[0px]"
                           >
-                            {!isImageError?(<Image
-                              src={val?.profile_picture_path}
-                              alt={ `${val?.first_name?.charAt(0)?.toUpperCase()}${val?.last_name?.charAt(0)?.toUpperCase()}`}
-                              height={32}
-                              width={32}
-                              className="object-cover"
-                              onError={handleImageError}
-                            />)
-                            :(`${val?.first_name?.charAt(0)?.toUpperCase()}${val?.last_name?.charAt(0)?.toUpperCase()}`)}
+                            {!isImageError ? (
+                              <Image
+                                src={val?.profile_picture_path}
+                                alt={`${val?.first_name
+                                  ?.charAt(0)
+                                  ?.toUpperCase()}${val?.last_name
+                                  ?.charAt(0)
+                                  ?.toUpperCase()}`}
+                                height={32}
+                                width={32}
+                                className="object-cover"
+                                onError={handleImageError}
+                              />
+                            ) : (
+                              `${val?.first_name
+                                ?.charAt(0)
+                                ?.toUpperCase()}${val?.last_name
+                                ?.charAt(0)
+                                ?.toUpperCase()}`
+                            )}
                           </div>
                         );
                       })}
