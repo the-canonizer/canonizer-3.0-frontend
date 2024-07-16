@@ -609,19 +609,27 @@ const TopicDetails = ({ serverSideCall }: any) => {
 
         <div className={styles.pageContent + " pageContentWrap"} id="printWrap">
           {openConsensusTreePopup == true ? (
-            <div className="bg-canGray py-7 px-5 rounded-lg">
-              <div className="border border-canGrey2 bg-white rounded-lg p-5 w-[80%]">
+            <div className="bg-canGray py-7 px-5 rounded-lg lg:w-[80%] w-full">
+              <div className="border border-canGrey2 bg-white rounded-lg p-5 w-full">
                 <div className="consensu-tree-section">
-                  <h3 className="mb-5 text-canBlack uppercase text-base font-semibold">
+                  <h3 className="mb-6 text-canBlack uppercase text-base font-semibold">
                     Consensus tree
                   </h3>
-                  <p className="text-sm  font-medium text-canBlack">
+                  <p className="text-sm  font-medium !text-canBlack">
                     Collapse camps with support less than
                   </p>
 
                   <Select
                     // className="!w-[200px] !mt-[10px] !mb-[20px] !rounded-[8px]   !shadow-none !border !border-canGrey2"
-                    className="[&_.ant-select-selector]:!bg-transparent !border !border-canGrey2 !shadow-none rounded-md !w-[200px] !mt-2.5 !mb-5"
+                    className="flex items-center [&_.ant-select-selector]:!bg-transparent [&_.ant-select-selector]:!border-none [&_.ant-select-selector]:focus:!border-none !border !border-canGrey2 !shadow-none rounded-md !w-[200px] !mt-2.5 !mb-5 h-[40px]"
+                    suffixIcon={
+                      <Image
+                        src="/images/select-caret.svg"
+                        alt=""
+                        height={7}
+                        width={15}
+                      />
+                    }
                     value={`${treeExpandValue}`}
                     defaultValue={`${treeExpandValue}`}
                     // style={{ width: 80, margin: "0 5px" }}

@@ -795,14 +795,14 @@ const FilterWithTree = ({
             <Col xs={24} className=" refine-drawer-mobile overflow-hidden">
               <div className="flex items-center justify-center sm:gap-0 lg:gap-2 btn-parent  lg:px-1 sm:px-0 fixed lg:static bottom-0 w-full">
                 <Button
-                  className="btnCancel lg:!border-b lg:!border-t lg:!border-l lg:!border-r focus:!text-canblack hover:!text-canblack !border-t !border-b-0 !border-r-0 !border-l-0 lg:!border-canBlue border-[#DDE2EE] bg-transparent lg:rounded-lg lg:h-[44px] h-[67px] lg:px-14 lg:w-auto w-full "
+                  className="btnCancel lg:!border-b lg:!border-t lg:!border-l lg:!border-r focus:!text-canblack hover:!text-canBlack !border-t !border-b-0 !border-r-0 !border-l-0 lg:!border-canBlue border-[#DDE2EE] bg-transparent lg:rounded-lg lg:h-[44px] h-[67px] lg:px-14 lg:w-auto w-full "
                   onClick={onClose}
                 >
                   Cancel
                 </Button>
 
                 <Button
-                  className="btnApplyfilters border-t lg:rounded-lg lg:h-[44px] h-[67px] bg-canBlue !text-white flex justify-center items-center lg:w-auto w-full gap-2.5 hover:!text-canBlack hover:!border hover:!border-canblack"
+                  className="btnApplyfilters border-t lg:rounded-lg lg:h-[44px] h-[67px] !bg-canBlue focus:!text-white border border-transparent focus:border-transparent !text-white flex justify-center items-center lg:w-auto w-full gap-2.5 hover:!text-white hover:!border hover:!border-canblack"
                   onClick={handleApplyClick}
                 >
                   <span className="!flex gap-1 flex-row ">

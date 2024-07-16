@@ -294,7 +294,7 @@ const SupportTreeCard = ({
           return (
             <>
               <TreeNode
-                className="[&_.ant-tree-node-content-wrapper]:!w-full lg:!px-5 px-2.5 !bg-transparent border-b hover:[&_.ant-tree-node-content-wrapper]:!bg-transparent !w-full"
+                className="[&_.ant-tree-node-content-wrapper]:!w-full [&_.ant-tree-switcher]:!hidden !bg-transparent border-b hover:[&_.ant-tree-node-content-wrapper]:!bg-transparent !w-full"
                 title={
                   <>
                     <div className="group w-full">
@@ -303,8 +303,9 @@ const SupportTreeCard = ({
                           "treeListItemTitle " + styles.treeListItemTitle
                         }
                       > */}
-                      <div className="flex gap-1 items-center  boder-b py-2.5 w-full ">
+                      <div className="flex gap-1 items-center  boder-b py-2.5 w-full flex-wrap">
                         <Link
+                          className="flex flex-wrap"
                           href={{
                             pathname: `/user/supports/${data[item].nick_name_id}`,
                             query: {
@@ -312,7 +313,7 @@ const SupportTreeCard = ({
                             },
                           }}
                         >
-                          <a className="flex gap-1 items-center">
+                          <a className="flex gap-1 items-center flex-wrap">
                             <span className="text-canBlack text-base font-medium">
                               {" "}
                               #{data[item].support_order}{" "}
@@ -329,7 +330,6 @@ const SupportTreeCard = ({
                               {" "}
                               {data[item].nick_name}
                             </span>
-                            <br />
                           </a>
                         </Link>
 
@@ -510,10 +510,7 @@ const SupportTreeCard = ({
               {campSupportingTree && renderTreeNodes(campSupportingTree)}
             </Tree>
           ) : (
-            <p>
-              {" "}
-              {campSupportingTree?.length}No direct supporters of this camp
-            </p>
+            <p> No direct supporters of this camp</p>
           )}
 
           {campSupportingTree?.length > supportLength && (
@@ -530,7 +527,7 @@ const SupportTreeCard = ({
         <div className="topicDetailsCollapseFooter printHIde mt-3 w-full">
           <CustomButton
             onClick={handleClickSupportCheck}
-            className="w-full justify-center bg-canGreen h-[44px] px-11 text-white flex items-center rounded-lg font-medium text-base gap-2"
+            className="w-full justify-center bg-canGreen hover:!bg-canGreen hover:!text-white hover:!border-transparent !border-transparent h-[44px] px-11 text-white flex items-center rounded-lg font-medium text-base gap-2"
             disabled={asof == "bydate" || campRecord?.is_archive == 1}
             id="manage-support-btn"
           >

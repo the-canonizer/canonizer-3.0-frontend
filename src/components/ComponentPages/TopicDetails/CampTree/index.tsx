@@ -322,9 +322,28 @@ const CampTree = ({
             (data[item].is_archive != 0 && is_camp_archive_checked == true) ? (
             <>
               <TreeNode
-                switcherIcon={({ expanded }) =>
-                  expanded ? <DownOutlined /> : <RightOutlined />
-                }
+              
+              className="[&_.ant-tree-switcher]:!flex [&_.ant-tree-switcher]:!items-center [&_.ant-tree-node-content-wrapper]:hover:!bg-transparent"
+              switcherIcon={({ expanded }) => {
+                const isCampIdZero = data[item].camp_id === 0;
+              
+                return (
+                  data[item].camp_id ===
+                  +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1) &&
+                  _isDisabled == 0 &&
+                  parentIsOneLevel == 0 &&
+                  _isArchive == 0 &&
+                  campRecord?.is_archive == 0 ?
+                    (expanded ?
+                      <Image className="" src="/images/tree-green-icon.svg" width={16} height={16} /> :
+                      <Image className="rotate-180" src="/images/tree-green-icon.svg" width={16} height={16} />
+                    ) :
+                    (expanded ?
+                      <Image className="" src="/images/tree-black-icon.svg" width={16} height={16} /> :
+                      <Image className="rotate-180" src="/images/tree-black-icon.svg" width={16} height={16} />
+                    )
+                );
+              }}
                 title={
                   <div
                     style={{ overflowX: "auto", overflowY: "clip" }}
@@ -332,13 +351,13 @@ const CampTree = ({
                   >
                     <div
                       className={
-                        "treeListItem !my-2.5 " +
+                        "treeListItem !my-2.5 flex items-center flex-wrap " +
                         styles.topicDetailsTreeListItem
                       }
                     >
                       <span
                         className={
-                          "treeListItemTitle " + styles.treeListItemTitle
+                          "treeListItemTitle " + styles.treeListItemTitle + " !text-base !text-canBlack font-normal hover:!text-canblack"
                         }
                       >
                         <Link
@@ -370,7 +389,7 @@ const CampTree = ({
                           <a
                             className={`${
                               data[item].is_archive == 1
-                                ? `font-weight-bold tra !text-canBlack ${styles.archive_grey}`
+                                ? `font-bold !text-canBlack hover:!text-canBlack   ${styles.archive_grey}`
                                 : !isForumPage &&
                                   (data[item]?.camp_id ==
                                     router?.query?.camp
@@ -378,8 +397,8 @@ const CampTree = ({
                                       ?.split("-")
                                       ?.at(0) ??
                                     "1")
-                                ? `font-weight-bold ${styles.activeCamp}`
-                                : ""
+                                ? `font-weight-bold text-base hover:!text-canBlack  ${styles.activeCamp}`
+                                : " hover:!text-canBlack"
                             } ${
                               isForumPage &&
                               data[item]?.camp_id ==
@@ -388,7 +407,12 @@ const CampTree = ({
                                   ?.at(0) ?? "1")
                                 ? `font-weight-bold forumActive ${styles.activeCamp}`
                                 : ""
-                            }`}
+                            } ${data[item].camp_id ===
+                              +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1) &&
+                              _isDisabled == 0 &&
+                              parentIsOneLevel == 0 &&
+                              _isArchive == 0 &&
+                              campRecord?.is_archive == 0 ?`!text-canGreen font-semibold text-base` : ""}`}
                           >
                             {data[item].is_archive == 1 ? (
                               <Popover content="Archived Camp">
@@ -488,6 +512,7 @@ const CampTree = ({
                   _isArchive == 0 &&
                   campRecord?.is_archive == 0 && (
                     <TreeNode
+                    className="[&_.ant-tree-switcher-leaf-line]:before:hidden [&_.ant-tree-switcher-leaf-line]:after:hidden "
                       key={"custom"}
                       title={
                         <p className={styles.startNew}>
@@ -506,7 +531,9 @@ const CampTree = ({
                               }`,
                             }}
                           >
-                            <a>{`<Start new supporting camp here>`} </a>
+                            <a className="!text-canGreen font-semibold italic text-base">
+                              <Image src="/images/start-new-tree.svg" width={16} height={17} />
+                              {`Start new`} </a>
                           </Link>
                         </p>
                       }

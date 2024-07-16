@@ -19,7 +19,7 @@
   margin-bottom: 0;
 }
 .topicDetailContentHead {
-  width: 100%;
+  // width: 100%;
   padding: 12px 22px;
   padding-bottom: 0;
   border-radius: 12px;
@@ -52,23 +52,23 @@
   }
   & > div > div {
     @media screen and (min-width: 992px) {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
+      // display: flex;
+      // flex-wrap: wrap;
+      // justify-content: space-between;
+      // align-items: center;
     }
   }
   &_Left {
-    display: flex;
-    justify-content: space-between;
-    position: relative;
+    // display: flex;
+    // justify-content: space-between;
+    // position: relative;
     &.rightPanel {
       display: flex;
       justify-content: space-between;
       border: none;
       padding-top: 0;
       @media screen and (max-width: 767px) {
-        flex-wrap: wrap;
+        // flex-wrap: wrap;
         gap: 10px;
       }
       [class="btnsWrap"] {
@@ -115,14 +115,14 @@
       }
     }
     @media screen and (min-width: 992px) {
-      display: flex;
-      flex-wrap: wrap;
+      // display: flex;
+      // flex-wrap: wrap;
       // width: calc(100% - 220px);
-      width: 100%;
+      // width: 100%;
       // border-bottom: 1px solid #f1f1f1;
       // padding-top: 10px;
       // padding-bottom: 10px;
-      align-items: center;
+      // align-items: center;
     }
     .topicTitleStyle,
     .breadcrumbLinks {
@@ -142,11 +142,11 @@
     }
     .topicTitleStyle {
       // margin-right: 20px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 20px;
+      // font-weight: 700;
+      // display: flex;
+      // align-items: center;
+      // justify-content: center;
+      // gap: 20px;
       // margin-left: 20px;
 
       @media screen and (max-width: 767px) {
@@ -157,12 +157,12 @@
       margin-right: 100px;
     }
     .breadcrumbLinks {
-      display: flex;
+      // display: flex;
       a {
         // font-size: 16px;
         // color: var(--primary);
         // color: #4eb966 !important;
-        font-weight: 600;
+        // font-weight: 600;
       }
     }
   }
@@ -260,9 +260,9 @@
 }
 
 .breadcrumbLinks {
-  display: flex;
-  font-size: 16px;
-  flex-wrap: wrap;
+  // display: flex;
+  // font-size: 16px;
+  // flex-wrap: wrap;
   a {
     // font-size: 16px;
     // color: var(--primary) !important;
@@ -298,15 +298,16 @@
   display: flex;
   align-items: center;
   .treeListItemTitle {
-    font-size: 15px;
+    // font-size: 15px;
     font-weight: 400;
     color: #0f2a4d;
     margin-left: 4px;
     a {
       // color: var(--primary);
       &:hover {
-        font-weight: bold;
-        color: #4484ce;
+        // font-weight: bold;
+        // color: #242B37;
+       
       }
       &.activeCamp {
         font-size: 16px;
@@ -408,7 +409,7 @@
   svg {
     width: 11px;
   }
-  margin-left: 5px;
+  // margin-left: 5px;
   // font-size: 14px;
 }
 

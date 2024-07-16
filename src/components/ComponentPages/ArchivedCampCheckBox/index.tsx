@@ -42,7 +42,7 @@ const ArchivedCampCheckBox = ({ loadingIndicator = false }: any) => {
         }
         onChange={onChange}
         checked={isChecked}
-        className="text-canBlack text-sm leading-[24px] font-medium"
+        className="text-canBlack !text-sm leading-[24px] font-medium mt-5"
       >
         Show archived camps
       </Checkbox>

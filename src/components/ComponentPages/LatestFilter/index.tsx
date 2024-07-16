@@ -256,91 +256,164 @@ const LatestFilter = () => {
         ""
       )} */}
 
-      <Space size={[0, 18]} wrap className="flex">
+      <Space size={[0, 18]} wrap className="flex !gap-2.5">
         {router?.query?.algo &&
         selectedAlgorithm &&
         lable?.algorithm_label !== undefined ? (
-          <Tag className="bg-canLightGrey rounded-full py-2.5 px-3.5 text-xs text-canBlue leading-4 font-medium border-none flex items-center gap-1">
-            <CloseOutlined
+          <Tag className="bg-canLightGrey rounded-full h-8 px-3.5 !m-0 text-xs text-canBlue leading-4 font-medium border-none flex items-center gap-2.5">
+            {/* <CloseOutlined /> */}
+            {lable?.algorithm_label}
+            <div
               onClick={() => {
                 algoRevert();
                 revertScore();
               }}
-            />
-            {lable?.algorithm_label}
+            >
+              <Image
+                className="cursor-pointer"
+                src="/images/filter-cross.svg"
+                alt=""
+                width={10}
+                height={10}
+              />
+            </div>
           </Tag>
         ) : (
           ""
         )}
         {is_camp_archive_checked ? (
           <Tag
-            className="bg-canLightGrey rounded-full py-2.5 px-3.5 text-xs text-canBlue leading-4 font-medium border-none flex items-center gap-1"
+            className="bg-canLightGrey rounded-full h-8 px-3.5 text-xs text-canBlue leading-4 font-medium border-none flex items-center gap-3"
             data-testid="archived_camps"
           >
             Show archived camps
-            <CloseOutlined
+            {/* <CloseOutlined
               onClick={() => {
                 dispatch(setArchivedCheckBox(false));
               }}
               data-testid="close_icon_archived_camps"
-            />
+            /> */}
+            <div
+              onClick={() => {
+                dispatch(setArchivedCheckBox(false));
+              }}
+              data-testid="close_icon_archived_camps"
+            >
+              <Image
+                className="cursor-pointer"
+                src="/images/filter-cross.svg"
+                alt=""
+                width={10}
+                height={10}
+              />
+            </div>
           </Tag>
         ) : (
           ""
         )}
         {is_checked ? (
-          <Tag className="bg-canLightGrey rounded-full py-2.5 px-3.5 text-xs text-canBlue leading-4 font-medium border-none flex items-center gap-1">
+          <Tag className="bg-canLightGrey rounded-full h-8 px-3.5 text-xs text-canBlue leading-4 font-medium border-none flex items-center gap-3">
             100% of canonized score
-            <CloseOutlined
+            {/* <CloseOutlined
               onClick={() => {
                 dispatch(setScoreCheckBox(false));
               }}
               data-testid="close_icon_100%_of_canonized_score"
-            />
+            /> */}
+            <div
+              onClick={() => {
+                dispatch(setScoreCheckBox(false));
+              }}
+              data-testid="close_icon_100%_of_canonized_score"
+            >
+              <Image
+              className="cursor-pointer"
+                src="/images/filter-cross.svg"
+                alt=""
+                width={10}
+                height={10}
+              />
+            </div>
           </Tag>
         ) : (
           ""
         )}
         {selectedAsOf == "bydate" ? (
           <Tag
-            className="bg-canLightGrey rounded-full py-1 px-3.5 text-xs text-canBlue leading-4 font-medium border-none flex items-center gap-1"
+            className="bg-canLightGrey rounded-full h-8 px-3.5 text-xs text-canBlue leading-4 font-medium border-none flex items-center gap-3"
             data-testid="asOfDate"
           >
             <Image src={calendarIcon} alt="svg" height={20} width={20} />
 
             {`${filteredDate}`}
-            <CloseOutlined
+            {/* <CloseOutlined
               onClick={filterForAsofDate}
               data-testid="close_icon_as_of_date"
-            />
+            /> */}
+            <div
+              onClick={filterForAsofDate}
+              data-testid="close_icon_as_of_date"
+            >
+              <Image
+                className="cursor-pointer"
+                src="/images/filter-cross.svg"
+                alt=""
+                width={10}
+                height={10}
+              />
+            </div>
           </Tag>
         ) : (
           ""
         )}
         {includeReview || router?.query?.asof == "review" ? (
           <Tag
-            className="bg-canLightGrey rounded-full py-2.5 px-3.5 text-xs text-canBlue leading-4 font-medium border-none flex items-center gap-1"
+            className="bg-canLightGrey rounded-full h-8 px-3.5 text-xs text-canBlue leading-4 font-medium border-none flex items-center gap-3"
             data-testid="include_review"
           >
             {`Include review`}
-            <CloseOutlined
+            {/* <CloseOutlined
               onClick={filterForAsofDate}
               data-testid="close_icon_include_review"
-            />
+            /> */}
+             <div
+              onClick={filterForAsofDate}
+              data-testid="close_icon_include_review"
+            >
+              <Image
+                className="cursor-pointer"
+                src="/images/filter-cross.svg"
+                alt=""
+                width={10}
+                height={10}
+              />
+            </div>
           </Tag>
         ) : (
           ""
         )}
         {filteredScore != 0 ? (
           <Tag
-            className="bg-canLightGrey rounded-full py-2.5 px-3.5 text-xs text-canBlue leading-4 font-medium border-none flex items-center gap-1"
+            className="bg-canLightGrey rounded-full h-8 px-3.5 text-xs text-canBlue leading-4 font-medium border-none flex items-center gap-3"
             data-testid="Score"
           >
-            {`Score < ${filteredScore}`}
-            <CloseOutlined
+            {`Score > ${filteredScore}`}
+            {/* <CloseOutlined
               onClick={filterscore}
               data-testid="close_icon_Score"
-            />
+            /> */}
+             <div
+              onClick={filterscore}
+              data-testid="close_icon_Score"
+            >
+              <Image
+                className="cursor-pointer"
+                src="/images/filter-cross.svg"
+                alt=""
+                width={10}
+                height={10}
+              />
+            </div>
           </Tag>
         ) : (
           ""
