@@ -521,7 +521,7 @@ const TimelineInfoBar = ({
           styles.topicDetailContentHead + " printHIde " + styles.info_bar_n
         }
       > */}
-      <div className="lg:bg-canGrey1 bg-white lg:py-6 py-3 lg:px-5 lg:rounded-xl mb-10 mt-7.5 mx-[-16px]  lg:mx-0 px-5 border-t border-[#EAECF0] shadow-mobile-b-shadow lg:shadow-none ">
+      <div className="lg:bg-canGrey1 bg-white lg:py-6 py-3 px-3 lg:px-5 lg:rounded-xl lg:mb-10 mb-7 mt-7.5 mx-[-16px]  lg:mx-0  border-t border-[#EAECF0] shadow-mobile-b-shadow lg:shadow-none ">
         <Spin spinning={false}>
           <div className={styles.topicDetailContentHead_Left}>
             {isForumPage ? (
@@ -550,203 +550,226 @@ const TimelineInfoBar = ({
             ) : (
               ""
             )}
-
-            {isMobile ? (
-              <div className="flex desktop-view">
-                <Typography.Paragraph
-                  className={
-                    "!mb-0 " +
-                    `${
-                      loadingIndicator
-                        ? styles.topicTitleSkeleton
-                        : styles.topicTitleStyle
-                    }`
-                  }
-                >
-                  <span className="flex items-center lg:gap-5 gap-1">
-                    <Image
-                      src="/images/home-icon.svg"
-                      alt="svg"
-                      height={21}
-                      width={17}
-                    />
-                    <Image
-                      src="/images/arrow-bread.svg"
-                      alt="svg"
-                      height={12}
-                      width={6}
-                    />
-                    (Canon) General{" "}
-                    <Image
-                      src="/images/arrow-bread.svg"
-                      alt="svg"
-                      height={12}
-                      width={6}
-                    />
-                  </span>
-                  <Popover
-                    content={content}
-                    title={title}
-                    className="title-popover"
-                  >
-                    <div className="flex  items-center gap-1.5">
-                      <span className="font- text-base text-canBlack">
-                        Topic :
-                      </span>
-
-                      {loadingIndicator ? (
-                        <CustomSkelton
-                          skeltonFor="list"
-                          bodyCount={1}
-                          stylingClass="topic-skeleton"
-                          isButton={false}
-                        />
-                      ) : isTopicHistoryPage ? (
-                        <Link
-                          href={`/topic/${
-                            payload?.topic_num
-                          }-${replaceSpecialCharacters(
-                            breadCrumbRes?.topic_name,
-                            "-"
-                          )}/1-Agreement?${getQueryParams()?.returnQuery}`}
-                        >
-                          <a className={styles.boldBreadcrumb}>
-                            {breadCrumbRes?.topic_name}
-                          </a>
-                        </Link>
-                      ) : breadCrumbRes ? (
-                        <span className={styles.boldBreadcrumb}>
-                          {breadCrumbRes?.topic_name}
-                        </span>
-                      ) : (
-                        "N/A"
-                      )}
-                      <span className="flex">
-                        {" "}
-                        <Image
-                          src="/images/circle-info-bread.svg"
-                          alt="svg"
-                          className="icon-topic"
-                          height={16}
-                          width={16}
-                        />
-                      </span>
-                    </div>
-                  </Popover>
-
-                  {breadCrumbRes && !!topicSubscriptionID && (
-                    <Tooltip
-                      title="You have subscribed to the entire topic."
-                      key="camp_subscribed_icon"
-                    >
-                      <small
-                        style={{ alignSelf: "center", marginLeft: "10px" }}
-                      >
-                        <i className="icon-subscribe text-primary"></i>
-                      </small>
-                    </Tooltip>
-                  )}
-                </Typography.Paragraph>
-                <div className={styles.breadcrumbLinks}>
+            <div className="flex justify-between">
+              {isMobile ? (
+                <div className="flex desktop-view gap-5 items-start">
                   <Typography.Paragraph
-                    className={"!mb-0 ml-5 " + styles.topicTitleStyle}
+                    className={
+                      "!mb-0  flex gap-5 shrink-0 " +
+                      `${
+                        loadingIndicator
+                          ? styles.topicTitleSkeleton
+                          : styles.topicTitleStyle
+                      }`
+                    }
                   >
-                    <Image
+                    <span className="flex items-center lg:gap-5 gap-1 shrink-0">
+                      <Image
+                        src="/images/home-icon.svg"
+                        alt="svg"
+                        height={17}
+                        width={21}
+                      />
+                      {/* <Image
                       src="/images/arrow-bread.svg"
                       alt="svg"
-                      className="icon-topic"
                       height={12}
                       width={6}
-                    />
+                    /> */}
+                      {/* <span className="whitespace-nowrap"> (Canon) General{" "}</span> */}
+                      <Image
+                        src="/images/arrow-bread.svg"
+                        alt="svg"
+                        height={12}
+                        width={6}
+                      />
+                    </span>
+                    <Popover
+                      content={content}
+                      title={title}
+                      className="title-popover"
+                    >
+                      <div className="flex  items-center gap-1.5">
+                        <span className="font- text-base text-canBlack whitespace-nowrap">
+                          Topic :
+                        </span>
 
-                    <div className="flex items-center gap-1.5">
-                      <span className="font-bold text-base text-canBlack">
-                        {!isTopicHistoryPage ? "Camp :" : ""}
-                      </span>
-                      {loadingIndicator ? (
-                        <CustomSkelton
-                          skeltonFor="list"
-                          bodyCount={1}
-                          stylingClass="topic-skeleton"
-                          isButton={false}
-                        />
-                      ) : !isTopicHistoryPage ? (
-                        breadCrumbRes ? (
-                          breadCrumbRes?.bread_crumb?.map((camp, index) => {
-                            return (
-                              <Link
-                                href={`/topic/${
-                                  payloadData?.topic_num
-                                }-${replaceSpecialCharacters(
-                                  breadCrumbRes?.topic_name,
-                                  "-"
-                                )}/${camp?.camp_num}-${replaceSpecialCharacters(
-                                  camp?.camp_name,
-                                  "-"
-                                )}?${getQueryParams()?.returnQuery}`}
-                                key={index}
-                              >
-                                <a className="!text-canBlack flex">
-                                  <span
-                                    className={
-                                      styles.slashStyle + " !text-canBlack"
-                                    }
-                                  >
-                                    {index !== 0 && <DoubleRightOutlined />}
-                                  </span>
-                                  <span
-                                    className={
-                                      breadCrumbRes?.bread_crumb.length - 1 ==
-                                      index
-                                        ? styles.greenIndicateText
-                                        : styles.boldBreadcrumb
-                                    }
-                                  >
-                                    <Popover
-                                      content={contentForCamp}
-                                      title={title2}
-                                    >
-                                      <div className="flex items-center gap-1.5">
-                                        <span className="lg:text-base text-xs font-semibold">
-                                          {" "}
-                                          {`${camp?.camp_name}`}
-                                        </span>
-                                        <Image
-                                          src="/images/circle-info-bread.svg"
-                                          alt="svg"
-                                          className="icon-topic"
-                                          height={16}
-                                          width={16}
-                                        />
-                                      </div>
-                                    </Popover>
-                                  </span>
-                                </a>
-                              </Link>
-                            );
-                          })
+                        {loadingIndicator ? (
+                          <CustomSkelton
+                            skeltonFor="list"
+                            bodyCount={1}
+                            stylingClass="topic-skeleton"
+                            isButton={false}
+                          />
+                        ) : isTopicHistoryPage ? (
+                          <Link
+                            href={`/topic/${
+                              payload?.topic_num
+                            }-${replaceSpecialCharacters(
+                              breadCrumbRes?.topic_name,
+                              "-"
+                            )}/1-Agreement?${getQueryParams()?.returnQuery}`}
+                          >
+                            <a className="whitespace-nowrap !text-canBlack">
+                              {breadCrumbRes?.topic_name}
+                            </a>
+                          </Link>
+                        ) : breadCrumbRes ? (
+                          <span
+                            className={
+                              styles.boldBreadcrumb + " whitespace-nowrap"
+                            }
+                          >
+                            {breadCrumbRes?.topic_name}
+                          </span>
                         ) : (
                           "N/A"
-                        )
-                      ) : null}
-                      {breadCrumbRes &&
-                        !!campSubscriptionID &&
-                        !isTopicHistoryPage && (
-                          <Tooltip
-                            title="You have subscribed to this camp."
-                            key="camp_subscribed_icon"
-                          >
-                            <small
-                              style={{
-                                alignSelf: "center",
-                                marginLeft: "10px",
-                              }}
-                            >
-                              <i className="icon-subscribe text-primary"></i>
-                            </small>
-                          </Tooltip>
                         )}
-                      {/* <span className="flex">
+                        <span className="flex shrink-0">
+                          {" "}
+                          <Image
+                            src="/images/circle-info-bread.svg"
+                            alt="svg"
+                            className="icon-topic"
+                            height={16}
+                            width={16}
+                          />
+                        </span>
+                      </div>
+                    </Popover>
+
+                    {breadCrumbRes && !!topicSubscriptionID && (
+                      <Tooltip
+                        title="You have subscribed to the entire topic."
+                        key="camp_subscribed_icon"
+                      >
+                        <small
+                          style={{ alignSelf: "center", marginLeft: "10px" }}
+                        >
+                          <i className="icon-subscribe text-primary"></i>
+                        </small>
+                      </Tooltip>
+                    )}
+                  </Typography.Paragraph>
+                  <div className={styles.breadcrumbLinks + " flex "}>
+                    <Typography.Paragraph
+                      className={
+                        "!mb-0 flex  " + styles.topicTitleStyle
+                      }
+                    >
+                       <div className="flex items-start shrink-0">
+                        <div>
+                        <Image
+                          src="/images/arrow-bread.svg"
+                          alt="svg"
+                          className="icon-topic"
+                          height={12}
+                          width={6}
+                        />
+                        </div>
+                       
+                        <span className="ml-5 font-bold text-base text-canBlack whitespace-nowrap shrink-0">
+                          {!isTopicHistoryPage ? "Camp:" : ""}
+                        </span>
+                        </div>
+                      <div className="flex items-start gap-5">
+                       
+                       
+                        <div className="flex gap-x-5 gap-y-2 flex-wrap items-center">
+                          {loadingIndicator ? (
+                            <CustomSkelton
+                              skeltonFor="list"
+                              bodyCount={1}
+                              stylingClass="topic-skeleton"
+                              isButton={false}
+                            />
+                          ) : !isTopicHistoryPage ? (
+                            breadCrumbRes ? (
+                              breadCrumbRes?.bread_crumb?.map((camp, index) => {
+                                return (
+                                  <Link
+                                    href={`/topic/${
+                                      payloadData?.topic_num
+                                    }-${replaceSpecialCharacters(
+                                      breadCrumbRes?.topic_name,
+                                      "-"
+                                    )}/${
+                                      camp?.camp_num
+                                    }-${replaceSpecialCharacters(
+                                      camp?.camp_name,
+                                      "-"
+                                    )}?${getQueryParams()?.returnQuery}`}
+                                    key={index}
+                                  >
+                                    <a className="!text-canBlack gap-x-5 gap-y-1 flex hover:text-canBlack ">
+                                      {index !== 0 && (
+                                        <span className=" !text-canBlack">
+                                          <Image
+                                            src="/images/arrow-bread.svg"
+                                            alt="svg"
+                                            className="icon-topic"
+                                            height={12}
+                                            width={6}
+                                          />
+                                        </span>
+                                      )}
+
+                                      <span
+                                        className={
+                                          breadCrumbRes?.bread_crumb.length -
+                                            1 ==
+                                          index
+                                            ? styles.greenIndicateText
+                                            : styles.boldBreadcrumb
+                                        }
+                                      >
+                                        <Popover
+                                          content={contentForCamp}
+                                          title={title2}
+                                        >
+                                          <div className="flex items-center gap-1.5">
+                                            <span className={`${index === breadCrumbRes.bread_crumb.length - 1 ? "lg:text-base text-xs font-semibold" : "lg:text-base text-xs"}`}>
+                                              {" "}
+                                              {`${camp?.camp_name}`}
+                                            </span>
+                                            <Image
+                                              src="/images/circle-info-bread.svg"
+                                              alt="svg"
+                                              className="icon-topic"
+                                              height={16}
+                                              width={16}
+                                            />
+                                          </div>
+                                        </Popover>
+                                      </span>
+                                    </a>
+                                  </Link>
+                                );
+                              })
+                            ) : (
+                              "N/A"
+                            )
+                          ) : null}
+                        </div>
+
+                        {breadCrumbRes &&
+                          !!campSubscriptionID &&
+                          !isTopicHistoryPage && (
+                            <Tooltip
+                              title="You have subscribed to this camp."
+                              key="camp_subscribed_icon"
+                            >
+                              <small
+                                style={{
+                                  alignSelf: "center",
+                                  marginLeft: "10px",
+                                }}
+                              >
+                                <i className="icon-subscribe text-primary"></i>
+                              </small>
+                            </Tooltip>
+                          )}
+                        {/* <span className="flex">
                         {" "}
                         <Image
                           src="/images/circle-info-bread.svg"
@@ -756,84 +779,84 @@ const TimelineInfoBar = ({
                           width={16}
                         />
                       </span> */}
-                    </div>
-                  </Typography.Paragraph>
+                      </div>
+                    </Typography.Paragraph>
+                  </div>
                 </div>
-              </div>
-            ) : (
-              <div className="flex mobile-view gap-5px items-center">
-                <Typography.Paragraph
-                  className={
-                    "!mb-0 " +
-                    `${
-                      loadingIndicator
-                        ? styles.topicTitleSkeleton
-                        : styles.topicTitleStyle
-                    }`
-                  }
-                >
-                  <span className="flex items-center lg:gap-2 gap-1">
-                    <Image
-                      src="/images/home-icon.svg"
-                      alt="svg"
-                      height={21}
-                      width={17}
-                    />
-                    <Image
+              ) : (
+                <div className="flex mobile-view gap-2 items-center">
+                  <Typography.Paragraph
+                    className={
+                      "!mb-0 flex items-center gap-2 shrink-0 " +
+                      `${
+                        loadingIndicator
+                          ? styles.topicTitleSkeleton
+                          : styles.topicTitleStyle
+                      }`
+                    }
+                  >
+                    <span className="flex items-center gap-2">
+                      <Image
+                        src="/images/home-mobile-infobar.svg"
+                        alt="svg"
+                        height={21}
+                        width={17}
+                      />
+                      {/* <Image
                       src="/images/arrow-bread.svg"
                       alt="svg"
                       height={12}
                       width={6}
-                    />
-                    <span className="home-link text-canLight text-xs font-normal leading-5 whitespace-nowrap">
+                    /> */}
+                      {/* <span className="home-link text-canLight text-xs font-normal leading-5 whitespace-nowrap">
                       {" "}
                       General
+                    </span> */}
+                      <Image
+                        src="/images/mobile-caret-infobar.svg"
+                        alt="svg"
+                        height={12}
+                        width={6}
+                      />
                     </span>
-                    <Image
-                      src="/images/arrow-bread.svg"
-                      alt="svg"
-                      height={12}
-                      width={6}
-                    />
-                  </span>
-                  <Popover
-                    content={content}
-                    title={title}
-                    className="title-popover"
-                  >
-                    <div className="flex  items-center gap-1 ">
-                      <span className="lg:font-normal lg:text-base text-xs lg:text-canBlack text-canLight whitespace-nowrap">
-                        Topic :
-                      </span>
-
-                      {loadingIndicator ? (
-                        <CustomSkelton
-                          skeltonFor="list"
-                          bodyCount={1}
-                          stylingClass="topic-skeleton"
-                          isButton={false}
-                        />
-                      ) : isTopicHistoryPage ? (
-                        <Link
-                          href={`/topic/${
-                            payload?.topic_num
-                          }-${replaceSpecialCharacters(
-                            breadCrumbRes?.topic_name,
-                            "-"
-                          )}/1-Agreement?${getQueryParams()?.returnQuery}`}
-                        >
-                          <a className="normal lg:text-canBlack lg:text-base text-xs leading-5 lg:font-normal text-canLight text-ellipsis w-[50px] truncate">
-                            {breadCrumbRes?.topic_name}
-                          </a>
-                        </Link>
-                      ) : breadCrumbRes ? (
-                        <span className="lg:text-base text-xs font-normal text-ellipsis w-[80px] lg:w-auto truncate lg:text-canBlack text-canLight ">
-                          {breadCrumbRes?.topic_name}
+                    <Popover
+                      content={content}
+                      title={title}
+                      className="title-popover"
+                    >
+                      <div className="flex  items-center gap-2 ">
+                        <span className="lg:font-normal lg:text-base text-xs lg:text-canBlack text-canLight whitespace-nowrap">
+                          Topic :
                         </span>
-                      ) : (
-                        "N/A"
-                      )}
-                      {/* <span className="flex">
+
+                        {loadingIndicator ? (
+                          <CustomSkelton
+                            skeltonFor="list"
+                            bodyCount={1}
+                            stylingClass="topic-skeleton"
+                            isButton={false}
+                          />
+                        ) : !isTopicHistoryPage ? (
+                          <Link
+                            href={`/topic/${
+                              payload?.topic_num
+                            }-${replaceSpecialCharacters(
+                              breadCrumbRes?.topic_name,
+                              "-"
+                            )}/1-Agreement?${getQueryParams()?.returnQuery}`}
+                          >
+                            <a className="normal lg:text-canBlack !text-canLight lg:text-base text-xs leading-5 lg:font-normal text-ellipsis w-[50px] truncate">
+                              {breadCrumbRes?.topic_name}
+                            </a>
+                          </Link>
+                        ) : breadCrumbRes ? (
+                          <span className="lg:text-base text-xs font-normal text-ellipsis w-[80px] lg:w-auto truncate lg:text-canBlack text-canLight ">
+                            {breadCrumbRes?.topic_name}
+                          </span>
+                        ) : (
+                          "N/A"
+                        )}
+                        {/* <span className="flex">
                       {" "}
                       <Image
                         src="/images/circle-info-bread.svg"
@@ -843,201 +866,187 @@ const TimelineInfoBar = ({
                         width={16}
                       />
                     </span> */}
-                    </div>
-                  </Popover>
+                      </div>
+                    </Popover>
 
-                  {breadCrumbRes && !!topicSubscriptionID && (
-                    <Tooltip
-                      title="You have subscribed to the entire topic."
-                      key="camp_subscribed_icon"
-                    >
-                      <small
-                        style={{ alignSelf: "center", marginLeft: "10px" }}
+                    {breadCrumbRes && !!topicSubscriptionID && (
+                      <Tooltip
+                        title="You have subscribed to the entire topic."
+                        key="camp_subscribed_icon"
                       >
-                        <i className="icon-subscribe text-primary"></i>
-                      </small>
-                    </Tooltip>
-                  )}
-                </Typography.Paragraph>
-                <div className={styles.breadcrumbLinks}>
-                  <Typography.Paragraph
-                    className={"!mb-0 " + styles.topicTitleStyle}
-                  >
-                    <Image
-                      src="/images/arrow-bread.svg"
-                      alt="svg"
-                      className="icon-topic"
-                      height={12}
-                      width={6}
-                    />
+                        <small
+                          style={{ alignSelf: "center", marginLeft: "10px" }}
+                        >
+                          <i className="icon-subscribe text-primary"></i>
+                        </small>
+                      </Tooltip>
+                    )}
+                  </Typography.Paragraph>
+                  <div className={styles.breadcrumbLinks + " flex flex-wrap"}>
+                    <Typography.Paragraph
+                      className={
+                        "!mb-0 flex  flex-wrap " + styles.topicTitleStyle
+                      }
+                    >
+                      <div className="flex items-center gap-2 overflow-y-auto">
+                        <span className="flex items-center shrink-0">
+                          {" "}
+                          <Image
+                            src="/images/mobile-caret-infobar.svg"
+                            alt="svg"
+                            className="icon-topic"
+                            height={12}
+                            width={6}
+                          />
+                        </span>
+                        <span className="normal text-canGreen whitespace-nowrap flex items-center text-xs font-semibold">
+                          {isTopicHistoryPage ? "Camp :" : ""}
+                        </span>
+                        {loadingIndicator ? (
+                          <CustomSkelton
+                            skeltonFor="list"
+                            bodyCount={1}
+                            stylingClass="topic-skeleton"
+                            isButton={false}
+                          />
+                        ) : isTopicHistoryPage ? (
+                          breadCrumbRes ? (
+                            breadCrumbRes?.bread_crumb?.map((camp, index) => {
+                              return (
+                                <Link
+                                  href={`/topic/${
+                                    payloadData?.topic_num
+                                  }-${replaceSpecialCharacters(
+                                    breadCrumbRes?.topic_name,
+                                    "-"
+                                  )}/${
+                                    camp?.camp_num
+                                  }-${replaceSpecialCharacters(
+                                    camp?.camp_name,
+                                    "-"
+                                  )}?${getQueryParams()?.returnQuery}`}
+                                  key={index}
+                                >
+                                  <a className="text-xs !text-canGreen flex flex-wrap shrink-0 gap-2 items-center">
+                                    <span
+                                      className={
+                                        styles.slashStyl + " flex items-center"
+                                      }
+                                    >
+                                      {index !== 0 && (
+                                        <Image
+                                          src="/images/mobile-caret-infobar.svg"
+                                          alt="svg"
+                                          className="icon-topic"
+                                          height={12}
+                                          width={6}
+                                        />
+                                      )}
+                                    </span>
 
-                    <div className="flex items-center">
-                      <span className="normal text-canGreen">
-                        {isTopicHistoryPage ? "Camp :" : ""}
-                      </span>
-                      {loadingIndicator ? (
-                        <CustomSkelton
-                          skeltonFor="list"
-                          bodyCount={1}
-                          stylingClass="topic-skeleton"
-                          isButton={false}
-                        />
-                      ) : isTopicHistoryPage ? (
-                        breadCrumbRes ? (
-                          breadCrumbRes?.bread_crumb?.map((camp, index) => {
-                            return (
-                              <Link
-                                href={`/topic/${
-                                  payloadData?.topic_num
-                                }-${replaceSpecialCharacters(
-                                  breadCrumbRes?.topic_name,
-                                  "-"
-                                )}/${camp?.camp_num}-${replaceSpecialCharacters(
-                                  camp?.camp_name,
-                                  "-"
-                                )}?${getQueryParams()?.returnQuery}`}
-                                key={index}
-                              >
-                                <a className="text-3 text-canGreen">
-                                  <span className={styles.slashStyle}>
-                                    {index !== 0 && <DoubleRightOutlined />}
-                                  </span>
-
-                                  {`${camp?.camp_name}`}
-                                </a>
-                              </Link>
-                            );
-                          })
-                        ) : (
-                          "N/A"
-                        )
-                      ) : null}
-                      {breadCrumbRes &&
-                        !!campSubscriptionID &&
-                        !isTopicHistoryPage && (
-                          <Tooltip
-                            title="You have subscribed to this camp."
-                            key="camp_subscribed_icon"
-                          >
-                            <small
-                              style={{
-                                alignSelf: "center",
-                                marginLeft: "10px",
-                              }}
+                                    {`${camp?.camp_name}`}
+                                  </a>
+                                </Link>
+                              );
+                            })
+                          ) : (
+                            "N/A"
+                          )
+                        ) : null}
+                        {breadCrumbRes &&
+                          !!campSubscriptionID &&
+                          !isTopicHistoryPage && (
+                            <Tooltip
+                              title="You have subscribed to this camp."
+                              key="camp_subscribed_icon"
                             >
-                              <i className="icon-subscribe text-primary"></i>
-                            </small>
-                          </Tooltip>
-                        )}
-                      <span className="flex ddddd">
-                        {" "}
-                        {/* <Image
+                              <small
+                                style={{
+                                  alignSelf: "center",
+                                  marginLeft: "10px",
+                                }}
+                              >
+                                <i className="icon-subscribe text-primary"></i>
+                              </small>
+                            </Tooltip>
+                          )}
+                        <span className="flex ddddd">
+                          {" "}
+                          {/* <Image
                         src="/images/circle-info-bread.svg"
                         alt="svg"
                         className="icon-topic"
                         height={16}
                         width={16}
                       /> */}
-                      </span>
-                    </div>
-                  </Typography.Paragraph>
+                        </span>
+                      </div>
+                    </Typography.Paragraph>
+                  </div>
                 </div>
-              </div>
-            )}
-
-            <div className="flex items-center gap-3">
-              {campStatement?.length > 0 ? (
-                <div className="topicDetailsCollapseFooter printHIde camp">
-                  <CustomButton
-                    disabled={campRecord?.is_archive == 1 ? true : false}
-                    className=" printHIde manage_camp_btn sm:hidden md:hidden hidden lg:flex border border-canBlue !h-[40px] py-2.5 px-3 rounded-lg flex items-center gap-2.5 text-base font-medium leading-6 text-center  text-white bg-canBlue"
-                    id="add-camp-statement-btn"
-                  >
-                    <Link
-                      href={
-                        campStatement?.length > 0
-                          ? `/statement/history/${replaceSpecialCharacters(
-                              router?.query?.camp?.at(0),
-                              "-"
-                            )}/${replaceSpecialCharacters(
-                              router?.query?.camp?.at(1) ?? "1-Agreement",
-                              "-"
-                            )}`
-                          : `/create/statement/${replaceSpecialCharacters(
-                              router?.query?.camp?.at(0),
-                              "-"
-                            )}/${replaceSpecialCharacters(
-                              router?.query?.camp?.at(1) ?? "1-Agreement",
-                              "-"
-                            )}`
-                      }
-                      className="printHIde"
-                    >
-                      <a className="printHIde flex items-center gap-2">
-                        {K?.exceptionalMessages?.manageCampStatementButton}
-                        <Image
-                          src="/images/manage-btn-icon.svg"
-                          alt=""
-                          height={24}
-                          width={24}
-                        />
-                      </a>
-                    </Link>
-                  </CustomButton>
-                </div>
-              ) : (
-                ""
               )}
 
-              <Button
-                className="btn hidden create-new-camp-btn border border-canBlue px-8 py-2.5 rounded-lg lg:flex items-center gap-2.5 text-base font-medium leading-6 text-center text-canBlack bg-transparent"
-                size="large"
-                onClick={handleClick}
-              >
-                Create Camp
-                <Image
-                  src="/images/Icon-plus.svg"
-                  alt="svg"
-                  className="icon-topic"
-                  height={16}
-                  width={16}
-                />
-              </Button>
+              <div className="flex items-center gap-3 shrink-0">
+                {campStatement?.length > 0 ? (
+                  <div className="topicDetailsCollapseFooter printHIde camp">
+                    <CustomButton
+                      disabled={campRecord?.is_archive == 1 ? true : false}
+                      className=" printHIde manage_camp_btn sm:hidden md:hidden hidden lg:flex border border-canBlue hover:bg-canBlue hover:border-transparent hover:text-white !h-[40px] py-2.5 px-3 rounded-lg flex items-center gap-2.5 text-base !font-medium leading-6 text-center  text-white bg-canBlue"
+                      id="add-camp-statement-btn"
+                    >
+                      <Link
+                        href={
+                          campStatement?.length > 0
+                            ? `/statement/history/${replaceSpecialCharacters(
+                                router?.query?.camp?.at(0),
+                                "-"
+                              )}/${replaceSpecialCharacters(
+                                router?.query?.camp?.at(1) ?? "1-Agreement",
+                                "-"
+                              )}`
+                            : `/create/statement/${replaceSpecialCharacters(
+                                router?.query?.camp?.at(0),
+                                "-"
+                              )}/${replaceSpecialCharacters(
+                                router?.query?.camp?.at(1) ?? "1-Agreement",
+                                "-"
+                              )}`
+                        }
+                        className="printHIde"
+                      >
+                        <a className="printHIde flex items-center gap-2 ">
+                          {K?.exceptionalMessages?.manageCampStatementButton}
+                          <Image
+                            src="/images/manage-btn-icon.svg"
+                            alt=""
+                            height={24}
+                            width={24}
+                          />
+                        </a>
+                      </Link>
+                    </CustomButton>
+                  </div>
+                ) : (
+                  ""
+                )}
+
+                <Button
+                  className="btn hidden create-new-camp-btn border border-canBlue px-8 py-2.5 rounded-lg lg:flex items-center gap-2.5 text-base font-medium leading-6 text-center text-canBlack bg-transparent"
+                  size="large"
+                  onClick={handleClick}
+                >
+                  Create Camp
+                  <Image
+                    src="/images/Icon-plus.svg"
+                    alt="svg"
+                    className="icon-topic"
+                    height={16}
+                    width={16}
+                  />
+                </Button>
+              </div>
             </div>
           </div>
-
-          {/* <div className={styles.topicDetailContentHead_Right}>
-            <Typography.Paragraph
-              className={"mb-0 campInfoRight " + styles.topicTitleStyle}
-            >
-              {isTopicPage && (
-                <Fragment>
-                  {loadingIndicator ? (
-                    <CustomSkelton
-                      skeltonFor="list"
-                      bodyCount={1}
-                      stylingClass="header-skeleton-btn"
-                      // stylingClass="skeleton-item"
-                      isButton={false}
-                    />
-                  ) : (
-                    <>
-                      {router.pathname != "/support/[...manageSupport]" ? (
-                        <Button
-                          type="primary"
-                          onClick={eventLinePath}
-                          className={styles.btnCampForum}
-                          id="camp-forum-btn"
-                        >
-                          Event Line 
-                        </Button>
-                      ) : null}
-                    </>
-                  )}
-                </Fragment>
-              )}
-            </Typography.Paragraph>
-          </div> */}
         </Spin>
       </div>
     </>

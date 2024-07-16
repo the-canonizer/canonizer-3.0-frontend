@@ -501,7 +501,7 @@ const InfoBar = ({
                 <div>{!isMobile && <CampDisclaimer />}</div>
               </Tooltip>
             ) : null}
-            <div className="flex gap-5  items-center lg:flex-nowrap flex-wrap mb-14">
+            <div className="flex lg:gap-6 gap-4  items-center lg:flex-nowrap flex-wrap lg:mb-5 mb-7">
               <Button
                 onClick={showConsensusTree}
                 className="xl:w-[277px] text-canBlack border border-canGrey2 py-2.5 lg:px-5 !h-[44px]  refine-btn  lg:!text-base !text-sm font-medium  flex items-center justify-between gap-2.5 rounded-lg   bg-canGray"
@@ -516,7 +516,7 @@ const InfoBar = ({
               </Button>
               <Button
                 onClick={showDrawer}
-                className="gap-5 relative text-canBlack py-2.5 lg:px-5 h-[34px] rounded-lg w-auto  lg:text-base text-sm font-medium  flex items-center justify-center !border !border-canGrey2"
+                className="w-36hover:!text-canBlack gap-5 relative text-canBlack py-2.5 lg:px-5 h-[44px] rounded-lg w-auto  lg:text-base text-sm font-medium  flex items-center justify-center !border !border-canGrey2"
               >
                 <span>Refine</span>
                 <Image
@@ -525,9 +525,19 @@ const InfoBar = ({
                   height={24}
                   width={24}
                 />
-                <div className="w-3.5 h-3.5 rounded-full bg-canRed absolute -top-1.5 -right-1.5">
-                  {" "}
-                </div>
+                {(router.query.algo &&
+                  selectedAlgorithm &&
+                  lable?.algorithm_label !== undefined) ||
+                is_camp_archive_checked ||
+                is_checked ||
+                selectedAsOf == "bydate" ||
+                includeReview ||
+                router?.query?.asof === "review" ||
+                filteredScore != 0 ? (
+                  <div className="w-3.5 h-3.5 rounded-full bg-canRed absolute -top-1.5 -right-1.5"></div>
+                ) : (
+                  ""
+                )}
               </Button>
               {(router.query.algo &&
                 selectedAlgorithm &&

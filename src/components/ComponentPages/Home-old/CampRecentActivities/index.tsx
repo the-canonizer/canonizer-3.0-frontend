@@ -61,7 +61,7 @@ export default function CampRecentActivities() {
         </h3>
       </div>
       <div className="camp-recent lg:bg-canGray bg-transparent lg:py-8 lg:px-6 rounded-2xl">
-        <div className="camp-recent-child d-flex justify-center flex-col items-center bg-white px-8  rounded-xl border border-canGrey2 ">
+        <div className="camp-recent-child d-flex justify-center flex-col items-center bg-white lg:px-8 px-3.5  rounded-xl border border-canGrey2 ">
           <div className="d-flex flex-col gap-1 w-full">
             {loadingIndicator ? (
               <CustomSkelton
@@ -82,7 +82,7 @@ export default function CampRecentActivities() {
                       avatar={<BellFilled className={styles.bellIcon} />}
                       title={
                         <div>
-                          <h4 className="text-base leading-[24px] mb-2.5 font-normal">
+                          <h4 className="text-base leading-[24px] mb-2.5 font-normal !break-words">
                             {" "}
                             {item?.description}
                           </h4>{" "}

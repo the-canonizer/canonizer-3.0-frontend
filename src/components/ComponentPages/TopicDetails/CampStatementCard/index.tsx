@@ -38,10 +38,10 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
     />
   ) : (
     <>
-      <div className="camp-agrrement-new mb-14 bg-canGray py-8 lg:px-6 px-4 rounded-lg border-t-6 !border-canGreen">
+      <div className="camp-agrrement-new mb-7 lg:mb-14 bg-canGray py-8 lg:px-6 px-4 rounded-lg border-t-6 !border-canGreen">
         <div>
-          <div className="camp-agreement-header flex items-center mb-5 gap-2">
-            <h3 className="text-base text-canBlack text-left font-semibold ">
+          <div className="camp-agreement-header flex items-center mb-2.5 lg:mb-5 gap-2">
+            <h3 className="text-sm lg:text-base text-canBlack text-left font-semibold ">
               {K?.exceptionalMessages?.campStatementHeading}
             </h3>
             <Image
@@ -52,7 +52,7 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
               width={16}
             />
           </div>
-          <div className="flex items-center justify-start gap-6 camp-header-content lg:border-none border-t border-b border-canGrey2 lg:py-0 py-2 lg:mb-0 mb-5">
+          <div className="flex items-center justify-start gap-6 camp-header-content lg:border-none border-t border-b border-canGrey2 lg:py-0 py-1.5 lg:mb-0 mb-5">
             <div className="flex items-center gap-2">
               <Image
                 src="/images/calendar-camp.svg"
@@ -72,7 +72,7 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
           <hr className="my-5 hidden lg:flex" />
           <div className="flex items-center flex-col justify-center">
             <Paragraph className="!m-0">
-              <div className={styles.campStatement}>
+              <div className={styles.campStatement + " mb-3"}>
                 {campStatement?.length && campStatement[0]?.parsed_value ? (
                   <div
                     dangerouslySetInnerHTML={{
