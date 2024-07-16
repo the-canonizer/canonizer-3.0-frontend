@@ -353,6 +353,9 @@ body {
   }
 }
 
+.ant-checkbox-checked .ant-checkbox-inner {
+  @apply bg-canBlue border-canBlue; }
+
 // @media screen and (max-width: 767px) {
 //   .topicDetails_breadcrumbLinks__7BG2D {
 //     margin-left: 5px;

@@ -34,14 +34,14 @@ function Campforum() {
     <>
       {thread?.length <= 0 ? (
         <div className="campfourm-nodata mb-5">
-          <h3 className="text-lg text-canBlack font-semibold uppercase">
+          <h3 className="text-sm lg:text-base text-canBlack font-semibold uppercase mb-6">
             Camp Forum
           </h3>
-          <div className="bg-canGray py-14 rounded-lg flex flex-col items-center justify-center">
-            <p className="mb-4 text-base text-canBlack">
+          <div className="bg-canGray py-14 px-4 rounded-lg flex flex-col items-center justify-center">
+            <p className="mb-2.5 font-normal lg:mb-4 text-[13px] lg:text-base text-canBlack">
               No threads have been started in the Camp Forum
             </p>
-            <Button className="gap-2 flex items-center justify-center px-20 py-2.5 border border-canBlue rounded-lg text-canBlack text-base leading-[22px] font-medium">
+            <Button className="h-[44px] gap-2 flex items-center justify-center px-20 py-2.5 border border-canBlue bg-transparent rounded-lg text-canBlack text-base leading-[22px] font-medium">
               Start A Thread
               <Image
                 src="/images/plus-Icon.svg"
@@ -55,7 +55,7 @@ function Campforum() {
       ) : (
         <div className="campfourm-withdata">
           <div className="flex justify-between lg:mb-6 mb-5">
-            <h3 className="text-lg text-canBlack font-semibold uppercase">
+            <h3 className="text-sm lg:text-base text-canBlack font-semibold uppercase">
               Camp Forum
             </h3>
             <a
@@ -78,20 +78,20 @@ function Campforum() {
                       <p className="mb-1.5 text-base text-canBlack text-ellipsis font-medium">
                         {obj.body}
                       </p>
-                      <p className="text-canBlack text-opacity-80 lg:text-sm text-[10px] hidden lg:flex ">
+                      <p className="text-canBlack text-opacity-50 font-medium lg:text-xs text-[10px] hidden lg:flex ">
                         {covertToTime(obj?.created_at)}
                       </p>
                       <div className="">
                         <div className="flex gap-2.5 items-center lg:hidden w-full justify-between">
-                          <p className="text-canBlack text-opacity-80 lg:text-sm text-[10px] flex-1 flex w-full whitespace-nowrap">
+                          <p className="text-canBlack font-normal text-opacity-80 lg:text-sm text-[10px] flex-1 flex w-full whitespace-nowrap">
                             {covertToTime(obj?.created_at)}
                           </p>
                           <div className="w-full flex justify-end gap-3">
                             <Image
                               src="/images/comment-icon.svg"
                               alt="svg"
-                              height={24}
-                              width={24}
+                              height={15}
+                              width={18}
                             />
                             <p className="text-xs text-canLightBlack flex items-center gap-1 font-medium">
                               {obj.post_count} <span> Replies</span>
@@ -105,8 +105,8 @@ function Campforum() {
                         <Image
                           src="/images/comment-icon.svg"
                           alt="svg"
-                          height={24}
-                          width={24}
+                          height={15}
+                          width={18}
                         />
                         <p className="text-xs text-canLightBlack flex items-center gap-1 font-medium">
                           {obj.post_count} <span> Replies</span>

@@ -209,7 +209,7 @@ const CampTreeCard = ({
         <Collapse
           defaultActiveKey={["1"]}
           expandIconPosition="right"
-          className={`topicDetailsCollapse ${styles.topicDetailsPanelNo} ${backGroundColorClass}`}
+          className={`topicDetailsCollapse [&_.ant-collapse-content]:!border-none  [&_.ant-collapse-item]:!border-none !bg-transparent [&_.ant-collapse-header]:!hidden   ${styles.topicDetailsPanelNo} ${backGroundColorClass}`}
         >
           <Panel
             disabled
@@ -231,32 +231,32 @@ const CampTreeCard = ({
               </h3>
             }
             key="1"
-            extra={
-              <>
-                {!openDrawer ? (
-                  <div
-                    className="ant-checkbox-wrapper"
-                    onClick={(event) => {
-                      event.stopPropagation();
-                    }}
-                  >
-                    <Text>Collapse camps with less than</Text>
-                    <Select
-                      value={`${treeExpandValue}`}
-                      defaultValue={`${treeExpandValue}`}
-                      style={{ width: 80, margin: "0 5px" }}
-                      onChange={handleChange}
-                      options={scoreOptions}
-                    />
-                    <Text>of all support.</Text>
-                  </div>
-                ) : (
-                  ""
-                )}
-              </>
-            }
+            // extra={
+            //   <>
+            //     {openDrawer ? (
+            //       <div
+            //         className="ant-checkbox-wrapper"
+            //         onClick={(event) => {
+            //           event.stopPropagation();
+            //         }}
+            //       >
+            //         <Text>Collapse camps with less than</Text>
+            //         <Select
+            //           value={`${treeExpandValue}`}
+            //           defaultValue={`${treeExpandValue}`}
+            //           style={{ width: 80, margin: "0 5px" }}
+            //           onChange={handleChange}
+            //           options={scoreOptions}
+            //         />
+            //         <Text>of all support.</Text>
+            //       </div>
+            //     ) : (
+            //       ""
+            //     )}
+            //   </>
+            // }
           >
-            {!openDrawer ? (
+            {openDrawer ? (
               <CampTree
                 scrollToCampStatement={scrollToCampStatement}
                 setTotalCampScoreForSupportTree={

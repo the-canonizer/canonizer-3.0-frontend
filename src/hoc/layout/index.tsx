@@ -32,7 +32,7 @@ function CustomLayout(props: any) {
     <Layout className={`w-100 ${props?.className}`}>
       {!props?.withOutHeader ? (
         <Header
-          className={`px-6 md:px-4 h-auto bg-white shadow-lg lg:!mb-10 printHIde sm:mb-0 xs:mb-0`}
+          className={`px-6 md:px-4 h-auto bg-white shadow-lg lg:!mb-7 printHIde sm:mb-0 xs:mb-0`}
           data-testid="main_header"
         >
           <MainHeader />
@@ -48,7 +48,7 @@ function CustomLayout(props: any) {
       ) : null}
 
       <Layout
-        className={`px-4 md:px-7 max-w-full ${styles.contentArea} ${getCls()}`}
+        className={`px-4 md:px-7 max-w-full pb-14 ${styles.contentArea} ${getCls()}`}
       >
         {props?.leftSidebar ? (
           <aside className={`${styles.leftSidebar} md:mr-7`}>

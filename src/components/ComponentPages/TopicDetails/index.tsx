@@ -486,14 +486,14 @@ const TopicDetails = ({ serverSideCall }: any) => {
             <Fragment>
               <div className="support-tree-parent-box w-full mt-14 lg:mt-0">
                 <div className="flex gap-2 items-center mb-5 ">
-                  <h3 className="uppercase text-base font-semibold text-canBlack ">
+                  <h3 className="uppercase text-sm lg:text-base font-semibold text-canBlack ">
                     Support Tree
                   </h3>
                   <div className="handicon-badge py-1 px-2.5 bg-canOrange rounded inline-flex items-center gap-1.5">
                     <Image
                       src="/images/hand-icon.svg"
                       alt="svg"
-                      height={15}
+                      height={16}
                       width={12}
                     />
                     <span className="text-white font-medium text-sm">
@@ -540,7 +540,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
                 </div>
               </div>
 
-              <div className="my-16">
+              <div className="my-14">
                 <CampRecentActivities />
               </div>
             </Fragment>
@@ -612,7 +612,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
             <div className="bg-canGray py-7 px-5 rounded-lg lg:w-[80%] w-full">
               <div className="border border-canGrey2 bg-white rounded-lg p-5 w-full">
                 <div className="consensu-tree-section">
-                  <h3 className="mb-6 text-canBlack uppercase text-base font-semibold">
+                  <h3 className="mb-6 text-canBlack uppercase text-sm lg:text-base font-semibold">
                     Consensus tree
                   </h3>
                   <p className="text-sm  font-medium !text-canBlack">

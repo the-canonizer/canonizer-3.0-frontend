@@ -46,10 +46,10 @@ const SiblingCamps = () => {
     <>
       {siblingCampData?.length ? (
         <div className="flex flex-col mt-14">
-          <h3 className="font-semibold text-base text-canBlack uppercase">
+          <h3 className="font-semibold text-sm lg:text-base text-canBlack uppercase">
             SIBLING CAMPS
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 my-5">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 my-6">
             {siblingCampsData?.map((obj, index) => {
               return (
                 <div

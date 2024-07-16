@@ -38,7 +38,7 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
     />
   ) : (
     <>
-      <div className="camp-agrrement-new mb-7 lg:mb-14 bg-canGray py-8 lg:px-6 px-4 rounded-lg border-t-6 !border-canGreen">
+      <div className="camp-agrrement-new mb-8 lg:mb-14 bg-canGray pt-8 pb-10 lg:px-6 px-4 rounded-lg border-t-6 !border-canGreen">
         <div>
           <div className="camp-agreement-header flex items-center mb-2.5 lg:mb-5 gap-2">
             <h3 className="text-sm lg:text-base text-canBlack text-left font-semibold ">
@@ -61,7 +61,7 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
                 height={16}
                 width={16}
               />
-              <p className="text-xs font-normal text-canBlack text-opacity-80">
+              <p className="text-xs font-normal text-canBlack text-opacity-50">
                 Last update: {covertToTime(campStatement?.[0]?.go_live_time)}
               </p>
             </div>
@@ -70,9 +70,9 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
             </div>
           </div>
           <hr className="my-5 hidden lg:flex" />
-          <div className="flex items-center flex-col justify-center">
+          <div className="flex items-center flex-col justify-center lg:pt-5">
             <Paragraph className="!m-0">
-              <div className={styles.campStatement + " mb-3"}>
+              <div className={styles.campStatement + ""}>
                 {campStatement?.length && campStatement[0]?.parsed_value ? (
                   <div
                     dangerouslySetInnerHTML={{
@@ -80,7 +80,7 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
                     }}
                   />
                 ) : (
-                  K?.exceptionalMessages?.campStatement
+                  <span className="text-sm lg:text-base">{K?.exceptionalMessages?.campStatement}</span>
                 )}
               </div>
             </Paragraph>
@@ -89,7 +89,7 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
               {campStatement?.length <= 0 ? (
                 <CustomButton
                   disabled={campRecord?.is_archive == 1 ? true : false}
-                  className=" printHIde flex items-center justify-center bg-canBlue py-5 gap-2 rounded-lg w-[320px] text-base font-medium text-center text-white"
+                  className=" printHIde flex items-center justify-center bg-canBlue py-5 gap-2 rounded-lg w-[320px] mt-5 text-base font-medium text-center text-white"
                   id="add-camp-statement-btn"
                 >
                   <Link

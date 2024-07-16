@@ -17,7 +17,7 @@ const CampDisclaimer = () => {
     })
   );
   return (
-    <div className="flex justify-between mb-5 items-center">
+    <div className="flex justify-between mb-6 items-center">
       <div className="flex gap-2.5 items-center">
         <h3 className="font-semibold text-canBlack text-sm lg:text-base uppercase">
           CAMP: {campRecord?.camp_name}
