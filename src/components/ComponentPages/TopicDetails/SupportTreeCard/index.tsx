@@ -114,6 +114,7 @@ const SupportTreeCard = ({
   const [selectNickId, setSelectNickId] = useState(null);
   const [mainComponentKey, setMainComponentKey] = useState(0);
   const [loadingIndicatorSupport, setLoadingIndicatorSupport] = useState(false);
+  const [isImageError, setIsImageError] = useState(false);
   const [
     getManageSupportLoadingIndicator,
     setGetManageSupportLoadingIndicator,
@@ -172,6 +173,9 @@ const SupportTreeCard = ({
       arr.push(value.id);
     });
     setUserNickNameList(arr);
+  };
+  const handleImageError = () => {
+    setIsImageError(true);
   };
 
   useEffect(() => {
@@ -313,20 +317,28 @@ const SupportTreeCard = ({
                             },
                           }}
                         >
-                          <a className="flex gap-1 items-center flex-wrap">
+                          <a className="flex  gap-2.5 items-center flex-wrap text-canBlack hover:!text-canBlack">
                             <span className="text-canBlack text-base font-medium">
                               {" "}
                               #{data[item].support_order}{" "}
                             </span>
-                            <div className="w-[32px] h-[32px] rounded-full overflow-hidden">
-                              <Image
-                                src={support_image}
-                                alt="svg"
-                                height={32}
-                                width={32}
-                              />
-                            </div>{" "}
-                            <span className="text-canBlack lg:text-base text-xs font-medium">
+                            <div className="w-[32px] h-[32px] rounded-full overflow-hidden bg-canLightBg flex items-center justify-center">
+                              {isImageError ? (
+                                <Image
+                                  src={support_image}
+                                  alt="svg"
+                                  height={32}
+                                  width={32}
+                                  onError={handleImageError}
+                                />
+                              ) : (
+                                <span>
+                                  {data[item].nick_name.charAt(0).toUpperCase()}
+                                </span>
+                              )}
+                            </div>
+
+                            <span className="text-canBlack lg:text-base text-13 font-medium">
                               {" "}
                               {data[item].nick_name}
                             </span>
@@ -524,22 +536,22 @@ const SupportTreeCard = ({
             </CustomButton>
           )}
         </div>
-        <div className="topicDetailsCollapseFooter printHIde mt-3 w-full">
+        <div className="topicDetailsCollapseFooter printHIde mt-3 w-full flex justify-center">
           <CustomButton
             onClick={handleClickSupportCheck}
-            className="w-full justify-center bg-canGreen hover:!bg-canGreen hover:!text-white hover:!border-transparent !border-transparent h-[44px] px-11 text-white flex items-center rounded-lg font-medium text-base gap-2"
+            className="w-full justify-center bg-canGreen hover:!bg-canGreen hover:!text-white hover:!border-transparent !border-transparent h-[44px] px-8 lg:px-10 text-white flex items-center rounded-lg font-medium text-base gap-2"
             disabled={asof == "bydate" || campRecord?.is_archive == 1}
             id="manage-support-btn"
           >
-            {getCheckSupportStatus?.is_delegator == 1 ||
+            <span>{getCheckSupportStatus?.is_delegator == 1 ||
             getCheckSupportStatus?.support_flag != 1
               ? K?.exceptionalMessages?.directJoinSupport
-              : K?.exceptionalMessages?.manageSupport}
+              : K?.exceptionalMessages?.manageSupport}</span>
             <Image
               src="/images/hand-icon.svg"
               alt="svg"
               height={16}
-              width={12}
+              width={16}
             />
           </CustomButton>
         </div>

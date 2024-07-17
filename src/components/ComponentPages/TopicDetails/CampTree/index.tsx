@@ -335,8 +335,8 @@ const CampTree = ({
                   _isArchive == 0 &&
                   campRecord?.is_archive == 0 ?
                     (expanded ?
-                      <Image className="" src="/images/tree-green-icon.svg" width={16} height={16} /> :
-                      <Image className="rotate-180" src="/images/tree-green-icon.svg" width={16} height={16} />
+                      <Image className="rotate-180" src="/images/tree-green-icon.svg" width={16} height={16} /> :
+                      <Image className="" src="/images/tree-green-icon.svg" width={16} height={16} />
                     ) :
                     (expanded ?
                       <Image className="" src="/images/tree-black-icon.svg" width={16} height={16} /> :
@@ -689,6 +689,7 @@ const CampTree = ({
     ) : null
   ) : (
     <p data-testid="camp-tree">No Camp Tree Found</p>
+    
   );
 };
 
