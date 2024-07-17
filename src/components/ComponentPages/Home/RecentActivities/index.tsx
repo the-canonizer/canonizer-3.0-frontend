@@ -28,6 +28,7 @@ import ReasonsActivity from "src/components/common/SupportReasonActivity";
 import CommonCard from "src/components/shared/Card";
 import SeeMoreLInk from "../FeaturedTopic/seeMoreLink";
 import SectionHeading from "../FeaturedTopic/sectionsHeading";
+import Image from "next/image";
 
 const antIcon = <LoadingOutlined spin />;
 
@@ -60,6 +61,7 @@ export default function RecentActivities() {
   const [isChecked, setIsInternalChecked] = useState(isCheckedRecent);
   const [userData, setUserData] = useState(loggedInUser);
   const [isShowAllLoading, setIsShowAllLoading] = useState(false);
+  const [checkLogType, setCheckLogType] = useState("");
 
   const slot = useMemo(() => {
     if (position.length === 0) return null;
@@ -192,6 +194,7 @@ export default function RecentActivities() {
     await getRecentActivitiesApi(reqBody, loadMore, topicType);
     setLoadMoreIndicator(false);
     setIsShowAllLoading(false);
+    setCheckLogType(reqBody?.log_type);
   }
 
   const covertToTime = (unixTime) => {
@@ -241,11 +244,11 @@ export default function RecentActivities() {
       topicType == "topic/camps" ? topicPageNumber : threadPageNumber;
     return (
       recentActivities?.topics?.length > 0 && (
-        <div className="flex justify-end">
+        <div className="flex justify-start">
           {pageNumber < recentActivities?.numOfPages && (
             <div className="text-center">
               <Button
-                className="font-semibold text-canBlue flex items-center"
+                className="font-medium text-canBlue flex gap-2.5 items-center border-[1px] py-3 rounded-lg border-canBlue bg-[#98B7E61A]  px-3 "
                 onClick={() => {
                   setLoadMoreIndicator(true);
                   if (router?.query?.topic_num && router?.query?.camp_num) {
@@ -279,125 +282,218 @@ export default function RecentActivities() {
     });
     return str?.length > 90 ? str?.substring(0, 90) + "..." : str;
   };
+  const isMobile = window.matchMedia("(max-width: 991px)").matches;
 
   return (
-    <Fragment>
-      <Row gutter={15}>
-        <Col md={12} sm={12} xs={12}>
-          <SectionHeading
-            title="Recent activities"
-            infoContent=""
-            icon={null}
-          />
-        </Col>
-        <Col md={12} sm={12} xs={12} className="text-right">
-          <SeeMoreLInk href="/activities" />
-        </Col>
-      </Row>
-      <div className="mt-3">
-        <CommonCard className="border-0 h-100 hocus:!bg-canGray !bg-white [&_.ant-card-body]:p-0 [&_.ant-card-body]:lg:p-[24px] lg:!bg-canGray">
-          {userData?.is_admin &&
-          !router?.query?.camp_num &&
-          !router?.query?.topic_num ? (
-            <Typography.Paragraph className="text-sm flex items-center justify-between">
-              <span>Show all user activities</span>
-              {isShowAllLoading ? (
-                <Spin size="small" />
-              ) : (
-                <Switch
-                  checked={isChecked}
-                  className="text-sm"
-                  size="small"
-                  onChange={onChange}
+    <>
+      {router.asPath == "/activities" ? (
+        <Fragment>
+          <Row gutter={15}>
+            <Col md={24} sm={24} xs={24}>
+              <div
+                className="flex items-center gap-3.5 lg:!mb-10 mt-5"
+                onClick={() => {
+                  router?.back();
+                }}
+              >
+                <Image
+                  src="/images/recent-activiity-arrow.svg"
+                  width={16}
+                  height={24}
+                  alt="icon"
                 />
-              )}
-            </Typography.Paragraph>
-          ) : null}
-          <div className="bg-white border p-2 rounded-lg">
-            <Tabs
-              className={`[&_.ant-tabs-nav]:mb-0 [&_.ant-tabs-nav-wrap]:w-full [&_.ant-tabs-nav-wrap]:justify-center [&_.ant-tabs-nav-list]:w-full px-2 [&_.ant-tabs-tab-btn]:!text-canBlue [&_.ant-tabs-tab-btn]:!px-4 [&_.ant-tabs-ink-bar]:!h-[3px] ${
-                router?.query?.camp_num && router?.query?.topic_num
-                  ? "hidden"
-                  : ""
-              }`}
-              defaultActiveKey={`${
-                router?.query?.tabName ? router?.query?.tabName : "topic/camps"
-              }`}
-              tabBarExtraContent={slot}
-              onChange={handleTabChange}
-            >
-              <TabPane tab="Camps" key="topic/camps">
-                {getTopicsLoadingIndicator ? (
-                  <CustomSkelton
-                    skeltonFor="list"
-                    bodyCount={22}
-                    stylingClass="listSkeleton"
-                    isButton={false}
-                  />
-                ) : (
-                  <List
-                    className="rounded-lg"
-                    footer={
-                      !router?.asPath?.includes("/activities")
-                        ? ViewAllTopics(true)
-                        : LoadMoreTopics("topic/camps")
-                    }
-                    bordered={false}
-                    locale={{
-                      emptyText:
-                        "You don't have any recent activity right now.",
-                    }}
-                    dataSource={recentActivities?.topics}
-                    renderItem={(activity: any) => {
-                      const decodedProperties = JSON.parse(
-                        activity?.activity?.properties
-                      );
-                      return (
-                        <List.Item className="font-inter text-sm font-medium bg-white w-full px-2">
-                          <AntLink
-                            href={decodedProperties?.url?.replace(/\s+/g, "-")}
-                            className="w-full !text-canBlue hover:!text-canHoverBlue"
-                          >
-                            <Fragment>
-                              <Text className="text-canBlack text-sm font-normal mb-0">
-                                {activity?.activity?.description}{" "}
-                                {activity?.activity?.log_name === "support" &&
-                                  getProperties(activity?.activity)?.reason && (
-                                    <Popover
-                                      content={
-                                        <div className="w-full">
-                                          <ReasonsActivity
-                                            CurrentItem={activity?.activity}
-                                          />
-                                        </div>
-                                      }
-                                      placement="top"
-                                      className="pointer text-canGrey2"
-                                    >
-                                      <i className="icon-info"></i>
-                                    </Popover>
-                                  )}
-                                <br />
-                                <Text className="text-canBlue font-medium">
-                                  <Tooltip
-                                    placement={"topLeft"}
-                                    title={
-                                      decodedProperties?.topic_name
-                                        ? `Topic: ${decodedProperties?.topic_name}` +
-                                          (decodedProperties?.camp_name
-                                            ? ` | Camp: ${decodedProperties?.camp_name}`
-                                            : "")
-                                        : handleTextOverflow(
-                                            decodedProperties?.description
-                                          )
-                                    }
+                <SectionHeading
+                  title={"Recent activities"}
+                  infoContent=""
+                  icon={null}
+                />
+              </div>
+            </Col>
+            {/* <Col md={12} sm={12} xs={12} className="text-right">
+          <SeeMoreLInk href="/activities" />
+        </Col> */}
+          </Row>
+
+          <div className="mt-3">
+            <CommonCard className="border-0 h-100  !bg-white [&_.ant-card-body]:p-0  [&_.ant-tabs-tab-active]:!border  ">
+              {userData?.is_admin &&
+              !router?.query?.camp_num &&
+              !router?.query?.topic_num ? (
+                <Typography.Paragraph className="text-sm flex items-center justify-between">
+                  <span>Show all user activities</span>
+                  {isShowAllLoading ? (
+                    <Spin size="small" />
+                  ) : (
+                    <Switch
+                      checked={isChecked}
+                      className="text-sm"
+                      size="small"
+                      onChange={onChange}
+                    />
+                  )}
+                </Typography.Paragraph>
+              ) : null}
+              <div className="">
+                <Tabs
+                  // tabPosition="left"
+                  tabPosition={!isMobile ? "left" : "top"}
+                  className={`[&_.ant-tabs-nav]:mb-0 [&_.ant-tabs-nav-wrap]:w-full [&_.ant-tabs-nav-wrap]:justify-center [&_.ant-tabs-nav-list]:w-full [&_.ant-tabs-tab-btn]:text-canBlack [&_.ant-tabs-tab-active]:!text-canBlue  [&_.ant-tabs-tab-btn]:!px-0 [&_.ant-tabs-ink-bar]:!h-[3px] [&_.ant-tabs-tab]:!px-0 [&_.ant-tabs-tab-btn]:text-base  [&_.ant-tabs-tab-btn]:font-semibold [&_.ant-tabs-tab-btn]:!pr-8 lg:[&_.ant-tabs-tab-btn]:!mr-28 [&_.ant-tabs-content-holder]:!border [&_.ant-tabs-content-holder]:!border-canGrey2 [&_.ant-tabs-content-holder]:!rounded-xl [&_.ant-tabs-content-holder]:!py-4 lg:[&_.ant-tabs-content-holder]:!px-8 [&_.ant-tabs-tabpane]:!p-0 [&_.ant-tabs-tab-btn]:!py-2.5 [&_.ant-tabs-ink-bar]:!hidden [&_.ant-list-item]:!border-b [&_.ant-list-item]:!border-canDarkBlack [&_.ant-list-item]:!border-opacity-10 [&_.ant-tabs-content-holder]:!px-4 [&_.ant-tabs-content-holder]:relative ${
+                    router?.query?.camp_num && router?.query?.topic_num
+                      ? "hidden"
+                      : ""
+                  }`}
+                  defaultActiveKey={`${
+                    router?.query?.tabName
+                      ? router?.query?.tabName
+                      : "topic/camps"
+                  }`}
+                  tabBarExtraContent={slot}
+                  onChange={handleTabChange}
+                >
+                  <TabPane tab="Camps" key="topic/camps">
+                
+                    {getTopicsLoadingIndicator ? (
+                      <CustomSkelton
+                        skeltonFor="list"
+                        bodyCount={22}
+                        stylingClass="listSkeleton"
+                        isButton={false}
+                      />
+                    ) : (
+                      <List
+                        className="rounded-lg  relative"
+                        // footer={
+                        //   !router?.asPath?.includes("/activities")
+                        //     ? ViewAllTopics(true)
+                        //     : LoadMoreTopics("topic/camps")
+                        // }
+                        bordered={false}
+                        locale={{
+                          emptyText:
+                            "You don't have any recent activity right now.",
+                        }}
+                        dataSource={recentActivities?.topics}
+                        renderItem={(activity: any) => {
+                          const decodedProperties = JSON.parse(
+                            activity?.activity?.properties
+                          );
+                          return (
+                            <List.Item className=" font-medium w-full  first:!pt-0 py-5 last:!pb-0 last:!border-none  ">
+                              <AntLink
+                                href={decodedProperties?.url?.replace(
+                                  /\s+/g,
+                                  "-"
+                                )}
+                                className="w-full !text-canBlue hover:!text-canHoverBlue"
+                              >
+                                <Fragment>
+                                  <Text className="text-canBlack text-base font-normal mb-0">
+                                    {activity?.activity?.description}{" "}
+                                    {activity?.activity?.log_name ===
+                                      "support" &&
+                                      getProperties(activity?.activity)
+                                        ?.reason && (
+                                        <Popover
+                                          content={
+                                            <div className="w-full">
+                                              <ReasonsActivity
+                                                CurrentItem={activity?.activity}
+                                              />
+                                            </div>
+                                          }
+                                          placement="top"
+                                          className="pointer text-canGrey2"
+                                        >
+                                          <i className="icon-info"></i>
+                                        </Popover>
+                                      )}
+                                    <Text className="text-canBlue font-medium text-base capitalize">
+                                      <Tooltip
+                                        placement={"topLeft"}
+                                        title={
+                                          decodedProperties?.topic_name
+                                            ? `Topic: ${decodedProperties?.topic_name}` +
+                                              (decodedProperties?.camp_name
+                                                ? ` | Camp: ${decodedProperties?.camp_name}`
+                                                : "")
+                                            : handleTextOverflow(
+                                                decodedProperties?.description
+                                              )
+                                        }
+                                      >
+                                        {decodedProperties?.topic_name
+                                          ? `Topic: ${decodedProperties?.topic_name}` +
+                                            (decodedProperties?.camp_name
+                                              ? ` | Camp: ${decodedProperties?.camp_name}`
+                                              : "")
+                                          : convert(
+                                              decodedProperties?.description?.replace(
+                                                /<img[^>]*>/gi,
+                                                ""
+                                              ),
+                                              {
+                                                wordwrap: 130,
+                                              }
+                                            )}
+                                      </Tooltip>
+                                    </Text>
+                                  </Text>
+                                  <Text
+                                    className="!text-canBlack !text-opacity-50 font-normal font-inter text-xs block mt-2.5"
+                                    type="secondary"
                                   >
-                                    {decodedProperties?.topic_name
-                                      ? `Topic: ${decodedProperties?.topic_name}` +
-                                        (decodedProperties?.camp_name
-                                          ? ` | Camp: ${decodedProperties?.camp_name}`
-                                          : "")
-                                      : convert(
+                                    {covertToTime(activity.updated_at)}
+                                  </Text>
+                                </Fragment>
+                              </AntLink>
+                            </List.Item>
+                          );
+                        }}
+                      />
+                    )}
+                  </TabPane>
+
+                  <TabPane tab="Threads" key="threads">
+                    {getTopicsLoadingIndicator ? (
+                      <CustomSkelton
+                        skeltonFor="list"
+                        bodyCount={22}
+                        stylingClass="listSkeleton"
+                        isButton={false}
+                      />
+                    ) : (
+                      <List
+                        className="rounded-lg"
+                        // footer={
+                        //   !router?.asPath?.includes("/activities")
+                        //     ? ViewAllTopics(false)
+                        //     : LoadMoreTopics("threads")
+                        // }
+                        bordered={false}
+                        locale={{
+                          emptyText:
+                            "You don't have any recent activity right now.",
+                        }}
+                        dataSource={recentActivities?.topics}
+                        renderItem={(activity: any) => {
+                          const decodedProperties = JSON.parse(
+                            activity?.activity?.properties
+                          );
+
+                          return (
+                            <List.Item className="!text-base font-medium w-full  first:!pt-0 py-5 last:!pb-0 last:!border-none ">
+                              <Link href={decodeUrlLink(activity)} passHref>
+                                <a className="w-full !text-canBlue hover:!text-canHoverBlue">
+                                  <Text className="text-canBlack text-base font-normal mb-0 block w-full">
+                                    {activity?.activity?.description}{" "}
+                                    <Text className="text-canBlue font-medium text-base capitalize">
+                                      <Tooltip
+                                        placement={"topLeft"}
+                                        title={handleTextOverflow(
+                                          decodedProperties?.description
+                                        )}
+                                      >
+                                        {convert(
                                           decodedProperties?.description?.replace(
                                             /<img[^>]*>/gi,
                                             ""
@@ -406,93 +502,270 @@ export default function RecentActivities() {
                                             wordwrap: 130,
                                           }
                                         )}
-                                  </Tooltip>
-                                </Text>
-                              </Text>
-                              <Text
-                                className="text-canBlack opacity-[0.5] font-normal font-inter text-[12px] block mt-1"
-                                type="secondary"
-                              >
-                                {covertToTime(activity.updated_at)}
-                              </Text>
-                            </Fragment>
-                          </AntLink>
-                        </List.Item>
-                      );
-                    }}
-                  />
-                )}
-              </TabPane>
-              <TabPane tab="Threads" key="threads">
-                {getTopicsLoadingIndicator ? (
-                  <CustomSkelton
-                    skeltonFor="list"
-                    bodyCount={22}
-                    stylingClass="listSkeleton"
-                    isButton={false}
-                  />
-                ) : (
-                  <List
-                    className="rounded-lg"
-                    footer={
-                      !router?.asPath?.includes("/activities")
-                        ? ViewAllTopics(false)
-                        : LoadMoreTopics("threads")
-                    }
-                    bordered={false}
-                    locale={{
-                      emptyText:
-                        "You don't have any recent activity right now.",
-                    }}
-                    dataSource={recentActivities?.topics}
-                    renderItem={(activity: any) => {
-                      const decodedProperties = JSON.parse(
-                        activity?.activity?.properties
-                      );
-
-                      return (
-                        <List.Item className="font-inter text-sm font-medium bg-white w-full px-2">
-                          <Link href={decodeUrlLink(activity)} passHref>
-                            <a className="w-full !text-canBlue hover:!text-canHoverBlue">
-                              <Text className="text-canBlack text-sm font-normal mb-0 block w-full">
-                                {activity?.activity?.description}{" "}
-                                <Text className="text-canBlue font-medium">
-                                  <Tooltip
-                                    placement={"topLeft"}
-                                    title={handleTextOverflow(
-                                      decodedProperties?.description
-                                    )}
+                                      </Tooltip>
+                                    </Text>
+                                  </Text>
+                                  <Text
+                                    className="!text-canBlack !text-opacity-50 font-normal font-inter text-xs block mt-2.5"
+                                    type="secondary"
                                   >
-                                    {convert(
-                                      decodedProperties?.description?.replace(
-                                        /<img[^>]*>/gi,
-                                        ""
-                                      ),
-                                      {
-                                        wordwrap: 130,
-                                      }
-                                    )}
-                                  </Tooltip>
-                                </Text>
-                              </Text>
-                              <Text
-                                className="text-canBlack opacity-[0.5] font-normal font-inter text-[12px] block mt-1"
-                                type="secondary"
-                              >
-                                {covertToTime(activity.updated_at)}
-                              </Text>
-                            </a>
-                          </Link>
-                        </List.Item>
-                      );
-                    }}
-                  />
-                )}
-              </TabPane>
-            </Tabs>
+                                    {covertToTime(activity.updated_at)}
+                                  </Text>
+                                </a>
+                              </Link>
+                            </List.Item>
+                          );
+                        }}
+                      />
+                    )}
+                  </TabPane>
+                </Tabs>
+              </div>
+            </CommonCard>
+            <div className="lg:ml-[206px] mt-5 ">
+              {!router?.asPath?.includes("/activities") &&
+              checkLogType == "topic/camps"
+                ? ViewAllTopics(true)
+                : !router?.asPath?.includes("/activities") &&
+                  checkLogType == "threads"
+                ? ViewAllTopics(false)
+                : checkLogType == "topic/camps"
+                ? LoadMoreTopics("topic/camps")
+                : LoadMoreTopics("threads")}
+            </div>
           </div>
-        </CommonCard>
-      </div>
-    </Fragment>
+        </Fragment>
+      ) : (
+        <Fragment>
+          <Row gutter={15}>
+            <Col md={12} sm={12} xs={12}>
+              <SectionHeading
+                title="Recent activities"
+                infoContent=""
+                icon={null}
+              />
+            </Col>
+            <Col md={12} sm={12} xs={12} className="text-right">
+              <SeeMoreLInk href="/activities" />
+            </Col>
+          </Row>
+          <div className="mt-3">
+            <CommonCard className="border-0 h-100 hocus:!bg-canGray !bg-white [&_.ant-card-body]:p-0 [&_.ant-card-body]:lg:p-[24px] lg:!bg-canGray">
+              {userData?.is_admin &&
+              !router?.query?.camp_num &&
+              !router?.query?.topic_num ? (
+                <Typography.Paragraph className="text-sm flex items-center justify-between">
+                  <span>Show all user activities</span>
+                  {isShowAllLoading ? (
+                    <Spin size="small" />
+                  ) : (
+                    <Switch
+                      checked={isChecked}
+                      className="text-sm"
+                      size="small"
+                      onChange={onChange}
+                    />
+                  )}
+                </Typography.Paragraph>
+              ) : null}
+              <div className="bg-white border p-2 rounded-lg">
+                <Tabs
+                  className={`[&_.ant-tabs-nav]:mb-0 [&_.ant-tabs-nav-wrap]:w-full [&_.ant-tabs-nav-wrap]:justify-center [&_.ant-tabs-nav-list]:w-full px-2 [&_.ant-tabs-tab-btn]:!text-canBlue [&_.ant-tabs-tab-btn]:!px-4 [&_.ant-tabs-ink-bar]:!h-[3px] ${
+                    router?.query?.camp_num && router?.query?.topic_num
+                      ? "hidden"
+                      : ""
+                  }`}
+                  defaultActiveKey={`${
+                    router?.query?.tabName
+                      ? router?.query?.tabName
+                      : "topic/camps"
+                  }`}
+                  tabBarExtraContent={slot}
+                  onChange={handleTabChange}
+                >
+                  <TabPane tab="Camps" key="topic/camps">
+                    {getTopicsLoadingIndicator ? (
+                      <CustomSkelton
+                        skeltonFor="list"
+                        bodyCount={22}
+                        stylingClass="listSkeleton"
+                        isButton={false}
+                      />
+                    ) : (
+                      <List
+                        className="rounded-lg"
+                        // footer={
+                        //   !router?.asPath?.includes("/activities")
+                        //     ? ViewAllTopics(true)
+                        //     : LoadMoreTopics("topic/camps")
+                        // }
+                        bordered={false}
+                        locale={{
+                          emptyText:
+                            "You don't have any recent activity right now.",
+                        }}
+                        dataSource={recentActivities?.topics}
+                        renderItem={(activity: any) => {
+                          const decodedProperties = JSON.parse(
+                            activity?.activity?.properties
+                          );
+                          return (
+                            <List.Item className="font-inter text-sm font-medium bg-white w-full px-2">
+                              <AntLink
+                                href={decodedProperties?.url?.replace(
+                                  /\s+/g,
+                                  "-"
+                                )}
+                                className="w-full !text-canBlue hover:!text-canHoverBlue"
+                              >
+                                <Fragment>
+                                  <Text className="text-canBlack text-sm font-normal mb-0">
+                                    {activity?.activity?.description}{" "}
+                                    {activity?.activity?.log_name ===
+                                      "support" &&
+                                      getProperties(activity?.activity)
+                                        ?.reason && (
+                                        <Popover
+                                          content={
+                                            <div className="w-full">
+                                              <ReasonsActivity
+                                                CurrentItem={activity?.activity}
+                                              />
+                                            </div>
+                                          }
+                                          placement="top"
+                                          className="pointer text-canGrey2"
+                                        >
+                                          <i className="icon-info"></i>
+                                        </Popover>
+                                      )}
+                                    <br />
+                                    <Text className="text-canBlue font-medium">
+                                      <Tooltip
+                                        placement={"topLeft"}
+                                        title={
+                                          decodedProperties?.topic_name
+                                            ? `Topic: ${decodedProperties?.topic_name}` +
+                                              (decodedProperties?.camp_name
+                                                ? ` | Camp: ${decodedProperties?.camp_name}`
+                                                : "")
+                                            : handleTextOverflow(
+                                                decodedProperties?.description
+                                              )
+                                        }
+                                      >
+                                        {decodedProperties?.topic_name
+                                          ? `Topic: ${decodedProperties?.topic_name}` +
+                                            (decodedProperties?.camp_name
+                                              ? ` | Camp: ${decodedProperties?.camp_name}`
+                                              : "")
+                                          : convert(
+                                              decodedProperties?.description?.replace(
+                                                /<img[^>]*>/gi,
+                                                ""
+                                              ),
+                                              {
+                                                wordwrap: 130,
+                                              }
+                                            )}
+                                      </Tooltip>
+                                    </Text>
+                                  </Text>
+                                  <Text
+                                    className="text-canBlack opacity-[0.5] font-normal font-inter text-[12px] block mt-1"
+                                    type="secondary"
+                                  >
+                                    {covertToTime(activity.updated_at)}
+                                  </Text>
+                                </Fragment>
+                              </AntLink>
+                            </List.Item>
+                          );
+                        }}
+                      />
+                    )}
+                  </TabPane>
+                  <TabPane tab="Threads" key="threads">
+                    {getTopicsLoadingIndicator ? (
+                      <CustomSkelton
+                        skeltonFor="list"
+                        bodyCount={22}
+                        stylingClass="listSkeleton"
+                        isButton={false}
+                      />
+                    ) : (
+                      <List
+                        className="rounded-lg"
+                        // footer={
+                        //   !router?.asPath?.includes("/activities")
+                        //     ? ViewAllTopics(false)
+                        //     : LoadMoreTopics("threads")
+                        // }
+                        bordered={false}
+                        locale={{
+                          emptyText:
+                            "You don't have any recent activity right now.",
+                        }}
+                        dataSource={recentActivities?.topics}
+                        renderItem={(activity: any) => {
+                          const decodedProperties = JSON.parse(
+                            activity?.activity?.properties
+                          );
+
+                          return (
+                            <List.Item className="font-inter text-sm font-medium bg-white w-full px-2">
+                              <Link href={decodeUrlLink(activity)} passHref>
+                                <a className="w-full !text-canBlue hover:!text-canHoverBlue">
+                                  <Text className="text-canBlack text-sm font-normal mb-0 block w-full">
+                                    {activity?.activity?.description}{" "}
+                                    <Text className="text-canBlue font-medium">
+                                      <Tooltip
+                                        placement={"topLeft"}
+                                        title={handleTextOverflow(
+                                          decodedProperties?.description
+                                        )}
+                                      >
+                                        {convert(
+                                          decodedProperties?.description?.replace(
+                                            /<img[^>]*>/gi,
+                                            ""
+                                          ),
+                                          {
+                                            wordwrap: 130,
+                                          }
+                                        )}
+                                      </Tooltip>
+                                    </Text>
+                                  </Text>
+                                  <Text
+                                    className="text-canBlack opacity-[0.5] font-normal font-inter text-[12px] block mt-1"
+                                    type="secondary"
+                                  >
+                                    {covertToTime(activity.updated_at)}
+                                  </Text>
+                                </a>
+                              </Link>
+                            </List.Item>
+                          );
+                        }}
+                      />
+                    )}
+                  </TabPane>
+                </Tabs>
+              </div>
+            </CommonCard>
+            {!router?.asPath?.includes("/activities") &&
+            checkLogType == "topic/camps"
+              ? ViewAllTopics(true)
+              : !router?.asPath?.includes("/activities") &&
+                checkLogType == "threads"
+              ? ViewAllTopics(false)
+              : checkLogType == "topic/camps"
+              ? LoadMoreTopics("topic/camps")
+              : LoadMoreTopics("threads")}
+          </div>
+        </Fragment>
+      )}
+    </>
   );
 }
