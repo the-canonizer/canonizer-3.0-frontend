@@ -8,7 +8,6 @@ import { capitalizeFirstLetter } from "src/utils/generalUtility";
 const { Title } = Typography;
 const { Panel } = Collapse;
 
-
 const HistoryComparison = ({ campStatement, topicNamespaceId }: any) => {
   const router = useRouter();
   const historyOf = router?.query?.from;
@@ -79,8 +78,9 @@ const HistoryComparison = ({ campStatement, topicNamespaceId }: any) => {
               Camp about Nickname:{" "}
               <span>
                 <Link
-                  href={`/user/supports/${campStatement?.camp_about_nick_id || ""
-                    }?canon=${topicNamespaceId || ""}`}
+                  href={`/user/supports/${
+                    campStatement?.camp_about_nick_id || ""
+                  }?canon=${topicNamespaceId || ""}`}
                   passHref
                 >
                   <a>{campStatement?.camp_about_nick_name}</a>
@@ -92,8 +92,9 @@ const HistoryComparison = ({ campStatement, topicNamespaceId }: any) => {
               <span>
                 <Link
                   href={{
-                    pathname: `/user/supports/${campStatement?.submitter_nick_id || ""
-                      }`,
+                    pathname: `/user/supports/${
+                      campStatement?.submitter_nick_id || ""
+                    }`,
                     query: {
                       canon: topicNamespaceId || "",
                     },
@@ -131,8 +132,9 @@ const HistoryComparison = ({ campStatement, topicNamespaceId }: any) => {
             <span>
               <Link
                 href={{
-                  pathname: `/user/supports/${campStatement?.submitter_nick_id || ""
-                    }`,
+                  pathname: `/user/supports/${
+                    campStatement?.submitter_nick_id || ""
+                  }`,
                   query: {
                     canon: topicNamespaceId || "",
                   },
@@ -151,25 +153,23 @@ const HistoryComparison = ({ campStatement, topicNamespaceId }: any) => {
           Going live on:{" "}
           <span>{covertToTime(campStatement?.go_live_time)}</span>
         </p>
-        {historyOf === "statement" &&
+        {historyOf === "statement" && (
           <Collapse
             expandIconPosition="end"
-            className="ch-collapse"
+            className="comparision-collapse"
             defaultActiveKey={["1"]}
             expandIcon={({ isActive }) =>
               isActive ? (
-                <i className="icon-up-arrow"></i>
+                <i className="icon-chevron-up"></i>
               ) : (
-                <i className="icon-down-arrow"></i>
+                <i className="icon-chevron-down"></i>
               )
             }
             ghost
           >
             <Panel header="" key="1">
               <div>
-                <h5 className="font-semibold text-canOrange mb-3">
-                  Statement
-                </h5>
+                <h5 className="font-semibold text-canOrange mb-3">Statement</h5>
                 <div
                   className="text-canBlack pb-[1.25rem]"
                   dangerouslySetInnerHTML={{
@@ -179,7 +179,7 @@ const HistoryComparison = ({ campStatement, topicNamespaceId }: any) => {
               </div>
             </Panel>
           </Collapse>
-        }
+        )}
       </div>
     </>
   );

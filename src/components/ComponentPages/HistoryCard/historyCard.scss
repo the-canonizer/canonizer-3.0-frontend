@@ -4,7 +4,6 @@
     .badge-wrapper {
       .ch-dot-history {
         @apply lg:ml-[-26px] z-10;
-      
       }
     }
     + .csh-wrapper {
@@ -86,7 +85,7 @@
 
   .cn-dot-badge {
     @apply flex items-center;
-   
+
     .ant-badge-status-dot {
       @apply w-[12px] h-[12px];
     }
@@ -105,6 +104,24 @@
       }
       .ant-collapse-content-box {
         @apply p-0 border-b border-[#242B3733] mb-5;
+      }
+    }
+    .comparision-collapse {
+      .ant-collapse-header {
+        @apply absolute top-[22px] right-0 z-30 md:hidden;
+        .ant-collapse-expand-icon {
+          i {
+            @apply text-base text-canBlack;
+          }
+        }
+      }
+      .ant-collapse-content {
+        &.ant-collapse-content-hidden {
+          @apply md:block;
+        }
+      }
+      .ant-collapse-content-box {
+        @apply pt-5 pb-0 px-0 p-0 border-t border-[#242B3733] mt-5;
       }
     }
     p {
@@ -141,7 +158,7 @@
       .ant-space {
         @apply items-start;
         p {
-          @apply italic text-[#777F93] ;
+          @apply italic text-[#777F93];
         }
       }
     }
@@ -165,6 +182,6 @@
   }
 }
 .btn-light-primary {
-  background-color: #98B7E61A;
-  border-color: #5482C8;
+  background-color: #98b7e61a;
+  border-color: #5482c8;
 }
