@@ -134,7 +134,6 @@ function HistoryCard() {
               </div>
             </Panel>
           </Collapse>
-
           <p className="font-semibold mb-2.5">Updates</p>
           <p>
             Category:<span>Test</span>
@@ -166,7 +165,7 @@ function HistoryCard() {
           <p>
             Going live on :<span>17 Feb 2024, 04:36 PM</span>
           </p>
-          <div className="agreement-wrapper">
+          <div className="agreement-wrapper cursor-pointer">
             <Checkbox onChange={onChange}>Agree With Change</Checkbox>
             <Space>
               <HistoryCardDrawer />
