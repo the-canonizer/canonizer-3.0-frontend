@@ -1,11 +1,13 @@
-/* eslint-disable @next/next/no-img-element */
-import { CaretRightOutlined } from "@ant-design/icons";
-import { Card, Col, PageHeader, Row } from "antd";
+//* eslint-disable @next/next/no-img-element */
+import React, { useEffect, useState } from "react";
+import Layout from "../../hoc/layout";
+import { Row, Col, PageHeader } from "antd";
+import { Card } from "antd";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { CaretRightOutlined } from "@ant-design/icons";
 import { getVideosContentApi } from "src/network/api/videos";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
-import Layout from "../../hoc/layout";
+import CustomSkeleton from "../../components/common/customSkelton";
 
 // eslint-disable-next-line @next/next/no-img-element
 const { Meta } = Card;
@@ -36,6 +38,7 @@ const VideosPage = () => {
     getVideoCategories();
   }, []);
 
+  console.log(categories);
   return (
     <Layout routeName={"video"}>
       <div className="video-wrapper">
