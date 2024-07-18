@@ -500,7 +500,7 @@ function HistoryContainer() {
                   }
                   onClick={onCompareClick}
                 >
-                  Compare Camps
+                  Compare Statements
                   <i className="icon-compare-statement"></i>
                 </Button>
               )}

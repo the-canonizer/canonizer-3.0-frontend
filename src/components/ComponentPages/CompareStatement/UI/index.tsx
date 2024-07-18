@@ -78,6 +78,7 @@ function CompareStatementUI({
                 compareMode={compareMode}
                 comparisonData={s1}
                 status={itemsStatus[s1?.id]}
+                s1={true}
               />
             </Col>
             <Col xs={24} md={12}>

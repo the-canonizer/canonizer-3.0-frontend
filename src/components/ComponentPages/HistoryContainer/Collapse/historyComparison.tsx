@@ -8,7 +8,8 @@ import { capitalizeFirstLetter } from "src/utils/generalUtility";
 const { Title } = Typography;
 const { Panel } = Collapse;
 
-const HistoryComparison = ({ campStatement, topicNamespaceId }: any) => {
+
+const HistoryComparison = ({ campStatement, topicNamespaceId, s1 = false }: any) => {
   const router = useRouter();
   const historyOf = router?.query?.from;
 
@@ -27,6 +28,12 @@ const HistoryComparison = ({ campStatement, topicNamespaceId }: any) => {
   const topicName = router?.query?.routes[0];
   const topic_name = topicName.split("-").slice(1).join(" ");
 
+  const getTitle = () => {
+    if (historyOf === "camp" || historyOf === "topic") return "Updates";
+    if (historyOf === "statement") return s1 ? "EDITS" : "DETAILS";
+    return null; // or a default value if needed
+  };
+
   return (
     <>
       {historyOf === "topic" || historyOf === "camp" ? (
@@ -39,7 +46,7 @@ const HistoryComparison = ({ campStatement, topicNamespaceId }: any) => {
       ) : null}
 
       <Title level={5} className="font-semibold mb-2.5">
-        Updates
+        {getTitle()}
       </Title>
       <div className="mb-2">
         {historyOf === "topic" && (
@@ -78,9 +85,8 @@ const HistoryComparison = ({ campStatement, topicNamespaceId }: any) => {
               Camp about Nickname:{" "}
               <span>
                 <Link
-                  href={`/user/supports/${
-                    campStatement?.camp_about_nick_id || ""
-                  }?canon=${topicNamespaceId || ""}`}
+                  href={`/user/supports/${campStatement?.camp_about_nick_id || ""
+                    }?canon=${topicNamespaceId || ""}`}
                   passHref
                 >
                   <a>{campStatement?.camp_about_nick_name}</a>
@@ -92,9 +98,8 @@ const HistoryComparison = ({ campStatement, topicNamespaceId }: any) => {
               <span>
                 <Link
                   href={{
-                    pathname: `/user/supports/${
-                      campStatement?.submitter_nick_id || ""
-                    }`,
+                    pathname: `/user/supports/${campStatement?.submitter_nick_id || ""
+                      }`,
                     query: {
                       canon: topicNamespaceId || "",
                     },
@@ -132,9 +137,8 @@ const HistoryComparison = ({ campStatement, topicNamespaceId }: any) => {
             <span>
               <Link
                 href={{
-                  pathname: `/user/supports/${
-                    campStatement?.submitter_nick_id || ""
-                  }`,
+                  pathname: `/user/supports/${campStatement?.submitter_nick_id || ""
+                    }`,
                   query: {
                     canon: topicNamespaceId || "",
                   },
