@@ -13,6 +13,13 @@ module.exports = {
         "camp-light": "0 10px 20px 0px rgba(49, 80, 114, 0.2)",
         "mobile-b-shadow" : " 0px 10px 10px 0px rgba(0, 0, 0, 0.1)",
       },
+   
+      fontSize: {
+        '24': '24px', 
+        '13': '13px', 
+        '32': '32px',
+        
+      },
       borderWidth: {
         '3': '3px', // Custom border width
         '5': '5px', // Another custom border width
@@ -41,7 +48,9 @@ module.exports = {
         canLightBlue: "#E1EDFE",
         canDarkBlack: "#000000",
         canLightGrey: "#F0F2FA",
-        canLightBlack: "#69748B"
+        canLightBlack: "#69748B",
+        canLightBg: "#E4E7EF",
+        canLightgrey4: "#DDE2EE"
       },
       backgroundImage: {
         "custom-gradient":

@@ -39,7 +39,7 @@ import FullScoreCheckbox from "../../ComponentPages/FullScoreCheckbox";
 import ArchivedCampCheckBox from "src/components/ComponentPages/ArchivedCampCheckBox";
 import CampTreeCard from "src/components/ComponentPages/TopicDetails/CampTreeCard";
 import { getTreesApi } from "src/network/api/campDetailApi";
-import { setOpenDrawer } from "../../../store/slices/campDetailSlice";
+import { setOpenDrawer, setAsOfValues, setClearAlgoFromRefineFilter, setClearScoreFromRefineFilter,  } from "../../../store/slices/campDetailSlice";
 
 const infoContent = (
   <>
@@ -110,6 +110,10 @@ const FilterWithTree = ({
     asofdate,
     algorithm,
     openDrawer,
+    asOfValues,
+    clearAlgoFromRefineFilter,
+    clearScoreFromRefineFilter,
+
   } = useSelector((state: RootState) => ({
     algorithms: state.homePage?.algorithms,
     filteredScore: state?.filters?.filterObject?.filterByScore,
@@ -126,6 +130,9 @@ const FilterWithTree = ({
     asofdate: state.filters?.filterObject?.asofdate,
     algorithm: state.filters?.filterObject?.algorithm,
     openDrawer: state.topicDetails.openDrawer,
+    asOfValues :state.topicDetails.asOfValues,
+    clearAlgoFromRefineFilter :state.topicDetails.clearAlgoFromRefineFilter,
+    clearScoreFromRefineFilter :state.topicDetails.clearScoreFromRefineFilter,
   }));
 
   const [value, setValue] = useState(
@@ -259,8 +266,10 @@ const FilterWithTree = ({
   useEffect(() => {
     if (!router?.query?.algo) {
       setSelectAlgo("blind_popularity");
+      dispatch(setClearAlgoFromRefineFilter("blind_popularity"))
       if (!router?.query?.score) {
-        setSelectScore(0);
+        // setSelectScore(0);
+        dispatch(setClearScoreFromRefineFilter(0))
       }
       if (router?.query?.asof !== "bydate" || !router?.query?.asofdate) {
         // selectedAsOf = "default"
@@ -291,7 +300,8 @@ const FilterWithTree = ({
   }, [isLoading]);
 
   useEffect(() => {
-    setValue(selectedAsOf == "default" ? 2 : selectedAsOf == "review" ? 1 : 3);
+    // setValue(selectedAsOf == "default" ? 2 : selectedAsOf == "review" ? 1 : 3);
+    dispatch(setAsOfValues(selectedAsOf == "default" ? 2 : selectedAsOf == "review" ? 1 : 3))
   }, [selectedAsOf]);
 
   useEffect(() => {
@@ -309,7 +319,7 @@ const FilterWithTree = ({
     asOf: asof,
     asofdate:
       asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
-    algorithm: selectAlgo,
+    algorithm: clearAlgoFromRefineFilter,
     update_all: 1,
     fetch_topic_history: viewThisVersionCheck ? 1 : null,
   };
@@ -323,7 +333,7 @@ const FilterWithTree = ({
     });
     dispatch(
       setFilterCanonizedTopics({
-        algorithm: selectAlgo,
+        algorithm: clearAlgoFromRefineFilter,
       })
     );
     // onChangeRoute(
@@ -342,7 +352,8 @@ const FilterWithTree = ({
     } else {
       setIsDatePicker(false);
     }
-    setValue(e.target.value);
+    // setValue(e.target.value);
+    dispatch(setAsOfValues(e.target.value))
   };
 
   const pickDate = (e) => {
@@ -441,8 +452,8 @@ const FilterWithTree = ({
         })
       );
       onChangeRoute(
-        selectScore,
-        selectAlgo,
+        clearScoreFromRefineFilter,
+        clearAlgoFromRefineFilter,
         "bydate",
         Date.parse(dateValue) / 1000,
         filterObject?.namespace_id,
@@ -457,7 +468,7 @@ const FilterWithTree = ({
       );
       onChangeRoute(
         filterObject?.filterByScore,
-        selectAlgo,
+        clearAlgoFromRefineFilter,
         "bydate",
         Date.now() / 1000,
         filterObject?.namespace_id,
@@ -473,8 +484,8 @@ const FilterWithTree = ({
     setSelectedValue(value);
   };
   const handleApplyClick = () => {
-    filterOnScore(selectScore);
-    selectAlgorithm(selectAlgo);
+    filterOnScore(clearScoreFromRefineFilter);
+    selectAlgorithm(clearAlgoFromRefineFilter);
     if (selectedValue === 2) {
       dispatch(setViewThisVersion(false));
       setCookie("asof", "default", { path: "/" });
@@ -485,8 +496,8 @@ const FilterWithTree = ({
         })
       );
       onChangeRoute(
-        selectScore,
-        selectAlgo,
+        clearScoreFromRefineFilter,
+        clearAlgoFromRefineFilter,
         "default",
         Date.now() / 1000,
         filterObject?.namespace_id,
@@ -505,8 +516,8 @@ const FilterWithTree = ({
         })
       );
       onChangeRoute(
-        selectScore,
-        selectAlgo,
+        clearScoreFromRefineFilter,
+        clearAlgoFromRefineFilter,
         "review",
         Date.now() / 1000,
         filterObject?.namespace_id,
@@ -523,16 +534,19 @@ const FilterWithTree = ({
 
   const handleChange = (event) => {
     const value = event.target.value;
-    setSelectScore(Number(value));
+    // setSelectScore(Number(value));
+    dispatch(setClearScoreFromRefineFilter(Number(value)));
   };
   return (
     <div className="leftSideBar_Card drawer_card">
+       
       <div
         className={`${styles.cardAccordian} ${styles.cardWithDrawerAccordian} topicListFilterCardCollapse`}
         // expandIconPosition="right"
         // bordered={false}
         // defaultActiveKey={["1"]}
       >
+      
         <div
           className={`header-bg-color-change radio-group-sider ${selectedAsOf}`}
           // header={null}
@@ -540,8 +554,11 @@ const FilterWithTree = ({
         >
           <Row gutter={20}>
             <Col xs={24}>
-              <div className="algo_title_new border-b border-canGrey2  mb-3.5 p-5">
-                <Title level={5} className={styles.algoText}>
+              <div className="algo_title_new border-b lg:border-canGrey2 border-canLightgrey4 pr-4 lg:pr-8 pl-4 lg:pl-8 pb-8 lg:pt-0 pt-6 ">
+                <Title
+                  level={5}
+                  className="!text-sm lg:!text-base !font-normal mb-3 lg:!mb-5 lg:!font-medium flex gap-3"
+                >
                   Select Canonizer Algorithm:{"  "}{" "}
                   <Popover
                     content="Algorithm Information"
@@ -579,10 +596,11 @@ const FilterWithTree = ({
                   </Popover>
                 </Title>
                 <Select
+                suffixIcon={<Image src="/images/refine-caret-icon.svg" width={15} height={7} />}
                   size="large"
                   showSearch
                   optionFilterProp="children"
-                  className={styles.algoSelect}
+                  className=" [&_.ant-select-selector]:!rounded-lg [&_.ant-select-selection-item]:text-sm  lg:[&_.ant-select-selection-item]:font-medium [&_.ant-select-selection-item]:font-semibold lg:w-4/5 w-full "
                   defaultValue={
                     algorithms?.filter(
                       (algo) => algo?.algorithm_key == selectedAlgorithm
@@ -590,10 +608,11 @@ const FilterWithTree = ({
                   }
                   // onChange={selectAlgorithm}
                   onChange={(algo) => {
-                    setSelectAlgo(algo);
+                    // setSelectAlgo(algo);
+                    dispatch(setClearAlgoFromRefineFilter(algo))
                   }}
                   value={
-                    selectAlgo
+                    clearAlgoFromRefineFilter
                     // !router?.query?.algo
                     //   ? algorithms && algorithms[0]?.algorithm_label
                     //   : algorithms?.filter(
@@ -626,39 +645,42 @@ const FilterWithTree = ({
                 alignItems: "flex-end",
               }}
             >
-              <div className="score_value mb-3.5 pt-2.5 px-5 pb-7 w-full border-b border-canGrey2">
+              <div className="score_value pr-4 lg:pr-8  pl-4 lg:pl-8 pb-8 pt-8 w-full border-b lg:border-canGrey2 border-canLightgrey4 ">
                 <Text className={styles.filterText}>
-                  <p className="flex items-center gap-1">
+                  <p className="flex items-center gap-3 text-sm lg:!text-base font-normal  lg:!font-medium">
                     {" "}
                     Score value{" "}
-                    <Image
+                    <Popover
+                  content={infoContent}
+                  placement="right"
+                  className={styles.infoIcon}
+                >
+                  <Image
                       src="/images/circle-info-bread.svg"
                       alt="svg"
                       className="icon-topic"
                       height={16}
                       width={16}
                     />
+                </Popover>
+                    
                   </p>{" "}
                 </Text>
                 {/* {/ <LeftOutlined className={styles.LeftOutlined} />  /} */}
                 <Input
                   size="large"
+                  className="rounded-lg lg:!w-4/5 w-full text-canBlack font-medium"
                   // onChange={filterOnScore}
                   onChange={handleChange}
                   value={
                     // filteredScore == 0 ? filterObject.filterByScore : inputValue
-                    selectScore
+                    clearScoreFromRefineFilter
                   }
                   disabled={loadingIndicator}
                   id="filter_input"
+                  prefix={<span className="text-canBlack lg:text-canLight text-sm lg:text-base lg:font-medium font-semibold lg:mr-14 mr-2 ">Greater than -</span>}
                 />
-                <Popover
-                  content={infoContent}
-                  placement="right"
-                  className={styles.infoIcon}
-                >
-                  {/* {/ <i className="icon-info"></i>  /} */}
-                </Popover>
+              
               </div>
             </Col>
             {/* <Col md={24} className="mt-5">
@@ -669,8 +691,11 @@ const FilterWithTree = ({
             </Col> */}
             <Col xs={24} className="">
               {/* <div className={`${styles.algo_title} ${styles.title}`}> / */}
-              <div className="as-of-div mb-3.5 pt-2.5 px-5 pb-7 w-full">
-                <Title level={5} className={styles.algoText}>
+              <div className="as-of-div pl-4 lg:pl-8 pb-8 pt-8 w-full">
+                <Title
+                  level={5}
+                  className="!text-sm lg:!text-base !font-normal  lg:!font-medium flex gap-3 !mb-5"
+                >
                   As Of
                   <Popover content={asContent} placement="right">
                     <Image
@@ -689,7 +714,7 @@ const FilterWithTree = ({
                 >
                   <Radio.Group
                     onChange={onChange}
-                    value={value}
+                    value={asOfValues}
                     disabled={loadingIndicator}
                     className={styles.radioBtns}
                     id="radio_group"
@@ -704,7 +729,7 @@ const FilterWithTree = ({
                       }}
                     >
                       <Radio
-                        className={styles.radio + " topicFilterRadio"}
+                        className="text-sm font-medium text-canBlack mb-5"
                         value={2}
                         onClick={() => {
                           handleRadioClick(2);
@@ -714,7 +739,7 @@ const FilterWithTree = ({
                         Default
                       </Radio>
                       <Radio
-                        className={styles.radio + " topicFilterRadio"}
+                        className="!text-sm !font-medium !text-canBlack  mb-5"
                         style={{ width: "100%" }}
                         value={1}
                         onClick={() => {
@@ -726,7 +751,7 @@ const FilterWithTree = ({
                       </Radio>
                       <div className="flex justify-between items-center">
                         <Radio
-                          className={styles.radio + " topicFilterRadio"}
+                          className="text-sm font-medium text-canBlack "
                           value={3}
                           onClick={() => {
                             handleRadioClick(3);
@@ -745,9 +770,9 @@ const FilterWithTree = ({
                             format="YYYY-MM-DD"
                             defaultValue={moment(current_date_filter * 1000)}
                             value={moment(selectedAsOFDate * 1000)}
-                            suffixIcon={<i className="icon-calendar"></i>}
+                            suffixIcon={<Image src="/images/date-picker-icon.svg" width={22} height={22} />}
                             size={"large"}
-                            className={`${styles.date} ${styles.dates} w-100`}
+                            className={`${styles.date} ${styles.dates} w-100 !text-canBlack`}
                             onChange={pickDate}
                             inputReadOnly={true}
                             disabledDate={(current) =>
@@ -775,7 +800,7 @@ const FilterWithTree = ({
             </Col>
             <Col xs={24}>
               {!openDrawer ? (
-                <div className={styles.treeContainer}>
+                <div className={styles.treeContainer + " !p-0"}>
                   <CampTreeCard
                     getTreeLoadingIndicator={getTreeLoadingIndicator}
                     scrollToCampStatement={scrollToCampStatement}
@@ -793,23 +818,32 @@ const FilterWithTree = ({
             </Col>
 
             <Col xs={24} className=" refine-drawer-mobile overflow-hidden">
-              <div className="flex items-center justify-center sm:gap-0 lg:gap-2 btn-parent  lg:px-1 sm:px-0 fixed lg:static bottom-0 w-full">
+              <div className="flex items-center justify-center sm:gap-0 lg:gap-2 btn-parent  lg:px-1 sm:px-0 fixed lg:static bottom-0 w-full lg:mt-14">
                 <Button
-                  className="btnCancel lg:!border-b lg:!border-t lg:!border-l lg:!border-r focus:!text-canblack hover:!text-canBlack !border-t !border-b-0 !border-r-0 !border-l-0 lg:!border-canBlue border-[#DDE2EE] bg-transparent lg:rounded-lg lg:h-[44px] h-[67px] lg:px-14 lg:w-auto w-full "
+                  className="flex  items-center justify-center gap-2.5 btnCancel lg:!border-b lg:!border-t lg:!border-l lg:!border-r focus:!text-canblack hover:!text-canBlack !border-t !border-b-0 !border-r-0 !border-l-0 lg:!border-canBlue border-[#DDE2EE] bg-transparent lg:rounded-lg lg:h-[44px] h-[67px] lg:px-14 lg:w-auto w-full text-base lg:font-medium font-normal "
                   onClick={onClose}
                 >
                   Cancel
+                  <span className="!hidden lg:!flex lg:items-center  ">
+                    <Image
+                      src="/images/refine-close-icon.svg"
+                      alt="svg"
+                      className="icon-topic "
+                      height={24}
+                      width={24}
+                    />
+                  </span>
                 </Button>
 
                 <Button
-                  className="btnApplyfilters border-t lg:rounded-lg lg:h-[44px] h-[67px] !bg-canBlue focus:!text-white border border-transparent focus:border-transparent !text-white flex justify-center items-center lg:w-auto w-full gap-2.5 hover:!text-white hover:!border hover:!border-canblack"
+                  className="btnApplyfilters border-t lg:rounded-lg lg:h-[44px] h-[67px] !bg-canBlue focus:!text-white border border-transparent focus:border-transparent !text-white flex justify-center items-center lg:px-8 lg:w-auto w-full gap-2.5 hover:!text-white hover:!border hover:!border-canblack text-base lg:font-medium font-semibold"
                   onClick={handleApplyClick}
                 >
                   <span className="!flex gap-1 flex-row ">
                     <span>Apply</span>
                     <span className="hidden lg:block">Filters</span>
                   </span>
-                  <span className="!hidden lg:!block ">
+                  <span className="!hidden lg:!flex  items-center">
                     <Image
                       src="/images/filterbtn-icon.svg"
                       alt="svg"

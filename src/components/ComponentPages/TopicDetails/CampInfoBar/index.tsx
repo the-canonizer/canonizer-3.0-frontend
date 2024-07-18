@@ -370,7 +370,7 @@ const TimelineInfoBar = ({
       </Row>
 
       <hr className="horizontal_line my-5" />
-      <CustomButton className="customButton-popover mx-auto bg-canBlue text-white flex items-center justify-center py-3 px-7 rounded-lg text-base font-medium gap-2.5 h-[44px] ">
+      <CustomButton className="customButton-popover mx-auto bg-canBlue hover:!bg-canBlue  border-transparent hover:border-transparent hover:text-white text-white flex items-center justify-center py-3 px-7 rounded-lg text-base font-medium gap-2.5 h-[44px] ">
         {isTopicPage && (
           <Link
             href={`/topic/history/${replaceSpecialCharacters(
@@ -380,7 +380,7 @@ const TimelineInfoBar = ({
               "-"
             )}`}
           >
-            <a className="flex items-center justify-center gap-3 text-base font-medium leading-[]">
+            <a className="flex items-center justify-center gap-3 text-base font-medium  leading-[]">
               {K?.exceptionalMessages?.manageTopicButton}
               <Image
                 src="/images/manage-btn-icon.svg"
@@ -477,7 +477,7 @@ const TimelineInfoBar = ({
       </Row>
 
       <hr className="horizontal_line my-5" />
-      <CustomButton className="customButton-popover customButton-popover mx-auto bg-canBlue text-white flex items-center justify-center py-3 px-7 rounded-lg text-base font-medium gap-2.5 h-[44px] ">
+      <CustomButton className="customButton-popover customButton-popover mx-auto bg-canBlue hover:!bg-canBlue border-transparent hover:border-transparent hover:!text-white text-white flex items-center justify-center py-3 px-7 rounded-lg text-base font-medium gap-2.5 h-[44px] ">
         {isTopicPage && (
           <Link
             href={`/topic/history/${replaceSpecialCharacters(
@@ -653,28 +653,24 @@ const TimelineInfoBar = ({
                   </Typography.Paragraph>
                   <div className={styles.breadcrumbLinks + " flex "}>
                     <Typography.Paragraph
-                      className={
-                        "!mb-0 flex  " + styles.topicTitleStyle
-                      }
+                      className={"!mb-0 flex  " + styles.topicTitleStyle}
                     >
-                       <div className="flex items-start shrink-0">
+                      <div className="flex items-start shrink-0">
                         <div>
-                        <Image
-                          src="/images/arrow-bread.svg"
-                          alt="svg"
-                          className="icon-topic"
-                          height={12}
-                          width={6}
-                        />
+                          <Image
+                            src="/images/arrow-bread.svg"
+                            alt="svg"
+                            className="icon-topic"
+                            height={12}
+                            width={6}
+                          />
                         </div>
-                       
-                        <span className="ml-5 font-bold text-base text-canBlack whitespace-nowrap shrink-0">
+
+                        <span className="ml-5 mr-1 font-bold text-base text-canBlack whitespace-nowrap shrink-0">
                           {!isTopicHistoryPage ? "Camp:" : ""}
                         </span>
-                        </div>
+                      </div>
                       <div className="flex items-start gap-5">
-                       
-                       
                         <div className="flex gap-x-5 gap-y-2 flex-wrap items-center">
                           {loadingIndicator ? (
                             <CustomSkelton
@@ -701,7 +697,7 @@ const TimelineInfoBar = ({
                                     )}?${getQueryParams()?.returnQuery}`}
                                     key={index}
                                   >
-                                    <a className="!text-canBlack gap-x-5 gap-y-1 flex hover:text-canBlack ">
+                                    <a className="!text-canBlack gap-x-5 gap-y-1 flex hover:!text-canBlack ">
                                       {index !== 0 && (
                                         <span className=" !text-canBlack">
                                           <Image
@@ -728,7 +724,16 @@ const TimelineInfoBar = ({
                                           title={title2}
                                         >
                                           <div className="flex items-center gap-1.5">
-                                            <span className={`${index === breadCrumbRes.bread_crumb.length - 1 ? "lg:text-base text-xs font-semibold" : "lg:text-base text-xs"}`}>
+                                            <span
+                                              className={`${
+                                                index ===
+                                                breadCrumbRes.bread_crumb
+                                                  .length -
+                                                  1
+                                                  ? "lg:text-base text-xs font-semibold"
+                                                  : "lg:text-base text-xs"
+                                              }`}
+                                            >
                                               {" "}
                                               {`${camp?.camp_name}`}
                                             </span>
@@ -928,12 +933,13 @@ const TimelineInfoBar = ({
                                   key={index}
                                 >
                                   <a className="text-xs !text-canGreen flex flex-wrap shrink-0 gap-2 items-center">
-                                    <span
-                                      className={
-                                        styles.slashStyl + " flex items-center"
-                                      }
-                                    >
-                                      {index !== 0 && (
+                                    {index !== 0 && (
+                                      <span
+                                        className={
+                                          styles.slashStyl +
+                                          " flex items-center"
+                                        }
+                                      >
                                         <Image
                                           src="/images/mobile-caret-infobar.svg"
                                           alt="svg"
@@ -941,8 +947,8 @@ const TimelineInfoBar = ({
                                           height={12}
                                           width={6}
                                         />
-                                      )}
-                                    </span>
+                                      </span>
+                                    )}
 
                                     {`${camp?.camp_name}`}
                                   </a>

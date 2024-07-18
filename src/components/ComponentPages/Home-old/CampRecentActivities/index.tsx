@@ -56,12 +56,12 @@ export default function CampRecentActivities() {
   return (
     <Fragment>
       <div className="camp_activity_new">
-        <h3 className="lg:mb-6 mb-3 uppercase text-base font-semibold text-canBlack">
+        <h3 className="lg:mb-5 mb-3 uppercase text-sm lg:text-base font-semibold text-canBlack">
           Camp activities
         </h3>
       </div>
       <div className="camp-recent lg:bg-canGray bg-transparent lg:py-8 lg:px-6 rounded-2xl">
-        <div className="camp-recent-child d-flex justify-center flex-col items-center bg-white lg:px-8 px-3.5  rounded-xl border border-canGrey2 ">
+        <div className="camp-recent-child d-flex justify-center flex-col items-center bg-white lg:px-7 px-3.5  rounded-xl border border-canGrey2 ">
           <div className="d-flex flex-col gap-1 w-full">
             {loadingIndicator ? (
               <CustomSkelton
@@ -109,7 +109,7 @@ export default function CampRecentActivities() {
                 )}
               />
             ) : (
-              <div className="flex items-center justify-center gap-3 flex-col pt-3">
+              <div className="flex items-center justify-center gap-3 flex-col pt-14 pb-14">
                 {K?.exceptionalMessages?.noRecentActivityFound}
                 <Image
                   src="/images/no-activity.svg"

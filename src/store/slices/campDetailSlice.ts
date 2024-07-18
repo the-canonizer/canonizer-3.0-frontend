@@ -23,6 +23,9 @@ export const treeSlice = createSlice({
     },
     manageSupportStatusCheck: false,
     openDrawer: false,
+    asOfValues:0,
+    clearAlgoFromRefineFilter:"",
+    clearScoreFromRefineFilter:0,
     // openConsensusTreePopup: true,
     manageSupportUrlLink: null,
     CurrentCheckSupportStatus: null,
@@ -127,6 +130,15 @@ export const treeSlice = createSlice({
     setSiblingCampData: (state, action) => {
       state.siblingCampData = action.payload;
     },
+    setAsOfValues: (state, action) => {
+      state.asOfValues = action.payload;
+    },
+    setClearAlgoFromRefineFilter: (state, action) => {
+      state.clearAlgoFromRefineFilter = action.payload;
+    },
+    setClearScoreFromRefineFilter: (state, action) => {
+      state.clearScoreFromRefineFilter = action.payload;
+    },
   },
 });
 
@@ -151,6 +163,9 @@ export const {
   setRemovedReasons,
   setChangeGoneLive,
   setSiblingCampData,
+  setAsOfValues,
+  setClearAlgoFromRefineFilter,
+  setClearScoreFromRefineFilter
   // setOpenConsensusTreePopup,
 } = treeSlice.actions;
 

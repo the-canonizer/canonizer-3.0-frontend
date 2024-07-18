@@ -37,7 +37,7 @@ const HomePageContainer = () => {
             ) : null}
 
             {isUserAuthenticated ? (
-              <div className="mb-14" data-testid="recentActivities">
+              <div className="mb-14 [&_.ant-tabs-tab-btn]:!border-none" data-testid="recentActivities">
                 <RecentActivities />
               </div>
             ) : null}
