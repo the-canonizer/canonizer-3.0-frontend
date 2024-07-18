@@ -21,7 +21,7 @@ const SingleTopicWithImage = ({ topic }) => {
 
   return (
     <CommonCard
-      className="bg-canGray w-full p-0 [&>.ant-card-body]:p-0 xl:[&>.ant-card-body]:py-5 xl:[&>.ant-card-body]:px-8"
+      className="bg-canGray w-full p-0 [&>.ant-card-body]:p-0 xl:[&>.ant-card-body]:py-5 xl:[&>.ant-card-body]:px-8 [&_.ant-card-body]:before:hidden"
       key={topic?.id}
     >
       <Row gutter={0} className="w-full min-w-full max-w-full relative">

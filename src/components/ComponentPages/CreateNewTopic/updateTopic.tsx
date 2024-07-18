@@ -4,11 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { HomeOutlined } from "@ant-design/icons";
 
-import { createTopic } from "src/network/api/topicAPI";
-import {
-  getNickNameList,
-  globalSearchCanonizer,
-} from "src/network/api/userApi";
+import { globalSearchCanonizer } from "src/network/api/userApi";
 import { RootState } from "src/store";
 import isAuth from "src/hooks/isUserAuthenticated";
 import {
@@ -22,8 +18,13 @@ import FromUI from "./UI/FromUI";
 import TopicInfoCard from "./UI/rightContent";
 import ExistingTopicList from "./UI/existingTopicList";
 import queryParams from "src/utils/queryParams";
+import { getAllUsedNickNames } from "src/network/api/campDetailApi";
+import {
+  getEditTopicApi,
+  updateTopicApi,
+} from "src/network/api/campManageStatementApi";
 
-const CreateNewTopic = () => {
+const UpdateTopic = () => {
   const { nameSpaces, catTaga } = useSelector((state: RootState) => ({
     // filterByScore: state.filters?.filterObject?.filterByScore,
     // filterObject: state?.filters?.filterObject,
@@ -40,11 +41,15 @@ const CreateNewTopic = () => {
   const [isShowMore, setIsShowMore] = useState(false);
   const [haveTopicExist, setHaveTopicExist] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [currentTopic, setCurrentTopic] = useState(null);
+  const [isSubmitReq, setIsSubmitReq] = useState(false);
 
   const router = useRouter();
   const dispatch = useDispatch();
   const [form] = Form.useForm();
   const { isUserAuthenticated } = isAuth();
+
+  const update = router?.query?.statement?.at(0)?.split("-")[1] == "update";
 
   const values = Form.useWatch([], form);
 
@@ -55,20 +60,79 @@ const CreateNewTopic = () => {
       .catch(() => setIsDisabled(false));
   }, [form, values]);
 
-  const fetchNickNameList = async () => {
-    let response = await getNickNameList();
-    if (response && response.status_code === 200) {
-      const resData = response.data;
-      setNickNameList(resData);
-      form.setFieldValue("nick_name", resData[0]?.id);
-    }
+  const compareTags = (existedData, newData) => {
+    const newIds = newData?.map((item) => item?.id);
+    const areSame =
+      existedData?.every((id) => newIds?.includes(id)) &&
+      newIds?.every((id) => existedData?.includes(id));
+
+    return areSame;
   };
 
   useEffect(() => {
-    if (isUserAuthenticated) {
-      fetchNickNameList();
+    if (
+      currentTopic?.topic_name?.trim() !== values?.topic_name?.trim() ||
+      currentTopic?.submitter_nick_id !== values?.nick_name ||
+      currentTopic?.namespace_id !== values?.namespace ||
+      !compareTags(currentTopic?.tags, selectedCats)
+    ) {
+      setIsSubmitReq(true);
+    } else {
+      setIsSubmitReq(false);
     }
-    // eslint-disable-next-line
+  }, [values, currentTopic, selectedCats]);
+
+  useEffect(() => {
+    if (currentTopic?.tags?.length) {
+      const existedCats = catTaga?.filter((ct) =>
+        currentTopic?.tags?.includes(ct?.id)
+      );
+
+      setSelectedCats(existedCats);
+    }
+  }, [currentTopic?.tags]);
+
+  async function getTopicDetails() {
+    setIsLoading(true);
+    const topicPayload = {
+      record_id: router?.query?.statement?.at(0)?.split("-")[0],
+      event_type: "edit",
+    };
+
+    const res = await getEditTopicApi(topicPayload);
+
+    if (res?.status_code == 200) {
+      const topicData = res?.data?.topic;
+
+      setCurrentTopic(topicData);
+
+      const result = await getAllUsedNickNames({
+        topic_num: topicData?.topic_num,
+      });
+
+      if (result?.status_code == 200) {
+        const resData = result.data;
+
+        await form.setFieldValue("nick_name", resData[0]?.id);
+        await form.setFieldValue("topic_name", topicData?.topic_name);
+        await form.setFieldValue("namespace", topicData?.namespace_id);
+
+        setNickNameList(resData);
+      }
+    }
+    setIsLoading(false);
+  }
+
+  useEffect(() => {
+    if (isUserAuthenticated) {
+      setIsLoading(true);
+      getTopicDetails();
+    } else {
+      router?.push({
+        pathname: "/login",
+        query: { returnUrl: router?.asPath },
+      });
+    }
   }, [isUserAuthenticated]);
 
   const onFinish = async (values: any) => {
@@ -78,10 +142,29 @@ const CreateNewTopic = () => {
       topic_name: values.topic_name?.trim(),
       namespace: values.namespace,
       nick_name: values.nick_name,
+      topic_num: currentTopic?.topic_num,
+      topic_id: currentTopic?.id,
+      namespace_id: values.namespace,
+      submitter: currentTopic?.submitter_nick_id,
       tags: selectedCats?.map((cat) => cat?.id),
+      event_type: update ? "edit" : "update",
+      // camp_num: null,
+      // note: null,
+      // statement: "",
+      // statement_id: null,
+      // objection_reason: null,
+      // statement_update: null,
+      // camp_id: null,
+      // camp_name: null,
+      // key_words: null,
+      // camp_about_url: null,
+      // camp_about_nick_id: null,
+      // parent_camp_num: null,
+      // old_parent_camp_num: null,
+      // camp_leader_nick_id: null,
     };
 
-    const res = await createTopic(body);
+    const res = await updateTopicApi(body);
 
     if (res && res.status_code === 400) {
       if (res?.error) {
@@ -121,10 +204,9 @@ const CreateNewTopic = () => {
       message.success(res.message);
       storeFilterClear();
       router?.push({
-        pathname: `/topic/${res.data.topic_num}-${replaceSpecialCharacters(
-          res.data.topic_name,
-          "-"
-        )}/1-Agreement`,
+        pathname: `/topic/history/${
+          currentTopic?.topic_num
+        }-${replaceSpecialCharacters(currentTopic?.topic_name, "-")}`,
       });
 
       dispatch(setShowDrawer(true));
@@ -194,7 +276,10 @@ const CreateNewTopic = () => {
 
   const onTopicNameBlur = () => {
     setIsError(false);
-    if (values?.topic_name) {
+    if (
+      values?.topic_name &&
+      currentTopic?.topic_name?.trim() !== values?.topic_name?.trim()
+    ) {
       getExistingList();
     }
   };
@@ -204,7 +289,13 @@ const CreateNewTopic = () => {
       <Breadcrumbs
         items={[
           { icon: <HomeOutlined className="text-canBlack" />, href: "/" },
-          { label: "Creating a New Topic" },
+          {
+            href: `/topic/history/${
+              currentTopic?.topic_num
+            }-${replaceSpecialCharacters(currentTopic?.topic_name, "-")}`,
+            label: "Topic History",
+          },
+          { label: "Update Topic" },
         ]}
       />
 
@@ -216,13 +307,14 @@ const CreateNewTopic = () => {
             nameSpaces={nameSpaces || []}
             nickNameList={nickNameList || []}
             onCancel={onCancel}
-            isDisabled={isDisabled}
+            isDisabled={isDisabled && isSubmitReq}
             categories={catTaga}
             selectedCats={selectedCats}
             onCatRemove={onCatRemove}
             onTagSelect={onTagSelect}
             onTopicNameBlur={onTopicNameBlur}
             onTopicChange={onTopicChange}
+            isEdit={true}
             values={values}
             isLoading={isLoading}
           />
@@ -244,4 +336,4 @@ const CreateNewTopic = () => {
   );
 };
 
-export default CreateNewTopic;
+export default UpdateTopic;

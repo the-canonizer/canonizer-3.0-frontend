@@ -12,8 +12,6 @@ module.exports = {
       boxShadow: {
         "camp-light": "0 10px 20px 0px rgba(49, 80, 114, 0.2)",
         "mobile-b-shadow" : " 0px 10px 10px 0px rgba(0, 0, 0, 0.1)",
-
-
       },
       borderWidth: {
         '3': '3px', // Custom border width
@@ -48,6 +46,7 @@ module.exports = {
       backgroundImage: {
         "custom-gradient":
           "linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000000 100%)",
+          'topic-card-gr':'linear-gradient(158.22deg, #FFFFFF 0%, #F7F8FC 100%)'
       },
       screens: {
         sm: "576px",

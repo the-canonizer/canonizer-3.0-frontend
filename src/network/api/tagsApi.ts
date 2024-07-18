@@ -7,14 +7,18 @@ export const getAllTags = async (
   page = 1,
   per_page = 15,
   search_term = "",
-  sort_by: "asc" | "desc" = "desc"
+  sort_by: "asc" | "desc" = "desc",
+  token = ""
 ) => {
   const body: any = { search_term, sort_by };
   if (page) body.page = page;
   if (per_page) body.per_page = per_page;
 
   try {
-    const res = await NetworkCall.fetch(TagsRequests.getTags(body), false);
+    const res = await NetworkCall.fetch(
+      TagsRequests.getTags(body, token),
+      false
+    );
 
     store.dispatch(setTags(res?.data?.items));
 

@@ -6,7 +6,7 @@ import configureMockStore from "redux-mock-store";
 import { RouterContext } from "next/dist/shared/lib/router-context";
 import { NextRouter } from "next/router";
 
-import CreateNewTopic from "../";
+import CreateNewTopic from "..";
 import messages from "src/messages";
 import { createTopic } from "src/network/api/topicAPI";
 import { getNickNameList } from "src/network/api/userApi";

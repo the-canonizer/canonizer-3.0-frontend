@@ -96,6 +96,7 @@ export const labels = {
   reasonModalTitle: "Reason for support end!",
   copied_success: "Text has been copied.",
   copied_error: "Error: Text could not be copied.",
+  cateLabel: "Add Categories To Topic",
 };
 
 export const preventCampLabel = [

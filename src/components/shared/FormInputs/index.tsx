@@ -6,6 +6,7 @@ const Inputs = ({
   rules,
   placeholder,
   onKeyDown,
+  onBlur = null,
   prefix = "",
   suffix = "",
   addonBefore = "",
@@ -34,6 +35,7 @@ const Inputs = ({
           className={`text-canBlack font-normal h-[40px] ${inputClassName}`}
           autoComplete="off"
           onKeyDown={onKeyDown}
+          onBlur={onBlur}
           maxLength={maxLength}
           inputMode={inputMode}
         />
@@ -47,6 +49,7 @@ const Inputs = ({
           className={`text-canBlack font-normal h-[40px] ${inputClassName}`}
           autoComplete="off"
           onKeyDown={onKeyDown}
+          onBlur={onBlur}
           maxLength={maxLength}
           inputMode={inputMode}
         />
