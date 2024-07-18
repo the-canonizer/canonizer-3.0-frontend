@@ -163,7 +163,7 @@ export default function CanonVideos() {
             }
           }
         } else {
-          setVideoResolution(data?.data[0]?.resolutions[0]?.link);
+          setVideoResolution(data?.data[0]?.resolutions?.at(0)?.link);
         }
       }
       setLoader(false);

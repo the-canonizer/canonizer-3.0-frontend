@@ -1,0 +1,169 @@
+.video-wrapper {
+  .ant-page-header {
+    @apply border-b py-[2.5rem];
+    .ant-page-header-back,
+    .ant-page-header-heading-title {
+      @apply text-[2rem] font-medium;
+    }
+    .ant-page-header-back {
+      @apply leading-[0] ml-2.5;
+    }
+  }
+
+  .video-parent-card {
+    .ant-card-head {
+      @apply border-b-0 py-9 px-0 min-h-[auto];
+      .ant-card-head-title {
+        @apply text-base font-semibold whitespace-normal p-0;
+      }
+    }
+    & > .ant-card-body {
+      @apply p-0;
+    }
+  }
+  .video-inner-card {
+    @apply bg-transparent transition-all;
+
+    .ant-card-cover {
+      @apply pt-2 pb-0 px-2;
+
+      .img-wrapper {
+        @apply relative block w-full p-0 overflow-hidden;
+
+        &::after {
+          @apply content-[''] block pt-[56.25%];
+        }
+
+        img {
+          @apply rounded-[10px] absolute h-full w-full object-cover;
+        }
+        .play-btn {
+          @apply absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-5xl opacity-0 text-white transition-all;
+        }
+      }
+    }
+    &:hover {
+      @apply cursor-pointer shadow-[0px_0px_32px_0px_#00000066] opacity-[99] rounded-[10px];
+
+      .img-wrapper {
+        .play-btn {
+          @apply opacity-100;
+        }
+      }
+    }
+    .ant-card-body {
+      @apply py-3.5 px-2;
+      .ant-card-meta-title {
+        @apply text-[#000000d9] text-sm font-medium;
+      }
+    }
+  }
+}
+.video-container {
+  padding: 0 !important;
+  //   @apply p-0;
+  .side-bar-wrap {
+    // @apply border border-[#f0f0f0] py-4 px-0 self-start w-full lg:max-w-[340px] max-lg:mt-4;
+    border: 1px solid #f0f0f0;
+    padding: 1rem 0 !important;
+    align-self: flex-start;
+    width: 100% !important;
+    @media screen and (min-width: 992px) {
+      max-width: 340px;
+    }
+    @media screen and (max-width: 991px) {
+      margin-top: 1rem !important;
+    }
+    ul {
+      //   @apply list-none m-0 max-h-[360px] overflow-auto;
+      list-style-type: none;
+      margin: 0;
+      max-height: 360px;
+      overflow: auto;
+
+      li {
+        // @apply flex items-start gap-2 text-sm text-[#262626] py-0 px-4 relative;
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        font-size: 14px;
+        color: #262626;
+        padding: 0 1rem;
+        position: relative;
+
+        &.active {
+          //   @apply text-[#4484ce] font-semibold;
+          color: #4484ce !important;
+          font-weight: 600;
+          &::before {
+            // @apply content-[''] block w-1 h-[46px] text-[#4484ce] absolute left-0;
+            content: "";
+            display: block;
+            width: 4px;
+            height: 46px;
+            background-color: #4484ce;
+            position: absolute;
+            left: 0;
+          }
+        }
+        + li {
+          //   @apply mt-4;
+          margin-top: 1rem;
+        }
+        img {
+          //   @apply rounded  max-w-[80px];
+          max-width: 80px;
+          border-radius: 4px;
+        }
+      }
+    }
+    .video-formats {
+      //   @apply pt-8 pb-0 px-4;
+      padding: 2rem 1rem 0 1rem;
+      h5 {
+        // @apply mb-3;
+        margin-bottom: 12px;
+      }
+      .ant-radio-wrapper {
+        // @apply text-black;
+        color: #000000;
+      }
+    }
+  }
+  .video-player-card {
+    // @apply p-0;
+    padding: 0 !important;
+    .ant-card-body {
+      //   @apply p-4;
+      padding: 1rem;
+      .video-player-heading {
+        // @apply p-4 border-b border-[#f0f0f0];
+        padding: 1rem;
+        border-bottom: 1px solid #f0f0f0;
+        h3 {
+          //   @apply text-lg font-semibold text-[#000000d9];
+          font-size: 1.125rem;
+          font-weight: 600;
+          color: #000000d9;
+        }
+      }
+      ul {
+        // @apply list-none mb-0 pl-4 mt-3;
+
+        margin-top: 12px;
+        margin-bottom: 0;
+        padding-left: 1rem;
+        list-style-type: none;
+        li {
+          //   @apply text-sm text-[#4484ce];
+          font-size: 14px;
+          color: #4484ce;
+          + li {
+            // @apply mt-4;
+            margin-top: 1rem;
+          }
+        }
+      }
+    }
+  }
+}
