@@ -60,110 +60,93 @@
   }
 }
 .video-container {
-  padding: 0 !important;
-  //   @apply p-0;
+  @apply p-0 flex justify-between w-full gap-8 max-lg:flex-col;
   .side-bar-wrap {
-    // @apply border border-[#f0f0f0] py-4 px-0 self-start w-full lg:max-w-[340px] max-lg:mt-4;
-    border: 1px solid #f0f0f0;
-    padding: 1rem 0 !important;
-    align-self: flex-start;
-    width: 100% !important;
-    @media screen and (min-width: 992px) {
-      max-width: 340px;
-    }
-    @media screen and (max-width: 991px) {
-      margin-top: 1rem !important;
-    }
+    @apply border border-[#f0f0f0] py-4 px-0 self-start w-full lg:max-w-[340px] max-lg:mt-4 rounded max-lg:hidden;
+
     ul {
-      //   @apply list-none m-0 max-h-[360px] overflow-auto;
-      list-style-type: none;
-      margin: 0;
-      max-height: 360px;
-      overflow: auto;
+      @apply list-none m-0 max-h-[360px] overflow-auto;
 
       li {
-        // @apply flex items-start gap-2 text-sm text-[#262626] py-0 px-4 relative;
-        display: flex;
-        align-items: flex-start;
-        gap: 8px;
-        font-size: 14px;
-        color: #262626;
-        padding: 0 1rem;
-        position: relative;
+        @apply flex items-start gap-2 text-sm text-[#262626] py-0 px-4 relative;
 
         &.active {
-          //   @apply text-[#4484ce] font-semibold;
-          color: #4484ce !important;
-          font-weight: 600;
+          @apply text-[#4484ce] font-semibold;
+
           &::before {
-            // @apply content-[''] block w-1 h-[46px] text-[#4484ce] absolute left-0;
-            content: "";
-            display: block;
-            width: 4px;
-            height: 46px;
-            background-color: #4484ce;
-            position: absolute;
-            left: 0;
+            @apply content-[''] block w-1 h-[46px] bg-[#4484ce] absolute left-0;
           }
         }
         + li {
-          //   @apply mt-4;
-          margin-top: 1rem;
+          @apply mt-4;
         }
         img {
-          //   @apply rounded  max-w-[80px];
-          max-width: 80px;
-          border-radius: 4px;
+          @apply rounded  max-w-[80px];
         }
       }
     }
     .video-formats {
-      //   @apply pt-8 pb-0 px-4;
-      padding: 2rem 1rem 0 1rem;
+      @apply pt-8 pb-0 px-4;
+
       h5 {
-        // @apply mb-3;
-        margin-bottom: 12px;
+        @apply mb-3;
       }
-      .ant-radio-wrapper {
-        // @apply text-black;
-        color: #000000;
+      .ant-radio-group {
+        @apply flex flex-col gap-2.5;
+        .ant-radio-wrapper {
+          @apply text-black;
+        }
       }
     }
   }
-  .video-player-card {
-    // @apply p-0;
-    padding: 0 !important;
+  .video-player-card.ant-card {
+    @apply p-0 w-full;
+
     .ant-card-body {
-      //   @apply p-4;
-      padding: 1rem;
-      .video-player-heading {
-        // @apply p-4 border-b border-[#f0f0f0];
-        padding: 1rem;
-        border-bottom: 1px solid #f0f0f0;
-        h3 {
-          //   @apply text-lg font-semibold text-[#000000d9];
-          font-size: 1.125rem;
-          font-weight: 600;
-          color: #000000d9;
+      @apply max-lg:py-0 lg:pt-4 pb-0 px-0;
+      .video-select {
+        .ant-select-selector {
+          @apply rounded-[10px];
         }
       }
-      ul {
-        // @apply list-none mb-0 pl-4 mt-3;
+      video {
+        @apply rounded-lg;
+      }
 
-        margin-top: 12px;
-        margin-bottom: 0;
-        padding-left: 1rem;
-        list-style-type: none;
-        li {
-          //   @apply text-sm text-[#4484ce];
-          font-size: 14px;
-          color: #4484ce;
-          + li {
-            // @apply mt-4;
-            margin-top: 1rem;
+      .share-wrapper {
+        @apply flex gap-2 justify-between items-center p-5 border-b border-[#F0F0F0];
+        h5 {
+          @apply mb-0 text-base;
+        }
+      }
+      .video-player-heading {
+        @apply p-4 border-b border-[#f0f0f0];
+
+        h3 {
+          @apply text-lg font-semibold text-[#000000d9];
+        }
+      }
+      .video-chap-content {
+        @apply ml-5;
+        ul,
+        ol {
+          @apply list-disc text-[#5482C8] mb-0  pl-5 mt-5;
+
+          li {
+            @apply text-sm text-[#4484ce];
+
+            + li {
+              @apply mt-4;
+            }
           }
         }
       }
     }
+  }
+}
+.share-menu {
+  @apply flex p-2 rounded-lg;
+  li {
+    @apply p-1;
   }
 }

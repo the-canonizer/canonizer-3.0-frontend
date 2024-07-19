@@ -1,13 +1,25 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { Fragment, useEffect, useRef, useState } from "react";
-import { RadioChangeEvent, Typography, Radio, Card } from "antd";
+import {
+  RadioChangeEvent,
+  Typography,
+  Radio,
+  Card,
+  PageHeader,
+  Menu,
+  Dropdown,
+  Button,
+  Select,
+} from "antd";
 import { useRouter } from "next/router";
-
-import styles from "./style.module.scss";
 
 import K from "src/constants";
 import { getVideosApi } from "src/network/api/videos";
 import CustomSkelton from "../../common/customSkelton";
+import { CodepenCircleOutlined, ShareAltOutlined } from "@ant-design/icons";
+import Facebook from "../../../assets/image/facebook.svg";
+import Linkdhn from "../../../assets/image/LinkedIn.svg";
+import Twitter from "../../../assets/image/twitter.svg";
 
 const { Title } = Typography;
 
@@ -254,15 +266,35 @@ export default function CanonVideos() {
     // :
     router.push(router.pathname, asPath, { shallow: true });
   }
+  const menu = (
+    <Menu className="share-menu">
+      <Menu.Item>
+        <img src={Facebook.src} alt="facebook" />
+      </Menu.Item>
+      <Menu.Item>
+        <img src={Twitter.src} alt="twitter" />
+      </Menu.Item>
+      <Menu.Item>
+        <img src={Linkdhn.src} alt="linkdhn" />
+      </Menu.Item>
+    </Menu>
+  );
+  const handleChange = (value) => {
+    console.log(`selected ${value}`);
+  };
 
   return (
     <Fragment>
-      <Card
-        title=" Consciousness: Not a Hard Problem, Just a Color Problem"
-        className="video-parent-card w-100"
-      >
-        <div className={`video-container ${styles.videosContainer}`}>
-          <div className={`side-bar-wrap ${styles.sideBarWrap}`}>
+      <div className="video-parent-card w-full">
+        <PageHeader
+          className="px-0 py-10"
+          ghost
+          backIcon={<i className="icon-back text-xl"></i>}
+          onBack={() => null}
+          title="Consciousness: Not a Hard Problem, Just a Color Problem"
+        />
+        <div className="video-container">
+          <div className="side-bar-wrap ">
             {loader ? (
               <CustomSkelton
                 skeltonFor="list"
@@ -299,10 +331,7 @@ export default function CanonVideos() {
               <Title level={5}>Video Format:</Title>
 
               {videos && !loader ? (
-                <Radio.Group
-                  className={styles.radioGroup}
-                  value={videoResolution}
-                >
+                <Radio.Group value={videoResolution}>
                   {videos[selectedVideoId - 1]?.resolutions?.map(
                     (data: {
                       id: React.Key;
@@ -340,11 +369,36 @@ export default function CanonVideos() {
             </div>
           </div>
           <Card
-            className={`video-player-card ${styles.videoPlayer}`}
+            className="video-player-card"
             data-testid="videoPlayer"
+            bordered={false}
           >
             {videos && videoResolution ? (
               <>
+                <Select
+                  defaultValue="Introduction"
+                  size="large"
+                  className="video-select mb-5 lg:hidden"
+                  suffixIcon={<i className="icon-chevron-down text-black"></i>}
+                  style={{
+                    width: "100%",
+                  }}
+                  onChange={handleChange}
+                  options={[
+                    {
+                      value: "introduction",
+                      label: "Introduction",
+                    },
+                    {
+                      value: "conclusion",
+                      label: "Conclusion",
+                    },
+                    {
+                      value: "differentiating",
+                      label: "Differentiating Reality and Knowledge of Reality",
+                    },
+                  ]}
+                />
                 <video
                   onTimeUpdate={updateTime}
                   width={"100%"}
@@ -364,8 +418,31 @@ export default function CanonVideos() {
                     default
                   ></track>
                 </video>
+                <div className="share-wrapper">
+                  <Title level={5} className="text-canBlack">
+                    Topic
+                  </Title>
+                  <Dropdown overlay={menu}>
+                    <Button
+                      size="small"
+                      className="flex items-center"
+                      type="primary"
+                      ghost
+                    >
+                      Share
+                      <ShareAltOutlined />
+                    </Button>
+                  </Dropdown>
+                </div>
+                <Title
+                  level={5}
+                  className="p-5 mb-5 text-canBlack border-b border-[#F0F0F0]"
+                >
+                  Chapters
+                </Title>
+
                 <div
-                  className={`video-chap-content ${styles.vttComtainer}`}
+                  className="video-chap-content"
                   dangerouslySetInnerHTML={{ __html: topic }}
                 ></div>
               </>
@@ -380,7 +457,7 @@ export default function CanonVideos() {
             )}
           </Card>
         </div>
-      </Card>
+      </div>
     </Fragment>
   );
 }
