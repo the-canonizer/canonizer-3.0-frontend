@@ -36,6 +36,7 @@ import { showLoginModal } from "src/store/slices/uiSlice";
 import Image from "next/image";
 import support_image from "../../../../../public/images/support-tree-avatar.svg";
 import { setOpenConsensusTreePopup } from "src/store/slices/hotTopicSlice";
+import SupportTreeDrawer from "./supportTreeDrawer/supportTreeDrawer";
 
 const { Paragraph } = Typography;
 const { Panel } = Collapse;
@@ -497,6 +498,7 @@ const SupportTreeCard = ({
         // expandIconPosition="right"
         className="topicDetailsCollapse"
       >
+        <SupportTreeDrawer />
         <div className=" support-tree-sec">
           {/* <Paragraph className="position-relative">
             Total Support for This Camp (including sub-camps):
@@ -543,10 +545,12 @@ const SupportTreeCard = ({
             disabled={asof == "bydate" || campRecord?.is_archive == 1}
             id="manage-support-btn"
           >
-            <span>{getCheckSupportStatus?.is_delegator == 1 ||
-            getCheckSupportStatus?.support_flag != 1
-              ? K?.exceptionalMessages?.directJoinSupport
-              : K?.exceptionalMessages?.manageSupport}</span>
+            <span>
+              {getCheckSupportStatus?.is_delegator == 1 ||
+              getCheckSupportStatus?.support_flag != 1
+                ? K?.exceptionalMessages?.directJoinSupport
+                : K?.exceptionalMessages?.manageSupport}
+            </span>
             <Image
               src="/images/hand-icon.svg"
               alt="svg"
