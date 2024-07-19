@@ -383,10 +383,10 @@ function HistoryContainer() {
                   handleBackButton();
                 }}
               >
-                {historyTitle(historyOf)}
+                {historyTitle(historyOf)+" "+"History"}
               </Button>
               <Title level={5} className="mb-6">
-                {historyTitle(historyOf).toUpperCase()} BASED ON STATUS
+                {historyTitle(historyOf).toUpperCase()+" "+"HISTORY BASED ON STATUS"}
               </Title>
               <div className="sider-btn">
                 <Button
@@ -466,7 +466,7 @@ function HistoryContainer() {
                 }
                 onClick={onCompareClick}
               >
-                Compare {historyOf == "topic" ? "Topics" : historyOf == "camp" ? "Camps" : historyOf == "statement" ? "Statements": null}
+                Compare {historyTitle(historyOf)+"s"}
                 <i className="icon-compare-statement"></i>
               </Button>
             </div>
