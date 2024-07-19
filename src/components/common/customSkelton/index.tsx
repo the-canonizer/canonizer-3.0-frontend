@@ -1,23 +1,6 @@
-import {
-  Avatar,
-  Button,
-  Card,
-  Col,
-  Divider,
-  Dropdown,
-  Form,
-  List,
-  Pagination,
-  Popover,
-  Row,
-  Space,
-  Tag,
-  Tooltip,
-  Typography,
-} from "antd";
+import { Card, Col, Form, List, Row } from "antd";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-// import FormItem from "../formElements";
 
 import styles from "./style.module.scss";
 
@@ -25,33 +8,20 @@ import PostCustomSkelton from "./postCard";
 import SubscriptionCustomSkelton from "./subscriptionCard";
 import DelegateCardSkeleton from "./delegateCard";
 import UserProfileCardSkeleton from "./userProfileSupportCars";
-import Title from "antd/lib/skeleton/Title";
-import {
-  AntDesignOutlined,
-  DownOutlined,
-  EyeOutlined,
-  FlagOutlined,
-  SearchOutlined,
-  SortDescendingOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
-import Link from "next/link";
-import SkeletonAvatar from "antd/lib/skeleton/Avatar";
+import FeaturedTopicCard from "./featuredTopicCard";
+import HotTopicCard from "./hotTopicCard";
 
 const CustomSkelton = ({
   titleName = "",
   skeltonFor,
   bodyCount,
   stylingClass,
-
   action = true,
   bordered = true,
   title = true,
   cardStylingClass = "",
   listStyle = "blank",
-
   circle = false,
-
   height = 0,
 }: any) => {
   return skeltonFor == "card" ? (
@@ -257,6 +227,10 @@ const CustomSkelton = ({
       count={bodyCount}
       circle={circle}
     />
+  ) : skeltonFor == "featuredTopic" ? (
+    <FeaturedTopicCard bodyCount={bodyCount} stylingClass={stylingClass} />
+  ) : skeltonFor == "hotTopic" ? (
+    <HotTopicCard stylingClass={stylingClass} />
   ) : skeltonFor == "browse" ? (
     <>
       <Row gutter={[24, 24]}>

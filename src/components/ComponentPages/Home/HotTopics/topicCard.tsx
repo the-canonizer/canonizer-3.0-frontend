@@ -14,7 +14,7 @@ const propTypes = {
   topic: PropTypes.object,
 };
 
-const SingleTopicCard = ({ topic }) => {
+const SingleTopicCard = ({ topic, onTopicLinkClick = null }) => {
   if (!topic) {
     return null;
   }
@@ -33,7 +33,10 @@ const SingleTopicCard = ({ topic }) => {
           }`,
         }}
       >
-        <a className="flex justify-between pb-3 items-center">
+        <a
+          className="flex justify-between pb-3 items-center"
+          onClick={onTopicLinkClick}
+        >
           <Typography.Paragraph className="m-0 text-base font-medium font-inter !mb-0">
             {topic?.topic_name}
           </Typography.Paragraph>

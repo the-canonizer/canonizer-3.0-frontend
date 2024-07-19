@@ -1,10 +1,11 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import dynamic from "next/dynamic";
 import { useSelector } from "react-redux";
 
 import { RootState } from "src/store";
 import SectionHeading from "./sectionsHeading";
 import SingleTopicWithImage from "./topicCardWithImage";
+import CustomSkelton from "components/common/customSkelton";
 
 const Slider = dynamic(() => import("react-slick"), { ssr: false });
 
@@ -12,6 +13,8 @@ const FeaturedTopic = () => {
   const { topicData } = useSelector((state: RootState) => ({
     topicData: state?.hotTopic?.featuredTopic,
   }));
+
+  const [loadMoreIndicator, setLoadMoreIndicator] = useState(false);
 
   const settings = {
     autoplay: true,
@@ -35,11 +38,24 @@ const FeaturedTopic = () => {
     <Fragment>
       <SectionHeading title="FEATURED TOPICS" infoContent="FEATURED TOPICS" />
       <div className="mt-4">
-        <Slider {...settings}>
-          {topicData?.map((ft) => (
-            <SingleTopicWithImage topic={ft} key={ft?.id} />
-          ))}
-        </Slider>
+        {loadMoreIndicator ? (
+          <CustomSkelton
+            skeltonFor="featuredTopic"
+            bodyCount={1}
+            stylingClass="listSkeleton"
+            isButton={false}
+          />
+        ) : (
+          <Slider {...settings}>
+            {topicData?.map((ft) => (
+              <SingleTopicWithImage
+                topic={ft}
+                key={ft?.id}
+                onTopicClick={() => setLoadMoreIndicator(true)}
+              />
+            ))}
+          </Slider>
+        )}
       </div>
     </Fragment>
   );
