@@ -150,3 +150,11 @@
     @apply p-1;
   }
 }
+.video-detail-header {
+  .ant-page-header-heading-left {
+    @apply m-0 items-start;
+    .ant-page-header-heading-title {
+      @apply text-[2rem] overflow-hidden whitespace-normal;
+    }
+  }
+}

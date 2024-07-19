@@ -287,7 +287,7 @@ export default function CanonVideos() {
     <Fragment>
       <div className="video-parent-card w-full">
         <PageHeader
-          className="px-0 py-10"
+          className="video-detail-header px-0 py-10"
           ghost
           backIcon={<i className="icon-back text-xl"></i>}
           onBack={() => null}
