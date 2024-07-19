@@ -1,93 +1,115 @@
 import { Fragment, useState } from "react";
-import { Card, Form, Input, Button, Select, Row, Col } from "antd";
+import { Form, Row, Col, Typography, Select } from "antd";
+import { CloseOutlined, SaveOutlined, UserOutlined } from "@ant-design/icons";
 
-import messages from "../../../../messages";
-import styles from "./createNewTopic.module.scss";
+import messages from "src/messages";
 import { changeSlashToArrow } from "src/utils/generalUtility";
+import Inputs from "components/shared/FormInputs";
+import SelectInputs from "components/shared/FormInputs/select";
+import AlignIcon from "./alignIcon";
+import StructureIcon from "./structureIcon";
+import SecondaryButton from "components/shared/Buttons/SecondaryButton";
+import PrimaryButton from "components/shared/Buttons/PrimariButton";
+import CommonCards from "components/shared/Card";
+import Tags from "components/shared/Tag";
+import CustomSkelton from "components/common/customSkelton";
 
+const { labels, placeholders, nickNmRule, topicNameRule, namespaceRule } =
+  messages;
 const { Option } = Select;
-
-const {
-  labels,
-  placeholders,
-  nickNmRule,
-  topicNameRule,
-  namespaceRule,
-  summaryRule,
-} = messages;
 
 const CreateTopicFromUI = ({
   onFinish,
   form,
-  initialValue,
   nameSpaces,
   nickNameList,
   onCancel,
-  existedTopic,
-  isFormSubmitted,
-  setIsFormSubmitted,
-  setExistedTopic,
+  isDisabled,
+  categories,
+  selectedCats,
+  onCatRemove,
+  onTagSelect,
+  onTopicChange,
+  onTopicNameBlur,
+  values,
   isLoading,
-}: any) => {
-  const CardTitle = (
-    <span className={styles.cardTitle} data-testid="head">
-      Create Topic
-    </span>
-  );
-  const [topicName, setTopicName] = useState("");
+  isEdit = false,
+}) => {
+  const [isFocused, setIsFocused] = useState(false);
+
+  const getNickNameInput = () => {
+    const selectInputProps: any = {
+      label: (
+        <Fragment>
+          {labels.cr_nick_name}
+          <span className="required">*</span>
+        </Fragment>
+      ),
+      key: "nickNamesKeyName",
+      name: "nick_name",
+      options: nickNameList,
+      nameKey: "nick_name",
+      placeholder: placeholders.nickName,
+      allowClear: true,
+      size: "large",
+      dataid: "nick-name",
+      showSearch: true,
+      optionFilterProp: "children",
+      inputClassName:
+        "border-0 [&_.ant-select-selector]:![&_.ant-select-selection-search]:!w-auto",
+      rules: nickNmRule,
+      prefix: <UserOutlined className="px-3 text-canBlack" />,
+      onSelect: (val) => form.setFieldValue("nick_name", val),
+    };
+
+    if (nickNameList?.length) {
+      selectInputProps.defaultValue = values?.nick_name || nickNameList[0]?.id;
+      selectInputProps.initialValue = values?.nick_name || nickNameList[0]?.id;
+      selectInputProps.key = "nickNamesWithKeyName";
+    }
+    return <SelectInputs {...selectInputProps} />;
+  };
 
   return (
-    <Fragment>
-      <Card title={CardTitle} className={`can-card-style ${styles.form_card}`}>
-        <Form
-          form={form}
-          onFinish={onFinish}
-          name="create_new_topic"
-          className={`${styles.createNewTopicForm}`}
-          layout={"vertical"}
-          autoComplete="off"
-          scrollToFirstError
-          validateTrigger={messages.formValidationTypes()}
-          initialValues={{
-            ...initialValue,
-            namespace: nameSpaces && nameSpaces[0]?.id,
-          }}
-        >
-          <Row gutter={16}>
-            <Col xs={24} sm={12}>
-              <Form.Item
-                label={
-                  <>
-                    {labels.cr_nick_name}
-                    <span className="required">*</span>
-                  </>
-                }
-                name="nick_name"
-                {...nickNmRule}
-                // extra={labels.cr_nick_name_sp}
-                initialValue={nickNameList[0]?.id}
-              >
-                <Select
-                  placeholder={placeholders.nickName}
-                  allowClear
-                  size={"large"}
-                  defaultValue={nickNameList[0]?.id}
-                  data-id="nick-name"
-                  showSearch
-                  optionFilterProp="children"
-                >
-                  {nickNameList.map((nick) => (
-                    <Option key={nick.id} value={nick.id}>
-                      {nick.nick_name}
-                    </Option>
-                  ))}
-                </Select>
-              </Form.Item>
-              <div className={styles.customErrorMessage}>
-                {labels.cr_nick_name_sp}
-              </div>
-
-              <Form.Item
+    <CommonCards className="border-0 bg-white">
+      <header className="mb-14">
+        <Typography.Paragraph className="text-xl text-canBlack font-medium">
+          {isEdit ? "Update Topic" : "Creating a New Topic"}
+        </Typography.Paragraph>
+        <Typography.Paragraph className="text-canBlack opacity-80 mt-3">
+          A topic on our platform refers to a specific subject within the
+          context of the canon. It serves as a focal point for discussions,
+          allowing users to explore and share opinions, ideas on a topic.
+        </Typography.Paragraph>
+      </header>
+      <Form
+        form={form}
+        onFinish={onFinish}
+        name="create_new_topic"
+        className={`[&_label]:text-sm [&_label]:font-semibold [&_label]:text-canBlack [&_label_span]:ml-[4px] [&_label_span]:font-normal [&_label_span]:text-[#6e7880] [&_label_span]:text-[92%] [&_label]:before:absolute [&_label]:before:right-[-15px]`}
+        layout={"vertical"}
+        autoComplete="off"
+        scrollToFirstError
+        validateTrigger={messages.formValidationTypes()}
+        initialValues={{
+          topic_name: "",
+          nick_name: values?.nick_name || nickNameList[0]?.id,
+          namespace: values?.namespace || nameSpaces[0]?.id,
+          tags: null,
+        }}
+      >
+        <Row gutter={15}>
+          <Col xs={24} sm={24}>
+            {isLoading ? (
+              <CustomSkelton
+                skeltonFor="list"
+                bodyCount={1}
+                stylingClass="listSkeleton"
+                isButton={false}
+              />
+            ) : (
+              <Inputs
+                name="topic_name"
                 label={
                   <Fragment>
                     {labels.cr_topic_name}
@@ -95,119 +117,173 @@ const CreateTopicFromUI = ({
                     <span>(Limit 30 Chars)</span>
                   </Fragment>
                 }
-                name="topic_name"
-                {...topicNameRule}
-              >
-                <Input
-                  placeholder={placeholders.topicName}
-                  size={"large"}
-                  maxLength={30}
-                  onChange={(e) => {
-                    setTopicName(e.target.value);
-                    setIsFormSubmitted(false);
-                    setExistedTopic({
-                      status: false,
-                      data: "",
-                    });
-                  }}
-                />
-              </Form.Item>
-              {existedTopic?.status && topicName && isFormSubmitted && (
-                <div className={styles.customErrorMessage}>
-                  <span>
-                    The topic titled{" "}
-                    <a
-                      href={existedTopic?.data}
-                      className="text-underline"
-                      target="__blank"
-                    >
-                      {topicName}
-                    </a>{" "}
-                    already exists. Please enter a different name.
-                  </span>
-                </div>
-              )}
-              {nameSpaces ? (
-                <Form.Item
-                  label={
-                    <Fragment>
-                      {labels.cr_namespace}
-                      <span className="required">*</span>
-                      <span>
-                        (General is recommended, unless you know otherwise)
-                      </span>
-                    </Fragment>
-                  }
-                  className={styles.namespaceInput}
-                  name="namespace"
-                  {...namespaceRule}
-                >
-                  <Select
-                    placeholder={placeholders.namespace}
-                    allowClear
-                    size={"large"}
-                    defaultValue={nameSpaces[0]?.id}
-                    data-id="namespace"
-                    showSearch
-                    optionFilterProp="children"
-                  >
-                    {nameSpaces.map((name) => (
-                      <Option key={name.id} value={name.id}>
-                        {changeSlashToArrow(name.label)}
-                      </Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-              ) : null}
-            </Col>
-            <Col xs={24} sm={12}>
-              <Form.Item
-                className={styles.edit_summary_input}
+                rules={topicNameRule}
+                placeholder={placeholders.topicName}
+                size={"large"}
+                maxLength={30}
+                prefix={
+                  <div className="pr-3">
+                    <AlignIcon fill="#242B37" />
+                  </div>
+                }
+                onKeyDown={onTopicChange}
+                onBlur={onTopicNameBlur}
+              />
+            )}
+          </Col>
+          <Col xs={24} sm={12}>
+            {isLoading ? (
+              <CustomSkelton
+                skeltonFor="list"
+                bodyCount={1}
+                stylingClass="listSkeleton"
+                isButton={false}
+              />
+            ) : (
+              getNickNameInput()
+            )}
+            <div className="text-xs text-canRed -mt-4 mb-6">
+              {labels.cr_nick_name_sp}
+            </div>
+          </Col>
+          <Col xs={24} sm={12} key={"namespaces_div"}>
+            {isLoading ? (
+              <CustomSkelton
+                skeltonFor="list"
+                bodyCount={1}
+                stylingClass="listSkeleton"
+                isButton={false}
+              />
+            ) : (
+              <SelectInputs
                 label={
                   <Fragment>
-                    {labels.cr_edit_summary}
-                    <span>(Briefly describe your changes)</span>
+                    {labels.cr_namespace}
+                    <span className="required">*</span>
+                    <span>
+                      (General is recommended, unless you know otherwise)
+                    </span>
                   </Fragment>
                 }
-                name="edit_summary"
-                {...summaryRule}
-              >
-                <Input.TextArea
-                  rows={5}
-                  placeholder={placeholders.editSummary}
-                />
-              </Form.Item>
-            </Col>
-          </Row>
+                name="namespace"
+                options={nameSpaces}
+                placeholder={placeholders.namespace}
+                size={"large"}
+                defaultValue={values?.namespace || nameSpaces[0]?.id}
+                initialValue={values?.namespace || nameSpaces[0]?.id}
+                key={
+                  "namespaces_label" + values?.namespace || nameSpaces[0]?.id
+                }
+                dataid="nick-namespace"
+                allowClear
+                showSearch
+                optionFilterProp="children"
+                inputClassName="border-0"
+                rules={namespaceRule}
+                prefix={
+                  <StructureIcon
+                    className="flex items-center justify-center px-2"
+                    fill="#242B37"
+                  />
+                }
+                isLabelRequiredFormat={true}
+                formatFunc={changeSlashToArrow}
+                onChange={(val) => form.setFieldValue("namespace", val)}
+                onSearch={(val) => {
+                  console.log("val--", val);
+                  return;
+                }}
+                loading={isLoading}
+              />
+            )}
+          </Col>
+          <Col xs={24} sm={12}>
+            {isLoading ? (
+              <CustomSkelton
+                skeltonFor="list"
+                bodyCount={1}
+                stylingClass="listSkeleton"
+                isButton={false}
+              />
+            ) : (
+              <SelectInputs
+                label={labels.cateLabel}
+                name="tags"
+                options={categories}
+                placeholder={placeholders.catSelect}
+                allowClear
+                size={"large"}
+                dataid="topic-category"
+                showSearch
+                optionFilterProp="children"
+                inputClassName="border-0"
+                rules={null}
+                nameKey="title"
+                prefix={
+                  <AlignIcon
+                    className="flex items-center justify-center px-2"
+                    fill="#242B37"
+                  />
+                }
+                onChange={onTagSelect}
+              />
+            )}
+          </Col>
+          <Col xs={24} className="mb-5">
+            {isLoading ? (
+              <CustomSkelton
+                skeltonFor="list"
+                bodyCount={1}
+                stylingClass="listSkeleton"
+                isButton={false}
+              />
+            ) : (
+              selectedCats?.map((cat) => (
+                <Tags
+                  className="rounded-lg py-2 px-6 border-canGrey2 text-canBlue bg-canGray mt-0 mb-2 font-medium"
+                  key={cat?.id}
+                >
+                  <span>{cat?.title}</span>
+                  <CloseOutlined
+                    className="mr-2"
+                    onClick={(e) => onCatRemove(e, cat)}
+                  />
+                </Tags>
+              ))
+            )}
+          </Col>
+        </Row>
 
-          <div className={styles.btn_box}>
-            <Button
-              type="primary"
-              htmlType="submit"
-              size={"large"}
-              className={`${styles.submit_btn}`}
-              id="create-topic-btn"
-              data-testid="create-topic-btn"
-              disabled={isLoading}
-            >
-              Create Topic
-            </Button>
-
-            <Button
-              type="primary"
-              htmlType="button"
-              size={"large"}
-              className={`${styles.cancel_btn}`}
+        {isLoading ? (
+          <CustomSkelton
+            skeltonFor="list"
+            bodyCount={1}
+            stylingClass="listSkeleton"
+            isButton={false}
+          />
+        ) : (
+          <div className="mt-4 flex justify-start items-center">
+            <SecondaryButton
               onClick={onCancel}
               id="cancel-btn"
               data-testid="cancel-btn"
+              className="mr-4 flex justify-center items-center py-5 px-6"
             >
-              Cancel
-            </Button>
+              Discard <CloseOutlined />
+            </SecondaryButton>
+            <PrimaryButton
+              htmlType="submit"
+              id="create-topic-btn"
+              data-testid="create-topic-btn"
+              disabled={!isDisabled}
+              className="flex justify-center items-center py-5 px-6"
+            >
+              {isEdit ? "Update Topic" : "Save Topic"} <SaveOutlined />
+            </PrimaryButton>
           </div>
-        </Form>
-      </Card>
-    </Fragment>
+        )}
+      </Form>
+    </CommonCards>
   );
 };
 

@@ -1,14 +1,12 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
-import { Typography, Button, Row, Col } from "antd";
+import { Button, Row, Col } from "antd";
 import styles from "./index.module.scss";
 
 import CustomSkelton from "../../../common/customSkelton";
 import { capitalizeFirstLetter } from "src/utils/generalUtility";
 import Breadcrumbs from "components/ComponentPages/Breadcrumbs/breadcrumbs";
 import HistoryCard from "components/ComponentPages/HistoryCard/historyCard";
-
-const { Title, Text, Paragraph } = Typography;
 const validUrl = (url) => {
   try {
     new URL(url);
@@ -78,6 +76,7 @@ function CompareStatementUI({
                 compareMode={compareMode}
                 comparisonData={s1}
                 status={itemsStatus[s1?.id]}
+                s1={true}
               />
             </Col>
             <Col xs={24} md={12}>
@@ -88,12 +87,15 @@ function CompareStatementUI({
               />
             </Col>
             <Col xs={24} md={24}>
-              <HistoryCard
-                compareMode={compareMode}
-                comparisonData={liveStatement}
-                status={liveStatement?.status}
-                currentVersion={currentVersion}
-              />
+              {
+                liveStatement !== null &&
+                <HistoryCard
+                  compareMode={compareMode}
+                  comparisonData={liveStatement}
+                  status={liveStatement?.status}
+                  currentVersion={currentVersion}
+                />
+              }
             </Col>
           </Row>
         </div>

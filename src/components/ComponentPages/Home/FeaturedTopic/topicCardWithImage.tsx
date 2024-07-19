@@ -14,14 +14,14 @@ const propTypes = {
   topic: PropTypes.object,
 };
 
-const SingleTopicWithImage = ({ topic }) => {
+const SingleTopicWithImage = ({ topic, onTopicClick = null }) => {
   if (!topic) {
     return null;
   }
 
   return (
     <CommonCard
-      className="bg-canGray w-full p-0 [&>.ant-card-body]:p-0 xl:[&>.ant-card-body]:py-5 xl:[&>.ant-card-body]:px-8"
+      className="bg-canGray w-full p-0 [&>.ant-card-body]:p-0 xl:[&>.ant-card-body]:py-5 xl:[&>.ant-card-body]:px-8 [&_.ant-card-body]:before:hidden"
       key={topic?.id}
     >
       <Row gutter={0} className="w-full min-w-full max-w-full relative">
@@ -43,7 +43,7 @@ const SingleTopicWithImage = ({ topic }) => {
               )}`,
             }}
           >
-            <a>
+            <a onClick={onTopicClick}>
               <Image
                 alt={topic?.topic_name}
                 className="w-full rounded-lg h-auto object-cover h-full min-h-28 md:min-h-60 max-h-48 md:max-h-72"
@@ -73,7 +73,7 @@ const SingleTopicWithImage = ({ topic }) => {
                 "-"
               )}`}
             >
-              <a>
+              <a onClick={onTopicClick}>
                 <Typography.Paragraph className="m-0 text-base lg:text-xl font-medium lg:font-bold font-inter absolute -top-14 left-1 right-0 text-white px-3 py-0 !mb-0 flex w-full lg:static lg:px-0 lg:py-0 lg:text-canBlack hover:!text-canHoverBlue">
                   {topic?.title}
                 </Typography.Paragraph>
