@@ -48,7 +48,7 @@ const HistoryComparison = ({ campStatement, topicNamespaceId, s1 = false }: any)
       <Title level={5} className="font-semibold mb-2.5">
         {getTitle()}
       </Title>
-      <div className="mb-2">
+      <div>
         {historyOf === "topic" && (
           <>
             <p>
@@ -175,7 +175,7 @@ const HistoryComparison = ({ campStatement, topicNamespaceId, s1 = false }: any)
               <div>
                 <h5 className="font-semibold text-canOrange mb-3">Statement</h5>
                 <div
-                  className="text-canBlack pb-[1.25rem]"
+                  className="text-canBlack compare-card-internal"
                   dangerouslySetInnerHTML={{
                     __html: campStatement?.parsed_v ? campStatement?.parsed_v : campStatement?.parsed_value,
                   }}

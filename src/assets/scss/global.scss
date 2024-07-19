@@ -359,3 +359,14 @@ body {
 .ant-tabs-tab-active .ant-tabs-tab-btn{
   @apply border-canBlue border-b-4;
 }
+
+.compare-card-internal{
+  ins {
+    @apply no-underline bg-[#e0eafb];
+    
+  }
+  del {
+    @apply no-underline bg-[#fbb6c2] text-[#555];
+    
+  }
+}
