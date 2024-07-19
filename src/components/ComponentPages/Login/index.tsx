@@ -16,6 +16,9 @@ import { setEmailForOTP } from "src/store/slices/authSlice";
 
 const Login = () => {
   const remember = useSelector((state: RootState) => state.utils.remember_me);
+  const currentReturnUrl = useSelector(
+    (state: RootState) => state?.auth?.currentReturnUrl
+  );
 
   const [errorMsg, setErrorMsg] = useState(""),
     [isDisabled, setIsDisabled] = useState(true),
@@ -97,6 +100,8 @@ const Login = () => {
 
       if (router?.query?.returnUrl) {
         router?.push(`${router?.query?.returnUrl}`);
+      } else if (currentReturnUrl) {
+        router?.push({ pathname: currentReturnUrl });
       } else if (router?.pathname === "/login") {
         router?.push("/");
       } else {
@@ -132,7 +137,7 @@ const Login = () => {
       if (res && res.status_code === 200) {
         dispatch(setEmailForOTP(emailPhone?.trim()));
 
-        router.push({ pathname: "/login/otp" });
+        router.push({ pathname: "/login/otp", query: { ...router?.query } });
       }
     } else {
       form.validateFields(["username"]);
@@ -147,12 +152,12 @@ const Login = () => {
 
   const onForgotPasswordClick = (e) => {
     e.preventDefault();
-    router?.push("/forgot-password");
+    router?.push({ pathname: "/forgot-password", query: { ...router?.query } });
   };
 
   const onRegister = (e) => {
     e.preventDefault();
-    router?.push("/registration");
+    router?.push({ pathname: "/registration", query: { ...router?.query } });
   };
 
   return (

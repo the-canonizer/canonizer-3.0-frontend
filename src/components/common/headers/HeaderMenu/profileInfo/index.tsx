@@ -2,9 +2,9 @@ import React, { Fragment } from "react";
 import { Dropdown, Space, Avatar } from "antd";
 import { useSelector } from "react-redux";
 import md5 from "md5";
+import { DownOutlined } from "@ant-design/icons";
 
 import { RootState } from "src/store";
-import { DownOutlined } from "@ant-design/icons";
 
 const ProfileInfo = ({
   isGravatarImage,
@@ -21,39 +21,26 @@ const ProfileInfo = ({
   let dataMain =
     loggedInUser?.profile_picture && !loadingImage ? (
       <Avatar
-        style={{
-          cursor: "pointer",
-          marginBottom: "-10px",
-        }}
         src={loggedInUser?.profile_picture}
         size={isMobile ? "small" : "default"}
+        className="-mb-[10px] cursor-pointer"
       />
     ) : isGravatarImage && !loadingImage ? (
       loggedInUser?.email && (
         <Avatar
-          style={{ marginBottom: "-10px" }}
           src={`https://www.gravatar.com/avatar/${md5(
             loggedInUser?.email
           )}.png`}
+          className="-mb-[10px] cursor-pointer"
         />
       )
     ) : (
       <Avatar
-        style={{
-          border: "1px solid #fff",
-          color: "#fff",
-          backgroundColor: "#5482C8",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          fontSize: `${isMobile ? "12px" : ""}`,
-          cursor: "pointer",
-          marginBottom: "-10px",
-        }}
+        style={{ fontSize: `${isMobile ? "12px" : ""}` }}
         size={isMobile ? "small" : "default"}
+        className="uppercase bg-canBlue text-white flex justify-center items-center  text-sm border-[1px] border-solid border-white -mb-[10px]"
       >
-        {loggedUser?.first_name?.charAt(0).toUpperCase() +
-          loggedUser?.last_name?.charAt(0).toUpperCase()}
+        {loggedUser?.first_name?.charAt(0) + loggedUser?.last_name?.charAt(0)}
       </Avatar>
     );
 

@@ -63,7 +63,7 @@ function RegistrationUi({
 
   const onLoginClick = (e) => {
     e.preventDefault();
-    router?.push("/login");
+    router?.push({ pathname: "/login", query: { ...router?.query } });
   };
 
   return (

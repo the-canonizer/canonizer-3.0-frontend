@@ -54,7 +54,7 @@ const SingleAvatar = ({ user }) => {
 
     if (!user?.profile_picture_path && !isGravatarAvailable) {
       return (
-        <Avatar style={{ backgroundColor: "#D0D8F4" }}>
+        <Avatar style={{ backgroundColor: "#D0D8F4" }} className="uppercase">
           {user?.first_name?.charAt(0)}
         </Avatar>
       );

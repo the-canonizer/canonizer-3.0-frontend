@@ -147,7 +147,7 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
     <Menu onClick={onClick}>
       <Menu.Item key="0" className="hover:text-canHoverBlue">
         <Link href="/settings" passHref>
-          <a className="text-sm font-medium hover:text-canHoverBlue">
+          <a className="!text-sm font-normal hover:text-canHoverBlue">
             <SettingOutlined className="mr-1" />
             Account Settings
           </a>
@@ -156,7 +156,7 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
       <Menu.Divider />
       <Menu.Item key="1" className="hover:text-canHoverBlue">
         <Link href="/settings?tab=supported_camps" passHref>
-          <a className="text-sm font-medium ">
+          <a className="!text-sm font-normal ">
             <CheckCircleOutlined className="mr-1" />
             Supported Camps
           </a>
@@ -165,7 +165,7 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
       <Menu.Divider />
       <Menu.Item
         key="3"
-        className="text-sm font-medium hover:text-canHoverBlue"
+        className="!text-sm font-normal hover:text-canHoverBlue"
       >
         <LogoutOutlined className="mr-1" />
         Log Out

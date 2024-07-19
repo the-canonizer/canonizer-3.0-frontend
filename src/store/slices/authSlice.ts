@@ -12,6 +12,7 @@ export const authSlice = createSlice({
     socialUsers: [],
     emailForOtp: null,
     isNewUser: false,
+    currentReturnUrl: null,
   },
   reducers: {
     setAuthToken: (state, action) => {
@@ -53,6 +54,9 @@ export const authSlice = createSlice({
     setEmailForOTP: (state, action) => {
       state.emailForOtp = action.payload;
     },
+    setCurrentReturnUrl: (state, action) => {
+      state.currentReturnUrl = action.payload;
+    },
   },
 });
 
@@ -67,6 +71,7 @@ export const {
   setLogout,
   setEmailForOTP,
   setIsNewUser,
+  setCurrentReturnUrl,
 } = authSlice.actions;
 
 export default authSlice.reducer;
