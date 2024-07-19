@@ -70,7 +70,7 @@ export const GetCheckSupportExists = async (reqbody, loginToken = null) => {
   }
 };
 
-export const GetHotTopicDetails = async (page, perPage, token: string) => {
+export const GetHotTopicDetails = async (page, perPage, token: string = "") => {
   try {
     const res = await NetworkCall.fetch(
       TopicRequest.GetHotTopic(page, perPage, token)
