@@ -33,15 +33,6 @@ const SingleAvatar = ({ user }) => {
     }`;
   }, [user?.first_name, user?.middle_name, user?.last_name]);
 
-  if (user?.first_name === "Shannon") {
-  }
-  console.log(
-    "isGravatarAvailable---",
-    isGravatarAvailable,
-    user,
-    user?.profile_picture_path
-  );
-
   const renderAvatar = () => {
     if (user?.profile_picture_path) {
       return (
