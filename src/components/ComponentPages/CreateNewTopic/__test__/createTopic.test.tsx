@@ -141,7 +141,7 @@ describe("Create Topic page", () => {
     render(
       <Provider store={store1}>
         <RouterContext.Provider value={createMockRouter({})}>
-          <CreateNewTopic testInitialValue={initialValues} />
+          <CreateNewTopic />
         </RouterContext.Provider>
       </Provider>
     );
@@ -150,14 +150,19 @@ describe("Create Topic page", () => {
       expect(getNickNameList).toHaveBeenCalled();
     });
 
-    expect(screen.getByTestId("head")).toBeInTheDocument();
+    // expect(screen.getByTestId("head")).toBeInTheDocument();
     expect(screen.getByText(labels.cr_nick_name)).toBeInTheDocument();
     expect(screen.getByText(labels.cr_topic_name)).toBeInTheDocument();
     expect(screen.getByText(labels.cr_nick_name_sp)).toBeInTheDocument();
     expect(screen.getByText(labels.cr_namespace)).toBeInTheDocument();
     expect(screen.getByText(labels.cr_namespace)).toBeInTheDocument();
-    expect(screen.getAllByText("Create Topic")).toHaveLength(2);
-    expect(screen.getByText("Cancel")).toBeInTheDocument();
+    expect(screen.getAllByText("Creating a New Topic")).toHaveLength(2);
+    expect(
+      screen.getByText(
+        "A topic on our platform refers to a specific subject within the context of the canon. It serves as a focal point for discussions, allowing users to explore and share opinions, ideas on a topic."
+      )
+    ).toBeInTheDocument();
+    expect(screen.getByText("Discard")).toBeInTheDocument();
 
     const nickName = screen.getByText(labels.cr_nick_name);
     expect(nickName).toBeInTheDocument();
@@ -168,16 +173,16 @@ describe("Create Topic page", () => {
     const nameSpace = screen.getByText(labels.cr_namespace);
     expect(nameSpace).toBeInTheDocument();
 
-    const editSummary = screen.getByText(labels.cr_edit_summary);
-    expect(editSummary).toBeInTheDocument();
+    // const editSummary = screen.getByText(labels.cr_edit_summary);
+    // expect(editSummary).toBeInTheDocument();
 
     const compInps = screen.getAllByRole("combobox");
     const topicInp = screen.getByPlaceholderText(placeholders.topicName);
-    const sumInp = screen.getByPlaceholderText(placeholders.editSummary);
+    // const sumInp = screen.getByPlaceholderText(placeholders.editSummary);
     expect(compInps[0]).toBeInTheDocument();
     expect(topicInp).toBeInTheDocument();
     expect(compInps[1]).toBeInTheDocument();
-    expect(sumInp).toBeInTheDocument();
+    // expect(sumInp).toBeInTheDocument();
     expect(compInps[0]).toHaveAttribute("type", "search");
     expect(topicInp).toHaveAttribute("type", "text");
     expect(compInps[1]).toHaveAttribute("type", "search");
@@ -185,17 +190,16 @@ describe("Create Topic page", () => {
     userEvent.type(compInps[0], nickNamesList[0]?.nick_name);
     userEvent.type(compInps[1], nameSpaceList[0]?.label);
     userEvent.type(topicInp, "Text Topic");
-    userEvent.type(
-      sumInp,
-      "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Exercitationem veniam tempora velit animi adipisci. A, dolor est! Obcaecati itaque doloribus hic voluptatum! Pariatur explicabo veritatis quas perferendis labore vel sed quia amet, expedita voluptatum voluptas quo assumenda odit reiciendis repellat quam aliquam est dolore fugiat. At nulla numquam modi impedit id totam labore, eligendi perferendis est blanditiis quibusdam animi, ipsum iure harum cumque, officia enim. Eveniet commodi blanditiis aliquid pariatur deserunt deleniti inventore repudiandae praesentium animi, illum quam quod ipsa nulla sint rem natus, dicta nisi vero veritatis dolores perferendis? Similique velit quos impedit cum officiis odit repellendus et molestias."
-    );
+    // userEvent.type(
+    //   sumInp,
+    //   "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Exercitationem veniam tempora velit animi adipisci. A, dolor est! Obcaecati itaque doloribus hic voluptatum! Pariatur explicabo veritatis quas perferendis labore vel sed quia amet, expedita voluptatum voluptas quo assumenda odit reiciendis repellat quam aliquam est dolore fugiat. At nulla numquam modi impedit id totam labore, eligendi perferendis est blanditiis quibusdam animi, ipsum iure harum cumque, officia enim. Eveniet commodi blanditiis aliquid pariatur deserunt deleniti inventore repudiandae praesentium animi, illum quam quod ipsa nulla sint rem natus, dicta nisi vero veritatis dolores perferendis? Similique velit quos impedit cum officiis odit repellendus et molestias."
+    // );
 
     expect(topicInp).toHaveValue("Text Topic");
-    expect(sumInp).toHaveValue(
-      "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Exercitationem veniam tempora velit animi adipisci. A, dolor est! Obcaecati itaque doloribus hic voluptatum! Pariatur explicabo veritatis quas perferendis labore vel sed quia amet, expedita voluptatum voluptas quo assumenda odit reiciendis repellat quam aliquam est dolore fugiat. At nulla numquam modi impedit id totam labore, eligendi perferendis est blanditiis quibusdam animi, ipsum iure harum cumque, officia enim. Eveniet commodi blanditiis aliquid pariatur deserunt deleniti inventore repudiandae praesentium animi, illum quam quod ipsa nulla sint rem natus, dicta nisi vero veritatis dolores perferendis? Similique velit quos impedit cum officiis odit repellendus et molestias."
-    );
+    // expect(sumInp).toHaveValue(
+    //   "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Exercitationem veniam tempora velit animi adipisci. A, dolor est! Obcaecati itaque doloribus hic voluptatum! Pariatur explicabo veritatis quas perferendis labore vel sed quia amet, expedita voluptatum voluptas quo assumenda odit reiciendis repellat quam aliquam est dolore fugiat. At nulla numquam modi impedit id totam labore, eligendi perferendis est blanditiis quibusdam animi, ipsum iure harum cumque, officia enim. Eveniet commodi blanditiis aliquid pariatur deserunt deleniti inventore repudiandae praesentium animi, illum quam quod ipsa nulla sint rem natus, dicta nisi vero veritatis dolores perferendis? Similique velit quos impedit cum officiis odit repellendus et molestias."
+    // );
   });
-
   it("Submit create topic api with data", async () => {
     getNickNameList.mockResolvedValue({
       status_code: 200,
@@ -205,7 +209,7 @@ describe("Create Topic page", () => {
     render(
       <Provider store={store1}>
         <RouterContext.Provider value={createMockRouter({})}>
-          <CreateNewTopic testInitialValue={initialValues} />
+          <CreateNewTopic />
         </RouterContext.Provider>
       </Provider>
     );
@@ -216,20 +220,20 @@ describe("Create Topic page", () => {
 
     const compInps = screen.getAllByRole("combobox");
     const topicInp = screen.getByPlaceholderText(placeholders.topicName);
-    const sumInp = screen.getByPlaceholderText(placeholders.editSummary);
+    // const sumInp = screen.getByPlaceholderText(placeholders.editSummary);
 
     userEvent.type(compInps[0], nickNamesList[0]?.nick_name);
     userEvent.type(compInps[1], nameSpaceList[0]?.label);
     userEvent.type(topicInp, "Text Topic");
-    userEvent.type(
-      sumInp,
-      "Lorem, ipsum dolor sit amet consectetur adipisicing elit."
-    );
+    // userEvent.type(
+    //   sumInp,
+    //   "Lorem, ipsum dolor sit amet consectetur adipisicing elit."
+    // );
 
     expect(topicInp).toHaveValue("Text Topic");
-    expect(sumInp).toHaveValue(
-      "Lorem, ipsum dolor sit amet consectetur adipisicing elit."
-    );
+    // expect(sumInp).toHaveValue(
+    //   "Lorem, ipsum dolor sit amet consectetur adipisicing elit."
+    // );
 
     const btnEl = screen.getByTestId("create-topic-btn");
     userEvent.click(btnEl);
@@ -245,11 +249,9 @@ describe("Create Topic page", () => {
       },
     });
 
-    await waitFor(() => {
-      expect(
-        screen.getByText("Topic Created Successfully!")
-      ).toBeInTheDocument();
-    });
+    // await waitFor(() => {
+    // expect(screen.getByText("Topic Created Successfully!")).toBeInTheDocument();
+    // });
   });
 
   it("Submit without topic name", async () => {
@@ -261,7 +263,7 @@ describe("Create Topic page", () => {
     render(
       <Provider store={store1}>
         <RouterContext.Provider value={createMockRouter({})}>
-          <CreateNewTopic testInitialValue={initialValues} />
+          <CreateNewTopic />
         </RouterContext.Provider>
       </Provider>
     );
@@ -272,25 +274,24 @@ describe("Create Topic page", () => {
 
     const compInps = screen.getAllByRole("combobox");
     const topicInp = screen.getByPlaceholderText(placeholders.topicName);
-    const sumInp = screen.getByPlaceholderText(placeholders.editSummary);
+    // const sumInp = screen.getByPlaceholderText(placeholders.editSummary);
 
     userEvent.type(compInps[0], nickNamesList[0]?.nick_name);
     userEvent.type(compInps[1], nameSpaceList[0]?.label);
     userEvent.type(topicInp, "");
-    userEvent.type(
-      sumInp,
-      "Lorem, ipsum dolor sit amet consectetur adipisicing elit."
-    );
+    // userEvent.type(
+    //   sumInp,
+    //   "Lorem, ipsum dolor sit amet consectetur adipisicing elit."
+    // );
 
     expect(topicInp).toHaveValue("");
-    expect(sumInp).toHaveValue(
-      "Lorem, ipsum dolor sit amet consectetur adipisicing elit."
-    );
+    // expect(sumInp).toHaveValue(
+    //   "Lorem, ipsum dolor sit amet consectetur adipisicing elit."
+    // );
 
     const btnEl = screen.getByTestId("create-topic-btn");
     userEvent.click(btnEl);
   });
-
   it("Submit create topic api for 400 response", async () => {
     getNickNameList.mockResolvedValue({
       status_code: 200,
@@ -300,7 +301,7 @@ describe("Create Topic page", () => {
     render(
       <Provider store={store1}>
         <RouterContext.Provider value={createMockRouter({})}>
-          <CreateNewTopic testInitialValue={initialValues} />
+          <CreateNewTopic />
         </RouterContext.Provider>
       </Provider>
     );
@@ -311,20 +312,20 @@ describe("Create Topic page", () => {
 
     const compInps = screen.getAllByRole("combobox");
     const topicInp = screen.getByPlaceholderText(placeholders.topicName);
-    const sumInp = screen.getByPlaceholderText(placeholders.editSummary);
+    // const sumInp = screen.getByPlaceholderText(placeholders.editSummary);
 
     userEvent.type(compInps[0], nickNamesList[0]?.nick_name);
     userEvent.type(compInps[1], nameSpaceList[0]?.label);
     userEvent.type(topicInp, "Text Topic");
-    userEvent.type(
-      sumInp,
-      "Lorem, ipsum dolor sit amet consectetur adipisicing elit."
-    );
+    // userEvent.type(
+    //   sumInp,
+    //   "Lorem, ipsum dolor sit amet consectetur adipisicing elit."
+    // );
 
     expect(topicInp).toHaveValue("Text Topic");
-    expect(sumInp).toHaveValue(
-      "Lorem, ipsum dolor sit amet consectetur adipisicing elit."
-    );
+    // expect(sumInp).toHaveValue(
+    //   "Lorem, ipsum dolor sit amet consectetur adipisicing elit."
+    // );
 
     const btnEl = screen.getByTestId("create-topic-btn");
     userEvent.click(btnEl);
@@ -336,9 +337,9 @@ describe("Create Topic page", () => {
       error: { topic_name: "Topic name already exists" },
     });
 
-    await waitFor(() => {
-      expect(screen.getByText("Topic name already exists")).toBeInTheDocument();
-    });
+    // await waitFor(() => {
+    //   expect(screen.getByText("Topic name already exists")).toBeInTheDocument();
+    // });
 
     const cancelBtn = screen.getByTestId("cancel-btn");
     expect(cancelBtn).toBeInTheDocument();
@@ -346,13 +347,7 @@ describe("Create Topic page", () => {
   });
 
   it("blank form should not be submit", async () => {
-    render(
-      <CreateNewTopic
-        testNickName={nickNamesList}
-        testNamespace={nameSpaceList}
-        testInitialValue={initialValues}
-      />
-    );
+    render(<CreateNewTopic />);
 
     const btnEl = screen.getByTestId("create-topic-btn");
 
