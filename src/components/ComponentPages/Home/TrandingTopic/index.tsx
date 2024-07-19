@@ -149,7 +149,10 @@ const TrandingTopics = () => {
                       "-"
                     )}/1-Agreement`}
                   >
-                    <a className="hover:*:text-canHoverBlue">
+                    <a
+                      className="hover:*:text-canHoverBlue"
+                      onClick={() => setLoadMoreIndicator(true)}
+                    >
                       <Typography.Text className="">
                         {item?.topic_name}
                       </Typography.Text>
