@@ -6,13 +6,14 @@ export default class TagsRequests extends Request {
     super(params);
   }
 
-  static getTags(body) {
+  static getTags(body, token) {
     return new Request(
       K.Network.URL.GetTagsList,
       K.Network.Method.POST,
       body,
       K.Network.Header.Type.formData,
-      {}
+      {},
+      token
     );
   }
 

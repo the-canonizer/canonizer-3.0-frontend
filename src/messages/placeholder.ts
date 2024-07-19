@@ -25,9 +25,10 @@ export const placeholders = {
   emailId: "Enter Your Email",
   editSummary: "Summary",
   nickName: "Nickname",
-  topicName: "Topic Name",
+  topicName: "Enter Topic Name",
   namespace: "Canon",
   campAboutNickName: "--Select Camp About Nickname--",
+  catSelect: "Select Category",
   campURL: "https://",
   searchPlaceholder: "Search by thread name",
 };

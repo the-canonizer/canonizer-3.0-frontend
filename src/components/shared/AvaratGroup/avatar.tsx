@@ -52,7 +52,7 @@ const SingleAvatar = ({ user }) => {
       );
     }
 
-    if (!user?.profile_picture_path) {
+    if (!user?.profile_picture_path && !isGravatarAvailable) {
       return (
         <Avatar style={{ backgroundColor: "#D0D8F4" }}>
           {user?.first_name?.charAt(0)}
