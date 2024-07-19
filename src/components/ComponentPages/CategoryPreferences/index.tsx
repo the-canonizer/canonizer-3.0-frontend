@@ -69,7 +69,14 @@ const Preferences = () => {
 
   const onSkip = (e) => {
     e?.preventDefault();
-    router?.push({ pathname: "/" });
+    if (router?.query.returnUrl) {
+      router?.push(`${router?.query.returnUrl}`);
+    } else if (currentReturnUrl) {
+      router?.push({ pathname: currentReturnUrl });
+    } else {
+      router?.push({ pathname: "/" });
+    }
+    // router?.push({ pathname: "/" });
     // router?.push({ pathname: "/settings" });
   };
 
