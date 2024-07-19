@@ -1,37 +1,26 @@
 import {
   Badge,
-  Breadcrumb,
   Button,
   Card,
   Checkbox,
   Collapse,
-  Divider,
   Space,
   Tag,
   Tooltip,
-  Typography,
   message,
   Modal,
-  Spin,
-  Table,
-  Tabs,
 } from "antd";
 
 import {
   ExclamationCircleFilled,
   EyeOutlined,
-  HomeOutlined,
   InfoCircleOutlined,
-  LeftOutlined,
-  LoadingOutlined,
 } from "@ant-design/icons";
 
 import { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
-import { CheckboxChangeEvent } from "antd/lib/checkbox";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useAuthentication from "src/hooks/isUserAuthenticated";
-import HistoryCardModal from "./historyCardDrawer";
 import HistoryCardDrawer from "./historyCardDrawer";
 // import "./historyCard.scss";
 import {
@@ -59,7 +48,6 @@ import HistoryComparison from "../HistoryContainer/Collapse/historyComparison";
 import Timer from "../Timer";
 import PrimaryButton from "components/shared/Buttons/PrimariButton";
 
-const { Title } = Typography;
 
 const { Panel } = Collapse;
 
