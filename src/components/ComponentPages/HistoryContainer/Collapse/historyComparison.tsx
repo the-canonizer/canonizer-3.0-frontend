@@ -177,7 +177,7 @@ const HistoryComparison = ({ campStatement, topicNamespaceId, s1 = false }: any)
                 <div
                   className="text-canBlack pb-[1.25rem]"
                   dangerouslySetInnerHTML={{
-                    __html: campStatement?.parsed_value,
+                    __html: campStatement?.parsed_v ? campStatement?.parsed_v : campStatement?.parsed_value,
                   }}
                 ></div>
               </div>
