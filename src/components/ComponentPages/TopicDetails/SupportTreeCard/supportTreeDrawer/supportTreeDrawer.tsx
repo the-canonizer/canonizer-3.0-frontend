@@ -101,7 +101,6 @@ Adding support to this camp will remove your support from the parent camp."
             showIcon
             icon={<i className="icon-warning"></i>}
           />
-          <div></div>
 
           <Row gutter={16}>
             <Col span={24} sm={12}>
