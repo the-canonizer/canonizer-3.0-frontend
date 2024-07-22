@@ -456,7 +456,7 @@ export default function CanonVideos() {
                   <Title level={5} className="text-canBlack">
                     Topic : {currentVideoTitle}
                   </Title>
-                  <Dropdown overlay={menu}>
+                  <Dropdown overlay={menu} placement="bottomRight">
                     <Button
                       size="small"
                       className="flex items-center"
