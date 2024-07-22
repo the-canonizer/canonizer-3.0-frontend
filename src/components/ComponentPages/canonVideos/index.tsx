@@ -20,7 +20,12 @@ import { CodepenCircleOutlined, ShareAltOutlined } from "@ant-design/icons";
 import Facebook from "../../../assets/image/facebook.svg";
 import Linkdhn from "../../../assets/image/linkedIn.svg";
 import Twitter from "../../../assets/image/twitter.svg";
-import { replaceHyphensAndCapitalize, replaceUnderscoresWithSpaces, transformData } from "src/utils/generalUtility";
+import { isServer, replaceHyphensAndCapitalize, replaceUnderscoresWithSpaces, transformData } from "src/utils/generalUtility";
+import {
+  FacebookShareButton,
+  TwitterShareButton,
+  LinkedinShareButton,
+} from "next-share";
 
 const { Title } = Typography;
 
@@ -277,13 +282,28 @@ export default function CanonVideos() {
   const menu = (
     <Menu className="share-menu">
       <Menu.Item>
-        <img src={Facebook.src} alt="facebook" />
+        <FacebookShareButton
+          url={router?.asPath}
+          quote={currentVideoTitle}
+          hashtag={`#${!isServer() && window?.location?.hostname}`}
+        >
+          <img src={Facebook.src} alt="facebook" />
+        </FacebookShareButton>
       </Menu.Item>
       <Menu.Item>
-        <img src={Twitter.src} alt="twitter" />
+        <TwitterShareButton
+          url={router?.asPath}
+          title={currentVideoTitle}
+        >
+          <img src={Twitter.src} alt="twitter" />
+        </TwitterShareButton>
       </Menu.Item>
       <Menu.Item>
-        <img src={Linkdhn.src} alt="linkdhn" />
+        <LinkedinShareButton
+          url={router?.asPath}
+        >
+          <img src={Linkdhn.src} alt="linkdhn" />
+        </LinkedinShareButton>
       </Menu.Item>
     </Menu>
   );
@@ -364,10 +384,10 @@ export default function CanonVideos() {
                       id: React.Key;
                       link: string;
                       title:
-                        | boolean
-                        | React.ReactChild
-                        | React.ReactFragment
-                        | React.ReactPortal;
+                      | boolean
+                      | React.ReactChild
+                      | React.ReactFragment
+                      | React.ReactPortal;
                     }) => {
                       return (
                         <Radio
