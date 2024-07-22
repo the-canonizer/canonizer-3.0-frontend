@@ -558,7 +558,7 @@ const ManageSupportUI = ({
         </div>
       </div>
 
-      {/* modal data */}
+      {/ modal data /}
       {/* <Modal
         className={styles.modal_cross}
         title={

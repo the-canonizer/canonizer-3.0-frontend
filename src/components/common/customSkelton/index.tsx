@@ -10,6 +10,7 @@ import DelegateCardSkeleton from "./delegateCard";
 import UserProfileCardSkeleton from "./userProfileSupportCars";
 import FeaturedTopicCard from "./featuredTopicCard";
 import HotTopicCard from "./hotTopicCard";
+import Meta from "antd/lib/card/Meta";
 
 const CustomSkelton = ({
   titleName = "",
@@ -232,32 +233,129 @@ const CustomSkelton = ({
   ) : skeltonFor == "hotTopic" ? (
     <HotTopicCard stylingClass={stylingClass} />
   ) : skeltonFor == "browse" ? (
-    <>
-      <Row gutter={[24, 24]}>
-        {[...Array(8)].map((_, index) => (
-          <Col key={index} xs={24} sm={24} md={12}>
-            <Card className="browse-card">
-              <div className="mb-2.5 flex justify-between">
-                <Skeleton style={{ width: 300 }} />
-              </div>
-              <Skeleton style={{ width: 100 }} />
-              <Skeleton style={{ width: 800 }} />
-              <List className="">
-                <List.Item className="w-full flex font-medium p-0">
-                  <div className="flex justify-between gap-3 w-full items-start flex-wrap">
-                    <div className="text-left flex">
-                      <Skeleton style={{ width: 130 }} />
-                      <Skeleton style={{ width: 40 }} />
-                    </div>
-                    <Skeleton />
+    <Row gutter={[24, 24]}>
+      {[...Array(8)].map((_, index) => (
+        <Col key={index} xs={24} sm={24} md={12}>
+          <Card className="browse-card">
+            <div className="mb-2.5 flex justify-between">
+              <Skeleton style={{ width: 300 }} />
+            </div>
+            <Skeleton style={{ width: 100 }} />
+            <Skeleton style={{ width: 800 }} />
+            <List className="">
+              <List.Item className="w-full flex font-medium p-0">
+                <div className="flex justify-between gap-3 w-full items-start flex-wrap">
+                  <div className="text-left flex">
+                    <Skeleton style={{ width: 130 }} />
+                    <Skeleton style={{ width: 40 }} />
                   </div>
-                </List.Item>
-              </List>
+                  <Skeleton />
+                </div>
+              </List.Item>
+            </List>
+          </Card>
+        </Col>
+      ))}
+    </Row>
+  ) : skeltonFor == "videos" ? (
+    <Card
+      className="video-parent-card"
+      title={<Skeleton width={460} count={1} enableAnimation />}
+    >
+      <Row gutter={[16, 16]}>
+        <Row>
+          <Col xs={24} sm={12} lg={8} xl={6}>
+            <Card
+              className="video-inner-card"
+              cover={<Skeleton style={{ height: "200px" }} />}
+            >
+              <Meta title={<Skeleton />} />
             </Card>
           </Col>
-        ))}
+          <Col xs={24} sm={12} lg={8} xl={6}>
+            <Card
+              className="video-inner-card"
+              cover={<Skeleton style={{ height: "200px" }} />}
+            >
+              <Meta title={<Skeleton />} />
+            </Card>
+          </Col>
+          <Col xs={24} sm={12} lg={8} xl={6}>
+            <Card
+              className="video-inner-card"
+              cover={<Skeleton style={{ height: "200px" }} />}
+            >
+              <Meta title={<Skeleton />} />
+            </Card>
+          </Col>
+          <Col xs={24} sm={12} lg={8} xl={6}>
+            <Card
+              className="video-inner-card"
+              cover={<Skeleton style={{ height: "200px" }} />}
+            >
+              <Meta title={<Skeleton />} />
+            </Card>
+          </Col>
+          <Col xs={24} sm={12} lg={8} xl={6}>
+            <Card
+              className="video-inner-card"
+              cover={<Skeleton style={{ height: "200px" }} />}
+            >
+              <Meta title={<Skeleton />} />
+            </Card>
+          </Col>
+          <Col xs={24} sm={12} lg={8} xl={6}>
+            <Card
+              className="video-inner-card"
+              cover={<Skeleton style={{ height: "200px" }} />}
+            >
+              <Meta title={<Skeleton />} />
+            </Card>
+          </Col>
+          <Col xs={24} sm={12} lg={8} xl={6}>
+            <Card
+              className="video-inner-card"
+              cover={<Skeleton style={{ height: "200px" }} />}
+            >
+              <Meta title={<Skeleton />} />
+            </Card>
+          </Col>
+          <Col xs={24} sm={12} lg={8} xl={6}>
+            <Card
+              className="video-inner-card"
+              cover={<Skeleton style={{ height: "200px" }} />}
+            >
+              <Meta title={<Skeleton />} />
+            </Card>
+          </Col>
+          <Col xs={24} sm={12} lg={8} xl={6}>
+            <Card
+              className="video-inner-card"
+              cover={<Skeleton style={{ height: "200px" }} />}
+            >
+              <Meta title={<Skeleton />} />
+            </Card>
+          </Col>
+
+          <Col xs={24} sm={12} lg={8} xl={6}>
+            <Card
+              className="video-inner-card"
+              cover={<Skeleton style={{ height: "200px" }} />}
+            >
+              <Meta title={<Skeleton />} />
+            </Card>
+          </Col>
+          <Col xs={24} sm={12} lg={8} xl={6}>
+            <Card
+              className="video-inner-card"
+              cover={<Skeleton style={{ height: "200px" }} />}
+            >
+              <Meta title={<Skeleton />} />
+            </Card>
+          </Col>
+        </Row>
       </Row>
-    </>
+    </Card>
   ) : (
     /* eslint-disable */
     (skeltonFor = "cardForUploadFile" ? (

@@ -1,48 +1,28 @@
-import { useState, useEffect, useRef, Fragment } from "react";
-import {
-  Button,
-  Popover,
-  Spin,
-  Tooltip,
-  Typography,
-  Dropdown,
-  Menu,
-  Row,
-  Col,
-} from "antd";
-import { useRouter } from "next/router";
-import { useSelector, useDispatch } from "react-redux";
-import {
-  DoubleRightOutlined,
-  DoubleLeftOutlined,
-  HeartOutlined,
-  FileTextOutlined,
-  MoreOutlined,
-} from "@ant-design/icons";
-import Link from "next/link";
+import { DoubleLeftOutlined } from "@ant-design/icons";
+import { Button, Col, Popover, Row, Spin, Tooltip, Typography } from "antd";
 import moment from "moment";
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import styles from "../topicDetails.module.scss";
 
-import { RootState } from "src/store";
 import CustomSkelton from "src/components/common/customSkelton";
-import { setManageSupportStatusCheck } from "src/store/slices/campDetailSlice";
 import {
   getCampBreadCrumbApi,
   getTreesApi,
   subscribeToCampApi,
 } from "src/network/api/campDetailApi";
+import { RootState } from "src/store";
+import { setManageSupportStatusCheck } from "src/store/slices/campDetailSlice";
+import K from "src/constants";
 import {
   changeSlashToArrow,
   getCookies,
   replaceSpecialCharacters,
 } from "src/utils/generalUtility";
-import SocialShareUI from "../../../common/socialShare";
-import { isServer } from "../../../../utils/generalUtility";
-import useAuthentication from "../../../../../src/hooks/isUserAuthenticated";
-import K from "src/constants";
-import GenerateModal from "src/components/common/generateScript";
 import CustomButton from "../../../common/button";
 
 const CodeIcon = () => (
@@ -66,7 +46,6 @@ const TimelineInfoBar = ({
   isForumPage = false,
   getCheckSupportStatus = null,
 }: any) => {
-  const { isUserAuthenticated } = useAuthentication();
   const dispatch = useDispatch();
   const [loadingIndicator, setLoadingIndicator] = useState(false);
   const [payloadData, setPayloadData] = useState(payload);
@@ -80,7 +59,6 @@ const TimelineInfoBar = ({
   const {
     topicRecord,
     campRecord,
-    is_admin,
     asofdate,
     asof,
     viewThisVersion,
@@ -92,7 +70,6 @@ const TimelineInfoBar = ({
   } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
     campRecord: state?.topicDetails?.currentCampRecord,
-    is_admin: state?.auth?.loggedInUser?.is_admin,
     asofdate: state.filters?.filterObject?.asofdate,
     asof: state?.filters?.filterObject?.asof,
     viewThisVersion: state?.filters?.viewThisVersionCheck,
@@ -110,10 +87,6 @@ const TimelineInfoBar = ({
   const [topicSubscriptionID, setTopicSubscriptionID] = useState(
     topicRecord?.topicSubscriptionId
   );
-
-  const handleClickSupportCheck = () => {
-    dispatch(setManageSupportStatusCheck(true));
-  };
 
   useEffect(() => {
     if (isTopicPage) {
@@ -273,8 +246,6 @@ const TimelineInfoBar = ({
             ? `${breadCampId}-${replaceSpecialCharacters(breadCampName, "-")}`
             : "1-Agreement",
         ];
-        // router.query = { ...router?.query, ...query };
-        // router.replace(router, null, { shallow: true });
       }
       setBreadCrumbRes(res?.data);
       setLoadingIndicator(false);
