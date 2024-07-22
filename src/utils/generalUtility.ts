@@ -396,3 +396,34 @@ export const historyTitle = (historyOf) => {
 export const convertToTime = (unixTime) => {
   return moment(unixTime * 1000).format("DD MMM YYYY, hh:mm:ss A");
 };
+
+export const transformData = (data) => {
+  // Extract the videos array from the first element in the data array
+  const videos = data;
+
+  // Map over the videos array to transform each video object
+  return videos?.map(video => {
+      // Generate the value by converting the title to lowercase and replacing spaces with underscores
+      const value = video.title.toLowerCase().replace(/ /g, '_');
+
+      // Return the new object with the desired shape
+      return {
+          value: value,
+          label: video.title
+      };
+  });
+}
+
+export const replaceUnderscoresWithSpaces = (str) =>{
+  return str.replace(/_/g, ' ');
+}
+
+export const replaceHyphensAndCapitalize = (str) => {
+  // Replace hyphens with spaces
+  let replacedStr = str.replace(/-/g, ' ');
+  
+  // Capitalize the first letter
+  let capitalizedStr = replacedStr.charAt(0).toUpperCase() + replacedStr.slice(1);
+  
+  return capitalizedStr;
+}

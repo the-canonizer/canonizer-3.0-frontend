@@ -20,6 +20,7 @@ import { CodepenCircleOutlined, ShareAltOutlined } from "@ant-design/icons";
 import Facebook from "../../../assets/image/facebook.svg";
 import Linkdhn from "../../../assets/image/linkedIn.svg";
 import Twitter from "../../../assets/image/twitter.svg";
+import { replaceHyphensAndCapitalize, replaceUnderscoresWithSpaces, transformData } from "src/utils/generalUtility";
 
 const { Title } = Typography;
 
@@ -32,10 +33,15 @@ export default function CanonVideos() {
   const [topic, setTopic] = useState("");
   const [loader, setLoader] = useState(false);
   const [videoResolution, setVideoResolution] = useState("");
+  const [mobileVideoOptions, setMobileVideoOptions] = useState([]);
+  const [currentVideoTitle, setCurrentVideoTitle] = useState("");
 
   const router = useRouter();
 
   useEffect(() => {
+    if (router?.query?.chapter) {
+      setCurrentVideoTitle(replaceHyphensAndCapitalize(String(router?.query?.chapter)));
+    }
     if (router?.route === "/videos/consciousness") {
       let { chapter, ...restq }: any = { ...router.query };
 
@@ -104,6 +110,7 @@ export default function CanonVideos() {
 
     setSelectedVideoId(videodata?.id);
     setVideoResolution(videodata?.resolutions[0]?.link);
+    setCurrentVideoTitle(videodata?.title);
 
     const node = document.getElementsByTagName("video")[0];
     node.src = BaseVideosURL + "/" + videodata?.resolutions.at(0)?.link;
@@ -139,6 +146,7 @@ export default function CanonVideos() {
 
       if (data?.status_code == 200) {
         setVideos(data?.data[0]?.videos);
+        setMobileVideoOptions(transformData(data?.data[0]?.videos))
 
         const videoss = data?.data[0]?.videos;
 
@@ -279,8 +287,27 @@ export default function CanonVideos() {
       </Menu.Item>
     </Menu>
   );
+
+
   const handleChange = (value) => {
-    console.log(`selected ${value}`);
+    let currentVideo = videos?.find(video => video?.title?.toLowerCase() == replaceUnderscoresWithSpaces(value).toLowerCase());
+    setCurrentVideoTitle(replaceUnderscoresWithSpaces(currentVideo?.title));
+
+    playeref.current;
+
+    addQueryParams(
+      spaceChangeToDash(currentVideo?.title),
+      currentVideo?.resolutions[0]?.title?.split(" ")[0],
+      null,
+      currentVideo?.id
+    );
+
+    setSelectedVideoId(currentVideo?.id);
+    setVideoResolution(currentVideo?.resolutions[0]?.link);
+
+    const node = document.getElementsByTagName("video")[0];
+    node.src = BaseVideosURL + "/" + currentVideo?.resolutions.at(0)?.link;
+    node.play();
   };
 
   return (
@@ -376,7 +403,7 @@ export default function CanonVideos() {
             {videos && videoResolution ? (
               <>
                 <Select
-                  defaultValue="Introduction"
+                  defaultValue={currentVideoTitle}
                   size="large"
                   className="video-select mb-5 lg:hidden"
                   suffixIcon={<i className="icon-chevron-down text-black"></i>}
@@ -384,20 +411,7 @@ export default function CanonVideos() {
                     width: "100%",
                   }}
                   onChange={handleChange}
-                  options={[
-                    {
-                      value: "introduction",
-                      label: "Introduction",
-                    },
-                    {
-                      value: "conclusion",
-                      label: "Conclusion",
-                    },
-                    {
-                      value: "differentiating",
-                      label: "Differentiating Reality and Knowledge of Reality",
-                    },
-                  ]}
+                  options={mobileVideoOptions}
                 />
                 <video
                   onTimeUpdate={updateTime}
@@ -420,7 +434,7 @@ export default function CanonVideos() {
                 </video>
                 <div className="share-wrapper">
                   <Title level={5} className="text-canBlack">
-                    Topic
+                    Topic : {currentVideoTitle}
                   </Title>
                   <Dropdown overlay={menu}>
                     <Button
