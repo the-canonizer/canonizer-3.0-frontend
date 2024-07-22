@@ -461,3 +461,54 @@ body {
     }
   }
 }
+.ant-notification-topRight {
+  @apply mr-0;
+}
+.thm-notification {
+  @apply max-w-[463px] w-full py-2 pl-2 pr-11 relative shadow-[0px_10px_20px_0px_#00000033];
+  &.ant-notification-notice-success {
+    @apply bg-gradient-to-r from-[#dcf9e3] to-white;
+
+    .ant-notification-notice-content {
+      &::before {
+        @apply bg-[#4EB966];
+      }
+    }
+    .ant-notification-notice-icon {
+      .anticon,
+      i {
+        @apply text-[#4EB966];
+      }
+    }
+  }
+  &.ant-notification-notice-error {
+    @apply bg-gradient-to-r from-[#FFE6E6] to-white;
+
+    .ant-notification-notice-content {
+      &::before {
+        @apply bg-[#E46B6B];
+      }
+    }
+    .ant-notification-notice-icon {
+      .anticon,
+      i {
+        @apply text-[#E46B6B];
+      }
+    }
+  }
+  .ant-notification-notice-content {
+    &::before {
+      @apply block content-[''] w-[6px] absolute top-[8px] bottom-[8px] rounded-full;
+    }
+  }
+  .ant-notification-notice-icon {
+    @apply ml-5;
+    .anticon,
+    i {
+      @apply text-[2.375rem];
+    }
+  }
+  .ant-notification-notice-description {
+    @apply ml-[4.75rem] font-medium;
+  }
+}
