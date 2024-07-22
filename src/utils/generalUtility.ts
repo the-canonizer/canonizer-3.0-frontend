@@ -420,10 +420,23 @@ export const replaceUnderscoresWithSpaces = (str) =>{
 
 export const replaceHyphensAndCapitalize = (str) => {
   // Replace hyphens with spaces
-  let replacedStr = str.replace(/-/g, ' ');
+  let replacedStr = str?.replace(/-/g, ' ');
   
   // Capitalize the first letter
-  let capitalizedStr = replacedStr.charAt(0).toUpperCase() + replacedStr.slice(1);
+  let capitalizedStr = replacedStr?.charAt(0)?.toUpperCase() + replacedStr?.slice(1);
   
   return capitalizedStr;
+}
+
+export const getVideoNameFromURL = (str) =>{
+// Split the string at the first hyphen to remove the leading ID
+let splitStr = str?.split('-')?.slice(1)?.join('-');
+
+// Replace hyphens with spaces
+let formattedStr = splitStr?.replace(/-/g, ' ');
+
+// Capitalize the first letter of the resulting string
+let capitalizedStr = formattedStr?.charAt(0)?.toUpperCase() + formattedStr.slice(1);
+
+return capitalizedStr;
 }

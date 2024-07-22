@@ -20,7 +20,7 @@ import { CodepenCircleOutlined, ShareAltOutlined } from "@ant-design/icons";
 import Facebook from "../../../assets/image/facebook.svg";
 import Linkdhn from "../../../assets/image/linkedIn.svg";
 import Twitter from "../../../assets/image/twitter.svg";
-import { isServer, replaceHyphensAndCapitalize, replaceUnderscoresWithSpaces, transformData } from "src/utils/generalUtility";
+import { getVideoNameFromURL, isServer, replaceUnderscoresWithSpaces, transformData } from "src/utils/generalUtility";
 import {
   FacebookShareButton,
   TwitterShareButton,
@@ -44,8 +44,8 @@ export default function CanonVideos() {
   const router = useRouter();
 
   useEffect(() => {
-    if (router?.query?.chapter) {
-      setCurrentVideoTitle(replaceHyphensAndCapitalize(String(router?.query?.chapter)));
+    if (router?.query?.video) {
+      setCurrentVideoTitle(getVideoNameFromURL(String(router?.query?.video?.at(1))));
     }
     if (router?.route === "/videos/consciousness") {
       let { chapter, ...restq }: any = { ...router.query };
@@ -71,7 +71,7 @@ export default function CanonVideos() {
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [router, currentVideoTitle]);
 
   const replaceString = (text: string, reverse: boolean = false) => {
     if (reverse) {
