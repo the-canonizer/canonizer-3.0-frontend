@@ -20,7 +20,7 @@ import { CodepenCircleOutlined, ShareAltOutlined } from "@ant-design/icons";
 import Facebook from "../../../assets/image/facebook.svg";
 import Linkdhn from "../../../assets/image/linkedIn.svg";
 import Twitter from "../../../assets/image/twitter.svg";
-import { getVideoNameFromURL, isServer, replaceUnderscoresWithSpaces, transformData } from "src/utils/generalUtility";
+import { getVideoNameFromURL, isServer, replaceHyphensAndCapitalize, replaceUnderscoresWithSpaces, transformData } from "src/utils/generalUtility";
 import {
   FacebookShareButton,
   TwitterShareButton,
@@ -46,7 +46,10 @@ export default function CanonVideos() {
   useEffect(() => {
     if (router?.query?.video) {
       setCurrentVideoTitle(getVideoNameFromURL(String(router?.query?.video?.at(1))));
+    }else if (router?.query?.chapter){
+      setCurrentVideoTitle(replaceHyphensAndCapitalize(String(router?.query?.chapter)));
     }
+
     if (router?.route === "/videos/consciousness") {
       let { chapter, ...restq }: any = { ...router.query };
 
