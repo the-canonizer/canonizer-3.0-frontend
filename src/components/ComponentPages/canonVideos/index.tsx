@@ -46,7 +46,7 @@ export default function CanonVideos() {
   useEffect(() => {
     if (router?.query?.video) {
       setCurrentVideoTitle(getVideoNameFromURL(String(router?.query?.video?.at(1))));
-    }else if (router?.query?.chapter){
+    } else if (router?.query?.chapter) {
       setCurrentVideoTitle(replaceHyphensAndCapitalize(String(router?.query?.chapter)));
     }
 
@@ -471,17 +471,21 @@ export default function CanonVideos() {
                     </Button>
                   </Dropdown>
                 </div>
-                <Title
-                  level={5}
-                  className="max-lg:py-5 lg:p-5 mb-5 text-canBlack border-b border-[#F0F0F0]"
-                >
-                  Chapters
-                </Title>
+                {topic && (
+                  <>
+                    <Title
+                      level={5}
+                      className="max-lg:py-5 lg:p-5 mb-5 text-canBlack border-b border-[#F0F0F0]"
+                    >
+                      Chapters
+                    </Title>
 
-                <div
-                  className="video-chap-content"
-                  dangerouslySetInnerHTML={{ __html: topic }}
-                ></div>
+                    <div
+                      className="video-chap-content"
+                      dangerouslySetInnerHTML={{ __html: topic }}
+                    ></div>
+                  </>
+                )}
               </>
             ) : (
               <CustomSkelton
