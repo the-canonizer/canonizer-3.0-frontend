@@ -473,7 +473,7 @@ export default function CanonVideos() {
                 </div>
                 <Title
                   level={5}
-                  className="p-5 mb-5 text-canBlack border-b border-[#F0F0F0]"
+                  className="max-lg:py-5 lg:p-5 mb-5 text-canBlack border-b border-[#F0F0F0]"
                 >
                   Chapters
                 </Title>

@@ -114,7 +114,7 @@
       }
 
       .share-wrapper {
-        @apply flex gap-2 justify-between items-center p-5 border-b border-[#F0F0F0];
+        @apply flex gap-2 justify-between items-center max-lg:py-5 max-lg:px-0 lg:p-5 border-b border-[#F0F0F0];
         h5 {
           @apply mb-0 text-base;
         }
