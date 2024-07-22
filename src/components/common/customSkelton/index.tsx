@@ -10,6 +10,7 @@ import DelegateCardSkeleton from "./delegateCard";
 import UserProfileCardSkeleton from "./userProfileSupportCars";
 import FeaturedTopicCard from "./featuredTopicCard";
 import HotTopicCard from "./hotTopicCard";
+import Meta from "antd/lib/card/Meta";
 
 const CustomSkelton = ({
   titleName = "",
@@ -227,6 +228,151 @@ const CustomSkelton = ({
       count={bodyCount}
       circle={circle}
     />
+  )  : skeltonFor == "videos" ? (
+    <>
+      <Card
+        className="video-parent-card"
+        title={<Skeleton width={460} count={1} enableAnimation />}
+      >
+        <Row gutter={[16, 16]}>
+          <>
+            <Col xs={24} sm={12} lg={8} xl={6}>
+              <Card
+                className="video-inner-card"
+                cover={
+                  <>
+                    <Skeleton style={{ height: "200px" }} />
+                  </>
+                }
+              >
+                <Meta title={<Skeleton />} />
+              </Card>
+            </Col>
+            <Col xs={24} sm={12} lg={8} xl={6}>
+              <Card
+                className="video-inner-card"
+                cover={
+                  <>
+                    <Skeleton style={{ height: "200px" }} />
+                  </>
+                }
+              >
+                <Meta title={<Skeleton />} />
+              </Card>
+            </Col>
+            <Col xs={24} sm={12} lg={8} xl={6}>
+              <Card
+                className="video-inner-card"
+                cover={
+                  <>
+                    <Skeleton style={{ height: "200px" }} />
+                  </>
+                }
+              >
+                <Meta title={<Skeleton />} />
+              </Card>
+            </Col>
+            <Col xs={24} sm={12} lg={8} xl={6}>
+              <Card
+                className="video-inner-card"
+                cover={
+                  <>
+                    <Skeleton style={{ height: "200px" }} />
+                  </>
+                }
+              >
+                <Meta title={<Skeleton />} />
+              </Card>
+            </Col>
+            <Col xs={24} sm={12} lg={8} xl={6}>
+              <Card
+                className="video-inner-card"
+                cover={
+                  <>
+                    <Skeleton style={{ height: "200px" }} />
+                  </>
+                }
+              >
+                <Meta title={<Skeleton />} />
+              </Card>
+            </Col>
+            <Col xs={24} sm={12} lg={8} xl={6}>
+              <Card
+                className="video-inner-card"
+                cover={
+                  <>
+                    <Skeleton style={{ height: "200px" }} />
+                  </>
+                }
+              >
+                <Meta title={<Skeleton />} />
+              </Card>
+            </Col>
+            <Col xs={24} sm={12} lg={8} xl={6}>
+              <Card
+                className="video-inner-card"
+                cover={
+                  <>
+                    <Skeleton style={{ height: "200px" }} />
+                  </>
+                }
+              >
+                <Meta title={<Skeleton />} />
+              </Card>
+            </Col>
+            <Col xs={24} sm={12} lg={8} xl={6}>
+              <Card
+                className="video-inner-card"
+                cover={
+                  <>
+                    <Skeleton style={{ height: "200px" }} />
+                  </>
+                }
+              >
+                <Meta title={<Skeleton />} />
+              </Card>
+            </Col>
+            <Col xs={24} sm={12} lg={8} xl={6}>
+              <Card
+                className="video-inner-card"
+                cover={
+                  <>
+                    <Skeleton style={{ height: "200px" }} />
+                  </>
+                }
+              >
+                <Meta title={<Skeleton />} />
+              </Card>
+            </Col>
+
+            <Col xs={24} sm={12} lg={8} xl={6}>
+              <Card
+                className="video-inner-card"
+                cover={
+                  <>
+                    <Skeleton style={{ height: "200px" }} />
+                  </>
+                }
+              >
+                <Meta title={<Skeleton />} />
+              </Card>
+            </Col>
+            <Col xs={24} sm={12} lg={8} xl={6}>
+              <Card
+                className="video-inner-card"
+                cover={
+                  <>
+                    <Skeleton style={{ height: "200px" }} />
+                  </>
+                }
+              >
+                <Meta title={<Skeleton />} />
+              </Card>
+            </Col>
+          </>
+        </Row>
+      </Card>
+    </>
   ) : skeltonFor == "featuredTopic" ? (
     <FeaturedTopicCard bodyCount={bodyCount} stylingClass={stylingClass} />
   ) : skeltonFor == "hotTopic" ? (

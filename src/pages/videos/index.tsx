@@ -43,7 +43,9 @@ const VideosPage = () => {
     <Layout routeName={"video"}>
       <div className="video-wrapper">
         {loader ? (
-          <></>
+          <>
+           <CustomSkeleton skeltonFor="videos" />
+          </>
         ) : (
           <>
             {categories?.map((category) => {
