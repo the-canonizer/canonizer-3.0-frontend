@@ -384,10 +384,10 @@ function HistoryContainer() {
                   handleBackButton();
                 }}
               >
-                {historyTitle(historyOf)}
+                {historyTitle(historyOf) + " " + "History"}
               </Button>
               <Title level={5} className="mb-6">
-                {historyTitle(historyOf).toUpperCase()} BASED ON STATUS
+                {historyTitle(historyOf).toUpperCase() + " " + "HISTORY BASED ON STATUS"}
               </Title>
               <div className="sider-btn">
                 <Button
@@ -461,55 +461,20 @@ function HistoryContainer() {
                   </span>
                 </Button>
               </div>
-              {historyOf === "topic" && (
-                <Button
-                  size="large"
-                  className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none mt-12"
-                  disabled={
-                    !(
-                      selectedTopic.length >= 2 &&
-                      !selectedTopic?.includes(campHistory && campHistory["id"])
-                    )
-                  }
-                  onClick={onCompareClick}
-                >
-                  Compare Topics
-                  <i className="icon-compare-statement"></i>
-                </Button>
-              )}
-
-              {historyOf === "camp" && (
-                <Button
-                  size="large"
-                  className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none mt-12"
-                  disabled={
-                    !(
-                      selectedTopic.length >= 2 &&
-                      !selectedTopic?.includes(campHistory && campHistory["id"])
-                    )
-                  }
-                  onClick={onCompareClick}
-                >
-                  Compare Camps
-                  <i className="icon-compare-statement"></i>
-                </Button>
-              )}
-              {historyOf === "statement" && (
-                <Button
-                  size="large"
-                  className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none mt-12"
-                  disabled={
-                    !(
-                      selectedTopic.length >= 2 &&
-                      !selectedTopic?.includes(campHistory && campHistory["id"])
-                    )
-                  }
-                  onClick={onCompareClick}
-                >
-                  Compare Statements
-                  <i className="icon-compare-statement"></i>
-                </Button>
-              )}
+              <Button
+                size="large"
+                className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none mt-12"
+                disabled={
+                  !(
+                    selectedTopic.length >= 2 &&
+                    !selectedTopic?.includes(campHistory && campHistory["id"])
+                  )
+                }
+                onClick={onCompareClick}
+              >
+                Compare {historyTitle(historyOf) + "s"}
+                <i className="icon-compare-statement"></i>
+              </Button>
             </div>
             {activeTab === "live" ? (
               <>
