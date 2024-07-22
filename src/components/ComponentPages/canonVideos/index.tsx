@@ -454,7 +454,7 @@ export default function CanonVideos() {
                 </video>
                 <div className="share-wrapper">
                   <Title level={5} className="text-canBlack">
-                    Topic : {currentVideoTitle}
+                    {currentVideoTitle}
                   </Title>
                   <Dropdown overlay={menu} placement="bottomRight">
                     <Button
