@@ -391,8 +391,7 @@ export const historyTitle = (historyOf) => {
     default:
       return "";
   }
-}
+};
 export const convertToTime = (unixTime) => {
   return moment(unixTime * 1000).format("DD MMM YYYY, hh:mm:ss A");
 };
-

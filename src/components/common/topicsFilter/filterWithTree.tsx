@@ -39,7 +39,12 @@ import FullScoreCheckbox from "../../ComponentPages/FullScoreCheckbox";
 import ArchivedCampCheckBox from "src/components/ComponentPages/ArchivedCampCheckBox";
 import CampTreeCard from "src/components/ComponentPages/TopicDetails/CampTreeCard";
 import { getTreesApi } from "src/network/api/campDetailApi";
-import { setOpenDrawer, setAsOfValues, setClearAlgoFromRefineFilter, setClearScoreFromRefineFilter,  } from "../../../store/slices/campDetailSlice";
+import {
+  setOpenDrawer,
+  setAsOfValues,
+  setClearAlgoFromRefineFilter,
+  setClearScoreFromRefineFilter,
+} from "../../../store/slices/campDetailSlice";
 
 const infoContent = (
   <>
@@ -113,7 +118,6 @@ const FilterWithTree = ({
     asOfValues,
     clearAlgoFromRefineFilter,
     clearScoreFromRefineFilter,
-
   } = useSelector((state: RootState) => ({
     algorithms: state.homePage?.algorithms,
     filteredScore: state?.filters?.filterObject?.filterByScore,
@@ -130,9 +134,9 @@ const FilterWithTree = ({
     asofdate: state.filters?.filterObject?.asofdate,
     algorithm: state.filters?.filterObject?.algorithm,
     openDrawer: state.topicDetails.openDrawer,
-    asOfValues :state.topicDetails.asOfValues,
-    clearAlgoFromRefineFilter :state.topicDetails.clearAlgoFromRefineFilter,
-    clearScoreFromRefineFilter :state.topicDetails.clearScoreFromRefineFilter,
+    asOfValues: state.topicDetails.asOfValues,
+    clearAlgoFromRefineFilter: state.topicDetails.clearAlgoFromRefineFilter,
+    clearScoreFromRefineFilter: state.topicDetails.clearScoreFromRefineFilter,
   }));
 
   const [value, setValue] = useState(
@@ -266,10 +270,10 @@ const FilterWithTree = ({
   useEffect(() => {
     if (!router?.query?.algo) {
       setSelectAlgo("blind_popularity");
-      dispatch(setClearAlgoFromRefineFilter("blind_popularity"))
+      dispatch(setClearAlgoFromRefineFilter("blind_popularity"));
       if (!router?.query?.score) {
         // setSelectScore(0);
-        dispatch(setClearScoreFromRefineFilter(0))
+        dispatch(setClearScoreFromRefineFilter(0));
       }
       if (router?.query?.asof !== "bydate" || !router?.query?.asofdate) {
         // selectedAsOf = "default"
@@ -301,7 +305,11 @@ const FilterWithTree = ({
 
   useEffect(() => {
     // setValue(selectedAsOf == "default" ? 2 : selectedAsOf == "review" ? 1 : 3);
-    dispatch(setAsOfValues(selectedAsOf == "default" ? 2 : selectedAsOf == "review" ? 1 : 3))
+    dispatch(
+      setAsOfValues(
+        selectedAsOf == "default" ? 2 : selectedAsOf == "review" ? 1 : 3
+      )
+    );
   }, [selectedAsOf]);
 
   useEffect(() => {
@@ -352,7 +360,7 @@ const FilterWithTree = ({
       setIsDatePicker(false);
     }
     // setValue(e.target.value);
-    dispatch(setAsOfValues(e.target.value))
+    dispatch(setAsOfValues(e.target.value));
   };
 
   const pickDate = (e) => {
@@ -538,14 +546,12 @@ const FilterWithTree = ({
   };
   return (
     <div className="leftSideBar_Card drawer_card">
-       
       <div
         className={`${styles.cardAccordian} ${styles.cardWithDrawerAccordian} topicListFilterCardCollapse`}
         // expandIconPosition="right"
         // bordered={false}
         // defaultActiveKey={["1"]}
       >
-      
         <div
           className={`header-bg-color-change radio-group-sider ${selectedAsOf}`}
           // header={null}
@@ -595,7 +601,13 @@ const FilterWithTree = ({
                   </Popover>
                 </Title>
                 <Select
-                suffixIcon={<Image src="/images/refine-caret-icon.svg" width={15} height={7} />}
+                  suffixIcon={
+                    <Image
+                      src="/images/refine-caret-icon.svg"
+                      width={15}
+                      height={7}
+                    />
+                  }
                   size="large"
                   showSearch
                   optionFilterProp="children"
@@ -608,7 +620,7 @@ const FilterWithTree = ({
                   // onChange={selectAlgorithm}
                   onChange={(algo) => {
                     // setSelectAlgo(algo);
-                    dispatch(setClearAlgoFromRefineFilter(algo))
+                    dispatch(setClearAlgoFromRefineFilter(algo));
                   }}
                   value={
                     clearAlgoFromRefineFilter
@@ -650,19 +662,18 @@ const FilterWithTree = ({
                     {" "}
                     Score value{" "}
                     <Popover
-                  content={infoContent}
-                  placement="right"
-                  className={styles.infoIcon}
-                >
-                  <Image
-                      src="/images/circle-info-bread.svg"
-                      alt="svg"
-                      className="icon-topic"
-                      height={16}
-                      width={16}
-                    />
-                </Popover>
-                    
+                      content={infoContent}
+                      placement="right"
+                      className={styles.infoIcon}
+                    >
+                      <Image
+                        src="/images/circle-info-bread.svg"
+                        alt="svg"
+                        className="icon-topic"
+                        height={16}
+                        width={16}
+                      />
+                    </Popover>
                   </p>{" "}
                 </Text>
                 {/* {/ <LeftOutlined className={styles.LeftOutlined} />  /} */}
@@ -677,9 +688,12 @@ const FilterWithTree = ({
                   }
                   disabled={loadingIndicator}
                   id="filter_input"
-                  prefix={<span className="text-canBlack lg:text-canLight text-sm lg:text-base lg:font-medium font-semibold lg:mr-14 mr-2 ">Greater than -</span>}
+                  prefix={
+                    <span className="text-canBlack lg:text-canLight text-sm lg:text-base lg:font-medium font-semibold lg:mr-14 mr-2 ">
+                      Greater than -
+                    </span>
+                  }
                 />
-              
               </div>
             </Col>
             {/* <Col md={24} className="mt-5">
@@ -769,7 +783,13 @@ const FilterWithTree = ({
                             format="YYYY-MM-DD"
                             defaultValue={moment(current_date_filter * 1000)}
                             value={moment(selectedAsOFDate * 1000)}
-                            suffixIcon={<Image src="/images/date-picker-icon.svg" width={22} height={22} />}
+                            suffixIcon={
+                              <Image
+                                src="/images/date-picker-icon.svg"
+                                width={22}
+                                height={22}
+                              />
+                            }
                             size={"large"}
                             className={`${styles.date} ${styles.dates} w-100 !text-canBlack`}
                             onChange={pickDate}

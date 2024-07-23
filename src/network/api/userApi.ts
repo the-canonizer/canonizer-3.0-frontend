@@ -100,7 +100,7 @@ export const logout = async (error = "", status = null, count: number = 1) => {
           is_archive: 0,
         })
       );
-      store.dispatch(setUserNickNames(null))
+      store.dispatch(setUserNickNames(null));
 
       if (+state.ui.apiStatus === +status) {
         return;
@@ -1001,7 +1001,9 @@ export const getChangeEmailRequest = async () => {
 
 export const EmailChangeVerificationOTP = async (body) => {
   try {
-    const res = await NetworkCall.fetch(UserRequest.emailChangeVerificationOTP(body));
+    const res = await NetworkCall.fetch(
+      UserRequest.emailChangeVerificationOTP(body)
+    );
     return res;
   } catch (err) {
     handleError(err);
@@ -1035,7 +1037,9 @@ export const UpdateNewEmailVerification = async (body) => {
 
 export const ReplaceAndUpdateNewEmail = async (body) => {
   try {
-    const res = await NetworkCall.fetch(UserRequest.replaceAndUpdateEmail(body));
+    const res = await NetworkCall.fetch(
+      UserRequest.replaceAndUpdateEmail(body)
+    );
     return res;
   } catch (err) {
     handleError(err);

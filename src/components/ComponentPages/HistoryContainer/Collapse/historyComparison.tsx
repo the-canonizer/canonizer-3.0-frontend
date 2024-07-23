@@ -8,8 +8,11 @@ import { capitalizeFirstLetter } from "src/utils/generalUtility";
 const { Title } = Typography;
 const { Panel } = Collapse;
 
-
-const HistoryComparison = ({ campStatement, topicNamespaceId, s1 = false }: any) => {
+const HistoryComparison = ({
+  campStatement,
+  topicNamespaceId,
+  s1 = false,
+}: any) => {
   const router = useRouter();
   const historyOf = router?.query?.from;
 
@@ -85,8 +88,9 @@ const HistoryComparison = ({ campStatement, topicNamespaceId, s1 = false }: any)
               Camp about Nickname:{" "}
               <span>
                 <Link
-                  href={`/user/supports/${campStatement?.camp_about_nick_id || ""
-                    }?canon=${topicNamespaceId || ""}`}
+                  href={`/user/supports/${
+                    campStatement?.camp_about_nick_id || ""
+                  }?canon=${topicNamespaceId || ""}`}
                   passHref
                 >
                   <a>{campStatement?.camp_about_nick_name}</a>
@@ -98,8 +102,9 @@ const HistoryComparison = ({ campStatement, topicNamespaceId, s1 = false }: any)
               <span>
                 <Link
                   href={{
-                    pathname: `/user/supports/${campStatement?.submitter_nick_id || ""
-                      }`,
+                    pathname: `/user/supports/${
+                      campStatement?.submitter_nick_id || ""
+                    }`,
                     query: {
                       canon: topicNamespaceId || "",
                     },
@@ -137,8 +142,9 @@ const HistoryComparison = ({ campStatement, topicNamespaceId, s1 = false }: any)
             <span>
               <Link
                 href={{
-                  pathname: `/user/supports/${campStatement?.submitter_nick_id || ""
-                    }`,
+                  pathname: `/user/supports/${
+                    campStatement?.submitter_nick_id || ""
+                  }`,
                   query: {
                     canon: topicNamespaceId || "",
                   },
@@ -177,7 +183,9 @@ const HistoryComparison = ({ campStatement, topicNamespaceId, s1 = false }: any)
                 <div
                   className="text-canBlack compare-card-internal"
                   dangerouslySetInnerHTML={{
-                    __html: campStatement?.parsed_v ? campStatement?.parsed_v : campStatement?.parsed_value,
+                    __html: campStatement?.parsed_v
+                      ? campStatement?.parsed_v
+                      : campStatement?.parsed_value,
                   }}
                 ></div>
               </div>

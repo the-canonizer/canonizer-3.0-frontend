@@ -22,6 +22,7 @@ import { store, wrapper } from "../store";
 import { checkTopicCampExistAPICall } from "src/network/api/campDetailApi";
 import { metaTagsApi } from "src/network/api/metaTagsAPI";
 import { createToken } from "src/network/api/userApi";
+import withRouteChange from "src/hoc/withRouteChange";
 import { getCookies } from "src/utils/generalUtility";
 // import CustomSkelton from "src/components/common/customSkelton";
 // import { ConfigProvider } from "antd";
@@ -158,6 +159,8 @@ function WrappedApp({
     };
   }, [router.events]);
 
+  const WrappedComponent = withRouteChange(Component);
+
   return (
     <CookiesProvider>
       <Provider store={store}>
@@ -171,7 +174,7 @@ function WrappedApp({
           {/* <ConfigProvider theme={}> */}
           {isAuthenticatedRef?.current &&
           !!(getCookies() as any)?.loginToken ? (
-            <Component {...pageProps} />
+            <WrappedComponent {...pageProps} />
           ) : null}
           {/* </ConfigProvider> */}
         </ErrorBoundary>

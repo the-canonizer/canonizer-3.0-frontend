@@ -52,23 +52,20 @@ body {
     right: 0;
     li {
       button {
-        width: 10px;
-        height: 10px;
-        overflow: hidden;
-        border-radius: 50%;
         display: block;
         box-shadow: none;
         outline: linen;
-        border: 1px solid var(--canBlue);
-        position: static;
-        color: #fff;
-        background-color: #fff;
-        padding: 0;
+        border-width: 1px;
+        border-style: solid;
+        @apply border-canBlue;
+        @apply px-1;
+        @apply text-canBlack;
+        @apply bg-white;
       }
       &[class*="slick-active"] {
         button {
-          background-color: var(--canBlue);
-          color: var(--canBlue);
+          @apply border-canHoverBlue;
+          @apply text-canHoverBlue;
         }
       }
       &:not(:last-child) {

@@ -49,7 +49,6 @@ const ProfileInfo = () => {
   const [userProfileSkeletonV, setUserProfileSkeletonV] = useState(true);
   const [viewEmail, setViewEmail] = useState("");
 
-
   const publicPrivateArray = {
     first_name: "first_name",
     last_name: "last_name",
@@ -279,7 +278,7 @@ const ProfileInfo = () => {
       if (res != undefined) {
         if (res.data != undefined) {
           let profileData = res.data;
-          setViewEmail(profileData?.email)
+          setViewEmail(profileData?.email);
           const verify = {
             phone_number: profileData.phone_number,
             mobile_carrier:

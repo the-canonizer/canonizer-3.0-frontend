@@ -15,8 +15,9 @@ const Preferences = () => {
   const dispatch = useDispatch<AppDispatch>(),
     router = useRouter();
 
-  const { tags } = useSelector((state: RootState) => ({
+  const { tags, currentReturnUrl } = useSelector((state: RootState) => ({
     tags: state?.tag?.tags,
+    currentReturnUrl: state?.auth?.currentReturnUrl,
   }));
 
   const onFinish = async (e) => {
@@ -33,7 +34,14 @@ const Preferences = () => {
 
     if (res && res.status_code === 200) {
       message.success(res.message);
-      router?.push({ pathname: "/" });
+
+      if (router?.query.returnUrl) {
+        router?.push(`${router?.query.returnUrl}`);
+      } else if (currentReturnUrl) {
+        router?.push({ pathname: currentReturnUrl });
+      } else {
+        router?.push({ pathname: "/" });
+      }
     }
   };
 
@@ -61,7 +69,15 @@ const Preferences = () => {
 
   const onSkip = (e) => {
     e?.preventDefault();
-    router?.push({ pathname: "/" });
+    if (router?.query.returnUrl) {
+      router?.push(`${router?.query.returnUrl}`);
+    } else if (currentReturnUrl) {
+      router?.push({ pathname: currentReturnUrl });
+    } else {
+      router?.push({ pathname: "/" });
+    }
+    // router?.push({ pathname: "/" });
+    // router?.push({ pathname: "/settings" });
   };
 
   return (

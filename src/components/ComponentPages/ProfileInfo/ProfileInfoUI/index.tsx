@@ -28,7 +28,7 @@ function ProfileInfoUI({
   setIsOTPModalVisible,
   setOTP,
   setToggleVerifyButton,
-  viewEmail
+  viewEmail,
 }: any) {
   return (
     <section className={styles.profileInfo_wrapper}>

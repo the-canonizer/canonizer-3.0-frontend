@@ -47,7 +47,7 @@ function SubscriptionsList({ isTestData = [] }: any) {
       setIsVisible(false);
       await getSubscriptionsList(query);
     }
-    
+
     setIsLoading(false);
   };
 

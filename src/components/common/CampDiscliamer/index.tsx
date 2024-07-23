@@ -1,9 +1,10 @@
 import React from "react";
 import Image from "next/image";
-import { isServer } from "src/utils/generalUtility";
-import SocialShareUI from "../socialShare";
 import { useSelector } from "react-redux";
+
+import { isServer } from "src/utils/generalUtility";
 import { RootState } from "src/store";
+import SocialShare from "components/shared/ShareTopic";
 
 const CampDisclaimer = () => {
   const { campRecord } = useSelector((state: RootState) => ({
@@ -13,7 +14,8 @@ const CampDisclaimer = () => {
     <div className="d-flex justify-between">
       <h3 className="mb-3">CAMP: AGREEMENT</h3>
       <div className="d-flex gap-4">
-        <SocialShareUI
+        <SocialShare
+          key={campRecord?.id}
           campName={campRecord?.camp_name}
           campUrl={!isServer() && window?.location?.href}
         />

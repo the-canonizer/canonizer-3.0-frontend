@@ -9,12 +9,15 @@ import AvatarGroup from "src/components/shared/AvaratGroup";
 import CardDescription from "./descriptions";
 import TopicCatsLabel from "components/shared/TopicCategories";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
+import { useIsMobile } from "src/hooks/useIsMobile";
 
 const propTypes = {
   topic: PropTypes.object,
 };
 
 const SingleTopicCard = ({ topic, onTopicLinkClick = null }) => {
+  const isMobile = useIsMobile();
+
   if (!topic) {
     return null;
   }
@@ -44,14 +47,14 @@ const SingleTopicCard = ({ topic, onTopicLinkClick = null }) => {
         </a>
       </Link>
       <CardDescription description={topic?.statement?.parsed_value} />
-      <div className="flex justify-between mt-auto pt-5 mt-auto flex-row md:flex-row lg:flex-col 2xl:flex-row">
+      <div className="flex justify-between mt-auto pt-5 mt-auto flex-row">
         <div className="text-letopic flex flex-col">
           <TopicCatsLabel tags={topic?.topicTags} />
           <ViewCounts views={topic?.views} className="!mt-2" />
         </div>
         <AvatarGroup
           avatars={topic?.supporterData?.slice(0, 3)}
-          size="large"
+          size={isMobile ? "small" : "large"}
           maxCount={3}
           maxStyle={{
             color: "#f56a00",

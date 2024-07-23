@@ -96,7 +96,10 @@ const Registration = () => {
         message.success(res.message);
         dispatch(setEmailForOTP(values.email?.trim()));
         form.resetFields();
-        router?.push({ pathname: "/registration/otp" });
+        router?.push({
+          pathname: "/registration/otp",
+          query: { ...router?.query },
+        });
       }
     }
     setLoading(false);
