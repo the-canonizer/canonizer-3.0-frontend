@@ -154,6 +154,15 @@ const TopicDetails = ({ serverSideCall }: any) => {
         showTreeSkeltonRef.current = true;
       }
       setLoadingIndicator(true);
+      const reqBody = {
+        topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
+        camp_num: +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1),
+        as_of: asof,
+        as_of_date:
+          asof == "default" || asof == "review"
+            ? Date.now() / 1000
+            : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
+      };
 
       if (didMount.current && !serverSideCall.current) {
         const reqBodyForService = {
@@ -168,15 +177,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
           update_all: 1,
           fetch_topic_history: viewThisVersionCheck ? 1 : null,
         };
-        const reqBody = {
-          topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
-          camp_num: +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1),
-          as_of: asof,
-          as_of_date:
-            asof == "default" || asof == "review"
-              ? Date.now() / 1000
-              : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
-        };
+
         const reqBodyForCampData = {
           topic_num: router?.query?.camp[0]?.split("-")[0],
           camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
@@ -187,7 +188,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
         if (!(algorithms?.length > 0)) await getCanonizedAlgorithmsApi();
         await Promise.all([
           dispatch(setCampSupportingTree({})),
-          getNewsFeedApi(reqBody),
+
           getCurrentTopicRecordApi(reqBody),
           getCurrentCampRecordApi(reqBody),
           getCanonizedCampStatementApi(reqBody),
@@ -197,6 +198,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
         serverSideCall.current = false;
         didMount.current = true;
       } else {
+        getNewsFeedApi(reqBody);
         didMount.current = true;
       }
 
@@ -206,7 +208,11 @@ const TopicDetails = ({ serverSideCall }: any) => {
     getTreeApiCall();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [asofdate, algorithm, +(router?.query?.camp[1]?.split("-")[0] ?? 1) || router]);
+  }, [
+    asofdate,
+    algorithm,
+    +(router?.query?.camp[1]?.split("-")[0] ?? 1) || router,
+  ]);
 
   const reqBodyData = {
     topic_num: +router?.query?.camp[0]?.split("-")[0],
@@ -235,12 +241,12 @@ const TopicDetails = ({ serverSideCall }: any) => {
       fetch_topic_history: +router?.query?.topic_history,
     };
     setRemoveSupportSpinner(true);
-    let reqBody = { 
-      as_of: asof, 
-      as_of_date: asofdate, 
-      topic_num: +router?.query?.camp[0]?.split("-")[0], 
-      camp_num: +router?.query?.camp[1]?.split("-")[0], 
-    }
+    let reqBody = {
+      as_of: asof,
+      as_of_date: asofdate,
+      topic_num: +router?.query?.camp[0]?.split("-")[0],
+      camp_num: +router?.query?.camp[1]?.split("-")[0],
+    };
 
     const res = await removeSupportedCamps(supportedCampsRemove);
     if (res && res.status_code == 200) {
@@ -249,7 +255,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
       GetCheckStatusData();
       await getTreesApi(reqBodyForService);
       getTopicActivityLogCall();
-      await getCurrentCampRecordApi(reqBody)
+      await getCurrentCampRecordApi(reqBody);
       setRemoveSupportSpinner(false);
       setIsRemovingSupport(false);
     }
@@ -278,12 +284,12 @@ const TopicDetails = ({ serverSideCall }: any) => {
     };
     setRemoveSupportSpinner(true);
 
-    let reqBody = { 
-      as_of: asof, 
-      as_of_date: asofdate, 
-      topic_num: +router?.query?.camp[0]?.split("-")[0], 
-      camp_num: +router?.query?.camp[1]?.split("-")[0], 
-    }
+    let reqBody = {
+      as_of: asof,
+      as_of_date: asofdate,
+      topic_num: +router?.query?.camp[0]?.split("-")[0],
+      camp_num: +router?.query?.camp[1]?.split("-")[0],
+    };
 
     let res = await addSupport(RemoveSupportId);
     if (res && res.status_code == 200) {
@@ -292,7 +298,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
       GetCheckStatusData();
       await getTreesApi(reqBodyForService);
       getTopicActivityLogCall();
-      await getCurrentCampRecordApi(reqBody)
+      await getCurrentCampRecordApi(reqBody);
       setRemoveSupportSpinner(false);
       setIsRemovingSupport(false);
     }

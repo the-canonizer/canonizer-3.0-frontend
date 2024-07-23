@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import {
   getCanonizedCampStatementApi,
@@ -28,44 +28,66 @@ import { setCurrentDate } from "src/store/slices/filtersSlice";
 import { useEffect, useRef } from "react";
 import DataNotFound from "@/components/ComponentPages/DataNotFound/dataNotFound";
 import { createToken } from "src/network/api/userApi";
+import { useRouter } from "next/router";
 
 const TopicDetailsPage = ({
   current_date,
-  newsFeed,
+  // newsFeed,
   topicRecord,
   campRecord,
   campStatement,
-  statementHistory,
-  tree,
+  // statementHistory,
+  // tree,
   serverCall,
 }: any) => {
+  const [treeState, setTreeState] = useState<any>();
   const dispatch = useDispatch();
   const serverSideCall = useRef(serverCall || false);
+  const router = useRouter();
+  const query = router.query;
 
   useEffect(() => {
-    dispatch(setNewsFeed(newsFeed));
+    let topicNum = query?.camp[0]?.split("-")[0];
+    let campNum = query?.camp[1]?.split("-")[0] || 1;
+    const reqBodyForService = {
+      topic_num: topicNum,
+      camp_num: campNum,
+      asOf: query?.asof ?? "default",
+      asofdate:
+        query?.asofdate && query?.asof == "bydate"
+          ? parseFloat(query?.asofdate)
+          : Date.now() / 1000,
+      algorithm: query?.algo || "blind_popularity",
+      update_all: 1,
+      fetch_topic_history: query?.viewversion == "1" ? 1 : null,
+    };
+    (async () => {
+      const res = await getTreesApi(reqBodyForService);
+      setTreeState(res);
+      dispatch(setTree(res?.status_code == 200 ? [res?.treeData] : []));
+    })();
+    // dispatch(setNewsFeed(newsFeed));
     dispatch(setCurrentTopicRecord(topicRecord));
     dispatch(setCurrentCampRecord(campRecord?.campData));
     dispatch(setCampStatement(campStatement));
-    dispatch(setHistory(statementHistory));
-    dispatch(setTree(tree?.status_code == 200 ? [tree?.treeData] : []));
+    // dispatch(setHistory(statementHistory));
     dispatch(setCurrentDate(current_date));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   let ErrorStatus =
-    tree?.status_code == 404 ||
-      (tree?.status_code == 422 &&
-        (!tree?.error?.camp_num ||
-          (tree?.error?.camp_num && tree?.error?.topic_num)))
+    treeState?.status_code == 404 ||
+    (treeState?.status_code == 422 &&
+      (!treeState?.error?.camp_num ||
+        (treeState?.error?.camp_num && treeState?.error?.topic_num)))
       ? "Topic"
       : "Camp";
 
   return (
     <Layout>
-      {tree?.status_code == 404 ||
-        campRecord?.status_code == 404 ||
-        campRecord?.status_code == 400 ? (
+      {treeState?.status_code == 404 ||
+      campRecord?.status_code == 404 ||
+      campRecord?.status_code == 400 ? (
         <DataNotFound
           name={ErrorStatus}
           message={`${ErrorStatus} not found`}
@@ -150,19 +172,19 @@ export async function getServerSideProps({ req, query }) {
   }
 
   const [
-    newsFeed,
+    // newsFeed,
     topicRecord,
     campRecord,
     campStatement,
-    statementHistory,
-    tree,
+    // statementHistory,
+    // tree,
   ] = await Promise.all([
-    getNewsFeedApi(reqBody, token),
+    // getNewsFeedApi(reqBody, token),
     getCurrentTopicRecordApi(reqBody, token),
     getCurrentCampRecordApi(reqBody, token),
     getCanonizedCampStatementApi(reqBody, token),
-    getHistoryApi(reqBodyForCampData, "1", "statement", token),
-    getTreesApi(reqBodyForService),
+    // getHistoryApi(reqBodyForCampData, "1", "statement", token),
+    // getTreesApi(reqBodyForService),
   ]);
 
   const resTopicName = topicRecord?.topic_name?.replaceAll(" ", "-");
@@ -187,12 +209,12 @@ export async function getServerSideProps({ req, query }) {
       },
       props: {
         current_date: currentDate,
-        newsFeed: newsFeed || [],
+        // newsFeed: newsFeed || [],
         topicRecord: topicRecord || {},
         campRecord: campRecord || {},
         campStatement: campStatement || [],
-        statementHistory: statementHistory?.data || {},
-        tree: tree || [],
+        // statementHistory: statementHistory?.data || {},
+        // tree: tree || [],
         serverCall: true,
       },
     };
@@ -201,12 +223,12 @@ export async function getServerSideProps({ req, query }) {
   return {
     props: {
       current_date: currentDate,
-      newsFeed: newsFeed || [],
+      // newsFeed: newsFeed || [],
       topicRecord: topicRecord || {},
       campRecord: campRecord || {},
       campStatement: campStatement || [],
-      statementHistory: statementHistory?.data || {},
-      tree: tree || [],
+      // statementHistory: statementHistory?.data || {},
+      // tree: tree || [],
       serverCall: true,
     },
   };
