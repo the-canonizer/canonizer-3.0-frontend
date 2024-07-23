@@ -25,9 +25,16 @@ import { placeholders } from "src/messages/placeholder";
 import { getAllRemovedReasons } from "src/network/api/campDetailApi";
 import { RootState } from "src/store";
 function SupportTreeDrawer({ onClose, open }: any) {
-  const reasons = useSelector(
-    (state: RootState) => state?.topicDetails?.removedReasons
-  );
+  const {
+    reasons,
+    topicRecord,
+    campRecord,
+  } = useSelector((state: RootState) => ({
+    reasons: state?.topicDetails?.removedReasons,
+    topicRecord: state?.topicDetails?.currentTopicRecord,
+    campRecord: state?.topicDetails?.currentCampRecord,
+   
+  }));
   const [availableReasons, setReasons] = useState(reasons);
   const [selectedValue, setSelectedValue] = useState(null);
   const [form] = Form.useForm();
@@ -94,7 +101,7 @@ function SupportTreeDrawer({ onClose, open }: any) {
             title={
               <>
                 Adding Support to camp:
-                <span>Agreement </span>
+                <span>{campRecord?.camp_name} </span>
               </>
             }
           />
@@ -106,23 +113,23 @@ function SupportTreeDrawer({ onClose, open }: any) {
               </>
             }
           >
-            <Breadcrumb.Item href="">Canon: General</Breadcrumb.Item>
+            {/* <Breadcrumb.Item href="">Canon: General</Breadcrumb.Item> */}
             <Breadcrumb.Item href="">
-              Topic: Representationalist Books
+              Topic: {topicRecord?.topic_name}
             </Breadcrumb.Item>
-            <Breadcrumb.Item href="">This Camp</Breadcrumb.Item>
+            <Breadcrumb.Item href="">{campRecord?.camp_name}</Breadcrumb.Item>
           </Breadcrumb>
         </div>
 
         <Form form={form} layout="vertical" className="adding-support-form">
-          <Alert
+          {/* <Alert
             className="border-0 rounded-lg warning-alert"
             description="You’re already supporting the Parent Camp: Agreement.
 Adding support to this camp will remove your support from the parent camp."
             type="error"
             showIcon
             icon={<i className="icon-warning"></i>}
-          />
+          /> */}
 
           <Row gutter={16}>
             <Col span={24} sm={12}>
