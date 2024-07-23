@@ -19,22 +19,41 @@ import {
 import Breadcrumbs from "components/ComponentPages/Breadcrumbs/breadcrumbs";
 import StructureIcon from "components/ComponentPages/CreateNewTopic/UI/structureIcon";
 import SelectInputs from "components/shared/FormInputs/select";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { placeholders } from "src/messages/placeholder";
-import { getAllRemovedReasons } from "src/network/api/campDetailApi";
+import { getAllRemovedReasons, getAllUsedNickNames } from "src/network/api/campDetailApi";
+import { addSupport } from "src/network/api/userApi";
 import { RootState } from "src/store";
+
 function SupportTreeDrawer({ onClose, open }: any) {
   const reasons = useSelector(
     (state: RootState) => state?.topicDetails?.removedReasons
   );
+  const router = useRouter();
+  const [nickNameList, setNickNameList] = useState([]);
   const [availableReasons, setReasons] = useState(reasons);
   const [selectedValue, setSelectedValue] = useState(null);
   const [form] = Form.useForm();
 
-  const handleChange = (value) => {
-    console.log(`selected ${value}`);
+
+
+  const getCanonizedNicknameList = async () => {
+    const topicNum = router?.query?.camp?.at(0)?.split("-")?.at(0);
+    const body = { topic_num: topicNum };
+
+    let res = await getAllUsedNickNames(topicNum && body);
+    if (res && res?.status_code == 200) {
+      setNickNameList(res.data);
+      form.setFieldsValue({
+        nickname: res?.data?.nick_name
+      })
+    }
   };
+
+
+
 
   const getReasons = async () => {
     await getAllRemovedReasons();
@@ -46,6 +65,7 @@ function SupportTreeDrawer({ onClose, open }: any) {
 
   useEffect(() => {
     getReasons();
+    getCanonizedNicknameList()
   }, []);
 
   useEffect(() => {
@@ -66,25 +86,27 @@ function SupportTreeDrawer({ onClose, open }: any) {
         onClose={onClose}
         open={open}
         width={730}
-        footer={
-          <div className="flex justify-center max-sm:flex-col gap-5">
-            <Button
-              size="large"
-              className="min-w-[200px] gap-2 flex items-center justify-center border border-canBlue bg-[#98B7E61A] rounded-lg text-canBlack text-base font-medium"
-            >
-              Cancel
-              <CloseOutlined />
-            </Button>
-            <Button
-              size="large"
-              type="primary"
-              className=" min-w-[200px] bg-canBlue flex items-center justify-center hover:bg-canHoverBlue focus:bg-canHoverBlue hover:text-white font-medium text-white disabled:bg-disabled font-base rounded-lg"
-            >
-              Add Support
-              <PlusOutlined />
-            </Button>
-          </div>
-        }
+      // footer={
+      //   <div className="flex justify-center max-sm:flex-col gap-5">
+      //     <Button
+      //       size="large"
+      //       className="min-w-[200px] gap-2 flex items-center justify-center border border-canBlue bg-[#98B7E61A] rounded-lg text-canBlack text-base font-medium"
+      //       onClick={() => onClose()}
+      //     >
+      //       Cancel
+      //       <CloseOutlined />
+      //     </Button>
+      //     <Button
+      //       size="large"
+      //       type="primary"
+      //       htmlType="submit"
+      //       className=" min-w-[200px] bg-canBlue flex items-center justify-center hover:bg-canHoverBlue focus:bg-canHoverBlue hover:text-white font-medium text-white disabled:bg-disabled font-base rounded-lg"
+      //     >
+      //       Add Support
+      //       <PlusOutlined />
+      //     </Button>
+      //   </div>
+      // }
       >
         <div className="page-breadcrums-wrapper">
           <PageHeader
@@ -113,99 +135,85 @@ function SupportTreeDrawer({ onClose, open }: any) {
             <Breadcrumb.Item href="">This Camp</Breadcrumb.Item>
           </Breadcrumb>
         </div>
+        <Form
+          form={form}
+          layout="vertical"
+          className="adding-support-form"
+          autoComplete="off"
+          scrollToFirstError
+          onFinish={onFinish}
+        // validateTrigger={messages.formValidationTypes()}
+        >
 
-        <Form form={form} layout="vertical" className="adding-support-form">
-          <Alert
+          {/* <Alert
             className="border-0 rounded-lg warning-alert"
             description="You’re already supporting the Parent Camp: Agreement.
 Adding support to this camp will remove your support from the parent camp."
             type="error"
             showIcon
             icon={<i className="icon-warning"></i>}
-          />
+          /> */}
 
           <Row gutter={16}>
             <Col span={24} sm={12}>
               <Form.Item
+                name="reason"
                 label="Reason for adding support"
+                required
                 rules={[
                   {
                     required: true,
+                    message: 'Please select a reason',
                   },
                 ]}
               >
-                <div className="thm-select">
-                  <div className="prefix-icon">
-                    <i className="icon-bar"></i>
-                  </div>
-                  <Select
-                    placeholder={placeholders.nickName}
-                    className="w-100 cn-select"
-                    size="large"
-                    suffixIcon={<i className="icon-chevron-down"></i>}
-                    onChange={handleChange}
-
-                  >
-                    {availableReasons.map((res) => (
-                      <Select.Option key={res.id} value={res.value}>
-                        {res.label}
-                      </Select.Option>
-                    ))}
-                    <Select.Option key="custom_reason" value="custom">
-                      Custom reason
+                <Select
+                  className="w-100 cn-select"
+                  size="large"
+                  suffixIcon={<i className="icon-chevron-down"></i>}
+                  onChange={onSelectChange}
+                >
+                  {availableReasons?.map((res) => (
+                    <Select.Option key={res?.id} value={`${res?.id}-(${res?.label})`}>
+                      {res?.label}
                     </Select.Option>
-                  </Select>
-
-                </div>
+                  ))}
+                  <Select.Option key="custom_reason" value="custom">
+                    Custom reason
+                  </Select.Option>
+                </Select>
               </Form.Item>
             </Col>
             <Col span={24} sm={12}>
               <Form.Item
+                name="nickname"
                 label="Nickname"
                 rules={[
                   {
                     required: true,
+                    message: 'Please select a nickname',
                   },
                 ]}
               >
-                <div className="thm-select">
-                  <div className="prefix-icon">
-                    <UserOutlined />
-                  </div>
-                  <Select
-                    placeholder="Select your nickname from list"
-                    className="w-100 cn-select"
-                    size="large"
-                    suffixIcon={<i className="icon-chevron-down"></i>}
-                    onChange={handleChange}
-                    options={[
-                      {
-                        value: "jack",
-                        label: "Jack",
-                      },
-                      {
-                        value: "lucy",
-                        label: "Lucy",
-                      },
-
-                      {
-                        value: "Yiminghe",
-                        label: "yiminghe",
-                      },
-                    ]}
-                  />
-                </div>
+                <Select
+                  placeholder="Select a nickname"
+                  className="w-100 cn-select"
+                  size="large"
+                  suffixIcon={<i className="icon-chevron-down"></i>}
+                  showSearch
+                >
+                  {nickNameList?.map((nick) => (
+                    <Select.Option key={nick.id} value={nick.id} >
+                      {nick.nick_name}
+                    </Select.Option>
+                  ))}
+                </Select>
               </Form.Item>
             </Col>
             <Col span={24}>
               <Form.Item
                 name="Citation"
                 label="Citation link"
-                rules={[
-                  {
-                    required: true,
-                  },
-                ]}
               >
                 <Input
                   className="thm-input"
@@ -216,6 +224,28 @@ Adding support to this camp will remove your support from the parent camp."
               </Form.Item>
             </Col>
           </Row>
+          <div className="flex justify-center max-sm:flex-col gap-5 absolute">
+            <Button
+              size="large"
+              className="min-w-[200px] gap-2 flex items-center justify-center border border-canBlue bg-[#98B7E61A] rounded-lg text-canBlack text-base font-medium"
+              onClick={() => {
+                onClose()
+                form.resetFields()
+              }}
+            >
+              Cancel
+              <CloseOutlined />
+            </Button>
+            <Button
+              size="large"
+              type="primary"
+              htmlType="submit"
+              className=" min-w-[200px] bg-canBlue flex items-center justify-center hover:bg-canHoverBlue focus:bg-canHoverBlue hover:text-white font-medium text-white disabled:bg-disabled font-base rounded-lg"
+            >
+              Add Support
+              <PlusOutlined />
+            </Button>
+          </div>
         </Form>
       </Drawer>
     </>
