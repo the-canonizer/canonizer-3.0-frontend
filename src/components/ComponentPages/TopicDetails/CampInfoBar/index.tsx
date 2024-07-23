@@ -588,7 +588,8 @@ const TimelineInfoBar = ({
                         ) : breadCrumbRes ? (
                           <span
                             className={
-                              styles.boldBreadcrumb + " whitespace-nowrap text-sm"
+                              styles.boldBreadcrumb +
+                              " whitespace-nowrap text-sm"
                             }
                           >
                             {breadCrumbRes?.topic_name}

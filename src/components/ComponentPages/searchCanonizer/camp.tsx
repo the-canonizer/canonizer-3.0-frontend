@@ -58,8 +58,13 @@ const CampSearch = () => {
   }, [asof]);
 
   useEffect(() => {
-    if(asof == "review" || asof == "bydate" || filterByScore !=0 || algorithm !== "blind_popularity"){
-    pageChange1(1,20)
+    if (
+      asof == "review" ||
+      asof == "bydate" ||
+      filterByScore != 0 ||
+      algorithm !== "blind_popularity"
+    ) {
+      pageChange1(1, 20);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCampFromAdvanceFilterAlgorithm]);
@@ -99,9 +104,7 @@ const CampSearch = () => {
             <div className={styles.search_lists}>
               {searchDataAll.camp?.length ? (
                 <div>
-                  {
-                  isReview ||
-                  asof == "bydate" ? (
+                  {isReview || asof == "bydate" ? (
                     <div>
                       {selectedCampFromAdvanceFilterAlgorithm?.length ? (
                         <ul>
@@ -216,9 +219,15 @@ const CampSearch = () => {
 
           <Pagination
             hideOnSinglePage={true}
-            total={asof == "review" || asof == "bydate" ?(selectedCampFromAdvanceFilterAlgorithm?.length):(searchMetaData.total)}
+            total={
+              asof == "review" || asof == "bydate"
+                ? selectedCampFromAdvanceFilterAlgorithm?.length
+                : searchMetaData.total
+            }
             pageSize={20}
-            onChange={asof == "review" || asof == "bydate"?pageChange1:pageChange}
+            onChange={
+              asof == "review" || asof == "bydate" ? pageChange1 : pageChange
+            }
             showSizeChanger={false}
           />
         </div>

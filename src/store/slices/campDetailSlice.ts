@@ -23,9 +23,9 @@ export const treeSlice = createSlice({
     },
     manageSupportStatusCheck: false,
     openDrawer: false,
-    asOfValues:0,
-    clearAlgoFromRefineFilter:"",
-    clearScoreFromRefineFilter:0,
+    asOfValues: 0,
+    clearAlgoFromRefineFilter: "",
+    clearScoreFromRefineFilter: 0,
     // openConsensusTreePopup: true,
     manageSupportUrlLink: null,
     CurrentCheckSupportStatus: null,
@@ -165,7 +165,7 @@ export const {
   setSiblingCampData,
   setAsOfValues,
   setClearAlgoFromRefineFilter,
-  setClearScoreFromRefineFilter
+  setClearScoreFromRefineFilter,
   // setOpenConsensusTreePopup,
 } = treeSlice.actions;
 

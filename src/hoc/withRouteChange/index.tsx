@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { setCurrentReturnUrl } from "src/store/slices/authSlice";
 
 const withRouteChange = (WrappedComponent) => {
+  // eslint-disable-next-line
   return (props) => {
     const router = useRouter(),
       dispatch = useDispatch();

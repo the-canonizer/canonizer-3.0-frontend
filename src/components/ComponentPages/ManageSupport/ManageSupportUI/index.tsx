@@ -290,7 +290,10 @@ const ManageSupportUI = ({
 
   const handleOnClick = () => {
     // Original logic
-    if (removeAllIsSelected() && !currentGetCheckSupportExistsData.is_delegator) {
+    if (
+      removeAllIsSelected() &&
+      !currentGetCheckSupportExistsData.is_delegator
+    ) {
       removeCampsApi();
     } else if (CheckDelegatedOrDirect) {
       checkNickNameSupportCamps();
@@ -572,7 +575,6 @@ const ManageSupportUI = ({
         </div>
       </div>
 
-    
       {/* <Modal
         className={styles.modal_cross}
         title={

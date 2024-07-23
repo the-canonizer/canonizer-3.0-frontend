@@ -87,15 +87,14 @@ function CompareStatementUI({
               />
             </Col>
             <Col xs={24} md={24}>
-              {
-                liveStatement !== null &&
+              {liveStatement !== null && (
                 <HistoryCard
                   compareMode={compareMode}
                   comparisonData={liveStatement}
                   status={liveStatement?.status}
                   currentVersion={currentVersion}
                 />
-              }
+              )}
             </Col>
           </Row>
         </div>

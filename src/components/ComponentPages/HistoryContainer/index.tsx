@@ -387,7 +387,9 @@ function HistoryContainer() {
                 {historyTitle(historyOf) + " " + "History"}
               </Button>
               <Title level={5} className="mb-6">
-                {historyTitle(historyOf).toUpperCase() + " " + "HISTORY BASED ON STATUS"}
+                {historyTitle(historyOf).toUpperCase() +
+                  " " +
+                  "HISTORY BASED ON STATUS"}
               </Title>
               <div className="sider-btn">
                 <Button

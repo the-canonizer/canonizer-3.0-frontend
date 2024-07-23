@@ -107,8 +107,7 @@ const UploadFileUI = ({
   toggleFileView,
   setToggleFileView,
   getUploadFilesLoadingIndicator,
-  getUploadFolderLoadingIndicator
-
+  getUploadFolderLoadingIndicator,
 }: any) => {
   const [uploadStatus] = useState(false);
   // const [toggleFileView, setToggleFileView] = useState(false);
@@ -673,13 +672,14 @@ const UploadFileUI = ({
   };
 
   const openFolderData = (item, i) => {
-    return (
-      getUploadFilesLoadingIndicator ?  <CustomSkelton
-      skeltonFor="cardForUploadFile"
-      bodyCount={15}
-      stylingClass=""
-      isButton={false}
-    />:
+    return getUploadFilesLoadingIndicator ? (
+      <CustomSkelton
+        skeltonFor="cardForUploadFile"
+        bodyCount={15}
+        stylingClass=""
+        isButton={false}
+      />
+    ) : (
       <div className={"folderId" + item.id} id={"folderId" + item.id}>
         {item && item.type && item.type == "folder" && !toggleFileView ? (
           <div className={styles.Folder_container}>
@@ -809,13 +809,14 @@ const UploadFileUI = ({
                 openFolder &&
                 dragBoxStatus == false
               ) {
-                return (
-                  getUploadFolderLoadingIndicator ?  <CustomSkelton
-                  skeltonFor="cardForUploadFile"
-                  bodyCount={10}
-                  stylingClass=""
-                  isButton={false}
-                />:
+                return getUploadFolderLoadingIndicator ? (
+                  <CustomSkelton
+                    skeltonFor="cardForUploadFile"
+                    bodyCount={10}
+                    stylingClass=""
+                    isButton={false}
+                  />
+                ) : (
                   <div>
                     <Card
                       size="small"
@@ -875,7 +876,7 @@ const UploadFileUI = ({
                   </div>
                 );
               } else if (!openFolder && dragBoxStatus == false) {
-                return  openFolderData(item, i);
+                return openFolderData(item, i);
               } else {
                 return "";
               }

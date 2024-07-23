@@ -20,8 +20,7 @@ export default function SocialLoginUi({ isNotLogin = false }: any) {
   const [isLoading, setIsLoading] = useState(false);
 
   const dispatch = useDispatch();
-  
-  
+
   // social login api call
   const onSocialLogin = async (
     provider: any,
@@ -33,7 +32,7 @@ export default function SocialLoginUi({ isNotLogin = false }: any) {
     let body = { provider };
     const res = await socialLogin(body);
     try {
-      if (res.data) {  
+      if (res.data) {
         if (isNotLogin) {
           dispatch(setValue({ label: "redirect_type", value: true }));
         }
