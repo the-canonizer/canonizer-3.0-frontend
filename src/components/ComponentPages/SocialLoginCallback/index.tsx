@@ -4,6 +4,7 @@ import { message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
+  getNickNameList,
   socialLoginCallback,
   socialLoginLinkUser,
 } from "src/network/api/userApi";
@@ -15,6 +16,7 @@ import {
 import { setValue } from "src/store/slices/utilsSlice";
 import { RootState } from "src/store";
 import CallbackUI from "./UI";
+import { setUserNickNames } from "src/store/slices/authSlice";
 
 function SocialLoginCallback() {
   const { rdType } = useSelector((state: RootState) => ({
@@ -32,6 +34,11 @@ function SocialLoginCallback() {
   const openModal = () => dispatch(showSocialEmailPopup());
   const openNameModal = () => dispatch(showSocialNamePopup());
 
+  const fetchNickNameList = async () => {
+    let response = await getNickNameList();
+      dispatch(setUserNickNames(response?.data));
+  }
+
   const sendData = async (data: object) => {
     const redirectTab = localStorage.getItem("redirectTab");
 
@@ -42,6 +49,9 @@ function SocialLoginCallback() {
         (response && response.status_code === 200) ||
         (response && response.status_code === 400)
       ) {
+        
+        fetchNickNameList()
+
         if (redirectType) {
           dispatch(setValue({ label: "redirect_type", value: false }));
 

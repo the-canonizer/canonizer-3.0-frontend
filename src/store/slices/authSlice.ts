@@ -12,6 +12,7 @@ export const authSlice = createSlice({
     socialUsers: [],
     emailForOtp: null,
     isNewUser: false,
+    userNickNames: null,
   },
   reducers: {
     setAuthToken: (state, action) => {
@@ -53,6 +54,9 @@ export const authSlice = createSlice({
     setEmailForOTP: (state, action) => {
       state.emailForOtp = action.payload;
     },
+    setUserNickNames: (state, action) => {
+      state.userNickNames = action.payload;
+    },
   },
 });
 
@@ -67,6 +71,7 @@ export const {
   setLogout,
   setEmailForOTP,
   setIsNewUser,
+  setUserNickNames,
 } = authSlice.actions;
 
 export default authSlice.reducer;

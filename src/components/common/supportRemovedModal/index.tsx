@@ -22,6 +22,7 @@ const SupportRemovedModal = ({
   form,
   isAdd = false,
   isOrderChange = false,
+  onKeyUp = (_) => {},
 }: any) => {
   const reasons = useSelector(
     (state: RootState) => state?.topicDetails?.removedReasons
@@ -80,6 +81,10 @@ const SupportRemovedModal = ({
                 showSearch
                 optionFilterProp="children"
                 onChange={onSelectChange}
+                getPopupContainer={(triggerNode) => {
+                  return triggerNode.parentNode;
+                }}
+                onSelect={onKeyUp}
               >
                 <Option key="select" value={null}>
                   Select reason
@@ -110,6 +115,7 @@ const SupportRemovedModal = ({
                   rows={5}
                   data-testid="supportremoval"
                   placeholder={placeholders.editSummary}
+                  onKeyUp={onKeyUp}
                 />
               </Form.Item>
             )}
@@ -124,6 +130,7 @@ const SupportRemovedModal = ({
                 placeholder={placeholders.campURL}
                 size={"large"}
                 maxLength={255}
+                onKeyUp={onKeyUp}
               />
             </Form.Item>
           </Col>

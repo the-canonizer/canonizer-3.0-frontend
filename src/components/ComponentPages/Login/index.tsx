@@ -1,18 +1,18 @@
-import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import { useDispatch, useSelector } from "react-redux";
 import { Card, Col, Form, Row } from "antd";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import LoginUI from "./UI";
 
+import CustomSpinner from "components/shared/CustomSpinner";
 import { login, resendOTPForRegistration } from "src/network/api/userApi";
 import { AppDispatch, RootState } from "src/store";
+import { setEmailForOTP } from "src/store/slices/authSlice";
+import { setManageSupportStatusCheck } from "src/store/slices/campDetailSlice";
 import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
 import { setValue } from "src/store/slices/utilsSlice";
-import { setManageSupportStatusCheck } from "src/store/slices/campDetailSlice";
-import CustomSpinner from "components/shared/CustomSpinner";
 import LeftContent from "../Registration/UI/leftContent";
-import { setEmailForOTP } from "src/store/slices/authSlice";
 
 const Login = () => {
   const remember = useSelector((state: RootState) => state.utils.remember_me);
@@ -92,6 +92,7 @@ const Login = () => {
       );
 
       form.resetFields();
+      // fetchNickNameList();
 
       closeModal();
 

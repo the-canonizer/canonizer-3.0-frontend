@@ -80,7 +80,9 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
                     }}
                   />
                 ) : (
-                  <span className="text-sm lg:text-base">{K?.exceptionalMessages?.campStatement}</span>
+                  <span className="text-sm lg:text-base">
+                    {K?.exceptionalMessages?.campStatement}
+                  </span>
                 )}
               </div>
             </Paragraph>
@@ -171,6 +173,8 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
       defaultActiveKey={["1"]}
       expandIconPosition="right"
       className="topicDetailsCollapse"
+      style={{ cursor: campStatement[0]?.in_review_changes > 0 &&
+        campRecord?.is_archive == 0?"pointer": null}}
     >
       <Panel
         className={`campStatementPanel header-bg-color-change ${backGroundColorClass}`}
@@ -187,18 +191,6 @@ const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
               {campStatement[0]?.in_review_changes > 0 &&
               campRecord?.is_archive == 0 ? (
                 <div
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    router.push(
-                      `/statement/history/${replaceSpecialCharacters(
-                        router?.query?.camp[0],
-                        "-"
-                      )}/${replaceSpecialCharacters(
-                        router?.query?.camp[1] ?? "1-Agreement",
-                        "-"
-                      )}`
-                    );
-                  }}
                 >
                   <Popover
                     content={

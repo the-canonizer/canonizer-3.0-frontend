@@ -36,7 +36,7 @@ function HotTopic() {
 
   return (
     <Fragment>
-      {topicData ? (
+      {topicData?.length>0 && topicData? (
         <Slider {...settings}>
           {topicData?.map((topic) => (
             <Card
