@@ -1,54 +1,76 @@
 .NavWrap {
+  @apply overflow-hidden;
+  @apply h-full;
   ul {
+    @apply h-full;
     .listItem {
-      position: relative;
+      @apply h-full;
+      @apply relative;
+      // @apply flex;
+      @apply items-center;
       &:not(:last-child) {
         &::before {
-          position: absolute;
-          content: "|";
-          top: 0;
-          left: 0;
           color: darkgray;
+          @apply content-["|"];
+          @apply absolute;
+          @apply top-[50%];
+          @apply -translate-y-2/4;
+          @apply left-0;
         }
+      }
+      &::after {
+        @apply absolute;
+        @apply top-[50%];
+        @apply -translate-y-2/4;
+        @apply right-0;
       }
       &:first-child {
         &::before {
-          display: none;
+          @apply hidden;
         }
       }
       &:nth-child(3) {
         &::before {
-          display: none;
+          @apply hidden;
         }
       }
     }
   }
   @media screen and (max-width: 1050px) {
-    position: fixed;
+    @apply fixed;
     width: 80%;
     height: 100%;
-    background: #fff;
-    top: 0;
-    left: 0;
+    @apply bg-white;
+    @apply top-0;
+    @apply left-0;
     z-index: 100;
     margin: 0;
     padding: 30px 30px;
     transform: translateX(-500em);
     transition: all 0.3s;
-    display: flex;
-    flex-flow: column;
+    @apply flex;
+    @apply flex-col;
     &.open {
       transform: translateX(0);
     }
     ul {
       z-index: 1000;
-      li {
+      .listItem {
         padding: 10px 20px;
+        @apply w-full;
+        @apply h-auto;
+        @apply max-h-[50px];
+        // &::after,
+        // &::before {
+        //   @apply hidden;
+        // }
         &.active {
-          background: var(--canGray);
-
+          @apply bg-canGray;
+          .divider {
+            @apply hidden;
+          }
           a {
-            color: var(--canHoverBlue);
+            @apply text-canHoverBlue;
           }
         }
       }
@@ -56,9 +78,28 @@
   }
 }
 
+.divider {
+  width: calc(100% - 1.5rem);
+  @apply m-auto;
+  @apply hidden;
+  @apply h-[5px];
+  @apply bg-canBlue;
+  @apply absolute;
+  @apply bottom-0;
+  @apply top-auto;
+  @apply left-0;
+  @apply right-0;
+}
+
 .active {
-  color: var(--canHoverBlue);
+  @apply text-canHoverBlue;
+  @apply relative;
+
+  .divider {
+    @apply block;
+  }
+
   a {
-    color: var(--canHoverBlue);
+    @apply text-canHoverBlue;
   }
 }

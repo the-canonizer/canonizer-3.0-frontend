@@ -590,7 +590,7 @@ const TimelineInfoBar = ({
                       className="title-popover"
                     >
                       <div className="flex  items-center gap-1.5">
-                        <span className="font- text-base text-canBlack whitespace-nowrap">
+                        <span className="font-normal text-sm text-canBlack whitespace-nowrap">
                           Topic :
                         </span>
 
@@ -610,14 +610,14 @@ const TimelineInfoBar = ({
                               "-"
                             )}/1-Agreement?${getQueryParams()?.returnQuery}`}
                           >
-                            <a className="whitespace-nowrap !text-canBlack">
+                            <a className="whitespace-nowrap !text-canBlack !text-sm">
                               {breadCrumbRes?.topic_name}
                             </a>
                           </Link>
                         ) : breadCrumbRes ? (
                           <span
                             className={
-                              styles.boldBreadcrumb + " whitespace-nowrap"
+                              styles.boldBreadcrumb + " whitespace-nowrap text-sm"
                             }
                           >
                             {breadCrumbRes?.topic_name}
@@ -666,7 +666,7 @@ const TimelineInfoBar = ({
                           />
                         </div>
 
-                        <span className="ml-5 mr-1 font-bold text-base text-canBlack whitespace-nowrap shrink-0">
+                        <span className="ml-5 mr-1 font-bold text-sm text-canBlack whitespace-nowrap shrink-0">
                           {!isTopicHistoryPage ? "Camp:" : ""}
                         </span>
                       </div>
@@ -697,7 +697,7 @@ const TimelineInfoBar = ({
                                     )}?${getQueryParams()?.returnQuery}`}
                                     key={index}
                                   >
-                                    <a className="!text-canBlack gap-x-5 gap-y-1 flex hover:!text-canBlack ">
+                                    <a className="!text-canBlack gap-x-5 gap-y-1 flex hover:!text-canBlack !text-sm">
                                       {index !== 0 && (
                                         <span className=" !text-canBlack">
                                           <Image
@@ -723,7 +723,7 @@ const TimelineInfoBar = ({
                                           content={contentForCamp}
                                           title={title2}
                                         >
-                                          <div className="flex items-center gap-1.5">
+                                          <div className="flex items-center gap-1.5 text-sm">
                                             <span
                                               className={`${
                                                 index ===
@@ -830,7 +830,7 @@ const TimelineInfoBar = ({
                       className="title-popover"
                     >
                       <div className="flex  items-center gap-2 ">
-                        <span className="lg:font-normal lg:text-base text-xs lg:text-canBlack text-canLight whitespace-nowrap">
+                        <span className="lg:font-normal lg:text-sm text-xs lg:text-canBlack text-canLight whitespace-nowrap">
                           Topic :
                         </span>
 
@@ -850,12 +850,12 @@ const TimelineInfoBar = ({
                               "-"
                             )}/1-Agreement?${getQueryParams()?.returnQuery}`}
                           >
-                            <a className="normal lg:text-canBlack !text-canLight lg:text-base text-xs leading-5 lg:font-normal text-ellipsis w-[50px] truncate">
+                            <a className="normal lg:text-canBlack !text-canLight lg:text-base text-sm leading-5 lg:font-normal text-ellipsis w-[50px] truncate">
                               {breadCrumbRes?.topic_name}
                             </a>
                           </Link>
                         ) : breadCrumbRes ? (
-                          <span className="lg:text-base text-xs font-normal text-ellipsis w-[80px] lg:w-auto truncate lg:text-canBlack text-canLight ">
+                          <span className="lg:text-base text-sm font-normal text-ellipsis w-[80px] lg:w-auto truncate lg:text-canBlack text-canLight ">
                             {breadCrumbRes?.topic_name}
                           </span>
                         ) : (
@@ -904,7 +904,7 @@ const TimelineInfoBar = ({
                             width={6}
                           />
                         </span>
-                        <span className="normal text-canGreen whitespace-nowrap flex items-center text-xs font-semibold">
+                        <span className="normal text-canGreen whitespace-nowrap flex items-center text-sm font-semibold">
                           {isTopicHistoryPage ? "Camp :" : ""}
                         </span>
                         {loadingIndicator ? (
@@ -932,7 +932,7 @@ const TimelineInfoBar = ({
                                   )}?${getQueryParams()?.returnQuery}`}
                                   key={index}
                                 >
-                                  <a className="text-xs !text-canGreen flex flex-wrap shrink-0 gap-2 items-center">
+                                  <a className="text-sm !text-canGreen flex flex-wrap shrink-0 gap-2 items-center">
                                     {index !== 0 && (
                                       <span
                                         className={
@@ -997,7 +997,7 @@ const TimelineInfoBar = ({
                   <div className="topicDetailsCollapseFooter printHIde camp">
                     <CustomButton
                       disabled={campRecord?.is_archive == 1 ? true : false}
-                      className=" printHIde manage_camp_btn sm:hidden md:hidden hidden lg:flex border border-canBlue hover:bg-canBlue hover:border-transparent hover:text-white !h-[40px] py-2.5 px-3 rounded-lg flex items-center gap-2.5 text-base !font-medium leading-6 text-center  text-white bg-canBlue"
+                      className=" printHIde manage_camp_btn sm:hidden md:hidden hidden lg:flex border border-canBlue hover:bg-canBlue hover:border-transparent hover:text-white !h-[40px] py-2.5 px-3 rounded-lg flex items-center gap-2.5 text-sm !font-medium leading-6 text-center  text-white bg-canBlue"
                       id="add-camp-statement-btn"
                     >
                       <Link
@@ -1020,7 +1020,7 @@ const TimelineInfoBar = ({
                         }
                         className="printHIde"
                       >
-                        <a className="printHIde flex items-center gap-2 ">
+                        <a className="printHIde flex items-center gap-2 text-sm">
                           {K?.exceptionalMessages?.manageCampStatementButton}
                           <Image
                             src="/images/manage-btn-icon.svg"
@@ -1037,7 +1037,7 @@ const TimelineInfoBar = ({
                 )}
 
                 <Button
-                  className="btn hidden create-new-camp-btn border border-canBlue px-8 py-2.5 rounded-lg lg:flex items-center gap-2.5 text-base font-medium leading-6 text-center text-canBlack bg-transparent"
+                  className="btn hidden create-new-camp-btn border border-canBlue px-8 py-2.5 rounded-lg lg:flex items-center gap-2.5 text-base font-medium leading-6 text-center text-canBlack bg-transparent !text-sm"
                   size="large"
                   onClick={handleClick}
                 >

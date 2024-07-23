@@ -44,11 +44,15 @@ function CustomLayout(props: any) {
       <RegistrationModal />
 
       {props?.afterHeader ? (
-        <div className="px-4 md:px-7 mb-3 lg:mt-2 lg:mb-10">{props?.afterHeader}</div>
+        <div className="px-4 md:px-7 mb-3 mt-9 lg:mt-2 lg:mb-10">
+          {props?.afterHeader}
+        </div>
       ) : null}
 
       <Layout
-        className={`px-4 md:px-7 max-w-full pb-14 ${styles.contentArea} ${getCls()}`}
+        className={`px-4 md:px-7 max-w-full pb-14 ${
+          styles.contentArea
+        } ${getCls()}`}
       >
         {props?.leftSidebar ? (
           <aside className={`${styles.leftSidebar} md:mr-7`}>

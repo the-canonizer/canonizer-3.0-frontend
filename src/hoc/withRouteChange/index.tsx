@@ -18,7 +18,8 @@ const withRouteChange = (WrappedComponent) => {
           currentUrl !== "/login" &&
           currentUrl !== "/registration" &&
           currentUrl !== "/login/otp" &&
-          currentUrl !== "/registration/otp"
+          currentUrl !== "/registration/otp" &&
+          currentUrl !== "/category-preference"
         ) {
           if (url === "/registration" || url === "/login") {
             dispatch(setCurrentReturnUrl(router?.asPath));

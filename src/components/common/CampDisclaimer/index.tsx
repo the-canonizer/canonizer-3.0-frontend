@@ -1,12 +1,13 @@
 import React from "react";
 import Image from "next/image";
-import { isServer } from "src/utils/generalUtility";
-import SocialShareUI from "../socialShare";
 import { useSelector } from "react-redux";
-import { RootState } from "src/store";
 import { Dropdown } from "antd";
+
+import { isServer } from "src/utils/generalUtility";
+import { RootState } from "src/store";
 import DropDownMenu from "../../DropdownMenu";
 import ViewCounts from "components/shared/ViewsCount";
+import SocialShare from "components/shared/ShareTopic";
 
 const CampDisclaimer = () => {
   const { campRecord, manageSupportStatusCheck, tree } = useSelector(
@@ -16,6 +17,7 @@ const CampDisclaimer = () => {
       tree: state?.topicDetails?.tree && state?.topicDetails?.tree[0],
     })
   );
+
   return (
     <div className="flex justify-between mb-6 items-center">
       <div className="flex gap-2.5 items-center">
@@ -29,7 +31,8 @@ const CampDisclaimer = () => {
 
       <div className="flex gap-7 items-center">
         <div className="">
-          <SocialShareUI
+          <SocialShare
+            key={campRecord?.id}
             campName={campRecord?.camp_name}
             campUrl={!isServer() && window?.location?.href}
           />
@@ -61,4 +64,5 @@ const CampDisclaimer = () => {
     </div>
   );
 };
+
 export default CampDisclaimer;

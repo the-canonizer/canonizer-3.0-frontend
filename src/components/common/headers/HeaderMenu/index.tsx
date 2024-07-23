@@ -57,7 +57,7 @@ const menuItems = [
   //   external: true,
   // },
   {
-    link: "/videos/consciousness",
+    link: "/videos/consciousness/introduction",
     linkTitle: "Videos",
     id: 6,
     icon: <QuestionCircleOutlined />,
@@ -116,10 +116,11 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
 
   const ListItem = ({ cls = "", ...props }) => (
     <li
-      className={`flex-auto px-3 before:hidden after:hidden tab:before:block tab:after:block rounded-lg ${styles.listItem} ${cls}`}
+      className={`flex-auto flex px-3 before:hidden after:hidden tab:before:block tab:after:block rounded-lg ${styles.listItem} ${cls}`}
       key={props.key}
     >
       {props?.children}
+      <div className={styles.divider}></div>
     </li>
   );
 
@@ -218,7 +219,7 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
             </Link>
           </div>
         ) : null}
-        <ul className="flex text-sm font-inter font-medium flex-col tab:flex-row tab:items-center mt-4 tab:mt-0">
+        <ul className="flex text-sm font-inter font-medium flex-col tab:flex-row tab:items-center mt-4 tab:mt-0 items-center">
           <ListItem
             cls={`create-topic-header-link relative ${
               router?.asPath === "/create/topic" ? styles.active : ""
@@ -248,7 +249,7 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
             return (
               <ListItem
                 cls={`${router?.asPath === item.link ? styles.active : ""} ${
-                  item?.isMobile ? "block tab:hidden" : ""
+                  item?.isMobile ? "flex tab:hidden" : ""
                 } ${
                   item.linkTitle?.toLowerCase() === "start a topic"
                     ? "create-topic-header-link"
@@ -277,7 +278,7 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
           {isUserAuthenticated ? (
             <ListItem
               key="notification-li"
-              cls="after:content-['|'] after:absolute after:ml-[10px] after:text-[darkgray] hidden tab:block after:top-[5px] after:right-0 before:!top-[5px]"
+              cls="after:content-['|'] after:absolute after:ml-[10px] after:text-[darkgray] hidden tab:flex after:right-0"
             >
               <Notifications />
             </ListItem>
@@ -298,7 +299,7 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
               />
             </ListItem>
           ) : (
-            <ListItem key="Join-canonizer-li" cls="hidden tab:block">
+            <ListItem key="Join-canonizer-li" cls="hidden tab:flex">
               <JoinCanonizer className="py-3" />
             </ListItem>
           )}
