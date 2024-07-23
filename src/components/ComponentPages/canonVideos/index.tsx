@@ -74,7 +74,7 @@ export default function CanonVideos() {
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router, currentVideoTitle]);
+  }, []);
 
   const replaceString = (text: string, reverse: boolean = false) => {
     if (reverse) {
@@ -240,7 +240,7 @@ export default function CanonVideos() {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [topic]);
+  }, []);
 
   useEffect(() => {
     const ct = router?.query?.t;

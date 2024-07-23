@@ -195,7 +195,6 @@ const NetworkConstants = {
 
     Videos: `${BaseCanonizerApiUrl}/videos/consiousness/1`,
     VideosContent: `${BaseCanonizerApiUrl}/videos`,
-    Videos: `${BaseCanonizerApiUrl}/videos/consiousness/1`,
 
     GetNickSupportUser: `${BaseCanonizerApiUrl}/get-nick-support-user/`,
 
