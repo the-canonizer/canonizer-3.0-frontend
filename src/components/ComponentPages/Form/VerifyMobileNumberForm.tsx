@@ -89,6 +89,7 @@ function VerifyMobileNumberForm({
     if (!phoneV && !carrirV) {
       message.error("Please enter the mobile number with the carrier first!");
       formVerify.resetFields(["phone_number", "mobile_carrier"]);
+      setIsLoading(false);
       return;
     }
 
@@ -124,7 +125,7 @@ function VerifyMobileNumberForm({
                         style={{ marginLeft: "5px" }}
                       >
                         {" "}
-                        (for mobile otp verification)
+                        (for mobile OTP verification)
                       </span>
                     </>
                   }
@@ -178,7 +179,7 @@ function VerifyMobileNumberForm({
                 </Form.Item>
               </Col>
               <Col md={4}>
-                <Form.Item label="&nbsp;">
+                <Form.Item label="&nbsp;" className={styles.btnLayout}>
                   {!toggleVerifyButton ? (
                     <Button
                       id="verifyBtn"

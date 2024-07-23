@@ -1,33 +1,32 @@
-import { Fragment, useEffect, useState } from "react";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { Button, Menu, Typography } from "antd";
 import {
+  ArrowRightOutlined,
+  BellOutlined,
   CheckCircleOutlined,
+  CloseOutlined,
+  GlobalOutlined,
+  HomeOutlined,
   LogoutOutlined,
   MenuOutlined,
-  SettingOutlined,
-  HomeOutlined,
   QuestionCircleOutlined,
-  GlobalOutlined,
-  CloseOutlined,
-  ArrowRightOutlined,
-  VideoCameraOutlined,
-  BellOutlined,
+  SettingOutlined,
 } from "@ant-design/icons";
+import { Button, Menu, Typography } from "antd";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { Fragment, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 import styles from "./HeaderMenu.module.scss";
 
-import CreateTopic from "src/components/shared/Buttons/TopicCreationButton";
 import JoinCanonizer from "src/components/shared/Buttons/JoinCanoizerButton";
-import ProfileInfoTab from "./profileInfo";
-import { RootState } from "src/store";
-import Notifications from "../notification";
-import { logout } from "src/network/api/userApi";
-import { getGravatarPicApi } from "src/network/api/notificationAPI";
-import Logo from "../logoHeader";
+import CreateTopic from "src/components/shared/Buttons/TopicCreationButton";
 import { useIsMobile } from "src/hooks/useIsMobile";
+import { getGravatarPicApi } from "src/network/api/notificationAPI";
+import { logout } from "src/network/api/userApi";
+import { RootState } from "src/store";
+import Logo from "../logoHeader";
+import Notifications from "../notification";
+import ProfileInfoTab from "./profileInfo";
 
 const menuItems = [
   {

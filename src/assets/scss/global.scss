@@ -8,6 +8,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
 
 @import "./fonts";
+@import "./video";
 @import "./speed-controller";
 @import "../../components/ComponentPages/Breadcrumbs/breadcrumbs.scss";
 @import "../../components/ComponentPages/HistoryCard/historyCard.scss";
@@ -364,5 +365,11 @@ body {
   }
   del {
     @apply no-underline bg-[#fbb6c2] text-[#555];
+  }
+}
+
+@media screen and (max-width: 575px) {
+  .leftSideBar.miniSideBar {
+    width: auto;
   }
 }

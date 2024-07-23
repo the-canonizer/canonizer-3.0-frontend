@@ -326,7 +326,6 @@ const FilterWithTree = ({
   const revertScore = () => {
     getTreesApi(reqBodyForService);
   };
-  console.log(selectAlgo, "algooo");
   const selectAlgorithm = (value) => {
     setCookie("canAlgo", value, {
       path: "/",

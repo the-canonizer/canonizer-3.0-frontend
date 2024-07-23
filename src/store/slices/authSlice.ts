@@ -13,6 +13,7 @@ export const authSlice = createSlice({
     emailForOtp: null,
     isNewUser: false,
     currentReturnUrl: null,
+    userNickNames: null,
   },
   reducers: {
     setAuthToken: (state, action) => {
@@ -57,6 +58,9 @@ export const authSlice = createSlice({
     setCurrentReturnUrl: (state, action) => {
       state.currentReturnUrl = action.payload;
     },
+    setUserNickNames: (state, action) => {
+      state.userNickNames = action.payload;
+    },
   },
 });
 
@@ -72,6 +76,7 @@ export const {
   setEmailForOTP,
   setIsNewUser,
   setCurrentReturnUrl,
+  setUserNickNames,
 } = authSlice.actions;
 
 export default authSlice.reducer;

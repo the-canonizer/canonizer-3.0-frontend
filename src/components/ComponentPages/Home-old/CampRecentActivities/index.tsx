@@ -1,20 +1,21 @@
-import { Fragment, useEffect, useState } from "react";
-import { List, Typography, Collapse, Popover } from "antd";
-import { useRouter } from "next/router";
 import { BellFilled } from "@ant-design/icons";
+import { Collapse, List, Popover, Typography } from "antd";
 import moment from "moment";
 import Link from "next/link";
-import { useSelector } from "react-redux";
+import { useRouter } from "next/router";
+import { Fragment, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import styles from "./campRecentActivities.module.scss";
 
-import { getTopicActivityLogApi } from "../../../../network/api/campDetailApi";
-import K from "../../../../constants";
-import CustomSkelton from "../../../common/customSkelton";
-import { RootState } from "src/store";
-import ReasonsActivity from "src/components/common/SupportReasonActivity";
-import { getProperties } from "src/utils/generalUtility";
 import Image from "next/image";
+import ReasonsActivity from "src/components/common/SupportReasonActivity";
+import { RootState, store } from "src/store";
+import { setCampActivityData } from "src/store/slices/recentActivitiesSlice";
+import { getProperties } from "src/utils/generalUtility";
+import K from "../../../../constants";
+import { getTopicActivityLogApi } from "../../../../network/api/campDetailApi";
+import CustomSkelton from "../../../common/customSkelton";
 
 const { Text } = Typography;
 const { Panel } = Collapse;
@@ -23,9 +24,13 @@ export default function CampRecentActivities() {
   const loggedInUser = useSelector(
     (state: RootState) => state.auth.loggedInUser
   );
+  const data = useSelector(
+    (state: RootState) => state.recentActivities.campActivityData
+  ); // Selector to access campActivityData
+  const dispatch = useDispatch();
 
   const router = useRouter();
-  const [data, setData] = useState([]);
+  // const [data, setData] = useState([]);
   const [hasShowViewAll, setHasShowViewAll] = useState(false);
   const [loadingIndicator, setLoadingIndicator] = useState(false);
   const [userData, setUserData] = useState(loggedInUser);
@@ -44,7 +49,8 @@ export default function CampRecentActivities() {
         camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
       };
       let res = await getTopicActivityLogApi(reqBody);
-      setData(res?.data?.items);
+      store.dispatch(setCampActivityData(res?.data?.items));
+      // setData(res?.data?.items);
       setHasShowViewAll(res?.data?.is_show_all_btn);
       setLoadingIndicator(false);
     }
