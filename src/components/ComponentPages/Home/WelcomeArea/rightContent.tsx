@@ -20,7 +20,7 @@ const RightContent = ({ isUserAuthenticated }) => {
         isUserAuthenticated ? "bg-white" : "bg-white"
       } z-[1000] relative rounded-xl`}
     >
-      <Typography.Paragraph className="m-0 text-xl font-inter">
+      <Typography.Paragraph className="m-0 text-xl font-inter font-medium">
         {isUserAuthenticated ? "For Existing Users" : "For Guest User"}
       </Typography.Paragraph>
       <PrimaryButton

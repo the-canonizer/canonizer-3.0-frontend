@@ -33,3 +33,31 @@
 .score{
   color: blue;
 }
+.btnShareURL {
+  padding: 2px 6px;
+  height: 28px;
+  position: absolute;
+  right: 15px;
+  top: 20px;
+}
+.cursorPointer {
+  cursor: pointer;
+}
+.shareLink {
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+}
+.shareLinkPopover {
+  width : 320px
+}
+.popoverWrapper {
+  width: 320px;
+}
+.typographyLink {
+  margin-bottom: 0 !important;
+  .ant-typography-copy {
+    display: none;
+  }
+}

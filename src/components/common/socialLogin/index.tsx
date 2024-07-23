@@ -9,9 +9,10 @@ import {
 
 import styles from "./social-login.module.scss";
 
-import { socialLogin } from "src/network/api/userApi";
+import { getNickNameList, socialLogin } from "src/network/api/userApi";
 import { setValue } from "src/store/slices/utilsSlice";
 import CustomSkeleton from "../customSkelton";
+import { setUserNickNames } from "src/store/slices/authSlice";
 
 const { Text } = Typography;
 

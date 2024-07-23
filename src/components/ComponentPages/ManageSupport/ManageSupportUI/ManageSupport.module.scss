@@ -100,6 +100,10 @@
   font-size: 16px;
   padding: 4px 32px;
   height: 38px;
+
+  &:disabled {
+    opacity: 0.5;
+  }
 }
 
 .cancel_Btn {
@@ -161,6 +165,19 @@
   display: inline-block;
   width: 100%;
   color: #80141f;
+}
+.info {
+  background-color: #dbeefc;
+  border-color: #f8d7da;
+  position: relative;
+  padding: 8px 15px;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+  font-size: 13px;
+  display: inline-block;
+  width: 100%;
+  color: black;
 }
 .hrtag {
   display: inline-block;

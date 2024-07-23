@@ -11,8 +11,9 @@ import CustomSpinner from "components/shared/CustomSpinner";
 import LeftContent from "../Registration/UI/leftContent";
 
 const LoginOTP = () => {
-  const { emailForOtp } = useSelector((state: RootState) => ({
+  const { emailForOtp, currentReturnUrl } = useSelector((state: RootState) => ({
     emailForOtp: state?.auth?.emailForOtp,
+    currentReturnUrl: state?.auth?.currentReturnUrl,
   }));
 
   const [isResend, setIsResend] = useState(false);
@@ -66,6 +67,8 @@ const LoginOTP = () => {
 
         if (router?.query.returnUrl) {
           router?.push(`${router?.query.returnUrl}`);
+        } else if (currentReturnUrl) {
+          router?.push({ pathname: currentReturnUrl });
         } else {
           router?.push("/");
         }

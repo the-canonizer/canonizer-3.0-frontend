@@ -383,16 +383,15 @@ export function parseCookies(cookiesString) {
 export const historyTitle = (historyOf) => {
   switch (historyOf) {
     case "statement":
-      return "Statement History";
+      return "Statement";
     case "topic":
-      return "Topic History";
+      return "Topic";
     case "camp":
-      return "Camp History";
+      return "Camp";
     default:
       return "";
   }
 };
-
 export const convertToTime = (unixTime) => {
   return moment(unixTime * 1000).format("DD MMM YYYY, hh:mm:ss A");
 };

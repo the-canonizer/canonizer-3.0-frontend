@@ -49,7 +49,9 @@ const ViewCounts = ({
       {...restProps}
     >
       <EyeOutlined className="" />{" "}
-      <span className="text-canBlack text-opacity-50 text-xs font-normal">{!views || views == 0 ? 0 : formatNumber(views)}</span>
+      <span className="text-canBlack text-opacity-50 text-xs font-normal">
+        {!views || views == 0 ? 0 : formatNumber(views)}
+      </span>
     </Typography.Paragraph>
   );
 };

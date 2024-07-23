@@ -8,6 +8,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
 
 @import "./fonts";
+@import "./video";
 @import "./speed-controller";
 @import "../../components/ComponentPages/Breadcrumbs/breadcrumbs.scss";
 @import "../../components/ComponentPages/HistoryCard/historyCard.scss";
@@ -52,23 +53,20 @@ body {
     right: 0;
     li {
       button {
-        width: 10px;
-        height: 10px;
-        overflow: hidden;
-        border-radius: 50%;
         display: block;
         box-shadow: none;
         outline: linen;
-        border: 1px solid var(--canBlue);
-        position: static;
-        color: #fff;
-        background-color: #fff;
-        padding: 0;
+        border-width: 1px;
+        border-style: solid;
+        @apply border-canBlue;
+        @apply px-1;
+        @apply text-canBlack;
+        @apply bg-white;
       }
       &[class*="slick-active"] {
         button {
-          background-color: var(--canBlue);
-          color: var(--canBlue);
+          @apply border-canHoverBlue;
+          @apply text-canHoverBlue;
         }
       }
       &:not(:last-child) {
@@ -362,13 +360,17 @@ body {
   @apply border-canBlue border-b-4;
 }
 
-.compare-card-internal{
+.compare-card-internal {
   ins {
     @apply no-underline bg-[#e0eafb];
-    
   }
   del {
     @apply no-underline bg-[#fbb6c2] text-[#555];
-    
+  }
+}
+
+@media screen and (max-width: 575px) {
+  .leftSideBar.miniSideBar {
+    width: auto;
   }
 }

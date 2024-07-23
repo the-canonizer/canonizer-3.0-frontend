@@ -1,33 +1,32 @@
-import { Fragment, useEffect, useState } from "react";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { Button, Menu, Typography } from "antd";
 import {
+  ArrowRightOutlined,
+  BellOutlined,
   CheckCircleOutlined,
+  CloseOutlined,
+  GlobalOutlined,
+  HomeOutlined,
   LogoutOutlined,
   MenuOutlined,
-  SettingOutlined,
-  HomeOutlined,
   QuestionCircleOutlined,
-  GlobalOutlined,
-  CloseOutlined,
-  ArrowRightOutlined,
-  VideoCameraOutlined,
-  BellOutlined,
+  SettingOutlined,
 } from "@ant-design/icons";
+import { Button, Menu, Typography } from "antd";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { Fragment, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 import styles from "./HeaderMenu.module.scss";
 
-import CreateTopic from "src/components/shared/Buttons/TopicCreationButton";
 import JoinCanonizer from "src/components/shared/Buttons/JoinCanoizerButton";
-import ProfileInfoTab from "./profileInfo";
-import { RootState } from "src/store";
-import Notifications from "../notification";
-import { logout } from "src/network/api/userApi";
-import { getGravatarPicApi } from "src/network/api/notificationAPI";
-import Logo from "../logoHeader";
+import CreateTopic from "src/components/shared/Buttons/TopicCreationButton";
 import { useIsMobile } from "src/hooks/useIsMobile";
+import { getGravatarPicApi } from "src/network/api/notificationAPI";
+import { logout } from "src/network/api/userApi";
+import { RootState } from "src/store";
+import Logo from "../logoHeader";
+import Notifications from "../notification";
+import ProfileInfoTab from "./profileInfo";
 
 const menuItems = [
   {
@@ -116,10 +115,11 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
 
   const ListItem = ({ cls = "", ...props }) => (
     <li
-      className={`flex-auto px-3 before:hidden after:hidden tab:before:block tab:after:block rounded-lg ${styles.listItem} ${cls}`}
+      className={`flex-auto flex px-3 before:hidden after:hidden tab:before:block tab:after:block rounded-lg ${styles.listItem} ${cls}`}
       key={props.key}
     >
       {props?.children}
+      <div className={styles.divider}></div>
     </li>
   );
 
@@ -147,7 +147,7 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
     <Menu onClick={onClick}>
       <Menu.Item key="0" className="hover:text-canHoverBlue">
         <Link href="/settings" passHref>
-          <a className="text-sm font-medium hover:text-canHoverBlue">
+          <a className="!text-sm font-normal hover:text-canHoverBlue">
             <SettingOutlined className="mr-1" />
             Account Settings
           </a>
@@ -156,7 +156,7 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
       <Menu.Divider />
       <Menu.Item key="1" className="hover:text-canHoverBlue">
         <Link href="/settings?tab=supported_camps" passHref>
-          <a className="text-sm font-medium ">
+          <a className="!text-sm font-normal ">
             <CheckCircleOutlined className="mr-1" />
             Supported Camps
           </a>
@@ -165,7 +165,7 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
       <Menu.Divider />
       <Menu.Item
         key="3"
-        className="text-sm font-medium hover:text-canHoverBlue"
+        className="!text-sm font-normal hover:text-canHoverBlue"
       >
         <LogoutOutlined className="mr-1" />
         Log Out
@@ -218,7 +218,7 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
             </Link>
           </div>
         ) : null}
-        <ul className="flex text-sm font-inter font-medium flex-col tab:flex-row tab:items-center mt-4 tab:mt-0">
+        <ul className="flex text-sm font-inter font-medium flex-col tab:flex-row tab:items-center mt-4 tab:mt-0 items-center">
           <ListItem
             cls={`create-topic-header-link relative ${
               router?.asPath === "/create/topic" ? styles.active : ""
@@ -248,7 +248,7 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
             return (
               <ListItem
                 cls={`${router?.asPath === item.link ? styles.active : ""} ${
-                  item?.isMobile ? "block tab:hidden" : ""
+                  item?.isMobile ? "flex tab:hidden" : ""
                 } ${
                   item.linkTitle?.toLowerCase() === "start a topic"
                     ? "create-topic-header-link"
@@ -277,7 +277,7 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
           {isUserAuthenticated ? (
             <ListItem
               key="notification-li"
-              cls="after:content-['|'] after:absolute after:ml-[10px] after:text-[darkgray] hidden tab:block after:top-[5px] after:right-0 before:!top-[5px]"
+              cls="after:content-['|'] after:absolute after:ml-[10px] after:text-[darkgray] hidden tab:flex after:right-0"
             >
               <Notifications />
             </ListItem>
@@ -298,7 +298,7 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
               />
             </ListItem>
           ) : (
-            <ListItem key="Join-canonizer-li" cls="hidden tab:block">
+            <ListItem key="Join-canonizer-li" cls="hidden tab:flex">
               <JoinCanonizer className="py-3" />
             </ListItem>
           )}

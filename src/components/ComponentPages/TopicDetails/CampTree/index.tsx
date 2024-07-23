@@ -214,7 +214,7 @@ const CampTree = ({
       setUniqueKeys(uniquekeyss);
       if (tree?.at(0)) {
         let index = sesionexpandkeys?.findIndex(
-          (item) => item.topic_id === tree?.at(0)["1"]?.topic_id
+          (item) => item?.topic_id === tree?.at(0)["1"]?.topic_id
         );
         if (index !== -1) {
           sesionexpandkeys[index] = {
@@ -322,28 +322,47 @@ const CampTree = ({
             (data[item].is_archive != 0 && is_camp_archive_checked == true) ? (
             <>
               <TreeNode
-              
-              className="[&_.ant-tree-switcher]:!flex [&_.ant-tree-switcher]:!items-center [&_.ant-tree-node-content-wrapper]:hover:!bg-transparent"
-              switcherIcon={({ expanded }) => {
-                const isCampIdZero = data[item].camp_id === 0;
-              
-                return (
-                  data[item].camp_id ===
-                  +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1) &&
-                  _isDisabled == 0 &&
-                  parentIsOneLevel == 0 &&
-                  _isArchive == 0 &&
-                  campRecord?.is_archive == 0 ?
-                    (expanded ?
-                      <Image className="rotate-180" src="/images/tree-green-icon.svg" width={16} height={16} /> :
-                      <Image className="" src="/images/tree-green-icon.svg" width={16} height={16} />
-                    ) :
-                    (expanded ?
-                      <Image className="" src="/images/tree-black-icon.svg" width={16} height={16} /> :
-                      <Image className="rotate-180" src="/images/tree-black-icon.svg" width={16} height={16} />
+                className="[&_.ant-tree-switcher]:!flex [&_.ant-tree-switcher]:!items-center [&_.ant-tree-node-content-wrapper]:hover:!bg-transparent"
+                switcherIcon={({ expanded }) => {
+                  const isCampIdZero = data[item].camp_id === 0;
+
+                  return data[item].camp_id ===
+                    +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1) &&
+                    _isDisabled == 0 &&
+                    parentIsOneLevel == 0 &&
+                    _isArchive == 0 &&
+                    campRecord?.is_archive == 0 ? (
+                    expanded ? (
+                      <Image
+                        className="rotate-180"
+                        src="/images/tree-green-icon.svg"
+                        width={16}
+                        height={16}
+                      />
+                    ) : (
+                      <Image
+                        className=""
+                        src="/images/tree-green-icon.svg"
+                        width={16}
+                        height={16}
+                      />
                     )
-                );
-              }}
+                  ) : expanded ? (
+                    <Image
+                      className=""
+                      src="/images/tree-black-icon.svg"
+                      width={16}
+                      height={16}
+                    />
+                  ) : (
+                    <Image
+                      className="rotate-180"
+                      src="/images/tree-black-icon.svg"
+                      width={16}
+                      height={16}
+                    />
+                  );
+                }}
                 title={
                   <div
                     style={{ overflowX: "auto", overflowY: "clip" }}
@@ -357,7 +376,9 @@ const CampTree = ({
                     >
                       <span
                         className={
-                          "treeListItemTitle " + styles.treeListItemTitle + " !text-base !text-canBlack font-normal hover:!text-canblack"
+                          "treeListItemTitle " +
+                          styles.treeListItemTitle +
+                          " !text-base !text-canBlack font-normal hover:!text-canblack"
                         }
                       >
                         <Link
@@ -407,12 +428,21 @@ const CampTree = ({
                                   ?.at(0) ?? "1")
                                 ? `font-weight-bold forumActive ${styles.activeCamp}`
                                 : ""
-                            } ${data[item].camp_id ===
-                              +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1) &&
+                            } ${
+                              data[item].camp_id ===
+                                +(
+                                  router?.query?.camp
+                                    ?.at(1)
+                                    ?.split("-")
+                                    ?.at(0) ?? 1
+                                ) &&
                               _isDisabled == 0 &&
                               parentIsOneLevel == 0 &&
                               _isArchive == 0 &&
-                              campRecord?.is_archive == 0 ?`!text-canGreen font-semibold text-base` : ""}`}
+                              campRecord?.is_archive == 0
+                                ? `!text-canGreen font-semibold text-base`
+                                : ""
+                            }`}
                           >
                             {data[item].is_archive == 1 ? (
                               <Popover content="Archived Camp">
@@ -422,8 +452,6 @@ const CampTree = ({
                                   ? "Agreement"
                                   : data[item]?.title}
                               </Popover>
-                            ) : includeReview ? (
-                              data[item]?.review_title
                             ) : data[item].camp_id === 1 ? (
                               "Agreement"
                             ) : (
@@ -506,20 +534,25 @@ const CampTree = ({
                 }}
               >
                 {data[item].camp_id ===
-                  +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1) &&
+                  +(Array.isArray(router?.query?.camp)
+                    ? router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1
+                    : (router?.query?.camp as string)?.split("-")?.at(0) ??
+                      1) &&
                   _isDisabled == 0 &&
                   parentIsOneLevel == 0 &&
                   _isArchive == 0 &&
                   campRecord?.is_archive == 0 && (
                     <TreeNode
-                    className="[&_.ant-tree-switcher-leaf-line]:before:hidden [&_.ant-tree-switcher-leaf-line]:after:hidden "
+                      className="[&_.ant-tree-switcher-leaf-line]:before:hidden [&_.ant-tree-switcher-leaf-line]:after:hidden "
                       key={"custom"}
                       title={
                         <p className={styles.startNew}>
                           <Link
                             href={{
                               pathname: `/camp/create/${replaceSpecialCharacters(
-                                router?.query.camp[0],
+                                Array.isArray(router?.query?.camp)
+                                  ? router?.query.camp[0]
+                                  : (router?.query?.topic as string),
                                 "-"
                               )}/${
                                 router?.query.camp[1]
@@ -532,8 +565,13 @@ const CampTree = ({
                             }}
                           >
                             <a className="!text-canGreen font-semibold italic text-base">
-                              <Image src="/images/start-new-tree.svg" width={16} height={17} />
-                              {`Start new`} </a>
+                              <Image
+                                src="/images/start-new-tree.svg"
+                                width={16}
+                                height={17}
+                              />
+                              {`Start new`}{" "}
+                            </a>
                           </Link>
                         </p>
                       }
@@ -584,7 +622,16 @@ const CampTree = ({
     return uniqueArraytoString;
   };
   const eventLinePath = () => {
-    router?.push(router?.asPath.replace("topic", "eventline"));
+    let topicId = tree && tree[0][1]?.topic_id;
+    let topicName = tree && tree[0][1]?.title;
+    let campId = tree && tree[0][1]?.camp_id;
+
+    let URL = `/eventline/${topicId}-${replaceSpecialCharacters(
+      topicName,
+      "-"
+    )}/${campId}`;
+
+    router.push(URL);
   };
 
   return tree?.at(0) ? (
@@ -599,47 +646,54 @@ const CampTree = ({
               <span className="normal">Topic : </span>
               {tree?.length && tree[0] ? (
                 <Link
-                  href={`${includeReview
+                  href={`${
+                    includeReview
                       ? isForumPage
                         ? tree[0]["1"]?.review_link
-                          ?.replace("#statement", "")
-                          ?.replace("/topic/", "/forum/") + "/threads"
+                            ?.replace("#statement", "")
+                            ?.replace("/topic/", "/forum/") + "/threads"
                         : tree[0]["1"]?.review_link?.replace("#statement", "")
                       : isForumPage
-                        ? tree[0]["1"]?.link
+                      ? tree[0]["1"]?.link
                           ?.replace("#statement", "")
                           ?.replace("/topic/", "/forum/") + "/threads"
-                        : tree[0]["1"]?.link?.replace("#statement", "")
-                    }?filter=${treeExpandValue}&score=${filterByScore}&algo=${filterObject?.algorithm
-                    }${filterObject?.asof == "bydate"
+                      : tree[0]["1"]?.link?.replace("#statement", "")
+                  }?filter=${treeExpandValue}&score=${filterByScore}&algo=${
+                    filterObject?.algorithm
+                  }${
+                    filterObject?.asof == "bydate"
                       ? "&asofdate=" + filterObject?.asofdate
                       : ""
-                    }&asof=${filterObject?.asof}&canon=${filterObject?.namespace_id}${viewThisVersion ? "&viewversion=1" : ""
-                    }`}
+                  }&asof=${filterObject?.asof}&canon=${
+                    filterObject?.namespace_id
+                  }${viewThisVersion ? "&viewversion=1" : ""}`}
                   className={styles.boldBreadcrumb}
                   replace
                 >
                   <a
-                    className={`${tree[0]["1"].is_archive == 1
+                    className={`${
+                      tree[0]["1"].is_archive == 1
                         ? `font-weight-bold tra ${styles.archive_grey}`
                         : tree[0]["1"]?.camp_id ==
-                          router?.query?.camp?.at(1)?.split("-")?.at(0) ?? "1"
-                          ? `font-weight-bold ${styles.activeCamp}`
-                          : ""
-                      } ${isForumPage &&
-                        tree[0]["1"]?.camp_id ==
-                        ((router?.query?.camp as string)?.split("-")?.at(0) ?? "1")
+                            router?.query?.camp?.at(1)?.split("-")?.at(0) ?? "1"
+                        ? `font-weight-bold ${styles.activeCamp}`
+                        : ""
+                    } ${
+                      isForumPage &&
+                      tree[0]["1"]?.camp_id ==
+                        ((router?.query?.camp as string)?.split("-")?.at(0) ??
+                          "1")
                         ? `font-weight-bold forumActive ${styles.activeCamp}`
                         : ""
-                      }`}
+                    }`}
                   >
                     {tree[0]["1"].is_archive == 1 ? (
                       <Popover content="Archived Camp">
                         {includeReview
                           ? tree[0]["1"]?.review_title
                           : tree[0]["1"]?.title}
-                      </Popover>
-                    ) : includeReview ? (
+                      </Popover>                    
+                      ) : includeReview ? (
                       tree[0]["1"]?.review_title
                     ) : (
                       tree[0]["1"]?.title
@@ -649,14 +703,26 @@ const CampTree = ({
               ) : (
                 ""
               )}{" "}
-
+              <span className={styles.subScriptionIcon}>
+                {isUserAuthenticated && !!topicRecord?.topicSubscriptionId ? (
+                  <Tooltip
+                    title="You have subscribed to the entire topic."
+                    key="camp_subscribed_icon"
+                  >
+                    <small style={{ alignSelf: "center", marginLeft: "10px" }}>
+                      <i className="icon-subscribe text-primary"></i>
+                    </small>
+                  </Tooltip>
+                ) : (
+                  ""
+                )}
+              </span>
             </div>
             <Button
               type="primary"
               size="small"
               onClick={eventLinePath}
-              className={styles.btnCampForum}
-              id="camp-forum-btn"
+              id="event-line-btn"
             >
               Event Line
             </Button>
@@ -689,7 +755,6 @@ const CampTree = ({
     ) : null
   ) : (
     <p data-testid="camp-tree">No Camp Tree Found</p>
-    
   );
 };
 
