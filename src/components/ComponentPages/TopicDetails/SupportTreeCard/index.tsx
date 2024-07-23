@@ -120,12 +120,21 @@ const SupportTreeCard = ({
     getManageSupportLoadingIndicator,
     setGetManageSupportLoadingIndicator,
   ] = useState(true);
+  const [open, setOpen] = useState(false);
+  const showDrawer = () => {
+    setOpen(true);
+  };
+  const onClose = () => {
+    setOpen(false);
+  };
   const showModalSupportCamps = () => {
-    dispatch(setIsSupportModal(true));
+    showDrawer();
+    // dispatch(setIsSupportModal(true));
   };
   const handleOkSupportCamps = () => {
     dispatch(setIsSupportModal(false));
   };
+
   const getSupportTreeApi = async () => {
     const reqBodyForService = {
       topic_num: +router?.query?.camp[0]?.split("-")[0],
@@ -357,8 +366,8 @@ const SupportTreeCard = ({
                             {campRecord?.is_archive
                               ? 0
                               : is_checked && isUserAuthenticated
-                              ? data[item].full_score?.toFixed(2)
-                              : data[item].score?.toFixed(2)}
+                                ? data[item].full_score?.toFixed(2)
+                                : data[item].score?.toFixed(2)}
                             {/* {data[item].score?.toFixed(2)} */}
                           </span>
                         </div>
@@ -368,15 +377,15 @@ const SupportTreeCard = ({
 
                       {(userNickNameList?.length > 0 &&
                         !userNickNameList.includes(data[item].nick_name_id)) ||
-                      !isUserAuthenticated ? (
+                        !isUserAuthenticated ? (
                         <>
                           {loggedInUserDelegate ||
-                          (loggedInUserChild &&
-                            delegateNickNameId !=
+                            (loggedInUserChild &&
+                              delegateNickNameId !=
                               data[item].delegate_nick_name_id) ||
-                          data[item].delegates?.findIndex((obj) =>
-                            userNickNameList.includes(obj.nick_name_id)
-                          ) > -1 ? (
+                            data[item].delegates?.findIndex((obj) =>
+                              userNickNameList.includes(obj.nick_name_id)
+                            ) > -1 ? (
                             ""
                           ) : (
                             <Popover
@@ -425,14 +434,16 @@ const SupportTreeCard = ({
                               campRecord?.is_archive
                             }
                             onClick={() => {
-                              currentGetCheckSupportExistsData.is_delegator
-                                ? setIsDelegateSupportTreeCardModal(true)
-                                : topicList.length <= 1
-                                ? setIsSupportTreeCardModal(true)
-                                : setIsSupportTreeCardModal(true);
-
+                              if (currentGetCheckSupportExistsData.is_delegator) {
+                                // setIsDelegateSupportTreeCardModal(true);
+                                showDrawer()
+                                // } else {
+                                //   setIsSupportTreeCardModal(true);
+                                showDrawer()
+                              }
                               setModalData(data[item]);
                             }}
+
                             className="mb-2 flex items-center gap-1 justify-center bg-canLightRed text-canRed text-base rounded-lg font-medium h-[44px] w-full"
                           >
                             <Image
@@ -474,8 +485,8 @@ const SupportTreeCard = ({
     currentGetCheckSupportExistsData.is_delegator
       ? removeSupportForDelegate(values)
       : topicList.length <= 1
-      ? removeApiSupport(modalData?.nick_name_id, values)
-      : removeSupport(modalData?.nick_name_id, values);
+        ? removeApiSupport(modalData?.nick_name_id, values)
+        : removeSupport(modalData?.nick_name_id, values);
     setModalData({});
     removeForm.resetFields();
   };
@@ -498,7 +509,7 @@ const SupportTreeCard = ({
         // expandIconPosition="right"
         className="topicDetailsCollapse"
       >
-        <SupportTreeDrawer />
+        <SupportTreeDrawer onClose={onClose} open={open} />
         <div className=" support-tree-sec">
           {/* <Paragraph className="position-relative">
             Total Support for This Camp (including sub-camps):
@@ -547,7 +558,7 @@ const SupportTreeCard = ({
           >
             <span>
               {getCheckSupportStatus?.is_delegator == 1 ||
-              getCheckSupportStatus?.support_flag != 1
+                getCheckSupportStatus?.support_flag != 1
                 ? K?.exceptionalMessages?.directJoinSupport
                 : K?.exceptionalMessages?.manageSupport}
             </span>
@@ -623,8 +634,8 @@ const SupportTreeCard = ({
                     currentGetCheckSupportExistsData.is_delegator
                       ? removeSupportForDelegate()
                       : topicList.length <= 1
-                      ? removeApiSupport(modalData?.nick_name_id)
-                      : removeSupport(modalData?.nick_name_id);
+                        ? removeApiSupport(modalData?.nick_name_id)
+                        : removeSupport(modalData?.nick_name_id);
                     setModalData({});
                   }}
                   type="primary"

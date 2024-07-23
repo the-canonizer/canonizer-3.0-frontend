@@ -19,24 +19,46 @@ import {
 import Breadcrumbs from "components/ComponentPages/Breadcrumbs/breadcrumbs";
 import StructureIcon from "components/ComponentPages/CreateNewTopic/UI/structureIcon";
 import SelectInputs from "components/shared/FormInputs/select";
-import React, { useState } from "react";
-function SupportTreeDrawer() {
-  const [open, setOpen] = useState(false);
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { placeholders } from "src/messages/placeholder";
+import { getAllRemovedReasons } from "src/network/api/campDetailApi";
+import { RootState } from "src/store";
+function SupportTreeDrawer({ onClose, open }: any) {
+  const reasons = useSelector(
+    (state: RootState) => state?.topicDetails?.removedReasons
+  );
+  const [availableReasons, setReasons] = useState(reasons);
+  const [selectedValue, setSelectedValue] = useState(null);
   const [form] = Form.useForm();
-  const showDrawer = () => {
-    setOpen(true);
-  };
-  const onClose = () => {
-    setOpen(false);
-  };
+
   const handleChange = (value) => {
     console.log(`selected ${value}`);
   };
+
+  const getReasons = async () => {
+    await getAllRemovedReasons();
+  };
+
+  const onSelectChange = (value) => {
+    setSelectedValue(value);
+  };
+
+  useEffect(() => {
+    getReasons();
+  }, []);
+
+  useEffect(() => {
+    setReasons(reasons);
+  }, [reasons]);
+
+
+
   return (
     <>
-      <Button type="primary" onClick={showDrawer}>
-        Open
-      </Button>
+      {/* <Button type="primary" onClick={showDrawer}>
+        Open close
+      </Button> */}
       <Drawer
         closable={false}
         className="ch-drawer adding-supported-drawer"
@@ -117,27 +139,23 @@ Adding support to this camp will remove your support from the parent camp."
                     <i className="icon-bar"></i>
                   </div>
                   <Select
-                    placeholder="Select reason from list"
+                    placeholder={placeholders.nickName}
                     className="w-100 cn-select"
                     size="large"
                     suffixIcon={<i className="icon-chevron-down"></i>}
                     onChange={handleChange}
-                    options={[
-                      {
-                        value: "jack",
-                        label: "Jack",
-                      },
-                      {
-                        value: "lucy",
-                        label: "Lucy",
-                      },
 
-                      {
-                        value: "Yiminghe",
-                        label: "yiminghe",
-                      },
-                    ]}
-                  />
+                  >
+                    {availableReasons.map((res) => (
+                      <Select.Option key={res.id} value={res.value}>
+                        {res.label}
+                      </Select.Option>
+                    ))}
+                    <Select.Option key="custom_reason" value="custom">
+                      Custom reason
+                    </Select.Option>
+                  </Select>
+
                 </div>
               </Form.Item>
             </Col>
