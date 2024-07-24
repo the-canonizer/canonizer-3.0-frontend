@@ -141,6 +141,8 @@ function SupportTreeDrawer({ onClose, open, topicList }: any) {
 
 
 
+  console.log("hello")
+
 
   return (
     <>
