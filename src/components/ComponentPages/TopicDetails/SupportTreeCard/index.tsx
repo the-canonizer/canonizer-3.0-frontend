@@ -36,11 +36,14 @@ import { showLoginModal } from "src/store/slices/uiSlice";
 import Image from "next/image";
 import support_image from "../../../../../public/images/support-tree-avatar.svg";
 import { setOpenConsensusTreePopup } from "src/store/slices/hotTopicSlice";
-import SupportTreeDrawer from "./supportTreeDrawer/supportTreeDrawer";
+// import SupportTreeDrawer from "./supportTreeDrawer/supportTreeDrawer";
+import dynamic from "next/dynamic";
+
 
 const { Paragraph } = Typography;
 const { Panel } = Collapse;
 const { TreeNode } = Tree;
+
 
 const supportContent = (
   <>
@@ -55,6 +58,13 @@ const supportContent = (
       </p>
     </div>
   </>
+);
+
+const SupportTreeDrawer = dynamic(
+  () => import("./supportTreeDrawer/supportTreeDrawer"),
+  {
+    ssr: false,
+  }
 );
 
 const SupportTreeCard = ({

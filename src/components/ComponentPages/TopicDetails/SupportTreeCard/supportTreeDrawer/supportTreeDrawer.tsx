@@ -9,6 +9,7 @@ import {
   Alert,
   Breadcrumb,
   Button,
+  Checkbox,
   Col,
   Drawer,
   Form,
@@ -17,8 +18,9 @@ import {
   PageHeader,
   Row,
   Select,
+  Tag,
 } from "antd";
-import dynamic from 'next/dynamic';
+import dynamic from "next/dynamic";
 import Breadcrumbs from "components/ComponentPages/Breadcrumbs/breadcrumbs";
 import StructureIcon from "components/ComponentPages/CreateNewTopic/UI/structureIcon";
 import SelectInputs from "components/shared/FormInputs/select";
@@ -28,14 +30,23 @@ import { DraggableArea } from "react-draggable-tags";
 import { useSelector } from "react-redux";
 import { labels } from "src/messages/label";
 import { placeholders } from "src/messages/placeholder";
-import { getAllRemovedReasons, getAllUsedNickNames } from "src/network/api/campDetailApi";
+
+import {
+  getAllRemovedReasons,
+  getAllUsedNickNames,
+} from "src/network/api/campDetailApi";
 import { addSupport } from "src/network/api/userApi";
 import { RootState } from "src/store";
 import { GetActiveSupportTopic } from "src/network/api/topicAPI";
 
-const SupportTreeDrawerClientOnly = dynamic(() => import('./supportTreeDrawer'), {
-  ssr: false
-});
+const { TextArea } = Input;
+const SupportTreeDrawerClientOnly = dynamic(
+  () => import("./supportTreeDrawer"),
+  {
+    ssr: false,
+  }
+);
+
 
 function SupportTreeDrawer({ onClose, open, topicList }: any) {
   const {
@@ -45,8 +56,10 @@ function SupportTreeDrawer({ onClose, open, topicList }: any) {
     campRecord,
   } = useSelector((state: RootState) => ({
     reasons: state?.topicDetails?.removedReasons,
-    currentGetCheckSupportExistsData: state.topicDetails.currentGetCheckSupportExistsData,
-    currentDelegatedSupportedClick: state.supportTreeCard.currentDelegatedSupportedClick,
+    currentGetCheckSupportExistsData:
+      state.topicDetails.currentGetCheckSupportExistsData,
+    currentDelegatedSupportedClick:
+      state.supportTreeCard.currentDelegatedSupportedClick,
     campRecord: state?.topicDetails?.currentCampRecord,
   }));
 
@@ -92,17 +105,27 @@ function SupportTreeDrawer({ onClose, open, topicList }: any) {
       setNickNameList(res?.data);
       setNictNameId(res?.data[0]?.id);
       form.setFieldsValue({
-        nickname: res ? res?.data[0]?.nick_name : ""
-      })
+        nickname: res ? res?.data[0]?.nick_name : "",
+      });
     }
   };
 
+  const initialTags = [
+    { id: 1, content: "apple" },
+    { id: 2, content: "olive" },
+    { id: 3, content: "banana" },
+    { id: 4, content: "lemon" },
+    { id: 5, content: "orange" },
+    { id: 6, content: "grape" },
+    { id: 7, content: "strawberry" },
+    { id: 8, content: "cherry" },
+    { id: 9, content: "peach" },
+  ];
 
   const onFinish = async (values) => {
-
-    console.log('====================================');
+    console.log("====================================");
     console.log("values", values);
-    console.log('====================================');
+    console.log("====================================");
     let addSupportId = {
       topic_num: topicNum,
       // add_camp: addCampsData,
@@ -116,22 +139,18 @@ function SupportTreeDrawer({ onClose, open, topicList }: any) {
     if (res && res.status_code == 200) {
       message.success(res.message);
     }
-    onClose(true)
-    form.resetFields()
-  }
-
-
-
+    onClose(true);
+    form.resetFields();
+  };
 
   const getReasons = async () => {
     await getAllRemovedReasons();
   };
 
-
   useEffect(() => {
     if (open) {
       getReasons();
-      getCanonizedNicknameList()
+      getCanonizedNicknameList();
     }
   }, [open]);
 
@@ -139,10 +158,10 @@ function SupportTreeDrawer({ onClose, open, topicList }: any) {
     setReasons(reasons);
   }, [reasons]);
 
-
-
-  console.log("hello")
-
+  const preventDefault = (e) => {
+    e.preventDefault();
+    console.log("Clicked! But prevent default.");
+  };
 
   return (
     <>
@@ -189,119 +208,157 @@ function SupportTreeDrawer({ onClose, open, topicList }: any) {
           scrollToFirstError
           onFinish={onFinish}
           initialValues={{
-            reason: ""
+            reason: "",
           }}
         >
           <div className="support-content">
-
-
             {/* <Alert
             className="border-0 rounded-lg warning-alert"
             description="You’re already supporting the Parent Camp: Agreement.
-Adding support to this camp will remove your support from the parent camp."
+            Adding support to this camp will remove your support from the parent camp."
             type="error"
             showIcon
             icon={<i className="icon-warning"></i>}
           /> */}
 
-
-            <Row gutter={16}>
-              <Col span={24} sm={12}>
-                <Form.Item
-                  name="reason"
-                  label="Reason for adding support"
-                // rules={[
-                //   {
-                //     required: true,
-                //     message: 'Please select a reason',
-                //   },
-                // ]}
+            <div className="checkbox-wrapper">
+              <Form.Item label="Quick Action" className="mb-0">
+                <Checkbox>Remove All Support</Checkbox>
+              </Form.Item>
+              <Button
+                size="large"
+                className="min-w-[200px] gap-2 flex items-center justify-center border border-canBlue bg-[#98B7E61A] rounded-lg text-canBlack text-base font-medium"
+              >
+                Clear All Changes
+              </Button>
+            </div>
+            <div className="chips-wrapper">
+              <p className="text-[#DB4F4F] mb-9">
+                Note : To change support order of camp, drag & drop the camp box
+                on your choice position.
+              </p>
+              <div className="vertical-chips">
+                <Tag
+                  className="rounded-full bg-[#F0F2FA] border-transparent font-semibold text-base px-5 py-2.5 leading-none text-canBlack"
+                  closable
+                  onClose={preventDefault}
                 >
-                  <div className="thm-select">
-                    <div className="prefix-icon">
-                      <i className="icon-bar"></i>
-                    </div>
-                    <Select
-                      className="w-100 cn-select"
-                      size="large"
-                      suffixIcon={<i className="icon-chevron-down"></i>}
-                      placeholder="Select reason"
-                      allowClear
-                      value={selectedValue}
-                      onChange={(value) => {
-                        setSelectedValue(value);
-                      }}
-                      showSearch
-                    >
-                      {availableReasons?.map((res) => (
-                        <Select.Option key={res?.id} value={res?.label}>
-                          {res?.label}
+                  1 . Debating the theory
+                </Tag>
+              </div>
+            </div>
+            <div>
+              <DraggableArea
+                tags={initialTags}
+                render={({ tag, index }) => (
+                  <div className="tag">{tag.content}</div>
+                )}
+                onChange={(tags) => console.log(tags)}
+              />
+              <Row gutter={16}>
+                <Col span={24} sm={12}>
+                  <Form.Item
+                    name="reason"
+                    label="Reason for adding support"
+                  // rules={[
+                  //   {
+                  //     required: true,
+                  //     message: 'Please select a reason',
+                  //   },
+                  // ]}
+                  >
+                    <div className="thm-select">
+                      <div className="prefix-icon">
+                        <i className="icon-bar"></i>
+                      </div>
+                      <Select
+                        className="w-100 cn-select"
+                        size="large"
+                        suffixIcon={<i className="icon-chevron-down"></i>}
+                        placeholder="Select reason"
+                        allowClear
+                        value={selectedValue}
+                        onChange={(value) => {
+                          setSelectedValue(value);
+                        }}
+                        showSearch
+                      >
+                        {availableReasons?.map((res) => (
+                          <Select.Option key={res?.id} value={res?.label}>
+                            {res?.label}
+                          </Select.Option>
+                        ))}
+                        <Select.Option key="custom_reason" value="custom">
+                          Custom reason
                         </Select.Option>
-                      ))}
-                      <Select.Option key="custom_reason" value="custom">
-                        Custom reason
-                      </Select.Option>
-                    </Select>
-                  </div>
-                </Form.Item>
-              </Col>
-              <Col span={24} sm={12}>
-                <Form.Item
-                  name="nickname"
-                  label="Nickname"
-                // rules={[
-                //   {
-                //     required: true,
-                //     message: 'Please select a nickname',
-                //   },
-                // ]}
-                >
-                  <div className="thm-select">
-                    <div className="prefix-icon">
-                      <UserOutlined />
+                      </Select>
                     </div>
-                    <Select
-                      placeholder="Select a nickname"
-                      className="w-100 cn-select"
+                  </Form.Item>
+                </Col>
+                <Col span={24} sm={12}>
+                  <Form.Item
+                    name="nickname"
+                    label="Nickname"
+                  // rules={[
+                  //   {
+                  //     required: true,
+                  //     message: 'Please select a nickname',
+                  //   },
+                  // ]}
+                  >
+                    <div className="thm-select">
+                      <div className="prefix-icon">
+                        <UserOutlined />
+                      </div>
+                      <Select
+                        placeholder="Select a nickname"
+                        className="w-100 cn-select"
+                        size="large"
+                        suffixIcon={<i className="icon-chevron-down"></i>}
+                        showSearch
+                        value={selectedtNickname}
+                        onChange={(value) => {
+                          setSelectedtNickname(value);
+                        }}
+                      >
+                        {nickNameList &&
+                          nickNameList?.map((nick) => (
+                            <Select.Option
+                              key={nick?.id}
+                              value={`${nick?.id}-(${nick?.nick_name})`}
+                            >
+                              {nick?.nick_name}
+                            </Select.Option>
+                          ))}
+                      </Select>
+                    </div>
+                  </Form.Item>
+                </Col>
+                <Col span={24}>
+                  <Form.Item name="description" label="Description">
+                    <TextArea className="thm-input" rows={4} />
+                  </Form.Item>
+                </Col>
+                <Col span={24}>
+                  <Form.Item name="Citation" label="Citation link">
+                    <Input
+                      className="thm-input"
                       size="large"
-                      suffixIcon={<i className="icon-chevron-down"></i>}
-                      showSearch
-                      value={selectedtNickname}
-                      onChange={(value) => {
-                        setSelectedtNickname(value);
-                      }}
-                    >
-                      {nickNameList && nickNameList?.map((nick) => (
-                        <Select.Option key={nick?.id} value={`${nick?.id}-(${nick?.nick_name})`} >
-                          {nick?.nick_name}
-                        </Select.Option>
-                      ))}
-                    </Select>
-                  </div>
-                </Form.Item>
-              </Col>
-              <Col span={24}>
-                <Form.Item
-                  name="Citation"
-                  label="Citation link"
-                >
-                  <Input
-                    className="thm-input"
-                    size="large"
-                    placeholder="https://"
-                    prefix={<i className="icon-link"></i>}
-                  />
-                </Form.Item>
-              </Col>
-            </Row>
+                      placeholder="https://"
+                      prefix={<i className="icon-link"></i>}
+                    />
+                  </Form.Item>
+                </Col>
+              </Row>
+            </div>
           </div>
-          <div className="flex justify-center max-sm:flex-col gap-5 ">
+          <div className="flex justify-center max-sm:flex-col gap-5 p-11 fixed right-0 max-w-[730px] w-full mt-0 bg-white z-50 bottom-0">
             <Button
               size="large"
               className="min-w-[200px] gap-2 flex items-center justify-center border border-canBlue bg-[#98B7E61A] rounded-lg text-canBlack text-base font-medium"
               onClick={() => {
-                onClose()
-                form.resetFields()
+                onClose();
+                form.resetFields();
               }}
             >
               Cancel
@@ -318,7 +375,7 @@ Adding support to this camp will remove your support from the parent camp."
             </Button>
           </div>
         </Form>
-      </Drawer >
+      </Drawer>
     </>
   );
 }
