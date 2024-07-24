@@ -157,6 +157,12 @@ const HistoryComparison = ({
           </p>
         )}
         <p>
+          Camp Leader Id: <span>{campStatement?.camp_about_nick_id}</span>
+        </p>
+        <p>
+          Camp Leader: <span>{campStatement?.camp_about_nick_name}</span>
+        </p>
+        <p>
           Submitted on: <span>{covertToTime(campStatement?.submit_time)}</span>
         </p>
         <p>
