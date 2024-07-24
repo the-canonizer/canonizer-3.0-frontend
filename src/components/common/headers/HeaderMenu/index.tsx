@@ -56,7 +56,7 @@ const menuItems = [
   //   external: true,
   // },
   {
-    link: "/videos/consciousness/introduction",
+    link: "/videos",
     linkTitle: "Videos",
     id: 6,
     icon: <QuestionCircleOutlined />,
