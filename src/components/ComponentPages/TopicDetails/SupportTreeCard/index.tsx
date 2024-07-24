@@ -30,7 +30,7 @@ import {
 import { getNickNameList } from "../../../../network/api/userApi";
 import SupportRemovedModal from "src/components/common/supportRemovedModal";
 import ManageSupport from "../../ManageSupport";
-import { getTreesApi } from "src/network/api/campDetailApi";
+import { getCurrentCampRecordApi, getTreesApi } from "src/network/api/campDetailApi";
 import { setIsSupportModal } from "src/store/slices/topicSlice";
 import { showLoginModal } from "src/store/slices/uiSlice";
 import Image from "next/image";
@@ -121,6 +121,8 @@ const SupportTreeCard = ({
     setGetManageSupportLoadingIndicator,
   ] = useState(true);
   const [open, setOpen] = useState(false);
+  const [drawerFor,setDrawerFor] = useState(""); //["add","delegate","remove"]
+
   const showDrawer = () => {
     setOpen(true);
   };
@@ -286,6 +288,43 @@ const SupportTreeCard = ({
     // },100);
     // })()
   }, []);
+
+  const removeSupportModalHandler = (data,item) => {
+    // if (currentGetCheckSupportExistsData.is_delegator) {
+    //   setIsDelegateSupportTreeCardModal(true);
+    //   } else {
+    //     setIsSupportTreeCardModal(true);
+    // }
+
+    if (currentGetCheckSupportExistsData.is_delegator) {
+      setDrawerFor("delegate")
+    }else{
+      setDrawerFor("remove")
+    }
+
+    showDrawer()
+    setModalData(data[item]);
+  }
+
+  const onRemoveFinish = async(values) => {
+    currentGetCheckSupportExistsData.is_delegator
+      ? removeSupportForDelegate(values)
+      : topicList.length <= 1
+      ? removeApiSupport(modalData?.nick_name_id, values)
+      : removeSupport(modalData?.nick_name_id, values);
+
+    let reqBody = {
+      as_of: asof,
+      as_of_date: asofdate,
+      topic_num: +router?.query?.camp[0]?.split("-")[0],
+      camp_num: +router?.query?.camp[1]?.split("-")[0],
+    };
+    await getCurrentCampRecordApi(reqBody);
+
+    setModalData({});
+    removeForm.resetFields();
+  }
+
   const supportLength = 15;
   const renderTreeNodes = (
     data: any,
@@ -433,16 +472,7 @@ const SupportTreeCard = ({
                               !isUserAuthenticated ||
                               campRecord?.is_archive
                             }
-                            onClick={() => {
-                              if (currentGetCheckSupportExistsData.is_delegator) {
-                                // setIsDelegateSupportTreeCardModal(true);
-                                showDrawer()
-                                // } else {
-                                //   setIsSupportTreeCardModal(true);
-                                showDrawer()
-                              }
-                              setModalData(data[item]);
-                            }}
+                            onClick={() => removeSupportModalHandler(data,item)}
 
                             className="mb-2 flex items-center gap-1 justify-center bg-canLightRed text-canRed text-base rounded-lg font-medium h-[44px] w-full"
                           >
@@ -481,15 +511,6 @@ const SupportTreeCard = ({
 
   const [removeForm] = Form.useForm();
 
-  const onRemoveFinish = (values) => {
-    currentGetCheckSupportExistsData.is_delegator
-      ? removeSupportForDelegate(values)
-      : topicList.length <= 1
-        ? removeApiSupport(modalData?.nick_name_id, values)
-        : removeSupport(modalData?.nick_name_id, values);
-    setModalData({});
-    removeForm.resetFields();
-  };
   let title = `Support Tree for "${campRecord?.camp_name}" Camp`;
 
   // remove support popup added.
@@ -509,7 +530,12 @@ const SupportTreeCard = ({
         // expandIconPosition="right"
         className="topicDetailsCollapse"
       >
-        <SupportTreeDrawer onClose={onClose} open={open} />
+        <SupportTreeDrawer 
+          onClose={onClose} 
+          open={open} 
+          drawerFor={drawerFor}
+          onRemoveFinish={onRemoveFinish}
+        />
         <div className=" support-tree-sec">
           {/* <Paragraph className="position-relative">
             Total Support for This Camp (including sub-camps):
