@@ -37,7 +37,6 @@ function CustomLayout(props: any) {
           data-testid="main_header"
         >
           <MainHeader />
-          <SupportTreeDrawer />
         </Header>
       ) : null}
 
