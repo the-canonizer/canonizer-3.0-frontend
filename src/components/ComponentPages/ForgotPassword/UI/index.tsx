@@ -1,129 +1,74 @@
-import { Typography, Form, Input, Button, Image } from "antd";
-import { CloseCircleOutlined, ArrowRightOutlined } from "@ant-design/icons";
-
-import styles from "../../Registration/UI/Registration.module.scss";
-
-import messages from "../../../../messages";
-import { fallBackSrc } from "../../../../assets/data-images";
+import { Typography, Form } from "antd";
+import { ArrowRightOutlined, MailOutlined } from "@ant-design/icons";
 import { Fragment } from "react";
+
+import messages from "src/messages";
+import PrimaryButton from "components/shared/Buttons/PrimariButton";
+import Inputs from "components/shared/FormInputs";
 
 const { Title, Text } = Typography;
 const { labels } = messages;
 
-function ForgotPasswordUI({
-  form,
-  onFinish,
-  isModal,
-  closeModal,
-  isScreen,
-}: any) {
+function ForgotPasswordUI({ form, onFinish, isDisabled }) {
   return (
-    <section className={styles.signup_wrapper + " " + styles.textCenter}>
-      <Form
-        form={form}
-        name={isScreen === 1 ? "otpverify" : "forgotPassword"}
-        onFinish={onFinish}
-        layout="vertical"
-        scrollToFirstError
-        validateTrigger={messages.formValidationTypes()}
+    <Form
+      form={form}
+      name={"forgotPassword"}
+      onFinish={onFinish}
+      layout="vertical"
+      scrollToFirstError
+      validateTrigger={messages.formValidationTypes()}
+      className="h-full flex flex-col"
+    >
+      <Title
+        level={2}
+        className="mt-6 text-sm text-center text-canBlack font-medium"
+        id="forgot-password-title"
       >
-        <Title level={2} className={styles.titles} id="forgot-password-title">
-          {isScreen === 1 ? labels.verificationLabel : labels.forgotModalLabel}
-        </Title>
-        {isModal && (
-          <Button
-            shape="circle"
-            type="link"
-            className={styles.close_btn}
-            onClick={closeModal}
-            icon={<CloseCircleOutlined />}
-            id="forgot-modal-close-btn"
+        {labels.forgotModalLabel}
+      </Title>
+
+      <div className="my-auto">
+        <Text
+          className="text-center block text-sm font-medium mb-20 text-canBlack w-8/12 lg:w-7/12 mx-auto"
+          id="forgot-modal-note"
+        >
+          Don&apos;t worry, it happens.
+          <br /> Let us know the email address you signed up with and we&apos;ll
+          send you an email with instructions.
+        </Text>
+        <div className="w-8/12 lg:w-7/12 mx-auto my-5 overflow-hidden">
+          <Inputs
+            name="email_id"
+            label={
+              <Fragment>
+                {messages.labels.emailId}
+                <span className="required">*</span>
+              </Fragment>
+            }
+            rules={messages.emRule}
+            placeholder={messages.placeholders.emailId}
+            onKeyDown={(e) =>
+              e.key === " " && e.keyCode === 32 && e.preventDefault()
+            }
+            maxLength={255}
+            prefix={<MailOutlined />}
+            type="email"
           />
-        )}
-        <div className={styles.section_one}>
-          <div className={styles.imageWrapper}>
-            <Image
-              preview={false}
-              alt="otp"
-              src={
-                isScreen === 1
-                  ? "/images/otp-image.png"
-                  : "/images/forgot-password.png"
-              }
-              fallback={fallBackSrc}
-              width={200}
-              id="forgot-modal-img"
-            />
-          </div>
-          {isScreen === 0 && (
-            <Text
-              type="danger"
-              className={styles.otpNote}
-              id="forgot-modal-note"
-            >
-              Don&apos;t worry, it happens. Let us know the email address you
-              signed up{" "}
-              <span className={styles.otpNoteSupport}>
-                with and we&apos;ll send you an email with instructions.
-              </span>
-            </Text>
-          )}
-          {isScreen === 1 && (
-            <Text type="danger" className={styles.otpNote} id="otp-msg">
-              {messages.validations.otpMsgs}
-            </Text>
-          )}
-          {isScreen === 0 && (
-            <Form.Item
-              name="email_id"
-              label={
-                <Fragment>
-                  {messages.labels.emailId}
-                  <span className="required">*</span>
-                </Fragment>
-              }
-              style={{ textAlign: "center" }}
-              {...messages.emRule}
-              className={styles.textCenter}
-            >
-              <Input
-                className={styles.otpInput}
-                placeholder={messages.placeholders.emailId}
-                onKeyDown={(e) =>
-                  e.key === " " && e.keyCode === 32 && e.preventDefault()
-                }
-              />
-            </Form.Item>
-          )}
-          {isScreen === 1 && (
-            <Form.Item
-              name="otp"
-              style={{ textAlign: "center" }}
-              {...messages.otpRule}
-            >
-              <Input
-                className={styles.otpInput}
-                placeholder={messages.placeholders.otp}
-                min={6}
-                max={6}
-              />
-            </Form.Item>
-          )}
         </div>
-        <Form.Item>
-          <Button
-            type="primary"
+        <Form.Item className="text-center mt-4">
+          <PrimaryButton
             htmlType="submit"
-            className={styles["login-form-button"]}
-            block
+            className="h-[40px] text-sm rounded-lg !w-8/12 lg:!w-4/12"
             data-testid="submitButton"
             id="submit-btn"
+            disabled={!isDisabled}
           >
             Submit <ArrowRightOutlined />
-          </Button>
+          </PrimaryButton>
         </Form.Item>
-      </Form>
-    </section>
+      </div>
+    </Form>
   );
 }
 

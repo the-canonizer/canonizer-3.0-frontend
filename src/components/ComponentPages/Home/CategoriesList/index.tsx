@@ -1,5 +1,5 @@
 import { Fragment, useEffect } from "react";
-import { Row, Col, Tooltip } from "antd";
+import { Row, Col } from "antd";
 import { FlagOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import Link from "next/link";
@@ -52,17 +52,19 @@ const CategoriesList = () => {
         </Col>
       </Row>
 
-      <div className="mt-3">
+      <div className="w-full flex flex-wrap mt-3 -mb-5">
         {renderedTags?.map((cat) => (
-          <Tooltip title={cat?.title} key={cat?.id}>
-            <Tags
-              className="rounded-lg py-3 px-6 border-0 text-canBlack bg-canBlue mt-0 mb-5"
-              icon={<FlagOutlined />}
-              color={getRandomColor()}
-            >
-              {cat?.title}
-            </Tags>
-          </Tooltip>
+          <Link href={{ pathname: `/categories/${cat?.id}` }} key={cat?.id}>
+            <a>
+              <Tags
+                className="rounded-lg py-3 px-6 border-0 text-canBlack bg-canBlue mt-0 mb-5"
+                icon={<FlagOutlined />}
+                color={getRandomColor()}
+              >
+                {cat?.title}
+              </Tags>
+            </a>
+          </Link>
         ))}
         {isMobile ? (
           <Link href="/categories" key="moretag">

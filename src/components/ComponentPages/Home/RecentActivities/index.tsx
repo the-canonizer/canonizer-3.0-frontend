@@ -351,7 +351,6 @@ export default function RecentActivities() {
                   onChange={handleTabChange}
                 >
                   <TabPane tab="Camps" key="topic/camps">
-                
                     {getTopicsLoadingIndicator ? (
                       <CustomSkelton
                         skeltonFor="list"

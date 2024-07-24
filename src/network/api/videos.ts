@@ -13,3 +13,16 @@ export const getVideosContentApi = async (loginToken = null) => {
     //
   }
 };
+
+export const getVideosApi = async (loginToken = null) => {
+  try {
+    const videosData = await NetworkCall.fetch(
+      VideosContent.getVideos(loginToken),
+      false
+    );
+
+    return videosData;
+  } catch (error) {
+    //
+  }
+};

@@ -106,6 +106,7 @@ const InfoBar = ({
     selectedAsOf: state?.filters?.filterObject?.asof,
     algorithms: state.homePage?.algorithms,
   }));
+
   const { manageSupportStatusCheck } = useSelector((state: RootState) => ({
     manageSupportStatusCheck: state.topicDetails.manageSupportStatusCheck,
   }));
@@ -113,6 +114,7 @@ const InfoBar = ({
   const [campSubscriptionID, setCampSubscriptionID] = useState(
     campRecord?.subscriptionId
   );
+
   const [topicSubscriptionID, setTopicSubscriptionID] = useState(
     topicRecord?.topicSubscriptionId
   );
@@ -162,6 +164,7 @@ const InfoBar = ({
       }/threads`,
     });
   };
+
   const eventLinePath = () => {
     router?.push(router?.asPath.replace("topic", "eventline"));
   };
@@ -625,14 +628,6 @@ const InfoBar = ({
                     <>
                       <Button
                         type="primary"
-                        onClick={eventLinePath}
-                        className={styles.btnEventLine}
-                        id="camp-forum-btn"
-                      >
-                        Event Line
-                      </Button>
-                      <Button
-                        type="primary"
                         className={styles.btnCampForum}
                         onClick={onCampForumClick}
                         id="camp-forum-btn"
@@ -647,10 +642,11 @@ const InfoBar = ({
                           !manageSupportStatusCheck ? campForumDropdownMenu : ""
                         }
                         trigger={["click"]}
+                        destroyPopupOnHide={true}
                       >
                         <a
                           className={styles.iconMore}
-                          onClick={(e) => e.preventDefault()}
+                          onClick={(e) => {e.preventDefault(); dispatch(setManageSupportStatusCheck(false))}}
                         >
                           <MoreOutlined />
                         </a>

@@ -91,20 +91,28 @@ const ImageUploader: React.FC = () => {
 
   const onModalOk = async (file) => {
     setLoading(true);
-    try {
-      const formData = new FormData();
-      formData.append("profile_picture", file as File);
-      const response = await uploadProfileImage(formData);
-      const imageUrl = response.data.profile_picture;
-      dispatch(setProfilePicture(imageUrl));
+    if (!["image/jpeg", "image/jpg", "image/png"].includes(file?.type)) {
       setLoading(false);
-      message.success("Upload successful");
-    } catch (error) {
-      setLoading(false);
-      message.error(error?.error?.data?.error?.profile_picture[0]);
+      message.error(
+        "The profile picture must be a file of type: png, jpg, jpeg"
+      );
+    } else {
+      try {
+        const formData = new FormData();
+        formData.append("profile_picture", file as File);
+        const response = await uploadProfileImage(formData);
+        const imageUrl = response.data.profile_picture;
+        dispatch(setProfilePicture(imageUrl));
+        setLoading(false);
+        if (response?.status_code === 200) {
+          message.success("Upload successful");
+        }
+      } catch (error) {
+        setLoading(false);
+        message.error(error?.error?.data?.error?.profile_picture[0]);
+      }
     }
   };
-
   return (
     <Fragment>
       <div className="upload-wrap">

@@ -190,7 +190,6 @@ const CreateTopicFromUI = ({
                 formatFunc={changeSlashToArrow}
                 onChange={(val) => form.setFieldValue("namespace", val)}
                 onSearch={(val) => {
-                  console.log("val--", val);
                   return;
                 }}
                 loading={isLoading}

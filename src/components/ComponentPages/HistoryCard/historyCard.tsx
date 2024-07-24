@@ -48,7 +48,6 @@ import HistoryComparison from "../HistoryContainer/Collapse/historyComparison";
 import Timer from "../Timer";
 import PrimaryButton from "components/shared/Buttons/PrimariButton";
 
-
 const { Panel } = Collapse;
 
 function HistoryCard({
@@ -72,7 +71,7 @@ function HistoryCard({
   historyState = null,
   status = null,
   currentVersion = null,
-  s1 = false
+  s1 = false,
 }: any) {
   const router = useRouter();
   const [commited, setCommited] = useState(false);
@@ -205,10 +204,11 @@ function HistoryCard({
   return (
     <>
       <div
-        className={`${compareMode ? "" : "csh-wrapper"} cn-wrapper ${compareMode
-          ? getStatusClass(status)
-          : getStatusClass(campStatement?.status)
-          }`}
+        className={`${compareMode ? "" : "csh-wrapper"} cn-wrapper ${
+          compareMode
+            ? getStatusClass(status)
+            : getStatusClass(campStatement?.status)
+        }`}
       >
         <div className="badge-wrapper">
           <Badge
@@ -274,12 +274,13 @@ function HistoryCard({
                 <Tooltip
                   title={` Note: This countdown timer is the grace period in which
                       you can make minor changes to your
-                      ${historyOf == "topic"
-                      ? "topic"
-                      : historyOf == "camp"
-                        ? "camp"
-                        : "statement"
-                    }
+                      ${
+                        historyOf == "topic"
+                          ? "topic"
+                          : historyOf == "camp"
+                          ? "camp"
+                          : "statement"
+                      }
                       before other direct supporters are notified.`}
                 >
                   <InfoCircleOutlined />
@@ -403,73 +404,74 @@ function HistoryCard({
                       campStatement?.ifIAmExplicitSupporter ||
                       campStatement?.isAuthor
                     ) && (
-                        <>
-                          <HistoryCardDrawer
-                            onClick={async () => {
-                              let req = {
-                                topic_num: router?.query.camp[0].split("-")[0],
-                                camp_num:
-                                  historyOf == "topic"
-                                    ? 1
-                                    : router?.query.camp[1].split("-")[0],
-                                change_id: campStatement?.id,
-                                type: historyOf,
-                              };
-                              let res = await getChangeSupporters(req);
-                              if (res.status_code == 200) {
-                                let supportersData = res?.data.supporters?.map(
-                                  (data, key) => {
-                                    return {
-                                      key: key,
-                                      status: data?.agreed,
-                                      nickNameData: {
-                                        name: data?.nick_name,
-                                        path: `/user/supports/${data?.id || ""
-                                          }?canon=${topicNamespaceId || ""}`,
-                                      },
-                                    };
-                                  }
-                                );
-                                setSupporters(supportersData);
-                              }
-                              setIsModalOpen(true);
-                            }}
-                            displayText={
-                              <p>
-                                <u>
-                                  {campStatement?.agreed_supporters} out of{" "}
-                                  {campStatement?.total_supporters} required
-                                  supporters have agreed
-                                </u>
-                                {(campStatement?.ifICanAgreeAndObject ||
-                                  campStatement?.ifICanAgreeAndObject ==
+                      <>
+                        <HistoryCardDrawer
+                          onClick={async () => {
+                            let req = {
+                              topic_num: router?.query.camp[0].split("-")[0],
+                              camp_num:
+                                historyOf == "topic"
+                                  ? 1
+                                  : router?.query.camp[1].split("-")[0],
+                              change_id: campStatement?.id,
+                              type: historyOf,
+                            };
+                            let res = await getChangeSupporters(req);
+                            if (res.status_code == 200) {
+                              let supportersData = res?.data.supporters?.map(
+                                (data, key) => {
+                                  return {
+                                    key: key,
+                                    status: data?.agreed,
+                                    nickNameData: {
+                                      name: data?.nick_name,
+                                      path: `/user/supports/${
+                                        data?.id || ""
+                                      }?canon=${topicNamespaceId || ""}`,
+                                    },
+                                  };
+                                }
+                              );
+                              setSupporters(supportersData);
+                            }
+                            setIsModalOpen(true);
+                          }}
+                          displayText={
+                            <p>
+                              <u>
+                                {campStatement?.agreed_supporters} out of{" "}
+                                {campStatement?.total_supporters} required
+                                supporters have agreed
+                              </u>
+                              {(campStatement?.ifICanAgreeAndObject ||
+                                campStatement?.ifICanAgreeAndObject ==
                                   undefined) &&
-                                  !!(
-                                    campStatement?.ifIamSupporter != 0 ||
-                                    campStatement?.ifIAmExplicitSupporter
-                                  ) &&
-                                  isUserAuthenticated &&
-                                  !campStatement?.isAuthor &&
-                                  campStatement?.total_supporters -
+                                !!(
+                                  campStatement?.ifIamSupporter != 0 ||
+                                  campStatement?.ifIAmExplicitSupporter
+                                ) &&
+                                isUserAuthenticated &&
+                                !campStatement?.isAuthor &&
+                                campStatement?.total_supporters -
                                   campStatement?.agreed_supporters ==
                                   1 &&
-                                  !campStatement?.agreed_to_change && (
-                                    <>
-                                      , Since you are the last hold out, the
-                                      instant you agree, this will go live.
-                                    </>
-                                  )}
-                              </p>
-                            }
-                            agreedSupporters={supporters?.filter(
-                              (obj) => obj?.status === true
-                            )}
-                            notAgreedSupporters={supporters?.filter(
-                              (obj) => obj?.status === false
-                            )}
-                          />
-                        </>
-                      )}
+                                !campStatement?.agreed_to_change && (
+                                  <>
+                                    , Since you are the last hold out, the
+                                    instant you agree, this will go live.
+                                  </>
+                                )}
+                            </p>
+                          }
+                          agreedSupporters={supporters?.filter(
+                            (obj) => obj?.status === true
+                          )}
+                          notAgreedSupporters={supporters?.filter(
+                            (obj) => obj?.status === false
+                          )}
+                        />
+                      </>
+                    )}
                   </Space>
                 </div>
               </>
@@ -486,33 +488,33 @@ function HistoryCard({
                     className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none w-100"
                     onClick={() => {
                       campStatement?.is_archive == 1 &&
-                        campStatement?.status == "live"
+                      campStatement?.status == "live"
                         ? !isUserAuthenticated
                           ? router?.push({
-                            pathname: "/login",
-                            query: {
-                              returnUrl: `/manage/${historyOf}/${campStatement?.id}`,
-                            },
-                          })
+                              pathname: "/login",
+                              query: {
+                                returnUrl: `/manage/${historyOf}/${campStatement?.id}`,
+                              },
+                            })
                           : callManageCampApi()
                         : submitUpdateRedirect(historyOf);
                     }}
                     disabled={
                       unarchiveChangeSubmitted ||
-                        (campHistoryItems &&
-                          campHistoryItems[0]?.status == "in_review" &&
-                          !commited &&
-                          !!campHistoryItems[0]?.grace_period) ||
-                        (campHistoryItems?.at(0)?.status == "live" &&
-                          campHistoryItems?.at(0)?.is_archive == 1 &&
-                          campStatement.status == "old") ||
-                        (parentArchived == 1 && directarchived == 0) ||
-                        (parentArchived == 1 &&
-                          directarchived == 1 &&
-                          historyOf == "topic") ||
-                        (campHistoryItems?.at(0)?.is_archive == 1 &&
-                          campHistoryItems?.at(0)?.status == "live" &&
-                          campStatement.status == "objected")
+                      (campHistoryItems &&
+                        campHistoryItems[0]?.status == "in_review" &&
+                        !commited &&
+                        !!campHistoryItems[0]?.grace_period) ||
+                      (campHistoryItems?.at(0)?.status == "live" &&
+                        campHistoryItems?.at(0)?.is_archive == 1 &&
+                        campStatement.status == "old") ||
+                      (parentArchived == 1 && directarchived == 0) ||
+                      (parentArchived == 1 &&
+                        directarchived == 1 &&
+                        historyOf == "topic") ||
+                      (campHistoryItems?.at(0)?.is_archive == 1 &&
+                        campHistoryItems?.at(0)?.status == "live" &&
+                        campStatement.status == "objected")
                         ? true
                         : false
                     }
@@ -532,13 +534,13 @@ function HistoryCard({
                           let isModelPop = !isUserAuthenticated
                             ? true
                             : (!campStatement?.ifIAmExplicitSupporter &&
-                              campStatement?.ifIamSupporter == 0) ||
+                                campStatement?.ifIamSupporter == 0) ||
                               (parentArchived == 1 &&
                                 directarchived == 1 &&
                                 historyOf == "topic") ||
                               (parentArchived == 1 && directarchived == 0)
-                              ? true
-                              : false;
+                            ? true
+                            : false;
                           if (isModelPop) {
                             setModal1Open(true);
                           } else {
@@ -546,8 +548,8 @@ function HistoryCard({
                               historyOf == "camp"
                                 ? `/manage/camp/${campStatement?.id}-objection`
                                 : historyOf == "topic"
-                                  ? `/manage/topic/${campStatement?.id}-objection`
-                                  : `/manage/statement/${campStatement?.id}-objection`
+                                ? `/manage/topic/${campStatement?.id}-objection`
+                                : `/manage/statement/${campStatement?.id}-objection`
                             );
                           }
                         }}
@@ -569,33 +571,35 @@ function HistoryCard({
                     }
                   >
                     <Link
-                      href={`/topic/${replaceSpecialCharacters(
-                        historyOf == "topic"
-                          ? replaceSpecialCharacters(
-                            campStatement?.topic_num +
-                            "-" +
-                            campStatement?.topic_name?.replace(/ /g, "-"),
-                            "-"
-                          )
-                          : router?.query?.camp?.at(0),
-                        "-"
-                      ) +
+                      href={`/topic/${
+                        replaceSpecialCharacters(
+                          historyOf == "topic"
+                            ? replaceSpecialCharacters(
+                                campStatement?.topic_num +
+                                  "-" +
+                                  campStatement?.topic_name?.replace(/ /g, "-"),
+                                "-"
+                              )
+                            : router?.query?.camp?.at(0),
+                          "-"
+                        ) +
                         "/" +
                         (historyOf != "topic"
                           ? historyOf == "camp"
                             ? replaceSpecialCharacters(
-                              campStatement?.camp_num +
-                              "-" +
-                              campStatement?.camp_name?.replace(/ /g, "-"),
-                              "-"
-                            )
+                                campStatement?.camp_num +
+                                  "-" +
+                                  campStatement?.camp_name?.replace(/ /g, "-"),
+                                "-"
+                              )
                             : replaceSpecialCharacters(
-                              router?.query?.camp?.at(1),
-                              "-"
-                            )
+                                router?.query?.camp?.at(1),
+                                "-"
+                              )
                           : "1-Agreement")
-                        }?algo=${algorithm}&asofdate=${campStatement?.go_live_time
-                        }&asof=bydate&canon=${namespace_id}&viewversion=${1}`}
+                      }?algo=${algorithm}&asofdate=${
+                        campStatement?.go_live_time
+                      }&asof=bydate&canon=${namespace_id}&viewversion=${1}`}
                     >
                       View Version
                     </Link>
@@ -634,8 +638,8 @@ function HistoryCard({
                           historyOf == "camp"
                             ? `/manage/camp/${campStatement?.id}-update`
                             : historyOf == "topic"
-                              ? `/manage/topic/${campStatement?.id}-update`
-                              : `/manage/statement/${campStatement?.id}-update`
+                            ? `/manage/topic/${campStatement?.id}-update`
+                            : `/manage/statement/${campStatement?.id}-update`
                         }
                       >
                         Edit Change

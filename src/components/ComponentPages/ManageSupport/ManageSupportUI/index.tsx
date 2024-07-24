@@ -15,6 +15,7 @@ import CustomSkelton from "src/components/common/customSkelton";
 import SupportRemovedModal from "src/components/common/supportRemovedModal";
 import My404 from "../../404";
 import { setIsSupportModal } from "src/store/slices/topicSlice";
+import { setOpenConsensusTreePopup } from "src/store/slices/hotTopicSlice";
 
 const { placeholders } = messages;
 
@@ -285,6 +286,22 @@ const ManageSupportUI = ({
     // }
     // removeForm.resetFields();
     // setRemoveSupportSpinner(false);
+  };
+
+  const handleOnClick = () => {
+    // Original logic
+    if (
+      removeAllIsSelected() &&
+      !currentGetCheckSupportExistsData.is_delegator
+    ) {
+      removeCampsApi();
+    } else if (CheckDelegatedOrDirect) {
+      checkNickNameSupportCamps();
+    } else if (removeCampsSupport) {
+      checkNickNameSupportCamps();
+    } else {
+      addRemoveApi();
+    }
   };
 
   const checkNickNameSupportCamps = async () => {
@@ -558,7 +575,6 @@ const ManageSupportUI = ({
         </div>
       </div>
 
-      {/* modal data */}
       {/* <Modal
         className={styles.modal_cross}
         title={

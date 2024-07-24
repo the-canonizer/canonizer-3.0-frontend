@@ -18,7 +18,7 @@ const SingleAvatar = ({ user }) => {
 
   useEffect(() => {
     const fetchGravatarImage = async () => {
-      if (user?.email) {
+      if (!user?.profile_picture_path && user?.email) {
         const available = await getGravatarImage(user?.email);
         setIsGravatarAvailable(available);
       }
@@ -43,7 +43,7 @@ const SingleAvatar = ({ user }) => {
       );
     }
 
-    if (isGravatarAvailable) {
+    if (!user?.profile_picture_path && isGravatarAvailable) {
       return (
         <Avatar
           style={{ backgroundColor: "#D0D8F4" }}
@@ -54,7 +54,7 @@ const SingleAvatar = ({ user }) => {
 
     if (!user?.profile_picture_path && !isGravatarAvailable) {
       return (
-        <Avatar style={{ backgroundColor: "#D0D8F4" }}>
+        <Avatar style={{ backgroundColor: "#D0D8F4" }} className="uppercase">
           {user?.first_name?.charAt(0)}
         </Avatar>
       );

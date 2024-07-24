@@ -204,4 +204,26 @@ export default class TreeRequest extends Request {
       token
     );
   }
+
+  static CheckCampSign(queryParams) {
+    return new Request(
+      K.Network.URL.CampSignCheck +
+        `?topic_num=${queryParams.topic_num}&camp_num=${queryParams.camp_num}`,
+      K.Network.Method.GET,
+      null,
+      K.Network.Header.Type.Json,
+      {}
+    );
+  }
+
+  static campSignRequest(reqBody, token) {
+    return new Request(
+      K.Network.URL.CampSign,
+      K.Network.Method.POST,
+      reqBody,
+      K.Network.Header.Type.Json,
+      {},
+      token
+    );
+  }
 }
