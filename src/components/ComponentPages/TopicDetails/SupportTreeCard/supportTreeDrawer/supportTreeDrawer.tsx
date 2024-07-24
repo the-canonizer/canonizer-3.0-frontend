@@ -73,6 +73,10 @@ function SupportTreeDrawer({ onClose, open }: any) {
   }, [reasons]);
 
 
+  const onFinish = () => {
+
+  }
+
 
   return (
     <>
@@ -85,7 +89,7 @@ function SupportTreeDrawer({ onClose, open }: any) {
         placement="right"
         onClose={onClose}
         open={open}
-        width={730}
+        contentWrapperStyle={{ maxWidth: "730px", width: "100%" }}
       // footer={
       //   <div className="flex justify-center max-sm:flex-col gap-5">
       //     <Button
@@ -144,8 +148,10 @@ function SupportTreeDrawer({ onClose, open }: any) {
           onFinish={onFinish}
         // validateTrigger={messages.formValidationTypes()}
         >
+          <div className="support-content">
 
-          {/* <Alert
+
+            {/* <Alert
             className="border-0 rounded-lg warning-alert"
             description="You’re already supporting the Parent Camp: Agreement.
 Adding support to this camp will remove your support from the parent camp."
@@ -154,77 +160,78 @@ Adding support to this camp will remove your support from the parent camp."
             icon={<i className="icon-warning"></i>}
           /> */}
 
-          <Row gutter={16}>
-            <Col span={24} sm={12}>
-              <Form.Item
-                name="reason"
-                label="Reason for adding support"
-                required
-                rules={[
-                  {
-                    required: true,
-                    message: 'Please select a reason',
-                  },
-                ]}
-              >
-                <Select
-                  className="w-100 cn-select"
-                  size="large"
-                  suffixIcon={<i className="icon-chevron-down"></i>}
-                  onChange={onSelectChange}
+            <Row gutter={16}>
+              <Col span={24} sm={12}>
+                <Form.Item
+                  name="reason"
+                  label="Reason for adding support"
+                  required
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Please select a reason',
+                    },
+                  ]}
                 >
-                  {availableReasons?.map((res) => (
-                    <Select.Option key={res?.id} value={`${res?.id}-(${res?.label})`}>
-                      {res?.label}
+                  <Select
+                    className="w-100 cn-select"
+                    size="large"
+                    suffixIcon={<i className="icon-chevron-down"></i>}
+                    onChange={onSelectChange}
+                  >
+                    {availableReasons?.map((res) => (
+                      <Select.Option key={res?.id} value={`${res?.id}-(${res?.label})`}>
+                        {res?.label}
+                      </Select.Option>
+                    ))}
+                    <Select.Option key="custom_reason" value="custom">
+                      Custom reason
                     </Select.Option>
-                  ))}
-                  <Select.Option key="custom_reason" value="custom">
-                    Custom reason
-                  </Select.Option>
-                </Select>
-              </Form.Item>
-            </Col>
-            <Col span={24} sm={12}>
-              <Form.Item
-                name="nickname"
-                label="Nickname"
-                rules={[
-                  {
-                    required: true,
-                    message: 'Please select a nickname',
-                  },
-                ]}
-              >
-                <Select
-                  placeholder="Select a nickname"
-                  className="w-100 cn-select"
-                  size="large"
-                  suffixIcon={<i className="icon-chevron-down"></i>}
-                  showSearch
+                  </Select>
+                </Form.Item>
+              </Col>
+              <Col span={24} sm={12}>
+                <Form.Item
+                  name="nickname"
+                  label="Nickname"
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Please select a nickname',
+                    },
+                  ]}
                 >
-                  {nickNameList?.map((nick) => (
-                    <Select.Option key={nick.id} value={nick.id} >
-                      {nick.nick_name}
-                    </Select.Option>
-                  ))}
-                </Select>
-              </Form.Item>
-            </Col>
-            <Col span={24}>
-              <Form.Item
-                name="Citation"
-                label="Citation link"
-              >
-                <Input
-                  className="thm-input"
-                  size="large"
-                  placeholder="https://"
-                  prefix={<i className="icon-link"></i>}
-                />
-              </Form.Item>
-            </Col>
-          </Row>
-          <div className="flex justify-center max-sm:flex-col gap-5 absolute">
+                  <Select
+                    placeholder="Select a nickname"
+                    className="w-100 cn-select"
+                    size="large"
+                    suffixIcon={<i className="icon-chevron-down"></i>}
+                    showSearch
+                  >
+                    {nickNameList?.map((nick) => (
+                      <Select.Option key={nick.id} value={nick.id} >
+                        {nick.nick_name}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                </Form.Item>
+              </Col>
+              <Col span={24}>
+                <Form.Item
+                  name="Citation"
+                  label="Citation link"
+                >
+                  <Input
+                    className="thm-input"
+                    size="large"
+                    placeholder="https://"
+                    prefix={<i className="icon-link"></i>}
+                  />
+                </Form.Item>
+              </Col>
+            </Row>
+          </div>
+          <div className="flex justify-center max-sm:flex-col gap-5">
             <Button
               size="large"
               className="min-w-[200px] gap-2 flex items-center justify-center border border-canBlue bg-[#98B7E61A] rounded-lg text-canBlack text-base font-medium"
