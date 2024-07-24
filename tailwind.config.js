@@ -73,6 +73,9 @@ module.exports = {
 
         "2xl": "1600px",
         // => @media (min-width: 1600px) { ... }
+        
+        "3xl": "1900px",
+        // => @media (min-width: 1600px) { ... }
       },
     },
   },
