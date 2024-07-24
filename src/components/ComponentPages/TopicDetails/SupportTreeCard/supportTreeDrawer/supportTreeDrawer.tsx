@@ -43,26 +43,7 @@ function SupportTreeDrawer() {
         placement="right"
         onClose={onClose}
         open={open}
-        width={730}
-        footer={
-          <div className="flex justify-center max-sm:flex-col gap-5">
-            <Button
-              size="large"
-              className="min-w-[200px] gap-2 flex items-center justify-center border border-canBlue bg-[#98B7E61A] rounded-lg text-canBlack text-base font-medium"
-            >
-              Cancel
-              <CloseOutlined />
-            </Button>
-            <Button
-              size="large"
-              type="primary"
-              className=" min-w-[200px] bg-canBlue flex items-center justify-center hover:bg-canHoverBlue focus:bg-canHoverBlue hover:text-white font-medium text-white disabled:bg-disabled font-base rounded-lg"
-            >
-              Add Support
-              <PlusOutlined />
-            </Button>
-          </div>
-        }
+        contentWrapperStyle={{ maxWidth: "730px", width: "100%" }}
       >
         <div className="page-breadcrums-wrapper">
           <PageHeader
@@ -72,7 +53,7 @@ function SupportTreeDrawer() {
             title={
               <>
                 Adding Support to camp:
-                <span>Agreement </span>
+                <span className="ml-1">Agreement </span>
               </>
             }
           />
@@ -93,111 +74,130 @@ function SupportTreeDrawer() {
         </div>
 
         <Form form={form} layout="vertical" className="adding-support-form">
-          <Alert
-            className="border-0 rounded-lg warning-alert"
-            description="You’re already supporting the Parent Camp: Agreement.
+          <div className="support-content">
+            <Alert
+              className="border-0 rounded-lg warning-alert"
+              description="You’re already supporting the Parent Camp: Agreement.
 Adding support to this camp will remove your support from the parent camp."
-            type="error"
-            showIcon
-            icon={<i className="icon-warning"></i>}
-          />
+              type="error"
+              showIcon
+              icon={<i className="icon-warning"></i>}
+            />
 
-          <Row gutter={16}>
-            <Col span={24} sm={12}>
-              <Form.Item
-                label="Reason for adding support"
-                rules={[
-                  {
-                    required: true,
-                  },
-                ]}
-              >
-                <div className="thm-select">
-                  <div className="prefix-icon">
-                    <i className="icon-bar"></i>
+            <Row gutter={16}>
+              <Col span={24} sm={12}>
+                <Form.Item
+                  label="Reason for adding support"
+                  rules={[
+                    {
+                      required: true,
+                    },
+                  ]}
+                >
+                  <div className="thm-select">
+                    <div className="prefix-icon">
+                      <i className="icon-bar"></i>
+                    </div>
+                    <Select
+                      placeholder="Select reason from list"
+                      className="w-100 cn-select"
+                      size="large"
+                      suffixIcon={<i className="icon-chevron-down"></i>}
+                      onChange={handleChange}
+                      options={[
+                        {
+                          value: "jack",
+                          label: "Jack",
+                        },
+                        {
+                          value: "lucy",
+                          label: "Lucy",
+                        },
+
+                        {
+                          value: "Yiminghe",
+                          label: "yiminghe",
+                        },
+                      ]}
+                    />
                   </div>
-                  <Select
-                    placeholder="Select reason from list"
-                    className="w-100 cn-select"
-                    size="large"
-                    suffixIcon={<i className="icon-chevron-down"></i>}
-                    onChange={handleChange}
-                    options={[
-                      {
-                        value: "jack",
-                        label: "Jack",
-                      },
-                      {
-                        value: "lucy",
-                        label: "Lucy",
-                      },
+                </Form.Item>
+              </Col>
+              <Col span={24} sm={12}>
+                <Form.Item
+                  label="Nickname"
+                  rules={[
+                    {
+                      required: true,
+                    },
+                  ]}
+                >
+                  <div className="thm-select">
+                    <div className="prefix-icon">
+                      <UserOutlined />
+                    </div>
+                    <Select
+                      placeholder="Select your nickname from list"
+                      className="w-100 cn-select"
+                      size="large"
+                      suffixIcon={<i className="icon-chevron-down"></i>}
+                      onChange={handleChange}
+                      options={[
+                        {
+                          value: "jack",
+                          label: "Jack",
+                        },
+                        {
+                          value: "lucy",
+                          label: "Lucy",
+                        },
 
-                      {
-                        value: "Yiminghe",
-                        label: "yiminghe",
-                      },
-                    ]}
-                  />
-                </div>
-              </Form.Item>
-            </Col>
-            <Col span={24} sm={12}>
-              <Form.Item
-                label="Nickname"
-                rules={[
-                  {
-                    required: true,
-                  },
-                ]}
-              >
-                <div className="thm-select">
-                  <div className="prefix-icon">
-                    <UserOutlined />
+                        {
+                          value: "Yiminghe",
+                          label: "yiminghe",
+                        },
+                      ]}
+                    />
                   </div>
-                  <Select
-                    placeholder="Select your nickname from list"
-                    className="w-100 cn-select"
+                </Form.Item>
+              </Col>
+              <Col span={24}>
+                <Form.Item
+                  name="Citation"
+                  label="Citation link"
+                  rules={[
+                    {
+                      required: true,
+                    },
+                  ]}
+                >
+                  <Input
+                    className="thm-input"
                     size="large"
-                    suffixIcon={<i className="icon-chevron-down"></i>}
-                    onChange={handleChange}
-                    options={[
-                      {
-                        value: "jack",
-                        label: "Jack",
-                      },
-                      {
-                        value: "lucy",
-                        label: "Lucy",
-                      },
-
-                      {
-                        value: "Yiminghe",
-                        label: "yiminghe",
-                      },
-                    ]}
+                    placeholder="https://"
+                    prefix={<i className="icon-link"></i>}
                   />
-                </div>
-              </Form.Item>
-            </Col>
-            <Col span={24}>
-              <Form.Item
-                name="Citation"
-                label="Citation link"
-                rules={[
-                  {
-                    required: true,
-                  },
-                ]}
-              >
-                <Input
-                  className="thm-input"
-                  size="large"
-                  placeholder="https://"
-                  prefix={<i className="icon-link"></i>}
-                />
-              </Form.Item>
-            </Col>
-          </Row>
+                </Form.Item>
+              </Col>
+            </Row>
+          </div>
+          <div className="flex justify-center max-sm:flex-col gap-5">
+            <Button
+              size="large"
+              className="min-w-[200px] gap-2 flex items-center justify-center border border-canBlue bg-[#98B7E61A] rounded-lg text-canBlack text-base font-medium"
+            >
+              Cancel
+              <CloseOutlined />
+            </Button>
+            <Button
+              size="large"
+              type="primary"
+              className=" min-w-[200px] bg-canBlue flex items-center justify-center hover:bg-canHoverBlue focus:bg-canHoverBlue hover:text-white font-medium text-white disabled:bg-disabled font-base rounded-lg"
+            >
+              Add Support
+              <PlusOutlined />
+            </Button>
+          </div>
         </Form>
       </Drawer>
     </>
