@@ -27,6 +27,7 @@ import ViewCounts from "components/shared/ViewsCount";
 import CardDescription from "../HotTopics/descriptions";
 import NameSpaceLabel from "components/shared/NameSpaceLabel";
 import CustomPagination from "components/shared/CustomPagination/intex";
+import TopicCatsLabel from "components/shared/TopicCategories";
 const { Title } = Typography;
 const { Search } = Input;
 
@@ -319,8 +320,8 @@ const TopicsList = () => {
                       }/1-Agreement`,
                     }}
                   >
-                    <a className="flex justify-between items-center">
-                      <Typography.Paragraph className="m-0 text-base font-medium font-inter">
+                    <a className="flex justify-between items-center text-canBlack">
+                      <Typography.Paragraph className="!mb-2 text-base font-medium font-inter line-clamp-1 max-w-[96%]">
                         {ft?.topic_name}
                       </Typography.Paragraph>
                       <RightOutlined className="text-canBlue font-bold hidden rightArrow" />
@@ -352,21 +353,22 @@ const TopicsList = () => {
                     </svg>
                     {ft?.topic_score?.toFixed(2)}
                   </Tag>
-                  <div className="card-description mt-3">
+                  <div className="card-description mt-6">
                     <CardDescription
                       description={ft?.statement}
                       isBrowsing={isBrowsing}
                     />
                   </div>
-                  <div className="browse-card-footer">
+                  <div className="browse-card-footer !mt-5">
                     <div className="text-left flex ">
-                      <NameSpaceLabel
+                      <TopicCatsLabel tags={ft?.topicTags} />
+                      {/* <NameSpaceLabel
                         namespace={
                           selectedNameSpace != "All"
                             ? selectedNameSpace
                             : getNameById(ft?.namespace_id)
                         }
-                      />
+                      /> */}
                       <ViewCounts views={ft?.camp_views} />
                     </div>
                     <AvatarGroup
