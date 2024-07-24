@@ -85,7 +85,12 @@ const PermissionsForPages: PermissionsObj = {
     permissionName: "addNews",
   },
   AllCategories: {
-    isAuthenticationRequired: true,
+    isAuthenticationRequired: false,
+    isPermissionRequired: false,
+    permissionName: "all_categories",
+  },
+  CategoriesTopic: {
+    isAuthenticationRequired: false,
     isPermissionRequired: false,
     permissionName: "all_categories",
   },

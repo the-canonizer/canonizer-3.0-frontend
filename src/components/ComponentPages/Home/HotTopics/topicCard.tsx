@@ -24,7 +24,7 @@ const SingleTopicCard = ({ topic, onTopicLinkClick = null }) => {
 
   return (
     <CommonCard
-      className="border-0 h-full transition duration-300 hocus:shadow-lg [&_.rightArrow]:hover:block mainCard hocus:bg-white [&_.ant-card-body]:flex [&_.ant-card-body]:flex-col [&_.ant-card-body]:h-full fullHeightCard [&_.ant-card-body]:before:hidden"
+      className="border-0 h-full transition duration-300 hocus:shadow-lg [&_.rightArrow]:hover:block mainCard hocus:bg-white [&_.ant-card-body]:flex [&_.ant-card-body]:flex-col [&_.ant-card-body]:h-full fullHeightCard [&_.ant-card-body]:before:hidden [&_.ant-card-body]:after:hidden"
       key={topic?.id}
     >
       <Link
@@ -48,7 +48,7 @@ const SingleTopicCard = ({ topic, onTopicLinkClick = null }) => {
       </Link>
       <CardDescription description={topic?.statement?.parsed_value} />
       <div className="flex justify-between mt-auto pt-5 mt-auto flex-row">
-        <div className="text-letopic flex flex-col">
+        <div className="text-letopic flex flex-col justify-end">
           <TopicCatsLabel tags={topic?.topicTags} />
           <ViewCounts views={topic?.views} className="!mt-2" />
         </div>
