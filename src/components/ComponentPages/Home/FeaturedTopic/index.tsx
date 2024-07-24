@@ -1,6 +1,7 @@
 import { Fragment, useState } from "react";
 import dynamic from "next/dynamic";
 import { useSelector } from "react-redux";
+import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 
 import { RootState } from "src/store";
 import SectionHeading from "./sectionsHeading";
@@ -18,15 +19,18 @@ const FeaturedTopic = () => {
 
   const settings = {
     autoplay: true,
-    dots: true,
-    arrows: false,
+    dots: false,
+    arrows: true,
     infinite: true,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
     centerPadding: "16px",
     className: "featuresSlider",
-    dotsClass: "featuredDots my-[20px] justify-center",
+    // dotsClass: "featuredDots my-[20px] justify-center",
+    arrowClass: "hello",
+    nextArrow: <RightOutlined className="text-xl text-canBlue" />,
+    prevArrow: <LeftOutlined className="text-xl text-canBlue" />,
     responsive: [],
   };
 

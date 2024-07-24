@@ -47,10 +47,13 @@ const SingleTopicCard = ({ topic, onTopicLinkClick = null }) => {
         </a>
       </Link>
       <CardDescription description={topic?.statement?.parsed_value} />
-      <div className="flex justify-between mt-auto pt-5 mt-auto flex-row">
-        <div className="text-letopic flex flex-col justify-end">
+      <div className="flex justify-between mt-auto pt-5 mt-auto flex-row items-center">
+        <div className="text-letopic flex flex-col justify-center">
           <TopicCatsLabel tags={topic?.topicTags} />
-          <ViewCounts views={topic?.views} className="!mt-2" />
+          <ViewCounts
+            views={topic?.views}
+            className={`${topic?.topicTags?.length ? "!mt-2" : ""}`}
+          />
         </div>
         <AvatarGroup
           avatars={topic?.supporterData?.slice(0, 3)}
