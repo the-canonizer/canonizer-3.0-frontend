@@ -35,6 +35,12 @@ function Footer() {
       id: 10,
       external: true,
     },
+    {
+      link: "/videos",
+      linkTitle: "Videos",
+      id: 10,
+      external: true,
+    },
   ];
 
   const mockLinks2 = [
