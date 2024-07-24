@@ -140,7 +140,7 @@ const TrandingTopics = () => {
               }}
               renderItem={(item: any) => (
                 <List.Item
-                  className="font-inter text-sm font-medium bg-white hover:bg-canGrey1 !px-3.5 !py-4"
+                  className="font-inter text-sm font-medium bg-white hover:bg-canGrey1 !px-3.5 !py-4 justify-start"
                   id={`topic-${item?.topic_id}`}
                 >
                   <Link
@@ -149,13 +149,15 @@ const TrandingTopics = () => {
                       "-"
                     )}/1-Agreement`}
                   >
-                    <a
-                      className="hover:*:text-canHoverBlue"
-                      onClick={() => setLoadMoreIndicator(true)}
-                    >
-                      <Typography.Text className="">
-                        {item?.topic_name}
-                      </Typography.Text>
+                    <>
+                      <a
+                        className="hover:*:text-canHoverBlue font-medium 3xl:font-semibold"
+                        onClick={() => setLoadMoreIndicator(true)}
+                      >
+                        <Typography.Text className="">
+                          {item?.topic_name}
+                        </Typography.Text>
+                      </a>
                       <Tag
                         className={
                           "bg-canOrange text-white border-0 rounded-md ml-1 inline-flex py-[2px] flex items-center text-12"
@@ -164,7 +166,7 @@ const TrandingTopics = () => {
                         <HandIcon />
                         {item?.topic_score?.toFixed(2)}
                       </Tag>
-                    </a>
+                    </>
                   </Link>
                 </List.Item>
               )}

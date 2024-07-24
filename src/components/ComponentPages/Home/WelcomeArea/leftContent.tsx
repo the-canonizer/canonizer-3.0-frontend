@@ -66,7 +66,7 @@ const LeftContent = ({ isUserAuthenticated }) => {
       </Typography.Paragraph>
       {isUserAuthenticated ? (
         <TopicCreateButton
-          className={`w-6/12 h-[50px] text-sm bg-canBlue px-3 rounded-lg text-white hover:bg-canHoverBlue hover:text-white flex items-center justify-center font-medium md:w-4/12 mt-auto ${
+          className={`w-6/12 h-[44px] text-sm bg-canBlue px-3 rounded-lg text-white hover:bg-canHoverBlue hover:text-white flex items-center justify-center font-medium md:w-4/12 mt-auto ${
             isMobile
               ? "bg-transparent !text-canBlue px-0 w-5/12 !text-base !text-left"
               : ""
@@ -75,7 +75,7 @@ const LeftContent = ({ isUserAuthenticated }) => {
         />
       ) : (
         <PrimaryButton
-          className="w-6/12 h-[50px] text-sm md:w-4/12 mt-3"
+          className="w-6/12 h-[44px] text-sm md:w-4/12 mt-3"
           onClick={onBrowseClick}
         >
           Browse More <ArrowRightOutlined />
