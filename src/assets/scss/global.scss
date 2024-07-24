@@ -314,10 +314,15 @@ body {
 .ch-drawer {
   &.adding-supported-drawer {
     .ant-drawer-body {
-      @apply pb-0;
+      @apply pb-11;
+    }
+    .support-content {
+      @apply min-h-[calc(100vh-300px)];
+      & > :not(:first-child) {
+        @apply mt-10;
+      }
     }
     .ant-drawer-content-wrapper {
-      @apply max-w-[730px] w-full #{!important};
       .thm-input {
         @apply rounded-lg border-[#CCD4E7];
         .ant-input-prefix {
@@ -353,9 +358,6 @@ body {
             @apply text-[#777F93];
           }
           li {
-            // &:last-child {
-            //   @apply font-semibold text-[#4EB966];
-            // }
             @apply text-xs;
           }
           .ant-breadcrumb-separator {
