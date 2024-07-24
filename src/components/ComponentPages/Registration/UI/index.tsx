@@ -10,10 +10,10 @@ import {
 } from "@ant-design/icons";
 
 import messages from "src/messages";
-import SocialLoginButton from "src/components/common/socialLogin";
-import LogoHeader from "src/components/common/headers/logoHeader";
-import Inputs from "src/components/shared/FormInputs";
-import PrimaryButton from "src/components/shared/Buttons/PrimariButton";
+import SocialLoginButton from "components/common/socialLogin";
+import LogoHeader from "components/common/headers/logoHeader";
+import Inputs from "components/shared/FormInputs";
+import PrimaryButton from "components/shared/Buttons/PrimariButton";
 import RegistrationUiGoBack from "./goBack";
 
 const { Title, Text, Paragraph } = Typography;

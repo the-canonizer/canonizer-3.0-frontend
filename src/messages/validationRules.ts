@@ -120,6 +120,10 @@ export const otpRule = {
       max: 6,
       message: validations.otpLength,
     },
+    {
+      min: 6,
+      message: validations.otpLength,
+    },
   ],
 };
 
