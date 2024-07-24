@@ -173,9 +173,9 @@ function RegistrationUi({
                 onKeyDown={(e) =>
                   e.key === " " && e.keyCode === 32 && e.preventDefault()
                 }
-                prefix={<PhoneOutlined />}
+                prefix={<PhoneOutlined className="opacity-0" />}
                 inputMode="tel"
-                inputClassName={`numberInput [&>*]:h-[40px] [&_.ant-input-affix-wrapper]:h-full`}
+                inputClassName={`numberInput [&>*]:h-[40px] [&_.ant-input-affix-wrapper]:h-full [&_.ant-input-prefix]:w-0`}
               />
             </Col>
             <Col md={12} style={{ width: "100%" }}>
