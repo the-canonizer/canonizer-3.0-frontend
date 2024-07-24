@@ -77,6 +77,8 @@ function SupportTreeDrawer({ onClose, open }: any) {
 
   }
 
+  console.log("hello")
+
 
   return (
     <>
