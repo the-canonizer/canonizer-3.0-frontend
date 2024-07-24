@@ -314,12 +314,25 @@ body {
 .ch-drawer {
   &.adding-supported-drawer {
     .ant-drawer-body {
-      @apply pb-11;
+      @apply pb-3 max-sm:mb-[11.75rem] sm:mb-[8.75rem] relative;
     }
     .support-content {
-      @apply min-h-[calc(100vh-300px)];
       & > :not(:first-child) {
-        @apply mt-10;
+        @apply mt-8 pt-8 border-t border-[#CCD4E7];
+      }
+    }
+    .checkbox-wrapper {
+      @apply flex gap-8 md:items-center justify-between max-sm:flex-col;
+    }
+    .chips-wrapper {
+      .vertical-chips {
+        @apply flex flex-col items-start gap-2;
+        .ant-tag {
+          @apply mr-0;
+          .anticon {
+            @apply ml-2 text-xs text-canBlack;
+          }
+        }
       }
     }
     .ant-drawer-content-wrapper {
@@ -338,7 +351,7 @@ body {
       @apply p-11 border-t-0 sm:pb-32;
     }
     .page-breadcrums-wrapper {
-      @apply pb-10 mb-10 border-b border-[#CCD4E7];
+      @apply pb-10 mb-8 border-b border-[#CCD4E7];
       .drawer-header {
         .ant-page-header-heading-left {
           @apply m-0;
@@ -366,11 +379,11 @@ body {
         }
       }
     }
-    .adding-support-form {
-      & > :not(:first-child) {
-        @apply mt-10;
-      }
-    }
+    // .adding-support-form {
+    //   & > :not(:first-child) {
+    //     @apply mt-10;
+    //   }
+    // }
     .warning-alert {
       @apply px-4 py-2;
       .anticon,
@@ -454,6 +467,9 @@ body {
   .cn-select.ant-select {
     .ant-select-selector {
       @apply pl-10 rounded-lg border-[#CCD4E7];
+      .ant-select-selection-search-input{
+        @apply pl-6;
+      }
     }
     .ant-select-arrow {
       .anticon,
