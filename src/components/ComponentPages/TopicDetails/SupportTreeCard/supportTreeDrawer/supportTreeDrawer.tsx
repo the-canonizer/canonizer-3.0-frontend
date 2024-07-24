@@ -8,6 +8,7 @@ import {
   Alert,
   Breadcrumb,
   Button,
+  Checkbox,
   Col,
   Drawer,
   Form,
@@ -15,11 +16,12 @@ import {
   PageHeader,
   Row,
   Select,
+  Tag,
 } from "antd";
-import Breadcrumbs from "components/ComponentPages/Breadcrumbs/breadcrumbs";
-import StructureIcon from "components/ComponentPages/CreateNewTopic/UI/structureIcon";
-import SelectInputs from "components/shared/FormInputs/select";
+
 import React, { useState } from "react";
+const { TextArea } = Input;
+
 function SupportTreeDrawer() {
   const [open, setOpen] = useState(false);
   const [form] = Form.useForm();
@@ -31,6 +33,10 @@ function SupportTreeDrawer() {
   };
   const handleChange = (value) => {
     console.log(`selected ${value}`);
+  };
+  const preventDefault = (e) => {
+    e.preventDefault();
+    console.log("Clicked! But prevent default.");
   };
   return (
     <>
@@ -83,105 +89,138 @@ Adding support to this camp will remove your support from the parent camp."
               showIcon
               icon={<i className="icon-warning"></i>}
             />
-
-            <Row gutter={16}>
-              <Col span={24} sm={12}>
-                <Form.Item
-                  label="Reason for adding support"
-                  rules={[
-                    {
-                      required: true,
-                    },
-                  ]}
+            <div className="checkbox-wrapper">
+              <Form.Item label="Quick Action" className="mb-0">
+                <Checkbox>Remove All Support</Checkbox>
+              </Form.Item>
+              <Button
+                size="large"
+                className="min-w-[200px] gap-2 flex items-center justify-center border border-canBlue bg-[#98B7E61A] rounded-lg text-canBlack text-base font-medium"
+              >
+                Clear All Changes
+              </Button>
+            </div>
+            <div className="chips-wrapper">
+              <p className="text-[#DB4F4F] mb-9">
+                Note : To change support order of camp, drag & drop the camp box
+                on your choice position.
+              </p>
+              <div className="vertical-chips">
+                <Tag
+                  className="rounded-full bg-[#F0F2FA] border-transparent font-semibold text-base px-5 py-2.5 leading-none text-canBlack"
+                  closable
+                  onClose={preventDefault}
                 >
-                  <div className="thm-select">
-                    <div className="prefix-icon">
-                      <i className="icon-bar"></i>
+                  1 . Debating the theory
+                </Tag>
+              </div>
+            </div>
+            <div>
+              <Row gutter={16}>
+                <Col span={24} sm={12}>
+                  <Form.Item
+                    label="Reason for adding support"
+                    rules={[
+                      {
+                        required: true,
+                      },
+                    ]}
+                  >
+                    <div className="thm-select">
+                      <div className="prefix-icon">
+                        <i className="icon-bar"></i>
+                      </div>
+                      <Select
+                        placeholder="Select reason from list"
+                        className="w-100 cn-select"
+                        size="large"
+                        suffixIcon={<i className="icon-chevron-down"></i>}
+                        onChange={handleChange}
+                        options={[
+                          {
+                            value: "jack",
+                            label: "Jack",
+                          },
+                          {
+                            value: "lucy",
+                            label: "Lucy",
+                          },
+
+                          {
+                            value: "Yiminghe",
+                            label: "yiminghe",
+                          },
+                        ]}
+                      />
                     </div>
-                    <Select
-                      placeholder="Select reason from list"
-                      className="w-100 cn-select"
-                      size="large"
-                      suffixIcon={<i className="icon-chevron-down"></i>}
-                      onChange={handleChange}
-                      options={[
-                        {
-                          value: "jack",
-                          label: "Jack",
-                        },
-                        {
-                          value: "lucy",
-                          label: "Lucy",
-                        },
+                  </Form.Item>
+                </Col>
+                <Col span={24} sm={12}>
+                  <Form.Item
+                    label="Nickname"
+                    rules={[
+                      {
+                        required: true,
+                      },
+                    ]}
+                  >
+                    <div className="thm-select">
+                      <div className="prefix-icon">
+                        <UserOutlined />
+                      </div>
+                      <Select
+                        placeholder="Select your nickname from list"
+                        className="w-100 cn-select"
+                        size="large"
+                        suffixIcon={<i className="icon-chevron-down"></i>}
+                        onChange={handleChange}
+                        options={[
+                          {
+                            value: "jack",
+                            label: "Jack",
+                          },
+                          {
+                            value: "lucy",
+                            label: "Lucy",
+                          },
 
-                        {
-                          value: "Yiminghe",
-                          label: "yiminghe",
-                        },
-                      ]}
-                    />
-                  </div>
-                </Form.Item>
-              </Col>
-              <Col span={24} sm={12}>
-                <Form.Item
-                  label="Nickname"
-                  rules={[
-                    {
-                      required: true,
-                    },
-                  ]}
-                >
-                  <div className="thm-select">
-                    <div className="prefix-icon">
-                      <UserOutlined />
+                          {
+                            value: "Yiminghe",
+                            label: "yiminghe",
+                          },
+                        ]}
+                      />
                     </div>
-                    <Select
-                      placeholder="Select your nickname from list"
-                      className="w-100 cn-select"
+                  </Form.Item>
+                </Col>
+                <Col span={24}>
+                  <Form.Item name="description" label="Description">
+                    <TextArea className="thm-input" rows={4} />
+                  </Form.Item>
+                </Col>
+                <Col span={24}>
+                  <Form.Item
+                    className="mb-0"
+                    name="Citation"
+                    label="Citation link"
+                    rules={[
+                      {
+                        required: true,
+                      },
+                    ]}
+                  >
+                    <Input
+                      className="thm-input"
                       size="large"
-                      suffixIcon={<i className="icon-chevron-down"></i>}
-                      onChange={handleChange}
-                      options={[
-                        {
-                          value: "jack",
-                          label: "Jack",
-                        },
-                        {
-                          value: "lucy",
-                          label: "Lucy",
-                        },
-
-                        {
-                          value: "Yiminghe",
-                          label: "yiminghe",
-                        },
-                      ]}
+                      placeholder="https://"
+                      prefix={<i className="icon-link"></i>}
                     />
-                  </div>
-                </Form.Item>
-              </Col>
-              <Col span={24}>
-                <Form.Item
-                  name="Citation"
-                  label="Citation link"
-                  rules={[
-                    {
-                      required: true,
-                    },
-                  ]}
-                >
-                  <Input
-                    className="thm-input"
-                    size="large"
-                    placeholder="https://"
-                    prefix={<i className="icon-link"></i>}
-                  />
-                </Form.Item>
-              </Col>
-            </Row>
+                  </Form.Item>
+                </Col>
+              </Row>
+            </div>
           </div>
-          <div className="flex justify-center max-sm:flex-col gap-5">
+          <div className="flex justify-center max-sm:flex-col gap-5 p-11 fixed right-0 max-w-[730px] w-full mt-0 bg-white z-50 bottom-0">
             <Button
               size="large"
               className="min-w-[200px] gap-2 flex items-center justify-center border border-canBlue bg-[#98B7E61A] rounded-lg text-canBlack text-base font-medium"
