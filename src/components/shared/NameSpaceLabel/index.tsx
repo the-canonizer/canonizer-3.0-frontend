@@ -1,4 +1,4 @@
-import { Popover, Typography } from "antd";
+import { Typography } from "antd";
 import { FlagOutlined } from "@ant-design/icons";
 import Link from "next/link";
 
@@ -22,19 +22,17 @@ const NameSpaceLabel = ({ namespace, loading = false, ...restProps }) => {
   }
 
   return (
-    <Popover content={changeSlashToArrow(namespace)} placement="top">
-      <Typography.Paragraph
-        className="!bg-transparent border-0 p-0 flex items-center leading-1 !mb-0 mr-3"
-        {...restProps}
-      >
-        <FlagOutlined className="text-canLight p-1 text-medium" />
-        <Link href="#">
-          <a className="!text-canBlue text-sm font-inter font-medium hover:!canHoverBlue line-clamp-1 max-w-52">
-            {changeSlashToArrow(namespace)}
-          </a>
-        </Link>
-      </Typography.Paragraph>
-    </Popover>
+    <Typography.Paragraph
+      className="!bg-transparent border-0 p-0 flex items-center leading-1 !mb-0 mr-3"
+      {...restProps}
+    >
+      <FlagOutlined className="text-canLight p-1 text-medium" />
+      <Link href="#">
+        <a className="!text-canBlue text-sm font-inter font-medium hover:!canHoverBlue line-clamp-1 max-w-52">
+          {changeSlashToArrow(namespace)}
+        </a>
+      </Link>
+    </Typography.Paragraph>
   );
 };
 
