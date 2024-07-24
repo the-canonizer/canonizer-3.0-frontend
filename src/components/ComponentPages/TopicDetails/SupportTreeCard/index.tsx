@@ -509,7 +509,7 @@ const SupportTreeCard = ({
         // expandIconPosition="right"
         className="topicDetailsCollapse"
       >
-        <SupportTreeDrawer onClose={onClose} open={open} />
+        <SupportTreeDrawer onClose={onClose} open={open} topicList={topicList} />
         <div className=" support-tree-sec">
           {/* <Paragraph className="position-relative">
             Total Support for This Camp (including sub-camps):
