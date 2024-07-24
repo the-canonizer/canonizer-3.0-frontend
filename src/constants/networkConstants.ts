@@ -193,8 +193,8 @@ const NetworkConstants = {
     // Meta Tags
     GetMetaContent: `${BaseCanonizerApiUrl}/meta-tags`,
 
-    VideosContent: `${BaseCanonizerApiUrl}/videos`,
     Videos: `${BaseCanonizerApiUrl}/videos/consiousness/1`,
+    VideosContent: `${BaseCanonizerApiUrl}/videos`,
 
     GetNickSupportUser: `${BaseCanonizerApiUrl}/get-nick-support-user/`,
 
