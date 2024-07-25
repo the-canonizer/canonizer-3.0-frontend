@@ -182,7 +182,7 @@ function SupportTreeDrawer({ onClose, open, topicList, drawerFor, setDrawerFor, 
         contentWrapperStyle={{ maxWidth: "730px", width: "100%" }}
       >
         {
-          drawerFor === "add" ? <>
+          drawerFor === "directAdd" || drawerFor === "delegateAdd" ? <>
             <div className="page-breadcrums-wrapper">
               <PageHeader
                 className="p-0 drawer-header"
@@ -417,11 +417,9 @@ function SupportTreeDrawer({ onClose, open, topicList, drawerFor, setDrawerFor, 
                 </Button>
               </div>
             </Form>
-          </> :
-            drawerFor === "delegate" ? <>
-
-            </> :
-              drawerFor === "remove" ? <>
+          </> 
+          :
+              drawerFor === "directRemove" ||  drawerFor === "delegateRemove"? <>
                 <div className="page-breadcrums-wrapper">
                   <PageHeader
                     className="p-0 drawer-header"

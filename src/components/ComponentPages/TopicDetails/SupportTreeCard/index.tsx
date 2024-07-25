@@ -137,7 +137,7 @@ const SupportTreeCard = ({
     setGetManageSupportLoadingIndicator,
   ] = useState(true);
   const [open, setOpen] = useState(false);
-  const [drawerFor,setDrawerFor] = useState(""); //["add","delegate","remove"]
+  const [drawerFor,setDrawerFor] = useState(""); //["directAdd","delegateAdd","directRemove","delegateRemove"]
 
   const showDrawer = () => {
     setOpen(true);
@@ -249,7 +249,7 @@ const SupportTreeCard = ({
       q && q.from && q.from.includes("notify_")
         ? null
         : showModalSupportCamps(); 
-          setDrawerFor("add"); 
+          setDrawerFor("directAdd"); 
     } else {
       dispatch(showLoginModal());
     }
@@ -567,9 +567,9 @@ const SupportTreeCard = ({
     // }
 
     if (currentGetCheckSupportExistsData.is_delegator) {
-      setDrawerFor("delegate")
+      setDrawerFor("delegateRemove")
     }else{
-      setDrawerFor("remove")
+      setDrawerFor("directRemove")
     }
 
     showDrawer()
