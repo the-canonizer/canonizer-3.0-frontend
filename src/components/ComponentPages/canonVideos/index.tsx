@@ -341,7 +341,7 @@ export default function CanonVideos() {
           className="video-detail-header px-0 py-10"
           ghost
           backIcon={<i className="icon-back text-xl"></i>}
-          onBack={() => null}
+          onBack={() => router?.push("/videos")}
           title="Consciousness: Not a Hard Problem, Just a Color Problem"
         />
         <div className="video-container">

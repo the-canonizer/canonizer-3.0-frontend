@@ -38,7 +38,6 @@ const VideosPage = () => {
     getVideoCategories();
   }, []);
 
-  console.log(categories);
   return (
     <Layout routeName={"video"}>
       <div className="video-wrapper">
@@ -55,7 +54,7 @@ const VideosPage = () => {
                     className="px-0"
                     ghost
                     backIcon={<i className="icon-back text-xl"></i>}
-                    onBack={() => null}
+                    onBack={() => router?.push("/")}
                     title="Videos"
                   />
                   <Card
