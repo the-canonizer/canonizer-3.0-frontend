@@ -50,11 +50,12 @@ const SupportTreeDrawerClientOnly = dynamic(
   }
 );
 
-function SupportTreeDrawer({ onClose, open, topicList }: any) {
+function SupportTreeDrawer({ onClose, open, topicList, drawerFor, onRemoveFinish }: any) {
   const {
     reasons,
     currentGetCheckSupportExistsData,
     currentDelegatedSupportedClick,
+    topicRecord,
     campRecord,
   } = useSelector((state: RootState) => ({
     reasons: state?.topicDetails?.removedReasons,
@@ -62,6 +63,7 @@ function SupportTreeDrawer({ onClose, open, topicList }: any) {
       state.topicDetails.currentGetCheckSupportExistsData,
     currentDelegatedSupportedClick:
       state.supportTreeCard.currentDelegatedSupportedClick,
+    topicRecord: state?.topicDetails?.currentTopicRecord,
     campRecord: state?.topicDetails?.currentCampRecord,
   }));
 
@@ -91,6 +93,11 @@ function SupportTreeDrawer({ onClose, open, topicList }: any) {
       camp_num: campNum,
       order: position + 1,
     };
+  };
+
+  const handleChange = (value) => {
+    console.log(`selected ${value}`);
+    setSelectedValue(value);
   };
 
   const topicNum = router?.query?.camp?.at(0)?.split("-")?.at(0);
@@ -173,239 +180,361 @@ function SupportTreeDrawer({ onClose, open, topicList }: any) {
         open={open}
         contentWrapperStyle={{ maxWidth: "730px", width: "100%" }}
       >
-        <div className="page-breadcrums-wrapper">
-          <PageHeader
-            className="p-0 drawer-header"
-            onBack={() => null}
-            backIcon={<i className="icon-back"></i>}
-            title={
-              <>
-                Adding Support to camp:
-                <span className="ml-1">Agreement </span>
-              </>
-            }
-          />
-          <Breadcrumb
-            className="drawer-breadcrumbs ml-6"
-            separator={
-              <>
-                <i className="icon-angle-right-arrow"></i>
-              </>
-            }
-          >
-            <Breadcrumb.Item href="">Canon: General</Breadcrumb.Item>
-            <Breadcrumb.Item href="">
-              Topic: Representationalist Books
-            </Breadcrumb.Item>
-            <Breadcrumb.Item href="">This Camp</Breadcrumb.Item>
-          </Breadcrumb>
-        </div>
-        <Form
-          form={form}
-          layout="vertical"
-          className="adding-support-form"
-          autoComplete="off"
-          scrollToFirstError
-          onFinish={onFinish}
-        >
-          <div className="support-content">
-            <div className="alert-wrapper">
-              <Alert
-                className="border-0 rounded-lg warning-alert"
-                description="You’re already supporting the Parent Camp: Agreement.
-            Adding support to this camp will remove your support from the parent camp."
-                type="error"
-                showIcon
-                icon={<i className="icon-warning"></i>}
+        {
+          drawerFor === "add" ? <>
+            <div className="page-breadcrums-wrapper">
+              <PageHeader
+                className="p-0 drawer-header"
+                onBack={() => null}
+                backIcon={<i className="icon-back"></i>}
+                title={
+                  <>
+                    Adding Support to camp:
+                    <span className="ml-1">Agreement </span>
+                  </>
+                }
               />
-              <div className="horizontal-chips">
-                <Tag
-                  className="rounded-full mr-0 bg-[#F0F2FA] border-transparent font-semibold text-base px-5 py-2.5 leading-none text-canBlack"
-                  closable={false}
-                  onClose={preventDefault}
-                >
-                  New Research
-                </Tag>
-                <Tag
-                  className="rounded-full mr-0 bg-[#F0F2FA] border-transparent font-semibold text-base px-5 py-2.5 leading-none text-canBlack"
-                  closable={false}
-                  onClose={preventDefault}
-                >
-                  Debating the theory
-                </Tag>
-              </div>
-            </div>
-
-            <div className="checkbox-wrapper">
-              <Form.Item label="Quick Action" className="mb-0">
-                <Checkbox>Remove All Support</Checkbox>
-              </Form.Item>
-              <Button
-                size="large"
-                className="min-w-[200px] gap-2 flex items-center justify-center border border-canBlue bg-[#98B7E61A] rounded-lg text-canBlack text-base font-medium"
+              <Breadcrumb
+                className="drawer-breadcrumbs ml-6"
+                separator={
+                  <>
+                    <i className="icon-angle-right-arrow"></i>
+                  </>
+                }
               >
-                Clear All Changes
-              </Button>
+                <Breadcrumb.Item href="">Canon: General</Breadcrumb.Item>
+                <Breadcrumb.Item href="">
+                  Topic: {topicRecord?.topic_name}
+                </Breadcrumb.Item>
+                <Breadcrumb.Item href="">{campRecord?.camp_name}</Breadcrumb.Item>
+              </Breadcrumb>
             </div>
-            <div className="chips-wrapper">
-              <p className="text-[#DB4F4F] mb-9">
-                Note : To change support order of camp, drag & drop the camp box
-                on your choice position.
-              </p>
-              <div className="vertical-chips">
-                <DraggableArea
-                  tags={initialTags}
-                  render={({ tag, index }) => (
-                    <div className="flex items-center gap-7">
-                      <MenuOutlined className="text-sm text-[#777F93]" />
-                      <Tag
-                        className="rounded-full mr-0 bg-[#F0F2FA] border-transparent font-semibold text-base px-5 py-2.5 leading-none text-canBlack"
-                        closable={false}
-                        onClose={preventDefault}
-                      >
-                        {tag.content}
-                      </Tag>
-                    </div>
-                  )}
-                  onChange={(tags) => console.log(tags)}
-                />
+            <Form
+              form={form}
+              layout="vertical"
+              className="adding-support-form"
+              autoComplete="off"
+              scrollToFirstError
+              onFinish={onFinish}
+            >
+              <div className="support-content">
+                <div className="alert-wrapper">
+                  <Alert
+                    className="border-0 rounded-lg warning-alert"
+                    description="You’re already supporting the Parent Camp: Agreement.
+            Adding support to this camp will remove your support from the parent camp."
+                    type="error"
+                    showIcon
+                    icon={<i className="icon-warning"></i>}
+                  />
+                  <div className="horizontal-chips">
+                    <Tag
+                      className="rounded-full mr-0 bg-[#F0F2FA] border-transparent font-semibold text-base px-5 py-2.5 leading-none text-canBlack"
+                      closable={false}
+                      onClose={preventDefault}
+                    >
+                      New Research
+                    </Tag>
+                    <Tag
+                      className="rounded-full mr-0 bg-[#F0F2FA] border-transparent font-semibold text-base px-5 py-2.5 leading-none text-canBlack"
+                      closable={false}
+                      onClose={preventDefault}
+                    >
+                      Debating the theory
+                    </Tag>
+                  </div>
+                </div>
 
-                {/* <Tag
+                <div className="checkbox-wrapper">
+                  <Form.Item label="Quick Action" className="mb-0">
+                    <Checkbox>Remove All Support</Checkbox>
+                  </Form.Item>
+                  <Button
+                    size="large"
+                    className="min-w-[200px] gap-2 flex items-center justify-center border border-canBlue bg-[#98B7E61A] rounded-lg text-canBlack text-base font-medium"
+                  >
+                    Clear All Changes
+                  </Button>
+                </div>
+                <div className="chips-wrapper">
+                  <p className="text-[#DB4F4F] mb-9">
+                    Note : To change support order of camp, drag & drop the camp box
+                    on your choice position.
+                  </p>
+                  <div className="vertical-chips">
+                    <DraggableArea
+                      tags={initialTags}
+                      render={({ tag, index }) => (
+                        <div className="flex items-center gap-7">
+                          <MenuOutlined className="text-sm text-[#777F93]" />
+                          <Tag
+                            className="rounded-full mr-0 bg-[#F0F2FA] border-transparent font-semibold text-base px-5 py-2.5 leading-none text-canBlack"
+                            closable={false}
+                            onClose={preventDefault}
+                          >
+                            {tag.content}
+                          </Tag>
+                        </div>
+                      )}
+                      onChange={(tags) => console.log(tags)}
+                    />
+
+                    {/* <Tag
                   className="rounded-full bg-[#F0F2FA] border-transparent font-semibold text-base px-5 py-2.5 leading-none text-canBlack"
                   closable
                   onClose={preventDefault}
                 >
                   1 . Debating the theory
                 </Tag> */}
-              </div>
-            </div>
+                  </div>
+                </div>
 
-            <div>
-              <Row gutter={16}>
-                <Col span={24} sm={12}>
-                  <Form.Item
-                    name="reason"
-                    label="Reason for adding support"
-                    // rules={[
-                    //   {
-                    //     required: true,
-                    //     message: 'Please select a reason',
-                    //   },
-                    // ]}
-                  >
-                    <div className="thm-select">
-                      <div className="prefix-icon">
-                        <i className="icon-bar"></i>
-                      </div>
-                      <Select
-                        className="w-100 cn-select"
-                        size="large"
-                        suffixIcon={<i className="icon-chevron-down"></i>}
-                        placeholder="Select reason"
-                        allowClear
-                        value={selectedValue}
-                        onChange={(value) => {
-                          setSelectedValue(value);
-                        }}
-                        showSearch
+                <div>
+                  <Row gutter={16}>
+                    <Col span={24} sm={12}>
+                      <Form.Item
+                        name="reason"
+                        label="Reason for adding support"
+                      // rules={[
+                      //   {
+                      //     required: true,
+                      //     message: 'Please select a reason',
+                      //   },
+                      // ]}
                       >
-                        {availableReasons?.map((res) => (
-                          <Select.Option key={res?.id} value={res?.label}>
-                            {res?.label}
-                          </Select.Option>
-                        ))}
-                        <Select.Option key="custom_reason" value="custom">
-                          Custom reason
-                        </Select.Option>
-                      </Select>
-                    </div>
-                  </Form.Item>
-                </Col>
-                <Col span={24} sm={12}>
-                  <Form.Item
-                    name="nickname"
-                    label="Nickname"
-                    // rules={[
-                    //   {
-                    //     required: true,
-                    //     message: 'Please select a nickname',
-                    //   },
-                    // ]}
-                  >
-                    <div className="thm-select">
-                      <div className="prefix-icon">
-                        <UserOutlined />
-                      </div>
-                      <Select
-                        placeholder="Select a nickname"
-                        className="w-100 cn-select"
-                        size="large"
-                        suffixIcon={<i className="icon-chevron-down"></i>}
-                        showSearch
-                        value={selectedtNickname}
-                        onChange={(value) => {
-                          setSelectedtNickname(value);
-                        }}
-                      >
-                        {nickNameList &&
-                          nickNameList?.map((nick) => (
-                            <Select.Option
-                              key={nick?.id}
-                              value={`${nick?.id}-(${nick?.nick_name})`}
-                            >
-                              {nick?.nick_name}
+                        <div className="thm-select">
+                          <div className="prefix-icon">
+                            <i className="icon-bar"></i>
+                          </div>
+                          <Select
+                            className="w-100 cn-select"
+                            size="large"
+                            suffixIcon={<i className="icon-chevron-down"></i>}
+                            placeholder="Select reason"
+                            allowClear
+                            value={selectedValue}
+                            onChange={(value) => {
+                              setSelectedValue(value);
+                            }}
+                            showSearch
+                          >
+                            {availableReasons?.map((res) => (
+                              <Select.Option key={res?.id} value={res?.label}>
+                                {res?.label}
+                              </Select.Option>
+                            ))}
+                            <Select.Option key="custom_reason" value="custom">
+                              Custom reason
                             </Select.Option>
-                          ))}
-                      </Select>
-                    </div>
-                  </Form.Item>
-                </Col>
-                {selectedValue && selectedValue == "custom" && (
-                  <>
-                    <Col span={24}>
-                      <Form.Item name="description" label="Description">
-                        <TextArea className="thm-input" rows={4} />
+                          </Select>
+                        </div>
                       </Form.Item>
                     </Col>
-                    <Col span={24}>
-                      <Form.Item name="Citation" label="Citation link">
-                        <Input
-                          className="thm-input"
-                          size="large"
-                          placeholder="https://"
-                          prefix={<i className="icon-link"></i>}
-                        />
+                    <Col span={24} sm={12}>
+                      <Form.Item
+                        name="nickname"
+                        label="Nickname"
+                      // rules={[
+                      //   {
+                      //     required: true,
+                      //     message: 'Please select a nickname',
+                      //   },
+                      // ]}
+                      >
+                        <div className="thm-select">
+                          <div className="prefix-icon">
+                            <UserOutlined />
+                          </div>
+                          <Select
+                            placeholder="Select a nickname"
+                            className="w-100 cn-select"
+                            size="large"
+                            suffixIcon={<i className="icon-chevron-down"></i>}
+                            showSearch
+                            value={selectedtNickname}
+                            onChange={(value) => {
+                              setSelectedtNickname(value);
+                            }}
+                          >
+                            {nickNameList &&
+                              nickNameList?.map((nick) => (
+                                <Select.Option
+                                  key={nick?.id}
+                                  value={`${nick?.id}-(${nick?.nick_name})`}
+                                >
+                                  {nick?.nick_name}
+                                </Select.Option>
+                              ))}
+                          </Select>
+                        </div>
                       </Form.Item>
                     </Col>
-                  </>
-                )}
-              </Row>
-            </div>
-          </div>
-          <div className="flex justify-center max-sm:flex-col gap-5 p-11 fixed right-0 max-w-[730px] w-full mt-0 bg-white z-50 bottom-0">
-            <Button
-              size="large"
-              className="min-w-[200px] gap-2 flex items-center justify-center border border-canBlue bg-[#98B7E61A] rounded-lg text-canBlack text-base font-medium"
-              onClick={() => {
-                onClose();
-                form.resetFields();
-                setSelectedValue(null);
-              }}
-            >
-              Cancel
-              <CloseOutlined />
-            </Button>
-            <Button
-              size="large"
-              type="primary"
-              htmlType="submit"
-              className=" min-w-[200px] bg-canBlue flex items-center justify-center hover:bg-canHoverBlue focus:bg-canHoverBlue hover:text-white font-medium text-white disabled:bg-disabled font-base rounded-lg"
-            >
-              Add Support
-              <PlusOutlined />
-            </Button>
-          </div>
-        </Form>
+                    {selectedValue && selectedValue == "custom" && (
+                      <>
+                        <Col span={24}>
+                          <Form.Item name="description" label="Description">
+                            <TextArea className="thm-input" rows={4} />
+                          </Form.Item>
+                        </Col>
+                        <Col span={24}>
+                          <Form.Item name="Citation" label="Citation link">
+                            <Input
+                              className="thm-input"
+                              size="large"
+                              placeholder="https://"
+                              prefix={<i className="icon-link"></i>}
+                            />
+                          </Form.Item>
+                        </Col>
+                      </>
+                    )}
+                  </Row>
+                </div>
+              </div>
+              <div className="flex justify-center max-sm:flex-col gap-5 p-11 fixed right-0 max-w-[730px] w-full mt-0 bg-white z-50 bottom-0">
+                <Button
+                  size="large"
+                  className="min-w-[200px] gap-2 flex items-center justify-center border border-canBlue bg-[#98B7E61A] rounded-lg text-canBlack text-base font-medium"
+                  onClick={() => {
+                    onClose();
+                    form.resetFields();
+                    setSelectedValue(null);
+                  }}
+                >
+                  Cancel
+                  <CloseOutlined />
+                </Button>
+                <Button
+                  size="large"
+                  type="primary"
+                  htmlType="submit"
+                  className=" min-w-[200px] bg-canBlue flex items-center justify-center hover:bg-canHoverBlue focus:bg-canHoverBlue hover:text-white font-medium text-white disabled:bg-disabled font-base rounded-lg"
+                >
+                  Add Support
+                  <PlusOutlined />
+                </Button>
+              </div>
+            </Form>
+          </> :
+            drawerFor === "delegate" ? <>
+
+            </> :
+              drawerFor === "remove" ? <>
+                <div className="page-breadcrums-wrapper">
+                  <PageHeader
+                    className="p-0 drawer-header"
+                    onBack={() => null}
+                    backIcon={<i className="icon-back"></i>}
+                    title={
+                      <>
+                        Removing Support from camp:
+                        <span> {campRecord?.camp_name} </span>
+                      </>
+                    }
+                  />
+                  <Breadcrumb
+                    className="drawer-breadcrumbs ml-6"
+                    separator={
+                      <>
+                        <i className="icon-angle-right-arrow"></i>
+                      </>
+                    }
+                  >
+                    {/* <Breadcrumb.Item href="">Canon: General</Breadcrumb.Item> */}
+                    <Breadcrumb.Item href="">
+                      Topic: {topicRecord?.topic_name}
+                    </Breadcrumb.Item>
+                    <Breadcrumb.Item href="">{campRecord?.camp_name}</Breadcrumb.Item>
+                  </Breadcrumb>
+                </div>
+
+                <Form form={form} layout="vertical" className="adding-support-form" onFinish={onRemoveFinish}>
+                  <div className="support-content">
+                    {/* <Alert
+                      className="border-0 rounded-lg warning-alert"
+                      description="You are about to remove your support from this camp. You can optionally add a helpful reason in the citation link."
+                      showIcon
+                      icon={<i className="icon-warning"></i>}
+                    /> */}
+
+                    <Row gutter={16}>
+                      <Col span={24}>
+                        <Form.Item
+                          label="Reason for removing support"
+                          rules={[
+                            {
+                              required: true,
+                            },
+                          ]}
+                        >
+                          <div className="thm-select">
+                            <div className="prefix-icon">
+                              <i className="icon-bar"></i>
+                            </div>
+                            <Select
+                              placeholder={placeholders.nickName}
+                              className="w-100 cn-select"
+                              size="large"
+                              suffixIcon={<i className="icon-chevron-down"></i>}
+                              onChange={handleChange}
+
+                            >
+                              {availableReasons.map((res) => (
+                                <Select.Option key={res.id} value={res.value}>
+                                  {res.label}
+                                </Select.Option>
+                              ))}
+                            </Select>
+                          </div>
+                        </Form.Item>
+                      </Col>
+                      <Col span={24}>
+                        <Form.Item
+                          name="Citation"
+                          label="Citation link"
+                          rules={[
+                            {
+                              required: true,
+                            },
+                          ]}
+                        >
+                          <Input
+                            className="thm-input"
+                            size="large"
+                            placeholder="https://"
+                            prefix={<i className="icon-link"></i>}
+                          />
+                        </Form.Item>
+                      </Col>
+                    </Row>
+                  </div>
+                  <div className="flex justify-center max-sm:flex-col gap-5 p-11 fixed right-0 max-w-[730px] w-full mt-0 bg-white z-50 bottom-0">
+                    <Button
+                      size="large"
+                      className="min-w-[200px] gap-2 flex items-center justify-center border border-canBlue bg-[#98B7E61A] rounded-lg text-canBlack text-base font-medium"
+                      onClick={() => {
+                        onClose();
+                        form.resetFields();
+                        setSelectedValue(null);
+                      }}
+                    >
+                      Cancel
+                      <CloseOutlined />
+                    </Button>
+                    <Button
+                      size="large"
+                      type="primary"
+                      htmlType="submit"
+                      className=" min-w-[200px] bg-canBlue flex items-center justify-center hover:bg-canHoverBlue focus:bg-canHoverBlue hover:text-white font-medium text-white disabled:bg-disabled font-base rounded-lg"
+                    >
+                      Remove Support
+                      <PlusOutlined />
+                    </Button>
+                  </div>
+                </Form>
+              </> : null
+        }
+
       </Drawer>
     </>
   );

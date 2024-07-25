@@ -520,15 +520,7 @@ const SupportTreeCard = ({
                             !isUserAuthenticated ||
                             campRecord?.is_archive
                           }
-                          onClick={() => {
-                            currentGetCheckSupportExistsData.is_delegator
-                              ? setIsDelegateSupportTreeCardModal(true)
-                              : topicList.length <= 1
-                              ? setIsSupportTreeCardModal(true)
-                              : setIsSupportTreeCardModal(true);
-
-                            setModalData(data[item]);
-                          }}
+                          onClick={() => removeSupportModalHandler(data,item)}
                           className="mb-2 flex items-center gap-1 justify-center bg-canLightRed text-canRed text-base rounded-lg font-medium h-[44px] w-full"
                         >
                           <Image
@@ -565,6 +557,24 @@ const SupportTreeCard = ({
 
   const [removeForm] = Form.useForm();
 
+  const removeSupportModalHandler = (data,item) => {
+    // if (currentGetCheckSupportExistsData.is_delegator) {
+    //   setIsDelegateSupportTreeCardModal(true);
+    //   } else {
+    //     setIsSupportTreeCardModal(true);
+    // }
+
+    if (currentGetCheckSupportExistsData.is_delegator) {
+      setDrawerFor("delegate")
+    }else{
+      setDrawerFor("remove")
+    }
+
+    showDrawer()
+    setModalData(data[item]);
+  }
+
+
   const onRemoveFinish = async (values) => {
     currentGetCheckSupportExistsData.is_delegator
       ? removeSupportForDelegate(values)
@@ -581,6 +591,7 @@ const SupportTreeCard = ({
     await getCurrentCampRecordApi(reqBody);
 
     setModalData({});
+    onClose()
     removeForm.resetFields();
   };
   let title = `Support Tree for "${campRecord?.camp_name}" Camp`;
@@ -602,7 +613,13 @@ const SupportTreeCard = ({
         // expandIconPosition="right"
         className="topicDetailsCollapse"
       >
-        <SupportTreeDrawer onClose={onClose} open={open} topicList={topicList} />
+        <SupportTreeDrawer 
+          onClose={onClose} 
+          open={open} 
+          topicList={topicList}
+          drawerFor={drawerFor}
+          onRemoveFinish={onRemoveFinish} 
+        />
         <div className=" support-tree-sec">
           {/* <Paragraph className="position-relative">
             Total Support for This Camp (including sub-camps):
