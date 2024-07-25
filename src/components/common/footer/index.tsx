@@ -38,7 +38,7 @@ function Footer() {
     {
       link: "/videos",
       linkTitle: "Videos",
-      id: 10,
+      id: 13,
       external: true,
     },
   ];
