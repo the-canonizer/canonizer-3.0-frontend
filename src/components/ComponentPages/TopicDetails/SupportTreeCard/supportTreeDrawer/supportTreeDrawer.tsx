@@ -38,6 +38,7 @@ import {
 import { addSupport } from "src/network/api/userApi";
 import { RootState } from "src/store";
 import { GetActiveSupportTopic } from "src/network/api/topicAPI";
+import  { openNotificationWithIcon } from "components/ComponentPages/notificationBar/notificationBar";
 
 const { TextArea } = Input;
 const SupportTreeDrawerClientOnly = dynamic(
@@ -93,6 +94,9 @@ function SupportTreeDrawer({ onClose, open, topicList }: any) {
 
   const topicNum = router?.query?.camp?.at(0)?.split("-")?.at(0);
 
+  console.log("topicList",topicList);
+  
+
   const CheckDelegatedOrDirect =
     currentDelegatedSupportedClick.delegatedSupportClick;
 
@@ -128,19 +132,20 @@ function SupportTreeDrawer({ onClose, open, topicList }: any) {
     console.log("====================================");
     let addSupportId = {
       topic_num: topicNum,
-      // add_camp: addCampsData,
-      // remove_camps: campIDsArr,
+      add_camp: {camp_num: 1, support_order: 1},
+      remove_camps: [],
       type: "direct",
       action: "add",
       nick_name_id: nictNameId,
-      // order_update: filterArrayResult,
+      order_update:  [{camp_num: 1, order: 1}],
     };
     let res = await addSupport(addSupportId);
     if (res && res.status_code == 200) {
-      message.success(res.message);
+    openNotificationWithIcon({ type: "success", message: res?.message });
+      onClose(true);
+      form.resetFields();
+      setSelectedValue(null)
     }
-    onClose(true);
-    form.resetFields();
   };
 
   const getReasons = async () => {
@@ -207,9 +212,6 @@ function SupportTreeDrawer({ onClose, open, topicList }: any) {
           autoComplete="off"
           scrollToFirstError
           onFinish={onFinish}
-          initialValues={{
-            reason: "",
-          }}
         >
           <div className="support-content">
             {/* <Alert
@@ -334,6 +336,8 @@ function SupportTreeDrawer({ onClose, open, topicList }: any) {
                     </div>
                   </Form.Item>
                 </Col>
+                { selectedValue && selectedValue=="custom"  &&
+                <>
                 <Col span={24}>
                   <Form.Item name="description" label="Description">
                     <TextArea className="thm-input" rows={4} />
@@ -346,9 +350,11 @@ function SupportTreeDrawer({ onClose, open, topicList }: any) {
                       size="large"
                       placeholder="https://"
                       prefix={<i className="icon-link"></i>}
-                    />
+                      />
                   </Form.Item>
                 </Col>
+                      </>
+                    }
               </Row>
             </div>
           </div>
@@ -359,6 +365,7 @@ function SupportTreeDrawer({ onClose, open, topicList }: any) {
               onClick={() => {
                 onClose();
                 form.resetFields();
+                setSelectedValue(null)
               }}
             >
               Cancel
