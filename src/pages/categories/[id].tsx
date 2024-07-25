@@ -4,6 +4,6 @@ const AllUserCategories = () => {
   return <Layout className="min-h-screen">Topics by cats</Layout>;
 };
 
-AllUserCategories.displayName = "AllCategories";
+AllUserCategories.displayName = "CategoriesTopic";
 
 export default AllUserCategories;

@@ -52,23 +52,23 @@ const HomePageContainer = () => {
         }
       >
         <Row className="pt-4 w-100" data-testid="featuredTopic">
-          <Col md={24} className="mb-20">
+          <Col md={24} className="mb-14">
             <FeaturedTopic />
           </Col>
           {isMobile ? (
-            <Col md={24} xs={24} className="mb-20">
+            <Col md={24} xs={24} className="mb-14">
               <TrandingTopics />
             </Col>
           ) : null}
           {isUserAuthenticated && preferedTopic?.length ? (
-            <Col md={24} className="mb-20" data-testid="preferedTopic">
+            <Col md={24} className="mb-14" data-testid="preferedTopic">
               <PreferedTopics />
             </Col>
           ) : null}
-          <Col md={24} className="mb-20" data-testid="categoriesList">
+          <Col md={24} className="mb-14" data-testid="categoriesList">
             <CategoriesList />
           </Col>
-          <Col md={24} className="mb-20" data-testid="hotTopics">
+          <Col md={24} className="mb-0" data-testid="hotTopics">
             <HotTopics />
           </Col>
         </Row>

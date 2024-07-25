@@ -439,6 +439,7 @@ export const forgotPasswordVerifyOTP = async (values: object) => {
     return res;
   } catch (err) {
     handleError(err);
+    return err?.error?.data;
   }
 };
 

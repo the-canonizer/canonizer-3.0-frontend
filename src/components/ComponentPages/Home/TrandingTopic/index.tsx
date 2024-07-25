@@ -140,32 +140,37 @@ const TrandingTopics = () => {
               }}
               renderItem={(item: any) => (
                 <List.Item
-                  className="font-inter text-sm font-medium bg-white hover:bg-canGrey1 !px-3.5 !py-4"
+                  className="font-inter text-sm font-medium bg-white hover:bg-canGrey1 !px-3.5 !py-4 justify-start"
                   id={`topic-${item?.topic_id}`}
                 >
                   <Link
-                    href={`/topic/${item?.topic_id}-${replaceSpecialCharacters(
-                      item?.topic_name,
-                      "-"
-                    )}/1-Agreement`}
+                    href={{
+                      pathname: `/topic/${
+                        item?.topic_id
+                      }-${replaceSpecialCharacters(
+                        item?.topic_name,
+                        "-"
+                      )}/1-Agreement`,
+                    }}
+                    passHref
                   >
                     <a
-                      className="hover:*:text-canHoverBlue"
+                      className="hover:*:text-canHoverBlue font-medium"
                       onClick={() => setLoadMoreIndicator(true)}
                     >
                       <Typography.Text className="">
                         {item?.topic_name}
                       </Typography.Text>
-                      <Tag
-                        className={
-                          "bg-canOrange text-white border-0 rounded-md ml-1 inline-flex py-[2px] flex items-center text-12"
-                        }
-                      >
-                        <HandIcon />
-                        {item?.topic_score?.toFixed(2)}
-                      </Tag>
                     </a>
                   </Link>
+                  <Tag
+                    className={
+                      "bg-canOrange text-white border-0 rounded-md ml-1 inline-flex py-[2px] flex items-center text-12"
+                    }
+                  >
+                    <HandIcon />
+                    {item?.topic_score?.toFixed(2)}
+                  </Tag>
                 </List.Item>
               )}
             />

@@ -23,7 +23,7 @@ const LeftContent = ({ onBrowseClick }) => {
         Enter the best leaderless consensus building and tracking system in the
         world.
       </Typography.Paragraph>
-      <div className="text-center mt-auto -mb-7">
+      <div className="text-center mt-auto -mb-12">
         <Image
           src="/images/middle-vector.svg"
           className="w-auto"

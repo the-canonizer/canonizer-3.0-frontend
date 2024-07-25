@@ -1,19 +1,28 @@
 import { Typography, Form } from "antd";
-import { ArrowRightOutlined, MailOutlined } from "@ant-design/icons";
-import { Fragment } from "react";
+import { ArrowRightOutlined } from "@ant-design/icons";
 
 import messages from "src/messages";
 import PrimaryButton from "components/shared/Buttons/PrimariButton";
 import Inputs from "components/shared/FormInputs";
+import Otpinput from "./otpInputs";
+import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 
 const { Title, Text } = Typography;
 const { labels } = messages;
 
-function ForgotPasswordUI({ form, onFinish, isDisabled }) {
+function ForgotPasswordUI({
+  form,
+  onFinish,
+  isDisabled,
+  onChangeOtp,
+  isResend,
+  onRsendClick,
+  timer,
+}) {
   return (
     <Form
       form={form}
-      name={"forgotPassword"}
+      name={"otpverify"}
       onFinish={onFinish}
       layout="vertical"
       scrollToFirstError
@@ -25,36 +34,43 @@ function ForgotPasswordUI({ form, onFinish, isDisabled }) {
         className="mt-6 text-sm text-center text-canBlack font-medium"
         id="forgot-password-title"
       >
-        {labels.forgotModalLabel}
+        {labels.verificationLabel}
       </Title>
-
       <div className="my-auto">
         <Text
           className="text-center block text-sm font-medium mb-20 text-canBlack w-8/12 lg:w-7/12 mx-auto"
-          id="forgot-modal-note"
+          id="otp-msg"
         >
-          Don&apos;t worry, it happens.
-          <br /> Let us know the email address you signed up with and we&apos;ll
-          send you an email with instructions.
+          An email has been sent to your regsistered email address.
         </Text>
         <div className="w-8/12 lg:w-7/12 mx-auto my-5 overflow-hidden">
-          <Inputs
-            name="email_id"
+          <Otpinput
             label={
-              <Fragment>
-                {messages.labels.emailId}
+              <>
+                {messages.labels.otpTitle}
                 <span className="required">*</span>
-              </Fragment>
+              </>
             }
-            rules={messages.emRule}
-            placeholder={messages.placeholders.emailId}
-            onKeyDown={(e) =>
-              e.key === " " && e.keyCode === 32 && e.preventDefault()
-            }
-            maxLength={255}
-            prefix={<MailOutlined />}
-            type="email"
+            onChangeOtp={onChangeOtp}
           />
+          <Inputs
+            name="otp"
+            label={null}
+            rules={messages.otpRule}
+            placeholder={messages.placeholders.otp}
+            inputClassName="hidden"
+          />
+          {isResend && (
+            <div className="text-center">
+              <SecondaryButton
+                className="border-0"
+                onClick={onRsendClick}
+                disabled={timer}
+              >
+                Resend OTP {isResend ? (timer ? `(${timer}s)` : "") : ""}
+              </SecondaryButton>
+            </div>
+          )}
         </div>
         <Form.Item className="text-center mt-4">
           <PrimaryButton
