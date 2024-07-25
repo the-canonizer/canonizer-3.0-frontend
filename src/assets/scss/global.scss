@@ -335,12 +335,23 @@ body {
         @apply mt-8 pt-8 border-t border-[#CCD4E7];
       }
     }
+    .alert-wrapper {
+      & > :not(:first-child) {
+        @apply mt-8;
+      }
+      .horizontal-chips {
+        @apply flex gap-2.5 flex-wrap;
+      }
+    }
     .checkbox-wrapper {
       @apply flex gap-8 md:items-center justify-between max-sm:flex-col;
     }
     .chips-wrapper {
       .vertical-chips {
         @apply flex flex-col items-start gap-2;
+        .DraggableTags {
+          @apply flex flex-col items-start gap-2;
+        }
         .ant-tag {
           @apply mr-0;
           .anticon {
@@ -481,7 +492,7 @@ body {
   .cn-select.ant-select {
     .ant-select-selector {
       @apply pl-10 rounded-lg border-[#CCD4E7];
-      .ant-select-selection-search-input{
+      .ant-select-selection-search-input {
         @apply pl-6;
       }
     }
@@ -532,20 +543,29 @@ body {
     &::before {
       @apply block content-[''] w-[6px] absolute top-[8px] bottom-[8px] rounded-full;
     }
+    .ant-notification-notice-with-icon {
+      @apply flex items-center gap-5;
+      .ant-notification-notice-description {
+        @apply ml-0;
+      }
+    }
   }
   .ant-notification-notice-icon {
-    @apply ml-5;
+    @apply ml-5 relative;
     .anticon,
     i {
       @apply text-[2.375rem];
     }
   }
+  .ant-notification-notice-message {
+    @apply hidden;
+  }
   .ant-notification-notice-description {
     @apply ml-[4.75rem] font-medium;
   }
-@media screen and (max-width: 575px) {
-  .leftSideBar.miniSideBar {
-    width: auto;
+  @media screen and (max-width: 575px) {
+    .leftSideBar.miniSideBar {
+      width: auto;
+    }
   }
-}
 }

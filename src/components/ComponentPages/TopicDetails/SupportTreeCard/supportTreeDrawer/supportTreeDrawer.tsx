@@ -1,6 +1,7 @@
 import {
   CloseCircleOutlined,
   CloseOutlined,
+  MenuOutlined,
   PlusOutlined,
   UserOutlined,
   WarningOutlined,
@@ -18,6 +19,7 @@ import {
   PageHeader,
   Row,
   Select,
+  Space,
   Tag,
 } from "antd";
 import dynamic from "next/dynamic";
@@ -38,7 +40,7 @@ import {
 import { addSupport } from "src/network/api/userApi";
 import { RootState } from "src/store";
 import { GetActiveSupportTopic } from "src/network/api/topicAPI";
-import  { openNotificationWithIcon } from "components/ComponentPages/notificationBar/notificationBar";
+import { openNotificationWithIcon } from "components/ComponentPages/notificationBar/notificationBar";
 
 const { TextArea } = Input;
 const SupportTreeDrawerClientOnly = dynamic(
@@ -47,7 +49,6 @@ const SupportTreeDrawerClientOnly = dynamic(
     ssr: false,
   }
 );
-
 
 function SupportTreeDrawer({ onClose, open, topicList }: any) {
   const {
@@ -94,8 +95,7 @@ function SupportTreeDrawer({ onClose, open, topicList }: any) {
 
   const topicNum = router?.query?.camp?.at(0)?.split("-")?.at(0);
 
-  console.log("topicList",topicList);
-  
+  console.log("topicList", topicList);
 
   const CheckDelegatedOrDirect =
     currentDelegatedSupportedClick.delegatedSupportClick;
@@ -115,15 +115,10 @@ function SupportTreeDrawer({ onClose, open, topicList }: any) {
   };
 
   const initialTags = [
-    { id: 1, content: "apple" },
-    { id: 2, content: "olive" },
-    { id: 3, content: "banana" },
-    { id: 4, content: "lemon" },
-    { id: 5, content: "orange" },
-    { id: 6, content: "grape" },
-    { id: 7, content: "strawberry" },
-    { id: 8, content: "cherry" },
-    { id: 9, content: "peach" },
+    { id: 1, content: " 1 . Debating the theory" },
+    { id: 2, content: " 2 . Debating the theory" },
+    { id: 3, content: " 3 . Debating the theory" },
+    { id: 4, content: " 4 . Debating the theory" },
   ];
 
   const onFinish = async (values) => {
@@ -132,19 +127,19 @@ function SupportTreeDrawer({ onClose, open, topicList }: any) {
     console.log("====================================");
     let addSupportId = {
       topic_num: topicNum,
-      add_camp: {camp_num: 1, support_order: 1},
+      add_camp: { camp_num: 1, support_order: 1 },
       remove_camps: [],
       type: "direct",
       action: "add",
       nick_name_id: nictNameId,
-      order_update:  [{camp_num: 1, order: 1}],
+      order_update: [{ camp_num: 1, order: 1 }],
     };
     let res = await addSupport(addSupportId);
     if (res && res.status_code == 200) {
-    openNotificationWithIcon({ type: "success", message: res?.message });
+      openNotificationWithIcon({ type: "success", message: res?.message });
       onClose(true);
       form.resetFields();
-      setSelectedValue(null)
+      setSelectedValue(null);
     }
   };
 
@@ -186,7 +181,7 @@ function SupportTreeDrawer({ onClose, open, topicList }: any) {
             title={
               <>
                 Adding Support to camp:
-                <span>Agreement </span>
+                <span className="ml-1">Agreement </span>
               </>
             }
           />
@@ -214,14 +209,32 @@ function SupportTreeDrawer({ onClose, open, topicList }: any) {
           onFinish={onFinish}
         >
           <div className="support-content">
-            {/* <Alert
-            className="border-0 rounded-lg warning-alert"
-            description="You’re already supporting the Parent Camp: Agreement.
+            <div className="alert-wrapper">
+              <Alert
+                className="border-0 rounded-lg warning-alert"
+                description="You’re already supporting the Parent Camp: Agreement.
             Adding support to this camp will remove your support from the parent camp."
-            type="error"
-            showIcon
-            icon={<i className="icon-warning"></i>}
-          /> */}
+                type="error"
+                showIcon
+                icon={<i className="icon-warning"></i>}
+              />
+              <div className="horizontal-chips">
+                <Tag
+                  className="rounded-full mr-0 bg-[#F0F2FA] border-transparent font-semibold text-base px-5 py-2.5 leading-none text-canBlack"
+                  closable={false}
+                  onClose={preventDefault}
+                >
+                  New Research
+                </Tag>
+                <Tag
+                  className="rounded-full mr-0 bg-[#F0F2FA] border-transparent font-semibold text-base px-5 py-2.5 leading-none text-canBlack"
+                  closable={false}
+                  onClose={preventDefault}
+                >
+                  Debating the theory
+                </Tag>
+              </div>
+            </div>
 
             <div className="checkbox-wrapper">
               <Form.Item label="Quick Action" className="mb-0">
@@ -240,34 +253,45 @@ function SupportTreeDrawer({ onClose, open, topicList }: any) {
                 on your choice position.
               </p>
               <div className="vertical-chips">
-                <Tag
+                <DraggableArea
+                  tags={initialTags}
+                  render={({ tag, index }) => (
+                    <div className="flex items-center gap-7">
+                      <MenuOutlined className="text-sm text-[#777F93]" />
+                      <Tag
+                        className="rounded-full mr-0 bg-[#F0F2FA] border-transparent font-semibold text-base px-5 py-2.5 leading-none text-canBlack"
+                        closable={false}
+                        onClose={preventDefault}
+                      >
+                        {tag.content}
+                      </Tag>
+                    </div>
+                  )}
+                  onChange={(tags) => console.log(tags)}
+                />
+
+                {/* <Tag
                   className="rounded-full bg-[#F0F2FA] border-transparent font-semibold text-base px-5 py-2.5 leading-none text-canBlack"
                   closable
                   onClose={preventDefault}
                 >
                   1 . Debating the theory
-                </Tag>
+                </Tag> */}
               </div>
             </div>
+
             <div>
-              <DraggableArea
-                tags={initialTags}
-                render={({ tag, index }) => (
-                  <div className="tag">{tag.content}</div>
-                )}
-                onChange={(tags) => console.log(tags)}
-              />
               <Row gutter={16}>
                 <Col span={24} sm={12}>
                   <Form.Item
                     name="reason"
                     label="Reason for adding support"
-                  // rules={[
-                  //   {
-                  //     required: true,
-                  //     message: 'Please select a reason',
-                  //   },
-                  // ]}
+                    // rules={[
+                    //   {
+                    //     required: true,
+                    //     message: 'Please select a reason',
+                    //   },
+                    // ]}
                   >
                     <div className="thm-select">
                       <div className="prefix-icon">
@@ -301,12 +325,12 @@ function SupportTreeDrawer({ onClose, open, topicList }: any) {
                   <Form.Item
                     name="nickname"
                     label="Nickname"
-                  // rules={[
-                  //   {
-                  //     required: true,
-                  //     message: 'Please select a nickname',
-                  //   },
-                  // ]}
+                    // rules={[
+                    //   {
+                    //     required: true,
+                    //     message: 'Please select a nickname',
+                    //   },
+                    // ]}
                   >
                     <div className="thm-select">
                       <div className="prefix-icon">
@@ -336,25 +360,25 @@ function SupportTreeDrawer({ onClose, open, topicList }: any) {
                     </div>
                   </Form.Item>
                 </Col>
-                { selectedValue && selectedValue=="custom"  &&
-                <>
-                <Col span={24}>
-                  <Form.Item name="description" label="Description">
-                    <TextArea className="thm-input" rows={4} />
-                  </Form.Item>
-                </Col>
-                <Col span={24}>
-                  <Form.Item name="Citation" label="Citation link">
-                    <Input
-                      className="thm-input"
-                      size="large"
-                      placeholder="https://"
-                      prefix={<i className="icon-link"></i>}
-                      />
-                  </Form.Item>
-                </Col>
-                      </>
-                    }
+                {selectedValue && selectedValue == "custom" && (
+                  <>
+                    <Col span={24}>
+                      <Form.Item name="description" label="Description">
+                        <TextArea className="thm-input" rows={4} />
+                      </Form.Item>
+                    </Col>
+                    <Col span={24}>
+                      <Form.Item name="Citation" label="Citation link">
+                        <Input
+                          className="thm-input"
+                          size="large"
+                          placeholder="https://"
+                          prefix={<i className="icon-link"></i>}
+                        />
+                      </Form.Item>
+                    </Col>
+                  </>
+                )}
               </Row>
             </div>
           </div>
@@ -365,7 +389,7 @@ function SupportTreeDrawer({ onClose, open, topicList }: any) {
               onClick={() => {
                 onClose();
                 form.resetFields();
-                setSelectedValue(null)
+                setSelectedValue(null);
               }}
             >
               Cancel
