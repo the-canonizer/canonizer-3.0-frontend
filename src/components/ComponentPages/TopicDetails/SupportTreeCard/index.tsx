@@ -36,7 +36,6 @@ import {
 import { setDelegatedSupportClick } from "src/store/slices/supportTreeCard";
 import CustomSkelton from "components/common/customSkelton";
 import ManageSupport from "../../ManageSupport";
-
 import support_image from "../../../../../public/images/support-tree-avatar.svg";
 import { setOpenConsensusTreePopup } from "src/store/slices/hotTopicSlice";
 // import SupportTreeDrawer from "./supportTreeDrawer/supportTreeDrawer";
@@ -138,6 +137,8 @@ const SupportTreeCard = ({
     setGetManageSupportLoadingIndicator,
   ] = useState(true);
   const [open, setOpen] = useState(false);
+  const [drawerFor,setDrawerFor] = useState(""); //["add","delegate","remove"]
+
   const showDrawer = () => {
     setOpen(true);
   };
@@ -154,8 +155,8 @@ const SupportTreeCard = ({
 
   const getSupportTreeApi = async () => {
     const reqBodyForService = {
-      topic_num: +router?.query?.camp[0]?.split("-")[0],
-      camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
+      topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
+      camp_num: +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1),
       asOf: asof,
       asofdate:
         asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
@@ -246,7 +247,8 @@ const SupportTreeCard = ({
       setSelectNickId(null);
       q && q.from && q.from.includes("notify_")
         ? null
-        : showModalSupportCamps();
+        : showModalSupportCamps(); 
+          setDrawerFor("add"); 
     } else {
       dispatch(showLoginModal());
     }
@@ -519,15 +521,7 @@ const SupportTreeCard = ({
                             !isUserAuthenticated ||
                             campRecord?.is_archive
                           }
-                          onClick={() => {
-                            currentGetCheckSupportExistsData.is_delegator
-                              ? setIsDelegateSupportTreeCardModal(true)
-                              : topicList.length <= 1
-                              ? setIsSupportTreeCardModal(true)
-                              : setIsSupportTreeCardModal(true);
-
-                            setModalData(data[item]);
-                          }}
+                          onClick={() => removeSupportModalHandler(data,item)}
                           className="mb-2 flex items-center gap-1 justify-center bg-canLightRed text-canRed text-base rounded-lg font-medium h-[44px] w-full"
                         >
                           <Image
@@ -564,6 +558,24 @@ const SupportTreeCard = ({
 
   const [removeForm] = Form.useForm();
 
+  const removeSupportModalHandler = (data,item) => {
+    // if (currentGetCheckSupportExistsData.is_delegator) {
+    //   setIsDelegateSupportTreeCardModal(true);
+    //   } else {
+    //     setIsSupportTreeCardModal(true);
+    // }
+
+    if (currentGetCheckSupportExistsData.is_delegator) {
+      setDrawerFor("delegate")
+    }else{
+      setDrawerFor("remove")
+    }
+
+    showDrawer()
+    setModalData(data[item]);
+  }
+
+
   const onRemoveFinish = async (values) => {
     currentGetCheckSupportExistsData.is_delegator
       ? removeSupportForDelegate(values)
@@ -580,6 +592,7 @@ const SupportTreeCard = ({
     await getCurrentCampRecordApi(reqBody);
 
     setModalData({});
+    onClose()
     removeForm.resetFields();
   };
   let title = `Support Tree for "${campRecord?.camp_name}" Camp`;
@@ -601,7 +614,13 @@ const SupportTreeCard = ({
         // expandIconPosition="right"
         className="topicDetailsCollapse"
       >
-        <SupportTreeDrawer onClose={onClose} open={open} topicList={topicList} />
+        <SupportTreeDrawer 
+          onClose={onClose} 
+          open={open} 
+          topicList={topicList}
+          drawerFor={drawerFor}
+          onRemoveFinish={onRemoveFinish} 
+        />
         <div className=" support-tree-sec">
           {/* <Paragraph className="position-relative">
             Total Support for This Camp (including sub-camps):
