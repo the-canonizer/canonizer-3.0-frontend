@@ -15,8 +15,9 @@ import {
   // getCanonizedCampSupportingTreeApi,
   getCurrentTopicRecordApi,
   getCurrentCampRecordApi,
+  getTopicActivityLogApi,
 } from "src/network/api/campDetailApi";
-import { RootState } from "src/store";
+import { RootState, store } from "src/store";
 import SideBar from "../Home-old/SideBar";
 import CampStatementCard from "../../ComponentPages/TopicDetails/CampStatementCard";
 import CampInfoBar from "./CampInfoBar";
@@ -73,6 +74,7 @@ import CampTree from "./CampTree";
 import FullScoreCheckbox from "../FullScoreCheckbox";
 import ArchivedCampCheckBox from "../ArchivedCampCheckBox";
 import { setOpenConsensusTreePopup } from "src/store/slices/hotTopicSlice";
+import { setCampActivityData } from "src/store/slices/recentActivitiesSlice";
 
 const { Link: AntLink } = Typography;
 
@@ -216,6 +218,16 @@ const TopicDetails = ({ serverSideCall }: any) => {
     router,
   ]);
 
+  async function getTopicActivityLogCall() {
+    let reqBody = {
+      topic_num: router?.query?.camp[0]?.split("-")[0],
+      camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
+    };
+    let res = await getTopicActivityLogApi(reqBody);
+    store.dispatch(setCampActivityData(res?.data?.items));
+  }
+
+
   const reqBodyData = {
     topic_num: +router?.query?.camp[0]?.split("-")[0],
     camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
@@ -243,6 +255,12 @@ const TopicDetails = ({ serverSideCall }: any) => {
       fetch_topic_history: +router?.query?.topic_history,
     };
     setRemoveSupportSpinner(true);
+    let reqBody = { 
+      as_of: asof, 
+      as_of_date: asofdate, 
+      topic_num: +router?.query?.camp[0]?.split("-")[0], 
+      camp_num: +router?.query?.camp[1]?.split("-")[0], 
+    }
 
     const res = await removeSupportedCamps(supportedCampsRemove);
     if (res && res.status_code == 200) {
@@ -250,6 +268,8 @@ const TopicDetails = ({ serverSideCall }: any) => {
       setIsSupportTreeCardModal(false);
       GetCheckStatusData();
       await getTreesApi(reqBodyForService);
+      getTopicActivityLogCall();
+      await getCurrentCampRecordApi(reqBody)
       setRemoveSupportSpinner(false);
       setIsRemovingSupport(false);
     }

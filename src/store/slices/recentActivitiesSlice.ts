@@ -12,8 +12,12 @@ export const recentActivitiesSlice = createSlice({
       numOfPages: 0,
     },
     isCheckedAllRecent: false,
+    campActivityData: [],
   },
   reducers: {
+    setCampActivityData: (state, action) => {
+      state.campActivityData = action.payload;
+    },
     setTopics: (state, action) => {
       state.topicsData = {
         topics: action.payload?.items,
@@ -50,6 +54,7 @@ export const {
   setThreads,
   pushToThreads,
   setIsChecked,
+  setCampActivityData,
 } = recentActivitiesSlice.actions;
 
 export default recentActivitiesSlice.reducer;
