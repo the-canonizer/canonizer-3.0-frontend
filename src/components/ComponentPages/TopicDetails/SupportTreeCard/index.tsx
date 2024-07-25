@@ -37,12 +37,17 @@ import { setDelegatedSupportClick } from "src/store/slices/supportTreeCard";
 import CustomSkelton from "components/common/customSkelton";
 import ManageSupport from "../../ManageSupport";
 
-import support_image from "src/../public/images/support-tree-avatar.svg";
+import support_image from "../../../../../public/images/support-tree-avatar.svg";
+import { setOpenConsensusTreePopup } from "src/store/slices/hotTopicSlice";
+// import SupportTreeDrawer from "./supportTreeDrawer/supportTreeDrawer";
+import dynamic from "next/dynamic";
+
 import SignCamp from "./SignCamp";
 
 const { Paragraph } = Typography;
 const { Panel } = Collapse;
 const { TreeNode } = Tree;
+
 
 const supportContent = (
   <>
@@ -57,6 +62,13 @@ const supportContent = (
       </p>
     </div>
   </>
+);
+
+const SupportTreeDrawer = dynamic(
+  () => import("./supportTreeDrawer/supportTreeDrawer"),
+  {
+    ssr: false,
+  }
 );
 
 const SupportTreeCard = ({
@@ -125,12 +137,21 @@ const SupportTreeCard = ({
     getManageSupportLoadingIndicator,
     setGetManageSupportLoadingIndicator,
   ] = useState(true);
+  const [open, setOpen] = useState(false);
+  const showDrawer = () => {
+    setOpen(true);
+  };
+  const onClose = () => {
+    setOpen(false);
+  };
   const showModalSupportCamps = () => {
-    dispatch(setIsSupportModal(true));
+    showDrawer();
+    // dispatch(setIsSupportModal(true));
   };
   const handleOkSupportCamps = () => {
     dispatch(setIsSupportModal(false));
   };
+
   const getSupportTreeApi = async () => {
     const reqBodyForService = {
       topic_num: +router?.query?.camp[0]?.split("-")[0],
@@ -580,6 +601,7 @@ const SupportTreeCard = ({
         // expandIconPosition="right"
         className="topicDetailsCollapse"
       >
+        <SupportTreeDrawer onClose={onClose} open={open} topicList={topicList} />
         <div className=" support-tree-sec">
           {/* <Paragraph className="position-relative">
             Total Support for This Camp (including sub-camps):
@@ -607,6 +629,7 @@ const SupportTreeCard = ({
           ) : (
             <p> No direct supporters of this camp</p>
           )}
+
 
           {campSupportingTree?.length > supportLength && (
             <CustomButton
@@ -701,12 +724,14 @@ const SupportTreeCard = ({
                   id="supportTreeModalRemoveApi"
                   disabled={asof == "bydate"}
                   onClick={() => {
-                    currentGetCheckSupportExistsData.is_delegator
-                      ? removeSupportForDelegate()
-                      : topicList.length <= 1
-                      ? removeApiSupport(modalData?.nick_name_id)
-                      : removeSupport(modalData?.nick_name_id);
-                    setModalData({});
+                    if (currentGetCheckSupportExistsData.is_delegator) {
+                      // setIsDelegateSupportTreeCardModal(true);
+                      showDrawer()
+                      // } else {
+                      //   setIsSupportTreeCardModal(true);
+                      // showDrawer()
+                    }
+                    // setModalData(data[item]);
                   }}
                   type="primary"
                   style={{
