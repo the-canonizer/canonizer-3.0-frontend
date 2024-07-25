@@ -52,7 +52,7 @@ const CategoriesList = () => {
         </Col>
       </Row>
 
-      <div className="mt-3">
+      <div className="w-full flex flex-wrap mt-3 -mb-5">
         {renderedTags?.map((cat) => (
           <Link href={{ pathname: `/categories/${cat?.id}` }} key={cat?.id}>
             <a>

@@ -30,7 +30,7 @@ const CardDescription = ({
       <div
         className={`${
           isBrowsing ? "text-base" : "text-sm"
-        } font-inter font-normal overflow-hidden text-canBlack opacity-80`}
+        } font-inter font-normal overflow-hidden text-canBlack opacity-80 italic`}
       >
         No description available
       </div>

@@ -10,10 +10,10 @@ import {
 } from "@ant-design/icons";
 
 import messages from "src/messages";
-import SocialLoginButton from "src/components/common/socialLogin";
-import LogoHeader from "src/components/common/headers/logoHeader";
-import Inputs from "src/components/shared/FormInputs";
-import PrimaryButton from "src/components/shared/Buttons/PrimariButton";
+import SocialLoginButton from "components/common/socialLogin";
+import LogoHeader from "components/common/headers/logoHeader";
+import Inputs from "components/shared/FormInputs";
+import PrimaryButton from "components/shared/Buttons/PrimariButton";
 import RegistrationUiGoBack from "./goBack";
 
 const { Title, Text, Paragraph } = Typography;
@@ -173,9 +173,9 @@ function RegistrationUi({
                 onKeyDown={(e) =>
                   e.key === " " && e.keyCode === 32 && e.preventDefault()
                 }
-                prefix={<PhoneOutlined />}
+                prefix={<PhoneOutlined className="opacity-0" />}
                 inputMode="tel"
-                inputClassName={`numberInput [&>*]:h-[40px] [&_.ant-input-affix-wrapper]:h-full`}
+                inputClassName={`numberInput [&>*]:h-[40px] [&_.ant-input-affix-wrapper]:h-full [&_.ant-input-prefix]:w-0`}
               />
             </Col>
             <Col md={12} style={{ width: "100%" }}>

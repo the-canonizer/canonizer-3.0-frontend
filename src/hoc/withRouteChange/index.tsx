@@ -12,15 +12,16 @@ const withRouteChange = (WrappedComponent) => {
     useEffect(() => {
       const handleRouteChange = (url) => {
         const currentUrl = router?.asPath;
-        console.log("App is changing to: ", url);
-        console.log("Current app url: ", currentUrl);
 
         if (
           currentUrl !== "/login" &&
           currentUrl !== "/registration" &&
           currentUrl !== "/login/otp" &&
           currentUrl !== "/registration/otp" &&
-          currentUrl !== "/category-preference"
+          currentUrl !== "/category-preference" &&
+          currentUrl !== "/forgot-password" &&
+          currentUrl !== "/forgot-password/otp" &&
+          currentUrl !== "/reset-password"
         ) {
           if (url === "/registration" || url === "/login") {
             dispatch(setCurrentReturnUrl(router?.asPath));
@@ -29,8 +30,8 @@ const withRouteChange = (WrappedComponent) => {
       };
 
       const handleRouteComplete = (url) => {
-        console.log("App has changed to: ", url);
-        console.log("Current app url after completed: ", router?.asPath);
+        // console.log("App has changed to: ", url);
+        // console.log("Current app url after completed: ", router?.asPath);
       };
 
       router.events.on("routeChangeStart", handleRouteChange);

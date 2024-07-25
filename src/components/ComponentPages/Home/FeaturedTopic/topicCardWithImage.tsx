@@ -65,16 +65,16 @@ const SingleTopicWithImage = ({ topic, onTopicClick = null }) => {
         >
           <div className="flex justify-between pb-4 align-center z-100 relative -ml-4 -mr-4 lg:ml-0 lg:mr-0">
             <Link
-              href={`/topic/${topic?.topic_num}-${replaceSpecialCharacters(
-                topic?.topic_name,
-                "-"
-              )}/${topic?.camp_num}-${replaceSpecialCharacters(
-                topic?.camp_name,
-                "-"
-              )}`}
+              href={{
+                pathname: `/topic/${
+                  topic?.topic_num
+                }-${replaceSpecialCharacters(topic?.topic_name, "-")}/${
+                  topic?.camp_num
+                }-${replaceSpecialCharacters(topic?.camp_name, "-")}`,
+              }}
             >
               <a onClick={onTopicClick}>
-                <Typography.Paragraph className="m-0 text-base lg:text-xl font-medium lg:font-bold font-inter absolute -top-14 left-1 right-0 text-white px-3 py-0 !mb-0 flex w-full lg:static lg:px-0 lg:py-0 lg:text-canBlack hover:!text-canHoverBlue">
+                <Typography.Paragraph className="m-0 text-base lg:text-xl font-medium lg:font-semibold font-inter absolute -top-14 left-1 right-0 text-white px-3 py-0 !mb-0 flex w-full lg:static lg:px-0 lg:py-0 lg:text-canBlack hover:!text-canHoverBlue">
                   {topic?.title}
                 </Typography.Paragraph>
               </a>
@@ -89,7 +89,7 @@ const SingleTopicWithImage = ({ topic, onTopicClick = null }) => {
           </div>
           <CardDescription description={topic?.description} />
           <div className="flex justify-between pt-3 mt-auto">
-            <div className="text-left flex flex-col sm:flex-row">
+            <div className="text-left flex flex-col sm:flex-row justify-center items-center">
               <TopicCatsLabel tags={topic?.topicTags} />
               <div className="absolute top-2 right-2 px-2 rounded-md bg-canBlack lg:static lg:bg-transparent lg:px-0 lg:flex">
                 <ViewCounts views={topic?.views} />

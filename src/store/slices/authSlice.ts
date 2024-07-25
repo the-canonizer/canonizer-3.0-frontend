@@ -14,6 +14,8 @@ export const authSlice = createSlice({
     isNewUser: false,
     currentReturnUrl: null,
     userNickNames: null,
+    passwordEmail: null,
+    isPasswordVerfied: null,
   },
   reducers: {
     setAuthToken: (state, action) => {
@@ -61,6 +63,12 @@ export const authSlice = createSlice({
     setUserNickNames: (state, action) => {
       state.userNickNames = action.payload;
     },
+    setPasswordEmail: (state, action) => {
+      state.passwordEmail = action.payload;
+    },
+    setIsPasswordVerfied: (state, action) => {
+      state.isPasswordVerfied = action.payload;
+    },
   },
 });
 
@@ -77,6 +85,8 @@ export const {
   setIsNewUser,
   setCurrentReturnUrl,
   setUserNickNames,
+  setPasswordEmail,
+  setIsPasswordVerfied,
 } = authSlice.actions;
 
 export default authSlice.reducer;

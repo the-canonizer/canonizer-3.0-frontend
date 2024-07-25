@@ -42,6 +42,7 @@ export default function CanonVideos() {
   const [currentVideoTitle, setCurrentVideoTitle] = useState("");
 
   const router = useRouter();
+  const videoFormat = router?.asPath.split("?")?.at(1)?.split("=")?.at(1)
 
   useEffect(() => {
     if (router?.query?.video) {
@@ -184,7 +185,7 @@ export default function CanonVideos() {
                 title: string | (string | string[])[];
                 link: React.SetStateAction<string>;
               }) => {
-                if (format?.title?.includes((q?.format as string) || "360")) {
+                if (format?.title?.includes((q?.format as string) || videoFormat || "360")) {
                   setVideoResolution(format?.link);
                   resLink = format?.link as string;
                   return;
