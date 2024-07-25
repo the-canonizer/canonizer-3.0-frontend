@@ -139,8 +139,8 @@ const SupportTreeCard = ({
 
   const getSupportTreeApi = async () => {
     const reqBodyForService = {
-      topic_num: +router?.query?.camp[0]?.split("-")[0],
-      camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
+      topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
+      camp_num: +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1),
       asOf: asof,
       asofdate:
         asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
@@ -274,20 +274,6 @@ const SupportTreeCard = ({
       }
     });
   };
-  useEffect(() => {
-    // setTimeout(()=>{
-    //   debugger;
-    //   dispatch(setOpenConsensusTreePopup(false))
-    // },100);
-    // debugger;
-    // (async()=>{
-    // dispatch(setOpenConsensusTreePopup(true))
-    // // await getSupportTreeApi()
-    // setTimeout(()=>{
-    //   dispatch(setOpenConsensusTreePopup(false))
-    // },100);
-    // })()
-  }, []);
 
   const removeSupportModalHandler = (data,item) => {
     // if (currentGetCheckSupportExistsData.is_delegator) {
@@ -316,8 +302,8 @@ const SupportTreeCard = ({
     let reqBody = {
       as_of: asof,
       as_of_date: asofdate,
-      topic_num: +router?.query?.camp[0]?.split("-")[0],
-      camp_num: +router?.query?.camp[1]?.split("-")[0],
+      topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
+      camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
     };
     await getCurrentCampRecordApi(reqBody);
 
@@ -408,7 +394,6 @@ const SupportTreeCard = ({
                               : is_checked && isUserAuthenticated
                                 ? data[item].full_score?.toFixed(2)
                                 : data[item].score?.toFixed(2)}
-                            {/* {data[item].score?.toFixed(2)} */}
                           </span>
                         </div>
                       </div>
