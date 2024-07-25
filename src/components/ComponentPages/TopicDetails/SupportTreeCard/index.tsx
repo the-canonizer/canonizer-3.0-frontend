@@ -247,7 +247,8 @@ const SupportTreeCard = ({
       setSelectNickId(null);
       q && q.from && q.from.includes("notify_")
         ? null
-        : showModalSupportCamps();
+        : showModalSupportCamps(); 
+          setDrawerFor("add"); 
     } else {
       dispatch(showLoginModal());
     }

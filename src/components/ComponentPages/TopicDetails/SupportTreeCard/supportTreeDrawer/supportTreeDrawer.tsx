@@ -376,18 +376,19 @@ function SupportTreeDrawer({ onClose, open, topicList, drawerFor, onRemoveFinish
                             <TextArea className="thm-input" rows={4} />
                           </Form.Item>
                         </Col>
-                        <Col span={24}>
-                          <Form.Item name="Citation" label="Citation link">
-                            <Input
-                              className="thm-input"
-                              size="large"
-                              placeholder="https://"
-                              prefix={<i className="icon-link"></i>}
-                            />
-                          </Form.Item>
-                        </Col>
                       </>
                     )}
+                    <Col span={24}>
+                      <Form.Item name="Citation" label="Citation link">
+                        <Input
+                          className="thm-input"
+                          size="large"
+                          placeholder="https://"
+                          prefix={<i className="icon-link"></i>}
+                        />
+                      </Form.Item>
+                    </Col>
+
                   </Row>
                 </div>
               </div>
@@ -492,11 +493,6 @@ function SupportTreeDrawer({ onClose, open, topicList, drawerFor, onRemoveFinish
                         <Form.Item
                           name="Citation"
                           label="Citation link"
-                          rules={[
-                            {
-                              required: true,
-                            },
-                          ]}
                         >
                           <Input
                             className="thm-input"

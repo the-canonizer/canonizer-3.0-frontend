@@ -22,7 +22,7 @@ import React from "react";
 
 export const openNotificationWithIcon = ({ type, message }: any) => {
   notification[type]({
-    duration: 5000,
+    duration: 5,
     closeIcon: null,
     className: "thm-notification",
     icon: <CheckCircleFilled />,
