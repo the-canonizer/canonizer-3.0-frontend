@@ -16,6 +16,7 @@ import { getProperties } from "src/utils/generalUtility";
 import K from "../../../../constants";
 import { getTopicActivityLogApi } from "../../../../network/api/campDetailApi";
 import CustomSkelton from "../../../common/customSkelton";
+import SectionHeading from "components/ComponentPages/Home/FeaturedTopic/sectionsHeading";
 
 const { Text } = Typography;
 const { Panel } = Collapse;
@@ -62,9 +63,12 @@ export default function CampRecentActivities() {
   return (
     <Fragment>
       <div className="camp_activity_new">
-        <h3 className="lg:mb-5 mb-3 uppercase text-sm lg:text-base font-semibold text-canBlack">
-          Camp activities
-        </h3>
+        <SectionHeading
+          title="Camp activities"
+          infoContent=""
+          icon={null}
+          className="lg:!mb-5 !mb-3"
+        />
       </div>
       <div className="camp-recent lg:bg-canGray bg-transparent lg:py-8 lg:px-6 rounded-2xl">
         <div className="camp-recent-child d-flex justify-center flex-col items-center bg-white lg:px-7 px-3.5  rounded-xl border border-canGrey2 ">
@@ -148,80 +152,6 @@ export default function CampRecentActivities() {
           </div>
         </div>
       </div>
-      {/* <Collapse
-        defaultActiveKey={["1"]}
-        expandIconPosition="right"
-        className="topicDetailsCollapse news-feeds"
-      >
-        <Panel
-          header={
-            <h3 className="text-orange card_heading">
-               Camp  Activities
-            </h3>
-          }
-          className={"activities " + styles.campActivities}
-          key="1"
-        >
-          {loadingIndicator ? (
-            <CustomSkelton
-              skeltonFor="list"
-              bodyCount={7}
-              stylingClass="listSkeleton"
-              isButton={false}
-            />
-          ) : !data ? (
-            <List
-              itemLayout="horizontal"
-              className="activeListWrap"
-              dataSource={data}
-              renderItem={(item) => (
-                <List.Item className={styles.activitiesList}>
-                  <List.Item.Meta
-                    avatar={<BellFilled className={styles.bellIcon} />}
-                    title={
-                      <Fragment>
-                        {item?.description}{" "}
-                        {item?.log_name === "support" &&
-                          getProperties(item)?.reason && (
-                            <Popover
-                              content={<ReasonsActivity CurrentItem={item} />}
-                              placement="top"
-                              className={styles.algoInfoIcon}
-                            >
-                              <i className="icon-info"></i>
-                            </Popover>
-                          )}
-                      </Fragment>
-                    }
-                    description={covertToTime(item?.updated_at)}
-                    className={styles.listItem}
-                  />
-                </List.Item>
-              )}
-            />
-          ) : (
-            K?.exceptionalMessages?.noRecentActivityFound
-          )}
-          <div className={styles.footerLink}>
-            {userData?.is_admin && hasShowViewAll ? (
-              <Link
-                href={{
-                  pathname: "/activities",
-                  query: {
-                    topic_num: router?.query?.camp[0]?.split("-")[0],
-                    camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
-                  },
-                }}
-              >
-                <a className={styles.viewAllLink}>
-                  <Text>View All</Text>
-                  <i className="icon-angle-right"></i>
-                </a>
-              </Link>
-            ) : null}
-          </div>
-        </Panel>
-      </Collapse>  */}
     </Fragment>
   );
 }

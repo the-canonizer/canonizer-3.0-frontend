@@ -8,6 +8,7 @@ import { RootState } from "src/store";
 import DropDownMenu from "../../DropdownMenu";
 import ViewCounts from "components/shared/ViewsCount";
 import SocialShare from "components/shared/ShareTopic";
+import SectionHeading from "components/ComponentPages/Home/FeaturedTopic/sectionsHeading";
 
 const CampDisclaimer = () => {
   const { campRecord, manageSupportStatusCheck, tree } = useSelector(
@@ -21,12 +22,13 @@ const CampDisclaimer = () => {
   return (
     <div className="flex justify-between mb-6 items-center">
       <div className="flex gap-2.5 items-center">
-        <h3 className="font-semibold text-canBlack text-sm lg:text-base uppercase">
-          CAMP: {campRecord?.camp_name}
-        </h3>
-        <div className="lg:flex items-center gap-2 hidden ">
-          <ViewCounts views={tree?.[1] && tree[1]?.camp_views} />
-        </div>
+        <SectionHeading
+          title={"CAMP: " + campRecord?.camp_name}
+          infoContent=""
+          icon={null}
+          className="!mb-0"
+        />
+        <ViewCounts views={tree?.[1] && tree[1]?.camp_views} />
       </div>
 
       <div className="flex gap-7 items-center">
@@ -39,18 +41,13 @@ const CampDisclaimer = () => {
         </div>
         <div className="">
           <Dropdown
-            // className={styles.campForumDropdown}
             placement="bottomRight"
             dropdownRender={() =>
               !manageSupportStatusCheck ? <DropDownMenu /> : ""
             }
             trigger={["click"]}
           >
-            <a
-              // className={styles.iconMore}
-              onClick={(e) => e.preventDefault()}
-              className="flex"
-            >
+            <a onClick={(e) => e.preventDefault()} className="flex">
               <Image
                 src="/images/options-icon.svg"
                 alt="svg"

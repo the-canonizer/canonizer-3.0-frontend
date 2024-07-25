@@ -18,10 +18,9 @@ import { useDispatch, useSelector } from "react-redux";
 import styles from "../topicDetails.module.scss";
 
 import { RootState } from "src/store";
-import K from "../../../../constants";
-import isAuth from "../../../../hooks/isUserAuthenticated";
-import CustomButton from "../../../common/button";
-// import { setCurrentCampRecord } from "../../../../store/slices/campDetailSlice";
+import K from "src/constants";
+import isAuth from "src/hooks/isUserAuthenticated";
+import CustomButton from "components/common/button";
 import SupportRemovedModal from "src/components/common/supportRemovedModal";
 import {
   getCurrentCampRecordApi,
@@ -29,16 +28,16 @@ import {
 } from "src/network/api/campDetailApi";
 import { setIsSupportModal } from "src/store/slices/topicSlice";
 import { showLoginModal } from "src/store/slices/uiSlice";
-import { getNickNameList } from "../../../../network/api/userApi";
+import { getNickNameList } from "src/network/api/userApi";
 import {
   setManageSupportStatusCheck,
   setManageSupportUrlLink,
-} from "../../../../store/slices/campDetailSlice";
-import { setDelegatedSupportClick } from "../../../../store/slices/supportTreeCard";
-import CustomSkelton from "../../../common/customSkelton";
+} from "src/store/slices/campDetailSlice";
+import { setDelegatedSupportClick } from "src/store/slices/supportTreeCard";
+import CustomSkelton from "components/common/customSkelton";
 import ManageSupport from "../../ManageSupport";
 
-import support_image from "../../../../../public/images/support-tree-avatar.svg";
+import support_image from "src/../public/images/support-tree-avatar.svg";
 import SignCamp from "./SignCamp";
 
 const { Paragraph } = Typography;
@@ -399,7 +398,6 @@ const SupportTreeCard = ({
                       >
                         <a className="flex  gap-2.5 items-center flex-wrap text-canBlack hover:!text-canBlack">
                           <span className="text-canBlack text-base font-medium">
-                            {" "}
                             #{data[item].support_order}{" "}
                           </span>
                           <div className="w-[32px] h-[32px] rounded-full overflow-hidden bg-canLightBg flex items-center justify-center">
@@ -418,7 +416,7 @@ const SupportTreeCard = ({
                             )}
                           </div>
 
-                          <span className="text-canBlack lg:text-base text-13 font-medium">
+                          <span className="text-canBlack lg:text-base text-sm font-medium">
                             {" "}
                             {data[item].nick_name}
                           </span>

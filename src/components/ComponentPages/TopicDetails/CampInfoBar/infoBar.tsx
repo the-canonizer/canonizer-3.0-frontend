@@ -488,19 +488,6 @@ const InfoBar = ({
                     : ""
                 }
               >
-                {/* <Button
-                  className="btn"
-                  size="large"
-                  disabled={
-                    (tree && !tree["1"]?.is_valid_as_of_time) ||
-                    (campExist && !campExist?.camp_exist)
-                      ? true
-                      : false
-                  }
-                  onClick={onCreateCamp}
-                >
-                  <i className="icon-camp"></i> Create New Camp
-                </Button> */}
                 <div>{!isMobile && <CampDisclaimer />}</div>
               </Tooltip>
             ) : null}
@@ -538,9 +525,7 @@ const InfoBar = ({
                 router?.query?.asof === "review" ||
                 filteredScore != 0 ? (
                   <div className="w-3.5 h-3.5 rounded-full bg-canRed absolute -top-1.5 -right-1.5"></div>
-                ) : (
-                  ""
-                )}
+                ) : null}
               </Button>
               {(router.query.algo &&
                 selectedAlgorithm &&
@@ -552,9 +537,7 @@ const InfoBar = ({
               router?.query?.asof === "review" ||
               filteredScore != 0 ? (
                 <LatestFilter />
-              ) : (
-                ""
-              )}
+              ) : null}
             </div>
           </div>
           <div
@@ -563,100 +546,7 @@ const InfoBar = ({
             <Typography.Paragraph
               className={"mb-0 campInfoRight " + styles.topicTitleStyle}
             >
-              {isTopicPage && (
-                <Fragment>
-                  {/* {loadingIndicator ? (
-                    <div className="socail-skeleton mr-3">
-                      <CustomSkelton
-                        skeltonFor="list"
-                        bodyCount={1}
-                        stylingClass="skeleton-item"
-                        isButton={false}
-                        circle={true}
-                      />
-                    </div>
-                  ) : (
-                    <div className="cam-social-ot">
-                      <Button
-                        className={styles.shareIcon}
-                        onClick={onPrintCamp}
-                      >
-                        <span>Print</span> <PrinterOutlined />
-                      </Button>
-                    </div>
-                  )}
-                  {loadingIndicator ? (
-                    <div className="socail-skeleton mr-3">
-                      <CustomSkelton
-                        skeltonFor="list"
-                        bodyCount={1}
-                        stylingClass="skeleton-item"
-                        isButton={false}
-                        circle={true}
-                      />
-                      <CustomSkelton
-                        skeltonFor="list"
-                        bodyCount={1}
-                        stylingClass="skeleton-item"
-                        isButton={false}
-                        circle={true}
-                      />
-                      <CustomSkelton
-                        skeltonFor="list"
-                        bodyCount={1}
-                        stylingClass="skeleton-item"
-                        isButton={false}
-                        circle={true}
-                      />
-                    </div>
-                  ) : (
-                    <div className="cam-social-ot">
-                      <SocialShareUI
-                        campName={campRecord?.camp_name}
-                        campUrl={!isServer() && window?.location?.href}
-                      />
-                    </div>
-                  )}
-                  {loadingIndicator ? (
-                    <CustomSkelton
-                      skeltonFor="list"
-                      bodyCount={1}
-                      stylingClass="header-skeleton-btn"
-                      isButton={false}
-                    />
-                  ) : (
-                    <>
-                      <Button
-                        type="primary"
-                        className={styles.btnCampForum}
-                        onClick={onCampForumClick}
-                        id="camp-forum-btn"
-                      >
-                        Camp Forum
-                      </Button>
-
-                      <Dropdown
-                        className={styles.campForumDropdown}
-                        placement="bottomRight"
-                        dropdownRender={() =>
-                          !manageSupportStatusCheck ? campForumDropdownMenu : ""
-                        }
-                        trigger={["click"]}
-                        destroyPopupOnHide={true}
-                      >
-                        <a
-                          className={styles.iconMore}
-                          onClick={(e) => {e.preventDefault(); dispatch(setManageSupportStatusCheck(false))}}
-                        >
-                          <MoreOutlined />
-                        </a>
-                      </Dropdown>
-                     
-                    </>
-                  )} */}
-                  <RefineFilter />
-                </Fragment>
-              )}
+              {isTopicPage && <RefineFilter />}
             </Typography.Paragraph>
           </div>
         </div>
