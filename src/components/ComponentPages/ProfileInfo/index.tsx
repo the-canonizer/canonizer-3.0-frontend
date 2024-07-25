@@ -47,6 +47,7 @@ const ProfileInfo = () => {
   const [add, setAdd] = useState(false);
   const [userProfileSkeleton, setUserProfileSkeleton] = useState(false);
   const [userProfileSkeletonV, setUserProfileSkeletonV] = useState(true);
+  const [viewEmail, setViewEmail] = useState("");
 
   const publicPrivateArray = {
     first_name: "first_name",
@@ -277,6 +278,7 @@ const ProfileInfo = () => {
       if (res != undefined) {
         if (res.data != undefined) {
           let profileData = res.data;
+          setViewEmail(profileData?.email);
           const verify = {
             phone_number: profileData.phone_number,
             mobile_carrier:
@@ -362,6 +364,7 @@ const ProfileInfo = () => {
       userProfileSkeletonV={userProfileSkeletonV}
       setOTP={setOTP}
       setToggleVerifyButton={setToggleVerifyButton}
+      viewEmail={viewEmail}
     />
   );
 };

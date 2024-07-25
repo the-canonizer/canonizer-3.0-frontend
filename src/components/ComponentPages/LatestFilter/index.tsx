@@ -327,7 +327,7 @@ const LatestFilter = () => {
               data-testid="close_icon_100%_of_canonized_score"
             >
               <Image
-              className="cursor-pointer"
+                className="cursor-pointer"
                 src="/images/filter-cross.svg"
                 alt=""
                 width={10}
@@ -376,7 +376,7 @@ const LatestFilter = () => {
               onClick={filterForAsofDate}
               data-testid="close_icon_include_review"
             /> */}
-             <div
+            <div
               onClick={filterForAsofDate}
               data-testid="close_icon_include_review"
             >
@@ -402,10 +402,7 @@ const LatestFilter = () => {
               onClick={filterscore}
               data-testid="close_icon_Score"
             /> */}
-             <div
-              onClick={filterscore}
-              data-testid="close_icon_Score"
-            >
+            <div onClick={filterscore} data-testid="close_icon_Score">
               <Image
                 className="cursor-pointer"
                 src="/images/filter-cross.svg"

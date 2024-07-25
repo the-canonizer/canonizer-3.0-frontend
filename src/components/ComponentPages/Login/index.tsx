@@ -1,21 +1,24 @@
-import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import { useDispatch, useSelector } from "react-redux";
 import { Card, Col, Form, Row } from "antd";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import LoginUI from "./UI";
 
+import CustomSpinner from "components/shared/CustomSpinner";
 import { login, resendOTPForRegistration } from "src/network/api/userApi";
 import { AppDispatch, RootState } from "src/store";
+import { setEmailForOTP } from "src/store/slices/authSlice";
+import { setManageSupportStatusCheck } from "src/store/slices/campDetailSlice";
 import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
 import { setValue } from "src/store/slices/utilsSlice";
-import { setManageSupportStatusCheck } from "src/store/slices/campDetailSlice";
-import CustomSpinner from "components/shared/CustomSpinner";
 import LeftContent from "../Registration/UI/leftContent";
-import { setEmailForOTP } from "src/store/slices/authSlice";
 
 const Login = () => {
   const remember = useSelector((state: RootState) => state.utils.remember_me);
+  const currentReturnUrl = useSelector(
+    (state: RootState) => state?.auth?.currentReturnUrl
+  );
 
   const [errorMsg, setErrorMsg] = useState(""),
     [isDisabled, setIsDisabled] = useState(true),
@@ -92,11 +95,14 @@ const Login = () => {
       );
 
       form.resetFields();
+      // fetchNickNameList();
 
       closeModal();
 
       if (router?.query?.returnUrl) {
         router?.push(`${router?.query?.returnUrl}`);
+      } else if (currentReturnUrl) {
+        router?.push({ pathname: currentReturnUrl });
       } else if (router?.pathname === "/login") {
         router?.push("/");
       } else {
@@ -132,7 +138,7 @@ const Login = () => {
       if (res && res.status_code === 200) {
         dispatch(setEmailForOTP(emailPhone?.trim()));
 
-        router.push({ pathname: "/login/otp" });
+        router.push({ pathname: "/login/otp", query: { ...router?.query } });
       }
     } else {
       form.validateFields(["username"]);
@@ -147,12 +153,12 @@ const Login = () => {
 
   const onForgotPasswordClick = (e) => {
     e.preventDefault();
-    router?.push("/forgot-password");
+    router?.push({ pathname: "/forgot-password", query: { ...router?.query } });
   };
 
   const onRegister = (e) => {
     e.preventDefault();
-    router?.push("/registration");
+    router?.push({ pathname: "/registration", query: { ...router?.query } });
   };
 
   return (

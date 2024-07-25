@@ -11,24 +11,11 @@ module.exports = {
     extend: {
       boxShadow: {
         "camp-light": "0 10px 20px 0px rgba(49, 80, 114, 0.2)",
-        "mobile-b-shadow" : " 0px 10px 10px 0px rgba(0, 0, 0, 0.1)",
-      },
-   
-      fontSize: {
-        '24': '24px', 
-        '13': '13px', 
-        '32': '32px',
-        
-      },
-      borderWidth: {
-        '3': '3px', // Custom border width
-        '5': '5px', // Another custom border width
-        '10': '10px', // Yet another custom border width
-        '6': '6px' // Yet another custom border width
+        "mobile-b-shadow": " 0px 10px 10px 0px rgba(0, 0, 0, 0.1)",
       },
       colors: {
         canBlue: "#5482C8",
-        canBlue_Opacity20:"#5482C833",
+        canBlue_Opacity20: "#5482C833",
         canHoverBlue: "#326DC7",
         canGreen: "#4EB966",
         canGreen2: "#2EAD4A4D",
@@ -50,12 +37,12 @@ module.exports = {
         canLightGrey: "#F0F2FA",
         canLightBlack: "#69748B",
         canLightBg: "#E4E7EF",
-        canLightgrey4: "#DDE2EE"
+        canLightgrey4: "#DDE2EE",
       },
       backgroundImage: {
         "custom-gradient":
           "linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000000 100%)",
-          'topic-card-gr':'linear-gradient(158.22deg, #FFFFFF 0%, #F7F8FC 100%)'
+        "topic-card-gr": "linear-gradient(158.22deg, #FFFFFF 0%, #F7F8FC 100%)",
       },
       screens: {
         sm: "576px",
@@ -72,6 +59,9 @@ module.exports = {
         // => @media (min-width: 1200px) { ... }
 
         "2xl": "1600px",
+        // => @media (min-width: 1600px) { ... }
+
+        "3xl": "1900px",
         // => @media (min-width: 1600px) { ... }
       },
     },

@@ -9,19 +9,22 @@ import AvatarGroup from "src/components/shared/AvaratGroup";
 import CardDescription from "./descriptions";
 import TopicCatsLabel from "components/shared/TopicCategories";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
+import { useIsMobile } from "src/hooks/useIsMobile";
 
 const propTypes = {
   topic: PropTypes.object,
 };
 
 const SingleTopicCard = ({ topic, onTopicLinkClick = null }) => {
+  const isMobile = useIsMobile();
+
   if (!topic) {
     return null;
   }
 
   return (
     <CommonCard
-      className="border-0 h-full transition duration-300 hocus:shadow-lg [&_.rightArrow]:hover:block mainCard hocus:bg-white [&_.ant-card-body]:flex [&_.ant-card-body]:flex-col [&_.ant-card-body]:h-full fullHeightCard [&_.ant-card-body]:before:hidden"
+      className="border-0 h-full transition duration-300 hocus:shadow-lg [&_.rightArrow]:hover:block mainCard hocus:bg-white [&_.ant-card-body]:flex [&_.ant-card-body]:flex-col [&_.ant-card-body]:h-full fullHeightCard [&_.ant-card-body]:before:hidden [&_.ant-card-body]:after:hidden"
       key={topic?.id}
     >
       <Link
@@ -44,14 +47,17 @@ const SingleTopicCard = ({ topic, onTopicLinkClick = null }) => {
         </a>
       </Link>
       <CardDescription description={topic?.statement?.parsed_value} />
-      <div className="flex justify-between mt-auto pt-5 mt-auto flex-row md:flex-row lg:flex-col 2xl:flex-row">
-        <div className="text-letopic flex flex-col">
+      <div className="flex justify-between mt-auto pt-5 mt-auto flex-row items-center">
+        <div className="text-letopic flex flex-col justify-center">
           <TopicCatsLabel tags={topic?.topicTags} />
-          <ViewCounts views={topic?.views} className="!mt-2" />
+          <ViewCounts
+            views={topic?.views}
+            className={`${topic?.topicTags?.length ? "!mt-2" : ""}`}
+          />
         </div>
         <AvatarGroup
           avatars={topic?.supporterData?.slice(0, 3)}
-          size="large"
+          size={isMobile ? "small" : "large"}
           maxCount={3}
           maxStyle={{
             color: "#f56a00",

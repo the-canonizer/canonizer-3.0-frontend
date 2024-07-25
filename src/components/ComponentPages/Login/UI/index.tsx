@@ -108,7 +108,7 @@ const LoginUi = ({
           <PrimaryButton
             data-testid="submitButton"
             htmlType="submit"
-            className="h-[40px] text-sm rounded-lg !w-10/12 lg:!w-8/12 mb-6 flex justify-center items-center"
+            className="h-[40px] text-sm rounded-lg !w-10/12 lg:!w-8/12 mb-6 flex justify-center items-center mx-auto"
             id="login-btn"
             disabled={!isDisabled}
           >

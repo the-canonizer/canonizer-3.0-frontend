@@ -3,7 +3,7 @@ import { Button } from "antd";
 const PrimaryButton = ({ className = "", ...rest }: any) => {
   return (
     <Button
-      className={`bg-canBlue hover:bg-canHoverBlue hover:text-white font-medium text-white disabled:bg-disabled font-base leading-22 rounded-lg ${className}`}
+      className={`bg-canBlue hocus:bg-canHoverBlue hocus:text-white font-medium text-white disabled:bg-disabled font-base leading-22 rounded-lg ${className}`}
       {...rest}
     >
       {rest.children}

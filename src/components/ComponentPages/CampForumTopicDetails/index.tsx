@@ -5,6 +5,8 @@ import { latestThread } from "src/network/api/campForumApi";
 import moment from "moment";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import SectionHeading from "../Home/FeaturedTopic/sectionsHeading";
+import SeeMoreLInk from "../Home/FeaturedTopic/seeMoreLink";
 function Campforum() {
   const [thread, setThread] = useState([]);
   const router = useRouter();
@@ -34,9 +36,7 @@ function Campforum() {
     <>
       {thread?.length <= 0 ? (
         <div className="campfourm-nodata mb-5">
-          <h3 className="text-sm lg:text-base text-canBlack font-semibold uppercase mb-6">
-            Camp Forum
-          </h3>
+          <SectionHeading title="Camp Forum" infoContent="" icon={null} />
           <div className="bg-canGray py-14 px-4 rounded-lg flex flex-col items-center justify-center">
             <p className="mb-2.5 font-normal lg:mb-4 text-[13px] lg:text-base text-canBlack">
               No threads have been started in the Camp Forum
@@ -55,15 +55,20 @@ function Campforum() {
       ) : (
         <div className="campfourm-withdata">
           <div className="flex justify-between lg:mb-6 mb-5">
-            <h3 className="text-sm lg:text-base text-canBlack font-semibold uppercase">
-              Camp Forum
-            </h3>
-            <a
-              onClick={onCampForumClick}
-              className="text-base text-canBlue font-medium"
-            >
-              See All Threads
-            </a>
+            <SectionHeading
+              title="Camp Forum"
+              infoContent=""
+              icon={null}
+              className="!mb-0"
+            />
+            <SeeMoreLInk
+              href={{
+                pathname: `/forum/${router?.query?.camp[0]}/${
+                  router?.query?.camp[1] || "1"
+                }/threads`,
+              }}
+              title="See All Threads"
+            />
           </div>
 
           <div className=" lg:bg-canGray lg:py-8  rounded-lg flex flex-col  items-start justify-between">

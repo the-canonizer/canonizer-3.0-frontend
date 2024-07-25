@@ -348,7 +348,7 @@ const HeaderSearch = ({ className = "" }: any) => {
           // console.log("eee--", e);
           setIsFullWidth(false);
         }}
-        className={`ml-5 transition-all delay-300 [&>div]:!border-0 ${
+        className={`ml-6 transition-all delay-300 [&>div]:!border-0 3xl:w-3/12 ${
           isFullWidth ? styles.widthScroll : ""
         }`}
       >

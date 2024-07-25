@@ -3,6 +3,7 @@ const BaseCanonizerApiUrl = process.env.NEXT_PUBLIC_BASE_API_URL;
 const DummyUrl = process.env.NEXT_PUBLIC_BASE_DUMMY_URL;
 const BaseImagesURL = process.env.NEXT_PUBLIC_BASE_IMAGES_URL;
 const BaseVideosURL = process.env.NEXT_PUBLIC_BASE_VIDEOS_URL;
+const BaseDevApiURL = process.env.NEXT_PUBLIC_BASE_API_DEV_URL;
 const NetworkConstants = {
   URL: {
     BaseImagesURL,
@@ -180,6 +181,8 @@ const NetworkConstants = {
 
     //removeSupportedCamps
     RemoveCamps: `${BaseCanonizerApiUrl}/support/update`,
+    CampSignCheck: `${BaseCanonizerApiUrl}/camp/sign/check`,
+    CampSign: `${BaseCanonizerApiUrl}/camp/sign`,
 
     UpdateToken: `${BaseCanonizerApiUrl}/update-fcm-token`,
 
@@ -190,6 +193,7 @@ const NetworkConstants = {
     // Meta Tags
     GetMetaContent: `${BaseCanonizerApiUrl}/meta-tags`,
 
+    Videos: `${BaseCanonizerApiUrl}/videos/consiousness/1`,
     VideosContent: `${BaseCanonizerApiUrl}/videos`,
 
     GetNickSupportUser: `${BaseCanonizerApiUrl}/get-nick-support-user/`,
@@ -209,6 +213,12 @@ const NetworkConstants = {
     // categories
     GetTagsList: `${BaseCanonizerApiUrl}/get-tags-list`,
     SavePrefCats: `${BaseCanonizerApiUrl}/create/user/tags`,
+
+    // Email Update
+    ChangeEmailRequest: `${BaseCanonizerApiUrl}/change-email-request`,
+    EmailChangeVerification: `${BaseCanonizerApiUrl}/emailchange-verify-otp`,
+    UpdateNewEmailRequest: `${BaseCanonizerApiUrl}/update-email-request`,
+    ReplaceExistOneUpdateNewEmail: `${BaseCanonizerApiUrl}/update-email`,
   },
   Method: {
     GET: "GET",

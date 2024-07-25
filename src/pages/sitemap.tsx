@@ -1,30 +1,56 @@
 import fs from "fs";
 
-import { Fragment, useEffect } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Card, Typography } from "antd";
 import { useRouter } from "next/router";
 
 import Layout from "src/hoc/layout";
 
 import { getSitemapXML } from "src/network/api/metaTagsAPI";
+import CustomSkelton from "src/components/common/customSkelton";
 
 const { Text } = Typography;
 
 const SitemapPage = () => {
   const router = useRouter();
 
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
-    router?.replace("/sitemap.xml");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    const navigateToSitemap = async () => {
+      await router.replace("/sitemap.xml");
+      setIsLoading(false);
+    };
+
+    navigateToSitemap();
+  }, [router]);
+
+  if (isLoading) {
+    return (
+      <Layout initialProps={undefined} initialState={undefined}>
+        <Card
+          bordered={false}
+          style={{ height: "50vh", textAlign: "center", width: "100%" }}
+        >
+          <CustomSkelton
+            skeltonFor="list"
+            bodyCount={5}
+            stylingClass="listSkeleton"
+            isButton={false}
+          />
+        </Card>
+      </Layout>
+    );
+  }
 
   return (
     <Fragment>
       <Layout initialProps={undefined} initialState={undefined}>
-        <Card bordered={false} style={{ height: "50vh", textAlign: "center" }}>
-          <Text>
-            This page is generating sitemap.xml file in every 15 days interval.
-          </Text>
+        <Card
+          bordered={false}
+          style={{ height: "50vh", textAlign: "center", width: "100%" }}
+        >
+          <Text>This page generates a sitemap.xml file in every 15 days.</Text>
         </Card>
       </Layout>
     </Fragment>

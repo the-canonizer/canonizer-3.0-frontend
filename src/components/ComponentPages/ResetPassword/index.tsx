@@ -1,136 +1,80 @@
-import { Fragment, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { Row, Col, Button, Form, Input, Typography, message } from "antd";
+import { Row, Col, Form, message, Card } from "antd";
+import { useDispatch, useSelector } from "react-redux";
 
-import styles from "../Registration/UI/Registration.module.scss";
+import { forgotPasswordUpdate } from "src/network/api/userApi";
+import CustomSpinner from "components/shared/CustomSpinner";
+import LeftContent from "../Registration/UI/leftContent";
+import { RootState } from "src/store";
+import { setIsPasswordVerfied } from "src/store/slices/authSlice";
+import ResetPasswordUI from "./UI";
 
-import messages from "../../../messages";
-import { forgotPasswordUpdate } from "../../../network/api/userApi";
-import SideBar from "../CampForum/UI/sidebar";
+const ResetPassword = () => {
+  const { isPasswordVerfied } = useSelector((state: RootState) => ({
+    isPasswordVerfied: state?.auth?.isPasswordVerfied,
+  }));
 
-const { Title } = Typography;
+  const router = useRouter(),
+    dispatch = useDispatch();
 
-const ResetPassword = ({ is_test = false }: any) => {
-  const router = useRouter();
   const [form] = Form.useForm();
 
-  const backToLogin = async () => {
-    if (localStorage.getItem("verified")) {
-      await localStorage.removeItem("verified");
-    }
+  const [isLoading, setIsLoading] = useState(false),
+    [isDisabled, setIsDisabled] = useState(true);
 
-    router?.push({ pathname: "/login" });
-  };
+  const values = Form.useWatch([], form);
 
   useEffect(() => {
-    const getData = async () => {
-      const verified = await localStorage.getItem("verified");
-
-      if (!verified && !is_test) {
-        backToLogin();
-      }
-    };
-
-    getData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    form
+      .validateFields({ validateOnly: true })
+      .then(() => setIsDisabled(true))
+      .catch(() => setIsDisabled(false));
+  }, [form, values]);
 
   const onFinish = async (values: any) => {
-    const email = await localStorage.getItem("verified");
-    let body = {
-      username: email?.trim(),
+    setIsLoading(true);
+
+    const res = await forgotPasswordUpdate({
+      username: isPasswordVerfied,
       new_password: values.password,
       confirm_password: values.confirm,
-    };
-
-    let res = await forgotPasswordUpdate(body);
+    });
 
     if (res && res.status_code === 200) {
       message.success(res.message);
       form.resetFields();
-      backToLogin();
+      router?.push({ pathname: "/login" });
     }
+
+    setIsLoading(false);
+  };
+
+  const onBrowseClick = (e) => {
+    e?.preventDefault();
+    router?.back();
   };
 
   return (
-    <div className={styles.wrapper}>
-      <aside className="leftSideBar miniSideBar topicPageNewLayoutSidebar">
-        <SideBar />
-      </aside>
-      <div className={`pageContentWrap ${styles.pageContentWrap}`}>
-        <div className={`${styles.signup_wrapper} ${styles.resetPassword}`}>
-          <Form
-            form={form}
-            name="setPassword"
-            onFinish={onFinish}
-            layout="vertical"
-            scrollToFirstError
-            validateTrigger={messages.formValidationTypes()}
-          >
-            <Title level={2} className={styles.titles} id="create-pass-title">
-              {messages.labels.createPassword}
-            </Title>
-            <div className={styles.section_one}>
-              <div className={styles.imageWrapper}>
-                <Row gutter={20} align="top" className={styles.inputRows}>
-                  <Col xs={24} md={10}>
-                    <Form.Item
-                      name="password"
-                      label={
-                        <Fragment>
-                          {messages.labels.newPassword}
-                          <span className="required">*</span>
-                        </Fragment>
-                      }
-                      {...messages.passwordRule}
-                    >
-                      <Input.Password
-                        className={styles.passwordInput}
-                        type="password"
-                        placeholder={messages.placeholders.newPassword}
-                      />
-                    </Form.Item>
-                  </Col>
-                  <Col xs={24} md={10}>
-                    <Form.Item
-                      name="confirm"
-                      label={
-                        <Fragment>
-                          {messages.labels.confirmPassword}
-                          <span className="required">*</span>
-                        </Fragment>
-                      }
-                      dependencies={["password"]}
-                      {...messages.confirmPasswordRule}
-                    >
-                      <Input.Password
-                        className={styles.passwordInput}
-                        type="password"
-                        placeholder={messages.placeholders.confirmPassword}
-                      />
-                    </Form.Item>
-                  </Col>
-                  <Col md={24}>
-                    <Form.Item noStyle>
-                      <Button
-                        type="primary"
-                        htmlType="submit"
-                        className={styles["login-form-button"]}
-                        block
-                        data-testid="submitButton"
-                        id="save-btn"
-                      >
-                        Save
-                      </Button>
-                    </Form.Item>
-                  </Col>
-                </Row>
-              </div>
-            </div>
-          </Form>
-        </div>
-      </div>
-    </div>
+    <CustomSpinner key="forgot-password-spinner" spinning={isLoading}>
+      <Card
+        bordered={false}
+        className="bg-canGrey1 mt-0 lg:mt-10 h-full flex justify-center items-center [&>.ant-card-body]:p-0 [&>.ant-card-body]:w-full [&_.ant-card-body]:pb-0 min-h-full"
+      >
+        <Row gutter={20}>
+          <Col lg={12} md={24} xl={12} xs={24} className="hidden lg:block">
+            <LeftContent onBrowseClick={onBrowseClick} />
+          </Col>
+          <Col lg={12} md={24} xl={12} xs={24} className="bg-white rounded-lg">
+            <ResetPasswordUI
+              form={form}
+              onFinish={onFinish}
+              isDisabled={isDisabled}
+            />
+          </Col>
+        </Row>
+      </Card>
+    </CustomSpinner>
   );
 };
 

@@ -35,7 +35,7 @@ export const validations: ErrorContainer = {
   phoneMaxLength: "Phone number must be at least 10 digits!",
   validPhone: "Please input valid phone number!",
   email: "Please input your E-mail!",
-  validEmail: "The input is not valid E-mail!",
+  validEmail: "Please enter a valid email address.",
   emailMax: "E-mail should be max 255 characters long!",
   captcha: "Please check the captcha!",
   captchaExtra: "We must make sure that your are a human.",
