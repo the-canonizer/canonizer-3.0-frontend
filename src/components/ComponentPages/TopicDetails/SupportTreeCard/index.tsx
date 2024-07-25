@@ -322,6 +322,7 @@ const SupportTreeCard = ({
     await getCurrentCampRecordApi(reqBody);
 
     setModalData({});
+    onClose()
     removeForm.resetFields();
   }
 
