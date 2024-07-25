@@ -22,7 +22,7 @@ const RightContent = ({ isUserAuthenticated }) => {
         {isUserAuthenticated ? "For Existing Users" : "For Guest User"}
       </Typography.Paragraph>
       <PrimaryButton
-        className="w-auto h-auto leading-0 p-0 rounded-full !bg-transparent border-0 mb-3 flex items-center justify-center"
+        className="w-auto h-auto leading-0 p-0 rounded-full !bg-transparent border-0 mb-3 flex items-center justify-center mx-auto"
         onClick={onPlayClick}
       >
         <PlayCircleFilled
