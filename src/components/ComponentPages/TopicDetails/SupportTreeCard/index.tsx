@@ -144,6 +144,7 @@ const SupportTreeCard = ({
   };
   const onClose = () => {
     setOpen(false);
+    setDrawerFor("")
   };
   const showModalSupportCamps = () => {
     showDrawer();
@@ -619,6 +620,7 @@ const SupportTreeCard = ({
           open={open} 
           topicList={topicList}
           drawerFor={drawerFor}
+          setDrawerFor={setDrawerFor}
           onRemoveFinish={onRemoveFinish} 
         />
         <div className=" support-tree-sec">

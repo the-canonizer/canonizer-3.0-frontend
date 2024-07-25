@@ -50,7 +50,7 @@ const SupportTreeDrawerClientOnly = dynamic(
   }
 );
 
-function SupportTreeDrawer({ onClose, open, topicList, drawerFor, onRemoveFinish }: any) {
+function SupportTreeDrawer({ onClose, open, topicList, drawerFor, setDrawerFor, onRemoveFinish }: any) {
   const {
     reasons,
     currentGetCheckSupportExistsData,
@@ -145,6 +145,7 @@ function SupportTreeDrawer({ onClose, open, topicList, drawerFor, onRemoveFinish
     if (res && res.status_code == 200) {
       openNotificationWithIcon({ type: "success", message: res?.message });
       onClose(true);
+      setDrawerFor("")
       form.resetFields();
       setSelectedValue(null);
     }
