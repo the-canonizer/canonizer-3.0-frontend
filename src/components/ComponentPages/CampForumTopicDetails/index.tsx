@@ -61,7 +61,9 @@ function Campforum() {
         <Col md={24} lg={24} xs={24} sm={24}>
           <CommonCard
             className={`bg-canGray flex flex-col items-center justify-center [&_.ant-card-body]:w-full ${
-              !thread?.length ? "py-14" : "!py-0"
+              !thread?.length
+                ? "py-14 [&_.ant-card-body]:text-center "
+                : "!py-0"
             }`}
           >
             {!thread?.length ? (
@@ -70,7 +72,7 @@ function Campforum() {
                   No threads have been started in the Camp Forum
                 </Typography.Paragraph>
                 <SecondaryButton
-                  className="h-[44px] flex items-center justify-center px-20 py-2.5"
+                  className="h-[44px] flex items-center justify-center px-20 py-2.5 mx-auto"
                   onClick={onCampForumClick}
                 >
                   Start A Thread
