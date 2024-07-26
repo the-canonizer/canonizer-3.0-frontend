@@ -39,7 +39,7 @@ const HotTopics = () => {
             ) : (
               <SingleTopicCard
                 topic={ft}
-                onTopicLinkClick={() => setLoadMoreIndicator(true)}
+                onTopicLinkClick={() => setLoadMoreIndicator(false)}
               />
             )}
           </Col>

@@ -228,7 +228,7 @@ const CustomSkelton = ({
       count={bodyCount}
       circle={circle}
     />
-  )  : skeltonFor == "videos" ? (
+  ) : skeltonFor == "videos" ? (
     <>
       <Card
         className="video-parent-card"
@@ -381,7 +381,7 @@ const CustomSkelton = ({
     <Row gutter={[24, 24]}>
       {[...Array(8)].map((_, index) => (
         <Col key={index} xs={24} sm={24} md={12}>
-          <Card className="browse-card">
+          <Card className="browse-card overflow-hidden">
             <div className="mb-2.5 flex justify-between">
               <Skeleton style={{ width: 300 }} />
             </div>

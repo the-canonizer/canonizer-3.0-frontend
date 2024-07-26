@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { Typography } from "antd";
 
-import Layout from "../hoc/layout";
+// import Layout from "../hoc/layout";
 import TopicsList from "../components/ComponentPages/Home/TopicsList";
 import { setCurrentDate, setOnlyMyTopic } from "src/store/slices/filtersSlice";
 
@@ -30,9 +30,9 @@ const BrowsePage = ({ current_date }: any) => {
   }, []);
 
   return (
-    <Layout routeName={"browse"}>
-      <TopicsList />
-    </Layout>
+    // <Layout routeName={"browse"}>
+    <TopicsList />
+    // </Layout>
   );
 };
 

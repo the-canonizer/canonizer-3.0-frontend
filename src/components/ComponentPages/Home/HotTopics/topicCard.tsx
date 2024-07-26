@@ -3,9 +3,9 @@ import { RightOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import PropTypes from "prop-types";
 
-import CommonCard from "src/components/shared/Card";
-import ViewCounts from "src/components/shared/ViewsCount";
-import AvatarGroup from "src/components/shared/AvaratGroup";
+import CommonCard from "components/shared/Card";
+import ViewCounts from "components/shared/ViewsCount";
+import AvatarGroup from "components/shared/AvaratGroup";
 import CardDescription from "./descriptions";
 import TopicCatsLabel from "components/shared/TopicCategories";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
@@ -15,7 +15,13 @@ const propTypes = {
   topic: PropTypes.object,
 };
 
-const SingleTopicCard = ({ topic, onTopicLinkClick = null }) => {
+const SingleTopicCard = ({
+  topic,
+  onTopicLinkClick = null,
+  topic_name_key = "topic_name",
+  tag_key = "topicTags",
+  avatar_key = "supporterData",
+}) => {
   const isMobile = useIsMobile();
 
   if (!topic) {
@@ -41,22 +47,24 @@ const SingleTopicCard = ({ topic, onTopicLinkClick = null }) => {
           onClick={onTopicLinkClick}
         >
           <Typography.Paragraph className="m-0 text-base font-medium font-inter !mb-0">
-            {topic?.topic_name}
+            {topic[topic_name_key]}
           </Typography.Paragraph>
           <RightOutlined className="text-canBlue font-bold hidden rightArrow" />
         </a>
       </Link>
-      <CardDescription description={topic?.statement?.parsed_value} />
+      <CardDescription
+        description={topic?.statement || topic?.statement?.parsed_value}
+      />
       <div className="flex justify-between mt-auto pt-5 mt-auto flex-row items-center">
         <div className="text-letopic flex flex-col justify-center">
-          <TopicCatsLabel tags={topic?.topicTags} />
+          <TopicCatsLabel tags={topic[tag_key]} />
           <ViewCounts
             views={topic?.views}
-            className={`${topic?.topicTags?.length ? "!mt-2" : ""}`}
+            className={`${topic[tag_key]?.length ? "!mt-2" : ""}`}
           />
         </div>
         <AvatarGroup
-          avatars={topic?.supporterData?.slice(0, 3)}
+          avatars={topic[avatar_key]?.slice(0, 3)}
           size={isMobile ? "small" : "large"}
           maxCount={3}
           maxStyle={{

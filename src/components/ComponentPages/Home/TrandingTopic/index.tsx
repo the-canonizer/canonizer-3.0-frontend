@@ -156,11 +156,9 @@ const TrandingTopics = () => {
                   >
                     <a
                       className="hover:*:text-canHoverBlue font-medium"
-                      onClick={() => setLoadMoreIndicator(true)}
+                      onClick={() => setLoadMoreIndicator(false)}
                     >
-                      <Typography.Text className="">
-                        {item?.topic_name}
-                      </Typography.Text>
+                      <Typography.Text>{item?.topic_name}</Typography.Text>
                     </a>
                   </Link>
                   <Tag
