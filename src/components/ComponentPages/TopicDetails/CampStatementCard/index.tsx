@@ -1,4 +1,3 @@
-import { Typography } from "antd";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import Image from "next/image";
@@ -15,8 +14,6 @@ import CustomSkelton from "components/common/customSkelton";
 import ViewCounts from "components/shared/ViewsCount";
 import PrimaryButton from "components/shared/Buttons/PrimariButton";
 import CommonCard from "components/shared/Card";
-
-const { Paragraph } = Typography;
 
 const CampStatementCard = ({ loadingIndicator }) => {
   const router = useRouter();
