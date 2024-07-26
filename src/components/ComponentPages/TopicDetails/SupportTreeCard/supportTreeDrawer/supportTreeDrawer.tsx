@@ -95,12 +95,33 @@ function SupportTreeDrawer({
   const [isTagDragged, setIsTagDragged] = useState(false);
   const [parentSupportDataList, setParentSupportDataList] = useState([]);
   const [updatePostion, setUpdatePostion] = useState<boolean>(false);
+  const [supportOrder, setSupportOrder] = useState([]);
+
   const filteredList = manageSupportList?.map((obj: any, index: any) => {
     return {
       camp_num: obj.camp_num,
       order: index + 1, //obj.support_order,
     };
   });
+
+  const transformDataForDraggable = (data) => {
+    return data.map((item, index) => {
+        return {
+            id: item.camp_num,
+            content: item.camp_name
+        };
+    });
+  }
+
+  const transformSupportOrderForAPI = (data) => {
+    return data.map((item, index) => {
+        return {
+          camp_num: item.id,
+          order: index + 1,
+        };
+    });
+  }
+  
 
   const filterList = (campNum, position) => {
     const index = filteredList.findIndex((obj) => obj.camp_num === campNum);
@@ -122,6 +143,25 @@ function SupportTreeDrawer({
     topic_num: topicNum,
     camp_num: camp_num,
   };
+
+  const getActiveSupportTopic = async() =>{
+    let body = {
+      topic_num: topicNum 
+    }
+    const response = await GetActiveSupportTopic(topicNum && body);
+
+    let camp_data = 
+      {
+        id: camp_num,
+        content: campRecord?.camp_name,
+      }
+
+    if(currentGetCheckSupportExistsData.support_flag == 0){
+      setTagsArrayList([...transformDataForDraggable(response?.data),camp_data])
+    }else if (currentGetCheckSupportExistsData.support_flag == 1){
+      setTagsArrayList(transformDataForDraggable(response?.data))
+    }
+  }
 
   const reqBody = {
     topic_num: topicNum,
@@ -165,23 +205,18 @@ function SupportTreeDrawer({
     }
   };
 
-  // const initialTags = [
-  //   { camp_num: 1, camp_Name: "a the theory" },
-  //   { camp_num: 2, camp_Name: "b the theory" },
-  //   { camp_num: 3, camp_Name: "c the theory" },
-  //   { camp_num: 4, camp_Name: "d the theory" },
-  // ];
-
   const onFinish = async (values) => {
+    
     let addSupportId = {
       topic_num: topicNum,
-      add_camp: { camp_num: 1, support_order: 1 },
+      add_camp: { camp_num: camp_num, support_order: tagsArrayList?.length },
       remove_camps: [],
       type: "direct",
       action: "add",
       nick_name_id: nictNameId,
-      order_update: [{ camp_num: 1, order: 1 }],
+      order_update: transformSupportOrderForAPI(tagsArrayList),
     };
+    console.log("add support payload", addSupportId) 
     let res = await addSupport(addSupportId);
     if (res && res.status_code == 200) {
       openNotificationWithIcon({ type: "success", message: res?.message });
@@ -195,9 +230,9 @@ function SupportTreeDrawer({
     await getAllRemovedReasons();
   };
 
-  useEffect(() => {
-    setIsTagDragged(false);
-  }, []);
+  // useEffect(() => {
+  //   setIsTagDragged(false);
+  // }, []);
   
 
   useEffect(() => {
@@ -205,6 +240,8 @@ function SupportTreeDrawer({
       getReasons();
       getCanonizedNicknameList();
       getCurrentCampRecordApi(reqBody);
+      GetCheckStatusData()
+      getActiveSupportTopic()
     }
   }, [open]);
 
@@ -217,25 +254,25 @@ function SupportTreeDrawer({
     console.log("Clicked! But prevent default.");
   };
 
-  useEffect(() => {
-    if (manageSupportList?.length > 0) {
-      const newTagList = manageSupportList.map((obj) => ({
-        ...obj,
-        id: obj.camp_num,
-      }));
-      let newTagsArrayList = newTagList;
+  // useEffect(() => {
+  //   if (manageSupportList?.length > 0) {
+  //     const newTagList = manageSupportList.map((obj) => ({
+  //       ...obj,
+  //       id: obj.camp_num,
+  //     }));
+  //     let newTagsArrayList = newTagList;
 
-      if (!isTagDragged && parentSupportDataList.length > 0) {
-        const shouldArrayReverse = newTagList.every(
-          (element) => element.support_order === newTagList.length
-        );
-        newTagsArrayList = shouldArrayReverse
-          ? newTagList.slice().reverse()
-          : newTagList;
-      }
-      setTagsArrayList(newTagsArrayList);
-    }
-  }, [manageSupportList, parentSupportDataList, isTagDragged]);
+  //     if (!isTagDragged && parentSupportDataList.length > 0) {
+  //       const shouldArrayReverse = newTagList.every(
+  //         (element) => element.support_order === newTagList.length
+  //       );
+  //       newTagsArrayList = shouldArrayReverse
+  //         ? newTagList.slice().reverse()
+  //         : newTagList;
+  //     }
+  //     setTagsArrayList(newTagsArrayList);
+  //   }
+  // }, [manageSupportList, parentSupportDataList, isTagDragged]);
 
   return (
     <>
@@ -352,7 +389,7 @@ function SupportTreeDrawer({
                                   // dispatch(setIsSupportModal(false));
                                 }}
                               >
-                                {`${index + 1}.${tag?.camp_Name}`}
+                                {`${index + 1}.${tag?.content}`}
                               </a>
                             </Tag>
                           </div>
@@ -360,7 +397,8 @@ function SupportTreeDrawer({
                         onChange={(tags) => {
                           setIsTagDragged(true);
                           setUpdatePostion(true);
-                          setManageSupportList(tags);
+                          // setManageSupportList(tags);
+                          setTagsArrayList(tags)
                         }}
                       />
                     </div>
