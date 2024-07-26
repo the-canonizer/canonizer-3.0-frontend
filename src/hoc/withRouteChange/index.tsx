@@ -12,8 +12,6 @@ const withRouteChange = (WrappedComponent) => {
     useEffect(() => {
       const handleRouteChange = (url) => {
         const currentUrl = router?.asPath;
-        // console.log("App is changing to: ", url);
-        // console.log("Current app url: ", currentUrl);
 
         if (
           currentUrl !== "/login" &&
