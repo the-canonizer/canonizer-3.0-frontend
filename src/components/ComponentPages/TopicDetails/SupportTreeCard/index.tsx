@@ -1,4 +1,4 @@
-import { CloseCircleOutlined } from "@ant-design/icons";
+import { CloseCircleOutlined, ExclamationCircleFilled } from "@ant-design/icons";
 import {
   Button,
   Collapse,
@@ -137,8 +137,8 @@ const SupportTreeCard = ({
     setGetManageSupportLoadingIndicator,
   ] = useState(true);
   const [open, setOpen] = useState(false);
-  const [drawerFor,setDrawerFor] = useState(""); //["directAdd","delegateAdd","directRemove","delegateRemove"]
-
+  const [drawerFor, setDrawerFor] = useState(""); //["directAdd","delegateAdd","directRemove","delegateRemove"]
+  console.log("drawerFor", drawerFor)
   const showDrawer = () => {
     setOpen(true);
   };
@@ -236,6 +236,7 @@ const SupportTreeCard = ({
       );
       setSelectNickId(data);
       showModalSupportCamps();
+      setDrawerFor("delegateAdd");
     }
   };
 
@@ -248,8 +249,8 @@ const SupportTreeCard = ({
       setSelectNickId(null);
       q && q.from && q.from.includes("notify_")
         ? null
-        : showModalSupportCamps(); 
-          setDrawerFor("directAdd"); 
+        : showModalSupportCamps();
+      setDrawerFor("directAdd");
     } else {
       dispatch(showLoginModal());
     }
@@ -380,6 +381,7 @@ const SupportTreeCard = ({
       </Modal>
     );
   };
+
   const supportLength = 15;
   const renderTreeNodes = (
     data: any,
@@ -458,8 +460,8 @@ const SupportTreeCard = ({
                           {campRecord?.is_archive
                             ? 0
                             : is_checked && isUserAuthenticated
-                            ? data[item].full_score?.toFixed(2)
-                            : data[item].score?.toFixed(2)}
+                              ? data[item].full_score?.toFixed(2)
+                              : data[item].score?.toFixed(2)}
                           {/* {data[item].score?.toFixed(2)} */}
                         </span>
                       </div>
@@ -469,16 +471,16 @@ const SupportTreeCard = ({
 
                     {(userNickNameList?.length > 0 &&
                       !userNickNameList.includes(data[item].nick_name_id)) ||
-                    !isUserAuthenticated ? (
+                      !isUserAuthenticated ? (
                       <>
                         {loggedInUserDelegate ||
-                        (loggedInUserChild &&
-                          delegateNickNameId !=
+                          (loggedInUserChild &&
+                            delegateNickNameId !=
                             data[item]?.delegate_nick_name_id) ||
-                        (Array.isArray(data[item]?.delegates) &&
-                          data[item].delegates.findIndex((obj) =>
-                            userNickNameList?.includes(obj?.nick_name_id)
-                          ) > -1) ? null : (
+                          (Array.isArray(data[item]?.delegates) &&
+                            data[item].delegates.findIndex((obj) =>
+                              userNickNameList?.includes(obj?.nick_name_id)
+                            ) > -1) ? null : (
                           <Popover
                             placement="right"
                             content={
@@ -522,7 +524,7 @@ const SupportTreeCard = ({
                             !isUserAuthenticated ||
                             campRecord?.is_archive
                           }
-                          onClick={() => removeSupportModalHandler(data,item)}
+                          onClick={() => removeSupportModalHandler(data, item)}
                           className="mb-2 flex items-center gap-1 justify-center bg-canLightRed text-canRed text-base rounded-lg font-medium h-[44px] w-full"
                         >
                           <Image
@@ -557,9 +559,26 @@ const SupportTreeCard = ({
 
   // remove support popup added.
 
+  const removeDelegateSupportModal = () => {
+    Modal.confirm({
+      title: "Are you sure you want to remove your support?",
+      icon: <ExclamationCircleFilled />,
+      width: 400,
+      onOk() {
+        currentGetCheckSupportExistsData.is_delegator
+          ? removeSupportForDelegate()
+          : topicList.length <= 1
+            ? removeApiSupport(modalData?.nick_name_id)
+            : removeSupport(modalData?.nick_name_id);
+        setModalData({});
+
+      },
+    });
+  };
+
   const [removeForm] = Form.useForm();
 
-  const removeSupportModalHandler = (data,item) => {
+  const removeSupportModalHandler = (data, item) => {
     // if (currentGetCheckSupportExistsData.is_delegator) {
     //   setIsDelegateSupportTreeCardModal(true);
     //   } else {
@@ -567,12 +586,13 @@ const SupportTreeCard = ({
     // }
 
     if (currentGetCheckSupportExistsData.is_delegator) {
-      setDrawerFor("delegateRemove")
-    }else{
+      // setDrawerFor("delegateRemove")
+      removeDelegateSupportModal()
+    } else {
       setDrawerFor("directRemove")
+      showDrawer()
     }
 
-    showDrawer()
     setModalData(data[item]);
   }
 
@@ -581,8 +601,8 @@ const SupportTreeCard = ({
     currentGetCheckSupportExistsData.is_delegator
       ? removeSupportForDelegate(values)
       : topicList.length <= 1
-      ? removeApiSupport(modalData?.nick_name_id, values)
-      : removeSupport(modalData?.nick_name_id, values);
+        ? removeApiSupport(modalData?.nick_name_id, values)
+        : removeSupport(modalData?.nick_name_id, values);
 
     let reqBody = {
       as_of: asof,
@@ -615,13 +635,13 @@ const SupportTreeCard = ({
         // expandIconPosition="right"
         className="topicDetailsCollapse"
       >
-        <SupportTreeDrawer 
-          onClose={onClose} 
-          open={open} 
+        <SupportTreeDrawer
+          onClose={onClose}
+          open={open}
           topicList={topicList}
           drawerFor={drawerFor}
           setDrawerFor={setDrawerFor}
-          onRemoveFinish={onRemoveFinish} 
+          onRemoveFinish={onRemoveFinish}
         />
         <div className=" support-tree-sec">
           {/* <Paragraph className="position-relative">
@@ -672,7 +692,7 @@ const SupportTreeCard = ({
           >
             <span>
               {getCheckSupportStatus?.is_delegator == 1 ||
-              getCheckSupportStatus?.support_flag != 1
+                getCheckSupportStatus?.support_flag != 1
                 ? K?.exceptionalMessages?.directJoinSupport
                 : K?.exceptionalMessages?.manageSupport}
             </span>
