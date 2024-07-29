@@ -49,6 +49,7 @@ import Link from "next/link";
 import queryParams from "src/utils/queryParams";
 import { setCheckSupportExistsData } from "src/store/slices/campDetailSlice";
 import moment from "moment";
+import messages from "src/messages";
 
 const { TextArea } = Input;
 
@@ -99,6 +100,7 @@ function SupportTreeDrawer({
   const [campIds, setcampIds] = useState([]);
   const topicNum = router?.query?.camp?.at(0)?.split("-")?.at(0);
   const camp_num = router?.query?.camp?.at(1)?.split("-")?.at(0);
+  const [isQuickActionSelected, setIsQuickActionSelected] = useState(false);
 
   const filteredList = manageSupportList?.map((obj: any, index: any) => {
     return {
@@ -112,6 +114,7 @@ function SupportTreeDrawer({
       return {
         id: item.camp_num,
         content: item.camp_name,
+        disabled: false,
         link: item.link,
       };
     });
@@ -150,8 +153,9 @@ function SupportTreeDrawer({
     const response = await GetActiveSupportTopic(topicNum && body);
 
     let camp_data = {
-      id: camp_num,
+      id: Number(camp_num),
       content: campRecord?.camp_name,
+      disabled: false,
     };
 
     if (currentGetCheckSupportExistsData.support_flag == 0) {
@@ -176,7 +180,6 @@ function SupportTreeDrawer({
         ? Date.now() / 1000
         : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
   };
-
 
   const GetCheckStatusData = async () => {
     let response = await GetCheckSupportExists(queryParams(reqBodyData));
@@ -204,16 +207,50 @@ function SupportTreeDrawer({
     }
   };
 
+
   const TagList = ({ name }) => {
     return (
       <Tag
         className="rounded-full mr-0 bg-[#F0F2FA] border-transparent font-semibold text-base px-5 py-2.5 leading-none text-canBlack"
         closable={false}
-        onClose={preventDefault}
+        onClose={(e) => e.preventDefault()}
       >
         {name}
       </Tag>
     );
+  }
+  const removeAllSupportHandler = async (e) => {
+    setIsQuickActionSelected(e?.target?.checked);
+    let res = null;
+
+    if (e?.target?.checked) {
+      res = tagsArrayList.map((item, index) => {
+        return {
+          ...item,
+          disabled: true,
+        };
+      });
+    } else {
+      res = tagsArrayList.map((item, index) => {
+        return {
+          ...item,
+          disabled: false,
+        };
+      });
+    }
+    setTagsArrayList(res);
+  };
+
+  const clearChangesHandler = () => {
+    setIsQuickActionSelected(false);
+
+    let res = tagsArrayList.map((item, index) => {
+      return {
+        ...item,
+        disabled: false,
+      };
+    });
+    setTagsArrayList(res);
   };
 
   const onFinish = async (values) => {
@@ -259,6 +296,22 @@ function SupportTreeDrawer({
 
   const preventDefault = (e) => {
     e.preventDefault();
+  };
+
+  const enableDisableTagsHandler = (data) => {
+    let res = tagsArrayList.map((item, index) => {
+      if (item?.id == data?.id) {
+        return {
+          ...item,
+          disabled: item.disabled ? false : true,
+        };
+      } else {
+        return {
+          ...item,
+        };
+      }
+    });
+    setTagsArrayList(res);
   };
 
   return (
@@ -336,11 +389,21 @@ function SupportTreeDrawer({
 
                 <div className="checkbox-wrapper">
                   <Form.Item label="Quick Action" className="mb-0">
-                    <Checkbox>Remove All Support</Checkbox>
+                    <Checkbox
+                      checked={isQuickActionSelected}
+                      onChange={(e) => {
+                        removeAllSupportHandler(e);
+                      }}
+                    >
+                      Remove All Support
+                    </Checkbox>
                   </Form.Item>
                   <Button
                     size="large"
                     className="min-w-[200px] gap-2 flex items-center justify-center border border-canBlue bg-[#98B7E61A] rounded-lg text-canBlack text-base font-medium"
+                    onClick={() => {
+                      clearChangesHandler();
+                    }}
                   >
                     Clear All Changes
                   </Button>
@@ -354,29 +417,61 @@ function SupportTreeDrawer({
                     <div className="vertical-chips">
                       <DraggableArea
                         tags={tagsArrayList}
-                        render={({ tag, index }) => (
-                          <div className="flex items-center gap-7">
-                            <MenuOutlined className="text-sm text-[#777F93]" />
-                            <Tag
-                              className="rounded-full mr-0 bg-[#F0F2FA] border-transparent font-semibold text-base px-5 py-2.5 leading-none text-canBlack"
-                              closable={false}
-                              onClose={preventDefault}
-                            >
-                              {/* {filterList(tag.camp_num, index)} */}
-                              <a
-                                data-testid="styles_Bluecolor"
-                                // className={styles.Bluecolor}
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  window.location.href = tag.link;
-                                  // dispatch(setIsSupportModal(false));
-                                }}
-                              >
-                                {`${index + 1}.${tag?.content}`}
-                              </a>
-                            </Tag>
-                          </div>
-                        )}
+                        render={({ tag, index }) => {
+                          return (
+                            <div className="flex items-center gap-7">
+                              {tagsArrayList?.at(index)?.disabled ? (
+                                <>
+                                  <Tag
+                                    className="rounded-full bg-[#F0F2FA] border-transparent font-semibold text-base px-5 py-2.5 leading-none text-canBlack"
+                                    closable={true}
+                                    onClose={() => {
+                                      enableDisableTagsHandler(tag);
+                                    }}
+                                  >
+                                    {filterList(tag.camp_num, index)}
+                                    {/* <a
+                                        data-testid="styles_Bluecolor"
+                                        // className={styles.Bluecolor}
+                                        // onClick={(e) => {
+                                        //   e.preventDefault();
+                                        //   window.location.href = tag.link;
+                                        //   // dispatch(setIsSupportModal(false));
+                                        // }}
+
+                                      > */}
+                                    {`${index + 1}.${tag?.content}`}
+                                    {/* </a> */}
+                                  </Tag>
+                                </>
+                              ) : (
+                                <>
+                                  <MenuOutlined className="text-sm text-[#777F93]" />
+                                  <Tag
+                                    className="rounded-full mr-0 bg-[#F0F2FA] border-transparent font-semibold text-base px-5 py-2.5 leading-none text-canBlack"
+                                    closable={true}
+                                    onClose={() => {
+                                      enableDisableTagsHandler(tag);
+                                    }}
+                                  >
+                                    {filterList(tag.camp_num, index)}
+                                    <a
+                                      data-testid="styles_Bluecolor"
+                                      // className={styles.Bluecolor}
+                                      onClick={(e) => {
+                                        e.preventDefault();
+                                        window.location.href = tag.link;
+                                        // dispatch(setIsSupportModal(false));
+                                      }}
+                                    >
+                                      {`${index + 1}.${tag?.content}`}
+                                    </a>
+                                  </Tag>
+                                </>
+                              )}
+                            </div>
+                          );
+                        }}
                         onChange={(tags) => {
                           setIsTagDragged(true);
                           setUpdatePostion(true);
@@ -449,9 +544,14 @@ function SupportTreeDrawer({
                             placeholder="Select a nickname"
                             className="w-100 cn-select"
                             size="large"
+                            defaultValue={nickNameList?.at(0)?.nick_name}
                             suffixIcon={<i className="icon-chevron-down"></i>}
                             showSearch
-                            // value={selectedtNickname}
+                            value={
+                              selectedtNickname
+                                ? selectedtNickname
+                                : nickNameList?.at(0)?.nick_name
+                            }
                             onChange={(value) => {
                               setSelectedtNickname(value);
                             }}
@@ -642,13 +742,3 @@ function SupportTreeDrawer({
   );
 }
 export default SupportTreeDrawer;
-
-{
-  /* <Tag
-                  className="rounded-full bg-[#F0F2FA] border-transparent font-semibold text-base px-5 py-2.5 leading-none text-canBlack"
-                  closable
-                  onClose={preventDefault}
-                >
-                  1 . Debating the theory
-                </Tag> */
-}
