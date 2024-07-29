@@ -53,7 +53,7 @@ const SingleTopicCard = ({
         </a>
       </Link>
       <CardDescription
-        description={topic?.statement || topic?.statement?.parsed_value}
+        description={topic?.statement?.parsed_value || topic?.statement}
       />
       <div className="flex justify-between mt-auto pt-5 mt-auto flex-row items-center">
         <div className="text-letopic flex flex-col justify-center">
