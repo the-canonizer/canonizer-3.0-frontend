@@ -207,7 +207,6 @@ function SupportTreeDrawer({
     }
   };
 
-
   const TagList = ({ name }) => {
     return (
       <Tag
@@ -218,7 +217,7 @@ function SupportTreeDrawer({
         {name}
       </Tag>
     );
-  }
+  };
   const removeAllSupportHandler = async (e) => {
     setIsQuickActionSelected(e?.target?.checked);
     let res = null;
@@ -256,12 +255,17 @@ function SupportTreeDrawer({
   const onFinish = async (values) => {
     let addSupportId = {
       topic_num: topicNum,
-      add_camp: { camp_num: camp_num, support_order: tagsArrayList?.length },
+      add_camp:
+        supportedCampsStatus?.support_flag == 1
+          ? {}
+          : { camp_num: camp_num, support_order: tagsArrayList?.length },
       remove_camps: campIds,
       type: "direct",
       action: campIds?.length > 0 ? "partial" : "add",
       nick_name_id: nictNameId,
       order_update: transformSupportOrderForAPI(tagsArrayList),
+      reason_summary: values?.description,
+      reasons: selectedValue,
     };
     let res = await addSupport(addSupportId);
     if (res && res.status_code == 200) {
@@ -324,20 +328,24 @@ function SupportTreeDrawer({
         open={open}
         contentWrapperStyle={{ maxWidth: "730px", width: "100%" }}
       >
-        { drawerFor === "directAdd" || drawerFor === "delegateAdd" ? (
+        {drawerFor === "directAdd" ||
+        drawerFor === "delegateAdd" ||
+        drawerFor === "manageSupport" ? (
           <>
             <div className="page-breadcrums-wrapper">
               <PageHeader
                 className="p-0 drawer-header"
-                onBack={() => null}
+                onBack={() => onClose()}
                 backIcon={<i className="icon-back"></i>}
                 title={
-                  <>
-                    Adding Support to camp:
-                    <span className="ml-1">
-                      {campRecord && campRecord?.camp_name}{" "}
-                    </span>
-                  </>
+                  drawerFor === "manageSupport" ? (
+                    "Manage Support"
+                  ) : (
+                    <>
+                      Adding Support to camp:
+                      <span className="ml-1">{campRecord?.camp_name}</span>
+                    </>
+                  )
                 }
               />
               <Breadcrumb
@@ -366,26 +374,30 @@ function SupportTreeDrawer({
               onFinish={onFinish}
             >
               <div className="support-content">
-                <div className="alert-wrapper">
-                  {currentGetCheckSupportExistsData &&
-                    currentGetCheckSupportExistsData?.warning && (
-                      <Alert
-                        className="border-0 rounded-lg warning-alert"
-                        description={currentGetCheckSupportExistsData?.warning}
-                        type="error"
-                        showIcon
-                        icon={<i className="icon-warning"></i>}
-                      />
-                    )}
-                  {parentSupportDataList &&
-                    parentSupportDataList.length > 0 && (
-                      <div className="horizontal-chips">
-                        {parentSupportDataList.map((item, index) => (
-                          <TagList key={index} name={item?.camp_name} />
-                        ))}
-                      </div>
-                    )}
-                </div>
+                {drawerFor !== "manageSupport" && (
+                  <div className="alert-wrapper">
+                    {currentGetCheckSupportExistsData &&
+                      currentGetCheckSupportExistsData?.warning && (
+                        <Alert
+                          className="border-0 rounded-lg warning-alert"
+                          description={
+                            currentGetCheckSupportExistsData?.warning
+                          }
+                          type="error"
+                          showIcon
+                          icon={<i className="icon-warning"></i>}
+                        />
+                      )}
+                    {parentSupportDataList &&
+                      parentSupportDataList.length > 0 && (
+                        <div className="horizontal-chips">
+                          {parentSupportDataList.map((item, index) => (
+                            <TagList key={index} name={item?.camp_name} />
+                          ))}
+                        </div>
+                      )}
+                  </div>
+                )}
 
                 <div className="checkbox-wrapper">
                   <Form.Item label="Quick Action" className="mb-0">
@@ -479,7 +491,6 @@ function SupportTreeDrawer({
                           setTagsArrayList(tags);
                         }}
                       />
-           
                     </div>
                   )}
                 </div>
@@ -556,7 +567,6 @@ function SupportTreeDrawer({
                               setSelectedtNickname(value);
                             }}
                           >
-                        
                             {nickNameList?.map((nick) => {
                               return (
                                 <Select.Option key={nick.id} value={nick.id}>
@@ -609,13 +619,13 @@ function SupportTreeDrawer({
                   htmlType="submit"
                   className=" min-w-[200px] bg-canBlue flex items-center justify-center hover:bg-canHoverBlue focus:bg-canHoverBlue hover:text-white font-medium text-white disabled:bg-disabled font-base rounded-lg"
                 >
-                  Add Support
+                  {drawerFor === "manageSupport" ? "Update" : "Add Support"}
                   <PlusOutlined />
                 </Button>
               </div>
             </Form>
           </>
-        ) : drawerFor === "directRemove" ||  drawerFor === "delegateRemove" ? (
+        ) : drawerFor === "directRemove" || drawerFor === "delegateRemove" ? (
           <>
             <div className="page-breadcrums-wrapper">
               <PageHeader
