@@ -43,7 +43,7 @@ const CampStatementCard = ({ loadingIndicator }) => {
       className="border-0 h-100 bg-white [&_.ant-card-body]:p-0 [&_.ant-card-body]:lg:p-[24px] lg:bg-canGray mb-8 lg:mb-14"
       data-testid="algoSelect"
     >
-      <div className="camp-agrrement-new mb-8 lg:mb-14 border-t-6 !border-canGreen">
+      <div className="camp-agrrement-new mb-8 border-t-6 !border-canGreen">
         <div className="camp-agreement-header flex items-center mb-2.5 lg:mb-5 gap-2">
           <h3 className="text-sm lg:text-base text-canBlack text-left font-semibold ">
             {K?.exceptionalMessages?.campStatementHeading}
