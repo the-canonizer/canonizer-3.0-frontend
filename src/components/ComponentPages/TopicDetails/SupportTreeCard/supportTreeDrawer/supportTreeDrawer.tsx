@@ -324,7 +324,7 @@ function SupportTreeDrawer({
         open={open}
         contentWrapperStyle={{ maxWidth: "730px", width: "100%" }}
       >
-        {drawerFor === "add" ? (
+        { drawerFor === "directAdd" || drawerFor === "delegateAdd" ? (
           <>
             <div className="page-breadcrums-wrapper">
               <PageHeader
@@ -615,9 +615,7 @@ function SupportTreeDrawer({
               </div>
             </Form>
           </>
-        ) : drawerFor === "delegate" ? (
-          <></>
-        ) : drawerFor === "remove" ? (
+        ) : drawerFor === "directRemove" ||  drawerFor === "delegateRemove" ? (
           <>
             <div className="page-breadcrums-wrapper">
               <PageHeader
