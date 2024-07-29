@@ -137,8 +137,8 @@ const SupportTreeCard = ({
     setGetManageSupportLoadingIndicator,
   ] = useState(true);
   const [open, setOpen] = useState(false);
-  const [drawerFor, setDrawerFor] = useState(""); //["directAdd","delegateAdd","directRemove","delegateRemove"]
-  console.log("drawerFor", drawerFor)
+  const [drawerFor,setDrawerFor] = useState(""); //["directAdd","delegateAdd","directRemove","delegateRemove"]
+
   const showDrawer = () => {
     setOpen(true);
   };
@@ -236,7 +236,7 @@ const SupportTreeCard = ({
       );
       setSelectNickId(data);
       showModalSupportCamps();
-      setDrawerFor("delegateAdd");
+      setDrawerFor("delegateAdd")
     }
   };
 
@@ -249,8 +249,8 @@ const SupportTreeCard = ({
       setSelectNickId(null);
       q && q.from && q.from.includes("notify_")
         ? null
-        : showModalSupportCamps();
-      setDrawerFor("directAdd");
+        : showModalSupportCamps(); 
+          setDrawerFor("directAdd"); 
     } else {
       dispatch(showLoginModal());
     }
@@ -524,7 +524,7 @@ const SupportTreeCard = ({
                             !isUserAuthenticated ||
                             campRecord?.is_archive
                           }
-                          onClick={() => removeSupportModalHandler(data, item)}
+                          onClick={() => removeSupportModalHandler(data,item)}
                           className="mb-2 flex items-center gap-1 justify-center bg-canLightRed text-canRed text-base rounded-lg font-medium h-[44px] w-full"
                         >
                           <Image
@@ -578,7 +578,7 @@ const SupportTreeCard = ({
 
   const [removeForm] = Form.useForm();
 
-  const removeSupportModalHandler = (data, item) => {
+  const removeSupportModalHandler = (data,item) => {
     // if (currentGetCheckSupportExistsData.is_delegator) {
     //   setIsDelegateSupportTreeCardModal(true);
     //   } else {
