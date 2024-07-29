@@ -96,6 +96,9 @@ function SupportTreeDrawer({
   const [parentSupportDataList, setParentSupportDataList] = useState([]);
   const [updatePostion, setUpdatePostion] = useState<boolean>(false);
   const [supportOrder, setSupportOrder] = useState([]);
+  const [campIds, setcampIds] = useState([]);
+  const topicNum = router?.query?.camp?.at(0)?.split("-")?.at(0);
+  const camp_num = router?.query?.camp?.at(1)?.split("-")?.at(0);
 
   const filteredList = manageSupportList?.map((obj: any, index: any) => {
     return {
@@ -105,23 +108,23 @@ function SupportTreeDrawer({
   });
 
   const transformDataForDraggable = (data) => {
-    return data.map((item, index) => {
-        return {
-            id: item.camp_num,
-            content: item.camp_name
-        };
+    return data?.map((item, index) => {
+      return {
+        id: item.camp_num,
+        content: item.camp_name,
+        link: item.link,
+      };
     });
-  }
+  };
 
   const transformSupportOrderForAPI = (data) => {
-    return data.map((item, index) => {
-        return {
-          camp_num: item.id,
-          order: index + 1,
-        };
+    return data?.map((item, index) => {
+      return {
+        camp_num: item?.id,
+        order: index + 1,
+      };
     });
-  }
-  
+  };
 
   const filterList = (campNum, position) => {
     const index = filteredList.findIndex((obj) => obj.camp_num === campNum);
@@ -132,37 +135,38 @@ function SupportTreeDrawer({
   };
 
   const handleChange = (value) => {
-    console.log(`selected ${value}`);
     setSelectedValue(value);
   };
-
-  const topicNum = router?.query?.camp?.at(0)?.split("-")?.at(0);
-  const camp_num = router?.query?.camp?.at(1)?.split("-")?.at(0);
 
   const reqBodyData: any = {
     topic_num: topicNum,
     camp_num: camp_num,
   };
 
-  const getActiveSupportTopic = async() =>{
+  const getActiveSupportTopic = async () => {
     let body = {
-      topic_num: topicNum 
-    }
+      topic_num: topicNum,
+    };
     const response = await GetActiveSupportTopic(topicNum && body);
 
-    let camp_data = 
-      {
-        id: camp_num,
-        content: campRecord?.camp_name,
-      }
+    let camp_data = {
+      id: camp_num,
+      content: campRecord?.camp_name,
+    };
 
-    if(currentGetCheckSupportExistsData.support_flag == 0){
-      setTagsArrayList([...transformDataForDraggable(response?.data),camp_data])
-    }else if (currentGetCheckSupportExistsData.support_flag == 1){
-      setTagsArrayList(transformDataForDraggable(response?.data))
+    if (currentGetCheckSupportExistsData.support_flag == 0) {
+      setTagsArrayList([
+        ...transformDataForDraggable(response?.data),
+        camp_data,
+      ]);
+    } else if (currentGetCheckSupportExistsData.support_flag == 1) {
+      setTagsArrayList(transformDataForDraggable(response?.data));
     }
-  }
+  };
 
+  function getCampNums(camps) {
+    return camps.map((camp) => camp.camp_num);
+  }
   const reqBody = {
     topic_num: topicNum,
     camp_num: camp_num,
@@ -173,24 +177,19 @@ function SupportTreeDrawer({
         : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
   };
 
-  console.log("topicList", topicList);
-  console.log("drawerFor", drawerFor);
-  console.log("tagsArrayList", tagsArrayList);
 
   const GetCheckStatusData = async () => {
     let response = await GetCheckSupportExists(queryParams(reqBodyData));
 
-    if (response && response.status_code === 200) {
-      if (response.data?.remove_camps) {
-        setParentSupportDataList(response.data.remove_camps);
-
-        dispatch(setCheckSupportExistsData(response.data));
+    if (response && response?.status_code === 200) {
+      if (response?.data?.remove_camps) {
+        const campsIds = getCampNums(response?.data?.remove_camps);
+        setcampIds(campsIds);
+        setParentSupportDataList(response?.data?.remove_camps);
+        dispatch(setCheckSupportExistsData(response?.data));
       }
     }
   };
-
-  const CheckDelegatedOrDirect =
-    currentDelegatedSupportedClick.delegatedSupportClick;
 
   const getCanonizedNicknameList = async () => {
     const body = { topic_num: topicNum };
@@ -199,24 +198,34 @@ function SupportTreeDrawer({
     if (res && res?.status_code == 200) {
       setNickNameList(res?.data);
       setNictNameId(res?.data[0]?.id);
-      form.setFieldsValue({
-        nickname: res ? res?.data[0]?.nick_name : "",
-      });
+      // form.setFieldsValue({
+      //   nickname: res ? res?.data[0]?.nick_name : "",
+      // });
     }
   };
 
+  const TagList = ({ name }) => {
+    return (
+      <Tag
+        className="rounded-full mr-0 bg-[#F0F2FA] border-transparent font-semibold text-base px-5 py-2.5 leading-none text-canBlack"
+        closable={false}
+        onClose={preventDefault}
+      >
+        {name}
+      </Tag>
+    );
+  };
+
   const onFinish = async (values) => {
-    
     let addSupportId = {
       topic_num: topicNum,
       add_camp: { camp_num: camp_num, support_order: tagsArrayList?.length },
-      remove_camps: [],
+      remove_camps: campIds,
       type: "direct",
-      action: "add",
+      action: campIds?.length > 0 ? "partial" : "add",
       nick_name_id: nictNameId,
       order_update: transformSupportOrderForAPI(tagsArrayList),
     };
-    console.log("add support payload", addSupportId) 
     let res = await addSupport(addSupportId);
     if (res && res.status_code == 200) {
       openNotificationWithIcon({ type: "success", message: res?.message });
@@ -233,15 +242,14 @@ function SupportTreeDrawer({
   // useEffect(() => {
   //   setIsTagDragged(false);
   // }, []);
-  
 
   useEffect(() => {
     if (open) {
       getReasons();
       getCanonizedNicknameList();
       getCurrentCampRecordApi(reqBody);
-      GetCheckStatusData()
-      getActiveSupportTopic()
+      GetCheckStatusData();
+      getActiveSupportTopic();
     }
   }, [open]);
 
@@ -251,28 +259,7 @@ function SupportTreeDrawer({
 
   const preventDefault = (e) => {
     e.preventDefault();
-    console.log("Clicked! But prevent default.");
   };
-
-  // useEffect(() => {
-  //   if (manageSupportList?.length > 0) {
-  //     const newTagList = manageSupportList.map((obj) => ({
-  //       ...obj,
-  //       id: obj.camp_num,
-  //     }));
-  //     let newTagsArrayList = newTagList;
-
-  //     if (!isTagDragged && parentSupportDataList.length > 0) {
-  //       const shouldArrayReverse = newTagList.every(
-  //         (element) => element.support_order === newTagList.length
-  //       );
-  //       newTagsArrayList = shouldArrayReverse
-  //         ? newTagList.slice().reverse()
-  //         : newTagList;
-  //     }
-  //     setTagsArrayList(newTagsArrayList);
-  //   }
-  // }, [manageSupportList, parentSupportDataList, isTagDragged]);
 
   return (
     <>
@@ -294,7 +281,9 @@ function SupportTreeDrawer({
                 title={
                   <>
                     Adding Support to camp:
-                    <span className="ml-1">{campRecord && campRecord?.camp_name} </span>
+                    <span className="ml-1">
+                      {campRecord && campRecord?.camp_name}{" "}
+                    </span>
                   </>
                 }
               />
@@ -325,30 +314,24 @@ function SupportTreeDrawer({
             >
               <div className="support-content">
                 <div className="alert-wrapper">
-                  <Alert
-                    className="border-0 rounded-lg warning-alert"
-                    description="You’re already supporting the Parent Camp: Agreement.
-                     Adding support to this camp will remove your support from the parent camp."
-                    type="error"
-                    showIcon
-                    icon={<i className="icon-warning"></i>}
-                  />
-                  <div className="horizontal-chips">
-                    <Tag
-                      className="rounded-full mr-0 bg-[#F0F2FA] border-transparent font-semibold text-base px-5 py-2.5 leading-none text-canBlack"
-                      closable={false}
-                      onClose={preventDefault}
-                    >
-                      New Research
-                    </Tag>
-                    <Tag
-                      className="rounded-full mr-0 bg-[#F0F2FA] border-transparent font-semibold text-base px-5 py-2.5 leading-none text-canBlack"
-                      closable={false}
-                      onClose={preventDefault}
-                    >
-                      Debating the theory
-                    </Tag>
-                  </div>
+                  {currentGetCheckSupportExistsData &&
+                    currentGetCheckSupportExistsData?.warning && (
+                      <Alert
+                        className="border-0 rounded-lg warning-alert"
+                        description={currentGetCheckSupportExistsData?.warning}
+                        type="error"
+                        showIcon
+                        icon={<i className="icon-warning"></i>}
+                      />
+                    )}
+                  {parentSupportDataList &&
+                    parentSupportDataList.length > 0 && (
+                      <div className="horizontal-chips">
+                        {parentSupportDataList.map((item, index) => (
+                          <TagList key={index} name={item?.camp_name} />
+                        ))}
+                      </div>
+                    )}
                 </div>
 
                 <div className="checkbox-wrapper">
@@ -367,7 +350,7 @@ function SupportTreeDrawer({
                     Note : To change support order of camp, drag & drop the camp
                     box on your choice position.
                   </p>
-                  {tagsArrayList?.length > 0 && (
+                  {tagsArrayList?.length > 1 && (
                     <div className="vertical-chips">
                       <DraggableArea
                         tags={tagsArrayList}
@@ -379,7 +362,7 @@ function SupportTreeDrawer({
                               closable={false}
                               onClose={preventDefault}
                             >
-                              {filterList(tag.camp_num, index)}
+                              {/* {filterList(tag.camp_num, index)} */}
                               <a
                                 data-testid="styles_Bluecolor"
                                 // className={styles.Bluecolor}
@@ -398,9 +381,10 @@ function SupportTreeDrawer({
                           setIsTagDragged(true);
                           setUpdatePostion(true);
                           // setManageSupportList(tags);
-                          setTagsArrayList(tags)
+                          setTagsArrayList(tags);
                         }}
                       />
+           
                     </div>
                   )}
                 </div>
@@ -467,20 +451,19 @@ function SupportTreeDrawer({
                             size="large"
                             suffixIcon={<i className="icon-chevron-down"></i>}
                             showSearch
-                            value={selectedtNickname}
+                            // value={selectedtNickname}
                             onChange={(value) => {
                               setSelectedtNickname(value);
                             }}
                           >
-                            {nickNameList &&
-                              nickNameList?.map((nick) => (
-                                <Select.Option
-                                  key={nick?.id}
-                                  value={`${nick?.id}-(${nick?.nick_name})`}
-                                >
-                                  {nick?.nick_name}
+                        
+                            {nickNameList?.map((nick) => {
+                              return (
+                                <Select.Option key={nick.id} value={nick.id}>
+                                  {nick.nick_name}
                                 </Select.Option>
-                              ))}
+                              );
+                            })}
                           </Select>
                         </div>
                       </Form.Item>
@@ -573,12 +556,18 @@ function SupportTreeDrawer({
               onFinish={onRemoveFinish}
             >
               <div className="support-content">
-                {/* <Alert
-                      className="border-0 rounded-lg warning-alert"
-                      description="You are about to remove your support from this camp. You can optionally add a helpful reason in the citation link."
-                      showIcon
-                      icon={<i className="icon-warning"></i>}
-                    /> */}
+                {currentGetCheckSupportExistsData && (
+                  <Alert
+                    className="border-0 rounded-lg warning-alert"
+                    description={
+                      currentGetCheckSupportExistsData &&
+                      currentGetCheckSupportExistsData?.warning
+                    }
+                    type="error"
+                    showIcon
+                    icon={<i className="icon-warning"></i>}
+                  />
+                )}
 
                 <Row gutter={16}>
                   <Col span={24}>
