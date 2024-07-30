@@ -436,6 +436,7 @@ function SupportTreeDrawer({ onClose, open, topicList, drawerFor, setDrawerFor, 
                                     closable={true}
                                     onClose={() => {
                                       enableDisableTagsHandler(tag);
+                                      setIsQuickActionSelected(false);
                                     }}
                                   >
                                     {filterList(tag.camp_num, index)}
@@ -461,6 +462,7 @@ function SupportTreeDrawer({ onClose, open, topicList, drawerFor, setDrawerFor, 
                                     closable={true}
                                     onClose={() => {
                                       enableDisableTagsHandler(tag);
+                                      setIsQuickActionSelected(false);
                                     }}
                                   >
                                     {filterList(tag.camp_num, index)}
