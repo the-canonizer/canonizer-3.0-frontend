@@ -37,9 +37,11 @@ import {
   getAllRemovedReasons,
   getAllUsedNickNames,
   getCurrentCampRecordApi,
+  getTopicActivityLogApi,
+  getTreesApi,
 } from "src/network/api/campDetailApi";
 import { addSupport } from "src/network/api/userApi";
-import { RootState } from "src/store";
+import { RootState, store } from "src/store";
 import {
   GetActiveSupportTopic,
   GetCheckSupportExists,
@@ -50,6 +52,7 @@ import queryParams from "src/utils/queryParams";
 import { setCheckSupportExistsData } from "src/store/slices/campDetailSlice";
 import moment from "moment";
 import messages from "src/messages";
+import { setCampActivityData } from "src/store/slices/recentActivitiesSlice";
 
 const { TextArea } = Input;
 
@@ -59,6 +62,8 @@ function SupportTreeDrawer({
   topicList,
   drawerFor,
   onRemoveFinish,
+  selectNickId: getDelegateId,
+  delegateNickName,
 }: any) {
   const {
     reasons,
@@ -68,6 +73,7 @@ function SupportTreeDrawer({
     campRecord,
     asofdate,
     asof,
+    algorithm,
   } = useSelector((state: RootState) => ({
     reasons: state?.topicDetails?.removedReasons,
     currentGetCheckSupportExistsData:
@@ -78,6 +84,7 @@ function SupportTreeDrawer({
     campRecord: state?.topicDetails?.currentCampRecord,
     asofdate: state.filters?.filterObject?.asofdate,
     asof: state?.filters?.filterObject?.asof,
+    algorithm: state.filters?.filterObject?.algorithm,
   }));
   const dispatch = useDispatch();
   const router = useRouter();
@@ -101,13 +108,35 @@ function SupportTreeDrawer({
   const topicNum = router?.query?.camp?.at(0)?.split("-")?.at(0);
   const camp_num = router?.query?.camp?.at(1)?.split("-")?.at(0);
   const [isQuickActionSelected, setIsQuickActionSelected] = useState(false);
+  const CheckDelegatedOrDirect =
+    currentDelegatedSupportedClick.delegatedSupportClick;
 
-  const filteredList = manageSupportList?.map((obj: any, index: any) => {
-    return {
-      camp_num: obj.camp_num,
-      order: index + 1, //obj.support_order,
-    };
-  });
+  // const filteredList = manageSupportList?.map((obj: any, index: any) => {
+  //   return {
+  //     camp_num: obj.camp_num,
+  //     order: index + 1, //obj.support_order,
+  //   };
+  // });
+
+  console.log("drawerFor", drawerFor);
+
+  const reqBodyForService = {
+    topic_num: topicNum,
+    camp_num: camp_num,
+    asOf: asof,
+    asofdate:
+      asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
+    algorithm: algorithm,
+    update_all: 1,
+    fetch_topic_history: +router?.query?.topic_history,
+  };
+
+  const callDetailPageApis = async () => {
+    GetCheckStatusData();
+    await getTreesApi(reqBodyForService);
+    let res = await getTopicActivityLogApi(reqBodyData);
+    store.dispatch(setCampActivityData(res?.data?.items));
+  };
 
   const transformDataForDraggable = (data) => {
     return data?.map((item, index) => {
@@ -129,13 +158,13 @@ function SupportTreeDrawer({
     });
   };
 
-  const filterList = (campNum, position) => {
-    const index = filteredList.findIndex((obj) => obj.camp_num === campNum);
-    filteredList[index] = {
-      camp_num: campNum,
-      order: position + 1,
-    };
-  };
+  // const filterList = (campNum, position) => {
+  //   const index = filteredList.findIndex((obj) => obj.camp_num === campNum);
+  //   filteredList[index] = {
+  //     camp_num: campNum,
+  //     order: position + 1,
+  //   };
+  // };
 
   const handleChange = (value) => {
     setSelectedValue(value);
@@ -182,6 +211,9 @@ function SupportTreeDrawer({
   };
 
   const GetCheckStatusData = async () => {
+    if (CheckDelegatedOrDirect && getDelegateId) {
+      reqBodyData.delegated_nick_name_id = getDelegateId;
+    }
     let response = await GetCheckSupportExists(queryParams(reqBodyData));
 
     if (response && response?.status_code === 200) {
@@ -218,6 +250,11 @@ function SupportTreeDrawer({
       </Tag>
     );
   };
+
+  //   const removeAllCampNum = (res) => {
+  //     return res.map(obj => obj.camp_num);
+  // }
+
   const removeAllSupportHandler = async (e) => {
     setIsQuickActionSelected(e?.target?.checked);
     let res = null;
@@ -237,6 +274,7 @@ function SupportTreeDrawer({
         };
       });
     }
+    // setcampIds(removeAllCampNum(res))
     setTagsArrayList(res);
   };
 
@@ -252,7 +290,20 @@ function SupportTreeDrawer({
     setTagsArrayList(res);
   };
 
+  const removeSupportFromCamps = () => {
+    let remove_camps = tagsArrayList?.filter((item) => item?.disabled == true);
+    let remove_camps_ids = [];
+
+    if (remove_camps?.length > 0) {
+      remove_camps?.map((item) => {
+        remove_camps_ids.push(item?.id);
+      });
+    }
+    return remove_camps_ids;
+  };
+
   const onFinish = async (values) => {
+    // let campIdsArr = removeSupportFromCamps();
     let addSupportId = {
       topic_num: topicNum,
       add_camp:
@@ -270,7 +321,8 @@ function SupportTreeDrawer({
     let res = await addSupport(addSupportId);
     if (res && res.status_code == 200) {
       openNotificationWithIcon({ type: "success", message: res?.message });
-      onClose(true);
+      onClose();
+      await callDetailPageApis();
       form.resetFields();
       setSelectedValue(null);
     }
@@ -340,14 +392,22 @@ function SupportTreeDrawer({
                 title={
                   drawerFor === "manageSupport" ? (
                     "Manage Support"
+                  ) : drawerFor === "delegateAdd" ? (
+                    <>
+                      Delegating Support to
+                      <span className="ml-1">{delegateNickName || ""}</span>
+                    </>
                   ) : (
                     <>
                       Adding Support to camp:
-                      <span className="ml-1">{campRecord?.camp_name}</span>
+                      <span className="ml-1">
+                        {campRecord && campRecord?.camp_name}
+                      </span>
                     </>
                   )
                 }
               />
+
               <Breadcrumb
                 className="drawer-breadcrumbs ml-6"
                 separator={
@@ -356,12 +416,13 @@ function SupportTreeDrawer({
                   </>
                 }
               >
-                <Breadcrumb.Item href="">Canon: General</Breadcrumb.Item>
+                {/* <Breadcrumb.Item href="">Canon: General</Breadcrumb.Item> */}
                 <Breadcrumb.Item href="">
                   Topic: {topicRecord?.topic_name}
                 </Breadcrumb.Item>
                 <Breadcrumb.Item href="">
                   {campRecord?.camp_name}
+                  {console.log(campRecord)}
                 </Breadcrumb.Item>
               </Breadcrumb>
             </div>
@@ -425,7 +486,7 @@ function SupportTreeDrawer({
                     Note : To change support order of camp, drag & drop the camp
                     box on your choice position.
                   </p>
-                  {tagsArrayList?.length > 1 && (
+                  {tagsArrayList?.length > 0 && (
                     <div className="vertical-chips">
                       <DraggableArea
                         tags={tagsArrayList}
@@ -441,7 +502,7 @@ function SupportTreeDrawer({
                                       enableDisableTagsHandler(tag);
                                     }}
                                   >
-                                    {filterList(tag.camp_num, index)}
+                                    {/* {filterList(tag.camp_num, index)} */}
                                     {/* <a
                                         data-testid="styles_Bluecolor"
                                         // className={styles.Bluecolor}
@@ -466,7 +527,7 @@ function SupportTreeDrawer({
                                       enableDisableTagsHandler(tag);
                                     }}
                                   >
-                                    {filterList(tag.camp_num, index)}
+                                    {/* {filterList(tag.camp_num, index)} */}
                                     <a
                                       data-testid="styles_Bluecolor"
                                       // className={styles.Bluecolor}
@@ -485,8 +546,8 @@ function SupportTreeDrawer({
                           );
                         }}
                         onChange={(tags) => {
-                          setIsTagDragged(true);
-                          setUpdatePostion(true);
+                          // setIsTagDragged(true);
+                          // setUpdatePostion(true);
                           // setManageSupportList(tags);
                           setTagsArrayList(tags);
                         }}
@@ -496,46 +557,57 @@ function SupportTreeDrawer({
                 </div>
 
                 <div>
+                  {drawerFor === "delegateAdd" && (
+                    <p className="text-base font-medium mb-5 text-canBlack">
+                      If you still wish to delegate support to{" "}
+                      <a href="#" className="text-canBlue">
+                        {delegateNickName} -
+                      </a>{" "}
+                    </p>
+                  )}
                   <Row gutter={16}>
-                    <Col span={24} sm={12}>
-                      <Form.Item
-                        name="reason"
-                        label="Reason for adding support"
-                        // rules={[
-                        //   {
-                        //     required: true,
-                        //     message: 'Please select a reason',
-                        //   },
-                        // ]}
-                      >
-                        <div className="thm-select">
-                          <div className="prefix-icon">
-                            <i className="icon-bar"></i>
-                          </div>
-                          <Select
-                            className="w-100 cn-select"
-                            size="large"
-                            suffixIcon={<i className="icon-chevron-down"></i>}
-                            placeholder="Select reason"
-                            allowClear
-                            value={selectedValue}
-                            onChange={(value) => {
-                              setSelectedValue(value);
-                            }}
-                            showSearch
-                          >
-                            {availableReasons?.map((res) => (
-                              <Select.Option key={res?.id} value={res?.label}>
-                                {res?.label}
+                    {drawerFor !== "delegateAdd" && (
+                      <Col span={24} sm={12}>
+                        <Form.Item
+                          name="reason"
+                          label="Reason for adding support"
+                          // rules={[
+                          //   {
+                          //     required: true,
+                          //     message: 'Please select a reason',
+                          //   },
+                          // ]}
+                        >
+                          <div className="thm-select">
+                            <div className="prefix-icon">
+                              <i className="icon-bar"></i>
+                            </div>
+                            <Select
+                              className="w-100 cn-select"
+                              size="large"
+                              suffixIcon={<i className="icon-chevron-down"></i>}
+                              placeholder="Select reason"
+                              allowClear
+                              value={selectedValue}
+                              onChange={(value) => {
+                                setSelectedValue(value);
+                              }}
+                              showSearch
+                            >
+                              {availableReasons?.map((res) => (
+                                <Select.Option key={res?.id} value={res?.label}>
+                                  {res?.label}
+                                </Select.Option>
+                              ))}
+                              <Select.Option key="custom_reason" value="custom">
+                                Custom reason
                               </Select.Option>
-                            ))}
-                            <Select.Option key="custom_reason" value="custom">
-                              Custom reason
-                            </Select.Option>
-                          </Select>
-                        </div>
-                      </Form.Item>
-                    </Col>
+                            </Select>
+                          </div>
+                        </Form.Item>
+                      </Col>
+                    )}
+
                     <Col span={24} sm={12}>
                       <Form.Item
                         name="nickname"
@@ -587,16 +659,18 @@ function SupportTreeDrawer({
                         </Col>
                       </>
                     )}
-                    <Col span={24}>
-                      <Form.Item name="Citation" label="Citation link">
-                        <Input
-                          className="thm-input"
-                          size="large"
-                          placeholder="https://"
-                          prefix={<i className="icon-link"></i>}
-                        />
-                      </Form.Item>
-                    </Col>
+                    {drawerFor !== "delegateAdd" && (
+                      <Col span={24}>
+                        <Form.Item name="Citation" label="Citation link">
+                          <Input
+                            className="thm-input"
+                            size="large"
+                            placeholder="https://"
+                            prefix={<i className="icon-link"></i>}
+                          />
+                        </Form.Item>
+                      </Col>
+                    )}
                   </Row>
                 </div>
               </div>
@@ -619,7 +693,11 @@ function SupportTreeDrawer({
                   htmlType="submit"
                   className=" min-w-[200px] bg-canBlue flex items-center justify-center hover:bg-canHoverBlue focus:bg-canHoverBlue hover:text-white font-medium text-white disabled:bg-disabled font-base rounded-lg"
                 >
-                  {drawerFor === "manageSupport" ? "Update" : "Add Support"}
+                  {drawerFor === "manageSupport"
+                    ? "Update"
+                    : drawerFor === "delegateAdd"
+                    ? "Delegate Support"
+                    : "Add Support"}
                   <PlusOutlined />
                 </Button>
               </div>

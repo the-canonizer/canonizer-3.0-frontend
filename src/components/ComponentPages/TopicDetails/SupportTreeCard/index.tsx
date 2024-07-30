@@ -132,13 +132,14 @@ const SupportTreeCard = ({
   const [delegatorID, setDelegatorID] = useState(null);
   const [loadingIndicatorSupport, setLoadingIndicatorSupport] = useState(false);
   const [isImageError, setIsImageError] = useState(false);
+  const [delegateNickName,setDelegateNickName]=useState(null)
   const [
     getManageSupportLoadingIndicator,
     setGetManageSupportLoadingIndicator,
   ] = useState(true);
   const [open, setOpen] = useState(false);
   const [drawerFor, setDrawerFor] = useState(""); //["directAdd","delegateAdd","directRemove","delegateRemove","manageSupport"]
-
+  
   const showDrawer = () => {
     setOpen(true);
   };
@@ -225,7 +226,7 @@ const SupportTreeCard = ({
   }, [mainComponentKey]);
 
   //Delegate Support Camp
-  const handleDelegatedClick = (data) => {
+  const handleDelegatedClick = (data) => {  
     if (isUserAuthenticated) {
       dispatch(setManageSupportStatusCheck(true));
       dispatch(
@@ -233,7 +234,8 @@ const SupportTreeCard = ({
           delegatedSupportClick: true,
         })
       );
-      setSelectNickId(data);
+      setSelectNickId(data?.nick_name_id);
+      setDelegateNickName(data?.nick_name)
       showModalSupportCamps();
       setDrawerFor("delegateAdd");
     }
@@ -489,7 +491,7 @@ const SupportTreeCard = ({
                                   campRecord?.is_archive === 1
                                 }
                                 onClick={() =>
-                                  handleDelegatedClick(data[item]?.nick_name_id)
+                                  handleDelegatedClick(data[item])
                                 }
                                 className="hidden group-hover:flex mb-2  items-center gap-1 justify-center bg-canLightBlue text-canBlue text-base rounded-lg font-medium h-[44px] w-full "
                               >
@@ -628,6 +630,8 @@ const SupportTreeCard = ({
           topicList={topicList}
           drawerFor={drawerFor}
           onRemoveFinish={onRemoveFinish}
+          selectNickId={selectNickId}
+          delegateNickName={delegateNickName}
         />
         <div className=" support-tree-sec">
           {/* <Paragraph className="position-relative">
