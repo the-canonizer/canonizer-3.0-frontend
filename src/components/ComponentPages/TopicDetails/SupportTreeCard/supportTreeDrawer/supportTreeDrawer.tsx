@@ -159,9 +159,9 @@ function SupportTreeDrawer({
       disabled: false,
     };
 
-    if(currentGetCheckSupportExistsData?.warning){
-      setTagsArrayList([camp_data])
-    }else{
+    if (currentGetCheckSupportExistsData?.warning) {
+      setTagsArrayList([camp_data]);
+    } else {
       if (currentGetCheckSupportExistsData.support_flag == 0) {
         setTagsArrayList([
           ...transformDataForDraggable(response?.data),
@@ -305,7 +305,6 @@ function SupportTreeDrawer({
   const getReasons = async () => {
     await getAllRemovedReasons();
   };
-
 
   useEffect(() => {
     if (open) {

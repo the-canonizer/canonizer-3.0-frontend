@@ -194,7 +194,6 @@ const TopicDetails = ({ serverSideCall }: any) => {
     store.dispatch(setCampActivityData(res?.data?.items));
   }
 
-
   const reqBodyData = {
     topic_num: +router?.query?.camp[0]?.split("-")[0],
     camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
@@ -231,7 +230,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
 
     const res = await removeSupportedCamps(supportedCampsRemove);
     if (res && res.status_code == 200) {
-      openNotificationWithIcon({ type: "error", message: res?.message })
+      openNotificationWithIcon({ type: "error", message: res?.message });
       setIsSupportTreeCardModal(false);
       GetCheckStatusData();
       await getTreesApi(reqBodyForService);
@@ -307,7 +306,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
 
     let res = await removeSupportedCampsEntireTopic(removeEntireData);
     if (res && res.status_code == 200) {
-      openNotificationWithIcon({ type: "error", message: res?.message })
+      openNotificationWithIcon({ type: "error", message: res?.message });
       setRemoveSupportSpinner(false);
       setIsSupportTreeCardModal(false);
       setIsDelegateSupportTreeCardModal(false);

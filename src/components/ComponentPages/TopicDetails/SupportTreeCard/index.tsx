@@ -1,4 +1,7 @@
-import { CloseCircleOutlined, ExclamationCircleFilled } from "@ant-design/icons";
+import {
+  CloseCircleOutlined,
+  ExclamationCircleFilled,
+} from "@ant-design/icons";
 import {
   Button,
   Collapse,
@@ -46,7 +49,6 @@ import SignCamp from "./SignCamp";
 const { Paragraph } = Typography;
 const { Panel } = Collapse;
 const { TreeNode } = Tree;
-
 
 const supportContent = (
   <>
@@ -132,20 +134,20 @@ const SupportTreeCard = ({
   const [delegatorID, setDelegatorID] = useState(null);
   const [loadingIndicatorSupport, setLoadingIndicatorSupport] = useState(false);
   const [isImageError, setIsImageError] = useState(false);
-  const [delegateNickName,setDelegateNickName]=useState(null)
+  const [delegateNickName, setDelegateNickName] = useState(null);
   const [
     getManageSupportLoadingIndicator,
     setGetManageSupportLoadingIndicator,
   ] = useState(true);
   const [open, setOpen] = useState(false);
   const [drawerFor, setDrawerFor] = useState(""); //["directAdd","delegateAdd","directRemove","delegateRemove","manageSupport"]
-  
+
   const showDrawer = () => {
     setOpen(true);
   };
   const onClose = () => {
     setOpen(false);
-    setDrawerFor("")
+    setDrawerFor("");
   };
   const showModalSupportCamps = () => {
     showDrawer();
@@ -227,7 +229,7 @@ const SupportTreeCard = ({
   }, [mainComponentKey]);
 
   //Delegate Support Camp
-  const handleDelegatedClick = (data) => {  
+  const handleDelegatedClick = (data) => {
     if (isUserAuthenticated) {
       dispatch(setManageSupportStatusCheck(true));
       dispatch(
@@ -236,14 +238,14 @@ const SupportTreeCard = ({
         })
       );
       setSelectNickId(data?.nick_name_id);
-      setDelegateNickName(data?.nick_name)
+      setDelegateNickName(data?.nick_name);
       showModalSupportCamps();
       setDrawerFor("delegateAdd");
     }
   };
 
   const handleClickSupportCheck = () => {
-    const query = router?.query 
+    const query = router?.query;
     if (!isUserAuthenticated) {
       router?.push("/login");
       return;
@@ -257,13 +259,12 @@ const SupportTreeCard = ({
       //   showModalSupportCamps();
       // }
       setDrawerFor("directAdd");
-      showDrawer()
+      showDrawer();
     } else {
       setDrawerFor("manageSupport");
-      showDrawer()
+      showDrawer();
     }
   };
-  
 
   useEffect(() => {
     const q: any = router?.query;
@@ -455,8 +456,8 @@ const SupportTreeCard = ({
                           {campRecord?.is_archive
                             ? 0
                             : is_checked && isUserAuthenticated
-                              ? data[item].full_score?.toFixed(2)
-                              : data[item].score?.toFixed(2)}
+                            ? data[item].full_score?.toFixed(2)
+                            : data[item].score?.toFixed(2)}
                           {/* {data[item].score?.toFixed(2)} */}
                         </span>
                       </div>
@@ -466,16 +467,16 @@ const SupportTreeCard = ({
 
                     {(userNickNameList?.length > 0 &&
                       !userNickNameList.includes(data[item].nick_name_id)) ||
-                      !isUserAuthenticated ? (
+                    !isUserAuthenticated ? (
                       <>
                         {loggedInUserDelegate ||
-                          (loggedInUserChild &&
-                            delegateNickNameId !=
+                        (loggedInUserChild &&
+                          delegateNickNameId !=
                             data[item]?.delegate_nick_name_id) ||
-                          (Array.isArray(data[item]?.delegates) &&
-                            data[item].delegates.findIndex((obj) =>
-                              userNickNameList?.includes(obj?.nick_name_id)
-                            ) > -1) ? null : (
+                        (Array.isArray(data[item]?.delegates) &&
+                          data[item].delegates.findIndex((obj) =>
+                            userNickNameList?.includes(obj?.nick_name_id)
+                          ) > -1) ? null : (
                           <Popover
                             placement="right"
                             content={
@@ -492,9 +493,7 @@ const SupportTreeCard = ({
                                   !isUserAuthenticated ||
                                   campRecord?.is_archive === 1
                                 }
-                                onClick={() =>
-                                  handleDelegatedClick(data[item])
-                                }
+                                onClick={() => handleDelegatedClick(data[item])}
                                 className="hidden group-hover:flex mb-2  items-center gap-1 justify-center bg-canLightBlue text-canBlue text-base rounded-lg font-medium h-[44px] w-full "
                               >
                                 <Image
@@ -563,10 +562,9 @@ const SupportTreeCard = ({
         currentGetCheckSupportExistsData.is_delegator
           ? removeSupportForDelegate()
           : topicList.length <= 1
-            ? removeApiSupport(modalData?.nick_name_id)
-            : removeSupport(modalData?.nick_name_id);
+          ? removeApiSupport(modalData?.nick_name_id)
+          : removeSupport(modalData?.nick_name_id);
         setModalData({});
-
       },
     });
   };
@@ -582,10 +580,10 @@ const SupportTreeCard = ({
 
     if (currentGetCheckSupportExistsData.is_delegator) {
       // setDrawerFor("delegateRemove")
-      removeDelegateSupportModal()
+      removeDelegateSupportModal();
     } else {
-      setDrawerFor("directRemove")
-      showDrawer()
+      setDrawerFor("directRemove");
+      showDrawer();
     }
 
     setModalData(data[item]);
@@ -595,8 +593,8 @@ const SupportTreeCard = ({
     currentGetCheckSupportExistsData.is_delegator
       ? removeSupportForDelegate(values)
       : topicList.length <= 1
-        ? removeApiSupport(modalData?.nick_name_id, values)
-        : removeSupport(modalData?.nick_name_id, values);
+      ? removeApiSupport(modalData?.nick_name_id, values)
+      : removeSupport(modalData?.nick_name_id, values);
 
     let reqBody = {
       as_of: asof,
@@ -681,7 +679,6 @@ const SupportTreeCard = ({
           ) : (
             <p> No direct supporters of this camp</p>
           )}
-
 
           {campSupportingTree?.length > supportLength && (
             <CustomButton
