@@ -153,19 +153,23 @@ function SupportTreeDrawer({
     };
     const response = await GetActiveSupportTopic(topicNum && body);
 
-    let camp_data = {
+    let camp_data: any = {
       id: Number(camp_num),
       content: campRecord?.camp_name,
       disabled: false,
     };
 
-    if (currentGetCheckSupportExistsData.support_flag == 0) {
-      setTagsArrayList([
-        ...transformDataForDraggable(response?.data),
-        camp_data,
-      ]);
-    } else if (currentGetCheckSupportExistsData.support_flag == 1) {
-      setTagsArrayList(transformDataForDraggable(response?.data));
+    if(currentGetCheckSupportExistsData?.warning){
+      setTagsArrayList([camp_data])
+    }else{
+      if (currentGetCheckSupportExistsData.support_flag == 0) {
+        setTagsArrayList([
+          ...transformDataForDraggable(response?.data),
+          camp_data,
+        ]);
+      } else if (currentGetCheckSupportExistsData.support_flag == 1) {
+        setTagsArrayList(transformDataForDraggable(response?.data));
+      }
     }
   };
 
@@ -272,14 +276,13 @@ function SupportTreeDrawer({
   };
 
   const onFinish = async (values) => {
-    // let campIdsArr = removeSupportFromCamps();
     let addSupportId = {
       topic_num: topicNum,
       add_camp:
         supportedCampsStatus?.support_flag == 1
           ? {}
           : { camp_num: camp_num, support_order: tagsArrayList?.length },
-      remove_camps: campIds,
+      remove_camps: removeSupportFromCamps(),
       type: "direct",
       action: campIds?.length > 0 ? "partial" : "add",
       nick_name_id: nictNameId,
