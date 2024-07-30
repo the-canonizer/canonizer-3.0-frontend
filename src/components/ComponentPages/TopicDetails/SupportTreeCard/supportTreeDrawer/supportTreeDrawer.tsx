@@ -284,7 +284,7 @@ function SupportTreeDrawer({
           : { camp_num: camp_num, support_order: tagsArrayList?.length },
       remove_camps: removeSupportFromCamps(),
       type: "direct",
-      action: campIds?.length > 0 ? "partial" : "add",
+      action: removeSupportFromCamps()?.length > 0 ? "partial" : "add",
       nick_name_id: nictNameId,
       order_update: transformSupportOrderForAPI(tagsArrayList),
       reason_summary: values?.description,
