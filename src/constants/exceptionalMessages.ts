@@ -28,6 +28,7 @@ const ExceptionalMessageConstants = {
   objectionStatementHeading: "Object To This Proposed Change",
   directJoinSupport: "Join Canonizer to Support",
   manageSupport: "Manage Support",
+  addSupport:"Add Camp Support",
   noRecentActivityFound: "No Recent Activity Found",
   objectedTooltipMsg:
     "Only direct supporters at the time this change was submitted can object.",

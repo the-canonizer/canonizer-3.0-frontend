@@ -132,13 +132,14 @@ const SupportTreeCard = ({
   const [delegatorID, setDelegatorID] = useState(null);
   const [loadingIndicatorSupport, setLoadingIndicatorSupport] = useState(false);
   const [isImageError, setIsImageError] = useState(false);
+  const [delegateNickName,setDelegateNickName]=useState(null)
   const [
     getManageSupportLoadingIndicator,
     setGetManageSupportLoadingIndicator,
   ] = useState(true);
   const [open, setOpen] = useState(false);
-  const [drawerFor,setDrawerFor] = useState(""); //["directAdd","delegateAdd","directRemove","delegateRemove"]
-
+  const [drawerFor, setDrawerFor] = useState(""); //["directAdd","delegateAdd","directRemove","delegateRemove","manageSupport"]
+  
   const showDrawer = () => {
     setOpen(true);
   };
@@ -226,7 +227,7 @@ const SupportTreeCard = ({
   }, [mainComponentKey]);
 
   //Delegate Support Camp
-  const handleDelegatedClick = (data) => {
+  const handleDelegatedClick = (data) => {  
     if (isUserAuthenticated) {
       dispatch(setManageSupportStatusCheck(true));
       dispatch(
@@ -234,27 +235,35 @@ const SupportTreeCard = ({
           delegatedSupportClick: true,
         })
       );
-      setSelectNickId(data);
+      setSelectNickId(data?.nick_name_id);
+      setDelegateNickName(data?.nick_name)
       showModalSupportCamps();
-      setDrawerFor("delegateAdd")
+      setDrawerFor("delegateAdd");
     }
   };
 
   const handleClickSupportCheck = () => {
-    const q: any = router?.query;
-    if (isUserAuthenticated) {
-      dispatch(setManageSupportUrlLink(manageSupportPath));
-      // dispatch(setManageSupportStatusCheck(true));
-      setGetManageSupportLoadingIndicator(false);
-      setSelectNickId(null);
-      q && q.from && q.from.includes("notify_")
-        ? null
-        : showModalSupportCamps(); 
-          setDrawerFor("directAdd"); 
+    const query = router?.query 
+    if (!isUserAuthenticated) {
+      router?.push("/login");
+      return;
+    }
+    dispatch(setManageSupportUrlLink(manageSupportPath));
+    setSelectNickId(null);
+
+    if (getCheckSupportStatus?.support_flag === 0) {
+      // const shouldShowModal = !query.from?.includes("notify_");
+      // if (shouldShowModal) {
+      //   showModalSupportCamps();
+      // }
+      setDrawerFor("directAdd");
+      showDrawer()
     } else {
-      dispatch(showLoginModal());
+      setDrawerFor("manageSupport");
+      showDrawer()
     }
   };
+  
 
   useEffect(() => {
     const q: any = router?.query;
@@ -299,20 +308,6 @@ const SupportTreeCard = ({
       }
     });
   };
-  useEffect(() => {
-    // setTimeout(()=>{
-    //   debugger;
-    //   dispatch(setOpenConsensusTreePopup(false))
-    // },100);
-    // debugger;
-    // (async()=>{
-    // dispatch(setOpenConsensusTreePopup(true))
-    // // await getSupportTreeApi()
-    // setTimeout(()=>{
-    //   dispatch(setOpenConsensusTreePopup(false))
-    // },100);
-    // })()
-  }, []);
 
   useEffect(() => {
     if (!campSupportingTree) return;
@@ -498,7 +493,7 @@ const SupportTreeCard = ({
                                   campRecord?.is_archive === 1
                                 }
                                 onClick={() =>
-                                  handleDelegatedClick(data[item]?.nick_name_id)
+                                  handleDelegatedClick(data[item])
                                 }
                                 className="hidden group-hover:flex mb-2  items-center gap-1 justify-center bg-canLightBlue text-canBlue text-base rounded-lg font-medium h-[44px] w-full "
                               >
@@ -524,7 +519,7 @@ const SupportTreeCard = ({
                             !isUserAuthenticated ||
                             campRecord?.is_archive
                           }
-                          onClick={() => removeSupportModalHandler(data,item)}
+                          onClick={() => removeSupportModalHandler(data, item)}
                           className="mb-2 flex items-center gap-1 justify-center bg-canLightRed text-canRed text-base rounded-lg font-medium h-[44px] w-full"
                         >
                           <Image
@@ -578,7 +573,7 @@ const SupportTreeCard = ({
 
   const [removeForm] = Form.useForm();
 
-  const removeSupportModalHandler = (data,item) => {
+  const removeSupportModalHandler = (data, item) => {
     // if (currentGetCheckSupportExistsData.is_delegator) {
     //   setIsDelegateSupportTreeCardModal(true);
     //   } else {
@@ -594,8 +589,7 @@ const SupportTreeCard = ({
     }
 
     setModalData(data[item]);
-  }
-
+  };
 
   const onRemoveFinish = async (values) => {
     currentGetCheckSupportExistsData.is_delegator
@@ -613,8 +607,23 @@ const SupportTreeCard = ({
     await getCurrentCampRecordApi(reqBody);
 
     setModalData({});
-    onClose()
+    onClose();
     removeForm.resetFields();
+  };
+
+  const renderSupportBtn = () => {
+    if (isUserAuthenticated) {
+      if (
+        getCheckSupportStatus?.support_flag != 1 ||
+        getCheckSupportStatus?.is_delegator == 1
+      ) {
+        return K?.exceptionalMessages?.addSupport;
+      } else {
+        return K?.exceptionalMessages?.manageSupport;
+      }
+    } else {
+      return K.exceptionalMessages?.directJoinSupport;
+    }
   };
   let title = `Support Tree for "${campRecord?.camp_name}" Camp`;
 
@@ -642,6 +651,8 @@ const SupportTreeCard = ({
           drawerFor={drawerFor}
           setDrawerFor={setDrawerFor}
           onRemoveFinish={onRemoveFinish}
+          selectNickId={selectNickId}
+          delegateNickName={delegateNickName}
         />
         <div className=" support-tree-sec">
           {/* <Paragraph className="position-relative">
@@ -690,12 +701,7 @@ const SupportTreeCard = ({
             disabled={asof == "bydate" || campRecord?.is_archive == 1}
             id="manage-support-btn"
           >
-            <span>
-              {getCheckSupportStatus?.is_delegator == 1 ||
-                getCheckSupportStatus?.support_flag != 1
-                ? K?.exceptionalMessages?.directJoinSupport
-                : K?.exceptionalMessages?.manageSupport}
-            </span>
+            {renderSupportBtn()}
             <Image
               src="/images/hand-icon.svg"
               alt="svg"
@@ -767,7 +773,7 @@ const SupportTreeCard = ({
                   onClick={() => {
                     if (currentGetCheckSupportExistsData.is_delegator) {
                       // setIsDelegateSupportTreeCardModal(true);
-                      showDrawer()
+                      showDrawer();
                       // } else {
                       //   setIsSupportTreeCardModal(true);
                       // showDrawer()
