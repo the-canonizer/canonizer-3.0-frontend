@@ -247,16 +247,30 @@ function SupportTreeDrawer({ onClose, open, topicList, drawerFor, setDrawerFor, 
     setTagsArrayList(res);
   };
 
+  const removeSupportFromCamps = () => {
+    let remove_camps = tagsArrayList?.filter((item) => item?.disabled == true)
+    let remove_camps_ids = []
+
+    if (remove_camps?.length > 0) {
+      remove_camps?.map((item)=>{
+        remove_camps_ids.push(item?.id)
+      })
+    }
+    return remove_camps_ids
+  }
+
   const onFinish = async (values) => {
     let addSupportId = {
       topic_num: topicNum,
       add_camp: { camp_num: camp_num, support_order: tagsArrayList?.length },
-      remove_camps: campIds,
+      remove_camps: removeSupportFromCamps(),
       type: "direct",
       action: campIds?.length > 0 ? "partial" : "add",
       nick_name_id: nictNameId,
       order_update: transformSupportOrderForAPI(tagsArrayList),
     };
+
+    
     let res = await addSupport(addSupportId);
     if (res && res.status_code == 200) {
       openNotificationWithIcon({ type: "success", message: res?.message });
