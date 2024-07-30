@@ -256,6 +256,11 @@ function SupportTreeDrawer({ onClose, open, topicList, drawerFor, setDrawerFor, 
         remove_camps_ids.push(item?.id)
       })
     }
+    if(campIds?.length > 0){
+      campIds?.map((item)=>{
+        remove_camps_ids.push(item)
+      })
+    }
     return remove_camps_ids
   }
 
