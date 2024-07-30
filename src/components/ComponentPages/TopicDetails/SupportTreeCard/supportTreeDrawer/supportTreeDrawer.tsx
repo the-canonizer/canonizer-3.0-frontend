@@ -1,14 +1,11 @@
 import {
-  CloseCircleOutlined,
   CloseOutlined,
   MenuOutlined,
   PlusOutlined,
   UserOutlined,
-  WarningOutlined,
 } from "@ant-design/icons";
 import {
   Alert,
-  Breadcrumb,
   Button,
   Checkbox,
   Col,
@@ -22,15 +19,10 @@ import {
   Space,
   Tag,
 } from "antd";
-import dynamic from "next/dynamic";
-import Breadcrumbs from "components/ComponentPages/Breadcrumbs/breadcrumbs";
-import StructureIcon from "components/ComponentPages/CreateNewTopic/UI/structureIcon";
-import SelectInputs from "components/shared/FormInputs/select";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { DraggableArea } from "react-draggable-tags";
 import { useDispatch, useSelector } from "react-redux";
-import { labels } from "src/messages/label";
 import { placeholders } from "src/messages/placeholder";
 
 import {
@@ -47,12 +39,11 @@ import {
   GetCheckSupportExists,
 } from "src/network/api/topicAPI";
 import { openNotificationWithIcon } from "components/ComponentPages/notificationBar/notificationBar";
-import Link from "next/link";
 import queryParams from "src/utils/queryParams";
 import { setCheckSupportExistsData } from "src/store/slices/campDetailSlice";
 import moment from "moment";
-import messages from "src/messages";
 import { setCampActivityData } from "src/store/slices/recentActivitiesSlice";
+import DrawerBreadcrumbs from "./drawerBreadcrumbs";
 
 const { TextArea } = Input;
 
@@ -95,31 +86,19 @@ function SupportTreeDrawer({
   const [form] = Form.useForm();
   //GetCheckSupportExistsData check support_id is 0 or 1
   let supportedCampsStatus = currentGetCheckSupportExistsData;
-  const [manageSupportRevertData, setManageSupportRevertData] = useState([]);
-  const [manageSupportList, setManageSupportList] = useState([]);
   const [selectedtNickname, setSelectedtNickname] = useState("");
-  const [topicSupportListData, setTopicSupportListData] = useState([]);
   const [tagsArrayList, setTagsArrayList] = useState([]);
   const [nictNameId, setNictNameId] = useState(null);
-  const [isTagDragged, setIsTagDragged] = useState(false);
   const [parentSupportDataList, setParentSupportDataList] = useState([]);
-  const [updatePostion, setUpdatePostion] = useState<boolean>(false);
-  const [supportOrder, setSupportOrder] = useState([]);
   const [campIds, setcampIds] = useState([]);
+  const [isQuickActionSelected, setIsQuickActionSelected] = useState(false);
+
   const topicNum = router?.query?.camp?.at(0)?.split("-")?.at(0);
   const camp_num = router?.query?.camp?.at(1)?.split("-")?.at(0);
-  const [isQuickActionSelected, setIsQuickActionSelected] = useState(false);
   const CheckDelegatedOrDirect =
     currentDelegatedSupportedClick.delegatedSupportClick;
 
-  // const filteredList = manageSupportList?.map((obj: any, index: any) => {
-  //   return {
-  //     camp_num: obj.camp_num,
-  //     order: index + 1, //obj.support_order,
-  //   };
-  // });
-
-  console.log("drawerFor", drawerFor);
+  const topic_name = router?.query?.camp?.at(0)?.split("-")?.slice(1).join("-");
 
   const reqBodyForService = {
     topic_num: topicNum,
@@ -158,14 +137,6 @@ function SupportTreeDrawer({
       };
     });
   };
-
-  // const filterList = (campNum, position) => {
-  //   const index = filteredList.findIndex((obj) => obj.camp_num === campNum);
-  //   filteredList[index] = {
-  //     camp_num: campNum,
-  //     order: position + 1,
-  //   };
-  // };
 
   const handleChange = (value) => {
     setSelectedValue(value);
@@ -229,14 +200,10 @@ function SupportTreeDrawer({
 
   const getCanonizedNicknameList = async () => {
     const body = { topic_num: topicNum };
-
     let res = await getAllUsedNickNames(topicNum && body);
     if (res && res?.status_code == 200) {
       setNickNameList(res?.data);
       setNictNameId(res?.data[0]?.id);
-      // form.setFieldsValue({
-      //   nickname: res ? res?.data[0]?.nick_name : "",
-      // });
     }
   };
 
@@ -251,10 +218,6 @@ function SupportTreeDrawer({
       </Tag>
     );
   };
-
-  //   const removeAllCampNum = (res) => {
-  //     return res.map(obj => obj.camp_num);
-  // }
 
   const removeAllSupportHandler = async (e) => {
     setIsQuickActionSelected(e?.target?.checked);
@@ -340,9 +303,6 @@ function SupportTreeDrawer({
     await getAllRemovedReasons();
   };
 
-  // useEffect(() => {
-  //   setIsTagDragged(false);
-  // }, []);
 
   useEffect(() => {
     if (open) {
@@ -415,24 +375,11 @@ function SupportTreeDrawer({
                   )
                 }
               />
-
-              <Breadcrumb
-                className="drawer-breadcrumbs ml-6"
-                separator={
-                  <>
-                    <i className="icon-angle-right-arrow"></i>
-                  </>
-                }
-              >
-                {/* <Breadcrumb.Item href="">Canon: General</Breadcrumb.Item> */}
-                <Breadcrumb.Item href="">
-                  Topic: {topicRecord?.topic_name}
-                </Breadcrumb.Item>
-                <Breadcrumb.Item href="">
-                  {campRecord?.camp_name}
-                  {console.log(campRecord)}
-                </Breadcrumb.Item>
-              </Breadcrumb>
+              <DrawerBreadcrumbs
+                topicRecord={topicRecord}
+                campRecord={campRecord}
+                topic_name={topic_name}
+              />
             </div>
             <Form
               form={form}
@@ -444,30 +391,31 @@ function SupportTreeDrawer({
             >
               <div className="support-content">
                 {drawerFor !== "manageSupport" && (
-                  <div className="alert-wrapper">
+                  <>
                     {currentGetCheckSupportExistsData &&
                       currentGetCheckSupportExistsData?.warning && (
-                        <Alert
-                          className="border-0 rounded-lg warning-alert"
-                          description={
-                            currentGetCheckSupportExistsData?.warning
-                          }
-                          type="error"
-                          showIcon
-                          icon={<i className="icon-warning"></i>}
-                        />
-                      )}
-                    {parentSupportDataList &&
-                      parentSupportDataList.length > 0 && (
-                        <div className="horizontal-chips">
-                          {parentSupportDataList.map((item, index) => (
-                            <TagList key={index} name={item?.camp_name} />
-                          ))}
+                        <div className="alert-wrapper">
+                          <Alert
+                            className="border-0 rounded-lg warning-alert"
+                            description={
+                              currentGetCheckSupportExistsData?.warning
+                            }
+                            type="error"
+                            showIcon
+                            icon={<i className="icon-warning"></i>}
+                          />
+                          {parentSupportDataList &&
+                            parentSupportDataList.length > 0 && (
+                              <div className="horizontal-chips">
+                                {parentSupportDataList.map((item, index) => (
+                                  <TagList key={index} name={item?.camp_name} />
+                                ))}
+                              </div>
+                            )}
                         </div>
                       )}
-                  </div>
+                  </>
                 )}
-
                 <div className="checkbox-wrapper">
                   <Form.Item label="Quick Action" className="mb-0">
                     <Checkbox
@@ -556,9 +504,6 @@ function SupportTreeDrawer({
                           );
                         }}
                         onChange={(tags) => {
-                          // setIsTagDragged(true);
-                          // setUpdatePostion(true);
-                          // setManageSupportList(tags);
                           setTagsArrayList(tags);
                         }}
                       />
@@ -727,22 +672,11 @@ function SupportTreeDrawer({
                   </>
                 }
               />
-              <Breadcrumb
-                className="drawer-breadcrumbs ml-6"
-                separator={
-                  <>
-                    <i className="icon-angle-right-arrow"></i>
-                  </>
-                }
-              >
-                {/* <Breadcrumb.Item href="">Canon: General</Breadcrumb.Item> */}
-                <Breadcrumb.Item href="">
-                  Topic: {topicRecord?.topic_name}
-                </Breadcrumb.Item>
-                <Breadcrumb.Item href="">
-                  {campRecord?.camp_name}
-                </Breadcrumb.Item>
-              </Breadcrumb>
+              <DrawerBreadcrumbs
+                topicRecord={topicRecord}
+                campRecord={campRecord}
+                topic_name={topic_name}
+              />
             </div>
 
             <Form
@@ -752,12 +686,20 @@ function SupportTreeDrawer({
               onFinish={onRemoveFinish}
             >
               <div className="support-content">
-                {/* <Alert
+                {currentGetCheckSupportExistsData && (
+                  <div className="alert-wrapper">
+                    <Alert
                       className="border-0 rounded-lg warning-alert"
-                      description="You are about to remove your support from this camp. You can optionally add a helpful reason in the citation link."
+                      description={
+                        currentGetCheckSupportExistsData &&
+                        currentGetCheckSupportExistsData?.warning
+                      }
+                      type="error"
                       showIcon
                       icon={<i className="icon-warning"></i>}
-                    /> */}
+                    />
+                  </div>
+                )}
 
                 <Row gutter={16}>
                   <Col span={24}>
