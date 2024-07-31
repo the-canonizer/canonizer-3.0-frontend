@@ -598,10 +598,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
             <div className="">
               {isMobile && <CampDisclaimer />}
 
-              <CampStatementCard
-                loadingIndicator={loadingIndicator}
-                backGroundColorClass={backGroundColorClass}
-              />
+              <CampStatementCard loadingIndicator={loadingIndicator} />
               <Campforum />
               <SiblingCamps />
             </div>

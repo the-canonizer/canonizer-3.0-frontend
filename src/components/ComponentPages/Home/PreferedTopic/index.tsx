@@ -47,7 +47,7 @@ const PreferedTopics = () => {
               ) : (
                 <SingleTopicCard
                   topic={ft}
-                  onTopicLinkClick={() => setLoadMoreIndicator(true)}
+                  onTopicLinkClick={() => setLoadMoreIndicator(false)}
                 />
               )}
             </div>

@@ -401,41 +401,47 @@ export const transformData = (data) => {
   const videos = data;
 
   // Map over the videos array to transform each video object
-  return videos?.map(video => {
-      // Generate the value by converting the title to lowercase and replacing spaces with underscores
-      const value = video.title.toLowerCase().replace(/ /g, '_');
+  return videos?.map((video) => {
+    // Generate the value by converting the title to lowercase and replacing spaces with underscores
+    const value = video.title.toLowerCase().replace(/ /g, "_");
 
-      // Return the new object with the desired shape
-      return {
-          value: value,
-          label: video.title
-      };
+    // Return the new object with the desired shape
+    return {
+      value: value,
+      label: video.title,
+    };
   });
-}
+};
 
-export const replaceUnderscoresWithSpaces = (str) =>{
-  return str.replace(/_/g, ' ');
-}
+export const replaceUnderscoresWithSpaces = (str) => {
+  return str.replace(/_/g, " ");
+};
 
 export const replaceHyphensAndCapitalize = (str) => {
   // Replace hyphens with spaces
-  let replacedStr = str?.replace(/-/g, ' ');
-  
+  let replacedStr = str?.replace(/-/g, " ");
+
   // Capitalize the first letter
-  let capitalizedStr = replacedStr?.charAt(0)?.toUpperCase() + replacedStr?.slice(1);
-  
+  let capitalizedStr =
+    replacedStr?.charAt(0)?.toUpperCase() + replacedStr?.slice(1);
+
   return capitalizedStr;
-}
+};
 
-export const getVideoNameFromURL = (str) =>{
-// Split the string at the first hyphen to remove the leading ID
-let splitStr = str?.split('-')?.slice(1)?.join('-');
+export const getVideoNameFromURL = (str) => {
+  // Split the string at the first hyphen to remove the leading ID
+  let splitStr = str?.split("-")?.slice(1)?.join("-");
 
-// Replace hyphens with spaces
-let formattedStr = splitStr?.replace(/-/g, ' ');
+  // Replace hyphens with spaces
+  let formattedStr = splitStr?.replace(/-/g, " ");
 
-// Capitalize the first letter of the resulting string
-let capitalizedStr = formattedStr?.charAt(0)?.toUpperCase() + formattedStr.slice(1);
+  // Capitalize the first letter of the resulting string
+  let capitalizedStr =
+    formattedStr?.charAt(0)?.toUpperCase() + formattedStr.slice(1);
 
-return capitalizedStr;
-}
+  return capitalizedStr;
+};
+
+export const covertToTime = (unixTime) => {
+  return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
+};
