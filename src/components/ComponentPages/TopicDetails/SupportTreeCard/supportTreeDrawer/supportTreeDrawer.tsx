@@ -293,7 +293,7 @@ function SupportTreeDrawer({
 
     let res = await addSupport(addSupportId);
     if (res && res.status_code == 200) {
-      openNotificationWithIcon({ type: "success", message: res?.message });
+      openNotificationWithIcon(res?.message);
       setDrawerFor("");
       onClose();
       await callDetailPageApis();
@@ -311,7 +311,7 @@ function SupportTreeDrawer({
 
     let res = await addDelegateSupportCamps(addDelegatedSupport);
     if (res && res.status_code == 200) {
-      openNotificationWithIcon({ type: "success", message: res?.message });
+      openNotificationWithIcon(res?.message);
       setDrawerFor("");
       onClose();
       await callDetailPageApis();
@@ -384,12 +384,12 @@ function SupportTreeDrawer({
             Adding Support to camp:
             <span className="ml-1">{campRecord && campRecord?.camp_name}</span>
           </>
-        ) : drawerFor === "directRemove" ?(
+        ) : drawerFor === "directRemove" ? (
           <>
             Removing Support from camp:
             <span> {campRecord?.camp_name} </span>
           </>
-        ): null}
+        ) : null}
       </>
     );
   };
@@ -399,14 +399,14 @@ function SupportTreeDrawer({
       return "Update";
     } else if (drawerFor === "delegateAdd") {
       return "Delegate Support";
-    } else if(drawerFor === "directAdd") {
+    } else if (drawerFor === "directAdd") {
       return "Add Support";
-    } else if(drawerFor === "directRemove") {
-      return "Remove Support"
-    }else{
-      return 
+    } else if (drawerFor === "directRemove") {
+      return "Remove Support";
+    } else {
+      return;
     }
-  }
+  };
 
   return (
     <>
