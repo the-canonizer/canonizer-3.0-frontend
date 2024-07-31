@@ -200,7 +200,7 @@ const SupportTreeCard = ({
       (a: { algorithm_key: string }) =>
         a.algorithm_key === (selectedAlgorithm || router?.query?.algo)
     );
-    if (filteredAlgo?.length) setCurrentAlgo(filteredAlgo[0]?.algorithm_label);
+    if (filteredAlgo?.length) setCurrentAlgo(filteredAlgo?.at(0)?.algorithm_label);
   }, [algorithms, router?.query?.algo, selectedAlgorithm]);
 
   const dispatch = useDispatch();
@@ -282,7 +282,7 @@ const SupportTreeCard = ({
       q?.n_type?.toLowerCase() === "support"
     ) {
       const fArr = (q.from as String).split("_");
-      if (+fArr[1]) {
+      if (+fArr?.at(1)) {
         handleClickSupportCheck();
       }
     }
@@ -325,7 +325,7 @@ const SupportTreeCard = ({
     );
 
     const campLeaderId = campLeader?.nick_name_id;
-    const delegatorId = campLeader?.delegates?.[0]?.nick_name_id;
+    const delegatorId = campLeader?.delegates?.at(0)?.nick_name_id;
 
     setCampLeaderId(campLeaderId);
     setDelegatorID(delegatorId);
@@ -393,7 +393,7 @@ const SupportTreeCard = ({
     loggedInUserDelegate = false,
     loggedInUserChild = false
   ) => {
-    return Object.keys(data).map((item, index) => {
+    return Object.keys(data)?.map((item, index) => {
       if (userNickNameList?.includes(data[item]?.nick_name_id))
         loggedInUserChild = true;
       const parentIsOneLevel = isOneLevel;
@@ -593,7 +593,7 @@ const SupportTreeCard = ({
       showDrawer();
     }
 
-    setModalData(data[item]);
+    setModalData(data?.at(item));
   };
 
   const onRemoveFinish = async (values) => {
@@ -606,8 +606,8 @@ const SupportTreeCard = ({
     let reqBody = {
       as_of: asof,
       as_of_date: asofdate,
-      topic_num: +router?.query?.camp[0]?.split("-")[0],
-      camp_num: +router?.query?.camp[1]?.split("-")[0],
+      topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
+      camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
     };
     await getCurrentCampRecordApi(reqBody);
 
