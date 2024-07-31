@@ -384,12 +384,12 @@ function SupportTreeDrawer({
             Adding Support to camp:
             <span className="ml-1">{campRecord && campRecord?.camp_name}</span>
           </>
-        ) : drawerFor === "directRemove" ?(
+        ) : drawerFor === "directRemove" ? (
           <>
             Removing Support from camp:
             <span> {campRecord?.camp_name} </span>
           </>
-        ): null}
+        ) : null}
       </>
     );
   };
@@ -399,14 +399,14 @@ function SupportTreeDrawer({
       return "Update";
     } else if (drawerFor === "delegateAdd") {
       return "Delegate Support";
-    } else if(drawerFor === "directAdd") {
+    } else if (drawerFor === "directAdd") {
       return "Add Support";
-    } else if(drawerFor === "directRemove") {
-      return "Remove Support"
-    }else{
-      return 
+    } else if (drawerFor === "directRemove") {
+      return "Remove Support";
+    } else {
+      return;
     }
-  }
+  };
 
   return (
     <>
@@ -418,23 +418,23 @@ function SupportTreeDrawer({
         open={open}
         contentWrapperStyle={{ maxWidth: "730px", width: "100%" }}
       >
+        <div className="page-breadcrums-wrapper">
+          <PageHeader
+            className="p-0 drawer-header"
+            onBack={() => onClose()}
+            backIcon={<i className="icon-back"></i>}
+            title={renderPageHeaderTitle()}
+          />
+          <DrawerBreadcrumbs
+            topicRecord={topicRecord}
+            campRecord={campRecord}
+            topic_name={topic_name}
+          />
+        </div>
         {drawerFor === "directAdd" ||
         drawerFor === "delegateAdd" ||
         drawerFor === "manageSupport" ? (
           <>
-            <div className="page-breadcrums-wrapper">
-              <PageHeader
-                className="p-0 drawer-header"
-                onBack={() => onClose()}
-                backIcon={<i className="icon-back"></i>}
-                title={renderPageHeaderTitle()}
-              />
-              <DrawerBreadcrumbs
-                topicRecord={topicRecord}
-                campRecord={campRecord}
-                topic_name={topic_name}
-              />
-            </div>
             <Form
               form={form}
               layout="vertical"
@@ -712,20 +712,6 @@ function SupportTreeDrawer({
           </>
         ) : drawerFor === "directRemove" || drawerFor === "delegateRemove" ? (
           <>
-            <div className="page-breadcrums-wrapper">
-              <PageHeader
-                className="p-0 drawer-header"
-                onBack={() => null}
-                backIcon={<i className="icon-back"></i>}
-                title={renderPageHeaderTitle()}
-              />
-              <DrawerBreadcrumbs
-                topicRecord={topicRecord}
-                campRecord={campRecord}
-                topic_name={topic_name}
-              />
-            </div>
-
             <Form
               form={form}
               layout="vertical"
