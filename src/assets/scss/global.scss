@@ -329,7 +329,7 @@ body {
   }
 }
 .ant-tabs-tab-active .ant-tabs-tab-btn{
-  @apply border-canBlue border-b-4 !text-canBlue !text-shadow-none;
+  @apply border-canBlue border-b-4 text-canBlue text-shadow-none;
 }
 .ant-tabs-top > .ant-tabs-nav .ant-tabs-ink-bar{
  @apply  h-1 rounded-tl-full rounded-tr-full bg-canBlue

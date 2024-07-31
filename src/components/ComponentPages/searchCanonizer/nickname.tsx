@@ -147,7 +147,7 @@ const NicknameSearch = () => {
       </span>
     );
   };
-const router = useRouter();
+  const router = useRouter();
   return (
     <Fragment>
       <div className="flex justify-between lg:items-center lg:flex-row flex-col items-start mb-10 mt-2.5 lg:gap-0 gap-5">
@@ -161,7 +161,10 @@ const router = useRouter();
 
             <h3 className="lg:text-32 text-xl   text-canBlack font-medium">
               Search Results for “
-              <span className="text-canBlue capitalize">{router?.query?.q}</span>”
+              <span className="text-canBlue capitalize">
+                {router?.query?.q}
+              </span>
+              ”
             </h3>
           </div>
         </div>
@@ -244,7 +247,10 @@ const router = useRouter();
                                     className="font-medium text-base"
                                   >
                                     {/* {x?.type_value} */}
-                                    {getHighlightedText(x?.type_value,searchValue)}
+                                    {getHighlightedText(
+                                      x?.type_value,
+                                      searchValue
+                                    )}
                                   </label>
                                 </a>
                               </Link>
@@ -269,7 +275,7 @@ const router = useRouter();
               </div>
             )}
             <Pagination
-             className="mt-5 [&_.ant-pagination-item]:!mr-1 lg:[&_.ant-pagination-item]:!mr-2"
+              className="mt-5 [&_.ant-pagination-item]:!mr-1 lg:[&_.ant-pagination-item]:!mr-2"
               hideOnSinglePage={true}
               total={searchMetaData.total}
               pageSize={20}

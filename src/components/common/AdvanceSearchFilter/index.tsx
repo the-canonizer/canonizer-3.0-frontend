@@ -353,7 +353,7 @@ export default function AdvanceFilter() {
         asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
     };
     const response = await AdvanceFilterSeacrhApi(rebody);
-    dispatch(setSelectedTopicFromAdvanceFilterAlgorithm(response?.data?.topic))
+    dispatch(setSelectedTopicFromAdvanceFilterAlgorithm(response?.data?.topic));
     // setLoadMoreIndicator(false);
   }
   async function getCampsApiCallWithReqBody() {
@@ -371,7 +371,7 @@ export default function AdvanceFilter() {
         asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
     };
     const response = await AdvanceFilterSeacrhApi(rebody);
-    dispatch(setSelectedCampFromAdvanceFilterAlgorithm(response?.data?.camp))
+    dispatch(setSelectedCampFromAdvanceFilterAlgorithm(response?.data?.camp));
     // setLoadMoreIndicator(false);
   }
 
@@ -390,7 +390,9 @@ export default function AdvanceFilter() {
         asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
     };
     const response = await AdvanceFilterSeacrhApi(rebody);
-    dispatch(setSelectedStatementFromAdvanceFilterAlgorithm(response?.data?.statement))
+    dispatch(
+      setSelectedStatementFromAdvanceFilterAlgorithm(response?.data?.statement)
+    );
     // setLoadMoreIndicator(false);
   }
   const filterOnScore = (e) => {
@@ -590,13 +592,13 @@ export default function AdvanceFilter() {
       }
     >
       <Collapse
-        className={`${styles.cardAccordian} !border-none relative topicListFilterCardCollapse [&_.ant-collapse-header]:!border [&_.ant-collapse-header]:!border-canGrey2 [&_.ant-collapse-header]:!rounded-lg !border-canBlue [&_.ant-collapse-content]:!top-14 [&_.ant-collapse-content]:!rounded-xl [&_.ant-collapse-content]:!shadow-filter-shadow 
+        className={`${styles.cardAccordian} [&_.ant-collapse-content]:!bg-white !border-none relative topicListFilterCardCollapse [&_.ant-collapse-header]:!border [&_.ant-collapse-header]:!border-canGrey2 [&_.ant-collapse-header]:!rounded-lg !border-canBlue [&_.ant-collapse-content]:!top-14 [&_.ant-collapse-content]:!rounded-xl [&_.ant-collapse-content]:!shadow-filter-shadow 
         lg:[&_.ant-collapse-content]:!right-0 [&_.ant-collapse-content]:!absolute !w-52 [&_.ant-collapse-borderless]:!border-2  !rounded-lg [&_.ant-collapse-header]:!px-8 
         [&_.ant-collapse-item]:!border-none  [&_.ant-collapse-header]:!py-2.5 !bg-transparent [&_.ant-collapse-content-box]:!p-2.5 [&_.ant-collapse-content]:!w-72  [&_.ant-collapse-expand-icon]:!order-1 [&_.ant-collapse-expand-icon]:flex [&_.ant-collapse-expand-icon]:items-center [&_.ant-collapse-arrow]:!transform-none [&_.ant-collapse-header]:!items-center lg:[&_.ant-collapse-content]:!self-center  [&_.ant-collapse-content]:!self-auto [&_.ant-collapse-content]:z-10 `}
         expandIconPosition="end"
         expandIcon={({ isActive }) => (
           // <DownOutlined rotate={isActive ? 0 : 180} />
-          <Image  src="/images/caret-icon.svg" width={12} height={12} />
+          <Image src="/images/caret-icon.svg" width={12} height={12} />
         )}
         bordered={false}
         activeKey={active}
@@ -632,7 +634,9 @@ export default function AdvanceFilter() {
             className="advance_close flex justify-between items-center w-full mb-10"
             data-testid="cross_icon"
           >
-            <h4 className="text-sm text-canBlack font-medium">Advanced Filters</h4>
+            <h4 className="text-sm text-canBlack font-medium">
+              Advanced Filters
+            </h4>
             <CloseOutlined className="w-2.5 h-2.5" onClick={handleClosePanel} />
           </div>
 
@@ -641,9 +645,13 @@ export default function AdvanceFilter() {
               <h3 className="text-sm text-canBlack font-medium pb-2 border-b border-canBlack border-opacity-5">
                 Search Type
               </h3>
-              <Radio.Group onChange={onChange} value={value} className="flex flex-col ">
+              <Radio.Group
+                onChange={onChange}
+                value={value}
+                className="flex flex-col "
+              >
                 <Radio
-                className=" border-b border-canBlack border-opacity-5 py-2 font-medium [&_.ant-radio-inner]:!w-3 [&_.ant-radio-inner]:!h-3 "
+                  className=" border-b border-canBlack border-opacity-5 py-2 font-medium [&_.ant-radio-inner]:!w-3 [&_.ant-radio-inner]:!h-3 "
                   value={1}
                   onClick={() => {
                     dispatch(setViewThisVersion(false));
@@ -691,7 +699,7 @@ export default function AdvanceFilter() {
                   Default
                 </Radio>
                 <Radio
-                   className="py-2  font-medium [&_.ant-radio-inner]:!w-3 [&_.ant-radio-inner]:!h-3"
+                  className="py-2  font-medium [&_.ant-radio-inner]:!w-3 [&_.ant-radio-inner]:!h-3"
                   value={3}
                   onClick={() => {
                     dispatch(setViewThisVersion(false));
@@ -713,7 +721,13 @@ export default function AdvanceFilter() {
                 format="YYYY-MM-DD"
                 defaultValue={moment(current_date_filter * 1000)}
                 value={moment(selectedAsOFDate * 1000)}
-                suffixIcon={<Image src="/images/calendar-icon.svg" width={22} height={22} />}
+                suffixIcon={
+                  <Image
+                    src="/images/calendar-icon.svg"
+                    width={22}
+                    height={22}
+                  />
+                }
                 size={"large"}
                 className={`${styles.date} w-100 ml-6 rounded-lg `}
                 onChange={pickDate}

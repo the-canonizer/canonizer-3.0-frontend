@@ -109,7 +109,7 @@ const TopicSearch = () => {
       </span>
     );
   };
-const router = useRouter();
+  const router = useRouter();
   return (
     <Fragment>
       <div className="flex justify-between lg:items-center lg:flex-row flex-col items-start mb-10 mt-2.5 lg:gap-0 gap-5">
@@ -123,7 +123,10 @@ const router = useRouter();
 
             <h3 className="lg:text-32 text-xl   text-canBlack font-medium">
               Search Results for “
-              <span className="text-canBlue capitalize">{router?.query?.q}</span>”
+              <span className="text-canBlue capitalize">
+                {router?.query?.q}
+              </span>
+              ”
             </h3>
           </div>
         </div>

@@ -297,7 +297,7 @@ export default function RecentActivities() {
                 }}
               >
                 <Image
-                className="cursor-pointer"
+                  className="cursor-pointer"
                   src="/images/recent-activiity-arrow.svg"
                   width={16}
                   height={24}

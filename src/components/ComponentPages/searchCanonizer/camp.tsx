@@ -113,7 +113,10 @@ const CampSearch = () => {
 
             <h3 className="lg:text-32 text-xl   text-canBlack font-medium">
               Search Results for “
-              <span className="text-canBlue capitalize">{router?.query?.q}</span>”
+              <span className="text-canBlue capitalize">
+                {router?.query?.q}
+              </span>
+              ”
             </h3>
           </div>
         </div>
@@ -333,7 +336,7 @@ const CampSearch = () => {
             )}
 
             <Pagination
-             className="mt-5 [&_.ant-pagination-item]:!mr-1 lg:[&_.ant-pagination-item]:!mr-2"
+              className="mt-5 [&_.ant-pagination-item]:!mr-1 lg:[&_.ant-pagination-item]:!mr-2"
               hideOnSinglePage={true}
               total={
                 asof == "review" || asof == "bydate"

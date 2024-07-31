@@ -223,7 +223,7 @@ function ProfileInfoForm({
       return null;
     }
   };
-  
+
   const handleClick = async () => {
     if (step === 1) {
       const statusCode = await verifyEmail();

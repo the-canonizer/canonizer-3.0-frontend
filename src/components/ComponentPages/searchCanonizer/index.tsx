@@ -67,7 +67,10 @@ const Search = () => {
 
             <h3 className="lg:text-32 text-xl   text-canBlack font-medium">
               Search Results for “
-              <span className="text-canBlue capitalize">{router?.query?.q}</span>”
+              <span className="text-canBlue capitalize">
+                {router?.query?.q}
+              </span>
+              ”
             </h3>
           </div>
         </div>
@@ -340,7 +343,6 @@ const Search = () => {
                                             ? "/ "
                                             : ""}
                                         </a>
-                                        
                                       </>
                                     );
                                   })}
@@ -386,7 +388,6 @@ const Search = () => {
                                       )}
                                     </label>
                                   </a>
-                                  
                                 </Link>
 
                                 <span className="font-normal text-base">
