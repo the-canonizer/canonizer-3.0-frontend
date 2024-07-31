@@ -4,7 +4,7 @@ import { Typography, Row, Col, Select, List, Tag } from "antd";
 import Link from "next/link";
 import { useSelector } from "react-redux";
 
-import CommonCard from "src/components/shared/Card";
+import CommonCard from "components/shared/Card";
 import { RootState } from "src/store";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
 import {
@@ -156,11 +156,9 @@ const TrandingTopics = () => {
                   >
                     <a
                       className="hover:*:text-canHoverBlue font-medium"
-                      onClick={() => setLoadMoreIndicator(true)}
+                      onClick={() => setLoadMoreIndicator(false)}
                     >
-                      <Typography.Text className="">
-                        {item?.topic_name}
-                      </Typography.Text>
+                      <Typography.Text>{item?.topic_name}</Typography.Text>
                     </a>
                   </Link>
                   <Tag

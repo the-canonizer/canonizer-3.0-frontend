@@ -28,7 +28,7 @@ const FeaturedTopic = () => {
     centerPadding: "16px",
     className: "featuresSlider",
     // dotsClass: "featuredDots my-[20px] justify-center",
-    arrowClass: "hello",
+    arrowClass: "",
     nextArrow: <RightOutlined className="text-xl text-canBlue" />,
     prevArrow: <LeftOutlined className="text-xl text-canBlue" />,
     responsive: [],
@@ -55,7 +55,7 @@ const FeaturedTopic = () => {
               <SingleTopicWithImage
                 topic={ft}
                 key={ft?.id}
-                onTopicClick={() => setLoadMoreIndicator(true)}
+                onTopicClick={() => setLoadMoreIndicator(false)}
               />
             ))}
           </Slider>
