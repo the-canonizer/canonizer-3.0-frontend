@@ -394,6 +394,20 @@ function SupportTreeDrawer({
     );
   };
 
+  const renderSubmitBtnText = () => {
+    if (drawerFor === "manageSupport") {
+      return "Update";
+    } else if (drawerFor === "delegateAdd") {
+      return "Delegate Support";
+    } else if(drawerFor === "directAdd") {
+      return "Add Support";
+    } else if(drawerFor === "directRemove") {
+      return "Remove Support"
+    }else{
+      return 
+    }
+  }
+
   return (
     <>
       <Drawer
@@ -690,11 +704,7 @@ function SupportTreeDrawer({
                   htmlType="submit"
                   className=" min-w-[200px] bg-canBlue flex items-center justify-center hover:bg-canHoverBlue focus:bg-canHoverBlue hover:text-white font-medium text-white disabled:bg-disabled font-base rounded-lg"
                 >
-                  {drawerFor === "manageSupport"
-                    ? "Update"
-                    : drawerFor === "delegateAdd"
-                    ? "Delegate Support"
-                    : "Add Support"}
+                  {renderSubmitBtnText()}
                   <PlusOutlined />
                 </Button>
               </div>
@@ -799,7 +809,7 @@ function SupportTreeDrawer({
                   htmlType="submit"
                   className=" min-w-[200px] bg-canBlue flex items-center justify-center hover:bg-canHoverBlue focus:bg-canHoverBlue hover:text-white font-medium text-white disabled:bg-disabled font-base rounded-lg"
                 >
-                  Remove Support
+                  {renderSubmitBtnText()}
                   <PlusOutlined />
                 </Button>
               </div>
