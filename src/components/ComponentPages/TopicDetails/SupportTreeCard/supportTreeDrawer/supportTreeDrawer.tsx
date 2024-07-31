@@ -688,7 +688,7 @@ function SupportTreeDrawer({
               onFinish={onRemoveFinish}
             >
               <div className="support-content">
-                {currentGetCheckSupportExistsData && (
+                {/* {currentGetCheckSupportExistsData && (
                   <div className="alert-wrapper">
                     <Alert
                       className="border-0 rounded-lg warning-alert"
@@ -701,7 +701,7 @@ function SupportTreeDrawer({
                       icon={<i className="icon-warning"></i>}
                     />
                   </div>
-                )}
+                )} */}
 
                 <Row gutter={16}>
                   <Col span={24}>
@@ -718,7 +718,7 @@ function SupportTreeDrawer({
                           <i className="icon-bar"></i>
                         </div>
                         <Select
-                          placeholder={placeholders.nickName}
+                          placeholder={placeholders.selectReason}
                           className="w-100 cn-select"
                           size="large"
                           suffixIcon={<i className="icon-chevron-down"></i>}
