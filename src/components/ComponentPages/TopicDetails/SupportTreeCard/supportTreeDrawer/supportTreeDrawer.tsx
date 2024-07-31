@@ -369,6 +369,45 @@ function SupportTreeDrawer({
     setTagsArrayList(res);
   };
 
+  const renderPageHeaderTitle = () => {
+    return (
+      <>
+        {drawerFor === "manageSupport" ? (
+          "Manage Support"
+        ) : drawerFor === "delegateAdd" ? (
+          <>
+            Delegating Support to
+            <span className="ml-1">{delegateNickName || ""}</span>
+          </>
+        ) : drawerFor === "directAdd" ? (
+          <>
+            Adding Support to camp:
+            <span className="ml-1">{campRecord && campRecord?.camp_name}</span>
+          </>
+        ) : drawerFor === "directRemove" ?(
+          <>
+            Removing Support from camp:
+            <span> {campRecord?.camp_name} </span>
+          </>
+        ): null}
+      </>
+    );
+  };
+
+  const renderSubmitBtnText = () => {
+    if (drawerFor === "manageSupport") {
+      return "Update";
+    } else if (drawerFor === "delegateAdd") {
+      return "Delegate Support";
+    } else if(drawerFor === "directAdd") {
+      return "Add Support";
+    } else if(drawerFor === "directRemove") {
+      return "Remove Support"
+    }else{
+      return 
+    }
+  }
+
   return (
     <>
       <Drawer
@@ -388,23 +427,7 @@ function SupportTreeDrawer({
                 className="p-0 drawer-header"
                 onBack={() => onClose()}
                 backIcon={<i className="icon-back"></i>}
-                title={
-                  drawerFor === "manageSupport" ? (
-                    "Manage Support"
-                  ) : drawerFor === "delegateAdd" ? (
-                    <>
-                      Delegating Support to
-                      <span className="ml-1">{delegateNickName || ""}</span>
-                    </>
-                  ) : (
-                    <>
-                      Adding Support to camp:
-                      <span className="ml-1">
-                        {campRecord && campRecord?.camp_name}
-                      </span>
-                    </>
-                  )
-                }
+                title={renderPageHeaderTitle()}
               />
               <DrawerBreadcrumbs
                 topicRecord={topicRecord}
@@ -448,27 +471,27 @@ function SupportTreeDrawer({
                   </>
                 )}
                 {drawerFor !== "delegateAdd" && (
-                    <div className="checkbox-wrapper">
-                      <Form.Item label="Quick Action" className="mb-0">
-                        <Checkbox
-                          checked={isQuickActionSelected}
-                          onChange={(e) => {
-                            removeAllSupportHandler(e);
-                          }}
-                        >
-                          Remove All Support
-                        </Checkbox>
-                      </Form.Item>
-                      <Button
-                        size="large"
-                        className="min-w-[200px] gap-2 flex items-center justify-center border border-canBlue bg-[#98B7E61A] rounded-lg text-canBlack text-base font-medium"
-                        onClick={() => {
-                          clearChangesHandler();
+                  <div className="checkbox-wrapper">
+                    <Form.Item label="Quick Action" className="mb-0">
+                      <Checkbox
+                        checked={isQuickActionSelected}
+                        onChange={(e) => {
+                          removeAllSupportHandler(e);
                         }}
                       >
-                        Clear All Changes
-                      </Button>
-                    </div>
+                        Remove All Support
+                      </Checkbox>
+                    </Form.Item>
+                    <Button
+                      size="large"
+                      className="min-w-[200px] gap-2 flex items-center justify-center border border-canBlue bg-[#98B7E61A] rounded-lg text-canBlack text-base font-medium"
+                      onClick={() => {
+                        clearChangesHandler();
+                      }}
+                    >
+                      Clear All Changes
+                    </Button>
+                  </div>
                 )}
                 <div className="chips-wrapper">
                   <p className="text-[#DB4F4F] mb-9">
@@ -681,11 +704,7 @@ function SupportTreeDrawer({
                   htmlType="submit"
                   className=" min-w-[200px] bg-canBlue flex items-center justify-center hover:bg-canHoverBlue focus:bg-canHoverBlue hover:text-white font-medium text-white disabled:bg-disabled font-base rounded-lg"
                 >
-                  {drawerFor === "manageSupport"
-                    ? "Update"
-                    : drawerFor === "delegateAdd"
-                    ? "Delegate Support"
-                    : "Add Support"}
+                  {renderSubmitBtnText()}
                   <PlusOutlined />
                 </Button>
               </div>
@@ -698,12 +717,7 @@ function SupportTreeDrawer({
                 className="p-0 drawer-header"
                 onBack={() => null}
                 backIcon={<i className="icon-back"></i>}
-                title={
-                  <>
-                    Removing Support from camp:
-                    <span> {campRecord?.camp_name} </span>
-                  </>
-                }
+                title={renderPageHeaderTitle()}
               />
               <DrawerBreadcrumbs
                 topicRecord={topicRecord}
@@ -795,7 +809,7 @@ function SupportTreeDrawer({
                   htmlType="submit"
                   className=" min-w-[200px] bg-canBlue flex items-center justify-center hover:bg-canHoverBlue focus:bg-canHoverBlue hover:text-white font-medium text-white disabled:bg-disabled font-base rounded-lg"
                 >
-                  Remove Support
+                  {renderSubmitBtnText()}
                   <PlusOutlined />
                 </Button>
               </div>

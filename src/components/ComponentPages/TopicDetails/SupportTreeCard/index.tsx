@@ -141,6 +141,13 @@ const SupportTreeCard = ({
   ] = useState(true);
   const [open, setOpen] = useState(false);
   const [drawerFor, setDrawerFor] = useState(""); //["directAdd","delegateAdd","directRemove","delegateRemove","manageSupport"]
+  let drawerOptions = {
+    directAdd:"directAdd",
+    delegateAdd:"delegateAdd",
+    directRemove:"directRemove",
+    delegateRemove:"delegateRemove",
+    manageSupport:"manageSupport"
+  }
 
   const showDrawer = () => {
     setOpen(true);
@@ -240,7 +247,7 @@ const SupportTreeCard = ({
       setSelectNickId(data?.nick_name_id);
       setDelegateNickName(data?.nick_name);
       showModalSupportCamps();
-      setDrawerFor("delegateAdd");
+      setDrawerFor(drawerOptions.delegateAdd);
     }
   };
 
@@ -258,10 +265,10 @@ const SupportTreeCard = ({
       // if (shouldShowModal) {
       //   showModalSupportCamps();
       // }
-      setDrawerFor("directAdd");
+      setDrawerFor(drawerOptions.directAdd);
       showDrawer();
     } else {
-      setDrawerFor("manageSupport");
+      setDrawerFor(drawerOptions.manageSupport);
       showDrawer();
     }
   };
@@ -582,7 +589,7 @@ const SupportTreeCard = ({
       // setDrawerFor("delegateRemove")
       removeDelegateSupportModal();
     } else {
-      setDrawerFor("directRemove");
+      setDrawerFor(drawerOptions.directRemove);
       showDrawer();
     }
 
