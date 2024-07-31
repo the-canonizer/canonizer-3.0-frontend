@@ -32,7 +32,7 @@ import {
   getTopicActivityLogApi,
   getTreesApi,
 } from "src/network/api/campDetailApi";
-import { addSupport } from "src/network/api/userApi";
+import { addDelegateSupportCamps, addSupport } from "src/network/api/userApi";
 import { RootState, store } from "src/store";
 import {
   GetActiveSupportTopic,
@@ -275,7 +275,7 @@ function SupportTreeDrawer({
     return remove_camps_ids;
   };
 
-  const onFinish = async (values) => {
+  const addSupportMethod = async (values) => {
     let addSupportId = {
       topic_num: topicNum,
       add_camp:
@@ -302,17 +302,45 @@ function SupportTreeDrawer({
     }
   };
 
+  const addDelegateMethod = async () => {
+    const addDelegatedSupport = {
+      nick_name_id: nictNameId,
+      delegated_nick_name_id: getDelegateId,
+      topic_num: topicNum,
+    };
+
+    let res = await addDelegateSupportCamps(addDelegatedSupport);
+    if (res && res.status_code == 200) {
+      openNotificationWithIcon({ type: "success", message: res?.message });
+      setDrawerFor("");
+      onClose();
+      await callDetailPageApis();
+    }
+  };
+
+  const onFinish = async (values) => {
+    if (drawerFor === "delegateAdd") {
+      addDelegateMethod();
+    } else if (drawerFor === "directAdd" || drawerFor === "manageSupport") {
+      addSupportMethod(values);
+    }
+  };
+
   const getReasons = async () => {
     await getAllRemovedReasons();
   };
 
   useEffect(() => {
     if (open) {
-      if(reasons?.length == 0){
+      if (reasons?.length == 0) {
         getReasons();
       }
 
-      if(drawerFor === "directAdd"){
+      if (
+        drawerFor === "directAdd" ||
+        drawerFor === "delegateAdd" ||
+        drawerFor === "manageSupport"
+      ) {
         getCanonizedNicknameList();
         getCurrentCampRecordApi(reqBody);
         GetCheckStatusData();
@@ -419,27 +447,29 @@ function SupportTreeDrawer({
                       )}
                   </>
                 )}
-                <div className="checkbox-wrapper">
-                  <Form.Item label="Quick Action" className="mb-0">
-                    <Checkbox
-                      checked={isQuickActionSelected}
-                      onChange={(e) => {
-                        removeAllSupportHandler(e);
-                      }}
-                    >
-                      Remove All Support
-                    </Checkbox>
-                  </Form.Item>
-                  <Button
-                    size="large"
-                    className="min-w-[200px] gap-2 flex items-center justify-center border border-canBlue bg-[#98B7E61A] rounded-lg text-canBlack text-base font-medium"
-                    onClick={() => {
-                      clearChangesHandler();
-                    }}
-                  >
-                    Clear All Changes
-                  </Button>
-                </div>
+                {drawerFor !== "delegateAdd" && (
+                    <div className="checkbox-wrapper">
+                      <Form.Item label="Quick Action" className="mb-0">
+                        <Checkbox
+                          checked={isQuickActionSelected}
+                          onChange={(e) => {
+                            removeAllSupportHandler(e);
+                          }}
+                        >
+                          Remove All Support
+                        </Checkbox>
+                      </Form.Item>
+                      <Button
+                        size="large"
+                        className="min-w-[200px] gap-2 flex items-center justify-center border border-canBlue bg-[#98B7E61A] rounded-lg text-canBlack text-base font-medium"
+                        onClick={() => {
+                          clearChangesHandler();
+                        }}
+                      >
+                        Clear All Changes
+                      </Button>
+                    </div>
+                )}
                 <div className="chips-wrapper">
                   <p className="text-[#DB4F4F] mb-9">
                     Note : To change support order of camp, drag & drop the camp

@@ -25,7 +25,6 @@ function DrawerBreadcrumbs({ topicRecord, campRecord, topic_name }: any) {
                 href={`/topic/${camp?.topic_num}-${topic_name}/${camp?.camp_num}-${camp?.camp_name}`}
               >
                 {camp?.camp_name}
-                {console.log("camp", camp)}
               </Breadcrumb.Item>
             </React.Fragment>
           ))}
