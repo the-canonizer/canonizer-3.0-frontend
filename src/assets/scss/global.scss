@@ -46,38 +46,10 @@ body {
 }
 
 .featuresSlider {
-  // .featuredDots {
-  //   display: flex !important;
-  //   position: absolute;
-  //   top: -55px;
-  //   right: 0;
-  //   li {
-  //     button {
-  //       display: block;
-  //       box-shadow: none;
-  //       outline: linen;
-  //       border-width: 1px;
-  //       border-style: solid;
-  //       @apply border-canBlue;
-  //       @apply px-1;
-  //       @apply text-canBlack;
-  //       @apply bg-white;
-  //     }
-  //     &[class*="slick-active"] {
-  //       button {
-  //         @apply border-canHoverBlue;
-  //         @apply text-canHoverBlue;
-  //       }
-  //     }
-  //     &:not(:last-child) {
-  //       margin-right: 10px;
-  //     }
-  //   }
-  // }
   .slick-arrow {
     z-index: 100;
     @apply absolute;
-    @apply -top-[20px];
+    @apply -top-[26px];
     @apply right-0;
     @apply left-auto;
     svg {
@@ -89,39 +61,6 @@ body {
       @apply right-[30px];
     }
   }
-  // [class*="slick-arrow"] {
-  //   z-index: 100;
-  //   // top: 0;
-  //   &::before {
-  //     color: #9aa5e7;
-  //   }
-  // }
-  // [class*="slick-prev"] {
-  //   left: 0;
-  // }
-  // [class*="slick-next"] {
-  //   right: 0;
-  // }
-  // &.hotTopicSlider {
-  //   .hotTopicDots {
-  //     display: none !important;
-  //   }
-  //   .slick-track {
-  //     display: flex !important;
-  //   }
-  //   .slick-slide {
-  //     padding: 10px 15px;
-  //     height: auto !important;
-  //   }
-  // }
-  // @media screen and (max-width: 600px) {
-  //   padding-bottom: 30px;
-  //   .featuredDots {
-  //     top: calc(100% - 30px);
-  //     right: 0;
-  //     left: 0;
-  //   }
-  // }
 }
 
 .ant-form-item-label

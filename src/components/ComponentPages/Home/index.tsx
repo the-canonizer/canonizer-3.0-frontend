@@ -29,7 +29,7 @@ const HomePageContainer = () => {
       <Layout
         afterHeader={<WelcomeContent />}
         rightSidebar={
-          <div className="md:mt-3" data-testid="sideBar">
+          <div className="md:mt-3.5" data-testid="sideBar">
             {!isMobile ? (
               <div className="mb-14" data-testid="topicsList">
                 <TrandingTopics />

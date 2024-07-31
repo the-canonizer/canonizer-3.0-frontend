@@ -7,13 +7,14 @@ const CustomPagination = ({
   pageSize,
   loading,
   handlePageChange,
+  className = "",
 }) => {
   const showTotal = (total) => `Total ${total} items`;
 
   return (
     <div>
       <Pagination
-        className="browse-pagination mt-14"
+        className={`browse-pagination mt-14 ${className}`}
         size="small"
         total={totalTopics}
         defaultCurrent={1}
