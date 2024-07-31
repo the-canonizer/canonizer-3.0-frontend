@@ -16,15 +16,13 @@ const RightContent = ({ isUserAuthenticated }) => {
     <div
       className={`pr-0 text-center ${
         isUserAuthenticated ? "lg:w-[70%] ml-auto" : "w-full"
-      } h-auto py-6 mt-4 md:mt-0 md:h-full ${
-        isUserAuthenticated ? "bg-white" : "bg-white"
-      } z-[1000] relative rounded-xl`}
+      } h-auto py-6 mt-4 md:mt-0 md:h-full bg-white z-[1000] relative rounded-xl`}
     >
       <Typography.Paragraph className="m-0 text-xl font-inter font-medium">
         {isUserAuthenticated ? "For Existing Users" : "For Guest User"}
       </Typography.Paragraph>
       <PrimaryButton
-        className="w-auto h-auto leading-0 p-0 rounded-full !bg-transparent border-0 mb-3"
+        className="w-auto h-auto leading-0 p-0 rounded-full !bg-transparent border-0 mb-3 flex items-center justify-center mx-auto"
         onClick={onPlayClick}
       >
         <PlayCircleFilled

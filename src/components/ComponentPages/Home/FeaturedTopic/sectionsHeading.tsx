@@ -15,17 +15,11 @@ const SectionHeading = ({
   title,
   infoContent,
   icon = <InfoCircleOutlined />,
+  className = "",
 }) => {
   const router = useRouter();
   return (
-    <Headings
-      level={5}
-      className={`${
-        router?.asPath == "/activities"
-          ? "lg:!text-32 !text-[24px] !font-medium capitalize flex items-center !m-0"
-          : "text-sm font-bold uppercase"
-      } `}
-    >
+    <Headings level={5} className={`text-sm font-bold uppercase ${className}`}>
       {title}{" "}
       {icon ? (
         <Popover content={infoContent} placement="top">

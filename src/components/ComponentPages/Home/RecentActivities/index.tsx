@@ -306,6 +306,10 @@ export default function RecentActivities() {
                   title={"Recent activities"}
                   infoContent=""
                   icon={null}
+                  className={
+                    router?.asPath == "/activities" &&
+                    "lg:!text-3xl !text-2xl !font-medium capitalize flex items-center !m-0"
+                  }
                 />
               </div>
             </Col>

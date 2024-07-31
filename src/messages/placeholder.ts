@@ -31,4 +31,5 @@ export const placeholders = {
   catSelect: "Select Category",
   campURL: "https://",
   searchPlaceholder: "Search by thread name",
+  selectReason: "Select reason from list"
 };

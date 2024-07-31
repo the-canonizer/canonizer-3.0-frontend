@@ -3,10 +3,16 @@ import PropTypes from "prop-types";
 
 const propTypes = {
   title: PropTypes.string,
-  href: PropTypes.string,
+  href: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
 };
 
-const SeeMoreLInk = ({ title = "See More", href = "#" }) => {
+const SeeMoreLink = ({
+  title = "See More",
+  href,
+}: {
+  title?: string;
+  href?: any;
+}) => {
   return (
     <Link href={href}>
       <a className="!text-canBlue hover:!text-canHoverBlue text-sm font-inter font-medium">
@@ -16,6 +22,6 @@ const SeeMoreLInk = ({ title = "See More", href = "#" }) => {
   );
 };
 
-SeeMoreLInk.propTypes = propTypes;
+SeeMoreLink.propTypes = propTypes;
 
-export default SeeMoreLInk;
+export default SeeMoreLink;

@@ -218,7 +218,7 @@ function RegistrationUi({
           <PrimaryButton
             type="primary"
             htmlType="submit"
-            className="h-[40px] text-sm rounded-lg !w-8/12 lg:!w-4/12"
+            className="h-[40px] text-sm rounded-lg !w-8/12 lg:!w-4/12 flex items-center justify-center mx-auto"
             block
             data-testid="submitButton"
             id="register-btn"

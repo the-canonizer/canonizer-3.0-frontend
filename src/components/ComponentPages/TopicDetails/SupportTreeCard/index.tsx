@@ -1,4 +1,7 @@
-import { CloseCircleOutlined } from "@ant-design/icons";
+import {
+  CloseCircleOutlined,
+  ExclamationCircleFilled,
+} from "@ant-design/icons";
 import {
   Button,
   Collapse,
@@ -18,10 +21,9 @@ import { useDispatch, useSelector } from "react-redux";
 import styles from "../topicDetails.module.scss";
 
 import { RootState } from "src/store";
-import K from "../../../../constants";
-import isAuth from "../../../../hooks/isUserAuthenticated";
-import CustomButton from "../../../common/button";
-// import { setCurrentCampRecord } from "../../../../store/slices/campDetailSlice";
+import K from "src/constants";
+import isAuth from "src/hooks/isUserAuthenticated";
+import CustomButton from "components/common/button";
 import SupportRemovedModal from "src/components/common/supportRemovedModal";
 import {
   getCurrentCampRecordApi,
@@ -29,16 +31,19 @@ import {
 } from "src/network/api/campDetailApi";
 import { setIsSupportModal } from "src/store/slices/topicSlice";
 import { showLoginModal } from "src/store/slices/uiSlice";
-import { getNickNameList } from "../../../../network/api/userApi";
+import { getNickNameList } from "src/network/api/userApi";
 import {
   setManageSupportStatusCheck,
   setManageSupportUrlLink,
-} from "../../../../store/slices/campDetailSlice";
-import { setDelegatedSupportClick } from "../../../../store/slices/supportTreeCard";
-import CustomSkelton from "../../../common/customSkelton";
+} from "src/store/slices/campDetailSlice";
+import { setDelegatedSupportClick } from "src/store/slices/supportTreeCard";
+import CustomSkelton from "components/common/customSkelton";
 import ManageSupport from "../../ManageSupport";
-
 import support_image from "../../../../../public/images/support-tree-avatar.svg";
+import { setOpenConsensusTreePopup } from "src/store/slices/hotTopicSlice";
+// import SupportTreeDrawer from "./supportTreeDrawer/supportTreeDrawer";
+import dynamic from "next/dynamic";
+
 import SignCamp from "./SignCamp";
 
 const { Paragraph } = Typography;
@@ -58,6 +63,13 @@ const supportContent = (
       </p>
     </div>
   </>
+);
+
+const SupportTreeDrawer = dynamic(
+  () => import("./supportTreeDrawer/supportTreeDrawer"),
+  {
+    ssr: false,
+  }
 );
 
 const SupportTreeCard = ({
@@ -122,20 +134,33 @@ const SupportTreeCard = ({
   const [delegatorID, setDelegatorID] = useState(null);
   const [loadingIndicatorSupport, setLoadingIndicatorSupport] = useState(false);
   const [isImageError, setIsImageError] = useState(false);
+  const [delegateNickName, setDelegateNickName] = useState(null);
   const [
     getManageSupportLoadingIndicator,
     setGetManageSupportLoadingIndicator,
   ] = useState(true);
+  const [open, setOpen] = useState(false);
+  const [drawerFor, setDrawerFor] = useState(""); //["directAdd","delegateAdd","directRemove","delegateRemove","manageSupport"]
+
+  const showDrawer = () => {
+    setOpen(true);
+  };
+  const onClose = () => {
+    setOpen(false);
+    setDrawerFor("");
+  };
   const showModalSupportCamps = () => {
-    dispatch(setIsSupportModal(true));
+    showDrawer();
+    // dispatch(setIsSupportModal(true));
   };
   const handleOkSupportCamps = () => {
     dispatch(setIsSupportModal(false));
   };
+
   const getSupportTreeApi = async () => {
     const reqBodyForService = {
-      topic_num: +router?.query?.camp[0]?.split("-")[0],
-      camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
+      topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
+      camp_num: +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1),
       asOf: asof,
       asofdate:
         asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
@@ -212,23 +237,32 @@ const SupportTreeCard = ({
           delegatedSupportClick: true,
         })
       );
-      setSelectNickId(data);
+      setSelectNickId(data?.nick_name_id);
+      setDelegateNickName(data?.nick_name);
       showModalSupportCamps();
+      setDrawerFor("delegateAdd");
     }
   };
 
   const handleClickSupportCheck = () => {
-    const q: any = router?.query;
-    if (isUserAuthenticated) {
-      dispatch(setManageSupportUrlLink(manageSupportPath));
-      // dispatch(setManageSupportStatusCheck(true));
-      setGetManageSupportLoadingIndicator(false);
-      setSelectNickId(null);
-      q && q.from && q.from.includes("notify_")
-        ? null
-        : showModalSupportCamps();
+    const query = router?.query;
+    if (!isUserAuthenticated) {
+      router?.push("/login");
+      return;
+    }
+    dispatch(setManageSupportUrlLink(manageSupportPath));
+    setSelectNickId(null);
+
+    if (getCheckSupportStatus?.support_flag === 0) {
+      // const shouldShowModal = !query.from?.includes("notify_");
+      // if (shouldShowModal) {
+      //   showModalSupportCamps();
+      // }
+      setDrawerFor("directAdd");
+      showDrawer();
     } else {
-      dispatch(showLoginModal());
+      setDrawerFor("manageSupport");
+      showDrawer();
     }
   };
 
@@ -275,20 +309,6 @@ const SupportTreeCard = ({
       }
     });
   };
-  useEffect(() => {
-    // setTimeout(()=>{
-    //   debugger;
-    //   dispatch(setOpenConsensusTreePopup(false))
-    // },100);
-    // debugger;
-    // (async()=>{
-    // dispatch(setOpenConsensusTreePopup(true))
-    // // await getSupportTreeApi()
-    // setTimeout(()=>{
-    //   dispatch(setOpenConsensusTreePopup(false))
-    // },100);
-    // })()
-  }, []);
 
   useEffect(() => {
     if (!campSupportingTree) return;
@@ -357,6 +377,7 @@ const SupportTreeCard = ({
       </Modal>
     );
   };
+
   const supportLength = 15;
   const renderTreeNodes = (
     data: any,
@@ -399,7 +420,6 @@ const SupportTreeCard = ({
                       >
                         <a className="flex  gap-2.5 items-center flex-wrap text-canBlack hover:!text-canBlack">
                           <span className="text-canBlack text-base font-medium">
-                            {" "}
                             #{data[item].support_order}{" "}
                           </span>
                           <div className="w-[32px] h-[32px] rounded-full overflow-hidden bg-canLightBg flex items-center justify-center">
@@ -418,7 +438,7 @@ const SupportTreeCard = ({
                             )}
                           </div>
 
-                          <span className="text-canBlack lg:text-base text-13 font-medium">
+                          <span className="text-canBlack lg:text-base text-sm font-medium">
                             {" "}
                             {data[item].nick_name}
                           </span>
@@ -473,9 +493,7 @@ const SupportTreeCard = ({
                                   !isUserAuthenticated ||
                                   campRecord?.is_archive === 1
                                 }
-                                onClick={() =>
-                                  handleDelegatedClick(data[item]?.nick_name_id)
-                                }
+                                onClick={() => handleDelegatedClick(data[item])}
                                 className="hidden group-hover:flex mb-2  items-center gap-1 justify-center bg-canLightBlue text-canBlue text-base rounded-lg font-medium h-[44px] w-full "
                               >
                                 <Image
@@ -500,15 +518,7 @@ const SupportTreeCard = ({
                             !isUserAuthenticated ||
                             campRecord?.is_archive
                           }
-                          onClick={() => {
-                            currentGetCheckSupportExistsData.is_delegator
-                              ? setIsDelegateSupportTreeCardModal(true)
-                              : topicList.length <= 1
-                              ? setIsSupportTreeCardModal(true)
-                              : setIsSupportTreeCardModal(true);
-
-                            setModalData(data[item]);
-                          }}
+                          onClick={() => removeSupportModalHandler(data, item)}
                           className="mb-2 flex items-center gap-1 justify-center bg-canLightRed text-canRed text-base rounded-lg font-medium h-[44px] w-full"
                         >
                           <Image
@@ -543,7 +553,41 @@ const SupportTreeCard = ({
 
   // remove support popup added.
 
+  const removeDelegateSupportModal = () => {
+    Modal.confirm({
+      title: "Are you sure you want to remove your support?",
+      icon: <ExclamationCircleFilled />,
+      width: 400,
+      onOk() {
+        currentGetCheckSupportExistsData.is_delegator
+          ? removeSupportForDelegate()
+          : topicList.length <= 1
+          ? removeApiSupport(modalData?.nick_name_id)
+          : removeSupport(modalData?.nick_name_id);
+        setModalData({});
+      },
+    });
+  };
+
   const [removeForm] = Form.useForm();
+
+  const removeSupportModalHandler = (data, item) => {
+    // if (currentGetCheckSupportExistsData.is_delegator) {
+    //   setIsDelegateSupportTreeCardModal(true);
+    //   } else {
+    //     setIsSupportTreeCardModal(true);
+    // }
+
+    if (currentGetCheckSupportExistsData.is_delegator) {
+      // setDrawerFor("delegateRemove")
+      removeDelegateSupportModal();
+    } else {
+      setDrawerFor("directRemove");
+      showDrawer();
+    }
+
+    setModalData(data[item]);
+  };
 
   const onRemoveFinish = async (values) => {
     currentGetCheckSupportExistsData.is_delegator
@@ -561,7 +605,23 @@ const SupportTreeCard = ({
     await getCurrentCampRecordApi(reqBody);
 
     setModalData({});
+    onClose();
     removeForm.resetFields();
+  };
+
+  const renderSupportBtn = () => {
+    if (isUserAuthenticated) {
+      if (
+        getCheckSupportStatus?.support_flag != 1 ||
+        getCheckSupportStatus?.is_delegator == 1
+      ) {
+        return K?.exceptionalMessages?.addSupport;
+      } else {
+        return K?.exceptionalMessages?.manageSupport;
+      }
+    } else {
+      return K.exceptionalMessages?.directJoinSupport;
+    }
   };
   let title = `Support Tree for "${campRecord?.camp_name}" Camp`;
 
@@ -582,6 +642,16 @@ const SupportTreeCard = ({
         // expandIconPosition="right"
         className="topicDetailsCollapse"
       >
+        <SupportTreeDrawer
+          onClose={onClose}
+          open={open}
+          topicList={topicList}
+          drawerFor={drawerFor}
+          setDrawerFor={setDrawerFor}
+          onRemoveFinish={onRemoveFinish}
+          selectNickId={selectNickId}
+          delegateNickName={delegateNickName}
+        />
         <div className=" support-tree-sec">
           {/* <Paragraph className="position-relative">
             Total Support for This Camp (including sub-camps):
@@ -628,12 +698,7 @@ const SupportTreeCard = ({
             disabled={asof == "bydate" || campRecord?.is_archive == 1}
             id="manage-support-btn"
           >
-            <span>
-              {getCheckSupportStatus?.is_delegator == 1 ||
-              getCheckSupportStatus?.support_flag != 1
-                ? K?.exceptionalMessages?.directJoinSupport
-                : K?.exceptionalMessages?.manageSupport}
-            </span>
+            {renderSupportBtn()}
             <Image
               src="/images/hand-icon.svg"
               alt="svg"
@@ -703,12 +768,14 @@ const SupportTreeCard = ({
                   id="supportTreeModalRemoveApi"
                   disabled={asof == "bydate"}
                   onClick={() => {
-                    currentGetCheckSupportExistsData.is_delegator
-                      ? removeSupportForDelegate()
-                      : topicList.length <= 1
-                      ? removeApiSupport(modalData?.nick_name_id)
-                      : removeSupport(modalData?.nick_name_id);
-                    setModalData({});
+                    if (currentGetCheckSupportExistsData.is_delegator) {
+                      // setIsDelegateSupportTreeCardModal(true);
+                      showDrawer();
+                      // } else {
+                      //   setIsSupportTreeCardModal(true);
+                      // showDrawer()
+                    }
+                    // setModalData(data[item]);
                   }}
                   type="primary"
                   style={{

@@ -75,7 +75,7 @@ function ForgotPasswordUI({
         <Form.Item className="text-center mt-4">
           <PrimaryButton
             htmlType="submit"
-            className="h-[40px] text-sm rounded-lg !w-8/12 lg:!w-4/12"
+            className="h-[40px] text-sm rounded-lg !w-8/12 lg:!w-4/12 flex items-center justify-center mx-auto"
             data-testid="submitButton"
             id="submit-btn"
             disabled={!isDisabled}

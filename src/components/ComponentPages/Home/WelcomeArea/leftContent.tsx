@@ -75,7 +75,7 @@ const LeftContent = ({ isUserAuthenticated }) => {
         />
       ) : (
         <PrimaryButton
-          className="w-6/12 h-[44px] text-sm md:w-4/12 mt-3"
+          className="w-6/12 h-[44px] text-sm md:w-4/12 mt-3 flex items-center justify-center"
           onClick={onBrowseClick}
         >
           Browse More <ArrowRightOutlined />
