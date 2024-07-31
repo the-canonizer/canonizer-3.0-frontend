@@ -291,12 +291,13 @@ export default function RecentActivities() {
           <Row gutter={15}>
             <Col md={24} sm={24} xs={24}>
               <div
-                className="flex items-center gap-3.5 lg:!mb-10 mt-5"
+                className="flex items-center gap-3.5 lg:!mb-10 mt-5 "
                 onClick={() => {
                   router?.back();
                 }}
               >
                 <Image
+                className="cursor-pointer"
                   src="/images/recent-activiity-arrow.svg"
                   width={16}
                   height={24}
