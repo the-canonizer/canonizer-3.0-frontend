@@ -308,21 +308,22 @@ function SupportTreeDrawer({
 
   useEffect(() => {
     if (open) {
-      getReasons();
-      getCanonizedNicknameList();
-      getCurrentCampRecordApi(reqBody);
-      GetCheckStatusData();
-      getActiveSupportTopic();
+      if(reasons?.length == 0){
+        getReasons();
+      }
+
+      if(drawerFor === "directAdd"){
+        getCanonizedNicknameList();
+        getCurrentCampRecordApi(reqBody);
+        GetCheckStatusData();
+        getActiveSupportTopic();
+      }
     }
   }, [open]);
 
   useEffect(() => {
     setReasons(reasons);
   }, [reasons]);
-
-  const preventDefault = (e) => {
-    e.preventDefault();
-  };
 
   const enableDisableTagsHandler = (data) => {
     let res = tagsArrayList.map((item, index) => {
