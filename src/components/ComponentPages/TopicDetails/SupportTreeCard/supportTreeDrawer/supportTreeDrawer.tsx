@@ -293,7 +293,7 @@ function SupportTreeDrawer({
 
     let res = await addSupport(addSupportId);
     if (res && res.status_code == 200) {
-      openNotificationWithIcon({ type: "success", message: res?.message });
+      openNotificationWithIcon(res?.message);
       setDrawerFor("");
       onClose();
       await callDetailPageApis();
@@ -311,7 +311,7 @@ function SupportTreeDrawer({
 
     let res = await addDelegateSupportCamps(addDelegatedSupport);
     if (res && res.status_code == 200) {
-      openNotificationWithIcon({ type: "success", message: res?.message });
+      openNotificationWithIcon(res?.message);
       setDrawerFor("");
       onClose();
       await callDetailPageApis();

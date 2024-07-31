@@ -230,7 +230,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
 
     const res = await removeSupportedCamps(supportedCampsRemove);
     if (res && res.status_code == 200) {
-      openNotificationWithIcon({ type: "error", message: res?.message });
+      openNotificationWithIcon( res?.message );
       setIsSupportTreeCardModal(false);
       GetCheckStatusData();
       await getTreesApi(reqBodyForService);
@@ -272,8 +272,8 @@ const TopicDetails = ({ serverSideCall }: any) => {
     };
 
     let res = await addSupport(RemoveSupportId);
-    if (res && res.status_code == 200) {
-      openNotificationWithIcon({ type: "error", message: res?.message });
+    if (res && res.status_code == 200) {     
+       openNotificationWithIcon( res?.message );
       setIsSupportTreeCardModal(false);
       GetCheckStatusData();
       await getTreesApi(reqBodyForService);
@@ -306,7 +306,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
 
     let res = await removeSupportedCampsEntireTopic(removeEntireData);
     if (res && res.status_code == 200) {
-      openNotificationWithIcon({ type: "error", message: res?.message });
+      openNotificationWithIcon( res?.message );
       setRemoveSupportSpinner(false);
       setIsSupportTreeCardModal(false);
       setIsDelegateSupportTreeCardModal(false);
