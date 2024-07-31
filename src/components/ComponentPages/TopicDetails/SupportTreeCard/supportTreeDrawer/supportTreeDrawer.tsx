@@ -379,12 +379,17 @@ function SupportTreeDrawer({
             Delegating Support to
             <span className="ml-1">{delegateNickName || ""}</span>
           </>
-        ) : (
+        ) : drawerFor === "directAdd" ? (
           <>
             Adding Support to camp:
             <span className="ml-1">{campRecord && campRecord?.camp_name}</span>
           </>
-        )}
+        ) : drawerFor === "directRemove" ?(
+          <>
+            Removing Support from camp:
+            <span> {campRecord?.camp_name} </span>
+          </>
+        ): null}
       </>
     );
   };
@@ -702,12 +707,7 @@ function SupportTreeDrawer({
                 className="p-0 drawer-header"
                 onBack={() => null}
                 backIcon={<i className="icon-back"></i>}
-                title={
-                  <>
-                    Removing Support from camp:
-                    <span> {campRecord?.camp_name} </span>
-                  </>
-                }
+                title={renderPageHeaderTitle()}
               />
               <DrawerBreadcrumbs
                 topicRecord={topicRecord}
