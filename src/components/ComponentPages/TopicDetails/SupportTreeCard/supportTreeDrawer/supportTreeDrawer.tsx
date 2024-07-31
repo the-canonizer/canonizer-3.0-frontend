@@ -332,7 +332,11 @@ function SupportTreeDrawer({
 
   useEffect(() => {
     if (open) {
-      if (reasons?.length == 0) {
+      if(
+        drawerFor === "directAdd" ||
+        drawerFor === "manageSupport" ||
+        drawerFor === "directRemove"
+      ){
         getReasons();
       }
 
