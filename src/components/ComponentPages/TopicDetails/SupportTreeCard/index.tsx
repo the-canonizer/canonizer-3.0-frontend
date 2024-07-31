@@ -393,7 +393,7 @@ const SupportTreeCard = ({
     loggedInUserDelegate = false,
     loggedInUserChild = false
   ) => {
-    return Object.keys(data).map((item, index) => {
+    return Object.keys(data)?.map((item, index) => {
       if (userNickNameList?.includes(data[item]?.nick_name_id))
         loggedInUserChild = true;
       const parentIsOneLevel = isOneLevel;

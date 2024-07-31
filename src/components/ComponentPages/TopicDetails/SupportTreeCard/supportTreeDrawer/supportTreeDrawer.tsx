@@ -174,7 +174,7 @@ function SupportTreeDrawer({
   };
 
   function getCampNums(camps) {
-    return camps.map((camp) => camp.camp_num);
+    return camps?.map((camp) => camp.camp_num);
   }
   const reqBody = {
     topic_num: topicNum,
@@ -228,14 +228,14 @@ function SupportTreeDrawer({
     let res = null;
 
     if (e?.target?.checked) {
-      res = tagsArrayList.map((item, index) => {
+      res = tagsArrayList?.map((item, index) => {
         return {
           ...item,
           disabled: true,
         };
       });
     } else {
-      res = tagsArrayList.map((item, index) => {
+      res = tagsArrayList?.map((item, index) => {
         return {
           ...item,
           disabled: false,
@@ -249,7 +249,7 @@ function SupportTreeDrawer({
   const clearChangesHandler = () => {
     setIsQuickActionSelected(false);
 
-    let res = tagsArrayList.map((item, index) => {
+    let res = tagsArrayList?.map((item, index) => {
       return {
         ...item,
         disabled: false,
@@ -354,7 +354,7 @@ function SupportTreeDrawer({
   }, [reasons]);
 
   const enableDisableTagsHandler = (data) => {
-    let res = tagsArrayList.map((item, index) => {
+    let res = tagsArrayList?.map((item, index) => {
       if (item?.id == data?.id) {
         return {
           ...item,
@@ -461,7 +461,7 @@ function SupportTreeDrawer({
                           {parentSupportDataList &&
                             parentSupportDataList.length > 0 && (
                               <div className="horizontal-chips">
-                                {parentSupportDataList.map((item, index) => (
+                                {parentSupportDataList?.map((item, index) => (
                                   <TagList key={index} name={item?.camp_name} />
                                 ))}
                               </div>
@@ -755,7 +755,7 @@ function SupportTreeDrawer({
                           suffixIcon={<i className="icon-chevron-down"></i>}
                           onChange={handleChange}
                         >
-                          {availableReasons.map((res) => (
+                          {availableReasons?.map((res) => (
                             <Select.Option key={res.id} value={res.value}>
                               {res.label}
                             </Select.Option>
