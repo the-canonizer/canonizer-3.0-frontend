@@ -32,7 +32,11 @@ import {
   getTopicActivityLogApi,
   getTreesApi,
 } from "src/network/api/campDetailApi";
-import { addDelegateSupportCamps, addSupport } from "src/network/api/userApi";
+import {
+  addDelegateSupportCamps,
+  addSupport,
+  removeSupportedCamps,
+} from "src/network/api/userApi";
 import { RootState, store } from "src/store";
 import {
   GetActiveSupportTopic,
@@ -56,6 +60,7 @@ function SupportTreeDrawer({
   onRemoveFinish,
   selectNickId: getDelegateId,
   delegateNickName,
+  handleCancelSupportCamps,
 }: any) {
   const {
     reasons,
@@ -100,23 +105,23 @@ function SupportTreeDrawer({
 
   const topic_name = router?.query?.camp?.at(0)?.split("-")?.slice(1).join("-");
 
-  const reqBodyForService = {
-    topic_num: topicNum,
-    camp_num: camp_num,
-    asOf: asof,
-    asofdate:
-      asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
-    algorithm: algorithm,
-    update_all: 1,
-    fetch_topic_history: +router?.query?.topic_history,
-  };
+  // const reqBodyForService = {
+  //   topic_num: topicNum,
+  //   camp_num: camp_num,
+  //   asOf: asof,
+  //   asofdate:
+  //     asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
+  //   algorithm: algorithm,
+  //   update_all: 1,
+  //   fetch_topic_history: +router?.query?.topic_history,
+  // };
 
-  const callDetailPageApis = async () => {
-    GetCheckStatusData();
-    await getTreesApi(reqBodyForService);
-    let res = await getTopicActivityLogApi(reqBodyData);
-    store.dispatch(setCampActivityData(res?.data?.items));
-  };
+  // const callDetailPageApis = async () => {
+  //   GetCheckStatusData();
+  //   await getTreesApi(reqBodyForService);
+  //   let res = await getTopicActivityLogApi(reqBodyData);
+  //   store.dispatch(setCampActivityData(res?.data?.items));
+  // };
 
   const transformDataForDraggable = (data) => {
     return data?.map((item, index) => {
@@ -136,6 +141,12 @@ function SupportTreeDrawer({
         order: index + 1,
       };
     });
+  };
+
+  const shouldRemoveSupport = () => {
+    return !!(
+      tagsArrayList?.filter((item) => item.disabled == true).length > 0
+    );
   };
 
   const handleChange = (value) => {
@@ -276,29 +287,54 @@ function SupportTreeDrawer({
   };
 
   const addSupportMethod = async (values) => {
-    let addSupportId = {
-      topic_num: topicNum,
-      add_camp:
-        supportedCampsStatus?.support_flag == 1
-          ? {}
-          : { camp_num: camp_num, support_order: tagsArrayList?.length },
-      remove_camps: removeSupportFromCamps(),
-      type: "direct",
-      action: removeSupportFromCamps()?.length > 0 ? "partial" : "add",
-      nick_name_id: nictNameId,
-      order_update: transformSupportOrderForAPI(tagsArrayList),
-      reason_summary: values?.description,
-      reasons: selectedValue,
-    };
+    if (shouldRemoveSupport()) {
+      let payload = {
+        topic_num: reqBodyData.topic_num,
+        remove_camps: removeSupportFromCamps(),
+        type: "direct",
+        action: "all",
+        nick_name_id: nictNameId,
+        order_update: transformSupportOrderForAPI(tagsArrayList),
+      };
 
-    let res = await addSupport(addSupportId);
-    if (res && res.status_code == 200) {
-      openNotificationWithIcon(res?.message);
-      setDrawerFor("");
-      onClose();
-      await callDetailPageApis();
-      form.resetFields();
-      setSelectedValue(null);
+      let res = await removeSupportedCamps(payload);
+      if (res && res.status_code == 200) {
+        openNotificationWithIcon(res?.message);
+        await  handleCancelSupportCamps({ isCallApiStatus: true });
+        getCurrentCampRecordApi(reqBody);
+        setDrawerFor("");
+        onClose();
+        // await callDetailPageApis();
+        form.resetFields();
+        setSelectedValue(null);
+      }
+    } else {
+      let payload = {
+        topic_num: topicNum,
+        add_camp:
+          supportedCampsStatus?.support_flag == 1
+            ? {}
+            : { camp_num: camp_num, support_order: tagsArrayList?.length },
+        remove_camps: removeSupportFromCamps(),
+        type: "direct",
+        action: removeSupportFromCamps()?.length > 0 ? "partial" : "add",
+        nick_name_id: nictNameId,
+        order_update: transformSupportOrderForAPI(tagsArrayList),
+        reason_summary: values?.description,
+        reasons: selectedValue,
+      };
+
+      let res = await addSupport(payload);
+      if (res && res.status_code == 200) {
+        openNotificationWithIcon(res?.message);
+        await  handleCancelSupportCamps({ isCallApiStatus: true });
+        getCurrentCampRecordApi(reqBody);
+        setDrawerFor("");
+        onClose();
+        // await callDetailPageApis();
+        form.resetFields();
+        setSelectedValue(null);
+      }
     }
   };
 
@@ -312,17 +348,19 @@ function SupportTreeDrawer({
     let res = await addDelegateSupportCamps(addDelegatedSupport);
     if (res && res.status_code == 200) {
       openNotificationWithIcon(res?.message);
+      await  handleCancelSupportCamps({ isCallApiStatus: true });
+      getCurrentCampRecordApi(reqBody);
       setDrawerFor("");
       onClose();
-      await callDetailPageApis();
+      // await callDetailPageApis();
     }
   };
 
   const onFinish = async (values) => {
     if (drawerFor === "delegateAdd") {
-      addDelegateMethod();
+      await addDelegateMethod();
     } else if (drawerFor === "directAdd" || drawerFor === "manageSupport") {
-      addSupportMethod(values);
+     await  addSupportMethod(values);
     }
   };
 
@@ -332,11 +370,11 @@ function SupportTreeDrawer({
 
   useEffect(() => {
     if (open) {
-      if(
+      if (
         drawerFor === "directAdd" ||
         drawerFor === "manageSupport" ||
         drawerFor === "directRemove"
-      ){
+      ) {
         getReasons();
       }
 
@@ -542,7 +580,7 @@ function SupportTreeDrawer({
                                     closable={true}
                                     onClose={() => {
                                       enableDisableTagsHandler(tag);
-                                      setIsQuickActionSelected(false);
+                                      setIsQuickActionSelected(true);
                                     }}
                                   >
                                     {/* {filterList(tag.camp_num, index)} */}
