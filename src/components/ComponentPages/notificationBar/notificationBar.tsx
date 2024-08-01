@@ -7,7 +7,7 @@ export const openNotificationWithIcon = (messageData) => {
 
   const showMessage = (type, message) => {
     notification[type]({
-      duration: 5,
+      duration: 3,
       closeIcon: null,
       className: "thm-notification",
       icon: <CheckCircleFilled />,
@@ -27,5 +27,9 @@ export const openNotificationWithIcon = (messageData) => {
     removeMessages.forEach((message) => {
       showMessage("error", message);
     });
+  }
+
+  if(typeof messageData != 'object' && messageData !== null){
+    showMessage("success", messageData);
   }
 };

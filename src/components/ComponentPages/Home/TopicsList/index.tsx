@@ -220,7 +220,7 @@ const TopicsList = () => {
   ]);
 
   const memoizedOptions = useMemo(() => {
-    return nameSpacesList.map((item) => (
+    return nameSpacesList?.map((item) => (
       <Select.Option id={`name-space-${item.id}`} key={item.id} value={item.id}>
         {changeSlashToArrow(item.label)}
       </Select.Option>

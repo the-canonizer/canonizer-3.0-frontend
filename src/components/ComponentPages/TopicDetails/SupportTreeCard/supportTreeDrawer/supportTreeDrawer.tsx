@@ -60,6 +60,7 @@ function SupportTreeDrawer({
   onRemoveFinish,
   selectNickId: getDelegateId,
   delegateNickName,
+  handleCancelSupportCamps,
 }: any) {
   const {
     reasons,
@@ -104,23 +105,23 @@ function SupportTreeDrawer({
 
   const topic_name = router?.query?.camp?.at(0)?.split("-")?.slice(1).join("-");
 
-  const reqBodyForService = {
-    topic_num: topicNum,
-    camp_num: camp_num,
-    asOf: asof,
-    asofdate:
-      asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
-    algorithm: algorithm,
-    update_all: 1,
-    fetch_topic_history: +router?.query?.topic_history,
-  };
+  // const reqBodyForService = {
+  //   topic_num: topicNum,
+  //   camp_num: camp_num,
+  //   asOf: asof,
+  //   asofdate:
+  //     asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
+  //   algorithm: algorithm,
+  //   update_all: 1,
+  //   fetch_topic_history: +router?.query?.topic_history,
+  // };
 
-  const callDetailPageApis = async () => {
-    GetCheckStatusData();
-    await getTreesApi(reqBodyForService);
-    let res = await getTopicActivityLogApi(reqBodyData);
-    store.dispatch(setCampActivityData(res?.data?.items));
-  };
+  // const callDetailPageApis = async () => {
+  //   GetCheckStatusData();
+  //   await getTreesApi(reqBodyForService);
+  //   let res = await getTopicActivityLogApi(reqBodyData);
+  //   store.dispatch(setCampActivityData(res?.data?.items));
+  // };
 
   const transformDataForDraggable = (data) => {
     return data?.map((item, index) => {
@@ -299,9 +300,11 @@ function SupportTreeDrawer({
       let res = await removeSupportedCamps(payload);
       if (res && res.status_code == 200) {
         openNotificationWithIcon(res?.message);
+        await  handleCancelSupportCamps({ isCallApiStatus: true });
+        getCurrentCampRecordApi(reqBody);
         setDrawerFor("");
         onClose();
-        await callDetailPageApis();
+        // await callDetailPageApis();
         form.resetFields();
         setSelectedValue(null);
       }
@@ -324,9 +327,11 @@ function SupportTreeDrawer({
       let res = await addSupport(payload);
       if (res && res.status_code == 200) {
         openNotificationWithIcon(res?.message);
+        await  handleCancelSupportCamps({ isCallApiStatus: true });
+        getCurrentCampRecordApi(reqBody);
         setDrawerFor("");
         onClose();
-        await callDetailPageApis();
+        // await callDetailPageApis();
         form.resetFields();
         setSelectedValue(null);
       }
@@ -343,17 +348,19 @@ function SupportTreeDrawer({
     let res = await addDelegateSupportCamps(addDelegatedSupport);
     if (res && res.status_code == 200) {
       openNotificationWithIcon(res?.message);
+      await  handleCancelSupportCamps({ isCallApiStatus: true });
+      getCurrentCampRecordApi(reqBody);
       setDrawerFor("");
       onClose();
-      await callDetailPageApis();
+      // await callDetailPageApis();
     }
   };
 
   const onFinish = async (values) => {
     if (drawerFor === "delegateAdd") {
-      addDelegateMethod();
+      await addDelegateMethod();
     } else if (drawerFor === "directAdd" || drawerFor === "manageSupport") {
-      addSupportMethod(values);
+     await  addSupportMethod(values);
     }
   };
 
