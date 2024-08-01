@@ -177,10 +177,10 @@ const SupportTreeCard = ({
     setOpen(false);
     setDrawerFor("");
   };
-  // const showModalSupportCamps = () => {
-  //   showDrawer();
-  //   // dispatch(setIsSupportModal(true));
-  // };
+  const showModalSupportCamps = () => {
+    showDrawer();
+    // dispatch(setIsSupportModal(true));
+  };
   const handleOkSupportCamps = () => {
     dispatch(setIsSupportModal(false));
   };
@@ -268,11 +268,8 @@ const SupportTreeCard = ({
       );
       setSelectNickId(data?.nick_name_id);
       setDelegateNickName(data?.nick_name);
-      if(getCheckSupportStatus?.support_flag ===0){
-        // showModalSupportCamps();
-       showDrawer();
-        setDrawerFor(drawerOptions.delegateAdd);
-      }
+      showModalSupportCamps();
+      setDrawerFor(drawerOptions.delegateAdd);
     }
   };
 
@@ -292,7 +289,7 @@ const SupportTreeCard = ({
       // }
       setDrawerFor(drawerOptions.directAdd);
       showDrawer();
-    } else if(getCheckSupportStatus?.support_flag === 1) {
+    } else {
       setDrawerFor(drawerOptions.manageSupport);
       showDrawer();
     }
@@ -644,14 +641,12 @@ const SupportTreeCard = ({
   const renderSupportBtn = () => {
     if (isUserAuthenticated) {
       if (
-        getCheckSupportStatus?.support_flag == 0
+        getCheckSupportStatus?.support_flag != 1
         // ||
         // getCheckSupportStatus?.is_delegator == 1
       ) {
         return K?.exceptionalMessages?.addSupport;
-      } else if (
-        getCheckSupportStatus?.support_flag == 1
-      ) {
+      } else {
         return K?.exceptionalMessages?.manageSupport;
       }
     } else {
