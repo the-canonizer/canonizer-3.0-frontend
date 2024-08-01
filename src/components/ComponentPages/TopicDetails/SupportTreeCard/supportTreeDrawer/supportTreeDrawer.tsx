@@ -573,7 +573,7 @@ function SupportTreeDrawer({
                                     closable={true}
                                     onClose={() => {
                                       enableDisableTagsHandler(tag);
-                                      setIsQuickActionSelected(false);
+                                      setIsQuickActionSelected(true);
                                     }}
                                   >
                                     {/* {filterList(tag.camp_num, index)} */}
