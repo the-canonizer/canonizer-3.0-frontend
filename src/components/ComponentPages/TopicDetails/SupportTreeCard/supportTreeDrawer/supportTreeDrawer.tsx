@@ -294,7 +294,7 @@ function SupportTreeDrawer({
         type: "direct",
         action: "all",
         nick_name_id: nictNameId,
-        order_update: [],
+        order_update: transformSupportOrderForAPI(tagsArrayList),
       };
 
       let res = await removeSupportedCamps(payload);
