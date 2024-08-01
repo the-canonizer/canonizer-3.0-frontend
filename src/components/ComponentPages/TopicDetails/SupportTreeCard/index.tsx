@@ -282,7 +282,7 @@ const SupportTreeCard = ({
     dispatch(setManageSupportUrlLink(manageSupportPath));
     setSelectNickId(null);
 
-    if (getCheckSupportStatus?.support_flag === 0) {
+    if (getCheckSupportStatus?.support_flag === 0 || getCheckSupportStatus?.is_delegator==1) {
       // const shouldShowModal = !query.from?.includes("notify_");
       // if (shouldShowModal) {
       //   showModalSupportCamps();
@@ -640,13 +640,12 @@ const SupportTreeCard = ({
 
   const renderSupportBtn = () => {
     if (isUserAuthenticated) {
-      if (
-        getCheckSupportStatus?.support_flag != 1
-        // ||
-        // getCheckSupportStatus?.is_delegator == 1
+      if 
+        (getCheckSupportStatus?.support_flag == 0 ||
+        getCheckSupportStatus?.is_delegator == 1
       ) {
         return K?.exceptionalMessages?.addSupport;
-      } else {
+      } else if(getCheckSupportStatus?.support_flag == 1){
         return K?.exceptionalMessages?.manageSupport;
       }
     } else {
