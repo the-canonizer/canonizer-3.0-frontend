@@ -32,7 +32,11 @@ import {
   getTopicActivityLogApi,
   getTreesApi,
 } from "src/network/api/campDetailApi";
-import { addDelegateSupportCamps, addSupport } from "src/network/api/userApi";
+import {
+  addDelegateSupportCamps,
+  addSupport,
+  removeSupportedCamps,
+} from "src/network/api/userApi";
 import { RootState, store } from "src/store";
 import {
   GetActiveSupportTopic,
@@ -136,6 +140,12 @@ function SupportTreeDrawer({
         order: index + 1,
       };
     });
+  };
+
+  const shouldRemoveSupport = () => {
+    return !!(
+      tagsArrayList?.filter((item) => item.disabled == true).length > 0
+    );
   };
 
   const handleChange = (value) => {
@@ -276,29 +286,50 @@ function SupportTreeDrawer({
   };
 
   const addSupportMethod = async (values) => {
-    let addSupportId = {
-      topic_num: topicNum,
-      add_camp:
-        supportedCampsStatus?.support_flag == 1
-          ? {}
-          : { camp_num: camp_num, support_order: tagsArrayList?.length },
-      remove_camps: removeSupportFromCamps(),
-      type: "direct",
-      action: removeSupportFromCamps()?.length > 0 ? "partial" : "add",
-      nick_name_id: nictNameId,
-      order_update: transformSupportOrderForAPI(tagsArrayList),
-      reason_summary: values?.description,
-      reasons: selectedValue,
-    };
+    if (shouldRemoveSupport()) {
+      let payload = {
+        topic_num: reqBodyData.topic_num,
+        remove_camps: removeSupportFromCamps(),
+        type: "direct",
+        action: "all",
+        nick_name_id: nictNameId,
+        order_update: [],
+      };
 
-    let res = await addSupport(addSupportId);
-    if (res && res.status_code == 200) {
-      openNotificationWithIcon(res?.message);
-      setDrawerFor("");
-      onClose();
-      await callDetailPageApis();
-      form.resetFields();
-      setSelectedValue(null);
+      let res = await removeSupportedCamps(payload);
+      if (res && res.status_code == 200) {
+        openNotificationWithIcon(res?.message);
+        setDrawerFor("");
+        onClose();
+        await callDetailPageApis();
+        form.resetFields();
+        setSelectedValue(null);
+      }
+    } else {
+      let payload = {
+        topic_num: topicNum,
+        add_camp:
+          supportedCampsStatus?.support_flag == 1
+            ? {}
+            : { camp_num: camp_num, support_order: tagsArrayList?.length },
+        remove_camps: removeSupportFromCamps(),
+        type: "direct",
+        action: removeSupportFromCamps()?.length > 0 ? "partial" : "add",
+        nick_name_id: nictNameId,
+        order_update: transformSupportOrderForAPI(tagsArrayList),
+        reason_summary: values?.description,
+        reasons: selectedValue,
+      };
+
+      let res = await addSupport(payload);
+      if (res && res.status_code == 200) {
+        openNotificationWithIcon(res?.message);
+        setDrawerFor("");
+        onClose();
+        await callDetailPageApis();
+        form.resetFields();
+        setSelectedValue(null);
+      }
     }
   };
 
@@ -332,11 +363,11 @@ function SupportTreeDrawer({
 
   useEffect(() => {
     if (open) {
-      if(
+      if (
         drawerFor === "directAdd" ||
         drawerFor === "manageSupport" ||
         drawerFor === "directRemove"
-      ){
+      ) {
         getReasons();
       }
 
