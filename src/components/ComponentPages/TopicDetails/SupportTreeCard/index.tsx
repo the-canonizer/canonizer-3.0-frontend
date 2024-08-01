@@ -91,6 +91,8 @@ const SupportTreeCard = ({
   backGroundColorClass,
   getCheckStatusAPI,
   GetActiveSupportTopicList,
+  setSupportTreeForCamp,
+  setTotalCampScoreForSupportTree,
 }: any) => {
   const {
     currentGetCheckSupportExistsData,
@@ -151,24 +153,24 @@ const SupportTreeCard = ({
     delegateRemove: "delegateRemove",
     manageSupport: "manageSupport",
   };
+  // useEffect(() => {
+  //   let data = tree && tree?.at(0);
+  //   if (!data) return;
 
-  useEffect(() => {
-    let data = tree && tree?.at(0);
-    if (!data) return;
+  //   let sortedData = Object.keys(data)
+  //     .map((key) => [Number(key), data[key]])
+  //     .sort((a, b) => b[1].score - a[1].score);
+  //   let treeData = sortedData?.at(0)?.at(1);
 
-    let sortedData = Object.keys(data)
-      .map((key) => [Number(key), data[key]])
-      .sort((a, b) => b[1].score - a[1].score);
-    let treeData = sortedData?.at(0)?.at(1);
+  //   if (router?.query?.camp?.at(1)?.split("-")?.at(0)) {
+  //     if (treeData?.camp_id == router?.query?.camp?.at(1)?.split("-")?.at(0)) {
+  //       setSupportTreeData(treeData?.support_tree);
+  //     } else if (treeData?.camp_id == 1) {
+  //       setSupportTreeData(treeData?.support_tree);
+  //     }
+  //   }
+  // }, [tree]);
 
-    if (router?.query?.camp?.at(1)?.split("-")?.at(0)) {
-      if (treeData?.camp_id == router?.query?.camp?.at(1)?.split("-")?.at(0)) {
-        setSupportTreeData(treeData?.support_tree);
-      } else if (treeData?.camp_id == 1) {
-        setSupportTreeData(treeData?.support_tree);
-      }
-    }
-  }, [tree]);
 
   const showDrawer = () => {
     setOpen(true);
@@ -342,7 +344,7 @@ const SupportTreeCard = ({
   useEffect(() => {
     if (!campSupportingTree) return;
 
-    const campLeader = campSupportingTree.find(
+    const campLeader = campSupportingTree?.length>0 && campSupportingTree?.find(
       (obj) => obj.camp_leader === true
     );
 
@@ -407,6 +409,7 @@ const SupportTreeCard = ({
     );
   };
 
+
   const supportLength = 15;
   const renderTreeNodes = (
     data: any,
@@ -421,6 +424,28 @@ const SupportTreeCard = ({
       const parentIsOneLevel = isOneLevel;
       isOneLevel = data[item].is_one_level == 1 || isOneLevel == 1 ? 1 : 0;
       //isDisabled = data[item].is_disabled == 1 || isDisabled == 1 ? 1 : 0;
+      console.log('tree ..', data[item])
+
+      if (router?.query?.camp?.at(1)?.split("-")?.at(0)) {
+        if (
+          data[item]?.camp_id == router?.query?.camp?.at(1)?.split("-")?.at(0)
+        ) {
+          setSupportTreeForCamp(data[item].support_tree);
+          is_checked && isUserAuthenticated
+            ? setTotalCampScoreForSupportTree(data[item].full_score)
+            : setTotalCampScoreForSupportTree(data[item].score);
+
+            setSupportTreeData(data[item])
+        }
+      } else {
+        if (data[item]?.camp_id == 1) {
+          setSupportTreeForCamp(data[item].support_tree);
+          is_checked && isUserAuthenticated
+            ? setTotalCampScoreForSupportTree(data[item].full_score)
+            : setTotalCampScoreForSupportTree(data[item].score);
+            setSupportTreeData(data[item])
+        }
+      }
       if ((!loadMore && index < supportLength) || loadMore) {
         if (data[item].delegates) {
           /* eslint-disable */
@@ -614,6 +639,7 @@ const SupportTreeCard = ({
       setDrawerFor(drawerOptions.directRemove);
       showDrawer();
     }
+    setSupportTreeForCamp({})
 
     setModalData(data?.at(item));
   };
@@ -693,7 +719,7 @@ const SupportTreeCard = ({
             </span>
           </Paragraph> */}
 
-          {supportTreeData?.length > 0 ? (
+          {campSupportingTree?.length > 0 ? (
             <Tree
               className={"Parent_Leaf"}
               showLine={false}
@@ -705,7 +731,7 @@ const SupportTreeCard = ({
               ]}
               defaultExpandAll={true}
             >
-              {supportTreeData && renderTreeNodes(supportTreeData)}
+              {campSupportingTree && renderTreeNodes(campSupportingTree)}
             </Tree>
           ) : (
             <p> No direct supporters of this camp</p>
