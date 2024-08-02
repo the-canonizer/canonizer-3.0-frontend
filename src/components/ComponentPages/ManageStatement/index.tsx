@@ -57,57 +57,32 @@ function ManageStatements({ isEdit = false, add = false }) {
   const isDraft = router?.query?.is_draft;
   // let editorTextLength = editorState.replace(/<(?!img\b)[^\s<>]*>/, "").length;
 
-  // function normalizeHtml(html) {
-  //   // Remove all whitespace between HTML tags
-  //   return html?.trim()?.replace(/>\s+</g, "><");
-  // }
-
   useEffect(() => {
     const backdata = editStatementData;
-    console.log("---dkd---", values, backdata?.statement);
-
-    // const isStatementDifferent =
-    //   backdata?.statement?.value?.trim() !== values?.statement?.trim();
-    // const isNicknameDifferent = backdata?.nick_name?.id !== values?.nick_name;
-    // const isEditSummaryDifferent =
-    //   backdata?.statement?.edit_summary !== values?.edit_summary;
 
     // Check if backdata and its nested properties are defined
     const statementValue = backdata?.statement?.value?.trim();
-    const statementEditSummary = backdata?.statement?.edit_summary;
-    const nickNameId = backdata?.nick_name?.id;
+    const statementEditSummary = backdata?.statement?.edit_summary || "";
+    const nickNameId = backdata?.nick_name[0]?.id;
 
-    const isStatementDifferent = statementValue !== values?.statement?.trim();
-    const isNicknameDifferent = nickNameId !== values?.nick_name;
+    const isStatementDifferent =
+      JSON.stringify(statementValue) ===
+      JSON.stringify(values?.statement?.trim());
+    const isNicknameDifferent = nickNameId === values?.nick_name;
     const isEditSummaryDifferent =
-      statementEditSummary !== values?.edit_summary;
+      statementEditSummary === values?.edit_summary;
 
     if (
       isEdit &&
-      (isStatementDifferent || isNicknameDifferent || isEditSummaryDifferent)
+      isStatementDifferent &&
+      isNicknameDifferent &&
+      isEditSummaryDifferent
     ) {
       setSubmitIsDisable(true);
     } else {
       setSubmitIsDisable(false);
     }
   }, [values, editStatementData, isEdit]);
-
-  // useEffect(() => {
-  //   const backdata = editStatementData;
-  //   console.log("---dkd---", values, backdata?.statement);
-
-  //   if (
-  //     isEdit &&
-  //     (normalizeHtml(backdata?.statement?.value) !==
-  //       normalizeHtml(values?.statement) ||
-  //       backdata?.nick_name?.id !== values?.nick_name ||
-  //       backdata?.statement?.edit_summary !== values?.edit_summary)
-  //   ) {
-  //     setSubmitIsDisable(true);
-  //   } else {
-  //     setSubmitIsDisable(false);
-  //   }
-  // }, [values, editStatementData]);
 
   const topicURL = () => {
     const backdata = editStatementData;
@@ -389,12 +364,6 @@ function ManageStatements({ isEdit = false, add = false }) {
 
     if (typeof nowFormStatus.statement == "string") {
       nowFormStatus.statement = nowFormStatus.statement.trim();
-    }
-
-    if (JSON.stringify(nowFormStatus) == JSON.stringify(initialFormStatus)) {
-      setSubmitIsDisable(true);
-    } else {
-      setSubmitIsDisable(false);
     }
   };
 

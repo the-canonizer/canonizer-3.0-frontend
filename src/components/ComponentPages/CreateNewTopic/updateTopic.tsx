@@ -75,6 +75,7 @@ const UpdateTopic = () => {
       currentTopic?.topic_name?.trim() !== values?.topic_name?.trim() ||
       currentTopic?.submitter_nick_id !== values?.nick_name ||
       currentTopic?.namespace_id !== values?.namespace ||
+      currentTopic?.edit_summary !== values?.edit_summary ||
       !compareTags(currentTopic?.tags, selectedCats)
     ) {
       setIsSubmitReq(true);
@@ -120,6 +121,7 @@ const UpdateTopic = () => {
           await form.setFieldValue("nick_name", resData[0]?.id);
           await form.setFieldValue("topic_name", topicData?.topic_name);
           await form.setFieldValue("namespace", topicData?.namespace_id);
+          await form.setFieldValue("edit_summary", topicData?.edit_summary);
 
           setNickNameList(resData);
         }

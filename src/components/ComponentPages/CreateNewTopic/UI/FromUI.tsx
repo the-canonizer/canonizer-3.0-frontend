@@ -262,8 +262,10 @@ const CreateTopicFromUI = ({
                 name="edit_summary"
                 label={
                   <>
-                    Add Summary Of Changes{" "}
-                    <small>(Briefly describe your changes)</small>
+                    Add Summary Of Changes
+                    <small className="ml-1">
+                      (Briefly describe your changes)
+                    </small>
                   </>
                 }
                 rules={messages.summaryRule}

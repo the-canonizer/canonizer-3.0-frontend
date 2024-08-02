@@ -76,13 +76,6 @@ function ManageStatementUI({
   onPreviewClick,
   isDraft,
 }) {
-  console.log(
-    "IS-DISABLED---",
-    submitIsDisable,
-    !isDisabled,
-    "<--- variables, final output ---->",
-    submitIsDisable || !isDisabled
-  );
   return (
     <CommonCards className="border-0 bg-white">
       <header className="mb-14">
