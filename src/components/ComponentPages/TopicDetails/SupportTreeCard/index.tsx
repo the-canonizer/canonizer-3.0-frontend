@@ -424,7 +424,6 @@ const SupportTreeCard = ({
       const parentIsOneLevel = isOneLevel;
       isOneLevel = data[item].is_one_level == 1 || isOneLevel == 1 ? 1 : 0;
       //isDisabled = data[item].is_disabled == 1 || isDisabled == 1 ? 1 : 0;
-      console.log('tree ..', data[item])
 
       if (router?.query?.camp?.at(1)?.split("-")?.at(0)) {
         if (
