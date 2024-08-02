@@ -5,8 +5,10 @@ import { FileTextOutlined, HomeOutlined } from "@ant-design/icons";
 
 import { getAllUsedNickNames } from "src/network/api/campDetailApi";
 import useAuthentication from "src/hooks/isUserAuthenticated";
-import { getEditStatementApi } from "src/network/api/campManageStatementApi";
-import { updateStatementApi } from "src/network/api/campManageStatementApi";
+import {
+  getEditStatementApi,
+  updateStatementApi,
+} from "src/network/api/campManageStatementApi";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
 import DataNotFound from "../DataNotFound/dataNotFound";
 import Breadcrumbs from "components/shared/Breadcrumbs";
@@ -30,14 +32,7 @@ function ManageStatements({ isEdit = false, add = false }) {
   const [submitIsDisable, setSubmitIsDisable] = useState(false);
   const [nickNameData, setNickNameData] = useState([]);
   const [screenLoading, setScreenLoading] = useState(false);
-  const [initialFormValues, setInitialFormValues] = useState({});
   const [editorState, setEditorState] = useState("");
-  const [existedTopic, setExistedTopic] = useState({
-    data: null,
-    url: "",
-    status: false,
-    topicName: "",
-  });
   const [isDisabled, setIsDisabled] = useState(true);
   const [isPopupLoading, setIsPopupLoading] = useState(false);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
@@ -55,7 +50,6 @@ function ManageStatements({ isEdit = false, add = false }) {
 
   const update = router?.query?.statement?.at(0)?.split("-")[1] == "update";
   const isDraft = router?.query?.is_draft;
-  // let editorTextLength = editorState.replace(/<(?!img\b)[^\s<>]*>/, "").length;
 
   useEffect(() => {
     const backdata = editStatementData;
@@ -188,7 +182,6 @@ function ManageStatements({ isEdit = false, add = false }) {
             };
 
         form.setFieldsValue(formData);
-        setInitialFormValues(form.getFieldsValue());
         setNickNameData(nickNames);
       }
 
@@ -217,7 +210,7 @@ function ManageStatements({ isEdit = false, add = false }) {
     if (res?.status_code == 200) {
       if (!isEdit) {
         if (isSaveDraft) {
-          router?.push({ pathname: topicURL() });
+          router?.push(router?.asPath?.replace("create/statement", "topic"));
         } else {
           router?.push(
             router?.asPath?.replace("create/statement", "statement/history")
@@ -225,6 +218,11 @@ function ManageStatements({ isEdit = false, add = false }) {
         }
         return;
       } else if (isEdit) {
+        // if (isSaveDraft) {
+        //   router?.push({ pathname: topicURL() });
+        //   return;
+        // }
+
         const route = `${editInfo?.topic?.topic_num}-${replaceSpecialCharacters(
           editInfo?.topic?.topic_name,
           "-"
@@ -264,7 +262,6 @@ function ManageStatements({ isEdit = false, add = false }) {
         ? nickNameData[0]?.id
         : editInfo?.statement?.submitter_nick_id,
       statement: blocks,
-      event_type: !isEdit ? "create" : update ? "edit" : "update",
       statement_id:
         update || isDraft ? router?.query?.statement[0]?.split("-")[0] : null,
       objection_reason: null,
@@ -278,6 +275,14 @@ function ManageStatements({ isEdit = false, add = false }) {
       old_parent_camp_num: null,
       camp_leader_nick_id: null,
     };
+
+    if (!isEdit) {
+      reqBody.event_type = "create";
+    } else if (update) {
+      reqBody.event_type = "edit";
+    } else {
+      reqBody.event_type = "update";
+    }
 
     if (isSaveDraft) {
       reqBody.is_draft = 1;
@@ -298,72 +303,19 @@ function ManageStatements({ isEdit = false, add = false }) {
   };
 
   const handleformvalues = () => {
-    setExistedTopic({
-      ...existedTopic,
-      data: null,
-      url: "",
-      status: false,
-    });
-    let initialFormStatus = {
-      statement: "",
-      edit_summary: "",
-    } as any;
+    const cleanValues = (values) =>
+      Object.keys(values).reduce((acc, key) => {
+        acc[key] = values[key] ?? "";
+        if (typeof acc[key] === "string") {
+          acc[key] = acc[key].trim();
+        }
+        return acc;
+      }, {});
 
-    let nowFormStatus = {
-      statement: "",
-      edit_summary: "",
-    } as any;
+    const nowFormStatus: any = cleanValues(form?.getFieldsValue());
 
-    initialFormStatus = Object.keys(initialFormValues).reduce((acc, key) => {
-      acc[key] =
-        initialFormValues[key] === null || undefined
-          ? ""
-          : initialFormValues[key];
-      return acc;
-    }, {});
-
-    if (initialFormStatus?.edit_summary == null || undefined) {
-      initialFormStatus.edit_summary = "";
-    }
-
-    if (initialFormStatus?.statement == null || undefined) {
-      initialFormStatus.statement = "";
-    }
-
-    if (typeof initialFormStatus.edit_summary == "string") {
-      initialFormStatus.edit_summary = initialFormStatus.edit_summary.trim();
-    }
-
-    if (typeof initialFormStatus.statement == "string") {
-      initialFormStatus.statement = initialFormStatus.statement.trim();
-    }
-
-    nowFormStatus = Object.keys(form?.getFieldsValue()).reduce((acc, key) => {
-      acc[key] =
-        form?.getFieldsValue()[key] === null || undefined
-          ? ""
-          : form?.getFieldsValue()[key];
-      return acc;
-    }, {});
-
-    if (nowFormStatus?.parent_camp_num) {
+    if (nowFormStatus.parent_camp_num) {
       delete nowFormStatus.parent_camp_num;
-    }
-
-    if (nowFormStatus?.edit_summary == null || undefined) {
-      nowFormStatus.edit_summary = "";
-    }
-
-    if (nowFormStatus?.statement == null || undefined) {
-      nowFormStatus.statement = "";
-    }
-
-    if (typeof nowFormStatus.edit_summary == "string") {
-      nowFormStatus.edit_summary = nowFormStatus.edit_summary.trim();
-    }
-
-    if (typeof nowFormStatus.statement == "string") {
-      nowFormStatus.statement = nowFormStatus.statement.trim();
     }
   };
 

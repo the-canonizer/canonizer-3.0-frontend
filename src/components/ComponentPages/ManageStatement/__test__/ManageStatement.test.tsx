@@ -9,14 +9,13 @@ import {
 
 import AddOrManage from "../index";
 import { Provider } from "react-redux";
-// import { store } from "src/store";
 
 import {
   getAllCampNickNames,
   getAllParentsCamp,
   getAllUsedNickNames,
   getCurrentTopicRecordApi,
-} from "../../../../../network/api/campDetailApi";
+} from "src/network/api/campDetailApi";
 
 import configureMockStore from "redux-mock-store";
 
