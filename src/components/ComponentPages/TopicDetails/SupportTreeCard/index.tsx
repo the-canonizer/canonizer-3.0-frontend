@@ -153,24 +153,6 @@ const SupportTreeCard = ({
     delegateRemove: "delegateRemove",
     manageSupport: "manageSupport",
   };
-  // useEffect(() => {
-  //   let data = tree && tree?.at(0);
-  //   if (!data) return;
-
-  //   let sortedData = Object.keys(data)
-  //     .map((key) => [Number(key), data[key]])
-  //     .sort((a, b) => b[1].score - a[1].score);
-  //   let treeData = sortedData?.at(0)?.at(1);
-
-  //   if (router?.query?.camp?.at(1)?.split("-")?.at(0)) {
-  //     if (treeData?.camp_id == router?.query?.camp?.at(1)?.split("-")?.at(0)) {
-  //       setSupportTreeData(treeData?.support_tree);
-  //     } else if (treeData?.camp_id == 1) {
-  //       setSupportTreeData(treeData?.support_tree);
-  //     }
-  //   }
-  // }, [tree]);
-
 
   const showDrawer = () => {
     setOpen(true);
@@ -181,8 +163,8 @@ const SupportTreeCard = ({
   };
   const showModalSupportCamps = () => {
     showDrawer();
-    // dispatch(setIsSupportModal(true));
   };
+
   const handleOkSupportCamps = () => {
     dispatch(setIsSupportModal(false));
   };
@@ -201,10 +183,6 @@ const SupportTreeCard = ({
     await getTreesApi(reqBodyForService);
   };
   const handleCancelSupportCamps = async ({ isCallApiStatus = false }) => {
-    // dispatch(setIsSupportModal(false));
-    // setGetManageSupportLoadingIndicator(true);
-    // setLoadingIndicatorSupport(true);
-
     if (isCallApiStatus == true) {
       await getCheckStatusAPI();
     }
@@ -212,12 +190,9 @@ const SupportTreeCard = ({
       await getSupportTreeApi();
       GetActiveSupportTopicList();
     }
-
-    // setSelectNickId(null);
-    // setLoadingIndicatorSupport(false);
     setTimeout(() => setMainComponentKey(mainComponentKey + 1), 500);
-    // setComponentKey2(componentKey2 + 1);
   };
+
   useEffect(() => {
     const filteredAlgo = algorithms?.filter(
       (a: { algorithm_key: string }) =>
@@ -285,10 +260,6 @@ const SupportTreeCard = ({
     setSelectNickId(null);
 
     if (getCheckSupportStatus?.support_flag === 0 || getCheckSupportStatus?.is_delegator==1) {
-      // const shouldShowModal = !query.from?.includes("notify_");
-      // if (shouldShowModal) {
-      //   showModalSupportCamps();
-      // }
       setDrawerFor(drawerOptions.directAdd);
       showDrawer();
     } else {
