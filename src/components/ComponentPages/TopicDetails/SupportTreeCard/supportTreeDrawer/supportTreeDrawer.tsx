@@ -374,6 +374,10 @@ function SupportTreeDrawer({
     setTagsArrayList(res);
   };
 
+  const checkAllTagsSelected = () => {
+    return tagsArrayList?.filter((item) => item.disabled == true)?.length == tagsArrayList?.length
+  };
+
   const renderPageHeaderTitle = () => {
     return (
       <>
@@ -412,6 +416,10 @@ function SupportTreeDrawer({
       return;
     }
   };
+
+  useEffect(()=>{
+    checkAllTagsSelected() ? setIsQuickActionSelected(true) : setIsQuickActionSelected(false)
+  },[checkAllTagsSelected()])
 
   return (
     <>
