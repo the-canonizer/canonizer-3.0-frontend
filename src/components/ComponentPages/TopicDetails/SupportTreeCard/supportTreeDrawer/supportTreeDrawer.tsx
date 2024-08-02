@@ -1,6 +1,7 @@
 import {
   CloseOutlined,
   MenuOutlined,
+  MinusOutlined,
   PlusOutlined,
   UserOutlined,
 } from "@ant-design/icons";
@@ -800,7 +801,7 @@ function SupportTreeDrawer({
                   className=" min-w-[200px] bg-canBlue flex items-center justify-center hover:bg-canHoverBlue focus:bg-canHoverBlue hover:text-white font-medium text-white disabled:bg-disabled font-base rounded-lg"
                 >
                   {renderSubmitBtnText()}
-                  <PlusOutlined />
+                  <MinusOutlined />
                 </Button>
               </div>
             </Form>
