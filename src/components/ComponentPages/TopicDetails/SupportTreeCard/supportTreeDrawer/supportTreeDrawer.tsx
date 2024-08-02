@@ -106,24 +106,6 @@ function SupportTreeDrawer({
 
   const topic_name = router?.query?.camp?.at(0)?.split("-")?.slice(1).join("-");
 
-  // const reqBodyForService = {
-  //   topic_num: topicNum,
-  //   camp_num: camp_num,
-  //   asOf: asof,
-  //   asofdate:
-  //     asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
-  //   algorithm: algorithm,
-  //   update_all: 1,
-  //   fetch_topic_history: +router?.query?.topic_history,
-  // };
-
-  // const callDetailPageApis = async () => {
-  //   GetCheckStatusData();
-  //   await getTreesApi(reqBodyForService);
-  //   let res = await getTopicActivityLogApi(reqBodyData);
-  //   store.dispatch(setCampActivityData(res?.data?.items));
-  // };
-
   const transformDataForDraggable = (data) => {
     return data?.map((item, index) => {
       return {
@@ -254,7 +236,6 @@ function SupportTreeDrawer({
         };
       });
     }
-    // setcampIds(removeAllCampNum(res))
     setTagsArrayList(res);
   };
 
@@ -291,7 +272,7 @@ function SupportTreeDrawer({
     if (shouldRemoveSupport() && supportedCampsStatus?.support_flag == 1) {
       let payload = {
         topic_num: reqBodyData.topic_num,
-        remove_camps: supportedCampsStatus?.support_flag == 1 && removeSupportFromCamps(),
+        remove_camps: supportedCampsStatus?.support_flag == 1? removeSupportFromCamps():[],
         type: "direct",
         action: "all",
         nick_name_id: nictNameId,
@@ -315,7 +296,7 @@ function SupportTreeDrawer({
       let payload = {
         topic_num: topicNum,
         add_camp: { camp_num: camp_num, support_order: tagsArrayList?.length },
-        remove_camps: supportedCampsStatus?.support_flag == 1 && removeSupportFromCamps(),
+        remove_camps: supportedCampsStatus?.support_flag == 1 ? removeSupportFromCamps():[],
         type: "direct",
         action: removeSupportFromCamps()?.length > 0 ? "partial" : "add",
         nick_name_id: nictNameId,
@@ -331,7 +312,6 @@ function SupportTreeDrawer({
         getCurrentCampRecordApi(reqBody);
         setDrawerFor("");
         onClose();
-        // await callDetailPageApis();
         form.resetFields();
         setSelectedValue(null);
       }
@@ -352,7 +332,6 @@ function SupportTreeDrawer({
       getCurrentCampRecordApi(reqBody);
       setDrawerFor("");
       onClose();
-      // await callDetailPageApis();
     }
   };
 
@@ -565,19 +544,7 @@ function SupportTreeDrawer({
                                       setIsQuickActionSelected(false);
                                     }}
                                   >
-                                    {/* {filterList(tag.camp_num, index)} */}
-                                    {/* <a
-                                        data-testid="styles_Bluecolor"
-                                        // className={styles.Bluecolor}
-                                        // onClick={(e) => {
-                                        //   e.preventDefault();
-                                        //   window.location.href = tag.link;
-                                        //   // dispatch(setIsSupportModal(false));
-                                        // }}
-
-                                      > */}
                                     {`${index + 1}.${tag?.content}`}
-                                    {/* </a> */}
                                   </Tag>
                                 </>
                               ) : (
@@ -591,14 +558,11 @@ function SupportTreeDrawer({
                                       setIsQuickActionSelected(false);
                                     }}
                                   >
-                                    {/* {filterList(tag.camp_num, index)} */}
                                     <a
                                       data-testid="styles_Bluecolor"
-                                      // className={styles.Bluecolor}
                                       onClick={(e) => {
                                         e.preventDefault();
                                         window.location.href = tag.link;
-                                        // dispatch(setIsSupportModal(false));
                                       }}
                                     >
                                       {`${index + 1}.${tag?.content}`}
@@ -632,12 +596,6 @@ function SupportTreeDrawer({
                         <Form.Item
                           name="reason"
                           label="Reason for adding support"
-                          // rules={[
-                          //   {
-                          //     required: true,
-                          //     message: 'Please select a reason',
-                          //   },
-                          // ]}
                         >
                           <div className="thm-select">
                             <div className="prefix-icon">
@@ -673,12 +631,6 @@ function SupportTreeDrawer({
                       <Form.Item
                         name="nickname"
                         label="Nickname"
-                        // rules={[
-                        //   {
-                        //     required: true,
-                        //     message: 'Please select a nickname',
-                        //   },
-                        // ]}
                       >
                         <div className="thm-select">
                           <div className="prefix-icon">
@@ -769,21 +721,6 @@ function SupportTreeDrawer({
               onFinish={onRemoveFinish}
             >
               <div className="support-content">
-                {/* {currentGetCheckSupportExistsData && (
-                  <div className="alert-wrapper">
-                    <Alert
-                      className="border-0 rounded-lg warning-alert"
-                      description={
-                        currentGetCheckSupportExistsData &&
-                        currentGetCheckSupportExistsData?.warning
-                      }
-                      type="error"
-                      showIcon
-                      icon={<i className="icon-warning"></i>}
-                    />
-                  </div>
-                )} */}
-
                 <Row gutter={16}>
                   <Col span={24}>
                     <Form.Item
