@@ -54,41 +54,37 @@ const CampStatementCard = ({ loadingIndicator }) => {
 
   return (
     <CommonCard
-      className="border-0 h-100 bg-white [&_.ant-card-body]:p-0 [&_.ant-card-body]:lg:p-[24px] lg:bg-canGray mb-8 lg:mb-14"
+      className="border-0 h-100 bg-white [&_.ant-card-body]:p-0 [&_.ant-card-body]:lg:p-[24px] lg:bg-canGray mb-8 lg:mb-14 border-t-8 !border-canGreen"
       data-testid="algoSelect"
     >
-      <div className="camp-agrrement-new mb-8 border-t-6 !border-canGreen">
-        <div className="flex items-center justify-between">
-          <div className="w-8/12">
-            <div className="camp-agreement-header flex items-center mb-2.5 lg:mb-5 gap-2">
-              <h3 className="text-sm lg:text-base text-canBlack text-left font-semibold ">
-                {K?.exceptionalMessages?.campStatementHeading}
-              </h3>
-              <Image
-                src="/images/circle-info-bread.svg"
-                alt="svg"
-                className="icon-topic"
-                height={16}
-                width={16}
-              />
-            </div>
-            <div className="flex items-center justify-start gap-6 camp-header-content lg:border-none border-t border-b border-canGrey2 lg:py-0 py-1.5 lg:mb-0 mb-5">
-              <div className="flex items-center gap-2">
-                <Image
-                  src="/images/calendar-camp.svg"
-                  alt="svg"
-                  className="icon-topic"
-                  height={16}
-                  width={16}
-                />
-                <p className="text-xs font-normal text-canBlack text-opacity-50">
-                  Last update: {covertToTime(campStatement?.[0]?.go_live_time)}
-                </p>
-              </div>
-              <div className="flex items-center gap-2 lg:hidden ">
-                <ViewCounts views={tree?.[1] && tree[1]?.camp_views} />
-              </div>
-            </div>
+      <div className="camp-agrrement-new mb-8">
+        <div className="camp-agreement-header flex items-center mb-2.5 lg:mb-5 gap-2">
+          <h3 className="text-sm lg:text-base text-canBlack text-left font-semibold ">
+            {K?.exceptionalMessages?.campStatementHeading}
+          </h3>
+          <Image
+            src="/images/circle-info-bread.svg"
+            alt="svg"
+            className="icon-topic"
+            height={16}
+            width={16}
+          />
+        </div>
+        <div className="flex items-center justify-start gap-6 camp-header-content lg:border-none border-t border-b border-canGrey2 lg:py-0 py-1.5 lg:mb-0 mb-5">
+          <div className="flex items-center gap-2">
+            <Image
+              src="/images/calendar-camp.svg"
+              alt="svg"
+              className="icon-topic"
+              height={16}
+              width={16}
+            />
+            <p className="text-xs font-normal text-canBlack text-opacity-50">
+              Last update: {covertToTime(campStatement?.[0]?.go_live_time)}
+            </p>
+          </div>
+          <div className="flex items-center gap-2 lg:hidden ">
+            <ViewCounts views={tree?.[1] && tree[1]?.camp_views} />
           </div>
           {isDraftShow() &&
           campStatement?.length &&
