@@ -296,7 +296,7 @@ function SupportTreeDrawer({
       let payload = {
         topic_num: topicNum,
         add_camp: { camp_num: camp_num, support_order: tagsArrayList?.length },
-        remove_camps: supportedCampsStatus?.support_flag == 1 ? removeSupportFromCamps():[],
+        remove_camps: removeSupportFromCamps(),
         type: "direct",
         action: removeSupportFromCamps()?.length > 0 ? "partial" : "add",
         nick_name_id: nictNameId,
