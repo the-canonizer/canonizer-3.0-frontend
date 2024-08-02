@@ -295,7 +295,7 @@ function SupportTreeDrawer({
     } else {
       let payload = {
         topic_num: topicNum,
-        add_camp: { camp_num: camp_num, support_order: tagsArrayList?.length },
+        add_camp: drawerFor == "add"? { camp_num: camp_num, support_order: tagsArrayList?.length }:{},
         remove_camps: removeSupportFromCamps(),
         type: "direct",
         action: removeSupportFromCamps()?.length > 0 ? "partial" : "add",
