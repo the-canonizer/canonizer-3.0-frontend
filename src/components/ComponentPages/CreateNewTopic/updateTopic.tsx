@@ -43,6 +43,7 @@ const UpdateTopic = () => {
   const [isError, setIsError] = useState(false);
   const [currentTopic, setCurrentTopic] = useState(null);
   const [isSubmitReq, setIsSubmitReq] = useState(false);
+  const [editCampStatementData, setEditCampStatementData] = useState("");
 
   const router = useRouter();
   const dispatch = useDispatch();
@@ -92,38 +93,40 @@ const UpdateTopic = () => {
     }
   }, [currentTopic?.tags]);
 
-  async function getTopicDetails() {
-    setIsLoading(true);
-    const topicPayload = {
-      record_id: router?.query?.statement?.at(0)?.split("-")[0],
-      event_type: "edit",
+  useEffect(() => {
+    const getTopicDetails = async () => {
+      setIsLoading(true);
+      const topicPayload = {
+        record_id: router?.query?.statement?.at(0)?.split("-")[0],
+        event_type: "edit",
+      };
+
+      const res = await getEditTopicApi(topicPayload);
+
+      if (res?.status_code == 200) {
+        const topicData = res?.data?.topic;
+
+        setCurrentTopic(topicData);
+
+        setEditCampStatementData(topicData?.note);
+
+        const result = await getAllUsedNickNames({
+          topic_num: topicData?.topic_num,
+        });
+
+        if (result?.status_code == 200) {
+          const resData = result.data;
+
+          await form.setFieldValue("nick_name", resData[0]?.id);
+          await form.setFieldValue("topic_name", topicData?.topic_name);
+          await form.setFieldValue("namespace", topicData?.namespace_id);
+
+          setNickNameList(resData);
+        }
+      }
+      setIsLoading(false);
     };
 
-    const res = await getEditTopicApi(topicPayload);
-
-    if (res?.status_code == 200) {
-      const topicData = res?.data?.topic;
-
-      setCurrentTopic(topicData);
-
-      const result = await getAllUsedNickNames({
-        topic_num: topicData?.topic_num,
-      });
-
-      if (result?.status_code == 200) {
-        const resData = result.data;
-
-        await form.setFieldValue("nick_name", resData[0]?.id);
-        await form.setFieldValue("topic_name", topicData?.topic_name);
-        await form.setFieldValue("namespace", topicData?.namespace_id);
-
-        setNickNameList(resData);
-      }
-    }
-    setIsLoading(false);
-  }
-
-  useEffect(() => {
     if (isUserAuthenticated) {
       setIsLoading(true);
       getTopicDetails();
@@ -148,8 +151,8 @@ const UpdateTopic = () => {
       submitter: currentTopic?.submitter_nick_id,
       tags: selectedCats?.map((cat) => cat?.id),
       event_type: update ? "edit" : "update",
+      note: values?.edit_summary || null,
       // camp_num: null,
-      // note: null,
       // statement: "",
       // statement_id: null,
       // objection_reason: null,
@@ -317,6 +320,7 @@ const UpdateTopic = () => {
             isEdit={true}
             values={values}
             isLoading={isLoading}
+            editCampStatementData={editCampStatementData}
           />
         </Col>
         <Col lg={12}>

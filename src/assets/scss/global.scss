@@ -328,3 +328,9 @@ body {
     width: auto;
   }
 }
+
+.ck-body-wrapper {
+  @apply hidden;
+  @apply w-0;
+  @apply opacity-0;
+}

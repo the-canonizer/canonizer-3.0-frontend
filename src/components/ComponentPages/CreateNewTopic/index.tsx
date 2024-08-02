@@ -225,6 +225,7 @@ const CreateNewTopic = () => {
             onTopicChange={onTopicChange}
             values={values}
             isLoading={isLoading}
+            editCampStatementData={null}
           />
         </Col>
         <Col lg={12}>
