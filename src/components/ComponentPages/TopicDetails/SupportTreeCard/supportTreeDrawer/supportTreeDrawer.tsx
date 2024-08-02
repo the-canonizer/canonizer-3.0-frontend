@@ -272,7 +272,7 @@ function SupportTreeDrawer({
     if (shouldRemoveSupport() && supportedCampsStatus?.support_flag == 1) {
       let payload = {
         topic_num: reqBodyData.topic_num,
-        remove_camps: supportedCampsStatus?.support_flag == 1? removeSupportFromCamps():[],
+        remove_camps: removeSupportFromCamps(),
         type: "direct",
         action: "all",
         nick_name_id: nictNameId,
