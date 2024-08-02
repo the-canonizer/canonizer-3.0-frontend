@@ -214,9 +214,9 @@ body {
         @apply text-[#242B37] text-[1.125rem] mb-7;
       }
       .sider-btn {
-        @apply flex items-center gap-4 flex-wrap;
+        @apply grid grid-cols-2 items-center gap-4 flex-wrap;
         button {
-          @apply rounded-[10px] font-medium;
+          @apply rounded-xl font-medium h-auto py-2;
           &.btn-all {
             @apply border-[#5482C8] hover:text-[#5482C8] focus:text-[#5482C8];
             &.active {
@@ -328,6 +328,12 @@ body {
     width: auto;
   }
 }
+
+.ck-body-wrapper {
+  @apply hidden;
+  @apply w-0;
+  @apply opacity-0;}
+  
 .ant-tabs-tab-active .ant-tabs-tab-btn{
   @apply border-canBlue border-b-4 text-canBlue text-shadow-none;
 }

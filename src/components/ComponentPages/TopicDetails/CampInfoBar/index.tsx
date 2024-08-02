@@ -507,7 +507,7 @@ const TimelineInfoBar = ({
               </Button>
             </Popover>
           ) : null}
-          <div className="flex justify-between">
+          <div className="flex justify-between items-center">
             {isMobile ? (
               <div className="flex desktop-view gap-5 items-start">
                 <Typography.Paragraph
@@ -900,7 +900,7 @@ const TimelineInfoBar = ({
                 <div className="topicDetailsCollapseFooter printHIde camp">
                   <PrimaryButton
                     disabled={campRecord?.is_archive == 1 ? true : false}
-                    className="printHIde sm:hidden md:hidden hidden lg:flex !h-[40px] py-2.5 px-5 items-center text-base"
+                    className="printHIde sm:hidden md:hidden hidden lg:flex !h-[40px] py-2.5 px-5 items-center text-sm"
                     onClick={() => {
                       router?.push({
                         pathname: `${
@@ -936,7 +936,7 @@ const TimelineInfoBar = ({
               ) : null}
 
               <SecondaryButton
-                className="hidden px-8 py-2.5 lg:flex items-center"
+                className="hidden px-8 py-2.5 lg:flex items-center text-sm"
                 size="large"
                 onClick={handleClick}
               >

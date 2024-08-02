@@ -91,7 +91,7 @@ function Campforum() {
                   className="cursor-pointer last:border-none py-3 px-5 group flex justify-between w-full hover:shadow-camp-light hover:bg-white hover:border-transparent hover:rounded-xl [&_.arrowIcon]:hover:block lg:border-b lg:mb-0 mb-2.5"
                 >
                   <div className="w-full grid grid-rows-2 md:grid-flow-col center">
-                    <Typography.Paragraph className="!mb-0 text-base text-canBlack text-ellipsis font-medium row-start-1 md:row-start-0 col-span-2 md:col-span-2">
+                    <Typography.Paragraph className="!mb-0 text-sm text-canBlack text-ellipsis font-medium row-start-1 md:row-start-0 col-span-2 md:col-span-2">
                       {obj.body}
                     </Typography.Paragraph>
                     <Typography.Paragraph className="text-canBlack text-opacity-50 font-medium text-xs !mb-0 flex items-center mt-2 row-start-2 row-span-2 col-span-2 md:col-span-2 md:row-start-0 md:row-span-0">
