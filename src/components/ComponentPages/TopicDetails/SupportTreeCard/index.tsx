@@ -1,4 +1,7 @@
-import { CloseCircleOutlined } from "@ant-design/icons";
+import {
+  CloseCircleOutlined,
+  ExclamationCircleFilled,
+} from "@ant-design/icons";
 import {
   Button,
   Collapse,
@@ -36,8 +39,11 @@ import {
 import { setDelegatedSupportClick } from "src/store/slices/supportTreeCard";
 import CustomSkelton from "components/common/customSkelton";
 import ManageSupport from "../../ManageSupport";
+import support_image from "../../../../../public/images/support-tree-avatar.svg";
+import { setOpenConsensusTreePopup } from "src/store/slices/hotTopicSlice";
+// import SupportTreeDrawer from "./supportTreeDrawer/supportTreeDrawer";
+import dynamic from "next/dynamic";
 
-import support_image from "src/../public/images/support-tree-avatar.svg";
 import SignCamp from "./SignCamp";
 
 const { Paragraph } = Typography;
@@ -59,6 +65,13 @@ const supportContent = (
   </>
 );
 
+const SupportTreeDrawer = dynamic(
+  () => import("./supportTreeDrawer/supportTreeDrawer"),
+  {
+    ssr: false,
+  }
+);
+
 const SupportTreeCard = ({
   loadingIndicator,
   isRemovingSupport,
@@ -78,6 +91,8 @@ const SupportTreeCard = ({
   backGroundColorClass,
   getCheckStatusAPI,
   GetActiveSupportTopicList,
+  setSupportTreeForCamp,
+  setTotalCampScoreForSupportTree,
 }: any) => {
   const {
     currentGetCheckSupportExistsData,
@@ -89,6 +104,7 @@ const SupportTreeCard = ({
     asofdate,
     isModalOpenSupportCamps,
     selectedAlgorithm,
+    tree,
   } = useSelector((state: RootState) => ({
     currentGetCheckSupportExistsData:
       state.topicDetails.currentGetCheckSupportExistsData,
@@ -101,6 +117,7 @@ const SupportTreeCard = ({
     asofdate: state.filters?.filterObject?.asofdate,
     isModalOpenSupportCamps: state?.topic?.isModalOpenSupportCamps,
     selectedAlgorithm: state?.filters?.filterObject?.algorithm,
+    tree: state?.topicDetails?.tree,
   }));
   const { manageSupportStatusCheck } = useSelector((state: RootState) => ({
     manageSupportStatusCheck: state.topicDetails.manageSupportStatusCheck,
@@ -121,20 +138,41 @@ const SupportTreeCard = ({
   const [delegatorID, setDelegatorID] = useState(null);
   const [loadingIndicatorSupport, setLoadingIndicatorSupport] = useState(false);
   const [isImageError, setIsImageError] = useState(false);
+  const [delegateNickName, setDelegateNickName] = useState(null);
   const [
     getManageSupportLoadingIndicator,
     setGetManageSupportLoadingIndicator,
   ] = useState(true);
-  const showModalSupportCamps = () => {
-    dispatch(setIsSupportModal(true));
+  const [open, setOpen] = useState(false);
+  const [supportTreeData, setSupportTreeData] = useState(null);
+  const [drawerFor, setDrawerFor] = useState(""); //["directAdd","delegateAdd","directRemove","delegateRemove","manageSupport"]
+  let drawerOptions = {
+    directAdd: "directAdd",
+    delegateAdd: "delegateAdd",
+    directRemove: "directRemove",
+    delegateRemove: "delegateRemove",
+    manageSupport: "manageSupport",
   };
+
+  const showDrawer = () => {
+    setOpen(true);
+  };
+  const onClose = () => {
+    setOpen(false);
+    setDrawerFor("");
+  };
+  const showModalSupportCamps = () => {
+    showDrawer();
+  };
+
   const handleOkSupportCamps = () => {
     dispatch(setIsSupportModal(false));
   };
+
   const getSupportTreeApi = async () => {
     const reqBodyForService = {
-      topic_num: +router?.query?.camp[0]?.split("-")[0],
-      camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
+      topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
+      camp_num: +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1),
       asOf: asof,
       asofdate:
         asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
@@ -145,10 +183,6 @@ const SupportTreeCard = ({
     await getTreesApi(reqBodyForService);
   };
   const handleCancelSupportCamps = async ({ isCallApiStatus = false }) => {
-    dispatch(setIsSupportModal(false));
-    setGetManageSupportLoadingIndicator(true);
-    setLoadingIndicatorSupport(true);
-
     if (isCallApiStatus == true) {
       await getCheckStatusAPI();
     }
@@ -156,18 +190,16 @@ const SupportTreeCard = ({
       await getSupportTreeApi();
       GetActiveSupportTopicList();
     }
-
-    setSelectNickId(null);
-    setLoadingIndicatorSupport(false);
     setTimeout(() => setMainComponentKey(mainComponentKey + 1), 500);
-    // setComponentKey2(componentKey2 + 1);
   };
+
   useEffect(() => {
     const filteredAlgo = algorithms?.filter(
       (a: { algorithm_key: string }) =>
         a.algorithm_key === (selectedAlgorithm || router?.query?.algo)
     );
-    if (filteredAlgo?.length) setCurrentAlgo(filteredAlgo[0]?.algorithm_label);
+    if (filteredAlgo?.length)
+      setCurrentAlgo(filteredAlgo?.at(0)?.algorithm_label);
   }, [algorithms, router?.query?.algo, selectedAlgorithm]);
 
   const dispatch = useDispatch();
@@ -211,23 +243,28 @@ const SupportTreeCard = ({
           delegatedSupportClick: true,
         })
       );
-      setSelectNickId(data);
+      setSelectNickId(data?.nick_name_id);
+      setDelegateNickName(data?.nick_name);
       showModalSupportCamps();
+      setDrawerFor(drawerOptions.delegateAdd);
     }
   };
 
   const handleClickSupportCheck = () => {
-    const q: any = router?.query;
-    if (isUserAuthenticated) {
-      dispatch(setManageSupportUrlLink(manageSupportPath));
-      // dispatch(setManageSupportStatusCheck(true));
-      setGetManageSupportLoadingIndicator(false);
-      setSelectNickId(null);
-      q && q.from && q.from.includes("notify_")
-        ? null
-        : showModalSupportCamps();
+    const query = router?.query;
+    if (!isUserAuthenticated) {
+      router?.push("/login");
+      return;
+    }
+    dispatch(setManageSupportUrlLink(manageSupportPath));
+    setSelectNickId(null);
+
+    if (getCheckSupportStatus?.support_flag === 0 || getCheckSupportStatus?.is_delegator==1) {
+      setDrawerFor(drawerOptions.directAdd);
+      showDrawer();
     } else {
-      dispatch(showLoginModal());
+      setDrawerFor(drawerOptions.manageSupport);
+      showDrawer();
     }
   };
 
@@ -240,7 +277,7 @@ const SupportTreeCard = ({
       q?.n_type?.toLowerCase() === "support"
     ) {
       const fArr = (q.from as String).split("_");
-      if (+fArr[1]) {
+      if (+fArr?.at(1)) {
         handleClickSupportCheck();
       }
     }
@@ -274,30 +311,16 @@ const SupportTreeCard = ({
       }
     });
   };
-  useEffect(() => {
-    // setTimeout(()=>{
-    //   debugger;
-    //   dispatch(setOpenConsensusTreePopup(false))
-    // },100);
-    // debugger;
-    // (async()=>{
-    // dispatch(setOpenConsensusTreePopup(true))
-    // // await getSupportTreeApi()
-    // setTimeout(()=>{
-    //   dispatch(setOpenConsensusTreePopup(false))
-    // },100);
-    // })()
-  }, []);
 
   useEffect(() => {
     if (!campSupportingTree) return;
 
-    const campLeader = campSupportingTree.find(
+    const campLeader = campSupportingTree?.length>0 && campSupportingTree?.find(
       (obj) => obj.camp_leader === true
     );
 
     const campLeaderId = campLeader?.nick_name_id;
-    const delegatorId = campLeader?.delegates?.[0]?.nick_name_id;
+    const delegatorId = campLeader?.delegates?.at(0)?.nick_name_id;
 
     setCampLeaderId(campLeaderId);
     setDelegatorID(delegatorId);
@@ -356,6 +379,8 @@ const SupportTreeCard = ({
       </Modal>
     );
   };
+
+
   const supportLength = 15;
   const renderTreeNodes = (
     data: any,
@@ -364,12 +389,33 @@ const SupportTreeCard = ({
     loggedInUserDelegate = false,
     loggedInUserChild = false
   ) => {
-    return Object.keys(data).map((item, index) => {
+    return Object.keys(data)?.map((item, index) => {
       if (userNickNameList?.includes(data[item]?.nick_name_id))
         loggedInUserChild = true;
       const parentIsOneLevel = isOneLevel;
       isOneLevel = data[item].is_one_level == 1 || isOneLevel == 1 ? 1 : 0;
       //isDisabled = data[item].is_disabled == 1 || isDisabled == 1 ? 1 : 0;
+
+      if (router?.query?.camp?.at(1)?.split("-")?.at(0)) {
+        if (
+          data[item]?.camp_id == router?.query?.camp?.at(1)?.split("-")?.at(0)
+        ) {
+          setSupportTreeForCamp(data[item].support_tree);
+          is_checked && isUserAuthenticated
+            ? setTotalCampScoreForSupportTree(data[item].full_score)
+            : setTotalCampScoreForSupportTree(data[item].score);
+
+            setSupportTreeData(data[item])
+        }
+      } else {
+        if (data[item]?.camp_id == 1) {
+          setSupportTreeForCamp(data[item].support_tree);
+          is_checked && isUserAuthenticated
+            ? setTotalCampScoreForSupportTree(data[item].full_score)
+            : setTotalCampScoreForSupportTree(data[item].score);
+            setSupportTreeData(data[item])
+        }
+      }
       if ((!loadMore && index < supportLength) || loadMore) {
         if (data[item].delegates) {
           /* eslint-disable */
@@ -471,10 +517,8 @@ const SupportTreeCard = ({
                                   !isUserAuthenticated ||
                                   campRecord?.is_archive === 1
                                 }
-                                onClick={() =>
-                                  handleDelegatedClick(data[item]?.nick_name_id)
-                                }
-                                className="hidden group-hover:flex mb-2  items-center gap-1 justify-center bg-canLightBlue text-canBlue text-sm rounded-lg font-medium h-[44px] w-full "
+                                onClick={() => handleDelegatedClick(data[item])}
+                                className="hidden group-hover:flex mb-2  items-center gap-1 justify-center bg-canLightBlue text-canBlue text-base rounded-lg font-medium h-[44px] w-full "
                               >
                                 <Image
                                   src="/images/user-minus-regular.svg"
@@ -498,16 +542,8 @@ const SupportTreeCard = ({
                             !isUserAuthenticated ||
                             campRecord?.is_archive
                           }
-                          onClick={() => {
-                            currentGetCheckSupportExistsData.is_delegator
-                              ? setIsDelegateSupportTreeCardModal(true)
-                              : topicList.length <= 1
-                              ? setIsSupportTreeCardModal(true)
-                              : setIsSupportTreeCardModal(true);
-
-                            setModalData(data[item]);
-                          }}
-                          className="mb-2 flex items-center gap-1 justify-center bg-canLightRed text-canRed text-sm rounded-lg font-medium h-[44px] w-full"
+                          onClick={() => removeSupportModalHandler(data, item)}
+                          className="mb-2 flex items-center gap-1 justify-center bg-canLightRed text-canRed text-base rounded-lg font-medium h-[44px] w-full"
                         >
                           <Image
                             src="/images/user-minus-red.svg"
@@ -541,7 +577,40 @@ const SupportTreeCard = ({
 
   // remove support popup added.
 
+  const removeDelegateSupportModal = () => {
+    Modal.confirm({
+      title: "Are you sure you want to remove your support?",
+      icon: <ExclamationCircleFilled />,
+      width: 400,
+      onOk() {
+        currentGetCheckSupportExistsData.is_delegator
+          ? removeSupportForDelegate()
+          : topicList.length <= 1
+          ? removeApiSupport(modalData?.nick_name_id)
+          : removeSupport(modalData?.nick_name_id);
+        setModalData({});
+      },
+    });
+  };
+
   const [removeForm] = Form.useForm();
+
+  const removeSupportModalHandler = (data, item) => {
+    // if (currentGetCheckSupportExistsData.is_delegator) {
+    //   setIsDelegateSupportTreeCardModal(true);
+    //   } else {
+    //     setIsSupportTreeCardModal(true);
+    // }
+
+    if (currentGetCheckSupportExistsData.is_delegator) {
+      // setDrawerFor("delegateRemove")
+      removeDelegateSupportModal();
+    } else {
+      setDrawerFor(drawerOptions.directRemove);
+      showDrawer();
+    }
+    setModalData(data?.at(item));
+  };
 
   const onRemoveFinish = async (values) => {
     currentGetCheckSupportExistsData.is_delegator
@@ -553,13 +622,29 @@ const SupportTreeCard = ({
     let reqBody = {
       as_of: asof,
       as_of_date: asofdate,
-      topic_num: +router?.query?.camp[0]?.split("-")[0],
-      camp_num: +router?.query?.camp[1]?.split("-")[0],
+      topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
+      camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
     };
     await getCurrentCampRecordApi(reqBody);
 
     setModalData({});
+    onClose();
     removeForm.resetFields();
+  };
+
+  const renderSupportBtn = () => {
+    if (isUserAuthenticated) {
+      if 
+        (getCheckSupportStatus?.support_flag == 0 ||
+        getCheckSupportStatus?.is_delegator == 1
+      ) {
+        return K?.exceptionalMessages?.addSupport;
+      } else if(getCheckSupportStatus?.support_flag == 1){
+        return K?.exceptionalMessages?.manageSupport;
+      }
+    } else {
+      return K.exceptionalMessages?.directJoinSupport;
+    }
   };
   let title = `Support Tree for "${campRecord?.camp_name}" Camp`;
 
@@ -580,6 +665,17 @@ const SupportTreeCard = ({
         // expandIconPosition="right"
         className="topicDetailsCollapse"
       >
+        <SupportTreeDrawer
+          onClose={onClose}
+          open={open}
+          topicList={topicList}
+          drawerFor={drawerFor}
+          setDrawerFor={setDrawerFor}
+          onRemoveFinish={onRemoveFinish}
+          selectNickId={selectNickId}
+          delegateNickName={delegateNickName}
+          handleCancelSupportCamps={handleCancelSupportCamps}
+        />
         <div className=" support-tree-sec">
           {/* <Paragraph className="position-relative">
             Total Support for This Camp (including sub-camps):
@@ -626,12 +722,7 @@ const SupportTreeCard = ({
             disabled={asof == "bydate" || campRecord?.is_archive == 1}
             id="manage-support-btn"
           >
-            <span>
-              {getCheckSupportStatus?.is_delegator == 1 ||
-              getCheckSupportStatus?.support_flag != 1
-                ? K?.exceptionalMessages?.directJoinSupport
-                : K?.exceptionalMessages?.manageSupport}
-            </span>
+            {renderSupportBtn()}
             <Image
               src="/images/hand-icon.svg"
               alt="svg"
@@ -701,12 +792,14 @@ const SupportTreeCard = ({
                   id="supportTreeModalRemoveApi"
                   disabled={asof == "bydate"}
                   onClick={() => {
-                    currentGetCheckSupportExistsData.is_delegator
-                      ? removeSupportForDelegate()
-                      : topicList.length <= 1
-                      ? removeApiSupport(modalData?.nick_name_id)
-                      : removeSupport(modalData?.nick_name_id);
-                    setModalData({});
+                    if (currentGetCheckSupportExistsData.is_delegator) {
+                      // setIsDelegateSupportTreeCardModal(true);
+                      showDrawer();
+                      // } else {
+                      //   setIsSupportTreeCardModal(true);
+                      // showDrawer()
+                    }
+                    // setModalData(data[item]);
                   }}
                   type="primary"
                   style={{
