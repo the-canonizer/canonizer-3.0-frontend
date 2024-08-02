@@ -432,13 +432,16 @@ const TimelineInfoBar = ({
         <Col md={12} sm={12} xs={12} className=" flex flex-col">
           <span className="text-xs text-canLight">canon:</span>
           <span className="text-base text-black">
-            {campRecord && campRecord.is_archive}
+            {" "}
+            {/* {campRecord && campRecord.is_archive} */}
+            {topicRecord && changeSlashToArrow(topicRecord?.namespace_name)}
           </span>
         </Col>
         <Col md={12} sm={12} xs={12} className=" flex flex-col">
           <span className="text-xs text-canLight">Topic :</span>
           <span className="text-base text-black">
-            {campRecord && campRecord.topic_num}
+            {/* {campRecord && campRecord.topic_num} */}
+            {topicRecord && topicRecord?.topic_name}
           </span>
         </Col>
       </Row>
