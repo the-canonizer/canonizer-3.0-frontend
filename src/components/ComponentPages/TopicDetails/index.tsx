@@ -506,6 +506,8 @@ const TopicDetails = ({ serverSideCall }: any) => {
                       getCheckStatusAPI={GetCheckStatusData}
                       GetActiveSupportTopic={GetActiveSupportTopic}
                       GetActiveSupportTopicList={GetActiveSupportTopicList}
+                      setSupportTreeForCamp={setSupportTreeForCamp}
+                      setTotalCampScoreForSupportTree={setTotalCampScoreForSupportTree}
                     />
                   </div>
                 </div>

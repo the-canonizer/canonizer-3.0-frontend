@@ -1,6 +1,7 @@
 import {
   CloseOutlined,
   MenuOutlined,
+  MinusOutlined,
   PlusOutlined,
   UserOutlined,
 } from "@ant-design/icons";
@@ -287,10 +288,10 @@ function SupportTreeDrawer({
   };
 
   const addSupportMethod = async (values) => {
-    if (shouldRemoveSupport()) {
+    if (shouldRemoveSupport() && supportedCampsStatus?.support_flag == 1) {
       let payload = {
         topic_num: reqBodyData.topic_num,
-        remove_camps: removeSupportFromCamps(),
+        remove_camps: supportedCampsStatus?.support_flag == 1 && removeSupportFromCamps(),
         type: "direct",
         action: "all",
         nick_name_id: nictNameId,
@@ -308,14 +309,13 @@ function SupportTreeDrawer({
         form.resetFields();
         setSelectedValue(null);
       }
+    } else if(shouldRemoveSupport() && supportedCampsStatus?.support_flag == 0){
+      openNotificationWithIcon("You are not supporting this camp. So, you can`t remove support");
     } else {
       let payload = {
         topic_num: topicNum,
-        add_camp:
-          supportedCampsStatus?.support_flag == 1
-            ? {}
-            : { camp_num: camp_num, support_order: tagsArrayList?.length },
-        remove_camps: removeSupportFromCamps(),
+        add_camp: { camp_num: camp_num, support_order: tagsArrayList?.length },
+        remove_camps: supportedCampsStatus?.support_flag == 1 && removeSupportFromCamps(),
         type: "direct",
         action: removeSupportFromCamps()?.length > 0 ? "partial" : "add",
         nick_name_id: nictNameId,
@@ -411,6 +411,10 @@ function SupportTreeDrawer({
     setTagsArrayList(res);
   };
 
+  const checkAllTagsSelected = () => {
+    return tagsArrayList?.filter((item) => item.disabled == true)?.length == tagsArrayList?.length
+  };
+
   const renderPageHeaderTitle = () => {
     return (
       <>
@@ -449,6 +453,10 @@ function SupportTreeDrawer({
       return;
     }
   };
+
+  useEffect(()=>{
+    checkAllTagsSelected() ? setIsQuickActionSelected(true) : setIsQuickActionSelected(false)
+  },[checkAllTagsSelected()])
 
   return (
     <>
@@ -580,7 +588,7 @@ function SupportTreeDrawer({
                                     closable={true}
                                     onClose={() => {
                                       enableDisableTagsHandler(tag);
-                                      setIsQuickActionSelected(true);
+                                      setIsQuickActionSelected(false);
                                     }}
                                   >
                                     {/* {filterList(tag.camp_num, index)} */}
@@ -838,7 +846,7 @@ function SupportTreeDrawer({
                   className=" min-w-[200px] bg-canBlue flex items-center justify-center hover:bg-canHoverBlue focus:bg-canHoverBlue hover:text-white font-medium text-white disabled:bg-disabled font-base rounded-lg"
                 >
                   {renderSubmitBtnText()}
-                  <PlusOutlined />
+                  <MinusOutlined />
                 </Button>
               </div>
             </Form>
