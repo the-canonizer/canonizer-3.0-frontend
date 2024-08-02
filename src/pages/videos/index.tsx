@@ -43,7 +43,7 @@ const VideosPage = () => {
       <div className="video-wrapper">
         {loader ? (
           <>
-           <CustomSkeleton skeltonFor="videos" />
+            <CustomSkeleton skeltonFor="videos" />
           </>
         ) : (
           <>

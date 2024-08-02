@@ -20,7 +20,13 @@ import { CodepenCircleOutlined, ShareAltOutlined } from "@ant-design/icons";
 import Facebook from "../../../assets/image/facebook.svg";
 import Linkdhn from "../../../assets/image/linkedIn.svg";
 import Twitter from "../../../assets/image/twitter.svg";
-import { getVideoNameFromURL, isServer, replaceHyphensAndCapitalize, replaceUnderscoresWithSpaces, transformData } from "src/utils/generalUtility";
+import {
+  getVideoNameFromURL,
+  isServer,
+  replaceHyphensAndCapitalize,
+  replaceUnderscoresWithSpaces,
+  transformData,
+} from "src/utils/generalUtility";
 import {
   FacebookShareButton,
   TwitterShareButton,
@@ -42,13 +48,17 @@ export default function CanonVideos() {
   const [currentVideoTitle, setCurrentVideoTitle] = useState("");
 
   const router = useRouter();
-  const videoFormat = router?.asPath.split("?")?.at(1)?.split("=")?.at(1)
+  const videoFormat = router?.asPath.split("?")?.at(1)?.split("=")?.at(1);
 
   useEffect(() => {
     if (router?.query?.video) {
-      setCurrentVideoTitle(getVideoNameFromURL(String(router?.query?.video?.at(1))));
+      setCurrentVideoTitle(
+        getVideoNameFromURL(String(router?.query?.video?.at(1)))
+      );
     } else if (router?.query?.chapter) {
-      setCurrentVideoTitle(replaceHyphensAndCapitalize(String(router?.query?.chapter)));
+      setCurrentVideoTitle(
+        replaceHyphensAndCapitalize(String(router?.query?.chapter))
+      );
     }
 
     if (router?.route === "/videos/consciousness") {
@@ -155,7 +165,7 @@ export default function CanonVideos() {
 
       if (data?.status_code == 200) {
         setVideos(data?.data[0]?.videos);
-        setMobileVideoOptions(transformData(data?.data[0]?.videos))
+        setMobileVideoOptions(transformData(data?.data[0]?.videos));
 
         const videoss = data?.data[0]?.videos;
 
@@ -185,7 +195,11 @@ export default function CanonVideos() {
                 title: string | (string | string[])[];
                 link: React.SetStateAction<string>;
               }) => {
-                if (format?.title?.includes((q?.format as string) || videoFormat || "360")) {
+                if (
+                  format?.title?.includes(
+                    (q?.format as string) || videoFormat || "360"
+                  )
+                ) {
                   setVideoResolution(format?.link);
                   resLink = format?.link as string;
                   return;
@@ -295,26 +309,24 @@ export default function CanonVideos() {
         </FacebookShareButton>
       </Menu.Item>
       <Menu.Item>
-        <TwitterShareButton
-          url={router?.asPath}
-          title={currentVideoTitle}
-        >
+        <TwitterShareButton url={router?.asPath} title={currentVideoTitle}>
           <img src={Twitter.src} alt="twitter" />
         </TwitterShareButton>
       </Menu.Item>
       <Menu.Item>
-        <LinkedinShareButton
-          url={router?.asPath}
-        >
+        <LinkedinShareButton url={router?.asPath}>
           <img src={Linkdhn.src} alt="linkdhn" />
         </LinkedinShareButton>
       </Menu.Item>
     </Menu>
   );
 
-
   const handleChange = (value) => {
-    let currentVideo = videos?.find(video => video?.title?.toLowerCase() == replaceUnderscoresWithSpaces(value).toLowerCase());
+    let currentVideo = videos?.find(
+      (video) =>
+        video?.title?.toLowerCase() ==
+        replaceUnderscoresWithSpaces(value).toLowerCase()
+    );
     setCurrentVideoTitle(replaceUnderscoresWithSpaces(currentVideo?.title));
 
     playeref.current;
@@ -388,10 +400,10 @@ export default function CanonVideos() {
                       id: React.Key;
                       link: string;
                       title:
-                      | boolean
-                      | React.ReactChild
-                      | React.ReactFragment
-                      | React.ReactPortal;
+                        | boolean
+                        | React.ReactChild
+                        | React.ReactFragment
+                        | React.ReactPortal;
                     }) => {
                       return (
                         <Radio

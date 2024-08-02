@@ -310,9 +310,9 @@ body {
   @apply bg-canBlue border-canBlue;
 }
 
-.ant-tabs-tab-active .ant-tabs-tab-btn {
-  @apply border-canBlue border-b-4;
-}
+// .ant-tabs-tab-active .ant-tabs-tab-btn {
+//   @apply border-canBlue border-b-4;
+// }
 
 .compare-card-internal {
   ins {
@@ -327,6 +327,20 @@ body {
   .leftSideBar.miniSideBar {
     width: auto;
   }
+}
+.ant-tabs-tab-active .ant-tabs-tab-btn{
+  @apply border-canBlue border-b-4 text-canBlue text-shadow-none;
+}
+.ant-tabs-top > .ant-tabs-nav .ant-tabs-ink-bar{
+ @apply  h-1 rounded-tl-full rounded-tr-full bg-canBlue
+}
+
+.ant-tabs-nav-list .ant-tabs-tab:first-child{
+  @apply ml-5
+}
+
+.ant-tabs-nav-list .ant-tabs-tab:last-child{
+  @apply mr-5
 }
 
 .ck-body-wrapper {
