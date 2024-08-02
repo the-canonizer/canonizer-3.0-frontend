@@ -639,8 +639,6 @@ const SupportTreeCard = ({
       setDrawerFor(drawerOptions.directRemove);
       showDrawer();
     }
-    setSupportTreeForCamp({})
-
     setModalData(data?.at(item));
   };
 
