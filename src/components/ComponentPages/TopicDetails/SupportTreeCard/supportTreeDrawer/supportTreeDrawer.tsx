@@ -454,6 +454,10 @@ function SupportTreeDrawer({
     }
   };
 
+  useEffect(()=>{
+    checkAllTagsSelected() ? setIsQuickActionSelected(true) : setIsQuickActionSelected(false)
+  },[checkAllTagsSelected()])
+
   return (
     <>
       <Drawer
