@@ -29,6 +29,23 @@
   --disabled: #aab2bf;
   --canGray: #f7f8fc;
 }
+html {
+  @apply max-sm:text-sm;
+}
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #b7c1d7 #ccd4e7;
+}
+
+*::-webkit-scrollbar {
+  @apply w-[10px] h-[10px] bg-[#ccd4e7];
+}
+*:-webkit-scrollbar-track {
+  @apply rounded-[5px] bg-[#ccd4e7];
+}
+*::-webkit-scrollbar-thumb {
+  @apply rounded-[5px] bg-[#b7c1d7];
+}
 
 body {
   font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
