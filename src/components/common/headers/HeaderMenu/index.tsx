@@ -204,7 +204,7 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
         </div>
         {!isUserAuthenticated ? (
           <div className="flex tab:hidden justify-between items-center mt-5 overflow-hidden py-3 text-center gap-[30px]">
-            <Link href="/registeration">
+            <Link href="/registration">
               <a className="h-[50px] leading-[0] flex items-center justify-center bg-canBlue hover:bg-canHoverBlue px-3 py-1 rounded-lg w-2/4 text-center text-sm font-medium font-inter text-white hover:text-white">
                 Register
                 <ArrowRightOutlined className="ml-2" />

@@ -1,6 +1,11 @@
 import { Fragment, useState } from "react";
-import { Form, Row, Col, Typography, Select } from "antd";
-import { CloseOutlined, SaveOutlined, UserOutlined } from "@ant-design/icons";
+import { Form, Row, Col, Typography } from "antd";
+import {
+  CloseOutlined,
+  FileTextOutlined,
+  SaveOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 
 import messages from "src/messages";
 import { changeSlashToArrow } from "src/utils/generalUtility";
@@ -16,7 +21,6 @@ import CustomSkelton from "components/common/customSkelton";
 
 const { labels, placeholders, nickNmRule, topicNameRule, namespaceRule } =
   messages;
-const { Option } = Select;
 
 const CreateTopicFromUI = ({
   onFinish,
@@ -33,6 +37,7 @@ const CreateTopicFromUI = ({
   onTopicNameBlur,
   values,
   isLoading,
+  editCampStatementData,
   isEdit = false,
 }) => {
   const [isFocused, setIsFocused] = useState(false);
@@ -251,6 +256,26 @@ const CreateTopicFromUI = ({
               ))
             )}
           </Col>
+          {isEdit && (
+            <Col xs={24} xl={24}>
+              <Inputs
+                name="edit_summary"
+                label={
+                  <>
+                    Add Summary Of Changes
+                    <small className="ml-1">
+                      (Briefly describe your changes)
+                    </small>
+                  </>
+                }
+                rules={messages.summaryRule}
+                placeholder={messages.placeholders.firstName}
+                maxLength={100}
+                prefix={<FileTextOutlined />}
+                defaultValue={String(editCampStatementData)}
+              />
+            </Col>
+          )}
         </Row>
 
         {isLoading ? (

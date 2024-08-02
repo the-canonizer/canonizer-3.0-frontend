@@ -67,7 +67,7 @@
   .ch-checkbox {
     span {
       + span {
-        @apply font-medium text-[#242B37] self-center;
+        @apply font-medium text-canBlack self-center;
       }
     }
     .ant-checkbox-checked {
@@ -90,9 +90,9 @@
       @apply w-[12px] h-[12px];
     }
     .ant-badge-status-text {
-      @apply text-[1.5rem] font-medium ml-[14px];
+      @apply text-xl font-medium ml-[14px] text-canBlack;
       span {
-        @apply text-[#242B3780] text-base ml-[4px];
+        @apply opacity-80 text-xs ml-[4px];
       }
     }
   }

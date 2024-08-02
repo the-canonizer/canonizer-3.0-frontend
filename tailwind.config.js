@@ -11,7 +11,26 @@ module.exports = {
     extend: {
       boxShadow: {
         "camp-light": "0 10px 20px 0px rgba(49, 80, 114, 0.2)",
-        "mobile-b-shadow": " 0px 10px 10px 0px rgba(0, 0, 0, 0.1)",
+        "mobile-b-shadow" : " 0px 10px 10px 0px rgba(0, 0, 0, 0.1)",
+        'text-none': 'none',
+        'filter-shadow' : " 0px 10px 20px 0px rgba(0, 0, 0, 0.25)",
+
+      },
+      width: {
+        'search-dropdown-width': '875px', // Adding a custom width value with a specific size
+      },
+   
+      fontSize: {
+        '24': '24px', 
+        '13': '13px', 
+        '32': '32px',
+        
+      },
+      borderWidth: {
+        '3': '3px', // Custom border width
+        '5': '5px', // Another custom border width
+        '10': '10px', // Yet another custom border width
+        '6': '6px' // Yet another custom border width
       },
       colors: {
         canBlue: "#5482C8",
@@ -78,5 +97,12 @@ module.exports = {
       addVariant("hocus", ["&:hover", "&:focus"]);
       addVariant("inverted-colors", "@media (inverted-colors: inverted)");
     }),
+    function ({ addUtilities }) {
+      addUtilities({
+        '.text-shadow-none': {
+          textShadow: 'none',
+        },
+      });
+    },
   ],
 };

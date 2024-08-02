@@ -443,7 +443,7 @@ const SupportTreeCard = ({
                         }}
                       >
                         <a className="flex  gap-2.5 items-center flex-wrap text-canBlack hover:!text-canBlack">
-                          <span className="text-canBlack text-base font-medium">
+                          <span className="text-canBlack text-sm font-medium">
                             #{data[item].support_order}{" "}
                           </span>
                           <div className="w-[32px] h-[32px] rounded-full overflow-hidden bg-canLightBg flex items-center justify-center">
@@ -462,7 +462,7 @@ const SupportTreeCard = ({
                             )}
                           </div>
 
-                          <span className="text-canBlack lg:text-base text-sm font-medium">
+                          <span className="text-canBlack text-sm font-medium">
                             {" "}
                             {data[item].nick_name}
                           </span>
@@ -718,7 +718,7 @@ const SupportTreeCard = ({
         <div className="topicDetailsCollapseFooter printHIde mt-3 w-full flex justify-center">
           <CustomButton
             onClick={handleClickSupportCheck}
-            className="w-full justify-center bg-canGreen hover:!bg-canGreen hover:!text-white hover:!border-transparent !border-transparent h-[44px] px-8 lg:px-10 text-white flex items-center rounded-lg font-medium text-base gap-2"
+            className="w-full justify-center bg-canGreen hover:!bg-canGreen hover:!text-white hover:!border-transparent !border-transparent h-[44px] px-8 lg:px-10 text-white flex items-center rounded-lg font-medium text-sm gap-2"
             disabled={asof == "bydate" || campRecord?.is_archive == 1}
             id="manage-support-btn"
           >

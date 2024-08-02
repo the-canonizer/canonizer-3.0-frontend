@@ -32,7 +32,7 @@ function CustomLayout(props: any) {
     <Layout className={`w-100 ${props?.className}`}>
       {!props?.withOutHeader ? (
         <Header
-          className={`px-6 md:px-4 h-auto bg-white shadow-lg lg:!mb-7 printHIde sm:mb-0 xs:mb-0`}
+          className={`lg:px-6 px-2 md:px-4 h-auto bg-white shadow-lg lg:!mb-7 printHIde sm:mb-0 xs:mb-0`}
           data-testid="main_header"
         >
           <MainHeader />
