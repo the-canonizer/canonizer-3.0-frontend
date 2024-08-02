@@ -274,7 +274,7 @@ function SupportTreeDrawer({
         topic_num: reqBodyData.topic_num,
         remove_camps: removeSupportFromCamps(),
         type: "direct",
-        action: "all",
+        action: removeSupportFromCamps()?.length > 0 ? "partial" : "add",
         nick_name_id: nictNameId,
         order_update: transformSupportOrderForAPI(tagsArrayList),
       };
