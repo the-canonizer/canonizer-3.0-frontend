@@ -53,6 +53,7 @@ import SiblingCamps from "../SiblingCamps";
 import CampTree from "./CampTree";
 import { setCampActivityData } from "src/store/slices/recentActivitiesSlice";
 import SectionHeading from "../Home/FeaturedTopic/sectionsHeading";
+import { openNotificationWithIcon } from "../notificationBar/notificationBar";
 
 const { Link: AntLink } = Typography;
 
@@ -124,15 +125,6 @@ const TopicDetails = ({ serverSideCall }: any) => {
     setLoadingIndicator(false);
   };
 
-  async function getTopicActivityLogCall() {
-    let reqBody = {
-      topic_num: router?.query?.camp[0]?.split("-")[0],
-      camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
-    };
-    let res = await getTopicActivityLogApi(reqBody);
-    store.dispatch(setCampActivityData(res?.data?.items));
-  }
-
   useEffect(() => {
     async function getTreeApiCall() {
       if (!showTreeSkeltonRef) {
@@ -193,6 +185,15 @@ const TopicDetails = ({ serverSideCall }: any) => {
     router,
   ]);
 
+  async function getTopicActivityLogCall() {
+    let reqBody = {
+      topic_num: router?.query?.camp[0]?.split("-")[0],
+      camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
+    };
+    let res = await getTopicActivityLogApi(reqBody);
+    store.dispatch(setCampActivityData(res?.data?.items));
+  }
+
   const reqBodyData = {
     topic_num: +router?.query?.camp[0]?.split("-")[0],
     camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
@@ -229,7 +230,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
 
     const res = await removeSupportedCamps(supportedCampsRemove);
     if (res && res.status_code == 200) {
-      message.success(res.message);
+      openNotificationWithIcon( res?.message );
       setIsSupportTreeCardModal(false);
       GetCheckStatusData();
       await getTreesApi(reqBodyForService);
@@ -271,8 +272,8 @@ const TopicDetails = ({ serverSideCall }: any) => {
     };
 
     let res = await addSupport(RemoveSupportId);
-    if (res && res.status_code == 200) {
-      message.success(res.message);
+    if (res && res.status_code == 200) {     
+       openNotificationWithIcon( res?.message );
       setIsSupportTreeCardModal(false);
       GetCheckStatusData();
       await getTreesApi(reqBodyForService);
@@ -305,7 +306,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
 
     let res = await removeSupportedCampsEntireTopic(removeEntireData);
     if (res && res.status_code == 200) {
-      message.success(res.message);
+      openNotificationWithIcon( res?.message );
       setRemoveSupportSpinner(false);
       setIsSupportTreeCardModal(false);
       setIsDelegateSupportTreeCardModal(false);
@@ -505,6 +506,8 @@ const TopicDetails = ({ serverSideCall }: any) => {
                       getCheckStatusAPI={GetCheckStatusData}
                       GetActiveSupportTopic={GetActiveSupportTopic}
                       GetActiveSupportTopicList={GetActiveSupportTopicList}
+                      setSupportTreeForCamp={setSupportTreeForCamp}
+                      setTotalCampScoreForSupportTree={setTotalCampScoreForSupportTree}
                     />
                   </div>
                 </div>
