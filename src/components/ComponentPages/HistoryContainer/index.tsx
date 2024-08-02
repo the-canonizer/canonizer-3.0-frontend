@@ -98,7 +98,7 @@ function HistoryContainer() {
 
   const [isTreesApiCallStop, setIsTreesApiCallStop] = useState(false);
   const [loadingIndicator, setLoadingIndicator] = useState(false);
-  const [campHistory, setCampHistory] = useState(history);
+  const [campHistory, setCampHistory] = useState<any>(history);
   let payload = history && {
     camp_num: router?.query?.camp?.at(1)?.split("-")?.at(0) ?? "1",
     topic_num: router?.query?.camp?.at(0)?.split("-")?.at(0),

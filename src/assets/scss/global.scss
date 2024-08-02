@@ -328,6 +328,12 @@ body {
     width: auto;
   }
 }
+
+.ck-body-wrapper {
+  @apply hidden;
+  @apply w-0;
+  @apply opacity-0;}
+  
 .ant-tabs-tab-active .ant-tabs-tab-btn{
   @apply border-canBlue border-b-4 text-canBlue text-shadow-none;
 }
@@ -341,10 +347,4 @@ body {
 
 .ant-tabs-nav-list .ant-tabs-tab:last-child{
   @apply mr-5
-}
-
-.ck-body-wrapper {
-  @apply hidden;
-  @apply w-0;
-  @apply opacity-0;
 }
