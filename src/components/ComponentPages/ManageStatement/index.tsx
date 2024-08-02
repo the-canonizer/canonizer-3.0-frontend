@@ -239,33 +239,94 @@ function ManageStatements({ isEdit = false, add = false }) {
     setScreenLoading(false);
   };
 
+  // const saveStatement = async (values) => {
+  //   const blocks = editorState;
+  //   const editInfo = editStatementData;
+  //   const parent_camp = editInfo?.parent_camp;
+
+  //   const reqBody: any = {
+  //     topic_num: !isEdit
+  //       ? router?.query?.statement[0]?.split("-")[0]
+  //       : parent_camp[parent_camp?.length - 1]?.topic_num,
+  //     topic_id: null,
+  //     topic_name: !isEdit
+  //       ? router?.query?.statement[0]?.split("-")[1]
+  //       : parent_camp[parent_camp?.length - 1]?.topic_name,
+  //     namespace_id: null,
+  //     camp_num: !isEdit
+  //       ? router?.query?.statement[1]?.split("-")[0]
+  //       : parent_camp[parent_camp?.length - 1]?.camp_num,
+  //     nick_name: values?.nick_name,
+  //     note: values?.edit_summary?.trim(),
+  //     submitter: !isEdit
+  //       ? nickNameData[0]?.id
+  //       : editInfo?.statement?.submitter_nick_id,
+  //     statement: blocks,
+  //     statement_id:
+  //       update || isDraft ? router?.query?.statement[0]?.split("-")[0] : null,
+  //     objection_reason: null,
+  //     statement_update: update ? 1 : null,
+  //     camp_id: null,
+  //     camp_name: null,
+  //     key_words: null,
+  //     camp_about_url: null,
+  //     camp_about_nick_id: null,
+  //     parent_camp_num: null,
+  //     old_parent_camp_num: null,
+  //     camp_leader_nick_id: null,
+  //   };
+
+  //   if (isDraft && isEdit) {
+  //     reqBody.event_type = "edit";
+  //   } else if (isDraft && !isSaveDraft) {
+  //     reqBody.event_type = "create";
+  //   } else if (isSaveDraft && !isEdit) {
+  //     reqBody.event_type = "create";
+  //   } else if (update) {
+  //     reqBody.event_type = "edit";
+  //   } else if (!isEdit && !isSaveDraft) {
+  //     reqBody.event_type = "create";
+  //   } else {
+  //     reqBody.event_type = "update";
+  //   }
+
+  //   if (isSaveDraft) {
+  //     reqBody.is_draft = 1;
+  //   } else {
+  //     reqBody.is_draft = 0;
+  //     if (isDraft) {
+  //       reqBody.event_type = "create";
+  //     }
+  //     // if (!isEdit) {
+  //     //   reqBody.event_type = "create";
+  //     // } else if (update) {
+  //     //   reqBody.event_type = "edit";
+  //     // } else {
+  //     //   reqBody.event_type = "update";
+  //     // }
+  //   }
+
+  //   const res = await updateStatementApi(reqBody);
+
+  //   return res;
+  // };
+
   const saveStatement = async (values) => {
     const blocks = editorState;
     const editInfo = editStatementData;
-    const parent_camp = editInfo?.parent_camp;
+    const parentCamp = editInfo?.parent_camp;
+
+    const topicNum = router?.query?.statement[0]?.split("-")[0];
+    const topicName = router?.query?.statement[0]?.split("-")[1];
+    const campNum = router?.query?.statement[1]?.split("-")[0];
+    const lastParentCamp = parentCamp?.[parentCamp.length - 1];
 
     const reqBody: any = {
-      topic_num: !isEdit
-        ? router?.query?.statement[0]?.split("-")[0]
-        : parent_camp[parent_camp?.length - 1]?.topic_num,
-      topic_id: null,
-      topic_name: !isEdit
-        ? router?.query?.statement[0]?.split("-")[1]
-        : parent_camp[parent_camp?.length - 1]?.topic_name,
       namespace_id: null,
-      camp_num: !isEdit
-        ? router?.query?.statement[1]?.split("-")[0]
-        : parent_camp[parent_camp?.length - 1]?.camp_num,
       nick_name: values?.nick_name,
       note: values?.edit_summary?.trim(),
-      submitter: !isEdit
-        ? nickNameData[0]?.id
-        : editInfo?.statement?.submitter_nick_id,
       statement: blocks,
-      statement_id:
-        update || isDraft ? router?.query?.statement[0]?.split("-")[0] : null,
       objection_reason: null,
-      statement_update: update ? 1 : null,
       camp_id: null,
       camp_name: null,
       key_words: null,
@@ -277,6 +338,28 @@ function ManageStatements({ isEdit = false, add = false }) {
     };
 
     if (!isEdit) {
+      reqBody.topic_num = topicNum;
+      reqBody.topic_name = topicName;
+      reqBody.camp_num = campNum;
+      reqBody.submitter = nickNameData[0]?.id;
+    } else {
+      reqBody.topic_num = lastParentCamp?.topic_num;
+      reqBody.topic_name = lastParentCamp?.topic_name;
+      reqBody.camp_num = lastParentCamp?.camp_num;
+      reqBody.submitter = editInfo?.statement?.submitter_nick_id;
+    }
+
+    if (update || isDraft) {
+      reqBody.statement_id = topicNum;
+    } else {
+      reqBody.statement_id = null;
+    }
+
+    reqBody.statement_update = update ? 1 : null;
+
+    if (isDraft && isEdit) {
+      reqBody.event_type = "edit";
+    } else if (isDraft || (!isEdit && !isSaveDraft)) {
       reqBody.event_type = "create";
     } else if (update) {
       reqBody.event_type = "edit";
@@ -284,14 +367,13 @@ function ManageStatements({ isEdit = false, add = false }) {
       reqBody.event_type = "update";
     }
 
-    if (isSaveDraft) {
-      reqBody.is_draft = 1;
-    } else {
-      reqBody.is_draft = 0;
+    reqBody.is_draft = isSaveDraft ? 1 : 0;
+
+    if (!isSaveDraft && isDraft) {
+      reqBody.event_type = "create";
     }
 
     const res = await updateStatementApi(reqBody);
-
     return res;
   };
 
