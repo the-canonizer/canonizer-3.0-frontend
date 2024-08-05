@@ -274,7 +274,7 @@ function SupportTreeDrawer({
         topic_num: reqBodyData.topic_num,
         remove_camps: removeSupportFromCamps(),
         type: "direct",
-        action: "all",
+        action: removeSupportFromCamps()?.length > 0 ? "partial" : "add",
         nick_name_id: nictNameId,
         order_update: transformSupportOrderForAPI(tagsArrayList),
       };
@@ -295,7 +295,7 @@ function SupportTreeDrawer({
     } else {
       let payload = {
         topic_num: topicNum,
-        add_camp: { camp_num: camp_num, support_order: tagsArrayList?.length },
+        add_camp: drawerFor == "directAdd"? { camp_num: camp_num, support_order: tagsArrayList?.length }:{},
         remove_camps: removeSupportFromCamps(),
         type: "direct",
         action: removeSupportFromCamps()?.length > 0 ? "partial" : "add",
