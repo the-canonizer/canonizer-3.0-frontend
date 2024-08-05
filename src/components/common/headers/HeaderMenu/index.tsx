@@ -7,6 +7,7 @@ import {
   HomeOutlined,
   LogoutOutlined,
   MenuOutlined,
+  PlayCircleOutlined,
   QuestionCircleOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
@@ -59,7 +60,7 @@ const menuItems = [
     link: "/videos",
     linkTitle: "Videos",
     id: 6,
-    icon: <QuestionCircleOutlined />,
+    icon: <PlayCircleOutlined />,
   },
   {
     link: "/topic/132-Help/1-Agreement?is_tree_open=1",

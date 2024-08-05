@@ -86,8 +86,8 @@ function ManageStatementUI({
         </Typography.Paragraph>
         <Typography.Paragraph className="text-canBlack opacity-80 mt-3">
           Each camp features a statement summarizing the discussions within,
-          providing a clear overview of the topic&lsquo;s various perspectives. This
-          concise summary serves as a guide.
+          providing a clear overview of the topic&lsquo;s various perspectives.
+          This concise summary serves as a guide.
         </Typography.Paragraph>
       </header>
       {screenLoading ? (
