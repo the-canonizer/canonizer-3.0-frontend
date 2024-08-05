@@ -29,7 +29,6 @@ const HotTopics = () => {
       <Row className="mt-4" gutter={[24, 24]}>
         {topicData?.map((ft) => (
           <Col md={12} lg={8} xs={24} sm={24} key={ft?.id}>
-            {console.log("ft----", ft)}
             {loadMoreIndicator ? (
               <CustomSkelton
                 skeltonFor="hotTopic"
