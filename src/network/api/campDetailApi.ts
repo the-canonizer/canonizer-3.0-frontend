@@ -62,7 +62,9 @@ export const getCanonizedCampStatementApi = async (
       TreeRequest.getCampStatement(reqBody, loginToken),
       false
     );
+
     store.dispatch(setCampStatement(campStatement?.data));
+
     return campStatement?.data;
   } catch (error) {
     if (error?.error?.data?.status_code == 404) {

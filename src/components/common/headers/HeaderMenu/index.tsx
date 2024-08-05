@@ -7,6 +7,7 @@ import {
   HomeOutlined,
   LogoutOutlined,
   MenuOutlined,
+  PlayCircleOutlined,
   QuestionCircleOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
@@ -59,7 +60,7 @@ const menuItems = [
     link: "/videos",
     linkTitle: "Videos",
     id: 6,
-    icon: <QuestionCircleOutlined />,
+    icon: <PlayCircleOutlined />,
   },
   {
     link: "/topic/132-Help/1-Agreement?is_tree_open=1",
@@ -204,7 +205,7 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
         </div>
         {!isUserAuthenticated ? (
           <div className="flex tab:hidden justify-between items-center mt-5 overflow-hidden py-3 text-center gap-[30px]">
-            <Link href="/registeration">
+            <Link href="/registration">
               <a className="h-[50px] leading-[0] flex items-center justify-center bg-canBlue hover:bg-canHoverBlue px-3 py-1 rounded-lg w-2/4 text-center text-sm font-medium font-inter text-white hover:text-white">
                 Register
                 <ArrowRightOutlined className="ml-2" />

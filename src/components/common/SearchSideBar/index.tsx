@@ -20,6 +20,7 @@ export default function SearchSideBar() {
       asofdate: state.filters?.filterObject?.asofdate,
     })
   );
+
   const { loading } = useSelector((state: RootState) => ({
     loading: state?.loading?.searchLoading,
   }));
@@ -28,6 +29,13 @@ export default function SearchSideBar() {
     router?.push("/search/topic");
   };
   const dispatch = useDispatch();
+  const { searchDataAll, searchData, searchCountForMetaData } = useSelector(
+    (state: RootState) => ({
+      searchDataAll: state?.searchSlice?.searchDataAll,
+      searchData: state?.searchSlice?.searchData,
+      searchCountForMetaData: state?.searchSlice?.searchCountForMetaData,
+    })
+  );
 
   return (
     <>
@@ -40,7 +48,7 @@ export default function SearchSideBar() {
             isButton={false}
           />
         ) : (
-          <div className="search_tabs">
+          <div className="search_tabs lg:flex-col flex overflow-x-auto gap-5">
             <Link
               href={{
                 pathname: "/search",
@@ -51,12 +59,16 @@ export default function SearchSideBar() {
               <a>
                 <Button
                   size="large"
-                  className={
-                    router?.asPath.includes("/search?") ? "active" : "btn"
-                  }
+                  // className={
+                  //   router?.asPath.includes("/search?") ? "active" : "btn"
+                  // }
+                  className={`p-0 shadow-none border-transparent !rounded-0 !border-t-0 !border-l-0 !border-r-0 active:!bg-transparent disabled:!bg-transparent disabled:!text-canBlue text-base font-normal disabled:!font-semibold active:!text-canBlue disabled:!border-b-2  disabled:!border-canBlue 
+                   active:!border-none active:!border-transparent hover:!border-transparent focus:!border-transparent  ${
+                     router?.asPath.includes("/search?") ? "active" : "btn"
+                   }`}
                   disabled={router?.pathname == "/search" ? true : false}
                 >
-                  All
+                  All Results
                 </Button>
               </a>
             </Link>
@@ -74,13 +86,20 @@ export default function SearchSideBar() {
               <a>
                 <Button
                   size="large"
-                  className={
-                    router?.asPath.includes("/search/topic?") ? "active" : "btn"
-                  }
+                  className={`p-0 shadow-none border-transparent !rounded-0 !border-t-0 !border-l-0 !border-r-0 active:!bg-transparent disabled:!bg-transparent disabled:!text-canBlue text-base font-normal disabled:!font-semibold active:!text-canBlue disabled:!border-b-2  disabled:!border-canBlue 
+                   active:!border-none active:!border-transparent  hover:!border-transparent focus:!border-transparent  
+                    ${
+                      router?.asPath.includes("/search/topic?")
+                        ? "active"
+                        : "btn"
+                    } `}
                   disabled={router?.pathname == "/search/topic" ? true : false}
                 >
-                  <i className="icon-topic"></i>
-                  <a>Topic</a>
+                  {/* <i className="icon-topic"></i> */}
+                  <a>
+                    Topic{" "}
+                    <span> &nbsp;({searchCountForMetaData?.topic_total})</span>
+                  </a>
                 </Button>
               </a>
             </Link>
@@ -98,13 +117,20 @@ export default function SearchSideBar() {
               <a>
                 <Button
                   size="large"
-                  className={
-                    router?.asPath.includes("/search/camp?") ? "active" : "btn"
-                  }
+                  className={` p-0 shadow-none border-transparent !rounded-0 !border-t-0 !border-l-0 !border-r-0 active:!bg-transparent disabled:!bg-transparent disabled:!text-canBlue text-base font-normal disabled:!font-semibold active:!text-canBlue disabled:!border-b-2  disabled:!border-canBlue 
+                   active:!border-none active:!border-transparent  hover:!border-transparent focus:!border-transparent 
+                    ${
+                      router?.asPath.includes("/search/camp?")
+                        ? "active"
+                        : "btn"
+                    }`}
                   disabled={router?.pathname == "/search/camp" ? true : false}
                 >
-                  <i className="icon-camp"></i>
-                  <a>Camp</a>
+                  {/* <i className="icon-camp"></i> */}
+                  <a>
+                    Camp{" "}
+                    <span> &nbsp;({searchCountForMetaData?.camp_total})</span>
+                  </a>
                 </Button>
               </a>
             </Link>
@@ -118,17 +144,25 @@ export default function SearchSideBar() {
               <a>
                 <Button
                   size="large"
-                  className={
-                    router?.asPath.includes("/search/camp_statement?")
-                      ? "active"
-                      : "btn"
-                  }
+                  className={`p-0 shadow-none border-transparent !rounded-0 !border-t-0 !border-l-0 !border-r-0 active:!bg-transparent disabled:!bg-transparent disabled:!text-canBlue text-base font-normal disabled:!font-semibold active:!text-canBlue disabled:!border-b-2  disabled:!border-canBlue 
+                   active:!border-none active:!border-transparent  hover:!border-transparent focus:!border-transparent 
+                    ${
+                      router?.asPath.includes("/search/camp_statement?")
+                        ? "active"
+                        : "btn"
+                    }`}
                   disabled={
                     router?.pathname == "/search/camp_statement" ? true : false
                   }
                 >
-                  <i className="icon-camp"></i>
-                  <a>Camp Statement</a>
+                  {/* <i className="icon-camp"></i> */}
+                  <a>
+                    Camp Statement{" "}
+                    <span>
+                      {" "}
+                      &nbsp;({searchCountForMetaData?.statement_total})
+                    </span>
+                  </a>
                 </Button>
               </a>
             </Link>
@@ -142,11 +176,13 @@ export default function SearchSideBar() {
               <a>
                 <Button
                   size="large"
-                  className={
-                    router?.asPath.includes("/search/nickname?")
-                      ? "active"
-                      : "btn"
-                  }
+                  className={`p-0 shadow-none border-transparent !rounded-0 !border-t-0 !border-l-0 !border-r-0 active:!bg-transparent disabled:!bg-transparent disabled:!text-canBlue text-base font-normal disabled:!font-semibold active:!text-canBlue disabled:!border-b-2  disabled:!border-canBlue 
+                   active:!border-none active:!border-transparent  hover:!border-transparent focus:!border-transparent 
+                    ${
+                      router?.asPath.includes("/search/nickname?")
+                        ? "active"
+                        : "btn"
+                    }`}
                   disabled={
                     router.pathname == "/search/nickname" ? true : false
                   }
@@ -154,15 +190,21 @@ export default function SearchSideBar() {
                     dispatch(setClickAdvanceFilterOption(false));
                   }}
                 >
-                  <Image
+                  {/* <Image
                     className={styles.nickname_icon}
                     id="nick_name"
                     alt="face Image"
                     src={filter}
                     width={15}
                     height={15}
-                  />
-                  <a>Nickname</a>
+                  /> */}
+                  <a>
+                    Nickname{" "}
+                    <span>
+                      {" "}
+                      &nbsp;({searchCountForMetaData?.nickname_total})
+                    </span>
+                  </a>
                 </Button>
               </a>
             </Link>

@@ -3,7 +3,15 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import debounce from "lodash/debounce";
-import { AutoComplete, Card, Empty, List, Popover, Typography } from "antd";
+import {
+  AutoComplete,
+  Card,
+  Empty,
+  Input,
+  List,
+  Popover,
+  Typography,
+} from "antd";
 // import moment from "moment";
 import {
   EyeOutlined,
@@ -25,11 +33,14 @@ import {
   setSearchMetaData,
   setSearchValue,
   setSearchDataAll,
+  setOpenSearchForMobileView,
+  setSearchCountForMetaData,
 } from "src/store/slices/searchSlice";
 import CustomSkelton from "../../customSkelton";
 import { setSearchLoadingAction } from "src/store/slices/loading";
 import SearchInputs from "src/components/shared/FormInputs/search";
 import CustomTabs from "src/components/shared/Tabs";
+import Image from "next/image";
 
 const getHighlightedText = (text, highlight) => {
   const parts = text.split(new RegExp(`(${highlight})`, "gi"));
@@ -51,6 +62,27 @@ const getHighlightedText = (text, highlight) => {
     </span>
   );
 };
+const getHighlightedTextForCampStatement = (text, highlight) => {
+  const parts = text.split(new RegExp(`(${highlight})`, "gi"));
+  return (
+    <>
+      {parts.map((part, i) => (
+        <div
+          key={i}
+          style={
+            part.toLowerCase() === highlight.toLowerCase()
+              ? { fontWeight: "bold" }
+              : {}
+          }
+        >
+          <div className="" dangerouslySetInnerHTML={{ __html: part }}></div>
+
+          {/* {part} */}
+        </div>
+      ))}{" "}
+    </>
+  );
+};
 
 function replaceSpecialCharactersInLink(link) {
   // Replace each special character with a series of hyphens
@@ -64,7 +96,7 @@ function replaceSpecialCharactersInLink(link) {
 
 const renderItem = (title: any) => ({
   value: title,
-  label: <div className="titleDiv">{title}</div>,
+  label: <div className="titleDiv ">{title}</div>,
 });
 
 const searchValueLength = 30;
@@ -74,9 +106,16 @@ const HeaderSearch = ({ className = "" }: any) => {
   const router = useRouter(),
     dispatch = useDispatch();
 
-  let { searchValue, pageNumber } = useSelector((state: RootState) => ({
+  let {
+    searchValue,
+    pageNumber,
+    openSearchForMobileView,
+    searchCountForMetaData,
+  } = useSelector((state: RootState) => ({
     searchValue: state?.searchSlice?.searchValue,
     pageNumber: state?.searchSlice?.pageNumber,
+    openSearchForMobileView: state?.searchSlice?.openSearchForMobileView,
+    searchCountForMetaData: state?.searchSlice?.searchCountForMetaData,
   }));
 
   const [inputSearch, setInputSearch] = useState("");
@@ -217,7 +256,7 @@ const HeaderSearch = ({ className = "" }: any) => {
       ],
     },
   ];
-
+  const { Search } = Input;
   const [preventInitialRender, setPreventInitialRender] = useState(true);
 
   useEffect(() => {
@@ -271,14 +310,16 @@ const HeaderSearch = ({ className = "" }: any) => {
       setSearchCamps(response.data.data.camp);
       setSearchCampStatement(response.data.data.statement);
       setSearchNickname(response.data.data.nickname);
+      // dispatch(setSearchMetaData(response?.data?.meta_data));
       if (
         router.pathname == "/search/topic" ||
         router.pathname == "/search/camp" ||
         router.pathname == "/search/camp_statement" ||
         router.pathname == "/search/nickname"
       ) {
-        dispatch(setSearchDataAll(response?.data?.data));
         dispatch(setSearchMetaData(response?.data?.meta_data));
+
+        dispatch(setSearchDataAll(response?.data?.data));
         // dispatch(setSearchLoadingAction(false));
       }
     }
@@ -295,6 +336,7 @@ const HeaderSearch = ({ className = "" }: any) => {
       setSearchCamps(response.data.data.camp);
       setSearchCampStatement(response.data.data.statement);
       setSearchNickname(response.data.data.nickname);
+      dispatch(setSearchCountForMetaData(response?.data?.meta_data));
       if (onPresEnter) {
         // dispatch(setSearchLoadingAction(true));
         dispatch(setSearchData(response?.data?.data));
@@ -314,13 +356,19 @@ const HeaderSearch = ({ className = "" }: any) => {
   };
 
   const debounceFn = useMemo(() => debounce(getGlobalSearchCanonizer, 500), []);
+  const [open, setOpen] = useState(false);
 
   return (
     <Fragment>
       {/* <div className="md:hidden"> */}
+      {/* <div className="overlay fixed top-[77px] right-0 left-0 bottom-0 bg-black bg-opacity-50"></div> */}
       <AutoComplete
-        popupClassName={`max-w-2xl w-full bg-white ${styles.searchCategories} !hidden tab:!flex`}
+        popupClassName={` w-full lg:!w-search-dropdown-width  bg-white pt-6 rounded-lg [&_.ant-tabs-nav]:mb-10 [&_.ant-tabs-nav-wrap]:px-12  [&_.ant-select-item-option-content]:!bg-white [&_.ant-select-item-option-grouped]:!bg-white [&_.ant-select-item-option-content]:!px-6 [&_>div]:w-full [&_.ant-select-item-option-grouped]:!px-0 [&_.ant-tabs-tab-btn]:!text-base [&_.ant-tabs-nav-list]:gap-12 [&_.ant-tabs-tab-btn]:!font-normal [&_.ant-tabs-tab-active>div]:!font-semibold [&_.ant-tabs-tab]:!ml-0 [&_.ant-tabs-ink-bar]:!border-b-4 [&_.ant-tabs-ink-bar]:!border-canBlue [&_.ant-tabs-ink-bar]:!rounded-tl-full  [&_.ant-tabs-ink-bar]:!rounded-tr-full  lg:[&_.ant-tabs-ink-bar]:!h-1 [&_.ant-tabs-ink-bar]:!h-1 [&_.ant-tabs-tab-active>div]:!shadow-none [&_.ant-card-head-title]:!font-semibold [&_.ant-tabs-nav-list]:!w-full ${styles.searchCategories} `}
         dropdownMatchSelectWidth={false}
+        // open={open}
+        // onDropdownVisibleChange={(visible) => {
+        //   setOpen(visible);
+        // }}
         // defaultOpen={true}
         // open={true}
         options={
@@ -341,20 +389,16 @@ const HeaderSearch = ({ className = "" }: any) => {
             : searchVal
         }
         onFocus={(e) => {
-          // console.log("eee--", e);
           setIsFullWidth(true);
         }}
         onBlur={(e) => {
-          // console.log("eee--", e);
           setIsFullWidth(false);
         }}
-        className={`ml-6 transition-all delay-300 [&>div]:!border-0 3xl:w-3/12 ${
+        className={`lg:ml-5 transition-all delay-300 [&>div]:!border-0 ${
           isFullWidth ? styles.widthScroll : ""
         }`}
       >
-        <div
-          className={`w-auto h-auto !hidden items-center ${className} tab:!flex`}
-        >
+        <div className={`items-center !hidden lg:!flex ${className}  `}>
           <SearchInputs
             placeholder="Search via keyword"
             value={
@@ -362,7 +406,7 @@ const HeaderSearch = ({ className = "" }: any) => {
                 ? searchVal.substring(0, advanceSearchValueLength)
                 : searchVal
             }
-            className={`${styles.searchInput} text-medium font-medium`}
+            className={`${styles.searchInput} text-medium font-medium [&_.ant-input]:!shadow-none [&_.ant-input]:!border-canGrey2 hover:!border-canGrey2 `}
             name="search"
             onChange={(e) => {
               setLoadingSekelton(true);
@@ -383,12 +427,125 @@ const HeaderSearch = ({ className = "" }: any) => {
           />
         </div>
       </AutoComplete>
-      <div className="block tab:hidden ml-auto mr-3">
-        <Link href="/search">
+      <div className=" lg:hidden flex items-center justify-end absolute  py-2">
+        <AutoComplete
+          popupClassName={`[&_.ant-select-item-option-active]:!bg-white !top-26 !shadow-none [&_.ant-select-item-option-grouped]:!px-0 ${styles.searchCategories} [&_.ant-tabs-nav-list]:!gap-5  [&_.ant-tabs-tab]:m-0 [&_.ant-tabs-tab]:gap-8 w-full [&_.ant-tabs-tab]:px-3 [&_.ant-tabs-nav]:!mb-8 [&_.ant-tabs-tab-btn]:text-base [&_.ant-tabs-tab-btn]:font-normal `}
+          dropdownMatchSelectWidth={false}
+          // open={open}
+          // onDropdownVisibleChange={(visible) => {
+          //   setOpen(visible);
+          // }}
+          // defaultOpen={true}
+          open={false}
+          options={
+            inputSearch == ""
+              ? []
+              : loadingSekelton
+              ? loader
+              : searchTopics?.length ||
+                searchCamps?.length ||
+                searchCampStatement?.length ||
+                searchNickname?.length
+              ? options
+              : no
+          }
+          value={
+            searchVal.length > advanceSearchValueLength
+              ? searchVal.substring(0, advanceSearchValueLength)
+              : searchVal
+          }
+          // onFocus={(e) => {
+
+          //   setIsFullWidth(true);
+          // }}
+          // onBlur={(e) => {
+
+          //   setIsFullWidth(false);
+          // }}
+          className={`flex w-full [&_.ant-tabs-nav-list]:!w-full transition-all delay-300 [&>div]:!border-0  bg-white ${
+            isFullWidth ? styles.widthScroll : ""
+          }`}
+        >
+          <div className="w-full flex bg-white gap-3">
+            {openSearchForMobileView ? (
+              <>
+                <div
+                  className="flex items-center"
+                  onClick={() => {
+                    dispatch(setOpenSearchForMobileView(false));
+                  }}
+                >
+                  <Image
+                    src="/images/recent-activiity-arrow.svg"
+                    width={20}
+                    height={20}
+                    alt={"check"}
+                  />
+                </div>
+                <SearchInputs
+                  placeholder="Search via keyword"
+                  value={
+                    searchVal.length > advanceSearchValueLength
+                      ? searchVal.substring(0, advanceSearchValueLength)
+                      : searchVal
+                  }
+                  className={`${styles.searchInput} [&_.ant-btn-primary]:!bg-transparent [&_.ant-btn-primary]:!border-canGrey2 w-full text-medium font-medium [&_.ant-input]:!shadow-none [&_.ant-input]:!border-canGrey2 hover:!border-canGrey2 [&_.ant-btn-primary]:!rounded-tr-lg [&_.ant-btn-primary]:!rounded-br-lg`}
+                  name="search"
+                  onChange={(e) => {
+                    setLoadingSekelton(true);
+                    dispatch(setSearchValue(e.target.value));
+                    setInputSearch(e.target.value);
+                    setSearchVal(e.target.value);
+                    debounceFn.cancel();
+                    if (e?.target?.value) debounceFn(e.target.value, false);
+                  }}
+                  onPressEnter={(e) => {
+                    handlePress();
+                    if ((e.target as HTMLTextAreaElement).value)
+                      getGlobalSearchCanonizer(
+                        (e.target as HTMLTextAreaElement).value,
+                        true
+                      );
+                  }}
+                  // enterButton={
+                  //   <SearchOutlined
+                  //     className="!bg-transparent"
+                  //     onClick={handlePress}
+                  //   />
+                  // }
+                />
+              </>
+            ) : (
+              ""
+            )}
+          </div>
+        </AutoComplete>
+        {/* <Link href="/search">
           <a className="text-lg text-canBlack hover:text-canBlue">
-            <SearchOutlined />
+           
+            />
           </a>
-        </Link>
+        </Link> */}
+      </div>
+      <div className="flex items-center  absolute right-8">
+        {!openSearchForMobileView ? (
+          <Image
+            src="/images/mobile-header-icon.svg"
+            width={24}
+            height={24}
+            onClick={() => {
+              dispatch(setOpenSearchForMobileView(!openSearchForMobileView));
+            }}
+          />
+        ) : (
+          // <SearchOutlined
+          // className="w-[24px] h-[24px]"
+          //   onClick={() => {
+          //     dispatch(setOpenSearchForMobileView(!openSearchForMobileView));
+          //   }}
+          // />
+          ""
+        )}
       </div>
     </Fragment>
   );
@@ -419,39 +576,53 @@ const AllItems = ({
 
 const TopicItems = ({ searchTopics, searchValue }) => (
   <Card
-    className={`border-0 h-100 bg-canGray ${styles.ItemCard}`}
+    className={`[&_.ant-empty-normal]:!m-0 [&_.ant-list-empty-text]:!p-0 [&_.ant-card-head-title]:!font-semibold [&_.ant-card-head-title]:uppercase border-0 h-100 bg-canGray lg:rounded-xl [&_.ant-card-head-wrapper]:mb-6 [&_.ant-card-head-title]:!p-0 [&_.ant-card-head]:!p-0  [&_.ant-card-body]:!p-0 py-5 lg:px-6 px-4  ${styles.ItemCard}`}
     title="Topic(s)"
   >
     <List
       size="small"
+      className=""
       dataSource={searchTopics?.slice(0, 5)}
       footer={
         searchTopics?.length ? <span className={styles.bold_margin}></span> : ""
       }
       renderItem={(item: any) => (
-        <List.Item className="w-full flex font-medium">
-          <Link href={`/${replaceSpecialCharactersInLink(item.link)}`}>
+        <List.Item className="w-full flex font-medium !border-b !border-canGrey2 !py-3 lg:!py-3.5 !px-0 first:!pt-0 last:!border-none ">
+          <Link
+            className="!font-semibold"
+            href={`/${replaceSpecialCharactersInLink(item.link)}`}
+          >
             <a className="flex justify-between w-full items-start">
-              <span>
-                {getHighlightedText(item.type_value, searchValue)}
-                <div className="text-left flex">
+              <span className="flex flex-col w-full">
+                <div className="flex items-center justify-between w-full">
+                  <span className="flex-1 text-base lg:font-medium font-normal text-canBlack mb-2 flex">
+                    {getHighlightedText(item.type_value, searchValue)}
+                  </span>
+
+                  <RightOutlined className="ml-auto" />
+                </div>
+                <div className="text-left flex gap-7">
                   <Popover content="Share Topic" placement="top">
-                    <Typography.Paragraph className="bg-transparent border-0 p-0 hover:bg-transparent focus:bg-transparent flex items-center leading-1 mb-0 mr-3">
-                      <FlagOutlined className="text-canBlack p-1 text-medium" />
+                    <Typography.Paragraph className="bg-transparent border-0 p-0 hover:bg-transparent focus:bg-transparent flex gap-1.5 items-center leading-1 !mb-0 ">
+                      {/* <FlagOutlined className="text-canBlack p-1 text-medium" /> */}
+                      <Image
+                        src="/images/serach-flag.svg"
+                        width={18}
+                        height={20}
+                      />
                       <Link href="">
-                        <a className="text-canBlue text-sm font-inter font-medium hover:hblue">
+                        <a className="text-canBlue text-base font-inter font-normal lg:font-medium">
                           General
                         </a>
                       </Link>
                     </Typography.Paragraph>
                   </Popover>
-                  <Typography.Paragraph className="m-0 text-canLight font-medium font-inter flex items-center">
+                  <Typography.Paragraph className="!m-0 text-canBlack font-medium font-inter text-base flex items-center">
                     <EyeOutlined className="text-canBlack p-1 text-medium" />{" "}
                     123
                   </Typography.Paragraph>
                 </div>
               </span>
-              <RightOutlined className="ml-auto" />
             </a>
           </Link>
         </List.Item>
@@ -462,7 +633,7 @@ const TopicItems = ({ searchTopics, searchValue }) => (
 
 const CampItems = ({ searchCamps, searchValue }) => (
   <Card
-    className={`border-0 h-100 bg-canGray ${styles.ItemCard}`}
+    className={`[&_.ant-empty-normal]:!m-0 [&_.ant-list-empty-text]:!p-0 [&_.ant-card-head-title]:uppercase [&_.ant-card-head-title]:!font-semibold border-0 h-100 bg-canGray lg:rounded-xl [&_.ant-card-head-wrapper]:mb-6 [&_.ant-card-head-title]:!p-0 [&_.ant-card-head]:!p-0  [&_.ant-card-body]:!p-0 py-5  lg:px-6 px-4  ${styles.ItemCard}`}
     title="Camp(s)"
   >
     <List
@@ -488,55 +659,37 @@ const CampItems = ({ searchCamps, searchValue }) => (
         // }, []);
 
         return (
-          <List.Item className="w-full flex font-medium items-start">
-            <div className="">
-              <Link href={`/${jsonData[0][1]?.camp_link}`}>
-                <a className="flex justify-between w-full items-start">
-                  <span>
-                    {getHighlightedText(item.type_value, searchValue)}
-                    <div className="text-left flex">
-                      <Typography.Paragraph className="bg-transparent border-0 p-0 hover:bg-transparent focus:bg-transparent flex items-center leading-1 mb-0 mr-3">
-                        <svg
-                          width="13"
-                          height="16"
-                          viewBox="0 0 18 19"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="mr-1"
-                        >
-                          <g clipPath="url(#clip0_31_13108)">
-                            <path
-                              d="M3.4066 2.96875C3.07267 2.96875 2.79946 3.23594 2.79946 3.5625V15.4375C2.79946 15.7641 3.07267 16.0312 3.4066 16.0312H11.9066V13.0625C11.9066 12.4057 12.4492 11.875 13.1209 11.875H16.1566V3.5625C16.1566 3.23594 15.8834 2.96875 15.5495 2.96875H3.4066ZM11.9066 17.8125H3.4066C2.06709 17.8125 0.978027 16.7475 0.978027 15.4375V3.5625C0.978027 2.25254 2.06709 1.1875 3.4066 1.1875H15.5495C16.889 1.1875 17.978 2.25254 17.978 3.5625V11.875V12.0791C17.978 12.71 17.7238 13.3148 17.2684 13.7602L13.8343 17.1186C13.3789 17.5639 12.7604 17.8125 12.1153 17.8125H11.9066Z"
-                              fill="#242B37"
-                            />
-                            <path
-                              d="M9.88172 4.88394C9.8077 4.73405 9.65128 4.63867 9.47949 4.63867C9.3077 4.63867 9.15267 4.73405 9.07726 4.88394L8.17922 6.68667L6.17364 6.97555C6.00605 7.00007 5.86638 7.11453 5.81471 7.27123C5.76303 7.42793 5.80493 7.60099 5.92504 7.71681L7.38034 9.12166L7.03677 11.107C7.00883 11.2705 7.07867 11.4367 7.21693 11.5335C7.3552 11.6302 7.53816 11.6425 7.689 11.5648L9.48089 10.6314L11.2728 11.5648C11.4236 11.6425 11.6066 11.6316 11.7448 11.5335C11.8831 11.4354 11.9529 11.2705 11.925 11.107L11.58 9.12166L13.0353 7.71681C13.1554 7.60099 13.1987 7.42793 13.1457 7.27123C13.0926 7.11453 12.9543 7.00007 12.7867 6.97555L10.7798 6.68667L9.88172 4.88394Z"
-                              fill="#242B37"
-                            />
-                          </g>
-                          <defs>
-                            <clipPath id="clip0_31_13108">
-                              <rect
-                                width="17"
-                                height="19"
-                                fill="white"
-                                transform="translate(0.978027)"
-                              />
-                            </clipPath>
-                          </defs>
-                        </svg>
-                        Topic:
-                        <Link href="">
-                          <a className="text-canBlue text-sm font-inter font-medium hover:hblue ml-1">
-                            topic name
-                          </a>
-                        </Link>
-                      </Typography.Paragraph>
-                    </div>
-                  </span>
-                </a>
-              </Link>
-              {/* <div className="">
+          <List.Item className="w-full flex font-medium !border-b !border-canGrey2 !py-3.5 !px-0 first:!pt-0">
+            <Link href={`/${jsonData[0][1]?.camp_link}`}>
+              <a className="flex justify-between w-full items-start">
+                <span className="flex flex-col w-full">
+                  <div className="flex items-center justify-between w-full">
+                    <span className="flex-1 text-base font-medium text-canBlack mb-2 flex">
+                      {" "}
+                      {getHighlightedText(item.type_value, searchValue)}
+                    </span>
+                    <RightOutlined className="ml-auto" />
+                  </div>
+
+                  <div className="text-left flex">
+                    <Typography.Paragraph className="text-base font-medium bg-transparent border-0 p-0 hover:bg-transparent focus:bg-transparent   flex gap-1.5 items-center leading-1 !mb-0">
+                      <Image
+                        src="/images/camp-search-icon.svg"
+                        width={17}
+                        height={19}
+                      />
+                      Topic:
+                      <Link href="">
+                        <a className="text-canBlue !text-base font-inter font-medium capitalize">
+                          topic name
+                        </a>
+                      </Link>
+                    </Typography.Paragraph>
+                  </div>
+                </span>
+              </a>
+            </Link>
+            {/* <div className="">
                 {parsedData?.reverse()?.map((obj, index) => {
                   return (
                     <a href={`/${obj.camp_link}`} key={`/${obj.camp_link}`}>
@@ -546,8 +699,6 @@ const CampItems = ({ searchCamps, searchValue }) => (
                   );
                 })}
               </div> */}
-            </div>
-            <RightOutlined className="ml-auto" />
           </List.Item>
         );
       }}
@@ -557,10 +708,11 @@ const CampItems = ({ searchCamps, searchValue }) => (
 
 const CampStatementsItems = ({ searchCampStatement, searchValue }) => (
   <Card
-    className={`border-0 h-100 bg-canGray ${styles.ItemCard}`}
+    className={`[&_.ant-empty-normal]:!m-0 [&_.ant-list-empty-text]:!p-0 [&_.ant-card-head-title]:uppercase [&_.ant-card-head-title]:!font-semibold border-0 h-100 bg-canGray lg:rounded-xl [&_.ant-card-head-wrapper]:mb-6 [&_.ant-card-head-title]:!p-0 [&_.ant-card-head]:!p-0  [&_.ant-card-body]:!p-0 py-5  lg:px-6 px-4 ${styles.ItemCard}`}
     title="Camp Statement(s)"
   >
     <List
+      className="[&_.ant-list-footer]:!hidden"
       size="small"
       dataSource={searchCampStatement?.slice(0, 5)}
       footer={
@@ -587,61 +739,42 @@ const CampStatementsItems = ({ searchCampStatement, searchValue }) => (
         // );
 
         return (
-          <List.Item className="w-full flex font-medium items-start">
+          <List.Item className="w-full flex font-medium !border-b !border-canGrey2 !py-3.5 !px-0 first:!pt-0 last:!border-none last:!pb-0 ">
             <div className="">
-              <Typography.Paragraph className="bg-transparent border-0 p-0 flex items-center leading-1 mb-0 mr-3">
+              <Typography.Paragraph className="bg-transparent border-0 p-0 flex items-center leading-1 mb-2 [&_span]:inline-flex">
                 <Link href={`/${jsonData[0][1]?.camp_link}`}>
-                  <a className="flex justify-between w-full items-start *text-canBlack">
-                    {getHighlightedText(
+                  <a className="flex w-full items-start !text-canBlack text-base font-medium">
+                    {getHighlightedTextForCampStatement(
                       jsonData?.[0]?.[1]?.camp_name,
                       searchValue
                     )}
                   </a>
                 </Link>
               </Typography.Paragraph>
-              <Typography.Paragraph className="bg-transparent border-0 p-0 flex items-center leading-1 mb-0 mr-3">
-                {getHighlightedText(item.type_value, searchValue)}
-              </Typography.Paragraph>
-              <Typography.Paragraph className="bg-transparent border-0 p-0 flex items-center leading-1 mb-0 mr-3">
-                <svg
-                  width="13"
-                  height="16"
-                  viewBox="0 0 18 19"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="mr-1"
-                >
-                  <g clipPath="url(#clip0_31_13108)">
-                    <path
-                      d="M3.4066 2.96875C3.07267 2.96875 2.79946 3.23594 2.79946 3.5625V15.4375C2.79946 15.7641 3.07267 16.0312 3.4066 16.0312H11.9066V13.0625C11.9066 12.4057 12.4492 11.875 13.1209 11.875H16.1566V3.5625C16.1566 3.23594 15.8834 2.96875 15.5495 2.96875H3.4066ZM11.9066 17.8125H3.4066C2.06709 17.8125 0.978027 16.7475 0.978027 15.4375V3.5625C0.978027 2.25254 2.06709 1.1875 3.4066 1.1875H15.5495C16.889 1.1875 17.978 2.25254 17.978 3.5625V11.875V12.0791C17.978 12.71 17.7238 13.3148 17.2684 13.7602L13.8343 17.1186C13.3789 17.5639 12.7604 17.8125 12.1153 17.8125H11.9066Z"
-                      fill="#242B37"
-                    />
-                    <path
-                      d="M9.88172 4.88394C9.8077 4.73405 9.65128 4.63867 9.47949 4.63867C9.3077 4.63867 9.15267 4.73405 9.07726 4.88394L8.17922 6.68667L6.17364 6.97555C6.00605 7.00007 5.86638 7.11453 5.81471 7.27123C5.76303 7.42793 5.80493 7.60099 5.92504 7.71681L7.38034 9.12166L7.03677 11.107C7.00883 11.2705 7.07867 11.4367 7.21693 11.5335C7.3552 11.6302 7.53816 11.6425 7.689 11.5648L9.48089 10.6314L11.2728 11.5648C11.4236 11.6425 11.6066 11.6316 11.7448 11.5335C11.8831 11.4354 11.9529 11.2705 11.925 11.107L11.58 9.12166L13.0353 7.71681C13.1554 7.60099 13.1987 7.42793 13.1457 7.27123C13.0926 7.11453 12.9543 7.00007 12.7867 6.97555L10.7798 6.68667L9.88172 4.88394Z"
-                      fill="#242B37"
-                    />
-                  </g>
-                  <defs>
-                    <clipPath id="clip0_31_13108">
-                      <rect
-                        width="17"
-                        height="19"
-                        fill="white"
-                        transform="translate(0.978027)"
-                      />
-                    </clipPath>
-                  </defs>
-                </svg>
-                Topic:
-                <Link href={`/${jsonData[0][1]?.camp_link}`}>
-                  <a className="text-canBlue text-sm font-inter font-medium hover:hblue ml-1">
-                    {getHighlightedText(
-                      jsonData?.[0]?.[1]?.topic_name,
-                      searchValue
-                    )}
-                  </a>
-                </Link>
-              </Typography.Paragraph>
+              {/* <Typography.Paragraph className="bg-transparent border-0 p-0 inline-flex items-center leading-1 [&_span]:!inline-flex">
+                {getHighlightedTextForCampStatement(item.type_value, searchValue)}
+              </Typography.Paragraph> */}
+
+              {getHighlightedTextForCampStatement(item.type_value, searchValue)}
+
+              <div className="text-left flex">
+                <Typography.Paragraph className="text-base font-medium bg-transparent border-0 p-0 hover:bg-transparent focus:bg-transparent   flex gap-1.5 items-center leading-1 !mb-0">
+                  <Image
+                    src="/images/camp-search-icon.svg"
+                    width={17}
+                    height={19}
+                  />
+                  Topic:
+                  <Link href={`/${jsonData[0][1]?.camp_link}`}>
+                    <a className="text-canBlue text-base font-inter font-medium ">
+                      {getHighlightedText(
+                        jsonData?.[0]?.[1]?.topic_name,
+                        searchValue
+                      )}
+                    </a>
+                  </Link>
+                </Typography.Paragraph>
+              </div>
               {/* <div className="">
                 {parsedData?.reverse()?.map((obj, index) => {
                   return (
@@ -663,7 +796,7 @@ const CampStatementsItems = ({ searchCampStatement, searchValue }) => (
 
 const NickNamesItems = ({ searchNickname, searchValue }) => (
   <Card
-    className={`border-0 h-100 bg-canGray ${styles.ItemCard}`}
+    className={`[&_.ant-empty-normal]:!m-0 [&_.ant-list-empty-text]:!p-0 [&_.ant-card-head-title]:uppercase [&_.ant-card-head-title]:!font-semibold border-0 h-100 bg-canGray lg:rounded-xl [&_.ant-card-head-wrapper]:mb-6 [&_.ant-card-head-title]:!p-0 [&_.ant-card-head]:!p-0  [&_.ant-card-body]:!p-0 py-5  lg:px-6 px-4 ${styles.ItemCard}`}
     title="Nickname(s)"
   >
     <List
@@ -676,16 +809,21 @@ const NickNamesItems = ({ searchNickname, searchValue }) => (
       }
       renderItem={(item: any) => {
         return (
-          <List.Item className="w-full flex font-medium items-start bg-white">
+          <List.Item className="w-full flex !border-none !py-2 lg:!px-5 !px-2.5 bg-white rounded-lg mb-2">
             <Link href={`/${item?.link}`}>
               <a className="flex justify-between w-full items-start">
-                <span>
-                  <UserOutlined />
+                <span className="flex items-center gap-3.5 text-base font-normal">
+                  {/* <UserOutlined /> */}
+                  <Image
+                    src="/images/nickname-user-icon.svg"
+                    width={14}
+                    height={16}
+                  />
                   {getHighlightedText(item.type_value, searchValue)}
                 </span>
-                <span className="ml_auto">
+                <span className="ml_auto text-base font-normal">
                   Supported camps:{" "}
-                  <strong className="text-orange">
+                  <strong className="text-canOrange text-base !font-normal">
                     {item?.support_count == "" ? 0 : item?.support_count}
                   </strong>{" "}
                 </span>
@@ -699,12 +837,15 @@ const NickNamesItems = ({ searchNickname, searchValue }) => (
 );
 
 const FooterItems = ({ searchValue, handleSearchfor }) => (
-  <footer className="p-2 text-center">
+  <footer className="px-2 pt-5 mt-5 pb-5 text-center lg:border-t lg:border-canGrey2">
     {/* <i className="icon-search"></i> */}
-    <Link href={{ pathname: "/search", query: { q: searchValue } }}>
+    <Link
+      href={{ pathname: "/search", query: { q: searchValue } }}
+      className="[&_.ant-select-item-option-active]:!bg-white [&_.ant-select-item]:!p-0 [&_.ant-select-item-option]:!p-0 [&_.ant-select-item-option-grouped]:!p-0 "
+    >
       <a
         onClick={() => handleSearchfor()}
-        className="text-sm font-inter font-semibold"
+        className="text-base uppercase font-inter font-semibold text-canBlack !p-0"
       >
         View All Results
       </a>

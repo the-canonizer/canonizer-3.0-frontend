@@ -3,7 +3,11 @@ import { notification } from "antd";
 import React from "react";
 
 export const openNotificationWithIcon = (messageData) => {
-  const { add: addMessage, remove: removeMessages, update: updateMessage } = messageData;
+  const {
+    add: addMessage,
+    remove: removeMessages,
+    update: updateMessage,
+  } = messageData;
 
   const showMessage = (type, message) => {
     notification[type]({
@@ -29,7 +33,7 @@ export const openNotificationWithIcon = (messageData) => {
     });
   }
 
-  if(typeof messageData != 'object' && messageData !== null){
+  if (typeof messageData != "object" && messageData !== null) {
     showMessage("success", messageData);
   }
 };
