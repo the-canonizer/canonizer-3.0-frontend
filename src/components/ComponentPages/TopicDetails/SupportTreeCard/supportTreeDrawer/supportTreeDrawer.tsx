@@ -282,7 +282,7 @@ function SupportTreeDrawer({
       let res = await removeSupportedCamps(payload);
       if (res && res.status_code == 200) {
         openNotificationWithIcon(res?.message);
-        await  handleCancelSupportCamps({ isCallApiStatus: true });
+        await handleCancelSupportCamps({ isCallApiStatus: true });
         getCurrentCampRecordApi(reqBody);
         setDrawerFor("");
         onClose();
@@ -290,12 +290,20 @@ function SupportTreeDrawer({
         form.resetFields();
         setSelectedValue(null);
       }
-    } else if(shouldRemoveSupport() && supportedCampsStatus?.support_flag == 0){
-      openNotificationWithIcon("You are not supporting this camp. So, you can`t remove support");
+    } else if (
+      shouldRemoveSupport() &&
+      supportedCampsStatus?.support_flag == 0
+    ) {
+      openNotificationWithIcon(
+        "You are not supporting this camp. So, you can`t remove support"
+      );
     } else {
       let payload = {
         topic_num: topicNum,
-        add_camp: drawerFor == "directAdd"? { camp_num: camp_num, support_order: tagsArrayList?.length }:{},
+        add_camp:
+          drawerFor == "directAdd"
+            ? { camp_num: camp_num, support_order: tagsArrayList?.length }
+            : {},
         remove_camps: removeSupportFromCamps(),
         type: "direct",
         action: removeSupportFromCamps()?.length > 0 ? "partial" : "add",
@@ -308,7 +316,7 @@ function SupportTreeDrawer({
       let res = await addSupport(payload);
       if (res && res.status_code == 200) {
         openNotificationWithIcon(res?.message);
-        await  handleCancelSupportCamps({ isCallApiStatus: true });
+        await handleCancelSupportCamps({ isCallApiStatus: true });
         getCurrentCampRecordApi(reqBody);
         setDrawerFor("");
         onClose();
@@ -328,7 +336,7 @@ function SupportTreeDrawer({
     let res = await addDelegateSupportCamps(addDelegatedSupport);
     if (res && res.status_code == 200) {
       openNotificationWithIcon(res?.message);
-      await  handleCancelSupportCamps({ isCallApiStatus: true });
+      await handleCancelSupportCamps({ isCallApiStatus: true });
       getCurrentCampRecordApi(reqBody);
       setDrawerFor("");
       onClose();
@@ -339,7 +347,7 @@ function SupportTreeDrawer({
     if (drawerFor === "delegateAdd") {
       await addDelegateMethod();
     } else if (drawerFor === "directAdd" || drawerFor === "manageSupport") {
-     await  addSupportMethod(values);
+      await addSupportMethod(values);
     }
   };
 
@@ -391,7 +399,10 @@ function SupportTreeDrawer({
   };
 
   const checkAllTagsSelected = () => {
-    return tagsArrayList?.filter((item) => item.disabled == true)?.length == tagsArrayList?.length
+    return (
+      tagsArrayList?.filter((item) => item.disabled == true)?.length ==
+      tagsArrayList?.length
+    );
   };
 
   const renderPageHeaderTitle = () => {
@@ -433,9 +444,11 @@ function SupportTreeDrawer({
     }
   };
 
-  useEffect(()=>{
-    checkAllTagsSelected() ? setIsQuickActionSelected(true) : setIsQuickActionSelected(false)
-  },[checkAllTagsSelected()])
+  useEffect(() => {
+    checkAllTagsSelected()
+      ? setIsQuickActionSelected(true)
+      : setIsQuickActionSelected(false);
+  }, [checkAllTagsSelected()]);
 
   return (
     <>
@@ -628,10 +641,7 @@ function SupportTreeDrawer({
                     )}
 
                     <Col span={24} sm={12}>
-                      <Form.Item
-                        name="nickname"
-                        label="Nickname"
-                      >
+                      <Form.Item name="nickname" label="Nickname">
                         <div className="thm-select">
                           <div className="prefix-icon">
                             <UserOutlined />

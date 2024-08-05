@@ -259,7 +259,10 @@ const SupportTreeCard = ({
     dispatch(setManageSupportUrlLink(manageSupportPath));
     setSelectNickId(null);
 
-    if (getCheckSupportStatus?.support_flag === 0 || getCheckSupportStatus?.is_delegator==1) {
+    if (
+      getCheckSupportStatus?.support_flag === 0 ||
+      getCheckSupportStatus?.is_delegator == 1
+    ) {
       setDrawerFor(drawerOptions.directAdd);
       showDrawer();
     } else {
@@ -315,9 +318,9 @@ const SupportTreeCard = ({
   useEffect(() => {
     if (!campSupportingTree) return;
 
-    const campLeader = campSupportingTree?.length>0 && campSupportingTree?.find(
-      (obj) => obj.camp_leader === true
-    );
+    const campLeader =
+      campSupportingTree?.length > 0 &&
+      campSupportingTree?.find((obj) => obj.camp_leader === true);
 
     const campLeaderId = campLeader?.nick_name_id;
     const delegatorId = campLeader?.delegates?.at(0)?.nick_name_id;
@@ -380,7 +383,6 @@ const SupportTreeCard = ({
     );
   };
 
-
   const supportLength = 15;
   const renderTreeNodes = (
     data: any,
@@ -405,7 +407,7 @@ const SupportTreeCard = ({
             ? setTotalCampScoreForSupportTree(data[item].full_score)
             : setTotalCampScoreForSupportTree(data[item].score);
 
-            setSupportTreeData(data[item])
+          setSupportTreeData(data[item]);
         }
       } else {
         if (data[item]?.camp_id == 1) {
@@ -413,7 +415,7 @@ const SupportTreeCard = ({
           is_checked && isUserAuthenticated
             ? setTotalCampScoreForSupportTree(data[item].full_score)
             : setTotalCampScoreForSupportTree(data[item].score);
-            setSupportTreeData(data[item])
+          setSupportTreeData(data[item]);
         }
       }
       if ((!loadMore && index < supportLength) || loadMore) {
@@ -634,12 +636,12 @@ const SupportTreeCard = ({
 
   const renderSupportBtn = () => {
     if (isUserAuthenticated) {
-      if 
-        (getCheckSupportStatus?.support_flag == 0 ||
+      if (
+        getCheckSupportStatus?.support_flag == 0 ||
         getCheckSupportStatus?.is_delegator == 1
       ) {
         return K?.exceptionalMessages?.addSupport;
-      } else if(getCheckSupportStatus?.support_flag == 1){
+      } else if (getCheckSupportStatus?.support_flag == 1) {
         return K?.exceptionalMessages?.manageSupport;
       }
     } else {
