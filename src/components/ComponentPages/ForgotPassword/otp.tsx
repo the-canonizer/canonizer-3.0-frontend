@@ -61,11 +61,13 @@ const ForgotPassword = () => {
 
   const onRsendClick = async () => {
     setIsLoading(true);
+    setIsResend(false);
 
     const res = await forgotPasswordSendOTP({ email: passwordEmail });
 
     if (res.status_code === 200) {
       message.success(res.message);
+      setIsResend(true);
 
       setTimer(120);
     }
