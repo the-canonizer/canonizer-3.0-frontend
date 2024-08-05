@@ -174,18 +174,21 @@ const CampStatementCard = ({ loadingIndicator }) => {
               />
             </div>
             <div className="flex items-center justify-start gap-6 camp-header-content lg:border-none border-t border-b border-canGrey2 lg:py-0 py-1.5 lg:mb-0 mb-5">
-              <div className="flex items-center gap-2">
-                <Image
-                  src="/images/calendar-camp.svg"
-                  alt="svg"
-                  className="icon-topic"
-                  height={16}
-                  width={16}
-                />
-                <p className="text-xs font-normal text-canBlack text-opacity-50">
-                  Last update: {covertToTime(campStatement?.[0]?.go_live_time)}
-                </p>
-              </div>
+              {campStatement?.[0]?.go_live_time && (
+                <div className="flex items-center gap-2">
+                  <Image
+                    src="/images/calendar-camp.svg"
+                    alt="svg"
+                    className="icon-topic"
+                    height={16}
+                    width={16}
+                  />
+                  <p className="text-xs font-normal text-canBlack text-opacity-50">
+                    Last update:{" "}
+                    {covertToTime(campStatement?.[0]?.go_live_time)}
+                  </p>
+                </div>
+              )}
               <div className="flex items-center gap-2 lg:hidden ">
                 <ViewCounts views={tree?.[1] && tree[1]?.camp_views} />
               </div>
