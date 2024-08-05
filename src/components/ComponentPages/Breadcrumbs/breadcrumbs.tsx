@@ -121,7 +121,7 @@ function Breadcrumbs({ compareMode = false, updateId, historyOF = null }: any) {
           <PrimaryButton
             size="large"
             type="primary"
-            className="flex items-center justify-center rounded-[10px] max-lg:hidden gap-3.5 leading-none"
+            className="flex items-center justify-center rounded-[10px] max-lg:hidden gap-3.5 leading-none text-sm"
             onClick={() => updateCurrentRecord()}
           >
             Update Current

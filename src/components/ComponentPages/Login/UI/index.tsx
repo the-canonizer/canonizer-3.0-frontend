@@ -98,7 +98,7 @@ const LoginUi = ({
                 className="text-canBlue hover:text-canHoverBlue"
                 onClick={onForgotPasswordClick}
               >
-                Forgot?
+                Forgot Password?
               </a>
             </Link>
           </div>

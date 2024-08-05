@@ -181,6 +181,11 @@ const SupportTreeCard = ({
       fetch_topic_history: +router?.query?.topic_history,
     };
     await getTreesApi(reqBodyForService);
+    dispatch(setOpenConsensusTreePopup(true));
+
+    setTimeout(() => {
+      dispatch(setOpenConsensusTreePopup(false));
+    }, 100);
   };
   const handleCancelSupportCamps = async ({ isCallApiStatus = false }) => {
     if (isCallApiStatus == true) {
@@ -259,7 +264,10 @@ const SupportTreeCard = ({
     dispatch(setManageSupportUrlLink(manageSupportPath));
     setSelectNickId(null);
 
-    if (getCheckSupportStatus?.support_flag === 0 || getCheckSupportStatus?.is_delegator==1) {
+    if (
+      getCheckSupportStatus?.support_flag === 0 ||
+      getCheckSupportStatus?.is_delegator == 1
+    ) {
       setDrawerFor(drawerOptions.directAdd);
       showDrawer();
     } else {
@@ -315,9 +323,9 @@ const SupportTreeCard = ({
   useEffect(() => {
     if (!campSupportingTree) return;
 
-    const campLeader = campSupportingTree?.length>0 && campSupportingTree?.find(
-      (obj) => obj.camp_leader === true
-    );
+    const campLeader =
+      campSupportingTree?.length > 0 &&
+      campSupportingTree?.find((obj) => obj.camp_leader === true);
 
     const campLeaderId = campLeader?.nick_name_id;
     const delegatorId = campLeader?.delegates?.at(0)?.nick_name_id;
@@ -380,7 +388,6 @@ const SupportTreeCard = ({
     );
   };
 
-
   const supportLength = 15;
   const renderTreeNodes = (
     data: any,
@@ -405,7 +412,7 @@ const SupportTreeCard = ({
             ? setTotalCampScoreForSupportTree(data[item].full_score)
             : setTotalCampScoreForSupportTree(data[item].score);
 
-            setSupportTreeData(data[item])
+          setSupportTreeData(data[item]);
         }
       } else {
         if (data[item]?.camp_id == 1) {
@@ -413,7 +420,7 @@ const SupportTreeCard = ({
           is_checked && isUserAuthenticated
             ? setTotalCampScoreForSupportTree(data[item].full_score)
             : setTotalCampScoreForSupportTree(data[item].score);
-            setSupportTreeData(data[item])
+          setSupportTreeData(data[item]);
         }
       }
       if ((!loadMore && index < supportLength) || loadMore) {
@@ -443,7 +450,7 @@ const SupportTreeCard = ({
                         }}
                       >
                         <a className="flex  gap-2.5 items-center flex-wrap text-canBlack hover:!text-canBlack">
-                          <span className="text-canBlack text-base font-medium">
+                          <span className="text-canBlack text-sm font-medium">
                             #{data[item].support_order}{" "}
                           </span>
                           <div className="w-[32px] h-[32px] rounded-full overflow-hidden bg-canLightBg flex items-center justify-center">
@@ -462,7 +469,7 @@ const SupportTreeCard = ({
                             )}
                           </div>
 
-                          <span className="text-canBlack lg:text-base text-sm font-medium">
+                          <span className="text-canBlack text-sm font-medium">
                             {" "}
                             {data[item].nick_name}
                           </span>
@@ -634,12 +641,12 @@ const SupportTreeCard = ({
 
   const renderSupportBtn = () => {
     if (isUserAuthenticated) {
-      if 
-        (getCheckSupportStatus?.support_flag == 0 ||
+      if (
+        getCheckSupportStatus?.support_flag == 0 ||
         getCheckSupportStatus?.is_delegator == 1
       ) {
         return K?.exceptionalMessages?.addSupport;
-      } else if(getCheckSupportStatus?.support_flag == 1){
+      } else if (getCheckSupportStatus?.support_flag == 1) {
         return K?.exceptionalMessages?.manageSupport;
       }
     } else {
@@ -718,7 +725,7 @@ const SupportTreeCard = ({
         <div className="topicDetailsCollapseFooter printHIde mt-3 w-full flex justify-center">
           <CustomButton
             onClick={handleClickSupportCheck}
-            className="w-full justify-center bg-canGreen hover:!bg-canGreen hover:!text-white hover:!border-transparent !border-transparent h-[44px] px-8 lg:px-10 text-white flex items-center rounded-lg font-medium text-base gap-2"
+            className="w-full justify-center bg-canGreen hover:!bg-canGreen hover:!text-white hover:!border-transparent !border-transparent h-[44px] px-8 lg:px-10 text-white flex items-center rounded-lg font-medium text-sm gap-2"
             disabled={asof == "bydate" || campRecord?.is_archive == 1}
             id="manage-support-btn"
           >
