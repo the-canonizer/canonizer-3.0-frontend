@@ -181,6 +181,12 @@ const SupportTreeCard = ({
       fetch_topic_history: +router?.query?.topic_history,
     };
     await getTreesApi(reqBodyForService);
+    debugger;
+    dispatch(setOpenConsensusTreePopup(true));
+
+    setTimeout(() => {
+      dispatch(setOpenConsensusTreePopup(false));
+    }, 100);
   };
   const handleCancelSupportCamps = async ({ isCallApiStatus = false }) => {
     if (isCallApiStatus == true) {

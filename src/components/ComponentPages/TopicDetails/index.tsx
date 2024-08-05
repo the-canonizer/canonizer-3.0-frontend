@@ -234,6 +234,10 @@ const TopicDetails = ({ serverSideCall }: any) => {
       setIsSupportTreeCardModal(false);
       GetCheckStatusData();
       await getTreesApi(reqBodyForService);
+      dispatch(setOpenConsensusTreePopup(true));
+      setTimeout(() => {
+        dispatch(setOpenConsensusTreePopup(false));
+      }, 100);
       getTopicActivityLogCall();
       await getCurrentCampRecordApi(reqBody);
       setRemoveSupportSpinner(false);
