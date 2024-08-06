@@ -147,6 +147,7 @@ function ManageStatements({ isEdit = false, add = false }) {
     let payload = {
       ...data,
       statement_id: topicNum,
+      statement: data?.statement ? data?.statement: localStorage.getItem("autosaveContent")
     }
 
     if (!isEdit) {
@@ -160,9 +161,15 @@ function ManageStatements({ isEdit = false, add = false }) {
       payload.camp_num = lastParentCamp?.camp_num;
       payload.submitter = editInfo?.statement?.submitter_nick_id;
     }
- 
-    await updateStatementApi(payload);
-    setIsAutoSave(false)
+    
+    if (navigator.onLine) {
+      await updateStatementApi(payload);
+      localStorage.removeItem('autosaveContent'); // Clear local storage on successful save
+      setIsAutoSave(false);
+    }else{
+      localStorage.setItem('autosaveContent', payload?.statement); // Save to local storage if offline
+    }
+   
   }
 
   useEffect(() => {
