@@ -62,6 +62,8 @@ function SupportTreeDrawer({
   selectNickId: getDelegateId,
   delegateNickName,
   handleCancelSupportCamps,
+  loader = false,
+  handleClick,
 }: any) {
   const {
     reasons,
@@ -344,6 +346,7 @@ function SupportTreeDrawer({
   };
 
   const onFinish = async (values) => {
+    handleClick();
     if (drawerFor === "delegateAdd") {
       await addDelegateMethod();
     } else if (drawerFor === "directAdd" || drawerFor === "manageSupport") {
@@ -715,6 +718,7 @@ function SupportTreeDrawer({
                   type="primary"
                   htmlType="submit"
                   className=" min-w-[200px] bg-canBlue flex items-center justify-center hover:bg-canHoverBlue focus:bg-canHoverBlue hover:text-white font-medium text-white disabled:bg-disabled font-base rounded-lg"
+                  loading={loader}
                 >
                   {renderSubmitBtnText()}
                   <PlusOutlined />
@@ -791,6 +795,7 @@ function SupportTreeDrawer({
                   type="primary"
                   htmlType="submit"
                   className=" min-w-[200px] bg-canBlue flex items-center justify-center hover:bg-canHoverBlue focus:bg-canHoverBlue hover:text-white font-medium text-white disabled:bg-disabled font-base rounded-lg"
+                  loading={loader}
                 >
                   {renderSubmitBtnText()}
                   <MinusOutlined />

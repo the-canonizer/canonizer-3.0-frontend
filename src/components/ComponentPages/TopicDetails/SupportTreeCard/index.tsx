@@ -144,7 +144,7 @@ const SupportTreeCard = ({
     setGetManageSupportLoadingIndicator,
   ] = useState(true);
   const [open, setOpen] = useState(false);
-  const [supportTreeData, setSupportTreeData] = useState(null);
+  const [loader, setLoader] = useState(false);
   const [drawerFor, setDrawerFor] = useState(""); //["directAdd","delegateAdd","directRemove","delegateRemove","manageSupport"]
   let drawerOptions = {
     directAdd: "directAdd",
@@ -152,6 +152,10 @@ const SupportTreeCard = ({
     directRemove: "directRemove",
     delegateRemove: "delegateRemove",
     manageSupport: "manageSupport",
+  };
+
+  const handleClick = () => {
+    setLoader(true);
   };
 
   const showDrawer = () => {
@@ -411,8 +415,6 @@ const SupportTreeCard = ({
           is_checked && isUserAuthenticated
             ? setTotalCampScoreForSupportTree(data[item].full_score)
             : setTotalCampScoreForSupportTree(data[item].score);
-
-          setSupportTreeData(data[item]);
         }
       } else {
         if (data[item]?.camp_id == 1) {
@@ -420,7 +422,6 @@ const SupportTreeCard = ({
           is_checked && isUserAuthenticated
             ? setTotalCampScoreForSupportTree(data[item].full_score)
             : setTotalCampScoreForSupportTree(data[item].score);
-          setSupportTreeData(data[item]);
         }
       }
       if ((!loadMore && index < supportLength) || loadMore) {
@@ -590,12 +591,14 @@ const SupportTreeCard = ({
       icon: <ExclamationCircleFilled />,
       width: 400,
       onOk() {
+        handleClick();
         currentGetCheckSupportExistsData.is_delegator
           ? removeSupportForDelegate()
           : topicList.length <= 1
           ? removeApiSupport(modalData?.nick_name_id)
           : removeSupport(modalData?.nick_name_id);
         setModalData({});
+        setLoader(false);
       },
     });
   };
@@ -620,6 +623,7 @@ const SupportTreeCard = ({
   };
 
   const onRemoveFinish = async (values) => {
+    handleClick();
     currentGetCheckSupportExistsData.is_delegator
       ? removeSupportForDelegate(values)
       : topicList.length <= 1
@@ -633,9 +637,9 @@ const SupportTreeCard = ({
       camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
     };
     await getCurrentCampRecordApi(reqBody);
-
     setModalData({});
     onClose();
+    setLoader(false);
     removeForm.resetFields();
   };
 
@@ -682,6 +686,8 @@ const SupportTreeCard = ({
           selectNickId={selectNickId}
           delegateNickName={delegateNickName}
           handleCancelSupportCamps={handleCancelSupportCamps}
+          handleClick={handleClick}
+          loader={loader}
         />
         <div className=" support-tree-sec">
           {/* <Paragraph className="position-relative">
@@ -740,7 +746,7 @@ const SupportTreeCard = ({
         </div>
       </div>
 
-      <Modal
+      {/* <Modal
         className={styles.modal_cross}
         title={
           <p id="all_camps_topics" className={styles.modalTitle}>
@@ -772,10 +778,10 @@ const SupportTreeCard = ({
             form={removeForm}
           />
         </Spin>
-      </Modal>
+      </Modal> */}
 
       {/* delegateremove */}
-      <Modal
+      {/* <Modal
         className={styles.modal_cross}
         title="Remove Support"
         open={isDelegateSupportTreeCardModal}
@@ -832,9 +838,9 @@ const SupportTreeCard = ({
             </Spin>
           </Form.Item>
         </Form>
-      </Modal>
+      </Modal> */}
 
-      <Modal
+      {/* <Modal
         className={styles.modal_cross}
         title="Support Camps"
         open={isModalOpenSupportCamps}
@@ -854,7 +860,7 @@ const SupportTreeCard = ({
           getManageSupportLoadingIndicator={getManageSupportLoadingIndicator}
           getCheckStatusAPI={getCheckStatusAPI}
         />
-      </Modal>
+      </Modal> */}
     </>
   );
 };
