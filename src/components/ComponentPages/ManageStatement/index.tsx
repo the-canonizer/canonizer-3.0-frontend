@@ -21,7 +21,7 @@ import StatementPreview from "./UI/preview";
 function ManageStatements({ isEdit = false, add = false }) {
   const router = useRouter();
   const [form] = Form.useForm();
-
+  
   const { isUserAuthenticated } = useAuthentication();
 
   const [notFoundStatus, setNotFoundStatus] = useState({
@@ -38,6 +38,7 @@ function ManageStatements({ isEdit = false, add = false }) {
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [editCampStatementData, setEditCampStatementData] = useState("");
   const [isSaveDraft, setIsSaveDraft] = useState(false);
+  const [isAutoSave, setIsAutoSave] = useState(false);
 
   const values = Form.useWatch([], form);
 
@@ -132,6 +133,38 @@ function ManageStatements({ isEdit = false, add = false }) {
     router.push({ pathname: getBackURL() });
   };
 
+  const autoSave = async (isAutosave, data) => {
+    setIsAutoSave(isAutosave)
+    
+    const editInfo = editStatementData;
+    const parentCamp = editInfo?.parent_camp;
+
+    const topicNum = router?.query?.statement?.at(0)?.split("-")?.at(0);
+    const topicName = router?.query?.statement?.at(0)?.split("-")?.at(1);
+    const campNum = router?.query?.statement?.at(1)?.split("-")?.at(0);
+    const lastParentCamp = parentCamp?.[parentCamp.length - 1];
+
+    let payload = {
+      ...data,
+      statement_id: topicNum,
+    }
+
+    if (!isEdit) {
+      payload.topic_num = topicNum;
+      payload.topic_name = topicName;
+      payload.camp_num = campNum;
+      payload.submitter = nickNameData?.at(0)?.id;
+    } else {
+      payload.topic_num = lastParentCamp?.topic_num;
+      payload.topic_name = lastParentCamp?.topic_name;
+      payload.camp_num = lastParentCamp?.camp_num;
+      payload.submitter = editInfo?.statement?.submitter_nick_id;
+    }
+ 
+    await updateStatementApi(payload);
+    setIsAutoSave(false)
+  }
+
   useEffect(() => {
     const fetchData = async () => {
       setScreenLoading(true);
@@ -199,44 +232,57 @@ function ManageStatements({ isEdit = false, add = false }) {
   }, [isUserAuthenticated]);
 
   const onFinish = async (values: any) => {
-    setScreenLoading(true);
-    setIsSaveDraft(false);
-
-    const editInfo = editStatementData;
-    const parent_camp = editInfo?.parent_camp;
-
-    const res = await saveStatement(values);
-
-    if (res?.status_code == 200) {
-      if (!isEdit) {
-        if (isSaveDraft) {
-          router?.push(router?.asPath?.replace("create/statement", "topic"));
-        } else {
-          router?.push(
-            router?.asPath?.replace("create/statement", "statement/history")
-          );
-        }
-        return;
-      } else if (isEdit) {
-        // if (isSaveDraft) {
-        //   router?.push({ pathname: topicURL() });
-        //   return;
-        // }
-
-        const route = `${editInfo?.topic?.topic_num}-${replaceSpecialCharacters(
-          editInfo?.topic?.topic_name,
-          "-"
-        )}/${
-          parent_camp[parent_camp?.length - 1]?.camp_num
-        }-${replaceSpecialCharacters(
-          parent_camp[parent_camp?.length - 1]?.camp_name,
-          "-"
-        )}`;
-        router?.push(`/statement/history/${route}`);
-        return;
-      }
+    if(isAutoSave) {
+        autoSave(isAutoSave, values)
     }
-    setScreenLoading(false);
+    else{
+      setScreenLoading(true);
+      setIsSaveDraft(false);
+  
+      const editInfo = editStatementData;
+      const parent_camp = editInfo?.parent_camp;
+
+      const campNum = router?.query?.statement?.at(1)?.split("-")?.at(0);
+
+      let payload = {
+        ...values,
+        camp_num: campNum
+
+      }
+  
+      const res = await saveStatement(payload);
+  
+      if (res?.status_code == 200) {
+        if (!isEdit) {
+          if (isSaveDraft) {
+            router?.push(router?.asPath?.replace("create/statement", "topic"));
+          } else {
+            router?.push(
+              router?.asPath?.replace("create/statement", "statement/history")
+            );
+          }
+          return;
+        } else if (isEdit) {
+          // if (isSaveDraft) {
+          //   router?.push({ pathname: topicURL() });
+          //   return;
+          // }
+  
+          const route = `${editInfo?.topic?.topic_num}-${replaceSpecialCharacters(
+            editInfo?.topic?.topic_name,
+            "-"
+          )}/${
+            parent_camp[parent_camp?.length - 1]?.camp_num
+          }-${replaceSpecialCharacters(
+            parent_camp[parent_camp?.length - 1]?.camp_name,
+            "-"
+          )}`;
+          router?.push(`/statement/history/${route}`);
+          return;
+        }
+      }
+      setScreenLoading(false);
+    }
   };
 
   // const saveStatement = async (values) => {
@@ -367,7 +413,7 @@ function ManageStatements({ isEdit = false, add = false }) {
       reqBody.event_type = "update";
     }
 
-    reqBody.is_draft = isSaveDraft ? 1 : 0;
+    reqBody.is_draft = isSaveDraft ? true : false;
 
     if (!isSaveDraft && isDraft) {
       reqBody.event_type = "create";
@@ -487,6 +533,7 @@ function ManageStatements({ isEdit = false, add = false }) {
               isDisabled={isDisabled}
               onPreviewClick={onPreviewClick}
               isDraft={isDraft}
+              autoSave={autoSave}
             />
           )}
         </Col>
