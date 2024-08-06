@@ -168,6 +168,7 @@ function ManageStatements({ isEdit = false, add = false }) {
       setIsAutoSave(false);
     }else{
       localStorage.setItem('autosaveContent', payload?.statement); // Save to local storage if offline
+      setIsAutoSave(false);
     }
    
   }
