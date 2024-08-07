@@ -78,8 +78,8 @@ function WrappedApp({
     fetch("/meta.json")
       .then((response) => response.json())
       .then((meta) => {
-        console.log("meta ===>", meta);
-        const latestVersionDate = meta?.buildDate;
+        // console.log("meta ===>", meta);
+        // const latestVersionDate = meta?.buildDate;
         const currentVersionDate = localStorage.getItem("build_number");
 
         const shouldForceRefresh = buildDateGreaterThan(
@@ -90,11 +90,11 @@ function WrappedApp({
           refreshCacheAndReload();
           localStorage.setItem("build_number", meta?.buildDate);
         }
-        console.log("cache", {
-          shouldForceRefresh: shouldForceRefresh,
-          latestVersionDate: meta?.buildDate,
-          currentVersionDate: +currentVersionDate ?? 0,
-        });
+        // console.log("cache", {
+        //   shouldForceRefresh: shouldForceRefresh,
+        //   latestVersionDate: meta?.buildDate,
+        //   currentVersionDate: +currentVersionDate ?? 0,
+        // });
       });
   }, []);
 
@@ -141,7 +141,6 @@ function WrappedApp({
     const handleTabClose = (event) => {
       if (!isRouting) {
         // Your custom logic here
-        // console.log("Tab is closing");
         // Prevent the tab from closing, if necessary
         event.preventDefault();
         event.returnValue = "";
@@ -275,8 +274,6 @@ WrappedApp.getInitialProps = async (
   };
 
   const metaData = await getTagData(req);
-
-  // console.log(aspath'metaData----', metaData, 'componentName----', componentName)
 
   /**
    *

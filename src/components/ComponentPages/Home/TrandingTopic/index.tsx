@@ -97,7 +97,7 @@ const TrandingTopics = () => {
             showSearch
             suffixIcon={<DownOutlined />}
             optionFilterProp="children"
-            className="w-full [&_.ant-select-selector]:!rounded-lg [&_.ant-select-arrow]:text-canBlack [&_.ant-select-selector]:!px-4"
+            className="w-full [&_.ant-select-selector]:!rounded-lg [&_.ant-select-arrow]:text-canBlack [&_.ant-select-selector]:!px-4 [&_.ant-select-selection-item]:font-medium"
             defaultValue={
               algorithms?.filter((algo) => algo?.algorithm_key == algoValue)[0]
                 ?.algorithm_label

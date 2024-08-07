@@ -37,8 +37,6 @@ const TopicDetailsPage = ({
   tree,
   serverCall,
 }: any) => {
-  console.log("campStatement---", campStatement);
-
   const dispatch = useDispatch();
   const serverSideCall = useRef(serverCall || false);
 

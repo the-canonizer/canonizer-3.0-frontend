@@ -379,10 +379,10 @@ function HistoryContainer() {
     </div>
   );
 
-  const renderButton = (type, label, count, active) => (
+  const renderButton = (type, label, count, active, classes = "") => (
     <Button
       size="large"
-      className={`btn-${type} text-sm ${active ? "active" : ""}`}
+      className={`btn-${type} ${classes} text-sm ${active ? "active" : ""}`}
       onClick={() => handleTabButton(type)}
     >
       {label} <span className="ml-1">({count}) </span>
@@ -391,23 +391,40 @@ function HistoryContainer() {
 
   const renderButtons = () => {
     const buttons = [
-      { type: "all", label: "View all", count: totalCount?.total_changes || 0 },
+      {
+        type: "all",
+        label: "View all",
+        count: totalCount?.total_changes || 0,
+        className: "btn-all",
+      },
       {
         type: "objected",
         label: "Objected",
         count: totalCount?.objected_changes || 0,
+        className: "btn-objected",
       },
-      { type: "live", label: "Live", count: totalCount?.live_changes || 0 },
+      {
+        type: "live",
+        label: "Live",
+        count: totalCount?.live_changes || 0,
+        className: "btn-live",
+      },
       {
         type: "in_review",
         label: "Pending",
         count: totalCount?.in_review_changes || 0,
+        className: "btn-pending",
       },
-      { type: "old", label: "Previous", count: totalCount?.old_changes || 0 },
+      {
+        type: "old",
+        label: "Previous",
+        count: totalCount?.old_changes || 0,
+        className: "btn-previous",
+      },
     ];
 
-    return buttons.map(({ type, label, count }) =>
-      renderButton(type, label, count, activeTab === type)
+    return buttons.map(({ type, label, count, className }) =>
+      renderButton(type, label, count, activeTab === type, className)
     );
   };
 

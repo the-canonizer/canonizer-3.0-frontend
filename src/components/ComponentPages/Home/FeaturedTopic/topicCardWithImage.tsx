@@ -79,7 +79,7 @@ const SingleTopicWithImage = ({ topic, onTopicClick = null }) => {
                 </Typography.Paragraph>
               </a>
             </Link>
-            <div className="hidden lg:flex items-start justify-center">
+            <div className="hidden lg:flex items-start justify-center [&_.ant-dropdown-trigger>svg]:fill-canLight [&_.ant-dropdown-trigger>svg]:!text-canLight [&_.ant-dropdown-trigger>svg]:w-[14px] [&_.ant-dropdown-trigger>svg]:h-[14px]">
               <SocialShare
                 key={topic?.id}
                 campName={topic?.camp_name}

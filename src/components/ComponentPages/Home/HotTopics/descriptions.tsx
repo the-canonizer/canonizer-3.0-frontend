@@ -40,7 +40,7 @@ const CardDescription = ({
   return (
     <div
       className={`${
-        isBrowsing ? "text-base line-clamp-2" : "text-sm line-clamp-4 h-20"
+        isBrowsing ? "text-base line-clamp-2" : "text-sm line-clamp-7 h-36"
       } font-inter !font-normal overflow-hidden text-canBlack opacity-80 [&_strong]:font-normal [&_*]:font-normal`}
       dangerouslySetInnerHTML={{
         __html: sanitizeHtml(description, {

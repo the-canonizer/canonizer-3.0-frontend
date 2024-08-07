@@ -2,6 +2,7 @@ import { message } from "antd";
 import moment from "moment";
 
 export const handleError = (error, log = false) => {
+  // eslint-disable-next-line
   log ? window.console.log(error) : "";
 
   const nestedErrs = error

@@ -76,7 +76,7 @@ const ThreadSidebar = () => {
     }
 
     if (router?.asPath?.includes("/forum/")) {
-      getTreeApiCall();
+      // getTreeApiCall();
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -84,7 +84,7 @@ const ThreadSidebar = () => {
 
   return (
     <Fragment>
-      <aside className="leftSideBar miniSideBar topicPageNewLayoutSidebar bg-white">
+      {/* <aside className="leftSideBar miniSideBar topicPageNewLayoutSidebar bg-white">
         {router?.asPath?.includes("/forum/") ? (
           <HomeSideBar
             onCreateCamp={onCreateCamp}
@@ -98,7 +98,7 @@ const ThreadSidebar = () => {
         ) : (
           ""
         )}
-      </aside>
+      </aside> */}
     </Fragment>
   );
 };

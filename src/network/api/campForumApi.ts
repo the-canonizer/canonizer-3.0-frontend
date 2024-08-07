@@ -12,6 +12,7 @@ export const createThread = async (body) => {
     return response;
   } catch (error) {
     handleError(error);
+    return error?.error?.data
   }
 };
 
@@ -25,6 +26,7 @@ export const updateThread = async (body, id) => {
     return response;
   } catch (error) {
     handleError(error);
+    return error?.error?.data
   }
 };
 
