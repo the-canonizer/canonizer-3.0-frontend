@@ -64,17 +64,21 @@ function ManageStatements({ isEdit = false, add = false }) {
         ...time,
         current_time: getEpochTime(),
       });
-      if(epochToMinutes(time?.current_time - time?.last_save_time)== 0){
+      if (epochToMinutes(time?.current_time - time?.last_save_time) == 0) {
         setAutoSaveDisplayMessage("Saved Few Seconds Ago");
-      }else{
-        setAutoSaveDisplayMessage(`Saved ${epochToMinutes(time?.current_time - time?.last_save_time)} min Ago`);
+      } else {
+        setAutoSaveDisplayMessage(
+          `Saved ${epochToMinutes(
+            time?.current_time - time?.last_save_time
+          )} min ago`
+        );
       }
     };
 
     const interval = setInterval(updateCurrentTime, 700);
 
     return () => clearInterval(interval);
-  }, [time?.last_save_time,time?.current_time]);
+  }, [time?.last_save_time, time?.current_time]);
 
   useEffect(() => {
     form
