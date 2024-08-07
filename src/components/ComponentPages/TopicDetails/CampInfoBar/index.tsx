@@ -47,6 +47,7 @@ const TimelineInfoBar = ({
   isTopicHistoryPage = false,
   isForumPage = false,
   getCheckSupportStatus = null,
+  isHtmlContent = null,
 }: any) => {
   const dispatch = useDispatch();
   const [loadingIndicator, setLoadingIndicator] = useState(false);
@@ -896,7 +897,9 @@ const TimelineInfoBar = ({
             )}
 
             <div className="flex items-center gap-3 shrink-0">
-              {campStatement?.length > 0 ? (
+              {!isHtmlContent &&
+              campStatement?.length > 0 &&
+              campStatement[0]?.parsed_value ? (
                 <div className="topicDetailsCollapseFooter printHIde camp">
                   <PrimaryButton
                     disabled={campRecord?.is_archive == 1 ? true : false}
@@ -935,20 +938,24 @@ const TimelineInfoBar = ({
                 </div>
               ) : null}
 
-              <SecondaryButton
-                className="hidden px-8 py-2.5 lg:flex items-center text-sm"
-                size="large"
-                onClick={handleClick}
-              >
-                Create Camp
-                <Image
-                  src="/images/Icon-plus.svg"
-                  alt="svg"
-                  className="icon-topic"
-                  height={16}
-                  width={16}
-                />
-              </SecondaryButton>
+              {!isHtmlContent && (
+                <SecondaryButton
+                  className="hidden px-8 py-2.5 lg:flex items-center text-sm"
+                  size="large"
+                  onClick={handleClick}
+                >
+                  Create Camp
+                  <Image
+                    src="/images/Icon-plus.svg"
+                    alt="svg"
+                    className="icon-topic"
+                    height={16}
+                    width={16}
+                  />
+                </SecondaryButton>
+              )}
+
+              {isHtmlContent}
             </div>
           </div>
         </div>

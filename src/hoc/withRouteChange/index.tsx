@@ -29,9 +29,9 @@ const withRouteChange = (WrappedComponent) => {
         }
       };
 
-      const handleRouteComplete = (url) => {
-        // console.log("App has changed to: ", url);
-        // console.log("Current app url after completed: ", router?.asPath);
+      // eslint-disable-next-line
+      const handleRouteComplete = (_url) => {
+        //
       };
 
       router.events.on("routeChangeStart", handleRouteChange);
