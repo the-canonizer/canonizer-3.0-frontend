@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
-import { Form, Row, Col } from "antd";
+import { Form, Row, Col, Typography } from "antd";
 import { useRouter } from "next/router";
-import { FileTextOutlined, HomeOutlined } from "@ant-design/icons";
+import {
+  CloudUploadOutlined,
+  FileTextOutlined,
+  HomeOutlined,
+} from "@ant-design/icons";
 
 import { getAllUsedNickNames } from "src/network/api/campDetailApi";
 import useAuthentication from "src/hooks/isUserAuthenticated";
@@ -9,7 +13,10 @@ import {
   getEditStatementApi,
   updateStatementApi,
 } from "src/network/api/campManageStatementApi";
-import { replaceSpecialCharacters } from "src/utils/generalUtility";
+import {
+  epochToMinutes,
+  replaceSpecialCharacters,
+} from "src/utils/generalUtility";
 import DataNotFound from "../DataNotFound/dataNotFound";
 import Breadcrumbs from "components/shared/Breadcrumbs";
 import CustomSpinner from "components/shared/CustomSpinner";
@@ -21,7 +28,7 @@ import StatementPreview from "./UI/preview";
 function ManageStatements({ isEdit = false, add = false }) {
   const router = useRouter();
   const [form] = Form.useForm();
-  
+
   const { isUserAuthenticated } = useAuthentication();
 
   const [notFoundStatus, setNotFoundStatus] = useState({
@@ -39,8 +46,39 @@ function ManageStatements({ isEdit = false, add = false }) {
   const [editCampStatementData, setEditCampStatementData] = useState("");
   const [isSaveDraft, setIsSaveDraft] = useState(false);
   const [isAutoSave, setIsAutoSave] = useState(false);
+  const [time, setTime] = useState({
+    current_time: null,
+    last_save_time: null,
+  });
+  const [autoSaveDisplayMessage, setAutoSaveDisplayMessage] = useState("");
 
   const values = Form.useWatch([], form);
+
+  const getEpochTime = () => {
+    return Math.floor(Date.now() / 1000);
+  };
+
+  useEffect(() => {
+    const updateCurrentTime = () => {
+      setTime({
+        ...time,
+        current_time: getEpochTime(),
+      });
+      if (epochToMinutes(time?.current_time - time?.last_save_time) == 0) {
+        setAutoSaveDisplayMessage("Saved Few Seconds Ago");
+      } else {
+        setAutoSaveDisplayMessage(
+          `Saved ${epochToMinutes(
+            time?.current_time - time?.last_save_time
+          )} min ago`
+        );
+      }
+    };
+
+    const interval = setInterval(updateCurrentTime, 700);
+
+    return () => clearInterval(interval);
+  }, [time?.last_save_time, time?.current_time]);
 
   useEffect(() => {
     form
@@ -134,8 +172,8 @@ function ManageStatements({ isEdit = false, add = false }) {
   };
 
   const autoSave = async (isAutosave, data) => {
-    setIsAutoSave(isAutosave)
-    
+    setIsAutoSave(isAutosave);
+
     const editInfo = editStatementData;
     const parentCamp = editInfo?.parent_camp;
 
@@ -147,8 +185,10 @@ function ManageStatements({ isEdit = false, add = false }) {
     let payload = {
       ...data,
       statement_id: topicNum,
-      statement: data?.statement ? data?.statement: localStorage.getItem("autosaveContent")
-    }
+      statement: data?.statement
+        ? data?.statement
+        : localStorage.getItem("autosaveContent"),
+    };
 
     if (!isEdit) {
       payload.topic_num = topicNum;
@@ -161,17 +201,26 @@ function ManageStatements({ isEdit = false, add = false }) {
       payload.camp_num = lastParentCamp?.camp_num;
       payload.submitter = editInfo?.statement?.submitter_nick_id;
     }
-    
+
     if (navigator.onLine) {
       await updateStatementApi(payload);
-      localStorage.removeItem('autosaveContent'); // Clear local storage on successful save
+      localStorage.removeItem("autosaveContent"); // Clear local storage on successful save
       setIsAutoSave(false);
-    }else{
-      localStorage.setItem('autosaveContent', payload?.statement); // Save to local storage if offline
+
+      setTime({
+        ...time,
+        last_save_time: getEpochTime(),
+      });
+    } else {
+      localStorage.setItem("autosaveContent", payload?.statement); // Save to local storage if offline
       setIsAutoSave(false);
+
+      setTime({
+        ...time,
+        last_save_time: getEpochTime(),
+      });
     }
-   
-  }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -184,6 +233,13 @@ function ManageStatements({ isEdit = false, add = false }) {
           record_id: router?.query?.statement?.[0]?.split("-")[0],
           event_type: "edit",
         });
+
+        if (editRes?.status_code === 200) {
+          setTime({
+            ...time,
+            last_save_time: editRes?.data?.statement?.submit_time,
+          });
+        }
 
         if (editRes?.status_code === 404) {
           setNotFoundStatus({ status: true, name: "Statement" });
@@ -240,13 +296,12 @@ function ManageStatements({ isEdit = false, add = false }) {
   }, [isUserAuthenticated]);
 
   const onFinish = async (values: any) => {
-    if(isAutoSave) {
-        autoSave(isAutoSave, values)
-    }
-    else{
+    if (isAutoSave) {
+      autoSave(isAutoSave, values);
+    } else {
       setScreenLoading(true);
       setIsSaveDraft(false);
-  
+
       const editInfo = editStatementData;
       const parent_camp = editInfo?.parent_camp;
 
@@ -254,12 +309,11 @@ function ManageStatements({ isEdit = false, add = false }) {
 
       let payload = {
         ...values,
-        camp_num: campNum
+        camp_num: campNum,
+      };
 
-      }
-  
       const res = await saveStatement(payload);
-  
+
       if (res?.status_code == 200) {
         if (!isEdit) {
           if (isSaveDraft) {
@@ -275,11 +329,10 @@ function ManageStatements({ isEdit = false, add = false }) {
           //   router?.push({ pathname: topicURL() });
           //   return;
           // }
-  
-          const route = `${editInfo?.topic?.topic_num}-${replaceSpecialCharacters(
-            editInfo?.topic?.topic_name,
-            "-"
-          )}/${
+
+          const route = `${
+            editInfo?.topic?.topic_num
+          }-${replaceSpecialCharacters(editInfo?.topic?.topic_name, "-")}/${
             parent_camp[parent_camp?.length - 1]?.camp_num
           }-${replaceSpecialCharacters(
             parent_camp[parent_camp?.length - 1]?.camp_name,
@@ -436,9 +489,15 @@ function ManageStatements({ isEdit = false, add = false }) {
           />
         </Col>
         <Col className="flex justify-end items-center" md={12}>
-          {/* <Typography.Paragraph className="!mb-0 mr-7">
-            Autosaved in 1 min ago <CloudUploadOutlined />
-          </Typography.Paragraph> */}
+          <Typography.Paragraph className="!mb-0 mr-7">
+            {isAutoSave ? (
+              <>Saving ...</>
+            ) : (
+              <>
+                {autoSaveDisplayMessage} <CloudUploadOutlined />
+              </>
+            )}
+          </Typography.Paragraph>
           <SecondaryButton
             className="flex items-center justify-center py-2 px-8 h-auto"
             onClick={onSaveDraftStatement}
