@@ -55,7 +55,6 @@ const { TextArea } = Input;
 function SupportTreeDrawer({
   onClose,
   open,
-  topicList,
   drawerFor,
   setDrawerFor,
   onRemoveFinish,
@@ -63,7 +62,7 @@ function SupportTreeDrawer({
   delegateNickName,
   handleCancelSupportCamps,
   loader = false,
-  handleClick,
+  setLoader
 }: any) {
   const {
     reasons,
@@ -299,6 +298,7 @@ function SupportTreeDrawer({
       openNotificationWithIcon(
         "You are not supporting this camp. So, you can`t remove support"
       );
+      setLoader(false)
     } else {
       let payload = {
         topic_num: topicNum,
@@ -346,12 +346,13 @@ function SupportTreeDrawer({
   };
 
   const onFinish = async (values) => {
-    handleClick();
+    setLoader(true)
     if (drawerFor === "delegateAdd") {
       await addDelegateMethod();
     } else if (drawerFor === "directAdd" || drawerFor === "manageSupport") {
       await addSupportMethod(values);
     }
+    setLoader(false)
   };
 
   const getReasons = async () => {

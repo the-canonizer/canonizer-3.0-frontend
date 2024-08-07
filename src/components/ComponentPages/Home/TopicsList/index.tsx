@@ -348,7 +348,6 @@ const TopicsList = () => {
                         <TopicCatsLabel tags={ft?.tags} />
                         <ViewCounts views={ft?.camp_views} />
                       </div>
-                      {console.log("otot---", ft?.topic_name, ft)}
                       <AvatarGroup
                         className="browse-avatar"
                         avatars={

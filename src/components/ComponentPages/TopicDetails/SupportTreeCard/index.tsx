@@ -154,9 +154,6 @@ const SupportTreeCard = ({
     manageSupport: "manageSupport",
   };
 
-  const handleClick = () => {
-    setLoader(true);
-  };
 
   const showDrawer = () => {
     setOpen(true);
@@ -591,7 +588,7 @@ const SupportTreeCard = ({
       icon: <ExclamationCircleFilled />,
       width: 400,
       onOk() {
-        handleClick();
+        setLoader(true);
         currentGetCheckSupportExistsData.is_delegator
           ? removeSupportForDelegate()
           : topicList.length <= 1
@@ -623,7 +620,7 @@ const SupportTreeCard = ({
   };
 
   const onRemoveFinish = async (values) => {
-    handleClick();
+    setLoader(true);
     currentGetCheckSupportExistsData.is_delegator
       ? removeSupportForDelegate(values)
       : topicList.length <= 1
@@ -679,15 +676,14 @@ const SupportTreeCard = ({
         <SupportTreeDrawer
           onClose={onClose}
           open={open}
-          topicList={topicList}
           drawerFor={drawerFor}
           setDrawerFor={setDrawerFor}
           onRemoveFinish={onRemoveFinish}
           selectNickId={selectNickId}
           delegateNickName={delegateNickName}
           handleCancelSupportCamps={handleCancelSupportCamps}
-          handleClick={handleClick}
           loader={loader}
+          setLoader={setLoader}
         />
         <div className=" support-tree-sec">
           {/* <Paragraph className="position-relative">
