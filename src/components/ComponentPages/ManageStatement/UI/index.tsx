@@ -75,6 +75,7 @@ function ManageStatementUI({
   isDisabled,
   onPreviewClick,
   isDraft,
+  autoSave,
 }) {
   return (
     <CommonCards className="border-0 bg-white">
@@ -163,6 +164,14 @@ function ManageStatementUI({
                     oneditorchange={onEditorStateChange}
                     placeholder="Write Your Statement Here"
                     items={EditorToolbarItems}
+                    saveContent={(data) => {
+                      autoSave(true, {
+                        is_draft: true,
+                        event_type: "edit",
+                        statement: data,
+                        nick_name:nickNameData?.at(0)?.id
+                      });
+                    }}
                   ></Editorckl>
                 )}
               </Form.Item>

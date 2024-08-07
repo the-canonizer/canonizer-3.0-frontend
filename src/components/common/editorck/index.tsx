@@ -26,7 +26,7 @@ interface height {
 }
 
 export default function Editorck(
-  props: editorState & editorchange & placeholder & toolbaritems & height
+  props: editorState & editorchange & placeholder & toolbaritems & height & any
 ) {
   const { isUserAuthenticated } = isAuth();
   const [loadeditor, setLoadeditor] = useState(false);
@@ -55,6 +55,13 @@ export default function Editorck(
         "linkImage",
       ],
     },
+    autosave: {
+      save(editor) {
+        const editorData = editor?.getData();
+        props?.saveContent && props?.saveContent(editorData);
+      },
+      waitingTime: 2000 // 2 seconds
+    }
   };
 
   return (
