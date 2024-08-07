@@ -11,7 +11,6 @@ import {
   setCurrentCampRecord,
 } from "src/store/slices/campDetailSlice";
 import { getThreadsList } from "src/network/api/campForumApi";
-import Layout from "src/hoc/layout";
 import CampForumComponent from "components/ComponentPages/CampForum/ThreadPage";
 import { createToken } from "src/network/api/userApi";
 
@@ -31,17 +30,9 @@ function CampForumListPage({ topicRecord, campRecord, threadList }) {
   }, []);
 
   return (
-    // <Layout routeName={"forum"}>
     <div className="" style={{ width: "100%" }}>
-      {threadList?.status_code != "404" && (
-        <CampForumComponent
-          threadlist={
-            threadList?.status_code == 200 ? threadList?.data?.items : []
-          }
-        />
-      )}
+      {threadList?.status_code != "404" && <CampForumComponent />}
     </div>
-    // </Layout>
   );
 }
 export async function getServerSideProps({ req, resolvedUrl }) {

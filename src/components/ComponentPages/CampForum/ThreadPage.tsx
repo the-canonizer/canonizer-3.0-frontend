@@ -113,7 +113,7 @@ const ForumComponent = () => {
       getSelectedNode(camp_num);
     } else didMount.current = true;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router]);
+  }, [router?.query]);
 
   useEffect(() => {
     const queries = router?.query;
