@@ -1,32 +1,21 @@
 import { Fragment, useState, useEffect } from "react";
-import {
-  Card,
-  Input,
-  Button,
-  Typography,
-  Table,
-  Pagination,
-  Tooltip,
-  Modal,
-  Form,
-  Row,
-  Col,
-} from "antd";
-import { EditOutlined } from "@ant-design/icons";
+import { Input, Typography, Table, Pagination, Tooltip } from "antd";
+import { EditOutlined, LeftOutlined } from "@ant-design/icons";
 import moment from "moment";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
 import styles from "./Forum.module.scss";
-import messages from "../../../../messages";
-import {
-  getTime,
-  replaceSpecialCharacters,
-} from "../../../../utils/generalUtility";
-import useAuthentication from "../../../../hooks/isUserAuthenticated";
-import CustomSkelton from "../../../common/customSkelton";
 
-const { Text } = Typography;
+import messages from "src/messages";
+import { getTime, replaceSpecialCharacters } from "src/utils/generalUtility";
+import useAuthentication from "src/hooks/isUserAuthenticated";
+import CustomSkelton from "components/common/customSkelton";
+import CommonCards from "components/shared/Card";
+import SecondaryButton from "components/shared/Buttons/SecondaryButton";
+import PrimaryButton from "components/shared/Buttons/PrimariButton";
+
+const { Text, Paragraph } = Typography;
 const { Column } = Table;
 
 const { placeholders } = messages;
@@ -34,7 +23,6 @@ const { placeholders } = messages;
 const ThreadListUI = ({
   onSearch,
   onChange,
-  onCreateThread,
   threadList,
   onThreadClick,
   current,
@@ -42,13 +30,8 @@ const ThreadListUI = ({
   filterThread,
   paramsList,
   isLoading,
-  isModalOpen = false,
-  showModal,
-  onFinish,
-  onCancelThreadUpdateForm,
   onThreadEdit,
-  form,
-}: any) => {
+}) => {
   const [isLog, setIsLog] = useState(false);
   const { isUserAuthenticated } = useAuthentication();
 
@@ -93,33 +76,30 @@ const ThreadListUI = ({
         },
       ];
 
+  const btnClass =
+      "border-0 [&:not(:last-child)]:mr-5 text-sm font-normal !text-canBlack hover:!text-canBlue relative after:content-[''] after:absolute after:border-b-4 after:w-[70%] after:top-auto after:left-[50%] after:-translate-x-[50%] after:bottom-0 after:border-canBlue after:rounded after:hidden",
+    activeCls = "font-semibold !text-canBlue after:!block";
+
   return (
-    <Fragment>
-      <Card
-        title={<span className={styles.cardTitle}>Camp Forum</span>}
-        className={`can-card-style ${styles.thread_card}`}
-        extra={
-          <div className={styles.inputSearchTopic}>
-            <Input.Search
-              placeholder={placeholders.searchPlaceholder}
-              allowClear
-              onSearch={onSearch}
-              className={styles.searchInput}
-              id="search-bar"
-              data-testid="search-bar"
-            />
-          </div>
-        }
-      >
-        <Text strong className={styles.labelHeading} id="list-label">
-          List of All Camp Threads
-        </Text>
-        <div className={styles.btn_group}>
-          <Button
-            type="primary"
+    <CommonCards
+      title={
+        <div className="border-0 flex items-center justify-start">
+          <SecondaryButton className="border-0 p-0 flex items-center justify-start text-xl">
+            <LeftOutlined />
+          </SecondaryButton>
+          <span className="text-canBlack font-medium text-xl ml-2">
+            Camp Forum
+          </span>
+        </div>
+      }
+      className={`bg-white border-0 px-6 [&_.ant-card-head]:p-0 [&_.ant-card-body]:px-0 [&_.ant-card-head]:border-0`}
+    >
+      <div className="flex justify-between mb-9">
+        <div className="flex justify-between items-center border-b-2 max-w-[50%]">
+          <PrimaryButton
             ghost
-            className={`${styles.tabBtn} ${
-              (!paramsList.by || paramsList.by === "all") && styles.orange
+            className={`${btnClass} ${
+              (!paramsList.by || paramsList.by === "all") && activeCls
             }`}
             onClick={filterThread.bind(this, "all")}
             key="all-btn"
@@ -127,27 +107,23 @@ const ThreadListUI = ({
             data-testid="all-thread-btn"
           >
             All Threads
-          </Button>
+          </PrimaryButton>
           {isLog ? (
             <Fragment>
-              <Button
-                type="primary"
+              <PrimaryButton
                 ghost
-                className={`${styles.tabBtn} ${
-                  paramsList.by === "my" && styles.orange
-                }`}
+                className={`${btnClass} ${paramsList.by === "my" && activeCls}`}
                 onClick={filterThread.bind(this, "my")}
                 key="my-btn"
                 id="my-thread-btn"
                 data-testid="my-thread-btn"
               >
                 My Threads
-              </Button>
-              <Button
-                type="primary"
+              </PrimaryButton>
+              <PrimaryButton
                 ghost
-                className={`${styles.tabBtn} ${
-                  paramsList.by === "participate" && styles.orange
+                className={`${btnClass} ${
+                  paramsList.by === "participate" && activeCls
                 }`}
                 onClick={filterThread.bind(this, "participate")}
                 key="participate-btn"
@@ -155,12 +131,11 @@ const ThreadListUI = ({
                 data-testid="participate-btn"
               >
                 My Participation
-              </Button>
-              <Button
-                type="primary"
+              </PrimaryButton>
+              <PrimaryButton
                 ghost
-                className={`${styles.tabBtn} ${
-                  paramsList.by === "most_replies" && styles.orange
+                className={`${btnClass} ${
+                  paramsList.by === "most_replies" && activeCls
                 }`}
                 onClick={filterThread.bind(this, "most_replies")}
                 key="most_replies-btn"
@@ -168,130 +143,138 @@ const ThreadListUI = ({
                 data-testid="most-rep-btn"
               >
                 Top 10
-              </Button>
+              </PrimaryButton>
             </Fragment>
           ) : null}
-          <Button
-            type="primary"
-            className={`${styles.tabBtn} ${styles.submit_btn}`}
-            onClick={onCreateThread}
-            key="create-btn"
-            id="create-btn"
-            data-testid="create-new-thread"
-          >
-            Create Thread
-          </Button>
         </div>
+        <div className="max-w-[300px]">
+          <Input.Search
+            placeholder={placeholders.searchPlaceholder}
+            allowClear
+            onSearch={onSearch}
+            className="[&_.ant-input-affix-wrapper]:!rounded-l-lg [&_.ant-input-search-button]:!rounded-r-lg [&_.ant-input]:h-[30px] [&_button]:h-[40px]"
+            id="search-bar"
+            data-testid="search-bar"
+          />
+        </div>
+      </div>
 
-        {isLoading ? (
-          <Fragment>
-            <Table dataSource={loadingData} pagination={false}>
-              <Column
-                title="Thread Name"
-                dataIndex="title"
-                key="title"
-                render={() => (
-                  <CustomSkelton
-                    skeltonFor="list"
-                    bodyCount={1}
-                    stylingClass=""
-                    isButton={false}
-                  />
-                )}
-                width="350px"
-              />
-              <Column
-                title="Replies"
-                dataIndex="post_count"
-                key="post_count"
-                responsive={["lg"]}
-                render={() => (
-                  <CustomSkelton
-                    skeltonFor="list"
-                    bodyCount={1}
-                    stylingClass=""
-                    isButton={false}
-                  />
-                )}
-              />
-              <Column
-                title="Last Updated On"
-                dataIndex="post_updated_at"
-                key="post_updated_at"
-                responsive={["lg"]}
-                render={() => (
-                  <CustomSkelton
-                    skeltonFor="list"
-                    bodyCount={1}
-                    stylingClass=""
-                    isButton={false}
-                  />
-                )}
-              />
-            </Table>
-            <div className={`paginationCon`}>
-              {total > 10 ? (
+      {isLoading ? (
+        <Fragment>
+          <Table dataSource={loadingData} pagination={false}>
+            <Column
+              title="Thread Name"
+              dataIndex="title"
+              key="title"
+              render={() => (
                 <CustomSkelton
                   skeltonFor="list"
                   bodyCount={1}
                   stylingClass=""
-                  listStyle="liHeight"
                   isButton={false}
                 />
-              ) : null}
-            </div>
-          </Fragment>
-        ) : (
-          <Fragment>
-            <Table dataSource={threadList} pagination={false}>
-              <Column
-                title="Thread Name"
-                dataIndex="title"
-                key="title"
-                render={(text, others: any, idx) => {
-                  return (
-                    <Fragment key={idx}>
-                      <a
-                        onClick={(e) => onThreadClick(e, others)}
-                        className={styles.threadListTitle}
-                        id={"thread-label-" + (+idx + 1)}
-                        data-testid={"thread-label-" + (+idx + 1)}
-                        href={`/forum/${replaceSpecialCharacters(
-                          router?.query?.topic as string,
-                          "-"
-                        )}/${replaceSpecialCharacters(
-                          router?.query?.camp as string,
-                          "-"
-                        )}/threads/${others?.id}`}
-                      >
-                        <Fragment>{text}</Fragment>
-                      </a>
-                      {isLog && paramsList.by === "my" ? (
-                        <Tooltip title="edit">
-                          <a
-                            onClick={() => {
-                              onThreadEdit({ text, others });
-                            }}
-                            className="linkCss"
-                            data-testid="edit_btn"
-                          >
-                            <EditOutlined />
-                          </a>
-                        </Tooltip>
-                      ) : null}
-                    </Fragment>
-                  );
-                }}
-                width="350px"
+              )}
+            />
+            <Column
+              title="Replies"
+              dataIndex="post_count"
+              key="post_count"
+              responsive={["lg"]}
+              width="150px"
+              render={() => (
+                <CustomSkelton
+                  skeltonFor="list"
+                  bodyCount={1}
+                  stylingClass=""
+                  isButton={false}
+                />
+              )}
+            />
+            <Column
+              title="Last Updated On"
+              dataIndex="post_updated_at"
+              key="post_updated_at"
+              responsive={["lg"]}
+              render={() => (
+                <CustomSkelton
+                  skeltonFor="list"
+                  bodyCount={1}
+                  stylingClass=""
+                  isButton={false}
+                />
+              )}
+            />
+          </Table>
+          <div className={`paginationCon`}>
+            {total > 10 ? (
+              <CustomSkelton
+                skeltonFor="list"
+                bodyCount={1}
+                stylingClass=""
+                listStyle="liHeight"
+                isButton={false}
               />
-              <Column title="Replies" dataIndex="post_count" key="post_count" />
-              <Column
-                title="Last Updated On"
-                dataIndex="post_updated_at"
-                key="post_updated_at"
-                render={(dt, others) => {
-                  return (
-                    <Text>
+            ) : null}
+          </div>
+        </Fragment>
+      ) : (
+        <Fragment>
+          <Table dataSource={threadList} pagination={false}>
+            <Column
+              title="Thread Name"
+              dataIndex="title"
+              key="title"
+              render={(text, others: any, idx) => {
+                return (
+                  <Fragment key={idx}>
+                    <a
+                      onClick={(e) => onThreadClick(e, others)}
+                      className="!text-canBlack hocus:!text-canBlue font-medium text-sm"
+                      id={"thread-label-" + (+idx + 1)}
+                      data-testid={"thread-label-" + (+idx + 1)}
+                      href={`/forum/${replaceSpecialCharacters(
+                        router?.query?.topic as string,
+                        "-"
+                      )}/${replaceSpecialCharacters(
+                        router?.query?.camp as string,
+                        "-"
+                      )}/threads/${others?.id}`}
+                    >
+                      <Fragment>{text}</Fragment>
+                    </a>
+                    {isLog && paramsList.by === "my" ? (
+                      <Tooltip title="edit">
+                        <a
+                          onClick={() => {
+                            onThreadEdit({ text, others });
+                          }}
+                          className="linkCss"
+                          data-testid="edit_btn"
+                        >
+                          <EditOutlined />
+                        </a>
+                      </Tooltip>
+                    ) : null}
+                  </Fragment>
+                );
+              }}
+            />
+            <Column
+              title="Replies"
+              dataIndex="post_count"
+              key="post_count"
+              width="150px"
+              className="!text-center"
+            />
+            <Column
+              title="Last Updated On"
+              dataIndex="post_updated_at"
+              key="post_updated_at"
+              width="600px"
+              render={(dt, others) => {
+                return (
+                  <Paragraph className="!mb-0">
+                    <Text className="block">
                       {others["post_count"] === 0 ? (
                         "This thread doesn't have any posts yet."
                       ) : (
@@ -318,83 +301,28 @@ const ThreadListUI = ({
                         </Fragment>
                       )}
                     </Text>
-                  );
-                }}
-              />
-            </Table>
+                    <Text className="block text-xs text-canLight mt-2">
+                      {moment(getTime(dt)).format("DD MMM YYYY, h:mm A")}
+                    </Text>
+                  </Paragraph>
+                );
+              }}
+            />
+          </Table>
 
-            <div className={`paginationCon`}>
-              {total > 10 ? (
-                <Pagination
-                  current={current}
-                  onChange={onChange}
-                  showSizeChanger={false}
-                  total={total}
-                />
-              ) : null}
-            </div>
-          </Fragment>
-        )}
-      </Card>
-      <Modal
-        title="Edit title of the thread"
-        open={isModalOpen}
-        // onOk={}
-        onCancel={() => showModal()}
-        className={styles.postFormModal}
-        footer={null}
-      >
-        <Form
-          autoComplete="off"
-          form={form}
-          onFinish={onFinish}
-          name="new_post"
-          className={`${styles.postForm}`}
-          layout={"vertical"}
-        >
-          <Row gutter={16}>
-            {isLog ? (
-              <Col xs={24} sm={24}>
-                <Form.Item
-                  name="threadName"
-                  // className="nick_name_extra"
-                  className={styles.editorQuill}
-                >
-                  <Input />
-                </Form.Item>
-              </Col>
+          <div className={`paginationCon mt-10 flex justify-center`}>
+            {total > 10 ? (
+              <Pagination
+                current={current}
+                onChange={onChange}
+                showSizeChanger={false}
+                total={total}
+              />
             ) : null}
-          </Row>
-          {isLog ? (
-            <div className={styles.saveBtns}>
-              <Form.Item noStyle>
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  size={"large"}
-                  className={`${styles.submit_btn}`}
-                  id="submit-btn"
-                  data-testid="submit-btn"
-                >
-                  Submit
-                </Button>
-                <Button
-                  type="primary"
-                  htmlType="button"
-                  size={"large"}
-                  className={`${styles.cancel_btn}`}
-                  onClick={onCancelThreadUpdateForm}
-                  id="back-btn"
-                  data-testid="back-btn"
-                >
-                  Cancel
-                </Button>
-              </Form.Item>
-            </div>
-          ) : null}
-        </Form>
-      </Modal>
-    </Fragment>
+          </div>
+        </Fragment>
+      )}
+    </CommonCards>
   );
 };
 
