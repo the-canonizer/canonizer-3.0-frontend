@@ -64,12 +64,15 @@ function ManageStatements({ isEdit = false, add = false }) {
         ...time,
         current_time: getEpochTime(),
       });
-      if (epochToMinutes(time?.current_time - time?.last_save_time) == 0) {
+
+      if(epochToMinutes(time?.last_save_time)== 0){
+        setAutoSaveDisplayMessage("");
+      }else if (epochToMinutes(getEpochTime() - time?.last_save_time) == 0 ) {
         setAutoSaveDisplayMessage("Saved Few Seconds Ago");
       } else {
         setAutoSaveDisplayMessage(
           `Saved ${epochToMinutes(
-            time?.current_time - time?.last_save_time
+            getEpochTime() - time?.last_save_time
           )} min ago`
         );
       }
@@ -566,7 +569,10 @@ function ManageStatements({ isEdit = false, add = false }) {
               <>Saving ...</>
             ) : (
               <>
-                {autoSaveDisplayMessage} <CloudUploadOutlined />
+                {autoSaveDisplayMessage && <>
+                  {autoSaveDisplayMessage+" "}
+                  <CloudUploadOutlined />
+                </>} 
               </>
             )}
           </Typography.Paragraph>
