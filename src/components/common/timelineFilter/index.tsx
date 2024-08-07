@@ -49,8 +49,39 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
 
   return (
     <>
-      <div className="leftSideBar_Card">
-        <Collapse
+      <div className="leftSideBar_Card cn-algo-wrapper">
+        <div className={styles.algo_title}>
+          <Title level={5} className="uppercase">
+            Canonizer Algorithm:
+          </Title>
+          <Select
+            size="large"
+            showSearch
+            optionFilterProp="children"
+            className="algo-select"
+            defaultValue={
+              algorithms?.filter(
+                (algo) => algo.algorithm_key == selectedAlgorithm
+              )[0]?.algorithm_label
+            }
+            onChange={selectAlgorithm}
+            value={
+              algorithms?.filter(
+                (algo) => algo.algorithm_key == selectedAlgorithm
+              )[0]?.algorithm_label
+            }
+            disabled={loading}
+          >
+            {algorithms?.map((algo) => {
+              return (
+                <Option key={algo.id} value={algo.algorithm_key}>
+                  {algo.algorithm_label}
+                </Option>
+              );
+            })}
+          </Select>
+        </div>
+        {/* <Collapse
           className={`${styles.cardAccordian} topicListFilterCardCollapse`}
           expandIconPosition="right"
           expandIcon={() => (
@@ -97,10 +128,10 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
               </Select>
             </div>
 
-            <Paragraph className={styles.algoInfo}>
-              {/* <i className="icon-fish-bones"></i> Algorithm Information */}
-            </Paragraph>
-            {/* <div className={styles.filter}>
+            {/* <Paragraph className={styles.algoInfo}> */}
+        {/* <i className="icon-fish-bones"></i> Algorithm Information */}
+        {/* </Paragraph> */}
+        {/* <div className={styles.filter}>
               <Text className={styles.filterText}>Filter</Text>
               <LeftOutlined className={styles.LeftOutlined} />
               <Input
@@ -117,8 +148,8 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
                 <i className="icon-info"></i>
               </Popover>
             </div> */}
-          </Panel>
-        </Collapse>
+        {/* </Panel> */}
+        {/* </Collapse> */}
       </div>
     </>
   );

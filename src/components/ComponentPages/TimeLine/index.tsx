@@ -295,35 +295,37 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
         />
       ) : (
         <>
-          <Popover content={content} trigger="click" placement="leftBottom">
-            <Button
-              type="primary"
-              size="middle"
-              className={styles.btnShareURL}
-              ghost
-              icon={<ShareAltOutlined />}
-            >
-              Share
-            </Button>
-          </Popover>
-          <TimelineSlider
-            mockData={mockData}
-            setStart={setStart}
-            start={start}
-            setTimelineDescript={setTimelineDescript}
-            handleEventSelection={handleEventSelection}
-            animationSpeed={animationSpeed}
-            setAnimationSpeed={setAnimationSpeed}
-            iteration={iteration}
-            setIteration={setIteration}
-            handleForwardOrBackord={handleForwardOrBackord}
-            isPlaying={isPlaying}
-            setIsPlaying={setIsPlaying}
-            eventId={eventId}
-            setEventId={setEventId}
-            value={value}
-            setValue={setValue}
-          />
+          <div className="audio-player">
+            <Popover content={content} trigger="click" placement="leftBottom">
+              <Button
+                type="primary"
+                size="middle"
+                className={styles.btnShareURL}
+                ghost
+                icon={<ShareAltOutlined />}
+              >
+                Share
+              </Button>
+            </Popover>
+            <TimelineSlider
+              mockData={mockData}
+              setStart={setStart}
+              start={start}
+              setTimelineDescript={setTimelineDescript}
+              handleEventSelection={handleEventSelection}
+              animationSpeed={animationSpeed}
+              setAnimationSpeed={setAnimationSpeed}
+              iteration={iteration}
+              setIteration={setIteration}
+              handleForwardOrBackord={handleForwardOrBackord}
+              isPlaying={isPlaying}
+              setIsPlaying={setIsPlaying}
+              eventId={eventId}
+              setEventId={setEventId}
+              value={value}
+              setValue={setValue}
+            />
+          </div>
         </>
       )}
       <div className="evenline-bars">

@@ -25,36 +25,35 @@ const EventLine = () => {
         />
       ) : (
         <>
-          <div className={styles.topicDetailContentWrap}>
-            <TimelineInfoBar />
-
-            <aside className={styles.miniSide + " leftSideBar miniSideBar"}>
+          <TimelineInfoBar />
+          <div className="eventline-content-wrap">
+            <div className="eventline-algo-content">
               <SideBarTimeline
                 timelineDescript={timelineDescript}
                 loadingEvents={loadingEvents}
               />
-            </aside>
+            </div>
 
             <>
               <div
                 className={
-                  styles.pageContent + " pageContentWrap timelineContent"
+                  styles.pageContent +
+                  " pageContentWrap timelineContent eventline-audio-wrapper"
                 }
               >
-                {" "}
-                <Collapse
+                {/* <Collapse
                   defaultActiveKey={["1"]}
                   expandIconPosition="right"
                   className="topicDetailsCollapse"
                 >
-                  <Panel disabled header={<h3>Consensus Tree Race</h3>} key="1">
-                    <TimeLine
-                      setTimelineDescript={setTimelineDescript}
-                      loadingEvents={loadingEvents}
-                      setLoadingEvents={setLoadingEvents}
-                    />
-                  </Panel>
-                </Collapse>
+                  <Panel disabled header={<h3>Consensus Tree Race</h3>} key="1"> */}
+                <TimeLine
+                  setTimelineDescript={setTimelineDescript}
+                  loadingEvents={loadingEvents}
+                  setLoadingEvents={setLoadingEvents}
+                />
+                {/* </Panel>
+                </Collapse> */}
               </div>
             </>
             {/* <aside className={"timelineRightSidebar"}>

@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import { Slider, Popover, Typography } from "antd";
+import { Slider, Popover, Typography, Button } from "antd";
 import {
   CaretRightOutlined,
   PauseOutlined,
   StepBackwardOutlined,
   StepForwardOutlined,
-  DashboardOutlined,
+  ShareAltOutlined,
 } from "@ant-design/icons";
 import styles from "./timeBarControl.module.scss";
 import { useRouter } from "next/router";
@@ -292,66 +292,78 @@ function TimelineSlider({
 
   return (
     <>
-      <div
-        className={`${styles.timeBarControl} ${
-          mockData && !mockData[Object.keys(mockData)[1]]?.firstEvent
-            ? ""
-            : styles.disablePlayBtn
-        }`}
-        data-testid="time-bar-control"
-      >
-        <StepBackwardOutlined
-          onClick={() => {
-            if (mockData && !mockData[Object.keys(mockData)[1]]?.firstEvent) {
-              handleClickBackword();
-            }
-          }}
-          className={styles.controlBtnSecond}
-          data-testid="backward-button"
-        />
-        {/* <BackwardOutlined className={styles.controlBtn} /> */}
-        {"     "}
+      <div className="player-wrapper">
         <div
-          className={`${styles.playBtn}`}
-          onClick={() => {
-            if (mockData && !mockData[Object.keys(mockData)[1]]?.firstEvent) {
-              handleClick();
-            }
-          }}
-          data-testid="play-button"
+          className={`${styles.timeBarControl} ${"player-controller"} ${
+            mockData && !mockData[Object.keys(mockData)[1]]?.firstEvent
+              ? ""
+              : styles.disablePlayBtn
+          }`}
+          data-testid="time-bar-control"
         >
-          {isPlaying ? <PauseOutlined /> : <CaretRightOutlined />}
-        </div>
-        {"   "}
-        {/* <ForwardOutlined className={styles.controlBtn} onClick={handleClickForward} /> */}
+          <i
+            className="icon-control-btn-2"
+            onClick={() => {
+              if (mockData && !mockData[Object.keys(mockData)[1]]?.firstEvent) {
+                handleClickBackword();
+              }
+            }}
+            // className={styles.controlBtnSecond}
+            data-testid="backward-button"
+          ></i>
+          {/* <BackwardOutlined className={styles.controlBtn} /> */}
+          {"     "}
+          <div
+            // className={`${styles.playBtn}`}
+            onClick={() => {
+              if (mockData && !mockData[Object.keys(mockData)[1]]?.firstEvent) {
+                handleClick();
+              }
+            }}
+            data-testid="play-button"
+          >
+            {isPlaying ? <PauseOutlined /> : <i className="icon-play-btn"></i>}
+          </div>
+          {"   "}
+          {/* <ForwardOutlined className={styles.controlBtn} onClick={handleClickForward} /> */}
 
-        <StepForwardOutlined
-          onClick={() => {
-            if (mockData && !mockData[Object.keys(mockData)[1]]?.firstEvent) {
-              handleClickForward();
-            }
-          }}
-          className={styles.controlBtnSecond}
-          data-testid="forward-button"
-        />
-        <Popover
-          content={content}
-          title={false}
-          trigger="hover"
-          open={speedBar}
-          onOpenChange={(newOpen) => {
-            setSpeedBar(newOpen);
-          }}
-        >
-          <DashboardOutlined
-            className={`${"speed-icon"}  ${
-              mockData && mockData[Object.keys(mockData)[1]]?.firstEvent
-                ? styles.disableIcon
-                : ""
-            }`}
-            data-testid="speed-icon"
+          <i
+            className="icon-control-btn-2"
+            onClick={() => {
+              if (mockData && !mockData[Object.keys(mockData)[1]]?.firstEvent) {
+                handleClickForward();
+              }
+            }}
+            // className={styles.controlBtnSecond}
+            data-testid="forward-button"
+          ></i>
+          <Popover
+            content={content}
+            title={false}
+            trigger="hover"
+            open={speedBar}
+            onOpenChange={(newOpen) => {
+              setSpeedBar(newOpen);
+            }}
+          >
+            <i
+              className={`${"icon-timer cursor-pointer"}  ${
+                mockData && mockData[Object.keys(mockData)[1]]?.firstEvent
+                  ? styles.disableIcon
+                  : ""
+              }`}
+              data-testid="speed-icon"
+            ></i>
+          </Popover>
+        </div>
+        <div className="share-wrapper">
+          <Button
+            type="link"
+            className="text-canBlack"
+            icon={<ShareAltOutlined />}
+            size="small"
           />
-        </Popover>
+        </div>
       </div>
       {mockData && (
         <Slider
