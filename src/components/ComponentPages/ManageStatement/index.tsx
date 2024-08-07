@@ -68,7 +68,7 @@ function ManageStatements({ isEdit = false, add = false }) {
       if(epochToMinutes(time?.last_save_time)== 0){
         setAutoSaveDisplayMessage("");
       }else if (epochToMinutes(getEpochTime() - time?.last_save_time) == 0 ) {
-        setAutoSaveDisplayMessage("Saved Few Seconds Ago");
+        setAutoSaveDisplayMessage("Saved just now");
       } else {
         setAutoSaveDisplayMessage(
           `Saved ${epochToMinutes(
