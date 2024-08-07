@@ -265,6 +265,9 @@ const ThreadListUI = ({
               key="post_count"
               width="150px"
               className="!text-center"
+              render={(val) => {
+                return <Text>{val == 0 ? "-" : val}</Text>;
+              }}
             />
             <Column
               title="Last Updated On"
