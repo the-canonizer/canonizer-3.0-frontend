@@ -65,15 +65,15 @@ function ManageStatements({ isEdit = false, add = false }) {
         current_time: getEpochTime(),
       });
 
-      if(epochToMinutes(time?.last_save_time)== 0){
+      let timeDifferance = getEpochTime() - time?.last_save_time;
+
+      if (epochToMinutes(time?.last_save_time) == 0) {
         setAutoSaveDisplayMessage("");
-      }else if (epochToMinutes(getEpochTime() - time?.last_save_time) == 0 ) {
+      } else if (epochToMinutes(timeDifferance) == 0) {
         setAutoSaveDisplayMessage("Saved just now");
       } else {
         setAutoSaveDisplayMessage(
-          `Saved ${epochToMinutes(
-            getEpochTime() - time?.last_save_time
-          )} min ago`
+          `Saved ${epochToMinutes(timeDifferance)} min ago`
         );
       }
     };
@@ -569,10 +569,12 @@ function ManageStatements({ isEdit = false, add = false }) {
               <>Saving ...</>
             ) : (
               <>
-                {autoSaveDisplayMessage && <>
-                  {autoSaveDisplayMessage+" "}
-                  <CloudUploadOutlined />
-                </>} 
+                {autoSaveDisplayMessage && (
+                  <>
+                    {autoSaveDisplayMessage + " "}
+                    <CloudUploadOutlined />
+                  </>
+                )}
               </>
             )}
           </Typography.Paragraph>
