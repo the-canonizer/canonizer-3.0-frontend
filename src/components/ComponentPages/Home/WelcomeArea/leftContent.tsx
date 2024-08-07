@@ -45,7 +45,7 @@ const LeftContent = ({ isUserAuthenticated }) => {
         className={`m-0 ${
           isUserAuthenticated
             ? "text-lg font-semibold"
-            : "text-md font-semibold"
+            : "text-md font-medium"
         } font-inter leading-[1]`}
       >
         {isUserAuthenticated

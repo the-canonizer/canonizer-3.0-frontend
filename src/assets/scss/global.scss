@@ -529,19 +529,30 @@ body {
 .ck-body-wrapper {
   @apply hidden;
   @apply w-0;
-  @apply opacity-0;}
-  
-.ant-tabs-tab-active .ant-tabs-tab-btn{
+  @apply opacity-0;
+}
+
+.ant-tabs-tab-active .ant-tabs-tab-btn {
   @apply border-canBlue border-b-4 text-canBlue text-shadow-none;
 }
-.ant-tabs-top > .ant-tabs-nav .ant-tabs-ink-bar{
- @apply  h-1 rounded-tl-full rounded-tr-full bg-canBlue
+.ant-tabs-top > .ant-tabs-nav .ant-tabs-ink-bar {
+  @apply h-1 rounded-tl-full rounded-tr-full bg-canBlue;
 }
 
-.ant-tabs-nav-list .ant-tabs-tab:first-child{
-  @apply ml-5
+.ant-tabs-nav-list .ant-tabs-tab:first-child {
+  @apply ml-5;
 }
 
-.ant-tabs-nav-list .ant-tabs-tab:last-child{
-  @apply mr-5
+.ant-tabs-nav-list .ant-tabs-tab:last-child {
+  @apply mr-5;
 }
+
+.searchInputHeader {
+  .ant-input {
+    &::placeholder {
+      font-size: 10px;
+      font-weight: 300;
+    }
+  }
+}
+
