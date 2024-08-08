@@ -206,7 +206,7 @@ const ForumComponent = () => {
     const type = queries["by"] as string;
 
     getThreads(camp_num, topic_num, type, page, searchQuery);
-    
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router?.query, page, searchQuery, isLoggedIn]);
 
