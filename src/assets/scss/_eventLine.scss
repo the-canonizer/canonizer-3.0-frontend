@@ -20,9 +20,9 @@
         }
         .ant-list-item-meta-content {
           .ant-list-item-meta-title {
-            @apply text-base text-canBlue mb-2;
+            @apply text-base text-canBlack mb-2;
             a {
-              @apply font-medium text-[#5482C8];
+              @apply font-medium text-canBlue ml-1;
             }
           }
           .ant-list-item-meta-description {
@@ -37,7 +37,7 @@
     .audio-player {
       @apply bg-[#F7F8FC] rounded-xl py-5 px-6;
       .player-wrapper {
-        @apply flex gap-3 mb-10;
+        @apply flex gap-3 mb-6;
 
         .player-controller {
           @apply flex justify-center items-center gap-6 w-full bg-white rounded-xl p-2;
@@ -49,10 +49,9 @@
             @apply text-[#5482C8] text-base cursor-pointer;
           }
 
-          //   .disableIcon {
-          //     color: #d5d5d5;
-          //     cursor: no-drop;
-          //   }
+          .disable-icon {
+            @apply text-[#d5d5d5] cursor-no-drop;
+          }
         }
         .share-wrapper {
           @apply bg-white rounded-xl p-2;
@@ -61,8 +60,18 @@
     }
     .evenline-bars {
       @apply mt-6;
+      .tree-progression-card {
+        @apply rounded-xl border-[#CCD4E7];
+        .ant-card-head {
+          @apply px-4;
+          .ant-card-head-title {
+            @apply font-semibold;
+          }
+        }
+      }
     }
     .rang-slider {
+      @apply mb-4;
       .ant-slider-mark {
         & > :nth-child(1) {
           @apply left-[20px]  #{!important};
@@ -82,5 +91,60 @@
   }
   .cn-algo-wrapper {
     @apply bg-[#F7F8FC] rounded-xl p-5;
+  }
+}
+.sp-controller-wrapper {
+  @apply max-w-[550px] w-full;
+  .ant-popover-inner {
+    @apply rounded-lg;
+    .ant-popover-inner-content {
+      @apply w-full;
+    }
+  }
+  .speed-controller {
+    @apply w-full;
+    h5 {
+      @apply border-b border-[#242B371A] pb-2 mb-2;
+    }
+    .ant-slider-with-marks {
+      @apply mt-4;
+    }
+    .ant-slider {
+      .ant-slider-rail,
+      .ant-slider-track {
+        @apply hidden;
+      }
+      .ant-slider-handle {
+        @apply shadow-none w-[16px] h-[16px];
+      }
+      .ant-slider-mark {
+        .ant-slider-mark-text {
+          @apply text-sm font-medium;
+          &.ant-slider-mark-text-active {
+            @apply text-canBlue font-bold;
+          }
+        }
+      }
+    }
+  }
+}
+
+.share-popover-wrapper {
+  @apply max-w-[300px] w-full;
+  .ant-popover-inner {
+    @apply rounded-lg;
+    .ant-popover-inner-content {
+      @apply w-full;
+      .share-popup-content {
+        .social-links {
+          @apply flex items-center gap-1 justify-between;
+          .copy-btn {
+            .ant-typography-copy {
+              @apply ml-0;
+            }
+          }
+        }
+      }
+    }
   }
 }

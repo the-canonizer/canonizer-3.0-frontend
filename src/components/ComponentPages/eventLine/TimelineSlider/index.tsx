@@ -1,23 +1,16 @@
-import { useEffect, useRef, useState } from "react";
+import { PauseOutlined, ShareAltOutlined } from "@ant-design/icons";
 import {
-  Slider,
-  Popover,
-  Typography,
   Button,
+  Divider,
+  Popover,
   Radio,
+  RadioChangeEvent,
+  Slider,
   Space,
   Tooltip,
-  RadioChangeEvent,
+  Typography,
 } from "antd";
-import {
-  CaretRightOutlined,
-  PauseOutlined,
-  StepBackwardOutlined,
-  StepForwardOutlined,
-  ShareAltOutlined,
-} from "@ant-design/icons";
-import styles from "./timeBarControl.module.scss";
-import { useRouter } from "next/router";
+import Paragraph from "antd/lib/typography/Paragraph";
 import {
   FacebookIcon,
   FacebookShareButton,
@@ -26,10 +19,11 @@ import {
   TwitterIcon,
   TwitterShareButton,
 } from "next-share";
+import { useRouter } from "next/router";
+import { useEffect, useRef, useState } from "react";
 import { isServer } from "src/utils/generalUtility";
-import Paragraph from "antd/lib/typography/Paragraph";
-import CopyLinkIcon from "../../../../assets/image/copy-link.png";
 import CheckIcon from "../../../../assets/image/check.png";
+import CopyLinkIcon from "../../../../assets/image/copy-link.png";
 
 const { Title } = Typography;
 
@@ -261,7 +255,7 @@ any) {
 
   const controller_content = (
     <div className="speed-controller">
-      <Title level={4}>Playback speed</Title>
+      <Title level={5}>Playback speed</Title>
       <Slider
         marks={marks}
         defaultValue={50}
@@ -392,7 +386,7 @@ any) {
   }, [iteration, mockData]);
 
   const content = (
-    <div className={styles.popoverWrapper}>
+    <div className="share-popup-content">
       <Title level={5}>Share</Title>
       <Radio.Group onChange={optionChange} value={value}>
         <Space direction="vertical">
@@ -400,8 +394,11 @@ any) {
           <Radio value={2}>Current Event URL</Radio>
         </Space>
       </Radio.Group>
-      <Space align={"center"} className={styles.shareLink}>
-        <Title level={5}> Share Link To: </Title>
+      <Divider className="my-3" />
+      <div className="social-links">
+        <Title level={5} className="mb-0">
+          Share Link To
+        </Title>
         <Space>
           <FacebookShareButton
             url={URL}
@@ -425,7 +422,7 @@ any) {
           </LinkedinShareButton>
           <>
             <Paragraph
-              className={styles.typographyLink}
+              className="!mb-0 copy-btn"
               copyable={{
                 text: URL,
                 icon: [
@@ -445,7 +442,7 @@ any) {
             ></Paragraph>
           </>
         </Space>
-      </Space>
+      </div>
     </div>
   );
 
@@ -453,10 +450,10 @@ any) {
     <>
       <div className="player-wrapper">
         <div
-          className={`${styles.timeBarControl} ${"player-controller"} ${
+          className={`${"player-controller"} ${
             mockData && !mockData[Object.keys(mockData)[1]]?.firstEvent
               ? ""
-              : styles.disablePlayBtn
+              : ""
           }`}
           data-testid="time-bar-control"
         >
@@ -467,13 +464,10 @@ any) {
                 handleClickBackword();
               }
             }}
-            // className={styles.controlBtnSecond}
             data-testid="backward-button"
           ></i>
-          {/* <BackwardOutlined className={styles.controlBtn} /> */}
           {"     "}
           <div
-            // className={`${styles.playBtn}`}
             onClick={() => {
               if (mockData && !mockData[Object.keys(mockData)[1]]?.firstEvent) {
                 handleClick();
@@ -484,23 +478,23 @@ any) {
             {isPlaying ? <PauseOutlined /> : <i className="icon-play-btn"></i>}
           </div>
           {"   "}
-          {/* <ForwardOutlined className={styles.controlBtn} onClick={handleClickForward} /> */}
 
           <i
-            className="icon-control-btn-2"
+            className="icon-control-btn"
             onClick={() => {
               if (mockData && !mockData[Object.keys(mockData)[1]]?.firstEvent) {
                 handleClickForward();
               }
             }}
-            // className={styles.controlBtnSecond}
             data-testid="forward-button"
           ></i>
           <Popover
             content={controller_content}
             title={false}
             trigger="hover"
-            open={speedBar}
+            overlayClassName="sp-controller-wrapper"
+            open
+            // open={speedBar}
             onOpenChange={(newOpen) => {
               setSpeedBar(newOpen);
             }}
@@ -508,7 +502,7 @@ any) {
             <i
               className={`${"icon-timer cursor-pointer"}  ${
                 mockData && mockData[Object.keys(mockData)[1]]?.firstEvent
-                  ? styles.disableIcon
+                  ? "disable-icon"
                   : ""
               }`}
               data-testid="speed-icon"
@@ -516,7 +510,13 @@ any) {
           </Popover>
         </div>
         <div className="share-wrapper">
-          <Popover content={content} trigger="click" placement="leftBottom">
+          <Popover
+            showArrow={false}
+            content={content}
+            overlayClassName="share-popover-wrapper"
+            trigger="click"
+            placement="bottomLeft"
+          >
             <Button
               type="link"
               className="text-canBlack"

@@ -1,13 +1,13 @@
 // import { useRouter } from "next/router";
-import SideBarTimeline from "../Home-old/SideBarTimeline";
-import TimelineInfoBar from "./TimelineInfoBar/index";
-import styles from "./topicDetails.module.scss";
-import { BackTop, Collapse } from "antd";
-import TimeLine from "../TimeLine";
-import { useState } from "react";
+import { BackTop, Typography } from "antd";
 import { useRouter } from "next/router";
+import { useState } from "react";
 import DataNotFound from "../DataNotFound/dataNotFound";
-const { Panel } = Collapse;
+import SideBarTimeline from "../Home-old/SideBarTimeline";
+import TimeLine from "../TimeLine";
+import TimelineInfoBar from "./TimelineInfoBar/index";
+const { Title } = Typography;
+
 const EventLine = () => {
   const router = useRouter();
 
@@ -35,30 +35,18 @@ const EventLine = () => {
             </div>
 
             <>
-              <div
-                className={
-                  styles.pageContent +
-                  " pageContentWrap timelineContent eventline-audio-wrapper"
-                }
-              >
-                {/* <Collapse
-                  defaultActiveKey={["1"]}
-                  expandIconPosition="right"
-                  className="topicDetailsCollapse"
-                >
-                  <Panel disabled header={<h3>Consensus Tree Race</h3>} key="1"> */}
+              <div className="eventline-audio-wrapper">
+                <Title level={5} className="uppercase">
+                  Event line
+                </Title>
+
                 <TimeLine
                   setTimelineDescript={setTimelineDescript}
                   loadingEvents={loadingEvents}
                   setLoadingEvents={setLoadingEvents}
                 />
-                {/* </Panel>
-                </Collapse> */}
               </div>
             </>
-            {/* <aside className={"timelineRightSidebar"}>
-              <Events timelineDescript={timelineDescript} />
-            </aside> */}
           </div>
         </>
       )}

@@ -1,37 +1,14 @@
-import styles from "./timeline.module.scss";
 import React, { useEffect, useState } from "react";
 import RacingBarChart from "./RacingBarChart";
 import useInterval from "./useInterval";
 // import "./App.css";
-import TimelineSlider from "../eventLine/TimelineSlider";
-import { getEventLineApi } from "src/network/api/topicEventLineAPI";
+import { Empty, Typography } from "antd";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
+import { getEventLineApi } from "src/network/api/topicEventLineAPI";
 import { RootState } from "src/store/index.js";
 import CustomSkelton from "../../common/customSkelton";
-import {
-  Empty,
-  Radio,
-  Space,
-  Typography,
-  Tooltip,
-  Popover,
-  Button,
-  message,
-} from "antd";
-import type { RadioChangeEvent } from "antd";
-import { ShareAltOutlined } from "@ant-design/icons";
-import {
-  FacebookShareButton,
-  LinkedinShareButton,
-  TwitterShareButton,
-  FacebookIcon,
-  TwitterIcon,
-  LinkedinIcon,
-} from "next-share";
-import CopyLinkIcon from "../../../assets/image/copy-link.png";
-import CheckIcon from "../../../assets/image/check.png";
-import { isServer } from "src/utils/generalUtility";
+import TimelineSlider from "../eventLine/TimelineSlider";
 
 // const getRandomIndex = (array) => {
 //   return Math.floor(array.length * Math.random());

@@ -73,46 +73,35 @@ const Events = ({ timelineDescript, loadingEvents }: any) => {
               timelineDescript.map((title, key) => {
                 return (
                   <Fragment key={key}>
-                    <List.Item
-                    // className={
-                    //   activityStyle.activitiesList +
-                    //   ` ${key == 0 && check ? "animatedText" : ""}`
-                    // }
-                    >
+                    <List.Item>
                       <List.Item.Meta
-                        // avatar={
-                        //   title && (
-                        //     <BellFilled className={activityStyle.bellIcon} />
-                        //   )
-                        // }
                         className={
                           activityStyle.activitiesList +
                           ` ${key == 0 ? "animatedText" : ""}`
                         }
                         title={
-                          // <div
-                          //   onClick={() =>
-                          //     handleEvents(title?.eventDate, title?.url)
-                          //   }
-                          // >
-                          <Link
-                            href={
-                              title?.url?.split("/")[1] == "topic"
-                                ? `${title?.url}?score=${filterByScore}&algo=${
-                                    filterObject?.algorithm
-                                  }&asofdate=${
-                                    title?.eventDate
-                                  }&asof=bydate&canon=${
-                                    filterObject?.namespace_id
-                                  }${
-                                    viewThisVersion ? "&viewversion=1" : ""
-                                  }&is_tree_open=1`
-                                : title?.url
-                            }
-                          >
-                            {title?.message}
-                          </Link>
-                          // </div>
+                          <>
+                            hello
+                            <Link
+                              href={
+                                title?.url?.split("/")[1] == "topic"
+                                  ? `${
+                                      title?.url
+                                    }?score=${filterByScore}&algo=${
+                                      filterObject?.algorithm
+                                    }&asofdate=${
+                                      title?.eventDate
+                                    }&asof=bydate&canon=${
+                                      filterObject?.namespace_id
+                                    }${
+                                      viewThisVersion ? "&viewversion=1" : ""
+                                    }&is_tree_open=1`
+                                  : title?.url
+                              }
+                            >
+                              {title?.message}
+                            </Link>
+                          </>
                         }
                         description={covertToTime(title?.eventDate)}
                       />

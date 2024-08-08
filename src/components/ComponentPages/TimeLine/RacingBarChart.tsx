@@ -198,7 +198,7 @@ function RacingBarChart({ data }: any) {
   }, [data, dimensions]);
 
   return (
-    <Card title="Consensus tree progression">
+    <Card title="Consensus tree progression" className="tree-progression-card">
       <div
         className={styles.svgD3}
         ref={wrapperRef}
