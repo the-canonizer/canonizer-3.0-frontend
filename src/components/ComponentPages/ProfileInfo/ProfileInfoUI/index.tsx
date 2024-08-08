@@ -29,6 +29,7 @@ function ProfileInfoUI({
   setOTP,
   setToggleVerifyButton,
   viewEmail,
+  userProfileData,
 }: any) {
   return (
     <section className={styles.profileInfo_wrapper}>
@@ -57,6 +58,7 @@ function ProfileInfoUI({
         setOTP={setOTP}
         setToggleVerifyButton={setToggleVerifyButton}
         viewEmail={viewEmail}
+        userProfileData={userProfileData}
       />
     </section>
   );
