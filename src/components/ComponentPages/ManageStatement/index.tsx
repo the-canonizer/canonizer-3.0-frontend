@@ -192,7 +192,11 @@ function ManageStatements({ isEdit = false, add = false }) {
         : localStorage.getItem("autosaveContent"),
     };
 
-    if (!(localStorage.getItem("draft_record_id"))) {
+    if (!(localStorage.getItem(`draft_record_id-${topicNum}-${campNum}`)) 
+      ||
+       topicNum != localStorage.getItem(`draft_record_id-${topicNum}-${campNum}`)?.split("-")?.at(1) &&
+       campNum != localStorage.getItem(`draft_record_id-${topicNum}-${campNum}`)?.split("-")?.at(2)
+    ) {
       payload.topic_num = topicNum;
       payload.topic_name = topicName;
       payload.camp_num = campNum;
@@ -205,12 +209,12 @@ function ManageStatements({ isEdit = false, add = false }) {
       payload.camp_num = campNum;
       payload.submitter = nickNameData?.at(0)?.id;
       payload.event_type = "edit";
-      payload.statement_id = (localStorage.getItem("draft_record_id"));
+      payload.statement_id = localStorage.getItem(`draft_record_id-${topicNum}-${campNum}`)?.split("-")?.at(0);
     }
 
     if (navigator.onLine) {
       let res = await updateStatementApi(payload);
-      localStorage.setItem("draft_record_id", res?.data?.draft_record_id);
+      localStorage.setItem(`draft_record_id-${topicNum}-${campNum}`, res?.data?.draft_record_id+"-"+topicNum+"-"+campNum);
       
       localStorage.removeItem("autosaveContent"); // Clear local storage on successful save
       setIsAutoSave(false);
