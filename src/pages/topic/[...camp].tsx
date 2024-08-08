@@ -213,7 +213,7 @@ export async function getServerSideProps({ req, query, res }) {
   let resUrl = `/topic/${topicRecord?.topic_num}-${replaceSpecialCharacters(
     resTopicName,
     "-"
-  )}/${campRecord?.campData?.camp_num}-${replaceSpecialCharacters(
+  )}/${campRecord?.campData?.camp_num ?campRecord?.campData?.camp_num:campNum}-${replaceSpecialCharacters(
     resCampName,
     "-"
   )}`;
