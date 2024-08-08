@@ -187,26 +187,31 @@ function ManageStatements({ isEdit = false, add = false }) {
 
     let payload = {
       ...data,
-      statement_id: topicNum,
       statement: data?.statement
         ? data?.statement
         : localStorage.getItem("autosaveContent"),
     };
 
-    if (!isEdit) {
+    if (!(localStorage.getItem("draft_record_id"))) {
       payload.topic_num = topicNum;
       payload.topic_name = topicName;
       payload.camp_num = campNum;
       payload.submitter = nickNameData?.at(0)?.id;
+      payload.event_type = "create";
+      payload.statement_id = null;
     } else {
-      payload.topic_num = lastParentCamp?.topic_num;
-      payload.topic_name = lastParentCamp?.topic_name;
-      payload.camp_num = lastParentCamp?.camp_num;
-      payload.submitter = editInfo?.statement?.submitter_nick_id;
+      payload.topic_num = topicNum;
+      payload.topic_name = topicName;
+      payload.camp_num = campNum;
+      payload.submitter = nickNameData?.at(0)?.id;
+      payload.event_type = "edit";
+      payload.statement_id = (localStorage.getItem("draft_record_id"));
     }
 
     if (navigator.onLine) {
-      await updateStatementApi(payload);
+      let res = await updateStatementApi(payload);
+      localStorage.setItem("draft_record_id", res?.data?.draft_record_id);
+      
       localStorage.removeItem("autosaveContent"); // Clear local storage on successful save
       setIsAutoSave(false);
 
