@@ -1,17 +1,18 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { Card, Typography, Tooltip, Space, Popconfirm } from "antd";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { PlusOutlined, MinusOutlined } from "@ant-design/icons";
 import moment from "moment";
 import sanitizeHtml from "sanitize-html";
 import Link from "next/link";
 
-import styles from "../Forum.module.scss";
-
 import { getTime } from "src/utils/generalUtility";
+import SecondaryButton from "components/shared/Buttons/SecondaryButton";
+import EditIcon from "./editIcon";
+import DeleteIcon from "./deleteIcon";
 
 const { Text } = Typography;
 
-const CreateCampFormUI = ({
+const SinglePost = ({
   postedTime = null,
   content = null,
   postedUpdatedTime = null,
@@ -19,10 +20,18 @@ const CreateCampFormUI = ({
   onEditClick,
   onDeleteClick,
   post,
-}: any) => (
-  <Fragment>
-    <Card className={styles.listCard} bodyStyle={{ padding: "15px" }}>
-      <div className={`${styles.cardTitle} ${styles.listCardTitle}`}>
+}) => {
+  const [showFullDescription, setFullDescription] = useState(false);
+
+  const showFullDescriptionHandler = () => {
+    setFullDescription(!showFullDescription);
+  };
+
+  const description = showFullDescription ? content : content?.slice(0, 500);
+
+  return (
+    <Card className=" mb-4 rounded-xl" bodyStyle={{ padding: "15px" }}>
+      <div className="mb-3">
         <Space size="small">
           <Text strong id={"post-title-" + post.id}>
             <Link
@@ -31,71 +40,85 @@ const CreateCampFormUI = ({
               }`}
               passHref
             >
-              <a className={styles.by}>{nick_name}</a>
+              <a className="">{nick_name}</a>
             </Link>
-            {new Date(postedTime).getTime() ===
-            new Date(postedUpdatedTime).getTime()
-              ? ` replied ${moment(getTime(postedTime))
-                  .local()
-                  .startOf("seconds")
-                  .fromNow()} (${moment(getTime(postedTime)).format(
-                  "MMM Do YYYY, h:mm:ss a"
-                )})`
-              : ` updated ${moment(getTime(postedUpdatedTime))
-                  .local()
-                  .startOf("seconds")
-                  .fromNow()} (${moment(getTime(postedUpdatedTime)).format(
-                  "MMM Do YYYY, h:mm:ss a"
-                )})`}
+            <Text>
+              {new Date(postedTime).getTime() ===
+              new Date(postedUpdatedTime).getTime() ? (
+                <Text className="ml-1 font-medium text-sm">
+                  edited comment{" "}
+                  {moment(getTime(postedTime))
+                    .local()
+                    .startOf("seconds")
+                    .fromNow()}{" "}
+                  <Text className="ml-1 text-xs text-canLight">
+                    (
+                    {moment(getTime(postedTime)).format(
+                      "MMM Do YYYY, h:mm:ss A"
+                    )}
+                    )
+                  </Text>
+                </Text>
+              ) : (
+                <Text className="ml-1 font-medium text-sm">
+                  updated{" "}
+                  {moment(getTime(postedUpdatedTime))
+                    .local()
+                    .startOf("seconds")
+                    .fromNow()}{" "}
+                  <Text className="ml-1 text-xs text-canLight">
+                    (
+                    {moment(getTime(postedUpdatedTime)).format(
+                      "MMM Do YYYY, h:mm:ss A"
+                    )}
+                    )
+                  </Text>
+                </Text>
+              )}
+            </Text>
           </Text>
-          {post.is_my_post ? (
+          {post?.is_my_post ? (
             <Fragment>
-              <Tooltip title="edit">
-                <a
+              <Tooltip title="Edit Comment">
+                <SecondaryButton
                   onClick={onEditClick}
-                  className="linkCss"
+                  className="linkCss border-0 p-0"
                   id={"post-edit-icon" + post.id}
                   data-testid={"post-edit-icon" + post.id}
                 >
-                  <EditOutlined />
-                </a>
+                  <EditIcon />
+                </SecondaryButton>
               </Tooltip>
-              <Popconfirm
+              {/* <Popconfirm
                 title="Are you sure you want to delete the post?"
                 onConfirm={onDeleteClick}
                 okText="Yes"
                 cancelText="No"
                 data-testid="delete_pop_confirm"
-              >
-                <a
-                  className="linkCss"
+              > */}
+              <Tooltip title="Delete Comment">
+                <SecondaryButton
+                  onClick={onDeleteClick}
+                  className="linkCss border-0 p-0"
                   id={"post-delete-icon-" + post.id}
                   data-testid={"post-delete-icon-" + post.id}
                 >
-                  <DeleteOutlined />
-                </a>
-              </Popconfirm>
+                  <DeleteIcon />
+                </SecondaryButton>
+              </Tooltip>
+              {/* </Popconfirm> */}
             </Fragment>
           ) : null}
         </Space>
       </div>
-   
+
       <div
-        className={styles.htmlContainer + " ql-editor ql-html-editor"}
+        className={
+          "text-canBlack opacity-80 [&_*]:ml-0 [&_*]:pl-0 [&_ol]:pl-4 ql-editor ql-html-editor"
+        }
         dangerouslySetInnerHTML={{
-          __html: sanitizeHtml(`<div class="ck-content">${content}</div>`, {
-            // allowedTags: ["b", "i", "em", "strong", "a", "img"],
-            selfClosing: [
-              "img",
-              "br",
-              "hr",
-              // "area",
-              // "base",
-              // "basefont",
-              // "input",
-              // "link",
-              // "meta",
-            ],
+          __html: sanitizeHtml(`<div class="ck-content">${description}</div>`, {
+            selfClosing: ["img", "br", "hr"],
             allowedTags: [
               "address",
               "article",
@@ -199,8 +222,27 @@ const CreateCampFormUI = ({
           }),
         }}
       ></div>
+      {content?.length > 500 && (
+        <SecondaryButton
+          onClick={showFullDescriptionHandler}
+          className="text-xs border-0 p-0 text-canBlue hocus:text-canHoverBlue mt-5"
+        >
+          Read{" "}
+          {showFullDescription ? (
+            <Text className="ml-1 text-xs text-canBlue hocus:text-canHoverBlue">
+              Less{" "}
+              <MinusOutlined className="text-xs ml-1 text-canBlue hocus:text-canHoverBlue" />
+            </Text>
+          ) : (
+            <Text className="ml-1 text-xs text-canBlue hocus:text-canHoverBlue">
+              More
+              <PlusOutlined className="text-xs ml-1 text-canBlue hocus:text-canHoverBlue" />
+            </Text>
+          )}
+        </SecondaryButton>
+      )}
     </Card>
-  </Fragment>
-);
+  );
+};
 
-export default CreateCampFormUI;
+export default SinglePost;
