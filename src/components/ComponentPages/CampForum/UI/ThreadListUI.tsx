@@ -31,6 +31,7 @@ const ThreadListUI = ({
   paramsList,
   isLoading,
   onThreadEdit,
+  onBackClick,
 }) => {
   const [isLog, setIsLog] = useState(false);
   const { isUserAuthenticated } = useAuthentication();
@@ -84,7 +85,10 @@ const ThreadListUI = ({
     <CommonCards
       title={
         <div className="border-0 flex items-center justify-start">
-          <SecondaryButton className="border-0 p-0 flex items-center justify-start text-xl">
+          <SecondaryButton
+            className="border-0 p-0 flex items-center justify-start text-xl"
+            onClick={onBackClick}
+          >
             <LeftOutlined />
           </SecondaryButton>
           <span className="text-canBlack font-medium text-xl ml-2">
