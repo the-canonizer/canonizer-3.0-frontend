@@ -317,6 +317,11 @@ const TopicDetails = ({ serverSideCall }: any) => {
       GetCheckStatusData();
       getTopicActivityLogCall();
       await getTreesApi(reqBodyForService);
+      dispatch(setOpenConsensusTreePopup(true));
+
+      setTimeout(() => {
+        dispatch(setOpenConsensusTreePopup(false));
+      }, 100);
       setIsRemovingSupport(false);
       setRemoveSupportSpinner(false);
     }
@@ -370,7 +375,6 @@ const TopicDetails = ({ serverSideCall }: any) => {
       }
     }
     dispatch(setOpenConsensusTreePopup(true));
-
     setTimeout(() => {
       dispatch(setOpenConsensusTreePopup(false));
     }, 100);
