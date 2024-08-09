@@ -77,7 +77,7 @@ const Events = ({ timelineDescript, loadingEvents }: any) => {
                       <List.Item.Meta
                         className={
                           activityStyle.activitiesList +
-                          ` ${key == 0 ? "animatedText" : ""}`
+                          ` ${key == 0 ? "animated-text" : ""}`
                         }
                         title={
                           <>
