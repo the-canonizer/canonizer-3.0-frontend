@@ -159,7 +159,7 @@ const NicknameSearch = () => {
               height={24}
             />
 
-            <h3 className="lg:text-32 text-xl   text-canBlack font-medium">
+            <h3 className="lg:text-3xl text-xl   text-canBlack font-medium">
               Search Results for “
               <span className="text-canBlue capitalize">
                 {router?.query?.q}

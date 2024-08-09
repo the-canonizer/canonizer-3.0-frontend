@@ -74,7 +74,7 @@ import {
 } from "../../../../network/api/userApi";
 import { labels } from "../../../../messages/label";
 import { setTimeout } from "timers";
-import SideBar from "../../CampForum/UI/sidebar";
+// import SideBar from "../../CampForum/UI/sidebar";
 import queryParams from "src/utils/queryParams";
 import CustomSkelton from "../../../common/customSkelton";
 
@@ -1018,20 +1018,16 @@ const UploadFileUI = ({
     setPreviewImageIndicator(false);
     setImageStatus("failed to load");
   };
-  //spinner Image Preview
+
   useEffect(() => {
     setPreviewImageIndicator(true);
-    // setTimeout(() => {
-    //   setPreviewImageIndicator(false);
-    // }, imageTimer);
   }, [preview.previewVisible]);
+  
   return (
     <Fragment>
       <div className="d-flex w-100">
         <aside className="leftSideBar miniSideBar topicPageNewLayoutSidebar">
-          <div className="leftSideBar_Card p-0 m-0">
-            <SideBar />
-          </div>
+          <div className="leftSideBar_Card p-0 m-0">{/* <SideBar /> */}</div>
         </aside>
         {getUploadFilesLoadingIndicator ? (
           <CustomSkelton
