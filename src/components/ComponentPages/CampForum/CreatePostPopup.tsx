@@ -10,6 +10,7 @@ import { setIsPostDrawerOpen, setPost } from "src/store/slices/campForumSlice";
 import PostFormPopup from "./UI/PostForm";
 import { useIsMobile } from "src/hooks/useIsMobile";
 import { RootState } from "src/store";
+import CustomSpinner from "components/shared/CustomSpinner";
 
 const CreatePostPopup = ({ onSubmittedSucess = null }) => {
   const { campRecord, currentPost, topicRecord, isOpen }: any = useSelector(
@@ -169,25 +170,27 @@ const CreatePostPopup = ({ onSubmittedSucess = null }) => {
   };
 
   return (
-    <PostFormPopup
-      onFinish={onFinishPost}
-      onCancel={onCancel}
-      form={form}
-      initialValue={initialValue}
-      nickNameList={nickNameList}
-      quillContent={quillContent}
-      onContentChange={onContentChange}
-      isLoading={isLoading}
-      isMobile={isMobile}
-      isPostUpdate={isPostUpdate}
-      onClose={onCancel}
-      isOpen={isOpen}
-      topicRecord={topicRecord}
-      campRecord={campRecord}
-      isDisabled={isDisabled}
-      isUpdateSubmit={isUpdateSubmit}
-      isError={isError}
-    />
+    <CustomSpinner key="create-post-spinner" spinning={isLoading}>
+      <PostFormPopup
+        onFinish={onFinishPost}
+        onCancel={onCancel}
+        form={form}
+        initialValue={initialValue}
+        nickNameList={nickNameList}
+        quillContent={quillContent}
+        onContentChange={onContentChange}
+        isLoading={isLoading}
+        isMobile={isMobile}
+        isPostUpdate={isPostUpdate}
+        onClose={onCancel}
+        isOpen={isOpen}
+        topicRecord={topicRecord}
+        campRecord={campRecord}
+        isDisabled={isDisabled}
+        isUpdateSubmit={isUpdateSubmit}
+        isError={isError}
+      />
+    </CustomSpinner>
   );
 };
 

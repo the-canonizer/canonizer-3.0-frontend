@@ -393,7 +393,7 @@ const InfoBar = ({
         )}
       </Menu.Item>
       <Menu.Item icon={<FileTextOutlined />} disabled={campRecord?.is_archive}>
-        {isTopicPage && (
+        {isTopicPage && !campStatement[0]?.draft_record_id && (
           <Link
             href={
               campStatement?.length > 0
@@ -496,7 +496,7 @@ const InfoBar = ({
                 onClick={showConsensusTree}
                 className="xl:w-[277px] text-canBlack border border-canGrey2 py-2.5 lg:px-5 !h-[44px]  refine-btn  lg:!text-base !text-sm font-medium  flex items-center justify-between gap-2.5 rounded-lg   bg-canGray"
               >
-                Consesnus Tree
+                Consensus Tree
                 <Image
                   src="/images/caret-icon.svg"
                   alt="svg"

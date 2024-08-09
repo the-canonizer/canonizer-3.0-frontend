@@ -136,14 +136,16 @@ const PostFormPopup = ({
               >
                 Message <span className="required">*</span>
               </label>
-              <Editorckl
-                key="post_editor"
-                editorState={quillContent || ""}
-                oneditorchange={onContentChange}
-                placeholder="Post Your Message Here..."
-                items={formats}
-                height={200}
-              />
+              {isLoading ? null : (
+                <Editorckl
+                  key="post_editor"
+                  editorState={quillContent || ""}
+                  oneditorchange={onContentChange}
+                  placeholder="Post Your Message Here..."
+                  items={formats}
+                  height={200}
+                />
+              )}
               {isError && <Text type="danger">{validations.reply}</Text>}
             </div>
           </Col>

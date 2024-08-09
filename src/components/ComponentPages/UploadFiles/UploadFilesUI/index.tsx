@@ -1018,20 +1018,16 @@ const UploadFileUI = ({
     setPreviewImageIndicator(false);
     setImageStatus("failed to load");
   };
-  //spinner Image Preview
+
   useEffect(() => {
     setPreviewImageIndicator(true);
-    // setTimeout(() => {
-    //   setPreviewImageIndicator(false);
-    // }, imageTimer);
   }, [preview.previewVisible]);
+  
   return (
     <Fragment>
       <div className="d-flex w-100">
         <aside className="leftSideBar miniSideBar topicPageNewLayoutSidebar">
-          <div className="leftSideBar_Card p-0 m-0">
-            {/* <SideBar /> */}
-          </div>
+          <div className="leftSideBar_Card p-0 m-0">{/* <SideBar /> */}</div>
         </aside>
         {getUploadFilesLoadingIndicator ? (
           <CustomSkelton
