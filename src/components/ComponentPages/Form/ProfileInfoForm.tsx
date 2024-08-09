@@ -28,7 +28,9 @@ import {
   UpdateNewEmailVerification,
   getChangeEmailRequest,
 } from "src/network/api/userApi";
-import { FormOutlined } from "@ant-design/icons";
+import { EditOutlined, FormOutlined, UserOutlined } from "@ant-design/icons";
+import Image from "next/image";
+import { isDisabled } from "@testing-library/user-event/dist/utils";
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -58,6 +60,7 @@ function ProfileInfoForm({
   otp,
   setToggleVerifyButton,
   viewEmail,
+  userProfileData,
 }: any) {
   // eslint-disable-next-line no-unused-vars
   const [gmapsLoaded, setgmapsLoaded] = useState(false);
@@ -67,10 +70,47 @@ function ProfileInfoForm({
   const [generatedOtp, setGeneratedOtp] = useState("");
   const [updatedEmail, setUpdatedEmail] = useState("");
   const [newEmailOtp, setNewEmailOtp] = useState("");
+  const [initialValues, setInitialValues] = useState({});
+  const [inputValue, setInputValue] = useState("");
+  const [prevValue, setPrevValue] = useState("");
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  const [afterSaveChangeDisable, setAfterSaveChangeDisable] = useState(false);
 
   useEffect(() => {
     setgmapsLoaded(true);
   }, []);
+  useEffect(() => {
+    // Assuming `userProfileData` is the object containing initial values
+    setInitialValues(userProfileData);
+    setAfterSaveChangeDisable(false);
+
+    form.setFieldsValue(userProfileData); // Set form fields to initial values
+  }, [userProfileData]);
+  const handleDiscard = () => {
+    form.setFieldsValue(initialValues); // Reset form to initial values
+  };
+  useEffect(() => {
+    // Disable the button if the input value is empty or same as the previous value
+    if (inputValue.trim() === "" || inputValue === prevValue) {
+      setIsButtonDisabled(true);
+      setAfterSaveChangeDisable(false);
+    } else {
+      setIsButtonDisabled(false);
+      setAfterSaveChangeDisable(false);
+    }
+  }, [inputValue, prevValue]);
+
+  const handleChange = (e) => {
+    const newValue = e.target.value;
+    setPrevValue(inputValue); // Store the current value as previous before updating
+    setInputValue(newValue); // Update the current value
+    if(newValue){
+      setAfterSaveChangeDisable(false);
+    }
+    
+    console.log("Prabhakar")
+  };
+
   const listOfOption = (optionList, algoOrLang): any => {
     let option = [];
     optionList.length > 0 &&
@@ -107,11 +147,18 @@ function ProfileInfoForm({
       <Select
         data-testid="selectAfterHandleselectAfter"
         defaultValue={prvtPblc}
-        className="select-after"
+        className="select-after [&_.ant-input-group-addon]:!w-[5rem]"
         onChange={handleselectAfter(val)}
+        suffixIcon={
+          <Image src="/images/caret-icon.svg" width={16} height={9} alt="" />
+        }
       >
-        <Option value="private">Private</Option>
-        <Option value="public">Public</Option>
+        <Option value="public">
+          <Image src="/images/globe-icon.svg" width={24} height={24} alt="" />
+        </Option>
+        <Option value="private">
+          <Image src="/images/private-icon.svg" width={24} height={16} alt="" />
+        </Option>
       </Select>
     );
   };
@@ -249,6 +296,13 @@ function ProfileInfoForm({
   if (privateFlags != "loading")
     return (
       <div>
+        {/* <div>
+          <div className={style.imageWrapper}>
+            <div id="upload-profile">
+              <ImageUploader />
+            </div>
+          </div>
+        </div> */}
         <Form
           name="profileInfo"
           form={form}
@@ -258,33 +312,43 @@ function ProfileInfoForm({
           scrollToFirstError
           className="profileInfoPointer"
         >
-          <Title level={4} className="form-Title">
-            Personal Information
+          <Title
+            level={4}
+            className=" uppercase font-semibold text-canBlack !mb-5 !text-base"
+          >
+            BASIC INFORMATION
           </Title>
           <div className={style.profileCardWrapper}>
-            <div className={style.imageWrapper}>
-              <div id="upload-profile">
-                <ImageUploader />
-              </div>
-            </div>
-            <div className={style.profileInfo}>
-              <Row gutter={40}>
-                <Col md={12}>
-                  <Row>
-                    <Col md={24}>
+            <div className="">
+              <Row>
+                <Col md={24}>
+                  <Row gutter={{ xs: 0, sm: 0, md: 20, lg: 32 }}>
+                    <Col md={12} sm={24} className="w-full">
                       <Form.Item
                         name="first_name"
                         label={
                           <>
                             {messages.labels.firstName}
-                            <span className="required" id="asteriskFirstName">
+                            <span className="required " id="asteriskFirstName">
                               *
                             </span>
                           </>
                         }
+                        className="!text-sm font-normal text-canBlack [&_.ant-input-group-addon]:!w-[5rem] [&_.ant-select-selection-item]:!pr-6"
                         {...messages.firstNameRule}
                       >
                         <Input
+                          onChange={handleChange}
+                          prefix={
+                            <Image
+                              src="/images/nickname-user-icon.svg"
+                              width={14}
+                              height={16}
+                              alt=""
+                            />
+                          }
+                          className="font-medium [&_.ant-input]:!rounded-tl-lg [&_.ant-input]:!rounded-bl-lg [&_.ant-input-group-addon]:!rounded-tr-lg [&_.ant-input-group-addon]:!rounded-br-lg [&_.ant-input]:!h-[3.25rem] [&_.ant-input-affix-wrapper]:!py-0 [&_.ant-input]:!pl-2.5 [&_.ant-input-affix-wrapper]:!rounded-tl-lg [&_.ant-input-affix-wrapper]:!rounded-bl-lg [&_.ant-select-selection-item]:!flex [&_.ant-select-selection-item]:!items-center [&_.ant-select]:!my-0
+                        [&_.ant-input-affix-wrapper-lg]:!pl-4 "
                           id="firstName"
                           addonAfter={selectAfter(
                             "first_name",
@@ -302,7 +366,7 @@ function ProfileInfoForm({
                         />
                       </Form.Item>
                     </Col>
-                    <Col md={24}>
+                    <Col md={12} sm={24} className="w-full">
                       <Form.Item
                         name="last_name"
                         label={
@@ -313,9 +377,21 @@ function ProfileInfoForm({
                             </span>
                           </>
                         }
+                        className="!text-sm font-normal text-canBlack [&_.ant-input-group-addon]:!w-[5rem] [&_.ant-select-selection-item]:!pr-6"
                         {...messages.lastNameRule}
                       >
                         <Input
+                          onChange={handleChange}
+                          prefix={
+                            <Image
+                              src="/images/nickname-user-icon.svg"
+                              width={14}
+                              height={16}
+                              alt=""
+                            />
+                          }
+                          className="font-medium [&_.ant-input]:!rounded-tl-lg [&_.ant-input]:!rounded-bl-lg [&_.ant-input-group-addon]:!rounded-tr-lg [&_.ant-input-group-addon]:!rounded-br-lg [&_.ant-input]:!h-[3.25rem] [&_.ant-input-affix-wrapper]:!py-0 [&_.ant-input]:!pl-2.5 [&_.ant-input-affix-wrapper]:!rounded-tl-lg [&_.ant-input-affix-wrapper]:!rounded-bl-lg [&_.ant-select-selection-item]:!flex [&_.ant-select-selection-item]:!items-center [&_.ant-select]:!my-0
+                        [&_.ant-input-affix-wrapper-lg]:!pl-4"
                           id="lastName"
                           addonAfter={selectAfter(
                             "last_name",
@@ -333,7 +409,113 @@ function ProfileInfoForm({
                         />
                       </Form.Item>
                     </Col>
-                    <Col md={24}>
+                    <Col md={12} sm={24} className="w-full">
+                      <Form.Item
+                        className="!text-sm font-normal text-canBlack [&_.ant-input-group-addon]:!w-[5rem] [&_.ant-select-selection-item]:!pr-6"
+                        name="email"
+                        label={messages.labels.email}
+                        {...messages.emailRule}
+                      >
+                        <EditOutlined
+                          className="email-edit-icon "
+                          onClick={() => {
+                            getEmailChaneRequest();
+                            setOpen(true);
+                            setNewEmailId(false);
+                            setStep(1);
+                            setGeneratedOtp("");
+                          }}
+                        />
+
+                        <Input
+                          onChange={handleChange}
+                          id="email"
+                          prefix={
+                            <Image
+                              src="/images/mail-icon.svg"
+                              width={16}
+                              height={16}
+                              alt=""
+                            />
+                          }
+                          className="font-medium [&_.ant-input]:!rounded-tl-lg [&_.ant-input]:!rounded-bl-lg [&_.ant-input-group-addon]:!rounded-tr-lg [&_.ant-input-group-addon]:!rounded-br-lg [&_.ant-input]:!h-[3.25rem] [&_.ant-input-affix-wrapper]:!py-0 [&_.ant-input]:!pl-2.5 [&_.ant-input-affix-wrapper]:!rounded-tl-lg [&_.ant-input-affix-wrapper]:!rounded-bl-lg [&_.ant-input-affix-wrapper-disabled]:!bg-canDisabled [&_.ant-input]:!text-white [&_.ant-input]:!text-base [&_.ant-input]:!font-normal [&_.ant-select-selection-item]:!flex [&_.ant-select-selection-item]:!items-center [&_.ant-select]:!my-0
+                        [&_.ant-input-affix-wrapper-lg]:!pl-4"
+                          addonAfter={selectAfter(
+                            "email",
+                            publicOrPrivate("email")
+                          )}
+                          placeholder={messages.placeholders.email}
+                          size="large"
+                          value={viewEmail}
+                          disabled
+                        />
+                      </Form.Item>
+                    </Col>
+                    <Col md={12} sm={24} className="w-full">
+                      <Form.Item
+                        label="Date of Birth"
+                        className="mb-0 [&_.ant-form-item]:!border-none "
+                      >
+                        <Input.Group compact className={styles.date_picker}>
+                          <Form.Item
+                            name="birthday"
+                            className=" [&_.ant-picker-large]:!h-[3.25rem] w-full [&_.ant-picker]:rounded-tl-lg  [&_.ant-picker]:rounded-bl-lg "
+                          >
+                            <DatePicker
+                              onChange={handleChange}
+                              size="large"
+                              suffixIcon={null}
+                              tabIndex={8}
+                              className="w-full  [&_.ant-select-selector]:!border-none font-medium"
+                              disabledDate={(current) => {
+                                let customDate = moment().format("YYYY-MM-DD");
+                                return (
+                                  current &&
+                                  current > moment(customDate, "YYYY-MM-DD")
+                                );
+                              }}
+                            />
+                          </Form.Item>
+                          <Form.Item className="[&_.ant-select-selector]:!w-[5rem]">
+                            <Select
+                              data-testid="handleselectAfter"
+                              size="large"
+                              defaultValue={publicOrPrivate("birthday")}
+                              onChange={handleselectAfter("birthday")}
+                              className="mobile-select font-medium [&_.ant-select-selector]:!h-[3.25rem] [&_.ant-select-selector]:!flex [&_.ant-select-selector]:!items-center [&_.ant-select-selector]:!rounded-br-lg [&_.ant-select-selector]:!rounded-tr-lg [&_.ant-select-selection-item]:!flex [&_.ant-select-selection-item]:!items-center [&_.ant-select]:!my-0 [&_.ant-input-affix-wrapper-lg]:!pl-4 [&_..ant-select-selection-item]:after:!hidden"
+                              showSearch
+                              optionFilterProp="children"
+                              suffixIcon={
+                                <Image
+                                  src="/images/caret-icon.svg"
+                                  width={16}
+                                  height={9}
+                                  alt=""
+                                />
+                              }
+                            >
+                              <Option value="public">
+                                <Image
+                                  src="/images/globe-icon.svg"
+                                  width={24}
+                                  height={24}
+                                  alt=""
+                                />
+                              </Option>
+                              <Option value="private">
+                                <Image
+                                  src="/images/private-icon.svg"
+                                  width={24}
+                                  height={16}
+                                  alt=""
+                                />
+                              </Option>
+                            </Select>
+                          </Form.Item>
+                        </Input.Group>
+                      </Form.Item>
+                    </Col>
+                    <Col md={24} sm={24} className="w-full">
                       <Form.Item name="gender" label={messages.labels.gender}>
                         <Radio.Group name="radiogroup" defaultValue={1}>
                           <Space size="large" className={styles.radio_Btn}>
@@ -349,78 +531,9 @@ function ProfileInfoForm({
                   </Row>
                 </Col>
                 <Col md={12}>
-                  <Row>
-                    <Col md={24}>
-                      <Form.Item
-                        className="email-icon"
-                        name="email"
-                        label={messages.labels.email}
-                        {...messages.emailRule}
-                      >
-                        <FormOutlined
-                          className="email-edit-icon"
-                          onClick={() => {
-                            getEmailChaneRequest();
-                            setOpen(true);
-                            setNewEmailId(false);
-                            setStep(1);
-                            setGeneratedOtp("");
-                          }}
-                        />
-
-                        <Input
-                          id="email"
-                          addonAfter={selectAfter(
-                            "email",
-                            publicOrPrivate("email")
-                          )}
-                          placeholder={messages.placeholders.email}
-                          size="large"
-                          value={viewEmail}
-                          disabled
-                        />
-                      </Form.Item>
-                    </Col>
-                    <Col md={24}>
-                      <Form.Item label="Date of Birth" className="mb-0">
-                        <Input.Group compact className={styles.date_picker}>
-                          <Form.Item
-                            name="birthday"
-                            className={styles.date_picker_input_item}
-                          >
-                            <DatePicker
-                              size="large"
-                              tabIndex={8}
-                              className={styles.date_picker_inner}
-                              disabledDate={(current) => {
-                                let customDate = moment().format("YYYY-MM-DD");
-                                return (
-                                  current &&
-                                  current > moment(customDate, "YYYY-MM-DD")
-                                );
-                              }}
-                            />
-                          </Form.Item>
-                          <Form.Item>
-                            <Select
-                              data-testid="handleselectAfter"
-                              size="large"
-                              defaultValue={publicOrPrivate("birthday")}
-                              onChange={handleselectAfter("birthday")}
-                              className={styles.select_after}
-                              showSearch
-                              optionFilterProp="children"
-                            >
-                              <Option value="private">Private</Option>
-                              <Option value="public">Public</Option>
-                            </Select>
-                          </Form.Item>
-                        </Input.Group>
-                      </Form.Item>
-                    </Col>
-                  </Row>
+                  <Row></Row>
                 </Col>
-                <Col md={24}>
+                {/* <Col md={24}>
                   <VerifyMobileNumber
                     mobileCarrier={mobileCarrier}
                     formVerify={formVerify}
@@ -435,17 +548,20 @@ function ProfileInfoForm({
                     setOTP={setOTP}
                     setToggleVerifyButton={setToggleVerifyButton}
                   />
-                </Col>
+                </Col> */}
               </Row>
             </div>
           </div>
-          <div className={styles.section_two}>
-            <Title level={4} className="form-Title">
-              Address Information
+          <div className="border-t border-canGrey2 pt-10">
+            <Title
+              level={4}
+              className=" uppercase font-semibold text-canBlack !mb-5 !text-base"
+            >
+              ADDITIONAL INFORMATION
             </Title>
             <Row gutter={30}>
-              <Col md={12}>
-                <Form.Item
+              <Col md={12} sm={24}>
+                {/* <Form.Item
                   name="address_1"
                   label={messages.labels.addressLine1}
                 >
@@ -460,31 +576,61 @@ function ProfileInfoForm({
                       </PlacesAutocomplete>
                     ) : null}
                   </div>
-                </Form.Item>
-                <Form.Item name="city" label={messages.labels.city}>
+                </Form.Item> */}
+                <Form.Item
+                  name="city"
+                  label={messages.labels.city}
+                  className="[&_.ant-input-group-addon]:!w-[5rem] [&_.ant-form-item-label]:font-normal [&_.ant-select-selection-item]:!pr-6"
+                >
                   <Input
+                    prefix={
+                      <Image
+                        src="/images/location.svg"
+                        width={24}
+                        height={24}
+                        alt=""
+                      />
+                    }
+                    onChange={handleChange}
                     id="selectCity"
                     addonAfter={selectAfter("city", publicOrPrivate("city"))}
                     placeholder={messages.placeholders.city}
+                    className="font-medium [&_.ant-input]:!rounded-tl-lg [&_.ant-input]:!rounded-bl-lg [&_.ant-input-group-addon]:!rounded-tr-lg [&_.ant-input-group-addon]:!rounded-br-lg [&_.ant-input]:!h-[3.25rem] [&_.ant-input-affix-wrapper]:!py-0 [&_.ant-input]:!pl-2.5 [&_.ant-input-affix-wrapper]:!rounded-tl-lg [&_.ant-input-affix-wrapper]:!rounded-bl-lg [&_.ant-input]:!text-white [&_.ant-input]:!text-base [&_.ant-input]:!font-normal [&_.ant-select-selection-item]:!flex [&_.ant-select-selection-item]:!items-center [&_.ant-select]:!my-0
+                        [&_.ant-input-affix-wrapper-lg]:!pl-4 "
                     size="large"
                     disabled
                   />
                 </Form.Item>
-                <Form.Item name="country" label={messages.labels.country}>
+                <Form.Item
+                  name="country"
+                  label={messages.labels.country}
+                  className="[&_.ant-input-group-addon]:!w-[5rem] [&_.ant-form-item-label]:font-normal [&_.ant-select-selection-item]:!pr-6"
+                >
                   <Input
+                    prefix={
+                      <Image
+                        src="/images/location.svg"
+                        width={24}
+                        height={24}
+                        alt=""
+                      />
+                    }
+                    onChange={handleChange}
                     id="selectCountry"
                     addonAfter={selectAfter(
                       "country",
                       publicOrPrivate("country")
                     )}
                     placeholder={messages.placeholders.country}
+                    className="font-medium [&_.ant-input]:!rounded-tl-lg [&_.ant-input]:!rounded-bl-lg [&_.ant-input-group-addon]:!rounded-tr-lg [&_.ant-input-group-addon]:!rounded-br-lg [&_.ant-input]:!h-[3.25rem] [&_.ant-input-affix-wrapper]:!py-0 [&_.ant-input]:!pl-2.5 [&_.ant-input-affix-wrapper]:!rounded-tl-lg [&_.ant-input-affix-wrapper]:!rounded-bl-lg [&_.ant-input]:!text-white [&_.ant-input]:!text-base [&_.ant-input]:!font-normal [&_.ant-select-selection-item]:!flex [&_.ant-select-selection-item]:!items-center [&_.ant-select]:!my-0
+                        [&_.ant-input-affix-wrapper-lg]:!pl-4"
                     size="large"
                     disabled
                   />
                 </Form.Item>
               </Col>
-              <Col md={12}>
-                <Form.Item
+              <Col md={12} sm={24}>
+                {/* <Form.Item
                   name="address_2"
                   label={messages.labels.addressLine2}
                 >
@@ -498,18 +644,47 @@ function ProfileInfoForm({
                     size="large"
                     maxLength={255}
                   />
-                </Form.Item>
-                <Form.Item name="state" label={messages.labels.state}>
+                </Form.Item> */}
+                <Form.Item
+                  name="state"
+                  label={messages.labels.state}
+                  className="[&_.ant-input-group-addon]:!w-[5rem] [&_.ant-form-item-label]:font-normal [&_.ant-select-selection-item]:!pr-6"
+                >
                   <Input
+                    prefix={
+                      <Image
+                        src="/images/location.svg"
+                        width={24}
+                        height={24}
+                        alt=""
+                      />
+                    }
+                    onChange={handleChange}
                     id="selectState"
                     addonAfter={selectAfter("state", publicOrPrivate("state"))}
                     placeholder={messages.placeholders.state}
                     size="large"
+                    className="font-medium [&_.ant-input]:!rounded-tl-lg [&_.ant-input]:!rounded-bl-lg [&_.ant-input-group-addon]:!rounded-tr-lg [&_.ant-input-group-addon]:!rounded-br-lg 
+                   [&_.ant-input]:!h-[3.25rem] [&_.ant-input-affix-wrapper]:!py-0 [&_.ant-input]:!pl-2.5 [&_.ant-input-affix-wrapper]:!rounded-tl-lg [&_.ant-input-affix-wrapper]:!rounded-bl-lg [&_.ant-input]:!text-white [&_.ant-input]:!text-base [&_.ant-input]:!font-normal [&_.ant-select-selection-item]:!flex [&_.ant-select-selection-item]:!items-center [&_.ant-select]:!my-0
+                        [&_.ant-input-affix-wrapper-lg]:!pl-4"
                     disabled
                   />
                 </Form.Item>
-                <Form.Item name="postal_code" label={messages.labels.zipCode}>
+                <Form.Item
+                  name="postal_code"
+                  label={messages.labels.zipCode}
+                  className="[&_.ant-input-group-addon]:!w-[5rem] [&_.ant-select-selection-item]:!pr-6"
+                >
                   <Input
+                    prefix={
+                      <Image
+                        src="/images/location.svg"
+                        width={24}
+                        height={24}
+                        alt=""
+                      />
+                    }
+                    onChange={handleChange}
                     id="selectPostalCode"
                     addonAfter={selectAfter(
                       "postal_code",
@@ -517,6 +692,9 @@ function ProfileInfoForm({
                     )}
                     placeholder={messages.placeholders.zipCode}
                     size="large"
+                    className="font-medium [&_.ant-input]:!rounded-tl-lg [&_.ant-input]:!rounded-bl-lg [&_.ant-input-group-addon]:!rounded-tr-lg [&_.ant-input-group-addon]:!rounded-br-lg 
+                    [&_.ant-input]:!h-[3.25rem] [&_.ant-input-affix-wrapper]:!py-0 [&_.ant-input]:!pl-2.5 [&_.ant-input-affix-wrapper]:!rounded-tl-lg [&_.ant-input-affix-wrapper]:!rounded-bl-lg [&_.ant-input]:!text-white [&_.ant-input]:!text-base [&_.ant-input]:!font-normal [&_.ant-select-selection-item]:!flex [&_.ant-select-selection-item]:!items-center [&_.ant-select]:!my-0
+                        [&_.ant-input-affix-wrapper-lg]:!pl-4"
                     maxLength={255}
                     disabled={postalCodeDisable}
                     autoComplete="off"
@@ -525,10 +703,10 @@ function ProfileInfoForm({
                 </Form.Item>
               </Col>
             </Row>
-            <Title level={4} className="form-Title">
+            {/* <Title level={4} className="form-Title">
               Other Information
-            </Title>
-            <Row gutter={30}>
+            </Title> */}
+            {/* <Row gutter={30}>
               <Col md={12}>
                 <Form.Item name="language" label={messages.labels.language}>
                   <Select
@@ -560,19 +738,41 @@ function ProfileInfoForm({
                   </Select>
                 </Form.Item>
               </Col>
-            </Row>
+            </Row> */}
           </div>
-          <Form.Item>
+          <Form.Item className="!flex-col flex items-center lg:flex-row md:flex-row sm:flex-row xs:flex-col justify-center   [&_.ant-form-item-control-input-content]:!flex lg:[&_.ant-form-item-control-input-content]:!flex-row lg:[&_.ant-form-item-control-input-content]:gap-5 mt-6 md:[&_.ant-form-item-control-input-content]:!flex-row [&_.ant-form-item-control-input-content]:!flex-col [&_.ant-form-item-control-input-content]:gap-2.5 md:[&_.ant-form-item-control-input-content]:!justify-center">
             <Button
+              onClick={handleDiscard}
+              disabled={afterSaveChangeDisable || isButtonDisabled}
+              className="Profile_btn ant-btn ant-btn-orange ant-btn-lg py-2.5 px-12 hover:bg-canBlue hover:text-white flex gap-2.5 items-center bg-[#98B7E6] bg-opacity-10 text-canBlack text-base font-medium rounded-lg border-canBlue justify-center "
+            >
+              Discard{" "}
+              <Image
+                src="/images/cross-dark.svg"
+                width={16}
+                height={16}
+                alt="no image"
+              />
+            </Button>
+            <Button
+              onClick={() => {
+                setAfterSaveChangeDisable(true);
+              }}
               id="profileUpdate"
               type="primary"
               htmlType="submit"
-              className="Profile_btn ant-btn ant-btn-orange ant-btn-lg"
               data-testid="submitButton"
               tabIndex={12}
               disabled={disableButton}
+              className=" Profile_btn ant-btn ant-btn-orange ant-btn-lg py-2.5 px-6 hover:bg-canBlue hover:text-white flex gap-2.5 items-center bg-canBlue text-white text-base font-medium rounded-lg border-none justify-center"
             >
-              Update
+              Save Changes{" "}
+              <Image
+                src="/images/save-icon.svg"
+                width={24}
+                height={24}
+                alt="no image"
+              />
             </Button>
           </Form.Item>
         </Form>

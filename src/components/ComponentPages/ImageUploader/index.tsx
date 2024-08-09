@@ -15,7 +15,7 @@ import { RootState } from "src/store";
 import { setProfilePicture } from "src/store/slices/authSlice";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Spin } from "antd";
-
+import Image from "next/image";
 const getBase64 = (file: RcFile): Promise<string> =>
   new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -115,16 +115,19 @@ const ImageUploader: React.FC = () => {
   };
   return (
     <Fragment>
-      <div className="upload-wrap">
+      <div className="upload-wrap relative flex items-center justify-center overflow-hidden lg:w-24 lg:h-24 w-12 h-12 rounded-full border border-canBlack">
         {fileList.length == 1 && !loading ? (
           <>
             <ImgCrop
               aspectSlider
               rotationSlider
               onModalOk={(file) => onModalOk(file)}
+            
+              
             >
               <Upload
-                className="picture-upload"
+                className="picture-upload [&_.ant-upload-select-picture-card]:!rounded-full  [&_.ant-upload-list-picture-card-container]:!rounded-full [&_.ant-upload-list-item-list-type-picture-card]:!rounded-full [&_. ant-upload-list-item-list-type-picture-card]:!p-0 [&_.ant-upload-list-item-thumbnail]:overflow-hidden [&_.ant-upload-list-item-thumbnail]:!flex [&_.ant-upload-list-item-thumbnail]:!rounded-full [&_.ant-upload-list-item]:!p-0 [&_.ant-upload-list-picture-card-container]:!m-0 [&_.ant-upload.ant-upload-select-picture-card]:!m-0 absolute bottom-0 bg-white bg-opacity-50 flex items-center justify-center p-2.5 h-full lg:[&_.ant-upload-select-picture-card]:!w-24 [&_.ant-upload-select-picture-card]:!w-12 "
+              
                 listType="picture-card"
                 accept="image/*"
                 fileList={fileList}
@@ -156,7 +159,7 @@ const ImageUploader: React.FC = () => {
             onModalOk={(file) => onModalOk(file)}
           >
             <Upload
-              className="picture-upload"
+               className="bg-green picture-upload [&_.ant-upload-select-picture-card]:!rounded-full  [&_.ant-upload-list-picture-card-container]:!rounded-full [&_.ant-upload.ant-upload-select-picture-card]:!m-0 lg:[&_.ant-upload.ant-upload-select-picture-card]:!w-24 lg:[&_.ant-upload.ant-upload-select-picture-card]:!h-24 [&_.ant-upload-select-picture-card]:!w-12 "
               listType="picture-card"
               accept="image/*"
               fileList={fileList}
@@ -175,16 +178,21 @@ const ImageUploader: React.FC = () => {
             onModalOk={(file) => onModalOk(file)}
           >
             <Upload
+               className="z-50   overflow-hidden picture-upload [&_.ant-upload-select-picture-card]:!rounded-full [&_.ant-upload-list-picture-card-container]:!rounded-full [&_.ant-upload.ant-upload-select-picture-card]:!m-0 absolute bg-canBlack bg-opacity-50 w-full bottom-0 py-2 flex items-center justify-center"
               fileList={fileList}
               multiple={false}
               accept="image/*"
               showUploadList={false}
             >
-              <Tooltip title="Update" key="update-btn" placement="bottom">
-                <Button size="small">
-                  <EditOutlined />
-                </Button>
+              <div className=" flex items-center justify-center z-10 ">
+              <Tooltip title="Update" key="update-btn" placement="bottom" className="">
+                <a  className="!bg-transparent !border-none">
+                  {/* <EditOutlined className="" /> */}
+                  <Image src="/images/image-edit-icon.svg" width={16} height={16} />
+                </a>
               </Tooltip>
+              </div>
+             
             </Upload>
           </ImgCrop>
         ) : null}
@@ -197,7 +205,7 @@ const ImageUploader: React.FC = () => {
       >
         <img
           alt="example"
-          style={{ width: "100%", borderRadius: "50px" }}
+          style={{ width: "100%", borderRadius: "100%" }}
           src={previewImage}
         />
       </Modal>

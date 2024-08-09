@@ -15,6 +15,7 @@ import {
 } from "../../../network/api/userApi";
 import ProfileInfoUI from "./ProfileInfoUI";
 import { formatDate } from "../../common/FormatDate";
+import { setGlobalUserProfileData, setGlobalUserProfileDataEmail } from "src/store/slices/campDetailSlice";
 
 type UpdateAddress = {
   city?: string;
@@ -48,6 +49,8 @@ const ProfileInfo = () => {
   const [userProfileSkeleton, setUserProfileSkeleton] = useState(false);
   const [userProfileSkeletonV, setUserProfileSkeletonV] = useState(true);
   const [viewEmail, setViewEmail] = useState("");
+  const [userProfileData, setUserProfileData] = useState("");
+
 
   const publicPrivateArray = {
     first_name: "first_name",
@@ -279,6 +282,9 @@ const ProfileInfo = () => {
         if (res.data != undefined) {
           let profileData = res.data;
           setViewEmail(profileData?.email);
+          setUserProfileData(profileData)
+          dispatch(setGlobalUserProfileData(profileData.first_name))
+          dispatch(setGlobalUserProfileDataEmail(profileData?.email))
           const verify = {
             phone_number: profileData.phone_number,
             mobile_carrier:
@@ -365,6 +371,7 @@ const ProfileInfo = () => {
       setOTP={setOTP}
       setToggleVerifyButton={setToggleVerifyButton}
       viewEmail={viewEmail}
+      userProfileData={userProfileData}
     />
   );
 };

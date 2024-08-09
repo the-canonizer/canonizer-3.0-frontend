@@ -532,7 +532,11 @@ body {
   @apply opacity-0;
 }
 
-.ant-tabs-tab-active .ant-tabs-tab-btn {
+.ant-tabs-tab-active .ant-tabs-tab-btn {}
+.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn{
+ @apply text-shadow-none;
+}
+.custom-tabs .ant-tabs-tab-active .ant-tabs-tab-btn{
   @apply border-canBlue border-b-4 text-canBlue text-shadow-none;
 }
 .ant-tabs-top > .ant-tabs-nav .ant-tabs-ink-bar {
@@ -542,6 +546,9 @@ body {
 .ant-tabs-nav-list .ant-tabs-tab:first-child {
   @apply ml-5;
 }
+// .ant-tabs-nav-list .ant-tabs-tab:first-child{
+//   @apply ml-5
+// }
 
 .ant-tabs-nav-list .ant-tabs-tab:last-child {
   @apply mr-5;
@@ -556,3 +563,29 @@ body {
   }
 }
 
+.sample{
+  @apply bg-canBlue bg-opacity-20 py-3 px-5 rounded-lg relative  
+}
+.ant-menu-item .sample:before {
+  @apply absolute bg-canBlue  w-2 h-3/5 top-1/2 left-2 transform -translate-x-1/2 -translate-y-1/2 rounded-lg;
+}
+.ant-menu-submenu .sample:before {
+  @apply absolute bg-canBlue  w-2 h-3/5 top-1/2 left-2 transform -translate-x-1/2 -translate-y-1/2 rounded-lg;
+}
+.ant-menu-item .sample span {
+  @apply  font-semibold
+
+}
+
+.custom-menu a{
+  @apply px-5 rounded-lg
+}
+.ant-menu-sub.ant-menu-inline > .ant-menu-item{
+  @apply h-20
+}
+// .mobile-select  .ant-select-selection-item:after {
+//   @apply hidden !important;
+// }
+.ant-menu-submenu-open.ant-menu-submenu .ant-menu-submenu-title .account-arrow{
+  @apply -rotate-90 transition-transform ease-in-out duration-150
+}
