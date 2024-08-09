@@ -81,7 +81,6 @@ const Events = ({ timelineDescript, loadingEvents }: any) => {
                         }
                         title={
                           <>
-                            hello
                             <Link
                               href={
                                 title?.url?.split("/")[1] == "topic"
