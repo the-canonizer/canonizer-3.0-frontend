@@ -3,7 +3,7 @@ $sidebar_width_small: 30%;
 
 .contentArea {
   display: flex;
-  overflow: hidden;
+  // overflow: hidden;
   flex-direction: row;
   flex-wrap: nowrap;
   min-height: calc(100vh - 347px);

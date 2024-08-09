@@ -16,6 +16,7 @@ import ViewCounts from "components/shared/ViewsCount";
 import PrimaryButton from "components/shared/Buttons/PrimariButton";
 import CommonCard from "components/shared/Card";
 import SecondaryButton from "components/shared/Buttons/SecondaryButton";
+import SectionHeading from "components/ComponentPages/Home/FeaturedTopic/sectionsHeading";
 
 const CampStatementCard = ({ loadingIndicator }) => {
   const router = useRouter();
@@ -59,6 +60,8 @@ const CampStatementCard = ({ loadingIndicator }) => {
     }
     return false;
   };
+
+  console.log("campStatement---", campStatement);
 
   const getButton = () => {
     if (isDraftShow()) {
@@ -160,15 +163,10 @@ const CampStatementCard = ({ loadingIndicator }) => {
         <div className="flex justify-between items-start">
           <div className="mr-auto">
             <div className="camp-agreement-header flex items-center mb-2.5 lg:mb-5 gap-2">
-              <h3 className="text-sm lg:text-base text-canBlack text-left font-semibold ">
-                {K?.exceptionalMessages?.campStatementHeading}
-              </h3>
-              <Image
-                src="/images/circle-info-bread.svg"
-                alt="svg"
-                className="icon-topic"
-                height={16}
-                width={16}
+              <SectionHeading
+                title={K?.exceptionalMessages?.campStatementHeading}
+                infoContent={K?.exceptionalMessages?.campStatementHeading}
+                className="text-sm lg:text-base normal-case text-canBlack text-left font-semibold"
               />
             </div>
             <div className="flex items-center justify-start gap-6 camp-header-content lg:border-none border-t border-b border-canGrey2 lg:py-0 py-1.5 lg:mb-0 mb-5">

@@ -13,6 +13,7 @@ import {
   setThread,
 } from "src/store/slices/campForumSlice";
 import { getAllUsedNickNames } from "src/network/api/campDetailApi";
+import CustomSpinner from "components/shared/CustomSpinner";
 
 const ManageThread = ({ onSubmittedSucess = null }) => {
   const { campRecord, currentThread, topicRecord, isOpen }: any = useSelector(
@@ -173,22 +174,24 @@ const ManageThread = ({ onSubmittedSucess = null }) => {
   };
 
   return (
-    <CreateEditThreadPopup
-      onFinish={onFinish}
-      form={form}
-      onClose={closeDrawer}
-      isOpen={isOpen}
-      isMobile={isMobile}
-      initialValue={initialValue}
-      isThreadUpdate={isThreadUpdate}
-      nickNameList={nickNameList}
-      onCancel={closeDrawer}
-      isLoading={isLoading}
-      isDisabled={isDisabled}
-      topicRecord={topicRecord}
-      campRecord={campRecord}
-      isUpdateSubmit={isUpdateSubmit}
-    />
+    <CustomSpinner key="create-thread-spinner" spinning={isLoading}>
+      <CreateEditThreadPopup
+        onFinish={onFinish}
+        form={form}
+        onClose={closeDrawer}
+        isOpen={isOpen}
+        isMobile={isMobile}
+        initialValue={initialValue}
+        isThreadUpdate={isThreadUpdate}
+        nickNameList={nickNameList}
+        onCancel={closeDrawer}
+        isLoading={isLoading}
+        isDisabled={isDisabled}
+        topicRecord={topicRecord}
+        campRecord={campRecord}
+        isUpdateSubmit={isUpdateSubmit}
+      />
+    </CustomSpinner>
   );
 };
 

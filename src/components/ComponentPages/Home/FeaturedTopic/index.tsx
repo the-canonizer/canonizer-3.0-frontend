@@ -18,7 +18,7 @@ const FeaturedTopic = () => {
   const [loadMoreIndicator, setLoadMoreIndicator] = useState(false);
 
   const settings = {
-    autoplay: true,
+    autoplay: false,
     dots: false,
     arrows: true,
     infinite: true,

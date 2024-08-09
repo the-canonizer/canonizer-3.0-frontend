@@ -140,7 +140,7 @@ const TrandingTopics = () => {
               }}
               renderItem={(item: any) => (
                 <List.Item
-                  className="font-inter text-sm font-medium bg-white hover:bg-canGrey1 !px-3.5 !py-4 justify-start"
+                  className="font-inter text-sm font-medium bg-white hover:bg-canGrey1 !px-3.5 !py-3 justify-start"
                   id={`topic-${item?.topic_id}`}
                 >
                   <Link

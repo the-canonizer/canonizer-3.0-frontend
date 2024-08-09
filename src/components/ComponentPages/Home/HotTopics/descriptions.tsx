@@ -13,6 +13,7 @@ const CardDescription = ({
   description,
   loading = false,
   isBrowsing = false,
+  className = "",
 }) => {
   if (loading) {
     return (
@@ -39,9 +40,9 @@ const CardDescription = ({
 
   return (
     <div
-      className={`${
-        isBrowsing ? "text-base line-clamp-2" : "text-sm line-clamp-7 h-36"
-      } font-inter !font-normal overflow-hidden text-canBlack opacity-80 [&_strong]:font-normal [&_*]:font-normal`}
+      className={`${className} ${
+        isBrowsing ? "text-base line-clamp-2" : "text-sm line-clamp-4"
+      } font-inter !font-normal overflow-hidden text-canBlack opacity-80 [&_strong]:font-normal [&_*]:font-normal leading-[1.7]`}
       dangerouslySetInnerHTML={{
         __html: sanitizeHtml(description, {
           allowedAttributes: {
