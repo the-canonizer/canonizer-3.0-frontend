@@ -189,7 +189,7 @@ function ManageStatementUI({
                     </>
                   }
                   rules={messages.summaryRule}
-                  placeholder={messages.placeholders.firstName}
+                  placeholder={messages.placeholders.editSummary}
                   maxLength={100}
                   prefix={<FileTextOutlined />}
                   defaultValue={String(editCampStatementData)}

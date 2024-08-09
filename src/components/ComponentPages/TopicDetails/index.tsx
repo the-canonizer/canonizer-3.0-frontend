@@ -234,6 +234,10 @@ const TopicDetails = ({ serverSideCall }: any) => {
       setIsSupportTreeCardModal(false);
       GetCheckStatusData();
       await getTreesApi(reqBodyForService);
+      dispatch(setOpenConsensusTreePopup(true));
+      setTimeout(() => {
+        dispatch(setOpenConsensusTreePopup(false));
+      }, 100);
       getTopicActivityLogCall();
       await getCurrentCampRecordApi(reqBody);
       setRemoveSupportSpinner(false);
@@ -313,6 +317,11 @@ const TopicDetails = ({ serverSideCall }: any) => {
       GetCheckStatusData();
       getTopicActivityLogCall();
       await getTreesApi(reqBodyForService);
+      dispatch(setOpenConsensusTreePopup(true));
+
+      setTimeout(() => {
+        dispatch(setOpenConsensusTreePopup(false));
+      }, 100);
       setIsRemovingSupport(false);
       setRemoveSupportSpinner(false);
     }
@@ -366,7 +375,6 @@ const TopicDetails = ({ serverSideCall }: any) => {
       }
     }
     dispatch(setOpenConsensusTreePopup(true));
-
     setTimeout(() => {
       dispatch(setOpenConsensusTreePopup(false));
     }, 100);

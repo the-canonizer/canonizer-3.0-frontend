@@ -55,13 +55,14 @@ const { TextArea } = Input;
 function SupportTreeDrawer({
   onClose,
   open,
-  topicList,
   drawerFor,
   setDrawerFor,
   onRemoveFinish,
   selectNickId: getDelegateId,
   delegateNickName,
   handleCancelSupportCamps,
+  loader = false,
+  setLoader
 }: any) {
   const {
     reasons,
@@ -297,6 +298,7 @@ function SupportTreeDrawer({
       openNotificationWithIcon(
         "You are not supporting this camp. So, you can`t remove support"
       );
+      setLoader(false)
     } else {
       let payload = {
         topic_num: topicNum,
@@ -344,11 +346,13 @@ function SupportTreeDrawer({
   };
 
   const onFinish = async (values) => {
+    setLoader(true)
     if (drawerFor === "delegateAdd") {
       await addDelegateMethod();
     } else if (drawerFor === "directAdd" || drawerFor === "manageSupport") {
       await addSupportMethod(values);
     }
+    setLoader(false)
   };
 
   const getReasons = async () => {
@@ -715,6 +719,7 @@ function SupportTreeDrawer({
                   type="primary"
                   htmlType="submit"
                   className=" min-w-[200px] bg-canBlue flex items-center justify-center hover:bg-canHoverBlue focus:bg-canHoverBlue hover:text-white font-medium text-white disabled:bg-disabled font-base rounded-lg"
+                  loading={loader}
                 >
                   {renderSubmitBtnText()}
                   <PlusOutlined />
@@ -791,6 +796,7 @@ function SupportTreeDrawer({
                   type="primary"
                   htmlType="submit"
                   className=" min-w-[200px] bg-canBlue flex items-center justify-center hover:bg-canHoverBlue focus:bg-canHoverBlue hover:text-white font-medium text-white disabled:bg-disabled font-base rounded-lg"
+                  loading={loader}
                 >
                   {renderSubmitBtnText()}
                   <MinusOutlined />

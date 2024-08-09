@@ -63,19 +63,13 @@ const RegistrationOTP = () => {
       }
 
       if (res && res.status_code === 200) {
-        message.success(res.message);
+        message.success("OTP Verified Successfully!");
         otpForm.resetFields();
 
         dispatch(setEmailForOTP(null));
         dispatch(setIsNewUser(true));
 
-        // if (router?.query.returnUrl) {
-        //   router?.push(`${router?.query.returnUrl}`);
-        // } else if (currentReturnUrl) {
-        //   router?.push({ pathname: currentReturnUrl });
-        // } else {
         router?.push({ pathname: "/category-preference" });
-        // }
       }
     } else {
       otpForm.resetFields();

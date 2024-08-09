@@ -2,7 +2,6 @@ import { Fragment } from "react";
 import { useRouter } from "next/router";
 import { Spin } from "antd";
 
-// import SideBar from "../../CampForum/UI/sidebar";
 import FormUI from "./FormUI";
 import CampInfoBar from "../../TopicDetails/CampInfoBar";
 

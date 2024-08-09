@@ -5,7 +5,7 @@ export const labels = {
   middleName: "Middle Name",
   lastName: "Last Name",
   phone: "Contact Number",
-  email: "Email Address",
+  email: "Email",
   captcha: "Captcha",
   registrationPassword: "Create a Password",
   confirmPassword: "Re-enter Password",
