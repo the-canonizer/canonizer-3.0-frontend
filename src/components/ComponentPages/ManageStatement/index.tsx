@@ -179,10 +179,10 @@ function ManageStatements({ isEdit = false, add = false }) {
 
     const editInfo = editStatementData;
     const parentCamp = editInfo?.parent_camp;
-
-    const topicNum = router?.query?.statement?.at(0)?.split("-")?.at(0);
-    const topicName = router?.query?.statement?.at(0)?.split("-")?.at(1);
-    const campNum = router?.query?.statement?.at(1)?.split("-")?.at(0);
+    
+    const topicNum = isEdit? editStatementData?.topic?.topic_num :router?.query?.statement?.at(0)?.split("-")?.at(0) ;
+    const topicName = isEdit? editStatementData?.topic?.topic_name :router?.query?.statement?.at(0)?.split("-")?.at(1) ;
+    const campNum = isEdit? editStatementData?.statement?.camp_num :router?.query?.statement?.at(1)?.split("-")?.at(0);
     const lastParentCamp = parentCamp?.[parentCamp.length - 1];
 
     let payload = {
@@ -193,9 +193,6 @@ function ManageStatements({ isEdit = false, add = false }) {
     };
 
     if (!(localStorage.getItem(`draft_record_id-${topicNum}-${campNum}`)) 
-      ||
-       topicNum != localStorage.getItem(`draft_record_id-${topicNum}-${campNum}`)?.split("-")?.at(1) &&
-       campNum != localStorage.getItem(`draft_record_id-${topicNum}-${campNum}`)?.split("-")?.at(2)
     ) {
       payload.topic_num = topicNum;
       payload.topic_name = topicName;
@@ -245,7 +242,7 @@ function ManageStatements({ isEdit = false, add = false }) {
           record_id: router?.query?.statement?.[0]?.split("-")[0],
           event_type: "edit",
         });
-
+        
         if (editRes?.status_code === 200) {
           setTime({
             ...time,
