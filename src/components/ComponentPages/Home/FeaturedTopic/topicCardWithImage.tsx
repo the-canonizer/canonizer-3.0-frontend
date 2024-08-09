@@ -87,7 +87,10 @@ const SingleTopicWithImage = ({ topic, onTopicClick = null }) => {
               />
             </div>
           </div>
-          <CardDescription description={topic?.description} />
+          <CardDescription
+            description={topic?.description}
+            className="line-clamp-[7]"
+          />
           <div className="flex justify-between pt-3 mt-auto">
             <div className="text-left flex flex-col sm:flex-row justify-center items-center">
               <TopicCatsLabel tags={topic?.topicTags} />
