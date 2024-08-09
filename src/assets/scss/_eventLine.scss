@@ -12,12 +12,17 @@
   .activites-wrapper {
     @apply bg-[#F7F8FC] rounded-xl p-5;
     .activity-list-wrap {
-      @apply bg-white border rounded-xl border-[#CCD4E7] px-8 py-4;
+      @apply bg-white border rounded-xl border-[#CCD4E7] px-8 py-4 max-h-[526px] overflow-x-auto;
       li {
         @apply py-0 border-b-0;
         + li {
           @apply mt-4 pt-4 border-t border-[#0000001A];
         }
+        // .animated-text {
+        //   animation-name: rightToLeft;
+        //   animation-duration: 0.4s;
+        //   animation-timing-function: linear;
+        // }
         .ant-list-item-meta-content {
           .ant-list-item-meta-title {
             @apply text-base text-canBlack mb-2;
