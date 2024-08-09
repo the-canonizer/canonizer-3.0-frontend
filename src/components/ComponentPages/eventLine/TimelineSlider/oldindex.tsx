@@ -1,29 +1,14 @@
-import { PauseOutlined, ShareAltOutlined } from "@ant-design/icons";
-import {
-  Button,
-  Divider,
-  Popover,
-  Radio,
-  RadioChangeEvent,
-  Slider,
-  Space,
-  Tooltip,
-  Typography,
-} from "antd";
-import Paragraph from "antd/lib/typography/Paragraph";
-import {
-  FacebookIcon,
-  FacebookShareButton,
-  LinkedinIcon,
-  LinkedinShareButton,
-  TwitterIcon,
-  TwitterShareButton,
-} from "next-share";
-import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
-import { isServer } from "src/utils/generalUtility";
-import CheckIcon from "../../../../assets/image/check.png";
-import CopyLinkIcon from "../../../../assets/image/copy-link.png";
+import { Slider, Popover, Typography } from "antd";
+import {
+  CaretRightOutlined,
+  PauseOutlined,
+  StepBackwardOutlined,
+  StepForwardOutlined,
+  DashboardOutlined,
+} from "@ant-design/icons";
+import styles from "./timeBarControl.module.scss";
+import { useRouter } from "next/router";
 
 const { Title } = Typography;
 
@@ -52,97 +37,17 @@ function TimelineSlider({
   handleForwardOrBackord,
   isPlaying,
   setIsPlaying,
-}: // eventId,
-// setEventId,
-// value,
-// setValue,
-any) {
+  eventId,
+  setEventId,
+  value,
+  setValue,
+}: any) {
   const router = useRouter();
   const didMount = useRef(false);
+
   const [intervalId, setIntervalId] = useState(null);
+
   const [speedBar, setSpeedBar] = useState(false);
-  const [URL, setURL] = useState("");
-  const [eventId, setEventId] = useState(0);
-  const [value, setValue] = useState(1);
-
-  const updateEventId = (url, newValue) => {
-    let urlParts = url.split("?");
-    let baseUrl = urlParts[0];
-    let params = urlParts[1].split("&");
-
-    for (let i = 0; i < params.length; i++) {
-      let paramParts = params[i].split("=");
-      if (paramParts[0] === "eventId") {
-        paramParts[1] = newValue;
-        params[i] = paramParts.join("=");
-        break; // Found eventId, no need to continue looping
-      }
-    }
-
-    return baseUrl + "?" + params.join("&");
-  };
-
-  const optionChange = (e: RadioChangeEvent) => {
-    setValue(e.target.value);
-
-    if (e.target.value == 1) {
-      if (router.asPath.includes("?")) {
-        setURL(!isServer() && window?.location?.href?.split("?")[0]);
-      } else {
-        setURL(!isServer() && window?.location?.href);
-      }
-    } else if (e.target.value == 2) {
-      if (router.asPath.includes("?")) {
-        if (router.asPath.includes("eventId")) {
-          setURL(updateEventId(window?.location?.href, eventId));
-        } else {
-          setURL(window?.location?.href + `&eventId=${eventId}`);
-        }
-      } else {
-        setURL(window?.location?.href + `?eventId=${eventId}`);
-      }
-    }
-  };
-
-  const copyHandler = () => {
-    if (value == 1) {
-      if (router.asPath.includes("?")) {
-        setURL(!isServer() && window?.location?.href?.split("?")[0]);
-      } else {
-        setURL(!isServer() && window?.location?.href);
-      }
-    } else if (value == 2) {
-      if (router.asPath.includes("?")) {
-        if (router.asPath.includes("eventId")) {
-          setURL(updateEventId(window?.location?.href, eventId));
-        } else {
-          setURL(window?.location?.href + `&eventId=${eventId}`);
-        }
-      } else {
-        setURL(window?.location?.href + `?eventId=${eventId}`);
-      }
-    }
-  };
-
-  useEffect(() => {
-    if (value == 1) {
-      if (router.asPath.includes("?")) {
-        setURL(!isServer() && window?.location?.href?.split("?")[0]);
-      } else {
-        setURL(!isServer() && window?.location?.href);
-      }
-    } else if (value == 2) {
-      if (router.asPath.includes("?")) {
-        if (router.asPath.includes("eventId")) {
-          setURL(updateEventId(window?.location?.href, eventId));
-        } else {
-          setURL(window?.location?.href + `&eventId=${eventId}`);
-        }
-      } else {
-        setURL(window?.location?.href + `?eventId=${eventId}`);
-      }
-    }
-  }, [eventId, value]);
 
   useEffect(() => {
     if (!didMount.current) {
@@ -253,9 +158,9 @@ any) {
     setSpeedBar(false);
   };
 
-  const controller_content = (
+  const content = (
     <div className="speed-controller">
-      <Title level={5}>Playback speed</Title>
+      <Title level={4}>Playback speed</Title>
       <Slider
         marks={marks}
         defaultValue={50}
@@ -385,145 +290,68 @@ any) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [iteration, mockData]);
 
-  const content = (
-    <div className="share-popup-content">
-      <Title level={5}>Share</Title>
-      <Radio.Group onChange={optionChange} value={value}>
-        <Space direction="vertical">
-          <Radio value={1}>Eventline URL</Radio>
-          <Radio value={2}>Current Event URL</Radio>
-        </Space>
-      </Radio.Group>
-      <Divider className="my-3" />
-      <div className="social-links">
-        <Title level={5} className="mb-0">
-          Share Link To
-        </Title>
-        <Space>
-          <FacebookShareButton
-            url={URL}
-            hashtag={`#${!isServer() && window?.location?.hostname}`}
-          >
-            <Tooltip title="Share On Facebook">
-              <FacebookIcon size={27} round />
-            </Tooltip>
-          </FacebookShareButton>
-
-          <TwitterShareButton url={URL}>
-            <Tooltip title="Share On Twitter">
-              <TwitterIcon size={27} round />
-            </Tooltip>
-          </TwitterShareButton>
-
-          <LinkedinShareButton url={URL}>
-            <Tooltip title="Share On Linkedin">
-              <LinkedinIcon size={27} round />
-            </Tooltip>
-          </LinkedinShareButton>
-          <>
-            <Paragraph
-              className="!mb-0 copy-btn"
-              copyable={{
-                text: URL,
-                icon: [
-                  <img
-                    src={CopyLinkIcon.src}
-                    key="1"
-                    style={{ verticalAlign: "baseline" }}
-                    onClick={() => copyHandler()}
-                  />,
-                  <img
-                    src={CheckIcon.src}
-                    key="2"
-                    style={{ verticalAlign: "baseline" }}
-                  />,
-                ],
-              }}
-            ></Paragraph>
-          </>
-        </Space>
-      </div>
-    </div>
-  );
-
   return (
     <>
-      <div className="player-wrapper">
+      <div
+        className={`${styles.timeBarControl} ${
+          mockData && !mockData[Object.keys(mockData)[1]]?.firstEvent
+            ? ""
+            : styles.disablePlayBtn
+        }`}
+        data-testid="time-bar-control"
+      >
+        <StepBackwardOutlined
+          onClick={() => {
+            if (mockData && !mockData[Object.keys(mockData)[1]]?.firstEvent) {
+              handleClickBackword();
+            }
+          }}
+          className={styles.controlBtnSecond}
+          data-testid="backward-button"
+        />
+        {/* <BackwardOutlined className={styles.controlBtn} /> */}
+        {"     "}
         <div
-          className={`${"player-controller"} ${
-            mockData && !mockData[Object.keys(mockData)[1]]?.firstEvent
-              ? ""
-              : ""
-          }`}
-          data-testid="time-bar-control"
+          className={`${styles.playBtn}`}
+          onClick={() => {
+            if (mockData && !mockData[Object.keys(mockData)[1]]?.firstEvent) {
+              handleClick();
+            }
+          }}
+          data-testid="play-button"
         >
-          <i
-            className="icon-control-btn-2"
-            onClick={() => {
-              if (mockData && !mockData[Object.keys(mockData)[1]]?.firstEvent) {
-                handleClickBackword();
-              }
-            }}
-            data-testid="backward-button"
-          ></i>
-          {"     "}
-          <div
-            onClick={() => {
-              if (mockData && !mockData[Object.keys(mockData)[1]]?.firstEvent) {
-                handleClick();
-              }
-            }}
-            data-testid="play-button"
-          >
-            {isPlaying ? <PauseOutlined /> : <i className="icon-play-btn"></i>}
-          </div>
-          {"   "}
+          {isPlaying ? <PauseOutlined /> : <CaretRightOutlined />}
+        </div>
+        {"   "}
+        {/* <ForwardOutlined className={styles.controlBtn} onClick={handleClickForward} /> */}
 
-          <i
-            className="icon-control-btn"
-            onClick={() => {
-              if (mockData && !mockData[Object.keys(mockData)[1]]?.firstEvent) {
-                handleClickForward();
-              }
-            }}
-            data-testid="forward-button"
-          ></i>
-          <Popover
-            content={controller_content}
-            title={false}
-            trigger="hover"
-            overlayClassName="sp-controller-wrapper"
-            open={speedBar}
-            onOpenChange={(newOpen) => {
-              setSpeedBar(newOpen);
-            }}
-          >
-            <i
-              className={`${"icon-timer cursor-pointer"}  ${
-                mockData && mockData[Object.keys(mockData)[1]]?.firstEvent
-                  ? "disable-icon"
-                  : ""
-              }`}
-              data-testid="speed-icon"
-            ></i>
-          </Popover>
-        </div>
-        <div className="share-wrapper">
-          <Popover
-            showArrow={false}
-            content={content}
-            overlayClassName="share-popover-wrapper"
-            trigger="click"
-            placement="bottomLeft"
-          >
-            <Button
-              type="link"
-              className="text-canBlack"
-              icon={<ShareAltOutlined />}
-              size="small"
-            />
-          </Popover>
-        </div>
+        <StepForwardOutlined
+          onClick={() => {
+            if (mockData && !mockData[Object.keys(mockData)[1]]?.firstEvent) {
+              handleClickForward();
+            }
+          }}
+          className={styles.controlBtnSecond}
+          data-testid="forward-button"
+        />
+        <Popover
+          content={content}
+          title={false}
+          trigger="hover"
+          open={speedBar}
+          onOpenChange={(newOpen) => {
+            setSpeedBar(newOpen);
+          }}
+        >
+          <DashboardOutlined
+            className={`${"speed-icon"}  ${
+              mockData && mockData[Object.keys(mockData)[1]]?.firstEvent
+                ? styles.disableIcon
+                : ""
+            }`}
+            data-testid="speed-icon"
+          />
+        </Popover>
       </div>
       {mockData && (
         <Slider

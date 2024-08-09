@@ -13,6 +13,7 @@
 @import "../../components/ComponentPages/Breadcrumbs/breadcrumbs.scss";
 @import "../../components/ComponentPages/HistoryCard/historyCard.scss";
 @import "./video";
+@import "./eventLine";
 
 :root {
   --primary: #4484ce;
@@ -537,6 +538,7 @@ body {
  @apply text-shadow-none;
 }
 .custom-tabs .ant-tabs-tab-active .ant-tabs-tab-btn{
+.ant-tabs-tab-active .ant-tabs-tab-btn {
   @apply border-canBlue border-b-4 text-canBlue text-shadow-none;
 }
 .ant-tabs-top > .ant-tabs-nav .ant-tabs-ink-bar {
@@ -588,4 +590,9 @@ body {
 // }
 .ant-menu-submenu-open.ant-menu-submenu .ant-menu-submenu-title .account-arrow{
   @apply -rotate-90 transition-transform ease-in-out duration-150
+}
+
+.ant-tabs-nav-list .ant-tabs-tab:last-child {
+  @apply mr-5;
+}
 }

@@ -3,6 +3,7 @@ import { select, scaleBand, scaleLinear, max } from "d3";
 import useResizeObserver from "./useResizeObserver";
 
 import styles from "./timeline.module.scss";
+import { Card } from "antd";
 
 function RacingBarChart({ data }: any) {
   const linesData = [];
@@ -197,13 +198,15 @@ function RacingBarChart({ data }: any) {
   }, [data, dimensions]);
 
   return (
-    <div
-      className={styles.svgD3}
-      ref={wrapperRef}
-      style={{ marginBottom: "2rem", width: widthBar + 45 }}
-    >
-      <svg height={data?.length * 30} ref={svgRef}></svg>
-    </div>
+    <Card title="Consensus tree progression" className="tree-progression-card">
+      <div
+        className={styles.svgD3}
+        ref={wrapperRef}
+        style={{ marginBottom: "2rem", width: widthBar + 45 }}
+      >
+        <svg height={data?.length * 30} ref={svgRef}></svg>
+      </div>
+    </Card>
   );
 }
 
