@@ -37,8 +37,6 @@ const TopicDetailsPage = ({
   tree,
   serverCall,
 }: any) => {
-  console.log("campStatement---", campStatement);
-
   const dispatch = useDispatch();
   const serverSideCall = useRef(serverCall || false);
 
@@ -215,10 +213,9 @@ export async function getServerSideProps({ req, query, res }) {
   let resUrl = `/topic/${topicRecord?.topic_num}-${replaceSpecialCharacters(
     resTopicName,
     "-"
-  )}/${campRecord?.campData?.camp_num}-${replaceSpecialCharacters(
-    resCampName,
-    "-"
-  )}`;
+  )}/${
+    campRecord?.campData?.camp_num ? campRecord?.campData?.camp_num : campNum
+  }-${replaceSpecialCharacters(resCampName, "-")}`;
 
   if (topicRecord && campRecord?.status_code == 200 && currentUrl !== resUrl) {
     let queryStr: any = buildSearchQuery(query);

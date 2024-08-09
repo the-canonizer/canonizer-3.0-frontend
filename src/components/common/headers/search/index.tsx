@@ -406,7 +406,7 @@ const HeaderSearch = ({ className = "" }: any) => {
                 ? searchVal.substring(0, advanceSearchValueLength)
                 : searchVal
             }
-            className={`${styles.searchInput} text-medium font-medium [&_.ant-input]:!shadow-none [&_.ant-input]:!border-canGrey2 hover:!border-canGrey2 `}
+            className={`${styles.searchInput} text-medium font-medium [&_.ant-input]:!shadow-none [&_.ant-input]:!border-canGrey2 hover:!border-canGrey2 searchInputHeader`}
             name="search"
             onChange={(e) => {
               setLoadingSekelton(true);
@@ -489,7 +489,7 @@ const HeaderSearch = ({ className = "" }: any) => {
                       ? searchVal.substring(0, advanceSearchValueLength)
                       : searchVal
                   }
-                  className={`${styles.searchInput} [&_.ant-btn-primary]:!bg-transparent [&_.ant-btn-primary]:!border-canGrey2 w-full text-medium font-medium [&_.ant-input]:!shadow-none [&_.ant-input]:!border-canGrey2 hover:!border-canGrey2 [&_.ant-btn-primary]:!rounded-tr-lg [&_.ant-btn-primary]:!rounded-br-lg`}
+                  className={`${styles.searchInput} [&_.ant-btn-primary]:!bg-transparent [&_.ant-btn-primary]:!border-canGrey2 w-full text-medium font-medium [&_.ant-input]:!shadow-none [&_.ant-input]:!border-canGrey2 hover:!border-canGrey2 [&_.ant-btn-primary]:!rounded-tr-lg [&_.ant-btn-primary]:!rounded-br-lg searchInputHeader`}
                   name="search"
                   onChange={(e) => {
                     setLoadingSekelton(true);

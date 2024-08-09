@@ -11,9 +11,9 @@ import { setEmailForOTP, setIsNewUser } from "src/store/slices/authSlice";
 import CustomSpinner from "components/shared/CustomSpinner";
 
 const RegistrationOTP = () => {
-  const { emailForOtp, currentReturnUrl } = useSelector((state: RootState) => ({
+  const { emailForOtp } = useSelector((state: RootState) => ({
     emailForOtp: state?.auth?.emailForOtp,
-    currentReturnUrl: state?.auth?.currentReturnUrl,
+    // currentReturnUrl: state?.auth?.currentReturnUrl,
   }));
 
   const [isResend, setIsResend] = useState(false),
@@ -69,13 +69,13 @@ const RegistrationOTP = () => {
         dispatch(setEmailForOTP(null));
         dispatch(setIsNewUser(true));
 
-        if (router?.query.returnUrl) {
-          router?.push(`${router?.query.returnUrl}`);
-        } else if (currentReturnUrl) {
-          router?.push({ pathname: currentReturnUrl });
-        } else {
-          router?.push({ pathname: "/category-preference" });
-        }
+        // if (router?.query.returnUrl) {
+        //   router?.push(`${router?.query.returnUrl}`);
+        // } else if (currentReturnUrl) {
+        //   router?.push({ pathname: currentReturnUrl });
+        // } else {
+        router?.push({ pathname: "/category-preference" });
+        // }
       }
     } else {
       otpForm.resetFields();

@@ -2,7 +2,7 @@ import { Fragment } from "react";
 import { useRouter } from "next/router";
 import { Spin } from "antd";
 
-import SideBar from "../../CampForum/UI/sidebar";
+// import SideBar from "../../CampForum/UI/sidebar";
 import FormUI from "./FormUI";
 import CampInfoBar from "../../TopicDetails/CampInfoBar";
 
@@ -32,7 +32,7 @@ const CreateNewCampUI = ({
     <Fragment>
       <div className="d-flex">
         <aside className="leftSideBar miniSideBar topicPageNewLayoutSidebar">
-          <SideBar />
+          {/* <SideBar /> */}
         </aside>
         <div className="pageContentWrap">
           <CampInfoBar payload={payload} />

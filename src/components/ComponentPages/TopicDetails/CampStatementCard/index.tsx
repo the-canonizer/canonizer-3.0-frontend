@@ -151,8 +151,6 @@ const CampStatementCard = ({ loadingIndicator }) => {
     );
   };
 
-  console.log("isDraftShow()---", isDraftShow());
-
   return (
     <CommonCard
       className="border-0 h-100 bg-white [&_.ant-card-body]:p-0 [&_.ant-card-body]:lg:p-[24px] lg:bg-canGray mb-8 lg:mb-14 border-t-8 !border-canGreen"
@@ -235,7 +233,6 @@ const CampStatementCard = ({ loadingIndicator }) => {
           </div>
 
           <div className="topicDetailsCollapseFooter printHIde camp">
-            {console.log("--campStatement----", campStatement[0])}
             {getButton()}
           </div>
         </div>

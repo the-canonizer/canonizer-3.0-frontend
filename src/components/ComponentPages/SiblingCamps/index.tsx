@@ -16,9 +16,12 @@ const SiblingCamps = () => {
     campRecord: state?.topicDetails?.currentCampRecord,
   }));
 
+  console.log(campRecord);
+
   const secondToLastElement =
-    campRecord?.parentCamps[campRecord?.parentCamps.length - 2];
-  const parentCampNum = secondToLastElement ? secondToLastElement.camp_num : 1;
+    campRecord?.parentCamps &&
+    campRecord?.parentCamps[campRecord?.parentCamps?.length - 2];
+  const parentCampNum = secondToLastElement ? secondToLastElement?.camp_num : 1;
 
   const [siblingCampsData, setSiblingCampsData] = useState([]);
 
