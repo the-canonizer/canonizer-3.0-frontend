@@ -243,7 +243,7 @@ const CommentsList = () => {
   };
 
   return (
-    <CustomSpinner key="registration-spinner" spinning={postLoading}>
+    <CustomSpinner key="post-spinner" spinning={postLoading}>
       <Layout
         routeName={"forum"}
         afterHeader={

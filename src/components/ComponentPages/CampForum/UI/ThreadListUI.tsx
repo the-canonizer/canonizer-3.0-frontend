@@ -14,6 +14,7 @@ import CustomSkelton from "components/common/customSkelton";
 import CommonCards from "components/shared/Card";
 import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 import PrimaryButton from "components/shared/Buttons/PrimariButton";
+import EditIcon from "./editIcon";
 
 const { Text, Paragraph } = Typography;
 const { Column } = Table;
@@ -230,10 +231,10 @@ const ThreadListUI = ({
               key="title"
               render={(text, others: any, idx) => {
                 return (
-                  <Fragment key={idx}>
+                  <div className="flex items-start" key={idx}>
                     <a
                       onClick={(e) => onThreadClick(e, others)}
-                      className="!text-canBlack hocus:!text-canBlue font-medium text-sm"
+                      className="!text-canBlack hocus:!text-canBlue font-medium text-sm h-full leading-[32px] line-clamp-1"
                       id={"thread-label-" + (+idx + 1)}
                       data-testid={"thread-label-" + (+idx + 1)}
                       href={`/forum/${replaceSpecialCharacters(
@@ -244,22 +245,22 @@ const ThreadListUI = ({
                         "-"
                       )}/threads/${others?.id}`}
                     >
-                      <Fragment>{text}</Fragment>
+                      <Text>{text}</Text>
                     </a>
                     {isLog && paramsList.by === "my" ? (
                       <Tooltip title="edit">
-                        <a
+                        <SecondaryButton
                           onClick={() => {
                             onThreadEdit({ text, others });
                           }}
-                          className="linkCss"
+                          className="linkCss border-0 p-0 ml-1"
                           data-testid="edit_btn"
                         >
-                          <EditOutlined />
-                        </a>
+                          <EditIcon />
+                        </SecondaryButton>
                       </Tooltip>
                     ) : null}
-                  </Fragment>
+                  </div>
                 );
               }}
             />

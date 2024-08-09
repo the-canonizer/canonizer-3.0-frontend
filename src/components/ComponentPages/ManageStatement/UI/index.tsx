@@ -163,7 +163,7 @@ function ManageStatementUI({
                     oneditorchange={onEditorStateChange}
                     placeholder="Write Your Statement Here"
                     items={EditorToolbarItems}
-                  ></Editorckl>
+                  />
                 )}
               </Form.Item>
             </Col>
@@ -180,7 +180,7 @@ function ManageStatementUI({
                     </>
                   }
                   rules={messages.summaryRule}
-                  placeholder={messages.placeholders.firstName}
+                  placeholder={messages.placeholders.editSummary}
                   maxLength={100}
                   prefix={<FileTextOutlined />}
                   defaultValue={String(editCampStatementData)}

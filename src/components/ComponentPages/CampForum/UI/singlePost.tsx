@@ -46,7 +46,7 @@ const SinglePost = ({
               {new Date(postedTime).getTime() ===
               new Date(postedUpdatedTime).getTime() ? (
                 <Text className="ml-1 font-medium text-sm">
-                  edited comment{" "}
+                  commented{" "}
                   {moment(getTime(postedTime))
                     .local()
                     .startOf("seconds")
@@ -61,7 +61,7 @@ const SinglePost = ({
                 </Text>
               ) : (
                 <Text className="ml-1 font-medium text-sm">
-                  updated{" "}
+                  edited comment{" "}
                   {moment(getTime(postedUpdatedTime))
                     .local()
                     .startOf("seconds")

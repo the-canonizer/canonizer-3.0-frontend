@@ -237,7 +237,7 @@ const ForumComponent = () => {
   };
 
   return (
-    <CustomSpinner key="registration-spinner" spinning={loading}>
+    <CustomSpinner key="thread-spinner" spinning={loading}>
       <Layout
         routeName={"forum"}
         afterHeader={

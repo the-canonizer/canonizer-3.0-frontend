@@ -65,13 +65,14 @@ export default function Editorck(
           editor={ClassicEditor.Editor}
           data={editordata}
           onReady={(editor) => {
-            editor.editing.view.focus();
             editor.editing.view.document.on("click", () => {
               props.oneditorchange(editor?.getData());
             });
+
             editor.editing.view.document.on("blur", () => {
               props.oneditorchange(editor?.getData());
             });
+
             if (props.height)
               editor.editing.view.change((writer) => {
                 writer.setStyle(
@@ -80,6 +81,8 @@ export default function Editorck(
                   editor.editing.view.document.getRoot()
                 );
               });
+
+            editor.editing.view.focus();
           }}
           onChange={(event, editor: any) => {
             // let isTyping = false;

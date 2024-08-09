@@ -16,8 +16,6 @@ const SiblingCamps = () => {
     campRecord: state?.topicDetails?.currentCampRecord,
   }));
 
-  console.log(campRecord);
-
   const secondToLastElement =
     campRecord?.parentCamps &&
     campRecord?.parentCamps[campRecord?.parentCamps?.length - 2];
