@@ -7,14 +7,14 @@ import SideBarTimeline from "../Home-old/SideBarTimeline";
 import TimeLine from "../TimeLine";
 // import TimelineInfoBar from "./TimelineInfoBar/index";
 import TimelineInfoBar from "../TopicDetails/CampInfoBar";
+import Events from "./Events";
 const { Title } = Typography;
 
 const EventLine = () => {
   const router = useRouter();
-
   const [timelineDescript, setTimelineDescript] = useState([]);
   const [loadingEvents, setLoadingEvents] = useState(false);
-  const [isEventLine,setIsEventLine]=useState(true)
+  const [isEventLine, setIsEventLine] = useState(true);
 
   return (
     <>
@@ -28,7 +28,7 @@ const EventLine = () => {
       ) : (
         <>
           {/* <TimelineInfoBar /> */}
-          <TimelineInfoBar isEventLine={isEventLine}/>
+          <TimelineInfoBar isEventLine={isEventLine} />
           <div className="eventline-content-wrap">
             <div className="eventline-algo-content">
               <SideBarTimeline
@@ -37,19 +37,23 @@ const EventLine = () => {
               />
             </div>
 
-            <>
-              <div className="eventline-audio-wrapper">
-                <Title level={5} className="uppercase">
-                  Event line
-                </Title>
+            <div className="eventline-audio-wrapper">
+              <Title level={5} className="uppercase">
+                Event line
+              </Title>
 
-                <TimeLine
-                  setTimelineDescript={setTimelineDescript}
-                  loadingEvents={loadingEvents}
-                  setLoadingEvents={setLoadingEvents}
-                />
-              </div>
-            </>
+              <TimeLine
+                setTimelineDescript={setTimelineDescript}
+                loadingEvents={loadingEvents}
+                setLoadingEvents={setLoadingEvents}
+              />
+            </div>
+            <div className="lg:hidden">
+              <Events
+                timelineDescript={timelineDescript}
+                loadingEvents={loadingEvents}
+              />
+            </div>
           </div>
         </>
       )}

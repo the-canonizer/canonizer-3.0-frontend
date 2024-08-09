@@ -16,14 +16,12 @@ export default function SideBarTimeline({
       <TimelineFilter onCreateCamp={onCreateCamp} />
       {typeof window !== "undefined" &&
         router?.asPath.includes("eventline") && (
-          <Fragment>
-            {
-              <Events
-                timelineDescript={timelineDescript}
-                loadingEvents={loadingEvents}
-              />
-            }
-          </Fragment>
+          <div className="max-lg:hidden">
+            <Events
+              timelineDescript={timelineDescript}
+              loadingEvents={loadingEvents}
+            />
+          </div>
         )}
     </Fragment>
   );

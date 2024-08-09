@@ -281,12 +281,21 @@ any) {
       "Nov",
       "Dec",
     ];
-    let formattedDate = `${
-      months[datess.getMonth()]
-    } ${datess.getDate()}, ${datess
-      .getYear()
-      .toString()
-      .slice(1)}<span style=display:none>${value}</span>`;
+
+    // let formattedDate = `${
+    //   months[datess.getMonth()]
+    // } ${datess.getDate()}, ${datess
+    //   .getYear()
+    //   .toString()
+    //   .slice(1)}<span style=display:none>${value}</span>`;
+
+    const day = datess.getDate();
+    const month = months[datess.getMonth()];
+    const year = datess.getFullYear().toString().slice(-2);
+  
+    const formattedDate = `${day} ${month}, ${year}<span style="display:none">${value}</span>`;
+  
+
     return (
       <div
         dangerouslySetInnerHTML={{
