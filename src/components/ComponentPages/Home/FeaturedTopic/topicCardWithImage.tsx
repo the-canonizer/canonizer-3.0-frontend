@@ -89,7 +89,7 @@ const SingleTopicWithImage = ({ topic, onTopicClick = null }) => {
           </div>
           <CardDescription
             description={topic?.description}
-            className="line-clamp-[7]"
+            className="line-clamp-[7] mb-6"
           />
           <div className="flex justify-between pt-3 mt-auto">
             <div className="text-left flex flex-col sm:flex-row justify-center items-center">
