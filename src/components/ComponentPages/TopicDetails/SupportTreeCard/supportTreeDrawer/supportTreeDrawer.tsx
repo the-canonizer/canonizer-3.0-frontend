@@ -43,7 +43,7 @@ import {
   GetActiveSupportTopic,
   GetCheckSupportExists,
 } from "src/network/api/topicAPI";
-import { openNotificationWithIcon } from "components/ComponentPages/notificationBar/notificationBar";
+import { openNotificationWithIcon } from "components/common/notification/notificationBar";
 import queryParams from "src/utils/queryParams";
 import { setCheckSupportExistsData } from "src/store/slices/campDetailSlice";
 import moment from "moment";

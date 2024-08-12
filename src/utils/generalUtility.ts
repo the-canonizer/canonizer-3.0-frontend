@@ -1,5 +1,5 @@
 import { message } from "antd";
-import { openNotificationWithIcon } from "components/ComponentPages/notificationBar/notificationBar";
+import { openNotificationWithIcon } from "components/common/notification/notificationBar";
 import moment from "moment";
 
 export const handleError = (error, log = false) => {

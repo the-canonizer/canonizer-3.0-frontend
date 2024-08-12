@@ -53,7 +53,7 @@ import SiblingCamps from "../SiblingCamps";
 import CampTree from "./CampTree";
 import { setCampActivityData } from "src/store/slices/recentActivitiesSlice";
 import SectionHeading from "../Home/FeaturedTopic/sectionsHeading";
-import { openNotificationWithIcon } from "../notificationBar/notificationBar";
+import { openNotificationWithIcon } from "../../common/notification/notificationBar";
 
 const { Link: AntLink } = Typography;
 
