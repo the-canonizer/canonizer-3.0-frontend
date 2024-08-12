@@ -51,6 +51,7 @@ function ManageStatements({ isEdit = false, add = false }) {
     last_save_time: null,
   });
   const [autoSaveDisplayMessage, setAutoSaveDisplayMessage] = useState("");
+  const [isAutoSaving, setIsAutoSaving] = useState(false);
 
   const values = Form.useWatch([], form);
 
@@ -165,6 +166,10 @@ function ManageStatements({ isEdit = false, add = false }) {
     e?.preventDefault();
 
     setScreenLoading(true);
+    const topicNum = isEdit? editStatementData?.topic?.topic_num :router?.query?.statement?.at(0)?.split("-")?.at(0) ;
+    const campNum = isEdit? editStatementData?.statement?.camp_num :router?.query?.statement?.at(1)?.split("-")?.at(0);
+
+    localStorage.removeItem(`draft_record_id-${topicNum}-${campNum}`)
 
     if (isEdit) {
       router?.push({ pathname: getBackURL() });
@@ -176,6 +181,7 @@ function ManageStatements({ isEdit = false, add = false }) {
 
   const autoSave = async (isAutosave, data) => {
     setIsAutoSave(isAutosave);
+    setIsAutoSaving(true);
 
     const editInfo = editStatementData;
     const parentCamp = editInfo?.parent_camp;
@@ -210,19 +216,23 @@ function ManageStatements({ isEdit = false, add = false }) {
     }
 
     if (navigator.onLine) {
-      let res = await updateStatementApi(payload);
-      localStorage.setItem(`draft_record_id-${topicNum}-${campNum}`, res?.data?.draft_record_id+"-"+topicNum+"-"+campNum);
-      
-      localStorage.removeItem("autosaveContent"); // Clear local storage on successful save
-      setIsAutoSave(false);
-
-      setTime({
-        ...time,
-        last_save_time: getEpochTime(),
-      });
+      if (payload?.statement){
+        let res = await updateStatementApi(payload);
+        localStorage.setItem(`draft_record_id-${topicNum}-${campNum}`, res?.data?.draft_record_id+"-"+topicNum+"-"+campNum);
+        
+        localStorage.removeItem("autosaveContent"); // Clear local storage on successful save
+        setIsAutoSave(false);
+        setIsAutoSaving(false);
+  
+        setTime({
+          ...time,
+          last_save_time: getEpochTime(),
+        });
+      }
     } else {
       localStorage.setItem("autosaveContent", payload?.statement); // Save to local storage if offline
       setIsAutoSave(false);
+      setIsAutoSaving(false)
 
       setTime({
         ...time,
@@ -314,16 +324,22 @@ function ManageStatements({ isEdit = false, add = false }) {
       const editInfo = editStatementData;
       const parent_camp = editInfo?.parent_camp;
 
-      const campNum = router?.query?.statement?.at(1)?.split("-")?.at(0);
+      const topicNum = isEdit? editStatementData?.topic?.topic_num :router?.query?.statement?.at(0)?.split("-")?.at(0) ;
+      const topicName = isEdit? editStatementData?.topic?.topic_name :router?.query?.statement?.at(0)?.split("-")?.at(1) ;
+      const campNum = isEdit? editStatementData?.statement?.camp_num :router?.query?.statement?.at(1)?.split("-")?.at(0);
 
       let payload = {
         ...values,
+        topic_num: topicNum,
+        topic_name: topicName,
         camp_num: campNum,
       };
 
       const res = await saveStatement(payload);
 
       if (res?.status_code == 200) {
+        localStorage.removeItem(`draft_record_id-${topicNum}-${campNum}`)
+
         if (!isEdit) {
           if (isSaveDraft) {
             router?.push(router?.asPath?.replace("create/statement", "topic"));
@@ -533,6 +549,7 @@ function ManageStatements({ isEdit = false, add = false }) {
           <SecondaryButton
             className="flex items-center justify-center py-2 px-8 h-auto"
             onClick={onSaveDraftStatement}
+            disabled={isAutoSaving}
           >
             Save As Draft
             <FileTextOutlined />
@@ -561,6 +578,7 @@ function ManageStatements({ isEdit = false, add = false }) {
               onPreviewClick={onPreviewClick}
               isDraft={isDraft}
               autoSave={autoSave}
+              isAutoSaving={isAutoSaving}
             />
           )}
         </Col>

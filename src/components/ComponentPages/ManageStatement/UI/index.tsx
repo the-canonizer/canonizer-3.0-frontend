@@ -76,6 +76,7 @@ function ManageStatementUI({
   onPreviewClick,
   isDraft,
   autoSave,
+  isAutoSaving,
 }) {
   return (
     <CommonCards className="border-0 bg-white">
@@ -206,13 +207,14 @@ function ManageStatementUI({
                   className="inline-flex items-center justify-center h-auto py-2 px-7 mr-5 h-auto"
                   onClick={onDiscardClick}
                   id="update-cancel-btn"
+                  disabled={isAutoSaving}
                 >
                   Discard <CloseOutlined />
                 </SecondaryButton>
                 <PrimaryButton
                   htmlType="submit"
                   className="inline-flex items-center justify-center h-auto py-2 px-7 h-auto"
-                  disabled={submitIsDisable || !isDisabled}
+                  disabled={submitIsDisable || !isDisabled || isAutoSaving}
                 >
                   Publish Statement
                   <UploadOutlined />
