@@ -62,7 +62,7 @@ function SupportTreeDrawer({
   delegateNickName,
   handleCancelSupportCamps,
   loader = false,
-  setLoader
+  setLoader,
 }: any) {
   const {
     reasons,
@@ -282,12 +282,12 @@ function SupportTreeDrawer({
 
       let res = await removeSupportedCamps(payload);
       if (res && res.status_code == 200) {
-        openNotificationWithIcon(res?.message);
+        let type = "success";
+        openNotificationWithIcon(res?.message, type);
         await handleCancelSupportCamps({ isCallApiStatus: true });
         getCurrentCampRecordApi(reqBody);
         setDrawerFor("");
         onClose();
-        // await callDetailPageApis();
         form.resetFields();
         setSelectedValue(null);
       }
@@ -295,10 +295,9 @@ function SupportTreeDrawer({
       shouldRemoveSupport() &&
       supportedCampsStatus?.support_flag == 0
     ) {
-      openNotificationWithIcon(
-        "You are not supporting this camp. So, you can`t remove support"
-      );
-      setLoader(false)
+      let type = "error";
+      openNotificationWithIcon("You are not supporter of this camp.", type);
+      setLoader(false);
     } else {
       let payload = {
         topic_num: topicNum,
@@ -317,7 +316,8 @@ function SupportTreeDrawer({
 
       let res = await addSupport(payload);
       if (res && res.status_code == 200) {
-        openNotificationWithIcon(res?.message);
+        let type = "success";
+        openNotificationWithIcon(res?.message, type);
         await handleCancelSupportCamps({ isCallApiStatus: true });
         getCurrentCampRecordApi(reqBody);
         setDrawerFor("");
@@ -337,7 +337,8 @@ function SupportTreeDrawer({
 
     let res = await addDelegateSupportCamps(addDelegatedSupport);
     if (res && res.status_code == 200) {
-      openNotificationWithIcon(res?.message);
+      let type = "success";
+      openNotificationWithIcon(res?.message, type);
       await handleCancelSupportCamps({ isCallApiStatus: true });
       getCurrentCampRecordApi(reqBody);
       setDrawerFor("");
@@ -346,13 +347,13 @@ function SupportTreeDrawer({
   };
 
   const onFinish = async (values) => {
-    setLoader(true)
+    setLoader(true);
     if (drawerFor === "delegateAdd") {
       await addDelegateMethod();
     } else if (drawerFor === "directAdd" || drawerFor === "manageSupport") {
       await addSupportMethod(values);
     }
-    setLoader(false)
+    setLoader(false);
   };
 
   const getReasons = async () => {
