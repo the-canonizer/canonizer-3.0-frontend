@@ -493,7 +493,8 @@ any) {
             title={false}
             trigger="hover"
             overlayClassName="sp-controller-wrapper"
-            open={speedBar}
+            // open={speedBar}
+            open
             onOpenChange={(newOpen) => {
               setSpeedBar(newOpen);
             }}

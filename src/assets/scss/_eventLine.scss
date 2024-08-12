@@ -116,6 +116,11 @@
     }
     .ant-slider-with-marks {
       @apply mt-4;
+      &:hover {
+        .ant-slider-handle:not(.ant-tooltip-open) {
+          @apply border-canBlue;
+        }
+      }
     }
     .ant-slider {
       .ant-slider-rail,
@@ -123,7 +128,7 @@
         @apply hidden;
       }
       .ant-slider-handle {
-        @apply shadow-none w-[16px] h-[16px];
+        @apply shadow-none w-[16px] h-[16px] border-[5px] border-canBlue mt-[-9px];
       }
       .ant-slider-mark {
         .ant-slider-mark-text {
@@ -131,6 +136,11 @@
           &.ant-slider-mark-text-active {
             @apply text-canBlue font-bold;
           }
+        }
+      }
+      .ant-slider-step {
+        .ant-slider-dot {
+          @apply top-[-6px] w-[12px] h-[12px] border border-canBlue;
         }
       }
     }
