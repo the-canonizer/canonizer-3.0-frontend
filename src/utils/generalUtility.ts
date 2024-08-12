@@ -1,4 +1,5 @@
 import { message } from "antd";
+import { openNotificationWithIcon } from "components/common/notification/notificationBar";
 import moment from "moment";
 
 export const handleError = (error, log = false) => {
@@ -21,14 +22,21 @@ export const handleError = (error, log = false) => {
   ) {
     let keys = Object.keys(nestedErrs.error);
     keys.forEach((key) => {
-      message.error(nestedErrs.error[key][0]);
+      // message.error(nestedErrs.error[key][0]);
+      let type="error"
+      openNotificationWithIcon(nestedErrs.error[key][0],type)
     });
   } else {
     if (nestedErrs.message) {
-      message.error(nestedErrs.message);
+      // message.error(nestedErrs.message);
+      let type="error"
+      openNotificationWithIcon(nestedErrs.message,type)
     }
     if (error.message) {
-      message.error(error.message);
+      // message.error(error.message);
+      let type="error"
+      openNotificationWithIcon(error.message,type)
+
     }
   }
   return null;

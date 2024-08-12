@@ -53,7 +53,7 @@ import SiblingCamps from "../SiblingCamps";
 import CampTree from "./CampTree";
 import { setCampActivityData } from "src/store/slices/recentActivitiesSlice";
 import SectionHeading from "../Home/FeaturedTopic/sectionsHeading";
-import { openNotificationWithIcon } from "../notificationBar/notificationBar";
+import { openNotificationWithIcon } from "../../common/notification/notificationBar";
 
 const { Link: AntLink } = Typography;
 
@@ -230,7 +230,8 @@ const TopicDetails = ({ serverSideCall }: any) => {
 
     const res = await removeSupportedCamps(supportedCampsRemove);
     if (res && res.status_code == 200) {
-      openNotificationWithIcon(res?.message);
+      let type="success"
+      openNotificationWithIcon(res?.message,type);
       setIsSupportTreeCardModal(false);
       GetCheckStatusData();
       await getTreesApi(reqBodyForService);
@@ -277,7 +278,8 @@ const TopicDetails = ({ serverSideCall }: any) => {
 
     let res = await addSupport(RemoveSupportId);
     if (res && res.status_code == 200) {
-      openNotificationWithIcon(res?.message);
+      let type="success"
+      openNotificationWithIcon(res?.message,type);
       setIsSupportTreeCardModal(false);
       GetCheckStatusData();
       await getTreesApi(reqBodyForService);
@@ -310,7 +312,8 @@ const TopicDetails = ({ serverSideCall }: any) => {
 
     let res = await removeSupportedCampsEntireTopic(removeEntireData);
     if (res && res.status_code == 200) {
-      openNotificationWithIcon(res?.message);
+      let type="success"
+      openNotificationWithIcon(res?.message,type);
       setRemoveSupportSpinner(false);
       setIsSupportTreeCardModal(false);
       setIsDelegateSupportTreeCardModal(false);
