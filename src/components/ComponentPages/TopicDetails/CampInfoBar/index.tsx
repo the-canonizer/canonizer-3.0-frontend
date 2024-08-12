@@ -897,37 +897,45 @@ const TimelineInfoBar = ({
             )}
 
             <div className="flex items-center gap-3 shrink-0">
-              {!isHtmlContent &&
-              campStatement?.length > 0 &&
-              campStatement[0]?.parsed_value ? (
+              {!isHtmlContent && campStatement?.length > 0 && isTopicPage ? (
                 <div className="topicDetailsCollapseFooter printHIde camp">
                   <PrimaryButton
                     disabled={campRecord?.is_archive == 1 ? true : false}
                     className="printHIde sm:hidden md:hidden hidden lg:flex !h-[40px] py-2.5 px-5 items-center text-sm"
                     onClick={() => {
-                      router?.push({
-                        pathname: `${
+                      router?.push(
+                        `${
                           campStatement?.length > 0
-                            ? `/statement/history/${replaceSpecialCharacters(
-                                router?.query?.camp?.at(0),
-                                "-"
-                              )}/${replaceSpecialCharacters(
-                                router?.query?.camp?.at(1) ?? "1-Agreement",
-                                "-"
-                              )}`
-                            : `/create/statement/${replaceSpecialCharacters(
-                                router?.query?.camp?.at(0),
-                                "-"
-                              )}/${replaceSpecialCharacters(
-                                router?.query?.camp?.at(1) ?? "1-Agreement",
-                                "-"
-                              )}`
-                        }`,
-                      });
+                            ? campStatement[0]?.draft_record_id
+                              ? "/manage/statement/" +
+                                campStatement[0]?.draft_record_id +
+                                "?is_draft=1"
+                              : campStatement[0]?.parsed_value
+                              ? `/statement/history/${replaceSpecialCharacters(
+                                  router?.query?.camp?.at(0),
+                                  "-"
+                                )}/${replaceSpecialCharacters(
+                                  router?.query?.camp?.at(1) ?? "1-Agreement",
+                                  "-"
+                                )}`
+                              : `/create/statement/${replaceSpecialCharacters(
+                                  router?.query?.camp?.at(0),
+                                  "-"
+                                )}/${replaceSpecialCharacters(
+                                  router?.query?.camp?.at(1) ?? "1-Agreement",
+                                  "-"
+                                )}`
+                            : null
+                        }`
+                      );
                     }}
                     id="add-camp-statement-btn"
                   >
-                    {K?.exceptionalMessages?.manageCampStatementButton}
+                    {campStatement[0]?.draft_record_id
+                      ? "Edit Draft Statement"
+                      : campStatement[0]?.parsed_value
+                      ? K?.exceptionalMessages?.manageCampStatementButton
+                      : K?.exceptionalMessages?.addCampStatementButton}
                     <Image
                       src="/images/manage-btn-icon.svg"
                       alt=""

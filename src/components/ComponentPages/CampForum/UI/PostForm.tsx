@@ -1,8 +1,8 @@
+import dynamic from "next/dynamic";
 import { Fragment } from "react";
 import { Form, Row, Col, Typography, Drawer } from "antd";
 import {
   CloseOutlined,
-  EditOutlined,
   LeftOutlined,
   SaveOutlined,
   UserOutlined,
@@ -10,34 +10,70 @@ import {
 
 import messages from "src/messages";
 import SelectInputs from "components/shared/FormInputs/select";
-import Inputs from "components/shared/FormInputs";
 import PrimaryButton from "components/shared/Buttons/PrimariButton";
 import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 import GetBreadCrumbs from "./PopupBreadCrumb";
 
-const { labels, placeholders, nickNmRule, threadTitleRule } = messages;
+const Editorckl = dynamic(
+  () => import("src/components/common/editorck/index"),
+  { ssr: false }
+);
 
-const CreateEditThreadPopup = ({
-  isOpen,
+const { Text } = Typography,
+  { labels, placeholders, nickNmRule, validations } = messages,
+  formats = [
+    "heading",
+    "|",
+    "bold",
+    "italic",
+    "underline",
+    "strikethrough",
+    "superscript",
+    "subscript",
+    "|",
+    "numberedList",
+    "bulletedList",
+    "alignment",
+    "|",
+    "fontColor",
+    "|",
+    "indent",
+    "outdent",
+    "|",
+    "link",
+    "autolink",
+    "blockQuote",
+    "|",
+    "findAndReplace",
+    "|",
+    "undo",
+    "redo",
+  ];
+
+const PostFormPopup = ({
   onFinish,
-  form,
-  onClose,
-  isMobile,
-  initialValue,
-  isThreadUpdate,
-  nickNameList,
-  isLoading,
   onCancel,
-  isDisabled,
+  form,
+  initialValue,
+  nickNameList,
+  quillContent,
+  onContentChange,
+  isError = false,
+  isLoading,
+  isMobile,
+  isPostUpdate,
+  onClose,
+  isOpen,
   topicRecord,
   campRecord,
+  isDisabled,
   isUpdateSubmit,
 }) => {
   return (
     <Drawer
       closeIcon={<LeftOutlined className="text-xl" />}
       placement={isMobile ? "top" : "right"}
-      title={isThreadUpdate ? "Update thread" : "Create a new thread"}
+      title={isPostUpdate ? "Update Comment" : "Comment in this thread"}
       destroyOnClose
       onClose={onClose}
       open={isOpen}
@@ -52,7 +88,7 @@ const CreateEditThreadPopup = ({
         autoComplete="off"
         form={form}
         onFinish={onFinish}
-        name="create_new_thread"
+        name="new_post"
         className="flex flex-col w-full h-full pb-9"
         layout={"vertical"}
         scrollToFirstError
@@ -68,46 +104,50 @@ const CreateEditThreadPopup = ({
             </Typography.Paragraph>
           </Col>
           <Col xs={24} sm={16} className="mb-4">
-            {!isThreadUpdate ? (
-              <SelectInputs
-                label={
-                  <Fragment>
-                    Nickname <span className="required">*</span>
-                  </Fragment>
-                }
-                name="nick_name"
-                defaultValue={nickNameList[0]?.id}
-                options={nickNameList}
-                placeholder={placeholders.nickName}
-                allowClear
-                size={"large"}
-                dataid="topic-category"
-                showSearch
-                optionFilterProp="children"
-                data-id="nick-names"
-                inputClassName="border-0"
-                rules={nickNmRule}
-                nameKey="nick_name"
-                prefix={<UserOutlined className="px-3 text-canBlack" />}
-                onChange={(val) => form.setFieldValue("nick_name", val)}
-              />
-            ) : null}
-          </Col>
-          <Col xs={24} sm={24}>
-            <Inputs
-              name="thread_title"
+            <SelectInputs
               label={
                 <Fragment>
-                  {labels.threadTitle}
-                  <span>(Limit 100 Chars)</span>
-                  <span className="required">*</span>
+                  {labels.cr_nick_name} <span className="required">*</span>
                 </Fragment>
               }
-              rules={threadTitleRule}
-              placeholder="Title"
-              maxLength={100}
-              prefix={<EditOutlined />}
+              name="nick_name"
+              defaultValue={nickNameList[0]?.id}
+              options={nickNameList}
+              placeholder={placeholders.nickName}
+              allowClear
+              size={"large"}
+              dataid="topic-category"
+              showSearch
+              optionFilterProp="children"
+              data-id="nick-names"
+              inputClassName="border-0"
+              rules={nickNmRule}
+              nameKey="nick_name"
+              prefix={<UserOutlined className="px-3 text-canBlack" />}
+              onChange={(val) => form.setFieldValue("nick_name", val)}
             />
+          </Col>
+          <Col xs={24}>
+            <div className="mb-[30px] relative" key="post_editor_div">
+              <label
+                htmlFor="new_post_nick_name"
+                className="ant-form-item-required text-sm font-medium mb-3 block"
+                title=""
+              >
+                Message <span className="required">*</span>
+              </label>
+              {isLoading ? null : (
+                <Editorckl
+                  key="post_editor"
+                  editorState={quillContent || ""}
+                  oneditorchange={onContentChange}
+                  placeholder="Post Your Message Here..."
+                  items={formats}
+                  height={200}
+                />
+              )}
+              {isError && <Text type="danger">{validations.reply}</Text>}
+            </div>
           </Col>
         </Row>
         <div className="flex justify-center pt-9 mt-auto">
@@ -126,7 +166,7 @@ const CreateEditThreadPopup = ({
             id="submit-btn"
             data-testid="submit-btn"
             disabled={
-              isLoading || !isDisabled || (isThreadUpdate && !isUpdateSubmit)
+              isLoading || !isDisabled || (isPostUpdate && !isUpdateSubmit)
             }
           >
             Submit <SaveOutlined />
@@ -137,4 +177,4 @@ const CreateEditThreadPopup = ({
   );
 };
 
-export default CreateEditThreadPopup;
+export default PostFormPopup;

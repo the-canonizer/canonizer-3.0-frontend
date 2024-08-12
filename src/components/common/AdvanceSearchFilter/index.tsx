@@ -520,7 +520,7 @@ export default function AdvanceFilter() {
     setSelectedAsOFDate(filteredAsOfDate);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filteredAsOfDate]);
- 
+
   useEffect(() => {
     if (router?.pathname == "/search/topic") {
       getTopicsApiCallWithReqBody();

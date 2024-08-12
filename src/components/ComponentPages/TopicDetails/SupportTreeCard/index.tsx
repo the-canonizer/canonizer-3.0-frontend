@@ -359,11 +359,11 @@ const SupportTreeCard = ({
   const renderPopupMsg = () => {
     let { campLeaderExist, delegateSupportExist } = isCampLeader();
     if (isUserAuthenticated && delegateSupportExist) {
-      return "You've already signed to the camp leader";
+      return "Your support has already been delegated to the Camp Leader";
     } else if (isUserAuthenticated && campLeaderExist) {
-      return "Current camp leader can`t sign the petition";
+      return "As you are the current Camp Leader, hence you cannot sign the petition.";
     } else {
-      return "Log in to participate";
+      return "Login to Canonizer to sign the camp";
     }
   };
 

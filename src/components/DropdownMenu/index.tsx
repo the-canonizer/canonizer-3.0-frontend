@@ -339,34 +339,44 @@ const DropDownMenu = () => {
             <Link
               href={
                 campStatement?.length > 0
-                  ? `/statement/history/${replaceSpecialCharacters(
-                      router?.query?.camp
-                        ? router?.query?.camp[0]
-                        : router?.query?.manageSupport[0],
-                      "-"
-                    )}/${replaceSpecialCharacters(
-                      router?.query?.camp
-                        ? router?.query?.camp[1] ?? "1-Agreement"
-                        : router?.query?.manageSupport[1],
-                      "-"
-                    )}`
-                  : `/create/statement/${replaceSpecialCharacters(
-                      router?.query?.camp
-                        ? router?.query?.camp[0]
-                        : router?.query?.manageSupport?.at(0),
-                      "-"
-                    )}/${replaceSpecialCharacters(
-                      router?.query?.camp
-                        ? router?.query?.camp[1] ?? "1-Agreement"
-                        : router?.query?.manageSupport?.at(1),
-                      "-"
-                    )}`
+                  ? campStatement[0]?.draft_record_id
+                    ? "/manage/statement/" +
+                      campStatement[0]?.draft_record_id +
+                      "?is_draft=1"
+                    : campStatement[0]?.parsed_value
+                    ? `/statement/history/${replaceSpecialCharacters(
+                        router?.query?.camp
+                          ? router?.query?.camp[0]
+                          : router?.query?.manageSupport[0],
+                        "-"
+                      )}/${replaceSpecialCharacters(
+                        router?.query?.camp
+                          ? router?.query?.camp[1] ?? "1-Agreement"
+                          : router?.query?.manageSupport[1],
+                        "-"
+                      )}`
+                    : `/create/statement/${replaceSpecialCharacters(
+                        router?.query?.camp
+                          ? router?.query?.camp[0]
+                          : router?.query?.manageSupport?.at(0),
+                        "-"
+                      )}/${replaceSpecialCharacters(
+                        router?.query?.camp
+                          ? router?.query?.camp[1] ?? "1-Agreement"
+                          : router?.query?.manageSupport?.at(1),
+                        "-"
+                      )}`
+                  : null
               }
             >
               <a>
                 {campStatement?.length > 0
-                  ? K?.exceptionalMessages?.manageCampStatementButton
-                  : K?.exceptionalMessages?.addCampStatementButton}
+                  ? campStatement[0]?.draft_record_id
+                    ? "Edit Draft Statement"
+                    : campStatement[0]?.parsed_value
+                    ? K?.exceptionalMessages?.manageCampStatementButton
+                    : K?.exceptionalMessages?.addCampStatementButton
+                  : null}
               </a>
             </Link>
           )}
