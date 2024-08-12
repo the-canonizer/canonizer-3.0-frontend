@@ -253,12 +253,12 @@ function ManageStatements({ isEdit = false, add = false }) {
           event_type: "edit",
         });
         
-        if (editRes?.status_code === 200) {
-          setTime({
-            ...time,
-            last_save_time: editRes?.data?.statement?.submit_time,
-          });
-        }
+        // if (editRes?.status_code === 200) {
+        //   setTime({
+        //     ...time,
+        //     last_save_time: editRes?.data?.statement?.submit_time,
+        //   });
+        // }
 
         if (editRes?.status_code === 404) {
           setNotFoundStatus({ status: true, name: "Statement" });
@@ -427,8 +427,9 @@ function ManageStatements({ isEdit = false, add = false }) {
       reqBody.submitter = editInfo?.statement?.submitter_nick_id;
     }
 
-    if (update || isDraft) {
-      reqBody.statement_id = topicNum;
+    if (update || isDraft || isEdit) {
+      // reqBody.statement_id = topicNum;
+      reqBody.statement_id = localStorage.getItem(`draft_record_id-${topicNum}-${campNum}`)?.split("-")?.at(0);
     } else {
       reqBody.statement_id = null;
     }
