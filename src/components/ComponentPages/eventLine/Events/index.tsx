@@ -73,12 +73,13 @@ const Events = ({ timelineDescript, loadingEvents }: any) => {
               timelineDescript.map((title, key) => {
                 return (
                   <Fragment key={key}>
-                    <List.Item>
+                    <List.Item
+                      className={
+                        activityStyle.activitiesList +
+                        ` ${key == 0 && check ? "animate-rightToLeft" : ""}`
+                      }
+                    >
                       <List.Item.Meta
-                        className={
-                          activityStyle.activitiesList +
-                          ` ${key == 0 ? "animated-text" : ""}`
-                        }
                         title={
                           <>
                             hello
