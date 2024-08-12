@@ -1,6 +1,7 @@
 import React, { useRef, useLayoutEffect, useState, useEffect } from "react";
 import { select, scaleBand, scaleLinear, max } from "d3";
 import useResizeObserver from "./useResizeObserver";
+
 import styles from "./timeline.module.scss";
 import { Card } from "antd";
 
@@ -22,15 +23,13 @@ function RacingBarChart({ data }: any) {
     }
   }
 
-  const svgRef = useRef<SVGSVGElement>(null);
-  const wrapperRef = useRef<HTMLDivElement>(null);
+  const svgRef = useRef();
+  const wrapperRef = useRef();
   const dimensions = useResizeObserver(wrapperRef);
   const [widthBar, setWidthBar] = useState(489);
 
-  // Define a fixed bar width
-  const fixedBarWidth = 50;
+  //Manage X axis
 
-  // Manage X axis
   const manageXAxis = (entry) => {
     return entry.level * 30;
   };
@@ -42,7 +41,8 @@ function RacingBarChart({ data }: any) {
       const length = element.getComputedTextLength();
       return entry.level * 30 + 30 + length;
     } else {
-      return entry.level * 30 + 30; // Default value
+      // console.warn("Element is not an SVG text element");
+      return /* handle other cases or return a default value */;
     }
   };
 
@@ -50,22 +50,32 @@ function RacingBarChart({ data }: any) {
     setWidthBar(489);
   }, [data]);
 
+  // will be called initially and on every data change
   useLayoutEffect(() => {
     const svg = select(svgRef.current);
+    // d3.select("element").remove()
     svg?.selectAll("line").remove();
     svg?.selectAll("image").remove();
     svg?.selectAll("text").remove();
+    // svg.selectAll('rect').remove()
 
     if (!dimensions) return;
 
-    const yScale = scaleBand<number>()
-      .paddingInner(0.1)
-      .domain(data?.map((_, index) => index)) // [0,1,2,3,4,5]
-      .range([0, dimensions.height]); // [0, 200]
+    // sorting the data
+    // data.sort((a, b) => b.value - a.value);
 
-    const xScale = scaleLinear<number>()
-      .domain([0, max(data, (entry) => entry.score) || 0]) // [0, max score]
-      .range([0, dimensions.width]); // Adjust range as needed
+    // const linkGenerator = linkHorizontal();
+    // .x(link => link.y)
+    // .y(link => link.x);
+
+    const yScale = scaleBand()
+      ?.paddingInner(0.1)
+      ?.domain(data?.map((value, index) => index)) // [0,1,2,3,4,5]
+      ?.range([0, dimensions.height]); // [0, 200]
+
+    const xScale = scaleLinear()
+      ?.domain([0, max(data, (entry) => entry.score)]) // [0, 65 (example)]
+      ?.range([0, 900]); // [0, 400 (example)]
 
     // Add minus square icon
     svg
@@ -75,24 +85,28 @@ function RacingBarChart({ data }: any) {
         enter
           .append("image")
           .attr("class", "circle")
+          // .attr("href", (entry) => entry.level == 2 || entry.level == 3 ? "/images/minus-square.svg" : '')
           .attr("href", (entry, index) =>
             index === 0 ||
-            (index === data.length - 1 &&
+            (index == data?.length - 1 &&
               data[index].level < data[index - 1].level) ||
             (index > 0 &&
-              index < data.length - 1 &&
-              (data[index].level < data[index + 1].level ||
-                data[index].level < data[index - 1].level))
+              index < data?.length - 1 &&
+              (data[index].level < data[+index + 1].level ||
+                data[index].level < data[+index - 1].level))
               ? "/images/minus-square.svg"
               : null
           )
           .attr("height", 14)
           .attr("width", 14)
       )
+      .text((entry) => ` ${entry.title} `)
+      .attr("class", "icon")
       .attr("x", (entry) => manageXAxis(entry) - 10)
+      // .transition()
       .attr("y", (entry, index) => yScale(index) + yScale.bandwidth() / 2 - 8);
 
-    // Draw the Title labels
+    // draw the Title labels
     svg
       ?.selectAll(".label")
       ?.data(data, (entry) => entry.title)
@@ -104,6 +118,7 @@ function RacingBarChart({ data }: any) {
             (entry, index) => yScale(index) + yScale.bandwidth() / 2 + 5
           )
       )
+      // .attr("fill", (entry) => '#f89d15')
       .text((entry) => ` ${entry.title} `)
       .attr("class", "label")
       .attr("id", (entry) => entry.camp_id)
@@ -111,7 +126,7 @@ function RacingBarChart({ data }: any) {
       .transition()
       .attr("y", (entry, index) => yScale(index) + yScale.bandwidth() / 2 + 5);
 
-    // Draw the bars with fixed width
+    // draw the bars
     svg
       ?.selectAll(".bar")
       ?.data(data, (entry) => entry.title)
@@ -122,12 +137,17 @@ function RacingBarChart({ data }: any) {
       .attr("class", "bar")
       .attr("x", (entry) => manageBarXAxis(entry))
       .attr("height", yScale.bandwidth())
-      .attr("width", fixedBarWidth)
       .transition()
-      .attr("x", (entry) => manageBarXAxis(entry))
+      .attr("width", (entry) => {
+        const length = manageBarXAxis(entry);
+        if (widthBar < xScale(entry.score) + length) {
+          setWidthBar(xScale(entry.score) + length);
+        }
+        return xScale(entry.score) + 39;
+      })
       .attr("y", (entry, index) => yScale(index));
 
-    // Draw the Score labels
+    // draw the Score labels
     svg
       ?.selectAll(".label1")
       ?.data(data, (entry) => entry.title)
@@ -168,7 +188,11 @@ function RacingBarChart({ data }: any) {
                 5
             )
         )
+        // .text((entry) => ` ${entry.title} `)
         .attr("class", "line");
+      // .attr("x", (entry) => manageXAxis(entry) + 20)
+      // .transition()
+      // .attr("y", (entry, index) => yScale(index) + yScale.bandwidth() / 2 + 5);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, dimensions]);
@@ -178,10 +202,7 @@ function RacingBarChart({ data }: any) {
       <div
         className={styles.svgD3}
         ref={wrapperRef}
-        style={{
-          marginBottom: "2rem",
-          width: Math.max(widthBar, data.length * fixedBarWidth) + 45,
-        }}
+        style={{ marginBottom: "2rem", width: widthBar + 45 }}
       >
         <svg height={data?.length * 30} ref={svgRef}></svg>
       </div>
