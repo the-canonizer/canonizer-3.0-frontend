@@ -12,22 +12,19 @@
   .activites-wrapper {
     @apply bg-[#F7F8FC] rounded-xl p-5;
     .activity-list-wrap {
-      @apply bg-white border rounded-xl border-[#CCD4E7] px-8 py-4 max-h-[526px] overflow-x-auto;
+      @apply bg-white border rounded-xl border-[#CCD4E7] px-8 py-4 max-h-[526px] overflow-x-hidden overflow-y-auto;
+
       li {
         @apply py-0 border-b-0;
         + li {
           @apply mt-4 pt-4 border-t border-[#0000001A];
         }
-        // .animated-text {
-        //   animation-name: rightToLeft;
-        //   animation-duration: 0.4s;
-        //   animation-timing-function: linear;
-        // }
+
         .ant-list-item-meta-content {
           .ant-list-item-meta-title {
             @apply text-base text-canBlack mb-2;
             a {
-              @apply font-medium text-canBlue ml-1;
+              @apply font-medium text-canBlue;
             }
           }
           .ant-list-item-meta-description {
@@ -42,7 +39,7 @@
     .audio-player {
       @apply bg-[#F7F8FC] rounded-xl py-5 px-6;
       .player-wrapper {
-        @apply flex gap-3 mb-6;
+        @apply flex gap-3 mb-8;
 
         .player-controller {
           @apply flex justify-center items-center gap-6 w-full bg-white rounded-xl p-2;
@@ -70,7 +67,7 @@
         .ant-card-head {
           @apply px-4;
           .ant-card-head-title {
-            @apply font-semibold;
+            @apply font-semibold uppercase;
           }
         }
       }
@@ -79,10 +76,11 @@
       @apply mb-4;
       .ant-slider-mark {
         & > :nth-child(1) {
-          @apply left-[20px]  #{!important};
+          left: 20px !important; //important is not working with @apply.
         }
         & > :last-child {
-          @apply left-[98%]  whitespace-nowrap #{!important};
+          @apply whitespace-nowrap;
+          left: 98% !important; //important is not working with @apply.
         }
 
         .ant-slider-mark-text {
@@ -90,6 +88,11 @@
           &.ant-slider-mark-text-active {
             @apply text-[#5482C8] font-bold;
           }
+        }
+      }
+      .ant-slider-tooltip {
+        .ant-tooltip-inner {
+          @apply p-1 text-xs min-h-[auto];
         }
       }
     }
@@ -113,6 +116,11 @@
     }
     .ant-slider-with-marks {
       @apply mt-4;
+      &:hover {
+        .ant-slider-handle:not(.ant-tooltip-open) {
+          @apply border-canBlue;
+        }
+      }
     }
     .ant-slider {
       .ant-slider-rail,
@@ -120,7 +128,7 @@
         @apply hidden;
       }
       .ant-slider-handle {
-        @apply shadow-none w-[16px] h-[16px];
+        @apply shadow-none w-[16px] h-[16px] border-[5px] border-canBlue mt-[-9px];
       }
       .ant-slider-mark {
         .ant-slider-mark-text {
@@ -128,6 +136,11 @@
           &.ant-slider-mark-text-active {
             @apply text-canBlue font-bold;
           }
+        }
+      }
+      .ant-slider-step {
+        .ant-slider-dot {
+          @apply top-[-6px] w-[12px] h-[12px] border border-canBlue;
         }
       }
     }

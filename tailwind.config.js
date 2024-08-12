@@ -15,6 +15,21 @@ module.exports = {
         "text-none": "none",
         "filter-shadow": " 0px 10px 20px 0px rgba(0, 0, 0, 0.25)",
       },
+      width: {
+        "search-dropdown-width": "875px", // Adding a custom width value with a specific size
+      },
+
+      fontSize: {
+        24: "24px",
+        13: "13px",
+        32: "32px",
+      },
+      borderWidth: {
+        3: "3px", // Custom border width
+        5: "5px", // Another custom border width
+        10: "10px", // Yet another custom border width
+        6: "6px", // Yet another custom border width
+      },
     
       colors: {
         canBlue: "#5482C8",
@@ -47,6 +62,15 @@ module.exports = {
         "custom-gradient":
           "linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000000 100%)",
         "topic-card-gr": "linear-gradient(158.22deg, #FFFFFF 0%, #F7F8FC 100%)",
+      },
+      keyframes: {
+        rightToLeft: {
+          "0%": { transform: "translateX(100%)" },
+          "100%": { transform: "translateX(0%)" },
+        },
+      },
+      animation: {
+        rightToLeft: "rightToLeft 0.7s linear",
       },
       screens: {
         sm: "576px",
