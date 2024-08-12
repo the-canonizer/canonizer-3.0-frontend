@@ -60,7 +60,7 @@ export default function Editorck(
         const editorData = editor?.getData();
         props?.saveContent && props?.saveContent(editorData);
       },
-      waitingTime: 2000 // 2 seconds
+      waitingTime: process.env.NEXT_PUBLIC_AUTOSAVE_THRESHOLD,
     }
   };
 

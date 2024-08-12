@@ -454,3 +454,11 @@ export const getVideoNameFromURL = (str) => {
 export const covertToTime = (unixTime) => {
   return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
 };
+
+export const epochToMinutes = (epochTime):any =>{
+  if (epochTime>0) {
+    return Number(new Date((epochTime) * 1000).toLocaleString()?.split(",")[1].split(":")[1])
+  }else{
+    return 0
+  }
+}

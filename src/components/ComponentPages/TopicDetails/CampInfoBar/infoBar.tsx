@@ -393,7 +393,7 @@ const InfoBar = ({
         )}
       </Menu.Item>
       <Menu.Item icon={<FileTextOutlined />} disabled={campRecord?.is_archive}>
-        {isTopicPage && !campStatement[0]?.draft_record_id && (
+        {isTopicPage && !campStatement?.at(0)?.draft_record_id && (
           <Link
             href={
               campStatement?.length > 0
