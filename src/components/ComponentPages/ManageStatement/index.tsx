@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Form, Row, Col, Typography } from "antd";
+import { Form, Row, Col, Typography, Modal } from "antd";
 import { useRouter } from "next/router";
 import {
   CloudUploadOutlined,
@@ -29,6 +29,8 @@ import StatementPreview from "./UI/preview";
 function ManageStatements({ isEdit = false, add = false }) {
   const router = useRouter();
   const [form] = Form.useForm();
+  const { confirm } = Modal;
+
 
   const { isUserAuthenticated } = useAuthentication();
 
@@ -332,7 +334,48 @@ function ManageStatements({ isEdit = false, add = false }) {
       payload.is_draft = true;
     }
 
-    if (navigator.onLine) {
+    if(postChangesCount > 0){
+      confirm({
+        title: 'Do you want to delete these items?',
+        content:
+          'When clicked the OK button, this dialog will be closed after 1 second',
+        async onOk() {
+          try {
+            
+            if (navigator.onLine) {
+              let res = await updateStatementApi(payload);
+      
+              if(res?.data?.draft_record_id){
+                localStorage.setItem(
+                  `draft_record_id-${topicNum}-${campNum}`,
+                  res?.data?.draft_record_id + "-" + topicNum + "-" + campNum
+                );
+              }
+      
+              localStorage.removeItem("autosaveContent"); // Clear local storage on successful save
+      
+              setTime({
+                ...time,
+                last_save_time: getEpochTime(),
+              });
+            
+          } else {
+            localStorage.setItem("autosaveContent", payload?.statement); // Save to local storage if offline
+      
+            setTime({
+              ...time,
+              last_save_time: getEpochTime(),
+            });
+          }
+          
+          } catch (e) {
+            return console.log('Oops errors!');
+          }
+        },
+        onCancel() {},
+      })
+    }else{
+      if (navigator.onLine) {
         let res = await updateStatementApi(payload);
 
         if(res?.data?.draft_record_id){
@@ -356,6 +399,7 @@ function ManageStatements({ isEdit = false, add = false }) {
         ...time,
         last_save_time: getEpochTime(),
       });
+    }
     }
 
     setIsAutoSaving(false)
