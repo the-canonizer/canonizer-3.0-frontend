@@ -9,6 +9,7 @@ import styles from "./DirectSupportedCamps.module.scss";
 import messages from "../../../../messages";
 import CustomSkelton from "../../../common/customSkelton";
 import SupportRemovedModal from "../../../common/supportRemovedModal";
+import Search from "antd/lib/transfer/search";
 
 export default function DirectSupportedCampsUI({
   removeCardSupportedCamps,
@@ -152,6 +153,23 @@ export default function DirectSupportedCampsUI({
         />
       ) : (
         <div>
+          <div className="flex justify-between items-center mb-5">
+            <div>
+              <h3 className="text-base uppercase font-semibold text-canBlack mb-5">
+                DIRECT SUPPORTED CAMPS
+              </h3>
+              <p className="text-sm font-normal text-canBlack">
+                Note : To change support order of camp, drag & drop the camp box
+                on your choice position.
+              </p>
+            </div>
+            <div>
+              <Search 
+              placeholder="Search via topic name"
+              
+              ></Search>
+            </div>
+          </div>
           {directSupportedCampsList && directSupportedCampsList.length > 0
             ? filteredArray().length > 0
               ? filteredArray()?.map((data) => {
@@ -163,7 +181,7 @@ export default function DirectSupportedCampsUI({
                     <>
                       <Card
                         key={data.topic_num}
-                        className={styles.cardBox_tags}
+                        className=""
                         type="inner"
                         size="default"
                         title={

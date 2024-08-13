@@ -14,6 +14,8 @@ module.exports = {
         "mobile-b-shadow": " 0px 10px 10px 0px rgba(0, 0, 0, 0.1)",
         "text-none": "none",
         "filter-shadow": " 0px 10px 20px 0px rgba(0, 0, 0, 0.25)",
+        "social-icon-shadow": " 0px 10px 20px 0px rgba(49, 80, 114, 0.1)",
+
       },
     
       colors: {
@@ -41,7 +43,8 @@ module.exports = {
         canLightBlack: "#69748B",
         canLightBg: "#E4E7EF",
         canLightgrey4: "#DDE2EE",
-        canDarkRed: "#DB4F4F"
+        canDarkRed: "#DB4F4F",
+        btnBg: "#98B7E6"
       },
       backgroundImage: {
         "custom-gradient":
