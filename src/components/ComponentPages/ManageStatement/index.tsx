@@ -11,6 +11,7 @@ import { getAllUsedNickNames } from "src/network/api/campDetailApi";
 import useAuthentication from "src/hooks/isUserAuthenticated";
 import {
   getEditStatementApi,
+  postStatementCountApi,
   updateStatementApi,
 } from "src/network/api/campManageStatementApi";
 import {
@@ -54,6 +55,7 @@ function ManageStatements({ isEdit = false, add = false }) {
   const [autoSaveApiPayload, setAutoSaveApiPayload] = useState(null);
   const [statement,setStatement] = useState(null)
   const [nickName,setNickName] = useState(null);
+  const [postChangesCount,setPostChangesCount] = useState(0);
   const values = Form.useWatch([], form);
 
   const getEpochTime = () => {
@@ -84,6 +86,30 @@ function ManageStatements({ isEdit = false, add = false }) {
 
     return () => clearInterval(interval);
   }, [time?.last_save_time, time?.current_time]);
+
+  useEffect(()=>{
+    postStatementCountApiHandler()
+  },[])
+
+  const postStatementCountApiHandler = async () => {
+    const topicNum = isEdit
+      ? editStatementData?.topic?.topic_num
+      : router?.query?.statement?.at(0)?.split("-")?.at(0);
+    const topicName = isEdit
+      ? editStatementData?.topic?.topic_name
+      : router?.query?.statement?.at(0)?.split("-")?.at(1);
+    const campNum = isEdit
+      ? editStatementData?.statement?.camp_num
+      : router?.query?.statement?.at(1)?.split("-")?.at(0);
+
+    let payload = {
+      topic_num: topicNum,
+      camp_num: campNum,
+      statement_id: localStorage.getItem(`draft_record_id-${topicNum}-${campNum}`)?.split("-")?.at(0)
+    }
+    let res = await postStatementCountApi(payload);
+    setPostChangesCount(res?.data?.post_changes_count)
+  }
 
   useEffect(() => {
     form
