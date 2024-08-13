@@ -45,7 +45,6 @@ function ManageStatements({ isEdit = false, add = false }) {
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [editCampStatementData, setEditCampStatementData] = useState("");
   const [isSaveDraft, setIsSaveDraft] = useState(false);
-  const [isAutoSave, setIsAutoSave] = useState(false);
   const [time, setTime] = useState({
     current_time: null,
     last_save_time: null,
@@ -185,8 +184,6 @@ function ManageStatements({ isEdit = false, add = false }) {
   };
 
   const autoSave = async (isAutosave, data) => {
-    setIsAutoSave(isAutosave);
-    setIsAutoSaving(true);
 
     const editInfo = editStatementData;
     const parentCamp = editInfo?.parent_camp;
@@ -229,11 +226,13 @@ function ManageStatements({ isEdit = false, add = false }) {
     }
 
     setAutoSaveApiPayload(payload);
-
+    setIsAutoSaving(true)
     autoSaveHandler();
+    setIsAutoSaving(false)
   };
 
   const autoSaveHandler = async () => {
+
     const topicNum = isEdit
       ? editStatementData?.topic?.topic_num
       : router?.query?.statement?.at(0)?.split("-")?.at(0);
@@ -250,8 +249,6 @@ function ManageStatements({ isEdit = false, add = false }) {
         );
 
         localStorage.removeItem("autosaveContent"); // Clear local storage on successful save
-        setIsAutoSave(false);
-        setIsAutoSaving(false);
 
         setTime({
           ...time,
@@ -260,8 +257,6 @@ function ManageStatements({ isEdit = false, add = false }) {
       }
     } else {
       localStorage.setItem("autosaveContent", autoSaveApiPayload?.statement); // Save to local storage if offline
-      setIsAutoSave(false);
-      setIsAutoSaving(false);
 
       setTime({
         ...time,
@@ -535,6 +530,8 @@ function ManageStatements({ isEdit = false, add = false }) {
     e?.preventDefault();
     setIsSaveDraft(true);
 
+    setIsAutoSaving(true)
+
     // const isValid = await form.validateFields();
 
     // if (isValid) {
@@ -542,7 +539,9 @@ function ManageStatements({ isEdit = false, add = false }) {
     // }
 
     autoSaveHandler()
+    setIsAutoSaving(false)
   };
+  console.log('is autosaving', isAutoSaving)
 
   return (
     <CustomSpinner key="create-statemnt-spinner" spinning={screenLoading}>
@@ -570,7 +569,7 @@ function ManageStatements({ isEdit = false, add = false }) {
         </Col>
         <Col className="flex justify-end items-center" md={12}>
           <Typography.Paragraph className="!mb-0 mr-7">
-            {isAutoSave ? (
+            {isAutoSaving ? (
               <>Saving ...</>
             ) : (
               <>
