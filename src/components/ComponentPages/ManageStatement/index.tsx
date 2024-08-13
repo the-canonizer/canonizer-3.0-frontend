@@ -31,7 +31,6 @@ function ManageStatements({ isEdit = false, add = false }) {
   const [form] = Form.useForm();
   const { confirm } = Modal;
 
-
   const { isUserAuthenticated } = useAuthentication();
 
   const [notFoundStatus, setNotFoundStatus] = useState({
@@ -55,9 +54,9 @@ function ManageStatements({ isEdit = false, add = false }) {
   const [autoSaveDisplayMessage, setAutoSaveDisplayMessage] = useState("");
   const [isAutoSaving, setIsAutoSaving] = useState(false);
   const [autoSaveApiPayload, setAutoSaveApiPayload] = useState(null);
-  const [statement,setStatement] = useState(null)
-  const [nickName,setNickName] = useState(null);
-  const [postChangesCount,setPostChangesCount] = useState(0);
+  const [statement, setStatement] = useState(null);
+  const [nickName, setNickName] = useState(null);
+  const [postChangesCount, setPostChangesCount] = useState(0);
   const values = Form.useWatch([], form);
 
   const getEpochTime = () => {
@@ -89,9 +88,9 @@ function ManageStatements({ isEdit = false, add = false }) {
     return () => clearInterval(interval);
   }, [time?.last_save_time, time?.current_time]);
 
-  useEffect(()=>{
-    postStatementCountApiHandler()
-  },[])
+  useEffect(() => {
+    postStatementCountApiHandler();
+  }, []);
 
   const postStatementCountApiHandler = async () => {
     const topicNum = isEdit
@@ -107,11 +106,22 @@ function ManageStatements({ isEdit = false, add = false }) {
     let payload = {
       topic_num: topicNum,
       camp_num: campNum,
-      statement_id: localStorage.getItem(`draft_record_id-${topicNum}-${campNum}`)?.split("-")?.at(0)
+      statement_id: localStorage
+        .getItem(`draft_record_id-${topicNum}-${campNum}`)
+        ?.split("-")
+        ?.at(0),
+    };
+
+    if (
+      localStorage
+        .getItem(`draft_record_id-${topicNum}-${campNum}`)
+        ?.split("-")
+        ?.at(0)
+    ) {
+      let res = await postStatementCountApi(payload);
+      setPostChangesCount(res?.data?.post_changes_count);
     }
-    let res = await postStatementCountApi(payload);
-    setPostChangesCount(res?.data?.post_changes_count)
-  }
+  };
 
   useEffect(() => {
     form
@@ -212,9 +222,9 @@ function ManageStatements({ isEdit = false, add = false }) {
     router.push({ pathname: getBackURL() });
   };
   const autoSave = async (data) => {
-    setIsAutoSaving(true)
-    setStatement(data?.statement)
-    setNickName(data?.nick_name)
+    setIsAutoSaving(true);
+    setStatement(data?.statement);
+    setNickName(data?.nick_name);
 
     const editInfo = editStatementData;
     const parentCamp = editInfo?.parent_camp;
@@ -244,23 +254,25 @@ function ManageStatements({ isEdit = false, add = false }) {
       payload.submitter = nickNameData?.at(0)?.id;
       payload.event_type = "create";
       payload.statement_id = null;
-      payload.is_draft = true
+      payload.is_draft = true;
     } else {
       payload.topic_num = topicNum;
       payload.topic_name = topicName;
       payload.camp_num = campNum;
       payload.submitter = nickNameData?.at(0)?.id;
       payload.event_type = "edit";
-      payload.statement_id = localStorage.getItem(`draft_record_id-${topicNum}-${campNum}`)?.split("-")?.at(0);
-      payload.is_draft = true
+      payload.statement_id = localStorage
+        .getItem(`draft_record_id-${topicNum}-${campNum}`)
+        ?.split("-")
+        ?.at(0);
+      payload.is_draft = true;
     }
-
 
     if (navigator.onLine) {
       if (payload?.statement) {
         let res = await updateStatementApi(payload);
 
-        if(res?.data?.draft_record_id){
+        if (res?.data?.draft_record_id) {
           localStorage.setItem(
             `draft_record_id-${topicNum}-${campNum}`,
             res?.data?.draft_record_id + "-" + topicNum + "-" + campNum
@@ -283,35 +295,35 @@ function ManageStatements({ isEdit = false, add = false }) {
       });
     }
 
-    setIsAutoSaving(false)
+    setIsAutoSaving(false);
   };
 
-  const saveDraftHandler = async() => {
+  const saveDraftHandler = async () => {
     setIsAutoSaving(true);
 
     const topicNum = isEdit
-    ? editStatementData?.topic?.topic_num
-    : router?.query?.statement?.at(0)?.split("-")?.at(0);
-  const campNum = isEdit
-    ? editStatementData?.statement?.camp_num
-    : router?.query?.statement?.at(1)?.split("-")?.at(0);
+      ? editStatementData?.topic?.topic_num
+      : router?.query?.statement?.at(0)?.split("-")?.at(0);
+    const campNum = isEdit
+      ? editStatementData?.statement?.camp_num
+      : router?.query?.statement?.at(1)?.split("-")?.at(0);
 
     const topicName = isEdit
-    ? editStatementData?.topic?.topic_name
-    : router?.query?.statement?.at(0)?.split("-")?.at(1);
-  
+      ? editStatementData?.topic?.topic_name
+      : router?.query?.statement?.at(0)?.split("-")?.at(1);
+
     let payload = {
-      camp_num : null,
-      event_type : null,
-      nick_name : null,
-      statement : null,
-      statement_id : null,
-      submitter : null,
-      topic_name : null,
-      topic_num : null,
-      is_draft : false,
-    }
-    
+      camp_num: null,
+      event_type: null,
+      nick_name: null,
+      statement: null,
+      statement_id: null,
+      submitter: null,
+      topic_name: null,
+      topic_num: null,
+      is_draft: false,
+    };
+
     if (!localStorage.getItem(`draft_record_id-${topicNum}-${campNum}`)) {
       payload.topic_num = topicNum;
       payload.topic_name = topicName;
@@ -319,8 +331,8 @@ function ManageStatements({ isEdit = false, add = false }) {
       payload.submitter = nickNameData?.at(0)?.id;
       payload.event_type = "create";
       payload.statement_id = null;
-      payload.statement = statement?statement:"";
-      payload.nick_name = nickNameData?.at(0)?.nick_name
+      payload.statement = statement ? statement : "";
+      payload.nick_name = nickNameData?.at(0)?.nick_name;
       payload.is_draft = true;
     } else {
       payload.topic_num = topicNum;
@@ -328,70 +340,33 @@ function ManageStatements({ isEdit = false, add = false }) {
       payload.camp_num = campNum;
       payload.submitter = nickNameData?.at(0)?.id;
       payload.event_type = "edit";
-      payload.statement_id = localStorage.getItem(`draft_record_id-${topicNum}-${campNum}`)?.split("-")?.at(0);
-      payload.statement = statement?statement:editStatementData?.data?.statement?.parsed_value;
+      payload.statement_id = localStorage
+        .getItem(`draft_record_id-${topicNum}-${campNum}`)
+        ?.split("-")
+        ?.at(0);
+      payload.statement = statement
+        ? statement
+        : editStatementData?.data?.statement?.parsed_value;
       payload.nick_name = nickName;
       payload.is_draft = true;
     }
 
-    if(postChangesCount > 0){
-      confirm({
-        title: 'Do you want to delete these items?',
-        content:
-          'When clicked the OK button, this dialog will be closed after 1 second',
-        async onOk() {
-          try {
-            
-            if (navigator.onLine) {
-              let res = await updateStatementApi(payload);
-      
-              if(res?.data?.draft_record_id){
-                localStorage.setItem(
-                  `draft_record_id-${topicNum}-${campNum}`,
-                  res?.data?.draft_record_id + "-" + topicNum + "-" + campNum
-                );
-              }
-      
-              localStorage.removeItem("autosaveContent"); // Clear local storage on successful save
-      
-              setTime({
-                ...time,
-                last_save_time: getEpochTime(),
-              });
-            
-          } else {
-            localStorage.setItem("autosaveContent", payload?.statement); // Save to local storage if offline
-      
-            setTime({
-              ...time,
-              last_save_time: getEpochTime(),
-            });
-          }
-          
-          } catch (e) {
-            return console.log('Oops errors!');
-          }
-        },
-        onCancel() {},
-      })
-    }else{
-      if (navigator.onLine) {
-        let res = await updateStatementApi(payload);
+    if (navigator.onLine) {
+      let res = await updateStatementApi(payload);
 
-        if(res?.data?.draft_record_id){
-          localStorage.setItem(
-            `draft_record_id-${topicNum}-${campNum}`,
-            res?.data?.draft_record_id + "-" + topicNum + "-" + campNum
-          );
-        }
+      if (res?.data?.draft_record_id) {
+        localStorage.setItem(
+          `draft_record_id-${topicNum}-${campNum}`,
+          res?.data?.draft_record_id + "-" + topicNum + "-" + campNum
+        );
+      }
 
-        localStorage.removeItem("autosaveContent"); // Clear local storage on successful save
+      localStorage.removeItem("autosaveContent"); // Clear local storage on successful save
 
-        setTime({
-          ...time,
-          last_save_time: getEpochTime(),
-        });
-      
+      setTime({
+        ...time,
+        last_save_time: getEpochTime(),
+      });
     } else {
       localStorage.setItem("autosaveContent", payload?.statement); // Save to local storage if offline
 
@@ -400,12 +375,9 @@ function ManageStatements({ isEdit = false, add = false }) {
         last_save_time: getEpochTime(),
       });
     }
-    }
 
-    setIsAutoSaving(false)
-  }
-
-
+    setIsAutoSaving(false);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -481,9 +453,100 @@ function ManageStatements({ isEdit = false, add = false }) {
   }, [isUserAuthenticated]);
 
   const onFinish = async (values: any) => {
-      setScreenLoading(true);
-      setIsSaveDraft(false);
+    setScreenLoading(true);
+    setIsSaveDraft(false);
 
+    if (postChangesCount > 0) {
+      confirm({
+        title: "Do you want to delete these items?",
+        content:
+          "When clicked the OK button, this dialog will be closed after 1 second",
+        async onOk() {
+          try {
+            const editInfo = editStatementData;
+            const parent_camp = editInfo?.parent_camp;
+
+            const topicNum = isEdit
+              ? editStatementData?.topic?.topic_num
+              : router?.query?.statement?.at(0)?.split("-")?.at(0);
+            const topicName = isEdit
+              ? editStatementData?.topic?.topic_name
+              : router?.query?.statement?.at(0)?.split("-")?.at(1);
+            const campNum = isEdit
+              ? editStatementData?.statement?.camp_num
+              : router?.query?.statement?.at(1)?.split("-")?.at(0);
+
+            let payload = {
+              ...values,
+              topic_num: topicNum,
+              topic_name: topicName,
+              camp_num: campNum,
+            };
+
+            const res = await saveStatement(payload);
+
+            if (res?.status_code == 200) {
+              localStorage.removeItem(`draft_record_id-${topicNum}-${campNum}`);
+
+              if (!isEdit) {
+                if (isSaveDraft) {
+                  router?.push(
+                    router?.asPath?.replace("create/statement", "topic")
+                  );
+                } else {
+                  router?.push(
+                    router?.asPath?.replace(
+                      "create/statement",
+                      "statement/history"
+                    )
+                  );
+                }
+                return;
+              } else if (isEdit) {
+                // if (isSaveDraft) {
+                //   router?.push({ pathname: topicURL() });
+                //   return;
+                // }
+
+                const route = `${
+                  editInfo?.topic?.topic_num
+                }-${replaceSpecialCharacters(
+                  editInfo?.topic?.topic_name,
+                  "-"
+                )}/${
+                  parent_camp[parent_camp?.length - 1]?.camp_num
+                }-${replaceSpecialCharacters(
+                  parent_camp[parent_camp?.length - 1]?.camp_name,
+                  "-"
+                )}`;
+                router?.push(`/statement/history/${route}`);
+                return;
+              }
+              return;
+            } else if (isEdit) {
+              if (isSaveDraft) {
+                router?.push({ pathname: topicURL() });
+                return;
+              }
+
+              const route = `${
+                editInfo?.topic?.topic_num
+              }-${replaceSpecialCharacters(editInfo?.topic?.topic_name, "-")}/${
+                parent_camp[parent_camp?.length - 1]?.camp_num
+              }-${replaceSpecialCharacters(
+                parent_camp[parent_camp?.length - 1]?.camp_name,
+                "-"
+              )}`;
+              router?.push(`/statement/history/${route}`);
+              return;
+            }
+          } catch (e) {
+            return console.log("Oops errors!");
+          }
+        },
+        onCancel() {},
+      });
+    } else {
       const editInfo = editStatementData;
       const parent_camp = editInfo?.parent_camp;
 
@@ -554,7 +617,8 @@ function ManageStatements({ isEdit = false, add = false }) {
         router?.push(`/statement/history/${route}`);
         return;
       }
-      setScreenLoading(false);
+    }
+    setScreenLoading(false);
   };
 
   const saveStatement = async (values) => {
@@ -725,7 +789,7 @@ function ManageStatements({ isEdit = false, add = false }) {
           </Typography.Paragraph>
           <SecondaryButton
             className="flex items-center justify-center py-2 px-8 h-auto"
-            onClick={()=>saveDraftHandler()}
+            onClick={() => saveDraftHandler()}
             // disabled={isAutoSaving}
           >
             Save As Draft
