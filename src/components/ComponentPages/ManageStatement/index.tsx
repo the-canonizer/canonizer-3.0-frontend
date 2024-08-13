@@ -541,7 +541,6 @@ function ManageStatements({ isEdit = false, add = false }) {
     autoSaveHandler()
     setIsAutoSaving(false)
   };
-  console.log('is autosaving', isAutoSaving)
 
   return (
     <CustomSpinner key="create-statemnt-spinner" spinning={screenLoading}>
