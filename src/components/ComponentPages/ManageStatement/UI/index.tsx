@@ -166,11 +166,9 @@ function ManageStatementUI({
                     placeholder="Write Your Statement Here"
                     items={EditorToolbarItems}
                     saveContent={(data) => {
-                      autoSave(true, {
-                        is_draft: true,
-                        event_type: "edit",
+                      autoSave({
                         statement: data,
-                        nick_name:nickNameData?.at(0)?.id
+                        nick_name: nickNameData?.at(0)?.nick_name
                       });
                     }}
                   ></Editorckl>

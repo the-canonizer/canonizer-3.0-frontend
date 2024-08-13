@@ -52,7 +52,8 @@ function ManageStatements({ isEdit = false, add = false }) {
   const [autoSaveDisplayMessage, setAutoSaveDisplayMessage] = useState("");
   const [isAutoSaving, setIsAutoSaving] = useState(false);
   const [autoSaveApiPayload, setAutoSaveApiPayload] = useState(null);
-
+  const [statement,setStatement] = useState(null)
+  const [nickName,setNickName] = useState(null);
   const values = Form.useWatch([], form);
 
   const getEpochTime = () => {
@@ -182,8 +183,10 @@ function ManageStatements({ isEdit = false, add = false }) {
 
     router.push({ pathname: getBackURL() });
   };
-
-  const autoSave = async (isAutosave, data) => {
+  const autoSave = async (data) => {
+    setIsAutoSaving(true)
+    setStatement(data?.statement)
+    setNickName(data?.nick_name)
 
     const editInfo = editStatementData;
     const parentCamp = editInfo?.parent_camp;
@@ -213,40 +216,28 @@ function ManageStatements({ isEdit = false, add = false }) {
       payload.submitter = nickNameData?.at(0)?.id;
       payload.event_type = "create";
       payload.statement_id = null;
+      payload.is_draft = true
     } else {
       payload.topic_num = topicNum;
       payload.topic_name = topicName;
       payload.camp_num = campNum;
       payload.submitter = nickNameData?.at(0)?.id;
       payload.event_type = "edit";
-      payload.statement_id = localStorage
-        .getItem(`draft_record_id-${topicNum}-${campNum}`)
-        ?.split("-")
-        ?.at(0);
+      payload.statement_id = localStorage.getItem(`draft_record_id-${topicNum}-${campNum}`)?.split("-")?.at(0);
+      payload.is_draft = true
     }
 
-    setAutoSaveApiPayload(payload);
-    setIsAutoSaving(true)
-    autoSaveHandler();
-    setIsAutoSaving(false)
-  };
-
-  const autoSaveHandler = async () => {
-
-    const topicNum = isEdit
-      ? editStatementData?.topic?.topic_num
-      : router?.query?.statement?.at(0)?.split("-")?.at(0);
-    const campNum = isEdit
-      ? editStatementData?.statement?.camp_num
-      : router?.query?.statement?.at(1)?.split("-")?.at(0);
 
     if (navigator.onLine) {
-      if (autoSaveApiPayload?.statement) {
-        let res = await updateStatementApi(autoSaveApiPayload);
-        localStorage.setItem(
-          `draft_record_id-${topicNum}-${campNum}`,
-          res?.data?.draft_record_id + "-" + topicNum + "-" + campNum
-        );
+      if (payload?.statement) {
+        let res = await updateStatementApi(payload);
+
+        if(res?.data?.draft_record_id){
+          localStorage.setItem(
+            `draft_record_id-${topicNum}-${campNum}`,
+            res?.data?.draft_record_id + "-" + topicNum + "-" + campNum
+          );
+        }
 
         localStorage.removeItem("autosaveContent"); // Clear local storage on successful save
 
@@ -256,14 +247,95 @@ function ManageStatements({ isEdit = false, add = false }) {
         });
       }
     } else {
-      localStorage.setItem("autosaveContent", autoSaveApiPayload?.statement); // Save to local storage if offline
+      localStorage.setItem("autosaveContent", payload?.statement); // Save to local storage if offline
 
       setTime({
         ...time,
         last_save_time: getEpochTime(),
       });
     }
+
+    setIsAutoSaving(false)
   };
+
+  const saveDraftHandler = async() => {
+    setIsAutoSaving(true);
+
+    const topicNum = isEdit
+    ? editStatementData?.topic?.topic_num
+    : router?.query?.statement?.at(0)?.split("-")?.at(0);
+  const campNum = isEdit
+    ? editStatementData?.statement?.camp_num
+    : router?.query?.statement?.at(1)?.split("-")?.at(0);
+
+    const topicName = isEdit
+    ? editStatementData?.topic?.topic_name
+    : router?.query?.statement?.at(0)?.split("-")?.at(1);
+  
+    let payload = {
+      camp_num : null,
+      event_type : null,
+      nick_name : null,
+      statement : null,
+      statement_id : null,
+      submitter : null,
+      topic_name : null,
+      topic_num : null,
+      is_draft : false,
+    }
+    
+    if (!localStorage.getItem(`draft_record_id-${topicNum}-${campNum}`)) {
+      payload.topic_num = topicNum;
+      payload.topic_name = topicName;
+      payload.camp_num = campNum;
+      payload.submitter = nickNameData?.at(0)?.id;
+      payload.event_type = "create";
+      payload.statement_id = null;
+      payload.statement = statement?statement:"";
+      payload.nick_name = nickNameData?.at(0)?.nick_name
+      payload.is_draft = true;
+    } else {
+      payload.topic_num = topicNum;
+      payload.topic_name = topicName;
+      payload.camp_num = campNum;
+      payload.submitter = nickNameData?.at(0)?.id;
+      payload.event_type = "edit";
+      payload.statement_id = localStorage.getItem(`draft_record_id-${topicNum}-${campNum}`)?.split("-")?.at(0);
+      payload.statement = statement?statement:editStatementData?.data?.statement?.parsed_value;
+      payload.nick_name = nickName;
+      payload.is_draft = true;
+    }
+
+    if (navigator.onLine) {
+        let res = await updateStatementApi(payload);
+
+        if(res?.data?.draft_record_id){
+          localStorage.setItem(
+            `draft_record_id-${topicNum}-${campNum}`,
+            res?.data?.draft_record_id + "-" + topicNum + "-" + campNum
+          );
+        }
+
+        localStorage.removeItem("autosaveContent"); // Clear local storage on successful save
+
+        setTime({
+          ...time,
+          last_save_time: getEpochTime(),
+        });
+      
+    } else {
+      localStorage.setItem("autosaveContent", payload?.statement); // Save to local storage if offline
+
+      setTime({
+        ...time,
+        last_save_time: getEpochTime(),
+      });
+    }
+
+    setIsAutoSaving(false)
+  }
+
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -530,7 +602,7 @@ function ManageStatements({ isEdit = false, add = false }) {
     e?.preventDefault();
     setIsSaveDraft(true);
 
-    setIsAutoSaving(true)
+    // setIsAutoSaving(true)
 
     // const isValid = await form.validateFields();
 
@@ -538,8 +610,8 @@ function ManageStatements({ isEdit = false, add = false }) {
     //   form.submit();
     // }
 
-    autoSaveHandler()
-    setIsAutoSaving(false)
+    // autoSaveHandler()
+    // setIsAutoSaving(false)
   };
 
   return (
@@ -583,8 +655,8 @@ function ManageStatements({ isEdit = false, add = false }) {
           </Typography.Paragraph>
           <SecondaryButton
             className="flex items-center justify-center py-2 px-8 h-auto"
-            onClick={onSaveDraftStatement}
-            disabled={isAutoSaving}
+            onClick={()=>saveDraftHandler()}
+            // disabled={isAutoSaving}
           >
             Save As Draft
             <FileTextOutlined />
