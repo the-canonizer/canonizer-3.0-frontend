@@ -52,6 +52,7 @@ function ManageStatements({ isEdit = false, add = false }) {
   });
   const [autoSaveDisplayMessage, setAutoSaveDisplayMessage] = useState("");
   const [isAutoSaving, setIsAutoSaving] = useState(false);
+  const [autoSaveApiPayload, setAutoSaveApiPayload] = useState(null);
 
   const values = Form.useWatch([], form);
 
@@ -166,10 +167,14 @@ function ManageStatements({ isEdit = false, add = false }) {
     e?.preventDefault();
 
     setScreenLoading(true);
-    const topicNum = isEdit? editStatementData?.topic?.topic_num :router?.query?.statement?.at(0)?.split("-")?.at(0) ;
-    const campNum = isEdit? editStatementData?.statement?.camp_num :router?.query?.statement?.at(1)?.split("-")?.at(0);
+    const topicNum = isEdit
+      ? editStatementData?.topic?.topic_num
+      : router?.query?.statement?.at(0)?.split("-")?.at(0);
+    const campNum = isEdit
+      ? editStatementData?.statement?.camp_num
+      : router?.query?.statement?.at(1)?.split("-")?.at(0);
 
-    localStorage.removeItem(`draft_record_id-${topicNum}-${campNum}`)
+    localStorage.removeItem(`draft_record_id-${topicNum}-${campNum}`);
 
     if (isEdit) {
       router?.push({ pathname: getBackURL() });
@@ -185,10 +190,16 @@ function ManageStatements({ isEdit = false, add = false }) {
 
     const editInfo = editStatementData;
     const parentCamp = editInfo?.parent_camp;
-    
-    const topicNum = isEdit? editStatementData?.topic?.topic_num :router?.query?.statement?.at(0)?.split("-")?.at(0) ;
-    const topicName = isEdit? editStatementData?.topic?.topic_name :router?.query?.statement?.at(0)?.split("-")?.at(1) ;
-    const campNum = isEdit? editStatementData?.statement?.camp_num :router?.query?.statement?.at(1)?.split("-")?.at(0);
+
+    const topicNum = isEdit
+      ? editStatementData?.topic?.topic_num
+      : router?.query?.statement?.at(0)?.split("-")?.at(0);
+    const topicName = isEdit
+      ? editStatementData?.topic?.topic_name
+      : router?.query?.statement?.at(0)?.split("-")?.at(1);
+    const campNum = isEdit
+      ? editStatementData?.statement?.camp_num
+      : router?.query?.statement?.at(1)?.split("-")?.at(0);
     const lastParentCamp = parentCamp?.[parentCamp.length - 1];
 
     let payload = {
@@ -198,8 +209,7 @@ function ManageStatements({ isEdit = false, add = false }) {
         : localStorage.getItem("autosaveContent"),
     };
 
-    if (!(localStorage.getItem(`draft_record_id-${topicNum}-${campNum}`)) 
-    ) {
+    if (!localStorage.getItem(`draft_record_id-${topicNum}-${campNum}`)) {
       payload.topic_num = topicNum;
       payload.topic_name = topicName;
       payload.camp_num = campNum;
@@ -212,27 +222,46 @@ function ManageStatements({ isEdit = false, add = false }) {
       payload.camp_num = campNum;
       payload.submitter = nickNameData?.at(0)?.id;
       payload.event_type = "edit";
-      payload.statement_id = localStorage.getItem(`draft_record_id-${topicNum}-${campNum}`)?.split("-")?.at(0);
+      payload.statement_id = localStorage
+        .getItem(`draft_record_id-${topicNum}-${campNum}`)
+        ?.split("-")
+        ?.at(0);
     }
 
+    setAutoSaveApiPayload(payload);
+
+    autoSaveHandler();
+  };
+
+  const autoSaveHandler = async () => {
+    const topicNum = isEdit
+      ? editStatementData?.topic?.topic_num
+      : router?.query?.statement?.at(0)?.split("-")?.at(0);
+    const campNum = isEdit
+      ? editStatementData?.statement?.camp_num
+      : router?.query?.statement?.at(1)?.split("-")?.at(0);
+
     if (navigator.onLine) {
-      if (payload?.statement){
-        let res = await updateStatementApi(payload);
-        localStorage.setItem(`draft_record_id-${topicNum}-${campNum}`, res?.data?.draft_record_id+"-"+topicNum+"-"+campNum);
-        
+      if (autoSaveApiPayload?.statement) {
+        let res = await updateStatementApi(autoSaveApiPayload);
+        localStorage.setItem(
+          `draft_record_id-${topicNum}-${campNum}`,
+          res?.data?.draft_record_id + "-" + topicNum + "-" + campNum
+        );
+
         localStorage.removeItem("autosaveContent"); // Clear local storage on successful save
         setIsAutoSave(false);
         setIsAutoSaving(false);
-  
+
         setTime({
           ...time,
           last_save_time: getEpochTime(),
         });
       }
     } else {
-      localStorage.setItem("autosaveContent", payload?.statement); // Save to local storage if offline
+      localStorage.setItem("autosaveContent", autoSaveApiPayload?.statement); // Save to local storage if offline
       setIsAutoSave(false);
-      setIsAutoSaving(false)
+      setIsAutoSaving(false);
 
       setTime({
         ...time,
@@ -252,7 +281,7 @@ function ManageStatements({ isEdit = false, add = false }) {
           record_id: router?.query?.statement?.[0]?.split("-")[0],
           event_type: "edit",
         });
-        
+
         // if (editRes?.status_code === 200) {
         //   setTime({
         //     ...time,
@@ -315,18 +344,21 @@ function ManageStatements({ isEdit = false, add = false }) {
   }, [isUserAuthenticated]);
 
   const onFinish = async (values: any) => {
-    if (isAutoSave) {
-      autoSave(isAutoSave, values);
-    } else {
       setScreenLoading(true);
       setIsSaveDraft(false);
 
       const editInfo = editStatementData;
       const parent_camp = editInfo?.parent_camp;
 
-      const topicNum = isEdit? editStatementData?.topic?.topic_num :router?.query?.statement?.at(0)?.split("-")?.at(0) ;
-      const topicName = isEdit? editStatementData?.topic?.topic_name :router?.query?.statement?.at(0)?.split("-")?.at(1) ;
-      const campNum = isEdit? editStatementData?.statement?.camp_num :router?.query?.statement?.at(1)?.split("-")?.at(0);
+      const topicNum = isEdit
+        ? editStatementData?.topic?.topic_num
+        : router?.query?.statement?.at(0)?.split("-")?.at(0);
+      const topicName = isEdit
+        ? editStatementData?.topic?.topic_name
+        : router?.query?.statement?.at(0)?.split("-")?.at(1);
+      const campNum = isEdit
+        ? editStatementData?.statement?.camp_num
+        : router?.query?.statement?.at(1)?.split("-")?.at(0);
 
       let payload = {
         ...values,
@@ -338,7 +370,7 @@ function ManageStatements({ isEdit = false, add = false }) {
       const res = await saveStatement(payload);
 
       if (res?.status_code == 200) {
-        localStorage.removeItem(`draft_record_id-${topicNum}-${campNum}`)
+        localStorage.removeItem(`draft_record_id-${topicNum}-${campNum}`);
 
         if (!isEdit) {
           if (isSaveDraft) {
@@ -386,7 +418,6 @@ function ManageStatements({ isEdit = false, add = false }) {
         return;
       }
       setScreenLoading(false);
-    }
   };
 
   const saveStatement = async (values) => {
@@ -429,7 +460,10 @@ function ManageStatements({ isEdit = false, add = false }) {
 
     if (update || isDraft || isEdit) {
       // reqBody.statement_id = topicNum;
-      reqBody.statement_id = localStorage.getItem(`draft_record_id-${topicNum}-${campNum}`)?.split("-")?.at(0);
+      reqBody.statement_id = localStorage
+        .getItem(`draft_record_id-${topicNum}-${campNum}`)
+        ?.split("-")
+        ?.at(0);
     } else {
       reqBody.statement_id = null;
     }
@@ -501,11 +535,13 @@ function ManageStatements({ isEdit = false, add = false }) {
     e?.preventDefault();
     setIsSaveDraft(true);
 
-    const isValid = await form.validateFields();
+    // const isValid = await form.validateFields();
 
-    if (isValid) {
-      form.submit();
-    }
+    // if (isValid) {
+    //   form.submit();
+    // }
+
+    autoSaveHandler()
   };
 
   return (
