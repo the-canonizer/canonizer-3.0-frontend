@@ -387,6 +387,36 @@ function ProfileInfoForm({
 
   const verifyHeading = "Verify Otp to change email address";
   const enterNewEmail = "Enter new email address";
+  let headingText = "";
+  if (step === 1) {
+    headingText = verifyHeading;
+  } else if (step === 2) {
+    headingText = enterNewEmail;
+  } else {
+    headingText = enterNewEmail; // Default or fallback case
+  }
+  const titleContent = (
+    <div className="flex flex-col items-start justify-center">
+      <div className="flex items-start gap-2.5">
+        <Image
+          onClick={() => {
+            setDrawerOpen(false);
+          }}
+          src="/images/caret-icon.svg"
+          className="rotate-90 !mt-1"
+          width={16}
+          height={24}
+          alt=""
+        />
+        <span className="text-2xl font-normal text-canBlack">
+          {headingText}
+          <p className="text-canLight text-sm font-normal mt-2.5">
+            Enter the OTP you have received on your registered email address
+          </p>
+        </span>
+      </div>
+    </div>
+  );
 
   // @ts-ignore
   if (privateFlags != "loading")
@@ -843,75 +873,76 @@ function ProfileInfoForm({
           width={730}
           className="[&.ant-drawer-content-wrapper]:!w-[45rem]"
           open={drawerOpen}
-          title={
-            step == 1 ? (
-              <div className="flex flex-col items-start justify-center">
-                <div className="flex items-start gap-2.5">
-                  <Image
-                    onClick={() => {
-                      setDrawerOpen(false);
-                    }}
-                    src="/images/caret-icon.svg"
-                    className="rotate-90 !mt-1"
-                    width={16}
-                    height={24}
-                    alt=""
-                  />
-                  <span className="text-2xl font-normal text-canBlack">
-                    {verifyHeading}
-                    <p className="text-canLight text-sm font-normal mt-2.5">
-                      Enter the OTP you have received on your registered email
-                      address
-                    </p>
-                  </span>
-                </div>
-              </div>
-            ) : step == 2 ? (
-              <div className="flex flex-col items-start justify-center">
-                <div className="flex items-start gap-2.5">
-                  <Image
-                    onClick={() => {
-                      setDrawerOpen(false);
-                    }}
-                    src="/images/caret-icon.svg"
-                    className="rotate-90 !mt-1"
-                    width={16}
-                    height={24}
-                    alt=""
-                  />
-                  <span className="text-2xl font-normal text-canBlack">
-                    {enterNewEmail}
-                    <p className="text-canLight text-sm font-normal mt-2.5">
-                      Enter the OTP you have received on your registered email
-                      address
-                    </p>
-                  </span>
-                </div>
-              </div>
-            ) : (
-              <div className="flex flex-col items-start justify-center">
-                <div className="flex items-start gap-2.5">
-                  <Image
-                    onClick={() => {
-                      setDrawerOpen(false);
-                    }}
-                    src="/images/caret-icon.svg"
-                    className="rotate-90 !mt-1"
-                    width={16}
-                    height={24}
-                    alt=""
-                  />
-                  <span className="text-2xl font-normal text-canBlack">
-                    {enterNewEmail}
-                    <p className="text-canLight text-sm font-normal mt-2.5">
-                      Enter the OTP you have received on your registered email
-                      address
-                    </p>
-                  </span>
-                </div>
-              </div>
-            )
-          }
+          // title={
+          //   step == 1 ? (
+          //     <div className="flex flex-col items-start justify-center">
+          //       <div className="flex items-start gap-2.5">
+          //         <Image
+          //           onClick={() => {
+          //             setDrawerOpen(false);
+          //           }}
+          //           src="/images/caret-icon.svg"
+          //           className="rotate-90 !mt-1"
+          //           width={16}
+          //           height={24}
+          //           alt=""
+          //         />
+          //         <span className="text-2xl font-normal text-canBlack">
+          //           {verifyHeading}
+          //           <p className="text-canLight text-sm font-normal mt-2.5">
+          //             Enter the OTP you have received on your registered email
+          //             address
+          //           </p>
+          //         </span>
+          //       </div>
+          //     </div>
+          //   ) : step == 2 ? (
+          //     <div className="flex flex-col items-start justify-center">
+          //       <div className="flex items-start gap-2.5">
+          //         <Image
+          //           onClick={() => {
+          //             setDrawerOpen(false);
+          //           }}
+          //           src="/images/caret-icon.svg"
+          //           className="rotate-90 !mt-1"
+          //           width={16}
+          //           height={24}
+          //           alt=""
+          //         />
+          //         <span className="text-2xl font-normal text-canBlack">
+          //           {enterNewEmail}
+          //           <p className="text-canLight text-sm font-normal mt-2.5">
+          //             Enter the OTP you have received on your registered email
+          //             address
+          //           </p>
+          //         </span>
+          //       </div>
+          //     </div>
+          //   ) : (
+          //     <div className="flex flex-col items-start justify-center">
+          //       <div className="flex items-start gap-2.5">
+          //         <Image
+          //           onClick={() => {
+          //             setDrawerOpen(false);
+          //           }}
+          //           src="/images/caret-icon.svg"
+          //           className="rotate-90 !mt-1"
+          //           width={16}
+          //           height={24}
+          //           alt=""
+          //         />
+          //         <span className="text-2xl font-normal text-canBlack">
+          //           {enterNewEmail}
+          //           <p className="text-canLight text-sm font-normal mt-2.5">
+          //             Enter the OTP you have received on your registered email
+          //             address
+          //           </p>
+          //         </span>
+          //       </div>
+          //     </div>
+          //   )
+          // }
+          title={titleContent}
         >
           <div className="flex flex-col w-full h-full lg:px-7">
             <div className="flex-1">
