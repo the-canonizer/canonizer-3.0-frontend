@@ -323,12 +323,13 @@ const CreateCampFormUI = ({
                   initialValue={topicData?.camp_num}
                   className={`font-14 text-canBlack font-medium`}
                 >
-                  <div
-                    className={`outerDiv flex border rounded ${
-                      false
+                                      {/* ${
+                      1 === 0
                         ? "border-[#40a9ff] shadow-[0 0 0 2px rgba(24, 144, 255, 0.2)"
                         : ""
-                    }`}
+                    } */}
+                  <div
+                    className={`outerDiv flex border rounded                     `}
                   >
                     <StructureIcon
                       className="flex items-center justify-center px-2"
