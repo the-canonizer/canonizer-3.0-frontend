@@ -52,11 +52,10 @@ const SiblingCamps = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 my-6">
         {siblingCampsData?.map((obj) => (
           <SingleTopicCard
-            topic={obj}
-            topic_name_key="camp_name"
+            topic={{ ...obj, topic_name: obj?.camp_name }}
             tag_key=""
-            avatar_key="supporterData"
             key={obj?.id}
+            avatars={obj?.supporterData?.slice(0, 3)}
           />
         ))}
       </div>

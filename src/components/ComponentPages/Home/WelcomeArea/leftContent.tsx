@@ -56,8 +56,8 @@ const LeftContent = ({ isUserAuthenticated }) => {
         </Headings>
       ) : null}
       <Typography.Paragraph
-        className={`text-sm font-inter font-normal mb-3 ${
-          isUserAuthenticated ? "" : "mt-3"
+        className={`text-sm font-inter font-normal mb-3  ${
+          isUserAuthenticated ? "" : "mt-3 md:w-8/12"
         }`}
       >
         {isUserAuthenticated

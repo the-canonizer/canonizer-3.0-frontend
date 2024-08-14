@@ -12,20 +12,14 @@ import {
   Popover,
   Typography,
 } from "antd";
-// import moment from "moment";
-import {
-  EyeOutlined,
-  FlagOutlined,
-  RightOutlined,
-  SearchOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
+import { EyeOutlined, RightOutlined } from "@ant-design/icons";
+import Image from "next/image";
 
 import type { TabsProps } from "antd";
 
 import styles from "./search.module.scss";
 
-import { RootState } from "../../../../store";
+import { RootState } from "src/store";
 import queryParams from "src/utils/queryParams";
 import { globalSearchCanonizer } from "src/network/api/userApi";
 import {
@@ -38,9 +32,8 @@ import {
 } from "src/store/slices/searchSlice";
 import CustomSkelton from "../../customSkelton";
 import { setSearchLoadingAction } from "src/store/slices/loading";
-import SearchInputs from "src/components/shared/FormInputs/search";
-import CustomTabs from "src/components/shared/Tabs";
-import Image from "next/image";
+import SearchInputs from "components/shared/FormInputs/search";
+import CustomTabs from "components/shared/Tabs";
 
 const getHighlightedText = (text, highlight) => {
   const parts = text.split(new RegExp(`(${highlight})`, "gi"));
@@ -62,6 +55,7 @@ const getHighlightedText = (text, highlight) => {
     </span>
   );
 };
+
 const getHighlightedTextForCampStatement = (text, highlight) => {
   const parts = text.split(new RegExp(`(${highlight})`, "gi"));
   return (
@@ -76,8 +70,6 @@ const getHighlightedTextForCampStatement = (text, highlight) => {
           }
         >
           <div className="" dangerouslySetInnerHTML={{ __html: part }}></div>
-
-          {/* {part} */}
         </div>
       ))}{" "}
     </>
@@ -85,38 +77,27 @@ const getHighlightedTextForCampStatement = (text, highlight) => {
 };
 
 function replaceSpecialCharactersInLink(link) {
-  // Replace each special character with a series of hyphens
-  // return link.replace(/[-\\^$*+?.()|%#|[\]{}]/g, "-");
   return link.replace(/[-\\^$*+?.()|%#|[\]{}@]/g, "-");
 }
-
-// const covertToTime = (unixTime) => {
-//   return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
-// };
 
 const renderItem = (title: any) => ({
   value: title,
   label: <div className="titleDiv ">{title}</div>,
 });
 
-const searchValueLength = 30;
 const advanceSearchValueLength = 100;
 
 const HeaderSearch = ({ className = "" }: any) => {
   const router = useRouter(),
     dispatch = useDispatch();
 
-  let {
-    searchValue,
-    pageNumber,
-    openSearchForMobileView,
-    searchCountForMetaData,
-  } = useSelector((state: RootState) => ({
-    searchValue: state?.searchSlice?.searchValue,
-    pageNumber: state?.searchSlice?.pageNumber,
-    openSearchForMobileView: state?.searchSlice?.openSearchForMobileView,
-    searchCountForMetaData: state?.searchSlice?.searchCountForMetaData,
-  }));
+  let { searchValue, pageNumber, openSearchForMobileView } = useSelector(
+    (state: RootState) => ({
+      searchValue: state?.searchSlice?.searchValue,
+      pageNumber: state?.searchSlice?.pageNumber,
+      openSearchForMobileView: state?.searchSlice?.openSearchForMobileView,
+    })
+  );
 
   const [inputSearch, setInputSearch] = useState("");
   const [searchTopics, setSearchTopics] = useState([]);
@@ -356,21 +337,12 @@ const HeaderSearch = ({ className = "" }: any) => {
   };
 
   const debounceFn = useMemo(() => debounce(getGlobalSearchCanonizer, 500), []);
-  const [open, setOpen] = useState(false);
 
   return (
     <Fragment>
-      {/* <div className="md:hidden"> */}
-      {/* <div className="overlay fixed top-[77px] right-0 left-0 bottom-0 bg-black bg-opacity-50"></div> */}
       <AutoComplete
-        popupClassName={` w-full lg:!w-[54rem] bg-white pt-6 rounded-lg [&_.ant-tabs-nav]:mb-10 [&_.ant-tabs-nav-wrap]:px-12  [&_.ant-select-item-option-content]:!bg-white [&_.ant-select-item-option-grouped]:!bg-white [&_.ant-select-item-option-content]:!px-6 [&_>div]:w-full [&_.ant-select-item-option-grouped]:!px-0 [&_.ant-tabs-tab-btn]:!text-base [&_.ant-tabs-nav-list]:gap-12 [&_.ant-tabs-tab-btn]:!font-normal [&_.ant-tabs-tab-active>div]:!font-semibold [&_.ant-tabs-tab]:!ml-0 [&_.ant-tabs-ink-bar]:!border-b-4 [&_.ant-tabs-ink-bar]:!border-canBlue [&_.ant-tabs-ink-bar]:!rounded-tl-full  [&_.ant-tabs-ink-bar]:!rounded-tr-full  lg:[&_.ant-tabs-ink-bar]:!h-1 [&_.ant-tabs-ink-bar]:!h-1 [&_.ant-tabs-tab-active>div]:!shadow-none [&_.ant-card-head-title]:!font-semibold [&_.ant-tabs-nav-list]:!w-full ${styles.searchCategories} `}
+        popupClassName={`w-full lg:!w-[54rem] bg-white pt-6 rounded-lg [&_.ant-tabs-nav]:mb-10 [&_.ant-tabs-nav-wrap]:px-12  [&_.ant-select-item-option-content]:!bg-white [&_.ant-select-item-option-grouped]:!bg-white [&_.ant-select-item-option-content]:!px-6 [&_>div]:w-full [&_.ant-select-item-option-grouped]:!px-0 [&_.ant-tabs-tab-btn]:!text-base [&_.ant-tabs-nav-list]:gap-12 [&_.ant-tabs-tab-btn]:!font-normal [&_.ant-tabs-tab-active>div]:!font-semibold [&_.ant-tabs-tab]:!ml-0 [&_.ant-tabs-ink-bar]:!border-b-4 [&_.ant-tabs-ink-bar]:!border-canBlue [&_.ant-tabs-ink-bar]:!rounded-tl-full  [&_.ant-tabs-ink-bar]:!rounded-tr-full  lg:[&_.ant-tabs-ink-bar]:!h-1 [&_.ant-tabs-ink-bar]:!h-1 [&_.ant-tabs-tab-active>div]:!shadow-none [&_.ant-card-head-title]:!font-semibold [&_.ant-tabs-nav-list]:!w-full ${styles.searchCategories} `}
         dropdownMatchSelectWidth={false}
-        // open={open}
-        // onDropdownVisibleChange={(visible) => {
-        //   setOpen(visible);
-        // }}
-        // defaultOpen={true}
-        // open={true}
         options={
           inputSearch == ""
             ? []
@@ -394,9 +366,7 @@ const HeaderSearch = ({ className = "" }: any) => {
         onBlur={(e) => {
           setIsFullWidth(false);
         }}
-        className={`lg:ml-5 transition-all delay-300 [&>div]:!border-0 ${
-          isFullWidth ? styles.widthScroll : ""
-        }`}
+        className={`lg:ml-5 transition-all delay-300 [&>div]:!border-0 w-full tab:w-4/12 xl:w-2/5`}
       >
         <div className={`items-center !hidden lg:!flex ${className}  `}>
           <SearchInputs
@@ -431,11 +401,6 @@ const HeaderSearch = ({ className = "" }: any) => {
         <AutoComplete
           popupClassName={`[&_.ant-select-item-option-active]:!bg-white !top-26 !shadow-none [&_.ant-select-item-option-grouped]:!px-0 ${styles.searchCategories} [&_.ant-tabs-nav-list]:!gap-5  [&_.ant-tabs-tab]:m-0 [&_.ant-tabs-tab]:gap-8 w-full [&_.ant-tabs-tab]:px-3 [&_.ant-tabs-nav]:!mb-8 [&_.ant-tabs-tab-btn]:text-base [&_.ant-tabs-tab-btn]:font-normal `}
           dropdownMatchSelectWidth={false}
-          // open={open}
-          // onDropdownVisibleChange={(visible) => {
-          //   setOpen(visible);
-          // }}
-          // defaultOpen={true}
           open={false}
           options={
             inputSearch == ""
@@ -454,17 +419,7 @@ const HeaderSearch = ({ className = "" }: any) => {
               ? searchVal.substring(0, advanceSearchValueLength)
               : searchVal
           }
-          // onFocus={(e) => {
-
-          //   setIsFullWidth(true);
-          // }}
-          // onBlur={(e) => {
-
-          //   setIsFullWidth(false);
-          // }}
-          className={`flex w-full [&_.ant-tabs-nav-list]:!w-full transition-all delay-300 [&>div]:!border-0  bg-white ${
-            isFullWidth ? styles.widthScroll : ""
-          }`}
+          className={`flex w-full [&_.ant-tabs-nav-list]:!w-full transition-all delay-300 [&>div]:!border-0 bg-white`}
         >
           <div className="w-full flex bg-white gap-3">
             {openSearchForMobileView ? (
@@ -507,27 +462,13 @@ const HeaderSearch = ({ className = "" }: any) => {
                         true
                       );
                   }}
-                  // enterButton={
-                  //   <SearchOutlined
-                  //     className="!bg-transparent"
-                  //     onClick={handlePress}
-                  //   />
-                  // }
                 />
               </>
-            ) : (
-              ""
-            )}
+            ) : null}
           </div>
         </AutoComplete>
-        {/* <Link href="/search">
-          <a className="text-lg text-canBlack hover:text-canBlue">
-           
-            />
-          </a>
-        </Link> */}
       </div>
-      <div className="flex items-center  absolute right-8">
+      <div className="flex items-center absolute right-8">
         {!openSearchForMobileView ? (
           <Image
             src="/images/mobile-header-icon.svg"
@@ -537,15 +478,7 @@ const HeaderSearch = ({ className = "" }: any) => {
               dispatch(setOpenSearchForMobileView(!openSearchForMobileView));
             }}
           />
-        ) : (
-          // <SearchOutlined
-          // className="w-[24px] h-[24px]"
-          //   onClick={() => {
-          //     dispatch(setOpenSearchForMobileView(!openSearchForMobileView));
-          //   }}
-          // />
-          ""
-        )}
+        ) : null}
       </div>
     </Fragment>
   );

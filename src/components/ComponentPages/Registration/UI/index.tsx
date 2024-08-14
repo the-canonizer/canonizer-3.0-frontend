@@ -67,7 +67,7 @@ function RegistrationUi({
   };
 
   return (
-    <Card className="rounded-lg [&_.ant-card-body]:pb-3 mb-8" bordered={false}>
+    <Card className="rounded-lg [&_.ant-card-body]:pb-3 mb-0" bordered={false}>
       <Form
         form={form}
         name="registration"
@@ -78,22 +78,22 @@ function RegistrationUi({
         validateTrigger={messages.formValidationTypes()}
         autoComplete="off"
       >
-        <div className="flex justify-center items-center text-center flex-col mb-4">
+        <div className="flex justify-center items-center text-center flex-col mb-4 [&_.ant-image>img]:h-[39px]">
           <RegistrationUiGoBack onBrowseClick={onBrowseClick} />
           <LogoHeader />
           <Title
             level={4}
-            className="mt-4 text-sm text-canBlack font-medium"
+            className="mt-4 text-sm text-canBlack !font-normal !mb-0"
             id="registration-title"
           >
             Create your account
           </Title>
-          <Paragraph className="text-muted text-sm text-canLight font-regular">
+          <Paragraph className="text-muted text-[10px] text-canLight !font-[300]">
             All fields marked with * are mandatory.
           </Paragraph>
         </div>
 
-        <div className="">
+        <div className="mt-10">
           <Row gutter={30}>
             <Col md={12} style={{ width: "100%" }}>
               <Inputs
@@ -175,7 +175,7 @@ function RegistrationUi({
                 }
                 prefix={<PhoneOutlined className="opacity-0" />}
                 inputMode="tel"
-                inputClassName={`numberInput [&>*]:h-[40px] [&_.ant-input-affix-wrapper]:h-full [&_.ant-input-prefix]:w-0`}
+                inputClassName={`numberInput [&>*]:h-[40px] [&_.ant-input-affix-wrapper]:h-full [&_.ant-input-prefix]:w-0 [&_.ant-input-group-addon]:bg-transparent`}
               />
             </Col>
             <Col md={12} style={{ width: "100%" }}>
@@ -214,7 +214,7 @@ function RegistrationUi({
           </Row>
         </div>
 
-        <Form.Item className="text-center">
+        <Form.Item className="text-center mt-5 mb-16">
           <PrimaryButton
             type="primary"
             htmlType="submit"
@@ -237,7 +237,7 @@ function RegistrationUi({
             <a
               href="#"
               onClick={onLoginClick}
-              className="text-canBlue hover:text-canHoverBlue text-xl"
+              className="text-canBlue hover:text-canHoverBlue text-lg"
               id="already-text-link"
             >
               Login

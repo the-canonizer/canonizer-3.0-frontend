@@ -382,7 +382,7 @@ export default function RecentActivities() {
                             activity?.activity?.properties
                           );
                           return (
-                            <List.Item className=" font-medium w-full  first:!pt-0 py-5 last:!pb-0 last:!border-none  ">
+                            <List.Item className=" font-medium w-full  first:!pt-0 py-8 last:!pb-0 last:!border-none  ">
                               <AntLink
                                 href={decodedProperties?.url?.replace(
                                   /\s+/g,
@@ -391,7 +391,7 @@ export default function RecentActivities() {
                                 className="w-full !text-canBlue hover:!text-canHoverBlue"
                               >
                                 <Fragment>
-                                  <Text className="text-canBlack text-base font-normal mb-0">
+                                  <Text className="text-canBlack text-xs font-normal mb-0 py-10">
                                     {activity?.activity?.description}{" "}
                                     {activity?.activity?.log_name ===
                                       "support" &&
@@ -411,7 +411,7 @@ export default function RecentActivities() {
                                           <i className="icon-info"></i>
                                         </Popover>
                                       )}
-                                    <Text className="text-canBlue font-medium text-base capitalize">
+                                    <Text className="text-canBlue font-medium text-xs capitalize">
                                       <Tooltip
                                         placement={"topLeft"}
                                         title={
@@ -443,7 +443,7 @@ export default function RecentActivities() {
                                     </Text>
                                   </Text>
                                   <Text
-                                    className="!text-canBlack !text-opacity-50 font-normal font-inter text-xs block mt-2.5"
+                                    className="!text-canBlack !text-opacity-50 font-normal font-inter !text-[10px] block mt-2.5"
                                     type="secondary"
                                   >
                                     {covertToTime(activity.updated_at)}
