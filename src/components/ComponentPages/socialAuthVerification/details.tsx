@@ -1,6 +1,6 @@
 import { Button, Popconfirm, Typography } from "antd";
 import { Fragment } from "react";
-
+import Image from "next/image";
 import styles from "./Social.module.scss";
 
 const { Text } = Typography;
@@ -36,24 +36,29 @@ export default function Details({
           >
             <Button
               type="link"
-              className={`${styles.linkBtn}`}
+              className="text-canDarkRed text-base font-semibold flex items-center justify-center gap-4"
               data-testid="linkBtn"
             >
               Unlink
+              <Image src="/images/unlink-icon.svg" width={24} height={24} />
             </Button>
           </Popconfirm>
         </Fragment>
       ) : (
-        <Button
-          type="primary"
-          htmlType="submit"
-          className={`ant-btn ant-btn-orange ant-btn-lg ${styles.submitBtn}`}
-          data-testid="linkBtn"
-          tabIndex={12}
-          onClick={onLinkClick.bind(this, provider)}
-        >
-          Link
-        </Button>
+        <>
+          {" "}
+          <Button
+            type="primary"
+            htmlType="submit"
+            className="bg-btnBg bg-opacity-10 w-40 !py-2.5 !border !border-canBlue text-base text-canBlack font-medium [&_.ant-btn-primary]:!border [&_.ant-btn-primary]:!border-canBlue !h-14 rounded-lg flex items-center justify-center gap-2.5"
+            data-testid="linkBtn"
+            tabIndex={12}
+            onClick={onLinkClick.bind(this, provider)}
+          >
+            Link
+            <Image src="/images/link-icon.svg" width={24} height={24} />
+          </Button>
+        </>
       )}
     </Fragment>
   );

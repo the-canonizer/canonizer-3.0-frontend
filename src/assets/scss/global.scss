@@ -589,3 +589,11 @@ body {
 .ant-menu-submenu-open.ant-menu-submenu .ant-menu-submenu-title .account-arrow{
   @apply -rotate-90 transition-transform ease-in-out duration-150
 }
+
+#nickNameList .ant-table-thead > tr > th{
+ @apply bg-canGray text-sm font-medium
+}
+
+#nickNameList .ant-table-tbody tr td{
+  @apply text-base font-normal text-canBlack
+}
