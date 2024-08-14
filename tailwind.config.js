@@ -15,9 +15,8 @@ module.exports = {
         "text-none": "none",
         "filter-shadow": " 0px 10px 20px 0px rgba(0, 0, 0, 0.25)",
         "social-icon-shadow": " 0px 10px 20px 0px rgba(49, 80, 114, 0.1)",
-
       },
-    
+
       colors: {
         canBlue: "#5482C8",
         canBlue_Opacity20: "#5482C833",
@@ -44,7 +43,7 @@ module.exports = {
         canLightBg: "#E4E7EF",
         canLightgrey4: "#DDE2EE",
         canDarkRed: "#DB4F4F",
-        btnBg: "#98B7E6"
+        btnBg: "#98B7E6",
       },
       backgroundImage: {
         "custom-gradient":
@@ -57,10 +56,11 @@ module.exports = {
 
         md: "768px",
         // => @media (min-width: 768px) { ... }
-        tab: "1050px",
 
         lg: "992px",
         // => @media (min-width: 992px) { ... }
+
+        tab: "1050px",
 
         xl: "1200px",
         // => @media (min-width: 1200px) { ... }

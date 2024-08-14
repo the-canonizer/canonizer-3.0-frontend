@@ -57,7 +57,7 @@ const CategoriesList = () => {
           <Link href={{ pathname: `/categories/${cat?.id}` }} key={cat?.id}>
             <a>
               <Tags
-                className="rounded-lg py-3 px-6 border-0 text-canBlack bg-canBlue mt-0 mb-5"
+                className="rounded-lg py-3 px-6 border-0 text-canBlack bg-canBlue mt-0 mb-[15px] mr-[15px] hover:shadow-md"
                 icon={<FlagOutlined />}
                 color={getRandomColor()}
               >

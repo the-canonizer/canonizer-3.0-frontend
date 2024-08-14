@@ -380,7 +380,7 @@ const CustomSkelton = ({
   ) : skeltonFor == "browse" ? (
     <Row gutter={[24, 24]}>
       {[...Array(8)].map((_, index) => (
-        <Col key={index} xs={24} sm={24} md={12}>
+        <Col key={index} xs={24} sm={24} md={8}>
           <Card className="browse-card overflow-hidden">
             <div className="mb-2.5 flex justify-between">
               <Skeleton style={{ width: 300 }} />
