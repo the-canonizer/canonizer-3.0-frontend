@@ -30,7 +30,23 @@ const NickName = () => {
       visibility_status: record.private.toString(),
     });
   };
-
+  const chnageVisibilityStatus = async (value, record) => {
+    const parsedValue = parseInt(value);
+    const formBody = {
+      visibility_status: isNaN(parsedValue) ? 0 : parsedValue,
+    };
+  
+    if (record && record.id) {
+      let nickNameId = "/" + record.id;
+      let res = await updateNickName(formBody, nickNameId);
+      if (res && res.status_code === 200) {
+        message.success(res.message);
+        setDisableButton(false);
+      } else {
+        setDisableButton(false);
+      }
+    }
+  };
   const handleNickNameCancel = () => {
     setIsNickNameModalVisible(false);
   };
@@ -112,6 +128,7 @@ const NickName = () => {
       nickNameList={nickNameList}
       disableButton={disableButton}
       getNickNamesLoadingIndicator={getNickNamesLoadingIndicator}
+      chnageVisibilityStatus={chnageVisibilityStatus}
     />
   );
 };
