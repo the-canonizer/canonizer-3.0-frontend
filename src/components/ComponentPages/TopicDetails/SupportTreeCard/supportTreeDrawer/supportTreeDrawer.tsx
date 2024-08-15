@@ -51,6 +51,7 @@ import { setCheckSupportExistsData } from "src/store/slices/campDetailSlice";
 import moment from "moment";
 import { setCampActivityData } from "src/store/slices/recentActivitiesSlice";
 import DrawerBreadcrumbs from "./drawerBreadcrumbs";
+import styles from "../../../ManageSupport/ManageSupportUI/ManageSupport.module.scss";
 
 const { TextArea } = Input;
 
@@ -370,11 +371,11 @@ function SupportTreeDrawer({
     }
   };
 
-  const signPetitionHandler = async() => {
+  const signPetitionHandler = async () => {
     let reqBody = {
       topic_num,
       camp_num,
-      nick_name_id:  nickNameList?.at(0)?.id,
+      nick_name_id: nickNameList?.at(0)?.id,
     };
 
     let res = await campSignApi(reqBody);
@@ -506,6 +507,14 @@ function SupportTreeDrawer({
       ? setIsQuickActionSelected(true)
       : setIsQuickActionSelected(false);
   }, [checkAllTagsSelected()]);
+
+  const validationTypeColor = (type) => {
+    if (type === "info") {
+      return styles.info;
+    } else if (type === "warning") {
+      return styles.warning;
+    }
+  };
 
   return (
     <>
@@ -866,8 +875,10 @@ function SupportTreeDrawer({
               onFinish={onFinish}
             >
               <div className="support-content">
-                <div className="alert-wrapper">
-                  {/* <Alert
+                {signCampData ? (
+                  <>
+                    <div className="alert-wrapper">
+                      {/* <Alert
                       className="border-0 rounded-lg info-alert"
                       description={
                         "The camp leader of this camp is mary-doe. If you continue, your support will be delegated to the camp leader"
@@ -876,26 +887,32 @@ function SupportTreeDrawer({
                       showIcon
                       icon={<i className="icon-info"></i>}
                     /> */}
-                  <span>
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: signCampData?.warning,
-                      }}
-                    ></div>
-                  </span>
+                      <span
+                        className={validationTypeColor(
+                          signCampData?.warning_type
+                        )}
+                        id="getSupportStatusDataWarning"
+                      >
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: signCampData?.warning,
+                          }}
+                        ></div>
+                      </span>
 
-                  {signCampData?.remove_camps?.length > 0 &&
-                    signCampData?.remove_camps?.map((tag) => {
-                      return (
-                        <>
-                          <Tag className="rounded-full bg-[#F0F2FA] border-transparent font-semibold text-base px-5 py-2.5 leading-none text-canBlack">
-                            {`${tag.support_order}.${tag.camp_name}`}
-                          </Tag>
-                        </>
-                      );
-                    })
-                  }
-                </div>
+                      {signCampData?.remove_camps?.length > 0 &&
+                        signCampData?.remove_camps?.map((tag) => {
+                          return (
+                            <>
+                              <Tag className="rounded-full bg-[#F0F2FA] border-transparent font-semibold text-base px-5 py-2.5 leading-none text-canBlack">
+                                {`${tag.support_order}.${tag.camp_name}`}
+                              </Tag>
+                            </>
+                          );
+                        })}
+                    </div>
+                  </>
+                ) : null}
                 <div>
                   <Row gutter={16}>
                     <Col span={24} sm={12}>
