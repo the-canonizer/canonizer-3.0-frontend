@@ -450,6 +450,7 @@ const SupportTreeCard = ({
                           </span>
                           <div className="w-[24px] h-[24px] rounded-full overflow-hidden bg-canLightBg flex items-center justify-center text-xs">
                             {isImageError ? (
+                              <>
                               <Image
                                 src={support_image}
                                 alt="svg"
@@ -457,12 +458,14 @@ const SupportTreeCard = ({
                                 width={24}
                                 onError={handleImageError}
                               />
+                              </>
                             ) : (
                               <span>
                                 {data[item].nick_name.charAt(0).toUpperCase()}
                               </span>
                             )}
                           </div>
+                          <i className="icon-crown text-canOrange"></i>
 
                           <span className="text-canBlack text-xs font-normal">
                             {" "}
@@ -718,7 +721,7 @@ const SupportTreeCard = ({
             </CustomButton>
           )}
         </div>
-        <div className="topicDetailsCollapseFooter printHIde mt-3 w-full flex justify-center">
+        <div className="topicDetailsCollapseFooter printHIde mt-3 w-full flex flex-col gap-2 justify-center">
           <CustomButton
             onClick={handleClickSupportCheck}
             className="w-full justify-center bg-canGreen hover:!bg-canGreen hover:!text-white hover:!border-transparent !border-transparent h-[44px] px-8 lg:px-10 text-white flex items-center rounded-lg font-medium text-sm gap-2"
@@ -733,6 +736,7 @@ const SupportTreeCard = ({
               width={16}
             />
           </CustomButton>
+          <Button size="large" className="flex items-center justify-center h-[44px] px-8 border-[#4EB966] hover:!text-canBlack hover:!border-[#4EB966] hover:!bg-[#4EB9661A] bg-[#4EB9661A] rounded-lg font-medium text-sm gap-2" block>Sign Petition<i className="icon-user-plus"></i></Button>
         </div>
       </div>
 
