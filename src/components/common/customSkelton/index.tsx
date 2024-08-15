@@ -200,7 +200,7 @@ const CustomSkelton = ({
     </div>
   ) : skeltonFor == "comparisonPage" ? (
     <div className="ch-wrapper">
-      <Row gutter={[60, 60]}>
+      <Row gutter={[24, 24]}>
         <Col xs={24} md={12}>
           <Skeleton style={{ height: 36 }} />
           <Skeleton style={{ height: 320 }} />

@@ -7,6 +7,7 @@ import CustomSkelton from "../../../common/customSkelton";
 import { capitalizeFirstLetter } from "src/utils/generalUtility";
 import Breadcrumbs from "components/ComponentPages/Breadcrumbs/breadcrumbs";
 import HistoryCard from "components/ComponentPages/HistoryCard/historyCard";
+import ComparisonMobileTabs from "./comparisonMobileTabs";
 const validUrl = (url) => {
   try {
     new URL(url);
@@ -70,7 +71,7 @@ function CompareStatementUI({
             {router?.query?.from && capitalizeFirstLetter(router?.query?.from)}{" "}
             History Comparison
           </Button>
-          <Row gutter={[60, 60]}>
+          <Row gutter={[24, 24]}>
             <Col xs={24} md={12}>
               <HistoryCard
                 compareMode={compareMode}
@@ -97,6 +98,7 @@ function CompareStatementUI({
               )}
             </Col>
           </Row>
+          <ComparisonMobileTabs />
         </div>
       )}
     </>
