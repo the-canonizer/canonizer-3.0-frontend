@@ -331,8 +331,8 @@ function ManageStatements({ isEdit = false, add = false }) {
       payload.submitter = nickNameData?.at(0)?.id;
       payload.event_type = "create";
       payload.statement_id = null;
-      payload.statement = statement ? statement : "";
-      payload.nick_name = nickNameData?.at(0)?.nick_name;
+      payload.statement = statement ? statement : (isEdit && statement?.length > 0 ? statement : editStatementData?.statement?.parsed_value);
+      payload.nick_name = nickNameData?.at(0)?.id;
       payload.is_draft = true;
     } else {
       payload.topic_num = topicNum;
@@ -340,14 +340,14 @@ function ManageStatements({ isEdit = false, add = false }) {
       payload.camp_num = campNum;
       payload.submitter = nickNameData?.at(0)?.id;
       payload.event_type = "edit";
-      payload.statement_id = localStorage
+      payload.statement_id = Number(localStorage
         .getItem(`draft_record_id-${topicNum}-${campNum}`)
         ?.split("-")
-        ?.at(0);
+        ?.at(0));
       payload.statement = statement
         ? statement
-        : editStatementData?.data?.statement?.parsed_value;
-      payload.nick_name = nickName;
+        : editStatementData?.statement?.parsed_value;
+      payload.nick_name = nickNameData?.at(0)?.id;
       payload.is_draft = true;
     }
 
@@ -765,7 +765,7 @@ function ManageStatements({ isEdit = false, add = false }) {
               },
               {
                 label:
-                  !isEdit || isDraft
+                  !isEdit
                     ? "Adding a camp statement"
                     : "Updating camp statement",
               },

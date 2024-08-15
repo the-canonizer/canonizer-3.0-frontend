@@ -82,7 +82,7 @@ function ManageStatementUI({
     <CommonCards className="border-0 bg-white">
       <header className="mb-14">
         <Typography.Paragraph className="text-xl text-canBlack font-medium">
-          {isEdit && !isDraft
+          {isEdit
             ? "Update Camp Statement"
             : "Adding Camp Statement"}
         </Typography.Paragraph>
@@ -168,7 +168,7 @@ function ManageStatementUI({
                     saveContent={(data) => {
                       autoSave({
                         statement: data,
-                        nick_name: nickNameData?.at(0)?.nick_name
+                        nick_name: nickNameData?.at(0)?.id
                       });
                     }}
                   ></Editorckl>
