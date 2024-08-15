@@ -187,163 +187,6 @@ function ManageStatements({ isEdit = false, add = false }) {
 
     router.push({ pathname: getBackURL() });
   };
-  const autoSave = async (data) => {
-    setIsAutoSaving(true);
-    setStatement(data?.statement);
-    setNickName(data?.nick_name);
-
-    const editInfo = editStatementData;
-    const parentCamp = editInfo?.parent_camp;
-
-    const topicNum = isEdit
-      ? editStatementData?.topic?.topic_num
-      : router?.query?.statement?.at(0)?.split("-")?.at(0);
-    const topicName = isEdit
-      ? editStatementData?.topic?.topic_name
-      : router?.query?.statement?.at(0)?.split("-")?.at(1);
-    const campNum = isEdit
-      ? editStatementData?.statement?.camp_num
-      : router?.query?.statement?.at(1)?.split("-")?.at(0);
-    const lastParentCamp = parentCamp?.[parentCamp.length - 1];
-
-    let payload = {
-      ...data,
-      statement: data?.statement
-        ? data?.statement
-        : localStorage.getItem("autosaveContent"),
-    };
-
-    if (!localStorage.getItem(`draft_record_id-${topicNum}-${campNum}`)) {
-      payload.topic_num = topicNum;
-      payload.topic_name = topicName;
-      payload.camp_num = campNum;
-      payload.submitter = nickNameData?.at(0)?.id;
-      payload.event_type = "create";
-      payload.statement_id = null;
-      payload.is_draft = true;
-    } else {
-      payload.topic_num = topicNum;
-      payload.topic_name = topicName;
-      payload.camp_num = campNum;
-      payload.submitter = nickNameData?.at(0)?.id;
-      payload.event_type = "edit";
-      payload.statement_id = localStorage
-        .getItem(`draft_record_id-${topicNum}-${campNum}`)
-        ?.split("-")
-        ?.at(0);
-      payload.is_draft = true;
-    }
-
-    if (navigator.onLine) {
-      if (payload?.statement) {
-        let res = await updateStatementApi(payload);
-
-        if (res?.data?.draft_record_id) {
-          localStorage.setItem(
-            `draft_record_id-${topicNum}-${campNum}`,
-            res?.data?.draft_record_id + "-" + topicNum + "-" + campNum
-          );
-        }
-
-        localStorage.removeItem("autosaveContent"); // Clear local storage on successful save
-
-        setTime({
-          ...time,
-          last_save_time: getEpochTime(),
-        });
-      }
-    } else {
-      localStorage.setItem("autosaveContent", payload?.statement); // Save to local storage if offline
-
-      setTime({
-        ...time,
-        last_save_time: getEpochTime(),
-      });
-    }
-
-    setIsAutoSaving(false);
-  };
-
-  const saveDraftHandler = async () => {
-    setIsAutoSaving(true);
-
-    const topicNum = isEdit
-      ? editStatementData?.topic?.topic_num
-      : router?.query?.statement?.at(0)?.split("-")?.at(0);
-    const campNum = isEdit
-      ? editStatementData?.statement?.camp_num
-      : router?.query?.statement?.at(1)?.split("-")?.at(0);
-
-    const topicName = isEdit
-      ? editStatementData?.topic?.topic_name
-      : router?.query?.statement?.at(0)?.split("-")?.at(1);
-
-    let payload = {
-      camp_num: null,
-      event_type: null,
-      nick_name: null,
-      statement: null,
-      statement_id: null,
-      submitter: null,
-      topic_name: null,
-      topic_num: null,
-      is_draft: false,
-    };
-
-    if (!localStorage.getItem(`draft_record_id-${topicNum}-${campNum}`)) {
-      payload.topic_num = topicNum;
-      payload.topic_name = topicName;
-      payload.camp_num = campNum;
-      payload.submitter = nickNameData?.at(0)?.id;
-      payload.event_type = "create";
-      payload.statement_id = null;
-      payload.statement = statement ? statement : (isEdit && statement?.length > 0 ? statement : editStatementData?.statement?.parsed_value);
-      payload.nick_name = nickNameData?.at(0)?.id;
-      payload.is_draft = true;
-    } else {
-      payload.topic_num = topicNum;
-      payload.topic_name = topicName;
-      payload.camp_num = campNum;
-      payload.submitter = nickNameData?.at(0)?.id;
-      payload.event_type = "edit";
-      payload.statement_id = Number(localStorage
-        .getItem(`draft_record_id-${topicNum}-${campNum}`)
-        ?.split("-")
-        ?.at(0));
-      payload.statement = statement
-        ? statement
-        : editStatementData?.statement?.parsed_value;
-      payload.nick_name = nickNameData?.at(0)?.id;
-      payload.is_draft = true;
-    }
-
-    if (navigator.onLine) {
-      let res = await updateStatementApi(payload);
-
-      if (res?.data?.draft_record_id) {
-        localStorage.setItem(
-          `draft_record_id-${topicNum}-${campNum}`,
-          res?.data?.draft_record_id + "-" + topicNum + "-" + campNum
-        );
-      }
-
-      localStorage.removeItem("autosaveContent"); // Clear local storage on successful save
-
-      setTime({
-        ...time,
-        last_save_time: getEpochTime(),
-      });
-    } else {
-      localStorage.setItem("autosaveContent", payload?.statement); // Save to local storage if offline
-
-      setTime({
-        ...time,
-        last_save_time: getEpochTime(),
-      });
-    }
-
-    setIsAutoSaving(false);
-  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -418,22 +261,167 @@ function ManageStatements({ isEdit = false, add = false }) {
     }
   }, [isUserAuthenticated]);
 
+  const getTopicAndCampIds = () => {
+    const topicNum = isEdit
+    ? editStatementData?.topic?.topic_num
+    : router?.query?.statement?.at(0)?.split("-")?.at(0);
+  const topicName = isEdit
+    ? editStatementData?.topic?.topic_name
+    : router?.query?.statement?.at(0)?.split("-")?.at(1);
+  const campNum = isEdit
+    ? editStatementData?.statement?.camp_num
+    : router?.query?.statement?.at(1)?.split("-")?.at(0);
+
+    return{
+      topicNum,
+      topicName,
+      campNum,
+    }
+  }
+
+  const autoSave = async (data) => {
+    setIsAutoSaving(true);
+    setStatement(data?.statement);
+    setNickName(data?.nick_name);
+
+    let payload = {
+      ...data,
+      statement: data?.statement
+        ? data?.statement
+        : localStorage.getItem("autosaveContent"),
+    };
+
+    if (!localStorage.getItem(`draft_record_id-${getTopicAndCampIds()?.topicNum}-${getTopicAndCampIds()?.campNum}`)) {
+      payload.topic_num = getTopicAndCampIds()?.topicNum;
+      payload.topic_name = getTopicAndCampIds()?.topicName;
+      payload.camp_num = getTopicAndCampIds()?.campNum;
+      payload.submitter = nickNameData?.at(0)?.id;
+      payload.event_type = "create";
+      payload.statement_id = null;
+      payload.is_draft = true;
+    } else {
+      payload.topic_num = getTopicAndCampIds()?.topicNum;
+      payload.topic_name = getTopicAndCampIds()?.topicName;
+      payload.camp_num = getTopicAndCampIds()?.campNum;
+      payload.submitter = nickNameData?.at(0)?.id;
+      payload.event_type = "edit";
+      payload.statement_id = localStorage
+        .getItem(`draft_record_id-${getTopicAndCampIds()?.topicNum}-${getTopicAndCampIds()?.campNum}`)
+        ?.split("-")
+        ?.at(0);
+      payload.is_draft = true;
+    }
+
+    if (navigator.onLine) {
+      if (payload?.statement) {
+        let res = await updateStatementApi(payload);
+
+        if (res?.data?.draft_record_id) {
+          localStorage.setItem(
+            `draft_record_id-${getTopicAndCampIds()?.topicNum}-${getTopicAndCampIds()?.campNum}`,
+            res?.data?.draft_record_id + "-" + getTopicAndCampIds()?.topicNum + "-" + getTopicAndCampIds()?.campNum
+          );
+        }
+
+        localStorage.removeItem("autosaveContent"); // Clear local storage on successful save
+
+        setTime({
+          ...time,
+          last_save_time: getEpochTime(),
+        });
+      }
+    } else {
+      localStorage.setItem("autosaveContent", payload?.statement); // Save to local storage if offline
+
+      setTime({
+        ...time,
+        last_save_time: getEpochTime(),
+      });
+    }
+
+    setIsAutoSaving(false);
+  };
+
+  const saveDraftHandler = async () => {
+    setIsAutoSaving(true);
+
+    let payload = {
+      camp_num: null,
+      event_type: null,
+      nick_name: null,
+      statement: null,
+      statement_id: null,
+      submitter: null,
+      topic_name: null,
+      topic_num: null,
+      is_draft: false,
+    };
+
+    if (!localStorage.getItem(`draft_record_id-${getTopicAndCampIds()?.topicNum}-${getTopicAndCampIds()?.campNum}`)) {
+      payload.topic_num = getTopicAndCampIds()?.topicNum;
+      payload.topic_name = getTopicAndCampIds()?.topicName;
+      payload.camp_num = getTopicAndCampIds()?.campNum;
+      payload.submitter = nickNameData?.at(0)?.id;
+      payload.event_type = "create";
+      payload.statement_id = null;
+      payload.statement = statement ? statement : (isEdit && statement?.length > 0 ? statement : editStatementData?.statement?.parsed_value);
+      payload.nick_name = nickNameData?.at(0)?.id;
+      payload.is_draft = true;
+    } else {
+      payload.topic_num = getTopicAndCampIds()?.topicNum;
+      payload.topic_name = getTopicAndCampIds()?.topicName;
+      payload.camp_num = getTopicAndCampIds()?.campNum;
+      payload.submitter = nickNameData?.at(0)?.id;
+      payload.event_type = "edit";
+      payload.statement_id = Number(localStorage
+        .getItem(`draft_record_id-${getTopicAndCampIds()?.topicNum}-${getTopicAndCampIds()?.campNum}`)
+        ?.split("-")
+        ?.at(0));
+      payload.statement = statement
+        ? statement
+        : editStatementData?.statement?.parsed_value;
+      payload.nick_name = nickNameData?.at(0)?.id;
+      payload.is_draft = true;
+    }
+
+    if (navigator.onLine) {
+      let res = await updateStatementApi(payload);
+
+      if (res?.data?.draft_record_id) {
+        localStorage.setItem(
+          `draft_record_id-${getTopicAndCampIds()?.topicNum}-${getTopicAndCampIds()?.campNum}`,
+          res?.data?.draft_record_id + "-" + getTopicAndCampIds()?.topicNum + "-" + getTopicAndCampIds()?.campNum
+        );
+      }
+
+      localStorage.removeItem("autosaveContent"); // Clear local storage on successful save
+
+      setTime({
+        ...time,
+        last_save_time: getEpochTime(),
+      });
+    } else {
+      localStorage.setItem("autosaveContent", payload?.statement); // Save to local storage if offline
+
+      setTime({
+        ...time,
+        last_save_time: getEpochTime(),
+      });
+    }
+
+    setIsAutoSaving(false);
+  };
+
   const onFinish = async (values: any) => {
     setScreenLoading(true);
     setIsSaveDraft(false);
 
-    const topicNum = isEdit
-      ? editStatementData?.topic?.topic_num
-      : router?.query?.statement?.at(0)?.split("-")?.at(0);
-    const campNum = isEdit
-      ? editStatementData?.statement?.camp_num
-      : router?.query?.statement?.at(1)?.split("-")?.at(0);
 
     let payload = {
-      topic_num: topicNum,
-      camp_num: campNum,
+      topic_num: getTopicAndCampIds()?.topicNum,
+      camp_num: getTopicAndCampIds()?.campNum,
       statement_id: localStorage
-        .getItem(`draft_record_id-${topicNum}-${campNum}`)
+        .getItem(`draft_record_id-${getTopicAndCampIds()?.topicNum}-${getTopicAndCampIds()?.campNum}`)
         ?.split("-")
         ?.at(0),
     };
@@ -442,7 +430,7 @@ function ManageStatements({ isEdit = false, add = false }) {
 
     if (
       localStorage
-        .getItem(`draft_record_id-${topicNum}-${campNum}`)
+        .getItem(`draft_record_id-${getTopicAndCampIds()?.topicNum}-${getTopicAndCampIds()?.campNum}`)
         ?.split("-")
         ?.at(0)
     ) {
@@ -460,27 +448,18 @@ function ManageStatements({ isEdit = false, add = false }) {
             const editInfo = editStatementData;
             const parent_camp = editInfo?.parent_camp;
 
-            const topicNum = isEdit
-              ? editStatementData?.topic?.topic_num
-              : router?.query?.statement?.at(0)?.split("-")?.at(0);
-            const topicName = isEdit
-              ? editStatementData?.topic?.topic_name
-              : router?.query?.statement?.at(0)?.split("-")?.at(1);
-            const campNum = isEdit
-              ? editStatementData?.statement?.camp_num
-              : router?.query?.statement?.at(1)?.split("-")?.at(0);
 
             let payload = {
               ...values,
-              topic_num: topicNum,
-              topic_name: topicName,
-              camp_num: campNum,
+              topic_num: getTopicAndCampIds()?.topicNum,
+              topic_name: getTopicAndCampIds()?.topicName,
+              camp_num: getTopicAndCampIds()?.campNum,
             };
 
             const res = await saveStatement(payload);
 
             if (res?.status_code == 200) {
-              localStorage.removeItem(`draft_record_id-${topicNum}-${campNum}`);
+              localStorage.removeItem(`draft_record_id-${getTopicAndCampIds()?.topicNum}-${getTopicAndCampIds()?.campNum}`);
 
               if (!isEdit) {
                 if (isSaveDraft) {
@@ -543,27 +522,18 @@ function ManageStatements({ isEdit = false, add = false }) {
       const editInfo = editStatementData;
       const parent_camp = editInfo?.parent_camp;
 
-      const topicNum = isEdit
-        ? editStatementData?.topic?.topic_num
-        : router?.query?.statement?.at(0)?.split("-")?.at(0);
-      const topicName = isEdit
-        ? editStatementData?.topic?.topic_name
-        : router?.query?.statement?.at(0)?.split("-")?.at(1);
-      const campNum = isEdit
-        ? editStatementData?.statement?.camp_num
-        : router?.query?.statement?.at(1)?.split("-")?.at(0);
 
       let payload = {
         ...values,
-        topic_num: topicNum,
-        topic_name: topicName,
-        camp_num: campNum,
+        topic_num: getTopicAndCampIds()?.topicNum,
+        topic_name: getTopicAndCampIds()?.topicName,
+        camp_num: getTopicAndCampIds()?.campNum,
       };
 
       const res = await saveStatement(payload);
 
       if (res?.status_code == 200) {
-        localStorage.removeItem(`draft_record_id-${topicNum}-${campNum}`);
+        localStorage.removeItem(`draft_record_id-${getTopicAndCampIds()?.topicNum}-${getTopicAndCampIds()?.campNum}`);
 
         if (!isEdit) {
           if (isSaveDraft) {
