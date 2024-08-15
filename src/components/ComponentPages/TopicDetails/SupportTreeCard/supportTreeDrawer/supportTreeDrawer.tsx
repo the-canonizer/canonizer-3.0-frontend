@@ -348,6 +348,8 @@ function SupportTreeDrawer({
       await addDelegateMethod();
     } else if (drawerFor === "directAdd" || drawerFor === "manageSupport") {
       await addSupportMethod(values);
+    }else if(drawerFor === "signPetition"){
+
     }
   };
 
@@ -425,6 +427,10 @@ function SupportTreeDrawer({
             Removing Support from camp:
             <span> {campRecord?.camp_name} </span>
           </>
+        ) : drawerFor === "signPetition" ? (
+          <>
+            Sign Camp Petition
+          </>
         ) : null}
       </>
     );
@@ -439,6 +445,8 @@ function SupportTreeDrawer({
       return "Add Support";
     } else if (drawerFor === "directRemove") {
       return "Remove Support";
+    } else if (drawerFor === "signPetition") {
+      return "Sign Petition";
     } else {
       return;
     }
@@ -794,6 +802,91 @@ function SupportTreeDrawer({
                 >
                   {renderSubmitBtnText()}
                   <MinusOutlined />
+                </Button>
+              </div>
+            </Form>
+          </>
+        ) : drawerFor === "signPetition" ? (
+          <>
+            <Form
+              form={form}
+              layout="vertical"
+              className="adding-support-form"
+              autoComplete="off"
+              scrollToFirstError
+              onFinish={onFinish}
+            >
+              <div className="support-content">
+                  <div className="alert-wrapper">
+                    <Alert
+                      className="border-0 rounded-lg info-alert"
+                      description={
+                        "The camp leader of this camp is mary-doe. If you continue, your support will be delegated to the camp leader"
+                      }
+                      type="info"
+                      showIcon
+                      icon={<i className="icon-info"></i>}
+                    />
+                  </div>
+                <div>
+                  <Row gutter={16}>
+                    <Col span={24} sm={12}>
+                      <Form.Item name="nickname" label="Nickname">
+                        <div className="thm-select">
+                          <div className="prefix-icon">
+                            <UserOutlined />
+                          </div>
+                          <Select
+                            placeholder="Select a nickname"
+                            className="w-100 cn-select"
+                            size="large"
+                            defaultValue={nickNameList?.at(0)?.nick_name}
+                            suffixIcon={<i className="icon-chevron-down"></i>}
+                            showSearch
+                            value={
+                              selectedtNickname
+                                ? selectedtNickname
+                                : nickNameList?.at(0)?.nick_name
+                            }
+                            onChange={(value) => {
+                              setSelectedtNickname(value);
+                            }}
+                          >
+                            {nickNameList?.map((nick) => {
+                              return (
+                                <Select.Option key={nick.id} value={nick.id}>
+                                  {nick.nick_name}
+                                </Select.Option>
+                              );
+                            })}
+                          </Select>
+                        </div>
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                </div>
+              </div>
+              <div className="flex justify-center max-sm:flex-col gap-5 p-11 fixed right-0 max-w-[730px] w-full mt-0 bg-white z-50 bottom-0">
+                <Button
+                  size="large"
+                  className="min-w-[200px] gap-2 flex items-center justify-center border border-canBlue bg-[#98B7E61A] rounded-lg text-canBlack text-base font-medium"
+                  onClick={() => {
+                    onClose();
+                    form.resetFields();
+                    setSelectedValue(null);
+                  }}
+                >
+                  Cancel
+                  <CloseOutlined />
+                </Button>
+                <Button
+                  size="large"
+                  type="primary"
+                  htmlType="submit"
+                  className=" min-w-[200px] bg-canBlue flex items-center justify-center hover:bg-canHoverBlue focus:bg-canHoverBlue hover:text-white font-medium text-white disabled:bg-disabled font-base rounded-lg"
+                >
+                  {renderSubmitBtnText()}
+                  <PlusOutlined />
                 </Button>
               </div>
             </Form>

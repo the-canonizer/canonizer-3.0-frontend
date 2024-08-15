@@ -152,6 +152,7 @@ const SupportTreeCard = ({
     directRemove: "directRemove",
     delegateRemove: "delegateRemove",
     manageSupport: "manageSupport",
+    signPetition: "signPetition",
   };
 
   const showDrawer = () => {
@@ -465,7 +466,7 @@ const SupportTreeCard = ({
                               </span>
                             )}
                           </div>
-                          <i className="icon-crown text-canOrange"></i>
+                          {data[item]?.camp_leader && <i className="icon-crown text-canOrange"></i>}
 
                           <span className="text-canBlack text-xs font-normal">
                             {" "}
@@ -638,6 +639,11 @@ const SupportTreeCard = ({
     removeForm.resetFields();
   };
 
+  const signPetitionHandler = () => {
+    setOpen(true);
+    setDrawerFor(drawerOptions.signPetition);
+  }
+
   const renderSupportBtn = () => {
     if (isUserAuthenticated) {
       if (
@@ -735,7 +741,10 @@ const SupportTreeCard = ({
               width={16}
             />
           </CustomButton>
-          <Button size="large" className="flex items-center justify-center h-[44px] px-8 border-[#4EB966] hover:!text-canBlack hover:!border-[#4EB966] hover:!bg-[#4EB9661A] bg-[#4EB9661A] rounded-lg font-medium text-sm gap-2" block>Sign Petition<i className="icon-user-plus"></i></Button>
+          <Button size="large" className="flex items-center justify-center h-[44px] px-8 border-[#4EB966] hover:!text-canBlack hover:!border-[#4EB966] hover:!bg-[#4EB9661A] bg-[#4EB9661A] rounded-lg font-medium text-sm gap-2" block
+            onClick={()=> signPetitionHandler()}>
+              Sign Petition<i className="icon-user-plus"></i>
+            </Button>
         </div>
       </div>
 
