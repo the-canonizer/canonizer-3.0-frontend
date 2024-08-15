@@ -89,41 +89,6 @@ function ManageStatements({ isEdit = false, add = false }) {
   }, [time?.last_save_time, time?.current_time]);
 
   useEffect(() => {
-    postStatementCountApiHandler();
-  }, []);
-
-  const postStatementCountApiHandler = async () => {
-    const topicNum = isEdit
-      ? editStatementData?.topic?.topic_num
-      : router?.query?.statement?.at(0)?.split("-")?.at(0);
-    const topicName = isEdit
-      ? editStatementData?.topic?.topic_name
-      : router?.query?.statement?.at(0)?.split("-")?.at(1);
-    const campNum = isEdit
-      ? editStatementData?.statement?.camp_num
-      : router?.query?.statement?.at(1)?.split("-")?.at(0);
-
-    let payload = {
-      topic_num: topicNum,
-      camp_num: campNum,
-      statement_id: localStorage
-        .getItem(`draft_record_id-${topicNum}-${campNum}`)
-        ?.split("-")
-        ?.at(0),
-    };
-
-    if (
-      localStorage
-        .getItem(`draft_record_id-${topicNum}-${campNum}`)
-        ?.split("-")
-        ?.at(0)
-    ) {
-      let res = await postStatementCountApi(payload);
-      setPostChangesCount(res?.data?.post_changes_count);
-    }
-  };
-
-  useEffect(() => {
     form
       .validateFields({ validateOnly: true })
       .then(() => setIsDisabled(true))
@@ -456,7 +421,34 @@ function ManageStatements({ isEdit = false, add = false }) {
     setScreenLoading(true);
     setIsSaveDraft(false);
 
-    if (postChangesCount > 0) {
+    const topicNum = isEdit
+      ? editStatementData?.topic?.topic_num
+      : router?.query?.statement?.at(0)?.split("-")?.at(0);
+    const campNum = isEdit
+      ? editStatementData?.statement?.camp_num
+      : router?.query?.statement?.at(1)?.split("-")?.at(0);
+
+    let payload = {
+      topic_num: topicNum,
+      camp_num: campNum,
+      statement_id: localStorage
+        .getItem(`draft_record_id-${topicNum}-${campNum}`)
+        ?.split("-")
+        ?.at(0),
+    };
+
+    let res = null;
+
+    if (
+      localStorage
+        .getItem(`draft_record_id-${topicNum}-${campNum}`)
+        ?.split("-")
+        ?.at(0)
+    ) {
+      res = await postStatementCountApi(payload);
+    }
+
+    if (res?.data?.post_changes_count > 0) {
       confirm({
         title: "Do you want to delete these items?",
         content:
