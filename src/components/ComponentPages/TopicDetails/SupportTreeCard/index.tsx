@@ -639,6 +639,10 @@ const SupportTreeCard = ({
     removeForm.resetFields();
   };
 
+  const disableSignPetition = () => {
+    return isCampLeader()?.campLeaderExist || isCampLeader()?.delegateSupportExist
+  }
+
   const signPetitionHandler = () => {
     setOpen(true);
     setDrawerFor(drawerOptions.signPetition);
@@ -742,7 +746,11 @@ const SupportTreeCard = ({
               width={16}
             />
           </CustomButton>
-          <Button size="large" className="flex items-center justify-center h-[44px] px-8 border-[#4EB966] hover:!text-canBlack hover:!border-[#4EB966] hover:!bg-[#4EB9661A] bg-[#4EB9661A] rounded-lg font-medium text-sm gap-2" block
+          <Button 
+            size="large" 
+            className="flex items-center justify-center h-[44px] px-8 border-[#4EB966] hover:!text-canBlack hover:!border-[#4EB966] hover:!bg-[#4EB9661A] bg-[#4EB9661A] rounded-lg font-medium text-sm gap-2" 
+            block
+            disabled={disableSignPetition()}
             onClick={()=> signPetitionHandler()}>
               Sign Petition<i className="icon-user-plus"></i>
             </Button>
