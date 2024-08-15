@@ -357,12 +357,12 @@ function ManageStatements({ isEdit = false, add = false }) {
           event_type: "edit",
         });
 
-        // if (editRes?.status_code === 200) {
-        //   setTime({
-        //     ...time,
-        //     last_save_time: editRes?.data?.statement?.submit_time,
-        //   });
-        // }
+        if (editRes?.status_code === 200 && !!editRes?.data?.statement?.is_draft) {
+          setTime({
+            ...time,
+            last_save_time: editRes?.data?.statement?.submit_time,
+          });
+        }
 
         if (editRes?.status_code === 404) {
           setNotFoundStatus({ status: true, name: "Statement" });
