@@ -20,7 +20,7 @@ const SectionHeading = ({
   const router = useRouter();
   return (
     <Headings level={5} className={`text-sm font-bold uppercase ${className}`}>
-      {title}{" "}
+      <span className="mr-3">{title}</span>
       {icon ? (
         <Popover content={infoContent} placement="top">
           {icon}

@@ -8,7 +8,7 @@ const LeftContent = ({ onBrowseClick }) => {
     <div className="w-full h-full flex flex-col">
       <Button
         type="link"
-        className="h-[50px] text-sm w-2/12 text-canBlack flex items-center justify-start text-sm font-medium p-0 mb-4"
+        className="h-[50px] text-sm w-2/12 text-canBlack flex items-start justify-start text-sm font-medium p-0 mb-4"
         onClick={onBrowseClick}
       >
         <LeftOutlined /> Go Back
@@ -19,7 +19,7 @@ const LeftContent = ({ onBrowseClick }) => {
       <Headings h1 className="mb-6 leading-[1.1] font-medium">
         Canonizer
       </Headings>
-      <Typography.Paragraph className="text-base font-normal text-canBlack font-inter">
+      <Typography.Paragraph className="text-sm font-normal text-canBlack opacity-80 font-inter">
         Enter the best leaderless consensus building and tracking system in the
         world.
       </Typography.Paragraph>

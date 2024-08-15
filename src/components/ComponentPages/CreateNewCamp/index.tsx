@@ -1,31 +1,51 @@
 import { Fragment, useState, useEffect } from "react";
-import { Form, message } from "antd";
-import type { CheckboxChangeEvent } from "antd/es/checkbox";
+import { Col, Form, Row, message } from "antd";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
+
+import type { CheckboxChangeEvent } from "antd/es/checkbox";
 
 import {
   createCamp,
   getAllParentsCamp,
   getAllCampNickNames,
   getAllUsedNickNames,
-} from "../../../network/api/campDetailApi";
-import { setCurrentTopic } from "../../../store/slices/topicSlice";
-import messages from "../../../messages";
-
-import CreateNewCampUI from "./UI/CampUI";
+} from "src/network/api/campDetailApi";
+import { setCurrentTopic } from "src/store/slices/topicSlice";
+import messages from "src/messages";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
-import isAuth from "../../../hooks/isUserAuthenticated";
+import isAuth from "src/hooks/isUserAuthenticated";
 import { setShowDrawer } from "src/store/slices/filtersSlice";
 import { RootState } from "src/store";
 import DataNotFound from "../DataNotFound/dataNotFound";
+import CustomSpinner from "components/shared/CustomSpinner";
+import ExistingCampList from "./UI/existingCampList";
+import CampInfoCard from "./UI/rightContent";
+import CampInfoBar from "../TopicDetails/CampInfoBar";
+import FormUI from "./UI/FormUI";
+import { globalSearchCanonizer } from "src/network/api/userApi";
+import queryParams from "src/utils/queryParams";
+import SimilarCampPopup from "./UI/similarCampsPopup";
 
-const CreateNewCamp = ({
-  nickNames = [],
-  parentCamps = [],
-  campNickNames = [],
-  initialValues = {},
-}: any) => {
+const getSimilarity = (str1, str2) => {
+  const length = Math.max(str1.length, str2.length);
+  let commonChars = 0;
+
+  str1.split("").forEach((char) => {
+    if (str2.includes(char)) commonChars++;
+  });
+
+  return commonChars / length;
+};
+
+const findSimilarNames = (inputName, namesList) => {
+  const threshold = 0.7; // adjust for desired sensitivity
+  return namesList.filter(
+    (name) => getSimilarity(inputName, name) >= threshold
+  );
+};
+
+const CreateNewCamp = () => {
   const { filterByScore, filterObject, viewThisVersion } = useSelector(
     (state: RootState) => ({
       filterByScore: state.filters?.filterObject?.filterByScore,
@@ -34,20 +54,60 @@ const CreateNewCamp = ({
     })
   );
 
-  const [nickNameList, setNickNameList] = useState(nickNames);
-  const [initialValue, setInitialValues] = useState(initialValues);
-  const [parentCamp, setParentCamps] = useState(parentCamps);
-  const [campExist, setCampExist] = useState(true);
-  const [campNickName, setCampNickName] = useState(campNickNames);
-  const [params, setParams] = useState({});
-  const [options, setOptions] = useState([...messages.preventCampLabel]);
-  const [isLoading, setIsLoading] = useState(false);
-
   const router = useRouter();
-  const [form] = Form.useForm();
   const dispatch = useDispatch();
 
   const { isUserAuthenticated } = isAuth();
+
+  const [form] = Form.useForm();
+
+  const values = Form.useWatch([], form);
+
+  const [nickNameList, setNickNameList] = useState([]);
+  const [initialValue, setInitialValues] = useState({});
+  const [parentCamp, setParentCamps] = useState([]);
+  const [campExist, setCampExist] = useState(true);
+  const [campNickName, setCampNickName] = useState([]);
+  const [params, setParams] = useState({});
+  const [options, setOptions] = useState([...messages.preventCampLabel]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [haveCampExist, setHaveCampExist] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(true);
+  const [existingCamps, setExistingCamps] = useState([]);
+  const [isShowMore, setIsShowMore] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [isSimPopOpen, setIsSimPopOpen] = useState(false);
+
+  useEffect(() => {
+    form
+      .validateFields({ validateOnly: true })
+      .then(() => setIsDisabled(true))
+      .catch(() => setIsDisabled(false));
+  }, [form, values]);
+
+  const getExistingList = async () => {
+    const topicName = values?.camp_name,
+      queryParamObj: any = {
+        type: "camp",
+        size: 5,
+        page: 1,
+        term: topicName,
+      };
+
+    const res = await globalSearchCanonizer(queryParams(queryParamObj)),
+      resData = res?.data;
+
+    if (res?.status_code === 200) {
+      setHaveCampExist(true);
+      if (resData?.data?.camp) {
+        setExistingCamps(resData?.data?.camp);
+      }
+
+      if (resData?.meta_data?.total > 5) {
+        setIsShowMore(true);
+      }
+    }
+  };
 
   const getRouterParams = () => {
     const q = router?.query;
@@ -134,7 +194,27 @@ const CreateNewCamp = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isUserAuthenticated]);
 
-  const onFinish = async (values: any) => {
+  const isSimilarAvaiable = () => {
+    const namesList = existingCamps?.map((cmp) =>
+      cmp?.type_value?.toLowerCase()
+    );
+
+    const similarNames = findSimilarNames(
+      values?.camp_name?.toLowerCase(),
+      namesList
+    );
+
+    console.log(
+      "similarNames--->",
+      similarNames,
+      " ---exitedname--->",
+      namesList
+    );
+
+    return !!similarNames?.length;
+  };
+
+  const onFinalSubmit = async () => {
     setIsLoading(true);
     if (!values.camp_name?.trim()) {
       form.setFields([
@@ -162,6 +242,9 @@ const CreateNewCamp = ({
     options.map((op) => (body[op.id] = op.checked ? 1 : 0));
 
     const res = await createCamp(body);
+
+    console.log("resposnse---", res.error);
+
     if (res && res.status_code === 200) {
       message.success(res.message);
 
@@ -226,9 +309,35 @@ const CreateNewCamp = ({
                 errors: [res.error[key]],
               },
             ]);
+            if (
+              key === "camp_name" &&
+              res.error[key][0] === "The camp name has already been taken."
+            ) {
+              form.validateFields(["camp_name"]);
+              setIsDisabled(false);
+              setIsError(true);
+              setIsSimPopOpen(false);
+              getExistingList();
+            }
           });
         }
       }
+    }
+
+    setIsSimPopOpen(false);
+
+    setIsLoading(false);
+  };
+
+  const onFinish = async (values) => {
+    setIsLoading(true);
+    const isSimAvalable = isSimilarAvaiable();
+    console.log("isSimAvalable---", isSimAvalable);
+
+    if (isSimAvalable) {
+      setIsSimPopOpen(true);
+    } else {
+      await onFinalSubmit();
     }
 
     setIsLoading(false);
@@ -294,32 +403,101 @@ const CreateNewCamp = ({
 
   const onParentCampChange = () => {};
 
+  const payload = {
+    camp_num: (router?.query.camp[1] as string)?.split("-")[0] ?? "1",
+    topic_num: (router?.query.camp[0] as string)?.split("-")[0],
+  };
+
+  const onCampChange = () => {
+    setHaveCampExist(false);
+  };
+
+  const onCampNameBlur = () => {
+    setIsError(false);
+    if (values?.camp_name) {
+      getExistingList();
+    }
+  };
+
+  const onContributeCLick = (item, e) => {
+    e?.preventDefault();
+    const bd = JSON.parse(item?.breadcrumb_data);
+    router?.push({ pathname: "/" + bd[0][1]?.camp_link });
+  };
+
+  const onClosePopup = () => setIsSimPopOpen(false);
+
+  const onFtContriClick = (e) => {
+    e?.preventDefault();
+    setIsLoading(true);
+    onClosePopup();
+    router?.push({ pathname: "/search/camp", query: { q: values?.camp_name } });
+  };
+
   return (
-    <Fragment>
-      {campExist ? (
-        <CreateNewCampUI
-          onFinish={onFinish}
-          onCancel={onCancel}
-          form={form}
-          initialValue={initialValue}
-          topicData={params}
-          nickNameList={nickNameList}
-          parentCamp={parentCamp}
-          campNickName={campNickName}
-          options={options}
-          onCheckboxChange={onCheckboxChange}
-          onParentCampChange={onParentCampChange}
-          isLoading={isLoading}
-        />
-      ) : (
-        <DataNotFound
-          name={"Camp"}
-          message={"Camp not found"}
-          backURL={"/"}
-          goBack={true}
-        />
-      )}
-    </Fragment>
+    <CustomSpinner key="create-topic-spinner" spinning={isLoading}>
+      <CampInfoBar payload={payload} />
+
+      <Row gutter={20} className="mb-5">
+        {campExist ? (
+          <Fragment>
+            <Col lg={12}>
+              <FormUI
+                onFinish={onFinish}
+                onCancel={onCancel}
+                form={form}
+                initialValue={initialValue}
+                topicData={params}
+                nickNameList={nickNameList}
+                parentCamp={parentCamp}
+                campNickName={campNickName}
+                options={options}
+                onCheckboxChange={onCheckboxChange}
+                onParentCampChange={onParentCampChange}
+                isLoading={isLoading}
+                isEdit={false}
+                isDisabled={isDisabled}
+                onCampChange={onCampChange}
+                onCampNameBlur={onCampNameBlur}
+                values={values}
+              />
+            </Col>
+            <Col lg={12}>
+              {haveCampExist ? (
+                <ExistingCampList
+                  campName={values?.camp_name}
+                  data={existingCamps}
+                  isShowMore={isShowMore}
+                  isError={isError}
+                  onContributeCLick={onContributeCLick}
+                />
+              ) : (
+                <CampInfoCard />
+              )}
+            </Col>
+          </Fragment>
+        ) : (
+          <Col lg={24}>
+            <DataNotFound
+              name={"Camp"}
+              message={"Camp not found"}
+              backURL={"/"}
+              goBack={true}
+            />
+          </Col>
+        )}
+      </Row>
+      <SimilarCampPopup
+        campName={values?.camp_name}
+        data={existingCamps}
+        isOpen={isSimPopOpen}
+        onContributeCLick={onContributeCLick}
+        handleCancel={onClosePopup}
+        loading={false}
+        onFtContriClick={onFtContriClick}
+        onCreateCamp={onFinalSubmit}
+      />
+    </CustomSpinner>
   );
 };
 

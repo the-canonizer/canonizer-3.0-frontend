@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import { Form, Row, Col, Typography } from "antd";
 import {
   CloseOutlined,
@@ -40,8 +40,6 @@ const CreateTopicFromUI = ({
   editCampStatementData,
   isEdit = false,
 }) => {
-  const [isFocused, setIsFocused] = useState(false);
-
   const getNickNameInput = () => {
     const selectInputProps: any = {
       label: (

@@ -157,13 +157,13 @@ const Registration = () => {
     <CustomSpinner key="registration-spinner" spinning={loading}>
       <Card
         bordered={false}
-        className="bg-canGrey1 mt-0 lg:mt-10 h-full flex justify-center items-center [&>.ant-card-body]:p-0 [&>.ant-card-body]:w-full [&_.ant-card-body]:pb-0 min-h-full"
+        className="bg-canGrey1 mt-0 lg:mt-5 h-full flex justify-center items-center [&>.ant-card-body]:p-0 [&>.ant-card-body]:w-full [&_.ant-card-body]:pb-0 min-h-full px-10"
       >
         <Row gutter={20}>
-          <Col lg={12} md={24} xl={12} xs={24} className="hidden lg:block">
+          <Col lg={12} md={24} xl={10} xs={24} className="hidden lg:block">
             <LeftContent onBrowseClick={onBrowseClick} />
           </Col>
-          <Col lg={12} md={24} xl={12} xs={24}>
+          <Col lg={12} md={24} xl={14} xs={24}>
             <RegistrationUi
               form={form}
               onFinish={handleSumitForm}

@@ -28,7 +28,7 @@ const AvatarGroup = ({
     <Avatar.Group
       maxCount={maxCount}
       {...restProps}
-      className="[&_.ant-avatar]:!bg-canBlue2 [&_.ant-avatar-string]:!text-canBlack"
+      className="[&_.ant-avatar]:!bg-canBlue2 [&_.ant-avatar]:border-2 [&_.ant-avatar-string]:!text-canBlack"
     >
       {avatars?.map((av) => (
         <SingleAvatar user={av} key={av?.id} />

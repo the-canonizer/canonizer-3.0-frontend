@@ -1,8 +1,9 @@
 import { Fragment, useEffect } from "react";
 import useState from "react-usestateref";
-import { Typography, Row, Col, Select, List, Tag } from "antd";
+import { Typography, Row, Col, Select, List } from "antd";
 import Link from "next/link";
 import { useSelector } from "react-redux";
+import { DownOutlined } from "@ant-design/icons";
 
 import CommonCard from "components/shared/Card";
 import { RootState } from "src/store";
@@ -14,8 +15,7 @@ import {
 import CustomSkelton from "src/components/common/customSkelton";
 import SectionHeading from "../FeaturedTopic/sectionsHeading";
 import SeeMoreLInk from "../FeaturedTopic/seeMoreLink";
-import HandIcon from "./handIcon";
-import { DownOutlined } from "@ant-design/icons";
+import ScoreTag from "./scoreTag";
 
 const { Option } = Select;
 
@@ -140,7 +140,7 @@ const TrandingTopics = () => {
               }}
               renderItem={(item: any) => (
                 <List.Item
-                  className="font-inter text-sm font-medium bg-white hover:bg-canGrey1 !px-3.5 !py-3 justify-start"
+                  className="font-inter text-sm font-normal bg-white hover:bg-canGrey1 !px-3.5 !py-3 justify-start"
                   id={`topic-${item?.topic_id}`}
                 >
                   <Link
@@ -155,20 +155,13 @@ const TrandingTopics = () => {
                     passHref
                   >
                     <a
-                      className="hover:*:text-canHoverBlue font-medium"
+                      className="hover:*:text-canHoverBlue font-normal"
                       onClick={() => setLoadMoreIndicator(false)}
                     >
                       <Typography.Text>{item?.topic_name}</Typography.Text>
                     </a>
                   </Link>
-                  <Tag
-                    className={
-                      "bg-canOrange text-white border-0 rounded-md ml-1 inline-flex py-[2px] flex items-center text-12"
-                    }
-                  >
-                    <HandIcon />
-                    {item?.topic_score?.toFixed(2)}
-                  </Tag>
+                  <ScoreTag topic_score={item?.topic_score} />
                 </List.Item>
               )}
             />

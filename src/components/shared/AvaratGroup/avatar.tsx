@@ -35,18 +35,12 @@ const SingleAvatar = ({ user }) => {
 
   const renderAvatar = () => {
     if (user?.profile_picture_path) {
-      return (
-        <Avatar
-          src={user?.profile_picture_path}
-          style={{ backgroundColor: "#D0D8F4" }}
-        />
-      );
+      return <Avatar src={user?.profile_picture_path} />;
     }
 
     if (!user?.profile_picture_path && isGravatarAvailable) {
       return (
         <Avatar
-          style={{ backgroundColor: "#D0D8F4" }}
           src={`https://www.gravatar.com/avatar/${md5(user?.email)}.png`}
         />
       );
@@ -54,15 +48,11 @@ const SingleAvatar = ({ user }) => {
 
     if (!user?.profile_picture_path && !isGravatarAvailable) {
       return (
-        <Avatar style={{ backgroundColor: "#D0D8F4" }} className="uppercase">
-          {user?.first_name?.charAt(0)}
-        </Avatar>
+        <Avatar className="uppercase">{user?.first_name?.charAt(0)}</Avatar>
       );
     }
 
-    return (
-      <Avatar style={{ backgroundColor: "#D0D8F4" }} icon={<UserOutlined />} />
-    );
+    return <Avatar icon={<UserOutlined />} />;
   };
 
   return (
