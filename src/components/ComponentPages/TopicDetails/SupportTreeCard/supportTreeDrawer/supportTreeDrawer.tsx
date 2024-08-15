@@ -27,6 +27,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { placeholders } from "src/messages/placeholder";
 
 import {
+  campSignApi,
+  CheckCampSignApiCall,
   getAllRemovedReasons,
   getAllUsedNickNames,
   getCurrentCampRecordApi,
@@ -62,6 +64,7 @@ function SupportTreeDrawer({
   selectNickId: getDelegateId,
   delegateNickName,
   handleCancelSupportCamps,
+  getCheckStatusAPI,
 }: any) {
   const {
     reasons,
@@ -98,13 +101,15 @@ function SupportTreeDrawer({
   const [parentSupportDataList, setParentSupportDataList] = useState([]);
   const [campIds, setcampIds] = useState([]);
   const [isQuickActionSelected, setIsQuickActionSelected] = useState(false);
+  const [signCampData, setSignCampData] = useState(null);
 
   const topicNum = router?.query?.camp?.at(0)?.split("-")?.at(0);
-  const camp_num = router?.query?.camp?.at(1)?.split("-")?.at(0);
+  const camp_num = router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1;
   const CheckDelegatedOrDirect =
     currentDelegatedSupportedClick.delegatedSupportClick;
 
   const topic_name = router?.query?.camp?.at(0)?.split("-")?.slice(1).join("-");
+  const topic_num = router?.query?.camp?.at(0)?.split("-")?.at(0);
 
   const transformDataForDraggable = (data) => {
     return data?.map((item, index) => {
@@ -348,13 +353,54 @@ function SupportTreeDrawer({
       await addDelegateMethod();
     } else if (drawerFor === "directAdd" || drawerFor === "manageSupport") {
       await addSupportMethod(values);
-    }else if(drawerFor === "signPetition"){
-
+    } else if (drawerFor === "signPetition") {
+      signPetitionHandler();
     }
   };
 
   const getReasons = async () => {
     await getAllRemovedReasons();
+  };
+
+  const getSignPetitionData = async () => {
+    let res = await CheckCampSignApiCall(topic_num, camp_num);
+
+    if (res?.status_code == 200 && !!res?.data) {
+      setSignCampData(res?.data);
+    }
+  };
+
+  const signPetitionHandler = async() => {
+    let reqBody = {
+      topic_num,
+      camp_num,
+      nick_name_id:  nickNameList?.at(0)?.id,
+    };
+
+    let res = await campSignApi(reqBody);
+    if (res?.status_code == 200) {
+      const reqBodyForService = {
+        topic_num,
+        camp_num,
+        asOf: asof,
+        asofdate:
+          asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
+        algorithm: algorithm,
+        update_all: 1,
+        fetch_topic_history: +router?.query?.topic_history,
+      };
+
+      let reqBody = {
+        as_of: asof,
+        as_of_date: asofdate,
+        topic_num: +router?.query?.camp[0]?.split("-")[0],
+        camp_num: +router?.query?.camp[1]?.split("-")[0],
+      };
+      await getTreesApi(reqBodyForService);
+      await getCurrentCampRecordApi(reqBody);
+
+      await getCheckStatusAPI();
+    }
   };
 
   useEffect(() => {
@@ -378,8 +424,9 @@ function SupportTreeDrawer({
         getActiveSupportTopic();
       }
 
-      if(drawerFor === "signPetition") {
+      if (drawerFor === "signPetition") {
         getCanonizedNicknameList();
+        getSignPetitionData();
       }
     }
   }, [open]);
@@ -432,9 +479,7 @@ function SupportTreeDrawer({
             <span> {campRecord?.camp_name} </span>
           </>
         ) : drawerFor === "signPetition" ? (
-          <>
-            Sign Camp Petition
-          </>
+          <>Sign Camp Petition</>
         ) : null}
       </>
     );
@@ -821,8 +866,8 @@ function SupportTreeDrawer({
               onFinish={onFinish}
             >
               <div className="support-content">
-                  <div className="alert-wrapper">
-                    <Alert
+                <div className="alert-wrapper">
+                  {/* <Alert
                       className="border-0 rounded-lg info-alert"
                       description={
                         "The camp leader of this camp is mary-doe. If you continue, your support will be delegated to the camp leader"
@@ -830,8 +875,27 @@ function SupportTreeDrawer({
                       type="info"
                       showIcon
                       icon={<i className="icon-info"></i>}
-                    />
-                  </div>
+                    /> */}
+                  <span>
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: signCampData?.warning,
+                      }}
+                    ></div>
+                  </span>
+
+                  {signCampData?.remove_camps?.length > 0 &&
+                    signCampData?.remove_camps?.map((tag) => {
+                      return (
+                        <>
+                          <Tag className="rounded-full bg-[#F0F2FA] border-transparent font-semibold text-base px-5 py-2.5 leading-none text-canBlack">
+                            {`${tag.support_order}.${tag.camp_name}`}
+                          </Tag>
+                        </>
+                      );
+                    })
+                  }
+                </div>
                 <div>
                   <Row gutter={16}>
                     <Col span={24} sm={12}>

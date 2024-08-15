@@ -686,6 +686,7 @@ const SupportTreeCard = ({
           selectNickId={selectNickId}
           delegateNickName={delegateNickName}
           handleCancelSupportCamps={handleCancelSupportCamps}
+          getCheckStatusAPI={getCheckStatusAPI}
         />
         <div className=" support-tree-sec">
           {/* <Paragraph className="position-relative">
