@@ -655,7 +655,6 @@ const SupportTreeCard = ({
   let title = `Support Tree for "${campRecord?.camp_name}" Camp`;
 
   // remove support popup added.
-
   return loadingIndicator || loadingIndicatorSupport ? (
     <CustomSkelton
       skeltonFor="card"
