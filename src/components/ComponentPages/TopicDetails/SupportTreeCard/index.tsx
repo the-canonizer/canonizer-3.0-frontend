@@ -357,8 +357,10 @@ const SupportTreeCard = ({
       return "Your support has already been delegated to the Camp Leader";
     } else if (isUserAuthenticated && campLeaderExist) {
       return "As you are the current Camp Leader, hence you cannot sign the petition.";
-    } else {
+    } else if (!isUserAuthenticated) {
       return "Login to Canonizer to sign the camp";
+    } else {
+      return false;
     }
   };
 
@@ -452,13 +454,13 @@ const SupportTreeCard = ({
                           <div className="w-[24px] h-[24px] rounded-full overflow-hidden bg-canLightBg flex items-center justify-center text-xs">
                             {isImageError ? (
                               <>
-                              <Image
-                                src={support_image}
-                                alt="svg"
-                                height={24}
-                                width={24}
-                                onError={handleImageError}
-                              />
+                                <Image
+                                  src={support_image}
+                                  alt="svg"
+                                  height={24}
+                                  width={24}
+                                  onError={handleImageError}
+                                />
                               </>
                             ) : (
                               <span>
@@ -466,7 +468,9 @@ const SupportTreeCard = ({
                               </span>
                             )}
                           </div>
-                          {data[item]?.camp_leader && <i className="icon-crown text-canOrange"></i>}
+                          {data[item]?.camp_leader && (
+                            <i className="icon-crown text-canOrange"></i>
+                          )}
 
                           <span className="text-canBlack text-xs font-normal">
                             {" "}
@@ -640,13 +644,15 @@ const SupportTreeCard = ({
   };
 
   const disableSignPetition = () => {
-    return isCampLeader()?.campLeaderExist || isCampLeader()?.delegateSupportExist
-  }
+    return (
+      isCampLeader()?.campLeaderExist || isCampLeader()?.delegateSupportExist
+    );
+  };
 
   const signPetitionHandler = () => {
     setOpen(true);
     setDrawerFor(drawerOptions.signPetition);
-  }
+  };
 
   const renderSupportBtn = () => {
     if (isUserAuthenticated) {
@@ -746,14 +752,17 @@ const SupportTreeCard = ({
               width={16}
             />
           </CustomButton>
-          <Button 
-            size="large" 
-            className="flex items-center justify-center h-[44px] px-8 border-[#4EB966] hover:!text-canBlack hover:!border-[#4EB966] hover:!bg-[#4EB9661A] bg-[#4EB9661A] rounded-lg font-medium text-sm gap-2" 
-            block
-            disabled={disableSignPetition()}
-            onClick={()=> signPetitionHandler()}>
+          <Popover content={renderPopupMsg()}>
+            <Button
+              size="large"
+              className="flex items-center justify-center h-[44px] px-8 border-[#4EB966] hover:!text-canBlack hover:!border-[#4EB966] hover:!bg-[#4EB9661A] bg-[#4EB9661A] rounded-lg font-medium text-sm gap-2"
+              block
+              disabled={disableSignPetition()}
+              onClick={() => signPetitionHandler()}
+            >
               Sign Petition<i className="icon-user-plus"></i>
             </Button>
+          </Popover>
         </div>
       </div>
 
