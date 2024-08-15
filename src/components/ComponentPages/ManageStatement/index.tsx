@@ -3,6 +3,7 @@ import { Form, Row, Col, Typography, Modal } from "antd";
 import { useRouter } from "next/router";
 import {
   CloudUploadOutlined,
+  ExclamationCircleFilled,
   FileTextOutlined,
   HomeOutlined,
 } from "@ant-design/icons";
@@ -449,12 +450,13 @@ function ManageStatements({ isEdit = false, add = false }) {
     }
 
     if (res?.data?.post_changes_count > 0) {
-      confirm({
-        title: "Do you want to delete these items?",
+      Modal.confirm({
+        title: "Do you want to discard this change?",
+        icon: <ExclamationCircleFilled />,
         content:
-          "When clicked the OK button, this dialog will be closed after 1 second",
+          "Please note that any unsaved changes will be lost if you cancel.",
         async onOk() {
-          try {
+            try {
             const editInfo = editStatementData;
             const parent_camp = editInfo?.parent_camp;
 
@@ -536,7 +538,6 @@ function ManageStatements({ isEdit = false, add = false }) {
             return console.log("Oops errors!");
           }
         },
-        onCancel() {},
       });
     } else {
       const editInfo = editStatementData;
