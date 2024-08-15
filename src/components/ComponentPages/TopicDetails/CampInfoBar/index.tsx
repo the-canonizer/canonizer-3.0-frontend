@@ -445,6 +445,13 @@ const TimelineInfoBar = ({
             {topicRecord && topicRecord?.topic_name}
           </span>
         </Col>
+        <Col md={12} sm={12} xs={12} className=" flex flex-col mt-4">
+          <span className="text-xs text-canLight">Camp Leader:</span>
+          <span className="text-base text-black">
+            {" "}
+            {topicRecord && topicRecord?.submitter_nick_name}
+          </span>
+        </Col>
       </Row>
       <hr className="horizontal_line my-5" />
       {isTopicPage && (
