@@ -377,6 +377,10 @@ function SupportTreeDrawer({
         GetCheckStatusData();
         getActiveSupportTopic();
       }
+
+      if(drawerFor === "signPetition") {
+        getCanonizedNicknameList();
+      }
     }
   }, [open]);
 
