@@ -881,7 +881,7 @@ function SupportTreeDrawer({
               onFinish={onFinish}
             >
               <div className="support-content">
-                {signCampData ? (
+                {signCampData && signCampData?.warning ? (
                   <>
                     <div className="alert-wrapper">
                       <Alert
