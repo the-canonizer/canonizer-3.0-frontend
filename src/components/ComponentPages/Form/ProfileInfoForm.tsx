@@ -11,27 +11,21 @@ import {
   Radio,
   Space,
   Modal,
+  Drawer,
 } from "antd";
 import moment from "moment";
-import PlacesAutocomplete from "react-places-autocomplete";
-
 import style from "./style.module.scss";
-
 import styles from "../ProfileInfo/ProfileInfoUI/ProfileInfo.module.scss";
 import messages from "../../../messages";
 import CustomSkelton from "../../common/customSkelton";
-import ImageUploader from "../../ComponentPages/ImageUploader";
-import VerifyMobileNumber from "./VerifyMobileNumberForm";
 import {
   EmailChangeVerificationOTP,
   ReplaceAndUpdateNewEmail,
   UpdateNewEmailVerification,
   getChangeEmailRequest,
 } from "src/network/api/userApi";
-import { EditOutlined, FormOutlined, UserOutlined } from "@ant-design/icons";
+import { EditOutlined } from "@ant-design/icons";
 import Image from "next/image";
-import { isDisabled } from "@testing-library/user-event/dist/utils";
-
 const { Title } = Typography;
 const { Option } = Select;
 
@@ -75,6 +69,15 @@ function ProfileInfoForm({
   const [prevValue, setPrevValue] = useState("");
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [afterSaveChangeDisable, setAfterSaveChangeDisable] = useState(false);
+  const [newEmailOpen, setNewEmailOpen] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [getOtpState, setGetOtpState] = useState(false);
+  const [newotp, setNewOtp] = useState(["", "", "", "", "", ""]);
+  const [OtpBox, setOtpBox] = useState(new Array(6).fill(""));
+  const [OtpBoxForNewEmail, setOtpBoxForNewEmail] = useState(
+    new Array(6).fill("")
+  );
+  const [saveOtpValue, setSaveOtpValue] = useState("");
 
   useEffect(() => {
     setgmapsLoaded(true);
@@ -104,11 +107,41 @@ function ProfileInfoForm({
     const newValue = e.target.value;
     setPrevValue(inputValue); // Store the current value as previous before updating
     setInputValue(newValue); // Update the current value
-    if(newValue){
+    if (newValue) {
       setAfterSaveChangeDisable(false);
     }
-    
-    console.log("Prabhakar")
+  };
+
+  const newEmailHandleClick = async () => {
+    if (step === 0) {
+      getEmailChaneRequest();
+      setGetOtpState(true); // Set the OTP state when step 0 is executed
+    } else if (step === 1) {
+      const statusCode = await verifyEmail();
+      if (statusCode === 200) {
+        setUpdatedEmail("");
+        setStep(2);
+      }
+    } else if (step === 2 && getOtpState) {
+      const statusCode = await updateNewEmail();
+      if (statusCode === 200) {
+        setStep(3);
+      }
+    } else if (step === 3) {
+      const statusCode = await replaceAndUpdateNewEmail();
+      if (statusCode === 200) {
+        setDrawerOpen(false);
+        // setStep(4);
+      }
+    }
+  };
+
+  const handleNewEmailSetup = () => {
+    setDrawerOpen(true);
+    setNewEmailOpen(false);
+    newEmailHandleClick();
+    setStep(1);
+    setSaveOtpValue("");
   };
 
   const listOfOption = (optionList, algoOrLang): any => {
@@ -232,7 +265,7 @@ function ProfileInfoForm({
     const reBody = {
       request_change: true,
       verify_email: false,
-      otp: generatedOtp,
+      otp: saveOtpValue,
     };
     try {
       const response = await EmailChangeVerificationOTP(reBody);
@@ -292,17 +325,103 @@ function ProfileInfoForm({
       setOpen(false); // Close the modal
     }
   };
+  const handleOtpBoxes = (e, index) => {
+    const value = e.target.value;
+
+    // If the input is not a digit and not empty, return (do nothing)
+    if (isNaN(value) && value !== "") return;
+
+    // Update the specific OTP box
+    const updatedOtpBox = OtpBox.map((data, indx) =>
+      indx === index ? value : data
+    );
+    setOtpBox(updatedOtpBox);
+
+    // Update the concatenated OTP value
+    setSaveOtpValue(updatedOtpBox.join(""));
+
+    // Move focus to the next input box if available and a digit was entered
+    if (value && e.target.nextSibling && index < 5) {
+      e.target.nextSibling.focus();
+    }
+    // Move focus to the previous input box if backspace was pressed and the box is empty
+    else if (value === "" && e.target.previousSibling && index > 0) {
+      e.target.previousSibling.focus();
+    }
+  };
+  const handleOtpBoxesForNewEmail = (e, index) => {
+    const value = e.target.value;
+
+    // If the input is not a digit and not empty, return (do nothing)
+    if (isNaN(value) && value !== "") return;
+
+    // Update the specific OTP box
+    const updatedOtpBox = OtpBoxForNewEmail.map((data, indx) =>
+      indx === index ? value : data
+    );
+    setOtpBoxForNewEmail(updatedOtpBox);
+
+    // Update the concatenated OTP value
+    setNewEmailOtp(updatedOtpBox.join(""));
+
+    // Move focus to the next input box if available and a digit was entered
+    if (value && e.target.nextSibling && index < 5) {
+      e.target.nextSibling.focus();
+    }
+    // Move focus to the previous input box if backspace was pressed and the box is empty
+    else if (value === "" && e.target.previousSibling && index > 0) {
+      e.target.previousSibling.focus();
+    }
+  };
+  useEffect(() => {
+    if (drawerOpen) {
+      setOtpBox(new Array(6).fill("")); // Clear the OTP boxes
+      setSaveOtpValue(""); // Optionally clear the concatenated OTP value
+    }
+  }, [drawerOpen]);
+  const handleKeyDown = (e, index) => {
+    if (e.key === "Backspace" && !otp[index] && index > 0) {
+      document.getElementById(`otp-${index - 1}`).focus();
+    }
+  };
+
+  const verifyHeading = "Verify Otp to change email address";
+  const enterNewEmail = "Enter new email address";
+  let headingText = "";
+  if (step === 1) {
+    headingText = verifyHeading;
+  } else if (step === 2) {
+    headingText = enterNewEmail;
+  } else {
+    headingText = enterNewEmail; // Default or fallback case
+  }
+  const titleContent = (
+    <div className="flex flex-col items-start justify-center">
+      <div className="flex items-start gap-2.5">
+        <Image
+          onClick={() => {
+            setDrawerOpen(false);
+          }}
+          src="/images/caret-icon.svg"
+          className="rotate-90 !mt-1"
+          width={16}
+          height={24}
+          alt=""
+        />
+        <span className="text-2xl font-normal text-canBlack">
+          {headingText}
+          <p className="text-canLight text-sm font-normal mt-2.5">
+            Enter the OTP you have received on your registered email address
+          </p>
+        </span>
+      </div>
+    </div>
+  );
+
   // @ts-ignore
   if (privateFlags != "loading")
     return (
       <div>
-        {/* <div>
-          <div className={style.imageWrapper}>
-            <div id="upload-profile">
-              <ImageUploader />
-            </div>
-          </div>
-        </div> */}
         <Form
           name="profileInfo"
           form={form}
@@ -419,11 +538,7 @@ function ProfileInfoForm({
                         <EditOutlined
                           className="email-edit-icon "
                           onClick={() => {
-                            getEmailChaneRequest();
-                            setOpen(true);
-                            setNewEmailId(false);
-                            setStep(1);
-                            setGeneratedOtp("");
+                            setNewEmailOpen(true);
                           }}
                         />
 
@@ -482,7 +597,7 @@ function ProfileInfoForm({
                               size="large"
                               defaultValue={publicOrPrivate("birthday")}
                               onChange={handleselectAfter("birthday")}
-                              className="mobile-select font-medium [&_.ant-select-selector]:!h-[3.25rem] [&_.ant-select-selector]:!flex [&_.ant-select-selector]:!items-center [&_.ant-select-selector]:!rounded-br-lg [&_.ant-select-selector]:!rounded-tr-lg [&_.ant-select-selection-item]:!flex [&_.ant-select-selection-item]:!items-center [&_.ant-select]:!my-0 [&_.ant-input-affix-wrapper-lg]:!pl-4 [&_..ant-select-selection-item]:after:!hidden"
+                              className="mobile-select font-medium [&_.ant-select-selector]:!h-[3.25rem] [&_.ant-select-selector]:!flex [&_.ant-select-selector]:!items-center [&_.ant-select-selector]:!rounded-br-lg [&_.ant-select-selector]:!rounded-tr-lg [&_.ant-select-selection-item]:!flex [&_.ant-select-selection-item]:!items-center [&_.ant-select]:!my-0 [&_.ant-input-affix-wrapper-lg]:!pl-4 [&_.ant-select-selection-item]:after:!hidden"
                               showSearch
                               optionFilterProp="children"
                               suffixIcon={
@@ -533,22 +648,6 @@ function ProfileInfoForm({
                 <Col md={12}>
                   <Row></Row>
                 </Col>
-                {/* <Col md={24}>
-                  <VerifyMobileNumber
-                    mobileCarrier={mobileCarrier}
-                    formVerify={formVerify}
-                    isOTPModalVisible={isOTPModalVisible}
-                    setIsOTPModalVisible={setIsOTPModalVisible}
-                    handleOTPCancel={handleOTPCancel}
-                    otp={otp}
-                    handleChangeOTP={handleChangeOTP}
-                    toggleVerifyButton={toggleVerifyButton}
-                    handleMobileNumberChange={handleMobileNumberChange}
-                    userProfileSkeletonV={userProfileSkeletonV}
-                    setOTP={setOTP}
-                    setToggleVerifyButton={setToggleVerifyButton}
-                  />
-                </Col> */}
               </Row>
             </div>
           </div>
@@ -561,22 +660,6 @@ function ProfileInfoForm({
             </Title>
             <Row gutter={30}>
               <Col md={12} sm={24}>
-                {/* <Form.Item
-                  name="address_1"
-                  label={messages.labels.addressLine1}
-                >
-                  <div className="reactDropdown">
-                    {loaded ? (
-                      <PlacesAutocomplete
-                        value={address}
-                        onChange={handleAddressChange}
-                        onSelect={handleAddressSelect}
-                      >
-                        {renderFuncForGooglePlaces}
-                      </PlacesAutocomplete>
-                    ) : null}
-                  </div>
-                </Form.Item> */}
                 <Form.Item
                   name="city"
                   label={messages.labels.city}
@@ -703,42 +786,6 @@ function ProfileInfoForm({
                 </Form.Item>
               </Col>
             </Row>
-            {/* <Title level={4} className="form-Title">
-              Other Information
-            </Title> */}
-            {/* <Row gutter={30}>
-              <Col md={12}>
-                <Form.Item name="language" label={messages.labels.language}>
-                  <Select
-                    id="selectLanguage"
-                    size="large"
-                    placeholder="Select a language"
-                    tabIndex={10}
-                    showSearch
-                    optionFilterProp="children"
-                  >
-                    {listOfOption(languageList, "languages")}
-                  </Select>
-                </Form.Item>
-              </Col>
-              <Col md={12}>
-                <Form.Item
-                  name="default_algo"
-                  label={messages.labels.chooseAlgorithm}
-                >
-                  <Select
-                    id="algorithms"
-                    size="large"
-                    placeholder={messages.placeholders.algorithm}
-                    tabIndex={11}
-                    showSearch
-                    optionFilterProp="children"
-                  >
-                    {listOfOption(algorithmList, "algorithms")}
-                  </Select>
-                </Form.Item>
-              </Col>
-            </Row> */}
           </div>
           <Form.Item className="!flex-col flex items-center lg:flex-row md:flex-row sm:flex-row xs:flex-col justify-center   [&_.ant-form-item-control-input-content]:!flex lg:[&_.ant-form-item-control-input-content]:!flex-row lg:[&_.ant-form-item-control-input-content]:gap-5 mt-6 md:[&_.ant-form-item-control-input-content]:!flex-row [&_.ant-form-item-control-input-content]:!flex-col [&_.ant-form-item-control-input-content]:gap-2.5 md:[&_.ant-form-item-control-input-content]:!justify-center">
             <Button
@@ -777,67 +824,288 @@ function ProfileInfoForm({
           </Form.Item>
         </Form>
         <Modal
-          open={open}
+          open={newEmailOpen}
           onCancel={handleCancel}
           footer={null}
           closable={false}
+          className="[&_.ant-modal-body]:!p-10 [&_.ant-modal-content]:!rounded-xl"
         >
-          <div className="modal_parent">
-            <h3>
-              {step === 2
-                ? "Verify New Email Id"
-                : step === 4
-                ? "Success"
-                : "Update Email Id"}
+          <div>
+            <h3 className="text-xl text-canBlack font-medium text-center">
+              Are you sure you want to change your email address?
             </h3>
-            <div className="otp-btn">
-              {step === 1 ? (
-                <div className="opt-btn-child">
-                  <p>Please enter the OTP sent to your Registered Email ID</p>
-                  <Input
-                    placeholder="Enter OTP Code"
-                    value={generatedOtp}
-                    onChange={(e) => {
-                      setGeneratedOtp(e?.target?.value);
-                    }}
-                  />
-                </div>
-              ) : step === 2 ? (
-                <div className="opt-btn-child">
-                  <p className="m-0 new-email-id">New Email ID</p>
-                  <Input
-                    placeholder="Enter New Email ID"
-                    value={updatedEmail}
-                    onChange={(e) => {
-                      setUpdatedEmail(e?.target?.value);
-                    }}
-                  />
-                </div>
-              ) : step === 3 ? (
-                <div className="opt-btn-child">
-                  <p>Please enter the OTP sent to your New Email ID</p>
-                  <Input
-                    placeholder="Enter OTP Code"
-                    value={newEmailOtp}
-                    onChange={(e) => {
-                      setNewEmailOtp(e?.target?.value);
-                    }}
-                  />
-                </div>
-              ) : step === 4 ? (
-                <div className="last-step-modal">
-                  <p>Your Email ID has been updated to</p>
-                  <h3>{updatedEmail}</h3>
-                </div>
-              ) : (
-                ""
-              )}
-              <Button onClick={handleClick}>
-                {step === 3 ? "Submit" : step == 4 ? "Ok" : "Continue"}
+            <p className="mt-2.5 text-canLight text-sm font-normal text-center">
+              You will need to verify your existing email address via OTP and
+              then add a new address.
+            </p>
+            <div className="flex gap-4 justify-center items-center mt-10">
+              <Button
+                className="Profile_btn ant-btn ant-btn-orange ant-btn-lg py-2.5 px-12 hover:bg-canBlue hover:text-white flex gap-2.5 items-center bg-[#98B7E6] bg-opacity-10 text-canBlack text-base font-medium rounded-lg border-canBlue justify-center "
+                onClick={() => {
+                  setNewEmailOpen(false);
+                }}
+              >
+                Cancel
+                <Image
+                  src="/images/cross-dark.svg"
+                  width={16}
+                  height={16}
+                  alt="no image"
+                />
+              </Button>
+              <Button
+                onClick={handleNewEmailSetup}
+                className=" Profile_btn ant-btn ant-btn-orange ant-btn-lg py-2.5 px-6 hover:bg-canBlue hover:text-white flex gap-2.5 items-center bg-canBlue text-white text-base font-medium rounded-lg border-none justify-center"
+              >
+                Get OTP
+                <Image
+                  src="/images/arrow-right-con.svg"
+                  width={24}
+                  height={24}
+                  alt="no image"
+                />
               </Button>
             </div>
           </div>
         </Modal>
+        <Drawer
+          closable={false}
+          width={730}
+          className="[&.ant-drawer-content-wrapper]:!w-[45rem]"
+          open={drawerOpen}
+          // title={
+          //   step == 1 ? (
+          //     <div className="flex flex-col items-start justify-center">
+          //       <div className="flex items-start gap-2.5">
+          //         <Image
+          //           onClick={() => {
+          //             setDrawerOpen(false);
+          //           }}
+          //           src="/images/caret-icon.svg"
+          //           className="rotate-90 !mt-1"
+          //           width={16}
+          //           height={24}
+          //           alt=""
+          //         />
+          //         <span className="text-2xl font-normal text-canBlack">
+          //           {verifyHeading}
+          //           <p className="text-canLight text-sm font-normal mt-2.5">
+          //             Enter the OTP you have received on your registered email
+          //             address
+          //           </p>
+          //         </span>
+          //       </div>
+          //     </div>
+          //   ) : step == 2 ? (
+          //     <div className="flex flex-col items-start justify-center">
+          //       <div className="flex items-start gap-2.5">
+          //         <Image
+          //           onClick={() => {
+          //             setDrawerOpen(false);
+          //           }}
+          //           src="/images/caret-icon.svg"
+          //           className="rotate-90 !mt-1"
+          //           width={16}
+          //           height={24}
+          //           alt=""
+          //         />
+          //         <span className="text-2xl font-normal text-canBlack">
+          //           {enterNewEmail}
+          //           <p className="text-canLight text-sm font-normal mt-2.5">
+          //             Enter the OTP you have received on your registered email
+          //             address
+          //           </p>
+          //         </span>
+          //       </div>
+          //     </div>
+          //   ) : (
+          //     <div className="flex flex-col items-start justify-center">
+          //       <div className="flex items-start gap-2.5">
+          //         <Image
+          //           onClick={() => {
+          //             setDrawerOpen(false);
+          //           }}
+          //           src="/images/caret-icon.svg"
+          //           className="rotate-90 !mt-1"
+          //           width={16}
+          //           height={24}
+          //           alt=""
+          //         />
+          //         <span className="text-2xl font-normal text-canBlack">
+          //           {enterNewEmail}
+          //           <p className="text-canLight text-sm font-normal mt-2.5">
+          //             Enter the OTP you have received on your registered email
+          //             address
+          //           </p>
+          //         </span>
+          //       </div>
+          //     </div>
+          //   )
+          // }
+          title={titleContent}
+        >
+          <div className="flex flex-col w-full h-full lg:px-7">
+            <div className="flex-1">
+              {step == 1 && (
+                <div>
+                  <p className="mb-4 mt-14 text-sm font-normal text-canBlack">
+                    Enter OTP
+                  </p>
+                  <div className="flex space-x-3">
+                    {OtpBox.map((data, i) => {
+                      return (
+                        <Input
+                          className="w-16 h-14 rounded-lg border border-canGrey2 focus:!shadow-none focus:!outline-none text-base font-semibold hover:border-canGrey2 focus-visible:!outline-transparent focus-visible:!border-canGrey2"
+                          maxLength={1}
+                          placeholder="*"
+                          type="text"
+                          key={i}
+                          value={data}
+                          onChange={(e) => {
+                            handleOtpBoxes(e, i);
+                          }}
+                        />
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {step == 2 && (
+                <div>
+                  <p className=" mt-14 text-sm font-normal text-canBlack mb-4">
+                    Email
+                  </p>
+
+                  <Input
+                    onChange={(e) => {
+                      setUpdatedEmail(e?.target?.value);
+                    }}
+                    id="email"
+                    prefix={
+                      <Image
+                        src="/images/mail-dark-icon.svg"
+                        width={16}
+                        height={16}
+                        alt=""
+                      />
+                    }
+                    className=" rounded-lg   text-base hover:!border-canGrey2 [&_.ant-input-group-addon]:!w-[5rem] [&_.ant-input-prefix]:!mr-2 font-medium text-canBlack
+                   [&_.ant-input]:!rounded-tl-lg [&_.ant-input]:!rounded-bl-lg [&_.ant-input-group-addon]:!rounded-tr-lg [&_.ant-input-group-addon]:!rounded-br-lg [&_.ant-input]:!h-[3.25rem] [&_.ant-input-affix-wrapper]:!py-0 [&_.ant-input]:!pl-2.5 [&_.ant-input-affix-wrapper]:!rounded-tl-lg [&_.ant-input-affix-wrapper]:!rounded-bl-lg [&_.ant-input-affix-wrapper-disabled]:!bg-canDisabled  [&_.ant-input]:!text-base [&_.ant-input]:!font-normal [&_.ant-select-selection-item]:!flex [&_.ant-select-selection-item]:!items-center [&_.ant-select]:!my-0
+                        [&_.ant-input-affix-wrapper-lg]:!pl-4 [&_.ant-input-affix-wrapper-lg]:!pr-0 [&_.ant-input-affix-wrapper-lg]:!bg-transparent "
+                    addonAfter={selectAfter("email", publicOrPrivate("email"))}
+                    placeholder="Enter new email"
+                    size="large"
+                    value={updatedEmail}
+                  />
+                </div>
+              )}
+
+              {step == 3 && (
+                <div>
+                  <p className=" mt-14 text-sm font-normal text-canBlack mb-4">
+                    Email
+                  </p>
+                  <Input
+                    onChange={(e) => {
+                      setUpdatedEmail(e?.target?.value);
+                    }}
+                    id="email"
+                    prefix={
+                      <Image
+                        src="/images/mail-dark-icon.svg"
+                        width={16}
+                        height={16}
+                        alt=""
+                      />
+                    }
+                    className="mb-5 rounded-lg   text-base hover:!border-canGrey2 [&_.ant-input-group-addon]:!w-[5rem] [&_.ant-input-prefix]:!mr-2 font-medium text-canBlack
+                   [&_.ant-input]:!rounded-tl-lg [&_.ant-input]:!rounded-bl-lg [&_.ant-input-group-addon]:!rounded-tr-lg [&_.ant-input-group-addon]:!rounded-br-lg [&_.ant-input]:!h-[3.25rem] [&_.ant-input-affix-wrapper]:!py-0 [&_.ant-input]:!pl-2.5 [&_.ant-input-affix-wrapper]:!rounded-tl-lg [&_.ant-input-affix-wrapper]:!rounded-bl-lg [&_.ant-input-affix-wrapper-disabled]:!bg-canDisabled  [&_.ant-input]:!text-base [&_.ant-input]:!font-normal [&_.ant-select-selection-item]:!flex [&_.ant-select-selection-item]:!items-center [&_.ant-select]:!my-0
+                        [&_.ant-input-affix-wrapper-lg]:!pl-4"
+                    addonAfter={selectAfter("email", publicOrPrivate("email"))}
+                    placeholder="Enter new email"
+                    size="large"
+                    value={updatedEmail}
+                  />
+
+                  <div className="flex flex-col gap-4">
+                    <p className=" mt-8 text-sm font-normal text-canBlack mb-1">
+                      Enter OTP
+                    </p>
+                    <div className="flex gap-2.5">
+                      {OtpBoxForNewEmail.map((data, i) => {
+                        return (
+                          <Input
+                            className="w-16 h-14 rounded-lg border border-canGrey2 focus:!shadow-none focus:!outline-none text-base font-semibold hover:border-canGrey2 focus-visible:!outline-transparent focus-visible:!border-canGrey2"
+                            maxLength={1}
+                            type="text"
+                            key={i}
+                            value={data}
+                            onChange={(e) => {
+                              handleOtpBoxesForNewEmail(e, i);
+                            }}
+                          />
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+            <div className="py-20">
+              <div className="flex items-center justify-center gap-5">
+                <Button
+                  className="Profile_btn ant-btn ant-btn-orange ant-btn-lg py-2.5 px-12 hover:bg-[#98B7E6] hover:text-white flex gap-2.5 items-center bg-[#98B7E6] bg-opacity-10 text-canBlack text-base font-medium rounded-lg border-canBlue justify-center "
+                  onClick={() => {
+                    setDrawerOpen(false);
+                    setStep(0);
+                  }}
+                >
+                  Cancel
+                  <Image
+                    src="/images/cross-dark.svg"
+                    width={16}
+                    height={16}
+                    alt="no image"
+                  />
+                </Button>
+                {step == 2 ? (
+                  <Button
+                    onClick={() => {
+                      newEmailHandleClick();
+                      // setGetOtpState(true);
+                      // setStep(3);
+                    }}
+                    className=" Profile_btn ant-btn ant-btn-orange ant-btn-lg py-2.5 px-6 hover:bg-canBlue hover:text-white flex gap-2.5 items-center bg-canBlue text-white text-base font-medium rounded-lg border-none justify-center focus:bg-canBlue focus:!text-white"
+                  >
+                    Get OTP
+                    <Image
+                      src="/images/verify-otp-caret.svg"
+                      width={24}
+                      height={24}
+                      alt="no image"
+                    />
+                  </Button>
+                ) : (
+                  <Button
+                    className=" Profile_btn ant-btn ant-btn-orange ant-btn-lg py-2.5 px-6 hover:bg-canBlue hover:text-white flex gap-2.5 items-center bg-canBlue text-white text-base font-medium rounded-lg border-none justify-center focus:bg-canBlue focus:text-white"
+                    onClick={() => {
+                      newEmailHandleClick();
+                    }}
+                  >
+                    Verify OTP
+                    <Image
+                      src="/images/verify-otp-caret.svg"
+                      width={24}
+                      height={24}
+                      alt="no image"
+                    />
+                  </Button>
+                )}
+              </div>
+            </div>
+          </div>
+        </Drawer>
       </div>
     );
   else

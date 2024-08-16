@@ -428,7 +428,7 @@ const SupportTreeCard = ({
 
           return (
             <TreeNode
-              className="[&_.ant-tree-node-content-wrapper]:!w-full [&_.ant-tree-switcher]:!hidden !bg-transparent border-b hover:[&_.ant-tree-node-content-wrapper]:!bg-transparent !w-full"
+              className="[&_.ant-tree-node-content-wrapper]:!w-full [&_.ant-tree-switcher]:!hidden !bg-transparent border-b hover:[&_.ant-tree-node-content-wrapper]:!bg-transparent !w-full !p-0"
               title={
                 <>
                   <div className="group w-full">
@@ -437,7 +437,7 @@ const SupportTreeCard = ({
                           "treeListItemTitle " + styles.treeListItemTitle
                         }
                       > */}
-                    <div className="flex gap-1 items-center  boder-b py-2.5 w-full flex-wrap">
+                    <div className="flex gap-1 items-center  boder-b p-[10px] w-full flex-wrap">
                       <Link
                         className="flex flex-wrap"
                         href={{
@@ -448,16 +448,16 @@ const SupportTreeCard = ({
                         }}
                       >
                         <a className="flex  gap-2.5 items-center flex-wrap text-canBlack hover:!text-canBlack">
-                          <span className="text-canBlack text-sm font-medium">
+                          <span className="text-canBlack text-xs font-normal">
                             #{data[item].support_order}{" "}
                           </span>
-                          <div className="w-[32px] h-[32px] rounded-full overflow-hidden bg-canLightBg flex items-center justify-center">
+                          <div className="w-[24px] h-[24px] rounded-full overflow-hidden bg-canLightBg flex items-center justify-center text-xs">
                             {isImageError ? (
                               <Image
                                 src={support_image}
                                 alt="svg"
-                                height={32}
-                                width={32}
+                                height={24}
+                                width={24}
                                 onError={handleImageError}
                               />
                             ) : (
@@ -467,7 +467,7 @@ const SupportTreeCard = ({
                             )}
                           </div>
 
-                          <span className="text-canBlack text-sm font-medium">
+                          <span className="text-canBlack text-xs font-normal">
                             {" "}
                             {data[item].nick_name}
                           </span>
@@ -478,10 +478,10 @@ const SupportTreeCard = ({
                         <Image
                           src="/images/hand-icon.svg"
                           alt="svg"
-                          height={15}
-                          width={12}
+                          // height={15}
+                          width={10}
                         />
-                        <span className="lg:text-sm text-xs text-white font-medium flex items-center leading-[16px]">
+                        <span className="text-xs text-white font-normal flex items-center">
                           {campRecord?.is_archive
                             ? 0
                             : is_checked && isUserAuthenticated
@@ -523,13 +523,14 @@ const SupportTreeCard = ({
                                   campRecord?.is_archive === 1
                                 }
                                 onClick={() => handleDelegatedClick(data[item])}
-                                className="hidden group-hover:flex mb-2  items-center gap-1 justify-center bg-canLightBlue text-canBlue text-base rounded-lg font-medium h-[44px] w-full "
+                                className="hidden group-hover:flex mb-2  items-center gap-1 justify-center bg-canLightBlue text-canBlue text-xs rounded-lg font-medium w-full !shadow-none p-2"
                               >
                                 <Image
                                   src="/images/user-minus-regular.svg"
                                   alt="svg"
-                                  height={24}
-                                  width={24}
+                                  height={16}
+                                  width={16}
+                                  preview={false}
                                 />
                                 {"Delegate Your Suppport"}
                               </Button>

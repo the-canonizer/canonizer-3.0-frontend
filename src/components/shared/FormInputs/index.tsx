@@ -19,7 +19,7 @@ const Inputs = ({
 }: any) => {
   return (
     <Form.Item
-      className={`font-14 text-canBlack font-medium ${wrapperClassName}`}
+      className={`font-sm text-canBlack font-normal ${wrapperClassName}`}
       name={name}
       label={label}
       data-id={dataid}
@@ -32,7 +32,7 @@ const Inputs = ({
           addonBefore={addonBefore}
           type={type}
           placeholder={placeholder}
-          className={`text-canBlack font-normal h-[40px] rounded-md [&_.ant-input-prefix]:!text-canBlack [&_.ant-input-prefix]:mr-3 ${inputClassName}`}
+          className={`text-canBlack font-normal h-[40px] rounded-md [&_.ant-input-prefix]:!text-canBlack [&_.ant-input-prefix]:mr-3 text-sm mainInput ${inputClassName}`}
           autoComplete="off"
           onKeyDown={onKeyDown}
           onBlur={onBlur}
@@ -46,7 +46,7 @@ const Inputs = ({
           addonBefore={addonBefore}
           type={type}
           placeholder={placeholder}
-          className={`text-canBlack font-normal h-[40px] rounded-md [&_.ant-input-prefix]:!text-canBlack [&_.ant-input-prefix]:mr-3 ${inputClassName}`}
+          className={`text-canBlack font-normal h-[40px] rounded-md [&_.ant-input-prefix]:!text-canBlack [&_.ant-input-prefix]:mr-3 text-sm mainInput ${inputClassName}`}
           autoComplete="off"
           onKeyDown={onKeyDown}
           onBlur={onBlur}

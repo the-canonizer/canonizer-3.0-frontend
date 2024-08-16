@@ -48,6 +48,7 @@ const PreferedTopics = () => {
                 <SingleTopicCard
                   topic={ft}
                   onTopicLinkClick={() => setLoadMoreIndicator(false)}
+                  avatars={ft?.supporterData?.slice(0, 3)}
                 />
               )}
             </div>

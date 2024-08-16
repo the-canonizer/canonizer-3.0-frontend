@@ -1,5 +1,4 @@
 import { Fragment } from "react";
-import { useRouter } from "next/router";
 
 import Logo from "../logoHeader";
 import HeaderMenu from "../HeaderMenu";
@@ -8,8 +7,6 @@ import useAuthentication from "src/hooks/isUserAuthenticated";
 
 const LoggedOutHeader = () => {
   const { isUserAuthenticated } = useAuthentication();
-
-  const router = useRouter();
 
   return (
     <Fragment>
