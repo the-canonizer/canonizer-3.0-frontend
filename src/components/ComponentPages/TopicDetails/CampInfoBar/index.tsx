@@ -449,7 +449,7 @@ const TimelineInfoBar = ({
           <span className="text-xs text-canLight">Camp Leader:</span>
           <span className="text-base text-black">
             {" "}
-            {topicRecord && topicRecord?.submitter_nick_name}
+            {campRecord && campRecord?.camp_leader_nick_name}
           </span>
         </Col>
       </Row>

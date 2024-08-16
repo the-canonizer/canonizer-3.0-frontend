@@ -145,6 +145,7 @@ const SupportTreeCard = ({
   ] = useState(true);
   const [open, setOpen] = useState(false);
   const [supportTreeData, setSupportTreeData] = useState(null);
+  const [loading,setLoading] = useState(false);
   const [drawerFor, setDrawerFor] = useState(""); //["directAdd","delegateAdd","directRemove","delegateRemove","manageSupport"]
   let drawerOptions = {
     directAdd: "directAdd",
@@ -697,6 +698,8 @@ const SupportTreeCard = ({
           delegateNickName={delegateNickName}
           handleCancelSupportCamps={handleCancelSupportCamps}
           getCheckStatusAPI={getCheckStatusAPI}
+          loading={loading}
+          setLoading={setLoading}
         />
         <div className=" support-tree-sec">
           {/* <Paragraph className="position-relative">

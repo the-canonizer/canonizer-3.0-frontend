@@ -3,6 +3,7 @@ import {
   MenuOutlined,
   MinusOutlined,
   PlusOutlined,
+  UserAddOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 import {
@@ -66,6 +67,8 @@ function SupportTreeDrawer({
   delegateNickName,
   handleCancelSupportCamps,
   getCheckStatusAPI,
+  loading = false,
+  setLoading,
 }: any) {
   const {
     reasons,
@@ -372,6 +375,7 @@ function SupportTreeDrawer({
   };
 
   const signPetitionHandler = async () => {
+    setLoading(true);
     let reqBody = {
       topic_num,
       camp_num,
@@ -394,14 +398,16 @@ function SupportTreeDrawer({
       let reqBody = {
         as_of: asof,
         as_of_date: asofdate,
-        topic_num: +router?.query?.camp[0]?.split("-")[0],
-        camp_num: +router?.query?.camp[1]?.split("-")[0],
+        topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
+        camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
       };
       await getTreesApi(reqBodyForService);
       await getCurrentCampRecordApi(reqBody);
 
       await getCheckStatusAPI();
     }
+    setLoading(false);
+    onClose();
   };
 
   useEffect(() => {
@@ -969,9 +975,10 @@ function SupportTreeDrawer({
                   type="primary"
                   htmlType="submit"
                   className=" min-w-[200px] bg-canBlue flex items-center justify-center hover:bg-canHoverBlue focus:bg-canHoverBlue hover:text-white font-medium text-white disabled:bg-disabled font-base rounded-lg"
+                  disabled={loading}
                 >
                   {renderSubmitBtnText()}
-                  <PlusOutlined />
+                  <UserAddOutlined />
                 </Button>
               </div>
             </Form>
