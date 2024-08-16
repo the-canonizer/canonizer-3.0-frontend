@@ -754,6 +754,7 @@ const SettingsUI = () => {
               </div>
             </div>
           </div>
+          <div className="border border-canGrey2 rounded-xl lg:p-8 p-1">
           <Card
             data-testid="contentlist"
             style={{ width: "100%" }}
@@ -763,10 +764,14 @@ const SettingsUI = () => {
             onTabChange={(key) => {
               onTabChange(key);
             }}
-            className="border-0 tab--card lg:[&_.ant-card-body]:!p-8 [&_.ant-card-body]:!p-1 [&_.ant-card-body]:!rounded-xl  lg:[&_.ant-card-body]:border  lg:[&_.ant-card-body]:border-canGrey2 [&_.ant-card]:!border-none "
+            className="border-0 tab--card  [&_.ant-card]:!border-none [&_.ant-card-body]:!p-0 "
           >
             {contentList[activeTabKey]}
           </Card>
+          
+          </div>
+         
+        
         </div>
       </div>
     </Fragment>

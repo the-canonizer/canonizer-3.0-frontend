@@ -1,42 +1,20 @@
 .searchCategories {
-  // padding: 0;
-  // border-radius: 10px;
   [class*="ant-select-item ant-select-item-group"] {
     display: none;
   }
   [class*="ant-select-item-option"] {
-    // padding: 5px;
     [class*="ant-select-item-option-active"] {
       background-color: white;
       padding: 5px;
     }
   }
-  // [class*="ant-select-item-option-active"] {
-  //   &:not([class*="ant-select-item-option-disabled"]) {
-  //     background-color: white;
-    
-  //   }
-  // }
   [class*="ant-tabs-nav"] {
     [class*="ant-tabs-nav-wrap"] {
-      // padding: 0 15px;
       [class*="ant-tabs-nav-list"] {
         justify-content: space-between;
-        // width: 100%;
         [class*="ant-tabs-tab"] {
           [class*="ant-tabs-tab-btn"] {
-            // color: #242b37;
-            // font-weight: 600;
             transition: all 0.3s;
-          }
-          &[class*="ant-tabs-tab-active"] {
-            [class*="ant-tabs-tab-btn"] {
-              // color: #5482c8;
-              // font-weight: 600;
-            }
-          }
-          & + [class*="ant-tabs-tab"] {
-            // margin: 0 0 0 35px;
           }
         }
       }
@@ -52,9 +30,7 @@
   [class*="ant-tabs-content-holder"] {
     overflow: hidden auto;
     max-height: 500px;
-    // padding-right: 20px;
     white-space: break-spaces;
-    // padding: 0 15px;
 
     &::-webkit-scrollbar {
       width: 10px;
@@ -78,7 +54,6 @@
       border: none;
       [class*="ant-card-head-title"] {
         margin: 0;
-        // padding: 10px 0;
       }
     }
     [class*="ant-card-body"] {
@@ -96,15 +71,13 @@
       &::placeholder {
         color: #777f93;
         font-weight: 400;
-        font-size: 16px;
+        font-size: 12px;
       }
     }
     [class*="ant-input-group-addon"] {
       border-radius: 0px 10px 10px 0px;
-      // border-color: #ccd4e7;
       display: flex;
       background: transparent !important;
-      // border: 1px solid #ccd4e7 !important;
       border: none !important;
       height: 44px !important;
       width: 50px !important;
@@ -123,15 +96,4 @@
       }
     }
   }
-}
-
-.widthScroll {
-  transition: width 0.3s;
-  // width: 40%;
-  // @media screen and (max-width: 1350px) {
-  //   width: 30%;
-  // }
-  // @media screen and (max-width: 1024px) {
-  //   width: 50%;
-  // }
 }

@@ -23,7 +23,7 @@ export const labels = {
   zipCode: "Zip Code (Limit 255 Chars)",
   chooseAlgorithm: "Choose Default Algorithm Preferences",
   emailId: "Email ID",
-  addnewNickName: "Add New Nickname",
+  addnewNickName: "Add Nickname",
   nickName: "Nickname (Limit 50 Char)",
   visibilityStatus: "Visibility Status",
 
@@ -108,7 +108,7 @@ export const preventCampLabel = [
     disable: false,
   },
   {
-    label: "Single level sub camps only.",
+    label: "Allow creation of single level sub-camps only.",
     tooltip:
       "Disable the ability to add additional sub camps beyond direct sub camps.",
     id: "is_one_level",

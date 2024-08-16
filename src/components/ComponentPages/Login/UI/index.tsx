@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 import { Typography, Form, Checkbox, Card } from "antd";
-import { ArrowRightOutlined, MobileOutlined } from "@ant-design/icons";
+import { ArrowRightOutlined } from "@ant-design/icons";
 import Link from "next/link";
 
 import messages from "src/messages";
@@ -38,26 +38,26 @@ const LoginUi = ({
         scrollToFirstError
         validateTrigger={messages.formValidationTypes()}
       >
-        <div className="flex justify-center items-center text-center flex-col mb-4">
+        <div className="flex justify-center items-center text-center flex-col mb-4 [&_.ant-image>img]:h-[39px]">
           <RegistrationUiGoBack onBrowseClick={onBrowseClick} />
           <LogoHeader />
           <Title
             level={4}
-            className="mt-4 text-sm text-canBlack font-medium"
+            className="mt-4 text-sm text-canBlack !font-medium"
             id="login-title"
           >
             Welcome back!
           </Title>
-          <Paragraph className="text-muted text-sm text-canLight font-regular">
+          {/* <Paragraph className="text-muted text-sm text-canLight font-regular">
             All fields are mandatory.
-          </Paragraph>
+          </Paragraph> */}
           {errorMsg && (
             <Text className="text-canRed" type="danger" id="login-error-label">
               {errorMsg}
             </Text>
           )}
         </div>
-        <div className="w-full lg:w-8/12 m-auto">
+        <div className="w-full lg:w-8/12 m-auto mt-10">
           <Inputs
             name="username"
             label={
@@ -104,11 +104,11 @@ const LoginUi = ({
           </div>
         </div>
 
-        <div className="flex flex-col items-center justify-center">
+        <div className="flex flex-col items-center justify-center mt-5 mb-16">
           <PrimaryButton
             data-testid="submitButton"
             htmlType="submit"
-            className="h-[40px] text-sm rounded-lg !w-10/12 lg:!w-8/12 mb-6 flex justify-center items-center mx-auto"
+            className="h-[40px] text-sm rounded-lg !w-8/12 lg:!w-4/12 mb-6 flex justify-center items-center mx-auto"
             id="login-btn"
             disabled={!isDisabled}
           >
@@ -116,13 +116,13 @@ const LoginUi = ({
           </PrimaryButton>
           <SecondaryButton
             htmlType="button"
-            className="h-[40px] text-sm rounded-lg !w-10/12 lg:!w-8/12 flex justify-center items-center"
+            className="h-[40px] text-sm rounded-lg !w-8/12 lg:!w-4/12 flex justify-center items-center"
             onClick={onOTPClick}
             id="request-otp-btn"
             data-testid="request-otp-btn"
             disabled={!isOTPDisabled}
           >
-            Request One Time Password <MobileOutlined />
+            Request OTP
           </SecondaryButton>
         </div>
 

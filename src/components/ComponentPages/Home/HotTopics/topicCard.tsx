@@ -17,10 +17,12 @@ const propTypes = {
 
 const SingleTopicCard = ({
   topic,
+  avatars,
+  scoreTag = null,
   onTopicLinkClick = null,
-  topic_name_key = "topic_name",
   tag_key = "topicTags",
-  avatar_key = "supporterData",
+  maxCount = 3,
+  cardClassName = "",
 }) => {
   const isMobile = useIsMobile();
 
@@ -30,7 +32,10 @@ const SingleTopicCard = ({
 
   return (
     <CommonCard
-      className="border-0 h-full transition duration-300 hocus:shadow-lg [&_.rightArrow]:hover:block mainCard hocus:bg-white [&_.ant-card-body]:flex [&_.ant-card-body]:flex-col [&_.ant-card-body]:h-full fullHeightCard [&_.ant-card-body]:before:hidden [&_.ant-card-body]:after:hidden"
+      className={
+        "border-0 h-full transition duration-300 hocus:shadow-lg [&_.rightArrow]:hover:block mainCard hocus:bg-white [&_.ant-card-body]:flex [&_.ant-card-body]:flex-col [&_.ant-card-body]:h-full fullHeightCard [&_.ant-card-body]:before:hidden [&_.ant-card-body]:after:hidden [&_.ant-card-body]:p-[15px] " +
+        cardClassName
+      }
       key={topic?.id}
     >
       <Link
@@ -46,27 +51,31 @@ const SingleTopicCard = ({
           className="flex justify-between pb-3 items-center"
           onClick={onTopicLinkClick}
         >
-          <Typography.Paragraph className="m-0 text-base font-medium font-inter !mb-0">
-            {topic[topic_name_key]}
-          </Typography.Paragraph>
+          <Typography.Text className="flex w-11/12 items-center">
+            <Typography.Paragraph className="m-0 text-sm font-medium font-inter !mb-0 line-clamp-1">
+              {topic?.topic_name}
+            </Typography.Paragraph>
+            {scoreTag}
+          </Typography.Text>
           <RightOutlined className="text-canBlue font-bold hidden rightArrow" />
         </a>
       </Link>
       <CardDescription
+        className="topicDesc"
         description={topic?.statement?.parsed_value || topic?.statement}
       />
       <div className="flex justify-between mt-auto pt-5 mt-auto flex-row items-center">
-        <div className="text-letopic flex flex-col justify-center">
+        <div className="catTags flex flex-col justify-center">
           <TopicCatsLabel tags={topic[tag_key]} />
           <ViewCounts
             views={topic?.views}
-            className={`${topic[tag_key]?.length ? "!mt-2" : ""}`}
+            className={`${topic[tag_key]?.length ? "!mt-1" : ""} cardCountCls`}
           />
         </div>
         <AvatarGroup
-          avatars={topic[avatar_key]?.slice(0, 3)}
-          size={isMobile ? "small" : "large"}
-          maxCount={3}
+          avatars={avatars}
+          size={isMobile ? "small" : "medium"}
+          maxCount={maxCount}
           maxStyle={{
             color: "#f56a00",
             backgroundColor: "#fde3cf",

@@ -23,7 +23,7 @@ const TopicCatsLabel = ({ tags, loading = false, ...restProps }) => {
 
   const LinkItem = ({ text, link }) => (
     <Link href={link}>
-      <a className="!text-canBlue text-sm font-inter font-medium hover:!canHoverBlue">
+      <a className="!text-canBlue text-xs font-inter font-medium hover:!canHoverBlue">
         {text}
       </a>
     </Link>
@@ -44,7 +44,7 @@ const TopicCatsLabel = ({ tags, loading = false, ...restProps }) => {
               key={item?.id}
             />{" "}
             {idx !== tags?.length - 1 ? (
-              <span className="!text-canBlue text-sm font-inter font-medium hover:!canHoverBlue mr-1">
+              <span className="!text-canBlue text-xs font-inter font-medium hover:!canHoverBlue mr-1">
                 ,
               </span>
             ) : (
