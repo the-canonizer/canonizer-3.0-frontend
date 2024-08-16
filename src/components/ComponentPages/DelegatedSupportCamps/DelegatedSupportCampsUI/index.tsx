@@ -1,12 +1,23 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Card, Modal, Row, Col, Form, Empty, Pagination, Button } from "antd";
-import { CloseCircleOutlined } from "@ant-design/icons";
+import {
+  Table,
+  Modal,
+  Button,
+  Form,
+  Pagination,
+  Empty,
+  Card,
+  Row,
+  Col,
+} from "antd";
+import { CloseCircleOutlined, UserDeleteOutlined } from "@ant-design/icons";
 
 import styles from "./DelegatedSupportedCamps.module.scss";
 import messages from "../../../../messages";
 import CustomSkelton from "src/components/common/customSkelton";
-// import SupportRemovedModal from "src/components/common/supportRemovedModal";
+import Image from "next/image";
+import Search from "antd/lib/transfer/search";
 
 export default function DelegatedSupportCampsUI({
   removeCardDelegatedSupportedCamps,
@@ -20,24 +31,139 @@ export default function DelegatedSupportCampsUI({
   search,
   removeSupport,
   removeSupportCampsData,
-  // statusFlag,
   delegateSupportedSkeleton,
 }: any) {
   const [displayList, setDisplayList] = useState([]);
-  // const [removeSupportSpinner, setRemoveSupportSpinner] = useState(false);
   const limit = 3;
+
+  useEffect(() => {
+    pageChange(1, 5);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [delegatedSupportCampsList]);
+
+  const pageChange = (pageNumber, pageSize) => {
+    const startingPosition = (pageNumber - 1) * pageSize;
+    const endingPosition = startingPosition + pageSize;
+    setDisplayList(
+      delegatedSupportCampsList?.slice(startingPosition, endingPosition)
+    );
+  };
+
+  const columns = [
+    {
+      title: "Sr.",
+      dataIndex: "sr",
+      key: "sr",
+
+      render: (text, record, index) => index + 1,
+    },
+    {
+      title: "Topics",
+
+      dataIndex: "title",
+      key: "title",
+      render: (text, record) => (
+        <Link href={record.title_link}>
+          <a className="text-base font-semibold text-canBlack">{text}</a>
+        </Link>
+      ),
+    },
+    {
+      title: "Supported Camps",
+      dataIndex: "camps",
+      key: "camps",
+
+      render: (camps, record) =>
+        camps.slice(0, limit).map((camp, i) => (
+          <p key={i}>
+            {camp.support_order}.{" "}
+            <Link href={camp.camp_link}>
+              <a className="text-base font-semibold text-canBlue underline">
+                {camp.camp_name}
+              </a>
+            </Link>
+          </p>
+        )),
+    },
+    {
+      title: "Delegated To",
+      dataIndex: "delegated_to_nick_name",
+      key: "delegated_to_nick_name",
+
+      render: (text, record) => (
+        <Link href={record.delegated_to_nick_name_link}>
+          <a className="text-base font-semibold text-canBlue underline">
+            {text}
+          </a>
+        </Link>
+      ),
+    },
+    {
+      title: "Nickname",
+      dataIndex: "my_nick_name",
+      key: "my_nick_name",
+
+      render: (text, record) => (
+        <Link href={record.my_nick_name_link}>
+          <a className="text-base font-semibold text-canBlue underline">
+            {text}
+          </a>
+        </Link>
+      ),
+    },
+    // {
+    //   title: "Action",
+    //   key: "action",
+    //   render: (text, record) => (
+    //     <Button
+    //       type="link"
+    //       onClick={() => removeCardDelegatedSupportedCamps(record)}
+    //       className={styles.RemoveCardSupported}
+    //     >
+    //       <Image
+    //         src="/images/minus-user-icon.svg"
+    //         alt=""
+    //         width={24}
+    //         height={24}
+    //       />
+    //     </Button>
+    //   ),
+    // },
+    {
+      title: "Action",
+      key: "action",
+
+      render: (text, record) => (
+        <Button
+          type="link"
+          onClick={() => removeCardDelegatedSupportedCamps(record)}
+        >
+          <Image
+            src="/images/minus-user-icon.svg"
+            alt=""
+            width={24}
+            height={24}
+          />
+        </Button>
+      ),
+    },
+  ];
+  const showEmpty = (msg) => {
+    return <Empty description={msg} />;
+  };
 
   function CardTitle(props: any) {
     return (
-      <div className={styles.card_heading_title}>
-        {messages.labels.fortopic}
+      <div className="flex flex-col">
+        <span className="uppercase text-sm font-medium mb-1">
+          {" "}
+          {messages.labels.fortopic} -
+        </span>
         <span>
           {" "}
-          &quot;
           <Link href={props.title_link}>
-            <a>{props.value}</a>
+            <a className=" text-base font-medium">{props.value}</a>
           </Link>
-          &quot;
         </span>
       </div>
     );
@@ -45,52 +171,39 @@ export default function DelegatedSupportCampsUI({
 
   function CurrentSupportedCamps(props: any) {
     return (
-      <>
-        <p>
-          {props.id_data} &nbsp;
-          <Link href={props.camp_link}>
-            <a className={styles.Bluecolor}>{props.value}</a>
-          </Link>
-        </p>
-      </>
+      <p>
+        <span>{props.id_data}</span>
+        <Link href={props.camp_link}>
+          <a className="text-canBlue text-base font-medium">{props.value}</a>
+        </Link>
+      </p>
     );
   }
 
   function SupportedCampsTo(props: any) {
     return (
-      <>
-        <div className={styles.line_height}>
-          <p>
-            Support Delegated To:{" "}
-            <Link href={props.supportedto_link}>
-              <a className={styles.Bluecolor}>{props.supportedto}</a>
-            </Link>
-          </p>
-          <p>
-            Nickname:{" "}
-            <Link href={props.NickNameLink}>
-              <a className={styles.Bluecolor}>{props.NickName}</a>
-            </Link>
-          </p>
-        </div>
-      </>
+      <div className="">
+        <p className="border-b py-3 flex flex-col">
+          <span className="uppercase text-sm font-medium">Delegated To:</span>
+          <Link href={props.supportedto_link}>
+            <a className="text-canBlue text-base font-medium">
+              {props.supportedto}
+            </a>
+          </Link>
+        </p>
+        <p className="border-b py-3 flex flex-col">
+          <b className="uppercase text-sm font-medium">Nickname:</b>
+          <Link href={props.NickNameLink}>
+            <a className="text-canBlue text-base font-medium">
+              {props.NickName}
+            </a>
+          </Link>
+        </p>
+      </div>
     );
   }
 
-  const showEmpty = (msg) => {
-    return <Empty description={msg} />;
-  };
-
   const filteredArray = () => {
-    // return displayList.filter((val) => {
-    //   if (search.trim() == "") {
-    //     return val;
-    //   } else if (
-    //     val.title.toLowerCase().trim().includes(search.toLowerCase().trim())
-    //   ) {
-    //     return val;
-    //   }
-    // });
     if (search.trim() == "") {
       return displayList;
     } else {
@@ -106,34 +219,176 @@ export default function DelegatedSupportCampsUI({
 
   useEffect(() => {
     pageChange(1, 5);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [delegatedSupportCampsList]);
-
-  const pageChange = (pageNumber, pageSize) => {
-    const startingPosition = (pageNumber - 1) * pageSize;
-    const endingPosition = startingPosition + pageSize;
-    setDisplayList(
-      delegatedSupportCampsList.slice(startingPosition, endingPosition)
-    );
-  };
-
-  // remove support popup added.
-
-  // const [removeForm] = Form.useForm();
-
-  // const onRemoveFinish = (values) => {
-  //   setRemoveSupportSpinner(true);
-
-  //   removeSupport(values);
-
-  //   removeForm.resetFields();
-  //   setRemoveSupportSpinner(false);
-  // };
-
-  // remove support popup added.
 
   return (
     <div>
+      <div className="hidden lg:flex w-full">
+        {delegateSupportedSkeleton ? (
+          <CustomSkelton
+            skeltonFor="delegateSupportedCampListCard"
+            bodyCount={4}
+            stylingClass=""
+            isButton={false}
+          />
+        ) : (
+          <div className="w-full">
+            <div className="flex items-center justify-between mb-5">
+              {" "}
+              <h3 className=" text-base font-semibold text-canBlack">
+                DELEGATED SUPPORTED CAMPS
+              </h3>
+            </div>
+
+            {delegatedSupportCampsList &&
+            delegatedSupportCampsList.length > 0 ? (
+              <Table
+                columns={columns}
+                dataSource={displayList}
+                pagination={false}
+                rowKey={(record) => record.title}
+                bordered
+                scroll={{ x: "1060" }}
+              />
+            ) : (
+              <Empty description="No Data Found" />
+            )}
+            {delegatedSupportCampsList &&
+            delegatedSupportCampsList.length > 0 &&
+            search.length === 0 ? (
+              <Pagination
+                hideOnSinglePage={true}
+                total={delegatedSupportCampsList.length}
+                pageSize={5}
+                onChange={pageChange}
+                showSizeChanger={false}
+                className="mt-5"
+              />
+            ) : (
+              ""
+            )}
+          </div>
+        )}
+        <Modal
+          className={styles.modal_cross}
+          title="Remove Support"
+          open={isRemoveSupportModalVisible}
+          onOk={handleSupportedCampsCancel}
+          onCancel={handleSupportedCampsCancel}
+          footer={null}
+          closeIcon={<CloseCircleOutlined />}
+        >
+          <Form>
+            <Form.Item style={{ marginBottom: "0px" }}>
+              <p id="remove_confirmation">
+                Are you sure, you want to remove your delegate support given to{" "}
+                <span>
+                  &quot;
+                  <Link
+                    href={removeSupportCampsData.delegated_to_nick_name_link}
+                  >
+                    <a>{removeSupportCampsData.delegated_to_nick_name}</a>
+                  </Link>
+                  &quot;
+                </span>{" "}
+                under the topic{" "}
+                <span className={styles.Bluecolor}>
+                  &quot;
+                  <Link href={removeSupportCampsData.title_link}>
+                    <a>{removeSupportCampsData.title}</a>
+                  </Link>
+                  &quot;
+                </span>{" "}
+                ?
+              </p>
+            </Form.Item>
+            <Form.Item
+              className={styles.text_right}
+              style={{ marginBottom: "0px" }}
+            >
+              <Button
+                id="removeBtn"
+                onClick={removeSupport}
+                type="primary"
+                style={{
+                  marginTop: 10,
+                  marginRight: 10,
+                }}
+                className="ant-btn ant-btn-orange"
+              >
+                Remove
+              </Button>
+              <Button
+                id="cancelBtn"
+                onClick={handleSupportedCampsCancel}
+                type="default"
+                style={{
+                  marginTop: 10,
+                }}
+                className=" !px-0"
+              >
+                Cancel
+              </Button>
+            </Form.Item>
+          </Form>
+        </Modal>
+        <Modal
+          title={<h3 id="currentSupportedCamps">Current Supported Camps:</h3>}
+          footer={null}
+          open={viewMoreModalVisible}
+          onOk={handelViewMoreModalCancel}
+          onCancel={handelViewMoreModalCancel}
+          closeIcon={<CloseCircleOutlined />}
+        >
+          <>
+            <h3 id="forTopic">
+              For Topic{" "}
+              <span className={styles.Bluecolor}>
+                &quot;{" "}
+                <Link href={viewMoreDataValue.title_link}>
+                  <a>{viewMoreDataValue.title}</a>
+                </Link>{" "}
+                &quot;
+              </span>{" "}
+            </h3>
+            <div className={styles.topic_content}>
+              <p>
+                {messages.labels.supportdelegatedto}{" "}
+                <Link href={viewMoreDataValue.delegated_to_nick_name_link}>
+                  <a className={styles.Bluecolor}>
+                    {viewMoreDataValue.delegated_to_nick_name}
+                  </a>
+                </Link>
+              </p>
+              <p>
+                {messages.labels.nickname}{" "}
+                <Link href={viewMoreDataValue.my_nick_name_link}>
+                  <a className={styles.Bluecolor}>
+                    {viewMoreDataValue.my_nick_name}
+                  </a>
+                </Link>
+              </p>
+            </div>
+            <h3 id="ListOfCurrentSupportedCamps" className={styles.marginTop}>
+              List of current supported camps
+            </h3>
+            <div className={styles.list_Content}>
+              {viewMoreDataValue.camps?.map((val, i) => {
+                return (
+                  <p key={i}>
+                    {val.support_order}.{" "}
+                    <Link href={val.camp_link}>
+                      <a className={styles.Bluecolor}>{val.camp_name}</a>
+                    </Link>
+                  </p>
+                );
+              })}
+            </div>
+          </>
+        </Modal>
+      </div>
+
+      <div className="lg:hidden flex w-full">
       {delegateSupportedSkeleton ? (
         <CustomSkelton
           skeltonFor="delegateSupportedCampListCard"
@@ -142,247 +397,89 @@ export default function DelegatedSupportCampsUI({
           isButton={false}
         />
       ) : (
-        <div>
-          {delegatedSupportCampsList && delegatedSupportCampsList.length > 0
-            ? filteredArray().length > 0
-              ? filteredArray()?.map((data, i) => {
-                  return (
-                    <Card
-                      key={i}
-                      className={styles.cardBox_tags}
-                      type="inner"
-                      size="default"
-                      title={
-                        <CardTitle
-                          title_link={data.title_link}
-                          value={data.title}
-                        />
-                      }
-                      extra={
-                        <div
-                          data-testid="removeCardDelegatedSupportedCamps"
-                          className={styles.RemoveCardSupported}
-                          onClick={() =>
-                            removeCardDelegatedSupportedCamps(data)
-                          }
-                        >
-                          <CloseCircleOutlined />{" "}
-                          {messages.labels.removeSupport}{" "}
+        <div className="w-full">
+          {displayList && displayList.length > 0 ? (
+            displayList.map((data, i) => (
+              <div key={i} className="!border !border-canGrey2 rounded-lg mb-5 last:mb-0 px-2.5">
+                <Card
+                  className="[&_.ant-card-head]:!px-0 [&_.ant-card-head]:!bg-transparent !w-full [&_.ant-card-head]:!border-none"
+                  type="inner"
+                  size="default"
+                  title={
+                    <CardTitle
+                      title_link={data.title_link}
+                      value={data.title}
+                    />
+                  }
+                  style={{ width: 360, marginBottom: 16 }}
+                >
+                  <div>
+                    <Row>
+                      <Col span={24}>
+                        <div className="border-y py-3">
+                          <span id="currentSupportedCamp" className="uppercase text-sm font-medium text-canBlack">
+                            {messages.labels.currentSupportedCamps}
+                          </span>
+                          {data.camps?.slice(0, limit).map((val, i) => (
+                            <CurrentSupportedCamps
+                              key={i}
+                              value={val.camp_name}
+                              id_data={val.support_order + "."}
+                              camp_link={val.camp_link}
+                            />
+                          ))}
                         </div>
-                      }
-                      style={{ width: 760, marginBottom: 16 }}
-                    >
-                      <div>
-                        <Row className={styles.flex_wrap}>
-                          <Col span={12} className={styles.flex_wrap_col}>
-                            <>
-                              <SupportedCampsTo
-                                supportedto={data.delegated_to_nick_name}
-                                supportedto_link={
-                                  data.delegated_to_nick_name_link
-                                }
-                                NickName={data.my_nick_name}
-                                NickNameLink={data.my_nick_name_link}
-                              />
-                            </>
-                          </Col>
-                          <Col span={12} className={styles.border_left}>
-                            <div className={styles.line_height1}>
-                              <p>
-                                <b id="currentSupportedCamp">
-                                  {messages.labels.currentSupportedCamps}
-                                </b>
-                              </p>
+                        {data.camps.length > limit && (
+                          <a
+                            className={styles.mrgn_left}
+                            onClick={(e) => showViewMoreModal(e, data)}
+                          >
+                            {messages.labels.viewMore}
+                          </a>
+                        )}
+                      </Col>
+                      <Col span={24}>
+                        <SupportedCampsTo
+                          supportedto={data.delegated_to_nick_name}
+                          supportedto_link={data.delegated_to_nick_name_link}
+                          NickName={data.my_nick_name}
+                          NickNameLink={data.my_nick_name_link}
+                        />
+                      </Col>
+                    </Row>
+                  </div>
+                  <Button
+                    className="bg-btnBg bg-opacity-10 rounded-lg py-2.5  w-full mt-5 flex items-center justify-center gap-2.5 text-base font-medium"
+                    onClick={() => removeCardDelegatedSupportedCamps(data)}
+                  >
+                    Remove Support
+                    <Image
+                      src="/images/minus-user-icon.svg"
+                      alt=""
+                      width={24}
+                      height={24}
+                    />
+                  </Button>
+                </Card>
+              </div>
+            ))
+          ) : (
+            showEmpty("No Data Found")
+          )}
 
-                              {data.camps?.slice(0, limit).map((val, i) => {
-                                return (
-                                  <CurrentSupportedCamps
-                                    key={i}
-                                    value={val.camp_name}
-                                    id_data={val.support_order + "."}
-                                    camp_link={val.camp_link}
-                                  />
-                                );
-                              })}
-                            </div>
-                            {data.camps.length > limit ? (
-                              <a
-                                className={styles.mrgn_left}
-                                onClick={(e) => showViewMoreModal(e, data)}
-                              >
-                                {messages.labels.viewMore}
-                              </a>
-                            ) : (
-                              ""
-                            )}
-                          </Col>
-                        </Row>
-                      </div>
-                    </Card>
-                  );
-                })
-              : showEmpty("No Data Found")
-            : showEmpty("No Data Found")}
-          {delegatedSupportCampsList &&
-          delegatedSupportCampsList.length > 0 &&
-          search.length == 0 ? (
+          {delegatedSupportCampsList && delegatedSupportCampsList.length > 0 && search.length === 0 && (
             <Pagination
               hideOnSinglePage={true}
               total={delegatedSupportCampsList.length}
               pageSize={5}
               onChange={pageChange}
               showSizeChanger={false}
+              className="mt-5"
             />
-          ) : (
-            ""
           )}
         </div>
       )}
-      {/* <Modal
-        className={styles.modal_cross}
-        title={
-          <p id="remove_confirmation" className={styles.modalTitle}>
-            You are about to remove your support from the camp:{" "}
-            <span className={styles.Bluecolor}>
-              &quot;
-              <Link href={removeSupportCampsData.title_link}>
-                <a>{removeSupportCampsData.title}</a>
-              </Link>
-              &quot;
-            </span>{" "}
-            You can optionally add a helpful reason, along with a citation link.
-          </p>
-        }
-        open={isRemoveSupportModalVisible}
-        onOk={handleSupportedCampsCancel}
-        onCancel={handleSupportedCampsCancel}
-        footer={null}
-        closeIcon={<CloseCircleOutlined />}
-      >
-        <Spin spinning={removeSupportSpinner} size="small">
-          <SupportRemovedModal
-            onFinish={onRemoveFinish}
-            handleCancel={handleSupportedCampsCancel}
-            form={removeForm}
-          />
-        </Spin>
-      </Modal> */}
-      <Modal
-        className={styles.modal_cross}
-        title="Remove Support"
-        open={isRemoveSupportModalVisible}
-        onOk={handleSupportedCampsCancel}
-        onCancel={handleSupportedCampsCancel}
-        footer={null}
-        closeIcon={<CloseCircleOutlined />}
-      >
-        <Form>
-          <Form.Item style={{ marginBottom: "0px" }}>
-            <p id="remove_confirmation">
-              Are you sure, you want to remove your delegate support given to{" "}
-              <span>
-                &quot;
-                <Link href={removeSupportCampsData.delegated_to_nick_name_link}>
-                  <a>{removeSupportCampsData.delegated_to_nick_name}</a>
-                </Link>
-                &quot;
-              </span>{" "}
-              under the topic{" "}
-              <span className={styles.Bluecolor}>
-                &quot;
-                <Link href={removeSupportCampsData.title_link}>
-                  <a>{removeSupportCampsData.title}</a>
-                </Link>
-                &quot;
-              </span>{" "}
-              ?
-            </p>
-          </Form.Item>
-          <Form.Item
-            className={styles.text_right}
-            style={{ marginBottom: "0px" }}
-          >
-            <Button
-              id="removeBtn"
-              onClick={removeSupport}
-              type="primary"
-              style={{
-                marginTop: 10,
-                marginRight: 10,
-              }}
-              className="ant-btn ant-btn-orange"
-            >
-              Remove
-            </Button>
-            <Button
-              id="cancelBtn"
-              onClick={handleSupportedCampsCancel}
-              type="default"
-              style={{
-                marginTop: 10,
-              }}
-              className="ant-btn"
-            >
-              Cancel
-            </Button>
-          </Form.Item>
-        </Form>
-      </Modal>
-      <Modal
-        title={<h3 id="currentSupportedCamps">Current Supported Camps:</h3>}
-        footer={null}
-        open={viewMoreModalVisible}
-        onOk={handelViewMoreModalCancel}
-        onCancel={handelViewMoreModalCancel}
-        closeIcon={<CloseCircleOutlined />}
-      >
-        <>
-          <h3 id="forTopic">
-            {" "}
-            For Topic{" "}
-            <span className={styles.Bluecolor}>
-              &quot;{" "}
-              <Link href={viewMoreDataValue.title_link}>
-                <a>{viewMoreDataValue.title}</a>
-              </Link>{" "}
-              &quot;
-            </span>{" "}
-          </h3>
-          <div className={styles.topic_content}>
-            <p>
-              {messages.labels.supportdelegatedto}{" "}
-              <Link href={viewMoreDataValue.delegated_to_nick_name_link}>
-                <a className={styles.Bluecolor}>
-                  {viewMoreDataValue.delegated_to_nick_name}
-                </a>
-              </Link>
-            </p>
-            <p>
-              {messages.labels.nickname}{" "}
-              <Link href={viewMoreDataValue.my_nick_name_link}>
-                <a className={styles.Bluecolor}>
-                  {viewMoreDataValue.my_nick_name}
-                </a>
-              </Link>
-            </p>
-          </div>
-          <h3 id="ListOfCurrentSupportedCamps" className={styles.marginTop}>
-            List of current supported camps
-          </h3>
-          <div className={styles.list_Content}>
-            {viewMoreDataValue.camps?.map((val, i) => {
-              return (
-                <CurrentSupportedCamps
-                  key={i}
-                  value={val.camp_name}
-                  id_data={val.support_order + "."}
-                  camp_link={val.camp_link}
-                />
-              );
-            })}
-          </div>
-        </>
-      </Modal>
+    </div>
     </div>
   );
 }

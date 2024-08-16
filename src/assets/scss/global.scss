@@ -606,3 +606,10 @@ body {
     }
   }
 }
+#nickNameList .ant-table-tbody tr td{
+  @apply text-base font-normal text-canBlack
+}
+
+.DraggableTags {
+  @apply flex flex-col
+}
