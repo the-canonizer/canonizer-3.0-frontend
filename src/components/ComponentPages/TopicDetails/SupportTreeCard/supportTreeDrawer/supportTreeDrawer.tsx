@@ -367,11 +367,13 @@ function SupportTreeDrawer({
   };
 
   const getSignPetitionData = async () => {
+    setLoading(true)
     let res = await CheckCampSignApiCall(topic_num, camp_num);
 
     if (res?.status_code == 200 && !!res?.data) {
       setSignCampData(res?.data);
     }
+    setLoading(false)
   };
 
   const signPetitionHandler = async () => {
@@ -384,6 +386,8 @@ function SupportTreeDrawer({
 
     let res = await campSignApi(reqBody);
     if (res?.status_code == 200) {
+      openNotificationWithIcon(res?.message);
+
       const reqBodyForService = {
         topic_num,
         camp_num,

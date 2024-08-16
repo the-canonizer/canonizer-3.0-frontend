@@ -13,6 +13,7 @@ import TreeRequest from "../request/campDetailRequest";
 import { message } from "antd";
 import { store } from "../../store";
 import { handleError } from "../../utils/generalUtility";
+import { showMessage } from "components/ComponentPages/notificationBar/notificationBar";
 
 export const getTreesApi = async (reqBody) => {
   try {
@@ -288,6 +289,6 @@ export const campSignApi = async (reqBody, loginToken = null) => {
 
     return campSign;
   } catch (error) {
-    message.error(error?.error?.data?.message);
+    showMessage("error", error?.error?.data?.message);
   }
 };
