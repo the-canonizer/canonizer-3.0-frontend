@@ -219,6 +219,9 @@ const NetworkConstants = {
     EmailChangeVerification: `${BaseCanonizerApiUrl}/emailchange-verify-otp`,
     UpdateNewEmailRequest: `${BaseCanonizerApiUrl}/update-email-request`,
     ReplaceExistOneUpdateNewEmail: `${BaseCanonizerApiUrl}/update-email`,
+
+    // PostStatementCount
+    postStatementCount:`${BaseCanonizerApiUrl}/post-statement-count`
   },
   Method: {
     GET: "GET",

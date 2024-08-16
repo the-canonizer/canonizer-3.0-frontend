@@ -14,7 +14,7 @@
     .ant-card-head {
       @apply border-b-0 py-9 px-0 min-h-[auto];
       .ant-card-head-title {
-        @apply text-base font-semibold whitespace-normal p-0;
+        @apply text-xl font-bold whitespace-normal p-0;
       }
     }
     & > .ant-card-body {
@@ -54,7 +54,7 @@
     .ant-card-body {
       @apply py-3.5 px-2;
       .ant-card-meta-title {
-        @apply text-[#000000d9] text-sm font-medium;
+        @apply text-[#000000d9] text-base font-semibold;
       }
     }
   }
@@ -68,7 +68,7 @@
       @apply list-none m-0 max-h-[360px] overflow-auto;
 
       li {
-        @apply flex items-start gap-2 text-sm text-[#262626] py-0 px-4 relative;
+        @apply flex items-start gap-2 text-sm text-[#262626] py-0 px-4 relative cursor-pointer;
 
         &.active {
           @apply text-[#4484ce] font-semibold;
