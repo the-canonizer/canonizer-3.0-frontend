@@ -210,7 +210,7 @@ function SupportTreeDrawer({
     let res = await getAllUsedNickNames(topicNum && body);
     if (res && res?.status_code == 200) {
       setNickNameList(res?.data);
-      setNictNameId(res?.data[0]?.id);
+      setNictNameId(res?.data?.at(0)?.id);
     }
   };
 
@@ -884,27 +884,19 @@ function SupportTreeDrawer({
                 {signCampData ? (
                   <>
                     <div className="alert-wrapper">
-                      {/* <Alert
-                      className="border-0 rounded-lg info-alert"
-                      description={
-                        "The camp leader of this camp is mary-doe. If you continue, your support will be delegated to the camp leader"
-                      }
-                      type="info"
-                      showIcon
-                      icon={<i className="icon-info"></i>}
-                    /> */}
-                      <span
-                        className={validationTypeColor(
-                          signCampData?.warning_type
-                        )}
-                        id="getSupportStatusDataWarning"
-                      >
-                        <div
-                          dangerouslySetInnerHTML={{
-                            __html: signCampData?.warning,
-                          }}
-                        ></div>
-                      </span>
+                      <Alert
+                        className="border-0 rounded-lg info-alert"
+                        description={
+                          <span
+                            dangerouslySetInnerHTML={{
+                              __html: signCampData?.warning,
+                            }}
+                          ></span>
+                        }
+                        type={signCampData?.warning_type}
+                        showIcon
+                        icon={<i className={`icon-${signCampData?.warning_type}`}></i>}
+                      />
 
                       {signCampData?.remove_camps?.length > 0 &&
                         signCampData?.remove_camps?.map((tag) => {
