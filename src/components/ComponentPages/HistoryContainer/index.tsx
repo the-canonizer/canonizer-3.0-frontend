@@ -378,12 +378,12 @@ function HistoryContainer() {
       <Empty />
     </div>
   );
-
-  const renderButton = (type, label, count, active, classes = "") => (
+  const renderButton = (type, label, count, active, classes = "",disabled) => (
     <Button
       size="large"
       className={`btn-${type} ${classes} text-sm ${active ? "active" : ""}`}
       onClick={() => handleTabButton(type)}
+      disabled={disabled}
     >
       {label} <span className="ml-1">({count}) </span>
     </Button>
@@ -423,10 +423,11 @@ function HistoryContainer() {
       },
     ];
 
-    return buttons.map(({ type, label, count, className }) =>
-      renderButton(type, label, count, activeTab === type, className)
+    return buttons?.map(({ type, label, count, className }) =>
+      renderButton(type, label, count, activeTab === type, className,count < 1)
     );
   };
+
 
   return (
     <CustomLayout afterHeader={<Breadcrumbs updateId={liveRecordId} />}>
