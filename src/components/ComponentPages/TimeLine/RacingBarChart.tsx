@@ -140,8 +140,8 @@ function RacingBarChart({ data }: any) {
       .attr("class", "bar")
       .attr("x", (entry) => manageBarXAxis(entry))
       .attr("height", yScale.bandwidth())
-      .attr("rx", 6) // Set the x-axis radius for the rounded corners
-      .attr("ry", 6) // Set the y-axis radius for the rounded corners
+      .attr("rx", 6) 
+      .attr("ry", 6) 
       .transition()
       .attr("width", (entry) => {
         const length = manageBarXAxis(entry);
