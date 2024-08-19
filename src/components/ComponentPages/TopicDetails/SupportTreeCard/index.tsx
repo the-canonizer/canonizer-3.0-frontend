@@ -657,8 +657,10 @@ const SupportTreeCard = ({
   };
 
   const signPetitionHandler = () => {
-    setOpen(true);
-    setDrawerFor(drawerOptions.signPetition);
+    if(isUserAuthenticated){
+      setOpen(true);
+      setDrawerFor(drawerOptions.signPetition);
+    }
   };
 
   const renderSupportBtn = () => {
