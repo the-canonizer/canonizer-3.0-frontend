@@ -271,9 +271,8 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
           stylingClass=""
         />
       ) : (
-        <>
-          <div className="audio-player">
-            {/* <Popover content={content} trigger="click" placement="leftBottom">
+        <div className="audio-player">
+          {/* <Popover content={content} trigger="click" placement="leftBottom">
               <Button
                 type="primary"
                 size="middle"
@@ -284,26 +283,25 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
                 Share
               </Button>
             </Popover> */}
-            <TimelineSlider
-              mockData={mockData}
-              setStart={setStart}
-              start={start}
-              setTimelineDescript={setTimelineDescript}
-              handleEventSelection={handleEventSelection}
-              animationSpeed={animationSpeed}
-              setAnimationSpeed={setAnimationSpeed}
-              iteration={iteration}
-              setIteration={setIteration}
-              handleForwardOrBackord={handleForwardOrBackord}
-              isPlaying={isPlaying}
-              setIsPlaying={setIsPlaying}
-              // eventId={eventId}
-              // setEventId={setEventId}
-              // value={value}
-              // setValue={setValue}
-            />
-          </div>
-        </>
+          <TimelineSlider
+            mockData={mockData}
+            setStart={setStart}
+            start={start}
+            setTimelineDescript={setTimelineDescript}
+            handleEventSelection={handleEventSelection}
+            animationSpeed={animationSpeed}
+            setAnimationSpeed={setAnimationSpeed}
+            iteration={iteration}
+            setIteration={setIteration}
+            handleForwardOrBackord={handleForwardOrBackord}
+            isPlaying={isPlaying}
+            setIsPlaying={setIsPlaying}
+            // eventId={eventId}
+            // setEventId={setEventId}
+            // value={value}
+            // setValue={setValue}
+          />
+        </div>
       )}
       <div className="evenline-bars">
         {loading || !data ? (
@@ -314,9 +312,7 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
             stylingClass=""
           />
         ) : data?.length > 0 ? (
-          <>
-            <RacingBarChart data={data} />
-          </>
+          <RacingBarChart data={data} />
         ) : (
           // <h1>No Event Found!</h1>
           <Empty description="No Event Found!" />
