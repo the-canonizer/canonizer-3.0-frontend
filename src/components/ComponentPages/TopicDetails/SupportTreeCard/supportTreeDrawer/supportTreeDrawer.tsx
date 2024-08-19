@@ -412,6 +412,7 @@ function SupportTreeDrawer({
       await getCurrentCampRecordApi(reqBody);
 
       await getCheckStatusAPI();
+      await handleCancelSupportCamps({ isCallApiStatus: true })
     }
     setLoader(false);
     onClose();
