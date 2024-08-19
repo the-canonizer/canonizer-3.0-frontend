@@ -75,12 +75,14 @@ function ManageStatementUI({
   isDisabled,
   onPreviewClick,
   isDraft,
+  autoSave,
+  isAutoSaving,
 }) {
   return (
     <CommonCards className="border-0 bg-white">
       <header className="mb-14">
         <Typography.Paragraph className="text-xl text-canBlack font-medium">
-          {isEdit && !isDraft
+          {isEdit
             ? "Update Camp Statement"
             : "Adding Camp Statement"}
         </Typography.Paragraph>
@@ -163,7 +165,13 @@ function ManageStatementUI({
                     oneditorchange={onEditorStateChange}
                     placeholder="Write Your Statement Here"
                     items={EditorToolbarItems}
-                  />
+                    saveContent={(data) => {
+                      autoSave({
+                        statement: data,
+                        nick_name: nickNameData?.at(0)?.id
+                      });
+                    }}
+                  ></Editorckl>
                 )}
               </Form.Item>
             </Col>
@@ -197,13 +205,14 @@ function ManageStatementUI({
                   className="inline-flex items-center justify-center h-auto py-2 px-7 mr-5 h-auto"
                   onClick={onDiscardClick}
                   id="update-cancel-btn"
+                  disabled={isAutoSaving}
                 >
                   Discard <CloseOutlined />
                 </SecondaryButton>
                 <PrimaryButton
                   htmlType="submit"
                   className="inline-flex items-center justify-center h-auto py-2 px-7 h-auto"
-                  disabled={submitIsDisable || !isDisabled}
+                  disabled={submitIsDisable || !isDisabled || isAutoSaving}
                 >
                   Publish Statement
                   <UploadOutlined />
