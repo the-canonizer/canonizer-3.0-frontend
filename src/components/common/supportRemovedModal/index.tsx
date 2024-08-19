@@ -109,7 +109,7 @@ const SupportRemovedModal = ({
                   }}
 
                   onSelect={onKeyUp}
-                  className="[&_.ant-select-selection-item]:!text-canLightWhite [&_.ant-select-arrow]:!right-4 !w-1/2 [&_.ant-select-selector]:!h-[3.25rem] [&_.ant-select-selector]:!pl-10 [&_.ant-select-selector]:!flex [&_.ant-select-selector]:!items-center [&_.ant-select-selector]:!rounded-lg [&_.ant-select-selector]:!border-canGrey2 [&_.ant-select-selector]:!border"
+                  className="[&_.ant-select-selection-item]:!text-canLightWhite [&_.ant-select-arrow]:!right-4 w-full lg:!w-1/2 [&_.ant-select-selector]:!h-[3.25rem] [&_.ant-select-selector]:!pl-10 [&_.ant-select-selector]:!flex [&_.ant-select-selector]:!items-center [&_.ant-select-selector]:!rounded-lg [&_.ant-select-selector]:!border-canGrey2 [&_.ant-select-selector]:!border"
                 >
                   <Option key="select" value={null}>
                   Select reason from list
@@ -168,8 +168,8 @@ const SupportRemovedModal = ({
         </Row>
 
         {!isAdd && (
-          <div className="py-20">
-            <div className="flex items-center justify-center gap-5">
+          <div className="lg:py-20 py-6 ">
+            <div className="flex items-center justify-center gap-5 lg:flex-row flex-col">
 
 
               {/* <Button
@@ -183,7 +183,7 @@ const SupportRemovedModal = ({
               Cancel
             </Button> */}
               <Button
-                className="Profile_btn ant-btn ant-btn-orange ant-btn-lg py-2.5 px-12 hover:bg-[#98B7E6] hover:text-white flex gap-2.5 items-center bg-[#98B7E6] bg-opacity-10 text-canBlack text-base font-medium rounded-lg border-canBlue justify-center "
+                className="Profile_btn ant-btn ant-btn-orange ant-btn-lg hover:text-canBlack flex gap-2.5 items-center bg-btnBg bg-opacity-10 hover:!bg-btnBg hover:!bg-opacity-10 text-canBlack text-base font-medium rounded-lg border-canBlue justify-center w-52 "
 
                 type="primary"
                 htmlType="button"
@@ -203,7 +203,7 @@ const SupportRemovedModal = ({
                 type="primary"
                 htmlType="submit"
                 size={"large"}
-                className=" Profile_btn ant-btn ant-btn-orange ant-btn-lg py-2.5 px-6 hover:bg-canBlue hover:text-white flex gap-2.5 items-center bg-canBlue text-white text-base font-medium rounded-lg border-none justify-center focus:bg-canBlue focus:!text-white"
+                className=" Profile_btn ant-btn ant-btn-orange ant-btn-lg w-52 hover:bg-canBlue hover:text-white flex gap-2.5 items-center bg-canBlue text-white text-base font-medium rounded-lg border-none justify-center focus:bg-canBlue focus:!text-white"
                 id="create-topic-btn"
               >
                 {isOrderChange ? "Submit" : <span className="!flex items-center justify-center gap-2.5">Remove Support  <Image

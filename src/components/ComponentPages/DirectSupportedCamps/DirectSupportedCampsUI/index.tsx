@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Table, Button, Pagination, Empty, Spin, Modal, Form, Drawer } from "antd";
+import { Table, Button, Pagination, Empty, Spin, Modal, Form, Drawer, Input } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import { DraggableArea } from "react-draggable-tags";
 import Link from "next/link";
@@ -21,7 +21,7 @@ export default function DirectSupportedCampsUI({
   isSupportedCampsModalVisible,
   directSupportedCampsList,
   setDirectSupportedCampsList,
-  search,
+  // search,
   setCardCamp_ID,
   removeSupport,
   handleClose,
@@ -51,6 +51,7 @@ export default function DirectSupportedCampsUI({
   const [currentCamp, setCurrentCamp] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [open, setOpen] = useState(false);
+  const [search, setSearch] = useState("");
 
   const { openDrawerForDirectSupportedCamp } = useSelector(
     (state: RootState) => ({
@@ -83,7 +84,7 @@ export default function DirectSupportedCampsUI({
             <a className="text-base font-semibold flex items-center gap-2.5 text-canBlack">{text}</a>
           </Link>
           <Image
-            onClick={() => {dispatch(setOpenDrawerForDirectSupportedCamp(true)); removeCardSupportedCamps(record) }}
+            onClick={() => { dispatch(setOpenDrawerForDirectSupportedCamp(true)); removeCardSupportedCamps(record) }}
             src="/images/minus-user-icon.svg"
             width={24}
             height={24}
@@ -265,8 +266,8 @@ export default function DirectSupportedCampsUI({
         />
       ) : (
         <div>
-          <div className="flex justify-between items-center mb-5">
-            <div>
+          <div className="flex lg:flex-row flex-col justify-between items-start mb-5 lg:gap-0 gap-2.5">
+            <div className="w-full flex-1">
               <h3 className="text-base uppercase font-semibold text-canBlack mb-5">
                 DIRECT SUPPORTED CAMPS
               </h3>
@@ -275,10 +276,21 @@ export default function DirectSupportedCampsUI({
                 on your choice position.
               </p>
             </div>
-            {/* <div>
-              {/ Uncomment if you want to add search functionality /}
-              {/ <Search placeholder="Search via topic name" /> /}
-            </div> */}
+            <div className="lg:w-auto w-full flex justify-end">
+              <Input
+                suffix={<Image src="/images/search-icon.svg" width={20} height={20} alt="" />}
+                data-testid="settingSearch"
+                value={search}
+                placeholder="Search via topic name"
+                type="text"
+                name="search"
+                className="!h-10 rounded-lg border border-canGrey2 text-base font-normal lg:w-auto w-full"
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                }}
+              />
+            </div>
+
           </div>
           {directSupportedCampsList && directSupportedCampsList.length > 0 ? (
             filteredArray().length > 0 ? (
@@ -348,9 +360,10 @@ export default function DirectSupportedCampsUI({
         <h1 id="changesWillBeReverted">Changes will be reverted ?</h1>
       </Modal>
       <Drawer
+      className="hidden lg:flex"
         open={openDrawerForDirectSupportedCamp}
         closeIcon={
-          <Image onClick={() => {dispatch(setOpenDrawerForDirectSupportedCamp(false)); }} src="/images/refine-back-arrow.svg" width={16} height={24} />
+          <Image onClick={() => { dispatch(setOpenDrawerForDirectSupportedCamp(false)); }} src="/images/refine-back-arrow.svg" width={16} height={24} />
         }
         // className="[&.ant-drawer-content-wrapper]:!w-[45rem]"
         width={730}
@@ -365,7 +378,7 @@ export default function DirectSupportedCampsUI({
                   : "You are about to remove your support from the camp: "}
             {!isChangingOrder && (
               <span>
-               
+
                 {modalPopupText ? (
                   <Link
                     href={{
@@ -388,17 +401,80 @@ export default function DirectSupportedCampsUI({
                     );
                   })
                 )}
-             
+
               </span>
             )}
-         
+
             {/* You can optionally add a helpful reason, along with a citation link. */}
           </p>
         }
 
       >
         <p className="text-sm font-normal text-canRed mb-8">
-          Note : You are about to remove your support from all the camps from the topic:<span className="text-sm font-semibold"> "Theories of consciousness"</span>. You can optionally add a helpful reason, along with a citation link.
+          Note : You are about to remove your support from all the camps from the topic:<span className="text-sm font-semibold">&quot;{removeSupportCampsData.title}&quot;</span>.You can optionally add a helpful reason, along with a citation link.
+        </p>
+        <SupportRemovedModal
+          onFinish={onRemoveFinish}
+          handleCancel={handleSupportedCampsCancel}
+          form={removeForm}
+          isOrderChange={isChangingOrder}
+        />
+
+
+      </Drawer>
+      <Drawer
+      className="flex lg:hidden"
+        open={openDrawerForDirectSupportedCamp}
+        closeIcon={
+          <Image onClick={() => { dispatch(setOpenDrawerForDirectSupportedCamp(false)); }} src="/images/refine-back-arrow.svg" width={16} height={24} />
+        }
+        // className="[&.ant-drawer-content-wrapper]:!w-[45rem]"
+        width={320}
+        title={
+          <p id="all_camps_topics" className="text-2xl font-normal">
+            {isChangingOrder
+              ? "You are about to change the order of your supported camps"
+              : modalPopupText
+                ? "You are about to remove your support from all the camps from the topic: "
+                : campIds?.length > 1
+                  ? "You are about to remove your support from the camps: "
+                  : "You are about to remove your support from the camp: "}
+            {!isChangingOrder && (
+              <span>
+
+                {modalPopupText ? (
+                  <Link
+                    href={{
+                      pathname: removeSupportCampsData.title_link,
+                    }}
+                  >
+                    <a className="text-canGreen text-2xl font-semibold">{removeSupportCampsData.title}</a>
+                  </Link>
+                ) : (
+                  removeCampLink?.map((val, index) => {
+                    return (
+                      <Link
+                        key={index}
+                        href={{
+                          pathname: val.camp_link,
+                        }}
+                      >
+                        <a className="text-canGreen text-2xl font-semibold">{(index ? ", " : "") + val.camp_name}</a>
+                      </Link>
+                    );
+                  })
+                )}
+
+              </span>
+            )}
+
+            {/* You can optionally add a helpful reason, along with a citation link. */}
+          </p>
+        }
+
+      >
+        <p className="text-sm font-normal text-canRed mb-8">
+          Note : You are about to remove your support from all the camps from the topic:<span className="text-sm font-semibold">&quot;{removeSupportCampsData.title}&quot;</span>.You can optionally add a helpful reason, along with a citation link.
         </p>
         <SupportRemovedModal
           onFinish={onRemoveFinish}
