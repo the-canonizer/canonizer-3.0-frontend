@@ -62,7 +62,7 @@ any) {
   const [intervalId, setIntervalId] = useState(null);
   const [speedBar, setSpeedBar] = useState(false);
   const [URL, setURL] = useState("");
-  const [eventId, setEventId] = useState(0);
+  const [eventId, setEventId] = useState<any>(0);
   const [value, setValue] = useState(1);
 
   const updateEventId = (url, newValue) => {
