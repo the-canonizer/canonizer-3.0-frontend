@@ -436,16 +436,20 @@ function SupportTreeDrawer({
   };
 
   const renderSubmitBtnText = () => {
-    if (drawerFor === "manageSupport") {
-      return "Update";
-    } else if (drawerFor === "delegateAdd") {
-      return "Delegate Support";
-    } else if (drawerFor === "directAdd") {
-      return "Add Support";
-    } else if (drawerFor === "directRemove") {
+    if(!!checkAllTagsSelected()){
       return "Remove Support";
-    } else {
-      return;
+    }else{
+      if (drawerFor === "manageSupport") {
+        return "Update";
+      } else if (drawerFor === "delegateAdd") {
+        return "Delegate Support";
+      } else if (drawerFor === "directAdd") {
+        return "Add Support";
+      } else if (drawerFor === "directRemove") {
+        return "Remove Support";
+      } else {
+        return;
+      }
     }
   };
 
@@ -723,7 +727,7 @@ function SupportTreeDrawer({
                   loading={loader}
                 >
                   {renderSubmitBtnText()}
-                  <PlusOutlined />
+                  {!!checkAllTagsSelected()?<MinusOutlined />:<PlusOutlined />}
                 </Button>
               </div>
             </Form>
