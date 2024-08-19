@@ -145,7 +145,7 @@ const SupportTreeCard = ({
   ] = useState(true);
   const [open, setOpen] = useState(false);
   const [supportTreeData, setSupportTreeData] = useState(null);
-  const [loading,setLoading] = useState(false);
+  const [loader, setLoader] = useState(false);
   const [drawerFor, setDrawerFor] = useState(""); //["directAdd","delegateAdd","directRemove","delegateRemove","manageSupport"]
   let drawerOptions = {
     directAdd: "directAdd",
@@ -155,6 +155,7 @@ const SupportTreeCard = ({
     manageSupport: "manageSupport",
     signPetition: "signPetition",
   };
+
 
   const showDrawer = () => {
     setOpen(true);
@@ -183,6 +184,11 @@ const SupportTreeCard = ({
       fetch_topic_history: +router?.query?.topic_history,
     };
     await getTreesApi(reqBodyForService);
+    dispatch(setOpenConsensusTreePopup(true));
+
+    setTimeout(() => {
+      dispatch(setOpenConsensusTreePopup(false));
+    }, 100);
   };
   const handleCancelSupportCamps = async ({ isCallApiStatus = false }) => {
     if (isCallApiStatus == true) {
@@ -410,8 +416,6 @@ const SupportTreeCard = ({
           is_checked && isUserAuthenticated
             ? setTotalCampScoreForSupportTree(data[item].full_score)
             : setTotalCampScoreForSupportTree(data[item].score);
-
-          setSupportTreeData(data[item]);
         }
       } else {
         if (data[item]?.camp_id == 1) {
@@ -419,7 +423,6 @@ const SupportTreeCard = ({
           is_checked && isUserAuthenticated
             ? setTotalCampScoreForSupportTree(data[item].full_score)
             : setTotalCampScoreForSupportTree(data[item].score);
-          setSupportTreeData(data[item]);
         }
       }
       if ((!loadMore && index < supportLength) || loadMore) {
@@ -595,12 +598,14 @@ const SupportTreeCard = ({
       icon: <ExclamationCircleFilled />,
       width: 400,
       onOk() {
+        setLoader(true);
         currentGetCheckSupportExistsData.is_delegator
           ? removeSupportForDelegate()
           : topicList.length <= 1
           ? removeApiSupport(modalData?.nick_name_id)
           : removeSupport(modalData?.nick_name_id);
         setModalData({});
+        setLoader(false);
       },
     });
   };
@@ -625,6 +630,7 @@ const SupportTreeCard = ({
   };
 
   const onRemoveFinish = async (values) => {
+    setLoader(true);
     currentGetCheckSupportExistsData.is_delegator
       ? removeSupportForDelegate(values)
       : topicList.length <= 1
@@ -638,9 +644,9 @@ const SupportTreeCard = ({
       camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
     };
     await getCurrentCampRecordApi(reqBody);
-
     setModalData({});
     onClose();
+    setLoader(false);
     removeForm.resetFields();
   };
 
@@ -690,7 +696,6 @@ const SupportTreeCard = ({
         <SupportTreeDrawer
           onClose={onClose}
           open={open}
-          topicList={topicList}
           drawerFor={drawerFor}
           setDrawerFor={setDrawerFor}
           onRemoveFinish={onRemoveFinish}
@@ -698,8 +703,8 @@ const SupportTreeCard = ({
           delegateNickName={delegateNickName}
           handleCancelSupportCamps={handleCancelSupportCamps}
           getCheckStatusAPI={getCheckStatusAPI}
-          loading={loading}
-          setLoading={setLoading}
+          loader={loader}
+          setLoader={setLoader}
         />
         <div className=" support-tree-sec">
           {/* <Paragraph className="position-relative">
@@ -769,7 +774,7 @@ const SupportTreeCard = ({
         </div>
       </div>
 
-      <Modal
+      {/* <Modal
         className={styles.modal_cross}
         title={
           <p id="all_camps_topics" className={styles.modalTitle}>
@@ -801,10 +806,10 @@ const SupportTreeCard = ({
             form={removeForm}
           />
         </Spin>
-      </Modal>
+      </Modal> */}
 
       {/* delegateremove */}
-      <Modal
+      {/* <Modal
         className={styles.modal_cross}
         title="Remove Support"
         open={isDelegateSupportTreeCardModal}
@@ -861,9 +866,9 @@ const SupportTreeCard = ({
             </Spin>
           </Form.Item>
         </Form>
-      </Modal>
+      </Modal> */}
 
-      <Modal
+      {/* <Modal
         className={styles.modal_cross}
         title="Support Camps"
         open={isModalOpenSupportCamps}
@@ -883,7 +888,7 @@ const SupportTreeCard = ({
           getManageSupportLoadingIndicator={getManageSupportLoadingIndicator}
           getCheckStatusAPI={getCheckStatusAPI}
         />
-      </Modal>
+      </Modal> */}
     </>
   );
 };
