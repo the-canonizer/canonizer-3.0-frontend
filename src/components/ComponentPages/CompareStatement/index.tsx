@@ -43,13 +43,12 @@ function CompareStatement() {
 
     s1.parsed_v = HtmlDiff.execute(s2?.parsed_value, s1?.parsed_value);
     s2.parsed_v = HtmlDiff.execute(s1?.parsed_value, s2?.parsed_value);
-
-    setIsLoading(false);
-
+    
     if (res && res.status_code === 200) {
       setStatements(statements);
       setLiveStatement(statementLive);
     }
+    setIsLoading(false);
   };
 
   useEffect(() => {
