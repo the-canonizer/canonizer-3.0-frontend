@@ -320,8 +320,10 @@ function HistoryContainer() {
 
     return key;
   };
-
-  const renderCampHistories =
+  
+  const renderCampHistories = loadingIndicator ? <CustomSkelton
+  skeltonFor="historyPage"
+  /> :
     campHistory &&
     campHistory?.items?.length &&
     campHistory?.items?.map((campHistoryData, index) => {
@@ -352,6 +354,7 @@ function HistoryContainer() {
           }
           directarchived={directarchived}
           historyState={historyOf}
+          loadingIndicator={loadingIndicator}
         />
       );
     });
