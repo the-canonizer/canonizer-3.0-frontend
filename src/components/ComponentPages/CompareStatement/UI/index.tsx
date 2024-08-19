@@ -7,7 +7,6 @@ import CustomSkelton from "../../../common/customSkelton";
 import { capitalizeFirstLetter } from "src/utils/generalUtility";
 import Breadcrumbs from "components/ComponentPages/Breadcrumbs/breadcrumbs";
 import HistoryCard from "components/ComponentPages/HistoryCard/historyCard";
-import ComparisonMobileTabs from "./comparisonMobileTabs";
 import moment from "moment";
 const validUrl = (url) => {
   try {
@@ -31,6 +30,9 @@ function CompareStatementUI({
     s2 = statements?.at(1) || {},
     from = router?.query?.from;
 
+    console.log("s1Status",s1?.status);
+    console.log("s2Status",s2?.status);
+    
   const breakpoint = 768;
 
   // Initialize state without using window.innerWidth directly
@@ -38,14 +40,27 @@ function CompareStatementUI({
     typeof window !== "undefined" ? window.innerWidth < breakpoint : false
   );
 
-  console.log("isMobileView", isMobileView);
-
   const convertToTime = (unixTime) => {
     return moment(unixTime * 1000).format("hh:mm:ss A");
   };
   
   const convertToDate = (unixTime) => {
     return moment(unixTime * 1000).format("DD MMMM YYYY");
+  };
+
+  const getStatusClass = (status: any) => {
+    switch (status) {
+      case "live":
+        return "live-tab";
+      case "in_review":
+        return "pending-wrapper";
+      case "objected":
+        return "objected-wrapper";
+      case "old":
+        return "previous-wrapper";
+      default:
+        return "";
+    }
   };
   
 
@@ -135,7 +150,8 @@ function CompareStatementUI({
             <Tabs
               defaultActiveKey="1"
               centered
-              className="comparision-mobile-tabs live-tab"
+              className={`comparision-mobile-tabs ${getStatusClass(s1?.status)} `}
+              
             >
               <Tabs.TabPane
                 className="comparison-tab-content"
@@ -153,6 +169,7 @@ function CompareStatementUI({
                     comparisonData={s1}
                     status={itemsStatus[s1?.id]}
                     s1={true}
+                    isMobileView={isMobileView}
                   />
                 </Col>
               </Tabs.TabPane>
@@ -172,6 +189,7 @@ function CompareStatementUI({
                     compareMode={compareMode}
                     comparisonData={s2}
                     status={itemsStatus[s2?.id]}
+                    isMobileView={isMobileView}
                   />
                 </Col>
               </Tabs.TabPane>
