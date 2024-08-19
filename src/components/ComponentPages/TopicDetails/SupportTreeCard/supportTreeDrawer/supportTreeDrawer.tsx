@@ -380,7 +380,7 @@ function SupportTreeDrawer({
   };
 
   const signPetitionHandler = async () => {
-    setLoader(true);
+    
     let reqBody = {
       topic_num,
       camp_num,
@@ -414,7 +414,6 @@ function SupportTreeDrawer({
       await getCheckStatusAPI();
       await handleCancelSupportCamps({ isCallApiStatus: true })
     }
-    setLoader(false);
     onClose();
   };
 
