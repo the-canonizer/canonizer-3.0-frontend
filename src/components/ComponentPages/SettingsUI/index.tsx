@@ -749,7 +749,7 @@ const SettingsUI = () => {
                         />
                       </div>
                       {showSupportedCampsTab && (router?.asPath == "/settings?tab=direct_supported_camps" || router?.asPath == "/settings?tab=delegate_supported_camp" ) && (
-                        <div className="flex justify-between border-b border-canGrey2 mb-5 lg:hidden flex">
+                        <div className="flex justify-between border-b border-canGrey2 mb-5 lg:hidden">
                           <Radio.Group
                             className="flex items-center justify-between py-5 gap-4 lg:ml-10"
                             value={selectedTab}

@@ -11,6 +11,9 @@ import CustomSkelton from "../../../common/customSkelton";
 import SupportRemovedModal from "../../../common/supportRemovedModal";
 import Search from "antd/lib/transfer/search";
 import Image from "next/image";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "src/store";
+import { setOpenDrawerForDirectSupportedCamp } from "src/store/slices/campDetailSlice";
 
 export default function DirectSupportedCampsUI({
   removeCardSupportedCamps,
@@ -47,8 +50,14 @@ export default function DirectSupportedCampsUI({
   const [removeSupportSpinner, setRemoveSupportSpinner] = useState(false);
   const [currentCamp, setCurrentCamp] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-
   const [open, setOpen] = useState(false);
+
+  const { openDrawerForDirectSupportedCamp } = useSelector(
+    (state: RootState) => ({
+      openDrawerForDirectSupportedCamp: state.topicDetails.openDrawerForDirectSupportedCamp,
+    })
+  );
+  const dispatch = useDispatch()
   interface Tag {
     id: number;
     camp_num: number;
@@ -69,14 +78,19 @@ export default function DirectSupportedCampsUI({
       dataIndex: "title",
       key: "title",
       render: (text: string, record: RecordType) => (
-        <Link href={record.title_link}>
-          <a className="text-base font-semibold flex items-center gap-2.5 text-canBlack">{text} <Image
-                    src="/images/minus-user-icon.svg"
-                    width={24}
-                    height={24}
-                    alt=""
-                  /></a>
-        </Link>
+        <div className="flex gap-2.5">
+          <Link href={record.title_link} >
+            <a className="text-base font-semibold flex items-center gap-2.5 text-canBlack">{text}</a>
+          </Link>
+          <Image
+            onClick={() => {dispatch(setOpenDrawerForDirectSupportedCamp(true)); removeCardSupportedCamps(record) }}
+            src="/images/minus-user-icon.svg"
+            width={24}
+            height={24}
+            alt=""
+          />
+        </div>
+
       ),
     },
     {
@@ -84,64 +98,96 @@ export default function DirectSupportedCampsUI({
       dataIndex: "camps",
       key: "camps",
       render: (camps: Tag[], record: RecordType) => (
-        <DraggableArea
-          tags={camps}
-          render={({ tag }: { tag: Tag }) => (
-            <div className={tag.dis ? "tag tags_disable" : "tag"}>
-              <Button
-                id="campsBtn"
-                key={tag.camp_num}
-                className="bg-canLightGrey rounded-full border-none mb-2.5 flex items-center gap-2.5"
-                disabled={tag.dis}
-              >
-                <div className={styles.btndiv}>
-                  <span className="count">{tag.id}. </span>
-                  <Link href={tag.camp_link}>
-                    <a
-                      className="text-sm text-canBlack font-semibold"
-                      draggable="false"
-                      onClick={() => false}
-                    >
-                      {tag.camp_name}
-                    </a>
-                  </Link>
-                </div>
-
-                <div
-                  className="flex items-center"
-                  onClick={() => {
-                    // handleClose(tag, record.topic_num, record, []);
-                    setValData(tag);
-                    setRevertBack([]);
-                    setOpen(true);
-                  }}
+        <div>
+          <DraggableArea
+            tags={camps}
+            render={({ tag }: { tag: Tag }) => (
+              <div className={tag.dis ? "tag tags_disable" : "tag"}>
+                <Button
+                  id="campsBtn"
+                  key={tag.camp_num}
+                  className="bg-canLightGrey rounded-full border-none mb-2.5 flex items-center gap-2.5"
+                  disabled={tag.dis}
                 >
-                  <Image
-                    src="/images/minus-user-icon.svg"
-                    width={24}
-                    height={24}
-                    alt=""
-                  />
-                </div>
+                  <div className={styles.btndiv}>
+                    <span className="count">{tag.id}. </span>
+                    <Link href={tag.camp_link}>
+                      <a
+                        className="text-sm text-canBlack font-semibold"
+                        draggable="false"
+                        onClick={() => false}
+                      >
+                        {tag.camp_name}
+                      </a>
+                    </Link>
+                  </div>
+                  <div
+                    className="flex items-center"
+                    onClick={() => {
+                      handleClose(tag, record.topic_num, record, []);
+                      setValData(tag);
+                      setRevertBack([]);
+                    }}
+                  >
+                    <Image
+                      src="/images/minus-user-icon.svg"
+                      width={24}
+                      height={24}
+                      alt=""
+                    />
+                  </div>
+                </Button>
+              </div>
+            )}
+            onChange={(tags: Tag[]) => tagsOrder(record.topic_num, record, tags)}
+          />
+
+
+          {showSaveChanges && idData === record.topic_num && (
+            <div className="flex gap-2.5">
+              <Button
+                data-testid="save_change_btn"
+                id="saveChangeBtn"
+
+                className=" Profile_btn ant-btn ant-btn-orange ant-btn-lg py-2.5 px-6 hover:bg-canBlue hover:text-white flex gap-2.5 items-center bg-canBlue text-white text-base font-medium rounded-lg border-none justify-center focus:bg-canBlue focus:!text-white"
+                onClick={() => {
+                  setCurrentCamp(record.topic_num);
+                  handleSupportedCampsOpen(record);
+                  pageChange(currentPage, 5);
+                  dispatch(setOpenDrawerForDirectSupportedCamp(true));
+                }}
+              >
+                Save Changes
+              </Button>
+              <Button
+                data-testid="save_change_btn"
+                id="revertBtn"
+                className="Profile_btn ant-btn ant-btn-orange ant-btn-lg py-2.5 px-6  flex gap-2.5 items-center bg-[#98B7E6] bg-opacity-10 text-canBlack text-base font-medium rounded-lg border-canBlue justify-center "
+                onClick={() => {
+                  handleRevertBack(idData, record.camps);
+                  setCardCamp_ID("");
+                  setShowSaveChanges(false);
+                }}
+              >
+                Revert
               </Button>
             </div>
           )}
-          onChange={(tags: Tag[]) => tagsOrder(record.topic_num, record, tags)}
-        />
-      ),
-    },
-    {
-      title: "",
-      key: "action",
-      render: (text: any, record: RecordType) => (
-        <div
-          className={styles.RemoveCardSupported}
-          onClick={() => removeCardSupportedCamps(record)}
-        >
-          <CloseCircleOutlined /> Remove Support
         </div>
       ),
     },
+    // {
+    //   title: "",
+    //   key: "action",
+    //   render: (text: any, record: RecordType) => (
+    //     <div
+    //       className={styles.RemoveCardSupported}
+    //       onClick={() => removeCardSupportedCamps(record)}
+    //     >
+    //       <CloseCircleOutlined /> Remove Support
+    //     </div>
+    //   ),
+    // },
   ];
 
   const tagsOrder = (topic_num, data, tags) => {
@@ -262,16 +308,16 @@ export default function DirectSupportedCampsUI({
           )}
         </div>
       )}
-      <Modal
+      {/* <Modal
         className={styles.modal_cross}
         title={
           isChangingOrder
             ? "You are about to change the order of your supported camps"
             : modalPopupText
-            ? `You are about to remove your support from all the camps from the topic: "${removeSupportCampsData.title}"`
-            : campIds?.length > 1
-            ? "You are about to remove your support from the camps: "
-            : "You are about to remove your support from the camp: "
+              ? `You are about to remove your support from all the camps from the topic: "${removeSupportCampsData.title}"`
+              : campIds?.length > 1
+                ? "You are about to remove your support from the camps: "
+                : "You are about to remove your support from the camp: "
         }
         open={isSupportedCampsModalVisible}
         onOk={handleSupportedCampsCancel}
@@ -287,7 +333,7 @@ export default function DirectSupportedCampsUI({
             isOrderChange={isChangingOrder}
           />
         </Spin>
-      </Modal>
+      </Modal> */}
 
       <Modal
         data-testid="closeModel"
@@ -301,10 +347,67 @@ export default function DirectSupportedCampsUI({
       >
         <h1 id="changesWillBeReverted">Changes will be reverted ?</h1>
       </Modal>
-      <Drawer open={open} closeIcon={
-         <Image onClick={()=>{setOpen(false)}} src="/images/refine-back-arrow.svg" width={16} height={24} />
-        }>
-        Hello 
+      <Drawer
+        open={openDrawerForDirectSupportedCamp}
+        closeIcon={
+          <Image onClick={() => {dispatch(setOpenDrawerForDirectSupportedCamp(false)); }} src="/images/refine-back-arrow.svg" width={16} height={24} />
+        }
+        // className="[&.ant-drawer-content-wrapper]:!w-[45rem]"
+        width={730}
+        title={
+          <p id="all_camps_topics" className="text-2xl font-normal">
+            {isChangingOrder
+              ? "You are about to change the order of your supported camps"
+              : modalPopupText
+                ? "You are about to remove your support from all the camps from the topic: "
+                : campIds?.length > 1
+                  ? "You are about to remove your support from the camps: "
+                  : "You are about to remove your support from the camp: "}
+            {!isChangingOrder && (
+              <span>
+               
+                {modalPopupText ? (
+                  <Link
+                    href={{
+                      pathname: removeSupportCampsData.title_link,
+                    }}
+                  >
+                    <a className="text-canGreen text-2xl font-semibold">{removeSupportCampsData.title}</a>
+                  </Link>
+                ) : (
+                  removeCampLink?.map((val, index) => {
+                    return (
+                      <Link
+                        key={index}
+                        href={{
+                          pathname: val.camp_link,
+                        }}
+                      >
+                        <a className="text-canGreen text-2xl font-semibold">{(index ? ", " : "") + val.camp_name}</a>
+                      </Link>
+                    );
+                  })
+                )}
+             
+              </span>
+            )}
+         
+            {/* You can optionally add a helpful reason, along with a citation link. */}
+          </p>
+        }
+
+      >
+        <p className="text-sm font-normal text-canRed mb-8">
+          Note : You are about to remove your support from all the camps from the topic:<span className="text-sm font-semibold"> "Theories of consciousness"</span>. You can optionally add a helpful reason, along with a citation link.
+        </p>
+        <SupportRemovedModal
+          onFinish={onRemoveFinish}
+          handleCancel={handleSupportedCampsCancel}
+          form={removeForm}
+          isOrderChange={isChangingOrder}
+        />
+
+
       </Drawer>
     </div>
   );
