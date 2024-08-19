@@ -360,7 +360,7 @@ function SupportTreeDrawer({
     } else if (drawerFor === "directAdd" || drawerFor === "manageSupport") {
       await addSupportMethod(values);
     } else if (drawerFor === "signPetition") {
-      signPetitionHandler();
+      await signPetitionHandler();
     }
     setLoader(false);
   };
@@ -976,7 +976,7 @@ function SupportTreeDrawer({
                   type="primary"
                   htmlType="submit"
                   className=" min-w-[200px] bg-canBlue flex items-center justify-center hover:bg-canHoverBlue focus:bg-canHoverBlue hover:text-white font-medium text-white disabled:bg-disabled font-base rounded-lg"
-                  disabled={loader}
+                  loading={loader}
                 >
                   {renderSubmitBtnText()}
                   <UserAddOutlined />
