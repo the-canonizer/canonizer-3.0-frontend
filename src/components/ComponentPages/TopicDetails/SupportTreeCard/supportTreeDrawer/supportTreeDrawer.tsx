@@ -3,6 +3,7 @@ import {
   MenuOutlined,
   MinusOutlined,
   PlusOutlined,
+  UserAddOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 import {
@@ -27,6 +28,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { placeholders } from "src/messages/placeholder";
 
 import {
+  campSignApi,
+  CheckCampSignApiCall,
   getAllRemovedReasons,
   getAllUsedNickNames,
   getCurrentCampRecordApi,
@@ -49,6 +52,7 @@ import { setCheckSupportExistsData } from "src/store/slices/campDetailSlice";
 import moment from "moment";
 import { setCampActivityData } from "src/store/slices/recentActivitiesSlice";
 import DrawerBreadcrumbs from "./drawerBreadcrumbs";
+import styles from "../../../ManageSupport/ManageSupportUI/ManageSupport.module.scss";
 
 const { TextArea } = Input;
 
@@ -61,6 +65,7 @@ function SupportTreeDrawer({
   selectNickId: getDelegateId,
   delegateNickName,
   handleCancelSupportCamps,
+  getCheckStatusAPI,
   loader = false,
   setLoader,
 }: any) {
@@ -99,13 +104,15 @@ function SupportTreeDrawer({
   const [parentSupportDataList, setParentSupportDataList] = useState([]);
   const [campIds, setcampIds] = useState([]);
   const [isQuickActionSelected, setIsQuickActionSelected] = useState(false);
+  const [signCampData, setSignCampData] = useState(null);
 
   const topicNum = router?.query?.camp?.at(0)?.split("-")?.at(0);
-  const camp_num = router?.query?.camp?.at(1)?.split("-")?.at(0);
+  const camp_num = router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1;
   const CheckDelegatedOrDirect =
     currentDelegatedSupportedClick.delegatedSupportClick;
 
   const topic_name = router?.query?.camp?.at(0)?.split("-")?.slice(1).join("-");
+  const topic_num = router?.query?.camp?.at(0)?.split("-")?.at(0);
 
   const transformDataForDraggable = (data) => {
     return data?.map((item, index) => {
@@ -202,7 +209,7 @@ function SupportTreeDrawer({
     let res = await getAllUsedNickNames(topicNum && body);
     if (res && res?.status_code == 200) {
       setNickNameList(res?.data);
-      setNictNameId(res?.data[0]?.id);
+      setNictNameId(res?.data?.at(0)?.id);
     }
   };
 
@@ -352,12 +359,62 @@ function SupportTreeDrawer({
       await addDelegateMethod();
     } else if (drawerFor === "directAdd" || drawerFor === "manageSupport") {
       await addSupportMethod(values);
+    } else if (drawerFor === "signPetition") {
+      signPetitionHandler();
     }
     setLoader(false);
   };
 
   const getReasons = async () => {
     await getAllRemovedReasons();
+  };
+
+  const getSignPetitionData = async () => {
+    setLoader(true)
+    let res = await CheckCampSignApiCall(topic_num, camp_num);
+
+    if (res?.status_code == 200 && !!res?.data) {
+      setSignCampData(res?.data);
+    }
+    setLoader(false)
+  };
+
+  const signPetitionHandler = async () => {
+    
+    let reqBody = {
+      topic_num,
+      camp_num,
+      nick_name_id: nickNameList?.at(0)?.id,
+    };
+
+    let res = await campSignApi(reqBody);
+    if (res?.status_code == 200) {
+      openNotificationWithIcon(res?.message,"success");
+
+      const reqBodyForService = {
+        topic_num,
+        camp_num,
+        asOf: asof,
+        asofdate:
+          asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
+        algorithm: algorithm,
+        update_all: 1,
+        fetch_topic_history: +router?.query?.topic_history,
+      };
+
+      let reqBody = {
+        as_of: asof,
+        as_of_date: asofdate,
+        topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
+        camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
+      };
+      await getTreesApi(reqBodyForService);
+      await getCurrentCampRecordApi(reqBody);
+
+      await getCheckStatusAPI();
+      await handleCancelSupportCamps({ isCallApiStatus: true })
+    }
+    onClose();
   };
 
   useEffect(() => {
@@ -379,6 +436,11 @@ function SupportTreeDrawer({
         getCurrentCampRecordApi(reqBody);
         GetCheckStatusData();
         getActiveSupportTopic();
+      }
+
+      if (drawerFor === "signPetition") {
+        getCanonizedNicknameList();
+        getSignPetitionData();
       }
     }
   }, [open]);
@@ -430,6 +492,8 @@ function SupportTreeDrawer({
             Removing Support from camp:
             <span> {campRecord?.camp_name} </span>
           </>
+        ) : drawerFor === "signPetition" ? (
+          <>Sign Camp Petition</>
         ) : null}
       </>
     );
@@ -444,6 +508,8 @@ function SupportTreeDrawer({
       return "Add Support";
     } else if (drawerFor === "directRemove") {
       return "Remove Support";
+    } else if (drawerFor === "signPetition") {
+      return "Sign Petition";
     } else {
       return;
     }
@@ -454,6 +520,14 @@ function SupportTreeDrawer({
       ? setIsQuickActionSelected(true)
       : setIsQuickActionSelected(false);
   }, [checkAllTagsSelected()]);
+
+  const validationTypeColor = (type) => {
+    if (type === "info") {
+      return styles.info;
+    } else if (type === "warning") {
+      return styles.warning;
+    }
+  };
 
   return (
     <>
@@ -801,6 +875,111 @@ function SupportTreeDrawer({
                 >
                   {renderSubmitBtnText()}
                   <MinusOutlined />
+                </Button>
+              </div>
+            </Form>
+          </>
+        ) : drawerFor === "signPetition" ? (
+          <>
+            <Form
+              form={form}
+              layout="vertical"
+              className="adding-support-form"
+              autoComplete="off"
+              scrollToFirstError
+              onFinish={onFinish}
+            >
+              <div className="support-content">
+                {signCampData && signCampData?.warning ? (
+                  <>
+                    <div className="alert-wrapper">
+                      <Alert
+                        className="border-0 rounded-lg info-alert"
+                        description={
+                          <span
+                            dangerouslySetInnerHTML={{
+                              __html: signCampData?.warning,
+                            }}
+                          ></span>
+                        }
+                        type={signCampData?.warning_type}
+                        showIcon
+                        icon={<i className={`icon-${signCampData?.warning_type}`}></i>}
+                      />
+
+                      {signCampData?.remove_camps?.length > 0 &&
+                        signCampData?.remove_camps?.map((tag) => {
+                          return (
+                            <>
+                              <Tag className="rounded-full bg-[#F0F2FA] border-transparent font-semibold text-base px-5 py-2.5 leading-none text-canBlack">
+                                {`${tag.support_order}.${tag.camp_name}`}
+                              </Tag>
+                            </>
+                          );
+                        })}
+                    </div>
+                  </>
+                ) : null}
+                <div>
+                  <Row gutter={16}>
+                    <Col span={24} sm={12}>
+                      <Form.Item name="nickname" label="Nickname">
+                        <div className="thm-select">
+                          <div className="prefix-icon">
+                            <UserOutlined />
+                          </div>
+                          <Select
+                            placeholder="Select a nickname"
+                            className="w-100 cn-select"
+                            size="large"
+                            defaultValue={nickNameList?.at(0)?.nick_name}
+                            suffixIcon={<i className="icon-chevron-down"></i>}
+                            showSearch
+                            value={
+                              selectedtNickname
+                                ? selectedtNickname
+                                : nickNameList?.at(0)?.nick_name
+                            }
+                            onChange={(value) => {
+                              setSelectedtNickname(value);
+                            }}
+                          >
+                            {nickNameList?.map((nick) => {
+                              return (
+                                <Select.Option key={nick.id} value={nick.id}>
+                                  {nick.nick_name}
+                                </Select.Option>
+                              );
+                            })}
+                          </Select>
+                        </div>
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                </div>
+              </div>
+              <div className="flex justify-center max-sm:flex-col gap-5 p-11 fixed right-0 max-w-[730px] w-full mt-0 bg-white z-50 bottom-0">
+                <Button
+                  size="large"
+                  className="min-w-[200px] gap-2 flex items-center justify-center border border-canBlue bg-[#98B7E61A] rounded-lg text-canBlack text-base font-medium"
+                  onClick={() => {
+                    onClose();
+                    form.resetFields();
+                    setSelectedValue(null);
+                  }}
+                >
+                  Cancel
+                  <CloseOutlined />
+                </Button>
+                <Button
+                  size="large"
+                  type="primary"
+                  htmlType="submit"
+                  className=" min-w-[200px] bg-canBlue flex items-center justify-center hover:bg-canHoverBlue focus:bg-canHoverBlue hover:text-white font-medium text-white disabled:bg-disabled font-base rounded-lg"
+                  disabled={loader}
+                >
+                  {renderSubmitBtnText()}
+                  <UserAddOutlined />
                 </Button>
               </div>
             </Form>
