@@ -389,7 +389,7 @@ function SupportTreeDrawer({
 
     let res = await campSignApi(reqBody);
     if (res?.status_code == 200) {
-      openNotificationWithIcon("success",res?.message);
+      openNotificationWithIcon(res?.message,"success");
 
       const reqBodyForService = {
         topic_num,
