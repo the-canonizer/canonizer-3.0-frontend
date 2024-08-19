@@ -590,7 +590,6 @@ body {
   @apply -rotate-90 transition-transform ease-in-out duration-150;
 }
 .comparision-mobile-tabs.ant-tabs {
-  @apply md:hidden;
   &.live-tab {
     .ant-tabs-ink-bar {
       @apply bg-canGreen;
@@ -612,8 +611,13 @@ body {
     }
   }
   .ant-tabs-nav {
+    @apply sticky top-0 bg-white z-50 max-lg:mx-[-14px];
     .ant-tabs-nav-list {
       @apply w-full;
+
+      &>:first-child{
+        @apply ml-0;
+      }
       .ant-tabs-tab {
         @apply justify-center w-[50%];
         .ant-tabs-tab-btn {
@@ -633,11 +637,7 @@ body {
       @apply hidden;
     }
   }
-  .comparision-tab-content {
-    .badge-wrapper {
-      @apply hidden;
-    }
-  }
+  
 }
 
 #nickNameList .ant-table-thead > tr > th {
