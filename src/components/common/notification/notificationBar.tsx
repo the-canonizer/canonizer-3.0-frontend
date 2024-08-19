@@ -2,7 +2,7 @@ import { CheckCircleFilled } from "@ant-design/icons";
 import { notification } from "antd";
 import React from "react";
 
-export const openNotificationWithIcon = (messageData) => {
+export const openNotificationWithIcon = (messageData,type="error") => {
   const {
     add: addMessage,
     remove: removeMessages,
@@ -33,7 +33,11 @@ export const openNotificationWithIcon = (messageData) => {
     });
   }
 
-  if (typeof messageData != "object" && messageData !== null) {
+  if (typeof messageData != "object" && messageData !== null && type!="error") {
     showMessage("success", messageData);
+  }
+  
+  if (typeof messageData != "object" && messageData !== null && type=="error") {
+    showMessage(type, messageData);
   }
 };
