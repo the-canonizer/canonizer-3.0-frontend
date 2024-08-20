@@ -8,7 +8,6 @@ import {
   Form,
   Drawer,
   Input,
-  DrawerProps,
 } from "antd";
 import { DraggableArea } from "react-draggable-tags";
 import Link from "next/link";
@@ -56,7 +55,6 @@ export default function DirectSupportedCampsUI({
   const [currentCamp, setCurrentCamp] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [search, setSearch] = useState("");
-  const [size, setSize] = useState<DrawerProps["size"]>();
 
   const { openDrawerForDirectSupportedCamp } = useSelector(
     (state: RootState) => ({
@@ -117,12 +115,12 @@ export default function DirectSupportedCampsUI({
 
               return (
                 <div
-                  key={tag.camp_num} // Ensure this key is unique and consistent
-                  className={tag.dis ? "tag tags_disable" : "tag"}
-                >
+                className={`tag ${tag.dis ? "tags_disable" : ""} ${camps.length > 1 ? "mb-2.5" : ""
+                  } flex items-center`}
+              >
                   <Button
                     id="campsBtn"
-                    className="bg-canLightGrey rounded-full border-none mb-2.5 flex items-center gap-2.5"
+                    className="bg-canLightGrey rounded-full border-none flex items-center gap-2.5"
                     disabled={tag.dis}
                   >
                     <div className={styles.btndiv}>
@@ -269,7 +267,7 @@ export default function DirectSupportedCampsUI({
             columns={columns}
             pagination={false}
             rowKey="topic_num"
-            bordered
+            className="[&_.ant-table-thead>tr>th]:!bg-canGray"
           />
           <Pagination
             hideOnSinglePage={true}

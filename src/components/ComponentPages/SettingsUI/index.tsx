@@ -232,7 +232,6 @@ const SettingsUI = () => {
   const handleChange2 = (e) => {
     const value = e.target.value;
     setSelectedValue(value);
-
     // Navigate to the corresponding page
     if (value === "Direct_Supported_Camps") {
       router.push("/settings?tab=direct_supported_camps");
@@ -240,6 +239,7 @@ const SettingsUI = () => {
       router.push("/settings?tab=delegate_supported_camp");
     }
   };
+  
   // useEffect(() => {
   //   const savedValue = localStorage.getItem("selectedValue");
   //   if (savedValue) {
@@ -421,7 +421,7 @@ const SettingsUI = () => {
         <span className="flex justify-between">
           <Link href="/settings?tab=subscriptions">
             <a
-              className={`flex items-center gap-3   ${
+              className={`flex items-center gap-3 w-full  ${
                 router?.asPath?.includes("subscriptions")
                   ? "sample relative"
                   : ""

@@ -57,7 +57,7 @@ export default function DelegatedSupportCampsUI({
       dataIndex: "sr",
       key: "sr",
 
-      render: (text, record, index) => index + 1,
+      render: (text, record, index) =>(<span className="bg-canGrey2 rounded-full h-5 w-6 flex items-center justify-center"> {index + 1}</span>),
     },
     {
       title: "Topics",
@@ -260,8 +260,11 @@ export default function DelegatedSupportCampsUI({
                 dataSource={filteredArray}
                 pagination={false}
                 rowKey={(record) => record.title}
-                bordered
+                // bordered
                 scroll={{ x: "1060" }}
+                className="[&_.ant-table-thead>tr>th]:!bg-canGray [&_.ant-table-cell:nth-child(3)]:before:!hidden [&_.ant-table-cell:nth-child(3)]:!border-l  [&_.ant-table-cell:nth-child(3)]:!border-black [&_.ant-table-cell:nth-child(3)]:!border-opacity-5  [&_.ant-table-cell:nth-child(4)]:!border-l  [&_.ant-table-cell:nth-child(4)]:!border-black [&_.ant-table-cell:nth-child(4)]:!border-opacity-5 [&_.ant-table-cell:nth-child(4)]:before:!hidden [&_.ant-table-cell:nth-child(5)]:before:!hidden 
+                [&_.ant-table-cell:nth-child(2)]:before:!hidden 
+                 [&_.ant-table-cell:nth-child(5)]:!border-l  [&_.ant-table-cell:nth-child(5)]:!border-black [&_.ant-table-cell:nth-child(5)]:!border-opacity-5  [&_.ant-table-thead>tr>th:nth-child(5)]:!border-l-0 [&_.ant-table-thead>tr>th:nth-child(6)]:!border-l-0"
               />
             ) : (
               <Empty description="No Data Found" />
