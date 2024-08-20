@@ -145,3 +145,31 @@
   font-weight: 400;
   font-size: 16px;
 }
+
+// treee
+.ant-tree-switcher-leaf-line {
+  //   position: relative;
+  //   z-index: 1;
+  //   display: inline-block;
+  //   width: 100%;
+  //   height: 100%;
+  &:before {
+    position: absolute;
+    top: 0;
+    right: 12px;
+    bottom: -4px;
+    margin-left: -1px;
+    border-right: 1px solid #d9d9d9;
+    content: " ";
+    display: block !important;
+  }
+  &:after {
+    position: absolute;
+    width: 10px;
+    height: 14px;
+    border-bottom: 1px solid #d9d9d9;
+    content: " ";
+    display: block !important;
+  }
+}
+// tree close

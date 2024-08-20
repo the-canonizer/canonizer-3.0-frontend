@@ -103,7 +103,8 @@ const TopicDetails = ({ serverSideCall }: any) => {
   }));
 
   const { openConsensusTreePopup } = useSelector((state: RootState) => ({
-    openConsensusTreePopup: state.hotTopic.openConsensusTreePopup,
+    // openConsensusTreePopup: state.hotTopic.openConsensusTreePopup,
+    openConsensusTreePopup: true,
   }));
 
   const [treeExpandValue, setTreeExpandValue] = useState<any>(campWithScore);
@@ -230,8 +231,8 @@ const TopicDetails = ({ serverSideCall }: any) => {
 
     const res = await removeSupportedCamps(supportedCampsRemove);
     if (res && res.status_code == 200) {
-      let type="success"
-      openNotificationWithIcon(res?.message,type);
+      let type = "success";
+      openNotificationWithIcon(res?.message, type);
       setIsSupportTreeCardModal(false);
       GetCheckStatusData();
       await getTreesApi(reqBodyForService);
@@ -278,8 +279,8 @@ const TopicDetails = ({ serverSideCall }: any) => {
 
     let res = await addSupport(RemoveSupportId);
     if (res && res.status_code == 200) {
-      let type="success"
-      openNotificationWithIcon(res?.message,type);
+      let type = "success";
+      openNotificationWithIcon(res?.message, type);
       setIsSupportTreeCardModal(false);
       GetCheckStatusData();
       await getTreesApi(reqBodyForService);
@@ -312,8 +313,8 @@ const TopicDetails = ({ serverSideCall }: any) => {
 
     let res = await removeSupportedCampsEntireTopic(removeEntireData);
     if (res && res.status_code == 200) {
-      let type="success"
-      openNotificationWithIcon(res?.message,type);
+      let type = "success";
+      openNotificationWithIcon(res?.message, type);
       setRemoveSupportSpinner(false);
       setIsSupportTreeCardModal(false);
       setIsDelegateSupportTreeCardModal(false);
