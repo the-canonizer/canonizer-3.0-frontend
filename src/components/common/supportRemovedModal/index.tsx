@@ -65,12 +65,9 @@ const SupportRemovedModal = ({
           <Col xs={24} sm={24}>
             <Form.Item
               label={
-                <Fragment>
-                  <span className="text-sm font-normal text-canBlack">
-                    {isOrderChange
-                      ? labels.reasonChangeLabel
-                      : labels.reasonLabel}</span>
-                </Fragment>
+                <span className="text-sm font-normal text-canBlack">
+                {isOrderChange ? labels.reasonChangeLabel : labels.reasonLabel}
+              </span>
               }
               name="reason"
               {...removedReasonSelectRule}
@@ -150,7 +147,9 @@ const SupportRemovedModal = ({
           </Col>
           <Col xs={24} sm={24}>
             <Form.Item
-              label={<Fragment><span className="text-sm font-normal text-canBlack">{labels.resonURLLabel}</span></Fragment>}
+              label={<span className="text-sm font-normal text-canBlack">
+                {labels.resonURLLabel}
+              </span>}
               name="citation_link"
               {...removedURLRule}
             >

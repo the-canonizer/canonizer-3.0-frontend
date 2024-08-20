@@ -94,48 +94,56 @@ export default function DirectSupportedCampsUI({
       key: "camps",
       render: (camps: Tag[], record: RecordType) => (
         <div>
-          <DraggableArea
-            tags={camps}
-            render={({ tag }: { tag: Tag }) => (
-              <div className={tag.dis ? "tag tags_disable" : "tag"}>
-                <Button
-                  id="campsBtn"
-                  key={tag.camp_num}
-                  className="bg-canLightGrey rounded-full border-none mb-2.5 flex items-center gap-2.5"
-                  disabled={tag.dis}
-                >
-                  <div className={styles.btndiv}>
-                    <span className="count">{tag.id}. </span>
-                    <Link href={tag.camp_link}>
-                      <a
-                        className="text-sm text-canBlack font-semibold"
-                        draggable="false"
-                        onClick={() => false}
-                      >
-                        {tag.camp_name}
-                      </a>
-                    </Link>
-                  </div>
-                  <div
-                    className="flex items-center"
-                    onClick={() => {
-                      handleClose(tag, record.topic_num, record, []);
-                      setValData(tag);
-                      setRevertBack([]);
-                    }}
-                  >
-                    <Image
-                      src="/images/minus-user-icon.svg"
-                      width={24}
-                      height={24}
-                      alt=""
-                    />
-                  </div>
-                </Button>
-              </div>
-            )}
-            onChange={(tags: Tag[]) => tagsOrder(record.topic_num, record, tags)}
-          />
+<DraggableArea
+  tags={camps}
+  render={(props: { tag: Tag }) => {
+    const { tag } = props;
+
+    return (
+      <div
+        key={tag.camp_num} // Ensure this key is unique and consistent
+        className={tag.dis ? "tag tags_disable" : "tag"}
+      >
+        <Button
+          id="campsBtn"
+          className="bg-canLightGrey rounded-full border-none mb-2.5 flex items-center gap-2.5"
+          disabled={tag.dis}
+        >
+          <div className={styles.btndiv}>
+            <span className="count">{tag.id}. </span>
+            <Link href={tag.camp_link}>
+              <a
+                className="text-sm text-canBlack font-semibold"
+                draggable="false"
+                onClick={(e) => e.preventDefault()} // Prevent default drag behavior
+              >
+                {tag.camp_name}
+              </a>
+            </Link>
+          </div>
+          <div
+            className="flex items-center"
+            onClick={() => {
+              handleClose(tag, record.topic_num, record, []);
+              setValData(tag);
+              setRevertBack([]);
+            }}
+          >
+            <Image
+              src="/images/minus-user-icon.svg"
+              width={24}
+              height={24}
+              alt=""
+            />
+          </div>
+        </Button>
+      </div>
+    );
+  }}
+  onChange={(tags) => tagsOrder(record.topic_num, record, tags)}
+/>
+
+
 
 
           {showSaveChanges && idData === record.topic_num && (
@@ -171,23 +179,11 @@ export default function DirectSupportedCampsUI({
         </div>
       ),
     },
-    // {
-    //   title: "",
-    //   key: "action",
-    //   render: (text: any, record: RecordType) => (
-    //     <div
-    //       className={styles.RemoveCardSupported}
-    //       onClick={() => removeCardSupportedCamps(record)}
-    //     >
-    //       <CloseCircleOutlined /> Remove Support
-    //     </div>
-    //   ),
-    // },
   ];
 
   const tagsOrder = (topic_num, data, tags) => {
     setTagsCampsOrderID(data.topic_num);
-    setTagsDataArrValue(tags);
+    setTagsDataArrValue(tags);  // Update the state with the new order
     handleClose({}, topic_num, data, tags);
     setValData({});
     setIsChangingOrder(true);
@@ -195,14 +191,13 @@ export default function DirectSupportedCampsUI({
 
   useEffect(() => {
     if (tagsDataArrValue.length > 0) {
-      let newData = directSupportedCampsList.map((val: any) => {
-        if (val.topic_num == tagsCampsOrderID) {
-          return { ...val, camps: tagsDataArrValue };
-        } else {
-          return val;
+      const newData = directSupportedCampsList.map((val) => {
+        if (val.topic_num === tagsCampsOrderID) {
+          return { ...val, camps: tagsDataArrValue };  // Update camps with new order
         }
+        return val;
       });
-      setDirectSupportedCampsList(newData);
+      setDirectSupportedCampsList(newData);  // Update the list
     }
   }, [tagsDataArrValue]);
 
@@ -250,6 +245,37 @@ export default function DirectSupportedCampsUI({
   };
   const hasDirectSupportedCamps = directSupportedCampsList && directSupportedCampsList.length > 0;
 const hasFilteredArray = filteredArray().length > 0;
+let displayContent;
+
+if (hasDirectSupportedCamps) {
+  if (hasFilteredArray) {
+    displayContent = (
+      <>
+        <Table
+          dataSource={filteredArray()}
+          columns={columns}
+          pagination={false}
+          rowKey="topic_num"
+          bordered
+        />
+        <Pagination
+          hideOnSinglePage={true}
+          total={directSupportedCampsList.length}
+          pageSize={5}
+          defaultCurrent={currentPage}
+          onChange={pageChange}
+          showSizeChanger={false}
+          className="mt-5"
+        />
+      </>
+    );
+  } else {
+    displayContent = showEmpty("No Data Found");
+  }
+} else {
+  displayContent = showEmpty("No Data Found");
+}
+
 const getModalMessage = (): string => {
   if (isChangingOrder) {
     return "You are about to change the order of your supported camps";
@@ -306,32 +332,7 @@ const message = getModalMessage();
 
           </div>
           <>
-    {hasDirectSupportedCamps ? (
-      hasFilteredArray ? (
-        <>
-          <Table
-            dataSource={filteredArray()}
-            columns={columns}
-            pagination={false}
-            rowKey="topic_num"
-            bordered
-          />
-          <Pagination
-            hideOnSinglePage={true}
-            total={directSupportedCampsList.length}
-            pageSize={5}
-            defaultCurrent={currentPage}
-            onChange={pageChange}
-            showSizeChanger={false}
-            className="mt-5"
-          />
-        </>
-      ) : (
-        showEmpty("No Data Found")
-      )
-    ) : (
-      showEmpty("No Data Found")
-    )}
+          {displayContent}
   </>
         </div>
       )}
@@ -406,7 +407,7 @@ const message = getModalMessage();
                   removeCampLink?.map((val, index) => {
                     return (
                       <Link
-                        key={index}
+                        key={val.camp_num}
                         href={{
                           pathname: val.camp_link,
                         }}

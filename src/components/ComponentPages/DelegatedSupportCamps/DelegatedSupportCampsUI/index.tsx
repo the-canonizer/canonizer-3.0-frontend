@@ -12,13 +12,12 @@ import {
   Col,
   Input,
 } from "antd";
-import { CloseCircleOutlined, UserDeleteOutlined } from "@ant-design/icons";
+import { CloseCircleOutlined } from "@ant-design/icons";
 
 import styles from "./DelegatedSupportedCamps.module.scss";
 import messages from "../../../../messages";
 import CustomSkelton from "src/components/common/customSkelton";
 import Image from "next/image";
-import Search from "antd/lib/transfer/search";
 
 export default function DelegatedSupportCampsUI({
   removeCardDelegatedSupportedCamps,
@@ -78,7 +77,7 @@ export default function DelegatedSupportCampsUI({
 
       render: (camps, record) =>
         camps.slice(0, limit).map((camp, i) => (
-          <p key={i}>
+          <p key={camp.camp_num}>
             {camp.support_order}.{" "}
             <Link href={camp.camp_link}>
               <a className="text-base font-semibold text-canBlue underline">
@@ -389,7 +388,7 @@ export default function DelegatedSupportCampsUI({
             <div className={styles.list_Content}>
               {viewMoreDataValue.camps?.map((val, i) => {
                 return (
-                  <p key={i}>
+                  <p key={val.camp_num}>
                     {val.support_order}.{" "}
                     <Link href={val.camp_link}>
                       <a className={styles.Bluecolor}>{val.camp_name}</a>
@@ -428,7 +427,7 @@ export default function DelegatedSupportCampsUI({
               </div>
             {displayList && displayList.length > 0 ? (
               displayList.map((data, i) => (
-                <div key={i} className="!border !border-canGrey2 rounded-lg mb-5 last:mb-0 px-2.5">
+                <div key={data.topic_num} className="!border !border-canGrey2 rounded-lg mb-5 last:mb-0 px-2.5">
                   <Card
                     className="[&_.ant-card-head]:!px-0 [&_.ant-card-head]:!bg-transparent !w-full [&_.ant-card-head]:!border-none"
                     type="inner"

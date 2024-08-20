@@ -53,22 +53,31 @@ function TopicSubscriptionsTab({
                 <Title level={5} className="!border-none">
                   <span>
                     <Link href={data.title_link}>
-                      <div className="flex gap-2.5">
-                        <a className="text-base font-semibold !text-canBlack">
-                          {data.title}
-                        </a>
-                        <span
-                          className="cursor-pointer"
-                          onClick={(e) => onRemoveSubscription(e, data)}
-                        >
-                          <Image
-                            src="/images/minus-user-icon.svg"
-                            alt=""
-                            width={24}
-                            height={24}
-                          />
-                        </span>
-                      </div>
+                    <div className="flex gap-2.5">
+                      <a className="text-base font-semibold !text-canBlack">
+                        {data.title}
+                      </a>
+                      <span
+                        className="cursor-pointer"
+                        onClick={(e) => onRemoveSubscription(e, data)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault(); // Prevent default action for space key
+                            onRemoveSubscription(e, data); // Trigger the click handler
+                          }
+                        }}
+                        tabIndex={0}  // Make the element focusable
+                        role="button" // Indicate that this span acts like a button
+                        aria-label="Remove subscription" // Add an accessible label for screen readers
+                      >
+                        <Image
+                          src="/images/minus-user-icon.svg"
+                          alt="Remove subscription"
+                          width={24}
+                          height={24}
+                        />
+                      </span>
+                    </div>
                     </Link>
                   </span>
                 </Title>

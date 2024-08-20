@@ -141,7 +141,6 @@ const DirectSupportedCamps = ({ search }: any) => {
     };
     let res = await removeOrUpdateDirectSupportCamps(tagsDeletedId);
     if (res && res.status_code == 200) {
-      // message.success(res.message);
       setShowSaveChanges(false);
       setCardCamp_ID("");
       fetchDirectSupportedCampsList();

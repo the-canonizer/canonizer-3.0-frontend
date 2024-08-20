@@ -81,10 +81,8 @@ export const logOut = async (_router) => {
 };
 const SettingsUI = () => {
   const [search, setSearch] = useState("");
-  const [collapsed, setCollapsed] = useState(false);
   const [activeTabKey, setActiveTabKey] = useState("");
   const [showSupportedCampsTab, setshowSupportedCampsTab] = useState(false);
-  // const [selectedValue, setSelectedValue] = useState("select");
   const [selectedValue, setSelectedValue] = useState("");
   const [selectedTab, setSelectedTab] = useState("Direct_Supported_Camps");
 
@@ -266,22 +264,7 @@ const SettingsUI = () => {
       router.push("/settings?tab=change_password");
     }
   };
-  const callDirectSupportedCamps = () => {
-    return (
-      <>
-        {router.push("/settings?tab=supported_camps")}
-        <DirectSupportedCamps search={search} />
-      </>
-    );
-  };
-  const callDelegateSupportedCamps = () => {
-    return (
-      <>
-        {router.push("/settings?tab=supported_camps")}
-        <DelegatedSupportCamps search={search} />
-      </>
-    );
-  };
+
   const items: MenuItem[] = [
     {
       key: "profile_info",
@@ -306,6 +289,7 @@ const SettingsUI = () => {
                 src="/images/nickname-user-icon.svg"
                 width={14}
                 height={24}
+                 alt=""
               />
             </a>
           </Link>
@@ -333,6 +317,7 @@ const SettingsUI = () => {
                 src="/images/nickname-user-icon.svg"
                 width={14}
                 height={24}
+                 alt=""
               />
             </a>
           </Link>
@@ -355,7 +340,7 @@ const SettingsUI = () => {
                 {" "}
                 Preferences
               </span>
-              <Image src="/images/preference-icon.svg" width={16} height={16} />
+              <Image src="/images/preference-icon.svg" width={16} height={16}  alt="" />
             </a>
           </Link>
         </span>
@@ -371,13 +356,14 @@ const SettingsUI = () => {
               {" "}
               Supported Camps
             </span>
-            <Image src="/images/flagicon.svg" width={24} height={24} />
+            <Image src="/images/flagicon.svg" width={24} height={24}  alt=""/>
           </a>
           <Image
             src="/images/caret-icon.svg"
             className="account-arrow"
             width={16}
             height={9}
+             alt=""
           />
         </span>
       ),
@@ -444,6 +430,7 @@ const SettingsUI = () => {
                 src="/images/subscription-icon.svg"
                 width={24}
                 height={24}
+                 alt=""
               />
             </a>
           </Link>
@@ -459,13 +446,14 @@ const SettingsUI = () => {
               {" "}
               Account Settings
             </span>
-            <Image src="/images/setting-icon.svg" width={24} height={24} />
+            <Image src="/images/setting-icon.svg" width={24} height={24}  alt=""/>
           </a>
           <Image
             src="/images/caret-icon.svg"
             className="account-arrow"
             width={16}
             height={9}
+             alt=""
           />
         </span>
       ),
@@ -568,7 +556,7 @@ const SettingsUI = () => {
           <footer className="px-9 py-10 flex justify-start border-t border-canGrey2">
             <p className="text-base font-semibold text-canDarkRed flex gap-2.5 items-center cursor-pointer">
               <span onClick={onClick}> LogOut</span>
-              <Image src="/images/logout-icon.svg" width={24} height={24} />
+              <Image src="/images/logout-icon.svg" width={24} height={24}  alt="" />
             </p>
           </footer>
         </div>
@@ -625,6 +613,7 @@ const SettingsUI = () => {
                                         src="/images/nickname-user-icon.svg"
                                         width={14}
                                         height={24}
+                                         alt=""
                                       />
                                     </a>
                                   </Link>
@@ -648,6 +637,7 @@ const SettingsUI = () => {
                                         src="/images/nickname-user-icon.svg"
                                         width={14}
                                         height={24}
+                                         alt=""
                                       />
                                     </a>
                                   </Link>
@@ -668,6 +658,7 @@ const SettingsUI = () => {
                                         src="/images/preference-icon.svg"
                                         width={16}
                                         height={16}
+                                         alt=""
                                       />
                                     </a>
                                   </Link>
@@ -678,28 +669,35 @@ const SettingsUI = () => {
                               value: "Supported Camps",
                               label: (
                                 <span>
-                                  <a className="flex items-center gap-3">
-                                    <span
-                                      className="text-base font-medium text-canBlack"
-                                      onClick={() => {
-                                        setshowSupportedCampsTab(true);
-                                        setSelectedTab(
-                                          "Direct_Supported_Camps"
-                                        );
-                                        router.push(
-                                          "/settings?tab=direct_supported_camps"
-                                        );
-                                      }}
-                                    >
-                                      Supported Camps
-                                    </span>
-                                    <Image
-                                      src="/images/flagicon.svg"
-                                      width={24}
-                                      height={24}
-                                    />
-                                  </a>
+                              <a className="flex items-center gap-3">
+                                <span
+                                  className="text-base font-medium text-canBlack"
+                                  onClick={() => {
+                                    setshowSupportedCampsTab(true);
+                                    setSelectedTab("Direct_Supported_Camps");
+                                    router.push("/settings?tab=direct_supported_camps");
+                                  }}
+                                  onKeyDown={(e) => {
+                                    if (e.key === 'Enter' || e.key === ' ') {
+                                      e.preventDefault(); // Prevent default action for space key
+                                      setshowSupportedCampsTab(true);
+                                      setSelectedTab("Direct_Supported_Camps");
+                                      router.push("/settings?tab=direct_supported_camps");
+                                    }
+                                  }}
+                                  tabIndex={0}  // Use tabIndex with a capital "I"
+                                  role="button" // Add a role attribute to indicate this span is interactive
+                                >
+                                  Supported Camps
                                 </span>
+                                <Image
+                                  src="/images/flagicon.svg"
+                                  width={24}
+                                  height={24}
+                                  alt=""
+                                />
+                                </a>
+                              </span>
                               ),
                             },
                             {
@@ -720,6 +718,7 @@ const SettingsUI = () => {
                                         src="/images/setting-icon.svg"
                                         width={24}
                                         height={24}
+                                        alt=""
                                       />
                                     </a>
                                   </Link>
@@ -740,6 +739,7 @@ const SettingsUI = () => {
                                         src="/images/setting-icon.svg"
                                         width={24}
                                         height={24}
+                                         alt=""
                                       />
                                     </a>
                                   </Link>
