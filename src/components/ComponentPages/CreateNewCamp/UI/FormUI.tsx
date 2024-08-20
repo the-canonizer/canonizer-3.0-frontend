@@ -121,6 +121,13 @@ const CreateCampFormUI = ({
     parent_camp_num: values?.parent_camp_num || topicData?.camp_num,
   };
 
+  const getCampLeaderNickName = () => {
+    return (
+      campLeaderData &&
+      campLeaderData?.find((CL) => CL?.camp_leader === true)?.nick_name
+    );
+  };
+
   return (
     <Fragment>
       <CommonCards className="border-0 bg-white">
@@ -324,11 +331,8 @@ const CreateCampFormUI = ({
                                   : filterObject?.namespace_id
                               }`}
                             >
-                              <a>
-                                {campLeaderData &&
-                                  campLeaderData?.find(
-                                    (CL) => CL?.camp_leader === true
-                                  )?.nick_name}
+                              <a className="text-canBlue">
+                                {getCampLeaderNickName() + " "}
                               </a>
                             </Link>
                             is currently the camp leader )
@@ -361,6 +365,7 @@ const CreateCampFormUI = ({
                           showSearch
                           size={"large"}
                           placeholder="Camp Leader"
+                          defaultValue={getCampLeaderNickName()}
                           optionFilterProp="children"
                           allowClear={false}
                           filterOption={(input, option) =>
