@@ -22,7 +22,10 @@ export const treeSlice = createSlice({
       },
     },
     manageSupportStatusCheck: false,
-  
+    openDrawerForDirectSupportedCamp: false,
+
+
+
     openDrawer: false,
     asOfValues: 0,
     clearAlgoFromRefineFilter: "",
@@ -30,8 +33,8 @@ export const treeSlice = createSlice({
     // openConsensusTreePopup: true,
     manageSupportUrlLink: null,
     CurrentCheckSupportStatus: null,
-    globalUserProfileData:"",
-    globalUserProfileDataEmail:"",
+    globalUserProfileData: "",
+    globalUserProfileDataEmail: "",
 
     currentGetCheckSupportExistsData: {
       camp_num: null,
@@ -149,8 +152,11 @@ export const treeSlice = createSlice({
     setGlobalUserProfileDataEmail: (state, action) => {
       state.globalUserProfileDataEmail = action.payload;
     },
+    setOpenDrawerForDirectSupportedCamp: (state, action) => {
+      state.openDrawerForDirectSupportedCamp = action.payload;
+    },
   },
-  
+
 });
 
 export const {
@@ -179,6 +185,7 @@ export const {
   setClearScoreFromRefineFilter,
   setGlobalUserProfileData,
   setGlobalUserProfileDataEmail,
+  setOpenDrawerForDirectSupportedCamp,
   // setOpenConsensusTreePopup,
 } = treeSlice.actions;
 

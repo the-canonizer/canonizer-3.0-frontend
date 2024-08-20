@@ -3,15 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import debounce from "lodash/debounce";
-import {
-  AutoComplete,
-  Card,
-  Empty,
-  Input,
-  List,
-  Popover,
-  Typography,
-} from "antd";
+import { AutoComplete, Card, Empty, List, Popover, Typography } from "antd";
 import { EyeOutlined, RightOutlined } from "@ant-design/icons";
 import Image from "next/image";
 
@@ -106,7 +98,7 @@ const HeaderSearch = ({ className = "" }: any) => {
   const [searchNickname, setSearchNickname] = useState([]);
   const [searchVal, setSearchVal] = useState("");
   const [loadingSekelton, setLoadingSekelton] = useState(true);
-  const [isFullWidth, setIsFullWidth] = useState(false);
+  const [isActiveTagHaveData, setIsActiveTagHaveData] = useState(true);
 
   useEffect(() => {
     if (searchValue?.length == 0) {
@@ -194,6 +186,19 @@ const HeaderSearch = ({ className = "" }: any) => {
             defaultActiveKey="1"
             items={items}
             className="text-sm font-normal font-inter"
+            onChange={(tabId) => {
+              if (tabId == 2 && searchTopics?.length === 0) {
+                setIsActiveTagHaveData(false);
+              } else if (tabId == 3 && searchCamps?.length === 0) {
+                setIsActiveTagHaveData(false);
+              } else if (tabId == 4 && searchCampStatement?.length === 0) {
+                setIsActiveTagHaveData(false);
+              } else if (tabId == 5 && searchNickname?.length === 0) {
+                setIsActiveTagHaveData(false);
+              } else {
+                setIsActiveTagHaveData(true);
+              }
+            }}
           />
         ),
       ],
@@ -237,7 +242,7 @@ const HeaderSearch = ({ className = "" }: any) => {
       ],
     },
   ];
-  const { Search } = Input;
+
   const [preventInitialRender, setPreventInitialRender] = useState(true);
 
   useEffect(() => {
@@ -341,7 +346,9 @@ const HeaderSearch = ({ className = "" }: any) => {
   return (
     <Fragment>
       <AutoComplete
-        popupClassName={`w-full lg:!w-[54rem] bg-white pt-6 rounded-lg [&_.ant-tabs-nav]:mb-10 [&_.ant-tabs-nav-wrap]:px-12  [&_.ant-select-item-option-content]:!bg-white [&_.ant-select-item-option-grouped]:!bg-white [&_.ant-select-item-option-content]:!px-6 [&_>div]:w-full [&_.ant-select-item-option-grouped]:!px-0 [&_.ant-tabs-tab-btn]:!text-base [&_.ant-tabs-nav-list]:gap-12 [&_.ant-tabs-tab-btn]:!font-normal [&_.ant-tabs-tab-active>div]:!font-semibold [&_.ant-tabs-tab]:!ml-0 [&_.ant-tabs-ink-bar]:!border-b-4 [&_.ant-tabs-ink-bar]:!border-canBlue [&_.ant-tabs-ink-bar]:!rounded-tl-full  [&_.ant-tabs-ink-bar]:!rounded-tr-full  lg:[&_.ant-tabs-ink-bar]:!h-1 [&_.ant-tabs-ink-bar]:!h-1 [&_.ant-tabs-tab-active>div]:!shadow-none [&_.ant-card-head-title]:!font-semibold [&_.ant-tabs-nav-list]:!w-full ${styles.searchCategories} `}
+        popupClassName={`w-full lg:!w-[54rem] bg-white pt-6 rounded-lg [&_.ant-tabs-nav]:mb-10 [&_.ant-tabs-nav-wrap]:px-12  [&_.ant-select-item-option-content]:!bg-white [&_.ant-select-item-option-grouped]:!bg-white [&_.ant-select-item-option-content]:!px-6 [&_>div]:w-full [&_.ant-select-item-option-grouped]:!px-0 [&_.ant-tabs-tab-btn]:!text-base [&_.ant-tabs-nav-list]:gap-12 [&_.ant-tabs-tab-btn]:!font-normal [&_.ant-tabs-tab-active>div]:!font-semibold [&_.ant-tabs-tab]:!ml-0 [&_.ant-tabs-ink-bar]:!border-b-4 [&_.ant-tabs-ink-bar]:!border-canBlue [&_.ant-tabs-ink-bar]:!rounded-tl-full  [&_.ant-tabs-ink-bar]:!rounded-tr-full  lg:[&_.ant-tabs-ink-bar]:!h-1 [&_.ant-tabs-ink-bar]:!h-1 [&_.ant-tabs-tab-active>div]:!shadow-none [&_.ant-card-head-title]:!font-semibold [&_.ant-tabs-nav-list]:!w-full ${
+          !isActiveTagHaveData ? "[&_.ftSearchLink]:hidden" : ""
+        } ${styles.searchCategories} `}
         dropdownMatchSelectWidth={false}
         options={
           inputSearch == ""
@@ -360,12 +367,6 @@ const HeaderSearch = ({ className = "" }: any) => {
             ? searchVal.substring(0, advanceSearchValueLength)
             : searchVal
         }
-        onFocus={(e) => {
-          setIsFullWidth(true);
-        }}
-        onBlur={(e) => {
-          setIsFullWidth(false);
-        }}
         className={`lg:ml-5 transition-all delay-300 [&>div]:!border-0 w-full tab:w-4/12 xl:w-2/5`}
       >
         <div className={`items-center !hidden lg:!flex ${className}  `}>
@@ -399,7 +400,11 @@ const HeaderSearch = ({ className = "" }: any) => {
       </AutoComplete>
       <div className=" lg:hidden flex items-center justify-end absolute  py-2">
         <AutoComplete
-          popupClassName={`[&_.ant-select-item-option-active]:!bg-white !top-26 !shadow-none [&_.ant-select-item-option-grouped]:!px-0 ${styles.searchCategories} [&_.ant-tabs-nav-list]:!gap-5  [&_.ant-tabs-tab]:m-0 [&_.ant-tabs-tab]:gap-8 w-full [&_.ant-tabs-tab]:px-3 [&_.ant-tabs-nav]:!mb-8 [&_.ant-tabs-tab-btn]:text-base [&_.ant-tabs-tab-btn]:font-normal `}
+          popupClassName={`[&_.ant-select-item-option-active]:!bg-white !top-26 !shadow-none [&_.ant-select-item-option-grouped]:!px-0 ${
+            styles.searchCategories
+          } [&_.ant-tabs-nav-list]:!gap-5  [&_.ant-tabs-tab]:m-0 [&_.ant-tabs-tab]:gap-8 w-full [&_.ant-tabs-tab]:px-3 [&_.ant-tabs-nav]:!mb-8 [&_.ant-tabs-tab-btn]:text-base [&_.ant-tabs-tab-btn]:font-normal ${
+            !isActiveTagHaveData ? "[&_.ftSearchLink]:hidden" : ""
+          }`}
           dropdownMatchSelectWidth={false}
           open={false}
           options={
@@ -486,6 +491,14 @@ const HeaderSearch = ({ className = "" }: any) => {
 
 export default HeaderSearch;
 
+const NoData = () => (
+  <Card className={`border-0 text-center`}>
+    <Typography.Text className="text-canBlack uppercase text-sm font-semibold">
+      no data found
+    </Typography.Text>
+  </Card>
+);
+
 const AllItems = ({
   searchTopics,
   searchCamps,
@@ -494,220 +507,162 @@ const AllItems = ({
   searchValue,
 }) => (
   <Fragment>
-    <TopicItems searchTopics={searchTopics} searchValue={searchValue} />
+    {searchTopics?.length > 0 && (
+      <TopicItems searchTopics={searchTopics} searchValue={searchValue} />
+    )}
     <br />
-    <CampItems searchCamps={searchCamps} searchValue={searchValue} />
+    {searchCamps?.length > 0 && (
+      <CampItems searchCamps={searchCamps} searchValue={searchValue} />
+    )}
     <br />
-    <CampStatementsItems
-      searchValue={searchValue}
-      searchCampStatement={searchCampStatement}
-    />
+    {searchCampStatement?.length > 0 && (
+      <CampStatementsItems
+        searchValue={searchValue}
+        searchCampStatement={searchCampStatement}
+      />
+    )}
     <br />
-    <NickNamesItems searchValue={searchValue} searchNickname={searchNickname} />
+    {searchNickname?.length > 0 && (
+      <NickNamesItems
+        searchValue={searchValue}
+        searchNickname={searchNickname}
+      />
+    )}
   </Fragment>
 );
 
-const TopicItems = ({ searchTopics, searchValue }) => (
-  <Card
-    className={`[&_.ant-empty-normal]:!m-0 [&_.ant-list-empty-text]:!p-0 [&_.ant-card-head-title]:!font-semibold [&_.ant-card-head-title]:uppercase border-0 h-100 bg-canGray lg:rounded-xl [&_.ant-card-head-wrapper]:mb-6 [&_.ant-card-head-title]:!p-0 [&_.ant-card-head]:!p-0  [&_.ant-card-body]:!p-0 py-5 lg:px-6 px-4  ${styles.ItemCard}`}
-    title="Topic(s)"
-  >
-    <List
-      size="small"
-      className=""
-      dataSource={searchTopics?.slice(0, 5)}
-      footer={
-        searchTopics?.length ? <span className={styles.bold_margin}></span> : ""
-      }
-      renderItem={(item: any) => (
-        <List.Item className="w-full flex font-medium !border-b !border-canGrey2 !py-3 lg:!py-3.5 !px-0 first:!pt-0 last:!border-none ">
-          <Link
-            className="!font-semibold"
-            href={`/${replaceSpecialCharactersInLink(item.link)}`}
-          >
-            <a className="flex justify-between w-full items-start">
-              <span className="flex flex-col w-full">
-                <div className="flex items-center justify-between w-full">
-                  <span className="flex-1 text-base lg:font-medium font-normal text-canBlack mb-2 flex">
-                    {getHighlightedText(item.type_value, searchValue)}
-                  </span>
+const TopicItems = ({ searchTopics, searchValue }) => {
+  if (!searchTopics?.length) {
+    return <NoData />;
+  }
 
-                  <RightOutlined className="ml-auto" />
-                </div>
-                <div className="text-left flex gap-7">
-                  <Popover content="Share Topic" placement="top">
-                    <Typography.Paragraph className="bg-transparent border-0 p-0 hover:bg-transparent focus:bg-transparent flex gap-1.5 items-center leading-1 !mb-0 ">
-                      {/* <FlagOutlined className="text-canBlack p-1 text-medium" /> */}
-                      <Image
-                        src="/images/serach-flag.svg"
-                        width={18}
-                        height={20}
-                      />
-                      <Link href="">
-                        <a className="text-canBlue text-base font-inter font-normal lg:font-medium">
-                          General
-                        </a>
-                      </Link>
-                    </Typography.Paragraph>
-                  </Popover>
-                  <Typography.Paragraph className="!m-0 text-canBlack font-medium font-inter text-base flex items-center">
-                    <EyeOutlined className="text-canBlack p-1 text-medium" />{" "}
-                    123
-                  </Typography.Paragraph>
-                </div>
-              </span>
-            </a>
-          </Link>
-        </List.Item>
-      )}
-    />
-  </Card>
-);
-
-const CampItems = ({ searchCamps, searchValue }) => (
-  <Card
-    className={`[&_.ant-empty-normal]:!m-0 [&_.ant-list-empty-text]:!p-0 [&_.ant-card-head-title]:uppercase [&_.ant-card-head-title]:!font-semibold border-0 h-100 bg-canGray lg:rounded-xl [&_.ant-card-head-wrapper]:mb-6 [&_.ant-card-head-title]:!p-0 [&_.ant-card-head]:!p-0  [&_.ant-card-body]:!p-0 py-5  lg:px-6 px-4  ${styles.ItemCard}`}
-    title="Camp(s)"
-  >
-    <List
-      size="small"
-      dataSource={searchCamps?.slice(0, 5)}
-      footer={
-        searchCamps?.length ? (
-          <span className={styles.bold_margin}></span>
-        ) : null
-      }
-      renderItem={(item: any) => {
-        const jsonData = JSON.parse(item.breadcrumb_data) as Array<any>;
-        // const parsedData = jsonData.reduce((accumulator, currentVal, index) => {
-        //   const accIndex = index + 1;
-        //   accumulator[index] = {
-        //     camp_name:
-        //       currentVal[accIndex]?.camp_name == "Agreement"
-        //         ? currentVal[accIndex]?.topic_name
-        //         : currentVal[accIndex]?.camp_name,
-        //     camp_link: currentVal[accIndex]?.camp_link,
-        //   };
-        //   return accumulator;
-        // }, []);
-
-        return (
-          <List.Item className="w-full flex font-medium !border-b !border-canGrey2 !py-3.5 !px-0 first:!pt-0">
-            <Link href={`/${jsonData[0][1]?.camp_link}`}>
+  return (
+    <Card
+      className={`[&_.ant-empty-normal]:!m-0 [&_.ant-list-empty-text]:!p-0 [&_.ant-card-head-title]:!font-semibold [&_.ant-card-head-title]:uppercase border-0 h-100 bg-canGray lg:rounded-xl [&_.ant-card-head-wrapper]:mb-6 [&_.ant-card-head-title]:!p-0 [&_.ant-card-head]:!p-0  [&_.ant-card-body]:!p-0 py-5 lg:px-6 px-4  ${styles.ItemCard}`}
+      title="Topic(s)"
+    >
+      <List
+        size="small"
+        className=""
+        locale={{ emptyText: "Currently, topic(s) are not available." }}
+        dataSource={searchTopics?.slice(0, 5)}
+        footer={
+          searchTopics?.length ? (
+            <span className={styles.bold_margin}></span>
+          ) : (
+            ""
+          )
+        }
+        renderItem={(item: any) => (
+          <List.Item className="w-full flex font-medium !border-b !border-canGrey2 !py-3 lg:!py-3.5 !px-0 first:!pt-0 last:!border-none ">
+            <Link
+              className="!font-semibold"
+              href={`/${replaceSpecialCharactersInLink(item.link)}`}
+            >
               <a className="flex justify-between w-full items-start">
                 <span className="flex flex-col w-full">
                   <div className="flex items-center justify-between w-full">
-                    <span className="flex-1 text-base font-medium text-canBlack mb-2 flex">
-                      {" "}
+                    <span className="flex-1 text-base lg:font-medium font-normal text-canBlack mb-2 flex">
                       {getHighlightedText(item.type_value, searchValue)}
                     </span>
+
                     <RightOutlined className="ml-auto" />
                   </div>
-
-                  <div className="text-left flex">
-                    <Typography.Paragraph className="text-base font-medium bg-transparent border-0 p-0 hover:bg-transparent focus:bg-transparent   flex gap-1.5 items-center leading-1 !mb-0">
-                      <Image
-                        src="/images/camp-search-icon.svg"
-                        width={17}
-                        height={19}
-                      />
-                      Topic:
-                      <Link href="">
-                        <a className="text-canBlue !text-base font-inter font-medium capitalize">
-                          topic name
-                        </a>
-                      </Link>
+                  <div className="text-left flex gap-7">
+                    <Popover content="Share Topic" placement="top">
+                      <Typography.Paragraph className="bg-transparent border-0 p-0 hover:bg-transparent focus:bg-transparent flex gap-1.5 items-center leading-1 !mb-0 ">
+                        {/* <FlagOutlined className="text-canBlack p-1 text-medium" /> */}
+                        <Image
+                          src="/images/serach-flag.svg"
+                          width={18}
+                          height={20}
+                        />
+                        <Link href="">
+                          <a className="text-canBlue text-base font-inter font-normal lg:font-medium">
+                            General
+                          </a>
+                        </Link>
+                      </Typography.Paragraph>
+                    </Popover>
+                    <Typography.Paragraph className="!m-0 text-canBlack font-medium font-inter text-base flex items-center">
+                      <EyeOutlined className="text-canBlack p-1 text-medium" />{" "}
+                      123
                     </Typography.Paragraph>
                   </div>
                 </span>
               </a>
             </Link>
-            {/* <div className="">
-                {parsedData?.reverse()?.map((obj, index) => {
-                  return (
-                    <a href={`/${obj.camp_link}`} key={`/${obj.camp_link}`}>
-                      {obj.camp_name}
-                      {index < parsedData?.length - 1 ? "/ " : ""}
-                    </a>
-                  );
-                })}
-              </div> */}
           </List.Item>
-        );
-      }}
-    />
-  </Card>
-);
+        )}
+      />
+    </Card>
+  );
+};
 
-const CampStatementsItems = ({ searchCampStatement, searchValue }) => (
-  <Card
-    className={`[&_.ant-empty-normal]:!m-0 [&_.ant-list-empty-text]:!p-0 [&_.ant-card-head-title]:uppercase [&_.ant-card-head-title]:!font-semibold border-0 h-100 bg-canGray lg:rounded-xl [&_.ant-card-head-wrapper]:mb-6 [&_.ant-card-head-title]:!p-0 [&_.ant-card-head]:!p-0  [&_.ant-card-body]:!p-0 py-5  lg:px-6 px-4 ${styles.ItemCard}`}
-    title="Camp Statement(s)"
-  >
-    <List
-      className="[&_.ant-list-footer]:!hidden"
-      size="small"
-      dataSource={searchCampStatement?.slice(0, 5)}
-      footer={
-        searchCampStatement?.length ? (
-          <span className={styles.bold_margin}></span>
-        ) : null
-      }
-      renderItem={(item: any) => {
-        const jsonData = JSON.parse(item?.breadcrumb_data) as Array<any>;
-        // const parsedData = jsonData?.reduce(
-        //   (accumulator, currentVal, index) => {
-        //     const accIndex = index + 1;
-        //     accumulator[index] = {
-        //       camp_name:
-        //         currentVal[accIndex]?.camp_name == "Agreement"
-        //           ? currentVal[accIndex]?.topic_name
-        //           : currentVal[accIndex]?.camp_name,
-        //       camp_link: currentVal[accIndex]?.camp_link,
-        //       topic_name: currentVal[accIndex]?.topic_name,
-        //     };
-        //     return accumulator;
-        //   },
-        //   []
-        // );
+const CampItems = ({ searchCamps, searchValue }) => {
+  if (!searchCamps?.length) {
+    return <NoData />;
+  }
 
-        return (
-          <List.Item className="w-full flex font-medium !border-b !border-canGrey2 !py-3.5 !px-0 first:!pt-0 last:!border-none last:!pb-0 ">
-            <div className="">
-              <Typography.Paragraph className="bg-transparent border-0 p-0 flex items-center leading-1 mb-2 [&_span]:inline-flex">
-                <Link href={`/${jsonData[0][1]?.camp_link}`}>
-                  <a className="flex w-full items-start !text-canBlack text-base font-medium">
-                    {getHighlightedTextForCampStatement(
-                      jsonData?.[0]?.[1]?.camp_name,
-                      searchValue
-                    )}
-                  </a>
-                </Link>
-              </Typography.Paragraph>
-              {/* <Typography.Paragraph className="bg-transparent border-0 p-0 inline-flex items-center leading-1 [&_span]:!inline-flex">
-                {getHighlightedTextForCampStatement(item.type_value, searchValue)}
-              </Typography.Paragraph> */}
+  return (
+    <Card
+      className={`[&_.ant-empty-normal]:!m-0 [&_.ant-list-empty-text]:!p-0 [&_.ant-card-head-title]:uppercase [&_.ant-card-head-title]:!font-semibold border-0 h-100 bg-canGray lg:rounded-xl [&_.ant-card-head-wrapper]:mb-6 [&_.ant-card-head-title]:!p-0 [&_.ant-card-head]:!p-0  [&_.ant-card-body]:!p-0 py-5  lg:px-6 px-4  ${styles.ItemCard}`}
+      title="Camp(s)"
+    >
+      <List
+        size="small"
+        dataSource={searchCamps?.slice(0, 5)}
+        locale={{ emptyText: "Currently, camp(s) are not available." }}
+        footer={
+          searchCamps?.length ? (
+            <span className={styles.bold_margin}></span>
+          ) : null
+        }
+        renderItem={(item: any) => {
+          const jsonData = JSON.parse(item.breadcrumb_data) as Array<any>;
+          // const parsedData = jsonData.reduce((accumulator, currentVal, index) => {
+          //   const accIndex = index + 1;
+          //   accumulator[index] = {
+          //     camp_name:
+          //       currentVal[accIndex]?.camp_name == "Agreement"
+          //         ? currentVal[accIndex]?.topic_name
+          //         : currentVal[accIndex]?.camp_name,
+          //     camp_link: currentVal[accIndex]?.camp_link,
+          //   };
+          //   return accumulator;
+          // }, []);
 
-              {getHighlightedTextForCampStatement(item.type_value, searchValue)}
+          return (
+            <List.Item className="w-full flex font-medium !border-b !border-canGrey2 !py-3.5 !px-0 first:!pt-0">
+              <Link href={`/${jsonData[0][1]?.camp_link}`}>
+                <a className="flex justify-between w-full items-start">
+                  <span className="flex flex-col w-full">
+                    <div className="flex items-center justify-between w-full">
+                      <span className="flex-1 text-base font-medium text-canBlack mb-2 flex">
+                        {" "}
+                        {getHighlightedText(item.type_value, searchValue)}
+                      </span>
+                      <RightOutlined className="ml-auto" />
+                    </div>
 
-              <div className="text-left flex">
-                <Typography.Paragraph className="text-base font-medium bg-transparent border-0 p-0 hover:bg-transparent focus:bg-transparent   flex gap-1.5 items-center leading-1 !mb-0">
-                  <Image
-                    src="/images/camp-search-icon.svg"
-                    width={17}
-                    height={19}
-                  />
-                  Topic:
-                  <Link href={`/${jsonData[0][1]?.camp_link}`}>
-                    <a className="text-canBlue text-base font-inter font-medium ">
-                      {getHighlightedText(
-                        jsonData?.[0]?.[1]?.topic_name,
-                        searchValue
-                      )}
-                    </a>
-                  </Link>
-                </Typography.Paragraph>
-              </div>
+                    <div className="text-left flex">
+                      <Typography.Paragraph className="text-base font-medium bg-transparent border-0 p-0 hover:bg-transparent focus:bg-transparent   flex gap-1.5 items-center leading-1 !mb-0">
+                        <Image
+                          src="/images/camp-search-icon.svg"
+                          width={17}
+                          height={19}
+                        />
+                        Topic:
+                        <Link href="">
+                          <a className="text-canBlue !text-base font-inter font-medium capitalize">
+                            topic name
+                          </a>
+                        </Link>
+                      </Typography.Paragraph>
+                    </div>
+                  </span>
+                </a>
+              </Link>
               {/* <div className="">
                 {parsedData?.reverse()?.map((obj, index) => {
                   return (
@@ -718,60 +673,163 @@ const CampStatementsItems = ({ searchCampStatement, searchValue }) => (
                   );
                 })}
               </div> */}
-            </div>
-            <RightOutlined className="ml-auto" />
-          </List.Item>
-        );
-      }}
-    />
-  </Card>
-);
+            </List.Item>
+          );
+        }}
+      />
+    </Card>
+  );
+};
 
-const NickNamesItems = ({ searchNickname, searchValue }) => (
-  <Card
-    className={`[&_.ant-empty-normal]:!m-0 [&_.ant-list-empty-text]:!p-0 [&_.ant-card-head-title]:uppercase [&_.ant-card-head-title]:!font-semibold border-0 h-100 bg-canGray lg:rounded-xl [&_.ant-card-head-wrapper]:mb-6 [&_.ant-card-head-title]:!p-0 [&_.ant-card-head]:!p-0  [&_.ant-card-body]:!p-0 py-5  lg:px-6 px-4 ${styles.ItemCard}`}
-    title="Nickname(s)"
-  >
-    <List
-      size="small"
-      dataSource={searchNickname?.slice(0, 5)}
-      footer={
-        searchNickname?.length ? (
-          <span className={styles.bold_margin}></span>
-        ) : null
-      }
-      renderItem={(item: any) => {
-        return (
-          <List.Item className="w-full flex !border-none !py-2 lg:!px-5 !px-2.5 bg-white rounded-lg mb-2">
-            <Link href={`/${item?.link}`}>
-              <a className="flex justify-between w-full items-start">
-                <span className="flex items-center gap-3.5 text-base font-normal">
-                  {/* <UserOutlined /> */}
-                  <Image
-                    src="/images/nickname-user-icon.svg"
-                    width={14}
-                    height={16}
-                  />
-                  {getHighlightedText(item.type_value, searchValue)}
-                </span>
-                <span className="ml_auto text-base font-normal">
-                  Supported camps:{" "}
-                  <strong className="text-canOrange text-base !font-normal">
-                    {item?.support_count == "" ? 0 : item?.support_count}
-                  </strong>{" "}
-                </span>
-              </a>
-            </Link>
-          </List.Item>
-        );
-      }}
-    />
-  </Card>
-);
+const CampStatementsItems = ({ searchCampStatement, searchValue }) => {
+  if (!searchCampStatement?.length) {
+    return <NoData />;
+  }
+
+  return (
+    <Card
+      className={`[&_.ant-empty-normal]:!m-0 [&_.ant-list-empty-text]:!p-0 [&_.ant-card-head-title]:uppercase [&_.ant-card-head-title]:!font-semibold border-0 h-100 bg-canGray lg:rounded-xl [&_.ant-card-head-wrapper]:mb-6 [&_.ant-card-head-title]:!p-0 [&_.ant-card-head]:!p-0  [&_.ant-card-body]:!p-0 py-5  lg:px-6 px-4 ${styles.ItemCard}`}
+      title="Camp Statement(s)"
+    >
+      <List
+        className="[&_.ant-list-footer]:!hidden"
+        size="small"
+        dataSource={searchCampStatement?.slice(0, 5)}
+        locale={{ emptyText: "Currently, statement(s) are not available." }}
+        footer={
+          searchCampStatement?.length ? (
+            <span className={styles.bold_margin}></span>
+          ) : null
+        }
+        renderItem={(item: any) => {
+          const jsonData = JSON.parse(item?.breadcrumb_data) as Array<any>;
+          // const parsedData = jsonData?.reduce(
+          //   (accumulator, currentVal, index) => {
+          //     const accIndex = index + 1;
+          //     accumulator[index] = {
+          //       camp_name:
+          //         currentVal[accIndex]?.camp_name == "Agreement"
+          //           ? currentVal[accIndex]?.topic_name
+          //           : currentVal[accIndex]?.camp_name,
+          //       camp_link: currentVal[accIndex]?.camp_link,
+          //       topic_name: currentVal[accIndex]?.topic_name,
+          //     };
+          //     return accumulator;
+          //   },
+          //   []
+          // );
+
+          return (
+            <List.Item className="w-full flex font-medium !border-b !border-canGrey2 !py-3.5 !px-0 first:!pt-0 last:!border-none last:!pb-0 ">
+              <div className="">
+                <Typography.Paragraph className="bg-transparent border-0 p-0 flex items-center leading-1 mb-2 [&_span]:inline-flex">
+                  <Link href={`/${jsonData[0][1]?.camp_link}`}>
+                    <a className="flex w-full items-start !text-canBlack text-base font-medium">
+                      {getHighlightedTextForCampStatement(
+                        jsonData?.[0]?.[1]?.camp_name,
+                        searchValue
+                      )}
+                    </a>
+                  </Link>
+                </Typography.Paragraph>
+                {/* <Typography.Paragraph className="bg-transparent border-0 p-0 inline-flex items-center leading-1 [&_span]:!inline-flex">
+                {getHighlightedTextForCampStatement(item.type_value, searchValue)}
+              </Typography.Paragraph> */}
+
+                {getHighlightedTextForCampStatement(
+                  item.type_value,
+                  searchValue
+                )}
+
+                <div className="text-left flex">
+                  <Typography.Paragraph className="text-base font-medium bg-transparent border-0 p-0 hover:bg-transparent focus:bg-transparent   flex gap-1.5 items-center leading-1 !mb-0">
+                    <Image
+                      src="/images/camp-search-icon.svg"
+                      width={17}
+                      height={19}
+                    />
+                    Topic:
+                    <Link href={`/${jsonData[0][1]?.camp_link}`}>
+                      <a className="text-canBlue text-base font-inter font-medium ">
+                        {getHighlightedText(
+                          jsonData?.[0]?.[1]?.topic_name,
+                          searchValue
+                        )}
+                      </a>
+                    </Link>
+                  </Typography.Paragraph>
+                </div>
+                {/* <div className="">
+                {parsedData?.reverse()?.map((obj, index) => {
+                  return (
+                    <a href={`/${obj.camp_link}`} key={`/${obj.camp_link}`}>
+                      {obj.camp_name}
+                      {index < parsedData?.length - 1 ? "/ " : ""}
+                    </a>
+                  );
+                })}
+              </div> */}
+              </div>
+              <RightOutlined className="ml-auto" />
+            </List.Item>
+          );
+        }}
+      />
+    </Card>
+  );
+};
+
+const NickNamesItems = ({ searchNickname, searchValue }) => {
+  if (!searchNickname?.length) {
+    return <NoData />;
+  }
+
+  return (
+    <Card
+      className={`[&_.ant-empty-normal]:!m-0 [&_.ant-list-empty-text]:!p-0 [&_.ant-card-head-title]:uppercase [&_.ant-card-head-title]:!font-semibold border-0 h-100 bg-canGray lg:rounded-xl [&_.ant-card-head-wrapper]:mb-6 [&_.ant-card-head-title]:!p-0 [&_.ant-card-head]:!p-0  [&_.ant-card-body]:!p-0 py-5  lg:px-6 px-4 ${styles.ItemCard}`}
+      title="Nickname(s)"
+    >
+      <List
+        size="small"
+        dataSource={searchNickname?.slice(0, 5)}
+        locale={{ emptyText: "Currently, nick-name(s) are not available." }}
+        footer={
+          searchNickname?.length ? (
+            <span className={styles.bold_margin}></span>
+          ) : null
+        }
+        renderItem={(item: any) => {
+          return (
+            <List.Item className="w-full flex !border-none !py-2 lg:!px-5 !px-2.5 bg-white rounded-lg mb-2">
+              <Link href={`/${item?.link}`}>
+                <a className="flex justify-between w-full items-start">
+                  <span className="flex items-center gap-3.5 text-base font-normal">
+                    {/* <UserOutlined /> */}
+                    <Image
+                      src="/images/nickname-user-icon.svg"
+                      width={14}
+                      height={16}
+                    />
+                    {getHighlightedText(item.type_value, searchValue)}
+                  </span>
+                  <span className="ml_auto text-base font-normal">
+                    Supported camps:{" "}
+                    <strong className="text-canOrange text-base !font-normal">
+                      {item?.support_count == "" ? 0 : item?.support_count}
+                    </strong>{" "}
+                  </span>
+                </a>
+              </Link>
+            </List.Item>
+          );
+        }}
+      />
+    </Card>
+  );
+};
 
 const FooterItems = ({ searchValue, handleSearchfor }) => (
-  <footer className="px-2 pt-5 mt-5 pb-5 text-center lg:border-t lg:border-canGrey2">
-    {/* <i className="icon-search"></i> */}
+  <footer className="px-2 pt-5 mt-5 pb-5 text-center lg:border-t lg:border-canGrey2 ftSearchLink">
     <Link
       href={{ pathname: "/search", query: { q: searchValue } }}
       className="[&_.ant-select-item-option-active]:!bg-white [&_.ant-select-item]:!p-0 [&_.ant-select-item-option]:!p-0 [&_.ant-select-item-option-grouped]:!p-0 "
@@ -782,11 +840,6 @@ const FooterItems = ({ searchValue, handleSearchfor }) => (
       >
         View All Results
       </a>
-      {/* <a onClick={() => handleSearchfor()}>{`Search for "${
-        searchValue.length > searchValueLength
-          ? searchValue.substring(0, searchValueLength) + "..."
-          : searchValue
-      }"`}</a> */}
     </Link>
   </footer>
 );

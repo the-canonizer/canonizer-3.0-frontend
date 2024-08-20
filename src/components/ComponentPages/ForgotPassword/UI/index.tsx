@@ -21,7 +21,7 @@ function ForgotPasswordUI({ form, onFinish, isDisabled }) {
       className="h-full flex flex-col"
     >
       <Title
-        level={2}
+        level={4}
         className="mt-6 text-sm text-center text-canBlack font-medium"
         id="forgot-password-title"
       >
@@ -59,7 +59,7 @@ function ForgotPasswordUI({ form, onFinish, isDisabled }) {
         <Form.Item className="text-center mt-4">
           <PrimaryButton
             htmlType="submit"
-            className="h-[40px] text-sm rounded-lg !w-8/12 lg:!w-7/12 flex items-center justify-center mx-auto"
+            className="h-[40px] text-sm rounded-lg !w-8/12 lg:!w-4/12 flex items-center justify-center mx-auto"
             data-testid="submitButton"
             id="submit-btn"
             disabled={!isDisabled}

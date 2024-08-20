@@ -331,7 +331,7 @@ function HistoryCard({
                     Statement
                   </h5>
                   <div
-                    className="text-canBlack pb-[1.25rem]"
+                    className="text-canBlack pb-[1.25rem] editorContent"
                     dangerouslySetInnerHTML={{
                       __html: campStatement?.parsed_value,
                     }}

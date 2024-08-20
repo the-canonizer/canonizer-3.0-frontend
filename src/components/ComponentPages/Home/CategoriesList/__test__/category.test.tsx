@@ -47,7 +47,7 @@ describe("CategoryContainer", () => {
         <CategoryContainer />
       </Provider>
     );
-    expect(screen.getByText("List of Categories")).toBeInTheDocument();
+    expect(screen.getByText("List of Topic Tags")).toBeInTheDocument();
     expect(screen.getByText("See More")).toBeInTheDocument();
   });
 });
