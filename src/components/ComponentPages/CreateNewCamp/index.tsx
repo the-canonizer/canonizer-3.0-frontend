@@ -452,7 +452,6 @@ const CreateNewCamp = () => {
                 campNickName={campNickName}
                 options={options}
                 onCheckboxChange={onCheckboxChange}
-                // onParentCampChange={onParentCampChange}
                 isLoading={isLoading}
                 isEdit={false}
                 isDisabled={isDisabled}

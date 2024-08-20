@@ -103,8 +103,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
   }));
 
   const { openConsensusTreePopup } = useSelector((state: RootState) => ({
-    // openConsensusTreePopup: state.hotTopic.openConsensusTreePopup,
-    openConsensusTreePopup: true,
+    openConsensusTreePopup: state.hotTopic.openConsensusTreePopup,
   }));
 
   const [treeExpandValue, setTreeExpandValue] = useState<any>(campWithScore);

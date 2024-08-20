@@ -1,5 +1,5 @@
 import { Typography } from "antd";
-import { FlagOutlined } from "@ant-design/icons";
+import { TagOutlined } from "@ant-design/icons";
 import Link from "next/link";
 
 import CustomSkelton from "src/components/common/customSkelton";
@@ -32,7 +32,7 @@ const TopicCatsLabel = ({ tags, loading = false, ...restProps }) => {
       }`}
       {...restProps}
     >
-      <FlagOutlined className="text-canLight p-1 text-medium" />
+      <TagOutlined className="text-canLight p-1 text-medium rotate-[280deg]" />
       <Typography.Paragraph className="line-clamp-1 max-w-52 !mb-0">
         {(tags || []).map((item, idx) => (
           <Fragment key={item?.id}>

@@ -13,6 +13,7 @@ import SelectInputs from "components/shared/FormInputs/select";
 import PrimaryButton from "components/shared/Buttons/PrimariButton";
 import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 import GetBreadCrumbs from "./PopupBreadCrumb";
+import CustomSkelton from "components/common/customSkelton";
 
 const Editorckl = dynamic(
   () => import("src/components/common/editorck/index"),
@@ -59,7 +60,7 @@ const PostFormPopup = ({
   quillContent,
   onContentChange,
   isError = false,
-  isLoading,
+  isLoading = true,
   isMobile,
   isPostUpdate,
   onClose,
@@ -128,7 +129,10 @@ const PostFormPopup = ({
             />
           </Col>
           <Col xs={24}>
-            <div className="mb-[30px] relative" key="post_editor_div">
+            <div
+              className="mb-[30px] relative editorContent"
+              key="post_editor_div"
+            >
               <label
                 htmlFor="new_post_nick_name"
                 className="ant-form-item-required text-sm font-medium mb-3 block"
@@ -136,7 +140,9 @@ const PostFormPopup = ({
               >
                 Message <span className="required">*</span>
               </label>
-              {isLoading ? null : (
+              {isLoading ? (
+                <CustomSkelton skeltonFor="table" />
+              ) : (
                 <Editorckl
                   key="post_editor"
                   editorState={quillContent || ""}

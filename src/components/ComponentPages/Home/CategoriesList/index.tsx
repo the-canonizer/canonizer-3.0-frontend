@@ -1,6 +1,6 @@
 import { Fragment, useEffect } from "react";
 import { Row, Col } from "antd";
-import { FlagOutlined } from "@ant-design/icons";
+import { FlagOutlined, TagOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import Link from "next/link";
 
@@ -43,8 +43,8 @@ const CategoriesList = () => {
       <Row gutter={15}>
         <Col md={12} sm={12} xs={12}>
           <SectionHeading
-            title="List of Categories"
-            infoContent="List of Categories"
+            title="List of Topic Tags"
+            infoContent="List of Topic Tags"
           />
         </Col>
         <Col md={12} sm={12} xs={12} className="text-right">
@@ -58,7 +58,7 @@ const CategoriesList = () => {
             <a>
               <Tags
                 className="rounded-lg py-3 px-6 border-0 text-canBlack bg-canBlue mt-0 mb-[15px] mr-[15px] hover:shadow-md"
-                icon={<FlagOutlined />}
+                icon={<TagOutlined className="rotate-[280deg]" />}
                 color={getRandomColor()}
               >
                 {cat?.title}
