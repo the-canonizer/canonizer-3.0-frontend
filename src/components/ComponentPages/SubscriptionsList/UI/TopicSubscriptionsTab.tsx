@@ -46,38 +46,35 @@ function TopicSubscriptionsTab({
             <Card
               key={data?.topic_num}
               className="subs-card [&_.ant-card-head]:!bg-transparent [&_.ant-card-head]:!border-none [&_.ant-card-body]:!px-6 [&_.ant-card-body]:!my-4 [&_.ant-tag-close-icon]:flex [&_.ant-tag-close-icon]:items-center [&_.ant-card-head-title]:!border-b [&_.ant-card-head-title]:!border-black [&_.ant-card-head-title]:!border-opacity-5  [&_.ant-card-head-title]:!py-5 !mb-0 pb-0"
-             
               type="inner"
               size="default"
               title={
                 <Title level={5} className="!border-none">
                   <span>
                     <Link href={data.title_link}>
-                    <div className="flex gap-2.5">
-                      <a className="text-base font-semibold !text-canBlack">
-                        {data.title}
-                      </a>
-                      <button
-                        className="cursor-pointer"
-                        onClick={(e) => onRemoveSubscription(e, data)}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter' || e.key === ' ') {
-                            e.preventDefault(); // Prevent default action for space key
-                            onRemoveSubscription(e, data); // Trigger the click handler
-                          }
-                        }}
-                        tabIndex={0}  // Make the element focusable
-                        role="button" // Indicate that this span acts like a button
-                        aria-label="Remove subscription" // Add an accessible label for screen readers
-                      >
-                        <Image
-                          src="/images/minus-user-icon.svg"
-                          alt="Remove subscription"
-                          width={24}
-                          height={24}
-                        />
-                      </button>
-                    </div>
+                      <div className="flex gap-2.5">
+                        <a className="text-base font-semibold !text-canBlack">
+                          {data.title}
+                        </a>
+                        <button
+                          className="cursor-pointer"
+                          onClick={(e) => onRemoveSubscription(e, data)}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter" || e.key === " ") {
+                              e.preventDefault(); // Prevent default action for space key
+                              onRemoveSubscription(e, data); // Trigger the click handler
+                            }
+                          }}
+                          aria-label="Remove subscription" // Accessible label for screen readers
+                        >
+                          <Image
+                            src="/images/minus-user-icon.svg"
+                            alt="Remove subscription"
+                            width={24}
+                            height={24}
+                          />
+                        </button>
+                      </div>
                     </Link>
                   </span>
                 </Title>
@@ -104,53 +101,49 @@ function TopicSubscriptionsTab({
                 Political Sciences
               </p> */}
               <div className="flex flex-wrap flex-col gap-2.5 border-b pb-5 ">
-              {data.camps?.map((camp, i) => {
-                return (
-                  <>
-                  <Tag
-                    key={camp.subscription_start + i}
-                    className="  flex justify-start items-center bg-canLightGrey rounded-full w-max px-5 border-none "
-                    closable
-                    onClose={(e) => onConfirm(e, data, camp)}
-                    closeIcon={
-                      <Tooltip title="Remove camp subscription">
-                       <Image
-                       className="cursor-pointer"
-                            src="/images/minus-user-icon.svg"
-                            alt=""
-                            width={24}
-                            height={24}
-                          />
-                      </Tooltip>
-                    }
-                  >
-                    <div className="my-2.5">
-                      {/* <span className={styles.count}>{i + 1}. </span> */}
-                      <Link href={camp.camp_link}>
-                        <div className="flex gap-2.5 items-center  rounded-full">
-                          <a className=" text-sm font-semibold text-canBlack">
-                            {camp.camp_name}
-                          </a>
-                        
-                          {/* <Image
+                {data.camps?.map((camp, i) => {
+                  return (
+                    <>
+                      <Tag
+                        key={camp.subscription_start + i}
+                        className="  flex justify-start items-center bg-canLightGrey rounded-full w-max px-5 border-none "
+                        closable
+                        onClose={(e) => onConfirm(e, data, camp)}
+                        closeIcon={
+                          <Tooltip title="Remove camp subscription">
+                            <Image
+                              className="cursor-pointer"
+                              src="/images/minus-user-icon.svg"
+                              alt=""
+                              width={24}
+                              height={24}
+                            />
+                          </Tooltip>
+                        }
+                      >
+                        <div className="my-2.5">
+                          {/* <span className={styles.count}>{i + 1}. </span> */}
+                          <Link href={camp.camp_link}>
+                            <div className="flex gap-2.5 items-center  rounded-full">
+                              <a className=" text-sm font-semibold text-canBlack">
+                                {camp.camp_name}
+                              </a>
+
+                              {/* <Image
                             src="/images/minus-user-icon.svg"
                             alt=""
                             width={24}
                             height={24}
                           /> */}
+                            </div>
+                          </Link>
                         </div>
-                      </Link>
-                   
-                    </div>
-               
-                  </Tag>
-                  {/* <hr className="my-2.5 border-black border-opacity-5"/> */}
-                  </>
-                  
-                );
-              })}
+                      </Tag>
+                      {/* <hr className="my-2.5 border-black border-opacity-5"/> */}
+                    </>
+                  );
+                })}
               </div>
-             
             </Card>
           );
         })}

@@ -136,7 +136,7 @@ const SettingsUI = () => {
     profile_info: <ProfileInfo />,
     change_password: <ChangePassword />,
     nick_name: <NickName />,
-    
+
     direct_supported_camps: <DirectSupportedCamps search={search} />,
     delegate_supported_camp: <DelegatedSupportCamps search={search} />,
     supported_camps: (
@@ -289,7 +289,7 @@ const SettingsUI = () => {
                 src="/images/nickname-user-icon.svg"
                 width={14}
                 height={24}
-                 alt=""
+                alt=""
               />
             </a>
           </Link>
@@ -317,7 +317,7 @@ const SettingsUI = () => {
                 src="/images/nickname-user-icon.svg"
                 width={14}
                 height={24}
-                 alt=""
+                alt=""
               />
             </a>
           </Link>
@@ -340,7 +340,12 @@ const SettingsUI = () => {
                 {" "}
                 Preferences
               </span>
-              <Image src="/images/preference-icon.svg" width={16} height={16}  alt="" />
+              <Image
+                src="/images/preference-icon.svg"
+                width={16}
+                height={16}
+                alt=""
+              />
             </a>
           </Link>
         </span>
@@ -356,14 +361,14 @@ const SettingsUI = () => {
               {" "}
               Supported Camps
             </span>
-            <Image src="/images/flagicon.svg" width={24} height={24}  alt=""/>
+            <Image src="/images/flagicon.svg" width={24} height={24} alt="" />
           </a>
           <Image
             src="/images/caret-icon.svg"
             className="account-arrow"
             width={16}
             height={9}
-             alt=""
+            alt=""
           />
         </span>
       ),
@@ -430,7 +435,7 @@ const SettingsUI = () => {
                 src="/images/subscription-icon.svg"
                 width={24}
                 height={24}
-                 alt=""
+                alt=""
               />
             </a>
           </Link>
@@ -446,14 +451,19 @@ const SettingsUI = () => {
               {" "}
               Account Settings
             </span>
-            <Image src="/images/setting-icon.svg" width={24} height={24}  alt=""/>
+            <Image
+              src="/images/setting-icon.svg"
+              width={24}
+              height={24}
+              alt=""
+            />
           </a>
           <Image
             src="/images/caret-icon.svg"
             className="account-arrow"
             width={16}
             height={9}
-             alt=""
+            alt=""
           />
         </span>
       ),
@@ -556,7 +566,12 @@ const SettingsUI = () => {
           <footer className="px-9 py-10 flex justify-start border-t border-canGrey2">
             <p className="text-base font-semibold text-canDarkRed flex gap-2.5 items-center cursor-pointer">
               <span onClick={onClick}> LogOut</span>
-              <Image src="/images/logout-icon.svg" width={24} height={24}  alt="" />
+              <Image
+                src="/images/logout-icon.svg"
+                width={24}
+                height={24}
+                alt=""
+              />
             </p>
           </footer>
         </div>
@@ -613,7 +628,7 @@ const SettingsUI = () => {
                                         src="/images/nickname-user-icon.svg"
                                         width={14}
                                         height={24}
-                                         alt=""
+                                        alt=""
                                       />
                                     </a>
                                   </Link>
@@ -637,7 +652,7 @@ const SettingsUI = () => {
                                         src="/images/nickname-user-icon.svg"
                                         width={14}
                                         height={24}
-                                         alt=""
+                                        alt=""
                                       />
                                     </a>
                                   </Link>
@@ -658,7 +673,7 @@ const SettingsUI = () => {
                                         src="/images/preference-icon.svg"
                                         width={16}
                                         height={16}
-                                         alt=""
+                                        alt=""
                                       />
                                     </a>
                                   </Link>
@@ -669,35 +684,44 @@ const SettingsUI = () => {
                               value: "Supported Camps",
                               label: (
                                 <span>
-                              <a className="flex items-center gap-3">
-                                <button
-                                  className="text-base font-medium text-canBlack"
-                                  onClick={() => {
-                                    setshowSupportedCampsTab(true);
-                                    setSelectedTab("Direct_Supported_Camps");
-                                    router.push("/settings?tab=direct_supported_camps");
-                                  }}
-                                  onKeyDown={(e) => {
-                                    if (e.key === 'Enter' || e.key === ' ') {
-                                      e.preventDefault(); // Prevent default action for space key
-                                      setshowSupportedCampsTab(true);
-                                      setSelectedTab("Direct_Supported_Camps");
-                                      router.push("/settings?tab=direct_supported_camps");
-                                    }
-                                  }}
-                                  tabIndex={0}  // Use tabIndex with a capital "I"
-                                  role="button" // Add a role attribute to indicate this span is interactive
-                                >
-                                  Supported Camps
-                                </button>
-                                <Image
-                                  src="/images/flagicon.svg"
-                                  width={24}
-                                  height={24}
-                                  alt=""
-                                />
-                                </a>
-                              </span>
+                                  <a className="flex items-center gap-3">
+                                    <button
+                                      className="text-base font-medium text-canBlack"
+                                      onClick={() => {
+                                        setshowSupportedCampsTab(true);
+                                        setSelectedTab(
+                                          "Direct_Supported_Camps"
+                                        );
+                                        router.push(
+                                          "/settings?tab=direct_supported_camps"
+                                        );
+                                      }}
+                                      onKeyDown={(e) => {
+                                        if (
+                                          e.key === "Enter" ||
+                                          e.key === " "
+                                        ) {
+                                          e.preventDefault(); // Prevent default action for space key
+                                          setshowSupportedCampsTab(true);
+                                          setSelectedTab(
+                                            "Direct_Supported_Camps"
+                                          );
+                                          router.push(
+                                            "/settings?tab=direct_supported_camps"
+                                          );
+                                        }
+                                      }}
+                                    >
+                                      Supported Camps
+                                    </button>
+                                    <Image
+                                      src="/images/flagicon.svg"
+                                      width={24}
+                                      height={24}
+                                      alt=""
+                                    />
+                                  </a>
+                                </span>
                               ),
                             },
                             {
@@ -739,7 +763,7 @@ const SettingsUI = () => {
                                         src="/images/setting-icon.svg"
                                         width={24}
                                         height={24}
-                                         alt=""
+                                        alt=""
                                       />
                                     </a>
                                   </Link>
@@ -749,28 +773,32 @@ const SettingsUI = () => {
                           ]}
                         />
                       </div>
-                      {showSupportedCampsTab && (router?.asPath == "/settings?tab=direct_supported_camps" || router?.asPath == "/settings?tab=delegate_supported_camp" ) && (
-                        <div className="flex justify-between border-b border-canGrey2 mb-5 lg:hidden">
-                          <Radio.Group
-                            className="flex items-center justify-between py-5 gap-4 lg:ml-10"
-                            value={selectedTab}
-                            onChange={handleTabChange}
-                          >
-                            <Radio
-                              value="Direct_Supported_Camps"
-                              className="text-sm font-semibold"
+                      {showSupportedCampsTab &&
+                        (router?.asPath ==
+                          "/settings?tab=direct_supported_camps" ||
+                          router?.asPath ==
+                            "/settings?tab=delegate_supported_camp") && (
+                          <div className="flex justify-between border-b border-canGrey2 mb-5 lg:hidden">
+                            <Radio.Group
+                              className="flex items-center justify-between py-5 gap-4 lg:ml-10"
+                              value={selectedTab}
+                              onChange={handleTabChange}
                             >
-                              Direct Supported Camps
-                            </Radio>
-                            <Radio
-                              value="Delegated_Supported_Camps"
-                              className="text-sm font-semibold"
-                            >
-                              Delegated Supported Camps
-                            </Radio>
-                          </Radio.Group>
-                        </div>
-                      )}
+                              <Radio
+                                value="Direct_Supported_Camps"
+                                className="text-sm font-semibold"
+                              >
+                                Direct Supported Camps
+                              </Radio>
+                              <Radio
+                                value="Delegated_Supported_Camps"
+                                className="text-sm font-semibold"
+                              >
+                                Delegated Supported Camps
+                              </Radio>
+                            </Radio.Group>
+                          </div>
+                        )}
                     </div>
                   </div>
                 </div>
