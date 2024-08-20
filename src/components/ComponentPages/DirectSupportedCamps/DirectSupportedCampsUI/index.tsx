@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Table, Button, Pagination, Empty, Spin, Modal, Form, Drawer, Input } from "antd";
-import { CloseCircleOutlined } from "@ant-design/icons";
+import { Table, Button, Pagination, Empty, Modal, Form, Drawer, Input } from "antd";
 import { DraggableArea } from "react-draggable-tags";
 import Link from "next/link";
 
 import styles from "./DirectSupportedCamps.module.scss";
 
-import messages from "../../../../messages";
 import CustomSkelton from "../../../common/customSkelton";
 import SupportRemovedModal from "../../../common/supportRemovedModal";
-import Search from "antd/lib/transfer/search";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "src/store";
@@ -18,10 +15,8 @@ import { setOpenDrawerForDirectSupportedCamp } from "src/store/slices/campDetail
 export default function DirectSupportedCampsUI({
   removeCardSupportedCamps,
   handleSupportedCampsCancel,
-  isSupportedCampsModalVisible,
   directSupportedCampsList,
   setDirectSupportedCampsList,
-  // search,
   setCardCamp_ID,
   removeSupport,
   handleClose,
@@ -50,7 +45,6 @@ export default function DirectSupportedCampsUI({
   const [removeSupportSpinner, setRemoveSupportSpinner] = useState(false);
   const [currentCamp, setCurrentCamp] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
 
   const { openDrawerForDirectSupportedCamp } = useSelector(
@@ -254,7 +248,26 @@ export default function DirectSupportedCampsUI({
   const showEmpty = (msg) => {
     return <Empty description={msg} />;
   };
+  const hasDirectSupportedCamps = directSupportedCampsList && directSupportedCampsList.length > 0;
+const hasFilteredArray = filteredArray().length > 0;
+const getModalMessage = (): string => {
+  if (isChangingOrder) {
+    return "You are about to change the order of your supported camps";
+  }
 
+  if (modalPopupText) {
+    return "You are about to remove your support from all the camps from the topic: ";
+  }
+
+  if (campIds?.length > 1) {
+    return "You are about to remove your support from the camps: ";
+  }
+
+  return "You are about to remove your support from the camp: ";
+};
+
+// Usage
+const message = getModalMessage();
   return (
     <div data-testid="directSupportUi">
       {directSkeletonIndicator ? (
@@ -292,32 +305,34 @@ export default function DirectSupportedCampsUI({
             </div>
 
           </div>
-          {directSupportedCampsList && directSupportedCampsList.length > 0 ? (
-            filteredArray().length > 0 ? (
-              <>
-                <Table
-                  dataSource={filteredArray()}
-                  columns={columns}
-                  pagination={false}
-                  rowKey="topic_num"
-                  bordered
-                />
-                <Pagination
-                  hideOnSinglePage={true}
-                  total={directSupportedCampsList.length}
-                  pageSize={5}
-                  defaultCurrent={currentPage}
-                  onChange={pageChange}
-                  showSizeChanger={false}
-                  className="mt-5"
-                />
-              </>
-            ) : (
-              showEmpty("No Data Found")
-            )
-          ) : (
-            showEmpty("No Data Found")
-          )}
+          <>
+    {hasDirectSupportedCamps ? (
+      hasFilteredArray ? (
+        <>
+          <Table
+            dataSource={filteredArray()}
+            columns={columns}
+            pagination={false}
+            rowKey="topic_num"
+            bordered
+          />
+          <Pagination
+            hideOnSinglePage={true}
+            total={directSupportedCampsList.length}
+            pageSize={5}
+            defaultCurrent={currentPage}
+            onChange={pageChange}
+            showSizeChanger={false}
+            className="mt-5"
+          />
+        </>
+      ) : (
+        showEmpty("No Data Found")
+      )
+    ) : (
+      showEmpty("No Data Found")
+    )}
+  </>
         </div>
       )}
       {/* <Modal
@@ -432,13 +447,7 @@ export default function DirectSupportedCampsUI({
         width={320}
         title={
           <p id="all_camps_topics" className="text-2xl font-normal">
-            {isChangingOrder
-              ? "You are about to change the order of your supported camps"
-              : modalPopupText
-                ? "You are about to remove your support from all the camps from the topic: "
-                : campIds?.length > 1
-                  ? "You are about to remove your support from the camps: "
-                  : "You are about to remove your support from the camp: "}
+            {message}
             {!isChangingOrder && (
               <span>
 
