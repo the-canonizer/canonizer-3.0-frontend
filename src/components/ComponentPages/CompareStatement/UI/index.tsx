@@ -25,14 +25,12 @@ function CompareStatementUI({
 }: any) {
   const [compareMode, setCompareMode] = useState(true);
   const [currentVersion, setCurrentVersion] = useState(true);
+  const [tabId, setTabId] = useState("1");
   const router = useRouter();
   const s1 = statements?.at(0) || {},
     s2 = statements?.at(1) || {},
     from = router?.query?.from;
 
-    console.log("s1Status",s1?.status);
-    console.log("s2Status",s2?.status);
-    
   const breakpoint = 768;
 
   // Initialize state without using window.innerWidth directly
@@ -43,7 +41,7 @@ function CompareStatementUI({
   const convertToTime = (unixTime) => {
     return moment(unixTime * 1000).format("hh:mm:ss A");
   };
-  
+
   const convertToDate = (unixTime) => {
     return moment(unixTime * 1000).format("DD MMMM YYYY");
   };
@@ -53,16 +51,15 @@ function CompareStatementUI({
       case "live":
         return "live-tab";
       case "in_review":
-        return "pending-wrapper";
+        return "pending-tab";
       case "objected":
-        return "objected-wrapper";
+        return "objected-tab";
       case "old":
-        return "previous-wrapper";
+        return "previous-tab";
       default:
         return "";
     }
   };
-  
 
   useEffect(() => {
     const handleResize = () => {
@@ -150,8 +147,14 @@ function CompareStatementUI({
             <Tabs
               defaultActiveKey="1"
               centered
-              className={`comparision-mobile-tabs ${getStatusClass(s1?.status)} `}
-              
+              className={`comparision-mobile-tabs ${
+                tabId && tabId === "1"
+                  ? getStatusClass(itemsStatus[s1?.id])
+                  : getStatusClass(itemsStatus[s2?.id])
+              }`}
+              onChange={(id) => {
+                setTabId(id);
+              }}
             >
               <Tabs.TabPane
                 className="comparison-tab-content"
