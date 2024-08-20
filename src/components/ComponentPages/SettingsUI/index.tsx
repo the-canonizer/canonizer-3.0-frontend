@@ -670,7 +670,7 @@ const SettingsUI = () => {
                               label: (
                                 <span>
                               <a className="flex items-center gap-3">
-                                <span
+                                <button
                                   className="text-base font-medium text-canBlack"
                                   onClick={() => {
                                     setshowSupportedCampsTab(true);
@@ -689,7 +689,7 @@ const SettingsUI = () => {
                                   role="button" // Add a role attribute to indicate this span is interactive
                                 >
                                   Supported Camps
-                                </span>
+                                </button>
                                 <Image
                                   src="/images/flagicon.svg"
                                   width={24}

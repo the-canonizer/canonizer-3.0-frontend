@@ -57,7 +57,7 @@ function TopicSubscriptionsTab({
                       <a className="text-base font-semibold !text-canBlack">
                         {data.title}
                       </a>
-                      <span
+                      <button
                         className="cursor-pointer"
                         onClick={(e) => onRemoveSubscription(e, data)}
                         onKeyDown={(e) => {
@@ -76,7 +76,7 @@ function TopicSubscriptionsTab({
                           width={24}
                           height={24}
                         />
-                      </span>
+                      </button>
                     </div>
                     </Link>
                   </span>
