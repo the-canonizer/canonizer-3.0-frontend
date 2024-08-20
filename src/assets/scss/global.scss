@@ -610,3 +610,38 @@ body {
 .DraggableTags {
   @apply flex flex-col
 }
+.commonSelectClass {
+  @apply overflow-hidden;
+  .ant-select-selection-search-input {
+    &::placeholder {
+      font-size: 12px !important;
+      font-weight: 400;
+    }
+  }
+  .ant-select-selection-placeholder {
+    font-size: 12px !important;
+    font-weight: 400;
+  }
+  .ant-select-selection-item {
+    @apply text-sm;
+  }
+}
+
+.editorContent {
+  h1 {
+    @apply text-xl;
+  }
+  h2 {
+    @apply text-lg;
+  }
+  h3 {
+    @apply text-sm;
+  }
+
+  ul {
+    @apply list-disc pl-5;
+  }
+  ol {
+    @apply list-decimal pl-5;
+  }
+}

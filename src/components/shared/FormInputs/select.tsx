@@ -45,7 +45,7 @@ const SelectInputs = ({
       >
         {prefix}
         <Select
-          className={`text-canBlack font-normal h-[40px] [&_.ant-select-selector]:!border-0 [&_.ant-select-selector]:!outline-none [&_.ant-select-selector]:!shadow-none ${inputClassName}`}
+          className={`text-canBlack font-normal h-[40px] [&_.ant-select-selector]:!border-0 [&_.ant-select-selector]:!outline-none [&_.ant-select-selector]:!shadow-none commonSelectClass ${inputClassName}`}
           onFocus={(...rest) => {
             setIsFocused(true);
             if (onFocus) onFocus(...rest);

@@ -27,7 +27,7 @@ const CatsList = ({ onBackClick, isMobile, tags, onSort }) => {
           >
             <LeftOutlined />
           </Button>
-          List of Categories
+          List of Topic Tags
         </Title>
       }
       className={`bg-white mb-6 border-0 [&_.ant-card-head]:border-0 mainCard ${

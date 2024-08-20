@@ -61,8 +61,6 @@ const CampStatementCard = ({ loadingIndicator }) => {
     return false;
   };
 
-  console.log("campStatement---", campStatement);
-
   const getButton = () => {
     if (isDraftShow()) {
       return (

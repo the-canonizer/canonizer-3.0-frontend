@@ -114,7 +114,7 @@ const SinglePost = ({
 
       <div
         className={
-          "text-canBlack opacity-80 [&_*]:ml-0 [&_*]:pl-0 [&_ol]:pl-4 ql-editor ql-html-editor"
+          "text-canBlack opacity-80 [&_*]:ml-0 [&_*]:pl-0 [&_ol]:pl-4 ql-editor ql-html-editor editorContent"
         }
         dangerouslySetInnerHTML={{
           __html: sanitizeHtml(`<div class="ck-content">${description}</div>`, {

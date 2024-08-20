@@ -11,7 +11,7 @@ import Inputs from "src/components/shared/FormInputs";
 import PrimaryButton from "components/shared/Buttons/PrimariButton";
 import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 
-const { Title, Paragraph, Text } = Typography;
+const { Title, Text } = Typography;
 
 const LoginUi = ({
   form,
@@ -48,9 +48,7 @@ const LoginUi = ({
           >
             Welcome back!
           </Title>
-          {/* <Paragraph className="text-muted text-sm text-canLight font-regular">
-            All fields are mandatory.
-          </Paragraph> */}
+
           {errorMsg && (
             <Text className="text-canRed" type="danger" id="login-error-label">
               {errorMsg}
