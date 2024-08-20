@@ -13,6 +13,7 @@
 @import "../../components/ComponentPages/Breadcrumbs/breadcrumbs.scss";
 @import "../../components/ComponentPages/HistoryCard/historyCard.scss";
 @import "./video";
+@import "./eventLine";
 
 :root {
   --primary: #4484ce;
@@ -519,10 +520,11 @@ body {
   .ant-notification-notice-description {
     @apply ml-[4.75rem] font-medium;
   }
-  @media screen and (max-width: 575px) {
+
     .leftSideBar.miniSideBar {
-      width: auto;
-    }
+      @apply max-sm:w-[auto];
+      
+    
   }
 }
 
@@ -655,4 +657,8 @@ body {
       font-weight: 400;
     }
   }
+}
+
+.ant-tabs-nav-list .ant-tabs-tab:last-child {
+  @apply mr-5;
 }

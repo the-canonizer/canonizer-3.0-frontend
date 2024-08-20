@@ -72,7 +72,8 @@ function HistoryCard({
   status = null,
   currentVersion = null,
   s1 = false,
-  isMobileView=false
+  isMobileView=false,
+  loadingIndicator=false
 }: any) {
   const router = useRouter();
   const [commited, setCommited] = useState(false);
@@ -368,7 +369,7 @@ function HistoryCard({
             topicNamespaceId={topicNamespaceId}
           />
         )}
-
+        
         {campStatement?.status == "in_review" &&
           (!campStatement?.grace_period || commited) &&
           isUserAuthenticated &&
