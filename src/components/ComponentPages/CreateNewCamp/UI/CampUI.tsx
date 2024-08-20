@@ -49,6 +49,11 @@ const CreateNewCampUI = ({
               onCheckboxChange={onCheckboxChange}
               onParentCampChange={onParentCampChange}
               isLoading={isLoading}
+              isEdit={undefined}
+              isDisabled={undefined}
+              onCampChange={undefined}
+              onCampNameBlur={undefined}
+              values={undefined}
             />
           </Spin>
         </div>

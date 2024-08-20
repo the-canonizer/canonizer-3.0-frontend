@@ -215,7 +215,8 @@ const CreateCampFormUI = ({
                       isParentFocused
                         ? "border-[#40a9ff] shadow-[0 0 0 2px rgba(24, 144, 255, 0.2)"
                         : ""
-                    }`}
+                    }
+                    `}
                   >
                     <StructureIcon
                       className="flex items-center justify-center px-2"
