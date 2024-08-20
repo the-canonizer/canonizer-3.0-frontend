@@ -660,6 +660,8 @@ const SupportTreeCard = ({
     if(isUserAuthenticated){
       setOpen(true);
       setDrawerFor(drawerOptions.signPetition);
+    }else{
+      router?.push("/login");
     }
   };
 
