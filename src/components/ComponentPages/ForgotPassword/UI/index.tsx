@@ -21,7 +21,7 @@ function ForgotPasswordUI({ form, onFinish, isDisabled }) {
       className="h-full flex flex-col"
     >
       <Title
-        level={2}
+        level={4}
         className="mt-6 text-sm text-center text-canBlack font-medium"
         id="forgot-password-title"
       >

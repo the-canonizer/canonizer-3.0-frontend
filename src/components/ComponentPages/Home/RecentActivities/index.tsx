@@ -284,6 +284,23 @@ export default function RecentActivities() {
   };
   const isMobile = window.matchMedia("(max-width: 991px)").matches;
 
+  const getTopicCampName = (activity, decodedProperties) => {
+    const subjectType = activity?.activity?.subject_type;
+
+    const subjectTypeMap = {
+      "App\\Models\\Camp": decodedProperties?.camp_name,
+      "App\\Models\\Topic": decodedProperties?.topic_name,
+    };
+
+    const result =
+      subjectTypeMap[subjectType] ||
+      convert(decodedProperties?.description?.replace(/<img[^>]*>/gi, ""), {
+        wordwrap: 130,
+      });
+
+    return result;
+  };
+
   return (
     <>
       {router.asPath == "/activities" ? (
@@ -340,7 +357,6 @@ export default function RecentActivities() {
               ) : null}
               <div className="">
                 <Tabs
-                  // tabPosition="left"
                   tabPosition={!isMobile ? "left" : "top"}
                   className={`custom-tabs [&_.ant-tabs-nav]:mb-0 [&_.ant-tabs-nav-wrap]:w-full [&_.ant-tabs-nav-wrap]:justify-center [&_.ant-tabs-nav-list]:w-full [&_.ant-tabs-tab-btn]:text-canBlack [&_.ant-tabs-tab-active]:!text-canBlue  [&_.ant-tabs-tab-btn]:!px-0 [&_.ant-tabs-ink-bar]:!h-[3px] [&_.ant-tabs-tab]:!px-0 [&_.ant-tabs-tab-btn]:text-base  [&_.ant-tabs-tab-btn]:font-semibold [&_.ant-tabs-tab-btn]:!pr-8 lg:[&_.ant-tabs-tab-btn]:!mr-28 [&_.ant-tabs-content-holder]:!border [&_.ant-tabs-content-holder]:!border-canGrey2 [&_.ant-tabs-content-holder]:!rounded-xl [&_.ant-tabs-content-holder]:!py-4 lg:[&_.ant-tabs-content-holder]:!px-8 [&_.ant-tabs-tabpane]:!p-0 [&_.ant-tabs-tab-btn]:!py-2.5 [&_.ant-tabs-ink-bar]:!hidden [&_.ant-list-item]:!border-b [&_.ant-list-item]:!border-canDarkBlack [&_.ant-list-item]:!border-opacity-10 [&_.ant-tabs-content-holder]:!px-4 [&_.ant-tabs-content-holder]:relative ${
                     router?.query?.camp_num && router?.query?.topic_num
@@ -366,11 +382,6 @@ export default function RecentActivities() {
                     ) : (
                       <List
                         className="rounded-lg  relative"
-                        // footer={
-                        //   !router?.asPath?.includes("/activities")
-                        //     ? ViewAllTopics(true)
-                        //     : LoadMoreTopics("topic/camps")
-                        // }
                         bordered={false}
                         locale={{
                           emptyText:
@@ -425,20 +436,10 @@ export default function RecentActivities() {
                                               )
                                         }
                                       >
-                                        {decodedProperties?.topic_name
-                                          ? `Topic: ${decodedProperties?.topic_name}` +
-                                            (decodedProperties?.camp_name
-                                              ? ` | Camp: ${decodedProperties?.camp_name}`
-                                              : "")
-                                          : convert(
-                                              decodedProperties?.description?.replace(
-                                                /<img[^>]*>/gi,
-                                                ""
-                                              ),
-                                              {
-                                                wordwrap: 130,
-                                              }
-                                            )}
+                                        {getTopicCampName(
+                                          activity,
+                                          decodedProperties
+                                        )}
                                       </Tooltip>
                                     </Text>
                                   </Text>
@@ -456,7 +457,6 @@ export default function RecentActivities() {
                       />
                     )}
                   </TabPane>
-
                   <TabPane tab="Threads" key="threads">
                     {getTopicsLoadingIndicator ? (
                       <CustomSkelton
@@ -613,6 +613,7 @@ export default function RecentActivities() {
                           const decodedProperties = JSON.parse(
                             activity?.activity?.properties
                           );
+
                           return (
                             <List.Item className="font-inter text-sm font-medium bg-white w-full px-2">
                               <AntLink
@@ -643,7 +644,6 @@ export default function RecentActivities() {
                                           <i className="icon-info"></i>
                                         </Popover>
                                       )}
-                                    <br />
                                     <Text className="text-canBlue font-medium">
                                       <Tooltip
                                         placement={"topLeft"}
@@ -658,25 +658,15 @@ export default function RecentActivities() {
                                               )
                                         }
                                       >
-                                        {decodedProperties?.topic_name
-                                          ? `Topic: ${decodedProperties?.topic_name}` +
-                                            (decodedProperties?.camp_name
-                                              ? ` | Camp: ${decodedProperties?.camp_name}`
-                                              : "")
-                                          : convert(
-                                              decodedProperties?.description?.replace(
-                                                /<img[^>]*>/gi,
-                                                ""
-                                              ),
-                                              {
-                                                wordwrap: 130,
-                                              }
-                                            )}
+                                        {getTopicCampName(
+                                          activity,
+                                          decodedProperties
+                                        )}
                                       </Tooltip>
                                     </Text>
                                   </Text>
                                   <Text
-                                    className="text-canBlack opacity-[0.5] font-normal font-inter text-[12px] block mt-1"
+                                    className="text-canBlack opacity-[0.5] font-normal font-inter text-[10px] block mt-1"
                                     type="secondary"
                                   >
                                     {covertToTime(activity.updated_at)}
@@ -742,7 +732,7 @@ export default function RecentActivities() {
                                     </Text>
                                   </Text>
                                   <Text
-                                    className="text-canBlack opacity-[0.5] font-normal font-inter text-[12px] block mt-1"
+                                    className="text-canBlack opacity-[0.5] font-normal font-inter text-[10px] block mt-1"
                                     type="secondary"
                                   >
                                     {covertToTime(activity.updated_at)}

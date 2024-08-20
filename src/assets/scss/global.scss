@@ -606,3 +606,20 @@ body {
     }
   }
 }
+
+.commonSelectClass {
+  @apply overflow-hidden;
+  .ant-select-selection-search-input {
+    &::placeholder {
+      font-size: 12px !important;
+      font-weight: 400;
+    }
+  }
+  .ant-select-selection-placeholder {
+    font-size: 12px !important;
+    font-weight: 400;
+  }
+  .ant-select-selection-item {
+    @apply text-sm;
+  }
+}
