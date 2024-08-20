@@ -765,12 +765,12 @@ const SupportTreeCard = ({
           <Popover content={renderPopupMsg()}>
             <Button
               size="large"
-              className="flex items-center justify-center h-[44px] border-[#4EB966] hover:!text-canBlack hover:!border-[#4EB966] hover:!bg-[#4EB9661A] bg-[#4EB9661A] rounded-lg font-medium text-sm gap-2"
+              className="flex items-center justify-center h-[44px] border-[#4EB966] hover:!text-canBlack hover:!border-[#4EB966] hover:!bg-[#4EB9661A] bg-[#4EB9661A] rounded-lg font-medium text-sm"
               block
               disabled={disableSignPetition()}
               onClick={() => signPetitionHandler()}
             >
-              Sign Petition<i className="icon-user-plus"></i>
+              Sign Petition<i className="icon-user-plus ml-2"></i>
             </Button>
           </Popover>
         </div>
