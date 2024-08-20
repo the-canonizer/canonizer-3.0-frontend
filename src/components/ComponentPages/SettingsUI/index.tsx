@@ -81,11 +81,11 @@ export const logOut = async (_router) => {
 };
 const SettingsUI = () => {
   const [search, setSearch] = useState("");
-  const [collapsed, setCollapsed] = useState(false);
   const [activeTabKey, setActiveTabKey] = useState("");
   const [showSupportedCampsTab, setshowSupportedCampsTab] = useState(false);
-  // const [selectedValue, setSelectedValue] = useState("select");
   const [selectedValue, setSelectedValue] = useState("");
+  const [selectedTab, setSelectedTab] = useState("Direct_Supported_Camps");
+
   const onTabChange = (key) => {
     setActiveTabKey(key);
     router?.push("/settings?tab=" + key);
@@ -136,6 +136,7 @@ const SettingsUI = () => {
     profile_info: <ProfileInfo />,
     change_password: <ChangePassword />,
     nick_name: <NickName />,
+
     direct_supported_camps: <DirectSupportedCamps search={search} />,
     delegate_supported_camp: <DelegatedSupportCamps search={search} />,
     supported_camps: (
@@ -209,14 +210,24 @@ const SettingsUI = () => {
       setSelectedValue("Direct_Supported_Camps");
     } else if (router.asPath.includes("delegate_supported_camp")) {
       setSelectedValue("Delegated_Supported_Camps");
-    } else  if (router.asPath.includes("social_oauth_verification")) {
+    } else if (router.asPath.includes("social_oauth_verification")) {
       setSelectedValue("social_oauth_verification");
     } else if (router.asPath.includes("change_password")) {
       setSelectedValue("change_password");
     }
-    
   }, [router.asPath]);
-
+  const { tab } = router.query;
+  useEffect(() => {
+    // Set the correct tab based on the URL query parameter
+    if (tab) {
+      setshowSupportedCampsTab(true); // Show the tabs
+      setSelectedTab(
+        tab === "delegate_supported_camp"
+          ? "Delegated_Supported_Camps"
+          : "Direct_Supported_Camps"
+      );
+    }
+  }, [tab]);
 
   const handleChange2 = (e) => {
     const value = e.target.value;
@@ -253,22 +264,7 @@ const SettingsUI = () => {
       router.push("/settings?tab=change_password");
     }
   };
-  const callDirectSupportedCamps = () => {
-    return (
-      <>
-        {router.push("/settings?tab=supported_camps")}
-        <DirectSupportedCamps search={search} />
-      </>
-    );
-  };
-  const callDelegateSupportedCamps = () => {
-    return (
-      <>
-        {router.push("/settings?tab=supported_camps")}
-        <DelegatedSupportCamps search={search} />
-      </>
-    );
-  };
+
   const items: MenuItem[] = [
     {
       key: "profile_info",
@@ -293,6 +289,7 @@ const SettingsUI = () => {
                 src="/images/nickname-user-icon.svg"
                 width={14}
                 height={24}
+                alt=""
               />
             </a>
           </Link>
@@ -320,6 +317,7 @@ const SettingsUI = () => {
                 src="/images/nickname-user-icon.svg"
                 width={14}
                 height={24}
+                alt=""
               />
             </a>
           </Link>
@@ -342,7 +340,12 @@ const SettingsUI = () => {
                 {" "}
                 Preferences
               </span>
-              <Image src="/images/preference-icon.svg" width={16} height={16} />
+              <Image
+                src="/images/preference-icon.svg"
+                width={16}
+                height={16}
+                alt=""
+              />
             </a>
           </Link>
         </span>
@@ -358,13 +361,14 @@ const SettingsUI = () => {
               {" "}
               Supported Camps
             </span>
-            <Image src="/images/flagicon.svg" width={24} height={24} />
+            <Image src="/images/flagicon.svg" width={24} height={24} alt="" />
           </a>
           <Image
             src="/images/caret-icon.svg"
             className="account-arrow"
             width={16}
             height={9}
+            alt=""
           />
         </span>
       ),
@@ -431,6 +435,7 @@ const SettingsUI = () => {
                 src="/images/subscription-icon.svg"
                 width={24}
                 height={24}
+                alt=""
               />
             </a>
           </Link>
@@ -441,20 +446,24 @@ const SettingsUI = () => {
       key: "Account settings",
       label: (
         <span className="flex justify-between">
-          <a
-            className="flex items-center gap-3" 
-          >
+          <a className="flex items-center gap-3">
             <span className="text-base font-medium text-canBlack">
               {" "}
               Account Settings
             </span>
-            <Image src="/images/setting-icon.svg" width={24} height={24} />
+            <Image
+              src="/images/setting-icon.svg"
+              width={24}
+              height={24}
+              alt=""
+            />
           </a>
           <Image
             src="/images/caret-icon.svg"
             className="account-arrow"
             width={16}
             height={9}
+            alt=""
           />
         </span>
       ),
@@ -463,27 +472,29 @@ const SettingsUI = () => {
           key: "3",
           label: (
             <Radio.Group
-            onChange={handleChange}
-            value={selectedValue}
-            className="flex flex-col py-5 gap-4 ml-10"
-          >
-            <Radio
-              value="social_oauth_verification"
-              className={`text-base text-canBlack font-medium ${
-                selectedValue === "social_oauth_verification" ? "text-canBlue" : ""
-              }`}
+              onChange={handleChange}
+              value={selectedValue}
+              className="flex flex-col py-5 gap-4 ml-10"
             >
-              Social Auth
-            </Radio>
-            <Radio
-              value="change_password"
-              className={`text-base text-canBlack font-medium ${
-                selectedValue === "change_password" ? "text-canBlue" : ""
-              }`}
-            >
-              Password
-            </Radio>
-          </Radio.Group>
+              <Radio
+                value="social_oauth_verification"
+                className={`text-base text-canBlack font-medium ${
+                  selectedValue === "social_oauth_verification"
+                    ? "text-canBlue"
+                    : ""
+                }`}
+              >
+                Social Auth
+              </Radio>
+              <Radio
+                value="change_password"
+                className={`text-base text-canBlack font-medium ${
+                  selectedValue === "change_password" ? "text-canBlue" : ""
+                }`}
+              >
+                Password
+              </Radio>
+            </Radio.Group>
           ),
         },
       ],
@@ -508,7 +519,16 @@ const SettingsUI = () => {
     //   ),
     // },
   ];
+  const handleTabChange = (e) => {
+    const newTab = e.target.value;
+    setSelectedTab(newTab);
 
+    if (newTab === "Direct_Supported_Camps") {
+      router.push("/settings?tab=direct_supported_camps");
+    } else if (newTab === "Delegated_Supported_Camps") {
+      router.push("/settings?tab=delegate_supported_camp");
+    }
+  };
   return (
     <Fragment>
       {/* <aside className="leftSideBar miniSideBar topicPageNewLayoutSidebar">
@@ -546,7 +566,12 @@ const SettingsUI = () => {
           <footer className="px-9 py-10 flex justify-start border-t border-canGrey2">
             <p className="text-base font-semibold text-canDarkRed flex gap-2.5 items-center cursor-pointer">
               <span onClick={onClick}> LogOut</span>
-              <Image src="/images/logout-icon.svg" width={24} height={24} />
+              <Image
+                src="/images/logout-icon.svg"
+                width={24}
+                height={24}
+                alt=""
+              />
             </p>
           </footer>
         </div>
@@ -571,9 +596,9 @@ const SettingsUI = () => {
                       </div>
                     </div>
                     <div className=" ">
-                      <div className="mb-14 flex flex-col lg:flex-row lg:hidden bg-canGray ml-[-1rem] mr-[-1rem] w-[calc(100%- -2rem)]">
+                      <div className="mb-10 flex flex-col lg:flex-row lg:hidden bg-canGray ml-[-1rem] mr-[-1rem] w-[calc(100%- -2rem)]">
                         <Select
-                          className="w-full !bg-canGray [&_.ant-select-selector]:!h-16 [&_.ant-select-selector]:!flex [&_.ant-select-selector]:!items-center [&_.ant-select-selector]:!bg-transparent [&_.ant-select-selector]:!border-r-0 [&_.ant-select-selector]:!border-l-0 "
+                          className=" w-full !bg-canGray [&_.ant-select-selector]:!h-16 [&_.ant-select-selector]:!flex [&_.ant-select-selector]:!items-center [&_.ant-select-selector]:!bg-transparent [&_.ant-select-selector]:!border-r-0 [&_.ant-select-selector]:!border-l-0 "
                           defaultValue="Select"
                           // value={selectedValue}
                           suffixIcon={
@@ -603,6 +628,7 @@ const SettingsUI = () => {
                                         src="/images/nickname-user-icon.svg"
                                         width={14}
                                         height={24}
+                                        alt=""
                                       />
                                     </a>
                                   </Link>
@@ -626,6 +652,7 @@ const SettingsUI = () => {
                                         src="/images/nickname-user-icon.svg"
                                         width={14}
                                         height={24}
+                                        alt=""
                                       />
                                     </a>
                                   </Link>
@@ -646,6 +673,7 @@ const SettingsUI = () => {
                                         src="/images/preference-icon.svg"
                                         width={16}
                                         height={16}
+                                        alt=""
                                       />
                                     </a>
                                   </Link>
@@ -657,19 +685,40 @@ const SettingsUI = () => {
                               label: (
                                 <span>
                                   <a className="flex items-center gap-3">
-                                    <span
-                                      className="text-base font-medium text-canBlack "
+                                    <button
+                                      className="text-base font-medium text-canBlack"
                                       onClick={() => {
                                         setshowSupportedCampsTab(true);
+                                        setSelectedTab(
+                                          "Direct_Supported_Camps"
+                                        );
+                                        router.push(
+                                          "/settings?tab=direct_supported_camps"
+                                        );
+                                      }}
+                                      onKeyDown={(e) => {
+                                        if (
+                                          e.key === "Enter" ||
+                                          e.key === " "
+                                        ) {
+                                          e.preventDefault(); // Prevent default action for space key
+                                          setshowSupportedCampsTab(true);
+                                          setSelectedTab(
+                                            "Direct_Supported_Camps"
+                                          );
+                                          router.push(
+                                            "/settings?tab=direct_supported_camps"
+                                          );
+                                        }
                                       }}
                                     >
-                                      {" "}
                                       Supported Camps
-                                    </span>
+                                    </button>
                                     <Image
                                       src="/images/flagicon.svg"
                                       width={24}
                                       height={24}
+                                      alt=""
                                     />
                                   </a>
                                 </span>
@@ -693,6 +742,7 @@ const SettingsUI = () => {
                                         src="/images/setting-icon.svg"
                                         width={24}
                                         height={24}
+                                        alt=""
                                       />
                                     </a>
                                   </Link>
@@ -713,6 +763,7 @@ const SettingsUI = () => {
                                         src="/images/setting-icon.svg"
                                         width={24}
                                         height={24}
+                                        alt=""
                                       />
                                     </a>
                                   </Link>
@@ -722,56 +773,54 @@ const SettingsUI = () => {
                           ]}
                         />
                       </div>
-                      {showSupportedCampsTab && (
-                        <div className="flex justify-between border-b border-canGrey2 mb-5">
-                          <Radio.Group className="flex items-center justify-between py-5 gap-4 ml-10">
-                            <Link href="/settings?tab=direct_supported_camps">
-                              <a>
-                                <Radio
-                                  value="Direct_Supported_Camps"
-                                  className="text-sm font-semibold"
-                                >
-                                  Direct Supported Camps
-                                </Radio>
-                              </a>
-                            </Link>
-                            <Link href="/settings?tab=delegate_supported_camp">
-                              <a>
-                                <Radio
-                                  value="Delegated_Supported_Camps"
-                                  className="text-sm font-semibold"
-                                >
-                                  Delegated Supported Camps
-                                </Radio>
-                              </a>
-                            </Link>
-                          </Radio.Group>
-                        </div>
-                      )}
+                      {showSupportedCampsTab &&
+                        (router?.asPath ==
+                          "/settings?tab=direct_supported_camps" ||
+                          router?.asPath ==
+                            "/settings?tab=delegate_supported_camp") && (
+                          <div className="flex justify-between border-b border-canGrey2 mb-5 lg:hidden">
+                            <Radio.Group
+                              className="flex items-center justify-between py-5 gap-4 lg:ml-10"
+                              value={selectedTab}
+                              onChange={handleTabChange}
+                            >
+                              <Radio
+                                value="Direct_Supported_Camps"
+                                className="text-sm font-semibold"
+                              >
+                                Direct Supported Camps
+                              </Radio>
+                              <Radio
+                                value="Delegated_Supported_Camps"
+                                className="text-sm font-semibold"
+                              >
+                                Delegated Supported Camps
+                              </Radio>
+                            </Radio.Group>
+                          </div>
+                        )}
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div className="border border-canGrey2 rounded-xl lg:p-8 p-1">
-          <Card
-            data-testid="contentlist"
-            style={{ width: "100%" }}
-            // title="Account Settings"
-            // tabList={tabList}
-            activeTabKey={activeTabKey}
-            onTabChange={(key) => {
-              onTabChange(key);
-            }}
-            className="border-0 tab--card  [&_.ant-card]:!border-none [&_.ant-card-body]:!p-0 "
-          >
-            {contentList[activeTabKey]}
-          </Card>
-          
+          {/* <div className="lg:border border-canGrey2 rounded-xl lg:p-8 p-2.5"> */}
+          <div className="lg:border border-canGrey2 rounded-xl lg:p-8">
+            <Card
+              data-testid="contentlist"
+              style={{ width: "100%" }}
+              // title="Account Settings"
+              // tabList={tabList}
+              activeTabKey={activeTabKey}
+              onTabChange={(key) => {
+                onTabChange(key);
+              }}
+              className="border-0 tab--card  [&_.ant-card]:!border-none [&_.ant-card-body]:!p-0 "
+            >
+              {contentList[activeTabKey]}
+            </Card>
           </div>
-         
-        
         </div>
       </div>
     </Fragment>

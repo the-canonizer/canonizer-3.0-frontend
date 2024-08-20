@@ -607,6 +607,9 @@ body {
   }
 }
 
+.DraggableTags {
+  @apply flex flex-col
+}
 .commonSelectClass {
   @apply overflow-hidden;
   .ant-select-selection-search-input {
