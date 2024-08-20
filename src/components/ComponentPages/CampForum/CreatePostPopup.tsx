@@ -35,7 +35,7 @@ const CreatePostPopup = ({ onSubmittedSucess = null }) => {
   const [isPostUpdate, setIsPostUpdate] = useState(false);
   const [isUpdateSubmit, serIsUpdateSubmit] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const [form] = Form.useForm();
 

@@ -240,6 +240,7 @@ const CommentsList = () => {
     const threadId = router?.query?.id;
 
     await getPosts(threadId, 1);
+    await threadDetails();
   };
 
   return (

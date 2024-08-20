@@ -321,8 +321,9 @@ const CampTree = ({
           return data[item].is_archive == 0 ||
             (data[item].is_archive != 0 && is_camp_archive_checked == true) ? (
             <>
+              {/* [&_.ant-tree-node-content-wrapper]:before:content-[''] [&_.ant-tree-node-content-wrapper]:before:w-[10px] [&_.ant-tree-node-content-wrapper]:before:h-[1px] [&_.ant-tree-node-content-wrapper]:before:block [&_.ant-tree-node-content-wrapper]:before:absolute [&_.ant-tree-node-content-wrapper]:before:bg-canLight [&_.ant-tree-node-content-wrapper]:before:top-[50%] [&_.ant-tree-node-content-wrapper]:before:-left-[12px] */}
               <TreeNode
-                className="[&_.ant-tree-switcher]:!flex [&_.ant-tree-switcher]:!items-center [&_.ant-tree-node-content-wrapper]:hover:!bg-transparent"
+                className="[&_.ant-tree-switcher]:!flex [&_.ant-tree-switcher]:!items-center [&_.ant-tree-node-content-wrapper]:hover:!bg-transparent [&_.ant-tree-switcher.ant-tree-switcher-noop]:!hidden"
                 switcherIcon={({ expanded }) => {
                   const isCampIdZero = data[item].camp_id === 0;
 

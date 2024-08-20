@@ -301,17 +301,19 @@ export default function RecentActivities() {
     return result;
   };
 
+  const isActivitiesPage = router.asPath === "/activities";
+  const hasCampOrTopicNum = router.query?.camp_num || router.query?.topic_num;
+  const defaultActiveKey = router.query?.tabName || "topic/camps";
+
   return (
     <>
-      {router.asPath == "/activities" ? (
+      {isActivitiesPage ? (
         <Fragment>
           <Row gutter={15}>
             <Col md={24} sm={24} xs={24}>
               <div
                 className="flex items-center gap-3.5 lg:!mb-10 mt-5 "
-                onClick={() => {
-                  router?.back();
-                }}
+                onClick={() => router?.back()}
               >
                 <Image
                   className="cursor-pointer"
@@ -331,16 +333,11 @@ export default function RecentActivities() {
                 />
               </div>
             </Col>
-            {/* <Col md={12} sm={12} xs={12} className="text-right">
-          <SeeMoreLInk href="/activities" />
-        </Col> */}
           </Row>
 
           <div className="mt-3">
-            <CommonCard className="border-0 h-100  !bg-white [&_.ant-card-body]:p-0  [&_.ant-tabs-tab-active]:!border  ">
-              {userData?.is_admin &&
-              !router?.query?.camp_num &&
-              !router?.query?.topic_num ? (
+            <CommonCard className="border-0 h-100  !bg-white [&_.ant-card-body]:p-0  [&_.ant-tabs-tab-active]:!border">
+              {userData?.is_admin && !hasCampOrTopicNum && (
                 <Typography.Paragraph className="text-sm flex items-center justify-between">
                   <span>Show all user activities</span>
                   {isShowAllLoading ? (
@@ -354,7 +351,7 @@ export default function RecentActivities() {
                     />
                   )}
                 </Typography.Paragraph>
-              ) : null}
+              )}
               <div className="">
                 <Tabs
                   tabPosition={!isMobile ? "left" : "top"}
@@ -497,14 +494,16 @@ export default function RecentActivities() {
                                           decodedProperties?.description
                                         )}
                                       >
-                                        {convert(
-                                          decodedProperties?.description?.replace(
-                                            /<img[^>]*>/gi,
-                                            ""
-                                          ),
-                                          {
-                                            wordwrap: 130,
-                                          }
+                                        {handleTextOverflow(
+                                          convert(
+                                            decodedProperties?.description?.replace(
+                                              /<img[^>]*>/gi,
+                                              ""
+                                            ),
+                                            {
+                                              wordwrap: 130,
+                                            }
+                                          )
                                         )}
                                       </Tooltip>
                                     </Text>
@@ -526,7 +525,16 @@ export default function RecentActivities() {
                 </Tabs>
               </div>
             </CommonCard>
-            <div className="lg:ml-[206px] mt-5 ">
+            <div className="lg:ml-[206px] mt-5">
+              {!isActivitiesPage && checkLogType === "topic/camps"
+                ? ViewAllTopics(true)
+                : !isActivitiesPage && checkLogType === "threads"
+                ? ViewAllTopics(false)
+                : checkLogType === "topic/camps"
+                ? LoadMoreTopics("topic/camps")
+                : LoadMoreTopics("threads")}
+            </div>
+            {/* <div className="lg:ml-[206px] mt-5 ">
               {!router?.asPath?.includes("/activities") &&
               checkLogType == "topic/camps"
                 ? ViewAllTopics(true)
@@ -536,7 +544,7 @@ export default function RecentActivities() {
                 : checkLogType == "topic/camps"
                 ? LoadMoreTopics("topic/camps")
                 : LoadMoreTopics("threads")}
-            </div>
+            </div> */}
           </div>
         </Fragment>
       ) : (
@@ -555,7 +563,22 @@ export default function RecentActivities() {
           </Row>
           <div className="mt-3">
             <CommonCard className="border-0 h-100 hocus:!bg-canGray !bg-white [&_.ant-card-body]:p-0 [&_.ant-card-body]:lg:p-[24px] lg:!bg-canGray">
-              {userData?.is_admin &&
+              {userData?.is_admin && !hasCampOrTopicNum && (
+                <Typography.Paragraph className="text-sm flex items-center justify-between">
+                  <span>Show all user activities</span>
+                  {isShowAllLoading ? (
+                    <Spin size="small" />
+                  ) : (
+                    <Switch
+                      checked={isChecked}
+                      className="text-sm"
+                      size="small"
+                      onChange={onChange}
+                    />
+                  )}
+                </Typography.Paragraph>
+              )}
+              {/* {userData?.is_admin &&
               !router?.query?.camp_num &&
               !router?.query?.topic_num ? (
                 <Typography.Paragraph className="text-sm flex items-center justify-between">
@@ -571,8 +594,9 @@ export default function RecentActivities() {
                     />
                   )}
                 </Typography.Paragraph>
-              ) : null}
+              ) : null} */}
               <div className="bg-white border p-2 rounded-lg">
+                {/* {renderTabs()} */}
                 <Tabs
                   className={`[&_.ant-tabs-nav]:mb-0 [&_.ant-tabs-nav-wrap]:w-full [&_.ant-tabs-nav-wrap]:justify-center [&_.ant-tabs-nav-list]:w-full px-2 [&_.ant-tabs-tab-btn]:!text-canBlue [&_.ant-tabs-tab-btn]:!px-4 [&_.ant-tabs-ink-bar]:!h-[3px] ${
                     router?.query?.camp_num && router?.query?.topic_num
@@ -719,14 +743,16 @@ export default function RecentActivities() {
                                           decodedProperties?.description
                                         )}
                                       >
-                                        {convert(
-                                          decodedProperties?.description?.replace(
-                                            /<img[^>]*>/gi,
-                                            ""
-                                          ),
-                                          {
-                                            wordwrap: 130,
-                                          }
+                                        {handleTextOverflow(
+                                          convert(
+                                            decodedProperties?.description?.replace(
+                                              /<img[^>]*>/gi,
+                                              ""
+                                            ),
+                                            {
+                                              wordwrap: 130,
+                                            }
+                                          )
                                         )}
                                       </Tooltip>
                                     </Text>
@@ -748,7 +774,14 @@ export default function RecentActivities() {
                 </Tabs>
               </div>
             </CommonCard>
-            {!router?.asPath?.includes("/activities") &&
+            {!isActivitiesPage && checkLogType === "topic/camps"
+              ? ViewAllTopics(true)
+              : !isActivitiesPage && checkLogType === "threads"
+              ? ViewAllTopics(false)
+              : checkLogType === "topic/camps"
+              ? LoadMoreTopics("topic/camps")
+              : LoadMoreTopics("threads")}
+            {/* {!router?.asPath?.includes("/activities") &&
             checkLogType == "topic/camps"
               ? ViewAllTopics(true)
               : !router?.asPath?.includes("/activities") &&
@@ -756,7 +789,7 @@ export default function RecentActivities() {
               ? ViewAllTopics(false)
               : checkLogType == "topic/camps"
               ? LoadMoreTopics("topic/camps")
-              : LoadMoreTopics("threads")}
+              : LoadMoreTopics("threads")} */}
           </div>
         </Fragment>
       )}
