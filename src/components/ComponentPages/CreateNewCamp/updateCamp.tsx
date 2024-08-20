@@ -493,7 +493,12 @@ const CreateNewCamp = () => {
       return true;
     }
 
-    const res = await submitCampData(values);
+    let payload = {
+      ...values,
+      camp_leader: campLeaderData?.at(1)?.nick_name
+    }
+
+    const res = await submitCampData(payload);
 
     if (res && res.status_code === 200) {
       message.success(res.message);
