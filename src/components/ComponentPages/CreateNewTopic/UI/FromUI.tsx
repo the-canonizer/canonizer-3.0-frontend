@@ -79,7 +79,7 @@ const CreateTopicFromUI = ({
         <Typography.Paragraph className="text-xl text-canBlack font-medium">
           {isEdit ? "Update Topic" : "Creating a New Topic"}
         </Typography.Paragraph>
-        <Typography.Paragraph className="text-canBlack opacity-80 mt-3">
+        <Typography.Paragraph className="text-canBlack opacity-80 mt-3 font-normal">
           A topic on our platform refers to a specific subject within the
           context of the canon. It serves as a focal point for discussions,
           allowing users to explore and share opinions, ideas on a topic.
@@ -289,7 +289,7 @@ const CreateTopicFromUI = ({
               onClick={onCancel}
               id="cancel-btn"
               data-testid="cancel-btn"
-              className="mr-4 flex justify-center items-center py-5 px-6"
+              className="mr-4 flex justify-center items-center py-5 px-6 border-canBlue"
             >
               Discard <CloseOutlined />
             </SecondaryButton>

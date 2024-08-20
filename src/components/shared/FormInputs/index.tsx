@@ -19,7 +19,7 @@ const Inputs = ({
 }: any) => {
   return (
     <Form.Item
-      className={`font-sm text-canBlack font-normal ${wrapperClassName}`}
+      className={`text-sm text-canBlack font-normal [&_label]:text-sm [&_label]:font-medium [&_.ant-form-item-explain-error]:mb-6 ${wrapperClassName}`}
       name={name}
       label={label}
       data-id={dataid}

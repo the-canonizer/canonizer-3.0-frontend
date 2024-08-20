@@ -207,7 +207,7 @@ const CreateCampFormUI = ({
                   name="parent_camp_num"
                   {...parentCampRule}
                   initialValue={values?.parent_camp_num || topicData?.camp_num}
-                  className={`font-14 text-canBlack font-medium`}
+                  className={`text-14 text-canBlack font-medium`}
                   key="parent-div-camp"
                 >
                   <div
@@ -289,7 +289,7 @@ const CreateCampFormUI = ({
                     }
                     name="note"
                     {...summaryRule}
-                    className={`font-14 text-canBlack font-medium`}
+                    className={`text-14 text-canBlack font-medium`}
                   >
                     <Input.TextArea
                       rows={6}
@@ -339,7 +339,7 @@ const CreateCampFormUI = ({
                       </Fragment>
                     }
                     name="camp_leader_nick_id"
-                    className={`font-14 text-canBlack font-medium`}
+                    className={`text-14 text-canBlack font-medium`}
                   >
                     {isLoading ? (
                       <CustomSkelton
@@ -438,7 +438,7 @@ const CreateCampFormUI = ({
               <Form.Item
                 label={labels.cr_nick_name_about}
                 name="camp_about_nick_id"
-                className={`font-14 text-canBlack font-medium`}
+                className={`text-14 text-canBlack font-medium`}
                 initialValue={values?.camp_about_nick_id}
               >
                 {isLoading ? (

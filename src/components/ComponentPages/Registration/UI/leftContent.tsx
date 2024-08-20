@@ -13,7 +13,7 @@ const LeftContent = ({ onBrowseClick }) => {
       >
         <LeftOutlined /> Go Back
       </Button>
-      <div className="mt-5">
+      <div className="my-auto">
         <Typography.Paragraph className="text-2xl !mb-2 font-medium font-inter">
           Welcome to
         </Typography.Paragraph>
@@ -27,7 +27,7 @@ const LeftContent = ({ onBrowseClick }) => {
         <div className="text-center ftImage">
           <Image
             src="/images/middle-vector.svg"
-            className="w-auto"
+            className="w-10/12"
             preview={false}
           />
         </div>
