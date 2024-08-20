@@ -208,7 +208,7 @@ const CustomSkelton = ({
     </div>
   ) : skeltonFor == "comparisonPage" ? (
     <div className="ch-wrapper">
-      <Row gutter={[60, 60]}>
+      <Row gutter={[24, 24]}>
         <Col xs={24} md={12}>
           <Skeleton style={{ height: 36 }} />
           <Skeleton style={{ height: 320 }} />
@@ -412,24 +412,14 @@ const CustomSkelton = ({
     </Row>
   ) : skeltonFor == "historyPage" ? (
     <>
-  <div className="cn-wrapper">
+  <div className="cn-wrapper px-5">
     <div className="badge-wrapper">
-      <Badge>
-        <Skeleton />
-      </Badge>
-
       <div className="tooltip-count">
         <p>
           <Skeleton style={{ width: 50, height: 25 }} />
         </p>
-        <Tag
-          className=" border-0 rounded-md inline-flex py-[3px] items-center"
-        >
-          <Skeleton style={{ width: 50, height: 25 }} />
-        </Tag>
       </div>
     </div>
-
     <div className="mb-[1.25rem] ch-checkbox">
       <Skeleton style={{ width: 50, height: 25 }} />
     </div>

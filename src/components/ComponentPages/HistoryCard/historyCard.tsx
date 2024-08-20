@@ -72,6 +72,7 @@ function HistoryCard({
   status = null,
   currentVersion = null,
   s1 = false,
+  isMobileView=false,
   loadingIndicator=false
 }: any) {
   const router = useRouter();
@@ -211,7 +212,7 @@ function HistoryCard({
       }`}
     >
       <div className="badge-wrapper">
-        <Badge
+        { !isMobileView && <Badge
           className="cn-dot-badge ch-dot-history"
           color=""
           text={
@@ -261,7 +262,7 @@ function HistoryCard({
               )}
             </>
           }
-        />
+        /> }
 
         {campStatement &&
           campStatement?.status == "in_review" &&

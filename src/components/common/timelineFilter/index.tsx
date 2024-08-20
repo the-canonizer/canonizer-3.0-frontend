@@ -49,76 +49,36 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
 
   return (
     <>
-      <div className="leftSideBar_Card">
-        <Collapse
-          className={`${styles.cardAccordian} topicListFilterCardCollapse`}
-          expandIconPosition="right"
-          expandIcon={() => (
-            <div className={styles.collapseIcon}>
-              <i className="icon-angle-up"></i>
-            </div>
-          )}
-          bordered={false}
-          defaultActiveKey={["1", "2", "3"]}
+      <div className="cn-algo-wrapper">
+        <Title level={5} className="uppercase">
+          Canonizer Algorithm:
+        </Title>
+        <Select
+          size="large"
+          showSearch
+          optionFilterProp="children"
+          className="algo-select"
+          defaultValue={
+            algorithms?.filter(
+              (algo) => algo.algorithm_key == selectedAlgorithm
+            )[0]?.algorithm_label
+          }
+          onChange={selectAlgorithm}
+          value={
+            algorithms?.filter(
+              (algo) => algo.algorithm_key == selectedAlgorithm
+            )[0]?.algorithm_label
+          }
+          disabled={loading}
         >
-          <Panel
-            header={<span className={styles.title}>Canonizer</span>}
-            key="1"
-          >
-            <div className={styles.algo_title}>
-              <Title level={5} className={styles.algoText}>
-                Canonizer Algorithm:
-              </Title>
-              <Select
-                size="large"
-                showSearch
-                optionFilterProp="children"
-                className={styles.algoSelect}
-                defaultValue={
-                  algorithms?.filter(
-                    (algo) => algo.algorithm_key == selectedAlgorithm
-                  )[0]?.algorithm_label
-                }
-                onChange={selectAlgorithm}
-                value={
-                  algorithms?.filter(
-                    (algo) => algo.algorithm_key == selectedAlgorithm
-                  )[0]?.algorithm_label
-                }
-                disabled={loading}
-              >
-                {algorithms?.map((algo) => {
-                  return (
-                    <Option key={algo.id} value={algo.algorithm_key}>
-                      {algo.algorithm_label}
-                    </Option>
-                  );
-                })}
-              </Select>
-            </div>
-
-            <Paragraph className={styles.algoInfo}>
-              {/* <i className="icon-fish-bones"></i> Algorithm Information */}
-            </Paragraph>
-            {/* <div className={styles.filter}>
-              <Text className={styles.filterText}>Filter</Text>
-              <LeftOutlined className={styles.LeftOutlined} />
-              <Input
-                size="large"
-                onChange={filterOnScore}
-                value={inputValue}
-                disabled={loading}
-              />
-              <Popover
-                content={infoContent}
-                placement="right"
-                className={styles.infoIcon}
-              >
-                <i className="icon-info"></i>
-              </Popover>
-            </div> */}
-          </Panel>
-        </Collapse>
+          {algorithms?.map((algo) => {
+            return (
+              <Option key={algo.id} value={algo.algorithm_key}>
+                {algo.algorithm_label}
+              </Option>
+            );
+          })}
+        </Select>
       </div>
     </>
   );

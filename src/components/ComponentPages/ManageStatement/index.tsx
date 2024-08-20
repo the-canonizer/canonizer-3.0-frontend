@@ -448,6 +448,8 @@ function ManageStatements({ isEdit = false, add = false }) {
     }
 
     setIsAutoSaving(false);
+    router.push(`/topic/${getTopicAndCampIds().topicNum}-${getTopicAndCampIds().topicName}/${getTopicAndCampIds().campNum}`)
+
   };
 
   const onFinish = async (values: any) => {
