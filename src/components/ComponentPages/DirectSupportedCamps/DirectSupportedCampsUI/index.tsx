@@ -1,5 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Table, Button, Pagination, Empty, Modal, Form, Drawer, Input } from "antd";
+import {
+  Table,
+  Button,
+  Pagination,
+  Empty,
+  Modal,
+  Form,
+  Drawer,
+  Input,
+  DrawerProps,
+} from "antd";
 import { DraggableArea } from "react-draggable-tags";
 import Link from "next/link";
 
@@ -46,13 +56,15 @@ export default function DirectSupportedCampsUI({
   const [currentCamp, setCurrentCamp] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [search, setSearch] = useState("");
+  const [size, setSize] = useState<DrawerProps["size"]>();
 
   const { openDrawerForDirectSupportedCamp } = useSelector(
     (state: RootState) => ({
-      openDrawerForDirectSupportedCamp: state.topicDetails.openDrawerForDirectSupportedCamp,
+      openDrawerForDirectSupportedCamp:
+        state.topicDetails.openDrawerForDirectSupportedCamp,
     })
   );
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   interface Tag {
     id: number;
     camp_num: number;
@@ -74,18 +86,22 @@ export default function DirectSupportedCampsUI({
       key: "title",
       render: (text: string, record: RecordType) => (
         <div className="flex gap-2.5">
-          <Link href={record.title_link} >
-            <a className="text-base font-semibold flex items-center gap-2.5 text-canBlack">{text}</a>
+          <Link href={record.title_link}>
+            <a className="text-base font-semibold flex items-center gap-2.5 text-canBlack">
+              {text}
+            </a>
           </Link>
           <Image
-            onClick={() => { dispatch(setOpenDrawerForDirectSupportedCamp(true)); removeCardSupportedCamps(record) }}
+            onClick={() => {
+              dispatch(setOpenDrawerForDirectSupportedCamp(true));
+              removeCardSupportedCamps(record);
+            }}
             src="/images/minus-user-icon.svg"
             width={24}
             height={24}
             alt=""
           />
         </div>
-
       ),
     },
     {
@@ -94,64 +110,60 @@ export default function DirectSupportedCampsUI({
       key: "camps",
       render: (camps: Tag[], record: RecordType) => (
         <div>
-<DraggableArea
-  tags={camps}
-  render={(props: { tag: Tag }) => {
-    const { tag } = props;
+          <DraggableArea
+            tags={camps}
+            render={(props: { tag: Tag }) => {
+              const { tag } = props;
 
-    return (
-      <div
-        key={tag.camp_num} // Ensure this key is unique and consistent
-        className={tag.dis ? "tag tags_disable" : "tag"}
-      >
-        <Button
-          id="campsBtn"
-          className="bg-canLightGrey rounded-full border-none mb-2.5 flex items-center gap-2.5"
-          disabled={tag.dis}
-        >
-          <div className={styles.btndiv}>
-            <span className="count">{tag.id}. </span>
-            <Link href={tag.camp_link}>
-              <a
-                className="text-sm text-canBlack font-semibold"
-                draggable="false"
-                onClick={(e) => e.preventDefault()} // Prevent default drag behavior
-              >
-                {tag.camp_name}
-              </a>
-            </Link>
-          </div>
-          <div
-            className="flex items-center"
-            onClick={() => {
-              handleClose(tag, record.topic_num, record, []);
-              setValData(tag);
-              setRevertBack([]);
+              return (
+                <div
+                  key={tag.camp_num} // Ensure this key is unique and consistent
+                  className={tag.dis ? "tag tags_disable" : "tag"}
+                >
+                  <Button
+                    id="campsBtn"
+                    className="bg-canLightGrey rounded-full border-none mb-2.5 flex items-center gap-2.5"
+                    disabled={tag.dis}
+                  >
+                    <div className={styles.btndiv}>
+                      <span className="count">{tag.id}. </span>
+                      <Link href={tag.camp_link}>
+                        <a
+                          className="text-sm text-canBlack font-semibold"
+                          draggable="false"
+                          onClick={(e) => e.preventDefault()} // Prevent default drag behavior
+                        >
+                          {tag.camp_name}
+                        </a>
+                      </Link>
+                    </div>
+                    <div
+                      className="flex items-center"
+                      onClick={() => {
+                        handleClose(tag, record.topic_num, record, []);
+                        setValData(tag);
+                        setRevertBack([]);
+                      }}
+                    >
+                      <Image
+                        src="/images/minus-user-icon.svg"
+                        width={24}
+                        height={24}
+                        alt=""
+                      />
+                    </div>
+                  </Button>
+                </div>
+              );
             }}
-          >
-            <Image
-              src="/images/minus-user-icon.svg"
-              width={24}
-              height={24}
-              alt=""
-            />
-          </div>
-        </Button>
-      </div>
-    );
-  }}
-  onChange={(tags) => tagsOrder(record.topic_num, record, tags)}
-/>
-
-
-
+            onChange={(tags) => tagsOrder(record.topic_num, record, tags)}
+          />
 
           {showSaveChanges && idData === record.topic_num && (
             <div className="flex gap-2.5">
               <Button
                 data-testid="save_change_btn"
                 id="saveChangeBtn"
-
                 className=" Profile_btn ant-btn ant-btn-orange ant-btn-lg py-2.5 px-6 hover:bg-canBlue hover:text-white flex gap-2.5 items-center bg-canBlue text-white text-base font-medium rounded-lg border-none justify-center focus:bg-canBlue focus:!text-white"
                 onClick={() => {
                   setCurrentCamp(record.topic_num);
@@ -183,7 +195,7 @@ export default function DirectSupportedCampsUI({
 
   const tagsOrder = (topic_num, data, tags) => {
     setTagsCampsOrderID(data.topic_num);
-    setTagsDataArrValue(tags);  // Update the state with the new order
+    setTagsDataArrValue(tags); // Update the state with the new order
     handleClose({}, topic_num, data, tags);
     setValData({});
     setIsChangingOrder(true);
@@ -193,11 +205,11 @@ export default function DirectSupportedCampsUI({
     if (tagsDataArrValue.length > 0) {
       const newData = directSupportedCampsList.map((val) => {
         if (val.topic_num === tagsCampsOrderID) {
-          return { ...val, camps: tagsDataArrValue };  // Update camps with new order
+          return { ...val, camps: tagsDataArrValue }; // Update camps with new order
         }
         return val;
       });
-      setDirectSupportedCampsList(newData);  // Update the list
+      setDirectSupportedCampsList(newData); // Update the list
     }
   }, [tagsDataArrValue]);
 
@@ -243,57 +255,91 @@ export default function DirectSupportedCampsUI({
   const showEmpty = (msg) => {
     return <Empty description={msg} />;
   };
-  const hasDirectSupportedCamps = directSupportedCampsList && directSupportedCampsList.length > 0;
-const hasFilteredArray = filteredArray().length > 0;
-let displayContent;
+  const hasDirectSupportedCamps =
+    directSupportedCampsList && directSupportedCampsList.length > 0;
+  const hasFilteredArray = filteredArray().length > 0;
+  let displayContent;
 
-if (hasDirectSupportedCamps) {
-  if (hasFilteredArray) {
-    displayContent = (
-      <>
-        <Table
-          dataSource={filteredArray()}
-          columns={columns}
-          pagination={false}
-          rowKey="topic_num"
-          bordered
-        />
-        <Pagination
-          hideOnSinglePage={true}
-          total={directSupportedCampsList.length}
-          pageSize={5}
-          defaultCurrent={currentPage}
-          onChange={pageChange}
-          showSizeChanger={false}
-          className="mt-5"
-        />
-      </>
-    );
+  if (hasDirectSupportedCamps) {
+    if (hasFilteredArray) {
+      displayContent = (
+        <>
+          <Table
+            dataSource={filteredArray()}
+            columns={columns}
+            pagination={false}
+            rowKey="topic_num"
+            bordered
+          />
+          <Pagination
+            hideOnSinglePage={true}
+            total={directSupportedCampsList.length}
+            pageSize={5}
+            defaultCurrent={currentPage}
+            onChange={pageChange}
+            showSizeChanger={false}
+            className="mt-5"
+          />
+        </>
+      );
+    } else {
+      displayContent = showEmpty("No Data Found");
+    }
   } else {
     displayContent = showEmpty("No Data Found");
   }
-} else {
-  displayContent = showEmpty("No Data Found");
-}
 
-const getModalMessage = (): string => {
-  if (isChangingOrder) {
-    return "You are about to change the order of your supported camps";
-  }
 
-  if (modalPopupText) {
-    return "You are about to remove your support from all the camps from the topic: ";
-  }
+  const drawerTitle = (
+    <p id="all_camps_topics" className="text-2xl font-normal">
+      {isChangingOrder
+        ? "You are about to change the order of your supported camps"
+        : modalPopupText
+        ? "You are about to remove your support from all the camps from the topic: "
+        : campIds?.length > 1
+        ? "You are about to remove your support from the camps: "
+        : "You are about to remove your support from the camp: "}
+      {!isChangingOrder && (
+        <span>
+          {modalPopupText ? (
+            <Link href={{ pathname: removeSupportCampsData.title_link }}>
+              <a className="text-canGreen text-2xl font-semibold">
+                {removeSupportCampsData.title}
+              </a>
+            </Link>
+          ) : (
+            removeCampLink?.map((val, index) => (
+              <Link key={val.camp_num} href={{ pathname: val.camp_link }}>
+                <a className="text-canGreen text-2xl font-semibold">
+                  {(index ? ", " : "") + val.camp_name}
+                </a>
+              </Link>
+            ))
+          )}
+        </span>
+      )}
+    </p>
+  );
 
-  if (campIds?.length > 1) {
-    return "You are about to remove your support from the camps: ";
-  }
-
-  return "You are about to remove your support from the camp: ";
-};
-
-// Usage
-const message = getModalMessage();
+  // Extracted Content
+  const drawerContent = (
+    <>
+      <p className="text-sm font-normal text-canRed mb-8">
+        Note: You are about to remove your support from all the camps from the
+        topic:
+        <span className="text-sm font-semibold">
+          &quot;{removeSupportCampsData.title}&quot;
+        </span>
+        . You can optionally add a helpful reason, along with a citation link.
+      </p>
+      <SupportRemovedModal
+        onFinish={onRemoveFinish}
+        handleCancel={handleSupportedCampsCancel}
+        form={removeForm}
+        isOrderChange={isChangingOrder}
+      />
+    </>
+  );
   return (
     <div data-testid="directSupportUi">
       {directSkeletonIndicator ? (
@@ -317,7 +363,14 @@ const message = getModalMessage();
             </div>
             <div className="lg:w-auto w-full flex justify-end">
               <Input
-                suffix={<Image src="/images/search-icon.svg" width={20} height={20} alt="" />}
+                suffix={
+                  <Image
+                    src="/images/search-icon.svg"
+                    width={20}
+                    height={20}
+                    alt=""
+                  />
+                }
                 data-testid="settingSearch"
                 value={search}
                 placeholder="Search via topic name"
@@ -329,11 +382,8 @@ const message = getModalMessage();
                 }}
               />
             </div>
-
           </div>
-          <>
-          {displayContent}
-  </>
+          <>{displayContent}</>
         </div>
       )}
       {/* <Modal
@@ -376,126 +426,40 @@ const message = getModalMessage();
         <h1 id="changesWillBeReverted">Changes will be reverted ?</h1>
       </Modal>
       <Drawer
-      className="hidden lg:flex"
+        className="lg:flex hidden"
         open={openDrawerForDirectSupportedCamp}
         closeIcon={
-          <Image onClick={() => { dispatch(setOpenDrawerForDirectSupportedCamp(false)); }} src="/images/refine-back-arrow.svg" width={16} height={24} />
+          <Image
+            onClick={() => dispatch(setOpenDrawerForDirectSupportedCamp(false))}
+            src="/images/refine-back-arrow.svg"
+            width={16}
+            height={24}
+            alt=""
+          />
         }
-        // className="[&.ant-drawer-content-wrapper]:!w-[45rem]"
         width={730}
-        title={
-          <p id="all_camps_topics" className="text-2xl font-normal">
-            {isChangingOrder
-              ? "You are about to change the order of your supported camps"
-              : modalPopupText
-                ? "You are about to remove your support from all the camps from the topic: "
-                : campIds?.length > 1
-                  ? "You are about to remove your support from the camps: "
-                  : "You are about to remove your support from the camp: "}
-            {!isChangingOrder && (
-              <span>
-
-                {modalPopupText ? (
-                  <Link
-                    href={{
-                      pathname: removeSupportCampsData.title_link,
-                    }}
-                  >
-                    <a className="text-canGreen text-2xl font-semibold">{removeSupportCampsData.title}</a>
-                  </Link>
-                ) : (
-                  removeCampLink?.map((val, index) => {
-                    return (
-                      <Link
-                        key={val.camp_num}
-                        href={{
-                          pathname: val.camp_link,
-                        }}
-                      >
-                        <a className="text-canGreen text-2xl font-semibold">{(index ? ", " : "") + val.camp_name}</a>
-                      </Link>
-                    );
-                  })
-                )}
-
-              </span>
-            )}
-
-            {/* You can optionally add a helpful reason, along with a citation link. */}
-          </p>
-        }
-
+        title={drawerTitle}
       >
-        <p className="text-sm font-normal text-canRed mb-8">
-          Note : You are about to remove your support from all the camps from the topic:<span className="text-sm font-semibold">&quot;{removeSupportCampsData.title}&quot;</span>.You can optionally add a helpful reason, along with a citation link.
-        </p>
-        <SupportRemovedModal
-          onFinish={onRemoveFinish}
-          handleCancel={handleSupportedCampsCancel}
-          form={removeForm}
-          isOrderChange={isChangingOrder}
-        />
-
-
+        {drawerContent}
       </Drawer>
+
       <Drawer
-      className="flex lg:hidden"
+        className="lg:hidden flex"
         open={openDrawerForDirectSupportedCamp}
         closeIcon={
-          <Image onClick={() => { dispatch(setOpenDrawerForDirectSupportedCamp(false)); }} src="/images/refine-back-arrow.svg" width={16} height={24} />
+          <Image
+            onClick={() => dispatch(setOpenDrawerForDirectSupportedCamp(false))}
+            src="/images/refine-back-arrow.svg"
+            width={16}
+            height={24}
+            alt=""
+          />
         }
-        // className="[&.ant-drawer-content-wrapper]:!w-[45rem]"
         width={320}
-        title={
-          <p id="all_camps_topics" className="text-2xl font-normal">
-            {message}
-            {!isChangingOrder && (
-              <span>
-
-                {modalPopupText ? (
-                  <Link
-                    href={{
-                      pathname: removeSupportCampsData.title_link,
-                    }}
-                  >
-                    <a className="text-canGreen text-2xl font-semibold">{removeSupportCampsData.title}</a>
-                  </Link>
-                ) : (
-                  removeCampLink?.map((val, index) => {
-                    return (
-                      <Link
-                        key={index}
-                        href={{
-                          pathname: val.camp_link,
-                        }}
-                      >
-                        <a className="text-canGreen text-2xl font-semibold">{(index ? ", " : "") + val.camp_name}</a>
-                      </Link>
-                    );
-                  })
-                )}
-
-              </span>
-            )}
-
-            {/* You can optionally add a helpful reason, along with a citation link. */}
-          </p>
-        }
-
+        title={drawerTitle}
       >
-        <p className="text-sm font-normal text-canRed mb-8">
-          Note : You are about to remove your support from all the camps from the topic:<span className="text-sm font-semibold">&quot;{removeSupportCampsData.title}&quot;</span>.You can optionally add a helpful reason, along with a citation link.
-        </p>
-        <SupportRemovedModal
-          onFinish={onRemoveFinish}
-          handleCancel={handleSupportedCampsCancel}
-          form={removeForm}
-          isOrderChange={isChangingOrder}
-        />
-
-
+        {drawerContent}
       </Drawer>
     </div>
   );
-
 }
