@@ -26,7 +26,7 @@ const LoginUi = ({
 }) => {
   return (
     <Card
-      className="rounded-lg pb-3 [&_.ant-card-body]:pb-4 mb-8"
+      className="rounded-lg pb-3 [&_.ant-card-body]:pb-4 mb-0"
       bordered={false}
     >
       <Form

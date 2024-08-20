@@ -32,8 +32,8 @@ const TopicCatsLabel = ({ tags, loading = false, ...restProps }) => {
       }`}
       {...restProps}
     >
-      <TagOutlined className="text-canLight p-1 text-medium rotate-[280deg]" />
-      <Typography.Paragraph className="line-clamp-1 max-w-52 !mb-0">
+      <TagOutlined className="text-canLight text-medium rotate-[280deg]" />
+      <Typography.Paragraph className="line-clamp-1 max-w-52 !mb-0 pl-2">
         {(tags || []).map((item, idx) => (
           <Fragment key={item?.id}>
             <LinkItem
