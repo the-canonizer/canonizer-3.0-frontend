@@ -51,10 +51,10 @@ const ForgotPassword = () => {
     <CustomSpinner key="forgot-password-spinner" spinning={isLoading}>
       <Card
         bordered={false}
-        className="bg-canGrey1 mt-0 lg:mt-10 h-full flex justify-center items-center [&>.ant-card-body]:p-0 [&>.ant-card-body]:w-full [&_.ant-card-body]:pb-0 min-h-full"
+        className="bg-canGrey1 mt-0 lg:mt-10 h-full flex justify-center items-center [&>.ant-card-body]:p-0 [&>.ant-card-body]:w-full [&_.ant-card-body]:pb-0 min-h-full tab:px-10"
       >
         <Row gutter={20}>
-          <Col lg={12} md={24} xl={12} xs={24} className="hidden lg:block">
+          <Col lg={12} md={24} xl={12} xs={24} className="hidden lg:block [&_.ftImage]:mb-0">
             <LeftContent onBrowseClick={onBrowseClick} />
           </Col>
           <Col lg={12} md={24} xl={12} xs={24} className="bg-white rounded-lg">

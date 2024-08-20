@@ -16,9 +16,8 @@ const CreateNewCampUI = ({
   campNickName,
   options,
   onCheckboxChange,
-  onParentCampChange,
   isLoading,
-}: any) => {
+}) => {
   const router = useRouter();
 
   //  post section end
@@ -47,7 +46,6 @@ const CreateNewCampUI = ({
               campNickName={campNickName}
               options={options}
               onCheckboxChange={onCheckboxChange}
-              onParentCampChange={onParentCampChange}
               isLoading={isLoading}
               isEdit={undefined}
               isDisabled={undefined}

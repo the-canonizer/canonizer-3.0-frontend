@@ -105,7 +105,8 @@ function Campforum() {
                         width={18}
                       />
                       <Typography.Text className="text-xs text-canLightBlack flex items-center gap-1 font-medium">
-                        {obj.post_count} <span> Replies</span>
+                        {obj.post_count}{" "}
+                        <span>{+obj.post_count > 1 ? "Replies" : "Reply"}</span>
                         <RightOutlined className="hidden arrowIcon" />
                       </Typography.Text>
                     </div>

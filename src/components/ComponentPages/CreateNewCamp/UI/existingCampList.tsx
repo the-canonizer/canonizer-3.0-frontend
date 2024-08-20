@@ -84,7 +84,7 @@ const ExistingCampList = ({
       </Typography.Paragraph>
       <List
         dataSource={data}
-        locale={{ emptyText: "There are no related topics available" }}
+        locale={{ emptyText: "There are no related camps available" }}
         className="!list-disc"
         footer={
           isShowMore && (

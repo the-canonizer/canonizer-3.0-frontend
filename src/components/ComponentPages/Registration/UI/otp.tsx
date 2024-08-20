@@ -22,7 +22,7 @@ export default function OTPVerify({
   logMsg = "",
 }) {
   return (
-    <Card className="rounded-lg" bordered={false}>
+    <Card className="rounded-lg h-full" bordered={false}>
       <Form
         form={form}
         name="registration"
@@ -40,25 +40,13 @@ export default function OTPVerify({
             className="mt-4 text-sm text-canBlack font-medium"
             id="registration-title"
           >
-            Log In One Time Verification Code
+            Enter your one time password to login into Canonizer
+            {/* Log In One Time Verification Code */}
           </Title>
         </div>
 
         <div className="">
-          <div className="text-center my-3">
-            <Image
-              preview={false}
-              alt="otp"
-              src="/images/otp-image_sm.png"
-              fallback={fallBackSrc}
-              id="otp-modal-image"
-            />
-          </div>
-          <Text
-            type="danger"
-            className="text-center text-sm block mb-4"
-            id="otp-note-text"
-          >
+          <Text className="text-center text-xs block mb-10" id="otp-note-text">
             {isResend ? failedMsg : logMsg ? logMsg : messages?.labels?.regOtp}
           </Text>
           <Inputs
@@ -72,23 +60,24 @@ export default function OTPVerify({
             wrapperClassName="w-full md:w-8/12 mx-auto block"
           />
         </div>
-        <Form.Item>
-          {isResend && (
-            <SecondaryButton
-              type="text"
-              htmlType="button"
-              className="h-[40px] text-sm rounded-lg !w-auto m-auto flex justify-center items-center mb-4 sm:!w-full"
-              block
-              onClick={onResendClick}
-              id="resent-otp-btn"
-            >
-              Resend OTP <RedoOutlined />
-            </SecondaryButton>
-          )}
+        <Form.Item className="mt-8">
+          {isResend ||
+            (true && (
+              <SecondaryButton
+                type="text"
+                htmlType="button"
+                className="h-[40px] text-sm rounded-lg !w-auto m-auto flex justify-center items-center mb-4 sm:!w-full"
+                block
+                onClick={onResendClick}
+                id="resent-otp-btn"
+              >
+                Resend OTP <RedoOutlined />
+              </SecondaryButton>
+            ))}
           <PrimaryButton
             type="primary"
             htmlType="submit"
-            className="h-[40px] text-sm rounded-lg m-auto flex justify-center items-center !w-8/12 lg:!w-4/12"
+            className="h-[40px] text-sm mt-5 rounded-lg m-auto flex justify-center items-center !w-8/12 lg:!w-4/12"
             block
             data-testid="submitButton"
             id="otp-btn"
