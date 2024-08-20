@@ -43,7 +43,7 @@ import {
   GetActiveSupportTopic,
   GetCheckSupportExists,
 } from "src/network/api/topicAPI";
-import { openNotificationWithIcon } from "components/ComponentPages/notificationBar/notificationBar";
+import { openNotificationWithIcon } from "components/common/notification/notificationBar";
 import queryParams from "src/utils/queryParams";
 import { setCheckSupportExistsData } from "src/store/slices/campDetailSlice";
 import moment from "moment";
@@ -55,13 +55,14 @@ const { TextArea } = Input;
 function SupportTreeDrawer({
   onClose,
   open,
-  topicList,
   drawerFor,
   setDrawerFor,
   onRemoveFinish,
   selectNickId: getDelegateId,
   delegateNickName,
   handleCancelSupportCamps,
+  loader = false,
+  setLoader,
 }: any) {
   const {
     reasons,
@@ -281,12 +282,12 @@ function SupportTreeDrawer({
 
       let res = await removeSupportedCamps(payload);
       if (res && res.status_code == 200) {
-        openNotificationWithIcon(res?.message);
+        let type = "success";
+        openNotificationWithIcon(res?.message, type);
         await handleCancelSupportCamps({ isCallApiStatus: true });
         getCurrentCampRecordApi(reqBody);
         setDrawerFor("");
         onClose();
-        // await callDetailPageApis();
         form.resetFields();
         setSelectedValue(null);
       }
@@ -294,9 +295,9 @@ function SupportTreeDrawer({
       shouldRemoveSupport() &&
       supportedCampsStatus?.support_flag == 0
     ) {
-      openNotificationWithIcon(
-        "You are not supporting this camp. So, you can`t remove support"
-      );
+      let type = "error";
+      openNotificationWithIcon("You are not supporter of this camp.", type);
+      setLoader(false);
     } else {
       let payload = {
         topic_num: topicNum,
@@ -315,7 +316,8 @@ function SupportTreeDrawer({
 
       let res = await addSupport(payload);
       if (res && res.status_code == 200) {
-        openNotificationWithIcon(res?.message);
+        let type = "success";
+        openNotificationWithIcon(res?.message, type);
         await handleCancelSupportCamps({ isCallApiStatus: true });
         getCurrentCampRecordApi(reqBody);
         setDrawerFor("");
@@ -335,7 +337,8 @@ function SupportTreeDrawer({
 
     let res = await addDelegateSupportCamps(addDelegatedSupport);
     if (res && res.status_code == 200) {
-      openNotificationWithIcon(res?.message);
+      let type = "success";
+      openNotificationWithIcon(res?.message, type);
       await handleCancelSupportCamps({ isCallApiStatus: true });
       getCurrentCampRecordApi(reqBody);
       setDrawerFor("");
@@ -344,11 +347,13 @@ function SupportTreeDrawer({
   };
 
   const onFinish = async (values) => {
+    setLoader(true);
     if (drawerFor === "delegateAdd") {
       await addDelegateMethod();
     } else if (drawerFor === "directAdd" || drawerFor === "manageSupport") {
       await addSupportMethod(values);
     }
+    setLoader(false);
   };
 
   const getReasons = async () => {
@@ -715,6 +720,7 @@ function SupportTreeDrawer({
                   type="primary"
                   htmlType="submit"
                   className=" min-w-[200px] bg-canBlue flex items-center justify-center hover:bg-canHoverBlue focus:bg-canHoverBlue hover:text-white font-medium text-white disabled:bg-disabled font-base rounded-lg"
+                  loading={loader}
                 >
                   {renderSubmitBtnText()}
                   <PlusOutlined />
@@ -791,6 +797,7 @@ function SupportTreeDrawer({
                   type="primary"
                   htmlType="submit"
                   className=" min-w-[200px] bg-canBlue flex items-center justify-center hover:bg-canHoverBlue focus:bg-canHoverBlue hover:text-white font-medium text-white disabled:bg-disabled font-base rounded-lg"
+                  loading={loader}
                 >
                   {renderSubmitBtnText()}
                   <MinusOutlined />
