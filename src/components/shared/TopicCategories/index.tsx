@@ -1,5 +1,5 @@
 import { Typography } from "antd";
-import { FlagOutlined } from "@ant-design/icons";
+import { TagOutlined } from "@ant-design/icons";
 import Link from "next/link";
 
 import CustomSkelton from "src/components/common/customSkelton";
@@ -17,10 +17,6 @@ const TopicCatsLabel = ({ tags, loading = false, ...restProps }) => {
     );
   }
 
-  if (!tags?.length) {
-    return null;
-  }
-
   const LinkItem = ({ text, link }) => (
     <Link href={link}>
       <a className="!text-canBlue text-xs font-inter font-medium hover:!canHoverBlue">
@@ -31,12 +27,14 @@ const TopicCatsLabel = ({ tags, loading = false, ...restProps }) => {
 
   return (
     <Typography.Paragraph
-      className="!bg-transparent border-0 p-0 flex items-center leading-1 !mb-0 mr-3"
+      className={`!bg-transparent border-0 p-0 flex items-center leading-1 !mb-0 mr-3 ${
+        !tags?.length ? "invisible" : ""
+      }`}
       {...restProps}
     >
-      <FlagOutlined className="text-canLight p-1 text-medium" />
+      <TagOutlined className="text-canLight p-1 text-medium rotate-[280deg]" />
       <Typography.Paragraph className="line-clamp-1 max-w-52 !mb-0">
-        {tags.map((item, idx) => (
+        {(tags || []).map((item, idx) => (
           <Fragment key={item?.id}>
             <LinkItem
               text={item?.title}
