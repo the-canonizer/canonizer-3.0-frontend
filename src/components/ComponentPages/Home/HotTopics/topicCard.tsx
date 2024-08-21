@@ -52,7 +52,7 @@ const SingleTopicCard = ({
           onClick={onTopicLinkClick}
         >
           <Typography.Text className="flex w-11/12 items-center">
-            <Typography.Paragraph className="m-0 text-sm font-medium font-inter !mb-0 line-clamp-1">
+            <Typography.Paragraph className="m-0 text-sm 2xl:text-base font-medium font-inter !mb-0 line-clamp-1">
               {topic?.topic_name}
             </Typography.Paragraph>
             {scoreTag}

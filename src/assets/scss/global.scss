@@ -693,10 +693,10 @@ body {
 }
 
 .ant-select-item-option-content {
-  @apply font-normal text-xs flex items-center;
+  @apply font-normal text-xs 2xl:text-sm flex items-center;
 }
 .ant-select-selection-item {
-  @apply font-medium text-xs;
+  @apply font-medium text-xs 2xl:text-sm;
 }
 .ant-select-item-option-active .ant-select-item-option-content {
   @apply font-medium;

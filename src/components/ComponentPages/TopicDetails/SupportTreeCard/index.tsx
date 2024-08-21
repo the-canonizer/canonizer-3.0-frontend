@@ -475,7 +475,7 @@ const SupportTreeCard = ({
                             <i className="icon-crown text-canOrange"></i>
                           )}
 
-                          <span className="text-canBlack text-xs font-normal">
+                          <span className="text-canBlack text-xs 2xl:text-sm font-normal">
                             {data[item].nick_name}
                           </span>
                         </a>
@@ -526,7 +526,7 @@ const SupportTreeCard = ({
                                   campRecord?.is_archive === 1
                                 }
                                 onClick={() => handleDelegatedClick(data[item])}
-                                className="hidden group-hover:flex mb-2  items-center gap-1 justify-center bg-canLightBlue text-canBlue text-xs rounded-lg font-medium w-full !shadow-none p-2"
+                                className="hidden group-hover:flex mb-2  items-center gap-1 justify-center bg-canLightBlue text-canBlue text-xs 2xl:text-sm rounded-lg font-medium w-full !shadow-none p-2"
                               >
                                 <Image
                                   src="/images/user-minus-regular.svg"
@@ -552,7 +552,7 @@ const SupportTreeCard = ({
                             campRecord?.is_archive
                           }
                           onClick={() => removeSupportModalHandler(data, item)}
-                          className="mb-2 flex items-center gap-1 justify-center bg-canLightRed text-canRed text-xs rounded-lg font-medium w-full"
+                          className="mb-2 flex items-center gap-1 justify-center bg-canLightRed text-canRed text-xs 2xl:text-sm rounded-lg font-medium w-full"
                         >
                           <Image
                             src="/images/user-minus-red.svg"
@@ -645,10 +645,10 @@ const SupportTreeCard = ({
   };
 
   const signPetitionHandler = () => {
-    if(isUserAuthenticated){
+    if (isUserAuthenticated) {
       setOpen(true);
       setDrawerFor(drawerOptions.signPetition);
-    }else{
+    } else {
       router?.push("/login");
     }
   };

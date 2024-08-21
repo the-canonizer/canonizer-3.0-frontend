@@ -299,7 +299,7 @@ const TimelineInfoBar = ({
 
   const title = (
     <div className="popover_header">
-      <span className="text-xs text-canLight mb-1.5 font-normal">
+      <span className="text-xs 2xl:text-sm text-canLight mb-1.5 font-normal">
         Topic name :
       </span>
       <p className="font-bold mb-5 text-sm text-canBlack">
@@ -322,31 +322,31 @@ const TimelineInfoBar = ({
     <div className="popoverParent">
       <Row gutter={1}>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
-          <span className="text-canLight text-xs">Author</span>
+          <span className="text-canLight text-xs 2xl:text-sm">Author</span>
           <span className="text-canBlue text-sm font-medium underline">
             {topicRecord?.submitter_nick_name}
           </span>
         </Col>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
-          <span className="text-xs text-canLight">Submitted On : </span>
-          <span className="text-sm !text-black font-medium">
+          <span className="text-xs 2xl:text-sm text-canLight">Submitted On : </span>
+          <span className="text-sm 2xl !text-black font-medium">
             {topicRecord && covertToTime(topicRecord?.submit_time)}
           </span>
         </Col>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
-          <span className="text-xs text-canLight">Submitted By</span>
+          <span className="text-xs 2xl:text-sm text-canLight">Submitted By</span>
           <span className="text-canDarkBlack text-sm font-medium">
             {topicRecord?.submitter_nick_name}
           </span>
         </Col>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
-          <span className="text-xs text-canLight">Go Live Time : </span>
+          <span className="text-xs 2xl:text-sm text-canLight">Go Live Time : </span>
           <span className="text-sm text-canBlack font-medium">
             {topicRecord && covertToTime(topicRecord?.go_live_time)}
           </span>
         </Col>
         <Col md={12} sm={12} xs={12} className="flex flex-col">
-          <span className="text-xs text-canLight">Canon : </span>
+          <span className="text-xs 2xl:text-sm text-canLight">Canon : </span>
           <span className="text-sm text-canBlack font-medium">
             {topicRecord && changeSlashToArrow(topicRecord?.namespace_name)}
           </span>
@@ -382,7 +382,7 @@ const TimelineInfoBar = ({
   );
   const title2 = (
     <div className="popover_header">
-      <span className="text-xs text-canLight mb-1">Camp name :</span>
+      <span className="text-xs 2xl:text-sm text-canLight mb-1">Camp name :</span>
       <p className="font-bold mb-5 text-sm text-canBlack">
         {campRecord && campRecord?.camp_name}
       </p>
@@ -392,31 +392,31 @@ const TimelineInfoBar = ({
     <div className="popoverParent">
       <Row gutter={5}>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
-          <span className="text-xs text-canLight">Submitter</span>
+          <span className="text-xs 2xl:text-sm text-canLight">Submitter</span>
           <span className="author-name text-canBlue text-sm font-medium underline">
             {campRecord?.submitter_nick_name}
           </span>
         </Col>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
-          <span className="text-xs text-canLight">Submitted On : </span>
+          <span className="text-xs 2xl:text-sm text-canLight">Submitted On : </span>
           <span className="text-sm text-canBlack">
             {campRecord && covertToTime(campRecord?.submit_time)}
           </span>
         </Col>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
-          <span className="text-xs text-canLight">Camp about nickname : </span>
+          <span className="text-xs 2xl:text-sm text-canLight">Camp about nickname : </span>
           <span className="text-sm text-canBlack">
             {campRecord && campRecord.camp_about_nick_name}
           </span>
         </Col>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
-          <span className="text-xs text-canLight">Camp about URL : </span>
+          <span className="text-xs 2xl:text-sm text-canLight">Camp about URL : </span>
           <span className="text-sm text-canBlack">
             {campRecord && campRecord.camp_about_url}
           </span>
         </Col>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
-          <span className="text-xs text-canLight">
+          <span className="text-xs 2xl:text-sm text-canLight">
             Single level camps only :{" "}
           </span>
           <span className="text-sm text-canBlack">
@@ -424,7 +424,7 @@ const TimelineInfoBar = ({
           </span>
         </Col>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
-          <span className="text-xs text-canLight">
+          <span className="text-xs 2xl:text-sm text-canLight">
             Disable aditional sub camps:{" "}
           </span>
           <span className="text-sm text-canBlack">
@@ -432,31 +432,31 @@ const TimelineInfoBar = ({
           </span>
         </Col>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
-          <span className="text-xs text-canLight">Camp archive:</span>
+          <span className="text-xs 2xl:text-sm text-canLight">Camp archive:</span>
           <span className="text-sm text-canBlack">
             {campRecord && campRecord.is_archive == 0 ? "No" : "Yes"}
           </span>
         </Col>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
-          <span className="text-xs text-canLight">Go live time:</span>
+          <span className="text-xs 2xl:text-sm text-canLight">Go live time:</span>
           <span className="text-sm text-canBlack">
             {campRecord && covertToTime(campRecord?.go_live_time)}
           </span>
         </Col>
         <Col md={12} sm={12} xs={12} className=" flex flex-col">
-          <span className="text-xs text-canLight">canon:</span>
+          <span className="text-xs 2xl:text-sm text-canLight">canon:</span>
           <span className="text-sm text-canBlack">
             {topicRecord && changeSlashToArrow(topicRecord?.namespace_name)}
           </span>
         </Col>
         <Col md={12} sm={12} xs={12} className=" flex flex-col">
-          <span className="text-xs text-canLight">Topic :</span>
+          <span className="text-xs 2xl:text-sm text-canLight">Topic :</span>
           <span className="text-sm text-canBlack">
             {topicRecord && topicRecord?.topic_name}
           </span>
         </Col>
         <Col md={12} sm={12} xs={12} className=" flex flex-col mt-4">
-          <span className="text-xs text-canLight">Camp Leader:</span>
+          <span className="text-xs 2xl:text-sm text-canLight">Camp Leader:</span>
           <span className="text-base text-black">
             {" "}
             {campRecord && campRecord?.camp_leader_nick_name}
@@ -694,8 +694,8 @@ const TimelineInfoBar = ({
                                               index ===
                                               breadCrumbRes.bread_crumb.length -
                                                 1
-                                                ? "lg:text-sm text-xs font-semibold"
-                                                : "lg:text-sm text-xs"
+                                                ? "lg:text-sm text-xs 2xl:text-sm font-semibold"
+                                                : "lg:text-sm text-xs 2xl:text-sm"
                                             }`}
                                           >
                                             {camp?.camp_name}
@@ -795,7 +795,7 @@ const TimelineInfoBar = ({
                     className="title-popover"
                   >
                     <div className="flex  items-center gap-2 ">
-                      <span className="lg:font-normal lg:text-sm text-xs lg:text-canBlack text-canLight whitespace-nowrap">
+                      <span className="lg:font-normal lg:text-sm text-xs 2xl:text-sm lg:text-canBlack text-canLight whitespace-nowrap">
                         Topic :
                       </span>
 
