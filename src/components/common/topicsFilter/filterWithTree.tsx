@@ -624,7 +624,10 @@ const FilterWithTree = ({
             </Col>
             <Col xs={24} className="">
               <div className="as-of-div pl-4 lg:pl-8 pb-8 pt-8 w-full">
-                <Title level={5} className="!text-xs !font-normal flex gap-3">
+                <Title
+                  level={5}
+                  className="!text-xs !font-normal flex gap-3 !mb-4"
+                >
                   As Of
                   <Popover content={asContent} placement="right">
                     <Image
@@ -657,7 +660,7 @@ const FilterWithTree = ({
                       }}
                     >
                       <Radio
-                        className="!text-xs font-normal text-canBlack"
+                        className="!text-xs font-normal text-canBlack mb-2"
                         value={2}
                         onClick={() => handleRadioClick(2)}
                         id="default_input"
@@ -731,8 +734,8 @@ const FilterWithTree = ({
                 </div>
               ) : null}
             </Col> */}
-            <Col xs={24} className=" refine-drawer-mobile overflow-hidden">
-              <div className="flex items-center justify-center sm:gap-0 lg:gap-2 btn-parent  lg:px-1 sm:px-0 fixed lg:static bottom-0 w-full lg:mt-14">
+            <Col xs={24} className="refine-drawer-mobile overflow-hidden">
+              <div className="flex items-center justify-center btn-parent fixed lg:static bottom-20 w-full lg:mt-14 gap-7">
                 <SecondaryButton
                   className="flex items-center justify-center gap-2.5"
                   onClick={onClose}
