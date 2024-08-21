@@ -28,11 +28,11 @@ export const labels = {
   visibilityStatus: "Visibility Status",
 
   removeSupport: "Remove Support",
-  fortopic: "For Topic",
+  fortopic: "Topic Name",
   supportdelegatedto: "Support Delegated To:",
   nickname: "Nickname:",
   viewMore: "View More",
-  currentSupportedCamps: "Current Supported Camps:",
+  currentSupportedCamps: "Supported Camps:",
 
   cr_nick_name: "Nickname",
   cr_nick_name_sp:

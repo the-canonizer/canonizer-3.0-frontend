@@ -48,6 +48,7 @@ const TimelineInfoBar = ({
   isForumPage = false,
   getCheckSupportStatus = null,
   isHtmlContent = null,
+  isEventLine = false,
 }: any) => {
   const dispatch = useDispatch();
   const [loadingIndicator, setLoadingIndicator] = useState(false);
@@ -90,6 +91,8 @@ const TimelineInfoBar = ({
   const [topicSubscriptionID, setTopicSubscriptionID] = useState(
     topicRecord?.topicSubscriptionId
   );
+  const campId = router?.query?.camp?.at(1).split("-")?.at(0);
+  const topicId = router?.query?.camp?.at(0).split("-")?.at(0);
 
   useEffect(() => {
     if (isTopicPage) {
@@ -219,8 +222,8 @@ const TimelineInfoBar = ({
     async function getBreadCrumbApiCall() {
       setLoadingIndicator(true);
       let reqBody = {
-        topic_num: payload?.topic_num,
-        camp_num: payload?.camp_num,
+         topic_num: isEventLine ? topicId : payload?.topic_num,
+        camp_num: isEventLine ? campId : payload?.camp_num,
         as_of: router?.pathname == "/topic/[...camp]" ? asof : "default",
         as_of_date:
           asof == "default" || asof == "review"
@@ -305,6 +308,16 @@ const TimelineInfoBar = ({
       </p>
     </div>
   );
+
+  const contentEventLine = (
+    <div className="popoverParent">
+      <span>
+        Observe the gradual progression and changes that happened in this
+        topic/camp via Event Line.
+      </span>
+    </div>
+  );
+
   const content = (
     <div className="popoverParent">
       <Row gutter={1}>
@@ -440,6 +453,13 @@ const TimelineInfoBar = ({
           <span className="text-xs text-canLight">Topic :</span>
           <span className="text-sm text-canBlack">
             {topicRecord && topicRecord?.topic_name}
+          </span>
+        </Col>
+        <Col md={12} sm={12} xs={12} className=" flex flex-col mt-4">
+          <span className="text-xs text-canLight">Camp Leader:</span>
+          <span className="text-base text-black">
+            {" "}
+            {campRecord && campRecord?.camp_leader_nick_name}
           </span>
         </Col>
       </Row>
@@ -598,6 +618,7 @@ const TimelineInfoBar = ({
                     </Tooltip>
                   )}
                 </Typography.Paragraph>
+                {!isEventLine && (
                 <div className={styles.breadcrumbLinks + " flex "}>
                   <Typography.Paragraph
                     className={"!mb-0 flex  " + styles.topicTitleStyle}
@@ -719,6 +740,28 @@ const TimelineInfoBar = ({
                     </div>
                   </Typography.Paragraph>
                 </div>
+                )}
+                {isEventLine && (
+                  <Popover
+                    content={contentEventLine}
+                    className="title-popover"
+                  >
+                    <div className="flex  items-center gap-1.5">
+                      <span className="font-normal text-base text-canBlack whitespace-nowrap">
+                        Event Line
+                      </span>
+                      <span className="flex shrink-0">
+                        <Image
+                          src="/images/circle-info-bread.svg"
+                          alt="svg"
+                          className="icon-topic"
+                          height={16}
+                          width={16}
+                        />
+                      </span>
+                    </div>
+                  </Popover>
+                )}
               </div>
             ) : (
               <div className="flex mobile-view gap-2 items-center">
@@ -892,6 +935,7 @@ const TimelineInfoBar = ({
               </div>
             )}
 
+            {!isEventLine && (
             <div className="flex items-center gap-3 shrink-0">
               {!isHtmlContent && campStatement?.length > 0 && isTopicPage ? (
                 <div className="topicDetailsCollapseFooter printHIde camp">
@@ -958,9 +1002,9 @@ const TimelineInfoBar = ({
                   />
                 </SecondaryButton>
               )}
-
               {isHtmlContent}
             </div>
+            )}
           </div>
         </div>
       </Spin>
