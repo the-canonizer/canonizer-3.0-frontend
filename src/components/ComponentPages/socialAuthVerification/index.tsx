@@ -70,10 +70,10 @@ function SocialAuthVerification() {
   return (
     <Fragment>
       <section className={`${styles.wrapper}`}>
-        <h3 className="mb-5 uppercase text-canBlack font-semibold text-base">
+        <h3 className="mb-5 uppercase text-canBlack font-semibold text-base lg:mt-0 mt-10">
           Social Oauth
         </h3>
-        <div className="grid grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           <div className="">
             <IconWrapper
               socialLinks={socialLinks}

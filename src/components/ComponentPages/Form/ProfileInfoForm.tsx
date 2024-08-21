@@ -219,13 +219,13 @@ function ProfileInfoForm({
         {suggestions.map((suggestion, index) => {
           const style = suggestion.active
             ? {
-                backgroundColor: "#f8f8f8",
-                cursor: "pointer",
-              }
+              backgroundColor: "#f8f8f8",
+              cursor: "pointer",
+            }
             : {
-                backgroundColor: "#ffffff",
-                cursor: "pointer",
-              };
+              backgroundColor: "#ffffff",
+              cursor: "pointer",
+            };
           return (
             <div
               {...getSuggestionItemProps(suggestion, {
@@ -433,7 +433,7 @@ function ProfileInfoForm({
         >
           <Title
             level={4}
-            className=" uppercase font-semibold text-canBlack !mb-5 !text-base"
+            className=" uppercase font-semibold text-canBlack !mb-5 lg:mt-0 mt-10 !text-base"
           >
             BASIC INFORMATION
           </Title>
@@ -453,7 +453,7 @@ function ProfileInfoForm({
                             </span>
                           </>
                         }
-                        className="!text-sm font-normal text-canBlack [&_.ant-input-group-addon]:!w-[5rem] [&_.ant-select-selection-item]:!pr-6"
+                        className="!text-sm font-normal text-canBlack [&_.ant-input-group-addon]:!w-[5rem] [&_.ant-select-selection-item]:!pr-6 [&_.ant-input-group-addon]:!bg-canGray"
                         {...messages.firstNameRule}
                       >
                         <Input
@@ -466,8 +466,7 @@ function ProfileInfoForm({
                               alt=""
                             />
                           }
-                          className="font-medium [&_.ant-input]:!rounded-tl-lg [&_.ant-input]:!rounded-bl-lg [&_.ant-input-group-addon]:!rounded-tr-lg [&_.ant-input-group-addon]:!rounded-br-lg [&_.ant-input]:!h-[3.25rem] [&_.ant-input-affix-wrapper]:!py-0 [&_.ant-input]:!pl-2.5 [&_.ant-input-affix-wrapper]:!rounded-tl-lg [&_.ant-input-affix-wrapper]:!rounded-bl-lg [&_.ant-select-selection-item]:!flex [&_.ant-select-selection-item]:!items-center [&_.ant-select]:!my-0
-                        [&_.ant-input-affix-wrapper-lg]:!pl-4 "
+                          className="font-medium [&_.ant-input]:!rounded-tl-lg [&_.ant-input]:!rounded-bl-lg [&_.ant-input-group-addon]:!rounded-tr-lg [&_.ant-input-group-addon]:!rounded-br-lg [&_.ant-input-affix-wrapper]:!h-[3.25rem] [&_.ant-input-affix-wrapper]:!py-0 [&_.ant-input]:!pl-2.5 [&_.ant-input-affix-wrapper]:!rounded-tl-lg [&_.ant-input-affix-wrapper]:!rounded-bl-lg [&_.ant-select-selection-item]:!flex [&_.ant-select-selection-item]:!items-center [&_.ant-select]:!my-0 [&_.ant-input-affix-wrapper-lg]:!pl-4 "
                           id="firstName"
                           addonAfter={selectAfter(
                             "first_name",
@@ -496,7 +495,7 @@ function ProfileInfoForm({
                             </span>
                           </>
                         }
-                        className="!text-sm font-normal text-canBlack [&_.ant-input-group-addon]:!w-[5rem] [&_.ant-select-selection-item]:!pr-6"
+                        className="!text-sm font-normal text-canBlack [&_.ant-input-group-addon]:!w-[5rem] [&_.ant-select-selection-item]:!pr-6 [&_.ant-input-group-addon]:!bg-canGray"
                         {...messages.lastNameRule}
                       >
                         <Input
@@ -509,7 +508,7 @@ function ProfileInfoForm({
                               alt=""
                             />
                           }
-                          className="font-medium [&_.ant-input]:!rounded-tl-lg [&_.ant-input]:!rounded-bl-lg [&_.ant-input-group-addon]:!rounded-tr-lg [&_.ant-input-group-addon]:!rounded-br-lg [&_.ant-input]:!h-[3.25rem] [&_.ant-input-affix-wrapper]:!py-0 [&_.ant-input]:!pl-2.5 [&_.ant-input-affix-wrapper]:!rounded-tl-lg [&_.ant-input-affix-wrapper]:!rounded-bl-lg [&_.ant-select-selection-item]:!flex [&_.ant-select-selection-item]:!items-center [&_.ant-select]:!my-0
+                          className="font-medium [&_.ant-input]:!rounded-tl-lg [&_.ant-input]:!rounded-bl-lg [&_.ant-input-group-addon]:!rounded-tr-lg [&_.ant-input-group-addon]:!rounded-br-lg [&_.ant-input-affix-wrapper]:!h-[3.25rem] [&_.ant-input-affix-wrapper]:!py-0 [&_.ant-input]:!pl-2.5 [&_.ant-input-affix-wrapper]:!rounded-tl-lg [&_.ant-input-affix-wrapper]:!rounded-bl-lg [&_.ant-select-selection-item]:!flex [&_.ant-select-selection-item]:!items-center [&_.ant-select]:!my-0
                         [&_.ant-input-affix-wrapper-lg]:!pl-4"
                           id="lastName"
                           addonAfter={selectAfter(
@@ -530,7 +529,7 @@ function ProfileInfoForm({
                     </Col>
                     <Col md={12} sm={24} className="w-full">
                       <Form.Item
-                        className="!text-sm font-normal text-canBlack [&_.ant-input-group-addon]:!w-[5rem] [&_.ant-select-selection-item]:!pr-6"
+                        className="!text-sm font-normal text-canBlack [&_.ant-input-group-addon]:!w-[5rem] [&_.ant-select-selection-item]:!pr-6 [&_.ant-input-group-addon]:!bg-canGray"
                         name="email"
                         label={messages.labels.email}
                         {...messages.emailRule}
@@ -553,7 +552,7 @@ function ProfileInfoForm({
                               alt=""
                             />
                           }
-                          className="font-medium [&_.ant-input]:!rounded-tl-lg [&_.ant-input]:!rounded-bl-lg [&_.ant-input-group-addon]:!rounded-tr-lg [&_.ant-input-group-addon]:!rounded-br-lg [&_.ant-input]:!h-[3.25rem] [&_.ant-input-affix-wrapper]:!py-0 [&_.ant-input]:!pl-2.5 [&_.ant-input-affix-wrapper]:!rounded-tl-lg [&_.ant-input-affix-wrapper]:!rounded-bl-lg [&_.ant-input-affix-wrapper-disabled]:!bg-canDisabled [&_.ant-input]:!text-white [&_.ant-input]:!text-base [&_.ant-input]:!font-normal [&_.ant-select-selection-item]:!flex [&_.ant-select-selection-item]:!items-center [&_.ant-select]:!my-0
+                          className="font-medium [&_.ant-input]:!rounded-tl-lg [&_.ant-input]:!rounded-bl-lg [&_.ant-input-group-addon]:!rounded-tr-lg [&_.ant-input-group-addon]:!rounded-br-lg [&_.ant-input-affix-wrapper]:!h-[3.25rem] [&_.ant-input-affix-wrapper]:!py-0 [&_.ant-input]:!pl-2.5 [&_.ant-input-affix-wrapper]:!rounded-tl-lg [&_.ant-input-affix-wrapper]:!rounded-bl-lg [&_.ant-input-affix-wrapper-disabled]:!bg-canDisabled [&_.ant-input]:!text-white [&_.ant-input]:!text-base [&_.ant-input]:!font-normal [&_.ant-select-selection-item]:!flex [&_.ant-select-selection-item]:!items-center [&_.ant-select]:!my-0
                         [&_.ant-input-affix-wrapper-lg]:!pl-4"
                           addonAfter={selectAfter(
                             "email",
@@ -569,7 +568,7 @@ function ProfileInfoForm({
                     <Col md={12} sm={24} className="w-full">
                       <Form.Item
                         label="Date of Birth"
-                        className="mb-0 [&_.ant-form-item]:!border-none "
+                        className="mb-0 [&_.ant-form-item]:!border-none [&_.ant-input-group-addon]:!bg-canGray "
                       >
                         <Input.Group compact className={styles.date_picker}>
                           <Form.Item
@@ -591,13 +590,14 @@ function ProfileInfoForm({
                               }}
                             />
                           </Form.Item>
-                          <Form.Item className="[&_.ant-select-selector]:!w-[5rem]">
+                          <Form.Item className="[&_.ant-select-selector]:!w-[5rem] ">
                             <Select
                               data-testid="handleselectAfter"
                               size="large"
                               defaultValue={publicOrPrivate("birthday")}
                               onChange={handleselectAfter("birthday")}
-                              className="mobile-select font-medium [&_.ant-select-selector]:!h-[3.25rem] [&_.ant-select-selector]:!flex [&_.ant-select-selector]:!items-center [&_.ant-select-selector]:!rounded-br-lg [&_.ant-select-selector]:!rounded-tr-lg [&_.ant-select-selection-item]:!flex [&_.ant-select-selection-item]:!items-center [&_.ant-select]:!my-0 [&_.ant-input-affix-wrapper-lg]:!pl-4 [&_.ant-select-selection-item]:after:!hidden"
+                              className="mobile-select font-medium [&_.ant-select-selector]:!h-[3rem] [&_.ant-select-selector]:!flex [&_.ant-select-selector]:!items-center [&_.ant-select-selector]:!rounded-br-lg [&_.ant-select-selector]:!rounded-tr-lg [&_.ant-select-selection-item]:!flex [&_.ant-select-selection-item]:!items-center [&_.ant-select]:!my-0 [&_.ant-input-affix-wrapper-lg]:!pl-4 [&_.ant-select-selection-item]:after:!hidden
+                            [&_.ant-select-selector]:!bg-canGray"
                               showSearch
                               optionFilterProp="children"
                               suffixIcon={
@@ -659,11 +659,11 @@ function ProfileInfoForm({
               ADDITIONAL INFORMATION
             </Title>
             <Row gutter={30}>
-              <Col md={12} sm={24}>
+              <Col md={12} sm={24} className="w-full">
                 <Form.Item
                   name="city"
                   label={messages.labels.city}
-                  className="[&_.ant-input-group-addon]:!w-[5rem] [&_.ant-form-item-label]:font-normal [&_.ant-select-selection-item]:!pr-6"
+                  className="[&_.ant-input-group-addon]:!w-[5rem] [&_.ant-form-item-label]:font-normal [&_.ant-select-selection-item]:!pr-6 [&_.ant-input-group-addon]:!bg-canGray"
                 >
                   <Input
                     prefix={
@@ -678,8 +678,8 @@ function ProfileInfoForm({
                     id="selectCity"
                     addonAfter={selectAfter("city", publicOrPrivate("city"))}
                     placeholder={messages.placeholders.city}
-                    className="font-medium [&_.ant-input]:!rounded-tl-lg [&_.ant-input]:!rounded-bl-lg [&_.ant-input-group-addon]:!rounded-tr-lg [&_.ant-input-group-addon]:!rounded-br-lg [&_.ant-input]:!h-[3.25rem] [&_.ant-input-affix-wrapper]:!py-0 [&_.ant-input]:!pl-2.5 [&_.ant-input-affix-wrapper]:!rounded-tl-lg [&_.ant-input-affix-wrapper]:!rounded-bl-lg [&_.ant-input]:!text-white [&_.ant-input]:!text-base [&_.ant-input]:!font-normal [&_.ant-select-selection-item]:!flex [&_.ant-select-selection-item]:!items-center [&_.ant-select]:!my-0
-                        [&_.ant-input-affix-wrapper-lg]:!pl-4 "
+                    className="font-medium [&_.ant-input]:!rounded-tl-lg [&_.ant-input]:!rounded-bl-lg [&_.ant-input-group-addon]:!rounded-tr-lg [&_.ant-input-group-addon]:!rounded-br-lg [&_.ant-input-affix-wrapper]:!h-[3.25rem] [&_.ant-input-affix-wrapper]:!py-0 [&_.ant-input]:!pl-2.5 [&_.ant-input-affix-wrapper]:!rounded-tl-lg [&_.ant-input-affix-wrapper]:!rounded-bl-lg  [&_.ant-input]:!text-base [&_.ant-input]:!font-normal [&_.ant-select-selection-item]:!flex [&_.ant-select-selection-item]:!items-center [&_.ant-select]:!my-0
+                        [&_.ant-input-affix-wrapper-lg]:!pl-4 [.ant-input[disabled]]:!text-canBlack"
                     size="large"
                     disabled
                   />
@@ -687,7 +687,7 @@ function ProfileInfoForm({
                 <Form.Item
                   name="country"
                   label={messages.labels.country}
-                  className="[&_.ant-input-group-addon]:!w-[5rem] [&_.ant-form-item-label]:font-normal [&_.ant-select-selection-item]:!pr-6"
+                  className="[&_.ant-input-group-addon]:!w-[5rem] [&_.ant-form-item-label]:font-normal [&_.ant-select-selection-item]:!pr-6 [&_.ant-input-group-addon]:!bg-canGray"
                 >
                   <Input
                     prefix={
@@ -705,14 +705,14 @@ function ProfileInfoForm({
                       publicOrPrivate("country")
                     )}
                     placeholder={messages.placeholders.country}
-                    className="font-medium [&_.ant-input]:!rounded-tl-lg [&_.ant-input]:!rounded-bl-lg [&_.ant-input-group-addon]:!rounded-tr-lg [&_.ant-input-group-addon]:!rounded-br-lg [&_.ant-input]:!h-[3.25rem] [&_.ant-input-affix-wrapper]:!py-0 [&_.ant-input]:!pl-2.5 [&_.ant-input-affix-wrapper]:!rounded-tl-lg [&_.ant-input-affix-wrapper]:!rounded-bl-lg [&_.ant-input]:!text-white [&_.ant-input]:!text-base [&_.ant-input]:!font-normal [&_.ant-select-selection-item]:!flex [&_.ant-select-selection-item]:!items-center [&_.ant-select]:!my-0
+                    className="font-medium [&_.ant-input]:!rounded-tl-lg [&_.ant-input]:!rounded-bl-lg [&_.ant-input-group-addon]:!rounded-tr-lg [&_.ant-input-group-addon]:!rounded-br-lg [&_.ant-input-affix-wrapper]:!h-[3.25rem] [&_.ant-input-affix-wrapper]:!py-0 [&_.ant-input]:!pl-2.5 [&_.ant-input-affix-wrapper]:!rounded-tl-lg [&_.ant-input-affix-wrapper]:!rounded-bl-lg  [&_.ant-input]:!text-base [&_.ant-input]:!font-normal [&_.ant-select-selection-item]:!flex [&_.ant-select-selection-item]:!items-center [&_.ant-select]:!my-0
                         [&_.ant-input-affix-wrapper-lg]:!pl-4"
                     size="large"
                     disabled
                   />
                 </Form.Item>
               </Col>
-              <Col md={12} sm={24}>
+              <Col md={12} sm={24} className="w-full">
                 {/* <Form.Item
                   name="address_2"
                   label={messages.labels.addressLine2}
@@ -731,7 +731,7 @@ function ProfileInfoForm({
                 <Form.Item
                   name="state"
                   label={messages.labels.state}
-                  className="[&_.ant-input-group-addon]:!w-[5rem] [&_.ant-form-item-label]:font-normal [&_.ant-select-selection-item]:!pr-6"
+                  className="[&_.ant-input-group-addon]:!w-[5rem] [&_.ant-form-item-label]:font-normal [&_.ant-select-selection-item]:!pr-6 [&_.ant-input-group-addon]:!bg-canGray"
                 >
                   <Input
                     prefix={
@@ -748,7 +748,7 @@ function ProfileInfoForm({
                     placeholder={messages.placeholders.state}
                     size="large"
                     className="font-medium [&_.ant-input]:!rounded-tl-lg [&_.ant-input]:!rounded-bl-lg [&_.ant-input-group-addon]:!rounded-tr-lg [&_.ant-input-group-addon]:!rounded-br-lg 
-                   [&_.ant-input]:!h-[3.25rem] [&_.ant-input-affix-wrapper]:!py-0 [&_.ant-input]:!pl-2.5 [&_.ant-input-affix-wrapper]:!rounded-tl-lg [&_.ant-input-affix-wrapper]:!rounded-bl-lg [&_.ant-input]:!text-white [&_.ant-input]:!text-base [&_.ant-input]:!font-normal [&_.ant-select-selection-item]:!flex [&_.ant-select-selection-item]:!items-center [&_.ant-select]:!my-0
+                   [&_.ant-input-affix-wrapper]:!h-[3.25rem] [&_.ant-input-affix-wrapper]:!py-0 [&_.ant-input]:!pl-2.5 [&_.ant-input-affix-wrapper]:!rounded-tl-lg [&_.ant-input-affix-wrapper]:!rounded-bl-lg  [&_.ant-input]:!text-base [&_.ant-input]:!font-normal [&_.ant-select-selection-item]:!flex [&_.ant-select-selection-item]:!items-center [&_.ant-select]:!my-0
                         [&_.ant-input-affix-wrapper-lg]:!pl-4"
                     disabled
                   />
@@ -756,7 +756,7 @@ function ProfileInfoForm({
                 <Form.Item
                   name="postal_code"
                   label={messages.labels.zipCode}
-                  className="[&_.ant-input-group-addon]:!w-[5rem] [&_.ant-select-selection-item]:!pr-6"
+                  className="[&_.ant-input-group-addon]:!w-[5rem] [&_.ant-select-selection-item]:!pr-6 [&_.ant-input-group-addon]:!bg-canGray"
                 >
                   <Input
                     prefix={
@@ -776,7 +776,7 @@ function ProfileInfoForm({
                     placeholder={messages.placeholders.zipCode}
                     size="large"
                     className="font-medium [&_.ant-input]:!rounded-tl-lg [&_.ant-input]:!rounded-bl-lg [&_.ant-input-group-addon]:!rounded-tr-lg [&_.ant-input-group-addon]:!rounded-br-lg 
-                    [&_.ant-input]:!h-[3.25rem] [&_.ant-input-affix-wrapper]:!py-0 [&_.ant-input]:!pl-2.5 [&_.ant-input-affix-wrapper]:!rounded-tl-lg [&_.ant-input-affix-wrapper]:!rounded-bl-lg [&_.ant-input]:!text-white [&_.ant-input]:!text-base [&_.ant-input]:!font-normal [&_.ant-select-selection-item]:!flex [&_.ant-select-selection-item]:!items-center [&_.ant-select]:!my-0
+                    [&_.ant-input-affix-wrapper]:!h-[3.25rem] [&_.ant-input-affix-wrapper]:!py-0 [&_.ant-input]:!pl-2.5 [&_.ant-input-affix-wrapper]:!rounded-tl-lg [&_.ant-input-affix-wrapper]:!rounded-bl-lg [&_.ant-input]:!text-base [&_.ant-input]:!font-normal [&_.ant-select-selection-item]:!flex [&_.ant-select-selection-item]:!items-center [&_.ant-select]:!my-0
                         [&_.ant-input-affix-wrapper-lg]:!pl-4"
                     maxLength={255}
                     disabled={postalCodeDisable}
@@ -991,7 +991,7 @@ function ProfileInfoForm({
                       />
                     }
                     className=" rounded-lg   text-base hover:!border-canGrey2 [&_.ant-input-group-addon]:!w-[5rem] [&_.ant-input-prefix]:!mr-2 font-medium text-canBlack
-                   [&_.ant-input]:!rounded-tl-lg [&_.ant-input]:!rounded-bl-lg [&_.ant-input-group-addon]:!rounded-tr-lg [&_.ant-input-group-addon]:!rounded-br-lg [&_.ant-input]:!h-[3.25rem] [&_.ant-input-affix-wrapper]:!py-0 [&_.ant-input]:!pl-2.5 [&_.ant-input-affix-wrapper]:!rounded-tl-lg [&_.ant-input-affix-wrapper]:!rounded-bl-lg [&_.ant-input-affix-wrapper-disabled]:!bg-canDisabled  [&_.ant-input]:!text-base [&_.ant-input]:!font-normal [&_.ant-select-selection-item]:!flex [&_.ant-select-selection-item]:!items-center [&_.ant-select]:!my-0
+                   [&_.ant-input]:!rounded-tl-lg [&_.ant-input]:!rounded-bl-lg [&_.ant-input-group-addon]:!rounded-tr-lg [&_.ant-input-group-addon]:!rounded-br-lg [&_.ant-input]:!h-[3rem] [&_.ant-input-affix-wrapper]:!py-0 [&_.ant-input]:!pl-2.5 [&_.ant-input-affix-wrapper]:!rounded-tl-lg [&_.ant-input-affix-wrapper]:!rounded-bl-lg [&_.ant-input-affix-wrapper-disabled]:!bg-canDisabled  [&_.ant-input]:!text-base [&_.ant-input]:!font-normal [&_.ant-select-selection-item]:!flex [&_.ant-select-selection-item]:!items-center [&_.ant-select]:!my-0
                         [&_.ant-input-affix-wrapper-lg]:!pl-4 [&_.ant-input-affix-wrapper-lg]:!pr-0 [&_.ant-input-affix-wrapper-lg]:!bg-transparent "
                     addonAfter={selectAfter("email", publicOrPrivate("email"))}
                     placeholder="Enter new email"
@@ -1020,7 +1020,7 @@ function ProfileInfoForm({
                       />
                     }
                     className="mb-5 rounded-lg   text-base hover:!border-canGrey2 [&_.ant-input-group-addon]:!w-[5rem] [&_.ant-input-prefix]:!mr-2 font-medium text-canBlack
-                   [&_.ant-input]:!rounded-tl-lg [&_.ant-input]:!rounded-bl-lg [&_.ant-input-group-addon]:!rounded-tr-lg [&_.ant-input-group-addon]:!rounded-br-lg [&_.ant-input]:!h-[3.25rem] [&_.ant-input-affix-wrapper]:!py-0 [&_.ant-input]:!pl-2.5 [&_.ant-input-affix-wrapper]:!rounded-tl-lg [&_.ant-input-affix-wrapper]:!rounded-bl-lg [&_.ant-input-affix-wrapper-disabled]:!bg-canDisabled  [&_.ant-input]:!text-base [&_.ant-input]:!font-normal [&_.ant-select-selection-item]:!flex [&_.ant-select-selection-item]:!items-center [&_.ant-select]:!my-0
+                   [&_.ant-input]:!rounded-tl-lg [&_.ant-input]:!rounded-bl-lg [&_.ant-input-group-addon]:!rounded-tr-lg [&_.ant-input-group-addon]:!rounded-br-lg [&_.ant-input]:!h-[3rem] [&_.ant-input-affix-wrapper]:!py-0 [&_.ant-input]:!pl-2.5 [&_.ant-input-affix-wrapper]:!rounded-tl-lg [&_.ant-input-affix-wrapper]:!rounded-bl-lg [&_.ant-input-affix-wrapper-disabled]:!bg-canDisabled  [&_.ant-input]:!text-base [&_.ant-input]:!font-normal [&_.ant-select-selection-item]:!flex [&_.ant-select-selection-item]:!items-center [&_.ant-select]:!my-0
                         [&_.ant-input-affix-wrapper-lg]:!pl-4"
                     addonAfter={selectAfter("email", publicOrPrivate("email"))}
                     placeholder="Enter new email"

@@ -659,7 +659,7 @@ body {
   }
 }
 
-.DraggableTags {
+.DraggableTags, .DraggableTags>div  {
   @apply flex flex-col
 }
 .commonSelectClass {
