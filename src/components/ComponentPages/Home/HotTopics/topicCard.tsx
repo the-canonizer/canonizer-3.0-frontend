@@ -65,7 +65,7 @@ const SingleTopicCard = ({
         description={topic?.statement?.parsed_value || topic?.statement}
       />
       <div className="flex justify-between mt-auto pt-5 mt-auto flex-row items-center">
-        <div className="catTags flex flex-col justify-center">
+        <div className="catTags flex flex-col justify-center min-h-[32px]">
           <TopicCatsLabel tags={topic[tag_key]} />
           <ViewCounts
             views={topic?.views}

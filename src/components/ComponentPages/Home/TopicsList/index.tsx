@@ -213,7 +213,7 @@ const TopicsList = () => {
   return (
     <Layout routeName={"browse"}>
       <div className="browse-wrapper pb-4 mt-3">
-        <Title level={2} className="browse-title !mb-0">
+        <Title level={4} className="browse-title !mb-0">
           Browse Canonizer’s Topics
         </Title>
         <Divider />
@@ -221,7 +221,7 @@ const TopicsList = () => {
           <Form layout="vertical">
             <Form.Item className="browse-dropdown">
               <div className="filter-popover-wrapper">
-                <p>Filter By Canon</p>
+                <p className="text-xs font-medium">Filter By Canon</p>
                 <Popover placement="right" content={infoContent}>
                   <InfoCircleOutlined />
                 </Popover>
@@ -236,6 +236,7 @@ const TopicsList = () => {
                 defaultValue={changeSlashToArrow(selectedNameSpace)}
                 value={changeSlashToArrow(selectedNameSpace)}
                 disabled={loading}
+                className="text-canBlack font-normal commonSelectClass [&_.ant-select-arrow]:text-canBlack [&_.ant-select-arrow>svg]:fill-canBlack"
               >
                 {memoizedOptions}
                 <Select.Option id="name-space-custom" key="custom-key" value="">
@@ -248,7 +249,7 @@ const TopicsList = () => {
             <Search
               key={inputSearch}
               size="large"
-              className="browse-search"
+              className="browse-search mainInput"
               placeholder="Search via keyword"
               defaultValue={inputSearch}
               onSearch={onSearch}
@@ -278,7 +279,15 @@ const TopicsList = () => {
           <Row gutter={[24, 24]}>
             {topicsData?.topics &&
               topicsData?.topics?.map((ft: any, index) => (
-                <Col key={index} xs={24} sm={24} md={8}>
+                <Col
+                  key={index}
+                  xs={24}
+                  sm={24}
+                  md={8}
+                  className={`${
+                    ft?.tags?.length == 0 ? "[&_.mainTags]:!hidden" : ""
+                  }`}
+                >
                   <SingleTopicCard
                     cardClassName="[&_.scoreTag]:mx-0 [&_.scoreTag]:ml-2 [&_.catTags]:flex-row [&_.cardCountCls]:!mt-0 [&_.scoreTag]:w-max [&_.topicDesc]:line-clamp-2"
                     topic={{

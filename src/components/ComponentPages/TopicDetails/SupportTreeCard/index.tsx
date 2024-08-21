@@ -156,7 +156,6 @@ const SupportTreeCard = ({
     signPetition: "signPetition",
   };
 
-
   const showDrawer = () => {
     setOpen(true);
   };
@@ -477,7 +476,6 @@ const SupportTreeCard = ({
                           )}
 
                           <span className="text-canBlack text-xs font-normal">
-                            {" "}
                             {data[item].nick_name}
                           </span>
                         </a>
@@ -487,7 +485,6 @@ const SupportTreeCard = ({
                         <Image
                           src="/images/hand-icon.svg"
                           alt="svg"
-                          // height={15}
                           width={10}
                         />
                         <span className="text-xs text-white font-normal flex items-center">
@@ -496,12 +493,9 @@ const SupportTreeCard = ({
                             : is_checked && isUserAuthenticated
                             ? data[item].full_score?.toFixed(2)
                             : data[item].score?.toFixed(2)}
-                          {/* {data[item].score?.toFixed(2)} */}
                         </span>
                       </div>
                     </div>
-
-                    {/* </span> */}
 
                     {(userNickNameList?.length > 0 &&
                       !userNickNameList.includes(data[item].nick_name_id)) ||
@@ -558,13 +552,14 @@ const SupportTreeCard = ({
                             campRecord?.is_archive
                           }
                           onClick={() => removeSupportModalHandler(data, item)}
-                          className="mb-2 flex items-center gap-1 justify-center bg-canLightRed text-canRed text-base rounded-lg font-medium h-[44px] w-full"
+                          className="mb-2 flex items-center gap-1 justify-center bg-canLightRed text-canRed text-xs rounded-lg font-medium w-full"
                         >
                           <Image
                             src="/images/user-minus-red.svg"
                             alt="svg"
-                            height={24}
-                            width={24}
+                            height={16}
+                            width={16}
+                            preview={false}
                           />
                           Remove Your Support
                         </Button>
@@ -613,14 +608,7 @@ const SupportTreeCard = ({
   const [removeForm] = Form.useForm();
 
   const removeSupportModalHandler = (data, item) => {
-    // if (currentGetCheckSupportExistsData.is_delegator) {
-    //   setIsDelegateSupportTreeCardModal(true);
-    //   } else {
-    //     setIsSupportTreeCardModal(true);
-    // }
-
     if (currentGetCheckSupportExistsData.is_delegator) {
-      // setDrawerFor("delegateRemove")
       removeDelegateSupportModal();
     } else {
       setDrawerFor(drawerOptions.directRemove);
@@ -681,7 +669,6 @@ const SupportTreeCard = ({
   };
   let title = `Support Tree for "${campRecord?.camp_name}" Camp`;
 
-  // remove support popup added.
   return loadingIndicator || loadingIndicatorSupport ? (
     <CustomSkelton
       skeltonFor="card"
@@ -692,11 +679,7 @@ const SupportTreeCard = ({
     />
   ) : (
     <>
-      <div
-        // defaultActiveKey={["1"]}
-        // expandIconPosition="right"
-        className="topicDetailsCollapse"
-      >
+      <div className="topicDetailsCollapse">
         <SupportTreeDrawer
           onClose={onClose}
           open={open}
@@ -711,15 +694,6 @@ const SupportTreeCard = ({
           setLoader={setLoader}
         />
         <div className=" support-tree-sec">
-          {/* <Paragraph className="position-relative">
-            Total Support for This Camp (including sub-camps):
-            <span className="number-style">
-              {campRecord?.is_archive
-                ? 0
-                : totalCampScoreForSupportTree?.toFixed(2)}
-            </span>
-          </Paragraph> */}
-
           {campSupportingTree?.length > 0 ? (
             <Tree
               className={"Parent_Leaf"}
@@ -752,7 +726,7 @@ const SupportTreeCard = ({
         <div className="topicDetailsCollapseFooter printHIde mt-3 w-full flex flex-col gap-2 justify-center">
           <CustomButton
             onClick={handleClickSupportCheck}
-            className="w-full justify-center bg-canGreen hover:!bg-canGreen hover:!text-white hover:!border-transparent !border-transparent h-[44px] px-8 lg:px-10 text-white flex items-center rounded-lg font-medium text-sm gap-2"
+            className="w-full justify-center bg-canGreen hover:!bg-canGreen hover:!text-white hover:!border-transparent !border-transparent h-auto py-2 text-white flex items-center rounded-lg font-medium text-sm gap-2"
             disabled={asof == "bydate" || campRecord?.is_archive == 1}
             id="manage-support-btn"
           >
@@ -760,8 +734,8 @@ const SupportTreeCard = ({
             <Image
               src="/images/hand-icon.svg"
               alt="svg"
-              height={16}
-              width={16}
+              height={14}
+              width={14}
             />
           </CustomButton>
           <Popover content={renderPopupMsg()}>
