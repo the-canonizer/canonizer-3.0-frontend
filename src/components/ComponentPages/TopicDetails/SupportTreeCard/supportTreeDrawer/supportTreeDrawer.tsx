@@ -500,7 +500,8 @@ function SupportTreeDrawer({
   };
 
   const renderSubmitBtnText = () => {
-    if(!!checkAllTagsSelected()){
+    if(!!checkAllTagsSelected() && drawerFor !== "signPetition"
+  ){
       return "Remove Support";
     }else{
       if (drawerFor === "manageSupport") {
