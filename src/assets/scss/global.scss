@@ -97,7 +97,7 @@ body {
 
 .browse-wrapper {
   .browse-title {
-    @apply text-[2rem] mb-0 text-[#242B37];
+    @apply text-xl mb-0 text-[#242B37];
   }
   .ant-divider {
     @apply my-8 border-[#CCD4E7];
@@ -112,14 +112,14 @@ body {
     .browse-filters {
       .ant-select-selector {
         @apply rounded-md;
-        .ant-select-selection-item {
-          @apply text-[1rem] font-medium text-[#242B37];
-        }
+        // .ant-select-selection-item {
+        //   // @apply font-medium;
+        // }
       }
       .ant-select-arrow {
         .anticon,
         i {
-          @apply text-[#000] text-lg;
+          @apply text-canBlack;
         }
       }
     }
@@ -641,4 +641,12 @@ body {
   ol {
     @apply list-decimal pl-5;
   }
+}
+
+ .ant-select-item-option-content{
+  @apply font-normal text-xs flex items-center
+}
+.ant-select-selection-item{@apply font-medium text-xs}
+.ant-select-item-option-active .ant-select-item-option-content{
+  @apply font-medium
 }
