@@ -802,7 +802,7 @@ function SupportTreeDrawer({
                   loading={loader}
                 >
                   {renderSubmitBtnText()}
-                  {!!checkAllTagsSelected()?<MinusOutlined />:<PlusOutlined />}
+                  {checkAllTagsSelected()?<MinusOutlined />:<PlusOutlined />}
                 </Button>
               </div>
             </Form>
