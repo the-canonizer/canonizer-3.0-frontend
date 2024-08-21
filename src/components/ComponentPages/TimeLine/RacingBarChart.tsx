@@ -3,6 +3,7 @@ import { select, scaleBand, scaleLinear, max } from "d3";
 import useResizeObserver from "./useResizeObserver";
 
 import styles from "./timeline.module.scss";
+import { Card } from "antd";
 
 function RacingBarChart({ data }: any) {
   const linesData = [];
@@ -93,7 +94,7 @@ function RacingBarChart({ data }: any) {
               index < data?.length - 1 &&
               (data[index].level < data[+index + 1].level ||
                 data[index].level < data[+index - 1].level))
-              ? "/images/minus-square.svg"
+              ? "/images/circle-icon.svg"
               : null
           )
           .attr("height", 14)
@@ -122,6 +123,9 @@ function RacingBarChart({ data }: any) {
       .attr("class", "label")
       .attr("id", (entry) => entry.camp_id)
       .attr("x", (entry) => manageXAxis(entry) + 10)
+      .style("fill", "#242B37") // Set text color
+      .style("font-family", "Inter") // Set font family
+      .style("font-size", "1rem") // Set font size
       .transition()
       .attr("y", (entry, index) => yScale(index) + yScale.bandwidth() / 2 + 5);
 
@@ -136,13 +140,15 @@ function RacingBarChart({ data }: any) {
       .attr("class", "bar")
       .attr("x", (entry) => manageBarXAxis(entry))
       .attr("height", yScale.bandwidth())
+      .attr("rx", 6) 
+      .attr("ry", 6) 
       .transition()
       .attr("width", (entry) => {
         const length = manageBarXAxis(entry);
         if (widthBar < xScale(entry.score) + length) {
           setWidthBar(xScale(entry.score) + length);
         }
-        return xScale(entry.score) + 39;
+        return xScale(entry.score) + 65;
       })
       .attr("y", (entry, index) => yScale(index));
 
@@ -150,18 +156,34 @@ function RacingBarChart({ data }: any) {
     svg
       ?.selectAll(".label1")
       ?.data(data, (entry) => entry.title)
-      ?.join((enter) =>
-        enter
+      ?.join((enter) => {
+        const group = enter.append("g");
+        // Append the icon
+        group
+          .append("image")
+          .attr("xlink:href", "/images/hand-icon.svg") // Replace with the actual path to your icon
+          .attr("width", 12) // Adjust the size of the icon as needed
+          .attr("height", 12)
+          .attr("x", (entry) => manageBarXAxis(entry) + 7) // Adjust position before the text
+          .attr(
+            "y",
+            (entry, index) => yScale(index) + yScale.bandwidth() / 2 - 6 // Center the icon vertically
+          );
+
+        // Append the text
+        group
           .append("text")
           .attr(
             "y",
             (entry, index) => yScale(index) + yScale.bandwidth() / 2 + 5
           )
-      )
-      .attr("fill", () => "#fff")
-      .text((entry) => ` ${entry.score.toFixed(2)}`)
-      .attr("class", "label")
-      .attr("x", (entry) => manageBarXAxis(entry) + 7)
+          .attr("fill", "#fff")
+          .text((entry) => `  ${entry.score.toFixed(2)}`)
+          .attr("class", "label")
+          .attr("x", (entry) => manageBarXAxis(entry) + 25);
+
+        return group;
+      })
       .transition()
       .attr("y", (entry, index) => yScale(index) + yScale.bandwidth() / 2 + 5);
 
@@ -197,13 +219,15 @@ function RacingBarChart({ data }: any) {
   }, [data, dimensions]);
 
   return (
-    <div
-      className={styles.svgD3}
-      ref={wrapperRef}
-      style={{ marginBottom: "2rem", width: widthBar + 45 }}
-    >
-      <svg height={data?.length * 30} ref={svgRef}></svg>
-    </div>
+    <Card title="Consensus tree progression" className="tree-progression-card">
+      <div
+        className={styles.svgD3}
+        ref={wrapperRef}
+        style={{ marginBottom: "2rem", width: widthBar + 45 }}
+      >
+        <svg height={data?.length * 30} ref={svgRef}></svg>
+      </div>
+    </Card>
   );
 }
 

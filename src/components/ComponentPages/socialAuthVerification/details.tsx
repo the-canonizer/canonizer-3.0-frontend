@@ -50,9 +50,9 @@ export default function Details({
           <Button
             type="primary"
             htmlType="submit"
-            className="bg-btnBg bg-opacity-10 w-40 !py-2.5 !border !border-canBlue text-base text-canBlack font-medium [&_.ant-btn-primary]:!border [&_.ant-btn-primary]:!border-canBlue !h-14 rounded-lg flex items-center justify-center gap-2.5"
+            className="bg-btnBg bg-opacity-10 w-40 !py-2.5 !border !border-canBlue text-base text-canBlack font-medium [&_.ant-btn-primary]:!border [&_.ant-btn-primary]:!border-canBlue !h-14 rounded-lg flex items-center justify-center gap-2.5 hover:!bg-btnbg hover:bg-opacity-10"
             data-testid="linkBtn"
-            tabIndex={12}
+            tabIndex={12} 
             onClick={onLinkClick.bind(this, provider)}
           >
             Link

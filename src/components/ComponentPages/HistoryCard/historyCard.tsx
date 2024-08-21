@@ -72,6 +72,8 @@ function HistoryCard({
   status = null,
   currentVersion = null,
   s1 = false,
+  isMobileView=false,
+  loadingIndicator=false
 }: any) {
   const router = useRouter();
   const [commited, setCommited] = useState(false);
@@ -210,7 +212,7 @@ function HistoryCard({
       }`}
     >
       <div className="badge-wrapper">
-        <Badge
+        { !isMobileView && <Badge
           className="cn-dot-badge ch-dot-history"
           color=""
           text={
@@ -260,7 +262,7 @@ function HistoryCard({
               )}
             </>
           }
-        />
+        /> }
 
         {campStatement &&
           campStatement?.status == "in_review" &&
@@ -330,7 +332,7 @@ function HistoryCard({
                     Statement
                   </h5>
                   <div
-                    className="text-canBlack pb-[1.25rem]"
+                    className="text-canBlack pb-[1.25rem] editorContent"
                     dangerouslySetInnerHTML={{
                       __html: campStatement?.parsed_value,
                     }}
@@ -367,7 +369,7 @@ function HistoryCard({
             topicNamespaceId={topicNamespaceId}
           />
         )}
-
+        
         {campStatement?.status == "in_review" &&
           (!campStatement?.grace_period || commited) &&
           isUserAuthenticated &&

@@ -54,10 +54,9 @@ function ManageStatements({ isEdit = false, add = false }) {
   });
   const [autoSaveDisplayMessage, setAutoSaveDisplayMessage] = useState("");
   const [isAutoSaving, setIsAutoSaving] = useState(false);
-  const [autoSaveApiPayload, setAutoSaveApiPayload] = useState(null);
+  // const [autoSaveApiPayload, setAutoSaveApiPayload] = useState(null);
   const [statement, setStatement] = useState(null);
-  const [nickName, setNickName] = useState(null);
-  const [postChangesCount, setPostChangesCount] = useState(0);
+  // const [nickName, setNickName] = useState(null);
   const values = Form.useWatch([], form);
 
   const getEpochTime = () => {
@@ -108,21 +107,19 @@ function ManageStatements({ isEdit = false, add = false }) {
     const nickNameId = backdata?.nick_name[0]?.id;
 
     const isStatementDifferent =
-      JSON.stringify(statementValue) ===
+      JSON.stringify(statementValue) !=
       JSON.stringify(values?.statement?.trim());
-    const isNicknameDifferent = nickNameId === values?.nick_name;
-    const isEditSummaryDifferent =
-      statementEditSummary === values?.edit_summary;
+    const isNicknameDifferent =
+      nickNameId != values?.nick_name && values?.nick_name;
+    const isEditSummaryDifferent = statementEditSummary != values?.edit_summary;
 
     if (
       isEdit &&
-      isStatementDifferent &&
-      isNicknameDifferent &&
-      isEditSummaryDifferent
+      (isStatementDifferent || isNicknameDifferent || isEditSummaryDifferent)
     ) {
-      setSubmitIsDisable(true);
-    } else {
       setSubmitIsDisable(false);
+    } else {
+      setSubmitIsDisable(true);
     }
   }, [values, editStatementData, isEdit]);
 
@@ -200,7 +197,10 @@ function ManageStatements({ isEdit = false, add = false }) {
           event_type: "edit",
         });
 
-        if (editRes?.status_code === 200 && !!editRes?.data?.statement?.is_draft) {
+        if (
+          editRes?.status_code === 200 &&
+          !!editRes?.data?.statement?.is_draft
+        ) {
           setTime({
             ...time,
             last_save_time: editRes?.data?.statement?.submit_time,
@@ -263,26 +263,26 @@ function ManageStatements({ isEdit = false, add = false }) {
 
   const getTopicAndCampIds = () => {
     const topicNum = isEdit
-    ? editStatementData?.topic?.topic_num
-    : router?.query?.statement?.at(0)?.split("-")?.at(0);
-  const topicName = isEdit
-    ? editStatementData?.topic?.topic_name
-    : router?.query?.statement?.at(0)?.split("-")?.at(1);
-  const campNum = isEdit
-    ? editStatementData?.statement?.camp_num
-    : router?.query?.statement?.at(1)?.split("-")?.at(0);
+      ? editStatementData?.topic?.topic_num
+      : router?.query?.statement?.at(0)?.split("-")?.at(0);
+    const topicName = isEdit
+      ? editStatementData?.topic?.topic_name
+      : router?.query?.statement?.at(0)?.split("-")?.at(1);
+    const campNum = isEdit
+      ? editStatementData?.statement?.camp_num
+      : router?.query?.statement?.at(1)?.split("-")?.at(0);
 
-    return{
+    return {
       topicNum,
       topicName,
       campNum,
-    }
-  }
+    };
+  };
 
   const autoSave = async (data) => {
     setIsAutoSaving(true);
     setStatement(data?.statement);
-    setNickName(data?.nick_name);
+    // setNickName(data?.nick_name);
 
     let payload = {
       ...data,
@@ -291,7 +291,13 @@ function ManageStatements({ isEdit = false, add = false }) {
         : localStorage.getItem("autosaveContent"),
     };
 
-    if (!localStorage.getItem(`draft_record_id-${getTopicAndCampIds()?.topicNum}-${getTopicAndCampIds()?.campNum}`)) {
+    if (
+      !localStorage.getItem(
+        `draft_record_id-${getTopicAndCampIds()?.topicNum}-${
+          getTopicAndCampIds()?.campNum
+        }`
+      )
+    ) {
       payload.topic_num = getTopicAndCampIds()?.topicNum;
       payload.topic_name = getTopicAndCampIds()?.topicName;
       payload.camp_num = getTopicAndCampIds()?.campNum;
@@ -306,7 +312,11 @@ function ManageStatements({ isEdit = false, add = false }) {
       payload.submitter = nickNameData?.at(0)?.id;
       payload.event_type = "edit";
       payload.statement_id = localStorage
-        .getItem(`draft_record_id-${getTopicAndCampIds()?.topicNum}-${getTopicAndCampIds()?.campNum}`)
+        .getItem(
+          `draft_record_id-${getTopicAndCampIds()?.topicNum}-${
+            getTopicAndCampIds()?.campNum
+          }`
+        )
         ?.split("-")
         ?.at(0);
       payload.is_draft = true;
@@ -318,8 +328,14 @@ function ManageStatements({ isEdit = false, add = false }) {
 
         if (res?.data?.draft_record_id) {
           localStorage.setItem(
-            `draft_record_id-${getTopicAndCampIds()?.topicNum}-${getTopicAndCampIds()?.campNum}`,
-            res?.data?.draft_record_id + "-" + getTopicAndCampIds()?.topicNum + "-" + getTopicAndCampIds()?.campNum
+            `draft_record_id-${getTopicAndCampIds()?.topicNum}-${
+              getTopicAndCampIds()?.campNum
+            }`,
+            res?.data?.draft_record_id +
+              "-" +
+              getTopicAndCampIds()?.topicNum +
+              "-" +
+              getTopicAndCampIds()?.campNum
           );
         }
 
@@ -357,30 +373,46 @@ function ManageStatements({ isEdit = false, add = false }) {
       is_draft: false,
     };
 
-    if (!localStorage.getItem(`draft_record_id-${getTopicAndCampIds()?.topicNum}-${getTopicAndCampIds()?.campNum}`)) {
+    if (
+      !localStorage.getItem(
+        `draft_record_id-${getTopicAndCampIds()?.topicNum}-${
+          getTopicAndCampIds()?.campNum
+        }`
+      )
+    ) {
       payload.topic_num = getTopicAndCampIds()?.topicNum;
       payload.topic_name = getTopicAndCampIds()?.topicName;
       payload.camp_num = getTopicAndCampIds()?.campNum;
-      payload.submitter = nickNameData?.at(0)?.id;
+      payload.submitter = values?.nick_name;
       payload.event_type = "create";
       payload.statement_id = null;
-      payload.statement = statement ? statement : (isEdit && statement?.length > 0 ? statement : editStatementData?.statement?.parsed_value);
-      payload.nick_name = nickNameData?.at(0)?.id;
+      payload.statement = statement
+        ? statement
+        : isEdit && statement?.length > 0
+        ? statement
+        : editStatementData?.statement?.parsed_value;
+      payload.nick_name = values?.nick_name;
       payload.is_draft = true;
     } else {
       payload.topic_num = getTopicAndCampIds()?.topicNum;
       payload.topic_name = getTopicAndCampIds()?.topicName;
       payload.camp_num = getTopicAndCampIds()?.campNum;
-      payload.submitter = nickNameData?.at(0)?.id;
+      payload.submitter = values?.nick_name;
       payload.event_type = "edit";
-      payload.statement_id = Number(localStorage
-        .getItem(`draft_record_id-${getTopicAndCampIds()?.topicNum}-${getTopicAndCampIds()?.campNum}`)
-        ?.split("-")
-        ?.at(0));
+      payload.statement_id = Number(
+        localStorage
+          .getItem(
+            `draft_record_id-${getTopicAndCampIds()?.topicNum}-${
+              getTopicAndCampIds()?.campNum
+            }`
+          )
+          ?.split("-")
+          ?.at(0)
+      );
       payload.statement = statement
         ? statement
         : editStatementData?.statement?.parsed_value;
-      payload.nick_name = nickNameData?.at(0)?.id;
+      payload.nick_name = values?.nick_name;
       payload.is_draft = true;
     }
 
@@ -389,8 +421,14 @@ function ManageStatements({ isEdit = false, add = false }) {
 
       if (res?.data?.draft_record_id) {
         localStorage.setItem(
-          `draft_record_id-${getTopicAndCampIds()?.topicNum}-${getTopicAndCampIds()?.campNum}`,
-          res?.data?.draft_record_id + "-" + getTopicAndCampIds()?.topicNum + "-" + getTopicAndCampIds()?.campNum
+          `draft_record_id-${getTopicAndCampIds()?.topicNum}-${
+            getTopicAndCampIds()?.campNum
+          }`,
+          res?.data?.draft_record_id +
+            "-" +
+            getTopicAndCampIds()?.topicNum +
+            "-" +
+            getTopicAndCampIds()?.campNum
         );
       }
 
@@ -410,18 +448,23 @@ function ManageStatements({ isEdit = false, add = false }) {
     }
 
     setIsAutoSaving(false);
+    router.push(`/topic/${getTopicAndCampIds().topicNum}-${getTopicAndCampIds().topicName}/${getTopicAndCampIds().campNum}`)
+
   };
 
   const onFinish = async (values: any) => {
     setScreenLoading(true);
     setIsSaveDraft(false);
 
-
     let payload = {
       topic_num: getTopicAndCampIds()?.topicNum,
       camp_num: getTopicAndCampIds()?.campNum,
       statement_id: localStorage
-        .getItem(`draft_record_id-${getTopicAndCampIds()?.topicNum}-${getTopicAndCampIds()?.campNum}`)
+        .getItem(
+          `draft_record_id-${getTopicAndCampIds()?.topicNum}-${
+            getTopicAndCampIds()?.campNum
+          }`
+        )
         ?.split("-")
         ?.at(0),
     };
@@ -430,7 +473,11 @@ function ManageStatements({ isEdit = false, add = false }) {
 
     if (
       localStorage
-        .getItem(`draft_record_id-${getTopicAndCampIds()?.topicNum}-${getTopicAndCampIds()?.campNum}`)
+        .getItem(
+          `draft_record_id-${getTopicAndCampIds()?.topicNum}-${
+            getTopicAndCampIds()?.campNum
+          }`
+        )
         ?.split("-")
         ?.at(0)
     ) {
@@ -444,10 +491,9 @@ function ManageStatements({ isEdit = false, add = false }) {
         content:
           "Please note that any unsaved changes will be lost if you cancel.",
         async onOk() {
-            try {
+          try {
             const editInfo = editStatementData;
             const parent_camp = editInfo?.parent_camp;
-
 
             let payload = {
               ...values,
@@ -459,7 +505,11 @@ function ManageStatements({ isEdit = false, add = false }) {
             const res = await saveStatement(payload);
 
             if (res?.status_code == 200) {
-              localStorage.removeItem(`draft_record_id-${getTopicAndCampIds()?.topicNum}-${getTopicAndCampIds()?.campNum}`);
+              localStorage.removeItem(
+                `draft_record_id-${getTopicAndCampIds()?.topicNum}-${
+                  getTopicAndCampIds()?.campNum
+                }`
+              );
 
               if (!isEdit) {
                 if (isSaveDraft) {
@@ -522,7 +572,6 @@ function ManageStatements({ isEdit = false, add = false }) {
       const editInfo = editStatementData;
       const parent_camp = editInfo?.parent_camp;
 
-
       let payload = {
         ...values,
         topic_num: getTopicAndCampIds()?.topicNum,
@@ -533,7 +582,11 @@ function ManageStatements({ isEdit = false, add = false }) {
       const res = await saveStatement(payload);
 
       if (res?.status_code == 200) {
-        localStorage.removeItem(`draft_record_id-${getTopicAndCampIds()?.topicNum}-${getTopicAndCampIds()?.campNum}`);
+        localStorage.removeItem(
+          `draft_record_id-${getTopicAndCampIds()?.topicNum}-${
+            getTopicAndCampIds()?.campNum
+          }`
+        );
 
         if (!isEdit) {
           if (isSaveDraft) {
@@ -614,7 +667,7 @@ function ManageStatements({ isEdit = false, add = false }) {
       reqBody.topic_num = topicNum;
       reqBody.topic_name = topicName;
       reqBody.camp_num = campNum;
-      reqBody.submitter = nickNameData[0]?.id;
+      reqBody.submitter = values?.nick_name;
     } else {
       reqBody.topic_num = lastParentCamp?.topic_num;
       reqBody.topic_name = lastParentCamp?.topic_name;
@@ -678,10 +731,6 @@ function ManageStatements({ isEdit = false, add = false }) {
     }
   };
 
-  const onNickNameSelect = (val) => {
-    form.setFieldValue("nick_name", val);
-  };
-
   const onPreveiwClose = (e) => {
     e?.preventDefault();
     setIsPreviewOpen(false);
@@ -727,10 +776,9 @@ function ManageStatements({ isEdit = false, add = false }) {
                   !isEdit || isDraft ? "Topic Details" : "Statement History",
               },
               {
-                label:
-                  !isEdit
-                    ? "Adding a camp statement"
-                    : "Updating camp statement",
+                label: !isEdit
+                  ? "Adding a camp statement"
+                  : "Updating camp statement",
               },
             ]}
           />
@@ -775,7 +823,6 @@ function ManageStatements({ isEdit = false, add = false }) {
               editorState={editorState}
               onEditorStateChange={onEditorStateChange}
               submitIsDisable={submitIsDisable}
-              onNickNameSelect={onNickNameSelect}
               editCampStatementData={editCampStatementData}
               onDiscardClick={onDiscardClick}
               isDisabled={isDisabled}
@@ -783,6 +830,7 @@ function ManageStatements({ isEdit = false, add = false }) {
               isDraft={isDraft}
               autoSave={autoSave}
               isAutoSaving={isAutoSaving}
+              values={values}
             />
           )}
         </Col>

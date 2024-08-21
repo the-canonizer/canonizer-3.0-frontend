@@ -98,9 +98,9 @@ const CreateNewCamp = () => {
       resData = res?.data;
 
     if (res?.status_code === 200) {
-      setHaveCampExist(true);
-      if (resData?.data?.camp) {
+      if (resData?.data?.camp && resData?.data?.camp?.length > 0) {
         setExistingCamps(resData?.data?.camp);
+        setHaveCampExist(true);
       }
 
       if (resData?.meta_data?.total > 5) {
@@ -152,6 +152,7 @@ const CreateNewCamp = () => {
     if (response && response.status_code === 200) {
       setNickNameList(response.data);
       setInitialValues({ nick_name: response.data[0]?.id });
+      form.setFieldValue("nick_name", response.data[0]?.id);
       setIsLoading(false);
       return response.status_code;
     } else {
@@ -242,8 +243,6 @@ const CreateNewCamp = () => {
     options.map((op) => (body[op.id] = op.checked ? 1 : 0));
 
     const res = await createCamp(body);
-
-    console.log("resposnse---", res.error);
 
     if (res && res.status_code === 200) {
       message.success(res.message);
@@ -401,7 +400,7 @@ const CreateNewCamp = () => {
     setOptions(oldOptions);
   };
 
-  const onParentCampChange = () => {};
+  // const onParentCampChange = () => {};
 
   const payload = {
     camp_num: (router?.query.camp[1] as string)?.split("-")[0] ?? "1",
@@ -453,7 +452,6 @@ const CreateNewCamp = () => {
                 campNickName={campNickName}
                 options={options}
                 onCheckboxChange={onCheckboxChange}
-                onParentCampChange={onParentCampChange}
                 isLoading={isLoading}
                 isEdit={false}
                 isDisabled={isDisabled}
@@ -500,5 +498,7 @@ const CreateNewCamp = () => {
     </CustomSpinner>
   );
 };
+
+export { findSimilarNames };
 
 export default CreateNewCamp;

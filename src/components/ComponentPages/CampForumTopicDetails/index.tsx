@@ -91,10 +91,10 @@ function Campforum() {
                   className="cursor-pointer last:border-none py-3 px-5 group flex justify-between w-full hover:shadow-camp-light hover:bg-white hover:border-transparent hover:rounded-xl [&_.arrowIcon]:hover:block lg:border-b lg:mb-0 mb-2.5"
                 >
                   <div className="w-full grid grid-rows-2 md:grid-flow-col center">
-                    <Typography.Paragraph className="!mb-0 text-sm text-canBlack text-ellipsis font-medium row-start-1 md:row-start-0 col-span-2 md:col-span-2">
+                    <Typography.Paragraph className="!mb-0 text-xs 2xl:text-sm text-canBlack text-ellipsis font-medium row-start-1 md:row-start-0 col-span-2 md:col-span-2">
                       {obj.body}
                     </Typography.Paragraph>
-                    <Typography.Paragraph className="text-canBlack text-opacity-50 font-medium text-xs !mb-0 flex items-center mt-2 row-start-2 row-span-2 col-span-2 md:col-span-2 md:row-start-0 md:row-span-0">
+                    <Typography.Paragraph className="text-canBlack text-opacity-50 font-medium text-[10px] 2xl:text-xs !mb-0 flex items-center mt-1 row-start-2 row-span-2 col-span-2 md:col-span-2 md:row-start-0 md:row-span-0">
                       {covertToTime(obj?.created_at)}
                     </Typography.Paragraph>
                     <div className="flex justify-end items-center gap-3 row-start-2 row-span-2 md:row-start-0 md:row-span-2">
@@ -103,9 +103,11 @@ function Campforum() {
                         alt="svg"
                         height={15}
                         width={18}
+                        preview={false}
                       />
-                      <Typography.Text className="text-xs text-canLightBlack flex items-center gap-1 font-medium">
-                        {obj.post_count} <span> Replies</span>
+                      <Typography.Text className="text-xs 2xl:text-sm text-canLightBlack flex items-center gap-1 font-medium">
+                        {obj.post_count}{" "}
+                        <span>{+obj.post_count > 1 ? "Replies" : "Reply"}</span>
                         <RightOutlined className="hidden arrowIcon" />
                       </Typography.Text>
                     </div>

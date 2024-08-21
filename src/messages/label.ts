@@ -28,11 +28,11 @@ export const labels = {
   visibilityStatus: "Visibility Status",
 
   removeSupport: "Remove Support",
-  fortopic: "For Topic",
+  fortopic: "Topic Name",
   supportdelegatedto: "Support Delegated To:",
   nickname: "Nickname:",
   viewMore: "View More",
-  currentSupportedCamps: "Current Supported Camps:",
+  currentSupportedCamps: "Supported Camps:",
 
   cr_nick_name: "Nickname",
   cr_nick_name_sp:
@@ -96,7 +96,7 @@ export const labels = {
   reasonModalTitle: "Reason for support end!",
   copied_success: "Text has been copied.",
   copied_error: "Error: Text could not be copied.",
-  cateLabel: "Add Categories To Topic",
+  cateLabel: "Add Tags To Topic",
 };
 
 export const preventCampLabel = [

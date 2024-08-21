@@ -1,23 +1,32 @@
 import React, { useState, useEffect } from "react";
-import { Card, Modal, Button, Form, Empty, Pagination, Spin } from "antd";
-import { CloseCircleOutlined } from "@ant-design/icons";
+import {
+  Table,
+  Button,
+  Pagination,
+  Empty,
+  Modal,
+  Form,
+  Drawer,
+  Input,
+  DrawerProps,
+} from "antd";
 import { DraggableArea } from "react-draggable-tags";
 import Link from "next/link";
 
 import styles from "./DirectSupportedCamps.module.scss";
 
-import messages from "../../../../messages";
 import CustomSkelton from "../../../common/customSkelton";
 import SupportRemovedModal from "../../../common/supportRemovedModal";
-import Search from "antd/lib/transfer/search";
+import Image from "next/image";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "src/store";
+import { setOpenDrawerForDirectSupportedCamp } from "src/store/slices/campDetailSlice";
 
 export default function DirectSupportedCampsUI({
   removeCardSupportedCamps,
   handleSupportedCampsCancel,
-  isSupportedCampsModalVisible,
   directSupportedCampsList,
   setDirectSupportedCampsList,
-  search,
   setCardCamp_ID,
   removeSupport,
   handleClose,
@@ -31,7 +40,6 @@ export default function DirectSupportedCampsUI({
   handleOk,
   handleCancel,
   removeSupportCampsData,
-  // statusFlag,
   directSkeletonIndicator,
   handleSupportedCampsOpen,
   modalPopupText,
@@ -47,27 +55,147 @@ export default function DirectSupportedCampsUI({
   const [removeSupportSpinner, setRemoveSupportSpinner] = useState(false);
   const [currentCamp, setCurrentCamp] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  let tagsArrayList = [];
-  const CardTitle = (props: any) => {
-    return (
-      <div className={styles.card_heading_title}>
-        {messages.labels.fortopic}
-        <span>
-          {" "}
-          &quot;
-          <Link href={props.title_link}>
-            <a>{props.value}</a>
+  const [search, setSearch] = useState("");
+  const [size, setSize] = useState<DrawerProps["size"]>();
+
+  const { openDrawerForDirectSupportedCamp } = useSelector(
+    (state: RootState) => ({
+      openDrawerForDirectSupportedCamp:
+        state.topicDetails.openDrawerForDirectSupportedCamp,
+    })
+  );
+  const dispatch = useDispatch();
+  interface Tag {
+    id: number;
+    camp_num: number;
+    camp_name: string;
+    camp_link: string;
+    dis?: boolean;
+  }
+
+  interface RecordType {
+    topic_num: number;
+    title: string;
+    title_link: string;
+    camps: Tag[];
+  }
+  const columns = [
+    {
+      title: "Supported Topics",
+      dataIndex: "title",
+      key: "title",
+      render: (text: string, record: RecordType) => (
+        <div className="flex gap-2.5">
+          <Link href={record.title_link}>
+            <a className="text-base font-semibold flex items-center gap-2.5 text-canBlack">
+              {text}
+            </a>
           </Link>
-          &quot;
-        </span>
-      </div>
-    );
-  };
-  // const buttonText = "Save";
+          <Image
+            onClick={() => {
+              dispatch(setOpenDrawerForDirectSupportedCamp(true));
+              removeCardSupportedCamps(record);
+            }}
+            src="/images/minus-user-icon.svg"
+            width={24}
+            height={24}
+            alt=""
+          />
+        </div>
+      ),
+    },
+    {
+      title: "Supported Camps",
+      dataIndex: "camps",
+      key: "camps",
+      render: (camps: Tag[], record: RecordType) => (
+        <div>
+          <DraggableArea
+            tags={camps}
+            render={(props: { tag: Tag }) => {
+              const { tag } = props;
+
+              return (
+                <div
+                  key={tag.camp_num} // Ensure this key is unique and consistent
+                  className={tag.dis ? "tag tags_disable" : "tag"}
+                >
+                  <Button
+                    id="campsBtn"
+                    className="bg-canLightGrey rounded-full border-none mb-2.5 flex items-center gap-2.5"
+                    disabled={tag.dis}
+                  >
+                    <div className={styles.btndiv}>
+                      <span className="count">{tag.id}. </span>
+                      <Link href={tag.camp_link}>
+                        <a
+                          className="text-sm text-canBlack font-semibold"
+                          draggable="false"
+                          onClick={(e) => e.preventDefault()} // Prevent default drag behavior
+                        >
+                          {tag.camp_name}
+                        </a>
+                      </Link>
+                    </div>
+                    <div
+                      className="flex items-center"
+                      onClick={() => {
+                        handleClose(tag, record.topic_num, record, []);
+                        setValData(tag);
+                        setRevertBack([]);
+                      }}
+                    >
+                      <Image
+                        src="/images/minus-user-icon.svg"
+                        width={24}
+                        height={24}
+                        alt=""
+                      />
+                    </div>
+                  </Button>
+                </div>
+              );
+            }}
+            onChange={(tags) => tagsOrder(record.topic_num, record, tags)}
+          />
+
+          {showSaveChanges && idData === record.topic_num && (
+            <div className="flex gap-2.5">
+              <Button
+                data-testid="save_change_btn"
+                id="saveChangeBtn"
+                className=" Profile_btn ant-btn ant-btn-orange ant-btn-lg py-2.5 px-6 hover:bg-canBlue hover:text-white flex gap-2.5 items-center bg-canBlue text-white text-base font-medium rounded-lg border-none justify-center focus:bg-canBlue focus:!text-white"
+                onClick={() => {
+                  setCurrentCamp(record.topic_num);
+                  handleSupportedCampsOpen(record);
+                  pageChange(currentPage, 5);
+                  dispatch(setOpenDrawerForDirectSupportedCamp(true));
+                }}
+              >
+                Save Changes
+              </Button>
+              <Button
+                data-testid="save_change_btn"
+                id="revertBtn"
+                className="Profile_btn ant-btn ant-btn-orange ant-btn-lg py-2.5 px-6  flex gap-2.5 items-center bg-[#98B7E6] bg-opacity-10 text-canBlack text-base font-medium rounded-lg border-canBlue justify-center "
+                onClick={() => {
+                  handleRevertBack(idData, record.camps);
+                  setCardCamp_ID("");
+                  setShowSaveChanges(false);
+                }}
+              >
+                Revert
+              </Button>
+            </div>
+          )}
+        </div>
+      ),
+    },
+  ];
 
   const tagsOrder = (topic_num, data, tags) => {
     setTagsCampsOrderID(data.topic_num);
-    setTagsDataArrValue(tags);
+    setTagsDataArrValue(tags); // Update the state with the new order
     handleClose({}, topic_num, data, tags);
     setValData({});
     setIsChangingOrder(true);
@@ -75,31 +203,17 @@ export default function DirectSupportedCampsUI({
 
   useEffect(() => {
     if (tagsDataArrValue.length > 0) {
-      let newData = directSupportedCampsList.map((val: any) => {
-        if (val.topic_num == tagsCampsOrderID) {
-          return { ...val, camps: tagsDataArrValue };
-        } else {
-          return val;
+      const newData = directSupportedCampsList.map((val) => {
+        if (val.topic_num === tagsCampsOrderID) {
+          return { ...val, camps: tagsDataArrValue }; // Update camps with new order
         }
+        return val;
       });
-      setDirectSupportedCampsList(newData);
+      setDirectSupportedCampsList(newData); // Update the list
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tagsDataArrValue]);
 
-  const showEmpty = (msg) => {
-    return <Empty description={msg} />;
-  };
   const filteredArray = () => {
-    // return displayList.filter((val: any) => {
-    //   if (search.trim() == "") {
-    //     return val;
-    //   } else if (
-    //     val.title.toLowerCase().trim().includes(search.toLowerCase().trim())
-    //   ) {
-    //     return val;
-    //   }
-    // });
     if (search.trim() == "") {
       return displayList;
     } else {
@@ -112,10 +226,11 @@ export default function DirectSupportedCampsUI({
       });
     }
   };
+
   useEffect(() => {
     pageChange(currentPage, 5);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [directSupportedCampsList]);
+
   const pageChange = (pageNumber, pageSize) => {
     setCurrentPage(pageNumber);
     const startingPosition = (pageNumber - 1) * pageSize;
@@ -125,23 +240,106 @@ export default function DirectSupportedCampsUI({
     );
   };
 
-  // remove support popup added.
-
   const [removeForm] = Form.useForm();
 
   const onRemoveFinish = async (values) => {
     setRemoveSupportSpinner(true);
-
     if (showSaveChanges && idData == currentCamp) {
       await saveChanges(values);
     } else {
       await removeSupport(values);
     }
-
     removeForm.resetFields();
     setRemoveSupportSpinner(false);
   };
-  // // remove support popup added.
+  const showEmpty = (msg) => {
+    return <Empty description={msg} />;
+  };
+  const hasDirectSupportedCamps =
+    directSupportedCampsList && directSupportedCampsList.length > 0;
+  const hasFilteredArray = filteredArray().length > 0;
+  let displayContent;
+
+  if (hasDirectSupportedCamps) {
+    if (hasFilteredArray) {
+      displayContent = (
+        <>
+          <Table
+            dataSource={filteredArray()}
+            columns={columns}
+            pagination={false}
+            rowKey="topic_num"
+            bordered
+          />
+          <Pagination
+            hideOnSinglePage={true}
+            total={directSupportedCampsList.length}
+            pageSize={5}
+            defaultCurrent={currentPage}
+            onChange={pageChange}
+            showSizeChanger={false}
+            className="mt-5"
+          />
+        </>
+      );
+    } else {
+      displayContent = showEmpty("No Data Found");
+    }
+  } else {
+    displayContent = showEmpty("No Data Found");
+  }
+
+
+  const drawerTitle = (
+    <p id="all_camps_topics" className="text-2xl font-normal">
+      {isChangingOrder
+        ? "You are about to change the order of your supported camps"
+        : modalPopupText
+        ? "You are about to remove your support from all the camps from the topic: "
+        : campIds?.length > 1
+        ? "You are about to remove your support from the camps: "
+        : "You are about to remove your support from the camp: "}
+      {!isChangingOrder && (
+        <span>
+          {modalPopupText ? (
+            <Link href={{ pathname: removeSupportCampsData.title_link }}>
+              <a className="text-canGreen text-2xl font-semibold">
+                {removeSupportCampsData.title}
+              </a>
+            </Link>
+          ) : (
+            removeCampLink?.map((val, index) => (
+              <Link key={val.camp_num} href={{ pathname: val.camp_link }}>
+                <a className="text-canGreen text-2xl font-semibold">
+                  {(index ? ", " : "") + val.camp_name}
+                </a>
+              </Link>
+            ))
+          )}
+        </span>
+      )}
+    </p>
+  );
+
+  // Extracted Content
+  const drawerContent = (
+    <>
+      <p className="text-sm font-normal text-canRed mb-8">
+        Note: You are about to remove your support from all the camps from the
+        topic:
+        <span className="text-sm font-semibold">
+          &quot;{removeSupportCampsData.title}&quot;
+        </span>
+        . You can optionally add a helpful reason, along with a citation link.
+      </p>
+      <SupportRemovedModal
+        onFinish={onRemoveFinish}
+        handleCancel={handleSupportedCampsCancel}
+        form={removeForm}
+        isOrderChange={isChangingOrder}
+      />
+    </>
+  );
   return (
     <div data-testid="directSupportUi">
       {directSkeletonIndicator ? (
@@ -153,8 +351,8 @@ export default function DirectSupportedCampsUI({
         />
       ) : (
         <div>
-          <div className="flex justify-between items-center mb-5">
-            <div>
+          <div className="flex lg:flex-row flex-col justify-between items-start mb-5 lg:gap-0 gap-2.5">
+            <div className="w-full flex-1">
               <h3 className="text-base uppercase font-semibold text-canBlack mb-5">
                 DIRECT SUPPORTED CAMPS
               </h3>
@@ -163,183 +361,41 @@ export default function DirectSupportedCampsUI({
                 on your choice position.
               </p>
             </div>
-            <div>
-              <Search 
-              placeholder="Search via topic name"
-              
-              ></Search>
+            <div className="lg:w-auto w-full flex justify-end">
+              <Input
+                suffix={
+                  <Image
+                    src="/images/search-icon.svg"
+                    width={20}
+                    height={20}
+                    alt=""
+                  />
+                }
+                data-testid="settingSearch"
+                value={search}
+                placeholder="Search via topic name"
+                type="text"
+                name="search"
+                className="!h-10 rounded-lg border border-canGrey2 text-base font-normal lg:w-auto w-full"
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                }}
+              />
             </div>
           </div>
-          {directSupportedCampsList && directSupportedCampsList.length > 0
-            ? filteredArray().length > 0
-              ? filteredArray()?.map((data) => {
-                  tagsArrayList = data.camps;
-                  tagsArrayList.forEach((obj, index) => {
-                    obj.id = index + 1;
-                  });
-                  return (
-                    <>
-                      <Card
-                        key={data.topic_num}
-                        className=""
-                        type="inner"
-                        size="default"
-                        title={
-                          <CardTitle
-                            title_link={data.title_link}
-                            value={data.title}
-                          />
-                        }
-                        extra={
-                          <div
-                            className={styles.RemoveCardSupported}
-                            onClick={() => removeCardSupportedCamps(data)}
-                          >
-                            <CloseCircleOutlined />{" "}
-                            {messages.labels.removeSupport}{" "}
-                          </div>
-                        }
-                        style={{ width: 760, marginBottom: 16 }}
-                      >
-                        <DraggableArea
-                          tags={tagsArrayList}
-                          render={({ tag }) => (
-                            <div
-                              className={tag.dis ? "tag tags_disable" : "tag"}
-                            >
-                              <Button
-                                id="campsBtn"
-                                key={tag.camp_num}
-                                className={styles.tag_btn}
-                                disabled={tag.dis}
-                              >
-                                <div className={styles.btndiv}>
-                                  {" "}
-                                  <span className="count">{tag.id}. </span>
-                                  <Link href={tag.camp_link}>
-                                    <a
-                                      className={styles.Bluecolor}
-                                      draggable="false"
-                                      onClick={() => {
-                                        return false;
-                                      }}
-                                    >
-                                      {" "}
-                                      {tag.camp_name}
-                                    </a>
-                                  </Link>
-                                </div>
-                                <CloseCircleOutlined
-                                  data-testid="handle_close"
-                                  onClick={() => {
-                                    handleClose(tag, data.topic_num, data, []),
-                                      setValData(tag),
-                                      setRevertBack([]);
-                                  }}
-                                />
-                              </Button>
-                            </div>
-                          )}
-                          onChange={(tags) => {
-                            tagsOrder(data.topic_num, data, tags);
-                          }}
-                        />
-
-                        {showSaveChanges && idData == data.topic_num ? (
-                          <div className={styles.tag_Changes}>
-                            <Button
-                              data-testid="save_change_btn"
-                              id="saveChangeBtn"
-                              className={styles.save_Changes_Btn}
-                              onClick={() => {
-                                setCurrentCamp(data.topic_num);
-                                handleSupportedCampsOpen(data);
-                                //setCurrentPage(currentPage)
-                                pageChange(currentPage, 5);
-                              }}
-                            >
-                              Save Changes
-                            </Button>
-                            <Button
-                              data-testid="save_change_btn"
-                              id="revertBtn"
-                              className={styles.revert_Btn}
-                              onClick={() => {
-                                handleRevertBack(idData, data.camps);
-                                setCardCamp_ID("");
-                                setShowSaveChanges(false);
-                              }}
-                            >
-                              Revert
-                            </Button>
-                          </div>
-                        ) : (
-                          ""
-                        )}
-                      </Card>
-                    </>
-                  );
-                })
-              : showEmpty("No Data Found ")
-            : showEmpty("No Data Found ")}
-          {directSupportedCampsList &&
-          directSupportedCampsList.length > 0 &&
-          search.length == 0 ? (
-            <Pagination
-              hideOnSinglePage={true}
-              total={directSupportedCampsList.length}
-              pageSize={5}
-              defaultCurrent={currentPage}
-              onChange={pageChange}
-              showSizeChanger={false}
-            />
-          ) : (
-            ""
-          )}
+          <>{displayContent}</>
         </div>
       )}
-      <Modal
+      {/* <Modal
         className={styles.modal_cross}
         title={
-          <p id="all_camps_topics" className={styles.modalTitle}>
-            {isChangingOrder
-              ? "You are about to change the order of your supported camps"
-              : modalPopupText
-              ? "You are about to remove your support from all the camps from the topic: "
+          isChangingOrder
+            ? "You are about to change the order of your supported camps"
+            : modalPopupText
+              ? `You are about to remove your support from all the camps from the topic: "${removeSupportCampsData.title}"`
               : campIds?.length > 1
-              ? "You are about to remove your support from the camps: "
-              : "You are about to remove your support from the camp: "}
-            {!isChangingOrder && (
-              <span>
-                &quot;
-                {modalPopupText ? (
-                  <Link
-                    href={{
-                      pathname: removeSupportCampsData.title_link,
-                    }}
-                  >
-                    <a>{removeSupportCampsData.title}</a>
-                  </Link>
-                ) : (
-                  removeCampLink?.map((val, index) => {
-                    return (
-                      <Link
-                        key={index}
-                        href={{
-                          pathname: val.camp_link,
-                        }}
-                      >
-                        <a>{(index ? ", " : "") + val.camp_name}</a>
-                      </Link>
-                    );
-                  })
-                )}
-                &quot;
-              </span>
-            )}
-            {". "}
-            You can optionally add a helpful reason, along with a citation link.
-          </p>
+                ? "You are about to remove your support from the camps: "
+                : "You are about to remove your support from the camp: "
         }
         open={isSupportedCampsModalVisible}
         onOk={handleSupportedCampsCancel}
@@ -355,7 +411,7 @@ export default function DirectSupportedCampsUI({
             isOrderChange={isChangingOrder}
           />
         </Spin>
-      </Modal>
+      </Modal> */}
 
       <Modal
         data-testid="closeModel"
@@ -364,16 +420,46 @@ export default function DirectSupportedCampsUI({
         open={visible}
         onOk={() => {
           handleOk(idData, valData);
-
-          // setTagsCampsOrderID("");
-          // setTagsDataArrValue([]);
-          // setValData({});
-          // setIsChangingOrder(false);
         }}
         onCancel={handleCancel}
       >
         <h1 id="changesWillBeReverted">Changes will be reverted ?</h1>
       </Modal>
+      <Drawer
+        className="lg:flex hidden"
+        open={openDrawerForDirectSupportedCamp}
+        closeIcon={
+          <Image
+            onClick={() => dispatch(setOpenDrawerForDirectSupportedCamp(false))}
+            src="/images/refine-back-arrow.svg"
+            width={16}
+            height={24}
+            alt=""
+          />
+        }
+        width={730}
+        title={drawerTitle}
+      >
+        {drawerContent}
+      </Drawer>
+
+      <Drawer
+        className="lg:hidden flex"
+        open={openDrawerForDirectSupportedCamp}
+        closeIcon={
+          <Image
+            onClick={() => dispatch(setOpenDrawerForDirectSupportedCamp(false))}
+            src="/images/refine-back-arrow.svg"
+            width={16}
+            height={24}
+            alt=""
+          />
+        }
+        width={320}
+        title={drawerTitle}
+      >
+        {drawerContent}
+      </Drawer>
     </div>
   );
 }

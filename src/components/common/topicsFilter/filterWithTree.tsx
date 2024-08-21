@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef } from "react";
 import moment from "moment";
 import {
   Typography,
-  Collapse,
   Select,
   Radio,
   Space,
@@ -11,9 +10,7 @@ import {
   Popover,
   Row,
   Col,
-  Button,
 } from "antd";
-import { LeftOutlined } from "@ant-design/icons";
 import Image from "next/image";
 
 import { RootState } from "../../../store";
@@ -28,15 +25,12 @@ import {
 } from "src/store/slices/filtersSlice";
 
 const { Title, Text, Paragraph } = Typography;
-const { Panel } = Collapse;
 const { Option } = Select;
 
 import styles from "./topicListFilter.module.scss";
 import { useRouter } from "next/router";
 import K from "src/constants";
 import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
-import FullScoreCheckbox from "../../ComponentPages/FullScoreCheckbox";
-import ArchivedCampCheckBox from "src/components/ComponentPages/ArchivedCampCheckBox";
 import CampTreeCard from "src/components/ComponentPages/TopicDetails/CampTreeCard";
 import { getTreesApi } from "src/network/api/campDetailApi";
 import {
@@ -45,6 +39,8 @@ import {
   setClearAlgoFromRefineFilter,
   setClearScoreFromRefineFilter,
 } from "../../../store/slices/campDetailSlice";
+import SecondaryButton from "components/shared/Buttons/SecondaryButton";
+import PrimaryButton from "components/shared/Buttons/PrimariButton";
 
 const infoContent = (
   <>
@@ -113,7 +109,6 @@ const FilterWithTree = ({
     asof,
     viewThisVersionCheck,
     asofdate,
-    algorithm,
     openDrawer,
     asOfValues,
     clearAlgoFromRefineFilter,
@@ -139,15 +134,11 @@ const FilterWithTree = ({
     clearScoreFromRefineFilter: state.topicDetails.clearScoreFromRefineFilter,
   }));
 
-  const [value, setValue] = useState(
-    selectedAsOf == "default" ? 2 : selectedAsOf == "review" ? 1 : 3
-  );
   const [selectedAsOFDate, setSelectedAsOFDate] = useState(filteredAsOfDate);
   const [selectAlgo, setSelectAlgo] = useState(
     algorithms?.filter((algo) => algo?.algorithm_key == selectedAlgorithm)[0]
       ?.algorithm_label
   );
-  const [selectScore, setSelectScore] = useState(0);
 
   const [timer, setTimer] = useState(null);
   const [inputValue, setInputValue] = useState(
@@ -272,11 +263,9 @@ const FilterWithTree = ({
       setSelectAlgo("blind_popularity");
       dispatch(setClearAlgoFromRefineFilter("blind_popularity"));
       if (!router?.query?.score) {
-        // setSelectScore(0);
         dispatch(setClearScoreFromRefineFilter(0));
       }
       if (router?.query?.asof !== "bydate" || !router?.query?.asofdate) {
-        // selectedAsOf = "default"
         handleRadioClick(2);
       }
     }
@@ -343,14 +332,7 @@ const FilterWithTree = ({
         algorithm: clearAlgoFromRefineFilter,
       })
     );
-    // onChangeRoute(
-    //   filterObject?.filterByScore,
-    //   value,
-    //   filterObject?.asof,
-    //   filterObject?.asofdate,
-    //   filterObject?.namespace_id,
-    //   viewThisVersion
-    // );
+
     revertScore();
   };
   const onChange = (e) => {
@@ -359,7 +341,6 @@ const FilterWithTree = ({
     } else {
       setIsDatePicker(false);
     }
-    // setValue(e.target.value);
     dispatch(setAsOfValues(e.target.value));
   };
 
@@ -390,21 +371,6 @@ const FilterWithTree = ({
     setCookie("asof", "bydate", {
       path: "/",
     });
-
-    // dispatch(
-    //   setFilterCanonizedTopics({
-    //     asofdate: IsoDateFormat,
-    //     asof: "bydate",
-    //   })
-    // );
-    // onChangeRoute(
-    //   filterObject?.filterByScore,
-    //   filterObject?.algorithm,
-    //   "bydate",
-    //   IsoDateFormat,
-    //   filterObject?.namespace_id,
-    //   viewThisVersion
-    // );
   };
 
   const filterOnScore = (value) => {
@@ -419,14 +385,6 @@ const FilterWithTree = ({
             filterByScore: value,
           })
         );
-        // onChangeRoute(
-        //   value,
-        //   selectAlgo,
-        //   filterObject?.asof,
-        //   filterObject?.asofdate,
-        //   filterObject?.namespace_id,
-        //   viewThisVersion
-        // );
       }, 1000);
       setTimer(newTimer);
     }
@@ -541,30 +499,23 @@ const FilterWithTree = ({
 
   const handleChange = (event) => {
     const value = event.target.value;
-    // setSelectScore(Number(value));
     dispatch(setClearScoreFromRefineFilter(Number(value)));
   };
+
   return (
     <div className="leftSideBar_Card drawer_card">
       <div
         className={`${styles.cardAccordian} ${styles.cardWithDrawerAccordian} topicListFilterCardCollapse`}
-        // expandIconPosition="right"
-        // bordered={false}
-        // defaultActiveKey={["1"]}
       >
         <div
           className={`header-bg-color-change radio-group-sider ${selectedAsOf}`}
-          // header={null}
           key="1"
         >
           <Row gutter={20}>
             <Col xs={24}>
               <div className="algo_title_new border-b lg:border-canGrey2 border-canLightgrey4 pr-4 lg:pr-8 pl-4 lg:pl-8 pb-8 lg:pt-0 pt-6 ">
-                <Title
-                  level={5}
-                  className="!text-sm lg:!text-base !font-normal mb-3 lg:!mb-5 lg:!font-medium flex gap-3"
-                >
-                  Select Canonizer Algorithm:{"  "}{" "}
+                <Title level={5} className="!text-xs !font-normal flex gap-3">
+                  Select Canonizer Algorithm:
                   <Popover
                     content="Algorithm Information"
                     placement="top"
@@ -575,7 +526,6 @@ const FilterWithTree = ({
                         href={K?.Network?.URL?.algoInfoUrl}
                         className="flex items-center "
                       >
-                        {/* {/ <i className="icon-info"></i>  /} */}
                         <Image
                           src="/images/circle-info-bread.svg"
                           alt="svg"
@@ -587,7 +537,6 @@ const FilterWithTree = ({
                     ) : (
                       <Link href={K?.Network?.URL?.algoInfoUrl}>
                         <a>
-                          {/* {/ <i className="icon-info"></i>  /} */}
                           <Image
                             src="/images/circle-info-bread.svg"
                             alt="svg"
@@ -611,25 +560,16 @@ const FilterWithTree = ({
                   size="large"
                   showSearch
                   optionFilterProp="children"
-                  className=" [&_.ant-select-selector]:!rounded-lg [&_.ant-select-selection-item]:text-sm  lg:[&_.ant-select-selection-item]:font-medium [&_.ant-select-selection-item]:font-semibold lg:w-4/5 w-full "
+                  className="commonSelectClass [&_.ant-select-selector]:!rounded-lg [&_.ant-select-selection-item]:text-xs [&_.ant-select-selection-item]:!font-medium lg:w-4/5 w-full"
                   defaultValue={
                     algorithms?.filter(
                       (algo) => algo?.algorithm_key == selectedAlgorithm
                     )[0]?.algorithm_label
                   }
-                  // onChange={selectAlgorithm}
                   onChange={(algo) => {
-                    // setSelectAlgo(algo);
                     dispatch(setClearAlgoFromRefineFilter(algo));
                   }}
-                  value={
-                    clearAlgoFromRefineFilter
-                    // !router?.query?.algo
-                    //   ? algorithms && algorithms[0]?.algorithm_label
-                    //   : algorithms?.filter(
-                    //       (algo) => algo?.algorithm_key == selectedAlgorithm
-                    //     )[0]?.algorithm_label
-                  }
+                  value={clearAlgoFromRefineFilter}
                   disabled={loadingIndicator}
                   id="algo_dropdown"
                 >
@@ -647,20 +587,11 @@ const FilterWithTree = ({
                 </Select>
               </div>
             </Col>
-            <Col
-              className=""
-              xs={24}
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "flex-end",
-              }}
-            >
+            <Col className="flex justify-center items-end" xs={24}>
               <div className="score_value pr-4 lg:pr-8  pl-4 lg:pl-8 pb-8 pt-8 w-full border-b lg:border-canGrey2 border-canLightgrey4 ">
                 <Text className={styles.filterText}>
-                  <p className="flex items-center gap-3 text-sm lg:!text-base font-normal  lg:!font-medium">
-                    {" "}
-                    Score value{" "}
+                  <p className="flex items-center gap-3 text-xs font-normal">
+                    Score value
                     <Popover
                       content={infoContent}
                       placement="right"
@@ -676,39 +607,24 @@ const FilterWithTree = ({
                     </Popover>
                   </p>{" "}
                 </Text>
-                {/* {/ <LeftOutlined className={styles.LeftOutlined} />  /} */}
                 <Input
                   size="large"
-                  className="rounded-lg lg:!w-4/5 w-full text-canBlack font-medium"
-                  // onChange={filterOnScore}
+                  className="rounded-lg lg:!w-4/5 w-full text-sm text-canBlack font-medium"
                   onChange={handleChange}
-                  value={
-                    // filteredScore == 0 ? filterObject.filterByScore : inputValue
-                    clearScoreFromRefineFilter
-                  }
+                  value={clearScoreFromRefineFilter}
                   disabled={loadingIndicator}
                   id="filter_input"
                   prefix={
-                    <span className="text-canBlack lg:text-canLight text-sm lg:text-base lg:font-medium font-semibold lg:mr-14 mr-2 ">
+                    <span className="text-canLight text-sm font-medium">
                       Greater than -
                     </span>
                   }
                 />
               </div>
             </Col>
-            {/* <Col md={24} className="mt-5">
-              <div className={styles.scoreCheckbox}>
-                <FullScoreCheckbox loadingIndicator={loadingIndicator} />
-              </div>
-              <ArchivedCampCheckBox loadingIndicator={loadingIndicator} />
-            </Col> */}
             <Col xs={24} className="">
-              {/* <div className={`${styles.algo_title} ${styles.title}`}> / */}
               <div className="as-of-div pl-4 lg:pl-8 pb-8 pt-8 w-full">
-                <Title
-                  level={5}
-                  className="!text-sm lg:!text-base !font-normal  lg:!font-medium flex gap-3 !mb-5"
-                >
+                <Title level={5} className="!text-xs !font-normal flex gap-3">
                   As Of
                   <Popover content={asContent} placement="right">
                     <Image
@@ -729,7 +645,6 @@ const FilterWithTree = ({
                     onChange={onChange}
                     value={asOfValues}
                     disabled={loadingIndicator}
-                    className={styles.radioBtns}
                     id="radio_group"
                   >
                     <Space
@@ -742,33 +657,26 @@ const FilterWithTree = ({
                       }}
                     >
                       <Radio
-                        className="text-sm font-medium text-canBlack mb-5"
+                        className="!text-xs font-normal text-canBlack"
                         value={2}
-                        onClick={() => {
-                          handleRadioClick(2);
-                        }}
+                        onClick={() => handleRadioClick(2)}
                         id="default_input"
                       >
                         Default
                       </Radio>
                       <Radio
-                        className="!text-sm !font-medium !text-canBlack  mb-5"
-                        style={{ width: "100%" }}
+                        className="!text-xs !font-normal !text-canBlack"
                         value={1}
-                        onClick={() => {
-                          handleRadioClick(1);
-                        }}
+                        onClick={() => handleRadioClick(1)}
                         id="review_input"
                       >
                         Include review
                       </Radio>
                       <div className="flex justify-between items-center">
                         <Radio
-                          className="text-sm font-medium text-canBlack "
+                          className="text-xs font-normal text-canBlack"
                           value={3}
-                          onClick={() => {
-                            handleRadioClick(3);
-                          }}
+                          onClick={() => handleRadioClick(3)}
                           id="as_input"
                         >
                           Set Custom date
@@ -786,12 +694,12 @@ const FilterWithTree = ({
                             suffixIcon={
                               <Image
                                 src="/images/date-picker-icon.svg"
-                                width={22}
-                                height={22}
+                                width={14}
+                                height={14}
                               />
                             }
                             size={"large"}
-                            className={`${styles.date} ${styles.dates} w-100 !text-canBlack`}
+                            className={`${styles.date} ${styles.dates} w-100 !text-canBlack text-xs`}
                             onChange={pickDate}
                             inputReadOnly={true}
                             disabledDate={(current) =>
@@ -800,16 +708,6 @@ const FilterWithTree = ({
                             }
                             id="date_input"
                           />
-                          {/* <Popover
-                    content={""}
-                    placement="right"
-                    className={styles.infoIcon}
-                  >
-                    <i
-                      className="icon-info"
-                      style={{ visibility: "hidden", width: "40px" }}
-                    ></i>
-                  </Popover> */}
                         </div>
                       </div>
                     </Space>
@@ -817,7 +715,7 @@ const FilterWithTree = ({
                 </Space>
               </div>
             </Col>
-            <Col xs={24}>
+            {/* <Col xs={24}>
               {!openDrawer ? (
                 <div className={styles.treeContainer + " !p-0"}>
                   <CampTreeCard
@@ -831,31 +729,28 @@ const FilterWithTree = ({
                     isForumPage={isForumPage}
                   />
                 </div>
-              ) : (
-                ""
-              )}
-            </Col>
-
+              ) : null}
+            </Col> */}
             <Col xs={24} className=" refine-drawer-mobile overflow-hidden">
               <div className="flex items-center justify-center sm:gap-0 lg:gap-2 btn-parent  lg:px-1 sm:px-0 fixed lg:static bottom-0 w-full lg:mt-14">
-                <Button
-                  className="flex  items-center justify-center gap-2.5 btnCancel lg:!border-b lg:!border-t lg:!border-l lg:!border-r focus:!text-canblack hover:!text-canBlack !border-t !border-b-0 !border-r-0 !border-l-0 lg:!border-canBlue border-[#DDE2EE] bg-transparent lg:rounded-lg lg:h-[44px] h-[67px] lg:px-14 lg:w-auto w-full text-base lg:font-medium font-normal "
+                <SecondaryButton
+                  className="flex items-center justify-center gap-2.5"
                   onClick={onClose}
                 >
                   Cancel
-                  <span className="!hidden lg:!flex lg:items-center  ">
+                  <span className="!hidden lg:!flex lg:items-center">
                     <Image
                       src="/images/refine-close-icon.svg"
                       alt="svg"
                       className="icon-topic "
-                      height={24}
-                      width={24}
+                      height={16}
+                      width={16}
                     />
                   </span>
-                </Button>
+                </SecondaryButton>
 
-                <Button
-                  className="btnApplyfilters border-t lg:rounded-lg lg:h-[44px] h-[67px] !bg-canBlue focus:!text-white border border-transparent focus:border-transparent !text-white flex justify-center items-center lg:px-8 lg:w-auto w-full gap-2.5 hover:!text-white hover:!border hover:!border-canblack text-base lg:font-medium font-semibold"
+                <PrimaryButton
+                  className="flex justify-center items-center gap-2.5"
                   onClick={handleApplyClick}
                 >
                   <span className="!flex gap-1 flex-row ">
@@ -867,11 +762,11 @@ const FilterWithTree = ({
                       src="/images/filterbtn-icon.svg"
                       alt="svg"
                       className="icon-topic "
-                      height={24}
-                      width={24}
+                      height={16}
+                      width={16}
                     />
                   </span>
-                </Button>
+                </PrimaryButton>
               </div>
             </Col>
           </Row>

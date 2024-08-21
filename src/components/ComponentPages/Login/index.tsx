@@ -6,9 +6,9 @@ import { useDispatch, useSelector } from "react-redux";
 import LoginUI from "./UI";
 
 import CustomSpinner from "components/shared/CustomSpinner";
-import { login, resendOTPForRegistration } from "src/network/api/userApi";
+import { getNickNameList, login, resendOTPForRegistration } from "src/network/api/userApi";
 import { AppDispatch, RootState } from "src/store";
-import { setEmailForOTP } from "src/store/slices/authSlice";
+import { setEmailForOTP, setUserNickNames } from "src/store/slices/authSlice";
 import { setManageSupportStatusCheck } from "src/store/slices/campDetailSlice";
 import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
 import { setValue } from "src/store/slices/utilsSlice";
@@ -74,6 +74,13 @@ const Login = () => {
     setErrorMsg("");
   };
 
+  const fetchNickNameList = async () => {
+    let response = await getNickNameList();
+    if (response && response?.status_code === 200) {
+      dispatch(setUserNickNames(response?.data));
+    }
+  };
+
   const onFinish = async (values: any) => {
     setLoading(true);
     dispatch(setEmailForOTP(values.username?.trim()));
@@ -95,7 +102,7 @@ const Login = () => {
       );
 
       form.resetFields();
-      // fetchNickNameList();
+      fetchNickNameList();
 
       closeModal();
 
@@ -165,7 +172,7 @@ const Login = () => {
     <CustomSpinner key="login-spinner" spinning={loading}>
       <Card
         bordered={false}
-        className="bg-canGrey1 mt-0 lg:mt-5 h-full flex justify-center items-center [&>.ant-card-body]:p-0 [&>.ant-card-body]:w-full [&_.ant-card-body]:pb-0 min-h-full px-10"
+        className="bg-canGrey1 mt-0 lg:mt-5 h-full flex justify-center items-center [&>.ant-card-body]:p-0 [&>.ant-card-body]:w-full [&_.ant-card-body]:pb-0 min-h-full tab:px-10"
       >
         <Row gutter={20}>
           <Col lg={12} md={24} xl={12} xs={24} className="hidden lg:block">

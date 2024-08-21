@@ -69,7 +69,6 @@ function ManageStatementUI({
   editorState,
   onEditorStateChange,
   submitIsDisable,
-  onNickNameSelect,
   editCampStatementData,
   onDiscardClick,
   isDisabled,
@@ -77,14 +76,13 @@ function ManageStatementUI({
   isDraft,
   autoSave,
   isAutoSaving,
+  values,
 }) {
   return (
     <CommonCards className="border-0 bg-white">
       <header className="mb-14">
         <Typography.Paragraph className="text-xl text-canBlack font-medium">
-          {isEdit
-            ? "Update Camp Statement"
-            : "Adding Camp Statement"}
+          {isEdit ? "Update Camp Statement" : "Adding Camp Statement"}
         </Typography.Paragraph>
         <Typography.Paragraph className="text-canBlack opacity-80 mt-3">
           Each camp features a statement summarizing the discussions within,
@@ -99,7 +97,10 @@ function ManageStatementUI({
           form={form}
           layout={"vertical"}
           validateTrigger={messages.formValidationTypes()}
-          initialValues={{ available_for_child: 0 }}
+          initialValues={{
+            available_for_child: 0,
+            nick_name: nickNameData[0]?.id,
+          }}
           onValuesChange={handleformvalues}
           onFinish={onFinish}
         >
@@ -112,7 +113,8 @@ function ManageStatementUI({
                   </>
                 }
                 name="nick_name"
-                value={nickNameData[0]?.id}
+                defaultValue={nickNameData[0]?.id}
+                value={values?.nick_name}
                 options={nickNameData}
                 allowClear
                 size={"large"}
@@ -128,12 +130,12 @@ function ManageStatementUI({
                 ]}
                 nameKey="nick_name"
                 prefix={<UserOutlined className="px-3 text-canBlack" />}
-                onChange={onNickNameSelect}
+                onChange={(val) => form.setFieldValue("nick_name", val)}
               />
             </Col>
             <Col xs={24} xl={24}>
               <Form.Item
-                className="mb-2"
+                className="mb-2 editorContent"
                 name="statement"
                 label={
                   <>
@@ -168,7 +170,7 @@ function ManageStatementUI({
                     saveContent={(data) => {
                       autoSave({
                         statement: data,
-                        nick_name: nickNameData?.at(0)?.id
+                        nick_name: values?.nick_name,
                       });
                     }}
                   ></Editorckl>

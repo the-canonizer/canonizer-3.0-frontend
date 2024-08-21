@@ -117,7 +117,7 @@ function Breadcrumbs({ compareMode = false, updateId, historyOF = null }: any) {
             History
           </Breadcrumb.Item>
         </Breadcrumb>
-        {!compareMode && updateId && (
+        {!compareMode && !!updateId && (
           <PrimaryButton
             size="large"
             type="primary"

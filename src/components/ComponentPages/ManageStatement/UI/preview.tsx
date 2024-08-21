@@ -66,7 +66,7 @@ function StatementPreview({
                 },
               }),
             }}
-            className="text-canBlack rounded-sm h-full"
+            className="text-canBlack rounded-sm h-full editorContent"
           ></div>
         )}
       </CommonCards>

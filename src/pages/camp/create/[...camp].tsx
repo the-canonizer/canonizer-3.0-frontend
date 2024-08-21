@@ -1,4 +1,4 @@
-import CreateNewCamp from "src/components/ComponentPages/CreateNewCamp";
+import CreateNewCamp from "components/ComponentPages/CreateNewCamp";
 
 import Layout from "src/hoc/layout";
 
