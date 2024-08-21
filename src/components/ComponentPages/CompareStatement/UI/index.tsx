@@ -1,12 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { Button, Row, Col } from "antd";
+import { Button, Row, Col, Tabs } from "antd";
 import styles from "./index.module.scss";
 
 import CustomSkelton from "../../../common/customSkelton";
 import { capitalizeFirstLetter } from "src/utils/generalUtility";
 import Breadcrumbs from "components/ComponentPages/Breadcrumbs/breadcrumbs";
 import HistoryCard from "components/ComponentPages/HistoryCard/historyCard";
+import moment from "moment";
 const validUrl = (url) => {
   try {
     new URL(url);
@@ -24,10 +25,53 @@ function CompareStatementUI({
 }: any) {
   const [compareMode, setCompareMode] = useState(true);
   const [currentVersion, setCurrentVersion] = useState(true);
+  const [tabId, setTabId] = useState("1");
   const router = useRouter();
   const s1 = statements?.at(0) || {},
     s2 = statements?.at(1) || {},
     from = router?.query?.from;
+
+  const breakpoint = 768;
+
+  // Initialize state without using window.innerWidth directly
+  const [isMobileView, setIsMobileView] = useState(
+    typeof window !== "undefined" ? window.innerWidth < breakpoint : false
+  );
+
+  const convertToTime = (unixTime) => {
+    return moment(unixTime * 1000).format("hh:mm:ss A");
+  };
+
+  const convertToDate = (unixTime) => {
+    return moment(unixTime * 1000).format("DD MMMM YYYY");
+  };
+
+  const getStatusClass = (status: any) => {
+    switch (status) {
+      case "live":
+        return "live-tab";
+      case "in_review":
+        return "pending-tab";
+      case "objected":
+        return "objected-tab";
+      case "old":
+        return "previous-tab";
+      default:
+        return "";
+    }
+  };
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobileView(window.innerWidth < breakpoint);
+    };
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [breakpoint]);
 
   let payload = {
     camp_num: router?.query?.routes[1]?.split("-")[0] ?? "1",
@@ -53,10 +97,8 @@ function CompareStatementUI({
 
   return (
     <>
-      <Breadcrumbs
-        compareMode={compareMode}
-        historyOF={router && router?.query?.from}
-      />
+      <Breadcrumbs compareMode={compareMode} historyOF={router?.query?.from} />
+
       {isLoading ? (
         <CustomSkelton skeltonFor="comparisonPage" />
       ) : (
@@ -70,33 +112,92 @@ function CompareStatementUI({
             {router?.query?.from && capitalizeFirstLetter(router?.query?.from)}{" "}
             History Comparison
           </Button>
-          <Row gutter={[60, 60]}>
-            <Col xs={24} md={12}>
-              <HistoryCard
-                compareMode={compareMode}
-                comparisonData={s1}
-                status={itemsStatus[s1?.id]}
-                s1={true}
-              />
-            </Col>
-            <Col xs={24} md={12}>
-              <HistoryCard
-                compareMode={compareMode}
-                comparisonData={s2}
-                status={itemsStatus[s2?.id]}
-              />
-            </Col>
-            <Col xs={24} md={24}>
-              {liveStatement !== null && (
+
+          {!isMobileView && (
+            <Row gutter={[24, 24]}>
+              <Col xs={24} md={12}>
                 <HistoryCard
                   compareMode={compareMode}
-                  comparisonData={liveStatement}
-                  status={liveStatement?.status}
-                  currentVersion={currentVersion}
+                  comparisonData={s1}
+                  status={itemsStatus[s1?.id]}
+                  s1={true}
                 />
+              </Col>
+              <Col xs={24} md={12}>
+                <HistoryCard
+                  compareMode={compareMode}
+                  comparisonData={s2}
+                  status={itemsStatus[s2?.id]}
+                />
+              </Col>
+              {liveStatement !== null && (
+                <Col xs={24} md={24}>
+                  <HistoryCard
+                    compareMode={compareMode}
+                    comparisonData={liveStatement}
+                    status={liveStatement?.status}
+                    currentVersion={currentVersion}
+                  />
+                </Col>
               )}
-            </Col>
-          </Row>
+            </Row>
+          )}
+
+          {isMobileView && (
+            <Tabs
+              defaultActiveKey="1"
+              centered
+              className={`comparision-mobile-tabs ${
+                tabId && tabId === "1"
+                  ? getStatusClass(itemsStatus[s1?.id])
+                  : getStatusClass(itemsStatus[s2?.id])
+              }`}
+              onChange={(id) => {
+                setTabId(id);
+              }}
+            >
+              <Tabs.TabPane
+                className="comparison-tab-content"
+                tab={
+                  <>
+                    <p>{convertToDate(s1?.submit_time)}</p>
+                    <span>{convertToTime(s1?.submit_time)}</span>
+                  </>
+                }
+                key="1"
+              >
+                <Col xs={24} md={12}>
+                  <HistoryCard
+                    compareMode={compareMode}
+                    comparisonData={s1}
+                    status={itemsStatus[s1?.id]}
+                    s1={true}
+                    isMobileView={isMobileView}
+                  />
+                </Col>
+              </Tabs.TabPane>
+
+              <Tabs.TabPane
+                className="comparison-tab-content"
+                tab={
+                  <>
+                    <p>{convertToDate(s2?.submit_time)}</p>
+                    <span>{convertToTime(s2?.submit_time)}</span>
+                  </>
+                }
+                key="2"
+              >
+                <Col xs={24} md={12}>
+                  <HistoryCard
+                    compareMode={compareMode}
+                    comparisonData={s2}
+                    status={itemsStatus[s2?.id]}
+                    isMobileView={isMobileView}
+                  />
+                </Col>
+              </Tabs.TabPane>
+            </Tabs>
+          )}
         </div>
       )}
     </>

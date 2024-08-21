@@ -144,6 +144,7 @@ const SupportTreeCard = ({
     setGetManageSupportLoadingIndicator,
   ] = useState(true);
   const [open, setOpen] = useState(false);
+  const [supportTreeData, setSupportTreeData] = useState(null);
   const [loader, setLoader] = useState(false);
   const [drawerFor, setDrawerFor] = useState(""); //["directAdd","delegateAdd","directRemove","delegateRemove","manageSupport"]
   let drawerOptions = {
@@ -152,6 +153,7 @@ const SupportTreeCard = ({
     directRemove: "directRemove",
     delegateRemove: "delegateRemove",
     manageSupport: "manageSupport",
+    signPetition: "signPetition",
   };
 
 
@@ -362,8 +364,10 @@ const SupportTreeCard = ({
       return "Your support has already been delegated to the Camp Leader";
     } else if (isUserAuthenticated && campLeaderExist) {
       return "As you are the current Camp Leader, hence you cannot sign the petition.";
-    } else {
+    } else if (!isUserAuthenticated) {
       return "Login to Canonizer to sign the camp";
+    } else {
+      return false;
     }
   };
 
@@ -453,19 +457,24 @@ const SupportTreeCard = ({
                           </span>
                           <div className="w-[24px] h-[24px] rounded-full overflow-hidden bg-canLightBg flex items-center justify-center text-xs">
                             {isImageError ? (
-                              <Image
-                                src={support_image}
-                                alt="svg"
-                                height={24}
-                                width={24}
-                                onError={handleImageError}
-                              />
+                              <>
+                                <Image
+                                  src={support_image}
+                                  alt="svg"
+                                  height={24}
+                                  width={24}
+                                  onError={handleImageError}
+                                />
+                              </>
                             ) : (
                               <span>
                                 {data[item].nick_name.charAt(0).toUpperCase()}
                               </span>
                             )}
                           </div>
+                          {data[item]?.camp_leader && (
+                            <i className="icon-crown text-canOrange"></i>
+                          )}
 
                           <span className="text-canBlack text-xs font-normal">
                             {" "}
@@ -641,6 +650,21 @@ const SupportTreeCard = ({
     removeForm.resetFields();
   };
 
+  const disableSignPetition = () => {
+    return (
+      isCampLeader()?.campLeaderExist || isCampLeader()?.delegateSupportExist
+    );
+  };
+
+  const signPetitionHandler = () => {
+    if(isUserAuthenticated){
+      setOpen(true);
+      setDrawerFor(drawerOptions.signPetition);
+    }else{
+      router?.push("/login");
+    }
+  };
+
   const renderSupportBtn = () => {
     if (isUserAuthenticated) {
       if (
@@ -658,7 +682,6 @@ const SupportTreeCard = ({
   let title = `Support Tree for "${campRecord?.camp_name}" Camp`;
 
   // remove support popup added.
-
   return loadingIndicator || loadingIndicatorSupport ? (
     <CustomSkelton
       skeltonFor="card"
@@ -683,6 +706,7 @@ const SupportTreeCard = ({
           selectNickId={selectNickId}
           delegateNickName={delegateNickName}
           handleCancelSupportCamps={handleCancelSupportCamps}
+          getCheckStatusAPI={getCheckStatusAPI}
           loader={loader}
           setLoader={setLoader}
         />
@@ -725,7 +749,7 @@ const SupportTreeCard = ({
             </CustomButton>
           )}
         </div>
-        <div className="topicDetailsCollapseFooter printHIde mt-3 w-full flex justify-center">
+        <div className="topicDetailsCollapseFooter printHIde mt-3 w-full flex flex-col gap-2 justify-center">
           <CustomButton
             onClick={handleClickSupportCheck}
             className="w-full justify-center bg-canGreen hover:!bg-canGreen hover:!text-white hover:!border-transparent !border-transparent h-[44px] px-8 lg:px-10 text-white flex items-center rounded-lg font-medium text-sm gap-2"
@@ -740,6 +764,17 @@ const SupportTreeCard = ({
               width={16}
             />
           </CustomButton>
+          <Popover content={renderPopupMsg()}>
+            <Button
+              size="large"
+              className="flex items-center justify-center h-[44px] border-[#4EB966] hover:!text-canBlack hover:!border-[#4EB966] hover:!bg-[#4EB9661A] bg-[#4EB9661A] rounded-lg font-medium text-sm"
+              block
+              disabled={disableSignPetition()}
+              onClick={() => signPetitionHandler()}
+            >
+              Sign Petition<i className="icon-user-plus ml-2"></i>
+            </Button>
+          </Popover>
         </div>
       </div>
 

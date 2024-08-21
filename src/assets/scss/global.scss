@@ -13,6 +13,7 @@
 @import "../../components/ComponentPages/Breadcrumbs/breadcrumbs.scss";
 @import "../../components/ComponentPages/HistoryCard/historyCard.scss";
 @import "./video";
+@import "./eventLine";
 
 :root {
   --primary: #4484ce;
@@ -38,10 +39,10 @@ html {
 }
 
 *::-webkit-scrollbar {
-  @apply w-[10px] h-[10px] bg-[#ccd4e7];
+  @apply w-[10px] h-[10px] bg-canGrey2;
 }
 *:-webkit-scrollbar-track {
-  @apply rounded-[5px] bg-[#ccd4e7];
+  @apply rounded-[5px] bg-canGrey2;
 }
 *::-webkit-scrollbar-thumb {
   @apply rounded-[5px] bg-[#b7c1d7];
@@ -97,23 +98,23 @@ body {
 
 .browse-wrapper {
   .browse-title {
-    @apply text-[2rem] mb-0 text-[#242B37];
+    @apply text-[2rem] mb-0 text-canBlack;
   }
   .ant-divider {
-    @apply my-8 border-[#CCD4E7];
+    @apply my-8 border-canGrey2;
   }
   .browse-actions {
     @apply flex md:items-end justify-between gap-4 mb-[3.75rem] max-md:flex-col;
     .ant-form {
       .ant-form-item-required {
-        @apply text-[#69748B] text-sm;
+        @apply text-canLightBlack text-sm;
       }
     }
     .browse-filters {
       .ant-select-selector {
         @apply rounded-md;
         .ant-select-selection-item {
-          @apply text-[1rem] font-medium text-[#242B37];
+          @apply text-[1rem] font-medium text-canBlack;
         }
       }
       .ant-select-arrow {
@@ -158,7 +159,7 @@ body {
     }
   }
   .browse-card {
-    @apply ease-in-out duration-300 cursor-pointer bg-[#F7F8FC] rounded-lg border-transparent h-full;
+    @apply ease-in-out duration-300 cursor-pointer bg-canGray rounded-lg border-transparent h-full;
     &:hover {
       @apply hover:shadow-[0px_10px_20px_0px_#31507233] hover:bg-white;
       .ant-card-body {
@@ -170,7 +171,7 @@ body {
     .ant-card-body {
       @apply p-[1.25rem];
       .card-description {
-        @apply text-[#242B37] min-h-[44px];
+        @apply text-canBlack min-h-[44px];
       }
       .btn-right {
         @apply text-canBlue opacity-0;
@@ -213,7 +214,7 @@ body {
 }
 
 .filter-popover-wrapper {
-  @apply flex items-center gap-3 mb-2 text-[#777F93];
+  @apply flex items-center gap-3 mb-2 text-canLight;
   .ant-popover-inner-content {
     @apply max-w-[300px] w-full;
   }
@@ -228,7 +229,7 @@ body {
       @apply lg:w-[320px];
 
       h5 {
-        @apply text-[#242B37] text-[1.125rem] mb-7;
+        @apply text-canBlack text-[1.125rem] mb-7;
       }
       .sider-btn {
         @apply flex lg:grid grid-cols-2 items-center gap-4 flex-wrap;
@@ -241,21 +242,21 @@ body {
             }
           }
           &.btn-objected {
-            @apply border-[#E46B6B] hover:text-[#E46B6B] focus:text-[#E46B6B];
+            @apply border-canRed hover:text-canRed focus:text-canRed;
             &.active {
-              @apply bg-[#E46B6B] text-white;
+              @apply bg-canRed text-white;
             }
           }
           &.btn-live {
-            @apply border-[#4EB966] hover:text-[#4EB966] focus:text-[#4EB966];
+            @apply border-canGreen hover:text-canGreen focus:text-canGreen;
             &.active {
-              @apply bg-[#4EB966] text-white;
+              @apply bg-canGreen text-white;
             }
           }
           &.btn-pending {
-            @apply border-[#F19C39] hover:text-[#F19C39] focus:text-[#F19C39];
+            @apply border-canOrange hover:text-canOrange focus:text-canOrange;
             &.active {
-              @apply bg-[#F19C39] text-white;
+              @apply bg-canOrange text-white;
             }
           }
           &.btn-previous {
@@ -288,7 +289,7 @@ body {
     }
     .support-content {
       & > :not(:first-child) {
-        @apply mt-8 pt-8 border-t border-[#CCD4E7];
+        @apply mt-8 pt-8 border-t border-canGrey2;
       }
     }
     .alert-wrapper {
@@ -318,7 +319,7 @@ body {
     }
     .ant-drawer-content-wrapper {
       .thm-input {
-        @apply rounded-lg border-[#CCD4E7];
+        @apply rounded-lg border-canGrey2;
         .ant-input-prefix {
           @apply mr-2;
           .anticon,
@@ -332,14 +333,14 @@ body {
       @apply p-11 border-t-0 sm:pb-32;
     }
     .page-breadcrums-wrapper {
-      @apply pb-10 mb-8 border-b border-[#CCD4E7];
+      @apply pb-10 mb-8 border-b border-canGrey2;
       .drawer-header {
         .ant-page-header-heading-left {
           @apply m-0;
           .ant-page-header-heading-title {
             @apply text-2xl mr-0 whitespace-normal;
             span {
-              @apply text-[#4EB966];
+              @apply text-canGreen;
             }
           }
         }
@@ -349,13 +350,13 @@ body {
           @apply items-center;
           li,
           a {
-            @apply text-[#777F93];
+            @apply text-canLight;
           }
           li {
             @apply text-xs;
           }
           .ant-breadcrumb-separator {
-            @apply text-[10px] mx-[6px]  text-[#777F93];
+            @apply text-[10px] mx-[6px]  text-canLight;
           }
         }
       }
@@ -369,7 +370,7 @@ body {
       @apply px-4 py-2;
       .anticon,
       i {
-        @apply text-[#E46B6B] text-xl;
+        @apply text-canRed text-xl;
       }
       .ant-alert-description {
         @apply text-canBlack;
@@ -409,7 +410,7 @@ body {
       }
 
       .ant-list-header {
-        @apply p-3.5 font-medium text-base text-[#242B37] bg-[#4EB96633] uppercase rounded-tl-xl rounded-tr-xl;
+        @apply p-3.5 font-medium text-base text-canBlack bg-[#4EB96633] uppercase rounded-tl-xl rounded-tr-xl;
       }
       .ant-list-items {
         .ant-list-item {
@@ -447,7 +448,7 @@ body {
   }
   .cn-select.ant-select {
     .ant-select-selector {
-      @apply pl-10 rounded-lg border-[#CCD4E7];
+      @apply pl-10 rounded-lg border-canGrey2;
       .ant-select-selection-search-input {
         @apply pl-6;
       }
@@ -470,13 +471,13 @@ body {
 
     .ant-notification-notice-content {
       &::before {
-        @apply bg-[#4EB966];
+        @apply bg-canGreen;
       }
     }
     .ant-notification-notice-icon {
       .anticon,
       i {
-        @apply text-[#4EB966];
+        @apply text-canGreen;
       }
     }
   }
@@ -485,13 +486,13 @@ body {
 
     .ant-notification-notice-content {
       &::before {
-        @apply bg-[#E46B6B];
+        @apply bg-canRed;
       }
     }
     .ant-notification-notice-icon {
       .anticon,
       i {
-        @apply text-[#E46B6B];
+        @apply text-canRed;
       }
     }
   }
@@ -519,10 +520,11 @@ body {
   .ant-notification-notice-description {
     @apply ml-[4.75rem] font-medium;
   }
-  @media screen and (max-width: 575px) {
+
     .leftSideBar.miniSideBar {
-      width: auto;
-    }
+      @apply max-sm:w-[auto];
+      
+    
   }
 }
 
@@ -589,6 +591,56 @@ body {
 .ant-menu-submenu-open.ant-menu-submenu .ant-menu-submenu-title .account-arrow {
   @apply -rotate-90 transition-transform ease-in-out duration-150;
 }
+.comparision-mobile-tabs.ant-tabs {
+  &.live-tab {
+    .ant-tabs-ink-bar {
+      @apply bg-canGreen;
+    }
+  }
+  &.previous-tab {
+    .ant-tabs-ink-bar {
+      @apply bg-canBlue;
+    }
+  }
+  &.pending-tab {
+    .ant-tabs-ink-bar {
+      @apply bg-canOrange;
+    }
+  }
+  &.objected-tab {
+    .ant-tabs-ink-bar {
+      @apply bg-canDarkRed;
+    }
+  }
+  .ant-tabs-nav {
+    @apply sticky top-0 bg-white z-50 max-lg:mx-[-14px];
+    .ant-tabs-nav-list {
+      @apply w-full;
+
+      &>:first-child{
+        @apply ml-0;
+      }
+      .ant-tabs-tab {
+        @apply justify-center w-[50%];
+        .ant-tabs-tab-btn {
+          @apply text-center;
+          p {
+            @apply text-canBlack text-xs font-medium;
+          }
+          span {
+            @apply text-canDisabled text-[10px];
+          }
+        }
+      }
+    }
+
+    .ant-tabs-nav-operations,
+    .ant-tabs-nav-operations-hidden {
+      @apply hidden;
+    }
+  }
+  
+}
 
 #nickNameList .ant-table-thead > tr > th {
   @apply bg-canGray text-sm font-medium;
@@ -644,4 +696,7 @@ body {
   ol {
     @apply list-decimal pl-5;
   }
+}
+.ant-tabs-nav-list .ant-tabs-tab:last-child {
+  @apply mr-5;
 }
