@@ -222,7 +222,7 @@ const TimelineInfoBar = ({
     async function getBreadCrumbApiCall() {
       setLoadingIndicator(true);
       let reqBody = {
-         topic_num: isEventLine ? topicId : payload?.topic_num,
+        topic_num: isEventLine ? topicId : payload?.topic_num,
         camp_num: isEventLine ? campId : payload?.camp_num,
         as_of: router?.pathname == "/topic/[...camp]" ? asof : "default",
         as_of_date:
@@ -328,19 +328,25 @@ const TimelineInfoBar = ({
           </span>
         </Col>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
-          <span className="text-xs 2xl:text-sm text-canLight">Submitted On : </span>
+          <span className="text-xs 2xl:text-sm text-canLight">
+            Submitted On :{" "}
+          </span>
           <span className="text-sm 2xl !text-black font-medium">
             {topicRecord && covertToTime(topicRecord?.submit_time)}
           </span>
         </Col>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
-          <span className="text-xs 2xl:text-sm text-canLight">Submitted By</span>
+          <span className="text-xs 2xl:text-sm text-canLight">
+            Submitted By
+          </span>
           <span className="text-canDarkBlack text-sm font-medium">
             {topicRecord?.submitter_nick_name}
           </span>
         </Col>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
-          <span className="text-xs 2xl:text-sm text-canLight">Go Live Time : </span>
+          <span className="text-xs 2xl:text-sm text-canLight">
+            Go Live Time :{" "}
+          </span>
           <span className="text-sm text-canBlack font-medium">
             {topicRecord && covertToTime(topicRecord?.go_live_time)}
           </span>
@@ -382,7 +388,9 @@ const TimelineInfoBar = ({
   );
   const title2 = (
     <div className="popover_header">
-      <span className="text-xs 2xl:text-sm text-canLight mb-1">Camp name :</span>
+      <span className="text-xs 2xl:text-sm text-canLight mb-1">
+        Camp name :
+      </span>
       <p className="font-bold mb-5 text-sm text-canBlack">
         {campRecord && campRecord?.camp_name}
       </p>
@@ -398,19 +406,25 @@ const TimelineInfoBar = ({
           </span>
         </Col>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
-          <span className="text-xs 2xl:text-sm text-canLight">Submitted On : </span>
+          <span className="text-xs 2xl:text-sm text-canLight">
+            Submitted On :{" "}
+          </span>
           <span className="text-sm text-canBlack">
             {campRecord && covertToTime(campRecord?.submit_time)}
           </span>
         </Col>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
-          <span className="text-xs 2xl:text-sm text-canLight">Camp about nickname : </span>
+          <span className="text-xs 2xl:text-sm text-canLight">
+            Camp about nickname :{" "}
+          </span>
           <span className="text-sm text-canBlack">
             {campRecord && campRecord.camp_about_nick_name}
           </span>
         </Col>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
-          <span className="text-xs 2xl:text-sm text-canLight">Camp about URL : </span>
+          <span className="text-xs 2xl:text-sm text-canLight">
+            Camp about URL :{" "}
+          </span>
           <span className="text-sm text-canBlack">
             {campRecord && campRecord.camp_about_url}
           </span>
@@ -432,13 +446,17 @@ const TimelineInfoBar = ({
           </span>
         </Col>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
-          <span className="text-xs 2xl:text-sm text-canLight">Camp archive:</span>
+          <span className="text-xs 2xl:text-sm text-canLight">
+            Camp archive:
+          </span>
           <span className="text-sm text-canBlack">
             {campRecord && campRecord.is_archive == 0 ? "No" : "Yes"}
           </span>
         </Col>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
-          <span className="text-xs 2xl:text-sm text-canLight">Go live time:</span>
+          <span className="text-xs 2xl:text-sm text-canLight">
+            Go live time:
+          </span>
           <span className="text-sm text-canBlack">
             {campRecord && covertToTime(campRecord?.go_live_time)}
           </span>
@@ -455,13 +473,19 @@ const TimelineInfoBar = ({
             {topicRecord && topicRecord?.topic_name}
           </span>
         </Col>
-        <Col md={12} sm={12} xs={12} className=" flex flex-col mt-4">
-          <span className="text-xs 2xl:text-sm text-canLight">Camp Leader:</span>
-          <span className="text-base text-black">
-            {" "}
-            {campRecord && campRecord?.camp_leader_nick_name}
-          </span>
-        </Col>
+        {campRecord && (
+          <>
+            <Col md={12} sm={12} xs={12} className=" flex flex-col mt-4">
+              <span className="text-xs 2xl:text-sm text-canLight">
+                Camp Leader:
+              </span>
+              <span className="text-base text-black">
+                {" "}
+                {campRecord?.camp_leader_nick_name}
+              </span>
+            </Col>
+          </>
+        )}
       </Row>
       <hr className="horizontal_line my-5" />
       {isTopicPage && (
@@ -950,7 +974,7 @@ const TimelineInfoBar = ({
                               ? "/manage/statement/" +
                                 campStatement[0]?.draft_record_id +
                                 "?is_draft=1"
-                              : campStatement[0]?.parsed_value || campStatement?.at(0)?.in_review_changes
+                              : campStatement[0]?.parsed_value
                               ? `/statement/history/${replaceSpecialCharacters(
                                   router?.query?.camp?.at(0),
                                   "-"
@@ -970,10 +994,10 @@ const TimelineInfoBar = ({
                       );
                     }}
                     id="add-camp-statement-btn"
-                    >
+                  >
                     {campStatement[0]?.draft_record_id
                       ? "Edit Draft Statement"
-                      : campStatement[0]?.parsed_value || campStatement?.at(0)?.in_review_changes
+                      : campStatement[0]?.parsed_value
                       ? K?.exceptionalMessages?.manageCampStatementButton
                       : K?.exceptionalMessages?.addCampStatementButton}
                     <Image
