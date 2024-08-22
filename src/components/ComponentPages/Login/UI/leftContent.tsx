@@ -15,14 +15,15 @@ const LeftContent = ({ onBrowseClick }) => {
       </Button>
       <div className="my-auto">
         <Headings h1 className="mb-6 leading-[1.1] font-medium">
-          Join Canonizer
+          Welcome Back to Canonizer
         </Headings>
-        <Typography.Paragraph className="text-2xl !mb-2 font-medium font-inter">
-          Unite Voices, Build Consensus, Shape the Future Together{" "}
+        <Typography.Paragraph className="text-2xl !mb-5 font-medium font-inter">
+          Continue Shaping Collective Thought
         </Typography.Paragraph>
-        <Typography.Paragraph className="text-sm font-normal text-canBlack opacity-80 font-inter xl:w-11/12">
-          Sign up to contribute your insights, collaborate on ideas, and help
-          form unified stances on key topics through collective consensus.
+        <Typography.Paragraph className="text-sm font-normal text-canBlack opacity-80 font-inter xl:w-9/12">
+          Log in to participate in ongoing discussions, refine consensus, and
+          collaborate with others to influence impactful decisions on vital
+          issues.
         </Typography.Paragraph>
         <div className="text-center ftImage">
           <Image

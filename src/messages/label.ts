@@ -84,9 +84,9 @@ export const labels = {
     "Note : Registration code has been sent to your registered email address.",
   otLabel:
     "Note: Verification code has been sent to your registered email address.",
-  createPassword: "Create New Password",
-  verificationLabel: "Create Password Verification Code",
-  forgotModalLabel: "Forgot Your Password?",
+  createPassword: "Create new password",
+  verificationLabel: "Create password verification code",
+  forgotModalLabel: "Forgot your password? Don't worry, it happens.",
   nameConfirmationTitle: "Name Confirmation",
   reasonLabel: "Reason for adding/removing support",
   reasonChangeLabel: "Reason for adding/removing/changing order support",

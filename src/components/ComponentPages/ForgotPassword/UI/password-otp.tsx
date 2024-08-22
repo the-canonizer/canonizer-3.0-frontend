@@ -6,6 +6,7 @@ import PrimaryButton from "components/shared/Buttons/PrimariButton";
 import Inputs from "components/shared/FormInputs";
 import Otpinput from "./otpInputs";
 import SecondaryButton from "components/shared/Buttons/SecondaryButton";
+import LogoHeader from "components/common/headers/logoHeader";
 
 const { Title, Text } = Typography;
 const { labels } = messages;
@@ -27,22 +28,25 @@ function ForgotPasswordUI({
       layout="vertical"
       scrollToFirstError
       validateTrigger={messages.formValidationTypes()}
-      className="h-full flex flex-col"
+      className="h-full flex flex-col p-6"
     >
+      <div className="flex justify-center items-center text-center flex-col mb-6 mt-6">
+        <LogoHeader />
+      </div>
       <Title
-        level={2}
-        className="mt-6 text-sm text-center text-canBlack font-medium"
+        level={4}
+        className="text-sm text-center text-canBlack font-normal"
         id="forgot-password-title"
       >
         {labels.verificationLabel}
       </Title>
-      <div className="my-auto">
-        <Text
-          className="text-center block text-sm font-medium mb-20 text-canBlack w-8/12 lg:w-7/12 mx-auto"
-          id="otp-msg"
-        >
-          An email has been sent to your regsistered email address.
-        </Text>
+      <Text
+        className="text-center block text-xs font-normal mb-5 text-canBlack w-8/12 lg:w-7/12 mx-auto"
+        id="otp-msg"
+      >
+        An email has been sent to your regsistered email address.
+      </Text>
+      <div className="mt-10">
         <div className="w-8/12 lg:w-7/12 mx-auto my-5 overflow-hidden">
           <Otpinput
             label={

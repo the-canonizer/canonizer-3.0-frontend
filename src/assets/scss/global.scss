@@ -32,6 +32,10 @@
 }
 html {
   @apply max-sm:text-sm;
+  font-size: 14px;
+  @media screen and (min-width: 1300px) {
+    font-size: 100%;
+  }
 }
 * {
   scrollbar-width: thin;
@@ -186,19 +190,25 @@ body {
     }
   }
   .browse-pagination {
-    @apply flex lg:px-[3.25rem];
+    @apply flex;
+    .ant-pagination-item {
+      @apply mx-1.5;
+    }
     .ant-pagination-item-active {
       @apply rounded-md;
     }
     .ant-pagination-total-text {
-      @apply mr-auto;
+      @apply mr-auto font-normal text-sm;
     }
     .ant-pagination-options {
       @apply ml-auto;
       .ant-select {
         .ant-select-selector {
-          @apply rounded-md;
+          @apply rounded-md font-normal;
         }
+      }
+      .ant-select-selection-item {
+        @apply font-normal text-sm;
       }
       .ant-pagination-options-quick-jumper {
         @apply md:ml-10;

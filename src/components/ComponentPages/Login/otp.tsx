@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
-import { Card, Col, Form, Row } from "antd";
+import { Button, Card, Col, Form, Row } from "antd";
+import { LeftOutlined } from "@ant-design/icons";
 
 import { resendOTPForRegistration, verifyOtp } from "src/network/api/userApi";
 import { RootState } from "src/store";
 import OTPVerify from "../Registration/UI/otp";
 import messages from "src/messages";
 import CustomSpinner from "components/shared/CustomSpinner";
-import LeftContent from "../Registration/UI/leftContent";
 
 const LoginOTP = () => {
   const { emailForOtp, currentReturnUrl } = useSelector((state: RootState) => ({
@@ -97,19 +97,25 @@ const LoginOTP = () => {
     <CustomSpinner key="login-otp-spinner" spinning={loading}>
       <Card
         bordered={false}
-        className="bg-canGrey1 mt-0 lg:mt-10 h-full flex justify-center items-end [&>.ant-card-body]:p-0 [&>.ant-card-body]:w-full [&_.ant-card-body]:pb-0 min-h-full tab:px-10"
+        className="bg-canGrey1 mt-0 lg:mt-0 h-full flex justify-center items-center [&>.ant-card-body]:p-0 [&>.ant-card-body]:w-full min-h-full tab:px-10"
       >
         <Row gutter={20}>
           <Col
-            lg={12}
+            lg={24}
             md={24}
-            xl={12}
+            xl={24}
             xs={24}
             className="hidden lg:block [&_.ftImage]:mb-0"
           >
-            <LeftContent onBrowseClick={onBrowseClick} />
+            <Button
+              type="link"
+              className="h-[50px] text-sm w-2/12 text-canBlack flex items-start justify-start text-sm font-medium p-0 mb-4"
+              onClick={onBrowseClick}
+            >
+              <LeftOutlined /> Go Back
+            </Button>
           </Col>
-          <Col lg={12} md={24} xl={12} xs={24}>
+          <Col lg={12} md={24} xl={12} xs={24} className="mx-auto">
             <OTPVerify
               form={otpForm}
               onFinish={onOTPSubmit}

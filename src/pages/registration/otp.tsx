@@ -18,7 +18,7 @@ const RegistrationPage = () => {
 
   useEffect(() => {
     if (!emailForOtp) {
-      router?.push({ pathname: "/registration" });
+      // router?.push({ pathname: "/registration" });
     }
 
     return () => dispatch(setEmailForOTP(null));

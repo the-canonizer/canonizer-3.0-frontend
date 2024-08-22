@@ -24,7 +24,7 @@ const ForgotPasswordPage = () => {
     }
 
     if (!passwordEmail) {
-      router?.push({ pathname: "/forgot-password" });
+      // router?.push({ pathname: "/forgot-password" });
     }
   }, [passwordEmail]);
 
@@ -35,7 +35,7 @@ const ForgotPasswordPage = () => {
   }, []);
 
   return (
-    <CustomLayout className="bg-canGrey1">
+    <CustomLayout className="bg-canGrey1" withOutHeader={true}>
       <ForgotPasswordOTP />
     </CustomLayout>
   );

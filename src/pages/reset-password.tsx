@@ -17,7 +17,7 @@ const ResetPasswordPage = () => {
 
   useEffect(() => {
     if (!isPasswordVerfied) {
-      router?.push({ pathname: "/forgot-password" });
+      // router?.push({ pathname: "/forgot-password" });
     }
   }, [isPasswordVerfied]);
 
@@ -28,7 +28,11 @@ const ResetPasswordPage = () => {
   }, []);
 
   return (
-    <Layout routeName={"reset-password"} className="bg-canGrey1">
+    <Layout
+      routeName={"reset-password"}
+      className="bg-canGrey1"
+      withOutHeader={true}
+    >
       <Resetpassword />
     </Layout>
   );

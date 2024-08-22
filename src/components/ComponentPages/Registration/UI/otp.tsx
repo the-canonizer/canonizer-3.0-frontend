@@ -1,8 +1,7 @@
-import { Image, Typography, Form, Card } from "antd";
+import { Typography, Form, Card } from "antd";
 import { ArrowRightOutlined, RedoOutlined } from "@ant-design/icons";
 
 import messages from "src/messages";
-import { fallBackSrc } from "src/assets/data-images";
 import LogoHeader from "src/components/common/headers/logoHeader";
 import PrimaryButton from "src/components/shared/Buttons/PrimariButton";
 import Inputs from "src/components/shared/FormInputs";
@@ -22,7 +21,7 @@ export default function OTPVerify({
   logMsg = "",
 }) {
   return (
-    <Card className="rounded-lg h-full" bordered={false}>
+    <Card className="rounded-lg h-full p-5" bordered={false}>
       <Form
         form={form}
         name="registration"
@@ -37,18 +36,21 @@ export default function OTPVerify({
           <LogoHeader />
           <Title
             level={4}
-            className="mt-4 text-sm text-canBlack font-medium"
+            className="mt-10 text-sm text-canBlack font-normal"
             id="registration-title"
           >
-            Enter your one time password to login into Canonizer
+            Enter your one time password to login
             {/* Log In One Time Verification Code */}
           </Title>
-        </div>
-
-        <div className="">
-          <Text className="text-center text-xs block mb-10" id="otp-note-text">
+          <Text
+            className="text-center text-muted text-xs block mb-10"
+            id="otp-note-text"
+          >
             {isResend ? failedMsg : logMsg ? logMsg : messages?.labels?.regOtp}
           </Text>
+        </div>
+
+        <div className="mt-10">
           <Inputs
             name="otp"
             style={{ textAlign: "center" }}
@@ -66,8 +68,7 @@ export default function OTPVerify({
               <SecondaryButton
                 type="text"
                 htmlType="button"
-                className="h-[40px] text-sm rounded-lg !w-auto m-auto flex justify-center items-center mb-4 sm:!w-full"
-                block
+                className="h-[40px] text-sm rounded-lg !w-auto m-auto flex justify-center items-center mb-4 sm:!w-3/12 border-0"
                 onClick={onResendClick}
                 id="resent-otp-btn"
               >
