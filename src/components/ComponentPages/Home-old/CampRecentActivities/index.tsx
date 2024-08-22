@@ -92,7 +92,7 @@ export default function CampRecentActivities() {
                       avatar={<BellFilled className={styles.bellIcon} />}
                       title={
                         <div>
-                          <h4 className="text-base leading-[24px] mb-2.5 font-normal !break-words">
+                          <h4 className="text-xs leading-[24px] font-normal !break-words">
                             {" "}
                             {item?.description}
                           </h4>{" "}
@@ -109,7 +109,7 @@ export default function CampRecentActivities() {
                         </div>
                       }
                       description={
-                        <p className="text-xs font-normal leading-[15px] text-opacity-50">
+                        <p className="text-[10px] font-normal leading-[15px] text-opacity-50">
                           {covertToTime(item?.updated_at)}
                         </p>
                       }

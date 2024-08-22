@@ -160,14 +160,14 @@ const CampStatementCard = ({ loadingIndicator }) => {
       <div className="camp-agrrement-new mb-8">
         <div className="flex justify-between items-start">
           <div className="mr-auto">
-            <div className="camp-agreement-header flex items-center mb-2.5 lg:mb-5 gap-2">
+            <div className="camp-agreement-header flex items-center mb-2.5 lg:mb-1 gap-2">
               <SectionHeading
                 title={K?.exceptionalMessages?.campStatementHeading}
                 infoContent={K?.exceptionalMessages?.campStatementHeading}
                 className="text-sm lg:text-base normal-case text-canBlack text-left font-semibold"
               />
             </div>
-            <div className="flex items-center justify-start gap-6 camp-header-content lg:border-none border-t border-b border-canGrey2 lg:py-0 py-1.5 lg:mb-0 mb-5">
+            <div className="flex items-center justify-start gap-6 camp-header-content lg:border-none border-t border-b border-canGrey2 lg:py-0 py-1.5 lg:mb-0 mb-2">
               {campStatement?.[0]?.go_live_time && (
                 <div className="flex items-center gap-2">
                   <Image
@@ -177,7 +177,7 @@ const CampStatementCard = ({ loadingIndicator }) => {
                     height={16}
                     width={16}
                   />
-                  <p className="text-xs font-normal text-canBlack text-opacity-50">
+                  <p className="text-[10px] font-normal text-canBlack text-opacity-50">
                     Last update:{" "}
                     {covertToTime(campStatement?.[0]?.go_live_time)}
                   </p>
@@ -210,7 +210,7 @@ const CampStatementCard = ({ loadingIndicator }) => {
           <div
             className={
               styles.campStatement +
-              " text-canBlack opacity-80 text-sm text-normal leading-6"
+              " text-canBlack opacity-80 text-xs 2xl:text-sm font-normal leading-6"
             }
           >
             {campStatement?.length && campStatement[0]?.parsed_value ? (
