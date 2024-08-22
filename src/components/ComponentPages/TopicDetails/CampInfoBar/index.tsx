@@ -950,7 +950,7 @@ const TimelineInfoBar = ({
                               ? "/manage/statement/" +
                                 campStatement[0]?.draft_record_id +
                                 "?is_draft=1"
-                              : campStatement[0]?.parsed_value
+                              : campStatement[0]?.parsed_value || campStatement?.at(0)?.in_review_changes
                               ? `/statement/history/${replaceSpecialCharacters(
                                   router?.query?.camp?.at(0),
                                   "-"
@@ -970,10 +970,10 @@ const TimelineInfoBar = ({
                       );
                     }}
                     id="add-camp-statement-btn"
-                  >
+                    >
                     {campStatement[0]?.draft_record_id
                       ? "Edit Draft Statement"
-                      : campStatement[0]?.parsed_value
+                      : campStatement[0]?.parsed_value || campStatement?.at(0)?.in_review_changes
                       ? K?.exceptionalMessages?.manageCampStatementButton
                       : K?.exceptionalMessages?.addCampStatementButton}
                     <Image
