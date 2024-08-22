@@ -51,9 +51,9 @@ const VideosPage = () => {
               return (
                 <>
                   <PageHeader
-                    className="px-0"
+                    className="px-0 [&_.ant-page-header-heading-title]:!text-xl"
                     ghost
-                    backIcon={<i className="icon-back text-xl"></i>}
+                    backIcon={<i className="icon-back text-sm"></i>}
                     onBack={() => router?.push("/")}
                     title="Videos"
                   />
