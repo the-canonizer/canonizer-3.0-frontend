@@ -354,7 +354,7 @@ const TimelineInfoBar = ({
       </Row>
 
       <hr className="horizontal_line my-5" />
-      {isTopicPage && (
+      {isTopicPage || isEventLine && (
         <PrimaryButton
           className="mx-auto flex items-center justify-center font-medium h-auto"
           onClick={() =>
