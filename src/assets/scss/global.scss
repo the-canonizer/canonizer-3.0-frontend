@@ -98,7 +98,7 @@ body {
 
 .browse-wrapper {
   .browse-title {
-    @apply text-[2rem] mb-0 text-canBlack;
+    @apply text-xl mb-0 text-canBlack;
   }
   .ant-divider {
     @apply my-8 border-canGrey2;
@@ -113,14 +113,11 @@ body {
     .browse-filters {
       .ant-select-selector {
         @apply rounded-md;
-        .ant-select-selection-item {
-          @apply text-[1rem] font-medium text-canBlack;
-        }
       }
       .ant-select-arrow {
         .anticon,
         i {
-          @apply text-[#000] text-lg;
+          @apply text-canBlack;
         }
       }
     }
@@ -521,10 +518,8 @@ body {
     @apply ml-[4.75rem] font-medium;
   }
 
-    .leftSideBar.miniSideBar {
-      @apply max-sm:w-[auto];
-      
-    
+  .leftSideBar.miniSideBar {
+    @apply max-sm:w-[auto];
   }
 }
 
@@ -617,7 +612,7 @@ body {
     .ant-tabs-nav-list {
       @apply w-full;
 
-      &>:first-child{
+      & > :first-child {
         @apply ml-0;
       }
       .ant-tabs-tab {
@@ -639,7 +634,6 @@ body {
       @apply hidden;
     }
   }
-  
 }
 
 #nickNameList .ant-table-thead > tr > th {
@@ -696,6 +690,16 @@ body {
   ol {
     @apply list-decimal pl-5;
   }
+}
+
+.ant-select-item-option-content {
+  @apply font-normal text-xs 2xl:text-sm flex items-center;
+}
+.ant-select-selection-item {
+  @apply font-medium text-xs 2xl:text-sm;
+}
+.ant-select-item-option-active .ant-select-item-option-content {
+  @apply font-medium;
 }
 .ant-tabs-nav-list .ant-tabs-tab:last-child {
   @apply mr-5;
