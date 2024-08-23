@@ -91,8 +91,8 @@ const TimelineInfoBar = ({
   const [topicSubscriptionID, setTopicSubscriptionID] = useState(
     topicRecord?.topicSubscriptionId
   );
-  const campId = router?.query?.camp?.at(1).split("-")?.at(0);
-  const topicId = router?.query?.camp?.at(0).split("-")?.at(0);
+  const campId = router?.query?.camp?.at(1)?.split("-")?.at(0);
+  const topicId = router?.query?.camp?.at(0)?.split("-")?.at(0);
 
   useEffect(() => {
     if (isTopicPage) {

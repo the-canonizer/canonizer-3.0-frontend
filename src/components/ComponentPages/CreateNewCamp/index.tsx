@@ -112,8 +112,8 @@ const CreateNewCamp = () => {
   const getRouterParams = () => {
     const q = router?.query;
 
-    const topicArr = (q?.camp[0] as string).split("-");
-    const campArr = (q?.camp[1] as string).split("-");
+    const topicArr = (q?.camp[0] as string)?.split("-");
+    const campArr = (q?.camp[1] as string)?.split("-");
     const topic_num = topicArr?.shift();
     const camp_num = campArr?.shift();
     const topic = topicArr?.join(" ");
