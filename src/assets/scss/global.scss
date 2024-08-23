@@ -639,9 +639,6 @@ body {
   @apply w-0;
   @apply opacity-0;
 }
-
-.ant-tabs-tab-active .ant-tabs-tab-btn {}
-
 .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
   @apply text-shadow-none;
 }

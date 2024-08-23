@@ -234,27 +234,6 @@ const FilterWithTree = ({
       dispatch(setFilterCanonizedTopics({ namespace_id: router.query.canon }));
     }
 
-    // if (
-    //   String(filterObject?.filterByScore) !== "0" ||
-    //   String(filterObject?.namespace_id) !== "1" ||
-    //   filterObject?.asof !== "default" ||
-    //   filterObject?.algorithm !== "blind_popularity" ||
-    //   campScoreValue !== 10
-    // ) {
-    //   onChangeRoute(
-    //     +router.query.score || filteredScore || 0,
-    //     (
-    //       router.query.algo ||
-    //       filterObject?.algorithm ||
-    //       "blind_popularity"
-    //     )?.toString(),
-    //     (router.query.asof || filterObject?.asof || "default")?.toString(),
-    //     +router.query.asofdate || filterObject?.asofdate,
-    //     +router.query.canon,
-    //     viewThisVersion
-    //   );
-    // }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

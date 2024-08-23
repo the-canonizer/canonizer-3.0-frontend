@@ -343,11 +343,6 @@ export default function DirectSupportedCampsUI({
   );
   const [filteredArrayForMob, setFilteredArrayForMob] = useState([]);
 
-  const handleUserIconClick = (record) => {
-    setActiveTopic(record.topic_num); // Set the active card
-    dispatch(setOpenDrawerForDirectSupportedCamp(true));
-    removeCardSupportedCamps(record);
-  };
   useEffect(() => {
     setFilteredArrayForMob(
       search.trim() === ""
@@ -415,10 +410,16 @@ export default function DirectSupportedCampsUI({
                             <div className={styles.btndiv}>
                               <span className="count">{tag.id}. </span>
                               <Link href={tag.camp_link}>
-                                <a
-                                  className="text-sm text-canBlack font-semibold"
+                                <a className="text-sm text-canBlack font-semibold"
                                   draggable="false"
                                   onClick={(e) => e.preventDefault()}
+                                  onKeyDown={(e) => {
+                                    if (e.key === 'Enter' || e.key === ' ') {
+                                      e.preventDefault();
+                                      // Add your click handling logic here
+                                    }
+                                  }}
+                                  onTouchStart={(e) => e.preventDefault()} // Optional: if you need to support touch events
                                 >
                                   {tag.camp_name}
                                 </a>
@@ -430,8 +431,18 @@ export default function DirectSupportedCampsUI({
                                 handleClose(tag, record.topic_num, record, []);
                                 setValData(tag);
                                 setRevertBack([]);
-                                setActiveTopic(record.topic_num)
+                                setActiveTopic(record.topic_num);
                               }}
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter' || e.key === ' ') {
+                                  e.preventDefault();
+                                  handleClose(tag, record.topic_num, record, []);
+                                  setValData(tag);
+                                  setRevertBack([]);
+                                  setActiveTopic(record.topic_num);
+                                }
+                              }}
+                              onTouchStart={(e) => e.preventDefault()}
                             >
                               <Image
                                 className="cursor-pointer"
@@ -446,7 +457,7 @@ export default function DirectSupportedCampsUI({
 
                       );
                     }}
-                    onChange={(tags) => {tagsOrder(record.topic_num, record, tags); setShowSaveChanges(true); setActiveTopic(record.topic_num)}}
+                    onChange={(tags) => { tagsOrder(record.topic_num, record, tags); setShowSaveChanges(true); setActiveTopic(record.topic_num) }}
                   />
                 </div>
                 {showSaveChanges && activeTopic == record.topic_num && (
@@ -589,7 +600,7 @@ export default function DirectSupportedCampsUI({
             open={openDrawerForDirectSupportedCamp}
             closeIcon={
               <Image
-              className="mt-1"
+                className="mt-1"
                 onClick={() => dispatch(setOpenDrawerForDirectSupportedCamp(false))}
                 src="/images/refine-back-arrow.svg"
                 width={16}

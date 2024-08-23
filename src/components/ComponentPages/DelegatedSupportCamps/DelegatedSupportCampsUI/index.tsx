@@ -57,7 +57,7 @@ export default function DelegatedSupportCampsUI({
       dataIndex: "sr",
       key: "sr",
 
-      render: (text, record, index) =>(<span className="bg-canGrey2 rounded-full h-5 w-6 flex items-center justify-center"> {index + 1}</span>),
+      render: (text, record, index) => (<span className="bg-canGrey2 rounded-full h-5 w-6 flex items-center justify-center"> {index + 1}</span>),
     },
     {
       title: "Topics",
@@ -286,7 +286,7 @@ export default function DelegatedSupportCampsUI({
           </div>
         )}
         <Modal
-          className={styles.modal_cross}
+          className=" [&_.ant-modal-content]:!rounded-xl [&_.ant-modal-header]:rounded-tl-xl [&_.ant-modal-header]:rounded-tr-xl"
           title="Remove Support"
           open={isRemoveSupportModalVisible}
           onOk={handleSupportedCampsCancel}
@@ -296,7 +296,7 @@ export default function DelegatedSupportCampsUI({
         >
           <Form>
             <Form.Item style={{ marginBottom: "0px" }}>
-              <p id="remove_confirmation">
+              <p id="remove_confirmation" className="text-xl text-canBlack font-medium text-center">
                 Are you sure, you want to remove your delegate support given to{" "}
                 <span>
                   &quot;
@@ -319,32 +319,36 @@ export default function DelegatedSupportCampsUI({
               </p>
             </Form.Item>
             <Form.Item
-              className={styles.text_right}
-              style={{ marginBottom: "0px" }}
+              className=""
+
             >
-              <Button
-                id="removeBtn"
-                onClick={removeSupport}
-                type="primary"
-                style={{
-                  marginTop: 10,
-                  marginRight: 10,
-                }}
-                className="ant-btn ant-btn-orange"
-              >
-                Remove
-              </Button>
-              <Button
-                id="cancelBtn"
-                onClick={handleSupportedCampsCancel}
-                type="default"
-                style={{
-                  marginTop: 10,
-                }}
-                className=" !px-0"
-              >
-                Cancel
-              </Button>
+              <div className="flex gap-4 justify-center items-center mt-10">
+               
+                <Button
+                  id="cancelBtn"
+                  onClick={handleSupportedCampsCancel}
+                  type="default"
+                  
+                  className="Profile_btn ant-btn ant-btn-orange ant-btn-lg py-2.5 px-12 hover:text-canBlack flex gap-2.5 items-center bg-btnBg bg-opacity-10 text-canBlack text-base font-medium rounded-lg border-canBlue justify-center w-[11.25rem] hover:bg- hover:!border-canBlue hover:bg-btnBg hover:bg-opacity-10"
+                >
+                  Cancel
+                  <Image
+                  src="/images/cross-dark.svg"
+                  width={16}
+                  height={16}
+                  alt="no image"
+                />
+                </Button>
+                <Button
+                  id="removeBtn"
+                  onClick={removeSupport}
+                  type="primary"
+                 
+                  className=" Profile_btn ant-btn ant-btn-orange ant-btn-lg py-2.5 px-6 hover:bg-canBlue hover:text-white flex gap-2.5 items-center bg-canBlue text-white text-base font-medium rounded-lg border-none justify-center w-[11.25rem]"
+                >
+                  Remove
+                </Button>
+              </div>
             </Form.Item>
           </Form>
         </Modal>
@@ -414,20 +418,20 @@ export default function DelegatedSupportCampsUI({
           />
         ) : (
           <div className="w-full">
-              <div className="w-full flex justify-end mb-5">
-                <Input
-                  suffix={<Image src="/images/search-icon.svg" width={20} height={20} alt="" />}
-                  data-testid="settingSearch"
-                  value={search}
-                  placeholder="Search via topic name"
-                  type="text"
-                  name="search"
-                 className="!h-10 rounded-lg border border-canGrey2 text-base font-normal lg:w-auto w-full [&_.ant-input-affix-wrapper]:hover:!border-canGrey2 focus:!border-canGrey2 focus:!shadow-none "
-                  onChange={(e) => {
-                    setSearch(e.target.value);
-                  }}
-                />
-              </div>
+            <div className="w-full flex justify-end mb-5">
+              <Input
+                suffix={<Image src="/images/search-icon.svg" width={20} height={20} alt="" />}
+                data-testid="settingSearch"
+                value={search}
+                placeholder="Search via topic name"
+                type="text"
+                name="search"
+                className="!h-10 rounded-lg border border-canGrey2 text-base font-normal lg:w-auto w-full [&_.ant-input-affix-wrapper]:hover:!border-canGrey2 focus:!border-canGrey2 focus:!shadow-none "
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                }}
+              />
+            </div>
             {displayList && displayList.length > 0 ? (
               displayList.map((data, i) => (
                 <div key={data.topic_num} className="!border !border-canGrey2 rounded-lg mb-5 last:mb-0 px-2.5">

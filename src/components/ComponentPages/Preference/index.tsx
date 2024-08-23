@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, Row, Select } from "antd";
+import { Button, Col, Form, Input, Row, Select, message } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import messages from "src/messages";
@@ -18,6 +18,7 @@ import {
 } from "src/store/slices/campDetailSlice";
 import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
 
+
 const ProfilePrefrences = () => {
     const [languageList, setLanguageList] = useState([]);
     const [algorithmList, setAlgorithmList] = useState([]);
@@ -32,8 +33,6 @@ const ProfilePrefrences = () => {
     const { Option } = Select;
     const {
         globalUserProfileData,
-        globalUserProfileDataEmail,
-        userLanguageList,
         privateList,
         address,
         updateAddress,
@@ -41,8 +40,6 @@ const ProfilePrefrences = () => {
         globalUserProfileDataLastName,
     } = useSelector((state: RootState) => ({
         globalUserProfileData: state.topicDetails.globalUserProfileData,
-        globalUserProfileDataEmail: state.topicDetails.globalUserProfileDataEmail,
-        userLanguageList: state.topicDetails.userLanguageList,
         privateList: state.topicDetails.privateList,
         address: state.topicDetails.address,
         updateAddress: state.topicDetails.updateAddress,
@@ -52,12 +49,11 @@ const ProfilePrefrences = () => {
     }));
 
 
-    const { tags, currentReturnUrl } = useSelector((state: RootState) => ({
+    const { tags } = useSelector((state: RootState) => ({
         tags: state?.tag?.tags,
-        currentReturnUrl: state?.auth?.currentReturnUrl,
+
     }));
     const { isUserAuthenticated } = isAuth();
-    const router = useRouter()
     const dispatch = useDispatch();
     const getTags = async () => {
         await getAllTags();
@@ -132,10 +128,10 @@ const ProfilePrefrences = () => {
             const res = await savePrefTags(userTags);
 
             if (res.status_code === 200) {
-                // message.success(res.message);
+                message.success(res.message);
             }
         } catch (error) {
-            // message.error("Failed to save tags.");
+            message.error("Failed to save tags.");
         } finally {
             setLoading(false);
         }
@@ -168,10 +164,9 @@ const ProfilePrefrences = () => {
     const isPublicOrPrivate = (field_value) => {
         return privateList?.includes(field_value) ? 0 : 1;
     };
-console.log(globalUserProfileDataLastName, "fgfgfgfgfgfgfgfgfgfg")
+    console.log(globalUserProfileDataLastName, "fgfgfgfgfgfgfgfgfgfg")
     //on update profile click
     const onFinish2 = async (values: any) => {
-        let birthday = values.birthday?._d;
         let code = values.postal_code;
         dispatch(setDisableButtonForProfileInfo(true));
         dispatch(setPostalCodeDisableForProfileInfo(true));
@@ -190,12 +185,7 @@ console.log(globalUserProfileDataLastName, "fgfgfgfgfgfgfgfgfgfg")
         values.first_name = globalUserProfileData;
         values.last_name = globalUserProfileDataLastName;
         values.default_algo = selectedAlgorithmKey;
-
-        //values.birthday = formatDate(birthday);
-
         values.birthday = birthdayForProfileInfo;
-
-        //End Set Private Public flags
         values.mobile_carrier = formVerify.getFieldValue(
             publicPrivateArray.mobile_carrier
         );
@@ -208,7 +198,7 @@ console.log(globalUserProfileDataLastName, "fgfgfgfgfgfgfgfgfgfg")
 
         let res = await UpdateUserProfileInfo(values);
         if (res && res.status_code === 200) {
-            // message.success(res.message);
+            message.success(res.message);
             if (values?.default_algo) {
                 dispatch(
                     setFilterCanonizedTopics({
@@ -239,18 +229,55 @@ console.log(globalUserProfileDataLastName, "fgfgfgfgfgfgfgfgfgfg")
 
             <Row gutter={30}>
                 <Col md={12} sm={24} className="w-full lg:mb-0 mb-5">
-                    <Form.Item name="language" label={messages.labels.language} className="[&_.ant-form-item-row]:!flex-col [&_.ant-form-item-row]:!flex [&_.ant-form-item-row]:!items-start [&_.ant-form-item-row]:!justify-start [&_.ant-form-item-control]:!w-full  [&_.ant-select-selector]:!h-11 [&_.ant-select-selector]:!rounded-lg  [&_.ant-select-selector]:!text-canBlack [&_.ant-select-selector]:!text-base [&_.ant-select-selector]:!font-medium [&_.ant-form-item-label>label]:!font-normal [&_.ant-form-item-label>label]:!text-canBlack [&_.ant-select-selection-search-input]:!h-full [&_.ant-select-selector]:!items-center !mb-0">
+                    <Form.Item name="language" label={messages.labels.language} className="
+    [&_.ant-form-item-row]:!flex-col
+    [&_.ant-form-item-row]:!flex
+    [&_.ant-form-item-row]:!items-start
+    [&_.ant-form-item-row]:!justify-start
+    [&_.ant-form-item-control]:!w-full
+    [&_.ant-select-selector]:!h-11
+    [&_.ant-select-selector]:!rounded-lg
+    [&_.ant-select-selector]:!text-canBlack
+    [&_.ant-select-selector]:!text-base
+    [&_.ant-select-selector]:!font-medium
+    [&_.ant-form-item-label>label]:!font-normal
+    [&_.ant-form-item-label>label]:!text-canBlack
+    [&_.ant-select-selection-search-input]:!h-full
+    [&_.ant-select-selector]:!items-center
+    [&_.ant-select-selector]:!border-canGrey2
+    [&_.ant-select-selector]:!shadow-none
+    [&_.ant-select-selector]:focus:!ring-0
+    [&_.ant-select-selector]:focus:!border-canGrey2
+    [&_.ant-select-selector]:hover:!border-canGrey2
+    [&_.ant-select-selector]:hover:!shadow-none
+    [&_.ant-select-selector]:active:!ring-0
+    [&_.ant-select-selector]:active:!border-canGrey2
+    [&_.ant-select-selection-item]:!text-base
+    !mb-0">
                         <Select
                             id="selectLanguage"
                             size="large"
                             placeholder="Select a language"
-                            tabIndex={10}
+
                             showSearch
                             optionFilterProp="children"
                             suffixIcon={
                                 <Image src="/images/caret-icon.svg" width={16} height={9} alt="" />
                             }
                             onChange={handleChangeLanguage}
+                            className="
+                            !border-none
+                            !shadow-none
+                            !focus:!ring-0
+                            !focus:!border-none
+                            !hover:!border-none
+                            !hover:!shadow-none
+                            !active:!ring-0
+                            !active:!border-none
+                        [&_.ant-select-selection-placeholder]:!font-normal
+                        [&_.ant-select-selection-placeholder]:!text-base
+                        [&_.ant-select-selection-placeholder]:!text-canLight
+                          "
                         >
                             {listOfOption(languageList, "languages")}
                         </Select>
@@ -260,23 +287,59 @@ console.log(globalUserProfileDataLastName, "fgfgfgfgfgfgfgfgfgfg")
                     <Form.Item
                         name="default_algo"
                         label={messages.labels.chooseAlgorithm}
-                        className="[&_.ant-form-item-row]:!flex-col [&_.ant-form-item-row]:!flex [&_.ant-form-item-row]:!items-start [&_.ant-form-item-row]:!justify-start [&_.ant-form-item-control]:!w-full  [&_.ant-select-selector]:!h-11 [&_.ant-select-selector]:!rounded-lg  [&_.ant-select-selector]:!text-canBlack [&_.ant-select-selector]:!text-base [&_.ant-select-selector]:!font-medium [&_.ant-form-item-label>label]:!font-normal [&_.ant-form-item-label>label]:!text-canBlack [&_.ant-select-selection-search-input]:!h-full [&_.ant-select-selector]:!items-center !mb-0"
+                        className="
+                                    [&_.ant-form-item-row]:!flex-col
+                                    [&_.ant-form-item-row]:!flex
+                                    [&_.ant-form-item-row]:!items-start
+                                    [&_.ant-form-item-row]:!justify-start
+                                    [&_.ant-form-item-control]:!w-full
+                                    [&_.ant-select-selector]:!h-11
+                                    [&_.ant-select-selector]:!rounded-lg
+                                    [&_.ant-select-selector]:!text-canBlack
+                                    [&_.ant-select-selector]:!text-base
+                                    [&_.ant-select-selector]:!font-medium
+                                    [&_.ant-form-item-label>label]:!font-normal
+                                    [&_.ant-form-item-label>label]:!text-canBlack
+                                    [&_.ant-select-selection-search-input]:!h-full
+                                    [&_.ant-select-selector]:!items-center
+                                    [&_.ant-select-selector]:!border-canGrey2
+                                    [&_.ant-select-selector]:!shadow-none
+                                    [&_.ant-select-selector]:focus:!ring-0
+                                    [&_.ant-select-selector]:focus:!border-canGrey2
+                                    [&_.ant-select-selector]:hover:!border-canGrey2
+                                    [&_.ant-select-selector]:hover:!shadow-none
+                                    [&_.ant-select-selector]:active:!ring-0
+                                    [&_.ant-select-selector]:active:!border-canGrey2
+                                    [&_.ant-select-selection-item]:!text-base
+                                    !mb-0
+  "
                     >
                         <Select
                             id="algorithms"
                             size="large"
                             placeholder={messages.placeholders.algorithm}
-                            tabIndex={11}
                             showSearch
                             optionFilterProp="children"
-                            suffixIcon={
-                                <Image src="/images/caret-icon.svg" width={16} height={9} alt="" />
-                            }
+                            suffixIcon={<Image src="/images/caret-icon.svg" width={16} height={9} alt="" />}
                             onChange={handleAlgorithmChange}
+                            className="
+                            !border-none
+                            !shadow-none
+                            !focus:!ring-0
+                            !focus:!border-none
+                            !hover:!border-none
+                            !hover:!shadow-none
+                            !active:!ring-0
+                            !active:!border-none
+                            [&_.ant-select-selection-placeholder]:!font-normal
+                            [&_.ant-select-selection-placeholder]:!text-base
+                          [&_.ant-select-selection-placeholder]:!text-canLight
+    "
                         >
                             {listOfOption(algorithmList, "algorithms")}
                         </Select>
                     </Form.Item>
+
                 </Col>
             </Row>
             <Row className="lg:flex hidden">
@@ -291,15 +354,17 @@ console.log(globalUserProfileDataLastName, "fgfgfgfgfgfgfgfgfgfg")
                         <p className="text-base font-medium">You have set <span className="text-canBlue text-base font-medium">{selectedCount} Topic Tags </span>as your preference</p>
                     </div>
 
+
                     <Input
                         placeholder="Search via Topic Tags name"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className=" lg:w-72 w-full h-11 rounded-lg border-canGrey2 lg:mb-0 mb-7 lg:order-0 order-1"
+                        className="lg:w-72 w-full h-11 rounded-lg border-canGrey2 lg:mb-0 mb-7 lg:order-0 order-1 placeholder:!text-base placeholder:!text-canBlue placeholder:!font-normal focus:!border-canGrey2 focus:!shadow-none hover:!border-canGrey2"
                         suffix={
                             <Image src="/images/search-icon.svg" width={16} height={16} alt="" />
                         }
                     />
+
                 </div>
 
 
@@ -339,25 +404,10 @@ console.log(globalUserProfileDataLastName, "fgfgfgfgfgfgfgfgfgfg")
                     />
                 </Button>
 
-                {/* <Button
-                    type="primary"
-                    onClick={onFinish}
-                    loading={loading}
-
-                    className=" Profile_btn ant-btn ant-btn-orange ant-btn-lg py-2.5 px-6 hover:bg-canBlue hover:text-white flex gap-2.5 items-center bg-canBlue text-white text-base font-medium rounded-lg border-none justify-center w-[12.5rem]"
-                >
-                    Save
-                    <Image
-                        src="/images/save-icon.svg"
-                        width={24}
-                        height={24}
-                        alt="no image"
-                    />
-                </Button> */}
                 <Form
                     form={formVerify}
                     onFinish={onFinish2}
-                // other form props
+
                 >
 
                     <Button
@@ -366,14 +416,14 @@ console.log(globalUserProfileDataLastName, "fgfgfgfgfgfgfgfgfgfg")
                         loading={loading}
                         onClick={async (e) => {
                             try {
-                                // Call the first function
-                                await formVerify.validateFields(); // Trigger form validation manually
-                                await onFinish2(formVerify.getFieldsValue()); // Get form values and pass them to onFinish2
 
-                                // Call the second function
-                                await onFinish(e); // Since onFinish handles saving tags, no need for arguments here
+                                await formVerify.validateFields();
+                                await onFinish2(formVerify.getFieldsValue());
+
+
+                                await onFinish(e);
                             } catch (error) {
-                                // Handle validation error if needed
+
                             }
                         }}
                     >
