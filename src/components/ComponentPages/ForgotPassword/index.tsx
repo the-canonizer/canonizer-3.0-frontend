@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Button, Card, Col, Form, Row, message } from "antd";
+import { Card, Col, Form, Row, message } from "antd";
 import { useRouter } from "next/router";
-import { LeftOutlined } from "@ant-design/icons";
 
 import ForgotPasswordUI from "./UI";
 import { forgotPasswordSendOTP } from "src/network/api/userApi";
@@ -44,7 +43,7 @@ const ForgotPassword = () => {
 
   const onBrowseClick = (e) => {
     e?.preventDefault();
-    router?.back();
+    router?.push({ pathname: "/login" });
   };
 
   return (
@@ -55,24 +54,9 @@ const ForgotPassword = () => {
       >
         <Row gutter={20}>
           <Col
-            lg={24}
+            lg={13}
             md={24}
-            xl={24}
-            xs={24}
-            className="hidden lg:block [&_.ftImage]:mb-0"
-          >
-            <Button
-              type="link"
-              className="h-[50px] text-sm w-2/12 text-canBlack flex items-start justify-start text-sm font-medium p-0 mb-4"
-              onClick={onBrowseClick}
-            >
-              <LeftOutlined /> Go Back
-            </Button>{" "}
-          </Col>
-          <Col
-            lg={12}
-            md={24}
-            xl={12}
+            xl={13}
             xs={24}
             className="bg-white rounded-lg mx-auto"
           >
@@ -80,6 +64,7 @@ const ForgotPassword = () => {
               form={form}
               onFinish={onFinish}
               isDisabled={isDisabled}
+              onBrowseClick={onBrowseClick}
             />
           </Col>
         </Row>

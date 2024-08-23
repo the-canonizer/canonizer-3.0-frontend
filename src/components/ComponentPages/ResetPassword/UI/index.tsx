@@ -1,6 +1,10 @@
 import { Fragment } from "react";
-import { Form, Typography } from "antd";
-import { ArrowRightOutlined, LockOutlined } from "@ant-design/icons";
+import { Button, Form, Typography } from "antd";
+import {
+  ArrowRightOutlined,
+  LeftOutlined,
+  LockOutlined,
+} from "@ant-design/icons";
 
 import messages from "src/messages";
 import PrimaryButton from "components/shared/Buttons/PrimariButton";
@@ -9,7 +13,7 @@ import LogoHeader from "components/common/headers/logoHeader";
 
 const { Title } = Typography;
 
-const ResetPasswordUI = ({ form, onFinish, isDisabled }) => {
+const ResetPasswordUI = ({ form, onFinish, isDisabled, onBrowseClick }) => {
   return (
     <Form
       form={form}
@@ -20,7 +24,16 @@ const ResetPasswordUI = ({ form, onFinish, isDisabled }) => {
       validateTrigger={messages.formValidationTypes()}
       className="h-full flex flex-col p-5"
     >
-      <div className="flex justify-center items-center text-center flex-col mb-6 mt-6">
+      <div className="relative w-full mt-6">
+        <Button
+          type="link"
+          className="text-sm text-canBlack flex items-start justify-start text-sm font-medium p-0 absolute left-0 top-0"
+          onClick={onBrowseClick}
+        >
+          <LeftOutlined /> Go Back
+        </Button>
+      </div>
+      <div className="flex justify-center items-center text-center flex-col mb-6">
         <LogoHeader />
       </div>
       <Title

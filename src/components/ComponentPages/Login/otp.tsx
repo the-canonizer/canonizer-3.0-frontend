@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
-import { Button, Card, Col, Form, Row } from "antd";
-import { LeftOutlined } from "@ant-design/icons";
+import { Card, Col, Form, Row } from "antd";
 
 import { resendOTPForRegistration, verifyOtp } from "src/network/api/userApi";
 import { RootState } from "src/store";
@@ -100,22 +99,7 @@ const LoginOTP = () => {
         className="bg-canGrey1 mt-0 lg:mt-0 h-full flex justify-center items-center [&>.ant-card-body]:p-0 [&>.ant-card-body]:w-full min-h-full tab:px-10"
       >
         <Row gutter={20}>
-          <Col
-            lg={24}
-            md={24}
-            xl={24}
-            xs={24}
-            className="hidden lg:block [&_.ftImage]:mb-0"
-          >
-            <Button
-              type="link"
-              className="h-[50px] text-sm w-2/12 text-canBlack flex items-start justify-start text-sm font-medium p-0 mb-4"
-              onClick={onBrowseClick}
-            >
-              <LeftOutlined /> Go Back
-            </Button>
-          </Col>
-          <Col lg={12} md={24} xl={12} xs={24} className="mx-auto">
+          <Col lg={13} md={24} xl={13} xs={24} className="mx-auto">
             <OTPVerify
               form={otpForm}
               onFinish={onOTPSubmit}

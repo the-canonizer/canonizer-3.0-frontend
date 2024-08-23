@@ -5,7 +5,7 @@ import InfoIcon from "./infoIcon";
 
 const TopicInfoCard = () => {
   return (
-    <CommonCards className="bg-topic-card-gr h-full [&_.ant-card-body]:h-full [&_.ant-card-body]:flex [&_.ant-card-body]:flex-col">
+    <CommonCards className="bg-topic-card-gr h-full border-canGrey2 [&_.ant-card-body]:h-full [&_.ant-card-body]:flex [&_.ant-card-body]:flex-col mt-[20px]">
       <header className="mb-14">
         <Typography.Paragraph className="text-canBlack font-semibold text-lg uppercase">
           What are Topics?

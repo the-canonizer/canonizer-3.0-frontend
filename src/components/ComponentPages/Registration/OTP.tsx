@@ -1,20 +1,17 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Card, Col, Form, Row, message } from "antd";
+import { Card, Col, Form, Row, message } from "antd";
 
 import OTPVerify from "./UI/otp";
 import { verifyOtp, resendOTPForRegistration } from "src/network/api/userApi";
 import { AppDispatch, RootState } from "src/store";
-import LeftContent from "./UI/leftContent";
 import { setEmailForOTP, setIsNewUser } from "src/store/slices/authSlice";
 import CustomSpinner from "components/shared/CustomSpinner";
-import { LeftOutlined } from "@ant-design/icons";
 
 const RegistrationOTP = () => {
   const { emailForOtp } = useSelector((state: RootState) => ({
     emailForOtp: state?.auth?.emailForOtp,
-    // currentReturnUrl: state?.auth?.currentReturnUrl,
   }));
 
   const [isResend, setIsResend] = useState(false),
@@ -92,7 +89,7 @@ const RegistrationOTP = () => {
 
   const onBrowseClick = (e) => {
     e?.preventDefault();
-    router?.back();
+    router?.push({ pathname: "/registration" });
   };
 
   return (
@@ -102,16 +99,7 @@ const RegistrationOTP = () => {
         className="bg-canGrey1 mt-0 lg:mt-10 h-full flex justify-center items-center [&>.ant-card-body]:p-0 [&>.ant-card-body]:w-full min-h-full tab:px-10"
       >
         <Row gutter={20}>
-          <Col lg={24} md={24} xl={24} xs={24} className="hidden lg:block">
-            <Button
-              type="link"
-              className="h-[50px] text-sm w-2/12 text-canBlack flex items-start justify-start text-sm font-medium p-0 mb-4"
-              onClick={onBrowseClick}
-            >
-              <LeftOutlined /> Go Back
-            </Button>
-          </Col>
-          <Col lg={12} md={24} xl={12} xs={24} className="mx-auto">
+          <Col lg={13} md={24} xl={13} xs={24} className="mx-auto">
             <OTPVerify
               form={otpForm}
               onFinish={onOTPSubmit}

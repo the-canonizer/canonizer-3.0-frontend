@@ -60,7 +60,7 @@ function Campforum() {
       <Row className="mt-4" gutter={[24, 24]}>
         <Col md={24} lg={24} xs={24} sm={24}>
           <CommonCard
-            className={`bg-canGray flex flex-col items-center justify-center [&_.ant-card-body]:w-full ${
+            className={`bg-canGray flex flex-col items-center justify-center [&_.ant-card-body]:w-full [&_.ant-card-body]:p-3 ${
               !thread?.length
                 ? "py-14 [&_.ant-card-body]:text-center "
                 : "!py-0"
@@ -88,10 +88,10 @@ function Campforum() {
               thread?.map((obj) => (
                 <div
                   key={obj?.id}
-                  className="cursor-pointer last:border-none py-3 px-5 group flex justify-between w-full hover:shadow-camp-light hover:bg-white hover:border-transparent hover:rounded-xl [&_.arrowIcon]:hover:block lg:border-b lg:mb-0 mb-2.5"
+                  className="cursor-pointer last:border-none py-3 px-5 group flex justify-between w-full hover:[&_.headingTitle]:font-semibold [&_.arrowIcon]:hover:block lg:border-b lg:mb-0 mb-2.5"
                 >
                   <div className="w-full grid grid-rows-2 md:grid-flow-col center">
-                    <Typography.Paragraph className="!mb-0 text-xs 2xl:text-sm text-canBlack text-ellipsis font-medium row-start-1 md:row-start-0 col-span-2 md:col-span-2">
+                    <Typography.Paragraph className="!mb-0 text-sm text-canBlack text-ellipsis font-normal row-start-1 md:row-start-0 col-span-2 md:col-span-2 headingTitle">
                       {obj.body}
                     </Typography.Paragraph>
                     <Typography.Paragraph className="text-canBlack text-opacity-50 font-medium text-[10px] 2xl:text-xs !mb-0 flex items-center mt-1 row-start-2 row-span-2 col-span-2 md:col-span-2 md:row-start-0 md:row-span-0">
@@ -105,10 +105,10 @@ function Campforum() {
                         width={18}
                         preview={false}
                       />
-                      <Typography.Text className="text-xs 2xl:text-sm text-canLightBlack flex items-center gap-1 font-medium">
+                      <Typography.Text className="text-xs text-canLightBlack flex items-center gap-1 font-medium">
                         {obj.post_count}{" "}
                         <span>{+obj.post_count > 1 ? "Replies" : "Reply"}</span>
-                        <RightOutlined className="hidden arrowIcon" />
+                        {/* <RightOutlined className="hidden arrowIcon" /> */}
                       </Typography.Text>
                     </div>
                   </div>

@@ -17,7 +17,7 @@ const ResetPasswordPage = () => {
 
   useEffect(() => {
     if (!isPasswordVerfied) {
-      // router?.push({ pathname: "/forgot-password" });
+      router?.push({ pathname: "/forgot-password" });
     }
   }, [isPasswordVerfied]);
 

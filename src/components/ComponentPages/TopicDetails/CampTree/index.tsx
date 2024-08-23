@@ -255,7 +255,7 @@ const CampTree = ({
           key="camp_subscribed_icon"
         >
           <i
-            className={`icon-subscribe text-primary ${styles.iconSubscribe}`}
+            className={`icon-subscribe small text-xs text-primary ${styles.iconSubscribe}`}
           ></i>
         </Tooltip>
       ) : (
@@ -268,7 +268,7 @@ const CampTree = ({
           // title="You have subscribed to the entire topic."
         >
           <i
-            className={`icon-subscribe text-secondary  ${styles.implicitIcon}`}
+            className={`icon-subscribe small text-xs !text-canBlack !font-[300]  ${styles.implicitIcon}`}
           ></i>
         </Tooltip>
       )
@@ -471,43 +471,14 @@ const CampTree = ({
                             data[item]
                           )}
                       </span>
-                      <span className="bg-canOrange p-1 rounded-md flex items-center gap-1">
-                        {/* <ProgressBar
-                          completed={77}
-                          animateOnRender={true}
-                          className="progress-bar"
-                          width={String(
-                            showScoreBars
-                              ? (data[item].score * 460) /
-                                  tree?.at(0)["1"].score +
-                                  50 +
-                                  "px"
-                              : `${
-                                  (is_checked
-                                    ? data[item].full_score?.toFixed(2)
-                                    : data[item].score?.toFixed(2)
-                                  ).length * 11
-                                }px`
-                          )}
-                          baseBgColor={"#fff"}
-                          labelAlignment={"left"}
-                          bgColor={"#f89d15"}
-                          borderRadius={"2px"}
-                          height="16px"
-                          customLabel={
-                            is_checked
-                              ? data[item].full_score?.toFixed(2)
-                              : data[item].score?.toFixed(2)
-                          }
-                        /> */}
-
+                      <span className="bg-canOrange px-[0.30rem] rounded-md flex items-center gap-1">
                         <Image
                           src="/images/hand-icon.svg"
                           alt="svg"
-                          height={14}
-                          width={14}
+                          height={12}
+                          width={12}
                         />
-                        <span className="text-xs text-white">
+                        <span className="text-[10px] text-white">
                           {is_checked
                             ? data[item].full_score?.toFixed(2)
                             : data[item].score?.toFixed(2)}
@@ -719,7 +690,7 @@ const CampTree = ({
               Event Line
             </Button>
           </div> */}
-          <span className={styles.subScriptionIcon}>
+          {/* <span className={styles.subScriptionIcon}>
             {isUserAuthenticated && !!topicRecord?.topicSubscriptionId ? (
               <Tooltip
                 title="You have subscribed to the entire topic."
@@ -728,14 +699,20 @@ const CampTree = ({
                 <small style={{ alignSelf: "center", marginLeft: "10px" }}>
                   <i className="icon-subscribe text-primary"></i>
                 </small>
+                 showLine
+      switcherIcon={<DownOutlined />}
+      defaultExpandedKeys={['0-0-0']}
+      onSelect={onSelect}
+      treeData={treeData}
               </Tooltip>
             ) : (
               ""
             )}
-          </span>
+          </span> */}
         </Typography.Paragraph>
         <Tree
-          showLine={{ showLeafIcon: false }}
+        showLine
+          // showLine={{ showLeafIcon: false }}
           onSelect={onSelect}
           onExpand={onExpand}
           expandedKeys={[...uniqueKeys]}

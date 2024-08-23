@@ -551,13 +551,6 @@ body {
   @apply h-1 rounded-tl-full rounded-tr-full bg-canBlue;
 }
 
-.ant-tabs-nav-list .ant-tabs-tab:first-child {
-  @apply ml-5;
-}
-// .ant-tabs-nav-list .ant-tabs-tab:first-child{
-//   @apply ml-5
-// }
-
 .ant-tabs-nav-list .ant-tabs-tab:last-child {
   @apply mr-5;
 }
@@ -679,7 +672,7 @@ body {
     font-weight: 400;
   }
   .ant-select-selection-item {
-    @apply text-sm;
+    @apply text-sm font-normal;
   }
 }
 
@@ -713,4 +706,10 @@ body {
 }
 .ant-tabs-nav-list .ant-tabs-tab:last-child {
   @apply mr-5;
+}
+
+.statementCardBody {
+  .ant-card-body {
+    height: calc(100% - var(--element-height));
+  }
 }

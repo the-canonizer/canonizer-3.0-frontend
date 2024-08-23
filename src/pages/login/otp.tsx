@@ -17,7 +17,7 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (!emailForOtp) {
-      // router?.push({ pathname: "/login" });
+      router?.push({ pathname: "/login" });
     }
 
     return () => dispatch(setEmailForOTP(null));

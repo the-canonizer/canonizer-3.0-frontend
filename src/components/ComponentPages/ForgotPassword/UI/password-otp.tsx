@@ -1,5 +1,5 @@
-import { Typography, Form } from "antd";
-import { ArrowRightOutlined } from "@ant-design/icons";
+import { Typography, Form, Button } from "antd";
+import { ArrowRightOutlined, LeftOutlined } from "@ant-design/icons";
 
 import messages from "src/messages";
 import PrimaryButton from "components/shared/Buttons/PrimariButton";
@@ -19,6 +19,7 @@ function ForgotPasswordUI({
   isResend,
   onRsendClick,
   timer,
+  onBrowseClick,
 }) {
   return (
     <Form
@@ -30,7 +31,16 @@ function ForgotPasswordUI({
       validateTrigger={messages.formValidationTypes()}
       className="h-full flex flex-col p-6"
     >
-      <div className="flex justify-center items-center text-center flex-col mb-6 mt-6">
+      <div className="relative w-full mt-6">
+        <Button
+          type="link"
+          className="text-sm text-canBlack flex items-start justify-start text-sm font-medium p-0 absolute left-0 top-0"
+          onClick={onBrowseClick}
+        >
+          <LeftOutlined /> Go Back
+        </Button>
+      </div>
+      <div className="flex justify-center items-center text-center flex-col mb-6">
         <LogoHeader />
       </div>
       <Title
@@ -67,7 +77,8 @@ function ForgotPasswordUI({
           {isResend && (
             <div className="text-center">
               <SecondaryButton
-                className="border-0"
+                type="text"
+                className="border-0 !text-xs"
                 onClick={onRsendClick}
                 disabled={timer}
               >

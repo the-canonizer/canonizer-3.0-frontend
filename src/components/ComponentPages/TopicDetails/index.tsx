@@ -54,6 +54,7 @@ import CampTree from "./CampTree";
 import { setCampActivityData } from "src/store/slices/recentActivitiesSlice";
 import SectionHeading from "../Home/FeaturedTopic/sectionsHeading";
 import { openNotificationWithIcon } from "../../common/notification/notificationBar";
+import ScoreTag from "../Home/TrandingTopic/scoreTag";
 
 const { Link: AntLink } = Typography;
 
@@ -466,28 +467,21 @@ const TopicDetails = ({ serverSideCall }: any) => {
           !openConsensusTreePopup && (
             <Fragment>
               <div className="support-tree-parent-box w-full mt-14 lg:mt-0">
-                <div className="flex gap-2 items-center mb-5 ">
+                <div className="flex gap-1 items-center mb-4">
                   <SectionHeading
                     title="Support Tree"
                     infoContent=""
                     icon={null}
+                    className="!mb-0 [&_span]:mr-1"
                   />
-                  <div className="handicon-badge py-1 px-2.5 bg-canOrange rounded inline-flex items-center gap-1.5">
-                    <Image
-                      src="/images/hand-icon.svg"
-                      alt="svg"
-                      height={16}
-                      width={12}
-                    />
-                    <span className="text-white font-medium text-sm">
-                      {campRecord?.is_archive
-                        ? 0
-                        : totalCampScoreForSupportTree?.toFixed(2)}
-                    </span>
-                  </div>
+                  <ScoreTag
+                    topic_score={
+                      campRecord?.is_archive ? 0 : totalCampScoreForSupportTree
+                    }
+                  />
                 </div>
-                <div className="bg-canGray py-7 px-2.5 lg:px-6 rounded-lg">
-                  <div className="border border-canGrey2 bg-white rounded-lg lg:p-5 p-2.5">
+                <div className="bg-canGray py-7 px-2.5 lg:px-6 rounded-lg h-52 xl:h-[600px]">
+                  <div className="border border-canGrey2 bg-white rounded-lg lg:p-2 p-2.5 h-full">
                     <SupportTreeCard
                       loadingIndicator={loadingIndicator}
                       isRemovingSupport={isRemovingSupport}
@@ -575,7 +569,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
                     infoContent=""
                     icon={null}
                   />
-                  <p className="text-sm  font-medium !text-canBlack">
+                  <p className="text-sm  font-normal !text-canBlack mt-4">
                     Collapse camps with support less than
                   </p>
 

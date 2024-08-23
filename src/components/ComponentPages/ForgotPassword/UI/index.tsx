@@ -1,5 +1,9 @@
-import { Typography, Form } from "antd";
-import { ArrowRightOutlined, MailOutlined } from "@ant-design/icons";
+import { Typography, Form, Button } from "antd";
+import {
+  ArrowRightOutlined,
+  LeftOutlined,
+  MailOutlined,
+} from "@ant-design/icons";
 import { Fragment } from "react";
 
 import messages from "src/messages";
@@ -10,7 +14,7 @@ import LogoHeader from "components/common/headers/logoHeader";
 const { Title, Text } = Typography;
 const { labels } = messages;
 
-function ForgotPasswordUI({ form, onFinish, isDisabled }) {
+function ForgotPasswordUI({ form, onFinish, isDisabled, onBrowseClick }) {
   return (
     <Form
       form={form}
@@ -21,7 +25,16 @@ function ForgotPasswordUI({ form, onFinish, isDisabled }) {
       validateTrigger={messages.formValidationTypes()}
       className="h-full flex flex-col p-6"
     >
-      <div className="flex justify-center items-center text-center flex-col mb-6 mt-6">
+      <div className="relative w-full mt-6">
+        <Button
+          type="link"
+          className="text-sm text-canBlack flex items-start justify-start text-sm font-medium p-0 absolute left-0 top-0"
+          onClick={onBrowseClick}
+        >
+          <LeftOutlined /> Go Back
+        </Button>
+      </div>
+      <div className="flex justify-center items-center text-center flex-col mb-6">
         <LogoHeader />
       </div>
       <Title

@@ -9,7 +9,7 @@ const LogoHeader = () => {
           src={`/images/logo.svg`}
           alt="Picture of the author"
           preview={false}
-          width={200}
+          width={150}
         />
       </Link>
     </div>

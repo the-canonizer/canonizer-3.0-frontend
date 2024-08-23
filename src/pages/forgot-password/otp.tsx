@@ -24,7 +24,7 @@ const ForgotPasswordPage = () => {
     }
 
     if (!passwordEmail) {
-      // router?.push({ pathname: "/forgot-password" });
+      router?.push({ pathname: "/forgot-password" });
     }
   }, [passwordEmail]);
 
