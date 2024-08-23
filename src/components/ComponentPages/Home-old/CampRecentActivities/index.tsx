@@ -71,8 +71,8 @@ export default function CampRecentActivities() {
         />
       </div>
       <div className="camp-recent lg:bg-canGray bg-transparent lg:py-8 lg:px-6 rounded-2xl">
-        <div className="camp-recent-child d-flex justify-center flex-col items-center bg-white lg:px-7 px-3.5  rounded-xl border border-canGrey2 ">
-          <div className="d-flex flex-col gap-1 w-full">
+        <div className="camp-recent-child d-flex justify-center flex-col items-center bg-white lg:px-7 px-3.5  rounded-xl border border-canGrey2 h-full">
+          <div className="d-flex flex-col gap-1 w-full h-full">
             {loadingIndicator ? (
               <CustomSkelton
                 className=""

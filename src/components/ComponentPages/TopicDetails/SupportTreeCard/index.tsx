@@ -45,6 +45,7 @@ import { setOpenConsensusTreePopup } from "src/store/slices/hotTopicSlice";
 import dynamic from "next/dynamic";
 
 import SignCamp from "./SignCamp";
+import ScoreTag from "components/ComponentPages/Home/TrandingTopic/scoreTag";
 
 const { Paragraph } = Typography;
 const { Panel } = Collapse;
@@ -440,7 +441,7 @@ const SupportTreeCard = ({
                           "treeListItemTitle " + styles.treeListItemTitle
                         }
                       > */}
-                    <div className="flex gap-1 items-center  boder-b p-[10px] w-full flex-wrap">
+                    <div className="flex gap-1 items-center  boder-b p-[8px] w-full flex-wrap">
                       <Link
                         className="flex flex-wrap"
                         href={{
@@ -450,7 +451,7 @@ const SupportTreeCard = ({
                           },
                         }}
                       >
-                        <a className="flex  gap-2.5 items-center flex-wrap text-canBlack hover:!text-canBlack">
+                        <a className="flex  gap-2 items-center flex-wrap text-canBlack hover:!text-canBlack line-clamp-1">
                           <span className="text-canBlack text-xs font-normal">
                             #{data[item].support_order}{" "}
                           </span>
@@ -480,8 +481,16 @@ const SupportTreeCard = ({
                           </span>
                         </a>
                       </Link>
-
-                      <div className="flex bg-canOrange px-2.5 py-1 rounded-md gap-1 items-center">
+                      <ScoreTag
+                        topic_score={
+                          campRecord?.is_archive
+                            ? 0
+                            : is_checked && isUserAuthenticated
+                            ? data[item].full_score
+                            : data[item].score
+                        }
+                      />
+                      {/* <div className="flex bg-canOrange px-2.5 py-1 rounded-md gap-1 items-center">
                         <Image
                           src="/images/hand-icon.svg"
                           alt="svg"
@@ -494,7 +503,7 @@ const SupportTreeCard = ({
                             ? data[item].full_score?.toFixed(2)
                             : data[item].score?.toFixed(2)}
                         </span>
-                      </div>
+                      </div> */}
                     </div>
 
                     {(userNickNameList?.length > 0 &&
@@ -667,19 +676,17 @@ const SupportTreeCard = ({
       return K.exceptionalMessages?.directJoinSupport;
     }
   };
-  let title = `Support Tree for "${campRecord?.camp_name}" Camp`;
 
   return loadingIndicator || loadingIndicatorSupport ? (
     <CustomSkelton
-      skeltonFor="card"
-      titleName={title}
-      bodyCount={3}
+      skeltonFor="list"
+      bodyCount={10}
       stylingClass="test"
       isButton={false}
     />
   ) : (
     <>
-      <div className="topicDetailsCollapse">
+      <div className="topicDetailsCollapse flex flex-col w-full h-full">
         <SupportTreeDrawer
           onClose={onClose}
           open={open}
@@ -693,7 +700,7 @@ const SupportTreeCard = ({
           loader={loader}
           setLoader={setLoader}
         />
-        <div className=" support-tree-sec">
+        <div className="support-tree-sec overflow-hidden overflow-y-auto">
           {campSupportingTree?.length > 0 ? (
             <Tree
               className={"Parent_Leaf"}
@@ -723,7 +730,7 @@ const SupportTreeCard = ({
             </CustomButton>
           )}
         </div>
-        <div className="topicDetailsCollapseFooter printHIde mt-3 w-full flex flex-col gap-2 justify-center">
+        <div className="topicDetailsCollapseFooter printHIde mt-auto pt-3 w-full flex flex-col gap-2 justify-center">
           <CustomButton
             onClick={handleClickSupportCheck}
             className="w-full justify-center bg-canGreen hover:!bg-canGreen hover:!text-white hover:!border-transparent !border-transparent h-auto py-2 text-white flex items-center rounded-lg font-medium text-sm gap-2"
@@ -741,7 +748,7 @@ const SupportTreeCard = ({
           <Popover content={renderPopupMsg()}>
             <Button
               size="large"
-              className="flex items-center justify-center h-[44px] border-[#4EB966] hover:!text-canBlack hover:!border-[#4EB966] hover:!bg-[#4EB9661A] bg-[#4EB9661A] rounded-lg font-medium text-sm"
+              className="flex items-center justify-center h-auto py-2 border-[#4EB966] hover:!text-canBlack hover:!border-[#4EB966] hover:!bg-[#4EB9661A] bg-[#4EB9661A] rounded-lg font-medium text-sm"
               block
               disabled={disableSignPetition()}
               onClick={() => signPetitionHandler()}

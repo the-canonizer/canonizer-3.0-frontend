@@ -24,7 +24,7 @@ const CustomPagination = ({
         showTotal={showTotal}
         pageSizeOptions={[10, 16]}
         showSizeChanger
-        showQuickJumper
+        // showQuickJumper
         onChange={handlePageChange}
         onShowSizeChange={handlePageChange}
         disabled={loading}
