@@ -422,7 +422,7 @@ export default function DelegatedSupportCampsUI({
                   placeholder="Search via topic name"
                   type="text"
                   name="search"
-                  className="!h-10 rounded-lg border border-canGrey2 text-base font-normal lg:w-auto w-full"
+                 className="!h-10 rounded-lg border border-canGrey2 text-base font-normal lg:w-auto w-full [&_.ant-input-affix-wrapper]:hover:!border-canGrey2 focus:!border-canGrey2 focus:!shadow-none "
                   onChange={(e) => {
                     setSearch(e.target.value);
                   }}

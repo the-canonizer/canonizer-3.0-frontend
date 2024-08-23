@@ -45,6 +45,7 @@ import ImageUploader from "../ImageUploader";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
 import { logout } from "src/network/api/userApi";
+import ProfilePrefrences from "../Preference";
 
 const { TabPane } = Tabs;
 const tabList = [
@@ -136,7 +137,7 @@ const SettingsUI = () => {
     profile_info: <ProfileInfo />,
     change_password: <ChangePassword />,
     nick_name: <NickName />,
-
+    user_prefrences : <ProfilePrefrences/>,
     direct_supported_camps: <DirectSupportedCamps search={search} />,
     delegate_supported_camp: <DelegatedSupportCamps search={search} />,
     supported_camps: (
@@ -325,13 +326,13 @@ const SettingsUI = () => {
       ),
     },
     {
-      key: "change_password",
+      key: "user_prefrences",
       label: (
         <span>
-          <Link href="#">
+          <Link href="/settings?tab=user_prefrences">
             <a
               className={`flex items-center gap-3   ${
-                router?.asPath?.includes("change_password")
+                router?.asPath?.includes("user_prefrences")
                   ? "sample relative"
                   : ""
               }`}

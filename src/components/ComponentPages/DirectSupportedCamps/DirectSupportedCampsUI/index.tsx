@@ -179,7 +179,7 @@ export default function DirectSupportedCampsUI({
               <Button
                 data-testid="save_change_btn"
                 id="revertBtn"
-                className="Profile_btn ant-btn ant-btn-orange ant-btn-lg py-2.5 px-6  flex gap-2.5 items-center bg-[#98B7E6] bg-opacity-10 text-canBlack text-base font-medium rounded-lg border-canBlue justify-center "
+                className="Profile_btn ant-btn ant-btn-orange ant-btn-lg py-2.5 px-6  flex gap-2.5 items-center bg-btnBg bg-opacity-10 text-canBlack text-base font-medium rounded-lg border-canBlue justify-center "
                 onClick={() => {
                   handleRevertBack(idData, record.camps);
                   setCardCamp_ID("");
@@ -464,7 +464,7 @@ export default function DirectSupportedCampsUI({
                     </Button>
                     <Button
                       id="revertBtn"
-                      className="bg-[#98B7E6] bg-opacity-10 text-canBlack text-base font-medium rounded-lg py-2.5 px-6 flex items-center"
+                      className="bg-btnBg bg-opacity-10 text-canBlack text-base font-medium rounded-lg py-2.5 px-6 flex items-center"
                       onClick={() => {
                         handleRevertBack(idData, record.camps);
                         setCardCamp_ID("");
@@ -535,7 +535,7 @@ export default function DirectSupportedCampsUI({
                     placeholder="Search via topic name"
                     type="text"
                     name="search"
-                    className="!h-10 rounded-lg border border-canGrey2 text-base font-normal lg:w-auto w-full"
+                    className="!h-10 rounded-lg border border-canGrey2 text-base font-normal lg:w-auto w-full [&_.ant-input-affix-wrapper]:hover:!border-canGrey2 focus:!border-canGrey2 focus:shadow-none "
                     onChange={(e) => {
                       setSearch(e.target.value);
                     }}
@@ -585,7 +585,7 @@ export default function DirectSupportedCampsUI({
             <h1 id="changesWillBeReverted">Changes will be reverted ?</h1>
           </Modal>
           <Drawer
-            className="lg:flex hidden [&_.ant-drawer-header-title]:!items-start [&_.ant-drawer-close]:!mt-2 "
+            className="lg:flex hidden [&_.ant-drawer-header-title]:!items-start [&_.ant-drawer-close]:!mt-2 [&_.ant-drawer-body]:!p-14 "
             open={openDrawerForDirectSupportedCamp}
             closeIcon={
               <Image

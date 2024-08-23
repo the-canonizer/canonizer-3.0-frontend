@@ -198,7 +198,7 @@ export default function ChangePasswordUI({
             </Button> */}
             <div className="flex items-center w-full justify-center gap-6 my-5">
               <Button
-                className="ant-btn-lg py-2.5 px-12 hover:bg-canBlue hover:text-white flex gap-2.5 items-center bg-[#98B7E6] bg-opacity-10 text-canBlack text-base font-medium rounded-lg border-canBlue justify-center "
+                className="ant-btn-lg py-2.5 px-12 hover:bg-canBlue hover:text-white flex gap-2.5 items-center bg-btnBg bg-opacity-10 text-canBlack text-base font-medium rounded-lg border-canBlue justify-center "
                 onClick={() => {
                   form.resetFields(); // Reset all fields in the form
                   setCurrentPassWord(""); // Optionally clear the state if needed

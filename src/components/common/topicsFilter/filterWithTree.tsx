@@ -234,26 +234,26 @@ const FilterWithTree = ({
       dispatch(setFilterCanonizedTopics({ namespace_id: router.query.canon }));
     }
 
-    if (
-      String(filterObject?.filterByScore) !== "0" ||
-      String(filterObject?.namespace_id) !== "1" ||
-      filterObject?.asof !== "default" ||
-      filterObject?.algorithm !== "blind_popularity" ||
-      campScoreValue !== 10
-    ) {
-      onChangeRoute(
-        +router.query.score || filteredScore || 0,
-        (
-          router.query.algo ||
-          filterObject?.algorithm ||
-          "blind_popularity"
-        )?.toString(),
-        (router.query.asof || filterObject?.asof || "default")?.toString(),
-        +router.query.asofdate || filterObject?.asofdate,
-        +router.query.canon,
-        viewThisVersion
-      );
-    }
+    // if (
+    //   String(filterObject?.filterByScore) !== "0" ||
+    //   String(filterObject?.namespace_id) !== "1" ||
+    //   filterObject?.asof !== "default" ||
+    //   filterObject?.algorithm !== "blind_popularity" ||
+    //   campScoreValue !== 10
+    // ) {
+    //   onChangeRoute(
+    //     +router.query.score || filteredScore || 0,
+    //     (
+    //       router.query.algo ||
+    //       filterObject?.algorithm ||
+    //       "blind_popularity"
+    //     )?.toString(),
+    //     (router.query.asof || filterObject?.asof || "default")?.toString(),
+    //     +router.query.asofdate || filterObject?.asofdate,
+    //     +router.query.canon,
+    //     viewThisVersion
+    //   );
+    // }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -352,15 +352,16 @@ const FilterWithTree = ({
     } else {
       let datepicker =
         moment().unix() > moment(e?._d).unix() &&
-        moment().format("YYYY-MM-DD") > moment(e?._d).format("YYYY-MM-DD")
+          moment().format("YYYY-MM-DD") > moment(e?._d).format("YYYY-MM-DD")
           ? momentDateObject(moment(e?._d).endOf("day"))
           : momentDateObject(
-              moment(e?._d).set({
-                hour: moment().hour(),
-                minute: moment().minute(),
-                second: moment().second(),
-              })
-            );
+            moment(e?._d).set({
+              hour: moment().hour(),
+              minute: moment().minute(),
+              second: moment().second(),
+            })
+          );
+      setSelectedAsOFDate(Date.parse(datepicker) / 1000);
       setDatePickerValue(datepicker);
       IsoDateFormat = Date.parse(datepicker) / 1000;
     }
@@ -394,16 +395,16 @@ const FilterWithTree = ({
     if (datePickerValue !== null) {
       let dateValue =
         moment().unix() > moment(datePickerValue).unix() &&
-        moment().format("YYYY-MM-DD") >
+          moment().format("YYYY-MM-DD") >
           moment(datePickerValue).format("YYYY-MM-DD")
           ? momentDateObject(moment(datePickerValue).endOf("day"))
           : momentDateObject(
-              moment(datePickerValue).set({
-                hour: moment().hour(),
-                minute: moment().minute(),
-                second: moment().second(),
-              })
-            );
+            moment(datePickerValue).set({
+              hour: moment().hour(),
+              minute: moment().minute(),
+              second: moment().second(),
+            })
+          );
       setCookie("asofDate", JSON.stringify(Date.parse(dateValue) / 1000), {
         path: "/",
       });

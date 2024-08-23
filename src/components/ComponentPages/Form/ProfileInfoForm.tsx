@@ -26,6 +26,8 @@ import {
 } from "src/network/api/userApi";
 import { EditOutlined } from "@ant-design/icons";
 import Image from "next/image";
+import { RootState } from "src/store";
+import { useSelector } from "react-redux";
 const { Title } = Typography;
 const { Option } = Select;
 
@@ -78,6 +80,12 @@ function ProfileInfoForm({
     new Array(6).fill("")
   );
   const [saveOtpValue, setSaveOtpValue] = useState("");
+  const { disableButtonForProfileInfo, postalCodeDisableForProfileInfo } = useSelector(
+    (state: RootState) => ({
+      disableButtonForProfileInfo: state.topicDetails.disableButtonForProfileInfo,
+      postalCodeDisableForProfileInfo: state.topicDetails.postalCodeDisableForProfileInfo,
+    })
+  );
 
   useEffect(() => {
     setgmapsLoaded(true);
@@ -94,7 +102,7 @@ function ProfileInfoForm({
   };
   useEffect(() => {
     // Disable the button if the input value is empty or same as the previous value
-    if (inputValue.trim() === "" || inputValue === prevValue) {
+    if (inputValue?.trim() === "" || inputValue === prevValue) {
       setIsButtonDisabled(true);
       setAfterSaveChangeDisable(false);
     } else {
@@ -104,7 +112,7 @@ function ProfileInfoForm({
   }, [inputValue, prevValue]);
 
   const handleChange = (e) => {
-    const newValue = e.target.value;
+    const newValue = e?.target?.value;
     setPrevValue(inputValue); // Store the current value as previous before updating
     setInputValue(newValue); // Update the current value
     if (newValue) {
@@ -596,7 +604,7 @@ function ProfileInfoForm({
                               size="large"
                               defaultValue={publicOrPrivate("birthday")}
                               onChange={handleselectAfter("birthday")}
-                              className="mobile-select font-medium [&_.ant-select-selector]:!h-[3rem] [&_.ant-select-selector]:!flex [&_.ant-select-selector]:!items-center [&_.ant-select-selector]:!rounded-br-lg [&_.ant-select-selector]:!rounded-tr-lg [&_.ant-select-selection-item]:!flex [&_.ant-select-selection-item]:!items-center [&_.ant-select]:!my-0 [&_.ant-input-affix-wrapper-lg]:!pl-4 [&_.ant-select-selection-item]:after:!hidden
+                              className="mobile-select font-medium [&_.ant-select-selector]:!h-[3.25rem] [&_.ant-select-selector]:!flex [&_.ant-select-selector]:!items-center [&_.ant-select-selector]:!rounded-br-lg [&_.ant-select-selector]:!rounded-tr-lg [&_.ant-select-selection-item]:!flex [&_.ant-select-selection-item]:!items-center [&_.ant-select]:!my-0 [&_.ant-input-affix-wrapper-lg]:!pl-4 [&_.ant-select-selection-item]:after:!hidden
                             [&_.ant-select-selector]:!bg-canGray"
                               showSearch
                               optionFilterProp="children"
@@ -779,7 +787,7 @@ function ProfileInfoForm({
                     [&_.ant-input-affix-wrapper]:!h-[3.25rem] [&_.ant-input-affix-wrapper]:!py-0 [&_.ant-input]:!pl-2.5 [&_.ant-input-affix-wrapper]:!rounded-tl-lg [&_.ant-input-affix-wrapper]:!rounded-bl-lg [&_.ant-input]:!text-base [&_.ant-input]:!font-normal [&_.ant-select-selection-item]:!flex [&_.ant-select-selection-item]:!items-center [&_.ant-select]:!my-0
                         [&_.ant-input-affix-wrapper-lg]:!pl-4"
                     maxLength={255}
-                    disabled={postalCodeDisable}
+                    disabled={postalCodeDisable || postalCodeDisableForProfileInfo}
                     autoComplete="off"
                     defaultValue={publicOrPrivate("postal_code")}
                   />
@@ -791,9 +799,9 @@ function ProfileInfoForm({
             <Button
               onClick={handleDiscard}
               disabled={afterSaveChangeDisable || isButtonDisabled}
-              className="Profile_btn ant-btn ant-btn-orange ant-btn-lg py-2.5 px-12 hover:bg-canBlue hover:text-white flex gap-2.5 items-center bg-[#98B7E6] bg-opacity-10 text-canBlack text-base font-medium rounded-lg border-canBlue justify-center "
+              className="Profile_btn ant-btn ant-btn-orange ant-btn-lg py-2.5 px-12 hover:bg-btnBg hover:text-canBlack flex gap-2.5 items-center bg-btnBg bg-opacity-10 hover:bg-opacity-10 text-canBlack text-base font-medium rounded-lg border-canBlue justify-center w-[12.5rem] "
             >
-              Discard{" "}
+              Discard
               <Image
                 src="/images/cross-dark.svg"
                 width={16}
@@ -803,15 +811,18 @@ function ProfileInfoForm({
             </Button>
             <Button
               onClick={() => {
-                setAfterSaveChangeDisable(true);
+                form.validateFields().then((values) => {
+                  setInitialValues(values);
+                  setAfterSaveChangeDisable(true);
+                });
               }}
               id="profileUpdate"
               type="primary"
               htmlType="submit"
               data-testid="submitButton"
               tabIndex={12}
-              disabled={disableButton}
-              className=" Profile_btn ant-btn ant-btn-orange ant-btn-lg py-2.5 px-6 hover:bg-canBlue hover:text-white flex gap-2.5 items-center bg-canBlue text-white text-base font-medium rounded-lg border-none justify-center"
+              disabled={disableButton || disableButtonForProfileInfo}
+              className=" Profile_btn ant-btn ant-btn-orange ant-btn-lg py-2.5 px-6 hover:bg-canBlue hover:text-white flex gap-2.5 items-center bg-canBlue text-white text-base font-medium rounded-lg border-none justify-center w-[12.5rem]"
             >
               Save Changes{" "}
               <Image
@@ -840,7 +851,8 @@ function ProfileInfoForm({
             </p>
             <div className="flex gap-4 justify-center items-center mt-10">
               <Button
-                className="Profile_btn ant-btn ant-btn-orange ant-btn-lg py-2.5 px-12 hover:bg-canBlue hover:text-white flex gap-2.5 items-center bg-[#98B7E6] bg-opacity-10 text-canBlack text-base font-medium rounded-lg border-canBlue justify-center "
+                className="Profile_btn ant-btn ant-btn-orange ant-btn-lg py-2.5 px-12 hover:text-canBlack flex gap-2.5 items-center bg-btnBg bg-opacity-10 text-canBlack text-base font-medium rounded-lg border-canBlue justify-center w-[11.25rem] hover:bg- hover:!border-canBlue hover:bg-btnBg hover:bg-opacity-10"
+
                 onClick={() => {
                   setNewEmailOpen(false);
                 }}
@@ -855,7 +867,7 @@ function ProfileInfoForm({
               </Button>
               <Button
                 onClick={handleNewEmailSetup}
-                className=" Profile_btn ant-btn ant-btn-orange ant-btn-lg py-2.5 px-6 hover:bg-canBlue hover:text-white flex gap-2.5 items-center bg-canBlue text-white text-base font-medium rounded-lg border-none justify-center"
+                className=" Profile_btn ant-btn ant-btn-orange ant-btn-lg py-2.5 px-6 hover:bg-canBlue hover:text-white flex gap-2.5 items-center bg-canBlue text-white text-base font-medium rounded-lg border-none justify-center w-[11.25rem]"
               >
                 Get OTP
                 <Image
@@ -1055,7 +1067,7 @@ function ProfileInfoForm({
             <div className="py-20">
               <div className="flex items-center justify-center gap-5">
                 <Button
-                  className="Profile_btn ant-btn ant-btn-orange ant-btn-lg py-2.5 px-12 hover:bg-[#98B7E6] hover:text-white flex gap-2.5 items-center bg-[#98B7E6] bg-opacity-10 text-canBlack text-base font-medium rounded-lg border-canBlue justify-center "
+                  className="Profile_btn ant-btn ant-btn-orange ant-btn-lg py-2.5 px-12  hover:text-canBlack flex gap-2.5 items-center bg-btnBg bg-opacity-10 hover:bg-btnBg hover:bg-opacity-10 text-canBlack text-base font-medium rounded-lg border-canBlue justify-center w-[12.5rem]"
                   onClick={() => {
                     setDrawerOpen(false);
                     setStep(0);
@@ -1088,7 +1100,7 @@ function ProfileInfoForm({
                   </Button>
                 ) : (
                   <Button
-                    className=" Profile_btn ant-btn ant-btn-orange ant-btn-lg py-2.5 px-6 hover:bg-canBlue hover:text-white flex gap-2.5 items-center bg-canBlue text-white text-base font-medium rounded-lg border-none justify-center focus:bg-canBlue focus:text-white"
+                    className=" Profile_btn ant-btn ant-btn-orange ant-btn-lg py-2.5 px-6 hover:bg-canBlue hover:text-white flex gap-2.5 items-center bg-canBlue text-white text-base font-medium rounded-lg border-none justify-center focus:bg-canBlue focus:text-white w-[12.5rem]"
                     onClick={() => {
                       newEmailHandleClick();
                     }}
