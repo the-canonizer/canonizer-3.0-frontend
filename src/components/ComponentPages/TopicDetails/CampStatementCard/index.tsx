@@ -65,7 +65,6 @@ const CampStatementCard = ({ loadingIndicator }) => {
     const cardHeader = document.querySelector(
       "#statementCard .ant-card-head"
     ) as HTMLDivElement;
-    console.log("card-header-height-- ", cardHeader?.offsetHeight);
 
     return cardHeader?.offsetHeight || 0;
   };
@@ -184,9 +183,12 @@ const CampStatementCard = ({ loadingIndicator }) => {
                   title={campRecord?.camp_name}
                   infoContent=""
                   icon={null}
-                  className="!mb-0"
+                  className="text-sm lg:text-base normal-case text-canBlack text-left font-semibold !mb-0"
                 />
-                <ViewCounts views={tree?.[1] && tree[1]?.camp_views} className="!gap-1" />
+                <ViewCounts
+                  views={tree?.[1] && tree[1]?.camp_views}
+                  className="!gap-1"
+                />
               </div>
             </div>
 
@@ -225,7 +227,7 @@ const CampStatementCard = ({ loadingIndicator }) => {
       }
     >
       <div
-        className={`camp-agrrement-new overflow-hidden !overflow-y-auto w-full ${
+        className={`camp-agrrement-new overflow-hidden !overflow-y-auto w-full pr-4 ${
           campStatement?.length && campStatement[0]?.parsed_value
             ? ""
             : "my-auto"

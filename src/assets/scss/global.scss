@@ -713,3 +713,97 @@ body {
     height: calc(100% - var(--element-height));
   }
 }
+
+.ant-tree-switcher-leaf-line {
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+
+  &:before {
+    // display: block;
+    position: absolute;
+    top: 0;
+    right: 12px;
+    bottom: -4px;
+    margin-left: -1px;
+    border-right: 1px solid #d9d9d9;
+    content: " ";
+  }
+  &:after {
+    // display: block;
+    position: absolute;
+    width: 10px;
+    height: 14px;
+    border-bottom: 1px solid #d9d9d9;
+    content: " ";
+  }
+}
+
+.ant-tree-show-line .ant-tree-indent-unit:before {
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 12px;
+  bottom: -4px;
+  border-right: 1px solid #d9d9d9;
+  content: "";
+}
+
+// .ant-tree-show-line .ant-tree-switcher.ant-tree-switcher-noop:after {
+//   content: " " !important;
+//   width: 1px !important;
+//   border-left: 1px solid #d9d9d9 !important;
+//   height: 100% !important;
+//   position: absolute !important;
+//   left: 12px !important;
+// }
+// .ant-tree-show-line .ant-tree-switcher.ant-tree-switcher-noop:before {
+//   content: " ";
+//   width: 16px;
+//   border-bottom: 1px solid #d9d9d9;
+//   height: 38%;
+//   position: absolute;
+//   left: 12px;
+// }
+
+// .ant-tree-show-line
+//   > li:last-child
+//   > .ant-tree-switcher.ant-tree-switcher-noop:before {
+//   display: block;
+//   content: " " !important;
+//   width: 16px !important;
+//   border-left: 1px solid #d9d9d9 !important;
+//   border-bottom: 1px solid #d9d9d9 !important;
+//   height: 38% !important;
+//   position: absolute !important;
+//   left: 12px !important;
+// }
+
+// .ant-tree-show-line
+//   .ant-tree-child-tree
+//   > li:last-child
+//   > .ant-tree-switcher.ant-tree-switcher-noop:before {
+//   display: block;
+//   content: " " !important;
+//   width: 16px !important;
+//   border-left: 1px solid #d9d9d9 !important;
+//   border-bottom: 1px solid #d9d9d9 !important;
+//   height: 38% !important;
+//   position: absolute !important;
+//   left: 12px !important;
+// }
+
+// .ant-tree-show-line
+//   > li:last-child
+//   > .ant-tree-switcher.ant-tree-switcher-noop:after {
+//   display: none !important;
+// }
+
+// .ant-tree-show-line
+//   .ant-tree-child-tree
+//   > li:last-child
+//   > .ant-tree-switcher.ant-tree-switcher-noop:after {
+//   display: none !important;
+// }

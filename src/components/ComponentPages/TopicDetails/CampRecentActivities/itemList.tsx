@@ -1,9 +1,9 @@
 import { Fragment } from "react";
 import { Typography, List, Tooltip, Popover } from "antd";
 
-import CustomSkelton from "src/components/common/customSkelton";
+import CustomSkelton from "components/common/customSkelton";
 import { getProperties } from "src/utils/generalUtility";
-import ReasonsActivity from "src/components/common/SupportReasonActivity";
+import ReasonsActivity from "components/common/SupportReasonActivity";
 
 const { Link: AntLink, Text } = Typography;
 
@@ -31,8 +31,7 @@ function TopicCampsTab({
       }}
       dataSource={recentActivities?.topics}
       renderItem={(activity: any) => {
-        console.log("=== ", activity);
-        const decodedProperties = JSON.parse(activity?.activity?.properties);
+        const decodedProperties = JSON.parse(activity?.properties);
 
         return (
           <List.Item className="font-inter text-sm font-medium bg-white w-full px-2">
@@ -42,13 +41,13 @@ function TopicCampsTab({
             >
               <Fragment>
                 <Text className="text-canBlack text-sm font-normal mb-0">
-                  {activity?.activity?.description}{" "}
-                  {activity?.activity?.log_name === "support" &&
-                    getProperties(activity?.activity)?.reason && (
+                  {activity?.description}{" "}
+                  {activity?.log_name === "support" &&
+                    getProperties(activity)?.reason && (
                       <Popover
                         content={
                           <div className="w-full">
-                            <ReasonsActivity CurrentItem={activity?.activity} />
+                            <ReasonsActivity CurrentItem={activity} />
                           </div>
                         }
                         placement="top"
