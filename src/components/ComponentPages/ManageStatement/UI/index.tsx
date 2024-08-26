@@ -224,7 +224,9 @@ function ManageStatementUI({
                 <PrimaryButton
                   htmlType="submit"
                   className="inline-flex items-center justify-center h-auto py-2 px-7 h-auto"
-                  disabled={submitIsDisable || !isDisabled || isAutoSaving}
+                  disabled={
+                    (submitIsDisable && isEdit) || !isDisabled || isAutoSaving
+                  }
                 >
                   Publish Statement
                   <UploadOutlined />
