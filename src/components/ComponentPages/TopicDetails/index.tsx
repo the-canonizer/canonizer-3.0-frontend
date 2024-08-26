@@ -480,7 +480,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
                     }
                   />
                 </div>
-                <div className="bg-canGray py-7 px-2.5 lg:px-6 rounded-lg h-52 xl:h-[600px]">
+                <div className="bg-canGray py-7 px-2.5 lg:px-6 rounded-lg h-[400px] xl:h-[600px]">
                   <div className="border border-canGrey2 bg-white rounded-lg lg:p-2 p-2.5 h-full">
                     <SupportTreeCard
                       loadingIndicator={loadingIndicator}

@@ -18,7 +18,7 @@ const FeaturedTopic = () => {
   const [loadMoreIndicator, setLoadMoreIndicator] = useState(false);
 
   const settings = {
-    autoplay: false,
+    autoplay: true,
     dots: false,
     arrows: true,
     infinite: true,
@@ -27,11 +27,9 @@ const FeaturedTopic = () => {
     slidesToScroll: 1,
     centerPadding: "16px",
     className: "featuresSlider",
-    // dotsClass: "featuredDots my-[20px] justify-center",
     arrowClass: "",
     nextArrow: <RightOutlined className="text-xl text-canBlue" />,
     prevArrow: <LeftOutlined className="text-xl text-canBlue" />,
-    responsive: [],
   };
 
   if (!topicData?.length) {

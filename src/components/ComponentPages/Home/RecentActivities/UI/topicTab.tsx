@@ -31,7 +31,6 @@ function TopicCampsTab({
       }}
       dataSource={recentActivities?.topics}
       renderItem={(activity: any) => {
-        console.log("=== ", activity);
         const decodedProperties = JSON.parse(activity?.activity?.properties);
 
         return (

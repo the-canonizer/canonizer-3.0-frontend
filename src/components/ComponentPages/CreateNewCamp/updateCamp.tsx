@@ -1,5 +1,5 @@
-import { Fragment, useState, useEffect, useMemo, useCallback } from "react";
-import { Col, Form, Row, message } from "antd";
+import { Fragment, useState, useEffect, useCallback } from "react";
+import { Col, Form, Row } from "antd";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import debounce from "lodash/debounce";
@@ -31,6 +31,7 @@ import {
   getEditCampApi,
   updateCampApi,
 } from "src/network/api/campManageStatementApi";
+import { openNotificationWithIcon } from "components/common/notification/notificationBar";
 
 const CreateNewCamp = () => {
   const { filterByScore, filterObject, viewThisVersion } = useSelector(
@@ -498,7 +499,7 @@ const CreateNewCamp = () => {
     const res = await submitCampData(payload);
 
     if (res && res.status_code === 200) {
-      message.success(res.message);
+      openNotificationWithIcon(res.message, "success");
 
       dispatch(
         setCurrentTopic({ message: res.message, camp_num: res.data.camp_num })

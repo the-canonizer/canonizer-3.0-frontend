@@ -345,7 +345,7 @@ body {
         .ant-page-header-heading-left {
           @apply m-0;
           .ant-page-header-heading-title {
-            @apply text-2xl mr-0 whitespace-normal;
+            @apply text-lg mr-0 whitespace-normal font-medium;
             span {
               @apply text-canGreen;
             }
@@ -380,7 +380,7 @@ body {
         @apply text-canRed text-xl;
       }
       .ant-alert-description {
-        @apply text-canBlack;
+        @apply text-canBlack text-sm;
         span {
           @apply font-semibold;
         }

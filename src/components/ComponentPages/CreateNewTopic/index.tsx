@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { Col, Form, Row, message } from "antd";
+import { Col, Form, Row } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import debounce from "lodash/debounce";
@@ -21,6 +21,7 @@ import FromUI from "./UI/FromUI";
 import TopicInfoCard from "./UI/rightContent";
 import ExistingTopicList from "./UI/existingTopicList";
 import queryParams from "src/utils/queryParams";
+import { openNotificationWithIcon } from "components/common/notification/notificationBar";
 
 const CreateNewTopic = () => {
   const { nameSpaces, catTaga } = useSelector((state: RootState) => ({
@@ -131,7 +132,7 @@ const CreateNewTopic = () => {
     }
 
     if (res && res.status_code === 200) {
-      message.success(res.message);
+      openNotificationWithIcon(res.message, "success");
       storeFilterClear();
       router?.push({
         pathname: `/topic/${res.data.topic_num}-${replaceSpecialCharacters(

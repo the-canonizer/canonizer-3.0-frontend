@@ -28,6 +28,7 @@ import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 import ManageStatementUI from "./UI";
 import StatementPreview from "./UI/preview";
 import StatementAIPreview from "./UI/aiPreview";
+import { openNotificationWithIcon } from "components/common/notification/notificationBar";
 
 const systemPropPt = `You are a text converter for a website where people put their opinions on various topics, while writing and posting the content they are given a feature of Improve with AI, Your role is to improve that text accordingly. 
 
@@ -35,7 +36,7 @@ If the topic suggests a science theme then follow the users leads and convert ac
 
 function ManageStatements({ isEdit = false, add = false }) {
   const openai = new OpenAI({
-    apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
+    apiKey: process?.env?.NEXT_PUBLIC_OPENAI_API_KEY || "",
     dangerouslyAllowBrowser: true,
   });
 
@@ -782,26 +783,43 @@ function ManageStatements({ isEdit = false, add = false }) {
     e?.preventDefault();
     setScreenLoading(true);
 
-    const completion = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
-      messages: [
-        { role: "system", content: systemPropPt },
-        {
-          role: "user",
-          content: editorState,
-        },
-      ],
-    });
+    try {
+      if (!openai || !openai.chat || !openai.chat.completions) {
+        openNotificationWithIcon(
+          "OpenAI API key is not configured or is invalid.",
+          "error"
+        );
+        return;
+      }
 
-    const imConten = completion.choices[0].message;
+      const completion = await openai.chat.completions.create({
+        model: "gpt-4o-mini",
+        messages: [
+          { role: "system", content: systemPropPt },
+          { role: "user", content: editorState },
+        ],
+      });
 
-    setIsAIPreviewOpen(true);
+      const improvedContent = completion?.choices?.[0]?.message;
 
-    setImprovedContent(imConten);
+      if (!improvedContent) {
+        openNotificationWithIcon(
+          "Failed to retrieve content from OpenAI.",
+          "error"
+        );
+        return;
+      }
 
-    setScreenLoading(false);
+      console.log("Result:", improvedContent);
 
-    console.log("result---", completion, imConten);
+      setIsAIPreviewOpen(true);
+      setImprovedContent(improvedContent);
+    } catch (error) {
+      openNotificationWithIcon(`Error during AI improvement!`, "error");
+      return;
+    } finally {
+      setScreenLoading(false);
+    }
   };
 
   const onAiPreveiwClose = (e) => {

@@ -507,7 +507,6 @@ const CampTree = ({
                 _isArchive == 0 &&
                 campRecord?.is_archive == 0 && (
                   <TreeNode
-                    // className="[&_.ant-tree-switcher-leaf-line]:before:hidden [&_.ant-tree-switcher-leaf-line]:after:hidden "
                     key={"custom"}
                     title={
                       <p className={styles.startNew}>
