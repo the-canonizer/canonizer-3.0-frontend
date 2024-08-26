@@ -178,7 +178,7 @@ const CreateCampFormUI = ({
                       <AlignIcon fill="#242B37" />
                     </div>
                   }
-                  onKeyDown={onCampChange}
+                  onKeyUp={onCampChange}
                   onBlur={onCampNameBlur}
                 />
               )}
@@ -521,7 +521,6 @@ const CreateCampFormUI = ({
               >
                 Discard <CloseOutlined />
               </SecondaryButton>
-              {console.log("!isDisabled---", !isDisabled)}
               <PrimaryButton
                 htmlType="submit"
                 id="crate-camp-btn"

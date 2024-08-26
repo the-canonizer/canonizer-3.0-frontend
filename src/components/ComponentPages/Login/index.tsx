@@ -12,7 +12,7 @@ import { setEmailForOTP, setUserNickNames } from "src/store/slices/authSlice";
 import { setManageSupportStatusCheck } from "src/store/slices/campDetailSlice";
 import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
 import { setValue } from "src/store/slices/utilsSlice";
-import LeftContent from "../Registration/UI/leftContent";
+import LeftContent from "./UI/leftContent";
 
 const Login = () => {
   const remember = useSelector((state: RootState) => state.utils.remember_me);

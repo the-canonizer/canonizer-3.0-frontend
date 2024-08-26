@@ -48,7 +48,7 @@ const ViewCounts = ({
       className={`!m-0 !text-canLight font-medium font-inter flex items-center gap-2 ${className}`}
       {...restProps}
     >
-      <EyeOutlined className="" />{" "}
+      <EyeOutlined className="" />
       <span className="text-canBlack text-opacity-50 text-xs font-normal">
         {!views || views == 0 ? 0 : formatNumber(views)}
       </span>

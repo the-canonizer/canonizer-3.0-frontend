@@ -11,7 +11,6 @@ import {
 } from "src/network/api/userApi";
 import { AppDispatch, RootState } from "src/store";
 import CustomSpinner from "components/shared/CustomSpinner";
-import LeftContent from "../Registration/UI/leftContent";
 import {
   setIsPasswordVerfied,
   setPasswordEmail,
@@ -117,20 +116,23 @@ const ForgotPassword = () => {
 
   const onBrowseClick = (e) => {
     e?.preventDefault();
-    router?.back();
+    router?.push({ pathname: "/forgot-password" });
   };
 
   return (
     <CustomSpinner key="registration-spinner" spinning={isLoading}>
       <Card
         bordered={false}
-        className="bg-canGrey1 mt-0 lg:mt-10 h-full flex justify-center items-center [&>.ant-card-body]:p-0 [&>.ant-card-body]:w-full [&_.ant-card-body]:pb-0 min-h-full"
+        className="bg-canGrey1 mt-0 lg:mt-5 h-full flex justify-center items-center [&>.ant-card-body]:p-0 [&>.ant-card-body]:w-full min-h-full tab:px-10"
       >
         <Row gutter={20}>
-          <Col lg={12} md={24} xl={12} xs={24} className="hidden lg:block">
-            <LeftContent onBrowseClick={onBrowseClick} />
-          </Col>
-          <Col lg={12} md={24} xl={12} xs={24} className="bg-white rounded-lg">
+          <Col
+            lg={13}
+            md={24}
+            xl={13}
+            xs={24}
+            className="bg-white rounded-lg mx-auto"
+          >
             <ForgotPasswordOTPUI
               form={otpForm}
               onFinish={onOTPSubmit}
@@ -139,6 +141,7 @@ const ForgotPassword = () => {
               isResend={isResend}
               onRsendClick={onRsendClick}
               timer={timer}
+              onBrowseClick={onBrowseClick}
             />
           </Col>
         </Row>

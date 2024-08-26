@@ -408,7 +408,7 @@ function SupportTreeDrawer({
         topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
         camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
       };
-      await getTreesApi(reqBodyForService);
+      // await getTreesApi(reqBodyForService);
       await getCurrentCampRecordApi(reqBody);
 
       await getCheckStatusAPI();
@@ -500,18 +500,23 @@ function SupportTreeDrawer({
   };
 
   const renderSubmitBtnText = () => {
-    if (drawerFor === "manageSupport") {
-      return "Update";
-    } else if (drawerFor === "delegateAdd") {
-      return "Delegate Support";
-    } else if (drawerFor === "directAdd") {
-      return "Add Support";
-    } else if (drawerFor === "directRemove") {
+    if(!!checkAllTagsSelected() && drawerFor !== "signPetition"
+  ){
       return "Remove Support";
-    } else if (drawerFor === "signPetition") {
-      return "Sign Petition";
-    } else {
-      return;
+    }else{
+      if (drawerFor === "manageSupport") {
+        return "Update";
+      } else if (drawerFor === "delegateAdd") {
+        return "Delegate Support";
+      } else if (drawerFor === "directAdd") {
+        return "Add Support";
+      } else if (drawerFor === "directRemove") {
+        return "Remove Support";
+      } else if (drawerFor === "signPetition") {
+        return "Sign Petition";
+      } else {
+        return;
+      }
     }
   };
 
@@ -797,7 +802,7 @@ function SupportTreeDrawer({
                   loading={loader}
                 >
                   {renderSubmitBtnText()}
-                  <PlusOutlined />
+                  {checkAllTagsSelected()?<MinusOutlined />:<PlusOutlined />}
                 </Button>
               </div>
             </Form>
