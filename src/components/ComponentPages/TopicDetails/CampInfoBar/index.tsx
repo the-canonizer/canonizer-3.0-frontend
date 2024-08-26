@@ -77,8 +77,8 @@ const TimelineInfoBar = ({
     topicRecord?.topicSubscriptionId
   );
 
-  const campId = router?.query?.camp?.at(1).split("-")?.at(0);
-  const topicId = router?.query?.camp?.at(0).split("-")?.at(0);
+  const campId = router?.query?.camp?.at(1)?.split("-")?.at(0);
+  const topicId = router?.query?.camp?.at(0)?.split("-")?.at(0);
 
   useEffect(() => {
     if (isTopicPage) {
@@ -345,7 +345,7 @@ const TimelineInfoBar = ({
       </Row>
 
       <hr className="horizontal_line my-5" />
-      {isTopicPage && (
+      {isTopicPage || isEventLine && (
         <PrimaryButton
           className="mx-auto flex items-center justify-center font-medium h-auto"
           onClick={() =>
@@ -460,15 +460,19 @@ const TimelineInfoBar = ({
             {topicRecord && topicRecord?.topic_name}
           </span>
         </Col>
-        <Col md={12} sm={12} xs={12} className=" flex flex-col mt-4">
-          <span className="text-xs 2xl:text-sm text-canLight">
-            Camp Leader:
-          </span>
-          <span className="text-base text-black">
-            {" "}
-            {campRecord && campRecord?.camp_leader_nick_name}
-          </span>
-        </Col>
+        {campRecord && (
+          <>
+            <Col md={12} sm={12} xs={12} className=" flex flex-col mt-4">
+              <span className="text-xs 2xl:text-sm text-canLight">
+                Camp Leader:
+              </span>
+              <span className="text-base text-black">
+                {" "}
+                {campRecord?.camp_leader_nick_name}
+              </span>
+            </Col>
+          </>
+        )}
       </Row>
       <hr className="horizontal_line my-5" />
       {isTopicPage && (
@@ -941,55 +945,55 @@ const TimelineInfoBar = ({
             )}
 
             {!isEventLine && (
-              <div className="flex items-center gap-3 shrink-0">
-                {!isHtmlContent && campStatement?.length > 0 && isTopicPage ? (
-                  <div className="topicDetailsCollapseFooter printHIde camp">
-                    <PrimaryButton
-                      disabled={campRecord?.is_archive == 1 ? true : false}
-                      className="printHIde sm:hidden md:hidden hidden lg:flex !h-[40px] py-2.5 px-5 gap-1 items-center text-sm"
-                      onClick={() => {
-                        router?.push(
-                          `${
-                            campStatement?.length > 0
-                              ? campStatement[0]?.draft_record_id
-                                ? "/manage/statement/" +
-                                  campStatement[0]?.draft_record_id +
-                                  "?is_draft=1"
-                                : campStatement[0]?.parsed_value
-                                ? `/statement/history/${replaceSpecialCharacters(
-                                    router?.query?.camp?.at(0),
-                                    "-"
-                                  )}/${replaceSpecialCharacters(
-                                    router?.query?.camp?.at(1) ?? "1-Agreement",
-                                    "-"
-                                  )}`
-                                : `/create/statement/${replaceSpecialCharacters(
-                                    router?.query?.camp?.at(0),
-                                    "-"
-                                  )}/${replaceSpecialCharacters(
-                                    router?.query?.camp?.at(1) ?? "1-Agreement",
-                                    "-"
-                                  )}`
-                              : null
-                          }`
-                        );
-                      }}
-                      id="add-camp-statement-btn"
-                    >
-                      {campStatement[0]?.draft_record_id
-                        ? "Edit Draft Statement"
-                        : campStatement[0]?.parsed_value
-                        ? K?.exceptionalMessages?.manageCampStatementButton
-                        : K?.exceptionalMessages?.addCampStatementButton}
-                      <Image
-                        src="/images/manage-btn-icon.svg"
-                        alt=""
-                        height={24}
-                        width={24}
-                      />
-                    </PrimaryButton>
-                  </div>
-                ) : null}
+            <div className="flex items-center gap-3 shrink-0">
+              {!isHtmlContent && campStatement?.length > 0 && isTopicPage ? (
+                <div className="topicDetailsCollapseFooter printHIde camp">
+                  <PrimaryButton
+                    disabled={campRecord?.is_archive == 1 ? true : false}
+                    className="printHIde sm:hidden md:hidden hidden lg:flex !h-[40px] py-2.5 px-5 items-center text-sm"
+                    onClick={() => {
+                      router?.push(
+                        `${
+                          campStatement?.length > 0
+                            ? campStatement[0]?.draft_record_id
+                              ? "/manage/statement/" +
+                                campStatement[0]?.draft_record_id +
+                                "?is_draft=1"
+                              : campStatement[0]?.parsed_value || campStatement?.at(0)?.in_review_changes
+                              ? `/statement/history/${replaceSpecialCharacters(
+                                  router?.query?.camp?.at(0),
+                                  "-"
+                                )}/${replaceSpecialCharacters(
+                                  router?.query?.camp?.at(1) ?? "1-Agreement",
+                                  "-"
+                                )}`
+                              : `/create/statement/${replaceSpecialCharacters(
+                                  router?.query?.camp?.at(0),
+                                  "-"
+                                )}/${replaceSpecialCharacters(
+                                  router?.query?.camp?.at(1) ?? "1-Agreement",
+                                  "-"
+                                )}`
+                            : null
+                        }`
+                      );
+                    }}
+                    id="add-camp-statement-btn"
+                  >
+                    {campStatement[0]?.draft_record_id
+                      ? "Edit Draft Statement"
+                      : campStatement[0]?.parsed_value || campStatement?.at(0)?.in_review_changes
+                      ? K?.exceptionalMessages?.manageCampStatementButton
+                      : K?.exceptionalMessages?.addCampStatementButton}
+                    <Image
+                      src="/images/manage-btn-icon.svg"
+                      alt=""
+                      height={24}
+                      width={24}
+                    />
+                  </PrimaryButton>
+                </div>
+              ) : null}
 
                 {!isHtmlContent && (
                   <SecondaryButton
