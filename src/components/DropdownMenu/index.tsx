@@ -366,7 +366,7 @@ const DropDownMenu = () => {
                           : router?.query?.manageSupport?.at(1),
                         "-"
                       )}`
-                  : null
+                  : "#"
               }
             >
               <a>

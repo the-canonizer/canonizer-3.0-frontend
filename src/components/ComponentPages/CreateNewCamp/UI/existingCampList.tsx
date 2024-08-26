@@ -5,26 +5,8 @@ import { WarningOutlined } from "@ant-design/icons";
 import CommonCards from "components/shared/Card";
 import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 import UserEditIcon from "./userEditIcon";
-
-export const getHighlightedText = (text, highlight) => {
-  const parts = text?.split(new RegExp(`(${highlight})`, "gi"));
-  return (
-    <span>
-      {parts?.map((part, i) => (
-        <span
-          key={i}
-          style={
-            part?.toLowerCase() === highlight?.toLowerCase()
-              ? { fontWeight: "bold" }
-              : {}
-          }
-        >
-          {part}
-        </span>
-      ))}
-    </span>
-  );
-};
+import { getHighlightedText } from "components/ComponentPages/CreateNewTopic/UI/existingTopicList";
+import CustomSkelton from "components/common/customSkelton";
 
 export const getTopicNameLink = (
   item,
@@ -35,7 +17,7 @@ export const getTopicNameLink = (
   const bd = JSON.parse(item?.breadcrumb_data);
   return (
     <div className={"flex " + className}>
-      <div className="w-[5px] h-[5px] rounded-full bg-canBlack mr-2 mt-1.5"></div>
+      <div className="w-[5px] h-[5px] rounded-full bg-canBlack mr-2 mt-2.5"></div>
       <div className="w-full">
         <Link href={{ pathname: "/" + bd[0][1]?.camp_link }}>
           <a className="flex justify-start items-start">
@@ -43,7 +25,11 @@ export const getTopicNameLink = (
           </a>
         </Link>
         {isTopicNameReq && (
-          <Link href={{ pathname: "/" + bd[1][2]?.camp_link }}>
+          <Link
+            href={{
+              pathname: "/" + bd[1][2]?.camp_link || bd[0][1]?.camp_link,
+            }}
+          >
             <a className="flex justify-start items-start text-xs mt-2 text-canLight">
               Topic: {bd[0][1]?.topic_name}
             </a>
@@ -60,6 +46,7 @@ const ExistingCampList = ({
   isShowMore,
   isError,
   onContributeCLick,
+  isLoading,
 }) => {
   return (
     <CommonCards className="bg-topic-card-gr h-full">
@@ -82,43 +69,52 @@ const ExistingCampList = ({
       <Typography.Paragraph className="text-canBlack font-medium mt-5 text-base">
         Camps with similar name where you can contribute -
       </Typography.Paragraph>
-      <List
-        dataSource={data}
-        locale={{ emptyText: "There are no related camps available" }}
-        className="!list-disc"
-        footer={
-          isShowMore && (
-            <Link href={{ pathname: "/search/camp", query: { q: campName } }}>
-              <a className="text-canBlue uppercase text-xs font-semibold hocus:text-canHoverBlue">
-                See more results
-              </a>
-            </Link>
-          )
-        }
-        renderItem={(item: {
-          id: string;
-          link: string;
-          type_value: string;
-        }) => (
-          <List.Item
-            className="!border-b-0 mt-0 text-sm hover:shadow-lg !p-4 rounded-lg"
-            key={item?.id}
-          >
-            {getTopicNameLink(item, campName)}
-            <SecondaryButton
-              className="flex p-0 !bg-transparent h-auto shadow-none border-0 uppercase text-xs font-semibold text-canBlue hocus:text-canBlue hocus:[&_>svg]:fill-canBlue"
-              onClick={onContributeCLick.bind(this, item)}
+      {isLoading ? (
+        <CustomSkelton
+          skeltonFor="list"
+          bodyCount={5}
+          stylingClass="listSkeleton"
+          isButton={false}
+        />
+      ) : (
+        <List
+          dataSource={data}
+          locale={{ emptyText: "There are no related camps available" }}
+          className="!list-disc"
+          footer={
+            isShowMore && (
+              <Link href={{ pathname: "/search/camp", query: { q: campName } }}>
+                <a className="text-canBlue uppercase text-xs font-semibold hocus:text-canHoverBlue">
+                  See more results
+                </a>
+              </Link>
+            )
+          }
+          renderItem={(item: {
+            id: string;
+            link: string;
+            type_value: string;
+          }) => (
+            <List.Item
+              className="!border-b-0 mt-0 text-lg font-medium hover:shadow-lg !p-4 rounded-lg"
+              key={item?.id}
             >
-              contribute{" "}
-              <UserEditIcon
-                className="[&_>svg]:text-sm ml-2"
-                width="18"
-                height=""
-              />
-            </SecondaryButton>
-          </List.Item>
-        )}
-      />
+              {getTopicNameLink(item, campName)}
+              <SecondaryButton
+                className="flex p-0 !bg-transparent h-auto shadow-none border-0 uppercase text-xs font-semibold text-canBlue hocus:text-canBlue hocus:[&_>svg]:fill-canBlue"
+                onClick={onContributeCLick.bind(this, item)}
+              >
+                contribute{" "}
+                <UserEditIcon
+                  className="[&_>svg]:text-sm ml-2"
+                  width="18"
+                  height=""
+                />
+              </SecondaryButton>
+            </List.Item>
+          )}
+        />
+      )}
     </CommonCards>
   );
 };

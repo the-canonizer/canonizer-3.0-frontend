@@ -14,7 +14,7 @@ const ForgotPasswordPage = () => {
   }, []);
 
   return (
-    <CustomLayout className="bg-canGrey1">
+    <CustomLayout className="bg-canGrey1" withOutHeader={true}>
       <ForgotPassword />
     </CustomLayout>
   );

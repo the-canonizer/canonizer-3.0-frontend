@@ -279,7 +279,7 @@ const ThreadListUI = ({
               dataIndex="post_updated_at"
               key="post_updated_at"
               width="600px"
-              render={(dt, others) => {
+              render={(dt, others: any) => {
                 return (
                   <Paragraph className="!mb-0">
                     <Text className="block">
@@ -310,7 +310,9 @@ const ThreadListUI = ({
                       )}
                     </Text>
                     <Text className="block text-xs text-canLight mt-2">
-                      {moment(getTime(dt)).format("DD MMM YYYY, h:mm A")}
+                      {moment(getTime(dt || others?.updated_at)).format(
+                        "DD MMM YYYY, h:mm A"
+                      )}
                     </Text>
                   </Paragraph>
                 );

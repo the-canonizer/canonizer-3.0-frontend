@@ -130,7 +130,7 @@ const LoginUi = ({
 
         <Form.Item noStyle>
           <Text
-            className="text-canBlack text-base text-center block mt-4"
+            className="text-canBlack text-sm text-center block mt-4"
             id="dont-account-link"
           >
             {`Don't have an account? `}

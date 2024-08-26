@@ -35,7 +35,7 @@ const Category = ({ tag }) => {
           </Link>
         </Paragraph>
       }
-      className={`bg-white border-1 [&_.ant-card-head]:border-0 transition duration-300 [&_.ant-card-extra]:opacity-0 [&_.ant-card-extra]:transition [&_.ant-card-extra]:duration-300 [&_.ant-card-extra]:hover:opacity-100 [&_.ant-card-head]:pl-0 hocus:shadow-md [&_.ant-card-head-title]:w-10/12 [&_.ant-card-head-title]:md:w-8/12 [&_.ant-card-extra]:w-2/12 [&_.ant-card-extra]:md:w-4/12 [&_.ant-card-extra]:flex [&_.ant-card-extra]:justify-end`}
+      className={`bg-white border-1 [&_.ant-card-head]:border-0 transition duration-300 [&_.ant-card-extra]:opacity-0 [&_.ant-card-extra]:transition [&_.ant-card-extra]:duration-300 [&_.ant-card-extra]:hover:opacity-100 [&_.ant-card-head]:pl-0 hocus:shadow-md [&_.ant-card-head-title]:w-10/12 [&_.ant-card-head-title]:md:w-8/12 [&_.ant-card-extra]:w-2/12 [&_.ant-card-extra]:md:w-4/12 [&_.ant-card-extra]:flex [&_.ant-card-extra]:justify-end [&_.ant-card-body]:py-0`}
       id="card-title"
       extra={
         <Link href={{ pathname: `/categories/${tag?.id}` }} type="link">
@@ -45,12 +45,12 @@ const Category = ({ tag }) => {
         </Link>
       }
     >
-      <Paragraph className="text-sm font-medium text-canBlack font-inter">
-        <Text className="font-semibold text-base">{tag?.total_topics}</Text>
+      <Paragraph className="text-sm font-normal text-canBlack font-inter">
+        <Text className="font-semibold text-sm mr-1">{tag?.total_topics}</Text>
         <Text> Topic(s)</Text>
       </Paragraph>
-      <Paragraph className="text-sm font-medium text-canBlack mb-0">
-        <Text className="font-semibold text-base">{tag?.total_users}</Text>
+      <Paragraph className="text-sm font-normal text-canBlack mb-0">
+        <Text className="font-semibold text-sm mr-1">{tag?.total_users}</Text>
         <Text> People have contributed</Text>
       </Paragraph>
     </CommonCards>

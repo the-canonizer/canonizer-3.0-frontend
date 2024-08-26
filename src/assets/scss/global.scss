@@ -33,6 +33,10 @@
 
 html {
   @apply max-sm:text-sm;
+  font-size: 14px;
+  @media screen and (min-width: 1300px) {
+    font-size: 100%;
+  }
 }
 
 * {
@@ -218,14 +222,16 @@ body {
   }
 
   .browse-pagination {
-    @apply flex lg:px-[3.25rem];
-
+    @apply flex;
+    .ant-pagination-item {
+      @apply mx-1.5;
+    }
     .ant-pagination-item-active {
       @apply rounded-md;
     }
 
     .ant-pagination-total-text {
-      @apply mr-auto;
+      @apply mr-auto font-normal text-sm;
     }
 
     .ant-pagination-options {
@@ -233,10 +239,12 @@ body {
 
       .ant-select {
         .ant-select-selector {
-          @apply rounded-md;
+          @apply rounded-md font-normal;
         }
       }
-
+      .ant-select-selection-item {
+        @apply font-normal text-sm;
+      }
       .ant-pagination-options-quick-jumper {
         @apply md:ml-10;
 
@@ -655,10 +663,6 @@ body {
   @apply ml-5;
 }
 
-// .ant-tabs-nav-list .ant-tabs-tab:first-child{
-//   @apply ml-5
-// }
-
 .ant-tabs-nav-list .ant-tabs-tab:last-child {
   @apply mr-5;
 }
@@ -800,7 +804,7 @@ body {
   }
 
   .ant-select-selection-item {
-    @apply text-sm;
+    @apply text-sm font-normal;
   }
 }
 
@@ -842,4 +846,8 @@ body {
 .custom-checkbox-preference .ant-checkbox-wrapper {
   @apply m-0
 }
-
+.statementCardBody {
+  .ant-card-body {
+    height: calc(100% - var(--element-height));
+  }
+}

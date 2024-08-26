@@ -38,7 +38,7 @@ export const labels = {
   cr_nick_name_sp:
     "(Once you pick a nickname, for any contribution to a topic, you must always use the same nickname for any other contribution or forum post to this topic.)",
   cr_topic_name: "Topic Name",
-  cr_namespace: "Canon",
+  cr_namespace: "Select Canon",
   cr_edit_summary: "Edit Summary",
   cr_camp_name: "Camp Name",
   cr_parent_camp: "Parent Camp",
@@ -84,9 +84,9 @@ export const labels = {
     "Note : Registration code has been sent to your registered email address.",
   otLabel:
     "Note: Verification code has been sent to your registered email address.",
-  createPassword: "Create New Password",
-  verificationLabel: "Create Password Verification Code",
-  forgotModalLabel: "Forgot Your Password?",
+  createPassword: "Create new password",
+  verificationLabel: "Enter password verification code",
+  forgotModalLabel: "Forgot your password? Don't worry, it happens.",
   nameConfirmationTitle: "Name Confirmation",
   reasonLabel: "Reason for adding/removing support",
   reasonChangeLabel: "Reason for adding/removing/changing order support",
@@ -96,7 +96,7 @@ export const labels = {
   reasonModalTitle: "Reason for support end!",
   copied_success: "Text has been copied.",
   copied_error: "Error: Text could not be copied.",
-  cateLabel: "Add Tags To Topic",
+  cateLabel: "Add Topic Tags To Camp",
 };
 
 export const preventCampLabel = [

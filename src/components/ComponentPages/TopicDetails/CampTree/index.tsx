@@ -3,22 +3,14 @@ import { Tree, Tooltip, Popover, Typography, Button } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import ProgressBar from "@ramonak/react-progress-bar";
+import Image from "next/image";
 
 import styles from "../topicDetails.module.scss";
 
 import useAuthentication from "src/hooks/isUserAuthenticated";
-import { RootState } from "../../../../store";
-import { setCurrentCamp } from "../../../../store/slices/filtersSlice";
-import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
-import {
-  setCampSupportingTree,
-  setCheckSupportExistsData,
-  setCurrentCheckSupportStatus,
-} from "src/store/slices/campDetailSlice";
-import { DownOutlined, RightOutlined } from "@ant-design/icons";
-import Image from "next/image";
-import arrow from "../../../../../public/images/caret-icon.svg";
+import { RootState } from "src/store";
+import { setCurrentCamp } from "src/store/slices/filtersSlice";
+import { replaceSpecialCharacters } from "src/utils/generalUtility";
 
 const { TreeNode } = Tree;
 
@@ -263,7 +255,7 @@ const CampTree = ({
           key="camp_subscribed_icon"
         >
           <i
-            className={`icon-subscribe text-primary ${styles.iconSubscribe}`}
+            className={`icon-subscribe small text-xs text-primary ${styles.iconSubscribe}`}
           ></i>
         </Tooltip>
       ) : (
@@ -276,7 +268,7 @@ const CampTree = ({
           // title="You have subscribed to the entire topic."
         >
           <i
-            className={`icon-subscribe text-secondary  ${styles.implicitIcon}`}
+            className={`icon-subscribe small text-xs !text-canBlack !font-[300]  ${styles.implicitIcon}`}
           ></i>
         </Tooltip>
       )
@@ -323,7 +315,7 @@ const CampTree = ({
             <>
               {/* [&_.ant-tree-node-content-wrapper]:before:content-[''] [&_.ant-tree-node-content-wrapper]:before:w-[10px] [&_.ant-tree-node-content-wrapper]:before:h-[1px] [&_.ant-tree-node-content-wrapper]:before:block [&_.ant-tree-node-content-wrapper]:before:absolute [&_.ant-tree-node-content-wrapper]:before:bg-canLight [&_.ant-tree-node-content-wrapper]:before:top-[50%] [&_.ant-tree-node-content-wrapper]:before:-left-[12px] */}
               <TreeNode
-                className="[&_.ant-tree-switcher]:!flex [&_.ant-tree-switcher]:!items-center [&_.ant-tree-node-content-wrapper]:hover:!bg-transparent [&_.ant-tree-switcher.ant-tree-switcher-noop]:!hidden"
+                className="[&_.ant-tree-switcher]:!flex [&_.ant-tree-switcher]:!items-center [&_.ant-tree-node-content-wrapper]:hover:!bg-transparent [&_.ant-tree-switcher.ant-tree-switcher-noop]:!hidden [&_.ant-tree-node-content-wrapper]:py-1"
                 switcherIcon={({ expanded }) => {
                   const isCampIdZero = data[item].camp_id === 0;
 
@@ -357,7 +349,7 @@ const CampTree = ({
                     />
                   ) : (
                     <Image
-                      className="rotate-180"
+                      className="-rotate-90"
                       src="/images/tree-black-icon.svg"
                       width={16}
                       height={16}
@@ -371,7 +363,7 @@ const CampTree = ({
                   >
                     <div
                       className={
-                        "treeListItem !my-2.5 flex items-center flex-wrap " +
+                        "treeListItem !my-0 flex items-center flex-wrap " +
                         styles.topicDetailsTreeListItem
                       }
                     >
@@ -379,7 +371,7 @@ const CampTree = ({
                         className={
                           "treeListItemTitle " +
                           styles.treeListItemTitle +
-                          " !text-base !text-canBlack font-normal hover:!text-canblack"
+                          " !text-sm !text-canBlack font-normal hover:!text-canblack"
                         }
                       >
                         <Link
@@ -419,7 +411,7 @@ const CampTree = ({
                                       ?.split("-")
                                       ?.at(0) ??
                                     "1")
-                                ? `font-weight-bold text-base hover:!text-canBlack  ${styles.activeCamp}`
+                                ? `font-weight-bold text-sm hover:!text-canBlack  ${styles.activeCamp}`
                                 : " hover:!text-canBlack"
                             } ${
                               isForumPage &&
@@ -441,7 +433,7 @@ const CampTree = ({
                               parentIsOneLevel == 0 &&
                               _isArchive == 0 &&
                               campRecord?.is_archive == 0
-                                ? `!text-canGreen font-semibold text-base`
+                                ? `!text-canGreen font-semibold text-sm`
                                 : ""
                             }`}
                           >
@@ -479,44 +471,14 @@ const CampTree = ({
                             data[item]
                           )}
                       </span>
-                      <span className="bg-canOrange p-1 rounded-md flex items-center gap-1">
-                        {/* <ProgressBar
-                          completed={77}
-                          animateOnRender={true}
-                          className="progress-bar"
-                          width={String(
-                            showScoreBars
-                              ? (data[item].score * 460) /
-                                  tree?.at(0)["1"].score +
-                                  50 +
-                                  "px"
-                              : `${
-                                  (is_checked
-                                    ? data[item].full_score?.toFixed(2)
-                                    : data[item].score?.toFixed(2)
-                                  ).length * 11
-                                }px`
-                          )}
-                          baseBgColor={"#fff"}
-                          labelAlignment={"left"}
-                          bgColor={"#f89d15"}
-                          borderRadius={"2px"}
-                          height="16px"
-                          customLabel={
-                            is_checked
-                              ? data[item].full_score?.toFixed(2)
-                              : data[item].score?.toFixed(2)
-                          }
-                        /> */}
-
+                      <span className="bg-canOrange px-[0.30rem] rounded-md flex items-center gap-1">
                         <Image
                           src="/images/hand-icon.svg"
                           alt="svg"
-                          height={10}
-                          width={8}
+                          height={12}
+                          width={12}
                         />
-                        <span className="text-xs text-white">
-                          {" "}
+                        <span className="text-[10px] text-white">
                           {is_checked
                             ? data[item].full_score?.toFixed(2)
                             : data[item].score?.toFixed(2)}
@@ -565,7 +527,7 @@ const CampTree = ({
                               }`,
                             }}
                           >
-                            <a className="!text-canGreen font-semibold italic text-base">
+                            <a className="!text-canGreen font-semibold italic text-sm">
                               <Image
                                 src="/images/start-new-tree.svg"
                                 width={16}
@@ -728,7 +690,7 @@ const CampTree = ({
               Event Line
             </Button>
           </div> */}
-          <span className={styles.subScriptionIcon}>
+          {/* <span className={styles.subScriptionIcon}>
             {isUserAuthenticated && !!topicRecord?.topicSubscriptionId ? (
               <Tooltip
                 title="You have subscribed to the entire topic."
@@ -737,14 +699,20 @@ const CampTree = ({
                 <small style={{ alignSelf: "center", marginLeft: "10px" }}>
                   <i className="icon-subscribe text-primary"></i>
                 </small>
+                 showLine
+      switcherIcon={<DownOutlined />}
+      defaultExpandedKeys={['0-0-0']}
+      onSelect={onSelect}
+      treeData={treeData}
               </Tooltip>
             ) : (
               ""
             )}
-          </span>
+          </span> */}
         </Typography.Paragraph>
         <Tree
-          showLine={{ showLeafIcon: false }}
+        showLine
+          // showLine={{ showLeafIcon: false }}
           onSelect={onSelect}
           onExpand={onExpand}
           expandedKeys={[...uniqueKeys]}
