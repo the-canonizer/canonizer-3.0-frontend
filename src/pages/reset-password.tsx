@@ -28,7 +28,11 @@ const ResetPasswordPage = () => {
   }, []);
 
   return (
-    <Layout routeName={"reset-password"} className="bg-canGrey1">
+    <Layout
+      routeName={"reset-password"}
+      className="bg-canGrey1"
+      withOutHeader={true}
+    >
       <Resetpassword />
     </Layout>
   );

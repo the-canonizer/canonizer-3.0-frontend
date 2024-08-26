@@ -45,6 +45,7 @@ import ImageUploader from "../ImageUploader";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
 import { logout } from "src/network/api/userApi";
+import ProfilePrefrences from "../Preference";
 
 const { TabPane } = Tabs;
 const tabList = [
@@ -136,7 +137,7 @@ const SettingsUI = () => {
     profile_info: <ProfileInfo />,
     change_password: <ChangePassword />,
     nick_name: <NickName />,
-
+    user_prefrences : <ProfilePrefrences/>,
     direct_supported_camps: <DirectSupportedCamps search={search} />,
     delegate_supported_camp: <DelegatedSupportCamps search={search} />,
     supported_camps: (
@@ -232,7 +233,6 @@ const SettingsUI = () => {
   const handleChange2 = (e) => {
     const value = e.target.value;
     setSelectedValue(value);
-
     // Navigate to the corresponding page
     if (value === "Direct_Supported_Camps") {
       router.push("/settings?tab=direct_supported_camps");
@@ -240,6 +240,7 @@ const SettingsUI = () => {
       router.push("/settings?tab=delegate_supported_camp");
     }
   };
+  
   // useEffect(() => {
   //   const savedValue = localStorage.getItem("selectedValue");
   //   if (savedValue) {
@@ -325,13 +326,13 @@ const SettingsUI = () => {
       ),
     },
     {
-      key: "change_password",
+      key: "user_prefrences",
       label: (
         <span>
-          <Link href="#">
+          <Link href="/settings?tab=user_prefrences">
             <a
               className={`flex items-center gap-3   ${
-                router?.asPath?.includes("change_password")
+                router?.asPath?.includes("user_prefrences")
                   ? "sample relative"
                   : ""
               }`}
@@ -421,7 +422,7 @@ const SettingsUI = () => {
         <span className="flex justify-between">
           <Link href="/settings?tab=subscriptions">
             <a
-              className={`flex items-center gap-3   ${
+              className={`flex items-center gap-3 w-full  ${
                 router?.asPath?.includes("subscriptions")
                   ? "sample relative"
                   : ""
@@ -534,14 +535,14 @@ const SettingsUI = () => {
       {/* <aside className="leftSideBar miniSideBar topicPageNewLayoutSidebar">
         <Sidebar />
       </aside> */}
-      <div className="pageContentWrap flex lg:flex-row flex-col gap-10">
+      <div className="pageContentWrap flex lg:flex-row flex-col gap-9 lg:mt-11 mt-5">
         {/* <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)} width={200}>
         <div className="demo-logo-vertical" />
         <Menu  defaultSelectedKeys={['1']} mode="inline" items={items} />
       </Sider> */}
         <div className="bg-canGray  rounded-xl min-h-[45rem] h-full lg:flex flex-col justify-between sticky top-0  flex-1  hidden ">
           <div>
-            <div className="p-5 border-b border-canGrey2 flex mb-10">
+            <div className="px-5 pt-5 pb-3.5 border-b border-canGrey2 flex mb-10">
               <h3 className="uppercase text-base font-semibold">
                 PROFILE SETTINGS
               </h3>
@@ -596,7 +597,7 @@ const SettingsUI = () => {
                       </div>
                     </div>
                     <div className=" ">
-                      <div className="mb-10 flex flex-col lg:flex-row lg:hidden bg-canGray ml-[-1rem] mr-[-1rem] w-[calc(100%- -2rem)]">
+                      <div className=" flex flex-col lg:flex-row lg:hidden bg-canGray ml-[-1rem] mr-[-1rem] w-[calc(100%- -2rem)]">
                         <Select
                           className=" w-full !bg-canGray [&_.ant-select-selector]:!h-16 [&_.ant-select-selector]:!flex [&_.ant-select-selector]:!items-center [&_.ant-select-selector]:!bg-transparent [&_.ant-select-selector]:!border-r-0 [&_.ant-select-selector]:!border-l-0 "
                           defaultValue="Select"
@@ -806,7 +807,7 @@ const SettingsUI = () => {
             </div>
           </div>
           {/* <div className="lg:border border-canGrey2 rounded-xl lg:p-8 p-2.5"> */}
-          <div className="lg:border border-canGrey2 rounded-xl lg:p-8">
+          <div className="lg:border border-canGrey2 rounded-xl lg:p-8 min-h-[]">
             <Card
               data-testid="contentlist"
               style={{ width: "100%" }}

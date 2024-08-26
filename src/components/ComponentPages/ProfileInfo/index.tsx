@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Form, message } from "antd";
 import { geocodeByAddress, geocodeByPlaceId } from "react-places-autocomplete";
 import moment from "moment";
@@ -15,7 +15,8 @@ import {
 } from "../../../network/api/userApi";
 import ProfileInfoUI from "./ProfileInfoUI";
 import { formatDate } from "../../common/FormatDate";
-import { setGlobalUserProfileData, setGlobalUserProfileDataEmail } from "src/store/slices/campDetailSlice";
+import { setGlobalUserProfileData, setGlobalUserProfileDataEmail, setAddForProfileInfo, setUserLanguageList, setPrivateListForProfileInfo, setUpdateAddressForProfileInfo, setAddressForProfileInfo, setPostalCodeDisableForProfileInfo, setZipCodeForProfileInfo, setBirthdayForProfileInfo, setGlobalUserProfileDataLastName } from "src/store/slices/campDetailSlice";
+import { RootState } from "src/store";
 
 type UpdateAddress = {
   city?: string;
@@ -51,6 +52,14 @@ const ProfileInfo = () => {
   const [viewEmail, setViewEmail] = useState("");
   const [userProfileData, setUserProfileData] = useState("");
 
+
+  const { addForProfileInfo, zipCodeForProfileInfo } = useSelector(
+    (state: RootState) => ({
+      disableButtonForProfileInfo: state.topicDetails.disableButtonForProfileInfo,
+      addForProfileInfo: state.topicDetails.addForProfileInfo,
+      zipCodeForProfileInfo: state.topicDetails.zipCodeForProfileInfo,
+    })
+  );
 
   const publicPrivateArray = {
     first_name: "first_name",
@@ -94,7 +103,7 @@ const ProfileInfo = () => {
     } else {
       values.birthday = formatDate(birthday);
     }
-
+    dispatch(setBirthdayForProfileInfo(formatDate(birthday)))
     //End Set Private Public flags
     values.mobile_carrier = formVerify.getFieldValue(
       publicPrivateArray.mobile_carrier
@@ -118,11 +127,15 @@ const ProfileInfo = () => {
       }
       setDisableButton(false);
       setAdd(false);
+      dispatch(setAddForProfileInfo(false))
       setZipCode(false);
+      dispatch(setZipCodeForProfileInfo(false))
     } else {
       setDisableButton(false);
       setAdd(false);
+      dispatch(setAddForProfileInfo(false))
       setZipCode(false);
+      dispatch(setZipCodeForProfileInfo(false))
     }
   };
 
@@ -165,6 +178,7 @@ const ProfileInfo = () => {
     if (value == "private") {
       if (!privateList.includes(data)) {
         setPrivateList((oldArray) => [...oldArray, data]);
+        dispatch(setPrivateListForProfileInfo((oldArray) => [...oldArray, data]))
         publicList.splice(publicList.indexOf(data), 1);
       }
     } else if (value == "public") {
@@ -175,12 +189,16 @@ const ProfileInfo = () => {
     }
   };
   const handleAddressChange = (value) => {
-    if (zipCode && !add) {
+    if (zipCode && !add && !addForProfileInfo && zipCodeForProfileInfo) {
       setAddress(value);
+      dispatch(setAddressForProfileInfo(value))
       setPostalCodeDisable(false);
+      dispatch(setPostalCodeDisableForProfileInfo(false))
     } else {
       setAddress(value);
+      dispatch(setAddressForProfileInfo(value))
       setPostalCodeDisable(false);
+      dispatch(setPostalCodeDisableForProfileInfo(false))
       let postalCode = "";
       form.setFieldsValue({
         ["postal_code"]: postalCode,
@@ -190,6 +208,7 @@ const ProfileInfo = () => {
 
   const handleAddressSelect = async (address, placeId) => {
     setAddress(address);
+    dispatch(setAddressForProfileInfo(address))
     const results = await geocodeByAddress(address);
     const [place] = await geocodeByPlaceId(placeId);
     const { long_name: postalCode = "" } =
@@ -220,6 +239,7 @@ const ProfileInfo = () => {
     }
     address2 = address2.replace(/^,|,$/g, "");
     setPostalCodeDisable(!!postalCode);
+    dispatch(setPostalCodeDisableForProfileInfo(!!postalCode))
     form.setFieldsValue({
       ["address_2"]: address2,
       ["postal_code"]: postalCode,
@@ -236,6 +256,7 @@ const ProfileInfo = () => {
     };
     if (postalCode) updateAdd.postal_code = postalCode;
     setUpdateAddress(updateAdd);
+    dispatch(setUpdateAddressForProfileInfo(updateAdd))
   };
   const getAddress = (type, address, component) => {
     if (
@@ -273,6 +294,7 @@ const ProfileInfo = () => {
       let res = await GetLanguageList();
       if (res != undefined) {
         setLanguageList(res.data);
+        dispatch(setUserLanguageList(res.data))
       }
     }
 
@@ -283,7 +305,8 @@ const ProfileInfo = () => {
           let profileData = res.data;
           setViewEmail(profileData?.email);
           setUserProfileData(profileData)
-          dispatch(setGlobalUserProfileData(profileData.first_name))
+          dispatch(setGlobalUserProfileData(profileData?.first_name))
+          dispatch(setGlobalUserProfileDataLastName(profileData?.last_name))
           dispatch(setGlobalUserProfileDataEmail(profileData?.email))
           const verify = {
             phone_number: profileData.phone_number,
@@ -296,7 +319,10 @@ const ProfileInfo = () => {
           //format date for datepicker
           if (profileData.birthday != null && profileData.birthday != "")
             profileData.birthday = moment(profileData.birthday, "YYYY-MM-DD");
-          if (profileData.postal_code) setPostalCodeDisable(true);
+          if (profileData.postal_code) {
+            setPostalCodeDisable(true)
+            dispatch(setPostalCodeDisableForProfileInfo(true))
+          }
           form.setFieldsValue(profileData);
           setPrivateFlags(profileData.private_flags);
           setPrivateList(
@@ -304,7 +330,12 @@ const ProfileInfo = () => {
               ? profileData.private_flags.split(",")
               : ""
           );
+          dispatch(setPrivateListForProfileInfo(profileData.private_flags
+            ? profileData.private_flags.split(",")
+            : ""));
+
           setAddress(profileData.address_1);
+          dispatch(setAddressForProfileInfo(profileData.address_1))
           setMobileNumber(profileData.phone_number);
           setToggleVerifyButton(profileData.mobile_verified);
           setMobileVerified(profileData.mobile_verified);
@@ -319,11 +350,15 @@ const ProfileInfo = () => {
             updateAddress.postal_code = profileData.postalCode;
           if (profileData.postal_code !== "") {
             setZipCode(true);
+            dispatch(setZipCodeForProfileInfo(true))
+
           }
           if (profileData.address_1 !== "") {
             setAdd(true);
+            dispatch(setAddForProfileInfo(true))
           }
           setUpdateAddress(updateAddress);
+          dispatch(setUpdateAddressForProfileInfo(updateAddress))
         }
       }
     }

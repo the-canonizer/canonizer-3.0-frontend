@@ -23,7 +23,7 @@ const Notifications = () => {
       title={
         <div className="grid grid-cols-2 justify-betweens items-center w-full">
           <Typography.Paragraph
-            className="text-base capitalize font-medium text-canBlack mb-0 block"
+            className="text-base capitalize font-medium text-canBlack !mb-0 block"
             id="notification-title"
           >
             notifications

@@ -23,7 +23,7 @@ export default function ChangePasswordUI({
   return (
     <>
       <section className={styles.change_password}>
-        <h3 className="mb-5 uppercase text-canBlack font-semibold text-base">
+        <h3 className="mb-5 uppercase text-canBlack font-semibold text-base lg:mt-0 mt-10">
           Change Password
         </h3>
         <Form
@@ -40,7 +40,7 @@ export default function ChangePasswordUI({
         >
           <div className={styles.section_one}>
             <Row gutter={30}>
-              <Col md={12}>
+              <Col md={12} className="lg:w-auto w-full">
                 <Form.Item
                   className="[&_.ant-input-affix-wrapper]:!border-canGrey2"
                   name="current_password"
@@ -95,7 +95,7 @@ export default function ChangePasswordUI({
               </h3>
             </div>
             <Row gutter={30}>
-              <Col md={8}>
+              <Col md={8} sm={24} className="lg:w-auto w-full">
                 <Form.Item
                   className="[&_.ant-input-affix-wrapper]:!border-canGrey2"
                   name="new_password"
@@ -139,7 +139,7 @@ export default function ChangePasswordUI({
                   />
                 </Form.Item>
               </Col>
-              <Col md={8}>
+              <Col md={8} sm={24} className="lg:w-auto w-full">
                 {" "}
                 <Form.Item
                   className="[&_.ant-input-affix-wrapper]:!border-canGrey2"
@@ -196,9 +196,9 @@ export default function ChangePasswordUI({
             >
               Save
             </Button> */}
-            <div className="flex items-center w-full justify-center gap-6">
+            <div className="flex items-center w-full justify-center gap-6 my-5">
               <Button
-                className="ant-btn-lg py-2.5 px-12 hover:bg-canBlue hover:text-white flex gap-2.5 items-center bg-[#98B7E6] bg-opacity-10 text-canBlack text-base font-medium rounded-lg border-canBlue justify-center "
+                className="ant-btn-lg py-2.5 px-12 hover:bg-canBlue hover:text-white flex gap-2.5 items-center bg-btnBg bg-opacity-10 text-canBlack text-base font-medium rounded-lg border-canBlue justify-center "
                 onClick={() => {
                   form.resetFields(); // Reset all fields in the form
                   setCurrentPassWord(""); // Optionally clear the state if needed

@@ -7,6 +7,7 @@ import {
   FileTextOutlined,
   HomeOutlined,
 } from "@ant-design/icons";
+import OpenAI from "openai";
 
 import { getAllUsedNickNames } from "src/network/api/campDetailApi";
 import useAuthentication from "src/hooks/isUserAuthenticated";
@@ -26,8 +27,18 @@ import CustomSpinner from "components/shared/CustomSpinner";
 import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 import ManageStatementUI from "./UI";
 import StatementPreview from "./UI/preview";
+import StatementAIPreview from "./UI/aiPreview";
+
+const systemPropPt = `You are a text converter for a website where people put their opinions on various topics, while writing and posting the content they are given a feature of Improve with AI, Your role is to improve that text accordingly. 
+
+If the topic suggests a science theme then follow the users leads and convert accordingly, similarly go with the users content theme and magically convert text. Do not lose essence of and meaning behind the user's real intent. Convert text in such a way that it's more readable and bit concise, like a good page from a book, everything well put and organized.`;
 
 function ManageStatements({ isEdit = false, add = false }) {
+  const openai = new OpenAI({
+    apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
+    dangerouslyAllowBrowser: true,
+  });
+
   const router = useRouter();
   const [form] = Form.useForm();
   const { confirm } = Modal;
@@ -57,6 +68,10 @@ function ManageStatements({ isEdit = false, add = false }) {
   // const [autoSaveApiPayload, setAutoSaveApiPayload] = useState(null);
   const [statement, setStatement] = useState(null);
   // const [nickName, setNickName] = useState(null);
+  const [isPrePopupLoading, setIsPrePopupLoading] = useState(false);
+  const [isAIPreviewOpen, setIsAIPreviewOpen] = useState(false);
+  const [improvedContent, setImprovedContent] = useState(null);
+
   const values = Form.useWatch([], form);
   const [isSavingDraft,setIsSavingDraft] = useState(false);
 
@@ -761,6 +776,44 @@ function ManageStatements({ isEdit = false, add = false }) {
     // setIsAutoSaving(false)
   };
 
+  const onImproveClick = async (e) => {
+    e?.preventDefault();
+    setScreenLoading(true);
+
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o-mini",
+      messages: [
+        { role: "system", content: systemPropPt },
+        {
+          role: "user",
+          content: editorState,
+        },
+      ],
+    });
+
+    const imConten = completion.choices[0].message;
+
+    setIsAIPreviewOpen(true);
+
+    setImprovedContent(imConten);
+
+    setScreenLoading(false);
+
+    console.log("result---", completion, imConten);
+  };
+
+  const onAiPreveiwClose = (e) => {
+    e?.preventDefault();
+    setIsAIPreviewOpen(false);
+    setImprovedContent(null);
+  };
+
+  const onInsertClick = (e) => {
+    e?.preventDefault();
+    setEditorState(improvedContent?.content);
+    onAiPreveiwClose(e);
+  };
+
   return (
     <CustomSpinner key="create-statemnt-spinner" spinning={screenLoading}>
       <Row
@@ -832,6 +885,7 @@ function ManageStatements({ isEdit = false, add = false }) {
               autoSave={autoSave}
               isAutoSaving={isAutoSaving}
               values={values}
+              onImproveClick={onImproveClick}
             />
           )}
         </Col>
@@ -841,6 +895,13 @@ function ManageStatements({ isEdit = false, add = false }) {
         isVisible={isPreviewOpen}
         statement={editorState}
         onPreveiwClose={onPreveiwClose}
+      />
+      <StatementAIPreview
+        isLoading={isPrePopupLoading}
+        isVisible={isAIPreviewOpen}
+        statement={improvedContent?.content}
+        onPreveiwClose={onAiPreveiwClose}
+        onInsertClick={onInsertClick}
       />
     </CustomSpinner>
   );
