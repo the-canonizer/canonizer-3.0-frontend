@@ -22,7 +22,7 @@ const CustomPagination = ({
         current={pageNumber}
         pageSize={pageSize}
         showTotal={showTotal}
-        pageSizeOptions={[10, 16]}
+        pageSizeOptions={[10, 16, 24]}
         showSizeChanger
         // showQuickJumper
         onChange={handlePageChange}
