@@ -1,7 +1,8 @@
-import { Fragment, useState, useEffect } from "react";
+import { Fragment, useState, useEffect, useMemo, useCallback } from "react";
 import { Col, Form, Row, message } from "antd";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
+import debounce from "lodash/debounce";
 
 import type { CheckboxChangeEvent } from "antd/es/checkbox";
 
@@ -74,6 +75,7 @@ const CreateNewCamp = () => {
   const [originalData, setOriginalData] = useState({ name_space: null });
   const [submitIsDisableCheck, setSubmitIsDisableCheck] = useState(true);
   const [isSubmitReq, setIsSubmitReq] = useState(false);
+  const [isTopicLoading, setIsopicLoading] = useState(false);
 
   useEffect(() => {
     form
@@ -126,8 +128,9 @@ const CreateNewCamp = () => {
     }
   }, [values, editStatementData?.data?.camp]);
 
-  const getExistingList = async () => {
-    const topicName = values?.camp_name,
+  const getExistingList = async (val = values?.camp_name) => {
+    setIsopicLoading(true);
+    const topicName = val,
       queryParamObj: any = {
         type: "camp",
         size: 5,
@@ -148,6 +151,7 @@ const CreateNewCamp = () => {
         setIsShowMore(true);
       }
     }
+    setIsopicLoading(false);
   };
 
   useEffect(() => {
@@ -352,13 +356,6 @@ const CreateNewCamp = () => {
       namesList
     );
 
-    console.log(
-      "similarNames--->",
-      similarNames,
-      " ---exitedname--->",
-      namesList
-    );
-
     return !!similarNames?.length;
   };
 
@@ -495,8 +492,8 @@ const CreateNewCamp = () => {
 
     let payload = {
       ...values,
-      camp_leader: campLeaderData?.at(1)?.nick_name
-    }
+      camp_leader: campLeaderData?.at(1)?.nick_name,
+    };
 
     const res = await submitCampData(payload);
 
@@ -566,7 +563,6 @@ const CreateNewCamp = () => {
   const onFinish = async () => {
     setIsLoading(true);
     const isSimAvalable = isSimilarAvaiable();
-    console.log("isSimAvalable---", isSimAvalable);
 
     if (isSimAvalable) {
       setIsSimPopOpen(true);
@@ -639,17 +635,22 @@ const CreateNewCamp = () => {
     }
   };
 
-  // const onParentCampChange = () => {};
-
-  const onCampChange = () => {
-    setHaveCampExist(false);
-  };
+  const onCampChange = useCallback(
+    debounce((e) => {
+      const enteredValues = e?.target?.value;
+      if (enteredValues && enteredValues?.length > 2) {
+        setIsopicLoading(true);
+        setHaveCampExist(true);
+        getExistingList(enteredValues);
+      } else {
+        setHaveCampExist(false);
+      }
+    }, 900),
+    []
+  );
 
   const onCampNameBlur = () => {
     setIsError(false);
-    if (values?.camp_name) {
-      getExistingList();
-    }
   };
 
   const onContributeCLick = (item, e) => {
@@ -666,8 +667,6 @@ const CreateNewCamp = () => {
     onClosePopup();
     router?.push({ pathname: "/search/camp", query: { q: values?.camp_name } });
   };
-
-  console.log("check vale---", isDisabled, isSubmitReq);
 
   return (
     <CustomSpinner key="create-topic-spinner" spinning={isLoading}>
@@ -705,6 +704,7 @@ const CreateNewCamp = () => {
                   isShowMore={isShowMore}
                   isError={isError}
                   onContributeCLick={onContributeCLick}
+                  isLoading={isTopicLoading}
                 />
               ) : (
                 <CampInfoCard />

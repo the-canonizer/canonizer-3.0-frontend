@@ -48,7 +48,7 @@ const SingleAvatar = ({ user }) => {
 
     if (!user?.profile_picture_path && !isGravatarAvailable) {
       return (
-        <Avatar className="uppercase">{user?.first_name?.charAt(0)}</Avatar>
+        <Avatar className="uppercase flex justify-center items-center text-xs">{user?.first_name?.charAt(0)}</Avatar>
       );
     }
 

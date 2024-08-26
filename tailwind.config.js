@@ -38,7 +38,7 @@ module.exports = {
         canBlue_Opacity20: "#5482C833",
         canHoverBlue: "#326DC7",
         canGreen: "#4EB966",
-        canGreen2: "#2EAD4A4D",
+        canGreen2: "#2EAD4A",
         canRed: "#E46B6B",
         canRed_Opacity10: "#E46B6B1A",
         canBlack: "#242B37",
@@ -61,6 +61,7 @@ module.exports = {
         canDarkRed: "#DB4F4F",
         btnBg: "#98B7E6",
         canLightWhite:"#777f93"
+       
       },
       backgroundImage: {
         "custom-gradient":
