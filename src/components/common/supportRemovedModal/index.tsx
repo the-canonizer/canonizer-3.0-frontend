@@ -182,7 +182,7 @@ const SupportRemovedModal = ({
               Cancel
             </Button> */}
               <Button
-                className="Profile_btn ant-btn ant-btn-orange ant-btn-lg hover:text-canBlack flex gap-2.5 items-center bg-btnBg bg-opacity-10 hover:!bg-btnBg hover:!bg-opacity-10 text-canBlack text-base font-medium rounded-lg border-canBlue justify-center w-52 "
+                className="Profile_btn ant-btn ant-btn-orange ant-btn-lg hover:text-canBlack flex gap-2.5 items-center bg-btnBg bg-opacity-10 hover:!bg-btnBg hover:!bg-opacity-10 text-canBlack text-base font-medium rounded-lg border-canBlue hover:border-canBlue justify-center w-[12.5rem] active:bg-btnBg active:bg-opacity-10 active:border-canBlue active:text-canBlack"
 
                 type="primary"
                 htmlType="button"
@@ -202,7 +202,7 @@ const SupportRemovedModal = ({
                 type="primary"
                 htmlType="submit"
                 size={"large"}
-                className=" Profile_btn ant-btn ant-btn-orange ant-btn-lg w-52 hover:bg-canBlue hover:text-white flex gap-2.5 items-center bg-canBlue text-white text-base font-medium rounded-lg border-none justify-center focus:bg-canBlue focus:!text-white"
+                className=" Profile_btn ant-btn ant-btn-orange ant-btn-lg w-[12.5rem] hover:bg-canBlue hover:text-white flex gap-2.5 items-center bg-canBlue text-white text-base font-medium rounded-lg border-none justify-center focus:bg-canBlue focus:!text-white active:bg-canBlue"
                 id="create-topic-btn"
               >
                 {isOrderChange ? "Submit" : <span className="!flex items-center justify-center gap-2.5">Remove Support  <Image

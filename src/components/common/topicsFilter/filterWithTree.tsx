@@ -234,27 +234,6 @@ const FilterWithTree = ({
       dispatch(setFilterCanonizedTopics({ namespace_id: router.query.canon }));
     }
 
-    if (
-      String(filterObject?.filterByScore) !== "0" ||
-      String(filterObject?.namespace_id) !== "1" ||
-      filterObject?.asof !== "default" ||
-      filterObject?.algorithm !== "blind_popularity" ||
-      campScoreValue !== 10
-    ) {
-      onChangeRoute(
-        +router.query.score || filteredScore || 0,
-        (
-          router.query.algo ||
-          filterObject?.algorithm ||
-          "blind_popularity"
-        )?.toString(),
-        (router.query.asof || filterObject?.asof || "default")?.toString(),
-        +router.query.asofdate || filterObject?.asofdate,
-        +router.query.canon,
-        viewThisVersion
-      );
-    }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -352,15 +331,16 @@ const FilterWithTree = ({
     } else {
       let datepicker =
         moment().unix() > moment(e?._d).unix() &&
-        moment().format("YYYY-MM-DD") > moment(e?._d).format("YYYY-MM-DD")
+          moment().format("YYYY-MM-DD") > moment(e?._d).format("YYYY-MM-DD")
           ? momentDateObject(moment(e?._d).endOf("day"))
           : momentDateObject(
-              moment(e?._d).set({
-                hour: moment().hour(),
-                minute: moment().minute(),
-                second: moment().second(),
-              })
-            );
+            moment(e?._d).set({
+              hour: moment().hour(),
+              minute: moment().minute(),
+              second: moment().second(),
+            })
+          );
+      setSelectedAsOFDate(Date.parse(datepicker) / 1000);
       setDatePickerValue(datepicker);
       IsoDateFormat = Date.parse(datepicker) / 1000;
     }
@@ -394,16 +374,16 @@ const FilterWithTree = ({
     if (datePickerValue !== null) {
       let dateValue =
         moment().unix() > moment(datePickerValue).unix() &&
-        moment().format("YYYY-MM-DD") >
+          moment().format("YYYY-MM-DD") >
           moment(datePickerValue).format("YYYY-MM-DD")
           ? momentDateObject(moment(datePickerValue).endOf("day"))
           : momentDateObject(
-              moment(datePickerValue).set({
-                hour: moment().hour(),
-                minute: moment().minute(),
-                second: moment().second(),
-              })
-            );
+            moment(datePickerValue).set({
+              hour: moment().hour(),
+              minute: moment().minute(),
+              second: moment().second(),
+            })
+          );
       setCookie("asofDate", JSON.stringify(Date.parse(dateValue) / 1000), {
         path: "/",
       });
@@ -514,8 +494,11 @@ const FilterWithTree = ({
           <Row gutter={20}>
             <Col xs={24}>
               <div className="algo_title_new border-b lg:border-canGrey2 border-canLightgrey4 pr-4 lg:pr-8 pl-4 lg:pl-8 pb-8 lg:pt-0 pt-6 ">
-                <Title level={5} className="!text-xs !font-normal flex gap-3">
-                  Select Canonizer Algorithm:
+                <Title
+                  level={5}
+                  className="!text-xs !font-normal flex gap-1 !mb-2"
+                >
+                  Select Canonizer Algorithm
                   <Popover
                     content="Algorithm Information"
                     placement="top"
@@ -530,8 +513,8 @@ const FilterWithTree = ({
                           src="/images/circle-info-bread.svg"
                           alt="svg"
                           className="icon-topic"
-                          height={16}
-                          width={16}
+                          height={12}
+                          width={12}
                         />
                       </a>
                     ) : (
@@ -541,8 +524,8 @@ const FilterWithTree = ({
                             src="/images/circle-info-bread.svg"
                             alt="svg"
                             className="icon-topic"
-                            height={16}
-                            width={16}
+                            height={12}
+                            width={12}
                           />
                         </a>
                       </Link>
@@ -589,8 +572,8 @@ const FilterWithTree = ({
             </Col>
             <Col className="flex justify-center items-end" xs={24}>
               <div className="score_value pr-4 lg:pr-8  pl-4 lg:pl-8 pb-8 pt-8 w-full border-b lg:border-canGrey2 border-canLightgrey4 ">
-                <Text className={styles.filterText}>
-                  <p className="flex items-center gap-3 text-xs font-normal">
+                <Text className={`${styles.filterText} !mb-0`}>
+                  <p className="flex items-center gap-1 text-xs font-normal !mb-2">
                     Score value
                     <Popover
                       content={infoContent}
@@ -601,8 +584,8 @@ const FilterWithTree = ({
                         src="/images/circle-info-bread.svg"
                         alt="svg"
                         className="icon-topic"
-                        height={16}
-                        width={16}
+                        height={12}
+                        width={12}
                       />
                     </Popover>
                   </p>{" "}
@@ -634,8 +617,8 @@ const FilterWithTree = ({
                       src="/images/circle-info-bread.svg"
                       alt="svg"
                       className="icon-topic"
-                      height={16}
-                      width={16}
+                      height={12}
+                      width={12}
                     />
                   </Popover>
                 </Title>
@@ -735,9 +718,27 @@ const FilterWithTree = ({
               ) : null}
             </Col> */}
             <Col xs={24} className="refine-drawer-mobile overflow-hidden">
-              <div className="flex items-center justify-center btn-parent fixed lg:static bottom-20 w-full lg:mt-14 gap-7">
+              <div className="flex items-center justify-start btn-parent fixed lg:static bottom-0 w-full lg:mt-14 lg:gap-5 pr-4 lg:pr-8 pl-4 lg:pl-8 pb-8 lg:pt-0 pt-6">
+                <PrimaryButton
+                  className="flex justify-center items-center gap-2.5 w-6/12 lg:w-auto !rounded-none lg:!rounded-lg py-7 lg:py-0"
+                  onClick={handleApplyClick}
+                >
+                  <span className="!flex gap-1 flex-row ">
+                    <span>Apply</span>
+                    {/* <span className="hidden lg:block">Filters</span> */}
+                  </span>
+                  <span className="!hidden lg:!flex  items-center">
+                    <Image
+                      src="/images/filterbtn-icon.svg"
+                      alt="svg"
+                      className="icon-topic "
+                      height={16}
+                      width={16}
+                    />
+                  </span>
+                </PrimaryButton>
                 <SecondaryButton
-                  className="flex items-center justify-center gap-2.5"
+                  className="flex items-center justify-center gap-2.5 w-6/12 lg:w-auto !rounded-none lg:!rounded-lg border-[#d9d9d9] lg:border-canBlue py-7 lg:py-0"
                   onClick={onClose}
                 >
                   Cancel
@@ -751,25 +752,6 @@ const FilterWithTree = ({
                     />
                   </span>
                 </SecondaryButton>
-
-                <PrimaryButton
-                  className="flex justify-center items-center gap-2.5"
-                  onClick={handleApplyClick}
-                >
-                  <span className="!flex gap-1 flex-row ">
-                    <span>Apply</span>
-                    <span className="hidden lg:block">Filters</span>
-                  </span>
-                  <span className="!hidden lg:!flex  items-center">
-                    <Image
-                      src="/images/filterbtn-icon.svg"
-                      alt="svg"
-                      className="icon-topic "
-                      height={16}
-                      width={16}
-                    />
-                  </span>
-                </PrimaryButton>
               </div>
             </Col>
           </Row>

@@ -6,6 +6,7 @@ const Inputs = ({
   rules,
   placeholder,
   onKeyDown,
+  onKeyUp,
   onBlur = null,
   prefix = "",
   suffix = "",
@@ -35,6 +36,7 @@ const Inputs = ({
           className={`text-canBlack font-normal h-[40px] rounded-md [&_.ant-input-prefix]:!text-canBlack [&_.ant-input-prefix]:mr-3 text-sm mainInput ${inputClassName}`}
           autoComplete="off"
           onKeyDown={onKeyDown}
+          onKeyUp={onKeyUp}
           onBlur={onBlur}
           maxLength={maxLength}
           inputMode={inputMode}
@@ -49,6 +51,7 @@ const Inputs = ({
           className={`text-canBlack font-normal h-[40px] rounded-md [&_.ant-input-prefix]:!text-canBlack [&_.ant-input-prefix]:mr-3 text-sm mainInput ${inputClassName}`}
           autoComplete="off"
           onKeyDown={onKeyDown}
+          onKeyUp={onKeyUp}
           onBlur={onBlur}
           maxLength={maxLength}
           inputMode={inputMode}

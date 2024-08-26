@@ -57,6 +57,7 @@ export default function NickNameUI({
     },
     {
       title: "",
+    
       dataIndex: "private",
       width: "20%",
       render: (text, record) => (
@@ -116,10 +117,10 @@ export default function NickNameUI({
   ) : (
     <>
       <section className={styles.nick_name}>
-        <h3 className="uppercase text-canBlack font-semibold text-base">NICKNAMES</h3>
+        <h3 className="uppercase text-canBlack font-semibold text-base lg:mt-0 mt-10">NICKNAMES</h3>
         <p className="my-5 text-sm font-normal text-canBlack">Note: You can’t edit or delete your nickname once created. You can only manage its visibility status.</p>
         <Form form={nickNameForm} component={false}>
-          <Form.Item className={styles.nick_form}>
+          <Form.Item className="!mb-0">
             <Table
               id="nickNameList"
               dataSource={nickNameList}

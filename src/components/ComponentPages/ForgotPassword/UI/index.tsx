@@ -1,15 +1,20 @@
-import { Typography, Form } from "antd";
-import { ArrowRightOutlined, MailOutlined } from "@ant-design/icons";
+import { Typography, Form, Button } from "antd";
+import {
+  ArrowRightOutlined,
+  LeftOutlined,
+  MailOutlined,
+} from "@ant-design/icons";
 import { Fragment } from "react";
 
 import messages from "src/messages";
 import PrimaryButton from "components/shared/Buttons/PrimariButton";
 import Inputs from "components/shared/FormInputs";
+import LogoHeader from "components/common/headers/logoHeader";
 
 const { Title, Text } = Typography;
 const { labels } = messages;
 
-function ForgotPasswordUI({ form, onFinish, isDisabled }) {
+function ForgotPasswordUI({ form, onFinish, isDisabled, onBrowseClick }) {
   return (
     <Form
       form={form}
@@ -18,26 +23,37 @@ function ForgotPasswordUI({ form, onFinish, isDisabled }) {
       layout="vertical"
       scrollToFirstError
       validateTrigger={messages.formValidationTypes()}
-      className="h-full flex flex-col"
+      className="h-full flex flex-col p-6"
     >
+      <div className="relative w-full mt-6">
+        <Button
+          type="link"
+          className="text-sm text-canBlack flex items-start justify-start text-sm font-medium p-0 absolute left-0 top-0"
+          onClick={onBrowseClick}
+        >
+          <LeftOutlined /> Go Back
+        </Button>
+      </div>
+      <div className="flex justify-center items-center text-center flex-col mb-6">
+        <LogoHeader />
+      </div>
       <Title
         level={4}
-        className="mt-6 text-sm text-center text-canBlack font-medium"
+        className="text-sm text-center text-canBlack font-normal"
         id="forgot-password-title"
       >
         {labels.forgotModalLabel}
       </Title>
+      <Text
+        className="text-center block font-normal text-muted mb-10"
+        id="forgot-modal-note"
+      >
+        Let us know the email address you signed up with and we&apos;ll send you
+        an email with instructions.
+      </Text>
 
-      <div className="my-auto">
-        <Text
-          className="text-center block text-sm font-medium mb-20 text-canBlack w-8/12 lg:w-7/12 mx-auto"
-          id="forgot-modal-note"
-        >
-          Don&apos;t worry, it happens.
-          <br /> Let us know the email address you signed up with and we&apos;ll
-          send you an email with instructions.
-        </Text>
-        <div className="w-8/12 lg:w-7/12 mx-auto my-5 overflow-hidden">
+      <div className="mt-10">
+        <div className="w-8/12 lg:w-7/12 mx-auto overflow-hidden">
           <Inputs
             name="email_id"
             label={

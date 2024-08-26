@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Col, Form, Row, message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
-import { HomeOutlined } from "@ant-design/icons";
+import debounce from "lodash/debounce";
 
 import { globalSearchCanonizer } from "src/network/api/userApi";
 import { RootState } from "src/store";
@@ -12,7 +12,6 @@ import {
   setShowDrawer,
 } from "src/store/slices/filtersSlice";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
-import Breadcrumbs from "components/shared/Breadcrumbs";
 import CustomSpinner from "components/shared/CustomSpinner";
 import FromUI from "./UI/FromUI";
 import TopicInfoCard from "./UI/rightContent";
@@ -26,15 +25,13 @@ import {
 
 const UpdateTopic = () => {
   const { nameSpaces, catTaga } = useSelector((state: RootState) => ({
-    // filterByScore: state.filters?.filterObject?.filterByScore,
-    // filterObject: state?.filters?.filterObject,
-    // viewThisVersion: state?.filters?.viewThisVersionCheck,
     nameSpaces: state.homePage.nameSpaces,
     catTaga: state?.tag?.tags,
   }));
 
   const [nickNameList, setNickNameList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isTopicLoading, setIsopicLoading] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
   const [selectedCats, setSelectedCats] = useState([]);
   const [existingTopics, setExistingTopics] = useState([]);
@@ -154,19 +151,6 @@ const UpdateTopic = () => {
       tags: selectedCats?.map((cat) => cat?.id),
       event_type: update ? "edit" : "update",
       note: values?.edit_summary || null,
-      // camp_num: null,
-      // statement: "",
-      // statement_id: null,
-      // objection_reason: null,
-      // statement_update: null,
-      // camp_id: null,
-      // camp_name: null,
-      // key_words: null,
-      // camp_about_url: null,
-      // camp_about_nick_id: null,
-      // parent_camp_num: null,
-      // old_parent_camp_num: null,
-      // camp_leader_nick_id: null,
     };
 
     const res = await updateTopicApi(body);
@@ -251,8 +235,9 @@ const UpdateTopic = () => {
     }
   };
 
-  const getExistingList = async () => {
-    const topicName = values?.topic_name,
+  const getExistingList = async (val = values?.topic_nam) => {
+    setIsopicLoading(true);
+    const topicName = val,
       queryParamObj: any = {
         type: "topic",
         size: 5,
@@ -273,11 +258,45 @@ const UpdateTopic = () => {
         setIsShowMore(true);
       }
     }
+    setIsopicLoading(false);
   };
 
-  const onTopicChange = () => {
-    setHaveTopicExist(false);
+  const isMatched = () => {
+    const isMatched = existingTopics.some(
+      (tp) =>
+        values?.topic_name?.trim()?.toLowerCase() ===
+        tp?.type_value?.trim()?.toLowerCase()
+    );
+
+    if (isMatched) {
+      setIsError(true);
+      return;
+    }
+
+    if (!isMatched) {
+      setIsError(false);
+    }
   };
+
+  useEffect(() => {
+    if (existingTopics?.length) {
+      isMatched();
+    }
+  }, [existingTopics, values?.topic_name]);
+
+  const onTopicChange = useCallback(
+    debounce((e) => {
+      const enteredValues = e?.target?.value;
+      if (enteredValues && enteredValues?.length > 2) {
+        setIsopicLoading(true);
+        setHaveTopicExist(true);
+        getExistingList(enteredValues);
+      } else {
+        setHaveTopicExist(false);
+      }
+    }, 900),
+    []
+  );
 
   const onTopicNameBlur = () => {
     setIsError(false);
@@ -291,19 +310,6 @@ const UpdateTopic = () => {
 
   return (
     <CustomSpinner key="create-topic-spinner" spinning={isLoading}>
-      <Breadcrumbs
-        items={[
-          { icon: <HomeOutlined className="text-canBlack" />, href: "/" },
-          {
-            href: `/topic/history/${
-              currentTopic?.topic_num
-            }-${replaceSpecialCharacters(currentTopic?.topic_name, "-")}`,
-            label: "Topic History",
-          },
-          { label: "Update Topic" },
-        ]}
-      />
-
       <Row gutter={20} className="mb-5">
         <Col lg={12}>
           <FromUI
@@ -332,6 +338,7 @@ const UpdateTopic = () => {
               data={existingTopics}
               isShowMore={isShowMore}
               isError={isError}
+              isLoading={isTopicLoading}
             />
           ) : (
             <TopicInfoCard />

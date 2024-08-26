@@ -34,7 +34,17 @@ export const treeSlice = createSlice({
     manageSupportUrlLink: null,
     CurrentCheckSupportStatus: null,
     globalUserProfileData: "",
+    globalUserProfileDataLastName: "",
     globalUserProfileDataEmail: "",
+    address: "",
+    updateAddress : {},
+    userLanguageList:[],
+    privateList:[],
+    disableButtonForProfileInfo: false,
+    postalCodeDisableForProfileInfo: false,
+    addForProfileInfo:false,
+    zipCodeForProfileInfo:false,
+    birthdayForProfileInfo : "",
 
     currentGetCheckSupportExistsData: {
       camp_num: null,
@@ -155,6 +165,36 @@ export const treeSlice = createSlice({
     setOpenDrawerForDirectSupportedCamp: (state, action) => {
       state.openDrawerForDirectSupportedCamp = action.payload;
     },
+    setUserLanguageList: (state, action) => {
+      state.userLanguageList = action.payload;
+    },
+    setPrivateListForProfileInfo: (state, action) => {
+      state.privateList = action.payload;
+    },
+    setAddressForProfileInfo: (state, action) => {
+      state.address = action.payload;
+    },
+    setUpdateAddressForProfileInfo: (state, action) => {
+      state.updateAddress = action.payload;
+    },
+    setDisableButtonForProfileInfo: (state, action) => {
+      state.disableButtonForProfileInfo = action.payload;
+    },
+    setPostalCodeDisableForProfileInfo: (state, action) => {
+      state.postalCodeDisableForProfileInfo = action.payload;
+    },
+    setAddForProfileInfo: (state, action) => {
+      state.addForProfileInfo = action.payload;
+    },
+    setZipCodeForProfileInfo: (state, action) => {
+      state.zipCodeForProfileInfo = action.payload;
+    },
+    setBirthdayForProfileInfo: (state, action) => {
+      state.birthdayForProfileInfo = action.payload;
+    },
+    setGlobalUserProfileDataLastName: (state, action) => {
+      state.globalUserProfileDataLastName = action.payload;
+    },
   },
 
 });
@@ -186,6 +226,16 @@ export const {
   setGlobalUserProfileData,
   setGlobalUserProfileDataEmail,
   setOpenDrawerForDirectSupportedCamp,
+  setUserLanguageList,
+  setPrivateListForProfileInfo,
+  setAddressForProfileInfo,
+  setUpdateAddressForProfileInfo,
+  setDisableButtonForProfileInfo,
+  setPostalCodeDisableForProfileInfo,
+  setAddForProfileInfo,
+  setZipCodeForProfileInfo,
+  setBirthdayForProfileInfo,
+  setGlobalUserProfileDataLastName,
   // setOpenConsensusTreePopup,
 } = treeSlice.actions;
 

@@ -61,6 +61,15 @@ const CampStatementCard = ({ loadingIndicator }) => {
     return false;
   };
 
+  const getElementHeight = () => {
+    const cardHeader = document.querySelector(
+      "#statementCard .ant-card-head"
+    ) as HTMLDivElement;
+    console.log("card-header-height-- ", cardHeader?.offsetHeight);
+
+    return cardHeader?.offsetHeight || 0;
+  };
+
   const getButton = () => {
     if (isDraftShow()) {
       return (
@@ -154,19 +163,33 @@ const CampStatementCard = ({ loadingIndicator }) => {
 
   return (
     <CommonCard
-      className="border-0 h-100 bg-white [&_.ant-card-body]:p-0 [&_.ant-card-body]:lg:p-[24px] lg:bg-canGray mb-8 lg:mb-14 border-t-8 !border-canGreen"
+      style={{
+        "--card-body-height": `calc(100% - ${getElementHeight()}px)`,
+        "--element-height": `${getElementHeight()}px`,
+      }}
+      className={`border-0 h-100 bg-white [&_.ant-card-body]:p-0 [&_.ant-card-body]:lg:p-[24px] [&_.ant-card-body]:flex overflow-hidden lg:bg-canGray mb-8 lg:mb-14 border-t-8 !border-canGreen h-52 xl:h-[600px] statementCardBody`}
       data-testid="algoSelect"
-    >
-      <div className="camp-agrrement-new mb-8">
+      id="statementCard"
+      title={
         <div className="flex justify-between items-start">
           <div className="mr-auto">
             <div className="camp-agreement-header flex items-center mb-2.5 lg:mb-1 gap-2">
-              <SectionHeading
+              {/* <SectionHeading
                 title={K?.exceptionalMessages?.campStatementHeading}
                 infoContent={K?.exceptionalMessages?.campStatementHeading}
                 className="text-sm lg:text-base normal-case text-canBlack text-left font-semibold"
-              />
+              /> */}
+              <div className="flex gap-2.5 items-center">
+                <SectionHeading
+                  title={campRecord?.camp_name}
+                  infoContent=""
+                  icon={null}
+                  className="!mb-0"
+                />
+                <ViewCounts views={tree?.[1] && tree[1]?.camp_views} className="!gap-1" />
+              </div>
             </div>
+
             <div className="flex items-center justify-start gap-6 camp-header-content lg:border-none border-t border-b border-canGrey2 lg:py-0 py-1.5 lg:mb-0 mb-2">
               {campStatement?.[0]?.go_live_time && (
                 <div className="flex items-center gap-2">
@@ -199,13 +222,21 @@ const CampStatementCard = ({ loadingIndicator }) => {
             </SecondaryButton>
           ) : null}
         </div>
-        <hr className="my-5 hidden lg:flex" />
+      }
+    >
+      <div
+        className={`camp-agrrement-new overflow-hidden !overflow-y-auto w-full ${
+          campStatement?.length && campStatement[0]?.parsed_value
+            ? ""
+            : "my-auto"
+        }`}
+      >
         <div
           className={`flex flex-col ${
             campStatement?.length && campStatement[0]?.parsed_value
               ? "items-start justify-start"
               : "items-center justify-center"
-          } lg:pt-5`}
+          }`}
         >
           <div
             className={
