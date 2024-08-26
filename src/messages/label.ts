@@ -21,7 +21,7 @@ export const labels = {
   language: "Language",
   state: "State",
   zipCode: "Zip Code (Limit 255 Chars)",
-  chooseAlgorithm: "Choose Default Algorithm Preferences",
+  chooseAlgorithm: " Default Algorithm Preferences",
   emailId: "Email ID",
   addnewNickName: "Add Nickname",
   nickName: "Nickname (Limit 50 Char)",
