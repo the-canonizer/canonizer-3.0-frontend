@@ -74,6 +74,7 @@ const TopicsList = () => {
   const [options, setOptions] = useState([]);
   const [value, setValue] = useState([]);
   const [allTags, setAllTags] = useState([]);
+  const [showOnlyMyTopics, setShowOnlyMyTopics] = useState(false);
 
   const mapItemsToValueLabel = (items) => {
     return items.map((item) => ({
@@ -256,6 +257,10 @@ const TopicsList = () => {
     let res = getIdsOfFilteredTags(value,allTags)
     console.log("Ids....",res)
   },[value])
+
+  const showOnlyMyTopicsHandler = (e) => {
+    setShowOnlyMyTopics(e?.target?.checked)
+  }
  
 
   return (
@@ -322,7 +327,7 @@ const TopicsList = () => {
               </Form.Item>
             </div>
             <div className="search-wrapper w-full items-center max-sm:flex-wrap lg:justify-end max-lg:justify-between">
-              <Checkbox className="min-w-[169px] max-sm:order-2">
+              <Checkbox className="min-w-[169px] max-sm:order-2" onChange={(e:any)=>showOnlyMyTopicsHandler(e)}>
                 Show only my topics
               </Checkbox>
               <Search
