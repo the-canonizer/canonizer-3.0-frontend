@@ -753,7 +753,11 @@ const TimelineInfoBar = ({
                   </div>
                 )}
                 {isEventLine && (
-                  <Popover content={contentEventLine} className="title-popover">
+                  <Popover
+                    content={contentEventLine}
+                    className="title-popover"
+                    placement="bottom"
+                  >
                     <div className="flex  items-center gap-1.5">
                       <span className="font-normal text-base text-canBlack whitespace-nowrap">
                         Event Line
