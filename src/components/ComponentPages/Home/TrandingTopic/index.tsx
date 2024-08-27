@@ -2,7 +2,7 @@ import { Fragment, useEffect } from "react";
 import useState from "react-usestateref";
 import { Typography, Row, Col, Select, List } from "antd";
 import Link from "next/link";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { DownOutlined } from "@ant-design/icons";
 
 import CommonCard from "components/shared/Card";
@@ -16,18 +16,28 @@ import CustomSkelton from "src/components/common/customSkelton";
 import SectionHeading from "../FeaturedTopic/sectionsHeading";
 import SeeMoreLInk from "../FeaturedTopic/seeMoreLink";
 import ScoreTag from "./scoreTag";
+import { setTrandingAlgo } from "src/store/slices/homePageSlice";
 
 const { Option } = Select;
 
 const TrandingTopics = () => {
-  const { canonizedTopics, algorithms } = useSelector((state: RootState) => ({
-    canonizedTopics: state.homePage?.canonizedTopicsData,
-    algorithms: state.homePage?.algorithms,
-  }));
+  const dispatch = useDispatch();
+
+  const { canonizedTopics, algorithms, algorithm } = useSelector(
+    (state: RootState) => ({
+      canonizedTopics: state.homePage?.canonizedTopicsData,
+      algorithms: state.homePage?.algorithms,
+      algorithm: state?.homePage?.trandingAlgo,
+    })
+  );
 
   const [topicsData, setTopicsData] = useState(canonizedTopics);
   const [loadMoreIndicator, setLoadMoreIndicator] = useState(false);
-  const [algoValue, setAlgoValue] = useState("blind_popularity");
+  const [algoValue, setAlgoValue] = useState(algorithm);
+
+  useEffect(() => {
+    setAlgoValue(algorithm);
+  }, [algorithm]);
 
   useEffect(() => {
     setTopicsData(canonizedTopics);
@@ -48,12 +58,14 @@ const TrandingTopics = () => {
       is_archive: 0,
       sort: false,
     };
+
     await getCanonizedTopicsApi(reqBody, loadMore);
     setLoadMoreIndicator(false);
   }
 
   const selectAlgorithm = (value) => {
-    setAlgoValue(value);
+    // setAlgoValue(value);
+    dispatch(setTrandingAlgo(value));
   };
 
   useEffect(() => {

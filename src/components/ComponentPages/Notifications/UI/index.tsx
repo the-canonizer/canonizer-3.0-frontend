@@ -107,7 +107,10 @@ const NotificationsListUI = ({
             >
               Unread ({unreadCount})
             </SecondaryButton>
-            <div className="mt-auto pb-14 [&_.ant-typography>small]:text-base [&_.ant-typography>small]:font-normal [&_.ant-typography>small]:text-canBlack [&_.ant-typography>small]:capitalize">
+            <div
+              className="mt-auto pb-14 [&_.ant-typography>small]:text-base [&_.ant-typography>small]:font-normal [&_.ant-typography>small]:text-canBlack [&_.ant-typography>small]:capitalize"
+              key="div-of-switch"
+            >
               <NotificationSwitch key="notificatoin-page-switch" />
             </div>
           </div>
@@ -136,10 +139,10 @@ const NotificationsListUI = ({
             <Button
               onClick={onAllDelete}
               type="link"
-              className="text-canRed hover:text-canOrange font-medium text-md mt-3 py-0 float-right [&_.ant-btn]:flex [&_.ant-btn]:items-start [&_.ant-btn]:justify-center"
+              className="text-canRed hover:text-canOrange font-medium text-md mt-3 py-0 float-right flex items-start justify-center"
               disabled={list?.length === 0}
             >
-              <DeleteOutlined />
+              <DeleteOutlined className="text-sm" />
               Delete All Notifications
             </Button>
           </Popover>

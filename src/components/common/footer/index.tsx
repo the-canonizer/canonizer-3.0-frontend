@@ -54,12 +54,12 @@ function Footer() {
       id: 6,
       external: true,
     },
-    {
-      link: process.env.NEXT_PUBLIC_BLOG_URL,
-      linkTitle: "Blog",
-      id: 7,
-      external: true,
-    },
+    // {
+    //   link: process.env.NEXT_PUBLIC_BLOG_URL,
+    //   linkTitle: "Blog",
+    //   id: 7,
+    //   external: true,
+    // },
     {
       link: "/topic/6-Canonizer-Jobs/1-Agreement?is_tree_open=1",
       linkTitle: "Jobs",

@@ -65,7 +65,6 @@ const CampStatementCard = ({ loadingIndicator }) => {
     const cardHeader = document.querySelector(
       "#statementCard .ant-card-head"
     ) as HTMLDivElement;
-    console.log("card-header-height-- ", cardHeader?.offsetHeight);
 
     return cardHeader?.offsetHeight || 0;
   };
@@ -167,26 +166,24 @@ const CampStatementCard = ({ loadingIndicator }) => {
         "--card-body-height": `calc(100% - ${getElementHeight()}px)`,
         "--element-height": `${getElementHeight()}px`,
       }}
-      className={`border-0 h-100 bg-white [&_.ant-card-body]:p-0 [&_.ant-card-body]:lg:p-[24px] [&_.ant-card-body]:flex overflow-hidden lg:bg-canGray mb-8 lg:mb-14 border-t-8 !border-canGreen h-52 xl:h-[600px] statementCardBody`}
+      className={`border-0 h-100 bg-white [&_.ant-card-body]:p-0 [&_.ant-card-body]:lg:p-[24px] [&_.ant-card-body]:flex overflow-hidden lg:bg-canGray mb-8 lg:mb-14 border-t-8 !border-canGreen h-[400px] xl:h-[600px] statementCardBody`}
       data-testid="algoSelect"
       id="statementCard"
       title={
         <div className="flex justify-between items-start">
           <div className="mr-auto">
             <div className="camp-agreement-header flex items-center mb-2.5 lg:mb-1 gap-2">
-              {/* <SectionHeading
-                title={K?.exceptionalMessages?.campStatementHeading}
-                infoContent={K?.exceptionalMessages?.campStatementHeading}
-                className="text-sm lg:text-base normal-case text-canBlack text-left font-semibold"
-              /> */}
               <div className="flex gap-2.5 items-center">
                 <SectionHeading
                   title={campRecord?.camp_name}
                   infoContent=""
                   icon={null}
-                  className="!mb-0"
+                  className="text-sm lg:text-base normal-case text-canBlack text-left font-semibold !mb-0"
                 />
-                <ViewCounts views={tree?.[1] && tree[1]?.camp_views} className="!gap-1" />
+                <ViewCounts
+                  views={tree?.[1] && tree[1]?.camp_views}
+                  className="!gap-1"
+                />
               </div>
             </div>
 
@@ -206,9 +203,6 @@ const CampStatementCard = ({ loadingIndicator }) => {
                   </p>
                 </div>
               )}
-              <div className="flex items-center gap-2 lg:hidden ">
-                <ViewCounts views={tree?.[1] && tree[1]?.camp_views} />
-              </div>
             </div>
           </div>
           {campStatement?.length &&
@@ -225,7 +219,7 @@ const CampStatementCard = ({ loadingIndicator }) => {
       }
     >
       <div
-        className={`camp-agrrement-new overflow-hidden !overflow-y-auto w-full ${
+        className={`camp-agrrement-new overflow-hidden !overflow-y-auto w-full pr-4 ${
           campStatement?.length && campStatement[0]?.parsed_value
             ? ""
             : "my-auto"
@@ -241,7 +235,7 @@ const CampStatementCard = ({ loadingIndicator }) => {
           <div
             className={
               styles.campStatement +
-              " text-canBlack opacity-80 text-xs 2xl:text-sm font-normal leading-6"
+              " text-canBlack opacity-80 text-sm font-normal leading-6"
             }
           >
             {campStatement?.length && campStatement[0]?.parsed_value ? (
@@ -251,7 +245,7 @@ const CampStatementCard = ({ loadingIndicator }) => {
                 }}
               />
             ) : (
-              <span className="text-sm lg:text-base">
+              <span className="text-sm">
                 {isDraftShow()
                   ? "Continue finishing up your statement"
                   : K?.exceptionalMessages?.campStatement}
