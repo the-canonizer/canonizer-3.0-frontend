@@ -143,7 +143,7 @@ function ManageStatementUI({
                   <>
                     Statement <span className="required">*</span>
                     <SecondaryButton
-                      className="flex justify-center items-center border-0 p-0 ml-auto float-end"
+                      className="flex justify-center items-center border-0 p-0 ml-auto float-end !shadow-none hover:!shadow-none !bg-transparent"
                       type="link"
                       ghost
                       onClick={onImproveClick}
@@ -224,7 +224,9 @@ function ManageStatementUI({
                 <PrimaryButton
                   htmlType="submit"
                   className="inline-flex items-center justify-center h-auto py-2 px-7 h-auto"
-                  disabled={!isDisabled || isAutoSaving}
+                  disabled={
+                    (submitIsDisable && isEdit) || !isDisabled || isAutoSaving
+                  }
                 >
                   Publish Statement
                   <UploadOutlined />

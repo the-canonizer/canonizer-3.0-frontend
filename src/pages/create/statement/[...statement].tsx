@@ -4,7 +4,7 @@ import CreateStatement from "components/ComponentPages/ManageStatement";
 const ManageStatementPage = () => {
   return (
     <Layout>
-      <CreateStatement add={true} />
+      <CreateStatement />
     </Layout>
   );
 };

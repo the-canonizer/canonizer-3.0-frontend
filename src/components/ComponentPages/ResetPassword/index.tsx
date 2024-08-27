@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { Row, Col, Form, message, Card } from "antd";
+import { Row, Col, Form, Card } from "antd";
 import { useSelector } from "react-redux";
 
 import { forgotPasswordUpdate } from "src/network/api/userApi";
 import CustomSpinner from "components/shared/CustomSpinner";
 import { RootState } from "src/store";
 import ResetPasswordUI from "./UI";
+import { openNotificationWithIcon } from "components/common/notification/notificationBar";
 
 const ResetPassword = () => {
   const { isPasswordVerfied } = useSelector((state: RootState) => ({
@@ -39,7 +40,7 @@ const ResetPassword = () => {
     });
 
     if (res && res.status_code === 200) {
-      message.success(res.message);
+      openNotificationWithIcon(res.message, "success");
       form.resetFields();
       router?.push({ pathname: "/login" });
     }
