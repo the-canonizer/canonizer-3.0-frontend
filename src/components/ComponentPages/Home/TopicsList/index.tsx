@@ -73,6 +73,7 @@ const TopicsList = () => {
   const [isCanonChange, setIsCanonChange] = useState(false);
   const [options, setOptions] = useState([]);
   const [value, setValue] = useState([]);
+  const [allTags, setAllTags] = useState([]);
 
   const mapItemsToValueLabel = (items) => {
     return items.map((item) => ({
@@ -83,8 +84,8 @@ const TopicsList = () => {
 
   const getAlltagsData = async () => {
     let res = await getAllTags();
-    setValue(mapItemsToValueLabel(res?.data?.items));
     setOptions(mapItemsToValueLabel(res?.data?.items));
+    setAllTags(res?.data?.items)
   };
 
   useEffect(() => {
@@ -242,6 +243,20 @@ const TopicsList = () => {
       </Select.Option>
     ));
   }, [nameSpacesList]);
+
+  const getIdsOfFilteredTags = (arr, resData) => {
+    return arr.map(item => {
+        const found = resData.find(data => data?.title === item);
+        return found ? found.id : null;
+    });
+  }
+ 
+ 
+  useEffect(()=>{
+    let res = getIdsOfFilteredTags(value,allTags)
+    console.log("Ids....",res)
+  },[value])
+ 
 
   return (
     <Layout routeName={"browse"}>
