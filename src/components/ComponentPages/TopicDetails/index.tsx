@@ -55,6 +55,8 @@ import { setCampActivityData } from "src/store/slices/recentActivitiesSlice";
 import SectionHeading from "../Home/FeaturedTopic/sectionsHeading";
 import { openNotificationWithIcon } from "components/common/notification/notificationBar";
 import ScoreTag from "../Home/TrandingTopic/scoreTag";
+import SecondaryButton from "components/shared/Buttons/SecondaryButton";
+import { CloseOutlined } from "@ant-design/icons";
 
 const { Link: AntLink } = Typography;
 
@@ -564,11 +566,19 @@ const TopicDetails = ({ serverSideCall }: any) => {
             <div className="bg-canGray py-7 px-5 rounded-lg lg:w-[80%] w-full">
               <div className="border border-canGrey2 bg-white rounded-lg p-5 w-full">
                 <div className="consensu-tree-section">
-                  <SectionHeading
-                    title="Consensus tree"
-                    infoContent=""
-                    icon={null}
-                  />
+                  <div className="flex justify-between items-start">
+                    <SectionHeading
+                      title="Consensus tree"
+                      infoContent=""
+                      icon={null}
+                    />
+                    <SecondaryButton
+                      className="border-0 p-0 bg-transparent h-auto"
+                      onClick={() => dispatch(setOpenConsensusTreePopup(false))}
+                    >
+                      <CloseOutlined />
+                    </SecondaryButton>
+                  </div>
                   <p className="text-sm  font-normal !text-canBlack mt-4">
                     Collapse camps with support less than
                   </p>

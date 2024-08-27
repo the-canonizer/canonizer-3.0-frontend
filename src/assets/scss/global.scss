@@ -564,28 +564,55 @@ body {
   }
 }
 
-.sample {
-  @apply bg-canBlue bg-opacity-20 py-3 px-5 rounded-lg relative;
-}
-.ant-menu-item .sample:before {
-  @apply absolute bg-canBlue  w-2 h-3/5 top-1/2 left-2 transform -translate-x-1/2 -translate-y-1/2 rounded-lg;
-}
-.ant-menu-submenu .sample:before {
-  @apply absolute bg-canBlue  w-2 h-3/5 top-1/2 left-2 transform -translate-x-1/2 -translate-y-1/2 rounded-lg;
-}
-.ant-menu-item .sample span {
-  @apply font-semibold;
+.custom-menu {
+  @apply px-3;
+  .ant-menu-item.listItem {
+    @apply justify-start gap-2;
+    .ant-menu-title-content {
+      max-width: max-content;
+      a {
+        @apply block;
+      }
+    }
+  }
+  .ant-menu-item.listItem.listItemActive {
+    @apply bg-canBlue bg-opacity-20 py-3 px-5 rounded-lg relative;
+    &::before {
+      @apply content-[''] absolute bg-canBlue w-2 h-3/5 top-1/2 left-2 transform -translate-x-1/2 -translate-y-1/2
+          rounded-lg;
+    }
+  }
+  .ant-menu-submenu.listItem {
+    .ant-menu {
+      .ant-menu-item {
+        @apply h-auto relative;
+        &::before {
+          @apply content-[''] w-[15px] h-[15px] rounded-full border-[1px] border-canGrey2 bg-white mr-2;
+        }
+        &.listItemActive {
+          .ant-menu-title-content {
+            a {
+              @apply text-canBlue;
+            }
+          }
+          &::before {
+            @apply border-canBlue flex items-center justify-center text-canBlue p-[5px] content-['o'] overflow-hidden fill-canBlue;
+          }
+        }
+      }
+    }
+  }
+  .ant-menu-submenu-active.listItem {
+    .ant-menu-submenu-title {
+      @apply bg-canBlue bg-opacity-20 py-3 px-5 rounded-lg relative;
+      &::before {
+        @apply content-[''] absolute bg-canBlue w-2 h-3/5 top-1/2 left-2 transform -translate-x-1/2 -translate-y-1/2
+            rounded-lg;
+      }
+    }
+  }
 }
 
-.custom-menu a {
-  @apply px-5 rounded-lg;
-}
-.ant-menu-sub.ant-menu-inline > .ant-menu-item {
-  @apply h-20;
-}
-// .mobile-select  .ant-select-selection-item:after {
-//   @apply hidden !important;
-// }
 .ant-menu-submenu-open.ant-menu-submenu .ant-menu-submenu-title .account-arrow {
   @apply -rotate-90 transition-transform ease-in-out duration-150;
 }

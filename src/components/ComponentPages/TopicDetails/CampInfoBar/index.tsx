@@ -506,7 +506,7 @@ const TimelineInfoBar = ({
   };
 
   return (
-    <div className="lg:bg-canGrey1 bg-white lg:py-4 py-3 px-3 lg:px-5 lg:rounded-xl lg:mb-10 mb-10 -mt-9 lg:mt-0 mx-[-16px] lg:mx-0 border-t border-[#EAECF0] shadow-mobile-b-shadow lg:shadow-none ">
+    <div className="lg:bg-canGrey1 bg-white lg:py-4 py-3 px-3 lg:px-5 lg:rounded-xl lg:mb-10 mb-10 -mt-9 lg:mt-0 mx-[-16px] lg:mx-0 border-t border-[#EAECF0] shadow-mobile-b-shadow lg:shadow-none inforBarClass">
       <Spin spinning={false}>
         <div className={styles.topicDetailContentHead_Left}>
           {isForumPage ? (

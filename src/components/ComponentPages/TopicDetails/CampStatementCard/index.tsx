@@ -235,7 +235,7 @@ const CampStatementCard = ({ loadingIndicator }) => {
           <div
             className={
               styles.campStatement +
-              " text-canBlack opacity-80 text-xs 2xl:text-sm font-normal leading-6"
+              " text-canBlack opacity-80 text-sm font-normal leading-6"
             }
           >
             {campStatement?.length && campStatement[0]?.parsed_value ? (
@@ -245,7 +245,7 @@ const CampStatementCard = ({ loadingIndicator }) => {
                 }}
               />
             ) : (
-              <span className="text-sm lg:text-base">
+              <span className="text-sm">
                 {isDraftShow()
                   ? "Continue finishing up your statement"
                   : K?.exceptionalMessages?.campStatement}
