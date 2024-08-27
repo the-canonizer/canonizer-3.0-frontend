@@ -28,20 +28,20 @@ import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 import ManageStatementUI from "./UI";
 import StatementPreview from "./UI/preview";
 import StatementAIPreview from "./UI/aiPreview";
+import { openNotificationWithIcon } from "components/common/notification/notificationBar";
 
 const systemPropPt = `You are a text converter for a website where people put their opinions on various topics, while writing and posting the content they are given a feature of Improve with AI, Your role is to improve that text accordingly. 
 
 If the topic suggests a science theme then follow the users leads and convert accordingly, similarly go with the users content theme and magically convert text. Do not lose essence of and meaning behind the user's real intent. Convert text in such a way that it's more readable and bit concise, like a good page from a book, everything well put and organized.`;
 
-function ManageStatements({ isEdit = false, add = false }) {
+function ManageStatements({ isEdit = false }) {
   const openai = new OpenAI({
-    apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
+    apiKey: process?.env?.NEXT_PUBLIC_OPENAI_API_KEY || "",
     dangerouslyAllowBrowser: true,
   });
 
   const router = useRouter();
   const [form] = Form.useForm();
-  const { confirm } = Modal;
 
   const { isUserAuthenticated } = useAuthentication();
 
@@ -65,15 +65,13 @@ function ManageStatements({ isEdit = false, add = false }) {
   });
   const [autoSaveDisplayMessage, setAutoSaveDisplayMessage] = useState("");
   const [isAutoSaving, setIsAutoSaving] = useState(false);
-  // const [autoSaveApiPayload, setAutoSaveApiPayload] = useState(null);
   const [statement, setStatement] = useState(null);
-  // const [nickName, setNickName] = useState(null);
-  const [isPrePopupLoading, setIsPrePopupLoading] = useState(false);
+  const [isPrePopupLoading] = useState(false);
   const [isAIPreviewOpen, setIsAIPreviewOpen] = useState(false);
   const [improvedContent, setImprovedContent] = useState(null);
 
   const values = Form.useWatch([], form);
-  const [isSavingDraft,setIsSavingDraft] = useState(false);
+  const [isSavingDraft, setIsSavingDraft] = useState(false);
 
   const getEpochTime = () => {
     return Math.floor(Date.now() / 1000);
@@ -81,20 +79,20 @@ function ManageStatements({ isEdit = false, add = false }) {
 
   useEffect(() => {
     const updateCurrentTime = () => {
-      setTime({
-        ...time,
+      setTime((prevTime) => ({
+        ...prevTime,
         current_time: getEpochTime(),
-      });
+      }));
 
-      let timeDifferance = getEpochTime() - time?.last_save_time;
+      let timeDifference = getEpochTime() - time?.last_save_time;
 
       if (epochToMinutes(time?.last_save_time) == 0) {
         setAutoSaveDisplayMessage("");
-      } else if (epochToMinutes(timeDifferance) == 0) {
+      } else if (epochToMinutes(timeDifference) == 0) {
         setAutoSaveDisplayMessage("Saved just now");
       } else {
         setAutoSaveDisplayMessage(
-          `Saved ${epochToMinutes(timeDifferance)} min ago`
+          `Saved ${epochToMinutes(timeDifference)} min ago`
         );
       }
     };
@@ -464,8 +462,11 @@ function ManageStatements({ isEdit = false, add = false }) {
     }
 
     setTimeout(() => setIsSavingDraft(false), 2000);
-    router.push(`/topic/${getTopicAndCampIds().topicNum}-${getTopicAndCampIds().topicName}/${getTopicAndCampIds().campNum}`)
-
+    router.push(
+      `/topic/${getTopicAndCampIds().topicNum}-${
+        getTopicAndCampIds().topicName
+      }/${getTopicAndCampIds().campNum}`
+    );
   };
 
   const onFinish = async (values: any) => {
@@ -760,46 +761,63 @@ function ManageStatements({ isEdit = false, add = false }) {
     setIsPopupLoading(false);
   };
 
-  const onSaveDraftStatement = async (e) => {
-    e?.preventDefault();
-    setIsSaveDraft(true);
+  // const onSaveDraftStatement = async (e) => {
+  //   e?.preventDefault();
+  //   setIsSaveDraft(true);
 
-    // setIsAutoSaving(true)
+  // setIsAutoSaving(true)
 
-    // const isValid = await form.validateFields();
+  // const isValid = await form.validateFields();
 
-    // if (isValid) {
-    //   form.submit();
-    // }
+  // if (isValid) {
+  //   form.submit();
+  // }
 
-    // autoSaveHandler()
-    // setIsAutoSaving(false)
-  };
+  // autoSaveHandler()
+  // setIsAutoSaving(false)
+  // };
 
   const onImproveClick = async (e) => {
     e?.preventDefault();
     setScreenLoading(true);
 
-    const completion = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
-      messages: [
-        { role: "system", content: systemPropPt },
-        {
-          role: "user",
-          content: editorState,
-        },
-      ],
-    });
+    try {
+      if (!openai || !openai.chat || !openai.chat.completions) {
+        openNotificationWithIcon(
+          "OpenAI API key is not configured or is invalid.",
+          "error"
+        );
+        return;
+      }
 
-    const imConten = completion.choices[0].message;
+      const completion = await openai.chat.completions.create({
+        model: "gpt-4o-mini",
+        messages: [
+          { role: "system", content: systemPropPt },
+          { role: "user", content: editorState },
+        ],
+      });
 
-    setIsAIPreviewOpen(true);
+      const improvedContent = completion?.choices?.[0]?.message;
 
-    setImprovedContent(imConten);
+      if (!improvedContent) {
+        openNotificationWithIcon(
+          "Failed to retrieve content from OpenAI.",
+          "error"
+        );
+        return;
+      }
 
-    setScreenLoading(false);
+      console.log("Result:", improvedContent);
 
-    console.log("result---", completion, imConten);
+      setIsAIPreviewOpen(true);
+      setImprovedContent(improvedContent);
+    } catch (error) {
+      openNotificationWithIcon(`Error during AI improvement!`, "error");
+      return;
+    } finally {
+      setScreenLoading(false);
+    }
   };
 
   const onAiPreveiwClose = (e) => {
@@ -840,7 +858,7 @@ function ManageStatements({ isEdit = false, add = false }) {
         <Col className="flex justify-end items-center" md={12}>
           <Typography.Paragraph className="!mb-0 mr-7">
             {isAutoSaving ? (
-              <>Saving ...</>
+              "Saving ..."
             ) : (
               <>
                 {autoSaveDisplayMessage && (
@@ -854,7 +872,7 @@ function ManageStatements({ isEdit = false, add = false }) {
           </Typography.Paragraph>
           <SecondaryButton
             className="flex items-center justify-center py-2 px-8 h-auto"
-            onClick={() => saveDraftHandler()}
+            onClick={saveDraftHandler}
             loading={isSavingDraft}
           >
             Save As Draft

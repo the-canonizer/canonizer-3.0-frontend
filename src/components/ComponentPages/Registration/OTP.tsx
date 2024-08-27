@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
-import { Card, Col, Form, Row, message } from "antd";
+import { Card, Col, Form, Row } from "antd";
 
 import OTPVerify from "./UI/otp";
 import { verifyOtp, resendOTPForRegistration } from "src/network/api/userApi";
 import { AppDispatch, RootState } from "src/store";
 import { setEmailForOTP, setIsNewUser } from "src/store/slices/authSlice";
 import CustomSpinner from "components/shared/CustomSpinner";
+import { openNotificationWithIcon } from "components/common/notification/notificationBar";
 
 const RegistrationOTP = () => {
   const { emailForOtp } = useSelector((state: RootState) => ({
@@ -57,11 +58,11 @@ const RegistrationOTP = () => {
       }
 
       if (res && res.status_code === 406) {
-        message.error(res.message);
+        openNotificationWithIcon(res.message, "error");
       }
 
       if (res && res.status_code === 200) {
-        message.success("OTP Verified Successfully!");
+        openNotificationWithIcon("You Have Successfully Signed up!", "success");
         otpForm.resetFields();
 
         dispatch(setEmailForOTP(null));
@@ -81,7 +82,7 @@ const RegistrationOTP = () => {
     const res = await resendOTPForRegistration({ email: emailForOtp });
 
     if (res && res.status_code === 200) {
-      message.success(res.message);
+      openNotificationWithIcon(res.message, "success");
       setIsResend(false);
     }
     setLoading(false);

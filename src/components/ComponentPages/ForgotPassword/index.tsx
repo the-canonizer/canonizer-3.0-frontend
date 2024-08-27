@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Card, Col, Form, Row, message } from "antd";
+import { Card, Col, Form, Row } from "antd";
 import { useRouter } from "next/router";
 
 import ForgotPasswordUI from "./UI";
@@ -8,6 +8,7 @@ import { forgotPasswordSendOTP } from "src/network/api/userApi";
 import { AppDispatch } from "src/store";
 import CustomSpinner from "components/shared/CustomSpinner";
 import { setPasswordEmail } from "src/store/slices/authSlice";
+import { openNotificationWithIcon } from "components/common/notification/notificationBar";
 
 const ForgotPassword = () => {
   const [isLoading, setIsLoading] = useState(false),
@@ -35,7 +36,7 @@ const ForgotPassword = () => {
     if (res && res.status_code === 200) {
       router?.push({ pathname: "/forgot-password/otp" });
       form.resetFields();
-      message.success(res.message);
+      openNotificationWithIcon(res.message, "success");
       dispatch(setPasswordEmail(email));
     }
     setIsLoading(false);
