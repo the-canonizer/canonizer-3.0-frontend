@@ -314,7 +314,7 @@ const SettingsUI = () => {
       className: `listItem ${getMatchQuery("nick_name")}`,
     },
     {
-      key: "preferences",
+      key: "user_prefrences",
       itemIcon: (
         <Image
           src="/images/preference-icon.svg"
@@ -324,11 +324,11 @@ const SettingsUI = () => {
         />
       ),
       label: (
-        <Link href="#">
+        <Link href="/settings?tab=user_prefrences">
           <a>Preferences</a>
         </Link>
       ),
-      className: `listItem ${getMatchQuery("preferences")}`,
+      className: `listItem ${getMatchQuery("user_prefrences")}`,
     },
     {
       key: "supported_camps",
