@@ -117,7 +117,7 @@ body {
   }
 
   .browse-actions {
-    @apply flex md:items-end justify-between gap-4 mb-[3.75rem] max-md:flex-col;
+    @apply flex lg:items-end justify-between gap-2 mb-8 max-lg:flex-col;
 
     .ant-form {
       .ant-form-item-required {
@@ -143,10 +143,10 @@ body {
     }
 
     .search-wrapper {
-      @apply flex gap-4;
+      @apply flex gap-2;
 
       .browse-search {
-        @apply md:max-w-[350px] w-full;
+        @apply lg:max-w-[350px] w-full;
 
         .ant-input {
           @apply rounded-tl-md rounded-bl-md;
@@ -158,17 +158,23 @@ body {
           }
         }
       }
+      .browse-sort {
+        @apply leading-[0] max-sm:order-3 max-sm:grow;
+        .browse-filters {
+          @apply sm:w-[150px] max-sm:w-full;
+        }
+      }
     }
 
     .browse-dropdown {
-      @apply mb-0;
+      @apply mb-0 leading-[0];
 
       .ant-btn-compact-first-item {
         @apply min-w-[340px] text-start;
       }
 
       .ant-select {
-        @apply w-[390px] max-md:w-full;
+        @apply md:w-[100%];
 
         .ant-select-selector {
           @apply rounded-md;
@@ -178,7 +184,7 @@ body {
   }
 
   .search-response {
-    @apply flex gap-4 items-center mb-9 font-semibold;
+    @apply flex gap-4 items-center justify-between mb-8 font-semibold;
 
     .btn-clear {
       @apply flex gap-1 items-center font-semibold;
