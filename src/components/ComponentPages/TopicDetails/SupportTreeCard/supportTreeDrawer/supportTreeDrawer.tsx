@@ -408,7 +408,7 @@ function SupportTreeDrawer({
         topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
         camp_num: +router?.query?.camp?.at(1)?.split("-")?.at(0),
       };
-      await getTreesApi(reqBodyForService);
+      // await getTreesApi(reqBodyForService);
       await getCurrentCampRecordApi(reqBody);
 
       await getCheckStatusAPI();
@@ -682,7 +682,7 @@ function SupportTreeDrawer({
                   {drawerFor === "delegateAdd" && (
                     <p className="text-base font-medium mb-5 text-canBlack">
                       If you still wish to delegate support to{" "}
-                      <a href="#" className="text-canBlue">
+                      <a href={`/user/supports/${getDelegateId}?canon=${topicRecord?.namespace_id}`} className="text-canBlue">
                         {delegateNickName} -
                       </a>{" "}
                     </p>

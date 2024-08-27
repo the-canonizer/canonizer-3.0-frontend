@@ -1,7 +1,8 @@
-import { Fragment, useState, useEffect } from "react";
+import { Fragment, useState, useEffect, useMemo, useCallback } from "react";
 import { Col, Form, Row, message } from "antd";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
+import { debounce } from "lodash";
 
 import type { CheckboxChangeEvent } from "antd/es/checkbox";
 
@@ -77,6 +78,7 @@ const CreateNewCamp = () => {
   const [isShowMore, setIsShowMore] = useState(false);
   const [isError, setIsError] = useState(false);
   const [isSimPopOpen, setIsSimPopOpen] = useState(false);
+  const [isTopicLoading, setIsopicLoading] = useState(false);
 
   useEffect(() => {
     form
@@ -85,8 +87,9 @@ const CreateNewCamp = () => {
       .catch(() => setIsDisabled(false));
   }, [form, values]);
 
-  const getExistingList = async () => {
-    const topicName = values?.camp_name,
+  const getExistingList = async (val = values?.camp_name) => {
+    setIsopicLoading(true);
+    const topicName = val,
       queryParamObj: any = {
         type: "camp",
         size: 5,
@@ -107,6 +110,7 @@ const CreateNewCamp = () => {
         setIsShowMore(true);
       }
     }
+    setIsopicLoading(false);
   };
 
   const getRouterParams = () => {
@@ -202,13 +206,6 @@ const CreateNewCamp = () => {
 
     const similarNames = findSimilarNames(
       values?.camp_name?.toLowerCase(),
-      namesList
-    );
-
-    console.log(
-      "similarNames--->",
-      similarNames,
-      " ---exitedname--->",
       namesList
     );
 
@@ -331,7 +328,6 @@ const CreateNewCamp = () => {
   const onFinish = async (values) => {
     setIsLoading(true);
     const isSimAvalable = isSimilarAvaiable();
-    console.log("isSimAvalable---", isSimAvalable);
 
     if (isSimAvalable) {
       setIsSimPopOpen(true);
@@ -407,15 +403,36 @@ const CreateNewCamp = () => {
     topic_num: (router?.query.camp[0] as string)?.split("-")[0],
   };
 
-  const onCampChange = () => {
-    setHaveCampExist(false);
-  };
+  // const debounceFn = useCallback(() => debounce(getExistingList, 900), []);
+
+  // const onCampChange = (e) => {
+  //   setHaveCampExist(false);
+  //   const enteredValues = e?.target?.value;
+  //   if (enteredValues && enteredValues?.length > 2) {
+  //     setIsopicLoading(true);
+  //     setHaveCampExist(true);
+  //     debounceFn();
+  //   } else {
+  //     setHaveCampExist(false);
+  //   }
+  // };
+
+  const onCampChange = useCallback(
+    debounce((e) => {
+      const enteredValues = e?.target?.value;
+      if (enteredValues && enteredValues?.length > 2) {
+        setIsopicLoading(true);
+        setHaveCampExist(true);
+        getExistingList(enteredValues);
+      } else {
+        setHaveCampExist(false);
+      }
+    }, 900),
+    []
+  );
 
   const onCampNameBlur = () => {
     setIsError(false);
-    if (values?.camp_name) {
-      getExistingList();
-    }
   };
 
   const onContributeCLick = (item, e) => {
@@ -468,6 +485,7 @@ const CreateNewCamp = () => {
                   isShowMore={isShowMore}
                   isError={isError}
                   onContributeCLick={onContributeCLick}
+                  isLoading={isTopicLoading}
                 />
               ) : (
                 <CampInfoCard />

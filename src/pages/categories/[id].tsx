@@ -1,7 +1,7 @@
-import Layout from "src/hoc/layout";
+import TopicsByTagss from "components/ComponentPages/TopicsByTag";
 
 const AllUserCategories = () => {
-  return <Layout className="min-h-screen">Topics by cats</Layout>;
+  return <TopicsByTagss />;
 };
 
 AllUserCategories.displayName = "CategoriesTopic";

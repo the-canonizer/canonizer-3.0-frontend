@@ -47,12 +47,15 @@ const CatsList = ({ onBackClick, isMobile, tags, onSort }) => {
       <Row gutter={15} className="border-b-2 pb-4 mb-4">
         <Col lg={12}>
           <Paragraph className="font-semibold text-base text-canBlack uppercase">
-            What are Categories?
+            What are Topic Tags?
           </Paragraph>
           <Paragraph className="text-sm opacity-80 text-black font-normal mb-0">
-            Every conversation has to have a context, a group that it belongs
-            to. Category is that group that lorem Ipsum is simply dummy text of
-            the printing and typesetting industry.
+            Topic Tags are keywords that help categorize and organize topics
+            within a Canon on Canonizer. By adding relevant tags to a topic,
+            users can enhance discoverability, making it easier for others to
+            find and engage with topics that match their interests. Tags also
+            provide context, allowing users to quickly understand the focus and
+            scope of a topic.
           </Paragraph>
         </Col>
         {!isMobile && (

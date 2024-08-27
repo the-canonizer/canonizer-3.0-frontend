@@ -17,6 +17,7 @@ import PrimaryButton from "components/shared/Buttons/PrimariButton";
 import Inputs from "components/shared/FormInputs";
 import ManageStatementUISkelaton from "./skelaton";
 import CustomSkelton from "components/common/customSkelton";
+import StarIcon from "./starIcon";
 
 //Ckeditor
 const Editorckl = dynamic(() => import("components/common/editorck"), {
@@ -77,6 +78,7 @@ function ManageStatementUI({
   autoSave,
   isAutoSaving,
   values,
+  onImproveClick,
 }) {
   return (
     <CommonCards className="border-0 bg-white">
@@ -135,11 +137,19 @@ function ManageStatementUI({
             </Col>
             <Col xs={24} xl={24}>
               <Form.Item
-                className="mb-2 editorContent"
+                className="mb-2 editorContent [&_.ant-form-item-label>label]:w-full"
                 name="statement"
                 label={
                   <>
                     Statement <span className="required">*</span>
+                    <SecondaryButton
+                      className="flex justify-center items-center border-0 p-0 ml-auto float-end"
+                      type="link"
+                      ghost
+                      onClick={onImproveClick}
+                    >
+                      Improve With Ai <StarIcon className="" />
+                    </SecondaryButton>
                   </>
                 }
                 rules={[
@@ -214,7 +224,7 @@ function ManageStatementUI({
                 <PrimaryButton
                   htmlType="submit"
                   className="inline-flex items-center justify-center h-auto py-2 px-7 h-auto"
-                  disabled={submitIsDisable || !isDisabled || isAutoSaving}
+                  disabled={!isDisabled || isAutoSaving}
                 >
                   Publish Statement
                   <UploadOutlined />
