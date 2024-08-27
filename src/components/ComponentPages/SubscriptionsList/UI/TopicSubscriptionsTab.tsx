@@ -36,7 +36,7 @@ function TopicSubscriptionsTab({
   };
   return subscriptionsList.length ? (
     <div key="subscription_cart">
-      <h3 className="text-xl text-canBlack font-semibold bg-canGray p-6 mb-8 border-b border-black border-opacity-10">
+       <h3 className="text-xl text-canBlack font-semibold bg-canGray p-6 border-b border-black border-opacity-10">
         My Subscriptions
       </h3>
 
@@ -45,7 +45,7 @@ function TopicSubscriptionsTab({
           return (
             <Card
               key={data?.topic_num}
-              className="subs-card [&_.ant-card-head]:!bg-transparent [&_.ant-card-head]:!border-none [&_.ant-card-body]:!px-6 [&_.ant-card-body]:!my-4 [&_.ant-tag-close-icon]:flex [&_.ant-tag-close-icon]:items-center [&_.ant-card-head-title]:!border-b [&_.ant-card-head-title]:!border-black [&_.ant-card-head-title]:!border-opacity-5  [&_.ant-card-head-title]:!py-5 !mb-0 pb-0"
+              className="subs-card [&_.ant-card-head]:!bg-transparent [&_.ant-card-head]:!border-none [&_.ant-card-body]:!px-6 [&_.ant-card-body]:!my-0 [&_.ant-tag-close-icon]:flex [&_.ant-tag-close-icon]:items-center [&_.ant-card-head-title]:!border-b [&_.ant-card-head-title]:!border-black [&_.ant-card-head-title]:!border-opacity-5  [&_.ant-card-head-title]:!py-5 !mb-0 pb-0"
               type="inner"
               size="default"
               title={
@@ -53,11 +53,11 @@ function TopicSubscriptionsTab({
                   <span>
                     <Link href={data.title_link}>
                       <div className="flex gap-2.5">
-                        <a className="text-base font-semibold !text-canBlack">
+                      <a className="text-base font-semibold !text-canBlack flex items-center">
                           {data.title}
                         </a>
                         <button
-                          className="cursor-pointer"
+                          className="cursor-pointer flex items-center"
                           onClick={(e) => onRemoveSubscription(e, data)}
                           onKeyDown={(e) => {
                             if (e.key === "Enter" || e.key === " ") {
@@ -100,7 +100,7 @@ function TopicSubscriptionsTab({
               {/* <p className="text-base text-canBlack font-semibold mt-4 mb-2.5">
                 Political Sciences
               </p> */}
-              <div className="flex flex-wrap flex-col gap-2.5 border-b pb-5 ">
+              <div className="flex flex-wrap flex-col gap-2.5 border-b py-5 ">
                 {data.camps?.map((camp, i) => {
                   return (
                     <>
@@ -157,6 +157,7 @@ function TopicSubscriptionsTab({
             pageSize={5}
             onChange={pageChange}
             showSizeChanger={false}
+            className="mt-5"
           />
         )}
     </div>

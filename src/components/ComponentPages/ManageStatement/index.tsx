@@ -71,6 +71,7 @@ function ManageStatements({ isEdit = false }) {
   const [improvedContent, setImprovedContent] = useState(null);
 
   const values = Form.useWatch([], form);
+  const [isSavingDraft, setIsSavingDraft] = useState(false);
 
   const getEpochTime = () => {
     return Math.floor(Date.now() / 1000);
@@ -372,7 +373,7 @@ function ManageStatements({ isEdit = false }) {
   };
 
   const saveDraftHandler = async () => {
-    setIsAutoSaving(true);
+    setIsSavingDraft(true);
 
     let payload = {
       camp_num: null,
@@ -460,8 +461,7 @@ function ManageStatements({ isEdit = false }) {
       });
     }
 
-    setIsAutoSaving(false);
-
+    setTimeout(() => setIsSavingDraft(false), 2000);
     router.push(
       `/topic/${getTopicAndCampIds().topicNum}-${
         getTopicAndCampIds().topicName
@@ -873,6 +873,7 @@ function ManageStatements({ isEdit = false }) {
           <SecondaryButton
             className="flex items-center justify-center py-2 px-8 h-auto"
             onClick={saveDraftHandler}
+            loading={isSavingDraft}
           >
             Save As Draft
             <FileTextOutlined />

@@ -46,6 +46,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "src/store";
 import { logout } from "src/network/api/userApi";
 import SectionHeading from "../Home/FeaturedTopic/sectionsHeading";
+import ProfilePrefrences from "../Preference";
 
 const { TabPane } = Tabs;
 const tabList = [
@@ -137,7 +138,7 @@ const SettingsUI = () => {
     profile_info: <ProfileInfo />,
     change_password: <ChangePassword />,
     nick_name: <NickName />,
-
+    user_prefrences: <ProfilePrefrences />,
     direct_supported_camps: <DirectSupportedCamps search={search} />,
     delegate_supported_camp: <DelegatedSupportCamps search={search} />,
     supported_camps: (
@@ -233,7 +234,6 @@ const SettingsUI = () => {
   const handleChange2 = (e) => {
     const value = e.target.value;
     setSelectedValue(value);
-
     // Navigate to the corresponding page
     if (value === "Direct_Supported_Camps") {
       router.push("/settings?tab=direct_supported_camps");
@@ -241,6 +241,7 @@ const SettingsUI = () => {
       router.push("/settings?tab=delegate_supported_camp");
     }
   };
+
   // useEffect(() => {
   //   const savedValue = localStorage.getItem("selectedValue");
   //   if (savedValue) {
