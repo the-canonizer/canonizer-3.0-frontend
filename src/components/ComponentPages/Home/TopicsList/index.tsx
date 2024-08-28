@@ -9,7 +9,7 @@ import {
   getCanonizedNameSpacesApi,
   getCanonizedTopicsApi,
 } from "src/network/api/homePageApi";
-import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
+import { setFilterCanonizedTopics, setOnlyMyTopic } from "src/store/slices/filtersSlice";
 import { RootState } from "src/store";
 import { changeSlashToArrow } from "src/utils/generalUtility";
 import SortTopics from "components/ComponentPages/SortingTopics";
@@ -19,6 +19,8 @@ import Layout from "src/hoc/layout";
 import SingleTopicCard from "../HotTopics/topicCard";
 import ScoreTag from "../TrandingTopic/scoreTag";
 import { getAllTags } from "src/network/api/tagsApi";
+import useAuthentication from "src/hooks/isUserAuthenticated";
+import { setLoadingAction } from "src/store/slices/loading";
 
 const { Title } = Typography;
 const { Search } = Input;
@@ -26,6 +28,7 @@ const { Search } = Input;
 const TopicsList = () => {
   const router = useRouter();
   const dispatch = useDispatch();
+  const { isUserAuthenticated } = useAuthentication();
 
   const {
     canonizedTopics,
@@ -86,7 +89,7 @@ const TopicsList = () => {
   const getAlltagsData = async () => {
     let res = await getAllTags();
     setOptions(mapItemsToValueLabel(res?.data?.items));
-    setAllTags(res?.data?.items)
+    setAllTags(res?.data?.items);
   };
 
   useEffect(() => {
@@ -235,6 +238,7 @@ const TopicsList = () => {
     sortScoreViewTopic,
     pageSize,
     pageNumber,
+    onlyMyTopicsCheck,
   ]);
 
   const memoizedOptions = useMemo(() => {
@@ -246,22 +250,22 @@ const TopicsList = () => {
   }, [nameSpacesList]);
 
   const getIdsOfFilteredTags = (arr, resData) => {
-    return arr.map(item => {
-        const found = resData.find(data => data?.title === item);
-        return found ? found.id : null;
+    return arr?.map((item) => {
+      const found = resData?.find((data) => data?.title === item);
+      return found ? found?.id : null;
     });
-  }
- 
- 
-  useEffect(()=>{
-    let res = getIdsOfFilteredTags(value,allTags)
-    console.log("Ids....",res)
-  },[value])
+  };
+
+  useEffect(() => {
+    let res = getIdsOfFilteredTags(value, allTags);
+    console.log("Ids....", res);
+  }, [value]);
 
   const showOnlyMyTopicsHandler = (e) => {
-    setShowOnlyMyTopics(e?.target?.checked)
-  }
- 
+    dispatch(setLoadingAction(true))
+    dispatch(setOnlyMyTopic(e?.target?.checked));
+    dispatch(setLoadingAction(false))
+  };
 
   return (
     <Layout routeName={"browse"}>
@@ -327,9 +331,17 @@ const TopicsList = () => {
               </Form.Item>
             </div>
             <div className="search-wrapper w-full items-center max-sm:flex-wrap lg:justify-end max-lg:justify-between">
-              <Checkbox className="min-w-[169px] max-sm:order-2" onChange={(e:any)=>showOnlyMyTopicsHandler(e)}>
-                Show only my topics
-              </Checkbox>
+              {router?.asPath.includes("/browse") && isUserAuthenticated && (
+                <Checkbox
+                  className="min-w-[169px] max-sm:order-2"
+                  onChange={(e: any) => showOnlyMyTopicsHandler(e)}
+                  disabled={loading}
+                  checked={onlyMyTopicsCheck}
+                >
+                  Show only my topics
+                </Checkbox>
+              )}
+
               <Search
                 key={inputSearch}
                 size="large"
