@@ -72,6 +72,7 @@ function ManageStatements({ isEdit = false }) {
 
   const values = Form.useWatch([], form);
   const [isSavingDraft, setIsSavingDraft] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
 
   const getEpochTime = () => {
     return Math.floor(Date.now() / 1000);
@@ -543,11 +544,6 @@ function ManageStatements({ isEdit = false }) {
                 }
                 return;
               } else if (isEdit) {
-                // if (isSaveDraft) {
-                //   router?.push({ pathname: topicURL() });
-                //   return;
-                // }
-
                 const route = `${
                   editInfo?.topic?.topic_num
                 }-${replaceSpecialCharacters(
@@ -761,25 +757,11 @@ function ManageStatements({ isEdit = false }) {
     setIsPopupLoading(false);
   };
 
-  // const onSaveDraftStatement = async (e) => {
-  //   e?.preventDefault();
-  //   setIsSaveDraft(true);
-
-  // setIsAutoSaving(true)
-
-  // const isValid = await form.validateFields();
-
-  // if (isValid) {
-  //   form.submit();
-  // }
-
-  // autoSaveHandler()
-  // setIsAutoSaving(false)
-  // };
-
-  const onImproveClick = async (e) => {
+  const onImproveClick = async (e, editor) => {
     e?.preventDefault();
-    setScreenLoading(true);
+    console.log("editor---", editor);
+return
+    setIsGenerating(true);
 
     try {
       if (!openai || !openai.chat || !openai.chat.completions) {
@@ -816,7 +798,7 @@ function ManageStatements({ isEdit = false }) {
       openNotificationWithIcon(`Error during AI improvement!`, "error");
       return;
     } finally {
-      setScreenLoading(false);
+      setIsGenerating(false);
     }
   };
 
@@ -904,6 +886,7 @@ function ManageStatements({ isEdit = false }) {
               isAutoSaving={isAutoSaving}
               values={values}
               onImproveClick={onImproveClick}
+              isGenerating={isGenerating}
             />
           )}
         </Col>

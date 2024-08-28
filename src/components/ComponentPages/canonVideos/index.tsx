@@ -412,6 +412,7 @@ export default function CanonVideos() {
                           checked={videoResolution === data?.link}
                           onChange={(e) => onChange(e, data?.title as string)}
                           data-testid={data?.link}
+                          className="[&_>span]:!text-sm"
                         >
                           {data?.title}
                         </Radio>

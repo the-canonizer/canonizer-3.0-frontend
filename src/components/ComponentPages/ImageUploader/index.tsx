@@ -115,7 +115,7 @@ const ImageUploader: React.FC = () => {
   };
   return (
     <Fragment>
-      <div className="upload-wrap relative flex items-center justify-center overflow-hidden lg:w-24 lg:h-24 w-14 h-14 rounded-full border border-canBlack">
+      <div className="upload-wrap relative flex items-center justify-center overflow-hidden lg:w-24 lg:h-24 w-14 h-14 rounded-full border border-canGray2">
         {fileList.length == 1 && !loading ? (
           <>
             <ImgCrop
