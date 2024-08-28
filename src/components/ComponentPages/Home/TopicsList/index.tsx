@@ -19,6 +19,7 @@ import CustomPagination from "components/shared/CustomPagination/intex";
 import Layout from "src/hoc/layout";
 import SingleTopicCard from "../HotTopics/topicCard";
 import ScoreTag from "../TrandingTopic/scoreTag";
+// import styles from "../../../ComponentPages/Home-old/TopicsList/topicsList.module.scss";
 
 const { Title } = Typography;
 const { Search } = Input;
@@ -301,19 +302,19 @@ const TopicsList = () => {
     }
   };
 
-  // useEffect(()=>{
-  //   console.log("===>",{
-  //     showSearchDropdown,
-  //     searchTerm,
-  //     searchLoading,
-  //     searchedResult,
-  //   })
-  // },[
-  //   showSearchDropdown,
-  //   searchTerm,
-  //     searchLoading,
-  //     searchedResult,
-  // ])
+  useEffect(()=>{
+    console.log("===>",{
+      showSearchDropdown,
+      searchTerm,
+      searchLoading,
+      searchedResult,
+    })
+  },[
+    showSearchDropdown,
+    searchTerm,
+      searchLoading,
+      searchedResult,
+  ])
 
   
 
@@ -353,6 +354,7 @@ const TopicsList = () => {
             </Form.Item>
           </Form>
           <div className="search-wrapper">
+            <div className="input-search-topic">
             <Search
               key={inputSearch}
               size="large"
@@ -377,10 +379,10 @@ const TopicsList = () => {
               }}
             />
             {showSearchDropdown && searchTerm && (
-              <div >
+              <div className="suggestion-list">
                 <ul>
                   {searchLoading ? (
-                    <li>
+                    <li className="search-loader">
                       <LoadingOutlined spin />
                     </li>
                   ) : searchedResult?.length > 0 ? (
@@ -400,6 +402,7 @@ const TopicsList = () => {
                 </ul>
               </div>
             )}
+            </div>
             <SortTopics />
           </div>
         </div>
