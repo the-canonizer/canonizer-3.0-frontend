@@ -60,13 +60,15 @@ const CreateEditThreadPopup = ({
         initialValues={{ ...initialValue }}
       >
         <Row gutter={16}>
-          <Col sm={24} className="py-6">
-            <Typography.Paragraph className="text-canRed text-xs">
-              Note: Once you pick a nickname, for any contribution to a topic,
-              you must always use the same nickname for any other contribution
-              or forum comment to this topic.
-            </Typography.Paragraph>
-          </Col>
+          {!isThreadUpdate && (
+            <Col sm={24} className="py-6">
+              <Typography.Paragraph className="text-canRed text-xs">
+                Note: Once you pick a nickname, for any contribution to a topic,
+                you must always use the same nickname for any other contribution
+                or forum comment to this topic.
+              </Typography.Paragraph>
+            </Col>
+          )}
           <Col xs={24} sm={16} className="mb-4">
             {!isThreadUpdate ? (
               <SelectInputs

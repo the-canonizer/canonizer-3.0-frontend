@@ -1,8 +1,13 @@
-import { Modal, Button, Typography } from "antd";
-import { CloseCircleOutlined } from "@ant-design/icons";
+import { Modal, Typography } from "antd";
+import {
+  CloseCircleOutlined,
+  CloseOutlined,
+  DeleteOutlined,
+} from "@ant-design/icons";
 import Link from "next/link";
 
-import styles from "./SubscriptionsList.module.scss";
+import SecondaryButton from "components/shared/Buttons/SecondaryButton";
+import PrimaryButton from "components/shared/Buttons/PrimariButton";
 
 function TopicRemoveModal({
   isVisible,
@@ -14,41 +19,35 @@ function TopicRemoveModal({
   campTitle,
   campLink,
   isDisabled,
-}: any) {
+}) {
   return (
     <Modal
-      className={styles.modal_cross}
+      className="rounded-lg"
       title={
-        <Typography.Title
-          className={styles.modal_title}
-          level={4}
-          data-testid="rm-title"
-        >
+        <Typography.Title className="" level={4} data-testid="rm-title">
           Remove Subscription
         </Typography.Title>
       }
       visible={isVisible}
       onCancel={onCancel}
       footer={
-        <div className={styles.text_right}>
-          <Button
+        <div className="gap-5 py-3">
+          <PrimaryButton
             onClick={onRemove}
-            type="primary"
-            style={{ marginRight: 10 }}
-            className="ant-btn ant-btn-orange"
+            className="inline-flex items-center justify-center gap-2"
             data-testid="popremove"
             disabled={isDisabled}
           >
             Remove
-          </Button>
-          <Button
+            <DeleteOutlined />
+          </PrimaryButton>
+          <SecondaryButton
             onClick={onCancel}
-            type="default"
-            className="ant-btn"
+            className="inline-flex items-center justify-center gap-2"
             data-testid="popcancel"
           >
-            Cancel
-          </Button>
+            Cancel <CloseOutlined />
+          </SecondaryButton>
         </div>
       }
       closeIcon={<CloseCircleOutlined />}

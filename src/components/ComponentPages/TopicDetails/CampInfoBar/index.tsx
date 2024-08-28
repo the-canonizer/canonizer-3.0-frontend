@@ -345,30 +345,31 @@ const TimelineInfoBar = ({
       </Row>
 
       <hr className="horizontal_line my-5" />
-      {isTopicPage || isEventLine && (
-        <PrimaryButton
-          className="mx-auto flex items-center justify-center font-medium h-auto"
-          onClick={() =>
-            router?.push({
-              pathname: `/topic/history/${replaceSpecialCharacters(
-                router?.query?.camp
-                  ? router?.query?.camp[0]
-                  : router?.query?.manageSupport?.at(0),
-                "-"
-              )}`,
-            })
-          }
-        >
-          {K?.exceptionalMessages?.manageTopicButton}
-          <Image
-            src="/images/manage-btn-icon.svg"
-            alt="svg"
-            className="icon-topic"
-            height={16}
-            width={16}
-          />
-        </PrimaryButton>
-      )}
+      {isTopicPage ||
+        (isEventLine && (
+          <PrimaryButton
+            className="mx-auto flex items-center justify-center font-medium h-auto"
+            onClick={() =>
+              router?.push({
+                pathname: `/topic/history/${replaceSpecialCharacters(
+                  router?.query?.camp
+                    ? router?.query?.camp[0]
+                    : router?.query?.manageSupport?.at(0),
+                  "-"
+                )}`,
+              })
+            }
+          >
+            {K?.exceptionalMessages?.manageTopicButton}
+            <Image
+              src="/images/manage-btn-icon.svg"
+              alt="svg"
+              className="icon-topic"
+              height={16}
+              width={16}
+            />
+          </PrimaryButton>
+        ))}
     </div>
   );
 
@@ -503,14 +504,22 @@ const TimelineInfoBar = ({
   );
 
   const handleClick = () => {
-    const camp0 = router?.query.camp?.[0] || "";
-    const camp1 = router?.query.camp?.[1] || "";
-    const link = `/camp/create/${camp0}/${camp1}`;
+    const lastCamp =
+      breadCrumbRes?.bread_crumb[breadCrumbRes?.bread_crumb?.length - 1];
+
+    const link = `/camp/create/${payload?.topic_num}-${replaceSpecialCharacters(
+      breadCrumbRes?.topic_name,
+      "-"
+    )}/${lastCamp?.camp_num}-${replaceSpecialCharacters(
+      lastCamp?.camp_name,
+      "-"
+    )}`;
+
     router.push(link);
   };
 
   return (
-    <div className="lg:bg-canGrey1 bg-white lg:py-4 py-3 px-3 lg:px-5 lg:rounded-xl lg:mb-10 mb-7 mt-7.5 mx-[-16px] lg:mx-0 border-t border-[#EAECF0] shadow-mobile-b-shadow lg:shadow-none ">
+    <div className="lg:bg-canGrey1 bg-white lg:py-4 py-3 px-3 lg:px-5 lg:rounded-xl lg:mb-10 mb-10 -mt-9 lg:mt-0 mx-[-16px] lg:mx-0 border-t border-[#EAECF0] shadow-mobile-b-shadow lg:shadow-none inforBarClass">
       <Spin spinning={false}>
         <div className={styles.topicDetailContentHead_Left}>
           {isForumPage ? (
@@ -945,55 +954,57 @@ const TimelineInfoBar = ({
             )}
 
             {!isEventLine && (
-            <div className="flex items-center gap-3 shrink-0">
-              {!isHtmlContent && campStatement?.length > 0 && isTopicPage ? (
-                <div className="topicDetailsCollapseFooter printHIde camp">
-                  <PrimaryButton
-                    disabled={campRecord?.is_archive == 1 ? true : false}
-                    className="printHIde sm:hidden md:hidden hidden lg:flex !h-[40px] py-2.5 px-5 items-center text-sm"
-                    onClick={() => {
-                      router?.push(
-                        `${
-                          campStatement?.length > 0
-                            ? campStatement[0]?.draft_record_id
-                              ? "/manage/statement/" +
-                                campStatement[0]?.draft_record_id +
-                                "?is_draft=1"
-                              : campStatement[0]?.parsed_value || campStatement?.at(0)?.in_review_changes
-                              ? `/statement/history/${replaceSpecialCharacters(
-                                  router?.query?.camp?.at(0),
-                                  "-"
-                                )}/${replaceSpecialCharacters(
-                                  router?.query?.camp?.at(1) ?? "1-Agreement",
-                                  "-"
-                                )}`
-                              : `/create/statement/${replaceSpecialCharacters(
-                                  router?.query?.camp?.at(0),
-                                  "-"
-                                )}/${replaceSpecialCharacters(
-                                  router?.query?.camp?.at(1) ?? "1-Agreement",
-                                  "-"
-                                )}`
-                            : null
-                        }`
-                      );
-                    }}
-                    id="add-camp-statement-btn"
-                  >
-                    {campStatement[0]?.draft_record_id
-                      ? "Edit Draft Statement"
-                      : campStatement[0]?.parsed_value || campStatement?.at(0)?.in_review_changes
-                      ? K?.exceptionalMessages?.manageCampStatementButton
-                      : K?.exceptionalMessages?.addCampStatementButton}
-                    <Image
-                      src="/images/manage-btn-icon.svg"
-                      alt=""
-                      height={24}
-                      width={24}
-                    />
-                  </PrimaryButton>
-                </div>
-              ) : null}
+              <div className="flex items-center gap-3 shrink-0">
+                {!isHtmlContent && campStatement?.length > 0 && isTopicPage ? (
+                  <div className="topicDetailsCollapseFooter printHIde camp">
+                    <PrimaryButton
+                      disabled={campRecord?.is_archive == 1 ? true : false}
+                      className="printHIde sm:hidden md:hidden hidden lg:flex !h-[40px] py-2.5 px-5 items-center text-sm"
+                      onClick={() => {
+                        router?.push(
+                          `${
+                            campStatement?.length > 0
+                              ? campStatement[0]?.draft_record_id
+                                ? "/manage/statement/" +
+                                  campStatement[0]?.draft_record_id +
+                                  "?is_draft=1"
+                                : campStatement[0]?.parsed_value ||
+                                  campStatement?.at(0)?.in_review_changes
+                                ? `/statement/history/${replaceSpecialCharacters(
+                                    router?.query?.camp?.at(0),
+                                    "-"
+                                  )}/${replaceSpecialCharacters(
+                                    router?.query?.camp?.at(1) ?? "1-Agreement",
+                                    "-"
+                                  )}`
+                                : `/create/statement/${replaceSpecialCharacters(
+                                    router?.query?.camp?.at(0),
+                                    "-"
+                                  )}/${replaceSpecialCharacters(
+                                    router?.query?.camp?.at(1) ?? "1-Agreement",
+                                    "-"
+                                  )}`
+                              : null
+                          }`
+                        );
+                      }}
+                      id="add-camp-statement-btn"
+                    >
+                      {campStatement[0]?.draft_record_id
+                        ? "Edit Draft Statement"
+                        : campStatement[0]?.parsed_value ||
+                          campStatement?.at(0)?.in_review_changes
+                        ? K?.exceptionalMessages?.manageCampStatementButton
+                        : K?.exceptionalMessages?.addCampStatementButton}
+                      <Image
+                        src="/images/manage-btn-icon.svg"
+                        alt=""
+                        height={24}
+                        width={24}
+                      />
+                    </PrimaryButton>
+                  </div>
+                ) : null}
 
                 {!isHtmlContent && (
                   <SecondaryButton

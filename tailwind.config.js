@@ -39,6 +39,7 @@ module.exports = {
         canHoverBlue: "#326DC7",
         canGreen: "#4EB966",
         canGreen2: "#2EAD4A",
+        canGreen30: "#2EAD4A4D",
         canRed: "#E46B6B",
         canRed_Opacity10: "#E46B6B1A",
         canBlack: "#242B37",
