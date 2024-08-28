@@ -759,8 +759,6 @@ function ManageStatements({ isEdit = false }) {
 
   const onImproveClick = async (e, editor) => {
     e?.preventDefault();
-    console.log("editor---", editor);
-return
     setIsGenerating(true);
 
     try {
