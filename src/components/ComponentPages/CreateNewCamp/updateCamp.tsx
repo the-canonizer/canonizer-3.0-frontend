@@ -1,7 +1,7 @@
 import { Fragment, useState, useEffect, useCallback } from "react";
 import { Col, Form, Row } from "antd";
 import { useRouter } from "next/router";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import debounce from "lodash/debounce";
 
 import type { CheckboxChangeEvent } from "antd/es/checkbox";
@@ -16,7 +16,6 @@ import messages from "src/messages";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
 import isAuth from "src/hooks/isUserAuthenticated";
 import { setShowDrawer } from "src/store/slices/filtersSlice";
-import { RootState } from "src/store";
 import DataNotFound from "../DataNotFound/dataNotFound";
 import CustomSpinner from "components/shared/CustomSpinner";
 import ExistingCampList from "./UI/existingCampList";
@@ -34,14 +33,6 @@ import {
 import { openNotificationWithIcon } from "components/common/notification/notificationBar";
 
 const CreateNewCamp = () => {
-  const { filterByScore, filterObject, viewThisVersion } = useSelector(
-    (state: RootState) => ({
-      filterByScore: state.filters?.filterObject?.filterByScore,
-      filterObject: state?.filters?.filterObject,
-      viewThisVersion: state?.filters?.viewThisVersionCheck,
-    })
-  );
-
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -56,7 +47,6 @@ const CreateNewCamp = () => {
   const [parentCamp, setParentCamps] = useState([]);
   const [campExist, setCampExist] = useState(true);
   const [campNickName, setCampNickName] = useState([]);
-  const [params, setParams] = useState({});
   const [options, setOptions] = useState([...messages.preventCampLabel]);
   const [isLoading, setIsLoading] = useState(false);
   const [haveCampExist, setHaveCampExist] = useState(false);
@@ -65,16 +55,12 @@ const CreateNewCamp = () => {
   const [isShowMore, setIsShowMore] = useState(false);
   const [isError, setIsError] = useState(false);
   const [isSimPopOpen, setIsSimPopOpen] = useState(false);
-  const [initialOptions, setInitialOptions] = useState([]);
   const [payload, setPayloadBreadCrumb] = useState({
     camp_num: "",
     topic_num: "",
   });
   const [campLeaderData, setCampLeaderData] = useState([]);
   const [editStatementData, setEditStatementData] = useState({ data: null });
-  const [currentCampLeader, setCurrentCampLeader] = useState(null);
-  const [originalData, setOriginalData] = useState({ name_space: null });
-  const [submitIsDisableCheck, setSubmitIsDisableCheck] = useState(true);
   const [isSubmitReq, setIsSubmitReq] = useState(false);
   const [isTopicLoading, setIsopicLoading] = useState(false);
 
@@ -83,7 +69,7 @@ const CreateNewCamp = () => {
       .validateFields({ validateOnly: true })
       .then(() => setIsDisabled(true))
       .catch(() => setIsDisabled(false));
-  }, [form, values]);
+  }, [form, values, options]);
 
   // Helper function to check if a value has changed
   const hasChanged = (originalValue, newValue) => {
@@ -109,25 +95,45 @@ const CreateNewCamp = () => {
     );
   };
 
+  const isFormDataChanged = (existVal, newVal) => {
+    const existingVal = existVal || "";
+    const newValue = newVal || "";
+
+    if (existingVal !== newValue) {
+      return true;
+    }
+
+    return false;
+  };
+
   useEffect(() => {
     const currentCamp = editStatementData?.data?.camp;
+    const nickName = editStatementData?.data?.nick_name[0]?.id;
 
     if (
       hasChanged(currentCamp?.camp_name, values?.camp_name) ||
-      currentCamp?.submitter_nick_id !== values?.nick_name ||
-      currentCamp?.camp_about_nick_id !== values?.camp_about_nick_id ||
-      currentCamp?.camp_about_url !== values?.camp_about_url ||
-      currentCamp?.camp_leader_nick_id !== values?.camp_leader_nick_id ||
-      currentCamp?.parent_camp_num !== values?.parent_camp_num ||
-      currentCamp?.note !== values?.note ||
-      currentCamp?.edit_summary !== values?.edit_summary ||
+      isFormDataChanged(nickName, values?.nick_name) ||
+      isFormDataChanged(
+        currentCamp?.camp_about_nick_id,
+        values?.camp_about_nick_id
+      ) ||
+      isFormDataChanged(currentCamp?.camp_about_url, values?.camp_about_url) ||
+      isFormDataChanged(
+        currentCamp?.camp_leader_nick_id,
+        values?.camp_leader_nick_id
+      ) ||
+      isFormDataChanged(
+        currentCamp?.parent_camp_num,
+        values?.parent_camp_num
+      ) ||
+      isFormDataChanged(currentCamp?.note?.trim(), values?.note?.trim()) ||
       isValueChanged()
     ) {
       setIsSubmitReq(true);
     } else {
       setIsSubmitReq(false);
     }
-  }, [values, editStatementData?.data?.camp]);
+  }, [values, editStatementData?.data?.camp, options]);
 
   const getExistingList = async (val = values?.camp_name) => {
     setIsopicLoading(true);
@@ -201,25 +207,11 @@ const CreateNewCamp = () => {
         });
       }
 
-      // if (!add) {
-      // } else {
-      //   await getCurrentTopicRecordApi({
-      //     topic_num: router?.query?.statement?.at(0).split("-")[0],
-      //     camp_num: router?.query?.statement?.at(1).split("-")[0] ?? "1",
-      //   });
-      //   setPayloadBreadCrumb({
-      //     camp_num: router?.query?.statement?.at(1).split("-")[0] ?? "1",
-      //     topic_num: router?.query?.statement?.at(0).split("-")[0],
-      //   });
-      // }
-
       const result = await getAllUsedNickNames({
         topic_num: resData?.topic?.topic_num,
       });
 
       if (result?.status_code == 200) {
-        setCurrentCampLeader(result?.data[0]);
-
         const fieldSValuesForForm = {
           camp_name: resData?.camp?.camp_name,
           nick_name: resData?.nick_name?.at(0)?.id,
@@ -246,17 +238,6 @@ const CreateNewCamp = () => {
         Object.keys(fieldSValuesForForm)?.forEach((field_name) =>
           form.setFieldValue(field_name, fieldSValuesForForm[field_name])
         );
-
-        // await form.setFieldValue("camp_name", topicData?.topic_name);
-        // await form.setFieldValue("nick_name", resData[0]?.id);
-        // await form.setFieldValue("namespace", topicData?.namespace_id);
-        // await form.setFieldValue("edit_summary", topicData?.edit_summary);
-
-        // form.validateFields();
-
-        const og: any = { ...fieldSValuesForForm };
-
-        setOriginalData(og);
 
         setNickNameList(result?.data);
 
@@ -294,20 +275,6 @@ const CreateNewCamp = () => {
         });
 
         setOptions(oldOptions);
-        setInitialOptions([
-          {
-            checked: oldOptions[0]?.checked,
-            disable: oldOptions[0]?.disable,
-          },
-          {
-            checked: oldOptions[1]?.checked,
-            disable: oldOptions[1]?.disable,
-          },
-          {
-            checked: oldOptions[2]?.checked,
-            disable: oldOptions[2]?.disable,
-          },
-        ]);
       }
 
       setIsLoading(false);
@@ -360,8 +327,9 @@ const CreateNewCamp = () => {
     return !!similarNames?.length;
   };
 
+  // console.log('editStatementData?.data-',editStatementData?.data);
+
   const submitCampData = async (values) => {
-    // const blocks = editorState;
     const editInfo = editStatementData?.data;
     const parent_camp = editInfo?.parent_camp;
     const reqBody = {
@@ -621,19 +589,6 @@ const CreateNewCamp = () => {
           : op.tooltip;
     });
     setOptions(oldOptions);
-
-    if (
-      oldOptions[0]?.checked == initialOptions[0]?.checked &&
-      oldOptions[0]?.disable == initialOptions[0]?.disable &&
-      oldOptions[1]?.checked == initialOptions[1]?.checked &&
-      oldOptions[1]?.disable == initialOptions[1]?.disable &&
-      oldOptions[2]?.checked == initialOptions[2]?.checked &&
-      oldOptions[2]?.disable == initialOptions[2]?.disable
-    ) {
-      setSubmitIsDisableCheck(true);
-    } else {
-      setSubmitIsDisableCheck(false);
-    }
   };
 
   const onCampChange = useCallback(
@@ -682,7 +637,7 @@ const CreateNewCamp = () => {
                 onCancel={onCancel}
                 form={form}
                 initialValue={initialValue}
-                topicData={params}
+                topicData={{ camp_num: payload?.camp_num }}
                 nickNameList={nickNameList}
                 parentCamp={parentCamp}
                 campNickName={campNickName}

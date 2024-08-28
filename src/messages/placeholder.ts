@@ -28,7 +28,7 @@ export const placeholders = {
   topicName: "Enter Topic Name",
   namespace: "Canon",
   campAboutNickName: "--Select Camp About Nickname--",
-  catSelect: "Select Category",
+  catSelect: "Select Tags",
   campURL: "https://",
   searchPlaceholder: "Search by thread name",
   selectReason: "Select reason from list",
