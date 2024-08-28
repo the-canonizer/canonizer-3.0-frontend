@@ -173,6 +173,7 @@ const TopicsList = () => {
       is_archive: 0,
       sort: sortLatestTopic ? true : false,
       page: "browse",
+      topic_tags: getIdsOfFilteredTags(value, allTags),
     };
     const response = await getCanonizedTopicsApi(reqBody);
     setTotalTopics(response);
@@ -239,6 +240,7 @@ const TopicsList = () => {
     pageSize,
     pageNumber,
     onlyMyTopicsCheck,
+    value,
   ]);
 
   const memoizedOptions = useMemo(() => {
@@ -256,10 +258,6 @@ const TopicsList = () => {
     });
   };
 
-  useEffect(() => {
-    let res = getIdsOfFilteredTags(value, allTags);
-    console.log("Ids....", res);
-  }, [value]);
 
   const showOnlyMyTopicsHandler = (e) => {
     dispatch(setLoadingAction(true))
