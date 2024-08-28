@@ -676,39 +676,6 @@ function SupportTreeDrawer({
                 </p>
               )}
               <Row gutter={16}>
-                {drawerFor !== "delegateAdd" && (
-                  <Col span={24} sm={12}>
-                    <Form.Item name="reason" label="Reason for adding support">
-                      <div className="thm-select">
-                        <div className="prefix-icon">
-                          <i className="icon-bar"></i>
-                        </div>
-                        <Select
-                          className="w-100 cn-select"
-                          size="large"
-                          suffixIcon={<i className="icon-chevron-down"></i>}
-                          placeholder="Select reason"
-                          allowClear
-                          value={selectedValue}
-                          onChange={(value) => {
-                            setSelectedValue(value);
-                          }}
-                          showSearch
-                        >
-                          {availableReasons?.map((res) => (
-                            <Select.Option key={res?.id} value={res?.label}>
-                              {res?.label}
-                            </Select.Option>
-                          ))}
-                          <Select.Option key="custom_reason" value="custom">
-                            Custom reason
-                          </Select.Option>
-                        </Select>
-                      </div>
-                    </Form.Item>
-                  </Col>
-                )}
-
                 <Col span={24} sm={12}>
                   <Form.Item name="nickname" label="Nickname">
                     <div className="thm-select">
@@ -742,6 +709,39 @@ function SupportTreeDrawer({
                     </div>
                   </Form.Item>
                 </Col>
+
+                {drawerFor !== "delegateAdd" && (
+                  <Col span={24} sm={12}>
+                    <Form.Item name="reason" label="(Optional) Reason for adding support">
+                      <div className="thm-select">
+                        <div className="prefix-icon">
+                          <i className="icon-bar"></i>
+                        </div>
+                        <Select
+                          className="w-100 cn-select"
+                          size="large"
+                          suffixIcon={<i className="icon-chevron-down"></i>}
+                          placeholder="Select reason"
+                          allowClear
+                          value={selectedValue}
+                          onChange={(value) => {
+                            setSelectedValue(value);
+                          }}
+                          showSearch
+                        >
+                          {availableReasons?.map((res) => (
+                            <Select.Option key={res?.id} value={res?.label}>
+                              {res?.label}
+                            </Select.Option>
+                          ))}
+                          <Select.Option key="custom_reason" value="custom">
+                            Custom reason
+                          </Select.Option>
+                        </Select>
+                      </div>
+                    </Form.Item>
+                  </Col>
+                )}
                 {selectedValue && selectedValue == "custom" && (
                   <>
                     <Col span={24}>
