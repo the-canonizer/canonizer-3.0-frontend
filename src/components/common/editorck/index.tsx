@@ -61,13 +61,14 @@ export default function Editorck(
         props?.saveContent && props?.saveContent(editorData);
       },
       waitingTime: process.env.NEXT_PUBLIC_AUTOSAVE_THRESHOLD,
-    }
+    },
   };
 
   return (
     <div>
       {loadeditor ? (
         <CKEditor
+          ref={props.ref}
           config={editorConfiguration}
           editor={ClassicEditor.Editor}
           data={editordata}
