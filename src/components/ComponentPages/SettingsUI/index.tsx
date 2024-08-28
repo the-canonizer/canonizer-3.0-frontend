@@ -9,22 +9,27 @@ import {
   Radio,
   Select,
 } from "antd";
-import {
-  AppstoreOutlined,
-  CalendarOutlined,
-  DesktopOutlined,
-  FileOutlined,
-  LaptopOutlined,
-  LinkOutlined,
-  MailOutlined,
-  NotificationOutlined,
-  PieChartOutlined,
-  SearchOutlined,
-  SettingOutlined,
-  TeamOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
+// import {
+//   AppstoreOutlined,
+//   CalendarOutlined,
+//   DesktopOutlined,
+//   FileOutlined,
+//   LaptopOutlined,
+//   LinkOutlined,
+//   MailOutlined,
+//   NotificationOutlined,
+//   PieChartOutlined,
+//   SearchOutlined,
+//   SettingOutlined,
+//   TeamOutlined,
+//   UserOutlined,
+// } from "@ant-design/icons";
 import { useRouter } from "next/router";
+import Sider from "antd/lib/layout/Sider";
+import React from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { useSelector } from "react-redux";
 
 import styles from "./Settings.module.scss";
 
@@ -36,45 +41,40 @@ import DelegatedSupportCamps from "../DelegatedSupportCamps";
 import SocialOauth from "../socialAuthVerification";
 import SubscriptionsList from "../SubscriptionsList";
 import messages from "../../../messages";
-import Sidebar from "../Home-old/SideBarNoFilter";
-import Sider from "antd/lib/layout/Sider";
-import React from "react";
-import Image from "next/image";
-import Link from "next/link";
+// import Sidebar from "../Home-old/SideBarNoFilter";
 import ImageUploader from "../ImageUploader";
-import { useSelector } from "react-redux";
 import { RootState } from "src/store";
 import { logout } from "src/network/api/userApi";
 import SectionHeading from "../Home/FeaturedTopic/sectionsHeading";
 import ProfilePrefrences from "../Preference";
 
 const { TabPane } = Tabs;
-const tabList = [
-  {
-    key: "profile_info",
-    tab: "Profile Info",
-  },
-  {
-    key: "social_oauth_verification",
-    tab: "Social Oauth Verification",
-  },
-  {
-    key: "change_password",
-    tab: "Change Password",
-  },
-  {
-    key: "nick_name",
-    tab: "Nicknames",
-  },
-  {
-    key: "supported_camps",
-    tab: "Supported Camps",
-  },
-  {
-    key: "subscriptions",
-    tab: "Subscriptions",
-  },
-];
+// const tabList = [
+//   {
+//     key: "profile_info",
+//     tab: "Profile Info",
+//   },
+//   {
+//     key: "social_oauth_verification",
+//     tab: "Social Oauth Verification",
+//   },
+//   {
+//     key: "change_password",
+//     tab: "Change Password",
+//   },
+//   {
+//     key: "nick_name",
+//     tab: "Nicknames",
+//   },
+//   {
+//     key: "supported_camps",
+//     tab: "Supported Camps",
+//   },
+//   {
+//     key: "subscriptions",
+//     tab: "Subscriptions",
+//   },
+// ];
 
 function callback() {}
 export const logOut = async (_router) => {
@@ -93,12 +93,16 @@ const SettingsUI = () => {
     router?.push("/settings?tab=" + key);
   };
 
-  const { globalUserProfileData, globalUserProfileDataEmail } = useSelector(
-    (state: RootState) => ({
-      globalUserProfileData: state.topicDetails.globalUserProfileData,
-      globalUserProfileDataEmail: state.topicDetails.globalUserProfileDataEmail,
-    })
-  );
+  const {
+    globalUserProfileData,
+    globalUserProfileDataEmail,
+    globalUserProfileDataLastName,
+  } = useSelector((state: RootState) => ({
+    globalUserProfileData: state.topicDetails.globalUserProfileData,
+    globalUserProfileDataLastName:
+      state.topicDetails.globalUserProfileDataLastName,
+    globalUserProfileDataEmail: state.topicDetails.globalUserProfileDataEmail,
+  }));
   console.log(
     globalUserProfileData,
     globalUserProfileDataEmail,
@@ -106,19 +110,19 @@ const SettingsUI = () => {
   );
   const router = useRouter();
   type MenuItem = Required<MenuProps>["items"][number];
-  function getItem(
-    label: React.ReactNode,
-    key: React.Key,
-    icon?: React.ReactNode,
-    children?: MenuItem[]
-  ): MenuItem {
-    return {
-      key,
-      icon,
-      children,
-      label,
-    } as MenuItem;
-  }
+  // function getItem(
+  //   label: React.ReactNode,
+  //   key: React.Key,
+  //   icon?: React.ReactNode,
+  //   children?: MenuItem[]
+  // ): MenuItem {
+  //   return {
+  //     key,
+  //     icon,
+  //     children,
+  //     label,
+  //   } as MenuItem;
+  // }
   // const items: MenuItem[] = [
   //   getItem("Option 1", "1", <PieChartOutlined />),
   //   getItem("Option 2", "2", <DesktopOutlined />),
@@ -136,9 +140,9 @@ const SettingsUI = () => {
 
   const contentList = {
     profile_info: <ProfileInfo />,
-    change_password: <ChangePassword />,
     nick_name: <NickName />,
-    user_prefrences: <ProfilePrefrences />,
+    user_preferences: <ProfilePrefrences />,
+    change_password: <ChangePassword />,
     direct_supported_camps: <DirectSupportedCamps search={search} />,
     delegate_supported_camp: <DelegatedSupportCamps search={search} />,
     supported_camps: (
@@ -181,16 +185,8 @@ const SettingsUI = () => {
         </Tabs>
       </div>
     ),
-    social_oauth_verification: (
-      <Fragment>
-        <SocialOauth />
-      </Fragment>
-    ),
-    subscriptions: (
-      <Fragment>
-        <SubscriptionsList />
-      </Fragment>
-    ),
+    social_oauth_verification: <SocialOauth />,
+    subscriptions: <SubscriptionsList />,
   };
 
   useEffect(() => {
@@ -203,8 +199,11 @@ const SettingsUI = () => {
       setActiveTabKey("profile_info");
     } else if (query && query.tab) {
       setActiveTabKey(query.tab.toString());
+    } else {
+      setActiveTabKey("profile_info");
     }
   }, [router?.query]);
+  //default profile tab
 
   useEffect(() => {
     // Update the selected radio based on the URL path
@@ -231,16 +230,16 @@ const SettingsUI = () => {
     }
   }, [tab]);
 
-  const handleChange2 = (e) => {
-    const value = e.target.value;
-    setSelectedValue(value);
-    // Navigate to the corresponding page
-    if (value === "Direct_Supported_Camps") {
-      router.push("/settings?tab=direct_supported_camps");
-    } else if (value === "Delegated_Supported_Camps") {
-      router.push("/settings?tab=delegate_supported_camp");
-    }
-  };
+  // const handleChange2 = (e) => {
+  //   const value = e.target.value;
+  //   setSelectedValue(value);
+  //   // Navigate to the corresponding page
+  //   if (value === "Direct_Supported_Camps") {
+  //     router.push("/settings?tab=direct_supported_camps");
+  //   } else if (value === "Delegated_Supported_Camps") {
+  //     router.push("/settings?tab=delegate_supported_camp");
+  //   }
+  // };
 
   // useEffect(() => {
   //   const savedValue = localStorage.getItem("selectedValue");
@@ -254,17 +253,6 @@ const SettingsUI = () => {
   // };
   const onClick = () => {
     logOut(router);
-  };
-  const handleChange = (e) => {
-    const value = e.target.value;
-    setSelectedValue(value);
-
-    // Navigate to the corresponding page
-    if (value === "social_oauth_verification") {
-      router.push("/settings?tab=social_oauth_verification");
-    } else if (value === "change_password") {
-      router.push("/settings?tab=change_password");
-    }
   };
 
   const getMatchQuery = (tab) => {
@@ -314,7 +302,7 @@ const SettingsUI = () => {
       className: `listItem ${getMatchQuery("nick_name")}`,
     },
     {
-      key: "user_prefrences",
+      key: "user_preferences",
       itemIcon: (
         <Image
           src="/images/preference-icon.svg"
@@ -324,11 +312,11 @@ const SettingsUI = () => {
         />
       ),
       label: (
-        <Link href="/settings?tab=user_prefrences">
+        <Link href="/settings?tab=user_preferences">
           <a>Preferences</a>
         </Link>
       ),
-      className: `listItem ${getMatchQuery("user_prefrences")}`,
+      className: `listItem ${getMatchQuery("user_preferences")}`,
     },
     {
       key: "supported_camps",
@@ -428,7 +416,7 @@ const SettingsUI = () => {
             <SectionHeading title="PROFILE SETTING" icon={null} />
           </div>
           <Sider
-            width={390}
+            width={280}
             className="!bg-transparent [&_.ant-menu]:!bg-transparent  "
           >
             <Menu
@@ -470,10 +458,10 @@ const SettingsUI = () => {
                   >
                     <ImageUploader />
                     <div className="flex flex-col gap-1">
-                      <h3 className="lg:text-3xl text-base text-canBlack font-medium">
-                        {globalUserProfileData}
+                      <h3 className="lg:text-xl text-base text-canBlack font-medium">
+                        {globalUserProfileData} {globalUserProfileDataLastName}
                       </h3>
-                      <p className="text-base font-medium text-canLight">
+                      <p className="text-sm font-normal text-canLight">
                         {globalUserProfileDataEmail}
                       </p>
                     </div>
@@ -683,8 +671,7 @@ const SettingsUI = () => {
             </div>
           </div>
         </div>
-        {/* <div className="lg:border border-canGrey2 rounded-xl lg:p-8 p-2.5"> */}
-        <div className="lg:border border-canGrey2 rounded-xl lg:p-8">
+        <div className="lg:border border-canGrey2 rounded-xl lg:p-5">
           <Card
             data-testid="contentlist"
             style={{ width: "100%" }}

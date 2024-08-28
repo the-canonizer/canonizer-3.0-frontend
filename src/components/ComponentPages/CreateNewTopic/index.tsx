@@ -192,8 +192,8 @@ const CreateNewTopic = () => {
       resData = res?.data;
 
     if (res?.status_code === 200) {
-      setHaveTopicExist(true);
       if (resData?.data?.topic) {
+        setHaveTopicExist(true);
         setExistingTopics(resData?.data?.topic);
       }
 

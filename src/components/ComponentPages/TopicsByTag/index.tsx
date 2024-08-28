@@ -9,7 +9,7 @@ import {
   getCanonizedNameSpacesApi,
   getCanonizedTopicsApi,
 } from "src/network/api/homePageApi";
-import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
+import { setSelectCanonCatsPage } from "src/store/slices/filtersSlice";
 import { RootState } from "src/store";
 import { changeSlashToArrow } from "src/utils/generalUtility";
 import SortTopics from "components/ComponentPages/SortingTopics";
@@ -18,75 +18,77 @@ import CustomPagination from "components/shared/CustomPagination/intex";
 import Layout from "src/hoc/layout";
 import SingleTopicCard from "../Home/HotTopics/topicCard";
 import ScoreTag from "../Home/TrandingTopic/scoreTag";
-// import SingleTopicCard from "../HotTopics/topicCard";
-// import ScoreTag from "../TrandingTopic/scoreTag";
 
 const { Title } = Typography;
 const { Search } = Input;
 
-const TopicsList = () => {
+const infoContent = (
+  <div className="max-w-[300px] w-full">
+    <Title level={5}>Canon</Title>
+    <p>
+      Canons are a set of topics created for specific organizations and cities
+      to separate topics exclusively for them from the topics of general
+      interest. To get a canon created for your organization, contact{" "}
+    </p>
+
+    <a className="text-[#096dd9]" href="mailto:support@canonizer.com">
+      support@canonizer.com
+    </a>
+  </div>
+);
+
+const TopicsListByCats = () => {
   const router = useRouter();
   const dispatch = useDispatch();
 
   const {
-    canonizedTopics,
-    asofdate,
-    asof,
-    algorithm,
     nameSpaces,
-    filterNameSpace,
     userEmail,
-    filterNameSpaceId,
-    search,
     onlyMyTopicsCheck,
     loading,
     sortLatestTopic,
     sortScoreViewTopic,
+    selectCanonCatsPage,
+    selectCanonNameCatsPage,
   } = useSelector((state: RootState) => ({
-    canonizedTopics: state.homePage?.canonizedTopicsData,
-    asofdate: state.filters?.filterObject?.asofdate,
-    asof: state.filters?.filterObject?.asof,
-    algorithm: state.filters?.filterObject?.algorithm,
     nameSpaces: state.homePage?.nameSpaces,
-    filterNameSpace: state?.filters?.filterObject?.nameSpace,
     userEmail: state?.auth?.loggedInUser?.email,
-    filterNameSpaceId: String(state?.filters?.filterObject?.namespace_id),
-    search: state?.filters?.filterObject?.search,
     loading: state?.loading?.loading,
     onlyMyTopicsCheck: state?.filters?.onlyMyTopicsCheck,
+    selectCanonCatsPage: state?.filters?.selectCanonCatsPage,
+    selectCanonNameCatsPage: state?.filters?.selectCanonNameCatsPage,
     sortLatestTopic: state?.utils?.sortLatestTopic,
     sortScoreViewTopic: state?.utils?.sortScoreViewTopic,
   }));
 
-  const [topicsData, setTopicsData] = useState(canonizedTopics);
+  const [topicsData, setTopicsData] = useState([]);
   const [nameSpacesList, setNameSpacesList] = useState(nameSpaces);
-  const [inputSearch, setInputSearch] = useState(search || "");
-  const [nameSpaceId, setNameSpaceId] = useState(
-    String(filterNameSpaceId) || "1"
+  const [nameSpaceId, setNameSpaceId] = useState("");
+  const [selectedNameSpace, setSelectedNameSpace] = useState(
+    selectCanonNameCatsPage
   );
-  const [selectedNameSpace, setSelectedNameSpace] = useState(filterNameSpace);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [pageNumber, setPageNumber] = useState(1);
+  const [inputSearch, setInputSearch] = useState("");
   const [pageSize, setPageSize] = useState(24);
-  const [totalTopics, setTotalTopics] = useState<any>([]);
-  const inputRef = useRef(null);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [totalTopics, setTotalTopics] = useState<any>(0);
   const [allowClear, setAllowClear] = useState(false);
   const [isCanonChange, setIsCanonChange] = useState(false);
 
-  const infoContent = (
-    <div className="max-w-[300px] w-full">
-      <Title level={5}>Canon</Title>
-      <p>
-        Canons are a set of topics created for specific organizations and cities
-        to separate topics exclusively for them from the topics of general
-        interest. To get a canon created for your organization, contact{" "}
-      </p>
+  const inputRef = useRef(null);
 
-      <a className="text-[#096dd9]" href="mailto:support@canonizer.com">
-        support@canonizer.com
-      </a>
-    </div>
-  );
+  useEffect(() => {
+    if (nameSpaceId !== selectCanonCatsPage) {
+      setNameSpaceId(() => String(selectCanonCatsPage));
+    }
+
+    if (selectedNameSpace !== selectCanonNameCatsPage) {
+      setSelectedNameSpace(() => String(selectCanonNameCatsPage));
+    }
+  }, [selectCanonCatsPage, selectCanonNameCatsPage]);
+
+  useEffect(() => {
+    setNameSpacesList(() => nameSpaces);
+  }, [nameSpaces]);
 
   const handlePageChange = (newPageNumber, newPageSize) => {
     setIsCanonChange(false);
@@ -94,58 +96,44 @@ const TopicsList = () => {
     setPageSize(newPageSize);
   };
 
-  const selectNameSpace = (id, nameSpace) => {
+  const selectNameSpace = (id, canonName) => {
     setIsCanonChange(true);
-    setNameSpaceId(String(id));
-    setSelectedNameSpace(nameSpace?.children);
     setPageNumber(1);
 
-    if (id?.toString() !== "1") {
-      router.query.canon = id;
-      delete router?.query?.namespace;
-      router?.replace(router, undefined, { shallow: true });
-    } else {
-      if (router.query.canon) {
-        const params = router?.query;
-        delete params.canon;
-        delete params.namespace;
-        router.query = params;
-        router.replace(router, undefined, { shallow: true });
-      }
-    }
-
     dispatch(
-      setFilterCanonizedTopics({
-        namespace_id: String(id),
-        nameSpace: nameSpace?.children,
+      setSelectCanonCatsPage({
+        canon_id: String(id),
+        canon_name: canonName?.children,
       })
     );
   };
 
   async function getTopicsApiCallWithReqBody() {
     const reqBody = {
-      algorithm: algorithm,
-      asofdate:
-        asof == ("default" || asof == "review") ? Date.now() / 1000 : asofdate,
+      algorithm: "blind_popularity",
+      asof: "default",
+      asofdate: Date.now() / 1000,
       namespace_id: String(nameSpaceId),
       page_number: isCanonChange ? 1 : pageNumber,
       page_size: pageSize,
       search: inputSearch,
       filter: 0,
-      asof: asof,
       user_email: onlyMyTopicsCheck ? userEmail : "",
       is_archive: 0,
       sort: sortLatestTopic ? true : false,
       page: "browse",
+      topic_tags: [router?.query?.id],
     };
+
     const response = await getCanonizedTopicsApi(reqBody);
-    setTotalTopics(response);
+
+    setTopicsData(response?.topic);
+    setTotalTopics(response?.total_count);
   }
 
   const onSearch = (value) => {
     setIsCanonChange(true);
     setInputSearch(value?.trim());
-    dispatch(setFilterCanonizedTopics({ search: value || "" }));
     setAllowClear(true);
   };
 
@@ -153,13 +141,13 @@ const TopicsList = () => {
     setAllowClear(false);
     setInputSearch("");
     setPageNumber(1);
-    dispatch(setFilterCanonizedTopics({ search: "" }));
   };
 
   useEffect(() => {
     if (inputSearch) {
       setAllowClear(true);
     }
+
     if (!(nameSpaces?.length > 0)) {
       getCanonizedNameSpacesApi();
     }
@@ -168,24 +156,8 @@ const TopicsList = () => {
   }, []);
 
   useEffect(() => {
-    if (searchTerm) inputRef.current!.focus();
-  }, [searchTerm, onSearch]);
-
-  /* eslint-enable */
-
-  useEffect(() => {
-    setSelectedNameSpace(() => filterNameSpace);
-    if (nameSpaceId !== filterNameSpaceId) {
-      setNameSpaceId(() => String(filterNameSpaceId));
-    }
-    setInputSearch(() => search.trim());
-    setNameSpacesList(() => nameSpaces);
-  }, [filterNameSpace, filterNameSpaceId, search, nameSpaces]);
-
-  useEffect(() => {
-    setTopicsData(canonizedTopics);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [canonizedTopics?.topics]);
+    if (inputSearch) inputRef.current!.focus();
+  }, [inputSearch, onSearch]);
 
   useEffect(() => {
     async function getTopicsApiCall() {
@@ -261,9 +233,9 @@ const TopicsList = () => {
             <SortTopics />
           </div>
         </div>
-        {allowClear && search?.length > 0 && (
+        {allowClear && inputSearch?.length > 0 && (
           <div className="search-response">
-            <p>{totalTopics?.total_count} Results Found</p>
+            <p>{totalTopics} Results Found</p>
             <Button
               type="link"
               danger
@@ -279,8 +251,8 @@ const TopicsList = () => {
           <CustomSkelton skeltonFor="browse" />
         ) : (
           <Row gutter={[24, 24]}>
-            {topicsData?.topics &&
-              topicsData?.topics?.map((ft: any, index) => (
+            {topicsData &&
+              topicsData?.map((ft: any, index) => (
                 <Col
                   key={index}
                   xs={24}
@@ -311,13 +283,14 @@ const TopicsList = () => {
               ))}
           </Row>
         )}
-        {totalTopics?.total_count > 10 && (
+        {totalTopics > pageSize && (
           <CustomPagination
-            totalTopics={totalTopics?.total_count}
+            totalTopics={totalTopics}
             pageNumber={pageNumber}
             pageSize={pageSize}
             loading={loading}
             handlePageChange={handlePageChange}
+            pageSizeOptions={[12, 18, 27, 36]}
           />
         )}
       </div>
@@ -325,4 +298,4 @@ const TopicsList = () => {
   );
 };
 
-export default TopicsList;
+export default TopicsListByCats;

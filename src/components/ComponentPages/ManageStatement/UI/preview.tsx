@@ -1,9 +1,8 @@
 import { Typography, Modal, Button } from "antd";
 import { CloseOutlined, EyeOutlined } from "@ant-design/icons";
-import sanitizeHtml from "sanitize-html";
 
 import CommonCards from "components/shared/Card";
-import CustomSkelton from "components/common/customSkelton";
+import StatementDescPreview from "./descView";
 
 function StatementPreview({
   statement,
@@ -36,39 +35,7 @@ function StatementPreview({
         </Button>
       </header>
       <CommonCards className="border-0 bg-canGray !p-0 [&_.ant-card-body]:!p-5 [&_.ant-card-body]:min-h-72 [&_.ant-card-body]:max-h-96 [&_.ant-card-body]:overflow-y-auto [&_.ant-card-body]:overflow-x-hidden [&_.ant-card-body]:scroll-pr-6 [&_.ant-card-body]:snap-y">
-        {isLoading ? (
-          <CustomSkelton
-            bodyCount
-            stylingClass
-            isButton
-            height={150}
-            skeltonFor="video"
-          />
-        ) : (
-          <div
-            dangerouslySetInnerHTML={{
-              __html: sanitizeHtml(statement, {
-                allowedAttributes: {
-                  "*": [
-                    "class",
-                    "id",
-                    "href",
-                    "align",
-                    "alt",
-                    "center",
-                    "bgcolor",
-                    "src",
-                    "title",
-                    "style",
-                    "rel",
-                    "target",
-                  ],
-                },
-              }),
-            }}
-            className="text-canBlack rounded-sm h-full editorContent"
-          ></div>
-        )}
+        <StatementDescPreview statement={statement} isLoading={isLoading} />
       </CommonCards>
     </Modal>
   );

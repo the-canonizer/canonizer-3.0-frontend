@@ -17,7 +17,9 @@ const Inputs = ({
   wrapperClassName = "",
   inputClassName = "",
   inputMode = "",
-}: any) => {
+  disabled = false,
+}: // ...resProps
+any) => {
   return (
     <Form.Item
       className={`text-sm text-canBlack font-normal [&_label]:text-sm [&_label]:font-medium [&_.ant-form-item-explain-error]:mb-6 ${wrapperClassName}`}
@@ -40,6 +42,8 @@ const Inputs = ({
           onBlur={onBlur}
           maxLength={maxLength}
           inputMode={inputMode}
+          disabled={disabled}
+          // {...resProps}
         />
       ) : (
         <Input
@@ -55,6 +59,8 @@ const Inputs = ({
           onBlur={onBlur}
           maxLength={maxLength}
           inputMode={inputMode}
+          disabled={disabled}
+          // {...resProps}
         />
       )}
     </Form.Item>

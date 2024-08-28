@@ -49,9 +49,12 @@ export default function RecentActivities() {
   const [isShowAllLoading, setIsShowAllLoading] = useState(false);
   const [checkLogType, setCheckLogType] = useState("");
 
-  const isActivitiesPage = router.asPath === "/activities";
+  const isActivitiesPage = router.asPath?.includes("/activities");
   const hasCampOrTopicNum = router.query?.camp_num || router.query?.topic_num;
   const defaultActiveKey = router.query?.tabName || "topic/camps";
+  const isOnlyCamp =
+    (router.query?.topic_num && router.query?.camp_num) ||
+    router.query?.topic_num;
 
   const slot = useMemo(() => {
     if (position.length === 0) return null;
@@ -78,8 +81,9 @@ export default function RecentActivities() {
       await getTopicsApiCallWithReqBody(false, selectedTab);
       setGetTopicsLoadingIndicator(false);
     }
+
     if (isUserAuthenticated) {
-      if (router?.query?.topic_num && router?.query?.camp_num) {
+      if (isOnlyCamp) {
         getTopicActivityLogCall();
       } else {
         linksApiCall();
@@ -119,35 +123,34 @@ export default function RecentActivities() {
       setTopicPageNumber(1);
       pageNo = 1;
     }
-    let reqBody = {
+
+    const reqBody: any = {
       page: pageNo,
       per_page: isActivitiesPage ? 25 : 5,
-      is_admin_show_all: "all",
       topic_num: router?.query?.topic_num,
       camp_num: router?.query?.camp_num ?? 1,
     };
-    let res = await getTopicActivityLogApi(reqBody);
+
+    if (!isOnlyCamp) {
+      reqBody.is_admin_show_all = "all";
+    }
+
+    const res = await getTopicActivityLogApi(reqBody);
+
     if (res?.status_code == 200) {
+      let resData = res?.data;
+      resData = resData?.items?.map((i: any) => ({ ...i, activity: i }));
+      resData = {
+        topics: resData,
+        numOfPages: res?.data?.last_page,
+      };
+
       if (loadMore) {
-        let resData = res?.data;
-
-        resData = resData?.items?.map((i: any) => ({ ...i, activity: i }));
-
-        resData = {
-          topics: resData,
-          numOfPages: res?.data?.last_page,
-        };
-
         resData.topics = resData?.topics?.concat(recentActivities?.topics);
-
-        setRecentActivities(resData);
-      } else {
-        let resData = res?.data;
-
-        resData = resData?.items?.map((i: any) => ({ ...i, activity: i }));
-        resData = { topics: resData, numOfPages: res?.data?.last_page };
-        setRecentActivities(resData);
       }
+      console.log("resData---", resData);
+
+      setRecentActivities(resData);
     }
     setGetTopicsLoadingIndicator(false);
   }
@@ -189,8 +192,8 @@ export default function RecentActivities() {
   }
 
   const covertToTime = (unixTime) => {
-    let uTime = new Date(unixTime * 1000);
-    let formattedTime = new Intl.DateTimeFormat("en-US", {
+    const uTime = new Date(unixTime * 1000);
+    const formattedTime = new Intl.DateTimeFormat("en-US", {
       day: "2-digit",
       month: "short",
       year: "numeric",
@@ -279,6 +282,7 @@ export default function RecentActivities() {
               : "[&_.ant-card-body]:lg:p-[24px] lg:!bg-canGray mt-3"
           }`}
         >
+          ssss
           <AllActivitiesSwitch
             userData={userData}
             hasCampOrTopicNum={hasCampOrTopicNum}
@@ -291,34 +295,36 @@ export default function RecentActivities() {
             <Tabs
               tabPosition={!isMobile ? "left" : "top"}
               className={`custom-tabs [&_.ant-tabs-nav]:mb-0 [&_.ant-tabs-nav-wrap]:w-full [&_.ant-tabs-nav-wrap]:justify-center [&_.ant-tabs-nav-list]:w-full [&_.ant-tabs-tab-btn]:text-canBlack [&_.ant-tabs-tab-active]:!text-canBlue  [&_.ant-tabs-tab-btn]:!px-0 [&_.ant-tabs-ink-bar]:!h-[3px] [&_.ant-tabs-tab]:!px-0 [&_.ant-tabs-tab-btn]:text-base  [&_.ant-tabs-tab-btn]:font-semibold [&_.ant-tabs-tab-btn]:!pr-8 lg:[&_.ant-tabs-tab-btn]:!mr-28 [&_.ant-tabs-content-holder]:!border [&_.ant-tabs-content-holder]:!border-canGrey2 [&_.ant-tabs-content-holder]:!rounded-xl [&_.ant-tabs-content-holder]:!py-4 lg:[&_.ant-tabs-content-holder]:!px-8 [&_.ant-tabs-tabpane]:!p-0 [&_.ant-tabs-tab-btn]:!py-2.5 [&_.ant-tabs-ink-bar]:!hidden [&_.ant-list-item]:!border-b [&_.ant-list-item]:!border-canDarkBlack [&_.ant-list-item]:!border-opacity-10 [&_.ant-tabs-content-holder]:!px-4 [&_.ant-tabs-content-holder]:relative ${
-                router?.query?.camp_num && router?.query?.topic_num
-                  ? "hidden"
-                  : ""
+                isOnlyCamp ? "[&_.ant-tabs-nav]:hidden" : ""
               }`}
               defaultActiveKey={`${defaultActiveKey}`}
               tabBarExtraContent={slot}
               onChange={handleTabChange}
             >
-              <TabPane tab="Camps" key="topic/camps">
-                <TopicCampsTab
-                  getTopicsLoadingIndicator={getTopicsLoadingIndicator}
-                  recentActivities={recentActivities}
-                  handleTextOverflow={handleTextOverflow}
-                  getTopicCampName={getTopicCampName}
-                  covertToTime={covertToTime}
-                  bodyCount={15}
-                />
-              </TabPane>
-              <TabPane tab="Threads" key="threads">
-                <ThreadTab
-                  getTopicsLoadingIndicator={getTopicsLoadingIndicator}
-                  recentActivities={recentActivities}
-                  decodeUrlLink={decodeUrlLink}
-                  handleTextOverflow={handleTextOverflow}
-                  covertToTime={covertToTime}
-                  bodyCount={15}
-                />
-              </TabPane>
+              {!isOnlyCamp && (
+                <TabPane tab="Camps" key="topic/camps">
+                  <TopicCampsTab
+                    getTopicsLoadingIndicator={getTopicsLoadingIndicator}
+                    recentActivities={recentActivities}
+                    handleTextOverflow={handleTextOverflow}
+                    getTopicCampName={getTopicCampName}
+                    covertToTime={covertToTime}
+                    bodyCount={15}
+                  />
+                </TabPane>
+              )}
+              {
+                <TabPane tab="Threads" key="threads">
+                  <ThreadTab
+                    getTopicsLoadingIndicator={getTopicsLoadingIndicator}
+                    recentActivities={recentActivities}
+                    decodeUrlLink={decodeUrlLink}
+                    handleTextOverflow={handleTextOverflow}
+                    covertToTime={covertToTime}
+                    bodyCount={15}
+                  />
+                </TabPane>
+              }
             </Tabs>
           ) : (
             <div className="bg-white border p-2 rounded-lg min-h-80">
