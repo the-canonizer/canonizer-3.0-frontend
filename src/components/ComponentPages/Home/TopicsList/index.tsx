@@ -80,7 +80,7 @@ const TopicsList = () => {
   const [showOnlyMyTopics, setShowOnlyMyTopics] = useState(false);
 
   const mapItemsToValueLabel = (items) => {
-    return items.map((item) => ({
+    return items?.map((item) => ({
       label: item.title,
       value: item.title,
     }));
