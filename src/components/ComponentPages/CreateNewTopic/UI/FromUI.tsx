@@ -256,16 +256,9 @@ const CreateTopicFromUI = ({
             <Col xs={24} xl={24}>
               <Inputs
                 name="edit_summary"
-                label={
-                  <>
-                    Add Summary Of Changes
-                    <small className="ml-1">
-                      (Briefly describe your changes)
-                    </small>
-                  </>
-                }
+                label="Add Summary Of Changes"
                 rules={messages.summaryRule}
-                placeholder={messages.placeholders.firstName}
+                placeholder={messages.placeholders.editSummary}
                 maxLength={100}
                 prefix={<FileTextOutlined />}
                 defaultValue={String(editCampStatementData)}
