@@ -124,12 +124,12 @@ const DropDownMenu = () => {
       header: any = hiddenElem?.querySelector(".ant-collapse-header");
 
     if (!insideDiv?.classList?.contains("ant-collapse-item-active")) {
-      header.click();
+      header?.click();
     }
 
     setTimeout(() => {
       if (insideDiv?.classList?.contains("ant-collapse-item-active")) {
-        header.click();
+        header?.click();
       }
     }, 5000);
   };

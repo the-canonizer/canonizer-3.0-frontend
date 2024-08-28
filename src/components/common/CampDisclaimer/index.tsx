@@ -26,7 +26,7 @@ const CampDisclaimer = () => {
         <SectionHeading
           title={K?.exceptionalMessages?.campStatementHeading}
           infoContent={K?.exceptionalMessages?.campStatementHeading}
-          className="text-sm lg:text-base normal-case text-canBlack text-left font-semibold !mb-0"
+          className="!mb-0"
         />
         {/* <SectionHeading
           title={campRecord?.camp_name}

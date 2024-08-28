@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
-import { Card, message } from "antd";
+import { Card } from "antd";
 import { useSelector } from "react-redux";
 
 import PreferencesUI from "./UI/preferences";
@@ -10,6 +10,7 @@ import Spinner from "src/components/common/spinner/spinner";
 import { getAllTags, savePrefTags } from "src/network/api/tagsApi";
 import { RootState } from "src/store";
 import { setTags } from "src/store/slices/tagsSlice";
+import { openNotificationWithIcon } from "components/common/notification/notificationBar";
 
 const Preferences = () => {
   const dispatch = useDispatch<AppDispatch>(),
@@ -33,7 +34,7 @@ const Preferences = () => {
     const res = await savePrefTags(userTags);
 
     if (res && res.status_code === 200) {
-      message.success(res.message);
+      openNotificationWithIcon(res.message, "success");
 
       if (router?.query.returnUrl) {
         router?.push(`${router?.query.returnUrl}`);

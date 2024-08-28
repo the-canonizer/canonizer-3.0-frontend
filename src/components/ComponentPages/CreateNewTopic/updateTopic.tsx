@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { Col, Form, Row, message } from "antd";
+import { Col, Form, Row } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import debounce from "lodash/debounce";
@@ -22,6 +22,7 @@ import {
   getEditTopicApi,
   updateTopicApi,
 } from "src/network/api/campManageStatementApi";
+import { openNotificationWithIcon } from "components/common/notification/notificationBar";
 
 const UpdateTopic = () => {
   const { nameSpaces, catTaga } = useSelector((state: RootState) => ({
@@ -190,7 +191,7 @@ const UpdateTopic = () => {
     }
 
     if (res && res.status_code === 200) {
-      message.success(res.message);
+      openNotificationWithIcon(res.message, "success");
       storeFilterClear();
       router?.push({
         pathname: `/topic/history/${

@@ -240,6 +240,7 @@ const ForumComponent = () => {
     <CustomSpinner key="thread-spinner" spinning={loading}>
       <Layout
         routeName={"forum"}
+        className="[&_.inforBarClass]:mb-0 [&_.afterHeaderClass]:mb-5"
         afterHeader={
           <CampInfoBar
             payload={payload}
