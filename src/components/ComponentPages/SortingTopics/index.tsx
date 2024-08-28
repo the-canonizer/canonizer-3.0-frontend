@@ -42,13 +42,12 @@ const SortTopics = () => {
   };
 
   return (
-    <div className={styles.sortContainer}>
+    <div className={`browse-sort ${styles.sortContainer}`}>
       {/* Select component for sorting */}
       <Select
         size="large"
         className="browse-filters text-canBlack font-normal commonSelectClass [&_.ant-select-arrow]:text-canBlack [&_.ant-select-arrow>svg]:fill-canBlack"
         suffixIcon={<i className="icon-sort"></i>}
-        style={{ width: 150 }}
         placeholder="Sort By"
         value={sortLatestTopic ? "Latest" : "ScoreValue"}
         onChange={(value) => {
