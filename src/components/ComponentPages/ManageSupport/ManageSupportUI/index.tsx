@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Card, Tag, Select, Button, Col, Form } from "antd";
+import { Card, Tag, Select, Button, Col, Form, Popover } from "antd";
 import { DraggableArea } from "react-draggable-tags";
-import { CloseCircleOutlined } from "@ant-design/icons";
+import { CloseCircleOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 
@@ -48,7 +48,6 @@ const ManageSupportUI = ({
   const [tagsArrayList, setTagsArrayList] = useState([]);
   const [isTagDragged, setIsTagDragged] = useState(false);
   const [removeCampsSupport, setRemoveCampsSupport] = useState(false);
-
   const {
     currentDelegatedSupportedClick,
     currentGetCheckSupportExistsData,
@@ -64,7 +63,6 @@ const ManageSupportUI = ({
     asof: state?.filters?.filterObject?.asof,
     asofdate: state?.filters?.filterObject?.asofdate,
   }));
-
   const router = useRouter();
   const dispatch = useDispatch();
   const [removeForm] = Form.useForm();
@@ -252,20 +250,30 @@ const ManageSupportUI = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nickNameList]);
 
+  const takeCampFromTopicSupportList = topicSupportListData.flatMap((obj) => {
+    const matchingParent = parentSupportDataList.find(
+      (parent) => parent.camp_num === obj.camp_num
+    );
+
+    // If matching object found, replace it with the array of new objects, otherwise return the original object
+    return matchingParent ? manageSupportList : [obj];
+  });
+
   useEffect(() => {
     if (manageSupportList && manageSupportList.length > 0) {
-      const newTagList = manageSupportList.map((obj) => {
+      const newTagList = (parentSupportDataList.length > 0 ? takeCampFromTopicSupportList : manageSupportList).map((obj) => {
         obj.id = obj.camp_num;
         return obj;
       });
-      if (!isTagDragged && parentSupportDataList.length > 0) {
+      setTagsArrayList(newTagList);
+      if (!isTagDragged) {
         let shouldArrayReverse = true;
         newTagList.forEach((element) => {
           if (element.support_order != newTagList.length) {
             shouldArrayReverse = false;
           }
         });
-        if (shouldArrayReverse) setTagsArrayList(newTagList.reverse());
+        if (shouldArrayReverse) setTagsArrayList(newTagList);
         else setTagsArrayList(newTagList);
       } else setTagsArrayList(newTagList);
     }
@@ -375,6 +383,9 @@ const ManageSupportUI = ({
       if (supportFlag == "1") {
         return true;
       }
+      if (manageSupportList.length <= 0) {
+        return true;
+      }
     }
 
     if (submitButtonDisable || disableSubmit || campRecord.is_archive == 1) {
@@ -383,7 +394,13 @@ const ManageSupportUI = ({
 
     return false;
   };
-
+  interface Tag {
+    camp_num: number;
+    camp_name: string;
+    link: string;
+    dis?: boolean;
+    topic_num?: number;
+  }
   return (
     <div className={styles.card_width}>
       {(CheckDelegatedOrDirect &&
@@ -484,49 +501,95 @@ const ManageSupportUI = ({
               </span>
             </div>
           )}
-          {tagsArrayList.length > 0 && (
+
+          {(parentSupportDataList
+            ? tagsArrayList.length
+            : takeCampFromTopicSupportList.length) > 0 && (
             <DraggableArea
-              tags={tagsArrayList}
-              render={({ tag, index }) => (
-                <div className="">
-                  <Button
-                    data-testid="tag-btn"
-                    key={tag.camp_num}
-                    className={styles.tag_btn}
-                    disabled={tag.dis}
-                  >
-                    <div className={styles.btndiv}>
-                      {filterList(tag.camp_num, index)}
-                      <span className={styles.count}>{index + 1}. </span>
-                      <a
-                        data-testid="styles_Bluecolor"
-                        className={styles.Bluecolor}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          window.location.href = tag.link;
-                          dispatch(setIsSupportModal(false));
-                        }}
-                      >
-                        {tag?.camp_name}
-                      </a>
-                    </div>
-                    {CheckDelegatedOrDirect ? null : (
-                      <CloseCircleOutlined
-                        data-testid="close"
-                        className="closeId"
-                        onClick={() => {
-                          handleClose(tag, tag.topic_num, tagsArrayList);
-                          setRemoveCampsSupport(true);
-                        }}
-                      />
-                    )}
-                  </Button>
-                </div>
-              )}
+              tags={
+                parentSupportDataList.length > 0
+                  ? takeCampFromTopicSupportList
+                  : tagsArrayList
+              }
+              render={({ tag, index }) => {
+                const typedTag = tag as Tag;
+                // Check if the tag is part of tagsArrayList for conditional styling
+                const isNewObject = manageSupportList.some(
+                  (newTag) => newTag.camp_num == typedTag.camp_num
+                );
+                return (
+                  <div className="">
+                    <Button
+                      data-testid="tag-btn"
+                      key={typedTag.camp_num}
+                      className={styles.tag_btn}
+                      disabled={typedTag.dis}
+                    >
+                      <div className={styles.btndiv}>
+                        {filterList(typedTag.camp_num, index)}
+                        <span className={styles.count}>{index + 1}. </span>
+                        <a
+                          data-testid="styles_Bluecolor"
+                          className={styles.Bluecolor}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            window.location.href = typedTag.link;
+                            dispatch(setIsSupportModal(false));
+                          }}
+                          // style={{
+                          //   color:
+                          //     manageSupportList.length === 1 && index === 0
+                          //       ? currentGetCheckSupportExistsData.support_flag == 0 && index === manageSupportList.length - 1
+                          //         ? "#12c879"
+                          //         : "#4484ce"
+                          //       : manageSupportList.length === 1
+                          //       ? currentGetCheckSupportExistsData.support_flag == 0 && index === manageSupportList.length + 1
+                          //         ? "#12c879"
+                          //         : "#4484ce"
+                          //       : currentGetCheckSupportExistsData.support_flag == 0 && index === manageSupportList.length - 1
+                          //         ? "#12c879"
+                          //         : "#4484ce",
+                          // }}
+                          style={{
+                            color: reqBodyData.camp_num == typedTag.camp_num && currentGetCheckSupportExistsData.support_flag === 0 ? "#12c879" : "#4484ce"
+                          }}
+                        >
+                          {typedTag?.camp_name}
+                        </a>
+                        {reqBodyData.camp_num == typedTag.camp_num && currentGetCheckSupportExistsData.support_flag === 0 ? (
+                          <Popover
+                            content="This is the new camp to which you are adding your support."
+                            trigger="hover"
+                          >
+                            <InfoCircleOutlined
+                              style={{ marginLeft: "8px", cursor: "pointer" }}
+                            />
+                          </Popover>
+                        ) : (
+                          ""
+                        )}
+                      </div>
+                      {CheckDelegatedOrDirect ? null : (
+                        <CloseCircleOutlined
+                          data-testid="close"
+                          className="closeId"
+                          onClick={() => {
+                            handleClose(tag, typedTag.topic_num, tagsArrayList);
+                            setRemoveCampsSupport(true);
+                          }}
+                        />
+                      )}
+                    </Button>
+                  </div>
+                );
+              }}
               onChange={(tags) => {
                 setIsTagDragged(true);
                 setUpdatePostion(true);
+                if(parentSupportDataList.length == 0){
                 setManageSupportList(tags);
+
+                }
               }}
             />
           )}
