@@ -268,8 +268,6 @@ export default function RecentActivities() {
     return result;
   };
 
-  console.log("isActivitiesPage---", isActivitiesPage, recentActivities);
-
   return (
     <Fragment>
       <RecentActivitiesHeader
