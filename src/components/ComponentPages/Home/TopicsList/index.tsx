@@ -19,7 +19,6 @@ import CustomPagination from "components/shared/CustomPagination/intex";
 import Layout from "src/hoc/layout";
 import SingleTopicCard from "../HotTopics/topicCard";
 import ScoreTag from "../TrandingTopic/scoreTag";
-// import styles from "../../../ComponentPages/Home-old/TopicsList/topicsList.module.scss";
 
 const { Title } = Typography;
 const { Search } = Input;
