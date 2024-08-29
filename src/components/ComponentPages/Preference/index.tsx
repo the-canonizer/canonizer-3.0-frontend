@@ -332,7 +332,7 @@ const ProfilePrefrences = () => {
             placeholder="Search via Topic Tags name"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="lg:w-72 w-full h-11 rounded-lg border-canGrey2 lg:mb-0 mb-7 lg:order-0 order-1 placeholder:!text-base placeholder:!text-canBlue placeholder:!font-normal focus:!border-canGrey2 focus:!shadow-none hover:!border-canGrey2 text-canBlack font-normal h-[40px] rounded-md [&_.ant-input-prefix]:!text-canBlack [&_.ant-input-prefix]:mr-3 text-sm mainInput"
+            className="lg:w-72 w-full h-11 rounded-lg border-canGrey2 lg:mb-0 mb-7 lg:order-0 order-1 placeholder:!text-base placeholder:!text-canBlue placeholder:!font-normal focus:!border-canGrey2 focus:!shadow-none hover:!border-canGrey2 [&_.ant-input-suffix]:border-l [&_.ant-input-suffix]:!border-canGrey2 [&_.ant-input-suffix]:px-2.5 !p-0 [&_.ant-input]:!px-2.5 [&_.ant-input]:rounded-lg  [&_.ant-input-suffix]:!ml-0  "
             suffix={
               <Image
                 src="/images/search-icon.svg"

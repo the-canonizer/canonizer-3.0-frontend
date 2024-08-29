@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { CloseOutlined, InfoCircleOutlined } from "@ant-design/icons";
-import { Popover, Select } from "antd";
+import { Checkbox, Popover, Select } from "antd";
 import { Row, Col, Typography, Divider, Form, Input, Button } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
@@ -9,7 +9,7 @@ import {
   getCanonizedNameSpacesApi,
   getCanonizedTopicsApi,
 } from "src/network/api/homePageApi";
-import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
+import { setFilterCanonizedTopics, setOnlyMyTopic } from "src/store/slices/filtersSlice";
 import { RootState } from "src/store";
 import { changeSlashToArrow } from "src/utils/generalUtility";
 import SortTopics from "components/ComponentPages/SortingTopics";
@@ -18,6 +18,9 @@ import CustomPagination from "components/shared/CustomPagination/intex";
 import Layout from "src/hoc/layout";
 import SingleTopicCard from "../HotTopics/topicCard";
 import ScoreTag from "../TrandingTopic/scoreTag";
+import { getAllTags } from "src/network/api/tagsApi";
+import useAuthentication from "src/hooks/isUserAuthenticated";
+import { setLoadingAction } from "src/store/slices/loading";
 
 const { Title } = Typography;
 const { Search } = Input;
@@ -25,6 +28,7 @@ const { Search } = Input;
 const TopicsList = () => {
   const router = useRouter();
   const dispatch = useDispatch();
+  const { isUserAuthenticated } = useAuthentication();
 
   const {
     canonizedTopics,
@@ -70,6 +74,40 @@ const TopicsList = () => {
   const inputRef = useRef(null);
   const [allowClear, setAllowClear] = useState(false);
   const [isCanonChange, setIsCanonChange] = useState(false);
+  const [options, setOptions] = useState([]);
+  const [value, setValue] = useState([]);
+  const [allTags, setAllTags] = useState([]);
+  const [showOnlyMyTopics, setShowOnlyMyTopics] = useState(false);
+
+  const mapItemsToValueLabel = (items) => {
+    return items.map((item) => ({
+      label: item.title,
+      value: item.title,
+    }));
+  };
+
+  const getAlltagsData = async () => {
+    let res = await getAllTags();
+    setOptions(mapItemsToValueLabel(res?.data?.items));
+    setAllTags(res?.data?.items);
+  };
+
+  useEffect(() => {
+    getAlltagsData();
+  }, []);
+
+  const sharedProps: any = {
+    mode: "multiple",
+
+    options,
+    placeholder: "Select Item...",
+    maxTagCount: "responsive",
+  };
+
+  const selectProps = {
+    value,
+    onChange: setValue,
+  };
 
   const infoContent = (
     <div className="max-w-[300px] w-full">
@@ -135,6 +173,7 @@ const TopicsList = () => {
       is_archive: 0,
       sort: sortLatestTopic ? true : false,
       page: "browse",
+      topic_tags: getIdsOfFilteredTags(value, allTags),
     };
     const response = await getCanonizedTopicsApi(reqBody);
     setTotalTopics(response);
@@ -200,6 +239,8 @@ const TopicsList = () => {
     sortScoreViewTopic,
     pageSize,
     pageNumber,
+    onlyMyTopicsCheck,
+    value,
   ]);
 
   const memoizedOptions = useMemo(() => {
@@ -210,6 +251,20 @@ const TopicsList = () => {
     ));
   }, [nameSpacesList]);
 
+  const getIdsOfFilteredTags = (arr, resData) => {
+    return arr?.map((item) => {
+      const found = resData?.find((data) => data?.title === item);
+      return found ? found?.id : null;
+    });
+  };
+
+
+  const showOnlyMyTopicsHandler = (e) => {
+    dispatch(setLoadingAction(true))
+    dispatch(setOnlyMyTopic(e?.target?.checked));
+    dispatch(setLoadingAction(false))
+  };
+
   return (
     <Layout routeName={"browse"}>
       <div className="browse-wrapper pb-4 mt-3">
@@ -217,48 +272,89 @@ const TopicsList = () => {
           Browse Canonizer’s Topics
         </Title>
         <Divider />
-        <div className="browse-actions">
-          <Form layout="vertical">
-            <Form.Item className="browse-dropdown">
-              <div className="filter-popover-wrapper">
-                <p className="text-xs font-medium">Filter By Canon</p>
-                <Popover placement="right" content={infoContent}>
-                  <InfoCircleOutlined />
-                </Popover>
-              </div>
-              <Select
+        <Form layout="vertical">
+          <div className="browse-actions">
+            <div className="flex gap-2 lg:w-[70%] max-sm:flex-col">
+              <Form.Item className="browse-dropdown w-full">
+                <div className="filter-popover-wrapper">
+                  <p className="text-xs font-medium">Filter By Canon</p>
+                  <Popover placement="right" content={infoContent}>
+                    <InfoCircleOutlined />
+                  </Popover>
+                </div>
+                <Select
+                  size="large"
+                  virtual={true}
+                  showSearch
+                  placeholder="Select a person"
+                  optionFilterProp="children"
+                  onChange={selectNameSpace}
+                  defaultValue={changeSlashToArrow(selectedNameSpace)}
+                  value={changeSlashToArrow(selectedNameSpace)}
+                  disabled={loading}
+                  className="text-canBlack font-normal commonSelectClass [&_.ant-select-arrow]:text-canBlack [&_.ant-select-arrow>svg]:fill-canBlack"
+                >
+                  {memoizedOptions}
+                  <Select.Option
+                    id="name-space-custom"
+                    key="custom-key"
+                    value=""
+                  >
+                    All
+                  </Select.Option>
+                </Select>
+              </Form.Item>
+              <Form.Item className="browse-dropdown w-full">
+                <div className="filter-popover-wrapper">
+                  <p className="text-xs font-medium">Filter by Topic Tags</p>
+                  <Popover placement="right" content={infoContent}>
+                    <InfoCircleOutlined />
+                  </Popover>
+                </div>
+                <Select
+                  size="large"
+                  mode="multiple"
+                  className="text-canBlack font-normal commonSelectClass [&_.ant-select-arrow]:text-canBlack [&_.ant-select-arrow>svg]:fill-canBlack"
+                  showArrow
+                  {...sharedProps}
+                  {...selectProps}
+                />
+                {/* <Select
+                  size="large"
+                  mode="multiple"
+                  className="text-canBlack font-normal commonSelectClass [&_.ant-select-arrow]:text-canBlack [&_.ant-select-arrow>svg]:fill-canBlack"
+                  showArrow
+                  options={options}
+                /> */}
+              </Form.Item>
+            </div>
+            <div className="search-wrapper w-full items-center max-sm:flex-wrap lg:justify-end max-lg:justify-between">
+              {router?.asPath.includes("/browse") && isUserAuthenticated && (
+                <Checkbox
+                  className="min-w-[169px] max-sm:order-2"
+                  onChange={(e: any) => showOnlyMyTopicsHandler(e)}
+                  disabled={loading}
+                  checked={onlyMyTopicsCheck}
+                >
+                  Show only my topics
+                </Checkbox>
+              )}
+
+              <Search
+                key={inputSearch}
                 size="large"
-                virtual={true}
-                showSearch
-                placeholder="Select a person"
-                optionFilterProp="children"
-                onChange={selectNameSpace}
-                defaultValue={changeSlashToArrow(selectedNameSpace)}
-                value={changeSlashToArrow(selectedNameSpace)}
+                className="browse-search mainInput"
+                placeholder="Search via keyword"
+                defaultValue={inputSearch}
+                onSearch={onSearch}
+                ref={inputRef}
                 disabled={loading}
-                className="text-canBlack font-normal commonSelectClass [&_.ant-select-arrow]:text-canBlack [&_.ant-select-arrow>svg]:fill-canBlack"
-              >
-                {memoizedOptions}
-                <Select.Option id="name-space-custom" key="custom-key" value="">
-                  All
-                </Select.Option>
-              </Select>
-            </Form.Item>
-          </Form>
-          <div className="search-wrapper">
-            <Search
-              key={inputSearch}
-              size="large"
-              className="browse-search mainInput"
-              placeholder="Search via keyword"
-              defaultValue={inputSearch}
-              onSearch={onSearch}
-              ref={inputRef}
-              disabled={loading}
-            />
-            <SortTopics />
+              />
+              <SortTopics />
+            </div>
           </div>
-        </div>
+        </Form>
+
         {allowClear && search?.length > 0 && (
           <div className="search-response">
             <p>{totalTopics?.total_count} Results Found</p>
