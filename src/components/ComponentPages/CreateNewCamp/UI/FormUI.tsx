@@ -280,26 +280,6 @@ const CreateCampFormUI = ({
             )}
             {isEdit && (
               <Fragment>
-                <Col span={24}>
-                  <Form.Item
-                    label={labels.cr_edit_summary}
-                    name="note"
-                    {...summaryRule}
-                    className={`text-14 text-canBlack font-medium`}
-                  >
-                    <Input.TextArea
-                      rows={6}
-                      placeholder={placeholders.editSummary}
-                      className="rounded-lg"
-                      onChange={(e) =>
-                        form.setFieldValue("note", e?.target?.value)
-                      }
-                    />
-                    <Text className="mt-1 block text-canLight">
-                      {labels.cr_keywords_sp}
-                    </Text>
-                  </Form.Item>
-                </Col>
                 <Col xs={24} sm={24} xl={24}>
                   <Form.Item
                     label={
@@ -386,8 +366,34 @@ const CreateCampFormUI = ({
                     )}
                   </Form.Item>
                 </Col>
+                <Col span={24}>
+                  <Form.Item
+                    label={labels.cr_edit_summary}
+                    name="note"
+                    {...summaryRule}
+                    className={`text-14 text-canBlack font-medium`}
+                  >
+                    <Input.TextArea
+                      rows={6}
+                      placeholder={placeholders.editSummary}
+                      className="rounded-lg"
+                      onChange={(e) =>
+                        form.setFieldValue("note", e?.target?.value)
+                      }
+                    />
+                  </Form.Item>
+                </Col>
               </Fragment>
             )}
+          </Row>
+
+          <Row gutter={16} className="bg-canGray mb-3 py-3 rounded-lg">
+            <Col xs={24} sm={24}>
+              <Text className="mt-1 mb-4 block text-canRed">
+                {labels.cr_keywords_sp}
+              </Text>
+            </Col>
+
             <Col xs={24} sm={12}>
               {isLoading ? (
                 <CustomSkelton
@@ -435,7 +441,7 @@ const CreateCampFormUI = ({
                         : ""
                     }`}
                   >
-                    <UserOutlined className="px-3 text-canBlack" />
+                    <UserOutlined className="px-3 text-canBlack bg-white" />
                     <Select
                       placeholder={placeholders.campAboutNickName}
                       allowClear
@@ -470,6 +476,9 @@ const CreateCampFormUI = ({
                 )}
               </Form.Item>
             </Col>
+          </Row>
+
+          <Row gutter={16}>
             <Col className="flex flex-col [&_.ant-checkbox-wrapper]:ml-0 [&_.ant-checkbox-wrapper]:mb-4 [&_.ant-checkbox-wrapper>span]:text-canBlack [&_.ant-checkbox-wrapper>span]:text-sm [&_.ant-checkbox-wrapper>span]:font-medium">
               <PreventSubCamps
                 options={options}

@@ -138,7 +138,7 @@ const LoginUi = ({
               onClick={onRegister}
               id="dont-account-link-tag"
               data-testid="dont-account-link-tag"
-              className="!text-canBlue font-medium"
+              className="!text-canBlue hover:!text-canHoverBlue !font-medium"
             >
               Register
             </a>

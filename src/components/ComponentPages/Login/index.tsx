@@ -6,7 +6,11 @@ import { useDispatch, useSelector } from "react-redux";
 import LoginUI from "./UI";
 
 import CustomSpinner from "components/shared/CustomSpinner";
-import { getNickNameList, login, resendOTPForRegistration } from "src/network/api/userApi";
+import {
+  getNickNameList,
+  login,
+  resendOTPForRegistration,
+} from "src/network/api/userApi";
 import { AppDispatch, RootState } from "src/store";
 import { setEmailForOTP, setUserNickNames } from "src/store/slices/authSlice";
 import { setManageSupportStatusCheck } from "src/store/slices/campDetailSlice";

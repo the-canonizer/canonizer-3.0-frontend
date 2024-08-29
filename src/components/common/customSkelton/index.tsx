@@ -1,12 +1,4 @@
-import {
-  Badge,
-  Card,
-  Col,
-  Form,
-  List,
-  Row,
-  Tag,
-} from "antd";
+import { Badge, Card, Col, Form, List, Row, Tag } from "antd";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
@@ -412,59 +404,68 @@ const CustomSkelton = ({
     </Row>
   ) : skeltonFor == "historyPage" ? (
     <>
-  <div className="cn-wrapper px-5">
-    <div className="badge-wrapper">
-      <div className="tooltip-count">
-        <p>
-          <Skeleton style={{ width: 50, height: 25 }} />
-        </p>
-      </div>
-    </div>
-    <div className="mb-[1.25rem] ch-checkbox">
-      <Skeleton style={{ width: 50, height: 25 }} />
-    </div>
-
-    <Card className="cn-card">
-      <div>
-        <p className="font-semibold mb-2.5">
-          <Skeleton style={{ height: 25,width:"50%" }} />
-        </p>
-        <p>
-          <span><Skeleton style={{ height: 20 ,width:"50%" }} /></span>
-        </p>
-        <p>
-          <span><Skeleton style={{ height: 20 ,width:"50%"  }} /></span>
-        </p>
-        <p>
-          <span><Skeleton style={{ height: 20 ,width:"50%"  }} /></span>
-        </p>
-        <p>
-          <span><Skeleton style={{ height: 20 ,width:"50%" }} /></span>
-        </p>
-        <p>
-          <span><Skeleton style={{ height: 20 ,width:"50%" }} /></span>
-        </p>
-      </div>
-
-      <div className="agreement-wrapper">
-        <Skeleton style={{ width: "25%", height: 20 }} />
-      </div>
-
-      <div className="cn-footer-btn">
-        <div className="cn-card-btn">
-          <div className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none min-w-[200px]">
-            <Skeleton style={{ width: 150, height: 25 }} />
-          </div>
-
-          <div className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none min-w-[200px]">
-            <Skeleton style={{ width: 150, height: 25 }} />
+      <div className="cn-wrapper px-5">
+        <div className="badge-wrapper">
+          <div className="tooltip-count">
+            <p>
+              <Skeleton style={{ width: 50, height: 25 }} />
+            </p>
           </div>
         </div>
-      </div>
-    </Card>
-  </div>
-</>
+        <div className="mb-[1.25rem] ch-checkbox">
+          <Skeleton style={{ width: 50, height: 25 }} />
+        </div>
 
+        <Card className="cn-card">
+          <div>
+            <p className="font-semibold mb-2.5">
+              <Skeleton style={{ height: 25, width: "50%" }} />
+            </p>
+            <p>
+              <span>
+                <Skeleton style={{ height: 20, width: "50%" }} />
+              </span>
+            </p>
+            <p>
+              <span>
+                <Skeleton style={{ height: 20, width: "50%" }} />
+              </span>
+            </p>
+            <p>
+              <span>
+                <Skeleton style={{ height: 20, width: "50%" }} />
+              </span>
+            </p>
+            <p>
+              <span>
+                <Skeleton style={{ height: 20, width: "50%" }} />
+              </span>
+            </p>
+            <p>
+              <span>
+                <Skeleton style={{ height: 20, width: "50%" }} />
+              </span>
+            </p>
+          </div>
+
+          <div className="agreement-wrapper">
+            <Skeleton style={{ width: "25%", height: 20 }} />
+          </div>
+
+          <div className="cn-footer-btn">
+            <div className="cn-card-btn">
+              <div className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none min-w-[200px]">
+                <Skeleton style={{ width: 150, height: 25 }} />
+              </div>
+
+              <div className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none min-w-[200px]">
+                <Skeleton style={{ width: 150, height: 25 }} />
+              </div>
+            </div>
+          </div>
+        </Card>
+      </div>
+    </>
   ) : skeltonFor == "videos" ? (
     <Card
       className="video-parent-card"

@@ -320,10 +320,10 @@ function HistoryContainer() {
 
     return key;
   };
-  
-  const renderCampHistories = loadingIndicator ? <CustomSkelton
-  skeltonFor="historyPage"
-  /> :
+
+  const renderCampHistories = loadingIndicator ? (
+    <CustomSkelton skeltonFor="historyPage" />
+  ) : (
     campHistory &&
     campHistory?.items?.length &&
     campHistory?.items?.map((campHistoryData, index) => {
@@ -357,7 +357,8 @@ function HistoryContainer() {
           loadingIndicator={loadingIndicator}
         />
       );
-    });
+    })
+  );
 
   const handleBackButton = () => {
     const topicDetails = router.query.camp?.at(0);
@@ -381,7 +382,7 @@ function HistoryContainer() {
       <Empty />
     </div>
   );
-  const renderButton = (type, label, count, active, classes = "",disabled) => (
+  const renderButton = (type, label, count, active, classes = "", disabled) => (
     <Button
       size="large"
       className={`btn-${type} ${classes} text-sm ${active ? "active" : ""}`}
@@ -427,10 +428,9 @@ function HistoryContainer() {
     ];
 
     return buttons?.map(({ type, label, count, className }) =>
-      renderButton(type, label, count, activeTab === type, className,count < 1)
+      renderButton(type, label, count, activeTab === type, className, count < 1)
     );
   };
-
 
   return (
     <CustomLayout afterHeader={<Breadcrumbs updateId={liveRecordId} />}>

@@ -122,12 +122,9 @@ const ImageUploader: React.FC = () => {
               aspectSlider
               rotationSlider
               onModalOk={(file) => onModalOk(file)}
-            
-              
             >
               <Upload
                 className="picture-upload [&_.ant-upload-select-picture-card]:!rounded-full  [&_.ant-upload-list-picture-card-container]:!rounded-full [&_.ant-upload-list-item-list-type-picture-card]:!rounded-full [&_. ant-upload-list-item-list-type-picture-card]:!p-0 [&_.ant-upload-list-item-thumbnail]:overflow-hidden [&_.ant-upload-list-item-thumbnail]:!flex [&_.ant-upload-list-item-thumbnail]:!rounded-full [&_.ant-upload-list-item]:!p-0 [&_.ant-upload-list-picture-card-container]:!m-0 [&_.ant-upload.ant-upload-select-picture-card]:!m-0 absolute bottom-0 bg-white bg-opacity-50 flex items-center justify-center p-2.5 h-full lg:[&_.ant-upload-select-picture-card]:!w-24 [&_.ant-upload-select-picture-card]:!w-12 "
-              
                 listType="picture-card"
                 accept="image/*"
                 fileList={fileList}
@@ -159,7 +156,7 @@ const ImageUploader: React.FC = () => {
             onModalOk={(file) => onModalOk(file)}
           >
             <Upload
-               className="bg-green picture-upload [&_.ant-upload-select-picture-card]:!rounded-full  [&_.ant-upload-list-picture-card-container]:!rounded-full [&_.ant-upload.ant-upload-select-picture-card]:!m-0 lg:[&_.ant-upload.ant-upload-select-picture-card]:!w-24 lg:[&_.ant-upload.ant-upload-select-picture-card]:!h-24 [&_.ant-upload-select-picture-card]:!w-12 "
+              className="bg-green picture-upload [&_.ant-upload-select-picture-card]:!rounded-full  [&_.ant-upload-list-picture-card-container]:!rounded-full [&_.ant-upload.ant-upload-select-picture-card]:!m-0 lg:[&_.ant-upload.ant-upload-select-picture-card]:!w-24 lg:[&_.ant-upload.ant-upload-select-picture-card]:!h-24 [&_.ant-upload-select-picture-card]:!w-12 "
               listType="picture-card"
               accept="image/*"
               fileList={fileList}
@@ -178,21 +175,29 @@ const ImageUploader: React.FC = () => {
             onModalOk={(file) => onModalOk(file)}
           >
             <Upload
-               className="z-50   overflow-hidden picture-upload [&_.ant-upload-select-picture-card]:!rounded-full [&_.ant-upload-list-picture-card-container]:!rounded-full [&_.ant-upload.ant-upload-select-picture-card]:!m-0 absolute bg-canBlack bg-opacity-50 w-full bottom-0 py-2 flex items-center justify-center"
+              className="z-50   overflow-hidden picture-upload [&_.ant-upload-select-picture-card]:!rounded-full [&_.ant-upload-list-picture-card-container]:!rounded-full [&_.ant-upload.ant-upload-select-picture-card]:!m-0 absolute bg-canBlack bg-opacity-50 w-full bottom-0 py-2 flex items-center justify-center"
               fileList={fileList}
               multiple={false}
               accept="image/*"
               showUploadList={false}
             >
               <div className=" flex items-center justify-center z-10 ">
-              <Tooltip title="Update" key="update-btn" placement="bottom" className="">
-                <a  className="!bg-transparent !border-none">
-                  {/* <EditOutlined className="" /> */}
-                  <Image src="/images/image-edit-icon.svg" width={16} height={16} />
-                </a>
-              </Tooltip>
+                <Tooltip
+                  title="Update"
+                  key="update-btn"
+                  placement="bottom"
+                  className=""
+                >
+                  <a className="!bg-transparent !border-none">
+                    {/* <EditOutlined className="" /> */}
+                    <Image
+                      src="/images/image-edit-icon.svg"
+                      width={16}
+                      height={16}
+                    />
+                  </a>
+                </Tooltip>
               </div>
-             
             </Upload>
           </ImgCrop>
         ) : null}

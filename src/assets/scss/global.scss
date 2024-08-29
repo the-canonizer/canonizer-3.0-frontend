@@ -911,6 +911,14 @@ body {
   content: "";
 }
 
+.nickNamePopup {
+  .ant-select-item-option {
+    .ant-select-item-option-content {
+      @apply w-full grid items-center;
+    }
+  }
+}
+
 // .ant-tree-show-line .ant-tree-switcher.ant-tree-switcher-noop:after {
 //   content: " " !important;
 //   width: 1px !important;
