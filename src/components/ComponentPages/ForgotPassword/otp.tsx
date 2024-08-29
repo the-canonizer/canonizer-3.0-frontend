@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Card, Col, Form, Row, message } from "antd";
+import { Card, Col, Form, Row } from "antd";
 import { useRouter } from "next/router";
 
 import ForgotPasswordOTPUI from "./UI/password-otp";
@@ -15,6 +15,7 @@ import {
   setIsPasswordVerfied,
   setPasswordEmail,
 } from "src/store/slices/authSlice";
+import { openNotificationWithIcon } from "components/common/notification/notificationBar";
 
 const ForgotPassword = () => {
   const { passwordEmail } = useSelector((state: RootState) => ({
@@ -65,7 +66,7 @@ const ForgotPassword = () => {
     const res = await forgotPasswordSendOTP({ email: passwordEmail });
 
     if (res.status_code === 200) {
-      message.success(res.message);
+      openNotificationWithIcon(res.message, "success");
       setIsResend(true);
 
       setTimer(120);
@@ -92,7 +93,7 @@ const ForgotPassword = () => {
       }
 
       if (res.status_code === 200) {
-        message.success(res.message);
+        openNotificationWithIcon(res.message, "success");
         otpForm.resetFields();
 
         dispatch(setIsPasswordVerfied(userEmail));

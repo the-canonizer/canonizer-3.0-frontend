@@ -4,9 +4,12 @@ import { WarningOutlined } from "@ant-design/icons";
 
 import CommonCards from "components/shared/Card";
 import CustomSkelton from "components/common/customSkelton";
+import { replaceSpecialCharacters } from "src/utils/generalUtility";
 
 export const getHighlightedText = (text, highlight) => {
-  const parts = text?.split(new RegExp(`(${highlight})`, "gi"));
+  const parts = text?.split(
+    new RegExp(`(${replaceSpecialCharacters(highlight, "-")})`, "gi")
+  );
   return (
     <span>
       {parts?.map((part, i) => (
@@ -70,7 +73,10 @@ const ExistingTopicList = ({
               <Link
                 href={{ pathname: "/search/topic", query: { q: topicName } }}
               >
-                <a className="text-canBlue uppercase text-xs font-semibold hocus:text-canHoverBlue" target="_blank">
+                <a
+                  className="text-canBlue uppercase text-xs font-semibold hocus:text-canHoverBlue"
+                  target="_blank"
+                >
                   See more results
                 </a>
               </Link>

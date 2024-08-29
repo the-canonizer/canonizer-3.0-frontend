@@ -214,6 +214,8 @@ const CommentsList = () => {
             }
           }
           Modal.destroyAll();
+          const threadId = router?.query?.id;
+          if (threadId) threadDetails();
         }
         setPostLoading(false);
       },

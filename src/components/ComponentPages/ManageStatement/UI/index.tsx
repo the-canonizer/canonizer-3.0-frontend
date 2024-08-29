@@ -1,4 +1,4 @@
-import { Form, Row, Col, Typography } from "antd";
+import { Form, Row, Col, Typography, Spin } from "antd";
 import dynamic from "next/dynamic";
 import {
   CloseOutlined,
@@ -7,6 +7,7 @@ import {
   UploadOutlined,
   UserOutlined,
 } from "@ant-design/icons";
+import { Fragment, useRef } from "react";
 
 import K from "src/constants";
 import messages from "src/messages";
@@ -79,7 +80,10 @@ function ManageStatementUI({
   isAutoSaving,
   values,
   onImproveClick,
+  isGenerating,
 }) {
+  const editorRef = useRef(null);
+
   return (
     <CommonCards className="border-0 bg-white">
       <header className="mb-14">
@@ -140,17 +144,21 @@ function ManageStatementUI({
                 className="mb-2 editorContent [&_.ant-form-item-label>label]:w-full"
                 name="statement"
                 label={
-                  <>
+                  <Fragment>
                     Statement <span className="required">*</span>
-                    <SecondaryButton
-                      className="flex justify-center items-center border-0 p-0 ml-auto float-end"
-                      type="link"
-                      ghost
-                      onClick={onImproveClick}
-                    >
-                      Improve With Ai <StarIcon className="" />
-                    </SecondaryButton>
-                  </>
+                    {isGenerating ? (
+                      <Spin className="ml-auto float-end" />
+                    ) : (
+                      <SecondaryButton
+                        className="flex justify-center items-center border-0 p-0 ml-auto float-end !shadow-none hover:!shadow-none !bg-transparent"
+                        type="link"
+                        ghost
+                        onClick={(e) => onImproveClick(e, editorRef)}
+                      >
+                        Improve With Ai <StarIcon className="" />
+                      </SecondaryButton>
+                    )}
+                  </Fragment>
                 }
                 rules={[
                   {
@@ -173,6 +181,7 @@ function ManageStatementUI({
                   />
                 ) : (
                   <Editorckl
+                    ref={editorRef}
                     editorState={editorState}
                     oneditorchange={onEditorStateChange}
                     placeholder="Write Your Statement Here"
@@ -224,7 +233,9 @@ function ManageStatementUI({
                 <PrimaryButton
                   htmlType="submit"
                   className="inline-flex items-center justify-center h-auto py-2 px-7 h-auto"
-                  disabled={!isDisabled || isAutoSaving}
+                  disabled={
+                    (submitIsDisable && isEdit) || !isDisabled || isAutoSaving
+                  }
                 >
                   Publish Statement
                   <UploadOutlined />

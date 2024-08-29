@@ -9,6 +9,7 @@ import SeeMoreLInk from "../Home/FeaturedTopic/seeMoreLink";
 import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 import { covertToTime } from "src/utils/generalUtility";
 import CommonCard from "components/shared/Card";
+import Link from "next/link";
 
 function Campforum() {
   const router = useRouter();
@@ -86,33 +87,42 @@ function Campforum() {
               </Fragment>
             ) : (
               thread?.map((obj) => (
-                <div
+                <Link
+                  href={{
+                    pathname:
+                      router?.asPath?.replace("topic", "forum") +
+                      "/threads/" +
+                      obj?.id,
+                  }}
                   key={obj?.id}
-                  className="cursor-pointer last:border-none py-3 px-5 group flex justify-between w-full hover:[&_.headingTitle]:font-semibold [&_.arrowIcon]:hover:block lg:border-b lg:mb-0 mb-2.5"
                 >
-                  <div className="w-full grid grid-rows-2 md:grid-flow-col center">
-                    <Typography.Paragraph className="!mb-0 text-sm text-canBlack text-ellipsis font-normal row-start-1 md:row-start-0 col-span-2 md:col-span-2 headingTitle">
-                      {obj.body}
-                    </Typography.Paragraph>
-                    <Typography.Paragraph className="text-canBlack text-opacity-50 font-medium text-[10px] 2xl:text-xs !mb-0 flex items-center mt-1 row-start-2 row-span-2 col-span-2 md:col-span-2 md:row-start-0 md:row-span-0">
-                      {covertToTime(obj?.created_at)}
-                    </Typography.Paragraph>
-                    <div className="flex justify-end items-center gap-3 row-start-2 row-span-2 md:row-start-0 md:row-span-2">
-                      <Image
-                        src="/images/comment-icon.svg"
-                        alt="svg"
-                        height={15}
-                        width={18}
-                        preview={false}
-                      />
-                      <Typography.Text className="text-xs text-canLightBlack flex items-center gap-1 font-medium">
-                        {obj.post_count}{" "}
-                        <span>{+obj.post_count > 1 ? "Replies" : "Reply"}</span>
-                        {/* <RightOutlined className="hidden arrowIcon" /> */}
-                      </Typography.Text>
+                  <div className="cursor-pointer last:border-none py-3 px-5 group flex justify-between w-full hover:[&_.headingTitle]:font-semibold [&_.arrowIcon]:hover:block lg:border-b lg:mb-0 mb-2.5">
+                    <div className="w-full grid grid-rows-2 md:grid-flow-col center">
+                      <Typography.Paragraph className="!mb-0 text-sm text-canBlack text-ellipsis font-normal row-start-1 md:row-start-0 col-span-2 md:col-span-2 headingTitle">
+                        {obj.body}
+                      </Typography.Paragraph>
+                      <Typography.Paragraph className="text-canBlack text-opacity-50 font-medium text-[10px] 2xl:text-xs !mb-0 flex items-center mt-1 row-start-2 row-span-2 col-span-2 md:col-span-2 md:row-start-0 md:row-span-0">
+                        {covertToTime(obj?.created_at)}
+                      </Typography.Paragraph>
+                      <div className="flex justify-end items-center gap-3 row-start-2 row-span-2 md:row-start-0 md:row-span-2">
+                        <Image
+                          src="/images/comment-icon.svg"
+                          alt="svg"
+                          height={15}
+                          width={18}
+                          preview={false}
+                        />
+                        <Typography.Text className="text-xs text-canLightBlack flex items-center gap-1 font-medium">
+                          {obj.post_count}{" "}
+                          <span>
+                            {+obj.post_count > 1 ? "Replies" : "Reply"}
+                          </span>
+                          {/* <RightOutlined className="hidden arrowIcon" /> */}
+                        </Typography.Text>
+                      </div>
                     </div>
                   </div>
-                </div>
+                </Link>
               ))
             )}
           </CommonCard>

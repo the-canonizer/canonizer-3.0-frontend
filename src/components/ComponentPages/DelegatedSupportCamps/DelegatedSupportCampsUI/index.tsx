@@ -37,7 +37,6 @@ export default function DelegatedSupportCampsUI({
   const limit = 3;
   const [search, setSearch] = useState("");
 
-
   useEffect(() => {
     pageChange(1, 5);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -57,7 +56,12 @@ export default function DelegatedSupportCampsUI({
       dataIndex: "sr",
       key: "sr",
 
-      render: (text, record, index) => (<span className="bg-canGrey2 rounded-full h-5 w-6 flex items-center justify-center"> {index + 1}</span>),
+      render: (text, record, index) => (
+        <span className="bg-canGrey2 rounded-full h-5 w-6 flex items-center justify-center">
+          {" "}
+          {index + 1}
+        </span>
+      ),
     },
     {
       title: "Topics",
@@ -210,7 +214,10 @@ export default function DelegatedSupportCampsUI({
       return displayList;
     } else {
       return delegatedSupportCampsList.filter((val: any) => {
-        return val.title.toLowerCase().trim().includes(search.toLowerCase().trim());
+        return val.title
+          .toLowerCase()
+          .trim()
+          .includes(search.toLowerCase().trim());
       });
     }
   }, [search, displayList, delegatedSupportCampsList]);
@@ -239,7 +246,14 @@ export default function DelegatedSupportCampsUI({
               </div>
               <div className="w-full flex justify-end">
                 <Input
-                  suffix={<Image src="/images/search-icon.svg" width={20} height={20} alt="" />}
+                  suffix={
+                    <Image
+                      src="/images/search-icon.svg"
+                      width={20}
+                      height={20}
+                      alt=""
+                    />
+                  }
                   data-testid="settingSearch"
                   value={search}
                   placeholder="Search via topic name"
@@ -254,7 +268,7 @@ export default function DelegatedSupportCampsUI({
             </div>
 
             {delegatedSupportCampsList &&
-              delegatedSupportCampsList.length > 0 ? (
+            delegatedSupportCampsList.length > 0 ? (
               <Table
                 columns={columns}
                 dataSource={filteredArray}
@@ -270,8 +284,8 @@ export default function DelegatedSupportCampsUI({
               <Empty description="No Data Found" />
             )}
             {delegatedSupportCampsList &&
-              delegatedSupportCampsList.length > 0 &&
-              search.length === 0 ? (
+            delegatedSupportCampsList.length > 0 &&
+            search.length === 0 ? (
               <Pagination
                 hideOnSinglePage={true}
                 total={delegatedSupportCampsList.length}
@@ -296,7 +310,10 @@ export default function DelegatedSupportCampsUI({
         >
           <Form>
             <Form.Item style={{ marginBottom: "0px" }}>
-              <p id="remove_confirmation" className="text-xl text-canBlack font-medium text-center">
+              <p
+                id="remove_confirmation"
+                className="text-xl text-canBlack font-medium text-center"
+              >
                 Are you sure, you want to remove your delegate support given to{" "}
                 <span>
                   &quot;
@@ -318,32 +335,26 @@ export default function DelegatedSupportCampsUI({
                 ?
               </p>
             </Form.Item>
-            <Form.Item
-              className=""
-
-            >
+            <Form.Item className="">
               <div className="flex gap-4 justify-center items-center mt-10">
-               
                 <Button
                   id="cancelBtn"
                   onClick={handleSupportedCampsCancel}
                   type="default"
-                  
                   className="Profile_btn ant-btn ant-btn-orange ant-btn-lg py-2.5 px-12 hover:text-canBlack flex gap-2.5 items-center bg-btnBg bg-opacity-10 text-canBlack text-base font-medium rounded-lg border-canBlue justify-center w-[11.25rem] hover:bg- hover:!border-canBlue hover:bg-btnBg hover:bg-opacity-10"
                 >
                   Cancel
                   <Image
-                  src="/images/cross-dark.svg"
-                  width={16}
-                  height={16}
-                  alt="no image"
-                />
+                    src="/images/cross-dark.svg"
+                    width={16}
+                    height={16}
+                    alt="no image"
+                  />
                 </Button>
                 <Button
                   id="removeBtn"
                   onClick={removeSupport}
                   type="primary"
-                 
                   className=" Profile_btn ant-btn ant-btn-orange ant-btn-lg py-2.5 px-6 hover:bg-canBlue hover:text-white flex gap-2.5 items-center bg-canBlue text-white text-base font-medium rounded-lg border-none justify-center w-[11.25rem]"
                 >
                   Remove
@@ -420,7 +431,14 @@ export default function DelegatedSupportCampsUI({
           <div className="w-full">
             <div className="w-full flex justify-end mb-5">
               <Input
-                suffix={<Image src="/images/search-icon.svg" width={20} height={20} alt="" />}
+                suffix={
+                  <Image
+                    src="/images/search-icon.svg"
+                    width={20}
+                    height={20}
+                    alt=""
+                  />
+                }
                 data-testid="settingSearch"
                 value={search}
                 placeholder="Search via topic name"
@@ -432,85 +450,93 @@ export default function DelegatedSupportCampsUI({
                 }}
               />
             </div>
-            {displayList && displayList.length > 0 ? (
-              displayList.map((data, i) => (
-                <div key={data.topic_num} className="!border !border-canGrey2 rounded-lg mb-5 last:mb-0 px-2.5">
-                  <Card
-                    className="[&_.ant-card-head]:!px-0 [&_.ant-card-head]:!bg-transparent !w-full [&_.ant-card-head]:!border-none"
-                    type="inner"
-                    size="default"
-                    title={
-                      <CardTitle
-                        title_link={data.title_link}
-                        value={data.title}
-                      />
-                    }
-                    style={{ width: 360, marginBottom: 16 }}
+            {displayList && displayList.length > 0
+              ? displayList.map((data, i) => (
+                  <div
+                    key={data.topic_num}
+                    className="!border !border-canGrey2 rounded-lg mb-5 last:mb-0 px-2.5"
                   >
-                    <div>
-                      <Row>
-                        <Col span={24}>
-                          <div className="border-y py-3">
-                            <span id="currentSupportedCamp" className="uppercase text-sm font-medium text-canBlack">
-                              {messages.labels.currentSupportedCamps}
-                            </span>
-                            {data.camps?.slice(0, limit).map((val, i) => (
-                              <CurrentSupportedCamps
-                                key={i}
-                                value={val.camp_name}
-                                id_data={val.support_order + "."}
-                                camp_link={val.camp_link}
-                              />
-                            ))}
-                          </div>
-                          {data.camps.length > limit && (
-                            <a
-                              className={styles.mrgn_left}
-                              onClick={(e) => showViewMoreModal(e, data)}
-                            >
-                              {messages.labels.viewMore}
-                            </a>
-                          )}
-                        </Col>
-                        <Col span={24}>
-                          <SupportedCampsTo
-                            supportedto={data.delegated_to_nick_name}
-                            supportedto_link={data.delegated_to_nick_name_link}
-                            NickName={data.my_nick_name}
-                            NickNameLink={data.my_nick_name_link}
-                          />
-                        </Col>
-                      </Row>
-                    </div>
-                    <Button
-                      className="bg-btnBg bg-opacity-10 rounded-lg py-2.5  w-full mt-5 flex items-center justify-center gap-2.5 text-base font-medium"
-                      onClick={() => removeCardDelegatedSupportedCamps(data)}
+                    <Card
+                      className="[&_.ant-card-head]:!px-0 [&_.ant-card-head]:!bg-transparent !w-full [&_.ant-card-head]:!border-none"
+                      type="inner"
+                      size="default"
+                      title={
+                        <CardTitle
+                          title_link={data.title_link}
+                          value={data.title}
+                        />
+                      }
+                      style={{ width: 360, marginBottom: 16 }}
                     >
-                      Remove Support
-                      <Image
-                        src="/images/minus-user-icon.svg"
-                        alt=""
-                        width={24}
-                        height={24}
-                      />
-                    </Button>
-                  </Card>
-                </div>
-              ))
-            ) : (
-              showEmpty("No Data Found")
-            )}
+                      <div>
+                        <Row>
+                          <Col span={24}>
+                            <div className="border-y py-3">
+                              <span
+                                id="currentSupportedCamp"
+                                className="uppercase text-sm font-medium text-canBlack"
+                              >
+                                {messages.labels.currentSupportedCamps}
+                              </span>
+                              {data.camps?.slice(0, limit).map((val, i) => (
+                                <CurrentSupportedCamps
+                                  key={i}
+                                  value={val.camp_name}
+                                  id_data={val.support_order + "."}
+                                  camp_link={val.camp_link}
+                                />
+                              ))}
+                            </div>
+                            {data.camps.length > limit && (
+                              <a
+                                className={styles.mrgn_left}
+                                onClick={(e) => showViewMoreModal(e, data)}
+                              >
+                                {messages.labels.viewMore}
+                              </a>
+                            )}
+                          </Col>
+                          <Col span={24}>
+                            <SupportedCampsTo
+                              supportedto={data.delegated_to_nick_name}
+                              supportedto_link={
+                                data.delegated_to_nick_name_link
+                              }
+                              NickName={data.my_nick_name}
+                              NickNameLink={data.my_nick_name_link}
+                            />
+                          </Col>
+                        </Row>
+                      </div>
+                      <Button
+                        className="bg-btnBg bg-opacity-10 rounded-lg py-2.5  w-full mt-5 flex items-center justify-center gap-2.5 text-base font-medium"
+                        onClick={() => removeCardDelegatedSupportedCamps(data)}
+                      >
+                        Remove Support
+                        <Image
+                          src="/images/minus-user-icon.svg"
+                          alt=""
+                          width={24}
+                          height={24}
+                        />
+                      </Button>
+                    </Card>
+                  </div>
+                ))
+              : showEmpty("No Data Found")}
 
-            {delegatedSupportCampsList && delegatedSupportCampsList.length > 0 && search.length === 0 && (
-              <Pagination
-                hideOnSinglePage={true}
-                total={delegatedSupportCampsList.length}
-                pageSize={5}
-                onChange={pageChange}
-                showSizeChanger={false}
-                className="mt-5"
-              />
-            )}
+            {delegatedSupportCampsList &&
+              delegatedSupportCampsList.length > 0 &&
+              search.length === 0 && (
+                <Pagination
+                  hideOnSinglePage={true}
+                  total={delegatedSupportCampsList.length}
+                  pageSize={5}
+                  onChange={pageChange}
+                  showSizeChanger={false}
+                  className="mt-5"
+                />
+              )}
           </div>
         )}
       </div>

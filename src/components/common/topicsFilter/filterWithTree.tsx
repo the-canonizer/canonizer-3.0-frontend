@@ -12,35 +12,34 @@ import {
   Col,
 } from "antd";
 import Image from "next/image";
-
-import { RootState } from "../../../store";
 import { useDispatch, useSelector } from "react-redux";
-import { setIsReviewCanonizedTopics } from "../../../store/slices/filtersSlice";
 import Link from "next/link";
 import { useCookies } from "react-cookie";
+import { useRouter } from "next/router";
 
+import styles from "./topicListFilter.module.scss";
+
+import { RootState } from "src/store";
+import { setIsReviewCanonizedTopics } from "src/store/slices/filtersSlice";
 import {
   setViewThisVersion,
   setFilterCanonizedTopics,
 } from "src/store/slices/filtersSlice";
-
-const { Title, Text, Paragraph } = Typography;
-const { Option } = Select;
-
-import styles from "./topicListFilter.module.scss";
-import { useRouter } from "next/router";
 import K from "src/constants";
 import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
-import CampTreeCard from "src/components/ComponentPages/TopicDetails/CampTreeCard";
 import { getTreesApi } from "src/network/api/campDetailApi";
 import {
   setOpenDrawer,
   setAsOfValues,
   setClearAlgoFromRefineFilter,
   setClearScoreFromRefineFilter,
-} from "../../../store/slices/campDetailSlice";
+} from "src/store/slices/campDetailSlice";
 import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 import PrimaryButton from "components/shared/Buttons/PrimariButton";
+import RefineIcon from "components/ComponentPages/TopicDetails/CampInfoBar/refineIcon";
+
+const { Title, Text, Paragraph } = Typography;
+const { Option } = Select;
 
 const infoContent = (
   <>
@@ -75,15 +74,7 @@ const asContent = (
   </>
 );
 
-const FilterWithTree = ({
-  getTreeLoadingIndicator,
-  scrollToCampStatement,
-  setTotalCampScoreForSupportTree,
-  setSupportTreeForCamp,
-  backGroundColorClass,
-  loadingIndicator,
-  isForumPage = false,
-}: any) => {
+const FilterWithTree = ({ loadingIndicator }: any) => {
   const [isDatePicker, setIsDatePicker] = useState(false);
 
   const [datePickerValue, setDatePickerValue] = useState(null);
@@ -135,16 +126,9 @@ const FilterWithTree = ({
   }));
 
   const [selectedAsOFDate, setSelectedAsOFDate] = useState(filteredAsOfDate);
-  const [selectAlgo, setSelectAlgo] = useState(
-    algorithms?.filter((algo) => algo?.algorithm_key == selectedAlgorithm)[0]
-      ?.algorithm_label
-  );
-
   const [timer, setTimer] = useState(null);
-  const [inputValue, setInputValue] = useState(
-    router.query.score || filteredScore
-  );
   const [isLoading, setIsLoading] = useState(loading);
+
   const didMount = useRef(false);
 
   function removeEmptyValues(obj) {
@@ -239,7 +223,7 @@ const FilterWithTree = ({
 
   useEffect(() => {
     if (!router?.query?.algo) {
-      setSelectAlgo("blind_popularity");
+      // setSelectAlgo("blind_popularity");
       dispatch(setClearAlgoFromRefineFilter("blind_popularity"));
       if (!router?.query?.score) {
         dispatch(setClearScoreFromRefineFilter(0));
@@ -272,15 +256,6 @@ const FilterWithTree = ({
   }, [isLoading]);
 
   useEffect(() => {
-    // setValue(selectedAsOf == "default" ? 2 : selectedAsOf == "review" ? 1 : 3);
-    dispatch(
-      setAsOfValues(
-        selectedAsOf == "default" ? 2 : selectedAsOf == "review" ? 1 : 3
-      )
-    );
-  }, [selectedAsOf]);
-
-  useEffect(() => {
     setSelectedAsOFDate(filteredAsOfDate);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filteredAsOfDate]);
@@ -289,6 +264,7 @@ const FilterWithTree = ({
     if (!(algorithms?.length > 0)) getCanonizedAlgorithmsApi();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   const reqBodyForService = {
     topic_num: router?.query?.camp[0]?.split("-")[0],
     camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
@@ -299,9 +275,11 @@ const FilterWithTree = ({
     update_all: 1,
     fetch_topic_history: viewThisVersionCheck ? 1 : null,
   };
+
   const revertScore = () => {
     getTreesApi(reqBodyForService);
   };
+
   const selectAlgorithm = (value) => {
     setCookie("canAlgo", value, {
       path: "/",
@@ -314,6 +292,7 @@ const FilterWithTree = ({
 
     revertScore();
   };
+
   const onChange = (e) => {
     if (e.target.value === 3) {
       setIsDatePicker(true);
@@ -331,15 +310,15 @@ const FilterWithTree = ({
     } else {
       let datepicker =
         moment().unix() > moment(e?._d).unix() &&
-          moment().format("YYYY-MM-DD") > moment(e?._d).format("YYYY-MM-DD")
+        moment().format("YYYY-MM-DD") > moment(e?._d).format("YYYY-MM-DD")
           ? momentDateObject(moment(e?._d).endOf("day"))
           : momentDateObject(
-            moment(e?._d).set({
-              hour: moment().hour(),
-              minute: moment().minute(),
-              second: moment().second(),
-            })
-          );
+              moment(e?._d).set({
+                hour: moment().hour(),
+                minute: moment().minute(),
+                second: moment().second(),
+              })
+            );
       setSelectedAsOFDate(Date.parse(datepicker) / 1000);
       setDatePickerValue(datepicker);
       IsoDateFormat = Date.parse(datepicker) / 1000;
@@ -354,8 +333,6 @@ const FilterWithTree = ({
   };
 
   const filterOnScore = (value) => {
-    // const { value } = e?.target;
-    setInputValue(value);
     clearTimeout(timer);
     const reg = /^-?\d*(\.\d*)?$/;
     if ((!isNaN(value) && reg.test(value)) || value === "") {
@@ -374,16 +351,16 @@ const FilterWithTree = ({
     if (datePickerValue !== null) {
       let dateValue =
         moment().unix() > moment(datePickerValue).unix() &&
-          moment().format("YYYY-MM-DD") >
+        moment().format("YYYY-MM-DD") >
           moment(datePickerValue).format("YYYY-MM-DD")
           ? momentDateObject(moment(datePickerValue).endOf("day"))
           : momentDateObject(
-            moment(datePickerValue).set({
-              hour: moment().hour(),
-              minute: moment().minute(),
-              second: moment().second(),
-            })
-          );
+              moment(datePickerValue).set({
+                hour: moment().hour(),
+                minute: moment().minute(),
+                second: moment().second(),
+              })
+            );
       setCookie("asofDate", JSON.stringify(Date.parse(dateValue) / 1000), {
         path: "/",
       });
@@ -425,9 +402,11 @@ const FilterWithTree = ({
   function momentDateObject(e) {
     return e?._d;
   }
+
   const handleRadioClick = (value) => {
     setSelectedValue(value);
   };
+
   const handleApplyClick = () => {
     filterOnScore(clearScoreFromRefineFilter);
     selectAlgorithm(clearAlgoFromRefineFilter);
@@ -701,22 +680,6 @@ const FilterWithTree = ({
                 </Space>
               </div>
             </Col>
-            {/* <Col xs={24}>
-              {!openDrawer ? (
-                <div className={styles.treeContainer + " !p-0"}>
-                  <CampTreeCard
-                    getTreeLoadingIndicator={getTreeLoadingIndicator}
-                    scrollToCampStatement={scrollToCampStatement}
-                    setTotalCampScoreForSupportTree={
-                      setTotalCampScoreForSupportTree
-                    }
-                    backGroundColorClass={backGroundColorClass}
-                    setSupportTreeForCamp={setSupportTreeForCamp}
-                    isForumPage={isForumPage}
-                  />
-                </div>
-              ) : null}
-            </Col> */}
             <Col xs={24} className="refine-drawer-mobile overflow-hidden">
               <div className="flex items-center justify-start btn-parent fixed lg:static bottom-0 w-full lg:mt-14 lg:gap-5 pr-4 lg:pr-8 pl-4 lg:pl-8 pb-8 lg:pt-0 pt-6">
                 <PrimaryButton
@@ -725,16 +688,9 @@ const FilterWithTree = ({
                 >
                   <span className="!flex gap-1 flex-row ">
                     <span>Apply</span>
-                    {/* <span className="hidden lg:block">Filters</span> */}
                   </span>
                   <span className="!hidden lg:!flex  items-center">
-                    <Image
-                      src="/images/filterbtn-icon.svg"
-                      alt="svg"
-                      className="icon-topic "
-                      height={16}
-                      width={16}
-                    />
+                    <RefineIcon className="w-[16px] [&>svg]:fill-white" />
                   </span>
                 </PrimaryButton>
                 <SecondaryButton

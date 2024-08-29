@@ -289,6 +289,6 @@ export const campSignApi = async (reqBody, loginToken = null) => {
 
     return campSign;
   } catch (error) {
-    openNotificationWithIcon(error?.error?.data?.message,"error");
+    openNotificationWithIcon(error?.error?.data?.message, "error");
   }
 };

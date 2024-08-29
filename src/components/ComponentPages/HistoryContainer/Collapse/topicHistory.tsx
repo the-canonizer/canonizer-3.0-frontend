@@ -12,12 +12,12 @@ const TopicHistory = ({ campStatement, topicNamespaceId }: any) => {
       </p>
       <p className="font-semibold mb-2.5">UPDATES</p>
       <p>
-              Canon:{" "}
-              <span>
-                {campStatement?.namespace &&
-                  campStatement?.namespace.replace(/[^a-zA-Z0-9\s]/g, " ")}
-              </span>
-            </p>
+        Canon:{" "}
+        <span>
+          {campStatement?.namespace &&
+            campStatement?.namespace.replace(/[^a-zA-Z0-9\s]/g, " ")}
+        </span>
+      </p>
       <p>
         Edit summary:<span>{campStatement?.note}</span>
       </p>
