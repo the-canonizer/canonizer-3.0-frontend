@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { CloseOutlined, InfoCircleOutlined } from "@ant-design/icons";
+import { CloseOutlined, InfoCircleOutlined , LoadingOutlined} from "@ant-design/icons";
 import { Checkbox, Popover, Select } from "antd";
 import { Row, Col, Typography, Divider, Form, Input, Button } from "antd";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import {
   getCanonizedNameSpacesApi,
   getCanonizedTopicsApi,
+  getCanonizedTopicsForSuggestion,
 } from "src/network/api/homePageApi";
 import { setFilterCanonizedTopics, setOnlyMyTopic } from "src/store/slices/filtersSlice";
 import { RootState } from "src/store";
@@ -44,6 +45,8 @@ const TopicsList = () => {
     loading,
     sortLatestTopic,
     sortScoreViewTopic,
+    is_camp_archive_checked,
+    filterByScore,
   } = useSelector((state: RootState) => ({
     canonizedTopics: state.homePage?.canonizedTopicsData,
     asofdate: state.filters?.filterObject?.asofdate,
@@ -58,6 +61,8 @@ const TopicsList = () => {
     onlyMyTopicsCheck: state?.filters?.onlyMyTopicsCheck,
     sortLatestTopic: state?.utils?.sortLatestTopic,
     sortScoreViewTopic: state?.utils?.sortScoreViewTopic,
+    is_camp_archive_checked: state?.utils?.archived_checkbox,
+    filterByScore: state.filters?.filterObject?.filterByScore,
   }));
 
   const [topicsData, setTopicsData] = useState(canonizedTopics);
@@ -78,6 +83,9 @@ const TopicsList = () => {
   const [value, setValue] = useState([]);
   const [allTags, setAllTags] = useState([]);
   const [showOnlyMyTopics, setShowOnlyMyTopics] = useState(false);
+  const [showSearchDropdown, setShowSearchDropdown] = useState(false);
+  const [searchLoading, setSearchLoading] = useState(false);
+  const [searchedResult, setSearchedResult] = useState([]);
 
   const mapItemsToValueLabel = (items) => {
     return items.map((item) => ({
@@ -179,11 +187,93 @@ const TopicsList = () => {
     setTotalTopics(response);
   }
 
+  const handleKeyUpSearch = (event: any) => {
+    setSearchedResult([]);
+    setSearchLoading(true);
+    const value = event.target.value?.trim();
+    if (value) {
+      setAllowClear(true);
+      setSearchTerm(value);
+      setShowSearchDropdown(true);
+    } else {
+      setAllowClear(false);
+      setSearchTerm("");
+      setSearchedResult([]);
+      setShowSearchDropdown(false);
+    }
+  };
+
   const onSearch = (value) => {
     setIsCanonChange(true);
     setInputSearch(value?.trim());
     dispatch(setFilterCanonizedTopics({ search: value || "" }));
     setAllowClear(true);
+  };
+
+  let throttled: NodeJS.Timeout | null = null;
+
+  useEffect(() => {
+    if (throttled) {
+      clearTimeout(throttled);
+    }
+
+    inputRef.current?.focus();
+
+    throttled = setTimeout(() => {
+      if (searchTerm?.trim()) {
+        onSearchInput(searchTerm);
+      }
+    }, 800);
+
+    return () => {
+      if (throttled) {
+        clearTimeout(throttled);
+        throttled = null;
+      }
+    };
+  }, [searchTerm]);
+
+  const handleTopicNameClick = (
+    value: string,
+    e: { preventDefault: () => void }
+  ) => {
+    e.preventDefault();
+    if (value?.trim()) {
+      setInputSearch(value?.trim());
+      setShowSearchDropdown(false);
+    }
+  };
+
+  const onSearchInput = async (value: string) => {
+    try {
+      const reqBody = {
+        algorithm: algorithm,
+        asofdate:
+          asof == ("default" || asof == "review")
+            ? Date.now() / 1000
+            : asofdate,
+        namespace_id: String(nameSpaceId),
+        page_number: pageNumber,
+        page_size: 15,
+        search: value,
+        filter: filterByScore,
+        asof: asof,
+        user_email: onlyMyTopicsCheck ? userEmail : "",
+        is_archive: is_camp_archive_checked ? 1 : 0,
+      };
+      const res = await getCanonizedTopicsForSuggestion(reqBody);
+
+      setSearchLoading(false);
+      if (res) {
+        setSearchedResult(res?.topic);
+        setTimeout(() => {
+          inputRef?.current?.focus();
+        }, 400);
+      }
+    } catch (error) {
+      // console.error("Error:", error);
+      /**/
+    }
   };
 
   const handleClear = () => {
@@ -339,7 +429,7 @@ const TopicsList = () => {
                   Show only my topics
                 </Checkbox>
               )}
-
+              <div className="input-search-topic">
               <Search
                 key={inputSearch}
                 size="large"
@@ -349,7 +439,42 @@ const TopicsList = () => {
                 onSearch={onSearch}
                 ref={inputRef}
                 disabled={loading}
+                onChange={handleKeyUpSearch}
+                onBlur={() => {
+                  setTimeout(() => {
+                    setShowSearchDropdown(false);
+                  }, 300);
+                }}
+                onFocus={() => {
+                  setSearchLoading(false);
+                  setShowSearchDropdown(true);
+                }}
               />
+               {showSearchDropdown && searchTerm && (
+              <div className="suggestion-list">
+                <ul>
+                  {searchLoading ? (
+                    <li className="search-loader">
+                      <LoadingOutlined spin />
+                    </li>
+                  ) : searchedResult?.length > 0 ? (
+                    searchedResult?.map((t, i) => (
+                      <li
+                        key={i}
+                        onClick={handleTopicNameClick.bind(this, t?.topic_name)}
+                      >
+                        {t?.topic_name}
+                      </li>
+                    ))
+                  ) : searchTerm ? (
+                    <li>No Data</li>
+                  ) : (
+                    ""
+                  )}
+                </ul>
+              </div>
+            )}
+            </div>
               <SortTopics />
             </div>
           </div>
