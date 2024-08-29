@@ -122,7 +122,7 @@ const TopicsListByCats = () => {
       is_archive: 0,
       sort: sortLatestTopic ? true : false,
       page: "browse",
-      topic_tags: [router?.query?.id],
+      topic_tags: [+router?.query?.id],
     };
 
     const response = await getCanonizedTopicsApi(reqBody);
