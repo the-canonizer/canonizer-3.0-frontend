@@ -441,6 +441,7 @@ const TopicsList = () => {
                   size="large"
                   className="browse-search mainInput"
                   placeholder="Search via keyword"
+                  allowClear={allowClear}
                   defaultValue={inputSearch}
                   onSearch={onSearch}
                   ref={inputRef}
