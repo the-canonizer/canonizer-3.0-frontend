@@ -264,7 +264,6 @@ const TopicsList = () => {
     e.preventDefault();
     if (value?.trim()) {
       setInputSearch(value?.trim());
-      // setSearchTerm(value?.trim());
       setShowSearchDropdown(false);
     }
   };
@@ -300,22 +299,6 @@ const TopicsList = () => {
       /**/
     }
   };
-
-  useEffect(()=>{
-    console.log("===>",{
-      showSearchDropdown,
-      searchTerm,
-      searchLoading,
-      searchedResult,
-    })
-  },[
-    showSearchDropdown,
-    searchTerm,
-      searchLoading,
-      searchedResult,
-  ])
-
-  
 
   return (
     <Layout routeName={"browse"}>
@@ -370,9 +353,6 @@ const TopicsList = () => {
                 }, 300);
               }}
               onFocus={() => {
-                // if (!inputSearch) {
-                //   setSearchTerm(inputSearch);
-                // }
                 setSearchLoading(false);
                 setShowSearchDropdown(true);
               }}
