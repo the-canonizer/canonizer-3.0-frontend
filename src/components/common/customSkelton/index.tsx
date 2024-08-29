@@ -57,61 +57,20 @@ const CustomSkelton = ({
       <Skeleton className={styles[stylingClass]} count={bodyCount} />
     </Card>
   ) : skeltonFor == "list" ? (
-    <Skeleton
-      className={`${styles[stylingClass]} ${styles[listStyle]}`}
-      count={bodyCount}
-      circle={circle}
-    />
+    <List itemLayout="horizontal" className="activity-list-wrap">
+      <List.Item className="activityStyle.activitiesList">
+        <List.Item.Meta
+          title={<Skeleton style={{ height: "30px" }} />}
+          description={<Skeleton style={{ width: "40%", height: "18px" }} />}
+        />
+      </List.Item>
+    </List>
   ) : skeltonFor == "tree" ? (
-    <ul className={styles.treeSkeleton}>
-      <li>
-        <Skeleton />
-        <ul>
-          <li>
-            <Skeleton />
-            <ul>
-              <li>
-                <Skeleton />
-                <ul>
-                  <li>
-                    <Skeleton />
-                  </li>
-                  <li>
-                    <Skeleton />
-                  </li>
-                  <li>
-                    <Skeleton />
-                  </li>
-                  <li>
-                    <Skeleton />
-                  </li>
-                  <li>
-                    <Skeleton />
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </li>
-          <li>
-            <Skeleton />
-          </li>
-        </ul>
-      </li>
-      <li>
-        <Skeleton />
-        <ul>
-          <li>
-            <Skeleton />
-          </li>
-          <li>
-            <Skeleton />
-          </li>
-          <li>
-            <Skeleton />
-          </li>
-        </ul>
-      </li>
-    </ul>
+    <Card title="Consensus tree progression" className="tree-progression-card">
+      <div className={styles.svgD3} style={{ marginBottom: "2rem" }}>
+        <Skeleton style={{ width: "50%", height: "25px" }} />
+      </div>
+    </Card>
   ) : skeltonFor == "video" ? (
     <Skeleton height={height} width={"100%"} />
   ) : skeltonFor == "post_card" ? (
@@ -216,12 +175,22 @@ const CustomSkelton = ({
       </Row>
     </div>
   ) : skeltonFor == "playButtons" ? (
-    <>
-      <div className="slider-skeleton">
-        <Skeleton className="inr" count={bodyCount} width={20} height={25} />
+    <div className="audio-player">
+      <div className="player-wrapper">
+        <div className="player-controller">
+          <div className=" flex flex-row gap-2 ">
+            <Skeleton style={{ width: "25px", height: "15px" }} />
+            <Skeleton style={{ width: "25px", height: "15px" }} />
+            <Skeleton style={{ width: "25px", height: "15px" }} />
+            <Skeleton style={{ width: "25px", height: "15px" }} />
+          </div>
+        </div>
+        <div className="share-wrapper ">
+          <Skeleton style={{ width: "25px", height: "15px" }} />
+        </div>
       </div>
-      <Skeleton className="skeleton-slider2" />
-    </>
+      <Skeleton />
+    </div>
   ) : skeltonFor == "search" ? (
     <Skeleton
       className={styles.search_skeleton}

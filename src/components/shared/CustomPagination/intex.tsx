@@ -7,7 +7,7 @@ const CustomPagination = ({
   pageSize,
   loading,
   handlePageChange,
-  pageSizeOptions = [10, 15, 20],
+  pageSizeOptions = [10, 15, 20, 24],
   className = "",
 }) => {
   const showTotal = (total) => `Total ${total} items`;

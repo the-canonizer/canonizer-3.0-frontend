@@ -41,25 +41,6 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
     })
   );
 
-  // useEffect(() => {
-  //   if (value == 1) {
-  //     if (router.asPath.includes("?")) {
-  //       setURL(!isServer() && window?.location?.href?.split("?")[0]);
-  //     } else {
-  //       setURL(!isServer() && window?.location?.href);
-  //     }
-  //   } else if (value == 2) {
-  //     if (router.asPath.includes("?")) {
-  //       if (router.asPath.includes("eventId")) {
-  //         setURL(updateEventId(window?.location?.href, eventId));
-  //       } else {
-  //         setURL(window?.location?.href + `&eventId=${eventId}`);
-  //       }
-  //     } else {
-  //       setURL(window?.location?.href + `?eventId=${eventId}`);
-  //     }
-  //   }
-  // }, [eventId, value]);
 
   useEffect(() => {
     async function apiCall() {
@@ -144,122 +125,6 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
     // setEventDescription(mockData[events[iteration]].event?.message);
   };
 
-  // const updateEventId = (url, newValue) => {
-  //   let urlParts = url.split("?");
-  //   let baseUrl = urlParts[0];
-  //   let params = urlParts[1].split("&");
-
-  //   for (let i = 0; i < params.length; i++) {
-  //     let paramParts = params[i].split("=");
-  //     if (paramParts[0] === "eventId") {
-  //       paramParts[1] = newValue;
-  //       params[i] = paramParts.join("=");
-  //       break; // Found eventId, no need to continue looping
-  //     }
-  //   }
-
-  //   return baseUrl + "?" + params.join("&");
-  // };
-
-  // const onChange = (e: RadioChangeEvent) => {
-  //   setValue(e.target.value);
-
-  //   if (e.target.value == 1) {
-  //     if (router.asPath.includes("?")) {
-  //       setURL(!isServer() && window?.location?.href?.split("?")[0]);
-  //     } else {
-  //       setURL(!isServer() && window?.location?.href);
-  //     }
-  //   } else if (e.target.value == 2) {
-  //     if (router.asPath.includes("?")) {
-  //       if (router.asPath.includes("eventId")) {
-  //         setURL(updateEventId(window?.location?.href, eventId));
-  //       } else {
-  //         setURL(window?.location?.href + `&eventId=${eventId}`);
-  //       }
-  //     } else {
-  //       setURL(window?.location?.href + `?eventId=${eventId}`);
-  //     }
-  //   }
-  // };
-
-  // const copyHandler = () => {
-  //   if (value == 1) {
-  //     if (router.asPath.includes("?")) {
-  //       setURL(!isServer() && window?.location?.href?.split("?")[0]);
-  //     } else {
-  //       setURL(!isServer() && window?.location?.href);
-  //     }
-  //   } else if (value == 2) {
-  //     if (router.asPath.includes("?")) {
-  //       if (router.asPath.includes("eventId")) {
-  //         setURL(updateEventId(window?.location?.href, eventId));
-  //       } else {
-  //         setURL(window?.location?.href + `&eventId=${eventId}`);
-  //       }
-  //     } else {
-  //       setURL(window?.location?.href + `?eventId=${eventId}`);
-  //     }
-  //   }
-  // };
-
-  // const content = (
-  //   <div className={styles.popoverWrapper}>
-  //     <Title level={5}>Share</Title>
-  //     <Radio.Group onChange={onChange} value={value}>
-  //       <Space direction="vertical">
-  //         <Radio value={1}>Eventline URL</Radio>
-  //         <Radio value={2}>Current Event URL</Radio>
-  //       </Space>
-  //     </Radio.Group>
-  //     <Space align={"center"} className={styles.shareLink}>
-  //       <Title level={5}> Share Link To: </Title>
-  //       <Space>
-  //         <FacebookShareButton
-  //           url={URL}
-  //           hashtag={`#${!isServer() && window?.location?.hostname}`}
-  //         >
-  //           <Tooltip title="Share On Facebook">
-  //             <FacebookIcon size={27} round />
-  //           </Tooltip>
-  //         </FacebookShareButton>
-
-  //         <TwitterShareButton url={URL}>
-  //           <Tooltip title="Share On Twitter">
-  //             <TwitterIcon size={27} round />
-  //           </Tooltip>
-  //         </TwitterShareButton>
-
-  //         <LinkedinShareButton url={URL}>
-  //           <Tooltip title="Share On Linkedin">
-  //             <LinkedinIcon size={27} round />
-  //           </Tooltip>
-  //         </LinkedinShareButton>
-  //         <>
-  //           <Paragraph
-  //             className={styles.typographyLink}
-  //             copyable={{
-  //               text: URL,
-  //               icon: [
-  //                 <img
-  //                   src={CopyLinkIcon.src}
-  //                   key="1"
-  //                   style={{ verticalAlign: "baseline" }}
-  //                   onClick={() => copyHandler()}
-  //                 />,
-  //                 <img
-  //                   src={CheckIcon.src}
-  //                   key="2"
-  //                   style={{ verticalAlign: "baseline" }}
-  //                 />,
-  //               ],
-  //             }}
-  //           ></Paragraph>
-  //         </>
-  //       </Space>
-  //     </Space>
-  //   </div>
-  // );
 
   return (
     <React.Fragment>
@@ -272,17 +137,7 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
         />
       ) : (
         <div className="audio-player">
-          {/* <Popover content={content} trigger="click" placement="leftBottom">
-              <Button
-                type="primary"
-                size="middle"
-                className={styles.btnShareURL}
-                ghost
-                icon={<ShareAltOutlined />}
-              >
-                Share
-              </Button>
-            </Popover> */}
+         
           <TimelineSlider
             mockData={mockData}
             setStart={setStart}
