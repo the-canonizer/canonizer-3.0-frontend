@@ -130,6 +130,9 @@ export async function getServerSideProps({ req, query, res }) {
       outputType: "encoded",
     });
 
+    // const parts = hash?.split("$");
+    // hashValue = "$" + parts[parts?.length - 2] + "$" + parts[parts?.length - 1];
+
 
     let cookiesString = req.headers.cookie || "";
     cookies = parseCookies(cookiesString);
