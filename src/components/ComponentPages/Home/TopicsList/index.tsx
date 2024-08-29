@@ -1,5 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { CloseOutlined, InfoCircleOutlined , LoadingOutlined} from "@ant-design/icons";
+import {
+  CloseOutlined,
+  InfoCircleOutlined,
+  LoadingOutlined,
+} from "@ant-design/icons";
 import { Checkbox, Popover, Select } from "antd";
 import { Row, Col, Typography, Divider, Form, Input, Button } from "antd";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,7 +14,10 @@ import {
   getCanonizedTopicsApi,
   getCanonizedTopicsForSuggestion,
 } from "src/network/api/homePageApi";
-import { setFilterCanonizedTopics, setOnlyMyTopic } from "src/store/slices/filtersSlice";
+import {
+  setFilterCanonizedTopics,
+  setOnlyMyTopic,
+} from "src/store/slices/filtersSlice";
 import { RootState } from "src/store";
 import { changeSlashToArrow } from "src/utils/generalUtility";
 import SortTopics from "components/ComponentPages/SortingTopics";
@@ -348,11 +355,10 @@ const TopicsList = () => {
     });
   };
 
-
   const showOnlyMyTopicsHandler = (e) => {
-    dispatch(setLoadingAction(true))
+    dispatch(setLoadingAction(true));
     dispatch(setOnlyMyTopic(e?.target?.checked));
-    dispatch(setLoadingAction(false))
+    dispatch(setLoadingAction(false));
   };
 
   return (
@@ -430,51 +436,54 @@ const TopicsList = () => {
                 </Checkbox>
               )}
               <div className="input-search-topic">
-              <Search
-                key={inputSearch}
-                size="large"
-                className="browse-search mainInput"
-                placeholder="Search via keyword"
-                defaultValue={inputSearch}
-                onSearch={onSearch}
-                ref={inputRef}
-                disabled={loading}
-                onChange={handleKeyUpSearch}
-                onBlur={() => {
-                  setTimeout(() => {
-                    setShowSearchDropdown(false);
-                  }, 300);
-                }}
-                onFocus={() => {
-                  setSearchLoading(false);
-                  setShowSearchDropdown(true);
-                }}
-              />
-               {showSearchDropdown && searchTerm && (
-              <div className="suggestion-list">
-                <ul>
-                  {searchLoading ? (
-                    <li className="search-loader">
-                      <LoadingOutlined spin />
-                    </li>
-                  ) : searchedResult?.length > 0 ? (
-                    searchedResult?.map((t, i) => (
-                      <li
-                        key={i}
-                        onClick={handleTopicNameClick.bind(this, t?.topic_name)}
-                      >
-                        {t?.topic_name}
-                      </li>
-                    ))
-                  ) : searchTerm ? (
-                    <li>No Data</li>
-                  ) : (
-                    ""
-                  )}
-                </ul>
+                <Search
+                  key={inputSearch}
+                  size="large"
+                  className="browse-search mainInput"
+                  placeholder="Search via keyword"
+                  defaultValue={inputSearch}
+                  onSearch={onSearch}
+                  ref={inputRef}
+                  disabled={loading}
+                  onChange={handleKeyUpSearch}
+                  onBlur={() => {
+                    setTimeout(() => {
+                      setShowSearchDropdown(false);
+                    }, 300);
+                  }}
+                  onFocus={() => {
+                    setSearchLoading(false);
+                    setShowSearchDropdown(true);
+                  }}
+                />
+                {showSearchDropdown && searchTerm && (
+                  <div className="suggestion-list">
+                    <ul>
+                      {searchLoading ? (
+                        <li className="search-loader">
+                          <LoadingOutlined spin />
+                        </li>
+                      ) : searchedResult?.length > 0 ? (
+                        searchedResult?.map((t, i) => (
+                          <li
+                            key={i}
+                            onClick={handleTopicNameClick.bind(
+                              this,
+                              t?.topic_name
+                            )}
+                          >
+                            {t?.topic_name}
+                          </li>
+                        ))
+                      ) : searchTerm ? (
+                        <li>No Data</li>
+                      ) : (
+                        ""
+                      )}
+                    </ul>
+                  </div>
+                )}
               </div>
-            )}
-            </div>
               <SortTopics />
             </div>
           </div>
