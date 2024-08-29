@@ -165,7 +165,8 @@ export async function getServerSideProps({ req, query, res }) {
     algorithm: query?.algo || "blind_popularity",
     update_all: 1,
     fetch_topic_history: query?.viewversion == "1" ? 1 : null,
-    view: req.cookies[cookieKey] ? req.cookies[cookieKey] : hashValue,
+    // view: req.cookies[cookieKey] ? req.cookies[cookieKey] : hashValue,
+    view: req.cookies[cookieKey]
   };
 
   const reqBody = {
