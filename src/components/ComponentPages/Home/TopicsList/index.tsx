@@ -9,7 +9,10 @@ import {
   getCanonizedNameSpacesApi,
   getCanonizedTopicsApi,
 } from "src/network/api/homePageApi";
-import { setFilterCanonizedTopics, setOnlyMyTopic } from "src/store/slices/filtersSlice";
+import {
+  setFilterCanonizedTopics,
+  setOnlyMyTopic,
+} from "src/store/slices/filtersSlice";
 import { RootState } from "src/store";
 import { changeSlashToArrow } from "src/utils/generalUtility";
 import SortTopics from "components/ComponentPages/SortingTopics";
@@ -258,11 +261,10 @@ const TopicsList = () => {
     });
   };
 
-
   const showOnlyMyTopicsHandler = (e) => {
-    dispatch(setLoadingAction(true))
+    dispatch(setLoadingAction(true));
     dispatch(setOnlyMyTopic(e?.target?.checked));
-    dispatch(setLoadingAction(false))
+    dispatch(setLoadingAction(false));
   };
 
   return (

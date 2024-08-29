@@ -1022,7 +1022,7 @@ const UploadFileUI = ({
   useEffect(() => {
     setPreviewImageIndicator(true);
   }, [preview.previewVisible]);
-  
+
   return (
     <Fragment>
       <div className="d-flex w-100">

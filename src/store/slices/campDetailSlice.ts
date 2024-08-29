@@ -24,8 +24,6 @@ export const treeSlice = createSlice({
     manageSupportStatusCheck: false,
     openDrawerForDirectSupportedCamp: false,
 
-
-
     openDrawer: false,
     asOfValues: 0,
     clearAlgoFromRefineFilter: "",
@@ -37,14 +35,14 @@ export const treeSlice = createSlice({
     globalUserProfileDataLastName: "",
     globalUserProfileDataEmail: "",
     address: "",
-    updateAddress : {},
-    userLanguageList:[],
-    privateList:[],
+    updateAddress: {},
+    userLanguageList: [],
+    privateList: [],
     disableButtonForProfileInfo: false,
     postalCodeDisableForProfileInfo: false,
-    addForProfileInfo:false,
-    zipCodeForProfileInfo:false,
-    birthdayForProfileInfo : "",
+    addForProfileInfo: false,
+    zipCodeForProfileInfo: false,
+    birthdayForProfileInfo: "",
 
     currentGetCheckSupportExistsData: {
       camp_num: null,
@@ -196,7 +194,6 @@ export const treeSlice = createSlice({
       state.globalUserProfileDataLastName = action.payload;
     },
   },
-
 });
 
 export const {

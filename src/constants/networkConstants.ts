@@ -221,7 +221,7 @@ const NetworkConstants = {
     ReplaceExistOneUpdateNewEmail: `${BaseCanonizerApiUrl}/update-email`,
 
     // PostStatementCount
-    postStatementCount:`${BaseCanonizerApiUrl}/post-statement-count`
+    postStatementCount: `${BaseCanonizerApiUrl}/post-statement-count`,
   },
   Method: {
     GET: "GET",

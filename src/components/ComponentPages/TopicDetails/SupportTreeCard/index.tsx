@@ -749,7 +749,7 @@ const SupportTreeCard = ({
             <Button
               size="large"
               className="flex items-center justify-center border-[#4EB966] hover:!text-canBlack hover:!border-[#4EB966] hover:!bg-[#4EB9661A] bg-[#4EB9661A] rounded-lg font-medium text-sm"
-              style={{borderRadius:'0.5rem'}}
+              style={{ borderRadius: "0.5rem" }}
               block
               disabled={disableSignPetition()}
               onClick={() => signPetitionHandler()}

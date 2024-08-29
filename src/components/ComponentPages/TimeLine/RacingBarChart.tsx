@@ -140,8 +140,8 @@ function RacingBarChart({ data }: any) {
       .attr("class", "bar")
       .attr("x", (entry) => manageBarXAxis(entry))
       .attr("height", yScale.bandwidth())
-      .attr("rx", 6) 
-      .attr("ry", 6) 
+      .attr("rx", 6)
+      .attr("ry", 6)
       .transition()
       .attr("width", (entry) => {
         const length = manageBarXAxis(entry);

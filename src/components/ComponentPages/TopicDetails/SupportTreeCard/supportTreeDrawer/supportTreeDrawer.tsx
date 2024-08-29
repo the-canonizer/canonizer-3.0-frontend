@@ -670,7 +670,10 @@ function SupportTreeDrawer({
               {drawerFor === "delegateAdd" && (
                 <p className="text-base font-medium mb-5 text-canBlack">
                   If you still wish to delegate support to{" "}
-                  <a href={`/user/supports/${getDelegateId}?canon=${topicRecord?.namespace_id}`} className="text-canBlue">
+                  <a
+                    href={`/user/supports/${getDelegateId}?canon=${topicRecord?.namespace_id}`}
+                    className="text-canBlue"
+                  >
                     {delegateNickName} -
                   </a>{" "}
                 </p>
@@ -712,7 +715,10 @@ function SupportTreeDrawer({
 
                 {drawerFor !== "delegateAdd" && (
                   <Col span={24} sm={12}>
-                    <Form.Item name="reason" label="(Optional) Reason for adding support">
+                    <Form.Item
+                      name="reason"
+                      label="(Optional) Reason for adding support"
+                    >
                       <div className="thm-select">
                         <div className="prefix-icon">
                           <i className="icon-bar"></i>

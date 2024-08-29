@@ -45,7 +45,7 @@ function TopicSubscriptionsTab({
         className="!mb-0 bg-canGray border-b-2 p-3 rounded-lg"
       />
       <div className="px-3">
-        {subList.map((item,idx) => (
+        {subList.map((item, idx) => (
           <div className={`[&:not(:last-child)]:border-b py-3`} key={item?.id}>
             <Typography.Paragraph
               className={`${!(item?.camps?.length > 0) && "!mb-0"}`}

@@ -292,9 +292,8 @@ any) {
     const day = datess.getDate();
     const month = months[datess.getMonth()];
     const year = datess.getFullYear().toString().slice(-2);
-  
+
     const formattedDate = `${day} ${month}, ${year}<span style="display:none">${value}</span>`;
-  
 
     return (
       <div

@@ -118,8 +118,9 @@ export default function DirectSupportedCampsUI({
 
               return (
                 <div
-                  className={`tag ${tag.dis ? "tags_disable" : ""} ${camps.length > 1 ? "mb-2.5" : ""
-                    } flex items-center`}
+                  className={`tag ${tag.dis ? "tags_disable" : ""} ${
+                    camps.length > 1 ? "mb-2.5" : ""
+                  } flex items-center`}
                 >
                   <Button
                     id="campsBtn"
@@ -296,10 +297,10 @@ export default function DirectSupportedCampsUI({
       {isChangingOrder
         ? "You are about to change the order of your supported camps"
         : modalPopupText
-          ? "You are about to remove your support from all the camps from the topic: "
-          : campIds?.length > 1
-            ? "You are about to remove your support from the camps: "
-            : "You are about to remove your support from the camp: "}
+        ? "You are about to remove your support from all the camps from the topic: "
+        : campIds?.length > 1
+        ? "You are about to remove your support from the camps: "
+        : "You are about to remove your support from the camp: "}
       {!isChangingOrder && (
         <span>
           {modalPopupText ? (
@@ -348,14 +349,15 @@ export default function DirectSupportedCampsUI({
       search.trim() === ""
         ? directSupportedCampsList
         : directSupportedCampsList.filter((val) =>
-          val.title.toLowerCase().includes(search.toLowerCase().trim())
-        )
+            val.title.toLowerCase().includes(search.toLowerCase().trim())
+          )
     );
   }, [search, directSupportedCampsList]);
 
   let displayContentForMob;
 
-  const hasDirectSupportedCampsForMob = directSupportedCampsList && directSupportedCampsList.length > 0;
+  const hasDirectSupportedCampsForMob =
+    directSupportedCampsList && directSupportedCampsList.length > 0;
   const hasFilteredArrayForMob = filteredArrayForMob.length > 0;
 
   if (hasDirectSupportedCampsForMob) {
@@ -363,13 +365,13 @@ export default function DirectSupportedCampsUI({
       displayContentForMob = (
         <>
           {filteredArrayForMob.map((record) => (
-            <Card
-              key={record.topic_num}
-              className="mb-5 bg-white shadow-none "
-            >
+            <Card key={record.topic_num} className="mb-5 bg-white shadow-none ">
               <div className=" !border !border-canGrey2  rounded-lg ">
                 <div className="flex justify-start items-start flex-col gap-1 border-b border-canGrey2 p-5">
-                  <span className="uppercase text-sm font-medium text-black text-opacity-85"> Topic Name -</span>
+                  <span className="uppercase text-sm font-medium text-black text-opacity-85">
+                    {" "}
+                    Topic Name -
+                  </span>
                   <div className="flex gap-2.5 justify-between items-center w-full">
                     <Link href={record.title_link}>
                       <a className="text-lg font-semibold text-canBlack">
@@ -387,21 +389,22 @@ export default function DirectSupportedCampsUI({
                       alt=""
                     />
                   </div>
-
                 </div>
                 <div className="p-5">
-                  <span className="uppercase text-sm font-medium text-black text-opacity-85 mb-2 flex">Supported Camps -</span>
+                  <span className="uppercase text-sm font-medium text-black text-opacity-85 mb-2 flex">
+                    Supported Camps -
+                  </span>
                   <DraggableArea<Tag>
                     tags={record.camps}
                     render={(props) => {
                       const { tag } = props;
 
                       return (
-
                         <div
-                          className={`tag ${tag.dis ? "tags_disable" : ""} ${record.camps.length > 1 ? "mb-2.5" : ""} flex w-full items-center`}
+                          className={`tag ${tag.dis ? "tags_disable" : ""} ${
+                            record.camps.length > 1 ? "mb-2.5" : ""
+                          } flex w-full items-center`}
                         >
-
                           <Button
                             id="campsBtn"
                             className="bg-canLightGrey rounded-full border-none flex items-center gap-2.5"
@@ -410,11 +413,12 @@ export default function DirectSupportedCampsUI({
                             <div className={styles.btndiv}>
                               <span className="count">{tag.id}. </span>
                               <Link href={tag.camp_link}>
-                                <a className="text-sm text-canBlack font-semibold"
+                                <a
+                                  className="text-sm text-canBlack font-semibold"
                                   draggable="false"
                                   onClick={(e) => e.preventDefault()}
                                   onKeyDown={(e) => {
-                                    if (e.key === 'Enter' || e.key === ' ') {
+                                    if (e.key === "Enter" || e.key === " ") {
                                       e.preventDefault();
                                       // Add your click handling logic here
                                     }
@@ -434,9 +438,14 @@ export default function DirectSupportedCampsUI({
                                 setActiveTopic(record.topic_num);
                               }}
                               onKeyDown={(e) => {
-                                if (e.key === 'Enter' || e.key === ' ') {
+                                if (e.key === "Enter" || e.key === " ") {
                                   e.preventDefault();
-                                  handleClose(tag, record.topic_num, record, []);
+                                  handleClose(
+                                    tag,
+                                    record.topic_num,
+                                    record,
+                                    []
+                                  );
                                   setValData(tag);
                                   setRevertBack([]);
                                   setActiveTopic(record.topic_num);
@@ -454,10 +463,13 @@ export default function DirectSupportedCampsUI({
                             </div>
                           </Button>
                         </div>
-
                       );
                     }}
-                    onChange={(tags) => { tagsOrder(record.topic_num, record, tags); setShowSaveChanges(true); setActiveTopic(record.topic_num) }}
+                    onChange={(tags) => {
+                      tagsOrder(record.topic_num, record, tags);
+                      setShowSaveChanges(true);
+                      setActiveTopic(record.topic_num);
+                    }}
                   />
                 </div>
                 {showSaveChanges && activeTopic == record.topic_num && (
@@ -527,8 +539,8 @@ export default function DirectSupportedCampsUI({
                     DIRECT SUPPORTED CAMPS
                   </h3>
                   <p className="text-sm font-normal text-canBlack">
-                    Note : To change support order of camp, drag & drop the camp box
-                    on your choice position.
+                    Note : To change support order of camp, drag & drop the camp
+                    box on your choice position.
                   </p>
                 </div>
                 <div className="lg:w-auto w-full flex justify-end">
@@ -601,7 +613,9 @@ export default function DirectSupportedCampsUI({
             closeIcon={
               <Image
                 className="mt-1"
-                onClick={() => dispatch(setOpenDrawerForDirectSupportedCamp(false))}
+                onClick={() =>
+                  dispatch(setOpenDrawerForDirectSupportedCamp(false))
+                }
                 src="/images/refine-back-arrow.svg"
                 width={16}
                 height={18}
@@ -619,7 +633,9 @@ export default function DirectSupportedCampsUI({
             open={openDrawerForDirectSupportedCamp}
             closeIcon={
               <Image
-                onClick={() => dispatch(setOpenDrawerForDirectSupportedCamp(false))}
+                onClick={() =>
+                  dispatch(setOpenDrawerForDirectSupportedCamp(false))
+                }
                 src="/images/refine-back-arrow.svg"
                 width={16}
                 height={24}
@@ -634,11 +650,7 @@ export default function DirectSupportedCampsUI({
         </div>
       </div>
 
-      <div className="lg:hidden flex flex-col">
-        {displayContentForMob}
-      </div>
+      <div className="lg:hidden flex flex-col">{displayContentForMob}</div>
     </div>
-
-
   );
 }
