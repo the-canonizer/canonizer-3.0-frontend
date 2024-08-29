@@ -217,7 +217,7 @@ const TopicsList = () => {
     setAllowClear(true);
   };
 
-  let throttled: NodeJS.Timeout | null = null;
+  let throttled: any = null;
 
   useEffect(() => {
     if (throttled) {
