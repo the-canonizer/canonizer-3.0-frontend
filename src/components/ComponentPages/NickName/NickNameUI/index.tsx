@@ -1,4 +1,4 @@
-import { Table, Input, Select, Form, Modal } from "antd";
+import { Table, Input, Select, Form, Modal, Tooltip } from "antd";
 import { DownOutlined, PlusOutlined, SaveOutlined } from "@ant-design/icons";
 import Image from "next/image";
 
@@ -10,7 +10,7 @@ import PrimaryButton from "components/shared/Buttons/PrimariButton";
 
 const { Option } = Select;
 
-export default function NickNameUI({
+function NickNameUI({
   add_edit_form,
   addEditBtn,
   addEditTitle,
@@ -40,7 +40,7 @@ export default function NickNameUI({
       render: (text, record) => <div className="flex gap-4">{text}</div>,
     },
     {
-      title: "",
+      title: "Visibility",
       dataIndex: "private",
       width: "20%",
       render: (_, record) => (
@@ -51,22 +51,27 @@ export default function NickNameUI({
           className="!w-[80px] [&_.ant-select-selector]:!h-[40px] !float-right [&_.ant-select-selection-item]:!flex [&_.ant-select-selection-item]:!justify-center [&_.ant-select-arrow]:!right-5 [&_.ant-select-selector]:!bg-canGray [&_.ant-select-selector]:!border-l [&_.ant-select-selector]:!border-r-0 [&_.ant-select-selector]:!border-t-0 [&_.ant-select-selector]:!border-b-0 [&_.ant-select-selector]:!border-canGrey2  [&_.ant-select-selector]:!shadow-none [&_.ant-select-selection-item]:!w-5 [&_.ant-select-selection-item]:!h-5
       [&_.ant-select-selector]:!flex [&_.ant-select-selector]:!items-center"
           suffixIcon={<DownOutlined className="text-canBlack" />}
+          popupClassName="nickNamePopup"
         >
           <Option value="0">
-            <Image
-              src="/images/globe-icon-2.svg"
-              width={14}
-              height={14}
-              alt=""
-            />
+            <Tooltip title="Public" placement="left">
+              <Image
+                src="/images/globe-icon-2.svg"
+                width={14}
+                height={14}
+                alt=""
+              />
+            </Tooltip>
           </Option>
           <Option value="1">
-            <Image
-              src="/images/nickname-lock-icon.svg"
-              width={12}
-              height={12}
-              alt=""
-            />
+            <Tooltip title="Private" placement="left">
+              <Image
+                src="/images/nickname-lock-icon.svg"
+                width={12}
+                height={12}
+                alt=""
+              />
+            </Tooltip>
           </Option>
         </Select>
       ),
@@ -166,8 +171,12 @@ export default function NickNameUI({
               size="large"
               className="text-canBlack font-normal h-[40px] [&_.ant-select-selector]:!rounded-lg [&_.ant-select-selector]:!outline-none [&_.ant-select-selector]:!shadow-none commonSelectClass [&_.ant-select-arrow]:text-canBlack [&_.ant-select-arrow>svg]:fill-canBlack"
             >
-              <Option value="0">Public</Option>
-              <Option value="1">Private</Option>
+              <Option value="0">
+                <Tooltip title="Public">Public</Tooltip>
+              </Option>
+              <Option value="1">
+                <Tooltip title="Private">Private</Tooltip>
+              </Option>
             </Select>
           </Form.Item>
           <Form.Item>
@@ -190,3 +199,5 @@ export default function NickNameUI({
     </section>
   );
 }
+
+export default NickNameUI;
