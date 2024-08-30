@@ -476,27 +476,33 @@ const TimelineInfoBar = ({
       </Row>
       <hr className="horizontal_line my-5" />
       {isTopicPage && (
-        <PrimaryButton
-          className="flex items-center justify-center h-auto mx-auto"
-          onClick={() =>
-            router?.push({
-              pathname: `/topic/history/${replaceSpecialCharacters(
-                router?.query?.camp
-                  ? router?.query?.camp[0]
-                  : router?.query?.manageSupport?.at(0),
-                "-"
-              )}`,
-            })
-          }
-        >
-          {K?.exceptionalMessages?.manageCampButton}
-          <Image
-            src="/images/manage-btn-icon.svg"
-            alt="svg"
-            className="icon-topic"
-            height={16}
-            width={16}
-          />
+        <PrimaryButton className="flex items-center justify-center h-auto mx-auto">
+          <Link
+            href={`/camp/history/${replaceSpecialCharacters(
+              router?.query?.camp
+                ? router?.query?.camp[0]
+                : router?.query?.manageSupport?.at(0),
+              "-"
+            )}/${replaceSpecialCharacters(
+              router?.query?.camp
+                ? router?.query?.camp[1] ?? "1-Agreement"
+                : router?.query?.manageSupport?.at(1),
+              "-"
+            )}`}
+          >
+            <a>
+              <span>
+                {K?.exceptionalMessages?.manageCampButton}
+                <Image
+                  src="/images/manage-btn-icon.svg"
+                  alt="svg"
+                  className="icon-topic"
+                  height={16}
+                  width={16}
+                />
+              </span>
+            </a>
+          </Link>
         </PrimaryButton>
       )}
     </div>
