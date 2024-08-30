@@ -512,7 +512,7 @@ const TopicsList = () => {
             </Button>
           </div>
         )}
-        {loading ? (
+        {loading && !searchTerm? (
           <CustomSkelton skeltonFor="browse" />
         ) : (
           <Row gutter={[24, 24]}>
