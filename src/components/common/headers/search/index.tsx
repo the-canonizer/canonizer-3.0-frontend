@@ -252,7 +252,7 @@ const HeaderSearch = ({ className = "" }: any) => {
       (inputSearch || searchValue) &&
       router.pathname.includes("/search")
     ) {
-      getGlobalSearchCanonizerNav(searchValue);
+      getGlobalSearchCanonizerNav(router?.query?.q);
     }
     setPreventInitialRender(false);
     return () => {
