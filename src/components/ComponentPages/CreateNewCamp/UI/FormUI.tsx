@@ -135,7 +135,7 @@ const CreateCampFormUI = ({
             {isEdit ? "Update Camp" : "Creating a New Camp"}
           </Typography.Paragraph>
           <Typography.Paragraph className="text-canBlack opacity-80 mt-3">
-            Input information required to create a camp.
+            Input information required to {isEdit ? "update" : "create"} a camp.
           </Typography.Paragraph>
         </header>
         <Form

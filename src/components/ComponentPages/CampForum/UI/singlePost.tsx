@@ -225,7 +225,7 @@ const SinglePost = ({
       {content?.length > 500 && (
         <SecondaryButton
           onClick={showFullDescriptionHandler}
-          className="text-xs border-0 p-0 text-canBlue hocus:text-canHoverBlue mt-5"
+          className="text-xs border-0 p-0 text-canBlue hocus:text-canHoverBlue mt-5 !bg-transparent !shadow-none"
         >
           Read{" "}
           {showFullDescription ? (

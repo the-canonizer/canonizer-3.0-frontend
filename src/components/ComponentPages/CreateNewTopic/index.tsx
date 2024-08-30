@@ -146,12 +146,14 @@ const CreateNewTopic = () => {
 
   const onTagSelect = (id) => {
     const currentitem = catTaga?.find((c) => c?.id == id);
-    const isExist = selectedCats?.find((c) => c?.id == id);
-    if (!isExist) {
-      setSelectedCats((prev) => {
-        const updatedCats = [...prev, currentitem];
-        return updatedCats;
-      });
+    if (currentitem) {
+      const isExist = selectedCats?.find((c) => c?.id == id);
+      if (!isExist) {
+        setSelectedCats((prev) => {
+          const updatedCats = [...prev, currentitem];
+          return updatedCats;
+        });
+      }
     }
   };
 
@@ -182,8 +184,12 @@ const CreateNewTopic = () => {
 
     if (res?.status_code === 200) {
       if (resData?.data?.topic) {
-        setHaveTopicExist(true);
         setExistingTopics(resData?.data?.topic);
+        if (resData?.data?.topic?.length) {
+          setHaveTopicExist(true);
+        } else {
+          setHaveTopicExist(false);
+        }
       }
 
       if (resData?.meta_data?.total > 5) {
@@ -223,7 +229,7 @@ const CreateNewTopic = () => {
       const enteredValues = e?.target?.value;
       if (enteredValues && enteredValues?.length > 2) {
         setIsopicLoading(true);
-        setHaveTopicExist(true);
+        // setHaveTopicExist(true);
         getExistingList(enteredValues);
       } else {
         setHaveTopicExist(false);
