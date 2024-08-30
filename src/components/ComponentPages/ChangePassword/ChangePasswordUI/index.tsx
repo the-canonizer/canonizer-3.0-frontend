@@ -16,6 +16,9 @@ function ChangePasswordUI({
   setIncorrectPasswordData,
 }) {
   const [currentPassWord, setCurrentPassWord] = useState("");
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewpassword, setShowNewpassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const validateFun = {
     validateStatus: "error" as any,
@@ -82,10 +85,11 @@ function ChangePasswordUI({
                     width={16}
                     height={13}
                     alt=""
+                    onClick={() => setShowCurrentPassword(!showCurrentPassword)}
                   />
                 }
                 id="currentPassword"
-                type="password"
+                type={showCurrentPassword ? "text" : "password"}
                 data-testid="currentpasssword"
                 // placeholder={messages.placeholders.currentPassword}
                 onChange={(e) => onChangeFun(e.target.value)}
@@ -134,10 +138,11 @@ function ChangePasswordUI({
                     width={16}
                     height={13}
                     alt=""
+                    onClick={() => setShowNewpassword(!showNewpassword)}
                   />
                 }
                 id="newPassword"
-                type="password"
+                type={showNewpassword ? "text" : "password"}
                 data-testid="newpassword"
                 onKeyDown={(e) =>
                   e.key === " " && e.keyCode === 32 && e.preventDefault()
@@ -176,11 +181,12 @@ function ChangePasswordUI({
                     width={16}
                     height={13}
                     alt=""
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   />
                 }
                 id="confirmPassword"
                 data-testid="confirmpassword"
-                type="password"
+                type={showConfirmPassword ? "text" : "password"}
                 onKeyDown={(e) =>
                   e.key === " " && e.keyCode === 32 && e.preventDefault()
                 }
