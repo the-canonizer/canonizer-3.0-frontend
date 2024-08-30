@@ -311,7 +311,6 @@ const TopicsList = () => {
   }, []);
 
   useEffect(() => {
-    if (searchTerm) inputRef.current!.focus();
   }, [searchTerm, onSearch]);
 
   /* eslint-enable */
