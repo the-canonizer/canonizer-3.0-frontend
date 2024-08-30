@@ -87,7 +87,10 @@ const VideosPage = () => {
                                   </div>
                                 }
                               >
-                                <Meta title={video?.title} className="text-sm [&_.ant-card-meta-title]:!text-sm" />
+                                <Meta
+                                  title={video?.title}
+                                  className="text-sm [&_.ant-card-meta-title]:!text-sm"
+                                />
                               </Card>
                             </Col>
                           </>

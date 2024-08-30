@@ -54,7 +54,7 @@ const HistoryComparison = ({
       <div>
         {historyOf === "topic" && (
           <>
-          <p>
+            <p>
               Edit summary: <span>{campStatement?.note}</span>
             </p>
             <p>
@@ -63,7 +63,7 @@ const HistoryComparison = ({
                 {campStatement?.namespace &&
                   campStatement?.namespace.replace(/[^a-zA-Z0-9\s]/g, " ")}
               </span>
-            </p>         
+            </p>
           </>
         )}
         {historyOf === "camp" && (

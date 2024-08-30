@@ -72,8 +72,8 @@ function HistoryCard({
   status = null,
   currentVersion = null,
   s1 = false,
-  isMobileView=false,
-  loadingIndicator=false
+  isMobileView = false,
+  loadingIndicator = false,
 }: any) {
   const router = useRouter();
   const [commited, setCommited] = useState(false);
@@ -212,57 +212,61 @@ function HistoryCard({
       }`}
     >
       <div className="badge-wrapper">
-        { !isMobileView && <Badge
-          className="cn-dot-badge ch-dot-history"
-          color=""
-          text={
-            <>
-              {compareMode ? (
-                <>
-                  {currentVersion && "Current Version -"}
-                  {convertToTime(comparisonData?.submit_time).split(",")?.at(0)}
-                  ,
-                  <span>
-                    {" "}
+        {!isMobileView && (
+          <Badge
+            className="cn-dot-badge ch-dot-history"
+            color=""
+            text={
+              <>
+                {compareMode ? (
+                  <>
+                    {currentVersion && "Current Version -"}
                     {convertToTime(comparisonData?.submit_time)
                       .split(",")
-                      ?.at(1)}
-                  </span>
-                </>
-              ) : (
-                <>
-                  {campStatement?.status === "live" ? (
-                    <>
-                      {convertToTime(campStatement?.go_live_time)
+                      ?.at(0)}
+                    ,
+                    <span>
+                      {" "}
+                      {convertToTime(comparisonData?.submit_time)
                         .split(",")
-                        ?.at(0)}
-                      ,
-                      <span>
-                        {" "}
+                        ?.at(1)}
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    {campStatement?.status === "live" ? (
+                      <>
                         {convertToTime(campStatement?.go_live_time)
                           .split(",")
-                          ?.at(1)}
-                      </span>
-                    </>
-                  ) : (
-                    <>
-                      {convertToTime(campStatement?.submit_time)
-                        .split(",")
-                        ?.at(0)}
-                      ,
-                      <span>
-                        {" "}
+                          ?.at(0)}
+                        ,
+                        <span>
+                          {" "}
+                          {convertToTime(campStatement?.go_live_time)
+                            .split(",")
+                            ?.at(1)}
+                        </span>
+                      </>
+                    ) : (
+                      <>
                         {convertToTime(campStatement?.submit_time)
                           .split(",")
-                          ?.at(1)}
-                      </span>
-                    </>
-                  )}
-                </>
-              )}
-            </>
-          }
-        /> }
+                          ?.at(0)}
+                        ,
+                        <span>
+                          {" "}
+                          {convertToTime(campStatement?.submit_time)
+                            .split(",")
+                            ?.at(1)}
+                        </span>
+                      </>
+                    )}
+                  </>
+                )}
+              </>
+            }
+          />
+        )}
 
         {campStatement &&
           campStatement?.status == "in_review" &&
@@ -369,7 +373,7 @@ function HistoryCard({
             topicNamespaceId={topicNamespaceId}
           />
         )}
-        
+
         {campStatement?.status == "in_review" &&
           (!campStatement?.grace_period || commited) &&
           isUserAuthenticated &&

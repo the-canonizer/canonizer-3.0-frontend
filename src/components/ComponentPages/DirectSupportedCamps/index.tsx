@@ -36,7 +36,7 @@ const DirectSupportedCamps = ({ search }: any) => {
   const [isChangingOrder, setIsChangingOrder] = useState(false);
 
   const dispatch = useDispatch();
-  
+
   const handleSupportedCampsCancel = () => {
     setIsSupportedCampsModalVisible(false);
     dispatch(setOpenDrawerForDirectSupportedCamp(false));
@@ -52,7 +52,7 @@ const DirectSupportedCamps = ({ search }: any) => {
     let data = directSopportedCampsListRevert.filter((val) => {
       return val.topic_num == topicId;
     });
-  
+
     if (data[0]?.camps?.length > 0) {
       let newData = [...directSupportedCampsList].map((val) => {
         if (val.topic_num == topicId) {
@@ -63,7 +63,7 @@ const DirectSupportedCamps = ({ search }: any) => {
       });
       setDirectSupportedCampsList(newData);
     }
-  
+
     // Check if `camps` is an array before calling `map`
     if (Array.isArray(camps)) {
       camps.map((val) => {
@@ -72,13 +72,13 @@ const DirectSupportedCamps = ({ search }: any) => {
     } else {
       console.error("`camps` is not an array:", camps);
     }
-  
+
     setcampIds([]);
     setRemoveCamplink([]);
     setRevertBack(camps);
     setIsChangingOrder(false);
   };
-  
+
   const handleCancel = () => {
     setVisible(false);
     setIdData(cardCamp_ID);
@@ -154,7 +154,6 @@ const DirectSupportedCamps = ({ search }: any) => {
       fetchDirectSupportedCampsList();
       setIsChangingOrder(false);
       dispatch(setOpenDrawerForDirectSupportedCamp(false));
-
     }
     handleSupportedCampsCancel();
   };
@@ -199,7 +198,7 @@ const DirectSupportedCamps = ({ search }: any) => {
     setDirectSkeletonIndicator(false);
   };
 
-  useEffect(() => { }, [statusFlag]);
+  useEffect(() => {}, [statusFlag]);
 
   //onLoad
   useEffect(() => {

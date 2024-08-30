@@ -280,7 +280,7 @@ function ProfileInfoForm({
     }
   }, [drawerOpen]);
 
-  const verifyHeading = "Verify Otp to change email address";
+  const verifyHeading = "Verify OTP to change email address";
   const enterNewEmail = "Enter new email address";
   let headingText = "";
 

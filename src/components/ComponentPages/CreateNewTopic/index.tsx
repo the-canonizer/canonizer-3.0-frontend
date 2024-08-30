@@ -3,6 +3,7 @@ import { Col, Form, Row } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import debounce from "lodash/debounce";
+import { HomeOutlined } from "@ant-design/icons";
 
 import { createTopic } from "src/network/api/topicAPI";
 import {
@@ -22,6 +23,7 @@ import TopicInfoCard from "./UI/rightContent";
 import ExistingTopicList from "./UI/existingTopicList";
 import queryParams from "src/utils/queryParams";
 import { openNotificationWithIcon } from "components/common/notification/notificationBar";
+import Breadcrumbs from "components/shared/Breadcrumbs";
 
 const CreateNewTopic = () => {
   const { nameSpaces, catTaga } = useSelector((state: RootState) => ({
@@ -95,21 +97,8 @@ const CreateNewTopic = () => {
                 value: values?.topic_name,
                 errors: res?.error?.topic_name || [],
                 touched: true,
-                // validated: true,
-                // validating: true,
-                // warnings: res?.error?.topic_name,
-                // dirty: true,
-                // di
               },
             ]);
-
-            console.log(
-              " res?.error?.topic_name--",
-              res.error.topic_name || []
-            );
-
-            //
-            // await form.validateFields(["topic_name"]);
 
             setIsDisabled(false);
             setIsError(true);
@@ -185,7 +174,7 @@ const CreateNewTopic = () => {
         type: "topic",
         size: 5,
         page: 1,
-        term: topicName,
+        term: topicName?.trim(),
       };
 
     const res = await globalSearchCanonizer(queryParams(queryParamObj)),
@@ -249,6 +238,12 @@ const CreateNewTopic = () => {
 
   return (
     <CustomSpinner key="create-topic-spinner" spinning={isLoading}>
+      <Breadcrumbs
+        items={[
+          { icon: <HomeOutlined className="text-canBlack" />, href: "/" },
+          { label: "Creating a New Topic" },
+        ]}
+      />
       <Row gutter={20} className="mb-5">
         <Col lg={12}>
           <FromUI

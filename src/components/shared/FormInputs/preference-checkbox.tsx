@@ -1,15 +1,15 @@
 import { Checkbox } from "antd";
 
 const CustomCheckbox = ({ className = "", ...props }: any) => {
-    let additionalClasses = "";
+  let additionalClasses = "";
 
-    if (props.checked && !props.onlyCheckbox) {
-        additionalClasses = " !border-canGreen bg-canGreen2 bg-opacity-30 ";
-    }
+  if (props.checked && !props.onlyCheckbox) {
+    additionalClasses = " !border-canGreen bg-canGreen2 bg-opacity-30 ";
+  }
 
-    return (
-        <Checkbox
-            className={`${additionalClasses} border border-canGrey2 py-2.5 px-5 rounded-lg flex gap-2.5 group
+  return (
+    <Checkbox
+      className={`${additionalClasses} border border-canGrey2 py-2.5 px-5 rounded-lg flex gap-2.5 group
                 [&_.ant-checkbox-wrapper]:!m-0
                 [&>.ant-checkbox-checked>.ant-checkbox-inner]:bg-canGreen
                 [&>.ant-checkbox-checked>.ant-checkbox-inner]:border-canGreen
@@ -35,13 +35,12 @@ const CustomCheckbox = ({ className = "", ...props }: any) => {
                 [&_.ant-checkbox-wrapper-checked]:!border-canGreen
            
                 ${className}`}
-            checked={props.checked}
-            {...props}
-        >
-            {props.children}
-        </Checkbox>
-    );
+      checked={props.checked}
+      {...props}
+    >
+      {props.children}
+    </Checkbox>
+  );
 };
-
 
 export default CustomCheckbox;

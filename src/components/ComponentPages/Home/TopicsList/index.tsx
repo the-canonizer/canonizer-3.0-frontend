@@ -95,7 +95,7 @@ const TopicsList = () => {
   const [searchedResult, setSearchedResult] = useState([]);
 
   const mapItemsToValueLabel = (items) => {
-    return items.map((item) => ({
+    return items?.map((item) => ({
       label: item.title,
       value: item.title,
     }));

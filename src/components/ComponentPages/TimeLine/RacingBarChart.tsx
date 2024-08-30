@@ -6,23 +6,6 @@ import styles from "./timeline.module.scss";
 import { Card } from "antd";
 
 function RacingBarChart({ data }: any) {
-  const linesData = [];
-
-  for (let i = 0; i < data?.length; i++) {
-    for (let j = i + 1; j < data.length; j++) {
-      if (data[i].level > data[j].level) {
-        break;
-      }
-      if (
-        data[i].level === data[j].level &&
-        data[i].level < data[i + 1].level
-      ) {
-        linesData.push({ x1: i, x2: j, level: data[i].level });
-        break;
-      }
-    }
-  }
-
   const svgRef = useRef();
   const wrapperRef = useRef();
   const dimensions = useResizeObserver(wrapperRef);
@@ -41,7 +24,6 @@ function RacingBarChart({ data }: any) {
       const length = element.getComputedTextLength();
       return entry.level * 30 + 30 + length;
     } else {
-      // console.warn("Element is not an SVG text element");
       return /* handle other cases or return a default value */;
     }
   };
@@ -60,13 +42,6 @@ function RacingBarChart({ data }: any) {
     // svg.selectAll('rect').remove()
 
     if (!dimensions) return;
-
-    // sorting the data
-    // data.sort((a, b) => b.value - a.value);
-
-    // const linkGenerator = linkHorizontal();
-    // .x(link => link.y)
-    // .y(link => link.x);
 
     const yScale = scaleBand()
       ?.paddingInner(0.1)
@@ -140,8 +115,8 @@ function RacingBarChart({ data }: any) {
       .attr("class", "bar")
       .attr("x", (entry) => manageBarXAxis(entry))
       .attr("height", yScale.bandwidth())
-      .attr("rx", 6) 
-      .attr("ry", 6) 
+      .attr("rx", 6)
+      .attr("ry", 6)
       .transition()
       .attr("width", (entry) => {
         const length = manageBarXAxis(entry);
@@ -187,34 +162,49 @@ function RacingBarChart({ data }: any) {
       .transition()
       .attr("y", (entry, index) => yScale(index) + yScale.bandwidth() / 2 + 5);
 
-    // Draw lines
-    let count = 0;
-    for (let i = 0; i < linesData?.length; i++) {
-      count = count + 0.001;
-      svg
-        ?.selectAll(`.line${i}`)
-        ?.data(linesData)
-        ?.join((enter) =>
-          enter
-            .append("line")
-            .style("stroke", "#d9d9d9")
-            .style("stroke-width", 2.1)
-            .attr("x1", linesData[i].level * 30 + count - 2)
-            .attr("y1", linesData[i].x1 * 30 + 23)
-            .attr("x2", linesData[i].level * 30 + count - 2)
-            .attr(
-              "y2",
-              linesData[i].x1 * 30 +
-                (linesData[i].x2 - linesData[i].x1) * 30 +
-                5
-            )
-        )
-        // .text((entry) => ` ${entry.title} `)
-        .attr("class", "line");
-      // .attr("x", (entry) => manageXAxis(entry) + 20)
-      // .transition()
-      // .attr("y", (entry, index) => yScale(index) + yScale.bandwidth() / 2 + 5);
+    // Draw Lines
+    for (let j = 0; j < data.length; j++) {
+      for (let index = j; index < data?.length; index++) {
+        if (index >= 0) {
+          if (data[j].level > data[index].level) {
+            break;
+          }
+          if (data[j].level >= data[index].level && index > j) {
+            break;
+          }
+
+          let parentIndex = j;
+
+          if (parentIndex >= j && data[j].level + 1 == data[index].level) {
+            const parent = data[parentIndex];
+
+            const x1 = manageXAxis(parent) - 3;
+            const y1 = yScale(parentIndex) + yScale.bandwidth() / 1;
+            const x2 = manageXAxis(data[index]) - 20;
+            const y2 = yScale(index) + yScale.bandwidth() / 2;
+
+            svg
+              .append("line")
+              .attr("x1", x1)
+              .attr("y1", y1)
+              .attr("x2", x1) // Draw vertical line down from parent
+              .attr("y2", y2)
+              .attr("stroke", "#b4c0d4") // Line color
+              .attr("stroke-width", 1.5); // Line width
+
+            svg
+              .append("line")
+              .attr("x1", x1) // Draw horizontal line to child
+              .attr("y1", y2)
+              .attr("x2", x2)
+              .attr("y2", y2)
+              .attr("stroke", "#b4c0d4") // Line color
+              .attr("stroke-width", 1.5); // Line width
+          }
+        }
+      }
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, dimensions]);
 

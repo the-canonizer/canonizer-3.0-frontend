@@ -3,6 +3,7 @@ import { Col, Form, Row } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import debounce from "lodash/debounce";
+import { HomeOutlined } from "@ant-design/icons";
 
 import { globalSearchCanonizer } from "src/network/api/userApi";
 import { RootState } from "src/store";
@@ -23,6 +24,7 @@ import {
   updateTopicApi,
 } from "src/network/api/campManageStatementApi";
 import { openNotificationWithIcon } from "components/common/notification/notificationBar";
+import Breadcrumbs from "components/shared/Breadcrumbs";
 
 const UpdateTopic = () => {
   const { nameSpaces, catTaga } = useSelector((state: RootState) => ({
@@ -40,6 +42,7 @@ const UpdateTopic = () => {
   const [haveTopicExist, setHaveTopicExist] = useState(false);
   const [isError, setIsError] = useState(false);
   const [currentTopic, setCurrentTopic] = useState(null);
+  const [currentTopicNickNames, setCurrentTopicNckNames] = useState(null);
   const [isSubmitReq, setIsSubmitReq] = useState(false);
   const [editCampStatementData, setEditCampStatementData] = useState("");
 
@@ -71,7 +74,7 @@ const UpdateTopic = () => {
   useEffect(() => {
     if (
       currentTopic?.topic_name?.trim() !== values?.topic_name?.trim() ||
-      currentTopic?.submitter_nick_id !== values?.nick_name ||
+      currentTopicNickNames?.at(0)?.id !== values?.nick_name ||
       currentTopic?.namespace_id !== values?.namespace ||
       currentTopic?.edit_summary !== values?.edit_summary ||
       !compareTags(currentTopic?.tags, selectedCats)
@@ -104,6 +107,8 @@ const UpdateTopic = () => {
 
       if (res?.status_code == 200) {
         const topicData = res?.data?.topic;
+
+        setCurrentTopicNckNames(res?.data?.nick_name);
 
         setCurrentTopic(topicData);
 
@@ -243,7 +248,7 @@ const UpdateTopic = () => {
         type: "topic",
         size: 5,
         page: 1,
-        term: topicName,
+        term: topicName?.trim(),
       };
 
     const res = await globalSearchCanonizer(queryParams(queryParamObj)),
@@ -311,6 +316,19 @@ const UpdateTopic = () => {
 
   return (
     <CustomSpinner key="create-topic-spinner" spinning={isLoading}>
+      <Breadcrumbs
+        items={[
+          { icon: <HomeOutlined className="text-canBlack" />, href: "/" },
+          {
+            href: `/topic/history/${
+              currentTopic?.topic_num
+            }-${replaceSpecialCharacters(currentTopic?.topic_name, "-")}`,
+            label: "Topic History",
+          },
+          { label: "Update Topic" },
+        ]}
+      />
+
       <Row gutter={20} className="mb-5">
         <Col lg={12}>
           <FromUI

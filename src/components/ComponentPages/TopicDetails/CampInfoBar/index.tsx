@@ -76,7 +76,6 @@ const TimelineInfoBar = ({
   const [topicSubscriptionID, setTopicSubscriptionID] = useState(
     topicRecord?.topicSubscriptionId
   );
-
   const campId = router?.query?.camp?.at(1)?.split("-")?.at(0);
   const topicId = router?.query?.camp?.at(0)?.split("-")?.at(0);
 
@@ -578,7 +577,7 @@ const TimelineInfoBar = ({
                     className="title-popover"
                   >
                     <div className="flex items-center gap-1.5">
-                      <span className="font-semibold text-xs text-canBlack whitespace-nowrap">
+                      <span className="font-semibold text-sm text-canBlack whitespace-nowrap">
                         Topic:
                       </span>
 
@@ -598,12 +597,12 @@ const TimelineInfoBar = ({
                             "-"
                           )}/1-Agreement?${getQueryParams()?.returnQuery}`}
                         >
-                          <a className="whitespace-nowrap !text-canBlack !text-xs">
+                          <a className="whitespace-nowrap !text-canBlack !text-sm">
                             {breadCrumbRes?.topic_name}
                           </a>
                         </Link>
                       ) : breadCrumbRes ? (
-                        <span className="!text-xs gap-x-1 flex">
+                        <span className="!text-sm gap-x-1 flex">
                           {breadCrumbRes && !!topicSubscriptionID && (
                             <Tooltip
                               title="You have subscribed to the entire topic."
@@ -617,7 +616,7 @@ const TimelineInfoBar = ({
                           <span
                             className={
                               styles.boldBreadcrumb +
-                              " whitespace-nowrap text-xs"
+                              " whitespace-nowrap text-sm"
                             }
                           >
                             {breadCrumbRes?.topic_name}
@@ -654,7 +653,7 @@ const TimelineInfoBar = ({
                       className={"!mb-0 flex  " + styles.topicTitleStyle}
                     >
                       {/* <div className="flex items-center shrink-0 mr-1">
-                        <span className="mr-1 font-bold text-xs text-canBlack whitespace-nowrap shrink-0">
+                        <span className="mr-1 font-bold text-sm text-canBlack whitespace-nowrap shrink-0">
                           {!isTopicHistoryPage ? "Camp: " : ""}
                         </span>
                       </div> */}
@@ -685,7 +684,7 @@ const TimelineInfoBar = ({
                                     )}?${getQueryParams()?.returnQuery}`}
                                     key={index}
                                   >
-                                    <a className="!text-canBlack gap-x-1 gap-y-1 flex hover:!text-canBlack !text-xs">
+                                    <a className="!text-canBlack gap-x-1 gap-y-1 flex hover:!text-canBlack !text-sm">
                                       {breadCrumbRes &&
                                         !!campSubscriptionID &&
                                         !isTopicHistoryPage && (
@@ -715,8 +714,8 @@ const TimelineInfoBar = ({
                                             content={contentForCamp}
                                             title={title2}
                                           >
-                                            <div className="flex items-center gap-1.5 text-xs">
-                                              <span className="lg:text-xs text-xs 2xl:text-xs font-semibold">
+                                            <div className="flex items-center gap-1.5 text-sm">
+                                              <span className="text-sm font-semibold">
                                                 {camp?.camp_name}
                                               </span>
                                               <Image
@@ -729,8 +728,8 @@ const TimelineInfoBar = ({
                                             </div>
                                           </Popover>
                                         ) : (
-                                          <div className="flex items-center gap-1.5 text-xs">
-                                            <span className="lg:text-xs text-xs 2xl:text-xs">
+                                          <div className="flex items-center gap-1.5 text-sm">
+                                            <span className="text-sm">
                                               {camp?.camp_name}
                                             </span>
                                           </div>
@@ -763,7 +762,11 @@ const TimelineInfoBar = ({
                   </div>
                 )}
                 {isEventLine && (
-                  <Popover content={contentEventLine} className="title-popover">
+                  <Popover
+                    content={contentEventLine}
+                    className="title-popover"
+                    placement="bottom"
+                  >
                     <div className="flex  items-center gap-1.5">
                       <span className="font-normal text-base text-canBlack whitespace-nowrap">
                         Event Line
@@ -813,7 +816,7 @@ const TimelineInfoBar = ({
                     className="title-popover"
                   >
                     <div className="flex  items-center gap-2 ">
-                      <span className="lg:font-normal lg:text-sm text-xs 2xl:text-sm lg:text-canBlack text-canLight whitespace-nowrap">
+                      <span className="lg:font-normal lg:text-sm text-sm 2xl:text-sm lg:text-canBlack text-canLight whitespace-nowrap">
                         Topic :
                       </span>
 
