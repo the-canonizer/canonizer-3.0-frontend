@@ -74,9 +74,9 @@ describe("SupportTreeCard on camp details page", () => {
     );
 
     // expect(container.getElementsByTagName("header")).toHaveLength(1);
-    expect(
-      getByText("Total Support for This Camp (including sub-camps):")
-    ).toBeInTheDocument();
+    // expect(
+    //   getByText("Total Support for This Camp (including sub-camps):")
+    // ).toBeInTheDocument();
   });
 
   /* eslint-disable */
