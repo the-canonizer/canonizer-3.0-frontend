@@ -224,6 +224,7 @@ const TopicsList = () => {
     setInputSearch(value?.trim());
     dispatch(setFilterCanonizedTopics({ search: value || "" }));
     setAllowClear(true);
+    setShowSearchDropdown(false);
   };
 
   let throttled: any = null;
