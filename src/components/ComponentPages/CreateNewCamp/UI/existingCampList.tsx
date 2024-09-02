@@ -50,7 +50,7 @@ const ExistingCampList = ({
   onContributeCLick,
   isLoading,
 }) => {
-const dispatch = useDispatch()
+  const dispatch = useDispatch();
   return (
     <CommonCards className="bg-topic-card-gr h-full">
       {isError && (
@@ -87,7 +87,19 @@ const dispatch = useDispatch()
           footer={
             isShowMore && (
               <Link href={{ pathname: "/search/camp", query: { q: campName } }}>
-                <a className="text-canBlue uppercase text-xs font-semibold hocus:text-canHoverBlue" onClick={()=>{dispatch(setSearchValue(""))}}>
+                <a
+                  className="text-canBlue uppercase text-xs font-semibold hocus:text-canHoverBlue"
+                  role="button" // Adds button role
+                  tabIndex={0} // Makes it focusable via keyboard
+                  onClick={() => {
+                    dispatch(setSearchValue(""));
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      dispatch(setSearchValue(""));
+                    }
+                  }}
+                >
                   See more results
                 </a>
               </Link>

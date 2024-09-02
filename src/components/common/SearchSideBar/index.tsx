@@ -29,7 +29,7 @@ export default function SearchSideBar() {
     router?.push("/search/topic");
   };
   const dispatch = useDispatch();
-  const { searchDataAll, searchData, searchCountForMetaData ,searchMetaData} = useSelector(
+  const { searchCountForMetaData ,searchMetaData} = useSelector(
     (state: RootState) => ({
       searchDataAll: state?.searchSlice?.searchDataAll,
       searchData: state?.searchSlice?.searchData,
@@ -38,7 +38,6 @@ export default function SearchSideBar() {
       
     })
   );
-console.log(searchMetaData,searchValue,"searchDataAll")
   return (
     <>
       <div className="leftSideBar_Card noFilter">
