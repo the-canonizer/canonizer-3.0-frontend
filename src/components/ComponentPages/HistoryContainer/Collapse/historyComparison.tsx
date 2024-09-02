@@ -55,24 +55,24 @@ const HistoryComparison = ({
         {historyOf === "topic" && (
           <>
             <p>
+              Edit summary: <span>{campStatement?.note}</span>
+            </p>
+            <p>
               Canon:{" "}
               <span>
                 {campStatement?.namespace &&
                   campStatement?.namespace.replace(/[^a-zA-Z0-9\s]/g, " ")}
               </span>
             </p>
-            <p>
-              Edit summary: <span>{campStatement?.note}</span>
-            </p>
           </>
         )}
         {historyOf === "camp" && (
           <>
             <p>
-              Edit summary: <span>{campStatement?.note}</span>
+              Keywords: <span>{campStatement?.key_words}</span>
             </p>
             <p>
-              Keywords: <span>{campStatement?.key_words}</span>
+              Edit summary: <span>{campStatement?.note}</span>
             </p>
             <p>
               Camp about URL:{" "}
@@ -132,7 +132,7 @@ const HistoryComparison = ({
         {historyOf === "statement" && (
           <>
             <p>
-              Edit reason: <span>{"static"}</span>
+              Edit summary: <span>{campStatement?.note}</span>
             </p>
           </>
         )}
@@ -156,12 +156,32 @@ const HistoryComparison = ({
             </span>
           </p>
         )}
-        <p>
-          Camp Leader Id: <span>{campStatement?.camp_about_nick_id}</span>
-        </p>
-        <p>
-          Camp Leader: <span>{campStatement?.camp_about_nick_name}</span>
-        </p>
+        {historyOf === "camp" && (
+          <p>
+            Camp Leader:{" "}
+            <span>
+              {campStatement && campStatement?.camp_leader_nick_name ? (
+                <>
+                  <Link
+                    href={{
+                      pathname: `/user/supports/${
+                        campStatement?.camp_leader_nick_id || ""
+                      }`,
+                      query: {
+                        canon: topicNamespaceId || "",
+                      },
+                    }}
+                    passHref
+                  >
+                    <a>{campStatement?.camp_leader_nick_name}</a>
+                  </Link>
+                </>
+              ) : (
+                <>No</>
+              )}
+            </span>
+          </p>
+        )}
         <p>
           Submitted on: <span>{covertToTime(campStatement?.submit_time)}</span>
         </p>

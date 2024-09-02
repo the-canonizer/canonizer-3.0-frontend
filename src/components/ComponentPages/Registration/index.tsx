@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Form, message, Row, Col, Card } from "antd";
+import { Form, Row, Col, Card } from "antd";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { useRouter } from "next/router";
 
@@ -10,6 +10,7 @@ import { AppDispatch } from "src/store";
 import LeftContent from "./UI/leftContent";
 import { setEmailForOTP } from "src/store/slices/authSlice";
 import CustomSpinner from "components/shared/CustomSpinner";
+import { openNotificationWithIcon } from "components/common/notification/notificationBar";
 
 const Registration = () => {
   const [country, setCountry] = useState([]),
@@ -26,7 +27,10 @@ const Registration = () => {
   const handleSumitForm = useCallback(
     (values) => {
       if (!executeRecaptcha) {
-        message.error("Execute recaptcha not yet available");
+        openNotificationWithIcon(
+          "Execute recaptcha not yet available",
+          "error"
+        );
         return;
       }
       executeRecaptcha("registrationFormSubmit").then((gReCaptchaToken) => {
@@ -60,7 +64,7 @@ const Registration = () => {
       let res = await register(formBody);
 
       if (res && res.status_code === 406) {
-        message.error(res.message);
+        openNotificationWithIcon(res.message, "error");
       }
 
       if (res && res.status_code === 400) {
@@ -93,7 +97,7 @@ const Registration = () => {
       }
 
       if (res && res.status_code === 200) {
-        message.success(res.message);
+        openNotificationWithIcon(res.message, "success");
         dispatch(setEmailForOTP(values.email?.trim()));
         form.resetFields();
         router?.push({

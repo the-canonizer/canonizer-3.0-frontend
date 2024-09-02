@@ -88,7 +88,7 @@ function RegistrationUi({
           >
             Create your account
           </Title>
-          <Paragraph className="text-muted text-[10px] text-canLight !font-[300]">
+          <Paragraph className="text-muted text-[10px] 2xl:text-xs text-canLight !font-[300]">
             All fields marked with * are mandatory.
           </Paragraph>
         </div>
@@ -176,6 +176,7 @@ function RegistrationUi({
                 prefix={<PhoneOutlined className="opacity-0" />}
                 inputMode="tel"
                 inputClassName={`numberInput [&>*]:h-[40px] [&_.ant-input-affix-wrapper]:h-full [&_.ant-input-prefix]:w-0 [&_.ant-input-group-addon]:bg-transparent`}
+                wrapperClassName="[&_.ant-form-item-explain-error]:mb-0 [&_.ant-form-item-explain-connected]:last:mb-6"
               />
             </Col>
             <Col md={12} style={{ width: "100%" }}>
@@ -232,12 +233,12 @@ function RegistrationUi({
           <SocialLoginButton isNotLogin={true} />
         </Form.Item>
         <Form.Item className="text-center">
-          <Text className="text-sm font-semibold" id="already-text">
+          <Text className="text-sm" id="already-text">
             Already have an account?{" "}
             <a
               href="#"
               onClick={onLoginClick}
-              className="text-canBlue hover:text-canHoverBlue text-lg"
+              className="!text-canBlue hover:!text-canHoverBlue !text-xl !font-semibold"
               id="already-text-link"
             >
               Login

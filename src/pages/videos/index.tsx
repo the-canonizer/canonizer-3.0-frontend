@@ -50,13 +50,13 @@ const VideosPage = () => {
             {categories?.map((category) => {
               return (
                 <>
-                  <PageHeader
-                    className="px-0"
+                  {/* <PageHeader
+                    className="px-0 [&_.ant-page-header-heading-title]:!text-xl"
                     ghost
-                    backIcon={<i className="icon-back text-xl"></i>}
+                    backIcon={<i className="icon-back text-sm"></i>}
                     onBack={() => router?.push("/")}
                     title="Videos"
-                  />
+                  /> */}
                   <Card
                     className="video-parent-card"
                     bordered={false}
@@ -87,7 +87,10 @@ const VideosPage = () => {
                                   </div>
                                 }
                               >
-                                <Meta title={video?.title} />
+                                <Meta
+                                  title={video?.title}
+                                  className="text-sm [&_.ant-card-meta-title]:!text-sm"
+                                />
                               </Card>
                             </Col>
                           </>

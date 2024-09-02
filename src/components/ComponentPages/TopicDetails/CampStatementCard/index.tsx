@@ -61,6 +61,14 @@ const CampStatementCard = ({ loadingIndicator }) => {
     return false;
   };
 
+  const getElementHeight = () => {
+    const cardHeader = document.querySelector(
+      "#statementCard .ant-card-head"
+    ) as HTMLDivElement;
+
+    return cardHeader?.offsetHeight || 0;
+  };
+
   const getButton = () => {
     if (isDraftShow()) {
       return (
@@ -154,20 +162,32 @@ const CampStatementCard = ({ loadingIndicator }) => {
 
   return (
     <CommonCard
-      className="border-0 h-100 bg-white [&_.ant-card-body]:p-0 [&_.ant-card-body]:lg:p-[24px] lg:bg-canGray mb-8 lg:mb-14 border-t-8 !border-canGreen"
+      style={{
+        "--card-body-height": `calc(100% - ${getElementHeight()}px)`,
+        "--element-height": `${getElementHeight()}px`,
+      }}
+      className={`border-0 h-100 bg-white [&_.ant-card-body]:p-0 [&_.ant-card-body]:lg:p-[24px] [&_.ant-card-body]:flex overflow-hidden lg:bg-canGray mb-8 lg:mb-14 border-t-8 !border-canGreen h-[400px] xl:h-[600px] statementCardBody`}
       data-testid="algoSelect"
-    >
-      <div className="camp-agrrement-new mb-8">
+      id="statementCard"
+      title={
         <div className="flex justify-between items-start">
           <div className="mr-auto">
-            <div className="camp-agreement-header flex items-center mb-2.5 lg:mb-5 gap-2">
-              <SectionHeading
-                title={K?.exceptionalMessages?.campStatementHeading}
-                infoContent={K?.exceptionalMessages?.campStatementHeading}
-                className="text-sm lg:text-base normal-case text-canBlack text-left font-semibold"
-              />
+            <div className="camp-agreement-header flex items-center mb-2.5 lg:mb-1 gap-2">
+              <div className="flex gap-2.5 items-center">
+                <SectionHeading
+                  title={campRecord?.camp_name}
+                  infoContent=""
+                  icon={null}
+                  className="text-sm lg:text-base normal-case text-canBlack text-left font-semibold !mb-0"
+                />
+                <ViewCounts
+                  views={tree?.[1] && tree[1]?.camp_views}
+                  className="!gap-1"
+                />
+              </div>
             </div>
-            <div className="flex items-center justify-start gap-6 camp-header-content lg:border-none border-t border-b border-canGrey2 lg:py-0 py-1.5 lg:mb-0 mb-5">
+
+            <div className="flex items-center justify-start gap-6 camp-header-content lg:border-none border-t border-b border-canGrey2 lg:py-0 py-1.5 lg:mb-0 mb-2">
               {campStatement?.[0]?.go_live_time && (
                 <div className="flex items-center gap-2">
                   <Image
@@ -177,15 +197,12 @@ const CampStatementCard = ({ loadingIndicator }) => {
                     height={16}
                     width={16}
                   />
-                  <p className="text-xs font-normal text-canBlack text-opacity-50">
+                  <p className="text-[10px] font-normal text-canBlack text-opacity-50">
                     Last update:{" "}
                     {covertToTime(campStatement?.[0]?.go_live_time)}
                   </p>
                 </div>
               )}
-              <div className="flex items-center gap-2 lg:hidden ">
-                <ViewCounts views={tree?.[1] && tree[1]?.camp_views} />
-              </div>
             </div>
           </div>
           {campStatement?.length &&
@@ -199,18 +216,26 @@ const CampStatementCard = ({ loadingIndicator }) => {
             </SecondaryButton>
           ) : null}
         </div>
-        <hr className="my-5 hidden lg:flex" />
+      }
+    >
+      <div
+        className={`camp-agrrement-new overflow-hidden !overflow-y-auto w-full pr-4 ${
+          campStatement?.length && campStatement[0]?.parsed_value
+            ? ""
+            : "my-auto"
+        }`}
+      >
         <div
           className={`flex flex-col ${
             campStatement?.length && campStatement[0]?.parsed_value
               ? "items-start justify-start"
               : "items-center justify-center"
-          } lg:pt-5`}
+          }`}
         >
           <div
             className={
               styles.campStatement +
-              " text-canBlack opacity-80 text-sm text-normal leading-6"
+              " text-canBlack opacity-80 text-sm font-normal leading-6"
             }
           >
             {campStatement?.length && campStatement[0]?.parsed_value ? (
@@ -220,7 +245,7 @@ const CampStatementCard = ({ loadingIndicator }) => {
                 }}
               />
             ) : (
-              <span className="text-sm lg:text-base">
+              <span className="text-sm">
                 {isDraftShow()
                   ? "Continue finishing up your statement"
                   : K?.exceptionalMessages?.campStatement}

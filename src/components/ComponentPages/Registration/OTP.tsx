@@ -1,19 +1,18 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
-import { Card, Col, Form, Row, message } from "antd";
+import { Card, Col, Form, Row } from "antd";
 
 import OTPVerify from "./UI/otp";
 import { verifyOtp, resendOTPForRegistration } from "src/network/api/userApi";
 import { AppDispatch, RootState } from "src/store";
-import LeftContent from "./UI/leftContent";
 import { setEmailForOTP, setIsNewUser } from "src/store/slices/authSlice";
 import CustomSpinner from "components/shared/CustomSpinner";
+import { openNotificationWithIcon } from "components/common/notification/notificationBar";
 
 const RegistrationOTP = () => {
   const { emailForOtp } = useSelector((state: RootState) => ({
     emailForOtp: state?.auth?.emailForOtp,
-    // currentReturnUrl: state?.auth?.currentReturnUrl,
   }));
 
   const [isResend, setIsResend] = useState(false),
@@ -59,11 +58,11 @@ const RegistrationOTP = () => {
       }
 
       if (res && res.status_code === 406) {
-        message.error(res.message);
+        openNotificationWithIcon(res.message, "error");
       }
 
       if (res && res.status_code === 200) {
-        message.success("OTP Verified Successfully!");
+        openNotificationWithIcon("You Have Successfully Signed up!", "success");
         otpForm.resetFields();
 
         dispatch(setEmailForOTP(null));
@@ -83,7 +82,7 @@ const RegistrationOTP = () => {
     const res = await resendOTPForRegistration({ email: emailForOtp });
 
     if (res && res.status_code === 200) {
-      message.success(res.message);
+      openNotificationWithIcon(res.message, "success");
       setIsResend(false);
     }
     setLoading(false);
@@ -91,20 +90,17 @@ const RegistrationOTP = () => {
 
   const onBrowseClick = (e) => {
     e?.preventDefault();
-    router?.back();
+    router?.push({ pathname: "/registration" });
   };
 
   return (
     <CustomSpinner key="registration-spinner" spinning={loading}>
       <Card
         bordered={false}
-        className="bg-canGrey1 mt-0 lg:mt-10 h-full flex justify-center items-center [&>.ant-card-body]:p-0 [&>.ant-card-body]:w-full [&_.ant-card-body]:pb-0 min-h-full tab:px-10"
+        className="bg-canGrey1 mt-0 lg:mt-10 h-full flex justify-center items-center [&>.ant-card-body]:p-0 [&>.ant-card-body]:w-full min-h-full tab:px-10"
       >
         <Row gutter={20}>
-          <Col lg={12} md={24} xl={12} xs={24} className="hidden lg:block">
-            <LeftContent onBrowseClick={onBrowseClick} />
-          </Col>
-          <Col lg={12} md={24} xl={12} xs={24}>
+          <Col lg={13} md={24} xl={13} xs={24} className="mx-auto">
             <OTPVerify
               form={otpForm}
               onFinish={onOTPSubmit}

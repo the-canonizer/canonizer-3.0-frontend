@@ -13,21 +13,21 @@ const LeftContent = ({ onBrowseClick }) => {
       >
         <LeftOutlined /> Go Back
       </Button>
-      <div className="mt-5">
-        <Typography.Paragraph className="text-2xl !mb-2 font-medium font-inter">
-          Welcome to
-        </Typography.Paragraph>
+      <div className="my-auto">
         <Headings h1 className="mb-6 leading-[1.1] font-medium">
-          Canonizer
+          Join Canonizer
         </Headings>
-        <Typography.Paragraph className="text-sm font-normal text-canBlack opacity-80 font-inter">
-          Enter the best leaderless consensus building and tracking system in
-          the world.
+        <Typography.Paragraph className="text-2xl !mb-2 font-medium font-inter">
+          Unite Voices, Build Consensus, Shape the Future Together{" "}
+        </Typography.Paragraph>
+        <Typography.Paragraph className="text-sm font-normal text-canBlack opacity-80 font-inter xl:w-11/12">
+          Sign up to contribute your insights, collaborate on ideas, and help
+          form unified stances on key topics through collective consensus.
         </Typography.Paragraph>
         <div className="text-center ftImage">
           <Image
             src="/images/middle-vector.svg"
-            className="w-auto"
+            className="w-10/12"
             preview={false}
           />
         </div>

@@ -321,7 +321,9 @@ function HistoryContainer() {
     return key;
   };
 
-  const renderCampHistories =
+  const renderCampHistories = loadingIndicator ? (
+    <CustomSkelton skeltonFor="historyPage" />
+  ) : (
     campHistory &&
     campHistory?.items?.length &&
     campHistory?.items?.map((campHistoryData, index) => {
@@ -352,9 +354,11 @@ function HistoryContainer() {
           }
           directarchived={directarchived}
           historyState={historyOf}
+          loadingIndicator={loadingIndicator}
         />
       );
-    });
+    })
+  );
 
   const handleBackButton = () => {
     const topicDetails = router.query.camp?.at(0);
@@ -373,17 +377,12 @@ function HistoryContainer() {
     </div>
   );
 
-  const renderEmpty = () => (
-    <div className="no-data-wrapper ch-content lg:w-[calc(100%-320px)] p-8 bg-[#F4F5FA] rounded-lg max-md:w-full relative">
-      <Empty />
-    </div>
-  );
-
-  const renderButton = (type, label, count, active, classes = "") => (
+  const renderButton = (type, label, count, active, classes = "",disabled) => (
     <Button
       size="large"
       className={`btn-${type} ${classes} text-sm ${active ? "active" : ""}`}
       onClick={() => handleTabButton(type)}
+      disabled={disabled}
     >
       {label} <span className="ml-1">({count}) </span>
     </Button>
@@ -423,8 +422,8 @@ function HistoryContainer() {
       },
     ];
 
-    return buttons.map(({ type, label, count, className }) =>
-      renderButton(type, label, count, activeTab === type, className)
+    return buttons?.map(({ type, label, count, className }) =>
+      renderButton(type, label, count, activeTab === type, className, count < 1)
     );
   };
 
@@ -460,26 +459,20 @@ function HistoryContainer() {
               <i className="icon-compare-statement"></i>
             </Button>
           </div>
-          {activeTab === "live" ? (
-            campHistory?.items?.length > 0 ? (
-              renderContent()
-            ) : (
-              renderEmpty()
-            )
-          ) : campHistory?.items?.length > 0 ? (
-            <div className="ch-content lg:w-[calc(100%-320px)] p-8 bg-[#F4F5FA] rounded-lg max-md:w-full relative">
-              <InfiniteScroll
-                initialLoad={false}
-                loadMore={!loadingIndicator && campStatementApiCall}
-                hasMore={loadMoreItems}
-                loader={<></>}
-              >
-                {renderCampHistories}
-              </InfiniteScroll>
-            </div>
-          ) : (
-            renderEmpty()
-          )}
+          {activeTab === "live"
+            ? campHistory?.items?.length > 0 && renderContent()
+            : campHistory?.items?.length > 0 && (
+                <div className="ch-content lg:w-[calc(100%-320px)] p-8 bg-[#F4F5FA] rounded-lg max-md:w-full relative">
+                  <InfiniteScroll
+                    initialLoad={false}
+                    loadMore={!loadingIndicator && campStatementApiCall}
+                    hasMore={loadMoreItems}
+                    loader={<></>}
+                  >
+                    {renderCampHistories}
+                  </InfiniteScroll>
+                </div>
+              )}
         </div>
       </div>
     </CustomLayout>

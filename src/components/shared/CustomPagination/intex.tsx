@@ -7,6 +7,7 @@ const CustomPagination = ({
   pageSize,
   loading,
   handlePageChange,
+  pageSizeOptions = [10, 15, 20, 24],
   className = "",
 }) => {
   const showTotal = (total) => `Total ${total} items`;
@@ -18,13 +19,12 @@ const CustomPagination = ({
         size="small"
         total={totalTopics}
         defaultCurrent={1}
-        defaultPageSize={10}
+        defaultPageSize={12}
         current={pageNumber}
         pageSize={pageSize}
         showTotal={showTotal}
-        pageSizeOptions={[10, 16]}
+        pageSizeOptions={pageSizeOptions}
         showSizeChanger
-        showQuickJumper
         onChange={handlePageChange}
         onShowSizeChange={handlePageChange}
         disabled={loading}

@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Card, Col, Form, Row, message } from "antd";
+import { Card, Col, Form, Row } from "antd";
 import { useRouter } from "next/router";
 
 import ForgotPasswordUI from "./UI";
 import { forgotPasswordSendOTP } from "src/network/api/userApi";
 import { AppDispatch } from "src/store";
 import CustomSpinner from "components/shared/CustomSpinner";
-import LeftContent from "../Registration/UI/leftContent";
 import { setPasswordEmail } from "src/store/slices/authSlice";
+import { openNotificationWithIcon } from "components/common/notification/notificationBar";
 
 const ForgotPassword = () => {
   const [isLoading, setIsLoading] = useState(false),
@@ -36,7 +36,7 @@ const ForgotPassword = () => {
     if (res && res.status_code === 200) {
       router?.push({ pathname: "/forgot-password/otp" });
       form.resetFields();
-      message.success(res.message);
+      openNotificationWithIcon(res.message, "success");
       dispatch(setPasswordEmail(email));
     }
     setIsLoading(false);
@@ -44,24 +44,28 @@ const ForgotPassword = () => {
 
   const onBrowseClick = (e) => {
     e?.preventDefault();
-    router?.back();
+    router?.push({ pathname: "/login" });
   };
 
   return (
     <CustomSpinner key="forgot-password-spinner" spinning={isLoading}>
       <Card
         bordered={false}
-        className="bg-canGrey1 mt-0 lg:mt-10 h-full flex justify-center items-center [&>.ant-card-body]:p-0 [&>.ant-card-body]:w-full [&_.ant-card-body]:pb-0 min-h-full tab:px-10"
+        className="bg-canGrey1 mt-0 lg:mt-0 h-full flex justify-center items-center [&>.ant-card-body]:p-0 [&>.ant-card-body]:w-full min-h-full tab:px-10"
       >
         <Row gutter={20}>
-          <Col lg={12} md={24} xl={12} xs={24} className="hidden lg:block [&_.ftImage]:mb-0">
-            <LeftContent onBrowseClick={onBrowseClick} />
-          </Col>
-          <Col lg={12} md={24} xl={12} xs={24} className="bg-white rounded-lg">
+          <Col
+            lg={13}
+            md={24}
+            xl={13}
+            xs={24}
+            className="bg-white rounded-lg mx-auto"
+          >
             <ForgotPasswordUI
               form={form}
               onFinish={onFinish}
               isDisabled={isDisabled}
+              onBrowseClick={onBrowseClick}
             />
           </Col>
         </Row>

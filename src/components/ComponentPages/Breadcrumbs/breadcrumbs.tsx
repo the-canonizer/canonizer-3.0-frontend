@@ -81,11 +81,12 @@ function Breadcrumbs({ compareMode = false, updateId, historyOF = null }: any) {
     router.push(`/manage/${historyOf}/${updateId}`);
   };
 
-  const { bread_crumb, topic_name } = breadCrumbRes;
-  const topicNum = bread_crumb?.at(0)?.topic_num;
-  const campNum = bread_crumb?.at(0)?.camp_num;
-  const campName = bread_crumb?.at(0)?.camp_name;
-  const formattedTopicName = topic_name.split(" ").join("-");
+  // const { bread_crumb, topic_name } = breadCrumbRes;
+
+  const topicNum = breadCrumbRes?.bread_crumb?.at(0)?.topic_num;
+  const campNum =breadCrumbRes?.bread_crumb?.at(0)?.camp_num;
+  const campName =breadCrumbRes?. bread_crumb?.at(0)?.camp_name;
+  const formattedTopicName = breadCrumbRes?.topic_name.split(" ").join("-");
   const href = `/topic/${topicNum}-${formattedTopicName}/${campNum}-${campName}`;
 
   return (
@@ -117,7 +118,7 @@ function Breadcrumbs({ compareMode = false, updateId, historyOF = null }: any) {
             History
           </Breadcrumb.Item>
         </Breadcrumb>
-        {!compareMode && updateId && (
+        {!compareMode && !!updateId && (
           <PrimaryButton
             size="large"
             type="primary"

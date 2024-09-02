@@ -9,6 +9,7 @@ import DropDownMenu from "../../DropdownMenu";
 import ViewCounts from "components/shared/ViewsCount";
 import SocialShare from "components/shared/ShareTopic";
 import SectionHeading from "components/ComponentPages/Home/FeaturedTopic/sectionsHeading";
+import K from "src/constants";
 
 const CampDisclaimer = () => {
   const { campRecord, manageSupportStatusCheck, tree } = useSelector(
@@ -20,16 +21,28 @@ const CampDisclaimer = () => {
   );
 
   return (
-    <div className="flex justify-between mb-6 items-center">
+    <div className="flex justify-between mb-4 items-center">
       <div className="flex gap-2.5 items-center">
         <SectionHeading
-          title={"CAMP: " + campRecord?.camp_name}
+          title={K?.exceptionalMessages?.campStatementHeading}
+          infoContent={K?.exceptionalMessages?.campStatementHeading}
+          className="!mb-0"
+        />
+        {/* <SectionHeading
+          title={campRecord?.camp_name}
           infoContent=""
           icon={null}
           className="!mb-0"
-        />
-        <ViewCounts views={tree?.[1] && tree[1]?.camp_views} />
+        /> */}
+        {/* <ViewCounts views={tree?.[1] && tree[1]?.camp_views} /> */}
       </div>
+      {/* <div className="camp-agreement-header flex items-center !mb-0 gap-2"> */}
+      {/* <SectionHeading
+        title={K?.exceptionalMessages?.campStatementHeading}
+        infoContent={K?.exceptionalMessages?.campStatementHeading}
+        className="text-sm lg:text-base normal-case text-canBlack text-left font-semibold"
+      /> */}
+      {/* </div> */}
 
       <div className="flex gap-7 items-center">
         <div className="">

@@ -1,16 +1,14 @@
 import { Button, Popconfirm, Typography } from "antd";
 import { Fragment } from "react";
 import Image from "next/image";
+
 import styles from "./Social.module.scss";
+
+import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 
 const { Text } = Typography;
 
-export default function Details({
-  socialLinks,
-  onUnlinkClick,
-  onLinkClick,
-  provider,
-}: any) {
+function Details({ socialLinks, onUnlinkClick, onLinkClick, provider }) {
   const text = "Are you sure to unlink this account?";
 
   return (
@@ -45,21 +43,20 @@ export default function Details({
           </Popconfirm>
         </Fragment>
       ) : (
-        <>
-          {" "}
-          <Button
-            type="primary"
-            htmlType="submit"
-            className="bg-btnBg bg-opacity-10 w-40 !py-2.5 !border !border-canBlue text-base text-canBlack font-medium [&_.ant-btn-primary]:!border [&_.ant-btn-primary]:!border-canBlue !h-14 rounded-lg flex items-center justify-center gap-2.5"
-            data-testid="linkBtn"
-            tabIndex={12}
-            onClick={onLinkClick.bind(this, provider)}
-          >
-            Link
-            <Image src="/images/link-icon.svg" width={24} height={24} />
-          </Button>
-        </>
+        <SecondaryButton
+          type="primary"
+          htmlType="submit"
+          className="!py-1.5 h-auto flex items-center justify-center gap-2"
+          data-testid="linkBtn"
+          tabIndex={12}
+          onClick={onLinkClick.bind(this, provider)}
+        >
+          Link
+          <Image src="/images/link-icon.svg" width={24} height={24} />
+        </SecondaryButton>
       )}
     </Fragment>
   );
 }
+
+export default Details;

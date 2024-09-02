@@ -77,19 +77,14 @@ const CreateTopicFromUI = ({
     <CommonCards className="border-0 bg-white">
       <header className="mb-14">
         <Typography.Paragraph className="text-xl text-canBlack font-medium">
-          {isEdit ? "Update Topic" : "Creating a New Topic"}
-        </Typography.Paragraph>
-        <Typography.Paragraph className="text-canBlack opacity-80 mt-3">
-          A topic on our platform refers to a specific subject within the
-          context of the canon. It serves as a focal point for discussions,
-          allowing users to explore and share opinions, ideas on a topic.
+          {isEdit ? "Update Topic" : "Start a New Topic"}
         </Typography.Paragraph>
       </header>
       <Form
         form={form}
         onFinish={onFinish}
         name="create_new_topic"
-        className={`[&_label]:text-sm [&_label]:font-semibold [&_label]:text-canBlack [&_label_span]:ml-[4px] [&_label_span]:font-normal [&_label_span]:text-[#6e7880] [&_label_span]:text-[92%] [&_label]:before:absolute [&_label]:before:right-[-15px]`}
+        className={`[&_label]:text-sm [&_label]:font-medium [&_label]:text-canBlack [&_label_span]:ml-[4px] [&_label_span]:font-normal [&_label_span]:text-[#6e7880] [&_label_span]:text-[92%] [&_label]:before:absolute [&_label]:before:right-[-15px]`}
         layout={"vertical"}
         autoComplete="off"
         scrollToFirstError
@@ -117,7 +112,7 @@ const CreateTopicFromUI = ({
                   <Fragment>
                     {labels.cr_topic_name}
                     <span className="required">*</span>
-                    <span>(Limit 30 Chars)</span>
+                    {/* <span>(Limit 30 Chars)</span> */}
                   </Fragment>
                 }
                 rules={topicNameRule}
@@ -129,8 +124,10 @@ const CreateTopicFromUI = ({
                     <AlignIcon fill="#242B37" />
                   </div>
                 }
-                onKeyDown={onTopicChange}
+                onKeyUp={onTopicChange}
                 onBlur={onTopicNameBlur}
+                dataid="topic-name"
+                key="topic-name-key"
               />
             )}
           </Col>
@@ -145,9 +142,9 @@ const CreateTopicFromUI = ({
             ) : (
               getNickNameInput()
             )}
-            <div className="text-xs text-canRed -mt-4 mb-6">
+            {/* <div className="text-xs text-canRed -mt-4 mb-6">
               {labels.cr_nick_name_sp}
-            </div>
+            </div> */}
           </Col>
           <Col xs={24} sm={12} key={"namespaces_div"}>
             {isLoading ? (
@@ -163,9 +160,9 @@ const CreateTopicFromUI = ({
                   <Fragment>
                     {labels.cr_namespace}
                     <span className="required">*</span>
-                    <span>
+                    {/* <span>
                       (General is recommended, unless you know otherwise)
-                    </span>
+                    </span> */}
                   </Fragment>
                 }
                 name="namespace"
@@ -174,6 +171,7 @@ const CreateTopicFromUI = ({
                 size={"large"}
                 defaultValue={values?.namespace || nameSpaces[0]?.id}
                 initialValue={values?.namespace || nameSpaces[0]?.id}
+                // value={values?.namespace}
                 key={
                   "namespaces_label" + values?.namespace || nameSpaces[0]?.id
                 }
@@ -247,7 +245,7 @@ const CreateTopicFromUI = ({
                 >
                   <span>{cat?.title}</span>
                   <CloseOutlined
-                    className="mr-2"
+                    className="mr-2 text-canLight"
                     onClick={(e) => onCatRemove(e, cat)}
                   />
                 </Tags>
@@ -258,16 +256,9 @@ const CreateTopicFromUI = ({
             <Col xs={24} xl={24}>
               <Inputs
                 name="edit_summary"
-                label={
-                  <>
-                    Add Summary Of Changes
-                    <small className="ml-1">
-                      (Briefly describe your changes)
-                    </small>
-                  </>
-                }
+                label="Add Summary Of Changes"
                 rules={messages.summaryRule}
-                placeholder={messages.placeholders.firstName}
+                placeholder={messages.placeholders.editSummary}
                 maxLength={100}
                 prefix={<FileTextOutlined />}
                 defaultValue={String(editCampStatementData)}
@@ -289,7 +280,7 @@ const CreateTopicFromUI = ({
               onClick={onCancel}
               id="cancel-btn"
               data-testid="cancel-btn"
-              className="mr-4 flex justify-center items-center py-5 px-6"
+              className="mr-4 flex justify-center items-center py-5 px-6 w-[200px] border-canBlue"
             >
               Discard <CloseOutlined />
             </SecondaryButton>
@@ -298,7 +289,7 @@ const CreateTopicFromUI = ({
               id="create-topic-btn"
               data-testid="create-topic-btn"
               disabled={!isDisabled}
-              className="flex justify-center items-center py-5 px-6"
+              className="flex justify-center items-center py-5 px-6 w-[200px]"
             >
               {isEdit ? "Update Topic" : "Save Topic"} <SaveOutlined />
             </PrimaryButton>

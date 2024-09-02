@@ -1,129 +1,248 @@
-import {
-  Card,
-  Tag,
-  Button,
-  Tooltip,
-  Typography,
-  Empty,
-  Pagination,
-} from "antd";
-import { CloseCircleOutlined } from "@ant-design/icons";
-
+import { useState, useEffect } from "react";
+import { Tag, Tooltip, Typography, Empty, Pagination, Popover } from "antd";
+import Image from "next/image";
 import Link from "next/link";
 
-import styles from "./SubscriptionsList.module.scss";
-import { useState, useEffect } from "react";
-
-const { Title } = Typography;
+import SectionHeading from "components/ComponentPages/Home/FeaturedTopic/sectionsHeading";
+import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 
 function TopicSubscriptionsTab({
   subscriptionsList,
   onRemoveSubscription,
   onConfirm,
-}: any) {
+}) {
+  const perPage = 10;
+
   const [subList, setSubList] = useState([]);
   const [current, setCurrent] = useState(1);
+
   useEffect(() => {
-    pageChange(1, 5);
+    pageChange(1, perPage);
     setCurrent(1);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [subscriptionsList]);
+
   const pageChange = (pageNumber, pageSize) => {
     setCurrent(pageNumber);
     const startingPosition = (pageNumber - 1) * pageSize;
     const endingPosition = startingPosition + pageSize;
     setSubList(subscriptionsList.slice(startingPosition, endingPosition));
   };
-  return subscriptionsList.length ? (
+
+  if (!subscriptionsList.length) {
+    return (
+      <Empty
+        image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+        className="flex flex-col items-center justify-center"
+      />
+    );
+  }
+
+  return (
     <div key="subscription_cart">
-      {subList.length > 0 &&
-        subList.map((data) => {
-          return (
-            <Card
-              key={data?.topic_num}
-              className={`${styles.cardBox_tags} ${
-                data.camps?.length > 0 ? "" : styles.no_body
-              }`}
-              type="inner"
-              size="default"
-              title={
-                <Title level={5} className={styles.card_heading_title}>
-                  For Topic{" "}
-                  <span>
-                    &quot;
-                    <Link href={data.title_link}>
-                      <a>{data.title}</a>
-                    </Link>
-                    &quot;
-                  </span>
-                </Title>
-              }
-              extra={
-                data.is_remove_subscription ? (
-                  <Tooltip title="Remove subscription">
-                    <Button
-                      className={styles.cardTitle}
-                      onClick={(e) => onRemoveSubscription(e, data)}
-                      type="link"
-                      danger
-                      icon={<CloseCircleOutlined />}
-                      data-testid="camp-remove"
-                    >
-                      Remove subscription
-                    </Button>
-                  </Tooltip>
-                ) : null
-              }
-              style={{ width: "100%", marginBottom: 16 }}
+      <SectionHeading
+        title="My Subscriptions"
+        icon={null}
+        className="!mb-0 bg-canGray border-b-2 p-3 rounded-lg"
+      />
+      <div className="px-3">
+        {subList.map((item, idx) => (
+          <div className={`[&:not(:last-child)]:border-b py-3`} key={item?.id}>
+            <Typography.Paragraph
+              className={`${!(item?.camps?.length > 0) && "!mb-0"}`}
             >
-              {data.camps?.map((camp, i) => {
-                return (
+              <Link href={item.title_link}>
+                <Typography.Text className="flex gap-2.5">
+                  <a className="text-sm font-normal !text-canBlack flex items-center">
+                    {item.title}
+                  </a>
+                  {item?.is_remove_subscription && (
+                    <Popover content="Remove subscription" placement="top">
+                      <SecondaryButton
+                        className="cursor-pointer flex items-center border-0 p-1 h-auto bg-white hover-bg-transparent"
+                        onClick={(e) => onRemoveSubscription(e, item)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter" || e.key === " ") {
+                            e.preventDefault();
+                            onRemoveSubscription(e, item);
+                          }
+                        }}
+                        aria-label="Remove subscription"
+                      >
+                        <Image
+                          src="/images/minus-user-icon.svg"
+                          alt="Remove subscription"
+                          width={24}
+                          height={24}
+                        />
+                      </SecondaryButton>
+                    </Popover>
+                  )}
+                </Typography.Text>
+              </Link>
+            </Typography.Paragraph>
+            {item?.camps?.length > 0 && (
+              <div className="flex gap-3 flex-wrap">
+                {item.camps.map((camp, i) => (
                   <Tag
-                    key={camp.subscription_start + i}
-                    className={styles.tag_btn}
+                    key={`${camp.subscription_start}-${i}`}
+                    className="flex justify-start items-center bg-canLightGrey rounded-full w-max px-5 border-none gap-2"
                     closable
-                    onClose={(e) => onConfirm(e, data, camp)}
+                    onClose={(e) => onConfirm(e, item, camp)}
                     closeIcon={
                       <Tooltip title="Remove camp subscription">
-                        <CloseCircleOutlined />
+                        <Image
+                          className="cursor-pointer"
+                          src="/images/minus-user-icon.svg"
+                          alt=""
+                          width={24}
+                          height={24}
+                        />
                       </Tooltip>
                     }
                   >
-                    <div>
-                      <span className={styles.count}>{i + 1}. </span>
-                      <Link href={camp.camp_link}>
-                        <a className={styles.Bluecolor}> {camp.camp_name}</a>
-                      </Link>
-                    </div>
+                    <Link href={camp.camp_link}>
+                      <a className="text-xs font-normal text-canBlack">
+                        {camp.camp_name}
+                      </a>
+                    </Link>
                   </Tag>
-                );
-              })}
-            </Card>
-          );
-        })}
-      {subscriptionsList &&
-        subscriptionsList.length > 0 &&
-        subList.length > 0 && (
-          <Pagination
-            hideOnSinglePage={true}
-            current={current}
-            total={subscriptionsList.length}
-            pageSize={5}
-            onChange={pageChange}
-            showSizeChanger={false}
-          />
-        )}
+                ))}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {subscriptionsList && subscriptionsList.length > 0 && (
+        <Pagination
+          hideOnSinglePage={true}
+          current={current}
+          total={subscriptionsList.length}
+          pageSize={perPage}
+          onChange={pageChange}
+          showSizeChanger={false}
+          className="mt-5"
+        />
+      )}
     </div>
-  ) : (
-    <Card
-      className={styles.cardBox_tags}
-      type="inner"
-      size="default"
-      style={{ width: "100%" }}
-    >
-      <Empty image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg" />
-    </Card>
   );
+  // <div key="subscription_cart">
+  //   <SectionHeading
+  //     title="My Subscriptions"
+  //     icon={null}
+  //     className="!mb-8 bg-canGray border-b-2 p-3 rounded-lg"
+  //   />
+  //   <div className="px-3">
+  //     {subList.map((item) =>
+  //       item?.camps?.length ? (
+  //         <div className="border-b pb-4 mb-3" key={item?.id}>
+  //           <Typography.Paragraph>
+  //             <Link href={item.title_link}>
+  //               <Typography.Text className="flex gap-2.5">
+  //                 <a className="text-sm font-medium !text-canBlack flex items-center">
+  //                   {item.title}
+  //                 </a>
+  //                 <Popover content="Remove subscription" placement="top">
+  //                   <SecondaryButton
+  //                     className="cursor-pointer flex items-center border-0 p-1 h-auto bg-white hover-bg-transparent"
+  //                     onClick={(e) => onRemoveSubscription(e, item)}
+  //                     onKeyDown={(e) => {
+  //                       if (e.key === "Enter" || e.key === " ") {
+  //                         e.preventDefault();
+  //                         onRemoveSubscription(e, item);
+  //                       }
+  //                     }}
+  //                     aria-label="Remove subscription"
+  //                   >
+  //                     <Image
+  //                       src="/images/minus-user-icon.svg"
+  //                       alt="Remove subscription"
+  //                       width={24}
+  //                       height={24}
+  //                     />
+  //                   </SecondaryButton>
+  //                 </Popover>
+  //               </Typography.Text>
+  //             </Link>
+  //           </Typography.Paragraph>
+  //           <div className="flex gap-3 flex-wrap">
+  //             {item?.camps?.map((camp, i) => {
+  //               return (
+  //                 <Tag
+  //                   key={camp.subscription_start + i}
+  //                   className="flex justify-start items-center bg-canLightGrey rounded-full w-max px-5 border-none gap-2"
+  //                   closable
+  //                   onClose={(e) => onConfirm(e, item, camp)}
+  //                   closeIcon={
+  //                     <Tooltip title="Remove camp subscription">
+  //                       <Image
+  //                         className="cursor-pointer"
+  //                         src="/images/minus-user-icon.svg"
+  //                         alt=""
+  //                         width={24}
+  //                         height={24}
+  //                       />
+  //                     </Tooltip>
+  //                   }
+  //                 >
+  //                   <Link href={camp.camp_link}>
+  //                     <a className="text-xs font-medium text-canBlack">
+  //                       {camp.camp_name}
+  //                     </a>
+  //                   </Link>
+  //                 </Tag>
+  //               );
+  //             })}
+  //           </div>
+  //         </div>
+  //       ) : (
+  //         <Typography.Paragraph key={item?.id} className="border-b pb-4 mb-3">
+  //           <Link href={item.title_link}>
+  //             <Typography.Text className="flex gap-2.5">
+  //               <a className="text-sm font-medium !text-canBlack flex items-center">
+  //                 {item.title}
+  //               </a>
+  //               {item?.is_remove_subscription && (
+  //                 <Popover content="Remove subscription" placement="top">
+  //                   <SecondaryButton
+  //                     className="cursor-pointer flex items-center border-0 p-1 h-auto bg-white hover-bg-transparent"
+  //                     onClick={(e) => onRemoveSubscription(e, item)}
+  //                     onKeyDown={(e) => {
+  //                       if (e.key === "Enter" || e.key === " ") {
+  //                         e.preventDefault();
+  //                         onRemoveSubscription(e, item);
+  //                       }
+  //                     }}
+  //                     aria-label="Remove subscription"
+  //                   >
+  //                     <Image
+  //                       src="/images/minus-user-icon.svg"
+  //                       alt="Remove subscription"
+  //                       width={24}
+  //                       height={24}
+  //                     />
+  //                   </SecondaryButton>
+  //                 </Popover>
+  //               )}
+  //             </Typography.Text>
+  //           </Link>
+  //         </Typography.Paragraph>
+  //       )
+  //     )}
+  //   </div>
+
+  //   {subscriptionsList && subscriptionsList.length > 0 && (
+  //     <Pagination
+  //       hideOnSinglePage={true}
+  //       current={current}
+  //       total={subscriptionsList.length}
+  //       pageSize={5}
+  //       onChange={pageChange}
+  //       showSizeChanger={false}
+  //       className="mt-5"
+  //     />
+  //   )}
+  // </div>
 }
 
 export default TopicSubscriptionsTab;

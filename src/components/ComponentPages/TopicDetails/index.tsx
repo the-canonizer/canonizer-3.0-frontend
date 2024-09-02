@@ -1,13 +1,16 @@
 import { useRouter } from "next/router";
 import { Fragment, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Alert, BackTop, Image, Select, Typography } from "antd";
+import moment from "moment";
+
+import styles from "./topicDetails.module.scss";
 
 import {
   setCampWithScorevalue,
   setFilterCanonizedTopics,
   setShowDrawer,
-} from "../../../store/slices/filtersSlice";
-
+} from "src/store/slices/filtersSlice";
 import {
   getCanonizedCampStatementApi,
   getCurrentCampRecordApi,
@@ -17,11 +20,8 @@ import {
   getTreesApi,
 } from "src/network/api/campDetailApi";
 import { RootState, store } from "src/store";
-import CampStatementCard from "../../ComponentPages/TopicDetails/CampStatementCard";
+import CampStatementCard from "components/ComponentPages/TopicDetails/CampStatementCard";
 import CampInfoBar from "./CampInfoBar";
-import styles from "./topicDetails.module.scss";
-import { Alert, BackTop, Image, Select, Typography, message } from "antd";
-import moment from "moment";
 import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
 import {
   GetActiveSupportTopic,
@@ -33,7 +33,7 @@ import {
   setCurrentCheckSupportStatus,
 } from "src/store/slices/campDetailSlice";
 import queryParams from "src/utils/queryParams";
-import isAuth from "../../../hooks/isUserAuthenticated";
+import isAuth from "src/hooks/isUserAuthenticated";
 import SupportTreeCard from "./SupportTreeCard";
 import { fallBackSrc } from "src/assets/data-images";
 import Layout from "src/hoc/layout";
@@ -42,10 +42,10 @@ import {
   removeSupportedCamps,
   removeSupportedCampsEntireTopic,
 } from "src/network/api/userApi";
-import CampRecentActivities from "../Home-old/CampRecentActivities";
+import CampRecentActivities from "./CampRecentActivities";
 import InfoBar from "./CampInfoBar/infoBar";
 import { setOpenConsensusTreePopup } from "src/store/slices/hotTopicSlice";
-import CampDisclaimer from "../../common/CampDisclaimer";
+import CampDisclaimer from "components/common/CampDisclaimer";
 import ArchivedCampCheckBox from "../ArchivedCampCheckBox";
 import Campforum from "../CampForumTopicDetails";
 import FullScoreCheckbox from "../FullScoreCheckbox";
@@ -53,33 +53,21 @@ import SiblingCamps from "../SiblingCamps";
 import CampTree from "./CampTree";
 import { setCampActivityData } from "src/store/slices/recentActivitiesSlice";
 import SectionHeading from "../Home/FeaturedTopic/sectionsHeading";
-import { openNotificationWithIcon } from "../../common/notification/notificationBar";
+import { openNotificationWithIcon } from "components/common/notification/notificationBar";
+import ScoreTag from "../Home/TrandingTopic/scoreTag";
+import SecondaryButton from "components/shared/Buttons/SecondaryButton";
+import { CloseOutlined } from "@ant-design/icons";
 
 const { Link: AntLink } = Typography;
 
 const TopicDetails = ({ serverSideCall }: any) => {
-  let myRefToCampStatement = useRef(null);
+  const myRefToCampStatement = useRef(null);
   const didMount = useRef(false);
-  const { isUserAuthenticated } = isAuth();
-  const [loadingIndicator, setLoadingIndicator] = useState(false);
-  const [getCheckSupportStatus, setGetCheckSupportStatus] = useState({});
-  const totalSupportScore = 0;
-  const totalFullSupportScore = 0;
-  const [topicList, setTopicList] = useState([]);
-  const [isSupportTreeCardModal, setIsSupportTreeCardModal] = useState(false);
-  const [isClient, setIsClient] = useState(false);
+  const showTreeSkeltonRef = useRef(false);
 
-  const [isDelegateSupportTreeCardModal, setIsDelegateSupportTreeCardModal] =
-    useState(false);
-  const [removeSupportSpinner, setRemoveSupportSpinner] = useState(false);
-  const [isRemovingSupport, setIsRemovingSupport] = useState(false);
-  const [backGroundColorClass, setBackGroundColorClass] = useState("default");
-  const [totalCampScoreForSupportTree, setTotalCampScoreForSupportTree] =
-    useState<number>(null);
-  const [supportTreeForCamp, setSupportTreeForCamp] = useState<number>(null);
   const router = useRouter();
   const dispatch = useDispatch();
-  const showTreeSkeltonRef = useRef(false);
+
   const {
     algorithms,
     asof,
@@ -90,6 +78,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
     campExist,
     viewThisVersionCheck,
     campWithScore,
+    openConsensusTreePopup,
   } = useSelector((state: RootState) => ({
     algorithms: state.homePage?.algorithms,
     asof: state?.filters?.filterObject?.asof,
@@ -100,12 +89,26 @@ const TopicDetails = ({ serverSideCall }: any) => {
     campExist: state?.topicDetails?.tree && state?.topicDetails?.tree[1],
     viewThisVersionCheck: state?.filters?.viewThisVersionCheck,
     campWithScore: state?.filters?.campWithScoreValue,
-  }));
-
-  const { openConsensusTreePopup } = useSelector((state: RootState) => ({
     openConsensusTreePopup: state.hotTopic.openConsensusTreePopup,
   }));
 
+  const { isUserAuthenticated } = isAuth();
+
+  const [loadingIndicator, setLoadingIndicator] = useState(false);
+  const [getCheckSupportStatus, setGetCheckSupportStatus] = useState({});
+  const totalSupportScore = 0;
+  const totalFullSupportScore = 0;
+  const [topicList, setTopicList] = useState([]);
+  const [isSupportTreeCardModal, setIsSupportTreeCardModal] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+  const [isDelegateSupportTreeCardModal, setIsDelegateSupportTreeCardModal] =
+    useState(false);
+  const [removeSupportSpinner, setRemoveSupportSpinner] = useState(false);
+  const [isRemovingSupport, setIsRemovingSupport] = useState(false);
+  const [backGroundColorClass, setBackGroundColorClass] = useState("default");
+  const [totalCampScoreForSupportTree, setTotalCampScoreForSupportTree] =
+    useState<number>(null);
+  const [supportTreeForCamp, setSupportTreeForCamp] = useState<number>(null);
   const [treeExpandValue, setTreeExpandValue] = useState<any>(campWithScore);
 
   useEffect(() => setTreeExpandValue(campWithScore), [campWithScore]);
@@ -466,28 +469,21 @@ const TopicDetails = ({ serverSideCall }: any) => {
           !openConsensusTreePopup && (
             <Fragment>
               <div className="support-tree-parent-box w-full mt-14 lg:mt-0">
-                <div className="flex gap-2 items-center mb-5 ">
+                <div className="flex gap-1 items-center mb-4">
                   <SectionHeading
                     title="Support Tree"
                     infoContent=""
                     icon={null}
+                    className="!mb-0 [&_span]:mr-1"
                   />
-                  <div className="handicon-badge py-1 px-2.5 bg-canOrange rounded inline-flex items-center gap-1.5">
-                    <Image
-                      src="/images/hand-icon.svg"
-                      alt="svg"
-                      height={16}
-                      width={12}
-                    />
-                    <span className="text-white font-medium text-sm">
-                      {campRecord?.is_archive
-                        ? 0
-                        : totalCampScoreForSupportTree?.toFixed(2)}
-                    </span>
-                  </div>
+                  <ScoreTag
+                    topic_score={
+                      campRecord?.is_archive ? 0 : totalCampScoreForSupportTree
+                    }
+                  />
                 </div>
-                <div className="bg-canGray py-7 px-2.5 lg:px-6 rounded-lg">
-                  <div className="border border-canGrey2 bg-white rounded-lg lg:p-5 p-2.5">
+                <div className="bg-canGray py-7 px-2.5 lg:px-6 rounded-lg h-[400px] xl:h-[600px]">
+                  <div className="border border-canGrey2 bg-white rounded-lg lg:p-2 p-2.5 h-full">
                     <SupportTreeCard
                       loadingIndicator={loadingIndicator}
                       isRemovingSupport={isRemovingSupport}
@@ -570,12 +566,20 @@ const TopicDetails = ({ serverSideCall }: any) => {
             <div className="bg-canGray py-7 px-5 rounded-lg lg:w-[80%] w-full">
               <div className="border border-canGrey2 bg-white rounded-lg p-5 w-full">
                 <div className="consensu-tree-section">
-                  <SectionHeading
-                    title="Consensus tree"
-                    infoContent=""
-                    icon={null}
-                  />
-                  <p className="text-sm  font-medium !text-canBlack">
+                  <div className="flex justify-between items-start">
+                    <SectionHeading
+                      title="Consensus tree"
+                      infoContent=""
+                      icon={null}
+                    />
+                    <SecondaryButton
+                      className="border-0 p-0 bg-transparent h-auto"
+                      onClick={() => dispatch(setOpenConsensusTreePopup(false))}
+                    >
+                      <CloseOutlined />
+                    </SecondaryButton>
+                  </div>
+                  <p className="text-sm  font-normal !text-canBlack mt-4">
                     Collapse camps with support less than
                   </p>
 
@@ -672,7 +676,6 @@ const TopicDetails = ({ serverSideCall }: any) => {
             )}
         </div>
       </Layout>
-
       <BackTop className="printHIde" />
     </Fragment>
   );

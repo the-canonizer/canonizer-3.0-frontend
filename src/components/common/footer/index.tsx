@@ -1,7 +1,6 @@
 import { Fragment, useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { Row, Col, Typography } from "antd";
-import Image from "next/image";
+import { Row, Col, Typography, Image } from "antd";
 import Link from "next/link";
 import { useSelector } from "react-redux";
 
@@ -55,12 +54,12 @@ function Footer() {
       id: 6,
       external: true,
     },
-    {
-      link: process.env.NEXT_PUBLIC_BLOG_URL,
-      linkTitle: "Blog",
-      id: 7,
-      external: true,
-    },
+    // {
+    //   link: process.env.NEXT_PUBLIC_BLOG_URL,
+    //   linkTitle: "Blog",
+    //   id: 7,
+    //   external: true,
+    // },
     {
       link: "/topic/6-Canonizer-Jobs/1-Agreement?is_tree_open=1",
       linkTitle: "Jobs",
@@ -105,9 +104,7 @@ function Footer() {
                   <Image
                     src={`/images/logo-white.svg`}
                     alt="Canonizer"
-                    width={142}
-                    height={26}
-                    layout="intrinsic"
+                    width={150}
                   />
                 </a>
               </Link>

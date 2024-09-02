@@ -26,7 +26,7 @@ const LoginUi = ({
 }) => {
   return (
     <Card
-      className="rounded-lg pb-3 [&_.ant-card-body]:pb-4 mb-8"
+      className="rounded-lg pb-3 [&_.ant-card-body]:pb-4 mb-0"
       bordered={false}
     >
       <Form
@@ -130,7 +130,7 @@ const LoginUi = ({
 
         <Form.Item noStyle>
           <Text
-            className="text-canBlack text-base text-center block mt-4"
+            className="text-canBlack text-sm text-center block mt-4"
             id="dont-account-link"
           >
             {`Don't have an account? `}
@@ -138,7 +138,7 @@ const LoginUi = ({
               onClick={onRegister}
               id="dont-account-link-tag"
               data-testid="dont-account-link-tag"
-              className="!text-canBlue font-medium"
+              className="!text-canBlue hover:!text-canHoverBlue !font-medium"
             >
               Register
             </a>

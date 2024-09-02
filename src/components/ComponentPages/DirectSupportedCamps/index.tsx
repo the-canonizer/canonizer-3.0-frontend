@@ -6,7 +6,8 @@ import {
   getDirectSupportedCampsList,
   removeOrUpdateDirectSupportCamps,
 } from "../../../network/api/userApi";
-
+import { setOpenDrawerForDirectSupportedCamp } from "src/store/slices/campDetailSlice";
+import { useDispatch } from "react-redux";
 const DirectSupportedCampsUI = dynamic(
   () => import("./DirectSupportedCampsUI"),
   { ssr: false }
@@ -34,8 +35,11 @@ const DirectSupportedCamps = ({ search }: any) => {
   const [removeCampLink, setRemoveCamplink] = useState([]);
   const [isChangingOrder, setIsChangingOrder] = useState(false);
 
+  const dispatch = useDispatch();
+
   const handleSupportedCampsCancel = () => {
     setIsSupportedCampsModalVisible(false);
+    dispatch(setOpenDrawerForDirectSupportedCamp(false));
   };
 
   const handleSupportedCampsOpen = (data) => {
@@ -48,7 +52,8 @@ const DirectSupportedCamps = ({ search }: any) => {
     let data = directSopportedCampsListRevert.filter((val) => {
       return val.topic_num == topicId;
     });
-    if (data[0].camps.length > 0) {
+
+    if (data[0]?.camps?.length > 0) {
       let newData = [...directSupportedCampsList].map((val) => {
         if (val.topic_num == topicId) {
           return { ...val, camps: data[0].camps };
@@ -58,9 +63,16 @@ const DirectSupportedCamps = ({ search }: any) => {
       });
       setDirectSupportedCampsList(newData);
     }
-    camps.map((val) => {
-      val.dis = false;
-    });
+
+    // Check if `camps` is an array before calling `map`
+    if (Array.isArray(camps)) {
+      camps.map((val) => {
+        val.dis = false;
+      });
+    } else {
+      console.error("`camps` is not an array:", camps);
+    }
+
     setcampIds([]);
     setRemoveCamplink([]);
     setRevertBack(camps);
@@ -78,7 +90,7 @@ const DirectSupportedCamps = ({ search }: any) => {
     let data = directSupportedCampsList.filter(
       (value) => value.topic_num == cardCamp_ID
     );
-    handleRevertBack(cardCamp_ID, data[0].camps);
+    handleRevertBack(cardCamp_ID, data[0]?.camps);
     Object.keys(val).length === 0
       ? setcampIds([])
       : ((val.dis = true),
@@ -137,11 +149,11 @@ const DirectSupportedCamps = ({ search }: any) => {
     };
     let res = await removeOrUpdateDirectSupportCamps(tagsDeletedId);
     if (res && res.status_code == 200) {
-      message.success(res.message);
       setShowSaveChanges(false);
       setCardCamp_ID("");
       fetchDirectSupportedCampsList();
       setIsChangingOrder(false);
+      dispatch(setOpenDrawerForDirectSupportedCamp(false));
     }
     handleSupportedCampsCancel();
   };
@@ -169,6 +181,7 @@ const DirectSupportedCamps = ({ search }: any) => {
     if (res && res.status_code == 200) {
       message.success(res.message);
       setIsSupportedCampsModalVisible(false);
+      dispatch(setOpenDrawerForDirectSupportedCamp(false));
       fetchDirectSupportedCampsList();
     }
   };

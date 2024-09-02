@@ -8,9 +8,9 @@ import UserProfileUI from "./UserProfileUI";
 const UserProfile = () => {
   return (
     <Fragment>
-      <div className={styles.card}>
+      {/* <div className={styles.card}>
         <Sidebar />
-      </div>
+      </div> */}
       <UserProfileUI />
     </Fragment>
   );

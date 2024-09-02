@@ -5,6 +5,7 @@ import {
   CloseOutlined,
   GlobalOutlined,
   HomeOutlined,
+  LockOutlined,
   LogoutOutlined,
   MenuOutlined,
   PlayCircleOutlined,
@@ -69,9 +70,16 @@ const menuItems = [
     icon: <QuestionCircleOutlined />,
   },
   {
+    link: "/login",
+    linkTitle: "Login",
+    id: 19,
+    icon: <LockOutlined />,
+    hideOnLogin: true,
+  },
+  {
     link: "/topic/132-Help/1-Agreement?is_tree_open=1",
     linkTitle: "Notifications",
-    id: 4,
+    id: 10,
     icon: <BellOutlined />,
     isAuthReq: true,
     isMobile: true,
@@ -147,7 +155,7 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
   const menu = (
     <Menu onClick={onClick}>
       <Menu.Item key="0" className="hover:text-canHoverBlue">
-        <Link href="/settings" passHref>
+        <Link href="/settings?tab=profile_info" passHref>
           <a className="!text-sm font-normal hover:text-canHoverBlue">
             <SettingOutlined className="mr-1" />
             Account Settings
@@ -156,7 +164,7 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
       </Menu.Item>
       <Menu.Divider />
       <Menu.Item key="1" className="hover:text-canHoverBlue">
-        <Link href="/settings?tab=supported_camps" passHref>
+        <Link href="/settings?tab=direct_supported_camps" passHref>
           <a className="!text-sm font-normal ">
             <CheckCircleOutlined className="mr-1" />
             Supported Camps
@@ -248,18 +256,22 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
           {menuItems?.map((item, idx) => {
             return (
               <ListItem
-                cls={`${router?.asPath === item.link ? styles.active : ""} ${
-                  item?.isMobile ? "flex tab:hidden" : ""
+                cls={`${router?.asPath === item.link ? styles.active : null} ${
+                  item?.isMobile ? "flex tab:hidden" : null
                 } ${
                   item.linkTitle?.toLowerCase() === "start a topic"
                     ? "create-topic-header-link"
-                    : ""
+                    : null
                 } ${
                   isUserAuthenticated &&
                   item.linkTitle?.toLowerCase() === "browse"
                     ? "before:!hidden after:!hidden"
-                    : ""
-                } ${item?.isAuthReq && !isUserAuthenticated ? "hidden" : ""}`}
+                    : null
+                } ${
+                  item?.isAuthReq && !isUserAuthenticated ? "hidden" : null
+                } ${
+                  item?.hideOnLogin && isUserAuthenticated ? "hidden" : null
+                }`}
                 key={item.id + "_" + item.link + "___" + idx}
               >
                 <Link href={item.link}>

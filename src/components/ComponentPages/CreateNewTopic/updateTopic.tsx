@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
-import { Col, Form, Row, message } from "antd";
+import { useState, useEffect, useCallback } from "react";
+import { Col, Form, Row } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
+import debounce from "lodash/debounce";
 import { HomeOutlined } from "@ant-design/icons";
 
 import { globalSearchCanonizer } from "src/network/api/userApi";
@@ -12,7 +13,6 @@ import {
   setShowDrawer,
 } from "src/store/slices/filtersSlice";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
-import Breadcrumbs from "components/shared/Breadcrumbs";
 import CustomSpinner from "components/shared/CustomSpinner";
 import FromUI from "./UI/FromUI";
 import TopicInfoCard from "./UI/rightContent";
@@ -23,18 +23,18 @@ import {
   getEditTopicApi,
   updateTopicApi,
 } from "src/network/api/campManageStatementApi";
+import { openNotificationWithIcon } from "components/common/notification/notificationBar";
+import Breadcrumbs from "components/shared/Breadcrumbs";
 
 const UpdateTopic = () => {
   const { nameSpaces, catTaga } = useSelector((state: RootState) => ({
-    // filterByScore: state.filters?.filterObject?.filterByScore,
-    // filterObject: state?.filters?.filterObject,
-    // viewThisVersion: state?.filters?.viewThisVersionCheck,
     nameSpaces: state.homePage.nameSpaces,
     catTaga: state?.tag?.tags,
   }));
 
   const [nickNameList, setNickNameList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isTopicLoading, setIsopicLoading] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
   const [selectedCats, setSelectedCats] = useState([]);
   const [existingTopics, setExistingTopics] = useState([]);
@@ -42,6 +42,7 @@ const UpdateTopic = () => {
   const [haveTopicExist, setHaveTopicExist] = useState(false);
   const [isError, setIsError] = useState(false);
   const [currentTopic, setCurrentTopic] = useState(null);
+  const [currentTopicNickNames, setCurrentTopicNckNames] = useState(null);
   const [isSubmitReq, setIsSubmitReq] = useState(false);
   const [editCampStatementData, setEditCampStatementData] = useState("");
 
@@ -73,7 +74,7 @@ const UpdateTopic = () => {
   useEffect(() => {
     if (
       currentTopic?.topic_name?.trim() !== values?.topic_name?.trim() ||
-      currentTopic?.submitter_nick_id !== values?.nick_name ||
+      currentTopicNickNames?.at(0)?.id !== values?.nick_name ||
       currentTopic?.namespace_id !== values?.namespace ||
       currentTopic?.edit_summary !== values?.edit_summary ||
       !compareTags(currentTopic?.tags, selectedCats)
@@ -106,6 +107,8 @@ const UpdateTopic = () => {
 
       if (res?.status_code == 200) {
         const topicData = res?.data?.topic;
+
+        setCurrentTopicNckNames(res?.data?.nick_name);
 
         setCurrentTopic(topicData);
 
@@ -154,19 +157,6 @@ const UpdateTopic = () => {
       tags: selectedCats?.map((cat) => cat?.id),
       event_type: update ? "edit" : "update",
       note: values?.edit_summary || null,
-      // camp_num: null,
-      // statement: "",
-      // statement_id: null,
-      // objection_reason: null,
-      // statement_update: null,
-      // camp_id: null,
-      // camp_name: null,
-      // key_words: null,
-      // camp_about_url: null,
-      // camp_about_nick_id: null,
-      // parent_camp_num: null,
-      // old_parent_camp_num: null,
-      // camp_leader_nick_id: null,
     };
 
     const res = await updateTopicApi(body);
@@ -206,7 +196,7 @@ const UpdateTopic = () => {
     }
 
     if (res && res.status_code === 200) {
-      message.success(res.message);
+      openNotificationWithIcon(res.message, "success");
       storeFilterClear();
       router?.push({
         pathname: `/topic/history/${
@@ -230,12 +220,14 @@ const UpdateTopic = () => {
 
   const onTagSelect = (id) => {
     const currentitem = catTaga?.find((c) => c?.id == id);
-    const isExist = selectedCats?.find((c) => c?.id == id);
-    if (!isExist) {
-      setSelectedCats((prev) => {
-        const updatedCats = [...prev, currentitem];
-        return updatedCats;
-      });
+    if (currentitem) {
+      const isExist = selectedCats?.find((c) => c?.id == id);
+      if (!isExist) {
+        setSelectedCats((prev) => {
+          const updatedCats = [...prev, currentitem];
+          return updatedCats;
+        });
+      }
     }
   };
 
@@ -251,21 +243,26 @@ const UpdateTopic = () => {
     }
   };
 
-  const getExistingList = async () => {
-    const topicName = values?.topic_name,
+  const getExistingList = async (val = values?.topic_nam) => {
+    setIsopicLoading(true);
+    const topicName = val,
       queryParamObj: any = {
         type: "topic",
         size: 5,
         page: 1,
-        term: topicName,
+        term: topicName?.trim(),
       };
 
     const res = await globalSearchCanonizer(queryParams(queryParamObj)),
       resData = res?.data;
 
     if (res?.status_code === 200) {
-      setHaveTopicExist(true);
       if (resData?.data?.topic) {
+        if (resData?.data?.topic?.length) {
+          setHaveTopicExist(true);
+        } else {
+          setHaveTopicExist(false);
+        }
         setExistingTopics(resData?.data?.topic);
       }
 
@@ -273,11 +270,45 @@ const UpdateTopic = () => {
         setIsShowMore(true);
       }
     }
+    setIsopicLoading(false);
   };
 
-  const onTopicChange = () => {
-    setHaveTopicExist(false);
+  const isMatched = () => {
+    const isMatched = existingTopics.some(
+      (tp) =>
+        values?.topic_name?.trim()?.toLowerCase() ===
+        tp?.type_value?.trim()?.toLowerCase()
+    );
+
+    if (isMatched) {
+      setIsError(true);
+      return;
+    }
+
+    if (!isMatched) {
+      setIsError(false);
+    }
   };
+
+  useEffect(() => {
+    if (existingTopics?.length) {
+      isMatched();
+    }
+  }, [existingTopics, values?.topic_name]);
+
+  const onTopicChange = useCallback(
+    debounce((e) => {
+      const enteredValues = e?.target?.value;
+      if (enteredValues && enteredValues?.length > 2) {
+        setIsopicLoading(true);
+        // setHaveTopicExist(true);
+        getExistingList(enteredValues);
+      } else {
+        setHaveTopicExist(false);
+      }
+    }, 900),
+    []
+  );
 
   const onTopicNameBlur = () => {
     setIsError(false);
@@ -332,6 +363,7 @@ const UpdateTopic = () => {
               data={existingTopics}
               isShowMore={isShowMore}
               isError={isError}
+              isLoading={isTopicLoading}
             />
           ) : (
             <TopicInfoCard />

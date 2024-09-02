@@ -7,6 +7,7 @@ import {
   FileTextOutlined,
   HomeOutlined,
 } from "@ant-design/icons";
+import OpenAI from "openai";
 
 import { getAllUsedNickNames } from "src/network/api/campDetailApi";
 import useAuthentication from "src/hooks/isUserAuthenticated";
@@ -26,11 +27,21 @@ import CustomSpinner from "components/shared/CustomSpinner";
 import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 import ManageStatementUI from "./UI";
 import StatementPreview from "./UI/preview";
+import StatementAIPreview from "./UI/aiPreview";
+import { openNotificationWithIcon } from "components/common/notification/notificationBar";
 
-function ManageStatements({ isEdit = false, add = false }) {
+const systemPropPt = `You are a text converter for a website where people put their opinions on various topics, while writing and posting the content they are given a feature of Improve with AI, Your role is to improve that text accordingly. 
+
+If the topic suggests a science theme then follow the users leads and convert accordingly, similarly go with the users content theme and magically convert text. Do not lose essence of and meaning behind the user's real intent. Convert text in such a way that it's more readable and bit concise, like a good page from a book, everything well put and organized.`;
+
+function ManageStatements({ isEdit = false }) {
+  const openai = new OpenAI({
+    apiKey: process?.env?.NEXT_PUBLIC_OPENAI_API_KEY || "",
+    dangerouslyAllowBrowser: true,
+  });
+
   const router = useRouter();
   const [form] = Form.useForm();
-  const { confirm } = Modal;
 
   const { isUserAuthenticated } = useAuthentication();
 
@@ -54,10 +65,14 @@ function ManageStatements({ isEdit = false, add = false }) {
   });
   const [autoSaveDisplayMessage, setAutoSaveDisplayMessage] = useState("");
   const [isAutoSaving, setIsAutoSaving] = useState(false);
-  // const [autoSaveApiPayload, setAutoSaveApiPayload] = useState(null);
   const [statement, setStatement] = useState(null);
-  // const [nickName, setNickName] = useState(null);
+  const [isPrePopupLoading] = useState(false);
+  const [isAIPreviewOpen, setIsAIPreviewOpen] = useState(false);
+  const [improvedContent, setImprovedContent] = useState(null);
+
   const values = Form.useWatch([], form);
+  const [isSavingDraft, setIsSavingDraft] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
 
   const getEpochTime = () => {
     return Math.floor(Date.now() / 1000);
@@ -65,20 +80,20 @@ function ManageStatements({ isEdit = false, add = false }) {
 
   useEffect(() => {
     const updateCurrentTime = () => {
-      setTime({
-        ...time,
+      setTime((prevTime) => ({
+        ...prevTime,
         current_time: getEpochTime(),
-      });
+      }));
 
-      let timeDifferance = getEpochTime() - time?.last_save_time;
+      let timeDifference = getEpochTime() - time?.last_save_time;
 
       if (epochToMinutes(time?.last_save_time) == 0) {
         setAutoSaveDisplayMessage("");
-      } else if (epochToMinutes(timeDifferance) == 0) {
+      } else if (epochToMinutes(timeDifference) == 0) {
         setAutoSaveDisplayMessage("Saved just now");
       } else {
         setAutoSaveDisplayMessage(
-          `Saved ${epochToMinutes(timeDifferance)} min ago`
+          `Saved ${epochToMinutes(timeDifference)} min ago`
         );
       }
     };
@@ -359,7 +374,7 @@ function ManageStatements({ isEdit = false, add = false }) {
   };
 
   const saveDraftHandler = async () => {
-    setIsAutoSaving(true);
+    setIsSavingDraft(true);
 
     let payload = {
       camp_num: null,
@@ -447,7 +462,12 @@ function ManageStatements({ isEdit = false, add = false }) {
       });
     }
 
-    setIsAutoSaving(false);
+    setTimeout(() => setIsSavingDraft(false), 2000);
+    router.push(
+      `/topic/${getTopicAndCampIds().topicNum}-${
+        getTopicAndCampIds().topicName
+      }/${getTopicAndCampIds().campNum}`
+    );
   };
 
   const onFinish = async (values: any) => {
@@ -524,11 +544,6 @@ function ManageStatements({ isEdit = false, add = false }) {
                 }
                 return;
               } else if (isEdit) {
-                // if (isSaveDraft) {
-                //   router?.push({ pathname: topicURL() });
-                //   return;
-                // }
-
                 const route = `${
                   editInfo?.topic?.topic_num
                 }-${replaceSpecialCharacters(
@@ -742,20 +757,59 @@ function ManageStatements({ isEdit = false, add = false }) {
     setIsPopupLoading(false);
   };
 
-  const onSaveDraftStatement = async (e) => {
+  const onImproveClick = async (e, editor) => {
     e?.preventDefault();
-    setIsSaveDraft(true);
+    setIsGenerating(true);
 
-    // setIsAutoSaving(true)
+    try {
+      if (!openai || !openai.chat || !openai.chat.completions) {
+        openNotificationWithIcon(
+          "OpenAI API key is not configured or is invalid.",
+          "error"
+        );
+        return;
+      }
 
-    // const isValid = await form.validateFields();
+      const completion = await openai.chat.completions.create({
+        model: "gpt-4o-mini",
+        messages: [
+          { role: "system", content: systemPropPt },
+          { role: "user", content: editorState },
+        ],
+      });
 
-    // if (isValid) {
-    //   form.submit();
-    // }
+      const improvedContent = completion?.choices?.[0]?.message;
 
-    // autoSaveHandler()
-    // setIsAutoSaving(false)
+      if (!improvedContent) {
+        openNotificationWithIcon(
+          "Failed to retrieve content from OpenAI.",
+          "error"
+        );
+        return;
+      }
+
+      console.log("Result:", improvedContent);
+
+      setIsAIPreviewOpen(true);
+      setImprovedContent(improvedContent);
+    } catch (error) {
+      openNotificationWithIcon(`Error during AI improvement!`, "error");
+      return;
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  const onAiPreveiwClose = (e) => {
+    e?.preventDefault();
+    setIsAIPreviewOpen(false);
+    setImprovedContent(null);
+  };
+
+  const onInsertClick = (e) => {
+    e?.preventDefault();
+    setEditorState(improvedContent?.content);
+    onAiPreveiwClose(e);
   };
 
   return (
@@ -784,7 +838,7 @@ function ManageStatements({ isEdit = false, add = false }) {
         <Col className="flex justify-end items-center" md={12}>
           <Typography.Paragraph className="!mb-0 mr-7">
             {isAutoSaving ? (
-              <>Saving ...</>
+              "Saving ..."
             ) : (
               <>
                 {autoSaveDisplayMessage && (
@@ -798,8 +852,8 @@ function ManageStatements({ isEdit = false, add = false }) {
           </Typography.Paragraph>
           <SecondaryButton
             className="flex items-center justify-center py-2 px-8 h-auto"
-            onClick={() => saveDraftHandler()}
-            // disabled={isAutoSaving}
+            onClick={saveDraftHandler}
+            loading={isSavingDraft}
           >
             Save As Draft
             <FileTextOutlined />
@@ -829,6 +883,8 @@ function ManageStatements({ isEdit = false, add = false }) {
               autoSave={autoSave}
               isAutoSaving={isAutoSaving}
               values={values}
+              onImproveClick={onImproveClick}
+              isGenerating={isGenerating}
             />
           )}
         </Col>
@@ -838,6 +894,13 @@ function ManageStatements({ isEdit = false, add = false }) {
         isVisible={isPreviewOpen}
         statement={editorState}
         onPreveiwClose={onPreveiwClose}
+      />
+      <StatementAIPreview
+        isLoading={isPrePopupLoading}
+        isVisible={isAIPreviewOpen}
+        statement={improvedContent?.content}
+        onPreveiwClose={onAiPreveiwClose}
+        onInsertClick={onInsertClick}
       />
     </CustomSpinner>
   );

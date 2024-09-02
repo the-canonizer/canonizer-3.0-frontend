@@ -29,7 +29,7 @@ const SelectInputs = ({
 
   return (
     <Form.Item
-      className={`font-14 text-canBlack font-medium ${wrapperClassName}`}
+      className={`text-sm text-canBlack font-medium [&_label]:text-sm [&_label]:font-medium [&_.ant-form-item-explain-error]:mb-6 ${wrapperClassName}`}
       name={name}
       label={label}
       data-id={dataid}
@@ -45,7 +45,7 @@ const SelectInputs = ({
       >
         {prefix}
         <Select
-          className={`text-canBlack font-normal h-[40px] [&_.ant-select-selector]:!border-0 [&_.ant-select-selector]:!outline-none [&_.ant-select-selector]:!shadow-none commonSelectClass ${inputClassName}`}
+          className={`text-canBlack font-normal h-[40px] [&_.ant-select-selector]:!border-0 [&_.ant-select-selector]:!outline-none [&_.ant-select-selector]:!shadow-none commonSelectClass [&_.ant-select-arrow]:text-canBlack [&_.ant-select-arrow>svg]:fill-canBlack ${inputClassName}`}
           onFocus={(...rest) => {
             setIsFocused(true);
             if (onFocus) onFocus(...rest);

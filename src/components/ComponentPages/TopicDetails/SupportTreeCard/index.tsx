@@ -45,6 +45,7 @@ import { setOpenConsensusTreePopup } from "src/store/slices/hotTopicSlice";
 import dynamic from "next/dynamic";
 
 import SignCamp from "./SignCamp";
+import ScoreTag from "components/ComponentPages/Home/TrandingTopic/scoreTag";
 
 const { Paragraph } = Typography;
 const { Panel } = Collapse;
@@ -144,6 +145,7 @@ const SupportTreeCard = ({
     setGetManageSupportLoadingIndicator,
   ] = useState(true);
   const [open, setOpen] = useState(false);
+  const [supportTreeData, setSupportTreeData] = useState(null);
   const [loader, setLoader] = useState(false);
   const [drawerFor, setDrawerFor] = useState(""); //["directAdd","delegateAdd","directRemove","delegateRemove","manageSupport"]
   let drawerOptions = {
@@ -152,8 +154,8 @@ const SupportTreeCard = ({
     directRemove: "directRemove",
     delegateRemove: "delegateRemove",
     manageSupport: "manageSupport",
+    signPetition: "signPetition",
   };
-
 
   const showDrawer = () => {
     setOpen(true);
@@ -362,8 +364,10 @@ const SupportTreeCard = ({
       return "Your support has already been delegated to the Camp Leader";
     } else if (isUserAuthenticated && campLeaderExist) {
       return "As you are the current Camp Leader, hence you cannot sign the petition.";
-    } else {
+    } else if (!isUserAuthenticated) {
       return "Login to Canonizer to sign the camp";
+    } else {
+      return false;
     }
   };
 
@@ -437,7 +441,7 @@ const SupportTreeCard = ({
                           "treeListItemTitle " + styles.treeListItemTitle
                         }
                       > */}
-                    <div className="flex gap-1 items-center  boder-b p-[10px] w-full flex-wrap">
+                    <div className="flex gap-1 items-center  boder-b p-[8px] w-full flex-wrap">
                       <Link
                         className="flex flex-wrap"
                         href={{
@@ -447,38 +451,49 @@ const SupportTreeCard = ({
                           },
                         }}
                       >
-                        <a className="flex  gap-2.5 items-center flex-wrap text-canBlack hover:!text-canBlack">
+                        <a className="flex  gap-2 items-center flex-wrap text-canBlack hover:!text-canBlack line-clamp-1">
                           <span className="text-canBlack text-xs font-normal">
                             #{data[item].support_order}{" "}
                           </span>
                           <div className="w-[24px] h-[24px] rounded-full overflow-hidden bg-canLightBg flex items-center justify-center text-xs">
                             {isImageError ? (
-                              <Image
-                                src={support_image}
-                                alt="svg"
-                                height={24}
-                                width={24}
-                                onError={handleImageError}
-                              />
+                              <>
+                                <Image
+                                  src={support_image}
+                                  alt="svg"
+                                  height={24}
+                                  width={24}
+                                  onError={handleImageError}
+                                />
+                              </>
                             ) : (
                               <span>
                                 {data[item].nick_name.charAt(0).toUpperCase()}
                               </span>
                             )}
                           </div>
+                          {data[item]?.camp_leader && (
+                            <i className="icon-crown text-canOrange"></i>
+                          )}
 
-                          <span className="text-canBlack text-xs font-normal">
-                            {" "}
+                          <span className="text-canBlack text-xs 2xl:text-sm font-normal">
                             {data[item].nick_name}
                           </span>
                         </a>
                       </Link>
-
-                      <div className="flex bg-canOrange px-2.5 py-1 rounded-md gap-1 items-center">
+                      <ScoreTag
+                        topic_score={
+                          campRecord?.is_archive
+                            ? 0
+                            : is_checked && isUserAuthenticated
+                            ? data[item].full_score
+                            : data[item].score
+                        }
+                      />
+                      {/* <div className="flex bg-canOrange px-2.5 py-1 rounded-md gap-1 items-center">
                         <Image
                           src="/images/hand-icon.svg"
                           alt="svg"
-                          // height={15}
                           width={10}
                         />
                         <span className="text-xs text-white font-normal flex items-center">
@@ -487,12 +502,9 @@ const SupportTreeCard = ({
                             : is_checked && isUserAuthenticated
                             ? data[item].full_score?.toFixed(2)
                             : data[item].score?.toFixed(2)}
-                          {/* {data[item].score?.toFixed(2)} */}
                         </span>
-                      </div>
+                      </div> */}
                     </div>
-
-                    {/* </span> */}
 
                     {(userNickNameList?.length > 0 &&
                       !userNickNameList.includes(data[item].nick_name_id)) ||
@@ -523,7 +535,7 @@ const SupportTreeCard = ({
                                   campRecord?.is_archive === 1
                                 }
                                 onClick={() => handleDelegatedClick(data[item])}
-                                className="hidden group-hover:flex mb-2  items-center gap-1 justify-center bg-canLightBlue text-canBlue text-xs rounded-lg font-medium w-full !shadow-none p-2"
+                                className="hidden group-hover:flex mb-2  items-center gap-1 justify-center bg-canLightBlue text-canBlue text-xs 2xl:text-sm rounded-lg font-medium w-full !shadow-none p-2"
                               >
                                 <Image
                                   src="/images/user-minus-regular.svg"
@@ -549,13 +561,14 @@ const SupportTreeCard = ({
                             campRecord?.is_archive
                           }
                           onClick={() => removeSupportModalHandler(data, item)}
-                          className="mb-2 flex items-center gap-1 justify-center bg-canLightRed text-canRed text-base rounded-lg font-medium h-[44px] w-full"
+                          className="mb-2 flex items-center gap-1 justify-center bg-canLightRed text-canRed text-xs 2xl:text-sm rounded-lg font-medium w-full"
                         >
                           <Image
                             src="/images/user-minus-red.svg"
                             alt="svg"
-                            height={24}
-                            width={24}
+                            height={16}
+                            width={16}
+                            preview={false}
                           />
                           Remove Your Support
                         </Button>
@@ -604,14 +617,7 @@ const SupportTreeCard = ({
   const [removeForm] = Form.useForm();
 
   const removeSupportModalHandler = (data, item) => {
-    // if (currentGetCheckSupportExistsData.is_delegator) {
-    //   setIsDelegateSupportTreeCardModal(true);
-    //   } else {
-    //     setIsSupportTreeCardModal(true);
-    // }
-
     if (currentGetCheckSupportExistsData.is_delegator) {
-      // setDrawerFor("delegateRemove")
       removeDelegateSupportModal();
     } else {
       setDrawerFor(drawerOptions.directRemove);
@@ -641,6 +647,21 @@ const SupportTreeCard = ({
     removeForm.resetFields();
   };
 
+  const disableSignPetition = () => {
+    return (
+      isCampLeader()?.campLeaderExist || isCampLeader()?.delegateSupportExist
+    );
+  };
+
+  const signPetitionHandler = () => {
+    if (isUserAuthenticated) {
+      setOpen(true);
+      setDrawerFor(drawerOptions.signPetition);
+    } else {
+      router?.push("/login");
+    }
+  };
+
   const renderSupportBtn = () => {
     if (isUserAuthenticated) {
       if (
@@ -655,25 +676,17 @@ const SupportTreeCard = ({
       return K.exceptionalMessages?.directJoinSupport;
     }
   };
-  let title = `Support Tree for "${campRecord?.camp_name}" Camp`;
-
-  // remove support popup added.
 
   return loadingIndicator || loadingIndicatorSupport ? (
     <CustomSkelton
-      skeltonFor="card"
-      titleName={title}
-      bodyCount={3}
+      skeltonFor="list"
+      bodyCount={10}
       stylingClass="test"
       isButton={false}
     />
   ) : (
     <>
-      <div
-        // defaultActiveKey={["1"]}
-        // expandIconPosition="right"
-        className="topicDetailsCollapse"
-      >
+      <div className="topicDetailsCollapse flex flex-col w-full h-full">
         <SupportTreeDrawer
           onClose={onClose}
           open={open}
@@ -683,19 +696,11 @@ const SupportTreeCard = ({
           selectNickId={selectNickId}
           delegateNickName={delegateNickName}
           handleCancelSupportCamps={handleCancelSupportCamps}
+          getCheckStatusAPI={getCheckStatusAPI}
           loader={loader}
           setLoader={setLoader}
         />
-        <div className=" support-tree-sec">
-          {/* <Paragraph className="position-relative">
-            Total Support for This Camp (including sub-camps):
-            <span className="number-style">
-              {campRecord?.is_archive
-                ? 0
-                : totalCampScoreForSupportTree?.toFixed(2)}
-            </span>
-          </Paragraph> */}
-
+        <div className="support-tree-sec overflow-hidden overflow-y-auto">
           {campSupportingTree?.length > 0 ? (
             <Tree
               className={"Parent_Leaf"}
@@ -725,10 +730,10 @@ const SupportTreeCard = ({
             </CustomButton>
           )}
         </div>
-        <div className="topicDetailsCollapseFooter printHIde mt-3 w-full flex justify-center">
+        <div className="topicDetailsCollapseFooter printHIde mt-auto pt-3 w-full flex flex-col gap-2 justify-center">
           <CustomButton
             onClick={handleClickSupportCheck}
-            className="w-full justify-center bg-canGreen hover:!bg-canGreen hover:!text-white hover:!border-transparent !border-transparent h-[44px] px-8 lg:px-10 text-white flex items-center rounded-lg font-medium text-sm gap-2"
+            className="w-full justify-center bg-canGreen hover:!bg-canGreen hover:!text-white hover:!border-transparent !border-transparent h-auto py-2 text-white flex items-center rounded-lg font-medium text-sm gap-2"
             disabled={asof == "bydate" || campRecord?.is_archive == 1}
             id="manage-support-btn"
           >
@@ -736,10 +741,22 @@ const SupportTreeCard = ({
             <Image
               src="/images/hand-icon.svg"
               alt="svg"
-              height={16}
-              width={16}
+              height={14}
+              width={14}
             />
           </CustomButton>
+          <Popover content={renderPopupMsg()}>
+            <Button
+              size="large"
+              className="flex items-center justify-center border-[#4EB966] hover:!text-canBlack hover:!border-[#4EB966] hover:!bg-[#4EB9661A] bg-[#4EB9661A] rounded-lg font-medium text-sm"
+              style={{ borderRadius: "0.5rem" }}
+              block
+              disabled={disableSignPetition()}
+              onClick={() => signPetitionHandler()}
+            >
+              Sign Petition<i className="icon-user-plus ml-2"></i>
+            </Button>
+          </Popover>
         </div>
       </div>
 

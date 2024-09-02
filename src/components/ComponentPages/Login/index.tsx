@@ -6,13 +6,17 @@ import { useDispatch, useSelector } from "react-redux";
 import LoginUI from "./UI";
 
 import CustomSpinner from "components/shared/CustomSpinner";
-import { login, resendOTPForRegistration } from "src/network/api/userApi";
+import {
+  getNickNameList,
+  login,
+  resendOTPForRegistration,
+} from "src/network/api/userApi";
 import { AppDispatch, RootState } from "src/store";
-import { setEmailForOTP } from "src/store/slices/authSlice";
+import { setEmailForOTP, setUserNickNames } from "src/store/slices/authSlice";
 import { setManageSupportStatusCheck } from "src/store/slices/campDetailSlice";
 import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
 import { setValue } from "src/store/slices/utilsSlice";
-import LeftContent from "../Registration/UI/leftContent";
+import LeftContent from "./UI/leftContent";
 
 const Login = () => {
   const remember = useSelector((state: RootState) => state.utils.remember_me);
@@ -74,6 +78,13 @@ const Login = () => {
     setErrorMsg("");
   };
 
+  const fetchNickNameList = async () => {
+    let response = await getNickNameList();
+    if (response && response?.status_code === 200) {
+      dispatch(setUserNickNames(response?.data));
+    }
+  };
+
   const onFinish = async (values: any) => {
     setLoading(true);
     dispatch(setEmailForOTP(values.username?.trim()));
@@ -95,7 +106,7 @@ const Login = () => {
       );
 
       form.resetFields();
-      // fetchNickNameList();
+      fetchNickNameList();
 
       closeModal();
 

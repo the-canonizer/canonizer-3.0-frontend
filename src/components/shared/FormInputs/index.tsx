@@ -6,6 +6,7 @@ const Inputs = ({
   rules,
   placeholder,
   onKeyDown,
+  onKeyUp,
   onBlur = null,
   prefix = "",
   suffix = "",
@@ -16,10 +17,12 @@ const Inputs = ({
   wrapperClassName = "",
   inputClassName = "",
   inputMode = "",
-}: any) => {
+  disabled = false,
+}: // ...resProps
+any) => {
   return (
     <Form.Item
-      className={`font-sm text-canBlack font-normal ${wrapperClassName}`}
+      className={`text-sm text-canBlack font-normal [&_label]:text-sm [&_label]:font-medium [&_.ant-form-item-explain-error]:mb-6 ${wrapperClassName}`}
       name={name}
       label={label}
       data-id={dataid}
@@ -35,9 +38,12 @@ const Inputs = ({
           className={`text-canBlack font-normal h-[40px] rounded-md [&_.ant-input-prefix]:!text-canBlack [&_.ant-input-prefix]:mr-3 text-sm mainInput ${inputClassName}`}
           autoComplete="off"
           onKeyDown={onKeyDown}
+          onKeyUp={onKeyUp}
           onBlur={onBlur}
           maxLength={maxLength}
           inputMode={inputMode}
+          disabled={disabled}
+          // {...resProps}
         />
       ) : (
         <Input
@@ -49,9 +55,12 @@ const Inputs = ({
           className={`text-canBlack font-normal h-[40px] rounded-md [&_.ant-input-prefix]:!text-canBlack [&_.ant-input-prefix]:mr-3 text-sm mainInput ${inputClassName}`}
           autoComplete="off"
           onKeyDown={onKeyDown}
+          onKeyUp={onKeyUp}
           onBlur={onBlur}
           maxLength={maxLength}
           inputMode={inputMode}
+          disabled={disabled}
+          // {...resProps}
         />
       )}
     </Form.Item>

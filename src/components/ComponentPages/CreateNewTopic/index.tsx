@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
-import { Col, Form, Row, message } from "antd";
+import { useState, useEffect, useCallback } from "react";
+import { Col, Form, Row } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
+import debounce from "lodash/debounce";
 import { HomeOutlined } from "@ant-design/icons";
 
 import { createTopic } from "src/network/api/topicAPI";
@@ -16,24 +17,23 @@ import {
   setShowDrawer,
 } from "src/store/slices/filtersSlice";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
-import Breadcrumbs from "components/shared/Breadcrumbs";
 import CustomSpinner from "components/shared/CustomSpinner";
 import FromUI from "./UI/FromUI";
 import TopicInfoCard from "./UI/rightContent";
 import ExistingTopicList from "./UI/existingTopicList";
 import queryParams from "src/utils/queryParams";
+import { openNotificationWithIcon } from "components/common/notification/notificationBar";
+import Breadcrumbs from "components/shared/Breadcrumbs";
 
 const CreateNewTopic = () => {
   const { nameSpaces, catTaga } = useSelector((state: RootState) => ({
-    // filterByScore: state.filters?.filterObject?.filterByScore,
-    // filterObject: state?.filters?.filterObject,
-    // viewThisVersion: state?.filters?.viewThisVersionCheck,
     nameSpaces: state.homePage.nameSpaces,
     catTaga: state?.tag?.tags,
   }));
 
   const [nickNameList, setNickNameList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isTopicLoading, setIsopicLoading] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
   const [selectedCats, setSelectedCats] = useState([]);
   const [existingTopics, setExistingTopics] = useState([]);
@@ -56,12 +56,14 @@ const CreateNewTopic = () => {
   }, [form, values]);
 
   const fetchNickNameList = async () => {
+    setIsLoading(true);
     let response = await getNickNameList();
     if (response && response.status_code === 200) {
       const resData = response.data;
       setNickNameList(resData);
       form.setFieldValue("nick_name", resData[0]?.id);
     }
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -89,14 +91,15 @@ const CreateNewTopic = () => {
 
         if (errors_key.length) {
           if ("existed_topic_reference" in res.error) {
-            form.setFields([
+            await form.setFields([
               {
                 name: "topic_name",
                 value: values?.topic_name,
-                errors: res?.error?.topic_name,
+                errors: res?.error?.topic_name || [],
+                touched: true,
               },
             ]);
-            form.validateFields(["topic_name"]);
+
             setIsDisabled(false);
             setIsError(true);
             getExistingList();
@@ -118,7 +121,7 @@ const CreateNewTopic = () => {
     }
 
     if (res && res.status_code === 200) {
-      message.success(res.message);
+      openNotificationWithIcon(res.message, "success");
       storeFilterClear();
       router?.push({
         pathname: `/topic/${res.data.topic_num}-${replaceSpecialCharacters(
@@ -143,12 +146,14 @@ const CreateNewTopic = () => {
 
   const onTagSelect = (id) => {
     const currentitem = catTaga?.find((c) => c?.id == id);
-    const isExist = selectedCats?.find((c) => c?.id == id);
-    if (!isExist) {
-      setSelectedCats((prev) => {
-        const updatedCats = [...prev, currentitem];
-        return updatedCats;
-      });
+    if (currentitem) {
+      const isExist = selectedCats?.find((c) => c?.id == id);
+      if (!isExist) {
+        setSelectedCats((prev) => {
+          const updatedCats = [...prev, currentitem];
+          return updatedCats;
+        });
+      }
     }
   };
 
@@ -164,39 +169,77 @@ const CreateNewTopic = () => {
     }
   };
 
-  const getExistingList = async () => {
-    const topicName = values?.topic_name,
+  const getExistingList = async (val = values?.topic_name) => {
+    setIsopicLoading(true);
+    const topicName = val,
       queryParamObj: any = {
         type: "topic",
         size: 5,
         page: 1,
-        term: topicName,
+        term: topicName?.trim(),
       };
 
     const res = await globalSearchCanonizer(queryParams(queryParamObj)),
       resData = res?.data;
 
     if (res?.status_code === 200) {
-      setHaveTopicExist(true);
       if (resData?.data?.topic) {
         setExistingTopics(resData?.data?.topic);
+        if (resData?.data?.topic?.length) {
+          setHaveTopicExist(true);
+        } else {
+          setHaveTopicExist(false);
+        }
       }
 
       if (resData?.meta_data?.total > 5) {
         setIsShowMore(true);
+      } else {
+        setIsShowMore(false);
       }
+    }
+    setIsopicLoading(false);
+  };
+
+  const isMatched = () => {
+    const isMatched = existingTopics.some(
+      (tp) =>
+        values?.topic_name?.trim()?.toLowerCase() ===
+        tp?.type_value?.trim()?.toLowerCase()
+    );
+
+    if (isMatched) {
+      setIsError(true);
+      return;
+    }
+
+    if (!isMatched) {
+      setIsError(false);
     }
   };
 
-  const onTopicChange = () => {
-    setHaveTopicExist(false);
-  };
+  useEffect(() => {
+    if (existingTopics?.length) {
+      isMatched();
+    }
+  }, [existingTopics, values?.topic_name]);
+
+  const onTopicChange = useCallback(
+    debounce((e) => {
+      const enteredValues = e?.target?.value;
+      if (enteredValues && enteredValues?.length > 2) {
+        setIsopicLoading(true);
+        // setHaveTopicExist(true);
+        getExistingList(enteredValues);
+      } else {
+        setHaveTopicExist(false);
+      }
+    }, 900),
+    []
+  );
 
   const onTopicNameBlur = () => {
     setIsError(false);
-    if (values?.topic_name) {
-      getExistingList();
-    }
   };
 
   return (
@@ -207,7 +250,6 @@ const CreateNewTopic = () => {
           { label: "Creating a New Topic" },
         ]}
       />
-
       <Row gutter={20} className="mb-5">
         <Col lg={12}>
           <FromUI
@@ -235,6 +277,7 @@ const CreateNewTopic = () => {
               data={existingTopics}
               isShowMore={isShowMore}
               isError={isError}
+              isLoading={isTopicLoading}
             />
           ) : (
             <TopicInfoCard />

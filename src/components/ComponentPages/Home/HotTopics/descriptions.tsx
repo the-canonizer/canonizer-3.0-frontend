@@ -30,7 +30,7 @@ const CardDescription = ({
     return (
       <div
         className={`${
-          isBrowsing ? "text-base" : "text-xs"
+          isBrowsing ? "text-base" : "text-sm "
         } font-inter font-normal overflow-hidden text-canBlack opacity-80 italic`}
       >
         No description available
@@ -41,7 +41,7 @@ const CardDescription = ({
   return (
     <div
       className={`${className} ${
-        isBrowsing ? "text-base line-clamp-2" : "text-xs line-clamp-4"
+        isBrowsing ? "text-base line-clamp-2" : "text-sm line-clamp-4 "
       } font-inter !font-normal overflow-hidden text-canBlack opacity-80 [&_strong]:font-normal [&_*]:font-normal leading-[1.6]`}
       dangerouslySetInnerHTML={{
         __html: sanitizeHtml(description, {

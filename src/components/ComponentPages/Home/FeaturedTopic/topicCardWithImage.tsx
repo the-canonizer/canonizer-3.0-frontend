@@ -89,9 +89,11 @@ const SingleTopicWithImage = ({ topic, onTopicClick = null }) => {
             </div>
           </div>
           <CardDescription description={topic?.description} className="mb-6" />
-          <div className="flex justify-between pt-3 ftItems">
+          <div className="flex justify-between pt-3 mt-auto ftItems">
             <div className="text-left flex flex-col sm:flex-row justify-center items-center">
-              <TopicCatsLabel tags={topic?.topicTags} />
+              {topic?.topicTags?.length && (
+                <TopicCatsLabel tags={topic?.topicTags} />
+              )}
               <div className="absolute top-2 right-2 px-2 rounded-md bg-canBlack lg:static lg:bg-transparent lg:px-0 lg:flex">
                 <ViewCounts views={topic?.views} />
               </div>

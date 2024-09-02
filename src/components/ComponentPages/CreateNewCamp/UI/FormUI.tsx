@@ -34,7 +34,6 @@ const {
   campNameRule,
   campAboutUrlRule,
   parentCampRule,
-  // keywordsRule,
 } = messages;
 
 const CreateCampFormUI = ({
@@ -121,6 +120,13 @@ const CreateCampFormUI = ({
     parent_camp_num: values?.parent_camp_num || topicData?.camp_num,
   };
 
+  const getCampLeaderNickName = () => {
+    return (
+      campLeaderData &&
+      campLeaderData?.find((CL) => CL?.camp_leader === true)?.nick_name
+    );
+  };
+
   return (
     <Fragment>
       <CommonCards className="border-0 bg-white">
@@ -129,7 +135,7 @@ const CreateCampFormUI = ({
             {isEdit ? "Update Camp" : "Creating a New Camp"}
           </Typography.Paragraph>
           <Typography.Paragraph className="text-canBlack opacity-80 mt-3">
-            Input information required to create a camp.
+            Input information required to {isEdit ? "update" : "create"} a camp.
           </Typography.Paragraph>
         </header>
         <Form
@@ -158,7 +164,6 @@ const CreateCampFormUI = ({
                     <Fragment>
                       {labels.cr_camp_name}
                       <span className="required">*</span>
-                      <span>(Limit 30 Chars)</span>
                     </Fragment>
                   }
                   name="camp_name"
@@ -171,8 +176,9 @@ const CreateCampFormUI = ({
                       <AlignIcon fill="#242B37" />
                     </div>
                   }
-                  onKeyDown={onCampChange}
+                  onKeyUp={onCampChange}
                   onBlur={onCampNameBlur}
+                  disabled={!!(parentCamp.length < 1)}
                 />
               )}
             </Col>
@@ -188,119 +194,92 @@ const CreateCampFormUI = ({
                 getNickNameInput()
               )}
             </Col>
-            <Col xs={24} sm={12}>
-              {isLoading ? (
-                <CustomSkelton
-                  skeltonFor="list"
-                  bodyCount={1}
-                  stylingClass="listSkeleton"
-                  isButton={false}
-                />
-              ) : (
-                <Form.Item
-                  label={
-                    <>
-                      {labels.cr_parent_camp}
-                      <span className="required">*</span>
-                    </>
-                  }
-                  name="parent_camp_num"
-                  {...parentCampRule}
-                  initialValue={values?.parent_camp_num || topicData?.camp_num}
-                  className={`font-14 text-canBlack font-medium`}
-                  key="parent-div-camp"
-                >
-                  <div
-                    className={`outerDiv flex border rounded ${
-                      isParentFocused
-                        ? "border-[#40a9ff] shadow-[0 0 0 2px rgba(24, 144, 255, 0.2)"
-                        : ""
-                    }
-                    `}
-                  >
-                    <StructureIcon
-                      className="flex items-center justify-center px-2"
-                      fill="#242B37"
-                    />
-                    <Select
-                      showSearch
-                      size={"large"}
-                      placeholder="Parent camp"
-                      data-id="parent-camp"
-                      optionFilterProp="children"
-                      id="parent-camp-dropdown"
-                      filterOption={(input, option) =>
-                        ((option?.children as any)?.props?.children ?? "")
-                          .toLowerCase()
-                          .includes(input.toLowerCase())
-                      }
-                      className={`text-canBlack font-normal h-[40px] [&_.ant-select-selector]:!border-0 [&_.ant-select-selector]:!outline-none [&_.ant-select-selector]:!shadow-none border-0 [&_.ant-select-selector]:![&_.ant-select-selection-search]:!w-auto commonSelectClass`}
-                      onFocus={() => setIsParentFocused(true)}
-                      onBlur={() => setIsParentFocused(false)}
-                      onChange={(val) =>
-                        form.setFieldValue("parent_camp_num", val)
-                      }
-                      defaultValue={
-                        values?.parent_camp_num || topicData?.camp_num
-                      }
-                      value={values?.parent_camp_num || topicData?.camp_num}
-                      key="parent-camp-name"
-                    >
-                      {parentCamp.map((camp) => (
-                        <Option
-                          value={camp.camp_num}
-                          key={camp.id}
-                          id={`parent-camp-${camp.id}`}
-                          camp={camp}
-                          disabled={camp.is_archive ? true : false}
-                        >
-                          <Tooltip
-                            title={
-                              camp.is_archive ? archiveToolTipContent : null
-                            }
-                          >
-                            {camp.camp_name}
-                          </Tooltip>
-                        </Option>
-                      ))}
-                    </Select>
-                  </div>
-                </Form.Item>
-              )}
-            </Col>
-            {/* <Col xs={24} sm={12}>
-              <Form.Item
-                label={labels.cr_keywords}
-                name="key_words"
-                {...keywordsRule}
-              >
-                <Input size={"large"} placeholder="Keywords" />
-              </Form.Item>
-            </Col> */}
-            {isEdit && (
-              <Fragment>
-                <Col span={24}>
+            {parentCamp.length >= 1 && (
+              <Col xs={24} sm={12}>
+                {isLoading ? (
+                  <CustomSkelton
+                    skeltonFor="list"
+                    bodyCount={1}
+                    stylingClass="listSkeleton"
+                    isButton={false}
+                  />
+                ) : (
                   <Form.Item
                     label={
-                      <Fragment>
-                        {labels.cr_edit_summary}
-                        <span>{labels.brief}</span>
-                      </Fragment>
+                      <>
+                        {labels.cr_parent_camp}
+                        <span className="required">*</span>
+                      </>
                     }
-                    name="note"
-                    {...summaryRule}
-                    className={`font-14 text-canBlack font-medium`}
+                    name="parent_camp_num"
+                    {...parentCampRule}
+                    initialValue={
+                      values?.parent_camp_num || topicData?.camp_num
+                    }
+                    className={`text-14 text-canBlack font-medium`}
+                    key="parent-div-camp"
                   >
-                    <Input.TextArea
-                      rows={6}
-                      placeholder={placeholders.editSummary}
-                      className="rounded-lg"
-                    />
-                    <Text className="mt-1 block text-canLight">
-                      {labels.cr_keywords_sp}
-                    </Text>
+                    <div
+                      className={`outerDiv flex border rounded ${
+                        isParentFocused
+                          ? "border-[#40a9ff] shadow-[0 0 0 2px rgba(24, 144, 255, 0.2)"
+                          : ""
+                      }
+                    `}
+                    >
+                      <StructureIcon
+                        className="flex items-center justify-center px-2"
+                        fill="#242B37"
+                      />
+                      <Select
+                        showSearch
+                        size={"large"}
+                        placeholder="Parent camp"
+                        data-id="parent-camp"
+                        optionFilterProp="children"
+                        id="parent-camp-dropdown"
+                        filterOption={(input, option) =>
+                          ((option?.children as any)?.props?.children ?? "")
+                            .toLowerCase()
+                            .includes(input.toLowerCase())
+                        }
+                        className={`text-canBlack font-normal h-[40px] [&_.ant-select-selector]:!border-0 [&_.ant-select-selector]:!outline-none [&_.ant-select-selector]:!shadow-none border-0 [&_.ant-select-selector]:![&_.ant-select-selection-search]:!w-auto commonSelectClass`}
+                        onFocus={() => setIsParentFocused(true)}
+                        onBlur={() => setIsParentFocused(false)}
+                        onChange={(val) =>
+                          form.setFieldValue("parent_camp_num", val)
+                        }
+                        defaultValue={
+                          values?.parent_camp_num || topicData?.camp_num
+                        }
+                        value={values?.parent_camp_num || topicData?.camp_num}
+                        key="parent-camp-name"
+                      >
+                        {parentCamp.map((camp) => (
+                          <Option
+                            value={camp.camp_num}
+                            key={camp.id}
+                            id={`parent-camp-${camp.id}`}
+                            camp={camp}
+                            disabled={camp.is_archive ? true : false}
+                          >
+                            <Tooltip
+                              title={
+                                camp.is_archive ? archiveToolTipContent : null
+                              }
+                            >
+                              {camp.camp_name}
+                            </Tooltip>
+                          </Option>
+                        ))}
+                      </Select>
+                    </div>
                   </Form.Item>
-                </Col>
+                )}
+              </Col>
+            )}
+            {isEdit && (
+              <Fragment>
                 <Col xs={24} sm={24} xl={24}>
                   <Form.Item
                     label={
@@ -324,11 +303,8 @@ const CreateCampFormUI = ({
                                   : filterObject?.namespace_id
                               }`}
                             >
-                              <a>
-                                {campLeaderData &&
-                                  campLeaderData?.find(
-                                    (CL) => CL?.camp_leader === true
-                                  )?.nick_name}
+                              <a className="text-canBlue">
+                                {getCampLeaderNickName() + " "}
                               </a>
                             </Link>
                             is currently the camp leader )
@@ -339,7 +315,7 @@ const CreateCampFormUI = ({
                       </Fragment>
                     }
                     name="camp_leader_nick_id"
-                    className={`font-14 text-canBlack font-medium`}
+                    className={`text-14 text-canBlack font-medium`}
                   >
                     {isLoading ? (
                       <CustomSkelton
@@ -361,6 +337,7 @@ const CreateCampFormUI = ({
                           showSearch
                           size={"large"}
                           placeholder="Camp Leader"
+                          defaultValue={getCampLeaderNickName()}
                           optionFilterProp="children"
                           allowClear={false}
                           filterOption={(input, option) =>
@@ -371,6 +348,9 @@ const CreateCampFormUI = ({
                           className={`text-canBlack font-normal h-[40px] [&_.ant-select-selector]:!border-0 [&_.ant-select-selector]:!outline-none [&_.ant-select-selector]:!shadow-none border-0 [&_.ant-select-selector]:![&_.ant-select-selection-search]:!w-auto commonSelectClass`}
                           onFocus={() => setIsCampLeaderFocused(true)}
                           onBlur={() => setIsCampLeaderFocused(false)}
+                          onChange={(val) =>
+                            form.setFieldValue("camp_leader_nick_id", val)
+                          }
                         >
                           {campLeaderData?.length > 0 &&
                             campLeaderData?.map((lead) => (
@@ -386,8 +366,34 @@ const CreateCampFormUI = ({
                     )}
                   </Form.Item>
                 </Col>
+                <Col span={24}>
+                  <Form.Item
+                    label={labels.cr_edit_summary}
+                    name="note"
+                    {...summaryRule}
+                    className={`text-14 text-canBlack font-medium`}
+                  >
+                    <Input.TextArea
+                      rows={6}
+                      placeholder={placeholders.editSummary}
+                      className="rounded-lg"
+                      onChange={(e) =>
+                        form.setFieldValue("note", e?.target?.value)
+                      }
+                    />
+                  </Form.Item>
+                </Col>
               </Fragment>
             )}
+          </Row>
+
+          <Row gutter={16} className="bg-canGray mb-3 py-3 rounded-lg">
+            <Col xs={24} sm={24}>
+              <Text className="mt-1 mb-4 block text-canRed">
+                {labels.cr_keywords_sp}
+              </Text>
+            </Col>
+
             <Col xs={24} sm={12}>
               {isLoading ? (
                 <CustomSkelton
@@ -398,12 +404,7 @@ const CreateCampFormUI = ({
                 />
               ) : (
                 <Inputs
-                  label={
-                    <Fragment>
-                      {labels.cr_camp_url}
-                      <span>(Limit 1024 Chars)</span>
-                    </Fragment>
-                  }
+                  label={labels.cr_camp_url}
                   name="camp_about_url"
                   rules={campAboutUrlRule}
                   placeholder="Enter Here"
@@ -416,29 +417,13 @@ const CreateCampFormUI = ({
                   }
                 />
               )}
-              {/* <Form.Item
-                label={
-                  <Fragment>
-                    {labels.cr_camp_url}
-                    <span>(Limit 1024 Chars)</span>
-                  </Fragment>
-                }
-                name="camp_about_url"
-                {...campAboutUrlRule}
-              >
-                <Input
-                  placeholder={placeholders.campURL}
-                  size={"large"}
-                  maxLength={1024}
-                />
-              </Form.Item> */}
             </Col>
 
             <Col xs={24} sm={12}>
               <Form.Item
                 label={labels.cr_nick_name_about}
                 name="camp_about_nick_id"
-                className={`font-14 text-canBlack font-medium`}
+                className={`text-14 text-canBlack font-medium`}
                 initialValue={values?.camp_about_nick_id}
               >
                 {isLoading ? (
@@ -456,7 +441,7 @@ const CreateCampFormUI = ({
                         : ""
                     }`}
                   >
-                    <UserOutlined className="px-3 text-canBlack" />
+                    <UserOutlined className="px-3 text-canBlack bg-white" />
                     <Select
                       placeholder={placeholders.campAboutNickName}
                       allowClear
@@ -491,6 +476,9 @@ const CreateCampFormUI = ({
                 )}
               </Form.Item>
             </Col>
+          </Row>
+
+          <Row gutter={16}>
             <Col className="flex flex-col [&_.ant-checkbox-wrapper]:ml-0 [&_.ant-checkbox-wrapper]:mb-4 [&_.ant-checkbox-wrapper>span]:text-canBlack [&_.ant-checkbox-wrapper>span]:text-sm [&_.ant-checkbox-wrapper>span]:font-medium">
               <PreventSubCamps
                 options={options}
@@ -516,7 +504,6 @@ const CreateCampFormUI = ({
               >
                 Discard <CloseOutlined />
               </SecondaryButton>
-              {console.log("!isDisabled---", !isDisabled)}
               <PrimaryButton
                 htmlType="submit"
                 id="crate-camp-btn"
