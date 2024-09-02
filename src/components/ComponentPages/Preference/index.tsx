@@ -129,7 +129,7 @@ const ProfilePrefrences = () => {
   };
 
   const onFinish = async (e) => {
-    if (e && e.preventDefault) e.preventDefault();
+    e.preventDefault();
     setLoading(true);
 
     const userTags = tags.filter((ch) => ch.checked).map((ch) => ch.id);
