@@ -139,6 +139,15 @@ const TopicsList = () => {
     </div>
   );
 
+  const topicTagsInfoContent = (
+    <div className="max-w-[300px] w-full">
+      <p>
+        Topic Tags are keywords that help categorize and organize topics on Canonizer. 
+        By adding relevant tags to a topic, users can enhance discover-ability, making it easier for others to find and engage with topics that match their interests.
+      </p>
+    </div>
+  );
+
   const handlePageChange = (newPageNumber, newPageSize) => {
     setIsCanonChange(false);
     setPageNumber(newPageNumber);
@@ -215,6 +224,7 @@ const TopicsList = () => {
     setInputSearch(value?.trim());
     dispatch(setFilterCanonizedTopics({ search: value || "" }));
     setAllowClear(true);
+    setShowSearchDropdown(false);
   };
 
   let throttled: any = null;
@@ -302,7 +312,6 @@ const TopicsList = () => {
   }, []);
 
   useEffect(() => {
-    if (searchTerm) inputRef.current!.focus();
   }, [searchTerm, onSearch]);
 
   /* eslint-enable */
@@ -403,7 +412,7 @@ const TopicsList = () => {
               <Form.Item className="browse-dropdown w-full">
                 <div className="filter-popover-wrapper">
                   <p className="text-xs font-medium">Filter by Topic Tags</p>
-                  <Popover placement="right" content={infoContent}>
+                  <Popover placement="right" content={topicTagsInfoContent}>
                     <InfoCircleOutlined />
                   </Popover>
                 </div>
@@ -504,7 +513,7 @@ const TopicsList = () => {
             </Button>
           </div>
         )}
-        {loading ? (
+        {loading && !searchTerm? (
           <CustomSkelton skeltonFor="browse" />
         ) : (
           <Row gutter={[24, 24]}>
