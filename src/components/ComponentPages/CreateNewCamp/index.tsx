@@ -102,9 +102,13 @@ const CreateNewCamp = () => {
       resData = res?.data;
 
     if (res?.status_code === 200) {
-      if (resData?.data?.camp && resData?.data?.camp?.length > 0) {
+      if (resData?.data?.camp) {
         setExistingCamps(resData?.data?.camp);
-        setHaveCampExist(true);
+        if (resData?.data?.camp?.length > 0) {
+          setHaveCampExist(true);
+        } else {
+          setHaveCampExist(false);
+        }
       }
 
       if (resData?.meta_data?.total > 5) {
@@ -423,7 +427,7 @@ const CreateNewCamp = () => {
       const enteredValues = e?.target?.value;
       if (enteredValues && enteredValues?.length > 2) {
         setIsopicLoading(true);
-        setHaveCampExist(true);
+        // setHaveCampExist(true);
         getExistingList(enteredValues);
       } else {
         setHaveCampExist(false);
