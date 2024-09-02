@@ -1,15 +1,7 @@
-import HistoryContainer from "../../../components/ComponentPages/HistoryContainer";
-
-import Layout from "../../../hoc/layout";
+import HistoryContainer from "components/ComponentPages/HistoryContainer";
 
 const CampHistoryPage = () => {
-  return (
-    <>
-      {/* <Layout> */}
-      <HistoryContainer />
-      {/* </Layout> */}
-    </>
-  );
+  return <HistoryContainer />;
 };
 
 CampHistoryPage.displayName = "CampHistoryPage";
