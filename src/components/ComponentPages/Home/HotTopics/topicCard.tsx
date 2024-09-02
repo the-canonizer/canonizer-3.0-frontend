@@ -24,6 +24,7 @@ const SingleTopicCard = ({
   tag_key = "topicTags",
   maxCount = 3,
   cardClassName = "",
+  copyLink = null,
 }) => {
   const isMobile = useIsMobile();
   const router = useRouter();
@@ -56,6 +57,7 @@ const SingleTopicCard = ({
               {topic?.topic_name}
             </Typography.Paragraph>
             {scoreTag}
+             {copyLink && copyLink}
           </Typography.Text>
           <RightOutlined className="text-canBlue font-bold hidden rightArrow" />
         </div>

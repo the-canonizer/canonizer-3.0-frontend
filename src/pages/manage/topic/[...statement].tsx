@@ -42,7 +42,7 @@ export async function getServerSideProps({ req }) {
 
   const nameSpaces = await getCanonizedNameSpacesApi(token);
   const canonizedAlgorithms = await getCanonizedAlgorithmsApi(token);
-  const categories = await getAllTags(null, null, "", "desc", token);
+  const categories = await getAllTags(null, null, "", "asc", token);
 
   return {
     props: {
