@@ -436,7 +436,7 @@ const SettingsUI = () => {
         </div>
         <footer className="px-9 py-10 flex justify-start border-t border-canGrey2">
           <p className="text-base font-semibold text-canDarkRed flex gap-2.5 items-center cursor-pointer">
-            <span onClick={onClick}> LogOut</span>
+            <span onClick={onClick}> Log Out</span>
             <Image
               src="/images/logout-icon.svg"
               width={24}
