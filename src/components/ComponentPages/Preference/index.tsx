@@ -18,6 +18,8 @@ import {
   setPostalCodeDisableForProfileInfo,
   setAddForProfileInfo,
   setZipCodeForProfileInfo,
+  setGlobalUserProfileDataLanguage,
+  setGlobalUserProfileDataAlgo,
 } from "src/store/slices/campDetailSlice";
 import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
 import SectionHeading from "../Home/FeaturedTopic/sectionsHeading";
@@ -33,8 +35,6 @@ const ProfilePrefrences = () => {
   const [filteredTags, setFilteredTags] = useState([]);
   const [selectedCount, setSelectedCount] = useState(0);
   const [formVerify] = Form.useForm();
-  const [selectedLanguage, setSelectedLanguage] = useState(null);
-  const [selectedAlgorithmKey, setSelectedAlgorithmKey] = useState(null);
 
   const { Option } = Select;
   const {
@@ -44,6 +44,8 @@ const ProfilePrefrences = () => {
     updateAddress,
     birthdayForProfileInfo,
     globalUserProfileDataLastName,
+    globalUserProfileDataLanguage,
+    globalUserProfileDataAlgo
   } = useSelector((state: RootState) => ({
     globalUserProfileData: state.topicDetails.globalUserProfileData,
     privateList: state.topicDetails.privateList,
@@ -52,20 +54,21 @@ const ProfilePrefrences = () => {
     birthdayForProfileInfo: state.topicDetails.birthdayForProfileInfo,
     globalUserProfileDataLastName:
       state.topicDetails.globalUserProfileDataLastName,
+      globalUserProfileDataLanguage:
+      state.topicDetails.globalUserProfileDataLanguage,
+      globalUserProfileDataAlgo:
+      state.topicDetails.globalUserProfileDataAlgo,
   }));
+  const [selectedLanguage, setSelectedLanguage] = useState(globalUserProfileDataLanguage || null);
+  const [selectedAlgorithmKey, setSelectedAlgorithmKey] = useState(globalUserProfileDataAlgo||null);
+
+
 
   const { tags } = useSelector((state: RootState) => ({
     tags: state?.tag?.tags,
   }));
   const { isUserAuthenticated } = isAuth();
   const dispatch = useDispatch();
-  const getTags = async () => {
-    await getAllTags();
-  };
-
-  useEffect(() => {
-    getTags();
-  }, []);
 
   useEffect(() => {
     async function fetchLanguageList() {
@@ -118,7 +121,7 @@ const ProfilePrefrences = () => {
           option.push(
             <Option key={item.id} value={item.name}>
               {item.name}
-            </Option>
+            </Option>,
           );
         }
       });
@@ -130,6 +133,10 @@ const ProfilePrefrences = () => {
     setLoading(true);
 
     const userTags = tags.filter((ch) => ch.checked).map((ch) => ch.id);
+    if (!userTags?.length) {
+      setLoading(false);
+      return;
+    }
 
     try {
       const res = await savePrefTags(userTags);
@@ -175,7 +182,6 @@ const ProfilePrefrences = () => {
     return privateList?.includes(field_value) ? 0 : 1;
   };
 
-  console.log(globalUserProfileDataLastName, "fgfgfgfgfgfgfgfgfgfg");
 
   //on update profile click
   const onFinish2 = async (values: any) => {
@@ -210,6 +216,8 @@ const ProfilePrefrences = () => {
 
     let res = await UpdateUserProfileInfo(values);
     if (res && res.status_code === 200) {
+      // setshowSelectedLanguage(res?.data?.language)
+
       message.success(res.message);
       if (values?.default_algo) {
         dispatch(
@@ -221,6 +229,9 @@ const ProfilePrefrences = () => {
       dispatch(setDisableButtonForProfileInfo(false));
       dispatch(setAddForProfileInfo(false));
       dispatch(setZipCodeForProfileInfo(false));
+      dispatch(setGlobalUserProfileDataLanguage(res?.data?.language))
+      dispatch(setGlobalUserProfileDataAlgo(res?.data?.default_algo))
+
     } else {
       dispatch(setDisableButtonForProfileInfo(false));
       dispatch(setAddForProfileInfo(false));
@@ -243,72 +254,58 @@ const ProfilePrefrences = () => {
         icon={null}
         className="lg:mt-0 mt-10 mb-5"
       />
-      <Row gutter={30}>
+    <Row gutter={30}>
         <Col md={12} sm={24} className="w-full lg:mb-0 mb-5">
-          <Form.Item
-            name="language"
-            label={messages.labels.language}
-            className="
-    [&_.ant-form-item-row]:!flex-col
-    [&_.ant-form-item-row]:!flex
-    [&_.ant-form-item-row]:!items-start
-    [&_.ant-form-item-row]:!justify-start
-    [&_.ant-form-item-control]:!w-full
-    [&_.ant-select-selection-search-input]:!h-full !mb-0 text-sm text-canBlack font-medium [&_label]:text-sm [&_label]:font-medium [&_.ant-form-item-explain-error]:mb-6"
+          <p className="mb-2 mt-3 text-sm font-normal text-canBlack">
+            Language
+          </p>
+          <Select
+            id="selectLanguage"
+            size="large"
+            placeholder={"Select a language"}
+            showSearch
+            optionFilterProp="children"
+            value={selectedLanguage}
+            suffixIcon={
+              <Image
+                src="/images/caret-icon.svg"
+                width={16}
+                height={9}
+                alt=""
+              />
+            }
+            onChange={handleChangeLanguage}
+            className="text-canBlack font-normal  [&_.ant-select-selector]:!rounded-lg [&_.ant-select-selector]:!outline-none [&_.ant-select-selector]:!shadow-none commonSelectClass [&_.ant-select-arrow]:text-canBlack [&_.ant-select-arrow>svg]:fill-canBlack  [&_.ant-select-selector]:!h-11 [&_.ant-select-selector]:!flex [&_.ant-select-selector]:!items-center [&_.ant-select-selection-search>input]:!text-base placeholder:!text-base w-full [&_.ant-select-arrow]:!h-full [&_.ant-select-arrow]:!flex [&_.ant-select-arrow]:!items-center [&_.ant-select-arrow]:border-l [&_.ant-select-arrow]:border-canGrey2 [&_.ant-select-arrow]:!pl-2.5 [&_.ant-select-arrow]:!top-1/2 [&_.ant-select-arrow]:!-translate-y-1/2 [&_.ant-select-arrow]:!mt-0 "
           >
-            <Select
-              id="selectLanguage"
-              size="large"
-              placeholder="Select a language"
-              showSearch
-              optionFilterProp="children"
-              suffixIcon={
-                <Image
-                  src="/images/caret-icon.svg"
-                  width={16}
-                  height={9}
-                  alt=""
-                />
-              }
-              onChange={handleChangeLanguage}
-              className="text-canBlack font-normal h-[40px] [&_.ant-select-selector]:!rounded-lg [&_.ant-select-selector]:!outline-none [&_.ant-select-selector]:!shadow-none commonSelectClass [&_.ant-select-arrow]:text-canBlack [&_.ant-select-arrow>svg]:fill-canBlack"
-            >
-              {listOfOption(languageList, "languages")}
-            </Select>
-          </Form.Item>
+             {listOfOption(languageList, "languages")}
+
+          </Select>
         </Col>
         <Col md={12} sm={24} className="w-full">
-          <Form.Item
-            name="default_algo"
-            label={messages.labels.chooseAlgorithm}
-            className="
-[&_.ant-form-item-row]:!flex-col
-[&_.ant-form-item-row]:!flex
-[&_.ant-form-item-row]:!items-start
-[&_.ant-form-item-row]:!justify-start
-[&_.ant-form-item-control]:!w-full
-[&_.ant-select-selection-search-input]:!h-full !mb-0 text-sm text-canBlack font-medium [&_label]:text-sm [&_label]:font-medium [&_.ant-form-item-explain-error]:mb-6"
+          <p className="mb-2 mt-3 text-sm font-normal text-canBlack">
+            Default Algorithm Preferences
+          </p>
+          <Select
+            id="algorithms"
+            size="large"
+            placeholder={messages.placeholders.algorithm}
+            showSearch
+            optionFilterProp="children"
+            value={selectedAlgorithmKey}
+            suffixIcon={
+              <Image
+                src="/images/caret-icon.svg"
+                width={16}
+                height={9}
+                alt=""
+              />
+            }
+            // value={}
+            onChange={handleAlgorithmChange}
+            className="text-canBlack font-normal  [&_.ant-select-selector]:!rounded-lg [&_.ant-select-selector]:!outline-none [&_.ant-select-selector]:!shadow-none commonSelectClass [&_.ant-select-arrow]:text-canBlack [&_.ant-select-arrow>svg]:fill-canBlack  [&_.ant-select-selector]:!h-11 [&_.ant-select-selector]:!flex [&_.ant-select-selector]:!items-center [&_.ant-select-selection-search>input]:!text-base placeholder:!text-base w-full [&_.ant-select-arrow]:!h-full [&_.ant-select-arrow]:!flex [&_.ant-select-arrow]:!items-center [&_.ant-select-arrow]:border-l [&_.ant-select-arrow]:border-canGrey2 [&_.ant-select-arrow]:!pl-2.5 [&_.ant-select-arrow]:!top-1/2 [&_.ant-select-arrow]:!-translate-y-1/2 [&_.ant-select-arrow]:!mt-0 [&_.ant-select-selection-placeholder]:!text-base  "
           >
-            <Select
-              id="algorithms"
-              size="large"
-              placeholder={messages.placeholders.algorithm}
-              showSearch
-              optionFilterProp="children"
-              suffixIcon={
-                <Image
-                  src="/images/caret-icon.svg"
-                  width={16}
-                  height={9}
-                  alt=""
-                />
-              }
-              onChange={handleAlgorithmChange}
-              className="text-canBlack font-normal h-[40px] [&_.ant-select-selector]:!rounded-lg [&_.ant-select-selector]:!outline-none [&_.ant-select-selector]:!shadow-none commonSelectClass [&_.ant-select-arrow]:text-canBlack [&_.ant-select-arrow>svg]:fill-canBlack"
-            >
-              {listOfOption(algorithmList, "algorithms")}
-            </Select>
-          </Form.Item>
+            {listOfOption(algorithmList, "algorithms")}
+          </Select>
         </Col>
       </Row>
 

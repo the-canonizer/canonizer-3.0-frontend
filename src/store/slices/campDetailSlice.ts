@@ -32,6 +32,8 @@ export const treeSlice = createSlice({
     manageSupportUrlLink: null,
     CurrentCheckSupportStatus: null,
     globalUserProfileData: "",
+    globalUserProfileDataLanguage: "",
+    globalUserProfileDataAlgo: "",
     globalUserProfileDataLastName: "",
     globalUserProfileDataEmail: "",
     address: "",
@@ -193,6 +195,12 @@ export const treeSlice = createSlice({
     setGlobalUserProfileDataLastName: (state, action) => {
       state.globalUserProfileDataLastName = action.payload;
     },
+    setGlobalUserProfileDataLanguage: (state, action) => {
+      state.globalUserProfileDataLanguage = action.payload;
+    },
+    setGlobalUserProfileDataAlgo: (state, action) => {
+      state.globalUserProfileDataAlgo = action.payload;
+    },
   },
 });
 
@@ -233,6 +241,8 @@ export const {
   setZipCodeForProfileInfo,
   setBirthdayForProfileInfo,
   setGlobalUserProfileDataLastName,
+  setGlobalUserProfileDataLanguage,
+  setGlobalUserProfileDataAlgo
   // setOpenConsensusTreePopup,
 } = treeSlice.actions;
 
