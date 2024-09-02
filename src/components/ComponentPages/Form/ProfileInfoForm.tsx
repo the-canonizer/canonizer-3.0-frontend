@@ -536,7 +536,7 @@ function ProfileInfoForm({
 
         <div className="border-t border-canGrey2 pt-10">
           <SectionHeading
-            title="Additional Informaiton"
+            title="Additional INFORMATION"
             icon={null}
             className="!mb-5"
           />
