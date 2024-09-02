@@ -133,10 +133,8 @@ const ProfilePrefrences = () => {
     setLoading(true);
 
     const userTags = tags.filter((ch) => ch.checked).map((ch) => ch.id);
-    if (userTags.length === 0) {
-      // Show warning message if no tags are selected
-    //   message.warning("Please select at least one tag.");
-      setLoading(false); // Stop loading
+    if (!userTags?.length) {
+      setLoading(false);
       return;
     }
 
@@ -151,8 +149,6 @@ const ProfilePrefrences = () => {
     } finally {
       setLoading(false);
     }
-    // getTags();
-
   };
 
   const onDiscard = () => {
