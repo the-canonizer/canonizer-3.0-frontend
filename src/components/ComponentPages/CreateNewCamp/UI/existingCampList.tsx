@@ -7,6 +7,8 @@ import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 import UserEditIcon from "./userEditIcon";
 import { getHighlightedText } from "components/ComponentPages/CreateNewTopic/UI/existingTopicList";
 import CustomSkelton from "components/common/customSkelton";
+import { useDispatch } from "react-redux";
+import { setSearchValue } from "src/store/slices/searchSlice";
 
 export const getTopicNameLink = (
   item,
@@ -48,6 +50,7 @@ const ExistingCampList = ({
   onContributeCLick,
   isLoading,
 }) => {
+const dispatch = useDispatch()
   return (
     <CommonCards className="bg-topic-card-gr h-full">
       {isError && (
@@ -84,7 +87,7 @@ const ExistingCampList = ({
           footer={
             isShowMore && (
               <Link href={{ pathname: "/search/camp", query: { q: campName } }}>
-                <a className="text-canBlue uppercase text-xs font-semibold hocus:text-canHoverBlue">
+                <a className="text-canBlue uppercase text-xs font-semibold hocus:text-canHoverBlue" onClick={()=>{dispatch(setSearchValue(""))}}>
                   See more results
                 </a>
               </Link>
