@@ -64,6 +64,7 @@ export const validations: ErrorContainer = {
   nickNm: "Please select nickname!",
   topicName: "Please enter topic name!",
   topiNameMax30: "Maximum 30 character allowed!",
+  campNameMax60:"Maximum 60 character allowed!",
   topicNameSpace:
     "Topic name can only contain space and alphanumeric characters.",
   namespace: "Please select Canon!",

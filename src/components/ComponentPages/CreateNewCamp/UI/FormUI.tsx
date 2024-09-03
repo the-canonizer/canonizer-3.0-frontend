@@ -164,13 +164,14 @@ const CreateCampFormUI = ({
                     <Fragment>
                       {labels.cr_camp_name}
                       <span className="required">*</span>
+                      <span>(Limit 60 Chars)</span>
                     </Fragment>
                   }
                   name="camp_name"
                   rules={campNameRule}
                   placeholder="Camp name"
                   size={"large"}
-                  maxLength={30}
+                  maxLength={60}
                   prefix={
                     <div className="pr-3">
                       <AlignIcon fill="#242B37" />
