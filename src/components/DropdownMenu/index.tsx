@@ -166,6 +166,25 @@ const DropDownMenu = () => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const getButtonLabel = () => {
+    if (!campStatement || campStatement.length === 0) {
+      return K?.exceptionalMessages?.addCampStatementButton;
+    }
+
+    const statement = campStatement[0];
+
+    if (statement?.draft_record_id) {
+      return "Edit Draft Statement";
+    }
+
+    if (statement?.parsed_value) {
+      return K?.exceptionalMessages?.manageCampStatementButton;
+    }
+
+    return K?.exceptionalMessages?.addCampStatementButton;
+  };
+
   return (
     <div>
       <Menu className={styles.campForumDropdownMenu}>
@@ -236,7 +255,6 @@ const DropDownMenu = () => {
             if (isUserAuthenticated) {
               campOrTopicScribe(false);
             } else {
-              // setLoadingIndicator(true);
               router?.push({
                 pathname: "/login",
                 query: { returnUrl: router?.asPath },
@@ -368,15 +386,7 @@ const DropDownMenu = () => {
                   : "#"
               }
             >
-              <a>
-                {campStatement?.length > 0
-                  ? campStatement[0]?.draft_record_id
-                    ? "Edit Draft Statement"
-                    : campStatement[0]?.parsed_value
-                    ? K?.exceptionalMessages?.manageCampStatementButton
-                    : K?.exceptionalMessages?.addCampStatementButton
-                  : null}
-              </a>
+              <a>{getButtonLabel()}</a>
             </Link>
           )}
         </Menu.Item>
