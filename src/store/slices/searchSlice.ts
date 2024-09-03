@@ -21,6 +21,10 @@ export const searchSlice = createSlice({
       page: 1,
       size: 1,
       total: 1,
+      topic_total:0,
+      camp_total:0,
+      statement_total:0,
+      nickname_total:0,
     },
     searchCountForMetaData: {
       topic_total: 0,
@@ -65,6 +69,10 @@ export const searchSlice = createSlice({
         page: action.payload.page,
         size: action.payload.size,
         total: action.payload.total,
+        topic_total : action.payload.topic_total,
+        camp_total: action.payload.camp_total,
+        statement_total : action.payload.statement_total,
+        nickname_total: action.payload.nickname_total,
       };
     },
     setSearchCountForMetaData: (state, action) => {
