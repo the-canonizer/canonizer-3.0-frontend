@@ -29,13 +29,12 @@ export default function SearchSideBar() {
     router?.push("/search/topic");
   };
   const dispatch = useDispatch();
-  const { searchCountForMetaData ,searchMetaData} = useSelector(
+  const { searchCountForMetaData, searchMetaData } = useSelector(
     (state: RootState) => ({
       searchDataAll: state?.searchSlice?.searchDataAll,
       searchData: state?.searchSlice?.searchData,
       searchCountForMetaData: state?.searchSlice?.searchCountForMetaData,
       searchMetaData: state?.searchSlice?.searchMetaData,
-      
     })
   );
   return (
@@ -99,7 +98,14 @@ export default function SearchSideBar() {
                   {/* <i className="icon-topic"></i> */}
                   <a>
                     Topic{" "}
-                    <span> &nbsp;({searchValue == ""? searchMetaData?.topic_total: searchCountForMetaData?.topic_total})</span>
+                    <span>
+                      {" "}
+                      &nbsp;(
+                      {searchValue == ""
+                        ? searchMetaData?.topic_total
+                        : searchCountForMetaData?.topic_total}
+                      )
+                    </span>
                   </a>
                 </Button>
               </a>
@@ -130,7 +136,14 @@ export default function SearchSideBar() {
                   {/* <i className="icon-camp"></i> */}
                   <a>
                     Camp{" "}
-                    <span> &nbsp;({searchValue == ""? searchMetaData?.camp_total: searchCountForMetaData?.camp_total})</span>
+                    <span>
+                      {" "}
+                      &nbsp;(
+                      {searchValue == ""
+                        ? searchMetaData?.camp_total
+                        : searchCountForMetaData?.camp_total}
+                      )
+                    </span>
                   </a>
                 </Button>
               </a>
@@ -161,7 +174,11 @@ export default function SearchSideBar() {
                     Camp Statement{" "}
                     <span>
                       {" "}
-                      &nbsp;({searchValue == ""? searchMetaData?.statement_total: searchCountForMetaData?.statement_total})
+                      &nbsp;(
+                      {searchValue == ""
+                        ? searchMetaData?.statement_total
+                        : searchCountForMetaData?.statement_total}
+                      )
                     </span>
                   </a>
                 </Button>
@@ -203,7 +220,11 @@ export default function SearchSideBar() {
                     Nickname{" "}
                     <span>
                       {" "}
-                      &nbsp;({searchValue == ""? searchMetaData?.nickname_total: searchCountForMetaData?.nickname_total})
+                      &nbsp;(
+                      {searchValue == ""
+                        ? searchMetaData?.nickname_total
+                        : searchCountForMetaData?.nickname_total}
+                      )
                     </span>
                   </a>
                 </Button>

@@ -40,27 +40,29 @@ const SingleTopicCard = ({
         cardClassName
       }
       key={topic?.id}
-      onClick={()=>{
-        router?.push(`/topic/${topic?.topic_num}-${
+      onClick={() => {
+        router?.push(
+          `/topic/${topic?.topic_num}-${
             replaceSpecialCharacters(topic?.topic_name, "-") || ""
           }/${topic?.camp_num || 1}-${
             replaceSpecialCharacters(topic?.camp_name, "-") || "Agreement"
-          }`)
+          }`
+        );
       }}
     >
-        <div
-          className="flex justify-between pb-3 items-center"
-          onClick={onTopicLinkClick}
-        >
-          <Typography.Text className="flex w-11/12 items-center">
-            <Typography.Paragraph className="m-0 text-sm 2xl:text-base font-medium font-inter !mb-0 line-clamp-1">
-              {topic?.topic_name}
-            </Typography.Paragraph>
-            {scoreTag}
-             {copyLink && copyLink}
-          </Typography.Text>
-          <RightOutlined className="text-canBlue font-bold hidden rightArrow" />
-        </div>
+      <div
+        className="flex justify-between pb-3 items-center"
+        onClick={onTopicLinkClick}
+      >
+        <Typography.Text className="flex w-11/12 items-center">
+          <Typography.Paragraph className="m-0 text-sm 2xl:text-base font-medium font-inter !mb-0 line-clamp-1">
+            {topic?.topic_name}
+          </Typography.Paragraph>
+          {scoreTag}
+          {copyLink && copyLink}
+        </Typography.Text>
+        <RightOutlined className="text-canBlue font-bold hidden rightArrow" />
+      </div>
       <CardDescription
         className="topicDesc"
         description={topic?.statement?.parsed_value || topic?.statement}

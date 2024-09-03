@@ -41,7 +41,6 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
     })
   );
 
-
   useEffect(() => {
     async function apiCall() {
       const data = await getEventLineApi({
@@ -125,7 +124,6 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
     // setEventDescription(mockData[events[iteration]].event?.message);
   };
 
-
   return (
     <React.Fragment>
       {loading || !data ? (
@@ -137,7 +135,6 @@ function TimeLine({ setTimelineDescript, setLoadingEvents }: any) {
         />
       ) : (
         <div className="audio-player">
-         
           <TimelineSlider
             mockData={mockData}
             setStart={setStart}

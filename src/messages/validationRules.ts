@@ -129,10 +129,6 @@ export const otpRule = {
 
 export const phoneRule = {
   rules: [
-    // {
-    //   required: true,
-    //   message: validations.phone,
-    // },
     {
       min: 10,
       message: validations.phoneMinLength,

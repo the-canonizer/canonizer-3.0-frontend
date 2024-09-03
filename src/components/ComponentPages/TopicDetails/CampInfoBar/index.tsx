@@ -307,9 +307,16 @@ const TimelineInfoBar = ({
       <Row gutter={1}>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
           <span className="text-canLight text-xs 2xl:text-sm">Author</span>
-          <span className="text-canBlue text-sm font-medium underline">
-            {topicRecord?.submitter_nick_name}
-          </span>
+          <Link
+            href={{
+              pathname: `/user/supports/${topicRecord?.submitter_nick_id}`,
+              query: { canon: topicRecord?.namespace_id || 1 },
+            }}
+          >
+            <a className="!text-canBlue text-sm font-medium underline hover:!text-canHoverBlue">
+              {topicRecord?.submitter_nick_name}
+            </a>
+          </Link>
         </Col>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
           <span className="text-xs 2xl:text-sm text-canLight">
@@ -323,9 +330,16 @@ const TimelineInfoBar = ({
           <span className="text-xs 2xl:text-sm text-canLight">
             Submitted By
           </span>
-          <span className="text-canDarkBlack text-sm font-medium">
-            {topicRecord?.submitter_nick_name}
-          </span>
+          <Link
+            href={{
+              pathname: `/user/supports/${topicRecord?.submitter_nick_id}`,
+              query: { canon: topicRecord?.namespace_id || 1 },
+            }}
+          >
+            <a className="!text-canBlue hover:!text-canHoverBlue text-sm font-medium">
+              {topicRecord?.submitter_nick_name}
+            </a>
+          </Link>
         </Col>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
           <span className="text-xs 2xl:text-sm text-canLight">
@@ -388,9 +402,16 @@ const TimelineInfoBar = ({
       <Row gutter={5}>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
           <span className="text-xs 2xl:text-sm text-canLight">Submitter</span>
-          <span className="author-name text-canBlue text-sm font-medium underline">
-            {campRecord?.submitter_nick_name}
-          </span>
+          <Link
+            href={{
+              pathname: `/user/supports/${campRecord?.submitter_nick_id}`,
+              query: { canon: topicRecord?.namespace_id || 1 },
+            }}
+          >
+            <a className="author-name !text-canBlue hover:!text-canHoverBlue text-sm font-medium underline">
+              {campRecord?.submitter_nick_name}
+            </a>
+          </Link>
         </Col>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
           <span className="text-xs 2xl:text-sm text-canLight">
@@ -404,17 +425,29 @@ const TimelineInfoBar = ({
           <span className="text-xs 2xl:text-sm text-canLight">
             Camp about nickname :{" "}
           </span>
-          <span className="text-sm text-canBlack">
-            {campRecord && campRecord.camp_about_nick_name}
-          </span>
+          <Link
+            href={{
+              pathname: `/user/supports/${campRecord?.camp_about_nick_id}`,
+              query: { canon: topicRecord?.namespace_id || 1 },
+            }}
+          >
+            <a className="text-sm !text-canBlue hover:!text-canHoverBlue">
+              {campRecord && campRecord.camp_about_nick_name}
+            </a>
+          </Link>
         </Col>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
           <span className="text-xs 2xl:text-sm text-canLight">
             Camp about URL :{" "}
           </span>
-          <span className="text-sm text-canBlack">
+          <a
+            href={campRecord.camp_about_url}
+            className="text-sm block !text-canBlue hover:!text-canHoverBlue"
+            target="_blank"
+            rel="noreferrer"
+          >
             {campRecord && campRecord.camp_about_url}
-          </span>
+          </a>
         </Col>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
           <span className="text-xs 2xl:text-sm text-canLight">

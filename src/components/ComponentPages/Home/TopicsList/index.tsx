@@ -145,13 +145,15 @@ const TopicsList = () => {
     </div>
   );
 
-  const topicTagsInfoContent = (
+  const tagInfoContent = (
     <div className="max-w-[300px] w-full">
+      <Title level={5}>Topic Tag</Title>
       <p>
-        Topic Tags are keywords that help categorize and organize topics on
-        Canonizer. By adding relevant tags to a topic, users can enhance
-        discover-ability, making it easier for others to find and engage with
-        topics that match their interests.
+        Topic Tags are keywords that help categorize and organize topics within
+        a Canon on Canonizer. By adding relevant tags to a topic, users can
+        enhance discoverability, making it easier for others to find and engage
+        with topics that match their interests. Tags also provide context,
+        allowing users to quickly understand the focus and scope of a topic.
       </p>
     </div>
   );
@@ -419,7 +421,7 @@ const TopicsList = () => {
               <Form.Item className="browse-dropdown w-full">
                 <div className="filter-popover-wrapper">
                   <p className="text-xs font-medium">Filter by Topic Tags</p>
-                  <Popover placement="right" content={topicTagsInfoContent}>
+                  <Popover placement="right" content={tagInfoContent}>
                     <InfoCircleOutlined />
                   </Popover>
                 </div>
