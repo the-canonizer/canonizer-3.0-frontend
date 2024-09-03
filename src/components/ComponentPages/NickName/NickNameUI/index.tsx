@@ -147,6 +147,16 @@ function NickNameUI({
             }
             {...messages.nickNameRule}
             className="text-sm text-canBlack font-normal [&_label]:text-sm [&_label]:font-medium [&_.ant-form-item-explain-error]:mb-6"
+            rules={[
+              {
+                required: true,
+                message: 'Please enter a nickname.',
+              },
+              {
+                pattern: /^[a-zA-Z0-9 ]*$/, // Allow only alphanumeric characters and spaces
+                message: 'Nickname should not contain special characters.',
+              },
+            ]}
           >
             <Input
               maxLength={50}
