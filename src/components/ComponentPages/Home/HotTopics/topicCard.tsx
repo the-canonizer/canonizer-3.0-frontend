@@ -10,6 +10,7 @@ import CardDescription from "./descriptions";
 import TopicCatsLabel from "components/shared/TopicCategories";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
 import { useIsMobile } from "src/hooks/useIsMobile";
+import { useRouter } from "next/router";
 
 const propTypes = {
   topic: PropTypes.object,
@@ -23,8 +24,10 @@ const SingleTopicCard = ({
   tag_key = "topicTags",
   maxCount = 3,
   cardClassName = "",
+  copyLink = null,
 }) => {
   const isMobile = useIsMobile();
+  const router = useRouter();
 
   if (!topic) {
     return null;
@@ -33,21 +36,19 @@ const SingleTopicCard = ({
   return (
     <CommonCard
       className={
-        "border-0 h-full transition duration-300 hocus:shadow-lg [&_.rightArrow]:hover:block mainCard hocus:bg-white [&_.ant-card-body]:flex [&_.ant-card-body]:flex-col [&_.ant-card-body]:h-full fullHeightCard [&_.ant-card-body]:before:hidden [&_.ant-card-body]:after:hidden [&_.ant-card-body]:p-[15px] " +
+        "hover:cursor-pointer border-0 h-full transition duration-300 hocus:shadow-lg [&_.rightArrow]:hover:block mainCard hocus:bg-white [&_.ant-card-body]:flex [&_.ant-card-body]:flex-col [&_.ant-card-body]:h-full fullHeightCard [&_.ant-card-body]:before:hidden [&_.ant-card-body]:after:hidden [&_.ant-card-body]:p-[15px] " +
         cardClassName
       }
       key={topic?.id}
-    >
-      <Link
-        href={{
-          pathname: `/topic/${topic?.topic_num}-${
+      onClick={()=>{
+        router?.push(`/topic/${topic?.topic_num}-${
             replaceSpecialCharacters(topic?.topic_name, "-") || ""
           }/${topic?.camp_num || 1}-${
             replaceSpecialCharacters(topic?.camp_name, "-") || "Agreement"
-          }`,
-        }}
-      >
-        <a
+          }`)
+      }}
+    >
+        <div
           className="flex justify-between pb-3 items-center"
           onClick={onTopicLinkClick}
         >
@@ -56,10 +57,10 @@ const SingleTopicCard = ({
               {topic?.topic_name}
             </Typography.Paragraph>
             {scoreTag}
+             {copyLink && copyLink}
           </Typography.Text>
           <RightOutlined className="text-canBlue font-bold hidden rightArrow" />
-        </a>
-      </Link>
+        </div>
       <CardDescription
         className="topicDesc"
         description={topic?.statement?.parsed_value || topic?.statement}
