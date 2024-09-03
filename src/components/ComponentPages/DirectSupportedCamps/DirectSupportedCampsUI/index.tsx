@@ -126,6 +126,10 @@ export default function DirectSupportedCampsUI({
                     id="campsBtn"
                     className="bg-canLightGrey rounded-full border-none flex items-center gap-2.5"
                     disabled={tag.dis}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      window.location.href = tag.camp_link;
+                    }}
                   >
                     <div className={styles.btndiv}>
                       <span className="count">{tag.id}. </span>
