@@ -107,6 +107,7 @@ function SupportTreeDrawer({
   const [campIds, setcampIds] = useState([]);
   const [isQuickActionSelected, setIsQuickActionSelected] = useState(false);
   const [signCampData, setSignCampData] = useState(null);
+  const [isOrderChange, setIsOrderChange] = useState(false);
 
   const topicNum = router?.query?.camp?.at(0)?.split("-")?.at(0);
   const camp_num = router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1;
@@ -662,6 +663,7 @@ function SupportTreeDrawer({
                     }}
                     onChange={(tags) => {
                       setTagsArrayList(tags);
+                      setIsOrderChange(true);
                     }}
                   />
                 </div>
@@ -719,7 +721,11 @@ function SupportTreeDrawer({
                   <Col span={24} sm={12}>
                     <Form.Item
                       name="reason"
-                      label="(Optional) Reason for adding support"
+                      label={
+                        isOrderChange
+                          ? labels?.reasonChangeLabel
+                          : labels?.reasonLabel
+                      }
                     >
                       <div className="thm-select">
                         <div className="prefix-icon">
