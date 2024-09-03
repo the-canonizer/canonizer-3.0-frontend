@@ -55,7 +55,7 @@ function ProfileInfoForm({
   handleAddressChange,
   address,
   handleAddressSelect,
-}) {
+}:any) {
   const [step, setStep] = useState(0);
   const [updatedEmail, setUpdatedEmail] = useState("");
   const [newEmailOtp, setNewEmailOtp] = useState("");
