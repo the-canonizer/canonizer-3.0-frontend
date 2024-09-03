@@ -441,7 +441,7 @@ const TimelineInfoBar = ({
             Camp about URL :{" "}
           </span>
           <a
-            href={campRecord.camp_about_url}
+            href={campRecord && campRecord.camp_about_url}
             className="text-sm block !text-canBlue hover:!text-canHoverBlue"
             target="_blank"
             rel="noreferrer"
