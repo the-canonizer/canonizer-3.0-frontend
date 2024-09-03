@@ -150,11 +150,11 @@ function NickNameUI({
             rules={[
               {
                 required: true,
-                message: 'Please enter a nickname.',
+                message: "Please enter a nickname.",
               },
               {
                 pattern: /^[a-zA-Z0-9 ]*$/, // Allow only alphanumeric characters and spaces
-                message: 'Nickname should not contain special characters.',
+                message: "Nickname should not contain special characters.",
               },
             ]}
           >

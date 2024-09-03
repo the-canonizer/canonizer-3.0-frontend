@@ -377,7 +377,7 @@ function HistoryContainer() {
     </div>
   );
 
-  const renderButton = (type, label, count, active, classes = "",disabled) => (
+  const renderButton = (type, label, count, active, classes = "", disabled) => (
     <Button
       size="large"
       className={`btn-${type} ${classes} text-sm ${active ? "active" : ""}`}

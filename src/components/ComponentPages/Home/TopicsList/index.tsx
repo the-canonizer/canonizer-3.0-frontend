@@ -4,7 +4,7 @@ import {
   InfoCircleOutlined,
   LoadingOutlined,
 } from "@ant-design/icons";
-import { Checkbox, Popover, Select } from "antd";
+import { Checkbox, Empty, Popover, Select } from "antd";
 import { Row, Col, Typography, Divider, Form, Input, Button } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
@@ -37,6 +37,7 @@ const TopicsList = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { isUserAuthenticated } = useAuthentication();
+  const { Paragraph } = Typography;
 
   const {
     canonizedTopics,
@@ -93,6 +94,7 @@ const TopicsList = () => {
   const [showSearchDropdown, setShowSearchDropdown] = useState(false);
   const [searchLoading, setSearchLoading] = useState(false);
   const [searchedResult, setSearchedResult] = useState([]);
+  const [isReview, setIsReview] = useState(asof == "review");
 
   const mapItemsToValueLabel = (items) => {
     return items?.map((item) => ({
@@ -110,6 +112,10 @@ const TopicsList = () => {
   useEffect(() => {
     getAlltagsData();
   }, []);
+
+  useEffect(() => {
+    setIsReview(asof == "review");
+  }, [asof]);
 
   const sharedProps: any = {
     mode: "multiple",
@@ -228,6 +234,7 @@ const TopicsList = () => {
     setInputSearch(value?.trim());
     dispatch(setFilterCanonizedTopics({ search: value || "" }));
     setAllowClear(true);
+    setShowSearchDropdown(false);
   };
 
   let throttled: any = null;
@@ -314,9 +321,7 @@ const TopicsList = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    if (searchTerm) inputRef.current!.focus();
-  }, [searchTerm, onSearch]);
+  useEffect(() => {}, [searchTerm, onSearch]);
 
   /* eslint-enable */
 
@@ -517,41 +522,75 @@ const TopicsList = () => {
             </Button>
           </div>
         )}
-        {loading ? (
+        {loading && !searchTerm ? (
           <CustomSkelton skeltonFor="browse" />
         ) : (
-          <Row gutter={[24, 24]}>
-            {topicsData?.topics &&
-              topicsData?.topics?.map((ft: any, index) => (
-                <Col
-                  key={index}
-                  xs={24}
-                  sm={24}
-                  md={8}
-                  className={`${
-                    ft?.tags?.length == 0 ? "[&_.mainTags]:!hidden" : ""
-                  }`}
-                >
-                  <SingleTopicCard
-                    cardClassName="[&_.scoreTag]:mx-0 [&_.scoreTag]:ml-2 [&_.catTags]:flex-row [&_.cardCountCls]:!mt-0 [&_.scoreTag]:w-max [&_.topicDesc]:line-clamp-2"
-                    topic={{
-                      ...ft,
-                      topic_num: ft?.topic_id,
-                      topicTags: ft?.tags,
-                      views: ft?.camp_views,
-                    }}
-                    avatars={
-                      ft?.tree_structure &&
-                      ft?.tree_structure[1]?.support_tree
-                        ?.map((support) => support?.user)
-                        ?.slice(0, 5)
-                    }
-                    maxCount={5}
-                    scoreTag={<ScoreTag topic_score={ft?.topic_score} />}
-                  />
-                </Col>
-              ))}
-          </Row>
+          <>
+            {topicsData?.topics?.length == 0 ? (
+              <div className="mt-[10rem]">
+                <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />;
+              </div>
+            ) : (
+              <>
+                <Row gutter={[24, 24]}>
+                  {topicsData?.topics &&
+                    topicsData?.topics?.map((ft: any, index) => (
+                      <Col
+                        key={index}
+                        xs={24}
+                        sm={24}
+                        md={8}
+                        className={`${
+                          ft?.tags?.length == 0 ? "[&_.mainTags]:!hidden" : ""
+                        }`}
+                      >
+                        <SingleTopicCard
+                          cardClassName="[&_.scoreTag]:mx-0 [&_.scoreTag]:ml-2 [&_.catTags]:flex-row [&_.cardCountCls]:!mt-0 [&_.scoreTag]:w-max [&_.topicDesc]:line-clamp-2"
+                          topic={{
+                            ...ft,
+                            topic_num: ft?.topic_id,
+                            topicTags: ft?.tags,
+                            views: ft?.camp_views,
+                          }}
+                          avatars={
+                            ft?.tree_structure &&
+                            ft?.tree_structure[1]?.support_tree
+                              ?.map((support) => support?.user)
+                              ?.slice(0, 5)
+                          }
+                          maxCount={5}
+                          scoreTag={<ScoreTag topic_score={ft?.topic_score} />}
+                          copyLink={
+                            <>
+                              <Paragraph
+                                className="!mb-0"
+                                copyable={{
+                                  text: ft.is_archive ? (
+                                    <Popover content="Archived Topic">
+                                      {isReview
+                                        ? ft?.tree_structure &&
+                                          ft?.tree_structure[1].review_title
+                                        : ft?.topic_name}
+                                    </Popover>
+                                  ) : isReview ? (
+                                    ft?.tree_structure &&
+                                    ft?.tree_structure[1].review_title
+                                  ) : (
+                                    ft?.topic_name
+                                  ),
+                                }}
+                              >
+                                {" "}
+                              </Paragraph>
+                            </>
+                          }
+                        />
+                      </Col>
+                    ))}
+                </Row>
+              </>
+            )}
+          </>
         )}
         {totalTopics?.total_count > 10 && (
           <CustomPagination

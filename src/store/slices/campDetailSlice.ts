@@ -242,7 +242,7 @@ export const {
   setBirthdayForProfileInfo,
   setGlobalUserProfileDataLastName,
   setGlobalUserProfileDataLanguage,
-  setGlobalUserProfileDataAlgo
+  setGlobalUserProfileDataAlgo,
   // setOpenConsensusTreePopup,
 } = treeSlice.actions;
 

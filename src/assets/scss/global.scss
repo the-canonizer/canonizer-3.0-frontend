@@ -921,7 +921,7 @@ body {
 
 //search type ahead
 .input-search-topic {
-  @apply relative;
+  @apply relative max-lg:w-full;
   .suggestion-list {
     @apply w-full absolute top-full left-0 right-0 z-10 max-h-[250px] p-2.5 overflow-auto mt-0.5 bg-white border-0 shadow;
 

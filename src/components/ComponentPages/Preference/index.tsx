@@ -45,7 +45,7 @@ const ProfilePrefrences = () => {
     birthdayForProfileInfo,
     globalUserProfileDataLastName,
     globalUserProfileDataLanguage,
-    globalUserProfileDataAlgo
+    globalUserProfileDataAlgo,
   } = useSelector((state: RootState) => ({
     globalUserProfileData: state.topicDetails.globalUserProfileData,
     privateList: state.topicDetails.privateList,
@@ -54,15 +54,16 @@ const ProfilePrefrences = () => {
     birthdayForProfileInfo: state.topicDetails.birthdayForProfileInfo,
     globalUserProfileDataLastName:
       state.topicDetails.globalUserProfileDataLastName,
-      globalUserProfileDataLanguage:
+    globalUserProfileDataLanguage:
       state.topicDetails.globalUserProfileDataLanguage,
-      globalUserProfileDataAlgo:
-      state.topicDetails.globalUserProfileDataAlgo,
+    globalUserProfileDataAlgo: state.topicDetails.globalUserProfileDataAlgo,
   }));
-  const [selectedLanguage, setSelectedLanguage] = useState(globalUserProfileDataLanguage || null);
-  const [selectedAlgorithmKey, setSelectedAlgorithmKey] = useState(globalUserProfileDataAlgo||null);
-
-
+  const [selectedLanguage, setSelectedLanguage] = useState(
+    globalUserProfileDataLanguage || null
+  );
+  const [selectedAlgorithmKey, setSelectedAlgorithmKey] = useState(
+    globalUserProfileDataAlgo || null
+  );
 
   const { tags } = useSelector((state: RootState) => ({
     tags: state?.tag?.tags,
@@ -121,7 +122,7 @@ const ProfilePrefrences = () => {
           option.push(
             <Option key={item.id} value={item.name}>
               {item.name}
-            </Option>,
+            </Option>
           );
         }
       });
@@ -182,7 +183,6 @@ const ProfilePrefrences = () => {
     return privateList?.includes(field_value) ? 0 : 1;
   };
 
-
   //on update profile click
   const onFinish2 = async (values: any) => {
     let code = values.postal_code;
@@ -229,9 +229,8 @@ const ProfilePrefrences = () => {
       dispatch(setDisableButtonForProfileInfo(false));
       dispatch(setAddForProfileInfo(false));
       dispatch(setZipCodeForProfileInfo(false));
-      dispatch(setGlobalUserProfileDataLanguage(res?.data?.language))
-      dispatch(setGlobalUserProfileDataAlgo(res?.data?.default_algo))
-
+      dispatch(setGlobalUserProfileDataLanguage(res?.data?.language));
+      dispatch(setGlobalUserProfileDataAlgo(res?.data?.default_algo));
     } else {
       dispatch(setDisableButtonForProfileInfo(false));
       dispatch(setAddForProfileInfo(false));
@@ -254,7 +253,7 @@ const ProfilePrefrences = () => {
         icon={null}
         className="lg:mt-0 mt-10 mb-5"
       />
-    <Row gutter={30}>
+      <Row gutter={30}>
         <Col md={12} sm={24} className="w-full lg:mb-0 mb-5">
           <p className="mb-2 mt-3 text-sm font-normal text-canBlack">
             Language
@@ -277,8 +276,7 @@ const ProfilePrefrences = () => {
             onChange={handleChangeLanguage}
             className="text-canBlack font-normal  [&_.ant-select-selector]:!rounded-lg [&_.ant-select-selector]:!outline-none [&_.ant-select-selector]:!shadow-none commonSelectClass [&_.ant-select-arrow]:text-canBlack [&_.ant-select-arrow>svg]:fill-canBlack  [&_.ant-select-selector]:!h-11 [&_.ant-select-selector]:!flex [&_.ant-select-selector]:!items-center [&_.ant-select-selection-search>input]:!text-base placeholder:!text-base w-full [&_.ant-select-arrow]:!h-full [&_.ant-select-arrow]:!flex [&_.ant-select-arrow]:!items-center [&_.ant-select-arrow]:border-l [&_.ant-select-arrow]:border-canGrey2 [&_.ant-select-arrow]:!pl-2.5 [&_.ant-select-arrow]:!top-1/2 [&_.ant-select-arrow]:!-translate-y-1/2 [&_.ant-select-arrow]:!mt-0 "
           >
-             {listOfOption(languageList, "languages")}
-
+            {listOfOption(languageList, "languages")}
           </Select>
         </Col>
         <Col md={12} sm={24} className="w-full">
