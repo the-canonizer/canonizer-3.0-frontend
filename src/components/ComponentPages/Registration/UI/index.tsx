@@ -101,7 +101,6 @@ function RegistrationUi({
                 label={
                   <Fragment>
                     {messages.labels.firstName}
-                    {/* <span>(Limit 100 Chars)</span> */}
                     <span className="required">*</span>
                   </Fragment>
                 }
@@ -121,7 +120,6 @@ function RegistrationUi({
                 label={
                   <Fragment>
                     {messages.labels.lastName}
-                    {/* <span>(Limit 100 Chars)</span> */}
                     <span className="required">*</span>
                   </Fragment>
                 }
@@ -140,7 +138,6 @@ function RegistrationUi({
                 label={
                   <Fragment>
                     {messages.labels.email}
-                    {/* <span>(Limit 255 Chars)</span> */}
                     <span className="required">*</span>
                   </Fragment>
                 }
@@ -157,17 +154,10 @@ function RegistrationUi({
             <Col md={12} style={{ width: "100%" }}>
               <Inputs
                 name="phone"
-                label={
-                  <Fragment>
-                    {messages.labels.phone}
-                    {/* <span>(Limit 100 Chars)</span> */}
-                    {/* <span className="required">*</span> */}
-                  </Fragment>
-                }
+                label={messages.labels.phone}
                 rules={messages.phoneRule}
                 type="tel"
                 addonBefore={prefixSelector}
-                // addonAfter={prefixSelector}
                 placeholder={messages.placeholders.phone}
                 maxLength={10}
                 onKeyDown={(e) =>
@@ -176,7 +166,7 @@ function RegistrationUi({
                 prefix={<PhoneOutlined className="opacity-0" />}
                 inputMode="tel"
                 inputClassName={`numberInput [&>*]:h-[40px] [&_.ant-input-affix-wrapper]:h-full [&_.ant-input-prefix]:w-0 [&_.ant-input-group-addon]:bg-transparent`}
-                wrapperClassName="[&_.ant-form-item-explain-error]:mb-0 [&_.ant-form-item-explain-connected]:last:mb-6"
+                wrapperClassName="[&_.ant-form-item-explain-error]:!mb-0 [&_.ant-form-item-explain-connected]:last:mb-6"
               />
             </Col>
             <Col md={12} style={{ width: "100%" }}>
