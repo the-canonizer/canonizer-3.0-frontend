@@ -48,6 +48,8 @@ import { openNotificationWithIcon } from "components/common/notification/notific
 import queryParams from "src/utils/queryParams";
 import { setCheckSupportExistsData } from "src/store/slices/campDetailSlice";
 import DrawerBreadcrumbs from "./drawerBreadcrumbs";
+import { removedURLRule } from "src/messages/validationRules";
+import { labels } from "src/messages/label";
 
 const { TextArea } = Input;
 
@@ -759,7 +761,11 @@ function SupportTreeDrawer({
                 )}
                 {drawerFor !== "delegateAdd" && (
                   <Col span={24}>
-                    <Form.Item name="Citation" label="Citation link">
+                    <Form.Item
+                      name="Citation"
+                      label={labels.resonURLLabel}
+                      {...removedURLRule}
+                    >
                       <Input
                         className="thm-input"
                         size="large"
@@ -836,7 +842,11 @@ function SupportTreeDrawer({
                 </Form.Item>
               </Col>
               <Col span={24}>
-                <Form.Item name="Citation" label="Citation link">
+                <Form.Item
+                  name="Citation"
+                  label={labels.resonURLLabel}
+                  {...removedURLRule}
+                >
                   <Input
                     className="thm-input"
                     size="large"
