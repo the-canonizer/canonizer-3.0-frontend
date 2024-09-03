@@ -199,7 +199,7 @@ const DropDownMenu = () => {
           icon={
             <i
               className={`icon-subscribe ${
-                !!topicSubscriptionID && "text-primary"
+                !!topicSubscriptionID && "!text-canBlue"
               }`}
             ></i>
           }
@@ -207,7 +207,6 @@ const DropDownMenu = () => {
             if (isUserAuthenticated) {
               campOrTopicScribe(true);
             } else {
-              // setLoadingIndicator(true);
               router?.push({
                 pathname: "/login",
                 query: { returnUrl: router?.asPath },
@@ -223,7 +222,7 @@ const DropDownMenu = () => {
           icon={
             <i
               className={`icon-subscribe ${
-                !!campSubscriptionID && "text-primary"
+                !!campSubscriptionID && "!text-canBlue"
               }`}
             ></i>
           }
