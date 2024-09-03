@@ -65,7 +65,6 @@ const CreateCampFormUI = ({
     })
   );
 
-  const [isParentFocused, setIsParentFocused] = useState(false);
   const [isAboutFocused, setIsAboutFocused] = useState(false);
   const [isCampLeaderFocused, setIsCampLeaderFocused] = useState(false);
 
@@ -114,9 +113,66 @@ const CreateCampFormUI = ({
     return <SelectInputs {...selectInputProps} />;
   };
 
+  const getParentCampInput = () => {
+    const selectInputProps: any = {
+      label: (
+        <>
+          {labels.cr_parent_camp}
+          <span className="required">*</span>
+        </>
+      ),
+      key: "parent_camp_numKeys",
+      name: "parent_camp_num",
+      options: parentCamp,
+      nameKey: "camp_name",
+      placeholder: placeholders.nickName,
+      allowClear: true,
+      size: "large",
+      dataid: "nick-name",
+      showSearch: true,
+      optionFilterProp: "children",
+      inputClassName:
+        "border-0 [&_.ant-select-selector]:![&_.ant-select-selection-search]:!w-auto",
+      rules: parentCampRule,
+      prefix: (
+        <StructureIcon
+          className="flex items-center justify-center px-2"
+          fill="#242B37"
+        />
+      ),
+      onSelect: (val) => form.setFieldValue("parent_camp_num", val),
+      id: "nickname-dropdown",
+      values: values?.parent_camp_num || topicData?.camp_num,
+      isDefaultOption: false,
+      // onBlur: () => console.log("parent_camp_num", form.getFieldInstance('parent_camp_num')),
+      optionsData: parentCamp.map((camp) => (
+        <Option
+          value={camp.camp_num}
+          key={camp.id}
+          id={`parent-camp-${camp.id}`}
+          camp={camp}
+          disabled={camp.is_archive ? true : false}
+        >
+          <Tooltip title={camp.is_archive ? archiveToolTipContent : null}>
+            {camp.camp_name}
+          </Tooltip>
+        </Option>
+      )),
+    };
+
+    if (parentCamp?.length) {
+      selectInputProps.defaultValue =
+        values?.parent_camp_num || topicData?.camp_num;
+      selectInputProps.initialValue =
+        values?.parent_camp_num || topicData?.camp_num;
+      selectInputProps.key = "parentcampNamesWithKeyName";
+    }
+    return <SelectInputs {...selectInputProps} />;
+  };
+
   const formInitValue = {
     ...initialValue,
-    nick_name: values?.nick_name || nickNameList[0]?.id,
+    nick_name: values?.nick_name || parentCamp[0]?.id,
     parent_camp_num: values?.parent_camp_num || topicData?.camp_num,
   };
 
@@ -204,77 +260,7 @@ const CreateCampFormUI = ({
                     isButton={false}
                   />
                 ) : (
-                  <Form.Item
-                    label={
-                      <>
-                        {labels.cr_parent_camp}
-                        <span className="required">*</span>
-                      </>
-                    }
-                    name="parent_camp_num"
-                    {...parentCampRule}
-                    initialValue={
-                      values?.parent_camp_num || topicData?.camp_num
-                    }
-                    className={`text-14 text-canBlack font-medium`}
-                    key="parent-div-camp"
-                  >
-                    <div
-                      className={`outerDiv flex border rounded ${
-                        isParentFocused
-                          ? "border-[#40a9ff] shadow-[0 0 0 2px rgba(24, 144, 255, 0.2)"
-                          : ""
-                      }
-                    `}
-                    >
-                      <StructureIcon
-                        className="flex items-center justify-center px-2"
-                        fill="#242B37"
-                      />
-                      <Select
-                        showSearch
-                        size={"large"}
-                        placeholder="Parent camp"
-                        data-id="parent-camp"
-                        optionFilterProp="children"
-                        id="parent-camp-dropdown"
-                        filterOption={(input, option) =>
-                          ((option?.children as any)?.props?.children ?? "")
-                            .toLowerCase()
-                            .includes(input.toLowerCase())
-                        }
-                        className={`text-canBlack font-normal h-[40px] [&_.ant-select-selector]:!border-0 [&_.ant-select-selector]:!outline-none [&_.ant-select-selector]:!shadow-none border-0 [&_.ant-select-selector]:![&_.ant-select-selection-search]:!w-auto commonSelectClass`}
-                        onFocus={() => setIsParentFocused(true)}
-                        onBlur={() => setIsParentFocused(false)}
-                        onChange={(val) =>
-                          form.setFieldValue("parent_camp_num", val)
-                        }
-                        defaultValue={
-                          values?.parent_camp_num || topicData?.camp_num
-                        }
-                        value={values?.parent_camp_num || topicData?.camp_num}
-                        key="parent-camp-name"
-                      >
-                        {parentCamp.map((camp) => (
-                          <Option
-                            value={camp.camp_num}
-                            key={camp.id}
-                            id={`parent-camp-${camp.id}`}
-                            camp={camp}
-                            disabled={camp.is_archive ? true : false}
-                          >
-                            <Tooltip
-                              title={
-                                camp.is_archive ? archiveToolTipContent : null
-                              }
-                            >
-                              {camp.camp_name}
-                            </Tooltip>
-                          </Option>
-                        ))}
-                      </Select>
-                    </div>
-                  </Form.Item>
+                  getParentCampInput()
                 )}
               </Col>
             )}

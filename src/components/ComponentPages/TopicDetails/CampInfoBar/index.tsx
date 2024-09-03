@@ -397,8 +397,6 @@ const TimelineInfoBar = ({
     </div>
   );
 
-  console.log("campRecord--", campRecord);
-
   const contentForCamp = (
     <div className="popoverParent">
       <Row gutter={5}>
