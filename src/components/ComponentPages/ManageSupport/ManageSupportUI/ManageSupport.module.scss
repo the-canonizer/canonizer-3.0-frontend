@@ -44,6 +44,13 @@
   font-size: 12px;
 }
 
+.highlighted {
+  color: red; /* Or any color you prefer */
+}
+.default {
+  color: inherit; /* Or any default color */
+}
+
 .tag_btn {
   border: 1px solid #f0f0f0 !important;
   background: transparent;
@@ -134,7 +141,7 @@
 }
 
 .Bluecolor {
-  color: #4484ce !important;
+  color: #4484ce ;
 }
 
 .clear_Btn {
