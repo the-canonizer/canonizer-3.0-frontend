@@ -486,7 +486,7 @@ const CreateCampFormUI = ({
           {objection && (
             <Input.TextArea
               size="large"
-              rows={1}
+              rows={6}
               maxLength={100}
               className="mb-6"
             />
