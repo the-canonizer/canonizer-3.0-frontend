@@ -1,5 +1,5 @@
-import { Fragment } from "react";
-import { Form, Row, Col, Typography } from "antd";
+import { Fragment, useEffect } from "react";
+import { Form, Row, Col, Typography, Input } from "antd";
 import {
   CloseOutlined,
   FileTextOutlined,
@@ -8,7 +8,7 @@ import {
 } from "@ant-design/icons";
 
 import messages from "src/messages";
-import { changeSlashToArrow } from "src/utils/generalUtility";
+import { allowedEmojies, changeSlashToArrow } from "src/utils/generalUtility";
 import Inputs from "components/shared/FormInputs";
 import SelectInputs from "components/shared/FormInputs/select";
 import AlignIcon from "./alignIcon";
@@ -18,6 +18,8 @@ import PrimaryButton from "components/shared/Buttons/PrimariButton";
 import CommonCards from "components/shared/Card";
 import Tags from "components/shared/Tag";
 import CustomSkelton from "components/common/customSkelton";
+import { useRouter } from "next/router";
+import K from "src/constants";
 
 const { labels, placeholders, nickNmRule, topicNameRule, namespaceRule } =
   messages;
@@ -40,6 +42,16 @@ const CreateTopicFromUI = ({
   editCampStatementData,
   isEdit = false,
 }) => {
+  const router = useRouter();
+  const historyOf = router?.asPath.split("/")?.at(2);
+  const objection =
+    router?.query?.["statement"]?.at(0)?.split("-")?.at(1) == "objection";
+
+  // useEffect(()=>{
+  //   console.log("historyOf",historyOf)
+  //   console.log("rrr...",objection)
+  // },[])
+
   const getNickNameInput = () => {
     const selectInputProps: any = {
       label: (
@@ -77,7 +89,11 @@ const CreateTopicFromUI = ({
     <CommonCards className="border-0 bg-white">
       <header className="mb-14">
         <Typography.Paragraph className="text-xl text-canBlack font-medium">
-          {isEdit ? "Update Topic" : "Start a New Topic"}
+          {objection
+            ? "Submit Objection"
+            : isEdit
+            ? "Update Topic"
+            : "Start a New Topic"}
         </Typography.Paragraph>
       </header>
       <Form
@@ -128,6 +144,7 @@ const CreateTopicFromUI = ({
                 onBlur={onTopicNameBlur}
                 dataid="topic-name"
                 key="topic-name-key"
+                disabled={objection}
               />
             )}
           </Col>
@@ -146,89 +163,100 @@ const CreateTopicFromUI = ({
               {labels.cr_nick_name_sp}
             </div> */}
           </Col>
-          <Col xs={24} sm={12} key={"namespaces_div"}>
-            {isLoading ? (
-              <CustomSkelton
-                skeltonFor="list"
-                bodyCount={1}
-                stylingClass="listSkeleton"
-                isButton={false}
-              />
-            ) : (
-              <SelectInputs
-                label={
-                  <Fragment>
-                    {labels.cr_namespace}
-                    <span className="required">*</span>
-                    {/* <span>
+          {!objection && (
+            <>
+              <Col xs={24} sm={12} key={"namespaces_div"}>
+                {isLoading ? (
+                  <CustomSkelton
+                    skeltonFor="list"
+                    bodyCount={1}
+                    stylingClass="listSkeleton"
+                    isButton={false}
+                  />
+                ) : (
+                  <SelectInputs
+                    label={
+                      <Fragment>
+                        {labels.cr_namespace}
+                        <span className="required">*</span>
+                        {/* <span>
                       (General is recommended, unless you know otherwise)
                     </span> */}
-                  </Fragment>
-                }
-                name="namespace"
-                options={nameSpaces}
-                placeholder={placeholders.namespace}
-                size={"large"}
-                defaultValue={values?.namespace || nameSpaces[0]?.id}
-                initialValue={values?.namespace || nameSpaces[0]?.id}
-                // value={values?.namespace}
-                key={
-                  "namespaces_label" + values?.namespace || nameSpaces[0]?.id
-                }
-                dataid="nick-namespace"
-                allowClear
-                showSearch
-                optionFilterProp="children"
-                inputClassName="border-0"
-                rules={namespaceRule}
-                prefix={
-                  <StructureIcon
-                    className="flex items-center justify-center px-2"
-                    fill="#242B37"
+                      </Fragment>
+                    }
+                    name="namespace"
+                    options={nameSpaces}
+                    placeholder={placeholders.namespace}
+                    size={"large"}
+                    defaultValue={values?.namespace || nameSpaces[0]?.id}
+                    initialValue={values?.namespace || nameSpaces[0]?.id}
+                    // value={values?.namespace}
+                    key={
+                      "namespaces_label" + values?.namespace ||
+                      nameSpaces[0]?.id
+                    }
+                    dataid="nick-namespace"
+                    allowClear
+                    showSearch
+                    optionFilterProp="children"
+                    inputClassName="border-0"
+                    rules={namespaceRule}
+                    prefix={
+                      <StructureIcon
+                        className="flex items-center justify-center px-2"
+                        fill="#242B37"
+                      />
+                    }
+                    isLabelRequiredFormat={true}
+                    formatFunc={changeSlashToArrow}
+                    onChange={(val) => form.setFieldValue("namespace", val)}
+                    onSearch={(val) => {
+                      return;
+                    }}
+                    loading={isLoading}
                   />
-                }
-                isLabelRequiredFormat={true}
-                formatFunc={changeSlashToArrow}
-                onChange={(val) => form.setFieldValue("namespace", val)}
-                onSearch={(val) => {
-                  return;
-                }}
-                loading={isLoading}
-              />
-            )}
-          </Col>
-          <Col xs={24} sm={12}>
-            {isLoading ? (
-              <CustomSkelton
-                skeltonFor="list"
-                bodyCount={1}
-                stylingClass="listSkeleton"
-                isButton={false}
-              />
-            ) : (
-              <SelectInputs
-                label={labels.cateLabel}
-                name="tags"
-                options={categories}
-                placeholder={placeholders.catSelect}
-                allowClear
-                size={"large"}
-                dataid="topic-category"
-                showSearch
-                optionFilterProp="children"
-                inputClassName="border-0"
-                rules={null}
-                nameKey="title"
-                prefix={
-                  <AlignIcon
-                    className="flex items-center justify-center px-2"
-                    fill="#242B37"
+                )}
+              </Col>
+            </>
+          )}
+
+          {!objection ? (
+            <>
+              <Col xs={24} sm={12}>
+                {isLoading ? (
+                  <CustomSkelton
+                    skeltonFor="list"
+                    bodyCount={1}
+                    stylingClass="listSkeleton"
+                    isButton={false}
                   />
-                }
-                onChange={onTagSelect}
-              />
-            )}
-          </Col>
+                ) : (
+                  <SelectInputs
+                    label={labels.cateLabel}
+                    name="tags"
+                    options={categories}
+                    placeholder={placeholders.catSelect}
+                    allowClear
+                    size={"large"}
+                    dataid="topic-category"
+                    showSearch
+                    optionFilterProp="children"
+                    inputClassName="border-0"
+                    rules={null}
+                    nameKey="title"
+                    prefix={
+                      <AlignIcon
+                        className="flex items-center justify-center px-2"
+                        fill="#242B37"
+                      />
+                    }
+                    onChange={onTagSelect}
+                  />
+                )}
+              </Col>
+            </>
+          ) : null}
+
           <Col xs={24} className="mb-5">
             {isLoading ? (
               <CustomSkelton
@@ -252,7 +280,7 @@ const CreateTopicFromUI = ({
               ))
             )}
           </Col>
-          {isEdit && (
+          {!objection && isEdit && (
             <Col xs={24} xl={24}>
               <Inputs
                 name="edit_summary"
@@ -267,33 +295,73 @@ const CreateTopicFromUI = ({
           )}
         </Row>
 
-        {isLoading ? (
-          <CustomSkelton
-            skeltonFor="list"
-            bodyCount={1}
-            stylingClass="listSkeleton"
-            isButton={false}
-          />
-        ) : (
-          <div className="mt-4 flex justify-start items-center">
-            <SecondaryButton
-              onClick={onCancel}
-              id="cancel-btn"
-              data-testid="cancel-btn"
-              className="mr-4 flex justify-center items-center py-5 px-6 w-[200px] border-canBlue"
-            >
-              Discard <CloseOutlined />
-            </SecondaryButton>
+        {objection && (
+          <Form.Item
+            rules={[
+              {
+                required: true,
+                message: K?.exceptionalMessages?.objectionRequireErrorMsg,
+              },
+              {
+                pattern: /[^ \s]/,
+                message: K?.exceptionalMessages?.objectionIsRequire,
+              },
+              allowedEmojies(),
+            ]}
+            name="objection_reason"
+            label={
+              <>
+                Your Objection Reason <span className="required">*</span>{" "}
+                <small>(Limit 100 Char) </small>
+              </>
+            }
+          >
+            <Input.TextArea size="large" rows={6} maxLength={100} />
+          </Form.Item>
+        )}
+
+        {objection ? (
+          <>
             <PrimaryButton
               htmlType="submit"
-              id="create-topic-btn"
-              data-testid="create-topic-btn"
-              disabled={!isDisabled}
-              className="flex justify-center items-center py-5 px-6 w-[200px]"
+              id="crate-camp-btn"
+              data-testid="btn"
+              className="flex justify-center items-center py-5 px-6"
             >
-              {isEdit ? "Update Topic" : "Save Topic"} <SaveOutlined />
+              {"Submit Objection"}
             </PrimaryButton>
-          </div>
+          </>
+        ) : (
+          <>
+            {isLoading ? (
+              <CustomSkelton
+                skeltonFor="list"
+                bodyCount={1}
+                stylingClass="listSkeleton"
+                isButton={false}
+              />
+            ) : (
+              <div className="mt-4 flex justify-start items-center">
+                <SecondaryButton
+                  onClick={onCancel}
+                  id="cancel-btn"
+                  data-testid="cancel-btn"
+                  className="mr-4 flex justify-center items-center py-5 px-6 w-[200px] border-canBlue"
+                >
+                  Discard <CloseOutlined />
+                </SecondaryButton>
+                <PrimaryButton
+                  htmlType="submit"
+                  id="create-topic-btn"
+                  data-testid="create-topic-btn"
+                  disabled={!isDisabled}
+                  className="flex justify-center items-center py-5 px-6 w-[200px]"
+                >
+                  {isEdit ? "Update Topic" : "Save Topic"} <SaveOutlined />
+                </PrimaryButton>
+              </div>
+            )}
+          </>
         )}
       </Form>
     </CommonCards>
