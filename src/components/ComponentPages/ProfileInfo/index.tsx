@@ -404,6 +404,9 @@ const ProfileInfo = () => {
       postalCodeDisable={postalCodeDisable}
       viewEmail={viewEmail}
       userProfileData={userProfileData}
+      handleAddressChange={handleAddressChange}
+      handleAddressSelect={handleAddressSelect}
+      address={address}
     />
   );
 };

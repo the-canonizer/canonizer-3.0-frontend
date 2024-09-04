@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import {
   Row,
   Col,
@@ -10,10 +10,12 @@ import {
   Space,
   Modal,
   Drawer,
+  Button,
 } from "antd";
 import moment from "moment";
 import {
   ArrowRightOutlined,
+  CalendarOutlined,
   CloseOutlined,
   EditOutlined,
   LeftOutlined,
@@ -37,6 +39,8 @@ import { RootState } from "src/store";
 import SectionHeading from "../Home/FeaturedTopic/sectionsHeading";
 import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 import PrimaryButton from "components/shared/Buttons/PrimariButton";
+import PlacesAutocomplete from "react-places-autocomplete";
+import React from "react";
 
 const { Option } = Select;
 
@@ -49,7 +53,10 @@ function ProfileInfoForm({
   postalCodeDisable,
   viewEmail,
   userProfileData,
-}) {
+  handleAddressChange,
+  address,
+  handleAddressSelect,
+}:any) {
   const [step, setStep] = useState(0);
   const [updatedEmail, setUpdatedEmail] = useState("");
   const [newEmailOtp, setNewEmailOtp] = useState("");
@@ -66,6 +73,7 @@ function ProfileInfoForm({
     new Array(6).fill("")
   );
   const [saveOtpValue, setSaveOtpValue] = useState("");
+  const [loaded, setLoaded] = useState(false);
 
   const { disableButtonForProfileInfo, postalCodeDisableForProfileInfo } =
     useSelector((state: RootState) => ({
@@ -74,7 +82,15 @@ function ProfileInfoForm({
       postalCodeDisableForProfileInfo:
         state.topicDetails.postalCodeDisableForProfileInfo,
     }));
-
+  useEffect(() => {
+    const scripttag = document.createElement("script");
+    scripttag.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_API_KEY}&libraries=places`;
+    scripttag.addEventListener("load", () => setLoaded(true));
+    document.body.appendChild(scripttag);
+    return () => {
+      document.body.removeChild(scripttag);
+    };
+  }, []);
   useEffect(() => {
     // Assuming `userProfileData` is the object containing initial values
     setInitialValues(userProfileData);
@@ -126,9 +142,13 @@ function ProfileInfoForm({
       const statusCode = await replaceAndUpdateNewEmail();
       if (statusCode === 200) {
         setDrawerOpen(false);
-        // setStep(4);
+        setStep(0);
       }
     }
+  };
+
+  const newEmailResendOtp = async () => {
+    await updateNewEmail();
   };
 
   const handleNewEmailSetup = () => {
@@ -222,57 +242,75 @@ function ProfileInfoForm({
       return null;
     }
   };
-
+  const inputRefs = useRef([]);
   const handleOtpBoxes = (e, index) => {
     const value = e.target.value;
 
-    // If the input is not a digit and not empty, return (do nothing)
-    if (isNaN(value) && value !== "") return;
+    // Create a copy of the current OTP values
+    const updatedOtpBox = [...OtpBox];
 
-    // Update the specific OTP box
-    const updatedOtpBox = OtpBox.map((data, indx) =>
-      indx === index ? value : data
-    );
-    setOtpBox(updatedOtpBox);
+    // If a valid digit is entered, update the value in the current box
+    if (!isNaN(value) && value.length === 1) {
+      updatedOtpBox[index] = value;
+      setOtpBox(updatedOtpBox);
+      setSaveOtpValue(updatedOtpBox.join(""));
 
-    // Update the concatenated OTP value
-    setSaveOtpValue(updatedOtpBox.join(""));
-
-    // Move focus to the next input box if available and a digit was entered
-    if (value && e.target.nextSibling && index < 5) {
-      e.target.nextSibling.focus();
+      // Move focus to the next input box if a digit is entered
+      if (index < updatedOtpBox.length - 1 && e.target.nextSibling) {
+        e.target.nextSibling.focus();
+      }
     }
-    // Move focus to the previous input box if backspace was pressed and the box is empty
-    else if (value === "" && e.target.previousSibling && index > 0) {
-      e.target.previousSibling.focus();
+
+    // Handle backspace/delete case
+    if (e.nativeEvent.inputType === "deleteContentBackward") {
+      // Clear the current box
+      updatedOtpBox[index] = "";
+      setOtpBox(updatedOtpBox);
+      setSaveOtpValue(updatedOtpBox.join(""));
+
+      // Move focus to the previous input box when backspace is pressed
+      if (index > 0 && e.target.previousSibling) {
+        e.target.previousSibling.focus();
+      }
     }
   };
+
+  const inputRefsForNewEmail = useRef([]);
+
+  // Ensure that refs are initialized properly
+  inputRefsForNewEmail.current = OtpBoxForNewEmail.map(
+    (_, i) => inputRefsForNewEmail.current[i] ?? React.createRef()
+  );
 
   const handleOtpBoxesForNewEmail = (e, index) => {
     const value = e.target.value;
 
-    // If the input is not a digit and not empty, return (do nothing)
+    // Allow only numeric values or empty strings
     if (isNaN(value) && value !== "") return;
 
-    // Update the specific OTP box
-    const updatedOtpBox = OtpBoxForNewEmail.map((data, indx) =>
-      indx === index ? value : data
-    );
+    const updatedOtpBox = [...OtpBoxForNewEmail];
+    updatedOtpBox[index] = value;
     setOtpBoxForNewEmail(updatedOtpBox);
-
-    // Update the concatenated OTP value
     setNewEmailOtp(updatedOtpBox.join(""));
 
-    // Move focus to the next input box if available and a digit was entered
-    if (value && e.target.nextSibling && index < 5) {
-      e.target.nextSibling.focus();
-    }
-    // Move focus to the previous input box if backspace was pressed and the box is empty
-    else if (value === "" && e.target.previousSibling && index > 0) {
-      e.target.previousSibling.focus();
+    // Handle focus movement
+    if (value && index < OtpBoxForNewEmail.length - 1) {
+      inputRefsForNewEmail.current[index + 1]?.focus();
+    } else if (
+      e.nativeEvent.inputType === "deleteContentBackward" &&
+      !value &&
+      index > 0
+    ) {
+      inputRefsForNewEmail.current[index - 1]?.focus();
     }
   };
-
+  useEffect(() => {
+    // When step changes to 3, reset the OTP boxes
+    if (step === 3) {
+      setOtpBoxForNewEmail(new Array(6).fill("")); // Reset the OTP boxes to empty
+      setNewEmailOtp(""); // Reset the concatenated OTP value
+    }
+  }, [step]);
   useEffect(() => {
     if (drawerOpen) {
       setOtpBox(new Array(6).fill("")); // Clear the OTP boxes
@@ -295,7 +333,15 @@ function ProfileInfoForm({
   const titleContent = (
     <div className="flex flex-col items-start justify-center">
       <div className="flex items-start gap-2.5">
-        <LeftOutlined onClick={() => setDrawerOpen(false)} className="!mt-1" />
+        <LeftOutlined
+          onClick={() => {
+            setDrawerOpen(false);
+            setStep(0);
+            setOtpBox(Array(6).fill("")); // Reset OTP boxes to empty
+            setSaveOtpValue(""); // Clear saved OTP value
+          }}
+          className="!mt-1"
+        />
 
         <span className="text-lg font-normal text-canBlack mb-0">
           {headingText}
@@ -319,6 +365,54 @@ function ProfileInfoForm({
       </div>
     );
   }
+  const renderFuncForGooglePlaces = ({
+    getInputProps,
+    suggestions,
+    getSuggestionItemProps,
+    loading,
+  }) => (
+    <div>
+      <Input
+        data-testid="auto_complete"
+        id="selectAddress_1"
+        addonAfter={selectAfter("address_1", publicOrPrivate("address_1"))}
+        placeholder={messages.placeholders.addressLine1}
+        size="large"
+        {...getInputProps({
+          placeholder: messages.placeholders.addressLine1,
+        })}
+        tabIndex={9}
+        maxLength={255}
+        // onChange={handleChange}
+        className="font-medium [&_.ant-input]:!rounded-tl-lg [&_.ant-input]:!rounded-bl-lg [&_.ant-input-group-addon]:!rounded-tr-lg [&_.ant-input-group-addon]:!rounded-br-lg [&_.ant-input-affix-wrapper]:!h-[40px] [&_.ant-input-affix-wrapper]:!py-0 [&_.ant-input]:!pl-2.5 [&_.ant-input-affix-wrapper]:!rounded-tl-lg [&_.ant-input-affix-wrapper]:!rounded-bl-lg  [&_.ant-input]:!text-base [&_.ant-input]:!font-normal [&_.ant-select-selection-item]:!flex [&_.ant-select-selection-item]:!items-center [&_.ant-select]:!my-0 [&_.ant-input-affix-wrapper-lg]:!pl-4 text-canBlack font-normal h-[40px] rounded-md [&_.ant-input-prefix]:!text-canBlack [&_.ant-input-prefix]:mr-3 text-sm mainInput"
+      />
+      <div className="">
+        {loading && <div>Loading...</div>}
+        {suggestions.map((suggestion, index) => {
+          const style = suggestion.active
+            ? {
+                backgroundColor: "#f8f8f8",
+                cursor: "pointer",
+              }
+            : {
+                backgroundColor: "#ffffff",
+                cursor: "pointer",
+              };
+          return (
+            <div
+              className=" bg-white shadow-lg border border-canLightGrey p-2"
+              {...getSuggestionItemProps(suggestion, {
+                style,
+              })}
+              key={index}
+            >
+              {suggestion.description}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
 
   return (
     <Fragment>
@@ -465,9 +559,9 @@ function ProfileInfoForm({
                   <DatePicker
                     onChange={handleChange}
                     size="large"
-                    suffixIcon={null}
+                    suffixIcon={<CalendarOutlined />}
                     tabIndex={8}
-                    className="w-full  [&_.ant-select-selector]:!border-none font-medium"
+                    className="realtive w-full  [&_.ant-select-selector]:!border-none font-medium pl-14"
                     disabledDate={(current) => {
                       let customDate = moment().format("YYYY-MM-DD");
                       return (
@@ -475,6 +569,14 @@ function ProfileInfoForm({
                       );
                     }}
                   />
+                  {/* <span className="flex absolute left-3 top-1/2 -translate-y-1/2  text-gray-500 pointer-events-none">
+                    <Image
+                      src="/images/profile-calendar-icon.svg"
+                      width={24}
+                      height={24}
+                      alt="calendar icon"
+                    />
+                  </span> */}
                 </Form.Item>
                 <Form.Item className="[&_.ant-select-selector]:!w-[5rem] ">
                   <Select
@@ -536,12 +638,29 @@ function ProfileInfoForm({
 
         <div className="border-t border-canGrey2 pt-10">
           <SectionHeading
-            title="Additional INFORMATION"
+            title="address INFORMATION"
             icon={null}
             className="!mb-5"
           />
           <Row gutter={30}>
             <Col md={12} sm={24} className="w-full">
+              <Form.Item
+                name="address_1"
+                label={messages.labels.addressLine1}
+                className="[&_.ant-input-group-addon]:!w-[5rem] [&_.ant-form-item-label]:font-normal [&_.ant-select-selection-item]:!pr-6 [&_.ant-input-group-addon]:!bg-canGray text-sm text-canBlack font-normal [&_label]:text-sm [&_label]:font-medium [&_.ant-form-item-explain-error]:mb-6"
+              >
+                <div className="reactDropdown">
+                  {loaded ? (
+                    <PlacesAutocomplete
+                      value={address}
+                      onChange={handleAddressChange}
+                      onSelect={handleAddressSelect}
+                    >
+                      {renderFuncForGooglePlaces}
+                    </PlacesAutocomplete>
+                  ) : null}
+                </div>
+              </Form.Item>
               <Form.Item
                 name="city"
                 label={messages.labels.city}
@@ -593,21 +712,24 @@ function ProfileInfoForm({
               </Form.Item>
             </Col>
             <Col md={12} sm={24} className="w-full">
-              {/* <Form.Item
-                  name="address_2"
-                  label={messages.labels.addressLine2}
-                >
-                  <Input
-                    id="selectAddress_2"
-                    addonAfter={selectAfter(
-                      "address_2",
-                      publicOrPrivate("address_2")
-                    )}
-                    placeholder={messages.placeholders.addressLine2}
-                    size="large"
-                    maxLength={255}
-                  />
-                </Form.Item> */}
+              <Form.Item
+                name="address_2"
+                label={messages.labels.addressLine2}
+                className="[&_.ant-input-group-addon]:!w-[5rem] [&_.ant-form-item-label]:font-normal [&_.ant-select-selection-item]:!pr-6 [&_.ant-input-group-addon]:!bg-canGray text-sm text-canBlack font-normal [&_label]:text-sm [&_label]:font-medium [&_.ant-form-item-explain-error]:mb-6"
+              >
+                <Input
+                  id="selectAddress_2"
+                  addonAfter={selectAfter(
+                    "address_2",
+                    publicOrPrivate("address_2")
+                  )}
+                  onChange={handleChange}
+                  placeholder={messages.placeholders.addressLine2}
+                  size="large"
+                  maxLength={255}
+                  className="font-medium [&_.ant-input]:!rounded-tl-lg [&_.ant-input]:!rounded-bl-lg [&_.ant-input-group-addon]:!rounded-tr-lg [&_.ant-input-group-addon]:!rounded-br-lg [&_.ant-input-affix-wrapper]:!h-[40px] [&_.ant-input-affix-wrapper]:!py-0 [&_.ant-input]:!pl-2.5 [&_.ant-input-affix-wrapper]:!rounded-tl-lg [&_.ant-input-affix-wrapper]:!rounded-bl-lg  [&_.ant-input]:!text-base [&_.ant-input]:!font-normal [&_.ant-select-selection-item]:!flex [&_.ant-select-selection-item]:!items-center [&_.ant-select]:!my-0 [&_.ant-input-affix-wrapper-lg]:!pl-4 text-canBlack font-normal h-[40px] rounded-md [&_.ant-input-prefix]:!text-canBlack [&_.ant-input-prefix]:mr-3 text-sm mainInput"
+                />
+              </Form.Item>
               <Form.Item
                 name="state"
                 label={messages.labels.state}
@@ -744,6 +866,7 @@ function ProfileInfoForm({
                   {OtpBox.map((data, i) => {
                     return (
                       <Input
+                        ref={(el) => (inputRefs.current[i] = el)}
                         className="w-[40px] rounded-lg border border-canGrey2 focus:!shadow-none focus:!outline-none text-base font-semibold hover:border-canGrey2 focus-visible:!outline-transparent focus-visible:!border-canGrey2 text-canBlack font-normal h-[40px] rounded-md [&_.ant-input-prefix]:!text-canBlack [&_.ant-input-prefix]:mr-3 text-sm mainInput"
                         maxLength={1}
                         placeholder="*"
@@ -753,10 +876,22 @@ function ProfileInfoForm({
                         onChange={(e) => {
                           handleOtpBoxes(e, i);
                         }}
+                        onKeyDown={(e) => {
+                          // Additional handling for backspace
+                          if (e.key === "Backspace" && !data && i > 0) {
+                            inputRefs.current[i - 1].focus();
+                          }
+                        }}
                       />
                     );
                   })}
                 </div>
+                <PrimaryButton
+                  className="flex gap-2.5 items-center justify-center w-[11.25rem] h-auto mt-5"
+                  onClick={getChangeEmailRequest}
+                >
+                  Resend OTP
+                </PrimaryButton>
               </Fragment>
             )}
 
@@ -812,6 +947,12 @@ function ProfileInfoForm({
                   size="large"
                   value={updatedEmail}
                 />
+                <PrimaryButton
+                  className="flex gap-2.5 items-center justify-center w-[11.25rem] h-auto mt-5"
+                  onClick={newEmailResendOtp}
+                >
+                  Resend OTP
+                </PrimaryButton>
 
                 <div className="flex flex-col gap-4">
                   <p className="mt-8 text-sm font-normal text-canBlack">
@@ -821,6 +962,7 @@ function ProfileInfoForm({
                     {OtpBoxForNewEmail.map((data, i) => {
                       return (
                         <Input
+                          ref={(el) => (inputRefsForNewEmail.current[i] = el)}
                           className="w-[40px] rounded-lg border border-canGrey2 focus:!shadow-none focus:!outline-none text-base font-semibold hover:border-canGrey2 focus-visible:!outline-transparent focus-visible:!border-canGrey2 text-canBlack font-normal h-[40px] rounded-md [&_.ant-input-prefix]:!text-canBlack [&_.ant-input-prefix]:mr-3 text-sm mainInput"
                           maxLength={1}
                           type="text"
@@ -828,6 +970,12 @@ function ProfileInfoForm({
                           value={data}
                           onChange={(e) => {
                             handleOtpBoxesForNewEmail(e, i);
+                          }}
+                          onKeyDown={(e) => {
+                            // Additional handling for backspace
+                            if (e.key === "Backspace" && !data && i > 0) {
+                              inputRefsForNewEmail.current[i - 1]?.focus();
+                            }
                           }}
                         />
                       );
@@ -843,6 +991,8 @@ function ProfileInfoForm({
               onClick={() => {
                 setDrawerOpen(false);
                 setStep(0);
+                setOtpBox(Array(6).fill("")); // Reset OTP boxes to empty
+                setSaveOtpValue(""); // Clear saved OTP value
               }}
             >
               Cancel

@@ -363,8 +363,8 @@ export const campNameRule = {
       message: validations.campName,
     },
     {
-      max: 30,
-      message: validations.topiNameMax30,
+      max: 60,
+      message: validations.campNameMax60,
     },
     emojiValidation(patterns.emoji_restrication),
   ],
