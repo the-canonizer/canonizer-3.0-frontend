@@ -109,7 +109,6 @@ const Login = () => {
       fetchNickNameList();
 
       closeModal();
-      console.log("router?.query?.returnUrl", router?.query?.returnUrl);
 
       const returnUrl: any = router?.query?.returnUrl;
 

@@ -43,9 +43,10 @@ const CreateNewTopic = () => {
 
   const router = useRouter();
   const dispatch = useDispatch();
-  const [form] = Form.useForm();
+
   const { isUserAuthenticated } = isAuth();
 
+  const [form] = Form.useForm();
   const values = Form.useWatch([], form);
 
   useEffect(() => {
@@ -90,32 +91,41 @@ const CreateNewTopic = () => {
         const errors_key = Object.keys(res.error);
 
         if (errors_key.length) {
+          const fieldsToUpdate = errors_key
+            .filter((key) => key !== "topic_name")
+            .map((key) => ({
+              name: [key],
+              value: values[key],
+              errors: [res.error[key]],
+              touched: true,
+              validating: true,
+            }));
+
+          if (fieldsToUpdate.length) {
+            form.setFields(fieldsToUpdate);
+          }
+
           if ("existed_topic_reference" in res.error) {
-            await form.setFields([
-              {
-                name: "topic_name",
-                value: values?.topic_name,
-                errors: res?.error?.topic_name || [],
-                touched: true,
-              },
-            ]);
+            const topicField = {
+              name: ["topic_name"],
+              value: values?.topic_name,
+              errors: res?.error?.topic_name || [],
+              touched: true,
+              validating: true,
+            };
+
+            if (fieldsToUpdate.length) {
+              form.setFields(fieldsToUpdate.concat([topicField]));
+              console.warn(
+                "--fieldsToUpdate---- ",
+                fieldsToUpdate.concat([topicField])
+              );
+            }
 
             setIsDisabled(false);
             setIsError(true);
             getExistingList();
           }
-
-          errors_key.forEach((key) => {
-            if (key !== "topic_name") {
-              form.setFields([
-                {
-                  name: key,
-                  value: values[key],
-                  errors: [res.error[key]],
-                },
-              ]);
-            }
-          });
         }
       }
     }
@@ -135,6 +145,8 @@ const CreateNewTopic = () => {
 
     setIsLoading(false);
   };
+
+  console.log(form.getFieldError("topic_name"));
 
   const storeFilterClear = () => {
     dispatch(setFilterCanonizedTopics({ filterByScore: "" }));

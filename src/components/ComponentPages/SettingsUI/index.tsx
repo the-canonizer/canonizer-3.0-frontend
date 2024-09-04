@@ -124,7 +124,6 @@ const SettingsUI = () => {
 
   useEffect(() => {
     const query = router?.query;
-    console.log("query.tab", query.tab);
 
     if (query && !query.tab) {
       setActiveTabKey("profile_info");
@@ -142,7 +141,6 @@ const SettingsUI = () => {
 
   useEffect(() => {
     // Update the selected radio based on the URL path
-    console.log("query.tab", router.query.tab);
     if (router.asPath.includes("direct_supported_camps")) {
       setSelectedValue("Direct_Supported_Camps");
     } else if (router.asPath.includes("delegate_supported_camp")) {

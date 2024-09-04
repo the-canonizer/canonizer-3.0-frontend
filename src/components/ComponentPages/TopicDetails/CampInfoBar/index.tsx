@@ -358,31 +358,30 @@ const TimelineInfoBar = ({
       </Row>
 
       <hr className="horizontal_line my-5" />
-      {isTopicPage ||
-        (isEventLine && (
-          <PrimaryButton
-            className="mx-auto flex items-center justify-center font-medium h-auto"
-            onClick={() =>
-              router?.push({
-                pathname: `/topic/history/${replaceSpecialCharacters(
-                  router?.query?.camp
-                    ? router?.query?.camp[0]
-                    : router?.query?.manageSupport?.at(0),
-                  "-"
-                )}`,
-              })
-            }
-          >
-            {K?.exceptionalMessages?.manageTopicButton}
-            <Image
-              src="/images/manage-btn-icon.svg"
-              alt="svg"
-              className="icon-topic"
-              height={16}
-              width={16}
-            />
-          </PrimaryButton>
-        ))}
+      {(isTopicPage || isEventLine) && (
+        <PrimaryButton
+          className="mx-auto flex items-center justify-center font-medium h-auto"
+          onClick={() =>
+            router?.push({
+              pathname: `/topic/history/${replaceSpecialCharacters(
+                router?.query?.camp
+                  ? router?.query?.camp[0]
+                  : router?.query?.manageSupport?.at(0),
+                "-"
+              )}`,
+            })
+          }
+        >
+          {K?.exceptionalMessages?.manageTopicButton}
+          <Image
+            src="/images/manage-btn-icon.svg"
+            alt="svg"
+            className="icon-topic"
+            height={16}
+            width={16}
+          />
+        </PrimaryButton>
+      )}
     </div>
   );
 
