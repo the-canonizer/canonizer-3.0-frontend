@@ -350,7 +350,7 @@ const CreateNewCamp = () => {
       nick_name: values?.nick_name,
       note: values?.note?.trim(),
       submitter: editInfo?.camp?.submitter_nick_id,
-      event_type: update ? "edit" : "update",
+      event_type: objection ? "objection" : update ? "edit" : "update",
       statement_id: null,
       objection_reason:  objection ? values?.objection_reason : null,
       statement_update: null,
