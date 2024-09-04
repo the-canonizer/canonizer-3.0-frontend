@@ -29,12 +29,17 @@ import { findSimilarNames } from ".";
 import {
   getEditCampApi,
   updateCampApi,
+  updateStatementApi,
+  updateTopicApi,
 } from "src/network/api/campManageStatementApi";
 import { openNotificationWithIcon } from "components/common/notification/notificationBar";
 
 const CreateNewCamp = () => {
   const router = useRouter();
   const dispatch = useDispatch();
+  const historyOf = router?.asPath.split("/")?.at(2);
+  const objection =
+    router?.query?.[historyOf]?.at(0)?.split("-")?.at(1) == "objection";
 
   const { isUserAuthenticated } = isAuth();
 
@@ -347,7 +352,7 @@ const CreateNewCamp = () => {
       submitter: editInfo?.camp?.submitter_nick_id,
       event_type: update ? "edit" : "update",
       statement_id: null,
-      objection_reason: null,
+      objection_reason:  objection ? values?.objection_reason : null,
       statement_update: null,
       camp_id: editInfo?.camp?.id,
       camp_name: values.camp_name,
@@ -362,7 +367,15 @@ const CreateNewCamp = () => {
 
     options.map((op) => (reqBody[op.id] = op.checked ? 1 : 0));
 
-    const res = await updateCampApi(reqBody);
+    let res = null;
+    if (historyOf == "camp") {
+      options.map((op) => (reqBody[op.id] = op.checked ? 1 : 0));
+      res = await updateCampApi(reqBody);
+    } else if (historyOf == "statement") {
+      res = await updateStatementApi(reqBody);
+    } else if (historyOf == "topic") {
+      res = await updateTopicApi(reqBody);
+    }
 
     return res;
   };
