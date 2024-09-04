@@ -41,6 +41,7 @@ import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 import PrimaryButton from "components/shared/Buttons/PrimariButton";
 import PlacesAutocomplete from "react-places-autocomplete";
 import React from "react";
+import VerifyMobileNumberForm from "./VerifyMobileNumberForm";
 
 const { Option } = Select;
 
@@ -56,6 +57,18 @@ function ProfileInfoForm({
   handleAddressChange,
   address,
   handleAddressSelect,
+  mobileCarrier,
+  formVerify,
+  isOTPModalVisible,
+  setIsOTPModalVisible,
+  handleOTPCancel,
+  otp,
+  handleChangeOTP,
+  toggleVerifyButton,
+  handleMobileNumberChange,
+  userProfileSkeletonV,
+  setOTP,
+  setToggleVerifyButton,
 }:any) {
   const [step, setStep] = useState(0);
   const [updatedEmail, setUpdatedEmail] = useState("");
@@ -634,6 +647,22 @@ function ProfileInfoForm({
               </Radio.Group>
             </Form.Item>
           </Col>
+          <Col md={24}>
+                  <VerifyMobileNumberForm
+                    mobileCarrier={mobileCarrier}
+                    formVerify={formVerify}
+                    isOTPModalVisible={isOTPModalVisible}
+                    setIsOTPModalVisible={setIsOTPModalVisible}
+                    handleOTPCancel={handleOTPCancel}
+                    otp={otp}
+                    handleChangeOTP={handleChangeOTP}
+                    toggleVerifyButton={toggleVerifyButton}
+                    handleMobileNumberChange={handleMobileNumberChange}
+                    userProfileSkeletonV={userProfileSkeletonV}
+                    setOTP={setOTP}
+                    setToggleVerifyButton={setToggleVerifyButton}
+                  />
+                </Col>
         </Row>
 
         <div className="border-t border-canGrey2 pt-10">
