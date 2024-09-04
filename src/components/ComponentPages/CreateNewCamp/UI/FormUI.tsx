@@ -22,6 +22,8 @@ import Inputs from "components/shared/FormInputs";
 import AlignIcon from "components/ComponentPages/CreateNewTopic/UI/alignIcon";
 import SelectInputs from "components/shared/FormInputs/select";
 import StructureIcon from "components/ComponentPages/CreateNewTopic/UI/structureIcon";
+import K from "src/constants";
+import { allowedEmojies } from "src/utils/generalUtility";
 
 const { Option } = Select;
 const { Text } = Typography;
@@ -191,10 +193,18 @@ const CreateCampFormUI = ({
       <CommonCards className="border-0 bg-white">
         <header className="mb-14">
           <Typography.Paragraph className="text-xl text-canBlack font-medium">
-            {objection ? "Submit Objection" : isEdit ? "Update Camp" : "Creating a New Camp"}
+            {objection
+              ? "Submit Objection"
+              : isEdit
+              ? "Update Camp"
+              : "Creating a New Camp"}
           </Typography.Paragraph>
           <Typography.Paragraph className="text-canBlack opacity-80 mt-3">
-            {objection?"Input information required to submit an objection.":`Input information required to ${isEdit ? "update" : "create"} a camp.`}
+            {objection
+              ? "Input information required to submit an objection."
+              : `Input information required to ${
+                  isEdit ? "update" : "create"
+                } a camp.`}
           </Typography.Paragraph>
         </header>
         <Form
@@ -484,12 +494,28 @@ const CreateCampFormUI = ({
           )}
 
           {objection && (
-            <Input.TextArea
-              size="large"
-              rows={6}
-              maxLength={100}
-              className="mb-6"
-            />
+            <Form.Item
+              rules={[
+                {
+                  required: true,
+                  message: K?.exceptionalMessages?.objectionRequireErrorMsg,
+                },
+                {
+                  pattern: /[^ \s]/,
+                  message: K?.exceptionalMessages?.objectionIsRequire,
+                },
+                allowedEmojies(),
+              ]}
+              name="objection_reason"
+              label={
+                <>
+                  Your Objection Reason <span className="required">*</span>{" "}
+                  <small>(Limit 100 Char) </small>
+                </>
+              }
+            >
+              <Input.TextArea size="large" rows={6} maxLength={100} />
+            </Form.Item>
           )}
 
           {objection ? (
