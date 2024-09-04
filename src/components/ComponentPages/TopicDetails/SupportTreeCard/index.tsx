@@ -331,7 +331,9 @@ const SupportTreeCard = ({
       campSupportingTree?.find((obj) => obj.camp_leader === true);
 
     const campLeaderId = campLeader?.nick_name_id;
-    const delegatorId = campLeader?.delegates?.at(0)?.nick_name_id;
+    const delegatorId = campLeader?.delegates?.length
+      ? campLeader?.delegates?.at(0)?.nick_name_id
+      : null;
 
     setCampLeaderId(campLeaderId);
     setDelegatorID(delegatorId);

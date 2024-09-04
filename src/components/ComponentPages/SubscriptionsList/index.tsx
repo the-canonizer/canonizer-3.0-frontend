@@ -1,5 +1,4 @@
 import { Fragment, useEffect, useState } from "react";
-import { message } from "antd";
 
 import CustomSkelton from "components/common/customSkelton";
 import {
@@ -8,6 +7,7 @@ import {
 } from "src/network/api/userApi";
 import TopicSubscriptionsTab from "./UI/TopicSubscriptionsTab";
 import TopicRemoveModal from "./UI/RemoveModal";
+import { openNotificationWithIcon } from "components/common/notification/notificationBar";
 
 function SubscriptionsList() {
   const [subscriptionsList, setSubscriptionsList] = useState([]);
@@ -43,7 +43,10 @@ function SubscriptionsList() {
     const query = `?page=${page}&per_page=${perPage}`;
 
     if (res && res["status_code"] === 200) {
-      message.success(res?.data?.msg);
+      openNotificationWithIcon(
+        res?.data?.msg || "Unsubscribed successfully.",
+        "success"
+      );
       setIsVisible(false);
       await getSubscriptionsList(query);
     }

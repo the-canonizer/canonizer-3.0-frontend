@@ -62,11 +62,13 @@ const SettingsUI = () => {
       state.topicDetails.globalUserProfileDataLastName,
     globalUserProfileDataEmail: state.topicDetails.globalUserProfileDataEmail,
   }));
+
   console.log(
     globalUserProfileData,
     globalUserProfileDataEmail,
     "abababababab;;;;;;;;;;;;;;;;;"
   );
+
   const router = useRouter();
   type MenuItem = Required<MenuProps>["items"][number];
 
@@ -122,6 +124,7 @@ const SettingsUI = () => {
 
   useEffect(() => {
     const query = router?.query;
+
     if (query && !query.tab) {
       setActiveTabKey("profile_info");
     } else if (query && query?.tab.includes("social")) {

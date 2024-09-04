@@ -15,6 +15,7 @@ import {
 import moment from "moment";
 import {
   ArrowRightOutlined,
+  CalendarOutlined,
   CloseOutlined,
   EditOutlined,
   LeftOutlined,
@@ -558,7 +559,7 @@ function ProfileInfoForm({
                   <DatePicker
                     onChange={handleChange}
                     size="large"
-                    suffixIcon={null}
+                    suffixIcon={<CalendarOutlined />}
                     tabIndex={8}
                     className="realtive w-full  [&_.ant-select-selector]:!border-none font-medium pl-14"
                     disabledDate={(current) => {
@@ -637,7 +638,7 @@ function ProfileInfoForm({
 
         <div className="border-t border-canGrey2 pt-10">
           <SectionHeading
-            title="Additional INFORMATION"
+            title="address INFORMATION"
             icon={null}
             className="!mb-5"
           />
