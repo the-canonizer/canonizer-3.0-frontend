@@ -109,9 +109,12 @@ const Login = () => {
       fetchNickNameList();
 
       closeModal();
+      console.log("router?.query?.returnUrl", router?.query?.returnUrl);
 
-      if (router?.query?.returnUrl) {
-        router?.push(`${router?.query?.returnUrl}`);
+      const returnUrl: any = router?.query?.returnUrl;
+
+      if (returnUrl) {
+        router?.push(returnUrl);
       } else if (currentReturnUrl) {
         router?.push({ pathname: currentReturnUrl });
       } else if (router?.pathname === "/login") {
@@ -135,6 +138,8 @@ const Login = () => {
 
     setLoading(false);
   };
+
+  console.log("router?.query?.returnUrl", router?.query?.returnUrl);
 
   const onOTPClick = async (e) => {
     e.preventDefault();

@@ -229,7 +229,6 @@ const CreateNewTopic = () => {
       const enteredValues = e?.target?.value;
       if (enteredValues && enteredValues?.length > 2) {
         setIsopicLoading(true);
-        // setHaveTopicExist(true);
         getExistingList(enteredValues);
       } else {
         setHaveTopicExist(false);
