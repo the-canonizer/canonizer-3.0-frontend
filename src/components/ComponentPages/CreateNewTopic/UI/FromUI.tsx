@@ -47,11 +47,6 @@ const CreateTopicFromUI = ({
   const objection =
     router?.query?.["statement"]?.at(0)?.split("-")?.at(1) == "objection";
 
-  // useEffect(()=>{
-  //   console.log("historyOf",historyOf)
-  //   console.log("rrr...",objection)
-  // },[])
-
   const getNickNameInput = () => {
     const selectInputProps: any = {
       label: (
