@@ -27,6 +27,11 @@ import { openNotificationWithIcon } from "components/common/notification/notific
 import Breadcrumbs from "components/shared/Breadcrumbs";
 
 const UpdateTopic = () => {
+  const router = useRouter();
+  const historyOf = router?.asPath.split("/")?.at(2);
+  const objection =
+    router?.query?.["statement"]?.at(0)?.split("-")?.at(1) == "objection";
+
   const { nameSpaces, catTaga } = useSelector((state: RootState) => ({
     nameSpaces: state.homePage.nameSpaces,
     catTaga: state?.tag?.tags,
@@ -46,7 +51,6 @@ const UpdateTopic = () => {
   const [isSubmitReq, setIsSubmitReq] = useState(false);
   const [editCampStatementData, setEditCampStatementData] = useState("");
 
-  const router = useRouter();
   const dispatch = useDispatch();
   const [form] = Form.useForm();
   const { isUserAuthenticated } = isAuth();
@@ -152,11 +156,12 @@ const UpdateTopic = () => {
       nick_name: values.nick_name,
       topic_num: currentTopic?.topic_num,
       topic_id: currentTopic?.id,
-      namespace_id: values.namespace,
+      namespace_id: values.namespace? values.namespace:null,
       submitter: currentTopic?.submitter_nick_id,
       tags: selectedCats?.map((cat) => cat?.id),
-      event_type: update ? "edit" : "update",
+      event_type: objection ? "objection" : update ? "edit" : "update",
       note: values?.edit_summary || null,
+      objection_reason:  objection ? values?.objection_reason : null,
     };
 
     const res = await updateTopicApi(body);
