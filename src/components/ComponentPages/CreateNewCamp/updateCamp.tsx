@@ -37,9 +37,9 @@ import { openNotificationWithIcon } from "components/common/notification/notific
 const CreateNewCamp = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const historyOf = router?.asPath.split("/")?.at(2);
+  const manageFormOf = router?.asPath.split("/")?.at(2);
   const objection =
-    router?.query?.[historyOf]?.at(0)?.split("-")?.at(1) == "objection";
+    router?.query?.[manageFormOf]?.at(0)?.split("-")?.at(1) == "objection";
 
   const { isUserAuthenticated } = isAuth();
 
@@ -368,12 +368,12 @@ const CreateNewCamp = () => {
     options.map((op) => (reqBody[op.id] = op.checked ? 1 : 0));
 
     let res = null;
-    if (historyOf == "camp") {
+    if (manageFormOf == "camp") {
       options.map((op) => (reqBody[op.id] = op.checked ? 1 : 0));
       res = await updateCampApi(reqBody);
-    } else if (historyOf == "statement") {
+    } else if (manageFormOf == "statement") {
       res = await updateStatementApi(reqBody);
-    } else if (historyOf == "topic") {
+    } else if (manageFormOf == "topic") {
       res = await updateTopicApi(reqBody);
     }
 
