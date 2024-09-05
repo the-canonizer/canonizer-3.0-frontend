@@ -32,9 +32,10 @@ const UpdateTopic = () => {
   const objection =
     router?.query?.["statement"]?.at(0)?.split("-")?.at(1) == "objection";
 
-  const { nameSpaces, catTaga } = useSelector((state: RootState) => ({
+  const { nameSpaces, catTaga, namespace_id } = useSelector((state: RootState) => ({
     nameSpaces: state.homePage.nameSpaces,
     catTaga: state?.tag?.tags,
+    namespace_id: state.filters?.filterObject?.namespace_id,
   }));
 
   const [nickNameList, setNickNameList] = useState([]);
@@ -156,7 +157,7 @@ const UpdateTopic = () => {
       nick_name: values.nick_name,
       topic_num: currentTopic?.topic_num,
       topic_id: currentTopic?.id,
-      namespace_id: values.namespace? values.namespace:null,
+      namespace_id: values.namespace? values.namespace: namespace_id,
       submitter: currentTopic?.submitter_nick_id,
       tags: selectedCats?.map((cat) => cat?.id),
       event_type: objection ? "objection" : update ? "edit" : "update",
