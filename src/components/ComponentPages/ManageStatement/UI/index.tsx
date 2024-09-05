@@ -1,4 +1,4 @@
-import { Form, Row, Col, Typography, Spin } from "antd";
+import { Form, Row, Col, Typography, Spin, Input } from "antd";
 import dynamic from "next/dynamic";
 import {
   CloseOutlined,
@@ -19,6 +19,8 @@ import Inputs from "components/shared/FormInputs";
 import ManageStatementUISkelaton from "./skelaton";
 import CustomSkelton from "components/common/customSkelton";
 import StarIcon from "./starIcon";
+import { useRouter } from "next/router";
+import { allowedEmojies } from "src/utils/generalUtility";
 
 //Ckeditor
 const Editorckl = dynamic(() => import("components/common/editorck"), {
@@ -83,18 +85,32 @@ function ManageStatementUI({
   isGenerating,
 }) {
   const editorRef = useRef(null);
+  const router = useRouter();
+  const historyOf = router?.asPath.split("/")?.at(2);
+  const objection =
+    router?.query?.[historyOf]?.at(0)?.split("-")?.at(1) == "objection";
 
   return (
     <CommonCards className="border-0 bg-white">
       <header className="mb-14">
         <Typography.Paragraph className="text-xl text-canBlack font-medium">
-          {isEdit ? "Update Camp Statement" : "Adding Camp Statement"}
+          {objection
+            ? "Submit Objection "
+            : isEdit
+            ? "Update Camp Statement"
+            : "Adding Camp Statement"}
         </Typography.Paragraph>
-        <Typography.Paragraph className="text-canBlack opacity-80 mt-3">
-          Each camp features a statement summarizing the discussions within,
-          providing a clear overview of the topic&lsquo;s various perspectives.
-          This concise summary serves as a guide.
-        </Typography.Paragraph>
+        {objection ? (
+          <Typography.Paragraph className="text-canBlack opacity-80 mt-3">
+            Input information required to submit an objection.
+          </Typography.Paragraph>
+        ) : (
+          <Typography.Paragraph className="text-canBlack opacity-80 mt-3">
+            Each camp features a statement summarizing the discussions within,
+            providing a clear overview of the topic&lsquo;s various
+            perspectives. This concise summary serves as a guide.
+          </Typography.Paragraph>
+        )}
       </header>
       {screenLoading ? (
         <ManageStatementUISkelaton isEdit={isEdit && !isDraft} />
@@ -139,64 +155,101 @@ function ManageStatementUI({
                 onChange={(val) => form.setFieldValue("nick_name", val)}
               />
             </Col>
-            <Col xs={24} xl={24}>
-              <Form.Item
-                className="mb-2 editorContent [&_.ant-form-item-label>label]:w-full"
-                name="statement"
-                label={
-                  <Fragment>
-                    Statement <span className="required">*</span>
-                    {isGenerating ? (
-                      <Spin className="ml-auto float-end" />
-                    ) : (
-                      <SecondaryButton
-                        className="flex justify-center items-center border-0 p-0 ml-auto float-end !shadow-none hover:!shadow-none !bg-transparent"
-                        type="link"
-                        ghost
-                        onClick={(e) => onImproveClick(e, editorRef)}
-                      >
-                        Improve With Ai <StarIcon className="" />
-                      </SecondaryButton>
-                    )}
-                  </Fragment>
-                }
-                rules={[
-                  {
-                    required: true,
-                    message: K?.exceptionalMessages?.statementRequiredErrorMsg,
-                  },
-                  {
-                    pattern: /[^ \s]/,
-                    message: K?.exceptionalMessages?.statementRequiredErrorMsg,
-                  },
-                ]}
-              >
-                {screenLoading ? (
-                  <CustomSkelton
-                    bodyCount
-                    stylingClass
-                    isButton
-                    height={250}
-                    skeltonFor="video"
+            {!objection && (
+              <Col xs={24} xl={24}>
+                <Form.Item
+                  className="mb-2 editorContent [&_.ant-form-item-label>label]:w-full"
+                  name="statement"
+                  label={
+                    <Fragment>
+                      Statement <span className="required">*</span>
+                      {isGenerating ? (
+                        <Spin className="ml-auto float-end" />
+                      ) : (
+                        <SecondaryButton
+                          className="flex justify-center items-center border-0 p-0 ml-auto float-end !shadow-none hover:!shadow-none !bg-transparent"
+                          type="link"
+                          ghost
+                          onClick={(e) => onImproveClick(e, editorRef)}
+                        >
+                          Improve With Ai <StarIcon className="" />
+                        </SecondaryButton>
+                      )}
+                    </Fragment>
+                  }
+                  rules={[
+                    {
+                      required: true,
+                      message:
+                        K?.exceptionalMessages?.statementRequiredErrorMsg,
+                    },
+                    {
+                      pattern: /[^ \s]/,
+                      message:
+                        K?.exceptionalMessages?.statementRequiredErrorMsg,
+                    },
+                  ]}
+                >
+                  {screenLoading ? (
+                    <CustomSkelton
+                      bodyCount
+                      stylingClass
+                      isButton
+                      height={250}
+                      skeltonFor="video"
+                    />
+                  ) : (
+                    <Editorckl
+                      ref={editorRef}
+                      editorState={editorState}
+                      oneditorchange={onEditorStateChange}
+                      placeholder="Write Your Statement Here"
+                      items={EditorToolbarItems}
+                      saveContent={(data) => {
+                        autoSave({
+                          statement: data,
+                          nick_name: values?.nick_name,
+                        });
+                      }}
+                    ></Editorckl>
+                  )}
+                </Form.Item>
+              </Col>
+            )}
+
+            {objection && (
+              <Col xs={24} xl={24}>
+                <Form.Item
+                  rules={[
+                    {
+                      required: true,
+                      message: K?.exceptionalMessages?.objectionRequireErrorMsg,
+                    },
+                    {
+                      pattern: /[^ \s]/,
+                      message: K?.exceptionalMessages?.objectionIsRequire,
+                    },
+                    allowedEmojies(),
+                  ]}
+                  name="objection_reason"
+                  label={
+                    <>
+                      Your Objection Reason <span className="required">*</span>{" "}
+                      <small>(Limit 100 Char) </small>
+                    </>
+                  }
+                >
+                  <Input.TextArea
+                    size="large"
+                    rows={6}
+                    maxLength={100}
+                    style={{ width: "44.3rem" }}
                   />
-                ) : (
-                  <Editorckl
-                    ref={editorRef}
-                    editorState={editorState}
-                    oneditorchange={onEditorStateChange}
-                    placeholder="Write Your Statement Here"
-                    items={EditorToolbarItems}
-                    saveContent={(data) => {
-                      autoSave({
-                        statement: data,
-                        nick_name: values?.nick_name,
-                      });
-                    }}
-                  ></Editorckl>
-                )}
-              </Form.Item>
-            </Col>
-            {isEdit && !isDraft && (
+                </Form.Item>
+              </Col>
+            )}
+
+            {!objection && isEdit && !isDraft && (
               <Col xs={24} xl={24} className="mt-6">
                 <Inputs
                   name="edit_summary"
@@ -216,37 +269,51 @@ function ManageStatementUI({
                 />
               </Col>
             )}
+
             <Col
               xs={24}
               xl={24}
               className="flex justify-between items-center pt-5 mt-3"
             >
-              <Form.Item className="mb-0">
-                <SecondaryButton
-                  className="inline-flex items-center justify-center h-auto py-2 px-7 mr-5 h-auto"
-                  onClick={onDiscardClick}
-                  id="update-cancel-btn"
-                  disabled={isAutoSaving}
-                >
-                  Discard <CloseOutlined />
-                </SecondaryButton>
+              {objection ? (
                 <PrimaryButton
                   htmlType="submit"
                   className="inline-flex items-center justify-center h-auto py-2 px-7 h-auto"
-                  disabled={
-                    (submitIsDisable && isEdit) || !isDisabled || isAutoSaving
-                  }
                 >
-                  Publish Statement
-                  <UploadOutlined />
+                  Submit Objection
                 </PrimaryButton>
-              </Form.Item>
-              <SecondaryButton
-                className="!border-0 flex items-center justify-center !shadow-none h-auto"
-                onClick={onPreviewClick}
-              >
-                Preview Statement <EyeOutlined />
-              </SecondaryButton>
+              ) : (
+                <>
+                  <Form.Item className="mb-0">
+                    <SecondaryButton
+                      className="inline-flex items-center justify-center h-auto py-2 px-7 mr-5 h-auto"
+                      onClick={onDiscardClick}
+                      id="update-cancel-btn"
+                      disabled={isAutoSaving}
+                    >
+                      Discard <CloseOutlined />
+                    </SecondaryButton>
+                    <PrimaryButton
+                      htmlType="submit"
+                      className="inline-flex items-center justify-center h-auto py-2 px-7 h-auto"
+                      disabled={
+                        (submitIsDisable && isEdit) ||
+                        !isDisabled ||
+                        isAutoSaving
+                      }
+                    >
+                      Publish Statement
+                      <UploadOutlined />
+                    </PrimaryButton>
+                  </Form.Item>
+                  <SecondaryButton
+                    className="!border-0 flex items-center justify-center !shadow-none h-auto"
+                    onClick={onPreviewClick}
+                  >
+                    Preview Statement <EyeOutlined />
+                  </SecondaryButton>
+                </>
+              )}
             </Col>
           </Row>
         </Form>
