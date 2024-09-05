@@ -8,6 +8,10 @@ import { capitalizeFirstLetter } from "src/utils/generalUtility";
 import Breadcrumbs from "components/ComponentPages/Breadcrumbs/breadcrumbs";
 import HistoryCard from "components/ComponentPages/HistoryCard/historyCard";
 import moment from "moment";
+import TimelineInfoBar from "components/ComponentPages/TopicDetails/CampInfoBar";
+import { getCurrentCampRecordApi, getCurrentTopicRecordApi } from "src/network/api/campDetailApi";
+import { useSelector } from "react-redux";
+import { RootState } from "src/store";
 const validUrl = (url) => {
   try {
     new URL(url);
@@ -27,6 +31,23 @@ function CompareStatementUI({
   const [currentVersion, setCurrentVersion] = useState(true);
   const [tabId, setTabId] = useState("1");
   const router = useRouter();
+
+  const {
+    asofdate,
+    topicRecord,
+    asof,
+    campRecord,
+  } = useSelector((state: RootState) => ({
+    history: state?.topicDetails?.history,
+    currentCampRecord: state.topicDetails.currentCampRecord,
+    currentCampNode: state?.filters?.selectedCampNode,
+    asofdate: state.filters?.filterObject?.asofdate,
+    algorithm: state.filters?.filterObject?.algorithm,
+    topicRecord: state?.topicDetails?.currentTopicRecord,
+    asof: state?.filters?.filterObject?.asof,
+    campRecord: state?.topicDetails?.currentCampRecord,
+  }));
+
   const s1 = statements?.at(0) || {},
     s2 = statements?.at(1) || {},
     from = router?.query?.from;
@@ -95,9 +116,44 @@ function CompareStatementUI({
     }
   };
 
+
+  useEffect(() => {
+    const isDefaultOrReview = asof === "default" || asof === "review";
+
+    const reqBody = {
+      topic_num: parseInt(router?.query?.camp?.at(0)?.split("-")?.at(0), 10),
+      camp_num:
+        parseInt(router?.query?.camp?.at(1)?.split("-")?.at(0), 10) || 1,
+      as_of: asof,
+      as_of_date: isDefaultOrReview
+        ? Math.floor(Date.now() / 1000)
+        : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
+    };
+
+    const fetchTopicRecord = async () => {
+      await getCurrentTopicRecordApi(reqBody);
+    };
+
+    const fetchCampRecord = async () => {
+      await getCurrentCampRecordApi(reqBody);
+    };
+
+    if (campRecord === null) {
+      fetchCampRecord();
+    }
+
+    if (topicRecord === null) {
+      fetchTopicRecord();
+    }
+  }, []);
+
   return (
     <>
-      <Breadcrumbs compareMode={compareMode} historyOF={router?.query?.from} />
+      <TimelineInfoBar
+        compareMode={compareMode}
+        historyOF={router?.query?.from}
+      />
+      {/* <Breadcrumbs compareMode={compareMode} historyOF={router?.query?.from} /> */}
 
       {isLoading ? (
         <CustomSkelton skeltonFor="comparisonPage" />
