@@ -337,7 +337,7 @@ const UpdateTopic = () => {
             }-${replaceSpecialCharacters(currentTopic?.topic_name, "-")}`,
             label: "Topic History",
           },
-          { label: "Update Topic" },
+          { label: objection ? "Objection" : "Update Topic" },
         ]}
       />
 
