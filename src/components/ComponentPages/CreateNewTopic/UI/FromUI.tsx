@@ -112,12 +112,13 @@ const CreateTopicFromUI = ({
                   <Fragment>
                     {labels.cr_topic_name}
                     <span className="required">*</span>
+                    <span>(Limit 80 Chars)</span>
                   </Fragment>
                 }
                 rules={topicNameRule}
                 placeholder={placeholders.topicName}
                 size={"large"}
-                maxLength={30}
+                maxLength={80}
                 prefix={
                   <div className="pr-3">
                     <AlignIcon fill="#242B37" />
