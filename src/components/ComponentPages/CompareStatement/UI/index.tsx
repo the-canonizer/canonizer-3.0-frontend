@@ -38,11 +38,7 @@ function CompareStatementUI({
     asof,
     campRecord,
   } = useSelector((state: RootState) => ({
-    history: state?.topicDetails?.history,
-    currentCampRecord: state.topicDetails.currentCampRecord,
-    currentCampNode: state?.filters?.selectedCampNode,
     asofdate: state.filters?.filterObject?.asofdate,
-    algorithm: state.filters?.filterObject?.algorithm,
     topicRecord: state?.topicDetails?.currentTopicRecord,
     asof: state?.filters?.filterObject?.asof,
     campRecord: state?.topicDetails?.currentCampRecord,

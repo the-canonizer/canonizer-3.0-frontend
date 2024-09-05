@@ -96,7 +96,6 @@ function HistoryContainer() {
     campRecord,
   } = useSelector((state: RootState) => ({
     history: state?.topicDetails?.history,
-    currentCampRecord: state.topicDetails.currentCampRecord,
     currentCampNode: state?.filters?.selectedCampNode,
     asofdate: state.filters?.filterObject?.asofdate,
     algorithm: state.filters?.filterObject?.algorithm,
