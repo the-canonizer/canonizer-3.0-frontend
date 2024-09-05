@@ -5,7 +5,7 @@ import md5 from "md5";
 
 import { getGravatarPicApi } from "src/network/api/notificationAPI";
 
-const getGravatarImage = async (email) => {
+export const getGravatarImage = async (email) => {
   let data = await getGravatarPicApi(email);
   if (data?.status == 200) {
     return true;
