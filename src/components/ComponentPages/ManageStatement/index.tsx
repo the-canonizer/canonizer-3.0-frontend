@@ -45,6 +45,11 @@ function ManageStatements({ isEdit = false }) {
 
   const { isUserAuthenticated } = useAuthentication();
 
+  const historyOf = router?.asPath.split("/")?.at(2);
+  const objection =
+    router?.query?.[historyOf]?.at(0)?.split("-")?.at(1) == "objection";
+
+
   const [notFoundStatus, setNotFoundStatus] = useState({
     status: false,
     name: "",
@@ -828,7 +833,7 @@ function ManageStatements({ isEdit = false }) {
                   !isEdit || isDraft ? "Topic Details" : "Statement History",
               },
               {
-                label: !isEdit
+                label: objection? "Objection": !isEdit
                   ? "Adding a camp statement"
                   : "Updating camp statement",
               },
