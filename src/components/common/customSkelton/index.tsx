@@ -348,7 +348,7 @@ const CustomSkelton = ({
     <HotTopicCard stylingClass={stylingClass} />
   ) : skeltonFor == "browse" ? (
     <Row gutter={[24, 24]}>
-      {[...Array(8)].map((_, index) => (
+      {[...Array(9)].map((_, index) => (
         <Col key={index} xs={24} sm={24} md={8}>
           <Card className="browse-card overflow-hidden">
             <div className="mb-2.5 flex justify-between">

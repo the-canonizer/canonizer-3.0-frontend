@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from "react";
+import { Fragment } from "react";
 import { Form, Row, Col, Typography, Input } from "antd";
 import {
   CloseOutlined,
@@ -46,7 +46,6 @@ const CreateTopicFromUI = ({
   const historyOf = router?.asPath.split("/")?.at(2);
   const objection =
     router?.query?.["statement"]?.at(0)?.split("-")?.at(1) == "objection";
-
   const getNickNameInput = () => {
     const selectInputProps: any = {
       label: (
@@ -123,7 +122,6 @@ const CreateTopicFromUI = ({
                   <Fragment>
                     {labels.cr_topic_name}
                     <span className="required">*</span>
-                    {/* <span>(Limit 30 Chars)</span> */}
                   </Fragment>
                 }
                 rules={topicNameRule}
@@ -154,10 +152,8 @@ const CreateTopicFromUI = ({
             ) : (
               getNickNameInput()
             )}
-            {/* <div className="text-xs text-canRed -mt-4 mb-6">
-              {labels.cr_nick_name_sp}
-            </div> */}
           </Col>
+
           {!objection && (
             <>
               <Col xs={24} sm={12} key={"namespaces_div"}>
@@ -174,48 +170,37 @@ const CreateTopicFromUI = ({
                       <Fragment>
                         {labels.cr_namespace}
                         <span className="required">*</span>
-                        {/* <span>
-                      (General is recommended, unless you know otherwise)
-                    </span> */}
                       </Fragment>
                     }
                     name="namespace"
                     options={nameSpaces}
                     placeholder={placeholders.namespace}
-                    size={"large"}
-                    defaultValue={values?.namespace || nameSpaces[0]?.id}
-                    initialValue={values?.namespace || nameSpaces[0]?.id}
-                    // value={values?.namespace}
-                    key={
-                      "namespaces_label" + values?.namespace ||
-                      nameSpaces[0]?.id
-                    }
-                    dataid="nick-namespace"
                     allowClear
+                    size={"large"}
+                    dataid="nick-namespace"
                     showSearch
                     optionFilterProp="children"
                     inputClassName="border-0"
                     rules={namespaceRule}
+                    nameKey="label"
                     prefix={
                       <StructureIcon
                         className="flex items-center justify-center px-2"
                         fill="#242B37"
                       />
                     }
+                    defaultValue={values?.namespace || nameSpaces[0]?.id}
+                    initialValue={values?.namespace || nameSpaces[0]?.id}
                     isLabelRequiredFormat={true}
                     formatFunc={changeSlashToArrow}
                     onChange={(val) => form.setFieldValue("namespace", val)}
-                    onSearch={(val) => {
-                      return;
-                    }}
-                    loading={isLoading}
                   />
                 )}
               </Col>
             </>
           )}
 
-          {!objection ? (
+          {!objection && (
             <>
               <Col xs={24} sm={12}>
                 {isLoading ? (
@@ -250,7 +235,7 @@ const CreateTopicFromUI = ({
                 )}
               </Col>
             </>
-          ) : null}
+          )}
 
           <Col xs={24} className="mb-5">
             {isLoading ? (
@@ -275,6 +260,7 @@ const CreateTopicFromUI = ({
               ))
             )}
           </Col>
+
           {!objection && isEdit && (
             <Col xs={24} xl={24}>
               <Inputs

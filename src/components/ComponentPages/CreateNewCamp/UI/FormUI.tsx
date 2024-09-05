@@ -126,11 +126,12 @@ const CreateCampFormUI = ({
           <span className="required">*</span>
         </>
       ),
-      key: "parent_camp_numKeys",
+      key:
+        "parent_camp_numKeys_" + values?.parent_camp_num || topicData?.camp_num,
       name: "parent_camp_num",
       options: parentCamp,
       nameKey: "camp_name",
-      placeholder: placeholders.nickName,
+      placeholder: "Parent camp",
       allowClear: true,
       size: "large",
       dataid: "nick-name",
@@ -147,9 +148,7 @@ const CreateCampFormUI = ({
       ),
       onSelect: (val) => form.setFieldValue("parent_camp_num", val),
       id: "nickname-dropdown",
-      values: values?.parent_camp_num || topicData?.camp_num,
       isDefaultOption: false,
-      // onBlur: () => console.log("parent_camp_num", form.getFieldInstance('parent_camp_num')),
       optionsData: parentCamp.map((camp) => (
         <Option
           value={camp.camp_num}
@@ -163,15 +162,11 @@ const CreateCampFormUI = ({
           </Tooltip>
         </Option>
       )),
+      values: values?.parent_camp_num || topicData?.camp_num,
+      defaultValue: values?.parent_camp_num || topicData?.camp_num,
+      initialValue: values?.parent_camp_num || topicData?.camp_num,
     };
 
-    if (parentCamp?.length) {
-      selectInputProps.defaultValue =
-        values?.parent_camp_num || topicData?.camp_num;
-      selectInputProps.initialValue =
-        values?.parent_camp_num || topicData?.camp_num;
-      selectInputProps.key = "parentcampNamesWithKeyName";
-    }
     return <SelectInputs {...selectInputProps} disabled={objection} />;
   };
 
@@ -233,13 +228,14 @@ const CreateCampFormUI = ({
                     <Fragment>
                       {labels.cr_camp_name}
                       <span className="required">*</span>
+                      <span>(Limit 60 Chars)</span>
                     </Fragment>
                   }
                   name="camp_name"
                   rules={campNameRule}
                   placeholder="Camp name"
                   size={"large"}
-                  maxLength={30}
+                  maxLength={60}
                   prefix={
                     <div className="pr-3">
                       <AlignIcon fill="#242B37" />

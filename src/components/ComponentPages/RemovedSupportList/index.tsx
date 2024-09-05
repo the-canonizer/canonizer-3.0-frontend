@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 
 import SubscriptionsListUI from "./UI";
-import CustomSkelton from "../../common/customSkelton";
-
-import { GetAllSubscriptionsList } from "../../../network/api/userApi";
+import CustomSkelton from "components/common/customSkelton";
+import { GetAllSubscriptionsList } from "src/network/api/userApi";
 import {
   getAllUsedNickNames,
   getAllRemovedReasons,
