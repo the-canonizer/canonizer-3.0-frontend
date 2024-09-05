@@ -17,12 +17,10 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { placeholders } from "src/messages/placeholder";
-import {
-  getAllUsedNickNames,
-} from "src/network/api/campDetailApi";
+import { getAllUsedNickNames } from "src/network/api/campDetailApi";
 import { RootState } from "src/store";
 import DrawerBreadcrumbs from "../TopicDetails/SupportTreeCard/supportTreeDrawer/drawerBreadcrumbs";
-import { topicNameRule } from "src/messages/validationRules";
+import { campNameRule, topicNameRule } from "src/messages/validationRules";
 import AlignIcon from "../CreateNewTopic/UI/alignIcon";
 import { labels } from "src/messages/label";
 import Inputs from "components/shared/FormInputs";
@@ -37,12 +35,10 @@ function ObjectionDrawer({
   loader = false,
   setLoader,
 }: any) {
-  const { topicRecord, campRecord } = useSelector(
-    (state: RootState) => ({
-      topicRecord: state?.topicDetails?.currentTopicRecord,
-      campRecord: state?.topicDetails?.currentCampRecord,
-    })
-  );
+  const { topicRecord, campRecord } = useSelector((state: RootState) => ({
+    topicRecord: state?.topicDetails?.currentTopicRecord,
+    campRecord: state?.topicDetails?.currentCampRecord,
+  }));
 
   const dispatch = useDispatch();
   const router = useRouter();
@@ -146,27 +142,55 @@ function ObjectionDrawer({
 
               <Col span={24} sm={12}>
                 <Form.Item>
-                  <Inputs
-                    name="topic_name"
-                    label={
-                      <>
-                        {labels.cr_topic_name}
-                        <span className="required">*</span>
-                      </>
-                    }
-                    rules={topicNameRule}
-                    placeholder={placeholders.topicName}
-                    size={"large"}
-                    maxLength={30}
-                    prefix={
-                      <div className="pr-3">
-                        <AlignIcon fill="#242B37" />
-                      </div>
-                    }
-                    dataid="topic-name"
-                    key="topic-name-key"
-                    disabled={true}
-                  />
+                  {drawerFor === "topicObjection" ? (
+                    <>
+                      <Inputs
+                        name="topic_name"
+                        label={
+                          <>
+                            {labels.cr_topic_name}
+                            <span className="required">*</span>
+                          </>
+                        }
+                        rules={topicNameRule}
+                        placeholder={placeholders.topicName}
+                        size={"large"}
+                        maxLength={30}
+                        prefix={
+                          <div className="pr-3">
+                            <AlignIcon fill="#242B37" />
+                          </div>
+                        }
+                        dataid="topic-name"
+                        key="topic-name-key"
+                        disabled={true}
+                      />
+                    </>
+                  ) : drawerFor === "campObjection" ? (
+                    <>
+                      <Inputs
+                        name="topic_name"
+                        label={
+                          <>
+                            {labels.cr_camp_name}
+                            <span className="required">*</span>
+                          </>
+                        }
+                        rules={campNameRule}
+                        placeholder={placeholders.campName}
+                        size={"large"}
+                        maxLength={30}
+                        prefix={
+                          <div className="pr-3">
+                            <AlignIcon fill="#242B37" />
+                          </div>
+                        }
+                        dataid="camp-name"
+                        key="camp-name-key"
+                        disabled={true}
+                      />
+                    </>
+                  ) : null}
                 </Form.Item>
               </Col>
 
