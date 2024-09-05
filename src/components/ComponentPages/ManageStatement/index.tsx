@@ -49,7 +49,7 @@ function ManageStatements({ isEdit = false }) {
   const objection =
     router?.query?.[historyOf]?.at(0)?.split("-")?.at(1) == "objection";
 
-
+    
   const [notFoundStatus, setNotFoundStatus] = useState({
     status: false,
     name: "",
@@ -833,7 +833,9 @@ function ManageStatements({ isEdit = false }) {
                   !isEdit || isDraft ? "Topic Details" : "Statement History",
               },
               {
-                label: objection? "Objection": !isEdit
+                label: objection
+                  ? "Objection"
+                  : !isEdit
                   ? "Adding a camp statement"
                   : "Updating camp statement",
               },
@@ -855,14 +857,16 @@ function ManageStatements({ isEdit = false }) {
               </>
             )}
           </Typography.Paragraph>
-          <SecondaryButton
-            className="flex items-center justify-center py-2 px-8 h-auto"
-            onClick={saveDraftHandler}
-            loading={isSavingDraft}
-          >
-            Save As Draft
-            <FileTextOutlined />
-          </SecondaryButton>
+          {!objection && (
+            <SecondaryButton
+              className="flex items-center justify-center py-2 px-8 h-auto"
+              onClick={saveDraftHandler}
+              loading={isSavingDraft}
+            >
+              Save As Draft
+              <FileTextOutlined />
+            </SecondaryButton>
+          )}
         </Col>
       </Row>
       <Row gutter={20} className="mt-5">
