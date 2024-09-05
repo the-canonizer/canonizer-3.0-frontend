@@ -584,10 +584,10 @@ const TopicItems = ({ searchTopics, searchValue }) => {
                         </Link>
                       </Typography.Paragraph>
                     </Popover>
-                    <Typography.Paragraph className="!m-0 text-canBlack font-medium font-inter text-base flex items-center">
+                    {/* <Typography.Paragraph className="!m-0 text-canBlack font-medium font-inter text-base flex items-center">
                       <EyeOutlined className="text-canBlack p-1 text-medium" />{" "}
                       123
-                    </Typography.Paragraph>
+                    </Typography.Paragraph> */}
                   </div>
                 </span>
               </a>
@@ -631,7 +631,23 @@ const CampItems = ({ searchCamps, searchValue }) => {
           //   };
           //   return accumulator;
           // }, []);
-
+          const parsedData = jsonData.reduce(
+            (accumulator, currentVal, index) => {
+              const accIndex = index + 1;
+              accumulator[index] = {
+                camp_name:
+                  currentVal[accIndex]?.camp_name ==
+                  "Agreement"
+                    ? currentVal[accIndex]?.topic_name
+                    : currentVal[accIndex]?.camp_name,
+                camp_link: currentVal[accIndex]?.camp_link,
+                topic_name:
+                  currentVal[accIndex]?.topic_name,
+              };
+              return accumulator;
+            },
+            []
+          );
           return (
             <List.Item className="w-full flex font-medium !border-b !border-canGrey2 !py-3.5 !px-0 first:!pt-0">
               <Link href={`/${jsonData[0][1]?.camp_link}`}>
@@ -653,11 +669,24 @@ const CampItems = ({ searchCamps, searchValue }) => {
                           height={19}
                         />
                         Topic:
-                        <Link href="">
-                          <a className="text-canBlue !text-base font-inter font-medium capitalize">
-                            topic name
-                          </a>
-                        </Link>
+                        {parsedData.reverse().map((obj, index) => {
+                          return (
+                            <>
+                              <a
+                                className="text-base text-canBlue flex items-center gap-2.5 font-medium"
+                                href={`/${obj?.camp_link}`}
+                                key={`/${obj?.camp_link}`}
+                              >
+                                {/* {obj.camp_name} */}
+                                {getHighlightedText(
+                                  obj?.camp_name,
+                                  searchValue
+                                )}
+                                {index < parsedData.length - 1 ? "/ " : ""}
+                              </a>
+                            </>
+                          );
+                        })}
                       </Typography.Paragraph>
                     </div>
                   </span>
