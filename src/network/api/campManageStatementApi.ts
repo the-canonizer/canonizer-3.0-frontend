@@ -56,7 +56,6 @@ export const updateStatementApi = async (body, loginToken = null) => {
     );
     return res;
   } catch (error) {
-    message.error(error?.error?.data?.message);
     return error?.error?.data;
   }
 };

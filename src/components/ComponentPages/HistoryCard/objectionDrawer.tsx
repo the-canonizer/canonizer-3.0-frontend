@@ -32,6 +32,7 @@ import {
   updateStatementApi,
   updateTopicApi,
 } from "src/network/api/campManageStatementApi";
+import { openNotificationWithIcon } from "components/common/notification/notificationBar";
 
 const { TextArea } = Input;
 
@@ -144,6 +145,7 @@ function ObjectionDrawer({
       statement: null,
     };
     let res = null;
+    let status = "";
     if (drawerFor === "topicObjection") {
       payload.namespace_id = namespace_id;
       payload.nick_name = values.nick_name;
@@ -182,6 +184,16 @@ function ObjectionDrawer({
       payload.statement_id = currentCampStatement?.id;
       payload.statement = values?.objection_reason;
       res = await updateStatementApi(payload);
+
+      if(res?.status_code == 200){
+        status = "success";
+      }
+
+      if(res?.status_code == 400){
+        status = "error";
+      }
+
+      openNotificationWithIcon(res?.message, status);
     }
     setLoader(false);
     setDrawerFor("");
