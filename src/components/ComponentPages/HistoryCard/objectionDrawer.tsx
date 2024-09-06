@@ -61,6 +61,7 @@ function ObjectionDrawer({
   const [nictNameId, setNictNameId] = useState(null);
   const [currentTopic, setCurrentTopic] = useState(null);
   const [currentCamp, setCurrentCamp] = useState(null);
+  const [currentCampStatement, setCurrentCampStatement] = useState(null);
   const [loader, setLoader] = useState(false);
 
   const topicNum = router?.query?.camp?.at(0)?.split("-")?.at(0);
@@ -106,9 +107,13 @@ function ObjectionDrawer({
       setCurrentCamp(campData);
     } else if (drawerFor === "statementObjection") {
       res = await getEditStatementApi(payload);
+
       fieldSValuesForForm = {
         nick_name: res?.data?.nick_name?.at(0)?.id,
       };
+
+      const campStatementData = res?.data?.statement;
+      setCurrentCampStatement(campStatementData);
     }
     form.setFieldsValue(fieldSValuesForForm);
   };
@@ -135,6 +140,8 @@ function ObjectionDrawer({
       camp_id: null,
       camp_name: null,
       camp_num: null,
+      statement_id: null,
+      statement: null,
     };
     let res = null;
     if (drawerFor === "topicObjection") {
@@ -161,6 +168,19 @@ function ObjectionDrawer({
       payload.camp_num = currentCamp?.camp_num;
       res = await updateCampApi(payload);
     } else if (drawerFor === "statementObjection") {
+      payload.namespace_id = namespace_id;
+      payload.nick_name = values?.nick_name;
+      payload.submitter = currentCampStatement?.submitter_nick_id;
+      payload.topic_id = currentCampStatement?.id;
+      payload.topic_name = values?.topic_name?.trim();
+      payload.topic_num = currentCampStatement?.topic_num;
+      payload.event_type = "objection";
+      payload.objection_reason = values?.objection_reason;
+      payload.camp_id = currentCampStatement?.id;
+      payload.camp_name = currentCampStatement?.camp_name;
+      payload.camp_num = currentCampStatement?.camp_num;
+      payload.statement_id = currentCampStatement?.id;
+      payload.statement = values?.objection_reason;
       res = await updateStatementApi(payload);
     }
     setLoader(false);
