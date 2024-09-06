@@ -157,11 +157,11 @@ function ObjectionDrawer({
       payload.objection_reason = values?.objection_reason;
       res = await updateTopicApi(payload);
 
-      if(res?.status_code == 200){
+      if (res?.status_code == 200) {
         status = "success";
       }
 
-      if(res?.status_code == 400){
+      if (res?.status_code == 400) {
         status = "error";
       }
 
@@ -179,15 +179,14 @@ function ObjectionDrawer({
       payload.camp_name = currentCamp?.camp_name;
       payload.camp_num = currentCamp?.camp_num;
       res = await updateCampApi(payload);
-      if(res?.status_code == 200){
+      if (res?.status_code == 200) {
         status = "success";
       }
 
-      if(res?.status_code == 400){
+      if (res?.status_code == 400) {
         status = "error";
       }
       openNotificationWithIcon(res?.message, status);
-
     } else if (drawerFor === "statementObjection") {
       payload.namespace_id = namespace_id;
       payload.nick_name = values?.nick_name;
@@ -204,11 +203,11 @@ function ObjectionDrawer({
       payload.statement = values?.objection_reason;
       res = await updateStatementApi(payload);
 
-      if(res?.status_code == 200){
+      if (res?.status_code == 200) {
         status = "success";
       }
 
-      if(res?.status_code == 400){
+      if (res?.status_code == 400) {
         status = "error";
       }
 
