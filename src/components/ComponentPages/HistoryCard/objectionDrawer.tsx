@@ -35,9 +35,10 @@ function ObjectionDrawer({
   setDrawerFor,
   objectionId,
 }: any) {
-  const { topicRecord, campRecord } = useSelector((state: RootState) => ({
+  const { topicRecord, campRecord, namespace_id } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
     campRecord: state?.topicDetails?.currentCampRecord,
+    namespace_id: state.filters?.filterObject?.namespace_id,
   }));
 
   const dispatch = useDispatch();
@@ -49,6 +50,7 @@ function ObjectionDrawer({
   const [selectedValue, setSelectedValue] = useState(null);
   const [selectedtNickname, setSelectedtNickname] = useState("");
   const [nictNameId, setNictNameId] = useState(null);
+  const [currentTopic, setCurrentTopic] = useState(null);
   const [loader, setLoader] = useState(false);
 
   const topicNum = router?.query?.camp?.at(0)?.split("-")?.at(0);
@@ -74,10 +76,15 @@ function ObjectionDrawer({
 
     if(drawerFor === "topicObjection") {
       res = await getEditTopicApi(payload);
+
       fieldSValuesForForm = {
         nick_name: res?.data?.nick_name?.at(0)?.id,
         topic_name: res?.data?.topic?.topic_name,
       }
+      
+      const topicData = res?.data?.topic;
+      setCurrentTopic(topicData);
+
     }else if (drawerFor === "campObjection") {
       res = await getEditCampApi(payload);
       fieldSValuesForForm = {
@@ -103,7 +110,12 @@ function ObjectionDrawer({
   const onFinish = async (values) => {
     setLoader(true);
     let payload = {
-      namespace_id: null,
+      namespace_id: namespace_id,
+      nick_name: values.nick_name,
+      submitter: currentTopic?.submitter_nick_id,
+      topic_id: currentTopic?.id,
+      topic_name: values.topic_name?.trim(),
+      topic_num: currentTopic?.topic_num,
       event_type: "objection",
       objection_reason: values?.objection_reason,
     }
