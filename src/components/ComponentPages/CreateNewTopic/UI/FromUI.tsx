@@ -63,6 +63,7 @@ const CreateTopicFromUI = ({
       rules: nickNmRule,
       prefix: <UserOutlined className="px-3 text-canBlack" />,
       onSelect: (val) => form.setFieldValue("nick_name", val),
+      // value: form.getFieldValue("nick_name"),
     };
 
     if (nickNameList?.length) {
@@ -71,6 +72,14 @@ const CreateTopicFromUI = ({
       selectInputProps.key = "nickNamesWithKeyName";
     }
     return <SelectInputs {...selectInputProps} />;
+  };
+
+  const getNameSpacesValue = () => {
+    if (isEdit) {
+      return values?.namespace;
+    }
+
+    return values?.namespace || nameSpaces[0]?.id;
   };
 
   return (
@@ -92,7 +101,7 @@ const CreateTopicFromUI = ({
         initialValues={{
           topic_name: "",
           nick_name: values?.nick_name || nickNameList[0]?.id,
-          namespace: values?.namespace || nameSpaces[0]?.id,
+          namespace: getNameSpacesValue(),
           tags: null,
         }}
       >
@@ -163,23 +172,24 @@ const CreateTopicFromUI = ({
                 placeholder={placeholders.namespace}
                 allowClear
                 size={"large"}
-                dataid="nick-namespace"
+                dataid="canon-namespace"
                 showSearch
                 optionFilterProp="children"
                 inputClassName="border-0"
                 rules={namespaceRule}
-                nameKey="label"
                 prefix={
                   <StructureIcon
                     className="flex items-center justify-center px-2"
                     fill="#242B37"
                   />
                 }
-                defaultValue={values?.namespace || nameSpaces[0]?.id}
-                initialValue={values?.namespace || nameSpaces[0]?.id}
+                defaultValue={getNameSpacesValue()}
+                initialValue={getNameSpacesValue()}
+                value={form.getFieldValue("namespace")}
                 isLabelRequiredFormat={true}
                 formatFunc={changeSlashToArrow}
-                onChange={(val) => form.setFieldValue("namespace", val)}
+                onSelect={(val) => form.setFieldValue("namespace", val)}
+                key="canon-select"
               />
             )}
           </Col>

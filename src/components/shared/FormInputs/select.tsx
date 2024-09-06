@@ -62,7 +62,7 @@ const SelectInputs = ({
         >
           {isDefaultOption
             ? options.map((op) => (
-                <Option key={name + "_" + op.id} value={op[valueKey]}>
+                <Option key={name + "_" + op[valueKey]} value={op[valueKey]}>
                   {isLabelRequiredFormat
                     ? formatFunc(op[nameKey])
                     : op[nameKey]}
