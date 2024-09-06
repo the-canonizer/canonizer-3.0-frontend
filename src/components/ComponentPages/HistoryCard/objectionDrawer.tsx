@@ -24,7 +24,14 @@ import { campNameRule, topicNameRule } from "src/messages/validationRules";
 import AlignIcon from "../CreateNewTopic/UI/alignIcon";
 import { labels } from "src/messages/label";
 import Inputs from "components/shared/FormInputs";
-import { getEditCampApi, getEditStatementApi, getEditTopicApi, updateCampApi, updateStatementApi, updateTopicApi } from "src/network/api/campManageStatementApi";
+import {
+  getEditCampApi,
+  getEditStatementApi,
+  getEditTopicApi,
+  updateCampApi,
+  updateStatementApi,
+  updateTopicApi,
+} from "src/network/api/campManageStatementApi";
 
 const { TextArea } = Input;
 
@@ -35,11 +42,13 @@ function ObjectionDrawer({
   setDrawerFor,
   objectionId,
 }: any) {
-  const { topicRecord, campRecord, namespace_id } = useSelector((state: RootState) => ({
-    topicRecord: state?.topicDetails?.currentTopicRecord,
-    campRecord: state?.topicDetails?.currentCampRecord,
-    namespace_id: state.filters?.filterObject?.namespace_id,
-  }));
+  const { topicRecord, campRecord, namespace_id } = useSelector(
+    (state: RootState) => ({
+      topicRecord: state?.topicDetails?.currentTopicRecord,
+      campRecord: state?.topicDetails?.currentCampRecord,
+      namespace_id: state.filters?.filterObject?.namespace_id,
+    })
+  );
 
   const dispatch = useDispatch();
   const router = useRouter();
@@ -51,6 +60,7 @@ function ObjectionDrawer({
   const [selectedtNickname, setSelectedtNickname] = useState("");
   const [nictNameId, setNictNameId] = useState(null);
   const [currentTopic, setCurrentTopic] = useState(null);
+  const [currentCamp, setCurrentCamp] = useState(null);
   const [loader, setLoader] = useState(false);
 
   const topicNum = router?.query?.camp?.at(0)?.split("-")?.at(0);
@@ -69,36 +79,39 @@ function ObjectionDrawer({
     let payload = {
       record_id: objectionId,
       event_type: "objection",
-    }
+    };
 
     let res = null;
     let fieldSValuesForForm = null;
 
-    if(drawerFor === "topicObjection") {
+    if (drawerFor === "topicObjection") {
       res = await getEditTopicApi(payload);
 
       fieldSValuesForForm = {
         nick_name: res?.data?.nick_name?.at(0)?.id,
         topic_name: res?.data?.topic?.topic_name,
-      }
-      
+      };
+
       const topicData = res?.data?.topic;
       setCurrentTopic(topicData);
-
-    }else if (drawerFor === "campObjection") {
+    } else if (drawerFor === "campObjection") {
       res = await getEditCampApi(payload);
+
       fieldSValuesForForm = {
         nick_name: res?.data?.nick_name?.at(0)?.id,
         camp_name: res?.data?.camp?.camp_name,
-      }
-    }else if (drawerFor === "statementObjection") {
+      };
+
+      const campData = res?.data?.camp;
+      setCurrentCamp(campData);
+    } else if (drawerFor === "statementObjection") {
       res = await getEditStatementApi(payload);
       fieldSValuesForForm = {
         nick_name: res?.data?.nick_name?.at(0)?.id,
-      }
+      };
     }
     form.setFieldsValue(fieldSValuesForForm);
-  }
+  };
 
   useEffect(() => {
     if (open) {
@@ -109,22 +122,45 @@ function ObjectionDrawer({
 
   const onFinish = async (values) => {
     setLoader(true);
+
     let payload = {
-      namespace_id: namespace_id,
-      nick_name: values.nick_name,
-      submitter: currentTopic?.submitter_nick_id,
-      topic_id: currentTopic?.id,
-      topic_name: values.topic_name?.trim(),
-      topic_num: currentTopic?.topic_num,
+      namespace_id: null,
+      nick_name: null,
+      submitter: null,
+      topic_id: null,
+      topic_name: null,
+      topic_num: null,
       event_type: "objection",
-      objection_reason: values?.objection_reason,
-    }
+      objection_reason: null,
+      camp_id: null,
+      camp_name: null,
+      camp_num: null,
+    };
     let res = null;
     if (drawerFor === "topicObjection") {
+      payload.namespace_id = namespace_id;
+      payload.nick_name = values.nick_name;
+      payload.submitter = currentTopic?.submitter_nick_id;
+      payload.topic_id = currentTopic?.id;
+      payload.topic_name = values.topic_name?.trim();
+      payload.topic_num = currentTopic?.topic_num;
+      payload.event_type = "objection";
+      payload.objection_reason = values?.objection_reason;
       res = await updateTopicApi(payload);
-    }else if(drawerFor === "campObjection") {
+    } else if (drawerFor === "campObjection") {
+      payload.namespace_id = namespace_id;
+      payload.nick_name = values.nick_name;
+      payload.submitter = currentCamp?.submitter_nick_id;
+      payload.topic_id = currentCamp?.id;
+      payload.topic_name = values.topic_name?.trim();
+      payload.topic_num = currentCamp?.topic_num;
+      payload.event_type = "objection";
+      payload.objection_reason = values?.objection_reason;
+      payload.camp_id = currentCamp?.id;
+      payload.camp_name = currentCamp?.camp_name;
+      payload.camp_num = currentCamp?.camp_num;
       res = await updateCampApi(payload);
-    }else if(drawerFor === "statementObjection") {
+    } else if (drawerFor === "statementObjection") {
       res = await updateStatementApi(payload);
     }
     setLoader(false);
