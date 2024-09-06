@@ -210,7 +210,7 @@ function SupportTreeDrawer({
     let res = await getAllUsedNickNames(topicNum && body);
     if (res && res?.status_code == 200) {
       setNickNameList(res?.data);
-      setNictNameId(res?.data?.at(0)?.id);
+      // setNictNameId(res?.data?.at(0)?.id);
     }
   };
 
@@ -276,7 +276,10 @@ function SupportTreeDrawer({
     }
     return remove_camps_ids;
   };
-
+  let nickNameID = nickNameList.filter(
+    (values) => selectedtNickname == values.id
+  );
+  let nickNameIDValue = nickNameID[0]?.id;
   const addSupportMethod = async (values) => {
     if (shouldRemoveSupport() && supportedCampsStatus?.support_flag == 1) {
       let payload = {
@@ -316,7 +319,7 @@ function SupportTreeDrawer({
         remove_camps: removeSupportFromCamps(),
         type: "direct",
         action: removeSupportFromCamps()?.length > 0 ? "partial" : "add",
-        nick_name_id: nictNameId,
+        nick_name_id: nickNameIDValue,
         order_update: transformSupportOrderForAPI(tagsArrayList),
         reason_summary: values?.description,
         reasons: selectedValue,
