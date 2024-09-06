@@ -56,6 +56,12 @@ const CreateNewTopic = () => {
       .catch(() => setIsDisabled(false));
   }, [form, values]);
 
+  useEffect(() => {
+    if (nameSpaces?.length > 0) {
+      form.setFieldValue("namespace", nameSpaces[0]?.id);
+    }
+  }, [nameSpaces]);
+
   const fetchNickNameList = async () => {
     setIsLoading(true);
     let response = await getNickNameList();
@@ -97,8 +103,6 @@ const CreateNewTopic = () => {
               name: [key],
               value: values[key],
               errors: [res.error[key]],
-              touched: true,
-              validating: true,
             }));
 
           if (fieldsToUpdate.length) {
@@ -110,16 +114,10 @@ const CreateNewTopic = () => {
               name: ["topic_name"],
               value: values?.topic_name,
               errors: res?.error?.topic_name || [],
-              touched: true,
-              validating: true,
             };
 
             if (fieldsToUpdate.length) {
               form.setFields(fieldsToUpdate.concat([topicField]));
-              console.warn(
-                "--fieldsToUpdate---- ",
-                fieldsToUpdate.concat([topicField])
-              );
             }
 
             setIsDisabled(false);
@@ -145,8 +143,6 @@ const CreateNewTopic = () => {
 
     setIsLoading(false);
   };
-
-  console.log(form.getFieldError("topic_name"));
 
   const storeFilterClear = () => {
     dispatch(setFilterCanonizedTopics({ filterByScore: "" }));
@@ -222,10 +218,26 @@ const CreateNewTopic = () => {
 
     if (isMatched) {
       setIsError(true);
+      setIsDisabled(false);
+      form.setFields([
+        {
+          name: ["topic_name"],
+          value: values?.topic_name,
+          errors: ["The topic name has already been taken."],
+        },
+      ]);
       return;
     }
 
     if (!isMatched) {
+      form.setFields([
+        {
+          name: ["topic_name"],
+          value: values?.topic_name,
+          errors: [],
+        },
+      ]);
+      setIsDisabled(true);
       setIsError(false);
     }
   };

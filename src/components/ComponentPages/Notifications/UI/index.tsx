@@ -111,7 +111,7 @@ const NotificationsListUI = ({
               className="mt-auto pb-14 [&_.ant-typography>small]:text-base [&_.ant-typography>small]:font-normal [&_.ant-typography>small]:text-canBlack [&_.ant-typography>small]:capitalize"
               key="div-of-switch"
             >
-              <NotificationSwitch key="notificatoin-page-switch" />
+              <NotificationSwitch />
             </div>
           </div>
         </Col>

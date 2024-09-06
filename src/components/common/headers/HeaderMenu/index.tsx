@@ -288,10 +288,7 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
             );
           })}
           {isUserAuthenticated ? (
-            <ListItem
-              key="notification-li"
-              cls="after:content-['|'] after:absolute after:ml-[10px] after:text-[darkgray] hidden tab:flex after:right-0"
-            >
+            <ListItem cls="after:content-['|'] after:absolute after:ml-[10px] after:text-[darkgray] hidden tab:flex after:right-0">
               <Notifications />
             </ListItem>
           ) : null}

@@ -31,15 +31,16 @@ const NotificationSwitch = () => {
           getMessage();
         }
       } catch (error) {
-        // log error or whateever you do
+        // log error or whatever you do
       }
     }
 
     setToken();
   }, []);
 
-  const onSwitch = async (st: any, event: { stopPropagation: () => void }) => {
+  const onSwitch = async (st: any, event: any) => {
     setIsLoading(true);
+    event.preventDefault();
     event.stopPropagation();
 
     if (st) {
@@ -107,6 +108,8 @@ const NotificationSwitch = () => {
     }
   }
 
+  console.log("checked-----", checked);
+
   return (
     <Typography.Text className="flex items-center justify-between text-muted text-sm">
       <small data-testid="enable-text" className="block mr-2">
@@ -119,7 +122,10 @@ const NotificationSwitch = () => {
           size="small"
           checked={checked}
           onClick={onSwitch}
-          onChange={(e, e1) => e1.stopPropagation()}
+          onChange={(e, e1) => {
+            e1.stopPropagation();
+            e1.preventDefault();
+          }}
         />
       )}
     </Typography.Text>
