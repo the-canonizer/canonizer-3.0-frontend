@@ -115,7 +115,9 @@ function ObjectionDrawer({
     }else if(drawerFor === "statementObjection") {
       res = await updateStatementApi(payload);
     }
-    setLoader(false)
+    setLoader(false);
+    setDrawerFor("");
+    onClose();
   };
 
   return (
