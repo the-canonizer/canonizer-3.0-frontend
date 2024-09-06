@@ -1,4 +1,3 @@
-import { Fragment } from "react";
 import { Dropdown, Badge, Card, Typography } from "antd";
 import Link from "next/link";
 import { BellOutlined } from "@ant-design/icons";
@@ -28,7 +27,7 @@ const Notifications = () => {
           >
             notifications
           </Typography.Paragraph>
-          <NotificationSwitch key="notificatoin-popup-switch" />
+          <NotificationSwitch />
         </div>
       }
       actions={[
@@ -47,25 +46,24 @@ const Notifications = () => {
   );
 
   return (
-    <Fragment>
-      <Dropdown
-        menu={{}}
-        overlay={notificationDropdown}
-        trigger={["click"]}
-        placement="bottomRight"
-        className="z-50"
+    <Dropdown
+      menu={{}}
+      overlay={notificationDropdown}
+      trigger={["click"]}
+      placement="bottomRight"
+      className="z-50"
+      destroyPopupOnHide={false}
+    >
+      <Badge
+        count={count}
+        color="orange"
+        size="small"
+        className="text-xl text-canBlue font-medium cursor-pointer"
+        data-testid="clickable"
       >
-        <Badge
-          count={count}
-          color="orange"
-          size="small"
-          className="text-xl text-canBlue font-medium cursor-pointer"
-          data-testid="clickable"
-        >
-          <BellOutlined />
-        </Badge>
-      </Dropdown>
-    </Fragment>
+        <BellOutlined />
+      </Badge>
+    </Dropdown>
   );
 };
 
