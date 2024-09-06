@@ -4,8 +4,8 @@ import {
   screen,
   waitFor,
 } from "../../../../utils/testUtils";
-import UserProfileDetails from "../UserProfileDetails/UserProfileDetails";
-import { UserProfileCard } from "../UserProfileDetails/UserProfileCard";
+import UserProfileDetails from "../UI/UserProfileDetails";
+import { UserProfileCard } from "../UI/UserProfileCard";
 import messages from "../../../../messages";
 import UserProfile from "..";
 import { useState } from "react";
