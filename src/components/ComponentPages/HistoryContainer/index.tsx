@@ -28,6 +28,8 @@ import useIsUserAuthenticated from "src/hooks/isUserAuthenticated";
 import {
   getAllUsedNickNames,
   getCampBreadCrumbApi,
+  getCurrentCampRecordApi,
+  getCurrentTopicRecordApi,
 } from "src/network/api/campDetailApi";
 import { store } from "src/store";
 import { setTree } from "src/store/slices/campDetailSlice";
@@ -45,6 +47,7 @@ import moment from "moment";
 import Breadcrumbs from "../Breadcrumbs/breadcrumbs";
 import HistoryCard from "../HistoryCard/historyCard";
 import CustomLayout from "src/hoc/layout/";
+import TimelineInfoBar from "../TopicDetails/CampInfoBar";
 
 const { Title } = Typography;
 
@@ -71,10 +74,7 @@ function HistoryContainer() {
   const [directarchived, setDirectarchived] = useState(0);
   const [totalCount, setTotalCount] = useState<any>([]);
   const [liveRecordId, setLiveRecordId] = useState<any>(null);
-
-  const { asof } = useSelector((state: RootState) => ({
-    asof: state?.filters?.filterObject?.asof,
-  }));
+  const [isHistoryPage, setIsHistoryPage] = useState(true);
 
   const changeAgree = () => {
     setAgreeCheck(!agreecheck);
@@ -86,15 +86,23 @@ function HistoryContainer() {
 
   const count = useRef(1);
 
-  const { history, currentCampNode, asofdate, algorithm } = useSelector(
-    (state: RootState) => ({
-      history: state?.topicDetails?.history,
-      currentCampRecord: state.topicDetails.currentCampRecord,
-      currentCampNode: state?.filters?.selectedCampNode,
-      asofdate: state.filters?.filterObject?.asofdate,
-      algorithm: state.filters?.filterObject?.algorithm,
-    })
-  );
+  const {
+    history,
+    currentCampNode,
+    asofdate,
+    algorithm,
+    topicRecord,
+    asof,
+    campRecord,
+  } = useSelector((state: RootState) => ({
+    history: state?.topicDetails?.history,
+    currentCampNode: state?.filters?.selectedCampNode,
+    asofdate: state.filters?.filterObject?.asofdate,
+    algorithm: state.filters?.filterObject?.algorithm,
+    topicRecord: state?.topicDetails?.currentTopicRecord,
+    asof: state?.filters?.filterObject?.asof,
+    campRecord: state?.topicDetails?.currentCampRecord,
+  }));
 
   const [isTreesApiCallStop, setIsTreesApiCallStop] = useState(false);
   const [loadingIndicator, setLoadingIndicator] = useState(false);
@@ -426,9 +434,46 @@ function HistoryContainer() {
       renderButton(type, label, count, activeTab === type, className, count < 1)
     );
   };
+  useEffect(() => {
+    const isDefaultOrReview = asof === "default" || asof === "review";
+
+    const reqBody = {
+      topic_num: parseInt(router?.query?.camp?.at(0)?.split("-")?.at(0), 10),
+      camp_num:
+        parseInt(router?.query?.camp?.at(1)?.split("-")?.at(0), 10) || 1,
+      as_of: asof,
+      as_of_date: isDefaultOrReview
+        ? Math.floor(Date.now() / 1000)
+        : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
+    };
+
+    const fetchTopicRecord = async () => {
+      await getCurrentTopicRecordApi(reqBody);
+    };
+
+    const fetchCampRecord = async () => {
+      await getCurrentCampRecordApi(reqBody);
+    };
+
+    if (campRecord === null) {
+      fetchCampRecord();
+    }
+
+    if (topicRecord === null) {
+      fetchTopicRecord();
+    }
+  }, []);
 
   return (
-    <CustomLayout afterHeader={<Breadcrumbs updateId={liveRecordId} />}>
+    // <CustomLayout afterHeader={<Breadcrumbs updateId={liveRecordId} />}>
+    <CustomLayout
+      afterHeader={
+        <TimelineInfoBar
+          updateId={liveRecordId}
+          isHistoryPage={isHistoryPage}
+        />
+      }
+    >
       <div className="ch-wrapper">
         <div className="ch-history">
           <div className="statement-status-sider">
@@ -441,7 +486,7 @@ function HistoryContainer() {
               {`${historyTitle(historyOf)} History`}
             </Button>
             <Typography.Paragraph className="mb-6 text-base font-medium">
-              {`${historyTitle(historyOf).toUpperCase()} BASED ON STATUS`}
+              {`${historyTitle(historyOf).toUpperCase()} HISTORY BASED ON STATUS`}
             </Typography.Paragraph>
             <div className="sider-btn pr-0 md:pr-8">{renderButtons()}</div>
             <Button
