@@ -407,6 +407,18 @@ const ProfileInfo = () => {
       handleAddressChange={handleAddressChange}
       handleAddressSelect={handleAddressSelect}
       address={address}
+      mobileCarrier={mobileCarrier}
+      formVerify={formVerify}
+      isOTPModalVisible={isOTPModalVisible}
+      setIsOTPModalVisible={setIsOTPModalVisible}
+      handleOTPCancel={handleOTPCancel}
+      otp={otp}
+      handleChangeOTP={handleChangeOTP}
+      toggleVerifyButton={toggleVerifyButton}
+      handleMobileNumberChange={handleMobileNumberChange}
+      userProfileSkeletonV={userProfileSkeleton}
+      setOTP={setOTP}
+      setToggleVerifyButton={setToggleVerifyButton}
     />
   );
 };
