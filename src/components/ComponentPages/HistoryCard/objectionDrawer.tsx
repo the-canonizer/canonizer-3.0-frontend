@@ -156,6 +156,16 @@ function ObjectionDrawer({
       payload.event_type = "objection";
       payload.objection_reason = values?.objection_reason;
       res = await updateTopicApi(payload);
+
+      if(res?.status_code == 200){
+        status = "success";
+      }
+
+      if(res?.status_code == 400){
+        status = "error";
+      }
+
+      openNotificationWithIcon(res?.message, status);
     } else if (drawerFor === "campObjection") {
       payload.namespace_id = namespace_id;
       payload.nick_name = values.nick_name;
