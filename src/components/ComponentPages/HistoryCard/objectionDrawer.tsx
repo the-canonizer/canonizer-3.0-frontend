@@ -24,6 +24,7 @@ import { campNameRule, topicNameRule } from "src/messages/validationRules";
 import AlignIcon from "../CreateNewTopic/UI/alignIcon";
 import { labels } from "src/messages/label";
 import Inputs from "components/shared/FormInputs";
+import { getEditCampApi, getEditStatementApi, getEditTopicApi } from "src/network/api/campManageStatementApi";
 
 const { TextArea } = Input;
 
@@ -34,6 +35,7 @@ function ObjectionDrawer({
   setDrawerFor,
   loader = false,
   setLoader,
+  objectionId,
 }: any) {
   const { topicRecord, campRecord } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
@@ -62,15 +64,44 @@ function ObjectionDrawer({
     }
   };
 
-  const onFinish = async (values) => {};
+  const getEditData = async () => {
+    let payload = {
+      record_id: objectionId,
+      event_type: "objection",
+    }
+
+    let res = null;
+    let fieldSValuesForForm = null;
+
+    if(drawerFor === "topicObjection") {
+      res = await getEditTopicApi(payload);
+      fieldSValuesForForm = {
+        nick_name: res?.data?.nick_name?.at(0)?.id,
+        topic_name: res?.data?.topic?.topic_name,
+      }
+    }else if (drawerFor === "campObjection") {
+      res = await getEditCampApi(payload);
+      fieldSValuesForForm = {
+        nick_name: res?.data?.nick_name?.at(0)?.id,
+        camp_name: res?.data?.camp?.camp_name,
+      }
+    }else if (drawerFor === "statementObjection") {
+      res = await getEditStatementApi(payload);
+      fieldSValuesForForm = {
+        nick_name: res?.data?.nick_name?.at(0)?.id,
+      }
+    }
+    form.setFieldsValue(fieldSValuesForForm);
+  }
 
   useEffect(() => {
     if (open) {
-      if (drawerFor === "topicObjection") {
-        getCanonizedNicknameList();
-      }
+      getCanonizedNicknameList();
+      getEditData();
     }
   }, [open]);
+
+  const onFinish = async (values) => {};
 
   return (
     <Drawer
@@ -107,7 +138,7 @@ function ObjectionDrawer({
           <div>
             <Row gutter={16}>
               <Col span={24} sm={12}>
-                <Form.Item name="nickname" label="Nickname">
+                <Form.Item name="nick_name" label="Nickname">
                   <div className="thm-select">
                     <div className="prefix-icon">
                       <UserOutlined />
@@ -169,7 +200,7 @@ function ObjectionDrawer({
                   ) : drawerFor === "campObjection" ? (
                     <>
                       <Inputs
-                        name="topic_name"
+                        name="camp_name"
                         label={
                           <>
                             {labels.cr_camp_name}

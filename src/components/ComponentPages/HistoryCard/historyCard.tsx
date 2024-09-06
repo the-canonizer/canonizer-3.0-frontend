@@ -680,6 +680,7 @@ function HistoryCard({
         open={open}
         drawerFor={drawerFor}
         setDrawerFor={setDrawerFor}
+        objectionId={campStatement?.id}
       />
     </div>
   );
