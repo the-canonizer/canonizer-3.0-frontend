@@ -24,7 +24,7 @@ import { campNameRule, topicNameRule } from "src/messages/validationRules";
 import AlignIcon from "../CreateNewTopic/UI/alignIcon";
 import { labels } from "src/messages/label";
 import Inputs from "components/shared/FormInputs";
-import { getEditCampApi, getEditStatementApi, getEditTopicApi } from "src/network/api/campManageStatementApi";
+import { getEditCampApi, getEditStatementApi, getEditTopicApi, updateCampApi, updateStatementApi, updateTopicApi } from "src/network/api/campManageStatementApi";
 
 const { TextArea } = Input;
 
@@ -101,7 +101,21 @@ function ObjectionDrawer({
     }
   }, [open]);
 
-  const onFinish = async (values) => {};
+  const onFinish = async (values) => {
+    let payload = {
+      namespace_id: null,
+      event_type: "objection",
+      objection_reason: values?.objection_reason,
+    }
+    let res = null;
+    if (drawerFor === "topicObjection") {
+      res = await updateTopicApi(payload);
+    }else if(drawerFor === "campObjection") {
+      res = await updateCampApi(payload);
+    }else if(drawerFor === "statementObjection") {
+      res = await updateStatementApi(payload);
+    }
+  };
 
   return (
     <Drawer
