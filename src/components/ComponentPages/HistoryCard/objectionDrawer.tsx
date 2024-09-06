@@ -33,8 +33,6 @@ function ObjectionDrawer({
   open,
   drawerFor,
   setDrawerFor,
-  loader = false,
-  setLoader,
   objectionId,
 }: any) {
   const { topicRecord, campRecord } = useSelector((state: RootState) => ({
@@ -51,6 +49,7 @@ function ObjectionDrawer({
   const [selectedValue, setSelectedValue] = useState(null);
   const [selectedtNickname, setSelectedtNickname] = useState("");
   const [nictNameId, setNictNameId] = useState(null);
+  const [loader, setLoader] = useState(false);
 
   const topicNum = router?.query?.camp?.at(0)?.split("-")?.at(0);
   const topic_name = router?.query?.camp?.at(0)?.split("-")?.slice(1).join("-");
@@ -102,6 +101,7 @@ function ObjectionDrawer({
   }, [open]);
 
   const onFinish = async (values) => {
+    setLoader(true);
     let payload = {
       namespace_id: null,
       event_type: "objection",
@@ -115,6 +115,7 @@ function ObjectionDrawer({
     }else if(drawerFor === "statementObjection") {
       res = await updateStatementApi(payload);
     }
+    setLoader(false)
   };
 
   return (
