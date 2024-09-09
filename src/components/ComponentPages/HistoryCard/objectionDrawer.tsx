@@ -303,9 +303,8 @@ function ObjectionDrawer({
               <Col span={24} sm={12}>
                 <Form.Item name="nick_name" label={
                     <>
-                      Your Objection Reason{" "}
+                      Nickname
                       <span className="required">*</span>{" "}
-                      <small>(Limit 100 Char) </small>
                     </>
                   }>
                   <div className="thm-select">
