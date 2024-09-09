@@ -391,7 +391,13 @@ function ObjectionDrawer({
               <Col span={24}>
                 <Form.Item
                   name="objection_reason"
-                  label="Your objection reason"
+                  label={
+                    <>
+                      Your Objection Reason{" "}
+                      <span className="required">*</span>{" "}
+                      <small>(Limit 100 Char) </small>
+                    </>
+                  }
                   rules={[
                     {
                       required: true,
