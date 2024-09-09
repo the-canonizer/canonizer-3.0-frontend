@@ -1,11 +1,9 @@
 import { Fragment, useState, useEffect } from "react";
 import { Input, Typography, Table, Pagination, Tooltip } from "antd";
-import { EditOutlined, LeftOutlined } from "@ant-design/icons";
+import { LeftOutlined } from "@ant-design/icons";
 import moment from "moment";
 import Link from "next/link";
 import { useRouter } from "next/router";
-
-import styles from "./Forum.module.scss";
 
 import messages from "src/messages";
 import { getTime, replaceSpecialCharacters } from "src/utils/generalUtility";
@@ -79,7 +77,7 @@ const ThreadListUI = ({
       ];
 
   const btnClass =
-      "border-0 [&:not(:last-child)]:mr-5 text-sm font-normal !text-canBlack hover:!text-canBlue relative after:content-[''] after:absolute after:border-b-4 after:w-[70%] after:top-auto after:left-[50%] after:-translate-x-[50%] after:bottom-0 after:border-canBlue after:rounded after:hidden",
+      "border-0 [&:not(:last-child)]:mr-5 text-sm font-normal !text-canBlack hover:!text-canBlue relative after:content-[''] after:absolute after:border-b-4 after:w-[70%] after:top-auto after:left-[50%] after:-translate-x-[50%] after:bottom-0 after:border-canBlue after:rounded after:hidden w-full sm:w-auto",
     activeCls = "font-semibold !text-canBlue after:!block";
 
   return (
@@ -97,10 +95,10 @@ const ThreadListUI = ({
           </span>
         </div>
       }
-      className={`bg-white border-0 px-6 [&_.ant-card-head]:p-0 [&_.ant-card-body]:px-0 [&_.ant-card-head]:border-0`}
+      className={`bg-white border-0 lg:px-6 [&_.ant-card-head]:p-0 [&_.ant-card-body]:px-0 [&_.ant-card-head]:border-0`}
     >
-      <div className="flex justify-between mb-9">
-        <div className="flex justify-between items-center border-b-2 max-w-[50%]">
+      <div className="flex justify-between mb-9 flex-wrap gap-5">
+        <div className="flex justify-between items-center flex-wrap border-b-2 max-w-full lg:max-w-[50%] order-1 lg:order-0">
           <PrimaryButton
             ghost
             className={`${btnClass} ${
@@ -152,7 +150,7 @@ const ThreadListUI = ({
             </Fragment>
           ) : null}
         </div>
-        <div className="max-w-[300px]">
+        <div className="max-w-full lg:max-w-[300px]">
           <Input.Search
             placeholder={placeholders.searchPlaceholder}
             allowClear

@@ -10,6 +10,14 @@ import CustomSkelton from "components/common/customSkelton";
 import { useDispatch } from "react-redux";
 import { setSearchValue } from "src/store/slices/searchSlice";
 
+const geturl = (bd) => {
+  if (bd[1] && bd[1][2]?.camp_link) {
+    return bd[1][2]?.camp_link;
+  } else {
+    return bd[0][1]?.camp_link;
+  }
+};
+
 export const getTopicNameLink = (
   item,
   campName,
@@ -29,7 +37,7 @@ export const getTopicNameLink = (
         {isTopicNameReq && (
           <Link
             href={{
-              pathname: "/" + bd[1][2]?.camp_link || bd[0][1]?.camp_link,
+              pathname: "/" + geturl(bd),
             }}
           >
             <a className="flex justify-start items-start text-xs mt-2 text-canLight">
