@@ -30,11 +30,15 @@ const HomePageContainer = () => {
         afterHeader={<WelcomeContent />}
         rightSidebar={
           <div className="md:mt-3.5" data-testid="sideBar">
-            {!isMobile ? (
+            {/* {!isMobile ? (
               <div className="mb-14" data-testid="topicsList">
                 <TrandingTopics />
               </div>
-            ) : null}
+            ) : null} */}
+
+            <div className="mb-14" data-testid="helpCard">
+              <WhatsNew />
+            </div>
 
             {isUserAuthenticated ? (
               <div
@@ -44,10 +48,6 @@ const HomePageContainer = () => {
                 <RecentActivities />
               </div>
             ) : null}
-
-            <div className="mb-14" data-testid="helpCard">
-              <WhatsNew />
-            </div>
           </div>
         }
       >
@@ -55,19 +55,19 @@ const HomePageContainer = () => {
           <Col md={24} className="mb-14">
             <FeaturedTopic />
           </Col>
-          {isMobile ? (
+          {/* {isMobile ? (
             <Col md={24} xs={24} className="mb-14">
               <TrandingTopics />
             </Col>
-          ) : null}
+          ) : null} */}
           {isUserAuthenticated && preferedTopic?.length ? (
             <Col md={24} className="mb-14" data-testid="preferedTopic">
               <PreferedTopics />
             </Col>
           ) : null}
-          <Col md={24} className="mb-14" data-testid="categoriesList">
+          {/* <Col md={24} className="mb-14" data-testid="categoriesList">
             <CategoriesList />
-          </Col>
+          </Col> */}
           <Col md={24} className="mb-0" data-testid="hotTopics">
             <HotTopics />
           </Col>

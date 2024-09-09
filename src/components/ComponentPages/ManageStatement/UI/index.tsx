@@ -219,7 +219,7 @@ function ManageStatementUI({
             <Col
               xs={24}
               xl={24}
-              className="flex justify-between items-center pt-5 mt-3"
+              className="flex justify-between items-center pt-5 mt-3 flex-wrap gap-5"
             >
               <Form.Item className="mb-0">
                 <SecondaryButton

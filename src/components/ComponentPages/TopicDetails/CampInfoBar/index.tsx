@@ -684,7 +684,7 @@ const TimelineInfoBar = ({
                               key="camp_subscribed_icon"
                             >
                               <small style={{ alignSelf: "center" }}>
-                                <i className="icon-subscribe text-primary"></i>
+                                <i className="icon-subscribe text-canBlue"></i>
                               </small>
                             </Tooltip>
                           )}
@@ -781,7 +781,7 @@ const TimelineInfoBar = ({
                                             <small
                                               style={{ alignSelf: "center" }}
                                             >
-                                              <i className="icon-subscribe text-primary"></i>
+                                              <i className="icon-subscribe text-canBlue"></i>
                                             </small>
                                           </Tooltip>
                                         )}
@@ -988,7 +988,7 @@ const TimelineInfoBar = ({
                       <small
                         style={{ alignSelf: "center", marginLeft: "10px" }}
                       >
-                        <i className="icon-subscribe text-primary"></i>
+                        <i className="icon-subscribe text-canBlue"></i>
                       </small>
                     </Tooltip>
                   )}
@@ -1077,7 +1077,7 @@ const TimelineInfoBar = ({
                                 marginLeft: "10px",
                               }}
                             >
-                              <i className="icon-subscribe text-primary"></i>
+                              <i className="icon-subscribe text-canBlue"></i>
                             </small>
                           </Tooltip>
                         )}

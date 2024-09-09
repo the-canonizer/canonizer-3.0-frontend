@@ -16,36 +16,16 @@ const Otpinput = ({ label, onChangeOtp, className = "" }) => {
     onChangeOtp(otpValues);
   }, [otp]);
 
-  // const handleChange = (name: string, event: ChangeEvent<HTMLInputElement>) => {
-  //   // const val = event?.target?.value;
-  //   // setOtp({
-  //   //   ...otp,
-  //   //   [name]: val,
-  //   // });
-
-  //   const { value } = event.target;
-  //   if (value.length <= 1) {
-  //     setOtp({ ...otp, [name]: value });
-  //   }
-  // };
-  const handleChange = (
-    name: string,
-    event: ChangeEvent<HTMLInputElement>,
-    idx: number
-  ) => {
+  const handleChange = (name: string, event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
 
     if (value.length <= 1) {
-      setOtp((prevOtp) => ({
-        ...prevOtp,
-        [name]: value,
-      }));
+      setOtp({ ...otp, [name]: value });
+      // Focus on the next input field if the input is valid (1 character)
+      if (value.length === 1) {
+        const nextInput: any =
+          event.target.form.elements[event.target.tabIndex + 1];
 
-      // Automatically move focus to the next input box if value is not empty and the next box exists
-      if (value && idx < otpInputs.length - 1) {
-        const nextInput = document.querySelector(
-          `[tabIndex="${idx + 2}"]`
-        ) as HTMLInputElement;
         if (nextInput) {
           nextInput.focus();
         }
@@ -53,24 +33,22 @@ const Otpinput = ({ label, onChangeOtp, className = "" }) => {
     }
   };
 
-  // const inputFocus = (elmnt) => {
-  //   if (elmnt.key === "Delete" || elmnt.key === "Backspace") {
-  //     const next = elmnt.target.tabIndex - 1;
-  //     if (next > -1) {
-  //       elmnt.target.form.elements[next].focus();
-  //     }
-  //   } else {
-  //     const next = elmnt.target.tabIndex;
-  //     if (next < 6) {
-  //       elmnt.target.form.elements[next].focus();
-  //     }
-  //   }
-  // };
-
-  // infoicontechnology
+  const inputFocus = (event) => {
+    if (event.key === "Delete" || event.key === "Backspace") {
+      const previous = event.target.tabIndex - 1; // Move to the previous input
+      if (previous > 0) {
+        event.target.form.elements[previous].focus();
+      }
+    } else {
+      const next = event.target.tabIndex; // Move to the next input
+      if (next < 6) {
+        event.target.form.elements[next].focus();
+      }
+    }
+  };
 
   const otpClass =
-    "w-[3rem] h-[3rem] m-[0 1rem] text-[2rem] text-center rounded-[4px] border-[1px] border-solid border-[rgba(0, 0, 0, 0.3)] text-canBlack font-normal h-[40px] rounded-md";
+    "w-[40px] h-[40px] m-[0 1rem] text-xl text-center rounded-[4px] border-[1px] border-solid border-[rgba(0, 0, 0, 0.3)] text-canBlack font-normal rounded-md p-1";
 
   const otpInputs = ["otp1", "otp2", "otp3", "otp4", "otp5", "otp6"];
   
@@ -94,27 +72,27 @@ const Otpinput = ({ label, onChangeOtp, className = "" }) => {
     }
   };
   return (
-    <div className={"w-8/12 mx-auto " + className}>
+    <div className={"w-[max-content] mx-auto " + className}>
       <div className="ant-col ant-form-item-label font-medium font-sm">
         <label htmlFor="otpverify_otp" className="ant-form-item-required">
           {label}
         </label>
       </div>
-      <div className="flex justify-evenly">
-      {otpInputs?.map((otp, idx) => (
-        <Input
-          key={otp}
-          name={otp}
-          type="text"
-          autoComplete="off"
-          className={otpClass}
-          value={otp[otp]}
-          onChange={(e) => handleChange(otp, e, idx)}
-          onKeyDown={(e) => handleKeyDown(e, idx)}
-          tabIndex={idx + 1}
-          maxLength={1}
-        />
-      ))}
+      <div className="flex gap-3 lg:gap-4">
+        {otpInputs?.map((otp, idx) => (
+          <Input
+            key={otp}
+            name={otp}
+            type="text"
+            autoComplete="off"
+            className={otpClass}
+            value={otp[otp]}
+            onChange={(e) => handleChange(otp, e)}
+            tabIndex={idx + 1}
+            maxLength={1}
+            onKeyUp={(e) => inputFocus(e)}
+          />
+        ))}
       </div>
     </div>
   );
