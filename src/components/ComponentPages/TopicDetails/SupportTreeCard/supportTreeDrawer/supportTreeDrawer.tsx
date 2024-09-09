@@ -100,7 +100,7 @@ function SupportTreeDrawer({
 
   const [selectedtNickname, setSelectedtNickname] = useState("");
   const [tagsArrayList, setTagsArrayList] = useState([]);
-  const [nictNameId, setNictNameId] = useState(null);
+  const [nickNameId, setNickNameId] = useState(null);
   const [parentSupportDataList, setParentSupportDataList] = useState([]);
   const [campIds, setcampIds] = useState([]);
   const [isQuickActionSelected, setIsQuickActionSelected] = useState(false);
@@ -210,7 +210,7 @@ function SupportTreeDrawer({
     let res = await getAllUsedNickNames(topicNum && body);
     if (res && res?.status_code == 200) {
       setNickNameList(res?.data);
-      // setNictNameId(res?.data?.at(0)?.id);
+      setNickNameId(res?.data?.at(0)?.id);
     }
   };
 
@@ -276,10 +276,10 @@ function SupportTreeDrawer({
     }
     return remove_camps_ids;
   };
-  let nickNameID = nickNameList.filter(
-    (values) => selectedtNickname == values.id
-  );
-  let nickNameIDValue = nickNameID[0]?.id;
+  // let nickNameID = nickNameList.filter(
+  //   (values) => selectedtNickname == values.id
+  // );
+  // let nickNameIDValue = nickNameID[0]?.id;
   const addSupportMethod = async (values) => {
     if (shouldRemoveSupport() && supportedCampsStatus?.support_flag == 1) {
       let payload = {
@@ -287,7 +287,7 @@ function SupportTreeDrawer({
         remove_camps: removeSupportFromCamps(),
         type: "direct",
         action: removeSupportFromCamps()?.length > 0 ? "partial" : "add",
-        nick_name_id: nictNameId,
+        nick_name_id: selectedtNickname ? selectedtNickname : nickNameId,
         order_update: transformSupportOrderForAPI(tagsArrayList),
       };
 
@@ -319,7 +319,7 @@ function SupportTreeDrawer({
         remove_camps: removeSupportFromCamps(),
         type: "direct",
         action: removeSupportFromCamps()?.length > 0 ? "partial" : "add",
-        nick_name_id: nickNameIDValue,
+        nick_name_id: selectedtNickname ? selectedtNickname : nickNameId,
         order_update: transformSupportOrderForAPI(tagsArrayList),
         reason_summary: values?.description,
         reasons: selectedValue,
@@ -341,7 +341,7 @@ function SupportTreeDrawer({
 
   const addDelegateMethod = async () => {
     const addDelegatedSupport = {
-      nick_name_id: nictNameId,
+      nick_name_id: selectedtNickname ? selectedtNickname : nickNameId,
       delegated_nick_name_id: getDelegateId,
       topic_num: topicNum,
     };
