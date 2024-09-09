@@ -306,7 +306,9 @@ function ObjectionDrawer({
                       Nickname
                       <span className="required">*</span>{" "}
                     </>
-                  }>
+                  }
+                  required
+                  >
                   <div className="thm-select">
                     <div className="prefix-icon">
                       <UserOutlined />
