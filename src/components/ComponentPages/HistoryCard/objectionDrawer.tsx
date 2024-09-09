@@ -33,6 +33,8 @@ import {
   updateTopicApi,
 } from "src/network/api/campManageStatementApi";
 import { openNotificationWithIcon } from "components/common/notification/notificationBar";
+import { allowedEmojies } from "src/utils/generalUtility";
+import K from "src/constants";
 
 const { TextArea } = Input;
 
@@ -64,6 +66,8 @@ function ObjectionDrawer({
   const [currentCamp, setCurrentCamp] = useState(null);
   const [currentCampStatement, setCurrentCampStatement] = useState(null);
   const [loader, setLoader] = useState(false);
+  const [initialFormValues, setInitialFormValues] = useState({});
+  const [submitIsDisable, setSubmitIsDisable] = useState(true);
 
   const topicNum = router?.query?.camp?.at(0)?.split("-")?.at(0);
   const topic_name = router?.query?.camp?.at(0)?.split("-")?.slice(1).join("-");
@@ -117,6 +121,65 @@ function ObjectionDrawer({
       setCurrentCampStatement(campStatementData);
     }
     form.setFieldsValue(fieldSValuesForForm);
+  };
+
+  const handleformvalues = () => {
+    let initialFormStatus = {
+      statement: "",
+      edit_summary: "",
+    } as any;
+
+    let nowFormStatus = {
+      statement: "",
+      edit_summary: "",
+    } as any;
+
+    initialFormStatus = Object.keys(initialFormValues).reduce((acc, key) => {
+      acc[key] =
+        initialFormValues[key] === null || undefined
+          ? ""
+          : initialFormValues[key];
+      return acc;
+    }, {});
+    if (initialFormStatus?.edit_summary == null || undefined) {
+      initialFormStatus.edit_summary = "";
+    }
+    if (initialFormStatus?.statement == null || undefined) {
+      initialFormStatus.statement = "";
+    }
+    if (typeof initialFormStatus.edit_summary == "string") {
+      initialFormStatus.edit_summary = initialFormStatus.edit_summary.trim();
+    }
+    if (typeof initialFormStatus.statement == "string") {
+      initialFormStatus.statement = initialFormStatus.statement.trim();
+    }
+    nowFormStatus = Object.keys(form?.getFieldsValue()).reduce((acc, key) => {
+      acc[key] =
+        form?.getFieldsValue()[key] === null || undefined
+          ? ""
+          : form?.getFieldsValue()[key];
+      return acc;
+    }, {});
+    if (nowFormStatus?.parent_camp_num) {
+      delete nowFormStatus.parent_camp_num;
+    }
+    if (nowFormStatus?.edit_summary == null || undefined) {
+      nowFormStatus.edit_summary = "";
+    }
+    if (nowFormStatus?.statement == null || undefined) {
+      nowFormStatus.statement = "";
+    }
+    if (typeof nowFormStatus.edit_summary == "string") {
+      nowFormStatus.edit_summary = nowFormStatus.edit_summary.trim();
+    }
+    if (typeof nowFormStatus.statement == "string") {
+      nowFormStatus.statement = nowFormStatus.statement.trim();
+    }
+    if (JSON.stringify(nowFormStatus) == JSON.stringify(initialFormStatus)) {
+      setSubmitIsDisable(true);
+    } else {
+      setSubmitIsDisable(false);
+    }
   };
 
   useEffect(() => {
@@ -231,6 +294,7 @@ function ObjectionDrawer({
         className="adding-support-form"
         autoComplete="off"
         scrollToFirstError
+        onValuesChange={handleformvalues}
         onFinish={onFinish}
       >
         <div className="support-content">
@@ -328,8 +392,20 @@ function ObjectionDrawer({
                 <Form.Item
                   name="objection_reason"
                   label="Your objection reason"
+                  rules={[
+                    {
+                      required: true,
+                      message:
+                        K?.exceptionalMessages?.objectionRequireErrorMsg,
+                    },
+                    {
+                      pattern: /[^ \s]/,
+                      message: K?.exceptionalMessages?.objectionIsRequire,
+                    },
+                    allowedEmojies(),
+                  ]}
                 >
-                  <TextArea className="thm-input" rows={4} />
+                  <TextArea className="thm-input" rows={4}  maxLength={100} required/>
                 </Form.Item>
               </Col>
             </Row>
@@ -350,7 +426,7 @@ function ObjectionDrawer({
           </Button>
           <Button
             size="large"
-            
+            disabled={submitIsDisable}
             htmlType="submit"
            className="flex items-center gap-2 min-w-[200px] bg-canRed_Opacity10 border-canRed hover:border-canRed hover:text-canRed focus:text-canRed focus:border-canRed justify-center text-base rounded-lg leading-none w-100 font-medium"
             loading={loader}
