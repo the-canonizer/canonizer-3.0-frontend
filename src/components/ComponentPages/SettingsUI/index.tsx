@@ -63,11 +63,6 @@ const SettingsUI = () => {
     globalUserProfileDataEmail: state.topicDetails.globalUserProfileDataEmail,
   }));
 
-  console.log(
-    globalUserProfileData,
-    globalUserProfileDataEmail,
-    "abababababab;;;;;;;;;;;;;;;;;"
-  );
 
   const router = useRouter();
   type MenuItem = Required<MenuProps>["items"][number];

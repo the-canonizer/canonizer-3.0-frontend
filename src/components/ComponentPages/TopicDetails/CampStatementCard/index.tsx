@@ -87,7 +87,7 @@ const CampStatementCard = ({ loadingIndicator }) => {
       return (
         <PrimaryButton
           disabled={campRecord?.is_archive == 1 ? true : false}
-          className=" printHIde flex items-center justify-center text-base py-5 gap-2 w-full mt-5 font-medium"
+          className="printHIde flex items-center justify-center text-base py-5 gap-2 w-full mt-5 font-medium mt-4"
           id="add-camp-statement-btn"
           onClick={() =>
             router?.push({
@@ -170,8 +170,8 @@ const CampStatementCard = ({ loadingIndicator }) => {
       data-testid="algoSelect"
       id="statementCard"
       title={
-        <div className="flex justify-between items-start">
-          <div className="mr-auto">
+        <div className="flex justify-between items-start flex-wrap">
+          <div className="mr-auto w-full lg:w-auto">
             <div className="camp-agreement-header flex items-center mb-2.5 lg:mb-1 gap-2">
               <div className="flex gap-2.5 items-center">
                 <SectionHeading
@@ -253,7 +253,13 @@ const CampStatementCard = ({ loadingIndicator }) => {
             )}
           </div>
 
-          <div className="topicDetailsCollapseFooter printHIde camp">
+          <div
+            className={`topicDetailsCollapseFooter printHIde camp ${
+              campStatement?.length && campStatement[0]?.parsed_value
+                ? "mt-5 border-t-2 pt-5 w-full"
+                : ""
+            }`}
+          >
             {getButton()}
           </div>
         </div>
