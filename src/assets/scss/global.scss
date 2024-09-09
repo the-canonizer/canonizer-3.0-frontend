@@ -292,7 +292,7 @@ body {
           @apply rounded-xl font-medium h-auto py-2;
 
           &.btn-all {
-            @apply enabled:border-canBlue enabled:hover:text-canBlue enabled:focus:text-canBlue;
+            @apply enabled:border-canBlue hover:text-canBlue enabled:focus:text-canBlue;
 
             &.active {
               @apply bg-canBlue text-white;
@@ -300,7 +300,7 @@ body {
           }
 
           &.btn-objected {
-            @apply enabled:border-canRed enabled:hover:text-canRed enabled:focus:text-canRed;
+            @apply enabled:border-canRed hover:text-canRed enabled:focus:text-canRed;
 
             &.active {
               @apply bg-canRed text-white;
@@ -308,7 +308,7 @@ body {
           }
 
           &.btn-live {
-            @apply enabled:border-canGreen enabled:hover:text-canGreen enabled:focus:text-canGreen;
+            @apply enabled:border-canGreen hover:text-canGreen enabled:focus:text-canGreen;
 
             &.active {
               @apply bg-canGreen text-white;
@@ -316,7 +316,7 @@ body {
           }
 
           &.btn-pending {
-            @apply enabled:border-canOrange enabled:hover:text-canOrange enabled:focus:text-canOrange;
+            @apply enabled:border-canOrange hover:text-canOrange enabled:focus:text-canOrange;
 
             &.active {
               @apply bg-canOrange text-white;
@@ -324,7 +324,7 @@ body {
           }
 
           &.btn-previous {
-            @apply enabled:border-[#4786CB] enabled:hover:text-[#4786CB] enabled:focus:text-[#4786CB];
+            @apply enabled:border-[#4786CB] hover:text-[#4786CB] enabled:focus:text-[#4786CB];
 
             &.active {
               @apply bg-[#4786CB] text-white;
