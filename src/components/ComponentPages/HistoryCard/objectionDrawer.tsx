@@ -350,9 +350,9 @@ function ObjectionDrawer({
           </Button>
           <Button
             size="large"
-            type="primary"
+            
             htmlType="submit"
-            className=" min-w-[200px] bg-canBlue flex items-center justify-center hover:bg-canHoverBlue focus:bg-canHoverBlue hover:text-white font-medium text-white disabled:bg-disabled font-base rounded-lg"
+           className="flex items-center gap-2 min-w-[200px] bg-canRed_Opacity10 border-canRed hover:border-canRed hover:text-canRed focus:text-canRed focus:border-canRed justify-center text-base rounded-lg leading-none w-100 font-medium"
             loading={loader}
           >
             Submit Objection
