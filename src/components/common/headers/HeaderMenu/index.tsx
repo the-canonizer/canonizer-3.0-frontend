@@ -77,7 +77,7 @@ const menuItems = [
     hideOnLogin: true,
   },
   {
-    link: "/topic/132-Help/1-Agreement?is_tree_open=1",
+    link: "/notifications",
     linkTitle: "Notifications",
     id: 10,
     icon: <BellOutlined />,
@@ -331,7 +331,7 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
                   {loggedInUser?.first_name} {loggedInUser?.last_name}
                 </Typography.Paragraph>
                 <Typography.Paragraph className="font-medium text-canLight !mb-0 text-xs h-auto block tab:hidden">
-                  {loggedInUser?.email}!
+                  {loggedInUser?.email}
                 </Typography.Paragraph>
               </div>
             </div>
