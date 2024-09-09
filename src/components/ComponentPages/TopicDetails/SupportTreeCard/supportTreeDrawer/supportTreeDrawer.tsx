@@ -724,6 +724,7 @@ function SupportTreeDrawer({
                   <Col span={24} sm={12}>
                     <Form.Item
                       name="reason"
+                      className="label-ellipses"
                       label={
                         isOrderChange
                           ? labels?.reasonChangeLabel

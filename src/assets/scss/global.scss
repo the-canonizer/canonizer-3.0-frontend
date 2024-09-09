@@ -1005,3 +1005,8 @@ body {
 //   > .ant-tree-switcher.ant-tree-switcher-noop:after {
 //   display: none !important;
 // }
+.label-ellipses{
+  label{
+   @apply truncate;
+  }
+}
