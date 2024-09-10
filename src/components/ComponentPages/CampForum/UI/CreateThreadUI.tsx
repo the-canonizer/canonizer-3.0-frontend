@@ -92,6 +92,7 @@ const CreateEditThreadPopup = ({
                 nameKey="nick_name"
                 prefix={<UserOutlined className="px-3 text-canBlack" />}
                 onChange={(val) => form.setFieldValue("nick_name", val)}
+                lastValue={form.getFieldValue("nick_name")}
               />
             ) : null}
           </Col>

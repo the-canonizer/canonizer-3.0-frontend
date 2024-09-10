@@ -63,7 +63,7 @@ const CreateTopicFromUI = ({
       rules: nickNmRule,
       prefix: <UserOutlined className="px-3 text-canBlack" />,
       onSelect: (val) => form.setFieldValue("nick_name", val),
-      // value: form.getFieldValue("nick_name"),
+      lastValue: form.getFieldValue("nick_name"),
     };
 
     if (nickNameList?.length) {
@@ -190,6 +190,7 @@ const CreateTopicFromUI = ({
                 formatFunc={changeSlashToArrow}
                 onSelect={(val) => form.setFieldValue("namespace", val)}
                 key="canon-select"
+                lastValue={form.getFieldValue("namespace")}
               />
             )}
           </Col>
@@ -221,7 +222,7 @@ const CreateTopicFromUI = ({
                     fill="#242B37"
                   />
                 }
-                onChange={onTagSelect}
+                onSelect={onTagSelect}
               />
             )}
           </Col>

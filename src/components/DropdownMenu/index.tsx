@@ -185,6 +185,36 @@ const DropDownMenu = () => {
     return K?.exceptionalMessages?.addCampStatementButton;
   };
 
+  const getCreateCampUr = () => {
+    const campQuery = router?.query?.camp;
+    const manageSupportQuery = router?.query?.manageSupport;
+
+    const firstValue = campQuery ? campQuery[0] : manageSupportQuery?.[0];
+    const secondValue = campQuery
+      ? campQuery[1] ?? "1-Agreement"
+      : manageSupportQuery?.[1];
+
+    if (campStatement?.length > 0) {
+      const draftRecordId = campStatement[0]?.draft_record_id;
+      const parsedValue = campStatement[0]?.parsed_value;
+
+      if (draftRecordId) {
+        return `/manage/statement/${draftRecordId}?is_draft=1`;
+      } else if (parsedValue) {
+        return `/statement/history/${replaceSpecialCharacters(
+          firstValue,
+          "-"
+        )}/${replaceSpecialCharacters(secondValue, "-")}`;
+      }
+    }
+
+    // Fallback for creating a statement if no draft or parsed value
+    return `/create/statement/${replaceSpecialCharacters(
+      firstValue,
+      "-"
+    )}/${replaceSpecialCharacters(secondValue, "-")}`;
+  };
+
   return (
     <div>
       <Menu className={styles.campForumDropdownMenu}>
@@ -353,39 +383,7 @@ const DropDownMenu = () => {
           disabled={campRecord?.is_archive}
         >
           {isTopicPage && (
-            <Link
-              href={
-                campStatement?.length > 0
-                  ? campStatement[0]?.draft_record_id
-                    ? "/manage/statement/" +
-                      campStatement[0]?.draft_record_id +
-                      "?is_draft=1"
-                    : campStatement[0]?.parsed_value
-                    ? `/statement/history/${replaceSpecialCharacters(
-                        router?.query?.camp
-                          ? router?.query?.camp[0]
-                          : router?.query?.manageSupport[0],
-                        "-"
-                      )}/${replaceSpecialCharacters(
-                        router?.query?.camp
-                          ? router?.query?.camp[1] ?? "1-Agreement"
-                          : router?.query?.manageSupport[1],
-                        "-"
-                      )}`
-                    : `/create/statement/${replaceSpecialCharacters(
-                        router?.query?.camp
-                          ? router?.query?.camp[0]
-                          : router?.query?.manageSupport?.at(0),
-                        "-"
-                      )}/${replaceSpecialCharacters(
-                        router?.query?.camp
-                          ? router?.query?.camp[1] ?? "1-Agreement"
-                          : router?.query?.manageSupport?.at(1),
-                        "-"
-                      )}`
-                  : "#"
-              }
-            >
+            <Link href={getCreateCampUr()}>
               <a>{getButtonLabel()}</a>
             </Link>
           )}

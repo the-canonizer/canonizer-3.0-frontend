@@ -297,7 +297,6 @@ function ManageStatements({ isEdit = false }) {
   const autoSave = async (data) => {
     setIsAutoSaving(true);
     setStatement(data?.statement);
-    // setNickName(data?.nick_name);
 
     let payload = {
       ...data,
