@@ -94,7 +94,7 @@ const TimelineInfoBar = ({
   const [tagsArrayList, setTagsArrayList] = useState([]);
 
   const [showAll, setShowAll] = useState(false);
-  const tagsToShow = showAll ? tagsArrayList : tagsArrayList.slice(0, 4);
+  const tagsToShow = showAll ? tagsArrayList : tagsArrayList?.slice(0, 4);
 
   const transformDataForTags = (data) => {
     return data?.map((item, index) => {
@@ -396,7 +396,7 @@ const TimelineInfoBar = ({
                     <span
                       data-testid="styles_Bluecolor"
                     >
-                      {`${index + 1}.${item?.content}`}
+                      {`${item?.content}`}
                     </span>
                   </Tag>
                 </div>
