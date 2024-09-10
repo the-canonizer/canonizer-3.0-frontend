@@ -1,5 +1,14 @@
-import { DoubleLeftOutlined } from "@ant-design/icons";
-import { Button, Col, Popover, Row, Spin, Tooltip, Typography } from "antd";
+import { DoubleLeftOutlined, MenuOutlined } from "@ant-design/icons";
+import {
+  Button,
+  Col,
+  Popover,
+  Row,
+  Spin,
+  Tag,
+  Tooltip,
+  Typography,
+} from "antd";
 import moment from "moment";
 import Image from "next/image";
 import Link from "next/link";
@@ -42,6 +51,7 @@ const TimelineInfoBar = ({
     topic_name: "",
     bread_crumb: [],
   });
+
   const didMount = useRef(false);
   const router = useRouter();
 
@@ -76,8 +86,26 @@ const TimelineInfoBar = ({
   const [topicSubscriptionID, setTopicSubscriptionID] = useState(
     topicRecord?.topicSubscriptionId
   );
+
+  // topicRecord?.tags
   const campId = router?.query?.camp?.at(1)?.split("-")?.at(0);
   const topicId = router?.query?.camp?.at(0)?.split("-")?.at(0);
+
+  const [tagsArrayList, setTagsArrayList] = useState([]);
+
+  const [showAll, setShowAll] = useState(false);
+  const tagsToShow = showAll ? tagsArrayList : tagsArrayList.slice(0, 4);
+
+  const transformDataForTags = (data) => {
+    return data?.map((item, index) => {
+      return {
+        id: item.id,
+        content: item.title,
+      };
+    });
+  };
+
+  useEffect(() => {setTagsArrayList(transformDataForTags(topicRecord?.tags))},[])
 
   useEffect(() => {
     if (isTopicPage) {
@@ -354,6 +382,35 @@ const TimelineInfoBar = ({
           <span className="text-sm text-canBlack font-medium">
             {topicRecord && changeSlashToArrow(topicRecord?.namespace_name)}
           </span>
+        </Col>
+        <Col md={24} sm={24} xs={24} className="flex flex-col mt-4">
+          {console.log("topic", topicRecord?.tags)}
+          <span className="text-xs 2xl:text-sm text-canLight">Tags :</span>            
+            <div className="vertical-chips">
+              {tagsToShow?.map((item: any, index) => (
+                <div key={index} className="flex items-center gap-7 mt-4">
+                  <Tag
+                    className="rounded-full mr-0 bg-[#F0F2FA] border-transparent font-semibold text-base px-5 py-2.5 leading-none text-canBlack"
+                    closable={false}
+                  >
+                    <span
+                      data-testid="styles_Bluecolor"
+                    >
+                      {`${index + 1}.${item?.content}`}
+                    </span>
+                  </Tag>
+                </div>
+              ))}
+
+              {tagsArrayList.length > 4 && (
+                <button
+                  className="mt-4 text-canBlue"
+                  onClick={() => setShowAll(!showAll)}
+                >
+                  {showAll ? "Show Less" : "Show More"}
+                </button>
+              )}
+            </div>
         </Col>
       </Row>
 
