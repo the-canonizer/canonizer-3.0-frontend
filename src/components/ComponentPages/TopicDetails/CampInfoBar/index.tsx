@@ -541,16 +541,25 @@ const TimelineInfoBar = ({
             {topicRecord && topicRecord?.topic_name}
           </span>
         </Col>
-        {campRecord && (
+        {campRecord?.camp_leader_nick_name && (
           <>
             <Col md={12} sm={12} xs={12} className=" flex flex-col mt-4">
               <span className="text-xs 2xl:text-sm text-canLight">
                 Camp Leader:
               </span>
-              <span className="text-base text-black">
-                {" "}
+              <Link
+                href={{
+                  pathname: `/user/supports/${
+                    campRecord?.camp_leader_nick_id
+                  }?canon=${
+                    topicRecord?.namespace_id
+                      ? topicRecord?.namespace_id
+                      : filterObject?.namespace_id
+                  }`,
+                }}
+              >
                 {campRecord?.camp_leader_nick_name}
-              </span>
+              </Link>
             </Col>
           </>
         )}
