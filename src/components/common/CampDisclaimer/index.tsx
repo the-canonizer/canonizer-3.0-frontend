@@ -11,11 +11,13 @@ import SectionHeading from "components/ComponentPages/Home/FeaturedTopic/section
 import K from "src/constants";
 
 const CampDisclaimer = () => {
-  const { campRecord, manageSupportStatusCheck, tree } = useSelector(
+  const { campRecord, manageSupportStatusCheck, tree,openDrawerForManageSupport } = useSelector(
     (state: RootState) => ({
       campRecord: state?.topicDetails?.currentCampRecord,
       manageSupportStatusCheck: state.topicDetails.manageSupportStatusCheck,
       tree: state?.topicDetails?.tree && state?.topicDetails?.tree[0],
+    openDrawerForManageSupport: state.topicDetails.openDrawerForManageSupport,
+
     })
   );
 
@@ -41,7 +43,7 @@ const CampDisclaimer = () => {
           <Dropdown
             placement="bottomRight"
             dropdownRender={() =>
-              !manageSupportStatusCheck ? <DropDownMenu /> : ""
+              !openDrawerForManageSupport ? <DropDownMenu /> : ""
             }
             trigger={["click"]}
           >

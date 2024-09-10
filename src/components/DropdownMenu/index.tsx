@@ -19,6 +19,7 @@ import GenerateModal from "components/common/generateScript";
 import {
   setManageSupportStatusCheck,
   setManageSupportUrlLink,
+  setOpenDrawerForManageSupport,
 } from "src/store/slices/campDetailSlice";
 import { setIsSupportModal } from "src/store/slices/topicSlice";
 import { showLoginModal } from "src/store/slices/uiSlice";
@@ -145,7 +146,7 @@ const DropDownMenu = () => {
     } else if (isUserAuthenticated && campRecord?.is_archive) {
       dispatch(setIsSupportModal(false));
     } else {
-      dispatch(setIsSupportModal(true));
+      dispatch(setOpenDrawerForManageSupport(true));
     }
   };
   let isTopicPage = router?.pathname?.split("/")[1];
