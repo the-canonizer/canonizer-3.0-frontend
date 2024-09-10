@@ -527,9 +527,11 @@ function SupportTreeDrawer({
   };
 
   useEffect(() => {
-    checkAllTagsSelected()
+      if(tagsArrayList && tagsArrayList?.length > 0){
+        checkAllTagsSelected()
       ? setIsQuickActionSelected(true)
       : setIsQuickActionSelected(false);
+      }
   }, [checkAllTagsSelected()]);
 
   return (
