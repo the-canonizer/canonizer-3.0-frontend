@@ -548,14 +548,12 @@ const TimelineInfoBar = ({
                 Camp Leader:
               </span>
               <Link
+                className="flex flex-wrap"
                 href={{
-                  pathname: `/user/supports/${
-                    campRecord?.camp_leader_nick_id
-                  }?canon=${
-                    topicRecord?.namespace_id
-                      ? topicRecord?.namespace_id
-                      : filterObject?.namespace_id
-                  }`,
+                  pathname: `/user/supports/${campRecord?.camp_leader_nick_id}`,
+                  query: {
+                    canon: topicRecord?.namespace_id,
+                  },
                 }}
               >
                 {campRecord?.camp_leader_nick_name}
