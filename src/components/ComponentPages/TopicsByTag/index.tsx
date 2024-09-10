@@ -251,7 +251,7 @@ const TopicsListByCats = () => {
           <CustomSkelton skeltonFor="browse" />
         ) : (
           <Row gutter={[24, 24]}>
-            {topicsData &&
+            {topicsData?.length ? (
               topicsData?.map((ft: any, index) => (
                 <Col
                   key={index}
@@ -280,7 +280,12 @@ const TopicsListByCats = () => {
                     scoreTag={<ScoreTag topic_score={ft?.topic_score} />}
                   />
                 </Col>
-              ))}
+              ))
+            ) : (
+              <Typography.Paragraph className="text-center w-full font-medium text-sm">
+                No data found
+              </Typography.Paragraph>
+            )}
           </Row>
         )}
         {totalTopics > pageSize && (

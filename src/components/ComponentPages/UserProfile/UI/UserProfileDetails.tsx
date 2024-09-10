@@ -68,7 +68,18 @@ const UserProfileDetails = ({
     ? `https://www.gravatar.com/avatar/${md5(profileData?.email)}.png`
     : null;
 
-  const address = `${profileData.address_1}, ${profileData.address_2}, ${profileData.city}, ${profileData.country} - ${profileData.postal_code}`;
+  const addressParts = [
+    profileData?.address_1,
+    profileData?.address_2,
+    profileData?.city,
+    profileData?.country,
+    profileData?.postal_code ? `- ${profileData.postal_code}` : "",
+  ];
+
+  const address = addressParts
+    .filter(Boolean) // Filters out any falsy values (null, undefined, empty string)
+    .join(", ") // Joins the non-empty parts with a comma and space
+    .trim(); // Ensures no leading or trailing spaces
 
   return (
     <CommonCards className="bg-white lg:bg-canGray mt-10 lg:mt-2">

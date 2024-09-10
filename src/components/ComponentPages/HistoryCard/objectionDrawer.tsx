@@ -301,7 +301,14 @@ function ObjectionDrawer({
           <div>
             <Row gutter={16}>
               <Col span={24} sm={12}>
-                <Form.Item name="nick_name" label="Nickname">
+                <Form.Item name="nick_name" label={
+                    <>
+                      Nickname
+                      <span className="required">*</span>{" "}
+                    </>
+                  }
+                  required
+                  >
                   <div className="thm-select">
                     <div className="prefix-icon">
                       <UserOutlined />
@@ -391,7 +398,13 @@ function ObjectionDrawer({
               <Col span={24}>
                 <Form.Item
                   name="objection_reason"
-                  label="Your objection reason"
+                  label={
+                    <>
+                      Your Objection Reason{" "}
+                      <span className="required">*</span>{" "}
+                      <small>(Limit 100 Char) </small>
+                    </>
+                  }
                   rules={[
                     {
                       required: true,

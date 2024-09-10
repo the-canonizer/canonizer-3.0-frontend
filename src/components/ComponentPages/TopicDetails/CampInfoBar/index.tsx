@@ -507,7 +507,7 @@ const TimelineInfoBar = ({
         </Col>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
           <span className="text-xs 2xl:text-sm text-canLight">
-            Disable aditional sub camps:{" "}
+            Disable additional sub camps:{" "}
           </span>
           <span className="text-sm text-canBlack">
             {campRecord && campRecord.is_disabled == 0 ? "No" : "Yes"}

@@ -1,16 +1,40 @@
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import { useRouter } from "next/router";
 
 import Logo from "../logoHeader";
 import HeaderMenu from "../HeaderMenu";
 import SearchHeader from "../search";
 import useAuthentication from "src/hooks/isUserAuthenticated";
+import { markNotificationRead } from "src/network/api/notificationAPI";
 
 const LoggedOutHeader = () => {
   const router = useRouter();
+
   const { isUserAuthenticated } = useAuthentication();
 
   const isTopicPage = router?.asPath === "/create/topic";
+
+  const onNotifyClick = async (id: number) => {
+    const res = await markNotificationRead(id);
+    if (res && res.status_code === 200) {
+      delete router?.query?.from;
+      delete router?.query?.n_type;
+      router?.replace(router, null, { shallow: true });
+    }
+  };
+
+  useEffect(() => {
+    const { from } = router.query;
+    if (from) {
+      if (from.includes("notify_")) {
+        const fArr = String(from).split("_");
+        if (+fArr[1]) {
+          onNotifyClick(+fArr[1]);
+        }
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.query]);
 
   return (
     <Fragment>
