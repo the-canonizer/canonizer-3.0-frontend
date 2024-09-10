@@ -75,7 +75,7 @@ function SupportTreeDrawer({
     asofdate,
     asof,
     algorithm,
-    openDrawerForManageSupport
+    openDrawerForManageSupport,
   } = useSelector((state: RootState) => ({
     reasons: state?.topicDetails?.removedReasons,
     currentGetCheckSupportExistsData:

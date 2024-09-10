@@ -11,15 +11,17 @@ import SectionHeading from "components/ComponentPages/Home/FeaturedTopic/section
 import K from "src/constants";
 
 const CampDisclaimer = () => {
-  const { campRecord, manageSupportStatusCheck, tree,openDrawerForManageSupport } = useSelector(
-    (state: RootState) => ({
-      campRecord: state?.topicDetails?.currentCampRecord,
-      manageSupportStatusCheck: state.topicDetails.manageSupportStatusCheck,
-      tree: state?.topicDetails?.tree && state?.topicDetails?.tree[0],
+  const {
+    campRecord,
+    manageSupportStatusCheck,
+    tree,
+    openDrawerForManageSupport,
+  } = useSelector((state: RootState) => ({
+    campRecord: state?.topicDetails?.currentCampRecord,
+    manageSupportStatusCheck: state.topicDetails.manageSupportStatusCheck,
+    tree: state?.topicDetails?.tree && state?.topicDetails?.tree[0],
     openDrawerForManageSupport: state.topicDetails.openDrawerForManageSupport,
-
-    })
-  );
+  }));
 
   return (
     <div className="flex justify-between mb-4 items-center">

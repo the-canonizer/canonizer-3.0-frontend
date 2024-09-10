@@ -48,12 +48,10 @@ const SettingsUI = () => {
   const [selectedTab, setSelectedTab] = useState("Direct_Supported_Camps");
   const [getDataFromUserProfile, setGetDataFromUserProfile] = useState(null);
 
-
   const onTabChange = (key) => {
     setActiveTabKey(key);
     router?.push("/settings?tab=" + key);
   };
-
 
   const router = useRouter();
   type MenuItem = Required<MenuProps>["items"][number];
@@ -330,17 +328,16 @@ const SettingsUI = () => {
     }
   };
 
-  const getUesrPofileData = async()=>{
+  const getUesrPofileData = async () => {
     let res = await GetUserProfileInfo();
-    setGetDataFromUserProfile(res?.data)
+    setGetDataFromUserProfile(res?.data);
+  };
 
-  }
-
-useEffect(()=>{
-  if(router?.pathname !== "/settings?tab=profile_info"){
-  getUesrPofileData()
-  }
-},[])
+  useEffect(() => {
+    if (router?.pathname !== "/settings?tab=profile_info") {
+      getUesrPofileData();
+    }
+  }, []);
 
   return (
     <div className="pageContentWrap flex lg:flex-row flex-col gap-10">
@@ -393,7 +390,8 @@ useEffect(()=>{
                     <ImageUploader />
                     <div className="flex flex-col gap-1">
                       <h3 className="lg:text-xl text-base text-canBlack font-medium">
-                        {getDataFromUserProfile?.first_name} {getDataFromUserProfile?.last_name}
+                        {getDataFromUserProfile?.first_name}{" "}
+                        {getDataFromUserProfile?.last_name}
                       </h3>
                       <p className="text-sm font-normal text-canLight">
                         {getDataFromUserProfile?.email}
