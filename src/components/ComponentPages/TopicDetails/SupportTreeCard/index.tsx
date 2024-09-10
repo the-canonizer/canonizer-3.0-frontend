@@ -663,7 +663,7 @@ const SupportTreeCard = ({
 
   const disableSignPetition = () => {
     return (
-      isCampLeader()?.campLeaderExist || isCampLeader()?.delegateSupportExist
+      isCampLeader()?.campLeaderExist || isCampLeader()?.delegateSupportExist || campRecord?.is_archive
     );
   };
 
