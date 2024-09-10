@@ -28,7 +28,7 @@ import SubscriptionsList from "../SubscriptionsList";
 import messages from "src/messages";
 import ImageUploader from "../ImageUploader";
 import { RootState } from "src/store";
-import { logout } from "src/network/api/userApi";
+import { GetUserProfileInfo, logout } from "src/network/api/userApi";
 import SectionHeading from "../Home/FeaturedTopic/sectionsHeading";
 import ProfilePrefrences from "../Preference";
 
@@ -46,23 +46,12 @@ const SettingsUI = () => {
   const [showSupportedCampsTab, setshowSupportedCampsTab] = useState(false);
   const [selectedValue, setSelectedValue] = useState("");
   const [selectedTab, setSelectedTab] = useState("Direct_Supported_Camps");
+  const [getDataFromUserProfile, setGetDataFromUserProfile] = useState(null);
 
   const onTabChange = (key) => {
     setActiveTabKey(key);
     router?.push("/settings?tab=" + key);
   };
-
-  const {
-    globalUserProfileData,
-    globalUserProfileDataEmail,
-    globalUserProfileDataLastName,
-  } = useSelector((state: RootState) => ({
-    globalUserProfileData: state.topicDetails.globalUserProfileData,
-    globalUserProfileDataLastName:
-      state.topicDetails.globalUserProfileDataLastName,
-    globalUserProfileDataEmail: state.topicDetails.globalUserProfileDataEmail,
-  }));
-
 
   const router = useRouter();
   type MenuItem = Required<MenuProps>["items"][number];
@@ -339,6 +328,17 @@ const SettingsUI = () => {
     }
   };
 
+  const getUesrPofileData = async () => {
+    let res = await GetUserProfileInfo();
+    setGetDataFromUserProfile(res?.data);
+  };
+
+  useEffect(() => {
+    if (router?.pathname !== "/settings?tab=profile_info") {
+      getUesrPofileData();
+    }
+  }, []);
+
   return (
     <div className="pageContentWrap flex lg:flex-row flex-col gap-10">
       <div className="bg-canGray rounded-xl min-h-[45rem] h-full lg:flex flex-col justify-between sticky top-0 flex-1 hidden ">
@@ -390,10 +390,11 @@ const SettingsUI = () => {
                     <ImageUploader />
                     <div className="flex flex-col gap-1">
                       <h3 className="lg:text-xl text-base text-canBlack font-medium">
-                        {globalUserProfileData} {globalUserProfileDataLastName}
+                        {getDataFromUserProfile?.first_name}{" "}
+                        {getDataFromUserProfile?.last_name}
                       </h3>
                       <p className="text-sm font-normal text-canLight">
-                        {globalUserProfileDataEmail}
+                        {getDataFromUserProfile?.email}
                       </p>
                     </div>
                   </div>

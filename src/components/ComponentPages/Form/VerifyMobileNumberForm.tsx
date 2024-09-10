@@ -132,11 +132,10 @@ function VerifyMobileNumberForm({
                     </>
                   }
                   {...messages.phoneNumberRule}
-              className="text-sm text-canBlack font-normal [&_label]:text-sm [&_label]:font-medium [&_.ant-form-item-explain-error]:mb-6 [&_.ant-input-group-addon]:!w-[5rem] [&_.ant-select-selection-item]:!pr-6 [&_.ant-input-group-addon]:!bg-canGray [&_.ant-input-affix-wrapper]:focus:!border-canGrey2 [&_.ant-input-affix-wrapper-focused]:!shadow-none  [&_.ant-input-affix-wrapper-focused]:!border-canGrey2 [&_.ant-input-affix-wrapper]:!border-canGrey2 [&_.ant-input-affix-wrapper]:!shadow-none"
-
+                  className="text-sm text-canBlack font-normal [&_label]:text-sm [&_label]:font-medium [&_.ant-form-item-explain-error]:mb-6 [&_.ant-input-group-addon]:!w-[5rem] [&_.ant-select-selection-item]:!pr-6 [&_.ant-input-group-addon]:!bg-canGray [&_.ant-input-affix-wrapper]:focus:!border-canGrey2 [&_.ant-input-affix-wrapper-focused]:!shadow-none  [&_.ant-input-affix-wrapper-focused]:!border-canGrey2 [&_.ant-input-affix-wrapper]:!border-canGrey2 [&_.ant-input-affix-wrapper]:!shadow-none"
                 >
                   <Input
-                  className="!rounded-lg"
+                    className="!rounded-lg"
                     data-testid="handleMobileNumberChange"
                     id="phoneNumber"
                     type="number"
@@ -162,7 +161,14 @@ function VerifyMobileNumberForm({
                   className="[&_.ant-select-selector]:!rounded-lg text-sm text-canBlack font-normal [&_label]:text-sm [&_label]:font-medium [&_.ant-form-item-explain-error]:mb-6 [&_.ant-input-group-addon]:!w-[5rem] [&_.ant-select-selection-item]:!pr-6 [&_.ant-input-group-addon]:!bg-canGray [&_.ant-input-affix-wrapper]:focus:!border-canGrey2 [&_.ant-input-affix-wrapper-focused]:!shadow-none  [&_.ant-input-affix-wrapper-focused]:!border-canGrey2 [&_.ant-input-affix-wrapper]:!border-canGrey2 [&_.ant-input-affix-wrapper]:!shadow-none"
                 >
                   <Select
-                  suffixIcon={<Image src="/images/caret-icon.svg" width={16} height={9} alt="" />}
+                    suffixIcon={
+                      <Image
+                        src="/images/caret-icon.svg"
+                        width={16}
+                        height={9}
+                        alt=""
+                      />
+                    }
                     data-testid="mobileCarrier"
                     showSearch
                     placeholder={messages.placeholders.mobileCarrier}
@@ -226,40 +232,38 @@ function VerifyMobileNumberForm({
             >
               {/* <p  className="text-base text-canBlack font-medium text-center">OTP has been sent on your phone number.</p> */}
               <div className="flex justify-center">
-              <Input
-                data-testid="handle_Change_OTP"
-                id="otpInput"
-                placeholder={messages.placeholders.otp}
-                value={otp}
-                onChange={handleChangeOTP}
-                size="large"
-                className="!rounded-lg m-auto"
-              />
+                <Input
+                  data-testid="handle_Change_OTP"
+                  id="otpInput"
+                  placeholder={messages.placeholders.otp}
+                  value={otp}
+                  onChange={handleChangeOTP}
+                  size="large"
+                  className="!rounded-lg m-auto"
+                />
               </div>
-             
               <p></p> {/* For Empty Row */}
               <div className="flex gap-2.5 mt-5 justify-center">
-              <SecondaryButton
-            className="flex gap-2.5 items-center justify-center w-[11.25rem] h-auto"
-            onClick={() => {
-              setIsOTPModalVisible(false);
-            }}
-          >
-            Cancel
-            <CloseOutlined />
-          </SecondaryButton>
-          <PrimaryButton
-                data-testid="on_otp_btn_click"
-                id="submitBtn"
-                type="primary"
-                // className="ant-btn ant-btn-orange ant-btn-lg"
-                onClick={onOTPBtnClick}
-                className="flex gap-2.5 items-center justify-center w-[11.25rem] h-auto"
-              >
-                Submit
-              </PrimaryButton>
+                <SecondaryButton
+                  className="flex gap-2.5 items-center justify-center w-[11.25rem] h-auto"
+                  onClick={() => {
+                    setIsOTPModalVisible(false);
+                  }}
+                >
+                  Cancel
+                  <CloseOutlined />
+                </SecondaryButton>
+                <PrimaryButton
+                  data-testid="on_otp_btn_click"
+                  id="submitBtn"
+                  type="primary"
+                  // className="ant-btn ant-btn-orange ant-btn-lg"
+                  onClick={onOTPBtnClick}
+                  className="flex gap-2.5 items-center justify-center w-[11.25rem] h-auto"
+                >
+                  Submit
+                </PrimaryButton>
               </div>
-              
             </Modal>
           </Fragment>
         )}
