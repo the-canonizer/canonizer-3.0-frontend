@@ -333,81 +333,6 @@ const CreateNewCamp = () => {
     return !!similarNames?.length;
   };
 
-  // console.log('editStatementData?.data-',editStatementData?.data);
-
-  // add
-  //   ? router?.query?.statement[0]?.split("-")[0]
-  //   : manageFormOf == "topic"
-  //   ? editInfo?.topic?.topic_num
-  //   :
-  // topic_id: manageFormOf == "topic" ? editInfo?.topic?.id : null,
-  // topic_name: manageFormOf == "topic" ? values?.topic_name : null,
-  // namespace_id:
-  //   manageFormOf == "topic"
-  //     ? values?.name_space
-  //       ? values?.name_space
-  //       : editInfo?.topic?.namespace_id
-  //     : null,
-  //  add
-  //   ? router?.query?.statement[1]?.split("-")[0]
-  //   : manageFormOf == "topic"
-  //   ? null
-  //   :
-  // add
-  //   ? nickNameData[0]?.id
-  //   : manageFormOf == "camp"
-  //   ? editInfo?.camp?.submitter_nick_id
-  //   : manageFormOf == "topic"
-  //   ? editInfo?.topic?.submitter_nick_id
-  //   : editInfo?.statement?.submitter_nick_id,
-  // // statement: blocks, //JSON.stringify(convertToRaw(contentState)),//values?.statement?.blocks[0].text.trim(),
-  // ? "create"
-  // : update
-  // ? "edit"
-  // : objection
-  // ? "objection"
-  // : "update",
-  // statement_id:
-  //   (objection || update) && manageFormOf == "statement"
-  //     ? router?.query?.statement[0]?.split("-")[0]
-  //     : null,
-  // objection_reason: objection ? values?.objection_reason : null,
-  // statement_update: update && manageFormOf == "statement" ? 1 : null,
-  // manageFormOf == "camp"
-  //   ? objection
-  //     ? editInfo?.camp?.camp_about_nick_id
-  //   : null,
-
-  /**
-   * 
-   * @param values {
-    "topic_num": 4741,
-    "topic_id": null,
-    "topic_name": null,
-    "namespace_id": null,
-    "camp_num": 1,
-    "nick_name": 713,
-    "note": "dsadadas",
-    "submitter": 803,
-    "statement": "",
-    "event_type": "update",
-    "statement_id": null,
-    "objection_reason": null,
-    "statement_update": null,
-    "camp_id": 16534,
-    "camp_name": "Agreement",
-    "key_words": "dsadas",
-    "camp_about_url": null,
-    "camp_about_nick_id": null,
-    "parent_camp_num": null,
-    "old_parent_camp_num": null,
-    "camp_leader_nick_id": 803,
-    "is_disabled": 0,
-    "is_one_level": 0,
-    "is_archive": 0
-}
-   * @returns 
-   */
   const submitCampData = async (values) => {
     const editInfo = editStatementData?.data;
     const parent_camp = editInfo?.parent_camp;
@@ -428,7 +353,7 @@ const CreateNewCamp = () => {
       camp_name: values.camp_name,
       key_words: values.keywords,
       camp_about_url: values?.camp_about_url,
-      camp_about_nick_id: values?.camp_about_nick_name,
+      camp_about_nick_id: values?.camp_about_nick_id,
       parent_camp_num:
         editInfo?.parent_camp.length > 1 ? values?.parent_camp_num : null,
       old_parent_camp_num: editInfo?.camp?.parent_camp_num,
@@ -438,45 +363,6 @@ const CreateNewCamp = () => {
     options.map((op) => (reqBody[op.id] = op.checked ? 1 : 0));
 
     const res = await updateCampApi(reqBody);
-
-    console.log("submit err----", res);
-
-    // if (res.status_code == 200) {
-    // setStatementResponseDisable(true);
-    // }
-    // if (manageFormOf == "camp") {
-    // } else if (manageFormOf == "statement") {
-    //   res = await updateStatementApi(reqBody);
-    //   if (res.status_code == 200) {
-    //     // setStatementResponseDisable(true);
-    //   }
-    // } else if (manageFormOf == "topic") {
-    //   res = await updateTopicApi(reqBody);
-    //   if (res.status_code == 200) {
-    //     // setStatementResponseDisable(true);
-    //   }
-
-    //   // if (res?.status_code == 400) {
-    //   //   let url = null;
-
-    //   //   if ("existed_topic_reference" in res.error) {
-    //   //     let topicId = res?.error?.existed_topic_reference?.topic_num;
-    //   //     let topicName = replaceSpecialCharacters(
-    //   //       res?.error?.existed_topic_reference?.topic_name,
-    //   //       "_"
-    //   //     );
-    //   //     url = `/topic/${topicId}-${topicName}/1-Agreement`;
-
-    //   //     setExistedTopic({
-    //   //       ...existedTopic,
-    //   //       data: res?.error?.topic_name,
-    //   //       url: url,
-    //   //       status: true,
-    //   //       topicName: topicName,
-    //   //     });
-    //   //   }
-    //   // }
-    // }
 
     return res;
   };

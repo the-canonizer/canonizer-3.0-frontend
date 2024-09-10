@@ -43,9 +43,10 @@ const CreateNewTopic = () => {
 
   const router = useRouter();
   const dispatch = useDispatch();
-  const [form] = Form.useForm();
+
   const { isUserAuthenticated } = isAuth();
 
+  const [form] = Form.useForm();
   const values = Form.useWatch([], form);
 
   useEffect(() => {
@@ -54,6 +55,12 @@ const CreateNewTopic = () => {
       .then(() => setIsDisabled(true))
       .catch(() => setIsDisabled(false));
   }, [form, values]);
+
+  useEffect(() => {
+    if (nameSpaces?.length > 0) {
+      form.setFieldValue("namespace", nameSpaces[0]?.id);
+    }
+  }, [nameSpaces]);
 
   const fetchNickNameList = async () => {
     setIsLoading(true);
@@ -90,32 +97,33 @@ const CreateNewTopic = () => {
         const errors_key = Object.keys(res.error);
 
         if (errors_key.length) {
+          const fieldsToUpdate = errors_key
+            .filter((key) => key !== "topic_name")
+            .map((key) => ({
+              name: [key],
+              value: values[key],
+              errors: [res.error[key]],
+            }));
+
+          if (fieldsToUpdate.length) {
+            form.setFields(fieldsToUpdate);
+          }
+
           if ("existed_topic_reference" in res.error) {
-            await form.setFields([
-              {
-                name: "topic_name",
-                value: values?.topic_name,
-                errors: res?.error?.topic_name || [],
-                touched: true,
-              },
-            ]);
+            const topicField = {
+              name: ["topic_name"],
+              value: values?.topic_name,
+              errors: res?.error?.topic_name || [],
+            };
+
+            if (fieldsToUpdate.length) {
+              form.setFields(fieldsToUpdate.concat([topicField]));
+            }
 
             setIsDisabled(false);
             setIsError(true);
             getExistingList();
           }
-
-          errors_key.forEach((key) => {
-            if (key !== "topic_name") {
-              form.setFields([
-                {
-                  name: key,
-                  value: values[key],
-                  errors: [res.error[key]],
-                },
-              ]);
-            }
-          });
         }
       }
     }
@@ -210,10 +218,26 @@ const CreateNewTopic = () => {
 
     if (isMatched) {
       setIsError(true);
+      setIsDisabled(false);
+      form.setFields([
+        {
+          name: ["topic_name"],
+          value: values?.topic_name,
+          errors: ["The topic name has already been taken."],
+        },
+      ]);
       return;
     }
 
     if (!isMatched) {
+      form.setFields([
+        {
+          name: ["topic_name"],
+          value: values?.topic_name,
+          errors: [],
+        },
+      ]);
+      setIsDisabled(true);
       setIsError(false);
     }
   };
@@ -229,7 +253,6 @@ const CreateNewTopic = () => {
       const enteredValues = e?.target?.value;
       if (enteredValues && enteredValues?.length > 2) {
         setIsopicLoading(true);
-        // setHaveTopicExist(true);
         getExistingList(enteredValues);
       } else {
         setHaveTopicExist(false);

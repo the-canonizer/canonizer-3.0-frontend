@@ -57,7 +57,7 @@ function ForgotPasswordUI({
         An email has been sent to your regsistered email address.
       </Text>
       <div className="mt-10">
-        <div className="w-8/12 lg:w-7/12 mx-auto my-5 overflow-hidden">
+        <div className="w-112/12 lg:w-7/12 mx-auto my-5 overflow-hidden">
           <Otpinput
             label={
               <>

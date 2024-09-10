@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Pagination } from "antd";
 
 const CustomPagination = ({
@@ -7,7 +7,7 @@ const CustomPagination = ({
   pageSize,
   loading,
   handlePageChange,
-  pageSizeOptions = [10, 15, 20, 24],
+  pageSizeOptions = [12, 18, 24],
   className = "",
 }) => {
   const showTotal = (total) => `Total ${total} items`;

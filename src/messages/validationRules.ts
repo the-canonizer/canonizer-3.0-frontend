@@ -129,10 +129,6 @@ export const otpRule = {
 
 export const phoneRule = {
   rules: [
-    // {
-    //   required: true,
-    //   message: validations.phone,
-    // },
     {
       min: 10,
       message: validations.phoneMinLength,
@@ -329,8 +325,8 @@ export const topicNameRule = {
       message: validations.topicName,
     },
     {
-      max: 30,
-      message: validations.topiNameMax30,
+      max: 80,
+      message: validations.topiNameMax80,
     },
     {
       pattern: /[^ \s]/,
@@ -367,8 +363,8 @@ export const campNameRule = {
       message: validations.campName,
     },
     {
-      max: 30,
-      message: validations.topiNameMax30,
+      max: 80,
+      message: validations.topiNameMax80,
     },
     emojiValidation(patterns.emoji_restrication),
   ],

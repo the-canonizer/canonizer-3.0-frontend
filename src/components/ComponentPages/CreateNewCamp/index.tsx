@@ -401,26 +401,10 @@ const CreateNewCamp = () => {
     setOptions(oldOptions);
   };
 
-  // const onParentCampChange = () => {};
-
   const payload = {
     camp_num: (router?.query.camp[1] as string)?.split("-")[0] ?? "1",
     topic_num: (router?.query.camp[0] as string)?.split("-")[0],
   };
-
-  // const debounceFn = useCallback(() => debounce(getExistingList, 900), []);
-
-  // const onCampChange = (e) => {
-  //   setHaveCampExist(false);
-  //   const enteredValues = e?.target?.value;
-  //   if (enteredValues && enteredValues?.length > 2) {
-  //     setIsopicLoading(true);
-  //     setHaveCampExist(true);
-  //     debounceFn();
-  //   } else {
-  //     setHaveCampExist(false);
-  //   }
-  // };
 
   const onCampChange = useCallback(
     debounce((e) => {
@@ -457,7 +441,7 @@ const CreateNewCamp = () => {
 
   return (
     <CustomSpinner key="create-topic-spinner" spinning={isLoading}>
-      <CampInfoBar payload={payload} />
+      <CampInfoBar payload={payload} isHtmlContent={<></>} isTopicPage={true} />
 
       <Row gutter={20} className="mb-5">
         {campExist ? (

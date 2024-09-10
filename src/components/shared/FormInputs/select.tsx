@@ -23,6 +23,8 @@ const SelectInputs = ({
   onBlur = null,
   initialValue = null,
   defaultValue = null,
+  isDefaultOption = true,
+  optionsData = null,
   ...props
 }) => {
   const [isFocused, setIsFocused] = useState(false);
@@ -58,11 +60,15 @@ const SelectInputs = ({
           key={name + "_select"}
           {...props}
         >
-          {options.map((op) => (
-            <Option key={name + "_" + op.id} value={op[valueKey]}>
-              {isLabelRequiredFormat ? formatFunc(op[nameKey]) : op[nameKey]}
-            </Option>
-          ))}
+          {isDefaultOption
+            ? options.map((op) => (
+                <Option key={name + "_" + op[valueKey]} value={op[valueKey]}>
+                  {isLabelRequiredFormat
+                    ? formatFunc(op[nameKey])
+                    : op[nameKey]}
+                </Option>
+              ))
+            : optionsData}
         </Select>
       </div>
     </Form.Item>

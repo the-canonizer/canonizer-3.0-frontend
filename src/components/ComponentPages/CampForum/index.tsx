@@ -26,7 +26,6 @@ const ForumComponent = () => {
   const router = useRouter();
 
   const { isUserAuthenticated } = useIsUserAuthenticated();
-  const reRenderRef = useRef(false);
 
   const [paramsList, setParamsList] = useState({});
   const [threadList, setThreadList] = useState([]);

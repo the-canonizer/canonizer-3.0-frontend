@@ -7,6 +7,16 @@ import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 import UserEditIcon from "./userEditIcon";
 import { getHighlightedText } from "components/ComponentPages/CreateNewTopic/UI/existingTopicList";
 import CustomSkelton from "components/common/customSkelton";
+import { useDispatch } from "react-redux";
+import { setSearchValue } from "src/store/slices/searchSlice";
+
+const geturl = (bd) => {
+  if (bd[1] && bd[1][2]?.camp_link) {
+    return bd[1][2]?.camp_link;
+  } else {
+    return bd[0][1]?.camp_link;
+  }
+};
 
 export const getTopicNameLink = (
   item,
@@ -27,7 +37,7 @@ export const getTopicNameLink = (
         {isTopicNameReq && (
           <Link
             href={{
-              pathname: "/" + bd[1][2]?.camp_link || bd[0][1]?.camp_link,
+              pathname: "/" + geturl(bd),
             }}
           >
             <a className="flex justify-start items-start text-xs mt-2 text-canLight">
@@ -48,6 +58,7 @@ const ExistingCampList = ({
   onContributeCLick,
   isLoading,
 }) => {
+  const dispatch = useDispatch();
   return (
     <CommonCards className="bg-topic-card-gr h-full">
       {isError && (
@@ -84,7 +95,19 @@ const ExistingCampList = ({
           footer={
             isShowMore && (
               <Link href={{ pathname: "/search/camp", query: { q: campName } }}>
-                <a className="text-canBlue uppercase text-xs font-semibold hocus:text-canHoverBlue">
+                <a
+                  className="text-canBlue uppercase text-xs font-semibold hocus:text-canHoverBlue"
+                  role="button" // Adds button role
+                  tabIndex={0} // Makes it focusable via keyboard
+                  onClick={() => {
+                    dispatch(setSearchValue(""));
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      dispatch(setSearchValue(""));
+                    }
+                  }}
+                >
                   See more results
                 </a>
               </Link>

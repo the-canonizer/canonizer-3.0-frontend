@@ -307,9 +307,16 @@ const TimelineInfoBar = ({
       <Row gutter={1}>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
           <span className="text-canLight text-xs 2xl:text-sm">Author</span>
-          <span className="text-canBlue text-sm font-medium underline">
-            {topicRecord?.submitter_nick_name}
-          </span>
+          <Link
+            href={{
+              pathname: `/user/supports/${topicRecord?.submitter_nick_id}`,
+              query: { canon: topicRecord?.namespace_id || 1 },
+            }}
+          >
+            <a className="!text-canBlue text-sm font-medium underline hover:!text-canHoverBlue">
+              {topicRecord?.submitter_nick_name}
+            </a>
+          </Link>
         </Col>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
           <span className="text-xs 2xl:text-sm text-canLight">
@@ -323,9 +330,16 @@ const TimelineInfoBar = ({
           <span className="text-xs 2xl:text-sm text-canLight">
             Submitted By
           </span>
-          <span className="text-canDarkBlack text-sm font-medium">
-            {topicRecord?.submitter_nick_name}
-          </span>
+          <Link
+            href={{
+              pathname: `/user/supports/${topicRecord?.submitter_nick_id}`,
+              query: { canon: topicRecord?.namespace_id || 1 },
+            }}
+          >
+            <a className="!text-canBlue hover:!text-canHoverBlue text-sm font-medium">
+              {topicRecord?.submitter_nick_name}
+            </a>
+          </Link>
         </Col>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
           <span className="text-xs 2xl:text-sm text-canLight">
@@ -344,31 +358,30 @@ const TimelineInfoBar = ({
       </Row>
 
       <hr className="horizontal_line my-5" />
-      {isTopicPage ||
-        (isEventLine && (
-          <PrimaryButton
-            className="mx-auto flex items-center justify-center font-medium h-auto"
-            onClick={() =>
-              router?.push({
-                pathname: `/topic/history/${replaceSpecialCharacters(
-                  router?.query?.camp
-                    ? router?.query?.camp[0]
-                    : router?.query?.manageSupport?.at(0),
-                  "-"
-                )}`,
-              })
-            }
-          >
-            {K?.exceptionalMessages?.manageTopicButton}
-            <Image
-              src="/images/manage-btn-icon.svg"
-              alt="svg"
-              className="icon-topic"
-              height={16}
-              width={16}
-            />
-          </PrimaryButton>
-        ))}
+      {(isTopicPage || isEventLine) && (
+        <PrimaryButton
+          className="mx-auto flex items-center justify-center font-medium h-auto"
+          onClick={() =>
+            router?.push({
+              pathname: `/topic/history/${replaceSpecialCharacters(
+                router?.query?.camp
+                  ? router?.query?.camp[0]
+                  : router?.query?.manageSupport?.at(0),
+                "-"
+              )}`,
+            })
+          }
+        >
+          {K?.exceptionalMessages?.manageTopicButton}
+          <Image
+            src="/images/manage-btn-icon.svg"
+            alt="svg"
+            className="icon-topic"
+            height={16}
+            width={16}
+          />
+        </PrimaryButton>
+      )}
     </div>
   );
 
@@ -388,9 +401,16 @@ const TimelineInfoBar = ({
       <Row gutter={5}>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
           <span className="text-xs 2xl:text-sm text-canLight">Submitter</span>
-          <span className="author-name text-canBlue text-sm font-medium underline">
-            {campRecord?.submitter_nick_name}
-          </span>
+          <Link
+            href={{
+              pathname: `/user/supports/${campRecord?.submitter_nick_id}`,
+              query: { canon: topicRecord?.namespace_id || 1 },
+            }}
+          >
+            <a className="author-name !text-canBlue hover:!text-canHoverBlue text-sm font-medium underline">
+              {campRecord?.submitter_nick_name}
+            </a>
+          </Link>
         </Col>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
           <span className="text-xs 2xl:text-sm text-canLight">
@@ -404,17 +424,29 @@ const TimelineInfoBar = ({
           <span className="text-xs 2xl:text-sm text-canLight">
             Camp about nickname :{" "}
           </span>
-          <span className="text-sm text-canBlack">
-            {campRecord && campRecord.camp_about_nick_name}
-          </span>
+          <Link
+            href={{
+              pathname: `/user/supports/${campRecord?.camp_about_nick_id}`,
+              query: { canon: topicRecord?.namespace_id || 1 },
+            }}
+          >
+            <a className="text-sm !text-canBlue hover:!text-canHoverBlue">
+              {campRecord && campRecord.camp_about_nick_name}
+            </a>
+          </Link>
         </Col>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
           <span className="text-xs 2xl:text-sm text-canLight">
             Camp about URL :{" "}
           </span>
-          <span className="text-sm text-canBlack">
+          <a
+            href={campRecord && campRecord.camp_about_url}
+            className="text-sm block !text-canBlue hover:!text-canHoverBlue"
+            target="_blank"
+            rel="noreferrer"
+          >
             {campRecord && campRecord.camp_about_url}
-          </span>
+          </a>
         </Col>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
           <span className="text-xs 2xl:text-sm text-canLight">
@@ -476,27 +508,33 @@ const TimelineInfoBar = ({
       </Row>
       <hr className="horizontal_line my-5" />
       {isTopicPage && (
-        <PrimaryButton
-          className="flex items-center justify-center h-auto mx-auto"
-          onClick={() =>
-            router?.push({
-              pathname: `/topic/history/${replaceSpecialCharacters(
-                router?.query?.camp
-                  ? router?.query?.camp[0]
-                  : router?.query?.manageSupport?.at(0),
-                "-"
-              )}`,
-            })
-          }
-        >
-          {K?.exceptionalMessages?.manageCampButton}
-          <Image
-            src="/images/manage-btn-icon.svg"
-            alt="svg"
-            className="icon-topic"
-            height={16}
-            width={16}
-          />
+        <PrimaryButton className="flex items-center justify-center h-auto mx-auto">
+          <Link
+            href={`/camp/history/${replaceSpecialCharacters(
+              router?.query?.camp
+                ? router?.query?.camp[0]
+                : router?.query?.manageSupport?.at(0),
+              "-"
+            )}/${replaceSpecialCharacters(
+              router?.query?.camp
+                ? router?.query?.camp[1] ?? "1-Agreement"
+                : router?.query?.manageSupport?.at(1),
+              "-"
+            )}`}
+          >
+            <a>
+              <span>
+                {K?.exceptionalMessages?.manageCampButton}
+                <Image
+                  src="/images/manage-btn-icon.svg"
+                  alt="svg"
+                  className="icon-topic"
+                  height={16}
+                  width={16}
+                />
+              </span>
+            </a>
+          </Link>
         </PrimaryButton>
       )}
     </div>
@@ -609,7 +647,7 @@ const TimelineInfoBar = ({
                               key="camp_subscribed_icon"
                             >
                               <small style={{ alignSelf: "center" }}>
-                                <i className="icon-subscribe text-primary"></i>
+                                <i className="icon-subscribe text-canBlue"></i>
                               </small>
                             </Tooltip>
                           )}
@@ -695,7 +733,7 @@ const TimelineInfoBar = ({
                                             <small
                                               style={{ alignSelf: "center" }}
                                             >
-                                              <i className="icon-subscribe text-primary"></i>
+                                              <i className="icon-subscribe text-canBlue"></i>
                                             </small>
                                           </Tooltip>
                                         )}
@@ -858,7 +896,7 @@ const TimelineInfoBar = ({
                       <small
                         style={{ alignSelf: "center", marginLeft: "10px" }}
                       >
-                        <i className="icon-subscribe text-primary"></i>
+                        <i className="icon-subscribe text-canBlue"></i>
                       </small>
                     </Tooltip>
                   )}
@@ -945,7 +983,7 @@ const TimelineInfoBar = ({
                                 marginLeft: "10px",
                               }}
                             >
-                              <i className="icon-subscribe text-primary"></i>
+                              <i className="icon-subscribe text-canBlue"></i>
                             </small>
                           </Tooltip>
                         )}

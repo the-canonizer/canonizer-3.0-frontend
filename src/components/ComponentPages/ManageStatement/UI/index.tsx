@@ -114,9 +114,9 @@ function ManageStatementUI({
             <Col xs={24} sm={24} xl={12}>
               <SelectInputs
                 label={
-                  <>
+                  <span className="ant-form-item-required">
                     Nickname <span className="required">*</span>
-                  </>
+                  </span>
                 }
                 name="nick_name"
                 defaultValue={nickNameData[0]?.id}
@@ -219,7 +219,7 @@ function ManageStatementUI({
             <Col
               xs={24}
               xl={24}
-              className="flex justify-between items-center pt-5 mt-3"
+              className="flex justify-between items-center pt-5 mt-3 flex-wrap gap-5"
             >
               <Form.Item className="mb-0">
                 <SecondaryButton

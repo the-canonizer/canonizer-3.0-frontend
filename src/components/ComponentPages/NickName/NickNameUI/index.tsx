@@ -42,13 +42,14 @@ function NickNameUI({
     {
       title: "Visibility",
       dataIndex: "private",
+      className: "",
       width: "20%",
       render: (_, record) => (
         <Select
           defaultValue={record.private.toString()}
           size="large"
           onChange={(value) => chnageVisibilityStatus(value, record)}
-          className="!w-[80px] [&_.ant-select-selector]:!h-[40px] !float-right [&_.ant-select-selection-item]:!flex [&_.ant-select-selection-item]:!justify-center [&_.ant-select-arrow]:!right-5 [&_.ant-select-selector]:!bg-canGray [&_.ant-select-selector]:!border-l [&_.ant-select-selector]:!border-r-0 [&_.ant-select-selector]:!border-t-0 [&_.ant-select-selector]:!border-b-0 [&_.ant-select-selector]:!border-canGrey2  [&_.ant-select-selector]:!shadow-none [&_.ant-select-selection-item]:!w-5 [&_.ant-select-selection-item]:!h-5
+          className="!w-[80px] [&_.ant-select-selector]:!h-[40px] [&_.ant-select-selection-item]:!flex [&_.ant-select-selection-item]:!justify-center [&_.ant-select-arrow]:!right-5 [&_.ant-select-selector]:!bg-canGray [&_.ant-select-selector]:!border-l [&_.ant-select-selector]:!border-r-0 [&_.ant-select-selector]:!border-t-0 [&_.ant-select-selector]:!border-b-0 [&_.ant-select-selector]:!border-canGrey2  [&_.ant-select-selector]:!shadow-none [&_.ant-select-selection-item]:!w-5 [&_.ant-select-selection-item]:!h-5
       [&_.ant-select-selector]:!flex [&_.ant-select-selector]:!items-center"
           suffixIcon={<DownOutlined className="text-canBlack" />}
           popupClassName="nickNamePopup"
@@ -146,6 +147,16 @@ function NickNameUI({
             }
             {...messages.nickNameRule}
             className="text-sm text-canBlack font-normal [&_label]:text-sm [&_label]:font-medium [&_.ant-form-item-explain-error]:mb-6"
+            rules={[
+              {
+                required: true,
+                message: "Please enter a nickname.",
+              },
+              {
+                pattern: /^[a-zA-Z0-9 ]*$/, // Allow only alphanumeric characters and spaces
+                message: "Nickname should not contain special characters.",
+              },
+            ]}
           >
             <Input
               maxLength={50}

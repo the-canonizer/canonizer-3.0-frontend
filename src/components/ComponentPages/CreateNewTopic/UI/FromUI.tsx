@@ -63,6 +63,7 @@ const CreateTopicFromUI = ({
       rules: nickNmRule,
       prefix: <UserOutlined className="px-3 text-canBlack" />,
       onSelect: (val) => form.setFieldValue("nick_name", val),
+      // value: form.getFieldValue("nick_name"),
     };
 
     if (nickNameList?.length) {
@@ -71,6 +72,14 @@ const CreateTopicFromUI = ({
       selectInputProps.key = "nickNamesWithKeyName";
     }
     return <SelectInputs {...selectInputProps} />;
+  };
+
+  const getNameSpacesValue = () => {
+    if (isEdit) {
+      return values?.namespace;
+    }
+
+    return values?.namespace || nameSpaces[0]?.id;
   };
 
   return (
@@ -92,7 +101,7 @@ const CreateTopicFromUI = ({
         initialValues={{
           topic_name: "",
           nick_name: values?.nick_name || nickNameList[0]?.id,
-          namespace: values?.namespace || nameSpaces[0]?.id,
+          namespace: getNameSpacesValue(),
           tags: null,
         }}
       >
@@ -112,13 +121,13 @@ const CreateTopicFromUI = ({
                   <Fragment>
                     {labels.cr_topic_name}
                     <span className="required">*</span>
-                    {/* <span>(Limit 30 Chars)</span> */}
+                    <span>(Limit 80 Chars)</span>
                   </Fragment>
                 }
                 rules={topicNameRule}
                 placeholder={placeholders.topicName}
                 size={"large"}
-                maxLength={30}
+                maxLength={80}
                 prefix={
                   <div className="pr-3">
                     <AlignIcon fill="#242B37" />
@@ -142,9 +151,6 @@ const CreateTopicFromUI = ({
             ) : (
               getNickNameInput()
             )}
-            {/* <div className="text-xs text-canRed -mt-4 mb-6">
-              {labels.cr_nick_name_sp}
-            </div> */}
           </Col>
           <Col xs={24} sm={12} key={"namespaces_div"}>
             {isLoading ? (
@@ -160,23 +166,14 @@ const CreateTopicFromUI = ({
                   <Fragment>
                     {labels.cr_namespace}
                     <span className="required">*</span>
-                    {/* <span>
-                      (General is recommended, unless you know otherwise)
-                    </span> */}
                   </Fragment>
                 }
                 name="namespace"
                 options={nameSpaces}
                 placeholder={placeholders.namespace}
-                size={"large"}
-                defaultValue={values?.namespace || nameSpaces[0]?.id}
-                initialValue={values?.namespace || nameSpaces[0]?.id}
-                // value={values?.namespace}
-                key={
-                  "namespaces_label" + values?.namespace || nameSpaces[0]?.id
-                }
-                dataid="nick-namespace"
                 allowClear
+                size={"large"}
+                dataid="canon-namespace"
                 showSearch
                 optionFilterProp="children"
                 inputClassName="border-0"
@@ -187,13 +184,13 @@ const CreateTopicFromUI = ({
                     fill="#242B37"
                   />
                 }
+                defaultValue={getNameSpacesValue()}
+                initialValue={getNameSpacesValue()}
+                value={form.getFieldValue("namespace")}
                 isLabelRequiredFormat={true}
                 formatFunc={changeSlashToArrow}
-                onChange={(val) => form.setFieldValue("namespace", val)}
-                onSearch={(val) => {
-                  return;
-                }}
-                loading={isLoading}
+                onSelect={(val) => form.setFieldValue("namespace", val)}
+                key="canon-select"
               />
             )}
           </Col>

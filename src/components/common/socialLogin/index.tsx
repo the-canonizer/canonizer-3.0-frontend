@@ -50,7 +50,7 @@ export default function SocialLoginUi({ isNotLogin = false }: any) {
         className="text-xs 2xl:text-sm font-normal text-center"
         id="social-login-title"
       >
-        {`${isNotLogin ? "Register" : "Login"} via social accounts-`}
+        {`${isNotLogin ? "Sign up" : "Log in"} via social accounts-`}
       </Text>
       {isLoading ? (
         <CustomSkeleton

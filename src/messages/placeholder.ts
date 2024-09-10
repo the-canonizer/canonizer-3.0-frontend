@@ -26,6 +26,7 @@ export const placeholders = {
   editSummary: "Summary",
   nickName: "Nickname",
   topicName: "Enter Topic Name",
+  campName: "Enter Camp Name",
   namespace: "Canon",
   campAboutNickName: "--Select Camp About Nickname--",
   catSelect: "Select Tags",

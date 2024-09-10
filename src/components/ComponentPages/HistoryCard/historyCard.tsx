@@ -47,6 +47,7 @@ import {
 import HistoryComparison from "../HistoryContainer/Collapse/historyComparison";
 import Timer from "../Timer";
 import PrimaryButton from "components/shared/Buttons/PrimariButton";
+import ObjectionDrawer from "./objectionDrawer";
 
 const { Panel } = Collapse;
 
@@ -84,8 +85,25 @@ function HistoryCard({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [supporters, setSupporters] = useState([]);
   const [loadingChanges, setLoadingChanges] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [drawerFor, setDrawerFor] = useState("");
+  let drawerOptions = {
+    topicObjection: "topicObjection",
+    campObjection: "campObjection",
+    statementObjection: "statementObjection",
+  };
+  const manageFor = router?.asPath?.split("/")?.at(1);
+
   const dispatch = useDispatch();
   const { isUserAuthenticated } = useAuthentication();
+
+  const showDrawer = () => {
+    setOpen(true);
+  };
+  const onClose = () => {
+    setOpen(false);
+    setDrawerFor("");
+  };
   const handleViewThisVersion = (goLiveTime) => {
     setIsTreesApiCallStop(true);
     dispatch(setViewThisVersion(true));
@@ -201,6 +219,17 @@ function HistoryCard({
         discardChanges();
       },
     });
+  };
+
+  const objectionHandler = () => {
+    showDrawer();
+    if (manageFor == "topic") {
+      setDrawerFor(drawerOptions.topicObjection);
+    } else if (manageFor == "camp") {
+      setDrawerFor(drawerOptions.campObjection);
+    } else if (manageFor == "statement") {
+      setDrawerFor(drawerOptions.statementObjection);
+    }
   };
 
   return (
@@ -533,29 +562,7 @@ function HistoryCard({
                       // disabled={historyOf == "camp" ? !campStatement?.ifICanAgreeAndObject : false}
                       id={`object-change-${campStatement?.id}`}
                       className="flex items-center bg-canRed_Opacity10 border-canRed hover:border-canRed hover:text-canRed focus:text-canRed focus:border-canRed justify-center text-sm rounded-xl gap-3.5 leading-none w-100 font-medium"
-                      onClick={() => {
-                        let isModelPop = !isUserAuthenticated
-                          ? true
-                          : (!campStatement?.ifIAmExplicitSupporter &&
-                              campStatement?.ifIamSupporter == 0) ||
-                            (parentArchived == 1 &&
-                              directarchived == 1 &&
-                              historyOf == "topic") ||
-                            (parentArchived == 1 && directarchived == 0)
-                          ? true
-                          : false;
-                        if (isModelPop) {
-                          setModal1Open(true);
-                        } else {
-                          router?.push(
-                            historyOf == "camp"
-                              ? `/manage/camp/${campStatement?.id}-objection`
-                              : historyOf == "topic"
-                              ? `/manage/topic/${campStatement?.id}-objection`
-                              : `/manage/statement/${campStatement?.id}-objection`
-                          );
-                        }
-                      }}
+                      onClick={() => objectionHandler()}
                     >
                       Object Changes
                       <i className="icon-thumb-down text-canRed"></i>
@@ -668,6 +675,13 @@ function HistoryCard({
             </>
           )}
       </Card>
+      <ObjectionDrawer
+        onClose={onClose}
+        open={open}
+        drawerFor={drawerFor}
+        setDrawerFor={setDrawerFor}
+        objectionId={campStatement?.id}
+      />
     </div>
   );
 }

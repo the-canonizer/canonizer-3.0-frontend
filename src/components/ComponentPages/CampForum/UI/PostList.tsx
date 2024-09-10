@@ -42,7 +42,7 @@ const PostUI = ({
           <span className="text-canBlack font-medium text-xl ml-2">Thread</span>
         </div>
       }
-      className={`bg-white border-0 px-6 [&_.ant-card-head]:p-0 [&_.ant-card-body]:px-0 [&_.ant-card-head]:border-0`}
+      className={`bg-white border-0 lg:px-6 [&_.ant-card-head]:p-0 [&_.ant-card-body]:px-0 [&_.ant-card-head]:border-0`}
     >
       <div className="bg-canGray p-6 rounded-xl">
         <header className="mb-5">
@@ -74,7 +74,7 @@ const PostUI = ({
               isButton={false}
             />
           ) : (
-            <div className="flex justify-start items-center">
+            <div className="flex justify-start items-center flex-wrap">
               <Paragraph id="started-by-label" className="!mb-0 text-canLight">
                 <UserOutlined className="mr-2 text-canLight" />
                 Started by{" "}

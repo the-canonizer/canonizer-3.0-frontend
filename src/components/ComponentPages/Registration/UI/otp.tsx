@@ -49,8 +49,7 @@ export default function OTPVerify({
             className="mt-10 text-sm text-canBlack font-normal"
             id="registration-title"
           >
-            Enter your one time password to login
-            {/* Log In One Time Verification Code */}
+            Enter your OTP to login
           </Title>
           <Text
             className="text-center text-muted text-xs block mb-10"
