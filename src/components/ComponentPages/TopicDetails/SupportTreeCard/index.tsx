@@ -35,7 +35,7 @@ import { getNickNameList } from "src/network/api/userApi";
 import {
   setManageSupportStatusCheck,
   setManageSupportUrlLink,
-  setOpenDrawerForManageSupport
+  setOpenDrawerForManageSupport,
 } from "src/store/slices/campDetailSlice";
 import { setDelegatedSupportClick } from "src/store/slices/supportTreeCard";
 import CustomSkelton from "components/common/customSkelton";
@@ -121,11 +121,12 @@ const SupportTreeCard = ({
     selectedAlgorithm: state?.filters?.filterObject?.algorithm,
     tree: state?.topicDetails?.tree,
   }));
-  const { manageSupportStatusCheck,openDrawerForManageSupport } = useSelector((state: RootState) => ({
-    manageSupportStatusCheck: state.topicDetails.manageSupportStatusCheck,
-    openDrawerForManageSupport: state.topicDetails.openDrawerForManageSupport,
-
-  }));
+  const { manageSupportStatusCheck, openDrawerForManageSupport } = useSelector(
+    (state: RootState) => ({
+      manageSupportStatusCheck: state.topicDetails.manageSupportStatusCheck,
+      openDrawerForManageSupport: state.topicDetails.openDrawerForManageSupport,
+    })
+  );
   const { isUserAuthenticated } = isAuth();
 
   const router = useRouter();
@@ -167,7 +168,6 @@ const SupportTreeCard = ({
     setOpen(false);
     setDrawerFor("");
     dispatch(setOpenDrawerForManageSupport(false));
-
   };
   const showModalSupportCamps = () => {
     showDrawer();
@@ -298,14 +298,14 @@ const SupportTreeCard = ({
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router,openDrawerForManageSupport]);
+  }, [router, openDrawerForManageSupport]);
 
   useEffect(() => {
-    if(openDrawerForManageSupport){
+    if (openDrawerForManageSupport) {
       handleClickSupportCheck();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router,openDrawerForManageSupport]);
+  }, [router, openDrawerForManageSupport]);
 
   const manageSupportPath = router?.asPath.replace("/topic/", "/support/");
 
@@ -663,7 +663,9 @@ const SupportTreeCard = ({
 
   const disableSignPetition = () => {
     return (
-      isCampLeader()?.campLeaderExist || isCampLeader()?.delegateSupportExist || campRecord?.is_archive
+      isCampLeader()?.campLeaderExist ||
+      isCampLeader()?.delegateSupportExist ||
+      campRecord?.is_archive
     );
   };
 

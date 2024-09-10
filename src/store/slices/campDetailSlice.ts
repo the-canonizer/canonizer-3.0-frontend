@@ -25,7 +25,6 @@ export const treeSlice = createSlice({
     openDrawerForDirectSupportedCamp: false,
     openDrawerForManageSupport: false,
 
-
     openDrawer: false,
     asOfValues: 0,
     clearAlgoFromRefineFilter: "",

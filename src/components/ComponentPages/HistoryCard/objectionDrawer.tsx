@@ -219,7 +219,6 @@ function ObjectionDrawer({
       payload.event_type = "objection";
       payload.objection_reason = values?.objection_reason;
       res = await updateTopicApi(payload);
-
     } else if (drawerFor === "campObjection") {
       payload.namespace_id = namespace_id;
       payload.nick_name = values.nick_name;
@@ -233,7 +232,6 @@ function ObjectionDrawer({
       payload.camp_name = currentCamp?.camp_name;
       payload.camp_num = currentCamp?.camp_num;
       res = await updateCampApi(payload);
-
     } else if (drawerFor === "statementObjection") {
       payload.namespace_id = namespace_id;
       payload.nick_name = values?.nick_name;
@@ -260,7 +258,7 @@ function ObjectionDrawer({
     }
 
     openNotificationWithIcon(res?.message, status);
-    
+
     setDrawerFor("");
     onClose();
   };
@@ -301,14 +299,16 @@ function ObjectionDrawer({
           <div>
             <Row gutter={16}>
               <Col span={24} sm={12}>
-                <Form.Item name="nick_name" label={
+                <Form.Item
+                  name="nick_name"
+                  label={
                     <>
                       Nickname
                       <span className="required">*</span>{" "}
                     </>
                   }
                   required
-                  >
+                >
                   <div className="thm-select">
                     <div className="prefix-icon">
                       <UserOutlined />
@@ -400,16 +400,14 @@ function ObjectionDrawer({
                   name="objection_reason"
                   label={
                     <>
-                      Your Objection Reason{" "}
-                      <span className="required">*</span>{" "}
+                      Your Objection Reason <span className="required">*</span>{" "}
                       <small>(Limit 100 Char) </small>
                     </>
                   }
                   rules={[
                     {
                       required: true,
-                      message:
-                        K?.exceptionalMessages?.objectionRequireErrorMsg,
+                      message: K?.exceptionalMessages?.objectionRequireErrorMsg,
                     },
                     {
                       pattern: /[^ \s]/,
@@ -418,7 +416,12 @@ function ObjectionDrawer({
                     allowedEmojies(),
                   ]}
                 >
-                  <TextArea className="thm-input" rows={4}  maxLength={100} required/>
+                  <TextArea
+                    className="thm-input"
+                    rows={4}
+                    maxLength={100}
+                    required
+                  />
                 </Form.Item>
               </Col>
             </Row>
@@ -441,7 +444,7 @@ function ObjectionDrawer({
             size="large"
             disabled={submitIsDisable}
             htmlType="submit"
-           className="flex items-center gap-2 min-w-[200px] bg-canRed_Opacity10 border-canRed hover:border-canRed hover:text-canRed focus:text-canRed focus:border-canRed justify-center text-base rounded-lg leading-none w-100 font-medium"
+            className="flex items-center gap-2 min-w-[200px] bg-canRed_Opacity10 border-canRed hover:border-canRed hover:text-canRed focus:text-canRed focus:border-canRed justify-center text-base rounded-lg leading-none w-100 font-medium"
             loading={loader}
           >
             Submit Objection
