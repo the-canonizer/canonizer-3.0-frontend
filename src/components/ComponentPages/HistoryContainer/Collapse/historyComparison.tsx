@@ -68,9 +68,11 @@ const HistoryComparison = ({
         )}
         {historyOf === "camp" && (
           <>
-            <p>
-              Keywords: <span>{campStatement?.key_words}</span>
-            </p>
+            {campStatement?.key_words && (
+              <p>
+                Keywords: <span>{campStatement?.key_words}</span>
+              </p>
+            )}
             <p>
               Edit summary: <span>{campStatement?.note}</span>
             </p>
