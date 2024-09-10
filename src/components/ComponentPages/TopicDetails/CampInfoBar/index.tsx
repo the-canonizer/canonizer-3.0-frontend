@@ -383,12 +383,11 @@ const TimelineInfoBar = ({
             {topicRecord && changeSlashToArrow(topicRecord?.namespace_name)}
           </span>
         </Col>
-        <Col md={24} sm={24} xs={24} className="flex flex-col mt-4">
-          {console.log("topic", topicRecord?.tags)}
+        <Col md={24} sm={24} xs={24} className="mt-3">
           <span className="text-xs 2xl:text-sm text-canLight">Tags :</span>            
-            <div className="vertical-chips">
+            <div className="vertical-chips mt-2 flex flex-wrap gap-2">
               {tagsToShow?.map((item: any, index) => (
-                <div key={index} className="flex items-center gap-7 mt-4">
+                <div key={index}>
                   <Tag
                     className="rounded-full mr-0 bg-[#F0F2FA] border-transparent font-semibold text-base px-5 py-2.5 leading-none text-canBlack"
                     closable={false}
@@ -402,15 +401,18 @@ const TimelineInfoBar = ({
                 </div>
               ))}
 
-              {tagsArrayList.length > 4 && (
+              
+            </div>
+            <div className="text-center mt-2">
+            {tagsArrayList.length > 4 && (
                 <button
-                  className="mt-4 text-canBlue"
+                  className=" text-canBlue"
                   onClick={() => setShowAll(!showAll)}
                 >
                   {showAll ? "Show Less" : "Show More"}
                 </button>
               )}
-            </div>
+              </div>
         </Col>
       </Row>
 
