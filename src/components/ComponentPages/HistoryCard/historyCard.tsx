@@ -551,7 +551,10 @@ function HistoryCard({
                       : false
                   }
                 >
-                  Edit Based On This
+                  {(campStatement?.is_archive == 1 &&
+                        campStatement?.status == "live")
+                          ? "Un-Archive This Camp"
+                          : "Edit Based on This" }
                   <i className="icon-edit"></i>
                 </PrimaryButton>
 
