@@ -9,7 +9,10 @@ import Breadcrumbs from "components/ComponentPages/Breadcrumbs/breadcrumbs";
 import HistoryCard from "components/ComponentPages/HistoryCard/historyCard";
 import moment from "moment";
 import TimelineInfoBar from "components/ComponentPages/TopicDetails/CampInfoBar";
-import { getCurrentCampRecordApi, getCurrentTopicRecordApi } from "src/network/api/campDetailApi";
+import {
+  getCurrentCampRecordApi,
+  getCurrentTopicRecordApi,
+} from "src/network/api/campDetailApi";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
 const validUrl = (url) => {
@@ -32,17 +35,14 @@ function CompareStatementUI({
   const [tabId, setTabId] = useState("1");
   const router = useRouter();
 
-  const {
-    asofdate,
-    topicRecord,
-    asof,
-    campRecord,
-  } = useSelector((state: RootState) => ({
-    asofdate: state.filters?.filterObject?.asofdate,
-    topicRecord: state?.topicDetails?.currentTopicRecord,
-    asof: state?.filters?.filterObject?.asof,
-    campRecord: state?.topicDetails?.currentCampRecord,
-  }));
+  const { asofdate, topicRecord, asof, campRecord } = useSelector(
+    (state: RootState) => ({
+      asofdate: state.filters?.filterObject?.asofdate,
+      topicRecord: state?.topicDetails?.currentTopicRecord,
+      asof: state?.filters?.filterObject?.asof,
+      campRecord: state?.topicDetails?.currentCampRecord,
+    })
+  );
 
   const s1 = statements?.at(0) || {},
     s2 = statements?.at(1) || {},
@@ -111,7 +111,6 @@ function CompareStatementUI({
       });
     }
   };
-
 
   useEffect(() => {
     const isDefaultOrReview = asof === "default" || asof === "review";

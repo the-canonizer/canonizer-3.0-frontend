@@ -120,10 +120,9 @@ function ManageStatementUI({
                 }
                 name="nick_name"
                 defaultValue={nickNameData[0]?.id}
-                value={values?.nick_name}
                 options={nickNameData}
                 allowClear
-                size={"large"}
+                size="large"
                 dataid="topic-category"
                 showSearch
                 optionFilterProp="children"
@@ -136,7 +135,9 @@ function ManageStatementUI({
                 ]}
                 nameKey="nick_name"
                 prefix={<UserOutlined className="px-3 text-canBlack" />}
-                onChange={(val) => form.setFieldValue("nick_name", val)}
+                key="statement-nicknames"
+                onSelect={(val) => form.setFieldValue("nick_name", val)}
+                lastValue={form.getFieldValue("nick_name")}
               />
             </Col>
             <Col xs={24} xl={24}>

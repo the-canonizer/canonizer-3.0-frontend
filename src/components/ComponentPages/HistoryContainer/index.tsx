@@ -486,7 +486,9 @@ function HistoryContainer() {
               {`${historyTitle(historyOf)} History`}
             </Button>
             <Typography.Paragraph className="mb-6 text-base font-medium">
-              {`${historyTitle(historyOf).toUpperCase()} HISTORY BASED ON STATUS`}
+              {`${historyTitle(
+                historyOf
+              ).toUpperCase()} HISTORY BASED ON STATUS`}
             </Typography.Paragraph>
             <div className="sider-btn pr-0 md:pr-8">{renderButtons()}</div>
             <Button

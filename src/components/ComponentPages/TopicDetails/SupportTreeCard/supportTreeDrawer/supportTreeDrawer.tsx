@@ -75,6 +75,7 @@ function SupportTreeDrawer({
     asofdate,
     asof,
     algorithm,
+    openDrawerForManageSupport,
   } = useSelector((state: RootState) => ({
     reasons: state?.topicDetails?.removedReasons,
     currentGetCheckSupportExistsData:
@@ -86,6 +87,7 @@ function SupportTreeDrawer({
     asofdate: state.filters?.filterObject?.asofdate,
     asof: state?.filters?.filterObject?.asof,
     algorithm: state.filters?.filterObject?.algorithm,
+    openDrawerForManageSupport: state.topicDetails.openDrawerForManageSupport,
   }));
 
   const dispatch = useDispatch();
@@ -473,10 +475,10 @@ function SupportTreeDrawer({
   };
 
   const checkAllTagsSelected = () => {
-    return (
-      tagsArrayList?.filter((item) => item.disabled == true)?.length ==
-      tagsArrayList?.length
-    );
+    return tagsArrayList?.length > 0
+      ? tagsArrayList?.filter((item) => item.disabled == true)?.length ==
+          tagsArrayList?.length
+      : false;
   };
 
   const renderPageHeaderTitle = () => {
@@ -540,7 +542,7 @@ function SupportTreeDrawer({
       className="ch-drawer adding-supported-drawer"
       placement="right"
       onClose={onClose}
-      open={open}
+      open={open || openDrawerForManageSupport}
       contentWrapperStyle={{ maxWidth: "730px", width: "100%" }}
     >
       <div className="page-breadcrums-wrapper">
