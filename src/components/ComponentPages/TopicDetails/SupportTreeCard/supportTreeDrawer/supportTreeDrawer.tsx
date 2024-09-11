@@ -475,10 +475,10 @@ function SupportTreeDrawer({
   };
 
   const checkAllTagsSelected = () => {
-    return (
-      tagsArrayList?.filter((item) => item.disabled == true)?.length ==
-      tagsArrayList?.length
-    );
+    return tagsArrayList?.length > 0
+      ? tagsArrayList?.filter((item) => item.disabled == true)?.length ==
+          tagsArrayList?.length
+      : false;
   };
 
   const renderPageHeaderTitle = () => {
