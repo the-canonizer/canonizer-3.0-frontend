@@ -408,6 +408,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
   };
 
   const handleApplyClick = () => {
+    dispatch(setOpenDrawer(false))
     filterOnScore(clearScoreFromRefineFilter);
     selectAlgorithm(clearAlgoFromRefineFilter);
     if (selectedValue === 2) {

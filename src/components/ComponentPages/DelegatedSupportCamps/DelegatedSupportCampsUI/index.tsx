@@ -18,6 +18,7 @@ import styles from "./DelegatedSupportedCamps.module.scss";
 import messages from "../../../../messages";
 import CustomSkelton from "src/components/common/customSkelton";
 import Image from "next/image";
+import PrimaryButton from "components/shared/Buttons/PrimariButton";
 
 export default function DelegatedSupportCampsUI({
   removeCardDelegatedSupportedCamps,
@@ -244,7 +245,10 @@ export default function DelegatedSupportCampsUI({
                   DELEGATED SUPPORTED CAMPS
                 </h3>
               </div>
-              <div className="w-full flex justify-end">
+              <div className="w-full flex justify-end gap-2.5 items-center">
+              <PrimaryButton onClick={()=>{setSearch("")}}>
+                  Reset
+                </PrimaryButton>
                 <Input
                   suffix={
                     <Image
