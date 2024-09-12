@@ -1,5 +1,14 @@
-import { DoubleLeftOutlined } from "@ant-design/icons";
-import { Button, Col, Popover, Row, Spin, Tooltip, Typography } from "antd";
+import { DoubleLeftOutlined, MenuOutlined } from "@ant-design/icons";
+import {
+  Button,
+  Col,
+  Popover,
+  Row,
+  Spin,
+  Tag,
+  Tooltip,
+  Typography,
+} from "antd";
 import moment from "moment";
 import Image from "next/image";
 import Link from "next/link";
@@ -46,6 +55,7 @@ const TimelineInfoBar = ({
     topic_name: "",
     bread_crumb: [],
   });
+
   const didMount = useRef(false);
   const router = useRouter();
 
@@ -95,6 +105,24 @@ const TimelineInfoBar = ({
   const updateCurrentRecord = () => {
     router.push(`/manage/${historyOf}/${updateId}`);
   };
+
+  const [tagsArrayList, setTagsArrayList] = useState([]);
+
+  const [showAll, setShowAll] = useState(false);
+  const tagsToShow = showAll ? tagsArrayList : tagsArrayList?.slice(0, 4);
+
+  const transformDataForTags = (data) => {
+    return data?.map((item, index) => {
+      return {
+        id: item.id,
+        content: item.title,
+      };
+    });
+  };
+
+  useEffect(() => {
+    setTagsArrayList(transformDataForTags(topicRecord?.tags));
+  }, []);
 
   useEffect(() => {
     if (isTopicPage) {
@@ -401,6 +429,33 @@ const TimelineInfoBar = ({
             {topicRecord && changeSlashToArrow(topicRecord?.namespace_name)}
           </span>
         </Col>
+        {tagsArrayList && tagsArrayList?.length > 0 ? (
+          <Col md={24} sm={24} xs={24} className="mt-3">
+            <span className="text-xs 2xl:text-sm text-canLight">Tags :</span>
+            <div className="vertical-chips mt-2 flex flex-wrap gap-2">
+              {tagsToShow?.map((item: any, index) => (
+                <div key={index}>
+                  <Tag
+                    className="rounded-full mr-0 bg-[#F0F2FA] border-transparent font-semibold text-base px-5 py-2.5 leading-none text-canBlack"
+                    closable={false}
+                  >
+                    <span data-testid="styles_Bluecolor">{item?.content}</span>
+                  </Tag>
+                </div>
+              ))}
+            </div>
+            <div className="text-center mt-2">
+              {tagsArrayList && tagsArrayList?.length > 4 && (
+                <button
+                  className=" text-canBlue"
+                  onClick={() => setShowAll(!showAll)}
+                >
+                  {showAll ? "Show Less" : "Show More"}
+                </button>
+              )}
+            </div>
+          </Col>
+        ) : null}
       </Row>
 
       <hr className="horizontal_line my-5" />
