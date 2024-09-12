@@ -44,7 +44,7 @@ function ObjectionDrawer({
   drawerFor,
   setDrawerFor,
   objectionId,
-  setIsObjectionSubmitted,
+  getHistory,
 }: any) {
   const { topicRecord, campRecord, namespace_id } = useSelector(
     (state: RootState) => ({
@@ -252,7 +252,8 @@ function ObjectionDrawer({
     setLoader(false);
     if (res?.status_code == 200) {
       status = "success";
-      setIsObjectionSubmitted(true);
+      
+      await getHistory();
     }
 
     if (res?.status_code == 400) {
