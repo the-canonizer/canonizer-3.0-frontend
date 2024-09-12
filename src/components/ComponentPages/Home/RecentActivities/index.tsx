@@ -282,7 +282,6 @@ export default function RecentActivities() {
               : "[&_.ant-card-body]:lg:p-[24px] lg:!bg-canGray mt-3"
           }`}
         >
-          ssss
           <AllActivitiesSwitch
             userData={userData}
             hasCampOrTopicNum={hasCampOrTopicNum}

@@ -542,24 +542,22 @@ const TimelineInfoBar = ({
           </span>
         </Col>
         {campRecord?.camp_leader_nick_name && (
-          <>
-            <Col md={12} sm={12} xs={12} className=" flex flex-col mt-4">
-              <span className="text-xs 2xl:text-sm text-canLight">
-                Camp Leader:
-              </span>
-              <Link
-                className="flex flex-wrap"
-                href={{
-                  pathname: `/user/supports/${campRecord?.camp_leader_nick_id}`,
-                  query: {
-                    canon: topicRecord?.namespace_id,
-                  },
-                }}
-              >
-                {campRecord?.camp_leader_nick_name}
-              </Link>
-            </Col>
-          </>
+          <Col md={12} sm={12} xs={12} className=" flex flex-col mt-4">
+            <span className="text-xs 2xl:text-sm text-canLight">
+              Camp Leader:
+            </span>
+            <Link
+              className="flex flex-wrap"
+              href={{
+                pathname: `/user/supports/${campRecord?.camp_leader_nick_id}`,
+                query: {
+                  canon: topicRecord?.namespace_id,
+                },
+              }}
+            >
+              {campRecord?.camp_leader_nick_name}
+            </Link>
+          </Col>
         )}
       </Row>
       <hr className="horizontal_line my-5" />
