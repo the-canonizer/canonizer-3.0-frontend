@@ -18,6 +18,7 @@ import { getTreesApi } from "src/network/api/campDetailApi";
 import { useEffect } from "react";
 import Image from "next/image";
 import calendarIcon from "../../../../public/images/calendar-icon.svg";
+import { setAsOfValues } from "src/store/slices/campDetailSlice";
 
 const LatestFilter = () => {
   const router = useRouter();
@@ -140,6 +141,7 @@ const LatestFilter = () => {
         asof: "default",
       })
     );
+    dispatch(setAsOfValues(2))
     onChangeRoute(
       filterObject?.filterByScore,
       filterObject?.algorithm,

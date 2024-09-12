@@ -395,6 +395,7 @@ const HeaderSearch = ({ className = "" }: any) => {
                   true
                 );
             }}
+            onSearch={handlePress}
           />
         </div>
       </AutoComplete>
@@ -828,7 +829,7 @@ const NickNamesItems = ({ searchNickname, searchValue }) => {
         renderItem={(item: any) => {
           return (
             <List.Item className="w-full flex !border-none !py-2 lg:!px-5 !px-2.5 bg-white rounded-lg mb-2">
-              <Link href={`/${item?.link}`}>
+              <Link href={`${item?.link}`}>
                 <a className="flex justify-between w-full items-start">
                   <span className="flex items-center gap-3.5 text-base font-normal">
                     {/* <UserOutlined /> */}
