@@ -21,6 +21,7 @@ import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "src/store";
 import { setOpenDrawerForDirectSupportedCamp } from "src/store/slices/campDetailSlice";
+import PrimaryButton from "components/shared/Buttons/PrimariButton";
 
 export default function DirectSupportedCampsUI({
   removeCardSupportedCamps,
@@ -278,15 +279,7 @@ export default function DirectSupportedCampsUI({
             rowKey="topic_num"
             className="[&_.ant-table-thead>tr>th]:!bg-canGray"
           />
-          <Pagination
-            hideOnSinglePage={true}
-            total={directSupportedCampsList.length}
-            pageSize={5}
-            defaultCurrent={currentPage}
-            onChange={pageChange}
-            showSizeChanger={false}
-            className="mt-5"
-          />
+         
         </>
       );
     } else {
@@ -547,7 +540,11 @@ export default function DirectSupportedCampsUI({
                     box on your choice position.
                   </p>
                 </div>
-                <div className="lg:w-auto w-full flex justify-end">
+                
+                <div className="lg:w-auto w-full flex justify-end gap-2.5 items-center">
+                <PrimaryButton onClick={()=>{setSearch("")}}>
+                  Reset
+                </PrimaryButton>
                   <Input
                     suffix={
                       <Image
@@ -569,7 +566,18 @@ export default function DirectSupportedCampsUI({
                   />
                 </div>
               </div>
-              <>{displayContent}</>
+              <>
+              {displayContent} 
+              {search.length === 0 &&<Pagination
+            hideOnSinglePage={true}
+            total={directSupportedCampsList.length}
+            pageSize={5}
+            defaultCurrent={currentPage}
+            onChange={pageChange}
+            showSizeChanger={false}
+            className="mt-5"
+          />}
+              </>
             </div>
           )}
           {/* <Modal
