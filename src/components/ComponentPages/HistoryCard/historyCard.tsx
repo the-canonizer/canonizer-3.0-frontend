@@ -75,6 +75,7 @@ function HistoryCard({
   s1 = false,
   isMobileView = false,
   loadingIndicator = false,
+  campStatementApiCall,
 }: any) {
   const router = useRouter();
   const [commited, setCommited] = useState(false);
@@ -85,6 +86,7 @@ function HistoryCard({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [supporters, setSupporters] = useState([]);
   const [loadingChanges, setLoadingChanges] = useState(false);
+  const [isObjectionSubmitted, setIsObjectionSubmitted] = useState(false);
   const [open, setOpen] = useState(false);
   const [drawerFor, setDrawerFor] = useState("");
   let drawerOptions = {
@@ -406,7 +408,7 @@ function HistoryCard({
         {campStatement?.status == "in_review" &&
           (!campStatement?.grace_period || commited) &&
           isUserAuthenticated &&
-          campStatement?.total_supporters > 1 && (
+          campStatement?.total_supporters > 1  && !isObjectionSubmitted && (
             <>
               <div className="agreement-wrapper">
                 {(campStatement?.ifICanAgreeAndObject ||
@@ -558,7 +560,7 @@ function HistoryCard({
                   <i className="icon-edit"></i>
                 </PrimaryButton>
 
-                {campStatement?.status == "in_review" && (
+                {campStatement?.status == "in_review" && !isObjectionSubmitted && (
                   <>
                     <Button
                       size="large"
@@ -684,6 +686,7 @@ function HistoryCard({
         drawerFor={drawerFor}
         setDrawerFor={setDrawerFor}
         objectionId={campStatement?.id}
+        getHistory={campStatementApiCall}
       />
     </div>
   );
