@@ -12,6 +12,8 @@ import styles from "../topicDetails.module.scss";
 import CustomSkelton from "src/components/common/customSkelton";
 import {
   getCampBreadCrumbApi,
+  getCurrentCampRecordApi,
+  getCurrentTopicRecordApi,
   getTreesApi,
   subscribeToCampApi,
 } from "src/network/api/campDetailApi";
@@ -48,6 +50,7 @@ const TimelineInfoBar = ({
   });
   const didMount = useRef(false);
   const router = useRouter();
+  const [isMobile, setIsMobile] = useState(false);
 
   const {
     topicRecord,
@@ -96,6 +99,39 @@ const TimelineInfoBar = ({
     router.push(`/manage/${historyOf}/${updateId}`);
   };
 
+
+  useEffect(() => {
+    const isDefaultOrReview = asof === "default" || asof === "review";
+
+    const reqBody = {
+      topic_num: parseInt(router?.query?.camp?.at(0)?.split("-")?.at(0), 10),
+      camp_num:
+        parseInt(router?.query?.camp?.at(1)?.split("-")?.at(0), 10) || 1,
+      as_of: asof,
+      as_of_date: isDefaultOrReview
+        ? Math.floor(Date.now() / 1000)
+        : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
+    };
+
+    const fetchTopicRecord = async () => {
+      await getCurrentTopicRecordApi(reqBody);
+    };
+
+    const fetchCampRecord = async () => {
+      await getCurrentCampRecordApi(reqBody);
+    };
+
+    if (campRecord === null) {
+      fetchCampRecord();
+    }
+
+    if (topicRecord === null) {
+      fetchTopicRecord();
+    }
+  }, []);
+
+
+
   useEffect(() => {
     if (isTopicPage) {
       if (didMount.current) {
@@ -116,7 +152,21 @@ const TimelineInfoBar = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const isMobile = window.matchMedia("(min-width: 1024.98px)").matches;
+  // const isMobile = window.matchMedia("(min-width: 1024.98px)").matches;
+
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.matchMedia("(min-width: 1024.98px)").matches);
+    };
+    checkIsMobile();
+    window.addEventListener("resize", checkIsMobile);
+    return () => {
+      window.removeEventListener("resize", checkIsMobile);
+    };
+  }, []);
+
+  console.log("isMobile",isMobile);
+  
   const onCampForumClick = () => {
     const topicName = topicRecord?.topic_name?.replaceAll(" ", "-");
     const campName = campRecord?.camp_name?.replaceAll(" ", "-");

@@ -1,23 +1,8 @@
 import {
-  Badge,
-  Breadcrumb,
   Button,
-  Card,
-  Checkbox,
-  Collapse,
-  Divider,
-  Empty,
-  Tag,
-  Tooltip,
   Typography,
 } from "antd";
 
-import {
-  EyeOutlined,
-  HomeOutlined,
-  InfoCircleOutlined,
-  LeftOutlined,
-} from "@ant-design/icons";
 import { updateCampApi } from "src/network/api/campManageStatementApi";
 import type { CheckboxChangeEvent } from "antd/es/checkbox";
 import { useRouter } from "next/router";
@@ -27,31 +12,20 @@ import { RootState } from "src/store";
 import useIsUserAuthenticated from "src/hooks/isUserAuthenticated";
 import {
   getAllUsedNickNames,
-  getCampBreadCrumbApi,
-  getCurrentCampRecordApi,
-  getCurrentTopicRecordApi,
 } from "src/network/api/campDetailApi";
 import { store } from "src/store";
 import { setTree } from "src/store/slices/campDetailSlice";
 import { getHistoryApi } from "src/network/api/history";
 import { setCurrentCamp } from "src/store/slices/filtersSlice";
-import HistoryCollapse from "./Collapse";
 import {
-  getCookies,
   historyTitle,
-  replaceSpecialCharacters,
 } from "src/utils/generalUtility";
 import InfiniteScroll from "react-infinite-scroller";
 import CustomSkelton from "../../common/customSkelton";
-import moment from "moment";
-import Breadcrumbs from "../Breadcrumbs/breadcrumbs";
 import HistoryCard from "../HistoryCard/historyCard";
 import CustomLayout from "src/hoc/layout/";
 import TimelineInfoBar from "../TopicDetails/CampInfoBar";
-
-const { Title } = Typography;
-
-const { Panel } = Collapse;
+import CommanBreadcrumbs from "../Breadcrumbs/commanBreadcrumbs";
 
 function HistoryContainer() {
   const { isUserAuthenticated } = useIsUserAuthenticated();
@@ -65,8 +39,6 @@ function HistoryContainer() {
   const [nickName, setNickName] = useState([]);
   const [selectedTopic, setSelectedTopic] = useState([]);
   const [selectedTopicStatus, setSelectedTopicStatus] = useState([]);
-
-  const [isAbs, setIsAbs] = useState(false);
   const [loadMoreItems, setLoadMoreItems] = useState(true);
   const [agreecheck, setAgreeCheck] = useState(false);
   const [discardChange, setDiscardChange] = useState(false);
@@ -88,29 +60,17 @@ function HistoryContainer() {
 
   const {
     history,
-    currentCampNode,
     asofdate,
     algorithm,
-    topicRecord,
-    asof,
-    campRecord,
   } = useSelector((state: RootState) => ({
     history: state?.topicDetails?.history,
-    currentCampNode: state?.filters?.selectedCampNode,
     asofdate: state.filters?.filterObject?.asofdate,
     algorithm: state.filters?.filterObject?.algorithm,
-    topicRecord: state?.topicDetails?.currentTopicRecord,
-    asof: state?.filters?.filterObject?.asof,
-    campRecord: state?.topicDetails?.currentCampRecord,
   }));
 
   const [isTreesApiCallStop, setIsTreesApiCallStop] = useState(false);
   const [loadingIndicator, setLoadingIndicator] = useState(false);
   const [campHistory, setCampHistory] = useState<any>(history);
-  let payload = history && {
-    camp_num: router?.query?.camp?.at(1)?.split("-")?.at(0) ?? "1",
-    topic_num: router?.query?.camp?.at(0)?.split("-")?.at(0),
-  };
 
   useEffect(() => {
     async function getTreeApiCall() {
@@ -434,41 +394,15 @@ function HistoryContainer() {
       renderButton(type, label, count, activeTab === type, className, count < 1)
     );
   };
-  useEffect(() => {
-    const isDefaultOrReview = asof === "default" || asof === "review";
-
-    const reqBody = {
-      topic_num: parseInt(router?.query?.camp?.at(0)?.split("-")?.at(0), 10),
-      camp_num:
-        parseInt(router?.query?.camp?.at(1)?.split("-")?.at(0), 10) || 1,
-      as_of: asof,
-      as_of_date: isDefaultOrReview
-        ? Math.floor(Date.now() / 1000)
-        : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
-    };
-
-    const fetchTopicRecord = async () => {
-      await getCurrentTopicRecordApi(reqBody);
-    };
-
-    const fetchCampRecord = async () => {
-      await getCurrentCampRecordApi(reqBody);
-    };
-
-    if (campRecord === null) {
-      fetchCampRecord();
-    }
-
-    if (topicRecord === null) {
-      fetchTopicRecord();
-    }
-  }, []);
 
   return (
-    // <CustomLayout afterHeader={<Breadcrumbs updateId={liveRecordId} />}>
     <CustomLayout
       afterHeader={
-        <TimelineInfoBar
+        // <TimelineInfoBar
+        //   updateId={liveRecordId}
+        //   isHistoryPage={isHistoryPage}
+        // />
+        <CommanBreadcrumbs 
           updateId={liveRecordId}
           isHistoryPage={isHistoryPage}
         />

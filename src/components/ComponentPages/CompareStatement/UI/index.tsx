@@ -112,35 +112,36 @@ function CompareStatementUI({
     }
   };
 
-  useEffect(() => {
-    const isDefaultOrReview = asof === "default" || asof === "review";
 
-    const reqBody = {
-      topic_num: parseInt(router?.query?.camp?.at(0)?.split("-")?.at(0), 10),
-      camp_num:
-        parseInt(router?.query?.camp?.at(1)?.split("-")?.at(0), 10) || 1,
-      as_of: asof,
-      as_of_date: isDefaultOrReview
-        ? Math.floor(Date.now() / 1000)
-        : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
-    };
+  // useEffect(() => {
+  //   const isDefaultOrReview = asof === "default" || asof === "review";
 
-    const fetchTopicRecord = async () => {
-      await getCurrentTopicRecordApi(reqBody);
-    };
+  //   const reqBody = {
+  //     topic_num: parseInt(router?.query?.camp?.at(0)?.split("-")?.at(0), 10),
+  //     camp_num:
+  //       parseInt(router?.query?.camp?.at(1)?.split("-")?.at(0), 10) || 1,
+  //     as_of: asof,
+  //     as_of_date: isDefaultOrReview
+  //       ? Math.floor(Date.now() / 1000)
+  //       : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
+  //   };
 
-    const fetchCampRecord = async () => {
-      await getCurrentCampRecordApi(reqBody);
-    };
+  //   const fetchTopicRecord = async () => {
+  //     await getCurrentTopicRecordApi(reqBody);
+  //   };
 
-    if (campRecord === null) {
-      fetchCampRecord();
-    }
+  //   const fetchCampRecord = async () => {
+  //     await getCurrentCampRecordApi(reqBody);
+  //   };
 
-    if (topicRecord === null) {
-      fetchTopicRecord();
-    }
-  }, []);
+  //   if (campRecord === null) {
+  //     fetchCampRecord();
+  //   }
+
+  //   if (topicRecord === null) {
+  //     fetchTopicRecord();
+  //   }
+  // }, []);
 
   return (
     <>
