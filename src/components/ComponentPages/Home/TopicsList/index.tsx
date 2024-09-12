@@ -531,64 +531,59 @@ const TopicsList = () => {
                 <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />;
               </div>
             ) : (
-              <>
-                <Row gutter={[24, 24]}>
-                  {topicsData?.topics &&
-                    topicsData?.topics?.map((ft: any, index) => (
-                      <Col
-                        key={index}
-                        xs={24}
-                        sm={24}
-                        md={8}
-                        className={`${
-                          ft?.tags?.length == 0 ? "[&_.mainTags]:!hidden" : ""
-                        }`}
-                      >
-                        <SingleTopicCard
-                          cardClassName="[&_.scoreTag]:mx-0 [&_.scoreTag]:ml-2 [&_.catTags]:flex-row [&_.cardCountCls]:!mt-0 [&_.scoreTag]:w-max [&_.topicDesc]:line-clamp-2"
-                          topic={{
-                            ...ft,
-                            topic_num: ft?.topic_id,
-                            topicTags: ft?.tags,
-                            views: ft?.camp_views,
-                          }}
-                          avatars={
-                            ft?.tree_structure &&
-                            ft?.tree_structure[1]?.support_tree
-                              ?.map((support) => support?.user)
-                              ?.slice(0, 5)
-                          }
-                          maxCount={5}
-                          scoreTag={<ScoreTag topic_score={ft?.topic_score} />}
-                          copyLink={
-                            <>
-                              <Paragraph
-                                className="!mb-0"
-                                copyable={{
-                                  text: ft.is_archive ? (
-                                    <Popover content="Archived Topic">
-                                      {isReview
-                                        ? ft?.tree_structure &&
-                                          ft?.tree_structure[1].review_title
-                                        : ft?.topic_name}
-                                    </Popover>
-                                  ) : isReview ? (
-                                    ft?.tree_structure &&
+              <Row gutter={[24, 24]}>
+                {topicsData?.topics?.map((ft: any, index) => (
+                  <Col
+                    key={index}
+                    xs={24}
+                    sm={24}
+                    md={8}
+                    className={`${
+                      ft?.tags?.length == 0 ? "[&_.mainTags]:!hidden" : ""
+                    }`}
+                  >
+                    <SingleTopicCard
+                      cardClassName="[&_.scoreTag]:mx-0 [&_.scoreTag]:ml-2 [&_.catTags]:flex-row [&_.cardCountCls]:!mt-0 [&_.scoreTag]:w-max [&_.topicDesc]:line-clamp-2"
+                      topic={{
+                        ...ft,
+                        topic_num: ft?.topic_id,
+                        topicTags: ft?.tags,
+                        views: ft?.camp_views,
+                      }}
+                      avatars={
+                        ft?.tree_structure &&
+                        ft?.tree_structure[1]?.support_tree
+                          ?.map((support) => support?.user)
+                          ?.slice(0, 5)
+                      }
+                      maxCount={5}
+                      scoreTag={<ScoreTag topic_score={ft?.topic_score} />}
+                      copyLink={
+                        <Paragraph
+                          className="!mb-0"
+                          copyable={{
+                            text: ft.is_archive ? (
+                              <Popover content="Archived Topic">
+                                {isReview
+                                  ? ft?.tree_structure &&
                                     ft?.tree_structure[1].review_title
-                                  ) : (
-                                    ft?.topic_name
-                                  ),
-                                }}
-                              >
-                                {" "}
-                              </Paragraph>
-                            </>
-                          }
-                        />
-                      </Col>
-                    ))}
-                </Row>
-              </>
+                                  : ft?.topic_name}
+                              </Popover>
+                            ) : isReview ? (
+                              ft?.tree_structure &&
+                              ft?.tree_structure[1].review_title
+                            ) : (
+                              ft?.topic_name
+                            ),
+                          }}
+                        >
+                          {" "}
+                        </Paragraph>
+                      }
+                    />
+                  </Col>
+                ))}
+              </Row>
             )}
           </>
         )}

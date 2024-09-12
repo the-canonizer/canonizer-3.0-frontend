@@ -24,11 +24,9 @@ function TopicCampsTab({
     />
   ) : (
     <List
-      className="rounded-lg"
+      className="rounded-lg max-h-[300px] overflow-y-auto"
       bordered={false}
-      locale={{
-        emptyText: "You don't have any recent activity right now.",
-      }}
+      locale={{ emptyText: "You don't have any recent activity right now." }}
       dataSource={recentActivities?.topics}
       renderItem={(activity: any) => {
         const decodedProperties = JSON.parse(activity?.properties);
