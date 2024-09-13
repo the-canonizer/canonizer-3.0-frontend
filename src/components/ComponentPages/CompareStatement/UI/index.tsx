@@ -15,6 +15,7 @@ import {
 } from "src/network/api/campDetailApi";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
+import CommanBreadcrumbs from "components/ComponentPages/Breadcrumbs/commanBreadcrumbs";
 const validUrl = (url) => {
   try {
     new URL(url);
@@ -145,10 +146,14 @@ function CompareStatementUI({
 
   return (
     <>
-      <TimelineInfoBar
+      {/* <TimelineInfoBar
         compareMode={compareMode}
         historyOF={router?.query?.from}
-      />
+      /> */}
+       <CommanBreadcrumbs 
+          compareMode={compareMode}
+          historyOF={router?.query?.from}
+        />
       {/* <Breadcrumbs compareMode={compareMode} historyOF={router?.query?.from} /> */}
 
       {isLoading ? (

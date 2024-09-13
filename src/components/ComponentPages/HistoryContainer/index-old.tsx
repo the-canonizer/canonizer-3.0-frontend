@@ -21,6 +21,7 @@ import useIsUserAuthenticated from "src/hooks/isUserAuthenticated";
 import { store } from "src/store";
 import { setTree } from "src/store/slices/campDetailSlice";
 import { updateCampApi } from "src/network/api/campManageStatementApi";
+import CommanBreadcrumbs from "../Breadcrumbs/commanBreadcrumbs";
 
 const { Title } = Typography;
 
@@ -361,7 +362,11 @@ function HistoryContainer() {
     );
   return (
     <div className={styles.wrap}>
-      <CampInfoBar
+      {/* <CampInfoBar
+        payload={payload}
+        isTopicHistoryPage={historyOf == "topic" ? true : false}
+      /> */}
+      <CommanBreadcrumbs
         payload={payload}
         isTopicHistoryPage={historyOf == "topic" ? true : false}
       />

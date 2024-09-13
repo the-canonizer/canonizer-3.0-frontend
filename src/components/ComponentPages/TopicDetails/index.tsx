@@ -57,6 +57,7 @@ import { openNotificationWithIcon } from "components/common/notification/notific
 import ScoreTag from "../Home/TrandingTopic/scoreTag";
 import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 import { CloseOutlined } from "@ant-design/icons";
+import CommanBreadcrumbs from "../Breadcrumbs/commanBreadcrumbs";
 
 const { Link: AntLink } = Typography;
 
@@ -531,7 +532,15 @@ const TopicDetails = ({ serverSideCall }: any) => {
         afterHeader={
           <Fragment>
             {(tree && tree["1"]?.is_valid_as_of_time) || asof == "default" ? (
-              <CampInfoBar
+              // <CampInfoBar
+              //   isTopicPage={true}
+              //   payload={{
+              //     topic_num: +router?.query?.camp[0]?.split("-")[0],
+              //     camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
+              //   }}
+              //   getCheckSupportStatus={getCheckSupportStatus}
+              // />
+              <CommanBreadcrumbs 
                 isTopicPage={true}
                 payload={{
                   topic_num: +router?.query?.camp[0]?.split("-")[0],
@@ -540,7 +549,15 @@ const TopicDetails = ({ serverSideCall }: any) => {
                 getCheckSupportStatus={getCheckSupportStatus}
               />
             ) : (
-              <CampInfoBar
+              // <CampInfoBar
+              //   payload={{
+              //     topic_num: +router?.query?.camp[0]?.split("-")[0],
+              //     camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
+              //   }}
+              //   isTopicHistoryPage={true}
+              //   getCheckSupportStatus={getCheckSupportStatus}
+              // />
+              <CommanBreadcrumbs 
                 payload={{
                   topic_num: +router?.query?.camp[0]?.split("-")[0],
                   camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),

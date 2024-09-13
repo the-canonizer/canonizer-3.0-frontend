@@ -12,6 +12,7 @@ import { getCurrentTopicRecordApi } from "src/network/api/campDetailApi";
 import moment from "moment";
 import { RootState } from "src/store";
 import { useSelector } from "react-redux";
+import CommanBreadcrumbs from "../Breadcrumbs/commanBreadcrumbs";
 const { Title } = Typography;
 
 const EventLine = () => {
@@ -57,7 +58,10 @@ const EventLine = () => {
         />
       ) : (
         <>
-          <TimelineInfoBar isEventLine={isEventLine} />
+          {/* <TimelineInfoBar isEventLine={isEventLine} /> */}
+          <CommanBreadcrumbs 
+          isEventLine={isEventLine}
+        />
           <div className="eventline-content-wrap">
             <div className="eventline-algo-content">
               <SideBarTimeline
