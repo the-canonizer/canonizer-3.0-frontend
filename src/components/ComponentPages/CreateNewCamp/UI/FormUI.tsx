@@ -103,6 +103,7 @@ const CreateCampFormUI = ({
       onSelect: (val) => form.setFieldValue("nick_name", val),
       id: "nickname-dropdown",
       values: values?.nick_name || nickNameList[0]?.id,
+      lastValue: form.getFieldValue("nick_name"),
     };
 
     if (nickNameList?.length) {
@@ -160,6 +161,7 @@ const CreateCampFormUI = ({
       values: values?.parent_camp_num || topicData?.camp_num,
       defaultValue: values?.parent_camp_num || topicData?.camp_num,
       initialValue: values?.parent_camp_num || topicData?.camp_num,
+      lastValue: form.getFieldValue("parent_camp_num"),
     };
 
     return <SelectInputs {...selectInputProps} />;

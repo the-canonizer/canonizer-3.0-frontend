@@ -69,7 +69,7 @@ function ProfileInfoForm({
   userProfileSkeletonV,
   setOTP,
   setToggleVerifyButton,
-}:any) {
+}: any) {
   const [step, setStep] = useState(0);
   const [updatedEmail, setUpdatedEmail] = useState("");
   const [newEmailOtp, setNewEmailOtp] = useState("");
@@ -648,21 +648,21 @@ function ProfileInfoForm({
             </Form.Item>
           </Col>
           <Col md={24}>
-                  <VerifyMobileNumberForm
-                    mobileCarrier={mobileCarrier}
-                    formVerify={formVerify}
-                    isOTPModalVisible={isOTPModalVisible}
-                    setIsOTPModalVisible={setIsOTPModalVisible}
-                    handleOTPCancel={handleOTPCancel}
-                    otp={otp}
-                    handleChangeOTP={handleChangeOTP}
-                    toggleVerifyButton={toggleVerifyButton}
-                    handleMobileNumberChange={handleMobileNumberChange}
-                    userProfileSkeletonV={userProfileSkeletonV}
-                    setOTP={setOTP}
-                    setToggleVerifyButton={setToggleVerifyButton}
-                  />
-                </Col>
+            <VerifyMobileNumberForm
+              mobileCarrier={mobileCarrier}
+              formVerify={formVerify}
+              isOTPModalVisible={isOTPModalVisible}
+              setIsOTPModalVisible={setIsOTPModalVisible}
+              handleOTPCancel={handleOTPCancel}
+              otp={otp}
+              handleChangeOTP={handleChangeOTP}
+              toggleVerifyButton={toggleVerifyButton}
+              handleMobileNumberChange={handleMobileNumberChange}
+              userProfileSkeletonV={userProfileSkeletonV}
+              setOTP={setOTP}
+              setToggleVerifyButton={setToggleVerifyButton}
+            />
+          </Col>
         </Row>
 
         <div className="border-t border-canGrey2 pt-10">

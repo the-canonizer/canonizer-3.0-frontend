@@ -166,7 +166,7 @@ const CampStatementCard = ({ loadingIndicator }) => {
         "--card-body-height": `calc(100% - ${getElementHeight()}px)`,
         "--element-height": `${getElementHeight()}px`,
       }}
-      className={`border-0 h-100 bg-white [&_.ant-card-body]:p-0 [&_.ant-card-body]:lg:p-[24px] [&_.ant-card-body]:flex overflow-hidden lg:bg-canGray mb-8 lg:mb-14 border-t-8 !border-canGreen h-[400px] xl:h-[600px] statementCardBody`}
+      className={`border-0 h-100 bg-white [&_.ant-card-body]:p-0 [&_.ant-card-body]:lg:p-[24px] [&_.ant-card-body]:flex overflow-hidden lg:bg-canGray mb-8 lg:mb-14 border-t-8 ${router?.query?.asof == "review"?"!border-canOrange":"!border-canGreen"} h-[400px] xl:h-[600px] statementCardBody`}
       data-testid="algoSelect"
       id="statementCard"
       title={

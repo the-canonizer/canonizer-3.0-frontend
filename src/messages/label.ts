@@ -88,8 +88,9 @@ export const labels = {
   verificationLabel: "Enter password verification code",
   forgotModalLabel: "Forgot your password? Don't worry, it happens.",
   nameConfirmationTitle: "Name Confirmation",
-  reasonLabel: "Reason for adding/removing support",
-  reasonChangeLabel: "Reason for adding/removing/changing order support",
+  reasonLabel: "(Optional) Reason for adding/removing support",
+  reasonChangeLabel:
+    "(Optional) Reason for adding/removing/changing order support",
   reasonLabelAdd: "Reason for support",
   reasonLabelSummary: "Summary",
   resonURLLabel: "Citation Link",

@@ -120,10 +120,9 @@ function ManageStatementUI({
                 }
                 name="nick_name"
                 defaultValue={nickNameData[0]?.id}
-                value={values?.nick_name}
                 options={nickNameData}
                 allowClear
-                size={"large"}
+                size="large"
                 dataid="topic-category"
                 showSearch
                 optionFilterProp="children"
@@ -136,7 +135,9 @@ function ManageStatementUI({
                 ]}
                 nameKey="nick_name"
                 prefix={<UserOutlined className="px-3 text-canBlack" />}
-                onChange={(val) => form.setFieldValue("nick_name", val)}
+                key="statement-nicknames"
+                onSelect={(val) => form.setFieldValue("nick_name", val)}
+                lastValue={form.getFieldValue("nick_name")}
               />
             </Col>
             <Col xs={24} xl={24}>
@@ -221,7 +222,7 @@ function ManageStatementUI({
               xl={24}
               className="flex justify-between items-center pt-5 mt-3 flex-wrap gap-5"
             >
-              <Form.Item className="mb-0">
+              <Form.Item className="mb-0 [&_.ant-form-item-control-input-content]:flex [&_.ant-form-item-control-input-content]:gap-5 [&_.ant-form-item-control-input-content]:flex-wrap">
                 <SecondaryButton
                   className="inline-flex items-center justify-center h-auto py-2 px-7 mr-5 h-auto"
                   onClick={onDiscardClick}

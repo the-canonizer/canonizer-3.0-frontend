@@ -21,6 +21,7 @@ import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "src/store";
 import { setOpenDrawerForDirectSupportedCamp } from "src/store/slices/campDetailSlice";
+import PrimaryButton from "components/shared/Buttons/PrimariButton";
 
 export default function DirectSupportedCampsUI({
   removeCardSupportedCamps,
@@ -71,6 +72,7 @@ export default function DirectSupportedCampsUI({
     camp_name: string;
     camp_link: string;
     dis?: boolean;
+    support_order:number
   }
 
   interface RecordType {
@@ -132,7 +134,7 @@ export default function DirectSupportedCampsUI({
                     }}
                   >
                     <div className={styles.btndiv}>
-                      <span className="count">{tag.id}. </span>
+                      <span className="count">{tag.support_order}. </span>
                       <Link href={tag.camp_link}>
                         <a
                           className="text-sm text-canBlack font-semibold"
@@ -278,15 +280,7 @@ export default function DirectSupportedCampsUI({
             rowKey="topic_num"
             className="[&_.ant-table-thead>tr>th]:!bg-canGray"
           />
-          <Pagination
-            hideOnSinglePage={true}
-            total={directSupportedCampsList.length}
-            pageSize={5}
-            defaultCurrent={currentPage}
-            onChange={pageChange}
-            showSizeChanger={false}
-            className="mt-5"
-          />
+         
         </>
       );
     } else {
@@ -523,6 +517,7 @@ export default function DirectSupportedCampsUI({
   } else {
     displayContent = <Empty description="No Data Found" />;
   }
+  const isMobile = window.matchMedia("(min-width: 1280px)").matches;
 
   return (
     <div>
@@ -547,7 +542,11 @@ export default function DirectSupportedCampsUI({
                     box on your choice position.
                   </p>
                 </div>
-                <div className="lg:w-auto w-full flex justify-end">
+                
+                <div className="lg:w-auto w-full flex justify-end gap-2.5 items-center">
+                <PrimaryButton onClick={()=>{setSearch("")}}>
+                  Reset
+                </PrimaryButton>
                   <Input
                     suffix={
                       <Image
@@ -569,7 +568,18 @@ export default function DirectSupportedCampsUI({
                   />
                 </div>
               </div>
-              <>{displayContent}</>
+             { isMobile&&<>
+              {displayContent} 
+              {search.length === 0 &&<Pagination
+            hideOnSinglePage={true}
+            total={directSupportedCampsList.length}
+            pageSize={5}
+            defaultCurrent={currentPage}
+            onChange={pageChange}
+            showSizeChanger={false}
+            className="mt-5"
+          />}
+              </>}
             </div>
           )}
           {/* <Modal
@@ -654,7 +664,7 @@ export default function DirectSupportedCampsUI({
         </div>
       </div>
 
-      <div className="lg:hidden flex flex-col">{displayContentForMob}</div>
+      {!isMobile &&<div className="lg:hidden flex flex-col">{displayContentForMob}</div>}
     </div>
   );
 }

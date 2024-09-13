@@ -42,7 +42,6 @@ import {
   removeSupportedCamps,
   removeSupportedCampsEntireTopic,
 } from "src/network/api/userApi";
-import CampRecentActivities from "./CampRecentActivities";
 import InfoBar from "./CampInfoBar/infoBar";
 import { setOpenConsensusTreePopup } from "src/store/slices/hotTopicSlice";
 import CampDisclaimer from "components/common/CampDisclaimer";
@@ -57,6 +56,8 @@ import { openNotificationWithIcon } from "components/common/notification/notific
 import ScoreTag from "../Home/TrandingTopic/scoreTag";
 import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 import { CloseOutlined } from "@ant-design/icons";
+import ActivityNewsCard from "./ActivityNewsCard";
+import CampRecentActivities from "./CampRecentActivities";
 
 const { Link: AntLink } = Typography;
 
@@ -523,14 +524,14 @@ const TopicDetails = ({ serverSideCall }: any) => {
               </div>
 
               <div className="my-14">
-                <CampRecentActivities />
+                <ActivityNewsCard />
               </div>
             </Fragment>
           )
         }
         afterHeader={
           <Fragment>
-            {(tree && tree["1"]?.is_valid_as_of_time) || asof == "default" ? (
+            {tree?.["1"]?.is_valid_as_of_time || asof === "default" ? (
               <CampInfoBar
                 isTopicPage={true}
                 payload={{

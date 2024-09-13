@@ -48,6 +48,8 @@ import { openNotificationWithIcon } from "components/common/notification/notific
 import queryParams from "src/utils/queryParams";
 import { setCheckSupportExistsData } from "src/store/slices/campDetailSlice";
 import DrawerBreadcrumbs from "./drawerBreadcrumbs";
+import { removedURLRule } from "src/messages/validationRules";
+import { labels } from "src/messages/label";
 
 const { TextArea } = Input;
 
@@ -73,6 +75,7 @@ function SupportTreeDrawer({
     asofdate,
     asof,
     algorithm,
+    openDrawerForManageSupport,
   } = useSelector((state: RootState) => ({
     reasons: state?.topicDetails?.removedReasons,
     currentGetCheckSupportExistsData:
@@ -84,6 +87,7 @@ function SupportTreeDrawer({
     asofdate: state.filters?.filterObject?.asofdate,
     asof: state?.filters?.filterObject?.asof,
     algorithm: state.filters?.filterObject?.algorithm,
+    openDrawerForManageSupport: state.topicDetails.openDrawerForManageSupport,
   }));
 
   const dispatch = useDispatch();
@@ -105,6 +109,7 @@ function SupportTreeDrawer({
   const [campIds, setcampIds] = useState([]);
   const [isQuickActionSelected, setIsQuickActionSelected] = useState(false);
   const [signCampData, setSignCampData] = useState(null);
+  const [isOrderChange, setIsOrderChange] = useState(false);
 
   const topicNum = router?.query?.camp?.at(0)?.split("-")?.at(0);
   const camp_num = router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1;
@@ -470,10 +475,10 @@ function SupportTreeDrawer({
   };
 
   const checkAllTagsSelected = () => {
-    return (
-      tagsArrayList?.filter((item) => item.disabled == true)?.length ==
-      tagsArrayList?.length
-    );
+    return tagsArrayList?.length > 0
+      ? tagsArrayList?.filter((item) => item.disabled == true)?.length ==
+          tagsArrayList?.length
+      : false;
   };
 
   const renderPageHeaderTitle = () => {
@@ -524,9 +529,11 @@ function SupportTreeDrawer({
   };
 
   useEffect(() => {
-    checkAllTagsSelected()
+      if(tagsArrayList && tagsArrayList?.length > 0){
+        checkAllTagsSelected()
       ? setIsQuickActionSelected(true)
       : setIsQuickActionSelected(false);
+      }
   }, [checkAllTagsSelected()]);
 
   return (
@@ -535,7 +542,7 @@ function SupportTreeDrawer({
       className="ch-drawer adding-supported-drawer"
       placement="right"
       onClose={onClose}
-      open={open}
+      open={open || openDrawerForManageSupport}
       contentWrapperStyle={{ maxWidth: "730px", width: "100%" }}
     >
       <div className="page-breadcrums-wrapper">
@@ -663,6 +670,7 @@ function SupportTreeDrawer({
                     }}
                     onChange={(tags) => {
                       setTagsArrayList(tags);
+                      setIsOrderChange(true);
                     }}
                   />
                 </div>
@@ -720,7 +728,12 @@ function SupportTreeDrawer({
                   <Col span={24} sm={12}>
                     <Form.Item
                       name="reason"
-                      label="(Optional) Reason for adding support"
+                      className="label-ellipses"
+                      label={
+                        isOrderChange
+                          ? labels?.reasonChangeLabel
+                          : labels?.reasonLabel
+                      }
                     >
                       <div className="thm-select">
                         <div className="prefix-icon">
@@ -762,7 +775,11 @@ function SupportTreeDrawer({
                 )}
                 {drawerFor !== "delegateAdd" && (
                   <Col span={24}>
-                    <Form.Item name="Citation" label="Citation link">
+                    <Form.Item
+                      name="Citation"
+                      label={labels.resonURLLabel}
+                      {...removedURLRule}
+                    >
                       <Input
                         className="thm-input"
                         size="large"
@@ -839,7 +856,11 @@ function SupportTreeDrawer({
                 </Form.Item>
               </Col>
               <Col span={24}>
-                <Form.Item name="Citation" label="Citation link">
+                <Form.Item
+                  name="Citation"
+                  label={labels.resonURLLabel}
+                  {...removedURLRule}
+                >
                   <Input
                     className="thm-input"
                     size="large"

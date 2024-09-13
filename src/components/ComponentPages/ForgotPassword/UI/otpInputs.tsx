@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState ,KeyboardEvent} from "react";
+import React, { ChangeEvent, useEffect, useState, KeyboardEvent } from "react";
 import { Input } from "antd";
 
 const Otpinput = ({ label, onChangeOtp, className = "" }) => {
@@ -51,17 +51,17 @@ const Otpinput = ({ label, onChangeOtp, className = "" }) => {
     "w-[40px] h-[40px] m-[0 1rem] text-xl text-center rounded-[4px] border-[1px] border-solid border-[rgba(0, 0, 0, 0.3)] text-canBlack font-normal rounded-md p-1";
 
   const otpInputs = ["otp1", "otp2", "otp3", "otp4", "otp5", "otp6"];
-  
+
   const handleKeyDown = (
     event: KeyboardEvent<HTMLInputElement>,
     idx: number
   ) => {
     const { key } = event;
 
-    if (key === 'Backspace' && idx > 0) {
+    if (key === "Backspace" && idx > 0) {
       // Move focus to the previous input box if the current input is empty
       const currentInput = event.target as HTMLInputElement;
-      if (currentInput.value === '') {
+      if (currentInput.value === "") {
         const prevInput = document.querySelector(
           `[tabIndex="${idx}"]`
         ) as HTMLInputElement;

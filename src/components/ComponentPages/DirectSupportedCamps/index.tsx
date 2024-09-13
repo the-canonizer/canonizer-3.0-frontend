@@ -6,7 +6,7 @@ import {
   getDirectSupportedCampsList,
   removeOrUpdateDirectSupportCamps,
 } from "../../../network/api/userApi";
-import { setOpenDrawerForDirectSupportedCamp } from "src/store/slices/campDetailSlice";
+import { setDisableSubmitButtonForDirectSupportedCamp, setOpenDrawerForDirectSupportedCamp } from "src/store/slices/campDetailSlice";
 import { useDispatch } from "react-redux";
 const DirectSupportedCampsUI = dynamic(
   () => import("./DirectSupportedCampsUI"),
@@ -147,6 +147,7 @@ const DirectSupportedCamps = ({ search }: any) => {
       order_update: filterArrayResult,
       ...reasonData,
     };
+    dispatch(setDisableSubmitButtonForDirectSupportedCamp(true))
     let res = await removeOrUpdateDirectSupportCamps(tagsDeletedId);
     if (res && res.status_code == 200) {
       setShowSaveChanges(false);
@@ -155,6 +156,7 @@ const DirectSupportedCamps = ({ search }: any) => {
       setIsChangingOrder(false);
       dispatch(setOpenDrawerForDirectSupportedCamp(false));
     }
+    dispatch(setDisableSubmitButtonForDirectSupportedCamp(false))
     handleSupportedCampsCancel();
   };
 

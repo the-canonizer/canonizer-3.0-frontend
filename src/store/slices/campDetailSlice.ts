@@ -23,6 +23,8 @@ export const treeSlice = createSlice({
     },
     manageSupportStatusCheck: false,
     openDrawerForDirectSupportedCamp: false,
+    openDrawerForManageSupport: false,
+    disableSubmitButtonForDirectSupportedCamp: false,
 
     openDrawer: false,
     asOfValues: 0,
@@ -201,6 +203,12 @@ export const treeSlice = createSlice({
     setGlobalUserProfileDataAlgo: (state, action) => {
       state.globalUserProfileDataAlgo = action.payload;
     },
+    setOpenDrawerForManageSupport: (state, action) => {
+      state.openDrawerForManageSupport = action.payload;
+    },
+    setDisableSubmitButtonForDirectSupportedCamp: (state, action) => {
+      state.disableSubmitButtonForDirectSupportedCamp = action.payload;
+    },
   },
 });
 
@@ -243,6 +251,8 @@ export const {
   setGlobalUserProfileDataLastName,
   setGlobalUserProfileDataLanguage,
   setGlobalUserProfileDataAlgo,
+  setOpenDrawerForManageSupport,
+  setDisableSubmitButtonForDirectSupportedCamp
   // setOpenConsensusTreePopup,
 } = treeSlice.actions;
 

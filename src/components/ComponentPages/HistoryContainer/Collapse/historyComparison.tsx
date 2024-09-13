@@ -61,7 +61,9 @@ const HistoryComparison = ({
               Canon:{" "}
               <span>
                 {campStatement?.namespace &&
-                  campStatement?.namespace.replace(/[^a-zA-Z0-9\s]/g, " ")}
+                  campStatement?.namespace
+                    ?.replace(/^\/|\/$/g, "")
+                    ?.replace(/\//g, " > ")}
               </span>
             </p>
           </>
