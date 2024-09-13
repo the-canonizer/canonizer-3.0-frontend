@@ -28,6 +28,12 @@ const SupportRemovedModal = ({
   const reasons = useSelector(
     (state: RootState) => state?.topicDetails?.removedReasons
   );
+  const { disableSubmitButtonForDirectSupportedCamp } = useSelector(
+    (state: RootState) => ({
+      disableSubmitButtonForDirectSupportedCamp:
+        state.topicDetails.disableSubmitButtonForDirectSupportedCamp,
+    })
+  );
 
   const [selectedValue, setSelectedValue] = useState(null);
   const [availableReasons, setReasons] = useState(reasons);
@@ -205,6 +211,7 @@ const SupportRemovedModal = ({
                 size={"large"}
                 className=" Profile_btn ant-btn ant-btn-orange ant-btn-lg w-[12.5rem] hover:bg-canBlue hover:text-white flex gap-2.5 items-center bg-canBlue text-white text-base font-medium rounded-lg border-none justify-center focus:bg-canBlue focus:!text-white active:bg-canBlue"
                 id="create-topic-btn"
+                disabled={disableSubmitButtonForDirectSupportedCamp}
               >
                 {isOrderChange ? (
                   "Submit"
