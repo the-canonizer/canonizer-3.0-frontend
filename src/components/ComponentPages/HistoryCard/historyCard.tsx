@@ -86,7 +86,6 @@ function HistoryCard({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [supporters, setSupporters] = useState([]);
   const [loadingChanges, setLoadingChanges] = useState(false);
-  const [isObjectionSubmitted, setIsObjectionSubmitted] = useState(false);
   const [open, setOpen] = useState(false);
   const [drawerFor, setDrawerFor] = useState("");
   let drawerOptions = {
@@ -408,7 +407,7 @@ function HistoryCard({
         {campStatement?.status == "in_review" &&
           (!campStatement?.grace_period || commited) &&
           isUserAuthenticated &&
-          campStatement?.total_supporters > 1  && !isObjectionSubmitted && (
+          campStatement?.total_supporters > 1 && (
             <>
               <div className="agreement-wrapper">
                 {(campStatement?.ifICanAgreeAndObject ||
@@ -557,7 +556,7 @@ function HistoryCard({
                   <i className="icon-edit"></i>
                 </PrimaryButton>
 
-                {campStatement?.status == "in_review" && !isObjectionSubmitted && (
+                {campStatement?.status == "in_review" && (
                   <>
                     <Button
                       size="large"
