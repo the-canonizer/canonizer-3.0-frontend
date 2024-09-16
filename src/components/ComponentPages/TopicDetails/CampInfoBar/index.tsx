@@ -371,7 +371,9 @@ const TimelineInfoBar = ({
         Topic name :
       </span>
       <p className="font-bold mb-5 text-sm text-canBlack">
-        {topicRecord && topicRecord?.topic_name}
+        {topicRecord && topicRecord?.topic_name.length > 50
+          ? `${topicRecord?.topic_name.substring(0, 20)}....`
+          : topicRecord?.topic_name}
       </p>
     </div>
   );
@@ -593,7 +595,9 @@ const TimelineInfoBar = ({
         <Col md={12} sm={12} xs={12} className=" flex flex-col">
           <span className="text-xs 2xl:text-sm text-canLight">Topic :</span>
           <span className="text-sm text-canBlack">
-            {topicRecord && topicRecord?.topic_name}
+            {topicRecord && topicRecord?.topic_name.length > 50
+              ? `${topicRecord?.topic_name.substring(0, 20)}....`
+              : topicRecord?.topic_name}
           </span>
         </Col>
         {campRecord?.camp_leader_nick_name && (
@@ -1201,22 +1205,25 @@ const TimelineInfoBar = ({
                   </div>
                 ) : null}
 
-                {!isHtmlContent && !isHistoryPage && !compareMode && (
-                  <SecondaryButton
-                    className="hidden px-8 py-2.5 lg:flex items-center text-sm gap-1"
-                    size="large"
-                    onClick={handleClick}
-                  >
-                    Create Camp
-                    <Image
-                      src="/images/Icon-plus.svg"
-                      alt="svg"
-                      className="icon-topic"
-                      height={16}
-                      width={16}
-                    />
-                  </SecondaryButton>
-                )}
+                {!isHtmlContent &&
+                  !isHistoryPage &&
+                  !compareMode &&
+                  campRecord?.is_archive == 0 && (
+                    <SecondaryButton
+                      className="hidden px-8 py-2.5 lg:flex items-center text-sm gap-1"
+                      size="large"
+                      onClick={handleClick}
+                    >
+                      Create Camp
+                      <Image
+                        src="/images/Icon-plus.svg"
+                        alt="svg"
+                        className="icon-topic"
+                        height={16}
+                        width={16}
+                      />
+                    </SecondaryButton>
+                  )}
                 {isHtmlContent}
               </div>
             )}

@@ -222,7 +222,7 @@ function ManageStatementUI({
               xl={24}
               className="flex justify-between items-center pt-5 mt-3 flex-wrap gap-5"
             >
-              <Form.Item className="mb-0">
+              <Form.Item className="mb-0 [&_.ant-form-item-control-input-content]:flex [&_.ant-form-item-control-input-content]:gap-5 [&_.ant-form-item-control-input-content]:flex-wrap">
                 <SecondaryButton
                   className="inline-flex items-center justify-center h-auto py-2 px-7 mr-5 h-auto"
                   onClick={onDiscardClick}
