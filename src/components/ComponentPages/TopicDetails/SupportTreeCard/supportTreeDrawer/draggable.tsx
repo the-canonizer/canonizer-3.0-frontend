@@ -49,6 +49,7 @@ export default function Draggable({
               key={item?.id}
               id={item?.id}
               item={item}
+              index={index}
               enableDisableTagsHandler={enableDisableTagsHandler}
             />
           ))}
@@ -98,7 +99,7 @@ function SortableItem(props) {
               props.enableDisableTagsHandler(props.item);
             }}
           >
-            {props?.item?.id}-{props?.item?.content}
+            {`${props?.index+1}-${props?.item?.content}`}
           </Tag>
       ) : (
         <>
@@ -120,7 +121,7 @@ function SortableItem(props) {
                 window.location.href = props?.item?.link;
               }}
             >
-              {props?.item?.id}-{props?.item?.content}
+              {`${props?.index+1}-${props?.item?.content}`}
             </a>
           </Tag>
         </>
