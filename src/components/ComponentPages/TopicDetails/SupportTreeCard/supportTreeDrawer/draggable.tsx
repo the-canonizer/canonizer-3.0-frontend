@@ -95,8 +95,7 @@ function SortableItem(props) {
             closable={true}
             onClose={(evt) => {
               evt.stopPropagation()
-              console.info("close");
-              props.enableDisableTagsHandler(props.item);
+              props?.enableDisableTagsHandler(props.item);
             }}
           >
             {`${props?.index+1}-${props?.item?.content}`}
@@ -110,8 +109,7 @@ function SortableItem(props) {
             onClose={(evt) => {
               evt.stopPropagation()
 
-              console.info("close");
-              props.enableDisableTagsHandler(props.item);
+              props?.enableDisableTagsHandler(props.item);
             }}
           >
             <a
