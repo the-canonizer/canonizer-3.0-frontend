@@ -1,6 +1,6 @@
 import { Typography, List, Tooltip, Button, Popconfirm } from "antd";
 import Link from "next/link";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 
 import CustomSkelton from "components/common/customSkelton";
 import K from "src/constants";
@@ -27,10 +27,23 @@ function NewsItemListTab({
     />
   ) : (
     <List
-      className="rounded-lg max-h-[300px] overflow-y-auto"
+      className="rounded-lg max-h-[300px] overflow-y-auto [&_.ant-list-footer]:mt-auto"
       bordered={false}
       locale={{ emptyText: "You don't have any news right now." }}
       dataSource={newsFeedList}
+      footer={
+        is_admin && isUserAuthenticated ? (
+          <Link
+            href={{
+              pathname: router?.asPath.replace("topic", "addnews"),
+            }}
+          >
+            <a className="flex items-center justify-center !bg-canBlue hover:!bg-canHoverBlue !text-white hover:shadow-md rounded-lg px-3 py-2 w-[200px] inline-block gap-2 mx-auto text-sm">
+              Add News <PlusOutlined />
+            </a>
+          </Link>
+        ) : null
+      }
       renderItem={(news: {
         id?: string;
         link?: string;
@@ -94,8 +107,8 @@ function NewsItemListTab({
                         href={{ pathname: news?.parent_camp_url || "" }}
                         id="inherit-btn"
                       >
-                        <a className="!text-canBlack hover:!text-canBlue flex items-center justify-center">
-                          {news?.parent_camp_name}
+                        <a className="font-medium !text-white hover:!text-canHoverBlue flex items-center justify-center">
+                          {'news?.parent_camp_name'}
                         </a>
                       </Link>
                     </>
