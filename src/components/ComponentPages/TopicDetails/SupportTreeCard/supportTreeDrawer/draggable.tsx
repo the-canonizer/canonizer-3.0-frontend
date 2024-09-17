@@ -33,7 +33,7 @@ export default function Draggable({
   );
 
   return (
-    <div className="vertical-chips">
+    <div className="draggable-container">
       <DndContext
         sensors={sensors}
         modifiers={[restrictToVerticalAxis]}

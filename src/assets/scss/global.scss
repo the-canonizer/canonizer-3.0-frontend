@@ -1010,3 +1010,11 @@ body {
    @apply truncate;
   }
 }
+
+.draggable-container{
+  div{
+    + div{
+      @apply mt-2;
+    }
+  }
+}
