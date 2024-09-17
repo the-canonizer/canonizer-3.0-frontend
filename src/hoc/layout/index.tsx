@@ -36,9 +36,6 @@ function CustomLayout(props: any) {
     tree: state?.topicDetails?.tree && state?.topicDetails?.tree[0],
   }));
 
-  console.log("tree",tree);
-  
-
   return (
     <Layout className={`w-100 ${props?.className}`}>
       {!props?.withOutHeader ? (
@@ -73,7 +70,7 @@ function CustomLayout(props: any) {
 
         <main className={`${styles.contentBox}`}>{props.children}</main>
 
-        {props?.rightSidebar && tree?.node1?.is_valid_as_of_time ? (
+        {props?.rightSidebar && tree &&  tree["1"]?.is_valid_as_of_time ? (
           <aside className={`${styles.rightSidebar} lg:ml-7`}>
             {props?.rightSidebar}
           </aside>
