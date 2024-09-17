@@ -1,6 +1,7 @@
 import App, { AppContext, AppInitialProps, AppProps } from "next/app";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import { useClearCache } from "react-clear-cache";
 import { CookiesProvider } from "react-cookie";
 import { Provider } from "react-redux";
 import useState from "react-usestateref";
@@ -41,62 +42,9 @@ function WrappedApp({
     [_, setIsAuthenticated, isAuthenticatedRef] = useState(
       !!(getCookies() as any)?.loginToken
     );
+  const { isLatestVersion, emptyCacheStorage, latestVersion } = useClearCache();
 
-  const buildDateGreaterThan = (latestDate, currentDate) => {
-    const momLatestDateTime = moment(latestDate);
-    const momCurrentDateTime = moment(currentDate);
-
-    return !!momLatestDateTime.isAfter(momCurrentDateTime);
-  };
-
-  const refreshCacheAndReload = () => {
-    for (const key in localStorage) {
-      if (key !== "auth_token") {
-        localStorage.removeItem(key);
-      }
-    }
-
-    const cookies = document.cookie.split("; ");
-    for (let cookie of cookies) {
-      const eqPos = cookie.indexOf("=");
-      const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-      if (name !== "loginToken") {
-        document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
-      }
-    }
-
-    if (window?.caches) {
-      window.caches.keys().then((names) => {
-        for (const name of names) {
-          caches.delete(name);
-        }
-      });
-    }
-  };
-
-  useEffect(() => {
-    fetch("/meta.json")
-      .then((response) => response.json())
-      .then((meta) => {
-        // console.log("meta ===>", meta);
-        // const latestVersionDate = meta?.buildDate;
-        const currentVersionDate = localStorage.getItem("build_number");
-
-        const shouldForceRefresh = buildDateGreaterThan(
-          meta?.buildDate,
-          +currentVersionDate ?? 0
-        );
-        if (shouldForceRefresh) {
-          refreshCacheAndReload();
-          localStorage.setItem("build_number", meta?.buildDate);
-        }
-        // console.log("cache", {
-        //   shouldForceRefresh: shouldForceRefresh,
-        //   latestVersionDate: meta?.buildDate,
-        //   currentVersionDate: +currentVersionDate ?? 0,
-        // });
-      });
-  }, []);
+  // if (!isLatestVersion) emptyCacheStorage();
 
   useEffect(() => {
     const fetchToken = async () => {
