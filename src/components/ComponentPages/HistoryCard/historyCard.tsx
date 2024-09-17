@@ -48,6 +48,7 @@ import HistoryComparison from "../HistoryContainer/Collapse/historyComparison";
 import Timer from "../Timer";
 import PrimaryButton from "components/shared/Buttons/PrimariButton";
 import ObjectionDrawer from "./objectionDrawer";
+import K from "src/constants";
 
 const { Panel } = Collapse;
 
@@ -223,13 +224,25 @@ function HistoryCard({
   };
 
   const objectionHandler = () => {
-    showDrawer();
-    if (manageFor == "topic") {
-      setDrawerFor(drawerOptions.topicObjection);
-    } else if (manageFor == "camp") {
-      setDrawerFor(drawerOptions.campObjection);
-    } else if (manageFor == "statement") {
-      setDrawerFor(drawerOptions.statementObjection);
+    let isModelPop = !isUserAuthenticated
+      ? true
+      : (!campStatement?.ifIAmExplicitSupporter &&
+          campStatement?.ifIamSupporter == 0) ||
+        (parentArchived == 1 && directarchived == 1 && historyOf == "topic") ||
+        (parentArchived == 1 && directarchived == 0)
+      ? true
+      : false;
+    if (isModelPop) {
+      setModal1Open(true);
+    } else {
+      showDrawer();
+      if (manageFor == "topic") {
+        setDrawerFor(drawerOptions.topicObjection);
+      } else if (manageFor == "camp") {
+        setDrawerFor(drawerOptions.campObjection);
+      } else if (manageFor == "statement") {
+        setDrawerFor(drawerOptions.statementObjection);
+      }
     }
   };
 
@@ -552,10 +565,10 @@ function HistoryCard({
                       : false
                   }
                 >
-                  {(campStatement?.is_archive == 1 &&
-                        campStatement?.status == "live")
-                          ? "Un-Archive This Camp"
-                          : "Edit Based on This" }
+                  {campStatement?.is_archive == 1 &&
+                  campStatement?.status == "live"
+                    ? "Un-Archive This Camp"
+                    : "Edit Based on This"}
                   <i className="icon-edit"></i>
                 </PrimaryButton>
 
@@ -563,7 +576,11 @@ function HistoryCard({
                   <>
                     <Button
                       size="large"
-                      // disabled={historyOf == "camp" ? !campStatement?.ifICanAgreeAndObject : false}
+                      disabled={
+                        historyOf == "camp"
+                          ? !campStatement?.ifICanAgreeAndObject
+                          : false
+                      }
                       id={`object-change-${campStatement?.id}`}
                       className="flex items-center bg-canRed_Opacity10 border-canRed hover:border-canRed hover:text-canRed focus:text-canRed focus:border-canRed justify-center text-sm rounded-xl gap-3.5 leading-none w-100 font-medium"
                       onClick={() => objectionHandler()}
@@ -571,6 +588,36 @@ function HistoryCard({
                       Object Changes
                       <i className="icon-thumb-down text-canRed"></i>
                     </Button>
+                    <Modal
+                      title={K?.exceptionalMessages?.objectedModelTitle}
+                      style={{
+                        top: 20,
+                      }}
+                      centered
+                      okText="Close"
+                      visible={modal1Open}
+                      footer={[
+                        <Button
+                          key="submit"
+                          danger
+                          type="primary"
+                          onClick={() => setModal1Open(false)}
+                        >
+                          Close
+                        </Button>,
+                      ]}
+                      onCancel={() => setModal1Open(false)}
+                    >
+                      <p>{K?.exceptionalMessages?.objectedModalMsg}</p>
+                      <p>
+                        {K?.exceptionalMessages?.objectedModalMsgForMoreInfo}
+                      </p>
+                      <Link href="/topic/132-Help/4-Disagreement?is_tree_open=1">
+                        <a>
+                          https://canonizer.com/topic/132-Help/4-Disagreement
+                        </a>
+                      </Link>
+                    </Modal>
                   </>
                 )}
               </div>
