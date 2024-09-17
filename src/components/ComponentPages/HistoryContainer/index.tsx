@@ -167,6 +167,8 @@ function HistoryContainer() {
         page: count.current,
       };
       let res = await getHistoryApi(reqBody, count.current, historyOf);
+      setCampHistory(res?.data);
+      
       if (res?.status_code == 404 || res?.status_code == 400) {
         if (router?.pathname == "/topic/history/[...camp]") {
           router?.push(router?.asPath?.replace("topic/history", "topic"));
@@ -363,6 +365,7 @@ function HistoryContainer() {
           directarchived={directarchived}
           historyState={historyOf}
           loadingIndicator={loadingIndicator}
+          campStatementApiCall={()=>{campStatementApiCall()}}
         />
       );
     })
