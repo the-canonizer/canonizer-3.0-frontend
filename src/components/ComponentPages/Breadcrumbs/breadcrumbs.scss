@@ -3,16 +3,24 @@
     @apply items-center;
     li,
     a {
-      @apply md:text-[#242B37] max-md:text-[#777F93];
+      @apply md:text-[#242B37] max-md:text-[#777F93] flex items-center;
     }
     li {
       &:last-child {
         @apply font-semibold max-md:text-[#4EB966];
       }
-      @apply max-md:text-xs lg:text-base;
+      @apply max-lg:text-xs lg:text-base;
+      .ant-breadcrumb-link {
+        .anticon {
+          @apply max-sm:text-[10px] max-lg:text-xs lg:mt-px lg:text-base;
+        }
+      }
     }
     .ant-breadcrumb-separator {
-      @apply md:text-xs max-md:text-[10px] max-md:mx-[6px] md:mx-[1.25rem] md:text-[#242B37] max-md:text-[#777F93];
+      @apply mt-0.5 self-center max-md:mx-[6px] md:mx-[1.25rem] md:text-[#242B37] max-md:text-[#777F93];
+      i {
+        @apply max-lg:text-xs leading-[0] lg:text-base;
+      }
     }
   }
 }

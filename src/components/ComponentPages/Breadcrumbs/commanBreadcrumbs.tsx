@@ -694,62 +694,96 @@ function CommanBreadcrumbs({
     <>
       <div className="max-md:mx-[-1rem] max-md:shadow-[0px_10px_10px_0px_#0000001A] md:bg-canGrey1_Opacity70 p-[1.5rem] md:rounded-[1.25rem] flex items-center justify-between gap-2 ">
         {/* <Spin spinning={false}> */}
-          <Breadcrumb
-            className="cn-breadcrumbs"
-            separator={
-              <>
-                <i className="icon-angle-right-arrow"></i>
-              </>
-            }
-          >
-            <Breadcrumb.Item href="/">
-              <i className="icon-home"></i>
-            </Breadcrumb.Item>
-            <Breadcrumb.Item href={href}>
-              <Popover
-                content={content}
-                title={title}
-                className="title-popover"
-              >
+
+        {/* <Breadcrumb
+          className="cn-breadcrumbs"
+          separator={
+            <>
+              <i className="icon-angle-right-arrow !leading-[0]"></i>
+            </>
+          }
+        >
+          <Breadcrumb.Item href="/">
+            <i className="icon-home"></i>
+          </Breadcrumb.Item>
+          <Breadcrumb.Item href={href}>
+            <Popover content={content} title={title} className="title-popover">
+              <div className="flex items-center gap-1.5">
                 Topic: {breadCrumbRes && breadCrumbRes?.topic_name}
-                <span>
                 <InfoCircleOutlined />
-                </span>
-              </Popover>
-            </Breadcrumb.Item>
-            {/* <Breadcrumb.Item> */}
-              {breadCrumbRes
-                ? breadCrumbRes?.bread_crumb?.map((camp, index) => {
-                    return (
-                      <Breadcrumb.Item>
-                      <Link
-                        href={`/topic/${
-                          payloadData?.topic_num
-                            ? payloadData?.topic_num
-                            : topicId
-                        }-${replaceSpecialCharacters(
-                          breadCrumbRes?.topic_name,
-                          "-"
-                        )}/${camp?.camp_num}-${replaceSpecialCharacters(
-                          camp?.camp_name,
-                          "-"
-                        )}?${getQueryParams()?.returnQuery}`}
-                        key={index}
-                      >
-                        <a className="!text-canBlack gap-x-1 gap-y-1 flex hover:!text-canBlack !text-sm">
-                          {breadCrumbRes &&
-                            !!campSubscriptionID &&
-                            !isTopicHistoryPage && (
-                              <Tooltip
-                                title="You have subscribed to this camp."
-                                key="camp_subscribed_icon"
-                              >
-                                <small style={{ alignSelf: "center" }}>
-                                  <i className="icon-subscribe text-canBlue"></i>
-                                </small>
-                              </Tooltip>
-                            )}
-                          {/* <span
+              </div>
+            </Popover>
+          </Breadcrumb.Item>
+          <Breadcrumb.Item href={href}>
+            <Popover content={content} title={title} className="title-popover">
+              <div className="flex items-center gap-1.5">
+                Topic: {breadCrumbRes && breadCrumbRes?.topic_name}
+                <InfoCircleOutlined />
+              </div>
+            </Popover>
+          </Breadcrumb.Item>
+          <Breadcrumb.Item href={href}>
+            <Popover content={content} title={title} className="title-popover">
+              <div className="flex items-center gap-1.5">
+                Topic: {breadCrumbRes && breadCrumbRes?.topic_name}
+                <InfoCircleOutlined />
+              </div>
+            </Popover>
+          </Breadcrumb.Item>
+        </Breadcrumb> */}
+        <Breadcrumb
+          className="cn-breadcrumbs"
+          separator={
+            <>
+              <i className="icon-angle-right-arrow"></i>
+            </>
+          }
+        >
+          <Breadcrumb.Item href="/">
+            <i className="icon-home"></i>
+          </Breadcrumb.Item>
+          <Breadcrumb.Item href={href}>
+            <Popover content={content} title={title} className="title-popover">
+              Topic: {breadCrumbRes && breadCrumbRes?.topic_name}
+              <span>
+                <InfoCircleOutlined />
+              </span>
+            </Popover>
+          </Breadcrumb.Item>
+          {/* <Breadcrumb.Item> */}
+          {breadCrumbRes
+            ? breadCrumbRes?.bread_crumb?.map((camp, index) => {
+                return (
+                  // eslint-disable-next-line react/jsx-key
+                  <Breadcrumb.Item href="">
+                    <Link
+                      href={`/topic/${
+                        payloadData?.topic_num
+                          ? payloadData?.topic_num
+                          : topicId
+                      }-${replaceSpecialCharacters(
+                        breadCrumbRes?.topic_name,
+                        "-"
+                      )}/${camp?.camp_num}-${replaceSpecialCharacters(
+                        camp?.camp_name,
+                        "-"
+                      )}?${getQueryParams()?.returnQuery}`}
+                      key={index}
+                    >
+                      <a className="!text-canBlack gap-x-1 gap-y-1 flex hover:!text-canBlack !text-sm">
+                        {breadCrumbRes &&
+                          !!campSubscriptionID &&
+                          !isTopicHistoryPage && (
+                            <Tooltip
+                              title="You have subscribed to this camp."
+                              key="camp_subscribed_icon"
+                            >
+                              <small style={{ alignSelf: "center" }}>
+                                <i className="icon-subscribe text-canBlue"></i>
+                              </small>
+                            </Tooltip>
+                          )}
+                        {/* <span
                               className={
                                 breadCrumbRes?.bread_crumb.length -
                                   1 ==
@@ -758,22 +792,22 @@ function CommanBreadcrumbs({
                                   : styles.boldBreadcrumb
                               }
                             > */}
-                          {index === breadCrumbRes.bread_crumb.length - 1 ? (
-                            <Popover content={contentForCamp} title={title2}>
-                              <div className="flex items-center gap-1.5 text-sm">
-                                <span className="text-sm font-semibold">
-                                  {camp?.camp_name}
-                                </span>
-                                <InfoCircleOutlined />
-                              </div>
-                            </Popover>
-                          ) : (
+                        {index === breadCrumbRes.bread_crumb.length - 1 ? (
+                          <Popover content={contentForCamp} title={title2}>
                             <div className="flex items-center gap-1.5 text-sm">
-                              <span className="text-sm">{camp?.camp_name}</span>
+                              <span className="text-sm font-semibold">
+                                {camp?.camp_name}
+                              </span>
+                              <InfoCircleOutlined />
                             </div>
-                          )}
-                          {/* </span> */}
-                          {/* {index !== breadCrumbRes.bread_crumb.length - 1 && (
+                          </Popover>
+                        ) : (
+                          <div className="flex items-center gap-1.5 text-sm">
+                            <span className="text-sm">{camp?.camp_name}</span>
+                          </div>
+                        )}
+                        {/* </span> */}
+                        {/* {index !== breadCrumbRes.bread_crumb.length - 1 && (
                             <span className="!text-canBlack">
                               <Image
                                 src="/images/arrow-bread.svg"
@@ -784,82 +818,83 @@ function CommanBreadcrumbs({
                               />
                             </span>
                           )} */}
-                        </a>
-                      </Link>
-                      </Breadcrumb.Item>
-                    );
-                  })
-                : "N/A"}
-            {/* </Breadcrumb.Item> */}
-              {isEventLine && (
+                      </a>
+                    </Link>
+                  </Breadcrumb.Item>
+                );
+              })
+            : "N/A"}
+          {/* </Breadcrumb.Item> */}
+          {isEventLine && (
             <Breadcrumb.Item>
-                <Popover
-                  content={contentEventLine}
-                  className="title-popover"
-                  placement="bottom"
-                >
-                  <div className="flex  items-center gap-1.5">
-                    <span className="font-normal text-base text-canBlack whitespace-nowrap">
-                      Event Line
-                    </span>
-                    <span >
-                      <Image
-                        src="/images/circle-info-bread.svg"
-                        alt="svg"
-                        className="icon-topic"
-                        height={16}
-                        width={16}
-                      />
-                    </span>
-                  </div>
-                </Popover>
-            </Breadcrumb.Item>
-              )}
-              {compareMode && (
-            <Breadcrumb.Item>
-                <>
-                  <div>
+              <Popover
+                content={contentEventLine}
+                className="title-popover"
+                placement="bottom"
+              >
+                <div className="flex  items-center gap-1.5">
+                  <span className="font-normal text-base text-canBlack whitespace-nowrap">
+                    Event Line
+                  </span>
+                  <span>
                     <Image
-                      src="/images/arrow-bread.svg"
+                      src="/images/circle-info-bread.svg"
                       alt="svg"
                       className="icon-topic"
-                      height={10}
-                      width={10}
+                      height={16}
+                      width={16}
                     />
-                  </div>
-                  <div className="flex  items-center gap-1.5">
-                    <span className="font-normal text-base text-canBlack whitespace-nowrap">
-                      {historyTitle() == "Statement History"
-                        ? "Statement History"
-                        : historyTitle() == "Topic History"
-                        ? "Topic History"
-                        : historyTitle() == "Camp History"
-                        ? "Camp History"
-                        : null}
-                    </span>
-                  </div>
-                </>
+                  </span>
+                </div>
+              </Popover>
             </Breadcrumb.Item>
-              )}
-          </Breadcrumb>
-          {!compareMode && !!updateId && (
-            <PrimaryButton
-              size="large"
-              type="primary"
-              className="flex items-center justify-center rounded-[10px] max-lg:hidden gap-3.5 leading-none text-sm"
-              onClick={() => updateCurrentRecord()}
-            >
-              Update Current
-              {historyTitle() == "Statement History"
-                ? " Statement"
-                : historyTitle() == "Topic History"
-                ? " Topic"
-                : historyTitle() == "Camp History"
-                ? " Camp"
-                : null}
-              <i className="icon-edit"></i>
-            </PrimaryButton>
           )}
+          {compareMode && (
+            <Breadcrumb.Item>
+              <>
+                <div>
+                  <Image
+                    src="/images/arrow-bread.svg"
+                    alt="svg"
+                    className="icon-topic"
+                    height={10}
+                    width={10}
+                  />
+                </div>
+                <div className="flex  items-center gap-1.5">
+                  <span className="font-normal text-base text-canBlack whitespace-nowrap">
+                    {historyTitle() == "Statement History"
+                      ? "Statement History"
+                      : historyTitle() == "Topic History"
+                      ? "Topic History"
+                      : historyTitle() == "Camp History"
+                      ? "Camp History"
+                      : null}
+                  </span>
+                </div>
+              </>
+            </Breadcrumb.Item>
+          )}
+        </Breadcrumb>
+
+        {!compareMode && !!updateId && (
+          <PrimaryButton
+            size="large"
+            type="primary"
+            className="flex items-center justify-center rounded-[10px] max-lg:hidden gap-3.5 leading-none text-sm"
+            onClick={() => updateCurrentRecord()}
+          >
+            Update Current
+            {historyTitle() == "Statement History"
+              ? " Statement"
+              : historyTitle() == "Topic History"
+              ? " Topic"
+              : historyTitle() == "Camp History"
+              ? " Camp"
+              : null}
+            <i className="icon-edit"></i>
+          </PrimaryButton>
+        )}
         {/* </Spin> */}
       </div>
     </>
