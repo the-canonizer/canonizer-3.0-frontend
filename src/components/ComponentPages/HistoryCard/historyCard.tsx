@@ -75,6 +75,7 @@ function HistoryCard({
   s1 = false,
   isMobileView = false,
   loadingIndicator = false,
+  campStatementApiCall,
 }: any) {
   const router = useRouter();
   const [commited, setCommited] = useState(false);
@@ -684,6 +685,7 @@ function HistoryCard({
         drawerFor={drawerFor}
         setDrawerFor={setDrawerFor}
         objectionId={campStatement?.id}
+        getHistory={campStatementApiCall}
       />
     </div>
   );
