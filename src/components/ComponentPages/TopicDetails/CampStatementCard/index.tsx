@@ -110,7 +110,10 @@ const CampStatementCard = ({ loadingIndicator }) => {
             })
           }
         >
-          {K?.exceptionalMessages?.addCampStatementButton}
+          {(campStatement[0]?.parsed_value ||
+          campStatement?.at(0)?.in_review_changes)
+            ? K?.exceptionalMessages?.manageCampStatementButton
+            : K?.exceptionalMessages?.addCampStatementButton}
           <Image
             src="/images/manage-btn-icon.svg"
             alt="svg"

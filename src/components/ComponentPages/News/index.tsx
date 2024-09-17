@@ -27,7 +27,6 @@ import PrimaryButton from "components/shared/Buttons/PrimariButton";
 import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 import Inputs from "components/shared/FormInputs";
 import SelectInputs from "components/shared/FormInputs/select";
-import { useIsMobile } from "src/hooks/useIsMobile";
 
 const { Text } = Typography;
 
@@ -37,7 +36,6 @@ function AddOrEdit({ edit }) {
   const [form] = Form.useForm();
 
   const { isUserAuthenticated } = useAuthentication();
-  const isMobile = useIsMobile();
 
   const [loading, setLoading] = useState(false);
   const [screenLoading, setScreenLoading] = useState(false);
@@ -230,12 +228,14 @@ function AddOrEdit({ edit }) {
                   showSearch
                   optionFilterProp="children"
                   inputClassName="border-0"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please select Nickname",
-                    },
-                  ]}
+                  rules={{
+                    rules: [
+                      {
+                        required: true,
+                        message: "Please select Nickname",
+                      },
+                    ],
+                  }}
                   nameKey="nick_name"
                   prefix={
                     <UserOutlined className="flex items-center justify-center px-2" />
@@ -245,7 +245,7 @@ function AddOrEdit({ edit }) {
                   value={form.getFieldValue("nick_name")}
                   key="canon-select"
                   lastValue={form.getFieldValue("nick_name")}
-                  onSelect={(val) => form.setFieldsValue(val)}
+                  onSelect={(val) => form.setFieldValue("nick_name", val)}
                 />
               )}
             </Col>
@@ -265,22 +265,25 @@ function AddOrEdit({ edit }) {
                       Link <span className="required text-canRed pl-1">*</span>
                     </Fragment>
                   }
-                  rules={[
-                    {
-                      required: true,
-                      message: "Link is required.",
-                    },
-                    {
-                      pattern: /[^ \s]/,
-                      message: "Enter a valid link",
-                    },
-                  ]}
+                  rules={{
+                    rules: [
+                      {
+                        required: true,
+                        message: "Link is required.",
+                      },
+                      {
+                        pattern: /[^ \s]/,
+                        message: "Enter a valid link",
+                      },
+                    ],
+                  }}
                   placeholder="Enter Link"
                   onKeyDown={(e) =>
                     e.key === " " && e.keyCode === 32 && e.preventDefault()
                   }
                   maxLength={2000}
                   prefix={<LinkOutlined />}
+                  wrapperClassName={`${errors.urlErrorMsg ? "!mb-1" : ""}`}
                 />
               )}
               {errors.urlError && (

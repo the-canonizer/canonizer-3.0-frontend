@@ -112,10 +112,12 @@ const Login = () => {
 
       const returnUrl: any = router?.query?.returnUrl;
 
+      console.log(returnUrl);
+
       if (returnUrl) {
         router?.push(returnUrl);
       } else if (currentReturnUrl) {
-        router?.push({ pathname: currentReturnUrl });
+        router?.push(currentReturnUrl);
       } else if (router?.pathname === "/login") {
         router?.push("/");
       } else {
@@ -137,8 +139,6 @@ const Login = () => {
 
     setLoading(false);
   };
-
-  console.log("router?.query?.returnUrl", router?.query?.returnUrl);
 
   const onOTPClick = async (e) => {
     e.preventDefault();
