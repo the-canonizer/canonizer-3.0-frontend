@@ -29,12 +29,18 @@ export default function SearchSideBar() {
     router?.push("/search/topic");
   };
   const dispatch = useDispatch();
-  const { searchCountForMetaData, searchMetaData } = useSelector(
+  const { searchCountForMetaData, searchMetaData,selectedTopicFromAdvanceFilterAlgorithm ,selectedCampFromAdvanceFilterAlgorithm,selectedStatementFromAdvanceFilterAlgorithm} = useSelector(
     (state: RootState) => ({
       searchDataAll: state?.searchSlice?.searchDataAll,
       searchData: state?.searchSlice?.searchData,
       searchCountForMetaData: state?.searchSlice?.searchCountForMetaData,
       searchMetaData: state?.searchSlice?.searchMetaData,
+      selectedTopicFromAdvanceFilterAlgorithm:
+      state?.searchSlice?.selectedTopicFromAdvanceFilterAlgorithm,
+      selectedCampFromAdvanceFilterAlgorithm:
+      state?.searchSlice?.selectedCampFromAdvanceFilterAlgorithm,
+      selectedStatementFromAdvanceFilterAlgorithm:
+      state?.searchSlice?.selectedStatementFromAdvanceFilterAlgorithm,
     })
   );
   return (
@@ -103,7 +109,7 @@ export default function SearchSideBar() {
                       &nbsp;(
                       {searchValue == ""
                         ? searchMetaData?.topic_total
-                        : searchCountForMetaData?.topic_total}
+                        : router.query.asof == "review" || router.query.asof == "bydate"? selectedTopicFromAdvanceFilterAlgorithm.length: searchCountForMetaData?.topic_total}
                       )
                     </span>
                   </a>
@@ -141,7 +147,7 @@ export default function SearchSideBar() {
                       &nbsp;(
                       {searchValue == ""
                         ? searchMetaData?.camp_total
-                        : searchCountForMetaData?.camp_total}
+                        :router.query.asof == "review" || router.query.asof == "bydate"? selectedCampFromAdvanceFilterAlgorithm.length: searchCountForMetaData?.camp_total}
                       )
                     </span>
                   </a>
@@ -177,7 +183,7 @@ export default function SearchSideBar() {
                       &nbsp;(
                       {searchValue == ""
                         ? searchMetaData?.statement_total
-                        : searchCountForMetaData?.statement_total}
+                        : router.query.asof == "review" || router.query.asof == "bydate" ? selectedStatementFromAdvanceFilterAlgorithm.length: searchCountForMetaData?.statement_total}
                       )
                     </span>
                   </a>

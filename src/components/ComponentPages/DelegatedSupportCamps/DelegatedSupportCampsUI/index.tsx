@@ -35,7 +35,7 @@ export default function DelegatedSupportCampsUI({
   delegateSupportedSkeleton,
 }: any) {
   const [displayList, setDisplayList] = useState([]);
-  const limit = 3;
+  const limit = delegatedSupportCampsList.length;
   const [search, setSearch] = useState("");
 
   useEffect(() => {
