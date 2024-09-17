@@ -70,7 +70,7 @@ function CustomLayout(props: any) {
 
         <main className={`${styles.contentBox}`}>{props.children}</main>
 
-        {props?.rightSidebar && tree["1"]?.is_valid_as_of_time ? (
+        {props?.rightSidebar && tree &&  tree["1"]?.is_valid_as_of_time ? (
           <aside className={`${styles.rightSidebar} lg:ml-7`}>
             {props?.rightSidebar}
           </aside>
