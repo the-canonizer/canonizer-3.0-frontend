@@ -7,6 +7,8 @@ import FooterComp from "src/components/common/footer";
 import RegistrationModal from "src/components/ComponentPages/Registration/registrationModal";
 import DisclaimerMsg from "src/components/common/disclaimer";
 import ArchivedCampMsg from "src/components/common/ArchivedCampMsg";
+import { useSelector } from "react-redux";
+import { RootState } from "src/store";
 // import GoogleAd from "src/components/googleAds";
 
 const { Header, Footer } = Layout;
@@ -27,6 +29,12 @@ function CustomLayout(props: any) {
 
     return "";
   };
+
+  const { 
+    tree,
+  } = useSelector((state: RootState) => ({
+    tree: state?.topicDetails?.tree && state?.topicDetails?.tree[0],
+  }));
 
   return (
     <Layout className={`w-100 ${props?.className}`}>
@@ -62,7 +70,7 @@ function CustomLayout(props: any) {
 
         <main className={`${styles.contentBox}`}>{props.children}</main>
 
-        {props?.rightSidebar ? (
+        {props?.rightSidebar && tree["1"]?.is_valid_as_of_time ? (
           <aside className={`${styles.rightSidebar} lg:ml-7`}>
             {props?.rightSidebar}
           </aside>

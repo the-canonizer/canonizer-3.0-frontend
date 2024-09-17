@@ -70,6 +70,7 @@ const TimelineInfoBar = ({
     changeGoneLive,
     algorithm,
     campStatement,
+    tree
   } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
     campRecord: state?.topicDetails?.currentCampRecord,
@@ -81,6 +82,7 @@ const TimelineInfoBar = ({
     changeGoneLive: state?.topicDetails?.changeGoneLive,
     algorithm: state.filters?.filterObject?.algorithm,
     campStatement: state?.topicDetails?.campStatement,
+    tree: state?.topicDetails?.tree && state?.topicDetails?.tree[0],
   }));
 
   const [campSubscriptionID, setCampSubscriptionID] = useState(
@@ -737,7 +739,7 @@ const TimelineInfoBar = ({
                           )}/1-Agreement?${getQueryParams()?.returnQuery}`}
                         >
                           <a className="whitespace-nowrap !text-canBlack !text-sm">
-                            {breadCrumbRes?.topic_name}
+                            {topicRecord?.topic_name}
                           </a>
                         </Link>
                       ) : breadCrumbRes ? (
@@ -766,7 +768,7 @@ const TimelineInfoBar = ({
                                 " whitespace-nowrap text-sm cursor-pointer"
                               }
                             >
-                              {breadCrumbRes?.topic_name}
+                              {topicRecord?.topic_name}
                             </span>
                           </Link>
                         </span>
@@ -866,7 +868,7 @@ const TimelineInfoBar = ({
                                           >
                                             <div className="flex items-center gap-1.5 text-sm">
                                               <span className="text-sm font-semibold">
-                                                {camp?.camp_name}
+                                                {campRecord?.camp_name}
                                               </span>
                                               <Image
                                                 src="/images/circle-info-bread.svg"
@@ -880,7 +882,7 @@ const TimelineInfoBar = ({
                                         ) : (
                                           <div className="flex items-center gap-1.5 text-sm">
                                             <span className="text-sm">
-                                              {camp?.camp_name}
+                                              {campRecord?.camp_name}
                                             </span>
                                           </div>
                                         )}
@@ -1205,25 +1207,23 @@ const TimelineInfoBar = ({
                   </div>
                 ) : null}
 
-                {!isHtmlContent &&
-                  !isHistoryPage &&
-                  !compareMode &&
-                  campRecord?.is_archive == 0 && (
-                    <SecondaryButton
-                      className="hidden px-8 py-2.5 lg:flex items-center text-sm gap-1"
-                      size="large"
-                      onClick={handleClick}
-                    >
-                      Create Camp
-                      <Image
-                        src="/images/Icon-plus.svg"
-                        alt="svg"
-                        className="icon-topic"
-                        height={16}
-                        width={16}
-                      />
-                    </SecondaryButton>
-                  )}
+                {!isHtmlContent && !isHistoryPage && !compareMode && (
+                  <SecondaryButton
+                    className="hidden px-8 py-2.5 lg:flex items-center text-sm gap-1"
+                    size="large"
+                    onClick={handleClick}
+                    disabled={!tree?.["1"]?.is_valid_as_of_time ?true :false}
+                  >
+                    Create Camp
+                    <Image
+                      src="/images/Icon-plus.svg"
+                      alt="svg"
+                      className="icon-topic"
+                      height={16}
+                      width={16}
+                    />
+                  </SecondaryButton>
+                )}
                 {isHtmlContent}
               </div>
             )}
