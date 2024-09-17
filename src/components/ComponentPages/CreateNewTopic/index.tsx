@@ -114,11 +114,17 @@ const CreateNewTopic = () => {
               name: ["topic_name"],
               value: values?.topic_name,
               errors: res?.error?.topic_name || [],
+              validating: false,
+              touched: true,
             };
 
-            if (fieldsToUpdate.length) {
-              form.setFields(fieldsToUpdate.concat([topicField]));
-            }
+            setTimeout(() => {
+              if (fieldsToUpdate.length) {
+                form.setFields([...fieldsToUpdate, topicField]);
+              }
+            }, 200);
+
+            console.log([...fieldsToUpdate, topicField]);
 
             setIsDisabled(false);
             setIsError(true);
@@ -209,49 +215,47 @@ const CreateNewTopic = () => {
     setIsopicLoading(false);
   };
 
-  const isMatched = () => {
-    const isMatched = existingTopics.some(
-      (tp) =>
-        values?.topic_name?.trim()?.toLowerCase() ===
-        tp?.type_value?.trim()?.toLowerCase()
-    );
+  // const isMatched = () => {
+  //   const isMatched = existingTopics.some(
+  //     (tp) =>
+  //       values?.topic_name?.trim()?.toLowerCase() ===
+  //       tp?.type_value?.trim()?.toLowerCase()
+  //   );
 
-    if (isMatched) {
-      setIsError(true);
-      setIsDisabled(false);
-      form.setFields([
-        {
-          name: ["topic_name"],
-          value: values?.topic_name,
-          errors: ["The topic name has already been taken."],
-        },
-      ]);
-      return;
-    }
+  //   if (isMatched) {
+  //     setIsError(true);
+  //     form.setFields([
+  //       {
+  //         name: ["topic_name"],
+  //         value: values?.topic_name,
+  //         errors: ["The topic name has already been taken."],
+  //       },
+  //     ]);
+  //     return;
+  //   }
 
-    if (!isMatched) {
-      form.setFields([
-        {
-          name: ["topic_name"],
-          value: values?.topic_name,
-          errors: [],
-        },
-      ]);
-      setIsDisabled(true);
-      setIsError(false);
-    }
-  };
+  //   if (!isMatched) {
+  //     form.setFields([
+  //       {
+  //         name: ["topic_name"],
+  //         value: values?.topic_name,
+  //         errors: [],
+  //       },
+  //     ]);
+  //     setIsError(false);
+  //   }
+  // };
 
-  useEffect(() => {
-    if (existingTopics?.length) {
-      isMatched();
-    }
-  }, [existingTopics, values?.topic_name]);
+  // useEffect(() => {
+  //   if (existingTopics?.length) {
+  //     isMatched();
+  //   }
+  // }, [existingTopics, values?.topic_name]);
 
   const onTopicChange = useCallback(
     debounce((e) => {
       const enteredValues = e?.target?.value;
-      if (enteredValues && enteredValues?.length > 2) {
+      if (enteredValues && enteredValues?.length > 1) {
         setIsopicLoading(true);
         getExistingList(enteredValues);
       } else {

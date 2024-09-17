@@ -107,8 +107,8 @@ function NewsItemListTab({
                         href={{ pathname: news?.parent_camp_url || "" }}
                         id="inherit-btn"
                       >
-                        <a className="!text-canBlack hover:!text-canBlue flex items-center justify-center">
-                          {news?.parent_camp_name}
+                        <a className="font-medium !text-white hover:!text-canHoverBlue flex items-center justify-center">
+                          {'news?.parent_camp_name'}
                         </a>
                       </Link>
                     </>

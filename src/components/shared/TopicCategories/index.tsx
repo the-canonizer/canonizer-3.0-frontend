@@ -19,7 +19,10 @@ const TopicCatsLabel = ({ tags, loading = false, ...restProps }) => {
 
   const LinkItem = ({ text, link }) => (
     <Link href={link}>
-      <a className="!text-canBlue text-xs font-inter font-medium hover:!canHoverBlue">
+      <a
+        className="!text-canBlue text-xs font-inter font-medium hover:!canHoverBlue"
+        onClick={(e) => e?.stopPropagation()}
+      >
         {text}
       </a>
     </Link>

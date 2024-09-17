@@ -167,14 +167,16 @@ const UpdateTopic = () => {
 
         if (errors_key.length) {
           if ("existed_topic_reference" in res.error) {
-            form.setFields([
-              {
-                name: "topic_name",
-                value: values?.topic_name,
-                errors: res?.error?.topic_name,
-              },
-            ]);
-            form.validateFields(["topic_name"]);
+            setTimeout(() => {
+              form.setFields([
+                {
+                  name: "topic_name",
+                  value: values?.topic_name,
+                  errors: res?.error?.topic_name,
+                },
+              ]);
+            }, 200);
+
             setIsDisabled(false);
             setIsError(true);
             getExistingList();
@@ -182,13 +184,15 @@ const UpdateTopic = () => {
 
           errors_key.forEach((key) => {
             if (key !== "topic_name") {
-              form.setFields([
-                {
-                  name: key,
-                  value: values[key],
-                  errors: [res.error[key]],
-                },
-              ]);
+              setTimeout(() => {
+                form.setFields([
+                  {
+                    name: key,
+                    value: values[key],
+                    errors: [res.error[key]],
+                  },
+                ]);
+              }, 300);
             }
           });
         }
@@ -273,33 +277,33 @@ const UpdateTopic = () => {
     setIsopicLoading(false);
   };
 
-  const isMatched = () => {
-    const isMatched = existingTopics.some(
-      (tp) =>
-        values?.topic_name?.trim()?.toLowerCase() ===
-        tp?.type_value?.trim()?.toLowerCase()
-    );
+  // const isMatched = () => {
+  //   const isMatched = existingTopics.some(
+  //     (tp) =>
+  //       values?.topic_name?.trim()?.toLowerCase() ===
+  //       tp?.type_value?.trim()?.toLowerCase()
+  //   );
 
-    if (isMatched) {
-      setIsError(true);
-      return;
-    }
+  //   if (isMatched) {
+  //     setIsError(true);
+  //     return;
+  //   }
 
-    if (!isMatched) {
-      setIsError(false);
-    }
-  };
+  //   if (!isMatched) {
+  //     setIsError(false);
+  //   }
+  // };
 
-  useEffect(() => {
-    if (existingTopics?.length) {
-      isMatched();
-    }
-  }, [existingTopics, values?.topic_name]);
+  // useEffect(() => {
+  //   if (existingTopics?.length) {
+  //     isMatched();
+  //   }
+  // }, [existingTopics, values?.topic_name]);
 
   const onTopicChange = useCallback(
     debounce((e) => {
       const enteredValues = e?.target?.value;
-      if (enteredValues && enteredValues?.length > 2) {
+      if (enteredValues && enteredValues?.length > 1) {
         setIsopicLoading(true);
         // setHaveTopicExist(true);
         getExistingList(enteredValues);

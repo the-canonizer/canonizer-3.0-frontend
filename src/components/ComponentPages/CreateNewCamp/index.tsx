@@ -409,7 +409,7 @@ const CreateNewCamp = () => {
   const onCampChange = useCallback(
     debounce((e) => {
       const enteredValues = e?.target?.value;
-      if (enteredValues && enteredValues?.length > 2) {
+      if (enteredValues && enteredValues?.length > 1) {
         setIsopicLoading(true);
         // setHaveCampExist(true);
         getExistingList(enteredValues);
