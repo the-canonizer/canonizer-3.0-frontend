@@ -101,9 +101,11 @@ const CampHistory = ({ campStatement, topicNamespaceId }: any) => {
           Parent Camp :<span>{campStatement?.parent_camp_name}</span>
         </p>
       )}
-      {/* <p>
-        Keywords :<span>{campStatement?.key_words}</span>
-      </p> */}
+      {campStatement?.key_words && (
+        <p>
+          Keywords :<span>{campStatement?.key_words}</span>
+        </p>
+      )}
       {campStatement?.object_reason && (
         <p>
           Object Reason : <span>{campStatement?.object_reason}</span>
