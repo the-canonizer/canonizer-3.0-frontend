@@ -574,6 +574,20 @@ function HistoryCard({
 
                 {campStatement?.status == "in_review" && (
                   <>
+                  <Tooltip
+                        title={
+                          (
+                            !isUserAuthenticated
+                              ? true
+                              : !campStatement?.ifIAmExplicitSupporter &&
+                                campStatement?.ifIamSupporter == 0
+                              ? true
+                              : false
+                          )
+                            ? K?.exceptionalMessages?.objectedTooltipMsg
+                            : ""
+                        }
+                      >
                     <Button
                       size="large"
                       disabled={
@@ -588,6 +602,7 @@ function HistoryCard({
                       Object Changes
                       <i className="icon-thumb-down text-canRed"></i>
                     </Button>
+                    </Tooltip>
                     <Modal
                       title={K?.exceptionalMessages?.objectedModelTitle}
                       style={{
