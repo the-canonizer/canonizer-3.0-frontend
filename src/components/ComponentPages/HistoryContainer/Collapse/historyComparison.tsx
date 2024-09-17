@@ -188,9 +188,12 @@ const HistoryComparison = ({
           Submitted on: <span>{covertToTime(campStatement?.submit_time)}</span>
         </p>
         <p>
-          Going live on:{" "}
-          <span>{covertToTime(campStatement?.go_live_time)}</span>
-        </p>
+        {campStatement &&
+        (campStatement?.status == "live" || campStatement?.status == "old"||campStatement?.status=="objected")
+          ? "Go Live Time"
+          : "Going live on"}{" "}
+        :<span>{covertToTime(campStatement?.go_live_time)}</span>
+      </p>
         {historyOf === "statement" && (
           <Collapse
             expandIconPosition="end"
