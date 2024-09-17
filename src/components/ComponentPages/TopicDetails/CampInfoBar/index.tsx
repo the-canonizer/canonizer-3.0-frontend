@@ -1207,7 +1207,7 @@ const TimelineInfoBar = ({
                   </div>
                 ) : null}
 
-                {!isHtmlContent && !isHistoryPage && !compareMode && (
+                {!isHtmlContent && !isHistoryPage && !compareMode && campRecord?.is_archive == 0 && (
                   <SecondaryButton
                     className="hidden px-8 py-2.5 lg:flex items-center text-sm gap-1"
                     size="large"
