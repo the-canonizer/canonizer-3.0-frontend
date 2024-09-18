@@ -12,6 +12,7 @@ module.exports = withBundleAnalyzer({
       "canonizer3.canonizer.com",
       "aws-315.s3.ap-south-1.amazonaws.com",
       "localhost:4001",
+      "canonizer-bucket.s3.ap-south-1.amazonaws.com",
     ],
   },
   typescript: {},
