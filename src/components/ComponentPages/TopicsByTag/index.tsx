@@ -192,7 +192,7 @@ const TopicsListByCats = () => {
         </Title>
         <Divider />
         <div className="browse-actions">
-          <Form layout="vertical">
+          <Form layout="vertical" className="w-full max-w-[300px]">
             <Form.Item className="browse-dropdown">
               <div className="filter-popover-wrapper">
                 <p className="text-xs font-medium">Filter By Canon</p>

@@ -70,6 +70,7 @@ const TimelineInfoBar = ({
     changeGoneLive,
     algorithm,
     campStatement,
+    tree
   } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
     campRecord: state?.topicDetails?.currentCampRecord,
@@ -81,6 +82,7 @@ const TimelineInfoBar = ({
     changeGoneLive: state?.topicDetails?.changeGoneLive,
     algorithm: state.filters?.filterObject?.algorithm,
     campStatement: state?.topicDetails?.campStatement,
+    tree: state?.topicDetails?.tree && state?.topicDetails?.tree[0],
   }));
 
   const [campSubscriptionID, setCampSubscriptionID] = useState(
@@ -371,7 +373,7 @@ const TimelineInfoBar = ({
         Topic name :
       </span>
       <p className="font-bold mb-5 text-sm text-canBlack">
-        {topicRecord && topicRecord?.topic_name.length > 50
+        {topicRecord && topicRecord?.topic_name?.length > 50
           ? `${topicRecord?.topic_name.substring(0, 20)}....`
           : topicRecord?.topic_name}
       </p>
@@ -595,7 +597,7 @@ const TimelineInfoBar = ({
         <Col md={12} sm={12} xs={12} className=" flex flex-col">
           <span className="text-xs 2xl:text-sm text-canLight">Topic :</span>
           <span className="text-sm text-canBlack">
-            {topicRecord && topicRecord?.topic_name.length > 50
+            {topicRecord && topicRecord?.topic_name?.length > 50
               ? `${topicRecord?.topic_name.substring(0, 20)}....`
               : topicRecord?.topic_name}
           </span>
@@ -737,7 +739,7 @@ const TimelineInfoBar = ({
                           )}/1-Agreement?${getQueryParams()?.returnQuery}`}
                         >
                           <a className="whitespace-nowrap !text-canBlack !text-sm">
-                            {breadCrumbRes?.topic_name}
+                            {topicRecord?.topic_name}
                           </a>
                         </Link>
                       ) : breadCrumbRes ? (
@@ -766,7 +768,7 @@ const TimelineInfoBar = ({
                                 " whitespace-nowrap text-sm cursor-pointer"
                               }
                             >
-                              {breadCrumbRes?.topic_name}
+                              {topicRecord?.topic_name}
                             </span>
                           </Link>
                         </span>
@@ -866,7 +868,7 @@ const TimelineInfoBar = ({
                                           >
                                             <div className="flex items-center gap-1.5 text-sm">
                                               <span className="text-sm font-semibold">
-                                                {camp?.camp_name}
+                                                {campRecord?.camp_name}
                                               </span>
                                               <Image
                                                 src="/images/circle-info-bread.svg"
@@ -880,7 +882,7 @@ const TimelineInfoBar = ({
                                         ) : (
                                           <div className="flex items-center gap-1.5 text-sm">
                                             <span className="text-sm">
-                                              {camp?.camp_name}
+                                              {campRecord?.camp_name}
                                             </span>
                                           </div>
                                         )}
@@ -1167,8 +1169,9 @@ const TimelineInfoBar = ({
                                 ? "/manage/statement/" +
                                   campStatement[0]?.draft_record_id +
                                   "?is_draft=1"
-                                : campStatement[0]?.parsed_value ||
-                                  campStatement?.at(0)?.in_review_changes
+                                : (campStatement[0]?.parsed_value ||
+                                  campStatement?.at(0)?.in_review_changes ||
+                                  campStatement?.at(0)?.grace_period_record_count > 0)
                                 ? `/statement/history/${replaceSpecialCharacters(
                                     router?.query?.camp?.at(0),
                                     "-"
@@ -1192,38 +1195,42 @@ const TimelineInfoBar = ({
                       {campStatement[0]?.draft_record_id
                         ? "Edit Draft Statement"
                         : campStatement[0]?.parsed_value ||
-                          campStatement?.at(0)?.in_review_changes
+                          campStatement?.at(0)?.in_review_changes ||
+                          campStatement?.at(0)?.grace_period_record_count > 0
                         ? K?.exceptionalMessages?.manageCampStatementButton
-                        : K?.exceptionalMessages?.addCampStatementButton}
-                      <Image
-                        src="/images/manage-btn-icon.svg"
-                        alt=""
-                        height={24}
-                        width={24}
-                      />
+                        : null}
+                      {(campStatement[0]?.parsed_value ||
+                        campStatement?.at(0)?.in_review_changes ||
+                        campStatement?.at(0)?.grace_period_record_count > 0 ||
+                        campStatement[0]?.draft_record_id) && (
+                        <Image
+                          src="/images/manage-btn-icon.svg"
+                          alt=""
+                          height={24}
+                          width={24}
+                        />
+                      )}
                     </PrimaryButton>
                   </div>
                 ) : null}
 
-                {!isHtmlContent &&
-                  !isHistoryPage &&
-                  !compareMode &&
-                  campRecord?.is_archive == 0 && (
-                    <SecondaryButton
-                      className="hidden px-8 py-2.5 lg:flex items-center text-sm gap-1"
-                      size="large"
-                      onClick={handleClick}
-                    >
-                      Create Camp
-                      <Image
-                        src="/images/Icon-plus.svg"
-                        alt="svg"
-                        className="icon-topic"
-                        height={16}
-                        width={16}
-                      />
-                    </SecondaryButton>
-                  )}
+                {!isHtmlContent && !isHistoryPage && !compareMode && campRecord?.is_archive == 0 && (
+                  <SecondaryButton
+                    className="hidden px-8 py-2.5 lg:flex items-center text-sm gap-1"
+                    size="large"
+                    onClick={handleClick}
+                    disabled={!tree?.["1"]?.is_valid_as_of_time ?true :false}
+                  >
+                    Create Camp
+                    <Image
+                      src="/images/Icon-plus.svg"
+                      alt="svg"
+                      className="icon-topic"
+                      height={16}
+                      width={16}
+                    />
+                  </SecondaryButton>
+                )}
                 {isHtmlContent}
               </div>
             )}
