@@ -787,7 +787,7 @@ const TimelineInfoBar = ({
                     </div>
                   </Popover>
 
-                  <div>
+                  {tree?.["1"]?.is_valid_as_of_time&&<div>
                     <Image
                       src="/images/arrow-bread.svg"
                       alt="svg"
@@ -795,7 +795,7 @@ const TimelineInfoBar = ({
                       height={10}
                       width={10}
                     />
-                  </div>
+                  </div>}
                 </Typography.Paragraph>
                 {!isEventLine && (
                   <div className={styles.breadcrumbLinks + " flex "}>
@@ -868,7 +868,7 @@ const TimelineInfoBar = ({
                                           >
                                             <div className="flex items-center gap-1.5 text-sm">
                                               <span className="text-sm font-semibold">
-                                                {campRecord?.camp_name}
+                                                {camp?.camp_name}
                                               </span>
                                               <Image
                                                 src="/images/circle-info-bread.svg"
@@ -882,7 +882,7 @@ const TimelineInfoBar = ({
                                         ) : (
                                           <div className="flex items-center gap-1.5 text-sm">
                                             <span className="text-sm">
-                                              {campRecord?.camp_name}
+                                              {camp?.camp_name}
                                             </span>
                                           </div>
                                         )}
