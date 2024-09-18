@@ -78,9 +78,10 @@ const UserProfile = () => {
   useEffect(() => {
     setNoData(false);
     const userId = router?.query?.supports?.[0];
-    const namespace_name_id = dropdownNameSpaceList
-      ? dropdownNameSpaceList
-      : router?.query?.canon ?? router?.query?.namespace;
+    const namespace_name_id =
+      (dropdownNameSpaceList
+        ? dropdownNameSpaceList
+        : router?.query?.canon ?? router?.query?.namespace) || "1";
 
     const query = `${userId}?namespace=${namespace_name_id}`;
 

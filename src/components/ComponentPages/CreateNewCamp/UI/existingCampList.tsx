@@ -9,6 +9,7 @@ import { getHighlightedText } from "components/ComponentPages/CreateNewTopic/UI/
 import CustomSkelton from "components/common/customSkelton";
 import { useDispatch } from "react-redux";
 import { setSearchValue } from "src/store/slices/searchSlice";
+import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
 
 const geturl = (bd) => {
   if (bd[1] && bd[1][2]?.camp_link) {
@@ -101,6 +102,12 @@ const ExistingCampList = ({
                   tabIndex={0} // Makes it focusable via keyboard
                   onClick={() => {
                     dispatch(setSearchValue(""));
+                    dispatch(
+                      setFilterCanonizedTopics({
+                        // asofdate: Date.now() / 1000,
+                        asof: "default",
+                      })
+                    );
                   }}
                   onKeyDown={(e) => {
                     if (e.key === "Enter" || e.key === " ") {

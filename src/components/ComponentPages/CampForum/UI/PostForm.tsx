@@ -125,8 +125,9 @@ const PostFormPopup = ({
               rules={nickNmRule}
               nameKey="nick_name"
               prefix={<UserOutlined className="px-3 text-canBlack" />}
-              onChange={(val) => form.setFieldValue("nick_name", val)}
+              onSelect={(val) => form.setFieldValue("nick_name", val)}
               lastValue={form.getFieldValue("nick_name")}
+              value={form.getFieldValue("nick_name")}
             />
           </Col>
           <Col xs={24}>
