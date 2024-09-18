@@ -7,6 +7,7 @@ import CustomSkelton from "components/common/customSkelton";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
 import { setSearchValue } from "src/store/slices/searchSlice";
 import { useDispatch } from "react-redux";
+import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
 
 export const getHighlightedText = (text, highlight) => {
   const parts = text?.split(
@@ -82,6 +83,12 @@ const dispatch = useDispatch()
                   tabIndex={0} // Makes it focusable via keyboard
                   onClick={() => {
                     dispatch(setSearchValue(""));
+                    dispatch(
+                      setFilterCanonizedTopics({
+                        // asofdate: Date.now() / 1000,
+                        asof: "default",
+                      })
+                    );
                   }}
                   onKeyDown={(e) => {
                     if (e.key === "Enter" || e.key === " ") {
