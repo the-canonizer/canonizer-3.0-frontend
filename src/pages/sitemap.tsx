@@ -69,7 +69,8 @@ const SitemapPage = () => {
   );
 };
 
-export const getServerSideProps = async () => {
+// export const getServerSideProps = async () => {
+export const getStaticProps = async () => {
   try {
     if (process.env.NEXT_PUBLIC_ENVIRONMENT === "production") {
       const XMLData = await getSitemapXML();
