@@ -19,37 +19,38 @@ import {
   Select,
   Tag,
 } from "antd";
+import moment from "moment";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { DraggableArea } from "react-draggable-tags";
 import { useDispatch, useSelector } from "react-redux";
-import moment from "moment";
 
+import { openNotificationWithIcon } from "components/common/notification/notificationBar";
+import { labels } from "src/messages/label";
 import { placeholders } from "src/messages/placeholder";
+import { removedURLRule } from "src/messages/validationRules";
 import {
   campSignApi,
   CheckCampSignApiCall,
   getAllRemovedReasons,
   getAllUsedNickNames,
   getCurrentCampRecordApi,
-  getTreesApi,
 } from "src/network/api/campDetailApi";
+import {
+  GetActiveSupportTopic,
+  GetCheckSupportExists,
+} from "src/network/api/topicAPI";
 import {
   addDelegateSupportCamps,
   addSupport,
   removeSupportedCamps,
 } from "src/network/api/userApi";
 import { RootState } from "src/store";
-import {
-  GetActiveSupportTopic,
-  GetCheckSupportExists,
-} from "src/network/api/topicAPI";
-import { openNotificationWithIcon } from "components/common/notification/notificationBar";
-import queryParams from "src/utils/queryParams";
 import { setCheckSupportExistsData } from "src/store/slices/campDetailSlice";
+import queryParams from "src/utils/queryParams";
 import DrawerBreadcrumbs from "./drawerBreadcrumbs";
-import { removedURLRule } from "src/messages/validationRules";
-import { labels } from "src/messages/label";
+import dynamic from "next/dynamic";
+const DraggableTags = dynamic(() => import("./draggable"), { ssr: false });
 
 const { TextArea } = Input;
 
@@ -529,11 +530,11 @@ function SupportTreeDrawer({
   };
 
   useEffect(() => {
-      if(tagsArrayList && tagsArrayList?.length > 0){
-        checkAllTagsSelected()
-      ? setIsQuickActionSelected(true)
-      : setIsQuickActionSelected(false);
-      }
+    if (tagsArrayList && tagsArrayList?.length > 0) {
+      checkAllTagsSelected()
+        ? setIsQuickActionSelected(true)
+        : setIsQuickActionSelected(false);
+    }
   }, [checkAllTagsSelected()]);
 
   return (
@@ -558,6 +559,7 @@ function SupportTreeDrawer({
           topic_name={topic_name}
         />
       </div>
+
       {drawerFor === "directAdd" ||
       drawerFor === "delegateAdd" ||
       drawerFor === "manageSupport" ? (
@@ -622,7 +624,7 @@ function SupportTreeDrawer({
                 Note : To change support order of camp, drag & drop the camp box
                 on your choice position.
               </p>
-              {tagsArrayList?.length > 0 && (
+              {/* {tagsArrayList?.length > 0 && (
                 <div className="vertical-chips">
                   <DraggableArea
                     tags={tagsArrayList}
@@ -674,7 +676,12 @@ function SupportTreeDrawer({
                     }}
                   />
                 </div>
-              )}
+              )} */}
+              <DraggableTags
+                tagsArrayList={tagsArrayList}
+                setTagsArrayList={setTagsArrayList}
+                enableDisableTagsHandler={enableDisableTagsHandler}
+              />
             </div>
 
             <div>

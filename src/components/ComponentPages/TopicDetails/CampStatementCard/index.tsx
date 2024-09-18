@@ -92,7 +92,8 @@ const CampStatementCard = ({ loadingIndicator }) => {
           onClick={() =>
             router?.push({
               pathname:
-                campStatement?.length < 0
+                (campStatement?.length < 0 || 
+                  campStatement?.at(0)?.grace_period_record_count > 0)
                   ? `/statement/history/${replaceSpecialCharacters(
                       router?.query?.camp.at(0),
                       "-"
@@ -110,7 +111,11 @@ const CampStatementCard = ({ loadingIndicator }) => {
             })
           }
         >
-          {K?.exceptionalMessages?.addCampStatementButton}
+          {(campStatement[0]?.parsed_value ||
+          campStatement?.at(0)?.in_review_changes || 
+          campStatement?.at(0)?.grace_period_record_count>0)
+            ? K?.exceptionalMessages?.manageCampStatementButton
+            : K?.exceptionalMessages?.addCampStatementButton}
           <Image
             src="/images/manage-btn-icon.svg"
             alt="svg"
