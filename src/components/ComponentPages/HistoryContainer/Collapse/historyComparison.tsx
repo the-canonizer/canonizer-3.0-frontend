@@ -70,9 +70,11 @@ const HistoryComparison = ({
         )}
         {historyOf === "camp" && (
           <>
-            <p>
-              Keywords: <span>{campStatement?.key_words}</span>
-            </p>
+            {campStatement?.key_words && (
+              <p>
+                Keywords: <span>{campStatement?.key_words}</span>
+              </p>
+            )}
             <p>
               Edit summary: <span>{campStatement?.note}</span>
             </p>
@@ -188,9 +190,12 @@ const HistoryComparison = ({
           Submitted on: <span>{covertToTime(campStatement?.submit_time)}</span>
         </p>
         <p>
-          Going live on:{" "}
-          <span>{covertToTime(campStatement?.go_live_time)}</span>
-        </p>
+        {campStatement &&
+        (campStatement?.status == "live" || campStatement?.status == "old"||campStatement?.status=="objected")
+          ? "Go Live Time"
+          : "Going live on"}{" "}
+        :<span>{covertToTime(campStatement?.go_live_time)}</span>
+      </p>
         {historyOf === "statement" && (
           <Collapse
             expandIconPosition="end"
