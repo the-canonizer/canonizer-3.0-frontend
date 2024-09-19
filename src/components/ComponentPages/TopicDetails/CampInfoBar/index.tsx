@@ -124,7 +124,7 @@ const TimelineInfoBar = ({
 
   useEffect(() => {
     setTagsArrayList(transformDataForTags(topicRecord?.tags));
-  }, []);
+  }, [topicRecord]);
 
   useEffect(() => {
     if (isTopicPage) {
