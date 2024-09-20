@@ -1,4 +1,8 @@
-import { DoubleLeftOutlined, MenuOutlined } from "@ant-design/icons";
+import {
+  DoubleLeftOutlined,
+  EditOutlined,
+  MenuOutlined,
+} from "@ant-design/icons";
 import {
   Button,
   Col,
@@ -465,17 +469,11 @@ const TimelineInfoBar = ({
       <hr className="horizontal_line my-5" />
       {(isTopicPage || isEventLine || isHistoryPage || compareMode) && (
         <PrimaryButton
-          className="mx-auto flex items-center justify-center font-medium h-auto"
+          className="mx-auto flex items-center justify-center font-medium h-auto gap-1"
           onClick={() => handleTopicUrl()}
         >
           {K?.exceptionalMessages?.manageTopicButton}
-          <Image
-            src="/images/manage-btn-icon.svg"
-            alt="svg"
-            className="icon-topic"
-            height={16}
-            width={16}
-          />
+          <EditOutlined />
         </PrimaryButton>
       )}
     </div>
@@ -623,18 +621,12 @@ const TimelineInfoBar = ({
       </Row>
       <hr className="horizontal_line my-5" />
       {(isTopicPage || isHistoryPage || compareMode) && (
-        <PrimaryButton className="flex items-center justify-center h-auto mx-auto">
+        <PrimaryButton className="flex items-center justify-center h-auto mx-auto gap-1">
           <Link href={href}>
-            <a>
-              <span>
+            <a className="flex items-center justify-center h-auto mx-auto gap-1">
+              <span className="flex items-center justify-center h-auto mx-auto gap-1">
                 {K?.exceptionalMessages?.manageCampButton}
-                <Image
-                  src="/images/manage-btn-icon.svg"
-                  alt="svg"
-                  className="icon-topic"
-                  height={16}
-                  width={16}
-                />
+                <EditOutlined />
               </span>
             </a>
           </Link>

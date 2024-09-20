@@ -1,5 +1,5 @@
 import { Fragment, useState } from "react";
-import { Row, Col } from "antd";
+import { Row, Col, Typography, Divider } from "antd";
 import { useSelector } from "react-redux";
 
 import { RootState } from "src/store";
@@ -8,7 +8,9 @@ import SeeMoreLInk from "../FeaturedTopic/seeMoreLink";
 import SingleTopicCard from "../HotTopics/topicCard";
 import CustomSkelton from "components/common/customSkelton";
 
-const PreferedTopics = () => {
+const { Title } = Typography;
+
+const PreferedTopics = ({ isPage = false }) => {
   const { topicData } = useSelector((state: RootState) => ({
     topicData: state?.hotTopic?.preferedTopic,
   }));
@@ -19,23 +21,34 @@ const PreferedTopics = () => {
     return null;
   }
 
+  const topicList = !isPage ? topicData?.slice(0, 6) : topicData;
+
   return (
     <Fragment>
-      <Row gutter={15}>
-        <Col md={12} sm={12} xs={12}>
-          <SectionHeading
-            title="Your preferred topics"
-            infoContent="Your preferred topics"
-          />
-        </Col>
-        <Col md={12} sm={12} xs={12} className="text-right">
-          <SeeMoreLInk href="/preferred-topics" />
-        </Col>
-      </Row>
+      {isPage ? (
+        <div className="browse-wrapper pb-4 mt-3">
+          <Title level={4} className="browse-title !mb-0">
+            Your preferred Topics
+          </Title>
+          <Divider />
+        </div>
+      ) : (
+        <Row gutter={15}>
+          <Col md={12} sm={12} xs={12}>
+            <SectionHeading
+              title="Your preferred topics"
+              infoContent="Preferred Topics are a personalized list of subjects shown to you based on the topic tags or categories you selected during registration. These topics align with your interests, making it easier for you to engage in discussions that matter most to you"
+            />
+          </Col>
+          <Col md={12} sm={12} xs={12} className="text-right">
+            <SeeMoreLInk href="/preferred-topics" />
+          </Col>
+        </Row>
+      )}
 
       <div className="mt-3">
         <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
-          {topicData?.slice(0, 6)?.map((ft) => (
+          {topicList?.map((ft) => (
             <div className="mb-4 h-full" key={ft?.id}>
               {loadMoreIndicator ? (
                 <CustomSkelton

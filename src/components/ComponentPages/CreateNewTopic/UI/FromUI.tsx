@@ -140,6 +140,11 @@ const CreateTopicFromUI = ({
               />
             )}
           </Col>
+          <Col xs={24} sm={24} className="py-3 mb-4">
+            <Typography.Paragraph className="text-canRed text-xs">
+              {labels.cr_nick_name_sp}
+            </Typography.Paragraph>
+          </Col>
           <Col xs={24} sm={12}>
             {isLoading ? (
               <CustomSkelton

@@ -38,7 +38,10 @@ const FeaturedTopic = () => {
 
   return (
     <Fragment>
-      <SectionHeading title="FEATURED TOPICS" infoContent="FEATURED TOPICS" />
+      <SectionHeading
+        title="FEATURED TOPICS"
+        infoContent="Featured Topics are highlighted subjects on Canonizer that we believe are important or trending. A Topic refers to a specific subject within the context of the platform, serving as a focal point for discussions. These topics encourage users to explore, share opinions, and build consensus on various ideas and viewpoints."
+      />
       <div className="mt-4">
         {loadMoreIndicator ? (
           <CustomSkelton

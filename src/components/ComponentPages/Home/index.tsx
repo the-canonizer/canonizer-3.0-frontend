@@ -7,18 +7,18 @@ import useAuthentication from "src/hooks/isUserAuthenticated";
 import Layout from "src/hoc/layout";
 import WelcomeContent from "./WelcomeArea";
 import FeaturedTopic from "./FeaturedTopic";
-import CategoriesList from "./CategoriesList";
+// import CategoriesList from "./CategoriesList";
 import HotTopics from "./HotTopics";
-import TrandingTopics from "./TrandingTopic";
+// import TrandingTopics from "./TrandingTopic";
 import WhatsNew from "./WhatsNew";
 import PreferedTopics from "./PreferedTopic";
 import RecentActivities from "./RecentActivities";
-import { useIsMobile } from "src/hooks/useIsMobile";
+// import { useIsMobile } from "src/hooks/useIsMobile";
 import { RootState } from "src/store";
 
 const HomePageContainer = () => {
   const { isUserAuthenticated } = useAuthentication();
-  const isMobile = useIsMobile();
+  // const isMobile = useIsMobile();
 
   const { preferedTopic } = useSelector((state: RootState) => ({
     preferedTopic: state?.hotTopic?.preferedTopic,

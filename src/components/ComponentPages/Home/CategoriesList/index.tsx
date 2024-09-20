@@ -44,7 +44,7 @@ const CategoriesList = () => {
         <Col md={12} sm={12} xs={12}>
           <SectionHeading
             title="List of Topic Tags"
-            infoContent="List of Topic Tags"
+            infoContent="Topic Tags represent the categories under which a topic falls. When creating a new topic, users can choose one or more relevant categories to help classify the subject. These tags make it easier for others to find and engage with discussions based on their interests."
           />
         </Col>
         <Col md={12} sm={12} xs={12} className="text-right">
