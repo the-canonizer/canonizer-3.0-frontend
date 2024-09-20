@@ -20,14 +20,13 @@ import HeadContentAndPermissionComponent from "../components/common/headContentA
 import ErrorBoundary from "../hoc/ErrorBoundary";
 import { store, wrapper } from "../store";
 
+import withRouteChange from "src/hoc/withRouteChange";
 import { checkTopicCampExistAPICall } from "src/network/api/campDetailApi";
 import { metaTagsApi } from "src/network/api/metaTagsAPI";
 import { createToken } from "src/network/api/userApi";
-import withRouteChange from "src/hoc/withRouteChange";
 import { getCookies } from "src/utils/generalUtility";
 // import CustomSkelton from "src/components/common/customSkelton";
 // import { ConfigProvider } from "antd";
-import moment from "moment";
 
 type AppOwnProps = { meta: any; canonical_url: string; returnURL: string };
 
@@ -44,7 +43,10 @@ function WrappedApp({
     );
   const { isLatestVersion, emptyCacheStorage, latestVersion } = useClearCache();
 
-  // if (!isLatestVersion) emptyCacheStorage();
+  if (!isLatestVersion) {
+    console.info({ latestVersion });
+    emptyCacheStorage();
+  }
 
   useEffect(() => {
     const fetchToken = async () => {
