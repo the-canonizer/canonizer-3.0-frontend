@@ -72,7 +72,7 @@ export default function DirectSupportedCampsUI({
     camp_name: string;
     camp_link: string;
     dis?: boolean;
-    support_order:number
+    support_order: number;
   }
 
   interface RecordType {
@@ -280,7 +280,6 @@ export default function DirectSupportedCampsUI({
             rowKey="topic_num"
             className="[&_.ant-table-thead>tr>th]:!bg-canGray"
           />
-         
         </>
       );
     } else {
@@ -542,11 +541,15 @@ export default function DirectSupportedCampsUI({
                     box on your choice position.
                   </p>
                 </div>
-                
+
                 <div className="lg:w-auto w-full flex justify-end gap-2.5 items-center">
-                <PrimaryButton onClick={()=>{setSearch("")}}>
-                  Reset
-                </PrimaryButton>
+                  <PrimaryButton
+                    onClick={() => {
+                      setSearch("");
+                    }}
+                  >
+                    Reset
+                  </PrimaryButton>
                   <Input
                     suffix={
                       <Image
@@ -568,18 +571,22 @@ export default function DirectSupportedCampsUI({
                   />
                 </div>
               </div>
-             { isMobile&&<>
-              {displayContent} 
-              {search.length === 0 &&<Pagination
-            hideOnSinglePage={true}
-            total={directSupportedCampsList.length}
-            pageSize={5}
-            defaultCurrent={currentPage}
-            onChange={pageChange}
-            showSizeChanger={false}
-            className="mt-5"
-          />}
-              </>}
+              {isMobile && (
+                <>
+                  {displayContent}
+                  {search.length === 0 && (
+                    <Pagination
+                      hideOnSinglePage={true}
+                      total={directSupportedCampsList.length}
+                      pageSize={5}
+                      defaultCurrent={currentPage}
+                      onChange={pageChange}
+                      showSizeChanger={false}
+                      className="mt-5"
+                    />
+                  )}
+                </>
+              )}
             </div>
           )}
           {/* <Modal
@@ -664,7 +671,9 @@ export default function DirectSupportedCampsUI({
         </div>
       </div>
 
-      {!isMobile &&<div className="lg:hidden flex flex-col">{displayContentForMob}</div>}
+      {!isMobile && (
+        <div className="lg:hidden flex flex-col">{displayContentForMob}</div>
+      )}
     </div>
   );
 }

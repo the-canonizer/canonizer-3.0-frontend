@@ -89,13 +89,6 @@ const SinglePost = ({
                   <EditIcon />
                 </SecondaryButton>
               </Tooltip>
-              {/* <Popconfirm
-                title="Are you sure you want to delete the post?"
-                onConfirm={onDeleteClick}
-                okText="Yes"
-                cancelText="No"
-                data-testid="delete_pop_confirm"
-              > */}
               <Tooltip title="Delete Comment">
                 <SecondaryButton
                   onClick={onDeleteClick}
@@ -106,15 +99,13 @@ const SinglePost = ({
                   <DeleteIcon />
                 </SecondaryButton>
               </Tooltip>
-              {/* </Popconfirm> */}
             </Fragment>
           ) : null}
         </Space>
       </div>
-
       <div
         className={
-          "text-canBlack opacity-80 [&_*]:ml-0 [&_*]:pl-0 [&_ol]:pl-4 ql-editor ql-html-editor editorContent"
+          "text-canBlack opacity-80 [&_*]:ml-0 [&_*]:pl-0 [&_*]:pr-0 [&_ol]:pl-4 ql-editor overflow-hidden whitespace-break-spaces break-words ql-html-editor editorContent"
         }
         dangerouslySetInnerHTML={{
           __html: sanitizeHtml(`<div class="ck-content">${description}</div>`, {

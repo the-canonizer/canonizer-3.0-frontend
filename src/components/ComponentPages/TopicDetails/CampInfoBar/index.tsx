@@ -1,4 +1,8 @@
-import { DoubleLeftOutlined, MenuOutlined } from "@ant-design/icons";
+import {
+  DoubleLeftOutlined,
+  EditOutlined,
+  MenuOutlined,
+} from "@ant-design/icons";
 import {
   Button,
   Col,
@@ -70,7 +74,7 @@ const TimelineInfoBar = ({
     changeGoneLive,
     algorithm,
     campStatement,
-    tree
+    tree,
   } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
     campRecord: state?.topicDetails?.currentCampRecord,
@@ -465,17 +469,11 @@ const TimelineInfoBar = ({
       <hr className="horizontal_line my-5" />
       {(isTopicPage || isEventLine || isHistoryPage || compareMode) && (
         <PrimaryButton
-          className="mx-auto flex items-center justify-center font-medium h-auto"
+          className="mx-auto flex items-center justify-center font-medium h-auto gap-1"
           onClick={() => handleTopicUrl()}
         >
           {K?.exceptionalMessages?.manageTopicButton}
-          <Image
-            src="/images/manage-btn-icon.svg"
-            alt="svg"
-            className="icon-topic"
-            height={16}
-            width={16}
-          />
+          <EditOutlined />
         </PrimaryButton>
       )}
     </div>
@@ -623,18 +621,12 @@ const TimelineInfoBar = ({
       </Row>
       <hr className="horizontal_line my-5" />
       {(isTopicPage || isHistoryPage || compareMode) && (
-        <PrimaryButton className="flex items-center justify-center h-auto mx-auto">
+        <PrimaryButton className="flex items-center justify-center h-auto mx-auto gap-1">
           <Link href={href}>
-            <a>
-              <span>
+            <a className="flex items-center justify-center h-auto mx-auto gap-1">
+              <span className="flex items-center justify-center h-auto mx-auto gap-1">
                 {K?.exceptionalMessages?.manageCampButton}
-                <Image
-                  src="/images/manage-btn-icon.svg"
-                  alt="svg"
-                  className="icon-topic"
-                  height={16}
-                  width={16}
-                />
+                <EditOutlined />
               </span>
             </a>
           </Link>
@@ -787,15 +779,17 @@ const TimelineInfoBar = ({
                     </div>
                   </Popover>
 
-                  {tree?.["1"]?.is_valid_as_of_time&&<div>
-                    <Image
-                      src="/images/arrow-bread.svg"
-                      alt="svg"
-                      className="icon-topic"
-                      height={10}
-                      width={10}
-                    />
-                  </div>}
+                  {tree?.["1"]?.is_valid_as_of_time && (
+                    <div>
+                      <Image
+                        src="/images/arrow-bread.svg"
+                        alt="svg"
+                        className="icon-topic"
+                        height={10}
+                        width={10}
+                      />
+                    </div>
+                  )}
                 </Typography.Paragraph>
                 {!isEventLine && (
                   <div className={styles.breadcrumbLinks + " flex "}>
@@ -1165,9 +1159,14 @@ const TimelineInfoBar = ({
                         router?.push(
                           `${
                             campStatement?.length > 0
-                              ? (campStatement[0]?.parsed_value ||
+                              ? campStatement[0]?.draft_record_id
+                                ? "/manage/statement/" +
+                                  campStatement[0]?.draft_record_id +
+                                  "?is_draft=1"
+                                : campStatement[0]?.parsed_value ||
                                   campStatement?.at(0)?.in_review_changes ||
-                                  campStatement?.at(0)?.grace_period_record_count > 0)
+                                  campStatement?.at(0)
+                                    ?.grace_period_record_count > 0
                                 ? `/statement/history/${replaceSpecialCharacters(
                                     router?.query?.camp?.at(0),
                                     "-"
@@ -1208,23 +1207,28 @@ const TimelineInfoBar = ({
                   </div>
                 ) : null}
 
-                {!isHtmlContent && !isHistoryPage && !compareMode && campRecord?.is_archive == 0 && (
-                  <SecondaryButton
-                    className="hidden px-8 py-2.5 lg:flex items-center text-sm gap-1"
-                    size="large"
-                    onClick={handleClick}
-                    disabled={!tree?.["1"]?.is_valid_as_of_time ?true :false}
-                  >
-                    Create Camp
-                    <Image
-                      src="/images/Icon-plus.svg"
-                      alt="svg"
-                      className="icon-topic"
-                      height={16}
-                      width={16}
-                    />
-                  </SecondaryButton>
-                )}
+                {!isHtmlContent &&
+                  !isHistoryPage &&
+                  !compareMode &&
+                  campRecord?.is_archive == 0 && (
+                    <SecondaryButton
+                      className="hidden px-8 py-2.5 lg:flex items-center text-sm gap-1"
+                      size="large"
+                      onClick={handleClick}
+                      disabled={
+                        !tree?.["1"]?.is_valid_as_of_time ? true : false
+                      }
+                    >
+                      Create Camp
+                      <Image
+                        src="/images/Icon-plus.svg"
+                        alt="svg"
+                        className="icon-topic"
+                        height={16}
+                        width={16}
+                      />
+                    </SecondaryButton>
+                  )}
                 {isHtmlContent}
               </div>
             )}

@@ -574,34 +574,34 @@ function HistoryCard({
 
                 {campStatement?.status == "in_review" && (
                   <>
-                  <Tooltip
-                        title={
-                          (
-                            !isUserAuthenticated
-                              ? true
-                              : !campStatement?.ifIAmExplicitSupporter &&
-                                campStatement?.ifIamSupporter == 0
-                              ? true
-                              : false
-                          )
-                            ? K?.exceptionalMessages?.objectedTooltipMsg
-                            : ""
-                        }
-                      >
-                    <Button
-                      size="large"
-                      disabled={
-                        historyOf == "camp"
-                          ? !campStatement?.ifICanAgreeAndObject
-                          : false
+                    <Tooltip
+                      title={
+                        (
+                          !isUserAuthenticated
+                            ? true
+                            : !campStatement?.ifIAmExplicitSupporter &&
+                              campStatement?.ifIamSupporter == 0
+                            ? true
+                            : false
+                        )
+                          ? K?.exceptionalMessages?.objectedTooltipMsg
+                          : ""
                       }
-                      id={`object-change-${campStatement?.id}`}
-                      className="flex items-center bg-canRed_Opacity10 border-canRed hover:border-canRed hover:text-canRed focus:text-canRed focus:border-canRed justify-center text-sm rounded-xl gap-3.5 leading-none w-100 font-medium"
-                      onClick={() => objectionHandler()}
                     >
-                      Object Changes
-                      <i className="icon-thumb-down text-canRed"></i>
-                    </Button>
+                      <Button
+                        size="large"
+                        disabled={
+                          historyOf == "camp"
+                            ? !campStatement?.ifICanAgreeAndObject
+                            : false
+                        }
+                        id={`object-change-${campStatement?.id}`}
+                        className="flex items-center bg-canRed_Opacity10 border-canRed hover:border-canRed hover:text-canRed focus:text-canRed focus:border-canRed justify-center text-sm rounded-xl gap-3.5 leading-none w-100 font-medium"
+                        onClick={() => objectionHandler()}
+                      >
+                        Object Changes
+                        <i className="icon-thumb-down text-canRed"></i>
+                      </Button>
                     </Tooltip>
                     <Modal
                       title={K?.exceptionalMessages?.objectedModelTitle}

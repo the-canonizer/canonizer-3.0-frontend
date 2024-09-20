@@ -408,7 +408,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
   };
 
   const handleApplyClick = () => {
-    dispatch(setOpenDrawer(false))
+    dispatch(setOpenDrawer(false));
     filterOnScore(clearScoreFromRefineFilter);
     selectAlgorithm(clearAlgoFromRefineFilter);
     if (selectedValue === 2) {
@@ -571,7 +571,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
                   </p>{" "}
                 </Text>
                 <Input
-                type="text" 
+                  type="text"
                   size="large"
                   className="rounded-lg lg:!w-4/5 w-full text-sm text-canBlack font-medium"
                   onChange={(e) => {

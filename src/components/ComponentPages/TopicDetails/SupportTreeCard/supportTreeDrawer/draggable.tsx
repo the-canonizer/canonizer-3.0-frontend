@@ -90,16 +90,16 @@ function SortableItem(props) {
       className="flex items-center gap-7"
     >
       {props?.item?.disabled ? (
-          <Tag
-            className="rounded-full mr-0 bg-[#F0F2FA] border-transparent font-semibold text-base px-5 py-2.5 leading-none text-canBlack"
-            closable={true}
-            onClose={(evt) => {
-              evt.stopPropagation()
-              props?.enableDisableTagsHandler(props.item);
-            }}
-          >
-            {`${props?.index+1}-${props?.item?.content}`}
-          </Tag>
+        <Tag
+          className="rounded-full mr-0 bg-[#F0F2FA] border-transparent font-semibold text-base px-5 py-2.5 leading-none text-canBlack"
+          closable={true}
+          onClose={(evt) => {
+            evt.stopPropagation();
+            props?.enableDisableTagsHandler(props.item);
+          }}
+        >
+          {`${props?.index + 1}-${props?.item?.content}`}
+        </Tag>
       ) : (
         <>
           <MenuOutlined className="text-sm text-[#777F93]" />
@@ -107,7 +107,7 @@ function SortableItem(props) {
             className="rounded-full mr-0 bg-[#F0F2FA] border-transparent font-semibold text-base px-5 py-2.5 leading-none text-canBlack"
             closable={true}
             onClose={(evt) => {
-              evt.stopPropagation()
+              evt.stopPropagation();
 
               props?.enableDisableTagsHandler(props.item);
             }}
@@ -119,7 +119,7 @@ function SortableItem(props) {
                 window.location.href = props?.item?.link;
               }}
             >
-              {`${props?.index+1}-${props?.item?.content}`}
+              {`${props?.index + 1}-${props?.item?.content}`}
             </a>
           </Tag>
         </>

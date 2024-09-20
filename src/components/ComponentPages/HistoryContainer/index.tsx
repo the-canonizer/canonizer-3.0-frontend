@@ -372,6 +372,9 @@ function HistoryContainer() {
           directarchived={directarchived}
           historyState={historyOf}
           loadingIndicator={loadingIndicator}
+          campStatementApiCall={() => {
+            campStatementApiCall();
+          }}
           changeObjection={changeObjection}
         />
       );

@@ -30,9 +30,7 @@ function CustomLayout(props: any) {
     return "";
   };
 
-  const { 
-    tree,
-  } = useSelector((state: RootState) => ({
+  const { tree } = useSelector((state: RootState) => ({
     tree: state?.topicDetails?.tree && state?.topicDetails?.tree[0],
   }));
 
