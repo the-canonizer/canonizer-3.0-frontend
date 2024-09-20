@@ -252,7 +252,7 @@ function ObjectionDrawer({
     setLoader(false);
     if (res?.status_code == 200) {
       status = "success";
-      
+
       await getHistory();
     }
 

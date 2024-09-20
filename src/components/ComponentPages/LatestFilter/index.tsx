@@ -141,7 +141,7 @@ const LatestFilter = () => {
         asof: "default",
       })
     );
-    dispatch(setAsOfValues(2))
+    dispatch(setAsOfValues(2));
     onChangeRoute(
       filterObject?.filterByScore,
       filterObject?.algorithm,

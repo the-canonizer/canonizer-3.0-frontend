@@ -564,13 +564,13 @@ export default function AdvanceFilter() {
   const selectRef = useRef(null);
   const handleClickOutside = (event) => {
     // Ignore clicks within the DatePicker panel
-    const datePickerPanel = document.querySelector('.ant-picker-dropdown');
-  
+    const datePickerPanel = document.querySelector(".ant-picker-dropdown");
+
     if (isSelectClicked) {
       setIsSelectClicked(false); // Reset the flag and return early
       return;
     }
-  
+
     // Check if the click is outside of the panel and not on the DatePicker dropdown
     if (
       panelRef.current &&

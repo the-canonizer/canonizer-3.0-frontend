@@ -37,7 +37,7 @@ const ExistingTopicList = ({
   isShowMore,
   isError,
 }) => {
-const dispatch = useDispatch()
+  const dispatch = useDispatch();
   return (
     <CommonCards className="bg-topic-card-gr !border-canGrey2 h-full">
       {isError && (

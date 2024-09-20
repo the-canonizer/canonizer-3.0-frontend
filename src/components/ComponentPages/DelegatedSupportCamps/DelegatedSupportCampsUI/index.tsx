@@ -246,7 +246,11 @@ export default function DelegatedSupportCampsUI({
                 </h3>
               </div>
               <div className="w-full flex justify-end gap-2.5 items-center">
-              <PrimaryButton onClick={()=>{setSearch("")}}>
+                <PrimaryButton
+                  onClick={() => {
+                    setSearch("");
+                  }}
+                >
                   Reset
                 </PrimaryButton>
                 <Input
