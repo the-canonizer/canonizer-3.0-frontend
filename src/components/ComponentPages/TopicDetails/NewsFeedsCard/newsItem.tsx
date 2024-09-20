@@ -108,7 +108,7 @@ function NewsItemListTab({
                         id="inherit-btn"
                       >
                         <a className="font-medium !text-white hover:!text-canHoverBlue flex items-center justify-center">
-                          {'news?.parent_camp_name'}
+                          {news?.parent_camp_name}
                         </a>
                       </Link>
                     </>

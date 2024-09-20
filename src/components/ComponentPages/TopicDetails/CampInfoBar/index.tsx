@@ -373,7 +373,7 @@ const TimelineInfoBar = ({
         Topic name :
       </span>
       <p className="font-bold mb-5 text-sm text-canBlack">
-        {topicRecord && topicRecord?.topic_name.length > 50
+        {topicRecord && topicRecord?.topic_name?.length > 50
           ? `${topicRecord?.topic_name.substring(0, 20)}....`
           : topicRecord?.topic_name}
       </p>
@@ -597,7 +597,7 @@ const TimelineInfoBar = ({
         <Col md={12} sm={12} xs={12} className=" flex flex-col">
           <span className="text-xs 2xl:text-sm text-canLight">Topic :</span>
           <span className="text-sm text-canBlack">
-            {topicRecord && topicRecord?.topic_name.length > 50
+            {topicRecord && topicRecord?.topic_name?.length > 50
               ? `${topicRecord?.topic_name.substring(0, 20)}....`
               : topicRecord?.topic_name}
           </span>
@@ -787,7 +787,7 @@ const TimelineInfoBar = ({
                     </div>
                   </Popover>
 
-                  <div>
+                  {tree?.["1"]?.is_valid_as_of_time&&<div>
                     <Image
                       src="/images/arrow-bread.svg"
                       alt="svg"
@@ -795,7 +795,7 @@ const TimelineInfoBar = ({
                       height={10}
                       width={10}
                     />
-                  </div>
+                  </div>}
                 </Typography.Paragraph>
                 {!isEventLine && (
                   <div className={styles.breadcrumbLinks + " flex "}>
@@ -868,7 +868,7 @@ const TimelineInfoBar = ({
                                           >
                                             <div className="flex items-center gap-1.5 text-sm">
                                               <span className="text-sm font-semibold">
-                                                {campRecord?.camp_name}
+                                                {camp?.camp_name}
                                               </span>
                                               <Image
                                                 src="/images/circle-info-bread.svg"
@@ -882,7 +882,7 @@ const TimelineInfoBar = ({
                                         ) : (
                                           <div className="flex items-center gap-1.5 text-sm">
                                             <span className="text-sm">
-                                              {campRecord?.camp_name}
+                                              {camp?.camp_name}
                                             </span>
                                           </div>
                                         )}
@@ -1169,8 +1169,9 @@ const TimelineInfoBar = ({
                                 ? "/manage/statement/" +
                                   campStatement[0]?.draft_record_id +
                                   "?is_draft=1"
-                                : campStatement[0]?.parsed_value ||
-                                  campStatement?.at(0)?.in_review_changes
+                                : (campStatement[0]?.parsed_value ||
+                                  campStatement?.at(0)?.in_review_changes ||
+                                  campStatement?.at(0)?.grace_period_record_count > 0)
                                 ? `/statement/history/${replaceSpecialCharacters(
                                     router?.query?.camp?.at(0),
                                     "-"
@@ -1194,15 +1195,21 @@ const TimelineInfoBar = ({
                       {campStatement[0]?.draft_record_id
                         ? "Edit Draft Statement"
                         : campStatement[0]?.parsed_value ||
-                          campStatement?.at(0)?.in_review_changes
+                          campStatement?.at(0)?.in_review_changes ||
+                          campStatement?.at(0)?.grace_period_record_count > 0
                         ? K?.exceptionalMessages?.manageCampStatementButton
-                        : K?.exceptionalMessages?.addCampStatementButton}
-                      <Image
-                        src="/images/manage-btn-icon.svg"
-                        alt=""
-                        height={24}
-                        width={24}
-                      />
+                        : null}
+                      {(campStatement[0]?.parsed_value ||
+                        campStatement?.at(0)?.in_review_changes ||
+                        campStatement?.at(0)?.grace_period_record_count > 0 ||
+                        campStatement[0]?.draft_record_id) && (
+                        <Image
+                          src="/images/manage-btn-icon.svg"
+                          alt=""
+                          height={24}
+                          width={24}
+                        />
+                      )}
                     </PrimaryButton>
                   </div>
                 ) : null}
