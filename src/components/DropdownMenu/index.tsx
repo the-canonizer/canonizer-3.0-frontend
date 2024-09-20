@@ -314,12 +314,12 @@ const DropDownMenu = () => {
         <Menu.Item
           icon={<HeartOutlined />}
           disabled={
-            asof == "bydate" || campRecord?.is_archive || !isUserAuthenticated
+            asof == "bydate" || campRecord?.is_archive
           }
         >
           {isTopicPage && (
             <Link
-              href="#"
+              href={isUserAuthenticated ? "#" : "/login"}
               onClick={(e) => {
                 e?.preventDefault();
                 e?.stopPropagation();
@@ -329,9 +329,11 @@ const DropDownMenu = () => {
               <div
                 className="topicDetailsCollapseFooter"
                 onClick={(e) => {
-                  e?.preventDefault();
-                  e?.stopPropagation();
-                  handleClickSupportCheck();
+                  if(isUserAuthenticated){
+                    e?.preventDefault();
+                    e?.stopPropagation();
+                    handleClickSupportCheck();
+                  }
                 }}
                 style={{
                   pointerEvents:

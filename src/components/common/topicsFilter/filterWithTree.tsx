@@ -448,7 +448,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
         filterObject?.namespace_id,
         viewThisVersion
       );
-    } else if (selectedValue === 3) {
+    } else if (selectedValue === 3 || asof == "bydate") {
       dispatch(setViewThisVersion(false));
       handleAsOfClick();
     }

@@ -171,6 +171,9 @@ const CreateTopicFromUI = ({
                   <Fragment>
                     {labels.cr_namespace}
                     <span className="required">*</span>
+                    <span className="text-[10px]">
+                      (General is recommended, unless you know otherwise)
+                    </span>
                   </Fragment>
                 }
                 name="namespace"

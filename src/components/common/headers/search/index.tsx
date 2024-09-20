@@ -110,7 +110,7 @@ const HeaderSearch = ({ className = "" }: any) => {
         ?.replace(/%20/g, " ");
       setSearchVal("");
 
-      if (inputSearch) {
+      if (inputSearch || router?.query?.q) {
         dispatch(setSearchValue(searchValue));
         getGlobalSearchCanonizer(searchValue, true);
       }
