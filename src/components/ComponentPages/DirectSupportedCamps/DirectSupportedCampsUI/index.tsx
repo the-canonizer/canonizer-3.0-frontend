@@ -22,6 +22,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "src/store";
 import { setOpenDrawerForDirectSupportedCamp } from "src/store/slices/campDetailSlice";
 import PrimaryButton from "components/shared/Buttons/PrimariButton";
+import dynamic from "next/dynamic";
+const DraggableTags = dynamic(() => import("./draggable"), { ssr: false });
 
 export default function DirectSupportedCampsUI({
   removeCardSupportedCamps,
@@ -72,7 +74,7 @@ export default function DirectSupportedCampsUI({
     camp_name: string;
     camp_link: string;
     dis?: boolean;
-    support_order:number
+    support_order: number;
   }
 
   interface RecordType {
@@ -119,50 +121,61 @@ export default function DirectSupportedCampsUI({
               const { tag } = props;
 
               return (
-                <div
-                  className={`tag ${tag.dis ? "tags_disable" : ""} ${
-                    camps.length > 1 ? "mb-2.5" : ""
-                  } flex items-center`}
-                >
-                  <Button
-                    id="campsBtn"
-                    className="bg-canLightGrey rounded-full border-none flex items-center gap-2.5"
-                    disabled={tag.dis}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      window.location.href = tag.camp_link;
-                    }}
+                <>
+                  {/* <div
+                    className={`tag ${tag.dis ? "tags_disable" : ""} ${
+                      camps.length > 1 ? "mb-2.5" : ""
+                    } flex items-center`}
                   >
-                    <div className={styles.btndiv}>
-                      <span className="count">{tag.support_order}. </span>
-                      <Link href={tag.camp_link}>
-                        <a
-                          className="text-sm text-canBlack font-semibold"
-                          draggable="false"
-                          onClick={(e) => e.preventDefault()} // Prevent default drag behavior
-                        >
-                          {tag.camp_name}
-                        </a>
-                      </Link>
-                    </div>
-                    <div
-                      className="flex items-center"
-                      onClick={() => {
-                        handleClose(tag, record.topic_num, record, []);
-                        setValData(tag);
-                        setRevertBack([]);
+                    <Button
+                      id="campsBtn"
+                      className="bg-canLightGrey rounded-full border-none flex items-center gap-2.5"
+                      disabled={tag.dis}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        window.location.href = tag.camp_link;
                       }}
                     >
-                      <Image
-                        className="cursor-pointer"
-                        src="/images/minus-user-icon.svg"
-                        width={24}
-                        height={24}
-                        alt=""
-                      />
-                    </div>
-                  </Button>
-                </div>
+                      <div className={styles.btndiv}>
+                        <span className="count">{tag.support_order}. </span>
+                        <Link href={tag.camp_link}>
+                          <a
+                            className="text-sm text-canBlack font-semibold"
+                            draggable="false"
+                            onClick={(e) => e.preventDefault()} // Prevent default drag behavior
+                          >
+                            {tag.camp_name}
+                          </a>
+                        </Link>
+                      </div>
+                      <div
+                        className="flex items-center"
+                        onClick={() => {
+                          handleClose(tag, record.topic_num, record, []);
+                          setValData(tag);
+                          setRevertBack([]);
+                        }}
+                      >
+                        <Image
+                          className="cursor-pointer"
+                          src="/images/minus-user-icon.svg"
+                          width={24}
+                          height={24}
+                          alt=""
+                        />
+                      </div>
+                    </Button>
+                  </div> */}
+                  <DraggableTags
+                    valData={camps}
+                    setValData={setValData}
+                    onClose={() => {
+                      handleClose(tag, record.topic_num, record, []);
+                      setValData(tag);
+                      setRevertBack([]);
+                    }}
+                  />
+                  </>
               );
             }}
             onChange={(tags) => tagsOrder(record.topic_num, record, tags)}
@@ -280,7 +293,6 @@ export default function DirectSupportedCampsUI({
             rowKey="topic_num"
             className="[&_.ant-table-thead>tr>th]:!bg-canGray"
           />
-         
         </>
       );
     } else {
@@ -542,11 +554,15 @@ export default function DirectSupportedCampsUI({
                     box on your choice position.
                   </p>
                 </div>
-                
+
                 <div className="lg:w-auto w-full flex justify-end gap-2.5 items-center">
-                <PrimaryButton onClick={()=>{setSearch("")}}>
-                  Reset
-                </PrimaryButton>
+                  <PrimaryButton
+                    onClick={() => {
+                      setSearch("");
+                    }}
+                  >
+                    Reset
+                  </PrimaryButton>
                   <Input
                     suffix={
                       <Image
@@ -568,18 +584,22 @@ export default function DirectSupportedCampsUI({
                   />
                 </div>
               </div>
-             { isMobile&&<>
-              {displayContent} 
-              {search.length === 0 &&<Pagination
-            hideOnSinglePage={true}
-            total={directSupportedCampsList.length}
-            pageSize={5}
-            defaultCurrent={currentPage}
-            onChange={pageChange}
-            showSizeChanger={false}
-            className="mt-5"
-          />}
-              </>}
+              {isMobile && (
+                <>
+                  {displayContent}
+                  {search.length === 0 && (
+                    <Pagination
+                      hideOnSinglePage={true}
+                      total={directSupportedCampsList.length}
+                      pageSize={5}
+                      defaultCurrent={currentPage}
+                      onChange={pageChange}
+                      showSizeChanger={false}
+                      className="mt-5"
+                    />
+                  )}
+                </>
+              )}
             </div>
           )}
           {/* <Modal
@@ -664,7 +684,9 @@ export default function DirectSupportedCampsUI({
         </div>
       </div>
 
-      {!isMobile &&<div className="lg:hidden flex flex-col">{displayContentForMob}</div>}
+      {!isMobile && (
+        <div className="lg:hidden flex flex-col">{displayContentForMob}</div>
+      )}
     </div>
   );
 }
