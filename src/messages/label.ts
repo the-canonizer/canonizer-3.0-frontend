@@ -38,7 +38,7 @@ export const labels = {
   cr_nick_name_sp:
     "(Once you pick a nickname, for any contribution to a topic, you must always use the same nickname for any other contribution or forum post to this topic.)",
   cr_topic_name: "Topic Name",
-  cr_namespace: "Select Canon",
+  cr_namespace: "Canon",
   cr_edit_summary: "Edit Summary",
   cr_camp_name: "Camp Name",
   cr_parent_camp: "Parent Camp",

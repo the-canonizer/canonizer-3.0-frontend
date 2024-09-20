@@ -124,7 +124,7 @@ const TimelineInfoBar = ({
 
   useEffect(() => {
     setTagsArrayList(transformDataForTags(topicRecord?.tags));
-  }, []);
+  }, [topicRecord]);
 
   useEffect(() => {
     if (isTopicPage) {
@@ -1165,11 +1165,7 @@ const TimelineInfoBar = ({
                         router?.push(
                           `${
                             campStatement?.length > 0
-                              ? campStatement[0]?.draft_record_id
-                                ? "/manage/statement/" +
-                                  campStatement[0]?.draft_record_id +
-                                  "?is_draft=1"
-                                : (campStatement[0]?.parsed_value ||
+                              ? (campStatement[0]?.parsed_value ||
                                   campStatement?.at(0)?.in_review_changes ||
                                   campStatement?.at(0)?.grace_period_record_count > 0)
                                 ? `/statement/history/${replaceSpecialCharacters(
@@ -1192,9 +1188,7 @@ const TimelineInfoBar = ({
                       }}
                       id="add-camp-statement-btn"
                     >
-                      {campStatement[0]?.draft_record_id
-                        ? "Edit Draft Statement"
-                        : campStatement[0]?.parsed_value ||
+                      { campStatement[0]?.parsed_value ||
                           campStatement?.at(0)?.in_review_changes ||
                           campStatement?.at(0)?.grace_period_record_count > 0
                         ? K?.exceptionalMessages?.manageCampStatementButton
