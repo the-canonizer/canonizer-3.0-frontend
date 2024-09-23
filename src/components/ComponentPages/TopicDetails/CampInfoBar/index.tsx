@@ -484,8 +484,10 @@ const TimelineInfoBar = ({
       <span className="text-xs 2xl:text-sm text-canLight mb-1">
         Camp name :
       </span>
-      <p className="font-bold mb-5 text-sm text-canBlack">
-        {campRecord && campRecord?.camp_name}
+      <p className="font-bold mb-5 text-sm text-canBlack line-clamp-1 overflow-hidden">
+        {campRecord && campRecord?.camp_name?.length > 50
+          ? `${campRecord?.camp_name.substring(0, 20)}....`
+          : campRecord?.camp_name}
       </p>
     </div>
   );
@@ -1061,7 +1063,6 @@ const TimelineInfoBar = ({
                   >
                     <div className="flex items-center gap-2 overflow-y-auto">
                       <span className="flex items-center shrink-0">
-                        {" "}
                         <Image
                           src="/images/mobile-caret-infobar.svg"
                           alt="svg"
@@ -1187,9 +1188,9 @@ const TimelineInfoBar = ({
                       }}
                       id="add-camp-statement-btn"
                     >
-                      { campStatement[0]?.parsed_value ||
-                          campStatement?.at(0)?.in_review_changes ||
-                          campStatement?.at(0)?.grace_period_record_count > 0
+                      {campStatement[0]?.parsed_value ||
+                      campStatement?.at(0)?.in_review_changes ||
+                      campStatement?.at(0)?.grace_period_record_count > 0
                         ? K?.exceptionalMessages?.manageCampStatementButton
                         : null}
                       {(campStatement[0]?.parsed_value ||

@@ -93,7 +93,7 @@ function NickNameUI({
   return (
     <section>
       <SectionHeading title="NICKNAMES" icon={null} />
-      <p className="mt-1 mb-5 text-sm font-normal text-canBlack">
+      <p className="mt-1 mb-5 text-sm font-normal text-canRed">
         Note: You can’t edit or delete your nickname once created. You can only
         manage its visibility status.
       </p>
