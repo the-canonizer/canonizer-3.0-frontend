@@ -119,6 +119,16 @@ const CampStatementSearch = () => {
     );
   };
   const router = useRouter();
+  const ArrowLink = ({ campLink }) => (
+    <a href={`/${campLink}`}>
+      <Image
+        src="/images/search-page-arrow.svg"
+        width={16}
+        height={10}
+        alt="check"
+      />
+    </a>
+  );
   return (
     <Fragment>
       <div className="flex justify-between lg:items-center lg:flex-row flex-col items-start mb-10 mt-2.5 lg:gap-0 gap-5">
@@ -213,14 +223,7 @@ const CampStatementSearch = () => {
                                               )}
                                         </h3>
                                       </a>
-                                      <a  href={`/${jsonData?.[0]?.[1]?.camp_link}`}>
-                                      <Image
-                                        src="/images/search-page-arrow.svg"
-                                        width={16}
-                                        height={10}
-                                        alt={"check"}
-                                      />
-                                      </a>
+                                      <ArrowLink campLink={jsonData?.[0]?.[1]?.camp_link} />;
                                       
                                     </div>
 
@@ -330,14 +333,7 @@ const CampStatementSearch = () => {
                                           )}
                                     </h3>
                                   </a>
-                                  <a href={`/${jsonData?.[0]?.[1]?.camp_link}`}>
-                                  <Image
-                                    src="/images/search-page-arrow.svg"
-                                    width={16}
-                                    height={10}
-                                    alt={"check"}
-                                  />
-                                  </a>
+                                  <ArrowLink campLink={jsonData?.[0]?.[1]?.camp_link} />;
                                 </div>
 
                                 {/* <div className={styles.statement_date}>
