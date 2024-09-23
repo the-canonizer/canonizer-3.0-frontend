@@ -213,12 +213,15 @@ const CampStatementSearch = () => {
                                               )}
                                         </h3>
                                       </a>
+                                      <a  href={`/${jsonData?.[0]?.[1]?.camp_link}`}>
                                       <Image
                                         src="/images/search-page-arrow.svg"
                                         width={16}
                                         height={10}
                                         alt={"check"}
                                       />
+                                      </a>
+                                      
                                     </div>
 
                                     {/* <div className={styles.statement_date}>
@@ -327,12 +330,14 @@ const CampStatementSearch = () => {
                                           )}
                                     </h3>
                                   </a>
+                                  <a href={`/${jsonData?.[0]?.[1]?.camp_link}`}>
                                   <Image
                                     src="/images/search-page-arrow.svg"
                                     width={16}
                                     height={10}
                                     alt={"check"}
                                   />
+                                  </a>
                                 </div>
 
                                 {/* <div className={styles.statement_date}>
