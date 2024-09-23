@@ -536,7 +536,7 @@ export default function DirectSupportedCampsUI({
                   <h3 className="text-base uppercase font-semibold text-canBlack mb-5">
                     DIRECT SUPPORTED CAMPS
                   </h3>
-                  <p className="text-sm font-normal text-canBlack">
+                  <p className="text-sm font-normal text-canRed">
                     Note : To change support order of camp, drag & drop the camp
                     box on your choice position.
                   </p>

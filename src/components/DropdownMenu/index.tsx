@@ -342,7 +342,7 @@ const DropDownMenu = () => {
               >
                 {currentGetCheckSupportExistsData?.is_delegator == 1 ||
                 currentGetCheckSupportExistsData?.support_flag != 1
-                  ? K?.exceptionalMessages?.directJoinSupport
+                  ? K?.exceptionalMessages?.addSupport
                   : K?.exceptionalMessages?.manageSupport}
               </div>
             </Link>
