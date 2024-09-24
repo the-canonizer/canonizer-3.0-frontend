@@ -118,7 +118,9 @@ function SortableItem(props) {
               evt.preventDefault();
               props?.tagsOrder(
                 props?.record.topic_num,
-                props?.record, props?.tagData)
+                props?.record,
+                props?.tagData
+              );
             }}
           >
             {`${props?.index + 1}-${props?.item?.camp_name}`}
@@ -142,7 +144,11 @@ function SortableItem(props) {
             }
             onClose={(evt) => {
               evt.preventDefault();
-              props?.onClose();
+              props?.tagsOrder(
+                props?.record.topic_num,
+                props?.record,
+                props?.tagData
+              );
             }}
           >
             <a
