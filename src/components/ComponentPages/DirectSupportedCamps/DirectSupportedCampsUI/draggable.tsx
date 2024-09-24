@@ -18,14 +18,22 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Image, Tag } from "antd";
+import { useState } from "react";
 
-export default function Draggable({ valData, setValData, onClose }: any) {
+export default function Draggable({
+  valData,
+  record,
+  tagsOrder,
+  onClose,
+}: any) {
   const sensors = useSensors(
     useSensor(MouseSensor, { activationConstraint: { distance: 10 } }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     })
   );
+
+  const [tagData, setTagData] = useState(null);
 
   return (
     <div className="draggable-container">
@@ -43,6 +51,9 @@ export default function Draggable({ valData, setValData, onClose }: any) {
               item={item}
               index={index}
               onClose={onClose}
+              record={record}
+              tagData={tagData}
+              tagsOrder={tagsOrder}
             />
           ))}
         </SortableContext>
@@ -54,12 +65,17 @@ export default function Draggable({ valData, setValData, onClose }: any) {
     const { active, over } = event;
 
     if (active.id !== over.id) {
-      setValData((prev) => {
-        const oldIndex = prev?.findIndex((i) => i?.id === active?.id);
-        const newIndex = prev?.findIndex((i) => i?.id === over?.id);
+      const oldIndex = valData?.findIndex((i) => i?.id === active?.id);
+      const newIndex = valData?.findIndex((i) => i?.id === over?.id);
 
-        return arrayMove(prev, oldIndex, newIndex);
-      });
+      tagsOrder(
+        record.topic_num,
+        record,
+        arrayMove(valData, oldIndex, newIndex)
+      );
+
+      setTagData(arrayMove(valData, oldIndex, newIndex));
+      return arrayMove(valData, oldIndex, newIndex);
     }
   }
 }
@@ -100,7 +116,9 @@ function SortableItem(props) {
             }
             onClose={(evt) => {
               evt.preventDefault();
-              props?.onClose();
+              props?.tagsOrder(
+                props?.record.topic_num,
+                props?.record, props?.tagData)
             }}
           >
             {`${props?.index + 1}-${props?.item?.camp_name}`}

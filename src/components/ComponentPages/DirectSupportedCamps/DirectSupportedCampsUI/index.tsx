@@ -115,14 +115,14 @@ export default function DirectSupportedCampsUI({
       key: "camps",
       render: (camps: Tag[], record: RecordType) => (
         <div>
-          <DraggableArea
+          {/* <DraggableArea
             tags={camps}
             render={(props: { tag: Tag }) => {
               const { tag } = props;
-
+              
               return (
                 <>
-                  {/* <div
+                  <div
                     className={`tag ${tag.dis ? "tags_disable" : ""} ${
                       camps.length > 1 ? "mb-2.5" : ""
                     } flex items-center`}
@@ -165,20 +165,18 @@ export default function DirectSupportedCampsUI({
                         />
                       </div>
                     </Button>
-                  </div> */}
-                  <DraggableTags
-                    valData={camps}
-                    setValData={setValData}
-                    onClose={() => {
-                      handleClose(tag, record.topic_num, record, []);
-                      setValData(tag);
-                      setRevertBack([]);
-                    }}
-                  />
+                  </div>
                   </>
               );
             }}
             onChange={(tags) => tagsOrder(record.topic_num, record, tags)}
+            /> */}
+          
+
+          <DraggableTags
+            valData={camps}
+            record={record}
+            tagsOrder={tagsOrder}
           />
 
           {showSaveChanges && idData === record.topic_num && (
@@ -211,6 +209,7 @@ export default function DirectSupportedCampsUI({
             </div>
           )}
         </div>
+        
       ),
     },
   ];
