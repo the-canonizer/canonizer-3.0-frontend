@@ -63,8 +63,6 @@ export default function Draggable({
 
     if (active.id !== over.id) {
       setTagsArrayList((prev) => {
-
-        console.log("prev", prev)
         
         const oldIndex = prev?.findIndex((i) => i?.id === active?.id);
         const newIndex = prev?.findIndex((i) => i?.id === over?.id);
