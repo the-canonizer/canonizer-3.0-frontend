@@ -20,7 +20,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { Image, Tag } from "antd";
 
 export default function Draggable({
-  valData,
+  tags,
   record,
   updateTagsOrder,
   onClose,
@@ -41,8 +41,8 @@ export default function Draggable({
         collisionDetection={closestCenter}
         onDragEnd={handleDragEnd}
       >
-        <SortableContext items={valData} strategy={verticalListSortingStrategy}>
-          {valData?.map((item, index) => (
+        <SortableContext items={tags} strategy={verticalListSortingStrategy}>
+          {tags?.map((item, index) => (
             <SortableItem
               key={item?.id}
               id={item?.id}
@@ -63,18 +63,18 @@ export default function Draggable({
     const { active, over } = event;
 
     if (active.id !== over.id) {
-      const oldIndex = valData?.findIndex((i) => i?.id === active?.id);
-      const newIndex = valData?.findIndex((i) => i?.id === over?.id);
+      const oldIndex = tags?.findIndex((i) => i?.id === active?.id);
+      const newIndex = tags?.findIndex((i) => i?.id === over?.id);
 
       updateTagsOrder(
         record.topic_num,
         record,
-        arrayMove(valData, oldIndex, newIndex)
+        arrayMove(tags, oldIndex, newIndex)
       );
 
-      setReOrderedTags(arrayMove(valData, oldIndex, newIndex));
+      setReOrderedTags(arrayMove(tags, oldIndex, newIndex));
 
-      return arrayMove(valData, oldIndex, newIndex);
+      return arrayMove(tags, oldIndex, newIndex);
     }
   }
 }

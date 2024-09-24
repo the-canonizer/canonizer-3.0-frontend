@@ -174,7 +174,7 @@ export default function DirectSupportedCampsUI({
             /> */}
 
           <DraggableTags
-            valData={camps}
+            tags={camps}
             record={record}
             updateTagsOrder={tagsOrder}
             setReOrderedTags={setReOrderedTags}
