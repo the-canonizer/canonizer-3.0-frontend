@@ -85,11 +85,12 @@ function SortableItem(props) {
       {props?.item?.dis ? (
         <>
           <Tag
-            className="rounded-full mr-0 bg-[#F0F2FA] border-transparent font-semibold text-base px-5 py-2.5 leading-none text-canBlack"
+            className="rounded-full mr-0 bg-[#F0F2FA] flex items-center  border-transparent font-semibold text-base px-5 py-2.5 leading-none text-canBlack"
             closable={true}
             closeIcon={
               <Image
                 className="cursor-pointer"
+                preview={false}
                 src="/images/minus-user-icon.svg"
                 width={24}
                 height={24}
@@ -108,11 +109,12 @@ function SortableItem(props) {
       ) : (
         <>
           <Tag
-            className="rounded-full mr-0 bg-[#F0F2FA] border-transparent font-semibold text-base px-5 py-2.5 leading-none text-canBlack"
+            className="rounded-full mr-0 bg-[#F0F2FA] flex items-center border-transparent font-semibold text-base px-5 py-2.5 leading-none text-canBlack"
             closable={true}
             closeIcon={
               <Image
                 className="cursor-pointer"
+                preview={false}
                 src="/images/minus-user-icon.svg"
                 style={{ cursor: "pointer", alignSelf: "center" }}
                 width={24}
