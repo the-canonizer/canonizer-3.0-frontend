@@ -192,12 +192,21 @@ const TopicSearch = () => {
                                               )}
                                             </label>
                                           </a>
-                                          <Image
-                                            src="/images/search-page-arrow.svg"
-                                            width={16}
-                                            height={10}
-                                            alt={"check"}
-                                          />
+                                          <a
+                                            href={`/topic/${
+                                              x?.topic_num
+                                            }-${replaceSpecialCharacters(
+                                              x?.topic_name,
+                                              "-"
+                                            )}/1-Agreement`}
+                                          >
+                                            <Image
+                                              src="/images/search-page-arrow.svg"
+                                              width={16}
+                                              height={10}
+                                              alt={"check"}
+                                            />
+                                          </a>
                                         </div>
                                       </Link>
 
@@ -249,12 +258,18 @@ const TopicSearch = () => {
                                         )}
                                       </label>
                                     </a>
-                                    <Image
-                                      src="/images/search-page-arrow.svg"
-                                      width={16}
-                                      height={10}
-                                      alt={"check"}
-                                    />
+                                    <a
+                                      href={`/${replaceSpecialCharactersInLink(
+                                        x?.link
+                                      )}`}
+                                    >
+                                      <Image
+                                        src="/images/search-page-arrow.svg"
+                                        width={16}
+                                        height={10}
+                                        alt={"check"}
+                                      />
+                                    </a>
                                   </div>
                                 </Link>
                                 <div className="text-base text-canBlue flex items-center gap-2.5">
