@@ -184,7 +184,7 @@ export const UserProfileCard = ({
                   .map((data, idx) => (
                     <Card
                       key={data.title_link || idx} // Use a unique identifier if available
-                      className="rounded-lg [&:not(:last-child)]:mb-7 shadow-md hover:shadow-lg"
+                      className="rounded-lg [&:not(:last-child)]:mb-7 shadow-md hover:shadow-lg [&_.ant-card-body]:gap-3 [&_.ant-card-body]:inline-flex [&_.ant-card-body]:flex-wrap [&_.ant-card-body]:before:hidden"
                       title={
                         <div className="flex flex-col items-start justify-center gap-2">
                           <span className="flex items-center justify-start gap-4">
@@ -219,6 +219,7 @@ export const UserProfileCard = ({
                             className="rounded-md text-sm font-medium border-0 text-canBlue py-1 px-4 bg-canLightGrey"
                             key={campIdx}
                           >
+                            {console.log(campData)}
                             {data.delegate_nick_name_id && (
                               <span className="text-canBlue">
                                 {campData.support_order} :

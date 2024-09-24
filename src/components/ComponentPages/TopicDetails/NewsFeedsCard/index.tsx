@@ -19,10 +19,10 @@ const NewsFeedsCard = () => {
     newsFeed: state?.topicDetails?.newsFeed,
   }));
 
-  const [newsFeedList, setNewsFeedList] = useState(newsFeed);
+  const [newsFeedList, setNewsFeedList] = useState(newsFeed || []);
 
   useEffect(() => {
-    setNewsFeedList(newsFeed);
+    setNewsFeedList(newsFeed || []);
   }, [newsFeed]);
 
   const handleDeleteCamp = async (id) => {
