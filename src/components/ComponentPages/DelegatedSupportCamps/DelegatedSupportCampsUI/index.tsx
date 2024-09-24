@@ -18,6 +18,7 @@ import styles from "./DelegatedSupportedCamps.module.scss";
 import messages from "../../../../messages";
 import CustomSkelton from "src/components/common/customSkelton";
 import Image from "next/image";
+import PrimaryButton from "components/shared/Buttons/PrimariButton";
 
 export default function DelegatedSupportCampsUI({
   removeCardDelegatedSupportedCamps,
@@ -34,7 +35,7 @@ export default function DelegatedSupportCampsUI({
   delegateSupportedSkeleton,
 }: any) {
   const [displayList, setDisplayList] = useState([]);
-  const limit = 3;
+  const limit = delegatedSupportCampsList.length;
   const [search, setSearch] = useState("");
 
   useEffect(() => {
@@ -244,7 +245,14 @@ export default function DelegatedSupportCampsUI({
                   DELEGATED SUPPORTED CAMPS
                 </h3>
               </div>
-              <div className="w-full flex justify-end">
+              <div className="w-full flex justify-end gap-2.5 items-center">
+                <PrimaryButton
+                  onClick={() => {
+                    setSearch("");
+                  }}
+                >
+                  Reset
+                </PrimaryButton>
                 <Input
                   suffix={
                     <Image
@@ -301,7 +309,7 @@ export default function DelegatedSupportCampsUI({
         )}
         <Modal
           className=" [&_.ant-modal-content]:!rounded-xl [&_.ant-modal-header]:rounded-tl-xl [&_.ant-modal-header]:rounded-tr-xl"
-          title="Remove Support"
+          title={<span className="text-lg font-medium">Remove Support</span>}
           open={isRemoveSupportModalVisible}
           onOk={handleSupportedCampsCancel}
           onCancel={handleSupportedCampsCancel}
@@ -312,7 +320,7 @@ export default function DelegatedSupportCampsUI({
             <Form.Item style={{ marginBottom: "0px" }}>
               <p
                 id="remove_confirmation"
-                className="text-xl text-canBlack font-medium text-center"
+                className="text-base text-canBlack font-normal"
               >
                 Are you sure, you want to remove your delegate support given to{" "}
                 <span>
@@ -320,7 +328,7 @@ export default function DelegatedSupportCampsUI({
                   <Link
                     href={removeSupportCampsData.delegated_to_nick_name_link}
                   >
-                    <a>{removeSupportCampsData.delegated_to_nick_name}</a>
+                    <a className={styles.Bluecolor}>{removeSupportCampsData.delegated_to_nick_name}</a>
                   </Link>
                   &quot;
                 </span>{" "}

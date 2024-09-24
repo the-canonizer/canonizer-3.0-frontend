@@ -22,7 +22,10 @@ const HotTopics = () => {
     <Fragment>
       <Row gutter={15}>
         <Col md={12} sm={12} xs={12}>
-          <SectionHeading title="Hot Topics" infoContent="Hot Topics" />
+          <SectionHeading
+            title="Hot Topics"
+            infoContent="Hot Topics are the most viewed subjects on Canonizer within the past month. These topics have garnered significant attention from users, making them central points of discussion and debate. Join the conversation and see what others are saying!"
+          />
         </Col>
       </Row>
 

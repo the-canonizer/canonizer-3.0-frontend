@@ -408,6 +408,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
   };
 
   const handleApplyClick = () => {
+    dispatch(setOpenDrawer(false));
     filterOnScore(clearScoreFromRefineFilter);
     selectAlgorithm(clearAlgoFromRefineFilter);
     if (selectedValue === 2) {
@@ -447,7 +448,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
         filterObject?.namespace_id,
         viewThisVersion
       );
-    } else if (selectedValue === 3) {
+    } else if (selectedValue === 3 || asof == "bydate") {
       dispatch(setViewThisVersion(false));
       handleAsOfClick();
     }
@@ -457,7 +458,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
   };
 
   const handleChange = (event) => {
-    const value = event.target.value;
+    const value = event?.target?.value;
     dispatch(setClearScoreFromRefineFilter(Number(value)));
   };
 
@@ -570,9 +571,16 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
                   </p>{" "}
                 </Text>
                 <Input
+                  type="text"
                   size="large"
                   className="rounded-lg lg:!w-4/5 w-full text-sm text-canBlack font-medium"
-                  onChange={handleChange}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    // Allow only numeric values
+                    if (!isNaN(Number(value))) {
+                      handleChange(e); // Call your handleChange function
+                    }
+                  }}
                   value={clearScoreFromRefineFilter}
                   disabled={loadingIndicator}
                   id="filter_input"
@@ -581,6 +589,12 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
                       Greater than -
                     </span>
                   }
+                  onKeyPress={(e) => {
+                    // Prevent any non-numeric input
+                    if (!/[0-9]/.test(e.key)) {
+                      e.preventDefault();
+                    }
+                  }}
                 />
               </div>
             </Col>

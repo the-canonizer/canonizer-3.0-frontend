@@ -66,7 +66,13 @@ const TopicHistory = ({ campStatement, topicNamespaceId }: any) => {
         </p>
       )}
       <p>
-        Going live on :<span>{covertToTime(campStatement?.go_live_time)}</span>
+        {campStatement &&
+        (campStatement?.status == "live" ||
+          campStatement?.status == "old" ||
+          campStatement?.status == "objected")
+          ? "Go Live Time"
+          : "Going live on"}{" "}
+        :<span>{covertToTime(campStatement?.go_live_time)}</span>
       </p>
     </>
   );

@@ -42,7 +42,6 @@ import {
   removeSupportedCamps,
   removeSupportedCampsEntireTopic,
 } from "src/network/api/userApi";
-import CampRecentActivities from "./CampRecentActivities";
 import InfoBar from "./CampInfoBar/infoBar";
 import { setOpenConsensusTreePopup } from "src/store/slices/hotTopicSlice";
 import CampDisclaimer from "components/common/CampDisclaimer";
@@ -58,6 +57,8 @@ import ScoreTag from "../Home/TrandingTopic/scoreTag";
 import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 import { CloseOutlined } from "@ant-design/icons";
 import CommanBreadcrumbs from "../Breadcrumbs/commanBreadcrumbs";
+import ActivityNewsCard from "./ActivityNewsCard";
+import CampRecentActivities from "./CampRecentActivities";
 
 const { Link: AntLink } = Typography;
 
@@ -467,80 +468,83 @@ const TopicDetails = ({ serverSideCall }: any) => {
     <Fragment>
       <Layout
         rightSidebar={
-          !openConsensusTreePopup && (
+          !openConsensusTreePopup &&
+          tree?.["1"]?.is_valid_as_of_time && (
             <Fragment>
               <div className="support-tree-parent-box w-full mt-14 lg:mt-0">
-                <div className="flex gap-1 items-center mb-4">
-                  <SectionHeading
-                    title="Support Tree"
-                    infoContent=""
-                    icon={null}
-                    className="!mb-0 [&_span]:mr-1"
-                  />
-                  <ScoreTag
-                    topic_score={
-                      campRecord?.is_archive ? 0 : totalCampScoreForSupportTree
-                    }
-                  />
-                </div>
-                <div className="bg-canGray py-7 px-2.5 lg:px-6 rounded-lg h-[400px] xl:h-[600px]">
-                  <div className="border border-canGrey2 bg-white rounded-lg lg:p-2 p-2.5 h-full">
-                    <SupportTreeCard
-                      loadingIndicator={loadingIndicator}
-                      isRemovingSupport={isRemovingSupport}
-                      handleLoadMoreSupporters={handleLoadMoreSupporters}
-                      getCheckSupportStatus={getCheckSupportStatus}
-                      removeApiSupport={removeApiSupport}
-                      totalSupportScore={totalSupportScore}
-                      totalFullSupportScore={totalFullSupportScore}
-                      removeSupport={removeSupport}
-                      topicList={topicList}
-                      removeSupportForDelegate={removeSupportForDelegate}
-                      isSupportTreeCardModal={isSupportTreeCardModal}
-                      setIsSupportTreeCardModal={setIsSupportTreeCardModal}
-                      isDelegateSupportTreeCardModal={
-                        isDelegateSupportTreeCardModal
-                      }
-                      setIsDelegateSupportTreeCardModal={
-                        setIsDelegateSupportTreeCardModal
-                      }
-                      handleSupportTreeCardCancel={handleSupportTreeCardCancel}
-                      removeSupportSpinner={removeSupportSpinner}
-                      supportTreeForCamp={supportTreeForCamp}
-                      totalCampScoreForSupportTree={
-                        totalCampScoreForSupportTree
-                      }
-                      backGroundColorClass={backGroundColorClass}
-                      getCheckStatusAPI={GetCheckStatusData}
-                      GetActiveSupportTopic={GetActiveSupportTopic}
-                      GetActiveSupportTopicList={GetActiveSupportTopicList}
-                      setSupportTreeForCamp={setSupportTreeForCamp}
-                      setTotalCampScoreForSupportTree={
-                        setTotalCampScoreForSupportTree
+                {tree?.["1"]?.is_valid_as_of_time && (
+                  <div className="flex gap-1 items-center mb-4">
+                    <SectionHeading
+                      title="Support Tree"
+                      infoContent=""
+                      icon={null}
+                      className="!mb-0 [&_span]:mr-1"
+                    />
+                    <ScoreTag
+                      topic_score={
+                        campRecord?.is_archive
+                          ? 0
+                          : totalCampScoreForSupportTree
                       }
                     />
                   </div>
-                </div>
+                )}
+                {tree?.["1"]?.is_valid_as_of_time && (
+                  <div className="bg-canGray py-7 px-2.5 lg:px-6 rounded-lg h-[400px] xl:h-[600px]">
+                    <div className="border border-canGrey2 bg-white rounded-lg lg:p-2 p-2.5 h-full">
+                      <SupportTreeCard
+                        loadingIndicator={loadingIndicator}
+                        isRemovingSupport={isRemovingSupport}
+                        handleLoadMoreSupporters={handleLoadMoreSupporters}
+                        getCheckSupportStatus={getCheckSupportStatus}
+                        removeApiSupport={removeApiSupport}
+                        totalSupportScore={totalSupportScore}
+                        totalFullSupportScore={totalFullSupportScore}
+                        removeSupport={removeSupport}
+                        topicList={topicList}
+                        removeSupportForDelegate={removeSupportForDelegate}
+                        isSupportTreeCardModal={isSupportTreeCardModal}
+                        setIsSupportTreeCardModal={setIsSupportTreeCardModal}
+                        isDelegateSupportTreeCardModal={
+                          isDelegateSupportTreeCardModal
+                        }
+                        setIsDelegateSupportTreeCardModal={
+                          setIsDelegateSupportTreeCardModal
+                        }
+                        handleSupportTreeCardCancel={
+                          handleSupportTreeCardCancel
+                        }
+                        removeSupportSpinner={removeSupportSpinner}
+                        supportTreeForCamp={supportTreeForCamp}
+                        totalCampScoreForSupportTree={
+                          totalCampScoreForSupportTree
+                        }
+                        backGroundColorClass={backGroundColorClass}
+                        getCheckStatusAPI={GetCheckStatusData}
+                        GetActiveSupportTopic={GetActiveSupportTopic}
+                        GetActiveSupportTopicList={GetActiveSupportTopicList}
+                        setSupportTreeForCamp={setSupportTreeForCamp}
+                        setTotalCampScoreForSupportTree={
+                          setTotalCampScoreForSupportTree
+                        }
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
 
-              <div className="my-14">
-                <CampRecentActivities />
-              </div>
+              {tree?.["1"]?.is_valid_as_of_time && (
+                <div className="my-14">
+                  <ActivityNewsCard />
+                </div>
+              )}
             </Fragment>
           )
         }
         afterHeader={
           <Fragment>
-            {(tree && tree["1"]?.is_valid_as_of_time) || asof == "default" ? (
-              // <CampInfoBar
-              //   isTopicPage={true}
-              //   payload={{
-              //     topic_num: +router?.query?.camp[0]?.split("-")[0],
-              //     camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
-              //   }}
-              //   getCheckSupportStatus={getCheckSupportStatus}
-              // />
-              <CommanBreadcrumbs 
+            {tree && tree?.["1"]?.is_valid_as_of_time || asof === "default" ? (
+              <CampInfoBar
                 isTopicPage={true}
                 payload={{
                   topic_num: +router?.query?.camp[0]?.split("-")[0],
@@ -632,16 +636,20 @@ const TopicDetails = ({ serverSideCall }: any) => {
             </div>
           ) : (
             <div className="">
-              {isMobile && <CampDisclaimer />}
+              {tree?.["1"]?.is_valid_as_of_time && (
+                <div>
+                  {isMobile && <CampDisclaimer />}
 
-              <CampStatementCard loadingIndicator={loadingIndicator} />
-              <Campforum />
-              <SiblingCamps />
+                  <CampStatementCard loadingIndicator={loadingIndicator} />
+                  <Campforum />
+                  <SiblingCamps />
+                </div>
+              )}
             </div>
           )}
 
           {isClient && tree && !tree["1"]?.is_valid_as_of_time && (
-            <div className={`printHIde ${styles.imageWrapper}`}>
+            <div className="justify-center w-full flex text-right">
               <div>
                 <Image
                   preview={false}
@@ -652,7 +660,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
                   id="forgot-modal-img"
                 />
                 <p>
-                  The topic was created on
+                  The topic was created on{" "}
                   <AntLink
                     onClick={() => {
                       onCreateTreeDate();

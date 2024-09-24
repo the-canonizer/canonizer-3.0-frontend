@@ -391,7 +391,7 @@ const ManageSupportUI = ({
             ) : (
               ""
             )}
-            <div className={styles.notes}>
+            <div className={`${styles.notes}`}>
               {" "}
               {messages.labels.manageSupportNote}
             </div>

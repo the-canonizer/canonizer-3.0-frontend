@@ -45,31 +45,28 @@ const SitemapPage = () => {
   }
 
   return (
-    <Fragment>
-      <Layout initialProps={undefined} initialState={undefined}>
-        <Card
-          bordered={false}
-          style={{ height: "50vh", textAlign: "center", width: "100%" }}
-        >
-          {isLoading ? (
-            <CustomSkelton
-              skeltonFor="list"
-              bodyCount={5}
-              stylingClass="listSkeleton"
-              isButton={false}
-            />
-          ) : (
-            <Text>
-              This page generates a sitemap.xml file in every 15 days.
-            </Text>
-          )}
-        </Card>
-      </Layout>
-    </Fragment>
+    <Layout>
+      <Card
+        bordered={false}
+        style={{ height: "50vh", textAlign: "center", width: "100%" }}
+      >
+        {isLoading ? (
+          <CustomSkelton
+            skeltonFor="list"
+            bodyCount={5}
+            stylingClass="listSkeleton"
+            isButton={false}
+          />
+        ) : (
+          <Text>This page generates a sitemap.xml file in every 15 days.</Text>
+        )}
+      </Card>
+    </Layout>
   );
 };
 
-export const getServerSideProps = async () => {
+// export const getServerSideProps = async () => {
+export const getStaticProps = async () => {
   try {
     if (process.env.NEXT_PUBLIC_ENVIRONMENT === "production") {
       const XMLData = await getSitemapXML();

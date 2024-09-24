@@ -563,15 +563,20 @@ export default function AdvanceFilter() {
   const panelRef = useRef(null);
   const selectRef = useRef(null);
   const handleClickOutside = (event) => {
+    // Ignore clicks within the DatePicker panel
+    const datePickerPanel = document.querySelector(".ant-picker-dropdown");
+
     if (isSelectClicked) {
       setIsSelectClicked(false); // Reset the flag and return early
       return;
     }
 
+    // Check if the click is outside of the panel and not on the DatePicker dropdown
     if (
       panelRef.current &&
       !panelRef.current.contains(event.target) &&
-      !event.target.closest(".ant-select")
+      !event.target.closest(".ant-select") &&
+      !(datePickerPanel && datePickerPanel.contains(event.target))
     ) {
       setActive([]); // Close the panel if click occurs outside of it
     }
@@ -739,6 +744,7 @@ export default function AdvanceFilter() {
                   e.stopPropagation();
                   setIsSelectClicked(true); // Set the flag when Select is clicked
                 }}
+                allowClear={false}
               />
             </div>
           ) : (

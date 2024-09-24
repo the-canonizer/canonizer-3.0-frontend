@@ -18,6 +18,8 @@ const CampHistory = ({ campStatement, topicNamespaceId }: any) => {
     }
   };
 
+  console.log("campStatement", campStatement);
+
   return (
     <>
       <p className="mb-[15px]">
@@ -88,16 +90,24 @@ const CampHistory = ({ campStatement, topicNamespaceId }: any) => {
         Submitted on:<span>{covertToTime(campStatement?.submit_time)}</span>
       </p>
       <p>
-        Going live on :<span>{covertToTime(campStatement?.go_live_time)}</span>
+        {campStatement &&
+        (campStatement?.status == "live" ||
+          campStatement?.status == "old" ||
+          campStatement?.status == "objected")
+          ? "Go Live Time"
+          : "Going live on"}{" "}
+        :<span>{covertToTime(campStatement?.go_live_time)}</span>
       </p>
       {!!campStatement?.parent_camp_name && (
         <p>
           Parent Camp :<span>{campStatement?.parent_camp_name}</span>
         </p>
       )}
-      {/* <p>
-        Keywords :<span>{campStatement?.key_words}</span>
-      </p> */}
+      {campStatement?.key_words && (
+        <p>
+          Keywords :<span>{campStatement?.key_words}</span>
+        </p>
+      )}
       {campStatement?.object_reason && (
         <p>
           Object Reason : <span>{campStatement?.object_reason}</span>

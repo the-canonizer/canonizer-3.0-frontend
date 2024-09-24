@@ -1,5 +1,18 @@
-import { DoubleLeftOutlined } from "@ant-design/icons";
-import { Button, Col, Popover, Row, Spin, Tooltip, Typography } from "antd";
+import {
+  DoubleLeftOutlined,
+  EditOutlined,
+  MenuOutlined,
+} from "@ant-design/icons";
+import {
+  Button,
+  Col,
+  Popover,
+  Row,
+  Spin,
+  Tag,
+  Tooltip,
+  Typography,
+} from "antd";
 import moment from "moment";
 import Image from "next/image";
 import Link from "next/link";
@@ -48,6 +61,7 @@ const TimelineInfoBar = ({
     topic_name: "",
     bread_crumb: [],
   });
+
   const didMount = useRef(false);
   const router = useRouter();
   const [isMobile, setIsMobile] = useState(false);
@@ -63,6 +77,7 @@ const TimelineInfoBar = ({
     changeGoneLive,
     algorithm,
     campStatement,
+    tree,
   } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
     campRecord: state?.topicDetails?.currentCampRecord,
@@ -74,6 +89,7 @@ const TimelineInfoBar = ({
     changeGoneLive: state?.topicDetails?.changeGoneLive,
     algorithm: state.filters?.filterObject?.algorithm,
     campStatement: state?.topicDetails?.campStatement,
+    tree: state?.topicDetails?.tree && state?.topicDetails?.tree[0],
   }));
 
   const [campSubscriptionID, setCampSubscriptionID] = useState(
@@ -99,38 +115,23 @@ const TimelineInfoBar = ({
     router.push(`/manage/${historyOf}/${updateId}`);
   };
 
+  const [tagsArrayList, setTagsArrayList] = useState([]);
+
+  const [showAll, setShowAll] = useState(false);
+  const tagsToShow = showAll ? tagsArrayList : tagsArrayList?.slice(0, 4);
+
+  const transformDataForTags = (data) => {
+    return data?.map((item, index) => {
+      return {
+        id: item.id,
+        content: item.title,
+      };
+    });
+  };
 
   useEffect(() => {
-    const isDefaultOrReview = asof === "default" || asof === "review";
-
-    const reqBody = {
-      topic_num: parseInt(router?.query?.camp?.at(0)?.split("-")?.at(0), 10),
-      camp_num:
-        parseInt(router?.query?.camp?.at(1)?.split("-")?.at(0), 10) || 1,
-      as_of: asof,
-      as_of_date: isDefaultOrReview
-        ? Math.floor(Date.now() / 1000)
-        : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
-    };
-
-    const fetchTopicRecord = async () => {
-      await getCurrentTopicRecordApi(reqBody);
-    };
-
-    const fetchCampRecord = async () => {
-      await getCurrentCampRecordApi(reqBody);
-    };
-
-    if (campRecord === null) {
-      fetchCampRecord();
-    }
-
-    if (topicRecord === null) {
-      fetchTopicRecord();
-    }
-  }, []);
-
-
+    setTagsArrayList(transformDataForTags(topicRecord?.tags));
+  }, [topicRecord]);
 
   useEffect(() => {
     if (isTopicPage) {
@@ -393,7 +394,9 @@ const TimelineInfoBar = ({
         Topic name :
       </span>
       <p className="font-bold mb-5 text-sm text-canBlack">
-        {topicRecord && topicRecord?.topic_name}
+        {topicRecord && topicRecord?.topic_name?.length > 50
+          ? `${topicRecord?.topic_name.substring(0, 20)}....`
+          : topicRecord?.topic_name}
       </p>
     </div>
   );
@@ -451,22 +454,43 @@ const TimelineInfoBar = ({
             {topicRecord && changeSlashToArrow(topicRecord?.namespace_name)}
           </span>
         </Col>
+        {tagsArrayList && tagsArrayList?.length > 0 ? (
+          <Col md={24} sm={24} xs={24} className="mt-3">
+            <span className="text-xs 2xl:text-sm text-canLight">Tags :</span>
+            <div className="vertical-chips mt-2 flex flex-wrap gap-2">
+              {tagsToShow?.map((item: any, index) => (
+                <div key={index}>
+                  <Tag
+                    className="rounded-full mr-0 bg-[#F0F2FA] border-transparent font-semibold text-base px-5 py-2.5 leading-none text-canBlack"
+                    closable={false}
+                  >
+                    <span data-testid="styles_Bluecolor">{item?.content}</span>
+                  </Tag>
+                </div>
+              ))}
+            </div>
+            <div className="text-center mt-2">
+              {tagsArrayList && tagsArrayList?.length > 4 && (
+                <button
+                  className=" text-canBlue"
+                  onClick={() => setShowAll(!showAll)}
+                >
+                  {showAll ? "Show Less" : "Show More"}
+                </button>
+              )}
+            </div>
+          </Col>
+        ) : null}
       </Row>
 
       <hr className="horizontal_line my-5" />
       {(isTopicPage || isEventLine || isHistoryPage || compareMode) && (
         <PrimaryButton
-          className="mx-auto flex items-center justify-center font-medium h-auto"
+          className="mx-auto flex items-center justify-center font-medium h-auto gap-1"
           onClick={() => handleTopicUrl()}
         >
           {K?.exceptionalMessages?.manageTopicButton}
-          <Image
-            src="/images/manage-btn-icon.svg"
-            alt="svg"
-            className="icon-topic"
-            height={16}
-            width={16}
-          />
+          <EditOutlined />
         </PrimaryButton>
       )}
     </div>
@@ -477,8 +501,10 @@ const TimelineInfoBar = ({
       <span className="text-xs 2xl:text-sm text-canLight mb-1">
         Camp name :
       </span>
-      <p className="font-bold mb-5 text-sm text-canBlack">
-        {campRecord && campRecord?.camp_name}
+      <p className="font-bold mb-5 text-sm text-canBlack line-clamp-1 overflow-hidden">
+        {campRecord && campRecord?.camp_name?.length > 50
+          ? `${campRecord?.camp_name.substring(0, 20)}....`
+          : campRecord?.camp_name}
       </p>
     </div>
   );
@@ -588,44 +614,38 @@ const TimelineInfoBar = ({
         <Col md={12} sm={12} xs={12} className=" flex flex-col">
           <span className="text-xs 2xl:text-sm text-canLight">Topic :</span>
           <span className="text-sm text-canBlack">
-            {topicRecord && topicRecord?.topic_name}
+            {topicRecord && topicRecord?.topic_name?.length > 50
+              ? `${topicRecord?.topic_name.substring(0, 20)}....`
+              : topicRecord?.topic_name}
           </span>
         </Col>
         {campRecord?.camp_leader_nick_name && (
-          <>
-            <Col md={12} sm={12} xs={12} className=" flex flex-col mt-4">
-              <span className="text-xs 2xl:text-sm text-canLight">
-                Camp Leader:
-              </span>
-              <Link
-                className="flex flex-wrap"
-                href={{
-                  pathname: `/user/supports/${campRecord?.camp_leader_nick_id}`,
-                  query: {
-                    canon: topicRecord?.namespace_id,
-                  },
-                }}
-              >
-                {campRecord?.camp_leader_nick_name}
-              </Link>
-            </Col>
-          </>
+          <Col md={12} sm={12} xs={12} className=" flex flex-col mt-4">
+            <span className="text-xs 2xl:text-sm text-canLight">
+              Camp Leader:
+            </span>
+            <Link
+              className="flex flex-wrap"
+              href={{
+                pathname: `/user/supports/${campRecord?.camp_leader_nick_id}`,
+                query: {
+                  canon: topicRecord?.namespace_id,
+                },
+              }}
+            >
+              {campRecord?.camp_leader_nick_name}
+            </Link>
+          </Col>
         )}
       </Row>
       <hr className="horizontal_line my-5" />
       {(isTopicPage || isHistoryPage || compareMode) && (
-        <PrimaryButton className="flex items-center justify-center h-auto mx-auto">
+        <PrimaryButton className="flex items-center justify-center h-auto mx-auto gap-1">
           <Link href={href}>
-            <a>
-              <span>
+            <a className="flex items-center justify-center h-auto mx-auto gap-1">
+              <span className="flex items-center justify-center h-auto mx-auto gap-1">
                 {K?.exceptionalMessages?.manageCampButton}
-                <Image
-                  src="/images/manage-btn-icon.svg"
-                  alt="svg"
-                  className="icon-topic"
-                  height={16}
-                  width={16}
-                />
+                <EditOutlined />
               </span>
             </a>
           </Link>
@@ -730,7 +750,7 @@ const TimelineInfoBar = ({
                           )}/1-Agreement?${getQueryParams()?.returnQuery}`}
                         >
                           <a className="whitespace-nowrap !text-canBlack !text-sm">
-                            {breadCrumbRes?.topic_name}
+                            {topicRecord?.topic_name}
                           </a>
                         </Link>
                       ) : breadCrumbRes ? (
@@ -759,7 +779,7 @@ const TimelineInfoBar = ({
                                 " whitespace-nowrap text-sm cursor-pointer"
                               }
                             >
-                              {breadCrumbRes?.topic_name}
+                              {topicRecord?.topic_name}
                             </span>
                           </Link>
                         </span>
@@ -778,15 +798,17 @@ const TimelineInfoBar = ({
                     </div>
                   </Popover>
 
-                  <div>
-                    <Image
-                      src="/images/arrow-bread.svg"
-                      alt="svg"
-                      className="icon-topic"
-                      height={10}
-                      width={10}
-                    />
-                  </div>
+                  {tree?.["1"]?.is_valid_as_of_time && (
+                    <div>
+                      <Image
+                        src="/images/arrow-bread.svg"
+                        alt="svg"
+                        className="icon-topic"
+                        height={10}
+                        width={10}
+                      />
+                    </div>
+                  )}
                 </Typography.Paragraph>
                 {!isEventLine && (
                   <div className={styles.breadcrumbLinks + " flex "}>
@@ -1058,7 +1080,6 @@ const TimelineInfoBar = ({
                   >
                     <div className="flex items-center gap-2 overflow-y-auto">
                       <span className="flex items-center shrink-0">
-                        {" "}
                         <Image
                           src="/images/mobile-caret-infobar.svg"
                           alt="svg"
@@ -1161,7 +1182,9 @@ const TimelineInfoBar = ({
                                   campStatement[0]?.draft_record_id +
                                   "?is_draft=1"
                                 : campStatement[0]?.parsed_value ||
-                                  campStatement?.at(0)?.in_review_changes
+                                  campStatement?.at(0)?.in_review_changes ||
+                                  campStatement?.at(0)
+                                    ?.grace_period_record_count > 0
                                 ? `/statement/history/${replaceSpecialCharacters(
                                     router?.query?.camp?.at(0),
                                     "-"
@@ -1182,38 +1205,48 @@ const TimelineInfoBar = ({
                       }}
                       id="add-camp-statement-btn"
                     >
-                      {campStatement[0]?.draft_record_id
-                        ? "Edit Draft Statement"
-                        : campStatement[0]?.parsed_value ||
-                          campStatement?.at(0)?.in_review_changes
+                      {campStatement[0]?.parsed_value ||
+                      campStatement?.at(0)?.in_review_changes ||
+                      campStatement?.at(0)?.grace_period_record_count > 0
                         ? K?.exceptionalMessages?.manageCampStatementButton
-                        : K?.exceptionalMessages?.addCampStatementButton}
-                      <Image
-                        src="/images/manage-btn-icon.svg"
-                        alt=""
-                        height={24}
-                        width={24}
-                      />
+                        : null}
+                      {(campStatement[0]?.parsed_value ||
+                        campStatement?.at(0)?.in_review_changes ||
+                        campStatement?.at(0)?.grace_period_record_count > 0 ||
+                        campStatement[0]?.draft_record_id) && (
+                        <Image
+                          src="/images/manage-btn-icon.svg"
+                          alt=""
+                          height={24}
+                          width={24}
+                        />
+                      )}
                     </PrimaryButton>
                   </div>
                 ) : null}
 
-                {!isHtmlContent && !isHistoryPage && !compareMode && (
-                  <SecondaryButton
-                    className="hidden px-8 py-2.5 lg:flex items-center text-sm gap-1"
-                    size="large"
-                    onClick={handleClick}
-                  >
-                    Create Camp
-                    <Image
-                      src="/images/Icon-plus.svg"
-                      alt="svg"
-                      className="icon-topic"
-                      height={16}
-                      width={16}
-                    />
-                  </SecondaryButton>
-                )}
+                {!isHtmlContent &&
+                  !isHistoryPage &&
+                  !compareMode &&
+                  campRecord?.is_archive == 0 && (
+                    <SecondaryButton
+                      className="hidden px-8 py-2.5 lg:flex items-center text-sm gap-1"
+                      size="large"
+                      onClick={handleClick}
+                      disabled={
+                        !tree?.["1"]?.is_valid_as_of_time ? true : false
+                      }
+                    >
+                      Create Camp
+                      <Image
+                        src="/images/Icon-plus.svg"
+                        alt="svg"
+                        className="icon-topic"
+                        height={16}
+                        width={16}
+                      />
+                    </SecondaryButton>
+                  )}
                 {isHtmlContent}
               </div>
             )}

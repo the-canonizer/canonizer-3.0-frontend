@@ -5,6 +5,9 @@ import { WarningOutlined } from "@ant-design/icons";
 import CommonCards from "components/shared/Card";
 import CustomSkelton from "components/common/customSkelton";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
+import { setSearchValue } from "src/store/slices/searchSlice";
+import { useDispatch } from "react-redux";
+import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
 
 export const getHighlightedText = (text, highlight) => {
   const parts = text?.split(
@@ -27,7 +30,6 @@ export const getHighlightedText = (text, highlight) => {
     </span>
   );
 };
-
 const ExistingTopicList = ({
   isLoading,
   topicName,
@@ -35,6 +37,7 @@ const ExistingTopicList = ({
   isShowMore,
   isError,
 }) => {
+  const dispatch = useDispatch();
   return (
     <CommonCards className="bg-topic-card-gr !border-canGrey2 h-full">
       {isError && (
@@ -76,6 +79,22 @@ const ExistingTopicList = ({
                 <a
                   className="text-canBlue uppercase text-xs font-semibold hocus:text-canHoverBlue"
                   target="_blank"
+                  role="button" // Adds button role
+                  tabIndex={0} // Makes it focusable via keyboard
+                  onClick={() => {
+                    dispatch(setSearchValue(""));
+                    dispatch(
+                      setFilterCanonizedTopics({
+                        // asofdate: Date.now() / 1000,
+                        asof: "default",
+                      })
+                    );
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      dispatch(setSearchValue(""));
+                    }
+                  }}
                 >
                   See more results
                 </a>
