@@ -252,7 +252,7 @@ export const {
   setGlobalUserProfileDataLanguage,
   setGlobalUserProfileDataAlgo,
   setOpenDrawerForManageSupport,
-  setDisableSubmitButtonForDirectSupportedCamp
+  setDisableSubmitButtonForDirectSupportedCamp,
   // setOpenConsensusTreePopup,
 } = treeSlice.actions;
 

@@ -92,8 +92,8 @@ const CampStatementCard = ({ loadingIndicator }) => {
           onClick={() =>
             router?.push({
               pathname:
-                (campStatement?.length < 0 || 
-                  campStatement?.at(0)?.grace_period_record_count > 0)
+                campStatement?.length < 0 ||
+                campStatement?.at(0)?.grace_period_record_count > 0
                   ? `/statement/history/${replaceSpecialCharacters(
                       router?.query?.camp.at(0),
                       "-"
@@ -111,9 +111,9 @@ const CampStatementCard = ({ loadingIndicator }) => {
             })
           }
         >
-          {(campStatement[0]?.parsed_value ||
-          campStatement?.at(0)?.in_review_changes || 
-          campStatement?.at(0)?.grace_period_record_count>0)
+          {campStatement[0]?.parsed_value ||
+          campStatement?.at(0)?.in_review_changes ||
+          campStatement?.at(0)?.grace_period_record_count > 0
             ? K?.exceptionalMessages?.manageCampStatementButton
             : K?.exceptionalMessages?.addCampStatementButton}
           <Image
@@ -171,7 +171,11 @@ const CampStatementCard = ({ loadingIndicator }) => {
         "--card-body-height": `calc(100% - ${getElementHeight()}px)`,
         "--element-height": `${getElementHeight()}px`,
       }}
-      className={`border-0 h-100 bg-white [&_.ant-card-body]:p-0 [&_.ant-card-body]:lg:p-[24px] [&_.ant-card-body]:flex overflow-hidden lg:bg-canGray mb-8 lg:mb-14 border-t-8 ${router?.query?.asof == "review"?"!border-canOrange":"!border-canGreen"} h-[400px] xl:h-[600px] statementCardBody`}
+      className={`border-0 h-100 bg-white [&_.ant-card-body]:p-0 [&_.ant-card-body]:lg:p-[24px] [&_.ant-card-body]:flex overflow-hidden lg:bg-canGray mb-8 lg:mb-14 border-t-8 ${
+        router?.query?.asof == "review"
+          ? "!border-canOrange"
+          : "!border-canGreen"
+      } h-[400px] xl:h-[600px] statementCardBody`}
       data-testid="algoSelect"
       id="statementCard"
       title={
@@ -238,10 +242,7 @@ const CampStatementCard = ({ loadingIndicator }) => {
           }`}
         >
           <div
-            className={
-              styles.campStatement +
-              " text-canBlack opacity-80 text-sm font-normal leading-6"
-            }
+            className={`${styles.campStatement} text-canBlack opacity-80 text-sm font-normal leading-6 [&_a]:!text-canBlue [&_a]:hover:!text-canHoverBlue`}
           >
             {campStatement?.length && campStatement[0]?.parsed_value ? (
               <div

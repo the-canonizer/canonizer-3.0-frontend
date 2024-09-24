@@ -27,6 +27,7 @@ import PrimaryButton from "components/shared/Buttons/PrimariButton";
 import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 import Inputs from "components/shared/FormInputs";
 import SelectInputs from "components/shared/FormInputs/select";
+import { openNotificationWithIcon } from "components/common/notification/notificationBar";
 
 const { Text } = Typography;
 
@@ -179,7 +180,7 @@ function AddOrEdit({ edit }) {
     if (isUserAuthenticated && is_admin) {
       nickNameListApiCall();
     } else if (!is_admin) {
-      message.error("Only admin can add/edit news");
+      openNotificationWithIcon("only admin can add/edit news", "error");
       router?.push("/");
     } else {
       router?.push("/login");

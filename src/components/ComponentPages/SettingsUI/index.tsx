@@ -466,7 +466,7 @@ const SettingsUI = () => {
                             value: "Preferences",
                             label: (
                               <span>
-                                <Link href="#">
+                                <Link href="/settings?tab=user_preferences">
                                   <a className="flex items-center gap-3">
                                     <span className="text-base font-medium text-canBlack">
                                       {" "}
