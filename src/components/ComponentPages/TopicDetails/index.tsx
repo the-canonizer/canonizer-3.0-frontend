@@ -467,7 +467,8 @@ const TopicDetails = ({ serverSideCall }: any) => {
     <Fragment>
       <Layout
         rightSidebar={
-          !openConsensusTreePopup && (
+          !openConsensusTreePopup &&
+          tree?.["1"]?.is_valid_as_of_time && (
             <Fragment>
               <div className="support-tree-parent-box w-full mt-14 lg:mt-0">
                 {tree?.["1"]?.is_valid_as_of_time && (
