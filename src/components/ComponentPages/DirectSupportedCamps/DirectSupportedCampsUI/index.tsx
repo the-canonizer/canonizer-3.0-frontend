@@ -60,6 +60,7 @@ export default function DirectSupportedCampsUI({
   const [currentPage, setCurrentPage] = useState(1);
   const [search, setSearch] = useState("");
   const [activeTopic, setActiveTopic] = useState(null);
+  const [reOrderedTags, setReOrderedTags] = useState(null);
 
   const { openDrawerForDirectSupportedCamp } = useSelector(
     (state: RootState) => ({
@@ -171,12 +172,18 @@ export default function DirectSupportedCampsUI({
             }}
             onChange={(tags) => tagsOrder(record.topic_num, record, tags)}
             /> */}
-          
 
           <DraggableTags
             valData={camps}
             record={record}
             tagsOrder={tagsOrder}
+            reOrderedTags={reOrderedTags}
+            setReOrderedTags={setReOrderedTags}
+            onClose={() => {
+              handleClose(reOrderedTags, record.topic_num, record, []);
+              setValData(reOrderedTags);
+              setRevertBack([]);
+            }}
           />
 
           {showSaveChanges && idData === record.topic_num && (
@@ -209,7 +216,6 @@ export default function DirectSupportedCampsUI({
             </div>
           )}
         </div>
-        
       ),
     },
   ];

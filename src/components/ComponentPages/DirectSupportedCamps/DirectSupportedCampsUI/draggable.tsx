@@ -25,6 +25,8 @@ export default function Draggable({
   record,
   tagsOrder,
   onClose,
+  reOrderedTags,
+  setReOrderedTags
 }: any) {
   const sensors = useSensors(
     useSensor(MouseSensor, { activationConstraint: { distance: 10 } }),
@@ -32,8 +34,6 @@ export default function Draggable({
       coordinateGetter: sortableKeyboardCoordinates,
     })
   );
-
-  const [tagData, setTagData] = useState(null);
 
   return (
     <div className="draggable-container">
@@ -52,8 +52,8 @@ export default function Draggable({
               index={index}
               onClose={onClose}
               record={record}
-              tagData={tagData}
               tagsOrder={tagsOrder}
+              setReOrderedTags={setReOrderedTags}
             />
           ))}
         </SortableContext>
@@ -74,7 +74,8 @@ export default function Draggable({
         arrayMove(valData, oldIndex, newIndex)
       );
 
-      setTagData(arrayMove(valData, oldIndex, newIndex));
+      setReOrderedTags(arrayMove(valData, oldIndex, newIndex));
+
       return arrayMove(valData, oldIndex, newIndex);
     }
   }
@@ -116,11 +117,7 @@ function SortableItem(props) {
             }
             onClose={(evt) => {
               evt.preventDefault();
-              props?.tagsOrder(
-                props?.record.topic_num,
-                props?.record,
-                props?.tagData
-              );
+              props?.onClose()
             }}
           >
             {`${props?.index + 1}-${props?.item?.camp_name}`}
@@ -144,11 +141,7 @@ function SortableItem(props) {
             }
             onClose={(evt) => {
               evt.preventDefault();
-              props?.tagsOrder(
-                props?.record.topic_num,
-                props?.record,
-                props?.tagData
-              );
+              props?.onClose()
             }}
           >
             <a
