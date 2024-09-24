@@ -1,4 +1,3 @@
-import { Fragment } from "react";
 import { Row, Col } from "antd";
 import { useSelector } from "react-redux";
 
@@ -25,56 +24,53 @@ const HomePageContainer = () => {
   }));
 
   return (
-    <Fragment>
-      <Layout
-        afterHeader={<WelcomeContent />}
-        rightSidebar={
-          <div className="md:mt-3.5" data-testid="sideBar">
-            {/* {!isMobile ? (
+    <Layout
+      afterHeader={<WelcomeContent />}
+      rightSidebar={
+        <div className="md:mt-3.5" data-testid="sideBar">
+          {/* {!isMobile ? (
               <div className="mb-14" data-testid="topicsList">
                 <TrandingTopics />
               </div>
             ) : null} */}
 
-            <div className="mb-14" data-testid="helpCard">
-              <WhatsNew />
-            </div>
-
-            {isUserAuthenticated ? (
-              <div
-                className="mb-14 [&_.ant-tabs-tab-btn]:!border-none"
-                data-testid="recentActivities"
-              >
-                <RecentActivities />
-              </div>
-            ) : null}
+          <div className="mb-14" data-testid="helpCard">
+            <WhatsNew />
           </div>
-        }
-      >
-        <Row className="pt-4 w-100" data-testid="featuredTopic">
-          <Col md={24} className="mb-14">
-            <FeaturedTopic />
-          </Col>
-          {/* {isMobile ? (
+
+          {isUserAuthenticated ? (
+            <div
+              className="mb-14 [&_.ant-tabs-tab-btn]:!border-none"
+              data-testid="recentActivities"
+            >
+              <RecentActivities />
+            </div>
+          ) : null}
+        </div>
+      }
+    >
+      <Row className="pt-4 w-100" data-testid="featuredTopic">
+        <Col md={24} className="mb-14">
+          <FeaturedTopic />
+        </Col>
+        {/* {isMobile ? (
             <Col md={24} xs={24} className="mb-14">
               <TrandingTopics />
             </Col>
           ) : null} */}
-          {isUserAuthenticated && preferedTopic?.length ? (
-            <Col md={24} className="mb-14" data-testid="preferedTopic">
-              <PreferedTopics />
-            </Col>
-          ) : null}
-          {/* <Col md={24} className="mb-14" data-testid="categoriesList">
+        {isUserAuthenticated && preferedTopic?.length ? (
+          <Col md={24} className="mb-14" data-testid="preferedTopic">
+            <PreferedTopics />
+          </Col>
+        ) : null}
+        {/* <Col md={24} className="mb-14" data-testid="categoriesList">
             <CategoriesList />
           </Col> */}
-          <Col md={24} className="mb-0" data-testid="hotTopics">
-            <HotTopics />
-          </Col>
-        </Row>
-      </Layout>
-      {/* <Tour open={open} onClose={() => setOpen(false)} steps={steps} /> */}
-    </Fragment>
+        <Col md={24} className="mb-0" data-testid="hotTopics">
+          <HotTopics />
+        </Col>
+      </Row>
+    </Layout>
   );
 };
 
