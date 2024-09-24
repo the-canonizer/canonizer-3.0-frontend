@@ -179,9 +179,15 @@ export default function DirectSupportedCampsUI({
             updateTagsOrder={tagsOrder}
             setReOrderedTags={setReOrderedTags}
             onClose={() => {
-              handleClose(reOrderedTags, record.topic_num, record, []);
-              setValData(reOrderedTags);
-              setRevertBack([]);
+              if (reOrderedTags) {
+                handleClose(reOrderedTags, record.topic_num, record, []);
+                setValData(reOrderedTags);
+                setRevertBack([]);
+              }else{
+                handleClose(camps, record.topic_num, record, []);
+                setValData(camps);
+                setRevertBack([]);
+              }
             }}
           />
 
