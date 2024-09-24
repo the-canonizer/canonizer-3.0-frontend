@@ -176,8 +176,7 @@ export default function DirectSupportedCampsUI({
           <DraggableTags
             valData={camps}
             record={record}
-            tagsOrder={tagsOrder}
-            reOrderedTags={reOrderedTags}
+            updateTagsOrder={tagsOrder}
             setReOrderedTags={setReOrderedTags}
             onClose={() => {
               handleClose(reOrderedTags, record.topic_num, record, []);

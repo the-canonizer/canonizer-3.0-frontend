@@ -18,14 +18,12 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Image, Tag } from "antd";
-import { useState } from "react";
 
 export default function Draggable({
   valData,
   record,
-  tagsOrder,
+  updateTagsOrder,
   onClose,
-  reOrderedTags,
   setReOrderedTags
 }: any) {
   const sensors = useSensors(
@@ -52,7 +50,7 @@ export default function Draggable({
               index={index}
               onClose={onClose}
               record={record}
-              tagsOrder={tagsOrder}
+              updateTagsOrder={updateTagsOrder}
               setReOrderedTags={setReOrderedTags}
             />
           ))}
@@ -68,7 +66,7 @@ export default function Draggable({
       const oldIndex = valData?.findIndex((i) => i?.id === active?.id);
       const newIndex = valData?.findIndex((i) => i?.id === over?.id);
 
-      tagsOrder(
+      updateTagsOrder(
         record.topic_num,
         record,
         arrayMove(valData, oldIndex, newIndex)
