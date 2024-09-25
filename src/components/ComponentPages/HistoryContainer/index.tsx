@@ -77,14 +77,13 @@ function HistoryContainer() {
   const [isHistoryPage, setIsHistoryPage] = useState(true);
   const [objectionState, setObjectionState] = useState(false);
 
-
   const changeAgree = () => {
     setAgreeCheck(!agreecheck);
   };
 
   const changeObjection = () => {
-  setObjectionState(!objectionState);
-  }
+    setObjectionState(!objectionState);
+  };
 
   const changeDiscard = () => {
     setDiscardChange(!discardChange);
@@ -151,7 +150,13 @@ function HistoryContainer() {
     };
     asynCall();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeTab, agreecheck, discardChange, isUserAuthenticated,objectionState]);
+  }, [
+    activeTab,
+    agreecheck,
+    discardChange,
+    isUserAuthenticated,
+    objectionState,
+  ]);
   useEffect(() => {
     if (didMount.current) {
       return () => {
@@ -175,7 +180,7 @@ function HistoryContainer() {
       };
       let res = await getHistoryApi(reqBody, count.current, historyOf);
       // setCampHistory(res?.data);
-      
+
       if (res?.status_code == 404 || res?.status_code == 400) {
         if (router?.pathname == "/topic/history/[...camp]") {
           router?.push(router?.asPath?.replace("topic/history", "topic"));
