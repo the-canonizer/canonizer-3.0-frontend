@@ -114,8 +114,8 @@ function SortableItem(props) {
               />
             }
             onClose={(evt) => {
-              evt.preventDefault();
-              props?.onClose(props?.item)
+              // evt.preventDefault();
+              // props?.onClose(props?.item)
             }}
           >
             {`${props?.index + 1}-${props?.item?.camp_name}`}
@@ -124,7 +124,7 @@ function SortableItem(props) {
       ) : (
         <>
           <Tag
-            className="rounded-full mr-0 bg-[#F0F2FA] flex items-center border-transparent font-semibold text-base px-5 py-2.5 leading-none text-canBlack"
+            className="rounded-full mr-0 bg-[#F0F2FA] flex items-center border-transparent font-semibold text-base px-5 py-2.5 leading-none"
             closable={true}
             closeIcon={
               <Image
@@ -144,6 +144,7 @@ function SortableItem(props) {
           >
             <a
               data-testid="styles_Bluecolor "
+              className="text-base font-semibold flex items-center gap-2.5"
               onClick={(e) => {
                 e.preventDefault();
                 window.location.href = props?.item?.camp_link;

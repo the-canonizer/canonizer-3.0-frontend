@@ -1016,5 +1016,12 @@ body {
     + div{
       @apply mt-2;
     }
+    .ant-tag{
+      &:hover{
+        a{
+        @apply text-canBlue;
+        }
+      }
+    }
   }
 }
