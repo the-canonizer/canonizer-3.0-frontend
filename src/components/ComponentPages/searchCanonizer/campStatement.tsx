@@ -226,7 +226,6 @@ const CampStatementSearch = () => {
                                       <ArrowLink
                                         campLink={jsonData?.[0]?.[1]?.camp_link}
                                       />
-                                      ;
                                     </div>
 
                                     {/* <div className={styles.statement_date}>
@@ -338,7 +337,6 @@ const CampStatementSearch = () => {
                                   <ArrowLink
                                     campLink={jsonData?.[0]?.[1]?.camp_link}
                                   />
-                                  ;
                                 </div>
 
                                 {/* <div className={styles.statement_date}>
