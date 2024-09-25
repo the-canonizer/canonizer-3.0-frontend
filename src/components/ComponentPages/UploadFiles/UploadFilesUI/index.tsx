@@ -1325,15 +1325,17 @@ const UploadFileUI = ({
                                 <label
                                   className={
                                     fileSizeFlag
-                                      ? "fileName_label_max_limit"
-                                      : "fileName_label"
+                                      ? "fileName_label_max_limit block w-full text-sm font-medium mt-2 border-t pt-2 mb-4"
+                                      : "fileName_label block w-full text-sm font-medium mt-2 border-t pt-2 mb-4"
                                   }
                                 >
                                   {file.name}
                                 </label>
                                 <Form.Item
                                   label="Enter file name"
-                                  className={"fileName_span"}
+                                  className={
+                                    "fileName_span mb-2 [&_label]:font-normal [&_label]:text-sm [&_.ant-form-item-label]:mb-0 [&_.ant-form-item-label]:pb-0"
+                                  }
                                   name={file.uid}
                                   rules={[
                                     {
@@ -1345,7 +1347,7 @@ const UploadFileUI = ({
                                   <Input
                                     data-testid="enterFileName"
                                     id="enterFileName"
-                                    className="mr0"
+                                    className="mr-0 text-sm font-medium rounded-md"
                                     name={file.uid}
                                     onChange={(e) =>
                                       handleChangeFileName(e, file.uid)

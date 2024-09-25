@@ -313,9 +313,7 @@ const DropDownMenu = () => {
         </Menu.Item>
         <Menu.Item
           icon={<HeartOutlined />}
-          disabled={
-            asof == "bydate" || campRecord?.is_archive
-          }
+          disabled={asof == "bydate" || campRecord?.is_archive}
         >
           {isTopicPage && (
             <Link
@@ -329,7 +327,7 @@ const DropDownMenu = () => {
               <div
                 className="topicDetailsCollapseFooter"
                 onClick={(e) => {
-                  if(isUserAuthenticated){
+                  if (isUserAuthenticated) {
                     e?.preventDefault();
                     e?.stopPropagation();
                     handleClickSupportCheck();
@@ -340,10 +338,12 @@ const DropDownMenu = () => {
                     asof == "bydate" || campRecord?.is_archive ? "none" : "all",
                 }}
               >
-                {currentGetCheckSupportExistsData?.is_delegator == 1 ||
-                currentGetCheckSupportExistsData?.support_flag != 1
-                  ? K?.exceptionalMessages?.addSupport
-                  : K?.exceptionalMessages?.manageSupport}
+                {isUserAuthenticated
+                  ? currentGetCheckSupportExistsData?.is_delegator == 1 ||
+                    currentGetCheckSupportExistsData?.support_flag != 1
+                    ? K?.exceptionalMessages?.addSupport
+                    : K?.exceptionalMessages?.manageSupport
+                  : K?.exceptionalMessages?.directJoinSupport}
               </div>
             </Link>
           )}
