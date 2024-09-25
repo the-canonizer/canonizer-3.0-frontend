@@ -134,7 +134,7 @@ export default function DirectSupportedCampsUI({
                       disabled={tag.dis}
                       onClick={(e) => {
                         e.preventDefault();
-                        window.location.href = tag.camp_link;
+                        // window.location.href = tag.camp_link;
                       }}
                     >
                       <div className={styles.btndiv}>
@@ -178,16 +178,10 @@ export default function DirectSupportedCampsUI({
             record={record}
             updateTagsOrder={tagsOrder}
             setReOrderedTags={setReOrderedTags}
-            onClose={() => {
-              if (reOrderedTags) {
-                handleClose(reOrderedTags, record.topic_num, record, []);
-                setValData(reOrderedTags);
-                setRevertBack([]);
-              }else{
-                handleClose(camps, record.topic_num, record, []);
-                setValData(camps);
-                setRevertBack([]);
-              }
+            onClose={(tag) => {
+              handleClose(tag, record.topic_num, record, []);
+              setValData(tag);
+              setRevertBack([]);
             }}
           />
 
