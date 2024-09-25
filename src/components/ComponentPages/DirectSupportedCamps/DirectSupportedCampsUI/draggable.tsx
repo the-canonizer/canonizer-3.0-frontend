@@ -86,7 +86,7 @@ function SortableItem(props) {
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-    cursor: "pointer",
+    cursor: props?.item?.dis ? "not-allowed": "pointer",
   };
 
   return (
@@ -104,12 +104,11 @@ function SortableItem(props) {
             closable={true}
             closeIcon={
               <Image
-                className="cursor-pointer"
                 preview={false}
                 src="/images/minus-user-icon.svg"
                 width={24}
                 height={24}
-                style={{ cursor: "pointer", alignSelf: "center" }}
+                style={{ cursor: "not-allowed", alignSelf: "center" }}
                 alt=""
               />
             }
