@@ -127,8 +127,8 @@ export default function DirectSupportedCampsUI({
         <div>
           <DraggableArea
             tags={camps}
-            render={(props: { tag: Tag }) => {
-              const { tag } = props;
+            render={(props: { tag: Tag, index: number }) => {
+              const { tag, index } = props;
 
               return (
                 <div
@@ -145,8 +145,9 @@ export default function DirectSupportedCampsUI({
                       window.location.href = tag.camp_link;
                     }}
                   >
+                    {console.log(tag,)}
                     <div className={styles.btndiv}>
-                      <span className="count">{tag.support_order}. </span>
+                      <span className="count">{index + 1}. </span>
                       <Link href={tag.camp_link}>
                         <a
                           className="text-sm text-canBlack font-semibold"
