@@ -83,11 +83,23 @@ export default function DirectSupportedCampsUI({
   }
   const columns = [
     {
+      title: "Sr.",
+      dataIndex: "sr",
+      key: "sr",
+
+      render: (text, record, index) => (
+        <span className="bg-canGrey2 rounded-full h-5 w-6 flex items-center justify-center">
+          {" "}
+          {index + 1}
+        </span>
+      ),
+    },
+    {
       title: "Supported Topics",
       dataIndex: "title",
       key: "title",
       render: (text: string, record: RecordType) => (
-        <div className="flex gap-2.5">
+        <div className="flex gap-2.5 line-clamp-1">
           <Link href={record.title_link}>
             <a className="text-base font-semibold flex items-center gap-2.5 text-canBlack">
               {text}
@@ -272,15 +284,13 @@ export default function DirectSupportedCampsUI({
   if (hasDirectSupportedCamps) {
     if (hasFilteredArray) {
       displayContent = (
-        <>
-          <Table
-            dataSource={filteredArray()}
-            columns={columns}
-            pagination={false}
-            rowKey="topic_num"
-            className="[&_.ant-table-thead>tr>th]:!bg-canGray"
-          />
-        </>
+        <Table
+          dataSource={filteredArray()}
+          columns={columns}
+          pagination={false}
+          rowKey="topic_num"
+          className="[&_.ant-table-thead>tr>th]:!bg-canGray [&_.ant-table-cell]:max-w-[200px]"
+        />
       );
     } else {
       displayContent = showEmpty("No Data Found");
