@@ -146,7 +146,7 @@ export default function DirectSupportedCampsUI({
                       disabled={tag.dis}
                       onClick={(e) => {
                         e.preventDefault();
-                        window.location.href = tag.camp_link;
+                        // window.location.href = tag.camp_link;
                       }}
                     >
                       <div className={styles.btndiv}>
@@ -190,9 +190,9 @@ export default function DirectSupportedCampsUI({
             record={record}
             updateTagsOrder={tagsOrder}
             setReOrderedTags={setReOrderedTags}
-            onClose={() => {
-              handleClose(reOrderedTags, record.topic_num, record, []);
-              setValData(reOrderedTags);
+            onClose={(tag) => {
+              handleClose(tag, record.topic_num, record, []);
+              setValData(tag);
               setRevertBack([]);
             }}
           />
