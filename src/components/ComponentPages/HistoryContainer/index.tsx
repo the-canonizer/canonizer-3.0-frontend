@@ -48,15 +48,15 @@ function HistoryContainer() {
   const [liveRecordId, setLiveRecordId] = useState<any>(null);
   const [isHistoryPage, setIsHistoryPage] = useState(true);
   const [objectionState, setObjectionState] = useState(false);
-
+  const [initialLoading, setInitialLoading] = useState(true);
 
   const changeAgree = () => {
     setAgreeCheck(!agreecheck);
   };
 
   const changeObjection = () => {
-  setObjectionState(!objectionState);
-  }
+    setObjectionState(!objectionState);
+  };
 
   const changeDiscard = () => {
     setDiscardChange(!discardChange);
@@ -108,10 +108,17 @@ function HistoryContainer() {
       setLoadMoreItems(true);
       count.current = 1;
       await campStatementApiCall();
+      setInitialLoading(false); // Disable initial loading once data is fetched
     };
     asynCall();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeTab, agreecheck, discardChange, isUserAuthenticated,objectionState]);
+  }, [
+    activeTab,
+    agreecheck,
+    discardChange,
+    isUserAuthenticated,
+    objectionState,
+  ]);
   useEffect(() => {
     if (didMount.current) {
       return () => {
@@ -135,7 +142,7 @@ function HistoryContainer() {
       };
       let res = await getHistoryApi(reqBody, count.current, historyOf);
       // setCampHistory(res?.data);
-      
+
       if (res?.status_code == 404 || res?.status_code == 400) {
         if (router?.pathname == "/topic/history/[...camp]") {
           router?.push(router?.asPath?.replace("topic/history", "topic"));
@@ -298,9 +305,7 @@ function HistoryContainer() {
     return key;
   };
 
-  const renderCampHistories = loadingIndicator ? (
-    <CustomSkelton skeltonFor="historyPage" />
-  ) : (
+  const renderCampHistories =
     campHistory &&
     campHistory?.items?.length &&
     campHistory?.items?.map((campHistoryData, index) => {
@@ -338,8 +343,7 @@ function HistoryContainer() {
           changeObjection={changeObjection}
         />
       );
-    })
-  );
+    });
 
   const handleBackButton = () => {
     const topicDetails = router.query.camp?.at(0);
@@ -457,14 +461,18 @@ function HistoryContainer() {
             ? campHistory?.items?.length > 0 && renderContent()
             : campHistory?.items?.length > 0 && (
                 <div className="ch-content lg:w-[calc(100%-320px)] p-8 bg-[#F4F5FA] rounded-lg max-md:w-full relative">
-                  <InfiniteScroll
-                    initialLoad={false}
-                    loadMore={!loadingIndicator && campStatementApiCall}
-                    hasMore={loadMoreItems}
-                    loader={<></>}
-                  >
-                    {renderCampHistories}
-                  </InfiniteScroll>
+                  {initialLoading ? (
+                    <CustomSkelton skeltonFor="historyPage" />
+                  ) : (
+                    <InfiniteScroll
+                      initialLoad={false}
+                      loadMore={!loadingIndicator && campStatementApiCall}
+                      hasMore={loadMoreItems}
+                      loader={<CustomSkelton skeltonFor="historyPage" />}
+                    >
+                      {renderCampHistories}
+                    </InfiniteScroll>
+                  )}
                 </div>
               )}
         </div>

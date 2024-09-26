@@ -62,7 +62,7 @@ function ObjectionDrawer({
   const [nickNameList, setNickNameList] = useState([]);
   const [selectedValue, setSelectedValue] = useState(null);
   const [selectedtNickname, setSelectedtNickname] = useState("");
-  const [nictNameId, setNictNameId] = useState(null);
+  const [nickNameId, setNickNameId] = useState(null);
   const [currentTopic, setCurrentTopic] = useState(null);
   const [currentCamp, setCurrentCamp] = useState(null);
   const [currentCampStatement, setCurrentCampStatement] = useState(null);
@@ -78,7 +78,7 @@ function ObjectionDrawer({
     let res = await getAllUsedNickNames(topicNum && body);
     if (res && res?.status_code == 200) {
       setNickNameList(res?.data);
-      setNictNameId(res?.data?.at(0)?.id);
+      setNickNameId(res?.data?.at(0)?.id);
     }
   };
 
@@ -212,7 +212,7 @@ function ObjectionDrawer({
     let status = "";
     if (drawerFor === "topicObjection") {
       payload.namespace_id = namespace_id;
-      payload.nick_name = values.nick_name;
+      payload.nick_name = selectedtNickname ? selectedtNickname : nickNameId;
       payload.submitter = currentTopic?.submitter_nick_id;
       payload.topic_id = currentTopic?.id;
       payload.topic_name = values.topic_name?.trim();
@@ -222,7 +222,7 @@ function ObjectionDrawer({
       res = await updateTopicApi(payload);
     } else if (drawerFor === "campObjection") {
       payload.namespace_id = namespace_id;
-      payload.nick_name = values.nick_name;
+      payload.nick_name = selectedtNickname ? selectedtNickname : nickNameId;
       payload.submitter = currentCamp?.submitter_nick_id;
       payload.topic_id = currentCamp?.id;
       payload.topic_name = values.topic_name?.trim();
@@ -235,7 +235,7 @@ function ObjectionDrawer({
       res = await updateCampApi(payload);
     } else if (drawerFor === "statementObjection") {
       payload.namespace_id = namespace_id;
-      payload.nick_name = values?.nick_name;
+      payload.nick_name = selectedtNickname ? selectedtNickname : nickNameId;
       payload.submitter = currentCampStatement?.submitter_nick_id;
       payload.topic_id = currentCampStatement?.id;
       payload.topic_name = values?.topic_name?.trim();
@@ -252,7 +252,7 @@ function ObjectionDrawer({
     setLoader(false);
     if (res?.status_code == 200) {
       status = "success";
-      await changeObjection()
+      await changeObjection();
     }
 
     if (res?.status_code == 400) {
