@@ -3,7 +3,7 @@
     @apply items-center;
     li,
     a {
-      @apply md:text-[#242B37] max-md:text-[#777F93] flex items-center;
+      @apply md:text-[#242B37] max-md:text-[#777F93] gap-1 flex items-center;
     }
     li {
       &:last-child {
@@ -22,5 +22,27 @@
         @apply max-lg:text-xs leading-[0] lg:text-base;
       }
     }
+  }
+}
+.warning-popover{
+  .ant-popover-content{
+    @apply absolute left-[-18px];
+ 
+  }
+
+  .ant-popover-inner{
+    @apply w-auto p-0 max-w-[350px] shadow-[0px_5px_20px_0px_#00000033];
+    .ant-popover-inner-content{
+      @apply p-2;
+      .ant-popover-content{
+        
+      .popoverParent{
+        span{
+          @apply text-[#777F93];
+        }
+      }
+    }
+    }
+
   }
 }

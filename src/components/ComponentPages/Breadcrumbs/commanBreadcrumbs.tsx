@@ -30,7 +30,14 @@ import PrimaryButton from "components/shared/Buttons/PrimariButton";
 import { setManageSupportStatusCheck } from "src/store/slices/campDetailSlice";
 import K from "src/constants";
 import Link from "next/link";
-import { InfoCircleOutlined } from "@ant-design/icons";
+import {
+  DoubleLeftOutlined,
+  EllipsisOutlined,
+  InfoCircleOutlined,
+  WarningOutlined,
+} from "@ant-design/icons";
+import threeDotsSvg from "../../../assets/image/threeDots-svg.svg";
+import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 
 function CommanBreadcrumbs({
   payload = null,
@@ -55,6 +62,7 @@ function CommanBreadcrumbs({
   const didMount = useRef(false);
   const router = useRouter();
   const [isMobile, setIsMobile] = useState(false);
+  const [showAll, setShowAll] = useState(false);
 
   //   const historyOf = compareMode ? historyOF : router?.asPath.split("/")[1];
 
@@ -69,6 +77,7 @@ function CommanBreadcrumbs({
     changeGoneLive,
     algorithm,
     campStatement,
+    tree,
   } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
     campRecord: state?.topicDetails?.currentCampRecord,
@@ -80,7 +89,11 @@ function CommanBreadcrumbs({
     changeGoneLive: state?.topicDetails?.changeGoneLive,
     algorithm: state.filters?.filterObject?.algorithm,
     campStatement: state?.topicDetails?.campStatement,
+    tree: state?.topicDetails?.tree && state?.topicDetails?.tree[0],
   }));
+
+  console.log("topicRecord", topicRecord?.in_review_changes);
+  console.log("campRecord", campRecord?.in_review_changes);
 
   const [campSubscriptionID, setCampSubscriptionID] = useState(
     campRecord?.subscriptionId
@@ -407,6 +420,18 @@ function CommanBreadcrumbs({
     return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
   };
 
+  const warningText = (
+    <div className="popoverParent">
+      <span>Some changes are currently under review in this camp.</span>
+    </div>
+  );
+
+  const warningTextForTopic = (
+    <div className="popoverParent">
+      <span>Some changes are currently under review in this camp.</span>
+    </div>
+  );
+
   const contentEventLine = (
     <div className="popoverParent">
       <span>
@@ -663,6 +688,13 @@ function CommanBreadcrumbs({
     </div>
   );
 
+  const topicHref = `/topic/${
+    payload?.topic_num || topicId
+  }-${replaceSpecialCharacters(
+    breadCrumbRes?.topic_name || "",
+    "-"
+  )}/1-Agreement?${getQueryParams()?.returnQuery || ""}`;
+
   const handleClick = () => {
     const lastCamp =
       breadCrumbRes?.bread_crumb[breadCrumbRes?.bread_crumb?.length - 1];
@@ -690,12 +722,37 @@ function CommanBreadcrumbs({
   //   const formattedTopicName = breadCrumbRes?.topic_name.split(" ").join("-");
   //   const href = `/topic/${topicNum}-${formattedTopicName}/${campNum}-${campName}`;
 
+  console.log("showAll", showAll);
+
   return (
     <>
       <div className="max-md:mx-[-1rem] max-md:shadow-[0px_10px_10px_0px_#0000001A] md:bg-canGrey1_Opacity70 p-[1.5rem] md:rounded-[1.25rem] flex items-center justify-between gap-2 ">
         {/* <Spin spinning={false}> */}
+        {isForumPage ? (
+          <Popover
+            content="Back to camp forum page"
+            key="back_button"
+            placement="topLeft"
+          >
+            <Button
+              onClick={() => {
+                router.push({
+                  pathname:
+                    "/forum/" +
+                    router?.query?.topic +
+                    "/" +
+                    router?.query?.camp +
+                    "/threads",
+                });
+              }}
+              // className={styles.backButton}
+            >
+              <DoubleLeftOutlined />
+            </Button>
+          </Popover>
+        ) : null}
 
-        {/* <Breadcrumb
+        <Breadcrumb
           className="cn-breadcrumbs"
           separator={
             <>
@@ -706,71 +763,125 @@ function CommanBreadcrumbs({
           <Breadcrumb.Item href="/">
             <i className="icon-home"></i>
           </Breadcrumb.Item>
-          <Breadcrumb.Item href={href}>
-            <Popover content={content} title={title} className="title-popover">
-              <div className="flex items-center gap-1.5">
-                Topic: {breadCrumbRes && breadCrumbRes?.topic_name}
-                <InfoCircleOutlined />
-              </div>
-            </Popover>
-          </Breadcrumb.Item>
-          <Breadcrumb.Item href={href}>
-            <Popover content={content} title={title} className="title-popover">
-              <div className="flex items-center gap-1.5">
-                Topic: {breadCrumbRes && breadCrumbRes?.topic_name}
-                <InfoCircleOutlined />
-              </div>
-            </Popover>
-          </Breadcrumb.Item>
-          <Breadcrumb.Item href={href}>
-            <Popover content={content} title={title} className="title-popover">
-              <div className="flex items-center gap-1.5">
-                Topic: {breadCrumbRes && breadCrumbRes?.topic_name}
-                <InfoCircleOutlined />
-              </div>
-            </Popover>
-          </Breadcrumb.Item>
-        </Breadcrumb> */}
-        <Breadcrumb
-          className="cn-breadcrumbs"
-          separator={
-            <>
-              <i className="icon-angle-right-arrow"></i>
-            </>
-          }
-        >
-          <Breadcrumb.Item href="/">
-            <i className="icon-home"></i>
-          </Breadcrumb.Item>
-          <Breadcrumb.Item href={href}>
-            <Popover content={content} title={title} className="title-popover">
-              Topic: {breadCrumbRes && breadCrumbRes?.topic_name}
-              <span>
-                <InfoCircleOutlined />
-              </span>
-            </Popover>
-          </Breadcrumb.Item>
-          {/* <Breadcrumb.Item> */}
-          {breadCrumbRes
-            ? breadCrumbRes?.bread_crumb?.map((camp, index) => {
-                return (
-                  // eslint-disable-next-line react/jsx-key
-                  <Breadcrumb.Item href="">
-                    <Link
-                      href={`/topic/${
-                        payloadData?.topic_num
-                          ? payloadData?.topic_num
-                          : topicId
-                      }-${replaceSpecialCharacters(
-                        breadCrumbRes?.topic_name,
-                        "-"
-                      )}/${camp?.camp_num}-${replaceSpecialCharacters(
-                        camp?.camp_name,
-                        "-"
-                      )}?${getQueryParams()?.returnQuery}`}
-                      key={index}
+          { (
+            <Breadcrumb.Item href={topicHref}>
+              {breadCrumbRes && !!topicSubscriptionID && (
+                <Tooltip
+                  title="You have subscribed to the entire topic."
+                  key="camp_subscribed_icon"
+                >
+                  <small style={{ alignSelf: "center" }}>
+                    <i className="icon-subscribe text-canBlue"></i>
+                  </small>
+                </Tooltip>
+              )}
+              {topicRecord?.in_review_changes > 0 && (
+                <Popover
+                  content={warningTextForTopic}
+                  className="title-popover"
+                  placement="bottomLeft"
+                  overlayClassName="warning-popover"
+                >
+                  <WarningOutlined className="text-[#F19C39] !mt-0" />
+                </Popover>
+              )}
+              <Popover
+                content={content}
+                title={title}
+                className="title-popover"
+              >
+                <div className="flex items-center gap-1.5">
+                  Topic: {breadCrumbRes?.topic_name}
+                  <InfoCircleOutlined />
+                </div>
+              </Popover>
+            </Breadcrumb.Item>
+          )}
+          {/* below code optional on isTopic history page and there is tooltip and classes should be verify in testing */}
+          {/* {breadCrumbRes
+            ? !isTopicHistoryPage &&
+              breadCrumbRes &&
+              !!topicSubscriptionID && (
+                <Breadcrumb.Item href={topicHref}>
+                  {breadCrumbRes && !!topicSubscriptionID && (
+                    <Tooltip
+                      title="You have subscribed to the entire topic."
+                      key="camp_subscribed_icon"
                     >
-                      <a className="!text-canBlack gap-x-1 gap-y-1 flex hover:!text-canBlack !text-sm">
+                      <small style={{ alignSelf: "center" }}>
+                        <i className="icon-subscribe text-canBlue"></i>
+                      </small>
+                    </Tooltip>
+                  )}
+                  {topicRecord?.in_review_changes > 0 && (
+                    <Popover
+                      content={warningTextForTopic}
+                      className="title-popover"
+                      placement="bottomLeft"
+                      overlayClassName="warning-popover"
+                    >
+                      <WarningOutlined className="text-[#F19C39] !mt-0" />
+                    </Popover>
+                  )}
+                  <Popover
+                    content={content}
+                    title={title}
+                    className="title-popover"
+                  >
+                    <div className="flex items-center gap-1.5">
+                      Topic: {breadCrumbRes?.topic_name}
+                      <InfoCircleOutlined />
+                    </div>
+                  </Popover>
+                </Breadcrumb.Item>
+              )
+            : "N/A"
+            } */}
+          {breadCrumbRes ? (
+            breadCrumbRes?.bread_crumb?.length > 1 && !showAll ? (
+              <>
+                <Breadcrumb.Item>
+                  <a onClick={() => setShowAll(true)}>
+                    <EllipsisOutlined />
+                  </a>
+                </Breadcrumb.Item>
+                <Breadcrumb.Item href={""}>
+                  {breadCrumbRes &&
+                    !!campSubscriptionID &&
+                    !isTopicHistoryPage && (
+                      <Tooltip
+                        title="You have subscribed to this camp."
+                        key="camp_subscribed_icon"
+                      >
+                        <small style={{ alignSelf: "center" }}>
+                          <i className="icon-subscribe text-canBlue"></i>
+                        </small>
+                      </Tooltip>
+                    )}
+                  {campRecord?.in_review_changes > 0 && (
+                    <Popover
+                      content={warningText}
+                      className="title-popover"
+                      placement="bottomLeft"
+                      overlayClassName="warning-popover"
+                    >
+                      <WarningOutlined className="text-[#F19C39] !mt-0" />
+                    </Popover>
+                  )}
+                  <Popover content={contentForCamp} title={title2}>
+                    <div className="flex items-center gap-1.5">
+                      Camp: {breadCrumbRes?.bread_crumb?.at(-1)?.camp_name}
+                      <InfoCircleOutlined />
+                    </div>
+                  </Popover>
+                </Breadcrumb.Item>
+              </>
+            ) : (
+              breadCrumbRes?.bread_crumb?.map((camp, index) => {
+                return (
+                  <>
+                    {index === breadCrumbRes.bread_crumb.length - 1 ? (
+                      <Breadcrumb.Item href={""} key={index}>
                         {breadCrumbRes &&
                           !!campSubscriptionID &&
                           !isTopicHistoryPage && (
@@ -783,105 +894,84 @@ function CommanBreadcrumbs({
                               </small>
                             </Tooltip>
                           )}
-                        {/* <span
-                              className={
-                                breadCrumbRes?.bread_crumb.length -
-                                  1 ==
-                                index
-                                  ? styles.greenIndicateText
-                                  : styles.boldBreadcrumb
-                              }
-                            > */}
-                        {index === breadCrumbRes.bread_crumb.length - 1 ? (
-                          <Popover content={contentForCamp} title={title2}>
-                            <div className="flex items-center gap-1.5 text-sm">
-                              <span className="text-sm font-semibold">
-                                {camp?.camp_name}
-                              </span>
-                              <InfoCircleOutlined />
-                            </div>
+                        {campRecord?.in_review_changes > 0 && (
+                          <Popover
+                            content={warningText}
+                            className="title-popover"
+                            placement="bottomLeft"
+                            overlayClassName="warning-popover"
+                          >
+                            <WarningOutlined className="text-[#F19C39] !mt-0" />
                           </Popover>
-                        ) : (
-                          <div className="flex items-center gap-1.5 text-sm">
-                            <span className="text-sm">{camp?.camp_name}</span>
-                          </div>
                         )}
-                        {/* </span> */}
-                        {/* {index !== breadCrumbRes.bread_crumb.length - 1 && (
-                            <span className="!text-canBlack">
-                              <Image
-                                src="/images/arrow-bread.svg"
-                                alt="svg"
-                                className="icon-topic"
-                                height={10}
-                                width={10}
-                              />
-                            </span>
-                          )} */}
-                      </a>
-                    </Link>
-                  </Breadcrumb.Item>
+                        <Popover content={contentForCamp} title={title2}>
+                          <div className="flex items-center gap-1.5">
+                            Camp: {camp?.camp_name}
+                            <InfoCircleOutlined />
+                          </div>
+                        </Popover>
+                      </Breadcrumb.Item>
+                    ) : (
+                      <Breadcrumb.Item href={""} key={index}>
+                        {breadCrumbRes &&
+                          !!campSubscriptionID &&
+                          !isTopicHistoryPage && (
+                            <Tooltip
+                              title="You have subscribed to this camp."
+                              key="camp_subscribed_icon"
+                            >
+                              <small style={{ alignSelf: "center" }}>
+                                <i className="icon-subscribe text-canBlue"></i>
+                              </small>
+                            </Tooltip>
+                          )}
+                        {camp?.camp_name}
+                      </Breadcrumb.Item>
+                    )}
+                  </>
                 );
               })
-            : "N/A"}
-          {/* </Breadcrumb.Item> */}
-          {isEventLine && (
-            <Breadcrumb.Item>
-              <Popover
-                content={contentEventLine}
-                className="title-popover"
-                placement="bottom"
-              >
-                <div className="flex  items-center gap-1.5">
-                  <span className="font-normal text-base text-canBlack whitespace-nowrap">
-                    Event Line
-                  </span>
-                  <span>
-                    <Image
-                      src="/images/circle-info-bread.svg"
-                      alt="svg"
-                      className="icon-topic"
-                      height={16}
-                      width={16}
-                    />
-                  </span>
-                </div>
-              </Popover>
-            </Breadcrumb.Item>
+            )
+          ) : (
+            "N/A"
           )}
           {compareMode && (
             <Breadcrumb.Item>
-              <>
-                <div>
-                  <Image
-                    src="/images/arrow-bread.svg"
-                    alt="svg"
-                    className="icon-topic"
-                    height={10}
-                    width={10}
-                  />
-                </div>
-                <div className="flex  items-center gap-1.5">
-                  <span className="font-normal text-base text-canBlack whitespace-nowrap">
-                    {historyTitle() == "Statement History"
-                      ? "Statement History"
-                      : historyTitle() == "Topic History"
-                      ? "Topic History"
-                      : historyTitle() == "Camp History"
-                      ? "Camp History"
-                      : null}
-                  </span>
-                </div>
-              </>
+              <div className="flex  items-center gap-1.5">
+                <span className="font-normal text-base text-canBlack whitespace-nowrap">
+                  {historyTitle() == "Statement History"
+                    ? "Statement History"
+                    : historyTitle() == "Topic History"
+                    ? "Topic History"
+                    : historyTitle() == "Camp History"
+                    ? "Camp History"
+                    : null}
+                </span>
+              </div>
             </Breadcrumb.Item>
           )}
         </Breadcrumb>
-
+        {isEventLine && !isMobile && (
+          <Popover
+            content={contentEventLine}
+            className="title-popover"
+            placement="bottom"
+          >
+            <div className="flex  items-center gap-1.5">
+              <span className="font-normal text-base text-canBlack whitespace-nowrap">
+                Event Line
+              </span>
+              <span className="flex shrink-0">
+                <InfoCircleOutlined />
+              </span>
+            </div>
+          </Popover>
+        )}
         {!compareMode && !!updateId && (
           <PrimaryButton
             size="large"
             type="primary"
-            className="flex items-center justify-center rounded-[10px] max-lg:hidden gap-3.5 leading-none text-sm"
+            className="flex items-center justify-center rounded-[10px] max-lg:hidden gap-3.5 leading-none text-sm ml-auto"
             onClick={() => updateCurrentRecord()}
           >
             Update Current
@@ -894,6 +984,88 @@ function CommanBreadcrumbs({
               : null}
             <i className="icon-edit"></i>
           </PrimaryButton>
+        )}
+        {!isEventLine && (
+          <div className="flex items-center gap-3 shrink-0">
+            {!isHtmlContent && campStatement?.length > 0 && isTopicPage ? (
+              <div className="topicDetailsCollapseFooter printHIde camp">
+                <PrimaryButton
+                  disabled={campRecord?.is_archive == 1 ? true : false}
+                  className="printHIde sm:hidden md:hidden hidden lg:flex !h-[40px] py-2.5 px-5 items-center text-sm"
+                  onClick={() => {
+                    router?.push(
+                      `${
+                        campStatement?.length > 0
+                          ? campStatement[0]?.draft_record_id
+                            ? "/manage/statement/" +
+                              campStatement[0]?.draft_record_id +
+                              "?is_draft=1"
+                            : campStatement[0]?.parsed_value ||
+                              campStatement?.at(0)?.in_review_changes ||
+                              campStatement?.at(0)?.grace_period_record_count >
+                                0
+                            ? `/statement/history/${replaceSpecialCharacters(
+                                router?.query?.camp?.at(0),
+                                "-"
+                              )}/${replaceSpecialCharacters(
+                                router?.query?.camp?.at(1) ?? "1-Agreement",
+                                "-"
+                              )}`
+                            : `/create/statement/${replaceSpecialCharacters(
+                                router?.query?.camp?.at(0),
+                                "-"
+                              )}/${replaceSpecialCharacters(
+                                router?.query?.camp?.at(1) ?? "1-Agreement",
+                                "-"
+                              )}`
+                          : null
+                      }`
+                    );
+                  }}
+                  id="add-camp-statement-btn"
+                >
+                  {campStatement[0]?.parsed_value ||
+                  campStatement?.at(0)?.in_review_changes ||
+                  campStatement?.at(0)?.grace_period_record_count > 0
+                    ? K?.exceptionalMessages?.manageCampStatementButton
+                    : null}
+                  {(campStatement[0]?.parsed_value ||
+                    campStatement?.at(0)?.in_review_changes ||
+                    campStatement?.at(0)?.grace_period_record_count > 0 ||
+                    campStatement[0]?.draft_record_id) && (
+                    <Image
+                      src="/images/manage-btn-icon.svg"
+                      alt=""
+                      height={24}
+                      width={24}
+                    />
+                  )}
+                </PrimaryButton>
+              </div>
+            ) : null}
+
+            {!isHtmlContent &&
+              !isHistoryPage &&
+              !compareMode &&
+              campRecord?.is_archive == 0 && (
+                <SecondaryButton
+                  className="hidden px-8 py-2.5 lg:flex items-center text-sm gap-1"
+                  size="large"
+                  onClick={handleClick}
+                  disabled={!tree?.["1"]?.is_valid_as_of_time ? true : false}
+                >
+                  Create Camp
+                  <Image
+                    src="/images/Icon-plus.svg"
+                    alt="svg"
+                    className="icon-topic"
+                    height={16}
+                    width={16}
+                  />
+                </SecondaryButton>
+              )}
+            {isHtmlContent}
+          </div>
         )}
         {/* </Spin> */}
       </div>
