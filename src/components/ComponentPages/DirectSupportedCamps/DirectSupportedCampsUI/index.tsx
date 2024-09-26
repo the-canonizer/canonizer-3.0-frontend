@@ -146,7 +146,7 @@ export default function DirectSupportedCampsUI({
                       disabled={tag.dis}
                       onClick={(e) => {
                         e.preventDefault();
-                        // window.location.href = tag.camp_link;
+                        window.location.href = tag.camp_link;
                       }}
                     >
                       <div className={styles.btndiv}>
