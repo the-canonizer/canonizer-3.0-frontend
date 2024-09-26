@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "dev": "sh bin/dev.sh",
-    "build": "sh bin/build.sh && node ./update-build.mjs",
+    "build": "sh bin/build.sh",
     "start": "sh bin/start.sh",
     "lint": "next lint",
     "format": "prettier --write \"src/**/*.{ts,tsx}\"",
@@ -11,7 +11,9 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage --watchAll=false",
     "analyze": "cross-env ANALYZE=true next build",
-    "find:unused": "next-unused"
+    "find:unused": "next-unused",
+    "prebuild": "npm run generate-build-meta",
+    "generate-build-meta": "./node_modules/react-clear-cache/bin/cli.js"
   },
   "next-unused": {
     "alias": {},
@@ -68,6 +70,7 @@
     "htmldiff-js": "^1.0.5",
     "isomorphic-fetch": "^3.0.0",
     "localforage": "^1.10.0",
+    "mkdirp": "^0.5.6",
     "moment": "^2.29.1",
     "next": "^12.3.1",
     "next-redux-wrapper": "6.0.0",
@@ -78,6 +81,7 @@
     "raw-loader": "4",
     "react": "17.0.2",
     "react-async-script-loader": "^0.3.0",
+    "react-clear-cache": "^1.4.14",
     "react-cookie": "^4.1.1",
     "react-dom": "17.0.2",
     "react-draggable-tags": "^1.0.6",

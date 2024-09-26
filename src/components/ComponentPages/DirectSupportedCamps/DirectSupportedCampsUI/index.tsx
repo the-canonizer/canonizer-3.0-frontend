@@ -22,6 +22,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "src/store";
 import { setOpenDrawerForDirectSupportedCamp } from "src/store/slices/campDetailSlice";
 import PrimaryButton from "components/shared/Buttons/PrimariButton";
+import dynamic from "next/dynamic";
+const DraggableTags = dynamic(() => import("./draggable"), { ssr: false });
 
 export default function DirectSupportedCampsUI({
   removeCardSupportedCamps,
@@ -58,6 +60,7 @@ export default function DirectSupportedCampsUI({
   const [currentPage, setCurrentPage] = useState(1);
   const [search, setSearch] = useState("");
   const [activeTopic, setActiveTopic] = useState(null);
+  const [reOrderedTags, setReOrderedTags] = useState(null);
 
   const { openDrawerForDirectSupportedCamp } = useSelector(
     (state: RootState) => ({
@@ -125,60 +128,73 @@ export default function DirectSupportedCampsUI({
       key: "camps",
       render: (camps: Tag[], record: RecordType) => (
         <div>
-          <DraggableArea
+          {/* <DraggableArea
             tags={camps}
-            render={(props: { tag: Tag, index: number }) => {
-              const { tag, index } = props;
-
+            render={(props: { tag: Tag }) => {
+              const { tag } = props;
+              
               return (
-                <div
-                  className={`tag ${tag.dis ? "tags_disable" : ""} ${
-                    camps.length > 1 ? "mb-2.5" : ""
-                  } flex items-center`}
-                >
-                  <Button
-                    id="campsBtn"
-                    className="bg-canLightGrey rounded-full border-none flex items-center gap-2.5"
-                    disabled={tag.dis}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      window.location.href = tag.camp_link;
-                    }}
+                <>
+                  <div
+                    className={`tag ${tag.dis ? "tags_disable" : ""} ${
+                      camps.length > 1 ? "mb-2.5" : ""
+                    } flex items-center`}
                   >
-                    {console.log(tag,)}
-                    <div className={styles.btndiv}>
-                      <span className="count">{index + 1}. </span>
-                      <Link href={tag.camp_link}>
-                        <a
-                          className="text-sm text-canBlack font-semibold"
-                          draggable="false"
-                          onClick={(e) => e.preventDefault()} // Prevent default drag behavior
-                        >
-                          {tag.camp_name}
-                        </a>
-                      </Link>
-                    </div>
-                    <div
-                      className="flex items-center"
-                      onClick={() => {
-                        handleClose(tag, record.topic_num, record, []);
-                        setValData(tag);
-                        setRevertBack([]);
+                    <Button
+                      id="campsBtn"
+                      className="bg-canLightGrey rounded-full border-none flex items-center gap-2.5"
+                      disabled={tag.dis}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        window.location.href = tag.camp_link;
                       }}
                     >
-                      <Image
-                        className="cursor-pointer"
-                        src="/images/minus-user-icon.svg"
-                        width={24}
-                        height={24}
-                        alt=""
-                      />
-                    </div>
-                  </Button>
-                </div>
+                      <div className={styles.btndiv}>
+                        <span className="count">{tag.support_order}. </span>
+                        <Link href={tag.camp_link}>
+                          <a
+                            className="text-sm text-canBlack font-semibold"
+                            draggable="false"
+                            onClick={(e) => e.preventDefault()} // Prevent default drag behavior
+                          >
+                            {tag.camp_name}
+                          </a>
+                        </Link>
+                      </div>
+                      <div
+                        className="flex items-center"
+                        onClick={() => {
+                          handleClose(tag, record.topic_num, record, []);
+                          setValData(tag);
+                          setRevertBack([]);
+                        }}
+                      >
+                        <Image
+                          className="cursor-pointer"
+                          src="/images/minus-user-icon.svg"
+                          width={24}
+                          height={24}
+                          alt=""
+                        />
+                      </div>
+                    </Button>
+                  </div>
+                  </>
               );
             }}
             onChange={(tags) => tagsOrder(record.topic_num, record, tags)}
+            /> */}
+
+          <DraggableTags
+            tags={camps}
+            record={record}
+            updateTagsOrder={tagsOrder}
+            setReOrderedTags={setReOrderedTags}
+            onClose={(tag) => {
+              handleClose(tag, record.topic_num, record, []);
+              setValData(tag);
+              setRevertBack([]);
+            }}
           />
 
           {showSaveChanges && idData === record.topic_num && (
