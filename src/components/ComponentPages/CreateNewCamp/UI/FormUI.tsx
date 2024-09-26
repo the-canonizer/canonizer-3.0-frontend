@@ -167,12 +167,12 @@ const CreateCampFormUI = ({
 
     return <SelectInputs {...selectInputProps} />;
   };
-  
-    const formInitValue = {
-      ...initialValue,
-      nick_name: values?.nick_name || parentCamp[0]?.id,
-      parent_camp_num: values?.parent_camp_num || topicData?.camp_num,
-    };
+
+  const formInitValue = {
+    ...initialValue,
+    nick_name: values?.nick_name || parentCamp[0]?.id,
+    parent_camp_num: values?.parent_camp_num || topicData?.camp_num,
+  };
 
   // const getCampLeaderNickName = () => {
   //   return (

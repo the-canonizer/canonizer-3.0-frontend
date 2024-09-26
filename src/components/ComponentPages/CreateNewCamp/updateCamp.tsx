@@ -63,7 +63,7 @@ const CreateNewCamp = () => {
   const [editStatementData, setEditStatementData] = useState({ data: null });
   const [isSubmitReq, setIsSubmitReq] = useState(false);
   const [isTopicLoading, setIsopicLoading] = useState(false);
-  const [editCampData,setEditCampData] = useState(null);
+  const [editCampData, setEditCampData] = useState(null);
 
   const update = router?.query?.camp?.at(0)?.split("-")[1] == "update";
 
@@ -178,8 +178,8 @@ const CreateNewCamp = () => {
 
       const res = await getEditCampApi(getDataPayload),
         resData = res?.data;
-        setEditCampData(resData)
-        
+      setEditCampData(resData);
+
       fetchCampNickNameList();
 
       if (res && res?.status_code == 404) {
@@ -325,13 +325,15 @@ const CreateNewCamp = () => {
   const getCampLeaderData = () => {
     let camp_leader_nick_id = editCampData?.camp?.camp_leader_nick_id;
     let camp_leader_nick_name = "";
-    if (camp_leader_nick_id){
-      camp_leader_nick_name =  editCampData?.eligible_camp_leaders?.find((CL) => CL?.camp_leader === true)?.nick_name
-    }else{
-      camp_leader_nick_name = "No Camp Leader"
-    } 
-    return camp_leader_nick_name
-  }
+    if (camp_leader_nick_id) {
+      camp_leader_nick_name = editCampData?.eligible_camp_leaders?.find(
+        (CL) => CL?.camp_leader === true
+      )?.nick_name;
+    } else {
+      camp_leader_nick_name = "No Camp Leader";
+    }
+    return camp_leader_nick_name;
+  };
 
   const isSimilarAvaiable = () => {
     const namesList = existingCamps?.map((cmp) =>
