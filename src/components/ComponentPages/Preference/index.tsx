@@ -64,6 +64,7 @@ const ProfilePrefrences = () => {
   const [selectedAlgorithmKey, setSelectedAlgorithmKey] = useState(
     globalUserProfileDataAlgo || null
   );
+  const [isInitialRender, setIsInitialRender] = useState(true);
 
   const { tags } = useSelector((state: RootState) => ({
     tags: state?.tag?.tags,
@@ -107,6 +108,7 @@ const ProfilePrefrences = () => {
     const selectedTags = tags.filter((tag) => tag.checked).length;
     setSelectedCount(selectedTags);
   }, [searchTerm, tags]);
+ 
 
   const listOfOption = (optionList, algoOrLang): any => {
     let option = [];
@@ -127,29 +129,6 @@ const ProfilePrefrences = () => {
         }
       });
     return option;
-  };
-
-  const onFinish = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-
-    const userTags = tags.filter((ch) => ch.checked).map((ch) => ch.id);
-    if (!userTags?.length) {
-      setLoading(false);
-      return;
-    }
-
-    try {
-      const res = await savePrefTags(userTags);
-
-      if (res.status_code === 200) {
-        message.success(res.message);
-      }
-    } catch (error) {
-      message.error("Failed to save tags.");
-    } finally {
-      setLoading(false);
-    }
   };
 
   const onDiscard = () => {
@@ -213,12 +192,23 @@ const ProfilePrefrences = () => {
     values.address_1 = address;
     values.postal_code = code;
     values = { ...values, ...updateAddress };
+    const userTags = tags.filter((ch) => ch.checked).map((ch) => ch.id);
+
+  // If no tags are selected, exit early
+  // if (!userTags.length) {
+  //   setLoading(false);
+  //   return;
+  // }
+  
+    // Include tags in values
+    values.user_tags = userTags;
 
     let res = await UpdateUserProfileInfo(values);
     if (res && res.status_code === 200) {
       // setshowSelectedLanguage(res?.data?.language)
-
+      if(!isInitialRender){
       message.success(res.message);
+      }
       if (values?.default_algo) {
         dispatch(
           setFilterCanonizedTopics({
@@ -237,7 +227,21 @@ const ProfilePrefrences = () => {
       dispatch(setZipCodeForProfileInfo(false));
     }
   };
+  useEffect(() => {
+    // Trigger `onFinish2` with the updated form values when the component renders
+    const callOnFinishOnRender = async () => {
+      try {
+        await formVerify.validateFields();  // Validate form first
+        const values = formVerify.getFieldsValue();  // Get current form values
+        await onFinish2(values);  // Call the onFinish2 function with current values
+      } catch (error) {
+        console.error("Error during form validation or function call:", error);
+      }
+    };
 
+    callOnFinishOnRender();  // Call the function when component renders
+    setIsInitialRender(false)
+  }, []);  
   const handleChangeLanguage = (value) => {
     setSelectedLanguage(value); // Update state with the selected value
   };
@@ -376,7 +380,6 @@ const ProfilePrefrences = () => {
                 await formVerify.validateFields();
                 await onFinish2(formVerify.getFieldsValue());
 
-                await onFinish(e);
               } catch (error) {}
             }}
           >
