@@ -1025,3 +1025,9 @@ body {
     }
   }
 }
+
+.cn-card-home{
+  a{
+    @apply text-canDefaultBlue;
+  }
+}
