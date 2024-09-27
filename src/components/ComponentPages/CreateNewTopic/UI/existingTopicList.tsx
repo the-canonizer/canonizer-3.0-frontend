@@ -111,7 +111,10 @@ const ExistingTopicList = ({
               key={item?.id}
             >
               <Link href={{ pathname: "/" + item?.link }}>
-                <a className="flex justify-start items-start whitespace-break-spaces break-all text-wrap line-clamp-1" target="_blank">
+                <a
+                  className="flex justify-start items-start whitespace-break-spaces break-all text-wrap line-clamp-1"
+                  target="_blank"
+                >
                   <div className="w-[5px] h-[5px] rounded-full bg-canBlack mr-3 mt-2.5"></div>
                   {getHighlightedText(item?.type_value, topicName)}
                 </a>

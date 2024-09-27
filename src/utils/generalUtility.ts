@@ -366,7 +366,7 @@ export const getCookies = function () {
 
 export const getProperties = (item) => {
   if (item?.log_name === "support") {
-    const parsedData = JSON.parse(item?.properties);  
+    const parsedData = JSON.parse(item?.properties);
     return parsedData;
   }
 
