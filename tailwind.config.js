@@ -61,7 +61,8 @@ module.exports = {
         canLightgrey4: "#DDE2EE",
         canDarkRed: "#DB4F4F",
         btnBg: "#98B7E6",
-        canLightWhite:"#777f93"
+        canLightWhite:"#777f93",
+        canDefaultBlue: "#4484ce"
        
       },
       backgroundImage: {
