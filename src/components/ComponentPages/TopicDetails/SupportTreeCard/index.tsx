@@ -48,23 +48,19 @@ import dynamic from "next/dynamic";
 import SignCamp from "./SignCamp";
 import ScoreTag from "components/ComponentPages/Home/TrandingTopic/scoreTag";
 
-const { Paragraph } = Typography;
-const { Panel } = Collapse;
 const { TreeNode } = Tree;
 
 const supportContent = (
-  <>
-    <div className={styles.addSupportText}>
-      <p>
-        Supporters can delegate their support to others. Direct supporters
-        receive email notifications of proposed camp changes, while delegated
-        supporters don’t. People delegating their support to others are shown
-        below and indented from their delegates in an outline form. If a
-        delegate changes camp, everyone delegating their support to them will
-        change camps with them.
-      </p>
-    </div>
-  </>
+  <div className={styles.addSupportText}>
+    <p>
+      Supporters can delegate their support to others. Direct supporters receive
+      email notifications of proposed camp changes, while delegated supporters
+      don’t. People delegating their support to others are shown below and
+      indented from their delegates in an outline form. If a delegate changes
+      camp, everyone delegating their support to them will change camps with
+      them.
+    </p>
+  </div>
 );
 
 const SupportTreeDrawer = dynamic(
@@ -701,197 +697,74 @@ const SupportTreeCard = ({
       isButton={false}
     />
   ) : (
-    <>
-      <div className="topicDetailsCollapse flex flex-col w-full h-full">
-        <SupportTreeDrawer
-          onClose={onClose}
-          open={open}
-          drawerFor={drawerFor}
-          setDrawerFor={setDrawerFor}
-          onRemoveFinish={onRemoveFinish}
-          selectNickId={selectNickId}
-          delegateNickName={delegateNickName}
-          handleCancelSupportCamps={handleCancelSupportCamps}
-          getCheckStatusAPI={getCheckStatusAPI}
-          loader={loader}
-          setLoader={setLoader}
-        />
-        <div className="support-tree-sec overflow-hidden overflow-y-auto">
-          {campSupportingTree?.length > 0 ? (
-            <Tree
-              className={"Parent_Leaf"}
-              showLine={false}
-              showIcon={false}
-              defaultExpandedKeys={[
-                +router?.query?.camp?.at(1)?.split("-")?.at(0) == 1
-                  ? 2
-                  : +router?.query?.camp?.at(1)?.split("-")?.at(0),
-              ]}
-              defaultExpandAll={true}
-            >
-              {campSupportingTree && renderTreeNodes(campSupportingTree)}
-            </Tree>
-          ) : (
-            <p> No direct supporters of this camp</p>
-          )}
+    <div className="topicDetailsCollapse flex flex-col w-full h-full">
+      <SupportTreeDrawer
+        onClose={onClose}
+        open={open}
+        drawerFor={drawerFor}
+        setDrawerFor={setDrawerFor}
+        onRemoveFinish={onRemoveFinish}
+        selectNickId={selectNickId}
+        delegateNickName={delegateNickName}
+        handleCancelSupportCamps={handleCancelSupportCamps}
+        getCheckStatusAPI={getCheckStatusAPI}
+        loader={loader}
+        setLoader={setLoader}
+      />
+      <div className="support-tree-sec overflow-hidden overflow-y-auto">
+        {campSupportingTree?.length > 0 ? (
+          <Tree
+            className={"Parent_Leaf"}
+            showLine={false}
+            showIcon={false}
+            defaultExpandedKeys={[
+              +router?.query?.camp?.at(1)?.split("-")?.at(0) == 1
+                ? 2
+                : +router?.query?.camp?.at(1)?.split("-")?.at(0),
+            ]}
+            defaultExpandAll={true}
+          >
+            {campSupportingTree && renderTreeNodes(campSupportingTree)}
+          </Tree>
+        ) : (
+          <p> No direct supporters of this camp</p>
+        )}
 
-          {campSupportingTree?.length > supportLength && (
-            <CustomButton
-              type="primary"
-              ghost
-              className="load-more-btn"
-              onClick={() => setLoadMore(!loadMore)}
-            >
-              {!loadMore ? "Load More" : "Load Less"}
-            </CustomButton>
-          )}
-        </div>
-        <div className="topicDetailsCollapseFooter printHIde mt-auto pt-3 w-full flex flex-col gap-2 justify-center">
+        {campSupportingTree?.length > supportLength && (
           <CustomButton
-            onClick={handleClickSupportCheck}
-            className="w-full justify-center bg-canGreen hover:!bg-canGreen hover:!text-white hover:!border-transparent !border-transparent h-auto py-2 text-white flex items-center rounded-lg font-medium text-sm gap-2"
-            disabled={asof == "bydate" || campRecord?.is_archive == 1}
-            id="manage-support-btn"
+            type="primary"
+            ghost
+            className="load-more-btn"
+            onClick={() => setLoadMore(!loadMore)}
           >
-            {renderSupportBtn()}
-            <Image
-              src="/images/hand-icon.svg"
-              alt="svg"
-              height={14}
-              width={14}
-            />
+            {!loadMore ? "Load More" : "Load Less"}
           </CustomButton>
-          <Popover content={renderPopupMsg()}>
-            <Button
-              size="large"
-              className="flex items-center justify-center border-[#4EB966] hover:!text-canBlack hover:!border-[#4EB966] hover:!bg-[#4EB9661A] bg-[#4EB9661A] rounded-lg font-medium text-sm"
-              style={{ borderRadius: "0.5rem" }}
-              block
-              disabled={disableSignPetition()}
-              onClick={() => signPetitionHandler()}
-            >
-              Sign Petition<i className="icon-user-plus ml-2"></i>
-            </Button>
-          </Popover>
-        </div>
+        )}
       </div>
-
-      {/* <Modal
-        className={styles.modal_cross}
-        title={
-          <p id="all_camps_topics" className={styles.modalTitle}>
-            You are about to remove your support from the camp:{" "}
-            <span>
-              &quot;
-              <Link
-                href={{
-                  pathname: `/topic/${topicRecord?.topic_num}-${topicRecord?.topic_name}/${campRecord?.camp_num}-${campRecord?.camp_name}`,
-                }}
-              >
-                <a>{campRecord?.camp_name}.</a>
-              </Link>
-              &quot;
-            </span>{" "}
-            You can optionally add a helpful reason, along with a citation link.
-          </p>
-        }
-        open={isSupportTreeCardModal}
-        onOk={handleSupportTreeCardCancel}
-        onCancel={handleSupportTreeCardCancel}
-        footer={null}
-        closeIcon={<CloseCircleOutlined />}
-      >
-        <Spin spinning={removeSupportSpinner} size="small">
-          <SupportRemovedModal
-            onFinish={onRemoveFinish}
-            handleCancel={() => setIsSupportTreeCardModal(false)}
-            form={removeForm}
-          />
-        </Spin>
-      </Modal> */}
-
-      {/* delegateremove */}
-      {/* <Modal
-        className={styles.modal_cross}
-        title="Remove Support"
-        open={isDelegateSupportTreeCardModal}
-        onOk={handleSupportTreeCardCancel}
-        onCancel={handleSupportTreeCardCancel}
-        footer={null}
-        closeIcon={<CloseCircleOutlined />}
-      >
-        <Form>
-          <Form.Item style={{ marginBottom: "0px" }}>
-            <p>Are you sure you want to remove your support?</p>
-          </Form.Item>
-          <Form.Item
-            id="supportTreeModalForm"
-            className={styles.text_right}
-            style={{ marginBottom: "0px" }}
+      <div className="topicDetailsCollapseFooter printHIde mt-auto pt-3 w-full flex flex-col gap-2 justify-center">
+        <CustomButton
+          onClick={handleClickSupportCheck}
+          className="w-full justify-center bg-canGreen hover:!bg-canGreen hover:!text-white hover:!border-transparent !border-transparent h-auto py-2 text-white flex items-center rounded-lg font-medium text-sm gap-2"
+          disabled={asof == "bydate" || campRecord?.is_archive == 1}
+          id="manage-support-btn"
+        >
+          {renderSupportBtn()}
+          <Image src="/images/hand-icon.svg" alt="svg" height={14} width={14} />
+        </CustomButton>
+        <Popover content={renderPopupMsg()}>
+          <Button
+            size="large"
+            className="flex items-center justify-center border-[#4EB966] hover:!text-canBlack hover:!border-[#4EB966] hover:!bg-[#4EB9661A] bg-[#4EB9661A] rounded-lg font-medium text-sm"
+            style={{ borderRadius: "0.5rem" }}
+            block
+            disabled={disableSignPetition()}
+            onClick={() => signPetitionHandler()}
           >
-            <Spin spinning={removeSupportSpinner} size="small">
-              <div className="text-right">
-                <Button
-                  id="supportTreeModalRemoveApi"
-                  disabled={asof == "bydate"}
-                  onClick={() => {
-                    if (currentGetCheckSupportExistsData.is_delegator) {
-                      // setIsDelegateSupportTreeCardModal(true);
-                      showDrawer();
-                      // } else {
-                      //   setIsSupportTreeCardModal(true);
-                      // showDrawer()
-                    }
-                    // setModalData(data[item]);
-                  }}
-                  type="primary"
-                  style={{
-                    marginTop: 10,
-                    marginRight: 10,
-                  }}
-                  className="ant-btn ant-btn-orange"
-                >
-                  Remove
-                </Button>
-                <Button
-                  id="supportTreeModalCancel"
-                  onClick={handleSupportTreeCardCancel}
-                  type="default"
-                  style={{
-                    marginTop: 10,
-                  }}
-                  className="ant-btn"
-                >
-                  Cancel
-                </Button>
-              </div>
-            </Spin>
-          </Form.Item>
-        </Form>
-      </Modal> */}
-
-      {/* <Modal
-        className={styles.modal_cross}
-        title="Support Camps"
-        open={isModalOpenSupportCamps}
-        onOk={handleOkSupportCamps}
-        onCancel={() => handleCancelSupportCamps({ isCallApiStatus: false })}
-        footer={null}
-        closeIcon={<CloseCircleOutlined />}
-        width={700}
-        destroyOnClose={true}
-      >
-        <ManageSupport
-          handleCancelSupportCamps={handleCancelSupportCamps}
-          selectNickId={selectNickId}
-          setGetManageSupportLoadingIndicator={
-            setGetManageSupportLoadingIndicator
-          }
-          getManageSupportLoadingIndicator={getManageSupportLoadingIndicator}
-          getCheckStatusAPI={getCheckStatusAPI}
-        />
-      </Modal> */}
-    </>
+            Sign Petition<i className="icon-user-plus ml-2"></i>
+          </Button>
+        </Popover>
+      </div>
+    </div>
   );
 };
 export default SupportTreeCard;

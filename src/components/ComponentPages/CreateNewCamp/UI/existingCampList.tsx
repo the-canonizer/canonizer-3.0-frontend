@@ -27,9 +27,9 @@ export const getTopicNameLink = (
 ) => {
   const bd = JSON.parse(item?.breadcrumb_data);
   return (
-    <div className={"flex " + className}>
+    <div className={"flex" + className}>
       <div className="w-[5px] h-[5px] rounded-full bg-canBlack mr-2 mt-2.5"></div>
-      <div className="w-full">
+      <div className="w-full whitespace-break-spaces break-all text-wrap line-clamp-1">
         <Link href={{ pathname: "/" + bd[0][1]?.camp_link }}>
           <a className="flex justify-start items-start">
             {getHighlightedText(item?.type_value, campName)}
@@ -41,7 +41,7 @@ export const getTopicNameLink = (
               pathname: "/" + geturl(bd),
             }}
           >
-            <a className="flex justify-start items-start text-xs mt-2 text-canLight">
+            <a className="flex justify-start items-start text-xs mt-2 text-canLight whitespace-break-spaces break-all text-wrap line-clamp-1">
               Topic: {bd[0][1]?.topic_name}
             </a>
           </Link>
@@ -70,7 +70,7 @@ const ExistingCampList = ({
               <Typography.Paragraph className="text-canRed font-medium text-base !mb-2">
                 A Camp with this exact name already exists!
               </Typography.Paragraph>
-              <Typography.Paragraph className="text-canRed font-medium text-lg">
+              <Typography.Paragraph className="text-canRed font-medium text-lg whitespace-break-spaces break-all text-wrap line-clamp-1">
                 {campName}
               </Typography.Paragraph>
             </div>
