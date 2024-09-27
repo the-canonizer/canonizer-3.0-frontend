@@ -48,7 +48,7 @@ const ExistingTopicList = ({
               <Typography.Paragraph className="text-canRed font-medium text-base !mb-2">
                 A Topic with this exact name already exists!
               </Typography.Paragraph>
-              <Typography.Paragraph className="text-canRed font-medium text-lg">
+              <Typography.Paragraph className="text-canRed font-medium text-lg whitespace-break-spaces break-all text-wrap line-clamp-1">
                 {topicName}
               </Typography.Paragraph>
             </div>
@@ -77,7 +77,7 @@ const ExistingTopicList = ({
                 href={{ pathname: "/search/topic", query: { q: topicName } }}
               >
                 <a
-                  className="text-canBlue uppercase text-xs font-semibold hocus:text-canHoverBlue"
+                  className="text-canBlue uppercase text-xs font-semibold hocus:text-canHoverBlue "
                   target="_blank"
                   role="button" // Adds button role
                   tabIndex={0} // Makes it focusable via keyboard
@@ -111,7 +111,7 @@ const ExistingTopicList = ({
               key={item?.id}
             >
               <Link href={{ pathname: "/" + item?.link }}>
-                <a className="flex justify-start items-start" target="_blank">
+                <a className="flex justify-start items-start whitespace-break-spaces break-all text-wrap line-clamp-1" target="_blank">
                   <div className="w-[5px] h-[5px] rounded-full bg-canBlack mr-3 mt-2.5"></div>
                   {getHighlightedText(item?.type_value, topicName)}
                 </a>

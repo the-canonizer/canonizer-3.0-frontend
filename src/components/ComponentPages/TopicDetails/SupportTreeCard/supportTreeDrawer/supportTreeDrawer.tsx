@@ -295,6 +295,9 @@ function SupportTreeDrawer({
         action: removeSupportFromCamps()?.length > 0 ? "partial" : "add",
         nick_name_id: selectedtNickname ? selectedtNickname : nickNameId,
         order_update: transformSupportOrderForAPI(tagsArrayList),
+        reason_summary: values?.description,
+        reason: selectedValue,
+        citation_link: values?.Citation,
       };
 
       let res = await removeSupportedCamps(payload);
@@ -328,7 +331,8 @@ function SupportTreeDrawer({
         nick_name_id: selectedtNickname ? selectedtNickname : nickNameId,
         order_update: transformSupportOrderForAPI(tagsArrayList),
         reason_summary: values?.description,
-        reasons: selectedValue,
+        reason: selectedValue,
+        citation_link: values?.Citation,
       };
 
       let res = await addSupport(payload);
@@ -624,59 +628,6 @@ function SupportTreeDrawer({
                 Note : To change support order of camp, drag & drop the camp box
                 on your choice position.
               </p>
-              {/* {tagsArrayList?.length > 0 && (
-                <div className="vertical-chips">
-                  <DraggableArea
-                    tags={tagsArrayList}
-                    render={({ tag, index }) => {
-                      return (
-                        <div className="flex items-center gap-7">
-                          {tagsArrayList?.at(index)?.disabled ? (
-                            <>
-                              <Tag
-                                className="rounded-full bg-[#F0F2FA] border-transparent font-semibold text-base px-5 py-2.5 leading-none text-canBlack"
-                                closable={true}
-                                onClose={() => {
-                                  enableDisableTagsHandler(tag);
-                                  setIsQuickActionSelected(false);
-                                }}
-                              >
-                                {`${index + 1}.${tag?.content}`}
-                              </Tag>
-                            </>
-                          ) : (
-                            <>
-                              <MenuOutlined className="text-sm text-[#777F93]" />
-                              <Tag
-                                className="rounded-full mr-0 bg-[#F0F2FA] border-transparent font-semibold text-base px-5 py-2.5 leading-none text-canBlack"
-                                closable={true}
-                                onClose={() => {
-                                  enableDisableTagsHandler(tag);
-                                  setIsQuickActionSelected(false);
-                                }}
-                              >
-                                <a
-                                  data-testid="styles_Bluecolor"
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                    window.location.href = tag.link;
-                                  }}
-                                >
-                                  {`${index + 1}.${tag?.content}`}
-                                </a>
-                              </Tag>
-                            </>
-                          )}
-                        </div>
-                      );
-                    }}
-                    onChange={(tags) => {
-                      setTagsArrayList(tags);
-                      setIsOrderChange(true);
-                    }}
-                  />
-                </div>
-              )} */}
               <DraggableTags
                 tagsArrayList={tagsArrayList}
                 setTagsArrayList={setTagsArrayList}

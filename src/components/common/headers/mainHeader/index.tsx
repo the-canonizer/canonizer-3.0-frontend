@@ -5,7 +5,10 @@ import Logo from "../logoHeader";
 import HeaderMenu from "../HeaderMenu";
 import SearchHeader from "../search";
 import useAuthentication from "src/hooks/isUserAuthenticated";
-import { markNotificationRead } from "src/network/api/notificationAPI";
+import {
+  getNotificationsList,
+  markNotificationRead,
+} from "src/network/api/notificationAPI";
 
 const LoggedOutHeader = () => {
   const router = useRouter();
@@ -35,6 +38,14 @@ const LoggedOutHeader = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.query]);
+
+  useEffect(() => {
+    const getList = async () => {
+      await getNotificationsList();
+    };
+
+    isUserAuthenticated && getList();
+  }, [isUserAuthenticated]);
 
   return (
     <Fragment>

@@ -42,20 +42,6 @@ function TopicCampsTab({
               <Fragment>
                 <Text className="text-canBlack text-sm font-normal mb-0">
                   {activity?.activity?.description}{" "}
-                  {activity?.activity?.log_name === "support" &&
-                    getProperties(activity?.activity)?.reason && (
-                      <Popover
-                        content={
-                          <div className="w-full">
-                            <ReasonsActivity CurrentItem={activity?.activity} />
-                          </div>
-                        }
-                        placement="top"
-                        className="pointer text-canGrey2"
-                      >
-                        <i className="icon-info"></i>
-                      </Popover>
-                    )}
                   <Text className="text-canBlue font-medium">
                     <Tooltip
                       placement={"topLeft"}
@@ -71,6 +57,20 @@ function TopicCampsTab({
                       {getTopicCampName(activity, decodedProperties)}
                     </Tooltip>
                   </Text>
+                  {activity?.activity?.log_name === "support" &&
+                    getProperties(activity?.activity)?.reason && (
+                      <Popover
+                        content={
+                          <div className="w-full">
+                            <ReasonsActivity CurrentItem={activity?.activity} />
+                          </div>
+                        }
+                        placement="top"
+                        className="pointer text-canGrey2"
+                      >
+                        <i className="icon-info ml-2"></i>
+                      </Popover>
+                    )}
                 </Text>
                 <Text
                   className="text-canBlack opacity-[0.5] font-normal font-inter text-[10px] block mt-1"
