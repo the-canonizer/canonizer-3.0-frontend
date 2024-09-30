@@ -70,6 +70,11 @@ const HistoryComparison = ({
         )}
         {historyOf === "camp" && (
           <>
+            {!!campStatement?.parent_camp_name && (
+              <p>
+                Parent Camp :<span>{campStatement?.parent_camp_name}</span>
+              </p>
+            )}
             {campStatement?.key_words && (
               <p>
                 Keywords: <span>{campStatement?.key_words}</span>
