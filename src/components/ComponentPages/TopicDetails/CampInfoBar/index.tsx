@@ -818,7 +818,7 @@ const TimelineInfoBar = ({
                             breadCrumbRes ? (
                               breadCrumbRes?.bread_crumb?.map((camp, index) => {
                                 return (
-                                    <a className="!text-canBlack gap-x-1 gap-y-1 flex hover:!text-canBlack !text-sm">
+                                    <a className="!text-canBlack gap-x-1 gap-y-1 flex hover:!text-canBlack !text-sm" key={index}>
                                       {breadCrumbRes &&
                                         !!campSubscriptionID &&
                                         !isTopicHistoryPage && (
