@@ -101,7 +101,7 @@ export default function DirectSupportedCampsUI({
       ),
     },
     {
-      title: "Supported Topics",
+      title: "Topics",
       dataIndex: "title",
       key: "title",
       render: (text: string, record: RecordType) => (

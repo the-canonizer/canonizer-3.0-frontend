@@ -24,12 +24,12 @@ const WhatsNew = () => {
       </Row>
 
       <div className="mt-3">
-        <CommonCard className="border-0 h-100 text-canBlack bg-white [&_.ant-card-body]:p-0 [&_.ant-card-body]:lg:p-[24px] lg:bg-canGray [&_iframe]:w-full [&_img]:w-auto [&_iframe]:aspect-video [&_iframe]:!my-5 [&_img]:!my-5 [&_*]:font-normal">
+        <CommonCard className="border-0 h-100 text-canBlack bg-white [&_.ant-card-body]:p-0 [&_.ant-card-body]:lg:p-[24px] lg:bg-canGray [&_iframe]:w-full [&_img]:w-auto [&_iframe]:aspect-video [&_iframe]:!my-5 [&_img]:!my-5 [&_*]:font-normal cn-card-home">
           <div
             className="text-canBlack"
             dangerouslySetInnerHTML={{ __html: whatsNew }}
           ></div>
-        </CommonCard>
+         </CommonCard>
       </div>
     </Fragment>
   );
