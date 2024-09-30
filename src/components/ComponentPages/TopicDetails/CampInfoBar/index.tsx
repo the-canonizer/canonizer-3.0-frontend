@@ -485,9 +485,11 @@ const TimelineInfoBar = ({
         Camp name :
       </span>
       <p className="font-bold mb-5 text-sm text-canBlack line-clamp-1 overflow-hidden">
+        <Link href={`/topic/${topicRecord?.topic_num}-${replaceSpecialCharacters(topicRecord?.topic_name,"-")}/${campRecord?.camp_num}-${replaceSpecialCharacters(campRecord?.camp_name,"-")}`}>
         {campRecord && campRecord?.camp_name?.length > 50
           ? `${campRecord?.camp_name.substring(0, 20)}....`
           : campRecord?.camp_name}
+        </Link>
       </p>
     </div>
   );
@@ -816,22 +818,6 @@ const TimelineInfoBar = ({
                             breadCrumbRes ? (
                               breadCrumbRes?.bread_crumb?.map((camp, index) => {
                                 return (
-                                  <Link
-                                    href={`/topic/${
-                                      payloadData?.topic_num
-                                        ? payloadData?.topic_num
-                                        : topicId
-                                    }-${replaceSpecialCharacters(
-                                      breadCrumbRes?.topic_name,
-                                      "-"
-                                    )}/${
-                                      camp?.camp_num
-                                    }-${replaceSpecialCharacters(
-                                      camp?.camp_name,
-                                      "-"
-                                    )}?${getQueryParams()?.returnQuery}`}
-                                    key={index}
-                                  >
                                     <a className="!text-canBlack gap-x-1 gap-y-1 flex hover:!text-canBlack !text-sm">
                                       {breadCrumbRes &&
                                         !!campSubscriptionID &&
@@ -897,7 +883,6 @@ const TimelineInfoBar = ({
                                         </span>
                                       )}
                                     </a>
-                                  </Link>
                                 );
                               })
                             ) : (
