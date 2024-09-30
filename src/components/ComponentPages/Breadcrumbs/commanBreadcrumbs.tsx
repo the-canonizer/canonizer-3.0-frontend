@@ -168,7 +168,7 @@ function CommanBreadcrumbs({
 
   useEffect(() => {
     const checkIsMobile = () => {
-      setIsMobile(window.matchMedia("(min-width: 1024.98px)").matches);
+      setIsMobile(window.matchMedia("(min-width: 992px)").matches);
     };
     checkIsMobile();
     window.addEventListener("resize", checkIsMobile);
@@ -726,7 +726,7 @@ function CommanBreadcrumbs({
 
   return (
     <>
-      <div className="max-md:mx-[-1rem] max-md:shadow-[0px_10px_10px_0px_#0000001A] md:bg-canGrey1_Opacity70 p-[1.5rem] md:rounded-[1.25rem] flex items-center justify-between gap-2 ">
+      <div className="max-md:mx-[-1rem] max-md:shadow-[0px_10px_10px_0px_#0000001A] md:bg-canGrey1_Opacity70 p-[1.5rem] md:rounded-[1.25rem] flex items-center justify-between gap-2 mb-10">
         {/* <Spin spinning={false}> */}
         {isForumPage ? (
           <Popover
@@ -763,7 +763,7 @@ function CommanBreadcrumbs({
           <Breadcrumb.Item href="/">
             <i className="icon-home"></i>
           </Breadcrumb.Item>
-          { (
+          {
             <Breadcrumb.Item href={topicHref}>
               {breadCrumbRes && !!topicSubscriptionID && (
                 <Tooltip
@@ -789,14 +789,15 @@ function CommanBreadcrumbs({
                 content={content}
                 title={title}
                 className="title-popover"
+                overlayClassName="max-lg:hidden"
               >
                 <div className="flex items-center gap-1.5">
                   Topic: {breadCrumbRes?.topic_name}
-                  <InfoCircleOutlined />
+                  {isMobile && <InfoCircleOutlined />}
                 </div>
               </Popover>
             </Breadcrumb.Item>
-          )}
+          }
           {/* below code optional on isTopic history page and there is tooltip and classes should be verify in testing */}
           {/* {breadCrumbRes
             ? !isTopicHistoryPage &&
@@ -868,10 +869,14 @@ function CommanBreadcrumbs({
                       <WarningOutlined className="text-[#F19C39] !mt-0" />
                     </Popover>
                   )}
-                  <Popover content={contentForCamp} title={title2}>
+                  <Popover
+                    content={contentForCamp}
+                    title={title2}
+                    overlayClassName="max-lg:hidden"
+                  >
                     <div className="flex items-center gap-1.5">
                       Camp: {breadCrumbRes?.bread_crumb?.at(-1)?.camp_name}
-                      <InfoCircleOutlined />
+                      {isMobile && <InfoCircleOutlined />}
                     </div>
                   </Popover>
                 </Breadcrumb.Item>
@@ -904,10 +909,14 @@ function CommanBreadcrumbs({
                             <WarningOutlined className="text-[#F19C39] !mt-0" />
                           </Popover>
                         )}
-                        <Popover content={contentForCamp} title={title2}>
+                        <Popover
+                          content={contentForCamp}
+                          title={title2}
+                          overlayClassName="max-lg:hidden"
+                        >
                           <div className="flex items-center gap-1.5">
                             Camp: {camp?.camp_name}
-                            <InfoCircleOutlined />
+                            {isMobile && <InfoCircleOutlined />}
                           </div>
                         </Popover>
                       </Breadcrumb.Item>
@@ -950,23 +959,28 @@ function CommanBreadcrumbs({
               </div>
             </Breadcrumb.Item>
           )}
+          {isEventLine && (
+            <Breadcrumb.Item>
+              <Popover
+                content={contentEventLine}
+                overlayClassName="max-lg:hidden"
+                className="title-popover"
+                placement="bottom"
+              >
+                <div className="flex  items-center gap-1.5">
+                  <span className="font-normal text-base text-canBlack whitespace-nowrap">
+                    Event Line
+                  </span>
+                  {isMobile && (
+                    <span className="flex shrink-0">
+                      <InfoCircleOutlined />
+                    </span>
+                  )}
+                </div>
+              </Popover>
+            </Breadcrumb.Item>
+          )}
         </Breadcrumb>
-        {isEventLine && !isMobile && (
-          <Popover
-            content={contentEventLine}
-            className="title-popover"
-            placement="bottom"
-          >
-            <div className="flex  items-center gap-1.5">
-              <span className="font-normal text-base text-canBlack whitespace-nowrap">
-                Event Line
-              </span>
-              <span className="flex shrink-0">
-                <InfoCircleOutlined />
-              </span>
-            </div>
-          </Popover>
-        )}
         {!compareMode && !!updateId && (
           <PrimaryButton
             size="large"
