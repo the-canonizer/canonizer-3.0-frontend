@@ -18,8 +18,6 @@ const CampHistory = ({ campStatement, topicNamespaceId }: any) => {
     }
   };
 
-  console.log("campStatement", campStatement);
-
   return (
     <>
       <p className="mb-[15px]">
