@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   CloseOutlined,
+  CopyOutlined,
   InfoCircleOutlined,
   LoadingOutlined,
 } from "@ant-design/icons";
@@ -560,7 +561,7 @@ const TopicsList = () => {
                       scoreTag={<ScoreTag topic_score={ft?.topic_score} />}
                       copyLink={
                         <Paragraph
-                          className="!mb-0"
+                          className="!mb-0 hidden rightArrow"
                           copyable={{
                             text: ft.is_archive ? (
                               <Popover content="Archived Topic">
@@ -575,6 +576,7 @@ const TopicsList = () => {
                             ) : (
                               ft?.topic_name
                             ),
+                            icon: <CopyOutlined className="text-canLight" />,
                           }}
                         >
                           {" "}

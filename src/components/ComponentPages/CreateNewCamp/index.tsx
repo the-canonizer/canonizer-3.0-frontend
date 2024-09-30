@@ -42,7 +42,9 @@ const getSimilarity = (str1, str2) => {
 };
 
 const findSimilarNames = (inputName, namesList) => {
-  const threshold = 0.7; // adjust for desired sensitivity
+  console.log("inputName", inputName);
+  console.log("namesList", namesList);
+  const threshold = 0.6; // adjust for desired sensitivity
   return namesList.filter(
     (name) => getSimilarity(inputName, name) >= threshold
   );

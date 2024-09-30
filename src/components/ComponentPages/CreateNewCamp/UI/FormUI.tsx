@@ -54,7 +54,8 @@ const CreateCampFormUI = ({
   onCampNameBlur,
   values,
   campLeaderData = null,
-}) => {
+  getCampLeaderData,
+}:any) => {
   const router = useRouter();
 
   const { campRecord, topicRecord, filterObject } = useSelector(
@@ -173,12 +174,12 @@ const CreateCampFormUI = ({
     parent_camp_num: values?.parent_camp_num || topicData?.camp_num,
   };
 
-  const getCampLeaderNickName = () => {
-    return (
-      campLeaderData &&
-      campLeaderData?.find((CL) => CL?.camp_leader === true)?.nick_name
-    );
-  };
+  // const getCampLeaderNickName = () => {
+  //   return (
+  //     campLeaderData &&
+  //     campLeaderData?.find((CL) => CL?.camp_leader === true)?.nick_name
+  //   );
+  // };
 
   return (
     <CommonCards className="border-0 bg-white">
@@ -268,8 +269,7 @@ const CreateCampFormUI = ({
                   label={
                     <Fragment>
                       Camp Leader
-                      {campLeaderData &&
-                      campLeaderData?.find((CL) => CL?.camp_leader === true) ? (
+                      {initialValue && initialValue?.camp_leader_nick_id ? (
                         <span>
                           (
                           <Link
@@ -285,7 +285,7 @@ const CreateCampFormUI = ({
                             }`}
                           >
                             <a className="text-canBlue">
-                              {getCampLeaderNickName() + " "}
+                              {getCampLeaderData() + " "}
                             </a>
                           </Link>
                           is currently the camp leader )
@@ -318,7 +318,7 @@ const CreateCampFormUI = ({
                         showSearch
                         size={"large"}
                         placeholder="Camp Leader"
-                        defaultValue={getCampLeaderNickName()}
+                        defaultValue={getCampLeaderData()}
                         optionFilterProp="children"
                         allowClear={false}
                         filterOption={(input, option) =>

@@ -24,7 +24,7 @@ export default function Draggable({
   record,
   updateTagsOrder,
   onClose,
-  setReOrderedTags
+  setReOrderedTags,
 }: any) {
   const sensors = useSensors(
     useSensor(MouseSensor, { activationConstraint: { distance: 10 } }),
@@ -86,7 +86,7 @@ function SortableItem(props) {
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-    cursor: props?.item?.dis ? "not-allowed": "pointer",
+    cursor: props?.item?.dis ? "not-allowed" : "pointer",
   };
 
   return (
@@ -138,7 +138,7 @@ function SortableItem(props) {
             }
             onClose={(evt) => {
               evt.preventDefault();
-              props?.onClose(props?.item)
+              props?.onClose(props?.item);
             }}
           >
             <a

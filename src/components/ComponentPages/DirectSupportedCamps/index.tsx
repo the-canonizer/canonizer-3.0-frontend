@@ -159,7 +159,6 @@ const DirectSupportedCamps = ({ search }: any) => {
       setIsChangingOrder(false);
       dispatch(setOpenDrawerForDirectSupportedCamp(false));
     }
-    dispatch(setDisableSubmitButtonForDirectSupportedCamp(false));
     handleSupportedCampsCancel();
   };
 

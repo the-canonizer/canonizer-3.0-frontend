@@ -20,7 +20,10 @@ import SupportRemovedModal from "../../../common/supportRemovedModal";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "src/store";
-import { setOpenDrawerForDirectSupportedCamp } from "src/store/slices/campDetailSlice";
+import {
+  setDisableSubmitButtonForDirectSupportedCamp,
+  setOpenDrawerForDirectSupportedCamp,
+} from "src/store/slices/campDetailSlice";
 import PrimaryButton from "components/shared/Buttons/PrimariButton";
 import dynamic from "next/dynamic";
 const DraggableTags = dynamic(() => import("./draggable"), { ssr: false });
@@ -98,7 +101,7 @@ export default function DirectSupportedCampsUI({
       ),
     },
     {
-      title: "Supported Topics",
+      title: "Topics",
       dataIndex: "title",
       key: "title",
       render: (text: string, record: RecordType) => (
@@ -130,9 +133,9 @@ export default function DirectSupportedCampsUI({
         <div>
           {/* <DraggableArea
             tags={camps}
-            render={(props: { tag: Tag }) => {
-              const { tag } = props;
-              
+            render={(props: { tag: Tag; index: number }) => {
+              const { tag, index } = props;
+
               return (
                 <>
                   <div
@@ -140,13 +143,25 @@ export default function DirectSupportedCampsUI({
                       camps.length > 1 ? "mb-2.5" : ""
                     } flex items-center`}
                   >
-                    <Button
-                      id="campsBtn"
-                      className="bg-canLightGrey rounded-full border-none flex items-center gap-2.5"
-                      disabled={tag.dis}
+                    {console.log(tag)}
+                    <div className={styles.btndiv}>
+                      <span className="count">{index + 1}. </span>
+                      <Link href={tag.camp_link}>
+                        <a
+                          className="text-sm text-canBlack font-semibold"
+                          draggable="false"
+                          onClick={(e) => e.preventDefault()} // Prevent default drag behavior
+                        >
+                          {tag.camp_name}
+                        </a>
+                      </Link>
+                    </div>
+                    <div
+                      className="flex items-center"
                       onClick={(e) => {
-                        e.preventDefault();
-                        window.location.href = tag.camp_link;
+                        handleClose(tag, record.topic_num, record, []);
+                        setValData(tag);
+                        setRevertBack([]);
                       }}
                     >
                       <div className={styles.btndiv}>
@@ -208,6 +223,7 @@ export default function DirectSupportedCampsUI({
                   handleSupportedCampsOpen(record);
                   pageChange(currentPage, 5);
                   dispatch(setOpenDrawerForDirectSupportedCamp(true));
+                  dispatch(setDisableSubmitButtonForDirectSupportedCamp(false));
                 }}
               >
                 Save Changes

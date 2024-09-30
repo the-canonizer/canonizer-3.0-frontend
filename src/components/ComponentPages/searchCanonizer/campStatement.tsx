@@ -85,7 +85,7 @@ const CampStatementSearch = () => {
         {" "}
         {parts?.map((part, i) => (
           <span
-            key={i}
+            key={part + i}
             style={
               part.toLowerCase() === highlight.toLowerCase()
                 ? { fontWeight: 700 }
@@ -105,7 +105,7 @@ const CampStatementSearch = () => {
         {" "}
         {parts?.map((part, i) => (
           <span
-            key={i}
+            key={part + i}
             style={
               part.toLowerCase() === highlight.toLowerCase()
                 ? { fontWeight: 700 }
@@ -205,35 +205,37 @@ const CampStatementSearch = () => {
                                 []
                               );
                               return (
-                                <>
-                                  <li className="flex flex-col py-3 first:pt-0 border-b border-canGrey2 last:border-none last:pb-0 ">
-                                    <div className="flex justify-between items-center">
-                                      <a
-                                        href={`/${jsonData?.[0]?.[1]?.camp_link}`}
-                                      >
-                                        <h3 className="font-medium mb-2 text-canBlack text-base">
-                                          {jsonData?.length > 1
-                                            ? getHighlightedText2(
-                                                jsonData?.[0]?.[1]?.camp_name,
-                                                searchValue
-                                              )
-                                            : getHighlightedText2(
-                                                jsonData?.[0]?.[1]?.topic_name,
-                                                searchValue
-                                              )}
-                                        </h3>
-                                      </a>
-                                      <ArrowLink
-                                        campLink={jsonData?.[0]?.[1]?.camp_link}
-                                      />
-                                    </div>
+                                <li
+                                  className="flex flex-col py-3 first:pt-0 border-b border-canGrey2 last:border-none last:pb-0"
+                                  key={x.id}
+                                >
+                                  <div className="flex justify-between items-center">
+                                    <a
+                                      href={`/${jsonData?.[0]?.[1]?.camp_link}`}
+                                    >
+                                      <h3 className="font-medium mb-2 text-canBlack text-base">
+                                        {jsonData?.length > 1
+                                          ? getHighlightedText2(
+                                              jsonData?.[0]?.[1]?.camp_name,
+                                              searchValue
+                                            )
+                                          : getHighlightedText2(
+                                              jsonData?.[0]?.[1]?.topic_name,
+                                              searchValue
+                                            )}
+                                      </h3>
+                                    </a>
+                                    <ArrowLink
+                                      campLink={jsonData?.[0]?.[1]?.camp_link}
+                                    />
+                                  </div>
 
-                                    {/* <div className={styles.statement_date}>
+                                  {/* <div className={styles.statement_date}>
                                       <strong>Go live Time : </strong>
                                       {covertToTime(x.go_live_time)}
                                     </div> */}
-                                    <div className="d-flex flex-wrap w-100 mb-1">
-                                      {/* <div
+                                  <div className="d-flex flex-wrap w-100 mb-1">
+                                    {/* <div
                                         dangerouslySetInnerHTML={{
                                           __html:
                                             x.type_value.substring(
@@ -242,51 +244,50 @@ const CampStatementSearch = () => {
                                             ) + "...",
                                         }}
                                       ></div> */}
-                                      {getHighlightedText(
-                                        x.type_value.substring(
-                                          0,
-                                          fileNameLength
-                                        ) + "...",
-                                        searchValue
-                                      )}
-                                    </div>
+                                    {getHighlightedText(
+                                      x.type_value.substring(
+                                        0,
+                                        fileNameLength
+                                      ) + "...",
+                                      searchValue
+                                    )}
+                                  </div>
 
-                                    <div className="text-base  flex flex-wrap items-center gap-2.5">
-                                      <div className="flex gap-2.5">
-                                        <Image
-                                          src="/images/note-sticky.svg"
-                                          width={17}
-                                          height={19}
-                                        />
-                                        <span className="text-base font-medium text-canBlack mr-1">
-                                          {" "}
-                                          Topic:
-                                        </span>
-                                      </div>
-                                      {parsedData
-                                        ?.reverse()
-                                        ?.map((obj, index) => {
-                                          return (
-                                            <>
-                                              <a
-                                                className="text-base !text-canBlue flex items-center gap-2.5 font-medium"
-                                                href={`/${obj?.camp_link}`}
-                                                key={`/${obj?.camp_link}`}
-                                              >
-                                                {getHighlightedText2(
-                                                  obj.camp_name,
-                                                  searchValue
-                                                )}
-                                                {index < parsedData.length - 1
-                                                  ? "/ "
-                                                  : ""}
-                                              </a>
-                                            </>
-                                          );
-                                        })}
+                                  <div className="text-base  flex flex-wrap items-center gap-2.5">
+                                    <div className="flex gap-2.5">
+                                      <Image
+                                        src="/images/note-sticky.svg"
+                                        width={17}
+                                        height={19}
+                                      />
+                                      <span className="text-base font-medium text-canBlack mr-1">
+                                        {" "}
+                                        Topic:
+                                      </span>
                                     </div>
-                                  </li>
-                                </>
+                                    {parsedData
+                                      ?.reverse()
+                                      ?.map((obj, index) => {
+                                        return (
+                                          <>
+                                            <a
+                                              className="text-base !text-canBlue flex items-center gap-2.5 font-medium"
+                                              href={`/${obj?.camp_link}`}
+                                              key={`/${obj?.camp_link}`}
+                                            >
+                                              {getHighlightedText2(
+                                                obj.camp_name,
+                                                searchValue
+                                              )}
+                                              {index < parsedData.length - 1
+                                                ? "/ "
+                                                : ""}
+                                            </a>
+                                          </>
+                                        );
+                                      })}
+                                  </div>
+                                </li>
                               );
                             })}
                           </ul>
@@ -318,34 +319,36 @@ const CampStatementSearch = () => {
                             []
                           );
                           return (
-                            <>
-                              <li className="flex flex-col py-3 first:pt-0 border-b border-canGrey2 last:border-none last:pb-0 ">
-                                <div className="flex justify-between items-center">
-                                  <a href={`/${jsonData?.[0]?.[1]?.camp_link}`}>
-                                    <h3 className="font-medium mb-2 text-canBlack text-base">
-                                      {jsonData?.length > 1
-                                        ? getHighlightedText2(
-                                            jsonData?.[0]?.[1]?.camp_name,
-                                            searchValue
-                                          )
-                                        : getHighlightedText2(
-                                            jsonData?.[0]?.[1]?.topic_name,
-                                            searchValue
-                                          )}
-                                    </h3>
-                                  </a>
-                                  <ArrowLink
-                                    campLink={jsonData?.[0]?.[1]?.camp_link}
-                                  />
-                                </div>
+                            <li
+                              className="flex flex-col py-3 first:pt-0 border-b border-canGrey2 last:border-none last:pb-0"
+                              key={x.id}
+                            >
+                              <div className="flex justify-between items-center">
+                                <a href={`/${jsonData?.[0]?.[1]?.camp_link}`}>
+                                  <h3 className="font-medium mb-2 text-canBlack text-base">
+                                    {jsonData?.length > 1
+                                      ? getHighlightedText2(
+                                          jsonData?.[0]?.[1]?.camp_name,
+                                          searchValue
+                                        )
+                                      : getHighlightedText2(
+                                          jsonData?.[0]?.[1]?.topic_name,
+                                          searchValue
+                                        )}
+                                  </h3>
+                                </a>
+                                <ArrowLink
+                                  campLink={jsonData?.[0]?.[1]?.camp_link}
+                                />
+                              </div>
 
-                                {/* <div className={styles.statement_date}>
+                              {/* <div className={styles.statement_date}>
                                 <strong>Go live Time : </strong>
                                 {covertToTime(x.go_live_time)}
                               </div> */}
-                                <div className="d-flex flex-wrap w-100 mb-1">
-                                  {/* <a className={styles.search_heading}>  */}
-                                  {/* <div
+                              <div className="d-flex flex-wrap w-100 mb-1">
+                                {/* <a className={styles.search_heading}>  */}
+                                {/* <div
                                     dangerouslySetInnerHTML={{
                                       __html:
                                         x.type_value.substring(
@@ -354,50 +357,47 @@ const CampStatementSearch = () => {
                                         ) + "...",
                                     }}
                                   ></div> */}
-                                  <div>
-                                    {getHighlightedText(
-                                      x.type_value.substring(
-                                        0,
-                                        fileNameLength
-                                      ) + "...",
-                                      searchValue
-                                    )}
-                                  </div>
+                                <div>
+                                  {getHighlightedText(
+                                    x.type_value.substring(0, fileNameLength) +
+                                      "...",
+                                    searchValue
+                                  )}
                                 </div>
-                                <div className="text-base  flex flex-wrap items-center gap-2.5">
-                                  <div className="flex gap-2.5">
-                                    <Image
-                                      src="/images/note-sticky.svg"
-                                      width={17}
-                                      height={19}
-                                    />
-                                    <span className="text-base font-medium text-canBlack mr-1">
-                                      {" "}
-                                      Topic:
-                                    </span>
-                                  </div>
-                                  {parsedData?.reverse()?.map((obj, index) => {
-                                    return (
-                                      <>
-                                        <a
-                                          className="text-base !text-canBlue flex items-center gap-2.5 font-medium"
-                                          href={`/${obj?.camp_link}`}
-                                          key={`/${obj?.camp_link}`}
-                                        >
-                                          {getHighlightedText2(
-                                            obj.camp_name,
-                                            searchValue
-                                          )}
-                                          {index < parsedData.length - 1
-                                            ? "/ "
-                                            : ""}
-                                        </a>
-                                      </>
-                                    );
-                                  })}
+                              </div>
+                              <div className="text-base  flex flex-wrap items-center gap-2.5">
+                                <div className="flex gap-2.5">
+                                  <Image
+                                    src="/images/note-sticky.svg"
+                                    width={17}
+                                    height={19}
+                                  />
+                                  <span className="text-base font-medium text-canBlack mr-1">
+                                    {" "}
+                                    Topic:
+                                  </span>
                                 </div>
-                              </li>
-                            </>
+                                {parsedData?.reverse()?.map((obj, index) => {
+                                  return (
+                                    <>
+                                      <a
+                                        className="text-base !text-canBlue flex items-center gap-2.5 font-medium"
+                                        href={`/${obj?.camp_link}`}
+                                        key={`/${obj?.camp_link}`}
+                                      >
+                                        {getHighlightedText2(
+                                          obj.camp_name,
+                                          searchValue
+                                        )}
+                                        {index < parsedData.length - 1
+                                          ? "/ "
+                                          : ""}
+                                      </a>
+                                    </>
+                                  );
+                                })}
+                              </div>
+                            </li>
                           );
                         })}
                       </ul>
