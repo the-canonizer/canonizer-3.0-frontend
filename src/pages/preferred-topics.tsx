@@ -31,7 +31,11 @@ export async function getServerSideProps({ req }) {
     token = response?.access_token;
   }
 
-  const prefData = await GetPreferedTopicDetails(1, -1, token as string);
+  const prefData = await GetPreferedTopicDetails(
+    1,
+    Number.MAX_SAFE_INTEGER,
+    token as string
+  );
 
   return {
     props: {
