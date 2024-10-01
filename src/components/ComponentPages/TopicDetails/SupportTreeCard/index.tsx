@@ -637,6 +637,7 @@ const SupportTreeCard = ({
   };
 
   const onRemoveFinish = async (values) => {
+    // return console.log(values);
     setLoader(true);
     currentGetCheckSupportExistsData.is_delegator
       ? removeSupportForDelegate(values)
