@@ -147,6 +147,7 @@ function SupportTreeDrawer({
   };
 
   const handleChange = (value) => {
+    form.setFieldValue("reason", value);
     setSelectedValue(value);
   };
 
@@ -295,9 +296,9 @@ function SupportTreeDrawer({
         action: removeSupportFromCamps()?.length > 0 ? "partial" : "add",
         nick_name_id: selectedtNickname ? selectedtNickname : nickNameId,
         order_update: transformSupportOrderForAPI(tagsArrayList),
-        reason_summary: values?.description,
+        reason_summary: values?.reason_summary,
         reason: selectedValue,
-        citation_link: values?.Citation,
+        citation_link: values?.citation_link,
       };
 
       let res = await removeSupportedCamps(payload);
@@ -330,9 +331,9 @@ function SupportTreeDrawer({
         action: removeSupportFromCamps()?.length > 0 ? "partial" : "add",
         nick_name_id: selectedtNickname ? selectedtNickname : nickNameId,
         order_update: transformSupportOrderForAPI(tagsArrayList),
-        reason_summary: values?.description,
+        reason_summary: values?.reason_summary,
         reason: selectedValue,
-        citation_link: values?.Citation,
+        citation_link: values?.citation_link,
       };
 
       let res = await addSupport(payload);
@@ -723,18 +724,16 @@ function SupportTreeDrawer({
                   </Col>
                 )}
                 {selectedValue && selectedValue == "custom" && (
-                  <>
-                    <Col span={24}>
-                      <Form.Item name="description" label="Description">
-                        <TextArea className="thm-input" rows={4} />
-                      </Form.Item>
-                    </Col>
-                  </>
+                  <Col span={24}>
+                    <Form.Item name="reason_summary" label="Description">
+                      <TextArea className="thm-input" rows={4} />
+                    </Form.Item>
+                  </Col>
                 )}
                 {drawerFor !== "delegateAdd" && (
                   <Col span={24}>
                     <Form.Item
-                      name="Citation"
+                      name="citation_link"
                       label={labels.resonURLLabel}
                       {...removedURLRule}
                     >
@@ -792,6 +791,7 @@ function SupportTreeDrawer({
                       required: true,
                     },
                   ]}
+                  name="reason"
                 >
                   <div className="thm-select">
                     <div className="prefix-icon">
@@ -805,7 +805,7 @@ function SupportTreeDrawer({
                       onChange={handleChange}
                     >
                       {availableReasons?.map((res) => (
-                        <Select.Option key={res.id} value={res.value}>
+                        <Select.Option key={res.id} value={res.label}>
                           {res.label}
                         </Select.Option>
                       ))}
@@ -815,7 +815,7 @@ function SupportTreeDrawer({
               </Col>
               <Col span={24}>
                 <Form.Item
-                  name="Citation"
+                  name="citation_link"
                   label={labels.resonURLLabel}
                   {...removedURLRule}
                 >

@@ -7,12 +7,12 @@ import { createToken } from "src/network/api/userApi";
 import { setPrefTopic } from "src/store/slices/hotTopicSlice";
 import { GetPreferedTopicDetails } from "src/network/api/topicAPI";
 
-const RegistrationUserPreferences = ({ prefData }) => {
-  const dispatch = useDispatch();
+const RegistrationUserPreferences = () => {
+  // const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(setPrefTopic(prefData));
-  }, []);
+  // useEffect(() => {
+  //   dispatch(setPrefTopic(prefData));
+  // }, []);
 
   return (
     <Layout className="min-h-screen">
@@ -21,24 +21,24 @@ const RegistrationUserPreferences = ({ prefData }) => {
   );
 };
 
-export async function getServerSideProps({ req }) {
-  let token = null;
+// export async function getServerSideProps({ req }) {
+//   let token = null;
 
-  if (req.cookies["loginToken"]) {
-    token = req.cookies["loginToken"];
-  } else {
-    const response = await createToken();
-    token = response?.access_token;
-  }
+//   if (req.cookies["loginToken"]) {
+//     token = req.cookies["loginToken"];
+//   } else {
+//     const response = await createToken();
+//     token = response?.access_token;
+//   }
 
-  const prefData = await GetPreferedTopicDetails(1, -1, token as string);
+//   const prefData = await GetPreferedTopicDetails(1, 2, token as string);
 
-  return {
-    props: {
-      prefData: prefData?.data?.items ? prefData?.data?.items : null,
-    },
-  };
-}
+//   return {
+//     props: {
+//       prefData: prefData?.data?.items ? prefData?.data?.items : null,
+//     },
+//   };
+// }
 
 RegistrationUserPreferences.displayName = "RegistrationPage";
 

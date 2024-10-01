@@ -93,7 +93,7 @@ export const GetHotTopicDetails = async (page, perPage, token: string = "") => {
 export const GetPreferedTopicDetails = async (
   page = 1,
   perPage = 6,
-  token: string
+  token?: string
 ) => {
   try {
     const res = await NetworkCall.fetch(
