@@ -9,8 +9,16 @@ import {
   getNotificationsList,
   markNotificationRead,
 } from "src/network/api/notificationAPI";
+import { useSelector } from "react-redux";
+import { RootState } from "src/store";
 
 const LoggedOutHeader = () => {
+  const { list } = useSelector((state: RootState) => {
+    return {
+      list: state.notifications.headerNotification.list,
+    };
+  });
+
   const router = useRouter();
 
   const { isUserAuthenticated } = useAuthentication();
@@ -44,8 +52,14 @@ const LoggedOutHeader = () => {
       await getNotificationsList();
     };
 
-    isUserAuthenticated && getList();
-  }, [isUserAuthenticated]);
+    if (
+      isUserAuthenticated &&
+      router?.asPath !== "/notifications" &&
+      !(list.length > 0)
+    ) {
+      getList();
+    }
+  }, [isUserAuthenticated, router?.asPath]);
 
   return (
     <Fragment>
