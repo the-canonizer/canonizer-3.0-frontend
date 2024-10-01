@@ -4,7 +4,7 @@ export const homePageSlice = createSlice({
   name: "homePage",
   initialState: {
     canonizedTopicsData: {
-      topics: [1],
+      topics: null,
       numOfPages: null,
     },
 
