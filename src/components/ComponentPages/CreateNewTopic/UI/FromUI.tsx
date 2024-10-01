@@ -64,6 +64,7 @@ const CreateTopicFromUI = ({
       prefix: <UserOutlined className="px-3 text-canBlack" />,
       onSelect: (val) => form.setFieldValue("nick_name", val),
       lastValue: form.getFieldValue("nick_name"),
+      value: form.getFieldValue("nick_name"),
     };
 
     if (nickNameList?.length) {
