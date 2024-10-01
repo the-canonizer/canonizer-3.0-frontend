@@ -3,48 +3,40 @@ import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { setCurrentReturnUrl } from "src/store/slices/authSlice";
 
-const withRouteChange = (WrappedComponent) => {
-  // eslint-disable-next-line
-  return (props) => {
-    const router = useRouter(),
-      dispatch = useDispatch();
+const WithRouteChange = (pageProps) => {
+  const router = useRouter();
+  const dispatch = useDispatch();
 
-    useEffect(() => {
-      const handleRouteChange = (url) => {
-        const currentUrl = router?.asPath;
+  useEffect(() => {
+    const handleRouteChange = (url) => {
+      const currentUrl = router.asPath;
 
-        if (
-          currentUrl !== "/login" &&
-          currentUrl !== "/registration" &&
-          currentUrl !== "/login/otp" &&
-          currentUrl !== "/registration/otp" &&
-          currentUrl !== "/category-preference" &&
-          currentUrl !== "/forgot-password" &&
-          currentUrl !== "/forgot-password/otp" &&
-          currentUrl !== "/reset-password"
-        ) {
-          if (url === "/registration" || url === "/login") {
-            dispatch(setCurrentReturnUrl(router?.asPath));
-          }
+      const excludedPaths = [
+        "/login",
+        "/registration",
+        "/login/otp",
+        "/registration/otp",
+        "/category-preference",
+        "/forgot-password",
+        "/forgot-password/otp",
+        "/reset-password",
+      ];
+
+      if (!excludedPaths.includes(currentUrl)) {
+        if (url === "/registration" || url === "/login") {
+          dispatch(setCurrentReturnUrl(currentUrl));
         }
-      };
+      }
+    };
 
-      // eslint-disable-next-line
-      const handleRouteComplete = (_url) => {
-        //
-      };
+    router.events.on("routeChangeStart", handleRouteChange);
 
-      router.events.on("routeChangeStart", handleRouteChange);
-      router.events.on("routeChangeComplete", handleRouteComplete);
+    return () => {
+      router.events.off("routeChangeStart", handleRouteChange);
+    };
+  }, [router.asPath, dispatch]);
 
-      return () => {
-        router.events.off("routeChangeStart", handleRouteChange);
-        router.events.off("routeChangeComplete", handleRouteComplete);
-      };
-    }, [router.events]);
-
-    return <WrappedComponent {...props} router={router} />;
-  };
+  return pageProps.children;
 };
 
-export default withRouteChange;
+export default WithRouteChange;

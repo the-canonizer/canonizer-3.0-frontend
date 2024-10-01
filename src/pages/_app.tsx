@@ -20,13 +20,11 @@ import HeadContentAndPermissionComponent from "../components/common/headContentA
 import ErrorBoundary from "../hoc/ErrorBoundary";
 import { store, wrapper } from "../store";
 
-import withRouteChange from "src/hoc/withRouteChange";
+import WithRouteChange from "src/hoc/withRouteChange";
 import { checkTopicCampExistAPICall } from "src/network/api/campDetailApi";
 import { metaTagsApi } from "src/network/api/metaTagsAPI";
 import { createToken } from "src/network/api/userApi";
 import { getCookies } from "src/utils/generalUtility";
-// import CustomSkelton from "src/components/common/customSkelton";
-// import { ConfigProvider } from "antd";
 
 type AppOwnProps = { meta: any; canonical_url: string; returnURL: string };
 
@@ -108,8 +106,6 @@ function WrappedApp({
     };
   }, [router.events]);
 
-  const WrappedComponent = withRouteChange(Component);
-
   return (
     <CookiesProvider>
       <Provider store={store}>
@@ -120,12 +116,14 @@ function WrappedApp({
             canonical={canonical_url}
             {...pageProps}
           />
-          {/* <ConfigProvider theme={}> */}
-          {isAuthenticatedRef?.current &&
-          !!(getCookies() as any)?.loginToken ? (
-            <WrappedComponent {...pageProps} />
-          ) : null}
-          {/* </ConfigProvider> */}
+          <WithRouteChange>
+            {/* <ConfigProvider theme={}> */}
+            {isAuthenticatedRef?.current &&
+            !!(getCookies() as any)?.loginToken ? (
+              <Component {...pageProps} />
+            ) : null}
+            {/* </ConfigProvider> */}
+          </WithRouteChange>
         </ErrorBoundary>
       </Provider>
     </CookiesProvider>
