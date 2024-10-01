@@ -49,6 +49,7 @@ import Timer from "../Timer";
 import PrimaryButton from "components/shared/Buttons/PrimariButton";
 import ObjectionDrawer from "./objectionDrawer";
 import K from "src/constants";
+import { openNotificationWithIcon } from "components/common/notification/notificationBar";
 
 const { Panel } = Collapse;
 
@@ -190,14 +191,14 @@ function HistoryCard({
     let res = await agreeToChangeApi(reqBody);
     if (res?.status_code == 200) {
       dispatch(setChangeGoneLive(!changeGoneLive));
-      res?.data?.is_submitted
-        ? message.success(res?.message)
-        : message?.error(res?.message);
+      res?.data?.is_submitted ? openNotificationWithIcon(res?.message, "success"): openNotificationWithIcon(res?.message, "error");
       setIsSelectChecked(false);
     }
 
-    changeAgree();
-    setLoadingChanges(false);
+    await changeAgree();
+    setTimeout(() => {
+      setLoadingChanges(false);
+    },1000)
   };
 
   const submitUpdateRedirect = (historyOf: string) => {
@@ -245,6 +246,18 @@ function HistoryCard({
       }
     }
   };
+
+  const disableAgreeCheckbox = () => {
+    if(loadingChanges){
+      return true
+    }else if(historyOf == "camp" && !campStatement?.ifICanAgreeAndObject){
+      return true
+    }else if(parentArchived == 1 && directarchived == 0){
+      return true
+    }else{
+      return false
+    }
+  }
 
   return (
     <div
@@ -434,10 +447,7 @@ function HistoryCard({
                     <>
                       <Checkbox
                         defaultChecked={campStatement?.agreed_to_change}
-                        disabled={
-                          // historyOf == "camp" ? !campStatement?.ifICanAgreeAndObject : false ||
-                          parentArchived == 1 && directarchived == 0
-                        }
+                        disabled={disableAgreeCheckbox()}
                         onChange={agreeWithChange}
                       >
                         Agree With Change
