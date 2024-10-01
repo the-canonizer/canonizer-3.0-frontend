@@ -1,7 +1,9 @@
+import { EllipsisOutlined } from "@ant-design/icons";
 import { Breadcrumb } from "antd";
-import React from "react";
+import React, { useState } from "react";
 
 function DrawerBreadcrumbs({ topicRecord, campRecord, topic_name }: any) {
+  const [showAll, setShowAll] = useState(false);
   return (
     <Breadcrumb
       className="drawer-breadcrumbs ml-6"
@@ -12,7 +14,18 @@ function DrawerBreadcrumbs({ topicRecord, campRecord, topic_name }: any) {
       >
         Topic: {topicRecord?.topic_name}
       </Breadcrumb.Item>
-      {campRecord &&
+      {campRecord && campRecord?.parentCamps?.length > 1 && !showAll ? (
+        <>
+          <Breadcrumb.Item>
+            <button onClick={() => setShowAll(true)}>
+              <EllipsisOutlined />
+            </button>
+          </Breadcrumb.Item>
+          <Breadcrumb.Item href={`/topic/${topicRecord?.topic_num}-${topic_name}/${campRecord?.camp_num}-${campRecord?.camp_name}`}>
+          Camp: {campRecord?.camp_name}
+          </Breadcrumb.Item>
+        </>
+      ) : (
         campRecord?.parentCamps?.map((camp, index) => (
           <React.Fragment key={index}>
             <Breadcrumb.Item
@@ -21,7 +34,8 @@ function DrawerBreadcrumbs({ topicRecord, campRecord, topic_name }: any) {
               {camp?.camp_name}
             </Breadcrumb.Item>
           </React.Fragment>
-        ))}
+        ))
+      )}
     </Breadcrumb>
   );
 }

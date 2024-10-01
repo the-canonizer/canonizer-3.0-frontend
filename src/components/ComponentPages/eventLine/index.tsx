@@ -6,7 +6,7 @@ import DataNotFound from "../DataNotFound/dataNotFound";
 import SideBarTimeline from "../Home-old/SideBarTimeline";
 import TimeLine from "../TimeLine";
 // import TimelineInfoBar from "./TimelineInfoBar/index";
-import TimelineInfoBar from "../TopicDetails/CampInfoBar";
+// import TimelineInfoBar from "../TopicDetails/CampInfoBar";
 import Events from "./Events";
 import { getCurrentTopicRecordApi } from "src/network/api/campDetailApi";
 import moment from "moment";

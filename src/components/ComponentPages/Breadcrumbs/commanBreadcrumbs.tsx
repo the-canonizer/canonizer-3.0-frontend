@@ -92,9 +92,6 @@ function CommanBreadcrumbs({
     tree: state?.topicDetails?.tree && state?.topicDetails?.tree[0],
   }));
 
-  console.log("topicRecord", topicRecord?.in_review_changes);
-  console.log("campRecord", campRecord?.in_review_changes);
-
   const [campSubscriptionID, setCampSubscriptionID] = useState(
     campRecord?.subscriptionId
   );
@@ -428,7 +425,7 @@ function CommanBreadcrumbs({
 
   const warningTextForTopic = (
     <div className="popoverParent">
-      <span>Some changes are currently under review in this camp.</span>
+      <span>Some changes are currently under review in this topic.</span>
     </div>
   );
 
@@ -440,6 +437,9 @@ function CommanBreadcrumbs({
       </span>
     </div>
   );
+  const topicLink = `/topic/${
+    payload?.topic_num || topicId
+  }-${replaceSpecialCharacters(breadCrumbRes?.topic_name || "", "-")}`;
 
   const title = (
     <div className="popover_header">
@@ -688,12 +688,7 @@ function CommanBreadcrumbs({
     </div>
   );
 
-  const topicHref = `/topic/${
-    payload?.topic_num || topicId
-  }-${replaceSpecialCharacters(
-    breadCrumbRes?.topic_name || "",
-    "-"
-  )}/1-Agreement?${getQueryParams()?.returnQuery || ""}`;
+  // const topicHref = `${topicLink}/1-Agreement?${getQueryParams()?.returnQuery || ""}`;
 
   const handleClick = () => {
     const lastCamp =
@@ -721,8 +716,6 @@ function CommanBreadcrumbs({
   //   const campName = breadCrumbRes?.bread_crumb?.at(0)?.camp_name;
   //   const formattedTopicName = breadCrumbRes?.topic_name.split(" ").join("-");
   //   const href = `/topic/${topicNum}-${formattedTopicName}/${campNum}-${campName}`;
-
-  console.log("showAll", showAll);
 
   return (
     <>
@@ -764,17 +757,11 @@ function CommanBreadcrumbs({
             <i className="icon-home"></i>
           </Breadcrumb.Item>
           {
-            <Breadcrumb.Item href={topicHref}>
-              {breadCrumbRes && !!topicSubscriptionID && (
-                <Tooltip
-                  title="You have subscribed to the entire topic."
-                  key="camp_subscribed_icon"
-                >
-                  <small style={{ alignSelf: "center" }}>
-                    <i className="icon-subscribe text-canBlue"></i>
-                  </small>
-                </Tooltip>
-              )}
+            <Breadcrumb.Item
+              href={`${topicLink}/1-Agreement?${
+                getQueryParams()?.returnQuery || ""
+              }`}
+            >
               {topicRecord?.in_review_changes > 0 && (
                 <Popover
                   content={warningTextForTopic}
@@ -792,7 +779,18 @@ function CommanBreadcrumbs({
                 overlayClassName="max-lg:hidden"
               >
                 <div className="flex items-center gap-1.5">
-                  Topic: {breadCrumbRes?.topic_name}
+                  Topic:
+                  {breadCrumbRes && !!topicSubscriptionID && (
+                    <Tooltip
+                      title="You have subscribed to the entire topic."
+                      key="camp_subscribed_icon"
+                    >
+                      <small style={{ alignSelf: "center" }}>
+                        <i className="icon-subscribe text-canBlue"></i>
+                      </small>
+                    </Tooltip>
+                  )}
+                  {breadCrumbRes?.topic_name}
                   {isMobile && <InfoCircleOutlined />}
                 </div>
               </Popover>
@@ -842,23 +840,15 @@ function CommanBreadcrumbs({
             breadCrumbRes?.bread_crumb?.length > 1 && !showAll ? (
               <>
                 <Breadcrumb.Item>
-                  <a onClick={() => setShowAll(true)}>
+                  <button onClick={() => setShowAll(true)}>
                     <EllipsisOutlined />
-                  </a>
+                  </button>
                 </Breadcrumb.Item>
-                <Breadcrumb.Item href={""}>
-                  {breadCrumbRes &&
-                    !!campSubscriptionID &&
-                    !isTopicHistoryPage && (
-                      <Tooltip
-                        title="You have subscribed to this camp."
-                        key="camp_subscribed_icon"
-                      >
-                        <small style={{ alignSelf: "center" }}>
-                          <i className="icon-subscribe text-canBlue"></i>
-                        </small>
-                      </Tooltip>
-                    )}
+                <Breadcrumb.Item
+                  href={`${topicLink}/${
+                    breadCrumbRes?.bread_crumb?.at(-1)?.camp_num
+                  }-${breadCrumbRes?.bread_crumb?.at(-1)?.camp_name}`}
+                >
                   {campRecord?.in_review_changes > 0 && (
                     <Popover
                       content={warningText}
@@ -875,7 +865,20 @@ function CommanBreadcrumbs({
                     overlayClassName="max-lg:hidden"
                   >
                     <div className="flex items-center gap-1.5">
-                      Camp: {breadCrumbRes?.bread_crumb?.at(-1)?.camp_name}
+                      Camp:
+                      {breadCrumbRes &&
+                        !!campSubscriptionID &&
+                        !isTopicHistoryPage && (
+                          <Tooltip
+                            title="You have subscribed to this camp."
+                            key="camp_subscribed_icon"
+                          >
+                            <small style={{ alignSelf: "center" }}>
+                              <i className="icon-subscribe text-canBlue"></i>
+                            </small>
+                          </Tooltip>
+                        )}
+                      {breadCrumbRes?.bread_crumb?.at(-1)?.camp_name}
                       {isMobile && <InfoCircleOutlined />}
                     </div>
                   </Popover>
@@ -886,19 +889,10 @@ function CommanBreadcrumbs({
                 return (
                   <>
                     {index === breadCrumbRes.bread_crumb.length - 1 ? (
-                      <Breadcrumb.Item href={""} key={index}>
-                        {breadCrumbRes &&
-                          !!campSubscriptionID &&
-                          !isTopicHistoryPage && (
-                            <Tooltip
-                              title="You have subscribed to this camp."
-                              key="camp_subscribed_icon"
-                            >
-                              <small style={{ alignSelf: "center" }}>
-                                <i className="icon-subscribe text-canBlue"></i>
-                              </small>
-                            </Tooltip>
-                          )}
+                      <Breadcrumb.Item
+                        href={`${topicLink}/${camp.camp_num}-${camp.camp_name}`}
+                        key={index}
+                      >
                         {campRecord?.in_review_changes > 0 && (
                           <Popover
                             content={warningText}
@@ -915,13 +909,29 @@ function CommanBreadcrumbs({
                           overlayClassName="max-lg:hidden"
                         >
                           <div className="flex items-center gap-1.5">
-                            Camp: {camp?.camp_name}
+                            Camp:
+                            {breadCrumbRes &&
+                              !!campSubscriptionID &&
+                              !isTopicHistoryPage && (
+                                <Tooltip
+                                  title="You have subscribed to this camp."
+                                  key="camp_subscribed_icon"
+                                >
+                                  <small style={{ alignSelf: "center" }}>
+                                    <i className="icon-subscribe text-canBlue"></i>
+                                  </small>
+                                </Tooltip>
+                              )}
+                            {camp?.camp_name}
                             {isMobile && <InfoCircleOutlined />}
                           </div>
                         </Popover>
                       </Breadcrumb.Item>
                     ) : (
-                      <Breadcrumb.Item href={""} key={index}>
+                      <Breadcrumb.Item
+                        href={`${topicLink}/${camp.camp_num}-${camp.camp_name}`}
+                        key={index}
+                      >
                         {breadCrumbRes &&
                           !!campSubscriptionID &&
                           !isTopicHistoryPage && (
