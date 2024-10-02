@@ -1,4 +1,4 @@
-.cn-breadcrumbs {
+.cn-breadcrumbs.ant-breadcrumb {
   ol {
     @apply items-center;
     li,
@@ -8,6 +8,9 @@
     li {
       &:last-child {
         @apply font-semibold max-md:text-[#4EB966];
+        a{
+          @apply max-md:text-[#4EB966];
+        }
       }
       @apply max-lg:text-xs lg:text-base;
       .ant-breadcrumb-link {
@@ -17,7 +20,7 @@
       }
     }
     .ant-breadcrumb-separator {
-      @apply mt-0.5 self-center max-md:mx-[6px] md:mx-[1.25rem] md:text-[#242B37] max-md:text-[#777F93];
+      @apply mt-0.5 self-center max-md:mx-[6px] md:mx-[0.50rem] md:text-[#242B37] max-md:text-[#777F93];
       i {
         @apply max-lg:text-xs leading-[0] lg:text-base;
       }

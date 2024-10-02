@@ -6,6 +6,7 @@ import {
   Popover,
   Row,
   Spin,
+  Tag,
   Tooltip,
 } from "antd";
 
@@ -32,6 +33,7 @@ import K from "src/constants";
 import Link from "next/link";
 import {
   DoubleLeftOutlined,
+  EditOutlined,
   EllipsisOutlined,
   InfoCircleOutlined,
   WarningOutlined,
@@ -63,6 +65,8 @@ function CommanBreadcrumbs({
   const router = useRouter();
   const [isMobile, setIsMobile] = useState(false);
   const [showAll, setShowAll] = useState(false);
+  const [tagsArrayList, setTagsArrayList] = useState([]);
+  const tagsToShow = showAll ? tagsArrayList : tagsArrayList?.slice(0, 4);
 
   //   const historyOf = compareMode ? historyOF : router?.asPath.split("/")[1];
 
@@ -174,7 +178,18 @@ function CommanBreadcrumbs({
     };
   }, []);
 
-  console.log("isMobile", isMobile);
+  const transformDataForTags = (data) => {
+    return data?.map((item, index) => {
+      return {
+        id: item.id,
+        content: item.title,
+      };
+    });
+  };
+
+  useEffect(() => {
+    setTagsArrayList(transformDataForTags(topicRecord?.tags));
+  }, [topicRecord]);
 
   const onCampForumClick = () => {
     const topicName = topicRecord?.topic_name?.replaceAll(" ", "-");
@@ -447,7 +462,9 @@ function CommanBreadcrumbs({
         Topic name :
       </span>
       <p className="font-bold mb-5 text-sm text-canBlack">
-        {topicRecord && topicRecord?.topic_name}
+        {topicRecord && topicRecord?.topic_name?.length > 50
+          ? `${topicRecord?.topic_name.substring(0, 20)}....`
+          : topicRecord?.topic_name}
       </p>
     </div>
   );
@@ -505,24 +522,43 @@ function CommanBreadcrumbs({
             {topicRecord && changeSlashToArrow(topicRecord?.namespace_name)}
           </span>
         </Col>
+        {tagsArrayList && tagsArrayList?.length > 0 ? (
+          <Col md={24} sm={24} xs={24} className="mt-3">
+            <span className="text-xs 2xl:text-sm text-canLight">Tags :</span>
+            <div className="vertical-chips mt-2 flex flex-wrap gap-2">
+              {tagsToShow?.map((item: any, index) => (
+                <div key={index}>
+                  <Tag
+                    className="rounded-full mr-0 bg-[#F0F2FA] border-transparent font-semibold text-base px-5 py-2.5 leading-none text-canBlack"
+                    closable={false}
+                  >
+                    <span data-testid="styles_Bluecolor">{item?.content}</span>
+                  </Tag>
+                </div>
+              ))}
+            </div>
+            <div className="text-center mt-2">
+              {tagsArrayList && tagsArrayList?.length > 4 && (
+                <Button
+                  className=" text-canBlue"
+                  onClick={() => setShowAll(!showAll)}
+                >
+                  {showAll ? "Show Less" : "Show More"}
+                </Button>
+              )}
+            </div>
+          </Col>
+        ) : null}
       </Row>
 
       <hr className="horizontal_line my-5" />
-      {(isTopicPage || isEventLine || isHistoryPage || compareMode) && (
-        <PrimaryButton
-          className="mx-auto flex items-center justify-center font-medium h-auto"
-          onClick={() => handleTopicUrl()}
-        >
-          {K?.exceptionalMessages?.manageTopicButton}
-          <Image
-            src="/images/manage-btn-icon.svg"
-            alt="svg"
-            className="icon-topic"
-            height={16}
-            width={16}
-          />
-        </PrimaryButton>
-      )}
+      <PrimaryButton
+        className="mx-auto flex items-center justify-center font-medium h-auto gap-1"
+        onClick={() => handleTopicUrl()}
+      >
+        {K?.exceptionalMessages?.manageTopicButton}
+        <EditOutlined />
+      </PrimaryButton>
     </div>
   );
 
@@ -531,8 +567,20 @@ function CommanBreadcrumbs({
       <span className="text-xs 2xl:text-sm text-canLight mb-1">
         Camp name :
       </span>
-      <p className="font-bold mb-5 text-sm text-canBlack">
-        {campRecord && campRecord?.camp_name}
+      <p className="font-bold mb-5 text-sm text-canBlack line-clamp-1 overflow-hidden">
+        <Link
+          href={`/topic/${topicRecord?.topic_num}-${replaceSpecialCharacters(
+            topicRecord?.topic_name,
+            "-"
+          )}/${campRecord?.camp_num}-${replaceSpecialCharacters(
+            campRecord?.camp_name,
+            "-"
+          )}`}
+        >
+          {campRecord && campRecord?.camp_name?.length > 50
+            ? `${campRecord?.camp_name.substring(0, 20)}....`
+            : campRecord?.camp_name}
+        </Link>
       </p>
     </div>
   );
@@ -642,52 +690,43 @@ function CommanBreadcrumbs({
         <Col md={12} sm={12} xs={12} className=" flex flex-col">
           <span className="text-xs 2xl:text-sm text-canLight">Topic :</span>
           <span className="text-sm text-canBlack">
-            {topicRecord && topicRecord?.topic_name}
+            {topicRecord && topicRecord?.topic_name?.length > 50
+              ? `${topicRecord?.topic_name.substring(0, 20)}....`
+              : topicRecord?.topic_name}
           </span>
         </Col>
         {campRecord?.camp_leader_nick_name && (
-          <>
-            <Col md={12} sm={12} xs={12} className=" flex flex-col mt-4">
-              <span className="text-xs 2xl:text-sm text-canLight">
-                Camp Leader:
-              </span>
-              <Link
-                className="flex flex-wrap"
-                href={{
-                  pathname: `/user/supports/${campRecord?.camp_leader_nick_id}`,
-                  query: {
-                    canon: topicRecord?.namespace_id,
-                  },
-                }}
-              >
-                {campRecord?.camp_leader_nick_name}
-              </Link>
-            </Col>
-          </>
+          <Col md={12} sm={12} xs={12} className=" flex flex-col mt-4">
+            <span className="text-xs 2xl:text-sm text-canLight">
+              Camp Leader:
+            </span>
+            <Link
+              className="flex flex-wrap"
+              href={{
+                pathname: `/user/supports/${campRecord?.camp_leader_nick_id}`,
+                query: {
+                  canon: topicRecord?.namespace_id,
+                },
+              }}
+            >
+              {campRecord?.camp_leader_nick_name}
+            </Link>
+          </Col>
         )}
       </Row>
       <hr className="horizontal_line my-5" />
-      {(isTopicPage || isHistoryPage || compareMode) && (
-        <PrimaryButton className="flex items-center justify-center h-auto mx-auto">
-          <Link href={href}>
-            <a>
-              <span>
-                {K?.exceptionalMessages?.manageCampButton}
-                <Image
-                  src="/images/manage-btn-icon.svg"
-                  alt="svg"
-                  className="icon-topic"
-                  height={16}
-                  width={16}
-                />
-              </span>
-            </a>
-          </Link>
-        </PrimaryButton>
-      )}
+      <PrimaryButton className="flex items-center justify-center h-auto mx-auto gap-1">
+        <Link href={href}>
+          <a className="flex items-center justify-center h-auto mx-auto gap-1">
+            <span className="flex items-center justify-center h-auto mx-auto gap-1">
+              {K?.exceptionalMessages?.manageCampButton}
+              <EditOutlined />
+            </span>
+          </a>
+        </Link>
+      </PrimaryButton>
     </div>
   );
-
   // const topicHref = `${topicLink}/1-Agreement?${getQueryParams()?.returnQuery || ""}`;
 
   const handleClick = () => {
@@ -772,28 +811,31 @@ function CommanBreadcrumbs({
                   <WarningOutlined className="text-[#F19C39] !mt-0" />
                 </Popover>
               )}
-              <Popover
-                content={content}
-                title={title}
-                className="title-popover"
-                overlayClassName="max-lg:hidden"
-              >
-                <div className="flex items-center gap-1.5">
-                  Topic:
-                  {breadCrumbRes && !!topicSubscriptionID && (
-                    <Tooltip
-                      title="You have subscribed to the entire topic."
-                      key="camp_subscribed_icon"
-                    >
-                      <small style={{ alignSelf: "center" }}>
-                        <i className="icon-subscribe text-canBlue"></i>
-                      </small>
-                    </Tooltip>
-                  )}
-                  {breadCrumbRes?.topic_name}
-                  {isMobile && <InfoCircleOutlined />}
-                </div>
-              </Popover>
+
+              <div className="flex items-center gap-1.5">
+                Topic:
+                {breadCrumbRes && !!topicSubscriptionID && (
+                  <Tooltip
+                    title="You have subscribed to the entire topic."
+                    key="camp_subscribed_icon"
+                  >
+                    <small style={{ alignSelf: "center" }}>
+                      <i className="icon-subscribe text-canBlue"></i>
+                    </small>
+                  </Tooltip>
+                )}
+                {breadCrumbRes?.topic_name}
+                {isMobile && (
+                  <Popover
+                    content={content}
+                    title={title}
+                    className="title-popover"
+                    overlayClassName="max-lg:hidden"
+                  >
+                    <InfoCircleOutlined />
+                  </Popover>
+                )}
+              </div>
             </Breadcrumb.Item>
           }
           {/* below code optional on isTopic history page and there is tooltip and classes should be verify in testing */}
@@ -836,13 +878,19 @@ function CommanBreadcrumbs({
               )
             : "N/A"
             } */}
-          {breadCrumbRes ? (
+          {isEventLine ? (
+            ""
+          ) : breadCrumbRes ? (
             breadCrumbRes?.bread_crumb?.length > 1 && !showAll ? (
               <>
                 <Breadcrumb.Item>
-                  <button onClick={() => setShowAll(true)}>
-                    <EllipsisOutlined />
-                  </button>
+                  <Button
+                    className="bg-white p-1  h-[11px] flex items-center rounded-lg border-[#dbd8d8]"
+                    size="small"
+                    onClick={() => setShowAll(true)}
+                  >
+                    <EllipsisOutlined className="!mt-0 !leading-none" />
+                  </Button>
                 </Breadcrumb.Item>
                 <Breadcrumb.Item
                   href={`${topicLink}/${
@@ -859,38 +907,41 @@ function CommanBreadcrumbs({
                       <WarningOutlined className="text-[#F19C39] !mt-0" />
                     </Popover>
                   )}
-                  <Popover
-                    content={contentForCamp}
-                    title={title2}
-                    overlayClassName="max-lg:hidden"
-                  >
-                    <div className="flex items-center gap-1.5">
-                      Camp:
-                      {breadCrumbRes &&
-                        !!campSubscriptionID &&
-                        !isTopicHistoryPage && (
-                          <Tooltip
-                            title="You have subscribed to this camp."
-                            key="camp_subscribed_icon"
-                          >
-                            <small style={{ alignSelf: "center" }}>
-                              <i className="icon-subscribe text-canBlue"></i>
-                            </small>
-                          </Tooltip>
-                        )}
-                      {breadCrumbRes?.bread_crumb?.at(-1)?.camp_name}
-                      {isMobile && <InfoCircleOutlined />}
-                    </div>
-                  </Popover>
+
+                  <div className="flex items-center gap-1.5">
+                    Camp:
+                    {breadCrumbRes &&
+                      !!campSubscriptionID &&
+                      !isTopicHistoryPage && (
+                        <Tooltip
+                          title="You have subscribed to this camp."
+                          key="camp_subscribed_icon"
+                        >
+                          <small style={{ alignSelf: "center" }}>
+                            <i className="icon-subscribe text-canBlue"></i>
+                          </small>
+                        </Tooltip>
+                      )}
+                    {breadCrumbRes?.bread_crumb?.at(-1)?.camp_name}
+                    {isMobile && (
+                      <Popover
+                        content={contentForCamp}
+                        title={title2}
+                        overlayClassName="max-lg:hidden"
+                      >
+                        <InfoCircleOutlined />
+                      </Popover>
+                    )}
+                  </div>
                 </Breadcrumb.Item>
               </>
             ) : (
               breadCrumbRes?.bread_crumb?.map((camp, index) => {
                 return (
                   <>
-                    {index === breadCrumbRes.bread_crumb.length - 1 ? (
+                    {index === breadCrumbRes?.bread_crumb?.length - 1 ? (
                       <Breadcrumb.Item
-                        href={`${topicLink}/${camp.camp_num}-${camp.camp_name}`}
+                        href={`${topicLink}/${camp?.camp_num}-${camp?.camp_name}`}
                         key={index}
                       >
                         {campRecord?.in_review_changes > 0 && (
@@ -903,29 +954,32 @@ function CommanBreadcrumbs({
                             <WarningOutlined className="text-[#F19C39] !mt-0" />
                           </Popover>
                         )}
-                        <Popover
-                          content={contentForCamp}
-                          title={title2}
-                          overlayClassName="max-lg:hidden"
-                        >
-                          <div className="flex items-center gap-1.5">
-                            Camp:
-                            {breadCrumbRes &&
-                              !!campSubscriptionID &&
-                              !isTopicHistoryPage && (
-                                <Tooltip
-                                  title="You have subscribed to this camp."
-                                  key="camp_subscribed_icon"
-                                >
-                                  <small style={{ alignSelf: "center" }}>
-                                    <i className="icon-subscribe text-canBlue"></i>
-                                  </small>
-                                </Tooltip>
-                              )}
-                            {camp?.camp_name}
-                            {isMobile && <InfoCircleOutlined />}
-                          </div>
-                        </Popover>
+
+                        <div className="flex items-center gap-1.5">
+                          Camp:
+                          {breadCrumbRes &&
+                            !!campSubscriptionID &&
+                            !isTopicHistoryPage && (
+                              <Tooltip
+                                title="You have subscribed to this camp."
+                                key="camp_subscribed_icon"
+                              >
+                                <small style={{ alignSelf: "center" }}>
+                                  <i className="icon-subscribe text-canBlue"></i>
+                                </small>
+                              </Tooltip>
+                            )}
+                          {camp?.camp_name}
+                          {isMobile && (
+                            <Popover
+                              content={contentForCamp}
+                              title={title2}
+                              overlayClassName="max-lg:hidden"
+                            >
+                              <InfoCircleOutlined />
+                            </Popover>
+                          )}
+                        </div>
                       </Breadcrumb.Item>
                     ) : (
                       <Breadcrumb.Item
@@ -971,23 +1025,23 @@ function CommanBreadcrumbs({
           )}
           {isEventLine && (
             <Breadcrumb.Item>
-              <Popover
-                content={contentEventLine}
-                overlayClassName="max-lg:hidden"
-                className="title-popover"
-                placement="bottom"
-              >
-                <div className="flex  items-center gap-1.5">
-                  <span className="font-normal text-base text-canBlack whitespace-nowrap">
-                    Event Line
-                  </span>
-                  {isMobile && (
+              <div className="flex  items-center gap-1.5">
+                <span className="font-normal  text-canBlack whitespace-nowrap">
+                  Event Line
+                </span>
+                {isMobile && (
+                  <Popover
+                    content={contentEventLine}
+                    overlayClassName="max-lg:hidden"
+                    className="title-popover"
+                    placement="bottom"
+                  >
                     <span className="flex shrink-0">
                       <InfoCircleOutlined />
                     </span>
-                  )}
-                </div>
-              </Popover>
+                  </Popover>
+                )}
+              </div>
             </Breadcrumb.Item>
           )}
         </Breadcrumb>
@@ -1059,6 +1113,7 @@ function CommanBreadcrumbs({
                     campStatement[0]?.draft_record_id) && (
                     <Image
                       src="/images/manage-btn-icon.svg"
+                      preview={false}
                       alt=""
                       height={24}
                       width={24}
@@ -1082,6 +1137,7 @@ function CommanBreadcrumbs({
                   <Image
                     src="/images/Icon-plus.svg"
                     alt="svg"
+                    preview={false}
                     className="icon-topic"
                     height={16}
                     width={16}

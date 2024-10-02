@@ -421,7 +421,7 @@ body {
           @apply m-0;
 
           .ant-page-header-heading-title {
-            @apply text-lg mr-0 whitespace-normal font-medium;
+            @apply text-2xl mr-0 whitespace-normal font-medium;
             span {
               @apply text-canGreen;
             }
@@ -430,6 +430,7 @@ body {
       }
 
       .drawer-breadcrumbs {
+        @apply mt-2;
         ol {
           @apply items-center;
 
@@ -439,7 +440,11 @@ body {
           }
 
           li {
-            @apply text-xs;
+            @apply text-sm;
+            &:last-child {
+              @apply font-semibold text-[#4EB966];
+            
+            }
           }
 
           .ant-breadcrumb-separator {
