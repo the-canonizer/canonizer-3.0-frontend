@@ -138,13 +138,9 @@ function CommanBreadcrumbs({
       await getCurrentCampRecordApi(reqBody);
     };
 
-    if (campRecord === null) {
       fetchCampRecord();
-    }
-
-    if (topicRecord === null) {
       fetchTopicRecord();
-    }
+
   }, []);
 
   useEffect(() => {
@@ -813,7 +809,7 @@ function CommanBreadcrumbs({
               )}
 
               <div className="flex items-center gap-1.5">
-                Topic:
+                Topic:{" "}
                 {breadCrumbRes && !!topicSubscriptionID && (
                   <Tooltip
                     title="You have subscribed to the entire topic."
@@ -909,7 +905,7 @@ function CommanBreadcrumbs({
                   )}
 
                   <div className="flex items-center gap-1.5">
-                    Camp:
+                    Camp:{" "}
                     {breadCrumbRes &&
                       !!campSubscriptionID &&
                       !isTopicHistoryPage && (
@@ -956,7 +952,7 @@ function CommanBreadcrumbs({
                         )}
 
                         <div className="flex items-center gap-1.5">
-                          Camp:
+                          Camp:{" "}
                           {breadCrumbRes &&
                             !!campSubscriptionID &&
                             !isTopicHistoryPage && (

@@ -16,13 +16,19 @@ function DrawerBreadcrumbs({ topicRecord, campRecord, topic_name }: any) {
       </Breadcrumb.Item>
       {campRecord && campRecord?.parentCamps?.length > 1 && !showAll ? (
         <>
-          <Breadcrumb.Item>
-            <Button onClick={() => setShowAll(true)}>
-              <EllipsisOutlined />
+          <Breadcrumb.Item > 
+            <Button
+              className="bg-white p-1 h-[11px] flex items-center rounded-lg border-[#dbd8d8]"
+              size="small"
+              onClick={() => setShowAll(true)}
+            >
+              <EllipsisOutlined className="!mt-0 !leading-none" />
             </Button>
           </Breadcrumb.Item>
-          <Breadcrumb.Item href={`/topic/${topicRecord?.topic_num}-${topic_name}/${campRecord?.camp_num}-${campRecord?.camp_name}`}>
-          Camp: {campRecord?.camp_name}
+          <Breadcrumb.Item
+            href={`/topic/${topicRecord?.topic_num}-${topic_name}/${campRecord?.camp_num}-${campRecord?.camp_name}`}
+          >
+            Camp: {campRecord?.camp_name}
           </Breadcrumb.Item>
         </>
       ) : (

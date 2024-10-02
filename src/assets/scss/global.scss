@@ -440,7 +440,7 @@ body {
           }
 
           li {
-            @apply text-sm;
+            @apply text-sm flex items-center;
             &:last-child {
               @apply font-semibold text-[#4EB966];
             
