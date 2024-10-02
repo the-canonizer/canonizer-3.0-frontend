@@ -485,10 +485,18 @@ const TimelineInfoBar = ({
         Camp name :
       </span>
       <p className="font-bold mb-5 text-sm text-canBlack line-clamp-1 overflow-hidden">
-        <Link href={`/topic/${topicRecord?.topic_num}-${replaceSpecialCharacters(topicRecord?.topic_name,"-")}/${campRecord?.camp_num}-${replaceSpecialCharacters(campRecord?.camp_name,"-")}`}>
-        {campRecord && campRecord?.camp_name?.length > 50
-          ? `${campRecord?.camp_name.substring(0, 20)}....`
-          : campRecord?.camp_name}
+        <Link
+          href={`/topic/${topicRecord?.topic_num}-${replaceSpecialCharacters(
+            topicRecord?.topic_name,
+            "-"
+          )}/${campRecord?.camp_num}-${replaceSpecialCharacters(
+            campRecord?.camp_name,
+            "-"
+          )}`}
+        >
+          {campRecord && campRecord?.camp_name?.length > 50
+            ? `${campRecord?.camp_name.substring(0, 20)}....`
+            : campRecord?.camp_name}
         </Link>
       </p>
     </div>
@@ -818,71 +826,114 @@ const TimelineInfoBar = ({
                             breadCrumbRes ? (
                               breadCrumbRes?.bread_crumb?.map((camp, index) => {
                                 return (
-                                    <a className="!text-canBlack gap-x-1 gap-y-1 flex hover:!text-canBlack !text-sm" key={index}>
-                                      {breadCrumbRes &&
-                                        !!campSubscriptionID &&
-                                        !isTopicHistoryPage && (
-                                          <Tooltip
-                                            title="You have subscribed to this camp."
-                                            key="camp_subscribed_icon"
+                                  <a
+                                    className="!text-canBlack gap-x-1 gap-y-1 flex hover:!text-canBlack !text-sm"
+                                    key={index}
+                                  >
+                                    {breadCrumbRes &&
+                                      !!campSubscriptionID &&
+                                      !isTopicHistoryPage && (
+                                        <Tooltip
+                                          title="You have subscribed to this camp."
+                                          key="camp_subscribed_icon"
+                                        >
+                                          <small
+                                            style={{ alignSelf: "center" }}
                                           >
-                                            <small
-                                              style={{ alignSelf: "center" }}
-                                            >
-                                              <i className="icon-subscribe text-canBlue"></i>
-                                            </small>
-                                          </Tooltip>
-                                        )}
-                                      <span
-                                        className={
-                                          breadCrumbRes?.bread_crumb.length -
-                                            1 ==
-                                          index
-                                            ? styles.greenIndicateText
-                                            : styles.boldBreadcrumb
-                                        }
-                                      >
-                                        {index ===
-                                        breadCrumbRes.bread_crumb.length - 1 ? (
-                                          <Popover
-                                            content={contentForCamp}
-                                            title={title2}
-                                          >
-                                            <div className="flex items-center gap-1.5 text-sm">
-                                              <span className="text-sm font-semibold">
-                                                {camp?.camp_name}
-                                              </span>
-                                              <Image
-                                                src="/images/circle-info-bread.svg"
-                                                alt="svg"
-                                                className="icon-topic"
-                                                height={14}
-                                                width={14}
-                                              />
-                                            </div>
-                                          </Popover>
-                                        ) : (
-                                          <div className="flex items-center gap-1.5 text-sm">
-                                            <span className="text-sm">
-                                              {camp?.camp_name}
-                                            </span>
-                                          </div>
-                                        )}
-                                      </span>
-                                      {index !==
-                                        breadCrumbRes.bread_crumb.length -
-                                          1 && (
-                                        <span className="!text-canBlack">
-                                          <Image
-                                            src="/images/arrow-bread.svg"
-                                            alt="svg"
-                                            className="icon-topic"
-                                            height={10}
-                                            width={10}
-                                          />
-                                        </span>
+                                            <i className="icon-subscribe text-canBlue"></i>
+                                          </small>
+                                        </Tooltip>
                                       )}
-                                    </a>
+                                    <span
+                                      className={
+                                        breadCrumbRes?.bread_crumb.length - 1 ==
+                                        index
+                                          ? styles.greenIndicateText
+                                          : styles.boldBreadcrumb
+                                      }
+                                    >
+                                      {index ===
+                                      breadCrumbRes.bread_crumb.length - 1 ? (
+                                        <Popover
+                                          content={contentForCamp}
+                                          title={title2}
+                                        >
+                                          <div className="flex items-center gap-1.5 text-sm">
+                                            <span className="text-sm font-semibold">
+                                              <Link
+                                                href={`/topic/${
+                                                  payloadData?.topic_num
+                                                    ? payloadData?.topic_num
+                                                    : topicId
+                                                }-${replaceSpecialCharacters(
+                                                  breadCrumbRes?.topic_name,
+                                                  "-"
+                                                )}/${
+                                                  camp?.camp_num
+                                                }-${replaceSpecialCharacters(
+                                                  camp?.camp_name,
+                                                  "-"
+                                                )}?${
+                                                  getQueryParams()?.returnQuery
+                                                }`}
+                                                key={index}
+                                              >
+                                                <a className="!text-canBlack gap-x-1 gap-y-1 flex hover:!text-canBlack !text-sm">
+                                                  {camp?.camp_name}
+                                                </a>
+                                              </Link>
+                                            </span>
+                                            <Image
+                                              src="/images/circle-info-bread.svg"
+                                              alt="svg"
+                                              className="icon-topic"
+                                              height={14}
+                                              width={14}
+                                            />
+                                          </div>
+                                        </Popover>
+                                      ) : (
+                                        <div className="flex items-center gap-1.5 text-sm">
+                                          <span className="text-sm">
+                                            <Link
+                                              href={`/topic/${
+                                                payloadData?.topic_num
+                                                  ? payloadData?.topic_num
+                                                  : topicId
+                                              }-${replaceSpecialCharacters(
+                                                breadCrumbRes?.topic_name,
+                                                "-"
+                                              )}/${
+                                                camp?.camp_num
+                                              }-${replaceSpecialCharacters(
+                                                camp?.camp_name,
+                                                "-"
+                                              )}?${
+                                                getQueryParams()?.returnQuery
+                                              }`}
+                                              key={index}
+                                            >
+                                              <a className="!text-canBlack gap-x-1 gap-y-1 flex hover:!text-canBlack !text-sm">
+                                                {camp?.camp_name}
+                                              </a>
+                                            </Link>
+                                          </span>
+                                        </div>
+                                      )}
+                                    </span>
+                                    {index !==
+                                      breadCrumbRes.bread_crumb.length - 1 && (
+                                      <span className="!text-canBlack">
+                                        <Image
+                                          src="/images/arrow-bread.svg"
+                                          alt="svg"
+                                          className="icon-topic"
+                                          height={10}
+                                          width={10}
+                                        />
+                                      </span>
+                                    )}
+                                  </a>
                                 );
                               })
                             ) : (
