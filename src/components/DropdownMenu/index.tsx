@@ -171,13 +171,17 @@ const DropDownMenu = () => {
   const getButtonLabel = () => {
     if (!campStatement || campStatement.length === 0) {
       return K?.exceptionalMessages?.addCampStatementButton;
-    } 
+    }
     const statement = campStatement[0];
-  
+
     if (statement?.draft_record_id) {
       return "Edit Draft Statement";
     }
-    if (statement?.parsed_value || statement?.grace_period_record_count > 0 || statement?.in_review_changes > 0 ) {
+    if (
+      statement?.parsed_value ||
+      statement?.grace_period_record_count > 0 ||
+      statement?.in_review_changes > 0
+    ) {
       return K?.exceptionalMessages?.manageCampStatementButton;
     }
     return K?.exceptionalMessages?.addCampStatementButton;
@@ -198,7 +202,11 @@ const DropDownMenu = () => {
 
       if (draftRecordId) {
         return `/manage/statement/${draftRecordId}?is_draft=1`;
-      } else if (parsedValue || campStatement?.at(0)?.grace_period_record_count>0 || campStatement?.at(0)?.in_review_changes > 0) {
+      } else if (
+        parsedValue ||
+        campStatement?.at(0)?.grace_period_record_count > 0 ||
+        campStatement?.at(0)?.in_review_changes > 0
+      ) {
         return `/statement/history/${replaceSpecialCharacters(
           firstValue,
           "-"
