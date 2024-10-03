@@ -179,7 +179,9 @@ const DropDownMenu = () => {
       return "Edit Draft Statement";
     }
 
-    if (statement?.parsed_value) {
+    if (statement?.parsed_value  ||
+      statement?.grace_period_record_count > 0 ||
+      statement?.in_review_changes > 0) {
       return K?.exceptionalMessages?.manageCampStatementButton;
     }
 
@@ -201,7 +203,10 @@ const DropDownMenu = () => {
 
       if (draftRecordId) {
         return `/manage/statement/${draftRecordId}?is_draft=1`;
-      } else if (parsedValue) {
+      } else if (parsedValue ||
+        campStatement?.at(0)?.grace_period_record_count > 0 ||
+        campStatement?.at(0)?.in_review_changes > 0
+      ) {
         return `/statement/history/${replaceSpecialCharacters(
           firstValue,
           "-"

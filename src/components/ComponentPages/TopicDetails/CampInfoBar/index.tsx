@@ -485,10 +485,18 @@ const TimelineInfoBar = ({
         Camp name :
       </span>
       <p className="font-bold mb-5 text-sm text-canBlack line-clamp-1 overflow-hidden">
-        <Link href={`/topic/${topicRecord?.topic_num}-${replaceSpecialCharacters(topicRecord?.topic_name,"-")}/${campRecord?.camp_num}-${replaceSpecialCharacters(campRecord?.camp_name,"-")}`}>
-        {campRecord && campRecord?.camp_name?.length > 50
-          ? `${campRecord?.camp_name.substring(0, 20)}....`
-          : campRecord?.camp_name}
+        <Link
+          href={`/topic/${topicRecord?.topic_num}-${replaceSpecialCharacters(
+            topicRecord?.topic_name,
+            "-"
+          )}/${campRecord?.camp_num}-${replaceSpecialCharacters(
+            campRecord?.camp_name,
+            "-"
+          )}`}
+        >
+          {campRecord && campRecord?.camp_name?.length > 50
+            ? `${campRecord?.camp_name.substring(0, 20)}....`
+            : campRecord?.camp_name}
         </Link>
       </p>
     </div>
@@ -818,71 +826,72 @@ const TimelineInfoBar = ({
                             breadCrumbRes ? (
                               breadCrumbRes?.bread_crumb?.map((camp, index) => {
                                 return (
-                                    <a className="!text-canBlack gap-x-1 gap-y-1 flex hover:!text-canBlack !text-sm" key={index}>
-                                      {breadCrumbRes &&
-                                        !!campSubscriptionID &&
-                                        !isTopicHistoryPage && (
-                                          <Tooltip
-                                            title="You have subscribed to this camp."
-                                            key="camp_subscribed_icon"
+                                  <a
+                                    className="!text-canBlack gap-x-1 gap-y-1 flex hover:!text-canBlack !text-sm"
+                                    key={index}
+                                  >
+                                    {breadCrumbRes &&
+                                      !!campSubscriptionID &&
+                                      !isTopicHistoryPage && (
+                                        <Tooltip
+                                          title="You have subscribed to this camp."
+                                          key="camp_subscribed_icon"
+                                        >
+                                          <small
+                                            style={{ alignSelf: "center" }}
                                           >
-                                            <small
-                                              style={{ alignSelf: "center" }}
-                                            >
-                                              <i className="icon-subscribe text-canBlue"></i>
-                                            </small>
-                                          </Tooltip>
-                                        )}
-                                      <span
-                                        className={
-                                          breadCrumbRes?.bread_crumb.length -
-                                            1 ==
-                                          index
-                                            ? styles.greenIndicateText
-                                            : styles.boldBreadcrumb
-                                        }
-                                      >
-                                        {index ===
-                                        breadCrumbRes.bread_crumb.length - 1 ? (
-                                          <Popover
-                                            content={contentForCamp}
-                                            title={title2}
-                                          >
-                                            <div className="flex items-center gap-1.5 text-sm">
-                                              <span className="text-sm font-semibold">
-                                                {camp?.camp_name}
-                                              </span>
-                                              <Image
-                                                src="/images/circle-info-bread.svg"
-                                                alt="svg"
-                                                className="icon-topic"
-                                                height={14}
-                                                width={14}
-                                              />
-                                            </div>
-                                          </Popover>
-                                        ) : (
+                                            <i className="icon-subscribe text-canBlue"></i>
+                                          </small>
+                                        </Tooltip>
+                                      )}
+                                    <span
+                                      className={
+                                        breadCrumbRes?.bread_crumb.length - 1 ==
+                                        index
+                                          ? styles.greenIndicateText
+                                          : styles.boldBreadcrumb
+                                      }
+                                    >
+                                      {index ===
+                                      breadCrumbRes.bread_crumb.length - 1 ? (
+                                        <Popover
+                                          content={contentForCamp}
+                                          title={title2}
+                                        >
                                           <div className="flex items-center gap-1.5 text-sm">
-                                            <span className="text-sm">
+                                            <span className="text-sm font-semibold">
                                               {camp?.camp_name}
                                             </span>
+                                            <Image
+                                              src="/images/circle-info-bread.svg"
+                                              alt="svg"
+                                              className="icon-topic"
+                                              height={14}
+                                              width={14}
+                                            />
                                           </div>
-                                        )}
-                                      </span>
-                                      {index !==
-                                        breadCrumbRes.bread_crumb.length -
-                                          1 && (
-                                        <span className="!text-canBlack">
-                                          <Image
-                                            src="/images/arrow-bread.svg"
-                                            alt="svg"
-                                            className="icon-topic"
-                                            height={10}
-                                            width={10}
-                                          />
-                                        </span>
+                                        </Popover>
+                                      ) : (
+                                        <div className="flex items-center gap-1.5 text-sm">
+                                          <span className="text-sm">
+                                            {camp?.camp_name}
+                                          </span>
+                                        </div>
                                       )}
-                                    </a>
+                                    </span>
+                                    {index !==
+                                      breadCrumbRes.bread_crumb.length - 1 && (
+                                      <span className="!text-canBlack">
+                                        <Image
+                                          src="/images/arrow-bread.svg"
+                                          alt="svg"
+                                          className="icon-topic"
+                                          height={10}
+                                          width={10}
+                                        />
+                                      </span>
+                                    )}
+                                  </a>
                                 );
                               })
                             ) : (
@@ -1133,62 +1142,38 @@ const TimelineInfoBar = ({
                 </div>
               </div>
             )}
-
             {!isEventLine && (
               <div className="flex items-center gap-3 shrink-0">
-                {!isHtmlContent && campStatement?.length > 0 && isTopicPage ? (
+                {!isHtmlContent &&
+                isTopicPage &&
+                campStatement?.length > 0 &&
+                (campStatement?.at(0)?.in_review_changes > 0 ||
+                  campStatement?.at(0)?.grace_period_record_count > 0 ||
+                  campStatement?.at(0)?.parsed_value) ? (
                   <div className="topicDetailsCollapseFooter printHIde camp">
                     <PrimaryButton
                       disabled={campRecord?.is_archive == 1 ? true : false}
                       className="printHIde sm:hidden md:hidden hidden lg:flex !h-[40px] py-2.5 px-5 items-center text-sm"
                       onClick={() => {
                         router?.push(
-                          `${
-                            campStatement?.length > 0
-                              ? campStatement[0]?.draft_record_id
-                                ? "/manage/statement/" +
-                                  campStatement[0]?.draft_record_id +
-                                  "?is_draft=1"
-                                : campStatement[0]?.parsed_value ||
-                                  campStatement?.at(0)?.in_review_changes ||
-                                  campStatement?.at(0)
-                                    ?.grace_period_record_count > 0
-                                ? `/statement/history/${replaceSpecialCharacters(
-                                    router?.query?.camp?.at(0),
-                                    "-"
-                                  )}/${replaceSpecialCharacters(
-                                    router?.query?.camp?.at(1) ?? "1-Agreement",
-                                    "-"
-                                  )}`
-                                : `/create/statement/${replaceSpecialCharacters(
-                                    router?.query?.camp?.at(0),
-                                    "-"
-                                  )}/${replaceSpecialCharacters(
-                                    router?.query?.camp?.at(1) ?? "1-Agreement",
-                                    "-"
-                                  )}`
-                              : null
-                          }`
+                          `${`/statement/history/${replaceSpecialCharacters(
+                            router?.query?.camp?.at(0),
+                            "-"
+                          )}/${replaceSpecialCharacters(
+                            router?.query?.camp?.at(1) ?? "1-Agreement",
+                            "-"
+                          )}`}`
                         );
                       }}
                       id="add-camp-statement-btn"
                     >
-                      {campStatement[0]?.parsed_value ||
-                      campStatement?.at(0)?.in_review_changes ||
-                      campStatement?.at(0)?.grace_period_record_count > 0
-                        ? K?.exceptionalMessages?.manageCampStatementButton
-                        : null}
-                      {(campStatement[0]?.parsed_value ||
-                        campStatement?.at(0)?.in_review_changes ||
-                        campStatement?.at(0)?.grace_period_record_count > 0 ||
-                        campStatement[0]?.draft_record_id) && (
-                        <Image
-                          src="/images/manage-btn-icon.svg"
-                          alt=""
-                          height={24}
-                          width={24}
-                        />
-                      )}
+                      {K?.exceptionalMessages?.manageCampStatementButton}
+                      <Image
+                        src="/images/manage-btn-icon.svg"
+                        alt=""
+                        height={24}
+                        width={24}
+                      />
                     </PrimaryButton>
                   </div>
                 ) : null}
