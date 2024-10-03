@@ -172,7 +172,6 @@ const DropDownMenu = () => {
     if (!campStatement || campStatement.length === 0) {
       return K?.exceptionalMessages?.addCampStatementButton;
     }
-
     const statement = campStatement[0];
 
     if (statement?.draft_record_id) {
@@ -184,7 +183,6 @@ const DropDownMenu = () => {
       statement?.in_review_changes > 0) {
       return K?.exceptionalMessages?.manageCampStatementButton;
     }
-
     return K?.exceptionalMessages?.addCampStatementButton;
   };
 
