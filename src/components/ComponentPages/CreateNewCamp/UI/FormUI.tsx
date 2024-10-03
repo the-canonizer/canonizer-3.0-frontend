@@ -55,7 +55,7 @@ const CreateCampFormUI = ({
   values,
   campLeaderData = null,
   getCampLeaderData,
-}:any) => {
+}: any) => {
   const router = useRouter();
 
   const { campRecord, topicRecord, filterObject } = useSelector(
