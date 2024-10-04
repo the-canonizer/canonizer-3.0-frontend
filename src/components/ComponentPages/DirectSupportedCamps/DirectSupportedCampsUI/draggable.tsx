@@ -98,61 +98,57 @@ function SortableItem(props) {
       className="flex items-center gap-7"
     >
       {props?.item?.dis ? (
-        <>
-          <Tag
-            className="rounded-full mr-0 bg-[#dadbde] flex items-center  border-transparent font-semibold text-base px-5 py-2.5 leading-none text-canBlack"
-            closable={true}
-            closeIcon={
-              <Image
-                preview={false}
-                src="/images/minus-user-icon.svg"
-                width={24}
-                height={24}
-                style={{ cursor: "not-allowed", alignSelf: "center" }}
-                alt=""
-              />
-            }
-            onClose={(evt) => {
-              // evt.preventDefault();
-              // props?.onClose(props?.item)
+        <Tag
+          className="rounded-full mr-0 bg-[#dadbde] flex items-center  border-transparent font-medium text-sm px-3 py-1 leading-none text-canBlack"
+          closable={true}
+          closeIcon={
+            <Image
+              preview={false}
+              src="/images/minus-user-icon.svg"
+              width={20}
+              height={20}
+              style={{ cursor: "not-allowed", alignSelf: "center" }}
+              alt=""
+            />
+          }
+          onClose={(evt) => {
+            // evt.preventDefault();
+            // props?.onClose(props?.item)
+          }}
+        >
+          {`${props?.index + 1}-${props?.item?.camp_name}`}
+        </Tag>
+      ) : (
+        <Tag
+          className="rounded-full mr-0 bg-[#F0F2FA] flex items-center border-transparent font-medium text-sm px-3 py-1 leading-none"
+          closable={true}
+          closeIcon={
+            <Image
+              className="cursor-pointer"
+              preview={false}
+              src="/images/minus-user-icon.svg"
+              style={{ cursor: "pointer", alignSelf: "center" }}
+              width={20}
+              height={20}
+              alt=""
+            />
+          }
+          onClose={(evt) => {
+            evt.preventDefault();
+            props?.onClose(props?.item);
+          }}
+        >
+          <a
+            data-testid="styles_Bluecolor "
+            className="text-sm font-medium flex items-center gap-2.5"
+            onClick={(e) => {
+              e.preventDefault();
+              window.location.href = props?.item?.camp_link;
             }}
           >
             {`${props?.index + 1}-${props?.item?.camp_name}`}
-          </Tag>
-        </>
-      ) : (
-        <>
-          <Tag
-            className="rounded-full mr-0 bg-[#F0F2FA] flex items-center border-transparent font-semibold text-base px-5 py-2.5 leading-none"
-            closable={true}
-            closeIcon={
-              <Image
-                className="cursor-pointer"
-                preview={false}
-                src="/images/minus-user-icon.svg"
-                style={{ cursor: "pointer", alignSelf: "center" }}
-                width={24}
-                height={24}
-                alt=""
-              />
-            }
-            onClose={(evt) => {
-              evt.preventDefault();
-              props?.onClose(props?.item);
-            }}
-          >
-            <a
-              data-testid="styles_Bluecolor "
-              className="text-base font-semibold flex items-center gap-2.5"
-              onClick={(e) => {
-                e.preventDefault();
-                window.location.href = props?.item?.camp_link;
-              }}
-            >
-              {`${props?.index + 1}-${props?.item?.camp_name}`}
-            </a>
-          </Tag>
-        </>
+          </a>
+        </Tag>
       )}
     </div>
   );
