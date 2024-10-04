@@ -485,10 +485,18 @@ const TimelineInfoBar = ({
         Camp name :
       </span>
       <p className="font-bold mb-5 text-sm text-canBlack line-clamp-1 overflow-hidden">
-        <Link href={`/topic/${topicRecord?.topic_num}-${replaceSpecialCharacters(topicRecord?.topic_name,"-")}/${campRecord?.camp_num}-${replaceSpecialCharacters(campRecord?.camp_name,"-")}`}>
-        {campRecord && campRecord?.camp_name?.length > 50
-          ? `${campRecord?.camp_name.substring(0, 20)}....`
-          : campRecord?.camp_name}
+        <Link
+          href={`/topic/${topicRecord?.topic_num}-${replaceSpecialCharacters(
+            topicRecord?.topic_name,
+            "-"
+          )}/${campRecord?.camp_num}-${replaceSpecialCharacters(
+            campRecord?.camp_name,
+            "-"
+          )}`}
+        >
+          {campRecord && campRecord?.camp_name?.length > 50
+            ? `${campRecord?.camp_name.substring(0, 20)}....`
+            : campRecord?.camp_name}
         </Link>
       </p>
     </div>
@@ -652,6 +660,45 @@ const TimelineInfoBar = ({
     )}`;
 
     router.push(link);
+  };
+
+  const getCurrentUpdateButton = () => {
+    const renderButtonLabel = () => {
+      switch (historyTitle()) {
+        case "Statement History":
+          return " Statement";
+        case "Topic History":
+          return " Topic";
+        case "Camp History":
+          return " Camp";
+        default:
+          return "";
+      }
+    };
+
+    const btn = (
+      <PrimaryButton
+        size="large"
+        type="primary"
+        className="flex items-center justify-center rounded-[10px] max-lg:hidden gap-3.5 leading-none text-sm ml-auto"
+        onClick={() => updateCurrentRecord()}
+      >
+        Update Current
+        {renderButtonLabel()}
+        <i className="icon-edit"></i>
+      </PrimaryButton>
+    );
+
+    // Return button for "Camp History" if the record is not archived
+    if (!compareMode && !!updateId) {
+      if (historyTitle() === "Camp History" && campRecord?.is_archive === 1) {
+        return null;
+      }
+      return btn;
+    }
+
+    // Return null if conditions are not met
+    return null;
   };
 
   return (
@@ -818,71 +865,72 @@ const TimelineInfoBar = ({
                             breadCrumbRes ? (
                               breadCrumbRes?.bread_crumb?.map((camp, index) => {
                                 return (
-                                    <a className="!text-canBlack gap-x-1 gap-y-1 flex hover:!text-canBlack !text-sm" key={index}>
-                                      {breadCrumbRes &&
-                                        !!campSubscriptionID &&
-                                        !isTopicHistoryPage && (
-                                          <Tooltip
-                                            title="You have subscribed to this camp."
-                                            key="camp_subscribed_icon"
+                                  <a
+                                    className="!text-canBlack gap-x-1 gap-y-1 flex hover:!text-canBlack !text-sm"
+                                    key={index}
+                                  >
+                                    {breadCrumbRes &&
+                                      !!campSubscriptionID &&
+                                      !isTopicHistoryPage && (
+                                        <Tooltip
+                                          title="You have subscribed to this camp."
+                                          key="camp_subscribed_icon"
+                                        >
+                                          <small
+                                            style={{ alignSelf: "center" }}
                                           >
-                                            <small
-                                              style={{ alignSelf: "center" }}
-                                            >
-                                              <i className="icon-subscribe text-canBlue"></i>
-                                            </small>
-                                          </Tooltip>
-                                        )}
-                                      <span
-                                        className={
-                                          breadCrumbRes?.bread_crumb.length -
-                                            1 ==
-                                          index
-                                            ? styles.greenIndicateText
-                                            : styles.boldBreadcrumb
-                                        }
-                                      >
-                                        {index ===
-                                        breadCrumbRes.bread_crumb.length - 1 ? (
-                                          <Popover
-                                            content={contentForCamp}
-                                            title={title2}
-                                          >
-                                            <div className="flex items-center gap-1.5 text-sm">
-                                              <span className="text-sm font-semibold">
-                                                {camp?.camp_name}
-                                              </span>
-                                              <Image
-                                                src="/images/circle-info-bread.svg"
-                                                alt="svg"
-                                                className="icon-topic"
-                                                height={14}
-                                                width={14}
-                                              />
-                                            </div>
-                                          </Popover>
-                                        ) : (
+                                            <i className="icon-subscribe text-canBlue"></i>
+                                          </small>
+                                        </Tooltip>
+                                      )}
+                                    <span
+                                      className={
+                                        breadCrumbRes?.bread_crumb.length - 1 ==
+                                        index
+                                          ? styles.greenIndicateText
+                                          : styles.boldBreadcrumb
+                                      }
+                                    >
+                                      {index ===
+                                      breadCrumbRes.bread_crumb.length - 1 ? (
+                                        <Popover
+                                          content={contentForCamp}
+                                          title={title2}
+                                        >
                                           <div className="flex items-center gap-1.5 text-sm">
-                                            <span className="text-sm">
+                                            <span className="text-sm font-semibold">
                                               {camp?.camp_name}
                                             </span>
+                                            <Image
+                                              src="/images/circle-info-bread.svg"
+                                              alt="svg"
+                                              className="icon-topic"
+                                              height={14}
+                                              width={14}
+                                            />
                                           </div>
-                                        )}
-                                      </span>
-                                      {index !==
-                                        breadCrumbRes.bread_crumb.length -
-                                          1 && (
-                                        <span className="!text-canBlack">
-                                          <Image
-                                            src="/images/arrow-bread.svg"
-                                            alt="svg"
-                                            className="icon-topic"
-                                            height={10}
-                                            width={10}
-                                          />
-                                        </span>
+                                        </Popover>
+                                      ) : (
+                                        <div className="flex items-center gap-1.5 text-sm">
+                                          <span className="text-sm">
+                                            {camp?.camp_name}
+                                          </span>
+                                        </div>
                                       )}
-                                    </a>
+                                    </span>
+                                    {index !==
+                                      breadCrumbRes.bread_crumb.length - 1 && (
+                                      <span className="!text-canBlack">
+                                        <Image
+                                          src="/images/arrow-bread.svg"
+                                          alt="svg"
+                                          className="icon-topic"
+                                          height={10}
+                                          width={10}
+                                        />
+                                      </span>
+                                    )}
+                                  </a>
                                 );
                               })
                             ) : (
@@ -940,24 +988,7 @@ const TimelineInfoBar = ({
                     </div>
                   </>
                 )}
-                {!compareMode && !!updateId && (
-                  <PrimaryButton
-                    size="large"
-                    type="primary"
-                    className="flex items-center justify-center rounded-[10px] max-lg:hidden gap-3.5 leading-none text-sm ml-auto"
-                    onClick={() => updateCurrentRecord()}
-                  >
-                    Update Current
-                    {historyTitle() == "Statement History"
-                      ? " Statement"
-                      : historyTitle() == "Topic History"
-                      ? " Topic"
-                      : historyTitle() == "Camp History"
-                      ? " Camp"
-                      : null}
-                    <i className="icon-edit"></i>
-                  </PrimaryButton>
-                )}
+                {getCurrentUpdateButton()}
               </div>
             ) : (
               <div className="flex mobile-view gap-2 items-center">
