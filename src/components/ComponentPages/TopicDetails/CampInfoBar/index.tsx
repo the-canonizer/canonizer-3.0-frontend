@@ -919,7 +919,9 @@ const TimelineInfoBar = ({
                                                 }`}
                                                 key={index}
                                               >
-                                                {camp?.camp_name}
+                                                <span className="!text-canBlack gap-x-1 gap-y-1 flex hover:!text-canBlack !text-sm">
+                                                  {camp?.camp_name}
+                                                </span>
                                               </Link>
                                             </span>
                                             <Image
@@ -952,7 +954,9 @@ const TimelineInfoBar = ({
                                               }`}
                                               key={index}
                                             >
-                                              {camp?.camp_name}
+                                              <span className="!text-canBlack gap-x-1 gap-y-1 flex hover:!text-canBlack !text-sm">
+                                                {camp?.camp_name}
+                                              </span>
                                             </Link>
                                           </span>
                                         </div>
