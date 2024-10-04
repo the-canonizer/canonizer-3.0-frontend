@@ -580,7 +580,7 @@ const TopicItems = ({ searchTopics, searchValue }) => {
                         />
                         <Link href="">
                           <a className="text-canBlue text-base font-inter font-normal lg:font-medium">
-                            General
+                            {item?.namespace}
                           </a>
                         </Link>
                       </Typography.Paragraph>

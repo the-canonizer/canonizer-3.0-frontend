@@ -80,6 +80,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
     viewThisVersionCheck,
     campWithScore,
     openConsensusTreePopup,
+    totalScoreforTreeCard
   } = useSelector((state: RootState) => ({
     algorithms: state.homePage?.algorithms,
     asof: state?.filters?.filterObject?.asof,
@@ -91,6 +92,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
     viewThisVersionCheck: state?.filters?.viewThisVersionCheck,
     campWithScore: state?.filters?.campWithScoreValue,
     openConsensusTreePopup: state.hotTopic.openConsensusTreePopup,
+    totalScoreforTreeCard: state.topicDetails.totalScoreforTreeCard,
   }));
 
   const { isUserAuthenticated } = isAuth();
@@ -131,11 +133,11 @@ const TopicDetails = ({ serverSideCall }: any) => {
 
   useEffect(() => {
     async function getTreeApiCall() {
+      
       if (!showTreeSkeltonRef) {
         showTreeSkeltonRef.current = true;
       }
       setLoadingIndicator(true);
-
       if (didMount.current && !serverSideCall.current) {
         const reqBodyForService = {
           topic_num: router?.query?.camp[0]?.split("-")[0],
@@ -149,6 +151,8 @@ const TopicDetails = ({ serverSideCall }: any) => {
           update_all: 1,
           fetch_topic_history: viewThisVersionCheck ? 1 : null,
         };
+        console.log(reqBodyForService, tree,"reqBodyForService")
+
         const reqBody = {
           topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
           camp_num: +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1),
@@ -239,10 +243,6 @@ const TopicDetails = ({ serverSideCall }: any) => {
       setIsSupportTreeCardModal(false);
       GetCheckStatusData();
       await getTreesApi(reqBodyForService);
-      dispatch(setOpenConsensusTreePopup(true));
-      setTimeout(() => {
-        dispatch(setOpenConsensusTreePopup(false));
-      }, 100);
       getTopicActivityLogCall();
       await getCurrentCampRecordApi(reqBody);
       setRemoveSupportSpinner(false);
@@ -324,11 +324,6 @@ const TopicDetails = ({ serverSideCall }: any) => {
       GetCheckStatusData();
       getTopicActivityLogCall();
       await getTreesApi(reqBodyForService);
-      dispatch(setOpenConsensusTreePopup(true));
-
-      setTimeout(() => {
-        dispatch(setOpenConsensusTreePopup(false));
-      }, 100);
       setIsRemovingSupport(false);
       setRemoveSupportSpinner(false);
     }
@@ -358,7 +353,6 @@ const TopicDetails = ({ serverSideCall }: any) => {
     if (isUserAuthenticated) {
       GetCheckStatusData();
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isUserAuthenticated || router || algorithm, router.query.camp.at(1)]);
 
@@ -381,11 +375,6 @@ const TopicDetails = ({ serverSideCall }: any) => {
         dispatch(setShowDrawer(false));
       }
     }
-    dispatch(setOpenConsensusTreePopup(true));
-    setTimeout(() => {
-      dispatch(setOpenConsensusTreePopup(false));
-    }, 100);
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
