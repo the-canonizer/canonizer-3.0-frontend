@@ -93,9 +93,8 @@ export default function DirectSupportedCampsUI({
       dataIndex: "sr",
       key: "sr",
 
-      render: (text, record, index) => (
-        <span className="bg-canGrey2 rounded-full h-5 w-6 flex items-center justify-center">
-          {" "}
+      render: (_text, _record, index) => (
+        <span className="text-sm bg-canGrey2 rounded-full h-5 w-6 flex items-center justify-center">
           {index + 1}
         </span>
       ),
@@ -107,7 +106,7 @@ export default function DirectSupportedCampsUI({
       render: (text: string, record: RecordType) => (
         <div className="flex gap-2.5 line-clamp-1">
           <Link href={record.title_link}>
-            <a className="text-base font-semibold flex items-center gap-2.5 text-canBlack">
+            <a className="text-sm font-medium flex items-center gap-2.5 text-canBlack">
               {text}
             </a>
           </Link>
@@ -118,8 +117,8 @@ export default function DirectSupportedCampsUI({
             }}
             className="cursor-pointer"
             src="/images/minus-user-icon.svg"
-            width={24}
-            height={24}
+            width={20}
+            height={20}
             alt=""
           />
         </div>
@@ -131,75 +130,6 @@ export default function DirectSupportedCampsUI({
       key: "camps",
       render: (camps: Tag[], record: RecordType) => (
         <div>
-          {/* <DraggableArea
-            tags={camps}
-            render={(props: { tag: Tag; index: number }) => {
-              const { tag, index } = props;
-
-              return (
-                <>
-                  <div
-                    className={`tag ${tag.dis ? "tags_disable" : ""} ${
-                      camps.length > 1 ? "mb-2.5" : ""
-                    } flex items-center`}
-                  >
-                    {console.log(tag)}
-                    <div className={styles.btndiv}>
-                      <span className="count">{index + 1}. </span>
-                      <Link href={tag.camp_link}>
-                        <a
-                          className="text-sm text-canBlack font-semibold"
-                          draggable="false"
-                          onClick={(e) => e.preventDefault()} // Prevent default drag behavior
-                        >
-                          {tag.camp_name}
-                        </a>
-                      </Link>
-                    </div>
-                    <div
-                      className="flex items-center"
-                      onClick={(e) => {
-                        handleClose(tag, record.topic_num, record, []);
-                        setValData(tag);
-                        setRevertBack([]);
-                      }}
-                    >
-                      <div className={styles.btndiv}>
-                        <span className="count">{tag.support_order}. </span>
-                        <Link href={tag.camp_link}>
-                          <a
-                            className="text-sm text-canBlack font-semibold"
-                            draggable="false"
-                            onClick={(e) => e.preventDefault()} // Prevent default drag behavior
-                          >
-                            {tag.camp_name}
-                          </a>
-                        </Link>
-                      </div>
-                      <div
-                        className="flex items-center"
-                        onClick={() => {
-                          handleClose(tag, record.topic_num, record, []);
-                          setValData(tag);
-                          setRevertBack([]);
-                        }}
-                      >
-                        <Image
-                          className="cursor-pointer"
-                          src="/images/minus-user-icon.svg"
-                          width={24}
-                          height={24}
-                          alt=""
-                        />
-                      </div>
-                    </Button>
-                  </div>
-                  </>
-              );
-            }}
-            onChange={(tags) => tagsOrder(record.topic_num, record, tags)}
-            /> */}
-
           <DraggableTags
             tags={camps}
             record={record}
@@ -576,7 +506,7 @@ export default function DirectSupportedCampsUI({
             <div>
               <div className="flex lg:flex-row flex-col justify-between items-start mb-5 lg:gap-0 gap-2.5">
                 <div className="w-full flex-1">
-                  <h3 className="text-base uppercase font-semibold text-canBlack mb-5">
+                  <h3 className="text-sm uppercase font-medium text-canBlack mb-5">
                     DIRECT SUPPORTED CAMPS
                   </h3>
                   <p className="text-sm font-normal text-canRed">
@@ -597,8 +527,8 @@ export default function DirectSupportedCampsUI({
                     suffix={
                       <Image
                         src="/images/search-icon.svg"
-                        width={20}
-                        height={20}
+                        width={15}
+                        height={15}
                         alt=""
                       />
                     }
@@ -607,7 +537,7 @@ export default function DirectSupportedCampsUI({
                     placeholder="Search via topic name"
                     type="text"
                     name="search"
-                    className="!h-10 rounded-lg border border-canGrey2 text-base font-normal lg:w-auto w-full [&_.ant-input-affix-wrapper]:hover:!border-canGrey2 focus:!border-canGrey2 focus:shadow-none "
+                    className="!h-10 rounded-lg border border-canGrey2 text-sm font-normal lg:w-auto w-full [&_.ant-input-affix-wrapper]:hover:!border-canGrey2 focus:!border-canGrey2 focus:shadow-none "
                     onChange={(e) => {
                       setSearch(e.target.value);
                     }}
@@ -632,33 +562,7 @@ export default function DirectSupportedCampsUI({
               )}
             </div>
           )}
-          {/* <Modal
-        className={styles.modal_cross}
-        title={
-          isChangingOrder
-            ? "You are about to change the order of your supported camps"
-            : modalPopupText
-              ? `You are about to remove your support from all the camps from the topic: "${removeSupportCampsData.title}"`
-              : campIds?.length > 1
-                ? "You are about to remove your support from the camps: "
-                : "You are about to remove your support from the camp: "
-        }
-        open={isSupportedCampsModalVisible}
-        onOk={handleSupportedCampsCancel}
-        onCancel={handleSupportedCampsCancel}
-        footer={null}
-        closeIcon={<CloseCircleOutlined />}
-      >
-        <Spin spinning={removeSupportSpinner} size="small">
-          <SupportRemovedModal
-            onFinish={onRemoveFinish}
-            handleCancel={handleSupportedCampsCancel}
-            form={removeForm}
-            isOrderChange={isChangingOrder}
-          />
-        </Spin>
-      </Modal> */}
-
+          
           <Modal
             data-testid="closeModel"
             className={styles.modal}
