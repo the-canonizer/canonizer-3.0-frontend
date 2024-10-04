@@ -612,11 +612,11 @@ const TimelineInfoBar = ({
               : topicRecord?.topic_name}
           </span>
         </Col>
-        {campRecord?.camp_leader_nick_name && (
           <Col md={12} sm={12} xs={12} className=" flex flex-col mt-4">
             <span className="text-xs 2xl:text-sm text-canLight">
               Camp Leader:
             </span>
+            {campRecord?.camp_leader_nick_name ? (
             <Link
               className="flex flex-wrap"
               href={{
@@ -628,8 +628,8 @@ const TimelineInfoBar = ({
             >
               {campRecord?.camp_leader_nick_name}
             </Link>
+          ):"No"}
           </Col>
-        )}
       </Row>
       <hr className="horizontal_line my-5" />
       {(isTopicPage || isHistoryPage || compareMode) && (
@@ -1164,62 +1164,38 @@ const TimelineInfoBar = ({
                 </div>
               </div>
             )}
-
             {!isEventLine && (
               <div className="flex items-center gap-3 shrink-0">
-                {!isHtmlContent && campStatement?.length > 0 && isTopicPage ? (
+                {!isHtmlContent &&
+                isTopicPage &&
+                campStatement?.length > 0 &&
+                (campStatement?.at(0)?.in_review_changes > 0 ||
+                  campStatement?.at(0)?.grace_period_record_count > 0 ||
+                  campStatement?.at(0)?.parsed_value) ? (
                   <div className="topicDetailsCollapseFooter printHIde camp">
                     <PrimaryButton
                       disabled={campRecord?.is_archive == 1 ? true : false}
                       className="printHIde sm:hidden md:hidden hidden lg:flex !h-[40px] py-2.5 px-5 items-center text-sm"
                       onClick={() => {
                         router?.push(
-                          `${
-                            campStatement?.length > 0
-                              ? campStatement[0]?.draft_record_id
-                                ? "/manage/statement/" +
-                                  campStatement[0]?.draft_record_id +
-                                  "?is_draft=1"
-                                : campStatement[0]?.parsed_value ||
-                                  campStatement?.at(0)?.in_review_changes ||
-                                  campStatement?.at(0)
-                                    ?.grace_period_record_count > 0
-                                ? `/statement/history/${replaceSpecialCharacters(
-                                    router?.query?.camp?.at(0),
-                                    "-"
-                                  )}/${replaceSpecialCharacters(
-                                    router?.query?.camp?.at(1) ?? "1-Agreement",
-                                    "-"
-                                  )}`
-                                : `/create/statement/${replaceSpecialCharacters(
-                                    router?.query?.camp?.at(0),
-                                    "-"
-                                  )}/${replaceSpecialCharacters(
-                                    router?.query?.camp?.at(1) ?? "1-Agreement",
-                                    "-"
-                                  )}`
-                              : null
-                          }`
+                          `${`/statement/history/${replaceSpecialCharacters(
+                            router?.query?.camp?.at(0),
+                            "-"
+                          )}/${replaceSpecialCharacters(
+                            router?.query?.camp?.at(1) ?? "1-Agreement",
+                            "-"
+                          )}`}`
                         );
                       }}
                       id="add-camp-statement-btn"
                     >
-                      {campStatement[0]?.parsed_value ||
-                      campStatement?.at(0)?.in_review_changes ||
-                      campStatement?.at(0)?.grace_period_record_count > 0
-                        ? K?.exceptionalMessages?.manageCampStatementButton
-                        : null}
-                      {(campStatement[0]?.parsed_value ||
-                        campStatement?.at(0)?.in_review_changes ||
-                        campStatement?.at(0)?.grace_period_record_count > 0 ||
-                        campStatement[0]?.draft_record_id) && (
-                        <Image
-                          src="/images/manage-btn-icon.svg"
-                          alt=""
-                          height={24}
-                          width={24}
-                        />
-                      )}
+                      {K?.exceptionalMessages?.manageCampStatementButton}
+                      <Image
+                        src="/images/manage-btn-icon.svg"
+                        alt=""
+                        height={24}
+                        width={24}
+                      />
                     </PrimaryButton>
                   </div>
                 ) : null}
