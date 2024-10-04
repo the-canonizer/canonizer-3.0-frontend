@@ -29,7 +29,7 @@ const WhatsNew = () => {
             className="text-canBlack"
             dangerouslySetInnerHTML={{ __html: whatsNew }}
           ></div>
-         </CommonCard>
+        </CommonCard>
       </div>
     </Fragment>
   );

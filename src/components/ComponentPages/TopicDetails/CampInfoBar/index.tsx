@@ -662,6 +662,45 @@ const TimelineInfoBar = ({
     router.push(link);
   };
 
+  const getCurrentUpdateButton = () => {
+    const renderButtonLabel = () => {
+      switch (historyTitle()) {
+        case "Statement History":
+          return " Statement";
+        case "Topic History":
+          return " Topic";
+        case "Camp History":
+          return " Camp";
+        default:
+          return "";
+      }
+    };
+
+    const btn = (
+      <PrimaryButton
+        size="large"
+        type="primary"
+        className="flex items-center justify-center rounded-[10px] max-lg:hidden gap-3.5 leading-none text-sm ml-auto"
+        onClick={() => updateCurrentRecord()}
+      >
+        Update Current
+        {renderButtonLabel()}
+        <i className="icon-edit"></i>
+      </PrimaryButton>
+    );
+
+    // Return button for "Camp History" if the record is not archived
+    if (!compareMode && !!updateId) {
+      if (historyTitle() === "Camp History" && campRecord?.is_archive === 1) {
+        return null;
+      }
+      return btn;
+    }
+
+    // Return null if conditions are not met
+    return null;
+  };
+
   return (
     <div className="lg:bg-canGrey1 bg-white lg:py-4 py-3 px-3 lg:px-5 lg:rounded-xl lg:mb-10 mb-10 -mt-9 lg:mt-0 mx-[-16px] lg:mx-0 border-t border-[#EAECF0] shadow-mobile-b-shadow lg:shadow-none inforBarClass">
       <Spin spinning={false}>
@@ -949,24 +988,7 @@ const TimelineInfoBar = ({
                     </div>
                   </>
                 )}
-                {!compareMode && !!updateId && (
-                  <PrimaryButton
-                    size="large"
-                    type="primary"
-                    className="flex items-center justify-center rounded-[10px] max-lg:hidden gap-3.5 leading-none text-sm ml-auto"
-                    onClick={() => updateCurrentRecord()}
-                  >
-                    Update Current
-                    {historyTitle() == "Statement History"
-                      ? " Statement"
-                      : historyTitle() == "Topic History"
-                      ? " Topic"
-                      : historyTitle() == "Camp History"
-                      ? " Camp"
-                      : null}
-                    <i className="icon-edit"></i>
-                  </PrimaryButton>
-                )}
+                {getCurrentUpdateButton()}
               </div>
             ) : (
               <div className="flex mobile-view gap-2 items-center">

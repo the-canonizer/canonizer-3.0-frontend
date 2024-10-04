@@ -42,6 +42,7 @@ import CampHistory from "../HistoryContainer/Collapse/campHistory";
 import TopicHistory from "../HistoryContainer/Collapse/topicHistory";
 import {
   convertToTime,
+  formatTheDate,
   replaceSpecialCharacters,
 } from "src/utils/generalUtility";
 import HistoryComparison from "../HistoryContainer/Collapse/historyComparison";
@@ -50,6 +51,10 @@ import PrimaryButton from "components/shared/Buttons/PrimariButton";
 import ObjectionDrawer from "./objectionDrawer";
 import K from "src/constants";
 import { openNotificationWithIcon } from "components/common/notification/notificationBar";
+import {
+  getCurrentCampRecordApi,
+  getCurrentTopicRecordApi,
+} from "src/network/api/campDetailApi";
 
 const { Panel } = Collapse;
 
@@ -141,6 +146,28 @@ function HistoryCard({
     }
   };
 
+  const updateHistory = async () => {
+    const query: any = router?.query;
+
+    const reqBody = {
+      topic_num: router?.query.camp?.at(0).split("-")?.at(0),
+      camp_num:
+        historyOf == "topic"
+          ? 1
+          : router?.query.camp && router?.query.camp?.at(1)?.split("-")?.at(0),
+      as_of: query?.asof ?? "default",
+      as_of_date:
+        query?.asofdate && query?.asof == "bydate"
+          ? formatTheDate(query?.asofdate * 1000, "DD-MM-YYYY H:mm:ss")
+          : Date.now() / 1000,
+    };
+
+    await Promise.all([
+      getCurrentTopicRecordApi(reqBody),
+      getCurrentCampRecordApi(reqBody),
+    ]);
+  };
+
   const commitChanges = async () => {
     setLoadingChanges(true);
     let reqBody = {
@@ -154,6 +181,9 @@ function HistoryCard({
     if (res?.status_code === 200) {
       setCommited(true);
       dispatch(setChangeGoneLive(!changeGoneLive));
+      if (historyOf == "camp" || historyOf == "topic") {
+        updateHistory();
+      }
     }
     changeAgree();
     setLoadingChanges(false);
@@ -637,7 +667,7 @@ function HistoryCard({
                       <p>
                         {K?.exceptionalMessages?.objectedModalMsgForMoreInfo}
                       </p>
-                      <Link href="/topic/132-Help/4-Disagreement?is_tree_open=1" >
+                      <Link href="/topic/132-Help/4-Disagreement?is_tree_open=1">
                         <a className="text-canBlue">
                           https://canonizer.com/topic/132-Help/4-Disagreement
                         </a>
