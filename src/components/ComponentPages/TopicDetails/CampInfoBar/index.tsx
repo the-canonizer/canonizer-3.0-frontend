@@ -901,7 +901,26 @@ const TimelineInfoBar = ({
                                         >
                                           <div className="flex items-center gap-1.5 text-sm">
                                             <span className="text-sm font-semibold">
-                                              {camp?.camp_name}
+                                              <Link
+                                                href={`/topic/${
+                                                  payloadData?.topic_num
+                                                    ? payloadData?.topic_num
+                                                    : topicId
+                                                }-${replaceSpecialCharacters(
+                                                  breadCrumbRes?.topic_name,
+                                                  "-"
+                                                )}/${
+                                                  camp?.camp_num
+                                                }-${replaceSpecialCharacters(
+                                                  camp?.camp_name,
+                                                  "-"
+                                                )}?${
+                                                  getQueryParams()?.returnQuery
+                                                }`}
+                                                key={index}
+                                              >
+                                                {camp?.camp_name}
+                                              </Link>
                                             </span>
                                             <Image
                                               src="/images/circle-info-bread.svg"
@@ -915,7 +934,26 @@ const TimelineInfoBar = ({
                                       ) : (
                                         <div className="flex items-center gap-1.5 text-sm">
                                           <span className="text-sm">
-                                            {camp?.camp_name}
+                                            <Link
+                                              href={`/topic/${
+                                                payloadData?.topic_num
+                                                  ? payloadData?.topic_num
+                                                  : topicId
+                                              }-${replaceSpecialCharacters(
+                                                breadCrumbRes?.topic_name,
+                                                "-"
+                                              )}/${
+                                                camp?.camp_num
+                                              }-${replaceSpecialCharacters(
+                                                camp?.camp_name,
+                                                "-"
+                                              )}?${
+                                                getQueryParams()?.returnQuery
+                                              }`}
+                                              key={index}
+                                            >
+                                              {camp?.camp_name}
+                                            </Link>
                                           </span>
                                         </div>
                                       )}
