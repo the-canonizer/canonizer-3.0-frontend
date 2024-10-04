@@ -471,8 +471,8 @@ function HistoryContainer() {
     const fetchCampRecord = async () => {
       await getCurrentCampRecordApi(reqBody);
     };
-      fetchCampRecord();
-      fetchTopicRecord();
+    fetchCampRecord();
+    fetchTopicRecord();
   }, []);
 
   return (

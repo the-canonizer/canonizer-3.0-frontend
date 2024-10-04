@@ -612,11 +612,11 @@ const TimelineInfoBar = ({
               : topicRecord?.topic_name}
           </span>
         </Col>
-          <Col md={12} sm={12} xs={12} className=" flex flex-col mt-4">
-            <span className="text-xs 2xl:text-sm text-canLight">
-              Camp Leader:
-            </span>
-            {campRecord?.camp_leader_nick_name ? (
+        <Col md={12} sm={12} xs={12} className=" flex flex-col mt-4">
+          <span className="text-xs 2xl:text-sm text-canLight">
+            Camp Leader:
+          </span>
+          {campRecord?.camp_leader_nick_name ? (
             <Link
               className="flex flex-wrap"
               href={{
@@ -628,8 +628,10 @@ const TimelineInfoBar = ({
             >
               {campRecord?.camp_leader_nick_name}
             </Link>
-          ):"No"}
-          </Col>
+          ) : (
+            "No"
+          )}
+        </Col>
       </Row>
       <hr className="horizontal_line my-5" />
       {(isTopicPage || isHistoryPage || compareMode) && (

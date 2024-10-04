@@ -221,14 +221,16 @@ function HistoryCard({
     let res = await agreeToChangeApi(reqBody);
     if (res?.status_code == 200) {
       dispatch(setChangeGoneLive(!changeGoneLive));
-      res?.data?.is_submitted ? openNotificationWithIcon(res?.message, "success"): openNotificationWithIcon(res?.message, "error");
+      res?.data?.is_submitted
+        ? openNotificationWithIcon(res?.message, "success")
+        : openNotificationWithIcon(res?.message, "error");
       setIsSelectChecked(false);
     }
 
     await changeAgree();
     setTimeout(() => {
       setLoadingChanges(false);
-    },1000)
+    }, 1000);
   };
 
   const submitUpdateRedirect = (historyOf: string) => {
@@ -278,16 +280,16 @@ function HistoryCard({
   };
 
   const disableAgreeCheckbox = () => {
-    if(loadingChanges){
-      return true
-    }else if(historyOf == "camp" && !campStatement?.ifICanAgreeAndObject){
-      return true
-    }else if(parentArchived == 1 && directarchived == 0){
-      return true
-    }else{
-      return false
+    if (loadingChanges) {
+      return true;
+    } else if (historyOf == "camp" && !campStatement?.ifICanAgreeAndObject) {
+      return true;
+    } else if (parentArchived == 1 && directarchived == 0) {
+      return true;
+    } else {
+      return false;
     }
-  }
+  };
 
   return (
     <div
