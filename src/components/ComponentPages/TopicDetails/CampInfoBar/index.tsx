@@ -612,11 +612,11 @@ const TimelineInfoBar = ({
               : topicRecord?.topic_name}
           </span>
         </Col>
-          <Col md={12} sm={12} xs={12} className=" flex flex-col mt-4">
-            <span className="text-xs 2xl:text-sm text-canLight">
-              Camp Leader:
-            </span>
-            {campRecord?.camp_leader_nick_name ? (
+        <Col md={12} sm={12} xs={12} className=" flex flex-col mt-4">
+          <span className="text-xs 2xl:text-sm text-canLight">
+            Camp Leader:
+          </span>
+          {campRecord?.camp_leader_nick_name ? (
             <Link
               className="flex flex-wrap"
               href={{
@@ -628,8 +628,10 @@ const TimelineInfoBar = ({
             >
               {campRecord?.camp_leader_nick_name}
             </Link>
-          ):"No"}
-          </Col>
+          ) : (
+            "No"
+          )}
+        </Col>
       </Row>
       <hr className="horizontal_line my-5" />
       {(isTopicPage || isHistoryPage || compareMode) && (
@@ -899,7 +901,28 @@ const TimelineInfoBar = ({
                                         >
                                           <div className="flex items-center gap-1.5 text-sm">
                                             <span className="text-sm font-semibold">
-                                              {camp?.camp_name}
+                                              <Link
+                                                href={`/topic/${
+                                                  payloadData?.topic_num
+                                                    ? payloadData?.topic_num
+                                                    : topicId
+                                                }-${replaceSpecialCharacters(
+                                                  breadCrumbRes?.topic_name,
+                                                  "-"
+                                                )}/${
+                                                  camp?.camp_num
+                                                }-${replaceSpecialCharacters(
+                                                  camp?.camp_name,
+                                                  "-"
+                                                )}?${
+                                                  getQueryParams()?.returnQuery
+                                                }`}
+                                                key={index}
+                                              >
+                                                <span className="!text-canBlack gap-x-1 gap-y-1 flex hover:!text-canBlack !text-sm">
+                                                  {camp?.camp_name}
+                                                </span>
+                                              </Link>
                                             </span>
                                             <Image
                                               src="/images/circle-info-bread.svg"
@@ -913,7 +936,28 @@ const TimelineInfoBar = ({
                                       ) : (
                                         <div className="flex items-center gap-1.5 text-sm">
                                           <span className="text-sm">
-                                            {camp?.camp_name}
+                                            <Link
+                                              href={`/topic/${
+                                                payloadData?.topic_num
+                                                  ? payloadData?.topic_num
+                                                  : topicId
+                                              }-${replaceSpecialCharacters(
+                                                breadCrumbRes?.topic_name,
+                                                "-"
+                                              )}/${
+                                                camp?.camp_num
+                                              }-${replaceSpecialCharacters(
+                                                camp?.camp_name,
+                                                "-"
+                                              )}?${
+                                                getQueryParams()?.returnQuery
+                                              }`}
+                                              key={index}
+                                            >
+                                              <span className="!text-canBlack gap-x-1 gap-y-1 flex hover:!text-canBlack !text-sm">
+                                                {camp?.camp_name}
+                                              </span>
+                                            </Link>
                                           </span>
                                         </div>
                                       )}

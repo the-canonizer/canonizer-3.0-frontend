@@ -373,7 +373,7 @@ const CustomSkelton = ({
     </Row>
   ) : skeltonFor == "historyPage" ? (
     <>
-      <div className="cn-wrapper px-5">
+      <div className="cn-wrapper px-5 py-5">
         <div className="badge-wrapper">
           <div className="tooltip-count">
             <p>
@@ -417,9 +417,9 @@ const CustomSkelton = ({
             </p>
           </div>
 
-          <div className="agreement-wrapper">
+          {/* <div className="agreement-wrapper">
             <Skeleton style={{ width: "25%", height: 20 }} />
-          </div>
+          </div> */}
 
           <div className="cn-footer-btn">
             <div className="cn-card-btn">
