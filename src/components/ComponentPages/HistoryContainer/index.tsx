@@ -49,6 +49,7 @@ function HistoryContainer() {
   const [isHistoryPage, setIsHistoryPage] = useState(true);
   const [objectionState, setObjectionState] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
+  const [historyData,setHistoryData] = useState(null);
 
   const changeAgree = () => {
     setAgreeCheck(!agreecheck);
@@ -142,6 +143,7 @@ function HistoryContainer() {
       };
       let res = await getHistoryApi(reqBody, count.current, historyOf);
       // setCampHistory(res?.data);
+      setHistoryData(res?.data);
 
       if (res?.status_code == 404 || res?.status_code == 400) {
         if (router?.pathname == "/topic/history/[...camp]") {
@@ -467,7 +469,7 @@ function HistoryContainer() {
                     <InfiniteScroll
                       initialLoad={false}
                       loadMore={!loadingIndicator && campStatementApiCall}
-                      hasMore={loadMoreItems}
+                      hasMore={ count.current !== historyData?.last_page && loadMoreItems}
                       loader={<CustomSkelton skeltonFor="historyPage" />}
                     >
                       {renderCampHistories}

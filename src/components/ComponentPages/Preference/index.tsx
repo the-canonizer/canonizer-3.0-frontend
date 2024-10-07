@@ -108,7 +108,6 @@ const ProfilePrefrences = () => {
     const selectedTags = tags.filter((tag) => tag.checked).length;
     setSelectedCount(selectedTags);
   }, [searchTerm, tags]);
- 
 
   const listOfOption = (optionList, algoOrLang): any => {
     let option = [];
@@ -194,20 +193,20 @@ const ProfilePrefrences = () => {
     values = { ...values, ...updateAddress };
     const userTags = tags.filter((ch) => ch.checked).map((ch) => ch.id);
 
-  // If no tags are selected, exit early
-  // if (!userTags.length) {
-  //   setLoading(false);
-  //   return;
-  // }
-  
+    // If no tags are selected, exit early
+    // if (!userTags.length) {
+    //   setLoading(false);
+    //   return;
+    // }
+
     // Include tags in values
     values.user_tags = userTags;
 
     let res = await UpdateUserProfileInfo(values);
     if (res && res.status_code === 200) {
       // setshowSelectedLanguage(res?.data?.language)
-      if(!isInitialRender){
-      message.success(res.message);
+      if (!isInitialRender) {
+        message.success(res.message);
       }
       if (values?.default_algo) {
         dispatch(
@@ -231,17 +230,17 @@ const ProfilePrefrences = () => {
     // Trigger `onFinish2` with the updated form values when the component renders
     const callOnFinishOnRender = async () => {
       try {
-        await formVerify.validateFields();  // Validate form first
-        const values = formVerify.getFieldsValue();  // Get current form values
-        await onFinish2(values);  // Call the onFinish2 function with current values
+        await formVerify.validateFields(); // Validate form first
+        const values = formVerify.getFieldsValue(); // Get current form values
+        await onFinish2(values); // Call the onFinish2 function with current values
       } catch (error) {
         console.error("Error during form validation or function call:", error);
       }
     };
 
-    callOnFinishOnRender();  // Call the function when component renders
-    setIsInitialRender(false)
-  }, []);  
+    callOnFinishOnRender(); // Call the function when component renders
+    setIsInitialRender(false);
+  }, []);
   const handleChangeLanguage = (value) => {
     setSelectedLanguage(value); // Update state with the selected value
   };
@@ -379,7 +378,6 @@ const ProfilePrefrences = () => {
               try {
                 await formVerify.validateFields();
                 await onFinish2(formVerify.getFieldsValue());
-
               } catch (error) {}
             }}
           >

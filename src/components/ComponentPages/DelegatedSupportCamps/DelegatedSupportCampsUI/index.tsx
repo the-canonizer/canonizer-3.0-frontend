@@ -56,23 +56,20 @@ export default function DelegatedSupportCampsUI({
       title: "Sr.",
       dataIndex: "sr",
       key: "sr",
-
-      render: (text, record, index) => (
-        <span className="bg-canGrey2 rounded-full h-5 w-6 flex items-center justify-center">
-          {" "}
+      render: (_text, _record, index) => (
+        <span className="text-sm bg-canGrey2 rounded-full h-5 w-6 flex items-center justify-center">
           {index + 1}
         </span>
       ),
     },
     {
       title: "Topics",
-
       dataIndex: "title",
       key: "title",
       render: (text, record) => (
         <div className="line-clamp-1 max-w-[300px]">
           <Link href={record.title_link}>
-            <a className="text-base font-semibold text-canBlack">{text}</a>
+            <a className="text-sm font-medium text-canBlack">{text}</a>
           </Link>
         </div>
       ),
@@ -81,13 +78,12 @@ export default function DelegatedSupportCampsUI({
       title: "Supported Camps",
       dataIndex: "camps",
       key: "camps",
-
-      render: (camps, record) =>
+      render: (camps, _record) =>
         camps.slice(0, limit).map((camp, i) => (
           <p key={camp.camp_num} className="max-w-[250px] line-clamp-1">
             {camp.support_order}.{" "}
             <Link href={camp.camp_link}>
-              <a className="text-base font-semibold text-canBlue underline">
+              <a className="text-sm font-medium text-canBlue underline">
                 {camp.camp_name}
               </a>
             </Link>
@@ -98,12 +94,9 @@ export default function DelegatedSupportCampsUI({
       title: "Delegated To",
       dataIndex: "delegated_to_nick_name",
       key: "delegated_to_nick_name",
-
       render: (text, record) => (
         <Link href={record.delegated_to_nick_name_link}>
-          <a className="text-base font-semibold text-canBlue underline">
-            {text}
-          </a>
+          <a className="text-sm font-medium text-canBlue underline">{text}</a>
         </Link>
       ),
     },
@@ -111,38 +104,16 @@ export default function DelegatedSupportCampsUI({
       title: "Nickname",
       dataIndex: "my_nick_name",
       key: "my_nick_name",
-
       render: (text, record) => (
         <Link href={record.my_nick_name_link}>
-          <a className="text-base font-semibold text-canBlue underline">
-            {text}
-          </a>
+          <a className="text-sm font-medium text-canBlue underline">{text}</a>
         </Link>
       ),
     },
-    // {
-    //   title: "Action",
-    //   key: "action",
-    //   render: (text, record) => (
-    //     <Button
-    //       type="link"
-    //       onClick={() => removeCardDelegatedSupportedCamps(record)}
-    //       className={styles.RemoveCardSupported}
-    //     >
-    //       <Image
-    //         src="/images/minus-user-icon.svg"
-    //         alt=""
-    //         width={24}
-    //         height={24}
-    //       />
-    //     </Button>
-    //   ),
-    // },
     {
       title: "Action",
       key: "action",
-
-      render: (text, record) => (
+      render: (_text, record) => (
         <Button
           type="link"
           onClick={() => removeCardDelegatedSupportedCamps(record)}
@@ -150,8 +121,8 @@ export default function DelegatedSupportCampsUI({
           <Image
             src="/images/minus-user-icon.svg"
             alt=""
-            width={24}
-            height={24}
+            width={20}
+            height={20}
           />
         </Button>
       ),
@@ -165,13 +136,11 @@ export default function DelegatedSupportCampsUI({
     return (
       <div className="flex flex-col">
         <span className="uppercase text-sm font-medium mb-1">
-          {" "}
           {messages.labels.fortopic} -
         </span>
         <span>
-          {" "}
           <Link href={props.title_link}>
-            <a className=" text-base font-medium">{props.value}</a>
+            <a className="text-sm font-medium">{props.value}</a>
           </Link>
         </span>
       </div>
@@ -183,7 +152,7 @@ export default function DelegatedSupportCampsUI({
       <p>
         <span>{props.id_data}</span>
         <Link href={props.camp_link}>
-          <a className="text-canBlue text-base font-medium">{props.value}</a>
+          <a className="text-canBlue text-sm font-medium">{props.value}</a>
         </Link>
       </p>
     );
@@ -195,7 +164,7 @@ export default function DelegatedSupportCampsUI({
         <p className="border-b py-3 flex flex-col">
           <span className="uppercase text-sm font-medium">Delegated To:</span>
           <Link href={props.supportedto_link}>
-            <a className="text-canBlue text-base font-medium">
+            <a className="text-canBlue text-sm font-medium">
               {props.supportedto}
             </a>
           </Link>
@@ -203,7 +172,7 @@ export default function DelegatedSupportCampsUI({
         <p className="border-b py-3 flex flex-col">
           <b className="uppercase text-sm font-medium">Nickname:</b>
           <Link href={props.NickNameLink}>
-            <a className="text-canBlue text-base font-medium">
+            <a className="text-canBlue text-sm font-medium">
               {props.NickName}
             </a>
           </Link>
@@ -243,7 +212,7 @@ export default function DelegatedSupportCampsUI({
           <div className="w-full">
             <div className="flex lg:flex-row flex-col justify-between items-center mb-5 lg:gap-0 gap-2.5">
               <div className="w-full">
-                <h3 className=" text-base font-semibold text-canBlack">
+                <h3 className="text-sm font-medium text-canBlack">
                   DELEGATED SUPPORTED CAMPS
                 </h3>
               </div>
@@ -259,8 +228,8 @@ export default function DelegatedSupportCampsUI({
                   suffix={
                     <Image
                       src="/images/search-icon.svg"
-                      width={20}
-                      height={20}
+                      width={15}
+                      height={15}
                       alt=""
                     />
                   }
@@ -269,7 +238,7 @@ export default function DelegatedSupportCampsUI({
                   placeholder="Search via topic name"
                   type="text"
                   name="search"
-                  className="!h-10 rounded-lg border border-canGrey2 text-base font-normal lg:w-auto w-full"
+                  className="!h-10 rounded-lg border border-canGrey2 text-sm font-normal lg:w-auto w-full"
                   onChange={(e) => {
                     setSearch(e.target.value);
                   }}
@@ -284,7 +253,6 @@ export default function DelegatedSupportCampsUI({
                 dataSource={filteredArray}
                 pagination={false}
                 rowKey={(record) => record.title}
-                // bordered
                 scroll={{ x: "1060" }}
                 className="[&_.ant-table-thead>tr>th]:!bg-canGray [&_.ant-table-cell:nth-child(3)]:before:!hidden [&_.ant-table-cell:nth-child(3)]:!border-l  [&_.ant-table-cell:nth-child(3)]:!border-black [&_.ant-table-cell:nth-child(3)]:!border-opacity-5  [&_.ant-table-cell:nth-child(4)]:!border-l  [&_.ant-table-cell:nth-child(4)]:!border-black [&_.ant-table-cell:nth-child(4)]:!border-opacity-5 [&_.ant-table-cell:nth-child(4)]:before:!hidden [&_.ant-table-cell:nth-child(5)]:before:!hidden 
                 [&_.ant-table-cell:nth-child(2)]:before:!hidden 
@@ -310,7 +278,7 @@ export default function DelegatedSupportCampsUI({
           </div>
         )}
         <Modal
-          className=" [&_.ant-modal-content]:!rounded-xl [&_.ant-modal-header]:rounded-tl-xl [&_.ant-modal-header]:rounded-tr-xl"
+          className="[&_.ant-modal-content]:!rounded-xl [&_.ant-modal-header]:rounded-tl-xl [&_.ant-modal-header]:rounded-tr-xl"
           title={<span className="text-lg font-medium">Remove Support</span>}
           open={isRemoveSupportModalVisible}
           onOk={handleSupportedCampsCancel}
@@ -322,7 +290,7 @@ export default function DelegatedSupportCampsUI({
             <Form.Item style={{ marginBottom: "0px" }}>
               <p
                 id="remove_confirmation"
-                className="text-base text-canBlack font-normal"
+                className="text-sm text-canBlack font-normal"
               >
                 Are you sure, you want to remove your delegate support given to{" "}
                 <span>
@@ -446,8 +414,8 @@ export default function DelegatedSupportCampsUI({
                 suffix={
                   <Image
                     src="/images/search-icon.svg"
-                    width={20}
-                    height={20}
+                    width={15}
+                    height={15}
                     alt=""
                   />
                 }
@@ -456,7 +424,7 @@ export default function DelegatedSupportCampsUI({
                 placeholder="Search via topic name"
                 type="text"
                 name="search"
-                className="!h-10 rounded-lg border border-canGrey2 text-base font-normal lg:w-auto w-full [&_.ant-input-affix-wrapper]:hover:!border-canGrey2 focus:!border-canGrey2 focus:!shadow-none "
+                className="!h-10 rounded-lg border border-canGrey2 text-sm font-normal lg:w-auto w-full [&_.ant-input-affix-wrapper]:hover:!border-canGrey2 focus:!border-canGrey2 focus:!shadow-none "
                 onChange={(e) => {
                   setSearch(e.target.value);
                 }}

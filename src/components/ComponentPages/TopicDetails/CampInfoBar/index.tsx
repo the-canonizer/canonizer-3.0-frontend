@@ -613,11 +613,11 @@ const TimelineInfoBar = ({
               : topicRecord?.topic_name}
           </span>
         </Col>
-        {campRecord?.camp_leader_nick_name && (
-          <Col md={12} sm={12} xs={12} className=" flex flex-col mt-4">
-            <span className="text-xs 2xl:text-sm text-canLight">
-              Camp Leader:
-            </span>
+        <Col md={12} sm={12} xs={12} className=" flex flex-col mt-4">
+          <span className="text-xs 2xl:text-sm text-canLight">
+            Camp Leader:
+          </span>
+          {campRecord?.camp_leader_nick_name ? (
             <Link
               className="flex flex-wrap"
               href={{
@@ -629,8 +629,10 @@ const TimelineInfoBar = ({
             >
               {campRecord?.camp_leader_nick_name}
             </Link>
-          </Col>
-        )}
+          ) : (
+            "No"
+          )}
+        </Col>
       </Row>
       <hr className="horizontal_line my-5" />
       {(isTopicPage || isHistoryPage || compareMode) && (
@@ -661,6 +663,45 @@ const TimelineInfoBar = ({
     )}`;
 
     router.push(link);
+  };
+
+  const getCurrentUpdateButton = () => {
+    const renderButtonLabel = () => {
+      switch (historyTitle()) {
+        case "Statement History":
+          return " Statement";
+        case "Topic History":
+          return " Topic";
+        case "Camp History":
+          return " Camp";
+        default:
+          return "";
+      }
+    };
+
+    const btn = (
+      <PrimaryButton
+        size="large"
+        type="primary"
+        className="flex items-center justify-center rounded-[10px] max-lg:hidden gap-3.5 leading-none text-sm ml-auto"
+        onClick={() => updateCurrentRecord()}
+      >
+        Update Current
+        {renderButtonLabel()}
+        <i className="icon-edit"></i>
+      </PrimaryButton>
+    );
+
+    // Return button for "Camp History" if the record is not archived
+    if (!compareMode && !!updateId) {
+      if (historyTitle() === "Camp History" && campRecord?.is_archive === 1) {
+        return null;
+      }
+      return btn;
+    }
+
+    // Return null if conditions are not met
+    return null;
   };
 
   return (
@@ -861,7 +902,28 @@ const TimelineInfoBar = ({
                                         >
                                           <div className="flex items-center gap-1.5 text-sm">
                                             <span className="text-sm font-semibold">
-                                              {camp?.camp_name}
+                                              <Link
+                                                href={`/topic/${
+                                                  payloadData?.topic_num
+                                                    ? payloadData?.topic_num
+                                                    : topicId
+                                                }-${replaceSpecialCharacters(
+                                                  breadCrumbRes?.topic_name,
+                                                  "-"
+                                                )}/${
+                                                  camp?.camp_num
+                                                }-${replaceSpecialCharacters(
+                                                  camp?.camp_name,
+                                                  "-"
+                                                )}?${
+                                                  getQueryParams()?.returnQuery
+                                                }`}
+                                                key={index}
+                                              >
+                                                <span className="!text-canBlack gap-x-1 gap-y-1 flex hover:!text-canBlack !text-sm">
+                                                  {camp?.camp_name}
+                                                </span>
+                                              </Link>
                                             </span>
                                             <Image
                                               src="/images/circle-info-bread.svg"
@@ -875,7 +937,28 @@ const TimelineInfoBar = ({
                                       ) : (
                                         <div className="flex items-center gap-1.5 text-sm">
                                           <span className="text-sm">
-                                            {camp?.camp_name}
+                                            <Link
+                                              href={`/topic/${
+                                                payloadData?.topic_num
+                                                  ? payloadData?.topic_num
+                                                  : topicId
+                                              }-${replaceSpecialCharacters(
+                                                breadCrumbRes?.topic_name,
+                                                "-"
+                                              )}/${
+                                                camp?.camp_num
+                                              }-${replaceSpecialCharacters(
+                                                camp?.camp_name,
+                                                "-"
+                                              )}?${
+                                                getQueryParams()?.returnQuery
+                                              }`}
+                                              key={index}
+                                            >
+                                              <span className="!text-canBlack gap-x-1 gap-y-1 flex hover:!text-canBlack !text-sm">
+                                                {camp?.camp_name}
+                                              </span>
+                                            </Link>
                                           </span>
                                         </div>
                                       )}
@@ -950,24 +1033,7 @@ const TimelineInfoBar = ({
                     </div>
                   </>
                 )}
-                {!compareMode && !!updateId && (
-                  <PrimaryButton
-                    size="large"
-                    type="primary"
-                    className="flex items-center justify-center rounded-[10px] max-lg:hidden gap-3.5 leading-none text-sm ml-auto"
-                    onClick={() => updateCurrentRecord()}
-                  >
-                    Update Current
-                    {historyTitle() == "Statement History"
-                      ? " Statement"
-                      : historyTitle() == "Topic History"
-                      ? " Topic"
-                      : historyTitle() == "Camp History"
-                      ? " Camp"
-                      : null}
-                    <i className="icon-edit"></i>
-                  </PrimaryButton>
-                )}
+                {getCurrentUpdateButton()}
               </div>
             ) : (
               <div className="flex mobile-view gap-2 items-center">
@@ -1143,62 +1209,38 @@ const TimelineInfoBar = ({
                 </div>
               </div>
             )}
-
             {!isEventLine && (
               <div className="flex items-center gap-3 shrink-0">
-                {!isHtmlContent && campStatement?.length > 0 && isTopicPage ? (
+                {!isHtmlContent &&
+                isTopicPage &&
+                campStatement?.length > 0 &&
+                (campStatement?.at(0)?.in_review_changes > 0 ||
+                  campStatement?.at(0)?.grace_period_record_count > 0 ||
+                  campStatement?.at(0)?.parsed_value) ? (
                   <div className="topicDetailsCollapseFooter printHIde camp">
                     <PrimaryButton
                       disabled={campRecord?.is_archive == 1 ? true : false}
                       className="printHIde sm:hidden md:hidden hidden lg:flex !h-[40px] py-2.5 px-5 items-center text-sm"
                       onClick={() => {
                         router?.push(
-                          `${
-                            campStatement?.length > 0
-                              ? campStatement[0]?.draft_record_id
-                                ? "/manage/statement/" +
-                                  campStatement[0]?.draft_record_id +
-                                  "?is_draft=1"
-                                : campStatement[0]?.parsed_value ||
-                                  campStatement?.at(0)?.in_review_changes ||
-                                  campStatement?.at(0)
-                                    ?.grace_period_record_count > 0
-                                ? `/statement/history/${replaceSpecialCharacters(
-                                    router?.query?.camp?.at(0),
-                                    "-"
-                                  )}/${replaceSpecialCharacters(
-                                    router?.query?.camp?.at(1) ?? "1-Agreement",
-                                    "-"
-                                  )}`
-                                : `/create/statement/${replaceSpecialCharacters(
-                                    router?.query?.camp?.at(0),
-                                    "-"
-                                  )}/${replaceSpecialCharacters(
-                                    router?.query?.camp?.at(1) ?? "1-Agreement",
-                                    "-"
-                                  )}`
-                              : null
-                          }`
+                          `${`/statement/history/${replaceSpecialCharacters(
+                            router?.query?.camp?.at(0),
+                            "-"
+                          )}/${replaceSpecialCharacters(
+                            router?.query?.camp?.at(1) ?? "1-Agreement",
+                            "-"
+                          )}`}`
                         );
                       }}
                       id="add-camp-statement-btn"
                     >
-                      {campStatement[0]?.parsed_value ||
-                      campStatement?.at(0)?.in_review_changes ||
-                      campStatement?.at(0)?.grace_period_record_count > 0
-                        ? K?.exceptionalMessages?.manageCampStatementButton
-                        : null}
-                      {(campStatement[0]?.parsed_value ||
-                        campStatement?.at(0)?.in_review_changes ||
-                        campStatement?.at(0)?.grace_period_record_count > 0 ||
-                        campStatement[0]?.draft_record_id) && (
-                        <Image
-                          src="/images/manage-btn-icon.svg"
-                          alt=""
-                          height={24}
-                          width={24}
-                        />
-                      )}
+                      {K?.exceptionalMessages?.manageCampStatementButton}
+                      <Image
+                        src="/images/manage-btn-icon.svg"
+                        alt=""
+                        height={24}
+                        width={24}
+                      />
                     </PrimaryButton>
                   </div>
                 ) : null}

@@ -93,7 +93,8 @@ const CampStatementCard = ({ loadingIndicator }) => {
             router?.push({
               pathname:
                 campStatement?.length < 0 ||
-                campStatement?.at(0)?.grace_period_record_count > 0
+                campStatement?.at(0)?.grace_period_record_count > 0 ||
+                campStatement?.at(0)?.in_review_changes
                   ? `/statement/history/${replaceSpecialCharacters(
                       router?.query?.camp.at(0),
                       "-"
