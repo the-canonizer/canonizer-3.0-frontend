@@ -25,7 +25,7 @@ import CustomSkelton from "../../common/customSkelton";
 import HistoryCard from "../HistoryCard/historyCard";
 import CustomLayout from "src/hoc/layout/";
 import TimelineInfoBar from "../TopicDetails/CampInfoBar";
-import CommanBreadcrumbs from "../Breadcrumbs/commanBreadcrumbs";
+import CommanBreadcrumbs from "../Breadcrumbs/commonBreadcrumbs";
 
 function HistoryContainer() {
   const { isUserAuthenticated } = useIsUserAuthenticated();

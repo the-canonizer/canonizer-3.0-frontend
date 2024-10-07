@@ -12,7 +12,7 @@ import { getCurrentTopicRecordApi } from "src/network/api/campDetailApi";
 import moment from "moment";
 import { RootState } from "src/store";
 import { useSelector } from "react-redux";
-import CommanBreadcrumbs from "../Breadcrumbs/commanBreadcrumbs";
+import CommonBreadcrumbs from "../Breadcrumbs/commonBreadcrumbs";
 const { Title } = Typography;
 
 const EventLine = () => {
@@ -59,7 +59,7 @@ const EventLine = () => {
       ) : (
         <>
           {/* <TimelineInfoBar isEventLine={isEventLine} /> */}
-          <CommanBreadcrumbs 
+          <CommonBreadcrumbs 
           isEventLine={isEventLine}
         />
           <div className="eventline-content-wrap">

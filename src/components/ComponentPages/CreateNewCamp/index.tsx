@@ -28,7 +28,7 @@ import { globalSearchCanonizer } from "src/network/api/userApi";
 import queryParams from "src/utils/queryParams";
 import SimilarCampPopup from "./UI/similarCampsPopup";
 import { openNotificationWithIcon } from "components/common/notification/notificationBar";
-import CommanBreadcrumbs from "../Breadcrumbs/commanBreadcrumbs";
+import CommonBreadcrumbs from "../Breadcrumbs/commonBreadcrumbs";
 
 const getSimilarity = (str1, str2) => {
   const length = Math.max(str1.length, str2.length);
@@ -445,7 +445,7 @@ const CreateNewCamp = () => {
   return (
     <CustomSpinner key="create-topic-spinner" spinning={isLoading}>
       {/* <CampInfoBar payload={payload} isHtmlContent={<></>} isTopicPage={true} /> */}
-      <CommanBreadcrumbs payload={payload} isHtmlContent={<></>} isTopicPage={true} />
+      <CommonBreadcrumbs payload={payload} isHtmlContent={<></>} isTopicPage={true} />
 
       <Row gutter={20} className="mb-5">
         {campExist ? (

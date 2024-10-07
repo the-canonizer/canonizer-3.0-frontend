@@ -15,7 +15,7 @@ import {
 } from "src/network/api/campDetailApi";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
-import CommanBreadcrumbs from "components/ComponentPages/Breadcrumbs/commanBreadcrumbs";
+import CommonBreadcrumbs from "components/ComponentPages/Breadcrumbs/commonBreadcrumbs";
 const validUrl = (url) => {
   try {
     new URL(url);
@@ -150,7 +150,7 @@ function CompareStatementUI({
         compareMode={compareMode}
         historyOF={router?.query?.from}
       /> */}
-       <CommanBreadcrumbs 
+       <CommonBreadcrumbs 
           compareMode={compareMode}
           historyOF={router?.query?.from}
         />

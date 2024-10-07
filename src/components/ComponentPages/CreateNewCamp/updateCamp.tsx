@@ -31,7 +31,7 @@ import {
   updateCampApi,
 } from "src/network/api/campManageStatementApi";
 import { openNotificationWithIcon } from "components/common/notification/notificationBar";
-import CommanBreadcrumbs from "../Breadcrumbs/commanBreadcrumbs";
+import CommonBreadcrumbs from "../Breadcrumbs/commonBreadcrumbs";
 
 const CreateNewCamp = () => {
   const router = useRouter();
@@ -570,7 +570,7 @@ const CreateNewCamp = () => {
     <CustomSpinner key="create-topic-spinner" spinning={isLoading}>
       {!!payload?.camp_num &&
       //  <CampInfoBar payload={payload} />
-      <CommanBreadcrumbs payload={payload} />
+      <CommonBreadcrumbs payload={payload} />
        }
 
       <Row gutter={20} className="mb-5">

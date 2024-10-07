@@ -56,7 +56,7 @@ import { openNotificationWithIcon } from "components/common/notification/notific
 import ScoreTag from "../Home/TrandingTopic/scoreTag";
 import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 import { CloseOutlined } from "@ant-design/icons";
-import CommanBreadcrumbs from "../Breadcrumbs/commanBreadcrumbs";
+import CommanBreadcrumbs from "../Breadcrumbs/commonBreadcrumbs";
 import ActivityNewsCard from "./ActivityNewsCard";
 import CampRecentActivities from "./CampRecentActivities";
 

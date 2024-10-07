@@ -28,7 +28,7 @@ import {
   getCurrentTopicRecordApi,
 } from "src/network/api/campDetailApi";
 import { RootState } from "src/store";
-import CommanBreadcrumbs from "../Breadcrumbs/commanBreadcrumbs";
+import CommonBreadcrumbs from "../Breadcrumbs/commonBreadcrumbs";
 
 const { Text } = Typography;
 
@@ -270,7 +270,7 @@ const CommentsList = () => {
           //     )
           //   }
           // />
-          <CommanBreadcrumbs 
+          <CommonBreadcrumbs 
           payload={payload}
             isForumPage={false}
             isHtmlContent={

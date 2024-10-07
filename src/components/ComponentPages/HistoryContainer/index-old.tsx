@@ -21,7 +21,7 @@ import useIsUserAuthenticated from "src/hooks/isUserAuthenticated";
 import { store } from "src/store";
 import { setTree } from "src/store/slices/campDetailSlice";
 import { updateCampApi } from "src/network/api/campManageStatementApi";
-import CommanBreadcrumbs from "../Breadcrumbs/commanBreadcrumbs";
+import CommanBreadcrumbs from "../Breadcrumbs/commonBreadcrumbs";
 
 const { Title } = Typography;
 

@@ -21,7 +21,7 @@ import Layout from "src/hoc/layout";
 import PrimaryButton from "components/shared/Buttons/PrimariButton";
 import ManageThread from "./CreateThreadPopup";
 import { RootState } from "src/store";
-import CommanBreadcrumbs from "../Breadcrumbs/commanBreadcrumbs";
+import CommonBreadcrumbs from "../Breadcrumbs/commonBreadcrumbs";
 
 const ForumComponent = () => {
   const router = useRouter();
@@ -254,7 +254,7 @@ const ForumComponent = () => {
           //     </PrimaryButton>
           //   }
           // />
-          <CommanBreadcrumbs
+          <CommonBreadcrumbs
           payload={payload}
             isForumPage={false}
             isHtmlContent={
