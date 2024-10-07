@@ -10,6 +10,7 @@ import {
   setCampWithScorevalue,
   setFilterCanonizedTopics,
   setShowDrawer,
+  setTreeExpandValue,
 } from "src/store/slices/filtersSlice";
 import {
   getCanonizedCampStatementApi,
@@ -80,7 +81,8 @@ const TopicDetails = ({ serverSideCall }: any) => {
     viewThisVersionCheck,
     campWithScore,
     openConsensusTreePopup,
-    totalScoreforTreeCard
+    totalScoreforTreeCard,
+    treeExpandValue
   } = useSelector((state: RootState) => ({
     algorithms: state.homePage?.algorithms,
     asof: state?.filters?.filterObject?.asof,
@@ -93,6 +95,8 @@ const TopicDetails = ({ serverSideCall }: any) => {
     campWithScore: state?.filters?.campWithScoreValue,
     openConsensusTreePopup: state.hotTopic.openConsensusTreePopup,
     totalScoreforTreeCard: state.topicDetails.totalScoreforTreeCard,
+    treeExpandValue: state?.filters?.treeExpandValue,
+
   }));
 
   const { isUserAuthenticated } = isAuth();
@@ -112,9 +116,13 @@ const TopicDetails = ({ serverSideCall }: any) => {
   const [totalCampScoreForSupportTree, setTotalCampScoreForSupportTree] =
     useState<number>(null);
   const [supportTreeForCamp, setSupportTreeForCamp] = useState<number>(null);
-  const [treeExpandValue, setTreeExpandValue] = useState<any>(campWithScore);
+  // const [treeExpandValue, setTreeExpandValue] = useState<any>(campWithScore);
 
-  useEffect(() => setTreeExpandValue(campWithScore), [campWithScore]);
+  // useEffect(() => setTreeExpandValue(campWithScore), [campWithScore]);
+  useEffect(() => {
+    dispatch(setTreeExpandValue(campWithScore));
+  }, [campWithScore]);
+
 
   const isMobile = window.matchMedia("(min-width: 1280px)").matches;
 
