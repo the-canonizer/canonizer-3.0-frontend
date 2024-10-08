@@ -62,7 +62,7 @@ export default function SearchSideBar() {
             <Link
               href={{
                 pathname: "/search",
-                query: { q: searchValue },
+                query: { q: router?.query?.q },
               }}
               passHref
             >
@@ -86,7 +86,7 @@ export default function SearchSideBar() {
               href={{
                 pathname: "/search/topic",
                 query: {
-                  q: searchValue,
+                  q: router?.query?.q,
                   ...(asof !== "default" && { asof: asof }),
                   ...(asof == "bydate" && { asofdate: asofdate }),
                 },
@@ -127,7 +127,7 @@ export default function SearchSideBar() {
               href={{
                 pathname: "/search/camp",
                 query: {
-                  q: searchValue,
+                  q: router?.query?.q,
                   ...(asof !== "default" && { asof: asof }),
                   ...(asof == "bydate" && { asofdate: asofdate }),
                 },
@@ -167,7 +167,7 @@ export default function SearchSideBar() {
             <Link
               href={{
                 pathname: "/search/camp_statement",
-                query: { q: searchValue },
+                query: { q: router?.query?.q },
               }}
               passHref
             >
@@ -206,7 +206,7 @@ export default function SearchSideBar() {
             <Link
               href={{
                 pathname: "/search/nickname",
-                query: { q: searchValue },
+                query: { q: router?.query?.q },
               }}
               passHref
             >

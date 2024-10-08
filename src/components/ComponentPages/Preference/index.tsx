@@ -97,6 +97,7 @@ const ProfilePrefrences = () => {
 
     fetchLanguageList();
     fetchAlgorithmsList();
+    getAllTags()
   }, [isUserAuthenticated]);
 
   useEffect(() => {
@@ -226,21 +227,21 @@ const ProfilePrefrences = () => {
       dispatch(setZipCodeForProfileInfo(false));
     }
   };
-  useEffect(() => {
-    // Trigger `onFinish2` with the updated form values when the component renders
-    const callOnFinishOnRender = async () => {
-      try {
-        await formVerify.validateFields(); // Validate form first
-        const values = formVerify.getFieldsValue(); // Get current form values
-        await onFinish2(values); // Call the onFinish2 function with current values
-      } catch (error) {
-        console.error("Error during form validation or function call:", error);
-      }
-    };
+  // useEffect(() => {
+  //   // Trigger `onFinish2` with the updated form values when the component renders
+  //   const callOnFinishOnRender = async () => {
+  //     try {
+  //       await formVerify.validateFields(); // Validate form first
+  //       const values = formVerify.getFieldsValue(); // Get current form values
+  //       await onFinish2(values); // Call the onFinish2 function with current values
+  //     } catch (error) {
+  //       console.error("Error during form validation or function call:", error);
+  //     }
+  //   };
 
-    callOnFinishOnRender(); // Call the function when component renders
-    setIsInitialRender(false);
-  }, []);
+  //   callOnFinishOnRender(); // Call the function when component renders
+  //   setIsInitialRender(false);
+  // }, []);
   const handleChangeLanguage = (value) => {
     setSelectedLanguage(value); // Update state with the selected value
   };

@@ -296,14 +296,34 @@ export default function DirectSupportedCampsUI({
   // Extracted Content
   const drawerContent = (
     <>
-      <p className="text-sm font-normal text-canRed mb-8">
+      {/* <p className="text-sm font-normal text-canRed mb-8">
         Note: You are about to remove your support from all the camps from the
         topic:
         <span className="text-sm font-semibold">
           &quot;{removeSupportCampsData.title}&quot;
         </span>
         . You can optionally add a helpful reason, along with a citation link.
+      </p> */}
+      <p className="text-sm font-normal text-canRed mb-8">
+        {isChangingOrder ? (
+          "Note: You are about to change the order of your supported camps"
+        ) : modalPopupText ? (
+          <>
+            Note: You are about to remove your support from all the camps from
+            the topic:
+            <span className="text-sm font-semibold">
+              &quot;{removeSupportCampsData?.title}&quot;
+            </span>
+            . You can optionally add a helpful reason, along with a citation
+            link.
+          </>
+        ) : campIds?.length > 1 ? (
+          "You are about to remove your support from the camps: "
+        ) : (
+          "You are about to remove your support from the camp: "
+        )}
       </p>
+
       <SupportRemovedModal
         onFinish={onRemoveFinish}
         handleCancel={handleSupportedCampsCancel}
