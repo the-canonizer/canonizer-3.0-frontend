@@ -100,22 +100,38 @@ const HeaderSearch = ({ className = "" }: any) => {
   const [loadingSekelton, setLoadingSekelton] = useState(true);
   const [isActiveTagHaveData, setIsActiveTagHaveData] = useState(true);
 
-  useEffect(() => {
-    if (searchValue?.length == 0) {
-      // const localSearch = localStorage.getItem("searchValue");
-      searchValue = router?.asPath
-        ?.split("=")[1]
-        ?.split("+")
-        .join(" ")
-        ?.replace(/%20/g, " ");
-      setSearchVal("");
+  // useEffect(() => {
+  //   if (searchValue?.length == 0) {
+  //     // const localSearch = localStorage.getItem("searchValue");
+  //     searchValue = router?.asPath
+  //       ?.split("=")[1]
+  //       ?.split("+")
+  //       .join(" ")
+  //       ?.replace(/%20/g, " ");
+  //     setSearchVal("");
 
-      if (inputSearch || router?.query?.q) {
-        dispatch(setSearchValue(searchValue));
-        getGlobalSearchCanonizer(searchValue, true);
-      }
+  //     if (inputSearch || router?.query?.q) {
+  //       dispatch(setSearchValue(searchValue));
+  //       getGlobalSearchCanonizer(searchValue, true);
+  //     }
+  //   }
+  // }, []);
+
+  useEffect(() => {
+    const { q } = router.query; // Extract the query parameter from the URL
+  
+    if (typeof q === 'string') { // Check if q is a string
+      // If 'q' is present, format and set the search value, then call the search function
+      const formattedSearchValue = q.split("+").join(" ").replace(/%20/g, " ");
+      setSearchVal(formattedSearchValue); // Update the local search value state
+      dispatch(setSearchValue(formattedSearchValue)); // Dispatch the search value to Redux
+      getGlobalSearchCanonizer(formattedSearchValue, true); // Call the search function
+    } else {
+      // If 'q' is not present or not a string, clear the search value
+      setSearchVal("");
+      dispatch(setSearchValue("")); // Optionally clear the dispatched search value
     }
-  }, []);
+  }, [router.query.q]);
 
   const showEmpty = (msg) => {
     return <Empty description={msg} />;
