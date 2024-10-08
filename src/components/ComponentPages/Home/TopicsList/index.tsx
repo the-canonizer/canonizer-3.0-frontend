@@ -529,7 +529,7 @@ const TopicsList = () => {
           <>
             {topicsData?.topics?.length == 0 ? (
               <div className="mt-[10rem]">
-                <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />;
+                <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
               </div>
             ) : (
               <Row gutter={[24, 24]}>
