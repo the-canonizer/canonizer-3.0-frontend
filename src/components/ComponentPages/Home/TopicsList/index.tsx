@@ -523,7 +523,7 @@ const TopicsList = () => {
             </Button>
           </div>
         )}
-        {loading && !searchTerm ? (
+        {loading && !searchTerm || topicsData?.topics == null ? (
           <CustomSkelton skeltonFor="browse" />
         ) : (
           <>
