@@ -36,6 +36,7 @@ import {
   setManageSupportStatusCheck,
   setManageSupportUrlLink,
   setOpenDrawerForManageSupport,
+  settotalScoreforTreeCard,
 } from "src/store/slices/campDetailSlice";
 import { setDelegatedSupportClick } from "src/store/slices/supportTreeCard";
 import CustomSkelton from "components/common/customSkelton";
@@ -117,10 +118,12 @@ const SupportTreeCard = ({
     selectedAlgorithm: state?.filters?.filterObject?.algorithm,
     tree: state?.topicDetails?.tree,
   }));
-  const { manageSupportStatusCheck, openDrawerForManageSupport } = useSelector(
+  const { manageSupportStatusCheck, openDrawerForManageSupport,totalScoreforTreeCard } = useSelector(
     (state: RootState) => ({
       manageSupportStatusCheck: state.topicDetails.manageSupportStatusCheck,
       openDrawerForManageSupport: state.topicDetails.openDrawerForManageSupport,
+      totalScoreforTreeCard: state.topicDetails.totalScoreforTreeCard,
+
     })
   );
   const { isUserAuthenticated } = isAuth();
@@ -144,6 +147,7 @@ const SupportTreeCard = ({
     getManageSupportLoadingIndicator,
     setGetManageSupportLoadingIndicator,
   ] = useState(true);
+  const [supportOrder, setSupportOrder]  = useState(0)
   const [open, setOpen] = useState(false);
   const [supportTreeData, setSupportTreeData] = useState(null);
   const [loader, setLoader] = useState(false);
@@ -185,11 +189,6 @@ const SupportTreeCard = ({
       fetch_topic_history: +router?.query?.topic_history,
     };
     await getTreesApi(reqBodyForService);
-    dispatch(setOpenConsensusTreePopup(true));
-
-    setTimeout(() => {
-      dispatch(setOpenConsensusTreePopup(false));
-    }, 100);
   };
   const handleCancelSupportCamps = async ({ isCallApiStatus = false }) => {
     if (isCallApiStatus == true) {
@@ -305,14 +304,39 @@ const SupportTreeCard = ({
 
   const manageSupportPath = router?.asPath.replace("/topic/", "/support/");
 
-  const { campSupportingTree, asof, userNickNames } = useSelector(
+  const { campSupportingTree, asof, userNickNames, initialTree } = useSelector(
     (state: RootState) => ({
       campSupportingTree: supportTreeForCamp,
       asof: state?.filters?.filterObject?.asof,
       userNickNames: state?.auth?.userNickNames,
+      initialTree: state?.topicDetails?.tree,
     })
   );
-
+  const findInitialTreeSupport = (tree)=>{
+    Object.keys(tree)?.some((item)=>{
+      if (router?.query?.camp?.at(1)?.split("-")?.at(0)){
+          if (tree[item]?.camp_id == router?.query?.camp?.at(1)?.split("-")?.at(0)){
+            setSupportTreeForCamp(tree[item].support_tree)
+            if (is_checked && isUserAuthenticated) {
+              setTotalCampScoreForSupportTree(tree[item].full_score);
+            } else {
+              setTotalCampScoreForSupportTree(tree[item].score);
+            }
+            return true
+          }
+          else {
+              if(Object.keys(tree[item]?.children)?.length > 0) {
+                findInitialTreeSupport(tree[item]?.children);
+              }
+            }
+          }
+    })
+  }
+  useEffect(()=> {
+    if(initialTree?.[0]){
+      findInitialTreeSupport(initialTree?.[0]);
+    }
+  },[initialTree, setSupportTreeForCamp])
   useEffect(() => {
     if (campSupportingTree?.length > 0) {
       getDelegateNicknameId(campSupportingTree);
@@ -417,29 +441,37 @@ const SupportTreeCard = ({
       const parentIsOneLevel = isOneLevel;
       isOneLevel = data[item].is_one_level == 1 || isOneLevel == 1 ? 1 : 0;
       //isDisabled = data[item].is_disabled == 1 || isDisabled == 1 ? 1 : 0;
-
       if (router?.query?.camp?.at(1)?.split("-")?.at(0)) {
         if (
           data[item]?.camp_id == router?.query?.camp?.at(1)?.split("-")?.at(0)
         ) {
           setSupportTreeForCamp(data[item].support_tree);
+          setSupportOrder(data[item].support_order)
           is_checked && isUserAuthenticated
             ? setTotalCampScoreForSupportTree(data[item].full_score)
             : setTotalCampScoreForSupportTree(data[item].score);
+
+            is_checked && isUserAuthenticated
+            ? settotalScoreforTreeCard(data[item].full_score)
+            : settotalScoreforTreeCard(data[item].score);
         }
       } else {
         if (data[item]?.camp_id == 1) {
           setSupportTreeForCamp(data[item].support_tree);
+          setSupportOrder(data[item].support_order)
           is_checked && isUserAuthenticated
             ? setTotalCampScoreForSupportTree(data[item].full_score)
             : setTotalCampScoreForSupportTree(data[item].score);
+
+            is_checked && isUserAuthenticated
+            ? settotalScoreforTreeCard(data[item].full_score)
+            : settotalScoreforTreeCard(data[item].score);
         }
       }
       if ((!loadMore && index < supportLength) || loadMore) {
         if (data[item].delegates) {
           /* eslint-disable */
           /* eslint-enable */
-
           return (
             <TreeNode
               className="[&_.ant-tree-node-content-wrapper]:!w-full [&_.ant-tree-switcher]:!hidden !bg-transparent border-b hover:[&_.ant-tree-node-content-wrapper]:!bg-transparent !w-full !p-0"

@@ -26,6 +26,7 @@ export const filtersSlice = createSlice({
     selectAlgoBrowsePage: false,
     selectCanonCatsPage: "",
     selectCanonNameCatsPage: "All",
+    treeExpandValue:10,
   },
   reducers: {
     setFilterCanonizedTopics: (state, action) => {
@@ -72,6 +73,9 @@ export const filtersSlice = createSlice({
       state.selectCanonCatsPage = action.payload?.canon_id;
       state.selectCanonNameCatsPage = action.payload?.canon_name;
     },
+    setTreeExpandValue: (state, action) => {
+      state.treeExpandValue = action.payload;
+    },
   },
 });
 
@@ -88,6 +92,7 @@ export const {
   setRemoveFilters,
   setSelectAlgoBrowsePage,
   setSelectCanonCatsPage,
+  setTreeExpandValue
 } = filtersSlice.actions;
 
 export default filtersSlice.reducer;
