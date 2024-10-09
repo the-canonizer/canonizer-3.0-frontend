@@ -3,7 +3,7 @@ import { Tag } from "antd";
 import HandIcon from "./handIcon";
 
 const ScoreTag = ({ topic_score }) => {
-  if (!topic_score) return null;
+  // if (!topic_score) return null;
 
   return (
     <Tag
