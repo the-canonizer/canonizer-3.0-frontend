@@ -33,7 +33,7 @@ const CampTree = ({
     viewThisVersion,
     is_camp_archive_checked,
     campRecord,
-    treeExpandValue
+    treeExpandValue,
   } = useSelector((state: RootState) => ({
     tree: state?.topicDetails?.tree,
     filterByScore: state.filters?.filterObject?.filterByScore,
@@ -45,7 +45,6 @@ const CampTree = ({
     is_camp_archive_checked: state?.utils?.archived_checkbox,
     campRecord: state?.topicDetails?.currentCampRecord,
     treeExpandValue: state?.filters?.treeExpandValue,
-
   }));
 
   let childExpandTree = [];
