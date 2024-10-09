@@ -50,7 +50,7 @@ const findSimilarNames = (inputName, namesList) => {
 };
 
 const CreateNewCamp = () => {
-  const { filterByScore, filterObject, viewThisVersion } = useSelector(
+  const { filterByScore, filterObject, viewThisVersion }: any = useSelector(
     (state: RootState) => ({
       filterByScore: state.filters?.filterObject?.filterByScore,
       filterObject: state?.filters?.filterObject,
@@ -219,6 +219,26 @@ const CreateNewCamp = () => {
     return !!similarNames?.length;
   };
 
+  const getURLParams = () => {
+    const searchParams = new URLSearchParams();
+
+    if (filterByScore && filterByScore != 0)
+      searchParams.append("score", filterByScore);
+    if (filterObject?.algorithm)
+      searchParams.append("algo", filterObject.algorithm);
+    if (filterObject?.asof && filterObject?.asof !== "default")
+      searchParams.append("asof", filterObject.asof);
+    if (filterObject?.asof === "bydate" && filterObject?.asofdate) {
+      searchParams.append("asofdate", filterObject.asofdate);
+    }
+    if (filterObject?.namespace_id && filterObject?.namespace_id != 1)
+      searchParams.append("canon", filterObject.namespace_id);
+    if (viewThisVersion) searchParams.append("viewversion", "1");
+
+    console.log("searchParams", searchParams.toString());
+    return searchParams.toString();
+  };
+
   const onFinalSubmit = async () => {
     setIsLoading(true);
     if (!values.camp_name?.trim()) {
@@ -259,16 +279,7 @@ const CreateNewCamp = () => {
       const returnPath = localStorage.getItem("topicPath"),
         defPath = `/topic/${replaceSpecialCharacters(camp[0], "-")}/${
           res?.data?.camp_num
-        }-${replaceSpecialCharacters(
-          values.camp_name,
-          "-"
-        )}?score=${filterByScore}&algo=${filterObject?.algorithm}${
-          filterObject?.asof == "bydate"
-            ? "&asofdate=" + filterObject?.asofdate
-            : ""
-        }&asof=${filterObject?.asof}&canon=${filterObject?.namespace_id}${
-          viewThisVersion ? "&viewversion=1" : ""
-        }`;
+        }-${replaceSpecialCharacters(values.camp_name, "-")}?${getURLParams()}`;
 
       let pathToPush = defPath;
 
@@ -351,16 +362,7 @@ const CreateNewCamp = () => {
       defPath = `/topic/${replaceSpecialCharacters(
         camp[0],
         "-"
-      )}/${replaceSpecialCharacters(
-        camp[1],
-        "-"
-      )}?score=${filterByScore}&algo=${filterObject?.algorithm}${
-        filterObject?.asof == "bydate"
-          ? "&asofdate=" + filterObject?.asofdate
-          : ""
-      }&asof=${filterObject?.asof}&canon=${filterObject?.namespace_id}${
-        viewThisVersion ? "&viewversion=1" : ""
-      }`;
+      )}/${replaceSpecialCharacters(camp[1], "-")}?${getURLParams()}`;
 
     let pathToPush = defPath;
 

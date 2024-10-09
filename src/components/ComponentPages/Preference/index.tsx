@@ -97,7 +97,7 @@ const ProfilePrefrences = () => {
 
     fetchLanguageList();
     fetchAlgorithmsList();
-    getAllTags()
+    getAllTags();
   }, [isUserAuthenticated]);
 
   useEffect(() => {

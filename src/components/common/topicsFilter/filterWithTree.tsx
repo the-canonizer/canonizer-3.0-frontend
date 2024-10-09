@@ -232,7 +232,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
       if (router?.query?.asof !== "bydate" || !router?.query?.asofdate) {
         handleRadioClick(2);
       }
-    }else{
+    } else {
       dispatch(setClearAlgoFromRefineFilter(router?.query?.algo));
     }
   }, [openDrawer]);
@@ -279,11 +279,11 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
     fetch_topic_history: viewThisVersionCheck ? 1 : null,
   };
 
-  const revertScore = async() => {
+  const revertScore = async () => {
     await getTreesApi(reqBodyForService);
   };
 
-  const selectAlgorithm = async(value) => {
+  const selectAlgorithm = async (value) => {
     setCookie("canAlgo", value, {
       path: "/",
     });
@@ -412,26 +412,30 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
 
   const updateURLWithAlgo = (selectedAlgorithm) => {
     const currentQuery = router.query;
-  
+
     // Update the query params
     const newQuery = {
       ...currentQuery, // Retain the existing query parameters
       algo: selectedAlgorithm, // Update with the selected algorithm
     };
-  
+
     // Push the new URL without causing a full page reload
-    router.push({
-      pathname: router.pathname,
-      query: newQuery,
-    }, undefined, { shallow: true });
+    router.push(
+      {
+        pathname: router.pathname,
+        query: newQuery,
+      },
+      undefined,
+      { shallow: true }
+    );
   };
-  
+
   const handleApplyClick = async () => {
     const selectedAlgorithm = clearAlgoFromRefineFilter;
-  
+
     // Step 1: Update URL with the selected algorithm
     updateURLWithAlgo(selectedAlgorithm);
-  
+
     // Step 2: Dispatch Redux actions and perform state updates
     dispatch(setOpenDrawer(false));
     filterOnScore(clearScoreFromRefineFilter);
@@ -440,14 +444,14 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
     if (selectedValue === 2) {
       dispatch(setViewThisVersion(false));
       setCookie("asof", "default", { path: "/" });
-  
+
       dispatch(
         setFilterCanonizedTopics({
           asofdate: Date.now() / 1000,
           asof: "default",
         })
       );
-  
+
       onChangeRoute(
         clearScoreFromRefineFilter,
         clearAlgoFromRefineFilter,
@@ -459,7 +463,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
     } else if (selectedValue === 1) {
       dispatch(setViewThisVersion(false));
       setCookie("asof", "review", { path: "/" });
-  
+
       dispatch(
         setIsReviewCanonizedTopics({
           includeReview: true,
@@ -467,7 +471,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
           asofdate: Date.now() / 1000,
         })
       );
-  
+
       onChangeRoute(
         clearScoreFromRefineFilter,
         clearAlgoFromRefineFilter,
@@ -480,9 +484,8 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
       dispatch(setViewThisVersion(false));
       handleAsOfClick();
     }
-   
   };
-  
+
   const onClose = () => {
     dispatch(setOpenDrawer(false));
   };
@@ -570,7 +573,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
                     )[0]?.algorithm_label
                   }
                   onChange={(algo) => {
-                   dispatch(setClearAlgoFromRefineFilter(algo)); 
+                    dispatch(setClearAlgoFromRefineFilter(algo));
                   }}
                   value={clearAlgoFromRefineFilter}
                   disabled={loadingIndicator}

@@ -172,9 +172,7 @@ export default function DelegatedSupportCampsUI({
         <p className="border-b py-3 flex flex-col">
           <b className="uppercase text-sm font-medium">Nickname:</b>
           <Link href={props.NickNameLink}>
-            <a className="text-canBlue text-sm font-medium">
-              {props.NickName}
-            </a>
+            <a className="text-canBlue text-sm font-medium">{props.NickName}</a>
           </Link>
         </p>
       </div>

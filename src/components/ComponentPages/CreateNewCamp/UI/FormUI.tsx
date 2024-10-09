@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
 import { Form, Input, Select, Row, Col, Typography, Tooltip } from "antd";
 import {
+  ApartmentOutlined,
   CloseOutlined,
   CrownOutlined,
   LinkOutlined,
@@ -21,7 +22,6 @@ import PrimaryButton from "components/shared/Buttons/PrimariButton";
 import Inputs from "components/shared/FormInputs";
 import AlignIcon from "components/ComponentPages/CreateNewTopic/UI/alignIcon";
 import SelectInputs from "components/shared/FormInputs/select";
-import StructureIcon from "components/ComponentPages/CreateNewTopic/UI/structureIcon";
 
 const { Option } = Select;
 const { Text } = Typography;
@@ -137,12 +137,7 @@ const CreateCampFormUI = ({
       inputClassName:
         "border-0 [&_.ant-select-selector]:![&_.ant-select-selection-search]:!w-auto",
       rules: parentCampRule,
-      prefix: (
-        <StructureIcon
-          className="flex items-center justify-center px-2"
-          fill="#242B37"
-        />
-      ),
+      prefix: <ApartmentOutlined className="px-3 text-canBlack" />,
       onSelect: (val) => form.setFieldValue("parent_camp_num", val),
       id: "nickname-dropdown",
       isDefaultOption: false,
