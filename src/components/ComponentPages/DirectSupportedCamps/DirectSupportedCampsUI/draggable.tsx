@@ -120,7 +120,7 @@ function SortableItem(props) {
         </Tag>
       ) : (
         <Tag
-          className="rounded-full mr-0 bg-[#F0F2FA] flex items-center border-transparent font-medium text-sm px-3 py-1 leading-none"
+          className="rounded-full mr-0 bg-[#F0F2FA] flex items-center border-transparent font-medium text-sm px-3 py-1 leading-none cn-card-home"
           closable={true}
           closeIcon={
             <Image
