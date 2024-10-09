@@ -125,7 +125,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
     clearAlgoFromRefineFilter: state.topicDetails.clearAlgoFromRefineFilter,
     clearScoreFromRefineFilter: state.topicDetails.clearScoreFromRefineFilter,
   }));
-console.log(clearAlgoFromRefineFilter,"clearAlgoFromRefineFilter")
+
   const [selectedAsOFDate, setSelectedAsOFDate] = useState(filteredAsOfDate);
   const [timer, setTimer] = useState(null);
   const [isLoading, setIsLoading] = useState(loading);
@@ -232,6 +232,8 @@ console.log(clearAlgoFromRefineFilter,"clearAlgoFromRefineFilter")
       if (router?.query?.asof !== "bydate" || !router?.query?.asofdate) {
         handleRadioClick(2);
       }
+    }else{
+      dispatch(setClearAlgoFromRefineFilter(router?.query?.algo));
     }
   }, [openDrawer]);
   useEffect(() => {
@@ -499,6 +501,7 @@ console.log(clearAlgoFromRefineFilter,"clearAlgoFromRefineFilter")
       query: { ...query, algo },
     });
   };
+
   return (
     <div className="leftSideBar_Card drawer_card">
       <div
