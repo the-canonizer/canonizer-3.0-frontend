@@ -50,7 +50,7 @@ const findSimilarNames = (inputName, namesList) => {
 };
 
 const CreateNewCamp = () => {
-  const { filterByScore, filterObject, viewThisVersion } = useSelector(
+  const { filterByScore, filterObject, viewThisVersion }: any = useSelector(
     (state: RootState) => ({
       filterByScore: state.filters?.filterObject?.filterByScore,
       filterObject: state?.filters?.filterObject,
