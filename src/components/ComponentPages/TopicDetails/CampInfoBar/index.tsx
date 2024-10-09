@@ -320,20 +320,10 @@ const TimelineInfoBar = ({
   };
 
   const handleTopicUrl = () => {
-    const query = router?.query;
-    const basePath = "/topic/history/";
-    let routeValue = compareMode
-      ? query?.routes?.at(0)
-      : query?.camp?.at(0) || query?.manageSupport?.at(0);
-
-    if (routeValue) {
-      const formattedRoute = replaceSpecialCharacters(routeValue, "-");
-      const fullPath = compareMode
-        ? `${basePath}${formattedRoute}/1-Agreement`
-        : `${basePath}${formattedRoute}/1-Agreement`;
-
-      router?.push({ pathname: fullPath });
-    }
+    const fullPath = `/topic/history/${
+      topicRecord?.topic_num
+    }-${replaceSpecialCharacters(topicRecord?.topic_name, "-")}/1-Agreement`;
+    router?.push({ pathname: fullPath });
   };
 
   const campOrTopicScribe = async (isTopic: Boolean) => {
@@ -467,15 +457,13 @@ const TimelineInfoBar = ({
       </Row>
 
       <hr className="horizontal_line my-5" />
-      {(isTopicPage || isEventLine || isHistoryPage || compareMode) && (
-        <PrimaryButton
-          className="mx-auto flex items-center justify-center font-medium h-auto gap-1"
-          onClick={() => handleTopicUrl()}
-        >
-          {K?.exceptionalMessages?.manageTopicButton}
-          <EditOutlined />
-        </PrimaryButton>
-      )}
+      <PrimaryButton
+        className="mx-auto flex items-center justify-center font-medium h-auto gap-1"
+        onClick={() => handleTopicUrl()}
+      >
+        {K?.exceptionalMessages?.manageTopicButton}
+        <EditOutlined />
+      </PrimaryButton>
     </div>
   );
 
@@ -513,6 +501,8 @@ const TimelineInfoBar = ({
       : router?.query?.camp?.at(1) || "1-Agreement",
     "-"
   )}`;
+
+  const campHref= `/camp/history/${topicRecord?.topic_num}-${replaceSpecialCharacters(topicRecord?.topic_name, "-")}/${campRecord?.camp_num}-${replaceSpecialCharacters(campRecord?.camp_name, "-")}`
 
   const contentForCamp = (
     <div className="popoverParent">
@@ -634,18 +624,16 @@ const TimelineInfoBar = ({
         </Col>
       </Row>
       <hr className="horizontal_line my-5" />
-      {(isTopicPage || isHistoryPage || compareMode) && (
-        <PrimaryButton className="flex items-center justify-center h-auto mx-auto gap-1">
-          <Link href={href}>
-            <a className="flex items-center justify-center h-auto mx-auto gap-1">
-              <span className="flex items-center justify-center h-auto mx-auto gap-1">
-                {K?.exceptionalMessages?.manageCampButton}
-                <EditOutlined />
-              </span>
-            </a>
-          </Link>
-        </PrimaryButton>
-      )}
+      <PrimaryButton className="flex items-center justify-center h-auto mx-auto gap-1">
+        <Link href={campHref}>
+          <a className="flex items-center justify-center h-auto mx-auto gap-1">
+            <span className="flex items-center justify-center h-auto mx-auto gap-1">
+              {K?.exceptionalMessages?.manageCampButton}
+              <EditOutlined />
+            </span>
+          </a>
+        </Link>
+      </PrimaryButton>
     </div>
   );
 
