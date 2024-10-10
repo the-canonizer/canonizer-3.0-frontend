@@ -29,6 +29,7 @@ import {
   GetCheckSupportExists,
 } from "src/network/api/topicAPI";
 import {
+  setAsOfValues,
   setCampSupportingTree,
   setCheckSupportExistsData,
   setCurrentCheckSupportStatus,
@@ -198,6 +199,16 @@ const TopicDetails = ({ serverSideCall }: any) => {
     router,
   ]);
 
+  useEffect(()=>{
+    if(router?.query?.asOf !== "bydate"){
+      dispatch(
+        setFilterCanonizedTopics({
+          asofdate: Date.now() / 1000,
+          asof: "default",
+        })
+      );
+    }
+  },[asof])
   async function getTopicActivityLogCall() {
     let reqBody = {
       topic_num: router?.query?.camp[0]?.split("-")[0],

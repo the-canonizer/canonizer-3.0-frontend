@@ -1,10 +1,11 @@
 import { Col, Form, Input, Row, Select, message } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import messages from "src/messages";
 import {
   GetAlgorithmsList,
   GetLanguageList,
+  GetUserProfileInfo,
   UpdateUserProfileInfo,
 } from "src/network/api/userApi";
 import { RootState } from "src/store";
@@ -27,6 +28,7 @@ import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 import { CloseOutlined, SaveOutlined } from "@ant-design/icons";
 import PrimaryButton from "components/shared/Buttons/PrimariButton";
 
+
 const ProfilePrefrences = () => {
   const [languageList, setLanguageList] = useState([]);
   const [algorithmList, setAlgorithmList] = useState([]);
@@ -34,6 +36,8 @@ const ProfilePrefrences = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredTags, setFilteredTags] = useState([]);
   const [selectedCount, setSelectedCount] = useState(0);
+  const [profileUserTags, setProfileUserTags] = useState([]);
+
   const [formVerify] = Form.useForm();
 
   const { Option } = Select;
@@ -94,21 +98,34 @@ const ProfilePrefrences = () => {
         console.error("Error fetching algorithms list:", error);
       }
     }
+    async function fetchUserProfileInfo() {
+      try {
+        let res = await GetUserProfileInfo();
+        if (res !== undefined) {
+          setProfileUserTags(res?.data?.tags);
+        }
+      } catch (error) {
+        console.error("Error fetching algorithms list:", error);
+      }
+    }
 
     fetchLanguageList();
     fetchAlgorithmsList();
+    fetchUserProfileInfo();
     getAllTags();
   }, [isUserAuthenticated]);
 
   useEffect(() => {
     // Filter the tags based on the search term
     const filtered = tags.filter((tag) =>
-      tag.title.toLowerCase().includes(searchTerm.toLowerCase())
+      tag?.title?.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredTags(filtered);
-    const selectedTags = tags.filter((tag) => tag.checked).length;
+    const selectedTags = filtered.filter((tag) => 
+      tag.checked || profileUserTags.some((profileTag) => profileTag.tag_id === tag.id)
+    ).length;
     setSelectedCount(selectedTags);
-  }, [searchTerm, tags]);
+  }, [searchTerm, tags,profileUserTags]);
 
   const listOfOption = (optionList, algoOrLang): any => {
     let option = [];
@@ -134,14 +151,40 @@ const ProfilePrefrences = () => {
   const onDiscard = () => {
     const resetTags = tags.map((ch) => ({ ...ch, checked: false }));
     dispatch(setTags(resetTags));
+
+    setProfileUserTags([]);
   };
 
+  // const onChange = (data) => {
+  //   const newTags = tags.map((ch) =>
+  //     ch.id === data.id ? { ...ch, checked: !ch.checked } : ch
+  //   );
+  //   dispatch(setTags(newTags));
+  // };
   const onChange = (data) => {
+    const isCurrentlyChecked = data.checked; // Determine if the current tag is checked
+
+    if (isCurrentlyChecked) {
+      // If currently checked, remove it from profileUserTags
+      const updatedProfileTags = profileUserTags.filter((tag) => tag.tag_id !== data.id);
+      setProfileUserTags(updatedProfileTags); // Update local state for profileUserTags
+    } else {
+      // If currently unchecked, add it to profileUserTags
+      const newProfileTags = [...profileUserTags, { tag_id: data.id, title: data.title }];
+      setProfileUserTags(newProfileTags); // Update local state for profileUserTags
+    }
+
+    // Update the tags state to toggle the checkbox
     const newTags = tags.map((ch) =>
-      ch.id === data.id ? { ...ch, checked: !ch.checked } : ch
+      ch.id === data.id
+        ? { ...ch, checked: !isCurrentlyChecked } // Toggle the checked state
+        : ch
     );
-    dispatch(setTags(newTags));
+
+    setTags(newTags); // Update the tags state to reflect the change
+    dispatch(setTags(newTags)); // Dispatch the updated tags
   };
+
 
   const publicPrivateArray = {
     first_name: "first_name",
@@ -192,16 +235,17 @@ const ProfilePrefrences = () => {
     values.address_1 = address;
     values.postal_code = code;
     values = { ...values, ...updateAddress };
-    const userTags = tags.filter((ch) => ch.checked).map((ch) => ch.id);
+    // const userTags = tags.filter((ch) => ch.checked).map((ch) => ch.id);
+    const userTags = [
+      ...tags.filter((ch) => ch.checked).map((ch) => ch.id), // Include checked tags from tags state
+      ...profileUserTags.map((tag) => tag.tag_id) // Include saved tags from profileUserTags
+    ];
 
-    // If no tags are selected, exit early
-    // if (!userTags.length) {
-    //   setLoading(false);
-    //   return;
-    // }
-
-    // Include tags in values
-    values.user_tags = userTags;
+    if (userTags.length === 0) {
+      values.user_tags = []; // No tags selected
+    } else {
+      values.user_tags = Array.from(new Set(userTags)); // Ensure unique tag IDs
+    }
 
     let res = await UpdateUserProfileInfo(values);
     if (res && res.status_code === 200) {
@@ -344,19 +388,23 @@ const ProfilePrefrences = () => {
         </div>
       </div>
 
-      <div className="w-full my-4   px-1  focus:overscroll-contain custom-checkbox-preference flex flex-wrap gap-3">
+      <div className="w-full my-4 px-1 focus:overscroll-contain custom-checkbox-preference flex flex-wrap gap-3">
         {filteredTags.length > 0 ? (
-          filteredTags.map((ch) => (
-            <CustomCheckbox
-              id={ch.id}
-              key={ch.id}
-              onChange={() => onChange(ch)}
-              checked={ch.checked}
-              className="text-sm"
-            >
-              {ch.title}
-            </CustomCheckbox>
-          ))
+          filteredTags.map((ch) => {
+            // Check if the tag should be initially checked based on profileUserTags
+            const isChecked = ch.checked !== undefined ? ch.checked : profileUserTags.some((tag) => tag.tag_id === ch.id);
+            return (
+              <CustomCheckbox
+                id={ch.id}
+                key={ch.id}
+                onChange={() => onChange({ ...ch, checked: isChecked })} 
+                checked={isChecked}
+                className="text-sm"
+              >
+                {ch.title}
+              </CustomCheckbox>
+            );
+          })
         ) : (
           <p>No tags found</p>
         )}
@@ -379,6 +427,7 @@ const ProfilePrefrences = () => {
               try {
                 await formVerify.validateFields();
                 await onFinish2(formVerify.getFieldsValue());
+                await GetUserProfileInfo();
               } catch (error) {}
             }}
           >
