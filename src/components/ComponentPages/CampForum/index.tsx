@@ -21,6 +21,7 @@ import Layout from "src/hoc/layout";
 import PrimaryButton from "components/shared/Buttons/PrimariButton";
 import ManageThread from "./CreateThreadPopup";
 import { RootState } from "src/store";
+import moment from "moment";
 
 const ForumComponent = () => {
   const router = useRouter();
@@ -63,7 +64,7 @@ const ForumComponent = () => {
       topic_num: +topic_num,
       camp_num: +nodeKey,
       as_of: asof,
-      as_of_date: asofdate || Date.now() / 1000,
+      as_of_date: moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss") || Date.now() / 1000,
       algorithm: algorithm,
       update_all: 1,
     };

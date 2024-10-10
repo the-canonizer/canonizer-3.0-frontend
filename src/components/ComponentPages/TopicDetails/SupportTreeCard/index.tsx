@@ -118,14 +118,15 @@ const SupportTreeCard = ({
     selectedAlgorithm: state?.filters?.filterObject?.algorithm,
     tree: state?.topicDetails?.tree,
   }));
-  const { manageSupportStatusCheck, openDrawerForManageSupport,totalScoreforTreeCard } = useSelector(
-    (state: RootState) => ({
-      manageSupportStatusCheck: state.topicDetails.manageSupportStatusCheck,
-      openDrawerForManageSupport: state.topicDetails.openDrawerForManageSupport,
-      totalScoreforTreeCard: state.topicDetails.totalScoreforTreeCard,
-
-    })
-  );
+  const {
+    manageSupportStatusCheck,
+    openDrawerForManageSupport,
+    totalScoreforTreeCard,
+  } = useSelector((state: RootState) => ({
+    manageSupportStatusCheck: state.topicDetails.manageSupportStatusCheck,
+    openDrawerForManageSupport: state.topicDetails.openDrawerForManageSupport,
+    totalScoreforTreeCard: state.topicDetails.totalScoreforTreeCard,
+  }));
   const { isUserAuthenticated } = isAuth();
 
   const router = useRouter();
@@ -147,7 +148,7 @@ const SupportTreeCard = ({
     getManageSupportLoadingIndicator,
     setGetManageSupportLoadingIndicator,
   ] = useState(true);
-  const [supportOrder, setSupportOrder]  = useState(0)
+  const [supportOrder, setSupportOrder] = useState(0);
   const [open, setOpen] = useState(false);
   const [supportTreeData, setSupportTreeData] = useState(null);
   const [loader, setLoader] = useState(false);
@@ -312,31 +313,32 @@ const SupportTreeCard = ({
       initialTree: state?.topicDetails?.tree,
     })
   );
-  const findInitialTreeSupport = (tree)=>{
-    Object.keys(tree)?.some((item)=>{
-      if (router?.query?.camp?.at(1)?.split("-")?.at(0)){
-          if (tree[item]?.camp_id == router?.query?.camp?.at(1)?.split("-")?.at(0)){
-            setSupportTreeForCamp(tree[item].support_tree)
-            if (is_checked && isUserAuthenticated) {
-              setTotalCampScoreForSupportTree(tree[item].full_score);
-            } else {
-              setTotalCampScoreForSupportTree(tree[item].score);
-            }
-            return true
+  const findInitialTreeSupport = (tree) => {
+    Object.keys(tree)?.some((item) => {
+      if (router?.query?.camp?.at(1)?.split("-")?.at(0)) {
+        if (
+          tree[item]?.camp_id == router?.query?.camp?.at(1)?.split("-")?.at(0)
+        ) {
+          setSupportTreeForCamp(tree[item].support_tree);
+          if (is_checked && isUserAuthenticated) {
+            setTotalCampScoreForSupportTree(tree[item].full_score);
+          } else {
+            setTotalCampScoreForSupportTree(tree[item].score);
           }
-          else {
-              if(Object.keys(tree[item]?.children)?.length > 0) {
-                findInitialTreeSupport(tree[item]?.children);
-              }
-            }
+          return true;
+        } else {
+          if (Object.keys(tree[item]?.children)?.length > 0) {
+            findInitialTreeSupport(tree[item]?.children);
           }
-    })
-  }
-  useEffect(()=> {
-    if(initialTree?.[0]){
+        }
+      }
+    });
+  };
+  useEffect(() => {
+    if (initialTree?.[0]) {
       findInitialTreeSupport(initialTree?.[0]);
     }
-  },[initialTree, setSupportTreeForCamp])
+  }, [initialTree, setSupportTreeForCamp]);
   useEffect(() => {
     if (campSupportingTree?.length > 0) {
       getDelegateNicknameId(campSupportingTree);
@@ -446,24 +448,24 @@ const SupportTreeCard = ({
           data[item]?.camp_id == router?.query?.camp?.at(1)?.split("-")?.at(0)
         ) {
           setSupportTreeForCamp(data[item].support_tree);
-          setSupportOrder(data[item].support_order)
+          setSupportOrder(data[item].support_order);
           is_checked && isUserAuthenticated
             ? setTotalCampScoreForSupportTree(data[item].full_score)
             : setTotalCampScoreForSupportTree(data[item].score);
 
-            is_checked && isUserAuthenticated
+          is_checked && isUserAuthenticated
             ? settotalScoreforTreeCard(data[item].full_score)
             : settotalScoreforTreeCard(data[item].score);
         }
       } else {
         if (data[item]?.camp_id == 1) {
           setSupportTreeForCamp(data[item].support_tree);
-          setSupportOrder(data[item].support_order)
+          setSupportOrder(data[item].support_order);
           is_checked && isUserAuthenticated
             ? setTotalCampScoreForSupportTree(data[item].full_score)
             : setTotalCampScoreForSupportTree(data[item].score);
 
-            is_checked && isUserAuthenticated
+          is_checked && isUserAuthenticated
             ? settotalScoreforTreeCard(data[item].full_score)
             : settotalScoreforTreeCard(data[item].score);
         }

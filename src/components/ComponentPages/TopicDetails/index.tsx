@@ -83,7 +83,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
     campWithScore,
     openConsensusTreePopup,
     totalScoreforTreeCard,
-    treeExpandValue
+    treeExpandValue,
   } = useSelector((state: RootState) => ({
     algorithms: state.homePage?.algorithms,
     asof: state?.filters?.filterObject?.asof,
@@ -123,7 +123,6 @@ const TopicDetails = ({ serverSideCall }: any) => {
     dispatch(setTreeExpandValue(campWithScore));
   }, [campWithScore]);
 
-
   const isMobile = window.matchMedia("(min-width: 1280px)").matches;
 
   const GetActiveSupportTopicList = async () => {
@@ -141,7 +140,6 @@ const TopicDetails = ({ serverSideCall }: any) => {
 
   useEffect(() => {
     async function getTreeApiCall() {
-      
       if (!showTreeSkeltonRef) {
         showTreeSkeltonRef.current = true;
       }
@@ -159,7 +157,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
           update_all: 1,
           fetch_topic_history: viewThisVersionCheck ? 1 : null,
         };
-        console.log(reqBodyForService, tree,"reqBodyForService")
+        console.log(reqBodyForService, tree, "reqBodyForService");
 
         const reqBody = {
           topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
