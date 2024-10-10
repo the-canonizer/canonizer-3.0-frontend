@@ -1,13 +1,12 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
-import { Typography } from "antd";
+import { Row, Col } from "antd";
 
-// import Layout from "../hoc/layout";
+import Layout from "../hoc/layout";
+import SideBar from "../components/ComponentPages/Home/SideBar";
 import TopicsList from "../components/ComponentPages/Home/TopicsList";
 import { setCurrentDate, setOnlyMyTopic } from "src/store/slices/filtersSlice";
-
-const { Title } = Typography;
 
 const BrowsePage = ({ current_date }: any) => {
   const dispatch = useDispatch();
@@ -30,9 +29,18 @@ const BrowsePage = ({ current_date }: any) => {
   }, []);
 
   return (
-    // <Layout routeName={"browse"}>
-    <TopicsList />
-    // </Layout>
+    <Layout routeName={"browse"}>
+      <aside className="leftSideBar miniSideBar">
+        <SideBar />
+      </aside>
+      <div className="pageContentWrap">
+        <Row gutter={16}>
+          <Col xs={24} sm={24} xl={24}>
+            <TopicsList />
+          </Col>
+        </Row>
+      </div>
+    </Layout>
   );
 };
 

@@ -10,12 +10,7 @@ export const authSlice = createSlice({
     authRefreshToken: null,
     permissions: [""],
     socialUsers: [],
-    emailForOtp: null,
-    isNewUser: false,
-    currentReturnUrl: null,
     userNickNames: null,
-    passwordEmail: null,
-    isPasswordVerfied: null,
   },
   reducers: {
     setAuthToken: (state, action) => {
@@ -46,28 +41,13 @@ export const authSlice = createSlice({
     removeSocialUsers: (state) => {
       state.socialUsers = [];
     },
-    setIsNewUser: (state, action) => {
-      state.isNewUser = action.payload;
-    },
     setLogout: () => {
       // From here we can take action only at this "auth" state
       // But, as we have taken care of this particular "logout" action
       // in rootReducer, we can use it to CLEAR the complete Redux Store's state
     },
-    setEmailForOTP: (state, action) => {
-      state.emailForOtp = action.payload;
-    },
-    setCurrentReturnUrl: (state, action) => {
-      state.currentReturnUrl = action.payload;
-    },
     setUserNickNames: (state, action) => {
       state.userNickNames = action.payload;
-    },
-    setPasswordEmail: (state, action) => {
-      state.passwordEmail = action.payload;
-    },
-    setIsPasswordVerfied: (state, action) => {
-      state.isPasswordVerfied = action.payload;
     },
   },
 });
@@ -81,12 +61,7 @@ export const {
   setSocialUsers,
   removeSocialUsers,
   setLogout,
-  setEmailForOTP,
-  setIsNewUser,
-  setCurrentReturnUrl,
   setUserNickNames,
-  setPasswordEmail,
-  setIsPasswordVerfied,
 } = authSlice.actions;
 
 export default authSlice.reducer;

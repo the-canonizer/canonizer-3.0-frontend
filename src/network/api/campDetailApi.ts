@@ -13,7 +13,6 @@ import TreeRequest from "../request/campDetailRequest";
 import { message } from "antd";
 import { store } from "../../store";
 import { handleError } from "../../utils/generalUtility";
-import { openNotificationWithIcon } from "components/common/notification/notificationBar";
 
 export const getTreesApi = async (reqBody) => {
   try {
@@ -63,9 +62,7 @@ export const getCanonizedCampStatementApi = async (
       TreeRequest.getCampStatement(reqBody, loginToken),
       false
     );
-
     store.dispatch(setCampStatement(campStatement?.data));
-
     return campStatement?.data;
   } catch (error) {
     if (error?.error?.data?.status_code == 404) {
@@ -289,6 +286,6 @@ export const campSignApi = async (reqBody, loginToken = null) => {
 
     return campSign;
   } catch (error) {
-    openNotificationWithIcon(error?.error?.data?.message, "error");
+    message.error(error?.error?.data?.message);
   }
 };

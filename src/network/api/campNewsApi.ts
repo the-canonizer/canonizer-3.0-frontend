@@ -1,8 +1,8 @@
 import NetworkCall from "../networkCall";
+import { message } from "antd";
 import { campNewsRequest } from "../request/campNewsRequest";
 import { store } from "../../store";
 import { setCampNewsToEdit } from "../../../src/store/slices/news";
-import { openNotificationWithIcon } from "components/common/notification/notificationBar";
 
 export const addNewsFeedApi = async (body, loginToken = null) => {
   try {
@@ -11,7 +11,7 @@ export const addNewsFeedApi = async (body, loginToken = null) => {
     );
     return editNewsData;
   } catch (error) {
-    openNotificationWithIcon(error?.error?.data?.message, "error");
+    message.error(error?.error?.data?.message);
     return error?.error?.data;
   }
 };
@@ -37,7 +37,7 @@ export const updateNewsFeedApi = async (body, loginToken = null) => {
     return editNewsData;
   } catch (error) {
     if (Object.keys(error?.error?.data?.error).includes("newsfeed_id")) {
-      openNotificationWithIcon("News does not found", "error");
+      message.error("News does not found");
     }
     return error?.error?.data;
   }

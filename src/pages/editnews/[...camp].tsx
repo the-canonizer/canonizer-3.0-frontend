@@ -1,16 +1,22 @@
+import Add from "../../components/ComponentPages/News/AddOrEdit";
+import Layout from "../../hoc/layout";
+import SideBarNoFilter from "../../components/ComponentPages/Home/SideBarNoFilter";
 import React from "react";
-
-import Layout from "src/hoc/layout";
-import Edit from "components/ComponentPages/News";
 
 const EditNewsPage = () => {
   return (
-    <Layout>
-      <Edit edit={true} />
-    </Layout>
+    <>
+      <Layout>
+        <aside className="leftSideBar miniSideBar topicPageNewLayoutSidebar">
+          <SideBarNoFilter />
+        </aside>
+        <div className="pageContentWrap">
+          <Add edit={true} />
+        </div>
+      </Layout>
+    </>
   );
 };
-
 EditNewsPage.displayName = "EditNewsPage";
 
 export default EditNewsPage;

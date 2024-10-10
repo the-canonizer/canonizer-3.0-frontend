@@ -37,26 +37,6 @@ export default class TreeRequest extends Request {
     );
   }
 
-  static latestThread(body) {
-    return new Request(
-      K.Network.URL.GetTopFiveThreadData,
-      K.Network.Method.POST,
-      body,
-      K.Network.Header.Type.Json,
-      {}
-    );
-  }
-
-  static siblingCamps(body) {
-    return new Request(
-      K.Network.URL.GetSiblingCamp,
-      K.Network.Method.POST,
-      body,
-      K.Network.Header.Type.Json,
-      {}
-    );
-  }
-
   static createPost(body) {
     return new Request(
       K.Network.URL.PostSave,

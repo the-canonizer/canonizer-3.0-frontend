@@ -22,7 +22,11 @@ const ChangePassword = () => {
       if (res && res.status_code === 200) {
         form.resetFields();
         message.success(res.message);
-        await logout();
+        //logout after success
+        const logOutRes = await logout();
+        if (logOutRes.status_code === 200) {
+          router?.push("/login");
+        }
       }
     } catch (e) {
       let msgs = e?.error?.data?.error;

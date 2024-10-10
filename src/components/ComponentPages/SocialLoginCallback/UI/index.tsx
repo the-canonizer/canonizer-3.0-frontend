@@ -1,8 +1,8 @@
 import { Fragment } from "react";
 import { Row, Col, List, Typography, Collapse } from "antd";
 
-import styles from "../../Home-old/TopicsList/topicsList.module.scss";
-import helpStyles from "../../Home-old/HelpCard/helpCard.module.scss";
+import styles from "../../Home/TopicsList/topicsList.module.scss";
+import helpStyles from "../../Home/HelpCard/helpCard.module.scss";
 
 import CustomSkelton from "../../../common/customSkelton";
 

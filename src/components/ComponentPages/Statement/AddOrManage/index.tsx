@@ -113,9 +113,7 @@ export default function AddOrManage({ add }: any) {
   const { filterObject } = useSelector((state: RootState) => ({
     filterObject: state?.filters?.filterObject,
   }));
-  const { topicRecord } = useSelector((state: RootState) => ({
-    topicRecord: state?.topicDetails?.currentTopicRecord,
-  }));
+  const { topicRecord } = useSelector((state: RootState) => ({topicRecord: state?.topicDetails?.currentTopicRecord }));
   const [notFoundStatus, setNotFoundStatus] = useState({
     status: false,
     name: "",
@@ -755,9 +753,7 @@ export default function AddOrManage({ add }: any) {
       {notFoundStatus?.status ? (
         <DataNotFound name={notFoundStatus?.name} backURL={"/"} />
       ) : (
-        <div
-        // className={styles.topicDetailContentWrap}
-        >
+        <div className={styles.topicDetailContentWrap}>
           <aside className="leftSideBar miniSideBar topicPageNewLayoutSidebar">
             {/* <SideBarNoFilter /> */}
           </aside>
@@ -999,11 +995,7 @@ export default function AddOrManage({ add }: any) {
                                         campLeaderData?.find(
                                           (CL) => CL?.camp_leader === true
                                         )?.nick_name_id
-                                      }?canon=${
-                                        topicRecord?.namespace_id
-                                          ? topicRecord?.namespace_id
-                                          : filterObject?.namespace_id
-                                      }`}
+                                      }?canon=${topicRecord?.namespace_id ? topicRecord?.namespace_id : filterObject?.namespace_id}`}
                                     >
                                       <a>
                                         {campLeaderData &&

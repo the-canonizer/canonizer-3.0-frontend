@@ -16,7 +16,7 @@
     "isolatedModules": true,
     "baseUrl": ".",
     "paths": {
-      "components/*": ["./src/components/*"]
+      "@/components/*": ["./src/components/*"]
     }
   },
   "include": [

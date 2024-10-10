@@ -1,76 +1,57 @@
-import { useState, useEffect, useCallback } from "react";
-import { Col, Form, Row } from "antd";
+import { Fragment, useState, useEffect } from "react";
+import { Form, message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
-import debounce from "lodash/debounce";
-import { HomeOutlined } from "@ant-design/icons";
 
-import { createTopic } from "src/network/api/topicAPI";
-import {
-  getNickNameList,
-  globalSearchCanonizer,
-} from "src/network/api/userApi";
-import { RootState } from "src/store";
-import isAuth from "src/hooks/isUserAuthenticated";
+import { createTopic } from "../../../network/api/topicAPI";
+import { getNickNameList } from "../../../network/api/userApi";
+import { RootState } from "../../../store";
+import { setCurrentTopic } from "../../../store/slices/topicSlice";
+import CreateNewTopicUI from "./UI/TopicUI";
+import isAuth from "../../../hooks/isUserAuthenticated";
 import {
   setFilterCanonizedTopics,
   setShowDrawer,
-} from "src/store/slices/filtersSlice";
+} from "../../../store/slices/filtersSlice";
+import messages from "../../../messages";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
-import CustomSpinner from "components/shared/CustomSpinner";
-import FromUI from "./UI/FromUI";
-import TopicInfoCard from "./UI/rightContent";
-import ExistingTopicList from "./UI/existingTopicList";
-import queryParams from "src/utils/queryParams";
-import { openNotificationWithIcon } from "components/common/notification/notificationBar";
-import Breadcrumbs from "components/shared/Breadcrumbs";
 
-const CreateNewTopic = () => {
-  const { nameSpaces, catTaga } = useSelector((state: RootState) => ({
-    nameSpaces: state.homePage.nameSpaces,
-    catTaga: state?.tag?.tags,
-  }));
+const CreateNewTopic = ({
+  testNickName = [],
+  testNamespace = [],
+  testInitialValue = {},
+}: any) => {
+  const { nameSpaces, filterByScore, filterObject, viewThisVersion } =
+    useSelector((state: RootState) => ({
+      filterByScore: state.filters?.filterObject?.filterByScore,
+      filterObject: state?.filters?.filterObject,
+      viewThisVersion: state?.filters?.viewThisVersionCheck,
+      nameSpaces: state.homePage.nameSpaces || testNamespace,
+    }));
 
-  const [nickNameList, setNickNameList] = useState([]);
+  const [nickNameList, setNickNameList] = useState(testNickName);
+  const [initialValue, setInitialValues] = useState(testInitialValue);
+  const [options, setOptions] = useState([...messages.preventCampLabel]);
   const [isLoading, setIsLoading] = useState(false);
-  const [isTopicLoading, setIsopicLoading] = useState(false);
-  const [isDisabled, setIsDisabled] = useState(true);
-  const [selectedCats, setSelectedCats] = useState([]);
-  const [existingTopics, setExistingTopics] = useState([]);
-  const [isShowMore, setIsShowMore] = useState(false);
-  const [haveTopicExist, setHaveTopicExist] = useState(false);
-  const [isError, setIsError] = useState(false);
+  const [existedTopic, setExistedTopic] = useState({
+    data: null,
+    status: false,
+  });
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
 
   const router = useRouter();
   const dispatch = useDispatch();
-
   const { isUserAuthenticated } = isAuth();
 
   const [form] = Form.useForm();
-  const values = Form.useWatch([], form);
-
-  useEffect(() => {
-    form
-      .validateFields({ validateOnly: true })
-      .then(() => setIsDisabled(true))
-      .catch(() => setIsDisabled(false));
-  }, [form, values]);
-
-  useEffect(() => {
-    if (nameSpaces?.length > 0) {
-      form.setFieldValue("namespace", nameSpaces[0]?.id);
-    }
-  }, [nameSpaces]);
 
   const fetchNickNameList = async () => {
-    setIsLoading(true);
     let response = await getNickNameList();
     if (response && response.status_code === 200) {
-      const resData = response.data;
-      setNickNameList(resData);
-      form.setFieldValue("nick_name", resData[0]?.id);
+      setNickNameList(response.data);
+      setInitialValues({ nick_name: response.data[0]?.id });
+      form.setFieldValue("nick_name", response.data[0]?.id);
     }
-    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -81,237 +62,130 @@ const CreateNewTopic = () => {
   }, [isUserAuthenticated]);
 
   const onFinish = async (values: any) => {
+    setIsFormSubmitted(true);
     setIsLoading(true);
 
     const body = {
       topic_name: values.topic_name?.trim(),
       namespace: values.namespace,
       nick_name: values.nick_name,
-      tags: selectedCats?.map((cat) => cat?.id),
+      note: values.edit_summary?.trim(),
     };
 
     const res = await createTopic(body);
 
+    if (res && res.status_code === 200) {
+      message.success(res.message);
+      storeFilterClear();
+      const data = {
+        submitter_nick_id: res.data.submitter_nick_id,
+        message: res.message,
+        topic_num: res.data.topic_num,
+        topic_name: res.data.topic_name,
+      };
+      dispatch(setCurrentTopic(data));
+      router?.push(
+        `/topic/${res.data.topic_num}-${replaceSpecialCharacters(
+          res.data.topic_name,
+          "-"
+        )}/1-Agreement/?score=${filterByScore}&algo=${filterObject?.algorithm}${
+          filterObject?.asof == "bydate"
+            ? "&asofdate=" + filterObject?.asofdate
+            : ""
+        }&asof=${filterObject?.asof}&canon=${filterObject?.namespace_id}${
+          viewThisVersion ? "&viewversion=1" : ""
+        }`
+      );
+
+      const oldOptions = [...options];
+      await oldOptions.map((op) => {
+        op.checked = false;
+        op.disable = false;
+      });
+      setOptions(oldOptions);
+
+      dispatch(setShowDrawer(true));
+      return;
+    }
+
     if (res && res.status_code === 400) {
+      let url = null;
       if (res?.error) {
         const errors_key = Object.keys(res.error);
 
         if (errors_key.length) {
-          const fieldsToUpdate = errors_key
-            .filter((key) => key !== "topic_name")
-            .map((key) => ({
-              name: [key],
-              value: values[key],
-              errors: [res.error[key]],
-            }));
-
-          if (fieldsToUpdate.length) {
-            form.setFields(fieldsToUpdate);
-          }
-
           if ("existed_topic_reference" in res.error) {
-            const topicField = {
-              name: ["topic_name"],
-              value: values?.topic_name,
-              errors: res?.error?.topic_name || [],
-              validating: false,
-              touched: true,
-            };
+            let topicId = res?.error?.existed_topic_reference?.topic_num;
+            let topicName = replaceSpecialCharacters(
+              res?.error?.existed_topic_reference?.topic_name,
+              "_"
+            );
+            url = `/topic/${topicId}-${topicName}/1-Agreement`;
 
-            setTimeout(() => {
-              if (fieldsToUpdate.length) {
-                form.setFields([...fieldsToUpdate, topicField]);
-              }
-            }, 200);
-
-            console.log([...fieldsToUpdate, topicField]);
-
-            setIsDisabled(false);
-            setIsError(true);
-            getExistingList();
+            setExistedTopic({
+              status: true,
+              data: url,
+            });
           }
+
+          errors_key.forEach((key) => {
+            if (key !== "topic_name") {
+              form.setFields([
+                {
+                  name: key,
+                  value: values[key],
+                  errors: [res.error[key]],
+                },
+              ]);
+            }
+          });
         }
       }
     }
-
-    if (res && res.status_code === 200) {
-      openNotificationWithIcon(res.message, "success");
-      storeFilterClear();
-      router?.push({
-        pathname: `/topic/${res.data.topic_num}-${replaceSpecialCharacters(
-          res.data.topic_name,
-          "-"
-        )}/1-Agreement`,
-      });
-
-      dispatch(setShowDrawer(true));
-    }
-
     setIsLoading(false);
   };
 
   const storeFilterClear = () => {
-    dispatch(setFilterCanonizedTopics({ filterByScore: "" }));
+    dispatch(
+      setFilterCanonizedTopics({
+        filterByScore: "",
+      })
+    );
   };
 
   const onCancel = () => {
-    router?.back();
+    router?.push({ pathname: "/" });
   };
 
-  const onTagSelect = (id) => {
-    const currentitem = catTaga?.find((c) => c?.id == id);
-    if (currentitem) {
-      const isExist = selectedCats?.find((c) => c?.id == id);
-      if (!isExist) {
-        setSelectedCats((prev) => {
-          const updatedCats = [...prev, currentitem];
-          return updatedCats;
-        });
-      }
-    }
-  };
-
-  const onCatRemove = (e, item) => {
-    e?.preventDefault();
-    const isExist = selectedCats?.find((c) => c?.id == item?.id);
-
-    if (isExist) {
-      setSelectedCats((prev) => {
-        const updatedCats = prev?.filter((p) => p?.id != item?.id);
-        return updatedCats;
+  // checkbox
+  useEffect(() => {
+    return () => {
+      const oldOptions = [...options];
+      oldOptions.map((op) => {
+        op.checked = false;
       });
-    }
-  };
 
-  const getExistingList = async (val = values?.topic_name) => {
-    setIsopicLoading(true);
-    const topicName = val,
-      queryParamObj: any = {
-        type: "topic",
-        size: 5,
-        page: 1,
-        term: topicName?.trim(),
-      };
-
-    const res = await globalSearchCanonizer(queryParams(queryParamObj)),
-      resData = res?.data;
-
-    if (res?.status_code === 200) {
-      if (resData?.data?.topic) {
-        setExistingTopics(resData?.data?.topic);
-        if (resData?.data?.topic?.length) {
-          setHaveTopicExist(true);
-        } else {
-          setHaveTopicExist(false);
-        }
-      }
-
-      if (resData?.meta_data?.total > 5) {
-        setIsShowMore(true);
-      } else {
-        setIsShowMore(false);
-      }
-    }
-    setIsopicLoading(false);
-  };
-
-  // const isMatched = () => {
-  //   const isMatched = existingTopics.some(
-  //     (tp) =>
-  //       values?.topic_name?.trim()?.toLowerCase() ===
-  //       tp?.type_value?.trim()?.toLowerCase()
-  //   );
-
-  //   if (isMatched) {
-  //     setIsError(true);
-  //     form.setFields([
-  //       {
-  //         name: ["topic_name"],
-  //         value: values?.topic_name,
-  //         errors: ["The topic name has already been taken."],
-  //       },
-  //     ]);
-  //     return;
-  //   }
-
-  //   if (!isMatched) {
-  //     form.setFields([
-  //       {
-  //         name: ["topic_name"],
-  //         value: values?.topic_name,
-  //         errors: [],
-  //       },
-  //     ]);
-  //     setIsError(false);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   if (existingTopics?.length) {
-  //     isMatched();
-  //   }
-  // }, [existingTopics, values?.topic_name]);
-
-  const onTopicChange = useCallback(
-    debounce((e) => {
-      const enteredValues = e?.target?.value;
-      if (enteredValues && enteredValues?.length > 1) {
-        setIsopicLoading(true);
-        getExistingList(enteredValues);
-      } else {
-        setHaveTopicExist(false);
-      }
-    }, 900),
-    []
-  );
-
-  const onTopicNameBlur = () => {
-    setIsError(false);
-  };
+      setOptions(oldOptions);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
-    <CustomSpinner key="create-topic-spinner" spinning={isLoading}>
-      <Breadcrumbs
-        items={[
-          { icon: <HomeOutlined className="text-canBlack" />, href: "/" },
-          { label: "Creating a New Topic" },
-        ]}
+    <Fragment>
+      <CreateNewTopicUI
+        onFinish={onFinish}
+        form={form}
+        initialValue={initialValue}
+        nameSpaces={nameSpaces}
+        nickNameList={nickNameList}
+        onCancel={onCancel}
+        isLoading={isLoading}
+        existedTopic={existedTopic}
+        isFormSubmitted={isFormSubmitted}
+        setIsFormSubmitted={setIsFormSubmitted}
+        setExistedTopic={setExistedTopic}
       />
-      <Row gutter={20} className="mb-5">
-        <Col lg={12}>
-          <FromUI
-            onFinish={onFinish}
-            form={form}
-            nameSpaces={nameSpaces || []}
-            nickNameList={nickNameList || []}
-            onCancel={onCancel}
-            isDisabled={isDisabled}
-            categories={catTaga}
-            selectedCats={selectedCats}
-            onCatRemove={onCatRemove}
-            onTagSelect={onTagSelect}
-            onTopicNameBlur={onTopicNameBlur}
-            onTopicChange={onTopicChange}
-            values={values}
-            isLoading={isLoading}
-            editCampStatementData={null}
-          />
-        </Col>
-        <Col lg={12}>
-          {haveTopicExist ? (
-            <ExistingTopicList
-              topicName={values?.topic_name}
-              data={existingTopics}
-              isShowMore={isShowMore}
-              isError={isError}
-              isLoading={isTopicLoading}
-            />
-          ) : (
-            <TopicInfoCard />
-          )}
-        </Col>
-      </Row>
-    </CustomSpinner>
+    </Fragment>
   );
 };
 

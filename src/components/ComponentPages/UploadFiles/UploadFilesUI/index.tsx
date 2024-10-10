@@ -74,7 +74,7 @@ import {
 } from "../../../../network/api/userApi";
 import { labels } from "../../../../messages/label";
 import { setTimeout } from "timers";
-// import SideBar from "../../CampForum/UI/sidebar";
+import SideBar from "../../CampForum/UI/sidebar";
 import queryParams from "src/utils/queryParams";
 import CustomSkelton from "../../../common/customSkelton";
 
@@ -107,7 +107,8 @@ const UploadFileUI = ({
   toggleFileView,
   setToggleFileView,
   getUploadFilesLoadingIndicator,
-  getUploadFolderLoadingIndicator,
+  getUploadFolderLoadingIndicator
+
 }: any) => {
   const [uploadStatus] = useState(false);
   // const [toggleFileView, setToggleFileView] = useState(false);
@@ -672,14 +673,13 @@ const UploadFileUI = ({
   };
 
   const openFolderData = (item, i) => {
-    return getUploadFilesLoadingIndicator ? (
-      <CustomSkelton
-        skeltonFor="cardForUploadFile"
-        bodyCount={15}
-        stylingClass=""
-        isButton={false}
-      />
-    ) : (
+    return (
+      getUploadFilesLoadingIndicator ?  <CustomSkelton
+      skeltonFor="cardForUploadFile"
+      bodyCount={15}
+      stylingClass=""
+      isButton={false}
+    />:
       <div className={"folderId" + item.id} id={"folderId" + item.id}>
         {item && item.type && item.type == "folder" && !toggleFileView ? (
           <div className={styles.Folder_container}>
@@ -809,14 +809,13 @@ const UploadFileUI = ({
                 openFolder &&
                 dragBoxStatus == false
               ) {
-                return getUploadFolderLoadingIndicator ? (
-                  <CustomSkelton
-                    skeltonFor="cardForUploadFile"
-                    bodyCount={10}
-                    stylingClass=""
-                    isButton={false}
-                  />
-                ) : (
+                return (
+                  getUploadFolderLoadingIndicator ?  <CustomSkelton
+                  skeltonFor="cardForUploadFile"
+                  bodyCount={10}
+                  stylingClass=""
+                  isButton={false}
+                />:
                   <div>
                     <Card
                       size="small"
@@ -876,7 +875,7 @@ const UploadFileUI = ({
                   </div>
                 );
               } else if (!openFolder && dragBoxStatus == false) {
-                return openFolderData(item, i);
+                return  openFolderData(item, i);
               } else {
                 return "";
               }
@@ -1018,16 +1017,20 @@ const UploadFileUI = ({
     setPreviewImageIndicator(false);
     setImageStatus("failed to load");
   };
-
+  //spinner Image Preview
   useEffect(() => {
     setPreviewImageIndicator(true);
+    // setTimeout(() => {
+    //   setPreviewImageIndicator(false);
+    // }, imageTimer);
   }, [preview.previewVisible]);
-
   return (
     <Fragment>
       <div className="d-flex w-100">
         <aside className="leftSideBar miniSideBar topicPageNewLayoutSidebar">
-          <div className="leftSideBar_Card p-0 m-0">{/* <SideBar /> */}</div>
+          <div className="leftSideBar_Card p-0 m-0">
+            <SideBar />
+          </div>
         </aside>
         {getUploadFilesLoadingIndicator ? (
           <CustomSkelton
@@ -1325,17 +1328,15 @@ const UploadFileUI = ({
                                 <label
                                   className={
                                     fileSizeFlag
-                                      ? "fileName_label_max_limit block w-full text-sm font-medium mt-2 border-t pt-2 mb-4"
-                                      : "fileName_label block w-full text-sm font-medium mt-2 border-t pt-2 mb-4"
+                                      ? "fileName_label_max_limit"
+                                      : "fileName_label"
                                   }
                                 >
                                   {file.name}
                                 </label>
                                 <Form.Item
                                   label="Enter file name"
-                                  className={
-                                    "fileName_span mb-2 [&_label]:font-normal [&_label]:text-sm [&_.ant-form-item-label]:mb-0 [&_.ant-form-item-label]:pb-0"
-                                  }
+                                  className={"fileName_span"}
                                   name={file.uid}
                                   rules={[
                                     {
@@ -1347,7 +1348,7 @@ const UploadFileUI = ({
                                   <Input
                                     data-testid="enterFileName"
                                     id="enterFileName"
-                                    className="mr-0 text-sm font-medium rounded-md"
+                                    className="mr0"
                                     name={file.uid}
                                     onChange={(e) =>
                                       handleChangeFileName(e, file.uid)

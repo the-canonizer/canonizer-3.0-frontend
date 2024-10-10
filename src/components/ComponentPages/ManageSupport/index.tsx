@@ -1,26 +1,28 @@
 import React, { useEffect, useRef, useState } from "react";
-// import ManageSupportUI from "./ManageSupportUI";
 import { message } from "antd";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/router";
+import { useDispatch, useSelector } from "react-redux";
+import moment from "moment";
+
 import {
   getAllUsedNickNames,
   getCurrentCampRecordApi,
+  getTopicActivityLogApi,
 } from "src/network/api/campDetailApi";
-import { useRouter } from "next/router";
 import {
   GetActiveSupportTopic,
   GetCheckSupportExists,
 } from "src/network/api/topicAPI";
 import { addDelegateSupportCamps, addSupport } from "src/network/api/userApi";
-import isAuth from "../../../hooks/isUserAuthenticated";
-import { RootState } from "src/store";
-import { useDispatch, useSelector } from "react-redux";
+import isAuth from "src/hooks/isUserAuthenticated";
+import { RootState, store } from "src/store";
 import queryParams from "src/utils/queryParams";
 import {
   setCheckSupportExistsData,
   setManageSupportStatusCheck,
 } from "src/store/slices/campDetailSlice";
-import moment from "moment";
+import { setCampActivityData } from "src/store/slices/recentActivitiesSlice";
 
 const ManageSupportUI = dynamic(async () => await import("./ManageSupportUI"), {
   ssr: false,
@@ -32,15 +34,32 @@ const ManageSupport = ({
   setGetManageSupportLoadingIndicator,
   getManageSupportLoadingIndicator,
   getCheckStatusAPI,
-  isManageSupportPage = true,
 }: any) => {
-  const { asof, asofdate } = useSelector((state: RootState) => ({
+  const {
+    asof,
+    asofdate,
+    currentDelegatedSupportedClick,
+    currentGetCheckSupportExistsData,
+    CurrentCheckSupportStatus,
+    manageSupportStatusCheck,
+    campRecord,
+  } = useSelector((state: RootState) => ({
     asofdate: state.filters?.filterObject?.asofdate,
     asof: state?.filters?.filterObject?.asof,
+    currentDelegatedSupportedClick:
+      state.supportTreeCard.currentDelegatedSupportedClick,
+    currentGetCheckSupportExistsData:
+      state.topicDetails.currentGetCheckSupportExistsData,
+    CurrentCheckSupportStatus: state.topicDetails.CurrentCheckSupportStatus,
+    manageSupportStatusCheck: state.topicDetails.manageSupportStatusCheck,
+    campRecord: state?.topicDetails?.currentCampRecord,
   }));
+
   const dispatch = useDispatch();
-  const { isUserAuthenticated } = isAuth();
   const router = useRouter();
+
+  const { isUserAuthenticated } = isAuth();
+
   const [nickNameList, setNickNameList] = useState([]);
   const [topicSupportListData, setTopicSupportListData] = useState([]);
   const [cardCamp_ID, setCardCamp_ID] = useState("");
@@ -54,6 +73,7 @@ const ManageSupport = ({
   const [unableToFindCamp, setUnableToFindCamp] = useState<boolean>(false);
   const [updatePostion, setUpdatePostion] = useState<boolean>(false);
   const [submitButtonDisable, setSubmitButtonDisable] = useState(false);
+  const [isSubmitRequire, setIsSubmitRequire] = useState(false);
 
   //get NickName List Data
   const getCanonizedNicknameList = async () => {
@@ -61,10 +81,12 @@ const ManageSupport = ({
     const body = { topic_num: topicNum };
 
     let res = await getAllUsedNickNames(topicNum && body);
+
     if (res && res.status_code == 200) {
       setNickNameList(res.data);
     }
   };
+
   //get Data for CurrentCampName from Api
   const reqBody = {
     topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
@@ -75,47 +97,22 @@ const ManageSupport = ({
         ? Date.now() / 1000
         : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
   };
-  //Support page Link Url
-  const { currentDelegatedSupportedClick } = useSelector(
-    (state: RootState) => ({
-      currentDelegatedSupportedClick:
-        state.supportTreeCard.currentDelegatedSupportedClick,
-    })
-  );
-  const { currentGetCheckSupportExistsData } = useSelector(
-    (state: RootState) => ({
-      currentGetCheckSupportExistsData:
-        state.topicDetails.currentGetCheckSupportExistsData,
-    })
-  );
-
-  const { CurrentCheckSupportStatus } = useSelector((state: RootState) => ({
-    CurrentCheckSupportStatus: state.topicDetails.CurrentCheckSupportStatus,
-  }));
-
-  //check Status for call api for checkstatusData
-  const { manageSupportStatusCheck } = useSelector((state: RootState) => ({
-    manageSupportStatusCheck: state.topicDetails.manageSupportStatusCheck,
-  }));
 
   //GetCheckSupportExistsData check support_id is 0 or 1
   let supportedCampsStatus = currentGetCheckSupportExistsData;
   const campRef = useRef(null);
+
   const CheckDelegatedOrDirect =
     currentDelegatedSupportedClick.delegatedSupportClick;
+
   const reqBodyData: any = {
     topic_num: +router?.query?.camp?.[0]?.split("-")[0],
     camp_num: +router?.query?.camp?.[1]?.split("-")[0],
   };
-  // const getDelegateId = router.asPath?.substring(
-  //   router.asPath.lastIndexOf("_") + 1
-  // );
 
   if (CheckDelegatedOrDirect && getDelegateId)
     reqBodyData.delegated_nick_name_id = getDelegateId;
-  const { campRecord } = useSelector((state: RootState) => ({
-    campRecord: state?.topicDetails?.currentCampRecord,
-  }));
+
   const refSetter = async (reqBody) => {
     let reqBodyCAmpRecord = reqBody;
     reqBodyCAmpRecord.as_of = "default";
@@ -123,55 +120,59 @@ const ManageSupport = ({
     campRef.current = res?.campData;
   };
 
-  //prevent user to open this page if camp archive is true
-  // useEffect(()=>{
-  //   isUserAuthenticated &&
-  //   campRecord?.is_archive  &&
-  //   router.route == "/support/[...manageSupport]"
-  //     ? router.push("/")
-  //     : "";
-  // },[])
-  //isUserAuthenticated
+  async function getTopicActivityLogCall() {
+    let reqBody = {
+      topic_num: router?.query?.camp[0]?.split("-")[0],
+      camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
+    };
+    let res = await getTopicActivityLogApi(reqBody);
+    store.dispatch(setCampActivityData(res?.data?.items));
+  }
+
   useEffect(() => {
     (async () => {
       if (isUserAuthenticated) {
         setUpdatePostion(false);
         await refSetter(reqBody);
+
+        // get nickname list for support
+        await getCanonizedNicknameList();
+
         if (manageSupportStatusCheck) {
           setGetManageSupportLoadingIndicator(true);
-          await getCanonizedNicknameList();
           setGetManageSupportLoadingIndicator(false);
 
           getActiveSupportTopicList(null, null, campRef.current);
           setSubmitButtonDisable(false);
-          dispatch(setManageSupportStatusCheck(true));
         }
-        // else {
+
         GetCheckStatusData(campRef);
-        // }
       }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isUserAuthenticated, reqBodyData.topic_num, campRecord?.camp_name]);
+
   const GetCheckStatusData = async (campReff: any) => {
     let response = await GetCheckSupportExists(queryParams(reqBodyData));
+
     if (response && response?.status_code === 404) {
-      // router?.push(router?.asPath?.replace("support", "topic"));
       handleCancelSupportCamps({ isCallApiStatus: false });
     }
+
     if (response && response.status_code === 200) {
       if (response.data?.remove_camps) {
         setParentSupportDataList(response.data.remove_camps);
 
         dispatch(setCheckSupportExistsData(response.data));
       }
+
       if (!manageSupportStatusCheck || CheckDelegatedOrDirect) {
         response.data.warning;
         response.data.support_flag;
         //Api's call for list
         dispatch(setCheckSupportExistsData({}));
         dispatch(setCheckSupportExistsData(response.data));
-        getCanonizedNicknameList();
+        // getCanonizedNicknameList();
         if (isUserAuthenticated && !CheckDelegatedOrDirect) {
           getActiveSupportTopicList(
             response.data.warning,
@@ -181,6 +182,7 @@ const ManageSupport = ({
         }
         setSubmitButtonDisable(false);
       }
+
       if (manageSupportStatusCheck && response.data.disable_submit) {
         dispatch(setCheckSupportExistsData(response.data));
       }
@@ -190,6 +192,7 @@ const ManageSupport = ({
   let manageSupportArr = [],
     supportArrayListData = [],
     supportedCampsList = [];
+
   //clearAllChanges Functionality
   const clearAllChanges = (val) => {
     setCardCamp_ID("");
@@ -203,20 +206,25 @@ const ManageSupport = ({
     });
     setManageSupportList(ClearDataRes);
   };
+
   //removeAll function
   const removeAllCampNum = manageSupportList.map((obj) => {
     return obj.camp_num;
   });
+
   const removeAll = (checked, val) => {
     setCardCamp_ID("");
     setChecked(checked);
+
     const disabeleAllTopic = val.map((obj) => {
       setcampIds(removeAllCampNum);
       obj.dis = checked;
       return obj;
     });
+
     setManageSupportList(disabeleAllTopic);
   };
+
   //handleClose function
   const handleClose = (val, id, dataList) => {
     if (cardCamp_ID == "") {
@@ -232,6 +240,7 @@ const ManageSupport = ({
     }
 
     const checkedValue = dataList.every((item) => item.dis == true);
+
     if (checkedValue) {
       setChecked(true);
     } else {
@@ -242,13 +251,13 @@ const ManageSupport = ({
   //get data from url
   const topicNum = router?.query?.camp?.at(0)?.split("-")?.at(0);
   const campNum = router?.query?.camp?.at(1)?.split("-")?.at(0);
-  //const camp_Name = router?.query?.manageSupport?.at(1)?.split(/-(.*)/s);
 
   //replace use to - change to space
   // const camp_Name_ = campRecord?.camp_name;
   // const CampName = camp_Name_;
   const campSupportPath = router?.asPath?.replace("/support/", "/topic/");
   const body = { topic_num: topicNum };
+
   const getActiveSupportTopicList = async (
     warning?: string,
     statusFlag?: number,
@@ -258,16 +267,18 @@ const ManageSupport = ({
     setTopicSupportListData(response?.data);
     const fiterSupportedCamps = response?.data?.filter((val) => {
       return (
-        currentGetCheckSupportExistsData.remove_camps?.findIndex(
+        currentGetCheckSupportExistsData?.remove_camps?.findIndex(
           (obj) => obj.camp_num == val.camp_num
         ) == -1
       );
     });
+
     const dataValue = manageSupportStatusCheck
       ? CurrentCheckSupportStatus
       : warning
       ? warning
       : "";
+
     // let dataValue = warningMessage;
     if (response && response.status_code === 200) {
       setCardCamp_ID("");
@@ -276,7 +287,7 @@ const ManageSupport = ({
         supportedCampsList.push(val);
       });
       // setParentSupportDataList(supportArrayListData);
-      let resultFilterSupportCamp = response.data.filter(
+      let resultFilterSupportCamp = response?.data?.filter(
         (values) => values.camp_num == campNum
       );
 
@@ -300,11 +311,11 @@ const ManageSupport = ({
             link: campSupportPath,
           });
         }
+
         if (CheckDelegatedOrDirect && resultFilterSupportCamp.length == 0) {
           setManageSupportList(manageSupportArr);
         } else {
           setManageSupportList([
-            // ...fiterSupportedCamps,
             ...manageSupportArr,
             ...resultFilterSupportCamp,
           ]);
@@ -341,31 +352,13 @@ const ManageSupport = ({
       }
     }
   };
+
   let manageSupportPath = router?.asPath?.replace("/support/", "/topic/");
   if (manageSupportPath?.lastIndexOf("_") > -1)
     manageSupportPath = manageSupportPath.substring(
       0,
       manageSupportPath.lastIndexOf("_")
     );
-  //remove add id for cancel and submit
-  // let remove_ = manageSupportPath.lastIndexOf("_");
-  // let resDat = manageSupportPath.substring(0, remove_);
-  // let manageSupportPathData = CheckDelegatedOrDirect
-  //   ? resDat
-  //   : manageSupportPath;
-
-  //Cancel Button
-  // const cancelManageRoute = () => {
-  // let manageSupportPath1 = manageSupportUrlLink?.replace(
-  //   "/support/",
-  //   "/topic/"
-  // );
-  // if (manageSupportPath || manageSupportPath1) {
-  //   router?.push(
-  //     CheckDelegatedOrDirect ? manageSupportPath : manageSupportPath1
-  //   );
-  // }
-  // };
 
   //Submit NickName Supported Camps
   const submitNickNameSupportCamps = async (reasonData) => {
@@ -490,6 +483,7 @@ const ManageSupport = ({
       let res = await addDelegateSupportCamps(addDelegatedSupport);
       if (res && res.status_code == 200) {
         message.success(res.message);
+        getTopicActivityLogCall();
         //After Submit page is redirect to previous
         // router?.push(manageSupportPath);
         handleCancelSupportCamps({ isCallApiStatus: true });
@@ -500,6 +494,7 @@ const ManageSupport = ({
       let res = await addSupport(addSupportId);
       if (res && res.status_code == 200) {
         message.success(res.message);
+        getTopicActivityLogCall();
         //After Submit page is redirect to previous
         // router?.push(manageSupportPath);
         handleCancelSupportCamps({ isCallApiStatus: false });
@@ -509,20 +504,17 @@ const ManageSupport = ({
     }
     handleCancelSupportCamps({ isCallApiStatus: true });
   };
+
+  useEffect(() => {
+    dispatch(setManageSupportStatusCheck(false));
+  }, []);
+
+  // console.log("Nickname To Support Above Camps [MAIN PAGE]--", nickNameList);
+
   return (
     <>
-      <aside className="leftSideBar miniSideBar topicPageNewLayoutSidebar bg-white">
-        {/* <Sidebar /> */}
-      </aside>
+      <aside className="leftSideBar miniSideBar topicPageNewLayoutSidebar bg-white"></aside>
       <div className="pageContentWrap">
-        {/* <CampInfoBar
-          isTopicPage={true}
-          payload={{
-            topic_num: router?.query?.manageSupport?.at(0)?.split("-")?.at(0),
-            camp_num:
-              router?.query?.manageSupport?.at(1)?.split("-")?.at(0) ?? "1",
-          }}
-        /> */}
         {campRecord && (
           <ManageSupportUI
             nickNameList={nickNameList}
@@ -535,7 +527,6 @@ const ManageSupport = ({
             parentSupportDataList={parentSupportDataList}
             getSupportStatusData={getSupportStatusData}
             submitNickNameSupportCamps={submitNickNameSupportCamps}
-            // cancelManageRoute={cancelManageRoute}
             setSelectedtNickname={setSelectedtNickname}
             selectedtNickname={selectedtNickname}
             submitButtonDisable={submitButtonDisable}
@@ -552,6 +543,8 @@ const ManageSupport = ({
             topicSupportListData={topicSupportListData}
             handleCancelSupportCamps={handleCancelSupportCamps}
             getCheckStatusAPI={getCheckStatusAPI}
+            isSubmitRequire={isSubmitRequire}
+            setIsSubmitRequire={setIsSubmitRequire}
           />
         )}
       </div>

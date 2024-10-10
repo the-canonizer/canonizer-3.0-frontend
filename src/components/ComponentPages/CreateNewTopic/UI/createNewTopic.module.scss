@@ -1,0 +1,185 @@
+.createNewTopicForm {
+  label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #795548;
+    span {
+      margin-left: 4px;
+      color: #6e7880;
+      font-size: 92%;
+    }
+
+    &::before {
+      position: absolute;
+      right: -15px;
+    }
+  }
+  input {
+    transition: all 0.3s;
+    &::placeholder {
+      font-size: 14px;
+      color: #afb6bb;
+      line-height: 20px;
+    }
+  }
+  span[class="ant-select-selection-placeholder"] {
+    font-size: 14px;
+    color: #afb6bb;
+    line-height: 20px;
+  }
+  textarea {
+    transition: all 0.3s;
+    &::placeholder {
+      font-size: 14px;
+      color: #afb6bb;
+      line-height: 20px;
+    }
+  }
+
+  .submit_btn {
+    background: #f89d15 0% 0% no-repeat padding-box;
+    border-radius: 2px;
+    border-color: #f89d15;
+    opacity: 1;
+    margin-right: 15px;
+    color: #ffffff;
+    transition: all 0.3s;
+
+    &:hover {
+      background: #d3840e;
+    }
+  }
+  .namespaceInput {
+    label {
+      display: block;
+      span {
+        &:last-child {
+          margin-left: 5px;
+
+          @media screen and (min-width: 1340px) {
+            white-space: nowrap;
+          }
+        }
+      }
+      &::before {
+        left: 70px;
+        right: auto;
+      }
+    }
+  }
+  .advanceuser {
+    // font-size: 12px;
+    // font-weight: normal;
+    // line-height: 14px;
+    // letter-spacing: 0px;
+    color: #ff4d4f;
+    opacity: 1;
+    margin-top: 35px;
+    margin-bottom: 15px;
+    display: block;
+  }
+  .cancel_btn {
+    background: #ffffff 0% 0% no-repeat padding-box;
+    border: 1px solid var(--primary);
+    border-radius: 2px;
+    opacity: 1;
+    letter-spacing: 0px;
+    color: var(--primary);
+    font-size: 14px;
+    font-weight: 600;
+    opacity: 1;
+    line-height: 16px;
+    transition: all 0.3s;
+
+    &:hover {
+      background: var(--primary);
+      color: #ffffff;
+    }
+  }
+
+  .btn_box {
+    width: 100%;
+  }
+
+  @media screen and (max-width: 767px) {
+    .edit_summary_input {
+      label {
+        display: block;
+      }
+    }
+  }
+
+  @media screen and (max-width: 320px) {
+    .btn_box {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .submit_btn {
+        margin-right: 5px;
+      }
+    }
+  }
+}
+
+.cardTitle {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0px;
+  color: #1c1b24;
+  opacity: 1;
+}
+
+.upperTitle {
+  display: flex;
+  padding: 10px 0 30px;
+  p {
+    text-align: left;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 21px;
+    letter-spacing: 0px;
+    color: #0f2a4d;
+    margin-right: 35px;
+    margin-bottom: 0;
+
+    &:last-child {
+      strong {
+        color: #0f2a4d;
+      }
+      color: var(--primary);
+    }
+  }
+
+  @media screen and (max-width: 767px) {
+    flex-flow: column;
+  }
+}
+
+.form_card {
+  @media screen and (max-width: 767px) {
+    [class="ant-card-body"] {
+      padding: 15px;
+    }
+    [class="ant-card-extra"] {
+      [class="ant-checkbox-wrapper"] {
+        margin-left: 0;
+        margin-bottom: 10px;
+      }
+    }
+  }
+}
+.topicExistsMessage {
+  color: #ef5e5e;
+  margin-top: -20px;
+  font-size: 12px;
+  line-height: 14px;
+  margin-bottom: 20px;
+  font-weight: normal;
+}
+
+.customErrorMessage{
+  color: #ff4d4f;
+  margin-top: -20px;
+  margin-bottom: 20px
+}

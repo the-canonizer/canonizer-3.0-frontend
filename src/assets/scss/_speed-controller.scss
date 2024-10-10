@@ -1,43 +1,47 @@
-// .speed-controller {
-//   width: 500px;
-//   // background-color: #262626;
-//   .ant-slider-with-marks {
-//     .ant-slider-rail,
-//     .ant-slider-track {
-//       height: 1px;
-//       background-color: var(--primary);
-//       border-radius: 2px;
-//       transition: background-color 0.3s;
-//     }
-//     .ant-slider-handle {
-//       width: 18px;
-//       height: 18px;
-//       margin-top: -9px;
-//       border: solid 5px var(--primary);
-//       box-shadow: 0 0 0 5px rgb(24 144 255 / 12%);
-//     }
-//     .ant-slider-step {
-//       .ant-slider-dot {
-//         top: -6px;
-//         width: 12px;
-//         height: 12px;
-//         border: 1px solid var(--primary);
-//       }
-//     }
-//     .ant-slider-mark-text {
-//       color: rgba(0, 0, 0, 0.85);
-//     }
-//     .ant-slider-mark {
-//       top: 20px;
-//     }
-//     &:hover {
-//       .ant-slider-handle:not(.ant-tooltip-open) {
-//         border-color: var(--primary);
-//       }
-//     }
-//   }
-// }
-// .speed-icon {
-//   color: var(--primary);
-//   font-size: 24px;
-// }
+
+.speed-controller {
+    width: 500px;
+    // background-color: #262626;
+    .ant-slider-with-marks {
+        .ant-slider-rail,
+        .ant-slider-track {
+            height: 1px;
+            background-color: var(--primary);
+            border-radius: 2px;
+            transition: background-color 0.3s;
+        }
+        .ant-slider-handle {
+            width: 18px;
+            height: 18px;
+            margin-top: -9px;
+            border: solid 5px var(--primary);
+            box-shadow: 0 0 0 5px rgb(24 144 255 / 12%);
+        }
+        .ant-slider-step{
+            .ant-slider-dot {
+                top: -6px;
+                width: 12px;
+                height: 12px;
+                border: 1px solid var(--primary);
+            }
+        }
+        .ant-slider-mark-text {
+            color: rgba(0, 0, 0, 0.85);
+        }
+        .ant-slider-mark {
+            top: 20px;
+        }
+        &:hover {
+            .ant-slider-handle:not(.ant-tooltip-open) {
+                border-color: var(--primary);
+            }
+        }
+    }
+}
+.speed-icon {
+    color: var(--primary);
+    font-size: 24px;
+}
+
+
+

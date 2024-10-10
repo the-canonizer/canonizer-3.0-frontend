@@ -60,8 +60,7 @@ const ProfileInfoTab = ({
           }}
           size={isMobile ? "small" : "default"}
         >
-          {loggedUser &&
-            loggedUser["first_name"].charAt(0).toUpperCase() + loggedUser &&
+          {loggedUser["first_name"].charAt(0).toUpperCase() +
             loggedUser["last_name"].charAt(0).toUpperCase()}
         </Avatar>
       )}

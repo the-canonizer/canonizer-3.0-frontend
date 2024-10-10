@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import {
   getCanonizedCampStatementApi,
@@ -14,18 +14,20 @@ import {
   setCurrentTopicRecord,
   setCurrentCampRecord,
 } from "../../store/slices/campDetailSlice";
-import { formatTheDate, parseCookies } from "src/utils/generalUtility";
-import { replaceSpecialCharacters } from "src/utils/generalUtility";
+import {
+  formatTheDate,
+  replaceSpecialCharacters,
+} from "src/utils/generalUtility";
 import { setHistory } from "../../store/slices/campDetailSlice";
+import Layout from "src/hoc/layout";
 
 import { getHistoryApi } from "../../network/api/history";
 
 import TopicDetails from "src/components/ComponentPages/TopicDetails";
 import { setCurrentDate } from "src/store/slices/filtersSlice";
 import { useEffect, useRef } from "react";
-import DataNotFound from "src/components/ComponentPages/DataNotFound/dataNotFound";
+import DataNotFound from "@/components/ComponentPages/DataNotFound/dataNotFound";
 import { createToken } from "src/network/api/userApi";
-import { argon2id } from "hash-wasm";
 
 const TopicDetailsPage = ({
   current_date,
@@ -53,17 +55,17 @@ const TopicDetailsPage = ({
 
   let ErrorStatus =
     tree?.status_code == 404 ||
-    (tree?.status_code == 422 &&
-      (!tree?.error?.camp_num ||
-        (tree?.error?.camp_num && tree?.error?.topic_num)))
+      (tree?.status_code == 422 &&
+        (!tree?.error?.camp_num ||
+          (tree?.error?.camp_num && tree?.error?.topic_num)))
       ? "Topic"
       : "Camp";
 
   return (
-    <Fragment>
+    <Layout>
       {tree?.status_code == 404 ||
-      campRecord?.status_code == 404 ||
-      campRecord?.status_code == 400 ? (
+        campRecord?.status_code == 404 ||
+        campRecord?.status_code == 400 ? (
         <DataNotFound
           name={ErrorStatus}
           message={`${ErrorStatus} not found`}
@@ -73,7 +75,7 @@ const TopicDetailsPage = ({
       ) : (
         <TopicDetails serverSideCall={serverSideCall} />
       )}
-    </Fragment>
+    </Layout>
   );
 };
 
@@ -101,68 +103,25 @@ function buildSearchQuery(query) {
   return searchParams.toString();
 }
 
-export async function getServerSideProps({ req, query, res }) {
+export async function getServerSideProps({ req, query }) {
   let topicNum = query?.camp[0]?.split("-")[0];
   let campNum = query?.camp[1]?.split("-")[0] || 1;
   let topicName = query?.camp[0];
   let campName = query?.camp[1];
   let token = null;
 
-  let hashValue;
-  let cookies;
-  const cookieKey = topicNum + "." + campNum;
-  async function generateHashValue() {
-    const salt = Buffer.from(process.env.NEXT_PUBLIC_SALT_KEY);
-    const asOfData =
-      query?.asofdate && query?.asof == "bydate"
-        ? parseFloat(query?.asofdate)
-        : Date.now() / 1000;
-
-    const data = Math.ceil(asOfData);
-
-    const hash = await argon2id({
-      password: data.toString(),
-      salt,
-      parallelism: parseInt(process.env.NEXT_PUBLIC_PARALLELISM),
-      iterations: parseInt(process.env.NEXT_PUBLIC_ITERATIONS),
-      memorySize: parseInt(process.env.NEXT_PUBLIC_MEMORYSIZE),
-      hashLength: parseInt(process.env.NEXT_PUBLIC_HASHLENGTH),
-      outputType: "encoded",
-    });
-
-    const parts = hash?.split("$");
-    hashValue = "$" + parts[parts?.length - 2] + "$" + parts[parts?.length - 1];
-
-    let cookiesString = req.headers.cookie || "";
-    cookies = parseCookies(cookiesString);
-
-    if (!cookies[cookieKey] || !(cookieKey in cookies)) {
-      const expirationInSeconds = parseInt(
-        process.env.NEXT_PUBLIC_EXPIRATIONDATE
-      );
-      const expirationDate = new Date(Date.now() + expirationInSeconds * 1000);
-      const expires = expirationDate.toUTCString();
-      const cookieValue = `${hashValue}; expires=${expires}; path=/`;
-      res.setHeader("Set-Cookie", cookieKey + "=" + cookieValue);
-    }
-  }
-
-  await generateHashValue();
-
   const currentDate = new Date().valueOf();
   const reqBodyForService = {
     topic_num: topicNum,
     camp_num: campNum,
     asOf: query?.asof ?? "default",
-    asofdate: Math.ceil(
+    asofdate:
       query?.asofdate && query?.asof == "bydate"
         ? parseFloat(query?.asofdate)
-        : Date.now() / 1000
-    ),
+        : Date.now() / 1000,
     algorithm: query?.algo || "blind_popularity",
     update_all: 1,
     fetch_topic_history: query?.viewversion == "1" ? 1 : null,
-    view: req.cookies[cookieKey] ? req.cookies[cookieKey] : hashValue,
   };
 
   const reqBody = {
@@ -213,9 +172,10 @@ export async function getServerSideProps({ req, query, res }) {
   let resUrl = `/topic/${topicRecord?.topic_num}-${replaceSpecialCharacters(
     resTopicName,
     "-"
-  )}/${
-    campRecord?.campData?.camp_num ? campRecord?.campData?.camp_num : campNum
-  }-${replaceSpecialCharacters(resCampName, "-")}`;
+  )}/${campRecord?.campData?.camp_num ?campRecord?.campData?.camp_num:campNum}-${replaceSpecialCharacters(
+    resCampName,
+    "-"
+  )}`;
 
   if (topicRecord && campRecord?.status_code == 200 && currentUrl !== resUrl) {
     let queryStr: any = buildSearchQuery(query);

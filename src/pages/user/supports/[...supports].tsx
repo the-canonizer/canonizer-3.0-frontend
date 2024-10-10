@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 
 import Layout from "src/hoc/layout";
-import UserProfiles from "components/ComponentPages/UserProfile";
+import UserProfiles from "src/components/ComponentPages/UserProfile";
 
 function UserProfile() {
   const router = useRouter();

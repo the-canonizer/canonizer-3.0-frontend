@@ -1,33 +1,26 @@
-import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-
 import {
   getCanonizedAlgorithmsApi,
   getCanonizedNameSpacesApi,
-} from "src/network/api/homePageApi";
-import CreateNewTopic from "src/components/ComponentPages/CreateNewTopic";
-import Layout from "src/hoc/layout";
+} from "../../network/api/homePageApi";
+import CreateNewTopic from "../../components/ComponentPages/CreateNewTopic";
+import Layout from "../../hoc/layout";
 import {
   setCanonizedAlgorithms,
   setCanonizedNameSpaces,
-} from "src/store/slices/homePageSlice";
+} from "../../store/slices/homePageSlice";
 import { createToken } from "src/network/api/userApi";
-import { setTags } from "src/store/slices/tagsSlice";
-import { getAllTags } from "src/network/api/tagsApi";
 
-const CreateTopicPage = ({ nameSpacesList, algorithms, cats }) => {
+const CreateNewTopicPage = ({ nameSpacesList, algorithms }: any) => {
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(setCanonizedNameSpaces(nameSpacesList));
-    dispatch(setCanonizedAlgorithms(algorithms));
-    dispatch(setTags(cats));
-  }, []);
-
+  dispatch(setCanonizedNameSpaces(nameSpacesList));
+  dispatch(setCanonizedAlgorithms(algorithms));
   return (
-    <Layout routeName={"/create/topic"}>
-      <CreateNewTopic />
-    </Layout>
+    <>
+      <Layout routeName={"/create/topic"}>
+        <CreateNewTopic />
+      </Layout>
+    </>
   );
 };
 
@@ -42,17 +35,15 @@ export async function getServerSideProps({ req }) {
 
   const nameSpaces = await getCanonizedNameSpacesApi(token);
   const canonizedAlgorithms = await getCanonizedAlgorithmsApi(token);
-  const categories = await getAllTags(null, null, "", "asc", token);
 
   return {
     props: {
       nameSpacesList: nameSpaces || [],
       algorithms: canonizedAlgorithms || [],
-      cats: categories?.data?.items || [],
     },
   };
 }
 
-CreateTopicPage.displayName = "CreateNewTopicPage";
+CreateNewTopicPage.displayName = "CreateNewTopicPage";
 
-export default CreateTopicPage;
+export default CreateNewTopicPage;

@@ -1,16 +1,16 @@
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { message } from "antd";
 
-import CustomSkelton from "components/common/customSkelton";
+import SubscriptionsListUI from "./UI";
+import CustomSkelton from "../../common/customSkelton";
+
 import {
   GetAllSubscriptionsList,
   unsubscribeTopicOrCampAPI,
 } from "src/network/api/userApi";
-import TopicSubscriptionsTab from "./UI/TopicSubscriptionsTab";
-import TopicRemoveModal from "./UI/RemoveModal";
-import { openNotificationWithIcon } from "components/common/notification/notificationBar";
 
-function SubscriptionsList() {
-  const [subscriptionsList, setSubscriptionsList] = useState([]);
+function SubscriptionsList({ isTestData = [] }: any) {
+  const [subscriptionsList, setSubscriptionsList] = useState(isTestData);
   const [isVisible, setIsVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [currentTopic, setCurrentTopic] = useState({});
@@ -43,14 +43,11 @@ function SubscriptionsList() {
     const query = `?page=${page}&per_page=${perPage}`;
 
     if (res && res["status_code"] === 200) {
-      openNotificationWithIcon(
-        res?.data?.msg || "Unsubscribed successfully.",
-        "success"
-      );
+      message.success(res?.data?.msg);
       setIsVisible(false);
       await getSubscriptionsList(query);
     }
-
+    
     setIsLoading(false);
   };
 
@@ -111,37 +108,29 @@ function SubscriptionsList() {
     }, 900);
   };
 
-  if (isLoading) {
-    return (
-      <CustomSkelton
-        skeltonFor="subscription_card"
-        bodyCount={4}
-        stylingClass=""
-        listStyle="liHeight"
-        isButton={false}
-      />
-    );
-  }
-
-  return (
-    <Fragment>
-      <TopicSubscriptionsTab
-        onRemoveSubscription={onRemoveSubscription}
-        onConfirm={onConfirm}
-        subscriptionsList={subscriptionsList}
-      />
-      <TopicRemoveModal
-        isVisible={isVisible}
-        onCancel={onCancel}
-        onRemove={onRemove}
-        topicTitle={currentTopic["title"]}
-        topicLink={currentTopic["title_link"]}
-        isCamp={isCamp}
-        campTitle={camp["camp_name"]}
-        campLink={camp["camp_link"]}
-        isDisabled={isDisabled}
-      />
-    </Fragment>
+  return isLoading ? (
+    <CustomSkelton
+      skeltonFor="subscription_card"
+      bodyCount={4}
+      stylingClass=""
+      listStyle="liHeight"
+      isButton={false}
+    />
+  ) : (
+    <SubscriptionsListUI
+      onRemoveSubscription={onRemoveSubscription}
+      onConfirm={onConfirm}
+      subscriptionsList={subscriptionsList}
+      isVisible={isVisible}
+      onCancel={onCancel}
+      onRemove={onRemove}
+      topicTitle={currentTopic["title"]}
+      topicLink={currentTopic["title_link"]}
+      isCamp={isCamp}
+      campTitle={camp["camp_name"]}
+      campLink={camp["camp_link"]}
+      isDisabled={isDisabled}
+    />
   );
 }
 

@@ -20,7 +20,7 @@ const ForgotModal = () => {
         width={800}
         className="loginModal"
       >
-        <ForgotPassword />
+        <ForgotPassword isModal={true} />
       </Modal>
     </Fragment>
   );

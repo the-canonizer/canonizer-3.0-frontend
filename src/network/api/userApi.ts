@@ -100,7 +100,7 @@ export const logout = async (error = "", status = null, count: number = 1) => {
           is_archive: 0,
         })
       );
-      store.dispatch(setUserNickNames(null));
+      store.dispatch(setUserNickNames(null))
 
       if (+state.ui.apiStatus === +status) {
         return;
@@ -173,13 +173,11 @@ export const verifyOtp = async (values: object) => {
       "loginToken=" +
       res.data.auth?.access_token +
       "; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
-
     store.dispatch(setLoggedInUser(payload));
 
     return res;
   } catch (err) {
     handleError(err);
-    return err.error.data;
   }
 };
 
@@ -439,7 +437,6 @@ export const forgotPasswordVerifyOTP = async (values: object) => {
     return res;
   } catch (err) {
     handleError(err);
-    return err?.error?.data;
   }
 };
 
@@ -1002,9 +999,7 @@ export const getChangeEmailRequest = async () => {
 
 export const EmailChangeVerificationOTP = async (body) => {
   try {
-    const res = await NetworkCall.fetch(
-      UserRequest.emailChangeVerificationOTP(body)
-    );
+    const res = await NetworkCall.fetch(UserRequest.emailChangeVerificationOTP(body));
     return res;
   } catch (err) {
     handleError(err);
@@ -1038,9 +1033,7 @@ export const UpdateNewEmailVerification = async (body) => {
 
 export const ReplaceAndUpdateNewEmail = async (body) => {
   try {
-    const res = await NetworkCall.fetch(
-      UserRequest.replaceAndUpdateEmail(body)
-    );
+    const res = await NetworkCall.fetch(UserRequest.replaceAndUpdateEmail(body));
     return res;
   } catch (err) {
     handleError(err);

@@ -1,22 +1,15 @@
-import { Fragment } from "react";
+import React, { Fragment } from "react";
 import { useRouter } from "next/router";
-import { Row, Col, Typography, Form, Select, Card } from "antd";
-import {
-  UserOutlined,
-  ArrowRightOutlined,
-  MailOutlined,
-  PhoneOutlined,
-  LockOutlined,
-} from "@ant-design/icons";
+import { Row, Col, Typography, Form, Input, Button, Select } from "antd";
+import { CloseCircleOutlined, ArrowRightOutlined } from "@ant-design/icons";
 
-import messages from "src/messages";
-import SocialLoginButton from "components/common/socialLogin";
-import LogoHeader from "components/common/headers/logoHeader";
-import Inputs from "components/shared/FormInputs";
-import PrimaryButton from "components/shared/Buttons/PrimariButton";
-import RegistrationUiGoBack from "./goBack";
+import styles from "./Registration.module.scss";
 
-const { Title, Text, Paragraph } = Typography;
+import messages from "../../../../messages";
+import SocialLoginButton from "../../../common/socialLogin";
+import FormItem from "../../../common/formElements";
+
+const { Title, Text } = Typography;
 const { Option } = Select;
 
 declare global {
@@ -28,10 +21,11 @@ declare global {
 function RegistrationUi({
   form,
   onFinish,
+  isModal,
+  closeModal,
   country,
-  isDisabled,
-  onBrowseClick,
-}) {
+  openLogin,
+}: any) {
   const router = useRouter();
 
   const prefixSelector = (
@@ -63,11 +57,16 @@ function RegistrationUi({
 
   const onLoginClick = (e) => {
     e.preventDefault();
-    router?.push({ pathname: "/login", query: { ...router?.query } });
+    if (isModal) {
+      closeModal();
+      openLogin();
+    } else {
+      router?.push("/login");
+    }
   };
 
   return (
-    <Card className="rounded-lg [&_.ant-card-body]:pb-3 mb-0" bordered={false}>
+    <section className={styles.signup_wrapper}>
       <Form
         form={form}
         name="registration"
@@ -78,29 +77,27 @@ function RegistrationUi({
         validateTrigger={messages.formValidationTypes()}
         autoComplete="off"
       >
-        <div className="flex justify-center items-center text-center flex-col mb-4 [&_.ant-image>img]:h-[39px]">
-          <RegistrationUiGoBack onBrowseClick={onBrowseClick} />
-          <LogoHeader />
-          <Title
-            level={4}
-            className="mt-4 text-sm text-canBlack !font-normal !mb-0"
-            id="registration-title"
-          >
-            Create your account
-          </Title>
-          <Paragraph className="text-muted text-[10px] 2xl:text-xs text-canLight !font-[300]">
-            All fields marked with * are mandatory.
-          </Paragraph>
-        </div>
-
-        <div className="mt-10">
+        <Title level={2} className={styles.titles} id="registration-title">
+          Register Now On Canonizer
+        </Title>
+        {isModal && (
+          <Button
+            shape="circle"
+            type="link"
+            className={styles.close_btn}
+            onClick={closeModal}
+            icon={<CloseCircleOutlined />}
+            id="register-modal-close-btn"
+          />
+        )}
+        <div className={styles.section_one}>
           <Row gutter={30}>
             <Col md={12} style={{ width: "100%" }}>
-              <Inputs
+              <FormItem
                 name="first_name"
                 label={
                   <Fragment>
-                    {messages.labels.firstName}
+                    {messages.labels.firstName} <span>(Limit 100 Chars)</span>
                     <span className="required">*</span>
                   </Fragment>
                 }
@@ -110,16 +107,16 @@ function RegistrationUi({
                   e.key === " " && e.keyCode === 32 && e.preventDefault()
                 }
                 maxLength={100}
-                prefix={<UserOutlined />}
               />
             </Col>
 
             <Col md={12} style={{ width: "100%" }}>
-              <Inputs
+              <FormItem
                 name="last_name"
                 label={
                   <Fragment>
                     {messages.labels.lastName}
+                    <span>(Limit 100 Chars)</span>
                     <span className="required">*</span>
                   </Fragment>
                 }
@@ -129,15 +126,15 @@ function RegistrationUi({
                   e.key === " " && e.keyCode === 32 && e.preventDefault()
                 }
                 maxLength={100}
-                prefix={<UserOutlined />}
               />
             </Col>
             <Col md={12} style={{ width: "100%" }}>
-              <Inputs
+              <FormItem
                 name="email"
                 label={
                   <Fragment>
                     {messages.labels.email}
+                    <span>(Limit 255 Chars)</span>
                     <span className="required">*</span>
                   </Fragment>
                 }
@@ -147,96 +144,98 @@ function RegistrationUi({
                   e.key === " " && e.keyCode === 32 && e.preventDefault()
                 }
                 maxLength={255}
-                prefix={<MailOutlined />}
-                type="email"
               />
             </Col>
             <Col md={12} style={{ width: "100%" }}>
-              <Inputs
+              <Form.Item
                 name="phone"
                 label={messages.labels.phone}
-                rules={messages.phoneRule}
-                type="tel"
-                addonBefore={prefixSelector}
-                placeholder={messages.placeholders.phone}
-                maxLength={10}
-                onKeyDown={(e) =>
-                  e.key === " " && e.keyCode === 32 && e.preventDefault()
-                }
-                prefix={<PhoneOutlined className="opacity-0" />}
-                inputMode="tel"
-                inputClassName={`numberInput [&>*]:h-[40px] [&_.ant-input-affix-wrapper]:h-full [&_.ant-input-prefix]:w-0 [&_.ant-input-group-addon]:bg-transparent`}
-                wrapperClassName="[&_.ant-form-item-explain-error]:!mb-0 [&_.ant-form-item-explain-connected]:last:mb-6"
-              />
+                {...messages.phoneRule}
+                className={styles.phoneInput}
+              >
+                <Input
+                  type="tel"
+                  addonBefore={prefixSelector}
+                  style={{ width: "100%" }}
+                  className={`${styles.phoneInput} numberInput`}
+                  placeholder={messages.placeholders.phone}
+                  autoComplete="off"
+                  maxLength={10}
+                  onKeyDown={(e) =>
+                    e.key === " " && e.keyCode === 32 && e.preventDefault()
+                  }
+                />
+              </Form.Item>
             </Col>
             <Col md={12} style={{ width: "100%" }}>
-              <Inputs
+              <Form.Item
                 name="password"
                 label={
-                  <Fragment>
+                  <>
                     {messages.labels.password}
                     <span className="required">*</span>
-                  </Fragment>
+                  </>
                 }
-                rules={messages.passwordRule}
-                type="password"
-                placeholder={messages.placeholders.password}
-                prefix={<LockOutlined />}
-                inputMode="password"
-              />
+                {...messages.passwordRule}
+              >
+                <Input.Password
+                  className={styles.passwordInput}
+                  type="password"
+                  placeholder={messages.placeholders.password}
+                  autoComplete="off"
+                />
+              </Form.Item>
             </Col>
             <Col md={{ span: 12 }} style={{ width: "100%" }}>
-              <Inputs
+              <Form.Item
                 name="confirm"
                 label={
-                  <Fragment>
+                  <>
                     {messages.labels.confirmPassword}
                     <span className="required">*</span>
-                  </Fragment>
+                  </>
                 }
                 dependencies={["password"]}
-                rules={messages.confirmPasswordRule}
-                type="password"
-                placeholder={messages.placeholders.confirmPassword}
-                prefix={<LockOutlined />}
-                inputMode="password"
-              />
+                {...messages.confirmPasswordRule}
+              >
+                <Input.Password
+                  className={styles.passwordInput}
+                  type="password"
+                  placeholder={messages.placeholders.confirmPassword}
+                  autoComplete="off"
+                />
+              </Form.Item>
             </Col>
           </Row>
         </div>
 
-        <Form.Item className="text-center mt-5 mb-16">
-          <PrimaryButton
+        <Form.Item>
+          <Button
             type="primary"
             htmlType="submit"
-            className="h-[40px] text-sm rounded-lg !w-8/12 lg:!w-4/12 flex items-center justify-center mx-auto"
+            className="login-form-button"
             block
             data-testid="submitButton"
+            style={{ marginTop: "20px" }}
             id="register-btn"
-            disabled={!isDisabled}
           >
-            Sign Up <ArrowRightOutlined />
-          </PrimaryButton>
+            Register Now <ArrowRightOutlined />
+          </Button>
         </Form.Item>
 
-        <Form.Item className="my-5">
+        <Form.Item style={{ marginBottom: "15px" }}>
           <SocialLoginButton isNotLogin={true} />
         </Form.Item>
-        <Form.Item className="text-center">
-          <Text className="text-sm" id="already-text">
+        <Form.Item noStyle>
+          <Text className={styles.ft_link} id="already-text">
             Already have an account?{" "}
-            <a
-              href="#"
-              onClick={onLoginClick}
-              className="!text-canBlue hover:!text-canHoverBlue !text-xl !font-semibold"
-              id="already-text-link"
-            >
-              Login
+            <a href="#" onClick={onLoginClick} id="already-text-link">
+              Login Here
             </a>
           </Text>
         </Form.Item>
       </Form>
-    </Card>
+    </section>
   );
 }
 

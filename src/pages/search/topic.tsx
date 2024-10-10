@@ -1,5 +1,5 @@
 import Layout from "src/hoc/layout";
-import TopicSearch from "src/components/ComponentPages/searchCanonizer/topic";
+import TopicSearch from "@/components/ComponentPages/searchCanonizer/topic";
 
 function SearchTopic() {
   return (
