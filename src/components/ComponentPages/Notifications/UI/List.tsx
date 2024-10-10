@@ -1,9 +1,7 @@
-import { List } from "antd";
+import { Badge, List } from "antd";
 import Link from "next/link";
-import { BellFilled } from "@ant-design/icons";
+import { BellOutlined } from "@ant-design/icons";
 import moment from "moment";
-
-import styles from "./Notifications.module.scss";
 
 import { getTime } from "src/utils/generalUtility";
 
@@ -16,18 +14,26 @@ export default function NotificationList({
     <List
       itemLayout="horizontal"
       dataSource={list}
-      className={styles.list}
+      className=""
       id="list-items"
+      locale={{
+        emptyText:
+          "You don’t have any notifications right now. Enable push notifications to stay updated.",
+      }}
       renderItem={(item: any) => (
         <List.Item
           id={"list-item-" + item["id"]}
           key={"list-item-" + item["id"]}
+          className=""
         >
           <List.Item.Meta
             avatar={
-              <div className={styles.avatarBell}>
-                <BellFilled />
-              </div>
+              <Badge
+                dot={item["is_seen"] === 0}
+                className="bg-[#5482C833] w-[30px] h-[30px] rounded-full grid items-center justify-center"
+              >
+                <BellOutlined className="text-white text-lg" />
+              </Badge>
             }
             title={
               <Link
@@ -44,12 +50,7 @@ export default function NotificationList({
                   },
                 }}
               >
-                <a
-                  style={{
-                    color: item["is_read"] === 1 ? "#566f8f" : "#0f2a4d",
-                    fontWeight: item["is_read"] === 1 ? 500 : 600,
-                  }}
-                >
+                <a className="text-sm text-canBlack break-words whitespace-pre-wrap">
                   {item["message_body"]}
                 </a>
               </Link>
@@ -62,7 +63,7 @@ export default function NotificationList({
         </List.Item>
       )}
       footer={
-        isFooter ? <div className={styles.footer}>{LoadMoreTopics}</div> : null
+        isFooter ? <div className="text-center">{LoadMoreTopics}</div> : null
       }
     />
   );

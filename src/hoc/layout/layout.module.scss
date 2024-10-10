@@ -1,162 +1,94 @@
-.pageWrap {
-  overflow: hidden;
-  .contentWrap {
-    padding: 16px 15px;
-    min-height: calc(100vh - 397px);
+$sidebar_width: 30%;
+$sidebar_width_small: 30%;
 
-    @media screen and (min-width: 768px) {
-      display: flex;
-    }
-    /* @media screen and (max-width: 767px) {
-    @media screen and (max-width: 991px) {
-      flex-wrap: wrap;
-    }
-    @media screen and (max-width: 767px) {
-      padding: 10px;
-    } */
+.contentArea {
+  display: flex;
+  // overflow: hidden;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  min-height: calc(100vh - 347px);
+
+  .contentBox {
+    width: 100%;
+    flex-grow: 1;
+    transition: width 0.3s ease;
   }
-  .leftSideBar {
-    & + .pageContentWrap {
-      @media screen and (min-width: 992px) {
-        padding: 0 8px;
-      }
-    }
-    &.miniSideBar {
-      @media screen and (min-width: 992px) {
-        width: 300px;
-        & + .pageContentWrap {
-          width: calc(100% - 300px);
-        }
-      }
-      @media screen and (max-width: 991px) {
-        width: 100%;
-        & + .pageContentWrap {
-          width: 100%;
-          margin: 0;
-        }
-      }
-      @media screen and (max-width: 767px) {
-        & + .pageContentWrap {
-          margin: 0;
-        }
-      }
-    }
-    &:not(.miniSideBar) {
-      @media screen and (min-width: 1200px) {
-        width: 420px;
-        & + .pageContentWrap {
-          width: calc(100% - 420px);
-        }
-      }
-      @media screen and (min-width: 992px) and (max-width: 1399px) {
-        width: 245px;
-        & + .pageContentWrap {
-          width: calc(100% - 245px);
-        }
-      }
-      @media screen and (max-width: 991px) {
-        width: 100%;
-        & + .pageContentWrap {
-          width: 100%;
-        }
-      }
-      @media screen and (max-width: 767px) {
-        width: 100%;
-        & + .pageContentWrap {
-          margin: 0;
-        }
-      }
-    }
-    &_Card {
-      padding-top: 15px;
-      padding-right: 15px;
-      padding-left: 15px;
-      border: solid 1px #f0f0f0;
-      background-color: #fff;
-      margin-bottom: 16px;
-      &.noFilter {
-        padding-bottom: 5px;
-      }
-      &:not(.noFilter) {
-        padding-bottom: 10px;
-      }
-      .btnsWrap {
-        margin-bottom: 15px;
-      }
-      .btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        font-size: 14px;
-        font-weight: 600;
-        color: #0f2a4d;
-        border: solid 1px #d9d9d9;
-        i {
-          font-size: 1.1875rem;
-          color: var(--primary);
-          margin-right: 8px;
-        }
-        &:hover {
-          color: var(--primary);
-          border-color: var(--primary);
-        }
-        & + .btn {
-          margin-top: 0.5rem;
-        }
-      }
-    }
+
+  .rightSidebar,
+  .leftSidebar {
+    width: $sidebar_width;
+    transition: width 0.3s ease;
   }
+
   .rightSidebar {
-    @media screen and (min-width: 820px) {
-      width: 180px;
-    }
-    @media screen and (max-width: 820px) {
-      display: none;
-    }
-    /* @media screen and (max-width: 991px) {
-      width: 100%;
-      margin-left: 10px;
-    } */
-    /* @media screen and (min-width: 768px) and (max-width: 991px) {
-      width: auto;
-    } */
-    @media screen and (max-width: 767px) {
-      text-align: center;
-      display: none;
-    }
+    margin-left: 30px;
   }
-  .contentArea {
-    @media screen and (min-width: 767px) {
-      display: flex;
-      flex-wrap: wrap;
-      align-content: baseline;
-      // flex-direction: column;
-      &:not(.timelineLayout) {
-        width: calc(100% - 180px);
-      }
-      &.timelineLayout {
-        width: 100%;
-      }
-    }
-    &.eventListArea {
-      width: 100%;
-    }
-    /* @media screen and (max-width: 991px) {
-      &:not(.timelineLayout) {
-        width: auto;
-      }
-    }
-    @media screen and (min-width: 768px) and (max-width: 991px) {
-      display: flex;
-      flex-wrap: wrap;
-      &:not(.timelineLayout) {
-        width: 100%;
-      }
-    } */
-  }
-}
 
-.recentActivitySider {
-  margin-top: 36px;
+  .leftSidebar {
+    margin-right: 20px;
+  }
+
+  &.withRightsideBar .contentBox {
+    width: calc(100% - ($sidebar_width + 50px));
+  }
+
+  &.withLeftsideBar .contentBox {
+    width: calc(100% - ($sidebar_width + 50px));
+  }
+
+  &.withBothsideBar .contentBox {
+    width: calc(100% - ($sidebar_width + 50px) * 2);
+  }
+
+  @media screen and (max-width: 1024px) {
+    .contentBox {
+      width: 100%;
+    }
+
+    &.withRightsideBar .contentBox {
+      width: calc(100% - $sidebar_width_small);
+    }
+
+    &.withLeftsideBar .contentBox {
+      width: calc(100% - $sidebar_width_small);
+    }
+
+    &.withBothsideBar .contentBox {
+      width: calc(100% - $sidebar_width_small * 2);
+    }
+
+    .rightSidebar,
+    .leftSidebar {
+      width: $sidebar_width_small;
+    }
+  }
+
+  @media screen and (max-width: 992px) {
+    flex-direction: column;
+    flex-wrap: wrap;
+
+    .contentBox {
+      width: 100%;
+    }
+
+    &.withRightsideBar .contentBox {
+      width: 100%;
+    }
+
+    &.withLeftsideBar .contentBox {
+      width: 100%;
+    }
+
+    &.withBothsideBar .contentBox {
+      width: 100%;
+    }
+
+    .rightSidebar,
+    .leftSidebar {
+      width: 100%;
+    }
+    .rightSidebar {
+      margin-left: 0px;
+    }
+  }
 }

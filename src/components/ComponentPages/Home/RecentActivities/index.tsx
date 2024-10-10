@@ -1,43 +1,26 @@
 import { useEffect, useMemo, useState, Fragment } from "react";
-import {
-  Tabs,
-  Typography,
-  List,
-  Button,
-  Spin,
-  Tooltip,
-  Switch,
-  Popover,
-} from "antd";
+import { Tabs, Typography, Button, Spin } from "antd";
 import { useRouter } from "next/router";
 import { LoadingOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
-import Link from "next/link";
 import { convert } from "html-to-text";
 
-import styles from "./recentActivities.module.scss";
-
 import { RootState } from "src/store";
-import { getRecentActivitiesApi } from "../../../../network/api/homePageApi";
-import useAuthentication from "../../../../hooks/isUserAuthenticated";
-import CustomSkelton from "../../../common/customSkelton";
+import { getRecentActivitiesApi } from "src/network/api/homePageApi";
+import useAuthentication from "src/hooks/isUserAuthenticated";
 import { setIsChecked } from "src/store/slices/recentActivitiesSlice";
 import { getTopicActivityLogApi } from "src/network/api/campDetailApi";
-import { getProperties } from "src/utils/generalUtility";
-import ReasonsActivity from "src/components/common/SupportReasonActivity";
+import CommonCard from "src/components/shared/Card";
+import { useIsMobile } from "src/hooks/useIsMobile";
+import RecentActivitiesHeader from "./UI/pageHeader";
+import TopicCampsTab from "./UI/topicTab";
+import ThreadTab from "./UI/threadTab";
+import AllActivitiesSwitch from "./UI/allActivitiesSwitch";
 
 const antIcon = <LoadingOutlined spin />;
 
 const { TabPane } = Tabs;
-const { Title, Link: AntLink, Text } = Typography;
-
-const OperationsSlot = {
-  left: (
-    <Fragment>
-      <Title level={3}>Recent Activities</Title>{" "}
-    </Fragment>
-  ),
-};
+const { Text } = Typography;
 
 export default function RecentActivities() {
   const { topicsData, threadsData, loggedInUser, isCheckedRecent } =
@@ -52,26 +35,30 @@ export default function RecentActivities() {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const [position] = useState(["left", "right"]);
+  const [position] = useState(["left"]);
   const [recentActivities, setRecentActivities] = useState(topicsData);
   const [topicPageNumber, setTopicPageNumber] = useState(1);
   const [threadPageNumber, setThreadPageNumber] = useState(1);
   const [selectedTab, setSelectedTab] = useState(
     router?.query?.tabName || "topic/camps"
   );
-  const [loadMoreIndicator, setLoadMoreIndicator] = useState(false);
   const [getTopicsLoadingIndicator, setGetTopicsLoadingIndicator] =
     useState(false);
   const [isChecked, setIsInternalChecked] = useState(isCheckedRecent);
   const [userData, setUserData] = useState(loggedInUser);
   const [isShowAllLoading, setIsShowAllLoading] = useState(false);
+  const [checkLogType, setCheckLogType] = useState("");
+
+  const isActivitiesPage = router.asPath?.includes("/activities");
+  const hasCampOrTopicNum = router.query?.camp_num || router.query?.topic_num;
+  const defaultActiveKey = router.query?.tabName || "topic/camps";
+  const isOnlyCamp =
+    (router.query?.topic_num && router.query?.camp_num) ||
+    router.query?.topic_num;
 
   const slot = useMemo(() => {
     if (position.length === 0) return null;
-    return position.reduce(
-      (acc, direction) => ({ ...acc, [direction]: OperationsSlot[direction] }),
-      {}
-    );
+    return position.reduce((acc) => ({ ...acc }), {});
   }, [position]);
 
   useEffect(() => setUserData(loggedInUser), [loggedInUser]);
@@ -80,12 +67,12 @@ export default function RecentActivities() {
 
   useEffect(() => {
     setRecentActivities(topicsData);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [topicsData?.topics]);
 
   useEffect(() => {
     setRecentActivities(threadsData);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [threadsData?.topics]);
 
   useEffect(() => {
@@ -94,8 +81,9 @@ export default function RecentActivities() {
       await getTopicsApiCallWithReqBody(false, selectedTab);
       setGetTopicsLoadingIndicator(false);
     }
+
     if (isUserAuthenticated) {
-      if (router?.query?.topic_num && router?.query?.camp_num) {
+      if (isOnlyCamp) {
         getTopicActivityLogCall();
       } else {
         linksApiCall();
@@ -104,8 +92,7 @@ export default function RecentActivities() {
       setGetTopicsLoadingIndicator(true);
       router?.push("/login");
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [selectedTab, isChecked]);
 
   const handleTabChange = (key: string) => {
@@ -118,6 +105,7 @@ export default function RecentActivities() {
     }
     setSelectedTab(key);
   };
+
   const decodeUrlLink = (threadData) => {
     return JSON.parse(threadData?.activity?.properties)?.url?.replace(
       /\s+/g,
@@ -135,41 +123,40 @@ export default function RecentActivities() {
       setTopicPageNumber(1);
       pageNo = 1;
     }
-    let reqBody = {
+
+    const reqBody: any = {
       page: pageNo,
-      per_page: 15,
-      is_admin_show_all: "all",
+      per_page: isActivitiesPage ? 25 : 5,
       topic_num: router?.query?.topic_num,
       camp_num: router?.query?.camp_num ?? 1,
     };
-    let res = await getTopicActivityLogApi(reqBody);
-    if (res?.status_code == 200) {
-      if (loadMore) {
-        let resData = res?.data;
 
-        resData = resData?.items?.map((i: any) => ({ ...i, activity: i }));
-
-        resData = {
-          topics: resData,
-          numOfPages: res?.data?.last_page,
-        };
-
-        resData.topics = resData?.topics?.concat(recentActivities?.topics);
-
-        setRecentActivities(resData);
-      } else {
-        let resData = res?.data;
-
-        resData = resData?.items?.map((i: any) => ({ ...i, activity: i }));
-        resData = { topics: resData, numOfPages: res?.data?.last_page };
-        setRecentActivities(resData);
-      }
+    if (!isOnlyCamp) {
+      reqBody.is_admin_show_all = "all";
     }
-    setLoadMoreIndicator(false);
+
+    const res = await getTopicActivityLogApi(reqBody);
+
+    if (res?.status_code == 200) {
+      let resData = res?.data;
+      resData = resData?.items?.map((i: any) => ({ ...i, activity: i }));
+      resData = {
+        topics: resData,
+        numOfPages: res?.data?.last_page,
+      };
+
+      if (loadMore) {
+        resData.topics = resData?.topics?.concat(recentActivities?.topics);
+      }
+      console.log("resData---", resData);
+
+      setRecentActivities(resData);
+    }
     setGetTopicsLoadingIndicator(false);
   }
 
   async function getTopicsApiCallWithReqBody(loadMore = false, topicType) {
+    setGetTopicsLoadingIndicator(true);
     let pageNo;
     if (topicType == "topic/camps") {
       if (loadMore) {
@@ -192,43 +179,29 @@ export default function RecentActivities() {
     const reqBody = {
       log_type: topicType,
       page: pageNo,
-      per_page: 15,
+      per_page: isActivitiesPage ? 25 : 5,
       is_admin_show_all: isChecked ? "all" : "",
       camp_num: router?.query?.camp_num,
       topic_num: router?.query?.topic_num,
     };
+
     await getRecentActivitiesApi(reqBody, loadMore, topicType);
-    setLoadMoreIndicator(false);
+    setGetTopicsLoadingIndicator(false);
     setIsShowAllLoading(false);
+    setCheckLogType(reqBody?.log_type);
   }
 
   const covertToTime = (unixTime) => {
-    let uTime = new Date(unixTime * 1000);
-    var year = uTime.getFullYear();
-    var month = uTime.toDateString().split(" ")[1];
-    var date = uTime.getDate();
-    var time = uTime.toLocaleTimeString();
-    var convertedTime = month + " " + date + ", " + year + ", " + time;
-    return " " + convertedTime;
-  };
-
-  const ViewAllTopics = (isTopic) => {
-    const ViewAllName = isTopic ? "View All Topics" : "View All Threads";
-    return (
-      recentActivities?.topics?.length > 0 && (
-        <div className={styles.footer}>
-          <Link
-            href={{ pathname: "/activities", query: { tabName: selectedTab } }}
-            as="/activities"
-          >
-            <a className={styles.viewAll}>
-              <Text>{ViewAllName}</Text>
-              <i className="icon-angle-right"></i>
-            </a>
-          </Link>
-        </div>
-      )
-    );
+    const uTime = new Date(unixTime * 1000);
+    const formattedTime = new Intl.DateTimeFormat("en-US", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    }).format(uTime);
+    return formattedTime.replace(",", "").replace(" at", ",");
   };
 
   const LoadMoreTopics = (topicType) => {
@@ -236,13 +209,13 @@ export default function RecentActivities() {
       topicType == "topic/camps" ? topicPageNumber : threadPageNumber;
     return (
       recentActivities?.topics?.length > 0 && (
-        <div className={styles.footer}>
+        <div className="flex justify-start">
           {pageNumber < recentActivities?.numOfPages && (
             <div className="text-center">
               <Button
-                className={styles.viewAll}
+                className="font-medium text-canBlue flex gap-2.5 items-center border-[1px] py-3 rounded-lg border-canBlue bg-[#98B7E61A]  px-3 "
                 onClick={() => {
-                  setLoadMoreIndicator(true);
+                  setGetTopicsLoadingIndicator(true);
                   if (router?.query?.topic_num && router?.query?.camp_num) {
                     getTopicActivityLogCall(true);
                   } else {
@@ -251,8 +224,10 @@ export default function RecentActivities() {
                 }}
               >
                 <Text>Load More</Text>
-                {!loadMoreIndicator && <i className="icon-angle-right"></i>}
-                {loadMoreIndicator && <Spin indicator={antIcon} />}
+                {!getTopicsLoadingIndicator && (
+                  <i className="icon-angle-right ml-1"></i>
+                )}
+                {getTopicsLoadingIndicator && <Spin indicator={antIcon} />}
               </Button>
             </div>
           )}
@@ -273,186 +248,125 @@ export default function RecentActivities() {
     return str?.length > 90 ? str?.substring(0, 90) + "..." : str;
   };
 
+  const isMobile = useIsMobile();
+  // const isMobile = window.matchMedia("(max-width: 991px)").matches;
+
+  const getTopicCampName = (activity, decodedProperties) => {
+    const subjectType = activity?.activity?.subject_type;
+
+    const subjectTypeMap = {
+      "App\\Models\\Camp": decodedProperties?.camp_name,
+      "App\\Models\\Topic": decodedProperties?.topic_name,
+    };
+
+    const result =
+      subjectTypeMap[subjectType] ||
+      convert(decodedProperties?.description?.replace(/<img[^>]*>/gi, ""), {
+        wordwrap: 130,
+      });
+
+    return result;
+  };
+
   return (
-    <>
-      <div className={`${styles.listCard} recentActivities_listWrap`}>
-        {userData?.is_admin &&
-        !router?.query?.camp_num &&
-        !router?.query?.topic_num ? (
-          <Title className={styles.switchButton} level={4}>
-            <span>Show all user activities</span>
-            {isShowAllLoading ? (
-              <Spin size="small" />
-            ) : (
-              <Switch checked={isChecked} size="small" onChange={onChange} />
-            )}
-          </Title>
-        ) : null}
-
-        <Tabs
-          className={`${styles.listCardTabs} ${
-            userData?.is_admin ? styles.spaceCardTabs : ""
-          } recentActivities_listCardTabs ${
-            router?.query?.camp_num && router?.query?.topic_num
-              ? styles.hideTabs
-              : ""
+    <Fragment>
+      <RecentActivitiesHeader
+        isActivitiesPage={isActivitiesPage}
+        onBackClick={() => router?.back()}
+      />
+      <div className={isActivitiesPage ? "mx-auto w-full lg:w-8/12" : "w-full"}>
+        <CommonCard
+          className={`border-0 h-100 !bg-white [&_.ant-card-body]:p-0 [&_.ant-tabs-tab-active]:!border ${
+            isActivitiesPage
+              ? "[&_.ant-tabs-tab-active]:!border [&_.ant-card-body]:flex [&_.ant-card-body]:flex-col"
+              : "[&_.ant-card-body]:lg:p-[24px] lg:!bg-canGray mt-3"
           }`}
-          defaultActiveKey={`${
-            router?.query?.tabName ? router?.query?.tabName : "topic/camps"
-          }`}
-          tabBarExtraContent={slot}
-          onChange={handleTabChange}
         >
-          <TabPane tab="Topics/Camps" key="topic/camps">
-            {getTopicsLoadingIndicator ? (
-              <CustomSkelton
-                skeltonFor="list"
-                bodyCount={22}
-                stylingClass="listSkeleton"
-                isButton={false}
-              />
-            ) : (
-              <List
-                className={styles.listWrap}
-                footer={
-                  !router?.asPath?.includes("/activities")
-                    ? ViewAllTopics(true)
-                    : LoadMoreTopics("topic/camps")
-                }
-                bordered={false}
-                dataSource={recentActivities?.topics}
-                renderItem={(activity: any) => {
-                  const decodedProperties = JSON.parse(
-                    activity?.activity?.properties
-                  );
-                  return (
-                    <List.Item className={styles.listItem}>
-                      <AntLink
-                        href={decodedProperties?.url?.replace(/\s+/g, "-")}
-                      >
-                        <>
-                          <Text className={styles.text}>
-                            {activity?.activity?.description}{" "}
-                            {activity?.activity?.log_name === "support" &&
-                              getProperties(activity?.activity)?.reason && (
-                                <Popover
-                                  content={
-                                    <div className={styles.reasonsText}>
-                                      <ReasonsActivity
-                                        CurrentItem={activity?.activity}
-                                      />
-                                    </div>
-                                  }
-                                  placement="top"
-                                  className={styles.algoInfoIcon}
-                                >
-                                  <i className="icon-info"></i>
-                                </Popover>
-                              )}
-                            <br />
-                            <Tooltip
-                              placement={"topLeft"}
-                              title={
-                                decodedProperties?.topic_name
-                                  ? `Topic: ${decodedProperties?.topic_name}` +
-                                    (decodedProperties?.camp_name
-                                      ? ` | Camp: ${decodedProperties?.camp_name}`
-                                      : "")
-                                  : handleTextOverflow(
-                                      decodedProperties?.description
-                                    )
-                              }
-                            >
-                              {decodedProperties?.topic_name
-                                ? `Topic: ${decodedProperties?.topic_name}` +
-                                  (decodedProperties?.camp_name
-                                    ? ` | Camp: ${decodedProperties?.camp_name}`
-                                    : "")
-                                : convert(
-                                    decodedProperties?.description?.replace(
-                                      /<img[^>]*>/gi,
-                                      ""
-                                    ),
-                                    {
-                                      wordwrap: 130,
-                                    }
-                                  )}
-                            </Tooltip>
-                          </Text>
-                          <Text className={styles.secondary} type="secondary">
-                            <i className="icon-calendar"></i>
-                            {covertToTime(activity.updated_at)}
-                          </Text>
-                        </>
-                      </AntLink>
-                    </List.Item>
-                  );
-                }}
-              />
-            )}
-          </TabPane>
-          <TabPane tab="Threads" key="threads">
-            {getTopicsLoadingIndicator ? (
-              <CustomSkelton
-                skeltonFor="list"
-                bodyCount={22}
-                stylingClass="listSkeleton"
-                isButton={false}
-              />
-            ) : (
-              <List
-                className={styles.listWrap}
-                footer={
-                  !router?.asPath?.includes("/activities")
-                    ? ViewAllTopics(false)
-                    : LoadMoreTopics("threads")
-                }
-                bordered={false}
-                dataSource={recentActivities?.topics}
-                renderItem={(activity: any) => {
-                  const decodedProperties = JSON.parse(
-                    activity?.activity?.properties
-                  );
-
-                  return (
-                    <List.Item className={styles.listItem}>
-                      <Link href={decodeUrlLink(activity)} passHref>
-                        <a>
-                          <Text className={styles.text}>
-                            {activity?.activity?.description}
-                            <br />
-                            <Tooltip
-                              placement={"topLeft"}
-                              title={handleTextOverflow(
-                                decodedProperties?.description
-                              )}
-                            >
-                              {convert(
-                                decodedProperties?.description?.replace(
-                                  /<img[^>]*>/gi,
-                                  ""
-                                ),
-                                {
-                                  wordwrap: 130,
-                                }
-                              )}
-                            </Tooltip>
-                          </Text>
-                          <Text className={styles.secondary} type="secondary">
-                            <i className="icon-calendar"></i>
-                            {covertToTime(activity.updated_at)}
-                          </Text>
-                        </a>
-                      </Link>
-                    </List.Item>
-                  );
-                }}
-              />
-            )}
-          </TabPane>
-        </Tabs>
-        {/* </Spin> */}
+          <AllActivitiesSwitch
+            userData={userData}
+            hasCampOrTopicNum={hasCampOrTopicNum}
+            isShowAllLoading={isShowAllLoading}
+            isChecked={isChecked}
+            onChange={onChange}
+            className={isActivitiesPage ? "inline-flex gap-4 ml-auto" : ""}
+          />
+          {isActivitiesPage ? (
+            <Tabs
+              tabPosition={!isMobile ? "left" : "top"}
+              className={`custom-tabs [&_.ant-tabs-nav]:mb-0 [&_.ant-tabs-nav-wrap]:w-full [&_.ant-tabs-nav-wrap]:justify-center [&_.ant-tabs-nav-list]:w-full [&_.ant-tabs-tab-btn]:text-canBlack [&_.ant-tabs-tab-active]:!text-canBlue  [&_.ant-tabs-tab-btn]:!px-0 [&_.ant-tabs-ink-bar]:!h-[3px] [&_.ant-tabs-tab]:!px-0 [&_.ant-tabs-tab-btn]:text-base  [&_.ant-tabs-tab-btn]:font-semibold [&_.ant-tabs-tab-btn]:!pr-8 lg:[&_.ant-tabs-tab-btn]:!mr-28 [&_.ant-tabs-content-holder]:!border [&_.ant-tabs-content-holder]:!border-canGrey2 [&_.ant-tabs-content-holder]:!rounded-xl [&_.ant-tabs-content-holder]:!py-4 lg:[&_.ant-tabs-content-holder]:!px-8 [&_.ant-tabs-tabpane]:!p-0 [&_.ant-tabs-tab-btn]:!py-2.5 [&_.ant-tabs-ink-bar]:!hidden [&_.ant-list-item]:!border-b [&_.ant-list-item]:!border-canDarkBlack [&_.ant-list-item]:!border-opacity-10 [&_.ant-tabs-content-holder]:!px-4 [&_.ant-tabs-content-holder]:relative ${
+                isOnlyCamp ? "[&_.ant-tabs-nav]:hidden" : ""
+              }`}
+              defaultActiveKey={`${defaultActiveKey}`}
+              tabBarExtraContent={slot}
+              onChange={handleTabChange}
+            >
+              {!isOnlyCamp && (
+                <TabPane tab="Camps" key="topic/camps">
+                  <TopicCampsTab
+                    getTopicsLoadingIndicator={getTopicsLoadingIndicator}
+                    recentActivities={recentActivities}
+                    handleTextOverflow={handleTextOverflow}
+                    getTopicCampName={getTopicCampName}
+                    covertToTime={covertToTime}
+                    bodyCount={15}
+                  />
+                </TabPane>
+              )}
+              {
+                <TabPane tab="Threads" key="threads">
+                  <ThreadTab
+                    getTopicsLoadingIndicator={getTopicsLoadingIndicator}
+                    recentActivities={recentActivities}
+                    decodeUrlLink={decodeUrlLink}
+                    handleTextOverflow={handleTextOverflow}
+                    covertToTime={covertToTime}
+                    bodyCount={15}
+                  />
+                </TabPane>
+              }
+            </Tabs>
+          ) : (
+            <div className="bg-white border p-2 rounded-lg min-h-80">
+              <Tabs
+                className={`[&_.ant-tabs-nav]:mb-0 [&_.ant-tabs-nav-wrap]:w-full [&_.ant-tabs-nav-wrap]:justify-center [&_.ant-tabs-nav-list]:w-full px-2 [&_.ant-tabs-tab-btn]:!text-canBlue [&_.ant-tabs-tab-btn]:!px-4 [&_.ant-tabs-ink-bar]:!h-[3px] ${
+                  router?.query?.camp_num && router?.query?.topic_num
+                    ? "hidden"
+                    : ""
+                }`}
+                defaultActiveKey={`${defaultActiveKey}`}
+                tabBarExtraContent={slot}
+                onChange={handleTabChange}
+              >
+                <TabPane tab="Camps" key="topic/camps">
+                  <TopicCampsTab
+                    getTopicsLoadingIndicator={getTopicsLoadingIndicator}
+                    recentActivities={recentActivities}
+                    handleTextOverflow={handleTextOverflow}
+                    getTopicCampName={getTopicCampName}
+                    covertToTime={covertToTime}
+                  />
+                </TabPane>
+                <TabPane tab="Threads" key="threads">
+                  <ThreadTab
+                    getTopicsLoadingIndicator={getTopicsLoadingIndicator}
+                    recentActivities={recentActivities}
+                    decodeUrlLink={decodeUrlLink}
+                    handleTextOverflow={handleTextOverflow}
+                    covertToTime={covertToTime}
+                  />
+                </TabPane>
+              </Tabs>
+            </div>
+          )}
+        </CommonCard>
+        {isActivitiesPage && (
+          <div className="lg:ml-[206px] mt-5">
+            {checkLogType === "topic/camps"
+              ? LoadMoreTopics("topic/camps")
+              : LoadMoreTopics("threads")}
+          </div>
+        )}
       </div>
-    </>
+    </Fragment>
   );
 }

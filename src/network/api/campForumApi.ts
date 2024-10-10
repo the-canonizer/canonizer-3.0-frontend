@@ -12,6 +12,7 @@ export const createThread = async (body) => {
     return response;
   } catch (error) {
     handleError(error);
+    return error?.error?.data;
   }
 };
 
@@ -25,6 +26,7 @@ export const updateThread = async (body, id) => {
     return response;
   } catch (error) {
     handleError(error);
+    return error?.error?.data;
   }
 };
 
@@ -53,6 +55,36 @@ export const createPost = async (body) => {
     return response;
   } catch (error) {
     handleError(error);
+  }
+};
+
+export const latestThread = async (queries) => {
+  try {
+    const response = await NetworkCall.fetch(
+      ForumRequests.latestThread(queries),
+      false
+    );
+
+    return response;
+  } catch (error) {
+    // handleError(error);
+
+    return error?.error?.data;
+  }
+};
+
+export const getSiblingCamp = async (queries) => {
+  try {
+    const response = await NetworkCall.fetch(
+      ForumRequests.siblingCamps(queries),
+      false
+    );
+
+    return response;
+  } catch (error) {
+    // handleError(error);
+
+    return error?.error?.data;
   }
 };
 

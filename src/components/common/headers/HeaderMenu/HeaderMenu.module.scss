@@ -1,0 +1,73 @@
+.NavWrap {
+  @apply overflow-hidden h-full z-[900000];
+  ul {
+    @apply h-full;
+    .listItem {
+      @apply h-full relative items-center;
+      &:not(:last-child) {
+        &::before {
+          color: darkgray;
+          @apply content-["|"] absolute top-[50%] -translate-y-2/4 left-0;
+        }
+      }
+      &::after {
+        @apply absolute top-[50%] -translate-y-2/4 right-0;
+      }
+      &:first-child {
+        &::before {
+          @apply hidden;
+        }
+      }
+      &:nth-child(3) {
+        &::before {
+          @apply hidden;
+        }
+      }
+    }
+  }
+  @media screen and (max-width: 1050px) {
+    @apply fixed bg-white top-0 left-0 flex flex-col;
+    width: 80%;
+    height: 100%;
+    margin: 0;
+    padding: 30px 30px;
+    transform: translateX(-500em);
+    transition: all 0.3s;
+    &.open {
+      transform: translateX(0);
+    }
+    ul {
+      z-index: 1000;
+      .listItem {
+        padding: 10px 20px;
+        @apply w-full h-auto max-h-[50px];
+        &.active {
+          @apply bg-canGray;
+          .divider {
+            @apply hidden;
+          }
+          a {
+            @apply text-canHoverBlue;
+          }
+        }
+      }
+    }
+  }
+}
+
+.divider {
+  width: calc(100% - 1.5rem);
+  @apply m-auto hidden h-[5px] bg-canBlue absolute bottom-0 top-auto left-0 right-0;
+}
+
+.active {
+  @apply text-canHoverBlue relative;
+
+  .divider {
+    @apply block;
+  }
+
+  a {
+    @apply text-canHoverBlue;
+  }
+}

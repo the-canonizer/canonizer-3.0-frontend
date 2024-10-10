@@ -5,9 +5,9 @@ import Layout from "../../../hoc/layout";
 const TopicHistoryPage = () => {
   return (
     <>
-      <Layout>
-        <HistoryContainer />
-      </Layout>
+      {/* <Layout> */}
+      <HistoryContainer />
+      {/* </Layout> */}
     </>
   );
 };

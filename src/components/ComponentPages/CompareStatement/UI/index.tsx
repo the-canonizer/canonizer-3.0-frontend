@@ -1,18 +1,20 @@
-import { Fragment } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { Typography, Button, Row, Col, Card, Divider } from "antd";
-import { ArrowLeftOutlined } from "@ant-design/icons";
-import Link from "next/link";
-import moment from "moment";
-
+import { Button, Row, Col, Tabs } from "antd";
 import styles from "./index.module.scss";
 
-import CampInfoBar from "../../TopicDetails/CampInfoBar";
 import CustomSkelton from "../../../common/customSkelton";
-import { changeSlashToArrow } from "src/utils/generalUtility";
-
-const { Title, Text, Paragraph } = Typography;
-
+import { capitalizeFirstLetter } from "src/utils/generalUtility";
+import Breadcrumbs from "components/ComponentPages/Breadcrumbs/breadcrumbs";
+import HistoryCard from "components/ComponentPages/HistoryCard/historyCard";
+import moment from "moment";
+import TimelineInfoBar from "components/ComponentPages/TopicDetails/CampInfoBar";
+import {
+  getCurrentCampRecordApi,
+  getCurrentTopicRecordApi,
+} from "src/network/api/campDetailApi";
+import { useSelector } from "react-redux";
+import { RootState } from "src/store";
 const validUrl = (url) => {
   try {
     new URL(url);
@@ -28,10 +30,65 @@ function CompareStatementUI({
   liveStatement,
   itemsStatus,
 }: any) {
+  const [compareMode, setCompareMode] = useState(true);
+  const [currentVersion, setCurrentVersion] = useState(true);
+  const [tabId, setTabId] = useState("1");
   const router = useRouter();
+
+  const { asofdate, topicRecord, asof, campRecord } = useSelector(
+    (state: RootState) => ({
+      asofdate: state.filters?.filterObject?.asofdate,
+      topicRecord: state?.topicDetails?.currentTopicRecord,
+      asof: state?.filters?.filterObject?.asof,
+      campRecord: state?.topicDetails?.currentCampRecord,
+    })
+  );
+
   const s1 = statements?.at(0) || {},
     s2 = statements?.at(1) || {},
     from = router?.query?.from;
+
+  const breakpoint = 768;
+
+  // Initialize state without using window.innerWidth directly
+  const [isMobileView, setIsMobileView] = useState(
+    typeof window !== "undefined" ? window.innerWidth < breakpoint : false
+  );
+
+  const convertToTime = (unixTime) => {
+    return moment(unixTime * 1000).format("hh:mm:ss A");
+  };
+
+  const convertToDate = (unixTime) => {
+    return moment(unixTime * 1000).format("DD MMMM YYYY");
+  };
+
+  const getStatusClass = (status: any) => {
+    switch (status) {
+      case "live":
+        return "live-tab";
+      case "in_review":
+        return "pending-tab";
+      case "objected":
+        return "objected-tab";
+      case "old":
+        return "previous-tab";
+      default:
+        return "";
+    }
+  };
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobileView(window.innerWidth < breakpoint);
+    };
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [breakpoint]);
 
   let payload = {
     camp_num: router?.query?.routes[1]?.split("-")[0] ?? "1",
@@ -42,7 +99,7 @@ function CompareStatementUI({
     const query = router?.query;
     if (query.from === "topic") {
       router?.push({
-        pathname: `/topic/history/${router?.query?.routes[0]}}`,
+        pathname: `/topic/history/${router?.query?.routes[0]}/${router?.query?.routes[1]}`,
       });
     } else if (query.from === "statement") {
       router?.push({
@@ -55,431 +112,146 @@ function CompareStatementUI({
     }
   };
 
-  const covertToTime = (unixTime) => {
-    return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
-  };
+  useEffect(() => {
+    const isDefaultOrReview = asof === "default" || asof === "review";
+
+    const reqBody = {
+      topic_num: parseInt(router?.query?.camp?.at(0)?.split("-")?.at(0), 10),
+      camp_num:
+        parseInt(router?.query?.camp?.at(1)?.split("-")?.at(0), 10) || 1,
+      as_of: asof,
+      as_of_date: isDefaultOrReview
+        ? Math.floor(Date.now() / 1000)
+        : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
+    };
+
+    const fetchTopicRecord = async () => {
+      await getCurrentTopicRecordApi(reqBody);
+    };
+
+    const fetchCampRecord = async () => {
+      await getCurrentCampRecordApi(reqBody);
+    };
+
+    if (campRecord === null) {
+      fetchCampRecord();
+    }
+
+    if (topicRecord === null) {
+      fetchTopicRecord();
+    }
+  }, []);
 
   return (
-    <Fragment>
-      <div className={styles.wrap}>
-        <CampInfoBar payload={payload} />
-        <div className={styles.campStatement}>
-          <div className={styles.tabHead}>
-            <div className={styles.filterOt}>
-              <Button
-                className={styles.active}
-                type="primary"
-                onClick={getBackUrl}
-              >
-                <ArrowLeftOutlined />
-              </Button>
-              <Title level={4}>
-                {from === "topic"
-                  ? "Topic "
-                  : from === "camp"
-                  ? "Camp "
-                  : "Camp Statement "}
-                History Comparison
-              </Title>
-            </div>
-          </div>
-          <div className={styles.contentBody}>
-            <Row gutter={[50, 15]}>
-              <Col xs={24} md={12}>
-                {isLoading ? (
-                  <CustomSkelton
-                    skeltonFor="card"
-                    bodyCount={5}
-                    stylingClass="test"
-                    isButton={false}
-                    action={false}
-                  />
-                ) : (
-                  <Card
-                    bordered
-                    className={
-                      styles.compareCard +
-                      " " +
-                      styles[itemsStatus[s1?.id] || "old"]
-                    }
-                  >
-                    <Paragraph>
-                      <Text strong>Edit Summary : </Text>
-                      <Text>{s1?.note}</Text>
-                    </Paragraph>
-                    <Paragraph>
-                      <Text strong>Submitted on : </Text>
-                      <Text>
-                        {s1?.submit_time ? covertToTime(s1?.submit_time) : ""}
-                      </Text>
-                    </Paragraph>
-                    <Paragraph>
-                      <Text strong>Submitter Nickname : </Text>
-                      <Text>
-                        <Link
-                          href={`/user/supports/${
-                            s1["submitter_nick_id"] || ""
-                          }?canon=${s1["namespace_id"] || 1}`}
-                        >
-                          <a>{s1?.submitter_nick_name}</a>
-                        </Link>
-                      </Text>
-                    </Paragraph>
-                    <Paragraph>
-                      <Text strong>Go live time : </Text>
-                      <Text>
-                        {s1?.go_live_time ? covertToTime(s1?.go_live_time) : ""}
-                      </Text>
-                    </Paragraph>
-                    {from == "topic" ? (
-                      <Paragraph>
-                        <Text strong>Canon : </Text>
-                        <Text>{changeSlashToArrow(s1?.namespace)}</Text>
-                      </Paragraph>
-                    ) : null}
-                    {from == "camp" ? (
-                      <Fragment>
-                        {s1?.camp_num != 1 ? (
-                          <Paragraph>
-                            <Text strong>Parent Camp : </Text>
-                            <Text>{s1?.parent_camp_name}</Text>
-                          </Paragraph>
-                        ) : (
-                          ""
-                        )}
+    <>
+      <TimelineInfoBar
+        compareMode={compareMode}
+        historyOF={router?.query?.from}
+      />
+      {/* <Breadcrumbs compareMode={compareMode} historyOF={router?.query?.from} /> */}
 
-                        <Paragraph>
-                          <Text strong>Keywords : </Text>
-                          <Text>{s1?.key_words}</Text>
-                        </Paragraph>
-                        <Paragraph>
-                          <Text strong>Camp About URL : </Text>
-                          <Text>
-                            {validUrl(s1?.camp_about_url) ? (
-                              <Link href={s1?.camp_about_url || ""}>
-                                <a>{s1?.camp_about_url}</a>
-                              </Link>
-                            ) : null}
-                          </Text>
-                        </Paragraph>
-                        <Paragraph>
-                          <Text strong>Camp About Nickname : </Text>
-                          <Text>
-                            <Link
-                              href={`/user/supports/${
-                                s1["camp_about_nick_id"] || ""
-                              }?canon=${s1["namespace_id"] || 1}`}
-                            >
-                              <a>{s1?.camp_about_nick_name}</a>
-                            </Link>
-                          </Text>
-                        </Paragraph>
-                        <Paragraph>
-                          <Text strong>Disable Additional Sub Camps : </Text>
-                          <Text>{s1?.is_disabled == 1 ? "Yes" : "No"}</Text>
-                        </Paragraph>
-                        <Paragraph>
-                          <Text strong>Single Level Camps Only : </Text>
-                          <Text>{s1?.is_one_level == 1 ? "Yes" : "No"}</Text>
-                        </Paragraph>
-                        <Paragraph>
-                          <Text strong>Camp Archived : </Text>
-                          <Text>{s1?.is_archive == 1 ? "Yes" : "No"}</Text>
-                        </Paragraph>
-                      </Fragment>
-                    ) : null}
-                    <Text strong style={{ textTransform: "capitalize" }}>
-                      {from === "topic"
-                        ? "Topic Name"
-                        : from === "camp"
-                        ? "Camp Name"
-                        : from}{" "}
-                      :{" "}
-                    </Text>
-                    <Card
-                      bordered
-                      className={
-                        styles.compareCardInternal + " " + styles.inter1
-                      }
-                    >
-                      <div
-                        dangerouslySetInnerHTML={{ __html: s1?.parsed_v }}
-                      ></div>
-                    </Card>
-                  </Card>
-                )}
+      {isLoading ? (
+        <CustomSkelton skeltonFor="comparisonPage" />
+      ) : (
+        <div className="ch-wrapper">
+          <Button
+            onClick={getBackUrl}
+            type="link"
+            className="text-2xl text-canBlack p-1 mb-14 gap-5 flex items-center max-lg:hidden leading-none"
+            icon={<i className="icon-back"></i>}
+          >
+            {router?.query?.from && capitalizeFirstLetter(router?.query?.from)}{" "}
+            History Comparison
+          </Button>
+
+          {!isMobileView && (
+            <Row gutter={[24, 24]}>
+              <Col xs={24} md={12}>
+                <HistoryCard
+                  compareMode={compareMode}
+                  comparisonData={s1}
+                  status={itemsStatus[s1?.id]}
+                  s1={true}
+                />
               </Col>
               <Col xs={24} md={12}>
-                {isLoading ? (
-                  <CustomSkelton
-                    skeltonFor="card"
-                    bodyCount={5}
-                    stylingClass="test"
-                    isButton={false}
-                    action={false}
-                  />
-                ) : (
-                  <Card
-                    bordered
-                    className={
-                      styles.compareCard +
-                      " " +
-                      styles[itemsStatus[s2?.id] || "old"]
-                    }
-                  >
-                    <Paragraph>
-                      <Text strong>Edit Summary : </Text>
-                      <Text>{s2?.note}</Text>
-                    </Paragraph>
-                    <Paragraph>
-                      <Text strong>Submitted on : </Text>
-                      <Text>
-                        {s2?.submit_time ? covertToTime(s2?.submit_time) : ""}
-                      </Text>
-                    </Paragraph>
-                    <Paragraph>
-                      <Text strong>Submitter Nickname : </Text>
-                      <Text>
-                        <Link
-                          href={`/user/supports/${
-                            s2["submitter_nick_id"] || ""
-                          }?canon=${s2["namespace_id"] || 1}`}
-                        >
-                          <a>{s2?.submitter_nick_name}</a>
-                        </Link>
-                      </Text>
-                    </Paragraph>
-                    <Paragraph>
-                      <Text strong>Go live time : </Text>
-                      <Text>
-                        {s2?.go_live_time ? covertToTime(s2?.go_live_time) : ""}
-                      </Text>
-                    </Paragraph>
-                    {from == "topic" ? (
-                      <Paragraph>
-                        <Text strong>Canon : </Text>
-                        <Text>{changeSlashToArrow(s2?.namespace)}</Text>
-                      </Paragraph>
-                    ) : null}
-                    {from == "camp" ? (
-                      <Fragment>
-                        {s2?.camp_num != 1 ? (
-                          <Paragraph>
-                            <Text strong>Parent Camp : </Text>
-                            <Text>{s2?.parent_camp_name}</Text>
-                          </Paragraph>
-                        ) : (
-                          ""
-                        )}
-                        <Paragraph>
-                          <Text strong>Keywords : </Text>
-                          <Text>{s2?.key_words}</Text>
-                        </Paragraph>
-                        <Paragraph>
-                          <Text strong>Camp About URL : </Text>
-                          <Text>
-                            {validUrl(s2?.camp_about_url) ? (
-                              <Link href={s2?.camp_about_url || ""}>
-                                <a>{s2?.camp_about_url}</a>
-                              </Link>
-                            ) : null}
-                          </Text>
-                        </Paragraph>
-                        <Paragraph>
-                          <Text strong>Camp About Nickname : </Text>
-                          <Text>
-                            <Link
-                              href={`/user/supports/${
-                                s2["camp_about_nick_id"] || ""
-                              }?canon=${s2["namespace_id"] || 1}`}
-                            >
-                              <a>{s2?.camp_about_nick_name}</a>
-                            </Link>
-                          </Text>
-                        </Paragraph>
-                        <Paragraph>
-                          <Text strong>Disable Additional Sub Camps : </Text>
-                          <Text>{s2?.is_disabled == 1 ? "Yes" : "No"}</Text>
-                        </Paragraph>
-                        <Paragraph>
-                          <Text strong>Single Level Camps Only : </Text>
-                          <Text>{s2?.is_one_level == 1 ? "Yes" : "No"}</Text>
-                        </Paragraph>
-                        <Paragraph>
-                          <Text strong>Camp Archived : </Text>
-                          <Text>{s2?.is_archive == 1 ? "Yes" : "No"}</Text>
-                        </Paragraph>
-                      </Fragment>
-                    ) : null}
-                    <Text strong style={{ textTransform: "capitalize" }}>
-                      {from === "topic"
-                        ? "Topic Name"
-                        : from === "camp"
-                        ? "Camp Name"
-                        : from}{" "}
-                      :{" "}
-                    </Text>
-                    <Card
-                      bordered
-                      className={
-                        styles.compareCardInternal + " " + styles.inter2
-                      }
-                    >
-                      <div
-                        dangerouslySetInnerHTML={{ __html: s2?.parsed_v }}
-                      ></div>
-                    </Card>
-                  </Card>
-                )}
+                <HistoryCard
+                  compareMode={compareMode}
+                  comparisonData={s2}
+                  status={itemsStatus[s2?.id]}
+                />
               </Col>
-              <Col span={24}>
-                <Divider />
-                {isLoading ? (
-                  <CustomSkelton
-                    skeltonFor="card"
-                    bodyCount={5}
-                    stylingClass="test"
-                    isButton={false}
-                    action={false}
-                    bordered={false}
-                    cardStylingClass="fullSkeleton"
+              {liveStatement !== null && (
+                <Col xs={24} md={24}>
+                  <HistoryCard
+                    compareMode={compareMode}
+                    comparisonData={liveStatement}
+                    status={liveStatement?.status}
+                    currentVersion={currentVersion}
                   />
-                ) : liveStatement ? (
-                  <Card
-                    bordered={false}
-                    className={
-                      styles.latestCard + " " + styles[liveStatement?.status] ||
-                      "live"
-                    }
-                    title={
-                      <Text>
-                        Latest revision as of{" "}
-                        {liveStatement?.revision_date
-                          ? covertToTime(liveStatement?.revision_date)
-                          : ""}
-                      </Text>
-                    }
-                  >
-                    <Text strong style={{ textTransform: "capitalize" }}>
-                      {from === "topic"
-                        ? "Topic Name"
-                        : from === "camp"
-                        ? "Camp Name"
-                        : from}{" "}
-                      :{" "}
-                    </Text>
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: liveStatement?.parsed_value,
-                      }}
-                    ></div>
-                    <Divider />
-                    <Paragraph>
-                      <Text strong>Edit Summary : </Text>
-                      <Text>{liveStatement?.note}</Text>
-                    </Paragraph>
-                    <Paragraph>
-                      <Text strong>Submitted on : </Text>
-                      <Text>
-                        {liveStatement?.submit_time
-                          ? covertToTime(liveStatement?.submit_time)
-                          : ""}
-                      </Text>
-                    </Paragraph>
-                    <Paragraph>
-                      <Text strong>Submitter Nickname : </Text>
-                      <Text>
-                        <Link
-                          href={`/user/supports/${
-                            liveStatement["submitter_nick_id"] || ""
-                          }?canon=${liveStatement["namespace_id"] || 1}`}
-                        >
-                          <a>{liveStatement?.submitter_nick_name}</a>
-                        </Link>
-                      </Text>
-                    </Paragraph>
-                    <Paragraph>
-                      <Text strong>Go live time : </Text>
-                      <Text>
-                        {liveStatement?.go_live_time
-                          ? covertToTime(liveStatement?.go_live_time)
-                          : ""}
-                      </Text>
-                    </Paragraph>
-                    {from == "topic" ? (
-                      <Paragraph>
-                        <Text strong>Canon : </Text>
-                        <Text>
-                          {changeSlashToArrow(liveStatement?.namespace)}
-                        </Text>
-                      </Paragraph>
-                    ) : null}
-                    {from == "camp" ? (
-                      <Fragment>
-                        {liveStatement?.camp_num != 1 ? (
-                          <Paragraph>
-                            <Text strong>Parent Camp : </Text>
-                            <Text>{liveStatement?.parent_camp_name}</Text>
-                          </Paragraph>
-                        ) : (
-                          ""
-                        )}
-                        <Paragraph>
-                          <Text strong>Keywords : </Text>
-                          <Text>{liveStatement?.key_words}</Text>
-                        </Paragraph>
-                        <Paragraph>
-                          <Text strong>Camp About URL : </Text>
-                          <Text>
-                            {validUrl(liveStatement?.camp_about_url) ? (
-                              <Link href={liveStatement?.camp_about_url || ""}>
-                                <a>{liveStatement?.camp_about_url}</a>
-                              </Link>
-                            ) : null}
-                          </Text>
-                        </Paragraph>
-                        <Paragraph>
-                          <Text strong>Camp About Nickname : </Text>
-                          <Text>
-                            <Link
-                              href={`/user/supports/${
-                                liveStatement["camp_about_nick_id"] || ""
-                              }?canon=${liveStatement["namespace_id"] || 1}`}
-                            >
-                              <a>{liveStatement?.camp_about_nick_name}</a>
-                            </Link>
-                          </Text>
-                        </Paragraph>
-                        <Paragraph>
-                          <Text strong>Disable Additional Sub Camps : </Text>
-                          <Text>
-                            {liveStatement?.is_disabled == 1 ? "Yes" : "No"}
-                          </Text>
-                        </Paragraph>
-                        <Paragraph>
-                          <Text strong>Single Level Camps Only : </Text>
-                          <Text>
-                            {liveStatement?.is_one_level == 1 ? "Yes" : "No"}
-                          </Text>
-                        </Paragraph>
-                        <Paragraph>
-                          <Text strong>Camp Archived : </Text>
-                          <Text>
-                            {liveStatement?.is_archive == 1 ? "Yes" : "No"}
-                          </Text>
-                        </Paragraph>
-                      </Fragment>
-                    ) : null}
-                  </Card>
-                ) : (
-                  ""
-                )}
-              </Col>
+                </Col>
+              )}
             </Row>
-          </div>
+          )}
+
+          {isMobileView && (
+            <Tabs
+              defaultActiveKey="1"
+              centered
+              className={`comparision-mobile-tabs ${
+                tabId && tabId === "1"
+                  ? getStatusClass(itemsStatus[s1?.id])
+                  : getStatusClass(itemsStatus[s2?.id])
+              }`}
+              onChange={(id) => {
+                setTabId(id);
+              }}
+            >
+              <Tabs.TabPane
+                className="comparison-tab-content"
+                tab={
+                  <>
+                    <p>{convertToDate(s1?.submit_time)}</p>
+                    <span>{convertToTime(s1?.submit_time)}</span>
+                  </>
+                }
+                key="1"
+              >
+                <Col xs={24} md={12}>
+                  <HistoryCard
+                    compareMode={compareMode}
+                    comparisonData={s1}
+                    status={itemsStatus[s1?.id]}
+                    s1={true}
+                    isMobileView={isMobileView}
+                  />
+                </Col>
+              </Tabs.TabPane>
+
+              <Tabs.TabPane
+                className="comparison-tab-content"
+                tab={
+                  <>
+                    <p>{convertToDate(s2?.submit_time)}</p>
+                    <span>{convertToTime(s2?.submit_time)}</span>
+                  </>
+                }
+                key="2"
+              >
+                <Col xs={24} md={12}>
+                  <HistoryCard
+                    compareMode={compareMode}
+                    comparisonData={s2}
+                    status={itemsStatus[s2?.id]}
+                    isMobileView={isMobileView}
+                  />
+                </Col>
+              </Tabs.TabPane>
+            </Tabs>
+          )}
         </div>
-      </div>
-    </Fragment>
+      )}
+    </>
   );
 }
 

@@ -1,7 +1,9 @@
 import { message } from "antd";
+import { openNotificationWithIcon } from "components/common/notification/notificationBar";
 import moment from "moment";
 
 export const handleError = (error, log = false) => {
+  // eslint-disable-next-line
   log ? window.console.log(error) : "";
 
   const nestedErrs = error
@@ -20,14 +22,20 @@ export const handleError = (error, log = false) => {
   ) {
     let keys = Object.keys(nestedErrs.error);
     keys.forEach((key) => {
-      message.error(nestedErrs.error[key][0]);
+      // message.error(nestedErrs.error[key][0]);
+      let type = "error";
+      openNotificationWithIcon(nestedErrs.error[key][0], type);
     });
   } else {
     if (nestedErrs.message) {
-      message.error(nestedErrs.message);
+      // message.error(nestedErrs.message);
+      let type = "error";
+      openNotificationWithIcon(nestedErrs.message, type);
     }
     if (error.message) {
-      message.error(error.message);
+      // message.error(error.message);
+      let type = "error";
+      openNotificationWithIcon(error.message, type);
     }
   }
   return null;
@@ -363,4 +371,95 @@ export const getProperties = (item) => {
   }
 
   return null;
+};
+
+export const capitalizeFirstLetter = (str) =>
+  str.charAt(0).toUpperCase() + str.slice(1);
+
+export function parseCookies(cookiesString) {
+  const cookiesArray = cookiesString?.split("; ");
+  const cookiesObject = {};
+
+  cookiesArray?.forEach((cookie) => {
+    const [key, value] = cookie?.split("=");
+    cookiesObject[key] = value;
+  });
+
+  return cookiesObject;
+}
+
+export const historyTitle = (historyOf) => {
+  switch (historyOf) {
+    case "statement":
+      return "Statement";
+    case "topic":
+      return "Topic";
+    case "camp":
+      return "Camp";
+    default:
+      return "";
+  }
+};
+export const convertToTime = (unixTime) => {
+  return moment(unixTime * 1000).format("DD MMM YYYY, hh:mm:ss A");
+};
+
+export const transformData = (data) => {
+  // Extract the videos array from the first element in the data array
+  const videos = data;
+
+  // Map over the videos array to transform each video object
+  return videos?.map((video) => {
+    // Generate the value by converting the title to lowercase and replacing spaces with underscores
+    const value = video.title.toLowerCase().replace(/ /g, "_");
+
+    // Return the new object with the desired shape
+    return {
+      value: value,
+      label: video.title,
+    };
+  });
+};
+
+export const replaceUnderscoresWithSpaces = (str) => {
+  return str.replace(/_/g, " ");
+};
+
+export const replaceHyphensAndCapitalize = (str) => {
+  // Replace hyphens with spaces
+  let replacedStr = str?.replace(/-/g, " ");
+
+  // Capitalize the first letter
+  let capitalizedStr =
+    replacedStr?.charAt(0)?.toUpperCase() + replacedStr?.slice(1);
+
+  return capitalizedStr;
+};
+
+export const getVideoNameFromURL = (str) => {
+  // Split the string at the first hyphen to remove the leading ID
+  let splitStr = str?.split("-")?.slice(1)?.join("-");
+
+  // Replace hyphens with spaces
+  let formattedStr = splitStr?.replace(/-/g, " ");
+
+  // Capitalize the first letter of the resulting string
+  let capitalizedStr =
+    formattedStr?.charAt(0)?.toUpperCase() + formattedStr.slice(1);
+
+  return capitalizedStr;
+};
+
+export const covertToTime = (unixTime) => {
+  return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
+};
+
+export const epochToMinutes = (epochTime): any => {
+  if (epochTime > 0) {
+    return Number(
+      new Date(epochTime * 1000).toLocaleString()?.split(",")[1].split(":")[1]
+    );
+  } else {
+    return 0;
+  }
 };

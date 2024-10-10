@@ -31,6 +31,7 @@ export const getLists = async (
     return error;
   }
 };
+
 export const getGravatarPicApi = async (email) => {
   try {
     let url = `https://www.gravatar.com/avatar/${md5(email)}?d=404`;
@@ -44,8 +45,8 @@ export const getGravatarPicApi = async (email) => {
 export const getNotificationsList = async (
   page: number = 1,
   per_page: number = 50,
-  loginToken = null,
-  is_seen: number = 1
+  is_seen: number = 0,
+  loginToken = null
 ) => {
   try {
     const res = await NetworkCall.fetch(
@@ -62,9 +63,13 @@ export const getNotificationsList = async (
         })
       );
     }
+
     return res;
   } catch (error) {
     handleError(error);
+    store.dispatch(setData([]));
+    store.dispatch(setHeaderData({ count: 0, list: [] }));
+    return error.error.data;
   }
 };
 
@@ -77,6 +82,50 @@ export const markNotificationRead = async (id: number) => {
 
     if (res && res?.status_code == 200) {
       await getNotificationsList();
+      await getLists();
+    }
+
+    return res;
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+export const markAllNotificationRead = async (
+  body: { ids: any[] },
+  page = 1,
+  perPage = -1
+) => {
+  try {
+    const res = await NetworkCall.fetch(
+      NotificationRequests.markAllReadNotification(body),
+      false
+    );
+
+    if (res && res?.status_code == 200) {
+      await getNotificationsList(page, perPage);
+      await getLists();
+    }
+
+    return res;
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+export const deleteAllNotifications = async (
+  body: { ids: any[] },
+  page = 1,
+  perPage = -1
+) => {
+  try {
+    const res = await NetworkCall.fetch(
+      NotificationRequests.deleteAllNotification(body),
+      false
+    );
+
+    if (res && res?.status_code == 200) {
+      await getNotificationsList(page, perPage);
       await getLists();
     }
 

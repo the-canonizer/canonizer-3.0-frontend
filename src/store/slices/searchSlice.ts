@@ -21,17 +21,29 @@ export const searchSlice = createSlice({
       page: 1,
       size: 1,
       total: 1,
+      topic_total: 0,
+      camp_total: 0,
+      statement_total: 0,
+      nickname_total: 0,
     },
+    searchCountForMetaData: {
+      topic_total: 0,
+      camp_total: 0,
+      statement_total: 0,
+      nickname_total: 0,
+    },
+
     searchValue: "",
     pageNumber: 1,
     searchQueryValue: "",
     selectedTopicFromAdvnaceFilterNickname: [],
-    selectNicknameIdFromGetApi : [],
-    selectNickNameIdFromDirectSupportTree :[],
-    clickAdvanceFilterOption:false,
-    selectedTopicFromAdvanceFilterAlgorithm:[],
-    selectedCampFromAdvanceFilterAlgorithm:[],
-    selectedStatementFromAdvanceFilterAlgorithm:[]
+    selectNicknameIdFromGetApi: [],
+    selectNickNameIdFromDirectSupportTree: [],
+    clickAdvanceFilterOption: false,
+    openSearchForMobileView: false,
+    selectedTopicFromAdvanceFilterAlgorithm: [],
+    selectedCampFromAdvanceFilterAlgorithm: [],
+    selectedStatementFromAdvanceFilterAlgorithm: [],
   },
   reducers: {
     setSearchData: (state, action) => {
@@ -55,8 +67,20 @@ export const searchSlice = createSlice({
     setSearchMetaData: (state, action) => {
       state.searchMetaData = {
         page: action.payload.page,
-        size: action.payload.nickname,
+        size: action.payload.size,
         total: action.payload.total,
+        topic_total: action.payload.topic_total,
+        camp_total: action.payload.camp_total,
+        statement_total: action.payload.statement_total,
+        nickname_total: action.payload.nickname_total,
+      };
+    },
+    setSearchCountForMetaData: (state, action) => {
+      state.searchCountForMetaData = {
+        topic_total: action.payload.topic_total,
+        camp_total: action.payload.camp_total,
+        statement_total: action.payload.statement_total,
+        nickname_total: action.payload.nickname_total,
       };
     },
     setSearchValue: (state, action) => {
@@ -79,6 +103,9 @@ export const searchSlice = createSlice({
     },
     setSelectNickNameIdFromDirectSupportTree: (state, action) => {
       state.selectNickNameIdFromDirectSupportTree = action.payload;
+    },
+    setOpenSearchForMobileView: (state, action) => {
+      state.openSearchForMobileView = action.payload;
     },
     setSelectedTopicFromAdvanceFilterAlgorithm: (state, action) => {
       state.selectedTopicFromAdvanceFilterAlgorithm = action.payload;
@@ -103,9 +130,11 @@ export const {
   setSelectNicknameIdFromGetApi,
   setClickAdvanceFilterOption,
   setSelectNickNameIdFromDirectSupportTree,
-  setSelectedTopicFromAdvanceFilterAlgorithm,
+  setOpenSearchForMobileView,
+  setSelectedStatementFromAdvanceFilterAlgorithm,
   setSelectedCampFromAdvanceFilterAlgorithm,
-  setSelectedStatementFromAdvanceFilterAlgorithm
+  setSelectedTopicFromAdvanceFilterAlgorithm,
+  setSearchCountForMetaData,
 } = searchSlice.actions;
 
 export default searchSlice.reducer;

@@ -13,10 +13,13 @@ import {
 } from "src/store/slices/searchSlice";
 import CustomSkelton from "../../common/customSkelton";
 import { CloseCircleOutlined } from "@ant-design/icons";
+import Image from "next/image";
+import { useRouter } from "next/router";
 
 const NicknameSearch = () => {
-  const { searchDataAll } = useSelector((state: RootState) => ({
+  const { searchDataAll, searchValue } = useSelector((state: RootState) => ({
     searchDataAll: state?.searchSlice?.searchDataAll,
+    searchValue: state?.searchSlice?.searchValue,
   }));
   const { searchMetaData } = useSelector((state: RootState) => ({
     searchMetaData: state?.searchSlice?.searchMetaData,
@@ -124,84 +127,162 @@ const NicknameSearch = () => {
       return searchDataAll.nickname;
     }
   };
-
+  const getHighlightedText = (text, highlight) => {
+    const parts = text?.split(new RegExp(`(${highlight})`, "gi"));
+    return (
+      <span>
+        {" "}
+        {parts?.map((part, i) => (
+          <span
+            key={i}
+            style={
+              part.toLowerCase() === highlight.toLowerCase()
+                ? { fontWeight: 700 }
+                : {}
+            }
+          >
+            {part}
+          </span>
+        ))}{" "}
+      </span>
+    );
+  };
+  const router = useRouter();
   return (
     <Fragment>
-      <aside className="leftSideBar miniSideBar">
-        <div className="leftSideBar_Card p-0 m-0">
-          <SearchSideBar />
-        </div>
-      </aside>
-      <div className="pageContentWrap">
-        <div className={styles.card}>
-          <div className="d-flex mb-2 align-items-center flex-wrap relative ant_tags">
-          <h4 className="m-0" data-testid="nickname_heading">Nickname</h4>
-         
-          {clickAdvanceFilterOption?<Space size={[0, 18]} wrap>
-          {/* <Tag onClose={()=>{handleTagClose()}}>{selectedTopicFromAdvnaceFilterNickname}</Tag> */}
-          {selectedTopicFromAdvnaceFilterNickname.map((topic, index) => (
-          <Tag key={index} >
-            {topic} <div><CloseCircleOutlined onClick={()=>{dispatch(setClickAdvanceFilterOption(false));handleTagClose(topic)}}/></div>
-          </Tag>
-        ))}
-          </Space>:""}
-            <AdvanceFilter />
-          </div>
-          
-          {loading ? (
-            <CustomSkelton
-              skeltonFor="list"
-              bodyCount={10}
-              stylingClass="listSkeleton"
-              isButton={false}
+      <div className="flex justify-between lg:items-center lg:flex-row flex-col items-start mb-10 mt-2.5 lg:gap-0 gap-5">
+        <div className="flex  items-center  ">
+          <div className="flex items-center gap-2.5">
+            <Image
+              src="/images/recent-activiity-arrow.svg"
+              width={16}
+              height={24}
             />
-          ) : (
-            <div className={styles.search_lists}>
-              {searchDataAll.nickname?.length ? (
-                <div>
-                  <ul>
-                    {mapNickNameList(
-                      selectNicknameIdFromGetApi,
-                      findNicknameId,
-                      filterNicknameList,
-                      clickAdvanceFilterOption,
-                      searchDataAll
-                    ).map((x) => {
-                      return (
-                        <>
-                          <li>
-                            <Link href={`${x?.link}`}>
-                              <a>
-                                <label style={{ cursor: "pointer" }}>
-                                  {x?.type_value}
-                                </label>
-                              </a>
-                            </Link>
 
-                            <span className={styles.ml_auto}>
-                              Supported camps:{" "}
-                              <strong className={styles.yellow_color}>
-                                {x.support_count == "" ? 0 : x.support_count}
-                              </strong>{" "}
-                            </span>
-                          </li>
-                        </>
-                      );
-                    })}
-                  </ul>
-                </div>
+            <h3 className="lg:text-3xl text-xl   text-canBlack font-medium">
+              Search Results for “
+              <span className="text-canBlue capitalize">
+                {router?.query?.q}
+              </span>
+              ”
+            </h3>
+          </div>
+        </div>
+        <AdvanceFilter />
+      </div>
+      <div className="flex lg:flex-row flex-col gap-10">
+        <aside className="leftSideBar miniSideBar">
+          <div className="leftSideBar_Card p-0 m-0">
+            <SearchSideBar />
+          </div>
+        </aside>
+        <div className="pageContentWrap flex-1">
+          <div className="bg-canGray lg:py-5 lg:px-8 py-4 px-4 rounded-xl mb-5">
+            <div className="d-flex mb-2 align-items-center flex-wrap relative ant_tags">
+              {clickAdvanceFilterOption ? (
+                <Space size={[0, 18]} wrap>
+                  {/* <Tag onClose={()=>{handleTagClose()}}>{selectedTopicFromAdvnaceFilterNickname}</Tag> */}
+                  {selectedTopicFromAdvnaceFilterNickname.map(
+                    (topic, index) => (
+                      <Tag key={index}>
+                        {topic}{" "}
+                        <div>
+                          <CloseCircleOutlined
+                            onClick={() => {
+                              dispatch(setClickAdvanceFilterOption(false));
+                              handleTagClose(topic);
+                            }}
+                          />
+                        </div>
+                      </Tag>
+                    )
+                  )}
+                </Space>
               ) : (
-                showEmpty("No Data Found")
+                ""
               )}
+              {/* <AdvanceFilter /> */}
             </div>
-          )}
-          <Pagination
-            hideOnSinglePage={true}
-            total={searchMetaData.total}
-            pageSize={20}
-            onChange={pageChange}
-            showSizeChanger={false}
-          />
+
+            <div className="mb-2">
+              <h4
+                className="!mb-6 !text-base !font-semibold !text-canBlack"
+                data-testid="nickname_heading"
+              >
+                Nickname
+              </h4>
+            </div>
+
+            {loading ? (
+              <CustomSkelton
+                skeltonFor="list"
+                bodyCount={10}
+                stylingClass="listSkeleton"
+                isButton={false}
+              />
+            ) : (
+              <div className="">
+                {searchDataAll.nickname?.length ? (
+                  <div>
+                    <ul>
+                      {mapNickNameList(
+                        selectNicknameIdFromGetApi,
+                        findNicknameId,
+                        filterNicknameList,
+                        clickAdvanceFilterOption,
+                        searchDataAll
+                      ).map((x) => {
+                        return (
+                          <>
+                            <li className="text-sm font-medium bg-white w-full px-5 py-2 rounded-xl mb-2 flex justify-between">
+                              <Link href={`${x?.link}`}>
+                                <a className="flex gap-2.5">
+                                  <Image
+                                    src="/images/nickname-user-icon.svg"
+                                    width={14}
+                                    height={16}
+                                  />
+                                  <label
+                                    style={{ cursor: "pointer" }}
+                                    className="font-medium text-base"
+                                  >
+                                    {/* {x?.type_value} */}
+                                    {getHighlightedText(
+                                      x?.type_value,
+                                      searchValue
+                                    )}
+                                  </label>
+                                </a>
+                              </Link>
+
+                              <span className="font-normal text-base">
+                                Supported camps:{" "}
+                                <strong className="text-canOrange font-semibold text-base">
+                                  {x.support_count == "" ? 0 : x.support_count}
+                                </strong>{" "}
+                              </span>
+                            </li>
+                          </>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                ) : (
+                  <span className="italic text-canLight">
+                    There is no data to show in this category.
+                  </span>
+                )}
+              </div>
+            )}
+            <Pagination
+              className="mt-5 [&_.ant-pagination-item]:!mr-1 lg:[&_.ant-pagination-item]:!mr-2"
+              hideOnSinglePage={true}
+              total={searchMetaData.total}
+              pageSize={20}
+              onChange={pageChange}
+              showSizeChanger={false}
+            />
+          </div>
         </div>
       </div>
     </Fragment>

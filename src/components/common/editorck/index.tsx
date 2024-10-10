@@ -26,7 +26,7 @@ interface height {
 }
 
 export default function Editorck(
-  props: editorState & editorchange & placeholder & toolbaritems & height
+  props: editorState & editorchange & placeholder & toolbaritems & height & any
 ) {
   const { isUserAuthenticated } = isAuth();
   const [loadeditor, setLoadeditor] = useState(false);
@@ -55,23 +55,32 @@ export default function Editorck(
         "linkImage",
       ],
     },
+    autosave: {
+      save(editor) {
+        const editorData = editor?.getData();
+        props?.saveContent && props?.saveContent(editorData);
+      },
+      waitingTime: process.env.NEXT_PUBLIC_AUTOSAVE_THRESHOLD,
+    },
   };
 
   return (
     <div>
       {loadeditor ? (
         <CKEditor
+          ref={props.ref}
           config={editorConfiguration}
           editor={ClassicEditor.Editor}
           data={editordata}
           onReady={(editor) => {
-            editor.editing.view.focus();
             editor.editing.view.document.on("click", () => {
               props.oneditorchange(editor?.getData());
             });
+
             editor.editing.view.document.on("blur", () => {
               props.oneditorchange(editor?.getData());
             });
+
             if (props.height)
               editor.editing.view.change((writer) => {
                 writer.setStyle(
@@ -80,6 +89,8 @@ export default function Editorck(
                   editor.editing.view.document.getRoot()
                 );
               });
+
+            editor.editing.view.focus();
           }}
           onChange={(event, editor: any) => {
             // let isTyping = false;

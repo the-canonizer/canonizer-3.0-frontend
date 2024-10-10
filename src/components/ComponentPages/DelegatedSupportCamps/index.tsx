@@ -53,8 +53,15 @@ const DelegatedSupportCamps = ({ search }: any) => {
     };
 
     let res = await removeSupportedCampsEntireTopic(removeEntireData);
+
+    console.log("Response:", res); // Add this to see what the API returns
+
     if (res && res.status_code == 200) {
-      message.success(res.message);
+      if (typeof res.message === "string") {
+        message.success(res.message); // Ensure this is a string
+      } else {
+        console.error("Expected a string but got:", res.message);
+      }
       setIsRemoveSupportModalVisible(false);
       fetchDelegatedSupportCampsList();
     }

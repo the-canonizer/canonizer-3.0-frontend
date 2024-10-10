@@ -120,6 +120,10 @@ export const otpRule = {
       max: 6,
       message: validations.otpLength,
     },
+    {
+      min: 6,
+      message: validations.otpLength,
+    },
   ],
 };
 
@@ -321,8 +325,8 @@ export const topicNameRule = {
       message: validations.topicName,
     },
     {
-      max: 30,
-      message: validations.topiNameMax30,
+      max: 80,
+      message: validations.topiNameMax80,
     },
     {
       pattern: /[^ \s]/,
@@ -359,8 +363,8 @@ export const campNameRule = {
       message: validations.campName,
     },
     {
-      max: 30,
-      message: validations.topiNameMax30,
+      max: 80,
+      message: validations.topiNameMax80,
     },
     emojiValidation(patterns.emoji_restrication),
   ],

@@ -86,7 +86,7 @@ const UploadFiles = () => {
   const [toggleFileView, setToggleFileView] = useState(false);
   const [getUploadFilesLoadingIndicator, setGetUploadFilesLoadingIndicator] =
     useState(false);
-    const [getUploadFolderLoadingIndicator, setGetUploadFolderLoadingIndicator] =
+  const [getUploadFolderLoadingIndicator, setGetUploadFolderLoadingIndicator] =
     useState(false);
 
   const { isUserAuthenticated } = isAuth();
@@ -210,16 +210,16 @@ const UploadFiles = () => {
     }
   };
 
-  const Openfolder =async (i) => {
+  const Openfolder = async (i) => {
     setOpenFolderID(i);
     shownFileStatus();
     openFolderShow();
     setSelectedFolderID(i);
     disbleCreateFolderBtn();
     hideUploadsAfter();
-    setGetUploadFolderLoadingIndicator(true)
-   await GetFileInsideFolderData(i);
-    setGetUploadFolderLoadingIndicator(false)
+    setGetUploadFolderLoadingIndicator(true);
+    await GetFileInsideFolderData(i);
+    setGetUploadFolderLoadingIndicator(false);
 
     //localStorage.setItem("isFolderOpen", "true"),
     dispatch(setIsFolderOpen(true));
@@ -350,7 +350,6 @@ const UploadFiles = () => {
       setToggleFileView={setToggleFileView}
       getUploadFilesLoadingIndicator={getUploadFilesLoadingIndicator}
       getUploadFolderLoadingIndicator={getUploadFolderLoadingIndicator}
-
     />
   );
 };

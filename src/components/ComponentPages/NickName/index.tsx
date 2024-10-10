@@ -1,11 +1,12 @@
-import NickNameUI from "./NickNameUI";
 import { useState, useEffect } from "react";
 import { Form, message } from "antd";
+
+import NickNameUI from "./NickNameUI";
 import {
   addNickName,
   updateNickName,
   getNickNameList,
-} from "../../../network/api/userApi";
+} from "src/network/api/userApi";
 
 const NickName = () => {
   const [add_edit_form] = Form.useForm();
@@ -14,23 +15,29 @@ const NickName = () => {
   const [addEditTitle, setAddEditTitle] = useState("");
   const [addEditBtn, setAddEditBtn] = useState("");
   const [nickNameList, setNickNameList] = useState([]);
-  const [selectedNickNameList, setSelectedNickNameList] = useState([]);
+  const [selectedNickNameList] = useState([]);
   const create = "Create";
   const [disableButton, setDisableButton] = useState(false);
   const [getNickNamesLoadingIndicator, setGetNickNamesIndicator] =
     useState(false);
 
-  const editNickName = (record) => {
-    setAddEditTitle("Edit Nickname");
-    setAddEditBtn("Update");
-    setIsNickNameModalVisible(true);
-    setSelectedNickNameList(record);
-    add_edit_form.setFieldsValue({
-      nick_name: record.nick_name.replace(/\s\s+/g, " "),
-      visibility_status: record.private.toString(),
-    });
-  };
+  const chnageVisibilityStatus = async (value, record) => {
+    const parsedValue = parseInt(value);
+    const formBody = {
+      visibility_status: isNaN(parsedValue) ? 0 : parsedValue,
+    };
 
+    if (record && record.id) {
+      let nickNameId = "/" + record.id;
+      let res = await updateNickName(formBody, nickNameId);
+      if (res && res.status_code === 200) {
+        message.success(res.message);
+        setDisableButton(false);
+      } else {
+        setDisableButton(false);
+      }
+    }
+  };
   const handleNickNameCancel = () => {
     setIsNickNameModalVisible(false);
   };
@@ -105,13 +112,13 @@ const NickName = () => {
       addEditTitle={addEditTitle}
       addEditBtn={addEditBtn}
       isNickNameModalVisible={isNickNameModalVisible}
-      editNickName={editNickName}
       handleAddNickName={handleAddNickName}
       handleNickNameCancel={handleNickNameCancel}
       onAddUpdateNickName={onAddUpdateNickName}
       nickNameList={nickNameList}
       disableButton={disableButton}
       getNickNamesLoadingIndicator={getNickNamesLoadingIndicator}
+      chnageVisibilityStatus={chnageVisibilityStatus}
     />
   );
 };

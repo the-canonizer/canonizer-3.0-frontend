@@ -1,15 +1,10 @@
 import { Fragment, useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { Row, Col, Typography } from "antd";
-import Image from "next/image";
+import { Row, Col, Typography, Image } from "antd";
 import Link from "next/link";
 import { useSelector } from "react-redux";
 
-import styles from "./siteFooter.module.scss";
-
 import { RootState } from "src/store";
-
-const { Title } = Typography;
 
 function Footer() {
   const router = useRouter();
@@ -39,6 +34,12 @@ function Footer() {
       id: 10,
       external: true,
     },
+    {
+      link: "/videos",
+      linkTitle: "Videos",
+      id: 13,
+      external: true,
+    },
   ];
 
   const mockLinks2 = [
@@ -53,16 +54,26 @@ function Footer() {
       id: 6,
       external: true,
     },
-    {
-      link: process.env.NEXT_PUBLIC_BLOG_URL,
-      linkTitle: "Blog",
-      id: 7,
-      external: true,
-    },
+    // {
+    //   link: process.env.NEXT_PUBLIC_BLOG_URL,
+    //   linkTitle: "Blog",
+    //   id: 7,
+    //   external: true,
+    // },
     {
       link: "/topic/6-Canonizer-Jobs/1-Agreement?is_tree_open=1",
       linkTitle: "Jobs",
       id: 8,
+    },
+    {
+      link: "/privacy-policy",
+      linkTitle: "Privacy Policy",
+      id: 9,
+    },
+    {
+      link: "/terms-and-services",
+      linkTitle: "Terms & Services",
+      id: 10,
     },
   ];
 
@@ -84,123 +95,110 @@ function Footer() {
 
   return (
     <Fragment>
-      <footer className={`printHIde ${styles.wrap}`}>
-        <div className={styles.container}>
-          <Row>
-            <Col xs={24} sm={10} md={7} lg={6}>
-              <div className={styles.logo}>
-                <Link href="/">
-                  <a>
-                    <Image
-                      src={`${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/site-images/logo.svg`}
-                      alt="Canonizer"
-                      width={142}
-                      height={26}
-                      layout="intrinsic"
-                    />
-                  </a>
-                </Link>
-              </div>
-              <p className={styles.note_text}>
-                Canonizer is an
-                <a
-                  href="https://github.com/the-canonizer/canonizer-3.0-frontend"
-                  rel="noreferrer"
-                  target="_blank"
-                >
-                  {" "}
-                  open source{" "}
-                </a>{" "}
-                project designed to build consensus and bring people together.
-                Your collaboration can make all the difference. Join us!
-              </p>
-              <p>Patent: US 8,160,970 B2</p>
-              <ul className={styles.privacyTerms}>
-                <li>
-                  <Link href="/privacy-policy">
-                    <a>Privacy Policy</a>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/terms-and-services">
-                    <a>Terms &amp; Services</a>
-                  </Link>
-                </li>
-              </ul>
-            </Col>
-            <Col xs={24} sm={14} md={10} lg={12}>
-              <div className={styles.navsWrap}>
-                <Row gutter={20}>
-                  <Col xs={24} md={12}>
-                    <ul>
-                      {mockLinks?.map((item) => (
-                        <li key={item.id}>
-                          {item?.external ? (
-                            <a
-                              href={item.link}
-                              rel="noopener noreferrer"
-                              target="_blank"
-                            >
-                              <i className="icon-angle-right"></i>{" "}
-                              {item.linkTitle}
-                            </a>
-                          ) : (
-                            <Link href={item.link}>
-                              <a>
-                                <i className="icon-angle-right"></i>{" "}
-                                {item.linkTitle}
-                              </a>
-                            </Link>
-                          )}
-                        </li>
-                      ))}
-                    </ul>
-                  </Col>
-                  <Col xs={24} md={12}>
-                    <ul>
-                      {mockLinks2?.map((item) => {
-                        return (
-                          <li key={item.id}>
-                            {router?.asPath.includes("/topic") ||
-                            item.external ? (
-                              <a
-                                href={item.link}
-                                rel="noopener noreferrer"
-                                target={item.external ? "_blank" : "_self"}
-                              >
-                                <i className="icon-angle-right"></i>{" "}
-                                {item.linkTitle}
-                              </a>
-                            ) : (
-                              <Link href={item.link}>
-                                <a>
-                                  <i className="icon-angle-right"></i>{" "}
-                                  {item.linkTitle}
-                                </a>
-                              </Link>
-                            )}
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </Col>
-                </Row>
-              </div>
-            </Col>
-            <Col xs={24} sm={12} md={7} lg={6}>
-              <div className={styles.supportWidget}>
-                <Title level={5}>Comments and Questions:</Title>
-                <Link href="mailto:support@canonizer.com">
-                  <a>
-                    <i className="icon-envelope"></i> support@canonizer.com
-                  </a>
-                </Link>
-              </div>
-            </Col>
-          </Row>
-        </div>
-        <div className={styles.copyRights}>
-          <p>
+      <footer className={`printHIde bg-canBlack px-4 md:px-7 py-4 pt-7`}>
+        <Row gutter={20}>
+          <Col xs={24} sm={24} md={7} lg={8}>
+            <div className="mb-3">
+              <Link href="/">
+                <a>
+                  <Image
+                    src={`/images/logo-white.svg`}
+                    alt="Canonizer"
+                    width={150}
+                  />
+                </a>
+              </Link>
+            </div>
+            <p className="text-xs font-inter font-normal text-white md:!pr-8">
+              Canonizer is an
+              <a
+                href="https://github.com/the-canonizer/canonizer-3.0-frontend"
+                rel="noreferrer"
+                target="_blank"
+              >
+                {" "}
+                open source{" "}
+              </a>{" "}
+              project designed to build consensus and bring people together.
+              Your collaboration can make all the difference.{" "}
+              <Link href="/login">
+                <a className="font-semibold underline">Join us!</a>
+              </Link>
+            </p>
+            <p className="font-semibold text-white text-xs mt-3">
+              Patent: US 8,160,970 B2
+            </p>
+          </Col>
+          <Col xs={24} sm={24} md={10} lg={10}>
+            <Row gutter={20} className="px-6 sm:px-32 sm:py-4">
+              <Col xs={12} md={12} className="text-white">
+                <Typography.Paragraph className="text-xs font-bold text-white">
+                  Explore
+                </Typography.Paragraph>
+                <ul>
+                  {mockLinks?.map((item) => (
+                    <li key={item.id} className="text-xs font-normal mb-2">
+                      {item?.external ? (
+                        <a
+                          href={item.link}
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          {item.linkTitle}
+                        </a>
+                      ) : (
+                        <Link href={item.link}>
+                          <a>{item.linkTitle}</a>
+                        </Link>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </Col>
+              <Col xs={12} md={12} className="text-white">
+                <Typography.Paragraph className="text-xs font-bold text-white">
+                  Learn More{" "}
+                </Typography.Paragraph>
+                <ul>
+                  {mockLinks2?.map((item) => {
+                    return (
+                      <li key={item.id} className="text-xs font-normal mb-2">
+                        {router?.asPath.includes("/topic") || item.external ? (
+                          <a
+                            href={item.link}
+                            rel="noopener noreferrer"
+                            target={item.external ? "_blank" : "_self"}
+                          >
+                            {item.linkTitle}
+                          </a>
+                        ) : (
+                          <Link href={item.link}>
+                            <a>{item.linkTitle}</a>
+                          </Link>
+                        )}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </Col>
+            </Row>
+          </Col>
+          <Col xs={24} sm={24} md={7} lg={6}>
+            <div className="bg-[#FFFFFF1A] rounded-lg px-3 py-4">
+              <Typography.Paragraph className="text-xs text-white">
+                Have comments or questions?
+              </Typography.Paragraph>
+              <Link href="mailto:support@canonizer.com">
+                <a className="text-white font-medium break-words text-xs">
+                  <i className="icon-envelope mr-1 text-xs"></i>{" "}
+                  <span className="underline">support@canonizer.com</span>
+                </a>
+              </Link>
+            </div>
+          </Col>
+        </Row>
+        <div className="border-t-[1px] pt-3 mt-4 text-center text-[10px] text-white opacity-[0.5]">
+          <p className="m-0">
             Copyright owned by the volunteers contributing to the system and its
             contents (2006 - {new Date().getFullYear()})
           </p>

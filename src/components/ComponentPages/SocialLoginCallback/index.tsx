@@ -36,8 +36,8 @@ function SocialLoginCallback() {
 
   const fetchNickNameList = async () => {
     let response = await getNickNameList();
-      dispatch(setUserNickNames(response?.data));
-  }
+    dispatch(setUserNickNames(response?.data));
+  };
 
   const sendData = async (data: object) => {
     const redirectTab = localStorage.getItem("redirectTab");
@@ -49,8 +49,7 @@ function SocialLoginCallback() {
         (response && response.status_code === 200) ||
         (response && response.status_code === 400)
       ) {
-        
-        fetchNickNameList()
+        fetchNickNameList();
 
         if (redirectType) {
           dispatch(setValue({ label: "redirect_type", value: false }));

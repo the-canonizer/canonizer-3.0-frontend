@@ -20,27 +20,19 @@ const CampHistory = ({ campStatement, topicNamespaceId }: any) => {
 
   return (
     <>
-      {!!campStatement?.parent_camp_name && (
-        <Title level={5}>
-          Parent Camp :{" "}
-          <span className={styles.updateSurveyPrj}>
-            {campStatement?.parent_camp_name}
-          </span>
-        </Title>
-      )}
-      <Title level={5}>
-        Keywords :{" "}
+      <p className="mb-[15px]">
+        Camp Name:
         <span className={styles.updateSurveyPrj}>
-          {campStatement?.key_words}
+          {campStatement?.camp_name}
         </span>
-      </Title>
-      <Title level={5}>
-        Edit Summary :{" "}
-        <span className={styles.updateSurveyPrj}>{campStatement?.note}</span>
-      </Title>
-      <Title level={5}>
-        Camp About URL :{" "}
-        <span className={styles.updateSurveyPrj}>
+      </p>
+      <p className="font-semibold mb-2.5">UPDATES</p>
+      <p>
+        Edit summary:<span>{campStatement?.note}</span>
+      </p>
+      <p>
+        Camp about URL:
+        <span>
           {campStatement?.camp_about_url &&
             validUrl(campStatement?.camp_about_url) && (
               <Link href={campStatement?.camp_about_url}>
@@ -48,10 +40,9 @@ const CampHistory = ({ campStatement, topicNamespaceId }: any) => {
               </Link>
             )}
         </span>
-      </Title>
-
-      <Title level={5}>
-        Camp About Nickname :{" "}
+      </p>
+      <p>
+        Camp about Nickname:
         <span>
           <Link
             href={`/user/supports/${
@@ -62,10 +53,9 @@ const CampHistory = ({ campStatement, topicNamespaceId }: any) => {
             <a>{campStatement?.camp_about_nick_name}</a>
           </Link>
         </span>
-      </Title>
-
-      <Title level={5}>
-        Submitter Nickname :{" "}
+      </p>
+      <p>
+        Submitter nickname:
         <span>
           <Link
             href={{
@@ -81,34 +71,49 @@ const CampHistory = ({ campStatement, topicNamespaceId }: any) => {
             <a>{campStatement?.submitter_nick_name}</a>
           </Link>
         </span>
-      </Title>
-      <Title level={5}>
-        Disable Additional Sub Camps :{" "}
+      </p>
+      <p>
+        Disable additional sub-camps:{" "}
         <span>{campStatement?.is_disabled == 1 ? "Yes" : "No"}</span>
-      </Title>
-      <Title level={5}>
-        Single Level Camps Only :{" "}
+      </p>
+      <p>
+        Single level Camps only:
         <span>{campStatement?.is_one_level == 1 ? "Yes" : "No"}</span>
-      </Title>
-      <Title level={5}>
-        Camp Archived :{" "}
+      </p>
+      <p>
+        Camp archived:
         <span>{campStatement?.is_archive == 1 ? "Yes" : "No"}</span>
-      </Title>
-      <Title level={5}>
-        Submitted On : <span>{covertToTime(campStatement?.submit_time)}</span>
-      </Title>
-
-      <Title level={5}>
-        Go Live Time : <span>{covertToTime(campStatement?.go_live_time)}</span>
-      </Title>
+      </p>
+      <p>
+        Submitted on:<span>{covertToTime(campStatement?.submit_time)}</span>
+      </p>
+      <p>
+        {campStatement &&
+        (campStatement?.status == "live" ||
+          campStatement?.status == "old" ||
+          campStatement?.status == "objected")
+          ? "Go Live Time"
+          : "Going live on"}{" "}
+        :<span>{covertToTime(campStatement?.go_live_time)}</span>
+      </p>
+      {!!campStatement?.parent_camp_name && (
+        <p>
+          Parent Camp :<span>{campStatement?.parent_camp_name}</span>
+        </p>
+      )}
+      {campStatement?.key_words && (
+        <p>
+          Keywords :<span>{campStatement?.key_words}</span>
+        </p>
+      )}
       {campStatement?.object_reason && (
-        <Title level={5}>
+        <p>
           Object Reason : <span>{campStatement?.object_reason}</span>
-        </Title>
+        </p>
       )}
       {campStatement?.objector_nick_name && (
-        <Title level={5}>
-          Objector Nickname :{" "}
+        <p>
+          Objector Nickname :
           <span>
             <Link
               href={`/user/supports/${
@@ -119,10 +124,10 @@ const CampHistory = ({ campStatement, topicNamespaceId }: any) => {
               <a>{campStatement?.objector_nick_name}</a>
             </Link>
           </span>
-        </Title>
+        </p>
       )}
-      <Title level={5}>
-        Camp Leader :{" "}
+      <p>
+        Camp Leader:{" "}
         <span>
           {campStatement && campStatement?.camp_leader_nick_name ? (
             <>
@@ -144,7 +149,7 @@ const CampHistory = ({ campStatement, topicNamespaceId }: any) => {
             <>No</>
           )}
         </span>
-      </Title>
+      </p>
     </>
   );
 };

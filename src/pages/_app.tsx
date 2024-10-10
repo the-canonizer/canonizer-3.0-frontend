@@ -1,31 +1,30 @@
-import React, { useEffect } from "react";
-import useState from "react-usestateref";
 import App, { AppContext, AppInitialProps, AppProps } from "next/app";
-import { Provider } from "react-redux";
-import { CookiesProvider } from "react-cookie";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { useClearCache } from "react-clear-cache";
+import { CookiesProvider } from "react-cookie";
+import { Provider } from "react-redux";
+import useState from "react-usestateref";
 
 import "antd/dist/antd.css";
-import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import "slick-carousel/slick/slick.css";
 
 import "../../styles/globals.scss";
 import "../../styles/variables.less";
+import "../assets/editorcss/editor.css";
 import "../assets/fonticons/style.css";
 import "../assets/scss/global.scss";
-import "../assets/editorcss/editor.css";
 
-import ErrorBoundary from "../hoc/ErrorBoundary";
 import HeadContentAndPermissionComponent from "../components/common/headContentAndPermisisonCheck";
+import ErrorBoundary from "../hoc/ErrorBoundary";
 import { store, wrapper } from "../store";
 
-import { metaTagsApi } from "src/network/api/metaTagsAPI";
+import WithRouteChange from "src/hoc/withRouteChange";
 import { checkTopicCampExistAPICall } from "src/network/api/campDetailApi";
-import { getCookies } from "src/utils/generalUtility";
+import { metaTagsApi } from "src/network/api/metaTagsAPI";
 import { createToken } from "src/network/api/userApi";
-import CustomSkelton from "@/components/common/customSkelton";
-import { logOut } from "@/components/common/headers/loggedInHeaderNavigation";
-import moment from "moment";
+import { getCookies } from "src/utils/generalUtility";
 
 type AppOwnProps = { meta: any; canonical_url: string; returnURL: string };
 
@@ -40,70 +39,13 @@ function WrappedApp({
     [_, setIsAuthenticated, isAuthenticatedRef] = useState(
       !!(getCookies() as any)?.loginToken
     );
-  
-    const buildDateGreaterThan = (latestDate, currentDate) => {
-      const momLatestDateTime = moment(latestDate);
-      const momCurrentDateTime = moment(currentDate);
-   
-      return !!(momLatestDateTime.isAfter(momCurrentDateTime));
-    };
- 
- 
-   const refreshCacheAndReload = () => {
-      for (const key in localStorage) {
-        if (key !== "auth_token") {
-          localStorage.removeItem(key);
-        }
-      }
-     
-      const cookies = document.cookie.split("; ");
-        for (let cookie of cookies) {
-          const eqPos = cookie.indexOf("=");
-          const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-          if (name !== "loginToken"){
-            document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
-          }
-        }
- 
- 
-        if (window?.caches) {
-          window.caches.keys().then((names) => {
-            for (const name of names) {
-              caches.delete(name);
-            }
-          });
-      }
-   
-  };
+  // const { isLatestVersion, emptyCacheStorage, latestVersion } = useClearCache();
 
- 
- 
-  useEffect(()=>{
-    fetch("/meta.json")
-    .then((response) => response.json())
-    .then((meta) => {
-      console.log('meta ===>', meta);
-        const latestVersionDate = meta?.buildDate;
-        const currentVersionDate = localStorage.getItem("build_number");
-        
-        const shouldForceRefresh = buildDateGreaterThan(
-          meta?.buildDate,
-          +currentVersionDate ?? 0
-        );
-         if (shouldForceRefresh) {
-          refreshCacheAndReload();
-          localStorage.setItem("build_number", meta?.buildDate);
-        }
-         console.log('cache',{
-          shouldForceRefresh: shouldForceRefresh,
-          latestVersionDate: meta?.buildDate,
-          currentVersionDate: +currentVersionDate??0
-        })
-  
-    });
- 
-  },[])
- 
+  // if (!isLatestVersion) {
+  //   console.info({ latestVersion });
+  //   emptyCacheStorage();
+  // }
+
   useEffect(() => {
     const fetchToken = async () => {
       if (router?.asPath) {
@@ -147,7 +89,6 @@ function WrappedApp({
     const handleTabClose = (event) => {
       if (!isRouting) {
         // Your custom logic here
-        console.log("Tab is closing");
         // Prevent the tab from closing, if necessary
         event.preventDefault();
         event.returnValue = "";
@@ -175,10 +116,14 @@ function WrappedApp({
             canonical={canonical_url}
             {...pageProps}
           />
-          {isAuthenticatedRef?.current &&
-          !!(getCookies() as any)?.loginToken ? (
-            <Component {...pageProps} />
-          ) : null}
+          <WithRouteChange>
+            {/* <ConfigProvider theme={}> */}
+            {isAuthenticatedRef?.current &&
+            !!(getCookies() as any)?.loginToken ? (
+              <Component {...pageProps} />
+            ) : null}
+            {/* </ConfigProvider> */}
+          </WithRouteChange>
         </ErrorBoundary>
       </Provider>
     </CookiesProvider>
@@ -277,8 +222,6 @@ WrappedApp.getInitialProps = async (
   };
 
   const metaData = await getTagData(req);
-
-  // console.log(aspath'metaData----', metaData, 'componentName----', componentName)
 
   /**
    *

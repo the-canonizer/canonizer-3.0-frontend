@@ -2,7 +2,6 @@ import { Fragment } from "react";
 import { useRouter } from "next/router";
 import { Spin } from "antd";
 
-import SideBar from "../../CampForum/UI/sidebar";
 import FormUI from "./FormUI";
 import CampInfoBar from "../../TopicDetails/CampInfoBar";
 
@@ -17,9 +16,8 @@ const CreateNewCampUI = ({
   campNickName,
   options,
   onCheckboxChange,
-  onParentCampChange,
   isLoading,
-}: any) => {
+}) => {
   const router = useRouter();
 
   //  post section end
@@ -32,7 +30,7 @@ const CreateNewCampUI = ({
     <Fragment>
       <div className="d-flex">
         <aside className="leftSideBar miniSideBar topicPageNewLayoutSidebar">
-          <SideBar />
+          {/* <SideBar /> */}
         </aside>
         <div className="pageContentWrap">
           <CampInfoBar payload={payload} />
@@ -48,8 +46,12 @@ const CreateNewCampUI = ({
               campNickName={campNickName}
               options={options}
               onCheckboxChange={onCheckboxChange}
-              onParentCampChange={onParentCampChange}
               isLoading={isLoading}
+              isEdit={undefined}
+              isDisabled={undefined}
+              onCampChange={undefined}
+              onCampNameBlur={undefined}
+              values={undefined}
             />
           </Spin>
         </div>

@@ -9,14 +9,14 @@ const { placeholders, labels } = messages;
 
 describe("OTP page", () => {
   it("render heading and text", () => {
-    render(<Registration isModal={false} isTest={true} />);
+    render(<Registration isTest={true} />);
     let heading = screen.getByText("Log In One Time Verification Code");
     expect(heading).toBeInTheDocument();
     expect(screen.getByText(labels.regOtp)).toBeInTheDocument();
   });
 
   it("render inputs field and submit button", () => {
-    render(<Registration isModal={false} isTest={true} />);
+    render(<Registration />);
     const otp = screen.getByPlaceholderText(placeholders.otp);
 
     expect(otp).toBeInTheDocument();
@@ -25,7 +25,7 @@ describe("OTP page", () => {
   });
 
   it("check with 6 digit otp", async () => {
-    render(<Registration isModal={false} isTest={true} />);
+    render(<Registration />);
     const inputEl = screen.getByPlaceholderText(placeholders.otp);
     userEvent.type(inputEl, "123456");
     await waitFor(() => {
@@ -35,7 +35,7 @@ describe("OTP page", () => {
   });
 
   it("check otp length not greater that 6 chars", async () => {
-    render(<Registration isModal={false} isTest={true} />);
+    render(<Registration />);
     const inputEl = screen.getByPlaceholderText(placeholders.otp);
     userEvent.type(inputEl, "123456789");
     userEvent.tab();
@@ -46,7 +46,7 @@ describe("OTP page", () => {
   });
 
   it("blank form should not be submit", async () => {
-    render(<Registration isModal={false} isTest={true} />);
+    render(<Registration />);
     const btnEl = screen.getByTestId("submitButton");
 
     userEvent.click(btnEl);

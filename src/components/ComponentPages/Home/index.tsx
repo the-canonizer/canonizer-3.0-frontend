@@ -1,47 +1,76 @@
 import { Row, Col } from "antd";
-import dynamic from "next/dynamic";
+import { useSelector } from "react-redux";
 
-import useAuthentication from "../../../hooks/isUserAuthenticated";
-import HotTopic from "src/components/common/hotTopic";
+import useAuthentication from "src/hooks/isUserAuthenticated";
 
-const SideBar = dynamic(() => import("./SideBar"));
-const TopicsList = dynamic(() => import("./TopicsList"));
-const RecentActivities = dynamic(() => import("./RecentActivities"));
-const HelpCard = dynamic(() => import("./HelpCard"));
+import Layout from "src/hoc/layout";
+import WelcomeContent from "./WelcomeArea";
+import FeaturedTopic from "./FeaturedTopic";
+// import CategoriesList from "./CategoriesList";
+import HotTopics from "./HotTopics";
+// import TrandingTopics from "./TrandingTopic";
+import WhatsNew from "./WhatsNew";
+import PreferedTopics from "./PreferedTopic";
+import RecentActivities from "./RecentActivities";
+// import { useIsMobile } from "src/hooks/useIsMobile";
+import { RootState } from "src/store";
 
 const HomePageContainer = () => {
   const { isUserAuthenticated } = useAuthentication();
+  // const isMobile = useIsMobile();
+
+  const { preferedTopic } = useSelector((state: RootState) => ({
+    preferedTopic: state?.hotTopic?.preferedTopic,
+  }));
 
   return (
-    <>
-      <aside className="leftSideBar miniSideBar" data-testid="sideBar">
-        <SideBar />
-      </aside>
-      <div className="pageContentWrap">
-        <Row gutter={8}>
-          <Col xs={24} sm={24} xl={24} data-testid="hotTopicColumn">
-            <HotTopic />
-          </Col>
-          <Col xs={24} sm={24} xl={12} data-testid="topicsList">
-            <TopicsList />
-          </Col>
-          {isUserAuthenticated && (
-            <Col xs={24} sm={24} xl={12} data-testid="recentActivities">
+    <Layout
+      afterHeader={<WelcomeContent />}
+      rightSidebar={
+        <div className="md:mt-3.5" data-testid="sideBar">
+          {/* {!isMobile ? (
+              <div className="mb-14" data-testid="topicsList">
+                <TrandingTopics />
+              </div>
+            ) : null} */}
+
+          <div className="mb-14" data-testid="helpCard">
+            <WhatsNew />
+          </div>
+
+          {isUserAuthenticated ? (
+            <div
+              className="mb-14 [&_.ant-tabs-tab-btn]:!border-none"
+              data-testid="recentActivities"
+            >
               <RecentActivities />
+            </div>
+          ) : null}
+        </div>
+      }
+    >
+      <Row className="pt-4 w-100" data-testid="featuredTopic">
+        <Col md={24} className="mb-14">
+          <FeaturedTopic />
+        </Col>
+        {/* {isMobile ? (
+            <Col md={24} xs={24} className="mb-14">
+              <TrandingTopics />
             </Col>
-          )}
-          <Col
-            xs={24}
-            sm={24}
-            xl={isUserAuthenticated ? 24 : 12}
-            className={isUserAuthenticated && "logged-in-view"}
-            data-testid="helpCard"
-          >
-            <HelpCard />
+          ) : null} */}
+        {isUserAuthenticated && preferedTopic?.length ? (
+          <Col md={24} className="mb-14" data-testid="preferedTopic">
+            <PreferedTopics />
           </Col>
-        </Row>
-      </div>
-    </>
+        ) : null}
+        {/* <Col md={24} className="mb-14" data-testid="categoriesList">
+            <CategoriesList />
+          </Col> */}
+        <Col md={24} className="mb-0" data-testid="hotTopics">
+          <HotTopics />
+        </Col>
+      </Row>
+    </Layout>
   );
 };
 

@@ -1,0 +1,187 @@
+.cn-wrapper {
+  &.csh-wrapper {
+    @apply lg:ml-[1.25rem];
+    .badge-wrapper {
+      .ch-dot-history {
+        @apply lg:ml-[-26px] z-10;
+      }
+    }
+    + .csh-wrapper {
+      @apply mt-10;
+    }
+  }
+  &.pending-wrapper {
+    .cn-dot-badge {
+      .ant-badge-status-dot {
+        @apply bg-[#F19C39] shadow-[0px_0px_6px_2px_#F19C39];
+      }
+    }
+    .cn-card {
+      &::after {
+        @apply border-t-[#f19c39];
+      }
+    }
+  }
+  &.live-wrapper {
+    .cn-dot-badge {
+      .ant-badge-status-dot {
+        @apply bg-[#4EB966] shadow-[0px_0px_6px_2px_#4EB966];
+      }
+    }
+    .cn-card {
+      &::after {
+        @apply border-t-[#4EB966];
+      }
+    }
+  }
+  &.previous-wrapper {
+    .cn-dot-badge {
+      .ant-badge-status-dot {
+        @apply bg-[#4786CB] shadow-[0px_0px_6px_2px_#4786CB];
+      }
+    }
+    .cn-card {
+      &::after {
+        @apply border-t-[#4786CB];
+      }
+    }
+  }
+  &.objected-wrapper {
+    .cn-dot-badge {
+      .ant-badge-status-dot {
+        @apply bg-[#E46B6B] shadow-[0px_0px_6px_2px_#E46B6B];
+      }
+    }
+    .cn-card {
+      &::after {
+        @apply border-t-[#E46B6B];
+      }
+    }
+  }
+  .badge-wrapper {
+    @apply flex justify-between gap-1.5 mb-[1.25rem] max-lg:flex-col;
+    .tooltip-count {
+      @apply flex items-center gap-1.5;
+    }
+  }
+  .ch-checkbox {
+    span {
+      + span {
+        @apply font-medium text-canBlack self-center;
+      }
+    }
+    .ant-checkbox-checked {
+      @apply after:rounded-md;
+    }
+    .ant-checkbox-checked {
+      .ant-checkbox-inner {
+        @apply bg-[#5482C8];
+      }
+    }
+    .ant-checkbox-inner {
+      @apply rounded-md border-[#5482C8] after:h-[7px] after:h-[13px] w-[22px] h-[22px];
+    }
+  }
+
+  .cn-dot-badge {
+    @apply flex items-center;
+
+    .ant-badge-status-dot {
+      @apply w-[12px] h-[12px];
+    }
+    .ant-badge-status-text {
+      @apply text-xl font-medium ml-[14px] text-canBlack;
+      span {
+        @apply opacity-80 text-xs ml-[4px];
+      }
+    }
+  }
+  .cn-card {
+    @apply rounded-xl border-[#CCD4E7] relative;
+    .ch-collapse {
+      .ant-collapse-header {
+        @apply absolute right-0 z-30;
+      }
+      .ant-collapse-content-box {
+        @apply p-0 border-b border-[#242B3733] mb-5;
+      }
+    }
+    .comparision-collapse {
+      .ant-collapse-header {
+        @apply absolute top-[22px] right-0 z-30 md:hidden;
+        .ant-collapse-expand-icon {
+          i {
+            @apply text-base text-canBlack;
+          }
+        }
+      }
+      .ant-collapse-content {
+        &.ant-collapse-content-hidden {
+          @apply md:block;
+        }
+      }
+      .ant-collapse-content-box {
+        @apply pt-5 pb-0 px-0 p-0 border-t border-[#242B3733] mt-5;
+      }
+    }
+    p {
+      @apply text-sm text-[#242B37];
+      span {
+        @apply font-semibold ml-0.5;
+      }
+      a {
+        @apply text-[#5482C8] underline;
+      }
+    }
+    &::after {
+      @apply content-[''] block absolute top-0 border-r-[36px] border-r-transparent border-t-[36px] rounded-tl-xl;
+    }
+    .agreement-wrapper {
+      @apply flex flex-col border-t border-t-[#242B3733] pt-[1.125rem] mt-[1.125rem];
+      .ant-checkbox-wrapper {
+        @apply mb-2;
+        .ant-checkbox {
+          &.ant-checkbox-checked {
+            @apply after:border-[#4EB966];
+            .ant-checkbox-inner {
+              @apply bg-[#4EB966];
+            }
+          }
+          .ant-checkbox-inner {
+            @apply border-[#4EB966];
+          }
+        }
+        span {
+          @apply text-[#4EB966] font-medium text-base;
+        }
+      }
+      .ant-space {
+        @apply items-start;
+        p {
+          @apply italic text-[#777F93];
+        }
+      }
+    }
+    .cn-footer-btn {
+      @apply flex gap-4 justify-between max-xl:flex-col border-t border-t-[#242B3733] pt-[1.125rem] mt-[1.125rem];
+      .cn-card-btn {
+        @apply flex gap-3 max-xl:order-2 max-sm:flex-col;
+        button {
+          @apply sm:grow;
+        }
+      }
+      .cn-link-btn {
+        @apply flex max-xl:border-b border-[#242B3733] max-xl:pb-[1.125rem] max-xl:justify-center text-center;
+        button {
+          + button {
+            @apply ml-auto;
+          }
+        }
+      }
+    }
+  }
+}
+.btn-light-primary {
+  background-color: #98b7e61a;
+  border-color: #5482c8;
+}

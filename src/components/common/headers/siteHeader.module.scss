@@ -238,95 +238,6 @@
   }
 }
 
-.bellIcon {
-  // margin-right: 15px;
-  svg {
-    width: auto;
-    height: 22px;
-    fill: #fff;
-  }
-}
-
-.notificationCard {
-  width: 300px;
-  padding: 15px;
-  position: relative;
-
-  div[class="ant-card-head"] {
-    padding-left: 0;
-    padding-right: 0;
-    div {
-      &[class="ant-card-head-title"] {
-        width: 100%;
-        padding-top: 0;
-        padding-bottom: 0;
-      }
-    }
-  }
-
-  div[class="ant-card-body"] {
-    padding-top: 0;
-    padding-left: 0;
-    padding-right: 0;
-    padding-bottom: 0;
-  }
-
-  ul[class="ant-card-actions"] {
-    border-top: 0;
-    li {
-      margin-top: 0;
-      margin-bottom: 0;
-    }
-  }
-
-  &::before {
-    content: "";
-    position: absolute;
-    top: -12px;
-    right: 5px;
-    width: 0;
-    height: 0;
-    border: 7px solid #fff;
-    border-top-color: transparent;
-    border-left-color: transparent;
-    z-index: -1;
-    border-right-color: transparent;
-  }
-  .notTitle {
-    text-transform: uppercase;
-    color: #828d9b;
-    font-size: 12px;
-    font-weight: 600;
-  }
-
-  .notificationEBTN {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    padding: 5px 0 10px;
-    color: #262626;
-  }
-  [class="ant-dropdown-menu-actions"] {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    li {
-      width: auto !important;
-      display: inline-block;
-      a {
-        color: #2e68db;
-        text-decoration: none;
-        font-size: 12px;
-        text-transform: capitalize;
-        font-weight: 600;
-      }
-    }
-  }
-}
-
 .badgeCls {
   cursor: pointer;
   sup {
@@ -430,10 +341,10 @@
 .highlighter {
   padding-right: 0;
   font-weight: bold;
-  color: #0F2A4D;
+  color: #0f2a4d;
   font-size: 1.17em;
 }
 
-.highlighterforCampStatement{
+.highlighterforCampStatement {
   padding-right: 0;
 }

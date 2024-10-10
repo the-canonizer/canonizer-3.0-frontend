@@ -1,13 +1,13 @@
-import { Typography, Form, Input, Button } from "antd";
+import { Typography, Form, Button, Card } from "antd";
 import {
   CloseCircleOutlined,
   ArrowRightOutlined,
   RedoOutlined,
 } from "@ant-design/icons";
 
-import styles from "./Registration.module.scss";
-
-import messages from "../../../../messages";
+import messages from "src/messages";
+import Inputs from "src/components/shared/FormInputs";
+import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 
 const { Title, Text } = Typography;
 
@@ -19,8 +19,8 @@ const EmailConfirmation = ({
   isOTP,
   onResendClick,
   isResend,
-}: any) => (
-  <section className={styles.signup_wrapper + " " + styles.textCenter}>
+}) => (
+  <Card className="rounded-lg" bordered={false}>
     <Form
       form={form}
       name="registration"
@@ -28,75 +28,80 @@ const EmailConfirmation = ({
       layout="vertical"
       scrollToFirstError
       validateTrigger={messages.formValidationTypes()}
+      className="relative"
     >
-      <Title level={2} className={styles.titles} id="otp-title">
+      <Title
+        level={4}
+        className="mt-4 text-sm text-canBlack font-medium"
+        id="otp-title"
+      >
         {isOTP ? messages.labels.otpTitle : messages.labels.emailTitle}
       </Title>
+
       {isModal && (
         <Button
           shape="circle"
           type="link"
-          className={styles.close_btn}
+          className="text-canBlack absolute !border-0 top-0 right-0 bg-transparent"
           onClick={closeModal}
           icon={<CloseCircleOutlined />}
           id="close-modal-btn"
         />
       )}
-      <div className={styles.section_one}>
-        <Text type="danger" className={styles.otpNote} id="note-text">
+      <div className="w-full mt-4">
+        <Text
+          type="danger"
+          className="text-xs text-danger text-center block mb-4 mt-2"
+          id="note-text"
+        >
           {isOTP ? messages.labels.otpLabel : messages.labels.emailLabel}
         </Text>
         {isOTP ? (
-          <Form.Item
+          <Inputs
             name="otp"
-            className={styles.confirmationINput}
-            {...messages.otpRule}
-          >
-            <Input
-              className={styles.otpInput}
-              placeholder={messages.placeholders.otp}
-              min={6}
-              max={6}
-            />
-          </Form.Item>
+            wrapperClassName="w-full md:w-8/12 mx-auto block"
+            rules={messages.otpRule}
+            placeholder={messages.placeholders.otp}
+            min={6}
+            max={6}
+            maxLength={6}
+          />
         ) : (
-          <Form.Item
+          <Inputs
             name="email"
-            className={styles.confirmationINput}
-            {...messages.emailRule}
-          >
-            <Input placeholder={messages.placeholders.email} />
-          </Form.Item>
+            wrapperClassName="w-full md:w-8/12 mx-auto block"
+            rules={messages.emailRule}
+            placeholder={messages.placeholders.email}
+          />
         )}
       </div>
       <Form.Item>
         {isResend && (
-          <Button
+          <SecondaryButton
             type="primary"
             htmlType="button"
-            className={styles.resetOTP}
+            className="h-[40px] text-sm rounded-lg !w-auto m-auto flex justify-center items-center mb-4 sm:!w-full"
             block
             onClick={onResendClick}
             id="otp-send-btn"
           >
             Resend OTP <RedoOutlined />
-          </Button>
+          </SecondaryButton>
         )}
 
         <Button
           type="primary"
           htmlType="submit"
-          className={styles["login-form-button"]}
+          className="h-[40px] text-sm rounded-lg m-auto flex justify-center items-center !w-8/12 lg:!w-4/12"
           block
           data-testid="submitButton"
-          style={{ width: "150px" }}
           id="submit-btn"
         >
           Submit <ArrowRightOutlined />
         </Button>
       </Form.Item>
     </Form>
-  </section>
+  </Card>
 );
 
 export default EmailConfirmation;
