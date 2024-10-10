@@ -11,6 +11,7 @@ import {
   setFilterCanonizedTopics,
   setShowDrawer,
   setTreeExpandValue,
+  setViewThisVersion,
 } from "src/store/slices/filtersSlice";
 import {
   getCanonizedCampStatementApi,
@@ -199,8 +200,9 @@ const TopicDetails = ({ serverSideCall }: any) => {
     router,
   ]);
 
-  useEffect(()=>{
-    if(router?.query?.asOf !== "bydate"){
+  useEffect(() => {
+    if (router?.query?.asOf && router.query.asOf !== "bydate" || router.query.asOf == undefined ) {
+      dispatch(setViewThisVersion(false));
       dispatch(
         setFilterCanonizedTopics({
           asofdate: Date.now() / 1000,
@@ -208,7 +210,8 @@ const TopicDetails = ({ serverSideCall }: any) => {
         })
       );
     }
-  },[asof])
+  }, [router.query.asOf]); 
+ 
   async function getTopicActivityLogCall() {
     let reqBody = {
       topic_num: router?.query?.camp[0]?.split("-")[0],

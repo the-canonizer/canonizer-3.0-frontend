@@ -268,6 +268,18 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    // Check the router query parameter and set the default value
+    if (router.query.asof === "bydate") {
+      dispatch(setAsOfValues(3));
+      setIsDatePicker(true);
+    } else {
+      dispatch(setAsOfValues(2));
+     // Default radio button
+      setIsDatePicker(false);
+    }
+  }, [router.query.asof]);
+
   const reqBodyForService = {
     topic_num: router?.query?.camp[0]?.split("-")[0],
     camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
