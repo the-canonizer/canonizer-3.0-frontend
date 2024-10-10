@@ -103,7 +103,7 @@ const CreateCampFormUI = ({
       prefix: <UserOutlined className="px-3 text-canBlack" />,
       onSelect: (val) => form.setFieldValue("nick_name", val),
       id: "nickname-dropdown",
-      values: values?.nick_name || nickNameList[0]?.id,
+      value: values?.nick_name || nickNameList[0]?.id,
       lastValue: form.getFieldValue("nick_name"),
     };
 
@@ -123,15 +123,14 @@ const CreateCampFormUI = ({
           <span className="required">*</span>
         </>
       ),
-      key:
-        "parent_camp_numKeys_" + values?.parent_camp_num || topicData?.camp_num,
+      key: "parent_camp_numKeys_",
       name: "parent_camp_num",
       options: parentCamp,
       nameKey: "camp_name",
       placeholder: "Parent camp",
       allowClear: true,
       size: "large",
-      dataid: "nick-name",
+      dataid: "parent-camp-name",
       showSearch: true,
       optionFilterProp: "children",
       inputClassName:
@@ -139,7 +138,7 @@ const CreateCampFormUI = ({
       rules: parentCampRule,
       prefix: <ApartmentOutlined className="px-3 text-canBlack" />,
       onSelect: (val) => form.setFieldValue("parent_camp_num", val),
-      id: "nickname-dropdown",
+      id: "parent-camp-dropdown",
       isDefaultOption: false,
       optionsData: parentCamp.map((camp) => (
         <Option
@@ -154,11 +153,17 @@ const CreateCampFormUI = ({
           </Tooltip>
         </Option>
       )),
-      values: values?.parent_camp_num || topicData?.camp_num,
-      defaultValue: values?.parent_camp_num || topicData?.camp_num,
-      initialValue: values?.parent_camp_num || topicData?.camp_num,
+      value: values?.parent_camp_num || topicData?.camp_num,
       lastValue: form.getFieldValue("parent_camp_num"),
     };
+
+    if (parentCamp?.length) {
+      selectInputProps.defaultValue =
+        values?.parent_camp_num || topicData?.camp_num;
+      selectInputProps.initialValue =
+        values?.parent_camp_num || topicData?.camp_num;
+      selectInputProps.key = "parent_camp_numKeys_Name";
+    }
 
     return <SelectInputs {...selectInputProps} />;
   };
