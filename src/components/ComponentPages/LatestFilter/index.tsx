@@ -341,7 +341,7 @@ const LatestFilter = () => {
         ) : (
           ""
         )}
-        {selectedAsOf == "bydate" && router?.query?.asof == "bydate" ? (
+        {selectedAsOf == "bydate" || router?.query?.asof == "bydate" ? (
           <Tag
             className="bg-canLightGrey rounded-full h-8 px-3.5 text-xs text-canBlue leading-4 font-medium border-none flex items-center gap-3"
             data-testid="asOfDate"
