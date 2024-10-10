@@ -116,7 +116,11 @@ function SortableItem(props) {
             // props?.onClose(props?.item)
           }}
         >
-          {`${props?.index + 1}-${props?.item?.camp_name}`}
+           {`${props?.index + 1}-${
+              props?.item?.camp_name?.length > 30
+                ? props.item.camp_name.substring(0, 30) + "..."
+                : props.item.camp_name
+            }`}
         </Tag>
       ) : (
         <Tag
@@ -146,7 +150,11 @@ function SortableItem(props) {
               window.location.href = props?.item?.camp_link;
             }}
           >
-            {`${props?.index + 1}-${props?.item?.camp_name}`}
+            {`${props?.index + 1}-${
+              props?.item?.camp_name?.length > 30
+                ? props.item.camp_name.substring(0, 30) + "..."
+                : props.item.camp_name
+            }`}
           </a>
         </Tag>
       )}
