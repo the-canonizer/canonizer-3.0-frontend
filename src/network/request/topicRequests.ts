@@ -43,31 +43,9 @@ export default class TopicRequest extends Request {
     );
   }
   //GetHotTopic
-  static GetHotTopic(page, parPage, token: string = "") {
+  static GetHotTopic(token: string = "") {
     return new Request(
-      K.Network.URL.GetHotTopic + `?page=${page}&per_page=${parPage}`,
-      K.Network.Method.GET,
-      {},
-      K.Network.Header.Type.Json,
-      {},
-      token
-    );
-  }
-  //GetPreferedTopic
-  static GetPreferedTopic(page, parPage, token: string = "") {
-    return new Request(
-      K.Network.URL.GetPrefTopic + `?page=${page}&per_page=${parPage}`,
-      K.Network.Method.GET,
-      {},
-      K.Network.Header.Type.Json,
-      {},
-      token
-    );
-  }
-  // GetFeaturedTopic
-  static GetFeaturedTopic(token: string = "") {
-    return new Request(
-      K.Network.URL.GetFeaturedTopic,
+      K.Network.URL.GetHotTopic,
       K.Network.Method.GET,
       {},
       K.Network.Header.Type.Json,

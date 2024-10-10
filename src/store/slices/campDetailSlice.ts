@@ -22,33 +22,8 @@ export const treeSlice = createSlice({
       },
     },
     manageSupportStatusCheck: false,
-    openDrawerForDirectSupportedCamp: false,
-    openDrawerForManageSupport: false,
-    disableSubmitButtonForDirectSupportedCamp: false,
-    totalScoreforTreeCard: 0,
-
-    openDrawer: false,
-    asOfValues: 0,
-    clearAlgoFromRefineFilter: "",
-    clearScoreFromRefineFilter: 0,
-    // openConsensusTreePopup: true,
     manageSupportUrlLink: null,
     CurrentCheckSupportStatus: null,
-    globalUserProfileData: "",
-    globalUserProfileDataLanguage: "",
-    globalUserProfileDataAlgo: "",
-    globalUserProfileDataLastName: "",
-    globalUserProfileDataEmail: "",
-    address: "",
-    updateAddress: {},
-    userLanguageList: [],
-    privateList: [],
-    disableButtonForProfileInfo: false,
-    postalCodeDisableForProfileInfo: false,
-    addForProfileInfo: false,
-    zipCodeForProfileInfo: false,
-    birthdayForProfileInfo: "",
-
     currentGetCheckSupportExistsData: {
       camp_num: null,
       is_confirm: null,
@@ -62,7 +37,6 @@ export const treeSlice = createSlice({
     },
     removedReasons: null,
     changeGoneLive: false,
-    siblingCampData: [],
   },
   reducers: {
     setTree: (state, action) => {
@@ -116,12 +90,6 @@ export const treeSlice = createSlice({
     setManageSupportStatusCheck: (state, action) => {
       state.manageSupportStatusCheck = action.payload;
     },
-    setOpenDrawer: (state, action) => {
-      state.openDrawer = action.payload;
-    },
-    // setOpenConsensusTreePopup: (state, action) => {
-    //   state.openConsensusTreePopup = action.payload;
-    // },
     setManageSupportUrlLink: (state, action) => {
       state.manageSupportUrlLink = action.payload;
     },
@@ -147,72 +115,6 @@ export const treeSlice = createSlice({
     setChangeGoneLive: (state, action) => {
       state.changeGoneLive = action.payload;
     },
-    setSiblingCampData: (state, action) => {
-      state.siblingCampData = action.payload;
-    },
-    setAsOfValues: (state, action) => {
-      state.asOfValues = action.payload;
-    },
-    setClearAlgoFromRefineFilter: (state, action) => {
-      state.clearAlgoFromRefineFilter = action.payload;
-    },
-    setClearScoreFromRefineFilter: (state, action) => {
-      state.clearScoreFromRefineFilter = action.payload;
-    },
-    setGlobalUserProfileData: (state, action) => {
-      state.globalUserProfileData = action.payload;
-    },
-    setGlobalUserProfileDataEmail: (state, action) => {
-      state.globalUserProfileDataEmail = action.payload;
-    },
-    setOpenDrawerForDirectSupportedCamp: (state, action) => {
-      state.openDrawerForDirectSupportedCamp = action.payload;
-    },
-    setUserLanguageList: (state, action) => {
-      state.userLanguageList = action.payload;
-    },
-    setPrivateListForProfileInfo: (state, action) => {
-      state.privateList = action.payload;
-    },
-    setAddressForProfileInfo: (state, action) => {
-      state.address = action.payload;
-    },
-    setUpdateAddressForProfileInfo: (state, action) => {
-      state.updateAddress = action.payload;
-    },
-    setDisableButtonForProfileInfo: (state, action) => {
-      state.disableButtonForProfileInfo = action.payload;
-    },
-    setPostalCodeDisableForProfileInfo: (state, action) => {
-      state.postalCodeDisableForProfileInfo = action.payload;
-    },
-    setAddForProfileInfo: (state, action) => {
-      state.addForProfileInfo = action.payload;
-    },
-    setZipCodeForProfileInfo: (state, action) => {
-      state.zipCodeForProfileInfo = action.payload;
-    },
-    setBirthdayForProfileInfo: (state, action) => {
-      state.birthdayForProfileInfo = action.payload;
-    },
-    setGlobalUserProfileDataLastName: (state, action) => {
-      state.globalUserProfileDataLastName = action.payload;
-    },
-    setGlobalUserProfileDataLanguage: (state, action) => {
-      state.globalUserProfileDataLanguage = action.payload;
-    },
-    setGlobalUserProfileDataAlgo: (state, action) => {
-      state.globalUserProfileDataAlgo = action.payload;
-    },
-    setOpenDrawerForManageSupport: (state, action) => {
-      state.openDrawerForManageSupport = action.payload;
-    },
-    setDisableSubmitButtonForDirectSupportedCamp: (state, action) => {
-      state.disableSubmitButtonForDirectSupportedCamp = action.payload;
-    },
-    settotalScoreforTreeCard: (state, action) => {
-      state.totalScoreforTreeCard = action.payload;
-    },
   },
 });
 
@@ -232,33 +134,9 @@ export const {
   setCurrentCheckSupportStatus,
   setCheckSupportExistsData,
   setManageSupportStatusCheck,
-  setOpenDrawer,
   setManageSupportUrlLink,
   setRemovedReasons,
   setChangeGoneLive,
-  setSiblingCampData,
-  setAsOfValues,
-  setClearAlgoFromRefineFilter,
-  setClearScoreFromRefineFilter,
-  setGlobalUserProfileData,
-  setGlobalUserProfileDataEmail,
-  setOpenDrawerForDirectSupportedCamp,
-  setUserLanguageList,
-  setPrivateListForProfileInfo,
-  setAddressForProfileInfo,
-  setUpdateAddressForProfileInfo,
-  setDisableButtonForProfileInfo,
-  setPostalCodeDisableForProfileInfo,
-  setAddForProfileInfo,
-  setZipCodeForProfileInfo,
-  setBirthdayForProfileInfo,
-  setGlobalUserProfileDataLastName,
-  setGlobalUserProfileDataLanguage,
-  setGlobalUserProfileDataAlgo,
-  setOpenDrawerForManageSupport,
-  setDisableSubmitButtonForDirectSupportedCamp,
-  settotalScoreforTreeCard,
-  // setOpenConsensusTreePopup,
 } = treeSlice.actions;
 
 export default treeSlice.reducer;

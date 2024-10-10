@@ -1,82 +1,58 @@
-import { Card, Col, Form, Row } from "antd";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Form } from "antd";
 
 import LoginUI from "./UI";
 
-import CustomSpinner from "components/shared/CustomSpinner";
+import {
+  hideLoginModal,
+  showForgotModal,
+  showRegistrationModal,
+} from "src/store/slices/uiSlice";
 import {
   getNickNameList,
   login,
   resendOTPForRegistration,
+  verifyOtp,
 } from "src/network/api/userApi";
 import { AppDispatch, RootState } from "src/store";
-import { setEmailForOTP, setUserNickNames } from "src/store/slices/authSlice";
-import { setManageSupportStatusCheck } from "src/store/slices/campDetailSlice";
+import Spinner from "../../common/spinner/spinner";
+import OTPVerify from "../Registration/UI/otp";
 import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
 import { setValue } from "src/store/slices/utilsSlice";
-import LeftContent from "./UI/leftContent";
+import messages from "src/messages";
+import { setUserNickNames } from "src/store/slices/authSlice";
+import { setManageSupportStatusCheck } from "src/store/slices/campDetailSlice";
 
-const Login = () => {
+const Login = ({ isModal, isTest = false }: any) => {
   const remember = useSelector((state: RootState) => state.utils.remember_me);
-  const currentReturnUrl = useSelector(
-    (state: RootState) => state?.auth?.currentReturnUrl
-  );
 
-  const [errorMsg, setErrorMsg] = useState(""),
-    [isDisabled, setIsDisabled] = useState(true),
-    [isOTPDisabled, setIsOTPDisabled] = useState(true),
-    [loading, setLoading] = useState(false);
+  const [isOtpScreen, setIsOtpScreen] = useState(isTest);
+  const [isResend, setIsResend] = useState(false);
+  const [formData, setFormData] = useState({ email: "" });
+  const [failedMsg, setFailedMsg] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
+  const [rememberValue, setRememberValue] = useState(remember);
 
-  const router = useRouter(),
-    dispatch = useDispatch<AppDispatch>(),
-    [form] = Form.useForm(),
-    values = Form.useWatch([], form);
+  const router = useRouter();
+  const dispatch = useDispatch<AppDispatch>();
+  const [form] = Form.useForm();
+  const [otpForm] = Form.useForm();
+  const didMount = useRef(false);
 
-  const setvalueAndValidateForm = async () => {
-    if (remember) {
-      form.setFieldValue("username", remember.username);
-      form.setFieldValue("password", remember.password);
-    } else {
-      form.setFieldValue("username", "");
-      form.setFieldValue("password", "");
-    }
-  };
-
-  useEffect(() => {
-    setvalueAndValidateForm();
-  }, [remember]);
-
-  useEffect(() => {
-    form
-      .validateFields({ validateOnly: true })
-      .then(() => {
-        setIsOTPDisabled(true);
-        setIsDisabled(true);
-      })
-      .catch((err) => {
-        const errorFieldNames = err?.errorFields
-          ?.map((field) => field.name)
-          .flat();
-
-        const isTouched = form.isFieldTouched("username");
-
-        if (errorFieldNames.includes("username")) {
-          setIsOTPDisabled(false);
-        } else if (values?.username && isTouched) {
-          setIsOTPDisabled(true);
-        }
-
-        if (errorFieldNames?.length) setIsDisabled(false);
-      });
-  }, [form, values]);
+  useEffect(() => setRememberValue(remember), [remember]);
 
   const closeModal = () => {
-    dispatch(setManageSupportStatusCheck(false));
-    form.resetFields();
+    dispatch(hideLoginModal());
+    // dispatch(setManageSupportStatusCheck(false));
+    isOtpScreen ? otpForm.resetFields() : form.resetFields();
+    setIsOtpScreen(false);
     setErrorMsg("");
   };
+
+  const openForgotPasswordModal = () => dispatch(showForgotModal());
+  const openRegistration = () => dispatch(showRegistrationModal());
 
   const fetchNickNameList = async () => {
     let response = await getNickNameList();
@@ -86,9 +62,9 @@ const Login = () => {
   };
 
   const onFinish = async (values: any) => {
-    setLoading(true);
-    dispatch(setEmailForOTP(values.username?.trim()));
+    setFormData({ email: values.username });
 
+    // const username = values.username?.trim().split(" ").join("");
     const username = values.username?.trim();
     const pass = values.password?.trim();
 
@@ -98,26 +74,25 @@ const Login = () => {
       setErrorMsg(res.message);
     }
 
+    if (res && res.status_code === 403) {
+      setIsOtpScreen(true);
+      setIsResend(true);
+      setFailedMsg(res.message);
+    }
+
     if (res && res.status_code === 200) {
       dispatch(
         setFilterCanonizedTopics({
           algorithm: res?.data?.user?.default_algo,
         })
       );
-
       form.resetFields();
       fetchNickNameList();
 
       closeModal();
 
-      const returnUrl: any = router?.query?.returnUrl;
-
-      console.log(returnUrl);
-
-      if (returnUrl) {
-        router?.push(returnUrl);
-      } else if (currentReturnUrl) {
-        router?.push(currentReturnUrl);
+      if (router?.query?.returnUrl) {
+        router?.push(`${router?.query?.returnUrl}`);
       } else if (router?.pathname === "/login") {
         router?.push("/");
       } else {
@@ -136,72 +111,104 @@ const Login = () => {
         })
       );
     }
-
-    setLoading(false);
   };
+
+  useEffect(() => {
+    if (didMount?.current) {
+      if (formData?.email && isOtpScreen) {
+        setFormData({ email: "" });
+        setIsOtpScreen(false);
+      }
+    } else didMount.current = true;
+    //eslint-disable-next-line
+  }, [router]);
 
   const onOTPClick = async (e) => {
     e.preventDefault();
-    setLoading(true);
     const emailPhone = form.getFieldValue("username");
-
     if (emailPhone?.trim()) {
       setErrorMsg("");
+      let formBody = { email: emailPhone };
 
-      const res = await resendOTPForRegistration({ email: emailPhone });
+      const res = await resendOTPForRegistration(formBody);
 
       if (res && res.status_code === 200) {
-        dispatch(setEmailForOTP(emailPhone?.trim()));
-
-        router.push({ pathname: "/login/otp", query: { ...router?.query } });
+        setFormData({ email: emailPhone });
+        setIsOtpScreen(true);
       }
     } else {
       form.validateFields(["username"]);
     }
-    setLoading(false);
   };
 
-  const onBrowseClick = (e) => {
-    e?.preventDefault();
-    router?.back();
+  const onOTPSubmit = async (values: any) => {
+    if (values.otp.trim()) {
+      let formBody = {
+        username: formData.email?.trim(),
+        otp: values.otp,
+        is_login: 1,
+      };
+
+      let res = await verifyOtp(formBody);
+
+      if (res) {
+        setFailedMsg(res.message);
+      }
+
+      if (res && res.status_code === 200) {
+        otpForm.resetFields();
+        setIsOtpScreen(false);
+
+        closeModal();
+
+        if (router?.query.returnUrl) {
+          router?.push(`${router?.query.returnUrl}`);
+        } else if (!router?.pathname?.includes("/forum/")) {
+          router?.push("/");
+        }
+      }
+    } else {
+      otpForm.resetFields();
+      otpForm.validateFields(["otp"]);
+    }
   };
 
-  const onForgotPasswordClick = (e) => {
-    e.preventDefault();
-    router?.push({ pathname: "/forgot-password", query: { ...router?.query } });
-  };
+  // on resend click
+  const onResendClick = async () => {
+    let formBody = { email: formData.email };
 
-  const onRegister = (e) => {
-    e.preventDefault();
-    router?.push({ pathname: "/registration", query: { ...router?.query } });
+    await resendOTPForRegistration(formBody);
   };
 
   return (
-    <CustomSpinner key="login-spinner" spinning={loading}>
-      <Card
-        bordered={false}
-        className="bg-canGrey1 mt-0 lg:mt-5 h-full flex justify-center items-center [&>.ant-card-body]:p-0 [&>.ant-card-body]:w-full [&_.ant-card-body]:pb-0 min-h-full tab:px-10"
-      >
-        <Row gutter={20}>
-          <Col lg={12} md={24} xl={12} xs={24} className="hidden lg:block">
-            <LeftContent onBrowseClick={onBrowseClick} />
-          </Col>
-          <Col lg={12} md={24} xl={12} xs={24}>
-            <LoginUI
-              form={form}
-              onFinish={onFinish}
-              onOTPClick={onOTPClick}
-              errorMsg={errorMsg}
-              onBrowseClick={onBrowseClick}
-              isDisabled={isDisabled}
-              isOTPDisabled={isOTPDisabled}
-              onForgotPasswordClick={onForgotPasswordClick}
-              onRegister={onRegister}
-            />
-          </Col>
-        </Row>
-      </Card>
-    </CustomSpinner>
+    <Fragment>
+      <Spinner>
+        {isOtpScreen ? (
+          <OTPVerify
+            form={otpForm}
+            onFinish={onOTPSubmit}
+            closeModal={closeModal}
+            isModal={isModal}
+            isResend={isResend}
+            failedMsg={failedMsg}
+            onResendClick={onResendClick}
+            logMsg={messages?.labels?.otLabel}
+          />
+        ) : (
+          <LoginUI
+            form={form}
+            onFinish={onFinish}
+            closeModal={closeModal}
+            isModal={isModal}
+            openForgotPasswordModal={openForgotPasswordModal}
+            openRegistration={openRegistration}
+            onOTPClick={onOTPClick}
+            errorMsg={errorMsg}
+            rememberValue={rememberValue}
+          />
+        )}
+      </Spinner>
+    </Fragment>
   );
 };
 

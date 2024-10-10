@@ -1,17 +1,16 @@
-import React, { Fragment, useEffect, useState } from "react";
-import { Tree, Tooltip, Popover } from "antd";
+import React, { useEffect, useState } from "react";
+import { Tree, Tooltip, Popover, Typography, Button } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import Image from "next/image";
+import ProgressBar from "@ramonak/react-progress-bar";
 
 import styles from "../topicDetails.module.scss";
 
 import useAuthentication from "src/hooks/isUserAuthenticated";
-import { RootState } from "src/store";
-import { setCurrentCamp } from "src/store/slices/filtersSlice";
-import { replaceSpecialCharacters } from "src/utils/generalUtility";
-import { DownOutlined } from "@ant-design/icons";
+import { RootState } from "../../../../store";
+import { setCurrentCamp } from "../../../../store/slices/filtersSlice";
+import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
 
 const { TreeNode } = Tree;
 
@@ -19,7 +18,7 @@ const CampTree = ({
   scrollToCampStatement,
   setTotalCampScoreForSupportTree,
   setSupportTreeForCamp,
-  // treeExpandValue,
+  treeExpandValue,
   prevTreeValueRef,
   isForumPage = false,
 }: any) => {
@@ -33,7 +32,6 @@ const CampTree = ({
     viewThisVersion,
     is_camp_archive_checked,
     campRecord,
-    treeExpandValue,
   } = useSelector((state: RootState) => ({
     tree: state?.topicDetails?.tree,
     filterByScore: state.filters?.filterObject?.filterByScore,
@@ -44,23 +42,20 @@ const CampTree = ({
     viewThisVersion: state?.filters?.viewThisVersionCheck,
     is_camp_archive_checked: state?.utils?.archived_checkbox,
     campRecord: state?.topicDetails?.currentCampRecord,
-    treeExpandValue: state?.filters?.treeExpandValue,
   }));
 
   let childExpandTree = [];
   const [defaultExpandKeys, setDefaultExpandKeys] = useState([]);
   const [uniqueKeys, setUniqueKeys] = useState([]);
-  // const [showScoreBars, setShowScoreBars] = useState(false);
+  const [showScoreBars, setShowScoreBars] = useState(false);
   const [selectedExpand, setSelectedExpand] = useState([]);
   const [scoreFilter, setScoreFilter] = useState(filterByScore);
   const [includeReview, setIncludeReview] = useState(
     review == "review" ? true : false
   );
   const [showTree, setShowTree] = useState(false);
-
   const router = useRouter();
   const dispatch = useDispatch();
-
   const onSelect = (
     selectedKeys,
     e: { selected; selectedNodes; node; event }
@@ -73,7 +68,6 @@ const CampTree = ({
       scrollToCampStatement();
     }
   };
-
   const { isUserAuthenticated, userID } = useAuthentication();
 
   const showSelectedCamp = (data, select_camp, campExist) => {
@@ -207,7 +201,7 @@ const CampTree = ({
       if (treeExpandValue == prevTreeValueRef?.current) {
         uniquekeyss = mergeArray(
           uniquekeyss,
-          tree?.at(0)?.["1"]?.collapsedTreeCampIds
+          tree?.at(0)["1"]?.collapsedTreeCampIds
         );
       }
       setDefaultExpandKeys(expandKeys);
@@ -230,17 +224,17 @@ const CampTree = ({
         sessionStorage.setItem("value", JSON.stringify(sesionexpandkeys));
       }
     }
-    // if (tree?.at(0)) {
-    //   const agreementCamp = tree?.at(0)[1]?.score;
-    //   if (
-    //     agreementCamp > 5 &&
-    //     Object.keys(tree?.at(0)[1].children).length > 0
-    //   ) {
-    //     setShowScoreBars(true);
-    //   } else {
-    //     setShowScoreBars(false);
-    //   }
-    // }
+    if (tree?.at(0)) {
+      const agreementCamp = tree?.at(0)[1]?.score;
+      if (
+        agreementCamp > 5 &&
+        Object.keys(tree?.at(0)[1].children).length > 0
+      ) {
+        setShowScoreBars(true);
+      } else {
+        setShowScoreBars(false);
+      }
+    }
     if (prevTreeValueRef !== undefined) {
       prevTreeValueRef.current = treeExpandValue;
     }
@@ -263,7 +257,7 @@ const CampTree = ({
           key="camp_subscribed_icon"
         >
           <i
-            className={`icon-subscribe small text-xs text-primary ${styles.iconSubscribe}`}
+            className={`icon-subscribe text-primary ${styles.iconSubscribe}`}
           ></i>
         </Tooltip>
       ) : (
@@ -276,7 +270,7 @@ const CampTree = ({
           // title="You have subscribed to the entire topic."
         >
           <i
-            className={`icon-subscribe small text-xs !text-canBlack !font-[300]  ${styles.implicitIcon}`}
+            className={`icon-subscribe text-secondary  ${styles.implicitIcon}`}
           ></i>
         </Tooltip>
       )
@@ -292,6 +286,7 @@ const CampTree = ({
     let sortedData = Object.keys(data)
       .map((key) => [Number(key), data[key]])
       .sort((a, b) => b[1].score - a[1].score);
+
     return sortedData.map((itemWithData) => {
       let item = itemWithData[0];
       const parentIsOneLevel = isOneLevel;
@@ -320,143 +315,88 @@ const CampTree = ({
         if (data[item].score >= scoreFilter) {
           return data[item].is_archive == 0 ||
             (data[item].is_archive != 0 && is_camp_archive_checked == true) ? (
-            <TreeNode
-              className="[&_.ant-tree-switcher]:!flex [&_.ant-tree-switcher]:!items-center [&_.ant-tree-node-content-wrapper]:hover:!bg-transparent [&_.ant-tree-switcher.ant-tree-switcher-noop]:!hidden [&_.ant-tree-node-content-wrapper]:py-1"
-              switcherIcon={({ expanded }) => {
-                // const isCampIdZero = data[item].camp_id === 0;
-
-                return data[item].camp_id ===
-                  +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1) &&
-                  _isDisabled == 0 &&
-                  parentIsOneLevel == 0 &&
-                  _isArchive == 0 &&
-                  campRecord?.is_archive == 0 ? (
-                  expanded ? (
-                    <Image
-                      className="rotate-180"
-                      src="/images/tree-green-icon.svg"
-                      width={16}
-                      height={16}
-                    />
-                  ) : (
-                    <Image
-                      className=""
-                      src="/images/tree-green-icon.svg"
-                      width={16}
-                      height={16}
-                    />
-                  )
-                ) : expanded ? (
-                  <Image
-                    className=""
-                    src="/images/tree-black-icon.svg"
-                    width={16}
-                    height={16}
-                  />
-                ) : (
-                  <Image
-                    className="-rotate-90"
-                    src="/images/tree-black-icon.svg"
-                    width={16}
-                    height={16}
-                  />
-                );
-              }}
-              title={
-                <div
-                  style={{ overflowX: "auto", overflowY: "clip" }}
-                  id={`camp-${data[item].camp_id}`}
-                >
+            <>
+              <TreeNode
+                title={
                   <div
-                    className={
-                      "treeListItem !my-0 flex items-center flex-wrap " +
-                      styles.topicDetailsTreeListItem
-                    }
+                    style={{ overflowX: "auto", overflowY: "clip" }}
+                    id={`camp-${data[item].camp_id}`}
                   >
-                    <span
+                    <div
                       className={
-                        "treeListItemTitle " +
-                        styles.treeListItemTitle +
-                        " !text-sm !text-canBlack font-normal hover:!text-canblack"
+                        "treeListItem " + styles.topicDetailsTreeListItem
                       }
                     >
-                      <Link
-                        href={`${
-                          includeReview
-                            ? isForumPage
-                              ? data[item]?.review_link
+                      <span
+                        className={
+                          "treeListItemTitle " + styles.treeListItemTitle
+                        }
+                      >
+                        <Link
+                          href={`${
+                            includeReview
+                              ? isForumPage
+                                ? data[item]?.review_link
+                                    ?.replace("#statement", "")
+                                    ?.replace("/topic/", "/forum/") + "/threads"
+                                : data[item]?.review_link?.replace(
+                                    "#statement",
+                                    ""
+                                  )
+                              : isForumPage
+                              ? data[item]?.link
                                   ?.replace("#statement", "")
                                   ?.replace("/topic/", "/forum/") + "/threads"
-                              : data[item]?.review_link?.replace(
-                                  "#statement",
-                                  ""
-                                )
-                            : isForumPage
-                            ? data[item]?.link
-                                ?.replace("#statement", "")
-                                ?.replace("/topic/", "/forum/") + "/threads"
-                            : data[item]?.link?.replace("#statement", "")
-                        }?filter=${treeExpandValue}&score=${filterByScore}&algo=${
-                          filterObject?.algorithm
-                        }${
-                          filterObject?.asof == "bydate"
-                            ? "&asofdate=" + filterObject?.asofdate
-                            : ""
-                        }&asof=${filterObject?.asof}&canon=${
-                          filterObject?.namespace_id
-                        }${viewThisVersion ? "&viewversion=1" : ""}`}
-                      >
-                        <a
-                          className={`${
-                            data[item].is_archive == 1
-                              ? `font-bold !text-canBlack hover:!text-canBlack   ${styles.archive_grey}`
-                              : !isForumPage &&
-                                (data[item]?.camp_id ==
-                                  router?.query?.camp
-                                    ?.at(1)
-                                    ?.split("-")
-                                    ?.at(0) ??
-                                  "1")
-                              ? `font-weight-bold text-sm hover:!text-canBlack  ${styles.activeCamp}`
-                              : " hover:!text-canBlack"
-                          } ${
-                            isForumPage &&
-                            data[item]?.camp_id ==
-                              ((router?.query?.camp as string)
-                                ?.split("-")
-                                ?.at(0) ?? "1")
-                              ? `font-weight-bold forumActive ${styles.activeCamp}`
+                              : data[item]?.link?.replace("#statement", "")
+                          }?filter=${treeExpandValue}&score=${filterByScore}&algo=${
+                            filterObject?.algorithm
+                          }${
+                            filterObject?.asof == "bydate"
+                              ? "&asofdate=" + filterObject?.asofdate
                               : ""
-                          } ${
-                            data[item].camp_id ===
-                              +(
-                                router?.query?.camp?.at(1)?.split("-")?.at(0) ??
-                                1
-                              ) &&
-                            _isDisabled == 0 &&
-                            parentIsOneLevel == 0 &&
-                            _isArchive == 0 &&
-                            campRecord?.is_archive == 0
-                              ? `!text-canGreen font-semibold text-sm`
-                              : ""
-                          }`}
+                          }&asof=${filterObject?.asof}&canon=${
+                            filterObject?.namespace_id
+                          }${viewThisVersion ? "&viewversion=1" : ""}`}
                         >
-                          {data[item].is_archive == 1 ? (
-                            <Popover content="Archived Camp">
-                              {includeReview
-                                ? data[item]?.review_title
-                                : data[item].camp_id === 1
-                                ? "Agreement"
-                                : data[item]?.title}
-                            </Popover>
-                          ) : data[item].camp_id === 1 ? (
-                            "Agreement"
-                          ) : (
-                            data[item]?.title
-                          )}
-                        </a>
-                      </Link>{" "}
-                      {/* {data[item].is_archive == 1 ? (
+                          <a
+                            className={`${
+                              data[item].is_archive == 1
+                                ? `font-weight-bold tra ${styles.archive_grey}`
+                                : !isForumPage &&
+                                  (data[item]?.camp_id ==
+                                    router?.query?.camp
+                                      ?.at(1)
+                                      ?.split("-")
+                                      ?.at(0) ??
+                                    "1")
+                                ? `font-weight-bold ${styles.activeCamp}`
+                                : ""
+                            } ${
+                              isForumPage &&
+                              data[item]?.camp_id ==
+                                ((router?.query?.camp as string)
+                                  ?.split("-")
+                                  ?.at(0) ?? "1")
+                                ? `font-weight-bold forumActive ${styles.activeCamp}`
+                                : ""
+                            }`}
+                          >
+                            {data[item].is_archive == 1 ? (
+                              <Popover content="Archived Camp">
+                                {includeReview
+                                  ? data[item]?.review_title
+                                  : data[item].camp_id === 1
+                                  ? "Agreement"
+                                  : data[item]?.title}
+                              </Popover>
+                            ) : data[item].camp_id === 1 ? (
+                              "Agreement"
+                            ) : (
+                              data[item]?.title
+                            )}
+                          </a>
+                        </Link>{" "}
+                        {/* {data[item].is_archive == 1 ? (
                           <Image
                             src={Archive_icon.src}
                             width={20}
@@ -467,89 +407,112 @@ const CampTree = ({
                         ) : (
                           ""
                         )} */}
-                    </span>
-                    <span className={styles.subScriptionIcon}>
-                      {isUserAuthenticated &&
-                        subScriptionStatus(
-                          data[item].subscribed_users,
-                          data[item]
-                        )}
-                    </span>
-                    <span className="bg-canOrange px-[0.30rem] rounded-md flex items-center gap-1">
-                      <Image
-                        src="/images/hand-icon.svg"
-                        alt="svg"
-                        height={12}
-                        width={12}
-                      />
-                      <span className="text-[10px] text-white">
-                        {is_checked
-                          ? data[item].full_score?.toFixed(2)
-                          : data[item].score?.toFixed(2)}
                       </span>
-                    </span>
+                      <span className={styles.subScriptionIcon}>
+                        {isUserAuthenticated &&
+                          subScriptionStatus(
+                            data[item].subscribed_users,
+                            data[item]
+                          )}
+                      </span>
+                      <span>
+                        <ProgressBar
+                          completed={77}
+                          animateOnRender={true}
+                          className="progress-bar"
+                          width={String(
+                            showScoreBars
+                              ? (data[item].score * 460) /
+                                  tree?.at(0)["1"].score +
+                                  50 +
+                                  "px"
+                              : `${
+                                  (is_checked
+                                    ? data[item].full_score?.toFixed(2)
+                                    : data[item].score?.toFixed(2)
+                                  ).length * 11
+                                }px`
+                          )}
+                          baseBgColor={"#fff"}
+                          labelAlignment={"left"}
+                          bgColor={"#f89d15"}
+                          borderRadius={"2px"}
+                          height="16px"
+                          customLabel={
+                            is_checked
+                              ? data[item].full_score?.toFixed(2)
+                              : data[item].score?.toFixed(2)
+                          }
+                        />
+                      </span>
+                    </div>
                   </div>
-                </div>
-              }
-              key={data[item].camp_id}
-              data={{
-                ...data[item],
-                parentIsOneLevel,
-                _isDisabled,
-                _isOneLevel,
-                _isArchive,
-              }}
-            >
-              {data[item].camp_id ===
-                +(Array.isArray(router?.query?.camp)
-                  ? router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1
-                  : (router?.query?.camp as string)?.split("-")?.at(0) ?? 1) &&
-                _isDisabled == 0 &&
-                parentIsOneLevel == 0 &&
-                _isArchive == 0 &&
-                campRecord?.is_archive == 0 && (
-                  <TreeNode
-                    key={"custom"}
-                    title={
-                      <p className={styles.startNew}>
-                        <Link
-                          href={{
-                            pathname: `/camp/create/${replaceSpecialCharacters(
-                              Array.isArray(router?.query?.camp)
-                                ? router?.query.camp[0]
-                                : (router?.query?.topic as string),
-                              "-"
-                            )}/${
-                              router?.query.camp[1]
-                                ? replaceSpecialCharacters(
-                                    router?.query.camp[1],
-                                    "-"
-                                  )
-                                : 1
-                            }`,
-                          }}
-                        >
-                          <a className="!text-canGreen font-semibold italic text-sm">
-                            <Image
-                              src="/images/start-new-tree.svg"
-                              width={16}
-                              height={17}
-                            />
-                            {`Start new`}{" "}
-                          </a>
-                        </Link>
-                      </p>
-                    }
-                  />
-                )}
+                }
+                key={data[item].camp_id}
+                data={{
+                  ...data[item],
+                  parentIsOneLevel,
+                  _isDisabled,
+                  _isOneLevel,
+                  _isArchive,
+                }}
+              >
+                {data[item].camp_id ===
+                  +(Array.isArray(router?.query?.camp)
+                    ? router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1
+                    : (router?.query?.camp as string)?.split("-")?.at(0) ??
+                      1) &&
+                  _isDisabled == 0 &&
+                  parentIsOneLevel == 0 &&
+                  _isArchive == 0 &&
+                  campRecord?.is_archive == 0 && (
+                    <TreeNode
+                      key={"custom"}
+                      title={
+                        <p className={styles.startNew}>
+                          <Link
+                            href={{
+                              pathname: `/camp/create/${replaceSpecialCharacters(
+                                Array.isArray(router?.query?.camp)
+                                  ? router?.query.camp[0]
+                                  : (router?.query?.topic as string),
+                                "-"
+                              )}/${
+                                router?.query.camp[1]
+                                  ? replaceSpecialCharacters(
+                                      Array.isArray(router?.query.camp)
+                                        ? router?.query.camp[1]
+                                        : router?.query.camp,
+                                      "-"
+                                    )
+                                  : 1
+                              }`,
+                            }}
+                          >
+                            <a
+                              onClick={() => {
+                                localStorage.setItem(
+                                  "topicPath",
+                                  router?.pathname
+                                );
+                              }}
+                            >
+                              {`<Start new supporting camp here>`}{" "}
+                            </a>
+                          </Link>
+                        </p>
+                      }
+                    />
+                  )}
 
-              {renderTreeNodes(
-                data[item].children,
-                _isDisabled,
-                _isOneLevel,
-                _isArchive
-              )}
-            </TreeNode>
+                {renderTreeNodes(
+                  data[item].children,
+                  _isDisabled,
+                  _isOneLevel,
+                  _isArchive
+                )}
+              </TreeNode>
+            </>
           ) : null;
         } else {
           return null;
@@ -585,25 +548,24 @@ const CampTree = ({
     let uniqueArraytoString = uniqueArray.map(String);
     return uniqueArraytoString;
   };
+  const eventLinePath = () => {
+    let topicId = tree && tree[0][1]?.topic_id;
+    let topicName = tree && tree[0][1]?.title;
+    let campId = tree && tree[0][1]?.camp_id;
 
-  // const eventLinePath = () => {
-  //   let topicId = tree && tree[0][1]?.topic_id;
-  //   let topicName = tree && tree[0][1]?.title;
-  //   let campId = tree && tree[0][1]?.camp_id;
+    let URL = `/eventline/${topicId}-${replaceSpecialCharacters(
+      topicName,
+      "-"
+    )}/${campId}`;
 
-  //   let URL = `/eventline/${topicId}-${replaceSpecialCharacters(
-  //     topicName,
-  //     "-"
-  //   )}/${campId}`;
-
-  //   router.push(URL);
-  // };
+    router.push(URL);
+  };
 
   return tree?.at(0) ? (
     (showTree && tree?.at(0)["1"]?.title != "" && defaultExpandKeys) ||
     isForumPage ? (
-      <Fragment>
-        {/* <Typography.Paragraph
+      <>
+        <Typography.Paragraph
           className={`${styles.topicTitleStyle} ${styles.topicTitle}`}
         >
           <div className="event-line-wrapper">
@@ -657,8 +619,8 @@ const CampTree = ({
                         {includeReview
                           ? tree[0]["1"]?.review_title
                           : tree[0]["1"]?.title}
-                      </Popover>
-                    ) : includeReview ? (
+                      </Popover>                    
+                      ) : includeReview ? (
                       tree[0]["1"]?.review_title
                     ) : (
                       tree[0]["1"]?.title
@@ -683,37 +645,18 @@ const CampTree = ({
                 )}
               </span>
             </div>
-            <PrimaryButton
+            <Button
               type="primary"
               size="small"
               onClick={eventLinePath}
               id="event-line-btn"
             >
               Event Line
-            </PrimaryButton>
+            </Button>
           </div>
-          <span className={styles.subScriptionIcon}>
-            {isUserAuthenticated && !!topicRecord?.topicSubscriptionId ? (
-              <Tooltip
-                title="You have subscribed to the entire topic."
-                key="camp_subscribed_icon"
-              >
-                <small style={{ alignSelf: "center", marginLeft: "10px" }}>
-                  <i className="icon-subscribe text-primary"></i>
-                </small>
-                showLine switcherIcon={<DownOutlined />}
-                defaultExpandedKeys={["0-0-0"]}
-                onSelect={onSelect}
-                treeData={tree}
-              </Tooltip>
-            ) : (
-              ""
-            )}
-          </span>
-        </Typography.Paragraph> */}
+        </Typography.Paragraph>
         <Tree
-          showLine
-          switcherIcon={<DownOutlined />}
+          showLine={{ showLeafIcon: false }}
           onSelect={onSelect}
           onExpand={onExpand}
           expandedKeys={[...uniqueKeys]}
@@ -721,7 +664,7 @@ const CampTree = ({
         >
           {tree?.at(0) && renderTreeNodes(tree?.at(0))}
         </Tree>
-      </Fragment>
+      </>
     ) : null
   ) : (
     <p data-testid="camp-tree">No Camp Tree Found</p>

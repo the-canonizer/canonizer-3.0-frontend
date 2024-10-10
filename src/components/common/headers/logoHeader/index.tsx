@@ -1,18 +1,26 @@
+import { Fragment } from "react";
 import Link from "next/link";
-import { Image } from "antd";
+import Image from "next/image";
+
+import styles from "../siteHeader.module.scss";
 
 const LogoHeader = () => {
   return (
-    <div className="w-auto h-auto flex items-center cursor-pointer">
-      <Link href="/" className="w-full max-w-full" role="Picture of the author">
-        <Image
-          src={`/images/logo.svg`}
-          alt="Picture of the author"
-          preview={false}
-          width={150}
-        />
-      </Link>
-    </div>
+    <Fragment>
+      <div className={styles.logo}>
+        <Link href="/">
+          <a>
+            <Image
+              src={`${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/site-images/logo.svg`}
+              alt="Picture of the author"
+              layout="responsive"
+              width={200}
+              height={42}
+            />
+          </a>
+        </Link>
+      </div>
+    </Fragment>
   );
 };
 

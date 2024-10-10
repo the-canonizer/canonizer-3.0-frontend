@@ -22,7 +22,7 @@ const LoginModal = () => {
         width={800}
         className="loginModal"
       >
-        <Login />
+        <Login isModal={true} />
       </Modal>
     </Fragment>
   );

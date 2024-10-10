@@ -1,14 +1,17 @@
-import Layout from "src/hoc/layout";
-import CreateStatement from "components/ComponentPages/ManageStatement";
+import AddOrManage from "../../../components/ComponentPages/Statement/AddOrManage";
+import Layout from "../../../hoc/layout";
 
-const ManageStatementPage = () => {
+const CreateNewStatement = () => {
   return (
-    <Layout>
-      <CreateStatement />
-    </Layout>
+    <>
+      <Layout>
+        <div className="pageContentWrap">
+          <AddOrManage add={true} />
+        </div>
+      </Layout>
+    </>
   );
 };
+CreateNewStatement.displayName = "CreateNewStatement";
 
-ManageStatementPage.displayName = "CreateNewStatement";
-
-export default ManageStatementPage;
+export default CreateNewStatement;

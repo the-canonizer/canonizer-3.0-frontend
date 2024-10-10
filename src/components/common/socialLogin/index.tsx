@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { Typography, Button } from "antd";
 import {
   FacebookFilled,
+  // TwitterOutlined,
   GithubFilled,
   LinkedinFilled,
 } from "@ant-design/icons";
@@ -20,7 +21,8 @@ export default function SocialLoginUi({ isNotLogin = false }: any) {
   const [isLoading, setIsLoading] = useState(false);
 
   const dispatch = useDispatch();
-
+  
+  
   // social login api call
   const onSocialLogin = async (
     provider: any,
@@ -32,7 +34,7 @@ export default function SocialLoginUi({ isNotLogin = false }: any) {
     let body = { provider };
     const res = await socialLogin(body);
     try {
-      if (res.data) {
+      if (res.data) {  
         if (isNotLogin) {
           dispatch(setValue({ label: "redirect_type", value: true }));
         }
@@ -45,12 +47,9 @@ export default function SocialLoginUi({ isNotLogin = false }: any) {
   };
 
   return (
-    <div className={styles.wrapper + " text-center"}>
-      <Text
-        className="text-xs 2xl:text-sm font-normal text-center"
-        id="social-login-title"
-      >
-        {`${isNotLogin ? "Sign up" : "Log in"} via social accounts-`}
+    <div className={styles.wrapper}>
+      <Text className={styles.social_login_text} id="social-login-title">
+        {`${isNotLogin ? "Signup" : "Login"} with social accounts.`}
       </Text>
       {isLoading ? (
         <CustomSkeleton

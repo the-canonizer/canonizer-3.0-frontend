@@ -1,6 +1,6 @@
 import CompareStatement from "../../../components/ComponentPages/CompareStatement";
 
-import Layout from "../../../hoc/layout";
+import Layout from "../../../hoc/withoutSidebarLayout";
 
 const CompareStatementPage = () => {
   return (

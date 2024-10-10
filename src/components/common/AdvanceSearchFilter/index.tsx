@@ -19,7 +19,7 @@ import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import filter from "src/assets/image/filter.svg";
 import upArrow from "src/assets/image/ant-design--caret-up-filled.svg";
 import Image from "next/image";
-import { CloseOutlined, DownOutlined, LeftOutlined } from "@ant-design/icons";
+import { LeftOutlined } from "@ant-design/icons";
 import { CloseCircleOutlined, CaretDownOutlined } from "@ant-design/icons";
 import { AdvanceFilterSeacrhApi } from "src/network/api/userApi";
 import { useDispatch, useSelector } from "react-redux";
@@ -79,7 +79,7 @@ export default function AdvanceFilter() {
     current_date_filter,
     filteredAsOfDate,
     loading,
-    // selectedCampFromAdvanceFilterAlgorithm,
+    selectedCampFromAdvanceFilterAlgorithm,
   } = useSelector((state: RootState) => ({
     searchValue: state?.searchSlice?.searchValue,
     searchQueryValue: state?.searchSlice?.searchQueryValue,
@@ -102,39 +102,41 @@ export default function AdvanceFilter() {
     current_date_filter: state?.filters?.current_date,
     filteredAsOfDate: state?.filters?.filterObject?.asofdate,
     loading: state?.loading?.loading,
-    // selectedCampFromAdvanceFilterAlgorithm:
-    //   state?.searchSlice?.selectedCampFromAdvanceFilterAlgorithm,
+    selectedCampFromAdvanceFilterAlgorithm:
+      state?.searchSlice?.selectedCampFromAdvanceFilterAlgorithm,
   }));
-  const { searchDataAll, searchData } = useSelector((state: RootState) => ({
+  const { searchDataAll ,searchData} = useSelector((state: RootState) => ({
     searchDataAll: state?.searchSlice?.searchDataAll,
     searchData: state?.searchSlice?.searchData,
+
   }));
   const findNicknameId = searchDataAll.nickname?.map((obj) => {
     return obj.id;
   });
 
-  const findTopicId = searchDataAll.camp?.map((obj) => {
-    return obj.topic_num;
-  });
+const findTopicId = searchDataAll.camp?.map((obj) => {
+  return obj.topic_num;
+});
 
-  let stringTopicArray = findTopicId?.map((element) => element?.toString());
+let stringTopicArray = findTopicId?.map(element => element?.toString());
 
-  const findCampId = searchDataAll.camp?.map((obj) => {
+const findCampId = searchDataAll.camp?.map((obj) => {
     return obj.camp_num;
-  });
+});
 
-  let stringCampArray = findCampId?.map((element) => element?.toString());
-  const findTopicId1 = searchData?.camp?.map((obj) => {
-    return obj.topic_num;
-  });
+let stringCampArray = findCampId?.map(element => element?.toString());
+const findTopicId1 = searchData?.camp?.map((obj) => {
+  return obj.topic_num;
+});
 
-  let stringTopicArray1 = findTopicId1?.map((element) => element.toString());
+let stringTopicArray1 = findTopicId1?.map(element => element.toString());
 
-  const findCampId1 = searchData?.camp?.map((obj) => {
+const findCampId1 = searchData?.camp?.map((obj) => {
     return obj.camp_num;
-  });
+});
 
-  let stringCampArray1 = findCampId1?.map((element) => element.toString());
+let stringCampArray1 = findCampId1?.map(element => element.toString());
+
 
   const [timer, setTimer] = useState(null);
   const [inputValue, setInputValue] = useState(
@@ -149,7 +151,7 @@ export default function AdvanceFilter() {
   const [active, setActive] = useState([]);
   const infoContent = (
     <>
-      <div className={styles.infoTextWidthBox}>
+      <div className={styles.infoTextWidthBox }>
         <Title level={5}>Score Value Filter </Title>
         <p>
           This option filters down the camp list with a score value greater than
@@ -342,57 +344,61 @@ export default function AdvanceFilter() {
 
   async function getTopicsApiCallWithReqBody() {
     // loadMore ? setPageNumber(pageNumber + 1) : setPageNumber(1);
-    const rebody = {
-      type: "topic",
-      search: searchValue,
-      query: "",
-      algo: algorithm,
-      asof: asof,
-      score: filterByScore,
-      asofdate:
-        asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
-    };
-    const response = await AdvanceFilterSeacrhApi(rebody);
-    dispatch(setSelectedTopicFromAdvanceFilterAlgorithm(response?.data?.topic));
+    const rebody={
+    type: "topic",
+    search: searchValue,
+    query: "",
+    algo: algorithm,
+    asof:asof,
+    score:filterByScore,
+    asofdate:
+    asof == "default" || asof == "review"
+      ? Date.now() / 1000
+      : asofdate,
+    }
+  const response = await AdvanceFilterSeacrhApi(rebody);
+  dispatch(setSelectedTopicFromAdvanceFilterAlgorithm(response?.data?.topic))
     // setLoadMoreIndicator(false);
   }
   async function getCampsApiCallWithReqBody() {
     // loadMore ? setPageNumber(pageNumber + 1) : setPageNumber(1);
-    const rebody = {
-      type: "camp",
-      search: "",
-      query: "",
-      algo: algorithm,
-      asof: asof,
-      score: filterByScore,
-      camp_ids: stringCampArray,
-      topic_ids: stringTopicArray,
-      asofdate:
-        asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
-    };
-    const response = await AdvanceFilterSeacrhApi(rebody);
-    dispatch(setSelectedCampFromAdvanceFilterAlgorithm(response?.data?.camp));
+    const rebody={
+    type:"camp",
+    search: "",
+    query: "",
+    algo: algorithm,
+    asof:asof,
+    score:filterByScore,
+    camp_ids: stringCampArray,
+    topic_ids: stringTopicArray,
+    asofdate:
+    asof == "default" || asof == "review"
+      ? Date.now() / 1000
+      : asofdate,
+    }
+  const response = await AdvanceFilterSeacrhApi(rebody);
+  dispatch(setSelectedCampFromAdvanceFilterAlgorithm(response?.data?.camp))
     // setLoadMoreIndicator(false);
   }
 
   async function getStatementApiCallWithReqBody() {
     // loadMore ? setPageNumber(pageNumber + 1) : setPageNumber(1);
-    const rebody = {
-      type: "statement",
+    const rebody={
+      type:"statement",
       search: "",
       query: "",
       algo: algorithm,
-      asof: asof,
-      score: filterByScore,
+      asof:asof,
+      score:filterByScore,
       camp_ids: stringCampArray1,
       topic_ids: stringTopicArray1,
       asofdate:
-        asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
-    };
-    const response = await AdvanceFilterSeacrhApi(rebody);
-    dispatch(
-      setSelectedStatementFromAdvanceFilterAlgorithm(response?.data?.statement)
-    );
+      asof == "default" || asof == "review"
+        ? Date.now() / 1000
+        : asofdate,
+    }
+  const response = await AdvanceFilterSeacrhApi(rebody);
+  dispatch(setSelectedStatementFromAdvanceFilterAlgorithm(response?.data?.statement))
     // setLoadMoreIndicator(false);
   }
   const filterOnScore = (e) => {
@@ -520,39 +526,24 @@ export default function AdvanceFilter() {
     setSelectedAsOFDate(filteredAsOfDate);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filteredAsOfDate]);
-
+console.log(stringCampArray,stringTopicArray,"stringTopicArray")
   useEffect(() => {
-    if (router?.pathname == "/search/topic") {
-      getTopicsApiCallWithReqBody();
-    } else if (
-      router?.pathname == "/search/camp" &&
-      stringCampArray &&
-      stringTopicArray &&
-      searchDataAll?.camp?.length != 0
-    ) {
-      getCampsApiCallWithReqBody();
-    } else if (
-      router?.pathname == "/search/camp_statement" &&
-      stringCampArray1 &&
-      stringTopicArray1 &&
-      searchDataAll?.statement?.length != 0
-    ) {
-      getStatementApiCallWithReqBody();
+    if(router?.pathname == "/search/topic"){
+    getTopicsApiCallWithReqBody()
+    }else if(router?.pathname == "/search/camp" && stringCampArray && stringTopicArray && searchDataAll?.camp?.length != 0){
+    getCampsApiCallWithReqBody()
+    }else  if(router?.pathname == "/search/camp_statement" && stringCampArray1 && stringTopicArray1 && searchDataAll?.statement?.length != 0){
+      getStatementApiCallWithReqBody()
     }
-
+   
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [asof, filterByScore, algorithm, asofdate]);
-  useEffect(() => {
-    if (
-      router?.pathname == "/search/camp" &&
-      stringCampArray &&
-      stringTopicArray &&
-      searchDataAll?.camp?.length != 0
-    ) {
-      getCampsApiCallWithReqBody();
+  }, [asof,filterByScore,algorithm,asofdate]);
+  useEffect(()=> {
+    if(router?.pathname == "/search/camp" && stringCampArray && stringTopicArray && searchDataAll?.camp?.length != 0){
+      getCampsApiCallWithReqBody()
     }
-  }, [searchDataAll]);
-
+  }, [searchDataAll])
+ 
   const handleCollapseChange = (key) => {
     setActive(key);
     // Do something with the collapsed key
@@ -561,28 +552,23 @@ export default function AdvanceFilter() {
     setActive([]);
   };
   const panelRef = useRef(null);
-  const selectRef = useRef(null);
+  const selectRef = useRef(null)
   const handleClickOutside = (event) => {
-    // Ignore clicks within the DatePicker panel
-    const datePickerPanel = document.querySelector(".ant-picker-dropdown");
-
     if (isSelectClicked) {
       setIsSelectClicked(false); // Reset the flag and return early
       return;
     }
-
-    // Check if the click is outside of the panel and not on the DatePicker dropdown
+    
     if (
       panelRef.current &&
       !panelRef.current.contains(event.target) &&
-      !event.target.closest(".ant-select") &&
-      !(datePickerPanel && datePickerPanel.contains(event.target))
+      !event.target.closest('.ant-select')
     ) {
       setActive([]); // Close the panel if click occurs outside of it
     }
   };
   useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -591,19 +577,16 @@ export default function AdvanceFilter() {
     <div
       ref={panelRef}
       className={
-        router?.pathname == "/search/nickname"
+        router?.pathname !== "/search/nickname"
           ? "advanceFilter"
           : "NicknameadvanceFilter advanceFilter"
       }
     >
       <Collapse
-        className={`${styles.cardAccordian} [&_.ant-collapse-content]:!bg-white !border-none relative topicListFilterCardCollapse [&_.ant-collapse-header]:!border [&_.ant-collapse-header]:!border-canGrey2 [&_.ant-collapse-header]:!rounded-lg !border-canBlue [&_.ant-collapse-content]:!top-14 [&_.ant-collapse-content]:!rounded-xl [&_.ant-collapse-content]:!shadow-filter-shadow 
-        lg:[&_.ant-collapse-content]:!right-0 [&_.ant-collapse-content]:!absolute !w-52 [&_.ant-collapse-borderless]:!border-2  !rounded-lg [&_.ant-collapse-header]:!px-8 
-        [&_.ant-collapse-item]:!border-none  [&_.ant-collapse-header]:!py-2.5 !bg-transparent [&_.ant-collapse-content-box]:!p-2.5 [&_.ant-collapse-content]:!w-72  [&_.ant-collapse-expand-icon]:!order-1 [&_.ant-collapse-expand-icon]:flex [&_.ant-collapse-expand-icon]:items-center [&_.ant-collapse-arrow]:!transform-none [&_.ant-collapse-header]:!items-center lg:[&_.ant-collapse-content]:!self-center  [&_.ant-collapse-content]:!self-auto [&_.ant-collapse-content]:z-10 `}
-        expandIconPosition="end"
+        className={`${styles.cardAccordian} topicListFilterCardCollapse`}
+        expandIconPosition="right"
         expandIcon={({ isActive }) => (
-          // <DownOutlined rotate={isActive ? 0 : 180} />
-          <Image src="/images/caret-icon.svg" width={12} height={12} />
+          <CaretDownOutlined rotate={isActive ? 180 : 180} />
         )}
         bordered={false}
         activeKey={active}
@@ -613,145 +596,122 @@ export default function AdvanceFilter() {
         <Panel
           data-testid="panel_click"
           header={
-            <span className="filter-heading text-base font-medium">
-              {/* <Image
+            <span className="filter-heading">
+              <Image
                 id="viewFile"
                 alt="Eye Image"
                 src={filter}
                 width={15}
                 height={11}
-              /> */}
+              />
               Advance Filter
-              {/* <Image  src="/images/caret-icon.svg" width={20} height={20} /> */}
             </span>
           }
           key={"1"}
-          disabled={
-            searchDataAll?.nickname?.length ||
-            searchDataAll?.topic?.length ||
-            searchDataAll?.camp?.length ||
-            searchDataAll?.statement?.length
-              ? false
-              : true
-          }
+          disabled={searchDataAll?.nickname?.length || searchDataAll?.topic?.length||searchDataAll?.camp?.length||searchDataAll?.statement?.length ? false: true}
         >
-          <div
-            className="advance_close flex justify-between items-center w-full mb-10"
-            data-testid="cross_icon"
-          >
-            <h4 className="text-sm text-canBlack font-medium">
-              Advanced Filters
-            </h4>
-            <CloseOutlined className="w-2.5 h-2.5" onClick={handleClosePanel} />
+          <div className="advance_close"  data-testid="cross_icon">
+            <CloseCircleOutlined onClick={handleClosePanel} />
           </div>
 
           {router?.pathname !== "/search/nickname" ? (
-            <div className="">
-              <h3 className="text-sm text-canBlack font-medium pb-2 border-b border-canBlack border-opacity-5">
-                Search Type
-              </h3>
-              <Radio.Group
-                onChange={onChange}
-                value={value}
-                className="flex flex-col "
-              >
-                <Radio
-                  className=" border-b border-canBlack border-opacity-5 py-2 font-medium [&_.ant-radio-inner]:!w-3 [&_.ant-radio-inner]:!h-3 "
-                  value={1}
-                  onClick={() => {
-                    dispatch(setViewThisVersion(false));
-                    dispatch(
-                      setIsReviewCanonizedTopics({
-                        includeReview: true,
-                        asof: "review",
-                        asofdate: Date.now() / 1000,
-                      })
-                    );
-                    onChangeRoute(
-                      // filterObject?.filterByScore,
-                      // filterObject?.algorithm,
-                      "review",
-                      Date.now() / 1000,
-                      filterObject?.namespace_id,
-                      viewThisVersion
-                    );
-                    // getTopicsApiCallWithReqBody()
-                  }}
-                >
-                  Search include review
-                </Radio>
-                <Radio
-                  className=" border-b border-canBlack border-opacity-5 py-2  font-medium [&_.ant-radio-inner]:!w-3 [&_.ant-radio-inner]:!h-3"
-                  value={2}
-                  onClick={() => {
-                    dispatch(setViewThisVersion(false));
-                    dispatch(
-                      setFilterCanonizedTopics({
-                        asofdate: Date.now() / 1000,
-                        asof: "default",
-                      })
-                    );
-                    onChangeRoute(
-                      // filterObject?.filterByScore,
-                      // filterObject?.algorithm,
-                      "default",
-                      Date.now() / 1000,
-                      filterObject?.namespace_id,
-                      viewThisVersion
-                    );
-                  }}
-                >
-                  Default
-                </Radio>
-                <Radio
-                  className="py-2  font-medium [&_.ant-radio-inner]:!w-3 [&_.ant-radio-inner]:!h-3"
-                  value={3}
-                  onClick={() => {
-                    dispatch(setViewThisVersion(false));
-                    handleAsOfClick();
-                    // getTopicsApiCallWithReqBody()
-                  }}
-                >
-                  Search historical
-                </Radio>
-              </Radio.Group>
-              <DatePicker
-                disabled={
-                  !loading
-                    ? isDatePicker || selectedAsOf == "bydate"
-                      ? false
-                      : true
+            <div className="row">
+              <div className="col-sm-12">
+                <h4>Canonizer</h4>
+                
+              </div>
+              <div className="col-sm-12">
+                <h3>Search Type</h3>
+                <Radio.Group onChange={onChange} value={value}>
+                  <Radio
+                    value={1}
+                    onClick={() => {
+                      dispatch(setViewThisVersion(false));
+                      dispatch(
+                        setIsReviewCanonizedTopics({
+                          includeReview: true,
+                          asof: "review",
+                          asofdate: Date.now() / 1000,
+                        })
+                      );
+                      onChangeRoute(
+                        // filterObject?.filterByScore,
+                        // filterObject?.algorithm,
+                        "review",
+                        Date.now() / 1000,
+                        filterObject?.namespace_id,
+                        viewThisVersion
+                      );
+                      // getTopicsApiCallWithReqBody()
+                    }}
+                  >
+                    Search include review
+                  </Radio>
+                  <Radio
+                    className={styles.radio + " topicFilterRadio"}
+                    value={2}
+                    onClick={() => {
+                      dispatch(setViewThisVersion(false));
+                      dispatch(
+                        setFilterCanonizedTopics({
+                          asofdate: Date.now() / 1000,
+                          asof: "default",
+                        })
+                      );
+                      onChangeRoute(
+                        // filterObject?.filterByScore,
+                        // filterObject?.algorithm,
+                        "default",
+                        Date.now() / 1000,
+                        filterObject?.namespace_id,
+                        viewThisVersion
+                      );
+                    }}
+                  >
+                    Default
+                  </Radio>
+                  <Radio
+                    className={styles.radio + " topicFilterRadio"}
+                    value={3}
+                    onClick={() => {
+                      dispatch(setViewThisVersion(false));
+                      handleAsOfClick();
+                      // getTopicsApiCallWithReqBody()
+                    }}
+                  >
+                    Search historical
+                  </Radio>
+                </Radio.Group>
+                <DatePicker
+              disabled={
+                !loading
+                  ? isDatePicker || selectedAsOf == "bydate"
+                    ? false
                     : true
-                }
-                format="YYYY-MM-DD"
-                defaultValue={moment(current_date_filter * 1000)}
-                value={moment(selectedAsOFDate * 1000)}
-                suffixIcon={
-                  <Image
-                    src="/images/calendar-icon.svg"
-                    width={22}
-                    height={22}
-                  />
-                }
-                size={"large"}
-                className={`${styles.date} w-100 ml-6 rounded-lg `}
-                onChange={pickDate}
-                inputReadOnly={true}
-                disabledDate={(current) =>
-                  current && current > moment(current_date_filter).endOf("day")
-                }
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setIsSelectClicked(true); // Set the flag when Select is clicked
-                }}
-                allowClear={false}
-              />
+                  : true
+              }
+              format="YYYY-MM-DD"
+              defaultValue={moment(current_date_filter * 1000)}
+              value={moment(selectedAsOFDate * 1000)}
+              suffixIcon={<i className="icon-calendar"></i>}
+              size={"large"}
+              className={`${styles.date} w-100 mt-10`}
+              onChange={pickDate}
+              inputReadOnly={true}
+              disabledDate={(current) =>
+                current && current > moment(current_date_filter).endOf("day")
+              }
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsSelectClicked(true); // Set the flag when Select is clicked
+              }}
+            />
+
+              </div>
             </div>
           ) : (
             <div className="nicknameAdvanceFilter">
-              <label data-testid="nickname_panel_heading">
-                Search for Topic or Camp{" "}
-              </label>
+              <label data-testid="nickname_panel_heading">Search for Topic or Camp </label>
               <Input
                 size="large"
                 value={searchVal}

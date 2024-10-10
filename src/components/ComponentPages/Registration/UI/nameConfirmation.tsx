@@ -1,13 +1,15 @@
 import { Fragment } from "react";
-import { Typography, Form, Row, Col, Button, Card } from "antd";
+import { Typography, Form, Row, Col, Button, Input } from "antd";
 import {
   CloseCircleOutlined,
   ArrowRightOutlined,
   RedoOutlined,
 } from "@ant-design/icons";
 
-import messages from "src/messages";
-import Inputs from "components/shared/FormInputs";
+import styles from "./Registration.module.scss";
+
+import messages from "../../../../messages";
+import FormItem from "../../../common/formElements";
 
 const { Title, Text } = Typography;
 const { labels } = messages;
@@ -20,8 +22,8 @@ const NameConfirmation = ({
   isOTP,
   onResendClick,
   isResend,
-}) => (
-  <Card className="rounded-lg" bordered={false}>
+}: any) => (
+  <section className={styles.signup_wrapper + " " + styles.textCenter}>
     <Form
       form={form}
       name="name-confirmation"
@@ -30,43 +32,40 @@ const NameConfirmation = ({
       scrollToFirstError
       validateTrigger={messages.formValidationTypes()}
     >
-      <Title
-        level={4}
-        className="mt-4 text-sm text-canBlack font-medium"
-        id="name-title"
-      >
+      <Title level={2} className={styles.titles} id="name-title">
         {isOTP ? labels.otpTitle : labels.nameConfirmationTitle}
       </Title>
       {isModal && (
         <Button
           shape="circle"
           type="link"
-          className="text-canBlack absolute !border-0 top-0 right-0 bg-transparent"
+          className={styles.close_btn}
           onClick={closeModal}
           icon={<CloseCircleOutlined />}
           id="close-modal-btn"
         />
       )}
-      <div className="w-full mt-4">
-        <Text
-          type="danger"
-          className="text-xs text-danger text-center block mb-4 mt-2"
-          id="note-text"
-        >
+      <div className={styles.section_one}>
+        <Text type="danger" className={styles.otpNote} id="note-text">
           {isOTP ? labels.otpLabel : labels.nameLabel}
         </Text>
         {isOTP ? (
-          <Inputs
+          <Form.Item
             name="otp"
-            rules={messages.otpRule}
-            placeholder={messages.placeholders.otp}
-            min={6}
-            max={6}
-          />
+            className={styles.confirmationINput}
+            {...messages.otpRule}
+          >
+            <Input
+              className={styles.otpInput}
+              placeholder={messages.placeholders.otp}
+              min={6}
+              max={6}
+            />
+          </Form.Item>
         ) : (
-          <Row gutter={30}>
+          <Row gutter={30} className={styles.textLeft}>
             <Col md={12} style={{ width: "100%" }}>
-              <Inputs
+              <FormItem
                 name="first_name"
                 label={
                   <Fragment>
@@ -84,7 +83,7 @@ const NameConfirmation = ({
             </Col>
 
             <Col md={12} style={{ width: "100%" }}>
-              <Inputs
+              <FormItem
                 name="last_name"
                 label={
                   <Fragment>
@@ -109,7 +108,7 @@ const NameConfirmation = ({
           <Button
             type="primary"
             htmlType="button"
-            className="h-[40px] text-sm rounded-lg !w-auto m-auto flex justify-center items-center mb-4 sm:!w-full"
+            className={styles.resetOTP}
             block
             onClick={onResendClick}
             id="otp-send-btn"
@@ -121,16 +120,17 @@ const NameConfirmation = ({
         <Button
           type="primary"
           htmlType="submit"
-          className="h-[40px] text-sm rounded-lg m-auto flex justify-center items-center !w-8/12 lg:!w-4/12"
+          className={styles["login-form-button"]}
           block
           data-testid="submitButton"
+          style={{ width: "150px" }}
           id="submit-btn"
         >
           Submit <ArrowRightOutlined />
         </Button>
       </Form.Item>
     </Form>
-  </Card>
+  </section>
 );
 
 export default NameConfirmation;

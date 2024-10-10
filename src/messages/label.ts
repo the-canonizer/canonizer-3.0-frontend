@@ -4,11 +4,11 @@ export const labels = {
   firstName: "First Name",
   middleName: "Middle Name",
   lastName: "Last Name",
-  phone: "Contact Number",
+  phone: "Phone Number",
   email: "Email",
   captcha: "Captcha",
-  registrationPassword: "Create a Password",
-  confirmPassword: "Re-enter Password",
+  registrationPassword: "Password",
+  confirmPassword: "Confirm Password",
   currentPassword: "Enter Current Password",
   newPassword: "Enter New Password",
   phoneNumber: "Phone Number",
@@ -21,18 +21,18 @@ export const labels = {
   language: "Language",
   state: "State",
   zipCode: "Zip Code (Limit 255 Chars)",
-  chooseAlgorithm: " Default Algorithm Preferences",
+  chooseAlgorithm: "Choose Default Algorithm Preferences",
   emailId: "Email ID",
-  addnewNickName: "Add Nickname",
+  addnewNickName: "Add New Nickname",
   nickName: "Nickname (Limit 50 Char)",
   visibilityStatus: "Visibility Status",
 
   removeSupport: "Remove Support",
-  fortopic: "Topic Name",
+  fortopic: "For Topic",
   supportdelegatedto: "Support Delegated To:",
   nickname: "Nickname:",
   viewMore: "View More",
-  currentSupportedCamps: "Supported Camps:",
+  currentSupportedCamps: "Current Supported Camps:",
 
   cr_nick_name: "Nickname",
   cr_nick_name_sp:
@@ -84,20 +84,18 @@ export const labels = {
     "Note : Registration code has been sent to your registered email address.",
   otLabel:
     "Note: Verification code has been sent to your registered email address.",
-  createPassword: "Create new password",
-  verificationLabel: "Enter password verification code",
-  forgotModalLabel: "Forgot your password? Don't worry, it happens.",
+  createPassword: "Create New Password",
+  verificationLabel: "Create Password Verification Code",
+  forgotModalLabel: "Forgot Your Password?",
   nameConfirmationTitle: "Name Confirmation",
-  reasonLabel: "(Optional) Reason for adding/removing support",
-  reasonChangeLabel:
-    "(Optional) Reason for adding/removing/changing order support",
+  reasonLabel: "Reason for adding/removing support",
+  reasonChangeLabel: "Reason for adding/removing/changing order support",
   reasonLabelAdd: "Reason for support",
   reasonLabelSummary: "Summary",
   resonURLLabel: "Citation Link",
   reasonModalTitle: "Reason for support end!",
   copied_success: "Text has been copied.",
   copied_error: "Error: Text could not be copied.",
-  cateLabel: "Add Topic Tags",
 };
 
 export const preventCampLabel = [
@@ -109,7 +107,7 @@ export const preventCampLabel = [
     disable: false,
   },
   {
-    label: "Allow creation of single level sub-camps only.",
+    label: "Single level sub camps only.",
     tooltip:
       "Disable the ability to add additional sub camps beyond direct sub camps.",
     id: "is_one_level",

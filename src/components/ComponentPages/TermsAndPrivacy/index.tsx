@@ -7,7 +7,7 @@ export default function TermsAndPrivacy({ termsAndPrivacyContent }: any) {
   return (
     <div className={styles.pageWrapper} data-testid="termsAndPolicy">
       <div
-        className="policy-content cn-card-home"
+        className="policy-content"
         dangerouslySetInnerHTML={{
           __html:
             router?.pathname == "/privacy-policy"

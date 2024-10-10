@@ -2,11 +2,10 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import HtmlDiff from "htmldiff-js";
 
-// import CompareStatementUI from "./UI/index-old";
+import CompareStatementUI from "./UI";
 
 import { getCompareStatement } from "../../../network/api/history";
 import useAuthentication from "src/hooks/isUserAuthenticated";
-import CompareStatementUI from "./UI";
 
 function CompareStatement() {
   const router = useRouter();
@@ -21,7 +20,7 @@ function CompareStatement() {
   useEffect(() => setIsLoggedIn(isUserAuthenticated), [isUserAuthenticated]);
 
   const getStatement = async (ids) => {
-    setIsLoading(true);
+    // setIsLoading(true);
     const reqBody = {
       ids,
       topic_num: +router?.query.routes?.at(0)?.split("-")[0],
@@ -44,11 +43,12 @@ function CompareStatement() {
     s1.parsed_v = HtmlDiff.execute(s2?.parsed_value, s1?.parsed_value);
     s2.parsed_v = HtmlDiff.execute(s1?.parsed_value, s2?.parsed_value);
 
+    setIsLoading(false);
+
     if (res && res.status_code === 200) {
       setStatements(statements);
       setLiveStatement(statementLive);
     }
-    setIsLoading(false);
   };
 
   useEffect(() => {

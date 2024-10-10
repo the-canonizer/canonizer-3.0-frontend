@@ -16,9 +16,6 @@ import { useRouter } from "next/router";
 import styles from "./latestFilter.module.scss";
 import { getTreesApi } from "src/network/api/campDetailApi";
 import { useEffect } from "react";
-import Image from "next/image";
-import calendarIcon from "../../../../public/images/calendar-icon.svg";
-import { setAsOfValues } from "src/store/slices/campDetailSlice";
 
 const LatestFilter = () => {
   const router = useRouter();
@@ -141,7 +138,6 @@ const LatestFilter = () => {
         asof: "default",
       })
     );
-    dispatch(setAsOfValues(2));
     onChangeRoute(
       filterObject?.filterByScore,
       filterObject?.algorithm,
@@ -191,23 +187,23 @@ const LatestFilter = () => {
   const revertScore = () => {
     getTreesApi(reqBodyForService);
   };
-  // const reqBody = {
-  //   topic_num: router?.query?.camp[0]?.split("-")[0],
-  //   camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
-  //   asOf: asof,
-  //   asofdate:
-  //     asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
-  //   algorithm: algorithm,
-  //   update_all: 1,
-  //   fetch_topic_history: viewThisVersionCheck ? 1 : null,
-  // };
-  // const revertScoreAndAlgo = () => {
-  //   getTreesApi(reqBody);
-  // };
+  const reqBody = {
+    topic_num: router?.query?.camp[0]?.split("-")[0],
+    camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
+    asOf: asof,
+    asofdate:
+      asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
+    algorithm: algorithm,
+    update_all: 1,
+    fetch_topic_history: viewThisVersionCheck ? 1 : null,
+  };
+  const revertScoreAndAlgo = () => {
+    getTreesApi(reqBody);
+  };
 
-  // useEffect(() => {
-  //   revertScoreAndAlgo();
-  // }, [selectAlgoBrowsePage]);
+  useEffect(() => {
+    revertScoreAndAlgo();
+  }, [selectAlgoBrowsePage]);
   const clearAllFilter = async () => {
     dispatch(setSelectAlgoBrowsePage(false));
     dispatch(setArchivedCheckBox(false));
@@ -224,14 +220,12 @@ const LatestFilter = () => {
     if (router?.query?.algo && selectedAlgorithm) {
       algoRevert();
     }
-    // revertScore();
+    revertScore();
   };
   let filteredDate = moment(filteredAsOfDate * 1000).format("YYYY-MM-DD");
-
   return (
-    // <div className={styles.selected_filter_area}>
-    <div className="flex">
-      {/* {(router?.query?.algo &&
+    <div className={styles.selected_filter_area}>
+      {(router?.query?.algo &&
         selectedAlgorithm &&
         lable?.algorithm_label !== undefined) ||
       is_camp_archive_checked ||
@@ -240,7 +234,7 @@ const LatestFilter = () => {
       includeReview ||
       router?.query?.asof == "review" ||
       filteredScore != 0 ? (
-        <span className="flex">
+        <span>
           <label
             className={styles.selected_filter_heading}
             data-testid="Selected filter"
@@ -257,164 +251,97 @@ const LatestFilter = () => {
         </span>
       ) : (
         ""
-      )} */}
+      )}
 
-      <Space size={[0, 18]} wrap className="flex !gap-2.5">
+      <Space size={[0, 18]} wrap>
         {router?.query?.algo &&
         selectedAlgorithm &&
         lable?.algorithm_label !== undefined ? (
-          <Tag className="bg-canLightGrey rounded-full h-8 px-3.5 !m-0 text-xs text-canBlue leading-4 font-medium border-none flex items-center gap-2.5">
-            {/* <CloseOutlined /> */}
-            {lable?.algorithm_label}
-            <div
-              onClick={() => {
-                algoRevert();
-                revertScore();
-              }}
-            >
-              <Image
-                className="cursor-pointer"
-                src="/images/filter-cross.svg"
-                alt=""
-                width={10}
-                height={10}
+          <Tag
+            icon={
+              <CloseOutlined
+                onClick={() => {
+                  algoRevert();
+                  revertScore();
+                }}
               />
-            </div>
+            }
+          >
+            {lable?.algorithm_label}
           </Tag>
         ) : (
           ""
         )}
         {is_camp_archive_checked ? (
           <Tag
-            className="bg-canLightGrey rounded-full h-8 px-3.5 text-xs text-canBlue leading-4 font-medium border-none flex items-center gap-3"
+            icon={
+              <CloseOutlined
+                onClick={() => {
+                  dispatch(setArchivedCheckBox(false));
+                }}
+                data-testid="close_icon_archived_camps"
+              />
+            }
             data-testid="archived_camps"
           >
             Show archived camps
-            {/* <CloseOutlined
-              onClick={() => {
-                dispatch(setArchivedCheckBox(false));
-              }}
-              data-testid="close_icon_archived_camps"
-            /> */}
-            <div
-              onClick={() => {
-                dispatch(setArchivedCheckBox(false));
-              }}
-              data-testid="close_icon_archived_camps"
-            >
-              <Image
-                className="cursor-pointer"
-                src="/images/filter-cross.svg"
-                alt=""
-                width={10}
-                height={10}
-              />
-            </div>
           </Tag>
         ) : (
           ""
         )}
         {is_checked ? (
-          <Tag className="bg-canLightGrey rounded-full h-8 px-3.5 text-xs text-canBlue leading-4 font-medium border-none flex items-center gap-3">
-            100% of canonized score
-            {/* <CloseOutlined
-              onClick={() => {
-                dispatch(setScoreCheckBox(false));
-              }}
-              data-testid="close_icon_100%_of_canonized_score"
-            /> */}
-            <div
-              onClick={() => {
-                dispatch(setScoreCheckBox(false));
-              }}
-              data-testid="close_icon_100%_of_canonized_score"
-            >
-              <Image
-                className="cursor-pointer"
-                src="/images/filter-cross.svg"
-                alt=""
-                width={10}
-                height={10}
+          <Tag
+            icon={
+              <CloseOutlined
+                onClick={() => {
+                  dispatch(setScoreCheckBox(false));
+                }}
+                data-testid="close_icon_100%_of_canonized_score"
               />
-            </div>
+            }
+            data-testid="100%_of_canonized_score"
+          >
+            100% of canonized score
           </Tag>
         ) : (
           ""
         )}
-        {selectedAsOf == "bydate" || router?.query?.asof == "bydate" ? (
+        {selectedAsOf == "bydate" ? (
           <Tag
-            className="bg-canLightGrey rounded-full h-8 px-3.5 text-xs text-canBlue leading-4 font-medium border-none flex items-center gap-3"
-            data-testid="asOfDate"
-          >
-            <Image src={calendarIcon} alt="svg" height={20} width={20} />
-
-            {`${filteredDate}`}
-            {/* <CloseOutlined
-              onClick={filterForAsofDate}
-              data-testid="close_icon_as_of_date"
-            /> */}
-            <div
-              onClick={filterForAsofDate}
-              data-testid="close_icon_as_of_date"
-            >
-              <Image
-                className="cursor-pointer"
-                src="/images/filter-cross.svg"
-                alt=""
-                width={10}
-                height={10}
+            icon={
+              <CloseOutlined
+                onClick={filterForAsofDate}
+                data-testid="close_icon_as_of_date"
               />
-            </div>
-          </Tag>
+            }
+            data-testid="asOfDate"
+          >{`As of date: ${filteredDate}`}</Tag>
         ) : (
           ""
         )}
         {includeReview || router?.query?.asof == "review" ? (
           <Tag
-            className="bg-canLightGrey rounded-full h-8 px-3.5 text-xs text-canBlue leading-4 font-medium border-none flex items-center gap-3"
-            data-testid="include_review"
-          >
-            {`Include review`}
-            {/* <CloseOutlined
-              onClick={filterForAsofDate}
-              data-testid="close_icon_include_review"
-            /> */}
-            <div
-              onClick={filterForAsofDate}
-              data-testid="close_icon_include_review"
-            >
-              <Image
-                className="cursor-pointer"
-                src="/images/filter-cross.svg"
-                alt=""
-                width={10}
-                height={10}
+            icon={
+              <CloseOutlined
+                onClick={filterForAsofDate}
+                data-testid="close_icon_include_review"
               />
-            </div>
-          </Tag>
+            }
+            data-testid="include_review"
+          >{`Include review`}</Tag>
         ) : (
           ""
         )}
         {filteredScore != 0 ? (
           <Tag
-            className="bg-canLightGrey rounded-full h-8 px-3.5 text-xs text-canBlue leading-4 font-medium border-none flex items-center gap-3"
-            data-testid="Score"
-          >
-            {`Score > ${filteredScore}`}
-            {/* <CloseOutlined
-              onClick={filterscore}
-              data-testid="close_icon_Score"
-            /> */}
-            <div onClick={filterscore} data-testid="close_icon_Score">
-              <Image
-                className="cursor-pointer"
-                src="/images/filter-cross.svg"
-                alt=""
-                width={10}
-                height={10}
+            icon={
+              <CloseOutlined
+                onClick={filterscore}
+                data-testid="close_icon_Score"
               />
-            </div>
-          </Tag>
+            }
+            data-testid="Score"
+          >{`Score < ${filteredScore}`}</Tag>
         ) : (
           ""
         )}

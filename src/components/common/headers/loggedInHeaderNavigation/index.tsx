@@ -160,15 +160,11 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
           <CloseOutlined />
         </Button>
 
-        {isMobile == true ? (
-          <HeaderMenu isUserAuthenticated={undefined} />
-        ) : (
-          <></>
-        )}
+        {isMobile == true ? <HeaderMenu loggedUser={loggedUser} /> : <></>}
 
         {!isLoginPage ? (
           <Fragment>
-            {!isMobile && <HeaderMenu isUserAuthenticated={undefined} />}
+            {!isMobile && <HeaderMenu loggedUser={loggedUser} />}
 
             {isSmallMobile && (
               <ProfileInfoTab

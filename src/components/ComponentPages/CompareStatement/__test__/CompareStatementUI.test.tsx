@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from "src/utils/testUtils";
 
-import CompareStatementUI from "../UI/index-old";
+import CompareStatementUI from "../UI/index";
 
 import { Provider } from "react-redux";
 import { RouterContext } from "next/dist/shared/lib/router-context";

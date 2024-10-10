@@ -1,6 +1,5 @@
 const BaseCanonizerServiceUrl = process.env.NEXT_PUBLIC_BASE_SERVICE_URL;
 const BaseCanonizerApiUrl = process.env.NEXT_PUBLIC_BASE_API_URL;
-const DummyUrl = process.env.NEXT_PUBLIC_BASE_DUMMY_URL;
 const BaseImagesURL = process.env.NEXT_PUBLIC_BASE_IMAGES_URL;
 const BaseVideosURL = process.env.NEXT_PUBLIC_BASE_VIDEOS_URL;
 const BaseDevApiURL = process.env.NEXT_PUBLIC_BASE_API_DEV_URL;
@@ -69,7 +68,7 @@ const NetworkConstants = {
     ResendOTPForRegistration: `${BaseCanonizerApiUrl}/user/resend-otp`,
 
     // HomePage
-    GetCanonizedTopics: `${BaseCanonizerServiceUrl}/api/v2/topic/getAll`,
+    GetCanonizedTopics: `${BaseCanonizerServiceUrl}/api/v1/topic/getAll`,
 
     GetCanonizedNameSpaces: `${BaseCanonizerApiUrl}/get-all-namespaces`,
     GetWhatsNewContent: `${BaseCanonizerApiUrl}/get-whats-new-content`,
@@ -131,7 +130,6 @@ const NetworkConstants = {
     PostList: `${BaseCanonizerApiUrl}/post/list`,
     PostDelete: `${BaseCanonizerApiUrl}/post/delete`,
     GetThreadData: `${BaseCanonizerApiUrl}/thread/`,
-    GetTopFiveThreadData: `${BaseCanonizerApiUrl}/thread/latest5`,
 
     //camp news feed add edit update
     GetEditCampNewsFeed: `${BaseCanonizerApiUrl}/edit-camp-newsfeed`,
@@ -167,8 +165,6 @@ const NetworkConstants = {
     // notification list
     GetList: `${BaseCanonizerApiUrl}/notification-list`,
     MarkRead: `${BaseCanonizerApiUrl}/notification-is-read/update/`,
-    MarkAllRead: `${BaseCanonizerApiUrl}/notification/read/all`,
-    DeleteAll: `${BaseCanonizerApiUrl}/notification/delete/all`,
 
     //Get Active support topic
     GetActiveSupportTopic: `${BaseCanonizerApiUrl}/topic-support-list`,
@@ -193,8 +189,8 @@ const NetworkConstants = {
     // Meta Tags
     GetMetaContent: `${BaseCanonizerApiUrl}/meta-tags`,
 
-    Videos: `${BaseCanonizerApiUrl}/videos/consiousness/1`,
     VideosContent: `${BaseCanonizerApiUrl}/videos`,
+    Videos: `${BaseCanonizerApiUrl}/videos/consiousness/1`,
 
     GetNickSupportUser: `${BaseCanonizerApiUrl}/get-nick-support-user/`,
 
@@ -204,24 +200,12 @@ const NetworkConstants = {
     GetXMLData: `${BaseCanonizerApiUrl}/sitemaps`,
     CheckTopicCampExist: `${BaseCanonizerApiUrl}/notify-if-url-not-exist`,
     GetHotTopic: `${BaseCanonizerApiUrl}/hot-topic`,
-    GetPrefTopic: `${BaseCanonizerApiUrl}/preferred-topic`,
-    GetFeaturedTopic: `${BaseCanonizerApiUrl}/featured-topic`,
-
-    //Sibling camps
-    GetSiblingCamp: `${BaseCanonizerApiUrl}/get-sibling-camps`,
-
-    // categories
-    GetTagsList: `${BaseCanonizerApiUrl}/get-tags-list`,
-    SavePrefCats: `${BaseCanonizerApiUrl}/create/user/tags`,
 
     // Email Update
-    ChangeEmailRequest: `${BaseCanonizerApiUrl}/change-email-request`,
-    EmailChangeVerification: `${BaseCanonizerApiUrl}/emailchange-verify-otp`,
-    UpdateNewEmailRequest: `${BaseCanonizerApiUrl}/update-email-request`,
-    ReplaceExistOneUpdateNewEmail: `${BaseCanonizerApiUrl}/update-email`,
-
-    // PostStatementCount
-    postStatementCount: `${BaseCanonizerApiUrl}/post-statement-count`,
+    ChangeEmailRequest : `${BaseCanonizerApiUrl}/change-email-request`,
+    EmailChangeVerification:`${BaseCanonizerApiUrl}/emailchange-verify-otp`,
+    UpdateNewEmailRequest : `${BaseCanonizerApiUrl}/update-email-request`,
+    ReplaceExistOneUpdateNewEmail : `${BaseCanonizerApiUrl}/update-email`
   },
   Method: {
     GET: "GET",

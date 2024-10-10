@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from "react";
 import { Row, Col, Form, Input, Button, Select, Modal, message } from "antd";
-import Icon, { CloseOutlined } from "@ant-design/icons";
+import Icon from "@ant-design/icons";
 import Image from "next/image";
 
 import styles from "../ProfileInfo/ProfileInfoUI/ProfileInfo.module.scss";
@@ -13,8 +13,6 @@ import {
   VerifyOTP,
   GetUserProfileInfo,
 } from "../../../network/api/userApi";
-import PrimaryButton from "components/shared/Buttons/PrimariButton";
-import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 
 const { Option } = Select;
 
@@ -132,10 +130,8 @@ function VerifyMobileNumberForm({
                     </>
                   }
                   {...messages.phoneNumberRule}
-                  className="text-sm text-canBlack font-normal [&_label]:text-sm [&_label]:font-medium [&_.ant-form-item-explain-error]:mb-6 [&_.ant-input-group-addon]:!w-[5rem] [&_.ant-select-selection-item]:!pr-6 [&_.ant-input-group-addon]:!bg-canGray [&_.ant-input-affix-wrapper]:focus:!border-canGrey2 [&_.ant-input-affix-wrapper-focused]:!shadow-none  [&_.ant-input-affix-wrapper-focused]:!border-canGrey2 [&_.ant-input-affix-wrapper]:!border-canGrey2 [&_.ant-input-affix-wrapper]:!shadow-none"
                 >
                   <Input
-                    className="!rounded-lg"
                     data-testid="handleMobileNumberChange"
                     id="phoneNumber"
                     type="number"
@@ -158,17 +154,8 @@ function VerifyMobileNumberForm({
                   name="mobile_carrier"
                   label={messages.labels.mobileCarrier}
                   {...messages.mobileCarrierRule}
-                  className="[&_.ant-select-selector]:!rounded-lg text-sm text-canBlack font-normal [&_label]:text-sm [&_label]:font-medium [&_.ant-form-item-explain-error]:mb-6 [&_.ant-input-group-addon]:!w-[5rem] [&_.ant-select-selection-item]:!pr-6 [&_.ant-input-group-addon]:!bg-canGray [&_.ant-input-affix-wrapper]:focus:!border-canGrey2 [&_.ant-input-affix-wrapper-focused]:!shadow-none  [&_.ant-input-affix-wrapper-focused]:!border-canGrey2 [&_.ant-input-affix-wrapper]:!border-canGrey2 [&_.ant-input-affix-wrapper]:!shadow-none"
                 >
                   <Select
-                    suffixIcon={
-                      <Image
-                        src="/images/caret-icon.svg"
-                        width={16}
-                        height={9}
-                        alt=""
-                      />
-                    }
                     data-testid="mobileCarrier"
                     showSearch
                     placeholder={messages.placeholders.mobileCarrier}
@@ -194,7 +181,7 @@ function VerifyMobileNumberForm({
               <Col md={4}>
                 <Form.Item label="&nbsp;" className={styles.btnLayout}>
                   {!toggleVerifyButton ? (
-                    <PrimaryButton
+                    <Button
                       id="verifyBtn"
                       type="primary"
                       className="Profile_btn ant-btn ant-btn-orange ant-btn-lg"
@@ -205,7 +192,7 @@ function VerifyMobileNumberForm({
                       disabled={isLoadingh}
                     >
                       {isLoadingh ? "Verifying" : "Verify"}
-                    </PrimaryButton>
+                    </Button>
                   ) : (
                     <div>
                       <Icon
@@ -224,46 +211,30 @@ function VerifyMobileNumberForm({
               </Col>
             </Row>
             <Modal
-              title="OTP has been sent on your phone number."
+              title=""
               visible={isOTPModalVisible}
               footer=""
               onCancel={handleOTPCancel}
-              className="[&_.ant-modal-body]:!p-5 [&_.ant-modal-content]:!rounded-xl"
             >
-              {/* <p  className="text-base text-canBlack font-medium text-center">OTP has been sent on your phone number.</p> */}
-              <div className="flex justify-center">
-                <Input
-                  data-testid="handle_Change_OTP"
-                  id="otpInput"
-                  placeholder={messages.placeholders.otp}
-                  value={otp}
-                  onChange={handleChangeOTP}
-                  size="large"
-                  className="!rounded-lg m-auto"
-                />
-              </div>
+              <p>OTP has been sent on your phone number.</p>
+              <Input
+                data-testid="handle_Change_OTP"
+                id="otpInput"
+                placeholder={messages.placeholders.otp}
+                value={otp}
+                onChange={handleChangeOTP}
+                size="large"
+              />
               <p></p> {/* For Empty Row */}
-              <div className="flex gap-2.5 mt-5 justify-center">
-                <SecondaryButton
-                  className="flex gap-2.5 items-center justify-center w-[11.25rem] h-auto"
-                  onClick={() => {
-                    setIsOTPModalVisible(false);
-                  }}
-                >
-                  Cancel
-                  <CloseOutlined />
-                </SecondaryButton>
-                <PrimaryButton
-                  data-testid="on_otp_btn_click"
-                  id="submitBtn"
-                  type="primary"
-                  // className="ant-btn ant-btn-orange ant-btn-lg"
-                  onClick={onOTPBtnClick}
-                  className="flex gap-2.5 items-center justify-center w-[11.25rem] h-auto"
-                >
-                  Submit
-                </PrimaryButton>
-              </div>
+              <Button
+                data-testid="on_otp_btn_click"
+                id="submitBtn"
+                type="primary"
+                className="ant-btn ant-btn-orange ant-btn-lg"
+                onClick={onOTPBtnClick}
+              >
+                Submit
+              </Button>
             </Modal>
           </Fragment>
         )}

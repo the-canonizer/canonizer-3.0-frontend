@@ -1,5 +1,5 @@
 import Layout from "src/hoc/layout";
-import CampSearch from "src/components/ComponentPages/searchCanonizer/camp";
+import CampSearch from "@/components/ComponentPages/searchCanonizer/camp";
 
 function SearchCamp() {
   return (

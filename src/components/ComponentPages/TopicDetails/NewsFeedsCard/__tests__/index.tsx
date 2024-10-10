@@ -1,4 +1,4 @@
-import NewsFeedsCard from "..";
+import NewsFeedsCard from "../";
 import {
   cleanup,
   render,

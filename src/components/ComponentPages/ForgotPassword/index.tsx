@@ -1,76 +1,85 @@
-import { useEffect, useState } from "react";
+import { Fragment, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Card, Col, Form, Row } from "antd";
+import { Form, message } from "antd";
 import { useRouter } from "next/router";
 
 import ForgotPasswordUI from "./UI";
-import { forgotPasswordSendOTP } from "src/network/api/userApi";
-import { AppDispatch } from "src/store";
-import CustomSpinner from "components/shared/CustomSpinner";
-import { setPasswordEmail } from "src/store/slices/authSlice";
-import { openNotificationWithIcon } from "components/common/notification/notificationBar";
 
-const ForgotPassword = () => {
-  const [isLoading, setIsLoading] = useState(false),
-    [isDisabled, setIsDisabled] = useState(true);
+import { hideForgotModal } from "../../../store/slices/uiSlice";
+import {
+  forgotPasswordSendOTP,
+  forgotPasswordVerifyOTP,
+} from "../../../network/api/userApi";
+import { AppDispatch } from "../../../store";
+import Spinner from "../../common/spinner/spinner";
+
+const ForgotPassword = ({ isModal, isTestScreen = 0 }: any) => {
+  const [isScreen, setIsScreen] = useState(isTestScreen);
+  const [formData, setFormData] = useState({ email_id: "" });
 
   const dispatch = useDispatch<AppDispatch>();
   const [form] = Form.useForm();
+  const [otpForm] = Form.useForm();
   const router = useRouter();
 
-  const values = Form.useWatch([], form);
-
-  useEffect(() => {
-    form
-      .validateFields({ validateOnly: true })
-      .then(() => setIsDisabled(true))
-      .catch(() => setIsDisabled(false));
-  }, [form, values]);
-
-  const onFinish = async (values: { email_id: string }) => {
-    setIsLoading(true);
-    const email = values.email_id?.trim();
-
-    const res = await forgotPasswordSendOTP({ email });
-
-    if (res && res.status_code === 200) {
-      router?.push({ pathname: "/forgot-password/otp" });
-      form.resetFields();
-      openNotificationWithIcon(res.message, "success");
-      dispatch(setPasswordEmail(email));
-    }
-    setIsLoading(false);
+  const closeModal = () => {
+    dispatch(hideForgotModal());
+    isScreen === 1 ? otpForm.resetFields() : form.resetFields();
+    setIsScreen(0);
   };
 
-  const onBrowseClick = (e) => {
-    e?.preventDefault();
-    router?.push({ pathname: "/login" });
+  const onFinish = async (values: any) => {
+    setFormData(values);
+    let body = {
+      email: values.email_id?.trim(),
+    };
+    let res = await forgotPasswordSendOTP(body);
+    if (res && res.status_code === 200) {
+      form.resetFields();
+      message.success(res.message);
+      // dispatch(setValue({ label: "email_id", value: formData?.email_id }));
+      setIsScreen(1);
+    }
+  };
+
+  const onOTPSubmit = async (values: any) => {
+    if (values.otp.trim()) {
+      let body = {
+        username: formData.email_id?.trim(),
+        otp: values.otp?.trim(),
+      };
+
+      let res = await forgotPasswordVerifyOTP(body);
+
+      if (res && res.status_code === 200) {
+        otpForm.resetFields();
+        message.success(res.message);
+        setIsScreen(0);
+        isModal && closeModal();
+        // dispatch(setValue({ label: "email_id", value: formData?.email_id }));
+        localStorage.setItem("verified", formData?.email_id);
+        router?.push({ pathname: "/reset-password" });
+      }
+    } else {
+      if (isScreen === 1) {
+        form.resetFields();
+        form.validateFields(["otp"]);
+      }
+    }
   };
 
   return (
-    <CustomSpinner key="forgot-password-spinner" spinning={isLoading}>
-      <Card
-        bordered={false}
-        className="bg-canGrey1 mt-0 lg:mt-0 h-full flex justify-center items-center [&>.ant-card-body]:p-0 [&>.ant-card-body]:w-full min-h-full tab:px-10"
-      >
-        <Row gutter={20}>
-          <Col
-            lg={13}
-            md={24}
-            xl={13}
-            xs={24}
-            className="bg-white rounded-lg mx-auto"
-          >
-            <ForgotPasswordUI
-              form={form}
-              onFinish={onFinish}
-              isDisabled={isDisabled}
-              onBrowseClick={onBrowseClick}
-            />
-          </Col>
-        </Row>
-      </Card>
-    </CustomSpinner>
+    <Fragment>
+      <Spinner>
+        <ForgotPasswordUI
+          form={isScreen === 1 ? otpForm : form}
+          onFinish={isScreen === 1 ? onOTPSubmit : onFinish}
+          closeModal={closeModal}
+          isModal={isModal}
+          isScreen={isScreen}
+        />
+      </Spinner>
+    </Fragment>
   );
 };
 

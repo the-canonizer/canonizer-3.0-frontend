@@ -1,61 +1,31 @@
-import {
-  Badge,
-  Breadcrumb,
-  Button,
-  Card,
-  Checkbox,
-  Collapse,
-  Divider,
-  Empty,
-  Tag,
-  Tooltip,
-  Typography,
-} from "antd";
-
-import {
-  EyeOutlined,
-  HomeOutlined,
-  InfoCircleOutlined,
-  LeftOutlined,
-} from "@ant-design/icons";
-import { updateCampApi } from "src/network/api/campManageStatementApi";
+import { useEffect, useState, useRef } from "react";
+import { Typography, Button, List, Affix } from "antd";
 import type { CheckboxChangeEvent } from "antd/es/checkbox";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
-import { useEffect, useRef, useState } from "react";
+import InfiniteScroll from "react-infinite-scroller";
+
+import styles from "./campHistory.module.scss";
+
+import { getHistoryApi } from "src/network/api/history";
+import { getAllUsedNickNames } from "src/network/api/campDetailApi";
+import CustomSkelton from "../../common/customSkelton";
+
+import HistoryCollapse from "./Collapse";
 import { RootState } from "src/store";
+import CampInfoBar from "../TopicDetails/CampInfoBar";
+import CreateNewCampButton from "../../common/button/createNewCampBtn";
+import { setCurrentCamp } from "src/store/slices/filtersSlice";
 import useIsUserAuthenticated from "src/hooks/isUserAuthenticated";
-import {
-  getAllUsedNickNames,
-  getCampBreadCrumbApi,
-  getCurrentCampRecordApi,
-  getCurrentTopicRecordApi,
-} from "src/network/api/campDetailApi";
+
 import { store } from "src/store";
 import { setTree } from "src/store/slices/campDetailSlice";
-import { getHistoryApi } from "src/network/api/history";
-import { setCurrentCamp } from "src/store/slices/filtersSlice";
-import HistoryCollapse from "./Collapse";
-import {
-  getCookies,
-  historyTitle,
-  replaceSpecialCharacters,
-} from "src/utils/generalUtility";
-import InfiniteScroll from "react-infinite-scroller";
-import CustomSkelton from "../../common/customSkelton";
-import moment from "moment";
-import Breadcrumbs from "../Breadcrumbs/breadcrumbs";
-import HistoryCard from "../HistoryCard/historyCard";
-import CustomLayout from "src/hoc/layout/";
-import TimelineInfoBar from "../TopicDetails/CampInfoBar";
+import { updateCampApi } from "src/network/api/campManageStatementApi";
 
 const { Title } = Typography;
 
-const { Panel } = Collapse;
-
 function HistoryContainer() {
   const { isUserAuthenticated } = useIsUserAuthenticated();
-
   const router = useRouter();
   const dispatch = useDispatch();
   const didMount = useRef(false);
@@ -72,21 +42,10 @@ function HistoryContainer() {
   const [discardChange, setDiscardChange] = useState(false);
   const [parentarchived, setParentarchived] = useState(0);
   const [directarchived, setDirectarchived] = useState(0);
-  const [totalCount, setTotalCount] = useState<any>([]);
-  const [liveRecordId, setLiveRecordId] = useState<any>(null);
-  const [isHistoryPage, setIsHistoryPage] = useState(true);
-  const [objectionState, setObjectionState] = useState(false);
-  const [initialLoading, setInitialLoading] = useState(true);
-  const [historyData, setHistoryData] = useState(null);
 
   const changeAgree = () => {
     setAgreeCheck(!agreecheck);
   };
-
-  const changeObjection = () => {
-    setObjectionState(!objectionState);
-  };
-
   const changeDiscard = () => {
     setDiscardChange(!discardChange);
   };
@@ -94,27 +53,19 @@ function HistoryContainer() {
 
   const count = useRef(1);
 
-  const {
-    history,
-    currentCampNode,
-    asofdate,
-    algorithm,
-    topicRecord,
-    asof,
-    campRecord,
-  } = useSelector((state: RootState) => ({
-    history: state?.topicDetails?.history,
-    currentCampNode: state?.filters?.selectedCampNode,
-    asofdate: state.filters?.filterObject?.asofdate,
-    algorithm: state.filters?.filterObject?.algorithm,
-    topicRecord: state?.topicDetails?.currentTopicRecord,
-    asof: state?.filters?.filterObject?.asof,
-    campRecord: state?.topicDetails?.currentCampRecord,
-  }));
+  const { history, currentCampNode, asofdate, algorithm } = useSelector(
+    (state: RootState) => ({
+      history: state?.topicDetails?.history,
+      currentCampRecord: state.topicDetails.currentCampRecord,
+      currentCampNode: state?.filters?.selectedCampNode,
+      asofdate: state.filters?.filterObject?.asofdate,
+      algorithm: state.filters?.filterObject?.algorithm,
+    })
+  );
 
   const [isTreesApiCallStop, setIsTreesApiCallStop] = useState(false);
   const [loadingIndicator, setLoadingIndicator] = useState(false);
-  const [campHistory, setCampHistory] = useState<any>(history);
+  const [campHistory, setCampHistory] = useState(history);
   let payload = history && {
     camp_num: router?.query?.camp?.at(1)?.split("-")?.at(0) ?? "1",
     topic_num: router?.query?.camp?.at(0)?.split("-")?.at(0),
@@ -124,7 +75,7 @@ function HistoryContainer() {
     async function getTreeApiCall() {
       if (isUserAuthenticated) {
         let response = await getAllUsedNickNames({
-          topic_num: router?.query?.camp?.at(0)?.split("-")?.at(0),
+          topic_num: router?.query?.camp?.at(0)?.split("-")[0],
         });
         setNickName(response?.data);
       }
@@ -149,17 +100,10 @@ function HistoryContainer() {
       setLoadMoreItems(true);
       count.current = 1;
       await campStatementApiCall();
-      setInitialLoading(false); // Disable initial loading once data is fetched
     };
     asynCall();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    activeTab,
-    agreecheck,
-    discardChange,
-    isUserAuthenticated,
-    objectionState,
-  ]);
+  }, [activeTab, agreecheck, discardChange, isUserAuthenticated]);
   useEffect(() => {
     if (didMount.current) {
       return () => {
@@ -182,9 +126,6 @@ function HistoryContainer() {
         page: count.current,
       };
       let res = await getHistoryApi(reqBody, count.current, historyOf);
-      // setCampHistory(res?.data);
-      setHistoryData(res?.data);
-
       if (res?.status_code == 404 || res?.status_code == 400) {
         if (router?.pathname == "/topic/history/[...camp]") {
           router?.push(router?.asPath?.replace("topic/history", "topic"));
@@ -215,8 +156,6 @@ function HistoryContainer() {
             is_archive,
           })
         );
-        setTotalCount(res?.data?.total_counts);
-        setLiveRecordId(res?.data?.live_record_id);
       }
 
       didMount.current = true;
@@ -272,7 +211,7 @@ function HistoryContainer() {
         router?.query.camp[1] ? router?.query.camp[1] : "1-Agreement"
       }`,
       query: {
-        statements: selectedTopic?.at(0) + "_" + selectedTopic?.at(1),
+        statements: selectedTopic[0] + "_" + selectedTopic[1],
         from:
           historyOf == "statement"
             ? "statement"
@@ -284,37 +223,72 @@ function HistoryContainer() {
     });
   };
 
+  const loader = <></>;
+
+  let historyTitle = () => {
+    let title: string;
+    if (historyOf == "statement") {
+      title = "Camp Statement History";
+    } else if (historyOf == "camp") {
+      title = "Camp History";
+    } else if (historyOf == "topic") {
+      title = "Topic History";
+    }
+    return title;
+  };
+
+  const NoRecordsMessage = () => {
+    let title: string;
+    if (historyOf == "statement") {
+      title = "No Camp Statement History Found";
+    } else if (historyOf == "camp") {
+      title = "No Camp History Found";
+    } else if (historyOf == "topic") {
+      title = "No Topic History Found";
+    }
+    return (
+      <h2
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          margin: "20px 0px",
+        }}
+      >
+        {title}
+      </h2>
+    );
+  };
   let reqBody = {
-    topic_num: campHistory?.items?.at(0)?.topic_num,
+    topic_num: campHistory?.items?.[0]?.topic_num,
     topic_id: null,
     topic_name: null,
     namespace_id: null,
     statement_id: null,
-    camp_num: campHistory?.items?.at(0)?.camp_num,
-    nick_name: nickName?.at(0)?.id,
+    camp_num: campHistory?.items?.[0]?.camp_num,
+    nick_name: nickName?.[0]?.id,
     // nick_name_id:userNickNameData?.[0]?.n,
-    submitter: campHistory?.items?.at(0)?.submitter_nick_id,
+    submitter: campHistory?.items?.[0]?.submitter_nick_id,
     statement: "", //JSON.stringify(convertToRaw(contentState)),//values?.statement?.blocks[0].text.trim(),
     //statement: values?.statement?.trim(), //JSON.stringify(convertToRaw(contentState)),//values?.statement?.blocks[0].text.trim(),
     event_type: "update",
     objection_reason: null,
     statement_update: null,
-    camp_id: campHistory?.items?.at(0)?.id,
-    camp_name: campHistory?.items?.at(0)?.camp_name,
-    key_words: campHistory?.items?.at(0)?.key_words,
-    camp_about_url: campHistory?.items?.at(0)?.camp_about_url,
+    camp_id: campHistory?.items?.[0]?.id,
+    camp_name: campHistory?.items?.[0]?.camp_name,
+    key_words: campHistory?.items?.[0]?.key_words,
+    camp_about_url: campHistory?.items?.[0]?.camp_about_url,
     camp_about_nick_id: null,
 
-    parent_camp_num: campHistory?.items?.at(0)?.parent_camp_num,
+    parent_camp_num: campHistory?.items?.[0]?.parent_camp_num,
 
-    old_parent_camp_num: campHistory?.items?.at(0)?.old_parent_camp_num,
+    old_parent_camp_num: campHistory?.items?.[0]?.old_parent_camp_num,
     is_disabled: 0,
     is_one_level: 0,
     is_archive: 0,
-    camp_leader_nick_id:
-      campHistory && campHistory?.items?.at(0)?.camp_leader_nick_id,
+    camp_leader_nick_id: campHistory?.items?.[0]?.camp_leader_nick_id,
   };
   const callManageCampApi = async () => {
+    // window.location.reload()
     setLoadingIndicator(true);
     if (campHistory?.items?.length >= 3) {
       count.current = 1;
@@ -322,8 +296,8 @@ function HistoryContainer() {
     await updateCampApi(reqBody);
     await campStatementApiCall();
     setLoadingIndicator(false);
+    // await commitChanges()
   };
-
   const getCollapseKeys = (campHistoryData, index) => {
     let key = "";
     let oldstatements = campHistory?.items?.filter(
@@ -348,201 +322,216 @@ function HistoryContainer() {
   };
 
   const renderCampHistories =
-    campHistory &&
-    campHistory?.items?.length &&
-    campHistory?.items?.map((campHistoryData, index) => {
-      return (
-        <HistoryCard
-          collapseKeys={getCollapseKeys(campHistoryData, index)}
-          key={index}
-          campStatement={campHistoryData}
-          onSelectCompare={onSelectCompare}
-          userNickNameData={nickName}
-          ifIamSupporter={campHistory?.details?.ifIamSupporter}
-          ifSupportDelayed={campHistory?.details?.ifSupportDelayed}
-          ifIAmExplicitSupporter={campHistory?.details?.ifIAmExplicitSupporter}
-          topicNamespaceId={campHistory?.details?.topic?.namespace_id}
-          changeAgree={changeAgree}
-          changeDiscard={changeDiscard}
-          isDisabledCheck={
-            selectedTopic.length >= 2 &&
-            !selectedTopic?.includes(campHistoryData?.id)
-          }
-          isChecked={selectedTopic?.includes(campHistoryData?.id)}
-          setIsTreesApiCallStop={setIsTreesApiCallStop}
-          campHistoryItems={campHistory?.items}
-          callManageCampApi={callManageCampApi}
-          parentArchived={parentarchived}
-          unarchiveChangeSubmitted={
-            campHistory?.details?.unarchive_change_submitted
-          }
-          directarchived={directarchived}
-          historyState={historyOf}
-          loadingIndicator={loadingIndicator}
-          campStatementApiCall={() => {
-            campStatementApiCall();
-          }}
-          changeObjection={changeObjection}
-        />
-      );
-    });
-
-  const handleBackButton = () => {
-    const topicDetails = router.query.camp?.at(0);
-    const campDetails = router.query.camp?.at(1)
-      ? router.query.camp?.at(1)
-      : "1-Agreement";
-
-    if (topicDetails && campDetails) {
-      router.push(`/topic/${topicDetails}/${campDetails}`);
-    }
-  };
-
-  const renderContent = () => (
-    <div className="ch-content lg:w-[calc(100%-320px)] p-8 bg-[#F4F5FA] rounded-lg max-md:w-full relative">
-      {renderCampHistories}
-    </div>
-  );
-
-  const renderButton = (type, label, count, active, classes = "", disabled) => (
-    <Button
-      size="large"
-      className={`btn-${type} ${classes} text-sm ${active ? "active" : ""}`}
-      onClick={() => handleTabButton(type)}
-      disabled={disabled}
-    >
-      {label} <span className="ml-1">({count}) </span>
-    </Button>
-  );
-
-  const renderButtons = () => {
-    const buttons = [
-      {
-        type: "all",
-        label: "View all",
-        count: totalCount?.total_changes || 0,
-        className: "btn-all",
-      },
-      {
-        type: "objected",
-        label: "Objected",
-        count: totalCount?.objected_changes || 0,
-        className: "btn-objected",
-      },
-      {
-        type: "live",
-        label: "Live",
-        count: totalCount?.live_changes || 0,
-        className: "btn-live",
-      },
-      {
-        type: "in_review",
-        label: "Pending",
-        count: totalCount?.in_review_changes || 0,
-        className: "btn-pending",
-      },
-      {
-        type: "old",
-        label: "Previous",
-        count: totalCount?.old_changes || 0,
-        className: "btn-previous",
-      },
-    ];
-
-    return buttons?.map(({ type, label, count, className }) =>
-      renderButton(type, label, count, activeTab === type, className, count < 1)
+    campHistory && campHistory?.items?.length ? (
+      campHistory?.items?.map((campHistoryData, index) => {
+        return (
+          <>
+            <HistoryCollapse
+              collapseKeys={getCollapseKeys(campHistoryData, index)}
+              key={index}
+              campStatement={campHistoryData}
+              onSelectCompare={onSelectCompare}
+              userNickNameData={nickName}
+              ifIamSupporter={campHistory?.details?.ifIamSupporter}
+              ifSupportDelayed={campHistory?.details?.ifSupportDelayed}
+              ifIAmExplicitSupporter={
+                campHistory?.details?.ifIAmExplicitSupporter
+              }
+              topicNamespaceId={campHistory?.details?.topic?.namespace_id}
+              changeAgree={changeAgree}
+              changeDiscard={changeDiscard}
+              isDisabledCheck={
+                selectedTopic.length >= 2 &&
+                !selectedTopic?.includes(campHistoryData?.id)
+              }
+              isChecked={selectedTopic?.includes(campHistoryData?.id)}
+              setIsTreesApiCallStop={setIsTreesApiCallStop}
+              campHistoryItems={campHistory?.items}
+              callManageCampApi={callManageCampApi}
+              parentArchived={parentarchived}
+              unarchiveChangeSubmitted={
+                campHistory?.details?.unarchive_change_submitted
+              }
+              directarchived={directarchived}
+            />
+          </>
+        );
+      })
+    ) : (
+      <NoRecordsMessage />
     );
-  };
-  useEffect(() => {
-    const isDefaultOrReview = asof === "default" || asof === "review";
-
-    const reqBody = {
-      topic_num: parseInt(router?.query?.camp?.at(0)?.split("-")?.at(0), 10),
-      camp_num:
-        parseInt(router?.query?.camp?.at(1)?.split("-")?.at(0), 10) || 1,
-      as_of: asof,
-      as_of_date: isDefaultOrReview
-        ? Math.floor(Date.now() / 1000)
-        : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
-    };
-
-    const fetchTopicRecord = async () => {
-      await getCurrentTopicRecordApi(reqBody);
-    };
-
-    const fetchCampRecord = async () => {
-      await getCurrentCampRecordApi(reqBody);
-    };
-    fetchCampRecord();
-    fetchTopicRecord();
-  }, []);
-
   return (
-    // <CustomLayout afterHeader={<Breadcrumbs updateId={liveRecordId} />}>
-    <CustomLayout
-      afterHeader={
-        <TimelineInfoBar
-          updateId={liveRecordId}
-          isHistoryPage={isHistoryPage}
-        />
-      }
-    >
-      <div className="ch-wrapper">
-        <div className="ch-history">
-          <div className="statement-status-sider">
+    <div className={styles.wrap}>
+      <CampInfoBar
+        payload={payload}
+        isTopicHistoryPage={historyOf == "topic" ? true : false}
+      />
+      <div className={styles.btnGroup}>
+        {/* <CreateNewTopicButton className={styles.createBtn} click={topicRoute} /> */}
+
+        {historyOf !== "topic" &&
+        currentCampNode?._isDisabled == 0 &&
+        currentCampNode?.parentIsOneLevel == 0 &&
+        currentCampNode?.is_archive == 0 ? (
+          <CreateNewCampButton
+            className={styles.createBtn}
+            click={campRoute}
+            url={`/camp/create/${
+              router?.query.camp?.at(0) + "/" + router?.query.camp?.at(1)
+            }`}
+          />
+        ) : null}
+      </div>
+      <div className={styles.campStatementHistoryCard}>
+        <Affix
+          offsetTop={0}
+          style={{ position: isAbs ? "absolute" : "static", left: "16px" }}
+          onChange={setIsAbs}
+        >
+          <div className={styles.cshcHead}>
+            <div className={styles.cshcHeadFilterWrap}>
+              <Title level={4}>{historyTitle()}</Title>
+              {/* <Spin spinning={loadingIndicator} size="default"> */}
+              <List className={styles.cshcHeadFilter} size="small">
+                <List.Item
+                  className={`${styles.campStatementViewAll} ${
+                    styles.cshcHeadFilterItem
+                  } ${activeTab == "all" ? styles.active : null}`}
+                >
+                  <a
+                    onClick={() => {
+                      handleTabButton("all");
+                    }}
+                  >
+                    View All
+                  </a>
+                </List.Item>
+                <List.Item
+                  className={`${styles.campStatementObjected}  ${
+                    styles.cshcHeadFilterItem
+                  }  ${activeTab == "objected" ? styles.active : null}`}
+                >
+                  <a
+                    onClick={() => {
+                      handleTabButton("objected");
+                    }}
+                  >
+                    Objected
+                  </a>
+                </List.Item>
+                <List.Item
+                  className={`${styles.campStatementLive} ${
+                    styles.cshcHeadFilterItem
+                  } ${activeTab == "live" ? styles.active : null}`}
+                >
+                  <a
+                    onClick={() => {
+                      handleTabButton("live");
+                    }}
+                  >
+                    Live
+                  </a>
+                </List.Item>
+                <List.Item
+                  className={`${styles.campStatementNotLive} ${
+                    styles.cshcHeadFilterItem
+                  } ${activeTab == "in_review" ? styles.active : null}`}
+                >
+                  <a
+                    onClick={() => {
+                      handleTabButton("in_review");
+                    }}
+                  >
+                    Not Live
+                  </a>
+                </List.Item>
+                <List.Item
+                  className={`${styles.campStatementOld} ${
+                    styles.cshcHeadFilterItem
+                  } ${activeTab == "old" ? styles.active : null}`}
+                >
+                  <a
+                    onClick={() => {
+                      handleTabButton("old");
+                    }}
+                  >
+                    Old
+                  </a>
+                </List.Item>
+              </List>
+            </div>
             <Button
-              type="link"
-              className="text-xl text-canBlack p-1 mb-14 gap-5 flex items-center max-lg:hidden leading-none"
-              icon={<i className="icon-back"></i>}
-              onClick={handleBackButton}
-            >
-              {`${historyTitle(historyOf)} History`}
-            </Button>
-            <Typography.Paragraph className="mb-6 text-base font-medium">
-              {`${historyTitle(
-                historyOf
-              ).toUpperCase()} HISTORY BASED ON STATUS`}
-            </Typography.Paragraph>
-            <div className="sider-btn pr-0 md:pr-8">{renderButtons()}</div>
-            <Button
-              size="large"
-              className="flex items-center justify-center rounded-xl text-sm gap-3.5 leading-none mt-12"
               disabled={
                 !(
                   selectedTopic.length >= 2 &&
-                  !selectedTopic?.includes(campHistory?.id)
+                  !selectedTopic?.includes(campHistory && campHistory["id"])
                 )
               }
+              className={styles.active}
+              id={`compare-${historyOf}`}
+              type="primary"
               onClick={onCompareClick}
             >
-              Compare {`${historyTitle(historyOf)}s`}
-              <i className="icon-compare-statement"></i>
+              Compare{" "}
+              {historyOf == "topic"
+                ? "Topics"
+                : historyOf == "camp"
+                ? "Camps"
+                : "Statements"}
             </Button>
           </div>
-          {activeTab === "live"
-            ? campHistory?.items?.length > 0 && renderContent()
-            : campHistory?.items?.length > 0 && (
-                <div className="ch-content lg:w-[calc(100%-320px)] p-8 bg-[#F4F5FA] rounded-lg max-md:w-full relative">
-                  {initialLoading ? (
-                    <CustomSkelton skeltonFor="historyPage" />
-                  ) : (
-                    <InfiniteScroll
-                      initialLoad={false}
-                      loadMore={!loadingIndicator && campStatementApiCall}
-                      hasMore={
-                        count.current !== historyData?.last_page &&
-                        loadMoreItems
-                      }
-                      loader={<CustomSkelton skeltonFor="historyPage" />}
-                    >
-                      {renderCampHistories}
-                    </InfiniteScroll>
-                  )}
+        </Affix>
+        <div style={{ paddingBottom: "20px" }}>
+          <div style={{ overflow: "auto" }}>
+            {loadingIndicator ? (
+              <>
+                <div className="px-3 py-2">
+                  <CustomSkelton
+                    skeltonFor="card"
+                    bodyCount={4}
+                    stylingClass="test"
+                    isButton={false}
+                    action={false}
+                    title={false}
+                  />
+                </div>{" "}
+                <div className="px-3 py-2">
+                  <CustomSkelton
+                    skeltonFor="card"
+                    bodyCount={4}
+                    stylingClass="test"
+                    isButton={false}
+                    action={false}
+                    title={false}
+                  />{" "}
                 </div>
-              )}
+                <div className="px-3 py-2">
+                  <CustomSkelton
+                    skeltonFor="card"
+                    bodyCount={4}
+                    stylingClass="test"
+                    isButton={false}
+                    action={false}
+                    title={false}
+                  />
+                </div>
+              </>
+            ) : activeTab === "live" ? (
+              renderCampHistories
+            ) : (
+              <InfiniteScroll
+                initialLoad={false}
+                loadMore={!loadingIndicator && campStatementApiCall}
+                hasMore={loadMoreItems}
+                loader={loader}
+              >
+                {renderCampHistories}
+              </InfiniteScroll>
+            )}
+          </div>
         </div>
       </div>
-    </CustomLayout>
+    </div>
   );
 }
 

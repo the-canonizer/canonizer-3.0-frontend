@@ -8,14 +8,17 @@ import { useRouter } from "next/router";
 import styles from "../ManageSupportUI/ManageSupport.module.scss";
 
 import messages from "../../../../messages";
-import { RootState } from "src/store";
+import { RootState, store } from "src/store";
 import { addSupport, removeSupportedCamps } from "src/network/api/userApi";
-// import { GetActiveSupportTopic } from "src/network/api/topicAPI";
 import CustomSkelton from "src/components/common/customSkelton";
 import SupportRemovedModal from "src/components/common/supportRemovedModal";
 import My404 from "../../404";
 import { setIsSupportModal } from "src/store/slices/topicSlice";
-import { setOpenConsensusTreePopup } from "src/store/slices/hotTopicSlice";
+import { setCampActivityData } from "src/store/slices/recentActivitiesSlice";
+import {
+  getCurrentCampRecordApi,
+  getTopicActivityLogApi,
+} from "src/network/api/campDetailApi";
 
 const { placeholders } = messages;
 
@@ -39,30 +42,33 @@ const ManageSupportUI = ({
   setGetManageSupportLoadingIndicator,
   topicSupportListData,
   handleCancelSupportCamps,
+  isSubmitRequire,
+  setIsSubmitRequire,
 }: any) => {
   const [tagsArrayList, setTagsArrayList] = useState([]);
   const [isTagDragged, setIsTagDragged] = useState(false);
-  // const [isSupportTreeCardModal, setIsSupportTreeCardModal] = useState(false);
-  // const [removeSupportSpinner, setRemoveSupportSpinner] = useState(false);
-  // const [topicSupportList, setTopicSupportList] = useState([]);
   const [removeCampsSupport, setRemoveCampsSupport] = useState(false);
 
   const {
     currentDelegatedSupportedClick,
     currentGetCheckSupportExistsData,
     campRecord,
+    asof,
+    asofdate,
   } = useSelector((state: RootState) => ({
     currentDelegatedSupportedClick:
       state.supportTreeCard.currentDelegatedSupportedClick,
     currentGetCheckSupportExistsData:
       state.topicDetails.currentGetCheckSupportExistsData,
     campRecord: state?.topicDetails?.currentCampRecord,
+    asof: state?.filters?.filterObject?.asof,
+    asofdate: state?.filters?.filterObject?.asofdate,
   }));
 
   const router = useRouter();
   const dispatch = useDispatch();
   const [removeForm] = Form.useForm();
-  // const openPopup = () => setIsSupportTreeCardModal(true);
+
   const closePopup = () => {};
 
   const filteredList = manageSupportList?.map((obj: any, index: any) => {
@@ -103,8 +109,6 @@ const ManageSupportUI = ({
     camp_num: +router?.query?.camp[1]?.split("-")[0],
   };
 
-  // const topicNum = router?.query?.manageSupport?.at(0)?.split("-")?.at(0);
-
   const findManageOrder = filteredList?.findIndex((obj: any) => {
     return obj.camp_num === reqBodyData.camp_num;
   });
@@ -116,23 +120,25 @@ const ManageSupportUI = ({
         : manageSupportList[manageSupportList.length - 1]?.support_order
       : 1;
 
-  // const body = { topic_num: topicNum };
-
   const nickNameloop = nickNameList?.filter((nickName) => {
     return selectedtNickname == nickName.id;
   });
 
   const nickNameIDValue = nickNameloop?.[0]?.id;
 
+  async function getTopicActivityLogCall() {
+    let reqBody = {
+      topic_num: router?.query?.camp[0]?.split("-")[0],
+      camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
+    };
+    let res = await getTopicActivityLogApi(reqBody);
+    store.dispatch(setCampActivityData(res?.data?.items));
+  }
+
   useEffect(() => {
-    // (async () => {
-    //   const topicList = await GetActiveSupportTopic(topicNum && body);
-    //   if (topicList && topicList.status_code == 200) {
-    //     setTopicSupportList(topicList.data);
-    //   }
-    // })();
     setIsTagDragged(false);
   }, []);
+
   const isFormValid = async () => {
     const isDropdownValid = await removeForm.validateFields([
       "reason",
@@ -156,10 +162,13 @@ const ManageSupportUI = ({
   const removeCampsApi = async () => {
     const isDropdownValid = await isFormValid();
     const formData = await getReasonFormValue();
+
     if (isDropdownValid?.errorFields) {
       return;
     }
+
     setGetManageSupportLoadingIndicator(true);
+
     const supportedCampsRemove = {
       topic_num: reqBodyData.topic_num,
       remove_camps: removeAllCampNum(),
@@ -169,20 +178,21 @@ const ManageSupportUI = ({
       order_update: [],
       ...formData,
     };
-    // const topicList = await GetActiveSupportTopic(topicNum && body);
-    // if (topicList && topicList.status_code == 200) {
-    //   setTopicSupportList(topicList.data);
-    // }
+
     const response = await removeSupportedCamps(supportedCampsRemove);
+
     if (response && response.status_code == 200) {
-      // let manageSupportPath = router?.asPath?.replace("/support/", "/topic/");
-      // if (manageSupportPath?.lastIndexOf("_") > -1)
-      //   manageSupportPath = manageSupportPath.substring(
-      //     0,
-      //     manageSupportPath?.lastIndexOf("_")
-      //   );
-      // router?.push(manageSupportPath);
+      let reqBody = {
+        as_of: asof,
+        as_of_date: asofdate,
+        topic_num: +router?.query?.camp[0]?.split("-")[0],
+        camp_num: +router?.query?.camp[1]?.split("-")[0],
+      };
+
+      getCurrentCampRecordApi(reqBody);
+
       handleCancelSupportCamps({ isCallApiStatus: true });
+      getTopicActivityLogCall();
     }
   };
 
@@ -227,20 +237,13 @@ const ManageSupportUI = ({
     };
     let addedRes = await addSupport(addSupportId);
     if (addedRes && addedRes.status_code == 200) {
-      // let manageSupportPath = router?.asPath?.replace("/support/", "/topic/");
-      // if (manageSupportPath.lastIndexOf("_") > -1)
-      //   manageSupportPath = manageSupportPath.substring(
-      //     0,
-      //     manageSupportPath.lastIndexOf("_")
-      //   );
-      // router?.push(manageSupportPath);
       handleCancelSupportCamps({ isCallApiStatus: true });
+      getTopicActivityLogCall();
     }
   };
 
   const CheckDelegatedOrDirect =
     currentDelegatedSupportedClick.delegatedSupportClick;
-  // const [CheckDelegatedOrDirect, setCheckDelegatedOrDirect] = useState(null);
 
   useEffect(() => {
     if (nickNameList?.length > 0) {
@@ -248,12 +251,6 @@ const ManageSupportUI = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nickNameList]);
-
-  // useEffect(() => {
-  //   setCheckDelegatedOrDirect(
-  //     currentDelegatedSupportedClick.delegatedSupportClick
-  //   );
-  // }, [currentDelegatedSupportedClick.delegatedSupportClick]);
 
   useEffect(() => {
     if (manageSupportList && manageSupportList.length > 0) {
@@ -275,34 +272,7 @@ const ManageSupportUI = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [manageSupportList, parentSupportDataList]);
 
-  // remove support popup added.
-
-  const onRemoveFinish = () => {
-    // setRemoveSupportSpinner(true);
-    // if (removeCampsSupport) {
-    // submitNickNameSupportCamps(values);
-    // } else {
-    // removeCampsApi(values);
-    // }
-    // removeForm.resetFields();
-    // setRemoveSupportSpinner(false);
-  };
-
-  const handleOnClick = () => {
-    // Original logic
-    if (
-      removeAllIsSelected() &&
-      !currentGetCheckSupportExistsData.is_delegator
-    ) {
-      removeCampsApi();
-    } else if (CheckDelegatedOrDirect) {
-      checkNickNameSupportCamps();
-    } else if (removeCampsSupport) {
-      checkNickNameSupportCamps();
-    } else {
-      addRemoveApi();
-    }
-  };
+  const onRemoveFinish = () => {};
 
   const checkNickNameSupportCamps = async () => {
     const isDropdownValid = await isFormValid();
@@ -313,302 +283,334 @@ const ManageSupportUI = ({
     submitNickNameSupportCamps(formData);
   };
 
+  const isSupportOrderAscending = (arr) => {
+    for (let i = 1; i < arr.length; i++) {
+      if (arr[i].support_order <= arr[i - 1].support_order) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  useEffect(() => {
+    const setSubmitStatus = async () => {
+      if (manageSupportList && manageSupportList.length > 0) {
+        const isChanged = isSupportOrderAscending(manageSupportList);
+
+        setIsSubmitRequire(!isChanged);
+      }
+    };
+
+    setSubmitStatus();
+  }, [manageSupportList]);
+
+  useEffect(() => {
+    const setSubmitStatus = async () => {
+      if (removeCampsSupport) {
+        setIsSubmitRequire(true);
+      } else {
+        setIsSubmitRequire(false);
+      }
+    };
+
+    setSubmitStatus();
+  }, [removeCampsSupport]);
+
+  const onKeyUp = async () => {
+    const values = await getReasonFormValue();
+    if (
+      values?.reason ||
+      values?.citation_link ||
+      (values?.reason_summary && values?.reason === "Custom reason")
+    ) {
+      setIsSubmitRequire(true);
+    } else {
+      setIsSubmitRequire(false);
+    }
+  };
+
   // remove support popup added.
-  return currentGetCheckSupportExistsData.warning?.includes(
-    "You can not submit your support to this camp, as system is unable to find this camp."
-  ) ? (
-    <My404 />
-  ) : getManageSupportLoadingIndicator ? (
-    <CustomSkelton
-      skeltonFor="manageSupportCard"
-      bodyCount={15}
-      stylingClass=""
-      isButton={true}
-    />
-  ) : (
-    <>
-      <div
-        className={styles.card_width}
-        // title={
-        //   <div className={styles.main_card_title}>
-        //     {messages.labels.SupportedCamps}
-        //   </div>
-        // }
-      >
-        {(CheckDelegatedOrDirect &&
-          currentGetCheckSupportExistsData.is_confirm &&
-          currentGetCheckSupportExistsData.remove_camps.length < 0) ||
-        unableToFindCamp ? (
-          <>
-            <span data-testId="warning" className={styles.warning}>
-              <strong> Warning! </strong>
-              {getSupportStatusData || currentGetCheckSupportExistsData.warning}
-            </span>
-          </>
-        ) : (
-          <>
-            {getSupportStatusData != "" || CheckDelegatedOrDirect ? (
+  if (
+    currentGetCheckSupportExistsData.warning?.includes(
+      "You can not submit your support to this camp, as system is unable to find this camp."
+    )
+  ) {
+    return <My404 />;
+  }
+
+  if (getManageSupportLoadingIndicator) {
+    return (
+      <CustomSkelton
+        skeltonFor="manageSupportCard"
+        bodyCount={15}
+        stylingClass=""
+        isButton={true}
+      />
+    );
+  }
+
+  /**
+   * 
+   *  (!isSubmitRequire &&
+                currentGetCheckSupportExistsData?.support_flag == "1") ||
+              submitButtonDisable ||
+              currentGetCheckSupportExistsData.disable_submit ||
+              campRecord.is_archive == 1
+
+   */
+  const isDisabled = () => {
+    const supportFlag = currentGetCheckSupportExistsData?.support_flag;
+    const isDelegator = currentGetCheckSupportExistsData?.is_delegator;
+    const disableSubmit = currentGetCheckSupportExistsData?.disable_submit;
+
+    if (!isSubmitRequire && (supportFlag == "1" || supportFlag == "0")) {
+      if (CheckDelegatedOrDirect && !isDelegator) {
+        return false;
+      }
+
+      if (!CheckDelegatedOrDirect && isDelegator) {
+        return false;
+      }
+
+      if (supportFlag == "1") {
+        return true;
+      }
+    }
+
+    if (submitButtonDisable || disableSubmit || campRecord.is_archive == 1) {
+      return true;
+    }
+
+    return false;
+  };
+
+  return (
+    <div className={styles.card_width}>
+      {(CheckDelegatedOrDirect &&
+        currentGetCheckSupportExistsData.is_confirm &&
+        currentGetCheckSupportExistsData.remove_camps.length < 0) ||
+      unableToFindCamp ? (
+        <>
+          <span data-testId="warning" className={styles.warning}>
+            <strong> Warning! </strong>
+            {getSupportStatusData || currentGetCheckSupportExistsData.warning}
+          </span>
+        </>
+      ) : (
+        <>
+          {getSupportStatusData != "" || CheckDelegatedOrDirect ? (
+            parentSupportDataList != "" ? (
               <>
-                {parentSupportDataList != "" ? (
-                  <>
-                    <span
-                      className={styles.warning}
-                      id="getSupportStatusDataWarning"
-                    >
-                      <strong> Warning! </strong>
-                      {CheckDelegatedOrDirect &&
-                      !currentGetCheckSupportExistsData.is_delegator
-                        ? warningForDirecteSupportedCamps
-                        : currentGetCheckSupportExistsData.warning}
-                    </span>
-                    <Col md={12}>
-                      {parentSupportDataList?.map((tag) => {
-                        return (
-                          <Tag
-                            data-testid="camp_name"
-                            key={tag.camp_num}
-                            className={styles.tag_btn}
-                            id="tags"
-                          >
-                            <div>
-                              {""}
-                              <span className={styles.count}>{""}</span>
-                            </div>
-
-                            <a href="#">
-                              {tag.support_order} . {tag.camp_name}
-                            </a>
-                          </Tag>
-                        );
-                      })}
-                    </Col>
-                    <div className={styles.hrtag}></div>
-                  </>
-                ) : (
-                  ""
-                )}
-              </>
-            ) : (
-              ""
-            )}
-            <div className={`${styles.notes}`}>
-              {" "}
-              {messages.labels.manageSupportNote}
-            </div>
-            {!CheckDelegatedOrDirect && topicSupportListData?.length != 0 ? (
-              <div>
-                <Card className={styles.margin_top} type="inner">
-                  <b>
-                    {messages.labels.topicSupportText} &quot;{""}
-                    {topicSupportListData?.[0]?.title}
-                    {""}&quot;
-                  </b>
-                </Card>
-              </div>
-            ) : (
-              ""
-            )}
-            {CheckDelegatedOrDirect ? (
-              ""
-            ) : (
-              <div className="mb-4">
-                <span id="quickActions" className={styles.quickAction}>
-                  Quick Actions:
-                  <span className={styles.checkbox}>
-                    <input
-                      data-testId="checkbox"
-                      type="checkbox"
-                      checked={checked}
-                      onClick={(e) => {
-                        removeAll((e.target as any).checked, manageSupportList);
-                        setRemoveCampsSupport(!removeCampsSupport);
-                      }}
-                      onChange={() => {}}
-                    ></input>
-                  </span>
-                  <span className={styles.removeAll}>Remove all</span>
-                  <Button
-                    id="clearAllChangesBtn"
-                    htmlType="button"
-                    className={styles.clear_Btn}
-                    onClick={() => {
-                      clearAllChanges(manageSupportList);
-                      setRemoveCampsSupport(false);
-                    }}
-                  >
-                    Clear all changes
-                  </Button>
-                </span>
-              </div>
-            )}
-            {tagsArrayList.length > 0 && (
-              <DraggableArea
-                tags={tagsArrayList}
-                render={({ tag, index }) => (
-                  <div className="">
-                    <Button
-                      data-testid="tag-btn"
-                      key={tag.camp_num}
-                      className={styles.tag_btn}
-                      disabled={tag.dis}
-                    >
-                      <div className={styles.btndiv}>
-                        {" "}
-                        {filterList(tag.camp_num, index)}
-                        <span className={styles.count}>
-                          {/* {getSupportStatusData == ""
-                          ? index + 1
-                          : tag.support_order} */}
-                          {index + 1}.{" "}
-                        </span>
-                        <a
-                          data-testid="styles_Bluecolor"
-                          className={styles.Bluecolor}
-                          onClick={(e) => {
-                            e.preventDefault();
-                            window.location.href = tag.link;
-                            dispatch(setIsSupportModal(false));
-                          }}
-                        >
-                          {tag?.camp_name}
-                        </a>
-                      </div>
-                      {CheckDelegatedOrDirect ? (
-                        ""
-                      ) : (
-                        <CloseCircleOutlined
-                          data-testid="close"
-                          className="closeId"
-                          onClick={() => {
-                            handleClose(tag, tag.topic_num, tagsArrayList);
-                            setRemoveCampsSupport(true);
-                          }}
-                        />
-                      )}
-                    </Button>
-                  </div>
-                )}
-                onChange={(tags) => {
-                  setIsTagDragged(true);
-                  setUpdatePostion(true);
-                  setManageSupportList(tags);
-                }}
-              />
-            )}
-
-            {!CheckDelegatedOrDirect && (
-              <div data-testid="support-remove-modal">
-                <Card className={styles.support_reason} type="inner">
-                  <SupportRemovedModal
-                    onFinish={onRemoveFinish}
-                    handleCancel={closePopup}
-                    form={removeForm}
-                    isAdd={true}
-                    isOrderChange={isTagDragged}
-                  />
-                </Card>
-              </div>
-            )}
-          </>
-        )}
-        <div>
-          <Card className={styles.margin_top} type="inner">
-            <div className={styles.card_heading}>
-              <p id="nickNameToSupport">Nickname To Support Above Camps</p>
-            </div>
-            <Select
-              data-testid="select-option"
-              placeholder={placeholders.nickName}
-              size="large"
-              className={styles.dropdown}
-              value={selectedtNickname}
-              onChange={(value) => {
-                setSelectedtNickname(value);
-              }}
-              showSearch
-              optionFilterProp="children"
-            >
-              {nickNameList?.map((nick) => {
-                return (
-                  <Select.Option key={nick.id} value={nick.id}>
-                    {nick.nick_name}
-                  </Select.Option>
-                );
-              })}
-            </Select>
-            <div className={styles.Upload_Cancel_Btn}>
-              <Button
-                id="uploadBtn"
-                htmlType="submit"
-                className={styles.Upload_Btn}
-                onClick={
-                  removeAllIsSelected() &&
+                <span
+                  className={styles.warning}
+                  id="getSupportStatusDataWarning"
+                >
+                  <strong> Warning! </strong>
+                  {CheckDelegatedOrDirect &&
                   !currentGetCheckSupportExistsData.is_delegator
-                    ? removeCampsApi
-                    : CheckDelegatedOrDirect
-                    ? checkNickNameSupportCamps
-                    : removeCampsSupport
-                    ? checkNickNameSupportCamps
-                    : addRemoveApi
-                }
-                disabled={
-                  submitButtonDisable ||
-                  currentGetCheckSupportExistsData.disable_submit ||
-                  campRecord.is_archive == 1
-                }
-              >
-                Submit
-              </Button>
+                    ? warningForDirecteSupportedCamps
+                    : currentGetCheckSupportExistsData.warning}
+                </span>
+                <Col md={12}>
+                  {parentSupportDataList?.map((tag) => {
+                    return (
+                      <Tag
+                        data-testid="camp_name"
+                        key={tag.camp_num}
+                        className={styles.tag_btn}
+                        id="tags"
+                      >
+                        <div>
+                          {""}
+                          <span className={styles.count}>{""}</span>
+                        </div>
 
-              <Button
-                id="cancelBtn"
-                htmlType="button"
-                className={styles.cancel_Btn}
-                onClick={() => {
-                  handleCancelSupportCamps({ isCallApiStatus: false });
-                }}
-              >
-                Cancel
-              </Button>
+                        <a href="#">
+                          {tag.support_order} . {tag.camp_name}
+                        </a>
+                      </Tag>
+                    );
+                  })}
+                </Col>
+                <div className={styles.hrtag}></div>
+              </>
+            ) : null
+          ) : null}
+
+          <div className={styles.notes}>
+            {messages.labels.manageSupportNote}
+          </div>
+
+          {!CheckDelegatedOrDirect && topicSupportListData?.length != 0 ? (
+            <div>
+              <Card className={styles.margin_top} type="inner">
+                <b>
+                  {messages.labels.topicSupportText} &quot;{""}
+                  {topicSupportListData?.[0]?.title}
+                  {""}&quot;
+                </b>
+              </Card>
             </div>
-          </Card>
-        </div>
-      </div>
+          ) : null}
 
-      {/* <Modal
-        className={styles.modal_cross}
-        title={
-          <p id="all_camps_topics" className={styles.modalTitle}>
-            You are about to remove your support from the camp:{" "}
-            <span>
-              &quot;
-              <Link
-                href={{
-                  pathname: `/topic/${topicRecord?.topic_num}-${topicRecord?.topic_name}/${campRecord?.camp_num}-${campRecord?.camp_name}`,
-                }}
-              >
-                <a>{campRecord?.camp_name}</a>.
-              </Link>
-              &quot;
-            </span>{" "}
-            You can optionally add a helpful reason, along with a citation link.
-          </p>
-        }
-        open={isSupportTreeCardModal}
-        onCancel={closePopup}
-        onOk={closePopup}
-        footer={null}
-        closeIcon={<CloseCircleOutlined />}
-      >
-        <Spin spinning={removeSupportSpinner} size="small">
-          <SupportRemovedModal
-            onFinish={onRemoveFinish}
-            handleCancel={closePopup}
-            form={removeForm}
-          />
-        </Spin>
-      </Modal> */}
-    </>
+          {CheckDelegatedOrDirect ? null : (
+            <div className="mb-4">
+              <span id="quickActions" className={styles.quickAction}>
+                Quick Actions:
+                <span className={styles.checkbox}>
+                  <input
+                    data-testId="checkbox"
+                    type="checkbox"
+                    checked={checked}
+                    onClick={(e) => {
+                      removeAll((e.target as any).checked, manageSupportList);
+                      setRemoveCampsSupport(!removeCampsSupport);
+                    }}
+                    onChange={() => {}}
+                  ></input>
+                </span>
+                <span className={styles.removeAll}>Remove all</span>
+                <Button
+                  id="clearAllChangesBtn"
+                  htmlType="button"
+                  className={styles.clear_Btn}
+                  onClick={() => {
+                    clearAllChanges(manageSupportList);
+                    setRemoveCampsSupport(false);
+                  }}
+                >
+                  Clear all changes
+                </Button>
+              </span>
+            </div>
+          )}
+          {tagsArrayList.length > 0 && (
+            <DraggableArea
+              tags={tagsArrayList}
+              render={({ tag, index }) => (
+                <div className="">
+                  <Button
+                    data-testid="tag-btn"
+                    key={tag.camp_num}
+                    className={styles.tag_btn}
+                    disabled={tag.dis}
+                  >
+                    <div className={styles.btndiv}>
+                      {filterList(tag.camp_num, index)}
+                      <span className={styles.count}>{index + 1}. </span>
+                      <a
+                        data-testid="styles_Bluecolor"
+                        className={styles.Bluecolor}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          window.location.href = tag.link;
+                          dispatch(setIsSupportModal(false));
+                        }}
+                      >
+                        {tag?.camp_name}
+                      </a>
+                    </div>
+                    {CheckDelegatedOrDirect ? null : (
+                      <CloseCircleOutlined
+                        data-testid="close"
+                        className="closeId"
+                        onClick={() => {
+                          handleClose(tag, tag.topic_num, tagsArrayList);
+                          setRemoveCampsSupport(true);
+                        }}
+                      />
+                    )}
+                  </Button>
+                </div>
+              )}
+              onChange={(tags) => {
+                setIsTagDragged(true);
+                setUpdatePostion(true);
+                setManageSupportList(tags);
+              }}
+            />
+          )}
+
+          {!CheckDelegatedOrDirect && (
+            <div data-testid="support-remove-modal">
+              <Card className={styles.support_reason} type="inner">
+                <SupportRemovedModal
+                  onFinish={onRemoveFinish}
+                  handleCancel={closePopup}
+                  form={removeForm}
+                  isAdd={true}
+                  isOrderChange={isTagDragged}
+                  onKeyUp={onKeyUp}
+                />
+              </Card>
+            </div>
+          )}
+        </>
+      )}
+      <div>
+        <Card className={styles.margin_top} type="inner">
+          <div className={styles.card_heading}>
+            <p id="nickNameToSupport">Nickname To Support Above Camps</p>
+          </div>
+          <Select
+            data-testid="select-option"
+            placeholder={placeholders.nickName}
+            size="large"
+            className={styles.dropdown}
+            value={selectedtNickname}
+            onChange={(value) => {
+              setSelectedtNickname(value);
+            }}
+            showSearch
+            optionFilterProp="children"
+            getPopupContainer={(triggerNode) => {
+              return triggerNode.parentNode;
+            }}
+          >
+            {nickNameList?.map((nick) => {
+              return (
+                <Select.Option key={nick.id} value={nick.id}>
+                  {nick.nick_name}
+                </Select.Option>
+              );
+            })}
+          </Select>
+          <div className={styles.Upload_Cancel_Btn}>
+            <Button
+              id="uploadBtn"
+              htmlType="submit"
+              className={styles.Upload_Btn}
+              onClick={
+                removeAllIsSelected() &&
+                !currentGetCheckSupportExistsData.is_delegator
+                  ? removeCampsApi
+                  : CheckDelegatedOrDirect
+                  ? checkNickNameSupportCamps
+                  : removeCampsSupport
+                  ? checkNickNameSupportCamps
+                  : addRemoveApi
+              }
+              disabled={isDisabled()}
+            >
+              {currentGetCheckSupportExistsData?.support_flag == "1"
+                ? "Update"
+                : "Submit"}
+            </Button>
+
+            <Button
+              id="cancelBtn"
+              htmlType="button"
+              className={styles.cancel_Btn}
+              onClick={() => {
+                handleCancelSupportCamps({ isCallApiStatus: false });
+              }}
+            >
+              Cancel
+            </Button>
+          </div>
+        </Card>
+      </div>
+    </div>
   );
 };
 

@@ -17,7 +17,6 @@ import {
 import IconWrapper from "./iconWrapper";
 import MultiUserModal from "./multipleAccounts";
 import isAuth from "../../../hooks/isUserAuthenticated";
-import SectionHeading from "../Home/FeaturedTopic/sectionsHeading";
 
 function SocialAuthVerification() {
   const [socialLinks, setSocialLinks] = useState({});
@@ -70,38 +69,28 @@ function SocialAuthVerification() {
 
   return (
     <Fragment>
-      <section className="">
-        <SectionHeading title="Social Oauth" icon={null} className="!mb-5" />
-
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+      <section className={`${styles.wrapper}`}>
+        <div className={`${styles.icon_container}`}>
           <IconWrapper
             socialLinks={socialLinks}
             onUnlinkClick={onUnlinkClick}
             onLinkClick={onLinkClick}
-            provider=" "
+            provider="google"
             icon={
               <Image
-                width={32}
-                height={32}
+                width={30}
+                height={30}
                 alt="google-logo"
                 src="/images/google.svg"
               />
             }
           />
-
           <IconWrapper
             socialLinks={socialLinks}
             onUnlinkClick={onUnlinkClick}
             onLinkClick={onLinkClick}
-            provider=""
-            icon={
-              <Image
-                width={32}
-                height={32}
-                alt="google-logo"
-                src="/images/meta_icon.png"
-              />
-            }
+            provider="facebook"
+            icon={<FacebookFilled />}
           />
           {/* <IconWrapper
             socialLinks={socialLinks}
@@ -110,34 +99,19 @@ function SocialAuthVerification() {
             provider="twitter"
             icon={<TwitterOutlined />}
           /> */}
-
           <IconWrapper
             socialLinks={socialLinks}
             onUnlinkClick={onUnlinkClick}
             onLinkClick={onLinkClick}
-            provider=""
-            icon={
-              <Image
-                width={32}
-                height={32}
-                alt="google-logo"
-                src="/images/linkedin.png"
-              />
-            }
+            provider="linkedin"
+            icon={<LinkedinFilled />}
           />
           <IconWrapper
             socialLinks={socialLinks}
             onUnlinkClick={onUnlinkClick}
             onLinkClick={onLinkClick}
-            provider=""
-            icon={
-              <Image
-                width={32}
-                height={32}
-                alt="google-logo"
-                src="/images/github_icon.png"
-              />
-            }
+            provider="github"
+            icon={<GithubFilled />}
           />
         </div>
       </section>

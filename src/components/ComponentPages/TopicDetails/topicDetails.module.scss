@@ -19,56 +19,33 @@
   margin-bottom: 0;
 }
 .topicDetailContentHead {
-  // width: 100%;
-  padding: 12px 22px;
+  width: 100%;
+  padding: 15px;
   padding-bottom: 0;
-  border-radius: 12px;
-  // margin-bottom: 30px;
-  @media screen and (max-width: 767px) {
-    // position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
-    width: 100%;
-  }
   &.info_bar_n {
-    // padding: 0;
+    padding: 0;
     padding-bottom: 10px;
-
-    background: #f4f5fab2;
-    @media screen and (max-width: 767px) {
-      padding: 10px;
-      border-radius: 0px;
-      background: #fff;
-      box-shadow: 0px 10px 10px 0px #0000001a;
-      margin: 0 -24px;
-      width: calc(100% + 48px);
-      border-top: 1px solid #ccc;
-    }
   }
   &.inforBarHEad {
     padding: 0;
-    // padding-bottom: 10px;
+    padding-bottom: 10px;
   }
   & > div > div {
     @media screen and (min-width: 992px) {
-      // display: flex;
-      // flex-wrap: wrap;
-      // justify-content: space-between;
-      // align-items: center;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
     }
   }
   &_Left {
-    // display: flex;
-    // justify-content: space-between;
-    // position: relative;
     &.rightPanel {
       display: flex;
       justify-content: space-between;
       border: none;
       padding-top: 0;
       @media screen and (max-width: 767px) {
-        // flex-wrap: wrap;
+        flex-wrap: wrap;
         gap: 10px;
       }
       [class="btnsWrap"] {
@@ -115,25 +92,21 @@
       }
     }
     @media screen and (min-width: 992px) {
-      // display: flex;
-      // flex-wrap: wrap;
+      display: flex;
+      flex-wrap: wrap;
       // width: calc(100% - 220px);
-      // width: 100%;
-      // border-bottom: 1px solid #f1f1f1;
-      // padding-top: 10px;
-      // padding-bottom: 10px;
-      // align-items: center;
+      width: 100%;
+      border-bottom: 1px solid #f1f1f1;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      align-items: center;
     }
     .topicTitleStyle,
     .breadcrumbLinks {
       span {
         &:first-child {
-          // font-weight: normal;
-          // font-size: 16px;
-          // font-weight: 600;
-          @media screen and (max-width: 767px) {
-            font-size: 12px;
-          }
+          font-weight: normal;
+          font-size: 16px;
         }
       }
       font-size: 16px;
@@ -141,28 +114,18 @@
       font-weight: 400;
     }
     .topicTitleStyle {
-      // margin-right: 20px;
-      // font-weight: 700;
-      // display: flex;
-      // align-items: center;
-      // justify-content: center;
-      // gap: 20px;
-      // margin-left: 20px;
-
-      @media screen and (max-width: 767px) {
-        gap: 5px;
-      }
+      margin-right: 50px;
+      font-weight: 700;
     }
     .topicTitleSkeleton {
       margin-right: 100px;
     }
     .breadcrumbLinks {
-      // display: flex;
+      display: flex;
       a {
-        // font-size: 16px;
-        // color: var(--primary);
-        // color: #4eb966 !important;
-        // font-weight: 600;
+        font-size: 16px;
+        color: var(--primary);
+        font-weight: 700;
       }
     }
   }
@@ -174,8 +137,6 @@
     padding-top: 10px;
     @media screen and (max-width: 991px) {
       margin-top: 1rem;
-      display: none;
-      // hide div in breadcrum
     }
     .btnCampForum {
       margin-right: 20px;
@@ -260,16 +221,16 @@
 }
 
 .breadcrumbLinks {
-  // display: flex;
-  // font-size: 16px;
-  // flex-wrap: wrap;
+  display: flex;
+  font-size: 16px;
+  flex-wrap: wrap;
   a {
-    // font-size: 16px;
-    // color: var(--primary) !important;
+    font-size: 16px;
+    color: var(--primary) !important;
     font-weight: 400;
-    //  white-space: nowrap;
+    /* white-space: nowrap; */
     &:hover {
-      // color: #71b1fc !important;
+      color: #71b1fc !important;
     }
   }
 }
@@ -298,20 +259,19 @@
   display: flex;
   align-items: center;
   .treeListItemTitle {
-    // font-size: 15px;
+    font-size: 15px;
     font-weight: 400;
     color: #0f2a4d;
     margin-left: 4px;
     a {
-      // color: var(--primary);
+      color: var(--primary);
       &:hover {
-        // font-weight: bold;
-        // color: #242B37;
-       
+        font-weight: bold;
+        color: #4484ce;
       }
       &.activeCamp {
-        font-size: 14px;
-        // color: #08b608 !important;
+        font-size: 16px;
+        color: #08b608 !important;
       }
     }
   }
@@ -409,14 +369,14 @@
   svg {
     width: 11px;
   }
-  // margin-left: 5px;
+  margin-left: 5px;
   // font-size: 14px;
 }
 
 .greenIndicateText {
   // font-weight: 600;
   font-size: 18px;
-  // color: #08b608;
+  color: #08b608;
 }
 
 .campinfoSocialOt {
@@ -536,104 +496,5 @@
     &:first-child {
       margin-right: 0px;
     }
-  }
-}
-
-.topicBreadcrums {
-  display: flex;
-  gap: 20px;
-  align-items: center;
-}
-.topicnameBreadcrum {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  span {
-    font-weight: 400 !important;
-  }
-}
-
-.campContent {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-
-  span {
-    color: #242b37;
-  }
-}
-.normal {
-  color: #242b37;
-  font-weight: 600;
-}
-
-.createNewcamp {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-
-  .camp {
-    .manage_camp_btn {
-      border: 1px solid #5482c8;
-      height: 40px !important;
-      padding: 10px 13px;
-
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      //styleName: Heading/H3/Medium;
-      font-family: Inter;
-      font-size: 16px;
-      font-weight: 500;
-      line-height: 22px;
-      text-align: center;
-      color: #242b37;
-      background: #5482c8 !important;
-
-      // &:first-child {
-      //   background: #5482c8 !important;
-      //   color: #fff;
-
-      //   align-items: center;
-      // }
-    }
-  }
-
-  .create-new-camp-btn {
-    border: 1px solid #5482c8;
-
-    padding: 10px 13px;
-
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    //styleName: Heading/H3/Medium;
-    font-family: Inter;
-    font-size: 16px;
-    font-weight: 500;
-    line-height: 22px;
-    text-align: center;
-    color: #242b37;
-    background: rgba(152, 183, 230, 0.1);
-  }
-}
-
-@media screen and (max-width: 1024.98px) {
-  .createNewcamp {
-    button {
-      display: none;
-    }
-  }
-
-  .topicBreadcrums {
-    gap: 5px;
-  }
-  .topicDetails_topicnameBreadcrum__16Vaa .normal {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    width: 50px;
   }
 }

@@ -1,6 +1,6 @@
-import CanonVideos from "components/ComponentPages/canonVideos";
 import React from "react";
 
+import CanonVideos from "@/components/ComponentPages/canonVideos";
 import Layout from "src/hoc/layout";
 
 function Video() {

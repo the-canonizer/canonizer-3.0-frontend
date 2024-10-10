@@ -1,15 +1,11 @@
-import { useEffect, useMemo, useRef, useState } from "react";
-import {
-  CloseOutlined,
-  CopyOutlined,
-  InfoCircleOutlined,
-  LoadingOutlined,
-} from "@ant-design/icons";
-import { Checkbox, Empty, Popover, Select } from "antd";
-import { Row, Col, Typography, Divider, Form, Input, Button } from "antd";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useRef } from "react";
+import useState from "react-usestateref";
 import { useRouter } from "next/router";
-
+import { BackTop } from "antd";
+import { Typography, List, Select, Tag, Input, Button, Popover } from "antd";
+import Link from "next/link";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "src/store";
 import {
   getCanonizedNameSpacesApi,
   getCanonizedTopicsApi,
@@ -18,158 +14,117 @@ import {
 import {
   setFilterCanonizedTopics,
   setOnlyMyTopic,
+  setShowDrawer,
 } from "src/store/slices/filtersSlice";
-import { RootState } from "src/store";
-import { changeSlashToArrow } from "src/utils/generalUtility";
-import SortTopics from "components/ComponentPages/SortingTopics";
-import CustomSkelton from "components/common/customSkelton";
-import CustomPagination from "components/shared/CustomPagination/intex";
-import Layout from "src/hoc/layout";
-import SingleTopicCard from "../HotTopics/topicCard";
-import ScoreTag from "../TrandingTopic/scoreTag";
-import { getAllTags } from "src/network/api/tagsApi";
+import styles from "./topicsList.module.scss";
+import { Spin, Checkbox } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 import useAuthentication from "src/hooks/isUserAuthenticated";
-import { setLoadingAction } from "src/store/slices/loading";
+import {
+  setCheckSupportExistsData,
+  setCurrentCheckSupportStatus,
+  setManageSupportStatusCheck,
+} from "src/store/slices/campDetailSlice";
+import {
+  replaceSpecialCharacters,
+  changeSlashToArrow,
+} from "src/utils/generalUtility";
+import CustomSkelton from "../../../common/customSkelton";
+import SortTopics from "../../SortingTopics";
 
-const { Title } = Typography;
+const antIcon = <LoadingOutlined spin />;
+const { Title, Text, Paragraph } = Typography;
 const { Search } = Input;
+
+const infoContent = (
+  <div className={styles.namespacesPopover}>
+    <Title level={5}>Canon</Title>
+    <p>
+      Canons are a set of topics created for specific organizations and cities
+      to separate topics exclusively for them from the topics of general
+      interest. To get a canon created for your organization, contact{" "}
+      <Link href="mailto:support@canonizer.com">
+        <a>support@canonizer.com</a>
+      </Link>
+    </p>
+  </div>
+);
 
 const TopicsList = () => {
   const router = useRouter();
+  const [pageNumber, setPageNumber, pageNumberRef] = useState(1);
   const dispatch = useDispatch();
   const { isUserAuthenticated } = useAuthentication();
-  const { Paragraph } = Typography;
 
   const {
     canonizedTopics,
     asofdate,
     asof,
     algorithm,
+    filterByScore,
     nameSpaces,
     filterNameSpace,
     userEmail,
     filterNameSpaceId,
     search,
+    is_checked,
+    is_archive,
     onlyMyTopicsCheck,
     loading,
-    sortLatestTopic,
-    sortScoreViewTopic,
-    is_camp_archive_checked,
-    filterByScore,
   } = useSelector((state: RootState) => ({
     canonizedTopics: state.homePage?.canonizedTopicsData,
     asofdate: state.filters?.filterObject?.asofdate,
     asof: state.filters?.filterObject?.asof,
     algorithm: state.filters?.filterObject?.algorithm,
+    filterByScore: state.filters?.filterObject?.filterByScore,
     nameSpaces: state.homePage?.nameSpaces,
     filterNameSpace: state?.filters?.filterObject?.nameSpace,
     userEmail: state?.auth?.loggedInUser?.email,
     filterNameSpaceId: String(state?.filters?.filterObject?.namespace_id),
     search: state?.filters?.filterObject?.search,
+    is_checked: state?.utils?.score_checkbox,
+    is_archive: state?.filters?.filterObject?.is_archive,
+    filterObject: state?.filters?.filterObject,
+    viewThisVersion: state?.filters?.viewThisVersionCheck,
     loading: state?.loading?.loading,
     onlyMyTopicsCheck: state?.filters?.onlyMyTopicsCheck,
-    sortLatestTopic: state?.utils?.sortLatestTopic,
-    sortScoreViewTopic: state?.utils?.sortScoreViewTopic,
-    is_camp_archive_checked: state?.utils?.archived_checkbox,
-    filterByScore: state.filters?.filterObject?.filterByScore,
   }));
-
+  const { is_camp_archive_checked } = useSelector((state: RootState) => ({
+    is_camp_archive_checked: state?.utils?.archived_checkbox,
+  }));
+  const { sortLatestTopic, sortScoreViewTopic } = useSelector(
+    (state: RootState) => ({
+      sortLatestTopic: state?.utils?.sortLatestTopic,
+      sortScoreViewTopic: state?.utils?.sortScoreViewTopic,
+      loading: state?.loading?.loading,
+    })
+  );
   const [topicsData, setTopicsData] = useState(canonizedTopics);
   const [nameSpacesList, setNameSpacesList] = useState(nameSpaces);
+  const [backGroundColorClass, setBackGroundColorClass] = useState("default");
+
+  const [isReview, setIsReview] = useState(asof == "review");
   const [inputSearch, setInputSearch] = useState(search || "");
+
   const [nameSpaceId, setNameSpaceId] = useState(
     String(filterNameSpaceId) || "1"
   );
+
+  const [loadMoreIndicator, setLoadMoreIndicator] = useState(false);
+  const [getTopicsLoadingIndicator, setGetTopicsLoadingIndicator] =
+    useState(false);
   const [selectedNameSpace, setSelectedNameSpace] = useState(filterNameSpace);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [pageNumber, setPageNumber] = useState(1);
-  const [pageSize, setPageSize] = useState(24);
-  const [totalTopics, setTotalTopics] = useState<any>([]);
-  const inputRef = useRef(null);
-  const [allowClear, setAllowClear] = useState(false);
-  const [isCanonChange, setIsCanonChange] = useState(false);
-  const [options, setOptions] = useState([]);
-  const [value, setValue] = useState([]);
-  const [allTags, setAllTags] = useState([]);
-  const [showOnlyMyTopics, setShowOnlyMyTopics] = useState(false);
   const [showSearchDropdown, setShowSearchDropdown] = useState(false);
   const [searchLoading, setSearchLoading] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
   const [searchedResult, setSearchedResult] = useState([]);
-  const [isReview, setIsReview] = useState(asof == "review");
 
-  const mapItemsToValueLabel = (items) => {
-    return items?.map((item) => ({
-      label: item.title,
-      value: item.title,
-    }));
-  };
-
-  const getAlltagsData = async () => {
-    let res = await getAllTags();
-    setOptions(mapItemsToValueLabel(res?.data?.items));
-    setAllTags(res?.data?.items);
-  };
-
-  useEffect(() => {
-    getAlltagsData();
-  }, []);
-
-  useEffect(() => {
-    setIsReview(asof == "review");
-  }, [asof]);
-
-  const sharedProps: any = {
-    mode: "multiple",
-
-    options,
-    placeholder: "Select Item...",
-    maxTagCount: "responsive",
-  };
-
-  const selectProps = {
-    value,
-    onChange: setValue,
-  };
-
-  const infoContent = (
-    <div className="max-w-[300px] w-full">
-      <Title level={5}>Canon</Title>
-      <p>
-        Canons are a set of topics created for specific organizations and cities
-        to separate topics exclusively for them from the topics of general
-        interest. To get a canon created for your organization, contact{" "}
-      </p>
-
-      <a className="text-[#096dd9]" href="mailto:support@canonizer.com">
-        support@canonizer.com
-      </a>
-    </div>
-  );
-
-  const tagInfoContent = (
-    <div className="max-w-[300px] w-full">
-      <Title level={5}>Topic Tag</Title>
-      <p>
-        Topic Tags are keywords that help categorize and organize topics within
-        a Canon on Canonizer. By adding relevant tags to a topic, users can
-        enhance discoverability, making it easier for others to find and engage
-        with topics that match their interests. Tags also provide context,
-        allowing users to quickly understand the focus and scope of a topic.
-      </p>
-    </div>
-  );
-
-  const handlePageChange = (newPageNumber, newPageSize) => {
-    setIsCanonChange(false);
-    setPageNumber(newPageNumber);
-    setPageSize(newPageSize);
-  };
+  const inputRef = useRef(null);
+  const [allowClear, setAllowClear] = useState(false);
 
   const selectNameSpace = (id, nameSpace) => {
-    setIsCanonChange(true);
     setNameSpaceId(String(id));
     setSelectedNameSpace(nameSpace?.children);
-    setPageNumber(1);
 
     if (id?.toString() !== "1") {
       router.query.canon = id;
@@ -193,26 +148,103 @@ const TopicsList = () => {
     );
   };
 
-  async function getTopicsApiCallWithReqBody() {
+  useEffect(() => {
+    if (String(filterNameSpaceId) !== "1") {
+      router.query.canon = String(filterNameSpaceId);
+      delete router.query?.namespace;
+      router.replace(router, undefined, { shallow: true });
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (filterNameSpaceId) {
+      const filteredName = nameSpacesList?.filter((n) => {
+        if (n?.id == filterNameSpaceId) {
+          return n;
+        }
+      });
+
+      if (filteredName && filteredName.length) {
+        dispatch(
+          setFilterCanonizedTopics({
+            nameSpace: filteredName[0]?.label,
+            namespace_id: String(filteredName[0]?.id),
+          })
+        );
+      }
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filterNameSpaceId, nameSpacesList]);
+
+  useEffect(() => {
+    setSelectedNameSpace(filterNameSpace);
+    setNameSpaceId(String(filterNameSpaceId));
+    setInputSearch(search.trim());
+    setNameSpacesList(nameSpaces);
+  }, [filterNameSpace, filterNameSpaceId, search, nameSpaces, is_archive]);
+
+  useEffect(() => {
+    setTopicsData(canonizedTopics);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [canonizedTopics?.topics]);
+
+  useEffect(() => {
+    setIsReview(asof == "review");
+    setBackGroundColorClass(asof);
+  }, [asof]);
+
+  useEffect(() => {
+    async function getTopicsApiCall() {
+      setGetTopicsLoadingIndicator(true);
+      await getTopicsApiCallWithReqBody();
+      setGetTopicsLoadingIndicator(false);
+    }
+
+    getTopicsApiCall();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    asofdate,
+    asof,
+    algorithm,
+    nameSpaceId,
+    filterByScore,
+    inputSearch,
+    is_camp_archive_checked,
+    onlyMyTopicsCheck,
+    sortLatestTopic,
+    sortScoreViewTopic,
+  ]);
+
+  async function getTopicsApiCallWithReqBody(loadMore = false) {
+    loadMore ? setPageNumber(pageNumber + 1) : setPageNumber(1);
     const reqBody = {
       algorithm: algorithm,
       asofdate:
         asof == ("default" || asof == "review") ? Date.now() / 1000 : asofdate,
       namespace_id: String(nameSpaceId),
-      page_number: isCanonChange ? 1 : pageNumber,
-      page_size: pageSize,
+      page_number: pageNumberRef.current,
+      page_size: 15,
       search: inputSearch,
-      filter: 0,
+      filter: filterByScore,
       asof: asof,
+      // archive:archeived?1:0,
       user_email: onlyMyTopicsCheck ? userEmail : "",
-      is_archive: 0,
+      is_archive: is_camp_archive_checked ? 1 : 0,
       sort: sortLatestTopic ? true : false,
-      page: "browse",
-      topic_tags: getIdsOfFilteredTags(value, allTags),
     };
-    const response = await getCanonizedTopicsApi(reqBody);
-    setTotalTopics(response);
+    await getCanonizedTopicsApi(reqBody, loadMore);
+    setLoadMoreIndicator(false);
   }
+
+  const onSearch = (value) => {
+    setInputSearch(value.trim());
+    dispatch(setFilterCanonizedTopics({ search: value || "" }));
+    setShowSearchDropdown(false);
+  };
 
   const handleKeyUpSearch = (event: any) => {
     setSearchedResult([]);
@@ -230,15 +262,39 @@ const TopicsList = () => {
     }
   };
 
-  const onSearch = (value) => {
-    setIsCanonChange(true);
-    setInputSearch(value?.trim());
-    dispatch(setFilterCanonizedTopics({ search: value || "" }));
-    setAllowClear(true);
-    setShowSearchDropdown(false);
+  const onSearchInput = async (value: string) => {
+    try {
+      const reqBody = {
+        algorithm: algorithm,
+        asofdate:
+          asof == ("default" || asof == "review")
+            ? Date.now() / 1000
+            : asofdate,
+        namespace_id: String(nameSpaceId),
+        page_number: pageNumberRef.current,
+        page_size: 15,
+        search: value,
+        filter: filterByScore,
+        asof: asof,
+        user_email: onlyMyTopicsCheck ? userEmail : "",
+        is_archive: is_camp_archive_checked ? 1 : 0,
+      };
+      const res = await getCanonizedTopicsForSuggestion(reqBody);
+      setSearchLoading(false);
+      if (res) {
+        setSearchedResult(res?.topic);
+        setTimeout(() => {
+          inputRef?.current?.focus();
+        }, 400);
+      }
+    } catch (error) {
+      // console.error("Error:", error);
+      /**/
+    }
   };
 
-  let throttled: any = null;
+  /* eslint-disable */
+  let throttled: NodeJS.Timeout | null = null;
 
   useEffect(() => {
     if (throttled) {
@@ -260,61 +316,70 @@ const TopicsList = () => {
       }
     };
   }, [searchTerm]);
+  /* eslint-enable */
 
-  const handleTopicNameClick = (
+  const hanldeTopicNameClick = (
     value: string,
     e: { preventDefault: () => void }
   ) => {
     e.preventDefault();
     if (value?.trim()) {
       setInputSearch(value?.trim());
+      // setSearchTerm(value?.trim());
       setShowSearchDropdown(false);
     }
   };
 
-  const onSearchInput = async (value: string) => {
-    try {
-      const reqBody = {
-        algorithm: algorithm,
-        asofdate:
-          asof == ("default" || asof == "review")
-            ? Date.now() / 1000
-            : asofdate,
-        namespace_id: String(nameSpaceId),
-        page_number: pageNumber,
-        page_size: 15,
-        search: value,
-        filter: filterByScore,
-        asof: asof,
-        user_email: onlyMyTopicsCheck ? userEmail : "",
-        is_archive: is_camp_archive_checked ? 1 : 0,
-      };
-      const res = await getCanonizedTopicsForSuggestion(reqBody);
+  const LoadMoreTopics = (
+    <div className="text-center">
+      {topicsData?.topics?.length > 1 &&
+        topicsData?.topics?.length % 15 == 0 && (
+          <Button
+            className={styles.viewAll}
+            onClick={() => {
+              getTopicsApiCallWithReqBody(true);
+              setLoadMoreIndicator(true);
+            }}
+          >
+            <Text>Load More</Text>
+            {!loadMoreIndicator && <i className="icon-angle-right"></i>}
+            {loadMoreIndicator && <Spin indicator={antIcon} />}
+          </Button>
+        )}
+    </div>
+  );
 
-      setSearchLoading(false);
-      if (res) {
-        setSearchedResult(res?.topic);
-        setTimeout(() => {
-          inputRef?.current?.focus();
-        }, 400);
-      }
-    } catch (error) {
-      // console.error("Error:", error);
-      /**/
-    }
+  const ViewAllTopics = (
+    <div className="text-right">
+      {topicsData?.topics?.length ? (
+        <Link href="/browse">
+          <a className={styles.viewAll}>
+            <Text>View All Topics</Text>
+            <i className="icon-angle-right"></i>
+          </a>
+        </Link>
+      ) : null}
+    </div>
+  );
+
+  const handleCheckbox = async (e) => {
+    setGetTopicsLoadingIndicator(true);
+    // onlyMyTopicsCheck = e.target.checked;
+    dispatch(setOnlyMyTopic(e.target.checked));
+    // await getTopicsApiCallWithReqBody();
+    setGetTopicsLoadingIndicator(false);
   };
 
-  const handleClear = () => {
-    setAllowClear(false);
-    setInputSearch("");
-    setPageNumber(1);
-    dispatch(setFilterCanonizedTopics({ search: "" }));
+  const handleTopicClick = () => {
+    setGetTopicsLoadingIndicator(true);
+    dispatch(setShowDrawer(true));
   };
 
   useEffect(() => {
-    if (inputSearch) {
-      setAllowClear(true);
-    }
+    //When Page is render remove data from GetCheckSupportStatus and GetCheckSupportExistsData
+    dispatch(setCurrentCheckSupportStatus(""));
+    dispatch(setCheckSupportExistsData(""));
+    dispatch(setManageSupportStatusCheck(false));
     if (!(nameSpaces?.length > 0)) {
       getCanonizedNameSpacesApi();
     }
@@ -322,284 +387,226 @@ const TopicsList = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {}, [searchTerm, onSearch]);
-
-  /* eslint-enable */
-
   useEffect(() => {
-    setSelectedNameSpace(() => filterNameSpace);
-    if (nameSpaceId !== filterNameSpaceId) {
-      setNameSpaceId(() => String(filterNameSpaceId));
-    }
-    setInputSearch(() => search.trim());
-    setNameSpacesList(() => nameSpaces);
-  }, [filterNameSpace, filterNameSpaceId, search, nameSpaces]);
-
-  useEffect(() => {
-    setTopicsData(canonizedTopics);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [canonizedTopics?.topics]);
-
-  useEffect(() => {
-    async function getTopicsApiCall() {
-      await getTopicsApiCallWithReqBody();
+    if (inputSearch) {
+      setAllowClear(true);
     }
 
-    getTopicsApiCall();
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    nameSpaceId,
-    inputSearch,
-    sortLatestTopic,
-    sortScoreViewTopic,
-    pageSize,
-    pageNumber,
-    onlyMyTopicsCheck,
-    value,
-  ]);
-
-  const memoizedOptions = useMemo(() => {
-    return nameSpacesList?.map((item) => (
-      <Select.Option id={`name-space-${item.id}`} key={item.id} value={item.id}>
-        {changeSlashToArrow(item.label)}
-      </Select.Option>
-    ));
-  }, [nameSpacesList]);
-
-  const getIdsOfFilteredTags = (arr, resData) => {
-    return arr?.map((item) => {
-      const found = resData?.find((data) => data?.title === item);
-      return found ? found?.id : null;
-    });
-  };
-
-  const showOnlyMyTopicsHandler = (e) => {
-    dispatch(setLoadingAction(true));
-    dispatch(setOnlyMyTopic(e?.target?.checked));
-    dispatch(setLoadingAction(false));
-  };
+  }, []);
 
   return (
-    <Layout routeName={"browse"}>
-      <div className="browse-wrapper pb-4 mt-3">
-        <Title level={4} className="browse-title !mb-0">
-          Browse Canonizer’s Topics
+    <>
+      <div
+        className={`header-bg-color-change ${backGroundColorClass} topics-list-card-header ${
+          styles.head
+        } ${router?.asPath.includes("/browse") ? styles.browsePage : ""}`}
+      >
+        <Title level={3}>
+          Select Canon
+          <Popover content={infoContent} placement="right">
+            <i className="icon-info cursor-pointer"></i>
+          </Popover>
         </Title>
-        <Divider />
-        <Form layout="vertical">
-          <div className="browse-actions">
-            <div className="flex gap-2 lg:w-[70%] max-sm:flex-col">
-              <Form.Item className="browse-dropdown w-full">
-                <div className="filter-popover-wrapper">
-                  <p className="text-xs font-medium">Filter By Canon</p>
-                  <Popover placement="right" content={infoContent}>
-                    <InfoCircleOutlined />
-                  </Popover>
-                </div>
-                <Select
-                  size="large"
-                  virtual={true}
-                  showSearch
-                  placeholder="Select a person"
-                  optionFilterProp="children"
-                  onChange={selectNameSpace}
-                  defaultValue={changeSlashToArrow(selectedNameSpace)}
-                  value={changeSlashToArrow(selectedNameSpace)}
-                  disabled={loading}
-                  className="text-canBlack font-normal commonSelectClass [&_.ant-select-arrow]:text-canBlack [&_.ant-select-arrow>svg]:fill-canBlack"
-                >
-                  {memoizedOptions}
-                  <Select.Option
-                    id="name-space-custom"
-                    key="custom-key"
-                    value=""
-                  >
-                    All
-                  </Select.Option>
-                </Select>
-              </Form.Item>
-              <Form.Item className="browse-dropdown w-full">
-                <div className="filter-popover-wrapper">
-                  <p className="text-xs font-medium">Filter by Topic Tags</p>
-                  <Popover placement="right" content={tagInfoContent}>
-                    <InfoCircleOutlined />
-                  </Popover>
-                </div>
-                <Select
-                  size="large"
-                  mode="multiple"
-                  className="text-canBlack font-normal commonSelectClass [&_.ant-select-arrow]:text-canBlack [&_.ant-select-arrow>svg]:fill-canBlack"
-                  showArrow
-                  {...sharedProps}
-                  {...selectProps}
-                />
-                {/* <Select
-                  size="large"
-                  mode="multiple"
-                  className="text-canBlack font-normal commonSelectClass [&_.ant-select-arrow]:text-canBlack [&_.ant-select-arrow>svg]:fill-canBlack"
-                  showArrow
-                  options={options}
-                /> */}
-              </Form.Item>
-            </div>
-            <div className="search-wrapper w-full items-center max-sm:flex-wrap lg:justify-end max-lg:justify-between">
-              {router?.asPath.includes("/browse") && isUserAuthenticated && (
-                <Checkbox
-                  className="min-w-[169px] max-sm:order-2"
-                  onChange={(e: any) => showOnlyMyTopicsHandler(e)}
-                  disabled={loading}
-                  checked={onlyMyTopicsCheck}
-                >
-                  Show only my topics
-                </Checkbox>
-              )}
-              <div className="input-search-topic">
-                <Search
-                  key={inputSearch}
-                  size="large"
-                  className="browse-search mainInput"
-                  placeholder="Search via keyword"
-                  allowClear={allowClear}
-                  defaultValue={inputSearch}
-                  onSearch={onSearch}
-                  ref={inputRef}
-                  disabled={loading}
-                  onChange={handleKeyUpSearch}
-                  onBlur={() => {
-                    setTimeout(() => {
-                      setShowSearchDropdown(false);
-                    }, 300);
-                  }}
-                  onFocus={() => {
-                    setSearchLoading(false);
-                    setShowSearchDropdown(true);
-                  }}
-                />
-                {showSearchDropdown && searchTerm && (
-                  <div className="suggestion-list">
-                    <ul>
-                      {searchLoading ? (
-                        <li className="search-loader">
-                          <LoadingOutlined spin />
-                        </li>
-                      ) : searchedResult?.length > 0 ? (
-                        searchedResult?.map((t, i) => (
-                          <li
-                            key={i}
-                            onClick={handleTopicNameClick.bind(
-                              this,
-                              t?.topic_name
-                            )}
-                          >
-                            {t?.topic_name}
-                          </li>
-                        ))
-                      ) : searchTerm ? (
-                        <li>No Data</li>
-                      ) : (
-                        ""
-                      )}
-                    </ul>
-                  </div>
-                )}
-              </div>
-              <SortTopics />
-            </div>
-          </div>
-        </Form>
 
-        {allowClear && search?.length > 0 && (
-          <div className="search-response">
-            <p>{totalTopics?.total_count} Results Found</p>
-            <Button
-              type="link"
-              danger
-              className="btn-clear"
-              onClick={() => handleClear()}
-            >
-              Clear all
-              <CloseOutlined />
-            </Button>
+        <Select
+          size="large"
+          className={styles.dropdown}
+          defaultValue={changeSlashToArrow(selectedNameSpace)}
+          value={changeSlashToArrow(selectedNameSpace)}
+          onChange={selectNameSpace}
+          showSearch
+          optionFilterProp="children"
+          id="name-space-dropdown"
+          data-testid="name-space-dropdown"
+          disabled={loading}
+        >
+          {nameSpacesList?.map((item) => {
+            return (
+              <Select.Option
+                id={`name-space-${item.id}`}
+                key={item.id}
+                value={item.id}
+              >
+                {changeSlashToArrow(item.label)}
+              </Select.Option>
+            );
+          })}
+          <Select.Option id="name-space-custom" key="custom-key" value="">
+            All
+          </Select.Option>
+        </Select>
+        {router?.asPath.includes("/browse") && isUserAuthenticated && (
+          <Checkbox
+            className={styles.checkboxOnlyMyTopics}
+            onChange={handleCheckbox}
+            disabled={loading}
+            checked={onlyMyTopicsCheck}
+          >
+            Only My Topics
+          </Checkbox>
+        )}
+        {router?.asPath.includes("/browse") && (
+          <div className={styles.inputSearchTopic}>
+            <Search
+              key={inputSearch}
+              placeholder="Search by topic name"
+              allowClear={allowClear}
+              className={styles.topic}
+              defaultValue={inputSearch}
+              onSearch={onSearch}
+              onChange={handleKeyUpSearch}
+              ref={inputRef}
+              disabled={loading}
+              onBlur={() => {
+                setTimeout(() => {
+                  setShowSearchDropdown(false);
+                }, 300);
+              }}
+              onFocus={() => {
+                // if (!inputSearch) {
+                //   setSearchTerm(inputSearch);
+                // }
+                setSearchLoading(false);
+                setShowSearchDropdown(true);
+              }}
+            />
+
+            {showSearchDropdown && searchTerm && (
+              <div className={styles.dropdown_list}>
+                <ul>
+                  {searchLoading ? (
+                    <li className={styles.searLoader}>
+                      <LoadingOutlined spin />
+                    </li>
+                  ) : searchedResult?.length > 0 ? (
+                    searchedResult?.map((t, i) => (
+                      <li
+                        key={i}
+                        onClick={hanldeTopicNameClick.bind(this, t?.topic_name)}
+                      >
+                        {t?.topic_name}
+                      </li>
+                    ))
+                  ) : searchTerm ? (
+                    <li>No Data</li>
+                  ) : (
+                    ""
+                  )}
+                </ul>
+              </div>
+            )}
           </div>
         )}
-        {loading && !searchTerm ? (
-          <CustomSkelton skeltonFor="browse" />
-        ) : (
-          <>
-            {topicsData?.topics?.length == 0 ? (
-              <div className="mt-[10rem]">
-                <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />;
-              </div>
-            ) : (
-              <Row gutter={[24, 24]}>
-                {topicsData?.topics?.map((ft: any, index) => (
-                  <Col
-                    key={index}
-                    xs={24}
-                    sm={24}
-                    md={8}
-                    className={`${
-                      ft?.tags?.length == 0 ? "[&_.mainTags]:!hidden" : ""
-                    }`}
-                  >
-                    <SingleTopicCard
-                      cardClassName="[&_.scoreTag]:mx-0 [&_.scoreTag]:ml-2 [&_.catTags]:flex-row [&_.cardCountCls]:!mt-0 [&_.scoreTag]:w-max [&_.topicDesc]:line-clamp-2"
-                      topic={{
-                        ...ft,
-                        topic_num: ft?.topic_id,
-                        topicTags: ft?.tags,
-                        views: ft?.camp_views,
-                      }}
-                      avatars={
-                        ft?.tree_structure &&
-                        ft?.tree_structure[1]?.support_tree
-                          ?.map((support) => support?.user)
-                          ?.slice(0, 5)
-                      }
-                      maxCount={5}
-                      scoreTag={<ScoreTag topic_score={ft?.topic_score} />}
-                      copyLink={
-                        <Paragraph
-                          className="!mb-0 hidden rightArrow"
-                          copyable={{
-                            text: ft.is_archive ? (
-                              <Popover content="Archived Topic">
-                                {isReview
-                                  ? ft?.tree_structure &&
-                                    ft?.tree_structure[1].review_title
-                                  : ft?.topic_name}
-                              </Popover>
-                            ) : isReview ? (
-                              ft?.tree_structure &&
-                              ft?.tree_structure[1].review_title
-                            ) : (
-                              ft?.topic_name
-                            ),
-                            icon: <CopyOutlined className="text-canLight" />,
-                          }}
-                        >
-                          {" "}
-                        </Paragraph>
-                      }
-                    />
-                  </Col>
-                ))}
-              </Row>
-            )}
-          </>
-        )}
-        {totalTopics?.total_count > 10 && (
-          <CustomPagination
-            totalTopics={totalTopics?.total_count}
-            pageNumber={pageNumber}
-            pageSize={pageSize}
-            loading={loading}
-            handlePageChange={handlePageChange}
-          />
-        )}
+        <SortTopics />
       </div>
-    </Layout>
+
+      <div
+        className={`${styles.card} ${
+          router?.asPath.includes("/browse") ? "" : styles.homePageCardList
+        }`}
+      >
+        <List
+          className={styles.wrap}
+          footer={
+            <div className={styles.footer}>
+              {router?.asPath.includes("/browse")
+                ? LoadMoreTopics
+                : topicsData && topicsData?.topics?.length >= 15
+                ? ViewAllTopics
+                : null}
+            </div>
+          }
+          bordered
+          dataSource={topicsData?.topics}
+          renderItem={(item: any) => {
+            return getTopicsLoadingIndicator ? (
+              <CustomSkelton
+                skeltonFor="list"
+                bodyCount={10}
+                stylingClass="listSkeleton"
+                isButton={false}
+              />
+            ) : (
+              <List.Item className={styles.item} id={`topic-${item?.topic_id}`}>
+                <>
+                  <Link
+                    href={`/topic/${item?.topic_id}-${replaceSpecialCharacters(
+                      isReview
+                        ? item?.tree_structure &&
+                            item?.tree_structure[1]?.review_title
+                        : item?.topic_name,
+                      "-"
+                    )}/1-Agreement`}
+                  >
+                    {!item.is_archive ||
+                    (item.is_archive && is_camp_archive_checked) ? (
+                      <a
+                        onClick={() => {
+                          handleTopicClick();
+                        }}
+                      >
+                        <Text
+                          className={
+                            item.is_archive
+                              ? `font-weight-bold ${styles.archive_topic}`
+                              : styles.text
+                          }
+                        >
+                          {item.is_archive ? (
+                            <Popover content="Archived Topic">
+                              {isReview
+                                ? item?.tree_structure &&
+                                  item?.tree_structure[1].review_title
+                                : item?.topic_name}
+                            </Popover>
+                          ) : isReview ? (
+                            item?.tree_structure &&
+                            item?.tree_structure[1].review_title
+                          ) : (
+                            item?.topic_name
+                          )}
+                        </Text>
+                        <Tag className={styles.tag}>
+                          {/* // ? item?.topic_full_score // : item?.full_score?.toFixed(2) */}
+                          {is_checked
+                            ? item?.topic_full_score?.toFixed(2)
+                            : item?.topic_score?.toFixed(2)}
+                        </Tag>
+                      </a>
+                    ) : (
+                      <></>
+                    )}
+                  </Link>
+                  <Paragraph
+                    className={styles.copyable}
+                    copyable={{
+                      text: item.is_archive ? (
+                        <Popover content="Archived Topic">
+                          {isReview
+                            ? item?.tree_structure &&
+                              item?.tree_structure[1].review_title
+                            : item?.topic_name}
+                        </Popover>
+                      ) : isReview ? (
+                        item?.tree_structure &&
+                        item?.tree_structure[1].review_title
+                      ) : (
+                        item?.topic_name
+                      ),
+                    }}
+                  >
+                    {" "}
+                  </Paragraph>
+                </>
+              </List.Item>
+            );
+          }}
+        />
+
+        <BackTop />
+      </div>
+    </>
   );
 };
 

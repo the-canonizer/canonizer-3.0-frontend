@@ -1,5 +1,5 @@
 import Layout from "src/hoc/layout";
-import NicknameSearch from "src/components/ComponentPages/searchCanonizer/nickname";
+import NicknameSearch from "@/components/ComponentPages/searchCanonizer/nickname";
 
 function SearchNickname() {
   return (

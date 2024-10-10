@@ -1,13 +1,17 @@
-//* eslint-disable @next/next/no-img-element */
+/* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useState } from "react";
 import Layout from "../../hoc/layout";
-import { Row, Col, PageHeader } from "antd";
-import { Card } from "antd";
+import { Row, Col, Image } from "antd";
+import { Avatar, Card, Collapse } from "antd";
 import { useRouter } from "next/router";
+import SideBar from "../../components/ComponentPages/Home/SideBar";
+import Title from "antd/lib/skeleton/Title";
+import VideoThumbnail from "../../assets/image/video-thumbnail.jpg";
 import { CaretRightOutlined } from "@ant-design/icons";
 import { getVideosContentApi } from "src/network/api/videos";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
-import CustomSkeleton from "../../components/common/customSkelton";
+import Skeleton from "react-loading-skeleton";
+import CustomSkeleton from "@/components/common/customSkelton";
 
 // eslint-disable-next-line @next/next/no-img-element
 const { Meta } = Card;
@@ -40,28 +44,15 @@ const VideosPage = () => {
 
   return (
     <Layout routeName={"video"}>
-      <div className="video-wrapper">
+      <div className="pageContentWrap">
         {loader ? (
-          <>
-            <CustomSkeleton skeltonFor="videos" />
-          </>
+          <CustomSkeleton skeltonFor="videos" />
         ) : (
           <>
             {categories?.map((category) => {
               return (
                 <>
-                  {/* <PageHeader
-                    className="px-0 [&_.ant-page-header-heading-title]:!text-xl"
-                    ghost
-                    backIcon={<i className="icon-back text-sm"></i>}
-                    onBack={() => router?.push("/")}
-                    title="Videos"
-                  /> */}
-                  <Card
-                    className="video-parent-card"
-                    bordered={false}
-                    title={category?.title}
-                  >
+                  <Card className="video-parent-card" title={category?.title}>
                     <Row gutter={[16, 16]}>
                       {category?.videos?.map((video) => {
                         return (
@@ -69,7 +60,6 @@ const VideosPage = () => {
                             <Col xs={24} sm={12} lg={8} xl={6}>
                               <Card
                                 className="video-inner-card"
-                                bordered={false}
                                 onClick={(e) => {
                                   onCardClick(e, video);
                                 }}
@@ -87,10 +77,7 @@ const VideosPage = () => {
                                   </div>
                                 }
                               >
-                                <Meta
-                                  title={video?.title}
-                                  className="text-sm [&_.ant-card-meta-title]:!text-sm"
-                                />
+                                <Meta title={video?.title} />
                               </Card>
                             </Col>
                           </>

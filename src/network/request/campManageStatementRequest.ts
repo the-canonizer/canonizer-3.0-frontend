@@ -57,17 +57,6 @@ export class campManageStatementRequest extends Request {
       token
     );
   }
-
-  static postStatementCount(reqBody, token) {
-    return new Request(
-      K.Network.URL.postStatementCount,
-      K.Network.Method.POST,
-      reqBody,
-      K.Network.Header.Type.Json,
-      {},
-      token
-    );
-  }
   static updateCamp(reqBody, token) {
     return new Request(
       K.Network.URL.UpdateCamp,

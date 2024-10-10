@@ -20,7 +20,6 @@ export default function SearchSideBar() {
       asofdate: state.filters?.filterObject?.asofdate,
     })
   );
-
   const { loading } = useSelector((state: RootState) => ({
     loading: state?.loading?.searchLoading,
   }));
@@ -29,24 +28,7 @@ export default function SearchSideBar() {
     router?.push("/search/topic");
   };
   const dispatch = useDispatch();
-  const {
-    searchCountForMetaData,
-    searchMetaData,
-    selectedTopicFromAdvanceFilterAlgorithm,
-    selectedCampFromAdvanceFilterAlgorithm,
-    selectedStatementFromAdvanceFilterAlgorithm,
-  } = useSelector((state: RootState) => ({
-    searchDataAll: state?.searchSlice?.searchDataAll,
-    searchData: state?.searchSlice?.searchData,
-    searchCountForMetaData: state?.searchSlice?.searchCountForMetaData,
-    searchMetaData: state?.searchSlice?.searchMetaData,
-    selectedTopicFromAdvanceFilterAlgorithm:
-      state?.searchSlice?.selectedTopicFromAdvanceFilterAlgorithm,
-    selectedCampFromAdvanceFilterAlgorithm:
-      state?.searchSlice?.selectedCampFromAdvanceFilterAlgorithm,
-    selectedStatementFromAdvanceFilterAlgorithm:
-      state?.searchSlice?.selectedStatementFromAdvanceFilterAlgorithm,
-  }));
+
   return (
     <>
       <div className="leftSideBar_Card noFilter">
@@ -58,27 +40,23 @@ export default function SearchSideBar() {
             isButton={false}
           />
         ) : (
-          <div className="search_tabs lg:flex-col flex overflow-x-auto gap-5">
+          <div className="search_tabs">
             <Link
               href={{
                 pathname: "/search",
-                query: { q: router?.query?.q },
+                query: { q: searchValue },
               }}
               passHref
             >
               <a>
                 <Button
                   size="large"
-                  // className={
-                  //   router?.asPath.includes("/search?") ? "active" : "btn"
-                  // }
-                  className={`p-0 shadow-none border-transparent !rounded-0 !border-t-0 !border-l-0 !border-r-0 active:!bg-transparent disabled:!bg-transparent disabled:!text-canBlue text-base font-normal disabled:!font-semibold active:!text-canBlue disabled:!border-b-2  disabled:!border-canBlue 
-                   active:!border-none active:!border-transparent hover:!border-transparent focus:!border-transparent  ${
-                     router?.asPath.includes("/search?") ? "active" : "btn"
-                   }`}
+                  className={
+                    router?.asPath.includes("/search?") ? "active" : "btn"
+                  }
                   disabled={router?.pathname == "/search" ? true : false}
                 >
-                  All Results
+                  All
                 </Button>
               </a>
             </Link>
@@ -86,7 +64,7 @@ export default function SearchSideBar() {
               href={{
                 pathname: "/search/topic",
                 query: {
-                  q: router?.query?.q,
+                  q: searchValue,
                   ...(asof !== "default" && { asof: asof }),
                   ...(asof == "bydate" && { asofdate: asofdate }),
                 },
@@ -96,30 +74,13 @@ export default function SearchSideBar() {
               <a>
                 <Button
                   size="large"
-                  className={`p-0 shadow-none border-transparent !rounded-0 !border-t-0 !border-l-0 !border-r-0 active:!bg-transparent disabled:!bg-transparent disabled:!text-canBlue text-base font-normal disabled:!font-semibold active:!text-canBlue disabled:!border-b-2  disabled:!border-canBlue 
-                   active:!border-none active:!border-transparent  hover:!border-transparent focus:!border-transparent  
-                    ${
-                      router?.asPath.includes("/search/topic?")
-                        ? "active"
-                        : "btn"
-                    } `}
+                  className={
+                    router?.asPath.includes("/search/topic?") ? "active" : "btn"
+                  }
                   disabled={router?.pathname == "/search/topic" ? true : false}
                 >
-                  {/* <i className="icon-topic"></i> */}
-                  <a>
-                    Topic{" "}
-                    <span>
-                      {" "}
-                      &nbsp;(
-                      {searchValue == ""
-                        ? searchMetaData?.topic_total
-                        : router.query.asof == "review" ||
-                          router.query.asof == "bydate"
-                        ? selectedTopicFromAdvanceFilterAlgorithm.length
-                        : searchCountForMetaData?.topic_total}
-                      )
-                    </span>
-                  </a>
+                  <i className="icon-topic"></i>
+                  <a>Topic</a>
                 </Button>
               </a>
             </Link>
@@ -127,7 +88,7 @@ export default function SearchSideBar() {
               href={{
                 pathname: "/search/camp",
                 query: {
-                  q: router?.query?.q,
+                  q: searchValue,
                   ...(asof !== "default" && { asof: asof }),
                   ...(asof == "bydate" && { asofdate: asofdate }),
                 },
@@ -137,89 +98,55 @@ export default function SearchSideBar() {
               <a>
                 <Button
                   size="large"
-                  className={` p-0 shadow-none border-transparent !rounded-0 !border-t-0 !border-l-0 !border-r-0 active:!bg-transparent disabled:!bg-transparent disabled:!text-canBlue text-base font-normal disabled:!font-semibold active:!text-canBlue disabled:!border-b-2  disabled:!border-canBlue 
-                   active:!border-none active:!border-transparent  hover:!border-transparent focus:!border-transparent 
-                    ${
-                      router?.asPath.includes("/search/camp?")
-                        ? "active"
-                        : "btn"
-                    }`}
+                  className={
+                    router?.asPath.includes("/search/camp?") ? "active" : "btn"
+                  }
                   disabled={router?.pathname == "/search/camp" ? true : false}
                 >
-                  {/* <i className="icon-camp"></i> */}
-                  <a>
-                    Camp{" "}
-                    <span>
-                      {" "}
-                      &nbsp;(
-                      {searchValue == ""
-                        ? searchMetaData?.camp_total
-                        : router.query.asof == "review" ||
-                          router.query.asof == "bydate"
-                        ? selectedCampFromAdvanceFilterAlgorithm.length
-                        : searchCountForMetaData?.camp_total}
-                      )
-                    </span>
-                  </a>
+                  <i className="icon-camp"></i>
+                  <a>Camp</a>
                 </Button>
               </a>
             </Link>
             <Link
               href={{
                 pathname: "/search/camp_statement",
-                query: { q: router?.query?.q },
+                query: { q: searchValue },
               }}
               passHref
             >
               <a>
                 <Button
                   size="large"
-                  className={`p-0 shadow-none border-transparent !rounded-0 !border-t-0 !border-l-0 !border-r-0 active:!bg-transparent disabled:!bg-transparent disabled:!text-canBlue text-base font-normal disabled:!font-semibold active:!text-canBlue disabled:!border-b-2  disabled:!border-canBlue 
-                   active:!border-none active:!border-transparent  hover:!border-transparent focus:!border-transparent 
-                    ${
-                      router?.asPath.includes("/search/camp_statement?")
-                        ? "active"
-                        : "btn"
-                    }`}
+                  className={
+                    router?.asPath.includes("/search/camp_statement?")
+                      ? "active"
+                      : "btn"
+                  }
                   disabled={
                     router?.pathname == "/search/camp_statement" ? true : false
                   }
                 >
-                  {/* <i className="icon-camp"></i> */}
-                  <a>
-                    Camp Statement{" "}
-                    <span>
-                      {" "}
-                      &nbsp;(
-                      {searchValue == ""
-                        ? searchMetaData?.statement_total
-                        : router.query.asof == "review" ||
-                          router.query.asof == "bydate"
-                        ? selectedStatementFromAdvanceFilterAlgorithm.length
-                        : searchCountForMetaData?.statement_total}
-                      )
-                    </span>
-                  </a>
+                  <i className="icon-camp"></i>
+                  <a>Camp Statement</a>
                 </Button>
               </a>
             </Link>
             <Link
               href={{
                 pathname: "/search/nickname",
-                query: { q: router?.query?.q },
+                query: { q: searchValue },
               }}
               passHref
             >
               <a>
                 <Button
                   size="large"
-                  className={`p-0 shadow-none border-transparent !rounded-0 !border-t-0 !border-l-0 !border-r-0 active:!bg-transparent disabled:!bg-transparent disabled:!text-canBlue text-base font-normal disabled:!font-semibold active:!text-canBlue disabled:!border-b-2  disabled:!border-canBlue 
-                   active:!border-none active:!border-transparent  hover:!border-transparent focus:!border-transparent 
-                    ${
-                      router?.asPath.includes("/search/nickname?")
-                        ? "active"
-                        : "btn"
-                    }`}
+                  className={
+                    router?.asPath.includes("/search/nickname?")
+                      ? "active"
+                      : "btn"
+                  }
                   disabled={
                     router.pathname == "/search/nickname" ? true : false
                   }
@@ -227,25 +154,15 @@ export default function SearchSideBar() {
                     dispatch(setClickAdvanceFilterOption(false));
                   }}
                 >
-                  {/* <Image
+                  <Image
                     className={styles.nickname_icon}
                     id="nick_name"
                     alt="face Image"
                     src={filter}
                     width={15}
                     height={15}
-                  /> */}
-                  <a>
-                    Nickname{" "}
-                    <span>
-                      {" "}
-                      &nbsp;(
-                      {searchValue == ""
-                        ? searchMetaData?.nickname_total
-                        : searchCountForMetaData?.nickname_total}
-                      )
-                    </span>
-                  </a>
+                  />
+                  <a>Nickname</a>
                 </Button>
               </a>
             </Link>
