@@ -151,6 +151,7 @@ const TimelineInfoBar = ({
   }, []);
 
   const isMobile = window.matchMedia("(min-width: 1024.98px)").matches;
+  
   const onCampForumClick = () => {
     const topicName = topicRecord?.topic_name?.replaceAll(" ", "-");
     const campName = campRecord?.camp_name?.replaceAll(" ", "-");
@@ -732,19 +733,19 @@ const TimelineInfoBar = ({
                   }
                 >
                   {/* <span className="flex items-center lg:gap-5 gap-1 shrink-0">
-                    <Image
-                      src="/images/home-icon.svg"
-                      alt="svg"
-                      height={17}
-                      width={21}
-                    />
-                    <Image
-                      src="/images/arrow-bread.svg"
-                      alt="svg"
-                      height={12}
-                      width={6}
-                    />
-                  </span> */}
+                      <Image
+                        src="/images/home-icon.svg"
+                        alt="svg"
+                        height={17}
+                        width={21}
+                      />
+                      <Image
+                        src="/images/arrow-bread.svg"
+                        alt="svg"
+                        height={12}
+                        width={6}
+                      />
+                    </span> */}
                   <Popover
                     content={content}
                     title={title}
@@ -838,10 +839,10 @@ const TimelineInfoBar = ({
                       className={"!mb-0 flex  " + styles.topicTitleStyle}
                     >
                       {/* <div className="flex items-center shrink-0 mr-1">
-                        <span className="mr-1 font-bold text-sm text-canBlack whitespace-nowrap shrink-0">
-                          {!isTopicHistoryPage ? "Camp: " : ""}
-                        </span>
-                      </div> */}
+                          <span className="mr-1 font-bold text-sm text-canBlack whitespace-nowrap shrink-0">
+                            {!isTopicHistoryPage ? "Camp: " : ""}
+                          </span>
+                        </div> */}
                       <div className="flex items-center gap-3">
                         <div className="flex gap-x-2 gap-y-2 flex-wrap items-center">
                           {loadingIndicator ? (

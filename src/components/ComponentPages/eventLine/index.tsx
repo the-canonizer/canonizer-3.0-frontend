@@ -6,12 +6,13 @@ import DataNotFound from "../DataNotFound/dataNotFound";
 import SideBarTimeline from "../Home-old/SideBarTimeline";
 import TimeLine from "../TimeLine";
 // import TimelineInfoBar from "./TimelineInfoBar/index";
-import TimelineInfoBar from "../TopicDetails/CampInfoBar";
+// import TimelineInfoBar from "../TopicDetails/CampInfoBar";
 import Events from "./Events";
 import { getCurrentTopicRecordApi } from "src/network/api/campDetailApi";
 import moment from "moment";
 import { RootState } from "src/store";
 import { useSelector } from "react-redux";
+import CommonBreadcrumbs from "../Breadcrumbs/commonBreadcrumbs";
 const { Title } = Typography;
 
 const EventLine = () => {
@@ -26,25 +27,25 @@ const EventLine = () => {
     topicRecord: state?.topicDetails?.currentTopicRecord,
   }));
 
-  useEffect(() => {
-    const fetchTopicRecord = async () => {
-      const isDefaultOrReview = asof === "default" || asof === "review";
-      const reqBody = {
-        topic_num: parseInt(router?.query?.camp?.at(0)?.split("-")?.at(0), 10),
-        camp_num:
-          parseInt(router?.query?.camp?.at(1)?.split("-")?.at(0), 10) || 1,
-        as_of: asof,
-        as_of_date: isDefaultOrReview
-          ? Math.floor(Date.now() / 1000)
-          : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
-      };
+  // useEffect(() => {
+  //   const fetchTopicRecord = async () => {
+  //     const isDefaultOrReview = asof === "default" || asof === "review";
+  //     const reqBody = {
+  //       topic_num: parseInt(router?.query?.camp?.at(0)?.split("-")?.at(0), 10),
+  //       camp_num:
+  //         parseInt(router?.query?.camp?.at(1)?.split("-")?.at(0), 10) || 1,
+  //       as_of: asof,
+  //       as_of_date: isDefaultOrReview
+  //         ? Math.floor(Date.now() / 1000)
+  //         : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
+  //     };
 
-      await getCurrentTopicRecordApi(reqBody);
-    };
-    if (topicRecord == null) {
-      fetchTopicRecord();
-    }
-  }, []);
+  //     await getCurrentTopicRecordApi(reqBody);
+  //   };
+  //   if (topicRecord == null) {
+  //     fetchTopicRecord();
+  //   }
+  // }, []);
 
   return (
     <>
@@ -57,8 +58,10 @@ const EventLine = () => {
         />
       ) : (
         <>
-          {/* <TimelineInfoBar /> */}
-          <TimelineInfoBar isEventLine={isEventLine} />
+          {/* <TimelineInfoBar isEventLine={isEventLine} /> */}
+          <CommonBreadcrumbs 
+          isEventLine={isEventLine}
+        />
           <div className="eventline-content-wrap">
             <div className="eventline-algo-content">
               <SideBarTimeline
