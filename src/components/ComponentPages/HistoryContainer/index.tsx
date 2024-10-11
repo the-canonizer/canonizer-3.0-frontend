@@ -77,7 +77,7 @@ function HistoryContainer() {
   const [isHistoryPage, setIsHistoryPage] = useState(true);
   const [objectionState, setObjectionState] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
-  const [historyData,setHistoryData] = useState(null);
+  const [historyData, setHistoryData] = useState(null);
 
   const changeAgree = () => {
     setAgreeCheck(!agreecheck);
@@ -529,7 +529,10 @@ function HistoryContainer() {
                     <InfiniteScroll
                       initialLoad={false}
                       loadMore={!loadingIndicator && campStatementApiCall}
-                      hasMore={ count.current !== historyData?.last_page && loadMoreItems}
+                      hasMore={
+                        count.current !== historyData?.last_page &&
+                        loadMoreItems
+                      }
                       loader={<CustomSkelton skeltonFor="historyPage" />}
                     >
                       {renderCampHistories}

@@ -50,7 +50,9 @@ export default function NotificationList({
                   },
                 }}
               >
-                <a className="text-sm text-canBlack">{item["message_body"]}</a>
+                <a className="text-sm text-canBlack break-words whitespace-pre-wrap">
+                  {item["message_body"]}
+                </a>
               </Link>
             }
             description={moment(getTime(item["created_at"]))

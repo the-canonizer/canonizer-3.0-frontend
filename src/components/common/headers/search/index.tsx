@@ -119,8 +119,9 @@ const HeaderSearch = ({ className = "" }: any) => {
 
   useEffect(() => {
     const { q } = router.query; // Extract the query parameter from the URL
-  
-    if (typeof q === 'string') { // Check if q is a string
+
+    if (typeof q === "string") {
+      // Check if q is a string
       // If 'q' is present, format and set the search value, then call the search function
       const formattedSearchValue = q.split("+").join(" ").replace(/%20/g, " ");
       setSearchVal(formattedSearchValue); // Update the local search value state

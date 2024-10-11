@@ -2,12 +2,12 @@ import { Fragment } from "react";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { Layout, Typography } from "antd";
-import { ArrowRightOutlined, PlusOutlined } from "@ant-design/icons";
+import { ArrowRightOutlined } from "@ant-design/icons";
 
 import useAuthentication from "src/hooks/isUserAuthenticated";
 import { RootState } from "src/store";
 import SecondaryButton from "components/shared/Buttons/SecondaryButton";
-import PrimaryButton from "components/shared/Buttons/PrimariButton";
+// import PrimaryButton from "components/shared/Buttons/PrimariButton";
 
 const { Text, Paragraph } = Typography;
 
@@ -42,10 +42,10 @@ const WelcomeContent = () => {
     router?.push({ pathname: "/browse" });
   };
 
-  const onTopicClick = (e) => {
-    e?.preventDefault();
-    router?.push({ pathname: "/create/topic" });
-  };
+  // const onTopicClick = (e) => {
+  //   e?.preventDefault();
+  //   router?.push({ pathname: "/create/topic" });
+  // };
 
   return (
     <Layout className="bg-canGray rounded-lg py-6 px-6 ">
@@ -67,21 +67,20 @@ const WelcomeContent = () => {
             ? "Welcome back! Explore topics, build consensus, and track conclusions on the go."
             : "A consensus building and tracking system and decision making tool you can use for Dynamic Surveying."}
         </Paragraph>
-        {isUserAuthenticated ? (
+        {/* {isUserAuthenticated ? (
           <PrimaryButton
             className={`h-[40px] text-sm px-5 md:px-20 flex items-center justify-center lg:ml-auto`}
             onClick={onTopicClick}
           >
             Start a Topic <PlusOutlined className="lg:ml-2 sm:ml-0" />
           </PrimaryButton>
-        ) : (
-          <SecondaryButton
-            className="lg:h-[40px] text-sm px-5 md:px-20 flex items-center justify-center lg:ml-auto"
-            onClick={onBrowseClick}
-          >
-            Browse More <ArrowRightOutlined />
-          </SecondaryButton>
-        )}
+        ) : ( */}
+        <SecondaryButton
+          className="lg:h-[40px] text-sm px-5 md:px-20 flex items-center justify-center lg:ml-auto"
+          onClick={onBrowseClick}
+        >
+          Browse More <ArrowRightOutlined />
+        </SecondaryButton>
       </div>
     </Layout>
   );

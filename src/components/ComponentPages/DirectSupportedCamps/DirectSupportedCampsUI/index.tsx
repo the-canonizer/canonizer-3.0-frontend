@@ -582,7 +582,7 @@ export default function DirectSupportedCampsUI({
               )}
             </div>
           )}
-          
+
           <Modal
             data-testid="closeModel"
             className={styles.modal}
