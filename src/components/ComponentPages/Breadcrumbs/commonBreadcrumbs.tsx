@@ -387,20 +387,10 @@ function CommanBreadcrumbs({
   };
 
   const handleTopicUrl = () => {
-    const query = router?.query;
-    const basePath = "/topic/history/";
-    let routeValue = compareMode
-      ? query?.routes?.at(0)
-      : query?.camp?.at(0) || query?.manageSupport?.at(0);
-
-    if (routeValue) {
-      const formattedRoute = replaceSpecialCharacters(routeValue, "-");
-      const fullPath = compareMode
-        ? `${basePath}${formattedRoute}/1-Agreement`
-        : `${basePath}${formattedRoute}/1-Agreement`;
-
-      router?.push({ pathname: fullPath });
-    }
+    const fullPath = `/topic/history/${
+      topicRecord?.topic_num
+    }-${replaceSpecialCharacters(topicRecord?.topic_name, "-")}/1-Agreement`;
+    router?.push({ pathname: fullPath });
   };
 
   // const campOrTopicScribe = async (isTopic: Boolean) => {
@@ -582,17 +572,9 @@ function CommanBreadcrumbs({
     </div>
   );
 
-  const href = `/camp/history/${replaceSpecialCharacters(
-    compareMode
-      ? router?.query?.routes?.at(0)
-      : router?.query?.camp?.at(0) || router?.query?.manageSupport?.at(0),
-    "-"
-  )}/${replaceSpecialCharacters(
-    compareMode
-      ? router?.query?.routes?.at(1)
-      : router?.query?.camp?.at(1) || "1-Agreement",
-    "-"
-  )}`;
+  
+  const campHref= `/camp/history/${topicRecord?.topic_num}-${replaceSpecialCharacters(topicRecord?.topic_name, "-")}/${campRecord?.camp_num}-${replaceSpecialCharacters(campRecord?.camp_name, "-")}`
+
 
   const contentForCamp = (
     <div className="popoverParent">
@@ -713,7 +695,7 @@ function CommanBreadcrumbs({
       </Row>
       <hr className="horizontal_line my-5" />
       <PrimaryButton className="flex items-center justify-center h-auto mx-auto gap-1">
-        <Link href={href}>
+        <Link href={campHref}>
           <a className="flex items-center justify-center h-auto mx-auto gap-1">
             <span className="flex items-center justify-center h-auto mx-auto gap-1">
               {K?.exceptionalMessages?.manageCampButton}
