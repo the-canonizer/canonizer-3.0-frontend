@@ -139,7 +139,6 @@ function CommanBreadcrumbs({
 
     fetchCampRecord();
     fetchTopicRecord();
-    
   }, []);
 
   useEffect(() => {
@@ -571,9 +570,11 @@ function CommanBreadcrumbs({
     </div>
   );
 
-  
-  const campHref= `/camp/history/${topicRecord?.topic_num}-${replaceSpecialCharacters(topicRecord?.topic_name, "-")}/${campRecord?.camp_num}-${replaceSpecialCharacters(campRecord?.camp_name, "-")}`
-
+  const campHref = `/camp/history/${
+    topicRecord?.topic_num
+  }-${replaceSpecialCharacters(topicRecord?.topic_name, "-")}/${
+    campRecord?.camp_num
+  }-${replaceSpecialCharacters(campRecord?.camp_name, "-")}`;
 
   const contentForCamp = (
     <div className="popoverParent">
@@ -687,7 +688,9 @@ function CommanBreadcrumbs({
                 },
               }}
             >
-              {campRecord?.camp_leader_nick_name}
+              <span className="!text-canBlue cursor-pointer">
+                {campRecord?.camp_leader_nick_name}
+              </span>
             </Link>
           </Col>
         )}
@@ -819,11 +822,7 @@ function CommanBreadcrumbs({
             <i className="icon-home"></i>
           </Breadcrumb.Item>
           {
-            <Breadcrumb.Item
-              href={`${topicLink}/1-Agreement?${
-                getQueryParams()?.returnQuery || ""
-              }`}
-            >
+            <Breadcrumb.Item className="flex items-center gap-1.5">
               {topicRecord?.in_review_changes > 0 && (
                 <Popover
                   content={warningTextForTopic}
@@ -847,7 +846,13 @@ function CommanBreadcrumbs({
                     </small>
                   </Tooltip>
                 )}
-                {breadCrumbRes?.topic_name}
+                <Link
+                  href={`${topicLink}/1-Agreement?${
+                    getQueryParams()?.returnQuery || ""
+                  }`}
+                >
+                  {breadCrumbRes?.topic_name}
+                </Link>
                 {isMobile && (
                   <Popover
                     content={content}
@@ -916,9 +921,11 @@ function CommanBreadcrumbs({
                   </Button>
                 </Breadcrumb.Item>
                 <Breadcrumb.Item
-                  href={`${topicLink}/${
-                    breadCrumbRes?.bread_crumb?.at(-1)?.camp_num
-                  }-${breadCrumbRes?.bread_crumb?.at(-1)?.camp_name}`}
+                  className="flex items-center gap-1.5"
+
+                  // href={`${topicLink}/${
+                  //   breadCrumbRes?.bread_crumb?.at(-1)?.camp_num
+                  // }-${breadCrumbRes?.bread_crumb?.at(-1)?.camp_name}`}
                 >
                   {campRecord?.in_review_changes > 0 && (
                     <Popover
@@ -945,7 +952,13 @@ function CommanBreadcrumbs({
                           </small>
                         </Tooltip>
                       )}
-                    {breadCrumbRes?.bread_crumb?.at(-1)?.camp_name}
+                    <Link
+                      href={`${topicLink}/${
+                        breadCrumbRes?.bread_crumb?.at(-1)?.camp_num
+                      }-${breadCrumbRes?.bread_crumb?.at(-1)?.camp_name}`}
+                    >
+                      {breadCrumbRes?.bread_crumb?.at(-1)?.camp_name}
+                    </Link>
                     {isMobile && (
                       <Popover
                         content={contentForCamp}
@@ -964,7 +977,7 @@ function CommanBreadcrumbs({
                   <>
                     {index === breadCrumbRes?.bread_crumb?.length - 1 ? (
                       <Breadcrumb.Item
-                        href={`${topicLink}/${camp?.camp_num}-${camp?.camp_name}`}
+                        className="flex items-center gap-1.5"
                         key={index}
                       >
                         {campRecord?.in_review_changes > 0 && (
@@ -992,7 +1005,11 @@ function CommanBreadcrumbs({
                                 </small>
                               </Tooltip>
                             )}
-                          {camp?.camp_name}
+                          <Link
+                            href={`${topicLink}/${camp?.camp_num}-${camp?.camp_name}`}
+                          >
+                            {camp?.camp_name}
+                          </Link>
                           {isMobile && (
                             <Popover
                               content={contentForCamp}
@@ -1006,7 +1023,7 @@ function CommanBreadcrumbs({
                       </Breadcrumb.Item>
                     ) : (
                       <Breadcrumb.Item
-                        href={`${topicLink}/${camp.camp_num}-${camp.camp_name}`}
+                        className="flex items-center gap-1.5"
                         key={index}
                       >
                         {breadCrumbRes &&
@@ -1021,7 +1038,11 @@ function CommanBreadcrumbs({
                               </small>
                             </Tooltip>
                           )}
-                        {camp?.camp_name}
+                        <Link
+                          href={`${topicLink}/${camp.camp_num}-${camp.camp_name}`}
+                        >
+                          {camp?.camp_name}
+                        </Link>
                       </Breadcrumb.Item>
                     )}
                   </>
