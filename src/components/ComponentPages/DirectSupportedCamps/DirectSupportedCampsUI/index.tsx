@@ -92,12 +92,15 @@ export default function DirectSupportedCampsUI({
       title: "Sr.",
       dataIndex: "sr",
       key: "sr",
-
-      render: (_text, _record, index) => (
-        <span className="text-sm bg-canGrey2 rounded-full h-5 w-6 flex items-center justify-center">
-          {index + 1}
-        </span>
-      ),
+      render: (_text, _record, index) => {
+        // Calculate the serial number based on the current page and page size
+        const serialNumber = (currentPage - 1) * 5 + index + 1;
+        return (
+          <span className="text-sm bg-canGrey2 rounded-full h-5 w-6 flex items-center justify-center">
+            {serialNumber}
+          </span>
+        );
+      },
     },
     {
       title: "Topics",
