@@ -10,6 +10,8 @@ import {
   setCampWithScorevalue,
   setFilterCanonizedTopics,
   setShowDrawer,
+  setTreeExpandValue,
+  setViewThisVersion,
 } from "src/store/slices/filtersSlice";
 import {
   getCanonizedCampStatementApi,
@@ -28,6 +30,7 @@ import {
   GetCheckSupportExists,
 } from "src/network/api/topicAPI";
 import {
+  setAsOfValues,
   setCampSupportingTree,
   setCheckSupportExistsData,
   setCurrentCheckSupportStatus,
@@ -81,6 +84,8 @@ const TopicDetails = ({ serverSideCall }: any) => {
     viewThisVersionCheck,
     campWithScore,
     openConsensusTreePopup,
+    totalScoreforTreeCard,
+    treeExpandValue,
   } = useSelector((state: RootState) => ({
     algorithms: state.homePage?.algorithms,
     asof: state?.filters?.filterObject?.asof,
@@ -92,6 +97,8 @@ const TopicDetails = ({ serverSideCall }: any) => {
     viewThisVersionCheck: state?.filters?.viewThisVersionCheck,
     campWithScore: state?.filters?.campWithScoreValue,
     openConsensusTreePopup: state.hotTopic.openConsensusTreePopup,
+    totalScoreforTreeCard: state.topicDetails.totalScoreforTreeCard,
+    treeExpandValue: state?.filters?.treeExpandValue,
   }));
 
   const { isUserAuthenticated } = isAuth();
@@ -111,9 +118,12 @@ const TopicDetails = ({ serverSideCall }: any) => {
   const [totalCampScoreForSupportTree, setTotalCampScoreForSupportTree] =
     useState<number>(null);
   const [supportTreeForCamp, setSupportTreeForCamp] = useState<number>(null);
-  const [treeExpandValue, setTreeExpandValue] = useState<any>(campWithScore);
+  // const [treeExpandValue, setTreeExpandValue] = useState<any>(campWithScore);
 
-  useEffect(() => setTreeExpandValue(campWithScore), [campWithScore]);
+  // useEffect(() => setTreeExpandValue(campWithScore), [campWithScore]);
+  useEffect(() => {
+    dispatch(setTreeExpandValue(campWithScore));
+  }, [campWithScore]);
 
   const isMobile = window.matchMedia("(min-width: 1280px)").matches;
 
@@ -136,7 +146,6 @@ const TopicDetails = ({ serverSideCall }: any) => {
         showTreeSkeltonRef.current = true;
       }
       setLoadingIndicator(true);
-
       if (didMount.current && !serverSideCall.current) {
         const reqBodyForService = {
           topic_num: router?.query?.camp[0]?.split("-")[0],
@@ -150,6 +159,8 @@ const TopicDetails = ({ serverSideCall }: any) => {
           update_all: 1,
           fetch_topic_history: viewThisVersionCheck ? 1 : null,
         };
+        console.log(reqBodyForService, tree, "reqBodyForService");
+
         const reqBody = {
           topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
           camp_num: +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1),
@@ -190,6 +201,18 @@ const TopicDetails = ({ serverSideCall }: any) => {
     router,
   ]);
 
+  useEffect(() => {
+    if (router?.query?.asOf && router.query.asOf !== "bydate" || router.query.asOf == undefined ) {
+      dispatch(setViewThisVersion(false));
+      dispatch(
+        setFilterCanonizedTopics({
+          asofdate: Date.now() / 1000,
+          asof: "default",
+        })
+      );
+    }
+  }, [router.query.asOf]); 
+ 
   async function getTopicActivityLogCall() {
     let reqBody = {
       topic_num: router?.query?.camp[0]?.split("-")[0],
@@ -240,10 +263,6 @@ const TopicDetails = ({ serverSideCall }: any) => {
       setIsSupportTreeCardModal(false);
       GetCheckStatusData();
       await getTreesApi(reqBodyForService);
-      dispatch(setOpenConsensusTreePopup(true));
-      setTimeout(() => {
-        dispatch(setOpenConsensusTreePopup(false));
-      }, 100);
       getTopicActivityLogCall();
       await getCurrentCampRecordApi(reqBody);
       setRemoveSupportSpinner(false);
@@ -325,11 +344,6 @@ const TopicDetails = ({ serverSideCall }: any) => {
       GetCheckStatusData();
       getTopicActivityLogCall();
       await getTreesApi(reqBodyForService);
-      dispatch(setOpenConsensusTreePopup(true));
-
-      setTimeout(() => {
-        dispatch(setOpenConsensusTreePopup(false));
-      }, 100);
       setIsRemovingSupport(false);
       setRemoveSupportSpinner(false);
     }
@@ -359,7 +373,6 @@ const TopicDetails = ({ serverSideCall }: any) => {
     if (isUserAuthenticated) {
       GetCheckStatusData();
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isUserAuthenticated || router || algorithm, router.query.camp.at(1)]);
 
@@ -382,11 +395,6 @@ const TopicDetails = ({ serverSideCall }: any) => {
         dispatch(setShowDrawer(false));
       }
     }
-    dispatch(setOpenConsensusTreePopup(true));
-    setTimeout(() => {
-      dispatch(setOpenConsensusTreePopup(false));
-    }, 100);
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

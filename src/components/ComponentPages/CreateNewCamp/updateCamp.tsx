@@ -65,6 +65,7 @@ const CreateNewCamp = () => {
   const [isSubmitReq, setIsSubmitReq] = useState(false);
   const [isTopicLoading, setIsopicLoading] = useState(false);
   const [editCampData, setEditCampData] = useState(null);
+  const [parentCampData, setParentCampData] = useState(null);
 
   const update = router?.query?.camp?.at(0)?.split("-")[1] == "update";
 
@@ -249,6 +250,8 @@ const CreateNewCamp = () => {
         );
 
         setNickNameList(result?.data);
+
+        setParentCampData(resData?.camp?.parent_camp_num);
 
         const oldOptions = [...options];
 
@@ -582,7 +585,7 @@ const CreateNewCamp = () => {
                 onCancel={onCancel}
                 form={form}
                 initialValue={initialValue}
-                topicData={{ camp_num: payload?.camp_num }}
+                topicData={{ camp_num: parentCampData }}
                 nickNameList={nickNameList}
                 parentCamp={parentCamp}
                 campNickName={campNickName}

@@ -19,7 +19,7 @@ const CampTree = ({
   scrollToCampStatement,
   setTotalCampScoreForSupportTree,
   setSupportTreeForCamp,
-  treeExpandValue,
+  // treeExpandValue,
   prevTreeValueRef,
   isForumPage = false,
 }: any) => {
@@ -33,6 +33,7 @@ const CampTree = ({
     viewThisVersion,
     is_camp_archive_checked,
     campRecord,
+    treeExpandValue,
   } = useSelector((state: RootState) => ({
     tree: state?.topicDetails?.tree,
     filterByScore: state.filters?.filterObject?.filterByScore,
@@ -43,6 +44,7 @@ const CampTree = ({
     viewThisVersion: state?.filters?.viewThisVersionCheck,
     is_camp_archive_checked: state?.utils?.archived_checkbox,
     campRecord: state?.topicDetails?.currentCampRecord,
+    treeExpandValue: state?.filters?.treeExpandValue,
   }));
 
   let childExpandTree = [];

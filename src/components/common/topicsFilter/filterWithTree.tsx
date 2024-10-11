@@ -37,6 +37,7 @@ import {
 import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 import PrimaryButton from "components/shared/Buttons/PrimariButton";
 import RefineIcon from "components/ComponentPages/TopicDetails/CampInfoBar/refineIcon";
+import { setOpenConsensusTreePopup } from "src/store/slices/hotTopicSlice";
 
 const { Title, Text, Paragraph } = Typography;
 const { Option } = Select;
@@ -231,6 +232,8 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
       if (router?.query?.asof !== "bydate" || !router?.query?.asofdate) {
         handleRadioClick(2);
       }
+    } else {
+      dispatch(setClearAlgoFromRefineFilter(router?.query?.algo));
     }
   }, [openDrawer]);
   useEffect(() => {
@@ -265,6 +268,18 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    // Check the router query parameter and set the default value
+    if (router.query.asof === "bydate") {
+      dispatch(setAsOfValues(3));
+      setIsDatePicker(true);
+    } else {
+      dispatch(setAsOfValues(2));
+     // Default radio button
+      setIsDatePicker(false);
+    }
+  }, [router.query.asof]);
+
   const reqBodyForService = {
     topic_num: router?.query?.camp[0]?.split("-")[0],
     camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
@@ -276,11 +291,11 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
     fetch_topic_history: viewThisVersionCheck ? 1 : null,
   };
 
-  const revertScore = () => {
-    getTreesApi(reqBodyForService);
+  const revertScore = async () => {
+    await getTreesApi(reqBodyForService);
   };
 
-  const selectAlgorithm = (value) => {
+  const selectAlgorithm = async (value) => {
     setCookie("canAlgo", value, {
       path: "/",
     });
@@ -290,7 +305,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
       })
     );
 
-    revertScore();
+    await revertScore();
   };
 
   const onChange = (e) => {
@@ -407,19 +422,48 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
     setSelectedValue(value);
   };
 
-  const handleApplyClick = () => {
+  const updateURLWithAlgo = (selectedAlgorithm) => {
+    const currentQuery = router.query;
+
+    // Update the query params
+    const newQuery = {
+      ...currentQuery, // Retain the existing query parameters
+      algo: selectedAlgorithm, // Update with the selected algorithm
+    };
+
+    // Push the new URL without causing a full page reload
+    router.push(
+      {
+        pathname: router.pathname,
+        query: newQuery,
+      },
+      undefined,
+      { shallow: true }
+    );
+  };
+
+  const handleApplyClick = async () => {
+    const selectedAlgorithm = clearAlgoFromRefineFilter;
+
+    // Step 1: Update URL with the selected algorithm
+    updateURLWithAlgo(selectedAlgorithm);
+
+    // Step 2: Dispatch Redux actions and perform state updates
     dispatch(setOpenDrawer(false));
     filterOnScore(clearScoreFromRefineFilter);
-    selectAlgorithm(clearAlgoFromRefineFilter);
+    await selectAlgorithm(clearAlgoFromRefineFilter);
+    // Step 3: Handle different cases based on selectedValue
     if (selectedValue === 2) {
       dispatch(setViewThisVersion(false));
       setCookie("asof", "default", { path: "/" });
+
       dispatch(
         setFilterCanonizedTopics({
           asofdate: Date.now() / 1000,
           asof: "default",
         })
       );
+
       onChangeRoute(
         clearScoreFromRefineFilter,
         clearAlgoFromRefineFilter,
@@ -430,9 +474,8 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
       );
     } else if (selectedValue === 1) {
       dispatch(setViewThisVersion(false));
-      setCookie("asof", "review", {
-        path: "/",
-      });
+      setCookie("asof", "review", { path: "/" });
+
       dispatch(
         setIsReviewCanonizedTopics({
           includeReview: true,
@@ -440,6 +483,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
           asofdate: Date.now() / 1000,
         })
       );
+
       onChangeRoute(
         clearScoreFromRefineFilter,
         clearAlgoFromRefineFilter,
@@ -448,11 +492,12 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
         filterObject?.namespace_id,
         viewThisVersion
       );
-    } else if (selectedValue === 3 || asof == "bydate") {
+    } else if (selectedValue === 3 || asof === "bydate") {
       dispatch(setViewThisVersion(false));
       handleAsOfClick();
     }
   };
+
   const onClose = () => {
     dispatch(setOpenDrawer(false));
   };
@@ -460,6 +505,16 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
   const handleChange = (event) => {
     const value = event?.target?.value;
     dispatch(setClearScoreFromRefineFilter(Number(value)));
+  };
+  const handleChangeAlgo = (algo) => {
+    dispatch(setClearAlgoFromRefineFilter(algo));
+
+    const { query } = router;
+    // Update the URL with the new algorithm
+    router.push({
+      pathname: router.pathname,
+      query: { ...query, algo },
+    });
   };
 
   return (

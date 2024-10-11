@@ -25,6 +25,7 @@ export const treeSlice = createSlice({
     openDrawerForDirectSupportedCamp: false,
     openDrawerForManageSupport: false,
     disableSubmitButtonForDirectSupportedCamp: false,
+    totalScoreforTreeCard: 0,
 
     openDrawer: false,
     asOfValues: 0,
@@ -209,6 +210,9 @@ export const treeSlice = createSlice({
     setDisableSubmitButtonForDirectSupportedCamp: (state, action) => {
       state.disableSubmitButtonForDirectSupportedCamp = action.payload;
     },
+    settotalScoreforTreeCard: (state, action) => {
+      state.totalScoreforTreeCard = action.payload;
+    },
   },
 });
 
@@ -253,6 +257,7 @@ export const {
   setGlobalUserProfileDataAlgo,
   setOpenDrawerForManageSupport,
   setDisableSubmitButtonForDirectSupportedCamp,
+  settotalScoreforTreeCard,
   // setOpenConsensusTreePopup,
 } = treeSlice.actions;
 

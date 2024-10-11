@@ -191,23 +191,23 @@ const LatestFilter = () => {
   const revertScore = () => {
     getTreesApi(reqBodyForService);
   };
-  const reqBody = {
-    topic_num: router?.query?.camp[0]?.split("-")[0],
-    camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
-    asOf: asof,
-    asofdate:
-      asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
-    algorithm: algorithm,
-    update_all: 1,
-    fetch_topic_history: viewThisVersionCheck ? 1 : null,
-  };
-  const revertScoreAndAlgo = () => {
-    getTreesApi(reqBody);
-  };
+  // const reqBody = {
+  //   topic_num: router?.query?.camp[0]?.split("-")[0],
+  //   camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
+  //   asOf: asof,
+  //   asofdate:
+  //     asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
+  //   algorithm: algorithm,
+  //   update_all: 1,
+  //   fetch_topic_history: viewThisVersionCheck ? 1 : null,
+  // };
+  // const revertScoreAndAlgo = () => {
+  //   getTreesApi(reqBody);
+  // };
 
-  useEffect(() => {
-    revertScoreAndAlgo();
-  }, [selectAlgoBrowsePage]);
+  // useEffect(() => {
+  //   revertScoreAndAlgo();
+  // }, [selectAlgoBrowsePage]);
   const clearAllFilter = async () => {
     dispatch(setSelectAlgoBrowsePage(false));
     dispatch(setArchivedCheckBox(false));
@@ -224,9 +224,10 @@ const LatestFilter = () => {
     if (router?.query?.algo && selectedAlgorithm) {
       algoRevert();
     }
-    revertScore();
+    // revertScore();
   };
   let filteredDate = moment(filteredAsOfDate * 1000).format("YYYY-MM-DD");
+
   return (
     // <div className={styles.selected_filter_area}>
     <div className="flex">
@@ -340,7 +341,7 @@ const LatestFilter = () => {
         ) : (
           ""
         )}
-        {selectedAsOf == "bydate" ? (
+        {selectedAsOf == "bydate" || router?.query?.asof == "bydate" ? (
           <Tag
             className="bg-canLightGrey rounded-full h-8 px-3.5 text-xs text-canBlue leading-4 font-medium border-none flex items-center gap-3"
             data-testid="asOfDate"
