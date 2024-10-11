@@ -38,7 +38,6 @@ import {
   InfoCircleOutlined,
   WarningOutlined,
 } from "@ant-design/icons";
-import threeDotsSvg from "../../../assets/image/threeDots-svg.svg";
 import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 
 function CommanBreadcrumbs({
