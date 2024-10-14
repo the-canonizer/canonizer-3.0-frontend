@@ -770,18 +770,6 @@ function CommanBreadcrumbs({
     router.push(link);
   };
 
-  //   const updateCurrentRecord = () => {
-  //     router.push(`/manage/${historyOf}/${updateId}`);
-  //   };
-
-  // const { bread_crumb, topic_name } = breadCrumbRes;
-
-  //   const topicNum = breadCrumbRes?.bread_crumb?.at(0)?.topic_num;
-  //   const campNum = breadCrumbRes?.bread_crumb?.at(0)?.camp_num;
-  //   const campName = breadCrumbRes?.bread_crumb?.at(0)?.camp_name;
-  //   const formattedTopicName = breadCrumbRes?.topic_name.split(" ").join("-");
-  //   const href = `/topic/${topicNum}-${formattedTopicName}/${campNum}-${campName}`;
-
   return (
     <>
       <div className="max-md:mx-[-1rem] max-md:shadow-[0px_10px_10px_0px_#0000001A] md:bg-canGrey1_Opacity70 p-[1.5rem] md:rounded-[1.25rem] flex items-center justify-between gap-2 mb-10">
@@ -922,10 +910,6 @@ function CommanBreadcrumbs({
                 </Breadcrumb.Item>
                 <Breadcrumb.Item
                   className="flex items-center gap-1.5"
-
-                  // href={`${topicLink}/${
-                  //   breadCrumbRes?.bread_crumb?.at(-1)?.camp_num
-                  // }-${breadCrumbRes?.bread_crumb?.at(-1)?.camp_name}`}
                 >
                   {campRecord?.in_review_changes > 0 && (
                     <Popover
@@ -1089,48 +1073,6 @@ function CommanBreadcrumbs({
             </Breadcrumb.Item>
           )}
         </Breadcrumb>
-        {/* {!compareMode && !!updateId && (
-          <PrimaryButton
-            size="large"
-            type="primary"
-            className="flex items-center justify-center rounded-[10px] max-lg:hidden gap-3.5 leading-none text-sm ml-auto"
-            onClick={() => updateCurrentRecord()}
-          >
-            Update Current
-            {historyTitle() == "Statement History"
-              ? " Statement"
-              : historyTitle() == "Topic History"
-              ? " Topic"
-              : historyTitle() == "Camp History"
-              ? " Camp"
-              : null}
-            <i className="icon-edit"></i>
-          </PrimaryButton>
-        )} */}
-        {compareMode && (
-          <>
-            <div>
-              <Image
-                src="/images/arrow-bread.svg"
-                alt="svg"
-                className="icon-topic"
-                height={10}
-                width={10}
-              />
-            </div>
-            <div className="flex  items-center gap-1.5">
-              <span className="font-normal text-base text-canBlack whitespace-nowrap">
-                {historyTitle() == "Statement History"
-                  ? "Statement History"
-                  : historyTitle() == "Topic History"
-                  ? "Topic History"
-                  : historyTitle() == "Camp History"
-                  ? "Camp History"
-                  : null}
-              </span>
-            </div>
-          </>
-        )}
         {getCurrentUpdateButton()}
         {!isEventLine && (
           <div className="flex items-center gap-3 shrink-0">
