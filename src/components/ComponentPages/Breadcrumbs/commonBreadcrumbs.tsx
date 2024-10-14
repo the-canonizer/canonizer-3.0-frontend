@@ -39,6 +39,7 @@ import {
   WarningOutlined,
 } from "@ant-design/icons";
 import SecondaryButton from "components/shared/Buttons/SecondaryButton";
+import CustomSkelton from "src/components/common/customSkelton";
 
 function CommanBreadcrumbs({
   payload = null,
@@ -824,32 +825,38 @@ function CommanBreadcrumbs({
 
               <div className="flex items-center gap-1.5">
                 Topic:{" "}
-                {breadCrumbRes && !!topicSubscriptionID && (
-                  <Tooltip
-                    title="You have subscribed to the entire topic."
-                    key="camp_subscribed_icon"
-                  >
-                    <small style={{ alignSelf: "center" }}>
-                      <i className="icon-subscribe text-canBlue"></i>
-                    </small>
-                  </Tooltip>
-                )}
-                <Link
-                  href={`${topicLink}/1-Agreement?${
-                    getQueryParams()?.returnQuery || ""
-                  }`}
-                >
-                  {breadCrumbRes?.topic_name}
-                </Link>
-                {isMobile && (
-                  <Popover
-                    content={content}
-                    title={title}
-                    className="title-popover"
-                    overlayClassName="max-lg:hidden"
-                  >
-                    <InfoCircleOutlined />
-                  </Popover>
+                {loadingIndicator ? (
+                  <CustomSkelton skeltonFor="topicName" bodyCount={1} />
+                ) : (
+                  <>
+                    {breadCrumbRes && !!topicSubscriptionID && (
+                      <Tooltip
+                        title="You have subscribed to the entire topic."
+                        key="camp_subscribed_icon"
+                      >
+                        <small style={{ alignSelf: "center" }}>
+                          <i className="icon-subscribe text-canBlue"></i>
+                        </small>
+                      </Tooltip>
+                    )}
+                    <Link
+                      href={`${topicLink}/1-Agreement?${
+                        getQueryParams()?.returnQuery || ""
+                      }`}
+                    >
+                      {breadCrumbRes?.topic_name}
+                    </Link>
+                    {isMobile && (
+                      <Popover
+                        content={content}
+                        title={title}
+                        className="title-popover"
+                        overlayClassName="max-lg:hidden"
+                      >
+                        <InfoCircleOutlined />
+                      </Popover>
+                    )}
+                  </>
                 )}
               </div>
             </Breadcrumb.Item>
@@ -908,9 +915,7 @@ function CommanBreadcrumbs({
                     <EllipsisOutlined className="!mt-0 !leading-none" />
                   </Button>
                 </Breadcrumb.Item>
-                <Breadcrumb.Item
-                  className="flex items-center gap-1.5"
-                >
+                <Breadcrumb.Item className="flex items-center gap-1.5">
                   {campRecord?.in_review_changes > 0 && (
                     <Popover
                       content={warningText}
@@ -924,33 +929,39 @@ function CommanBreadcrumbs({
 
                   <div className="flex items-center gap-1.5">
                     Camp:{" "}
-                    {breadCrumbRes &&
-                      !!campSubscriptionID &&
-                      !isTopicHistoryPage && (
-                        <Tooltip
-                          title="You have subscribed to this camp."
-                          key="camp_subscribed_icon"
+                    {loadingIndicator ? (
+                      <CustomSkelton skeltonFor="topicName" bodyCount={1} />
+                    ) : (
+                      <>
+                        {breadCrumbRes &&
+                          !!campSubscriptionID &&
+                          !isTopicHistoryPage && (
+                            <Tooltip
+                              title="You have subscribed to this camp."
+                              key="camp_subscribed_icon"
+                            >
+                              <small style={{ alignSelf: "center" }}>
+                                <i className="icon-subscribe text-canBlue"></i>
+                              </small>
+                            </Tooltip>
+                          )}
+                        <Link
+                          href={`${topicLink}/${
+                            breadCrumbRes?.bread_crumb?.at(-1)?.camp_num
+                          }-${breadCrumbRes?.bread_crumb?.at(-1)?.camp_name}`}
                         >
-                          <small style={{ alignSelf: "center" }}>
-                            <i className="icon-subscribe text-canBlue"></i>
-                          </small>
-                        </Tooltip>
-                      )}
-                    <Link
-                      href={`${topicLink}/${
-                        breadCrumbRes?.bread_crumb?.at(-1)?.camp_num
-                      }-${breadCrumbRes?.bread_crumb?.at(-1)?.camp_name}`}
-                    >
-                      {breadCrumbRes?.bread_crumb?.at(-1)?.camp_name}
-                    </Link>
-                    {isMobile && (
-                      <Popover
-                        content={contentForCamp}
-                        title={title2}
-                        overlayClassName="max-lg:hidden"
-                      >
-                        <InfoCircleOutlined />
-                      </Popover>
+                          {breadCrumbRes?.bread_crumb?.at(-1)?.camp_name}
+                        </Link>
+                        {isMobile && (
+                          <Popover
+                            content={contentForCamp}
+                            title={title2}
+                            overlayClassName="max-lg:hidden"
+                          >
+                            <InfoCircleOutlined />
+                          </Popover>
+                        )}
+                      </>
                     )}
                   </div>
                 </Breadcrumb.Item>
@@ -977,31 +988,40 @@ function CommanBreadcrumbs({
 
                         <div className="flex items-center gap-1.5">
                           Camp:{" "}
-                          {breadCrumbRes &&
-                            !!campSubscriptionID &&
-                            !isTopicHistoryPage && (
-                              <Tooltip
-                                title="You have subscribed to this camp."
-                                key="camp_subscribed_icon"
+                          {loadingIndicator ? (
+                            <CustomSkelton
+                              skeltonFor="topicName"
+                              bodyCount={1}
+                            />
+                          ) : (
+                            <>
+                              {breadCrumbRes &&
+                                !!campSubscriptionID &&
+                                !isTopicHistoryPage && (
+                                  <Tooltip
+                                    title="You have subscribed to this camp."
+                                    key="camp_subscribed_icon"
+                                  >
+                                    <small style={{ alignSelf: "center" }}>
+                                      <i className="icon-subscribe text-canBlue"></i>
+                                    </small>
+                                  </Tooltip>
+                                )}
+                              <Link
+                                href={`${topicLink}/${camp?.camp_num}-${camp?.camp_name}`}
                               >
-                                <small style={{ alignSelf: "center" }}>
-                                  <i className="icon-subscribe text-canBlue"></i>
-                                </small>
-                              </Tooltip>
-                            )}
-                          <Link
-                            href={`${topicLink}/${camp?.camp_num}-${camp?.camp_name}`}
-                          >
-                            {camp?.camp_name}
-                          </Link>
-                          {isMobile && (
-                            <Popover
-                              content={contentForCamp}
-                              title={title2}
-                              overlayClassName="max-lg:hidden"
-                            >
-                              <InfoCircleOutlined />
-                            </Popover>
+                                {camp?.camp_name}
+                              </Link>
+                              {isMobile && (
+                                <Popover
+                                  content={contentForCamp}
+                                  title={title2}
+                                  overlayClassName="max-lg:hidden"
+                                >
+                                  <InfoCircleOutlined />
+                                </Popover>
+                              )}
+                            </>
                           )}
                         </div>
                       </Breadcrumb.Item>
@@ -1010,23 +1030,29 @@ function CommanBreadcrumbs({
                         className="flex items-center gap-1.5"
                         key={index}
                       >
-                        {breadCrumbRes &&
-                          !!campSubscriptionID &&
-                          !isTopicHistoryPage && (
-                            <Tooltip
-                              title="You have subscribed to this camp."
-                              key="camp_subscribed_icon"
+                        {loadingIndicator ? (
+                          <CustomSkelton skeltonFor="topicName" bodyCount={1} />
+                        ) : (
+                          <>
+                            {breadCrumbRes &&
+                              !!campSubscriptionID &&
+                              !isTopicHistoryPage && (
+                                <Tooltip
+                                  title="You have subscribed to this camp."
+                                  key="camp_subscribed_icon"
+                                >
+                                  <small style={{ alignSelf: "center" }}>
+                                    <i className="icon-subscribe text-canBlue"></i>
+                                  </small>
+                                </Tooltip>
+                              )}
+                            <Link
+                              href={`${topicLink}/${camp.camp_num}-${camp.camp_name}`}
                             >
-                              <small style={{ alignSelf: "center" }}>
-                                <i className="icon-subscribe text-canBlue"></i>
-                              </small>
-                            </Tooltip>
-                          )}
-                        <Link
-                          href={`${topicLink}/${camp.camp_num}-${camp.camp_name}`}
-                        >
-                          {camp?.camp_name}
-                        </Link>
+                              {camp?.camp_name}
+                            </Link>
+                          </>
+                        )}
                       </Breadcrumb.Item>
                     )}
                   </>
