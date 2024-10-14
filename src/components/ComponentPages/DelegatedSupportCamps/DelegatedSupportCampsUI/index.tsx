@@ -37,6 +37,7 @@ export default function DelegatedSupportCampsUI({
   const [displayList, setDisplayList] = useState([]);
   const limit = delegatedSupportCampsList.length;
   const [search, setSearch] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     pageChange(1, 5);
@@ -44,13 +45,14 @@ export default function DelegatedSupportCampsUI({
   }, [delegatedSupportCampsList]);
 
   const pageChange = (pageNumber, pageSize) => {
+    setCurrentPage(pageNumber);
     const startingPosition = (pageNumber - 1) * pageSize;
     const endingPosition = startingPosition + pageSize;
     setDisplayList(
       delegatedSupportCampsList?.slice(startingPosition, endingPosition)
     );
   };
-
+  const pageSize = 5;
   const columns = [
     {
       title: "Sr.",
@@ -58,7 +60,8 @@ export default function DelegatedSupportCampsUI({
       key: "sr",
       render: (_text, _record, index) => (
         <span className="text-sm bg-canGrey2 rounded-full h-5 w-6 flex items-center justify-center">
-          {index + 1}
+          {/* Calculate Sr. based on the current page */}
+          {index + 1 + (currentPage - 1) * pageSize}
         </span>
       ),
     },
@@ -80,7 +83,10 @@ export default function DelegatedSupportCampsUI({
       key: "camps",
       render: (camps, _record) =>
         camps.slice(0, limit).map((camp, i) => (
-          <p key={camp.camp_num} className="max-w-[250px] line-clamp-1">
+          <p
+            key={camp.camp_num}
+            className="max-w-[250px] w-full line-clamp-3 break-words gap-1 flex items-center justify-start"
+          >
             {camp.support_order}.{" "}
             <Link href={camp.camp_link}>
               <a className="text-sm font-medium text-canBlue underline">

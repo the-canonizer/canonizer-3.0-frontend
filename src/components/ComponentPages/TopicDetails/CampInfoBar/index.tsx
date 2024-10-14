@@ -502,7 +502,11 @@ const TimelineInfoBar = ({
     "-"
   )}`;
 
-  const campHref= `/camp/history/${topicRecord?.topic_num}-${replaceSpecialCharacters(topicRecord?.topic_name, "-")}/${campRecord?.camp_num}-${replaceSpecialCharacters(campRecord?.camp_name, "-")}`
+  const campHref = `/camp/history/${
+    topicRecord?.topic_num
+  }-${replaceSpecialCharacters(topicRecord?.topic_name, "-")}/${
+    campRecord?.camp_num
+  }-${replaceSpecialCharacters(campRecord?.camp_name, "-")}`;
 
   const contentForCamp = (
     <div className="popoverParent">
@@ -608,7 +612,6 @@ const TimelineInfoBar = ({
           </span>
           {campRecord?.camp_leader_nick_name ? (
             <Link
-              className="flex flex-wrap"
               href={{
                 pathname: `/user/supports/${campRecord?.camp_leader_nick_id}`,
                 query: {
@@ -616,7 +619,9 @@ const TimelineInfoBar = ({
                 },
               }}
             >
-              {campRecord?.camp_leader_nick_name}
+              <a className="flex flex-wrap !text-canBlue hover:!text-canHoverBlue">
+                {campRecord?.camp_leader_nick_name}
+              </a>
             </Link>
           ) : (
             "No"
