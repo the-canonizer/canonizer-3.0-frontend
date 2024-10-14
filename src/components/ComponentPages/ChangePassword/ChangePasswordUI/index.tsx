@@ -195,9 +195,9 @@ function ChangePasswordUI({
           </Col>
         </Row>
         <Form.Item>
-          <div className="flex items-center w-full justify-center gap-6 my-5">
+          <div className="flex items-center w-full flex-wrap justify-center gap-6 my-5">
             <SecondaryButton
-              className="flex gap-2.5 items-center justify-center h-auto py-2 w-3/12"
+              className="flex gap-2.5 items-center justify-center h-auto py-2 lg:w-3/12"
               onClick={() => {
                 form.resetFields();
                 setCurrentPassWord("");
@@ -212,7 +212,7 @@ function ChangePasswordUI({
               htmlType="submit"
               data-testid="submitButton"
               tabIndex={12}
-              className="flex gap-2.5 items-center justify-center h-auto py-2 w-3/12"
+              className="flex gap-2.5 items-center justify-center h-auto py-2 lg:w-3/12"
             >
               Save Changes <SaveOutlined />
             </PrimaryButton>

@@ -83,7 +83,10 @@ export default function DelegatedSupportCampsUI({
       key: "camps",
       render: (camps, _record) =>
         camps.slice(0, limit).map((camp, i) => (
-          <p key={camp.camp_num} className="max-w-[250px] line-clamp-1">
+          <p
+            key={camp.camp_num}
+            className="max-w-[250px] w-full line-clamp-3 break-words gap-1 flex items-center justify-start"
+          >
             {camp.support_order}.{" "}
             <Link href={camp.camp_link}>
               <a className="text-sm font-medium text-canBlue underline">
