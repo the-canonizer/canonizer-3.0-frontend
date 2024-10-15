@@ -422,83 +422,17 @@ export default function DirectSupportedCampsUI({
                   <span className="uppercase text-sm font-medium text-black text-opacity-85 mb-2 flex">
                     Supported Camps -
                   </span>
-                  <DraggableArea<Tag>
-                    tags={record.camps}
-                    render={({ tag, index }) => {
-                      // const { tag } = props;
 
-                      return (
-                        <div
-                          className={`tag ${tag.dis ? "tags_disable" : ""} ${
-                            record.camps.length > 1 ? "mb-2.5" : ""
-                          } flex w-full items-center`}
-                        >
-                          <Button
-                            id="campsBtn"
-                            className="bg-canLightGrey rounded-full border-none flex items-center gap-2.5"
-                            disabled={tag.dis}
-                          >
-                            <div className={styles.btndiv}>
-                              {/* Use index + 1 here */}
-                              <span className="count">{index + 1}. </span>
-                              <Link href={tag.camp_link}>
-                                <a
-                                  className="text-sm text-canBlack font-semibold"
-                                  draggable="false"
-                                  onClick={(e) => e.preventDefault()}
-                                  onKeyDown={(e) => {
-                                    if (e.key === "Enter" || e.key === " ") {
-                                      e.preventDefault();
-                                      // Add your click handling logic here
-                                    }
-                                  }}
-                                  onTouchStart={(e) => e.preventDefault()} // Optional: if you need to support touch events
-                                >
-                                  {tag.camp_name.length > 30
-                                    ? `${tag.camp_name.substring(0, 30)}...`
-                                    : tag.camp_name}
-                                </a>
-                              </Link>
-                            </div>
-                            <div
-                              className="flex items-center"
-                              onClick={() => {
-                                handleClose(tag, record.topic_num, record, []);
-                                setValData(tag);
-                                setRevertBack([]);
-                                setActiveTopic(record.topic_num);
-                              }}
-                              onKeyDown={(e) => {
-                                if (e.key === "Enter" || e.key === " ") {
-                                  e.preventDefault();
-                                  handleClose(
-                                    tag,
-                                    record.topic_num,
-                                    record,
-                                    []
-                                  );
-                                  setValData(tag);
-                                  setRevertBack([]);
-                                  setActiveTopic(record.topic_num);
-                                }
-                              }}
-                              onTouchStart={(e) => e.preventDefault()}
-                            >
-                              <Image
-                                className="cursor-pointer"
-                                src="/images/minus-user-icon.svg"
-                                width={24}
-                                height={24}
-                                alt=""
-                              />
-                            </div>
-                          </Button>
-                        </div>
-                      );
-                    }}
-                    onChange={(tags) => {
-                      tagsOrder(record.topic_num, record, tags);
-                      setShowSaveChanges(true);
+                  <DraggableTags
+                    tags={record?.camps}
+                    record={record}
+                    updateTagsOrder={tagsOrder}
+                    setReOrderedTags={setReOrderedTags}
+                    setActiveTopic={(record)=>{setActiveTopic(record.topic_num)}}
+                    onClose={(tag) => {
+                      handleClose(tag, record.topic_num, record, []);
+                      setValData(tag);
+                      setRevertBack([]);
                       setActiveTopic(record.topic_num);
                     }}
                   />
