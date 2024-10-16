@@ -3,6 +3,7 @@ import { Form, Row, Col, Typography } from "antd";
 import {
   CloseOutlined,
   FileTextOutlined,
+  FlagOutlined,
   SaveOutlined,
   UserOutlined,
 } from "@ant-design/icons";
@@ -12,7 +13,6 @@ import { changeSlashToArrow } from "src/utils/generalUtility";
 import Inputs from "components/shared/FormInputs";
 import SelectInputs from "components/shared/FormInputs/select";
 import AlignIcon from "./alignIcon";
-import StructureIcon from "./structureIcon";
 import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 import PrimaryButton from "components/shared/Buttons/PrimariButton";
 import CommonCards from "components/shared/Card";
@@ -187,12 +187,7 @@ const CreateTopicFromUI = ({
                 optionFilterProp="children"
                 inputClassName="border-0"
                 rules={namespaceRule}
-                prefix={
-                  <StructureIcon
-                    className="flex items-center justify-center px-2"
-                    fill="#242B37"
-                  />
-                }
+                prefix={<FlagOutlined className="px-3 text-canBlack" />}
                 defaultValue={getNameSpacesValue()}
                 initialValue={getNameSpacesValue()}
                 value={form.getFieldValue("namespace")}

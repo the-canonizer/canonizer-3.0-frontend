@@ -38,19 +38,32 @@ export default function DelegatedSupportCampsUI({
   const limit = delegatedSupportCampsList.length;
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [filteredList, setFilteredList] = useState(delegatedSupportCampsList);
 
   useEffect(() => {
-    pageChange(1, 5);
+    pageChange(1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [delegatedSupportCampsList]);
 
-  const pageChange = (pageNumber, pageSize) => {
-    setCurrentPage(pageNumber);
-    const startingPosition = (pageNumber - 1) * pageSize;
+  // const pageChange = (pageNumber, pageSize) => {
+  //   setCurrentPage(pageNumber);
+  //   const startingPosition = (pageNumber - 1) * pageSize;
+  //   const endingPosition = startingPosition + pageSize;
+  //   setDisplayList(
+  //     delegatedSupportCampsList?.slice(startingPosition, endingPosition)
+  //   );
+  // };
+
+  useEffect(() => {
+    const startingPosition = (currentPage - 1) * pageSize;
     const endingPosition = startingPosition + pageSize;
-    setDisplayList(
-      delegatedSupportCampsList?.slice(startingPosition, endingPosition)
-    );
+
+    setDisplayList(filteredList.slice(startingPosition, endingPosition));
+  }, [filteredList, currentPage]);
+
+  // Page change handler
+  const pageChange = (pageNumber) => {
+    setCurrentPage(pageNumber); // Update current page
   };
   const pageSize = 5;
   const columns = [
@@ -70,9 +83,9 @@ export default function DelegatedSupportCampsUI({
       dataIndex: "title",
       key: "title",
       render: (text, record) => (
-        <div className="line-clamp-1 max-w-[300px]">
+        <div className="max-w-[300px]">
           <Link href={record.title_link}>
-            <a className="text-sm font-medium text-canBlack">{text}</a>
+            <a className="text-sm font-medium text-canBlack">{text.length >30?text.substring(0,20) + "...":text}</a>
           </Link>
         </div>
       ),
@@ -83,11 +96,16 @@ export default function DelegatedSupportCampsUI({
       key: "camps",
       render: (camps, _record) =>
         camps.slice(0, limit).map((camp, i) => (
-          <p key={camp.camp_num} className="max-w-[250px] line-clamp-1">
+          <p
+            key={camp.camp_num}
+            className="max-w-[250px] w-full line-clamp-3 break-words gap-1 flex items-center justify-start"
+          >
             {camp.support_order}.{" "}
             <Link href={camp.camp_link}>
               <a className="text-sm font-medium text-canBlue underline">
-                {camp.camp_name}
+                {camp.camp_name.length > 30
+                  ? camp.camp_name.substring(0, 20) + "..."
+                  : camp.camp_name}
               </a>
             </Link>
           </p>
@@ -195,10 +213,21 @@ export default function DelegatedSupportCampsUI({
     }
   }, [search, displayList, delegatedSupportCampsList]);
 
+  // useEffect(() => {
+  //   pageChange(1);
+  // }, [delegatedSupportCampsList]);
   useEffect(() => {
-    pageChange(1, 5);
-  }, [delegatedSupportCampsList]);
-
+    // Update the filtered list based on the search
+    if (search) {
+      const filtered = delegatedSupportCampsList.filter((item) =>
+        item.title.toLowerCase().includes(search.toLowerCase())
+      );
+      setFilteredList(filtered);
+      setCurrentPage(1); // Reset to the first page when searching
+    } else {
+      setFilteredList(delegatedSupportCampsList);
+    }
+  }, [search, delegatedSupportCampsList]);
   return (
     <div>
       <div className="hidden lg:flex w-full">
@@ -411,6 +440,16 @@ export default function DelegatedSupportCampsUI({
         ) : (
           <div className="w-full">
             <div className="w-full flex justify-end mb-5">
+              <div className="mr-2">
+                <PrimaryButton
+                  onClick={() => {
+                    setSearch("");
+                  }}
+                >
+                  Reset
+                </PrimaryButton>
+              </div>
+
               <Input
                 suffix={
                   <Image
@@ -462,7 +501,11 @@ export default function DelegatedSupportCampsUI({
                               {data.camps?.slice(0, limit).map((val, i) => (
                                 <CurrentSupportedCamps
                                   key={i}
-                                  value={val.camp_name}
+                                  value={
+                                    val.camp_name.length > 30
+                                      ? val.camp_name.substring(0, 30) + "..."
+                                      : val.camp_name
+                                  }
                                   id_data={val.support_order + "."}
                                   camp_link={val.camp_link}
                                 />

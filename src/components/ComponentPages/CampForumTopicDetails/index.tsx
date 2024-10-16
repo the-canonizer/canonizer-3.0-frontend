@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
 import { Col, Image, Row, Typography } from "antd";
 import { useRouter } from "next/router";
-import { RightOutlined } from "@ant-design/icons";
+import Link from "next/link";
 
 import { latestThread } from "src/network/api/campForumApi";
 import SectionHeading from "../Home/FeaturedTopic/sectionsHeading";
@@ -9,7 +9,6 @@ import SeeMoreLInk from "../Home/FeaturedTopic/seeMoreLink";
 import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 import { covertToTime } from "src/utils/generalUtility";
 import CommonCard from "components/shared/Card";
-import Link from "next/link";
 
 function Campforum() {
   const router = useRouter();
@@ -28,7 +27,7 @@ function Campforum() {
 
   useEffect(() => {
     getThreadList();
-  }, []);
+  }, [router?.query?.camp]);
 
   const onCampForumClick = () => {
     router?.push({

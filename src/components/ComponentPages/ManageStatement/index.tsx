@@ -7,7 +7,7 @@ import {
   FileTextOutlined,
   HomeOutlined,
 } from "@ant-design/icons";
-import OpenAI from "openai";
+// import OpenAI from "openai";
 
 import { getAllUsedNickNames } from "src/network/api/campDetailApi";
 import useAuthentication from "src/hooks/isUserAuthenticated";
@@ -28,17 +28,17 @@ import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 import ManageStatementUI from "./UI";
 import StatementPreview from "./UI/preview";
 import StatementAIPreview from "./UI/aiPreview";
-import { openNotificationWithIcon } from "components/common/notification/notificationBar";
+// import { openNotificationWithIcon } from "components/common/notification/notificationBar";
 
-const systemPropPt = `You are a text converter for a website where people put their opinions on various topics, while writing and posting the content they are given a feature of Improve with AI, Your role is to improve that text accordingly. 
+// const systemPropPt = `You are a text converter for a website where people put their opinions on various topics, while writing and posting the content they are given a feature of Improve with AI, Your role is to improve that text accordingly. 
 
-If the topic suggests a science theme then follow the users leads and convert accordingly, similarly go with the users content theme and magically convert text. Do not lose essence of and meaning behind the user's real intent. Convert text in such a way that it's more readable and bit concise, like a good page from a book, everything well put and organized.`;
+// If the topic suggests a science theme then follow the users leads and convert accordingly, similarly go with the users content theme and magically convert text. Do not lose essence of and meaning behind the user's real intent. Convert text in such a way that it's more readable and bit concise, like a good page from a book, everything well put and organized.`;
 
 function ManageStatements({ isEdit = false }) {
-  const openai = new OpenAI({
-    apiKey: process?.env?.NEXT_PUBLIC_OPENAI_API_KEY || "",
-    dangerouslyAllowBrowser: true,
-  });
+  // const openai = new OpenAI({
+  //   apiKey: process?.env?.NEXT_PUBLIC_OPENAI_API_KEY || "",
+  //   dangerouslyAllowBrowser: true,
+  // });
 
   const router = useRouter();
   const [form] = Form.useForm();
@@ -72,7 +72,7 @@ function ManageStatements({ isEdit = false }) {
 
   const values = Form.useWatch([], form);
   const [isSavingDraft, setIsSavingDraft] = useState(false);
-  const [isGenerating, setIsGenerating] = useState(false);
+  // const [isGenerating, setIsGenerating] = useState(false);
 
   const getEpochTime = () => {
     return Math.floor(Date.now() / 1000);
@@ -756,48 +756,48 @@ function ManageStatements({ isEdit = false }) {
     setIsPopupLoading(false);
   };
 
-  const onImproveClick = async (e, editor) => {
-    e?.preventDefault();
-    setIsGenerating(true);
+  // const onImproveClick = async (e, editor) => {
+  //   e?.preventDefault();
+  //   setIsGenerating(true);
 
-    try {
-      if (!openai || !openai.chat || !openai.chat.completions) {
-        openNotificationWithIcon(
-          "OpenAI API key is not configured or is invalid.",
-          "error"
-        );
-        return;
-      }
+  //   try {
+  //     if (!openai || !openai.chat || !openai.chat.completions) {
+  //       openNotificationWithIcon(
+  //         "OpenAI API key is not configured or is invalid.",
+  //         "error"
+  //       );
+  //       return;
+  //     }
 
-      const completion = await openai.chat.completions.create({
-        model: "gpt-4o-mini",
-        messages: [
-          { role: "system", content: systemPropPt },
-          { role: "user", content: editorState },
-        ],
-      });
+  //     const completion = await openai.chat.completions.create({
+  //       model: "gpt-4o-mini",
+  //       messages: [
+  //         { role: "system", content: systemPropPt },
+  //         { role: "user", content: editorState },
+  //       ],
+  //     });
 
-      const improvedContent = completion?.choices?.[0]?.message;
+  //     const improvedContent = completion?.choices?.[0]?.message;
 
-      if (!improvedContent) {
-        openNotificationWithIcon(
-          "Failed to retrieve content from OpenAI.",
-          "error"
-        );
-        return;
-      }
+  //     if (!improvedContent) {
+  //       openNotificationWithIcon(
+  //         "Failed to retrieve content from OpenAI.",
+  //         "error"
+  //       );
+  //       return;
+  //     }
 
-      console.log("Result:", improvedContent);
+  //     console.log("Result:", improvedContent);
 
-      setIsAIPreviewOpen(true);
-      setImprovedContent(improvedContent);
-    } catch (error) {
-      openNotificationWithIcon(`Error during AI improvement!`, "error");
-      return;
-    } finally {
-      setIsGenerating(false);
-    }
-  };
+  //     setIsAIPreviewOpen(true);
+  //     setImprovedContent(improvedContent);
+  //   } catch (error) {
+  //     openNotificationWithIcon(`Error during AI improvement!`, "error");
+  //     return;
+  //   } finally {
+  //     setIsGenerating(false);
+  //   }
+  // };
 
   const onAiPreveiwClose = (e) => {
     e?.preventDefault();
@@ -882,8 +882,8 @@ function ManageStatements({ isEdit = false }) {
               autoSave={autoSave}
               isAutoSaving={isAutoSaving}
               values={values}
-              onImproveClick={onImproveClick}
-              isGenerating={isGenerating}
+              // onImproveClick={onImproveClick}
+              // isGenerating={isGenerating}
             />
           )}
         </Col>

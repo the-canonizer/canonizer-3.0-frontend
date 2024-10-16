@@ -1,4 +1,4 @@
-import { Form, Row, Col, Typography, Spin } from "antd";
+import { Form, Row, Col, Typography } from "antd";
 import dynamic from "next/dynamic";
 import {
   CloseOutlined,
@@ -7,7 +7,7 @@ import {
   UploadOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { Fragment, useRef } from "react";
+import { useRef } from "react";
 
 import K from "src/constants";
 import messages from "src/messages";
@@ -18,7 +18,7 @@ import PrimaryButton from "components/shared/Buttons/PrimariButton";
 import Inputs from "components/shared/FormInputs";
 import ManageStatementUISkelaton from "./skelaton";
 import CustomSkelton from "components/common/customSkelton";
-import StarIcon from "./starIcon";
+// import StarIcon from "./starIcon";
 
 //Ckeditor
 const Editorckl = dynamic(() => import("components/common/editorck"), {
@@ -79,8 +79,8 @@ function ManageStatementUI({
   autoSave,
   isAutoSaving,
   values,
-  onImproveClick,
-  isGenerating,
+  // onImproveClick,
+  // isGenerating,
 }) {
   const editorRef = useRef(null);
 
@@ -144,23 +144,23 @@ function ManageStatementUI({
               <Form.Item
                 className="mb-2 editorContent [&_.ant-form-item-label>label]:w-full"
                 name="statement"
-                label={
-                  <Fragment>
-                    Statement <span className="required">*</span>
-                    {isGenerating ? (
-                      <Spin className="ml-auto float-end" />
-                    ) : (
-                      <SecondaryButton
-                        className="flex justify-center items-center border-0 p-0 ml-auto float-end !shadow-none hover:!shadow-none !bg-transparent"
-                        type="link"
-                        ghost
-                        onClick={(e) => onImproveClick(e, editorRef)}
-                      >
-                        Improve With Ai <StarIcon className="" />
-                      </SecondaryButton>
-                    )}
-                  </Fragment>
-                }
+                // label={
+                //   <Fragment>
+                //     Statement <span className="required">*</span>
+                //     {isGenerating ? (
+                //       <Spin className="ml-auto float-end" />
+                //     ) : (
+                //       <SecondaryButton
+                //         className="flex justify-center items-center border-0 p-0 ml-auto float-end !shadow-none hover:!shadow-none !bg-transparent"
+                //         type="link"
+                //         ghost
+                //         onClick={(e) => onImproveClick(e, editorRef)}
+                //       >
+                //         Improve With Ai <StarIcon className="" />
+                //       </SecondaryButton>
+                //     )}
+                //   </Fragment>
+                // }
                 rules={[
                   {
                     required: true,

@@ -37,7 +37,11 @@ const ProfilePrefrences = () => {
   const [filteredTags, setFilteredTags] = useState([]);
   const [selectedCount, setSelectedCount] = useState(0);
   const [profileUserTags, setProfileUserTags] = useState([]);
+  const [userPrifleInfoFirstName, setUserPrifleInfoFirstName] = useState({});
+  const [userPrifleInfolastName, setUserPrifleInfolastName] = useState({});
 
+
+console.log(userPrifleInfoFirstName,userPrifleInfolastName,"userPrifleInfo")
   const [formVerify] = Form.useForm();
 
   const { Option } = Select;
@@ -103,6 +107,8 @@ const ProfilePrefrences = () => {
         let res = await GetUserProfileInfo();
         if (res !== undefined) {
           setProfileUserTags(res?.data?.tags);
+          setUserPrifleInfoFirstName(res?.data?.first_name)
+          setUserPrifleInfolastName(res?.data?.last_name)
         }
       } catch (error) {
         console.error("Error fetching algorithms list:", error);
@@ -222,8 +228,8 @@ const ProfilePrefrences = () => {
     values.birthday_bit = isPublicOrPrivate(publicPrivateArray.birthday);
     values.city_bit = isPublicOrPrivate(publicPrivateArray.city);
     values.language = selectedLanguage;
-    values.first_name = globalUserProfileData;
-    values.last_name = globalUserProfileDataLastName;
+    values.first_name = userPrifleInfoFirstName;
+    values.last_name = userPrifleInfolastName;
     values.default_algo = selectedAlgorithmKey;
     values.birthday = birthdayForProfileInfo;
     values.mobile_carrier = formVerify.getFieldValue(
@@ -250,9 +256,9 @@ const ProfilePrefrences = () => {
     let res = await UpdateUserProfileInfo(values);
     if (res && res.status_code === 200) {
       // setshowSelectedLanguage(res?.data?.language)
-      if (!isInitialRender) {
-        message.success(res.message);
-      }
+      message.success(res.message);
+      // if (!isInitialRender) {
+      // }
       if (values?.default_algo) {
         dispatch(
           setFilterCanonizedTopics({
