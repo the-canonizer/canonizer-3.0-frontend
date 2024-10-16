@@ -83,9 +83,9 @@ export default function DelegatedSupportCampsUI({
       dataIndex: "title",
       key: "title",
       render: (text, record) => (
-        <div className="line-clamp-1 max-w-[300px]">
+        <div className="max-w-[300px]">
           <Link href={record.title_link}>
-            <a className="text-sm font-medium text-canBlack">{text}</a>
+            <a className="text-sm font-medium text-canBlack">{text.length >30?text.substring(0,20) + "...":text}</a>
           </Link>
         </div>
       ),
@@ -103,7 +103,9 @@ export default function DelegatedSupportCampsUI({
             {camp.support_order}.{" "}
             <Link href={camp.camp_link}>
               <a className="text-sm font-medium text-canBlue underline">
-                {camp.camp_name}
+                {camp.camp_name.length > 30
+                  ? camp.camp_name.substring(0, 20) + "..."
+                  : camp.camp_name}
               </a>
             </Link>
           </p>
@@ -499,7 +501,11 @@ export default function DelegatedSupportCampsUI({
                               {data.camps?.slice(0, limit).map((val, i) => (
                                 <CurrentSupportedCamps
                                   key={i}
-                                  value={val.camp_name}
+                                  value={
+                                    val.camp_name.length > 30
+                                      ? val.camp_name.substring(0, 30) + "..."
+                                      : val.camp_name
+                                  }
                                   id_data={val.support_order + "."}
                                   camp_link={val.camp_link}
                                 />
