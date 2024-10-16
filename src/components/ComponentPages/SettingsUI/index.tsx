@@ -76,7 +76,7 @@ const SettingsUI = () => {
     delegate_supported_camp: <DelegatedSupportCamps search={search} />,
     supported_camps: (
       <div className={styles.supported_camps}>
-        <div className={styles.search_users}>
+        {/* <div className={styles.search_users}>
           <div className={styles.search_box}>
             <div className={styles.search01}>
               <Input
@@ -98,7 +98,7 @@ const SettingsUI = () => {
               Reset
             </Button>
           </div>
-        </div>
+        </div> */}
 
         <Tabs onChange={callback} type="card" className={styles.supptab}>
           <TabPane tab="Direct Supported Camps" key="1">

@@ -256,9 +256,9 @@ console.log(userPrifleInfoFirstName,userPrifleInfolastName,"userPrifleInfo")
     let res = await UpdateUserProfileInfo(values);
     if (res && res.status_code === 200) {
       // setshowSelectedLanguage(res?.data?.language)
-      if (!isInitialRender) {
-        message.success(res.message);
-      }
+      message.success(res.message);
+      // if (!isInitialRender) {
+      // }
       if (values?.default_algo) {
         dispatch(
           setFilterCanonizedTopics({
