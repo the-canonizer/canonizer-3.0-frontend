@@ -403,7 +403,7 @@ export default function DirectSupportedCampsUI({
                   <div className="flex gap-2.5 justify-between items-center w-full">
                     <Link href={record.title_link}>
                       <a className="text-lg font-semibold text-canBlack">
-                        {record.title}
+                        {record.title.length >50 ? record.title.substring(0,30) + "...":record.title}
                       </a>
                     </Link>
                     <Image
