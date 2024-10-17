@@ -217,7 +217,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
           asof: "default",
         })
       );
-    };
+    }
   }, [router.query.asOf]); 
  
   async function getTopicActivityLogCall() {
