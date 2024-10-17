@@ -167,7 +167,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
           as_of_date:
             asof == "default" || asof == "review"
               ? Date.now() / 1000
-              : router?.query?.asofdate?moment.utc((+router?.query?.asofdate) * 1000).format("DD-MM-YYYY H:mm:ss"):moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
+              : router?.query?.asofdate ? moment.utc((+router?.query?.asofdate) * 1000).format("DD-MM-YYYY H:mm:ss") : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
         };
 
         if (!(algorithms?.length > 0)) await getCanonizedAlgorithmsApi();
