@@ -211,6 +211,14 @@ const TopicDetails = ({ serverSideCall }: any) => {
         })
       );
     }
+    if(!router?.query?.asof) {
+      dispatch(
+        setFilterCanonizedTopics({
+          asofdate: Date.now() / 1000,
+          asof: "default",
+        })
+      );
+    };
   }, [router.query.asOf]); 
  
   async function getTopicActivityLogCall() {
