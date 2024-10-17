@@ -741,6 +741,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
                               current > moment(current_date_filter).endOf("day")
                             }
                             id="date_input"
+                            allowClear={false}
                           />
                         </div>
                       </div>
