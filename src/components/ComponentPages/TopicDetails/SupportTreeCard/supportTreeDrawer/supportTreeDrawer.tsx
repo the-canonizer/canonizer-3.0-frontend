@@ -786,11 +786,6 @@ function SupportTreeDrawer({
               <Col span={24}>
                 <Form.Item
                   label="Reason for removing support"
-                  rules={[
-                    {
-                      required: true,
-                    },
-                  ]}
                   name="reason"
                 >
                   <div className="thm-select">
