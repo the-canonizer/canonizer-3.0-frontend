@@ -355,9 +355,44 @@ export default function DirectSupportedCampsUI({
 
   if (hasDirectSupportedCampsForMob) {
     if (hasFilteredArrayForMob) {
+      const startIndex = (currentPage - 1) * 5; // 5 is the page size
+      const endIndex = startIndex + 5;
+
+      // Slice the array to get the records for the current page
+      const paginatedArray = filteredArrayForMob.slice(startIndex, endIndex);
       displayContentForMob = (
         <>
-          {filteredArrayForMob.map((record) => (
+          <div className="w-full flex justify-end mb-5">
+            <div className="mr-2">
+              <PrimaryButton
+                onClick={() => {
+                  setSearch("");
+                }}
+              >
+                Reset
+              </PrimaryButton>
+            </div>
+            <Input
+              suffix={
+                <Image
+                  src="/images/search-icon.svg"
+                  width={15}
+                  height={15}
+                  alt=""
+                />
+              }
+              data-testid="settingSearch"
+              value={search}
+              placeholder="Search via topic name"
+              type="text"
+              name="search"
+              className="!h-10 rounded-lg border border-canGrey2 text-sm font-normal lg:w-auto w-full [&_.ant-input-affix-wrapper]:hover:!border-canGrey2 focus:!border-canGrey2 focus:shadow-none "
+              onChange={(e) => {
+                setSearch(e.target.value);
+              }}
+            />
+          </div>
+          {paginatedArray.map((record) => (
             <Card key={record.topic_num} className="mb-5 bg-white shadow-none ">
               <div className=" !border !border-canGrey2  rounded-lg ">
                 <div className="flex justify-start items-start flex-col gap-1 border-b border-canGrey2 p-5">
@@ -368,7 +403,7 @@ export default function DirectSupportedCampsUI({
                   <div className="flex gap-2.5 justify-between items-center w-full">
                     <Link href={record.title_link}>
                       <a className="text-lg font-semibold text-canBlack">
-                        {record.title}
+                        {record.title.length >50 ? record.title.substring(0,30) + "...":record.title}
                       </a>
                     </Link>
                     <Image
@@ -389,8 +424,8 @@ export default function DirectSupportedCampsUI({
                   </span>
                   <DraggableArea<Tag>
                     tags={record.camps}
-                    render={(props) => {
-                      const { tag } = props;
+                    render={({ tag, index }) => {
+                      // const { tag } = props;
 
                       return (
                         <div
@@ -404,7 +439,8 @@ export default function DirectSupportedCampsUI({
                             disabled={tag.dis}
                           >
                             <div className={styles.btndiv}>
-                              <span className="count">{tag.id}. </span>
+                              {/* Use index + 1 here */}
+                              <span className="count">{index + 1}. </span>
                               <Link href={tag.camp_link}>
                                 <a
                                   className="text-sm text-canBlack font-semibold"
@@ -418,7 +454,9 @@ export default function DirectSupportedCampsUI({
                                   }}
                                   onTouchStart={(e) => e.preventDefault()} // Optional: if you need to support touch events
                                 >
-                                  {tag.camp_name}
+                                  {tag.camp_name.length > 30
+                                    ? `${tag.camp_name.substring(0, 30)}...`
+                                    : tag.camp_name}
                                 </a>
                               </Link>
                             </div>
@@ -497,7 +535,7 @@ export default function DirectSupportedCampsUI({
 
           <Pagination
             hideOnSinglePage={true}
-            total={directSupportedCampsList.length}
+            total={filteredArrayForMob.length}
             pageSize={5}
             current={currentPage}
             onChange={pageChange}

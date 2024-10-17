@@ -47,10 +47,21 @@ const SettingsUI = () => {
   const [selectedValue, setSelectedValue] = useState("");
   const [selectedTab, setSelectedTab] = useState("Direct_Supported_Camps");
   const [getDataFromUserProfile, setGetDataFromUserProfile] = useState(null);
+  const [openKeys, setOpenKeys] = useState([]);
 
   const onTabChange = (key) => {
     setActiveTabKey(key);
     router?.push("/settings?tab=" + key);
+  };
+
+  const onOpenChange = (keys) => {
+    // Handle the opening and closing of submenus
+    const latestOpenKey = keys.find((key) => openKeys.indexOf(key) === -1);
+    if (latestOpenKey) {
+      setOpenKeys([latestOpenKey]);
+    } else {
+      setOpenKeys([]);
+    }
   };
 
   const router = useRouter();
@@ -65,7 +76,7 @@ const SettingsUI = () => {
     delegate_supported_camp: <DelegatedSupportCamps search={search} />,
     supported_camps: (
       <div className={styles.supported_camps}>
-        <div className={styles.search_users}>
+        {/* <div className={styles.search_users}>
           <div className={styles.search_box}>
             <div className={styles.search01}>
               <Input
@@ -87,7 +98,7 @@ const SettingsUI = () => {
               Reset
             </Button>
           </div>
-        </div>
+        </div> */}
 
         <Tabs onChange={callback} type="card" className={styles.supptab}>
           <TabPane tab="Direct Supported Camps" key="1">
@@ -355,13 +366,8 @@ const SettingsUI = () => {
               mode="inline"
               items={items}
               className="custom-menu"
-              // defaultSelectedKeys={["1"]}
-              // defaultOpenKeys={["sub1"]}
-              // style={{ height: "100%", borderRight: 0 }}
-              // activeKey=""
-              // defaultActiveFirst
-              // className="custom-menu w-full px-0 [&_.ant-menu]:!bg-transparent [&_.ant-menu-item]:bg-transparent [&_.ant-menu-item-selected]:!font-semibold [&_.ant-menu-item-selected]:!bg-canBlue
-              // [&_.ant-menu-item-selected]:!bg-opacity-20 [&_.ant-menu-item-selected]:after:!hidden relative [&_.ant-menu-item]:after:!right-auto [&_.ant-menu-item]:after:!left-2 [&_.ant-menu-item]:after:content-[''] [&_.ant-menu-item]:!py-0 [&_.ant-menu-item]:!px-0 [&_.ant-menu-submenu-title]:!py-0 [&_.ant-menu-item]:!my-2 [&_.ant-menu-item]:first:!mt-0 [&_.ant-menu-submenu]:!my-2 [&_.ant-menu-submenu-title]:!px-0 [&_.ant-menu-item]:!rounded-lg [&_.ant-menu-sub>li]:!bg-transparent"
+              openKeys={openKeys}
+              onOpenChange={onOpenChange}
             />
           </Sider>
         </div>
@@ -572,9 +578,9 @@ const SettingsUI = () => {
                       />
                     </div>
                     {showSupportedCampsTab &&
-                      (router?.asPath ==
+                      (router?.asPath ===
                         "/settings?tab=direct_supported_camps" ||
-                        router?.asPath ==
+                        router?.asPath ===
                           "/settings?tab=delegate_supported_camp") && (
                         <div className="flex justify-between border-b border-canGrey2 mb-5 lg:hidden">
                           <Radio.Group
