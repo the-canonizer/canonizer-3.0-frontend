@@ -77,7 +77,7 @@ function SocialAuthVerification() {
           <IconWrapper
             socialLinks={socialLinks}
             onUnlinkClick={onUnlinkClick}
-            onLinkClick={onLinkClick}
+            onLinkClick={()=>{onLinkClick("google")}}
             provider=" "
             icon={
               <Image
@@ -92,7 +92,7 @@ function SocialAuthVerification() {
           <IconWrapper
             socialLinks={socialLinks}
             onUnlinkClick={onUnlinkClick}
-            onLinkClick={onLinkClick}
+            onLinkClick={()=>{onLinkClick("facebook")}}
             provider=""
             icon={
               <Image
@@ -114,7 +114,7 @@ function SocialAuthVerification() {
           <IconWrapper
             socialLinks={socialLinks}
             onUnlinkClick={onUnlinkClick}
-            onLinkClick={onLinkClick}
+            onLinkClick={()=>{onLinkClick("linkedin")}}
             provider=""
             icon={
               <Image
@@ -128,7 +128,7 @@ function SocialAuthVerification() {
           <IconWrapper
             socialLinks={socialLinks}
             onUnlinkClick={onUnlinkClick}
-            onLinkClick={onLinkClick}
+            onLinkClick={()=>{onLinkClick("github")}}
             provider=""
             icon={
               <Image
