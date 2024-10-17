@@ -483,7 +483,7 @@ export default function DelegatedSupportCampsUI({
                       title={
                         <CardTitle
                           title_link={data.title_link}
-                          value={data.title}
+                          value={data.title.length > 50?data.title.substring(0, 50) + "...":data.title }
                         />
                       }
                       style={{ width: 360, marginBottom: 16 }}
