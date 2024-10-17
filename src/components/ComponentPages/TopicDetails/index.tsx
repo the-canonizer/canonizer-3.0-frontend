@@ -210,6 +210,14 @@ const TopicDetails = ({ serverSideCall }: any) => {
         })
       );
     }
+    if(!router?.query?.asOf) {
+      dispatch(
+        setFilterCanonizedTopics({
+          asofdate: Date.now() / 1000,
+          asof: "default",
+        })
+      );
+    };
   }, [router.query.asOf]); 
  
   async function getTopicActivityLogCall() {
