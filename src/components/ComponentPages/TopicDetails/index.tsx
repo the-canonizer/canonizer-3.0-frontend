@@ -210,7 +210,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
         })
       );
     }
-    if(!router?.query?.asOf) {
+    if(!router?.query?.asof) {
       dispatch(
         setFilterCanonizedTopics({
           asofdate: Date.now() / 1000,
