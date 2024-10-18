@@ -167,7 +167,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
           as_of_date:
             asof == "default" || asof == "review"
               ? Date.now() / 1000
-              : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
+              : router?.query?.asofdate ? moment.utc((+router?.query?.asofdate) * 1000).format("DD-MM-YYYY H:mm:ss") : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
         };
 
         if (!(algorithms?.length > 0)) await getCanonizedAlgorithmsApi();
@@ -203,6 +203,14 @@ const TopicDetails = ({ serverSideCall }: any) => {
   useEffect(() => {
     if (router?.query?.asOf && router.query.asOf !== "bydate" || router.query.asOf == undefined ) {
       dispatch(setViewThisVersion(false));
+      dispatch(
+        setFilterCanonizedTopics({
+          asofdate: router?.query?.asofdate ? +router?.query?.asofdate: (Date.now() / 1000),
+          asof: router?.query?.asofdate?"bydate":"default",
+        })
+      );
+    }
+    if(!router?.query?.asof) {
       dispatch(
         setFilterCanonizedTopics({
           asofdate: Date.now() / 1000,
