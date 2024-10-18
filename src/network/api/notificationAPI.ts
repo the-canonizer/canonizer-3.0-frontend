@@ -28,6 +28,7 @@ export const getLists = async (
     }
     return res;
   } catch (error) {
+    store.dispatch(setHeaderData({ count: 0, list: [] }));
     return error;
   }
 };
@@ -44,7 +45,7 @@ export const getGravatarPicApi = async (email) => {
 
 export const getNotificationsList = async (
   page: number = 1,
-  per_page: number = 50,
+  per_page: number = -1,
   is_seen: number = 0,
   loginToken = null
 ) => {
@@ -56,19 +57,12 @@ export const getNotificationsList = async (
 
     if (res && res?.status_code == 200) {
       store.dispatch(setData(res?.data?.items));
-      store.dispatch(
-        setHeaderData({
-          count: res?.data?.unread_count,
-          list: res?.data?.items.slice(0, 5),
-        })
-      );
     }
 
     return res;
   } catch (error) {
     handleError(error);
     store.dispatch(setData([]));
-    store.dispatch(setHeaderData({ count: 0, list: [] }));
     return error.error.data;
   }
 };
@@ -81,7 +75,7 @@ export const markNotificationRead = async (id: number) => {
     );
 
     if (res && res?.status_code == 200) {
-      await getNotificationsList();
+      await getNotificationsList(1, -1);
       await getLists();
     }
 
@@ -103,7 +97,7 @@ export const markAllNotificationRead = async (
     );
 
     if (res && res?.status_code == 200) {
-      await getNotificationsList(page, perPage);
+      await getNotificationsList(1, -1);
       await getLists();
     }
 
@@ -125,7 +119,7 @@ export const deleteAllNotifications = async (
     );
 
     if (res && res?.status_code == 200) {
-      await getNotificationsList(page, perPage);
+      await getNotificationsList(1, -1);
       await getLists();
     }
 
@@ -144,7 +138,7 @@ export const updateFCMToken = async (token: string) => {
     );
 
     if (res && res?.status_code == 200) {
-      await getNotificationsList();
+      await getNotificationsList(1, -1);
       await getLists();
     }
 
