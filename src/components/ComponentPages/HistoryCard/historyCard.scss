@@ -3,7 +3,7 @@
     @apply lg:ml-[1.25rem];
     .badge-wrapper {
       .ch-dot-history {
-        @apply lg:ml-[-26px] z-10;
+        @apply lg:ml-[-26px];
       }
     }
     + .csh-wrapper {
