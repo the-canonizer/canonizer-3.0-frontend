@@ -650,17 +650,16 @@ function SupportTreeDrawer({
               )}
               <Row gutter={16}>
                 <Col span={24} sm={12}>
-                  <Form.Item name="nickname"  rules={[
-                              {
-                                required: true,
-                              },
-                            ]}
-                          label={
-                    <>
-                      Nickname
-                      <span className="required">*</span>
-                    </>
-                  }>
+                  <Form.Item name="nickname" rules={[
+                    {
+                      required: true,
+                    },
+                  ]}
+                    label={
+                      <>
+                        Nickname <span className="required">*</span>
+                      </>
+                    }>
                     <div className="thm-select">
                       <div className="prefix-icon">
                         <UserOutlined />
@@ -910,17 +909,16 @@ function SupportTreeDrawer({
             <div>
               <Row gutter={16}>
                 <Col span={24} sm={12}>
-                  <Form.Item name="nickname"  rules={[
-                              {
-                                required: true,
-                              },
-                            ]}
-                          label={
-                    <>
-                      Nickname
-                      <span className="required">*</span>
-                    </>
-                  }>
+                  <Form.Item name="nickname" rules={[
+                    {
+                      required: true,
+                    },
+                  ]}
+                    label={
+                      <>
+                        Nickname <span className="required">*</span>
+                      </>
+                    }>
                     <div className="thm-select">
                       <div className="prefix-icon">
                         <UserOutlined />
