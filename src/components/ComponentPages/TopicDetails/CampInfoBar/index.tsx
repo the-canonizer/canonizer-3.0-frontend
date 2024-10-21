@@ -654,8 +654,6 @@ const TimelineInfoBar = ({
       "-"
     )}`;
 
-    console.log("link", link);
-
     router.push(link);
   };
 
