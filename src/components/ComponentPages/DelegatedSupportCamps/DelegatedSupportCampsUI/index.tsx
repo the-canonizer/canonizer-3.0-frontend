@@ -85,7 +85,9 @@ export default function DelegatedSupportCampsUI({
       render: (text, record) => (
         <div className="max-w-[300px]">
           <Link href={record.title_link}>
-            <a className="text-sm font-medium text-canBlack">{text.length >30?text.substring(0,20) + "...":text}</a>
+            <a className="text-sm font-medium text-canBlack">
+              {text.length > 30 ? text.substring(0, 20) + "..." : text}
+            </a>
           </Link>
         </div>
       ),
@@ -483,7 +485,11 @@ export default function DelegatedSupportCampsUI({
                       title={
                         <CardTitle
                           title_link={data.title_link}
-                          value={data.title.length > 50?data.title.substring(0, 50) + "...":data.title }
+                          value={
+                            data.title.length > 50
+                              ? data.title.substring(0, 50) + "..."
+                              : data.title
+                          }
                         />
                       }
                       style={{ width: 360, marginBottom: 16 }}

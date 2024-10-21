@@ -30,7 +30,7 @@ import StatementPreview from "./UI/preview";
 import StatementAIPreview from "./UI/aiPreview";
 // import { openNotificationWithIcon } from "components/common/notification/notificationBar";
 
-// const systemPropPt = `You are a text converter for a website where people put their opinions on various topics, while writing and posting the content they are given a feature of Improve with AI, Your role is to improve that text accordingly. 
+// const systemPropPt = `You are a text converter for a website where people put their opinions on various topics, while writing and posting the content they are given a feature of Improve with AI, Your role is to improve that text accordingly.
 
 // If the topic suggests a science theme then follow the users leads and convert accordingly, similarly go with the users content theme and magically convert text. Do not lose essence of and meaning behind the user's real intent. Convert text in such a way that it's more readable and bit concise, like a good page from a book, everything well put and organized.`;
 
