@@ -784,10 +784,7 @@ function SupportTreeDrawer({
           <div className="support-content">
             <Row gutter={16}>
               <Col span={24}>
-                <Form.Item
-                  label="Reason for removing support"
-                  name="reason"
-                >
+                <Form.Item label="Reason for removing support" name="reason">
                   <div className="thm-select">
                     <div className="prefix-icon">
                       <i className="icon-bar"></i>

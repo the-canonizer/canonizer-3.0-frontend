@@ -77,7 +77,9 @@ function SocialAuthVerification() {
           <IconWrapper
             socialLinks={socialLinks}
             onUnlinkClick={onUnlinkClick}
-            onLinkClick={()=>{onLinkClick("google")}}
+            onLinkClick={() => {
+              onLinkClick("google");
+            }}
             provider=" "
             icon={
               <Image
@@ -92,7 +94,9 @@ function SocialAuthVerification() {
           <IconWrapper
             socialLinks={socialLinks}
             onUnlinkClick={onUnlinkClick}
-            onLinkClick={()=>{onLinkClick("facebook")}}
+            onLinkClick={() => {
+              onLinkClick("facebook");
+            }}
             provider=""
             icon={
               <Image
@@ -114,7 +118,9 @@ function SocialAuthVerification() {
           <IconWrapper
             socialLinks={socialLinks}
             onUnlinkClick={onUnlinkClick}
-            onLinkClick={()=>{onLinkClick("linkedin")}}
+            onLinkClick={() => {
+              onLinkClick("linkedin");
+            }}
             provider=""
             icon={
               <Image
@@ -128,7 +134,9 @@ function SocialAuthVerification() {
           <IconWrapper
             socialLinks={socialLinks}
             onUnlinkClick={onUnlinkClick}
-            onLinkClick={()=>{onLinkClick("github")}}
+            onLinkClick={() => {
+              onLinkClick("github");
+            }}
             provider=""
             icon={
               <Image
