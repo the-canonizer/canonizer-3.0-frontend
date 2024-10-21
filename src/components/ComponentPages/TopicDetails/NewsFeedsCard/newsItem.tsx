@@ -72,11 +72,9 @@ function NewsItemListTab({
             </a>
             <Text className="flex gap-1 w-full">
               <span className="text-[#242B3780]">by</span>
-              <Link href={{ pathname: "#" }}>
-                <a className="!text-canBlue hover:!text-canHoverBlue text-sm">
-                  {news?.submitter_nick_name}
-                </a>
-              </Link>
+              <span className="!text-canBlue hover:!text-canHoverBlue text-sm">
+                {news?.submitter_nick_name}
+              </span>
             </Text>
           </Paragraph>
           {is_admin && isUserAuthenticated && (

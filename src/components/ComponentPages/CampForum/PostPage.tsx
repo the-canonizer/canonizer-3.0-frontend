@@ -247,8 +247,6 @@ const CommentsList = () => {
     await threadDetails();
   };
 
-  console.log("isMobile--", isMobile);
-
   return (
     <CustomSpinner key="post-spinner" spinning={postLoading}>
       <Layout
