@@ -39,12 +39,12 @@ function WrappedApp({
     [_, setIsAuthenticated, isAuthenticatedRef] = useState(
       !!(getCookies() as any)?.loginToken
     );
-  // const { isLatestVersion, emptyCacheStorage, latestVersion } = useClearCache();
+  const { isLatestVersion, emptyCacheStorage, latestVersion } = useClearCache();
 
-  // if (!isLatestVersion) {
-  //   console.info({ latestVersion });
-  //   emptyCacheStorage();
-  // }
+  if (!isLatestVersion) {
+    console.info({ latestVersion });
+    emptyCacheStorage();
+  }
 
   useEffect(() => {
     const fetchToken = async () => {
