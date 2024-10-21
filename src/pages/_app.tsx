@@ -43,6 +43,8 @@ function WrappedApp({
 
   if (!isLatestVersion) {
     console.info({ latestVersion });
+    localStorage.clear();
+    sessionStorage.clear();
     emptyCacheStorage();
   }
 
