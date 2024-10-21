@@ -483,7 +483,7 @@ function SupportTreeDrawer({
   const checkAllTagsSelected = () => {
     return tagsArrayList?.length > 0
       ? tagsArrayList?.filter((item) => item.disabled == true)?.length ==
-          tagsArrayList?.length
+      tagsArrayList?.length
       : false;
   };
 
@@ -566,8 +566,8 @@ function SupportTreeDrawer({
       </div>
 
       {drawerFor === "directAdd" ||
-      drawerFor === "delegateAdd" ||
-      drawerFor === "manageSupport" ? (
+        drawerFor === "delegateAdd" ||
+        drawerFor === "manageSupport" ? (
         <Form
           form={form}
           layout="vertical"
@@ -650,11 +650,21 @@ function SupportTreeDrawer({
               )}
               <Row gutter={16}>
                 <Col span={24} sm={12}>
-                  <Form.Item name="nickname" label="Nickname">
+                  <Form.Item name="nickname" rules={[
+                    {
+                      required: true,
+                    },
+                  ]}
+                    label={
+                      <>
+                        Nickname <span className="required">*</span>
+                      </>
+                    }>
                     <div className="thm-select">
                       <div className="prefix-icon">
                         <UserOutlined />
                       </div>
+
                       <Select
                         placeholder="Select a nickname"
                         className="w-100 cn-select"
@@ -891,7 +901,16 @@ function SupportTreeDrawer({
             <div>
               <Row gutter={16}>
                 <Col span={24} sm={12}>
-                  <Form.Item name="nickname" label="Nickname">
+                  <Form.Item name="nickname" rules={[
+                    {
+                      required: true,
+                    },
+                  ]}
+                    label={
+                      <>
+                        Nickname <span className="required">*</span>
+                      </>
+                    }>
                     <div className="thm-select">
                       <div className="prefix-icon">
                         <UserOutlined />
