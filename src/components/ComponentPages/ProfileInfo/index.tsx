@@ -63,6 +63,8 @@ const ProfileInfo = () => {
   const [userProfileSkeletonV, setUserProfileSkeletonV] = useState(true);
   const [viewEmail, setViewEmail] = useState("");
   const [userProfileData, setUserProfileData] = useState("");
+  const [getAddress1, setgetAddress1] = useState("");
+
 
   const { addForProfileInfo, zipCodeForProfileInfo } = useSelector(
     (state: RootState) => ({
@@ -128,6 +130,7 @@ const ProfileInfo = () => {
     values = { ...values, ...updateAddress };
 
     let res = await UpdateUserProfileInfo(values);
+    setgetAddress1(res?.data?.address_1)
     if (res && res.status_code === 200) {
       message.success(res.message);
       if (values?.default_algo) {
@@ -419,6 +422,9 @@ const ProfileInfo = () => {
       userProfileSkeletonV={userProfileSkeleton}
       setOTP={setOTP}
       setToggleVerifyButton={setToggleVerifyButton}
+      setAddress={setAddress}
+      getAddress1={getAddress1}
+      setDisableButton={setDisableButton}
     />
   );
 };
