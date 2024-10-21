@@ -46,10 +46,10 @@ const SingleTopicWithImage = ({ topic, onTopicClick = null }) => {
             <a onClick={onTopicClick}>
               <Image
                 alt={topic?.topic_name}
-                className="w-full rounded-lg object-cover h-full"
+                className="w-full rounded-lg object-cover h-full max-h-[200px] 2xl:max-h-[250px]"
                 preview={false}
-                // height={"100%"}
-                // width={"100%"}
+                height={"100%"}
+                width={"100%"}
                 src={topic?.file_full_path}
                 rootClassName="h-full"
                 style={{ aspectRatio: 2 / 2 }}
