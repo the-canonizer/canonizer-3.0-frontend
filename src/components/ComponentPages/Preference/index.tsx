@@ -28,7 +28,6 @@ import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 import { CloseOutlined, SaveOutlined } from "@ant-design/icons";
 import PrimaryButton from "components/shared/Buttons/PrimariButton";
 
-
 const ProfilePrefrences = () => {
   const [languageList, setLanguageList] = useState([]);
   const [algorithmList, setAlgorithmList] = useState([]);
@@ -40,8 +39,11 @@ const ProfilePrefrences = () => {
   const [userPrifleInfoFirstName, setUserPrifleInfoFirstName] = useState({});
   const [userPrifleInfolastName, setUserPrifleInfolastName] = useState({});
 
-
-console.log(userPrifleInfoFirstName,userPrifleInfolastName,"userPrifleInfo")
+  console.log(
+    userPrifleInfoFirstName,
+    userPrifleInfolastName,
+    "userPrifleInfo"
+  );
   const [formVerify] = Form.useForm();
 
   const { Option } = Select;
@@ -107,8 +109,8 @@ console.log(userPrifleInfoFirstName,userPrifleInfolastName,"userPrifleInfo")
         let res = await GetUserProfileInfo();
         if (res !== undefined) {
           setProfileUserTags(res?.data?.tags);
-          setUserPrifleInfoFirstName(res?.data?.first_name)
-          setUserPrifleInfolastName(res?.data?.last_name)
+          setUserPrifleInfoFirstName(res?.data?.first_name);
+          setUserPrifleInfolastName(res?.data?.last_name);
         }
       } catch (error) {
         console.error("Error fetching algorithms list:", error);
@@ -127,11 +129,13 @@ console.log(userPrifleInfoFirstName,userPrifleInfolastName,"userPrifleInfo")
       tag?.title?.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredTags(filtered);
-    const selectedTags = filtered.filter((tag) => 
-      tag.checked || profileUserTags.some((profileTag) => profileTag.tag_id === tag.id)
+    const selectedTags = filtered.filter(
+      (tag) =>
+        tag.checked ||
+        profileUserTags.some((profileTag) => profileTag.tag_id === tag.id)
     ).length;
     setSelectedCount(selectedTags);
-  }, [searchTerm, tags,profileUserTags]);
+  }, [searchTerm, tags, profileUserTags]);
 
   const listOfOption = (optionList, algoOrLang): any => {
     let option = [];
@@ -172,11 +176,16 @@ console.log(userPrifleInfoFirstName,userPrifleInfolastName,"userPrifleInfo")
 
     if (isCurrentlyChecked) {
       // If currently checked, remove it from profileUserTags
-      const updatedProfileTags = profileUserTags.filter((tag) => tag.tag_id !== data.id);
+      const updatedProfileTags = profileUserTags.filter(
+        (tag) => tag.tag_id !== data.id
+      );
       setProfileUserTags(updatedProfileTags); // Update local state for profileUserTags
     } else {
       // If currently unchecked, add it to profileUserTags
-      const newProfileTags = [...profileUserTags, { tag_id: data.id, title: data.title }];
+      const newProfileTags = [
+        ...profileUserTags,
+        { tag_id: data.id, title: data.title },
+      ];
       setProfileUserTags(newProfileTags); // Update local state for profileUserTags
     }
 
@@ -190,7 +199,6 @@ console.log(userPrifleInfoFirstName,userPrifleInfolastName,"userPrifleInfo")
     setTags(newTags); // Update the tags state to reflect the change
     dispatch(setTags(newTags)); // Dispatch the updated tags
   };
-
 
   const publicPrivateArray = {
     first_name: "first_name",
@@ -244,7 +252,7 @@ console.log(userPrifleInfoFirstName,userPrifleInfolastName,"userPrifleInfo")
     // const userTags = tags.filter((ch) => ch.checked).map((ch) => ch.id);
     const userTags = [
       ...tags.filter((ch) => ch.checked).map((ch) => ch.id), // Include checked tags from tags state
-      ...profileUserTags.map((tag) => tag.tag_id) // Include saved tags from profileUserTags
+      ...profileUserTags.map((tag) => tag.tag_id), // Include saved tags from profileUserTags
     ];
 
     if (userTags.length === 0) {
@@ -398,12 +406,15 @@ console.log(userPrifleInfoFirstName,userPrifleInfolastName,"userPrifleInfo")
         {filteredTags.length > 0 ? (
           filteredTags.map((ch) => {
             // Check if the tag should be initially checked based on profileUserTags
-            const isChecked = ch.checked !== undefined ? ch.checked : profileUserTags.some((tag) => tag.tag_id === ch.id);
+            const isChecked =
+              ch.checked !== undefined
+                ? ch.checked
+                : profileUserTags.some((tag) => tag.tag_id === ch.id);
             return (
               <CustomCheckbox
                 id={ch.id}
                 key={ch.id}
-                onChange={() => onChange({ ...ch, checked: isChecked })} 
+                onChange={() => onChange({ ...ch, checked: isChecked })}
                 checked={isChecked}
                 className="text-sm"
               >

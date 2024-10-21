@@ -65,7 +65,9 @@ const ForumComponent = () => {
       topic_num: +topic_num,
       camp_num: +nodeKey,
       as_of: asof,
-      as_of_date: moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss") || Date.now() / 1000,
+      as_of_date:
+        moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss") ||
+        Date.now() / 1000,
       algorithm: algorithm,
       update_all: 1,
     };

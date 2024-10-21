@@ -29,6 +29,7 @@ import {
 } from "src/network/api/campDetailApi";
 import { RootState } from "src/store";
 import CommonBreadcrumbs from "../Breadcrumbs/commonBreadcrumbs";
+import { useIsMobile } from "src/hooks/useIsMobile";
 
 const { Text } = Typography;
 
@@ -48,6 +49,7 @@ const CommentsList = () => {
   const dispatch = useDispatch();
 
   const { isUserAuthenticated } = useIsUserAuthenticated();
+  const isMobile = useIsMobile();
 
   const [postList, setPostList] = useState([]);
   const [ppage, setPpage] = useState(1);
@@ -274,23 +276,44 @@ const CommentsList = () => {
           payload={payload}
             isForumPage={false}
             isHtmlContent={
-              !isUserAuthenticated ? (
-                <Text id="sign-in-msg" data-testid="logincheck">
-                  Please <Link href={{ pathname: "/login" }}>Sign In</Link> to
-                  comment on this Thread
-                </Text>
-              ) : (
-                <PrimaryButton
-                  className="flex justify-center items-center h-auto py-2 px-7"
-                  onClick={onCreatePost}
-                >
-                  Comment in This Thread <PlusOutlined />
-                </PrimaryButton>
-              )
+              !isMobile ? (
+                <>
+                  {!isUserAuthenticated ? (
+                    <Text id="sign-in-msg" data-testid="logincheck">
+                      Please <Link href={{ pathname: "/login" }}>Sign In</Link>{" "}
+                      to comment on this Thread
+                    </Text>
+                  ) : (
+                    <PrimaryButton
+                      className="flex justify-center items-center h-auto py-2 px-7"
+                      onClick={onCreatePost}
+                    >
+                      Comment in This Thread <PlusOutlined />
+                    </PrimaryButton>
+                  )}
+                </>
+              ) : null
             }
           />
         }
       >
+        {isMobile && (
+          <div className="flex justify-end">
+            {!isUserAuthenticated ? (
+              <Text id="sign-in-msg" data-testid="logincheck">
+                Please <Link href={{ pathname: "/login" }}>Sign In</Link> to
+                comment on this Thread
+              </Text>
+            ) : (
+              <PrimaryButton
+                className="flex justify-center items-center h-auto py-2 px-7"
+                onClick={onCreatePost}
+              >
+                Comment in This Thread <PlusOutlined />
+              </PrimaryButton>
+            )}
+          </div>
+        )}
         <Post
           postList={postList}
           pCurrent={ppage}

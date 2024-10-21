@@ -69,6 +69,8 @@ function ProfileInfoForm({
   userProfileSkeletonV,
   setOTP,
   setToggleVerifyButton,
+  setAddress,
+  getAddress1
 }: any) {
   const [step, setStep] = useState(0);
   const [updatedEmail, setUpdatedEmail] = useState("");
@@ -114,6 +116,11 @@ function ProfileInfoForm({
 
   const handleDiscard = () => {
     form.setFieldsValue(initialValues); // Reset form to initial values
+    if (userProfileData?.address_1 == getAddress1 || getAddress1 == "" ) {
+      setAddress(userProfileData.address_1); // Set to userProfileData's address if available
+    } else {
+      setAddress(getAddress1); // Fallback to getAddress1
+    }
   };
 
   useEffect(() => {
@@ -136,6 +143,16 @@ function ProfileInfoForm({
     }
   };
 
+const handleDiscardOnAddress1 = ()=>{
+  if(address == userProfileData.address_1){
+    setIsButtonDisabled(true);
+    setAfterSaveChangeDisable(false);
+
+  }else {
+      setIsButtonDisabled(false);
+      setAfterSaveChangeDisable(false);
+    }
+}
   const newEmailHandleClick = async () => {
     if (step === 0) {
       getEmailChaneRequest();
@@ -674,6 +691,24 @@ function ProfileInfoForm({
           <Row gutter={30}>
             <Col md={12} sm={24} className="w-full">
               <Form.Item
+              rules={[
+                {
+                  validator: (_, value) => {
+                    if (!value) return Promise.resolve();
+              
+                    // Regular expressions to check for letters and digits
+                    const letterOrDigitRegex = /[a-zA-Z0-9]/;  // Checks if there's at least one letter or digit
+              
+                    if (!letterOrDigitRegex.test(value)) {
+                      return Promise.reject(
+                        "Address must contain at least one letter or number."
+                      );
+                    }
+              
+                    return Promise.resolve();
+                  }
+                }
+              ]}
                 name="address_1"
                 label={messages.labels.addressLine1}
                 className="[&_.ant-input-group-addon]:!w-[5rem] [&_.ant-form-item-label]:font-normal [&_.ant-select-selection-item]:!pr-6 [&_.ant-input-group-addon]:!bg-canGray text-sm text-canBlack font-normal [&_label]:text-sm [&_label]:font-medium [&_.ant-form-item-explain-error]:mb-6"
@@ -682,7 +717,10 @@ function ProfileInfoForm({
                   {loaded ? (
                     <PlacesAutocomplete
                       value={address}
-                      onChange={handleAddressChange}
+                      onChange={(value) => {
+                        handleAddressChange(value);
+                        handleDiscardOnAddress1();
+                      }}
                       onSelect={handleAddressSelect}
                     >
                       {renderFuncForGooglePlaces}
@@ -742,6 +780,24 @@ function ProfileInfoForm({
             </Col>
             <Col md={12} sm={24} className="w-full">
               <Form.Item
+                rules={[
+                  {
+                    validator: (_, value) => {
+                      if (!value) return Promise.resolve();
+              
+                      // Regular expressions to check for letters and digits
+                      const letterOrDigitRegex = /[a-zA-Z0-9]/;  // Checks if there's at least one letter or digit
+              
+                      if (!letterOrDigitRegex.test(value)) {
+                        return Promise.reject(
+                          "Address must contain at least one letter or number."
+                        );
+                      }
+              
+                      return Promise.resolve();
+                    }
+                  }
+                ]}
                 name="address_2"
                 label={messages.labels.addressLine2}
                 className="[&_.ant-input-group-addon]:!w-[5rem] [&_.ant-form-item-label]:font-normal [&_.ant-select-selection-item]:!pr-6 [&_.ant-input-group-addon]:!bg-canGray text-sm text-canBlack font-normal [&_label]:text-sm [&_label]:font-medium [&_.ant-form-item-explain-error]:mb-6"
@@ -756,6 +812,7 @@ function ProfileInfoForm({
                   placeholder={messages.placeholders.addressLine2}
                   size="large"
                   maxLength={255}
+                  // onKeyDown={(e) => checkSpecialChar(e)} 
                   className="font-medium [&_.ant-input]:!rounded-tl-lg [&_.ant-input]:!rounded-bl-lg [&_.ant-input-group-addon]:!rounded-tr-lg [&_.ant-input-group-addon]:!rounded-br-lg [&_.ant-input-affix-wrapper]:!h-[40px] [&_.ant-input-affix-wrapper]:!py-0 [&_.ant-input]:!pl-2.5 [&_.ant-input-affix-wrapper]:!rounded-tl-lg [&_.ant-input-affix-wrapper]:!rounded-bl-lg  [&_.ant-input]:!text-base [&_.ant-input]:!font-normal [&_.ant-select-selection-item]:!flex [&_.ant-select-selection-item]:!items-center [&_.ant-select]:!my-0 [&_.ant-input-affix-wrapper-lg]:!pl-4 text-canBlack font-normal h-[40px] rounded-md [&_.ant-input-prefix]:!text-canBlack [&_.ant-input-prefix]:mr-3 text-sm mainInput"
                 />
               </Form.Item>
@@ -783,6 +840,20 @@ function ProfileInfoForm({
                 />
               </Form.Item>
               <Form.Item
+              rules={[
+                {
+                  validator: (_, value) => {
+                    if (!value) return Promise.resolve();
+            
+                    // Check if the value consists only of zeros
+                    if (/^0+$/.test(value)) {
+                      return Promise.reject("Postal code cannot be all zeros.");
+                    }
+            
+                    return Promise.resolve();
+                  }
+                }
+              ]}
                 name="postal_code"
                 label={messages.labels.zipCode}
                 className="[&_.ant-input-group-addon]:!w-[5rem] [&_.ant-select-selection-item]:!pr-6 [&_.ant-input-group-addon]:!bg-canGray text-sm text-canBlack font-normal [&_label]:text-sm [&_label]:font-medium [&_.ant-form-item-explain-error]:mb-6"
@@ -805,7 +876,7 @@ function ProfileInfoForm({
                   placeholder={messages.placeholders.zipCode}
                   size="large"
                   className="font-medium [&_.ant-input]:!rounded-tl-lg [&_.ant-input]:!rounded-bl-lg [&_.ant-input-group-addon]:!rounded-tr-lg [&_.ant-input-group-addon]:!rounded-br-lg [&_.ant-input-affix-wrapper]:!h-[40px] [&_.ant-input-affix-wrapper]:!py-0 [&_.ant-input]:!pl-2.5 [&_.ant-input-affix-wrapper]:!rounded-tl-lg [&_.ant-input-affix-wrapper]:!rounded-bl-lg [&_.ant-input]:!text-base [&_.ant-input]:!font-normal [&_.ant-select-selection-item]:!flex [&_.ant-select-selection-item]:!items-center [&_.ant-select]:!my-0 [&_.ant-input-affix-wrapper-lg]:!pl-4 text-canBlack font-normal h-[40px] rounded-md [&_.ant-input-prefix]:!text-canBlack [&_.ant-input-prefix]:mr-3 text-sm mainInput"
-                  maxLength={255}
+                  maxLength={10}
                   disabled={
                     postalCodeDisable || postalCodeDisableForProfileInfo
                   }
