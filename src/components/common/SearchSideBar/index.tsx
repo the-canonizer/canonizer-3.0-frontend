@@ -156,7 +156,7 @@ export default function SearchSideBar() {
                         ? searchMetaData?.camp_total
                         : router.query.asof == "review" ||
                           router.query.asof == "bydate"
-                        ? selectedCampFromAdvanceFilterAlgorithm.length
+                        ? selectedCampFromAdvanceFilterAlgorithm?.length
                         : searchCountForMetaData?.camp_total}
                       )
                     </span>

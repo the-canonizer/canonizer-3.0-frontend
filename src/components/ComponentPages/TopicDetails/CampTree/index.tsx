@@ -377,7 +377,7 @@ const CampTree = ({
                       className={
                         "treeListItemTitle " +
                         styles.treeListItemTitle +
-                        " !text-sm !text-canBlack font-normal hover:!text-canblack"
+                        ` !text-sm !text-canBlack font-normal hover:!text-canblack ${uniqueKeys.includes(data[item].camp_id.toString()) ? "!font-bold" : ""}`
                       }
                     >
                       <Link
