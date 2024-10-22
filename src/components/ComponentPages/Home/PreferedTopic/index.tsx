@@ -36,7 +36,11 @@ const PreferedTopics = ({ isPage = false }) => {
   const getList = async () => {
     setIsLoading(true);
 
-    const prefData = await GetPreferedTopicDetails(pCurrent, postperPage);
+    const prefData = await GetPreferedTopicDetails(
+      pCurrent,
+      !isPage ? 6 : postperPage,
+      !isPage
+    );
 
     if (prefData.status_code === 200) {
       setPtotal(prefData?.data?.total_rows);
@@ -46,9 +50,7 @@ const PreferedTopics = ({ isPage = false }) => {
   };
 
   useEffect(() => {
-    if (isPage) {
-      getList();
-    }
+    getList();
   }, [pCurrent]);
 
   if (!isPage && !topicsList?.length) {

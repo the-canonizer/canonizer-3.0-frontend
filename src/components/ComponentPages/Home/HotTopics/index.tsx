@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Row, Col } from "antd";
 import { useSelector } from "react-redux";
 
@@ -6,6 +6,7 @@ import { RootState } from "src/store";
 import SectionHeading from "../FeaturedTopic/sectionsHeading";
 import SingleTopicCard from "./topicCard";
 import CustomSkelton from "components/common/customSkelton";
+import { GetHotTopicDetails } from "src/network/api/topicAPI";
 
 const HotTopics = () => {
   const { topicData } = useSelector((state: RootState) => ({
@@ -13,6 +14,22 @@ const HotTopics = () => {
   }));
 
   const [loadMoreIndicator, setLoadMoreIndicator] = useState(false);
+
+  const [hotTopics, setHotTopics] = useState([]);
+
+  useEffect(() => {
+    setHotTopics(topicData);
+  }, [topicData]);
+
+  useEffect(() => {
+    const getHotTopics = async () => {
+      setLoadMoreIndicator(true);
+      await GetHotTopicDetails(1, 6);
+      setLoadMoreIndicator(false);
+    };
+
+    getHotTopics();
+  }, []);
 
   if (!topicData?.length) {
     return null;
@@ -30,7 +47,7 @@ const HotTopics = () => {
       </Row>
 
       <Row className="mt-4" gutter={[24, 24]}>
-        {topicData?.map((ft) => (
+        {hotTopics?.map((ft) => (
           <Col md={12} lg={8} xs={24} sm={24} key={ft?.id}>
             {loadMoreIndicator ? (
               <CustomSkelton

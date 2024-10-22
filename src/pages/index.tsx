@@ -11,33 +11,23 @@ import {
 } from "src/store/slices/filtersSlice";
 import { GetUserProfileInfo, createToken } from "src/network/api/userApi";
 import { setAuthToken, setLoggedInUser } from "src/store/slices/authSlice";
-import {
-  setFeaturedTopic,
-  setHotTopic,
-  setPrefTopic,
-} from "src/store/slices/hotTopicSlice";
-import {
-  GetFeaturedTopicDetails,
-  GetHotTopicDetails,
-  GetPreferedTopicDetails,
-} from "src/network/api/topicAPI";
+import { setFeaturedTopic } from "src/store/slices/hotTopicSlice";
+import { GetFeaturedTopicDetails } from "src/network/api/topicAPI";
 
 const Tour = dynamic(() => import("src/components/ComponentPages/Home/Tour"), {
   ssr: false,
 });
 
-function Home({ current_date, hotTopicData, featuredData, prefData }: any) {
+function Home({ current_date, featuredData }: any) {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  dispatch(setFilterCanonizedTopics({ search: "" }));
-  dispatch(setCurrentDate(current_date));
-
   /* eslint-disable */
   useEffect(() => {
-    dispatch(setHotTopic(hotTopicData));
+    dispatch(setFilterCanonizedTopics({ search: "" }));
+    dispatch(setCurrentDate(current_date));
+    
     dispatch(setFeaturedTopic(featuredData));
-    dispatch(setPrefTopic(prefData));
     getCanonizedWhatsNewContentApi();
   }, []);
   /* eslint-enable */
@@ -105,16 +95,12 @@ export async function getServerSideProps({ req }) {
     token = response?.access_token;
   }
 
-  const resData = await GetHotTopicDetails(1, 6, token as string);
   const featuredData = await GetFeaturedTopicDetails(token as string);
-  const prefData = await GetPreferedTopicDetails(1, 6, token as string);
 
   return {
     props: {
       current_date: currentDate,
-      hotTopicData: resData?.data?.items ? resData?.data?.items : [],
       featuredData: featuredData?.data?.items ? featuredData?.data?.items : [],
-      prefData: prefData?.data?.items ? prefData?.data?.items : null,
     },
   };
 }

@@ -58,8 +58,12 @@ const HomePageContainer = () => {
               <TrandingTopics />
             </Col>
           ) : null} */}
-        {isUserAuthenticated && preferedTopic?.length ? (
-          <Col md={24} className="mb-14" data-testid="preferedTopic">
+        {isUserAuthenticated ? (
+          <Col
+            md={24}
+            className={preferedTopic?.length ? "mb-14" : ""}
+            data-testid="preferedTopic"
+          >
             <PreferedTopics />
           </Col>
         ) : null}
