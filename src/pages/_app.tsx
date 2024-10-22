@@ -41,6 +41,7 @@ function WrappedApp({
     );
     const { isLatestVersion, emptyCacheStorage, latestVersion } = useClearCache();
 
+    
     if (!isLatestVersion) {
       console.info({ latestVersion });
       localStorage.clear();
