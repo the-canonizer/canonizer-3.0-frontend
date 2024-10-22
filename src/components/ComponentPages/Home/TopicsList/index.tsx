@@ -384,7 +384,7 @@ const TopicsList = () => {
     <Layout routeName={"browse"}>
       <div className="browse-wrapper pb-4 mt-3">
         <Title level={4} className="browse-title !mb-0">
-          Browse Canonizer’s Topiics
+          Browse Canonizer’s Topics
         </Title>
         <Divider />
         <Form layout="vertical">
