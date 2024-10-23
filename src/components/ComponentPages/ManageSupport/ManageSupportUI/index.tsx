@@ -68,14 +68,25 @@ const ManageSupportUI = ({
   const [removeForm] = Form.useForm();
 
   const closePopup = () => {};
+  const takeCampFromTopicSupportList = topicSupportListData.flatMap((obj) => {
+    const matchingParent = parentSupportDataList.find(
+      (parent) => parent.camp_num === obj.camp_num
+    );
 
-  const filteredList = manageSupportList?.map((obj: any, index: any) => {
+    // If matching object found, replace it with the array of new objects, otherwise return the original object
+    return matchingParent ? manageSupportList : [obj];
+  });
+  const filteredList = (parentSupportDataList?.length > 0 
+    ? takeCampFromTopicSupportList 
+    : manageSupportList
+  )?.map((obj: any, index: any) => {
     return {
       camp_num: obj.camp_num,
-      order: index + 1, //obj.support_order,
+      order: index + 1, // or use obj.support_order if needed
     };
   });
 
+console.log(manageSupportList,"manageSupportList")
   const filterList = (campNum, position) => {
     const index = filteredList.findIndex((obj) => obj.camp_num === campNum);
     filteredList[index] = {
@@ -221,16 +232,16 @@ const ManageSupportUI = ({
       action: "add",
       nick_name_id: nickNameIDValue,
       order_update:
-        filteredList.length > 0
-          ? filteredList
-          : [
-              {
-                camp_num: reqBodyData.camp_num,
-                order:
-                  currentGetCheckSupportExistsData.remove_camps?.[0]
-                    ?.support_order || manageListOrder,
-              },
-            ],
+        // filteredList.length > 0
+           filteredList,
+          // : [
+          //     {
+          //       camp_num: reqBodyData.camp_num,
+          //       order:
+          //         currentGetCheckSupportExistsData.remove_camps?.[0]
+          //           ?.support_order || manageListOrder,
+          //     },
+          //   ],
       ...formData,
     };
     let addedRes = await addSupport(addSupportId);
@@ -239,7 +250,7 @@ const ManageSupportUI = ({
       getTopicActivityLogCall();
     }
   };
-
+console.log(filteredList,"filteredList")
   const CheckDelegatedOrDirect =
     currentDelegatedSupportedClick.delegatedSupportClick;
 
@@ -250,15 +261,8 @@ const ManageSupportUI = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nickNameList]);
 
-  const takeCampFromTopicSupportList = topicSupportListData.flatMap((obj) => {
-    const matchingParent = parentSupportDataList.find(
-      (parent) => parent.camp_num === obj.camp_num
-    );
 
-    // If matching object found, replace it with the array of new objects, otherwise return the original object
-    return matchingParent ? manageSupportList : [obj];
-  });
-
+console.log(takeCampFromTopicSupportList,parentSupportDataList,"takeCampFromTopicSupportList")
   useEffect(() => {
     if (manageSupportList && manageSupportList.length > 0) {
       const newTagList = (parentSupportDataList.length > 0 ? takeCampFromTopicSupportList : manageSupportList).map((obj) => {
