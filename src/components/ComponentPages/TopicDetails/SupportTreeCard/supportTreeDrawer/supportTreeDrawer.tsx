@@ -151,35 +151,49 @@ function SupportTreeDrawer({
     setSelectedValue(value);
   };
 
+  function getMisMatchingCampNums(arr1, arr2) {
+    return arr1.filter(arr1Item => 
+      arr2.some(arr2Item => arr1Item.camp_num === arr2Item.camp_num)
+    );
+  }
+
   const reqBodyData: any = {
     topic_num: topicNum,
     camp_num: camp_num,
   };
 
-  const getActiveSupportTopic = async () => {
+  const getActiveSupportTopic = async (removeParentCamps) => {
     let body = {
       topic_num: topicNum,
     };
-    const response = await GetActiveSupportTopic(topicNum && body);
+    let topicSupportList = (await GetActiveSupportTopic(topicNum && body))
+      ?.data;
 
-    let camp_data: any = {
-      id: Number(camp_num),
-      content: campRecord?.camp_name,
-      disabled: false,
-    };
+      //Step -1
+      //compare & remove from topic support list
+  
+      // topicSupportList = topicSupportList?.filter(
+      //   (item) => item?.camp_num != removeParentCamps?.at(0)?.camp_num
+      // );
 
-    if (currentGetCheckSupportExistsData?.warning) {
-      setTagsArrayList([camp_data]);
-    } else {
-      if (currentGetCheckSupportExistsData.support_flag == 0) {
-        setTagsArrayList([
-          ...transformDataForDraggable(response?.data),
-          camp_data,
-        ]);
-      } else if (currentGetCheckSupportExistsData.support_flag == 1) {
-        setTagsArrayList(transformDataForDraggable(response?.data));
-      }
-    }
+      topicSupportList = getMisMatchingCampNums(topicSupportList, removeParentCamps)
+    
+      //Step - 2
+      //Insert current working camp at remove support order at step 1
+  
+      let obj = {
+        topic_num: campRecord?.topic_num,
+        camp_num: campRecord?.camp_num,
+        support_order: removeParentCamps?.at(0)?.support_order,
+        camp_name: campRecord?.camp_name,
+        title: topicSupportList?.at(0)?.title,
+        link: `/topic/${campRecord?.topic_num}/${campRecord?.camp_num}-${campRecord?.camp_name}`,
+      };
+  
+      topicSupportList.push(obj);
+      topicSupportList = topicSupportList.sort((a, b) => a?.support_order - b?.support_order)
+        
+      setTagsArrayList(transformDataForDraggable(topicSupportList));
   };
 
   function getCampNums(camps) {
@@ -208,6 +222,8 @@ function SupportTreeDrawer({
         setcampIds(campsIds);
         setParentSupportDataList(response?.data?.remove_camps);
         dispatch(setCheckSupportExistsData(response?.data));
+
+        getActiveSupportTopic(response?.data?.remove_camps);
       }
     }
   };
@@ -447,10 +463,9 @@ function SupportTreeDrawer({
         drawerFor === "delegateAdd" ||
         drawerFor === "manageSupport"
       ) {
+        GetCheckStatusData();
         getCanonizedNicknameList();
         getCurrentCampRecordApi(reqBody);
-        GetCheckStatusData();
-        getActiveSupportTopic();
       }
 
       if (drawerFor === "signPetition") {
@@ -483,7 +498,7 @@ function SupportTreeDrawer({
   const checkAllTagsSelected = () => {
     return tagsArrayList?.length > 0
       ? tagsArrayList?.filter((item) => item.disabled == true)?.length ==
-      tagsArrayList?.length
+          tagsArrayList?.length
       : false;
   };
 
@@ -566,8 +581,8 @@ function SupportTreeDrawer({
       </div>
 
       {drawerFor === "directAdd" ||
-        drawerFor === "delegateAdd" ||
-        drawerFor === "manageSupport" ? (
+      drawerFor === "delegateAdd" ||
+      drawerFor === "manageSupport" ? (
         <Form
           form={form}
           layout="vertical"
@@ -650,11 +665,14 @@ function SupportTreeDrawer({
               )}
               <Row gutter={16}>
                 <Col span={24} sm={12}>
-                  <Form.Item name="nickname" label={
-                    <>
-                      Nickname <span className="text-red-600">*</span>
-                    </>
-                  }>
+                  <Form.Item
+                    name="nickname"
+                    label={
+                      <>
+                        Nickname <span className="text-red-600">*</span>
+                      </>
+                    }
+                  >
                     <div className="thm-select">
                       <div className="prefix-icon">
                         <UserOutlined />
@@ -896,11 +914,14 @@ function SupportTreeDrawer({
             <div>
               <Row gutter={16}>
                 <Col span={24} sm={12}>
-                  <Form.Item name="nickname" label={
-                    <>
-                      Nickname <span className="text-red-600">*</span>
-                    </>
-                  }>
+                  <Form.Item
+                    name="nickname"
+                    label={
+                      <>
+                        Nickname <span className="text-red-600">*</span>
+                      </>
+                    }
+                  >
                     <div className="thm-select">
                       <div className="prefix-icon">
                         <UserOutlined />
