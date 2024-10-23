@@ -1,6 +1,14 @@
 import { getCookies, isTokenExpired } from "src/utils/generalUtility";
 import K from "../../constants";
 import { createToken } from "../api/userApi";
+import {
+  logoutUser,
+  removeAuthToken,
+  setLogout,
+} from "src/store/slices/authSlice";
+import { setIsChecked } from "src/store/slices/recentActivitiesSlice";
+import { setHeaderData } from "src/store/slices/notificationSlice";
+import { store } from "../../store";
 
 export default class Request {
   static counter = 0;
@@ -40,7 +48,13 @@ export default class Request {
     if (isTokenExpired(bearerToken)) {
       (async () => {
         const res = await createToken();
-
+        if (res?.access_token) {
+          store.dispatch(setLogout());
+          store.dispatch(setIsChecked(false));
+          store.dispatch(logoutUser());
+          store.dispatch(removeAuthToken());
+          store.dispatch(setHeaderData({ count: 0, list: [] }));
+        }
         bearerToken = res?.data?.access_token;
       })();
     }
