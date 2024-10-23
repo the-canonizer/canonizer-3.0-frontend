@@ -45,7 +45,7 @@ export default class Request {
       }
     }
 
-    if (isTokenExpired(bearerToken)) {
+    /* if (isTokenExpired(bearerToken)) {
       (async () => {
         const res = await createToken();
         if (res?.access_token) {
@@ -57,7 +57,7 @@ export default class Request {
         }
         bearerToken = res?.data?.access_token;
       })();
-    }
+    } */
 
     headers = {
       ...(defaultHeaderType === K.Network.Header.Type.Json ||
