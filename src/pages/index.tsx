@@ -107,7 +107,7 @@ export async function getServerSideProps({ req }) {
 
   const resData = await GetHotTopicDetails(1, 6, token as string);
   const featuredData = await GetFeaturedTopicDetails(token as string);
-  const prefData = await GetPreferedTopicDetails(1, 6, token as string);
+  const prefData = await GetPreferedTopicDetails(1, 6, true, token as string);
 
   return {
     props: {
