@@ -1,4 +1,4 @@
-import { getCookies } from "src/utils/generalUtility";
+import { getCookies, isTokenExpired } from "src/utils/generalUtility";
 import K from "../../constants";
 import { createToken } from "../api/userApi";
 
@@ -35,6 +35,14 @@ export default class Request {
           bearerToken = res?.data?.access_token;
         })();
       }
+    }
+
+    if (isTokenExpired(bearerToken)) {
+      (async () => {
+        const res = await createToken();
+
+        bearerToken = res?.data?.access_token;
+      })();
     }
 
     headers = {

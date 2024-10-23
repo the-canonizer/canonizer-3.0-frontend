@@ -1,6 +1,7 @@
 import { message } from "antd";
 import { openNotificationWithIcon } from "components/common/notification/notificationBar";
 import moment from "moment";
+import { jwtDecode } from "jwt-decode";
 
 export const handleError = (error, log = false) => {
   // eslint-disable-next-line
@@ -462,4 +463,11 @@ export const epochToMinutes = (epochTime): any => {
   } else {
     return 0;
   }
+};
+
+export const isTokenExpired = (token: string): boolean => {
+  if (!token) return false;
+
+  const decodedToken: any = jwtDecode(token);
+  return decodedToken.exp < Math.floor(Date.now() / 1000);
 };
