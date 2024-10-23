@@ -54,9 +54,10 @@ export default class TopicRequest extends Request {
     );
   }
   //GetPreferedTopic
-  static GetPreferedTopic(page, parPage, token: string = "") {
+  static GetPreferedTopic(page, parPage, is_random, token: string = "") {
     return new Request(
-      K.Network.URL.GetPrefTopic + `?page=${page}&per_page=${parPage}`,
+      K.Network.URL.GetPrefTopic +
+        `?page=${page}&per_page=${parPage}&is_random=${is_random}`,
       K.Network.Method.GET,
       {},
       K.Network.Header.Type.Json,
