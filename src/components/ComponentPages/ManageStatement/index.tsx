@@ -506,9 +506,12 @@ function ManageStatements({ isEdit = false }) {
       Modal.confirm({
         title: "Do you want to discard this change?",
         icon: <ExclamationCircleFilled />,
+        okText: "Publish Anyway",
+        cancelText: "Review Other Statements",
+        onCancel: () => { router.push({ pathname: getBackURL() });},	
         content:
-          "Please note that any unsaved changes will be lost if you cancel.",
-        async onOk() {
+          "The draft you have created is based on anolder version. Multiple versions have been published since then. Checkout the newer versions before publishing your statement.",
+          async onOk() {
           try {
             const editInfo = editStatementData;
             const parent_camp = editInfo?.parent_camp;
