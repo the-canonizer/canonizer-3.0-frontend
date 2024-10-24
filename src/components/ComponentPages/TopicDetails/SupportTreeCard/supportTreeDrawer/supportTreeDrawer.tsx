@@ -178,9 +178,9 @@ function SupportTreeDrawer({
     //Step -1
     //compare & remove from topic support list
 
-    topicSupportList = topicSupportList?.filter(
-      (item) => item?.camp_num != removeParentCamps?.at(0)?.camp_num
-    );
+    // topicSupportList = topicSupportList?.filter(
+    //   (item) => item?.camp_num != removeParentCamps?.at(0)?.camp_num
+    // );
 
     topicSupportList = removeCamps(topicSupportList, parentSupportDataList);
 
