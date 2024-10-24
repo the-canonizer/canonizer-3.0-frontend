@@ -24,6 +24,7 @@ export default function Draggable({
   tagsArrayList,
   setTagsArrayList,
   enableDisableTagsHandler,
+  currentCampId=null,
 }) {
   const sensors = useSensors(
     useSensor(MouseSensor, { activationConstraint: { distance: 10 } }),
@@ -51,6 +52,7 @@ export default function Draggable({
               item={item}
               index={index}
               enableDisableTagsHandler={enableDisableTagsHandler}
+              currentCampId={currentCampId}
             />
           ))}
         </SortableContext>
@@ -75,6 +77,7 @@ export default function Draggable({
 function SortableItem(props) {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: props.id });
+    console.log("draggabel",props?.id, props?.currentCampId)
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -98,7 +101,9 @@ function SortableItem(props) {
             props?.enableDisableTagsHandler(props.item);
           }}
         >
-          {`${props?.index + 1}-${props?.item?.content}`}
+          <span style={{ color: props?.id == props?.currentCampId ? "#5482C8": "#242B37" }}>
+            {`${props?.index + 1}-${props?.item?.content}`}
+          </span>
         </Tag>
       ) : (
         <>
@@ -114,6 +119,7 @@ function SortableItem(props) {
           >
             <a
               data-testid="styles_Bluecolor"
+              style={{ color: props?.id == props?.currentCampId ? "#5482C8": "#242B37" }}
               onClick={(e) => {
                 e.preventDefault();
                 window.location.href = props?.item?.link;

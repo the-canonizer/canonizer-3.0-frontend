@@ -649,6 +649,7 @@ function SupportTreeDrawer({
                 tagsArrayList={tagsArrayList}
                 setTagsArrayList={setTagsArrayList}
                 enableDisableTagsHandler={enableDisableTagsHandler}
+                currentCampId={campRecord?.camp_num}
               />
             </div>
 
