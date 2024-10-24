@@ -182,7 +182,7 @@ function SupportTreeDrawer({
       //   (item) => item?.camp_num != removeParentCamps?.at(0)?.camp_num
       // );
   
-      topicSupportList = removeCamps(topicSupportList, parentSupportDataList);
+      topicSupportList = removeCamps(topicSupportList, removeParentCamps);
   
       //Step - 2
       //Insert current working camp at remove support order at step 1
