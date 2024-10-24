@@ -154,12 +154,12 @@ function SupportTreeDrawer({
   function removeCamps(supportListArray, removedCampsArray) {
     // Create a set of camp numbers from removedCampsArray for quick lookup
     const removedCampNums = new Set(
-      removedCampsArray.map((camp) => camp.camp_num)
+      removedCampsArray?.map((camp) => camp?.camp_num)
     );
 
     // Filter out the supportListArray items whose camp_num exists in removedCampsArray
-    return supportListArray.filter(
-      (support) => !removedCampNums.has(support.camp_num)
+    return supportListArray?.filter(
+      (support) => !removedCampNums?.has(support?.camp_num)
     );
   }
 
