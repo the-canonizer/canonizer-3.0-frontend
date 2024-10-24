@@ -116,10 +116,12 @@ function ProfileInfoForm({
 
   const handleDiscard = () => {
     form.setFieldsValue(initialValues); // Reset form to initial values
-    if (userProfileData?.address_1 == getAddress1 || getAddress1 == "" ) {
+    if (userProfileData?.address_1 == getAddress1 || getAddress1 == "") {
       setAddress(userProfileData.address_1); // Set to userProfileData's address if available
+      setIsButtonDisabled(true)
     } else {
       setAddress(getAddress1); // Fallback to getAddress1
+      setIsButtonDisabled(true)
     }
   };
 
@@ -143,16 +145,10 @@ function ProfileInfoForm({
     }
   };
 
-const handleDiscardOnAddress1 = ()=>{
-  if(address == userProfileData.address_1){
-    setIsButtonDisabled(true);
+  const handleDiscardOnAddress1 = () => {
+    setIsButtonDisabled(false);
     setAfterSaveChangeDisable(false);
-
-  }else {
-      setIsButtonDisabled(false);
-      setAfterSaveChangeDisable(false);
-    }
-}
+  }
   const newEmailHandleClick = async () => {
     if (step === 0) {
       getEmailChaneRequest();
@@ -421,13 +417,13 @@ const handleDiscardOnAddress1 = ()=>{
         {suggestions.map((suggestion, index) => {
           const style = suggestion.active
             ? {
-                backgroundColor: "#f8f8f8",
-                cursor: "pointer",
-              }
+              backgroundColor: "#f8f8f8",
+              cursor: "pointer",
+            }
             : {
-                backgroundColor: "#ffffff",
-                cursor: "pointer",
-              };
+              backgroundColor: "#ffffff",
+              cursor: "pointer",
+            };
           return (
             <div
               className=" bg-white shadow-lg border border-canLightGrey p-2"
@@ -691,24 +687,24 @@ const handleDiscardOnAddress1 = ()=>{
           <Row gutter={30}>
             <Col md={12} sm={24} className="w-full">
               <Form.Item
-              rules={[
-                {
-                  validator: (_, value) => {
-                    if (!value) return Promise.resolve();
-              
-                    // Regular expressions to check for letters and digits
-                    const letterOrDigitRegex = /[a-zA-Z0-9]/;  // Checks if there's at least one letter or digit
-              
-                    if (!letterOrDigitRegex.test(value)) {
-                      return Promise.reject(
-                        "Address must contain at least one letter or number."
-                      );
+                rules={[
+                  {
+                    validator: (_, value) => {
+                      if (!value) return Promise.resolve();
+
+                      // Regular expressions to check for letters and digits
+                      const letterOrDigitRegex = /[a-zA-Z0-9]/;  // Checks if there's at least one letter or digit
+
+                      if (!letterOrDigitRegex.test(value)) {
+                        return Promise.reject(
+                          "Address must contain at least one letter or number."
+                        );
+                      }
+
+                      return Promise.resolve();
                     }
-              
-                    return Promise.resolve();
                   }
-                }
-              ]}
+                ]}
                 name="address_1"
                 label={messages.labels.addressLine1}
                 className="[&_.ant-input-group-addon]:!w-[5rem] [&_.ant-form-item-label]:font-normal [&_.ant-select-selection-item]:!pr-6 [&_.ant-input-group-addon]:!bg-canGray text-sm text-canBlack font-normal [&_label]:text-sm [&_label]:font-medium [&_.ant-form-item-explain-error]:mb-6"
@@ -784,16 +780,16 @@ const handleDiscardOnAddress1 = ()=>{
                   {
                     validator: (_, value) => {
                       if (!value) return Promise.resolve();
-              
+
                       // Regular expressions to check for letters and digits
                       const letterOrDigitRegex = /[a-zA-Z0-9]/;  // Checks if there's at least one letter or digit
-              
+
                       if (!letterOrDigitRegex.test(value)) {
                         return Promise.reject(
                           "Address must contain at least one letter or number."
                         );
                       }
-              
+
                       return Promise.resolve();
                     }
                   }
@@ -840,20 +836,20 @@ const handleDiscardOnAddress1 = ()=>{
                 />
               </Form.Item>
               <Form.Item
-              rules={[
-                {
-                  validator: (_, value) => {
-                    if (!value) return Promise.resolve();
-            
-                    // Check if the value consists only of zeros
-                    if (/^0+$/.test(value)) {
-                      return Promise.reject("Postal code cannot be all zeros.");
+                rules={[
+                  {
+                    validator: (_, value) => {
+                      if (!value) return Promise.resolve();
+
+                      // Check if the value consists only of zeros
+                      if (/^0+$/.test(value)) {
+                        return Promise.reject("Postal code cannot be all zeros.");
+                      }
+
+                      return Promise.resolve();
                     }
-            
-                    return Promise.resolve();
                   }
-                }
-              ]}
+                ]}
                 name="postal_code"
                 label={messages.labels.zipCode}
                 className="[&_.ant-input-group-addon]:!w-[5rem] [&_.ant-select-selection-item]:!pr-6 [&_.ant-input-group-addon]:!bg-canGray text-sm text-canBlack font-normal [&_label]:text-sm [&_label]:font-medium [&_.ant-form-item-explain-error]:mb-6"
