@@ -349,14 +349,16 @@ function SupportTreeDrawer({
         form.resetFields();
         setSelectedValue(null);
       }
-    } else if (
-      shouldRemoveSupport() &&
-      supportedCampsStatus?.support_flag == 0
-    ) {
-      let type = "error";
-      openNotificationWithIcon("You are not supporter of this camp.", type);
-      setLoader(false);
-    } else {
+    } 
+    // else if (
+    //   shouldRemoveSupport() &&
+    //   supportedCampsStatus?.support_flag == 0
+    // ) {
+    //   let type = "error";
+    //   openNotificationWithIcon("You are not supporter of this camp.", type);
+    //   setLoader(false);
+    // } 
+    else {
       let payload = {
         topic_num: topicNum,
         add_camp:

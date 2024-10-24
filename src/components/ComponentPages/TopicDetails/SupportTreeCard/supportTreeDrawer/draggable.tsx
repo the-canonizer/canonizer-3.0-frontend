@@ -115,7 +115,7 @@ function SortableItem(props) {
           <MenuOutlined className="text-sm text-[#777F93]" />
           <Tag
             className="rounded-full mr-0 bg-[#F0F2FA] border-transparent font-semibold text-base px-5 py-2.5 leading-none text-canBlack"
-            closable={true}
+            closable={props?.id == props?.currentCampId && props?.drawerFor == "directAdd" ? false : true}
             onClose={(evt) => {
               evt.stopPropagation();
 
