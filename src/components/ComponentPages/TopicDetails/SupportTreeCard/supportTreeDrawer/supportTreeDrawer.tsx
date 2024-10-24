@@ -153,7 +153,7 @@ function SupportTreeDrawer({
 
   function getMisMatchingCampNums(arr1, arr2) {
     return arr1.filter(arr1Item => 
-      arr2?.some(arr2Item => arr1Item?.camp_num === arr2Item?.camp_num)
+      arr2?.some(arr2Item => arr1Item?.camp_num !== arr2Item?.camp_num)
     );
   }
 
@@ -172,11 +172,11 @@ function SupportTreeDrawer({
       //Step -1
       //compare & remove from topic support list
   
-      // topicSupportList = topicSupportList?.filter(
-      //   (item) => item?.camp_num != removeParentCamps?.at(0)?.camp_num
-      // );
+      topicSupportList = topicSupportList?.filter(
+        (item) => item?.camp_num != removeParentCamps?.at(0)?.camp_num
+      );
 
-      topicSupportList = getMisMatchingCampNums(topicSupportList, removeParentCamps)
+      // topicSupportList = getMisMatchingCampNums(topicSupportList, removeParentCamps)
     
       //Step - 2
       //Insert current working camp at remove support order at step 1
