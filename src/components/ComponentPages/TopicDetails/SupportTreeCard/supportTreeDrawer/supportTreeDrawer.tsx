@@ -196,7 +196,7 @@ function SupportTreeDrawer({
         link: `/topic/${campRecord?.topic_num}/${campRecord?.camp_num}-${campRecord?.camp_name}`,
       };
 
-      let currentCampExists = tagsArrayList?.filter(item=>item?.id == campRecord?.camp_num);
+      let currentCampExists = topicSupportList?.filter(item=>item?.camp_num == campRecord?.camp_num);
   
       if(currentCampExists?.length==0){
         topicSupportList.push(obj);
