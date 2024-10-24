@@ -311,6 +311,15 @@ function SupportTreeDrawer({
     }
     return remove_camps_ids;
   };
+
+  const updateSupportOrder = (tagsArray, removeCampsArr) => {
+   // Convert removeCampsArr to a Set for faster lookup
+   const removeSet = new Set(removeCampsArr);
+    
+   // Filter out the objects from tagsArray whose id is in removeCampsArr
+   return tagsArray.filter(tag => !removeSet.has(tag.id));
+  }
+
   // let nickNameID = nickNameList.filter(
   //   (values) => selectedtNickname == values.id
   // );
@@ -323,7 +332,7 @@ function SupportTreeDrawer({
         type: "direct",
         action: removeSupportFromCamps()?.length > 0 ? "partial" : "add",
         nick_name_id: selectedtNickname ? selectedtNickname : nickNameId,
-        order_update: transformSupportOrderForAPI(tagsArrayList),
+        order_update: transformSupportOrderForAPI(updateSupportOrder(tagsArrayList, removeSupportFromCamps())),
         reason_summary: values?.reason_summary,
         reason: selectedValue,
         citation_link: values?.citation_link,
@@ -358,7 +367,7 @@ function SupportTreeDrawer({
         type: "direct",
         action: removeSupportFromCamps()?.length > 0 ? "partial" : "add",
         nick_name_id: selectedtNickname ? selectedtNickname : nickNameId,
-        order_update: transformSupportOrderForAPI(tagsArrayList),
+        order_update: transformSupportOrderForAPI(updateSupportOrder(tagsArrayList, removeSupportFromCamps())),
         reason_summary: values?.reason_summary,
         reason: selectedValue,
         citation_link: values?.citation_link,
