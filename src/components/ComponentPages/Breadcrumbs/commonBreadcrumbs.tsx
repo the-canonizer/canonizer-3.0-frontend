@@ -372,6 +372,28 @@ function CommanBreadcrumbs({
 
   //     // eslint-disable-next-line react-hooks/exhaustive-deps
   //   }, []);
+  const handleTopicwarningIcon = () => {
+    const topicNum = payload?.topic_num || topicId;
+    const topicName = replaceSpecialCharacters(
+      breadCrumbRes?.topic_name || "",
+      "-"
+    );
+
+    const topicLink = `/topic/history/${topicNum}-${topicName}`;
+    const query = getQueryParams()?.returnQuery || "";
+    const url = `${topicLink}/1-Agreement${query ? `?${query}` : ""}`;
+    router.push(url);
+  };
+
+  const handleCampWarningIcon = () => {
+    const urlPart = `/camp/history/${
+      payload?.topic_num || topicId
+    }-${replaceSpecialCharacters(breadCrumbRes?.topic_name || "", "-")}`;
+    const camp_num = breadCrumbRes?.bread_crumb?.at(-1)?.camp_num;
+    const camp_name = breadCrumbRes?.bread_crumb?.at(-1)?.camp_name;
+    const url = `${urlPart}/${camp_num}-${camp_name}`;
+    router.push(url);
+  };
 
   let historyTitle = () => {
     let title: string;
@@ -819,7 +841,10 @@ function CommanBreadcrumbs({
                   placement="bottomLeft"
                   overlayClassName="warning-popover"
                 >
-                  <WarningOutlined className="text-[#F19C39] !mt-0" />
+                  <WarningOutlined
+                    className="text-[#F19C39] !mt-0"
+                    onClick={() => handleTopicwarningIcon()}
+                  />
                 </Popover>
               )}
 
@@ -923,7 +948,10 @@ function CommanBreadcrumbs({
                       placement="bottomLeft"
                       overlayClassName="warning-popover"
                     >
-                      <WarningOutlined className="text-[#F19C39] !mt-0" />
+                      <WarningOutlined
+                        className="text-[#F19C39] !mt-0"
+                        onClick={() => handleCampWarningIcon()}
+                      />
                     </Popover>
                   )}
 
@@ -982,7 +1010,10 @@ function CommanBreadcrumbs({
                             placement="bottomLeft"
                             overlayClassName="warning-popover"
                           >
-                            <WarningOutlined className="text-[#F19C39] !mt-0" />
+                            <WarningOutlined
+                              className="text-[#F19C39] !mt-0"
+                              onClick={() => handleCampWarningIcon()}
+                            />
                           </Popover>
                         )}
 
