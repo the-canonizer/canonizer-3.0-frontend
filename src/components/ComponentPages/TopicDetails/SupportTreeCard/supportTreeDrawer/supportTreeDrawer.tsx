@@ -153,7 +153,7 @@ function SupportTreeDrawer({
 
   function getMisMatchingCampNums(arr1, arr2) {
     return arr1.filter(arr1Item => 
-      arr2.some(arr2Item => arr1Item.camp_num === arr2Item.camp_num)
+      arr2?.some(arr2Item => arr1Item?.camp_num === arr2Item?.camp_num)
     );
   }
 
@@ -222,9 +222,8 @@ function SupportTreeDrawer({
         setcampIds(campsIds);
         setParentSupportDataList(response?.data?.remove_camps);
         dispatch(setCheckSupportExistsData(response?.data));
-
-        getActiveSupportTopic(response?.data?.remove_camps);
       }
+      getActiveSupportTopic(response?.data?.remove_camps);
     }
   };
 
