@@ -77,7 +77,6 @@ export default function Draggable({
 function SortableItem(props) {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: props.id });
-  console.log("draggabel", props?.id, props?.currentCampId);
 
   const style = {
     transform: CSS.Transform.toString(transform),
