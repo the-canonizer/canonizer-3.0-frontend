@@ -151,9 +151,15 @@ function SupportTreeDrawer({
     setSelectedValue(value);
   };
 
-  function getMisMatchingCampNums(arr1, arr2) {
-    return arr1.filter(arr1Item => 
-      arr2?.some(arr2Item => arr1Item?.camp_num !== arr2Item?.camp_num)
+  function removeCamps(supportListArray, removedCampsArray) {
+    // Create a set of camp numbers from removedCampsArray for quick lookup
+    const removedCampNums = new Set(
+      removedCampsArray.map((camp) => camp.camp_num)
+    );
+
+    // Filter out the supportListArray items whose camp_num exists in removedCampsArray
+    return supportListArray.filter(
+      (support) => !removedCampNums.has(support.camp_num)
     );
   }
 
@@ -169,31 +175,33 @@ function SupportTreeDrawer({
     let topicSupportList = (await GetActiveSupportTopic(topicNum && body))
       ?.data;
 
-      //Step -1
-      //compare & remove from topic support list
-  
-      topicSupportList = topicSupportList?.filter(
-        (item) => item?.camp_num != removeParentCamps?.at(0)?.camp_num
-      );
+    //Step -1
+    //compare & remove from topic support list
 
-      // topicSupportList = getMisMatchingCampNums(topicSupportList, removeParentCamps)
-    
-      //Step - 2
-      //Insert current working camp at remove support order at step 1
-  
-      let obj = {
-        topic_num: campRecord?.topic_num,
-        camp_num: campRecord?.camp_num,
-        support_order: removeParentCamps?.at(0)?.support_order,
-        camp_name: campRecord?.camp_name,
-        title: topicSupportList?.at(0)?.title,
-        link: `/topic/${campRecord?.topic_num}/${campRecord?.camp_num}-${campRecord?.camp_name}`,
-      };
-  
-      topicSupportList.push(obj);
-      topicSupportList = topicSupportList.sort((a, b) => a?.support_order - b?.support_order)
-        
-      setTagsArrayList(transformDataForDraggable(topicSupportList));
+    topicSupportList = topicSupportList?.filter(
+      (item) => item?.camp_num != removeParentCamps?.at(0)?.camp_num
+    );
+
+    topicSupportList = removeCamps(topicSupportList, parentSupportDataList);
+
+    //Step - 2
+    //Insert current working camp at remove support order at step 1
+
+    let obj = {
+      topic_num: campRecord?.topic_num,
+      camp_num: campRecord?.camp_num,
+      support_order: removeParentCamps?.at(0)?.support_order,
+      camp_name: campRecord?.camp_name,
+      title: topicSupportList?.at(0)?.title,
+      link: `/topic/${campRecord?.topic_num}/${campRecord?.camp_num}-${campRecord?.camp_name}`,
+    };
+
+    topicSupportList.push(obj);
+    topicSupportList = topicSupportList.sort(
+      (a, b) => a?.support_order - b?.support_order
+    );
+
+    setTagsArrayList(transformDataForDraggable(topicSupportList));
   };
 
   function getCampNums(camps) {
