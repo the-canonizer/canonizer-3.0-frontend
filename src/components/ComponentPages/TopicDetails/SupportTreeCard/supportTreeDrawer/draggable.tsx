@@ -25,6 +25,7 @@ export default function Draggable({
   setTagsArrayList,
   enableDisableTagsHandler,
   currentCampId = null,
+  drawerFor="",
 }) {
   const sensors = useSensors(
     useSensor(MouseSensor, { activationConstraint: { distance: 10 } }),
@@ -53,6 +54,7 @@ export default function Draggable({
               index={index}
               enableDisableTagsHandler={enableDisableTagsHandler}
               currentCampId={currentCampId}
+              drawerFor={drawerFor}
             />
           ))}
         </SortableContext>
@@ -124,7 +126,7 @@ function SortableItem(props) {
               data-testid="styles_Bluecolor"
               style={{
                 color:
-                  props?.id == props?.currentCampId ? "#5482C8" : "#242B37",
+                  props?.id == props?.currentCampId && props?.drawerFor == "directAdd" ? "#5482C8" : "#242B37",
               }}
               onClick={(e) => {
                 e.preventDefault();
@@ -133,7 +135,7 @@ function SortableItem(props) {
             >
               {`${props?.index + 1}-${props?.item?.content}`}
             </a>
-            {props?.id == props?.currentCampId && (
+            {props?.id == props?.currentCampId && props?.drawerFor == "directAdd" && (
               <Popover
                 content="This is the new camp to which you are adding your support."
                 trigger="hover"
