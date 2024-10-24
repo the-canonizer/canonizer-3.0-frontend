@@ -175,32 +175,33 @@ function SupportTreeDrawer({
     let topicSupportList = (await GetActiveSupportTopic(topicNum && body))
       ?.data;
 
-    //Step -1
-    //compare & remove from topic support list
-
-    // topicSupportList = topicSupportList?.filter(
-    //   (item) => item?.camp_num != removeParentCamps?.at(0)?.camp_num
-    // );
-
-    topicSupportList = removeCamps(topicSupportList, parentSupportDataList);
-
-    //Step - 2
-    //Insert current working camp at remove support order at step 1
-
-    let obj = {
-      topic_num: campRecord?.topic_num,
-      camp_num: campRecord?.camp_num,
-      support_order: removeParentCamps?.at(0)?.support_order,
-      camp_name: campRecord?.camp_name,
-      title: topicSupportList?.at(0)?.title,
-      link: `/topic/${campRecord?.topic_num}/${campRecord?.camp_num}-${campRecord?.camp_name}`,
-    };
-
-    topicSupportList.push(obj);
-    topicSupportList = topicSupportList.sort(
-      (a, b) => a?.support_order - b?.support_order
-    );
-
+      if(removeParentCamps?.length > 0){
+      //Step -1
+      //compare & remove from topic support list
+  
+      // topicSupportList = topicSupportList?.filter(
+      //   (item) => item?.camp_num != removeParentCamps?.at(0)?.camp_num
+      // );
+  
+      topicSupportList = removeCamps(topicSupportList, parentSupportDataList);
+  
+      //Step - 2
+      //Insert current working camp at remove support order at step 1
+      
+      let obj = {
+        topic_num: campRecord?.topic_num,
+        camp_num: campRecord?.camp_num,
+        support_order: removeParentCamps?.at(0)?.support_order,
+        camp_name: campRecord?.camp_name,
+        title: topicSupportList?.at(0)?.title,
+        link: `/topic/${campRecord?.topic_num}/${campRecord?.camp_num}-${campRecord?.camp_name}`,
+      };
+  
+      topicSupportList.push(obj);
+      topicSupportList = topicSupportList.sort(
+        (a, b) => a?.support_order - b?.support_order
+      );
+    }
     setTagsArrayList(transformDataForDraggable(topicSupportList));
   };
 
