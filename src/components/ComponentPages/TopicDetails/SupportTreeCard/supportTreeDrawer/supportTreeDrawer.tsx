@@ -175,7 +175,6 @@ function SupportTreeDrawer({
     let topicSupportList = (await GetActiveSupportTopic(topicNum && body))
       ?.data;
 
-      if(removeParentCamps?.length > 0){
       //Step -1
       //compare & remove from topic support list
   
@@ -196,12 +195,17 @@ function SupportTreeDrawer({
         title: topicSupportList?.at(0)?.title,
         link: `/topic/${campRecord?.topic_num}/${campRecord?.camp_num}-${campRecord?.camp_name}`,
       };
+
+      let currentCampExists = tagsArrayList?.filter(item=>item?.id == campRecord?.camp_num);
   
-      topicSupportList.push(obj);
+      if(currentCampExists?.length==0){
+        topicSupportList.push(obj);
+      }
+
       topicSupportList = topicSupportList.sort(
         (a, b) => a?.support_order - b?.support_order
       );
-    }
+    
     setTagsArrayList(transformDataForDraggable(topicSupportList));
   };
 
