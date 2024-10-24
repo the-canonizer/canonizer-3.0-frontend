@@ -377,10 +377,11 @@ function SupportTreeDrawer({
     if (res && res.status_code == 200) {
       let type = "success";
       openNotificationWithIcon(res?.message, type);
-      await handleCancelSupportCamps({ isCallApiStatus: true });
-      getCurrentCampRecordApi(reqBody);
       setDrawerFor("");
       onClose();
+
+      await handleCancelSupportCamps({ isCallApiStatus: true });
+      getCurrentCampRecordApi(reqBody);
     }
   };
 

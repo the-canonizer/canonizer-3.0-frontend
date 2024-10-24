@@ -295,81 +295,82 @@ function ManageStatements({ isEdit = false }) {
   };
 
   const autoSave = async (data) => {
-    setIsAutoSaving(true);
-    setStatement(data?.statement);
+    if (!isEdit || isDraft) {
+      setIsAutoSaving(true);
+      setStatement(data?.statement);
+      let payload = {
+        ...data,
+        statement: data?.statement
+          ? data?.statement
+          : localStorage.getItem("autosaveContent"),
+      };
 
-    let payload = {
-      ...data,
-      statement: data?.statement
-        ? data?.statement
-        : localStorage.getItem("autosaveContent"),
-    };
-
-    if (
-      !localStorage.getItem(
-        `draft_record_id-${getTopicAndCampIds()?.topicNum}-${
-          getTopicAndCampIds()?.campNum
-        }`
-      )
-    ) {
-      payload.topic_num = getTopicAndCampIds()?.topicNum;
-      payload.topic_name = getTopicAndCampIds()?.topicName;
-      payload.camp_num = getTopicAndCampIds()?.campNum;
-      payload.submitter = nickNameData?.at(0)?.id;
-      payload.event_type = "create";
-      payload.statement_id = null;
-      payload.is_draft = true;
-    } else {
-      payload.topic_num = getTopicAndCampIds()?.topicNum;
-      payload.topic_name = getTopicAndCampIds()?.topicName;
-      payload.camp_num = getTopicAndCampIds()?.campNum;
-      payload.submitter = nickNameData?.at(0)?.id;
-      payload.event_type = "edit";
-      payload.statement_id = localStorage
-        .getItem(
+      if (
+        !localStorage.getItem(
           `draft_record_id-${getTopicAndCampIds()?.topicNum}-${
             getTopicAndCampIds()?.campNum
           }`
-        )
-        ?.split("-")
-        ?.at(0);
-      payload.is_draft = true;
-    }
+        ) &&
+        !editStatementData?.statement?.id
+      ) {
+        payload.topic_num = getTopicAndCampIds()?.topicNum;
+        payload.topic_name = getTopicAndCampIds()?.topicName;
+        payload.camp_num = getTopicAndCampIds()?.campNum;
+        payload.submitter = nickNameData?.at(0)?.id;
+        payload.event_type = "create";
+        payload.statement_id = null;
+        payload.is_draft = true;
+      } else {
+        payload.topic_num = getTopicAndCampIds()?.topicNum;
+        payload.topic_name = getTopicAndCampIds()?.topicName;
+        payload.camp_num = getTopicAndCampIds()?.campNum;
+        payload.submitter = nickNameData?.at(0)?.id;
+        payload.event_type = "edit";
+        payload.statement_id = editStatementData
+          ? editStatementData?.statement?.id
+          : localStorage.getItem(
+              `draft_record_id-${getTopicAndCampIds()?.topicNum}-${
+                getTopicAndCampIds()?.campNum
+              }`
+            );
+        payload.is_draft = true;
+      }
 
-    if (navigator.onLine) {
-      if (payload?.statement) {
-        let res = await updateStatementApi(payload);
+      if (navigator.onLine) {
+        if (payload?.statement) {
+          let res = await updateStatementApi(payload);
 
-        if (res?.data?.draft_record_id) {
-          localStorage.setItem(
-            `draft_record_id-${getTopicAndCampIds()?.topicNum}-${
-              getTopicAndCampIds()?.campNum
-            }`,
-            res?.data?.draft_record_id +
-              "-" +
-              getTopicAndCampIds()?.topicNum +
-              "-" +
-              getTopicAndCampIds()?.campNum
-          );
+          if (res?.data?.draft_record_id) {
+            localStorage.setItem(
+              `draft_record_id-${getTopicAndCampIds()?.topicNum}-${
+                getTopicAndCampIds()?.campNum
+              }`,
+              res?.data?.draft_record_id +
+                "-" +
+                getTopicAndCampIds()?.topicNum +
+                "-" +
+                getTopicAndCampIds()?.campNum
+            );
+          }
+
+          localStorage.removeItem("autosaveContent"); // Clear local storage on successful save
+
+          setTime({
+            ...time,
+            last_save_time: getEpochTime(),
+          });
         }
-
-        localStorage.removeItem("autosaveContent"); // Clear local storage on successful save
+      } else {
+        localStorage.setItem("autosaveContent", payload?.statement); // Save to local storage if offline
 
         setTime({
           ...time,
           last_save_time: getEpochTime(),
         });
       }
-    } else {
-      localStorage.setItem("autosaveContent", payload?.statement); // Save to local storage if offline
 
-      setTime({
-        ...time,
-        last_save_time: getEpochTime(),
-      });
+      setIsAutoSaving(false);
     }
-
-    setIsAutoSaving(false);
   };
 
   const saveDraftHandler = async () => {
@@ -505,9 +506,12 @@ function ManageStatements({ isEdit = false }) {
       Modal.confirm({
         title: "Do you want to discard this change?",
         icon: <ExclamationCircleFilled />,
+        okText: "Publish Anyway",
+        cancelText: "Review Other Statements",
+        onCancel: () => { router.push({ pathname: getBackURL() });},	
         content:
-          "Please note that any unsaved changes will be lost if you cancel.",
-        async onOk() {
+          "The draft you have created is based on anolder version. Multiple versions have been published since then. Checkout the newer versions before publishing your statement.",
+          async onOk() {
           try {
             const editInfo = editStatementData;
             const parent_camp = editInfo?.parent_camp;
@@ -688,11 +692,16 @@ function ManageStatements({ isEdit = false }) {
     }
 
     if (update || isDraft || isEdit) {
-      // reqBody.statement_id = topicNum;
-      reqBody.statement_id = localStorage
-        .getItem(`draft_record_id-${topicNum}-${campNum}`)
-        ?.split("-")
-        ?.at(0);
+      reqBody.statement_id = editStatementData
+        ? editStatementData?.statement?.id
+        : localStorage
+            .getItem(`draft_record_id-${topicNum}-${campNum}`)
+            ?.split("-")
+            ?.at(0);
+      // reqBody.statement_id = localStorage
+      //   .getItem(`draft_record_id-${topicNum}-${campNum}`)
+      //   ?.split("-")
+      //   ?.at(0);
     } else {
       reqBody.statement_id = null;
     }
