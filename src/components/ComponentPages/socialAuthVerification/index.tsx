@@ -47,19 +47,17 @@ function SocialAuthVerification() {
   }, [isUserAuthenticated]);
 
   const onLinkClick = async (provider) => {
-    let body = { provider };
-    const res = await socialLogin(body);
+    const res = await socialLogin({ provider });
 
     if (res && res.status_code === 200) {
-      // dispatch(
-      //   setValue({ label: "redirect_tab_setting", value: "tab=social" })
-      // );
       localStorage.setItem("redirectTab", "tab=social");
       window.location.href = res.data.url;
     }
   };
 
   const onUnlinkClick = async (provider, id) => {
+    console.log("provider", provider, id);
+
     const res = await userSocialAccountDelete(id);
 
     if (res && res.status_code === 200) {
@@ -80,7 +78,7 @@ function SocialAuthVerification() {
             onLinkClick={() => {
               onLinkClick("google");
             }}
-            provider=" "
+            provider="google"
             icon={
               <Image
                 width={32}
@@ -97,7 +95,7 @@ function SocialAuthVerification() {
             onLinkClick={() => {
               onLinkClick("facebook");
             }}
-            provider=""
+            provider="facebook"
             icon={
               <Image
                 width={32}
@@ -121,7 +119,7 @@ function SocialAuthVerification() {
             onLinkClick={() => {
               onLinkClick("linkedin");
             }}
-            provider=""
+            provider="linkedin"
             icon={
               <Image
                 width={32}
@@ -137,7 +135,7 @@ function SocialAuthVerification() {
             onLinkClick={() => {
               onLinkClick("github");
             }}
-            provider=""
+            provider="github"
             icon={
               <Image
                 width={32}
