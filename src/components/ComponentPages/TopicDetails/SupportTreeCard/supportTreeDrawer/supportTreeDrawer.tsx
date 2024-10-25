@@ -151,35 +151,62 @@ function SupportTreeDrawer({
     setSelectedValue(value);
   };
 
+  function removeCamps(supportListArray, removedCampsArray) {
+    // Create a set of camp numbers from removedCampsArray for quick lookup
+    const removedCampNums = new Set(
+      removedCampsArray?.map((camp) => camp?.camp_num)
+    );
+
+    // Filter out the supportListArray items whose camp_num exists in removedCampsArray
+    return supportListArray?.filter(
+      (support) => !removedCampNums?.has(support?.camp_num)
+    );
+  }
+
   const reqBodyData: any = {
     topic_num: topicNum,
     camp_num: camp_num,
   };
 
-  const getActiveSupportTopic = async () => {
+  const getActiveSupportTopic = async (removeParentCamps) => {
     let body = {
       topic_num: topicNum,
     };
-    const response = await GetActiveSupportTopic(topicNum && body);
+    let topicSupportList = (await GetActiveSupportTopic(topicNum && body))
+      ?.data;
 
-    let camp_data: any = {
-      id: Number(camp_num),
-      content: campRecord?.camp_name,
-      disabled: false,
-    };
+      //Step -1
+      //compare & remove from topic support list
+  
+      // topicSupportList = topicSupportList?.filter(
+      //   (item) => item?.camp_num != removeParentCamps?.at(0)?.camp_num
+      // );
+  
+      topicSupportList = removeCamps(topicSupportList, removeParentCamps);
+  
+      //Step - 2
+      //Insert current working camp at remove support order at step 1
+      
+      let obj = {
+        topic_num: campRecord?.topic_num,
+        camp_num: campRecord?.camp_num,
+        support_order: removeParentCamps?.at(0)?.support_order,
+        camp_name: campRecord?.camp_name,
+        title: topicSupportList?.at(0)?.title,
+        link: `/topic/${campRecord?.topic_num}/${campRecord?.camp_num}-${campRecord?.camp_name}`,
+      };
 
-    if (currentGetCheckSupportExistsData?.warning) {
-      setTagsArrayList([camp_data]);
-    } else {
-      if (currentGetCheckSupportExistsData.support_flag == 0) {
-        setTagsArrayList([
-          ...transformDataForDraggable(response?.data),
-          camp_data,
-        ]);
-      } else if (currentGetCheckSupportExistsData.support_flag == 1) {
-        setTagsArrayList(transformDataForDraggable(response?.data));
+      let currentCampExists = topicSupportList?.filter(item=>item?.camp_num == campRecord?.camp_num);
+  
+      if(currentCampExists?.length==0){
+        topicSupportList.push(obj);
       }
-    }
+
+      topicSupportList = topicSupportList.sort(
+        (a, b) => a?.support_order - b?.support_order
+      );
+    
+    setTagsArrayList(transformDataForDraggable(topicSupportList));
   };
 
   function getCampNums(camps) {
@@ -209,6 +236,7 @@ function SupportTreeDrawer({
         setParentSupportDataList(response?.data?.remove_camps);
         dispatch(setCheckSupportExistsData(response?.data));
       }
+      getActiveSupportTopic(response?.data?.remove_camps);
     }
   };
 
@@ -283,6 +311,15 @@ function SupportTreeDrawer({
     }
     return remove_camps_ids;
   };
+
+  const updateSupportOrder = (tagsArray, removeCampsArr) => {
+   // Convert removeCampsArr to a Set for faster lookup
+   const removeSet = new Set(removeCampsArr);
+    
+   // Filter out the objects from tagsArray whose id is in removeCampsArr
+   return tagsArray.filter(tag => !removeSet.has(tag.id));
+  }
+
   // let nickNameID = nickNameList.filter(
   //   (values) => selectedtNickname == values.id
   // );
@@ -295,7 +332,7 @@ function SupportTreeDrawer({
         type: "direct",
         action: removeSupportFromCamps()?.length > 0 ? "partial" : "add",
         nick_name_id: selectedtNickname ? selectedtNickname : nickNameId,
-        order_update: transformSupportOrderForAPI(tagsArrayList),
+        order_update: transformSupportOrderForAPI(updateSupportOrder(tagsArrayList, removeSupportFromCamps())),
         reason_summary: values?.reason_summary,
         reason: selectedValue,
         citation_link: values?.citation_link,
@@ -312,14 +349,16 @@ function SupportTreeDrawer({
         form.resetFields();
         setSelectedValue(null);
       }
-    } else if (
-      shouldRemoveSupport() &&
-      supportedCampsStatus?.support_flag == 0
-    ) {
-      let type = "error";
-      openNotificationWithIcon("You are not supporter of this camp.", type);
-      setLoader(false);
-    } else {
+    } 
+    // else if (
+    //   shouldRemoveSupport() &&
+    //   supportedCampsStatus?.support_flag == 0
+    // ) {
+    //   let type = "error";
+    //   openNotificationWithIcon("You are not supporter of this camp.", type);
+    //   setLoader(false);
+    // } 
+    else {
       let payload = {
         topic_num: topicNum,
         add_camp:
@@ -330,7 +369,7 @@ function SupportTreeDrawer({
         type: "direct",
         action: removeSupportFromCamps()?.length > 0 ? "partial" : "add",
         nick_name_id: selectedtNickname ? selectedtNickname : nickNameId,
-        order_update: transformSupportOrderForAPI(tagsArrayList),
+        order_update: transformSupportOrderForAPI(updateSupportOrder(tagsArrayList, removeSupportFromCamps())),
         reason_summary: values?.reason_summary,
         reason: selectedValue,
         citation_link: values?.citation_link,
@@ -448,10 +487,9 @@ function SupportTreeDrawer({
         drawerFor === "delegateAdd" ||
         drawerFor === "manageSupport"
       ) {
+        GetCheckStatusData();
         getCanonizedNicknameList();
         getCurrentCampRecordApi(reqBody);
-        GetCheckStatusData();
-        getActiveSupportTopic();
       }
 
       if (drawerFor === "signPetition") {
@@ -484,7 +522,7 @@ function SupportTreeDrawer({
   const checkAllTagsSelected = () => {
     return tagsArrayList?.length > 0
       ? tagsArrayList?.filter((item) => item.disabled == true)?.length ==
-      tagsArrayList?.length
+          tagsArrayList?.length
       : false;
   };
 
@@ -567,8 +605,8 @@ function SupportTreeDrawer({
       </div>
 
       {drawerFor === "directAdd" ||
-        drawerFor === "delegateAdd" ||
-        drawerFor === "manageSupport" ? (
+      drawerFor === "delegateAdd" ||
+      drawerFor === "manageSupport" ? (
         <Form
           form={form}
           layout="vertical"
@@ -634,6 +672,8 @@ function SupportTreeDrawer({
                 tagsArrayList={tagsArrayList}
                 setTagsArrayList={setTagsArrayList}
                 enableDisableTagsHandler={enableDisableTagsHandler}
+                currentCampId={campRecord?.camp_num}
+                drawerFor={drawerFor}
               />
             </div>
 
@@ -651,11 +691,14 @@ function SupportTreeDrawer({
               )}
               <Row gutter={16}>
                 <Col span={24} sm={12}>
-                  <Form.Item name="nickname" label={
-                    <>
-                      Nickname <span className="text-red-600">*</span>
-                    </>
-                  }>
+                  <Form.Item
+                    name="nickname"
+                    label={
+                      <>
+                        Nickname <span className="text-red-600">*</span>
+                      </>
+                    }
+                  >
                     <div className="thm-select">
                       <div className="prefix-icon">
                         <UserOutlined />
@@ -897,11 +940,14 @@ function SupportTreeDrawer({
             <div>
               <Row gutter={16}>
                 <Col span={24} sm={12}>
-                  <Form.Item name="nickname" label={
-                    <>
-                      Nickname <span className="text-red-600">*</span>
-                    </>
-                  }>
+                  <Form.Item
+                    name="nickname"
+                    label={
+                      <>
+                        Nickname <span className="text-red-600">*</span>
+                      </>
+                    }
+                  >
                     <div className="thm-select">
                       <div className="prefix-icon">
                         <UserOutlined />

@@ -17,13 +17,15 @@ import {
   useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { MenuOutlined } from "@ant-design/icons";
-import { Tag } from "antd";
+import { InfoCircleOutlined, MenuOutlined } from "@ant-design/icons";
+import { Popover, Tag } from "antd";
 
 export default function Draggable({
   tagsArrayList,
   setTagsArrayList,
   enableDisableTagsHandler,
+  currentCampId = null,
+  drawerFor="",
 }) {
   const sensors = useSensors(
     useSensor(MouseSensor, { activationConstraint: { distance: 10 } }),
@@ -51,6 +53,8 @@ export default function Draggable({
               item={item}
               index={index}
               enableDisableTagsHandler={enableDisableTagsHandler}
+              currentCampId={currentCampId}
+              drawerFor={drawerFor}
             />
           ))}
         </SortableContext>
@@ -98,14 +102,20 @@ function SortableItem(props) {
             props?.enableDisableTagsHandler(props.item);
           }}
         >
-          {`${props?.index + 1}-${props?.item?.content}`}
+          <span
+            style={{
+              color: props?.id == props?.currentCampId ? "#5482C8" : "#242B37",
+            }}
+          >
+            {`${props?.index + 1}-${props?.item?.content}`}
+          </span>
         </Tag>
       ) : (
         <>
           <MenuOutlined className="text-sm text-[#777F93]" />
           <Tag
             className="rounded-full mr-0 bg-[#F0F2FA] border-transparent font-semibold text-base px-5 py-2.5 leading-none text-canBlack"
-            closable={true}
+            closable={props?.id == props?.currentCampId && props?.drawerFor == "directAdd" ? false : true}
             onClose={(evt) => {
               evt.stopPropagation();
 
@@ -114,6 +124,10 @@ function SortableItem(props) {
           >
             <a
               data-testid="styles_Bluecolor"
+              style={{
+                color:
+                  props?.id == props?.currentCampId && props?.drawerFor == "directAdd" ? "#5482C8" : "#242B37",
+              }}
               onClick={(e) => {
                 e.preventDefault();
                 window.location.href = props?.item?.link;
@@ -121,6 +135,16 @@ function SortableItem(props) {
             >
               {`${props?.index + 1}-${props?.item?.content}`}
             </a>
+            {props?.id == props?.currentCampId && props?.drawerFor == "directAdd" && (
+              <Popover
+                content="This is the new camp to which you are adding your support."
+                trigger="hover"
+              >
+                <InfoCircleOutlined
+                  style={{ marginLeft: "8px", cursor: "pointer" }}
+                />
+              </Popover>
+            )}
           </Tag>
         </>
       )}
