@@ -43,9 +43,12 @@ function WrappedApp({
 
   if (!isLatestVersion) {
     console.info({ latestVersion });
-    localStorage.clear();
-    sessionStorage.clear();
-    document.cookie = 'loginToken=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+    const authToken = localStorage.getItem("auth_token");
+    if (authToken) {
+      localStorage.removeItem("auth_token");
+    }
+    document.cookie =
+      "loginToken=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
     emptyCacheStorage();
   }
 
