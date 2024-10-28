@@ -107,7 +107,7 @@ export const logout = async (error = "", status = null, count: number = 1) => {
       }
 
       count === 1 &&
-        message.error(error);
+        message.error("Your session has expired. Please log in again!");
 
       return true;
     }
