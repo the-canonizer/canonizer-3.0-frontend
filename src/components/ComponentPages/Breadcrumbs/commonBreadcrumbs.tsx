@@ -794,104 +794,59 @@ function CommanBreadcrumbs({
   };
 
   return (
-    <>
-      <div className="max-md:mx-[-1rem] max-md:shadow-[0px_10px_10px_0px_#0000001A] md:bg-canGrey1_Opacity70 p-[1.5rem] md:rounded-[1.25rem] flex items-center justify-between gap-2 mb-10">
-        {/* <Spin spinning={false}> */}
-        {isForumPage ? (
-          <Popover
-            content="Back to camp forum page"
-            key="back_button"
-            placement="topLeft"
-          >
-            <Button
-              onClick={() => {
-                router.push({
-                  pathname:
-                    "/forum/" +
-                    router?.query?.topic +
-                    "/" +
-                    router?.query?.camp +
-                    "/threads",
-                });
-              }}
-              // className={styles.backButton}
-            >
-              <DoubleLeftOutlined />
-            </Button>
-          </Popover>
-        ) : null}
-
-        <Breadcrumb
-          className="cn-breadcrumbs"
-          separator={
-            <>
-              <i className="icon-angle-right-arrow !leading-[0]"></i>
-            </>
-          }
+    <div className="max-md:mx-[-1rem] max-md:shadow-[0px_10px_10px_0px_#0000001A] md:bg-canGrey1_Opacity70 p-[1.5rem] md:rounded-[1.25rem] flex items-center justify-between gap-2 mb-10">
+      {isForumPage ? (
+        <Popover
+          content="Back to camp forum page"
+          key="back_button"
+          placement="topLeft"
         >
-          <Breadcrumb.Item href="/">
-            <i className="icon-home"></i>
-          </Breadcrumb.Item>
-          {
-            <Breadcrumb.Item className="flex items-center gap-1.5">
-              {topicRecord?.in_review_changes > 0 && (
-                <Popover
-                  content={warningTextForTopic}
-                  className="title-popover"
-                  placement="bottomLeft"
-                  overlayClassName="warning-popover"
-                >
-                  <WarningOutlined
-                    className="text-[#F19C39] !mt-0"
-                    onClick={() => handleTopicwarningIcon()}
-                  />
-                </Popover>
-              )}
+          <Button
+            onClick={() => {
+              router.push({
+                pathname:
+                  "/forum/" +
+                  router?.query?.topic +
+                  "/" +
+                  router?.query?.camp +
+                  "/threads",
+              });
+            }}
+          >
+            <DoubleLeftOutlined />
+          </Button>
+        </Popover>
+      ) : null}
 
-              <div className="flex items-center gap-1.5">
-                Topic:{" "}
-                {loadingIndicator ? (
-                  <CustomSkelton skeltonFor="topicName" bodyCount={1} />
-                ) : (
-                  <>
-                    {breadCrumbRes && !!topicSubscriptionID && (
-                      <Tooltip
-                        title="You have subscribed to the entire topic."
-                        key="camp_subscribed_icon"
-                      >
-                        <small style={{ alignSelf: "center" }}>
-                          <i className="icon-subscribe text-canBlue"></i>
-                        </small>
-                      </Tooltip>
-                    )}
-                    <Link
-                      href={`${topicLink}/1-Agreement?${
-                        getQueryParams()?.returnQuery || ""
-                      }`}
-                    >
-                      {breadCrumbRes?.topic_name}
-                    </Link>
-                    {isMobile && (
-                      <Popover
-                        content={content}
-                        title={title}
-                        className="title-popover"
-                        overlayClassName="max-lg:hidden"
-                      >
-                        <InfoCircleOutlined />
-                      </Popover>
-                    )}
-                  </>
-                )}
-              </div>
-            </Breadcrumb.Item>
-          }
-          {/* below code optional on isTopic history page and there is tooltip and classes should be verify in testing */}
-          {/* {breadCrumbRes
-            ? !isTopicHistoryPage &&
-              breadCrumbRes &&
-              !!topicSubscriptionID && (
-                <Breadcrumb.Item href={topicHref}>
+      <Breadcrumb
+        className="cn-breadcrumbs"
+        separator={<i className="icon-angle-right-arrow !leading-[0]"></i>}
+      >
+        <Breadcrumb.Item href="/">
+          <i className="icon-home"></i>
+        </Breadcrumb.Item>
+        {
+          <Breadcrumb.Item className="flex items-center gap-1.5">
+            {topicRecord?.in_review_changes > 0 && (
+              <Popover
+                content={warningTextForTopic}
+                className="title-popover"
+                placement="bottomLeft"
+                overlayClassName="warning-popover"
+              >
+                <WarningOutlined
+                  className="text-[#F19C39] !mt-0"
+                  onClick={() => handleTopicwarningIcon()}
+                />
+              </Popover>
+            )}
+
+            <div className="flex items-center gap-1.5">
+              Topic:{" "}
+              {loadingIndicator ? (
+                <CustomSkelton skeltonFor="topicName" bodyCount={1} />
+              ) : (
+                <>
                   {breadCrumbRes && !!topicSubscriptionID && (
                     <Tooltip
                       title="You have subscribed to the entire topic."
@@ -902,165 +857,121 @@ function CommanBreadcrumbs({
                       </small>
                     </Tooltip>
                   )}
-                  {topicRecord?.in_review_changes > 0 && (
-                    <Popover
-                      content={warningTextForTopic}
-                      className="title-popover"
-                      placement="bottomLeft"
-                      overlayClassName="warning-popover"
-                    >
-                      <WarningOutlined className="text-[#F19C39] !mt-0" />
-                    </Popover>
-                  )}
-                  <Popover
-                    content={content}
-                    title={title}
-                    className="title-popover"
+                  <Link
+                    href={`${topicLink}/1-Agreement?${
+                      getQueryParams()?.returnQuery || ""
+                    }`}
                   >
-                    <div className="flex items-center gap-1.5">
-                      Topic: {breadCrumbRes?.topic_name}
+                    {breadCrumbRes?.topic_name}
+                  </Link>
+                  {isMobile && (
+                    <Popover
+                      content={content}
+                      title={title}
+                      className="title-popover"
+                      overlayClassName="max-lg:hidden"
+                    >
                       <InfoCircleOutlined />
-                    </div>
-                  </Popover>
-                </Breadcrumb.Item>
-              )
-            : "N/A"
-            } */}
-          {isEventLine ? (
-            ""
-          ) : breadCrumbRes ? (
-            breadCrumbRes?.bread_crumb?.length > 1 && !showAll ? (
-              <>
-                <Breadcrumb.Item>
-                  <Button
-                    className="bg-white p-1  h-[11px] flex items-center rounded-lg border-[#dbd8d8]"
-                    size="small"
-                    onClick={() => setShowAll(true)}
-                  >
-                    <EllipsisOutlined className="!mt-0 !leading-none" />
-                  </Button>
-                </Breadcrumb.Item>
-                <Breadcrumb.Item className="flex items-center gap-1.5">
-                  {campRecord?.in_review_changes > 0 && (
-                    <Popover
-                      content={warningText}
-                      className="title-popover"
-                      placement="bottomLeft"
-                      overlayClassName="warning-popover"
-                    >
-                      <WarningOutlined
-                        className="text-[#F19C39] !mt-0"
-                        onClick={() => handleCampWarningIcon()}
-                      />
                     </Popover>
                   )}
+                </>
+              )}
+            </div>
+          </Breadcrumb.Item>
+        }
+        {isEventLine ? (
+          ""
+        ) : breadCrumbRes ? (
+          breadCrumbRes?.bread_crumb?.length > 1 && !showAll ? (
+            <>
+              <Breadcrumb.Item>
+                <Button
+                  className="bg-white p-1  h-[11px] flex items-center rounded-lg border-[#dbd8d8]"
+                  size="small"
+                  onClick={() => setShowAll(true)}
+                >
+                  <EllipsisOutlined className="!mt-0 !leading-none" />
+                </Button>
+              </Breadcrumb.Item>
+              <Breadcrumb.Item className="flex items-center gap-1.5">
+                {campRecord?.in_review_changes > 0 && (
+                  <Popover
+                    content={warningText}
+                    className="title-popover"
+                    placement="bottomLeft"
+                    overlayClassName="warning-popover"
+                  >
+                    <WarningOutlined
+                      className="text-[#F19C39] !mt-0"
+                      onClick={() => handleCampWarningIcon()}
+                    />
+                  </Popover>
+                )}
 
-                  <div className="flex items-center gap-1.5">
-                    Camp:{" "}
-                    {loadingIndicator ? (
-                      <CustomSkelton skeltonFor="topicName" bodyCount={1} />
-                    ) : (
-                      <>
-                        {breadCrumbRes &&
-                          !!campSubscriptionID &&
-                          !isTopicHistoryPage && (
-                            <Tooltip
-                              title="You have subscribed to this camp."
-                              key="camp_subscribed_icon"
-                            >
-                              <small style={{ alignSelf: "center" }}>
-                                <i className="icon-subscribe text-canBlue"></i>
-                              </small>
-                            </Tooltip>
-                          )}
-                        <Link
-                          href={`${topicLink}/${
-                            breadCrumbRes?.bread_crumb?.at(-1)?.camp_num
-                          }-${breadCrumbRes?.bread_crumb?.at(-1)?.camp_name}`}
+                <div className="flex items-center gap-1.5">
+                  Camp:{" "}
+                  {loadingIndicator ? (
+                    <CustomSkelton skeltonFor="topicName" bodyCount={1} />
+                  ) : (
+                    <>
+                      {breadCrumbRes &&
+                        !!campSubscriptionID &&
+                        !isTopicHistoryPage && (
+                          <Tooltip
+                            title="You have subscribed to this camp."
+                            key="camp_subscribed_icon"
+                          >
+                            <small style={{ alignSelf: "center" }}>
+                              <i className="icon-subscribe text-canBlue"></i>
+                            </small>
+                          </Tooltip>
+                        )}
+                      <Link
+                        href={`${topicLink}/${
+                          breadCrumbRes?.bread_crumb?.at(-1)?.camp_num
+                        }-${breadCrumbRes?.bread_crumb?.at(-1)?.camp_name}`}
+                      >
+                        {breadCrumbRes?.bread_crumb?.at(-1)?.camp_name}
+                      </Link>
+                      {isMobile && (
+                        <Popover
+                          content={contentForCamp}
+                          title={title2}
+                          overlayClassName="max-lg:hidden"
                         >
-                          {breadCrumbRes?.bread_crumb?.at(-1)?.camp_name}
-                        </Link>
-                        {isMobile && (
-                          <Popover
-                            content={contentForCamp}
-                            title={title2}
-                            overlayClassName="max-lg:hidden"
-                          >
-                            <InfoCircleOutlined />
-                          </Popover>
-                        )}
-                      </>
-                    )}
-                  </div>
-                </Breadcrumb.Item>
-              </>
-            ) : (
-              breadCrumbRes?.bread_crumb?.map((camp, index) => {
-                return (
-                  <>
-                    {index === breadCrumbRes?.bread_crumb?.length - 1 ? (
-                      <Breadcrumb.Item
-                        className="flex items-center gap-1.5"
-                        key={index}
-                      >
-                        {campRecord?.in_review_changes > 0 && (
-                          <Popover
-                            content={warningText}
-                            className="title-popover"
-                            placement="bottomLeft"
-                            overlayClassName="warning-popover"
-                          >
-                            <WarningOutlined
-                              className="text-[#F19C39] !mt-0"
-                              onClick={() => handleCampWarningIcon()}
-                            />
-                          </Popover>
-                        )}
+                          <InfoCircleOutlined />
+                        </Popover>
+                      )}
+                    </>
+                  )}
+                </div>
+              </Breadcrumb.Item>
+            </>
+          ) : (
+            breadCrumbRes?.bread_crumb?.map((camp, index) => {
+              return (
+                <>
+                  {index === breadCrumbRes?.bread_crumb?.length - 1 ? (
+                    <Breadcrumb.Item
+                      className="flex items-center gap-1.5"
+                      key={index}
+                    >
+                      {campRecord?.in_review_changes > 0 && (
+                        <Popover
+                          content={warningText}
+                          className="title-popover"
+                          placement="bottomLeft"
+                          overlayClassName="warning-popover"
+                        >
+                          <WarningOutlined
+                            className="text-[#F19C39] !mt-0"
+                            onClick={() => handleCampWarningIcon()}
+                          />
+                        </Popover>
+                      )}
 
-                        <div className="flex items-center gap-1.5">
-                          Camp:{" "}
-                          {loadingIndicator ? (
-                            <CustomSkelton
-                              skeltonFor="topicName"
-                              bodyCount={1}
-                            />
-                          ) : (
-                            <>
-                              {breadCrumbRes &&
-                                !!campSubscriptionID &&
-                                !isTopicHistoryPage && (
-                                  <Tooltip
-                                    title="You have subscribed to this camp."
-                                    key="camp_subscribed_icon"
-                                  >
-                                    <small style={{ alignSelf: "center" }}>
-                                      <i className="icon-subscribe text-canBlue"></i>
-                                    </small>
-                                  </Tooltip>
-                                )}
-                              <Link
-                                href={`${topicLink}/${camp?.camp_num}-${camp?.camp_name}`}
-                              >
-                                {camp?.camp_name}
-                              </Link>
-                              {isMobile && (
-                                <Popover
-                                  content={contentForCamp}
-                                  title={title2}
-                                  overlayClassName="max-lg:hidden"
-                                >
-                                  <InfoCircleOutlined />
-                                </Popover>
-                              )}
-                            </>
-                          )}
-                        </div>
-                      </Breadcrumb.Item>
-                    ) : (
-                      <Breadcrumb.Item
-                        className="flex items-center gap-1.5"
-                        key={index}
-                      >
+                      <div className="flex items-center gap-1.5">
+                        Camp:{" "}
                         {loadingIndicator ? (
                           <CustomSkelton skeltonFor="topicName" bodyCount={1} />
                         ) : (
@@ -1078,121 +989,159 @@ function CommanBreadcrumbs({
                                 </Tooltip>
                               )}
                             <Link
-                              href={`${topicLink}/${camp.camp_num}-${camp.camp_name}`}
+                              href={`${topicLink}/${camp?.camp_num}-${camp?.camp_name}`}
                             >
                               {camp?.camp_name}
                             </Link>
+                            {isMobile && (
+                              <Popover
+                                content={contentForCamp}
+                                title={title2}
+                                overlayClassName="max-lg:hidden"
+                              >
+                                <InfoCircleOutlined />
+                              </Popover>
+                            )}
                           </>
                         )}
-                      </Breadcrumb.Item>
-                    )}
-                  </>
-                );
-              })
-            )
-          ) : (
-            "N/A"
-          )}
-          {compareMode && (
-            <Breadcrumb.Item>
-              <div className="flex  items-center gap-1.5">
-                <span className="font-normal text-base text-canBlack whitespace-nowrap">
-                  {historyTitle() == "Statement History"
-                    ? "Statement History"
-                    : historyTitle() == "Topic History"
-                    ? "Topic History"
-                    : historyTitle() == "Camp History"
-                    ? "Camp History"
-                    : null}
-                </span>
-              </div>
-            </Breadcrumb.Item>
-          )}
-          {isEventLine && (
-            <Breadcrumb.Item>
-              <div className="flex  items-center gap-1.5">
-                <span className="font-normal  text-canBlack whitespace-nowrap">
-                  Event Line
-                </span>
-                {isMobile && (
-                  <Popover
-                    content={contentEventLine}
-                    overlayClassName="max-lg:hidden"
-                    className="title-popover"
-                    placement="bottom"
-                  >
-                    <span className="flex shrink-0">
-                      <InfoCircleOutlined />
-                    </span>
-                  </Popover>
-                )}
-              </div>
-            </Breadcrumb.Item>
-          )}
-        </Breadcrumb>
-        {getCurrentUpdateButton()}
-        {!isEventLine && (
-          <div className="flex items-center gap-3 shrink-0">
-            {!isHtmlContent &&
-            isTopicPage &&
-            campStatement?.length > 0 &&
-            (campStatement?.at(0)?.in_review_changes > 0 ||
-              campStatement?.at(0)?.grace_period_record_count > 0 ||
-              campStatement?.at(0)?.parsed_value) ? (
-              <div className="topicDetailsCollapseFooter printHIde camp">
-                <PrimaryButton
-                  disabled={campRecord?.is_archive == 1 ? true : false}
-                  className="printHIde sm:hidden md:hidden hidden lg:flex !h-[40px] py-2.5 px-5 items-center text-sm"
-                  onClick={() => {
-                    router?.push(
-                      `${`/statement/history/${replaceSpecialCharacters(
-                        router?.query?.camp?.at(0),
-                        "-"
-                      )}/${replaceSpecialCharacters(
-                        router?.query?.camp?.at(1) ?? "1-Agreement",
-                        "-"
-                      )}`}`
-                    );
-                  }}
-                  id="add-camp-statement-btn"
-                >
-                  {K?.exceptionalMessages?.manageCampStatementButton}
-                  <Image
-                    src="/images/manage-btn-icon.svg"
-                    alt=""
-                    height={24}
-                    width={24}
-                  />
-                </PrimaryButton>
-              </div>
-            ) : null}
-
-            {!isHtmlContent &&
-              !isHistoryPage &&
-              !compareMode &&
-              campRecord?.is_archive == 0 && (
-                <SecondaryButton
-                  className="hidden px-8 py-2.5 lg:flex items-center text-sm gap-1"
-                  size="large"
-                  onClick={handleClick}
-                  disabled={!tree?.["1"]?.is_valid_as_of_time ? true : false}
-                >
-                  Create Camp
-                  <Image
-                    src="/images/Icon-plus.svg"
-                    alt="svg"
-                    className="icon-topic"
-                    height={16}
-                    width={16}
-                  />
-                </SecondaryButton>
-              )}
-            {isHtmlContent}
-          </div>
+                      </div>
+                    </Breadcrumb.Item>
+                  ) : (
+                    <Breadcrumb.Item
+                      className="flex items-center gap-1.5"
+                      key={index}
+                    >
+                      {loadingIndicator ? (
+                        <CustomSkelton skeltonFor="topicName" bodyCount={1} />
+                      ) : (
+                        <>
+                          {breadCrumbRes &&
+                            !!campSubscriptionID &&
+                            !isTopicHistoryPage && (
+                              <Tooltip
+                                title="You have subscribed to this camp."
+                                key="camp_subscribed_icon"
+                              >
+                                <small style={{ alignSelf: "center" }}>
+                                  <i className="icon-subscribe text-canBlue"></i>
+                                </small>
+                              </Tooltip>
+                            )}
+                          <Link
+                            href={`${topicLink}/${camp.camp_num}-${camp.camp_name}`}
+                          >
+                            {camp?.camp_name}
+                          </Link>
+                        </>
+                      )}
+                    </Breadcrumb.Item>
+                  )}
+                </>
+              );
+            })
+          )
+        ) : (
+          "N/A"
         )}
-        {/* </Spin> */}
-      </div>
-    </>
+        {compareMode && (
+          <Breadcrumb.Item>
+            <div className="flex  items-center gap-1.5">
+              <span className="font-normal text-base text-canBlack whitespace-nowrap">
+                {historyTitle() == "Statement History"
+                  ? "Statement History"
+                  : historyTitle() == "Topic History"
+                  ? "Topic History"
+                  : historyTitle() == "Camp History"
+                  ? "Camp History"
+                  : null}
+              </span>
+            </div>
+          </Breadcrumb.Item>
+        )}
+        {isEventLine && (
+          <Breadcrumb.Item>
+            <div className="flex  items-center gap-1.5">
+              <span className="font-normal  text-canBlack whitespace-nowrap">
+                Event Line
+              </span>
+              {isMobile && (
+                <Popover
+                  content={contentEventLine}
+                  overlayClassName="max-lg:hidden"
+                  className="title-popover"
+                  placement="bottom"
+                >
+                  <span className="flex shrink-0">
+                    <InfoCircleOutlined />
+                  </span>
+                </Popover>
+              )}
+            </div>
+          </Breadcrumb.Item>
+        )}
+      </Breadcrumb>
+      {getCurrentUpdateButton()}
+      {!isEventLine && (
+        <div className="flex items-center gap-3 shrink-0">
+          {!isHtmlContent &&
+          isTopicPage &&
+          campStatement?.length > 0 &&
+          (campStatement?.at(0)?.in_review_changes > 0 ||
+            campStatement?.at(0)?.grace_period_record_count > 0 ||
+            campStatement?.at(0)?.parsed_value) ? (
+            <div className="topicDetailsCollapseFooter printHIde camp">
+              <PrimaryButton
+                disabled={campRecord?.is_archive == 1 ? true : false}
+                className="printHIde sm:hidden md:hidden hidden lg:flex !h-[40px] py-2.5 px-5 items-center text-sm"
+                onClick={() => {
+                  router?.push(
+                    `${`/statement/history/${replaceSpecialCharacters(
+                      router?.query?.camp?.at(0),
+                      "-"
+                    )}/${replaceSpecialCharacters(
+                      router?.query?.camp?.at(1) ?? "1-Agreement",
+                      "-"
+                    )}`}`
+                  );
+                }}
+                id="add-camp-statement-btn"
+              >
+                {K?.exceptionalMessages?.manageCampStatementButton}
+                <Image
+                  src="/images/manage-btn-icon.svg"
+                  alt=""
+                  height={24}
+                  width={24}
+                />
+              </PrimaryButton>
+            </div>
+          ) : null}
+          {!isHtmlContent &&
+            !isHistoryPage &&
+            !compareMode &&
+            campRecord?.is_archive == 0 &&
+            breadCrumbRes?.bread_crumb?.length && (
+              <SecondaryButton
+                className="hidden px-8 py-2.5 lg:flex items-center text-sm gap-1"
+                size="large"
+                onClick={handleClick}
+                disabled={!tree?.["1"]?.is_valid_as_of_time ? true : false}
+              >
+                Create Camp
+                <Image
+                  src="/images/Icon-plus.svg"
+                  alt="svg"
+                  className="icon-topic"
+                  height={16}
+                  width={16}
+                />
+              </SecondaryButton>
+            )}
+          {isHtmlContent}
+        </div>
+      )}
+      {/* </Spin> */}
+    </div>
   );
 }
 
