@@ -159,7 +159,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
           update_all: 1,
           fetch_topic_history: viewThisVersionCheck ? 1 : null,
         };
-        console.log(reqBodyForService, tree, "reqBodyForService");
+        
 
         const reqBody = {
           topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
