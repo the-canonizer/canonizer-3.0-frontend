@@ -65,7 +65,6 @@ const ProfileInfo = () => {
   const [userProfileData, setUserProfileData] = useState("");
   const [getAddress1, setgetAddress1] = useState("");
 
-
   const { addForProfileInfo, zipCodeForProfileInfo } = useSelector(
     (state: RootState) => ({
       disableButtonForProfileInfo:
@@ -130,7 +129,7 @@ const ProfileInfo = () => {
     values = { ...values, ...updateAddress };
 
     let res = await UpdateUserProfileInfo(values);
-    setgetAddress1(res?.data?.address_1)
+    setgetAddress1(res?.data?.address_1);
     if (res && res.status_code === 200) {
       message.success(res.message);
       if (values?.default_algo) {

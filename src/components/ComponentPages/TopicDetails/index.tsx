@@ -159,7 +159,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
           update_all: 1,
           fetch_topic_history: viewThisVersionCheck ? 1 : null,
         };
-        console.log(reqBodyForService, tree, "reqBodyForService");
+        
 
         const reqBody = {
           topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
@@ -568,7 +568,8 @@ const TopicDetails = ({ serverSideCall }: any) => {
         }
         afterHeader={
           <Fragment>
-            {tree && tree?.["1"]?.is_valid_as_of_time || asof === "default" ? (
+            {(tree && tree?.["1"]?.is_valid_as_of_time) ||
+            asof === "default" ? (
               // <CampInfoBar
               //   isTopicPage={true}
               //   payload={{
@@ -577,8 +578,8 @@ const TopicDetails = ({ serverSideCall }: any) => {
               //   }}
               //   getCheckSupportStatus={getCheckSupportStatus}
               // />
-              
-              <CommanBreadcrumbs 
+
+              <CommanBreadcrumbs
                 isTopicPage={true}
                 payload={{
                   topic_num: +router?.query?.camp[0]?.split("-")[0],
@@ -586,7 +587,6 @@ const TopicDetails = ({ serverSideCall }: any) => {
                 }}
                 getCheckSupportStatus={getCheckSupportStatus}
               />
-              
             ) : (
               // <CampInfoBar
               //   payload={{
@@ -596,7 +596,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
               //   isTopicHistoryPage={true}
               //   getCheckSupportStatus={getCheckSupportStatus}
               // />
-              <CommanBreadcrumbs 
+              <CommanBreadcrumbs
                 payload={{
                   topic_num: +router?.query?.camp[0]?.split("-")[0],
                   camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),

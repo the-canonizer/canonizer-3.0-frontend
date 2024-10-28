@@ -113,14 +113,9 @@ const CustomSkelton = ({
     >
       <Skeleton className={styles[stylingClass]} count={bodyCount} />
     </Card>
-  ) :  skeltonFor == "topicName" ? (
-    <Skeleton
-      height={20}
-      width={120}
-      style={{ margin: "2px 0" }}
-      count={1}
-    />
-  ): skeltonFor == "profileInfoForm" ? (
+  ) : skeltonFor == "topicName" ? (
+    <Skeleton height={20} width={120} style={{ margin: "2px 0" }} count={1} />
+  ) : skeltonFor == "profileInfoForm" ? (
     <Form layout="vertical">
       <Row gutter={30}>
         <Col md={12}>

@@ -113,7 +113,6 @@ function CompareStatementUI({
     }
   };
 
-
   // useEffect(() => {
   //   const isDefaultOrReview = asof === "default" || asof === "review";
 
@@ -150,10 +149,10 @@ function CompareStatementUI({
         compareMode={compareMode}
         historyOF={router?.query?.from}
       /> */}
-       <CommonBreadcrumbs 
-          compareMode={compareMode}
-          historyOF={router?.query?.from}
-        />
+      <CommonBreadcrumbs
+        compareMode={compareMode}
+        historyOF={router?.query?.from}
+      />
       {/* <Breadcrumbs compareMode={compareMode} historyOF={router?.query?.from} /> */}
 
       {isLoading ? (

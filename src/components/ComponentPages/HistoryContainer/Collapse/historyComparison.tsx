@@ -42,9 +42,7 @@ const HistoryComparison = ({
       {historyOf === "topic" || historyOf === "camp" ? (
         <p className="mb-2.5">
           {capitalizeFirstLetter(historyOf)} Name:{" "}
-          <span>
-            {campStatement?.parsed_value}
-          </span>
+          <span>{campStatement?.parsed_value}</span>
         </p>
       ) : null}
 

@@ -175,37 +175,39 @@ function SupportTreeDrawer({
     let topicSupportList = (await GetActiveSupportTopic(topicNum && body))
       ?.data;
 
-      //Step -1
-      //compare & remove from topic support list
-  
-      // topicSupportList = topicSupportList?.filter(
-      //   (item) => item?.camp_num != removeParentCamps?.at(0)?.camp_num
-      // );
-  
-      topicSupportList = removeCamps(topicSupportList, removeParentCamps);
-  
-      //Step - 2
-      //Insert current working camp at remove support order at step 1
-      
-      let obj = {
-        topic_num: campRecord?.topic_num,
-        camp_num: campRecord?.camp_num,
-        support_order: removeParentCamps?.at(0)?.support_order,
-        camp_name: campRecord?.camp_name,
-        title: topicSupportList?.at(0)?.title,
-        link: `/topic/${campRecord?.topic_num}/${campRecord?.camp_num}-${campRecord?.camp_name}`,
-      };
+    //Step -1
+    //compare & remove from topic support list
 
-      let currentCampExists = topicSupportList?.filter(item=>item?.camp_num == campRecord?.camp_num);
-  
-      if(currentCampExists?.length==0){
-        topicSupportList.push(obj);
-      }
+    // topicSupportList = topicSupportList?.filter(
+    //   (item) => item?.camp_num != removeParentCamps?.at(0)?.camp_num
+    // );
 
-      topicSupportList = topicSupportList.sort(
-        (a, b) => a?.support_order - b?.support_order
-      );
-    
+    topicSupportList = removeCamps(topicSupportList, removeParentCamps);
+
+    //Step - 2
+    //Insert current working camp at remove support order at step 1
+
+    let obj = {
+      topic_num: campRecord?.topic_num,
+      camp_num: campRecord?.camp_num,
+      support_order: removeParentCamps?.at(0)?.support_order,
+      camp_name: campRecord?.camp_name,
+      title: topicSupportList?.at(0)?.title,
+      link: `/topic/${campRecord?.topic_num}/${campRecord?.camp_num}-${campRecord?.camp_name}`,
+    };
+
+    let currentCampExists = topicSupportList?.filter(
+      (item) => item?.camp_num == campRecord?.camp_num
+    );
+
+    if (currentCampExists?.length == 0) {
+      topicSupportList.push(obj);
+    }
+
+    topicSupportList = topicSupportList.sort(
+      (a, b) => a?.support_order - b?.support_order
+    );
+
     setTagsArrayList(transformDataForDraggable(topicSupportList));
   };
 
@@ -313,12 +315,12 @@ function SupportTreeDrawer({
   };
 
   const updateSupportOrder = (tagsArray, removeCampsArr) => {
-   // Convert removeCampsArr to a Set for faster lookup
-   const removeSet = new Set(removeCampsArr);
-    
-   // Filter out the objects from tagsArray whose id is in removeCampsArr
-   return tagsArray.filter(tag => !removeSet.has(tag.id));
-  }
+    // Convert removeCampsArr to a Set for faster lookup
+    const removeSet = new Set(removeCampsArr);
+
+    // Filter out the objects from tagsArray whose id is in removeCampsArr
+    return tagsArray.filter((tag) => !removeSet.has(tag.id));
+  };
 
   // let nickNameID = nickNameList.filter(
   //   (values) => selectedtNickname == values.id
@@ -332,7 +334,9 @@ function SupportTreeDrawer({
         type: "direct",
         action: removeSupportFromCamps()?.length > 0 ? "partial" : "add",
         nick_name_id: selectedtNickname ? selectedtNickname : nickNameId,
-        order_update: transformSupportOrderForAPI(updateSupportOrder(tagsArrayList, removeSupportFromCamps())),
+        order_update: transformSupportOrderForAPI(
+          updateSupportOrder(tagsArrayList, removeSupportFromCamps())
+        ),
         reason_summary: values?.reason_summary,
         reason: selectedValue,
         citation_link: values?.citation_link,
@@ -349,7 +353,7 @@ function SupportTreeDrawer({
         form.resetFields();
         setSelectedValue(null);
       }
-    } 
+    }
     // else if (
     //   shouldRemoveSupport() &&
     //   supportedCampsStatus?.support_flag == 0
@@ -357,7 +361,7 @@ function SupportTreeDrawer({
     //   let type = "error";
     //   openNotificationWithIcon("You are not supporter of this camp.", type);
     //   setLoader(false);
-    // } 
+    // }
     else {
       let payload = {
         topic_num: topicNum,
@@ -369,7 +373,9 @@ function SupportTreeDrawer({
         type: "direct",
         action: removeSupportFromCamps()?.length > 0 ? "partial" : "add",
         nick_name_id: selectedtNickname ? selectedtNickname : nickNameId,
-        order_update: transformSupportOrderForAPI(updateSupportOrder(tagsArrayList, removeSupportFromCamps())),
+        order_update: transformSupportOrderForAPI(
+          updateSupportOrder(tagsArrayList, removeSupportFromCamps())
+        ),
         reason_summary: values?.reason_summary,
         reason: selectedValue,
         citation_link: values?.citation_link,

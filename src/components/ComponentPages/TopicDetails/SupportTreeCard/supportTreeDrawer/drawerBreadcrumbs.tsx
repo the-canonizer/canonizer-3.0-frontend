@@ -16,7 +16,7 @@ function DrawerBreadcrumbs({ topicRecord, campRecord, topic_name }: any) {
       </Breadcrumb.Item>
       {campRecord && campRecord?.parentCamps?.length > 1 && !showAll ? (
         <>
-          <Breadcrumb.Item > 
+          <Breadcrumb.Item>
             <Button
               className="bg-white p-1 h-[11px] flex items-center rounded-lg border-[#dbd8d8]"
               size="small"

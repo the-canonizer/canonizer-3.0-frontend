@@ -454,7 +454,10 @@ export default function DirectSupportedCampsUI({
                                       // Add your click handling logic here
                                     }
                                   }}
-                                  onTouchStart={(e) => {e.preventDefault();window.location.href = tag.camp_link;}} // Optional: if you need to support touch events
+                                  onTouchStart={(e) => {
+                                    e.preventDefault();
+                                    window.location.href = tag.camp_link;
+                                  }} // Optional: if you need to support touch events
                                 >
                                   {tag.camp_name.length > 30
                                     ? `${tag.camp_name.substring(0, 30)}...`

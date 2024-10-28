@@ -59,9 +59,7 @@ const EventLine = () => {
       ) : (
         <>
           {/* <TimelineInfoBar isEventLine={isEventLine} /> */}
-          <CommonBreadcrumbs 
-          isEventLine={isEventLine}
-        />
+          <CommonBreadcrumbs isEventLine={isEventLine} />
           <div className="eventline-content-wrap">
             <div className="eventline-algo-content">
               <SideBarTimeline
