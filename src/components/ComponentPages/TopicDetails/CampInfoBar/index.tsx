@@ -151,7 +151,7 @@ const TimelineInfoBar = ({
   }, []);
 
   const isMobile = window.matchMedia("(min-width: 1024.98px)").matches;
-  
+
   const onCampForumClick = () => {
     const topicName = topicRecord?.topic_name?.replaceAll(" ", "-");
     const campName = campRecord?.camp_name?.replaceAll(" ", "-");

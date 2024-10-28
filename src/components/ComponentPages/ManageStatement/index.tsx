@@ -508,10 +508,12 @@ function ManageStatements({ isEdit = false }) {
         icon: <ExclamationCircleFilled />,
         okText: "Publish Anyway",
         cancelText: "Review Other Statements",
-        onCancel: () => { router.push({ pathname: getBackURL() });},	
+        onCancel: () => {
+          router.push({ pathname: getBackURL() });
+        },
         content:
           "The draft you have created is based on anolder version. Multiple versions have been published since then. Checkout the newer versions before publishing your statement.",
-          async onOk() {
+        async onOk() {
           try {
             const editInfo = editStatementData;
             const parent_camp = editInfo?.parent_camp;

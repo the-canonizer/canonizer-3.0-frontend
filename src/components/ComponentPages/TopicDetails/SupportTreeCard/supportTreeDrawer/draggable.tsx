@@ -25,7 +25,7 @@ export default function Draggable({
   setTagsArrayList,
   enableDisableTagsHandler,
   currentCampId = null,
-  drawerFor="",
+  drawerFor = "",
 }) {
   const sensors = useSensors(
     useSensor(MouseSensor, { activationConstraint: { distance: 10 } }),
@@ -115,7 +115,12 @@ function SortableItem(props) {
           <MenuOutlined className="text-sm text-[#777F93]" />
           <Tag
             className="rounded-full mr-0 bg-[#F0F2FA] border-transparent font-semibold text-base px-5 py-2.5 leading-none text-canBlack"
-            closable={props?.id == props?.currentCampId && props?.drawerFor == "directAdd" ? false : true}
+            closable={
+              props?.id == props?.currentCampId &&
+              props?.drawerFor == "directAdd"
+                ? false
+                : true
+            }
             onClose={(evt) => {
               evt.stopPropagation();
 
@@ -126,7 +131,10 @@ function SortableItem(props) {
               data-testid="styles_Bluecolor"
               style={{
                 color:
-                  props?.id == props?.currentCampId && props?.drawerFor == "directAdd" ? "#5482C8" : "#242B37",
+                  props?.id == props?.currentCampId &&
+                  props?.drawerFor == "directAdd"
+                    ? "#5482C8"
+                    : "#242B37",
               }}
               onClick={(e) => {
                 e.preventDefault();
@@ -135,16 +143,17 @@ function SortableItem(props) {
             >
               {`${props?.index + 1}-${props?.item?.content}`}
             </a>
-            {props?.id == props?.currentCampId && props?.drawerFor == "directAdd" && (
-              <Popover
-                content="This is the new camp to which you are adding your support."
-                trigger="hover"
-              >
-                <InfoCircleOutlined
-                  style={{ marginLeft: "8px", cursor: "pointer" }}
-                />
-              </Popover>
-            )}
+            {props?.id == props?.currentCampId &&
+              props?.drawerFor == "directAdd" && (
+                <Popover
+                  content="This is the new camp to which you are adding your support."
+                  trigger="hover"
+                >
+                  <InfoCircleOutlined
+                    style={{ marginLeft: "8px", cursor: "pointer" }}
+                  />
+                </Popover>
+              )}
           </Tag>
         </>
       )}

@@ -571,10 +571,10 @@ const CreateNewCamp = () => {
 
   return (
     <CustomSpinner key="create-topic-spinner" spinning={isLoading}>
-      {!!payload?.camp_num &&
-      //  <CampInfoBar payload={payload} />
-      <CommonBreadcrumbs payload={payload} />
-       }
+      {!!payload?.camp_num && (
+        //  <CampInfoBar payload={payload} />
+        <CommonBreadcrumbs payload={payload} />
+      )}
 
       <Row gutter={20} className="mb-5">
         {campExist ? (

@@ -70,7 +70,7 @@ function ProfileInfoForm({
   setOTP,
   setToggleVerifyButton,
   setAddress,
-  getAddress1
+  getAddress1,
 }: any) {
   const [step, setStep] = useState(0);
   const [updatedEmail, setUpdatedEmail] = useState("");
@@ -118,10 +118,10 @@ function ProfileInfoForm({
     form.setFieldsValue(initialValues); // Reset form to initial values
     if (userProfileData?.address_1 == getAddress1 || getAddress1 == "") {
       setAddress(userProfileData.address_1); // Set to userProfileData's address if available
-      setIsButtonDisabled(true)
+      setIsButtonDisabled(true);
     } else {
       setAddress(getAddress1); // Fallback to getAddress1
-      setIsButtonDisabled(true)
+      setIsButtonDisabled(true);
     }
   };
 
@@ -148,7 +148,7 @@ function ProfileInfoForm({
   const handleDiscardOnAddress1 = () => {
     setIsButtonDisabled(false);
     setAfterSaveChangeDisable(false);
-  }
+  };
   const newEmailHandleClick = async () => {
     if (step === 0) {
       getEmailChaneRequest();
@@ -417,13 +417,13 @@ function ProfileInfoForm({
         {suggestions.map((suggestion, index) => {
           const style = suggestion.active
             ? {
-              backgroundColor: "#f8f8f8",
-              cursor: "pointer",
-            }
+                backgroundColor: "#f8f8f8",
+                cursor: "pointer",
+              }
             : {
-              backgroundColor: "#ffffff",
-              cursor: "pointer",
-            };
+                backgroundColor: "#ffffff",
+                cursor: "pointer",
+              };
           return (
             <div
               className=" bg-white shadow-lg border border-canLightGrey p-2"
@@ -693,7 +693,7 @@ function ProfileInfoForm({
                       if (!value) return Promise.resolve();
 
                       // Regular expressions to check for letters and digits
-                      const letterOrDigitRegex = /[a-zA-Z0-9]/;  // Checks if there's at least one letter or digit
+                      const letterOrDigitRegex = /[a-zA-Z0-9]/; // Checks if there's at least one letter or digit
 
                       if (!letterOrDigitRegex.test(value)) {
                         return Promise.reject(
@@ -702,8 +702,8 @@ function ProfileInfoForm({
                       }
 
                       return Promise.resolve();
-                    }
-                  }
+                    },
+                  },
                 ]}
                 name="address_1"
                 label={messages.labels.addressLine1}
@@ -782,7 +782,7 @@ function ProfileInfoForm({
                       if (!value) return Promise.resolve();
 
                       // Regular expressions to check for letters and digits
-                      const letterOrDigitRegex = /[a-zA-Z0-9]/;  // Checks if there's at least one letter or digit
+                      const letterOrDigitRegex = /[a-zA-Z0-9]/; // Checks if there's at least one letter or digit
 
                       if (!letterOrDigitRegex.test(value)) {
                         return Promise.reject(
@@ -791,8 +791,8 @@ function ProfileInfoForm({
                       }
 
                       return Promise.resolve();
-                    }
-                  }
+                    },
+                  },
                 ]}
                 name="address_2"
                 label={messages.labels.addressLine2}
@@ -808,7 +808,7 @@ function ProfileInfoForm({
                   placeholder={messages.placeholders.addressLine2}
                   size="large"
                   maxLength={255}
-                  // onKeyDown={(e) => checkSpecialChar(e)} 
+                  // onKeyDown={(e) => checkSpecialChar(e)}
                   className="font-medium [&_.ant-input]:!rounded-tl-lg [&_.ant-input]:!rounded-bl-lg [&_.ant-input-group-addon]:!rounded-tr-lg [&_.ant-input-group-addon]:!rounded-br-lg [&_.ant-input-affix-wrapper]:!h-[40px] [&_.ant-input-affix-wrapper]:!py-0 [&_.ant-input]:!pl-2.5 [&_.ant-input-affix-wrapper]:!rounded-tl-lg [&_.ant-input-affix-wrapper]:!rounded-bl-lg  [&_.ant-input]:!text-base [&_.ant-input]:!font-normal [&_.ant-select-selection-item]:!flex [&_.ant-select-selection-item]:!items-center [&_.ant-select]:!my-0 [&_.ant-input-affix-wrapper-lg]:!pl-4 text-canBlack font-normal h-[40px] rounded-md [&_.ant-input-prefix]:!text-canBlack [&_.ant-input-prefix]:mr-3 text-sm mainInput"
                 />
               </Form.Item>
@@ -843,12 +843,14 @@ function ProfileInfoForm({
 
                       // Check if the value consists only of zeros
                       if (/^0+$/.test(value)) {
-                        return Promise.reject("Postal code cannot be all zeros.");
+                        return Promise.reject(
+                          "Postal code cannot be all zeros."
+                        );
                       }
 
                       return Promise.resolve();
-                    }
-                  }
+                    },
+                  },
                 ]}
                 name="postal_code"
                 label={messages.labels.zipCode}
