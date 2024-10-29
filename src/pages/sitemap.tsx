@@ -1,6 +1,6 @@
 import fs from "fs";
 
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, Typography } from "antd";
 import { useRouter } from "next/router";
 
@@ -15,12 +15,17 @@ const SitemapPage = () => {
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(true);
+  const [isSitemapAvailable, setIsSitemapAvailable] = useState(true);
 
   useEffect(() => {
-    setIsLoading(true);
     const navigateToSitemap = async () => {
-      await router.replace("/sitemap.xml");
-      setIsLoading(false);
+      try {
+        await router.replace("/sitemap.xml");
+      } catch (error) {
+        console.error("Sitemap not available:", error);
+        setIsSitemapAvailable(false);
+        setIsLoading(false);
+      }
     };
 
     navigateToSitemap();
@@ -28,7 +33,7 @@ const SitemapPage = () => {
 
   if (isLoading) {
     return (
-      <Layout initialProps={undefined} initialState={undefined}>
+      <Layout>
         <Card
           bordered={false}
           style={{ height: "50vh", textAlign: "center", width: "100%" }}
@@ -44,28 +49,24 @@ const SitemapPage = () => {
     );
   }
 
-  return (
-    <Layout>
-      <Card
-        bordered={false}
-        style={{ height: "50vh", textAlign: "center", width: "100%" }}
-      >
-        {isLoading ? (
-          <CustomSkelton
-            skeltonFor="list"
-            bodyCount={5}
-            stylingClass="listSkeleton"
-            isButton={false}
-          />
-        ) : (
-          <Text>This page generates a sitemap.xml file in every 15 days.</Text>
-        )}
-      </Card>
-    </Layout>
-  );
+  if (!isSitemapAvailable) {
+    return (
+      <Layout>
+        <Card
+          bordered={false}
+          style={{ height: "50vh", textAlign: "center", width: "100%" }}
+        >
+          <Text>
+            The sitemap is currently unavailable. Please try again later.
+          </Text>
+        </Card>
+      </Layout>
+    );
+  }
+
+  return null;
 };
 
-// export const getServerSideProps = async () => {
 export const getStaticProps = async () => {
   try {
     if (process.env.NEXT_PUBLIC_ENVIRONMENT === "production") {
