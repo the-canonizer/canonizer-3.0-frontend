@@ -258,7 +258,7 @@ const ForumComponent = () => {
           //   }
           // />
           <CommonBreadcrumbs
-          payload={payload}
+            payload={payload}
             isForumPage={false}
             isHtmlContent={
               <PrimaryButton

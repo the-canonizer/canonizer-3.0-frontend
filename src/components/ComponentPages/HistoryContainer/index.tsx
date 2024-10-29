@@ -1,7 +1,4 @@
-import {
-  Button,
-  Typography,
-} from "antd";
+import { Button, Typography } from "antd";
 
 import { updateCampApi } from "src/network/api/campManageStatementApi";
 import type { CheckboxChangeEvent } from "antd/es/checkbox";
@@ -10,16 +7,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useRef, useState } from "react";
 import { RootState } from "src/store";
 import useIsUserAuthenticated from "src/hooks/isUserAuthenticated";
-import {
-  getAllUsedNickNames,
-} from "src/network/api/campDetailApi";
+import { getAllUsedNickNames } from "src/network/api/campDetailApi";
 import { store } from "src/store";
 import { setTree } from "src/store/slices/campDetailSlice";
 import { getHistoryApi } from "src/network/api/history";
 import { setCurrentCamp } from "src/store/slices/filtersSlice";
-import {
-  historyTitle,
-} from "src/utils/generalUtility";
+import { historyTitle } from "src/utils/generalUtility";
 import InfiniteScroll from "react-infinite-scroller";
 import CustomSkelton from "../../common/customSkelton";
 import HistoryCard from "../HistoryCard/historyCard";
@@ -66,11 +59,7 @@ function HistoryContainer() {
 
   const count = useRef(1);
 
-  const {
-    history,
-    asofdate,
-    algorithm,
-  } = useSelector((state: RootState) => ({
+  const { history, asofdate, algorithm } = useSelector((state: RootState) => ({
     history: state?.topicDetails?.history,
     asofdate: state.filters?.filterObject?.asofdate,
     algorithm: state.filters?.filterObject?.algorithm,
@@ -421,7 +410,7 @@ function HistoryContainer() {
         //   updateId={liveRecordId}
         //   isHistoryPage={isHistoryPage}
         // />
-        <CommanBreadcrumbs 
+        <CommanBreadcrumbs
           updateId={liveRecordId}
           isHistoryPage={isHistoryPage}
         />

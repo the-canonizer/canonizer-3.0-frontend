@@ -447,7 +447,11 @@ const CreateNewCamp = () => {
   return (
     <CustomSpinner key="create-topic-spinner" spinning={isLoading}>
       {/* <CampInfoBar payload={payload} isHtmlContent={<></>} isTopicPage={true} /> */}
-      <CommonBreadcrumbs payload={payload} isHtmlContent={<></>} isTopicPage={true} />
+      <CommonBreadcrumbs
+        payload={payload}
+        isHtmlContent={<></>}
+        isTopicPage={true}
+      />
 
       <Row gutter={20} className="mb-5">
         {campExist ? (

@@ -272,8 +272,8 @@ const CommentsList = () => {
           //     )
           //   }
           // />
-          <CommonBreadcrumbs 
-          payload={payload}
+          <CommonBreadcrumbs
+            payload={payload}
             isForumPage={false}
             isHtmlContent={
               !isMobile ? (

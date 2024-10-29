@@ -111,6 +111,8 @@ const ProfilePrefrences = () => {
           setProfileUserTags(res?.data?.tags);
           setUserPrifleInfoFirstName(res?.data?.first_name);
           setUserPrifleInfolastName(res?.data?.last_name);
+          setSelectedLanguage(res?.data?.language);
+          setSelectedAlgorithmKey(res?.data?.default_algo);
         }
       } catch (error) {
         console.error("Error fetching algorithms list:", error);
