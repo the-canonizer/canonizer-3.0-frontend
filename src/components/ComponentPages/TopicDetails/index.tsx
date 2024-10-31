@@ -124,7 +124,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
   // useEffect(() => setTreeExpandValue(campWithScore), [campWithScore]);
 
   const supportRelatedInfo = (
-    <div className="popoverParent">
+    <div className="popoverSupport text-xs">
       <span>
         Supporters can delegate their support to others. Direct supporters
         receive email notifications of proposed camp changes, while delegated
@@ -522,8 +522,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
                     <Popover
                       content={supportRelatedInfo}
                       className="title-popover"
-                      placement="rightTop"
-                      overlayClassName="warning-popover"
+                      placement="top"
                     >
                       <InfoCircleOutlined />
                     </Popover>
