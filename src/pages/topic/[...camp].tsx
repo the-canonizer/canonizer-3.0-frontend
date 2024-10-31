@@ -102,8 +102,8 @@ function buildSearchQuery(query) {
 }
 
 export async function getServerSideProps({ req, query, res }) {
-  let topicNum = query?.camp[0]?.split("-")[0];
-  let campNum = query?.camp[1]?.split("-")[0] || 1;
+  let topicNum = query?.camp?.at(0)?.split("-")?.at(0);
+  let campNum = query?.camp?.at(query?.camp?.length - 1)?.split("-")?.at(0) || 1;
   let topicName = query?.camp[0];
   let campName = query?.camp[1];
   let token = null;
