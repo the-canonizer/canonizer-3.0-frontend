@@ -32,7 +32,7 @@ function Home({ current_date, hotTopicData, featuredData, prefData }: any) {
   const router = useRouter();
   const { latestVersion } = useClearCache();
   
-  console.log("build-version-number", latestVersion);
+  console.log("Build-Version:", latestVersion);
 
   dispatch(setFilterCanonizedTopics({ search: "" }));
   dispatch(setCurrentDate(current_date));
