@@ -1,4 +1,4 @@
-const ExcludeUrlSpecialCharaters = ["<", ">", "/","script"];
+const ExcludeUrlSpecialCharaters = ["<", ">", "/"];
 
 export default ExcludeUrlSpecialCharaters;
   
