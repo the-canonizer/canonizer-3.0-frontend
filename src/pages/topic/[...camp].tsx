@@ -14,7 +14,7 @@ import {
   setCurrentTopicRecord,
   setCurrentCampRecord,
 } from "../../store/slices/campDetailSlice";
-import { formatTheDate, parseCookies } from "src/utils/generalUtility";
+import { formatTheDate, parseCookies, removeSpecialCharacters } from "src/utils/generalUtility";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
 import { setHistory } from "../../store/slices/campDetailSlice";
 
@@ -102,8 +102,9 @@ function buildSearchQuery(query) {
 }
 
 export async function getServerSideProps({ req, query, res }) {
+  let chars = ["<", ">", "/","script"];
   let topicNum = query?.camp?.at(0)?.split("-")?.at(0);
-  let campNum = query?.camp?.at(query?.camp?.length - 1)?.split("-")?.at(0) || 1;
+  let campNum = removeSpecialCharacters(query?.camp?.at(query?.camp?.length - 1)?.split("-")?.at(0),chars) || 1;
   let topicName = query?.camp[0];
   let campName = query?.camp[1];
   let token = null;
