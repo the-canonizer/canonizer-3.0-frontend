@@ -26,6 +26,7 @@ import { useEffect, useRef } from "react";
 import DataNotFound from "src/components/ComponentPages/DataNotFound/dataNotFound";
 import { createToken } from "src/network/api/userApi";
 import { argon2id } from "hash-wasm";
+import K from "src/constants";
 
 const TopicDetailsPage = ({
   current_date,
@@ -102,7 +103,7 @@ function buildSearchQuery(query) {
 }
 
 export async function getServerSideProps({ req, query, res }) {
-  let chars = ["<", ">", "/","script"];
+  let chars = K.excludeUrlSpecialCharaters;
   let topicNum = query?.camp?.at(0)?.split("-")?.at(0);
   let campNum = removeSpecialCharacters(query?.camp?.at(query?.camp?.length - 1)?.split("-")?.at(0),chars) || 1;
   let topicName = query?.camp[0];
