@@ -257,7 +257,7 @@ export const routeToUserPage = (
 
 export const replaceSpecialCharacters = (url: string, character: string) => {
   return url
-    ?.replace(/[^a-zA-Z0-9\/]/g, character)
+    ?.replace(/[^a-zA-Z0-9]/g, character)
     ?.split(character)
     ?.filter((item) => item !== "")
     ?.join(character);
@@ -463,11 +463,3 @@ export const epochToMinutes = (epochTime): any => {
     return 0;
   }
 };
-
-export const removeSpecialCharacters = (str, chars) => {
-  // Create a regular expression from the characters array
-  const pattern = new RegExp(`[${chars?.join('')}]`, 'g');
-  
-  // Replace all occurrences of specified characters
-  return str?.replace(pattern, '');
-}
