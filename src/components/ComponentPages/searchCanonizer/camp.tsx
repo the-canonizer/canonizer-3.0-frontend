@@ -272,7 +272,7 @@ const CampSearch = () => {
                           return (
                             <>
                               <li className="flex flex-col py-3 first:pt-0 border-b border-canGrey2 last:border-none">
-                                <Link href={`/${jsonData[0][1]?.camp_link}`}>
+                                <Link href={`/${jsonData?.[0][1]?.camp_link}`}>
                                   <div className="flex justify-between items-center">
                                     <a className="text-base font-medium text-canBlack flex !mb-2 ">
                                       {" "}

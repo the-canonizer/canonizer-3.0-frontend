@@ -28,11 +28,11 @@ import SearchInputs from "components/shared/FormInputs/search";
 import CustomTabs from "components/shared/Tabs";
 
 const getHighlightedText = (text, highlight) => {
-  const parts = text.split(new RegExp(`(${highlight})`, "gi"));
+  const parts = text?.split(new RegExp(`(${highlight})`, "gi"));
   return (
     <span>
       {" "}
-      {parts.map((part, i) => (
+      {parts?.map((part, i) => (
         <span
           key={i}
           style={
@@ -49,10 +49,10 @@ const getHighlightedText = (text, highlight) => {
 };
 
 const getHighlightedTextForCampStatement = (text, highlight) => {
-  const parts = text.split(new RegExp(`(${highlight})`, "gi"));
+  const parts = text?.split(new RegExp(`(${highlight})`, "gi"));
   return (
     <>
-      {parts.map((part, i) => (
+      {parts?.map((part, i) => (
         <div
           key={i}
           style={
@@ -666,7 +666,7 @@ const CampItems = ({ searchCamps, searchValue }) => {
           );
           return (
             <List.Item className="w-full flex font-medium !border-b !border-canGrey2 !py-3.5 !px-0 first:!pt-0">
-              <Link href={`/${jsonData[0][1]?.camp_link}`}>
+              <Link href={`/${jsonData?.[0][1]?.camp_link}`}>
                 <a className="flex justify-between w-full items-start">
                   <span className="flex flex-col w-full">
                     <div className="flex items-center justify-between w-full">
@@ -768,7 +768,7 @@ const CampStatementsItems = ({ searchCampStatement, searchValue }) => {
             <List.Item className="w-full flex font-medium !border-b !border-canGrey2 !py-3.5 !px-0 first:!pt-0 last:!border-none last:!pb-0 ">
               <div className="">
                 <Typography.Paragraph className="bg-transparent border-0 p-0 flex items-center leading-1 mb-2 [&_span]:inline-flex">
-                  <Link href={`/${jsonData[0][1]?.camp_link}`}>
+                  <Link href={`/${jsonData?.[0][1]?.camp_link}`}>
                     <a className="flex w-full items-start !text-canBlack text-base font-medium">
                       {getHighlightedTextForCampStatement(
                         jsonData?.[0]?.[1]?.camp_name,
@@ -794,7 +794,7 @@ const CampStatementsItems = ({ searchCampStatement, searchValue }) => {
                       height={19}
                     />
                     Topic:
-                    <Link href={`/${jsonData[0][1]?.camp_link}`}>
+                    <Link href={`/${jsonData?.[0][1]?.camp_link}`}>
                       <a className="text-canBlue text-base font-inter font-medium ">
                         {getHighlightedText(
                           jsonData?.[0]?.[1]?.topic_name,
