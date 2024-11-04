@@ -14,7 +14,7 @@ import {
   setCurrentTopicRecord,
   setCurrentCampRecord,
 } from "../../store/slices/campDetailSlice";
-import { formatTheDate, parseCookies, removeSpecialCharacters } from "src/utils/generalUtility";
+import { formatTheDate, parseCookies } from "src/utils/generalUtility";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
 import { setHistory } from "../../store/slices/campDetailSlice";
 
