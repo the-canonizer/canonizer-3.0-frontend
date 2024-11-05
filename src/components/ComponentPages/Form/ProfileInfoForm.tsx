@@ -578,6 +578,13 @@ function ProfileInfoForm({
               className="mb-0 [&_.ant-form-item]:!border-none [&_.ant-input-group-addon]:!bg-canGray text-sm text-canBlack font-normal [&_label]:text-sm [&_label]:font-medium [&_.ant-form-item-explain-error]:mb-6"
             >
               <Input.Group compact className="!flex">
+                <span className="flex absolute left-4 top-1/3 -translate-y-1/2 z-50 pointer-events-none border-none">
+                  <Image
+                    src="/images/calender.svg"
+                    width={16}
+                    height={16}
+                  />
+                </span>
                 <Form.Item
                   name="birthday"
                   className=" [&_.ant-picker-large]:!h-[40px] w-full [&_.ant-picker]:rounded-tl-lg  [&_.ant-picker]:rounded-bl-lg text-canBlack font-normal h-[40px] rounded-md [&_.ant-input-prefix]:!text-canBlack [&_.ant-input-prefix]:mr-3 text-sm mainInput"
@@ -585,7 +592,7 @@ function ProfileInfoForm({
                   <DatePicker
                     onChange={handleChange}
                     size="large"
-                    suffixIcon={<CalendarOutlined />}
+                    suffixIcon={null}
                     tabIndex={8}
                     className="realtive w-full  [&_.ant-select-selector]:!border-none font-medium pl-14"
                     disabledDate={(current) => {
@@ -595,14 +602,6 @@ function ProfileInfoForm({
                       );
                     }}
                   />
-                  {/* <span className="flex absolute left-3 top-1/2 -translate-y-1/2  text-gray-500 pointer-events-none">
-                    <Image
-                      src="/images/profile-calendar-icon.svg"
-                      width={24}
-                      height={24}
-                      alt="calendar icon"
-                    />
-                  </span> */}
                 </Form.Item>
                 <Form.Item className="[&_.ant-select-selector]:!w-[5rem] ">
                   <Select
