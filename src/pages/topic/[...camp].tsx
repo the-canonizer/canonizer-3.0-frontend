@@ -26,7 +26,6 @@ import { useEffect, useRef } from "react";
 import DataNotFound from "src/components/ComponentPages/DataNotFound/dataNotFound";
 import { createToken } from "src/network/api/userApi";
 import { argon2id } from "hash-wasm";
-import K from "src/constants";
 
 const TopicDetailsPage = ({
   current_date,
