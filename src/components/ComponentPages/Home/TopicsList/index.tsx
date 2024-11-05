@@ -311,14 +311,18 @@ const TopicsList = () => {
     dispatch(setFilterCanonizedTopics({ search: "" }));
   };
 
+  const getAllNameSpaces = async () => {
+    await getCanonizedNameSpacesApi();
+  };
+
   useEffect(() => {
     if (inputSearch) {
       setAllowClear(true);
     }
-    if (!(nameSpaces?.length > 0)) {
-      getCanonizedNameSpacesApi();
-    }
-
+    getAllNameSpaces();
+    // if (!(nameSpaces?.length > 0)) {
+    //   getCanonizedNameSpacesApi();
+    // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
