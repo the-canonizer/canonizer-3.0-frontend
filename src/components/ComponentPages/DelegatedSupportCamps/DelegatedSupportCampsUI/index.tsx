@@ -72,7 +72,7 @@ export default function DelegatedSupportCampsUI({
       dataIndex: "sr",
       key: "sr",
       render: (_text, _record, index) => (
-        <span className="text-sm bg-canGrey2 rounded-full h-5 w-6 flex items-center justify-center">
+        <span className="text-sm bg-canGrey2 rounded-full w-fit pt-[1px] pb-[1px] pr-[8px] pl-[8px] flex items-center justify-center">
           {/* Calculate Sr. based on the current page */}
           {index + 1 + (currentPage - 1) * pageSize}
         </span>

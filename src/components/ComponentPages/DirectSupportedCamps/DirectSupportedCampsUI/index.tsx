@@ -65,12 +65,15 @@ export default function DirectSupportedCampsUI({
   const [activeTopic, setActiveTopic] = useState(null);
   const [reOrderedTags, setReOrderedTags] = useState(null);
 
-  const { openDrawerForDirectSupportedCamp } = useSelector(
+  const { openDrawerForDirectSupportedCamp , disableSubmitButtonForDirectSupportedCamp} = useSelector(
     (state: RootState) => ({
       openDrawerForDirectSupportedCamp:
         state.topicDetails.openDrawerForDirectSupportedCamp,
+        disableSubmitButtonForDirectSupportedCamp:
+        state.topicDetails.disableSubmitButtonForDirectSupportedCamp,
     })
   );
+  console.log(disableSubmitButtonForDirectSupportedCamp,"disableSubmitButtonForDirectSupportedCamp")
   const dispatch = useDispatch();
   interface Tag {
     id: number;
@@ -96,7 +99,7 @@ export default function DirectSupportedCampsUI({
         // Calculate the serial number based on the current page and page size
         const serialNumber = (currentPage - 1) * 5 + index + 1;
         return (
-          <span className="text-sm bg-canGrey2 rounded-full h-5 w-6 flex items-center justify-center">
+          <span className="text-sm bg-canGrey2 rounded-full w-fit pt-[1px] pb-[1px] pr-[8px] pl-[8px] flex items-center justify-center">
             {serialNumber}
           </span>
         );
@@ -117,6 +120,7 @@ export default function DirectSupportedCampsUI({
             onClick={() => {
               dispatch(setOpenDrawerForDirectSupportedCamp(true));
               removeCardSupportedCamps(record);
+              dispatch(setDisableSubmitButtonForDirectSupportedCamp(false));
             }}
             className="cursor-pointer"
             src="/images/minus-user-icon.svg"
