@@ -119,6 +119,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
   const [totalCampScoreForSupportTree, setTotalCampScoreForSupportTree] =
     useState<number>(null);
   const [supportTreeForCamp, setSupportTreeForCamp] = useState<number>(null);
+  const [breadCrumbBolean, setBreadCrumbBolean] = useState(true);
   // const [treeExpandValue, setTreeExpandValue] = useState<any>(campWithScore);
 
   // useEffect(() => setTreeExpandValue(campWithScore), [campWithScore]);
@@ -216,7 +217,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
     asofdate,
     algorithm,
     +(router?.query?.camp[1]?.split("-")[0] ?? 1),
-    router,
+    // router,
   ]);
 
   useEffect(() => {
@@ -589,43 +590,29 @@ const TopicDetails = ({ serverSideCall }: any) => {
         }
         afterHeader={
           <Fragment>
-            {(tree && tree?.["1"]?.is_valid_as_of_time) ||
-            asof === "default" ? (
-              // <CampInfoBar
-              //   isTopicPage={true}
-              //   payload={{
-              //     topic_num: +router?.query?.camp[0]?.split("-")[0],
-              //     camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
-              //   }}
-              //   getCheckSupportStatus={getCheckSupportStatus}
-              // />
-
-              <CommanBreadcrumbs
-                isTopicPage={true}
-                payload={{
-                  topic_num: +router?.query?.camp[0]?.split("-")[0],
-                  camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
-                }}
-                getCheckSupportStatus={getCheckSupportStatus}
-              />
-            ) : (
-              // <CampInfoBar
-              //   payload={{
-              //     topic_num: +router?.query?.camp[0]?.split("-")[0],
-              //     camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
-              //   }}
-              //   isTopicHistoryPage={true}
-              //   getCheckSupportStatus={getCheckSupportStatus}
-              // />
-              <CommanBreadcrumbs
-                payload={{
-                  topic_num: +router?.query?.camp[0]?.split("-")[0],
-                  camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
-                }}
-                isTopicHistoryPage={true}
-                getCheckSupportStatus={getCheckSupportStatus}
-              />
-            )}
+            {(tree && tree?.["1"]?.is_valid_as_of_time) || asof === "default"
+              ? breadCrumbBolean && (
+                  <CommanBreadcrumbs
+                    isTopicPage={true}
+                    payload={{
+                      topic_num: +router?.query?.camp[0]?.split("-")[0],
+                      camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
+                    }}
+                    getCheckSupportStatus={getCheckSupportStatus}
+                    setBreadCrumbBolean={setBreadCrumbBolean}
+                  />
+                )
+              : breadCrumbBolean && (
+                  <CommanBreadcrumbs
+                    payload={{
+                      topic_num: +router?.query?.camp[0]?.split("-")[0],
+                      camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
+                    }}
+                    isTopicHistoryPage={true}
+                    getCheckSupportStatus={getCheckSupportStatus}
+                    setBreadCrumbBolean={setBreadCrumbBolean}
+                  />
+                )}
             <InfoBar
               isTopicPage={true}
               payload={{
