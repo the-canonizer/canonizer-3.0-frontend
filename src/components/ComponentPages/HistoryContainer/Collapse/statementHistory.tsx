@@ -12,7 +12,7 @@ const StatementHistory = ({ campStatement, topicNamespaceId }: any) => {
   return (
     <>
       <p className="font-semibold mb-2.5">Updates</p>
-      <p>
+      <p className="break-all">
         Edit Summary:<span>{campStatement?.note}</span>
       </p>
       <p>

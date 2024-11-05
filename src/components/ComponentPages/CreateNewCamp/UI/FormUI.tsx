@@ -361,6 +361,7 @@ const CreateCampFormUI = ({
                     onChange={(e) =>
                       form.setFieldValue("note", e?.target?.value)
                     }
+                    maxLength={500}
                   />
                 </Form.Item>
               </Col>
