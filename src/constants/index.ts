@@ -7,7 +7,7 @@ const K = {
   Network: NetworkConstants,
   EncryptionConstants: EncryptionConstants,
   Roles: RoleConstants,
-  exceptionalMessages: ExceptionalMessageConstants,
+  exceptionalMessages: ExceptionalMessageConstants,  
 };
 
 export default K;
