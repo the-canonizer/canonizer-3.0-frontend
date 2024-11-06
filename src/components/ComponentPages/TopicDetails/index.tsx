@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { Fragment, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Alert, BackTop, Image, Select, Typography } from "antd";
+import { Alert, BackTop, Image, Popover, Select, Typography } from "antd";
 import moment from "moment";
 
 import styles from "./topicDetails.module.scss";
@@ -62,6 +62,7 @@ import { CloseOutlined } from "@ant-design/icons";
 import CommanBreadcrumbs from "../Breadcrumbs/commonBreadcrumbs";
 import ActivityNewsCard from "./ActivityNewsCard";
 import CampRecentActivities from "./CampRecentActivities";
+import { InfoCircleOutlined } from "@ant-design/icons";
 
 const { Link: AntLink } = Typography;
 
@@ -122,6 +123,20 @@ const TopicDetails = ({ serverSideCall }: any) => {
   // const [treeExpandValue, setTreeExpandValue] = useState<any>(campWithScore);
 
   // useEffect(() => setTreeExpandValue(campWithScore), [campWithScore]);
+
+  const supportRelatedInfo = (
+    <div className="popoverSupport text-xs">
+      <span>
+        Supporters can delegate their support to others. Direct supporters
+        receive email notifications of proposed camp changes, while delegated
+        supporters don’t. People delegating their support to others are shown
+        below and indented from their delegates in an outline form. If a
+        delegate changes camp, everyone delegating their support to them will
+        change camps with them.
+      </span>
+    </div>
+  );
+
   useEffect(() => {
     dispatch(setTreeExpandValue(campWithScore));
   }, [campWithScore]);
@@ -505,6 +520,13 @@ const TopicDetails = ({ serverSideCall }: any) => {
                       icon={null}
                       className="!mb-0 [&_span]:mr-1"
                     />
+                    <Popover
+                      content={supportRelatedInfo}
+                      className="title-popover"
+                      placement="top"
+                    >
+                      <InfoCircleOutlined />
+                    </Popover>
                     <ScoreTag
                       topic_score={
                         campRecord?.is_archive
