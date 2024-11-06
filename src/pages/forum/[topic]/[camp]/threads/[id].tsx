@@ -1,17 +1,12 @@
 import { useRouter } from "next/router";
-import { useDispatch } from "react-redux";
 
 import { getThreadData } from "src/network/api/campForumApi";
 import CampForumComponent from "components/ComponentPages/CampForum/PostPage";
 import DataNotFound from "src/components/ComponentPages/DataNotFound/dataNotFound";
-import { setThread } from "src/store/slices/campForumSlice";
 import { createToken } from "src/network/api/userApi";
 
-function CampForumPostPage({ threadData, notFoundStatus, notFoundMessage }) {
-  const dispatch = useDispatch(),
-    router = useRouter();
-
-  dispatch(setThread(threadData));
+function CampForumPostPage({ notFoundStatus, notFoundMessage }) {
+  const router = useRouter();
 
   return notFoundStatus ? (
     <DataNotFound
@@ -49,7 +44,6 @@ export async function getServerSideProps({ req, resolvedUrl }) {
   if (threadRes?.data?.status_code === 404) {
     return {
       props: {
-        threadData: {},
         notFoundStatus: true,
         notFoundMessage: threadRes?.data?.error,
       },
@@ -58,7 +52,6 @@ export async function getServerSideProps({ req, resolvedUrl }) {
 
   return {
     props: {
-      threadData: threadRes?.data || {},
       notFoundStatus: false,
       notFoundMessage: "",
     },
