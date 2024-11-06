@@ -138,6 +138,7 @@ const LatestFilter = () => {
     dispatch(setViewThisVersion(false));
     dispatch(
       setFilterCanonizedTopics({
+        asofdate: Date.now() / 1000,
         asof: "default",
       })
     );
@@ -151,6 +152,7 @@ const LatestFilter = () => {
       viewThisVersion
     );
   };
+ 
   const filterscore = () => {
     dispatch(setViewThisVersion(false));
     dispatch(
@@ -354,7 +356,7 @@ const LatestFilter = () => {
               data-testid="close_icon_as_of_date"
             /> */}
             <div
-              onClick={filterForAsofDate}
+              onClick={()=>{filterForAsofDate()}}
               data-testid="close_icon_as_of_date"
             >
               <Image
