@@ -680,6 +680,7 @@ function SupportTreeDrawer({
                 enableDisableTagsHandler={enableDisableTagsHandler}
                 currentCampId={campRecord?.camp_num}
                 drawerFor={drawerFor}
+                setIsOrderChange={setIsOrderChange}
               />
             </div>
 
@@ -812,6 +813,7 @@ function SupportTreeDrawer({
                 onClose();
                 form.resetFields();
                 setSelectedValue(null);
+                setIsOrderChange(false)
               }}
             >
               Cancel
@@ -884,6 +886,7 @@ function SupportTreeDrawer({
                 onClose();
                 form.resetFields();
                 setSelectedValue(null);
+                setIsOrderChange(false)
               }}
             >
               Cancel
@@ -996,6 +999,7 @@ function SupportTreeDrawer({
                 onClose();
                 form.resetFields();
                 setSelectedValue(null);
+                setIsOrderChange(false)
               }}
             >
               Cancel

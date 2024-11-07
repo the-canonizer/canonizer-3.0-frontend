@@ -26,7 +26,8 @@ export default function Draggable({
   enableDisableTagsHandler,
   currentCampId = null,
   drawerFor = "",
-}) {
+  setIsOrderChange,
+}:any) {
   const sensors = useSensors(
     useSensor(MouseSensor, { activationConstraint: { distance: 10 } }),
     useSensor(KeyboardSensor, {
@@ -64,7 +65,7 @@ export default function Draggable({
 
   function handleDragEnd(event) {
     const { active, over } = event;
-
+    setIsOrderChange(true)
     if (active.id !== over.id) {
       setTagsArrayList((prev) => {
         const oldIndex = prev?.findIndex((i) => i?.id === active?.id);

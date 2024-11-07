@@ -90,7 +90,7 @@ export const labels = {
   nameConfirmationTitle: "Name Confirmation",
   reasonLabel: "Reason for adding/removing support (Optional)",
   reasonChangeLabel:
-    "(Optional) Reason for adding/removing/changing order support",
+    "Reason for adding/removing/changing order support (Optional)",
   reasonLabelAdd: "Reason for support",
   reasonLabelSummary: "Summary",
   resonURLLabel: "Citation Link",
