@@ -356,7 +356,7 @@ const LatestFilter = () => {
               data-testid="close_icon_as_of_date"
             /> */}
             <div
-              onClick={()=>{filterForAsofDate()}}
+              onClick={filterForAsofDate}
               data-testid="close_icon_as_of_date"
             >
               <Image
