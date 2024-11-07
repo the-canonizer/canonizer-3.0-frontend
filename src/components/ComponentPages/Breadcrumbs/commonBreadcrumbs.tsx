@@ -53,7 +53,7 @@ function CommanBreadcrumbs({
   compareMode = false,
   updateId = null,
   historyOF = null,
-  setBreadCrumbBolean,
+  setBreadCrumbBolean = () => {},
 }: any) {
   const dispatch = useDispatch();
   const [loadingIndicator, setLoadingIndicator] = useState(false);
@@ -323,6 +323,7 @@ function CommanBreadcrumbs({
       }
       if (res?.status_code == 200) {
         setBreadCrumbRes(res?.data);
+        setBreadCrumbBolean(true);
       } else {
         setBreadCrumbBolean(false);
       }
