@@ -591,7 +591,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
         afterHeader={
           <Fragment>
             {(tree && tree?.["1"]?.is_valid_as_of_time) || asof === "default"
-              ? breadCrumbBolean && (
+              ?  (
                   <CommanBreadcrumbs
                     isTopicPage={true}
                     payload={{
