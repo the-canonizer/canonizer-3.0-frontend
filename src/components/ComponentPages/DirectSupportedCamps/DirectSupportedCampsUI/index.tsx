@@ -61,6 +61,7 @@ export default function DirectSupportedCampsUI({
   const [removeSupportSpinner, setRemoveSupportSpinner] = useState(false);
   const [currentCamp, setCurrentCamp] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [currentSearchPage, setCurrentSearchPage] = useState(1)
   const [search, setSearch] = useState("");
   const [activeTopic, setActiveTopic] = useState(null);
   const [reOrderedTags, setReOrderedTags] = useState(null);
@@ -95,9 +96,10 @@ export default function DirectSupportedCampsUI({
       render: (_text, _record, index) => {
         // Calculate the serial number based on the current page and page size
         const serialNumber = (currentPage - 1) * 5 + index + 1;
+        const searchSerialNumber = (currentSearchPage - 1) * 5 + index + 1;
         return (
           <span className="text-sm bg-canGrey2 rounded-full h-5 w-6 flex items-center justify-center">
-            {serialNumber}
+            {search.length > 0 ? searchSerialNumber : serialNumber}
           </span>
         );
       },
@@ -227,6 +229,16 @@ export default function DirectSupportedCampsUI({
     );
   };
 
+  const filteredSearchArray = () => {
+    const startingPosition = (currentSearchPage - 1) * 5;
+    const endingPosition = startingPosition + 5;
+    return filteredArray().slice(startingPosition, endingPosition)
+  }
+
+  const searchPageChange = (pageNumber) => {
+    setCurrentSearchPage(pageNumber);
+  }
+
   const [removeForm] = Form.useForm();
 
   const onRemoveFinish = async (values) => {
@@ -250,13 +262,24 @@ export default function DirectSupportedCampsUI({
   if (hasDirectSupportedCamps) {
     if (hasFilteredArray) {
       displayContent = (
-        <Table
-          dataSource={filteredArray()}
-          columns={columns}
-          pagination={false}
-          rowKey="topic_num"
-          className="[&_.ant-table-thead>tr>th]:!bg-canGray [&_.ant-table-cell]:max-w-[200px]"
-        />
+        <>
+          <Table
+            dataSource={search.length > 0 ? filteredSearchArray() : filteredArray()}
+            columns={columns}
+            pagination={false}
+            rowKey="topic_num"
+            className="[&_.ant-table-thead>tr>th]:!bg-canGray [&_.ant-table-cell]:max-w-[200px]"
+          />
+          {search.length > 0 ?
+            <Pagination
+              hideOnSinglePage={true}
+              total={filteredArray().length}
+              pageSize={5}
+              current={currentSearchPage}
+              onChange={searchPageChange}
+              showSizeChanger={false}
+              className="mt-5" /> : null}
+        </>
       );
     } else {
       displayContent = showEmpty("No Data Found");
@@ -270,10 +293,10 @@ export default function DirectSupportedCampsUI({
       {isChangingOrder
         ? "You are about to change the order of your supported camps"
         : modalPopupText
-        ? "You are about to remove your support from all the camps from the topic: "
-        : campIds?.length > 1
-        ? "You are about to remove your support from the camps: "
-        : "You are about to remove your support from the camp: "}
+          ? "You are about to remove your support from all the camps from the topic: "
+          : campIds?.length > 1
+            ? "You are about to remove your support from the camps: "
+            : "You are about to remove your support from the camp: "}
       {!isChangingOrder && (
         <span>
           {modalPopupText ? (
@@ -342,8 +365,8 @@ export default function DirectSupportedCampsUI({
       search.trim() === ""
         ? directSupportedCampsList
         : directSupportedCampsList.filter((val) =>
-            val.title.toLowerCase().includes(search.toLowerCase().trim())
-          )
+          val.title.toLowerCase().includes(search.toLowerCase().trim())
+        )
     );
   }, [search, directSupportedCampsList]);
 
@@ -431,9 +454,8 @@ export default function DirectSupportedCampsUI({
 
                       return (
                         <div
-                          className={`tag ${tag.dis ? "tags_disable" : ""} ${
-                            record.camps.length > 1 ? "mb-2.5" : ""
-                          } flex w-full items-center`}
+                          className={`tag ${tag.dis ? "tags_disable" : ""} ${record.camps.length > 1 ? "mb-2.5" : ""
+                            } flex w-full items-center`}
                         >
                           <Button
                             id="campsBtn"
@@ -454,7 +476,7 @@ export default function DirectSupportedCampsUI({
                                       // Add your click handling logic here
                                     }
                                   }}
-                                  onTouchStart={(e) => {e.preventDefault();window.location.href = tag.camp_link;}} // Optional: if you need to support touch events
+                                  onTouchStart={(e) => { e.preventDefault(); window.location.href = tag.camp_link; }} // Optional: if you need to support touch events
                                 >
                                   {tag.camp_name.length > 30
                                     ? `${tag.camp_name.substring(0, 30)}...`
@@ -603,6 +625,8 @@ export default function DirectSupportedCampsUI({
                     className="!h-10 rounded-lg border border-canGrey2 text-sm font-normal lg:w-auto w-full [&_.ant-input-affix-wrapper]:hover:!border-canGrey2 focus:!border-canGrey2 focus:shadow-none "
                     onChange={(e) => {
                       setSearch(e.target.value);
+                      setCurrentPage(1);
+                      setCurrentSearchPage(1)
                     }}
                   />
                 </div>
