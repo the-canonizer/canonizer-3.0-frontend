@@ -53,6 +53,7 @@ function CommanBreadcrumbs({
   compareMode = false,
   updateId = null,
   historyOF = null,
+  setBreadCrumbBolean = () => {},
 }: any) {
   const dispatch = useDispatch();
   const [loadingIndicator, setLoadingIndicator] = useState(false);
@@ -67,7 +68,6 @@ function CommanBreadcrumbs({
   const [showAll, setShowAll] = useState(false);
   const [tagsArrayList, setTagsArrayList] = useState([]);
   const tagsToShow = showAll ? tagsArrayList : tagsArrayList?.slice(0, 4);
-
   //   const historyOf = compareMode ? historyOF : router?.asPath.split("/")[1];
 
   const {
@@ -321,7 +321,12 @@ function CommanBreadcrumbs({
             : "1-Agreement",
         ];
       }
-      setBreadCrumbRes(res?.data);
+      if (res?.status_code == 200) {
+        setBreadCrumbRes(res?.data);
+        setBreadCrumbBolean(true);
+      } else {
+        setBreadCrumbBolean(false);
+      }
       setLoadingIndicator(false);
     }
 

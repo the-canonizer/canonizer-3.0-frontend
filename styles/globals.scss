@@ -40,6 +40,12 @@
 .ant_tags .ant-tag div {
   color: #b7babf;
 }
+.ant-popover-inner:has(.popoverSupport) {
+  width: 332px;
+  border-radius: 10px;
+  border: 1px solid rgba(204, 212, 231, 1);
+  padding: 2px 2px;
+}
 
 .ant-popover-inner:has(.popoverParent) {
   width: 500px;
