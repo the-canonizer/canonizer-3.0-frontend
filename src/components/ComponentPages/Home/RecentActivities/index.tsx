@@ -261,9 +261,7 @@ export default function RecentActivities() {
 
     const result =
       subjectTypeMap[subjectType] ||
-      convert(decodedProperties?.description?.replace(/<img[^>]*>/gi, ""), {
-        wordwrap: 130,
-      });
+      handleTextOverflow(convert(decodedProperties?.description));
 
     return result;
   };

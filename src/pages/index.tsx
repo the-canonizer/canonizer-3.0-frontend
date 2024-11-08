@@ -21,6 +21,7 @@ import {
   GetHotTopicDetails,
   GetPreferedTopicDetails,
 } from "src/network/api/topicAPI";
+import { useClearCache } from "react-clear-cache";
 
 const Tour = dynamic(() => import("src/components/ComponentPages/Home/Tour"), {
   ssr: false,
@@ -29,6 +30,9 @@ const Tour = dynamic(() => import("src/components/ComponentPages/Home/Tour"), {
 function Home({ current_date, hotTopicData, featuredData, prefData }: any) {
   const dispatch = useDispatch();
   const router = useRouter();
+  const { latestVersion } = useClearCache();
+  
+  console.log("Build-Version:", latestVersion);
 
   dispatch(setFilterCanonizedTopics({ search: "" }));
   dispatch(setCurrentDate(current_date));

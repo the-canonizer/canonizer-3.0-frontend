@@ -52,7 +52,7 @@ function TopicSubscriptionsTab({
             >
               <Link href={item.title_link}>
                 <Typography.Text className="flex gap-2.5">
-                  <a className="text-sm font-normal !text-canBlack flex items-center">
+                  <a className="text-sm font-normal !text-canBlue flex items-center">
                     {item.title}
                   </a>
                   {item?.is_remove_subscription && (
@@ -85,7 +85,7 @@ function TopicSubscriptionsTab({
                 {item.camps.map((camp, i) => (
                   <Tag
                     key={`${camp.subscription_start}-${i}`}
-                    className="flex justify-start items-center bg-canLightGrey rounded-full w-max px-5 border-none gap-2"
+                    className="flex justify-start items-center bg-canLightGrey rounded-full w-max px-5 border-none gap-2 cn-card-home"
                     closable
                     onClose={(e) => onConfirm(e, item, camp)}
                     closeIcon={

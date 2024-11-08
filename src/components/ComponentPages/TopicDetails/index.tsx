@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { Fragment, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Alert, BackTop, Image, Select, Typography } from "antd";
+import { Alert, BackTop, Image, Popover, Select, Typography } from "antd";
 import moment from "moment";
 
 import styles from "./topicDetails.module.scss";
@@ -59,8 +59,10 @@ import { openNotificationWithIcon } from "components/common/notification/notific
 import ScoreTag from "../Home/TrandingTopic/scoreTag";
 import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 import { CloseOutlined } from "@ant-design/icons";
+import CommanBreadcrumbs from "../Breadcrumbs/commonBreadcrumbs";
 import ActivityNewsCard from "./ActivityNewsCard";
 import CampRecentActivities from "./CampRecentActivities";
+import { InfoCircleOutlined } from "@ant-design/icons";
 
 const { Link: AntLink } = Typography;
 
@@ -117,9 +119,24 @@ const TopicDetails = ({ serverSideCall }: any) => {
   const [totalCampScoreForSupportTree, setTotalCampScoreForSupportTree] =
     useState<number>(null);
   const [supportTreeForCamp, setSupportTreeForCamp] = useState<number>(null);
+  const [breadCrumbBolean, setBreadCrumbBolean] = useState(true);
   // const [treeExpandValue, setTreeExpandValue] = useState<any>(campWithScore);
 
   // useEffect(() => setTreeExpandValue(campWithScore), [campWithScore]);
+
+  const supportRelatedInfo = (
+    <div className="popoverSupport text-xs">
+      <span>
+        Supporters can delegate their support to others. Direct supporters
+        receive email notifications of proposed camp changes, while delegated
+        supporters don’t. People delegating their support to others are shown
+        below and indented from their delegates in an outline form. If a
+        delegate changes camp, everyone delegating their support to them will
+        change camps with them.
+      </span>
+    </div>
+  );
+
   useEffect(() => {
     dispatch(setTreeExpandValue(campWithScore));
   }, [campWithScore]);
@@ -158,7 +175,6 @@ const TopicDetails = ({ serverSideCall }: any) => {
           update_all: 1,
           fetch_topic_history: viewThisVersionCheck ? 1 : null,
         };
-        console.log(reqBodyForService, tree, "reqBodyForService");
 
         const reqBody = {
           topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
@@ -504,6 +520,13 @@ const TopicDetails = ({ serverSideCall }: any) => {
                       icon={null}
                       className="!mb-0 [&_span]:mr-1"
                     />
+                    <Popover
+                      content={supportRelatedInfo}
+                      className="title-popover"
+                      placement="top"
+                    >
+                      <InfoCircleOutlined />
+                    </Popover>
                     <ScoreTag
                       topic_score={
                         campRecord?.is_archive
@@ -567,25 +590,29 @@ const TopicDetails = ({ serverSideCall }: any) => {
         }
         afterHeader={
           <Fragment>
-            {tree?.["1"]?.is_valid_as_of_time || asof === "default" ? (
-              <CampInfoBar
-                isTopicPage={true}
-                payload={{
-                  topic_num: +router?.query?.camp[0]?.split("-")[0],
-                  camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
-                }}
-                getCheckSupportStatus={getCheckSupportStatus}
-              />
-            ) : (
-              <CampInfoBar
-                payload={{
-                  topic_num: +router?.query?.camp[0]?.split("-")[0],
-                  camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
-                }}
-                isTopicHistoryPage={true}
-                getCheckSupportStatus={getCheckSupportStatus}
-              />
-            )}
+            {(tree && tree?.["1"]?.is_valid_as_of_time) || asof === "default"
+              ? breadCrumbBolean && (
+                  <CommanBreadcrumbs
+                    isTopicPage={true}
+                    payload={{
+                      topic_num: +router?.query?.camp[0]?.split("-")[0],
+                      camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
+                    }}
+                    getCheckSupportStatus={getCheckSupportStatus}
+                    setBreadCrumbBolean={setBreadCrumbBolean}
+                  />
+                )
+              : breadCrumbBolean && (
+                  <CommanBreadcrumbs
+                    payload={{
+                      topic_num: +router?.query?.camp[0]?.split("-")[0],
+                      camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
+                    }}
+                    isTopicHistoryPage={true}
+                    getCheckSupportStatus={getCheckSupportStatus}
+                    setBreadCrumbBolean={setBreadCrumbBolean}
+                  />
+                )}
             <InfoBar
               isTopicPage={true}
               payload={{

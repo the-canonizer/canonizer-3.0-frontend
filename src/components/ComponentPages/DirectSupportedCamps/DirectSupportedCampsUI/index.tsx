@@ -66,12 +66,15 @@ export default function DirectSupportedCampsUI({
   const [activeTopic, setActiveTopic] = useState(null);
   const [reOrderedTags, setReOrderedTags] = useState(null);
 
-  const { openDrawerForDirectSupportedCamp } = useSelector(
+  const { openDrawerForDirectSupportedCamp , disableSubmitButtonForDirectSupportedCamp} = useSelector(
     (state: RootState) => ({
       openDrawerForDirectSupportedCamp:
         state.topicDetails.openDrawerForDirectSupportedCamp,
+        disableSubmitButtonForDirectSupportedCamp:
+        state.topicDetails.disableSubmitButtonForDirectSupportedCamp,
     })
   );
+  console.log(disableSubmitButtonForDirectSupportedCamp,"disableSubmitButtonForDirectSupportedCamp")
   const dispatch = useDispatch();
   interface Tag {
     id: number;
@@ -109,7 +112,7 @@ export default function DirectSupportedCampsUI({
       dataIndex: "title",
       key: "title",
       render: (text: string, record: RecordType) => (
-        <div className="flex gap-2.5 line-clamp-1">
+        <div className="flex gap-2.5 line-clamp-1 cn-card-home">
           <Link href={record.title_link}>
             <a className="text-sm font-medium flex items-center gap-2.5 text-canBlack">
               {text}
@@ -119,6 +122,7 @@ export default function DirectSupportedCampsUI({
             onClick={() => {
               dispatch(setOpenDrawerForDirectSupportedCamp(true));
               removeCardSupportedCamps(record);
+              dispatch(setDisableSubmitButtonForDirectSupportedCamp(false));
             }}
             className="cursor-pointer"
             src="/images/minus-user-icon.svg"
@@ -476,7 +480,10 @@ export default function DirectSupportedCampsUI({
                                       // Add your click handling logic here
                                     }
                                   }}
-                                  onTouchStart={(e) => { e.preventDefault(); window.location.href = tag.camp_link; }} // Optional: if you need to support touch events
+                                  onTouchStart={(e) => {
+                                    e.preventDefault();
+                                    window.location.href = tag.camp_link;
+                                  }} // Optional: if you need to support touch events
                                 >
                                   {tag.camp_name.length > 30
                                     ? `${tag.camp_name.substring(0, 30)}...`

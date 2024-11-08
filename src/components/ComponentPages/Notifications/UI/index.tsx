@@ -62,7 +62,7 @@ const NotificationsListUI = ({
           Notifications
         </Title>
       }
-      className="bg-white mb-6 border-0 [&_.ant-card-head]:border-0 mb-8 [&_.ant-card-extra]:p-0"
+      className="bg-white mb-6 border-0 [&_.ant-card-head]:border-0 mb-8 [&_.ant-card-extra]:p-0 [&_.ant-card-head]:p-0 [&_.ant-card-body]:p-0"
       id="card-title"
       extra={
         <div className="flex justify-between items-center">
