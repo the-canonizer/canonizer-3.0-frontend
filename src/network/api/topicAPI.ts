@@ -93,11 +93,12 @@ export const GetHotTopicDetails = async (page, perPage, token: string = "") => {
 export const GetPreferedTopicDetails = async (
   page = 1,
   perPage = 6,
+  is_random = false,
   token?: string
 ) => {
   try {
     const res = await NetworkCall.fetch(
-      TopicRequest.GetPreferedTopic(page, perPage, token)
+      TopicRequest.GetPreferedTopic(page, perPage, is_random, token)
     );
 
     if (res.status_code === 200) {

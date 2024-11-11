@@ -39,6 +39,7 @@ function WrappedApp({
     [_, setIsAuthenticated, isAuthenticatedRef] = useState(
       !!(getCookies() as any)?.loginToken
     );
+
   const { isLatestVersion, emptyCacheStorage, latestVersion } = useClearCache();
 
   if (!isLatestVersion) {
@@ -51,6 +52,7 @@ function WrappedApp({
       "loginToken=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
     emptyCacheStorage();
   }
+
 
   useEffect(() => {
     const fetchToken = async () => {
