@@ -438,13 +438,6 @@ const TopicsList = () => {
                   {...sharedProps}
                   {...selectProps}
                 />
-                {/* <Select
-                  size="large"
-                  mode="multiple"
-                  className="text-canBlack font-normal commonSelectClass [&_.ant-select-arrow]:text-canBlack [&_.ant-select-arrow>svg]:fill-canBlack"
-                  showArrow
-                  options={options}
-                /> */}
               </Form.Item>
             </div>
             <div className="search-wrapper w-full items-center max-sm:flex-wrap lg:justify-end max-lg:justify-between">
