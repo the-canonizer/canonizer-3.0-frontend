@@ -20,7 +20,7 @@ export const labels = {
   country: "Country",
   language: "Language",
   state: "State",
-  zipCode: "Zip Code (Limit 255 Chars)",
+  zipCode: "Zip Code (Limit 10 Chars)",
   chooseAlgorithm: " Default Algorithm Preferences",
   emailId: "Email ID",
   addnewNickName: "Add Nickname",
