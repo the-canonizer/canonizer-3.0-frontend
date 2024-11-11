@@ -541,6 +541,7 @@ const TopicsList = () => {
                     }`}
                   >
                     <SingleTopicCard
+                      imageBaseURL={process?.env?.NEXT_PUBLIC_BASE_IMAGES_URL}
                       cardClassName="[&_.scoreTag]:mx-0 [&_.scoreTag]:ml-2 [&_.catTags]:flex-row [&_.cardCountCls]:!mt-0 [&_.scoreTag]:w-max [&_.topicDesc]:line-clamp-2"
                       topic={{
                         ...ft,

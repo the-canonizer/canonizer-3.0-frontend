@@ -24,6 +24,7 @@ const SingleTopicCard = ({
   maxCount = 3,
   cardClassName = "",
   copyLink = null,
+  imageBaseURL = '',
 }) => {
   const isMobile = useIsMobile();
 
@@ -81,6 +82,7 @@ const SingleTopicCard = ({
               color: "#f56a00",
               backgroundColor: "#fde3cf",
             }}
+            imageBaseURL={imageBaseURL}
           />
         </div>
       </CommonCard>
