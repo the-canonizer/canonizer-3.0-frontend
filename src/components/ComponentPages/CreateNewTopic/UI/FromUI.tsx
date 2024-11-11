@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import { Form, Row, Col, Typography } from "antd";
 import {
   CloseOutlined,
@@ -18,6 +18,7 @@ import PrimaryButton from "components/shared/Buttons/PrimariButton";
 import CommonCards from "components/shared/Card";
 import Tags from "components/shared/Tag";
 import CustomSkelton from "components/common/customSkelton";
+import { getCanonizedNameSpacesApi } from "src/network/api/homePageApi";
 
 const { labels, placeholders, nickNmRule, topicNameRule, namespaceRule } =
   messages;
@@ -74,6 +75,15 @@ const CreateTopicFromUI = ({
     }
     return <SelectInputs {...selectInputProps} />;
   };
+
+  const getAllNameSpaces = async () => {
+    await getCanonizedNameSpacesApi();
+  };
+
+  useEffect(() => {
+    getAllNameSpaces();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const getNameSpacesValue = () => {
     if (isEdit) {

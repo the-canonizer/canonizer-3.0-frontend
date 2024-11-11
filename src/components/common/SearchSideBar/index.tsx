@@ -47,6 +47,12 @@ export default function SearchSideBar() {
     selectedStatementFromAdvanceFilterAlgorithm:
       state?.searchSlice?.selectedStatementFromAdvanceFilterAlgorithm,
   }));
+  const campTotal =
+    searchValue === ""
+      ? searchMetaData?.camp_total
+      : router.query.asof === "review" || router.query.asof === "bydate"
+      ? selectedCampFromAdvanceFilterAlgorithm?.length
+      : searchCountForMetaData?.camp_total;
   return (
     <>
       <div className="leftSideBar_Card noFilter">
@@ -148,18 +154,7 @@ export default function SearchSideBar() {
                 >
                   {/* <i className="icon-camp"></i> */}
                   <a>
-                    Camp{" "}
-                    <span>
-                      {" "}
-                      &nbsp;(
-                      {searchValue == ""
-                        ? searchMetaData?.camp_total
-                        : router.query.asof == "review" ||
-                          router.query.asof == "bydate"
-                        ? selectedCampFromAdvanceFilterAlgorithm.length
-                        : searchCountForMetaData?.camp_total}
-                      )
-                    </span>
+                    Camp <span> &nbsp;({campTotal})</span>
                   </a>
                 </Button>
               </a>

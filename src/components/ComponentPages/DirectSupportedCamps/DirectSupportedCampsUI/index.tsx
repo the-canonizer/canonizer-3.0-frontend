@@ -107,7 +107,7 @@ export default function DirectSupportedCampsUI({
       dataIndex: "title",
       key: "title",
       render: (text: string, record: RecordType) => (
-        <div className="flex gap-2.5 line-clamp-1">
+        <div className="flex gap-2.5 line-clamp-1 cn-card-home">
           <Link href={record.title_link}>
             <a className="text-sm font-medium flex items-center gap-2.5 text-canBlack">
               {text}
@@ -403,7 +403,9 @@ export default function DirectSupportedCampsUI({
                   <div className="flex gap-2.5 justify-between items-center w-full">
                     <Link href={record.title_link}>
                       <a className="text-lg font-semibold text-canBlack">
-                        {record.title.length >50 ? record.title.substring(0,30) + "...":record.title}
+                        {record.title.length > 50
+                          ? record.title.substring(0, 30) + "..."
+                          : record.title}
                       </a>
                     </Link>
                     <Image
@@ -452,7 +454,10 @@ export default function DirectSupportedCampsUI({
                                       // Add your click handling logic here
                                     }
                                   }}
-                                  onTouchStart={(e) => e.preventDefault()} // Optional: if you need to support touch events
+                                  onTouchStart={(e) => {
+                                    e.preventDefault();
+                                    window.location.href = tag.camp_link;
+                                  }} // Optional: if you need to support touch events
                                 >
                                   {tag.camp_name.length > 30
                                     ? `${tag.camp_name.substring(0, 30)}...`

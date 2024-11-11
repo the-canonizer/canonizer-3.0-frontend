@@ -108,8 +108,6 @@ const NotificationSwitch = () => {
     }
   }
 
-  console.log("checked-----", checked);
-
   return (
     <Typography.Text className="flex items-center justify-between text-muted text-sm">
       <small data-testid="enable-text" className="block mr-2">

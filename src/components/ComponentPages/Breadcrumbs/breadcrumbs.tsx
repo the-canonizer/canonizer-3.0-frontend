@@ -103,7 +103,6 @@ function Breadcrumbs({ compareMode = false, updateId, historyOF = null }: any) {
           <Breadcrumb.Item href="/">
             <i className="icon-home"></i>
           </Breadcrumb.Item>
-          <Breadcrumb.Item href="">(Canon) General</Breadcrumb.Item>
           <Breadcrumb.Item href={href}>
             Topic: {breadCrumbRes && breadCrumbRes?.topic_name}
           </Breadcrumb.Item>

@@ -39,16 +39,20 @@ function WrappedApp({
     [_, setIsAuthenticated, isAuthenticatedRef] = useState(
       !!(getCookies() as any)?.loginToken
     );
-    const { isLatestVersion, emptyCacheStorage, latestVersion } = useClearCache();
 
-    
-    if (!isLatestVersion) {
-      console.info({ latestVersion });
-      localStorage.clear();
-      sessionStorage.clear();
-      document.cookie = 'loginToken=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
-      emptyCacheStorage();
+  const { isLatestVersion, emptyCacheStorage, latestVersion } = useClearCache();
+
+  if (!isLatestVersion) {
+    console.info({ latestVersion });
+    const authToken = localStorage.getItem("auth_token");
+    if (authToken) {
+      localStorage.removeItem("auth_token");
     }
+    document.cookie =
+      "loginToken=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
+    emptyCacheStorage();
+  }
+
 
   useEffect(() => {
     const fetchToken = async () => {

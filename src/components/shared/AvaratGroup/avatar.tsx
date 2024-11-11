@@ -19,8 +19,9 @@ const SingleAvatar = ({ user }) => {
   useEffect(() => {
     const fetchGravatarImage = async () => {
       if (!user?.profile_picture_path && user?.email) {
-        const available = await getGravatarImage(user?.email);
-        setIsGravatarAvailable(available);
+        getGravatarImage(user?.email)
+          .then((res) => setIsGravatarAvailable(res))
+          .catch((err) => setIsGravatarAvailable(false));
       }
     };
 

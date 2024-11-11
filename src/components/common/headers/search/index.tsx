@@ -266,7 +266,7 @@ const HeaderSearch = ({ className = "" }: any) => {
     if (preventInitialRender && pageNumber !== 1)
       setPreventInitialRender(false);
     else if (
-      (inputSearch || searchValue) &&
+      (inputSearch || searchValue || router?.query?.q) &&
       router.pathname.includes("/search")
     ) {
       getGlobalSearchCanonizerNav(router?.query?.q);

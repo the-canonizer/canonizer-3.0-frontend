@@ -6,7 +6,7 @@ import HeaderMenu from "../HeaderMenu";
 import SearchHeader from "../search";
 import useAuthentication from "src/hooks/isUserAuthenticated";
 import {
-  getNotificationsList,
+  getLists,
   markNotificationRead,
 } from "src/network/api/notificationAPI";
 import { useSelector } from "react-redux";
@@ -49,7 +49,7 @@ const LoggedOutHeader = () => {
 
   useEffect(() => {
     const getList = async () => {
-      await getNotificationsList();
+      await getLists();
     };
 
     if (

@@ -311,14 +311,18 @@ const TopicsList = () => {
     dispatch(setFilterCanonizedTopics({ search: "" }));
   };
 
+  const getAllNameSpaces = async () => {
+    await getCanonizedNameSpacesApi();
+  };
+
   useEffect(() => {
     if (inputSearch) {
       setAllowClear(true);
     }
-    if (!(nameSpaces?.length > 0)) {
-      getCanonizedNameSpacesApi();
-    }
-
+    getAllNameSpaces();
+    // if (!(nameSpaces?.length > 0)) {
+    //   getCanonizedNameSpacesApi();
+    // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -523,13 +527,13 @@ const TopicsList = () => {
             </Button>
           </div>
         )}
-        {loading && !searchTerm ? (
+        {(loading && !searchTerm) || topicsData?.topics == null ? (
           <CustomSkelton skeltonFor="browse" />
         ) : (
           <>
             {topicsData?.topics?.length == 0 ? (
               <div className="mt-[10rem]">
-                <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />;
+                <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
               </div>
             ) : (
               <Row gutter={[24, 24]}>

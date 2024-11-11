@@ -49,12 +49,10 @@ const SettingsUI = () => {
     }
   }, [list, router.query.filter]);
 
-  const per_page = -1;
-
   const getList = async (p = 1) => {
     setIsLoading(true);
 
-    await getNotificationsList(p, per_page);
+    await getNotificationsList(p, -1);
 
     setIsLoading(false);
   };
@@ -135,7 +133,7 @@ const SettingsUI = () => {
 
     const body = { ids: ids };
 
-    const res = await markAllNotificationRead(body, 1, per_page);
+    const res = await markAllNotificationRead(body, 1, -1);
 
     if (res?.status_code === 200) {
       message.success(res?.message);

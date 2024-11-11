@@ -275,7 +275,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
       setIsDatePicker(true);
     } else {
       dispatch(setAsOfValues(2));
-     // Default radio button
+      // Default radio button
       setIsDatePicker(false);
     }
   }, [router.query.asof]);
@@ -741,6 +741,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
                               current > moment(current_date_filter).endOf("day")
                             }
                             id="date_input"
+                            allowClear={false}
                           />
                         </div>
                       </div>

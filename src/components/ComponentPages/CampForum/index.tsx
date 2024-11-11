@@ -21,6 +21,7 @@ import Layout from "src/hoc/layout";
 import PrimaryButton from "components/shared/Buttons/PrimariButton";
 import ManageThread from "./CreateThreadPopup";
 import { RootState } from "src/store";
+import CommonBreadcrumbs from "../Breadcrumbs/commonBreadcrumbs";
 import moment from "moment";
 
 const ForumComponent = () => {
@@ -64,7 +65,9 @@ const ForumComponent = () => {
       topic_num: +topic_num,
       camp_num: +nodeKey,
       as_of: asof,
-      as_of_date: moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss") || Date.now() / 1000,
+      as_of_date:
+        moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss") ||
+        Date.now() / 1000,
       algorithm: algorithm,
       update_all: 1,
     };
@@ -242,7 +245,19 @@ const ForumComponent = () => {
         routeName={"forum"}
         className="[&_.inforBarClass]:mb-0 [&_.afterHeaderClass]:mb-5"
         afterHeader={
-          <CampInfoBar
+          // <CampInfoBar
+          //   payload={payload}
+          //   isForumPage={false}
+          //   isHtmlContent={
+          //     <PrimaryButton
+          //       className="flex justify-center items-center h-auto py-2 px-7"
+          //       onClick={onCreateThread}
+          //     >
+          //       Create a Thread <PlusOutlined />
+          //     </PrimaryButton>
+          //   }
+          // />
+          <CommonBreadcrumbs
             payload={payload}
             isForumPage={false}
             isHtmlContent={

@@ -40,7 +40,7 @@ function TopicCampsTab({
               <Fragment>
                 <Text className="text-canBlack text-sm font-normal mb-0">
                   {activity?.description}{" "}
-                  <Text className="text-canBlue font-medium">
+                  {/* <Text className="text-canBlue font-medium">
                     <Tooltip
                       placement={"topLeft"}
                       title={
@@ -54,7 +54,7 @@ function TopicCampsTab({
                     >
                       {getTopicCampName(activity, decodedProperties)}
                     </Tooltip>
-                  </Text>
+                  </Text> */}
                   {activity?.log_name === "support" &&
                     getProperties(activity)?.reason && (
                       <Tooltip

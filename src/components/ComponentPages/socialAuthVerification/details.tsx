@@ -15,12 +15,12 @@ function Details({ socialLinks, onUnlinkClick, onLinkClick, provider }) {
     <Fragment>
       {socialLinks[provider] ? (
         <Fragment>
-          <Text strong className={`${styles.name}`}>
+          {/* <Text strong className={`${styles.name}`}>
             {socialLinks[provider + "_name"]}
           </Text>
           <Text className={`${styles.email}`}>
             {socialLinks[provider + "_email"]}
-          </Text>
+          </Text> */}
 
           <Popconfirm
             title={text}

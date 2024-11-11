@@ -179,7 +179,7 @@ function HistoryCard({
 
     let res = await changeCommitStatement(reqBody);
     if (res?.status_code === 200) {
-      setCommited(true);
+      // setCommited(true);
       dispatch(setChangeGoneLive(!changeGoneLive));
       if (historyOf == "camp" || historyOf == "topic") {
         updateHistory();

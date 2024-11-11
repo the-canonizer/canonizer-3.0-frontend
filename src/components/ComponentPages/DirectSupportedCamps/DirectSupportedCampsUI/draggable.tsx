@@ -116,15 +116,15 @@ function SortableItem(props) {
             // props?.onClose(props?.item)
           }}
         >
-           {`${props?.index + 1}-${
-              props?.item?.camp_name?.length > 30
-                ? props.item.camp_name.substring(0, 30) + "..."
-                : props.item.camp_name
-            }`}
+          {`${props?.index + 1}-${
+            props?.item?.camp_name?.length > 30
+              ? props.item.camp_name.substring(0, 30) + "..."
+              : props.item.camp_name
+          }`}
         </Tag>
       ) : (
         <Tag
-          className="rounded-full mr-0 bg-[#F0F2FA] flex items-center border-transparent font-medium text-sm px-3 py-1 leading-none"
+          className="rounded-full mr-0 bg-[#F0F2FA] flex items-center border-transparent font-medium text-sm px-3 py-1 leading-none cn-card-home"
           closable={true}
           closeIcon={
             <Image
