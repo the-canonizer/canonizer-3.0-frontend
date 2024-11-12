@@ -113,11 +113,11 @@ export default function AdvanceFilter() {
     return obj.id;
   });
 
-  const findTopicId = searchDataAll.camp?.map((obj) => {
+  const findTopicId = searchDataAll?.camp?.map((obj) => {
     return obj.topic_num;
   });
 
-  const topicIdForElasticSearch = searchDataAll.topic?.map((obj) => {
+  const topicIdForElasticSearch = searchDataAll?.topic?.map((obj) => {
     return obj.topic_num;
   });
 
@@ -125,7 +125,7 @@ export default function AdvanceFilter() {
 
   let stringTopicArray = findTopicId?.map((element) => element?.toString());
 
-  const findCampId = searchDataAll.camp?.map((obj) => {
+  const findCampId = searchDataAll?.camp?.map((obj) => {
     return obj.camp_num;
   });
 
