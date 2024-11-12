@@ -20,7 +20,7 @@ const TopicHistory = ({ campStatement, topicNamespaceId }: any) => {
               ?.replace(/\//g, " > ")}
         </span>
       </p>
-      <p>
+      <p className="break-all">
         Edit summary:<span>{campStatement?.note}</span>
       </p>
 

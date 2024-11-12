@@ -38,6 +38,7 @@ export default function DelegatedSupportCampsUI({
   const limit = delegatedSupportCampsList.length;
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [currentSearchPage, setCurrentSearchPage] = useState(1);
   const [filteredList, setFilteredList] = useState(delegatedSupportCampsList);
 
   useEffect(() => {
@@ -65,18 +66,24 @@ export default function DelegatedSupportCampsUI({
   const pageChange = (pageNumber) => {
     setCurrentPage(pageNumber); // Update current page
   };
+  const searchPageChange = (pageNumber) => {
+    setCurrentSearchPage(pageNumber); // Update current search
+  }
   const pageSize = 5;
   const columns = [
     {
       title: "Sr.",
       dataIndex: "sr",
       key: "sr",
-      render: (_text, _record, index) => (
-        <span className="text-sm bg-canGrey2 rounded-full h-5 w-6 flex items-center justify-center">
-          {/* Calculate Sr. based on the current page */}
-          {index + 1 + (currentPage - 1) * pageSize}
-        </span>
-      ),
+      render: (_text, _record, index) => {
+        const serialNumber = (currentPage - 1) * 5 + index + 1;
+        const searchSerialNumber = (currentSearchPage - 1) * 5 + index + 1;
+        return (
+          <span className="text-sm bg-canGrey2 rounded-full h-5 w-6 flex items-center justify-center">
+            {search.length > 0 ? searchSerialNumber : serialNumber}
+          </span>
+        )
+      },
     },
     {
       title: "Topics",
@@ -202,6 +209,11 @@ export default function DelegatedSupportCampsUI({
     );
   }
 
+  const filteredSearchArray = () => {
+    const startingPosition = (currentSearchPage - 1) * 5;
+    const endingPosition = startingPosition + 5;
+    return filteredArray.slice(startingPosition, endingPosition)
+  }
   const filteredArray = useMemo(() => {
     if (search.trim() == "") {
       return displayList;
@@ -213,7 +225,9 @@ export default function DelegatedSupportCampsUI({
           .includes(search.toLowerCase().trim());
       });
     }
-  }, [search, displayList, delegatedSupportCampsList]);
+  }, [search, displayList, delegatedSupportCampsList, currentSearchPage]);
+
+
 
   // useEffect(() => {
   //   pageChange(1);
@@ -279,23 +293,35 @@ export default function DelegatedSupportCampsUI({
             </div>
 
             {delegatedSupportCampsList &&
-            delegatedSupportCampsList.length > 0 ? (
-              <Table
-                columns={columns}
-                dataSource={filteredArray}
-                pagination={false}
-                rowKey={(record) => record.title}
-                scroll={{ x: "1060" }}
-                className="[&_.ant-table-thead>tr>th]:!bg-canGray [&_.ant-table-cell:nth-child(3)]:before:!hidden [&_.ant-table-cell:nth-child(3)]:!border-l  [&_.ant-table-cell:nth-child(3)]:!border-black [&_.ant-table-cell:nth-child(3)]:!border-opacity-5  [&_.ant-table-cell:nth-child(4)]:!border-l  [&_.ant-table-cell:nth-child(4)]:!border-black [&_.ant-table-cell:nth-child(4)]:!border-opacity-5 [&_.ant-table-cell:nth-child(4)]:before:!hidden [&_.ant-table-cell:nth-child(5)]:before:!hidden 
+              delegatedSupportCampsList.length > 0 ? (
+              <>
+                <Table
+                  columns={columns}
+                  dataSource={search.length > 0 ? filteredSearchArray() : filteredArray}
+                  pagination={false}
+                  rowKey={(record) => record.title}
+                  scroll={{ x: "1060" }}
+                  className="[&_.ant-table-thead>tr>th]:!bg-canGray [&_.ant-table-cell:nth-child(3)]:before:!hidden [&_.ant-table-cell:nth-child(3)]:!border-l  [&_.ant-table-cell:nth-child(3)]:!border-black [&_.ant-table-cell:nth-child(3)]:!border-opacity-5  [&_.ant-table-cell:nth-child(4)]:!border-l  [&_.ant-table-cell:nth-child(4)]:!border-black [&_.ant-table-cell:nth-child(4)]:!border-opacity-5 [&_.ant-table-cell:nth-child(4)]:before:!hidden [&_.ant-table-cell:nth-child(5)]:before:!hidden 
                 [&_.ant-table-cell:nth-child(2)]:before:!hidden 
                  [&_.ant-table-cell:nth-child(5)]:!border-l  [&_.ant-table-cell:nth-child(5)]:!border-black [&_.ant-table-cell:nth-child(5)]:!border-opacity-5  [&_.ant-table-thead>tr>th:nth-child(5)]:!border-l-0 [&_.ant-table-thead>tr>th:nth-child(6)]:!border-l-0"
-              />
+                />
+                {search.length > 0 ?
+                  <Pagination
+                    hideOnSinglePage={true}
+                    total={filteredArray.length}
+                    pageSize={5}
+                    current={currentSearchPage}
+                    onChange={searchPageChange}
+                    showSizeChanger={false}
+                    className="mt-5"
+                  /> : null}
+              </>
             ) : (
               <Empty description="No Data Found" />
             )}
             {delegatedSupportCampsList &&
-            delegatedSupportCampsList.length > 0 &&
-            search.length === 0 ? (
+              delegatedSupportCampsList.length > 0 &&
+              search.length === 0 ? (
               <Pagination
                 hideOnSinglePage={true}
                 total={delegatedSupportCampsList.length}
@@ -474,85 +500,85 @@ export default function DelegatedSupportCampsUI({
             </div>
             {displayList && displayList.length > 0
               ? displayList.map((data, i) => (
-                  <div
-                    key={data.topic_num}
-                    className="!border !border-canGrey2 rounded-lg mb-5 last:mb-0 px-2.5"
+                <div
+                  key={data.topic_num}
+                  className="!border !border-canGrey2 rounded-lg mb-5 last:mb-0 px-2.5"
+                >
+                  <Card
+                    className="[&_.ant-card-head]:!px-0 [&_.ant-card-head]:!bg-transparent !w-full [&_.ant-card-head]:!border-none"
+                    type="inner"
+                    size="default"
+                    title={
+                      <CardTitle
+                        title_link={data.title_link}
+                        value={
+                          data.title.length > 50
+                            ? data.title.substring(0, 50) + "..."
+                            : data.title
+                        }
+                      />
+                    }
+                    style={{ width: 360, marginBottom: 16 }}
                   >
-                    <Card
-                      className="[&_.ant-card-head]:!px-0 [&_.ant-card-head]:!bg-transparent !w-full [&_.ant-card-head]:!border-none"
-                      type="inner"
-                      size="default"
-                      title={
-                        <CardTitle
-                          title_link={data.title_link}
-                          value={
-                            data.title.length > 50
-                              ? data.title.substring(0, 50) + "..."
-                              : data.title
-                          }
-                        />
-                      }
-                      style={{ width: 360, marginBottom: 16 }}
+                    <div>
+                      <Row>
+                        <Col span={24}>
+                          <div className="border-y py-3">
+                            <span
+                              id="currentSupportedCamp"
+                              className="uppercase text-sm font-medium text-canBlack"
+                            >
+                              {messages.labels.currentSupportedCamps}
+                            </span>
+                            {data.camps?.slice(0, limit).map((val, i) => (
+                              <CurrentSupportedCamps
+                                key={i}
+                                value={
+                                  val.camp_name.length > 30
+                                    ? val.camp_name.substring(0, 30) + "..."
+                                    : val.camp_name
+                                }
+                                id_data={val.support_order + "."}
+                                camp_link={val.camp_link}
+                              />
+                            ))}
+                          </div>
+                          {data.camps.length > limit && (
+                            <a
+                              className={styles.mrgn_left}
+                              onClick={(e) => showViewMoreModal(e, data)}
+                            >
+                              {messages.labels.viewMore}
+                            </a>
+                          )}
+                        </Col>
+                        <Col span={24}>
+                          <SupportedCampsTo
+                            supportedto={data.delegated_to_nick_name}
+                            supportedto_link={
+                              data.delegated_to_nick_name_link
+                            }
+                            NickName={data.my_nick_name}
+                            NickNameLink={data.my_nick_name_link}
+                          />
+                        </Col>
+                      </Row>
+                    </div>
+                    <Button
+                      className="bg-btnBg bg-opacity-10 rounded-lg py-2.5  w-full mt-5 flex items-center justify-center gap-2.5 text-base font-medium"
+                      onClick={() => removeCardDelegatedSupportedCamps(data)}
                     >
-                      <div>
-                        <Row>
-                          <Col span={24}>
-                            <div className="border-y py-3">
-                              <span
-                                id="currentSupportedCamp"
-                                className="uppercase text-sm font-medium text-canBlack"
-                              >
-                                {messages.labels.currentSupportedCamps}
-                              </span>
-                              {data.camps?.slice(0, limit).map((val, i) => (
-                                <CurrentSupportedCamps
-                                  key={i}
-                                  value={
-                                    val.camp_name.length > 30
-                                      ? val.camp_name.substring(0, 30) + "..."
-                                      : val.camp_name
-                                  }
-                                  id_data={val.support_order + "."}
-                                  camp_link={val.camp_link}
-                                />
-                              ))}
-                            </div>
-                            {data.camps.length > limit && (
-                              <a
-                                className={styles.mrgn_left}
-                                onClick={(e) => showViewMoreModal(e, data)}
-                              >
-                                {messages.labels.viewMore}
-                              </a>
-                            )}
-                          </Col>
-                          <Col span={24}>
-                            <SupportedCampsTo
-                              supportedto={data.delegated_to_nick_name}
-                              supportedto_link={
-                                data.delegated_to_nick_name_link
-                              }
-                              NickName={data.my_nick_name}
-                              NickNameLink={data.my_nick_name_link}
-                            />
-                          </Col>
-                        </Row>
-                      </div>
-                      <Button
-                        className="bg-btnBg bg-opacity-10 rounded-lg py-2.5  w-full mt-5 flex items-center justify-center gap-2.5 text-base font-medium"
-                        onClick={() => removeCardDelegatedSupportedCamps(data)}
-                      >
-                        Remove Support
-                        <Image
-                          src="/images/minus-user-icon.svg"
-                          alt=""
-                          width={24}
-                          height={24}
-                        />
-                      </Button>
-                    </Card>
-                  </div>
-                ))
+                      Remove Support
+                      <Image
+                        src="/images/minus-user-icon.svg"
+                        alt=""
+                        width={24}
+                        height={24}
+                      />
+                    </Button>
+                  </Card>
+                </div>
+              ))
               : showEmpty("No Data Found")}
 
             {delegatedSupportCampsList &&

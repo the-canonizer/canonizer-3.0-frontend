@@ -52,7 +52,7 @@ const HistoryComparison = ({
       <div>
         {historyOf === "topic" && (
           <>
-            <p>
+            <p className="break-all">
               Edit summary: <span>{campStatement?.note}</span>
             </p>
             <p>
@@ -78,7 +78,7 @@ const HistoryComparison = ({
                 Keywords: <span>{campStatement?.key_words}</span>
               </p>
             )}
-            <p>
+            <p className="break-all">
               Edit summary: <span>{campStatement?.note}</span>
             </p>
             <p>
@@ -138,7 +138,7 @@ const HistoryComparison = ({
         )}
         {historyOf === "statement" && (
           <>
-            <p>
+            <p className="break-all">
               Edit summary: <span>{campStatement?.note}</span>
             </p>
           </>
