@@ -1121,11 +1121,11 @@ function CommanBreadcrumbs({
               </PrimaryButton>
             </div>
           ) : null}
-          {!isHtmlContent &&
+          {!!(!isHtmlContent &&
             !isHistoryPage &&
             !compareMode &&
             campRecord?.is_archive == 0 &&
-            breadCrumbRes?.bread_crumb?.length && (
+            breadCrumbRes?.bread_crumb?.length) && (
               <SecondaryButton
                 className="hidden px-8 py-2.5 lg:flex items-center text-sm gap-1"
                 size="large"
