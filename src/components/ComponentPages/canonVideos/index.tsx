@@ -38,6 +38,7 @@ const { Title } = Typography;
 export default function CanonVideos() {
   const BaseVideosURL = `${K.Network.URL?.BaseVideosURL}videos/consciousness`;
 
+  const router = useRouter();
   const playeref = useRef<any>({});
   const [videos, setVideos] = useState([]);
   const [selectedVideoId, setSelectedVideoId] = useState(1);
@@ -47,8 +48,38 @@ export default function CanonVideos() {
   const [mobileVideoOptions, setMobileVideoOptions] = useState([]);
   const [currentVideoTitle, setCurrentVideoTitle] = useState("");
 
-  const router = useRouter();
   const videoFormat = router?.asPath.split("?")?.at(1)?.split("=")?.at(1);
+
+  const activeVideoClass = (videoId:number)=>{
+    const url = router.asPath?.split("/");
+    const currentVideoId = +url
+      ?.at(url?.length - 1)
+      ?.split("-")
+      ?.at(0);
+    return videoId === currentVideoId ? "active" : "";
+  }
+
+  const getCurrentVideoData = () => {
+    const url = router.asPath?.split("/");
+    const currentVideoId = +url
+    ?.at(url?.length - 1)
+    ?.split("-")
+    ?.at(0);
+
+    let res = videos &&videos?.length > 0 && videos?.filter((item:any) => item?.id === currentVideoId)
+
+    if(res){
+      setCurrentVideoTitle(res?.at(0)?.title);
+  
+      const node = document.getElementsByTagName("video")[0];
+      node.src = BaseVideosURL + "/" + res?.at(0)?.resolutions.at(0)?.link;
+      node.play();
+    }
+  }
+
+  useEffect(()=>{
+    getCurrentVideoData()
+  },[router?.asPath])
 
   useEffect(() => {
     if (router?.query?.video) {
@@ -129,11 +160,11 @@ export default function CanonVideos() {
 
     setSelectedVideoId(videodata?.id);
     setVideoResolution(videodata?.resolutions[0]?.link);
-    setCurrentVideoTitle(videodata?.title);
+    // setCurrentVideoTitle(videodata?.title);
 
-    const node = document.getElementsByTagName("video")[0];
-    node.src = BaseVideosURL + "/" + videodata?.resolutions.at(0)?.link;
-    node.play();
+    // const node = document.getElementsByTagName("video")[0];
+    // node.src = BaseVideosURL + "/" + videodata?.resolutions.at(0)?.link;
+    // node.play();
   };
 
   const onChange = (e: RadioChangeEvent, format: string) => {
@@ -373,7 +404,7 @@ export default function CanonVideos() {
                 {Object.values(videos)?.map((video) => {
                   return (
                     <li
-                      className={video.id === selectedVideoId ? "active" : ""}
+                      className={activeVideoClass(video.id)}
                       onClick={() => handleVideoSelection(video)}
                       key={video?.id}
                       data-testid={video?.title}
