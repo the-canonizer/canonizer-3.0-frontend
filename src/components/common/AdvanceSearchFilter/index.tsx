@@ -117,6 +117,12 @@ export default function AdvanceFilter() {
     return obj.topic_num;
   });
 
+  const topicIdForElasticSearch = searchDataAll.topic?.map((obj) => {
+    return obj.topic_num;
+  });
+
+  const stringTopicIdForElasticSearch = topicIdForElasticSearch?.map((element) => element?.toString());
+
   let stringTopicArray = findTopicId?.map((element) => element?.toString());
 
   const findCampId = searchDataAll.camp?.map((obj) => {
@@ -349,7 +355,7 @@ export default function AdvanceFilter() {
       algo: algorithm,
       asof: asof,
       score: filterByScore,
-      topic_ids: stringTopicArray1,
+      topic_ids: stringTopicIdForElasticSearch,
       asofdate:
         asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
     };
