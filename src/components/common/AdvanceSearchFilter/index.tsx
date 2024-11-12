@@ -349,6 +349,7 @@ export default function AdvanceFilter() {
       algo: algorithm,
       asof: asof,
       score: filterByScore,
+      topic_ids: stringTopicArray1,
       asofdate:
         asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
     };
