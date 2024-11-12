@@ -699,6 +699,7 @@ function SupportTreeDrawer({
                 enableDisableTagsHandler={enableDisableTagsHandler}
                 currentCampId={campRecord?.camp_num}
                 drawerFor={drawerFor}
+                setIsOrderChange={setIsOrderChange}
               />
             </div>
 
@@ -715,7 +716,7 @@ function SupportTreeDrawer({
                 </p>
               )}
               <Row gutter={16}>
-                <Col span={24} sm={12}>
+                <Col span={24}>
                   <Form.Item
                     name="nickname"
                     label={
@@ -758,7 +759,7 @@ function SupportTreeDrawer({
                 </Col>
 
                 {drawerFor !== "delegateAdd" && (
-                  <Col span={24} sm={12}>
+                  <Col span={24}>
                     <Form.Item
                       name="reason"
                       className="label-ellipses"
@@ -831,6 +832,7 @@ function SupportTreeDrawer({
                 onClose();
                 form.resetFields();
                 setSelectedValue(null);
+                setIsOrderChange(false)
               }}
             >
               Cancel
@@ -903,6 +905,7 @@ function SupportTreeDrawer({
                 onClose();
                 form.resetFields();
                 setSelectedValue(null);
+                setIsOrderChange(false)
               }}
             >
               Cancel
@@ -1022,6 +1025,7 @@ function SupportTreeDrawer({
                 onClose();
                 form.resetFields();
                 setSelectedValue(null);
+                setIsOrderChange(false)
               }}
             >
               Cancel

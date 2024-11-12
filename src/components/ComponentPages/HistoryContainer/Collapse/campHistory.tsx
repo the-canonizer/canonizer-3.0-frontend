@@ -27,7 +27,7 @@ const CampHistory = ({ campStatement, topicNamespaceId }: any) => {
         </span>
       </p>
       <p className="font-semibold mb-2.5">UPDATES</p>
-      <p>
+      <p className="break-all">
         Edit summary:<span>{campStatement?.note}</span>
       </p>
       <p>

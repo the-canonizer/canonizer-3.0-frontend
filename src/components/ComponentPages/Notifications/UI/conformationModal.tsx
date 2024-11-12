@@ -4,7 +4,7 @@ import { DeleteOutlined, ArrowLeftOutlined } from "@ant-design/icons";
 import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 import PrimaryButton from "components/shared/Buttons/PrimariButton";
 
-const DeleteAllPopup = ({ onClose, onDelete, isOpen }) => {
+const DeleteAllPopup = ({ onClose, onDelete, isOpen, isDeleteDisabled }) => {
   return (
     <Modal
       open={isOpen}
@@ -33,6 +33,7 @@ const DeleteAllPopup = ({ onClose, onDelete, isOpen }) => {
         <PrimaryButton
           onClick={onDelete}
           className="ml-4 rounded-lg px-7 inline-flex items-center justify-center"
+          disabled={isDeleteDisabled}
         >
           Delete All <DeleteOutlined />
         </PrimaryButton>

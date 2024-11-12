@@ -197,10 +197,10 @@ export default function AdvanceFilter() {
       "\\$&"
     );
     const regex = new RegExp(`(${escapedHighlight})`, "gi");
-    const parts = text.split(regex);
+    const parts = text?.split(regex);
     return (
       <>
-        {parts.map((part, i) =>
+        {parts?.map((part, i) =>
           regex.test(part) ? (
             <mark className={`${styles.highlighter} p-0`} key={i}>
               {part}

@@ -20,7 +20,7 @@ export const labels = {
   country: "Country",
   language: "Language",
   state: "State",
-  zipCode: "Zip Code (Limit 255 Chars)",
+  zipCode: "Zip Code (Limit 10 Chars)",
   chooseAlgorithm: " Default Algorithm Preferences",
   emailId: "Email ID",
   addnewNickName: "Add Nickname",
@@ -90,7 +90,7 @@ export const labels = {
   nameConfirmationTitle: "Name Confirmation",
   reasonLabel: "Reason for adding/removing support (Optional)",
   reasonChangeLabel:
-    "(Optional) Reason for adding/removing/changing order support",
+    "Reason for adding/removing/changing order support (Optional)",
   reasonLabelAdd: "Reason for support",
   reasonLabelSummary: "Summary",
   resonURLLabel: "Citation Link",

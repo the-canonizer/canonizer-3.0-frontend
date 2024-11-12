@@ -4,7 +4,7 @@ import { ArrowLeftOutlined, ReadOutlined } from "@ant-design/icons";
 import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 import PrimaryButton from "components/shared/Buttons/PrimariButton";
 
-const ReadPopup = ({ onClose, onRead, isOpen }) => {
+const ReadPopup = ({ onClose, onRead, isOpen, isReadDisabled }) => {
   return (
     <Modal
       open={isOpen}
@@ -33,6 +33,7 @@ const ReadPopup = ({ onClose, onRead, isOpen }) => {
         <PrimaryButton
           onClick={onRead}
           className="ml-4 rounded-lg px-7 inline-flex items-center justify-center"
+          disabled={isReadDisabled}
         >
           Mark Read All <ReadOutlined />
         </PrimaryButton>

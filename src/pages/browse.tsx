@@ -1,13 +1,9 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
-import { Typography } from "antd";
 
-// import Layout from "../hoc/layout";
 import TopicsList from "../components/ComponentPages/Home/TopicsList";
 import { setCurrentDate, setOnlyMyTopic } from "src/store/slices/filtersSlice";
-
-const { Title } = Typography;
 
 const BrowsePage = ({ current_date }: any) => {
   const dispatch = useDispatch();
@@ -29,11 +25,7 @@ const BrowsePage = ({ current_date }: any) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return (
-    // <Layout routeName={"browse"}>
-    <TopicsList />
-    // </Layout>
-  );
+  return <TopicsList />;
 };
 
 export async function getServerSideProps() {
