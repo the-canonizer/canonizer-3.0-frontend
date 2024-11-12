@@ -44,7 +44,7 @@ const CommentsList = () => {
       asofdate: state.filters?.filterObject?.asofdate,
       algorithm: state.filters?.filterObject?.algorithm,
     }));
-
+   
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -253,25 +253,6 @@ const CommentsList = () => {
       <Layout
         routeName={"forum"}
         afterHeader={
-          // <CampInfoBar
-          //   payload={payload}
-          //   isForumPage={false}
-          //   isHtmlContent={
-          //     !isUserAuthenticated ? (
-          //       <Text id="sign-in-msg" data-testid="logincheck">
-          //         Please <Link href={{ pathname: "/login" }}>Sign In</Link> to
-          //         comment on this Thread
-          //       </Text>
-          //     ) : (
-          //       <PrimaryButton
-          //         className="flex justify-center items-center h-auto py-2 px-7"
-          //         onClick={onCreatePost}
-          //       >
-          //         Comment in This Thread <PlusOutlined />
-          //       </PrimaryButton>
-          //     )
-          //   }
-          // />
           <CommonBreadcrumbs
             payload={payload}
             isForumPage={false}

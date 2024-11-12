@@ -13,7 +13,7 @@ export const getGravatarImage = async (email) => {
   return false;
 };
 
-const SingleAvatar = ({ user }) => {
+const SingleAvatar = ({ user, imageBaseURL = "" }) => {
   const [isGravatarAvailable, setIsGravatarAvailable] = useState(false);
 
   useEffect(() => {
@@ -36,7 +36,12 @@ const SingleAvatar = ({ user }) => {
 
   const renderAvatar = () => {
     if (user?.profile_picture_path) {
-      return <Avatar src={user?.profile_picture_path} />;
+      return (
+        <Avatar
+          className="dddd"
+          src={imageBaseURL + user?.profile_picture_path}
+        />
+      );
     }
 
     if (!user?.profile_picture_path && isGravatarAvailable) {
