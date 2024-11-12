@@ -839,14 +839,17 @@ function ProfileInfoForm({
                   {
                     validator: (_, value) => {
                       if (!value) return Promise.resolve();
-
+                
+                      // Check if the value contains only digits
+                      if (!/^\d+$/.test(value)) {
+                        return Promise.reject("Zip code must contain only numbers.");
+                      }
+                
                       // Check if the value consists only of zeros
                       if (/^0+$/.test(value)) {
-                        return Promise.reject(
-                          "Postal code cannot be all zeros."
-                        );
+                        return Promise.reject("Zip code cannot be all zeros.");
                       }
-
+                
                       return Promise.resolve();
                     },
                   },
