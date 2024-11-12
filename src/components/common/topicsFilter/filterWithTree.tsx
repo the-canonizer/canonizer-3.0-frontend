@@ -493,6 +493,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
         viewThisVersion
       );
     } else if (selectedValue === 3 || asof === "bydate") {
+      setSelectedValue(3)
       dispatch(setViewThisVersion(false));
       handleAsOfClick();
     }
