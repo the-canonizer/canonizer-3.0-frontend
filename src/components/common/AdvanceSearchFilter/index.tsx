@@ -113,13 +113,19 @@ export default function AdvanceFilter() {
     return obj.id;
   });
 
-  const findTopicId = searchDataAll.camp?.map((obj) => {
+  const findTopicId = searchDataAll?.camp?.map((obj) => {
     return obj.topic_num;
   });
 
+  const topicIdForElasticSearch = searchDataAll?.topic?.map((obj) => {
+    return obj.topic_num;
+  });
+
+  const stringTopicIdForElasticSearch = topicIdForElasticSearch?.map((element) => element?.toString());
+
   let stringTopicArray = findTopicId?.map((element) => element?.toString());
 
-  const findCampId = searchDataAll.camp?.map((obj) => {
+  const findCampId = searchDataAll?.camp?.map((obj) => {
     return obj.camp_num;
   });
 
@@ -197,10 +203,10 @@ export default function AdvanceFilter() {
       "\\$&"
     );
     const regex = new RegExp(`(${escapedHighlight})`, "gi");
-    const parts = text.split(regex);
+    const parts = text?.split(regex);
     return (
       <>
-        {parts.map((part, i) =>
+        {parts?.map((part, i) =>
           regex.test(part) ? (
             <mark className={`${styles.highlighter} p-0`} key={i}>
               {part}
@@ -349,6 +355,7 @@ export default function AdvanceFilter() {
       algo: algorithm,
       asof: asof,
       score: filterByScore,
+      topic_ids: stringTopicIdForElasticSearch,
       asofdate:
         asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
     };
