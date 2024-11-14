@@ -66,6 +66,7 @@ function SupportTreeDrawer({
   getCheckStatusAPI,
   loader = false,
   setLoader,
+  isCampLeader,
 }: any) {
   const {
     reasons,
@@ -518,7 +519,9 @@ function SupportTreeDrawer({
       }
 
       if (drawerFor === "signPetition") {
-        GetCheckStatusData();
+        if (isCampLeader()?.campLeaderExist) {
+          GetCheckStatusData();
+        }
         getCanonizedNicknameList();
         getSignPetitionData();
       }
@@ -833,7 +836,7 @@ function SupportTreeDrawer({
                 onClose();
                 form.resetFields();
                 setSelectedValue(null);
-                setIsOrderChange(false)
+                setIsOrderChange(false);
               }}
             >
               Cancel
@@ -906,7 +909,7 @@ function SupportTreeDrawer({
                 onClose();
                 form.resetFields();
                 setSelectedValue(null);
-                setIsOrderChange(false)
+                setIsOrderChange(false);
               }}
             >
               Cancel
@@ -1026,7 +1029,7 @@ function SupportTreeDrawer({
                 onClose();
                 form.resetFields();
                 setSelectedValue(null);
-                setIsOrderChange(false)
+                setIsOrderChange(false);
               }}
             >
               Cancel
