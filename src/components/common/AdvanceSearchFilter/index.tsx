@@ -347,7 +347,13 @@ export default function AdvanceFilter() {
   // };
 
   async function getTopicsApiCallWithReqBody() {
-    // loadMore ? setPageNumber(pageNumber + 1) : setPageNumber(1);
+    const stringTopicIdForElasticSearch = searchDataAll?.topic?.map((obj) => obj.topic_num?.toString()) || [];
+    
+    if (!stringTopicIdForElasticSearch.length) {
+      console.warn("No topic IDs available for the API call.");
+      return; // Skip the call if no topic IDs
+    }
+  
     const rebody = {
       type: "topic",
       search: searchValue,
@@ -356,13 +362,13 @@ export default function AdvanceFilter() {
       asof: asof,
       score: filterByScore,
       topic_ids: stringTopicIdForElasticSearch,
-      asofdate:
-        asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
+      asofdate: asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
     };
+  
     const response = await AdvanceFilterSeacrhApi(rebody);
     dispatch(setSelectedTopicFromAdvanceFilterAlgorithm(response?.data?.topic));
-    // setLoadMoreIndicator(false);
   }
+  
   async function getCampsApiCallWithReqBody() {
     // loadMore ? setPageNumber(pageNumber + 1) : setPageNumber(1);
     const rebody = {
