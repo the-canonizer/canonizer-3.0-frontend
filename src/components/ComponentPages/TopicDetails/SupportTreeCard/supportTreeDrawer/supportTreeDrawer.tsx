@@ -289,7 +289,7 @@ function SupportTreeDrawer({
       res = tagsArrayList?.map((item, index) => {
         return {
           ...item,
-          disabled: true,
+          disabled: item?.id == camp_num && drawerFor=="directAdd" ? false: true,
         };
       });
     } else {
@@ -441,6 +441,7 @@ function SupportTreeDrawer({
     } else if (drawerFor === "signPetition") {
       await signPetitionHandler();
     }
+    setIsQuickActionSelected(false)
     setLoader(false);
   };
 
