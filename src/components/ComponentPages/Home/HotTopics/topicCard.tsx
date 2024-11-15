@@ -51,12 +51,16 @@ const SingleTopicCard = ({
           className="flex justify-between pb-3 items-center"
           onClick={onTopicLinkClick}
         >
-          <Typography.Text className="flex w-11/12 items-center">
+          <Typography.Text id="browse-topic-name" className="flex w-11/12 items-center">
             <Typography.Paragraph className="m-0 text-sm 2xl:text-base font-medium font-inter !mb-0 line-clamp-1">
               {topic?.topic_name}
             </Typography.Paragraph>
-            {scoreTag}
-            {copyLink && copyLink}
+            <span id="browse-topic-score">
+              {scoreTag}
+            </span>
+            <span id="browse-copy-link">
+              {copyLink && copyLink}
+            </span>
           </Typography.Text>
           <RightOutlined className="text-canBlue font-bold hidden rightArrow" />
         </div>

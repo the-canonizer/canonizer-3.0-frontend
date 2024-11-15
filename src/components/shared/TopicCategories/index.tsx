@@ -20,6 +20,7 @@ const TopicCatsLabel = ({ tags, loading = false, ...restProps }) => {
   const LinkItem = ({ text, link }) => (
     <Link href={link}>
       <a
+        id="browse-topic-tags-item"
         className="!text-canBlue text-xs font-inter font-medium hover:!canHoverBlue"
         onClick={(e) => e?.stopPropagation()}
       >
@@ -36,7 +37,7 @@ const TopicCatsLabel = ({ tags, loading = false, ...restProps }) => {
       {...restProps}
     >
       <TagOutlined className="text-canLight text-medium rotate-[280deg]" />
-      <Typography.Paragraph className="line-clamp-1 max-w-52 !mb-0 pl-2">
+      <Typography.Paragraph id="browse-topic-tags-container" className="line-clamp-1 max-w-52 !mb-0 pl-2">
         {(tags || []).map((item, idx) => (
           <Fragment key={item?.id}>
             <LinkItem
