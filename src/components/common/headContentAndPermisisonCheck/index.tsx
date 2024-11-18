@@ -46,15 +46,6 @@ const HeadContentAndPermissionComponent = ({
     }
   }, [componentName, isUserAuthenticated, isAllowed, router]);
 
-  useEffect(() => {
-    //redirect if authentication is required and user is not loggedIn
-    // const lgt = localStorage.getItem("logout_type");
-    // if (lgt == "true") {
-    //   localStorage.removeItem("logout_type");
-    //   router?.push("/");
-    // }
-  }, [isUserAuthenticated]);
-
   return (
     <HeadContent
       title={metaContent?.title}

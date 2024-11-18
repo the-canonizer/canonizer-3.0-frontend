@@ -8,6 +8,7 @@ export const notificationSlice = createSlice({
       count: 0,
       list: [],
     },
+    isChecked: false,
   },
   reducers: {
     setData(state, action) {
@@ -16,9 +17,13 @@ export const notificationSlice = createSlice({
     setHeaderData(state, action) {
       state.headerNotification = action.payload;
     },
+    setNotificationIsChecked(state, action) {
+      state.isChecked = action.payload;
+    },
   },
 });
 
-export const { setData, setHeaderData } = notificationSlice.actions;
+export const { setData, setHeaderData, setNotificationIsChecked } =
+  notificationSlice.actions;
 
 export default notificationSlice.reducer;

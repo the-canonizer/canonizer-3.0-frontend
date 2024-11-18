@@ -165,7 +165,7 @@ function RegistrationUi({
                 }
                 prefix={<PhoneOutlined className="opacity-0" />}
                 inputMode="tel"
-                inputClassName={`numberInput [&>*]:h-[40px] [&_.ant-input-affix-wrapper]:h-full [&_.ant-input-affix-wrapper]:h-[40px] [&_.ant-input-prefix]:w-0 [&_.ant-input-group-addon]:bg-transparent`}
+                inputClassName={`numberInput [&>*]:h-[40px] [&_.ant-input-affix-wrapper]:h-full [&_.ant-input-affix-wrapper]:!h-[40px] [&_.ant-input-prefix]:w-0 [&_.ant-input-group-addon]:bg-transparent`}
                 wrapperClassName="[&_.ant-form-item-explain-error]:!mb-0 [&_.ant-form-item-explain-connected]:last:mb-6"
               />
             </Col>
