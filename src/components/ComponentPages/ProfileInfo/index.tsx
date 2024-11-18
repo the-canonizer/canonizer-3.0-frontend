@@ -294,10 +294,10 @@ const ProfileInfo = () => {
   };
   useEffect(() => {
     async function fetchMobileCarrier() {
-      // let res = await GetMobileCarrier();
-      // if (res != undefined) {
-      //   setMobileCarrier(res.data);
-      // }
+      let res = await GetMobileCarrier();
+      if (res != undefined) {
+        setMobileCarrier(res.data);
+      }
     }
 
     async function fetchAlgorithmsList() {

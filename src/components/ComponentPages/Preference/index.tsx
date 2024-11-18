@@ -145,7 +145,7 @@ const ProfilePrefrences = () => {
       optionList.map((item) => {
         if (algoOrLang == "algorithms") {
           option.push(
-            <Option key={item.algorithm_key} value={item.algorithm_key}>
+            <Option key={item.algorithm_key} value={item.algorithm_key} id="prefrence_option">
               {item.algorithm_label}
             </Option>
           );
@@ -311,19 +311,19 @@ const ProfilePrefrences = () => {
   };
 
   return (
-    <section>
+    <section id="prefrence_section">
       <SectionHeading
         title="PREFERENCES"
         icon={null}
         className="lg:mt-0 mt-10 mb-5"
       />
-      <Row gutter={30}>
-        <Col md={12} sm={24} className="w-full lg:mb-0 mb-5">
-          <p className="mb-2 mt-3 text-sm font-normal text-canBlack">
+      <Row gutter={30} id="prefrence_row">
+        <Col md={12} sm={24} className="w-full lg:mb-0 mb-5" id="prefrence_col">
+          <p className="mb-2 mt-3 text-sm font-normal text-canBlack" id="prefrence_select_heading_language">
             Language
           </p>
           <Select
-            id="selectLanguage"
+            id="prefrence_select"
             size="large"
             placeholder={"Select a language"}
             showSearch
@@ -343,12 +343,12 @@ const ProfilePrefrences = () => {
             {listOfOption(languageList, "languages")}
           </Select>
         </Col>
-        <Col md={12} sm={24} className="w-full">
-          <p className="mb-2 mt-3 text-sm font-normal text-canBlack">
+        <Col md={12} sm={24} className="w-full"  id="prefrence_col_2">
+          <p className="mb-2 mt-3 text-sm font-normal text-canBlack"  id="prefrence_select_heading_algorithm">
             Default Algorithm Preferences
           </p>
           <Select
-            id="algorithms"
+             id="prefrence_select_algorithm"
             size="large"
             placeholder={messages.placeholders.algorithm}
             showSearch
@@ -371,23 +371,24 @@ const ProfilePrefrences = () => {
         </Col>
       </Row>
 
-      <hr className="my-10" />
+      <hr className="my-10"  id="prefrence_line_space" />
 
-      <div className="lg:mt-0 mt-12">
+      <div className="lg:mt-0 mt-12"  id="prefrence_section_for_tags">
         <SectionHeading
           title="Topic Tags"
           icon={null}
           className="lg:mb-5 mb-7"
         />
-        <div className="flex lg:justify-between lg:items-center mb-5 lg:flex-row flex-col">
-          <div className="flex-1 order-2 lg:order-1  ">
-            <p className="text-sm font-medium">
+        <div className="flex lg:justify-between lg:items-center mb-5 lg:flex-row flex-col"  id="prefrence_tags_section">
+          <div className="flex-1 order-2 lg:order-1"  id="prefrence_tags_section_2">
+            <p className="text-sm font-medium" id="prefrence_tags_section_note">
               You have set{" "}
-              <span className="text-canBlue">{selectedCount} Topic Tags </span>
+              <span className="text-canBlue" id="prefrence_tags_section_note_as_your_pref">{selectedCount} Topic Tags </span>
               as your preference
             </p>
           </div>
           <Input
+            id="prefrence_tags_search_input"
             placeholder="Search via Topic Tags name"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -404,7 +405,7 @@ const ProfilePrefrences = () => {
         </div>
       </div>
 
-      <div className="w-full my-4 px-1 focus:overscroll-contain custom-checkbox-preference flex flex-wrap gap-3">
+      <div className="w-full my-4 px-1 focus:overscroll-contain custom-checkbox-preference flex flex-wrap gap-3" id="prefrence_tags_checkbox_section">
         {filteredTags.length > 0 ? (
           filteredTags.map((ch) => {
             // Check if the tag should be initially checked based on profileUserTags
@@ -425,20 +426,20 @@ const ProfilePrefrences = () => {
             );
           })
         ) : (
-          <p>No tags found</p>
+          <p id="prefrence_no_tags_found">No tags found</p>
         )}
       </div>
 
-      <div className="flex justify-center gap-5 mt-10">
+      <div className="flex justify-center gap-5 mt-10" id="prefrence_tags_discard_btn">
         <SecondaryButton
           onClick={onDiscard}
           disabled={loading}
           className="flex gap-2.5 items-center justify-center w-[12.5rem] h-auto"
         >
-          Discard <CloseOutlined />
+          Discard <CloseOutlined id="prefrence_tags_discard_btn_closeoutline" />
         </SecondaryButton>
 
-        <Form form={formVerify} onFinish={onFinish2}>
+        <Form form={formVerify} onFinish={onFinish2} id="form_for_prefrence">
           <PrimaryButton
             className="flex gap-2.5 items-center justify-center w-[12.5rem] h-auto"
             loading={loading}
@@ -449,8 +450,9 @@ const ProfilePrefrences = () => {
                 await GetUserProfileInfo();
               } catch (error) {}
             }}
+            id="prefrence_tags_save_btn"
           >
-            Save <SaveOutlined />
+            Save <SaveOutlined  id="prefrence_tags_save_btn_saveoutline" />
           </PrimaryButton>
         </Form>
       </div>
