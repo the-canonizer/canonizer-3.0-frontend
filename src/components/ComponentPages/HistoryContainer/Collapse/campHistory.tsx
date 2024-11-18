@@ -20,7 +20,7 @@ const CampHistory = ({ campStatement, topicNamespaceId }: any) => {
 
   return (
     <>
-      <p className="mb-[15px]">
+      <p className="mb-[15px] break-all">
         Camp Name:
         <span className={styles.updateSurveyPrj}>
           {campStatement?.camp_name}

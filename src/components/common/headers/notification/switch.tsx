@@ -3,17 +3,33 @@ import { Typography, Switch, notification, Spin, message } from "antd";
 import { useRouter } from "next/router";
 import localforage from "localforage";
 import firebase from "firebase/app";
+import { useDispatch, useSelector } from "react-redux";
 
 import { firebaseCloudMessaging } from "src/firebaseConfig/firebase";
 import { updateFCMToken } from "src/network/api/notificationAPI";
 
 import Fav from "./icon";
+import { RootState } from "src/store";
+import { setNotificationIsChecked } from "src/store/slices/notificationSlice";
 
 const NotificationSwitch = () => {
+  const isChecked = useSelector(
+    (state: RootState) => state.notifications.isChecked
+  );
+
   const [checked, setChecked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+  useEffect(() => {
+    setChecked(isChecked);
+  }, [isChecked]);
+
   const router = useRouter();
+  const dispatch = useDispatch();
+
+  const dispatchIsChecked = (isCheck: boolean) => {
+    dispatch(setNotificationIsChecked(isCheck));
+  };
 
   const updateToken = async (tc: string) => {
     await updateFCMToken(tc);
@@ -27,7 +43,7 @@ const NotificationSwitch = () => {
 
         if (token || token2) {
           localforage.setItem("fcm_token", token2);
-          setChecked(true);
+          dispatchIsChecked(true);
           getMessage();
         }
       } catch (error) {
@@ -60,7 +76,7 @@ const NotificationSwitch = () => {
             if (fcm_token) {
               await localforage.setItem("fcm_token", fcm_token);
               await updateToken(fcm_token);
-              setChecked(true);
+              dispatchIsChecked(true);
               getMessage();
               setIsLoading(false);
             } else {
@@ -85,7 +101,7 @@ const NotificationSwitch = () => {
     } else {
       await localforage.removeItem("fcm_token");
       await updateToken("disabled");
-      setChecked(false);
+      dispatchIsChecked(false);
       setIsLoading(false);
     }
   };
