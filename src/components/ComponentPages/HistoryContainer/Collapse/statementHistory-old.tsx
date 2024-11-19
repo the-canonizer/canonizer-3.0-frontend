@@ -11,7 +11,7 @@ const StatementHistory = ({ campStatement, topicNamespaceId }: any) => {
   };
   return (
     <>
-      <Title level={5}>
+      <Title level={5} className="break-all">
         Edit Summary :{" "}
         <span className={styles.updateSurveyPrj}>{campStatement?.note}</span>
       </Title>

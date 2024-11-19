@@ -40,13 +40,13 @@ const HistoryComparison = ({
   return (
     <>
       {historyOf === "topic" || historyOf === "camp" ? (
-        <p className="mb-2.5">
+        <p className="mb-2.5 break-all">
           {capitalizeFirstLetter(historyOf)} Name:{" "}
           <span>{campStatement?.parsed_value}</span>
         </p>
       ) : null}
 
-      <Title level={5} className="font-semibold mb-2.5">
+      <Title level={5} className="font-semibold mb-2.5 break-all">
         {getTitle()}
       </Title>
       <div>

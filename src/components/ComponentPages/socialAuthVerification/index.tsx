@@ -69,7 +69,7 @@ function SocialAuthVerification() {
   return (
     <Fragment>
       <section className="">
-        <SectionHeading title="Social Oauth" icon={null} className="!mb-5" />
+        <SectionHeading title="Social Auth" icon={null} className="!mb-5" />
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           <IconWrapper
