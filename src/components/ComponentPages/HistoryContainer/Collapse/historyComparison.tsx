@@ -73,11 +73,11 @@ const HistoryComparison = ({
                 Parent Camp :<span>{campStatement?.parent_camp_name}</span>
               </p>
             )}
-            {campStatement?.key_words && (
+            {/* {campStatement?.key_words && (
               <p>
                 Keywords: <span>{campStatement?.key_words}</span>
               </p>
-            )}
+            )} */}
             <p className="break-all">
               Edit summary: <span>{campStatement?.note}</span>
             </p>
