@@ -130,7 +130,7 @@ export default function SearchSideBar() {
                         ? searchMetaData?.topic_total
                         : router.query.asof == "review" ||
                           router.query.asof == "bydate"
-                        ? selectedTopicFromAdvanceFilterAlgorithm.length
+                        ? selectedTopicFromAdvanceFilterAlgorithm?.length
                         : searchCountForMetaData?.topic_total}
                       )
                     </span>

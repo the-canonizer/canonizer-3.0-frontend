@@ -135,7 +135,7 @@ const CampSearch = () => {
                 data-testid="camp_heading"
                 className="!mb-6 !text-base !font-semibold !text-canBlack"
               >
-                Camp
+                Camp(S)
               </h4>
               {/* <AdvanceFilter /> */}
             </div>
