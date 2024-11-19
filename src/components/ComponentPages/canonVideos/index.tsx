@@ -400,10 +400,11 @@ export default function CanonVideos() {
                 data-testid="skeleton"
               />
             ) : (
-              <ul>
+              <ul id="video-list-container">
                 {Object.values(videos)?.map((video) => {
                   return (
                     <li
+                      id="video-list-item"
                       className={activeVideoClass(video.id)}
                       onClick={() => handleVideoSelection(video)}
                       key={video?.id}
@@ -411,11 +412,14 @@ export default function CanonVideos() {
                       style={{ display: "flex", alignItems: "center" }}
                     >
                       <img
+                        id="video-thumbnail"
                         src={`${process.env.NEXT_PUBLIC_BETA_URL}files/videos/consciousness/${video?.thumbnail}`}
                         alt=""
                         style={{ minHeight: "50px" }}
                       />
-                      {video?.title}
+                      <span id="video-title">
+                        {video?.title}
+                      </span>
                     </li>
                   );
                 })}
