@@ -43,7 +43,6 @@ const TopicSearch = () => {
   const [displayedData, setDisplayedData] = useState([]);
   const [displayedDataforAlgo, setDisplayedDataforAlgo] = useState([]);
 
-
   const dispatch = useDispatch();
 
   const pageChange = (pageNumber) => {
@@ -114,7 +113,7 @@ const TopicSearch = () => {
   };
   const router = useRouter();
   // console.log(searchDataAll.topic.length,"ggggggggg")
-  const pageSize = 20
+  const pageSize = 20;
   useEffect(() => {
     // Calculate the starting and ending index for slicing the data
     const startIndex = (currentPage - 1) * pageSize;
@@ -132,15 +131,26 @@ const TopicSearch = () => {
     const endIndex = startIndex + pageSize;
 
     // Slice the data to show only 20 items for the current page
-    setDisplayedDataforAlgo(selectedTopicFromAdvanceFilterAlgorithm?.slice(startIndex, endIndex));
+    setDisplayedDataforAlgo(
+      selectedTopicFromAdvanceFilterAlgorithm?.slice(startIndex, endIndex)
+    );
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedTopicFromAdvanceFilterAlgorithm, currentPage]);
   return (
     <Fragment>
-      <div className="flex justify-between lg:items-center lg:flex-row flex-col items-start mb-10 mt-2.5 lg:gap-0 gap-5" id="elastic_topic_search_section">
-        <div className="flex  items-center  " id="elastic_topic_search_section_heading_content">
-          <div className="flex items-center gap-2.5" id="elastic_topic_search_section_img_content">
+      <div
+        className="flex justify-between lg:items-center lg:flex-row flex-col items-start mb-10 mt-2.5 lg:gap-0 gap-5"
+        id="elastic_topic_search_section"
+      >
+        <div
+          className="flex  items-center  "
+          id="elastic_topic_search_section_heading_content"
+        >
+          <div
+            className="flex items-center gap-2.5"
+            id="elastic_topic_search_section_img_content"
+          >
             <Image
               id="elastic_topic_search_section_img"
               src="/images/recent-activiity-arrow.svg"
@@ -148,7 +158,10 @@ const TopicSearch = () => {
               height={24}
             />
 
-            <h3 className="lg:text-3xl text-xl   text-canBlack font-medium" id="elastic_topic_search_section_heading">
+            <h3
+              className="lg:text-3xl text-xl   text-canBlack font-medium"
+              id="elastic_topic_search_section_heading"
+            >
               Search Results for “
               <span className="text-canBlue capitalize">
                 {router?.query?.q}
@@ -159,14 +172,26 @@ const TopicSearch = () => {
         </div>
         <AdvanceFilter />
       </div>
-      <div className="flex lg:flex-row flex-col gap-10" id="elastic_topic_search_section_sidebar">
-        <aside className="leftSideBar miniSideBar" id="elastic_topic_search_section_sidebar_sub">
-          <div className="leftSideBar_Card p-0 m-0" id="elastic_topic_search_section_sidebar_sub1">
+      <div
+        className="flex lg:flex-row flex-col gap-10"
+        id="elastic_topic_search_section_sidebar"
+      >
+        <aside
+          className="leftSideBar miniSideBar"
+          id="elastic_topic_search_section_sidebar_sub"
+        >
+          <div
+            className="leftSideBar_Card p-0 m-0"
+            id="elastic_topic_search_section_sidebar_sub1"
+          >
             <SearchSideBar />
           </div>
         </aside>
 
-        <div className="pageContentWrap flex-1" id="elastic_topic_search_section_topic_heading">
+        <div
+          className="pageContentWrap flex-1"
+          id="elastic_topic_search_section_topic_heading"
+        >
           <div
             className={`bg-canGray lg:py-5 lg:px-8 py-4 px-4 rounded-xl mb-5`}
           >
@@ -188,83 +213,102 @@ const TopicSearch = () => {
                 id="elastic_topic_search_section_loader"
               />
             ) : (
-              <div className={styles.search_lists} id="elastic_topic_search_list_section">
+              <div
+                className={styles.search_lists}
+                id="elastic_topic_search_list_section"
+              >
                 {searchDataAll.topic?.length ? (
                   <div>
                     {isReview || asof == "bydate" ? (
                       selectedTopicFromAdvanceFilterAlgorithm?.length ? (
                         <div id="elastic_topic_search_section_ul">
                           <ul id="elastic_topic_search_ul">
-                            {displayedDataforAlgo?.map(
-                              (x) => {
-                                return (
-                                  <>
-                                    <li className="flex flex-col py-3 first:pt-0 border-b border-canGrey2 last:border-none last:pb-0 " id="elastic_topic_search_li_section">
-                                      <Link
-                                        href={`/topic/${
-                                          x?.topic_num
-                                        }-${replaceSpecialCharacters(
-                                          x?.topic_name,
-                                          "-"
-                                        )}/1-Agreement`}
+                            {displayedDataforAlgo?.map((x) => {
+                              return (
+                                <>
+                                  <li
+                                    className="flex flex-col py-3 first:pt-0 border-b border-canGrey2 last:border-none last:pb-0 "
+                                    id="elastic_topic_search_li_section"
+                                  >
+                                    <Link
+                                      href={`/topic/${
+                                        x?.topic_num
+                                      }-${replaceSpecialCharacters(
+                                        x?.topic_name,
+                                        "-"
+                                      )}/1-Agreement`}
+                                    >
+                                      <div
+                                        className="flex justify-between items-center"
+                                        id="elastic_topic_search_value"
                                       >
-                                        <div className="flex justify-between items-center" id="elastic_topic_search_value">
-                                          <a id="elastic_topic_search_value_link">
-                                            <label
-                                              style={{ cursor: "pointer" }}
-                                              className="text-base font-medium text-canBlack flex !mb-2"
-                                              id="elastic_topic_search_value_lable"
-                                            >
-                                              {/* {x?.topic_name} */}
-                                              {getHighlightedText(
-                                                x?.topic_name,
-                                                searchValue
-                                              )}
-                                            </label>
-                                          </a>
-                                          <a
-                                            href={`/topic/${
-                                              x?.topic_num
-                                            }-${replaceSpecialCharacters(
-                                              x?.topic_name,
-                                              "-"
-                                            )}/1-Agreement`}
-                                            id="elastic_topic_search_value_link_2"
+                                        <a id="elastic_topic_search_value_link">
+                                          <label
+                                            style={{ cursor: "pointer" }}
+                                            className="text-base font-medium text-canBlack flex !mb-2"
+                                            id="elastic_topic_search_value_lable"
                                           >
-                                            <Image
-                                              id="elastic_topic_search_value_arrow_img"
-                                              src="/images/search-page-arrow.svg"
-                                              width={16}
-                                              height={10}
-                                              alt={"check"}
-                                            />
-                                          </a>
-                                        </div>
-                                      </Link>
-
-                                      <div className="text-base text-canBlue flex items-center gap-2.5" id="elastic_topic_search_canon_section">
-                                        <Image
-                                          id="elastic_topic_search_canon_img"
-                                          src="/images/flagicon.svg"
-                                          width={18}
-                                          height={20}
-                                        />
-                                        <span className="text-base !text-canBlack font-medium" id="elastic_topic_search_canon_text">
-                                          Canon:
-                                          <span className="font-medium !text-canBlue ml-1" id="elastic_topic_search_canon_value">
-                                            {x.namespace}
-                                          </span>
-                                        </span>
+                                            {/* {x?.topic_name} */}
+                                            {getHighlightedText(
+                                              x?.topic_name,
+                                              searchValue
+                                            )}
+                                          </label>
+                                        </a>
+                                        <a
+                                          href={`/topic/${
+                                            x?.topic_num
+                                          }-${replaceSpecialCharacters(
+                                            x?.topic_name,
+                                            "-"
+                                          )}/1-Agreement`}
+                                          id="elastic_topic_search_value_link_2"
+                                        >
+                                          <Image
+                                            id="elastic_topic_search_value_arrow_img"
+                                            src="/images/search-page-arrow.svg"
+                                            width={16}
+                                            height={10}
+                                            alt={"check"}
+                                          />
+                                        </a>
                                       </div>
-                                    </li>
-                                  </>
-                                );
-                              }
-                            )}
+                                    </Link>
+
+                                    <div
+                                      className="text-base text-canBlue flex items-center gap-2.5"
+                                      id="elastic_topic_search_canon_section"
+                                    >
+                                      <Image
+                                        id="elastic_topic_search_canon_img"
+                                        src="/images/flagicon.svg"
+                                        width={18}
+                                        height={20}
+                                      />
+                                      <span
+                                        className="text-base !text-canBlack font-medium"
+                                        id="elastic_topic_search_canon_text"
+                                      >
+                                        Canon:
+                                        <span
+                                          className="font-medium !text-canBlue ml-1"
+                                          id="elastic_topic_search_canon_value"
+                                        >
+                                          {x.namespace}
+                                        </span>
+                                      </span>
+                                    </div>
+                                  </li>
+                                </>
+                              );
+                            })}
                           </ul>
                         </div>
                       ) : (
-                        <span className="italic text-canLight" id="elastic_topic_search_no_data">
+                        <span
+                          className="italic text-canLight"
+                          id="elastic_topic_search_no_data"
+                        >
                           There is no data to show in this category.
                         </span>
                       )
@@ -273,13 +317,19 @@ const TopicSearch = () => {
                         {displayedData?.map((x) => {
                           return (
                             <>
-                              <li className="flex flex-col py-3 first:pt-0 border-b border-canGrey2 last:border-none last:pb-0 " id="elastic_topic_search_display_data_li">
+                              <li
+                                className="flex flex-col py-3 first:pt-0 border-b border-canGrey2 last:border-none last:pb-0 "
+                                id="elastic_topic_search_display_data_li"
+                              >
                                 <Link
                                   href={`/${replaceSpecialCharactersInLink(
                                     x?.link
                                   )}`}
                                 >
-                                  <div className="flex justify-between items-center" id="elastic_topic_search_display_data_list_section">
+                                  <div
+                                    className="flex justify-between items-center"
+                                    id="elastic_topic_search_display_data_list_section"
+                                  >
                                     <a>
                                       <label
                                         style={{ cursor: "pointer" }}
@@ -308,16 +358,25 @@ const TopicSearch = () => {
                                     </a>
                                   </div>
                                 </Link>
-                                <div className="text-base text-canBlue flex items-center gap-2.5" id="elastic_topic_search_display_data_canon">
+                                <div
+                                  className="text-base text-canBlue flex items-center gap-2.5"
+                                  id="elastic_topic_search_display_data_canon"
+                                >
                                   <Image
                                     id="elastic_topic_search_display_data_canon_img"
                                     src="/images/flagicon.svg"
                                     width={18}
                                     height={20}
                                   />
-                                  <span className="text-base !text-canBlack font-medium" id="elastic_topic_search_display_data_canon_text">
+                                  <span
+                                    className="text-base !text-canBlack font-medium"
+                                    id="elastic_topic_search_display_data_canon_text"
+                                  >
                                     Canon:
-                                    <span className="font-medium !text-canBlue ml-1" id="elastic_topic_search_display_data_canon_value">
+                                    <span
+                                      className="font-medium !text-canBlue ml-1"
+                                      id="elastic_topic_search_display_data_canon_value"
+                                    >
                                       {x.namespace}
                                     </span>
                                   </span>
@@ -330,7 +389,10 @@ const TopicSearch = () => {
                     )}
                   </div>
                 ) : (
-                  <span className="italic text-canLight" id="elastic_topic_search_display_no_data">
+                  <span
+                    className="italic text-canLight"
+                    id="elastic_topic_search_display_no_data"
+                  >
                     There is no data to show in this category.
                   </span>
                 )}

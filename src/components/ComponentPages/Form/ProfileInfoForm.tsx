@@ -664,7 +664,7 @@ function ProfileInfoForm({
             >
               <Radio.Group name="radiogroup" defaultValue={1} id="gender_radio_btn">
                 <Space size="large" className={styles.radio_Btn} id="space_tag_radio_btn">
-                  <Radio value={0} tabIndex={7} id="male_radio_btn">
+                  <Radio value={0} id="male_radio_btn">
                     Male
                   </Radio>
                   <Radio value={1} id="female_radio_btn">Female</Radio>
