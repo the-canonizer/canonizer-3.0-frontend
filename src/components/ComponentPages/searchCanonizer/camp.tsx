@@ -102,18 +102,19 @@ const CampSearch = () => {
   const router = useRouter();
   return (
     <Fragment>
-      <div className="flex justify-between lg:items-center lg:flex-row flex-col items-start mb-10 mt-2.5 lg:gap-0 gap-5">
-        <div className="flex  items-center  ">
-          <div className="flex items-center gap-2.5">
+      <div className="flex justify-between lg:items-center lg:flex-row flex-col items-start mb-10 mt-2.5 lg:gap-0 gap-5" id="search_camp_section">
+        <div className="flex  items-center  " id="search_camp_section_sub">
+          <div className="flex items-center gap-2.5" id="search_camp_section_heading">
             <Image
+             id="search_camp_section_heading_img"
               src="/images/recent-activiity-arrow.svg"
               width={16}
               height={24}
             />
 
-            <h3 className="lg:text-3xl text-xl   text-canBlack font-medium">
+            <h3 className="lg:text-3xl text-xl   text-canBlack font-medium"  id="search_camp_section_heading_text">
               Search Results for “
-              <span className="text-canBlue capitalize">
+              <span className="text-canBlue capitalize"  id="search_camp_section_heading_text_value">
                 {router?.query?.q}
               </span>
               ”
@@ -122,18 +123,19 @@ const CampSearch = () => {
         </div>
         <AdvanceFilter />
       </div>
-      <div className="flex lg:flex-row flex-col gap-10">
-        <aside className="leftSideBar miniSideBar">
-          <div className="leftSideBar_Card p-0 m-0">
+      <div className="flex lg:flex-row flex-col gap-10"  id="search_camp_section_sidebar">
+        <aside className="leftSideBar miniSideBar"  id="search_camp_section_sidebar_2">
+          <div className="leftSideBar_Card p-0 m-0"  id="search_camp_section_heading_sidebar_3">
             <SearchSideBar />
           </div>
         </aside>
-        <div className="pageContentWrap flex-1">
-          <div className="bg-canGray lg:py-5 lg:px-8 py-4 px-4 rounded-xl mb-5">
-            <div className="d-flex mb-2 align-items-center flex-wrap relative">
+        <div className="pageContentWrap flex-1"  id="search_camp_section_text_div">
+          <div className="bg-canGray lg:py-5 lg:px-8 py-4 px-4 rounded-xl mb-5"  id="search_camp_section_text_div_1">
+            <div className="d-flex mb-2 align-items-center flex-wrap relative"  id="search_camp_section_text_div_2">
               <h4
                 data-testid="camp_heading"
                 className="!mb-6 !text-base !font-semibold !text-canBlack"
+                 id="search_camp_section_text_heading"
               >
                 Camp(S)
               </h4>
@@ -141,19 +143,20 @@ const CampSearch = () => {
             </div>
             {loading ? (
               <CustomSkelton
+                 id="search_camp_section_loader"
                 skeltonFor="list"
                 bodyCount={10}
                 stylingClass="listSkeleton"
                 isButton={false}
               />
             ) : (
-              <div className={styles.search_lists}>
+              <div className={styles.search_lists}  id="search_camp_section_list">
                 {searchDataAll.camp?.length ? (
-                  <div>
+                  <div  id="search_camp_section_map_list">
                     {isReview || asof == "bydate" ? (
                       <div>
                         {selectedCampFromAdvanceFilterAlgorithm?.length ? (
-                          <ul>
+                          <ul  id="search_camp_section_ul">
                             {displayList?.map((x) => {
                               const jsonData = JSON.parse(
                                 x.breadcrumb
@@ -177,12 +180,12 @@ const CampSearch = () => {
                               );
                               return (
                                 <>
-                                  <li className="flex flex-col py-3 first:pt-0 border-b border-canGrey2 last:border-none">
+                                  <li className="flex flex-col py-3 first:pt-0 border-b border-canGrey2 last:border-none"  id="search_camp_section_ul_li">
                                     <Link
                                       href={`/${jsonData[0][1]?.camp_link}`}
                                     >
-                                      <div className="flex justify-between items-center">
-                                        <a className="text-base font-medium text-canBlack flex !mb-2">
+                                      <div className="flex justify-between items-center" id="search_camp_section_ul_li_div">
+                                        <a className="text-base font-medium text-canBlack flex !mb-2" id="search_camp_section_ul_li_link_value">
                                           {" "}
                                           {/* {x.camp_name} */}
                                           {getHighlightedText(
@@ -191,9 +194,11 @@ const CampSearch = () => {
                                           )}
                                         </a>
                                         <a
+                                          id="search_camp_section_ul_li_link"
                                           href={`/${jsonData[0][1]?.camp_link}`}
                                         >
                                           <Image
+                                            id="search_camp_section_ul_li_img"
                                             src="/images/search-page-arrow.svg"
                                             width={16}
                                             height={10}
@@ -202,14 +207,15 @@ const CampSearch = () => {
                                         </a>
                                       </div>
                                     </Link>
-                                    <div className="text-base  flex flex-wrap items-center gap-2.5">
-                                      <div className="flex gap-2.5">
+                                    <div className="text-base  flex flex-wrap items-center gap-2.5" id="search_camp_section_ul_li_img_div">
+                                      <div className="flex gap-2.5" id="search_camp_section_ul_li_img_div_1">
                                         <Image
+                                          id="search_camp_section_ul_li_img"
                                           src="/images/note-sticky.svg"
                                           width={17}
                                           height={19}
                                         />
-                                        <span className="text-base font-medium text-canBlack mr-1">
+                                        <span className="text-base font-medium text-canBlack mr-1" id="search_camp_section_ul_li_topic_heading">
                                           {" "}
                                           Topic:
                                         </span>
@@ -220,6 +226,7 @@ const CampSearch = () => {
                                           return (
                                             <>
                                               <a
+                                                id="search_camp_section_ul_li_parsed_link"
                                                 className="text-base text-canBlue flex items-center gap-2.5 font-medium"
                                                 href={`/${obj?.camp_link}`}
                                                 key={`/${obj?.camp_link}`}
@@ -243,13 +250,13 @@ const CampSearch = () => {
                             })}
                           </ul>
                         ) : (
-                          <span className="italic text-canLight">
+                          <span className="italic text-canLight" id="search_camp_section_ul_li_no_data">
                             There is no data to show in this category.
                           </span>
                         )}
                       </div>
                     ) : (
-                      <ul>
+                      <ul id="search_camp_section_advance">
                         {searchDataAll?.camp.map((x) => {
                           const jsonData = JSON.parse(
                             x.breadcrumb_data
@@ -271,10 +278,10 @@ const CampSearch = () => {
                           );
                           return (
                             <>
-                              <li className="flex flex-col py-3 first:pt-0 border-b border-canGrey2 last:border-none">
+                              <li className="flex flex-col py-3 first:pt-0 border-b border-canGrey2 last:border-none" id="search_camp_section_ul_li_advance">
                                 <Link href={`/${jsonData?.[0][1]?.camp_link}`}>
                                   <div className="flex justify-between items-center">
-                                    <a className="text-base font-medium text-canBlack flex !mb-2 ">
+                                    <a className="text-base font-medium text-canBlack flex !mb-2 " id="search_camp_section_ul_li_advance_link_value">
                                       {" "}
                                       {/* {x.type_value} */}
                                       {getHighlightedText(
@@ -282,8 +289,9 @@ const CampSearch = () => {
                                         searchValue
                                       )}
                                     </a>
-                                    <a href={`/${jsonData[0][1]?.camp_link}`}>
+                                    <a href={`/${jsonData[0][1]?.camp_link}`} id="search_camp_section_ul_li_advance_link">
                                       <Image
+                                        id="search_camp_section_ul_li_advance_img"
                                         src="/images/search-page-arrow.svg"
                                         width={16}
                                         height={10}
@@ -292,14 +300,15 @@ const CampSearch = () => {
                                     </a>
                                   </div>
                                 </Link>
-                                <div className="text-base  flex flex-wrap items-center gap-2.5">
-                                  <div className="flex gap-2.5">
+                                <div className="text-base  flex flex-wrap items-center gap-2.5" id="search_camp_section_ul_li_advance_parsed_area">
+                                  <div className="flex gap-2.5" id="search_camp_section_ul_li_advance_parsed_area_div_1">
                                     <Image
+                                      id="search_camp_section_ul_li_advance_parsed_area_img"
                                       src="/images/note-sticky.svg"
                                       width={17}
                                       height={19}
                                     />
-                                    <span className="text-base font-medium text-canBlack mr-1">
+                                    <span className="text-base font-medium text-canBlack mr-1" id="search_camp_section_ul_li_advance_parsed_area_topic">
                                       {" "}
                                       Topic:
                                     </span>
@@ -308,6 +317,7 @@ const CampSearch = () => {
                                     return (
                                       <>
                                         <a
+                                          id="search_camp_section_ul_li_advance_parsed_area_link"
                                           className="text-base text-canBlue flex items-center gap-2.5 font-medium"
                                           href={`/${obj?.camp_link}`}
                                           key={`/${obj?.camp_link}`}
@@ -334,7 +344,7 @@ const CampSearch = () => {
                     )}
                   </div>
                 ) : (
-                  <span className="italic text-canLight">
+                  <span className="italic text-canLight" id="search_camp_section_ul_li_advance_parsed_area_no_data">
                     There is no data to show in this category.
                   </span>
                 )}
