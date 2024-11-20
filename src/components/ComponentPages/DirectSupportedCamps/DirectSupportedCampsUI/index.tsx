@@ -119,10 +119,7 @@ export default function DirectSupportedCampsUI({
       render: (text: string, record: RecordType) => (
         <div className="flex gap-2.5 line-clamp-1 cn-card-home">
           <Link
-            href={record.title_link.replace(
-              "https://ux-dev.canonizer.com",
-              "http://localhost:4000"
-            )}
+            href={record.title_link}
           >
             <a
               className="text-sm font-medium flex items-center gap-2.5 text-canBlack"
