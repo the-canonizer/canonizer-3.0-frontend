@@ -711,8 +711,8 @@ const TopicDetails = ({ serverSideCall }: any) => {
                   >
                     {
                       new Date((tree && tree["1"]?.created_date) * 1000)
-                        .toLocaleString()
-                        ?.split(",")[0]
+                        .toISOString()
+                        ?.split("T")[0]
                     }
                   </AntLink>
                 </p>
