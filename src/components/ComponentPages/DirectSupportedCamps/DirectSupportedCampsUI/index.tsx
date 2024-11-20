@@ -26,6 +26,7 @@ import {
 } from "src/store/slices/campDetailSlice";
 import PrimaryButton from "components/shared/Buttons/PrimariButton";
 import dynamic from "next/dynamic";
+import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
 const DraggableTags = dynamic(() => import("./draggable"), { ssr: false });
 
 export default function DirectSupportedCampsUI({
@@ -113,8 +114,15 @@ export default function DirectSupportedCampsUI({
       key: "title",
       render: (text: string, record: RecordType) => (
         <div className="flex gap-2.5 line-clamp-1 cn-card-home">
-          <Link href={record.title_link}>
-            <a className="text-sm font-medium flex items-center gap-2.5 text-canBlack">
+          <Link href={record.title_link.replace('https://ux-dev.canonizer.com', 'http://localhost:4000')}>
+            <a className="text-sm font-medium flex items-center gap-2.5 text-canBlack"  onClick={(()=>{
+                    dispatch(
+                      setFilterCanonizedTopics({
+                        asofdate: Date.now() / 1000,
+                        asof: "default",
+                      })
+                    );
+                  })}>
               {text}
             </a>
           </Link>
@@ -429,7 +437,14 @@ export default function DirectSupportedCampsUI({
                   </span>
                   <div className="flex gap-2.5 justify-between items-center w-full">
                     <Link href={record.title_link}>
-                      <a className="text-lg font-semibold text-canBlack">
+                      <a className="text-lg font-semibold text-canBlack"  onClick={(()=>{
+                    dispatch(
+                      setFilterCanonizedTopics({
+                        asofdate: Date.now() / 1000,
+                        asof: "default",
+                      })
+                    );
+                  })}>
                         {record.title.length > 50
                           ? record.title.substring(0, 30) + "..."
                           : record.title}
