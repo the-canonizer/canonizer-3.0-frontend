@@ -351,17 +351,19 @@ const SettingsUI = () => {
   }, []);
 
   return (
-    <div className="pageContentWrap flex lg:flex-row flex-col gap-10">
-      <div className="bg-canGray rounded-xl min-h-[45rem] h-full lg:flex flex-col justify-between sticky top-0 flex-1 hidden ">
-        <div>
-          <div className="p-5 border-b border-canGrey2 flex mb-4">
+    <div className="pageContentWrap flex lg:flex-row flex-col gap-10" id="setting_section">
+      <div className="bg-canGray rounded-xl min-h-[45rem] h-full lg:flex flex-col justify-between sticky top-0 flex-1 hidden " id="setting_section_sub">
+        <div id="setting_section_sub_1">
+          <div className="p-5 border-b border-canGrey2 flex mb-4" id="setting_section_title">
             <SectionHeading title="PROFILE SETTING" icon={null} />
           </div>
           <Sider
+            id="setting_section_sider"
             width={280}
             className="!bg-transparent [&_.ant-menu]:!bg-transparent  "
           >
             <Menu
+              id="setting_section_menu"
               title="PROFILE SETTINGS"
               mode="inline"
               items={items}
@@ -371,10 +373,11 @@ const SettingsUI = () => {
             />
           </Sider>
         </div>
-        <footer className="px-9 py-10 flex justify-start border-t border-canGrey2">
-          <p className="text-base font-semibold text-canDarkRed flex gap-2.5 items-center cursor-pointer">
-            <span onClick={onClick}> Log Out</span>
+        <footer className="px-9 py-10 flex justify-start border-t border-canGrey2" id="setting_section_footer">
+          <p className="text-base font-semibold text-canDarkRed flex gap-2.5 items-center cursor-pointer" id="setting_section_footer_log_out">
+            <span onClick={onClick} id="setting_section_log_out_text"> Log Out</span>
             <Image
+              id="setting_section_log_out_img"
               src="/images/logout-icon.svg"
               width={24}
               height={24}
@@ -383,30 +386,31 @@ const SettingsUI = () => {
           </p>
         </footer>
       </div>
-      <div className="flex flex-col w-full">
-        <div>
-          <div className="">
+      <div className="flex flex-col w-full" id="setting_section_tab">
+        <div id="setting_section_tab_sub">
+          <div className="" id="setting_section_tab_sub_1">
             <div id="upload-profile">
               <div>
-                <div className="">
+                <div className="" id="setting_section_tab_sub_2">
                   <div
-                    id="upload-profile"
+                    id="setting_section_img_uploader"
                     className="flex flex-row  items-center justify-start lg:gap-8 gap-4 lg:bg-canGray py-2.5 lg:px-12 px-2 mb-4 rounded-xl"
                   >
                     <ImageUploader />
-                    <div className="flex flex-col gap-1">
-                      <h3 className="lg:text-xl text-base text-canBlack font-medium">
+                    <div className="flex flex-col gap-1" id="setting_section_user_profile_details">
+                      <h3 className="lg:text-xl text-base text-canBlack font-medium" id="setting_section_user_profile_name">
                         {getDataFromUserProfile?.first_name}{" "}
                         {getDataFromUserProfile?.last_name}
                       </h3>
-                      <p className="text-sm font-normal text-canLight">
+                      <p className="text-sm font-normal text-canLight" id="setting_section_user_profile_email">
                         {getDataFromUserProfile?.email}
                       </p>
                     </div>
                   </div>
-                  <div className=" ">
-                    <div className="mb-10 flex flex-col lg:flex-row lg:hidden bg-canGray ml-[-1rem] mr-[-1rem] w-[calc(100%- -2rem)]">
+                  <div className=" " id="setting_section_select_tag_parent">
+                    <div className="mb-10 flex flex-col lg:flex-row lg:hidden bg-canGray ml-[-1rem] mr-[-1rem] w-[calc(100%- -2rem)]" id="setting_section_select_tag_sub_1">
                       <Select
+                        id="setting_section_select_tag"
                         className=" w-full !bg-canGray [&_.ant-select-selector]:!h-16 [&_.ant-select-selector]:!flex [&_.ant-select-selector]:!items-center [&_.ant-select-selector]:!bg-transparent [&_.ant-select-selector]:!border-r-0 [&_.ant-select-selector]:!border-l-0 "
                         defaultValue="Select"
                         // value={selectedValue}
@@ -423,17 +427,18 @@ const SettingsUI = () => {
                           {
                             value: "Personal Info",
                             label: (
-                              <span>
+                              <span id="setting_section_select_tag_persnol_info">
                                 <Link
                                   href="/settings?tab=profile_info"
                                   className="[&_.ant-menu-item-selected]:!text-canBlue"
                                 >
-                                  <a className="flex items-center gap-3">
+                                  <a className="flex items-center gap-3" id="setting_section_select_tag_persnol_info_link">
                                     <span className="text-base font-medium text-canBlack">
                                       {" "}
                                       Personal Info
                                     </span>
                                     <Image
+                                      id="setting_section_select_tag_persnol_info_img"
                                       src="/images/nickname-user-icon.svg"
                                       width={14}
                                       height={24}
@@ -447,17 +452,18 @@ const SettingsUI = () => {
                           {
                             value: "Nicknames",
                             label: (
-                              <span>
+                              <span id="setting_section_select_tag_nickname">
                                 <Link
                                   href="/settings?tab=nick_name"
                                   className="[&_.ant-menu-item]:!rounded-lg"
                                 >
-                                  <a className="flex items-center gap-3">
-                                    <span className="text-base font-medium text-canBlack">
+                                  <a className="flex items-center gap-3" id="setting_section_select_tag_nickname_link">
+                                    <span className="text-base font-medium text-canBlack" id="setting_section_select_tag_nickname_text">
                                       {" "}
                                       Nicknames
                                     </span>
                                     <Image
+                                      id="setting_section_select_tag_nickname_img"
                                       src="/images/nickname-user-icon.svg"
                                       width={14}
                                       height={24}
@@ -471,14 +477,15 @@ const SettingsUI = () => {
                           {
                             value: "Preferences",
                             label: (
-                              <span>
+                              <span id="setting_section_select_tag_preferences">
                                 <Link href="/settings?tab=user_preferences">
-                                  <a className="flex items-center gap-3">
-                                    <span className="text-base font-medium text-canBlack">
+                                  <a className="flex items-center gap-3" id="setting_section_select_tag_preferences_link">
+                                    <span className="text-base font-medium text-canBlack" id="setting_section_select_tag_preferences_text">
                                       {" "}
                                       Preferences
                                     </span>
                                     <Image
+                                      id="setting_section_select_tag_preferences_img"
                                       src="/images/preference-icon.svg"
                                       width={16}
                                       height={16}
@@ -492,9 +499,10 @@ const SettingsUI = () => {
                           {
                             value: "Supported Camps",
                             label: (
-                              <span>
-                                <a className="flex items-center gap-3">
+                              <span id="setting_section_select_tag_supported_camps">
+                                <a className="flex items-center gap-3" id="setting_section_select_tag_supported_camps_all_link">
                                   <button
+                                    id="setting_section_select_tag_supported_camps_btn"
                                     className="text-base font-medium text-canBlack"
                                     onClick={() => {
                                       setshowSupportedCampsTab(true);
@@ -519,6 +527,7 @@ const SettingsUI = () => {
                                     Supported Camps
                                   </button>
                                   <Image
+                                    id="setting_section_select_tag_supported_camps_btn_img"
                                     src="/images/flagicon.svg"
                                     width={24}
                                     height={24}
@@ -531,18 +540,19 @@ const SettingsUI = () => {
                           {
                             value: "Social Auth",
                             label: (
-                              <span>
+                              <span id="setting_section_select_tag_social_auth">
                                 <Link
                                   href={
                                     "/settings?tab=social_oauth_verification"
                                   }
                                 >
-                                  <a className="flex items-center gap-3">
+                                  <a className="flex items-center gap-3" id="setting_section_select_tag_social_auth_link">
                                     <span className="text-base font-medium text-canBlack">
                                       {" "}
                                       Social Auth
                                     </span>
                                     <Image
+                                      id="setting_section_select_tag_social_auth_img"
                                       src="/images/setting-icon.svg"
                                       width={24}
                                       height={24}
@@ -556,14 +566,15 @@ const SettingsUI = () => {
                           {
                             value: "Change Password",
                             label: (
-                              <span>
+                              <span id="setting_section_select_tag_change_password">
                                 <Link href={"/settings?tab=change_password"}>
-                                  <a className="flex items-center gap-3">
-                                    <span className="text-base font-medium text-canBlack">
+                                  <a className="flex items-center gap-3" id="setting_section_select_tag_change_password_link">
+                                    <span className="text-base font-medium text-canBlack" id="setting_section_select_tag_change_password_text">
                                       {" "}
                                       Change Password
                                     </span>
                                     <Image
+                                      id="setting_section_select_tag_change_password_img"
                                       src="/images/setting-icon.svg"
                                       width={24}
                                       height={24}
@@ -584,17 +595,20 @@ const SettingsUI = () => {
                           "/settings?tab=delegate_supported_camp") && (
                         <div className="flex justify-between border-b border-canGrey2 mb-5 lg:hidden">
                           <Radio.Group
+                            id="setting_section_select_radio_grp"
                             className="flex items-center justify-between py-5 gap-4 lg:ml-10"
                             value={selectedTab}
                             onChange={handleTabChange}
                           >
                             <Radio
+                              id="setting_section_select_radio_btn_direct_supported_camp"
                               value="Direct_Supported_Camps"
                               className="text-sm font-semibold"
                             >
                               Direct Supported Camps
                             </Radio>
                             <Radio
+                              id="setting_section_select_radio_btn_delegate_supported_camp"
                               value="Delegated_Supported_Camps"
                               className="text-sm font-semibold"
                             >
@@ -609,8 +623,9 @@ const SettingsUI = () => {
             </div>
           </div>
         </div>
-        <div className="lg:border border-canGrey2 rounded-xl lg:p-5">
+        <div className="lg:border border-canGrey2 rounded-xl lg:p-5" id="setting_section_card">
           <Card
+            id="setting_section_contentlist"
             data-testid="contentlist"
             style={{ width: "100%" }}
             // title="Account Settings"
