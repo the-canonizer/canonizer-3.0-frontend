@@ -609,6 +609,7 @@ function SupportTreeDrawer({
   return (
     <Drawer
       closable={false}
+      id="support-drawer-container"
       className="ch-drawer adding-supported-drawer"
       placement="right"
       onClose={onClose}
@@ -655,7 +656,7 @@ function SupportTreeDrawer({
                       />
                       {parentSupportDataList &&
                         parentSupportDataList.length > 0 && (
-                          <div className="horizontal-chips">
+                          <div id="support-drawer-supported-camps-container" className="horizontal-chips">
                             {parentSupportDataList?.map((item, index) => (
                               <TagList key={index} name={item?.camp_name} />
                             ))}
@@ -669,6 +670,7 @@ function SupportTreeDrawer({
               <div className="checkbox-wrapper">
                 <Form.Item label="Quick Action" className="mb-0">
                   <Checkbox
+                    id="support-drawer-quick-action-checkbox"
                     checked={isQuickActionSelected}
                     onChange={(e) => {
                       removeAllSupportHandler(e);
@@ -678,6 +680,7 @@ function SupportTreeDrawer({
                   </Checkbox>
                 </Form.Item>
                 <Button
+                  id="support-drawer-clear-btn"
                   size="large"
                   className="min-w-[200px] gap-2 flex items-center justify-center border border-canBlue bg-[#98B7E61A] rounded-lg text-canBlack text-base font-medium"
                   onClick={() => {
@@ -688,7 +691,7 @@ function SupportTreeDrawer({
                 </Button>
               </div>
             )}
-            <div className="chips-wrapper">
+            <div id="support-drawer-tags" className="chips-wrapper">
               <p className="text-[#DB4F4F] mb-9">
                 Note : To change support order of camp, drag & drop the camp box
                 on your choice position.
@@ -718,6 +721,7 @@ function SupportTreeDrawer({
               <Row gutter={16}>
                 <Col span={24}>
                   <Form.Item
+                    id="delegate-support-drawer-nickname-select-title"
                     name="nickname"
                     label={
                       <>
@@ -732,6 +736,7 @@ function SupportTreeDrawer({
 
                       <Select
                         placeholder="Select a nickname"
+                        id="delegate-support-drawer-nickname-select"
                         className="w-100 cn-select"
                         size="large"
                         defaultValue={nickNameList?.at(0)?.nick_name}
@@ -748,7 +753,7 @@ function SupportTreeDrawer({
                       >
                         {nickNameList?.map((nick) => {
                           return (
-                            <Select.Option key={nick.id} value={nick.id}>
+                            <Select.Option id="delegate-support-drawer-nickname-select-item" key={nick.id} value={nick.id}>
                               {nick.nick_name}
                             </Select.Option>
                           );
@@ -761,6 +766,7 @@ function SupportTreeDrawer({
                 {drawerFor !== "delegateAdd" && (
                   <Col span={24}>
                     <Form.Item
+                      id="delegate-support-drawer-reason-select-title"
                       name="reason"
                       className="label-ellipses"
                       label={
@@ -774,6 +780,7 @@ function SupportTreeDrawer({
                           <i className="icon-bar"></i>
                         </div>
                         <Select
+                          id="delegate-support-drawer-reason-select"
                           className="w-100 cn-select"
                           size="large"
                           suffixIcon={<i className="icon-chevron-down"></i>}
@@ -786,11 +793,11 @@ function SupportTreeDrawer({
                           showSearch
                         >
                           {availableReasons?.map((res) => (
-                            <Select.Option key={res?.id} value={res?.label}>
+                            <Select.Option id="delegate-support-drawer-reason-select-item" key={res?.id} value={res?.label}>
                               {res?.label}
                             </Select.Option>
                           ))}
-                          <Select.Option key="custom_reason" value="custom">
+                          <Select.Option id="delegate-support-drawer-custom-reason-title" key="custom_reason" value="custom">
                             Custom reason
                           </Select.Option>
                         </Select>
@@ -801,7 +808,7 @@ function SupportTreeDrawer({
                 {selectedValue && selectedValue == "custom" && (
                   <Col span={24}>
                     <Form.Item name="reason_summary" label="Description">
-                      <TextArea className="thm-input" rows={4} />
+                      <TextArea id="support-drawer-custom-reason" className="thm-input" rows={4} />
                     </Form.Item>
                   </Col>
                 )}
@@ -813,6 +820,7 @@ function SupportTreeDrawer({
                       {...removedURLRule}
                     >
                       <Input
+                        id="delegate-support-drawer-citation-link"
                         className="thm-input"
                         size="large"
                         placeholder="https://"
@@ -827,6 +835,7 @@ function SupportTreeDrawer({
           <div className="flex justify-center max-sm:flex-col gap-5 p-11 fixed right-0 max-w-[730px] w-full mt-0 bg-white z-50 bottom-0">
             <Button
               size="large"
+              id="delegate-support-drawer-cancel-btn"
               className="min-w-[200px] gap-2 flex items-center justify-center border border-canBlue bg-[#98B7E61A] rounded-lg text-canBlack text-base font-medium"
               onClick={() => {
                 onClose();
@@ -842,6 +851,7 @@ function SupportTreeDrawer({
               size="large"
               type="primary"
               htmlType="submit"
+              id="delegate-support-drawer-submit-btn"
               className=" min-w-[200px] bg-canBlue flex items-center justify-center hover:bg-canHoverBlue focus:bg-canHoverBlue hover:text-white font-medium text-white disabled:bg-disabled font-base rounded-lg"
               loading={loader}
             >
@@ -867,13 +877,14 @@ function SupportTreeDrawer({
                     </div>
                     <Select
                       placeholder={placeholders.selectReason}
+                      id="remove-support-drawer-reason-select"
                       className="w-100 cn-select"
                       size="large"
                       suffixIcon={<i className="icon-chevron-down"></i>}
                       onChange={handleChange}
                     >
                       {availableReasons?.map((res) => (
-                        <Select.Option key={res.id} value={res.label}>
+                        <Select.Option id="remove-support-drawer-reason-select-item" key={res.id} value={res.label}>
                           {res.label}
                         </Select.Option>
                       ))}
@@ -888,6 +899,7 @@ function SupportTreeDrawer({
                   {...removedURLRule}
                 >
                   <Input
+                    id="remove-support-drawer-citation-link"
                     className="thm-input"
                     size="large"
                     placeholder="https://"
@@ -900,6 +912,7 @@ function SupportTreeDrawer({
           <div className="flex justify-center max-sm:flex-col gap-5 p-11 fixed right-0 max-w-[730px] w-full mt-0 bg-white z-50 bottom-0">
             <Button
               size="large"
+              id="remove-support-drawer-cancel-btn"
               className="min-w-[200px] gap-2 flex items-center justify-center border border-canBlue bg-[#98B7E61A] rounded-lg text-canBlack text-base font-medium"
               onClick={() => {
                 onClose();
@@ -915,6 +928,7 @@ function SupportTreeDrawer({
               size="large"
               type="primary"
               htmlType="submit"
+              id="remove-support-drawer-submit-btn"
               className=" min-w-[200px] bg-canBlue flex items-center justify-center hover:bg-canHoverBlue focus:bg-canHoverBlue hover:text-white font-medium text-white disabled:bg-disabled font-base rounded-lg"
               loading={loader}
             >
@@ -976,6 +990,7 @@ function SupportTreeDrawer({
               <Row gutter={16}>
                 <Col span={24} sm={12}>
                   <Form.Item
+                    id="petition-drawer-nickname-select-title"
                     name="nickname"
                     label={
                       <>
@@ -989,6 +1004,7 @@ function SupportTreeDrawer({
                       </div>
                       <Select
                         placeholder="Select a nickname"
+                        id="petition-drawer-nickname-select"
                         className="w-100 cn-select"
                         size="large"
                         defaultValue={nickNameList?.at(0)?.nick_name}
@@ -1005,7 +1021,7 @@ function SupportTreeDrawer({
                       >
                         {nickNameList?.map((nick) => {
                           return (
-                            <Select.Option key={nick.id} value={nick.id}>
+                            <Select.Option id="petition-drawer-nickname-select-item" key={nick.id} value={nick.id}>
                               {nick.nick_name}
                             </Select.Option>
                           );
@@ -1020,6 +1036,7 @@ function SupportTreeDrawer({
           <div className="flex justify-center max-sm:flex-col gap-5 p-11 fixed right-0 max-w-[730px] w-full mt-0 bg-white z-50 bottom-0">
             <Button
               size="large"
+              id="petition-drawer-cancel-btn"
               className="min-w-[200px] gap-2 flex items-center justify-center border border-canBlue bg-[#98B7E61A] rounded-lg text-canBlack text-base font-medium"
               onClick={() => {
                 onClose();
@@ -1035,6 +1052,7 @@ function SupportTreeDrawer({
               size="large"
               type="primary"
               htmlType="submit"
+              id="petition-drawer-submit-btn"
               className=" min-w-[200px] bg-canBlue flex items-center justify-center hover:bg-canHoverBlue focus:bg-canHoverBlue hover:text-white font-medium text-white disabled:bg-disabled font-base rounded-lg"
               loading={loader}
             >
