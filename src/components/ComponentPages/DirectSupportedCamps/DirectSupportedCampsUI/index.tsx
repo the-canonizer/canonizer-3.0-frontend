@@ -62,20 +62,24 @@ export default function DirectSupportedCampsUI({
   const [removeSupportSpinner, setRemoveSupportSpinner] = useState(false);
   const [currentCamp, setCurrentCamp] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [currentSearchPage, setCurrentSearchPage] = useState(1)
+  const [currentSearchPage, setCurrentSearchPage] = useState(1);
   const [search, setSearch] = useState("");
   const [activeTopic, setActiveTopic] = useState(null);
   const [reOrderedTags, setReOrderedTags] = useState(null);
 
-  const { openDrawerForDirectSupportedCamp , disableSubmitButtonForDirectSupportedCamp} = useSelector(
-    (state: RootState) => ({
-      openDrawerForDirectSupportedCamp:
-        state.topicDetails.openDrawerForDirectSupportedCamp,
-        disableSubmitButtonForDirectSupportedCamp:
-        state.topicDetails.disableSubmitButtonForDirectSupportedCamp,
-    })
+  const {
+    openDrawerForDirectSupportedCamp,
+    disableSubmitButtonForDirectSupportedCamp,
+  } = useSelector((state: RootState) => ({
+    openDrawerForDirectSupportedCamp:
+      state.topicDetails.openDrawerForDirectSupportedCamp,
+    disableSubmitButtonForDirectSupportedCamp:
+      state.topicDetails.disableSubmitButtonForDirectSupportedCamp,
+  }));
+  console.log(
+    disableSubmitButtonForDirectSupportedCamp,
+    "disableSubmitButtonForDirectSupportedCamp"
   );
-  console.log(disableSubmitButtonForDirectSupportedCamp,"disableSubmitButtonForDirectSupportedCamp")
   const dispatch = useDispatch();
   interface Tag {
     id: number;
@@ -114,15 +118,37 @@ export default function DirectSupportedCampsUI({
       key: "title",
       render: (text: string, record: RecordType) => (
         <div className="flex gap-2.5 line-clamp-1 cn-card-home">
-          <Link href={record.title_link.replace('https://ux-dev.canonizer.com', 'http://localhost:4000')}>
-            <a className="text-sm font-medium flex items-center gap-2.5 text-canBlack"  onClick={(()=>{
-                    dispatch(
-                      setFilterCanonizedTopics({
-                        asofdate: Date.now() / 1000,
-                        asof: "default",
-                      })
-                    );
-                  })}>
+          <Link
+            href={record.title_link.replace(
+              "https://ux-dev.canonizer.com",
+              "http://localhost:4000"
+            )}
+          >
+            <a
+              className="text-sm font-medium flex items-center gap-2.5 text-canBlack"
+              role="button" // Declare it as a button
+              tabIndex={0} // Make it focusable with the Tab key
+              onClick={() => {
+                dispatch(
+                  setFilterCanonizedTopics({
+                    asofdate: Date.now() / 1000,
+                    asof: "default",
+                  })
+                );
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault(); // Prevent scrolling when Space is pressed
+                  dispatch(
+                    setFilterCanonizedTopics({
+                      asofdate: Date.now() / 1000,
+                      asof: "default",
+                    })
+                  );
+                }
+              }}
+              style={{ cursor: "pointer" }} // Provide visual feedback
+            >
               {text}
             </a>
           </Link>
@@ -244,12 +270,12 @@ export default function DirectSupportedCampsUI({
   const filteredSearchArray = () => {
     const startingPosition = (currentSearchPage - 1) * 5;
     const endingPosition = startingPosition + 5;
-    return filteredArray().slice(startingPosition, endingPosition)
-  }
+    return filteredArray().slice(startingPosition, endingPosition);
+  };
 
   const searchPageChange = (pageNumber) => {
     setCurrentSearchPage(pageNumber);
-  }
+  };
 
   const [removeForm] = Form.useForm();
 
@@ -276,13 +302,15 @@ export default function DirectSupportedCampsUI({
       displayContent = (
         <>
           <Table
-            dataSource={search.length > 0 ? filteredSearchArray() : filteredArray()}
+            dataSource={
+              search.length > 0 ? filteredSearchArray() : filteredArray()
+            }
             columns={columns}
             pagination={false}
             rowKey="topic_num"
             className="[&_.ant-table-thead>tr>th]:!bg-canGray [&_.ant-table-cell]:max-w-[200px]"
           />
-          {search.length > 0 ?
+          {search.length > 0 ? (
             <Pagination
               hideOnSinglePage={true}
               total={filteredArray().length}
@@ -290,7 +318,9 @@ export default function DirectSupportedCampsUI({
               current={currentSearchPage}
               onChange={searchPageChange}
               showSizeChanger={false}
-              className="mt-5" /> : null}
+              className="mt-5"
+            />
+          ) : null}
         </>
       );
     } else {
@@ -305,10 +335,10 @@ export default function DirectSupportedCampsUI({
       {isChangingOrder
         ? "You are about to change the order of your supported camps"
         : modalPopupText
-          ? "You are about to remove your support from all the camps from the topic: "
-          : campIds?.length > 1
-            ? "You are about to remove your support from the camps: "
-            : "You are about to remove your support from the camp: "}
+        ? "You are about to remove your support from all the camps from the topic: "
+        : campIds?.length > 1
+        ? "You are about to remove your support from the camps: "
+        : "You are about to remove your support from the camp: "}
       {!isChangingOrder && (
         <span>
           {modalPopupText ? (
@@ -377,8 +407,8 @@ export default function DirectSupportedCampsUI({
       search.trim() === ""
         ? directSupportedCampsList
         : directSupportedCampsList.filter((val) =>
-          val.title.toLowerCase().includes(search.toLowerCase().trim())
-        )
+            val.title.toLowerCase().includes(search.toLowerCase().trim())
+          )
     );
   }, [search, directSupportedCampsList]);
 
@@ -437,14 +467,31 @@ export default function DirectSupportedCampsUI({
                   </span>
                   <div className="flex gap-2.5 justify-between items-center w-full">
                     <Link href={record.title_link}>
-                      <a className="text-lg font-semibold text-canBlack"  onClick={(()=>{
-                    dispatch(
-                      setFilterCanonizedTopics({
-                        asofdate: Date.now() / 1000,
-                        asof: "default",
-                      })
-                    );
-                  })}>
+                      <a
+                        className="text-lg font-semibold text-canBlack"
+                        role="button"
+                        tabIndex={0}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter" || e.key === " ") {
+                            e.preventDefault(); // Prevent scrolling when Space is pressed
+                            dispatch(
+                              setFilterCanonizedTopics({
+                                asofdate: Date.now() / 1000,
+                                asof: "default",
+                              })
+                            );
+                          }
+                        }}
+                        style={{ cursor: "pointer" }} // Provide visual feedback
+                        onClick={() => {
+                          dispatch(
+                            setFilterCanonizedTopics({
+                              asofdate: Date.now() / 1000,
+                              asof: "default",
+                            })
+                          );
+                        }}
+                      >
                         {record.title.length > 50
                           ? record.title.substring(0, 30) + "..."
                           : record.title}
@@ -473,8 +520,9 @@ export default function DirectSupportedCampsUI({
 
                       return (
                         <div
-                          className={`tag ${tag.dis ? "tags_disable" : ""} ${record.camps.length > 1 ? "mb-2.5" : ""
-                            } flex w-full items-center`}
+                          className={`tag ${tag.dis ? "tags_disable" : ""} ${
+                            record.camps.length > 1 ? "mb-2.5" : ""
+                          } flex w-full items-center`}
                         >
                           <Button
                             id="campsBtn"
@@ -648,7 +696,7 @@ export default function DirectSupportedCampsUI({
                     onChange={(e) => {
                       setSearch(e.target.value);
                       setCurrentPage(1);
-                      setCurrentSearchPage(1)
+                      setCurrentSearchPage(1);
                     }}
                   />
                 </div>
