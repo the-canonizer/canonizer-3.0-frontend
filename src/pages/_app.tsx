@@ -42,8 +42,13 @@ function WrappedApp({
 
   const { isLatestVersion, emptyCacheStorage, latestVersion } = useClearCache();
 
-  if (!isLatestVersion) {
+  if (
+    !isLatestVersion ||
+    (typeof window !== "undefined" &&
+      localStorage.getItem("APP_VERSION") === null)
+  ) {
     console.info({ latestVersion });
+    alert(`Cache Cleared: ${latestVersion}`);
     const authToken = localStorage.getItem("auth_token");
     if (authToken) {
       localStorage.removeItem("auth_token");
@@ -52,7 +57,6 @@ function WrappedApp({
       "loginToken=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
     emptyCacheStorage();
   }
-
 
   useEffect(() => {
     const fetchToken = async () => {
