@@ -21,15 +21,19 @@ const FeaturedTopic = () => {
     autoplay: true,
     dots: false,
     arrows: true,
-    infinite: true,
+    infinite: topicData?.length > 1,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
     centerPadding: "16px",
     className: "featuresSlider",
     arrowClass: "",
-    nextArrow: <RightOutlined className="text-xl text-canBlue" />,
-    prevArrow: <LeftOutlined className="text-xl text-canBlue" />,
+    nextArrow: topicData?.length > 1 && (
+      <RightOutlined className="text-xl text-canBlue" />
+    ),
+    prevArrow: topicData?.length > 1 && (
+      <LeftOutlined className="text-xl text-canBlue" />
+    ),
   };
 
   if (!topicData?.length) {
