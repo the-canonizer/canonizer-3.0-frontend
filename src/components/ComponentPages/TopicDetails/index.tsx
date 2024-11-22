@@ -526,6 +526,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
                       placement="top"
                     >
                       <InfoCircleOutlined />
+                      info test
                     </Popover>
                     <ScoreTag
                       topic_score={
