@@ -53,7 +53,6 @@ function WrappedApp({
     emptyCacheStorage();
   }
 
-
   useEffect(() => {
     const fetchToken = async () => {
       if (router?.asPath) {

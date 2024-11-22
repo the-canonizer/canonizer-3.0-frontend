@@ -31,7 +31,7 @@ function Home({ current_date, hotTopicData, featuredData, prefData }: any) {
   const dispatch = useDispatch();
   const router = useRouter();
   const { latestVersion } = useClearCache();
-  
+
   console.log("Build-Version:", latestVersion);
 
   dispatch(setFilterCanonizedTopics({ search: "" }));

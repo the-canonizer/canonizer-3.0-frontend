@@ -82,7 +82,6 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
   const [datePickerValue, setDatePickerValue] = useState(null);
   const [selectedValue, setSelectedValue] = useState(null);
 
-
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -107,7 +106,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
     asOfValues,
     clearAlgoFromRefineFilter,
     clearScoreFromRefineFilter,
-    disbaleApplyBtn
+    disbaleApplyBtn,
   } = useSelector((state: RootState) => ({
     algorithms: state.homePage?.algorithms,
     filteredScore: state?.filters?.filterObject?.filterByScore,
@@ -447,7 +446,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
   };
 
   const handleApplyClick = async () => {
-    dispatch(setDisbaleApplyBtn(true))
+    dispatch(setDisbaleApplyBtn(true));
     const selectedAlgorithm = clearAlgoFromRefineFilter;
 
     // Step 1: Update URL with the selected algorithm
@@ -498,7 +497,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
         viewThisVersion
       );
     } else if (selectedValue === 3 || asof === "bydate") {
-      setSelectedValue(3)
+      setSelectedValue(3);
       dispatch(setViewThisVersion(false));
       handleAsOfClick();
     }
@@ -510,7 +509,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
 
   const handleChange = (event) => {
     const value = event?.target?.value;
-  
+
     // Check if the value length is manageable within JavaScript's safe range
     if (value.length <= 15) {
       // Convert to number if it's within a safe range

@@ -121,7 +121,9 @@ export default function AdvanceFilter() {
     return obj.topic_num;
   });
 
-  const stringTopicIdForElasticSearch = topicIdForElasticSearch?.map((element) => element?.toString());
+  const stringTopicIdForElasticSearch = topicIdForElasticSearch?.map(
+    (element) => element?.toString()
+  );
 
   let stringTopicArray = findTopicId?.map((element) => element?.toString());
 
@@ -347,13 +349,14 @@ export default function AdvanceFilter() {
   // };
 
   async function getTopicsApiCallWithReqBody() {
-    const stringTopicIdForElasticSearch = searchDataAll?.topic?.map((obj) => obj.topic_num?.toString()) || [];
-    
+    const stringTopicIdForElasticSearch =
+      searchDataAll?.topic?.map((obj) => obj.topic_num?.toString()) || [];
+
     if (!stringTopicIdForElasticSearch.length) {
       console.warn("No topic IDs available for the API call.");
       return; // Skip the call if no topic IDs
     }
-  
+
     const rebody = {
       type: "topic",
       search: searchValue,
@@ -362,13 +365,14 @@ export default function AdvanceFilter() {
       asof: asof,
       score: filterByScore,
       topic_ids: stringTopicIdForElasticSearch,
-      asofdate: asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
+      asofdate:
+        asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
     };
-  
+
     const response = await AdvanceFilterSeacrhApi(rebody);
     dispatch(setSelectedTopicFromAdvanceFilterAlgorithm(response?.data?.topic));
   }
-  
+
   async function getCampsApiCallWithReqBody() {
     // loadMore ? setPageNumber(pageNumber + 1) : setPageNumber(1);
     const rebody = {

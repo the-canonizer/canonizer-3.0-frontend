@@ -82,7 +82,7 @@ const InfoBar = ({ isTopicPage = false }: any) => {
 
   const showDrawer = () => {
     dispatch(setOpenDrawer(true));
-    dispatch(setDisbaleApplyBtn(false))
+    dispatch(setDisbaleApplyBtn(false));
   };
 
   const showConsensusTree = () => {

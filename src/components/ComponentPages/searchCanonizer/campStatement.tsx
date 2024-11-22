@@ -131,9 +131,18 @@ const CampStatementSearch = () => {
   );
   return (
     <Fragment>
-      <div className="flex justify-between lg:items-center lg:flex-row flex-col items-start mb-10 mt-2.5 lg:gap-0 gap-5" id="search_section_camp_statement_heading">
-        <div className="flex  items-center" id="search_section_camp_statement_heading_1">
-          <div className="flex items-center gap-2.5" id="search_section_camp_statement_heading_2">
+      <div
+        className="flex justify-between lg:items-center lg:flex-row flex-col items-start mb-10 mt-2.5 lg:gap-0 gap-5"
+        id="search_section_camp_statement_heading"
+      >
+        <div
+          className="flex  items-center"
+          id="search_section_camp_statement_heading_1"
+        >
+          <div
+            className="flex items-center gap-2.5"
+            id="search_section_camp_statement_heading_2"
+          >
             <Image
               id="search_section_camp_statement_img"
               src="/images/recent-activiity-arrow.svg"
@@ -141,9 +150,15 @@ const CampStatementSearch = () => {
               height={24}
             />
 
-            <h3 className="lg:text-3xl text-xl   text-canBlack font-medium" id="search_section_camp_statement_text">
+            <h3
+              className="lg:text-3xl text-xl   text-canBlack font-medium"
+              id="search_section_camp_statement_text"
+            >
               Search Results for “
-              <span className="text-canBlue capitalize" id="search_section_camp_statement_text_value">
+              <span
+                className="text-canBlue capitalize"
+                id="search_section_camp_statement_text_value"
+              >
                 {router?.query?.q}
               </span>
               ”
@@ -152,15 +167,33 @@ const CampStatementSearch = () => {
         </div>
         <AdvanceFilter />
       </div>
-      <div className="flex lg:flex-row flex-col gap-10" id="search_section_camp_statement_text_sidebar">
-        <aside className="leftSideBar miniSideBar" id="search_section_camp_statement_text_sidebar_1">
-          <div className="leftSideBar_Card p-0 m-0" id="search_section_camp_statement_text_sidebar_2">
+      <div
+        className="flex lg:flex-row flex-col gap-10"
+        id="search_section_camp_statement_text_sidebar"
+      >
+        <aside
+          className="leftSideBar miniSideBar"
+          id="search_section_camp_statement_text_sidebar_1"
+        >
+          <div
+            className="leftSideBar_Card p-0 m-0"
+            id="search_section_camp_statement_text_sidebar_2"
+          >
             <SearchSideBar />
           </div>
         </aside>
-        <div className="pageContentWrap flex-1" id="search_section_camp_statement_header">
-          <div className="bg-canGray lg:py-5 lg:px-8 py-4 px-4 rounded-xl mb-5" id="search_section_camp_statement_header_1">
-            <div className="d-flex mb-2 align-items-center flex-wrap relative" id="search_section_camp_statement_header_2">
+        <div
+          className="pageContentWrap flex-1"
+          id="search_section_camp_statement_header"
+        >
+          <div
+            className="bg-canGray lg:py-5 lg:px-8 py-4 px-4 rounded-xl mb-5"
+            id="search_section_camp_statement_header_1"
+          >
+            <div
+              className="d-flex mb-2 align-items-center flex-wrap relative"
+              id="search_section_camp_statement_header_2"
+            >
               <h4
                 data-testid="camp_statment_heading"
                 className="!mb-6 !text-base !font-semibold !text-canBlack"
@@ -179,7 +212,10 @@ const CampStatementSearch = () => {
                 id="search_section_camp_statement_loader"
               />
             ) : (
-              <div className={styles.search_lists} id="search_section_camp_statement_search_all">
+              <div
+                className={styles.search_lists}
+                id="search_section_camp_statement_search_all"
+              >
                 {searchDataAll.statement?.length ? (
                   <div id="advance_search_section_camp_statement_search_all">
                     {isReview || asof == "bydate" ? (
@@ -213,7 +249,10 @@ const CampStatementSearch = () => {
                                   key={x.id}
                                   id="advance_search_section_camp_statement_search_all_li"
                                 >
-                                  <div className="flex justify-between items-center" id="advance_search_section_camp_statement_search_all_li_link_area">
+                                  <div
+                                    className="flex justify-between items-center"
+                                    id="advance_search_section_camp_statement_search_all_li_link_area"
+                                  >
                                     <a
                                       href={`/${jsonData?.[0]?.[1]?.camp_link}`}
                                       id="advance_search_section_camp_statement_search_all_li_parsed_link"
@@ -239,7 +278,10 @@ const CampStatementSearch = () => {
                                       <strong>Go live Time : </strong>
                                       {covertToTime(x.go_live_time)}
                                     </div> */}
-                                  <div className="d-flex flex-wrap w-100 mb-1" id="advance_search_section_camp_statement_search_all_li_parsed_highlighted_text">
+                                  <div
+                                    className="d-flex flex-wrap w-100 mb-1"
+                                    id="advance_search_section_camp_statement_search_all_li_parsed_highlighted_text"
+                                  >
                                     {/* <div
                                         dangerouslySetInnerHTML={{
                                           __html:
@@ -258,15 +300,24 @@ const CampStatementSearch = () => {
                                     )}
                                   </div>
 
-                                  <div className="text-base  flex flex-wrap items-center gap-2.5" id="advance_search_section_camp_statement_search_all_li_parsed_img_div">
-                                    <div className="flex gap-2.5" id="advance_search_section_camp_statement_search_all_li_parsed_img_1">
+                                  <div
+                                    className="text-base  flex flex-wrap items-center gap-2.5"
+                                    id="advance_search_section_camp_statement_search_all_li_parsed_img_div"
+                                  >
+                                    <div
+                                      className="flex gap-2.5"
+                                      id="advance_search_section_camp_statement_search_all_li_parsed_img_1"
+                                    >
                                       <Image
                                         id="advance_search_section_camp_statement_search_all_li_parsed_img"
                                         src="/images/note-sticky.svg"
                                         width={17}
                                         height={19}
                                       />
-                                      <span className="text-base font-medium text-canBlack mr-1" id="advance_search_section_camp_statement_search_all_li_parsed_text">
+                                      <span
+                                        className="text-base font-medium text-canBlack mr-1"
+                                        id="advance_search_section_camp_statement_search_all_li_parsed_text"
+                                      >
                                         {" "}
                                         Topic:
                                       </span>
@@ -299,7 +350,10 @@ const CampStatementSearch = () => {
                             })}
                           </ul>
                         ) : (
-                          <span className="italic text-canLight" id="advance_search_section_camp_statement_search_all_li_parsed_text_no_data">
+                          <span
+                            className="italic text-canLight"
+                            id="advance_search_section_camp_statement_search_all_li_parsed_text_no_data"
+                          >
                             There is no data to show in this category.
                           </span>
                         )}
@@ -332,7 +386,10 @@ const CampStatementSearch = () => {
                               key={x.id}
                             >
                               <div className="flex justify-between items-center">
-                                <a href={`/${jsonData?.[0]?.[1]?.camp_link}`} id="advance_search_section_camp_statement_search_all_li_parsed_value_link">
+                                <a
+                                  href={`/${jsonData?.[0]?.[1]?.camp_link}`}
+                                  id="advance_search_section_camp_statement_search_all_li_parsed_value_link"
+                                >
                                   <h3 className="font-medium mb-2 text-canBlack text-base">
                                     {jsonData?.length > 1
                                       ? getHighlightedText2(
@@ -376,7 +433,7 @@ const CampStatementSearch = () => {
                               <div className="text-base  flex flex-wrap items-center gap-2.5">
                                 <div className="flex gap-2.5">
                                   <Image
-                                  id="advance_search_section_camp_statement_search_all_li_parsed_text_value_img"
+                                    id="advance_search_section_camp_statement_search_all_li_parsed_text_value_img"
                                     src="/images/note-sticky.svg"
                                     width={17}
                                     height={19}
@@ -413,7 +470,10 @@ const CampStatementSearch = () => {
                     )}
                   </div>
                 ) : (
-                  <span className="italic text-canLight" id="advance_search_section_camp_statement_search_all_li_parsed_text_value_no_data">
+                  <span
+                    className="italic text-canLight"
+                    id="advance_search_section_camp_statement_search_all_li_parsed_text_value_no_data"
+                  >
                     There is no data to show in this category.
                   </span>
                 )}
