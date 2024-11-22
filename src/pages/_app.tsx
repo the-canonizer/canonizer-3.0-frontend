@@ -49,6 +49,7 @@ function WrappedApp({
   ) {
     console.info({ latestVersion });
     alert(`Cache Cleared: ${latestVersion}`);
+    
     const authToken = localStorage.getItem("auth_token");
     if (authToken) {
       localStorage.removeItem("auth_token");
