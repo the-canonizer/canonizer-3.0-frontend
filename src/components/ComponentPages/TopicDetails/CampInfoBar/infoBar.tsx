@@ -9,6 +9,7 @@ import styles from "../topicDetails.module.scss";
 import { RootState } from "src/store";
 import K from "src/constants";
 import {
+  setDisbaleApplyBtn,
   setManageSupportStatusCheck,
   setOpenDrawer,
 } from "src/store/slices/campDetailSlice";
@@ -81,6 +82,7 @@ const InfoBar = ({ isTopicPage = false }: any) => {
 
   const showDrawer = () => {
     dispatch(setOpenDrawer(true));
+    dispatch(setDisbaleApplyBtn(false))
   };
 
   const showConsensusTree = () => {

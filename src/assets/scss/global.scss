@@ -888,7 +888,6 @@ body {
   height: 100%;
 
   &:before {
-    // display: block;
     position: absolute;
     top: 0;
     right: 12px;
@@ -898,13 +897,41 @@ body {
     content: " ";
   }
   &:after {
-    // display: block;
     position: absolute;
     width: 10px;
     height: 14px;
     border-bottom: 1px solid #d9d9d9;
     content: " ";
   }
+}
+
+.ant-tree-switcher.ant-tree-switcher_close {
+  &::before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 10px;
+    right: 30px;
+    bottom: 0;
+    border-left: 1px solid #d9d9d9;
+    transform: rotate(90deg);
+    height: 10px;
+  }
+}
+
+.ant-tree-switcher.ant-tree-switcher-noop:before {
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 20px;
+  bottom: 0px;
+  border-right: 1px solid #d9d9d9;
+  content: "";
+  transform: rotate(90deg);
+}
+
+.ant-tree-switcher.ant-tree-switcher-noop:has(.ant-tree-switcher-leaf-line)::before {
+  border-color: transparent;
 }
 
 .ant-tree-show-line .ant-tree-indent-unit:before {

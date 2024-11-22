@@ -33,6 +33,7 @@ import {
   setAsOfValues,
   setClearAlgoFromRefineFilter,
   setClearScoreFromRefineFilter,
+  setDisbaleApplyBtn,
 } from "src/store/slices/campDetailSlice";
 import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 import PrimaryButton from "components/shared/Buttons/PrimariButton";
@@ -81,6 +82,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
   const [datePickerValue, setDatePickerValue] = useState(null);
   const [selectedValue, setSelectedValue] = useState(null);
 
+
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -105,6 +107,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
     asOfValues,
     clearAlgoFromRefineFilter,
     clearScoreFromRefineFilter,
+    disbaleApplyBtn
   } = useSelector((state: RootState) => ({
     algorithms: state.homePage?.algorithms,
     filteredScore: state?.filters?.filterObject?.filterByScore,
@@ -124,6 +127,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
     asOfValues: state.topicDetails.asOfValues,
     clearAlgoFromRefineFilter: state.topicDetails.clearAlgoFromRefineFilter,
     clearScoreFromRefineFilter: state.topicDetails.clearScoreFromRefineFilter,
+    disbaleApplyBtn: state.topicDetails.disbaleApplyBtn,
   }));
 
   const [selectedAsOFDate, setSelectedAsOFDate] = useState(filteredAsOfDate);
@@ -443,6 +447,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
   };
 
   const handleApplyClick = async () => {
+    dispatch(setDisbaleApplyBtn(true))
     const selectedAlgorithm = clearAlgoFromRefineFilter;
 
     // Step 1: Update URL with the selected algorithm
@@ -764,6 +769,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
                 <PrimaryButton
                   className="flex justify-center items-center gap-2.5 w-6/12 lg:w-auto !rounded-none lg:!rounded-lg py-7 lg:py-0"
                   onClick={handleApplyClick}
+                  disabled={disbaleApplyBtn}
                 >
                   <span className="!flex gap-1 flex-row ">
                     <span>Apply</span>
