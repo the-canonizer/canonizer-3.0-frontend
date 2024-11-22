@@ -24,7 +24,7 @@ const SingleTopicCard = ({
   maxCount = 3,
   cardClassName = "",
   copyLink = null,
-  imageBaseURL = '',
+  imageBaseURL = "",
 }) => {
   const isMobile = useIsMobile();
 

@@ -56,7 +56,11 @@ function NickNameUI({
           popupClassName="nickNamePopup"
         >
           <Option value="0" id="nickname_status_option">
-            <Tooltip title="Public" placement="left" id="nickname_status_option_public_tooltip">
+            <Tooltip
+              title="Public"
+              placement="left"
+              id="nickname_status_option_public_tooltip"
+            >
               <Image
                 src="/images/globe-icon-2.svg"
                 width={14}
@@ -67,7 +71,11 @@ function NickNameUI({
             </Tooltip>
           </Option>
           <Option value="1">
-            <Tooltip title="Private" placement="left" id="nickname_status_option_private_tooltip">
+            <Tooltip
+              title="Private"
+              placement="left"
+              id="nickname_status_option_private_tooltip"
+            >
               <Image
                 src="/images/nickname-lock-icon.svg"
                 width={12}
@@ -97,7 +105,10 @@ function NickNameUI({
   return (
     <section id="nickname_section">
       <SectionHeading title="NICKNAMES" icon={null} />
-      <p className="mt-1 mb-5 text-sm font-normal text-canRed" id="nickanme_note">
+      <p
+        className="mt-1 mb-5 text-sm font-normal text-canRed"
+        id="nickanme_note"
+      >
         Note: You can’t edit or delete your nickname once created. You can only
         manage its visibility status.
       </p>
@@ -120,7 +131,7 @@ function NickNameUI({
             id="nickname_secondry_btn"
           >
             {messages.labels.addnewNickName}
-            <PlusOutlined id="nickname_secondry_btn_plusoutlined"/>
+            <PlusOutlined id="nickname_secondry_btn_plusoutlined" />
           </SecondaryButton>
         </Form.Item>
       </Form>
@@ -192,10 +203,14 @@ function NickNameUI({
               className="text-canBlack font-normal h-[40px] [&_.ant-select-selector]:!rounded-lg [&_.ant-select-selector]:!outline-none [&_.ant-select-selector]:!shadow-none commonSelectClass [&_.ant-select-arrow]:text-canBlack [&_.ant-select-arrow>svg]:fill-canBlack"
             >
               <Option value="0" id="nickname_option">
-                <Tooltip title="Public" id="publuc_option">Public</Tooltip>
+                <Tooltip title="Public" id="publuc_option">
+                  Public
+                </Tooltip>
               </Option>
               <Option value="1">
-                <Tooltip title="Private" id="private_option">Private</Tooltip>
+                <Tooltip title="Private" id="private_option">
+                  Private
+                </Tooltip>
               </Option>
             </Select>
           </Form.Item>

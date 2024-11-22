@@ -50,36 +50,39 @@ export default function CanonVideos() {
 
   const videoFormat = router?.asPath.split("?")?.at(1)?.split("=")?.at(1);
 
-  const activeVideoClass = (videoId:number)=>{
+  const activeVideoClass = (videoId: number) => {
     const url = router.asPath?.split("/");
     const currentVideoId = +url
       ?.at(url?.length - 1)
       ?.split("-")
       ?.at(0);
     return videoId === currentVideoId ? "active" : "";
-  }
+  };
 
   const getCurrentVideoData = () => {
     const url = router.asPath?.split("/");
     const currentVideoId = +url
-    ?.at(url?.length - 1)
-    ?.split("-")
-    ?.at(0);
+      ?.at(url?.length - 1)
+      ?.split("-")
+      ?.at(0);
 
-    let res = videos &&videos?.length > 0 && videos?.filter((item:any) => item?.id === currentVideoId)
+    let res =
+      videos &&
+      videos?.length > 0 &&
+      videos?.filter((item: any) => item?.id === currentVideoId);
 
-    if(res){
+    if (res) {
       setCurrentVideoTitle(res?.at(0)?.title);
-  
+
       const node = document.getElementsByTagName("video")[0];
       node.src = BaseVideosURL + "/" + res?.at(0)?.resolutions.at(0)?.link;
       node.play();
     }
-  }
+  };
 
-  useEffect(()=>{
-    getCurrentVideoData()
-  },[router?.asPath])
+  useEffect(() => {
+    getCurrentVideoData();
+  }, [router?.asPath]);
 
   useEffect(() => {
     if (router?.query?.video) {

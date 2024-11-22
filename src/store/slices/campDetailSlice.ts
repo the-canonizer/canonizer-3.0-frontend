@@ -28,7 +28,7 @@ export const treeSlice = createSlice({
     totalScoreforTreeCard: 0,
 
     openDrawer: false,
-    disbaleApplyBtn:false,
+    disbaleApplyBtn: false,
     asOfValues: 0,
     clearAlgoFromRefineFilter: "",
     clearScoreFromRefineFilter: 0,
@@ -262,7 +262,7 @@ export const {
   setOpenDrawerForManageSupport,
   setDisableSubmitButtonForDirectSupportedCamp,
   settotalScoreforTreeCard,
-  setDisbaleApplyBtn
+  setDisbaleApplyBtn,
   // setOpenConsensusTreePopup,
 } = treeSlice.actions;
 

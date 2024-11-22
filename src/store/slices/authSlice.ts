@@ -16,6 +16,7 @@ export const authSlice = createSlice({
     userNickNames: null,
     passwordEmail: null,
     isPasswordVerfied: null,
+    logOutType: null,
   },
   reducers: {
     setAuthToken: (state, action) => {
@@ -69,6 +70,9 @@ export const authSlice = createSlice({
     setIsPasswordVerfied: (state, action) => {
       state.isPasswordVerfied = action.payload;
     },
+    setLogOutType: (state, action) => {
+      state.logOutType = action.payload;
+    },
   },
 });
 
@@ -87,6 +91,7 @@ export const {
   setUserNickNames,
   setPasswordEmail,
   setIsPasswordVerfied,
+  setLogOutType,
 } = authSlice.actions;
 
 export default authSlice.reducer;
