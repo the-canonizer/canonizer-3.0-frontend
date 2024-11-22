@@ -44,7 +44,10 @@ function CampRecentActivities({ onShowAllSet }) {
     getTopicActivityLogCall();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router?.query?.camp[1]?.split("-")[0] ?? 1]);
+  }, [
+    router?.query?.camp[1]?.split("-")[0] ?? 1,
+    router?.query?.camp[0]?.split("-")[0],
+  ]);
 
   const handleTextOverflow = (text) => {
     let str = convert(text?.replace(/<img[^>]*>/gi, ""), {
