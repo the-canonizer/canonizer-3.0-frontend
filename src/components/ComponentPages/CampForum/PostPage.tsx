@@ -44,7 +44,7 @@ const CommentsList = () => {
       asofdate: state.filters?.filterObject?.asofdate,
       algorithm: state.filters?.filterObject?.algorithm,
     }));
-   
+
   const router = useRouter();
   const dispatch = useDispatch();
 

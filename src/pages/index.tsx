@@ -10,7 +10,11 @@ import {
   setCurrentDate,
 } from "src/store/slices/filtersSlice";
 import { GetUserProfileInfo, createToken } from "src/network/api/userApi";
-import { setAuthToken, setLoggedInUser } from "src/store/slices/authSlice";
+import {
+  setAuthToken,
+  setLoggedInUser,
+  setLogOutType,
+} from "src/store/slices/authSlice";
 import {
   setFeaturedTopic,
   setHotTopic,
@@ -22,6 +26,7 @@ import {
   GetPreferedTopicDetails,
 } from "src/network/api/topicAPI";
 import { useClearCache } from "react-clear-cache";
+import { store } from "src/store";
 
 const Tour = dynamic(() => import("src/components/ComponentPages/Home/Tour"), {
   ssr: false,
@@ -31,7 +36,7 @@ function Home({ current_date, hotTopicData, featuredData, prefData }: any) {
   const dispatch = useDispatch();
   const router = useRouter();
   const { latestVersion } = useClearCache();
-  
+
   console.log("Build-Version:", latestVersion);
 
   dispatch(setFilterCanonizedTopics({ search: "" }));
@@ -90,6 +95,11 @@ function Home({ current_date, hotTopicData, featuredData, prefData }: any) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    const logOutType = store?.getState()?.auth?.logOutType;
+    if (logOutType) store.dispatch(setLogOutType(null));
+  }, [store?.getState()?.auth?.logOutType]);
 
   return (
     <Fragment>

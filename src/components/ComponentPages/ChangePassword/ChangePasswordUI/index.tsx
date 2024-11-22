@@ -51,7 +51,11 @@ function ChangePasswordUI({
         className="p-0"
       >
         <Row gutter={30} id="change_password_row_1">
-          <Col md={12} className="lg:w-auto w-full" id="change_password_col_current_password">
+          <Col
+            md={12}
+            className="lg:w-auto w-full"
+            id="change_password_col_current_password"
+          >
             <Form.Item
               id="form_for_current_password"
               className="[&_.ant-input-affix-wrapper]:!border-canGrey2 text-sm text-canBlack font-normal [&_label]:text-sm [&_label]:font-medium [&_.ant-form-item-explain-error]:mb-6"
@@ -110,7 +114,12 @@ function ChangePasswordUI({
           />
         </div>
         <Row gutter={30} id="change_password_row_2">
-          <Col md={8} sm={24} className="lg:w-auto w-full" id="change_password_col_new_password">
+          <Col
+            md={8}
+            sm={24}
+            className="lg:w-auto w-full"
+            id="change_password_col_new_password"
+          >
             <Form.Item
               id="form_for_new_password"
               className="[&_.ant-input-affix-wrapper]:!border-canGrey2 text-sm text-canBlack font-normal [&_label]:text-sm [&_label]:font-medium [&_.ant-form-item-explain-error]:mb-6"
@@ -144,7 +153,7 @@ function ChangePasswordUI({
                     onClick={() => setShowNewpassword(!showNewpassword)}
                   />
                 }
-               id="new_password_input"
+                id="new_password_input"
                 type={showNewpassword ? "text" : "password"}
                 data-testid="newpassword"
                 onKeyDown={(e) =>
@@ -153,7 +162,12 @@ function ChangePasswordUI({
               />
             </Form.Item>
           </Col>
-          <Col md={8} sm={24} className="lg:w-auto w-full" id="change_password_col_confirm_password">
+          <Col
+            md={8}
+            sm={24}
+            className="lg:w-auto w-full"
+            id="change_password_col_confirm_password"
+          >
             <Form.Item
               id="form_for_confirm_password"
               className="[&_.ant-input-affix-wrapper]:!border-canGrey2 text-sm text-canBlack font-normal [&_label]:text-sm [&_label]:font-medium [&_.ant-form-item-explain-error]:mb-6"
@@ -199,7 +213,10 @@ function ChangePasswordUI({
           </Col>
         </Row>
         <Form.Item>
-          <div className="flex items-center w-full flex-wrap justify-center gap-6 my-5" id="change_password_btn_section">
+          <div
+            className="flex items-center w-full flex-wrap justify-center gap-6 my-5"
+            id="change_password_btn_section"
+          >
             <SecondaryButton
               className="flex gap-2.5 items-center justify-center h-auto py-2 lg:w-3/12"
               onClick={() => {
@@ -209,7 +226,8 @@ function ChangePasswordUI({
               }}
               id="change_password_discard_btn"
             >
-              Discard <CloseOutlined id="change_password_discard_btn_close_outline"/>
+              Discard{" "}
+              <CloseOutlined id="change_password_discard_btn_close_outline" />
             </SecondaryButton>
             <PrimaryButton
               id="change_password_save_btn_btn"
@@ -219,7 +237,8 @@ function ChangePasswordUI({
               tabIndex={12}
               className="flex gap-2.5 items-center justify-center h-auto py-2 lg:w-3/12"
             >
-              Save Changes <SaveOutlined id="change_password_save_btn_save_outline"/>
+              Save Changes{" "}
+              <SaveOutlined id="change_password_save_btn_save_outline" />
             </PrimaryButton>
           </div>
         </Form.Item>

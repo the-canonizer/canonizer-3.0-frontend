@@ -357,7 +357,10 @@ function ProfileInfoForm({
   }
 
   const titleContent = (
-    <div className="flex flex-col items-start justify-center" id="title_content_section">
+    <div
+      className="flex flex-col items-start justify-center"
+      id="title_content_section"
+    >
       <div className="flex items-start gap-2.5" id="title_content">
         <LeftOutlined
           id="left_outlined"
@@ -370,7 +373,10 @@ function ProfileInfoForm({
           className="!mt-1"
         />
 
-        <span className="text-lg font-normal text-canBlack mb-0" id="heading_text">
+        <span
+          className="text-lg font-normal text-canBlack mb-0"
+          id="heading_text"
+        >
           {headingText}
           <p className="text-canLight text-xs font-normal mt-1" id="otp_text">
             Enter the OTP you have received on your registered email address
@@ -460,8 +466,16 @@ function ProfileInfoForm({
           className="!mb-5 lg:mt-0 mt-10"
         />
 
-        <Row gutter={{ xs: 0, sm: 0, md: 20, lg: 32 }} id="profile_info_row_first">
-          <Col md={12} sm={24} className="w-full" id="profile_info_col_first_name">
+        <Row
+          gutter={{ xs: 0, sm: 0, md: 20, lg: 32 }}
+          id="profile_info_row_first"
+        >
+          <Col
+            md={12}
+            sm={24}
+            className="w-full"
+            id="profile_info_col_first_name"
+          >
             <Form.Item
               id="form_for_first_name"
               name="first_name"
@@ -502,9 +516,14 @@ function ProfileInfoForm({
               />
             </Form.Item>
           </Col>
-          <Col md={12} sm={24} className="w-full" id="profile_info_col_last_name">
+          <Col
+            md={12}
+            sm={24}
+            className="w-full"
+            id="profile_info_col_last_name"
+          >
             <Form.Item
-               id="form_for_last_name"
+              id="form_for_last_name"
               name="last_name"
               label={
                 <>
@@ -545,7 +564,7 @@ function ProfileInfoForm({
           </Col>
           <Col md={12} sm={24} className="w-full" id="profile_info_col_email">
             <Form.Item
-             id="form_for_email"
+              id="form_for_email"
               className="text-sm text-canBlack font-normal [&_label]:text-sm [&_label]:font-medium [&_.ant-form-item-explain-error]:mb-6 [&_.ant-input-group-addon]:!w-[5rem] [&_.ant-select-selection-item]:!pr-6 [&_.ant-input-group-addon]:!bg-canGray"
               name="email"
               label={messages.labels.email}
@@ -579,27 +598,26 @@ function ProfileInfoForm({
               />
             </Form.Item>
           </Col>
-          <Col md={12} sm={24} className="w-full"  id="profile_info_col_dob">
+          <Col md={12} sm={24} className="w-full" id="profile_info_col_dob">
             <Form.Item
-            id="form_for_dob"
+              id="form_for_dob"
               label="Date of Birth"
               className="mb-0 [&_.ant-form-item]:!border-none [&_.ant-input-group-addon]:!bg-canGray text-sm text-canBlack font-normal [&_label]:text-sm [&_label]:font-medium [&_.ant-form-item-explain-error]:mb-6"
             >
               <Input.Group compact className="!flex">
-                <span className="flex absolute left-4 top-1/3 -translate-y-1/2 z-50 pointer-events-none border-none" id="calender_image_icon">
-                  <Image
-                    src="/images/calender.svg"
-                    width={16}
-                    height={16}
-                  />
+                <span
+                  className="flex absolute left-4 top-1/3 -translate-y-1/2 z-50 pointer-events-none border-none"
+                  id="calender_image_icon"
+                >
+                  <Image src="/images/calender.svg" width={16} height={16} />
                 </span>
                 <Form.Item
-                id="form_for_date_picker"
+                  id="form_for_date_picker"
                   name="birthday"
                   className=" [&_.ant-picker-large]:!h-[40px] w-full [&_.ant-picker]:rounded-tl-lg  [&_.ant-picker]:rounded-bl-lg text-canBlack font-normal h-[40px] rounded-md [&_.ant-input-prefix]:!text-canBlack [&_.ant-input-prefix]:mr-3 text-sm mainInput"
                 >
                   <DatePicker
-                  id="profile_info_datepicker"
+                    id="profile_info_datepicker"
                     onChange={handleChange}
                     size="large"
                     suffixIcon={null}
@@ -613,7 +631,10 @@ function ProfileInfoForm({
                     }}
                   />
                 </Form.Item>
-                <Form.Item className="[&_.ant-select-selector]:!w-[5rem] " id="form_for_birthday">
+                <Form.Item
+                  className="[&_.ant-select-selector]:!w-[5rem] "
+                  id="form_for_birthday"
+                >
                   <Select
                     id="profile_info_birthday"
                     data-testid="handleselectAfter"
@@ -643,7 +664,7 @@ function ProfileInfoForm({
                     </Option>
                     <Option value="private">
                       <Image
-                         id="prifle_info_private_icon"
+                        id="prifle_info_private_icon"
                         src="/images/private-icon.svg"
                         width={24}
                         height={16}
@@ -662,13 +683,25 @@ function ProfileInfoForm({
               label={messages.labels.gender}
               className="text-sm text-canBlack font-normal [&_label]:text-sm [&_label]:font-medium [&_.ant-form-item-explain-error]:mb-6"
             >
-              <Radio.Group name="radiogroup" defaultValue={1} id="gender_radio_btn">
-                <Space size="large" className={styles.radio_Btn} id="space_tag_radio_btn">
+              <Radio.Group
+                name="radiogroup"
+                defaultValue={1}
+                id="gender_radio_btn"
+              >
+                <Space
+                  size="large"
+                  className={styles.radio_Btn}
+                  id="space_tag_radio_btn"
+                >
                   <Radio value={0} id="male_radio_btn">
                     Male
                   </Radio>
-                  <Radio value={1} id="female_radio_btn">Female</Radio>
-                  <Radio value={2} id="other_radio_btn">Other</Radio>
+                  <Radio value={1} id="female_radio_btn">
+                    Female
+                  </Radio>
+                  <Radio value={2} id="other_radio_btn">
+                    Other
+                  </Radio>
                 </Space>
               </Radio.Group>
             </Form.Item>
@@ -691,16 +724,24 @@ function ProfileInfoForm({
           </Col>
         </Row>
 
-        <div className="border-t border-canGrey2 pt-10" id="profile_info_address_section">
+        <div
+          className="border-t border-canGrey2 pt-10"
+          id="profile_info_address_section"
+        >
           <SectionHeading
             title="address INFORMATION"
             icon={null}
             className="!mb-5"
           />
           <Row gutter={30} id="profile_info_row_second">
-            <Col md={12} sm={24} className="w-full" id="profile_info_col_address1">
+            <Col
+              md={12}
+              sm={24}
+              className="w-full"
+              id="profile_info_col_address1"
+            >
               <Form.Item
-              id="form_for_address1"
+                id="form_for_address1"
                 rules={[
                   {
                     validator: (_, value) => {
@@ -790,7 +831,12 @@ function ProfileInfoForm({
                 />
               </Form.Item>
             </Col>
-            <Col md={12} sm={24} className="w-full" id="profile_info_col_address_2">
+            <Col
+              md={12}
+              sm={24}
+              className="w-full"
+              id="profile_info_col_address_2"
+            >
               <Form.Item
                 id="form_for_address_2"
                 rules={[
@@ -830,7 +876,7 @@ function ProfileInfoForm({
                 />
               </Form.Item>
               <Form.Item
-               id="form_for_state"
+                id="form_for_state"
                 name="state"
                 label={messages.labels.state}
                 className="[&_.ant-input-group-addon]:!w-[5rem] [&_.ant-form-item-label]:font-normal [&_.ant-select-selection-item]:!pr-6 [&_.ant-input-group-addon]:!bg-canGray text-sm text-canBlack font-normal [&_label]:text-sm [&_label]:font-medium [&_.ant-form-item-explain-error]:mb-6"
@@ -859,17 +905,19 @@ function ProfileInfoForm({
                   {
                     validator: (_, value) => {
                       if (!value) return Promise.resolve();
-                
+
                       // Check if the value contains only digits
                       if (!/^\d+$/.test(value)) {
-                        return Promise.reject("Zip code must contain only numbers.");
+                        return Promise.reject(
+                          "Zip code must contain only numbers."
+                        );
                       }
-                
+
                       // Check if the value consists only of zeros
                       if (/^0+$/.test(value)) {
                         return Promise.reject("Zip code cannot be all zeros.");
                       }
-                
+
                       return Promise.resolve();
                     },
                   },
@@ -907,7 +955,10 @@ function ProfileInfoForm({
             </Col>
           </Row>
         </div>
-        <Form.Item id="form_for_discard_btn" className="!flex-col flex items-center lg:flex-row md:flex-row sm:flex-row xs:flex-col justify-center [&_.ant-form-item-control-input-content]:!flex lg:[&_.ant-form-item-control-input-content]:!flex-row lg:[&_.ant-form-item-control-input-content]:gap-5 mt-6 md:[&_.ant-form-item-control-input-content]:!flex-row [&_.ant-form-item-control-input-content]:!flex-col [&_.ant-form-item-control-input-content]:gap-2.5 md:[&_.ant-form-item-control-input-content]:!justify-center">
+        <Form.Item
+          id="form_for_discard_btn"
+          className="!flex-col flex items-center lg:flex-row md:flex-row sm:flex-row xs:flex-col justify-center [&_.ant-form-item-control-input-content]:!flex lg:[&_.ant-form-item-control-input-content]:!flex-row lg:[&_.ant-form-item-control-input-content]:gap-5 mt-6 md:[&_.ant-form-item-control-input-content]:!flex-row [&_.ant-form-item-control-input-content]:!flex-col [&_.ant-form-item-control-input-content]:gap-2.5 md:[&_.ant-form-item-control-input-content]:!justify-center"
+        >
           <SecondaryButton
             onClick={handleDiscard}
             disabled={afterSaveChangeDisable || isButtonDisabled}
@@ -931,7 +982,7 @@ function ProfileInfoForm({
             disabled={disableButton || disableButtonForProfileInfo}
             className="flex gap-2.5 items-center justify-center w-[12.5rem] h-auto"
           >
-            Save Changes <SaveOutlined id="save_btn_saveoutline"/>
+            Save Changes <SaveOutlined id="save_btn_saveoutline" />
           </PrimaryButton>
         </Form.Item>
       </Form>
@@ -942,14 +993,23 @@ function ProfileInfoForm({
         closable={false}
         className="[&_.ant-modal-body]:!p-10 [&_.ant-modal-content]:!rounded-xl"
       >
-        <h3 className="text-base text-canBlack font-medium text-center" id="profile_info_modal_text_1">
+        <h3
+          className="text-base text-canBlack font-medium text-center"
+          id="profile_info_modal_text_1"
+        >
           Are you sure you want to change your email address?
         </h3>
-        <p className="mt-2.5 text-canLight text-sm font-normal text-center"  id="profile_info_modal_text_2">
+        <p
+          className="mt-2.5 text-canLight text-sm font-normal text-center"
+          id="profile_info_modal_text_2"
+        >
           You will need to verify your existing email address via OTP and then
           add a new address.
         </p>
-        <div className="flex gap-4 justify-center items-center mt-10"  id="profile_info_modal_cancel_btn">
+        <div
+          className="flex gap-4 justify-center items-center mt-10"
+          id="profile_info_modal_cancel_btn"
+        >
           <SecondaryButton
             className="flex gap-2.5 items-center justify-center w-[11.25rem] h-auto"
             onClick={() => {
@@ -977,14 +1037,23 @@ function ProfileInfoForm({
         title={titleContent}
         id="profile_info_drawer"
       >
-        <div className="flex flex-col w-full h-full lg:px-7"  id="profile_info_drawer_section">
+        <div
+          className="flex flex-col w-full h-full lg:px-7"
+          id="profile_info_drawer_section"
+        >
           <div className="flex-1" id="profile_info_drawer_section_1">
             {step == 1 && (
               <Fragment>
-                <p className="mb-4 mt-14 text-sm font-medium text-canBlack" id="profile_info_drawer_enter_otp_text">
+                <p
+                  className="mb-4 mt-14 text-sm font-medium text-canBlack"
+                  id="profile_info_drawer_enter_otp_text"
+                >
                   Enter OTP
                 </p>
-                <div className="flex space-x-3" id="profile_info_drawer_iinput_section">
+                <div
+                  className="flex space-x-3"
+                  id="profile_info_drawer_iinput_section"
+                >
                   {OtpBox.map((data, i) => {
                     return (
                       <Input
@@ -1021,12 +1090,14 @@ function ProfileInfoForm({
 
             {step == 2 && (
               <Fragment>
-                <p className="mt-14 text-sm font-medium text-canBlack mb-4" id="profile_info_drawer_email_text">
+                <p
+                  className="mt-14 text-sm font-medium text-canBlack mb-4"
+                  id="profile_info_drawer_email_text"
+                >
                   Email
                 </p>
 
                 <Input
-                
                   onChange={(e) => {
                     setUpdatedEmail(e?.target?.value);
                   }}
@@ -1051,7 +1122,10 @@ function ProfileInfoForm({
 
             {step == 3 && (
               <div>
-                <p className="mt-14 text-sm font-medium text-canBlack mb-4" id="profile_info_drawer_email_step_three_text">
+                <p
+                  className="mt-14 text-sm font-medium text-canBlack mb-4"
+                  id="profile_info_drawer_email_step_three_text"
+                >
                   Email
                 </p>
                 <Input
@@ -1061,7 +1135,7 @@ function ProfileInfoForm({
                   id="profile_info_drawer_email_input_step_three_text"
                   prefix={
                     <Image
-                    id="profile_info_drawer_dark_icon_2"
+                      id="profile_info_drawer_dark_icon_2"
                       src="/images/mail-dark-icon.svg"
                       width={16}
                       height={16}
@@ -1082,11 +1156,20 @@ function ProfileInfoForm({
                   Resend OTP
                 </PrimaryButton>
 
-                <div className="flex flex-col gap-4"  id="profile_info_drawer_enter_otp_btn_section">
-                  <p className="mt-8 text-sm font-normal text-canBlack" id="profile_info_drawer_enter_otp_text_2">
+                <div
+                  className="flex flex-col gap-4"
+                  id="profile_info_drawer_enter_otp_btn_section"
+                >
+                  <p
+                    className="mt-8 text-sm font-normal text-canBlack"
+                    id="profile_info_drawer_enter_otp_text_2"
+                  >
                     Enter OTP
                   </p>
-                  <div className="flex gap-2.5" id="profile_info_drawer_input_section_2">
+                  <div
+                    className="flex gap-2.5"
+                    id="profile_info_drawer_input_section_2"
+                  >
                     {OtpBoxForNewEmail.map((data, i) => {
                       return (
                         <Input
@@ -1114,7 +1197,10 @@ function ProfileInfoForm({
               </div>
             )}
           </div>
-          <div className="flex items-center justify-center gap-5 py-20" id="profile_info_drawer_btn_section">
+          <div
+            className="flex items-center justify-center gap-5 py-20"
+            id="profile_info_drawer_btn_section"
+          >
             <SecondaryButton
               className="flex gap-2.5 items-center justify-center w-[12.5rem] h-auto"
               onClick={() => {
@@ -1139,7 +1225,7 @@ function ProfileInfoForm({
                 id="profile_info_drawer_get_otp_btn"
               >
                 Get OTP
-                <RightOutlined id="profile_info_drawer_get_otp_btn_right_outline"/>
+                <RightOutlined id="profile_info_drawer_get_otp_btn_right_outline" />
               </PrimaryButton>
             ) : (
               <PrimaryButton

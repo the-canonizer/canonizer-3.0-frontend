@@ -832,7 +832,7 @@ function SupportTreeDrawer({
                 onClose();
                 form.resetFields();
                 setSelectedValue(null);
-                setIsOrderChange(false)
+                setIsOrderChange(false);
               }}
             >
               Cancel
@@ -905,7 +905,7 @@ function SupportTreeDrawer({
                 onClose();
                 form.resetFields();
                 setSelectedValue(null);
-                setIsOrderChange(false)
+                setIsOrderChange(false);
               }}
             >
               Cancel
@@ -1025,7 +1025,7 @@ function SupportTreeDrawer({
                 onClose();
                 form.resetFields();
                 setSelectedValue(null);
-                setIsOrderChange(false)
+                setIsOrderChange(false);
               }}
             >
               Cancel

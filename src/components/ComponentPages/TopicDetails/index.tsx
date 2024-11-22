@@ -217,7 +217,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
     asofdate,
     algorithm,
     +(router?.query?.camp[1]?.split("-")[0] ?? 1),
-    // router,
+    router?.query?.camp[0]?.split("-")[0],
   ]);
 
   useEffect(() => {
