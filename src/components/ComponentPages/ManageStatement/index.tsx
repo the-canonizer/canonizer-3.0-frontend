@@ -295,9 +295,9 @@ function ManageStatements({ isEdit = false }) {
   };
 
   const autoSave = async (data) => {
+    setStatement(data?.statement);
     if (!isEdit || isDraft) {
       setIsAutoSaving(true);
-      setStatement(data?.statement);
       let payload = {
         ...data,
         statement: data?.statement
