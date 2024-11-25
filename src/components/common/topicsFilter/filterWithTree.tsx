@@ -835,7 +835,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
                 >
                   Cancel
                   <span
-                    className="!hidden lg:!flex lg:items-center"
+                    className="!hidden lg:!flex lg:items-center mr-2"
                     id="refine_filter_section_seceondry_btn_img"
                   >
                     <Image
