@@ -7,7 +7,7 @@ const AvatarGroup = ({
   avatars = [],
   loading = false,
   maxCount = 4,
-  imageBaseURL = '',
+  imageBaseURL = "",
   ...restProps
 }: any) => {
   if (loading) {

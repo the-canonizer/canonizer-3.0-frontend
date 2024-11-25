@@ -152,7 +152,7 @@ const LatestFilter = () => {
       viewThisVersion
     );
   };
- 
+
   const filterscore = () => {
     dispatch(setViewThisVersion(false));
     dispatch(

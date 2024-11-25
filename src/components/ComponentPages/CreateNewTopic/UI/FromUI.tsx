@@ -94,7 +94,7 @@ const CreateTopicFromUI = ({
 
     return values?.namespace || nameSpaces[0]?.id;
   };
-const dispatch = useDispatch()
+  const dispatch = useDispatch();
   return (
     <CommonCards className="border-0 bg-white">
       <header className="mb-14">
@@ -304,11 +304,13 @@ const dispatch = useDispatch()
               data-testid="create-topic-btn"
               disabled={!isDisabled}
               className="flex justify-center items-center py-5 px-6 w-[200px]"
-              onClick={(()=>{ dispatch(
-                setFilterCanonizedTopics({
-                  algorithm: "blind_popularity",
-                })
-              )})}
+              onClick={() => {
+                dispatch(
+                  setFilterCanonizedTopics({
+                    algorithm: "blind_popularity",
+                  })
+                );
+              }}
             >
               {isEdit ? "Update Topic" : "Save Topic"} <SaveOutlined />
             </PrimaryButton>
