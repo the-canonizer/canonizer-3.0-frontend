@@ -504,7 +504,7 @@ function ManageStatements({ isEdit = false }) {
 
     if (res?.data?.post_changes_count > 0) {
       Modal.confirm({
-        title: "Do you want to discard this change?",
+        title: "Do you want to publish this change?",
         icon: <ExclamationCircleFilled />,
         width: 600,
         okText: "Publish Anyway",
