@@ -295,9 +295,9 @@ function ManageStatements({ isEdit = false }) {
   };
 
   const autoSave = async (data) => {
+    setStatement(data?.statement);
     if (!isEdit || isDraft) {
       setIsAutoSaving(true);
-      setStatement(data?.statement);
       let payload = {
         ...data,
         statement: data?.statement
@@ -504,15 +504,16 @@ function ManageStatements({ isEdit = false }) {
 
     if (res?.data?.post_changes_count > 0) {
       Modal.confirm({
-        title: "Do you want to discard this change?",
+        title: "Do you want to publish this change?",
         icon: <ExclamationCircleFilled />,
+        width: 600,
         okText: "Publish Anyway",
         cancelText: "Review Other Statements",
         onCancel: () => {
-          router.push({ pathname: getBackURL() });
+          router.push(`/statement/history/${getTopicAndCampIds()?.topicNum}-${getTopicAndCampIds()?.topicName}/${getTopicAndCampIds()?.campNum}`);
         },
         content:
-          "The draft you have created is based on anolder version. Multiple versions have been published since then. Checkout the newer versions before publishing your statement.",
+          "The draft you have created is based on an older version. Multiple versions have been published since then. Checkout the newer versions before publishing your statement.",
         async onOk() {
           try {
             const editInfo = editStatementData;

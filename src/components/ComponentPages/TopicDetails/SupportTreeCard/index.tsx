@@ -781,6 +781,7 @@ const SupportTreeCard = ({
         getCheckStatusAPI={getCheckStatusAPI}
         loader={loader}
         setLoader={setLoader}
+        isCampLeader={isCampLeader}
       />
       <div
         className="support-tree-sec overflow-hidden overflow-y-auto"
