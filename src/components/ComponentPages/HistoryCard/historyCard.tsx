@@ -719,7 +719,7 @@ function HistoryCard({
                       campStatement?.go_live_time
                     }&asof=bydate&canon=${namespace_id}&viewversion=${1}`}
                   >
-                    View Version
+                    View This Version
                   </Link>
                   <EyeOutlined className="ml-2" />
                 </Button>

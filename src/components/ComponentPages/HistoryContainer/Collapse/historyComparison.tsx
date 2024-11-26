@@ -40,19 +40,19 @@ const HistoryComparison = ({
   return (
     <>
       {historyOf === "topic" || historyOf === "camp" ? (
-        <p className="mb-2.5">
+        <p className="mb-2.5 break-all">
           {capitalizeFirstLetter(historyOf)} Name:{" "}
           <span>{campStatement?.parsed_value}</span>
         </p>
       ) : null}
 
-      <Title level={5} className="font-semibold mb-2.5">
+      <Title level={5} className="font-semibold mb-2.5 break-all">
         {getTitle()}
       </Title>
       <div>
         {historyOf === "topic" && (
           <>
-            <p>
+            <p className="break-all">
               Edit summary: <span>{campStatement?.note}</span>
             </p>
             <p>
@@ -78,7 +78,7 @@ const HistoryComparison = ({
                 Keywords: <span>{campStatement?.key_words}</span>
               </p>
             )}
-            <p>
+            <p className="break-all">
               Edit summary: <span>{campStatement?.note}</span>
             </p>
             <p>
@@ -138,7 +138,7 @@ const HistoryComparison = ({
         )}
         {historyOf === "statement" && (
           <>
-            <p>
+            <p className="break-all">
               Edit summary: <span>{campStatement?.note}</span>
             </p>
           </>

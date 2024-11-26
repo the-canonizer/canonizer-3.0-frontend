@@ -57,11 +57,11 @@ const PostUI = ({
               />
             ) : (
               <Popover
-                content={currentThread["title"]}
-                key={currentThread["created_at"]}
+                content={currentThread?.title}
+                key={currentThread?.created_at}
                 placement="topLeft"
               >
-                <span id="card-title">{currentThread["title"]}</span>
+                <span id="card-title">{currentThread?.title}</span>
               </Popover>
             )}
           </Typography.Paragraph>
@@ -80,11 +80,11 @@ const PostUI = ({
                 Started by{" "}
                 <Link
                   href={`/user/supports/${
-                    currentThread["creation_nick_name_id"] || ""
-                  }?canon=${currentThread["namespace_id"] || 1}`}
+                    currentThread?.creation_nick_name_id || ""
+                  }?canon=${currentThread?.namespace_id || 1}`}
                   passHref
                 >
-                  <a className="">{currentThread["creation_nick_name"]}</a>
+                  <a className="">{currentThread?.creation_nick_name}</a>
                 </Link>
               </Paragraph>
               <span className="block mx-2 text-canLight text-xs">|</span>
@@ -105,7 +105,7 @@ const PostUI = ({
                     getTime(currentThread?.created_at)
                   ).format("MMM Do YYYY, h:mm:ss a")}`}</Text>
                 ) : null}
-                {currentThread["creation_nick_name"] && <></>}
+                {currentThread?.creation_nick_name && <></>}
               </Paragraph>
               <span className="block mx-2 text-canLight text-xs">|</span>
               <Paragraph className="!mb-0 text-canLight">

@@ -209,7 +209,7 @@ const NicknameSearch = () => {
                 className="!mb-6 !text-base !font-semibold !text-canBlack"
                 data-testid="nickname_heading"
               >
-                Nickname
+                Nickname(S)
               </h4>
             </div>
 

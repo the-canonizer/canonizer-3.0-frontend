@@ -525,7 +525,7 @@ function HistoryCollapse({
                             campStatement?.go_live_time
                           }&asof=bydate&canon=${namespace_id}&viewversion=${1}`}
                         >
-                          View Version
+                          View This Version
                         </Link>
                       </Button>
                     </div>
@@ -620,7 +620,7 @@ function HistoryCollapse({
                           campStatement?.go_live_time
                         }&asof=bydate&canon=${namespace_id}&viewversion=${1}`}
                       >
-                        View Version
+                        View This Version
                       </Link>
                     </Button>
                     <Button

@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "src/store";
 import CustomSkelton from "../customSkelton";
 import { setClickAdvanceFilterOption } from "src/store/slices/searchSlice";
+import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
 
 export default function SearchSideBar() {
   const router = useRouter();
@@ -93,8 +94,8 @@ export default function SearchSideBar() {
                 pathname: "/search/topic",
                 query: {
                   q: router?.query?.q,
-                  ...(asof !== "default" && { asof: asof }),
-                  ...(asof == "bydate" && { asofdate: asofdate }),
+                  // ...(asof !== "default" && { asof: asof }),
+                  // ...(asof == "bydate" && { asofdate: asofdate }),
                 },
               }}
               passHref
@@ -110,6 +111,14 @@ export default function SearchSideBar() {
                         : "btn"
                     } `}
                   disabled={router?.pathname == "/search/topic" ? true : false}
+                  onClick={(()=>{
+                    dispatch(
+                      setFilterCanonizedTopics({
+                        asofdate: Date.now() / 1000,
+                        asof: "default",
+                      })
+                    );
+                  })}
                 >
                   {/* <i className="icon-topic"></i> */}
                   <a>
@@ -121,7 +130,7 @@ export default function SearchSideBar() {
                         ? searchMetaData?.topic_total
                         : router.query.asof == "review" ||
                           router.query.asof == "bydate"
-                        ? selectedTopicFromAdvanceFilterAlgorithm.length
+                        ? selectedTopicFromAdvanceFilterAlgorithm?.length
                         : searchCountForMetaData?.topic_total}
                       )
                     </span>
@@ -134,8 +143,8 @@ export default function SearchSideBar() {
                 pathname: "/search/camp",
                 query: {
                   q: router?.query?.q,
-                  ...(asof !== "default" && { asof: asof }),
-                  ...(asof == "bydate" && { asofdate: asofdate }),
+                  // ...(asof !== "default" && { asof: asof }),
+                  // ...(asof == "bydate" && { asofdate: asofdate }),
                 },
               }}
               passHref
@@ -151,6 +160,14 @@ export default function SearchSideBar() {
                         : "btn"
                     }`}
                   disabled={router?.pathname == "/search/camp" ? true : false}
+                  onClick={(()=>{
+                    dispatch(
+                      setFilterCanonizedTopics({
+                        asofdate: Date.now() / 1000,
+                        asof: "default",
+                      })
+                    );
+                  })}
                 >
                   {/* <i className="icon-camp"></i> */}
                   <a>
@@ -179,6 +196,14 @@ export default function SearchSideBar() {
                   disabled={
                     router?.pathname == "/search/camp_statement" ? true : false
                   }
+                  onClick={(()=>{
+                    dispatch(
+                      setFilterCanonizedTopics({
+                        asofdate: Date.now() / 1000,
+                        asof: "default",
+                      })
+                    );
+                  })}
                 >
                   {/* <i className="icon-camp"></i> */}
                   <a>

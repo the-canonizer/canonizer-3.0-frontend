@@ -113,13 +113,19 @@ export default function AdvanceFilter() {
     return obj.id;
   });
 
-  const findTopicId = searchDataAll.camp?.map((obj) => {
+  const findTopicId = searchDataAll?.camp?.map((obj) => {
     return obj.topic_num;
   });
 
+  const topicIdForElasticSearch = searchDataAll?.topic?.map((obj) => {
+    return obj.topic_num;
+  });
+
+  const stringTopicIdForElasticSearch = topicIdForElasticSearch?.map((element) => element?.toString());
+
   let stringTopicArray = findTopicId?.map((element) => element?.toString());
 
-  const findCampId = searchDataAll.camp?.map((obj) => {
+  const findCampId = searchDataAll?.camp?.map((obj) => {
     return obj.camp_num;
   });
 
@@ -197,10 +203,10 @@ export default function AdvanceFilter() {
       "\\$&"
     );
     const regex = new RegExp(`(${escapedHighlight})`, "gi");
-    const parts = text.split(regex);
+    const parts = text?.split(regex);
     return (
       <>
-        {parts.map((part, i) =>
+        {parts?.map((part, i) =>
           regex.test(part) ? (
             <mark className={`${styles.highlighter} p-0`} key={i}>
               {part}
@@ -341,7 +347,13 @@ export default function AdvanceFilter() {
   // };
 
   async function getTopicsApiCallWithReqBody() {
-    // loadMore ? setPageNumber(pageNumber + 1) : setPageNumber(1);
+    const stringTopicIdForElasticSearch = searchDataAll?.topic?.map((obj) => obj.topic_num?.toString()) || [];
+    
+    if (!stringTopicIdForElasticSearch.length) {
+      console.warn("No topic IDs available for the API call.");
+      return; // Skip the call if no topic IDs
+    }
+  
     const rebody = {
       type: "topic",
       search: searchValue,
@@ -349,13 +361,14 @@ export default function AdvanceFilter() {
       algo: algorithm,
       asof: asof,
       score: filterByScore,
-      asofdate:
-        asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
+      topic_ids: stringTopicIdForElasticSearch,
+      asofdate: asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
     };
+  
     const response = await AdvanceFilterSeacrhApi(rebody);
     dispatch(setSelectedTopicFromAdvanceFilterAlgorithm(response?.data?.topic));
-    // setLoadMoreIndicator(false);
   }
+  
   async function getCampsApiCallWithReqBody() {
     // loadMore ? setPageNumber(pageNumber + 1) : setPageNumber(1);
     const rebody = {

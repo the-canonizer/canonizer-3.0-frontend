@@ -34,7 +34,7 @@ const CampHistory = ({ campStatement, topicNamespaceId }: any) => {
           {campStatement?.key_words}
         </span>
       </Title>
-      <Title level={5}>
+      <Title level={5} className="break-all">
         Edit Summary :{" "}
         <span className={styles.updateSurveyPrj}>{campStatement?.note}</span>
       </Title>

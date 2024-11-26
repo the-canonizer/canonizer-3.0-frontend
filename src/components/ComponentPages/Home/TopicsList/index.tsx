@@ -438,13 +438,6 @@ const TopicsList = () => {
                   {...sharedProps}
                   {...selectProps}
                 />
-                {/* <Select
-                  size="large"
-                  mode="multiple"
-                  className="text-canBlack font-normal commonSelectClass [&_.ant-select-arrow]:text-canBlack [&_.ant-select-arrow>svg]:fill-canBlack"
-                  showArrow
-                  options={options}
-                /> */}
               </Form.Item>
             </div>
             <div className="search-wrapper w-full items-center max-sm:flex-wrap lg:justify-end max-lg:justify-between">
@@ -548,6 +541,7 @@ const TopicsList = () => {
                     }`}
                   >
                     <SingleTopicCard
+                      imageBaseURL={process?.env?.NEXT_PUBLIC_BASE_IMAGES_URL}
                       cardClassName="[&_.scoreTag]:mx-0 [&_.scoreTag]:ml-2 [&_.catTags]:flex-row [&_.cardCountCls]:!mt-0 [&_.scoreTag]:w-max [&_.topicDesc]:line-clamp-2"
                       topic={{
                         ...ft,

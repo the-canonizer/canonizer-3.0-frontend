@@ -230,17 +230,7 @@ const CampTree = ({
         sessionStorage.setItem("value", JSON.stringify(sesionexpandkeys));
       }
     }
-    // if (tree?.at(0)) {
-    //   const agreementCamp = tree?.at(0)[1]?.score;
-    //   if (
-    //     agreementCamp > 5 &&
-    //     Object.keys(tree?.at(0)[1].children).length > 0
-    //   ) {
-    //     setShowScoreBars(true);
-    //   } else {
-    //     setShowScoreBars(false);
-    //   }
-    // }
+
     if (prevTreeValueRef !== undefined) {
       prevTreeValueRef.current = treeExpandValue;
     }
@@ -321,10 +311,8 @@ const CampTree = ({
           return data[item].is_archive == 0 ||
             (data[item].is_archive != 0 && is_camp_archive_checked == true) ? (
             <TreeNode
-              className="[&_.ant-tree-switcher]:!flex [&_.ant-tree-switcher]:!items-center [&_.ant-tree-node-content-wrapper]:hover:!bg-transparent [&_.ant-tree-switcher.ant-tree-switcher-noop]:!hidden [&_.ant-tree-node-content-wrapper]:py-1"
+              className="[&_.ant-tree-switcher]:!flex [&_.ant-tree-switcher]:!items-center [&_.ant-tree-node-content-wrapper]:hover:!bg-transparent [&_.ant-tree-switcher.ant-tree-switcher-noop>span]:!hidden [&_.ant-tree-node-content-wrapper]:py-1"
               switcherIcon={({ expanded }) => {
-                // const isCampIdZero = data[item].camp_id === 0;
-
                 return data[item].camp_id ===
                   +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1) &&
                   _isDisabled == 0 &&
@@ -460,17 +448,6 @@ const CampTree = ({
                           )}
                         </a>
                       </Link>{" "}
-                      {/* {data[item].is_archive == 1 ? (
-                          <Image
-                            src={Archive_icon.src}
-                            width={20}
-                            height={20}
-                            alt="archive"
-                            preview={false}
-                          />
-                        ) : (
-                          ""
-                        )} */}
                     </span>
                     <span className={styles.subScriptionIcon}>
                       {isUserAuthenticated &&
@@ -578,8 +555,6 @@ const CampTree = ({
 
     sessionStorage.setItem("value", JSON.stringify(sesionExpandnewKeys));
     setUniqueKeys(expandedKeys);
-
-    // setAutoExpandParent(false);
   };
 
   const toFindDuplicates = (arry) => {
@@ -590,142 +565,19 @@ const CampTree = ({
     return uniqueArraytoString;
   };
 
-  // const eventLinePath = () => {
-  //   let topicId = tree && tree[0][1]?.topic_id;
-  //   let topicName = tree && tree[0][1]?.title;
-  //   let campId = tree && tree[0][1]?.camp_id;
-
-  //   let URL = `/eventline/${topicId}-${replaceSpecialCharacters(
-  //     topicName,
-  //     "-"
-  //   )}/${campId}`;
-
-  //   router.push(URL);
-  // };
-
   return tree?.at(0) ? (
     (showTree && tree?.at(0)["1"]?.title != "" && defaultExpandKeys) ||
     isForumPage ? (
-      <Fragment>
-        {/* <Typography.Paragraph
-          className={`${styles.topicTitleStyle} ${styles.topicTitle}`}
-        >
-          <div className="event-line-wrapper">
-            <div>
-              <span className="normal">Topic : </span>
-              {tree?.length && tree[0] ? (
-                <Link
-                  href={`${
-                    includeReview
-                      ? isForumPage
-                        ? tree[0]["1"]?.review_link
-                            ?.replace("#statement", "")
-                            ?.replace("/topic/", "/forum/") + "/threads"
-                        : tree[0]["1"]?.review_link?.replace("#statement", "")
-                      : isForumPage
-                      ? tree[0]["1"]?.link
-                          ?.replace("#statement", "")
-                          ?.replace("/topic/", "/forum/") + "/threads"
-                      : tree[0]["1"]?.link?.replace("#statement", "")
-                  }?filter=${treeExpandValue}&score=${filterByScore}&algo=${
-                    filterObject?.algorithm
-                  }${
-                    filterObject?.asof == "bydate"
-                      ? "&asofdate=" + filterObject?.asofdate
-                      : ""
-                  }&asof=${filterObject?.asof}&canon=${
-                    filterObject?.namespace_id
-                  }${viewThisVersion ? "&viewversion=1" : ""}`}
-                  className={styles.boldBreadcrumb}
-                  replace
-                >
-                  <a
-                    className={`${
-                      tree[0]["1"].is_archive == 1
-                        ? `font-weight-bold tra ${styles.archive_grey}`
-                        : tree[0]["1"]?.camp_id ==
-                            router?.query?.camp?.at(1)?.split("-")?.at(0) ?? "1"
-                        ? `font-weight-bold ${styles.activeCamp}`
-                        : ""
-                    } ${
-                      isForumPage &&
-                      tree[0]["1"]?.camp_id ==
-                        ((router?.query?.camp as string)?.split("-")?.at(0) ??
-                          "1")
-                        ? `font-weight-bold forumActive ${styles.activeCamp}`
-                        : ""
-                    }`}
-                  >
-                    {tree[0]["1"].is_archive == 1 ? (
-                      <Popover content="Archived Camp">
-                        {includeReview
-                          ? tree[0]["1"]?.review_title
-                          : tree[0]["1"]?.title}
-                      </Popover>
-                    ) : includeReview ? (
-                      tree[0]["1"]?.review_title
-                    ) : (
-                      tree[0]["1"]?.title
-                    )}
-                  </a>
-                </Link>
-              ) : (
-                ""
-              )}{" "}
-              <span className={styles.subScriptionIcon}>
-                {isUserAuthenticated && !!topicRecord?.topicSubscriptionId ? (
-                  <Tooltip
-                    title="You have subscribed to the entire topic."
-                    key="camp_subscribed_icon"
-                  >
-                    <small style={{ alignSelf: "center", marginLeft: "10px" }}>
-                      <i className="icon-subscribe text-primary"></i>
-                    </small>
-                  </Tooltip>
-                ) : (
-                  ""
-                )}
-              </span>
-            </div>
-            <PrimaryButton
-              type="primary"
-              size="small"
-              onClick={eventLinePath}
-              id="event-line-btn"
-            >
-              Event Line
-            </PrimaryButton>
-          </div>
-          <span className={styles.subScriptionIcon}>
-            {isUserAuthenticated && !!topicRecord?.topicSubscriptionId ? (
-              <Tooltip
-                title="You have subscribed to the entire topic."
-                key="camp_subscribed_icon"
-              >
-                <small style={{ alignSelf: "center", marginLeft: "10px" }}>
-                  <i className="icon-subscribe text-primary"></i>
-                </small>
-                showLine switcherIcon={<DownOutlined />}
-                defaultExpandedKeys={["0-0-0"]}
-                onSelect={onSelect}
-                treeData={tree}
-              </Tooltip>
-            ) : (
-              ""
-            )}
-          </span>
-        </Typography.Paragraph> */}
-        <Tree
-          showLine
-          switcherIcon={<DownOutlined />}
-          onSelect={onSelect}
-          onExpand={onExpand}
-          expandedKeys={[...uniqueKeys]}
-          data-testid="camp-tree"
-        >
-          {tree?.at(0) && renderTreeNodes(tree?.at(0))}
-        </Tree>
-      </Fragment>
+      <Tree
+        showLine
+        switcherIcon={<DownOutlined />}
+        onSelect={onSelect}
+        onExpand={onExpand}
+        expandedKeys={[...uniqueKeys]}
+        data-testid="camp-tree"
+      >
+        {tree?.at(0) && renderTreeNodes(tree?.at(0))}
+      </Tree>
     ) : null
   ) : (
     <p data-testid="camp-tree">No Camp Tree Found</p>

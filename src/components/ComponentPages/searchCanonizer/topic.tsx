@@ -40,6 +40,9 @@ const TopicSearch = () => {
   }));
   const [currentPage, setCurrentPage] = useState(1);
   const [isReview, setIsReview] = useState(asof == "review");
+  const [displayedData, setDisplayedData] = useState([]);
+  const [displayedDataforAlgo, setDisplayedDataforAlgo] = useState([]);
+
 
   const dispatch = useDispatch();
 
@@ -110,6 +113,29 @@ const TopicSearch = () => {
     );
   };
   const router = useRouter();
+  // console.log(searchDataAll.topic.length,"ggggggggg")
+  const pageSize = 20
+  useEffect(() => {
+    // Calculate the starting and ending index for slicing the data
+    const startIndex = (currentPage - 1) * pageSize;
+    const endIndex = startIndex + pageSize;
+
+    // Slice the data to show only 20 items for the current page
+    setDisplayedData(searchDataAll?.topic?.slice(startIndex, endIndex));
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchDataAll?.topic, currentPage]);
+
+  useEffect(() => {
+    // Calculate the starting and ending index for slicing the data
+    const startIndex = (currentPage - 1) * pageSize;
+    const endIndex = startIndex + pageSize;
+
+    // Slice the data to show only 20 items for the current page
+    setDisplayedDataforAlgo(selectedTopicFromAdvanceFilterAlgorithm?.slice(startIndex, endIndex));
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedTopicFromAdvanceFilterAlgorithm, currentPage]);
   return (
     <Fragment>
       <div className="flex justify-between lg:items-center lg:flex-row flex-col items-start mb-10 mt-2.5 lg:gap-0 gap-5">
@@ -166,7 +192,7 @@ const TopicSearch = () => {
                       selectedTopicFromAdvanceFilterAlgorithm?.length ? (
                         <div>
                           <ul>
-                            {selectedTopicFromAdvanceFilterAlgorithm?.map(
+                            {displayedDataforAlgo?.map(
                               (x) => {
                                 return (
                                   <>
@@ -237,7 +263,7 @@ const TopicSearch = () => {
                       )
                     ) : (
                       <ul>
-                        {searchDataAll.topic.map((x) => {
+                        {displayedData?.map((x) => {
                           return (
                             <>
                               <li className="flex flex-col py-3 first:pt-0 border-b border-canGrey2 last:border-none last:pb-0 ">

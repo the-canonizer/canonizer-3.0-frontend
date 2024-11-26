@@ -103,7 +103,7 @@ function CompareStatementUIOld({
                       styles[itemsStatus[s1?.id] || "old"]
                     }
                   >
-                    <Paragraph>
+                    <Paragraph className="break-all">
                       <Text strong>Edit Summary : </Text>
                       <Text>{s1?.note}</Text>
                     </Paragraph>
@@ -227,7 +227,7 @@ function CompareStatementUIOld({
                       styles[itemsStatus[s2?.id] || "old"]
                     }
                   >
-                    <Paragraph>
+                    <Paragraph className="break-all">
                       <Text strong>Edit Summary : </Text>
                       <Text>{s2?.note}</Text>
                     </Paragraph>
@@ -374,7 +374,7 @@ function CompareStatementUIOld({
                       }}
                     ></div>
                     <Divider />
-                    <Paragraph>
+                    <Paragraph className="break-all">
                       <Text strong>Edit Summary : </Text>
                       <Text>{liveStatement?.note}</Text>
                     </Paragraph>

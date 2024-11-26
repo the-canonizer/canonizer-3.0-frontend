@@ -493,6 +493,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
         viewThisVersion
       );
     } else if (selectedValue === 3 || asof === "bydate") {
+      setSelectedValue(3)
       dispatch(setViewThisVersion(false));
       handleAsOfClick();
     }
@@ -504,7 +505,15 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
 
   const handleChange = (event) => {
     const value = event?.target?.value;
-    dispatch(setClearScoreFromRefineFilter(Number(value)));
+  
+    // Check if the value length is manageable within JavaScript's safe range
+    if (value.length <= 15) {
+      // Convert to number if it's within a safe range
+      dispatch(setClearScoreFromRefineFilter(Number(value)));
+    } else {
+      // Otherwise, store it as a string to avoid `Infinity`
+      dispatch(setClearScoreFromRefineFilter(value));
+    }
   };
   const handleChangeAlgo = (algo) => {
     dispatch(setClearAlgoFromRefineFilter(algo));

@@ -14,7 +14,7 @@ import CustomSpinner from "components/shared/CustomSpinner";
 import DeleteAllPopup from "./UI/conformationModal";
 import ReadPopup from "./UI/readConformationModal";
 
-const SettingsUI = () => {
+const NotificationPage = () => {
   const { list } = useSelector((state: RootState) => ({
     list: state.notifications.data,
   }));
@@ -25,7 +25,9 @@ const SettingsUI = () => {
     [notsList, setNotsList] = useState([]),
     [rendredNotsList, setRendredNotsList] = useState([]),
     [isDeleteOpen, setIsDeleteOpen] = useState(false),
-    [isReadOpen, setIsReadOpen] = useState(false);
+    [isDeleteDisabled, setIsDeleteDisabled] = useState(false),
+    [isReadOpen, setIsReadOpen] = useState(false),
+    [isReadDisabled, setIsReadDisabled] = useState(false);
 
   useEffect(() => {
     const filterType = router.query.filter;
@@ -110,9 +112,11 @@ const SettingsUI = () => {
     }
 
     setIsDeleteOpen(false);
+    setIsDeleteDisabled(false);
   };
 
   const deleteClick = (e) => {
+    setIsDeleteDisabled(true);
     e?.preventDefault();
     deleteAll();
   };
@@ -147,9 +151,11 @@ const SettingsUI = () => {
     }
 
     setIsReadOpen(false);
+    setIsReadDisabled(false);
   };
 
   const onReadAll = (e) => {
+    setIsReadDisabled(true);
     e?.preventDefault();
     allReadMark();
   };
@@ -170,9 +176,16 @@ const SettingsUI = () => {
         onClose={onDeleteClose}
         onDelete={deleteClick}
         isOpen={isDeleteOpen}
+        isDeleteDisabled={isDeleteDisabled}
       />
-      <ReadPopup onClose={onReadClose} onRead={onReadAll} isOpen={isReadOpen} />
+      <ReadPopup
+        onClose={onReadClose}
+        onRead={onReadAll}
+        isOpen={isReadOpen}
+        isReadDisabled={isReadDisabled}
+      />
     </CustomSpinner>
   );
 };
-export default SettingsUI;
+
+export default NotificationPage;

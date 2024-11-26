@@ -174,7 +174,9 @@ const CampStatementCard = ({ loadingIndicator }) => {
       }}
       className={`border-0 h-100 bg-white [&_.ant-card-body]:p-0 [&_.ant-card-body]:lg:p-[24px] [&_.ant-card-body]:flex overflow-hidden lg:bg-canGray mb-8 lg:mb-14 border-t-8 
         ${
-          router?.query?.asof == "review"
+          router?.query?.viewversion == "1"
+            ? "!border-canOrange"
+            : router?.query?.asof == "review"
             ? "!border-canOrange"
             : router?.query?.asof == "bydate"
             ? "border-[#4786CB]"
