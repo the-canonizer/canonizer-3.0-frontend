@@ -332,9 +332,10 @@ export default function CanonVideos() {
     router.push(router.pathname, asPath, { shallow: true });
   }
   const menu = (
-    <Menu className="share-menu">
+    <Menu id="video-share-menu" className="share-menu">
       <Menu.Item>
         <FacebookShareButton
+          id="video-share-facebook-btn"
           url={router?.asPath}
           quote={currentVideoTitle}
           hashtag={`#${!isServer() && window?.location?.hostname}`}
@@ -343,12 +344,12 @@ export default function CanonVideos() {
         </FacebookShareButton>
       </Menu.Item>
       <Menu.Item>
-        <TwitterShareButton url={router?.asPath} title={currentVideoTitle}>
+        <TwitterShareButton url={router?.asPath} id="video-share-twitter-btn" title={currentVideoTitle}>
           <img src={Twitter.src} alt="twitter" />
         </TwitterShareButton>
       </Menu.Item>
       <Menu.Item>
-        <LinkedinShareButton url={router?.asPath}>
+        <LinkedinShareButton url={router?.asPath} id="video-share-linkedin-btn">
           <img src={Linkdhn.src} alt="linkdhn" />
         </LinkedinShareButton>
       </Menu.Item>
@@ -403,10 +404,11 @@ export default function CanonVideos() {
                 data-testid="skeleton"
               />
             ) : (
-              <ul>
+              <ul id="video-list-container">
                 {Object.values(videos)?.map((video) => {
                   return (
                     <li
+                      id="video-list-item"
                       className={activeVideoClass(video.id)}
                       onClick={() => handleVideoSelection(video)}
                       key={video?.id}
@@ -414,21 +416,24 @@ export default function CanonVideos() {
                       style={{ display: "flex", alignItems: "center" }}
                     >
                       <img
+                        id="video-thumbnail"
                         src={`${process.env.NEXT_PUBLIC_BETA_URL}files/videos/consciousness/${video?.thumbnail}`}
                         alt=""
                         style={{ minHeight: "50px" }}
                       />
-                      {video?.title}
+                      <span id="video-title">
+                        {video?.title}
+                      </span>
                     </li>
                   );
                 })}
               </ul>
             )}
-            <div className="video-formats">
-              <Title level={5}>Video Format:</Title>
+            <div id="video-format-container" className="video-formats">
+              <Title level={5} id="video-format-title">Video Format:</Title>
 
               {videos && !loader ? (
-                <Radio.Group value={videoResolution}>
+                <Radio.Group value={videoResolution} id="video-format-radio-group">
                   {videos[selectedVideoId - 1]?.resolutions?.map(
                     (data: {
                       id: React.Key;
@@ -446,6 +451,7 @@ export default function CanonVideos() {
                           checked={videoResolution === data?.link}
                           onChange={(e) => onChange(e, data?.title as string)}
                           data-testid={data?.link}
+                          id="video-format-radio-group-item"
                           className="[&_>span]:!text-sm"
                         >
                           {data?.title}
@@ -485,6 +491,7 @@ export default function CanonVideos() {
                   options={mobileVideoOptions}
                 />
                 <video
+                  id="video-player"
                   onTimeUpdate={updateTime}
                   width={"100%"}
                   height={"auto"}
@@ -497,6 +504,7 @@ export default function CanonVideos() {
                     type="video/mp4"
                   />
                   <track
+                    id="video-chapters"
                     kind="chapters"
                     label="Locations"
                     src={"/subs/" + vttPath() + ".vtt"}
@@ -504,12 +512,13 @@ export default function CanonVideos() {
                   ></track>
                 </video>
                 <div className="share-wrapper">
-                  <Title level={5} className="text-canBlack">
+                  <Title level={5} id="video-title" className="text-canBlack">
                     {currentVideoTitle}
                   </Title>
                   <Dropdown overlay={menu} placement="bottomRight">
                     <Button
                       size="small"
+                      id="video-share-button"
                       className="flex items-center"
                       type="primary"
                       ghost
@@ -523,12 +532,14 @@ export default function CanonVideos() {
                   <>
                     <Title
                       level={5}
+                      id="video-chapters-heading"
                       className="max-lg:py-5 lg:p-5 mb-5 text-canBlack border-b border-[#F0F0F0]"
                     >
                       Chapters
                     </Title>
 
                     <div
+                      id="video-chapters-content"
                       className="video-chap-content"
                       dangerouslySetInnerHTML={{ __html: topic }}
                     ></div>

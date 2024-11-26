@@ -293,13 +293,14 @@ function HistoryCard({
 
   return (
     <div
+      id="history-card-container"
       className={`${compareMode ? "" : "csh-wrapper"} cn-wrapper ${
         compareMode
           ? getStatusClass(status)
           : getStatusClass(campStatement?.status)
       }`}
     >
-      <div className="badge-wrapper">
+      <div id="history-page-time-container" className="badge-wrapper">
         {!isMobileView && (
           <Badge
             className="cn-dot-badge ch-dot-history"
@@ -361,8 +362,9 @@ function HistoryCard({
           !commited &&
           !!campStatement?.grace_period &&
           moment.now() < campStatement?.submit_time * 1000 + 3600000 && (
-            <div className="tooltip-count">
+            <div id="history-page-grace-period-container" className="tooltip-count">
               <Tooltip
+                id="history-page-grace-period-tooltip"
                 title={` Note: This countdown timer is the grace period in which
                       you can make minor changes to your
                       ${
@@ -376,7 +378,7 @@ function HistoryCard({
               >
                 <InfoCircleOutlined />
               </Tooltip>
-              <p>Grace period countdown</p>
+              <p id="history-page-grace-period-title">Grace period countdown</p>
               <Tag
                 className={
                   "bg-canBlue_Opacity20 border-0 rounded-md inline-flex py-[3px] items-center"
@@ -402,7 +404,7 @@ function HistoryCard({
           Select to compare
         </Checkbox>
       )}
-      <Card className="cn-card">
+      <Card id="history-page-card" className="cn-card">
         {historyOf == " statement " ||
           (historyState == "statement" && (
             <Collapse
@@ -478,6 +480,7 @@ function HistoryCard({
                   !campStatement?.isAuthor && (
                     <>
                       <Checkbox
+                        id="history-page-agree-checkbox"
                         defaultChecked={campStatement?.agreed_to_change}
                         disabled={disableAgreeCheckbox()}
                         onChange={agreeWithChange}
@@ -525,7 +528,7 @@ function HistoryCard({
                           setIsModalOpen(true);
                         }}
                         displayText={
-                          <p>
+                          <p id="history-page-supporters-text">
                             <u>
                               {campStatement?.agreed_supporters} out of{" "}
                               {campStatement?.total_supporters} required
@@ -617,6 +620,7 @@ function HistoryCard({
                 {campStatement?.status == "in_review" && (
                   <>
                     <Tooltip
+                      id="history-page-objected-tooltip"
                       title={
                         (
                           !isUserAuthenticated
@@ -733,7 +737,7 @@ function HistoryCard({
           !!campStatement?.grace_period &&
           moment.now() < campStatement?.submit_time * 1000 + 3600000 && (
             <>
-              <div className="cn-footer-btn">
+              <div id="history-page-footer-container" className="cn-footer-btn">
                 <div className="cn-card-btn">
                   <PrimaryButton
                     size="large"
@@ -783,14 +787,16 @@ function HistoryCard({
             </>
           )}
       </Card>
-      <ObjectionDrawer
-        onClose={onClose}
-        open={open}
-        drawerFor={drawerFor}
-        setDrawerFor={setDrawerFor}
-        objectionId={campStatement?.id}
-        changeObjection={changeObjection}
-      />
+      <div id="history-page-objection-drawer-container">
+        <ObjectionDrawer
+          onClose={onClose}
+          open={open}
+          drawerFor={drawerFor}
+          setDrawerFor={setDrawerFor}
+          objectionId={campStatement?.id}
+          changeObjection={changeObjection}
+        />
+      </div>
     </div>
   );
 }

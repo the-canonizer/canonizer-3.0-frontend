@@ -394,53 +394,57 @@ any) {
   }, [iteration, mockData]);
 
   const content = (
-    <div className="share-popup-content">
-      <Title level={5}>Share</Title>
-      <Radio.Group onChange={optionChange} value={value}>
+    <div id="eventline-timeline-share-container" className="share-popup-content">
+      <Title level={5} id="eventline-timeline-share-text">Share</Title>
+      <Radio.Group onChange={optionChange} value={value} id="eventline-timeline-share-radiobox">
         <Space direction="vertical">
-          <Radio value={1}>Eventline URL</Radio>
-          <Radio value={2}>Current Event URL</Radio>
+          <Radio value={1} id="eventline-timeline-share-radiobox-1">Eventline URL</Radio>
+          <Radio value={2} id="eventline-timeline-share-radiobox-2">Current Event URL</Radio>
         </Space>
       </Radio.Group>
       <Divider className="my-3" />
       <div className="social-links">
-        <Title level={5} className="mb-0">
+        <Title level={5} id="eventline-timeline-share-title" className="mb-0">
           Share Link To
         </Title>
         <Space>
           <FacebookShareButton
             url={URL}
             hashtag={`#${!isServer() && window?.location?.hostname}`}
+            id="eventline-timeline-share-facebook"
           >
             <Tooltip title="Share On Facebook">
               <FacebookIcon size={27} round />
             </Tooltip>
           </FacebookShareButton>
 
-          <TwitterShareButton url={URL}>
+          <TwitterShareButton url={URL} id="eventline-timeline-share-twitter">
             <Tooltip title="Share On Twitter">
               <TwitterIcon size={27} round />
             </Tooltip>
           </TwitterShareButton>
 
-          <LinkedinShareButton url={URL}>
+          <LinkedinShareButton url={URL} id="eventline-timeline-share-linkedin">
             <Tooltip title="Share On Linkedin">
               <LinkedinIcon size={27} round />
             </Tooltip>
           </LinkedinShareButton>
           <>
             <Paragraph
+              id="eventline-timeline-share-url"
               className="!mb-0 copy-btn"
               copyable={{
                 text: URL,
                 icon: [
                   <img
+                    id="eventline-timeline-share-copy-icon"
                     src={CopyLinkIcon.src}
                     key="1"
                     style={{ verticalAlign: "baseline" }}
                     onClick={() => copyHandler()}
                   />,
                   <img
+                    id="eventline-timeline-share-copied-icon"
                     src={CheckIcon.src}
                     key="2"
                     style={{ verticalAlign: "baseline" }}
@@ -456,7 +460,7 @@ any) {
 
   return (
     <>
-      <div className="player-wrapper">
+      <div id="eventline-timeline-player-container" className="player-wrapper">
         <div
           className={`${"player-controller"} ${
             mockData && !mockData[Object.keys(mockData)[1]]?.firstEvent
@@ -473,6 +477,7 @@ any) {
               }
             }}
             data-testid="backward-button"
+            id="eventline-timeline-back-button"
           ></i>
           {"     "}
           <div
@@ -482,6 +487,7 @@ any) {
               }
             }}
             data-testid="play-button"
+            id="eventline-timeline-play-button"
           >
             {isPlaying ? <PauseOutlined /> : <i className="icon-play-btn"></i>}
           </div>
@@ -495,6 +501,7 @@ any) {
               }
             }}
             data-testid="forward-button"
+            id="eventline-timeline-forward-button"
           ></i>
           <Popover
             content={controller_content}
@@ -514,10 +521,11 @@ any) {
                   : ""
               }`}
               data-testid="speed-icon"
+              id="eventline-timeline-speed-icon"
             ></i>
           </Popover>
         </div>
-        <div className="share-wrapper">
+        <div id="eventline-timeline-share-container" className="share-wrapper">
           <Popover
             showArrow={false}
             content={content}
@@ -526,6 +534,7 @@ any) {
             placement="bottomLeft"
           >
             <Button
+              id="eventline-timeline-share-button"
               type="link"
               className="text-canBlack"
               icon={<ShareAltOutlined />}
@@ -536,6 +545,7 @@ any) {
       </div>
       {mockData && (
         <Slider
+          id="eventline-timeline-slider"
           disabled={
             mockData && !mockData[Object.keys(mockData)[1]]?.firstEvent
               ? false
