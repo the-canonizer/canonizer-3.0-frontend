@@ -27,11 +27,20 @@ export const getTopicNameLink = (
 ) => {
   const bd = JSON.parse(item?.breadcrumb_data);
   return (
-    <div className={"flex" + className}>
-      <div className="w-[5px] h-[5px] rounded-full bg-canBlack mr-2 mt-2.5"></div>
-      <div className="w-full whitespace-break-spaces break-all text-wrap line-clamp-1">
+    <div className={"flex" + className} id={`topic-link-${item.id}`}>
+      <div
+        className="w-[5px] h-[5px] rounded-full bg-canBlack mr-2 mt-2.5"
+        id={`dot-${item.id}`}
+      ></div>
+      <div
+        className="w-full whitespace-break-spaces break-all text-wrap line-clamp-1"
+        id={`text-wrap-${item.id}`}
+      >
         <Link href={{ pathname: "/" + bd[0][1]?.camp_link }}>
-          <a className="flex justify-start items-start">
+          <a
+            className="flex justify-start items-start"
+            id={`camp-link-${item.id}`}
+          >
             {getHighlightedText(item?.type_value, campName)}
           </a>
         </Link>
@@ -41,7 +50,10 @@ export const getTopicNameLink = (
               pathname: "/" + geturl(bd),
             }}
           >
-            <a className="flex justify-start items-start text-xs mt-2 text-canLight whitespace-break-spaces break-all text-wrap line-clamp-1">
+            <a
+              className="flex justify-start items-start text-xs mt-2 text-canLight whitespace-break-spaces break-all text-wrap line-clamp-1"
+              id={`topic-name-${item.id}`}
+            >
               Topic: {bd[0][1]?.topic_name}
             </a>
           </Link>
@@ -64,21 +76,36 @@ const ExistingCampList = ({
     <CommonCards className="bg-topic-card-gr h-full">
       {isError && (
         <>
-          <header className="mb-1 text-canRed flex items-start justify-start">
-            <WarningOutlined className="text-xl text-canRed" />
-            <div className="ml-3">
-              <Typography.Paragraph className="text-canRed font-medium text-base !mb-2">
+          <header
+            className="mb-1 text-canRed flex items-start justify-start"
+            id="error-header"
+          >
+            <WarningOutlined
+              className="text-xl text-canRed"
+              id="warning-icon"
+            />
+            <div className="ml-3" id="error-message">
+              <Typography.Paragraph
+                className="text-canRed font-medium text-base !mb-2"
+                id="error-paragraph-1"
+              >
                 A Camp with this exact name already exists!
               </Typography.Paragraph>
-              <Typography.Paragraph className="text-canRed font-medium text-lg whitespace-break-spaces break-all text-wrap line-clamp-1">
+              <Typography.Paragraph
+                className="text-canRed font-medium text-lg whitespace-break-spaces break-all text-wrap line-clamp-1"
+                id="error-paragraph-2"
+              >
                 {campName}
               </Typography.Paragraph>
             </div>
           </header>
-          <hr />
+          <hr id="error-divider" />
         </>
       )}
-      <Typography.Paragraph className="text-canBlack font-medium mt-5 text-base">
+      <Typography.Paragraph
+        className="text-canBlack font-medium mt-5 text-base"
+        id="contribute-message"
+      >
         Camps with similar name where you can contribute -
       </Typography.Paragraph>
       {isLoading ? (
@@ -87,6 +114,7 @@ const ExistingCampList = ({
           bodyCount={5}
           stylingClass="listSkeleton"
           isButton={false}
+          id="loading-skeleton"
         />
       ) : (
         <List
@@ -114,6 +142,7 @@ const ExistingCampList = ({
                       dispatch(setSearchValue(""));
                     }
                   }}
+                  id="see-more-results"
                 >
                   See more results
                 </a>
@@ -128,11 +157,13 @@ const ExistingCampList = ({
             <List.Item
               className="!border-b-0 mt-0 text-lg font-medium hover:shadow-lg !p-4 rounded-lg"
               key={item?.id}
+              id={`list-item-${item?.id}`}
             >
               {getTopicNameLink(item, campName)}
               <SecondaryButton
                 className="flex p-0 !bg-transparent h-auto shadow-none border-0 uppercase text-xs font-semibold text-canBlue hocus:text-canBlue hocus:[&_>svg]:fill-canBlue"
                 onClick={onContributeCLick.bind(this, item)}
+                id={`contribute-button-${item?.id}`}
               >
                 contribute{" "}
                 <UserEditIcon
@@ -143,6 +174,7 @@ const ExistingCampList = ({
               </SecondaryButton>
             </List.Item>
           )}
+          id="camp-list"
         />
       )}
     </CommonCards>

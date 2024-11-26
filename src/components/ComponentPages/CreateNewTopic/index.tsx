@@ -272,14 +272,20 @@ const CreateNewTopic = () => {
   return (
     <CustomSpinner key="create-topic-spinner" spinning={isLoading}>
       <Breadcrumbs
+        key="breadcrumbs"
         items={[
-          { icon: <HomeOutlined className="text-canBlack" />, href: "/" },
-          { label: "Creating a New Topic" },
+          {
+            icon: <HomeOutlined className="text-canBlack" />,
+            href: "/",
+            key: "home",
+          },
+          { label: "Creating a New Topic", key: "creating-new-topic" },
         ]}
       />
-      <Row gutter={20} className="mb-5">
-        <Col lg={12}>
+      <Row gutter={20} className="mb-5" key="row">
+        <Col lg={12} key="form-col">
           <FromUI
+            key="form-ui"
             onFinish={onFinish}
             form={form}
             nameSpaces={nameSpaces || []}
@@ -297,9 +303,10 @@ const CreateNewTopic = () => {
             editCampStatementData={null}
           />
         </Col>
-        <Col lg={12}>
+        <Col lg={12} key="info-col">
           {haveTopicExist ? (
             <ExistingTopicList
+              key="existing-topic-list"
               topicName={values?.topic_name}
               data={existingTopics}
               isShowMore={isShowMore}
@@ -307,7 +314,7 @@ const CreateNewTopic = () => {
               isLoading={isTopicLoading}
             />
           ) : (
-            <TopicInfoCard />
+            <TopicInfoCard key="topic-info-card" />
           )}
         </Col>
       </Row>

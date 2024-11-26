@@ -327,21 +327,28 @@ const UpdateTopic = () => {
   return (
     <CustomSpinner key="create-topic-spinner" spinning={isLoading}>
       <Breadcrumbs
+        key="breadcrumbs"
         items={[
-          { icon: <HomeOutlined className="text-canBlack" />, href: "/" },
+          {
+            icon: <HomeOutlined className="text-canBlack" />,
+            href: "/",
+            key: "home",
+          },
           {
             href: `/topic/history/${
               currentTopic?.topic_num
             }-${replaceSpecialCharacters(currentTopic?.topic_name, "-")}`,
             label: "Topic History",
+            key: "topic-history",
           },
-          { label: "Update Topic" },
+          { label: "Update Topic", key: "update-topic" },
         ]}
       />
 
-      <Row gutter={20} className="mb-5">
-        <Col lg={12}>
+      <Row gutter={20} className="mb-5" key="row">
+        <Col lg={12} key="col-form">
           <FromUI
+            key="form-ui"
             onFinish={onFinish}
             form={form}
             nameSpaces={nameSpaces || []}
@@ -360,9 +367,10 @@ const UpdateTopic = () => {
             editCampStatementData={editCampStatementData}
           />
         </Col>
-        <Col lg={12}>
+        <Col lg={12} key="col-topic-info">
           {haveTopicExist ? (
             <ExistingTopicList
+              key="existing-topic-list"
               topicName={values?.topic_name}
               data={existingTopics}
               isShowMore={isShowMore}
@@ -370,7 +378,7 @@ const UpdateTopic = () => {
               isLoading={isTopicLoading}
             />
           ) : (
-            <TopicInfoCard />
+            <TopicInfoCard key="topic-info-card" />
           )}
         </Col>
       </Row>

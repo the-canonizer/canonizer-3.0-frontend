@@ -67,9 +67,9 @@ const SocialShareTopic = ({ campUrl, campName }) => {
       trigger={["click"]}
       overlayClassName="[&_.ant-dropdown-menu]:flex [&_.ant-dropdown-menu]:py-2 [&_.ant-dropdown-menu]:px-2 rounded-lg overflow-hidden shadow-md [&_.ant-dropdown-menu-title-content]:flex [&_svg]:!fill-canBlack [&_svg]:!text-canBlack"
     >
-      <a className="" onClick={(e) => e.preventDefault()}>
-        {shareIcon}
-        {/* <ShareAltOutlined className="text-canBlack p-1 text-xl font-bold" /> */}
+      <a id="share-dropdown" className="" onClick={(e) => e.preventDefault()}>
+      {shareIcon}
+      {/* <ShareAltOutlined className="text-canBlack p-1 text-xl font-bold" /> */}
       </a>
     </Dropdown>
   );

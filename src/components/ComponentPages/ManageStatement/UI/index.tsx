@@ -85,12 +85,18 @@ function ManageStatementUI({
   const editorRef = useRef(null);
 
   return (
-    <CommonCards className="border-0 bg-white">
-      <header className="mb-14">
-        <Typography.Paragraph className="text-xl text-canBlack font-medium">
+    <CommonCards className="border-0 bg-white" id="common-cards">
+      <header className="mb-14" id="header">
+        <Typography.Paragraph
+          className="text-xl text-canBlack font-medium"
+          id="header-title"
+        >
           {isEdit ? "Update Camp Statement" : "Adding Camp Statement"}
         </Typography.Paragraph>
-        <Typography.Paragraph className="text-canBlack opacity-80 mt-3">
+        <Typography.Paragraph
+          className="text-canBlack opacity-80 mt-3"
+          id="header-description"
+        >
           Each camp features a statement summarizing the discussions within,
           providing a clear overview of the topic&lsquo;s various perspectives.
           This concise summary serves as a guide.
@@ -109,9 +115,10 @@ function ManageStatementUI({
           }}
           onValuesChange={handleformvalues}
           onFinish={onFinish}
+          id="statement-form"
         >
-          <Row gutter={28}>
-            <Col xs={24} sm={24} xl={12}>
+          <Row gutter={28} id="form-row">
+            <Col xs={24} sm={24} xl={12} id="nickname-col">
               <SelectInputs
                 label={
                   <span className="ant-form-item-required">
@@ -138,29 +145,13 @@ function ManageStatementUI({
                 key="statement-nicknames"
                 onSelect={(val) => form.setFieldValue("nick_name", val)}
                 lastValue={form.getFieldValue("nick_name")}
+                id="nickname-select"
               />
             </Col>
-            <Col xs={24} xl={24}>
+            <Col xs={24} xl={24} id="statement-col">
               <Form.Item
                 className="mb-2 editorContent [&_.ant-form-item-label>label]:w-full"
                 name="statement"
-                // label={
-                //   <Fragment>
-                //     Statement <span className="required">*</span>
-                //     {isGenerating ? (
-                //       <Spin className="ml-auto float-end" />
-                //     ) : (
-                //       <SecondaryButton
-                //         className="flex justify-center items-center border-0 p-0 ml-auto float-end !shadow-none hover:!shadow-none !bg-transparent"
-                //         type="link"
-                //         ghost
-                //         onClick={(e) => onImproveClick(e, editorRef)}
-                //       >
-                //         Improve With Ai <StarIcon className="" />
-                //       </SecondaryButton>
-                //     )}
-                //   </Fragment>
-                // }
                 rules={[
                   {
                     required: true,
@@ -171,6 +162,7 @@ function ManageStatementUI({
                     message: K?.exceptionalMessages?.statementRequiredErrorMsg,
                   },
                 ]}
+                id="statement-form-item"
               >
                 {screenLoading ? (
                   <CustomSkelton
@@ -179,6 +171,7 @@ function ManageStatementUI({
                     isButton
                     height={250}
                     skeltonFor="video"
+                    id="statement-skelton"
                   />
                 ) : (
                   <Editorckl
@@ -193,12 +186,13 @@ function ManageStatementUI({
                         nick_name: values?.nick_name,
                       });
                     }}
+                    id="statement-editor"
                   ></Editorckl>
                 )}
               </Form.Item>
             </Col>
             {isEdit && !isDraft && (
-              <Col xs={24} xl={24} className="mt-6">
+              <Col xs={24} xl={24} className="mt-6" id="edit-summary-col">
                 <Inputs
                   name="edit_summary"
                   label={
@@ -214,6 +208,7 @@ function ManageStatementUI({
                   maxLength={100}
                   prefix={<FileTextOutlined />}
                   defaultValue={String(editCampStatementData)}
+                  id="edit-summary-input"
                 />
               </Col>
             )}
@@ -221,12 +216,16 @@ function ManageStatementUI({
               xs={24}
               xl={24}
               className="flex justify-between items-center pt-5 mt-3 flex-wrap gap-5"
+              id="form-actions-col"
             >
-              <Form.Item className="mb-0 [&_.ant-form-item-control-input-content]:flex [&_.ant-form-item-control-input-content]:gap-5 [&_.ant-form-item-control-input-content]:flex-wrap">
+              <Form.Item
+                className="mb-0 [&_.ant-form-item-control-input-content]:flex [&_.ant-form-item-control-input-content]:gap-5 [&_.ant-form-item-control-input-content]:flex-wrap"
+                id="form-actions"
+              >
                 <SecondaryButton
                   className="inline-flex items-center justify-center h-auto py-2 px-7 mr-5 h-auto"
                   onClick={onDiscardClick}
-                  id="update-cancel-btn"
+                  id="discard-button"
                   disabled={isAutoSaving}
                 >
                   Discard <CloseOutlined />
@@ -237,6 +236,7 @@ function ManageStatementUI({
                   disabled={
                     (submitIsDisable && isEdit) || !isDisabled || isAutoSaving
                   }
+                  id="publish-button"
                 >
                   Publish Statement
                   <UploadOutlined />
@@ -245,6 +245,7 @@ function ManageStatementUI({
               <SecondaryButton
                 className="!border-0 flex items-center justify-center !shadow-none h-auto"
                 onClick={onPreviewClick}
+                id="preview-button"
               >
                 Preview Statement <EyeOutlined />
               </SecondaryButton>

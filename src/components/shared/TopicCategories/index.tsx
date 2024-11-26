@@ -31,13 +31,20 @@ const TopicCatsLabel = ({ tags, loading = false, ...restProps }) => {
 
   return (
     <Typography.Paragraph
+      id="topic-cats-label"
       className={`!bg-transparent border-0 p-0 flex items-center leading-1 !mb-0 mr-3 mainTags ${
         !tags?.length ? "invisible" : ""
       }`}
       {...restProps}
     >
-      <TagOutlined className="text-canLight text-medium rotate-[280deg]" />
-      <Typography.Paragraph id="browse-topic-tags-container" className="line-clamp-1 max-w-52 !mb-0 pl-2">
+      <TagOutlined
+        id="tag-icon"
+        className="text-canLight text-medium rotate-[280deg]"
+      />
+      <Typography.Paragraph
+        id="browse-topic-tags-container"
+        className="line-clamp-1 max-w-52 !mb-0 pl-2"
+      >
         {(tags || []).map((item, idx) => (
           <Fragment key={item?.id}>
             <LinkItem
@@ -46,7 +53,10 @@ const TopicCatsLabel = ({ tags, loading = false, ...restProps }) => {
               key={item?.id}
             />
             {idx !== tags?.length - 1 ? (
-              <span className="!text-canBlue text-xs font-inter font-medium hover:!canHoverBlue mr-1">
+              <span
+                id={`comma-${item?.id}`}
+                className="!text-canBlue text-xs font-inter font-medium hover:!canHoverBlue mr-1"
+              >
                 ,
               </span>
             ) : null}

@@ -37,7 +37,7 @@ const SingleAvatar = ({ user, imageBaseURL = "" }) => {
   const renderAvatar = () => {
     if (user?.profile_picture_path) {
       return (
-        <div id="browse-topic-avatar-item">
+        <div id={`browse-topic-avatar-item-${user?.id}`}>
           <Avatar
             className="dddd"
             src={imageBaseURL + user?.profile_picture_path}
@@ -48,25 +48,33 @@ const SingleAvatar = ({ user, imageBaseURL = "" }) => {
 
     if (!user?.profile_picture_path && isGravatarAvailable) {
       return (
-        <Avatar
-          src={`https://www.gravatar.com/avatar/${md5(user?.email)}.png`}
-        />
+        <div id={`gravatar-avatar-${user?.id}`}>
+          <Avatar
+            src={`https://www.gravatar.com/avatar/${md5(user?.email)}.png`}
+          />
+        </div>
       );
     }
 
     if (!user?.profile_picture_path && !isGravatarAvailable) {
       return (
-        <Avatar className="uppercase flex justify-center items-center text-xs">
-          {user?.first_name?.charAt(0)}
-        </Avatar>
+        <div id={`initial-avatar-${user?.id}`}>
+          <Avatar className="uppercase flex justify-center items-center text-xs">
+            {user?.first_name?.charAt(0)}
+          </Avatar>
+        </div>
       );
     }
 
-    return <Avatar icon={<UserOutlined />} />;
+    return (
+      <div id={`default-avatar-${user?.id}`}>
+        <Avatar icon={<UserOutlined />} />
+      </div>
+    );
   };
 
   return (
-    <Popover content={userName} placement="top">
+    <Popover id={`popover-${user?.id}`} content={userName} placement="top">
       {renderAvatar()}
     </Popover>
   );

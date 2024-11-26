@@ -27,14 +27,14 @@ const HomePageContainer = () => {
     <Layout
       afterHeader={<WelcomeContent />}
       rightSidebar={
-        <div className="md:mt-3.5" data-testid="sideBar">
+        <div className="md:mt-3.5" data-testid="sideBar" id="home-sidebar">
           {/* {!isMobile ? (
-              <div className="mb-14" data-testid="topicsList">
-                <TrandingTopics />
-              </div>
-            ) : null} */}
+          <div className="mb-14" data-testid="topicsList" id="trending-topics">
+          <TrandingTopics />
+          </div>
+        ) : null} */}
 
-          <div className="mb-14" data-testid="helpCard">
+          <div className="mb-14" data-testid="helpCard" id="whatsnew-content">
             <WhatsNew />
           </div>
 
@@ -42,6 +42,7 @@ const HomePageContainer = () => {
             <div
               className="mb-14 [&_.ant-tabs-tab-btn]:!border-none"
               data-testid="recentActivities"
+              id="recent-activities"
             >
               <RecentActivities />
             </div>
@@ -49,24 +50,33 @@ const HomePageContainer = () => {
         </div>
       }
     >
-      <Row className="pt-4 w-100" data-testid="featuredTopic">
-        <Col md={24} className="mb-14">
+      <Row
+        className="pt-4 w-100"
+        data-testid="featuredTopic"
+        id="featured-topic"
+      >
+        <Col md={24} className="mb-14" id="featured-topic-col">
           <FeaturedTopic />
         </Col>
         {/* {isMobile ? (
-            <Col md={24} xs={24} className="mb-14">
-              <TrandingTopics />
-            </Col>
-          ) : null} */}
+        <Col md={24} xs={24} className="mb-14" id="trending-topics-col">
+          <TrandingTopics />
+        </Col>
+        ) : null} */}
         {isUserAuthenticated && preferedTopic?.length ? (
-          <Col md={24} className="mb-14" data-testid="preferedTopic">
+          <Col
+            md={24}
+            className="mb-14"
+            data-testid="preferedTopic"
+            id="prefered-topic"
+          >
             <PreferedTopics />
           </Col>
         ) : null}
-        {/* <Col md={24} className="mb-14" data-testid="categoriesList">
-            <CategoriesList />
-          </Col> */}
-        <Col md={24} className="mb-0" data-testid="hotTopics">
+        {/* <Col md={24} className="mb-14" data-testid="categoriesList" id="categories-list">
+        <CategoriesList />
+        </Col> */}
+        <Col md={24} className="mb-0" data-testid="hotTopics" id="hot-topics">
           <HotTopics />
         </Col>
       </Row>

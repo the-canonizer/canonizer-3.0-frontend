@@ -30,19 +30,29 @@ function TopicCampsTab({
         emptyText: "You don't have any recent activity right now.",
       }}
       dataSource={recentActivities?.topics}
-      renderItem={(activity: any) => {
+      renderItem={(activity: any, index: number) => {
         const decodedProperties = JSON.parse(activity?.activity?.properties);
 
         return (
-          <List.Item className="font-inter text-sm font-medium bg-white w-full px-2">
+          <List.Item
+            key={`list-item-${index}`}
+            className="font-inter text-sm font-medium bg-white w-full px-2"
+          >
             <AntLink
               href={decodedProperties?.url?.replace(/\s+/g, "-")}
               className="w-full !text-canBlue hover:!text-canHoverBlue"
+              id={`ant-link-${index}`}
             >
               <Fragment>
-                <Text className="text-canBlack text-sm font-normal mb-0">
+                <Text
+                  className="text-canBlack text-sm font-normal mb-0"
+                  id={`text-description-${index}`}
+                >
                   {activity?.activity?.description}{" "}
-                  <Text className="text-canBlue font-medium">
+                  <Text
+                    className="text-canBlue font-medium"
+                    id={`text-topic-camp-${index}`}
+                  >
                     <Tooltip
                       placement={"topLeft"}
                       title={
@@ -53,6 +63,7 @@ function TopicCampsTab({
                               : "")
                           : handleTextOverflow(decodedProperties?.description)
                       }
+                      id={`tooltip-${index}`}
                     >
                       {getTopicCampName(activity, decodedProperties)}
                     </Tooltip>
@@ -62,19 +73,27 @@ function TopicCampsTab({
                       <Popover
                         content={
                           <div className="w-full">
-                            <ReasonsActivity CurrentItem={activity?.activity} />
+                            <ReasonsActivity
+                              CurrentItem={activity?.activity}
+                              id={`reasons-activity-${index}`}
+                            />
                           </div>
                         }
                         placement="top"
                         className="pointer text-canGrey2"
+                        id={`popover-${index}`}
                       >
-                        <i className="icon-info ml-2"></i>
+                        <i
+                          className="icon-info ml-2"
+                          id={`icon-info-${index}`}
+                        ></i>
                       </Popover>
                     )}
                 </Text>
                 <Text
                   className="text-canBlack opacity-[0.5] font-normal font-inter text-[10px] block mt-1"
                   type="secondary"
+                  id={`text-time-${index}`}
                 >
                   {covertToTime(activity.updated_at)}
                 </Text>

@@ -196,21 +196,24 @@ function AddOrEdit({ edit }) {
           <SectionHeading title={edit ? "Edit News" : "Add News"} icon={null} />
         }
         className="w-full tab:w-8/12 mx-auto mt-6"
+        id="news-common-card"
       >
         <Form
           form={form}
           layout={"vertical"}
           initialValues={{ available_for_child: 0 }}
           onFinish={onFinish}
+          id="news-form"
         >
-          <Row gutter={20}>
-            <Col xl={8} md={12} xs={24}>
+          <Row gutter={20} id="news-form-row">
+            <Col xl={8} md={12} xs={24} id="nickname-col">
               {screenLoading ? (
                 <CustomSkelton
                   skeltonFor="list"
                   bodyCount={1}
                   stylingClass="listSkeleton"
                   isButton={false}
+                  id="nickname-skeleton"
                 />
               ) : (
                 <SelectInputs
@@ -247,16 +250,18 @@ function AddOrEdit({ edit }) {
                   key="canon-select"
                   lastValue={form.getFieldValue("nick_name")}
                   onSelect={(val) => form.setFieldValue("nick_name", val)}
+                  id="nickname-select"
                 />
               )}
             </Col>
-            <Col xl={8} md={12} xs={24}>
+            <Col xl={8} md={12} xs={24} id="link-col">
               {screenLoading ? (
                 <CustomSkelton
                   skeltonFor="list"
                   bodyCount={1}
                   stylingClass="listSkeleton"
                   isButton={false}
+                  id="link-skeleton"
                 />
               ) : (
                 <Inputs
@@ -285,19 +290,23 @@ function AddOrEdit({ edit }) {
                   maxLength={2000}
                   prefix={<LinkOutlined />}
                   wrapperClassName={`${errors.urlErrorMsg ? "!mb-1" : ""}`}
+                  id="link-input"
                 />
               )}
               {errors.urlError && (
-                <Text type="danger">{errors.urlErrorMsg}</Text>
+                <Text type="danger" id="link-error-text">
+                  {errors.urlErrorMsg}
+                </Text>
               )}
             </Col>
-            <Col xl={8} md={12} xs={24}>
+            <Col xl={8} md={12} xs={24} id="available-for-child-col">
               {screenLoading ? (
                 <CustomSkelton
                   skeltonFor="list"
                   bodyCount={1}
                   stylingClass="listSkeleton"
                   isButton={false}
+                  id="available-for-child-skeleton"
                 />
               ) : (
                 <Form.Item
@@ -305,12 +314,13 @@ function AddOrEdit({ edit }) {
                   name="available_for_child"
                   valuePropName="checked"
                   label={<></>}
+                  id="available-for-child-checkbox"
                 >
                   <Checkbox>Available for child camps</Checkbox>
                 </Form.Item>
               )}
             </Col>
-            <Col xl={24} md={24} xs={24}>
+            <Col xl={24} md={24} xs={24} id="display-text-col">
               <Form.Item
                 className="text-sm text-canBlack font-normal [&_label]:text-sm [&_label]:font-medium [&_.ant-form-item-explain-error]:mb-6"
                 name="display_text"
@@ -329,6 +339,7 @@ function AddOrEdit({ edit }) {
                     message: "Display text is required",
                   },
                 ]}
+                id="display-text-form-item"
               >
                 {screenLoading ? (
                   <CustomSkelton
@@ -337,6 +348,7 @@ function AddOrEdit({ edit }) {
                     isButton
                     height={180}
                     skeltonFor="video"
+                    id="display-text-skeleton"
                   />
                 ) : (
                   <Input.TextArea
@@ -345,34 +357,39 @@ function AddOrEdit({ edit }) {
                     maxLength={256}
                     rows={7}
                     className="text-canBlack font-normal rounded-md [&_.ant-input-prefix]:!text-canBlack [&_.ant-input-prefix]:mr-3 text-sm mainInput"
+                    id="display-text-input"
                   />
                 )}
               </Form.Item>
 
               {errors.displayTextError && (
-                <Text type="danger">{errors.displayTextErrorMsg}</Text>
+                <Text type="danger" id="display-text-error-text">
+                  {errors.displayTextErrorMsg}
+                </Text>
               )}
             </Col>
           </Row>
 
-          <Form.Item>
+          <Form.Item id="form-buttons">
             {screenLoading ? (
-              <div className="manage-form-btnwrap">
+              <div className="manage-form-btnwrap" id="form-buttons-skeleton">
                 <CustomSkelton
                   skeltonFor="list"
                   bodyCount={1}
                   stylingClass="listSkeleton"
                   isButton={false}
+                  id="submit-button-skeleton"
                 />
                 <CustomSkelton
                   skeltonFor="list"
                   bodyCount={1}
                   stylingClass="listSkeleton"
                   isButton={false}
+                  id="cancel-button-skeleton"
                 />
               </div>
             ) : (
-              <div className="flex gap-4">
+              <div className="flex gap-4" id="form-buttons-container">
                 <PrimaryButton
                   className="flex items-center justify-center h-auto py-2 w-[150px]"
                   htmlType="submit"

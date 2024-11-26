@@ -24,7 +24,7 @@ export default function OTPVerify({
   logMsg = "",
 }) {
   return (
-    <Card className="rounded-lg h-full p-5" bordered={false}>
+    <Card className="rounded-lg h-full p-5" bordered={false} id="otp-card">
       <Form
         form={form}
         name="registration"
@@ -34,12 +34,17 @@ export default function OTPVerify({
         scrollToFirstError
         validateTrigger={messages.formValidationTypes()}
         className="relative"
+        id="otp-form"
       >
-        <div className="flex justify-center items-center text-center flex-col mb-4">
+        <div
+          className="flex justify-center items-center text-center flex-col mb-4"
+          id="otp-header"
+        >
           <Button
             type="link"
             className="text-sm text-canBlack flex items-start justify-start text-sm font-medium p-0 absolute left-0 top-0"
             onClick={onBrowseClick}
+            id="go-back-btn"
           >
             <LeftOutlined /> Go Back
           </Button>
@@ -59,7 +64,7 @@ export default function OTPVerify({
           </Text>
         </div>
 
-        <div className="mt-10">
+        <div className="mt-10" id="otp-input-container">
           <Inputs
             name="otp"
             style={{ textAlign: "center" }}
@@ -69,9 +74,10 @@ export default function OTPVerify({
             max={6}
             maxLength={6}
             wrapperClassName="w-full md:w-8/12 mx-auto block"
+            id="otp-input"
           />
         </div>
-        <Form.Item className="mt-8">
+        <Form.Item className="mt-8" id="otp-form-item">
           {isResend ||
             (true && (
               <SecondaryButton
@@ -90,7 +96,7 @@ export default function OTPVerify({
             className="h-[40px] text-sm mt-5 rounded-lg m-auto flex justify-center items-center !w-8/12 lg:!w-4/12"
             block
             data-testid="submitButton"
-            id="otp-btn"
+            id="otp-submit-btn"
             disabled={!isDisabled}
           >
             Submit <ArrowRightOutlined />

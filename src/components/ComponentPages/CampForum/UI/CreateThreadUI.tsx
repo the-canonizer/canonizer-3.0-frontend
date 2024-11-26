@@ -47,6 +47,7 @@ const CreateEditThreadPopup = ({
         <GetBreadCrumbs topicRecord={topicRecord} campRecord={campRecord} />
       }
       className="[&_.ant-drawer-header]:flex-wrap [&_.ant-drawer-header-title]:py-3 [&_.ant-drawer-header-title]:w-full [&_.ant-drawer-header-title]:flex-[100%] [&_.ant-drawer-header-title]:h-auto [&_.ant-drawer-extra]:w-full"
+      id="drawer-create-edit-thread"
     >
       <Form
         autoComplete="off"
@@ -58,18 +59,22 @@ const CreateEditThreadPopup = ({
         scrollToFirstError
         validateTrigger={messages.formValidationTypes()}
         initialValues={{ ...initialValue }}
+        id="form-create-edit-thread"
       >
-        <Row gutter={16}>
+        <Row gutter={16} id="row-create-edit-thread">
           {!isThreadUpdate && (
-            <Col sm={24} className="py-6">
-              <Typography.Paragraph className="text-canRed text-xs">
+            <Col sm={24} className="py-6" id="col-note-create-thread">
+              <Typography.Paragraph
+                className="text-canRed text-xs"
+                id="note-create-thread"
+              >
                 Note: Once you pick a nickname, for any contribution to a topic,
                 you must always use the same nickname for any other contribution
                 or forum comment to this topic.
               </Typography.Paragraph>
             </Col>
           )}
-          <Col xs={24} sm={16} className="mb-4">
+          <Col xs={24} sm={16} className="mb-4" id="col-nickname-select">
             {!isThreadUpdate ? (
               <SelectInputs
                 label={
@@ -94,10 +99,11 @@ const CreateEditThreadPopup = ({
                 onSelect={(val) => form.setFieldValue("nick_name", val)}
                 lastValue={form.getFieldValue("nick_name")}
                 value={form.getFieldValue("nick_name")}
+                id="select-nickname"
               />
             ) : null}
           </Col>
-          <Col xs={24} sm={24}>
+          <Col xs={24} sm={24} id="col-thread-title">
             <Inputs
               name="thread_title"
               label={
@@ -111,10 +117,11 @@ const CreateEditThreadPopup = ({
               placeholder="Title"
               maxLength={100}
               prefix={<EditOutlined />}
+              id="input-thread-title"
             />
           </Col>
         </Row>
-        <div className="flex justify-center pt-9 mt-auto">
+        <div className="flex justify-center pt-9 mt-auto" id="div-buttons">
           <SecondaryButton
             htmlType="button"
             className={`flex items-center justify-center py-2 h-auto px-9 mr-4`}

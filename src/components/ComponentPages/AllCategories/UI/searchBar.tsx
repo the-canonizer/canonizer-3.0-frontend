@@ -17,8 +17,9 @@ const SearchBars = ({ onSearchChange, onSearchKeyUp }) => {
   };
 
   return (
-    <div className={`searchWrap ${styles.wrap}`}>
+    <div id="searchWrap" className={`searchWrap ${styles.wrap}`}>
       <input
+        id="searchInput"
         type="text"
         className={`searchInput ${styles.input}`}
         placeholder="Search..."
@@ -26,6 +27,7 @@ const SearchBars = ({ onSearchChange, onSearchKeyUp }) => {
         onKeyUp={onSearchKeyUp}
       />
       <SearchOutlined
+        id="searchIcon"
         className={`text-sm ${styles.fa}`}
         onClick={onSearchClick}
       />
