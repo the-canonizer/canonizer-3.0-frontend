@@ -356,6 +356,7 @@ function HistoryContainer() {
   const renderButton = (type, label, count, active, classes = "", disabled) => (
     <Button
       size="large"
+      id="history-page-tab-button"
       className={`btn-${type} ${classes} text-sm ${active ? "active" : ""}`}
       onClick={() => handleTabButton(type)}
       disabled={disabled}
@@ -421,13 +422,14 @@ function HistoryContainer() {
           <div className="statement-status-sider">
             <Button
               type="link"
+              id="history-page-back-button"
               className="text-xl text-canBlack p-1 mb-14 gap-5 flex items-center max-lg:hidden leading-none"
               icon={<i className="icon-back"></i>}
               onClick={handleBackButton}
             >
               {`${historyTitle(historyOf)} History`}
             </Button>
-            <Typography.Paragraph className="mb-6 text-base font-medium">
+            <Typography.Paragraph id="history-page-title" className="mb-6 text-base font-medium">
               {`${historyTitle(
                 historyOf
               ).toUpperCase()} HISTORY BASED ON STATUS`}
@@ -435,6 +437,7 @@ function HistoryContainer() {
             <div className="sider-btn pr-0 md:pr-8">{renderButtons()}</div>
             <Button
               size="large"
+              id="history-page-compare-button"
               className="flex items-center justify-center rounded-xl text-sm gap-3.5 leading-none mt-12"
               disabled={
                 !(

@@ -69,7 +69,7 @@ function Timer({ unixTime, setCommited }: any) {
   }, [unixTime]);
 
   return (
-    <div>
+    <div id="timer-container">
       {hours === -1 && minutes === -1 && seconds === -1 ? (
         <span> 00:00:00 </span>
       ) : (

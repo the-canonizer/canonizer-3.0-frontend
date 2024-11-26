@@ -411,6 +411,7 @@ const TopicsList = () => {
                   defaultValue={changeSlashToArrow(selectedNameSpace)}
                   value={changeSlashToArrow(selectedNameSpace)}
                   disabled={loading}
+                  id="browse-canon-select"
                   className="text-canBlack font-normal commonSelectClass [&_.ant-select-arrow]:text-canBlack [&_.ant-select-arrow>svg]:fill-canBlack"
                 >
                   {memoizedOptions}
@@ -433,6 +434,7 @@ const TopicsList = () => {
                 <Select
                   size="large"
                   mode="multiple"
+                  id="browse-topic-tags-select"
                   className="text-canBlack font-normal commonSelectClass [&_.ant-select-arrow]:text-canBlack [&_.ant-select-arrow>svg]:fill-canBlack"
                   showArrow
                   {...sharedProps}
@@ -443,6 +445,7 @@ const TopicsList = () => {
             <div className="search-wrapper w-full items-center max-sm:flex-wrap lg:justify-end max-lg:justify-between">
               {router?.asPath.includes("/browse") && isUserAuthenticated && (
                 <Checkbox
+                  id="browse-only-my-topics"
                   className="min-w-[169px] max-sm:order-2"
                   onChange={(e: any) => showOnlyMyTopicsHandler(e)}
                   disabled={loading}
@@ -455,6 +458,7 @@ const TopicsList = () => {
                 <Search
                   key={inputSearch}
                   size="large"
+                  id="browse-search-input"
                   className="browse-search mainInput"
                   placeholder="Search via keyword"
                   allowClear={allowClear}
@@ -525,11 +529,11 @@ const TopicsList = () => {
         ) : (
           <>
             {topicsData?.topics?.length == 0 ? (
-              <div className="mt-[10rem]">
+              <div id="browse-empty-container" className="mt-[10rem]">
                 <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
               </div>
             ) : (
-              <Row gutter={[24, 24]}>
+              <Row gutter={[24, 24]} id="browse-topics-container">
                 {topicsData?.topics?.map((ft: any, index) => (
                   <Col
                     key={index}
@@ -588,13 +592,15 @@ const TopicsList = () => {
           </>
         )}
         {totalTopics?.total_count > 10 && (
-          <CustomPagination
-            totalTopics={totalTopics?.total_count}
-            pageNumber={pageNumber}
-            pageSize={pageSize}
-            loading={loading}
-            handlePageChange={handlePageChange}
-          />
+          <div id="browse-pagination">
+            <CustomPagination
+              totalTopics={totalTopics?.total_count}
+              pageNumber={pageNumber}
+              pageSize={pageSize}
+              loading={loading}
+              handlePageChange={handlePageChange}
+            />
+          </div>
         )}
       </div>
     </Layout>

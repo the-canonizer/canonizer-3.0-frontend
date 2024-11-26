@@ -6,7 +6,7 @@ const TopicHistory = ({ campStatement, topicNamespaceId }: any) => {
     return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
   };
   return (
-    <>
+    <div id="topic-history-container">
       <p className="mb-[10px] break-all">
         Topic Name:<span>{campStatement?.topic_name}</span>
       </p>
@@ -74,7 +74,7 @@ const TopicHistory = ({ campStatement, topicNamespaceId }: any) => {
           : "Going live on"}{" "}
         :<span>{covertToTime(campStatement?.go_live_time)}</span>
       </p>
-    </>
+    </div>
   );
 };
 

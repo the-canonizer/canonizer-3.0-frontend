@@ -37,10 +37,12 @@ const SingleAvatar = ({ user, imageBaseURL = "" }) => {
   const renderAvatar = () => {
     if (user?.profile_picture_path) {
       return (
-        <Avatar
-          className="dddd"
-          src={imageBaseURL + user?.profile_picture_path}
-        />
+        <div id="browse-topic-avatar-item">
+          <Avatar
+            className="dddd"
+            src={imageBaseURL + user?.profile_picture_path}
+          />
+        </div>
       );
     }
 
