@@ -276,6 +276,8 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
     if (router.query.asof === "bydate") {
       dispatch(setAsOfValues(3));
       setIsDatePicker(true);
+    }else if(router.query.asof === "review"){
+      dispatch(setAsOfValues(1));
     } else {
       dispatch(setAsOfValues(2));
       // Default radio button
