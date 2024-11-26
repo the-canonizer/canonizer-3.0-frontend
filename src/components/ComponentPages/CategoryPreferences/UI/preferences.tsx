@@ -31,6 +31,7 @@ function PreferencesUI({ onChange, tags, onFinish, onSkip }) {
           type="link"
           className="text-canBlack text-sm opacity-50 absolute right-0 top-0 hocus:blue hocus:opacity-100 md:hidden"
           onClick={onSkip}
+          id="skip-button-mobile"
         >
           Skip
         </Button>
@@ -38,7 +39,7 @@ function PreferencesUI({ onChange, tags, onFinish, onSkip }) {
       <div className="w-full text-center my-4 max-h-80 overflow-y-auto overflow-x-hidden px-1 overscroll-auto focus:overscroll-contain">
         {tags?.map((ch) => (
           <CustomCheckbox
-            id={ch?.id}
+            id={`checkbox-${ch?.id}`}
             key={ch?.id}
             onChange={onChange?.bind(this, ch)}
             checked={ch?.checked}
@@ -55,7 +56,7 @@ function PreferencesUI({ onChange, tags, onFinish, onSkip }) {
         className="h-[40px] text-sm rounded-lg !w-full m-auto flex justify-center items-center sm:!w-4/12"
         block
         data-testid="submitButton"
-        id="otp-btn"
+        id="get-started-button"
         disabled={!isDisabled(tags)}
         onClick={onFinish}
       >
@@ -65,6 +66,7 @@ function PreferencesUI({ onChange, tags, onFinish, onSkip }) {
         type="link"
         className="text-canBlack text-sm opacity-50 absolute right-0 top-0 hocus:blue hocus:opacity-100 hidden md:block"
         onClick={onSkip}
+        id="skip-button-desktop"
       >
         Skip
       </Button>

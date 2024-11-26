@@ -87,22 +87,29 @@ const TrandingTopics = () => {
   return (
     <Fragment>
       <Row gutter={15}>
-        <Col md={12} sm={12} xs={12}>
+        <Col md={12} sm={12} xs={12} id="trending-topics-heading-col">
           <SectionHeading
             title="TRENDING TOPICS"
             infoContent="TRENDING TOPICS"
             icon={null}
           />
         </Col>
-        <Col md={12} sm={12} xs={12} className="text-right">
+        <Col
+          md={12}
+          sm={12}
+          xs={12}
+          className="text-right"
+          id="see-more-link-col"
+        >
           <SeeMoreLInk href="/browse" />
         </Col>
       </Row>
 
-      <div className="mt-2">
+      <div className="mt-2" id="trending-topics-container">
         <CommonCard
           className="border-0 h-100 bg-white [&_.ant-card-body]:p-0 [&_.ant-card-body]:lg:p-[24px] lg:bg-canGray"
           data-testid="algoSelect"
+          id="trending-topics-card"
         >
           <Select
             size="large"
@@ -140,6 +147,7 @@ const TrandingTopics = () => {
               bodyCount={10}
               stylingClass="listSkeleton"
               isButton={false}
+              id="trending-topics-skeleton"
             />
           ) : (
             <List
@@ -169,8 +177,11 @@ const TrandingTopics = () => {
                     <a
                       className="hover:*:text-canHoverBlue font-normal"
                       onClick={() => setLoadMoreIndicator(false)}
+                      id={`topic-link-${item?.topic_id}`}
                     >
-                      <Typography.Text>{item?.topic_name}</Typography.Text>
+                      <Typography.Text id={`topic-name-${item?.topic_id}`}>
+                        {item?.topic_name}
+                      </Typography.Text>
                     </a>
                   </Link>
                   <ScoreTag topic_score={item?.topic_score} />

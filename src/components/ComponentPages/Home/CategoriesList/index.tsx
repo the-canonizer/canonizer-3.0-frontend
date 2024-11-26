@@ -41,25 +41,32 @@ const CategoriesList = () => {
   return (
     <Fragment>
       <Row gutter={15}>
-        <Col md={12} sm={12} xs={12}>
+        <Col md={12} sm={12} xs={12} id="section-heading-col">
           <SectionHeading
             title="List of Topic Tags"
             infoContent="Topic Tags represent the categories under which a topic falls. When creating a new topic, users can choose one or more relevant categories to help classify the subject. These tags make it easier for others to find and engage with discussions based on their interests."
           />
         </Col>
-        <Col md={12} sm={12} xs={12} className="text-right">
+        <Col
+          md={12}
+          sm={12}
+          xs={12}
+          className="text-right"
+          id="see-more-link-col"
+        >
           <SeeMoreLInk href="/categories" />
         </Col>
       </Row>
 
-      <div className="w-full flex flex-wrap mt-3 -mb-5">
+      <div className="w-full flex flex-wrap mt-3 -mb-5" id="tags-container">
         {renderedTags?.map((cat) => (
           <Link href={{ pathname: `/categories/${cat?.id}` }} key={cat?.id}>
-            <a>
+            <a id={`tag-link-${cat?.id}`}>
               <Tags
                 className="rounded-lg py-3 px-6 border-0 text-canBlack bg-canBlue mt-0 mb-[15px] mr-[15px] hover:shadow-md"
                 icon={<TagOutlined className="rotate-[280deg]" />}
                 color={getRandomColor()}
+                id={`tag-${cat?.id}`}
               >
                 {cat?.title}
               </Tags>
@@ -68,7 +75,7 @@ const CategoriesList = () => {
         ))}
         {isMobile ? (
           <Link href="/categories" key="moretag">
-            <a className="text-canBlack font-semibold">
+            <a className="text-canBlack font-semibold" id="more-tags-link">
               +{tags?.length - 5} more
             </a>
           </Link>

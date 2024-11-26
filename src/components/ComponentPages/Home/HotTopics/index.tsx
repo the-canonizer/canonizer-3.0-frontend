@@ -20,8 +20,8 @@ const HotTopics = () => {
 
   return (
     <Fragment>
-      <Row gutter={15}>
-        <Col md={12} sm={12} xs={12}>
+      <Row gutter={15} id="hot-topics-heading-row">
+        <Col md={12} sm={12} xs={12} id="hot-topics-heading-col">
           <SectionHeading
             title="Hot Topics"
             infoContent="Hot Topics are the most viewed subjects on Canonizer within the past month. These topics have garnered significant attention from users, making them central points of discussion and debate. Join the conversation and see what others are saying!"
@@ -29,15 +29,23 @@ const HotTopics = () => {
         </Col>
       </Row>
 
-      <Row className="mt-4" gutter={[24, 24]}>
+      <Row className="mt-4" gutter={[24, 24]} id="hot-topics-list-row">
         {topicData?.map((ft) => (
-          <Col md={12} lg={8} xs={24} sm={24} key={ft?.id}>
+          <Col
+            md={12}
+            lg={8}
+            xs={24}
+            sm={24}
+            key={ft?.id}
+            id={`hot-topic-col-${ft?.id}`}
+          >
             {loadMoreIndicator ? (
               <CustomSkelton
                 skeltonFor="hotTopic"
                 bodyCount={1}
                 stylingClass="listSkeleton"
                 isButton={false}
+                id={`hot-topic-skeleton-${ft?.id}`}
               />
             ) : (
               <SingleTopicCard

@@ -42,21 +42,36 @@ const ExistingTopicList = ({
     <CommonCards className="bg-topic-card-gr !border-canGrey2 h-full">
       {isError && (
         <>
-          <header className="mb-1 text-canRed flex items-start justify-start">
-            <WarningOutlined className="text-xl text-canRed" />
-            <div className="ml-3">
-              <Typography.Paragraph className="text-canRed font-medium text-base !mb-2">
+          <header
+            className="mb-1 text-canRed flex items-start justify-start"
+            id="error-header"
+          >
+            <WarningOutlined
+              className="text-xl text-canRed"
+              id="warning-icon"
+            />
+            <div className="ml-3" id="error-message">
+              <Typography.Paragraph
+                className="text-canRed font-medium text-base !mb-2"
+                id="error-paragraph-1"
+              >
                 A Topic with this exact name already exists!
               </Typography.Paragraph>
-              <Typography.Paragraph className="text-canRed font-medium text-lg whitespace-break-spaces break-all text-wrap line-clamp-1">
+              <Typography.Paragraph
+                className="text-canRed font-medium text-lg whitespace-break-spaces break-all text-wrap line-clamp-1"
+                id="error-paragraph-2"
+              >
                 {topicName}
               </Typography.Paragraph>
             </div>
           </header>
-          <hr className="border-canGrey2" />
+          <hr className="border-canGrey2" id="error-divider" />
         </>
       )}
-      <Typography.Paragraph className="text-canBlack font-medium mt-5 text-base">
+      <Typography.Paragraph
+        className="text-canBlack font-medium mt-5 text-base"
+        id="similar-topics-header"
+      >
         Topics with similar name -
       </Typography.Paragraph>
       {isLoading ? (
@@ -65,6 +80,7 @@ const ExistingTopicList = ({
           bodyCount={5}
           stylingClass="listSkeleton"
           isButton={false}
+          id="loading-skeleton"
         />
       ) : (
         <List
@@ -95,6 +111,7 @@ const ExistingTopicList = ({
                       dispatch(setSearchValue(""));
                     }
                   }}
+                  id="see-more-results"
                 >
                   See more results
                 </a>
@@ -109,18 +126,24 @@ const ExistingTopicList = ({
             <List.Item
               className="!border-b-0 mt-0 pt-0 text-lg font-[300]"
               key={item?.id}
+              id={`list-item-${item?.id}`}
             >
               <Link href={{ pathname: "/" + item?.link }}>
                 <a
                   className="flex justify-start items-start whitespace-break-spaces break-all text-wrap line-clamp-1"
                   target="_blank"
+                  id={`list-item-link-${item?.id}`}
                 >
-                  <div className="w-[5px] h-[5px] rounded-full bg-canBlack mr-3 mt-2.5"></div>
+                  <div
+                    className="w-[5px] h-[5px] rounded-full bg-canBlack mr-3 mt-2.5"
+                    id={`list-item-dot-${item?.id}`}
+                  ></div>
                   {getHighlightedText(item?.type_value, topicName)}
                 </a>
               </Link>
             </List.Item>
           )}
+          id="topics-list"
         />
       )}
     </CommonCards>

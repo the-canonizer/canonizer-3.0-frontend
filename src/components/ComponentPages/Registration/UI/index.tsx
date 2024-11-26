@@ -51,9 +51,14 @@ function RegistrationUi({
             )
         }
         data-testid="dropdown_country"
+        id="dropdown_country"
       >
         {country.map((code) => (
-          <Option value={code.phone_code} key={code.country_code}>
+          <Option
+            value={code.phone_code}
+            key={code.country_code}
+            id={`country_code_${code.country_code}`}
+          >
             {code.phone_code}
           </Option>
         ))}
@@ -67,7 +72,11 @@ function RegistrationUi({
   };
 
   return (
-    <Card className="rounded-lg [&_.ant-card-body]:pb-3 mb-0" bordered={false}>
+    <Card
+      className="rounded-lg [&_.ant-card-body]:pb-3 mb-0"
+      bordered={false}
+      id="registration-card"
+    >
       <Form
         form={form}
         name="registration"
@@ -77,8 +86,12 @@ function RegistrationUi({
         scrollToFirstError
         validateTrigger={messages.formValidationTypes()}
         autoComplete="off"
+        id="registration-form"
       >
-        <div className="flex justify-center items-center text-center flex-col mb-4 [&_.ant-image>img]:h-[39px]">
+        <div
+          className="flex justify-center items-center text-center flex-col mb-4 [&_.ant-image>img]:h-[39px]"
+          id="registration-header"
+        >
           <RegistrationUiGoBack onBrowseClick={onBrowseClick} />
           <LogoHeader />
           <Title
@@ -88,14 +101,17 @@ function RegistrationUi({
           >
             Create your account
           </Title>
-          <Paragraph className="text-muted text-[10px] 2xl:text-xs text-canLight !font-[300]">
+          <Paragraph
+            className="text-muted text-[10px] 2xl:text-xs text-canLight !font-[300]"
+            id="mandatory-fields"
+          >
             All fields marked with * are mandatory.
           </Paragraph>
         </div>
 
-        <div className="mt-10">
+        <div className="mt-10" id="registration-inputs">
           <Row gutter={30}>
-            <Col md={12} style={{ width: "100%" }}>
+            <Col md={12} style={{ width: "100%" }} id="first-name-col">
               <Inputs
                 name="first_name"
                 label={
@@ -111,10 +127,11 @@ function RegistrationUi({
                 }
                 maxLength={100}
                 prefix={<UserOutlined />}
+                id="first-name-input"
               />
             </Col>
 
-            <Col md={12} style={{ width: "100%" }}>
+            <Col md={12} style={{ width: "100%" }} id="last-name-col">
               <Inputs
                 name="last_name"
                 label={
@@ -130,9 +147,10 @@ function RegistrationUi({
                 }
                 maxLength={100}
                 prefix={<UserOutlined />}
+                id="last-name-input"
               />
             </Col>
-            <Col md={12} style={{ width: "100%" }}>
+            <Col md={12} style={{ width: "100%" }} id="email-col">
               <Inputs
                 name="email"
                 label={
@@ -149,9 +167,10 @@ function RegistrationUi({
                 maxLength={255}
                 prefix={<MailOutlined />}
                 type="email"
+                id="email-input"
               />
             </Col>
-            <Col md={12} style={{ width: "100%" }}>
+            <Col md={12} style={{ width: "100%" }} id="phone-col">
               <Inputs
                 name="phone"
                 label={messages.labels.phone}
@@ -167,9 +186,10 @@ function RegistrationUi({
                 inputMode="tel"
                 inputClassName={`numberInput [&>*]:h-[40px] [&_.ant-input-affix-wrapper]:h-full [&_.ant-input-affix-wrapper]:!h-[40px] [&_.ant-input-prefix]:w-0 [&_.ant-input-group-addon]:bg-transparent`}
                 wrapperClassName="[&_.ant-form-item-explain-error]:!mb-0 [&_.ant-form-item-explain-connected]:last:mb-6"
+                id="phone-input"
               />
             </Col>
-            <Col md={12} style={{ width: "100%" }}>
+            <Col md={12} style={{ width: "100%" }} id="password-col">
               <Inputs
                 name="password"
                 label={
@@ -183,9 +203,14 @@ function RegistrationUi({
                 placeholder={messages.placeholders.password}
                 prefix={<LockOutlined />}
                 inputMode="password"
+                id="password-input"
               />
             </Col>
-            <Col md={{ span: 12 }} style={{ width: "100%" }}>
+            <Col
+              md={{ span: 12 }}
+              style={{ width: "100%" }}
+              id="confirm-password-col"
+            >
               <Inputs
                 name="confirm"
                 label={
@@ -200,12 +225,13 @@ function RegistrationUi({
                 placeholder={messages.placeholders.confirmPassword}
                 prefix={<LockOutlined />}
                 inputMode="password"
+                id="confirm-password-input"
               />
             </Col>
           </Row>
         </div>
 
-        <Form.Item className="text-center mt-5 mb-16">
+        <Form.Item className="text-center mt-5 mb-16" id="submit-button-item">
           <PrimaryButton
             type="primary"
             htmlType="submit"
@@ -219,10 +245,10 @@ function RegistrationUi({
           </PrimaryButton>
         </Form.Item>
 
-        <Form.Item className="my-5">
-          <SocialLoginButton isNotLogin={true} />
+        <Form.Item className="my-5" id="social-login-item">
+          <SocialLoginButton isNotLogin={true} id="social-login-button" />
         </Form.Item>
-        <Form.Item className="text-center">
+        <Form.Item className="text-center" id="already-account-item">
           <Text className="text-sm" id="already-text">
             Already have an account?{" "}
             <a

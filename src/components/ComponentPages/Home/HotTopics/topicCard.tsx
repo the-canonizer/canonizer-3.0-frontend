@@ -39,6 +39,7 @@ const SingleTopicCard = ({
       }/${topic?.camp_num || 1}-${
         replaceSpecialCharacters(topic?.camp_name, "-") || "Agreement"
       }`}
+      id={`link-${topic?.id}`}
     >
       <CommonCard
         className={
@@ -46,36 +47,55 @@ const SingleTopicCard = ({
           cardClassName
         }
         key={topic?.id}
+        id={`common-card-${topic?.id}`}
       >
         <div
           className="flex justify-between pb-3 items-center"
           onClick={onTopicLinkClick}
+          id={`card-header-${topic?.id}`}
         >
-          <Typography.Text id="browse-topic-name" className="flex w-11/12 items-center">
-            <Typography.Paragraph className="m-0 text-sm 2xl:text-base font-medium font-inter !mb-0 line-clamp-1">
+          <Typography.Text
+            id={`browse-topic-name-${topic?.id}`}
+            className="flex w-11/12 items-center"
+          >
+            <Typography.Paragraph
+              id={`topic-name-${topic?.id}`}
+              className="m-0 text-sm 2xl:text-base font-medium font-inter !mb-0 line-clamp-1"
+            >
               {topic?.topic_name}
             </Typography.Paragraph>
-            <span id="browse-topic-score">
-              {scoreTag}
-            </span>
-            <span id="browse-copy-link">
+            <span id={`browse-topic-score-${topic?.id}`}>{scoreTag}</span>
+            <span id={`browse-copy-link-${topic?.id}`}>
               {copyLink && copyLink}
             </span>
           </Typography.Text>
-          <RightOutlined className="text-canBlue font-bold hidden rightArrow" />
+          <RightOutlined
+            id={`right-arrow-${topic?.id}`}
+            className="text-canBlue font-bold hidden rightArrow"
+          />
         </div>
         <CardDescription
           className="topicDesc"
           description={topic?.statement?.parsed_value || topic?.statement}
         />
-        <div className="flex justify-between mt-auto pt-5 flex-row items-center">
-          <div className="catTags flex flex-col justify-center min-h-[32px]">
-            <TopicCatsLabel tags={topic[tag_key]} />
+        <div
+          className="flex justify-between mt-auto pt-5 flex-row items-center"
+          id={`card-footer-${topic?.id}`}
+        >
+          <div
+            className="catTags flex flex-col justify-center min-h-[32px]"
+            id={`cat-tags-${topic?.id}`}
+          >
+            <TopicCatsLabel
+              tags={topic[tag_key]}
+              id={`topic-cats-label-${topic?.id}`}
+            />
             <ViewCounts
               views={topic?.views}
               className={`${
                 topic[tag_key]?.length ? "!mt-1" : ""
               } cardCountCls`}
+              id={`view-counts-${topic?.id}`}
             />
           </div>
           <AvatarGroup
@@ -87,6 +107,7 @@ const SingleTopicCard = ({
               backgroundColor: "#fde3cf",
             }}
             imageBaseURL={imageBaseURL}
+            id={`avatar-group-${topic?.id}`}
           />
         </div>
       </CommonCard>

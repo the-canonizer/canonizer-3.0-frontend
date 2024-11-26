@@ -179,14 +179,22 @@ const Login = () => {
   return (
     <CustomSpinner key="login-spinner" spinning={loading}>
       <Card
+        id="login-card"
         bordered={false}
         className="bg-canGrey1 mt-0 lg:mt-5 h-full flex justify-center items-center [&>.ant-card-body]:p-0 [&>.ant-card-body]:w-full [&_.ant-card-body]:pb-0 min-h-full tab:px-10"
       >
-        <Row gutter={20}>
-          <Col lg={12} md={24} xl={12} xs={24} className="hidden lg:block">
+        <Row id="login-row" gutter={20}>
+          <Col
+            id="left-content-col"
+            lg={12}
+            md={24}
+            xl={12}
+            xs={24}
+            className="hidden lg:block"
+          >
             <LeftContent onBrowseClick={onBrowseClick} />
           </Col>
-          <Col lg={12} md={24} xl={12} xs={24}>
+          <Col id="login-ui-col" lg={12} md={24} xl={12} xs={24}>
             <LoginUI
               form={form}
               onFinish={onFinish}

@@ -68,6 +68,7 @@ const LoginUi = ({
             dataid="username"
             data-testid="username"
             onKeyDown={() => {}}
+            id="login-username-input"
           />
 
           <Inputs
@@ -81,11 +82,15 @@ const LoginUi = ({
             rules={messages.userPassRule}
             type="password"
             placeholder={messages.placeholders.password}
+            id="login-password-input"
           />
 
           <div className="flex justify-between items-center pb-4">
             <Form.Item name="remember" valuePropName="checked" noStyle>
-              <Checkbox className="text-canBlack text-sm font-normal">
+              <Checkbox
+                className="text-canBlack text-sm font-normal"
+                id="login-remember-checkbox"
+              >
                 Remember Me
               </Checkbox>
             </Form.Item>
@@ -107,7 +112,7 @@ const LoginUi = ({
             data-testid="submitButton"
             htmlType="submit"
             className="h-[40px] text-sm rounded-lg !w-8/12 lg:!w-4/12 mb-6 flex justify-center items-center mx-auto"
-            id="login-btn"
+            id="login-submit-btn"
             disabled={!isDisabled}
           >
             Log In <ArrowRightOutlined />
@@ -116,7 +121,7 @@ const LoginUi = ({
             htmlType="button"
             className="h-[40px] text-sm rounded-lg !w-8/12 lg:!w-4/12 flex justify-center items-center"
             onClick={onOTPClick}
-            id="request-otp-btn"
+            id="login-request-otp-btn"
             data-testid="request-otp-btn"
             disabled={!isOTPDisabled}
           >
@@ -131,12 +136,12 @@ const LoginUi = ({
         <Form.Item noStyle>
           <Text
             className="text-canBlack text-sm text-center block mt-4"
-            id="dont-account-link"
+            id="login-dont-account-link"
           >
             {`Don't have an account? `}
             <a
               onClick={onRegister}
-              id="dont-account-link-tag"
+              id="login-dont-account-link-tag"
               data-testid="dont-account-link-tag"
               className="!text-canBlue hover:!text-canHoverBlue !font-medium"
             >

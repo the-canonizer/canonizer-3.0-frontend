@@ -30,7 +30,7 @@ const SinglePost = ({
   const description = showFullDescription ? content : content?.slice(0, 500);
 
   return (
-    <Card className=" mb-4 rounded-xl" bodyStyle={{ padding: "15px" }}>
+    <Card className="mb-4 rounded-xl" bodyStyle={{ padding: "15px" }}>
       <div className="mb-3">
         <Space size="small">
           <Text strong id={"post-title-" + post.id}>
@@ -83,8 +83,8 @@ const SinglePost = ({
                 <SecondaryButton
                   onClick={onEditClick}
                   className="linkCss border-0 p-0"
-                  id={"post-edit-icon" + post.id}
-                  data-testid={"post-edit-icon" + post.id}
+                  id={"post-edit-icon-" + post.id}
+                  data-testid={"post-edit-icon-" + post.id}
                 >
                   <EditIcon />
                 </SecondaryButton>
@@ -212,22 +212,36 @@ const SinglePost = ({
             },
           }),
         }}
+        id={"post-content-" + post.id}
       ></div>
       {content?.length > 500 && (
         <SecondaryButton
           onClick={showFullDescriptionHandler}
           className="text-xs border-0 p-0 text-canBlue hocus:text-canHoverBlue mt-5 !bg-transparent !shadow-none"
+          id={"post-read-more-" + post.id}
         >
           Read{" "}
           {showFullDescription ? (
-            <Text className="ml-1 text-xs text-canBlue hocus:text-canHoverBlue">
+            <Text
+              className="ml-1 text-xs text-canBlue hocus:text-canHoverBlue"
+              id={"post-read-less-text-" + post.id}
+            >
               Less{" "}
-              <MinusOutlined className="text-xs ml-1 text-canBlue hocus:text-canHoverBlue" />
+              <MinusOutlined
+                className="text-xs ml-1 text-canBlue hocus:text-canHoverBlue"
+                id={"post-read-less-icon-" + post.id}
+              />
             </Text>
           ) : (
-            <Text className="ml-1 text-xs text-canBlue hocus:text-canHoverBlue">
+            <Text
+              className="ml-1 text-xs text-canBlue hocus:text-canHoverBlue"
+              id={"post-read-more-text-" + post.id}
+            >
               More
-              <PlusOutlined className="text-xs ml-1 text-canBlue hocus:text-canHoverBlue" />
+              <PlusOutlined
+                className="text-xs ml-1 text-canBlue hocus:text-canHoverBlue"
+                id={"post-read-more-icon-" + post.id}
+              />
             </Text>
           )}
         </SecondaryButton>

@@ -21,7 +21,7 @@ const NameConfirmation = ({
   onResendClick,
   isResend,
 }) => (
-  <Card className="rounded-lg" bordered={false}>
+  <Card className="rounded-lg" bordered={false} id="name-confirmation-card">
     <Form
       form={form}
       name="name-confirmation"
@@ -29,6 +29,7 @@ const NameConfirmation = ({
       layout="vertical"
       scrollToFirstError
       validateTrigger={messages.formValidationTypes()}
+      id="name-confirmation-form"
     >
       <Title
         level={4}
@@ -47,7 +48,7 @@ const NameConfirmation = ({
           id="close-modal-btn"
         />
       )}
-      <div className="w-full mt-4">
+      <div className="w-full mt-4" id="name-confirmation-content">
         <Text
           type="danger"
           className="text-xs text-danger text-center block mb-4 mt-2"
@@ -62,10 +63,11 @@ const NameConfirmation = ({
             placeholder={messages.placeholders.otp}
             min={6}
             max={6}
+            id="otp-input"
           />
         ) : (
-          <Row gutter={30}>
-            <Col md={12} style={{ width: "100%" }}>
+          <Row gutter={30} id="name-input-row">
+            <Col md={12} style={{ width: "100%" }} id="first-name-col">
               <Inputs
                 name="first_name"
                 label={
@@ -80,10 +82,11 @@ const NameConfirmation = ({
                   e.key === " " && e.keyCode === 32 && e.preventDefault()
                 }
                 maxLength={100}
+                id="first-name-input"
               />
             </Col>
 
-            <Col md={12} style={{ width: "100%" }}>
+            <Col md={12} style={{ width: "100%" }} id="last-name-col">
               <Inputs
                 name="last_name"
                 label={
@@ -99,12 +102,13 @@ const NameConfirmation = ({
                   e.key === " " && e.keyCode === 32 && e.preventDefault()
                 }
                 maxLength={100}
+                id="last-name-input"
               />
             </Col>
           </Row>
         )}
       </div>
-      <Form.Item>
+      <Form.Item id="form-item">
         {isResend && (
           <Button
             type="primary"

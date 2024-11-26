@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { PlusOutlined } from "@ant-design/icons";
@@ -15,7 +15,6 @@ import {
   setIsThreadDrawerOpen,
 } from "src/store/slices/campForumSlice";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
-import CampInfoBar from "../TopicDetails/CampInfoBar";
 import ThreadListUI from "./UI/ThreadListUI";
 import Layout from "src/hoc/layout";
 import PrimaryButton from "components/shared/Buttons/PrimariButton";
@@ -245,23 +244,13 @@ const ForumComponent = () => {
         routeName={"forum"}
         className="[&_.inforBarClass]:mb-0 [&_.afterHeaderClass]:mb-5"
         afterHeader={
-          // <CampInfoBar
-          //   payload={payload}
-          //   isForumPage={false}
-          //   isHtmlContent={
-          //     <PrimaryButton
-          //       className="flex justify-center items-center h-auto py-2 px-7"
-          //       onClick={onCreateThread}
-          //     >
-          //       Create a Thread <PlusOutlined />
-          //     </PrimaryButton>
-          //   }
-          // />
           <CommonBreadcrumbs
+            key="common-breadcrumbs"
             payload={payload}
             isForumPage={false}
             isHtmlContent={
               <PrimaryButton
+                key="create-thread-button"
                 className="flex justify-center items-center h-auto py-2 px-7"
                 onClick={onCreateThread}
               >
@@ -272,6 +261,7 @@ const ForumComponent = () => {
         }
       >
         <ThreadListUI
+          key="thread-list-ui"
           onSearch={onSearch}
           onChange={onChange}
           threadList={threadList}
@@ -286,7 +276,7 @@ const ForumComponent = () => {
         />
       </Layout>
 
-      <ManageThread onSubmittedSucess={onSubmittedSucess} />
+      <ManageThread key="manage-thread" onSubmittedSucess={onSubmittedSucess} />
     </CustomSpinner>
   );
 };

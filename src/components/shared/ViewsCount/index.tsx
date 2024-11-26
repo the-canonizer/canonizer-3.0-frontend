@@ -45,11 +45,15 @@ const ViewCounts = ({
 
   return (
     <Typography.Paragraph
+      id="view-count-paragraph"
       className={`!m-0 !text-canLight font-medium font-inter flex items-center gap-2 ${className}`}
       {...restProps}
     >
-      <EyeOutlined className="" />
-      <span id="browse-topic-views-container" className="text-canBlack text-opacity-50 text-xs font-normal">
+      <EyeOutlined id="view-count-icon" className="" />
+      <span
+        id="browse-topic-views-container"
+        className="text-canBlack text-opacity-50 text-xs font-normal"
+      >
         {!views || views == 0 ? 0 : formatNumber(views)}
       </span>
     </Typography.Paragraph>
