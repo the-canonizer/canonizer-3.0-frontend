@@ -38,6 +38,7 @@ const RefineFilter = () => {
 
   return (
     <Drawer
+      id="refine_filter_drawer"
       closeIcon={
         <Image src="/images/refine-back-arrow.svg" width={16} height={16} />
       }
