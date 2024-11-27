@@ -153,7 +153,8 @@ const DirectSupportedCamps = ({ search }: any) => {
     dispatch(setDisableSubmitButtonForDirectSupportedCamp(true));
     let res = await removeOrUpdateDirectSupportCamps(tagsDeletedId);
     if (res && res.status_code == 200) {
-      message.success(res.message.remove[0]);
+      tagsDeletedId?.remove_camps.length>0 && message.success(res?.message?.remove?.[0]);
+      tagsDeletedId?.remove_camps.length == 0 && message.success(res?.message?.update);
       setShowSaveChanges(false);
       setCardCamp_ID("");
       fetchDirectSupportedCampsList();
