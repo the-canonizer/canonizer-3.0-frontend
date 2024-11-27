@@ -17,14 +17,19 @@ function StatementAIPreview({
     <Modal
       visible={isVisible}
       footer={
-        <div className="flex justify-center items-center py-4">
+        <div
+          id="footer-container"
+          className="flex justify-center items-center py-4"
+        >
           <SecondaryButton
+            id="cancel-button"
             onClick={onPreveiwClose}
             className="flex justify-center items-center py-2 px-8 h-auto"
           >
             Cancel <CloseOutlined />
           </SecondaryButton>
           <PrimaryButton
+            id="use-statement-button"
             onClick={onInsertClick}
             className="flex justify-center items-center py-2 px-8 h-auto"
           >
@@ -38,18 +43,25 @@ function StatementAIPreview({
       data-testid="statementPreview"
       centered
     >
-      <header className="mb-8 flex items-start justify-start">
-        <Typography.Paragraph className="text-xl text-canBlack font-medium !mb-0">
+      <header id="modal-header" className="mb-8 flex items-start justify-start">
+        <Typography.Paragraph
+          id="modal-title"
+          className="text-xl text-canBlack font-medium !mb-0"
+        >
           AI Improved Camp Statement
         </Typography.Paragraph>
         <Button
+          id="close-button"
           className="ml-auto !border-0 h-auto p-0 !shadow-none"
           onClick={onPreveiwClose}
         >
           <CloseOutlined />
         </Button>
       </header>
-      <CommonCards className="border-0 bg-canGray !p-0 [&_.ant-card-body]:!p-5 [&_.ant-card-body]:min-h-72 [&_.ant-card-body]:max-h-96 [&_.ant-card-body]:overflow-y-auto [&_.ant-card-body]:overflow-x-hidden [&_.ant-card-body]:scroll-pr-6 [&_.ant-card-body]:snap-y">
+      <CommonCards
+        id="statement-card"
+        className="border-0 bg-canGray !p-0 [&_.ant-card-body]:!p-5 [&_.ant-card-body]:min-h-72 [&_.ant-card-body]:max-h-96 [&_.ant-card-body]:overflow-y-auto [&_.ant-card-body]:overflow-x-hidden [&_.ant-card-body]:scroll-pr-6 [&_.ant-card-body]:snap-y"
+      >
         <StatementDescPreview statement={statement} isLoading={isLoading} />
       </CommonCards>
     </Modal>

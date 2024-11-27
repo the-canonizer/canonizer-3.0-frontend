@@ -16,13 +16,14 @@ const GetBreadCrumbs = ({ topicRecord, campRecord }) => {
       separator={<RightOutlined className="!text-xs" />}
     >
       <Breadcrumb.Item className={breadCrumbCss}>
-        <Typography.Text>Canon: </Typography.Text>
-        <Typography.Text>
+        <Typography.Text id="breadcrumb-canon-text">Canon: </Typography.Text>
+        <Typography.Text id="breadcrumb-canon-namespace">
           {changeSlashToArrow(topicRecord?.namespace_name)}
         </Typography.Text>
       </Breadcrumb.Item>
+
       <Breadcrumb.Item className={breadCrumbCss}>
-        <Typography.Text>Topic: </Typography.Text>
+        <Typography.Text id="breadcrumb-topic-text">Topic: </Typography.Text>
         <Link
           href={{
             pathname: `/topic/${
@@ -32,13 +33,17 @@ const GetBreadCrumbs = ({ topicRecord, campRecord }) => {
             }-${replaceSpecialCharacters(campRecord?.camp_name, "-")}`,
           }}
         >
-          <a className="!text-canLight hocus:!text-canBlue">
+          <a
+            id="breadcrumb-topic-link"
+            className="!text-canLight hocus:!text-canBlue"
+          >
             {topicRecord?.topic_name}
           </a>
         </Link>
       </Breadcrumb.Item>
+
       <Breadcrumb.Item className={breadCrumbCss}>
-        <Typography.Text>Camp: </Typography.Text>
+        <Typography.Text id="breadcrumb-camp-text">Camp: </Typography.Text>
         <Link
           href={{
             pathname: `/topic/${
@@ -48,7 +53,10 @@ const GetBreadCrumbs = ({ topicRecord, campRecord }) => {
             }-${replaceSpecialCharacters(campRecord?.camp_name, "-")}`,
           }}
         >
-          <a className="!text-canLight hocus:!text-canBlue">
+          <a
+            id="breadcrumb-camp-link"
+            className="!text-canLight hocus:!text-canBlue"
+          >
             {campRecord?.camp_name}
           </a>
         </Link>

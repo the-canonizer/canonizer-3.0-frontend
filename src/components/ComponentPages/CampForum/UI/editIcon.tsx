@@ -6,6 +6,7 @@ const EditIcon = () => {
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      id="edit-icon"
     >
       <g clipPath="url(#clip0_4629_26352)">
         <path

@@ -87,18 +87,29 @@ const ThreadListUI = ({
           <SecondaryButton
             className="border-0 p-0 flex items-center justify-start text-xl"
             onClick={onBackClick}
+            id="back-button"
           >
             <LeftOutlined />
           </SecondaryButton>
-          <span className="text-canBlack font-medium text-xl ml-2">
+          <span
+            className="text-canBlack font-medium text-xl ml-2"
+            id="camp-forum-title"
+          >
             Camp Forum
           </span>
         </div>
       }
       className={`bg-white border-0 lg:px-6 [&_.ant-card-head]:p-0 [&_.ant-card-body]:px-0 [&_.ant-card-head]:border-0`}
+      id="common-cards"
     >
-      <div className="flex justify-between mb-9 flex-wrap gap-5">
-        <div className="flex justify-between items-center flex-wrap border-b-2 max-w-full lg:max-w-[50%] order-1 lg:order-0">
+      <div
+        className="flex justify-between mb-9 flex-wrap gap-5"
+        id="top-controls"
+      >
+        <div
+          className="flex justify-between items-center flex-wrap border-b-2 max-w-full lg:max-w-[50%] order-1 lg:order-0"
+          id="thread-filters"
+        >
           <PrimaryButton
             ghost
             className={`${btnClass} ${
@@ -142,15 +153,15 @@ const ThreadListUI = ({
                 }`}
                 onClick={filterThread.bind(this, "most_replies")}
                 key="most_replies-btn"
-                id="most-rep-btn"
-                data-testid="most-rep-btn"
+                id="most-replies-btn"
+                data-testid="most-replies-btn"
               >
                 Top 10
               </PrimaryButton>
             </Fragment>
           ) : null}
         </div>
-        <div className="max-w-full lg:max-w-[300px]">
+        <div className="max-w-full lg:max-w-[300px]" id="search-container">
           <Input.Search
             placeholder={placeholders.searchPlaceholder}
             allowClear
@@ -164,7 +175,7 @@ const ThreadListUI = ({
 
       {isLoading ? (
         <Fragment>
-          <Table dataSource={loadingData} pagination={false}>
+          <Table dataSource={loadingData} pagination={false} id="loading-table">
             <Column
               title="Thread Name"
               dataIndex="title"
@@ -175,6 +186,7 @@ const ThreadListUI = ({
                   bodyCount={1}
                   stylingClass=""
                   isButton={false}
+                  id="loading-thread-name"
                 />
               )}
             />
@@ -190,6 +202,7 @@ const ThreadListUI = ({
                   bodyCount={1}
                   stylingClass=""
                   isButton={false}
+                  id="loading-replies"
                 />
               )}
             />
@@ -204,11 +217,12 @@ const ThreadListUI = ({
                   bodyCount={1}
                   stylingClass=""
                   isButton={false}
+                  id="loading-last-updated"
                 />
               )}
             />
           </Table>
-          <div className={`paginationCon`}>
+          <div className={`paginationCon`} id="loading-pagination">
             {total > 10 ? (
               <CustomSkelton
                 skeltonFor="list"
@@ -216,25 +230,30 @@ const ThreadListUI = ({
                 stylingClass=""
                 listStyle="liHeight"
                 isButton={false}
+                id="loading-pagination-skelton"
               />
             ) : null}
           </div>
         </Fragment>
       ) : (
         <Fragment>
-          <Table dataSource={threadList} pagination={false}>
+          <Table dataSource={threadList} pagination={false} id="thread-table">
             <Column
               title="Thread Name"
               dataIndex="title"
               key="title"
               render={(text, others: any, idx) => {
                 return (
-                  <div className="flex items-start" key={idx}>
+                  <div
+                    className="flex items-start"
+                    key={idx}
+                    id={`thread-name-${idx}`}
+                  >
                     <a
                       onClick={(e) => onThreadClick(e, others)}
                       className="!text-canBlack hocus:!text-canBlue font-medium text-sm h-full leading-[32px] line-clamp-1"
-                      id={"thread-label-" + (+idx + 1)}
-                      data-testid={"thread-label-" + (+idx + 1)}
+                      id={`thread-label-${idx + 1}`}
+                      data-testid={`thread-label-${idx + 1}`}
                       href={`/forum/${replaceSpecialCharacters(
                         router?.query?.topic as string,
                         "-"
@@ -246,13 +265,14 @@ const ThreadListUI = ({
                       <Text>{text}</Text>
                     </a>
                     {isLog && paramsList.by === "my" ? (
-                      <Tooltip title="edit">
+                      <Tooltip title="edit" id={`edit-tooltip-${idx}`}>
                         <SecondaryButton
                           onClick={() => {
                             onThreadEdit({ text, others });
                           }}
                           className="linkCss border-0 p-0 ml-1"
                           data-testid="edit_btn"
+                          id={`edit-button-${idx}`}
                         >
                           <EditIcon />
                         </SecondaryButton>
@@ -269,7 +289,9 @@ const ThreadListUI = ({
               width="150px"
               className="!text-center"
               render={(val) => {
-                return <Text>{val == 0 ? "-" : val}</Text>;
+                return (
+                  <Text id={`replies-${val}`}>{val == 0 ? "-" : val}</Text>
+                );
               }}
             />
             <Column
@@ -279,7 +301,10 @@ const ThreadListUI = ({
               width="600px"
               render={(dt, others: any) => {
                 return (
-                  <Paragraph className="!mb-0">
+                  <Paragraph
+                    className="!mb-0"
+                    id={`last-updated-${others?.id}`}
+                  >
                     <Text className="block">
                       {others["post_count"] === 0 ? (
                         "This thread doesn't have any posts yet."
@@ -291,7 +316,7 @@ const ThreadListUI = ({
                             }?canon=${others["namespace_id"] || 1}`}
                             passHref
                           >
-                            <a>
+                            <a id={`user-link-${others["nick_name_id"]}`}>
                               {others["nick_name"] === null ||
                               others["nick_name"] === ""
                                 ? ""
@@ -318,7 +343,10 @@ const ThreadListUI = ({
             />
           </Table>
 
-          <div className={`paginationCon mt-10 flex justify-center`}>
+          <div
+            className={`paginationCon mt-10 flex justify-center`}
+            id="pagination"
+          >
             {total > 10 ? (
               <Pagination
                 current={current}

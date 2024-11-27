@@ -33,12 +33,24 @@ function ThreadTab({
         const decodedProperties = JSON.parse(activity?.activity?.properties);
 
         return (
-          <List.Item className="font-inter text-sm font-medium bg-white w-full px-2">
+          <List.Item
+            key={activity.id}
+            className="font-inter text-sm font-medium bg-white w-full px-2"
+          >
             <Link href={decodeUrlLink(activity)} passHref>
-              <a className="w-full !text-canBlue hover:!text-canHoverBlue">
-                <Text className="!text-canBlack text-sm font-normal mb-0 block w-full">
+              <a
+                id={`link-${activity.id}`}
+                className="w-full !text-canBlue hover:!text-canHoverBlue"
+              >
+                <Text
+                  id={`description-${activity.id}`}
+                  className="!text-canBlack text-sm font-normal mb-0 block w-full"
+                >
                   {activity?.activity?.description}{" "}
-                  <Text className="text-canBlue font-medium">
+                  <Text
+                    id={`tooltip-${activity.id}`}
+                    className="text-canBlue font-medium"
+                  >
                     <Tooltip
                       placement={"topLeft"}
                       title={handleTextOverflow(decodedProperties?.description)}
@@ -58,6 +70,7 @@ function ThreadTab({
                   </Text>
                 </Text>
                 <Text
+                  id={`time-${activity.id}`}
                   className="text-canBlack opacity-[0.5] font-normal font-inter text-[10px] block mt-1"
                   type="secondary"
                 >

@@ -217,7 +217,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
     asofdate,
     algorithm,
     +(router?.query?.camp[1]?.split("-")[0] ?? 1),
-    // router,
+    router?.query?.camp[0]?.split("-")[0],
   ]);
 
   useEffect(() => {
@@ -511,9 +511,15 @@ const TopicDetails = ({ serverSideCall }: any) => {
           !openConsensusTreePopup &&
           tree?.["1"]?.is_valid_as_of_time && (
             <Fragment>
-              <div className="support-tree-parent-box w-full mt-14 lg:mt-0">
+              <div
+                className="support-tree-parent-box w-full mt-14 lg:mt-0"
+                id="topic_detail_section"
+              >
                 {tree?.["1"]?.is_valid_as_of_time && (
-                  <div className="flex gap-1 items-center mb-4">
+                  <div
+                    className="flex gap-1 items-center mb-4"
+                    id="topic_detail_section_heading"
+                  >
                     <SectionHeading
                       title="Support Tree"
                       infoContent=""
@@ -521,11 +527,12 @@ const TopicDetails = ({ serverSideCall }: any) => {
                       className="!mb-0 [&_span]:mr-1"
                     />
                     <Popover
+                      id="topic_detail_section_heading_pop_over"
                       content={supportRelatedInfo}
                       className="title-popover"
                       placement="top"
                     >
-                      <InfoCircleOutlined />
+                      <InfoCircleOutlined id="topic_detail_section_heading_info" />
                     </Popover>
                     <ScoreTag
                       topic_score={
@@ -537,8 +544,14 @@ const TopicDetails = ({ serverSideCall }: any) => {
                   </div>
                 )}
                 {tree?.["1"]?.is_valid_as_of_time && (
-                  <div className="bg-canGray py-7 px-2.5 lg:px-6 rounded-lg h-[400px] xl:h-[600px]">
-                    <div className="border border-canGrey2 bg-white rounded-lg lg:p-2 p-2.5 h-full">
+                  <div
+                    className="bg-canGray py-7 px-2.5 lg:px-6 rounded-lg h-[400px] xl:h-[600px]"
+                    id="topic_detail_section_heading_support_tree"
+                  >
+                    <div
+                      className="border border-canGrey2 bg-white rounded-lg lg:p-2 p-2.5 h-full"
+                      id="topic_detail_section_heading_support_tree_1"
+                    >
                       <SupportTreeCard
                         loadingIndicator={loadingIndicator}
                         isRemovingSupport={isRemovingSupport}
@@ -581,7 +594,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
               </div>
 
               {tree?.["1"]?.is_valid_as_of_time && (
-                <div className="my-14">
+                <div className="my-14" id="topic_detail_section_activity_card">
                   <ActivityNewsCard />
                 </div>
               )}
@@ -590,29 +603,30 @@ const TopicDetails = ({ serverSideCall }: any) => {
         }
         afterHeader={
           <Fragment>
-            {(tree && tree?.["1"]?.is_valid_as_of_time) || asof === "default"
-              ?  (
-                  <CommanBreadcrumbs
-                    isTopicPage={true}
-                    payload={{
-                      topic_num: +router?.query?.camp[0]?.split("-")[0],
-                      camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
-                    }}
-                    getCheckSupportStatus={getCheckSupportStatus}
-                    setBreadCrumbBolean={setBreadCrumbBolean}
-                  />
-                )
-              : breadCrumbBolean && (
-                  <CommanBreadcrumbs
-                    payload={{
-                      topic_num: +router?.query?.camp[0]?.split("-")[0],
-                      camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
-                    }}
-                    isTopicHistoryPage={true}
-                    getCheckSupportStatus={getCheckSupportStatus}
-                    setBreadCrumbBolean={setBreadCrumbBolean}
-                  />
-                )}
+            {(tree && tree?.["1"]?.is_valid_as_of_time) ||
+            asof === "default" ? (
+              <CommanBreadcrumbs
+                isTopicPage={true}
+                payload={{
+                  topic_num: +router?.query?.camp[0]?.split("-")[0],
+                  camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
+                }}
+                getCheckSupportStatus={getCheckSupportStatus}
+                setBreadCrumbBolean={setBreadCrumbBolean}
+              />
+            ) : (
+              breadCrumbBolean && (
+                <CommanBreadcrumbs
+                  payload={{
+                    topic_num: +router?.query?.camp[0]?.split("-")[0],
+                    camp_num: +(router?.query?.camp[1]?.split("-")[0] ?? 1),
+                  }}
+                  isTopicHistoryPage={true}
+                  getCheckSupportStatus={getCheckSupportStatus}
+                  setBreadCrumbBolean={setBreadCrumbBolean}
+                />
+              )
+            )}
             <InfoBar
               isTopicPage={true}
               payload={{
@@ -643,11 +657,15 @@ const TopicDetails = ({ serverSideCall }: any) => {
                       <CloseOutlined />
                     </SecondaryButton>
                   </div>
-                  <p className="text-sm  font-normal !text-canBlack mt-4">
+                  <p
+                    className="text-sm  font-normal !text-canBlack mt-4"
+                    id="topic_detail_section_collapse_camps_text"
+                  >
                     Collapse camps with support less than
                   </p>
 
                   <Select
+                    id="topic_detail_section_consesnus_tree_select_tag"
                     className="flex items-center [&_.ant-select-selector]:!bg-transparent [&_.ant-select-selector]:!border-none [&_.ant-select-selector]:focus:!border-none !border !border-canGrey2 !shadow-none rounded-md !w-[200px] !mt-2.5 !mb-5 h-[40px]"
                     suffixIcon={
                       <Image
@@ -663,12 +681,22 @@ const TopicDetails = ({ serverSideCall }: any) => {
                     options={scoreOptions}
                   />
                 </div>
-                <div className={styles.scoreCheckbox}>
+                <div
+                  className={styles.scoreCheckbox}
+                  id="topic_detail_section_consesnus_tree_full_score_checkbox"
+                >
                   <FullScoreCheckbox loadingIndicator={loadingIndicator} />
                 </div>
-                <ArchivedCampCheckBox loadingIndicator={loadingIndicator} />
-                <hr className="border-1 my-7 border-canGrey2" />
+                <ArchivedCampCheckBox
+                  loadingIndicator={loadingIndicator}
+                  id="topic_detail_section_consesnus_tree_archive_checkbox"
+                />
+                <hr
+                  className="border-1 my-7 border-canGrey2"
+                  id="topic_detail_section_consesnus_tree_line_break"
+                />
                 <CampTree
+                  id="topic_detail_section_consesnus_tree_camp_tree"
                   scrollToCampStatement={scrollToCampStatement}
                   setTotalCampScoreForSupportTree={
                     setTotalCampScoreForSupportTree
@@ -678,7 +706,10 @@ const TopicDetails = ({ serverSideCall }: any) => {
               </div>
             </div>
           ) : (
-            <div className="">
+            <div
+              className=""
+              id="topic_detail_section_consesnus_tree_camp_disclaimer"
+            >
               {tree?.["1"]?.is_valid_as_of_time && (
                 <div>
                   {isMobile && <CampDisclaimer />}
@@ -692,8 +723,11 @@ const TopicDetails = ({ serverSideCall }: any) => {
           )}
 
           {isClient && tree && !tree["1"]?.is_valid_as_of_time && (
-            <div className="justify-center w-full flex text-right">
-              <div>
+            <div
+              className="justify-center w-full flex text-right"
+              id="topic_detail_section_consesnus_tree_no_camp_tree_img"
+            >
+              <div id="topic_detail_section_consesnus_tree_no_camp_tree_img_1">
                 <Image
                   preview={false}
                   alt="No topic created"
@@ -702,7 +736,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
                   width={200}
                   id="forgot-modal-img"
                 />
-                <p>
+                <p id="topic_detail_before_date">
                   The topic was created on{" "}
                   <AntLink
                     onClick={() => {
@@ -711,8 +745,8 @@ const TopicDetails = ({ serverSideCall }: any) => {
                   >
                     {
                       new Date((tree && tree["1"]?.created_date) * 1000)
-                        .toLocaleString()
-                        ?.split(",")[0]
+                        .toISOString()
+                        ?.split("T")[0]
                     }
                   </AntLink>
                 </p>

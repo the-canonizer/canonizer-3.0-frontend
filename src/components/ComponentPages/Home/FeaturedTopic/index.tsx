@@ -21,15 +21,19 @@ const FeaturedTopic = () => {
     autoplay: true,
     dots: false,
     arrows: true,
-    infinite: true,
+    infinite: topicData?.length > 1,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
     centerPadding: "16px",
     className: "featuresSlider",
     arrowClass: "",
-    nextArrow: <RightOutlined className="text-xl text-canBlue" />,
-    prevArrow: <LeftOutlined className="text-xl text-canBlue" />,
+    nextArrow: topicData?.length > 1 && (
+      <RightOutlined className="text-xl text-canBlue" />
+    ),
+    prevArrow: topicData?.length > 1 && (
+      <LeftOutlined className="text-xl text-canBlue" />
+    ),
   };
 
   if (!topicData?.length) {
@@ -42,13 +46,14 @@ const FeaturedTopic = () => {
         title="FEATURED TOPICS"
         infoContent="Featured Topics are highlighted subjects on Canonizer that we believe are important or trending. A Topic refers to a specific subject within the context of the platform, serving as a focal point for discussions. These topics encourage users to explore, share opinions, and build consensus on various ideas and viewpoints."
       />
-      <div className="mt-4">
+      <div className="mt-4" id="featured-topics-container">
         {loadMoreIndicator ? (
           <CustomSkelton
             skeltonFor="featuredTopic"
             bodyCount={1}
             stylingClass="listSkeleton"
             isButton={false}
+            id="custom-skelton"
           />
         ) : (
           <Slider {...settings}>

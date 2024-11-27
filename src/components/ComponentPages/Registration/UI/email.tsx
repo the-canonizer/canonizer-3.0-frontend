@@ -20,7 +20,7 @@ const EmailConfirmation = ({
   onResendClick,
   isResend,
 }) => (
-  <Card className="rounded-lg" bordered={false}>
+  <Card className="rounded-lg" bordered={false} id="email-confirmation-card">
     <Form
       form={form}
       name="registration"
@@ -29,6 +29,7 @@ const EmailConfirmation = ({
       scrollToFirstError
       validateTrigger={messages.formValidationTypes()}
       className="relative"
+      id="email-confirmation-form"
     >
       <Title
         level={4}
@@ -48,7 +49,7 @@ const EmailConfirmation = ({
           id="close-modal-btn"
         />
       )}
-      <div className="w-full mt-4">
+      <div className="w-full mt-4" id="input-container">
         <Text
           type="danger"
           className="text-xs text-danger text-center block mb-4 mt-2"
@@ -65,6 +66,7 @@ const EmailConfirmation = ({
             min={6}
             max={6}
             maxLength={6}
+            id="otp-input"
           />
         ) : (
           <Inputs
@@ -72,10 +74,11 @@ const EmailConfirmation = ({
             wrapperClassName="w-full md:w-8/12 mx-auto block"
             rules={messages.emailRule}
             placeholder={messages.placeholders.email}
+            id="email-input"
           />
         )}
       </div>
-      <Form.Item>
+      <Form.Item id="form-item">
         {isResend && (
           <SecondaryButton
             type="primary"

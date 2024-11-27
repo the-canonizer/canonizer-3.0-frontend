@@ -96,11 +96,19 @@ const RegistrationOTP = () => {
   return (
     <CustomSpinner key="registration-spinner" spinning={loading}>
       <Card
+        id="registration-card"
         bordered={false}
         className="bg-canGrey1 mt-0 lg:mt-10 h-full flex justify-center items-center [&>.ant-card-body]:p-0 [&>.ant-card-body]:w-full min-h-full tab:px-10"
       >
-        <Row gutter={20}>
-          <Col lg={13} md={24} xl={13} xs={24} className="mx-auto">
+        <Row id="registration-row" gutter={20}>
+          <Col
+            id="registration-col"
+            lg={13}
+            md={24}
+            xl={13}
+            xs={24}
+            className="mx-auto"
+          >
             <OTPVerify
               form={otpForm}
               onFinish={onOTPSubmit}

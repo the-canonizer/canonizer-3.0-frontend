@@ -268,6 +268,7 @@ function ObjectionDrawer({
   return (
     <Drawer
       closable={false}
+      id="objection-drawer"
       className="ch-drawer adding-supported-drawer"
       placement="right"
       onClose={onClose}
@@ -302,6 +303,7 @@ function ObjectionDrawer({
             <Row gutter={16}>
               <Col span={24} sm={12}>
                 <Form.Item
+                  id="objection-drawer-nickname-title"
                   name="nick_name"
                   label={
                     <>
@@ -317,6 +319,7 @@ function ObjectionDrawer({
                     </div>
                     <Select
                       placeholder="Select a nickname"
+                      id="objection-drawer-nickname-select"
                       className="w-100 cn-select"
                       size="large"
                       defaultValue={nickNameList?.at(0)?.nick_name}
@@ -333,7 +336,7 @@ function ObjectionDrawer({
                     >
                       {nickNameList?.map((nick) => {
                         return (
-                          <Select.Option key={nick.id} value={nick.id}>
+                          <Select.Option id="objection-drawer-nickname-item-select" key={nick.id} value={nick.id}>
                             {nick.nick_name}
                           </Select.Option>
                         );
@@ -348,6 +351,7 @@ function ObjectionDrawer({
                   {drawerFor === "topicObjection" ? (
                     <>
                       <Inputs
+                        id="objection-drawer-topic-name"
                         name="topic_name"
                         label={
                           <>
@@ -372,6 +376,7 @@ function ObjectionDrawer({
                   ) : drawerFor === "campObjection" ? (
                     <>
                       <Inputs
+                        id="objection-drawer-camp-name"
                         name="camp_name"
                         label={
                           <>
@@ -399,6 +404,7 @@ function ObjectionDrawer({
 
               <Col span={24}>
                 <Form.Item
+                  id="objection-drawer-objection-reason"
                   name="objection_reason"
                   label={
                     <>
@@ -419,6 +425,7 @@ function ObjectionDrawer({
                   ]}
                 >
                   <TextArea
+                    id="objection-drawer-reason"
                     className="thm-input"
                     rows={4}
                     maxLength={100}
@@ -432,6 +439,7 @@ function ObjectionDrawer({
         <div className="flex justify-center max-sm:flex-col gap-5 p-11 fixed right-0 max-w-[730px] w-full mt-0 bg-white z-50 bottom-0">
           <Button
             size="large"
+            id="objection-drawer-cancel-btn"
             className="min-w-[200px] gap-2 flex items-center justify-center border border-canBlue bg-[#98B7E61A] rounded-lg text-canBlack text-base font-medium"
             onClick={() => {
               onClose();
@@ -446,6 +454,7 @@ function ObjectionDrawer({
             size="large"
             disabled={submitIsDisable}
             htmlType="submit"
+            id="objection-drawer-submit-btn"
             className="flex items-center gap-2 min-w-[200px] bg-canRed_Opacity10 border-canRed hover:border-canRed hover:text-canRed focus:text-canRed focus:border-canRed justify-center text-base rounded-lg leading-none w-100 font-medium"
             loading={loader}
           >

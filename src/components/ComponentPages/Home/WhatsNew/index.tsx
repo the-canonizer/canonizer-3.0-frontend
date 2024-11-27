@@ -13,8 +13,8 @@ const WhatsNew = () => {
 
   return (
     <Fragment>
-      <Row gutter={15}>
-        <Col md={24}>
+      <Row gutter={15} id="whats-new-row">
+        <Col md={24} id="whats-new-col">
           <SectionHeading
             title=" WHAT’S NEW AT CANONIZER?"
             infoContent=""
@@ -23,11 +23,15 @@ const WhatsNew = () => {
         </Col>
       </Row>
 
-      <div className="mt-3">
-        <CommonCard className="border-0 h-100 text-canBlack bg-white [&_.ant-card-body]:p-0 [&_.ant-card-body]:lg:p-[24px] lg:bg-canGray [&_iframe]:w-full [&_img]:w-auto [&_iframe]:aspect-video [&_iframe]:!my-5 [&_img]:!my-5 [&_*]:font-normal cn-card-home">
+      <div className="mt-3" id="whats-new-div">
+        <CommonCard
+          className="border-0 h-100 text-canBlack bg-white [&_.ant-card-body]:p-0 [&_.ant-card-body]:lg:p-[24px] lg:bg-canGray [&_iframe]:w-full [&_img]:w-auto [&_iframe]:aspect-video [&_iframe]:!my-5 [&_img]:!my-5 [&_*]:font-normal cn-card-home"
+          id="whats-new-card"
+        >
           <div
             className="text-canBlack"
             dangerouslySetInnerHTML={{ __html: whatsNew }}
+            id="whats-new-content"
           ></div>
         </CommonCard>
       </div>

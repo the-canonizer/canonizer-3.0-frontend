@@ -1,7 +1,8 @@
 const AlignIcon = ({ fill = "", className = "" }) => {
   return (
-    <div className={className}>
+    <div className={className} id="align-icon-div">
       <svg
+        id="align-icon"
         width="18"
         height="14"
         viewBox="0 0 18 14"

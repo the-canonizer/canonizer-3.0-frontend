@@ -5,8 +5,9 @@ const UserEditIcon = ({
   width = "26",
   height = "20",
 }) => (
-  <div className={className}>
+  <div className={className} id="user-icon-div">
     <svg
+      id="user-icon-svg"
       width={width}
       height={height}
       viewBox="0 0 26 20"

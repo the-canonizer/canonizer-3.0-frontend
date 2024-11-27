@@ -33,6 +33,7 @@ import {
   setAsOfValues,
   setClearAlgoFromRefineFilter,
   setClearScoreFromRefineFilter,
+  setDisbaleApplyBtn,
 } from "src/store/slices/campDetailSlice";
 import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 import PrimaryButton from "components/shared/Buttons/PrimariButton";
@@ -105,6 +106,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
     asOfValues,
     clearAlgoFromRefineFilter,
     clearScoreFromRefineFilter,
+    disbaleApplyBtn,
   } = useSelector((state: RootState) => ({
     algorithms: state.homePage?.algorithms,
     filteredScore: state?.filters?.filterObject?.filterByScore,
@@ -124,6 +126,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
     asOfValues: state.topicDetails.asOfValues,
     clearAlgoFromRefineFilter: state.topicDetails.clearAlgoFromRefineFilter,
     clearScoreFromRefineFilter: state.topicDetails.clearScoreFromRefineFilter,
+    disbaleApplyBtn: state.topicDetails.disbaleApplyBtn,
   }));
 
   const [selectedAsOFDate, setSelectedAsOFDate] = useState(filteredAsOfDate);
@@ -443,6 +446,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
   };
 
   const handleApplyClick = async () => {
+    dispatch(setDisbaleApplyBtn(true));
     const selectedAlgorithm = clearAlgoFromRefineFilter;
 
     // Step 1: Update URL with the selected algorithm
@@ -493,7 +497,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
         viewThisVersion
       );
     } else if (selectedValue === 3 || asof === "bydate") {
-      setSelectedValue(3)
+      setSelectedValue(3);
       dispatch(setViewThisVersion(false));
       handleAsOfClick();
     }
@@ -505,7 +509,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
 
   const handleChange = (event) => {
     const value = event?.target?.value;
-  
+
     // Check if the value length is manageable within JavaScript's safe range
     if (value.length <= 15) {
       // Convert to number if it's within a safe range
@@ -764,6 +768,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
                 <PrimaryButton
                   className="flex justify-center items-center gap-2.5 w-6/12 lg:w-auto !rounded-none lg:!rounded-lg py-7 lg:py-0"
                   onClick={handleApplyClick}
+                  disabled={disbaleApplyBtn}
                 >
                   <span className="!flex gap-1 flex-row ">
                     <span>Apply</span>

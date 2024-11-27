@@ -94,11 +94,14 @@ const CreateTopicFromUI = ({
 
     return values?.namespace || nameSpaces[0]?.id;
   };
-const dispatch = useDispatch()
+  const dispatch = useDispatch();
   return (
-    <CommonCards className="border-0 bg-white">
-      <header className="mb-14">
-        <Typography.Paragraph className="text-xl text-canBlack font-medium">
+    <CommonCards className="border-0 bg-white" id="common-cards">
+      <header className="mb-14" id="header">
+        <Typography.Paragraph
+          className="text-xl text-canBlack font-medium"
+          id="header-paragraph"
+        >
           {isEdit ? "Update Topic" : "Start a New Topic"}
         </Typography.Paragraph>
       </header>
@@ -117,15 +120,17 @@ const dispatch = useDispatch()
           namespace: getNameSpacesValue(),
           tags: null,
         }}
+        id="create-new-topic-form"
       >
-        <Row gutter={15}>
-          <Col xs={24} sm={24}>
+        <Row gutter={15} id="form-row">
+          <Col xs={24} sm={24} id="topic-name-col">
             {isLoading ? (
               <CustomSkelton
                 skeltonFor="list"
                 bodyCount={1}
                 stylingClass="listSkeleton"
                 isButton={false}
+                id="topic-name-skeleton"
               />
             ) : (
               <Inputs
@@ -150,33 +155,39 @@ const dispatch = useDispatch()
                 onBlur={onTopicNameBlur}
                 dataid="topic-name"
                 key="topic-name-key"
+                id="topic-name-input"
               />
             )}
           </Col>
-          <Col xs={24} sm={24} className="py-3 mb-4">
-            <Typography.Paragraph className="text-canRed text-xs">
+          <Col xs={24} sm={24} className="py-3 mb-4" id="nickname-label-col">
+            <Typography.Paragraph
+              className="text-canRed text-xs"
+              id="nickname-label"
+            >
               {labels.cr_nick_name_sp}
             </Typography.Paragraph>
           </Col>
-          <Col xs={24} sm={12}>
+          <Col xs={24} sm={12} id="nickname-input-col">
             {isLoading ? (
               <CustomSkelton
                 skeltonFor="list"
                 bodyCount={1}
                 stylingClass="listSkeleton"
                 isButton={false}
+                id="nickname-skeleton"
               />
             ) : (
               getNickNameInput()
             )}
           </Col>
-          <Col xs={24} sm={12} key={"namespaces_div"}>
+          <Col xs={24} sm={12} key={"namespaces_div"} id="namespace-input-col">
             {isLoading ? (
               <CustomSkelton
                 skeltonFor="list"
                 bodyCount={1}
                 stylingClass="listSkeleton"
                 isButton={false}
+                id="namespace-skeleton"
               />
             ) : (
               <SelectInputs
@@ -208,16 +219,18 @@ const dispatch = useDispatch()
                 onSelect={(val) => form.setFieldValue("namespace", val)}
                 key="canon-select"
                 lastValue={form.getFieldValue("namespace")}
+                id="namespace-select"
               />
             )}
           </Col>
-          <Col xs={24} sm={12}>
+          <Col xs={24} sm={12} id="category-input-col">
             {isLoading ? (
               <CustomSkelton
                 skeltonFor="list"
                 bodyCount={1}
                 stylingClass="listSkeleton"
                 isButton={false}
+                id="category-skeleton"
               />
             ) : (
               <SelectInputs
@@ -240,34 +253,38 @@ const dispatch = useDispatch()
                   />
                 }
                 onSelect={onTagSelect}
+                id="category-select"
               />
             )}
           </Col>
-          <Col xs={24} className="mb-5">
+          <Col xs={24} className="mb-5" id="selected-categories-col">
             {isLoading ? (
               <CustomSkelton
                 skeltonFor="list"
                 bodyCount={1}
                 stylingClass="listSkeleton"
                 isButton={false}
+                id="selected-categories-skeleton"
               />
             ) : (
               selectedCats?.map((cat) => (
                 <Tags
                   className="rounded-lg py-2 px-6 border-canGrey2 text-canBlue bg-canGray mt-0 mb-2 font-medium"
                   key={cat?.id}
+                  id={`selected-category-tag-${cat?.id}`}
                 >
                   <span>{cat?.title}</span>
                   <CloseOutlined
                     className="mr-2 text-canLight"
                     onClick={(e) => onCatRemove(e, cat)}
+                    id={`remove-category-icon-${cat?.id}`}
                   />
                 </Tags>
               ))
             )}
           </Col>
           {isEdit && (
-            <Col xs={24} xl={24}>
+            <Col xs={24} xl={24} id="edit-summary-col">
               <Inputs
                 name="edit_summary"
                 label="Add Summary Of Changes"
@@ -276,6 +293,7 @@ const dispatch = useDispatch()
                 maxLength={100}
                 prefix={<FileTextOutlined />}
                 defaultValue={String(editCampStatementData)}
+                id="edit-summary-input"
               />
             </Col>
           )}
@@ -287,9 +305,13 @@ const dispatch = useDispatch()
             bodyCount={1}
             stylingClass="listSkeleton"
             isButton={false}
+            id="form-buttons-skeleton"
           />
         ) : (
-          <div className="mt-4 flex justify-start items-center">
+          <div
+            className="mt-4 flex justify-start items-center"
+            id="form-buttons-div"
+          >
             <SecondaryButton
               onClick={onCancel}
               id="cancel-btn"
@@ -304,11 +326,13 @@ const dispatch = useDispatch()
               data-testid="create-topic-btn"
               disabled={!isDisabled}
               className="flex justify-center items-center py-5 px-6 w-[200px]"
-              onClick={(()=>{ dispatch(
-                setFilterCanonizedTopics({
-                  algorithm: "blind_popularity",
-                })
-              )})}
+              onClick={() => {
+                dispatch(
+                  setFilterCanonizedTopics({
+                    algorithm: "blind_popularity",
+                  })
+                );
+              }}
             >
               {isEdit ? "Update Topic" : "Save Topic"} <SaveOutlined />
             </PrimaryButton>

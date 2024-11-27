@@ -148,7 +148,6 @@ export default function RecentActivities() {
       if (loadMore) {
         resData.topics = resData?.topics?.concat(recentActivities?.topics);
       }
-      console.log("resData---", resData);
 
       setRecentActivities(resData);
     }
@@ -272,13 +271,17 @@ export default function RecentActivities() {
         isActivitiesPage={isActivitiesPage}
         onBackClick={() => router?.back()}
       />
-      <div className={isActivitiesPage ? "mx-auto w-full lg:w-8/12" : "w-full"}>
+      <div
+        className={isActivitiesPage ? "mx-auto w-full lg:w-8/12" : "w-full"}
+        id="activities-container"
+      >
         <CommonCard
           className={`border-0 h-100 !bg-white [&_.ant-card-body]:p-0 [&_.ant-tabs-tab-active]:!border ${
             isActivitiesPage
               ? "[&_.ant-tabs-tab-active]:!border [&_.ant-card-body]:flex [&_.ant-card-body]:flex-col"
               : "[&_.ant-card-body]:lg:p-[24px] lg:!bg-canGray mt-3"
           }`}
+          id="common-card"
         >
           <AllActivitiesSwitch
             userData={userData}
@@ -297,9 +300,10 @@ export default function RecentActivities() {
               defaultActiveKey={`${defaultActiveKey}`}
               tabBarExtraContent={slot}
               onChange={handleTabChange}
+              id="tabs"
             >
               {!isOnlyCamp && (
-                <TabPane tab="Camps" key="topic/camps">
+                <TabPane tab="Camps" key="topic/camps" id="tab-pane-camps">
                   <TopicCampsTab
                     getTopicsLoadingIndicator={getTopicsLoadingIndicator}
                     recentActivities={recentActivities}
@@ -311,7 +315,7 @@ export default function RecentActivities() {
                 </TabPane>
               )}
               {
-                <TabPane tab="Threads" key="threads">
+                <TabPane tab="Threads" key="threads" id="tab-pane-threads">
                   <ThreadTab
                     getTopicsLoadingIndicator={getTopicsLoadingIndicator}
                     recentActivities={recentActivities}
@@ -324,7 +328,10 @@ export default function RecentActivities() {
               }
             </Tabs>
           ) : (
-            <div className="bg-white border p-2 rounded-lg min-h-80">
+            <div
+              className="bg-white border p-2 rounded-lg min-h-80"
+              id="non-activities-container"
+            >
               <Tabs
                 className={`[&_.ant-tabs-nav]:mb-0 [&_.ant-tabs-nav-wrap]:w-full [&_.ant-tabs-nav-wrap]:justify-center [&_.ant-tabs-nav-list]:w-full px-2 [&_.ant-tabs-tab-btn]:!text-canBlue [&_.ant-tabs-tab-btn]:!px-4 [&_.ant-tabs-ink-bar]:!h-[3px] ${
                   router?.query?.camp_num && router?.query?.topic_num
@@ -334,8 +341,13 @@ export default function RecentActivities() {
                 defaultActiveKey={`${defaultActiveKey}`}
                 tabBarExtraContent={slot}
                 onChange={handleTabChange}
+                id="non-activities-tabs"
               >
-                <TabPane tab="Camps" key="topic/camps">
+                <TabPane
+                  tab="Camps"
+                  key="topic/camps"
+                  id="non-activities-tab-pane-camps"
+                >
                   <TopicCampsTab
                     getTopicsLoadingIndicator={getTopicsLoadingIndicator}
                     recentActivities={recentActivities}
@@ -344,7 +356,11 @@ export default function RecentActivities() {
                     covertToTime={covertToTime}
                   />
                 </TabPane>
-                <TabPane tab="Threads" key="threads">
+                <TabPane
+                  tab="Threads"
+                  key="threads"
+                  id="non-activities-tab-pane-threads"
+                >
                   <ThreadTab
                     getTopicsLoadingIndicator={getTopicsLoadingIndicator}
                     recentActivities={recentActivities}
@@ -358,7 +374,7 @@ export default function RecentActivities() {
           )}
         </CommonCard>
         {isActivitiesPage && (
-          <div className="lg:ml-[206px] mt-5">
+          <div className="lg:ml-[206px] mt-5" id="load-more-container">
             {checkLogType === "topic/camps"
               ? LoadMoreTopics("topic/camps")
               : LoadMoreTopics("threads")}

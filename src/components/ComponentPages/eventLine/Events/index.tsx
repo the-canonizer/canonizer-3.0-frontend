@@ -54,8 +54,8 @@ const Events = ({ timelineDescript, loadingEvents }: any) => {
 
   return (
     <>
-      <div className="activites-wrapper">
-        <Title level={5} className="uppercase">
+      <div id="eventline-sidebar-activities-container" className="activites-wrapper">
+        <Title level={5} id="eventline-sidebar-activities-title" className="uppercase">
           activities
         </Title>
         {loadingEvents || timelineDescript?.length == 0 ? (
@@ -74,6 +74,7 @@ const Events = ({ timelineDescript, loadingEvents }: any) => {
                 return (
                   <Fragment key={key}>
                     <List.Item
+                      id="eventline-sidebar-activities-item"
                       className={
                         activityStyle.activitiesList +
                         ` ${key == 0 && check ? "animate-rightToLeft" : ""}`
@@ -83,6 +84,7 @@ const Events = ({ timelineDescript, loadingEvents }: any) => {
                         title={
                           <>
                             <Link
+                              id="eventline-sidebar-activities-item-link"
                               href={
                                 title?.url?.split("/")[1] == "topic"
                                   ? `${

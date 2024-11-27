@@ -27,36 +27,38 @@ const CreateNewCampUI = ({
   };
 
   return (
-    <Fragment>
-      <div className="d-flex">
-        <aside className="leftSideBar miniSideBar topicPageNewLayoutSidebar">
-          {/* <SideBar /> */}
-        </aside>
-        <div className="pageContentWrap">
-          <CampInfoBar payload={payload} />
-          <Spin spinning={isLoading} size="large">
-            <FormUI
-              onFinish={onFinish}
-              onCancel={onCancel}
-              form={form}
-              initialValue={initialValue}
-              topicData={topicData}
-              nickNameList={nickNameList}
-              parentCamp={parentCamp}
-              campNickName={campNickName}
-              options={options}
-              onCheckboxChange={onCheckboxChange}
-              isLoading={isLoading}
-              isEdit={undefined}
-              isDisabled={undefined}
-              onCampChange={undefined}
-              onCampNameBlur={undefined}
-              values={undefined}
-            />
-          </Spin>
-        </div>
+    <div id="create-new-camp-container" className="d-flex">
+      <aside
+        id="create-new-camp-sidebar"
+        className="leftSideBar miniSideBar topicPageNewLayoutSidebar"
+      >
+        {/* <SideBar /> */}
+      </aside>
+      <div id="create-new-camp-content" className="pageContentWrap">
+        <CampInfoBar id="create-new-camp-info-bar" payload={payload} />
+        <Spin spinning={isLoading} size="large">
+          <FormUI
+            id="create-new-camp-form"
+            onFinish={onFinish}
+            onCancel={onCancel}
+            form={form}
+            initialValue={initialValue}
+            topicData={topicData}
+            nickNameList={nickNameList}
+            parentCamp={parentCamp}
+            campNickName={campNickName}
+            options={options}
+            onCheckboxChange={onCheckboxChange}
+            isLoading={isLoading}
+            isEdit={undefined}
+            isDisabled={undefined}
+            onCampChange={undefined}
+            onCampNameBlur={undefined}
+            values={undefined}
+          />
+        </Spin>
       </div>
-    </Fragment>
+    </div>
   );
 };
 

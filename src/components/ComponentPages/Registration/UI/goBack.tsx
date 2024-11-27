@@ -7,6 +7,7 @@ function RegistrationUiGoBack({ onBrowseClick }) {
       type="link"
       className="h-[50px] text-sm w-2/12 text-canBlack flex items-center justify-start text-sm font-medium p-0 mb-4 lg:hidden self-start"
       onClick={onBrowseClick}
+      id="go-back-button"
     >
       <LeftOutlined /> Go Back
     </Button>

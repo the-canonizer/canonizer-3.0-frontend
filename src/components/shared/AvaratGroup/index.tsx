@@ -7,7 +7,7 @@ const AvatarGroup = ({
   avatars = [],
   loading = false,
   maxCount = 4,
-  imageBaseURL = '',
+  imageBaseURL = "",
   ...restProps
 }: any) => {
   if (loading) {
@@ -29,6 +29,7 @@ const AvatarGroup = ({
     <Avatar.Group
       maxCount={maxCount}
       {...restProps}
+      id="browse-topic-avatars-container"
       className="[&_.ant-avatar]:!bg-canBlue2 [&_.ant-avatar]:border-2 [&_.ant-avatar-string]:!text-canBlack"
     >
       {avatars?.map((av) => (

@@ -60,32 +60,46 @@ const PreferedTopics = ({ isPage = false }) => {
   return (
     <Fragment>
       {isPage ? (
-        <div className="browse-wrapper pb-4 mt-3">
-          <Title level={4} className="browse-title !mb-0">
+        <div id="browse-wrapper" className="browse-wrapper pb-4 mt-3">
+          <Title id="browse-title" level={4} className="browse-title !mb-0">
             Your preferred Topics
           </Title>
           <Divider />
         </div>
       ) : (
-        <Row gutter={15}>
-          <Col md={12} sm={12} xs={12}>
+        <Row id="section-heading-row" gutter={15}>
+          <Col id="section-heading-col" md={12} sm={12} xs={12}>
             <SectionHeading
               title="Your preferred topics"
               infoContent="Preferred Topics are a personalized list of subjects shown to you based on the topic tags or categories you selected during registration. These topics align with your interests, making it easier for you to engage in discussions that matter most to you"
             />
           </Col>
-          <Col md={12} sm={12} xs={12} className="text-right">
+          <Col
+            id="see-more-link-col"
+            md={12}
+            sm={12}
+            xs={12}
+            className="text-right"
+          >
             <SeeMoreLInk href="/preferred-topics" />
           </Col>
         </Row>
       )}
 
-      <div className="mt-3">
-        <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
+      <div id="topics-list" className="mt-3">
+        <div
+          id="topics-grid"
+          className="grid md:grid-cols-2 xl:grid-cols-3 gap-5"
+        >
           {topicLists?.map((ft) => (
-            <div className="mb-4 h-full" key={ft?.id}>
+            <div
+              id={`topic-card-${ft?.id}`}
+              className="mb-4 h-full"
+              key={ft?.id}
+            >
               {loadMoreIndicator ? (
                 <CustomSkelton
+                  id={`custom-skelton-${ft?.id}`}
                   skeltonFor="hotTopic"
                   bodyCount={1}
                   stylingClass="listSkeleton"
@@ -103,9 +117,13 @@ const PreferedTopics = ({ isPage = false }) => {
         </div>
       </div>
 
-      <div className={`paginationCon flex justify-center py-5`}>
+      <div
+        id="pagination-container"
+        className={`paginationCon flex justify-center py-5`}
+      >
         {isLoading && (
           <CustomSkelton
+            id="loading-skelton"
             skeltonFor="list"
             bodyCount={1}
             stylingClass=""

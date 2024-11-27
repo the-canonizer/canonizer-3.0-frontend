@@ -295,9 +295,9 @@ function ManageStatements({ isEdit = false }) {
   };
 
   const autoSave = async (data) => {
+    setStatement(data?.statement);
     if (!isEdit || isDraft) {
       setIsAutoSaving(true);
-      setStatement(data?.statement);
       let payload = {
         ...data,
         statement: data?.statement
@@ -504,15 +504,20 @@ function ManageStatements({ isEdit = false }) {
 
     if (res?.data?.post_changes_count > 0) {
       Modal.confirm({
-        title: "Do you want to discard this change?",
+        title: "Do you want to publish this change?",
         icon: <ExclamationCircleFilled />,
+        width: 600,
         okText: "Publish Anyway",
         cancelText: "Review Other Statements",
         onCancel: () => {
-          router.push({ pathname: getBackURL() });
+          router.push(
+            `/statement/history/${getTopicAndCampIds()?.topicNum}-${
+              getTopicAndCampIds()?.topicName
+            }/${getTopicAndCampIds()?.campNum}`
+          );
         },
         content:
-          "The draft you have created is based on anolder version. Multiple versions have been published since then. Checkout the newer versions before publishing your statement.",
+          "The draft you have created is based on an older version. Multiple versions have been published since then. Checkout the newer versions before publishing your statement.",
         async onOk() {
           try {
             const editInfo = editStatementData;
@@ -823,13 +828,19 @@ function ManageStatements({ isEdit = false }) {
   };
 
   return (
-    <CustomSpinner key="create-statemnt-spinner" spinning={screenLoading}>
+    <CustomSpinner key="create-statement-spinner" spinning={screenLoading}>
       <Row
+        id="breadcrumb-row"
         className="bg-canGray rounded-lg [&_nav]:p-0 [&_nav]:mb-0 py-5 px-4"
         gutter={20}
       >
-        <Col md={12} className="flex justify-start items-center">
+        <Col
+          id="breadcrumb-col"
+          md={12}
+          className="flex justify-start items-center"
+        >
           <Breadcrumbs
+            id="breadcrumbs"
             items={[
               { icon: <HomeOutlined className="text-canBlack" />, href: "/" },
               {
@@ -845,8 +856,12 @@ function ManageStatements({ isEdit = false }) {
             ]}
           />
         </Col>
-        <Col className="flex justify-end items-center" md={12}>
-          <Typography.Paragraph className="!mb-0 mr-7">
+        <Col
+          id="save-draft-col"
+          className="flex justify-end items-center"
+          md={12}
+        >
+          <Typography.Paragraph id="auto-save-message" className="!mb-0 mr-7">
             {isAutoSaving ? (
               "Saving ..."
             ) : (
@@ -861,6 +876,7 @@ function ManageStatements({ isEdit = false }) {
             )}
           </Typography.Paragraph>
           <SecondaryButton
+            id="save-draft-button"
             className="flex items-center justify-center py-2 px-8 h-auto"
             onClick={saveDraftHandler}
             loading={isSavingDraft}
@@ -870,10 +886,14 @@ function ManageStatements({ isEdit = false }) {
           </SecondaryButton>
         </Col>
       </Row>
-      <Row gutter={20} className="mt-5">
-        <Col md={20}>
+      <Row id="main-content-row" gutter={20} className="mt-5">
+        <Col id="main-content-col" md={20}>
           {notFoundStatus?.status ? (
-            <DataNotFound name={notFoundStatus?.name} backURL={"/"} />
+            <DataNotFound
+              id="data-not-found"
+              name={notFoundStatus?.name}
+              backURL={"/"}
+            />
           ) : (
             <ManageStatementUI
               form={form}

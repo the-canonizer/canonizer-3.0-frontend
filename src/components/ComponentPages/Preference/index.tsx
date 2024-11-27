@@ -145,7 +145,11 @@ const ProfilePrefrences = () => {
       optionList.map((item) => {
         if (algoOrLang == "algorithms") {
           option.push(
-            <Option key={item.algorithm_key} value={item.algorithm_key}>
+            <Option
+              key={item.algorithm_key}
+              value={item.algorithm_key}
+              id="prefrence_option"
+            >
               {item.algorithm_label}
             </Option>
           );
@@ -311,19 +315,27 @@ const ProfilePrefrences = () => {
   };
 
   return (
-    <section>
+    <section id="prefrence_section_unique">
       <SectionHeading
         title="PREFERENCES"
         icon={null}
         className="lg:mt-0 mt-10 mb-5"
       />
-      <Row gutter={30}>
-        <Col md={12} sm={24} className="w-full lg:mb-0 mb-5">
-          <p className="mb-2 mt-3 text-sm font-normal text-canBlack">
+      <Row gutter={30} id="prefrence_row_unique">
+        <Col
+          md={12}
+          sm={24}
+          className="w-full lg:mb-0 mb-5"
+          id="prefrence_col_unique_1"
+        >
+          <p
+            className="mb-2 mt-3 text-sm font-normal text-canBlack"
+            id="prefrence_select_heading_language_unique"
+          >
             Language
           </p>
           <Select
-            id="selectLanguage"
+            id="prefrence_select_unique"
             size="large"
             placeholder={"Select a language"}
             showSearch
@@ -343,12 +355,15 @@ const ProfilePrefrences = () => {
             {listOfOption(languageList, "languages")}
           </Select>
         </Col>
-        <Col md={12} sm={24} className="w-full">
-          <p className="mb-2 mt-3 text-sm font-normal text-canBlack">
+        <Col md={12} sm={24} className="w-full" id="prefrence_col_unique_2">
+          <p
+            className="mb-2 mt-3 text-sm font-normal text-canBlack"
+            id="prefrence_select_heading_algorithm_unique"
+          >
             Default Algorithm Preferences
           </p>
           <Select
-            id="algorithms"
+            id="prefrence_select_algorithm_unique"
             size="large"
             placeholder={messages.placeholders.algorithm}
             showSearch
@@ -362,7 +377,6 @@ const ProfilePrefrences = () => {
                 alt=""
               />
             }
-            // value={}
             onChange={handleAlgorithmChange}
             className="text-canBlack font-normal  [&_.ant-select-selector]:!rounded-lg [&_.ant-select-selector]:!outline-none [&_.ant-select-selector]:!shadow-none commonSelectClass [&_.ant-select-arrow]:text-canBlack [&_.ant-select-arrow>svg]:fill-canBlack  [&_.ant-select-selector]:!h-11 [&_.ant-select-selector]:!flex [&_.ant-select-selector]:!items-center [&_.ant-select-selection-search>input]:!text-base placeholder:!text-base w-full [&_.ant-select-arrow]:!h-full [&_.ant-select-arrow]:!flex [&_.ant-select-arrow]:!items-center [&_.ant-select-arrow]:border-l [&_.ant-select-arrow]:border-canGrey2 [&_.ant-select-arrow]:!pl-2.5 [&_.ant-select-arrow]:!top-1/2 [&_.ant-select-arrow]:!-translate-y-1/2 [&_.ant-select-arrow]:!mt-0 [&_.ant-select-selection-placeholder]:!text-base  "
           >
@@ -371,23 +385,38 @@ const ProfilePrefrences = () => {
         </Col>
       </Row>
 
-      <hr className="my-10" />
+      <hr className="my-10" id="prefrence_line_space_unique" />
 
-      <div className="lg:mt-0 mt-12">
+      <div className="lg:mt-0 mt-12" id="prefrence_section_for_tags_unique">
         <SectionHeading
           title="Topic Tags"
           icon={null}
           className="lg:mb-5 mb-7"
         />
-        <div className="flex lg:justify-between lg:items-center mb-5 lg:flex-row flex-col">
-          <div className="flex-1 order-2 lg:order-1  ">
-            <p className="text-sm font-medium">
+        <div
+          className="flex lg:justify-between lg:items-center mb-5 lg:flex-row flex-col"
+          id="prefrence_tags_section_unique"
+        >
+          <div
+            className="flex-1 order-2 lg:order-1"
+            id="prefrence_tags_section_2_unique"
+          >
+            <p
+              className="text-sm font-medium"
+              id="prefrence_tags_section_note_unique"
+            >
               You have set{" "}
-              <span className="text-canBlue">{selectedCount} Topic Tags </span>
+              <span
+                className="text-canBlue"
+                id="prefrence_tags_section_note_as_your_pref_unique"
+              >
+                {selectedCount} Topic Tags{" "}
+              </span>
               as your preference
             </p>
           </div>
           <Input
+            id="prefrence_tags_search_input_unique"
             placeholder="Search via Topic Tags name"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -398,23 +427,26 @@ const ProfilePrefrences = () => {
                 width={16}
                 height={16}
                 alt=""
+                id="search_icon_unique"
               />
             }
           />
         </div>
       </div>
 
-      <div className="w-full my-4 px-1 focus:overscroll-contain custom-checkbox-preference flex flex-wrap gap-3">
+      <div
+        className="w-full my-4 px-1 focus:overscroll-contain custom-checkbox-preference flex flex-wrap gap-3"
+        id="prefrence_tags_checkbox_section_unique"
+      >
         {filteredTags.length > 0 ? (
           filteredTags.map((ch) => {
-            // Check if the tag should be initially checked based on profileUserTags
             const isChecked =
               ch.checked !== undefined
                 ? ch.checked
                 : profileUserTags.some((tag) => tag.tag_id === ch.id);
             return (
               <CustomCheckbox
-                id={ch.id}
+                id={`custom_checkbox_${ch.id}`}
                 key={ch.id}
                 onChange={() => onChange({ ...ch, checked: isChecked })}
                 checked={isChecked}
@@ -425,20 +457,29 @@ const ProfilePrefrences = () => {
             );
           })
         ) : (
-          <p>No tags found</p>
+          <p id="prefrence_no_tags_found_unique">No tags found</p>
         )}
       </div>
 
-      <div className="flex justify-center gap-5 mt-10">
+      <div
+        className="flex justify-center gap-5 mt-10"
+        id="prefrence_tags_discard_btn_unique"
+      >
         <SecondaryButton
           onClick={onDiscard}
           disabled={loading}
           className="flex gap-2.5 items-center justify-center w-[12.5rem] h-auto"
+          id="secondary_button_unique"
         >
-          Discard <CloseOutlined />
+          Discard{" "}
+          <CloseOutlined id="prefrence_tags_discard_btn_closeoutline_unique" />
         </SecondaryButton>
 
-        <Form form={formVerify} onFinish={onFinish2}>
+        <Form
+          form={formVerify}
+          onFinish={onFinish2}
+          id="form_for_prefrence_unique"
+        >
           <PrimaryButton
             className="flex gap-2.5 items-center justify-center w-[12.5rem] h-auto"
             loading={loading}
@@ -449,8 +490,10 @@ const ProfilePrefrences = () => {
                 await GetUserProfileInfo();
               } catch (error) {}
             }}
+            id="prefrence_tags_save_btn_unique"
           >
-            Save <SaveOutlined />
+            Save{" "}
+            <SaveOutlined id="prefrence_tags_save_btn_saveoutline_unique" />
           </PrimaryButton>
         </Form>
       </div>

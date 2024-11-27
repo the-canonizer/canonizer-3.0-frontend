@@ -46,6 +46,7 @@ function NickNameUI({
       width: "20%",
       render: (_, record) => (
         <Select
+          id="nickname_status_select"
           defaultValue={record.private.toString()}
           size="large"
           onChange={(value) => chnageVisibilityStatus(value, record)}
@@ -54,23 +55,33 @@ function NickNameUI({
           suffixIcon={<DownOutlined className="text-canBlack" />}
           popupClassName="nickNamePopup"
         >
-          <Option value="0">
-            <Tooltip title="Public" placement="left">
+          <Option value="0" id="nickname_status_option">
+            <Tooltip
+              title="Public"
+              placement="left"
+              id="nickname_status_option_public_tooltip"
+            >
               <Image
                 src="/images/globe-icon-2.svg"
                 width={14}
                 height={14}
                 alt=""
+                id="nickname_public_icon"
               />
             </Tooltip>
           </Option>
           <Option value="1">
-            <Tooltip title="Private" placement="left">
+            <Tooltip
+              title="Private"
+              placement="left"
+              id="nickname_status_option_private_tooltip"
+            >
               <Image
                 src="/images/nickname-lock-icon.svg"
                 width={12}
                 height={12}
                 alt=""
+                id="nickname_private_icon"
               />
             </Tooltip>
           </Option>
@@ -86,36 +97,41 @@ function NickNameUI({
         bodyCount={5}
         stylingClass=""
         isButton={false}
+        id="nickname_loader"
       />
     );
   }
 
   return (
-    <section>
+    <section id="nickname_section">
       <SectionHeading title="NICKNAMES" icon={null} />
-      <p className="mt-1 mb-5 text-sm font-normal text-canRed">
+      <p
+        className="mt-1 mb-5 text-sm font-normal text-canRed"
+        id="nickanme_note"
+      >
         Note: You can’t edit or delete your nickname once created. You can only
         manage its visibility status.
       </p>
-      <Form form={nickNameForm} component={false}>
-        <Form.Item className="!mb-0">
+      <Form form={nickNameForm} component={false} id="nickname_form_section">
+        <Form.Item className="!mb-0" id="form_for_nickname">
           <Table
-            id="nickNameList"
+            id="nickanme_table"
             dataSource={nickNameList}
             columns={columns}
             rowClassName="editable-row"
             pagination={{ pageSize: pageSizeLength }}
           />
         </Form.Item>
-        <Form.Item>
+        <Form.Item id="form_for_nickname_secondry_btn">
           <SecondaryButton
             onClick={handleAddNickName}
             type="primary"
             style={{ marginBottom: 16 }}
             className="flex gap-2.5 items-center justify-center h-auto"
+            id="nickname_secondry_btn"
           >
             {messages.labels.addnewNickName}
-            <PlusOutlined />
+            <PlusOutlined id="nickname_secondry_btn_plusoutlined" />
           </SecondaryButton>
         </Form.Item>
       </Form>
@@ -129,6 +145,7 @@ function NickNameUI({
         data-testid="addnicknamemodal"
       >
         <Form
+          id="nickname_modal_form"
           name="add_edit_form"
           form={add_edit_form}
           onFinish={onAddUpdateNickName}
@@ -136,6 +153,7 @@ function NickNameUI({
           scrollToFirstError
         >
           <Form.Item
+            id="form_for_nickanme_modal"
             name="nick_name"
             label={
               <>
@@ -161,7 +179,7 @@ function NickNameUI({
             <Input
               maxLength={50}
               data-testid="enterNickName"
-              id="enterNickName"
+              id="nickname_input"
               placeholder="Enter Nickname"
               value=""
               size="large"
@@ -173,26 +191,32 @@ function NickNameUI({
             />
           </Form.Item>
           <Form.Item
+            id="form_for_nickname_visibiluty_status"
             name="visibility_status"
             label={messages.labels.visibilityStatus}
             className="text-sm text-canBlack font-normal [&_label]:text-sm [&_label]:font-medium [&_.ant-form-item-explain-error]:mb-6"
           >
             <Select
+              id="nickname_select_tag"
               defaultValue="0"
               size="large"
               className="text-canBlack font-normal h-[40px] [&_.ant-select-selector]:!rounded-lg [&_.ant-select-selector]:!outline-none [&_.ant-select-selector]:!shadow-none commonSelectClass [&_.ant-select-arrow]:text-canBlack [&_.ant-select-arrow>svg]:fill-canBlack"
             >
-              <Option value="0">
-                <Tooltip title="Public">Public</Tooltip>
+              <Option value="0" id="nickname_option">
+                <Tooltip title="Public" id="publuc_option">
+                  Public
+                </Tooltip>
               </Option>
               <Option value="1">
-                <Tooltip title="Private">Private</Tooltip>
+                <Tooltip title="Private" id="private_option">
+                  Private
+                </Tooltip>
               </Option>
             </Select>
           </Form.Item>
           <Form.Item>
             <PrimaryButton
-              id="addEditBtn"
+              id="nickname_add_edit_btn"
               htmlType="submit"
               data-testid="submitButton"
               className="h-auto w-auto flex items-center justify-center"

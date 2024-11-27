@@ -25,10 +25,11 @@ import CreateTopic from "src/components/shared/Buttons/TopicCreationButton";
 import { useIsMobile } from "src/hooks/useIsMobile";
 import { getGravatarPicApi } from "src/network/api/notificationAPI";
 import { logout } from "src/network/api/userApi";
-import { RootState } from "src/store";
+import { RootState, store } from "src/store";
 import Logo from "../logoHeader";
 import Notifications from "../notification";
 import ProfileInfoTab from "./profileInfo";
+import { setLogOutType } from "src/store/slices/authSlice";
 
 const menuItems = [
   {
@@ -44,19 +45,6 @@ const menuItems = [
     id: 2,
     icon: <GlobalOutlined />,
   },
-  // {
-  //   link: "/create/topic",
-  //   linkTitle: "Start a Topic",
-  //   id: 3,
-  //   isMobile: true,
-  //   icon: <PlusOutlined />,
-  // },
-  // {
-  //   link: process.env.NEXT_PUBLIC_BLOG_URL,
-  //   linkTitle: "Blog",
-  //   id: 5,
-  //   external: true,
-  // },
   {
     link: "/videos",
     linkTitle: "Videos",
@@ -103,6 +91,8 @@ const menuItems = [
 ];
 
 export const logOut = async (router) => {
+  store.dispatch(setLogOutType("user"));
+
   const res = await logout();
 
   if (res?.status_code === 200) {

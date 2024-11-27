@@ -44,7 +44,7 @@ const CommentsList = () => {
       asofdate: state.filters?.filterObject?.asofdate,
       algorithm: state.filters?.filterObject?.algorithm,
     }));
-   
+
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -260,12 +260,16 @@ const CommentsList = () => {
               !isMobile ? (
                 <>
                   {!isUserAuthenticated ? (
-                    <Text id="sign-in-msg" data-testid="logincheck">
+                    <Text
+                      id="sign-in-msg-desktop"
+                      data-testid="logincheck-desktop"
+                    >
                       Please <Link href={{ pathname: "/login" }}>Sign In</Link>{" "}
                       to comment on this Thread
                     </Text>
                   ) : (
                     <PrimaryButton
+                      id="comment-button-desktop"
                       className="flex justify-center items-center h-auto py-2 px-7"
                       onClick={onCreatePost}
                     >
@@ -279,14 +283,15 @@ const CommentsList = () => {
         }
       >
         {isMobile && (
-          <div className="flex justify-end">
+          <div id="mobile-sign-in-container" className="flex justify-end">
             {!isUserAuthenticated ? (
-              <Text id="sign-in-msg" data-testid="logincheck">
+              <Text id="sign-in-msg-mobile" data-testid="logincheck-mobile">
                 Please <Link href={{ pathname: "/login" }}>Sign In</Link> to
                 comment on this Thread
               </Text>
             ) : (
               <PrimaryButton
+                id="comment-button-mobile"
                 className="flex justify-center items-center h-auto py-2 px-7"
                 onClick={onCreatePost}
               >

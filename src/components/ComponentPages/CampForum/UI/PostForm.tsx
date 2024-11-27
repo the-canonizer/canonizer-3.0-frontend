@@ -95,10 +95,14 @@ const PostFormPopup = ({
         scrollToFirstError
         validateTrigger={messages.formValidationTypes()}
         initialValues={{ ...initialValue }}
+        id="form-create-edit-post"
       >
         <Row gutter={16}>
           <Col sm={24} className="py-6">
-            <Typography.Paragraph className="text-canRed text-xs">
+            <Typography.Paragraph
+              className="text-canRed text-xs"
+              id="note-paragraph"
+            >
               Note: Once you pick a nickname, for any contribution to a topic,
               you must always use the same nickname for any other contribution
               or forum comment to this topic.
@@ -128,22 +132,25 @@ const PostFormPopup = ({
               onSelect={(val) => form.setFieldValue("nick_name", val)}
               lastValue={form.getFieldValue("nick_name")}
               value={form.getFieldValue("nick_name")}
+              id="select-nick-name"
             />
           </Col>
           <Col xs={24}>
             <div
               className="mb-[30px] relative editorContent"
               key="post_editor_div"
+              id="editor-container"
             >
               <label
                 htmlFor="new_post_nick_name"
                 className="ant-form-item-required text-sm font-medium mb-3 block"
                 title=""
+                id="message-label"
               >
                 Message <span className="required">*</span>
               </label>
               {isLoading ? (
-                <CustomSkelton skeltonFor="table" />
+                <CustomSkelton skeltonFor="table" id="custom-skelton" />
               ) : (
                 <Editorckl
                   key="post_editor"
@@ -152,18 +159,23 @@ const PostFormPopup = ({
                   placeholder="Post Your Message Here..."
                   items={formats}
                   height={200}
+                  id="editor"
                 />
               )}
-              {isError && <Text type="danger">{validations.reply}</Text>}
+              {isError && (
+                <Text type="danger" id="error-text">
+                  {validations.reply}
+                </Text>
+              )}
             </div>
           </Col>
         </Row>
-        <div className="flex justify-center pt-9 mt-auto">
+        <div className="flex justify-center pt-9 mt-auto" id="button-container">
           <SecondaryButton
             htmlType="button"
             className={`flex items-center justify-center py-2 h-auto px-9 mr-4`}
             onClick={onCancel}
-            id="back-btn"
+            id="cancel-btn"
             data-testid="back-btn"
           >
             Cancel <CloseOutlined />
