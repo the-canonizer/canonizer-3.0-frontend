@@ -172,7 +172,6 @@ const PostUI = ({
               onEditClick={onEditClick.bind(this, post)}
               onDeleteClick={onDeleteClick.bind(this, post.id)}
               post={post}
-              id={`post-${post.id}`}
             />
           ))
         )}
@@ -197,7 +196,6 @@ const PostUI = ({
               total={pTotal}
               showSizeChanger={false}
               data-testid="s"
-              id="pagination"
             />
           ) : null}
         </div>

@@ -26,7 +26,7 @@ const TopicInfoCard = () => {
           related to that particular subject.
         </Typography.Paragraph>
       </header>
-      <InfoIcon id="info-icon" className="mt-auto mx-auto max-w-lg w-full" />
+      <InfoIcon className="mt-auto mx-auto max-w-lg w-full" />
     </CommonCards>
   );
 };
