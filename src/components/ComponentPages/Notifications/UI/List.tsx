@@ -31,7 +31,6 @@ export default function NotificationList({
               <Badge
                 dot={item["is_seen"] === 0}
                 className="bg-[#5482C833] w-[30px] h-[30px] rounded-full grid items-center justify-center"
-                id={"badge-" + item["id"]}
               >
                 <BellOutlined
                   className="text-white text-lg"

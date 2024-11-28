@@ -125,7 +125,7 @@ const NotificationsListUI = ({
               key="div-of-switch"
               id="notification-switch-container"
             >
-              <NotificationSwitch id="notification-switch" />
+              <NotificationSwitch />
             </div>
           </div>
         </Col>

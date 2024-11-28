@@ -44,7 +44,7 @@ const CatsList = ({ onBackClick, isMobile, tags, onSort }) => {
       extra={
         isMobile ? (
           <div className="flex justify-end" id="sort-dropdown-container-1">
-            <SortByDropdown onSort={onSort} id="sort-dropdown-1" />
+            <SortByDropdown onSort={onSort} />
           </div>
         ) : null
       }
@@ -71,7 +71,7 @@ const CatsList = ({ onBackClick, isMobile, tags, onSort }) => {
         </Col>
         {!isMobile && (
           <Col lg={12} className="flex justify-end items-center" id="col-2">
-            <SortByDropdown onSort={onSort} id="sort-dropdown-2" />
+            <SortByDropdown onSort={onSort} />
           </Col>
         )}
       </Row>
@@ -81,7 +81,7 @@ const CatsList = ({ onBackClick, isMobile, tags, onSort }) => {
         id="grid-1"
       >
         {tags?.map((tag) => (
-          <Category key={tag?.id} tag={tag} id={`category-${tag?.id}`} />
+          <Category key={tag?.id} tag={tag} />
         ))}
       </div>
     </CommonCards>

@@ -20,8 +20,7 @@ const SortByDropdown = ({ onSort }) => {
           className="inline-flex border-0 p-0 !bg-transparent h-auto"
           onClick={(e) => onSort(e, "asc")}
         >
-          A-Z{" "}
-          <SortIcon id="sort_a_z_icon" className="rotate-180 scale-x-[-1]" />
+          A-Z <SortIcon className="rotate-180 scale-x-[-1]" />
         </SecondaryButton>
       ),
     },
@@ -33,7 +32,7 @@ const SortByDropdown = ({ onSort }) => {
           className="inline-flex border-0 p-0 !bg-transparent h-auto"
           onClick={(e) => onSort(e, "desc")}
         >
-          Z-A <SortIcon id="sort_z_a_icon" />
+          Z-A <SortIcon />
         </SecondaryButton>
       ),
     },
@@ -49,7 +48,7 @@ const SortByDropdown = ({ onSort }) => {
       className="ml-3 border-[1px] rounded-lg overflow-hidden !text-canBlack w-auto flex py-1 px-3"
     >
       <a id="sort_by_link" className="" onClick={(e) => e.preventDefault()}>
-        Sort By <SortIcon id="sort_by_icon" />
+        Sort By <SortIcon />
       </a>
     </Dropdown>
   );

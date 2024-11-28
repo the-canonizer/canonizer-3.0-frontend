@@ -45,7 +45,7 @@ function RecentActivitiesHeader({ isActivitiesPage, onBackClick }) {
         className="text-right"
         id="default-page-col-right"
       >
-        <SeeMoreLInk href="/activities" id="default-page-see-more-link" />
+        <SeeMoreLInk href="/activities" />
       </Col>
     </Row>
   );
