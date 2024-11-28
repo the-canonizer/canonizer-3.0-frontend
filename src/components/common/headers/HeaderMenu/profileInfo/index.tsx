@@ -13,6 +13,7 @@ const ProfileInfo = ({
   isMobile,
   menu = <></>,
   withoutDropdown = false,
+  showGravatar = false,
 }: any) => {
   const { loggedInUser } = useSelector((state: RootState) => ({
     loggedInUser: state.auth.loggedInUser,
@@ -25,7 +26,7 @@ const ProfileInfo = ({
         size={isMobile ? "small" : "default"}
         className="-mb-[10px] cursor-pointer"
       />
-    ) : isGravatarImage && !loadingImage ? (
+    ) : isGravatarImage && showGravatar && !loadingImage ? (
       loggedInUser?.email && (
         <Avatar
           src={`https://www.gravatar.com/avatar/${md5(

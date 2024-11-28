@@ -35,7 +35,7 @@ export const getLists = async (
 
 export const getGravatarPicApi = async (email) => {
   try {
-    let url = `https://www.gravatar.com/avatar/${md5(email)}?d=404`;
+    let url = `https://www.gravatar.com/avatar/${md5(email)}`;
     let res = await axios.get(url);
     return res;
   } catch (error) {

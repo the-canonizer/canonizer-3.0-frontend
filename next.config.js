@@ -13,6 +13,7 @@ module.exports = withBundleAnalyzer({
       "aws-315.s3.ap-south-1.amazonaws.com",
       "localhost:4001",
       "canonizer-bucket.s3.ap-south-1.amazonaws.com",
+      "www.gravatar.com",
     ],
   },
   typescript: {},

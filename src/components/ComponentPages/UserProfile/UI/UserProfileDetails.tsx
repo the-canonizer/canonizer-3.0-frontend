@@ -11,6 +11,8 @@ import messages from "src/messages";
 import CustomSkelton from "components/common/customSkelton";
 import CommonCards from "components/shared/Card";
 import { getGravatarImage } from "components/shared/AvaratGroup/avatar";
+import { Avatar } from "antd";
+import { useIsMobile } from "src/hooks/useIsMobile";
 
 const ItemCard = ({ icon, label, text }) => {
   return (
@@ -29,6 +31,7 @@ const UserProfileDetails = ({
   userSupportedCampsList,
   userProfileCardSkeleton,
 }) => {
+  const isMobile = useIsMobile();
   const [isGravatarAvailable, setIsGravatarAvailable] = useState(false);
 
   useEffect(() => {
@@ -84,7 +87,7 @@ const UserProfileDetails = ({
   return (
     <CommonCards className="bg-white lg:bg-canGray mt-10 lg:mt-2">
       <div className={`flex gap-5 flex-wrap`}>
-        {imagePath && (
+        {imagePath ? (
           <div className="w-[100px] h-[100px] rounded-full overflow-hidden object-cover [&_img]:object-cover [&_img]:object-top">
             <Image
               src={imagePath}
@@ -94,6 +97,14 @@ const UserProfileDetails = ({
               style={{ borderRadius: "50px" }}
             />
           </div>
+        ):(
+        <Avatar
+          style={{ fontSize: `${isMobile ? "25px" : "20px"}` }}
+          size={100}
+          className="uppercase bg-canBlue text-white flex justify-center items-center  text-sm border-[1px] border-solid border-white -mb-[10px]"
+        >
+          {profileData?.first_name?.charAt(0) + profileData?.last_name?.charAt(0)}
+        </Avatar>
         )}
 
         <div className="flex flex-wrap gap-4">
