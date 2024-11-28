@@ -306,12 +306,40 @@ const CampTree = ({
         }
       }
 
+      const isLastChild = (data, item) => {
+        const keys = Object.keys(data);
+        return keys[keys.length - 1] === item.toString();
+      };
+
+      const isLastParent = (data, item) => {
+        const parentKeys = Object.keys(data);
+        return parentKeys[parentKeys.length - 1] === item.toString();
+      };
+
+      const isLast = isLastChild(data, item) && isLastParent(data, item);
+
+      const isFirstItem = (data, item) => {
+        const keys = Object.keys(data);
+        return keys[0] === item.toString();
+      };
+
+      const isFirstParent = (data, item) => {
+        const parentKeys = Object.keys(data);
+        return parentKeys[0] === item.toString();
+      };
+
+      const isFirst = isFirstItem(data, item) && isFirstParent(data, item);
+
       if (data[item].children) {
         if (data[item].score >= scoreFilter) {
           return data[item].is_archive == 0 ||
             (data[item].is_archive != 0 && is_camp_archive_checked == true) ? (
             <TreeNode
-              className="[&_.ant-tree-switcher]:!flex [&_.ant-tree-switcher]:!items-center [&_.ant-tree-node-content-wrapper]:hover:!bg-transparent [&_.ant-tree-switcher.ant-tree-switcher-noop>span]:!hidden [&_.ant-tree-node-content-wrapper]:py-1"
+              className={`[&_.ant-tree-switcher]:!flex [&_.ant-tree-switcher]:!items-center [&_.ant-tree-node-content-wrapper]:hover:!bg-transparent [&_.ant-tree-switcher.ant-tree-switcher-noop>span]:!hidden [&_.ant-tree-node-content-wrapper]:py-1 ${
+                isLastChild ? "last-child-node-class" : ""
+              } ${isLastParent ? "last-parent-node-class" : ""} ${
+                isLast ? "last-node-class" : ""
+              } ${isFirst ? "first-node-class" : ""}`}
               switcherIcon={({ expanded }) => {
                 return data[item].camp_id ===
                   +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1) &&
@@ -564,6 +592,8 @@ const CampTree = ({
     let uniqueArraytoString = uniqueArray.map(String);
     return uniqueArraytoString;
   };
+
+  console.log("tree", tree);
 
   return tree?.at(0) ? (
     (showTree && tree?.at(0)["1"]?.title != "" && defaultExpandKeys) ||
