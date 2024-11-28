@@ -135,6 +135,7 @@ const LatestFilter = () => {
   };
 
   const filterForAsofDate = () => {
+    delete router?.query?.viewversion
     dispatch(setViewThisVersion(false));
     dispatch(
       setFilterCanonizedTopics({
@@ -168,6 +169,7 @@ const LatestFilter = () => {
       filterObject?.namespace_id,
       viewThisVersion
     );
+    revertScore()
   };
   const algoRevert = () => {
     onChangeRoute(
