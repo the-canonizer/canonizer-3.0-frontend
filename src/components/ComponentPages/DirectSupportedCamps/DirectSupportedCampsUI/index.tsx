@@ -561,6 +561,7 @@ export default function DirectSupportedCampsUI({
                       handleClose(tag, record.topic_num, record, []);
                       setValData(tag);
                       setRevertBack([]);
+                      setActiveTopic(record?.topic_num)
                     }}
                   />
                 </div>
