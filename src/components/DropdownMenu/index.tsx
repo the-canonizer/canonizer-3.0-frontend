@@ -223,9 +223,10 @@ const DropDownMenu = () => {
   };
 
   return (
-    <div>
-      <Menu className={styles.campForumDropdownMenu}>
+    <div id="threedot_dropdown_section">
+      <Menu className={styles.campForumDropdownMenu} id="threedot_dropdown_event_line_menu">
         <Menu.Item
+          id="threedot_dropdown_event_line_menu_item"
           icon={
             <span className={styles.svgIconCode}>
               <StockOutlined />
@@ -233,25 +234,26 @@ const DropDownMenu = () => {
           }
         >
           {isTopicPage && (
-            <a onClick={eventLinePath}>
-              <span>Event Line</span>
+            <a onClick={eventLinePath} id="threedot_dropdown_event_line_menu_item_link">
+              <span id="threedot_dropdown_event_line_menu_item_text">Event Line</span>
             </a>
           )}
         </Menu.Item>
         {isUserAuthenticated && is_admin && (
-          <Menu.Item key="0" icon={<i className="icon-newspaper"></i>}>
+          <Menu.Item key="0" icon={<i className="icon-newspaper" id="threedot_dropdown_add_news_menu_item"></i>}>
             {router?.pathname == "/support/[...manageSupport]" ? (
-              <Link href={router?.asPath.replace("support", "addnews")}>
+              <Link href={router?.asPath.replace("support", "addnews")} id="threedot_dropdown_add_news_menu_item_link_1">
                 Add News
               </Link>
             ) : (
-              <Link href={router?.asPath.replace("topic", "addnews")}>
+              <Link href={router?.asPath.replace("topic", "addnews")} id="threedot_dropdown_add_news_menu_item_link_2">
                 Add News
               </Link>
             )}
           </Menu.Item>
         )}
         <Menu.Item
+          id="threedot_dropdown_unsubscribe_entire_topic_menu_item"
           icon={
             <i
               className={`icon-subscribe ${
@@ -275,6 +277,7 @@ const DropDownMenu = () => {
             : " Subscribe to Entire Topic"}
         </Menu.Item>
         <Menu.Item
+          id="threedot_dropdown_unsubscribe_entire_camp_menu_item"
           icon={
             <i
               className={`icon-subscribe ${
@@ -303,12 +306,14 @@ const DropDownMenu = () => {
             "Unsubscribe to the Camp"
           ) : !!campSubscriptionID && campRecord?.flag == 2 ? (
             <Tooltip
+              id="threedot_dropdown_unsubscribe_camp_menu_item_tooltip_1"
               title={`You are subscribed to ${campRecord?.subscriptionCampName}`}
             >
               Subscribe to the Camp
             </Tooltip>
           ) : campRecord?.length == 0 ? (
             <Tooltip
+               id="threedot_dropdown_unsubscribe_camp_menu_item_tooltip_2"
               title={`You can't modify history, please go to the current state. `}
             >
               Subscribe to the Camp
@@ -318,11 +323,13 @@ const DropDownMenu = () => {
           )}
         </Menu.Item>
         <Menu.Item
+           id="threedot_dropdown_manage_support_btn__menu_item"
           icon={<HeartOutlined />}
           disabled={asof == "bydate" || campRecord?.is_archive}
         >
           {isTopicPage && (
             <Link
+              id="threedot_dropdown_manage_support_btn__menu_item_link"
               href={isUserAuthenticated ? "#" : "/login"}
               onClick={(e) => {
                 e?.preventDefault();
@@ -331,6 +338,7 @@ const DropDownMenu = () => {
               passHref
             >
               <div
+                id="threedot_dropdown_manage_support_btn__menu_item_text"
                 className="topicDetailsCollapseFooter"
                 onClick={(e) => {
                   if (isUserAuthenticated) {
@@ -354,9 +362,10 @@ const DropDownMenu = () => {
             </Link>
           )}
         </Menu.Item>
-        <Menu.Item icon={<i className="icon-camp"></i>}>
+        <Menu.Item icon={<i className="icon-camp" id="threedot_dropdown_manage_camp_btn__menu_item"></i>}>
           {isTopicPage && (
             <Link
+              id="threedot_dropdown_manage_camp_btn__menu_item_link"
               href={`/camp/history/${replaceSpecialCharacters(
                 router?.query?.camp
                   ? router?.query?.camp[0]
@@ -369,13 +378,14 @@ const DropDownMenu = () => {
                 "-"
               )}`}
             >
-              <a>{K?.exceptionalMessages?.manageCampButton}</a>
+              <a id="threedot_dropdown_manage_camp_btn__menu_item_text">{K?.exceptionalMessages?.manageCampButton}</a>
             </Link>
           )}
         </Menu.Item>
-        <Menu.Item icon={<i className="icon-topic"></i>}>
+        <Menu.Item icon={<i className="icon-topic"></i>} id="threedot_dropdown_manage_topic_btn__menu_item">
           {isTopicPage && (
             <Link
+              id="threedot_dropdown_manage_topic_btn__menu_item_link"
               href={`/topic/history/${replaceSpecialCharacters(
                 router?.query?.camp
                   ? router?.query?.camp[0]
@@ -383,23 +393,25 @@ const DropDownMenu = () => {
                 "-"
               )}`}
             >
-              <a>{K?.exceptionalMessages?.manageTopicButton} </a>
+              <a id="threedot_dropdown_manage_topic_btn__menu_item_text">{K?.exceptionalMessages?.manageTopicButton} </a>
             </Link>
           )}
         </Menu.Item>
         <Menu.Item
+          id="threedot_dropdown_btn_lable_menu_item"
           icon={<FileTextOutlined />}
           disabled={campRecord?.is_archive}
         >
           {isTopicPage && (
-            <Link href={getCreateCampUr()}>
-              <a>{getButtonLabel()}</a>
+            <Link href={getCreateCampUr()} id="threedot_dropdown_btn_lable_menu_item_link">
+              <a id="threedot_dropdown_btn_lable_menu_item_text">{getButtonLabel()}</a>
             </Link>
           )}
         </Menu.Item>
         <Menu.Item
+          id="threedot_dropdown_generate_modal_menu_item"
           icon={
-            <span className={styles.svgIconCode}>
+            <span className={styles.svgIconCode} id="threedot_dropdown_generate_modal_menu_item_code_icon">
               <CodeIcon />
             </span>
           }
@@ -412,6 +424,7 @@ const DropDownMenu = () => {
           )}
         </Menu.Item>
         <Menu.Item
+          id="threedot_dropdown_print_outline_menu_item"
           icon={
             <span className={styles.svgIconCode}>
               <PrinterOutlined />
@@ -419,8 +432,8 @@ const DropDownMenu = () => {
           }
         >
           {isTopicPage && (
-            <a onClick={onPrintCamp}>
-              <span>Print</span>
+            <a onClick={onPrintCamp} id="threedot_dropdown_print_outline_menu_item_link">
+              <span id="threedot_dropdown_print_outline_menu_item_text">Print</span>
             </a>
           )}
         </Menu.Item>
