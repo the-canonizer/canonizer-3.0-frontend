@@ -14,7 +14,7 @@ const HistoryComparison = ({
   s1 = false,
 }: any) => {
   const router = useRouter();
-  const historyOf = router?.query?.from;
+  const historyOf = router?.asPath?.split("/")?.at(1);
 
   const covertToTime = (unixTime) =>
     moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
@@ -40,13 +40,20 @@ const HistoryComparison = ({
   return (
     <>
       {historyOf === "topic" || historyOf === "camp" ? (
-        <p id="comparison-topic-camp-name-container" className="mb-2.5 break-all">
+        <p
+          id="comparison-topic-camp-name-container"
+          className="mb-2.5 break-all"
+        >
           {capitalizeFirstLetter(historyOf)} Name:{" "}
           <span>{campStatement?.parsed_value}</span>
         </p>
       ) : null}
 
-      <Title level={5} id="comparison-topic-camp-updates" className="font-semibold mb-2.5 break-all">
+      <Title
+        level={5}
+        id="comparison-topic-camp-updates"
+        className="font-semibold mb-2.5 break-all"
+      >
         {getTitle()}
       </Title>
       <div>
