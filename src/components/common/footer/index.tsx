@@ -80,16 +80,16 @@ function Footer() {
   const [mockLinks, setMockLinks] = useState(mockLinks1);
 
   useEffect(() => {
-    if (!loggedInUser?.is_admin) {
-      const allLinks = [...mockLinks];
-      const filteredLinks = allLinks.filter((obj) => {
-        return obj.link != "/uploadFile";
-      });
+    // if (!loggedInUser?.is_admin) {
+    //   const allLinks = [...mockLinks];
+    //   const filteredLinks = allLinks.filter((obj) => {
+    //     return obj.link != "/uploadFile";
+    //   });
 
-      setMockLinks(filteredLinks);
-    } else {
+    //   setMockLinks(filteredLinks);
+    // } else {
       setMockLinks(mockLinks1);
-    }
+    // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedInUser]);
 
