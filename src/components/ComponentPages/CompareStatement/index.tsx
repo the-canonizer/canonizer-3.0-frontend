@@ -53,7 +53,7 @@ function CompareStatement() {
   };
 
   useEffect(() => {
-    const ids = (router?.query?.statements as String)?.split("_");
+    const ids = (router?.query?.comparison_ids as String)?.split("_");
     const status = (router?.query?.status as String)?.split("-");
     if (isLoggedIn) {
       if (ids?.length) getStatement(ids);
