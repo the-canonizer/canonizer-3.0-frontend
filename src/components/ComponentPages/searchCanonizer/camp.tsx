@@ -80,7 +80,11 @@ const CampSearch = () => {
     );
   };
   const getHighlightedText = (text, highlight) => {
-    const parts = text?.split(new RegExp(`(${highlight})`, "gi"));
+    // const parts = text?.split(new RegExp(`(${highlight})`, "gi"));
+    const escapedHighlight = highlight.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+
+    // Create a regular expression using the escaped highlight
+    const parts = text?.split(new RegExp(`(${escapedHighlight})`, "gi"));
     return (
       <span>
         {" "}
