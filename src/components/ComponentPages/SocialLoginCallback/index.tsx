@@ -19,9 +19,10 @@ import CallbackUI from "./UI";
 import { setUserNickNames } from "src/store/slices/authSlice";
 
 function SocialLoginCallback() {
-  const { rdType } = useSelector((state: RootState) => ({
+  const { rdType, currentReturnUrl } = useSelector((state: RootState) => ({
     rdType: state.utils.redirect_type,
     rdSlTab: state.utils.redirect_tab_setting,
+    currentReturnUrl: state?.auth?.currentReturnUrl,
   }));
 
   const [redirectType, setRedirectType] = useState(rdType);
@@ -55,6 +56,8 @@ function SocialLoginCallback() {
           dispatch(setValue({ label: "redirect_type", value: false }));
 
           router?.push("/settings?tab=profile");
+        } else if (currentReturnUrl) {
+          router?.push(currentReturnUrl);
         } else {
           router?.push("/");
         }
@@ -110,7 +113,11 @@ function SocialLoginCallback() {
         dispatch(setValue({ label: "redirect_type", value: false }));
 
         if (!redirectTab) {
-          router?.push("/");
+          if (currentReturnUrl) {
+            router?.push(currentReturnUrl);
+          } else {
+            router?.push("/");
+          }
         } else {
           router?.push("/settings?tab=social");
         }
