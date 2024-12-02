@@ -221,7 +221,7 @@ function HistoryContainer() {
         router?.query.camp[1] ? router?.query.camp[1] : "1-Agreement"
       }`,
       query: {
-        statements: selectedTopic?.at(0) + "_" + selectedTopic?.at(1),
+        comparison_ids: selectedTopic?.at(0) + "_" + selectedTopic?.at(1),
         from:
           historyOf == "statement"
             ? "statement"
