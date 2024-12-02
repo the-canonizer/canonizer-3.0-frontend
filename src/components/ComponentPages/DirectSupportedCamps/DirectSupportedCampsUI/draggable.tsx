@@ -149,6 +149,7 @@ function SortableItem(props) {
             }
             onClose={(evt) => {
               evt.preventDefault();
+              evt.stopPropagation();
               props?.onClose(props?.item);
             }}
           >
@@ -157,6 +158,7 @@ function SortableItem(props) {
               className="text-sm font-medium flex items-center gap-2.5"
               onClick={(e) => {
                 e.preventDefault();
+                e.stopPropagation();
                 window.location.href = props?.item?.camp_link;
               }}
             >
