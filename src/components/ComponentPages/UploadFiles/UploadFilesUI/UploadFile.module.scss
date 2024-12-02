@@ -1,5 +1,6 @@
 .card {
   padding: 0 8px;
+  background-color: red;
   .btnsWrap {
     padding: 15px 13px 15px;
     border: solid 1px #d9d9d9;
@@ -42,6 +43,17 @@
 
     @media screen and (max-width: 1150px) {
       font-size: 15px;
+    }
+  }
+  @media screen and (max-width: 1150px) {
+    margin-top: 20px;
+  }
+  @media screen and (max-width: 767px) {
+    [class*="ant-card-head-wrapper"] {
+      flex-wrap: wrap;
+      [class*="ant-card-head-title"] {
+        @apply w-full min-w-full max-w-full flex;
+      }
     }
   }
 }
