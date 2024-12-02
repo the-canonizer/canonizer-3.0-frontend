@@ -26,7 +26,7 @@ const CampInfoCard = () => {
           arguments related to that particular subject.
         </Typography.Paragraph>
       </header>
-      <CampInfoIcon className="mt-auto mx-auto max-w-lg w-full" />
+      <CampInfoIcon className="my-auto mx-auto max-w-xl w-full" />
     </CommonCards>
   );
 };

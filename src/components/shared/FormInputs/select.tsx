@@ -28,6 +28,7 @@ const SelectInputs = ({
   optionsData = null,
   lastValue = null,
   mode = null,
+  extra = null,
   ...props
 }) => {
   const [isFocused, setIsFocused] = useState(false);
@@ -41,6 +42,7 @@ const SelectInputs = ({
       label={label}
       data-id={dataid}
       initialValue={initialValue}
+      extra={extra}
       {...rules}
     >
       <div

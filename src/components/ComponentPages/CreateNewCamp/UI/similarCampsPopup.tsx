@@ -66,7 +66,7 @@ const SimilarCampPopup = ({
       <List
         dataSource={data}
         locale={{ emptyText: "There are no related camps available" }}
-        className="!list-disc"
+        className="!list-disc [&_.ant-list-items]:!max-h-64 [&_.ant-list-items]:!overflow-y-auto"
         renderItem={(item: {
           id: string;
           link: string;
@@ -77,7 +77,7 @@ const SimilarCampPopup = ({
             key={item?.id}
             id={`list-item-${item?.id}`}
           >
-            {getTopicNameLink(item, campName, false, "w-full border-b-2 pb-3")}
+            {getTopicNameLink(item, campName, false, " w-full border-b-2 pb-3")}
             <SecondaryButton
               className="flex p-0 !bg-transparent h-auto shadow-none border-0 uppercase text-xs font-semibold text-canBlue hocus:text-canBlue hocus:[&_>svg]:fill-canBlue"
               onClick={onContributeCLick.bind(this, item)}
