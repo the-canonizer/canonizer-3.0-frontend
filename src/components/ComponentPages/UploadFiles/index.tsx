@@ -294,14 +294,7 @@ const UploadFiles = () => {
       }
     }
   };
-  // useEffect(() => {
-  //   !isUserAuthenticated &&
-  //   location.pathname == "/uploadFile"
-  //     ? router?.push("/")
-  //     : "";
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
-  //onLoad
+
   useEffect(() => {
     (async () => {
       if (isUserAuthenticated) {
