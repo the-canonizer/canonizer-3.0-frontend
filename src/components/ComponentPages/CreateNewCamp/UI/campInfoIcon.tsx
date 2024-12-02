@@ -1,8 +1,8 @@
 const CampInfoIcon = ({ fill = "", className = "" }) => (
   <div className={className} id="wrapper-div">
     <svg
-      width="453"
-      height="301"
+      // width="453"
+      // height="301"
       viewBox="0 0 453 301"
       fill={fill}
       xmlns="http://www.w3.org/2000/svg"
