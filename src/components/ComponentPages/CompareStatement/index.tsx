@@ -26,7 +26,8 @@ function CompareStatement() {
       ids,
       topic_num: +router?.query.routes?.at(0)?.split("-")[0],
       camp_num: +router?.query.routes?.at(1).split("-")[0],
-      compare: router?.query?.from,
+      compare: router?.asPath?.split("/")?.at(1),
+      // compare: router?.query?.from,
     };
     const res = await getCompareStatement(reqBody);
 
