@@ -27,7 +27,7 @@ export const getTopicNameLink = (
 ) => {
   const bd = JSON.parse(item?.breadcrumb_data);
   return (
-    <div className={"flex" + className} id={`topic-link-${item.id}`}>
+    <div className={"flex " + className} id={`topic-link-${item.id}`}>
       <div
         className="w-[5px] h-[5px] rounded-full bg-canBlack mr-2 mt-2.5"
         id={`dot-${item.id}`}
