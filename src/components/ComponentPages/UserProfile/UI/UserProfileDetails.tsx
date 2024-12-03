@@ -84,6 +84,17 @@ const UserProfileDetails = ({
     .join(", ") // Joins the non-empty parts with a comma and space
     .trim(); // Ensures no leading or trailing spaces
 
+  const getNameInitials = (first_name,last_name) => {
+    if(first_name && last_name){
+      return first_name?.charAt(0)+ last_name?.charAt(0)
+    }else if(first_name){
+      return first_name?.charAt(0)
+    }else if(last_name){
+      return last_name?.charAt(0)
+    }else{
+      return null
+    }
+  }
   return (
     <CommonCards className="bg-white lg:bg-canGray mt-10 lg:mt-2">
       <div className={`flex gap-5 flex-wrap`}>
@@ -103,7 +114,7 @@ const UserProfileDetails = ({
           size={100}
           className="uppercase bg-canBlue text-white flex justify-center items-center  text-sm border-[1px] border-solid border-white -mb-[10px]"
         >
-          {profileData?.first_name?.charAt(0) + profileData?.last_name?.charAt(0)}
+          {getNameInitials(profileData?.first_name, profileData?.last_name)}
         </Avatar>
         )}
 
