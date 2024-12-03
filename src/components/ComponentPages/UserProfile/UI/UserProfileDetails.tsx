@@ -33,6 +33,7 @@ const UserProfileDetails = ({
 }) => {
   const isMobile = useIsMobile();
   const [isGravatarAvailable, setIsGravatarAvailable] = useState(false);
+  const [profileImageError, setProfileImageError] = useState(false);
 
   useEffect(() => {
     const fetchGravatarImage = async () => {
@@ -84,21 +85,29 @@ const UserProfileDetails = ({
     .join(", ") // Joins the non-empty parts with a comma and space
     .trim(); // Ensures no leading or trailing spaces
 
-  const getNameInitials = (first_name,last_name) => {
-    if(first_name && last_name){
-      return first_name?.charAt(0)+ last_name?.charAt(0)
-    }else if(first_name){
-      return first_name?.charAt(0)
-    }else if(last_name){
-      return last_name?.charAt(0)
-    }else{
-      return null
+  const getNameInitials = (first_name, last_name) => {
+    if (first_name && last_name) {
+      return first_name?.charAt(0) + last_name?.charAt(0);
+    } else if (first_name) {
+      return first_name?.charAt(0);
+    } else if (last_name) {
+      return last_name?.charAt(0);
+    } else {
+      return null;
     }
   }
   return (
     <CommonCards className="bg-white lg:bg-canGray mt-10 lg:mt-2">
       <div className={`flex gap-5 flex-wrap`}>
-        {imagePath ? (
+        {!imagePath || profileImageError ? (
+          <Avatar
+            style={{ fontSize: `${isMobile ? "25px" : "20px"}` }}
+            size={100}
+            className="uppercase bg-canBlue text-white flex justify-center items-center  text-sm border-[1px] border-solid border-white -mb-[10px]"
+          >
+            {getNameInitials(profileData?.first_name, profileData?.last_name)}
+          </Avatar>
+        ) : (
           <div className="w-[100px] h-[100px] rounded-full overflow-hidden object-cover [&_img]:object-cover [&_img]:object-top">
             <Image
               src={imagePath}
@@ -106,16 +115,9 @@ const UserProfileDetails = ({
               width={100}
               height={100}
               style={{ borderRadius: "50px" }}
+              onError={() => {setProfileImageError(true)}}
             />
           </div>
-        ):(
-        <Avatar
-          style={{ fontSize: `${isMobile ? "25px" : "20px"}` }}
-          size={100}
-          className="uppercase bg-canBlue text-white flex justify-center items-center  text-sm border-[1px] border-solid border-white -mb-[10px]"
-        >
-          {getNameInitials(profileData?.first_name, profileData?.last_name)}
-        </Avatar>
         )}
 
         <div className="flex flex-wrap gap-4">
