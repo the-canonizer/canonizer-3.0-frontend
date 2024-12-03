@@ -167,7 +167,7 @@ const CreateTopicFromUI = ({
               {labels.cr_nick_name_sp}
             </Typography.Paragraph>
           </Col>
-          <Col xs={24} sm={12} id="nickname-input-col">
+          <Col xs={24} sm={24} md={24} lg={24} xl={12} id="nickname-input-col">
             {isLoading ? (
               <CustomSkelton
                 skeltonFor="list"
@@ -180,7 +180,15 @@ const CreateTopicFromUI = ({
               getNickNameInput()
             )}
           </Col>
-          <Col xs={24} sm={12} key={"namespaces_div"} id="namespace-input-col">
+          <Col
+            xs={24}
+            sm={24}
+            md={24}
+            lg={24}
+            xl={12}
+            key={"namespaces_div"}
+            id="namespace-input-col"
+          >
             {isLoading ? (
               <CustomSkelton
                 skeltonFor="list"
@@ -195,10 +203,12 @@ const CreateTopicFromUI = ({
                   <Fragment>
                     {labels.cr_namespace}
                     <span className="required">*</span>
-                    <span className="text-[10px]">
-                      (General is recommended, unless you know otherwise)
-                    </span>
                   </Fragment>
+                }
+                extra={
+                  <span className="text-[10px]">
+                    (General is recommended, unless you know otherwise)
+                  </span>
                 }
                 name="namespace"
                 options={nameSpaces}
@@ -223,7 +233,7 @@ const CreateTopicFromUI = ({
               />
             )}
           </Col>
-          <Col xs={24} sm={12} id="category-input-col">
+          <Col xs={24} sm={24} md={24} lg={24} xl={12} id="category-input-col">
             {isLoading ? (
               <CustomSkelton
                 skeltonFor="list"

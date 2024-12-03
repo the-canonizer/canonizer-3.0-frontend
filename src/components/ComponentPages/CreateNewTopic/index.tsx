@@ -215,43 +215,6 @@ const CreateNewTopic = () => {
     setIsopicLoading(false);
   };
 
-  // const isMatched = () => {
-  //   const isMatched = existingTopics.some(
-  //     (tp) =>
-  //       values?.topic_name?.trim()?.toLowerCase() ===
-  //       tp?.type_value?.trim()?.toLowerCase()
-  //   );
-
-  //   if (isMatched) {
-  //     setIsError(true);
-  //     form.setFields([
-  //       {
-  //         name: ["topic_name"],
-  //         value: values?.topic_name,
-  //         errors: ["The topic name has already been taken."],
-  //       },
-  //     ]);
-  //     return;
-  //   }
-
-  //   if (!isMatched) {
-  //     form.setFields([
-  //       {
-  //         name: ["topic_name"],
-  //         value: values?.topic_name,
-  //         errors: [],
-  //       },
-  //     ]);
-  //     setIsError(false);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   if (existingTopics?.length) {
-  //     isMatched();
-  //   }
-  // }, [existingTopics, values?.topic_name]);
-
   const onTopicChange = useCallback(
     debounce((e) => {
       const enteredValues = e?.target?.value;
