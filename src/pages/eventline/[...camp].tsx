@@ -4,7 +4,6 @@ import EventLine from "../../components/ComponentPages/eventLine";
 import { setCurrentDate } from "src/store/slices/filtersSlice";
 import { useDispatch } from "react-redux";
 
-// import { wrapper } from "src/store";
 
 const TopicAnimationPage = ({ current_date }: any) => {
   const dispatch = useDispatch();
@@ -12,11 +11,9 @@ const TopicAnimationPage = ({ current_date }: any) => {
   dispatch(setCurrentDate(current_date));
 
   return (
-    <>
-      <Layout>
-        <EventLine />
-      </Layout>
-    </>
+    <Layout>
+      <EventLine />
+    </Layout>
   );
 };
 
