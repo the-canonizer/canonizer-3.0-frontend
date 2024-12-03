@@ -17,7 +17,10 @@ import {
   useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Image, Tag } from "antd";
+import { Image, Tag, Tooltip } from "antd";
+import ReasonsActivity from "components/common/SupportReasonActivity";
+import { getProperties } from "src/utils/generalUtility";
+import { Fragment } from "react";
 
 export default function Draggable({
   tags,
@@ -102,19 +105,35 @@ function SortableItem(props) {
           className="rounded-full mr-0 bg-[#dadbde] flex items-center  border-transparent font-medium text-sm px-3 py-1 leading-none text-canBlack"
           closable={true}
           closeIcon={
-            <Image
-              preview={false}
-              src="/images/minus-user-icon.svg"
-              width={20}
-              height={20}
-              style={{ cursor: "not-allowed", alignSelf: "center" }}
-              alt=""
-            />
+            <Fragment>
+              <Image
+                preview={false}
+                src="/images/minus-user-icon.svg"
+                width={20}
+                height={20}
+                style={{ cursor: "not-allowed", alignSelf: "center" }}
+                alt=""
+              />
+              {props?.item?.recent_activity
+                ? getProperties(props?.item?.recent_activity)?.reason && (
+                    <Tooltip
+                      title={
+                        <div className="w-full">
+                          <ReasonsActivity
+                            CurrentItem={props?.item?.recent_activity}
+                          />
+                        </div>
+                      }
+                      placement="top"
+                      className="pointer text-canGrey2"
+                    >
+                      <i className="icon-info text-xl ml-2 mr-1"></i>
+                    </Tooltip>
+                  )
+                : null}
+            </Fragment>
           }
-          onClose={(evt) => {
-            // evt.preventDefault();
-            // props?.onClose(props?.item)
-          }}
+          onClose={(evt) => {}}
         >
           {`${props?.index + 1}-${
             props?.item?.camp_name?.length > 30
@@ -127,15 +146,34 @@ function SortableItem(props) {
           className="rounded-full mr-0 bg-[#F0F2FA] flex items-center border-transparent font-medium text-sm px-3 py-1 leading-none cn-card-home"
           closable={true}
           closeIcon={
-            <Image
-              className="cursor-pointer"
-              preview={false}
-              src="/images/minus-user-icon.svg"
-              style={{ cursor: "pointer", alignSelf: "center" }}
-              width={20}
-              height={20}
-              alt=""
-            />
+            <Fragment>
+              <Image
+                className="cursor-pointer"
+                preview={false}
+                src="/images/minus-user-icon.svg"
+                style={{ cursor: "pointer", alignSelf: "center" }}
+                width={20}
+                height={20}
+                alt=""
+              />
+              {props?.item?.recent_activity
+                ? getProperties(props?.item?.recent_activity)?.reason && (
+                    <Tooltip
+                      title={
+                        <div className="w-full">
+                          <ReasonsActivity
+                            CurrentItem={props?.item?.recent_activity}
+                          />
+                        </div>
+                      }
+                      placement="top"
+                      className="pointer text-canGrey2"
+                    >
+                      <i className="icon-info text-xl ml-3"></i>
+                    </Tooltip>
+                  )
+                : null}
+            </Fragment>
           }
           onClose={(evt) => {
             evt.preventDefault();
