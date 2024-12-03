@@ -507,6 +507,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
   return (
     <Fragment>
       <Layout
+        className="topicDetailsPageLayout"
         rightSidebar={
           !openConsensusTreePopup &&
           tree?.["1"]?.is_valid_as_of_time && (
