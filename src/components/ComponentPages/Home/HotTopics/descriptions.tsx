@@ -33,7 +33,7 @@ const CardDescription = ({
           isBrowsing ? "text-base" : "text-sm "
         } font-inter font-normal overflow-hidden text-canBlack opacity-80 italic`}
       >
-        No description available
+        No information available
       </div>
     );
   }
