@@ -30,6 +30,7 @@ export default function Draggable({
   setActiveTopic = null,
 }: any) {
   const sensors = useSensors(
+    useSensor(TouchSensor, { activationConstraint: { distance: 10 } }),
     useSensor(MouseSensor, { activationConstraint: { distance: 10 } }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
