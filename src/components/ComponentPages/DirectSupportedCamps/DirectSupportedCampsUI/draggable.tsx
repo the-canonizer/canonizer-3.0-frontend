@@ -34,7 +34,6 @@ export default function Draggable({
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     }),
-    useSensor(TouchSensor)
   );
 
   return (
