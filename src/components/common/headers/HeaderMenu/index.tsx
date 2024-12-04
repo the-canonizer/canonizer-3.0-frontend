@@ -81,7 +81,7 @@ const menuItems = [
     isAuthReq: true,
   },
   {
-    link: "/settings?tab=supported_camps",
+    link: "/settings?tab=direct_supported_camps",
     linkTitle: "Supported Camps",
     id: 5,
     isMobile: true,

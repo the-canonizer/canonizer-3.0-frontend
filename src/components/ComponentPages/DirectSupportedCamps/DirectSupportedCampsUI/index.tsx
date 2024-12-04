@@ -576,8 +576,11 @@ export default function DirectSupportedCampsUI({
                       className="bg-canBlue text-white text-base font-medium rounded-lg py-2.5 px-6 flex items-center focus:!bg-canBlue
                       focus:!text-canBlack"
                       onClick={() => {
+                        setCurrentCamp(record.topic_num);
                         handleSupportedCampsOpen(record);
+                        pageChange(currentPage, 5);
                         dispatch(setOpenDrawerForDirectSupportedCamp(true));
+                        dispatch(setDisableSubmitButtonForDirectSupportedCamp(false));
                       }}
                     >
                       Save Changes
