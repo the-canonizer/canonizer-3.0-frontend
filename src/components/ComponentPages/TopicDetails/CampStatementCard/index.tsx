@@ -1,7 +1,11 @@
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import Image from "next/image";
-import { EditOutlined } from "@ant-design/icons";
+import {
+  EditOutlined,
+  FullscreenExitOutlined,
+  FullscreenOutlined,
+} from "@ant-design/icons";
 
 import styles from "../topicDetails.module.scss";
 
@@ -17,6 +21,8 @@ import PrimaryButton from "components/shared/Buttons/PrimariButton";
 import CommonCard from "components/shared/Card";
 import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 import SectionHeading from "components/ComponentPages/Home/FeaturedTopic/sectionsHeading";
+import { useState } from "react";
+import { Button } from "antd";
 
 const CampStatementCard = ({ loadingIndicator }) => {
   const router = useRouter();
@@ -28,6 +34,7 @@ const CampStatementCard = ({ loadingIndicator }) => {
       tree: state?.topicDetails?.tree && state?.topicDetails?.tree[0],
     })
   );
+  const [fullScreen, setFullScreen] = useState(false);
 
   if (loadingIndicator || !campStatement) {
     return (
@@ -172,23 +179,27 @@ const CampStatementCard = ({ loadingIndicator }) => {
         "--card-body-height": `calc(100% - ${getElementHeight()}px)`,
         "--element-height": `${getElementHeight()}px`,
       }}
-      className={`border-0 h-100 bg-white [&_.ant-card-body]:p-0 [&_.ant-card-body]:lg:p-[24px] [&_.ant-card-body]:flex overflow-hidden lg:bg-canGray mb-8 lg:mb-14 border-t-8 
-        ${
-          router?.query?.viewversion == "1"
-            ? "!border-canOrange"
-            : router?.query?.asof == "review"
-            ? "!border-canOrange"
-            : router?.query?.asof == "bydate"
-            ? "border-[#4786CB]"
-            : "!border-canGreen"
-        } 
-          h-[400px] xl:h-[600px] statementCardBody`}
+      className={
+        fullScreen
+          ? "fixed top-0 left-0 w-full h-full z-[9999] bg-white border-none flex justify-start items-start shadow-md flex-col [&_.ant-card-head]:w-full"
+          : `border-0 h-100 bg-white [&_.ant-card-body]:p-0  [&_.ant-card-body]:lg:p-[24px] [&_.ant-card-body]:flex overflow-hidden lg:bg-canGray mb-8 lg:mb-14 border-t-8 
+            ${
+              router?.query?.viewversion == "1"
+                ? "!border-canOrange"
+                : router?.query?.asof == "review"
+                ? "!border-canOrange"
+                : router?.query?.asof == "bydate"
+                ? "border-[#4786CB]"
+                : "!border-canGreen"
+            } 
+            h-[400px] xl:h-[600px] statementCardBody`
+      }
       data-testid="algoSelect"
       id="statementCard"
       title={
         <div className="flex justify-between items-start flex-wrap">
-          <div className="mr-auto w-full lg:w-auto">
-            <div className="camp-agreement-header flex items-center mb-2.5 lg:mb-1 gap-2">
+          <div className="w-full">
+            <div className="camp-agreement-header flex items-center mb-2.5 lg:mb-1 gap-2 justify-between">
               <div className="flex gap-2.5 items-center">
                 <SectionHeading
                   title={campRecord?.camp_name}
@@ -201,25 +212,39 @@ const CampStatementCard = ({ loadingIndicator }) => {
                   className="!gap-1"
                 />
               </div>
+              <Button
+                className="border-none bg-transparent hover:bg-transparent shadow-none focus:!bg-transparent"
+                onClick={() => {
+                  setFullScreen(!fullScreen);
+                }}
+              >
+                {fullScreen ? (
+                  <FullscreenExitOutlined style={{ fontSize: "20px" }} />
+                ) : (
+                  <FullscreenOutlined style={{ fontSize: "20px" }} />
+                )}
+              </Button>
             </div>
 
-            {campStatement?.[0]?.go_live_time &&<div className="flex items-center justify-start gap-6 camp-header-content lg:border-none border-t border-b border-canGrey2 lg:py-0 py-1.5 lg:mb-0 mb-2">
-              {campStatement?.[0]?.go_live_time && (
-                <div className="flex items-center gap-2">
-                  <Image
-                    src="/images/calendar-camp.svg"
-                    alt="svg"
-                    className="icon-topic"
-                    height={16}
-                    width={16}
-                  />
-                  <p className="text-[10px] font-normal text-canBlack text-opacity-50">
-                    Last update:{" "}
-                    {covertToTime(campStatement?.[0]?.go_live_time)}
-                  </p>
-                </div>
-              )}
-            </div>}
+            {campStatement?.[0]?.go_live_time && (
+              <div className="flex items-center justify-start gap-6 camp-header-content lg:border-none border-t border-b border-canGrey2 lg:py-0 py-1.5 lg:mb-0 mb-2">
+                {campStatement?.[0]?.go_live_time && (
+                  <div className="flex items-center gap-2">
+                    <Image
+                      src="/images/calendar-camp.svg"
+                      alt="svg"
+                      className="icon-topic"
+                      height={16}
+                      width={16}
+                    />
+                    <p className="text-[10px] font-normal text-canBlack text-opacity-50">
+                      Last update:{" "}
+                      {covertToTime(campStatement?.[0]?.go_live_time)}
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
           {campStatement?.length &&
           campStatement[0]?.parsed_value &&
