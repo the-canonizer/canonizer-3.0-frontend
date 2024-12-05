@@ -643,7 +643,7 @@ function CommanBreadcrumbs({
             </a>
           </Link>
         </Col>
-        <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
+        <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col break-words">
           <span className="text-xs 2xl:text-sm text-canLight">
             Camp about URL :{" "}
           </span>
