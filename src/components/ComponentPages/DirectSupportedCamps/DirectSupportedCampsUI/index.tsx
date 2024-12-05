@@ -432,193 +432,202 @@ export default function DirectSupportedCampsUI({
   const hasFilteredArrayForMob = filteredArrayForMob.length > 0;
 
   if (hasDirectSupportedCampsForMob) {
-    if (hasFilteredArrayForMob) {
-      const startIndex = (currentPage - 1) * 5; // 5 is the page size
-      const endIndex = startIndex + 5;
+    const startIndex = (currentPage - 1) * 5; // Page size is 5
+    const endIndex = startIndex + 5;
 
-      // Slice the array to get the records for the current page
-      const paginatedArray = filteredArrayForMob.slice(startIndex, endIndex);
-      displayContentForMob = (
-        <>
-          <div
-            className="w-full flex justify-end mb-5"
-            id="direct_supported_camp_reset_btn"
-          >
-            <div className="mr-2" id="direct_supported_camp_reset_btn_1">
-              <PrimaryButton
-                onClick={() => {
-                  setSearch("");
-                }}
-              >
-                Reset
-              </PrimaryButton>
-            </div>
-            <Input
-              id="direct_supported_camp_search_icon"
-              suffix={
-                <Image
-                  src="/images/search-icon.svg"
-                  width={15}
-                  height={15}
-                  alt=""
-                />
-              }
-              data-testid="settingSearch"
-              value={search}
-              placeholder="Search via topic name"
-              type="text"
-              name="search"
-              className="!h-10 rounded-lg border border-canGrey2 text-sm font-normal lg:w-auto w-full [&_.ant-input-affix-wrapper]:hover:!border-canGrey2 focus:!border-canGrey2 focus:shadow-none "
-              onChange={(e) => {
-                setSearch(e.target.value);
+    // Slice the array to get records for the current page
+    const paginatedArray = filteredArrayForMob.slice(startIndex, endIndex);
+
+    displayContentForMob = (
+      <>
+        {/* Search and Reset Section */}
+        <div
+          className="w-full flex justify-end mb-5"
+          id="direct_supported_camp_reset_btn"
+        >
+          <div className="mr-2" id="direct_supported_camp_reset_btn_1">
+            <PrimaryButton
+              onClick={() => {
+                setSearch("");
               }}
-            />
-          </div>
-          {paginatedArray.map((record) => (
-            <Card
-              key={record.topic_num}
-              className="mb-5 bg-white shadow-none "
-              id="direct_supported_camp_card_section"
             >
-              <div
-                className=" !border !border-canGrey2  rounded-lg "
-                id="direct_supported_camp_card_section_1"
+              Reset
+            </PrimaryButton>
+          </div>
+          <Input
+            id="direct_supported_camp_search_icon"
+            suffix={
+              <Image
+                src="/images/search-icon.svg"
+                width={15}
+                height={15}
+                alt=""
+              />
+            }
+            data-testid="settingSearch"
+            value={search}
+            placeholder="Search via topic name"
+            type="text"
+            name="search"
+            className="!h-10 rounded-lg border border-canGrey2 text-sm font-normal lg:w-auto w-full [&_.ant-input-affix-wrapper]:hover:!border-canGrey2 focus:!border-canGrey2 focus:shadow-none "
+            onChange={(e) => {
+              setSearch(e.target.value);
+            }}
+          />
+        </div>
+
+        {/* Check if there is data to display */}
+        {hasFilteredArrayForMob ? (
+          <>
+            {paginatedArray.map((record) => (
+              <Card
+                key={record.topic_num}
+                className="mb-5 bg-white shadow-none"
+                id="direct_supported_camp_card_section"
               >
                 <div
-                  className="flex justify-start items-start flex-col gap-1 border-b border-canGrey2 p-5"
-                  id="direct_supported_camp_card_section_2"
+                  className="!border !border-canGrey2 rounded-lg"
+                  id="direct_supported_camp_card_section_1"
                 >
-                  <span
-                    className="uppercase text-sm font-medium text-black text-opacity-85"
-                    id="direct_supported_camp_card_section_heading"
-                  >
-                    {" "}
-                    Topic Name -
-                  </span>
                   <div
-                    className="flex gap-2.5 justify-between items-center w-full"
-                    id="direct_supported_camp__title_link_mob"
+                    className="flex justify-start items-start flex-col gap-1 border-b border-canGrey2 p-5"
+                    id="direct_supported_camp_card_section_2"
                   >
-                    <Link href={record.title_link}>
-                      <a
-                        id="direct_supported_camp_link_mob"
-                        className="text-lg font-semibold text-canBlack"
-                        role="button"
-                        tabIndex={0}
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter" || e.key === " ") {
-                            e.preventDefault(); // Prevent scrolling when Space is pressed
+                    <span
+                      className="uppercase text-sm font-medium text-black text-opacity-85"
+                      id="direct_supported_camp_card_section_heading"
+                    >
+                      Topic Name -
+                    </span>
+                    <div
+                      className="flex gap-2.5 justify-between items-center w-full"
+                      id="direct_supported_camp__title_link_mob"
+                    >
+                      <Link href={record.title_link}>
+                        <a
+                          id="direct_supported_camp_link_mob"
+                          className="text-lg font-semibold text-canBlack"
+                          role="button"
+                          tabIndex={0}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter" || e.key === " ") {
+                              e.preventDefault(); // Prevent scrolling when Space is pressed
+                              dispatch(
+                                setFilterCanonizedTopics({
+                                  asofdate: Date.now() / 1000,
+                                  asof: "default",
+                                })
+                              );
+                            }
+                          }}
+                          style={{ cursor: "pointer" }} // Provide visual feedback
+                          onClick={() => {
                             dispatch(
                               setFilterCanonizedTopics({
                                 asofdate: Date.now() / 1000,
                                 asof: "default",
                               })
                             );
-                          }
-                        }}
-                        style={{ cursor: "pointer" }} // Provide visual feedback
+                          }}
+                        >
+                          {record.title.length > 50
+                            ? record.title.substring(0, 30) + "..."
+                            : record.title}
+                        </a>
+                      </Link>
+                      <Image
+                        id="direct_supported_camp_minus_img_mob"
                         onClick={() => {
+                          dispatch(setOpenDrawerForDirectSupportedCamp(true));
+                          removeCardSupportedCamps(record);
+                        }}
+                        src="/images/minus-user-icon.svg"
+                        width={24}
+                        height={24}
+                        alt=""
+                      />
+                    </div>
+                  </div>
+                  <div
+                    className="p-5"
+                    id="direct_supported_camp_supported_camps_mob"
+                  >
+                    <span className="uppercase text-sm font-medium text-black text-opacity-85 mb-2 flex">
+                      Supported Camps -
+                    </span>
+                    <DraggableTags
+                      tags={record?.camps}
+                      record={record}
+                      updateTagsOrder={tagsOrder}
+                      setReOrderedTags={setReOrderedTags}
+                      setActiveTopic={(record) => {
+                        setActiveTopic(record.topic_num);
+                      }}
+                      onClose={(tag) => {
+                        handleClose(tag, record.topic_num, record, []);
+                        setValData(tag);
+                        setRevertBack([]);
+                        setActiveTopic(record.topic_num);
+                      }}
+                    />
+                  </div>
+                  {showSaveChanges && activeTopic === record.topic_num && (
+                    <div
+                      className="flex gap-2.5 px-5 pb-5"
+                      id="direct_supported_camp_draggable_area_btn_mob_section"
+                    >
+                      <Button
+                        id="saveChangeBtnmob"
+                        className="bg-canBlue text-white text-base font-medium rounded-lg py-2.5 px-6 flex items-center focus:!bg-canBlue
+                      focus:!text-canBlack"
+                        onClick={() => {
+                          setCurrentCamp(record.topic_num);
+                          handleSupportedCampsOpen(record);
+                          pageChange(currentPage, 5);
+                          dispatch(setOpenDrawerForDirectSupportedCamp(true));
                           dispatch(
-                            setFilterCanonizedTopics({
-                              asofdate: Date.now() / 1000,
-                              asof: "default",
-                            })
+                            setDisableSubmitButtonForDirectSupportedCamp(false)
                           );
                         }}
                       >
-                        {record.title.length > 50
-                          ? record.title.substring(0, 30) + "..."
-                          : record.title}
-                      </a>
-                    </Link>
-                    <Image
-                      id="direct_supported_camp_minus_img_mob"
-                      onClick={() => {
-                        dispatch(setOpenDrawerForDirectSupportedCamp(true));
-                        removeCardSupportedCamps(record);
-                      }}
-                      src="/images/minus-user-icon.svg"
-                      width={24}
-                      height={24}
-                      alt=""
-                    />
-                  </div>
+                        Save Changes
+                      </Button>
+                      <Button
+                        id="revertBtnmob"
+                        className="bg-btnBg bg-opacity-10 text-canBlack text-base font-medium rounded-lg py-2.5 px-6 flex items-center"
+                        onClick={() => {
+                          handleRevertBack(idData, record.camps);
+                          setCardCamp_ID("");
+                          setShowSaveChanges(false);
+                        }}
+                      >
+                        Revert
+                      </Button>
+                    </div>
+                  )}
                 </div>
-                <div
-                  className="p-5"
-                  id="direct_supported_camp_supported_camps_mob"
-                >
-                  <span className="uppercase text-sm font-medium text-black text-opacity-85 mb-2 flex">
-                    Supported Camps -
-                  </span>
-                  <DraggableTags
-                   tags={record?.camps}
-                   record={record}
-                   updateTagsOrder={tagsOrder}
-                   setReOrderedTags={setReOrderedTags}
-                   setActiveTopic={(record)=>{setActiveTopic(record.topic_num)}
-                  }
-                   onClose={(tag) => {
-                     handleClose(tag, record.topic_num, record, []);
-                     setValData(tag);
-                     setRevertBack([]);
-                     setActiveTopic(record.topic_num);
-                   }}
-                 />
-                </div>
-                {showSaveChanges && activeTopic == record.topic_num && (
-                  <div
-                    className="flex gap-2.5 px-5 pb-5 "
-                    id="direct_supported_camp_draggable_area_btn_mob_section"
-                  >
-                    <Button
-                      id="saveChangeBtnmob"
-                      className="bg-canBlue text-white text-base font-medium rounded-lg py-2.5 px-6 flex items-center focus:!bg-canBlue
-                      focus:!text-canBlack"
-                      onClick={() => {
-                        setCurrentCamp(record.topic_num);
-                        handleSupportedCampsOpen(record);
-                        pageChange(currentPage, 5);
-                        dispatch(setOpenDrawerForDirectSupportedCamp(true));
-                        dispatch(setDisableSubmitButtonForDirectSupportedCamp(false));
-                      }}
-                    >
-                      Save Changes
-                    </Button>
-                    <Button
-                      id="revertBtnmob"
-                      className="bg-btnBg bg-opacity-10 text-canBlack text-base font-medium rounded-lg py-2.5 px-6 flex items-center"
-                      onClick={() => {
-                        handleRevertBack(idData, record.camps);
-                        setCardCamp_ID("");
-                        setShowSaveChanges(false);
-                      }}
-                    >
-                      Revert
-                    </Button>
-                  </div>
-                )}
-              </div>
-            </Card>
-          ))}
+              </Card>
+            ))}
 
-          <Pagination
-            hideOnSinglePage={true}
-            total={filteredArrayForMob.length}
-            pageSize={5}
-            current={currentPage}
-            onChange={pageChange}
-            showSizeChanger={false}
-            className="mt-5"
-          />
-        </>
-      );
-    } else {
-      displayContent = <Empty description="No Data Found" />;
-    }
+            <Pagination
+              hideOnSinglePage={true}
+              total={filteredArrayForMob.length}
+              pageSize={5}
+              current={currentPage}
+              onChange={pageChange}
+              showSizeChanger={false}
+              className="mt-5"
+            />
+          </>
+        ) : (
+          <Empty description="No Data Found" />
+        )}
+      </>
+    );
   } else {
-    displayContent = <Empty description="No Data Found" />;
+    displayContentForMob = <Empty description="No Data Found" />;
   }
+
   const isMobile = window.matchMedia("(min-width: 1280px)").matches;
 
   return (
@@ -775,7 +784,18 @@ export default function DirectSupportedCampsUI({
       </div>
 
       {!isMobile && (
-        <div className="lg:hidden flex flex-col">{displayContentForMob}</div>
+        <div className="lg:hidden flex flex-col">
+          {directSkeletonIndicator ? (
+            <CustomSkelton
+              id="direct_supported_camp_loader"
+              skeltonFor="subscription_card"
+              bodyCount={4}
+              isButton={false}
+            />
+          ) : (
+            displayContentForMob
+          )}
+        </div>
       )}
     </div>
   );

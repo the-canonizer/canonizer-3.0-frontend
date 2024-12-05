@@ -367,6 +367,9 @@ useEffect(() => {
       case "direct_supported_camps":
         setSelectedValueFromSelectTag("Supported Camps");
         break;
+        case "delegate_supported_camp":
+        setSelectedValueFromSelectTag("Supported Camps");
+        break;
       case "social_oauth_verification":
         setSelectedValueFromSelectTag("Social Auth");
         break;
@@ -480,7 +483,8 @@ useEffect(() => {
                     >
                       <Select
                         id="setting_section_select_tag"
-                        className=" w-full !bg-canGray [&_.ant-select-selector]:!h-16 [&_.ant-select-selector]:!flex [&_.ant-select-selector]:!items-center [&_.ant-select-selector]:!bg-transparent [&_.ant-select-selector]:!border-r-0 [&_.ant-select-selector]:!border-l-0 "
+                        className=" w-full !bg-canGray [&_.ant-select-selector]:!h-16 [&_.ant-select-selector]:!flex [&_.ant-select-selector]:!items-center [&_.ant-select-selector]:!bg-transparent [&_.ant-select-selector]:!border-r-0 [&_.ant-select-selector]:!border-l-0 [&_.ant-select-selection-item]:h-full [&_.ant-select-selection-item]:!flex [&_.ant-select-selection-item]:!h-full
+                         [&_.ant-select-selection-item]:!items-center "
                         // defaultValue="Select"
                         value={selectedValueFromSelectTag}
                         suffixIcon={
@@ -496,7 +500,7 @@ useEffect(() => {
                           {
                             value: "Personal Info",
                             label: (
-                              <span id="setting_section_select_tag_persnol_info">
+                              <span id="setting_section_select_tag_persnol_info" className="span_tagpersonal_info">
                                 <Link
                                   href="/settings?tab=profile_info"
                                   className="[&_.ant-menu-item-selected]:!text-canBlue"
@@ -524,7 +528,7 @@ useEffect(() => {
                           {
                             value: "Nicknames",
                             label: (
-                              <span id="setting_section_select_tag_nickname">
+                              <span id="setting_section_select_tag_nickname" >
                                 <Link
                                   href="/settings?tab=nick_name"
                                   className="[&_.ant-menu-item]:!rounded-lg"
@@ -583,7 +587,7 @@ useEffect(() => {
                           {
                             value: "Supported Camps",
                             label: (
-                              <span id="setting_section_select_tag_supported_camps">
+                              <span id="setting_section_select_tag_supported_camps"  className="span_tagpersonal_info">
                                 <a
                                   className="flex items-center gap-3"
                                   id="setting_section_select_tag_supported_camps_all_link"
