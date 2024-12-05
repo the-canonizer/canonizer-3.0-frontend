@@ -79,10 +79,7 @@ export default function DelegatedSupportCampsUI({
         const serialNumber = (currentPage - 1) * 5 + index + 1;
         const searchSerialNumber = (currentSearchPage - 1) * 5 + index + 1;
         return (
-          <span
-            className="text-sm bg-canGrey2 rounded-full h-5 w-6 flex items-center justify-center"
-            id="delegated_supported_camp_serial_number"
-          >
+          <span className="text-sm" id="delegated_supported_camp_serial_number">
             {search.length > 0 ? searchSerialNumber : serialNumber}
           </span>
         );

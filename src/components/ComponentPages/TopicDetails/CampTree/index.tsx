@@ -429,7 +429,7 @@ const CampTree = ({
                         <a
                           className={`${
                             data[item].is_archive == 1
-                              ? `font-bold !text-canBlack hover:!text-canBlack   ${styles.archive_grey}`
+                              ? `font-bold !text-canBlack hover:!text-canBlack !break-all"  ${styles.archive_grey}`
                               : !isForumPage &&
                                 (data[item]?.camp_id ==
                                   router?.query?.camp
@@ -437,8 +437,8 @@ const CampTree = ({
                                     ?.split("-")
                                     ?.at(0) ??
                                   "1")
-                              ? `font-weight-bold text-sm hover:!text-canBlack  ${styles.activeCamp}`
-                              : " hover:!text-canBlack"
+                              ? `font-weight-bold text-sm hover:!text-canBlack !break-all"  ${styles.activeCamp}`
+                              : " hover:!text-canBlack !break-all"
                           } ${
                             isForumPage &&
                             data[item]?.camp_id ==
