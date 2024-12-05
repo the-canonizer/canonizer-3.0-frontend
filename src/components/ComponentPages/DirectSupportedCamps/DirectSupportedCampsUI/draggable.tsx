@@ -92,6 +92,7 @@ function SortableItem(props) {
     transform: CSS.Transform.toString(transform),
     transition,
     cursor: props?.item?.dis ? "not-allowed" : "pointer",
+    touchAction: "none",
   };
 
   return (
