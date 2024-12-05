@@ -69,6 +69,7 @@ const LoginUi = ({
             data-testid="username"
             onKeyDown={() => {}}
             id="login-username-input"
+            autoCapitalize="none"
           />
 
           <Inputs

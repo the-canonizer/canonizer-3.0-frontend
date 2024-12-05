@@ -11,6 +11,7 @@ import {
   PlayCircleOutlined,
   QuestionCircleOutlined,
   SettingOutlined,
+  UploadOutlined,
 } from "@ant-design/icons";
 import { Button, Menu, Typography } from "antd";
 import Link from "next/link";
@@ -44,6 +45,12 @@ const menuItems = [
     linkTitle: "Browse",
     id: 2,
     icon: <GlobalOutlined />,
+  },
+  {
+    link: "/uploadFile",
+    linkTitle: "Upload File",
+    id: 2,
+    icon: <UploadOutlined/>,
   },
   {
     link: "/videos",

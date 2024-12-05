@@ -1058,3 +1058,11 @@ body {
 .titleDiv {
   width: 100%;
 }
+
+.topicDetailsPageLayout {
+  @media screen and (max-width: 767px) {
+    .afterHeaderClass {
+      margin-top: 0;
+    }
+  }
+}

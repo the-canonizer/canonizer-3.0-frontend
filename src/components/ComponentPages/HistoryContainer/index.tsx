@@ -217,11 +217,11 @@ function HistoryContainer() {
 
   const onCompareClick = () => {
     router?.push({
-      pathname: `/statement/compare/${router?.query.camp[0]}/${
+      pathname: `/${historyOf}/compare/${router?.query.camp[0]}/${
         router?.query.camp[1] ? router?.query.camp[1] : "1-Agreement"
       }`,
       query: {
-        statements: selectedTopic?.at(0) + "_" + selectedTopic?.at(1),
+        comparison_ids: selectedTopic?.at(0) + "_" + selectedTopic?.at(1),
         from:
           historyOf == "statement"
             ? "statement"
@@ -429,7 +429,10 @@ function HistoryContainer() {
             >
               {`${historyTitle(historyOf)} History`}
             </Button>
-            <Typography.Paragraph id="history-page-title" className="mb-6 text-base font-medium">
+            <Typography.Paragraph
+              id="history-page-title"
+              className="mb-6 text-base font-medium"
+            >
               {`${historyTitle(
                 historyOf
               ).toUpperCase()} HISTORY BASED ON STATUS`}
