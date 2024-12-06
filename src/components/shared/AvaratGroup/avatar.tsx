@@ -29,10 +29,8 @@ const SingleAvatar = ({ user, imageBaseURL = "" }) => {
   }, [user?.email]);
 
   const userName = useMemo(() => {
-    return `${user?.first_name || ""} ${user?.middle_name || ""} ${
-      user?.last_name || ""
-    }`;
-  }, [user?.first_name, user?.middle_name, user?.last_name]);
+    return `${user?.first_name || ""} ${user?.last_name || ""}`;
+  }, [user?.first_name, user?.last_name]);
 
   const renderAvatar = () => {
     if (user?.profile_picture_path) {
