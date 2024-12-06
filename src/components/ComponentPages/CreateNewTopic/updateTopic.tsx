@@ -55,12 +55,12 @@ const UpdateTopic = () => {
 
   const values = Form.useWatch([], form);
 
-  useEffect(() => {
-    form
-      .validateFields({ validateOnly: true })
-      .then(() => setIsDisabled(true))
-      .catch(() => setIsDisabled(false));
-  }, [form, values]);
+  // useEffect(() => {
+  //   form
+  //     .validateFields({ validateOnly: true })
+  //     .then(() => setIsDisabled(true))
+  //     .catch(() => setIsDisabled(false));
+  // }, [form, values]);
 
   const compareTags = (existedData, newData) => {
     const newIds = newData?.map((item) => item?.id);
@@ -246,8 +246,7 @@ const UpdateTopic = () => {
       });
     }
   };
-
-  const getExistingList = async (val = values?.topic_nam) => {
+  const getExistingList = async (val = values?.topic_name) => {
     setIsopicLoading(true);
     const topicName = val,
       queryParamObj: any = {
@@ -256,7 +255,6 @@ const UpdateTopic = () => {
         page: 1,
         term: topicName?.trim(),
       };
-
     const res = await globalSearchCanonizer(queryParams(queryParamObj)),
       resData = res?.data;
 
