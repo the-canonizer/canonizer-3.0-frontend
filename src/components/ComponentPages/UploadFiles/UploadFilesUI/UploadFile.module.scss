@@ -525,7 +525,7 @@
 .files {
   > div {
     padding: 0;
-    border: 1px solid #eaedf2;
+    // border: 1px solid #ccd4e7;
     width: 160px;
     @media screen and (max-width: 767px) {
       width: 100%;
@@ -533,13 +533,13 @@
   }
   .imageFiles {
     text-align: center;
-    width: 100%;
-    display: inline-block;
-    background-color: #f3f3f3;
-    max-height: 125px;
-    min-height: 125px;
-    overflow: hidden;
-    padding-top: 5px;
+    // width: 100%;
+    // display: inline-block;
+    // background-color: #fff;
+    // max-height: 125px;
+    // min-height: 125px;
+    // overflow: hidden;
+    // padding-top: 5px;
     img {
       object-fit: cover;
     }
@@ -554,17 +554,17 @@
     overflow: hidden;
     white-space: nowrap;
     //text-overflow: ellipsis;
-    span {
-      margin-left: 5px !important;
-    }
+    // span {
+    //   margin-left: 5px !important;
+    // }
   }
   span {
-    font-size: 12px;
-    display: inline-block;
-    width: 100%;
-    color: #6c737d;
-    padding: 0 10px;
-    margin-bottom: 6px;
+    // font-size: 12px;
+    // display: inline-block;
+    // width: 100%;
+    // color: #6c737d;
+    // padding: 0 10px;
+    // margin-bottom: 6px;
   }
 }
 
@@ -756,43 +756,46 @@
     color: red;
   }
 }
-.FileTextTwoOneClass {
-  svg {
-    height: 100px;
-    width: 100px;
-    margin-block: 15px;
-  }
-}
-.FilePdfTwoToneColor {
-  svg {
-    height: 100px;
-    width: 100px;
-    margin-block: 15px;
-    color: red;
-  }
-}
+// .FileTextTwoOneClass {
+//   svg {
+//     height: 100px;
+//     width: 100px;
+//     margin-block: 15px;
+//   }
+// }
+// .FilePdfTwoToneColor {
+//   svg {
+//     height: 100px;
+//     width: 100px;
+//     margin-block: 15px;
+//     color: red;
+//   }
+// }
 
-.dropdown_menu {
-  position: absolute;
-  top: 6px;
-  margin-right: 0;
-  right: 10px;
-  cursor: pointer;
-  z-index: 99;
-  left: auto;
-  width: 25px;
-  height: 25px;
-  background: #ffffff96;
-  text-align: center;
-  border-radius: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-top: 5px;
-  span {
-    top: -3px;
-  }
+.dropdown-menu {
+  @apply leading-none cursor-pointer;
 }
+// .dropdown_menu {
+//   // position: absolute;
+//   top: 6px;
+//   margin-right: 0;
+//   right: 10px;
+//   cursor: pointer;
+//   z-index: 99;
+//   left: auto;
+//   width: 25px;
+//   height: 25px;
+//   background: #ffffff96;
+//   text-align: center;
+//   border-radius: 100%;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   padding-top: 5px;
+//   span {
+//     top: -3px;
+//   }
+// }
 
 .dropdown_menu:hover {
   background-color: #fff;

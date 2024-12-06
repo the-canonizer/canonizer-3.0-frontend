@@ -31,6 +31,8 @@ import {
   FileOutlined,
   FileExcelOutlined,
   FileWordOutlined,
+  LeftOutlined,
+  CloudUploadOutlined,
 } from "@ant-design/icons";
 import Image from "next/image";
 import styles from "./UploadFile.module.scss";
@@ -721,38 +723,33 @@ const UploadFileUI = ({
             </div>
           </div>
         ) : afterUpload && !toggleFileView && item.type == "file" ? (
-          <Card className={styles.files}>
-            <Dropdown
-              className={styles.dropdown_menu}
-              overlay={menu_files(item.id, item)}
-              trigger={["click"]}
-              placement="bottomRight"
-            >
-              <div
-                className="ant-dropdown-link"
-                onClick={(e) => e.preventDefault()}
-              >
-                <Image
-                  id="threeDots"
-                  className={styles.Menu_Iconss}
-                  alt="Three Dots"
-                  src={ThreeDots}
-                  width={15}
-                  height={20}
-                />
-              </div>
-            </Dropdown>
-            <div className={styles.imageFiles}>
+          <Card className={`files ${styles.files}`}>
+            <div className={`image-files ${styles.imageFiles}`}>
               {displayImage(
                 item,
                 `${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/${item.file_path}`
               )}
             </div>
-            <h3 className="BoxcopyWrap">
-              <span className="value">
-                {subStringData(item.name ? item.name : item.file_name)}
-              </span>
-              <span
+            <div className="BoxcopyWrap p-[6px]">
+              <div className="flex gap-1 items-center justify-between">
+                <span className="value truncate">
+                  {subStringData(item.name ? item.name : item.file_name)}
+                </span>
+                <Dropdown
+                  className="dropdown-menu leading-none"
+                  overlay={menu_files(item.id, item)}
+                  trigger={["click"]}
+                  placement="bottomRight"
+                >
+                  <div
+                    className="ant-dropdown-link"
+                    onClick={(e) => e.preventDefault()}
+                  >
+                    <MoreOutlined className="!text-sm cursor-pointer" />
+                  </div>
+                </Dropdown>
+              </div>
+              {/* <span
                 data-testid="cpoy_span"
                 className="copySpan"
                 onClick={() => {
@@ -766,13 +763,15 @@ const UploadFileUI = ({
                   width={12}
                   height={15}
                 />
+              </span> */}
+              <span className="upload-time block !text-[10px] text-[#777F93]">
+                {item.created_at
+                  ? moment
+                      .unix(item.created_at)
+                      .format("MMM DD, YYYY, h:mm:ss A")
+                  : moment(item.lastModified).format("MMM DD, YYYY, h:mm:ss A")}
               </span>
-            </h3>
-            <span>
-              {item.created_at
-                ? moment.unix(item.created_at).format("MMM DD, YYYY, h:mm:ss A")
-                : moment(item.lastModified).format("MMM DD, YYYY, h:mm:ss A")}
-            </span>
+            </div>
           </Card>
         ) : (
           ""
@@ -959,33 +958,35 @@ const UploadFileUI = ({
         //key="upload_file_one"
       >
         <Card className={styles.files} key={i}>
-          <Dropdown
-            className={styles.dropdown_menu}
-            overlay={menu_files(file.id, file)}
-            trigger={["click"]}
-          >
-            <div
-              className="ant-dropdown-link"
-              onClick={(e) => e.preventDefault()}
-            >
-              <Image
-                id="menuFilesThreeDots"
-                className={styles.Menu_Iconss}
-                alt="Three Dots"
-                src={ThreeDots}
-                width={15}
-                height={20}
-              />
-            </div>
-          </Dropdown>
           <div className={styles.imageFiles}>
             {displayImage(
               file,
               `${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/${file.file_path}`
             )}
           </div>
-          <h3 className="BoxcopyWrap">
-            <span className="value">{subStringData(file.file_name)}</span>
+          <div className="BoxcopyWrap">
+            <div className="flex gap-2">
+              <span className="value">{subStringData(file.file_name)}</span>
+              <Dropdown
+                className={styles.dropdown_menu}
+                overlay={menu_files(file.id, file)}
+                trigger={["click"]}
+              >
+                <div
+                  className="ant-dropdown-link"
+                  onClick={(e) => e.preventDefault()}
+                >
+                  <Image
+                    id="menuFilesThreeDots"
+                    className={styles.Menu_Iconss}
+                    alt="Three Dots"
+                    src={ThreeDots}
+                    width={15}
+                    height={20}
+                  />
+                </div>
+              </Dropdown>
+            </div>
             <span
               data-testid="copySpan"
               className="copySpan"
@@ -1001,10 +1002,10 @@ const UploadFileUI = ({
                 height={15}
               />
             </span>
-          </h3>
-          <span>
-            {moment.unix(file.created_at).format("MMM DD, YYYY, h:mm:ss A")}
-          </span>
+            <span>
+              {moment.unix(file.created_at).format("MMM DD, YYYY, h:mm:ss A")}
+            </span>
+          </div>
         </Card>
       </div>
     );
@@ -1049,14 +1050,25 @@ const UploadFileUI = ({
               >
                 <Card
                   title={
-                    <h3>
-                      {messages.labels.uploadFiles}{" "}
-                      <span className={styles.span}>
-                        {messages.labels.maxSize}
-                      </span>
-                    </h3>
+                    <>
+                      <Button
+                        type="link"
+                        className="upload-back-btn"
+                        icon={<LeftOutlined />}
+                        size="large"
+                      >
+                        File(s) Uploaded
+                      </Button>
+                      {/* <h3>
+                        {messages.labels.uploadFiles}
+                        <span className={styles.span}>
+                          {messages.labels.maxSize}
+                        </span>
+                      </h3> */}
+                    </>
                   }
-                  className={styles.Card}
+                  bordered={false}
+                  className={`upload-card-wrapper ${styles.Card}`}
                   extra={
                     <div className="d-flex">
                       <div className={styles.top_btn}>
@@ -1204,265 +1216,293 @@ const UploadFileUI = ({
                     </div>
                   }
                 >
-                  <div className={styles.uploded_Files}>
-                    {showCrossBtn ? (
-                      <div className={styles.Back_from_browser}>
-                        <CloseCircleOutlined
-                          onClick={() => {
-                            handle_X_btn();
-                            setSearch("");
+                  <Card
+                    title="8 Files, 3 Folders"
+                    className="upload-inner-card"
+                    bordered={false}
+                    extra={
+                      <>
+                        <Button
+                          className="min-w-[200px] gap-2 flex items-center justify-center border border-canBlue bg-[#98B7E61A] rounded-lg text-canBlack text-base font-medium"
+                          size="large"
+                        >
+                          Upload New File
+                          <CloudUploadOutlined />
+                        </Button>
+                      </>
+                    }
+                  >
+                    <div className={styles.uploded_Files}>
+                      {showCrossBtn ? (
+                        <div className={styles.Back_from_browser}>
+                          <CloseCircleOutlined
+                            onClick={() => {
+                              handle_X_btn();
+                              setSearch("");
+                            }}
+                            data-testid="handle_x_btn"
+                          />
+                        </div>
+                      ) : (
+                        ""
+                      )}
+
+                      <Upload
+                        className={`upload-data ${styles.UploadDataFiles}`}
+                        name="file"
+                        listType="picture"
+                        multiple
+                        data-testid="upload_images"
+                        fileList={fileStatus ? folderFiles : uploadFileList}
+                        beforeUpload={(file, fileList) => {
+                          setLoadingArray([...fileList]);
+                        }}
+                        onChange={(info) => {
+                          let length = info.fileList.length;
+                          if (info.file.status == "uploading") {
+                            setAddFileIndicator(true);
+                            setLoadingImage(true);
+                          }
+                          if (info.file.status == "done") {
+                            setLoadingImage(false);
+                            setTimeout(() => {
+                              setLoadingArray([]);
+                              setAddFileIndicator(false);
+                            }, 1000);
+                          }
+                          if (length) {
+                            if (fileStatus) {
+                              if (
+                                info.file.status == "uploading" &&
+                                info.file.percent == 0
+                              ) {
+                                setFolderFiles(info.fileList);
+                                //setUploadFileList(info.fileList);
+                                setFileLists(info.fileList);
+                              }
+                            } else {
+                              let dataValues = info.fileList;
+
+                              setUploadFileList(dataValues);
+                              setFileLists(info.fileList);
+                            }
+                            dragBoxHide();
+                            crossBtnhide();
+                            shownAddButton();
+                            uploadOptionsShow();
+                          } else {
+                            dragBoxShow();
+                            uploadOptionsHide();
+                            hideButtonAdd();
+                          }
+
+                          const { status } = info.file;
+                          if (status !== "uploading")
+                            if (status === "done") {
+                              showFiles();
+                            } else if (status === "error") {
+                              message.error(
+                                `${info.file.name} file upload failed.`
+                              );
+                            }
+                        }}
+                        onDrop={() => {}}
+                        itemRender={(originNode, file) => {
+                          const fileSizeFlag = file.size / (1024 * 1024) > 5;
+                          return (file.type && file.type == "folder") ||
+                            toggleFileView ? (
+                            ""
+                          ) : (
+                            <div className={afterUploadClass}>
+                              <Spin
+                                size="large"
+                                className="styles_spin"
+                                spinning={
+                                  addFileIndicator &&
+                                  loadingArray.findIndex(
+                                    (o) => o.uid === file.uid
+                                  ) > -1
+                                }
+                              >
+                                <div
+                                  className={styles.After_Upload}
+                                  style={
+                                    fileSizeFlag
+                                      ? { border: "1px solid red" }
+                                      : {}
+                                  }
+                                >
+                                  <CloseCircleOutlined
+                                    data-testid="remove_upload_files"
+                                    onClick={() => {
+                                      removeUploadFiles(
+                                        originNode,
+                                        file,
+                                        fileStatus
+                                          ? folderFiles
+                                          : uploadFileList
+                                      );
+                                    }}
+                                  />
+                                  <div className="imgWrap">
+                                    {(!imageRegexData.test(file.type) ||
+                                      (imageRegexData.test(file.type) &&
+                                        file.thumbUrl)) &&
+                                      displayImage(file, file.thumbUrl)}
+                                  </div>
+
+                                  <br />
+                                  <label
+                                    className={
+                                      fileSizeFlag
+                                        ? "fileName_label_max_limit block w-full text-sm font-medium mt-2 border-t pt-2 mb-4"
+                                        : "fileName_label block w-full text-sm font-medium mt-2 border-t pt-2 mb-4"
+                                    }
+                                  >
+                                    {file.name}
+                                  </label>
+                                  <Form.Item
+                                    label="Enter file name"
+                                    className={
+                                      "fileName_span mb-2 [&_label]:font-normal [&_label]:text-sm [&_.ant-form-item-label]:mb-0 [&_.ant-form-item-label]:pb-0"
+                                    }
+                                    name={file.uid}
+                                    rules={[
+                                      {
+                                        required: true,
+                                        message: "File Name is required",
+                                      },
+                                    ]}
+                                  >
+                                    <Input
+                                      data-testid="enterFileName"
+                                      id="enterFileName"
+                                      className="mr-0 text-sm font-medium rounded-md"
+                                      name={file.uid}
+                                      onChange={(e) =>
+                                        handleChangeFileName(e, file.uid)
+                                      }
+                                      placeholder="Full Name (with no extension)"
+                                      onKeyDown={(e) => {
+                                        // ============================ Allowed Special Chracter=====================================================
+                                        // if (/[^\w]|_/g.test(e.key))
+                                        //   return e.preventDefault();
+                                        return (
+                                          (e.key === "." || e.key === " ") &&
+                                          (e.keyCode === 190 ||
+                                            e.keyCode === 32) &&
+                                          e.preventDefault()
+                                        );
+                                      }}
+                                    />
+                                  </Form.Item>
+                                </div>
+                                {fileSizeFlag
+                                  ? (uploadOptionsHide(),
+                                    (
+                                      <p className={styles.maxLimit}>
+                                        This file is exceeding the max limit and
+                                        will not be uploaded{" "}
+                                      </p>
+                                    ))
+                                  : " "}
+                              </Spin>
+                            </div>
+                          );
+                        }}
+                      >
+                        {drageBoxVisible !== false ? (
+                          <div className={styles.Dragebox}>
+                            <Button
+                              id="clickOrDragAreaBtn"
+                              className={styles.Drager}
+                            >
+                              <div
+                                className="uploadBTn"
+                                data-testid="drag_file"
+                              >
+                                <InboxOutlined />
+                                <h2>
+                                  <b>
+                                    Click or drag file to this area to upload
+                                  </b>
+                                </h2>
+                                <p className="ant-upload-hint">
+                                  Support for a single or bulk upload. Strictly
+                                  prohibit from uploading company data or other
+                                  band files
+                                </p>
+                              </div>
+                            </Button>
+                          </div>
+                        ) : (
+                          ""
+                        )}
+                      </Upload>
+                    </div>
+
+                    <div className={styles.fileList}>{searchFilter()}</div>
+                    {toggleFileView && fileLists.length > 0 ? (
+                      <div className="TableContent">
+                        <Table
+                          id="tableColumn"
+                          className="contentValue"
+                          dataSource={filteredArray()}
+                          columns={columns}
+                          scroll={{
+                            x: 992,
                           }}
-                          data-testid="handle_x_btn"
+                          pagination={{ hideOnSinglePage: true }}
                         />
                       </div>
                     ) : (
                       ""
                     )}
 
-                    <Upload
-                      className={styles.UploadDataFiles}
-                      name="file"
-                      listType="picture"
-                      multiple
-                      data-testid="upload_images"
-                      fileList={fileStatus ? folderFiles : uploadFileList}
-                      beforeUpload={(file, fileList) => {
-                        setLoadingArray([...fileList]);
-                      }}
-                      onChange={(info) => {
-                        let length = info.fileList.length;
-                        if (info.file.status == "uploading") {
-                          setAddFileIndicator(true);
-                          setLoadingImage(true);
-                        }
-                        if (info.file.status == "done") {
-                          setLoadingImage(false);
-                          setTimeout(() => {
-                            setLoadingArray([]);
-                            setAddFileIndicator(false);
-                          }, 1000);
-                        }
-                        if (length) {
-                          if (fileStatus) {
-                            if (
-                              info.file.status == "uploading" &&
-                              info.file.percent == 0
-                            ) {
-                              setFolderFiles(info.fileList);
-                              //setUploadFileList(info.fileList);
-                              setFileLists(info.fileList);
-                            }
-                          } else {
-                            let dataValues = info.fileList;
-
-                            setUploadFileList(dataValues);
-                            setFileLists(info.fileList);
-                          }
-                          dragBoxHide();
-                          crossBtnhide();
-                          shownAddButton();
-                          uploadOptionsShow();
-                        } else {
-                          dragBoxShow();
-                          uploadOptionsHide();
-                          hideButtonAdd();
-                        }
-
-                        const { status } = info.file;
-                        if (status !== "uploading")
-                          if (status === "done") {
-                            showFiles();
-                          } else if (status === "error") {
-                            message.error(
-                              `${info.file.name} file upload failed.`
-                            );
-                          }
-                      }}
-                      onDrop={() => {}}
-                      itemRender={(originNode, file) => {
-                        const fileSizeFlag = file.size / (1024 * 1024) > 5;
-                        return (file.type && file.type == "folder") ||
-                          toggleFileView ? (
-                          ""
-                        ) : (
-                          <div className={afterUploadClass}>
-                            <Spin
-                              size="large"
-                              className="styles_spin"
-                              spinning={
-                                addFileIndicator &&
-                                loadingArray.findIndex(
-                                  (o) => o.uid === file.uid
-                                ) > -1
-                              }
-                            >
-                              <div
-                                className={styles.After_Upload}
-                                style={
-                                  fileSizeFlag
-                                    ? { border: "1px solid red" }
-                                    : {}
-                                }
-                              >
-                                <CloseCircleOutlined
-                                  data-testid="remove_upload_files"
-                                  onClick={() => {
-                                    removeUploadFiles(
-                                      originNode,
-                                      file,
-                                      fileStatus ? folderFiles : uploadFileList
-                                    );
-                                  }}
-                                />
-                                <div className="imgWrap">
-                                  {(!imageRegexData.test(file.type) ||
-                                    (imageRegexData.test(file.type) &&
-                                      file.thumbUrl)) &&
-                                    displayImage(file, file.thumbUrl)}
-                                </div>
-
-                                <br />
-                                <label
-                                  className={
-                                    fileSizeFlag
-                                      ? "fileName_label_max_limit block w-full text-sm font-medium mt-2 border-t pt-2 mb-4"
-                                      : "fileName_label block w-full text-sm font-medium mt-2 border-t pt-2 mb-4"
-                                  }
-                                >
-                                  {file.name}
-                                </label>
-                                <Form.Item
-                                  label="Enter file name"
-                                  className={
-                                    "fileName_span mb-2 [&_label]:font-normal [&_label]:text-sm [&_.ant-form-item-label]:mb-0 [&_.ant-form-item-label]:pb-0"
-                                  }
-                                  name={file.uid}
-                                  rules={[
-                                    {
-                                      required: true,
-                                      message: "File Name is required",
-                                    },
-                                  ]}
-                                >
-                                  <Input
-                                    data-testid="enterFileName"
-                                    id="enterFileName"
-                                    className="mr-0 text-sm font-medium rounded-md"
-                                    name={file.uid}
-                                    onChange={(e) =>
-                                      handleChangeFileName(e, file.uid)
-                                    }
-                                    placeholder="Full Name (with no extension)"
-                                    onKeyDown={(e) => {
-                                      // ============================ Allowed Special Chracter=====================================================
-                                      // if (/[^\w]|_/g.test(e.key))
-                                      //   return e.preventDefault();
-                                      return (
-                                        (e.key === "." || e.key === " ") &&
-                                        (e.keyCode === 190 ||
-                                          e.keyCode === 32) &&
-                                        e.preventDefault()
-                                      );
-                                    }}
-                                  />
-                                </Form.Item>
-                              </div>
-                              {fileSizeFlag
-                                ? (uploadOptionsHide(),
-                                  (
-                                    <p className={styles.maxLimit}>
-                                      This file is exceeding the max limit and
-                                      will not be uploaded{" "}
-                                    </p>
-                                  ))
-                                : " "}
-                            </Spin>
-                          </div>
-                        );
-                      }}
-                    >
-                      {drageBoxVisible !== false ? (
-                        <div className={styles.Dragebox}>
+                    {loadingImage ? (
+                      <div>
+                        <Spin
+                          tip="Loading..."
+                          spinning={loadingImage}
+                          size="large"
+                        >
+                          <Alert
+                            message="Image is loading. Please wait..."
+                            type="info"
+                          />
+                        </Spin>
+                        <br />
+                        <br />
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                    <Form.Item>
+                      {show_UploadOptions ? (
+                        <div className={styles.Upload_Cancel_Btn}>
                           <Button
-                            id="clickOrDragAreaBtn"
-                            className={styles.Drager}
+                            data-testid="upload_btn"
+                            id="uploadBtn"
+                            htmlType="submit"
+                            className={styles.Upload_Btn}
                           >
-                            <div className="uploadBTn" data-testid="drag_file">
-                              <InboxOutlined />
-                              <h2>
-                                <b>Click or drag file to this area to upload</b>
-                              </h2>
-                              <p className="ant-upload-hint">
-                                Support for a single or bulk upload. Strictly
-                                prohibit from uploading company data or other
-                                band files
-                              </p>
-                            </div>
+                            Upload
+                          </Button>
+                          <Button
+                            data-testid="cancel_btn"
+                            id="cancelBtn"
+                            htmlType="button"
+                            className={styles.cancel_Btn}
+                            onClick={cancelBtn}
+                          >
+                            Cancel
                           </Button>
                         </div>
                       ) : (
                         ""
                       )}
-                    </Upload>
-                  </div>
-                  <div className={styles.fileList}>{searchFilter()}</div>
-                  {toggleFileView && fileLists.length > 0 ? (
-                    <div className="TableContent">
-                      <Table
-                        id="tableColumn"
-                        className="contentValue"
-                        dataSource={filteredArray()}
-                        columns={columns}
-                        pagination={{ hideOnSinglePage: true }}
-                      />
-                    </div>
-                  ) : (
-                    ""
-                  )}
-
-                  {loadingImage ? (
-                    <div>
-                      <Spin
-                        tip="Loading..."
-                        spinning={loadingImage}
-                        size="large"
-                      >
-                        <Alert
-                          message="Image is loading. Please wait..."
-                          type="info"
-                        />
-                      </Spin>
-                      <br />
-                      <br />
-                    </div>
-                  ) : (
-                    ""
-                  )}
-                  <Form.Item>
-                    {show_UploadOptions ? (
-                      <div className={styles.Upload_Cancel_Btn}>
-                        <Button
-                          data-testid="upload_btn"
-                          id="uploadBtn"
-                          htmlType="submit"
-                          className={styles.Upload_Btn}
-                        >
-                          Upload
-                        </Button>
-                        <Button
-                          data-testid="cancel_btn"
-                          id="cancelBtn"
-                          htmlType="button"
-                          className={styles.cancel_Btn}
-                          onClick={cancelBtn}
-                        >
-                          Cancel
-                        </Button>
-                      </div>
-                    ) : (
-                      ""
-                    )}
-                  </Form.Item>
+                    </Form.Item>
+                  </Card>
                 </Card>
               </Form>
             </div>

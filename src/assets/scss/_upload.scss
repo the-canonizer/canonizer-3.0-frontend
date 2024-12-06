@@ -1,0 +1,80 @@
+.fileList {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  .view_After_Upload {
+    padding: 0 8px;
+    margin-bottom: 16px;
+    @media screen and (max-width: 767px) {
+      width: 50%;
+    }
+    @media screen and (max-width: 400px) {
+      width: 100%;
+    }
+  }
+  .folder_Back_Button {
+    width: 100%;
+    padding: 0;
+    .openFolder {
+      display: flex;
+      flex-wrap: wrap;
+    }
+  }
+}
+.files {
+  @apply rounded-lg border border-[#ccd4e7] h-full;
+
+  .ant-card-body {
+    @apply p-0 md:w-[160px];
+  }
+  .image-files {
+    @apply rounded-t-lg bg-white border-b border-[#ccd4e7] text-center h-[110px] flex items-center justify-center;
+    .anticon,
+    svg {
+      @apply text-7xl text-[red];
+    }
+  }
+}
+.upload-card-wrapper {
+  & > .ant-card-head {
+    @apply px-0 border-b-0;
+    .ant-card-head-wrapper {
+      .ant-card-head-title {
+        .upload-back-btn {
+          @apply flex p-0 items-center text-canDarkBlack text-[1.5rem];
+          span {
+            @apply leading-[1] inline-flex;
+          }
+        }
+      }
+    }
+  }
+  & > .ant-card-body {
+    @apply max-sm:px-0 sm:px-10;
+  }
+  .upload-inner-card {
+    @apply bg-[#f7f8fc] p-6 rounded-xl;
+    & > .ant-card-head {
+      @apply p-0 pb-4 min-h-0;
+      .ant-card-head-wrapper {
+        .ant-card-head-title {
+          @apply p-0 text-2xl;
+        }
+        .ant-card-extra {
+          @apply p-0;
+        }
+      }
+    }
+    & > .ant-card-body {
+      @apply px-0 pb-0 pt-6;
+    }
+  }
+}
+.upload-data {
+  .ant-upload {
+    @apply w-full;
+    .ant-btn {
+      @apply whitespace-normal;
+    }
+  }
+}
