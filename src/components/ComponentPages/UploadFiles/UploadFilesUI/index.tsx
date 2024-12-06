@@ -33,6 +33,7 @@ import {
   FileWordOutlined,
   LeftOutlined,
   CloudUploadOutlined,
+  FolderOpenOutlined,
 } from "@ant-design/icons";
 import Image from "next/image";
 import styles from "./UploadFile.module.scss";
@@ -684,43 +685,54 @@ const UploadFileUI = ({
     ) : (
       <div className={"folderId" + item.id} id={"folderId" + item.id}>
         {item && item.type && item.type == "folder" && !toggleFileView ? (
-          <div className={styles.Folder_container}>
-            <Card
-              className={styles.FolderData}
-              onClick={() => {
-                Openfolder(item.id);
-              }}
-            >
-              <div className={styles.folder_icon}>
-                <div className="folder--wrap">
-                  <div className="foldername">
-                    <span style={{ cursor: "pointer" }}>{item.name}</span>
-                  </div>
-                  <div className={styles.dateAndfiles}>
-                    <p>
-                      {" "}
-                      {moment.unix(item.created_at).format("DD MMMM YYYY")}
-                    </p>
-                    <small>{"(" + item.uploads_count + " files)"}</small>
-                  </div>
+          <div className={`${styles.Folder_container}`}>
+            <Card className={`${styles.files} files`}>
+              <div
+                className={`${styles.imageFiles} image-files`}
+                onClick={() => {
+                  Openfolder(item.id);
+                }}
+              >
+                <FolderOpenOutlined />
+              </div>
+              <div className="BoxcopyWrap p-[6px]">
+                <div className="flex gap-1 items-center justify-between">
+                  <span
+                    className="value truncate cursor-pointer"
+                    onClick={() => {
+                      Openfolder(item.id);
+                    }}
+                  >
+                    {item?.name}
+                  </span>
+                  <Dropdown
+                    overlay={menu(i, item)}
+                    trigger={["click"]}
+                    placement="topCenter"
+                  >
+                    <div
+                      data-testid="open_folder_render_mennu"
+                      className="ant-dropdown-link"
+                      onClick={(e) => e.preventDefault()}
+                    >
+                      <MoreOutlined />
+                    </div>
+                  </Dropdown>
                 </div>
+                <span
+                  className="upload-time block !text-[10px] text-[#777F93]"
+                  onClick={() => {
+                    Openfolder(item.id);
+                  }}
+                >
+                  <span>{item.uploads_count + " files"}</span>
+                  <br></br>
+                  <span>
+                    {moment?.unix(item.created_at)?.format("DD MMMM YYYY")}
+                  </span>
+                </span>
               </div>
             </Card>
-            <div className={styles.dropdown} data-testid="overlay_menu">
-              <Dropdown
-                overlay={menu(i, item)}
-                trigger={["click"]}
-                placement="topCenter"
-              >
-                <div
-                  data-testid="open_folder_render_mennu"
-                  className="ant-dropdown-link"
-                  onClick={(e) => e.preventDefault()}
-                >
-                  <MoreOutlined />
-                </div>
-              </Dropdown>
-            </div>
           </div>
         ) : afterUpload && !toggleFileView && item.type == "file" ? (
           <Card className={`files ${styles.files}`}>
@@ -957,16 +969,18 @@ const UploadFileUI = ({
         className={styles.view_After_Upload}
         //key="upload_file_one"
       >
-        <Card className={styles.files} key={i}>
-          <div className={styles.imageFiles}>
+        <Card className={`${styles.files} files`} key={i}>
+          <div className={`${styles.imageFiles} image-files`}>
             {displayImage(
               file,
               `${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/${file.file_path}`
             )}
           </div>
-          <div className="BoxcopyWrap">
-            <div className="flex gap-2">
-              <span className="value">{subStringData(file.file_name)}</span>
+          <div className="BoxcopyWrap p-[6px]">
+            <div className="flex gap-1 items-center justify-between">
+              <span className="value truncate">
+                {subStringData(file?.file_name)}
+              </span>
               <Dropdown
                 className={styles.dropdown_menu}
                 overlay={menu_files(file.id, file)}
@@ -987,7 +1001,7 @@ const UploadFileUI = ({
                 </div>
               </Dropdown>
             </div>
-            <span
+            {/* <span
               data-testid="copySpan"
               className="copySpan"
               onClick={() => {
@@ -1001,7 +1015,7 @@ const UploadFileUI = ({
                 width={12}
                 height={15}
               />
-            </span>
+            </span> */}
             <span>
               {moment.unix(file.created_at).format("MMM DD, YYYY, h:mm:ss A")}
             </span>
@@ -1225,6 +1239,14 @@ const UploadFileUI = ({
                         <Button
                           className="min-w-[200px] gap-2 flex items-center justify-center border border-canBlue bg-[#98B7E61A] rounded-lg text-canBlack text-base font-medium"
                           size="large"
+                          onClick={() => {
+                            addNewFile(),
+                              setToggleFileView(false),
+                              setUpdateList({});
+                            // setUploadStatus(true);
+                            setDatePick("");
+                            setSearch("");
+                          }}
                         >
                           Upload New File
                           <CloudUploadOutlined />
