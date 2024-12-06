@@ -8,6 +8,7 @@ import {
   MouseSensor,
   useSensor,
   useSensors,
+  TouchSensor,
 } from "@dnd-kit/core";
 import {
   arrayMove,
@@ -18,9 +19,9 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Image, Tag, Tooltip } from "antd";
-import ReasonsActivity from "components/common/SupportReasonActivity";
+import { MenuOutlined } from "@ant-design/icons";
 import { getProperties } from "src/utils/generalUtility";
-import { Fragment } from "react";
+import ReasonsActivity from "components/common/SupportReasonActivity";
 
 export default function Draggable({
   tags,
@@ -28,12 +29,14 @@ export default function Draggable({
   updateTagsOrder,
   onClose,
   setReOrderedTags,
+  setActiveTopic = null,
 }: any) {
   const sensors = useSensors(
+    useSensor(TouchSensor, { activationConstraint: { distance: 10 } }),
     useSensor(MouseSensor, { activationConstraint: { distance: 10 } }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
-    })
+    }),
   );
 
   return (
@@ -76,6 +79,7 @@ export default function Draggable({
       );
 
       setReOrderedTags(arrayMove(tags, oldIndex, newIndex));
+      setActiveTopic && setActiveTopic(record);
 
       return arrayMove(tags, oldIndex, newIndex);
     }
@@ -90,6 +94,7 @@ function SortableItem(props) {
     transform: CSS.Transform.toString(transform),
     transition,
     cursor: props?.item?.dis ? "not-allowed" : "pointer",
+    touchAction: "none",
   };
 
   return (
@@ -101,11 +106,13 @@ function SortableItem(props) {
       className="flex items-center gap-7"
     >
       {props?.item?.dis ? (
-        <Tag
-          className="rounded-full mr-0 bg-[#dadbde] flex items-center  border-transparent font-medium text-sm px-3 py-1 leading-none text-canBlack"
-          closable={true}
-          closeIcon={
-            <Fragment>
+        <>
+          <MenuOutlined className="text-sm text-[#777F93]" />
+          <Tag
+            className="rounded-full mr-0 bg-[#dadbde] flex items-center  border-transparent font-medium text-sm px-3 py-1 leading-none text-canBlack"
+            closable={true}
+            closeIcon={
+              <>
               <Image
                 preview={false}
                 src="/images/minus-user-icon.svg"
@@ -114,7 +121,7 @@ function SortableItem(props) {
                 style={{ cursor: "not-allowed", alignSelf: "center" }}
                 alt=""
               />
-              {props?.item?.recent_activity
+               {props?.item?.recent_activity
                 ? getProperties(props?.item?.recent_activity)?.reason && (
                     <Tooltip
                       title={
@@ -131,22 +138,28 @@ function SortableItem(props) {
                     </Tooltip>
                   )
                 : null}
-            </Fragment>
-          }
-          onClose={(evt) => {}}
-        >
-          {`${props?.index + 1}-${
-            props?.item?.camp_name?.length > 30
-              ? props.item.camp_name.substring(0, 30) + "..."
-              : props.item.camp_name
-          }`}
-        </Tag>
+              </>
+            }
+            onClose={(evt) => {
+              // evt.preventDefault();
+              // props?.onClose(props?.item)
+            }}
+          >
+            {`${props?.index + 1}-${
+              props?.item?.camp_name?.length > 30
+                ? props.item.camp_name.substring(0, 30) + "..."
+                : props.item.camp_name
+            }`}
+          </Tag>
+        </>
       ) : (
-        <Tag
-          className="rounded-full mr-0 bg-[#F0F2FA] flex items-center border-transparent font-medium text-sm px-3 py-1 leading-none cn-card-home"
-          closable={true}
-          closeIcon={
-            <Fragment>
+        <>
+          <MenuOutlined className="text-sm text-[#777F93]" />
+          <Tag
+            className="rounded-full mr-0 bg-[#F0F2FA] flex items-center border-transparent font-medium text-sm px-3 py-1 leading-none cn-card-home"
+            closable={true}
+            closeIcon={
+              <>
               <Image
                 className="cursor-pointer"
                 preview={false}
@@ -156,7 +169,7 @@ function SortableItem(props) {
                 height={20}
                 alt=""
               />
-              {props?.item?.recent_activity
+               {props?.item?.recent_activity
                 ? getProperties(props?.item?.recent_activity)?.reason && (
                     <Tooltip
                       title={
@@ -173,28 +186,31 @@ function SortableItem(props) {
                     </Tooltip>
                   )
                 : null}
-            </Fragment>
-          }
-          onClose={(evt) => {
-            evt.preventDefault();
-            props?.onClose(props?.item);
-          }}
-        >
-          <a
-            data-testid="styles_Bluecolor "
-            className="text-sm font-medium flex items-center gap-2.5"
-            onClick={(e) => {
-              e.preventDefault();
-              window.location.href = props?.item?.camp_link;
+              </>
+            }
+            onClose={(evt) => {
+              evt.preventDefault();
+              evt.stopPropagation();
+              props?.onClose(props?.item);
             }}
           >
-            {`${props?.index + 1}-${
-              props?.item?.camp_name?.length > 30
-                ? props.item.camp_name.substring(0, 30) + "..."
-                : props.item.camp_name
-            }`}
-          </a>
-        </Tag>
+            <a
+              data-testid="styles_Bluecolor "
+              className="text-sm font-medium flex items-center gap-2.5"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                window.location.href = props?.item?.camp_link;
+              }}
+            >
+              {`${props?.index + 1}-${
+                props?.item?.camp_name?.length > 30
+                  ? props.item.camp_name.substring(0, 30) + "..."
+                  : props.item.camp_name
+              }`}
+            </a>
+          </Tag>
+        </>
       )}
     </div>
   );

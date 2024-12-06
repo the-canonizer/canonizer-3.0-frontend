@@ -279,10 +279,12 @@ export default function DelegatedSupportCampsUI({
   return (
     <div>
       <div
-        className="hidden lg:flex w-full"
+        className="hidden lg:flex w-full [&_#delegated_supported_camp_loader_section>div]:!w-full"
         id="delegated_supported_camp_loader_section"
       >
+        
         {delegateSupportedSkeleton ? (
+          <div className="w-full">
           <CustomSkelton
             id="delegated_supported_camp_loader"
             skeltonFor="delegateSupportedCampListCard"
@@ -290,6 +292,7 @@ export default function DelegatedSupportCampsUI({
             stylingClass=""
             isButton={false}
           />
+          </div>
         ) : (
           <div className="w-full" id="delegated_supported_camp_upper_heading_1">
             <div
@@ -566,10 +569,11 @@ export default function DelegatedSupportCampsUI({
       </div>
 
       <div
-        className="lg:hidden flex w-full"
+        className="lg:hidden flex w-full [&_.ant-typography]:!m-0 [&_.ant-card-head-wrapper]:!gap-2"
         id="delagate_supported_camp_mob_btn_section"
       >
         {delegateSupportedSkeleton ? (
+          <div className="w-full">
           <CustomSkelton
             id="delagate_supported_camp_loader"
             skeltonFor="delegateSupportedCampListCard"
@@ -577,6 +581,7 @@ export default function DelegatedSupportCampsUI({
             stylingClass=""
             isButton={false}
           />
+          </div>
         ) : (
           <div
             className="w-full"

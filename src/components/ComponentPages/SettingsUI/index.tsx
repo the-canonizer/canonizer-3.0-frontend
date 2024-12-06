@@ -48,6 +48,7 @@ const SettingsUI = () => {
   const [selectedTab, setSelectedTab] = useState("Direct_Supported_Camps");
   const [getDataFromUserProfile, setGetDataFromUserProfile] = useState(null);
   const [openKeys, setOpenKeys] = useState([]);
+  const [selectedValueFromSelectTag, setSelectedValueFromSelectTag] = useState("");
 
   const onTabChange = (key) => {
     setActiveTabKey(key);
@@ -349,7 +350,37 @@ const SettingsUI = () => {
       getUesrPofileData();
     }
   }, []);
-
+console.log(router,"rout")
+useEffect(() => {
+  if (router.query.tab) {
+    const tab = router.query.tab as string;
+    switch (tab) {
+      case "nick_name":
+        setSelectedValueFromSelectTag("Nicknames");
+        break;
+      case "profile_info":
+        setSelectedValueFromSelectTag("Personal Info");
+        break;
+      case "user_preferences":
+        setSelectedValueFromSelectTag("Preferences");
+        break;
+      case "direct_supported_camps":
+        setSelectedValueFromSelectTag("Supported Camps");
+        break;
+        case "delegate_supported_camp":
+        setSelectedValueFromSelectTag("Supported Camps");
+        break;
+      case "social_oauth_verification":
+        setSelectedValueFromSelectTag("Social Auth");
+        break;
+      case "change_password":
+        setSelectedValueFromSelectTag("Change Password");
+        break;
+      default:
+        setSelectedValueFromSelectTag(undefined);
+    }
+  }
+}, [router.query.tab]);
   return (
     <div
       className="pageContentWrap flex lg:flex-row flex-col gap-10"
@@ -452,9 +483,10 @@ const SettingsUI = () => {
                     >
                       <Select
                         id="setting_section_select_tag"
-                        className=" w-full !bg-canGray [&_.ant-select-selector]:!h-16 [&_.ant-select-selector]:!flex [&_.ant-select-selector]:!items-center [&_.ant-select-selector]:!bg-transparent [&_.ant-select-selector]:!border-r-0 [&_.ant-select-selector]:!border-l-0 "
-                        defaultValue="Select"
-                        // value={selectedValue}
+                        className=" w-full !bg-canGray [&_.ant-select-selector]:!h-16 [&_.ant-select-selector]:!flex [&_.ant-select-selector]:!items-center [&_.ant-select-selector]:!bg-transparent [&_.ant-select-selector]:!border-r-0 [&_.ant-select-selector]:!border-l-0 [&_.ant-select-selection-item]:h-full [&_.ant-select-selection-item]:!flex [&_.ant-select-selection-item]:!h-full
+                         [&_.ant-select-selection-item]:!items-center "
+                        // defaultValue="Select"
+                        value={selectedValueFromSelectTag}
                         suffixIcon={
                           <Image
                             src="/images/caret-icon.svg"
@@ -468,7 +500,7 @@ const SettingsUI = () => {
                           {
                             value: "Personal Info",
                             label: (
-                              <span id="setting_section_select_tag_persnol_info">
+                              <span id="setting_section_select_tag_persnol_info" className="span_tagpersonal_info">
                                 <Link
                                   href="/settings?tab=profile_info"
                                   className="[&_.ant-menu-item-selected]:!text-canBlue"
@@ -496,7 +528,7 @@ const SettingsUI = () => {
                           {
                             value: "Nicknames",
                             label: (
-                              <span id="setting_section_select_tag_nickname">
+                              <span id="setting_section_select_tag_nickname" >
                                 <Link
                                   href="/settings?tab=nick_name"
                                   className="[&_.ant-menu-item]:!rounded-lg"
@@ -555,7 +587,7 @@ const SettingsUI = () => {
                           {
                             value: "Supported Camps",
                             label: (
-                              <span id="setting_section_select_tag_supported_camps">
+                              <span id="setting_section_select_tag_supported_camps"  className="span_tagpersonal_info">
                                 <a
                                   className="flex items-center gap-3"
                                   id="setting_section_select_tag_supported_camps_all_link"
