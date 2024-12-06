@@ -273,6 +273,21 @@ const CampTree = ({
     ) : null;
   };
 
+  const isOnlyOneChild = () => {
+    const treeData = tree?.at(0);
+    if (!treeData) return false;
+
+    const keys = Object.keys(treeData)
+      .map((key) => [Number(key), treeData[key]])
+      .sort((a, b) => b[1].score - a[1].score);
+
+    const keyName = keys?.at(0)?.[0];
+    if (!keyName) return false;
+
+    const child = treeData[keyName]?.children;
+    return child?.length === 0;
+  };
+
   const renderTreeNodes = (
     data: any,
     isDisabled = 0,
@@ -282,12 +297,15 @@ const CampTree = ({
     let sortedData = Object.keys(data)
       .map((key) => [Number(key), data[key]])
       .sort((a, b) => b[1].score - a[1].score);
+
     return sortedData.map((itemWithData) => {
       let item = itemWithData[0];
+
       const parentIsOneLevel = isOneLevel;
       let _isOneLevel = data[item].is_one_level == 1 || isOneLevel == 1 ? 1 : 0;
       let _isDisabled = data[item].is_disabled == 1 || isDisabled == 1 ? 1 : 0;
       let _isArchive = data[item].is_archive == 1 || isArchive == 1 ? 1 : 0;
+
       if (router?.query?.camp?.at(1)?.split("-")?.at(0)) {
         if (
           data[item]?.camp_id == router?.query?.camp?.at(1)?.split("-")?.at(0)
@@ -330,6 +348,8 @@ const CampTree = ({
 
       const isFirst = isFirstItem(data, item) && isFirstParent(data, item);
 
+      const haveOnlyOneChild = isOnlyOneChild();
+
       if (data[item].children) {
         if (data[item].score >= scoreFilter) {
           return data[item].is_archive == 0 ||
@@ -339,7 +359,9 @@ const CampTree = ({
                 isLastChild ? "last-child-node-class" : ""
               } ${isLastParent ? "last-parent-node-class" : ""} ${
                 isLast ? "last-node-class" : ""
-              } ${isFirst ? "first-node-class" : ""}`}
+              } ${isFirst ? "first-node-class" : ""} ${
+                haveOnlyOneChild ? "only-one-child" : ""
+              }`}
               switcherIcon={({ expanded }) => {
                 return data[item].camp_id ===
                   +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1) &&
@@ -592,8 +614,6 @@ const CampTree = ({
     let uniqueArraytoString = uniqueArray.map(String);
     return uniqueArraytoString;
   };
-
-  console.log("tree", tree);
 
   return tree?.at(0) ? (
     (showTree && tree?.at(0)["1"]?.title != "" && defaultExpandKeys) ||
