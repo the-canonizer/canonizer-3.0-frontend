@@ -55,12 +55,12 @@ const UpdateTopic = () => {
 
   const values = Form.useWatch([], form);
 
-  // useEffect(() => {
-  //   form
-  //     .validateFields({ validateOnly: true })
-  //     .then(() => setIsDisabled(true))
-  //     .catch(() => setIsDisabled(false));
-  // }, [form, values]);
+  useEffect(() => {
+    form
+      .validateFields({ validateOnly: true })
+      .then(() => setIsDisabled(true))
+      .catch(() => setIsDisabled(false));
+  }, [form, values]);
 
   const compareTags = (existedData, newData) => {
     const newIds = newData?.map((item) => item?.id);
