@@ -68,7 +68,7 @@ const RegistrationOTP = () => {
         dispatch(setEmailForOTP(null));
         dispatch(setIsNewUser(true));
 
-        router?.push({ pathname: "/category-preference" });
+        router?.push({ pathname: "/tags-preference" });
       }
     } else {
       otpForm.resetFields();

@@ -77,8 +77,6 @@ const Preferences = () => {
     } else {
       router?.push({ pathname: "/" });
     }
-    // router?.push({ pathname: "/" });
-    // router?.push({ pathname: "/settings" });
   };
 
   return (
