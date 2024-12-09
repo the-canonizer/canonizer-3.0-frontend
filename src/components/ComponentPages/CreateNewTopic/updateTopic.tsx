@@ -45,6 +45,7 @@ const UpdateTopic = () => {
   const [currentTopicNickNames, setCurrentTopicNckNames] = useState(null);
   const [isSubmitReq, setIsSubmitReq] = useState(false);
   const [editCampStatementData, setEditCampStatementData] = useState("");
+  const [isRankHidden, setIsRankHidden] = useState(false);
 
   const router = useRouter();
   const dispatch = useDispatch();
@@ -112,6 +113,8 @@ const UpdateTopic = () => {
 
         setCurrentTopic(topicData);
 
+        setIsRankHidden(!!topicData?.is_rank_hidden);
+
         setEditCampStatementData(topicData?.note);
 
         const result = await getAllUsedNickNames({
@@ -125,6 +128,7 @@ const UpdateTopic = () => {
           await form.setFieldValue("topic_name", topicData?.topic_name);
           await form.setFieldValue("namespace", topicData?.namespace_id);
           await form.setFieldValue("edit_summary", topicData?.edit_summary);
+          form.setFieldValue("rank_hidden", topicData?.is_rank_hidden);
 
           setNickNameList(resData);
         }
@@ -157,6 +161,7 @@ const UpdateTopic = () => {
       tags: selectedCats?.map((cat) => cat?.id),
       event_type: update ? "edit" : "update",
       note: values?.edit_summary || null,
+      is_rank_hidden: isRankHidden,
     };
 
     const res = await updateTopicApi(body);
@@ -324,6 +329,11 @@ const UpdateTopic = () => {
     }
   };
 
+  const hideRankHandler = (e) => {
+    setIsRankHidden(e.target.checked)
+  };
+
+
   return (
     <CustomSpinner key="create-topic-spinner" spinning={isLoading}>
       <Breadcrumbs
@@ -365,6 +375,8 @@ const UpdateTopic = () => {
             values={values}
             isLoading={isLoading}
             editCampStatementData={editCampStatementData}
+            isRankHidden = {isRankHidden}
+            hideRankHandler={hideRankHandler}
           />
         </Col>
         <Col lg={12} key="col-topic-info">

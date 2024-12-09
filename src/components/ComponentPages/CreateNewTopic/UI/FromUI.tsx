@@ -1,5 +1,5 @@
-import { Fragment, useEffect } from "react";
-import { Form, Row, Col, Typography } from "antd";
+import { Fragment, useEffect, useState } from "react";
+import { Form, Row, Col, Typography, Checkbox } from "antd";
 import {
   CloseOutlined,
   FileTextOutlined,
@@ -42,6 +42,8 @@ const CreateTopicFromUI = ({
   isLoading,
   editCampStatementData,
   isEdit = false,
+  isRankHidden,
+  hideRankHandler,
 }) => {
   const getNickNameInput = () => {
     const selectInputProps: any = {
@@ -307,6 +309,14 @@ const CreateTopicFromUI = ({
               />
             </Col>
           )}
+          <Checkbox 
+            id="rank_hidden"
+            name="rank_hidden"
+            checked={isRankHidden}
+            onChange={hideRankHandler}
+          >
+            Hide Score
+          </Checkbox>
         </Row>
 
         {isLoading ? (
@@ -334,7 +344,7 @@ const CreateTopicFromUI = ({
               htmlType="submit"
               id="create-topic-btn"
               data-testid="create-topic-btn"
-              disabled={!isDisabled}
+              // disabled={!isDisabled}
               className="flex justify-center items-center py-5 px-6 w-[200px]"
               onClick={() => {
                 dispatch(

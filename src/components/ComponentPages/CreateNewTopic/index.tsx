@@ -40,6 +40,7 @@ const CreateNewTopic = () => {
   const [isShowMore, setIsShowMore] = useState(false);
   const [haveTopicExist, setHaveTopicExist] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [isRankHidden, setIsRankHidden] = useState(false);
 
   const router = useRouter();
   const dispatch = useDispatch();
@@ -88,6 +89,7 @@ const CreateNewTopic = () => {
       namespace: values.namespace,
       nick_name: values.nick_name,
       tags: selectedCats?.map((cat) => cat?.id),
+      is_rank_hidden: isRankHidden,
     };
 
     const res = await createTopic(body);
@@ -232,6 +234,10 @@ const CreateNewTopic = () => {
     setIsError(false);
   };
 
+  const hideRankHandler = (e) => {
+    setIsRankHidden(e.target.checked)
+  };
+
   return (
     <CustomSpinner key="create-topic-spinner" spinning={isLoading}>
       <Breadcrumbs
@@ -264,6 +270,8 @@ const CreateNewTopic = () => {
             values={values}
             isLoading={isLoading}
             editCampStatementData={null}
+            isRankHidden = {isRankHidden}
+            hideRankHandler={hideRankHandler}
           />
         </Col>
         <Col lg={12} key="info-col">
