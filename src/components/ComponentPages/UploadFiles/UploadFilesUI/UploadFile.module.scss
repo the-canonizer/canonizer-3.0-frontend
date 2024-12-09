@@ -1,44 +1,11 @@
-.card {
-  padding: 0 8px;
-  background-color: red;
-  .btnsWrap {
-    padding: 15px 13px 15px;
-    border: solid 1px #d9d9d9;
-    background-color: #fff;
-    margin-bottom: 24px;
-    .btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      font-size: 1.125rem;
-      font-weight: 600;
-      color: #0f2a4d;
-      border: solid 1px #d9d9d9;
-      padding: 4px 15px;
-      i {
-        font-size: 1.1875rem;
-        color: var(--primary);
-        margin-right: 8px;
-      }
-      &:hover {
-        color: var(--primary);
-        border-color: var(--primary);
-      }
-    }
-  }
-}
-
 .uploadFilesData {
-  width: 100%;
+  @apply w-full;
 
   h3 {
-    color: #1c1b24;
-    font-weight: 600;
-    margin: 0;
+    @apply text-[#1c1b24] font-semibold m-0;
+
     span {
-      color: #6c737d;
-      font-weight: 400;
+      @apply text-[#6c737d] font-normal;
     }
 
     @media screen and (max-width: 1150px) {
@@ -59,68 +26,43 @@
 }
 
 .Container .Card {
-  justify-items: center;
-  position: absolute;
-  left: 150px;
-  height: auto;
-  width: 900px;
+  @apply justify-center absolute left-[150px] h-auto w-[900px];
 }
 
 .Container .span {
-  color: gray;
+  @apply text-[gray];
 }
 .top_icon {
-  font-size: 22px;
+  @apply text-[22px];
   span + span {
-    margin-left: 5px;
-    cursor: pointer;
+    @apply ml-[5px] cursor-pointer;
   }
 }
 .top_icon .anticon svg {
-  color: rgb(132, 135, 138);
-  height: 30px;
-  width: 30px;
-  margin-top: 15px;
-  margin-right: 5px;
+  @apply text-[rgb(132_135_138)] h-[30px] w-[30px] mt-[15px] mr-[15px];
 }
 
 .Dragebox .Drager {
-  display: flex;
-  justify-content: center;
-  justify-items: center;
-  align-items: center;
-  align-content: center;
-  height: 400px;
-  width: 100%;
-  border: 2px dashed #707070;
+  @apply flex justify-center justify-items-center items-center h-[400px] w-full border-2 border-dashed border-[#707070];
 }
 
 .Dragebox .Drager:hover {
-  color: gray;
-  border-color: gray;
+  @apply text-[gray] border-[gray];
 }
 
 .Dragebox .anticon svg {
-  color: rgb(20, 159, 223);
-  height: 50px;
-  width: 50px;
+  @apply text-canBlue h-[50px] w-[50px];
 }
 
 .Dragebox .ant-upload-hint {
-  color: gray;
+  @apply text-[gray];
 }
 
 .Back_from_browser .anticon svg {
-  position: absolute;
-  top: 120px;
-  right: 40px;
-  z-index: 5;
-  color: red;
-  height: 25px;
-  width: 25px;
+  @apply absolute top-[120px] right-[40px] text-[red] w-[25px] h-[25px];
 }
 .uploded_Files {
-  position: relative;
+  @apply relative;
 }
 .UploadDataFiles {
   color: green;
@@ -137,87 +79,52 @@
   }
 }
 .Back_from_browser {
-  position: absolute;
-  right: 10px;
-  z-index: 999;
-  top: 10px;
-  font-size: 19px;
-  color: red;
+  @apply absolute top-[10px] right-[10px] text-[red] text-[19px] z-[999];
 }
 
 .Upload_Cancel_Btn {
-  margin-top: 0px;
-  margin-left: 10px;
+  @apply mt-0 ml-[10px];
 }
 
 .Upload_Cancel_Btn .Upload_Btn {
-  margin-right: 10px;
-  background-color: rgb(249, 157, 22);
-  border-color: rgb(249, 157, 22);
-  color: white;
-  border-radius: 2px;
-  width: 130px;
-  height: 38px;
-  font-size: 16px;
+  @apply mr-[10px] bg-[rgb(249_157_22)] border-[rgb(249_157_22)] text-white rounded-sm w-[130px] h-[30px] text-base;
 }
 
 .Upload_Cancel_Btn .Upload_Btn:hover {
-  color: white;
-  border-color: rgb(249, 157, 22);
-  background-color: rgb(249, 157, 22);
+  @apply bg-[rgb(249_157_22)] border-[rgb(249_157_22)] text-white;
 }
 .cancel_Btn {
-  border-color: #4484ce;
-  color: #4484ce;
-  height: 38px;
-  border-radius: 2px;
-  width: auto;
-  font-weight: 600;
+  @apply border-canBlue text-canBlue h-[38px] rounded-sm w-auto font-semibold;
 }
 .cancel_Btn:hover {
-  background: #4484ce;
-  color: #fff;
+  @apply border-canBlue text-white;
 }
 .top_btn {
-  width: auto;
-  display: flex;
-  position: relative;
-  flex-wrap: wrap;
+  @apply w-auto flex relative flex-wrap gap-2;
 
   .datepIcker {
-    width: 100px;
+    @apply w-[100px];
   }
 }
 
 .Top_SearchBtn {
-  width: auto;
-  margin-right: 20px;
+  @apply w-auto mr-[20px];
 }
 
 .Top_SearchBtn Input {
-  width: 150px;
+  @apply w-[150px];
 }
 
 .Top_SearchBtn .ant-picker {
-  width: 100px;
-  margin-right: 10px;
+  @apply w-[100px] mr-[10px];
 }
 
 .searchIcon .anticon svg {
-  color: rgb(217, 217, 217);
-  height: 20px;
-  width: 20px;
-  position: absolute;
-  top: 5px;
-  right: 230px;
+  @apply text-[rgb(217_217_217)] h-[20px] w-[20px] absolute top-[5px] right-[230px];
 }
 
 .top_btn .create_folder_btn {
-  color: rgb(20, 159, 223);
-  border-color: rgb(20, 159, 223);
-  margin-right: 5px;
-  margin-left: 5px;
-  padding: 0 8px;
+  @apply text-canBlue border-canBlue py-0 px-[8px];
   @media screen and (max-width: 400px) {
     margin-right: 3px;
     margin-left: 2px;
@@ -243,11 +150,7 @@
 }
 
 .top_btn .reset_btn {
-  color: rgb(20, 159, 223);
-  border-color: rgb(20, 159, 223);
-  margin-right: 0px;
-  margin-left: 5px;
-  padding: -1 8px;
+  @apply text-canBlue border-canBlue mr-0 ml-[5px] py-[-1px] px-[8px];
   @media screen and (max-width: 400px) {
     margin-right: 3px;
     margin-left: 2px;
@@ -277,6 +180,7 @@
   border-color: rgb(20, 159, 223);
   margin-right: 10px;
   padding: 0 5px;
+  @apply text-canBlue border-canBlue mr-0 py-0 px-[5px];
   img {
     display: none !important;
   }
@@ -304,71 +208,53 @@
     
 } */
 .ant-upload-list-picture {
-  flex-wrap: wrap;
+  @apply flex-wrap;
 }
 .ant-upload-list-picture-container {
-  padding: 0 10px;
   flex: 0 0 20%;
+  @apply py-0 px-[10px];
 }
 .ant-modal-content {
-  width: 400px;
+  @apply w-[400px];
 }
 
 .modal_body .anticon svg {
-  color: red;
-  height: 25px;
-  width: 25px;
-  position: absolute;
-  top: 10px;
-  right: 10px;
+  @apply text-[red] absolute h-[25px] w-[25px] top-[10px] right-[10px];
 }
 
 .modal_title {
-  color: rgb(62, 103, 183);
-  margin-bottom: 20px;
-  margin-right: 100px;
-  display: inline;
+  @apply text-[rgb(62_103_183)] mb-[20px] mr-[100px] inline;
 }
 
 .ant-modal-close-x {
-  display: none;
+  @apply hidden;
 }
 
 .wraper .modal_Btn {
-  width: 350px;
-  margin-top: 20px;
-  background-color: rgb(249, 157, 22);
-  color: white;
+  @apply mt-[20px] w-[350px] bg-[rgb(249_157_22)] text-white;
 }
 
 .wraper .modal_Btn:hover {
-  color: white;
-  background-color: rgb(249, 157, 22);
+  @apply bg-[rgb(249_157_22)] text-white;
 }
 
 .ant-modal-mask {
-  background-color: rgba(0, 0, 0, 0.78);
+  @apply bg-[rgba(0_0_0_0.78)];
 }
 
 .wraper .folderlabel {
-  color: gray;
+  @apply text-[gray];
 }
 .wraper {
-  margin-top: 50px;
+  @apply mt-[50px];
 }
 
 .uploded-Files {
-  display: flex;
-  max-width: 850px;
+  @apply flex max-w-[850px];
 }
 
 .After_Upload {
-  padding: 8px;
-  height: auto;
-  border: 1px solid #eaedf2;
-  position: relative;
-  display: flex;
-  flex-wrap: wrap;
+  @apply p-[8px] h-auto border border-[#eaedf2] relative flex flex-wrap;
   [data-testid="remove_upload_files"] {
     position: absolute;
     top: 10px;
@@ -388,77 +274,54 @@
 }
 
 .After_Upload input {
-  width: 100%;
-  padding: 6px 10px;
-  margin-top: 10px;
-  display: block;
+  @apply w-full py-[6px] px-[10px] block mt-[10px];
 }
 .After_Upload .anticon svg {
-  position: absolute;
-  top: 10px;
-  right: 10px;
+  @apply absolute top-[10px] right-[10px];
 }
 
 .Folder_container .ant-card-body {
-  padding: 0px;
+  @apply p-0;
+  .imageFiles {
+    @apply bg-canBlue;
+  }
 }
 
 .folder_icon .anticon svg {
-  height: 160px;
-  width: 140px;
-  color: rgb(68, 132, 206);
-  position: absolute;
-  top: -10px;
-  left: -10px;
+  @apply h-[160px] w-[140px] text-[rgb(68_132_206)] absolute top-[-10px] left-[-10px];
 }
 
 .dropdown .anticon svg {
-  height: 30px;
-  width: 30px;
-  color: white;
+  @apply text-white h-[30px] w-[30px];
 }
 .ant-dropdown-menu {
-  position: relative;
-  right: 90px;
+  @apply relative right-[90px];
 }
 .dropdown .ant-dropdown-link {
-  position: absolute;
-  top: 95px;
-  left: 100px;
+  @apply absolute top-[95px] left-[100px];
 }
 .dropdown {
-  position: absolute;
-  right: 15px;
-  bottom: 20px;
-  width: 20px;
-  cursor: pointer;
-  height: 20px;
+  @apply absolute right-[15px] bottom-[20px] w-[20px] h-[20px] cursor-pointer;
 }
 .ant-dropdown-trigger .anticon.anticon-more {
-  color: #fff;
-  font-size: 20px;
   right: inherit;
   position: inherit;
   bottom: inherit;
+  @apply text-white text-[20px];
 }
 .Folder_container {
-  position: relative;
+  @apply relative;
 }
 .view_After_folder {
-  background: red;
+  @apply bg-[red];
 }
 .FolderfileCard {
-  background: red;
+  @apply bg-[red];
 }
 .FolderData {
-  width: 175px;
-  background: #4484ce;
-  height: 130px;
   border-radius: 0px 6px 6px 6px;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+
+  @apply w-[175px] bg-[#4484ce] h-[130px] relative flex flex-col justify-center;
   @media screen and (max-width: 767px) {
     width: 100%;
   }
@@ -474,22 +337,13 @@
     background-size: cover;
   }
   .foldername {
-    color: #fffdf3;
-    font-size: 13px;
-    text-align: center;
-    margin-bottom: 10px;
-    font-weight: 500;
+    @apply text-[13px] text-center mb-[10px] font-medium text-[#fffdf3];
   }
   small {
-    font-size: 10px;
-    text-align: center;
-    width: 100%;
-    display: inline-block;
+    @apply text-[11px] text-center w-full inline-block;
   }
   p {
-    font-size: 11px;
-    text-align: center;
-    margin-bottom: 10px;
+    @apply text-[11px] text-center mb-[10px];
   }
 
   > div {
@@ -500,12 +354,9 @@
   }
 }
 .fileList {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
+  @apply flex flex-wrap gap-y-4;
   .view_After_Upload {
-    padding: 0 8px;
-    margin-bottom: 16px;
+    @apply py-0 px-[8px];
     @media screen and (max-width: 767px) {
       width: 50%;
     }
@@ -514,57 +365,27 @@
     }
   }
   .folder_Back_Button {
-    width: 100%;
-    padding: 0;
+    @apply w-full p-0;
     .openFolder {
-      display: flex;
-      flex-wrap: wrap;
+      @apply flex flex-wrap;
     }
   }
 }
 .files {
   > div {
-    padding: 0;
-    // border: 1px solid #ccd4e7;
-    width: 160px;
+    @apply p-0 w-[160px];
     @media screen and (max-width: 767px) {
       width: 100%;
     }
   }
   .imageFiles {
-    text-align: center;
-    // width: 100%;
-    // display: inline-block;
-    // background-color: #fff;
-    // max-height: 125px;
-    // min-height: 125px;
-    // overflow: hidden;
-    // padding-top: 5px;
+    @apply text-center;
     img {
-      object-fit: cover;
+      @apply object-cover;
     }
   }
   h3 {
-    font-size: 16px;
-    padding: 2px 6px 0;
-    color: #0f2a4d;
-    margin-bottom: 0px;
-    border-top: 1px solid #eaedf2;
-    width: 100%;
-    overflow: hidden;
-    white-space: nowrap;
-    //text-overflow: ellipsis;
-    // span {
-    //   margin-left: 5px !important;
-    // }
-  }
-  span {
-    // font-size: 12px;
-    // display: inline-block;
-    // width: 100%;
-    // color: #6c737d;
-    // padding: 0 10px;
-    // margin-bottom: 6px;
+    @apply text-[16px] pt-[2px] px-[6px] pb-0 mb-0 border-t border-[#eaedf2] w-full overflow-hidden whitespace-nowrap;
   }
 }
 
@@ -591,8 +412,7 @@
   right: 5px;
 }*/
 .files .ant-card-body {
-  padding: 0px;
-  justify-content: center;
+  @apply p-0 justify-center;
 }
 
 @media (max-width: 1200px) {
@@ -616,56 +436,25 @@
 }
 
 .search_users {
-  margin-left: 5px;
-  position: relative;
+  @apply relative;
   @media screen and (max-width: 1023px) {
-    position: relative;
-    margin-bottom: 10px;
+    @apply relative mb-[10px];
   }
   span {
-    position: absolute;
-    right: 8px;
-    font-size: 19px;
-    color: #aaa;
-    top: 7px;
-    pointer-events: none;
+    @apply absolute top-[7px] right-[8px] text-[19px] text-[#aaa] z-[999] pointer-events-none;
     @media screen and (max-width: 1280px) {
-      position: relative;
-      border: 1px solid #ddd;
-      height: 32px;
-      width: 35px;
-      top: 0;
-      border-radius: 2px;
-      display: flex;
-      right: 0;
-      align-items: center;
-      justify-content: center;
+      @apply relative border border-[#ddd] h-[32px] w-[32px] top-0 rounded-sm flex right-0 items-center justify-center;
     }
   }
 
   input {
-    border: 1px solid #ddd;
-    height: 32px;
-    padding: 0 30px 0 15px;
-    background: transparent;
-    width: 150px;
+    @apply border border-[#ddd] w-[150px] h-[32px] py-0 pr-[30px] pl-[15px];
     @media screen and (max-width: 1280px) {
-      width: 35px;
-      display: block;
-      position: absolute;
-      right: 0;
-      padding: 0;
-      top: 0;
-      z-index: 99;
-      background: #fff;
       transition: all 0.3s ease-in-out 0s;
-      opacity: 1;
-      font-size: 0;
-      box-shadow: none;
+
+      @apply w-[35px] block absolute right-0 p-0 top-0 z-[99] bg-white opacity-[1] text-[0] shadow-none;
       &:focus {
-        padding: 0 30px 0 15px;
-        width: 200px;
-        font-size: 14px;
+        @apply text-[14px] w-[200px] py-0 pr-[30px] pl-[15px];
       }
     }
 
@@ -683,29 +472,25 @@
   margin-left: 5px !important;
 }
 .folder_icon {
-  position: relative;
+  @apply relative;
   .dropdown {
-    position: absolute;
-    bottom: 70px;
-    right: 10px;
-    cursor: pointer;
+    @apply absolute bottom-[70px] right-[10px] cursor-pointer;
   }
 }
 .modal_cross {
-  font-size: 17px;
+  @apply text-[17px];
 }
 .hideUpload {
-  display: none;
+  @apply hidden;
 }
 .high_light {
-  color: #149fdf;
+  @apply text-[#149fdf];
 }
 .menu_item {
-  color: black;
-  cursor: pointer;
+  @apply text-black cursor-pointer;
 }
 .menu_item > span {
-  display: inline-flex;
+  @apply inline-flex;
 }
 .icon_Width {
   display: inline-block;
@@ -723,21 +508,20 @@
   text-overflow: ellipsis;
 }
 .CopyShortCode {
-  display: flex;
+  @apply flex;
 }
 .filename_text {
   display: inline-block;
   color: #0f2a4d;
   font-size: 14px;
   flex: inherit;
-
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
   width: 150px;
 }
 .shortcode_icon {
-  margin-left: 10px;
+  @apply ml-[10px];
 }
 .folder_icons {
   svg {
@@ -747,97 +531,44 @@
 .folder_icons_fileTxt {
   svg {
     font-size: 20px !important;
-    //color: blue;
   }
 }
 .folder_icons_pdf {
   svg {
     font-size: 20px !important;
-    color: red;
+    @apply text-[red];
   }
 }
-// .FileTextTwoOneClass {
-//   svg {
-//     height: 100px;
-//     width: 100px;
-//     margin-block: 15px;
-//   }
-// }
-// .FilePdfTwoToneColor {
-//   svg {
-//     height: 100px;
-//     width: 100px;
-//     margin-block: 15px;
-//     color: red;
-//   }
-// }
 
 .dropdown-menu {
   @apply leading-none cursor-pointer;
 }
-// .dropdown_menu {
-//   // position: absolute;
-//   top: 6px;
-//   margin-right: 0;
-//   right: 10px;
-//   cursor: pointer;
-//   z-index: 99;
-//   left: auto;
-//   width: 25px;
-//   height: 25px;
-//   background: #ffffff96;
-//   text-align: center;
-//   border-radius: 100%;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   padding-top: 5px;
-//   span {
-//     top: -3px;
-//   }
-// }
 
 .dropdown_menu:hover {
-  background-color: #fff;
+  @apply bg-white;
 }
 
 .preview_image button span.ant-modal-close-x {
-  width: 23px;
-  height: 20px;
-  line-height: 25px;
+  @apply w-[32px] h-[20px] leading-[25px];
 }
 
 .crossIcon {
-  margin-left: 31px;
-  position: relative;
-  top: -15px;
+  @apply ml-[31px] relative top-[-15px];
 }
 .maxLimit {
-  color: red;
-  text-align: center;
-  font-size: 11px;
+  @apply text-[red] text-center text-[11px];
 }
 .FolderOpenHeading {
-  color: #1c1b24;
-  font-weight: 600;
-  display: flex;
-  font-size: 20px;
-  align-items: center;
+  @apply text-[#1c1b24] font-semibold flex text-[20px] items-center;
   span {
-    margin-right: 10px;
+    @apply mr-[10px];
   }
-  // span + span {
-  //   margin-left: 10px !important;
-  // }
 }
 
 .emptyFolderData {
-  margin: auto;
+  @apply m-auto;
 }
 
 .modal_cross {
-  font-size: 17px;
-}
-.text_right {
-  text-align: right;
+  @apply text-[17px];
 }

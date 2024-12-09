@@ -1,10 +1,12 @@
 .fileList {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
+  @apply flex items-center flex-wrap;
+  // display: flex;
+  // align-items: center;
+  // flex-wrap: wrap;
   .view_After_Upload {
-    padding: 0 8px;
-    margin-bottom: 16px;
+    // padding: 0 8px;
+    // margin-bottom: 16px;
+    @apply py-0 px-2;
     @media screen and (max-width: 767px) {
       width: 50%;
     }
@@ -13,16 +15,18 @@
     }
   }
   .folder_Back_Button {
-    width: 100%;
-    padding: 0;
+    @apply w-full p-0;
+    // width: 100%;
+    // padding: 0;
     .openFolder {
-      display: flex;
-      flex-wrap: wrap;
+      @apply flex flex-wrap;
+      // display: flex;
+      // flex-wrap: wrap;
     }
   }
 }
 .files {
-  @apply rounded-lg border border-[#ccd4e7] h-full;
+  @apply rounded-lg border border-[#ccd4e7] h-full min-h-[178px];
 
   .ant-card-body {
     @apply p-0 md:w-[160px];
@@ -75,6 +79,15 @@
     @apply w-full;
     .ant-btn {
       @apply whitespace-normal;
+    }
+  }
+}
+.folder-container {
+  .image-files {
+    @apply bg-canBlue;
+    .anticon,
+    svg {
+      @apply text-white;
     }
   }
 }
