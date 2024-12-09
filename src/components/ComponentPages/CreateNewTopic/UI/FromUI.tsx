@@ -309,14 +309,15 @@ const CreateTopicFromUI = ({
               />
             </Col>
           )}
+          <Form.Item name="rank_hidden" valuePropName="checked">
           <Checkbox 
             id="rank_hidden"
-            name="rank_hidden"
             checked={isRankHidden}
             onChange={hideRankHandler}
           >
             Hide Score
           </Checkbox>
+          </Form.Item>
         </Row>
 
         {isLoading ? (

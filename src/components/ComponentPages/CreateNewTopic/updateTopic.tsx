@@ -78,7 +78,8 @@ const UpdateTopic = () => {
       currentTopicNickNames?.at(0)?.id !== values?.nick_name ||
       currentTopic?.namespace_id !== values?.namespace ||
       currentTopic?.edit_summary !== values?.edit_summary ||
-      !compareTags(currentTopic?.tags, selectedCats)
+      !compareTags(currentTopic?.tags, selectedCats) ||
+      currentTopic?.is_rank_hidden !== values?.rank_hidden
     ) {
       setIsSubmitReq(true);
     } else {
@@ -128,7 +129,7 @@ const UpdateTopic = () => {
           await form.setFieldValue("topic_name", topicData?.topic_name);
           await form.setFieldValue("namespace", topicData?.namespace_id);
           await form.setFieldValue("edit_summary", topicData?.edit_summary);
-          form.setFieldValue("rank_hidden", topicData?.is_rank_hidden);
+          await form.setFieldValue("rank_hidden", topicData?.is_rank_hidden);
 
           setNickNameList(resData);
         }
