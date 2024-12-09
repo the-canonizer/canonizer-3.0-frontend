@@ -1230,6 +1230,7 @@ const UploadFileUI = ({
                         setLoadingArray([...fileList]);
                       }}
                       onChange={(info) => {
+                        console.log(info,"infoooo")
                         try {
                           const { file, fileList } = info; // Destructure 'info' to simplify the logic
                           const length = fileList ? fileList.length : 0;
