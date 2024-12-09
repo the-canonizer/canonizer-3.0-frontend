@@ -80,6 +80,7 @@ import { setTimeout } from "timers";
 // import SideBar from "../../CampForum/UI/sidebar";
 import queryParams from "src/utils/queryParams";
 import CustomSkelton from "../../../common/customSkelton";
+import { useRouter } from "next/router";
 
 const UploadFileUI = ({
   input,
@@ -113,6 +114,7 @@ const UploadFileUI = ({
   getUploadFolderLoadingIndicator,
   uploadedLengths,
 }: any) => {
+  const router = useRouter();
   const [uploadStatus] = useState(false);
   // const [toggleFileView, setToggleFileView] = useState(false);
   const [previewImageIndicator, setPreviewImageIndicator] = useState(false);
@@ -389,6 +391,14 @@ const UploadFileUI = ({
   const cancelBtn = () => {
     handleCancel();
     setLoadingImage(false);
+  };
+
+  const handleGoBack = () => {
+    if (document.referrer) {
+      router.back(); // Navigate to the previous page
+    } else {
+      router.push("/"); // Fallback if there's no previous page
+    }
   };
 
   const changeFolderName = async () => {
@@ -1071,6 +1081,7 @@ const UploadFileUI = ({
                         className="upload-back-btn"
                         icon={<LeftOutlined />}
                         size="large"
+                        onClick={handleGoBack}
                       >
                         File(s) Uploaded
                       </Button>
