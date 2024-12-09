@@ -344,7 +344,7 @@ const CreateTopicFromUI = ({
               htmlType="submit"
               id="create-topic-btn"
               data-testid="create-topic-btn"
-              // disabled={!isDisabled}
+              disabled={!isDisabled}
               className="flex justify-center items-center py-5 px-6 w-[200px]"
               onClick={() => {
                 dispatch(

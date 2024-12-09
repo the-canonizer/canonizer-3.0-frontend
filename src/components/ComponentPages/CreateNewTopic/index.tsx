@@ -235,6 +235,7 @@ const CreateNewTopic = () => {
   };
 
   const hideRankHandler = (e) => {
+    form.setFieldValue("nick_name", e.target.checked);
     setIsRankHidden(e.target.checked)
   };
 
