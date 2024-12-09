@@ -111,6 +111,7 @@ const UploadFileUI = ({
   setToggleFileView,
   getUploadFilesLoadingIndicator,
   getUploadFolderLoadingIndicator,
+  uploadedLengths,
 }: any) => {
   const [uploadStatus] = useState(false);
   // const [toggleFileView, setToggleFileView] = useState(false);
@@ -1231,7 +1232,7 @@ const UploadFileUI = ({
                   }
                 >
                   <Card
-                    title="8 Files, 3 Folders"
+                    title={`${uploadedLengths?.fileLength} Files, ${uploadedLengths?.folderLength} Folders`}
                     className="upload-inner-card"
                     bordered={false}
                     extra={
