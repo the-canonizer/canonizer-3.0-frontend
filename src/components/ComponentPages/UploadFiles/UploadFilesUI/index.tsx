@@ -58,8 +58,19 @@ import Trash from "../../../../assets/image/trash.svg";
 import ArrowLeft from "../../../../assets/image/arrow_small_left.svg";
 import CopyShortCodeImage from "../../../../assets/image/copyShort.png";
 import DatePickerImage from "../../../../assets/image/datePicker.png";
+import CSV from "../../../../assets/image/icons/csv.png";
+import EPS from "../../../../assets/image/icons/eps.png";
+import GIF from "../../../../assets/image/icons/gif.png";
+import HTML from "../../../../assets/image/icons/html.png";
+import JPG from "../../../../assets/image/icons/jpg.png";
+import MOV from "../../../../assets/image/icons/mov.png";
 import PDF from "../../../../assets/image/icons/pdf.png";
+import PNG from "../../../../assets/image/icons/text.png";
+import SVG from "../../../../assets/image/icons/svg.png";
 import TEXT from "../../../../assets/image/icons/text.png";
+import TIFF from "../../../../assets/image/icons/tiff.png";
+import XLS from "../../../../assets/image/icons/xls.png";
+import ZIP from "../../../../assets/image/icons/zip.png";
 
 import {
   showDrageBox,
@@ -202,6 +213,112 @@ const UploadFileUI = ({
   const pptRegexData =
     /^application\/(vnd.ms-powerpoint.template.macroEnabled.12$|vnd.openxmlformats-officedocument.presentationml.template$|vnd.ms-powerpoint.addin.macroEnabled.12$|vnd.openxmlformats-officedocument.presentationml.slideshow$|vnd.openxmlformats-officedocument.presentationml.slideshow$|vnd.ms-powerpoint.slideshow.macroEnabled.12$|vnd.ms-powerpoint$|vnd.ms-powerpoint.presentation.macroEnabled.12$|vnd.openxmlformats-officedocument.presentationml.presentation$)/;
   const fileJsonRegex = /^application\/(json$)/;
+
+  // File type regex mappings
+  const fileTypeRegexes = {
+    text: /^text\/(plain|html|rtf|csv)$/,
+    pdf: /^application\/pdf$/,
+    excel:
+      /^application\/(vnd\.ms-excel|vnd\.openxmlformats-officedocument\.spreadsheetml\.sheet)$/,
+    doc: /^application\/(msword|vnd\.openxmlformats-officedocument\.wordprocessingml\.document)$/,
+    image: /^image\/(jpeg|png|jpg|gif|bmp)$/,
+    ppt: /^application\/(vnd\.ms-powerpoint|vnd\.openxmlformats-officedocument\.presentationml\.presentation)$/,
+    json: /^application\/json$/,
+    csv: /^text\/csv$/,
+    gif: /^image\/gif$/,
+    html: /^text\/html$/,
+    eps: /^application\/postscript$/,
+    jpg: /^image\/(jpeg|jpg)$/,
+    mov: /^video\/quicktime$/,
+    png: /^image\/png$/,
+    svg: /^image\/svg\+xml$/,
+    tiff: /^image\/tiff$/,
+    zip: /^application\/(zip|x-zip-compressed)$/,
+  };
+
+  // File type to image icon mappings
+  const fileTypeIcons = {
+    text: TEXT,
+    pdf: PDF,
+    excel: XLS,
+    doc: TEXT, // Replace with DOC icon if available
+    ppt: TEXT, // Replace with PPT icon if available
+    json: TEXT, // Replace with JSON icon if available
+    csv: CSV,
+    gif: GIF,
+    html: HTML,
+    eps: EPS,
+    jpg: JPG,
+    mov: MOV,
+    png: PNG,
+    svg: SVG,
+    tiff: TIFF,
+    zip: ZIP,
+    unknown: TEXT, // Fallback icon
+  };
+
+  // Function to match file type
+  const matchFileType = (fileType) =>
+    Object.keys(fileTypeRegexes).find((key) =>
+      fileTypeRegexes[key].test(fileType)
+    ) || "unknown";
+
+  // Function to display image or folder
+  const displayColumnListImage = (obj) => {
+    const fileType = matchFileType(obj.file_type);
+
+    return (
+      <div>
+        {fileTypeRegexes.image?.test(obj.file_type) && obj.file_path ? (
+          // Render file image if it's an image type
+          <Image
+            alt="uploaded-file"
+            src={`${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/${obj.file_path}`}
+            height={150}
+            width={140}
+          />
+        ) : obj.type === "folder" ? (
+          // Render folder icon with interaction
+          <FolderFilled className="text-canBlue" />
+        ) : (
+          // Render file type icon for other file types
+          <Image
+            alt={`${fileType}-icon`}
+            src={fileTypeIcons[fileType] || fileTypeIcons.unknown}
+            height={40}
+            width={40}
+            className={styles.folder_icons}
+          />
+        )}
+      </div>
+    );
+  };
+
+  // Function to display detailed file
+  const displayImage = (file, imageData) => {
+    const fileType = matchFileType(file.file_type || file.type);
+
+    return (
+      <div id="display_image">
+        {fileTypeRegexes.image?.test(file.file_type || file.type) &&
+        imageData ? (
+          // Render image preview
+          <Image
+            alt="displayed-file"
+            src={imageData}
+            height={100}
+            width={140}
+          />
+        ) : (
+          // Render file icon
+          <Image
+            alt={`${fileType}-icon`}
+            src={fileTypeIcons[fileType] || fileTypeIcons.unknown}
+          />
+        )}
+      </div>
+    );
+  };
   const menu = (i, obj) => (
     <Menu>
       <Menu.Item
@@ -325,61 +442,61 @@ const UploadFileUI = ({
       </span>
     </Menu>
   );
-  const displayColumnListImage = (obj) => {
-    const fileText = <FileTextFilled className={styles.folder_icons_fileTxt} />;
-    const filePdf = <FilePdfFilled className={styles.folder_icons_pdf} />;
-    const fileUnknown = <FileUnknownFilled className={styles.folder_icons} />;
+  // const displayColumnListImage = (obj) => {
+  //   const fileText = <FileTextFilled className={styles.folder_icons_fileTxt} />;
+  //   const filePdf = <FilePdfFilled className={styles.folder_icons_pdf} />;
+  //   const fileUnknown = <FileUnknownFilled className={styles.folder_icons} />;
 
-    const filePpt = <FilePptOutlined className={styles.folder_icons_fileTxt} />;
-    const fileJson = <FileOutlined className={styles.folder_icons_fileTxt} />;
-    const fileXcel = (
-      <FileExcelOutlined className={styles.folder_icons_fileTxt} />
-    );
-    const fileDocs = (
-      <FileWordOutlined className={styles.folder_icons_fileTxt} />
-    );
-    return (
-      <div>
-        {(() => {
-          if (imageRegexData.test(obj.file_type) && obj.file_path) {
-            return (
-              <Image
-                alt="uploaded-file"
-                src={`${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/${obj.file_path}`}
-                height={150}
-                width={140}
-              />
-            );
-          } else if (obj.type == "folder") {
-            return (
-              <FolderFilled
-                data-testid="folderFilled"
-                className={styles.folder_icons}
-                style={{ cursor: "pointer" }}
-                onClick={() => {
-                  Openfolder(obj.id);
-                }}
-              />
-            );
-          } else if (textFileRegex.test(obj.file_type)) {
-            return fileText;
-          } else if (pdfFileRegex.test(obj.file_type)) {
-            return filePdf;
-          } else if (excelFileRegex.test(obj.file_type)) {
-            return fileXcel;
-          } else if (docFileRegex.test(obj.file_type)) {
-            return fileDocs;
-          } else if (pptRegexData.test(obj.file_type)) {
-            return filePpt;
-          } else if (fileJsonRegex.test(obj.file_type)) {
-            return fileJson;
-          } else {
-            return fileUnknown;
-          }
-        })()}
-      </div>
-    );
-  };
+  //   const filePpt = <FilePptOutlined className={styles.folder_icons_fileTxt} />;
+  //   const fileJson = <FileOutlined className={styles.folder_icons_fileTxt} />;
+  //   const fileXcel = (
+  //     <FileExcelOutlined className={styles.folder_icons_fileTxt} />
+  //   );
+  //   const fileDocs = (
+  //     <FileWordOutlined className={styles.folder_icons_fileTxt} />
+  //   );
+  //   return (
+  //     <div>
+  //       {(() => {
+  //         if (imageRegexData.test(obj.file_type) && obj.file_path) {
+  //           return (
+  //             <Image
+  //               alt="uploaded-file"
+  //               src={`${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/${obj.file_path}`}
+  //               height={150}
+  //               width={140}
+  //             />
+  //           );
+  //         } else if (obj.type == "folder") {
+  //           return (
+  //             <FolderFilled
+  //               data-testid="folderFilled"
+  //               className={styles.folder_icons}
+  //               style={{ cursor: "pointer" }}
+  //               onClick={() => {
+  //                 Openfolder(obj.id);
+  //               }}
+  //             />
+  //           );
+  //         } else if (textFileRegex.test(obj.file_type)) {
+  //           return fileText;
+  //         } else if (pdfFileRegex.test(obj.file_type)) {
+  //           return filePdf;
+  //         } else if (excelFileRegex.test(obj.file_type)) {
+  //           return fileXcel;
+  //         } else if (docFileRegex.test(obj.file_type)) {
+  //           return fileDocs;
+  //         } else if (pptRegexData.test(obj.file_type)) {
+  //           return filePpt;
+  //         } else if (fileJsonRegex.test(obj.file_type)) {
+  //           return fileJson;
+  //         } else {
+  //           return fileUnknown;
+  //         }
+  //       })()}
+  //     </div>
+  //   );
+  // };
   const editFolder = (obj) => {
     createFolderForm.resetFields();
     setEditModal(true);
@@ -698,7 +815,7 @@ const UploadFileUI = ({
         isButton={false}
       />
     ) : (
-      <div className={"folderId" + item.id} id={"folderId" + item.id}>
+      <div className={"folderId" + item.id } id={"folderId" + item.id}>
         {item && item.type && item.type == "folder" && !toggleFileView ? (
           <div className={`${styles.Folder_container} folder-container`}>
             <Card className={`${styles.files} files`}>
@@ -721,9 +838,11 @@ const UploadFileUI = ({
                     {item?.name}
                   </span>
                   <Dropdown
+                    className="cursor-pointer"
                     overlay={menu(i, item)}
                     trigger={["click"]}
-                    placement="topCenter"
+                    placement="bottomRight"
+                    // placement="topCenter"
                   >
                     <div
                       data-testid="open_folder_render_mennu"
@@ -920,53 +1039,53 @@ const UploadFileUI = ({
       ""
     );
   };
-  const displayImage = (file, imageData) => {
-    const fileText = <img src={TEXT.src} alt="" />;
-    // const filePdf = <FilePdfFilled className={styles.FilePdfTwoToneColor} />;
-    const filePdf = <img src={PDF.src} alt="" />;
-    const fileUnknown = (
-      <FileUnknownFilled className={styles.FileTextTwoOneClass} />
-    );
-    const filePpt = <FilePptOutlined className={styles.FileTextTwoOneClass} />;
-    const fileJson = <FileOutlined className={styles.FileTextTwoOneClass} />;
-    const fileXcel = (
-      <FileExcelOutlined className={styles.FileTextTwoOneClass} />
-    );
-    const fileDocs = (
-      <FileWordOutlined className={styles.FileTextTwoOneClass} />
-    );
+  // const displayImage = (file, imageData) => {
+  //   const fileText = <img src={TEXT.src} alt="" />;
+  //   // const filePdf = <FilePdfFilled className={styles.FilePdfTwoToneColor} />;
+  //   const filePdf = <img src={PDF.src} alt="" />;
+  //   const fileUnknown = (
+  //     <FileUnknownFilled className={styles.FileTextTwoOneClass} />
+  //   );
+  //   const filePpt = <FilePptOutlined className={styles.FileTextTwoOneClass} />;
+  //   const fileJson = <FileOutlined className={styles.FileTextTwoOneClass} />;
+  //   const fileXcel = (
+  //     <FileExcelOutlined className={styles.FileTextTwoOneClass} />
+  //   );
+  //   const fileDocs = (
+  //     <FileWordOutlined className={styles.FileTextTwoOneClass} />
+  //   );
 
-    return (
-      <div id="display_image">
-        {(() => {
-          if (imageRegexData.test(file.file_type || file.type) && imageData) {
-            return (
-              <Image
-                alt="displayed-file"
-                src={imageData}
-                height={150}
-                width={140}
-              />
-            );
-          } else if (textFileRegex.test(file.file_type || file.type)) {
-            return fileText;
-          } else if (pdfFileRegex.test(file.file_type || file.type)) {
-            return filePdf;
-          } else if (excelFileRegex.test(file.file_type || file.type)) {
-            return fileXcel;
-          } else if (docFileRegex.test(file.file_type || file.type)) {
-            return fileDocs;
-          } else if (pptRegexData.test(file.file_type || file.type)) {
-            return filePpt;
-          } else if (fileJsonRegex.test(file.file_type || file.type)) {
-            return fileJson;
-          } else {
-            return fileUnknown;
-          }
-        })()}
-      </div>
-    );
-  };
+  //   return (
+  //     <div id="display_image">
+  //       {(() => {
+  //         if (imageRegexData.test(file.file_type || file.type) && imageData) {
+  //           return (
+  //             <Image
+  //               alt="displayed-file"
+  //               src={imageData}
+  //               height={150}
+  //               width={140}
+  //             />
+  //           );
+  //         } else if (textFileRegex.test(file.file_type || file.type)) {
+  //           return fileText;
+  //         } else if (pdfFileRegex.test(file.file_type || file.type)) {
+  //           return filePdf;
+  //         } else if (excelFileRegex.test(file.file_type || file.type)) {
+  //           return fileXcel;
+  //         } else if (docFileRegex.test(file.file_type || file.type)) {
+  //           return fileDocs;
+  //         } else if (pptRegexData.test(file.file_type || file.type)) {
+  //           return filePpt;
+  //         } else if (fileJsonRegex.test(file.file_type || file.type)) {
+  //           return fileJson;
+  //         } else {
+  //           return fileUnknown;
+  //         }
+  //       })()}
+  //     </div>
+  //   );
+  // };
   // const confirm = (keyParam) => {
   //   message.info("Clicked on Yes.");
   //   removeFiles(keyParam);

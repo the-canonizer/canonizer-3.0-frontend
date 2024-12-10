@@ -83,6 +83,7 @@
   }
 }
 .folder-container {
+  @apply cursor-pointer;
   .image-files {
     @apply bg-canBlue;
     .anticon,
