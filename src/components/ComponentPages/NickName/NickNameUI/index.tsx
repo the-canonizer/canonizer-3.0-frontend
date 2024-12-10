@@ -1,4 +1,4 @@
-import { Table, Input, Select, Form, Modal, Tooltip } from "antd";
+import { Table, Input, Select, Form, Modal, Tooltip, Radio } from "antd";
 import { DownOutlined, PlusOutlined, SaveOutlined } from "@ant-design/icons";
 import Image from "next/image";
 
@@ -40,10 +40,16 @@ function NickNameUI({
       render: (text, record) => <div className="flex gap-4">{text}</div>,
     },
     {
+      title: "Default",
+      dataIndex: "default",
+      width: "20%",
+      render: (text, record) => <Radio className="nick-radio">Default</Radio>,
+    },
+    {
       title: "Visibility",
       dataIndex: "private",
       className: "",
-      width: "20%",
+      width: "10%",
       render: (_, record) => (
         <Select
           id="nickname_status_select"
@@ -105,10 +111,7 @@ function NickNameUI({
   return (
     <section id="nickname_section">
       <SectionHeading title="NICKNAMES" icon={null} />
-      <p
-        className="mt-1 mb-5 text-sm font-normal text-canRed"
-        id="nickanme_note"
-      >
+      <p className="mt-1 mb-5 text-sm font-normal " id="nickanme_note">
         Note: You can’t edit or delete your nickname once created. You can only
         manage its visibility status.
       </p>
@@ -119,6 +122,9 @@ function NickNameUI({
             dataSource={nickNameList}
             columns={columns}
             rowClassName="editable-row"
+            scroll={{
+              x: "inherit",
+            }}
             pagination={{ pageSize: pageSizeLength }}
           />
         </Form.Item>
