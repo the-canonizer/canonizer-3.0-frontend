@@ -1230,53 +1230,59 @@ const UploadFileUI = ({
                         setLoadingArray([...fileList]);
                       }}
                       onChange={(info) => {
-                        let length = info.fileList.length;
-                        if (info.file.status == "uploading") {
-                          setAddFileIndicator(true);
-                          setLoadingImage(true);
-                        }
-                        if (info.file.status == "done") {
-                          setLoadingImage(false);
-                          setTimeout(() => {
-                            setLoadingArray([]);
-                            setAddFileIndicator(false);
-                          }, 1000);
-                        }
-                        if (length) {
-                          if (fileStatus) {
-                            if (
-                              info.file.status == "uploading" &&
-                              info.file.percent == 0
-                            ) {
-                              setFolderFiles(info.fileList);
-                              //setUploadFileList(info.fileList);
-                              setFileLists(info.fileList);
+                        console.log(info,"infoooo")
+                        try {
+                          const { file, fileList } = info; // Destructure 'info' to simplify the logic
+                          const length = fileList ? fileList.length : 0;
+                      
+                          if (file?.status === "uploading") {
+                            setAddFileIndicator(true);
+                            setLoadingImage(true);
+                          }
+                      
+                          if (file?.status === "done") {
+                            setLoadingImage(false);
+                            setTimeout(() => {
+                              setLoadingArray([]);
+                              setAddFileIndicator(false);
+                            }, 1000);
+                          }
+                      
+                          if (length > 0) {
+                            if (fileStatus) {
+                              if (file?.status === "uploading" && file?.percent === 0) {
+                                setFolderFiles(fileList);
+                                setFileLists(fileList);
+                              }
+                            } else {
+                              setUploadFileList(fileList || []);
+                              setFileLists(fileList || []);
                             }
+                      
+                            dragBoxHide();
+                            crossBtnhide();
+                            shownAddButton();
+                            uploadOptionsShow();
                           } else {
-                            let dataValues = info.fileList;
-
-                            setUploadFileList(dataValues);
-                            setFileLists(info.fileList);
+                            dragBoxShow();
+                            uploadOptionsHide();
+                            hideButtonAdd();
                           }
-                          dragBoxHide();
-                          crossBtnhide();
-                          shownAddButton();
-                          uploadOptionsShow();
-                        } else {
-                          dragBoxShow();
-                          uploadOptionsHide();
-                          hideButtonAdd();
+                      
+                          if (file) {
+                            const { status } = file;
+                      
+                            if (status !== "uploading") {
+                              if (status === "done") {
+                                showFiles();
+                              } else if (status === "error") {
+                                message.error(`${file.name} file upload failed.`);
+                              }
+                            }
+                          }
+                        } catch (error) {
+                          console.error("An error occurred during file upload:", error);
                         }
-
-                        const { status } = info.file;
-                        if (status !== "uploading")
-                          if (status === "done") {
-                            showFiles();
-                          } else if (status === "error") {
-                            message.error(
-                              `${info.file.name} file upload failed.`
-                            );
-                          }
                       }}
                       onDrop={() => {}}
                       itemRender={(originNode, file) => {
