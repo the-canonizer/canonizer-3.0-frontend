@@ -34,6 +34,7 @@ import {
   LeftOutlined,
   CloudUploadOutlined,
   FolderOpenOutlined,
+  FolderOpenFilled,
 } from "@ant-design/icons";
 import Image from "next/image";
 import styles from "./UploadFile.module.scss";
@@ -57,6 +58,9 @@ import Trash from "../../../../assets/image/trash.svg";
 import ArrowLeft from "../../../../assets/image/arrow_small_left.svg";
 import CopyShortCodeImage from "../../../../assets/image/copyShort.png";
 import DatePickerImage from "../../../../assets/image/datePicker.png";
+import PDF from "../../../../assets/image/icons/pdf.png";
+import TEXT from "../../../../assets/image/icons/text.png";
+
 import {
   showDrageBox,
   hideDrageBox,
@@ -696,7 +700,7 @@ const UploadFileUI = ({
     ) : (
       <div className={"folderId" + item.id} id={"folderId" + item.id}>
         {item && item.type && item.type == "folder" && !toggleFileView ? (
-          <div className={`${styles.Folder_container}`}>
+          <div className={`${styles.Folder_container} folder-container`}>
             <Card className={`${styles.files} files`}>
               <div
                 className={`${styles.imageFiles} image-files`}
@@ -704,7 +708,7 @@ const UploadFileUI = ({
                   Openfolder(item.id);
                 }}
               >
-                <FolderOpenOutlined />
+                <FolderOpenFilled />
               </div>
               <div className="BoxcopyWrap p-[6px]">
                 <div className="flex gap-1 items-center justify-between">
@@ -917,8 +921,9 @@ const UploadFileUI = ({
     );
   };
   const displayImage = (file, imageData) => {
-    const fileText = <FileTextFilled className={styles.FileTextTwoOneClass} />;
-    const filePdf = <FilePdfFilled className={styles.FilePdfTwoToneColor} />;
+    const fileText = <img src={TEXT.src} alt="" />;
+    // const filePdf = <FilePdfFilled className={styles.FilePdfTwoToneColor} />;
+    const filePdf = <img src={PDF.src} alt="" />;
     const fileUnknown = (
       <FileUnknownFilled className={styles.FileTextTwoOneClass} />
     );
@@ -1094,7 +1099,7 @@ const UploadFileUI = ({
                     </>
                   }
                   bordered={false}
-                  className={`upload-card-wrapper ${styles.Card}`}
+                  className="upload-card-wrapper"
                   extra={
                     <div className="d-flex">
                       <div className={styles.top_btn}>
@@ -1479,6 +1484,7 @@ const UploadFileUI = ({
                     {toggleFileView && fileLists.length > 0 ? (
                       <div className="TableContent">
                         <Table
+                          bordered={true}
                           id="tableColumn"
                           className="contentValue"
                           dataSource={filteredArray()}
@@ -1664,10 +1670,7 @@ const UploadFileUI = ({
           <Form.Item style={{ marginBottom: "0px" }}>
             <p>Are you sure you want to delete ?</p>
           </Form.Item>
-          <Form.Item
-            className={styles.text_right}
-            style={{ marginBottom: "0px" }}
-          >
+          <Form.Item className="text-center" style={{ marginBottom: "0px" }}>
             <Button
               data-testid="remove_files"
               onClick={async () => {
