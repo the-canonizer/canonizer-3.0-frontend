@@ -161,27 +161,6 @@ const SettingsUI = () => {
     }
   }, [tab]);
 
-  // const handleChange2 = (e) => {
-  //   const value = e.target.value;
-  //   setSelectedValue(value);
-  //   // Navigate to the corresponding page
-  //   if (value === "Direct_Supported_Camps") {
-  //     router.push("/settings?tab=direct_supported_camps");
-  //   } else if (value === "Delegated_Supported_Camps") {
-  //     router.push("/settings?tab=delegate_supported_camp");
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   const savedValue = localStorage.getItem("selectedValue");
-  //   if (savedValue) {
-  //     setSelectedValue(savedValue);
-  //   }
-  // }, []);
-  // const handleSavedValue = (value) => {
-  //   setSelectedValue(value);
-  //   localStorage.setItem("selectedValue", value);
-  // };
   const onClick = () => {
     logOut(router);
   };
@@ -202,6 +181,7 @@ const SettingsUI = () => {
       key: "profile_info",
       itemIcon: (
         <Image
+          id="menu_item_profile_info_icon"
           src="/images/nickname-user-icon.svg"
           width={14}
           height={14}
@@ -210,7 +190,7 @@ const SettingsUI = () => {
       ),
       label: (
         <Link href="/settings?tab=profile_info">
-          <a>Personal Info</a>
+          <a id="menu_item_profile_info_link">Personal Info</a>
         </Link>
       ),
       className: `listItem ${getMatchQuery("profile_info")}`,
@@ -219,6 +199,7 @@ const SettingsUI = () => {
       key: "nick_name",
       itemIcon: (
         <Image
+          id="menu_item_nick_name_icon"
           src="/images/nickname-user-icon.svg"
           width={14}
           height={14}
@@ -227,7 +208,7 @@ const SettingsUI = () => {
       ),
       label: (
         <Link href="/settings?tab=nick_name">
-          <a>Nicknames</a>
+          <a id="menu_item_nick_name_link">Nicknames</a>
         </Link>
       ),
       className: `listItem ${getMatchQuery("nick_name")}`,
@@ -236,6 +217,7 @@ const SettingsUI = () => {
       key: "user_preferences",
       itemIcon: (
         <Image
+          id="menu_item_user_preferences_icon"
           src="/images/preference-icon.svg"
           width={14}
           height={14}
@@ -244,7 +226,7 @@ const SettingsUI = () => {
       ),
       label: (
         <Link href="/settings?tab=user_preferences">
-          <a>Preferences</a>
+          <a id="menu_item_user_preferences_link">Preferences</a>
         </Link>
       ),
       className: `listItem ${getMatchQuery("user_preferences")}`,
@@ -252,9 +234,17 @@ const SettingsUI = () => {
     {
       key: "supported_camps",
       label: (
-        <span className="flex justify-start gap-1">
+        <span
+          id="menu_item_supported_camps_label"
+          className="flex justify-start gap-1"
+        >
           Supported Camps
-          <Image src="/images/flagicon.svg" width={24} height={24} />
+          <Image
+            id="menu_item_supported_camps_icon"
+            src="/images/flagicon.svg"
+            width={24}
+            height={24}
+          />
         </span>
       ),
       children: [
@@ -262,7 +252,9 @@ const SettingsUI = () => {
           key: "direct_supported_camps",
           label: (
             <Link href="/settings?tab=direct_supported_camps">
-              <a>Direct Supported Camps</a>
+              <a id="menu_item_direct_supported_camps_link">
+                Direct Supported Camps
+              </a>
             </Link>
           ),
           className: `subItem ${getMatchQuery("direct_supported_camps")}`,
@@ -271,7 +263,9 @@ const SettingsUI = () => {
           key: "delegate_supported_camp",
           label: (
             <Link href="/settings?tab=delegate_supported_camp">
-              <a>Delegated Supported Camps</a>
+              <a id="menu_item_delegate_supported_camp_link">
+                Delegated Supported Camps
+              </a>
             </Link>
           ),
           className: `subItem ${getMatchQuery("delegate_supported_camp")}`,
@@ -283,6 +277,7 @@ const SettingsUI = () => {
       key: "subscriptions",
       itemIcon: (
         <Image
+          id="menu_item_subscriptions_icon"
           src="/images/subscription-icon.svg"
           width={14}
           height={14}
@@ -291,7 +286,7 @@ const SettingsUI = () => {
       ),
       label: (
         <Link href="/settings?tab=subscriptions">
-          <a>My Subscriptions</a>
+          <a id="menu_item_subscriptions_link">My Subscriptions</a>
         </Link>
       ),
       className: `listItem ${getMatchQuery("subscriptions")}`,
@@ -299,9 +294,18 @@ const SettingsUI = () => {
     {
       key: "account_settings",
       label: (
-        <span className="flex justify-start gap-1">
+        <span
+          id="menu_item_account_settings_label"
+          className="flex justify-start gap-1"
+        >
           Account Settings
-          <Image src="/images/setting-icon.svg" width={24} height={24} alt="" />
+          <Image
+            id="menu_item_account_settings_icon"
+            src="/images/setting-icon.svg"
+            width={24}
+            height={24}
+            alt=""
+          />
         </span>
       ),
       children: [
@@ -309,7 +313,7 @@ const SettingsUI = () => {
           key: "social_oauth_verification",
           label: (
             <Link href="/settings?tab=social_oauth_verification">
-              <a>Social Auth</a>
+              <a id="menu_item_social_oauth_verification_link">Social Auth</a>
             </Link>
           ),
           className: `subItem ${getMatchQuery("social_oauth_verification")}`,
@@ -318,7 +322,7 @@ const SettingsUI = () => {
           key: "change_password",
           label: (
             <Link href="/settings?tab=change_password">
-              <a>Password</a>
+              <a id="menu_item_change_password_link">Password</a>
             </Link>
           ),
           className: `subItem ${getMatchQuery("change_password")}`,
