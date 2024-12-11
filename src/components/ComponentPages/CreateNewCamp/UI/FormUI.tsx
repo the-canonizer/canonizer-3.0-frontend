@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useState } from "react";
-import { Form, Input, Select, Row, Col, Typography, Tooltip } from "antd";
+import { Form, Input, Select, Row, Col, Typography, Tooltip, Collapse } from "antd";
 import {
   ApartmentOutlined,
   CloseOutlined,
@@ -25,7 +25,7 @@ import SelectInputs from "components/shared/FormInputs/select";
 
 const { Option } = Select;
 const { Text } = Typography;
-
+const { Panel } = Collapse;
 const {
   labels,
   placeholders,
@@ -115,6 +115,7 @@ const CreateCampFormUI = ({
     return <SelectInputs {...selectInputProps} />;
   };
 
+
   const getParentCampInput = () => {
     const selectInputProps: any = {
       label: (
@@ -180,7 +181,9 @@ const CreateCampFormUI = ({
   //     campLeaderData?.find((CL) => CL?.camp_leader === true)?.nick_name
   //   );
   // };
-
+  const onChange = (key) => {
+    console.log(key);
+  };
   return (
     <CommonCards className="border-0 bg-white" id="common-cards">
       <header className="mb-14" id="header">
@@ -394,18 +397,14 @@ const CreateCampFormUI = ({
             </Fragment>
           )}
         </Row>
-
-        <Row
+        <Collapse className="camp-accordion" ghost expandIconPosition="right" defaultActiveKey={['1']} onChange={onChange}>
+      <Panel header={<>Advanced Settings<br></br> <Text className="block mt-1 text-xs text-[#777F93]" id="keywords-text">
+              {labels.cr_keywords_sp}
+            </Text></>} key="1">
+      <Row
           gutter={16}
-          className="bg-canGray mb-3 py-3 rounded-lg"
           id="form-row-2"
         >
-          <Col xs={24} sm={24} id="form-col-keywords">
-            <Text className="mt-1 mb-4 block text-canRed" id="keywords-text">
-              {labels.cr_keywords_sp}
-            </Text>
-          </Col>
-
           <Col xs={24} sm={12} id="form-col-camp-url">
             {isLoading ? (
               <CustomSkelton
@@ -497,8 +496,11 @@ const CreateCampFormUI = ({
             </Form.Item>
           </Col>
         </Row>
+      </Panel>
+      </Collapse>
+        
 
-        <Row gutter={16} id="form-row-3">
+        <Row gutter={16} className="mt-6" id="form-row-3">
           <Col
             className="flex flex-col [&_.ant-checkbox-wrapper]:ml-0 [&_.ant-checkbox-wrapper]:mb-4 [&_.ant-checkbox-wrapper>span]:text-canBlack [&_.ant-checkbox-wrapper>span]:text-sm [&_.ant-checkbox-wrapper>span]:font-medium"
             id="form-col-prevent-sub-camps"
