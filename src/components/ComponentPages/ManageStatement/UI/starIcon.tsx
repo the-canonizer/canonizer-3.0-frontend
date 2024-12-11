@@ -6,6 +6,7 @@ const StarIcon = ({ className = "" }) => (
       height="32"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      id="star-icon"
     >
       <g clipPath="url(#clip0_6020_11782)">
         <path

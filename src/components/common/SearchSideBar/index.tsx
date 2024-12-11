@@ -111,14 +111,14 @@ export default function SearchSideBar() {
                         : "btn"
                     } `}
                   disabled={router?.pathname == "/search/topic" ? true : false}
-                  onClick={(()=>{
+                  onClick={() => {
                     dispatch(
                       setFilterCanonizedTopics({
                         asofdate: Date.now() / 1000,
                         asof: "default",
                       })
                     );
-                  })}
+                  }}
                 >
                   {/* <i className="icon-topic"></i> */}
                   <a>
@@ -160,14 +160,14 @@ export default function SearchSideBar() {
                         : "btn"
                     }`}
                   disabled={router?.pathname == "/search/camp" ? true : false}
-                  onClick={(()=>{
+                  onClick={() => {
                     dispatch(
                       setFilterCanonizedTopics({
                         asofdate: Date.now() / 1000,
                         asof: "default",
                       })
                     );
-                  })}
+                  }}
                 >
                   {/* <i className="icon-camp"></i> */}
                   <a>
@@ -196,14 +196,14 @@ export default function SearchSideBar() {
                   disabled={
                     router?.pathname == "/search/camp_statement" ? true : false
                   }
-                  onClick={(()=>{
+                  onClick={() => {
                     dispatch(
                       setFilterCanonizedTopics({
                         asofdate: Date.now() / 1000,
                         asof: "default",
                       })
                     );
-                  })}
+                  }}
                 >
                   {/* <i className="icon-camp"></i> */}
                   <a>

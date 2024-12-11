@@ -36,17 +36,27 @@ const PostUI = ({
           <SecondaryButton
             className="border-0 p-0 flex items-center justify-start text-xl"
             onClick={onBackClick}
+            id="back-button"
           >
             <LeftOutlined />
           </SecondaryButton>
-          <span className="text-canBlack font-medium text-xl ml-2">Thread</span>
+          <span
+            className="text-canBlack font-medium text-xl ml-2"
+            id="thread-title"
+          >
+            Thread
+          </span>
         </div>
       }
       className={`bg-white border-0 lg:px-6 [&_.ant-card-head]:p-0 [&_.ant-card-body]:px-0 [&_.ant-card-head]:border-0`}
+      id="common-cards"
     >
-      <div className="bg-canGray p-6 rounded-xl">
-        <header className="mb-5">
-          <Typography.Paragraph className="text-base font-medium text-canBlack">
+      <div className="bg-canGray p-6 rounded-xl" id="post-list-container">
+        <header className="mb-5" id="post-list-header">
+          <Typography.Paragraph
+            className="text-base font-medium text-canBlack"
+            id="thread-title-paragraph"
+          >
             {threadDetailsLoading ? (
               <CustomSkelton
                 skeltonFor="list"
@@ -54,12 +64,14 @@ const PostUI = ({
                 stylingClass=""
                 listStyle="liHeight"
                 isButton={false}
+                id="thread-title-skeleton"
               />
             ) : (
               <Popover
                 content={currentThread?.title}
                 key={currentThread?.created_at}
                 placement="topLeft"
+                id="thread-title-popover"
               >
                 <span id="card-title">{currentThread?.title}</span>
               </Popover>
@@ -72,11 +84,15 @@ const PostUI = ({
               stylingClass=""
               listStyle="liWidth"
               isButton={false}
+              id="thread-details-skeleton"
             />
           ) : (
-            <div className="flex justify-start items-center flex-wrap">
+            <div
+              className="flex justify-start items-center flex-wrap"
+              id="thread-details"
+            >
               <Paragraph id="started-by-label" className="!mb-0 text-canLight">
-                <UserOutlined className="mr-2 text-canLight" />
+                <UserOutlined className="mr-2 text-canLight" id="user-icon" />
                 Started by{" "}
                 <Link
                   href={`/user/supports/${
@@ -84,12 +100,22 @@ const PostUI = ({
                   }?canon=${currentThread?.namespace_id || 1}`}
                   passHref
                 >
-                  <a className="">{currentThread?.creation_nick_name}</a>
+                  <a className="" id="creator-link">
+                    {currentThread?.creation_nick_name}
+                  </a>
                 </Link>
               </Paragraph>
-              <span className="block mx-2 text-canLight text-xs">|</span>
-              <Paragraph className="!mb-0 text-canLight">
-                <CalendarOutlined className="mr-2 text-canLight" />
+              <span
+                className="block mx-2 text-canLight text-xs"
+                id="separator-1"
+              >
+                |
+              </span>
+              <Paragraph className="!mb-0 text-canLight" id="created-at-label">
+                <CalendarOutlined
+                  className="mr-2 text-canLight"
+                  id="calendar-icon-1"
+                />
                 {createdAt ? (
                   <Text
                     id="thread-create-label"
@@ -107,17 +133,25 @@ const PostUI = ({
                 ) : null}
                 {currentThread?.creation_nick_name && <></>}
               </Paragraph>
-              <span className="block mx-2 text-canLight text-xs">|</span>
-              <Paragraph className="!mb-0 text-canLight">
-                <CalendarOutlined className="mr-2 text-canLight" />
-                <Text className="text-canLight">
+              <span
+                className="block mx-2 text-canLight text-xs"
+                id="separator-2"
+              >
+                |
+              </span>
+              <Paragraph className="!mb-0 text-canLight" id="post-count-label">
+                <CalendarOutlined
+                  className="mr-2 text-canLight"
+                  id="calendar-icon-2"
+                />
+                <Text className="text-canLight" id="post-count-text">
                   Post in this thread: {currentThread?.post_count}
                 </Text>
               </Paragraph>
             </div>
           )}
         </header>
-        <hr className="mb-7 mt-3" />
+        <hr className="mb-7 mt-3" id="header-separator" />
         {isLoading ? (
           <CustomSkelton
             skeltonFor="post_card"
@@ -125,6 +159,7 @@ const PostUI = ({
             stylingClass=""
             listStyle=""
             isButton={false}
+            id="post-list-skeleton"
           />
         ) : (
           postList?.map((post) => (
@@ -141,7 +176,10 @@ const PostUI = ({
           ))
         )}
 
-        <div className={`paginationCon flex justify-center py-5`}>
+        <div
+          className={`paginationCon flex justify-center py-5`}
+          id="pagination-container"
+        >
           {isLoading ? (
             <CustomSkelton
               skeltonFor="list"
@@ -149,6 +187,7 @@ const PostUI = ({
               stylingClass=""
               listStyle="liHeight"
               isButton={false}
+              id="pagination-skeleton"
             />
           ) : pTotal > postperPage ? (
             <Pagination

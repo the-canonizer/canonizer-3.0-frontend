@@ -32,7 +32,10 @@ export default function NotificationList({
                 dot={item["is_seen"] === 0}
                 className="bg-[#5482C833] w-[30px] h-[30px] rounded-full grid items-center justify-center"
               >
-                <BellOutlined className="text-white text-lg" />
+                <BellOutlined
+                  className="text-white text-lg"
+                  id={"bell-icon-" + item["id"]}
+                />
               </Badge>
             }
             title={
@@ -50,20 +53,31 @@ export default function NotificationList({
                   },
                 }}
               >
-                <a className="text-sm text-canBlack break-words whitespace-pre-wrap">
+                <a
+                  className="text-sm text-canBlack break-words whitespace-pre-wrap"
+                  id={"link-" + item["id"]}
+                >
                   {item["message_body"]}
                 </a>
               </Link>
             }
-            description={moment(getTime(item["created_at"]))
-              .local()
-              .startOf("seconds")
-              .fromNow()}
+            description={
+              <span id={"description-" + item["id"]}>
+                {moment(getTime(item["created_at"]))
+                  .local()
+                  .startOf("seconds")
+                  .fromNow()}
+              </span>
+            }
           />
         </List.Item>
       )}
       footer={
-        isFooter ? <div className="text-center">{LoadMoreTopics}</div> : null
+        isFooter ? (
+          <div className="text-center" id="footer">
+            {LoadMoreTopics}
+          </div>
+        ) : null
       }
     />
   );

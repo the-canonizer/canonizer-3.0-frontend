@@ -58,6 +58,7 @@ const VideosPage = () => {
                     title="Videos"
                   /> */}
                   <Card
+                    id="videos-category-title"
                     className="video-parent-card"
                     bordered={false}
                     title={category?.title}
@@ -68,14 +69,16 @@ const VideosPage = () => {
                           <>
                             <Col xs={24} sm={12} lg={8} xl={6}>
                               <Card
+                                id="videos-category-card"
                                 className="video-inner-card"
                                 bordered={false}
                                 onClick={(e) => {
                                   onCardClick(e, video);
                                 }}
                                 cover={
-                                  <div className="img-wrapper">
+                                  <div id="videos-category-thumbnail-container" className="img-wrapper">
                                     <img
+                                      id="videos-category-thumbnail"
                                       alt=""
                                       src={
                                         process.env.NEXT_PUBLIC_BETA_URL +
@@ -83,14 +86,16 @@ const VideosPage = () => {
                                         video.thumbnail
                                       }
                                     />
-                                    <CaretRightOutlined className="play-btn" />
+                                    <CaretRightOutlined id="videos-category-play-icon" className="play-btn" />
                                   </div>
                                 }
                               >
-                                <Meta
-                                  title={video?.title}
-                                  className="text-sm [&_.ant-card-meta-title]:!text-sm"
-                                />
+                                <div id="videos-category-meta-title">
+                                  <Meta
+                                    title={video?.title}
+                                    className="text-sm [&_.ant-card-meta-title]:!text-sm"
+                                  />
+                                </div>
                               </Card>
                             </Col>
                           </>

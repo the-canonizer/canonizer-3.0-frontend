@@ -48,34 +48,39 @@ const WelcomeContent = () => {
   // };
 
   return (
-    <Layout className="bg-canGray rounded-lg py-6 px-6 ">
-      <div className="pr-0 w-full h-full flex flex-wrap items-center justify-start gap-4 lg:gap-6">
-        <Paragraph className="!m-0 text-xl font-normal">
+    <Layout id="welcome-layout" className="bg-canGray rounded-lg py-6 px-6 ">
+      <div
+        id="welcome-container"
+        className="pr-0 w-full h-full flex flex-wrap items-center justify-start gap-4 lg:gap-6"
+      >
+        <Paragraph id="welcome-greeting" className="!m-0 text-xl font-normal">
           {isUserAuthenticated ? (
             <Fragment>
               {getGreet()},{" "}
-              <Text className="font-semibold">{loggedInUser?.first_name}</Text>!
+              <Text id="user-name" className="font-semibold">
+                {loggedInUser?.first_name}
+              </Text>
+              !
             </Fragment>
           ) : (
             <Fragment>
-              Welcome to <Text className="font-semibold">Canonizer</Text>
+              Welcome to{" "}
+              <Text id="site-name" className="font-semibold">
+                Canonizer
+              </Text>
             </Fragment>
           )}
         </Paragraph>
-        <Paragraph className={`text-sm font-normal !m-0 lg:w-4/12`}>
+        <Paragraph
+          id="welcome-message"
+          className={`text-sm font-normal !m-0 lg:w-4/12`}
+        >
           {isUserAuthenticated
             ? "Welcome back! Explore topics, build consensus, and track conclusions on the go."
             : "A consensus building and tracking system and decision making tool you can use for Dynamic Surveying."}
         </Paragraph>
-        {/* {isUserAuthenticated ? (
-          <PrimaryButton
-            className={`h-[40px] text-sm px-5 md:px-20 flex items-center justify-center lg:ml-auto`}
-            onClick={onTopicClick}
-          >
-            Start a Topic <PlusOutlined className="lg:ml-2 sm:ml-0" />
-          </PrimaryButton>
-        ) : ( */}
         <SecondaryButton
+          id="browse-button"
           className="lg:h-[40px] text-sm px-5 md:px-20 flex items-center justify-center lg:ml-auto"
           onClick={onBrowseClick}
         >

@@ -40,6 +40,7 @@ const CardDescription = ({
 
   return (
     <div
+      id="browse-description-container"
       className={`${className} ${
         isBrowsing ? "text-base line-clamp-2" : "text-sm line-clamp-4 "
       } font-inter !font-normal overflow-hidden text-canBlack opacity-80 [&_strong]:font-normal [&_*]:font-normal leading-[1.6]`}

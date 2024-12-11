@@ -95,11 +95,19 @@ const LoginOTP = () => {
   return (
     <CustomSpinner key="login-otp-spinner" spinning={loading}>
       <Card
+        id="login-otp-card-1"
         bordered={false}
         className="bg-canGrey1 mt-0 lg:mt-0 h-full flex justify-center items-center [&>.ant-card-body]:p-0 [&>.ant-card-body]:w-full min-h-full tab:px-10"
       >
-        <Row gutter={20}>
-          <Col lg={13} md={24} xl={13} xs={24} className="mx-auto">
+        <Row id="login-otp-row-1" gutter={20}>
+          <Col
+            id="login-otp-col-1"
+            lg={13}
+            md={24}
+            xl={13}
+            xs={24}
+            className="mx-auto"
+          >
             <OTPVerify
               form={otpForm}
               onFinish={onOTPSubmit}

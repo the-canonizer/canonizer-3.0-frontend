@@ -20,21 +20,34 @@ function StatementPreview({
       className="rounded-xl overflow-hidden [&_.ant-modal-body]:rounded-xl"
       data-testid="statementPreview"
     >
-      <header className="mb-3 flex items-start justify-start">
-        <Typography.Paragraph className="text-xl text-canBlack font-medium !mb-0">
+      <header
+        className="mb-3 flex items-start justify-start"
+        id="header-statement-preview"
+      >
+        <Typography.Paragraph
+          className="text-xl text-canBlack font-medium !mb-0"
+          id="paragraph-statement-preview"
+        >
           Camp Statement{" "}
-          <Typography.Text className="uppercase text-xs text-canLight font-semibold">
+          <Typography.Text
+            className="uppercase text-xs text-canLight font-semibold"
+            id="text-statement-preview"
+          >
             <EyeOutlined /> Preview Mode
           </Typography.Text>
         </Typography.Paragraph>
         <Button
           className="ml-auto !border-0 h-auto p-0 !shadow-none"
           onClick={onPreveiwClose}
+          id="button-close-preview"
         >
           <CloseOutlined />
         </Button>
       </header>
-      <CommonCards className="border-0 bg-canGray !p-0 [&_.ant-card-body]:!p-5 [&_.ant-card-body]:min-h-72 [&_.ant-card-body]:max-h-96 [&_.ant-card-body]:overflow-y-auto [&_.ant-card-body]:overflow-x-hidden [&_.ant-card-body]:scroll-pr-6 [&_.ant-card-body]:snap-y">
+      <CommonCards
+        className="border-0 bg-canGray !p-0 [&_.ant-card-body]:!p-5 [&_.ant-card-body]:min-h-72 [&_.ant-card-body]:max-h-96 [&_.ant-card-body]:overflow-y-auto [&_.ant-card-body]:overflow-x-hidden [&_.ant-card-body]:scroll-pr-6 [&_.ant-card-body]:snap-y"
+        id="common-cards-preview"
+      >
         <StatementDescPreview statement={statement} isLoading={isLoading} />
       </CommonCards>
     </Modal>

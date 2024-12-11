@@ -448,16 +448,18 @@ const CreateNewCamp = () => {
     <CustomSpinner key="create-topic-spinner" spinning={isLoading}>
       {/* <CampInfoBar payload={payload} isHtmlContent={<></>} isTopicPage={true} /> */}
       <CommonBreadcrumbs
+        key="common-breadcrumbs"
         payload={payload}
         isHtmlContent={<></>}
         isTopicPage={true}
       />
 
-      <Row gutter={20} className="mb-5">
+      <Row gutter={20} className="mb-5" key="row-container">
         {campExist ? (
-          <Fragment>
-            <Col lg={12}>
+          <Fragment key="fragment-container">
+            <Col lg={12} key="form-ui-col">
               <FormUI
+                key="form-ui"
                 onFinish={onFinish}
                 onCancel={onCancel}
                 form={form}
@@ -476,9 +478,10 @@ const CreateNewCamp = () => {
                 values={values}
               />
             </Col>
-            <Col lg={12}>
+            <Col lg={12} key="existing-camp-list-col">
               {haveCampExist ? (
                 <ExistingCampList
+                  key="existing-camp-list"
                   campName={values?.camp_name}
                   data={existingCamps}
                   isShowMore={isShowMore}
@@ -487,13 +490,14 @@ const CreateNewCamp = () => {
                   isLoading={isTopicLoading}
                 />
               ) : (
-                <CampInfoCard />
+                <CampInfoCard key="camp-info-card" />
               )}
             </Col>
           </Fragment>
         ) : (
-          <Col lg={24}>
+          <Col lg={24} key="data-not-found-col">
             <DataNotFound
+              key="data-not-found"
               name={"Camp"}
               message={"Camp not found"}
               backURL={"/"}
@@ -503,6 +507,7 @@ const CreateNewCamp = () => {
         )}
       </Row>
       <SimilarCampPopup
+        key="similar-camp-popup"
         campName={values?.camp_name}
         data={existingCamps}
         isOpen={isSimPopOpen}

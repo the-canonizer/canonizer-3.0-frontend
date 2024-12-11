@@ -5,12 +5,21 @@ import CampInfoIcon from "./campInfoIcon";
 
 const CampInfoCard = () => {
   return (
-    <CommonCards className="bg-topic-card-gr h-full [&_.ant-card-body]:h-full [&_.ant-card-body]:flex [&_.ant-card-body]:flex-col">
-      <header className="mb-14">
-        <Typography.Paragraph className="text-canBlack font-semibold text-lg uppercase">
+    <CommonCards
+      id="common-cards"
+      className="bg-topic-card-gr h-full [&_.ant-card-body]:h-full [&_.ant-card-body]:flex [&_.ant-card-body]:flex-col"
+    >
+      <header id="header" className="mb-14">
+        <Typography.Paragraph
+          id="paragraph-1"
+          className="text-canBlack font-semibold text-lg uppercase"
+        >
           What are Camps?
         </Typography.Paragraph>
-        <Typography.Paragraph className="text-canBlack font-normal mt-3 opacity-80">
+        <Typography.Paragraph
+          id="paragraph-2"
+          className="text-canBlack font-normal mt-3 opacity-80"
+        >
           A Camp on our platform refers to a specific subject within the context
           of the Topic inside a Canon. It serves as a focal point for
           discussions, allowing users to explore and share opinions, ideas, and

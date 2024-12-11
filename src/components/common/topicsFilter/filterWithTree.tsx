@@ -33,6 +33,7 @@ import {
   setAsOfValues,
   setClearAlgoFromRefineFilter,
   setClearScoreFromRefineFilter,
+  setDisbaleApplyBtn,
 } from "src/store/slices/campDetailSlice";
 import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 import PrimaryButton from "components/shared/Buttons/PrimariButton";
@@ -105,6 +106,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
     asOfValues,
     clearAlgoFromRefineFilter,
     clearScoreFromRefineFilter,
+    disbaleApplyBtn,
   } = useSelector((state: RootState) => ({
     algorithms: state.homePage?.algorithms,
     filteredScore: state?.filters?.filterObject?.filterByScore,
@@ -124,6 +126,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
     asOfValues: state.topicDetails.asOfValues,
     clearAlgoFromRefineFilter: state.topicDetails.clearAlgoFromRefineFilter,
     clearScoreFromRefineFilter: state.topicDetails.clearScoreFromRefineFilter,
+    disbaleApplyBtn: state.topicDetails.disbaleApplyBtn,
   }));
 
   const [selectedAsOFDate, setSelectedAsOFDate] = useState(filteredAsOfDate);
@@ -273,6 +276,8 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
     if (router.query.asof === "bydate") {
       dispatch(setAsOfValues(3));
       setIsDatePicker(true);
+    }else if(router.query.asof === "review"){
+      dispatch(setAsOfValues(1));
     } else {
       dispatch(setAsOfValues(2));
       // Default radio button
@@ -443,6 +448,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
   };
 
   const handleApplyClick = async () => {
+    dispatch(setDisbaleApplyBtn(true));
     const selectedAlgorithm = clearAlgoFromRefineFilter;
 
     // Step 1: Update URL with the selected algorithm
@@ -493,7 +499,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
         viewThisVersion
       );
     } else if (selectedValue === 3 || asof === "bydate") {
-      setSelectedValue(3)
+      setSelectedValue(3);
       dispatch(setViewThisVersion(false));
       handleAsOfClick();
     }
@@ -505,7 +511,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
 
   const handleChange = (event) => {
     const value = event?.target?.value;
-  
+
     // Check if the value length is manageable within JavaScript's safe range
     if (value.length <= 15) {
       // Convert to number if it's within a safe range
@@ -527,23 +533,30 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
   };
 
   return (
-    <div className="leftSideBar_Card drawer_card">
+    <div className="leftSideBar_Card drawer_card" id="refine_filter_section">
       <div
+        id="refine_filter_section_topicListFilterCardCollapse"
         className={`${styles.cardAccordian} ${styles.cardWithDrawerAccordian} topicListFilterCardCollapse`}
       >
         <div
+          id="refine_filter_section_radio_group_sider"
           className={`header-bg-color-change radio-group-sider ${selectedAsOf}`}
           key="1"
         >
-          <Row gutter={20}>
-            <Col xs={24}>
-              <div className="algo_title_new border-b lg:border-canGrey2 border-canLightgrey4 pr-4 lg:pr-8 pl-4 lg:pl-8 pb-8 lg:pt-0 pt-6 ">
+          <Row gutter={20} id="refine_filter_section_row_1">
+            <Col xs={24} id="refine_filter_section_row_col">
+              <div
+                className="algo_title_new border-b lg:border-canGrey2 border-canLightgrey4 pr-4 lg:pr-8 pl-4 lg:pl-8 pb-8 lg:pt-0 pt-6 "
+                id="refine_filter_section_algorith_section"
+              >
                 <Title
+                  id="refine_filter_section_algorith_titte_tag"
                   level={5}
                   className="!text-xs !font-normal flex gap-1 !mb-2"
                 >
                   Select Canonizer Algorithm
                   <Popover
+                    id="refine_filter_section_algorith_popover"
                     content="Algorithm Information"
                     placement="top"
                     className={styles.algoInfoIcon}
@@ -554,6 +567,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
                         className="flex items-center "
                       >
                         <Image
+                          id="refine_filter_section_algorith_circle_img"
                           src="/images/circle-info-bread.svg"
                           alt="svg"
                           className="icon-topic"
@@ -562,9 +576,13 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
                         />
                       </a>
                     ) : (
-                      <Link href={K?.Network?.URL?.algoInfoUrl}>
+                      <Link
+                        href={K?.Network?.URL?.algoInfoUrl}
+                        id="refine_filter_section_algorith_info_url"
+                      >
                         <a>
                           <Image
+                            id="refine_filter_section_algorith_info_ur_circle_img"
                             src="/images/circle-info-bread.svg"
                             alt="svg"
                             className="icon-topic"
@@ -577,6 +595,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
                   </Popover>
                 </Title>
                 <Select
+                  id="refine_filter_section_algorith_select_tag"
                   suffixIcon={
                     <Image
                       src="/images/refine-caret-icon.svg"
@@ -598,7 +617,6 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
                   }}
                   value={clearAlgoFromRefineFilter}
                   disabled={loadingIndicator}
-                  id="algo_dropdown"
                 >
                   {algorithms?.map((algo) => {
                     return (
@@ -614,17 +632,32 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
                 </Select>
               </div>
             </Col>
-            <Col className="flex justify-center items-end" xs={24}>
-              <div className="score_value pr-4 lg:pr-8  pl-4 lg:pl-8 pb-8 pt-8 w-full border-b lg:border-canGrey2 border-canLightgrey4 ">
-                <Text className={`${styles.filterText} !mb-0`}>
-                  <p className="flex items-center gap-1 text-xs font-normal !mb-2">
+            <Col
+              className="flex justify-center items-end"
+              xs={24}
+              id="refine_filter_section_score_value_col"
+            >
+              <div
+                className="score_value pr-4 lg:pr-8  pl-4 lg:pl-8 pb-8 pt-8 w-full border-b lg:border-canGrey2 border-canLightgrey4 "
+                id="refine_filter_section_score_value_div"
+              >
+                <Text
+                  className={`${styles.filterText} !mb-0`}
+                  id="refine_filter_section_score_value_text_tag"
+                >
+                  <p
+                    className="flex items-center gap-1 text-xs font-normal !mb-2"
+                    id="refine_filter_section_score_value_text"
+                  >
                     Score value
                     <Popover
+                      id="refine_filter_section_score_value_pop_over"
                       content={infoContent}
                       placement="right"
                       className={styles.infoIcon}
                     >
                       <Image
+                        id="refine_filter_section_score_value_popover_circle_img"
                         src="/images/circle-info-bread.svg"
                         alt="svg"
                         className="icon-topic"
@@ -662,15 +695,24 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
                 />
               </div>
             </Col>
-            <Col xs={24} className="">
-              <div className="as-of-div pl-4 lg:pl-8 pb-8 pt-8 w-full">
+            <Col xs={24} className="" id="refine_filter_section_as_of_col">
+              <div
+                className="as-of-div pl-4 lg:pl-8 pb-8 pt-8 w-full"
+                id="refine_filter_section_as_of_col_div"
+              >
                 <Title
+                  id="refine_filter_section_as_of_title_tag"
                   level={5}
                   className="!text-xs !font-normal flex gap-3 !mb-4"
                 >
                   As Of
-                  <Popover content={asContent} placement="right">
+                  <Popover
+                    content={asContent}
+                    placement="right"
+                    id="refine_filter_section_as_of_popover"
+                  >
                     <Image
+                      id="refine_filter_section_as_of_circle_img"
                       src="/images/circle-info-bread.svg"
                       alt="svg"
                       className="icon-topic"
@@ -680,6 +722,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
                   </Popover>
                 </Title>
                 <Space
+                  id="refine_filter_section_as_of_space_tag"
                   direction="horizontal"
                   style={{ gap: "12px", width: "100%" }}
                   className={styles.radioInputs}
@@ -691,6 +734,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
                     id="radio_group"
                   >
                     <Space
+                      id="refine_filter_section_as_of_space"
                       direction="horizontal"
                       style={{
                         gap: "12px",
@@ -759,26 +803,45 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
                 </Space>
               </div>
             </Col>
-            <Col xs={24} className="refine-drawer-mobile overflow-hidden">
-              <div className="flex items-center justify-start btn-parent fixed lg:static bottom-0 w-full lg:mt-14 lg:gap-5 pr-4 lg:pr-8 pl-4 lg:pl-8 pb-8 lg:pt-0 pt-6">
+            <Col
+              xs={24}
+              className="refine-drawer-mobile overflow-hidden"
+              id="refine_filter_section_btn_section"
+            >
+              <div
+                className="flex items-center justify-start btn-parent fixed lg:static bottom-0 w-full lg:mt-14 lg:gap-5 pr-4 lg:pr-8 pl-4 lg:pl-8 pb-8 lg:pt-0 pt-6"
+                id="refine_filter_section_btn_section_div"
+              >
                 <PrimaryButton
                   className="flex justify-center items-center gap-2.5 w-6/12 lg:w-auto !rounded-none lg:!rounded-lg py-7 lg:py-0"
                   onClick={handleApplyClick}
+                  disabled={disbaleApplyBtn}
                 >
-                  <span className="!flex gap-1 flex-row ">
-                    <span>Apply</span>
+                  <span
+                    className="!flex gap-1 flex-row "
+                    id="refine_filter_section_btn_apply"
+                  >
+                    <span id="apply_btn">Apply</span>
                   </span>
-                  <span className="!hidden lg:!flex  items-center">
+                  <span
+                    className="!hidden lg:!flex  items-center"
+                    id="refine_filter_section_refine_icon"
+                  >
                     <RefineIcon className="w-[16px] [&>svg]:fill-white" />
                   </span>
                 </PrimaryButton>
                 <SecondaryButton
+                  id="refine_filter_section_seceondry_btn_section"
                   className="flex items-center justify-center gap-2.5 w-6/12 lg:w-auto !rounded-none lg:!rounded-lg border-[#d9d9d9] lg:border-canBlue py-7 lg:py-0"
                   onClick={onClose}
                 >
                   Cancel
-                  <span className="!hidden lg:!flex lg:items-center">
+                  <span
+                    className="!hidden lg:!flex lg:items-center mr-2"
+                    id="refine_filter_section_seceondry_btn_img"
+                  >
                     <Image
+                      id="refine_filter_section_seceondry_btn_img_close_icon"
                       src="/images/refine-close-icon.svg"
                       alt="svg"
                       className="icon-topic "

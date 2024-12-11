@@ -49,11 +49,12 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
 
   return (
     <>
-      <div className="cn-algo-wrapper">
-        <Title level={5} className="uppercase">
+      <div id="eventline-sidebar-algorithm-container" className="cn-algo-wrapper">
+        <Title level={5} id="eventline-sidebar-algorithm-title" className="uppercase">
           Canonizer Algorithm:
         </Title>
         <Select
+          id="eventline-sidebar-algorithm-select"
           size="large"
           showSearch
           optionFilterProp="children"
@@ -73,7 +74,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
         >
           {algorithms?.map((algo) => {
             return (
-              <Option key={algo.id} value={algo.algorithm_key}>
+              <Option key={algo.id} value={algo.algorithm_key} id="eventline-sidebar-algorithm-item">
                 {algo.algorithm_label}
               </Option>
             );

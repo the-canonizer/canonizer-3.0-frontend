@@ -9,6 +9,7 @@ import styles from "../topicDetails.module.scss";
 import { RootState } from "src/store";
 import K from "src/constants";
 import {
+  setDisbaleApplyBtn,
   setManageSupportStatusCheck,
   setOpenDrawer,
 } from "src/store/slices/campDetailSlice";
@@ -81,6 +82,7 @@ const InfoBar = ({ isTopicPage = false }: any) => {
 
   const showDrawer = () => {
     dispatch(setOpenDrawer(true));
+    dispatch(setDisbaleApplyBtn(false));
   };
 
   const showConsensusTree = () => {
@@ -99,19 +101,25 @@ const InfoBar = ({ isTopicPage = false }: any) => {
 
   return (
     <div
+      id="info_bar_topic_detail_page_section"
       className={`${styles.topicDetailContentHead} ${styles.inforBarHEad} printHIde`}
     >
       <Spin spinning={false}>
         <div
+          id="info_bar_topic_detail_page_section_right_panel"
           className={`${styles.topicDetailContentHead_Left} ${styles.rightPanel}`}
         >
-          <div className="btnsWrap w-full">
+          <div
+            className="btnsWrap w-full"
+            id="info_bar_topic_detail_page_section_tooltip"
+          >
             {isCampBtnVisible &&
             currentCampNode?._isDisabled == 0 &&
             currentCampNode?.parentIsOneLevel == 0 &&
             (campRecord?.is_archive == 0 ||
               campRecord?.is_archive == undefined) ? (
               <Tooltip
+                id="tooltip"
                 title={
                   tree && !tree["1"]?.is_valid_as_of_time
                     ? K.exceptionalMessages.createNewCampTooltipMsg
@@ -121,13 +129,18 @@ const InfoBar = ({ isTopicPage = false }: any) => {
                 <div>{!isMobile && <CampDisclaimer />}</div>
               </Tooltip>
             ) : null}
-            <div className="flex lg:gap-6 gap-4  items-center lg:flex-nowrap flex-wrap lg:mb-5 mb-7">
+            <div
+              className="flex lg:gap-6 gap-4  items-center lg:flex-nowrap flex-wrap lg:mb-5 mb-7"
+              id="info_bar_topic_detail_page_section_btn"
+            >
               <Button
+                id="info_bar_topic_detail_page_section_consesnus_tree_btn"
                 onClick={showConsensusTree}
                 className="xl:w-[277px] text-canBlack border border-canGrey2 py-2.5 lg:px-5 !h-[44px] refine-btn lg:!text-sm !text-sm font-medium flex items-center justify-between gap-2.5 rounded-lg bg-canGray"
               >
                 Consensus Tree
                 <Image
+                  id="info_bar_topic_detail_page_section_caret_icon"
                   src="/images/caret-icon.svg"
                   alt="svg"
                   height={7}
@@ -135,10 +148,13 @@ const InfoBar = ({ isTopicPage = false }: any) => {
                 />
               </Button>
               <Button
+                id="info_bar_topic_detail_page_section_refine_btn"
                 onClick={showDrawer}
                 className="w-36 hover:!text-canBlack gap-5 relative text-canBlack py-2.5 lg:px-5 h-[44px] rounded-lg w-auto lg:text-sm text-sm font-medium  flex items-center justify-center !border !border-canGrey2"
               >
-                <span>Refine</span>
+                <span id="info_bar_topic_detail_page_section_refine_text">
+                  Refine
+                </span>
                 <RefineIcon className="w-[16px]" />
                 {(router.query.algo &&
                   selectedAlgorithm &&
@@ -166,9 +182,11 @@ const InfoBar = ({ isTopicPage = false }: any) => {
             </div>
           </div>
           <div
+            id="info_bar_topic_detail_page_section_refine_filter_area"
             className={`${styles.topicDetailContentHead_Right} ${styles.leftPanel}`}
           >
             <Typography.Paragraph
+              id="info_bar_topic_detail_page_section_typography_area"
               className={"mb-0 campInfoRight " + styles.topicTitleStyle}
             >
               {isTopicPage && <RefineFilter />}

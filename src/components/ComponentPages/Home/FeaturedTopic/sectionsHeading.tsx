@@ -50,10 +50,13 @@ const SectionHeading = ({
     <Headings
       level={5}
       className={`text-sm relative font-bold uppercase ${className}`}
+      id="section-heading"
     >
-      <span className="mr-3">{title}</span>
+      <span className="mr-3" id="section-title">
+        {title}
+      </span>
       {icon ? (
-        <Tooltip title={infoContent} placement="top">
+        <Tooltip title={infoContent} placement="top" id="section-tooltip">
           {icon}
         </Tooltip>
       ) : null}
@@ -64,10 +67,12 @@ const SectionHeading = ({
             className="title-popover"
             placement="bottomLeft"
             overlayClassName="warning-popover"
+            id="section-popover"
           >
             <Tag
               className="text-[#DD841C] ml-3 mr-0 bg-[#F19C391A] py-1.5 px-4 text-sm border-0 rounded-full cursor-pointer"
               onClick={() => handleNavigation()}
+              id="section-tag"
             >
               Under Review
             </Tag>

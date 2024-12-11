@@ -10,6 +10,7 @@ function StatementDescPreview({ statement, isLoading }) {
       isButton
       height={150}
       skeltonFor="video"
+      id="statement-desc-preview-skeleton"
     />
   ) : (
     <div
@@ -119,6 +120,7 @@ function StatementDescPreview({ statement, isLoading }) {
         }),
       }}
       className="text-canBlack rounded-sm h-full editorContent"
+      id="statement-desc-preview"
     ></div>
   );
 }

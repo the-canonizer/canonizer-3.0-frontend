@@ -56,16 +56,26 @@ const Search = () => {
   const router = useRouter();
   return (
     <Fragment>
-      <div className="flex justify-between lg:items-center lg:flex-row flex-col items-start mb-10 mt-2.5 lg:gap-0 gap-5">
-        <div className="flex  items-center  ">
-          <div className="flex items-center gap-2.5">
+      <div
+        className="flex justify-between lg:items-center lg:flex-row flex-col items-start mb-10 mt-2.5 lg:gap-0 gap-5"
+        id="auto_search_section"
+      >
+        <div className="flex  items-center  " id="auto_search_section_sub">
+          <div
+            className="flex items-center gap-2.5"
+            id="auto_search_section_img_div"
+          >
             <Image
+              id="auto_search_section_img"
               src="/images/recent-activiity-arrow.svg"
               width={16}
               height={24}
             />
 
-            <h3 className="lg:text-3xl text-xl   text-canBlack font-medium">
+            <h3
+              className="lg:text-3xl text-xl   text-canBlack font-medium"
+              id="auto_search_section_placeholder"
+            >
               Search Results for “
               <span className="text-canBlue capitalize">
                 {router?.query?.q}
@@ -76,13 +86,22 @@ const Search = () => {
         </div>
         {/* <AdvanceFilter /> */}
       </div>
-      <div className="flex lg:flex-row flex-col gap-10">
-        <aside className="leftSideBar miniSideBar">
-          <div className="leftSideBar_Card p-0 m-0">
+      <div
+        className="flex lg:flex-row flex-col gap-10"
+        id="auto_search_section_sidebar"
+      >
+        <aside
+          className="leftSideBar miniSideBar"
+          id="auto_search_section_left_sidebar"
+        >
+          <div
+            className="leftSideBar_Card p-0 m-0"
+            id="auto_search_section_left_sidebar_card"
+          >
             <SearchSideBar />
           </div>
         </aside>
-        <div className="pageContentWrap flex-1">
+        <div className="pageContentWrap flex-1" id="auto_search_section_loader">
           {loading ? (
             <CustomSkelton
               skeltonFor="list"
@@ -91,34 +110,45 @@ const Search = () => {
               isButton={false}
             />
           ) : (
-            <div className={styles.card}>
+            <div className={styles.card} id="auto_search_section_topic_text">
               {searchData?.topic?.length ||
               searchData?.camp?.length ||
               searchData?.statement?.length ||
               searchData?.nickname?.length ? (
-                <div>
+                <div id="auto_search_section_topic">
                   {searchData?.topic?.length > 0 ? (
                     <div className="bg-canGray lg:py-5 lg:px-8 py-4 px-4 rounded-xl mb-5">
                       <h4
                         data-testid="all_topic_heading "
                         className="!mb-6 !text-base !font-semibold !text-canBlack"
+                        id="auto_search_section_topic_h4"
                       >
                         Topic
                       </h4>
 
-                      <ul className="first:p-0 ">
+                      <ul
+                        className="first:p-0 "
+                        id="auto_search_section_topic_ul"
+                      >
                         {searchData?.topic?.slice(0, 5)?.map((x) => {
                           return (
                             <>
-                              <li className="flex flex-col py-3 first:pt-0 border-b border-canGrey2 last:border-none ">
+                              <li
+                                className="flex flex-col py-3 first:pt-0 border-b border-canGrey2 last:border-none "
+                                id="auto_search_section_topic_li"
+                              >
                                 <Link
                                   href={replaceSpecialCharactersInLink(x?.link)}
                                 >
-                                  <div className="flex justify-between items-center">
-                                    <a>
+                                  <div
+                                    className="flex justify-between items-center"
+                                    id="auto_search_section_topic_type_value"
+                                  >
+                                    <a id="auto_search_section_topic_type_value_link">
                                       <label
                                         style={{ cursor: "pointer" }}
                                         className="text-base font-medium text-canBlack flex !mb-2"
+                                        id="auto_search_section_topic_type_value_lable"
                                       >
                                         {getHighlightedText(
                                           x.type_value,
@@ -132,6 +162,7 @@ const Search = () => {
                                       )}
                                     >
                                       <Image
+                                        id="auto_search_section_topic_arrow_img"
                                         src="/images/search-page-arrow.svg"
                                         width={16}
                                         height={10}
@@ -141,16 +172,26 @@ const Search = () => {
                                   </div>
                                 </Link>
 
-                                <div className="text-base text-canBlue flex items-center gap-2.5">
+                                <div
+                                  className="text-base text-canBlue flex items-center gap-2.5"
+                                  id="auto_search_section_topic_canon"
+                                >
                                   <Image
+                                    id="auto_search_section_topic_canon_img"
                                     src="/images/flagicon.svg"
                                     width={18}
                                     height={20}
                                   />
-                                  <span className="text-base !text-canBlack font-medium">
+                                  <span
+                                    className="text-base !text-canBlack font-medium"
+                                    id="auto_search_section_topic_canon_text"
+                                  >
                                     {" "}
                                     Canon:{" "}
-                                    <span className="font-medium !text-canBlue">
+                                    <span
+                                      className="font-medium !text-canBlue"
+                                      id="auto_search_section_topic_canon_value"
+                                    >
                                       {" "}
                                       {x.namespace}
                                     </span>
@@ -167,15 +208,22 @@ const Search = () => {
                   )}
 
                   {searchData?.camp?.length > 0 ? (
-                    <div className="bg-canGray lg:py-5 lg:px-8  py-4 px-4 rounded-xl mb-5">
+                    <div
+                      className="bg-canGray lg:py-5 lg:px-8  py-4 px-4 rounded-xl mb-5"
+                      id="auto_search_section_camp"
+                    >
                       <h4
                         data-testid="all_camp_heading"
                         className="!mb-6 !text-base !font-semibold !text-canBlack"
+                        id="auto_search_section_camp_text"
                       >
                         Camp
                       </h4>
 
-                      <ul className="first:p-0">
+                      <ul
+                        className="first:p-0"
+                        id="auto_search_section_camp_ul"
+                      >
                         {searchData?.camp?.slice(0, 5)?.map((x) => {
                           const jsonData = JSON.parse(
                             x.breadcrumb_data
@@ -197,18 +245,31 @@ const Search = () => {
                           );
                           return (
                             <>
-                              <li className="flex flex-col py-3 first:pt-0 border-b border-canGrey2 last:border-none last:pb-0 ">
+                              <li
+                                className="flex flex-col py-3 first:pt-0 border-b border-canGrey2 last:border-none last:pb-0 "
+                                id="auto_search_section_camp_li"
+                              >
                                 <Link href={`/${jsonData?.[0][1]?.camp_link}`}>
-                                  <div className="flex justify-between items-center">
-                                    <a className="text-base font-medium text-canBlack flex !mb-2">
+                                  <div
+                                    className="flex justify-between items-center"
+                                    id="auto_search_section_camp_li_list"
+                                  >
+                                    <a
+                                      className="text-base font-medium text-canBlack flex !mb-2"
+                                      id="auto_search_section_camp_value_link"
+                                    >
                                       {" "}
                                       {getHighlightedText(
                                         x.type_value,
                                         searchValue
                                       )}
                                     </a>
-                                    <a href={`/${jsonData[0][1]?.camp_link}`}>
+                                    <a
+                                      href={`/${jsonData[0][1]?.camp_link}`}
+                                      id="auto_search_section_camp_sub_camp_link"
+                                    >
                                       <Image
+                                        id="auto_search_section_camp_img"
                                         src="/images/search-page-arrow.svg"
                                         width={16}
                                         height={10}
@@ -217,14 +278,24 @@ const Search = () => {
                                     </a>
                                   </div>
                                 </Link>
-                                <div className="flex flex-wrap ">
-                                  <div className="flex gap-2.5">
+                                <div
+                                  className="flex flex-wrap "
+                                  id="auto_search_section_camp_topic"
+                                >
+                                  <div
+                                    className="flex gap-2.5"
+                                    id="auto_search_section_camp_topic_links"
+                                  >
                                     <Image
+                                      id="auto_search_section_camp_topic_img"
                                       src="/images/note-sticky.svg"
                                       width={17}
                                       height={19}
                                     />
-                                    <span className="text-base font-medium text-canBlack mr-1">
+                                    <span
+                                      className="text-base font-medium text-canBlack mr-1"
+                                      id="auto_search_section_camp_topic_text"
+                                    >
                                       {" "}
                                       Topic:
                                     </span>
@@ -258,15 +329,22 @@ const Search = () => {
                   )}
 
                   {searchData.statement?.length > 0 ? (
-                    <div className="bg-canGray lg:py-5 lg:px-8  py-4 px-4 rounded-xl mb-5">
+                    <div
+                      className="bg-canGray lg:py-5 lg:px-8  py-4 px-4 rounded-xl mb-5"
+                      id="auto_search_section_camp_statment"
+                    >
                       <h4
                         data-testid="all_camp_statement_heading"
                         className="!mb-6 !text-base !font-semibold !text-canBlack"
+                        id="auto_search_section_camp_statment_text"
                       >
                         Camp Statement
                       </h4>
 
-                      <ul className="first:p-0">
+                      <ul
+                        className="first:p-0"
+                        id="auto_search_section_camp_statment_ul"
+                      >
                         {searchData?.statement?.slice(0, 5)?.map((x) => {
                           const jsonData = JSON.parse(
                             x.breadcrumb_data
@@ -287,10 +365,16 @@ const Search = () => {
                           );
                           return (
                             <>
-                              <li className="flex flex-col py-3 first:pt-0 border-b border-canGrey2 last:border-none last:pb-0 ">
+                              <li
+                                className="flex flex-col py-3 first:pt-0 border-b border-canGrey2 last:border-none last:pb-0 "
+                                id="auto_search_section_camp_statment_li"
+                              >
                                 <div className="flex justify-between items-center">
                                   <a href={jsonData?.[0]?.[1]?.camp_link}>
-                                    <h3 className="font-medium mb-2 text-canBlack text-base">
+                                    <h3
+                                      className="font-medium mb-2 text-canBlack text-base"
+                                      id="auto_search_section_camp_statment_heading"
+                                    >
                                       {jsonData?.length > 1
                                         ? getHighlightedText(
                                             jsonData?.[0]?.[1]?.camp_name,
@@ -302,8 +386,12 @@ const Search = () => {
                                           )}
                                     </h3>
                                   </a>
-                                  <a href={jsonData?.[0]?.[1]?.camp_link}>
+                                  <a
+                                    href={jsonData?.[0]?.[1]?.camp_link}
+                                    id="auto_search_section_camp_statment_heading_link"
+                                  >
                                     <Image
+                                      id="auto_search_section_camp_statment_img"
                                       src="/images/search-page-arrow.svg"
                                       width={16}
                                       height={10}
@@ -316,7 +404,10 @@ const Search = () => {
                                 <strong>Go live Time : </strong>
                                 {covertToTime(x.go_live_time)}
                               </div> */}
-                                <div className="d-flex flex-wrap w-100 mb-1">
+                                <div
+                                  className="d-flex flex-wrap w-100 mb-1"
+                                  id="auto_search_section_camp_statment_parse_value"
+                                >
                                   {/* <a className={styles.search_heading}>  */}
 
                                   <div
@@ -326,13 +417,20 @@ const Search = () => {
                                     }}
                                   ></div>
                                 </div>
-                                <div className="flex flex-wrap gap-2.5 gap-y-1.5">
+                                <div
+                                  className="flex flex-wrap gap-2.5 gap-y-1.5"
+                                  id="auto_search_section_camp_statment_topic_img_div"
+                                >
                                   <Image
+                                    id="auto_search_section_camp_statment_topic_img"
                                     src="/images/note-sticky.svg"
                                     width={17}
                                     height={19}
                                   />
-                                  <span className="text-base font-medium text-canBlack mr-1">
+                                  <span
+                                    className="text-base font-medium text-canBlack mr-1"
+                                    id="auto_search_section_camp_statment_topic_text"
+                                  >
                                     {" "}
                                     Topic:
                                   </span>
@@ -344,6 +442,7 @@ const Search = () => {
                                           className="text-base text-canBlue flex items-center gap-2.5"
                                           href={obj?.camp_link}
                                           key={obj?.camp_link}
+                                          id="auto_search_section_camp_statment_topic_link"
                                         >
                                           {getHighlightedText(
                                             obj?.camp_name,
@@ -368,27 +467,39 @@ const Search = () => {
                   )}
 
                   {searchData.nickname?.length > 0 ? (
-                    <div className="bg-canGray lg:py-5 lg:px-8  py-4 px-4 rounded-xl mb-5">
+                    <div
+                      className="bg-canGray lg:py-5 lg:px-8  py-4 px-4 rounded-xl mb-5"
+                      id="auto_search_section_nickname"
+                    >
                       <h4
                         data-testid="all_nick_name_heading"
                         className="!mb-6 !text-base !font-semibold !text-canBlack"
+                        id="auto_search_section_nickname_text"
                       >
                         Nickname
                       </h4>
 
-                      <ul>
+                      <ul id="auto_search_section_nickname_ul">
                         {searchData?.nickname?.slice(0, 5)?.map((x) => {
                           return (
                             <>
-                              <li className="text-sm font-medium bg-white w-full px-5 py-2 rounded-xl mb-2 flex justify-between">
+                              <li
+                                className="text-sm font-medium bg-white w-full px-5 py-2 rounded-xl mb-2 flex justify-between"
+                                id="auto_search_section_nickname_li"
+                              >
                                 <Link href={x.link}>
-                                  <a className="flex gap-2.5">
+                                  <a
+                                    className="flex gap-2.5"
+                                    id="auto_search_section_nickname_link"
+                                  >
                                     <Image
+                                      id="auto_search_section_nickname_img"
                                       src="/images/nickname-user-icon.svg"
                                       width={14}
                                       height={16}
                                     />
                                     <label
+                                      id="auto_search_section_nickname_value"
                                       style={{ cursor: "pointer" }}
                                       className="font-medium text-base"
                                     >
@@ -400,9 +511,15 @@ const Search = () => {
                                   </a>
                                 </Link>
 
-                                <span className="font-normal text-base">
+                                <span
+                                  className="font-normal text-base"
+                                  id="auto_search_section_nickname_supported_camps"
+                                >
                                   Supported camps:{" "}
-                                  <strong className="text-canOrange font-semibold text-base">
+                                  <strong
+                                    className="text-canOrange font-semibold text-base"
+                                    id="auto_search_section_nickname_count"
+                                  >
                                     {x.support_count == ""
                                       ? 0
                                       : x.support_count}
@@ -419,7 +536,10 @@ const Search = () => {
                   )}
                 </div>
               ) : (
-                <span className="italic text-canLight">
+                <span
+                  className="italic text-canLight"
+                  id="auto_search_section_empty_data"
+                >
                   There is no data to show in this category.
                 </span>
               )}

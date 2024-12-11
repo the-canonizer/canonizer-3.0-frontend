@@ -61,14 +61,14 @@ const EventLine = () => {
           {/* <TimelineInfoBar isEventLine={isEventLine} /> */}
           <CommonBreadcrumbs isEventLine={isEventLine} />
           <div className="eventline-content-wrap">
-            <div className="eventline-algo-content">
+            <div id="eventline-sidebar-container" className="eventline-algo-content">
               <SideBarTimeline
                 timelineDescript={timelineDescript}
                 loadingEvents={loadingEvents}
               />
             </div>
 
-            <div className="eventline-audio-wrapper">
+            <div id="eventline-timeline-container" className="eventline-audio-wrapper">
               <Title level={5} className="uppercase">
                 Event line
               </Title>
@@ -79,7 +79,7 @@ const EventLine = () => {
                 setLoadingEvents={setLoadingEvents}
               />
             </div>
-            <div className="lg:hidden">
+            <div id="events-container" className="lg:hidden">
               <Events
                 timelineDescript={timelineDescript}
                 loadingEvents={loadingEvents}

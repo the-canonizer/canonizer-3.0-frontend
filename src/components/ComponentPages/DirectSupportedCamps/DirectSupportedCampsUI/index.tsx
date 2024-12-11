@@ -26,6 +26,7 @@ import {
 } from "src/store/slices/campDetailSlice";
 import PrimaryButton from "components/shared/Buttons/PrimariButton";
 import dynamic from "next/dynamic";
+import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
 const DraggableTags = dynamic(() => import("./draggable"), { ssr: false });
 
 export default function DirectSupportedCampsUI({
@@ -61,20 +62,24 @@ export default function DirectSupportedCampsUI({
   const [removeSupportSpinner, setRemoveSupportSpinner] = useState(false);
   const [currentCamp, setCurrentCamp] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [currentSearchPage, setCurrentSearchPage] = useState(1)
+  const [currentSearchPage, setCurrentSearchPage] = useState(1);
   const [search, setSearch] = useState("");
   const [activeTopic, setActiveTopic] = useState(null);
   const [reOrderedTags, setReOrderedTags] = useState(null);
 
-  const { openDrawerForDirectSupportedCamp , disableSubmitButtonForDirectSupportedCamp} = useSelector(
-    (state: RootState) => ({
-      openDrawerForDirectSupportedCamp:
-        state.topicDetails.openDrawerForDirectSupportedCamp,
-        disableSubmitButtonForDirectSupportedCamp:
-        state.topicDetails.disableSubmitButtonForDirectSupportedCamp,
-    })
+  const {
+    openDrawerForDirectSupportedCamp,
+    disableSubmitButtonForDirectSupportedCamp,
+  } = useSelector((state: RootState) => ({
+    openDrawerForDirectSupportedCamp:
+      state.topicDetails.openDrawerForDirectSupportedCamp,
+    disableSubmitButtonForDirectSupportedCamp:
+      state.topicDetails.disableSubmitButtonForDirectSupportedCamp,
+  }));
+  console.log(
+    disableSubmitButtonForDirectSupportedCamp,
+    "disableSubmitButtonForDirectSupportedCamp"
   );
-  console.log(disableSubmitButtonForDirectSupportedCamp,"disableSubmitButtonForDirectSupportedCamp")
   const dispatch = useDispatch();
   interface Tag {
     id: number;
@@ -101,7 +106,10 @@ export default function DirectSupportedCampsUI({
         const serialNumber = (currentPage - 1) * 5 + index + 1;
         const searchSerialNumber = (currentSearchPage - 1) * 5 + index + 1;
         return (
-          <span className="text-sm bg-canGrey2 rounded-full h-5 w-6 flex items-center justify-center">
+          <span
+            className="text-sm bg-canGrey2 rounded-full h-5 w-6 flex items-center justify-center"
+            id="direct_supported_camp_serial_number"
+          >
             {search.length > 0 ? searchSerialNumber : serialNumber}
           </span>
         );
@@ -112,13 +120,42 @@ export default function DirectSupportedCampsUI({
       dataIndex: "title",
       key: "title",
       render: (text: string, record: RecordType) => (
-        <div className="flex gap-2.5 line-clamp-1 cn-card-home">
+        <div
+          className="flex gap-2.5 line-clamp-1 cn-card-home"
+          id="direct_supported_camp_title_link"
+        >
           <Link href={record.title_link}>
-            <a className="text-sm font-medium flex items-center gap-2.5 text-canBlack">
+            <a
+              id="direct_supported_camp_link"
+              className="text-sm font-medium flex items-center gap-2.5 text-canBlack"
+              role="button" // Declare it as a button
+              tabIndex={0} // Make it focusable with the Tab key
+              onClick={() => {
+                dispatch(
+                  setFilterCanonizedTopics({
+                    asofdate: Date.now() / 1000,
+                    asof: "default",
+                  })
+                );
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault(); // Prevent scrolling when Space is pressed
+                  dispatch(
+                    setFilterCanonizedTopics({
+                      asofdate: Date.now() / 1000,
+                      asof: "default",
+                    })
+                  );
+                }
+              }}
+              style={{ cursor: "pointer" }} // Provide visual feedback
+            >
               {text}
             </a>
           </Link>
           <Image
+            id="direct_supported_camp_minus_img"
             onClick={() => {
               dispatch(setOpenDrawerForDirectSupportedCamp(true));
               removeCardSupportedCamps(record);
@@ -138,7 +175,7 @@ export default function DirectSupportedCampsUI({
       dataIndex: "camps",
       key: "camps",
       render: (camps: Tag[], record: RecordType) => (
-        <div>
+        <div id="direct_supported_camp_draggable_tags">
           <DraggableTags
             tags={camps}
             record={record}
@@ -152,7 +189,10 @@ export default function DirectSupportedCampsUI({
           />
 
           {showSaveChanges && idData === record.topic_num && (
-            <div className="flex gap-2.5 mt-2">
+            <div
+              className="flex gap-2.5 mt-2"
+              id="direct_supported_camp_save_change_btn"
+            >
               <Button
                 data-testid="save_change_btn"
                 id="saveChangeBtn"
@@ -236,12 +276,12 @@ export default function DirectSupportedCampsUI({
   const filteredSearchArray = () => {
     const startingPosition = (currentSearchPage - 1) * 5;
     const endingPosition = startingPosition + 5;
-    return filteredArray().slice(startingPosition, endingPosition)
-  }
+    return filteredArray().slice(startingPosition, endingPosition);
+  };
 
   const searchPageChange = (pageNumber) => {
     setCurrentSearchPage(pageNumber);
-  }
+  };
 
   const [removeForm] = Form.useForm();
 
@@ -268,13 +308,16 @@ export default function DirectSupportedCampsUI({
       displayContent = (
         <>
           <Table
-            dataSource={search.length > 0 ? filteredSearchArray() : filteredArray()}
+            id="direct_supported_camp_table_section"
+            dataSource={
+              search.length > 0 ? filteredSearchArray() : filteredArray()
+            }
             columns={columns}
             pagination={false}
             rowKey="topic_num"
             className="[&_.ant-table-thead>tr>th]:!bg-canGray [&_.ant-table-cell]:max-w-[200px]"
           />
-          {search.length > 0 ?
+          {search.length > 0 ? (
             <Pagination
               hideOnSinglePage={true}
               total={filteredArray().length}
@@ -282,7 +325,9 @@ export default function DirectSupportedCampsUI({
               current={currentSearchPage}
               onChange={searchPageChange}
               showSizeChanger={false}
-              className="mt-5" /> : null}
+              className="mt-5"
+            />
+          ) : null}
         </>
       );
     } else {
@@ -297,12 +342,12 @@ export default function DirectSupportedCampsUI({
       {isChangingOrder
         ? "You are about to change the order of your supported camps"
         : modalPopupText
-          ? "You are about to remove your support from all the camps from the topic: "
-          : campIds?.length > 1
-            ? "You are about to remove your support from the camps: "
-            : "You are about to remove your support from the camp: "}
+        ? "You are about to remove your support from all the camps from the topic: "
+        : campIds?.length > 1
+        ? "You are about to remove your support from the camps: "
+        : "You are about to remove your support from the camp: "}
       {!isChangingOrder && (
-        <span>
+        <span id="direct_supported_camp_removeSupportCampsData_title_link">
           {modalPopupText ? (
             <Link href={{ pathname: removeSupportCampsData.title_link }}>
               <a className="text-canGreen lg:text-2xl text-base font-semibold">
@@ -334,14 +379,20 @@ export default function DirectSupportedCampsUI({
         </span>
         . You can optionally add a helpful reason, along with a citation link.
       </p> */}
-      <p className="text-sm font-normal text-canRed mb-8">
+      <p
+        className="text-sm font-normal text-canRed mb-8"
+        id="direct_supported_camp_change_order_text"
+      >
         {isChangingOrder ? (
           "Note: You are about to change the order of your supported camps"
         ) : modalPopupText ? (
           <>
             Note: You are about to remove your support from all the camps from
             the topic:
-            <span className="text-sm font-semibold">
+            <span
+              className="text-sm font-semibold"
+              id="direct_supported_camp_removeSupportCampsData_title"
+            >
               &quot;{removeSupportCampsData?.title}&quot;
             </span>
             . You can optionally add a helpful reason, along with a citation
@@ -369,8 +420,8 @@ export default function DirectSupportedCampsUI({
       search.trim() === ""
         ? directSupportedCampsList
         : directSupportedCampsList.filter((val) =>
-          val.title.toLowerCase().includes(search.toLowerCase().trim())
-        )
+            val.title.toLowerCase().includes(search.toLowerCase().trim())
+          )
     );
   }, [search, directSupportedCampsList]);
 
@@ -389,8 +440,11 @@ export default function DirectSupportedCampsUI({
       const paginatedArray = filteredArrayForMob.slice(startIndex, endIndex);
       displayContentForMob = (
         <>
-          <div className="w-full flex justify-end mb-5">
-            <div className="mr-2">
+          <div
+            className="w-full flex justify-end mb-5"
+            id="direct_supported_camp_reset_btn"
+          >
+            <div className="mr-2" id="direct_supported_camp_reset_btn_1">
               <PrimaryButton
                 onClick={() => {
                   setSearch("");
@@ -400,6 +454,7 @@ export default function DirectSupportedCampsUI({
               </PrimaryButton>
             </div>
             <Input
+              id="direct_supported_camp_search_icon"
               suffix={
                 <Image
                   src="/images/search-icon.svg"
@@ -420,22 +475,64 @@ export default function DirectSupportedCampsUI({
             />
           </div>
           {paginatedArray.map((record) => (
-            <Card key={record.topic_num} className="mb-5 bg-white shadow-none ">
-              <div className=" !border !border-canGrey2  rounded-lg ">
-                <div className="flex justify-start items-start flex-col gap-1 border-b border-canGrey2 p-5">
-                  <span className="uppercase text-sm font-medium text-black text-opacity-85">
+            <Card
+              key={record.topic_num}
+              className="mb-5 bg-white shadow-none "
+              id="direct_supported_camp_card_section"
+            >
+              <div
+                className=" !border !border-canGrey2  rounded-lg "
+                id="direct_supported_camp_card_section_1"
+              >
+                <div
+                  className="flex justify-start items-start flex-col gap-1 border-b border-canGrey2 p-5"
+                  id="direct_supported_camp_card_section_2"
+                >
+                  <span
+                    className="uppercase text-sm font-medium text-black text-opacity-85"
+                    id="direct_supported_camp_card_section_heading"
+                  >
                     {" "}
                     Topic Name -
                   </span>
-                  <div className="flex gap-2.5 justify-between items-center w-full">
+                  <div
+                    className="flex gap-2.5 justify-between items-center w-full"
+                    id="direct_supported_camp__title_link_mob"
+                  >
                     <Link href={record.title_link}>
-                      <a className="text-lg font-semibold text-canBlack">
+                      <a
+                        id="direct_supported_camp_link_mob"
+                        className="text-lg font-semibold text-canBlack"
+                        role="button"
+                        tabIndex={0}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter" || e.key === " ") {
+                            e.preventDefault(); // Prevent scrolling when Space is pressed
+                            dispatch(
+                              setFilterCanonizedTopics({
+                                asofdate: Date.now() / 1000,
+                                asof: "default",
+                              })
+                            );
+                          }
+                        }}
+                        style={{ cursor: "pointer" }} // Provide visual feedback
+                        onClick={() => {
+                          dispatch(
+                            setFilterCanonizedTopics({
+                              asofdate: Date.now() / 1000,
+                              asof: "default",
+                            })
+                          );
+                        }}
+                      >
                         {record.title.length > 50
                           ? record.title.substring(0, 30) + "..."
                           : record.title}
                       </a>
                     </Link>
                     <Image
+                      id="direct_supported_camp_minus_img_mob"
                       onClick={() => {
                         dispatch(setOpenDrawerForDirectSupportedCamp(true));
                         removeCardSupportedCamps(record);
@@ -447,7 +544,10 @@ export default function DirectSupportedCampsUI({
                     />
                   </div>
                 </div>
-                <div className="p-5">
+                <div
+                  className="p-5"
+                  id="direct_supported_camp_supported_camps_mob"
+                >
                   <span className="uppercase text-sm font-medium text-black text-opacity-85 mb-2 flex">
                     Supported Camps -
                   </span>
@@ -458,19 +558,30 @@ export default function DirectSupportedCampsUI({
 
                       return (
                         <div
-                          className={`tag ${tag.dis ? "tags_disable" : ""} ${record.camps.length > 1 ? "mb-2.5" : ""
-                            } flex w-full items-center`}
+                          id="direct_supported_camp_draggable_area_mob"
+                          className={`tag ${tag.dis ? "tags_disable" : ""} ${
+                            record.camps.length > 1 ? "mb-2.5" : ""
+                          } flex w-full items-center`}
                         >
                           <Button
                             id="campsBtn"
                             className="bg-canLightGrey rounded-full border-none flex items-center gap-2.5"
                             disabled={tag.dis}
                           >
-                            <div className={styles.btndiv}>
+                            <div
+                              className={styles.btndiv}
+                              id="direct_supported_camp_draggable_area_mob_div"
+                            >
                               {/* Use index + 1 here */}
-                              <span className="count">{index + 1}. </span>
+                              <span
+                                className="count"
+                                id="direct_supported_camp_draggable_area_count_mob"
+                              >
+                                {index + 1}.{" "}
+                              </span>
                               <Link href={tag.camp_link}>
                                 <a
+                                  id="direct_supported_camp_draggable_area_link_mob"
                                   className="text-sm text-canBlack font-semibold"
                                   draggable="false"
                                   onClick={(e) => e.preventDefault()}
@@ -492,6 +603,7 @@ export default function DirectSupportedCampsUI({
                               </Link>
                             </div>
                             <div
+                              id="direct_supported_camp_draggable_area_minus_img_mob_section"
                               className="flex items-center"
                               onClick={() => {
                                 handleClose(tag, record.topic_num, record, []);
@@ -516,6 +628,7 @@ export default function DirectSupportedCampsUI({
                               onTouchStart={(e) => e.preventDefault()}
                             >
                               <Image
+                                id="direct_supported_camp_draggable_area_minus_img_mob"
                                 className="cursor-pointer"
                                 src="/images/minus-user-icon.svg"
                                 width={24}
@@ -535,9 +648,12 @@ export default function DirectSupportedCampsUI({
                   />
                 </div>
                 {showSaveChanges && activeTopic == record.topic_num && (
-                  <div className="flex gap-2.5 px-5 pb-5 ">
+                  <div
+                    className="flex gap-2.5 px-5 pb-5 "
+                    id="direct_supported_camp_draggable_area_btn_mob_section"
+                  >
                     <Button
-                      id="saveChangeBtn"
+                      id="saveChangeBtnmob"
                       className="bg-canBlue text-white text-base font-medium rounded-lg py-2.5 px-6 flex items-center focus:!bg-canBlue
                       focus:!text-canBlack"
                       onClick={() => {
@@ -548,7 +664,7 @@ export default function DirectSupportedCampsUI({
                       Save Changes
                     </Button>
                     <Button
-                      id="revertBtn"
+                      id="revertBtnmob"
                       className="bg-btnBg bg-opacity-10 text-canBlack text-base font-medium rounded-lg py-2.5 px-6 flex items-center"
                       onClick={() => {
                         handleRevertBack(idData, record.camps);
@@ -585,29 +701,52 @@ export default function DirectSupportedCampsUI({
 
   return (
     <div>
-      <div className="lg:flex hidden w-full">
-        <div data-testid="directSupportUi" className="w-full">
+      <div
+        className="lg:flex hidden w-full"
+        id="direct_supported_camp_loader_section"
+      >
+        <div
+          data-testid="directSupportUi"
+          className="w-full"
+          id="direct_supported_camp_loader_section_1"
+        >
           {directSkeletonIndicator ? (
             <CustomSkelton
+              id="direct_supported_camp_loader"
               skeltonFor="subscription_card"
               bodyCount={4}
               stylingClass=""
               isButton={false}
             />
           ) : (
-            <div>
-              <div className="flex lg:flex-row flex-col justify-between items-start mb-5 lg:gap-0 gap-2.5">
-                <div className="w-full flex-1">
-                  <h3 className="text-sm uppercase font-medium text-canBlack mb-5">
+            <div id="direct_supported_camp_upper_heading_title">
+              <div
+                className="flex lg:flex-row flex-col justify-between items-start mb-5 lg:gap-0 gap-2.5"
+                id="direct_supported_camp_upper_heading_title_1"
+              >
+                <div
+                  className="w-full flex-1"
+                  id="direct_supported_camp_upper_heading_title_2"
+                >
+                  <h3
+                    className="text-sm uppercase font-medium text-canBlack mb-5"
+                    id="direct_supported_camp_upper_title"
+                  >
                     DIRECT SUPPORTED CAMPS
                   </h3>
-                  <p className="text-sm font-normal text-canRed">
+                  <p
+                    className="text-sm font-normal text-canRed"
+                    id="direct_supported_camp_upper_heading_note"
+                  >
                     Note : To change support order of camp, drag & drop the camp
                     box on your choice position.
                   </p>
                 </div>
 
-                <div className="lg:w-auto w-full flex justify-end gap-2.5 items-center">
+                <div
+                  className="lg:w-auto w-full flex justify-end gap-2.5 items-center"
+                  id="direct_supported_camp_search_rest_btn"
+                >
                   <PrimaryButton
                     onClick={() => {
                       setSearch("");
@@ -616,6 +755,7 @@ export default function DirectSupportedCampsUI({
                     Reset
                   </PrimaryButton>
                   <Input
+                    id="direct_supported_camp_search_input"
                     suffix={
                       <Image
                         src="/images/search-icon.svg"
@@ -633,7 +773,7 @@ export default function DirectSupportedCampsUI({
                     onChange={(e) => {
                       setSearch(e.target.value);
                       setCurrentPage(1);
-                      setCurrentSearchPage(1)
+                      setCurrentSearchPage(1);
                     }}
                   />
                 </div>

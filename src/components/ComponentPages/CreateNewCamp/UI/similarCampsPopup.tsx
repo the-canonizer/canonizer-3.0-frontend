@@ -24,11 +24,15 @@ const SimilarCampPopup = ({
       centered
       width={700}
       footer={
-        <div className="flex justify-center items-start">
+        <div
+          id="similar-camps-footer"
+          className="flex justify-center items-start"
+        >
           <SecondaryButton
             key="back"
             onClick={onFtContriClick}
             className="flex h-auto shadow-none text-canBlue hocus:text-canBlue hocus:[&_>svg]:fill-canBlue flex justify-center items-center"
+            id="contribute-similar-camps-button"
           >
             Contribute To Similar Camps{" "}
             <UserEditIcon
@@ -42,14 +46,19 @@ const SimilarCampPopup = ({
             loading={loading}
             onClick={onCreateCamp}
             className="flex justify-center items-center h-auto"
+            id="continue-creating-new-camp-button"
           >
-            Continue Creating A New Camp <ArrowRightOutlined />
+            Continue Creating A New Camp{" "}
+            <ArrowRightOutlined id="arrow-right-icon" />
           </PrimaryButton>
         </div>
       }
       className="[&_.ant-modal-header]:border-0 [&_.ant-modal-footer]:border-0 [&_.ant-modal-footer]:pb-8 [&_.ant-modal-title]:text-canBlack [&_.ant-modal-title]:text-base [&_.ant-modal-close]:text-canBlack [&_.ant-modal-body]:pt-0 [&_.ant-modal-content]:rounded-xl [&_.ant-modal-content]:overflow-hidden"
     >
-      <Typography.Paragraph className="text-canLight font-normal text-xs">
+      <Typography.Paragraph
+        className="text-canLight font-normal text-xs"
+        id="similar-camps-paragraph"
+      >
         We noticed that there are 3 Camps with similar name. Are you sure you
         want to create a new camp? You can contribute in any of the existing
         camps.
@@ -66,11 +75,13 @@ const SimilarCampPopup = ({
           <List.Item
             className="!border-b-0 mt-0 text-sm !p-3 rounded-lg"
             key={item?.id}
+            id={`list-item-${item?.id}`}
           >
             {getTopicNameLink(item, campName, false, "w-full border-b-2 pb-3")}
             <SecondaryButton
               className="flex p-0 !bg-transparent h-auto shadow-none border-0 uppercase text-xs font-semibold text-canBlue hocus:text-canBlue hocus:[&_>svg]:fill-canBlue"
               onClick={onContributeCLick.bind(this, item)}
+              id={`contribute-button-${item?.id}`}
             >
               contribute{" "}
               <UserEditIcon
@@ -81,6 +92,7 @@ const SimilarCampPopup = ({
             </SecondaryButton>
           </List.Item>
         )}
+        id="similar-camps-list"
       />
     </Modal>
   );

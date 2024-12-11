@@ -7,6 +7,7 @@ const ScoreTag = ({ topic_score }) => {
 
   return (
     <Tag
+      id="score-tag"
       className={
         "bg-canOrange text-white border-0 rounded-md ml-1 inline-flex py-[2px] flex items-center text-[10px] scoreTag"
       }

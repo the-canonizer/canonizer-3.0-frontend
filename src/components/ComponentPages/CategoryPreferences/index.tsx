@@ -83,7 +83,7 @@ const Preferences = () => {
 
   return (
     <Spinner>
-      <Card bordered={false}>
+      <Card bordered={false} id="preferences-card">
         <PreferencesUI
           onFinish={onFinish}
           onChange={onChange}

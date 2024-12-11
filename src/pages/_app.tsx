@@ -25,6 +25,7 @@ import { checkTopicCampExistAPICall } from "src/network/api/campDetailApi";
 import { metaTagsApi } from "src/network/api/metaTagsAPI";
 import { createToken } from "src/network/api/userApi";
 import { getCookies } from "src/utils/generalUtility";
+import WithAuthCheck from "src/hoc/withAuth";
 
 type AppOwnProps = { meta: any; canonical_url: string; returnURL: string };
 
@@ -57,7 +58,6 @@ function WrappedApp({
       "loginToken=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
     emptyCacheStorage();
   }
-
 
   useEffect(() => {
     const fetchToken = async () => {
@@ -123,20 +123,22 @@ function WrappedApp({
     <CookiesProvider>
       <Provider store={store}>
         <ErrorBoundary>
-          <HeadContentAndPermissionComponent
+          <WithAuthCheck
             componentName={Component.displayName || Component.name}
-            metaContent={meta}
-            canonical={canonical_url}
-            {...pageProps}
-          />
-          <WithRouteChange>
-            {/* <ConfigProvider theme={}> */}
-            {isAuthenticatedRef?.current &&
-            !!(getCookies() as any)?.loginToken ? (
-              <Component {...pageProps} />
-            ) : null}
-            {/* </ConfigProvider> */}
-          </WithRouteChange>
+          >
+            <HeadContentAndPermissionComponent
+              componentName={Component.displayName || Component.name}
+              metaContent={meta}
+              canonical={canonical_url}
+              {...pageProps}
+            />
+            <WithRouteChange>
+              {isAuthenticatedRef?.current &&
+              !!(getCookies() as any)?.loginToken ? (
+                <Component {...pageProps} />
+              ) : null}
+            </WithRouteChange>
+          </WithAuthCheck>
         </ErrorBoundary>
       </Provider>
     </CookiesProvider>

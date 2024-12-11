@@ -203,7 +203,7 @@ const CampStatementCard = ({ loadingIndicator }) => {
               </div>
             </div>
 
-            <div className="flex items-center justify-start gap-6 camp-header-content lg:border-none border-t border-b border-canGrey2 lg:py-0 py-1.5 lg:mb-0 mb-2">
+            {campStatement?.[0]?.go_live_time &&<div className="flex items-center justify-start gap-6 camp-header-content lg:border-none border-t border-b border-canGrey2 lg:py-0 py-1.5 lg:mb-0 mb-2">
               {campStatement?.[0]?.go_live_time && (
                 <div className="flex items-center gap-2">
                   <Image
@@ -219,7 +219,7 @@ const CampStatementCard = ({ loadingIndicator }) => {
                   </p>
                 </div>
               )}
-            </div>
+            </div>}
           </div>
           {campStatement?.length &&
           campStatement[0]?.parsed_value &&

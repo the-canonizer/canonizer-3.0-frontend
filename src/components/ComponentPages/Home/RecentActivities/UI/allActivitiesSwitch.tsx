@@ -10,13 +10,15 @@ function AllActivitiesSwitch({
 }) {
   return userData?.is_admin && !hasCampOrTopicNum ? (
     <Typography.Paragraph
+      id="all-activities-paragraph"
       className={`text-sm flex items-center justify-between ${className}`}
     >
-      <span>Show all user activities</span>
+      <span id="all-activities-span">Show all user activities</span>
       {isShowAllLoading ? (
         <Spin size="small" />
       ) : (
         <Switch
+          id="all-activities-switch"
           checked={isChecked}
           className="text-sm"
           size="small"

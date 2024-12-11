@@ -182,12 +182,18 @@ const CreateCampFormUI = ({
   // };
 
   return (
-    <CommonCards className="border-0 bg-white">
-      <header className="mb-14">
-        <Typography.Paragraph className="text-xl text-canBlack font-medium">
+    <CommonCards className="border-0 bg-white" id="common-cards">
+      <header className="mb-14" id="header">
+        <Typography.Paragraph
+          className="text-xl text-canBlack font-medium"
+          id="header-title"
+        >
           {isEdit ? "Update Camp" : "Creating a New Camp"}
         </Typography.Paragraph>
-        <Typography.Paragraph className="text-canBlack opacity-80 mt-3">
+        <Typography.Paragraph
+          className="text-canBlack opacity-80 mt-3"
+          id="header-subtitle"
+        >
           Input information required to {isEdit ? "update" : "create"} a camp.
         </Typography.Paragraph>
       </header>
@@ -201,15 +207,17 @@ const CreateCampFormUI = ({
         scrollToFirstError
         validateTrigger={messages.formValidationTypes()}
         initialValues={formInitValue}
+        id="create-new-camp-form"
       >
-        <Row gutter={16}>
-          <Col md={24}>
+        <Row gutter={16} id="form-row-1">
+          <Col md={24} id="form-col-camp-name">
             {isLoading ? (
               <CustomSkelton
                 skeltonFor="list"
                 bodyCount={1}
                 stylingClass="listSkeleton"
                 isButton={false}
+                id="camp-name-skeleton"
               />
             ) : (
               <Inputs
@@ -233,29 +241,32 @@ const CreateCampFormUI = ({
                 onKeyUp={onCampChange}
                 onBlur={onCampNameBlur}
                 disabled={!!(parentCamp.length < 1)}
+                id="camp-name-input"
               />
             )}
           </Col>
-          <Col xs={24} sm={12}>
+          <Col xs={24} sm={12} id="form-col-nick-name">
             {isLoading ? (
               <CustomSkelton
                 skeltonFor="list"
                 bodyCount={1}
                 stylingClass="listSkeleton"
                 isButton={false}
+                id="nick-name-skeleton"
               />
             ) : (
               getNickNameInput()
             )}
           </Col>
           {parentCamp.length >= 1 && (
-            <Col xs={24} sm={12}>
+            <Col xs={24} sm={12} id="form-col-parent-camp">
               {isLoading ? (
                 <CustomSkelton
                   skeltonFor="list"
                   bodyCount={1}
                   stylingClass="listSkeleton"
                   isButton={false}
+                  id="parent-camp-skeleton"
                 />
               ) : (
                 getParentCampInput()
@@ -264,7 +275,7 @@ const CreateCampFormUI = ({
           )}
           {isEdit && (
             <Fragment>
-              <Col xs={24} sm={24} xl={24}>
+              <Col xs={24} sm={24} xl={24} id="form-col-camp-leader">
                 <Form.Item
                   label={
                     <Fragment>
@@ -284,7 +295,7 @@ const CreateCampFormUI = ({
                                 : filterObject?.namespace_id
                             }`}
                           >
-                            <a className="text-canBlue">
+                            <a className="text-canBlue" id="camp-leader-link">
                               {getCampLeaderData() + " "}
                             </a>
                           </Link>
@@ -297,6 +308,7 @@ const CreateCampFormUI = ({
                   }
                   name="camp_leader_nick_id"
                   className={`text-14 text-canBlack font-medium`}
+                  id="camp-leader-item"
                 >
                   {isLoading ? (
                     <CustomSkelton
@@ -304,6 +316,7 @@ const CreateCampFormUI = ({
                       bodyCount={1}
                       stylingClass="listSkeleton"
                       isButton={false}
+                      id="camp-leader-skeleton"
                     />
                   ) : (
                     <div
@@ -312,8 +325,12 @@ const CreateCampFormUI = ({
                           ? "border-[#40a9ff] shadow-[0 0 0 2px rgba(24, 144, 255, 0.2)"
                           : ""
                       }`}
+                      id="camp-leader-select-wrapper"
                     >
-                      <CrownOutlined className="px-3 text-canBlack" />
+                      <CrownOutlined
+                        className="px-3 text-canBlack"
+                        id="camp-leader-icon"
+                      />
                       <Select
                         showSearch
                         size={"large"}
@@ -332,12 +349,14 @@ const CreateCampFormUI = ({
                         onChange={(val) =>
                           form.setFieldValue("camp_leader_nick_id", val)
                         }
+                        id="camp-leader-select"
                       >
                         {campLeaderData?.length > 0 &&
                           campLeaderData?.map((lead) => (
                             <Select.Option
                               value={lead.nick_name_id}
                               key={lead?.nick_name_id}
+                              id={`camp-leader-option-${lead?.nick_name_id}`}
                             >
                               {lead?.nick_name}
                             </Select.Option>
@@ -347,12 +366,13 @@ const CreateCampFormUI = ({
                   )}
                 </Form.Item>
               </Col>
-              <Col span={24}>
+              <Col span={24} id="form-col-note">
                 <Form.Item
                   label={labels.cr_edit_summary}
                   name="note"
                   {...summaryRule}
                   className={`text-14 text-canBlack font-medium`}
+                  id="note-item"
                 >
                   <Input.TextArea
                     rows={6}
@@ -362,6 +382,7 @@ const CreateCampFormUI = ({
                       form.setFieldValue("note", e?.target?.value)
                     }
                     maxLength={500}
+                    id="note-textarea"
                   />
                 </Form.Item>
               </Col>
@@ -369,20 +390,25 @@ const CreateCampFormUI = ({
           )}
         </Row>
 
-        <Row gutter={16} className="bg-canGray mb-3 py-3 rounded-lg">
-          <Col xs={24} sm={24}>
-            <Text className="mt-1 mb-4 block text-canRed">
+        <Row
+          gutter={16}
+          className="bg-canGray mb-3 py-3 rounded-lg"
+          id="form-row-2"
+        >
+          <Col xs={24} sm={24} id="form-col-keywords">
+            <Text className="mt-1 mb-4 block text-canRed" id="keywords-text">
               {labels.cr_keywords_sp}
             </Text>
           </Col>
 
-          <Col xs={24} sm={12}>
+          <Col xs={24} sm={12} id="form-col-camp-url">
             {isLoading ? (
               <CustomSkelton
                 skeltonFor="list"
                 bodyCount={1}
                 stylingClass="listSkeleton"
                 isButton={false}
+                id="camp-url-skeleton"
               />
             ) : (
               <Inputs
@@ -397,16 +423,18 @@ const CreateCampFormUI = ({
                     <LinkOutlined />
                   </div>
                 }
+                id="camp-url-input"
               />
             )}
           </Col>
 
-          <Col xs={24} sm={12}>
+          <Col xs={24} sm={12} id="form-col-camp-about-nick">
             <Form.Item
               label={labels.cr_nick_name_about}
               name="camp_about_nick_id"
               className={`text-14 text-canBlack font-medium`}
               initialValue={values?.camp_about_nick_id}
+              id="camp-about-nick-item"
             >
               {isLoading ? (
                 <CustomSkelton
@@ -414,6 +442,7 @@ const CreateCampFormUI = ({
                   bodyCount={1}
                   stylingClass="listSkeleton"
                   isButton={false}
+                  id="camp-about-nick-skeleton"
                 />
               ) : (
                 <div
@@ -422,8 +451,12 @@ const CreateCampFormUI = ({
                       ? "border-[#40a9ff] shadow-[0 0 0 2px rgba(24, 144, 255, 0.2)"
                       : ""
                   }`}
+                  id="camp-about-nick-select-wrapper"
                 >
-                  <UserOutlined className="px-3 text-canBlack bg-white" />
+                  <UserOutlined
+                    className="px-3 text-canBlack bg-white"
+                    id="camp-about-nick-icon"
+                  />
                   <Select
                     placeholder={placeholders.campAboutNickName}
                     allowClear
@@ -460,11 +493,15 @@ const CreateCampFormUI = ({
           </Col>
         </Row>
 
-        <Row gutter={16}>
-          <Col className="flex flex-col [&_.ant-checkbox-wrapper]:ml-0 [&_.ant-checkbox-wrapper]:mb-4 [&_.ant-checkbox-wrapper>span]:text-canBlack [&_.ant-checkbox-wrapper>span]:text-sm [&_.ant-checkbox-wrapper>span]:font-medium">
+        <Row gutter={16} id="form-row-3">
+          <Col
+            className="flex flex-col [&_.ant-checkbox-wrapper]:ml-0 [&_.ant-checkbox-wrapper]:mb-4 [&_.ant-checkbox-wrapper>span]:text-canBlack [&_.ant-checkbox-wrapper>span]:text-sm [&_.ant-checkbox-wrapper>span]:font-medium"
+            id="form-col-prevent-sub-camps"
+          >
             <PreventSubCamps
               options={options}
               onCheckboxChange={onCheckboxChange}
+              id="prevent-sub-camps"
             />
           </Col>
         </Row>
@@ -475,9 +512,13 @@ const CreateCampFormUI = ({
             bodyCount={1}
             stylingClass="listSkeleton"
             isButton={false}
+            id="form-skeleton"
           />
         ) : (
-          <div className="mt-4 flex justify-start items-center">
+          <div
+            className="mt-4 flex justify-start items-center"
+            id="form-buttons"
+          >
             <SecondaryButton
               onClick={onCancel}
               id="cancel-btn"
@@ -488,7 +529,7 @@ const CreateCampFormUI = ({
             </SecondaryButton>
             <PrimaryButton
               htmlType="submit"
-              id="crate-camp-btn"
+              id="create-camp-btn"
               data-testid="btn"
               disabled={!isDisabled}
               className="flex justify-center items-center py-5 px-6"

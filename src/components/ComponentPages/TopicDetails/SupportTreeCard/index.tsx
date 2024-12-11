@@ -476,16 +476,23 @@ const SupportTreeCard = ({
           /* eslint-enable */
           return (
             <TreeNode
+              id="topic_detail_user_support_tree_card"
               className="[&_.ant-tree-node-content-wrapper]:!w-full [&_.ant-tree-switcher]:!hidden !bg-transparent border-b hover:[&_.ant-tree-node-content-wrapper]:!bg-transparent !w-full !p-0"
               title={
                 <>
-                  <div className="group w-full">
+                  <div
+                    className="group w-full"
+                    id="topic_detail_user_support_tree_card_div"
+                  >
                     {/* <span
                         className={
                           "treeListItemTitle " + styles.treeListItemTitle
                         }
                       > */}
-                    <div className="flex gap-1 items-center  boder-b p-[8px] w-full flex-wrap">
+                    <div
+                      className="flex gap-1 items-center  boder-b p-[8px] w-full flex-wrap"
+                      id="topic_detail_user_support_tree_card_div_1"
+                    >
                       <Link
                         className="flex flex-wrap"
                         href={{
@@ -495,14 +502,24 @@ const SupportTreeCard = ({
                           },
                         }}
                       >
-                        <a className="flex  gap-2 items-center flex-wrap text-canBlack hover:!text-canBlack line-clamp-1">
-                          <span className="text-canBlack text-xs font-normal">
+                        <a
+                          className="flex  gap-2 items-center flex-wrap text-canBlack hover:!text-canBlack line-clamp-1"
+                          id="topic_detail_user_support_tree_card_link"
+                        >
+                          <span
+                            className="text-canBlack text-xs font-normal"
+                            id="topic_detail_user_support_tree_card_support_order"
+                          >
                             #{data[item].support_order}{" "}
                           </span>
-                          <div className="w-[24px] h-[24px] rounded-full overflow-hidden bg-canLightBg flex items-center justify-center text-xs">
+                          <div
+                            className="w-[24px] h-[24px] rounded-full overflow-hidden bg-canLightBg flex items-center justify-center text-xs"
+                            id="topic_detail_user_support_tree_card_profile_img"
+                          >
                             {isImageError ? (
                               <>
                                 <Image
+                                  id="topic_detail_user_support_tree_card_img"
                                   src={support_image}
                                   alt="svg"
                                   height={24}
@@ -511,16 +528,22 @@ const SupportTreeCard = ({
                                 />
                               </>
                             ) : (
-                              <span>
+                              <span id="topic_detail_user_support_tree_card_nick_name">
                                 {data[item].nick_name.charAt(0).toUpperCase()}
                               </span>
                             )}
                           </div>
                           {data[item]?.camp_leader && (
-                            <i className="icon-crown text-canOrange"></i>
+                            <i
+                              className="icon-crown text-canOrange"
+                              id="topic_detail_user_support_tree_card_info_icon"
+                            ></i>
                           )}
 
-                          <span className="text-canBlack text-xs 2xl:text-sm font-normal">
+                          <span
+                            className="text-canBlack text-xs 2xl:text-sm font-normal"
+                            id="topic_detail_user_support_tree_card_nick_name_1"
+                          >
                             {data[item].nick_name}
                           </span>
                         </a>
@@ -563,6 +586,7 @@ const SupportTreeCard = ({
                             userNickNameList?.includes(obj?.nick_name_id)
                           ) > -1) ? null : (
                           <Popover
+                            id="topic_detail_user_support_tree_card_popover_info"
                             placement="right"
                             content={
                               !isUserAuthenticated
@@ -570,7 +594,10 @@ const SupportTreeCard = ({
                                 : "This will delegate your support to the selected supporter"
                             }
                           >
-                            <a className="printHIde custom-btn group">
+                            <a
+                              className="printHIde custom-btn group"
+                              id="topic_detail_user_support_tree_card_delegate_section"
+                            >
                               <Button
                                 id="supportTreeDelegateYourSupport"
                                 disabled={
@@ -582,6 +609,7 @@ const SupportTreeCard = ({
                                 className="hidden group-hover:flex mb-2  items-center gap-1 justify-center bg-canLightBlue text-canBlue text-xs 2xl:text-sm rounded-lg font-medium w-full !shadow-none p-2"
                               >
                                 <Image
+                                  id="supportTreeDelegateYourSupportimg"
                                   src="/images/user-minus-regular.svg"
                                   alt="svg"
                                   height={16}
@@ -595,7 +623,10 @@ const SupportTreeCard = ({
                         )}
                       </>
                     ) : (
-                      <a className="printHIde  custom-btn hidden group-hover:flex">
+                      <a
+                        className="printHIde  custom-btn hidden group-hover:flex"
+                        id="topic_detail_user_support_tree_card_remove_section"
+                      >
                         <Button
                           id="supportTreeRemoveSupport"
                           disabled={
@@ -608,6 +639,7 @@ const SupportTreeCard = ({
                           className="mb-2 flex items-center gap-1 justify-center bg-canLightRed text-canRed text-xs 2xl:text-sm rounded-lg font-medium w-full"
                         >
                           <Image
+                            id="supportTreeRemoveSupportimg"
                             src="/images/user-minus-red.svg"
                             alt="svg"
                             height={16}
@@ -726,13 +758,17 @@ const SupportTreeCard = ({
 
   return loadingIndicator || loadingIndicatorSupport ? (
     <CustomSkelton
+      id="topic_detail_loader"
       skeltonFor="list"
       bodyCount={10}
       stylingClass="test"
       isButton={false}
     />
   ) : (
-    <div className="topicDetailsCollapse flex flex-col w-full h-full">
+    <div
+      className="topicDetailsCollapse flex flex-col w-full h-full"
+      id="topic_detail_user_support_tree_drawer_section"
+    >
       <SupportTreeDrawer
         onClose={onClose}
         open={open}
@@ -745,8 +781,12 @@ const SupportTreeCard = ({
         getCheckStatusAPI={getCheckStatusAPI}
         loader={loader}
         setLoader={setLoader}
+        isCampLeader={isCampLeader}
       />
-      <div className="support-tree-sec overflow-hidden overflow-y-auto">
+      <div
+        className="support-tree-sec overflow-hidden overflow-y-auto"
+        id="topic_detail_user_support_camp_tree_card_section"
+      >
         {campSupportingTree?.length > 0 ? (
           <Tree
             className={"Parent_Leaf"}
@@ -762,7 +802,10 @@ const SupportTreeCard = ({
             {campSupportingTree && renderTreeNodes(campSupportingTree)}
           </Tree>
         ) : (
-          <p> No direct supporters of this camp</p>
+          <p id="topic_detail_user_support_tree_no_data">
+            {" "}
+            No direct supporters of this camp
+          </p>
         )}
 
         {campSupportingTree?.length > supportLength && (
@@ -776,7 +819,10 @@ const SupportTreeCard = ({
           </CustomButton>
         )}
       </div>
-      <div className="topicDetailsCollapseFooter printHIde mt-auto pt-3 w-full flex flex-col gap-2 justify-center">
+      <div
+        className="topicDetailsCollapseFooter printHIde mt-auto pt-3 w-full flex flex-col gap-2 justify-center"
+        id="topic_detail_user_support_tree_btn_section"
+      >
         <CustomButton
           onClick={handleClickSupportCheck}
           className="w-full justify-center bg-canGreen hover:!bg-canGreen hover:!text-white hover:!border-transparent !border-transparent h-auto py-2 text-white flex items-center rounded-lg font-medium text-sm gap-2"
@@ -788,6 +834,7 @@ const SupportTreeCard = ({
         </CustomButton>
         <Popover content={renderPopupMsg()}>
           <Button
+            id="topic_detail_user_support_sign_petition_section"
             size="large"
             className="flex items-center justify-center border-[#4EB966] hover:!text-canBlack hover:!border-[#4EB966] hover:!bg-[#4EB9661A] bg-[#4EB9661A] rounded-lg font-medium text-sm"
             style={{ borderRadius: "0.5rem" }}
