@@ -46,15 +46,6 @@ export default function DelegatedSupportCampsUI({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [delegatedSupportCampsList]);
 
-  // const pageChange = (pageNumber, pageSize) => {
-  //   setCurrentPage(pageNumber);
-  //   const startingPosition = (pageNumber - 1) * pageSize;
-  //   const endingPosition = startingPosition + pageSize;
-  //   setDisplayList(
-  //     delegatedSupportCampsList?.slice(startingPosition, endingPosition)
-  //   );
-  // };
-
   useEffect(() => {
     const startingPosition = (currentPage - 1) * pageSize;
     const endingPosition = startingPosition + pageSize;
@@ -261,9 +252,6 @@ export default function DelegatedSupportCampsUI({
     }
   }, [search, displayList, delegatedSupportCampsList, currentSearchPage]);
 
-  // useEffect(() => {
-  //   pageChange(1);
-  // }, [delegatedSupportCampsList]);
   useEffect(() => {
     // Update the filtered list based on the search
     if (search) {
@@ -276,22 +264,22 @@ export default function DelegatedSupportCampsUI({
       setFilteredList(delegatedSupportCampsList);
     }
   }, [search, delegatedSupportCampsList]);
+  
   return (
     <div>
       <div
         className="hidden lg:flex w-full [&_#delegated_supported_camp_loader_section>div]:!w-full"
         id="delegated_supported_camp_loader_section"
       >
-        
         {delegateSupportedSkeleton ? (
           <div className="w-full">
-          <CustomSkelton
-            id="delegated_supported_camp_loader"
-            skeltonFor="delegateSupportedCampListCard"
-            bodyCount={4}
-            stylingClass=""
-            isButton={false}
-          />
+            <CustomSkelton
+              id="delegated_supported_camp_loader"
+              skeltonFor="delegateSupportedCampListCard"
+              bodyCount={4}
+              stylingClass=""
+              isButton={false}
+            />
           </div>
         ) : (
           <div className="w-full" id="delegated_supported_camp_upper_heading_1">
@@ -574,13 +562,13 @@ export default function DelegatedSupportCampsUI({
       >
         {delegateSupportedSkeleton ? (
           <div className="w-full">
-          <CustomSkelton
-            id="delagate_supported_camp_loader"
-            skeltonFor="delegateSupportedCampListCard"
-            bodyCount={4}
-            stylingClass=""
-            isButton={false}
-          />
+            <CustomSkelton
+              id="delagate_supported_camp_loader"
+              skeltonFor="delegateSupportedCampListCard"
+              bodyCount={4}
+              stylingClass=""
+              isButton={false}
+            />
           </div>
         ) : (
           <div
