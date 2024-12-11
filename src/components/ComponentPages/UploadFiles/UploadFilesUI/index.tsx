@@ -815,7 +815,7 @@ const UploadFileUI = ({
         isButton={false}
       />
     ) : (
-      <div className={"folderId" + item.id } id={"folderId" + item.id}>
+      <div className={"folderId" + item.id} id={"folderId" + item.id}>
         {item && item.type && item.type == "folder" && !toggleFileView ? (
           <div className={`${styles.Folder_container} folder-container`}>
             <Card className={`${styles.files} files`}>
@@ -1090,9 +1090,9 @@ const UploadFileUI = ({
   //   message.info("Clicked on Yes.");
   //   removeFiles(keyParam);
   // };
-  const getGlobalSearchUploadFile = async (queryString) => {
+  const getGlobalSearchUploadFile = async (queryString, date) => {
     let response = await globalSearchUploadFiles(
-      queryParams({ query: queryString })
+      queryParams({ query: queryString ,date}),
     );
     if (response && response.status_code == 200) {
       setFilteredList(response.data.files.map((v) => ({ ...v, type: "file" })));
@@ -1234,6 +1234,7 @@ const UploadFileUI = ({
                                 : setDatePick(
                                     date ? date.toLocaleString() : ""
                                   );
+                              getGlobalSearchUploadFile(search, date);
                             }}
                             value={datePick && moment(new Date(datePick))}
                           />
@@ -1256,7 +1257,10 @@ const UploadFileUI = ({
                               setSearch(e.target.value);
                               openFolder
                                 ? filteredArray()
-                                : getGlobalSearchUploadFile(e.target.value);
+                                : getGlobalSearchUploadFile(
+                                    e.target.value,
+                                    datePick
+                                  );
                             }}
                           />
                         </div>
