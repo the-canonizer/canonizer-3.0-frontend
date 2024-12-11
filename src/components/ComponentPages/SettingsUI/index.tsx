@@ -163,27 +163,6 @@ const SettingsUI = () => {
     }
   }, [tab]);
 
-  // const handleChange2 = (e) => {
-  //   const value = e.target.value;
-  //   setSelectedValue(value);
-  //   // Navigate to the corresponding page
-  //   if (value === "Direct_Supported_Camps") {
-  //     router.push("/settings?tab=direct_supported_camps");
-  //   } else if (value === "Delegated_Supported_Camps") {
-  //     router.push("/settings?tab=delegate_supported_camp");
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   const savedValue = localStorage.getItem("selectedValue");
-  //   if (savedValue) {
-  //     setSelectedValue(savedValue);
-  //   }
-  // }, []);
-  // const handleSavedValue = (value) => {
-  //   setSelectedValue(value);
-  //   localStorage.setItem("selectedValue", value);
-  // };
   const onClick = () => {
     logOut(router);
   };

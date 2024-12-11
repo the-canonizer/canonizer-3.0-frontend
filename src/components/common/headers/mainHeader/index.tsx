@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
 
 import Logo from "../logoHeader";
@@ -62,27 +62,19 @@ const LoggedOutHeader = () => {
   }, [isUserAuthenticated, router?.asPath]);
 
   return (
-    <Fragment>
-      <div
-        className={`flex md:justify-between justify-between items-center h-20 z-10 w-100 relative ${
-          isTopicPage ? "[&_.create-topic-header-link]:!hidden" : ""
-        }`}
-      >
-        <Logo />
-        <SearchHeader />
-        <HeaderMenu
-          className="ml-1 tab:ml-auto"
-          isUserAuthenticated={isUserAuthenticated}
-        />
-      </div>
-
-      {/* <SearchSection /> */}
-      {/* <DisclaimerMsg />
-      <ArchivedCampMsg />
-      <LoginModal />
-      <RegistrationModal />
-      <ForgotModal /> */}
-    </Fragment>
+    <div
+      className={`flex md:justify-between justify-between items-center h-20 z-10 w-100 relative ${
+        isTopicPage ? "[&_.create-topic-header-link]:!hidden" : ""
+      }`}
+      id="header"
+    >
+      <Logo />
+      <SearchHeader />
+      <HeaderMenu
+        className="ml-1 tab:ml-auto"
+        isUserAuthenticated={isUserAuthenticated}
+      />
+    </div>
   );
 };
 
