@@ -87,6 +87,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
     openConsensusTreePopup,
     totalScoreforTreeCard,
     treeExpandValue,
+    userEmail,
   } = useSelector((state: RootState) => ({
     algorithms: state.homePage?.algorithms,
     asof: state?.filters?.filterObject?.asof,
@@ -100,6 +101,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
     openConsensusTreePopup: state.hotTopic.openConsensusTreePopup,
     totalScoreforTreeCard: state.topicDetails.totalScoreforTreeCard,
     treeExpandValue: state?.filters?.treeExpandValue,
+    userEmail: state?.auth?.loggedInUser?.email,
   }));
 
   const { isUserAuthenticated } = isAuth();
@@ -174,6 +176,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
           algorithm: algorithm,
           update_all: 1,
           fetch_topic_history: viewThisVersionCheck ? 1 : null,
+          current_user: isUserAuthenticated ? userEmail : "",
         };
 
         const reqBody = {
