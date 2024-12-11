@@ -43,6 +43,19 @@ const CreateTopicFromUI = ({
   editCampStatementData,
   isEdit = false,
 }) => {
+  const findDefaultNickName = () => {
+    return nickNameList?.find((item) => item.default === 1);
+  };
+
+  useEffect(() => {
+    if (nickNameList?.length) {
+      const defaultNickName = findDefaultNickName();
+      if (defaultNickName) {
+        form.setFieldValue("nick_name", defaultNickName.id);
+      }
+    }
+  }, [nickNameList]);
+
   const getNickNameInput = () => {
     const selectInputProps: any = {
       label: (
@@ -71,9 +84,17 @@ const CreateTopicFromUI = ({
     };
 
     if (nickNameList?.length) {
-      selectInputProps.defaultValue = values?.nick_name || nickNameList[0]?.id;
-      selectInputProps.initialValue = values?.nick_name || nickNameList[0]?.id;
-      selectInputProps.key = "nickNamesWithKeyName";
+      // selectInputProps.defaultValue = values?.nick_name || nickNameList[0]?.id;
+      // selectInputProps.initialValue = values?.nick_name || nickNameList[0]?.id;
+      selectInputProps.defaultValue =
+        values?.nick_name || findDefaultNickName()?.id
+          ? findDefaultNickName()?.id
+          : nickNameList[0]?.id;
+      (selectInputProps.initialValue =
+        values?.nick_name || findDefaultNickName()?.id
+          ? findDefaultNickName()?.id
+          : nickNameList[0]?.id),
+        (selectInputProps.key = "nickNamesWithKeyName");
     }
     return <SelectInputs {...selectInputProps} />;
   };
@@ -116,7 +137,10 @@ const CreateTopicFromUI = ({
         validateTrigger={messages.formValidationTypes()}
         initialValues={{
           topic_name: "",
-          nick_name: values?.nick_name || nickNameList[0]?.id,
+          nick_name:
+            values?.nick_name || findDefaultNickName()?.id
+              ? findDefaultNickName()?.id
+              : nickNameList[0]?.id,
           namespace: getNameSpacesValue(),
           tags: null,
         }}

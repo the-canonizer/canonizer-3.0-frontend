@@ -7,6 +7,9 @@ import CustomSkelton from "components/common/customSkelton";
 import SectionHeading from "components/ComponentPages/Home/FeaturedTopic/sectionsHeading";
 import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 import PrimaryButton from "components/shared/Buttons/PrimariButton";
+import { setDefaultNickname } from "src/network/api/userApi";
+import { openNotificationWithIcon } from "components/common/notification/notificationBar";
+import { useState } from "react";
 
 const { Option } = Select;
 
@@ -23,9 +26,25 @@ function NickNameUI({
   disableButton,
   getNickNamesLoadingIndicator,
   chnageVisibilityStatus,
-}) {
+  fetchNickNameList = () => {},
+  isChecked,
+  setIsChecked=false,
+}:any) {
   const pageSizeLength = 10;
   const isDisable = addEditBtn == "Update";
+  const updateDefaultNickname = async (record) => {
+    const payload = {
+      nick_name_id: record.id,
+    };
+    const res = await setDefaultNickname(payload);
+    if (res && res.status_code === 200) {
+      openNotificationWithIcon(
+        `${res?.data?.nick_name} has been successfully set as the default.`,
+        "success"
+      );
+      fetchNickNameList();
+    }
+  };
 
   const columns = [
     {
@@ -43,7 +62,25 @@ function NickNameUI({
       title: "Default",
       dataIndex: "default",
       width: "20%",
-      render: (text, record) => <Radio className="nick-radio">Default</Radio>,
+      render: (text, record) => (
+        <Radio
+          className="nick-radio"
+          checked={record?.default > 0}
+          onClick={() => {
+            if (record?.default === 0) {
+              Modal.confirm({
+                title: "Are you sure?",
+                content: `Are you sure you want to set "${record?.nick_name}" as the default nickname?`,
+                okText: "Yes",
+                cancelText: "No",
+                onOk: () => updateDefaultNickname(record), // Call your function on confirmation
+              });
+            }
+          }}
+        >
+          {record?.default > 0 ? "Default" : "Set as default"}
+        </Radio>
+      ),
     },
     {
       title: "Visibility",
@@ -219,6 +256,14 @@ function NickNameUI({
                 </Tooltip>
               </Option>
             </Select>
+          </Form.Item>
+          <Form.Item>
+            <Radio
+              onClick={() => setIsChecked(true)}
+              checked={isChecked}
+            >
+              Set as default
+            </Radio>
           </Form.Item>
           <Form.Item>
             <PrimaryButton
