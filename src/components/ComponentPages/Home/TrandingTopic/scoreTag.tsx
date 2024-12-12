@@ -16,7 +16,7 @@ const ScoreTag = ({ topic_score }) => {
   return (
     <>
       {topic_score == 0 ? (
-          <Popover placement={"topLeft"} content={popoverContent} style={{ width: "50%" }}>
+          <Popover placement={"topLeft"} content={popoverContent} overlayStyle={{ width: "20%" }}>
             <Tag
               id="score-tag"
               className={
