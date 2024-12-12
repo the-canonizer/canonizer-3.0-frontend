@@ -1,5 +1,5 @@
 import { Fragment, useEffect } from "react";
-import { Form, Row, Col, Typography } from "antd";
+import { Form, Row, Col, Typography, Collapse } from "antd";
 import {
   CloseOutlined,
   FileTextOutlined,
@@ -24,6 +24,8 @@ import { useDispatch } from "react-redux";
 
 const { labels, placeholders, nickNmRule, topicNameRule, namespaceRule } =
   messages;
+const { Panel } = Collapse;
+const { Text } = Typography;
 
 const CreateTopicFromUI = ({
   onFinish,
@@ -180,7 +182,7 @@ const CreateTopicFromUI = ({
               getNickNameInput()
             )}
           </Col>
-          <Col
+          {/* <Col
             xs={24}
             sm={24}
             md={24}
@@ -292,7 +294,7 @@ const CreateTopicFromUI = ({
                 </Tags>
               ))
             )}
-          </Col>
+          </Col> */}
           {isEdit && (
             <Col xs={24} xl={24} id="edit-summary-col">
               <Inputs
@@ -308,6 +310,153 @@ const CreateTopicFromUI = ({
             </Col>
           )}
         </Row>
+        <Collapse
+          className="camp-accordion"
+          ghost
+          expandIconPosition="right"
+          defaultActiveKey={["1"]}
+        >
+          <Panel
+            header={
+              <>
+                Advanced Settings<br></br>{" "}
+                <Text
+                  className="block mt-1 text-xs text-[#777F93]"
+                  id="keywords-text"
+                >
+                  {labels.cr_keywords_sp}
+                </Text>
+              </>
+            }
+            key="1"
+          >
+            <Row   
+              gutter={16}
+              id="form-row-2"
+            >
+              <Col
+                xs={24}
+                sm={24}
+                md={24}
+                lg={24}
+                xl={12}
+                key={"namespaces_div"}
+                id="namespace-input-col"
+              >
+                {isLoading ? (
+                  <CustomSkelton
+                    skeltonFor="list"
+                    bodyCount={1}
+                    stylingClass="listSkeleton"
+                    isButton={false}
+                    id="namespace-skeleton"
+                  />
+                ) : (
+                  <SelectInputs
+                    label={
+                      <Fragment>
+                        {labels.cr_namespace}
+                        <span className="required">*</span>
+                      </Fragment>
+                    }
+                    extra={
+                      <span className="text-[10px]">
+                        (General is recommended, unless you know otherwise)
+                      </span>
+                    }
+                    name="namespace"
+                    options={nameSpaces}
+                    placeholder={placeholders.namespace}
+                    allowClear
+                    size={"large"}
+                    dataid="canon-namespace"
+                    showSearch
+                    optionFilterProp="children"
+                    inputClassName="border-0"
+                    rules={namespaceRule}
+                    prefix={<FlagOutlined className="px-3 text-canBlack" />}
+                    defaultValue={getNameSpacesValue()}
+                    initialValue={getNameSpacesValue()}
+                    value={form.getFieldValue("namespace")}
+                    isLabelRequiredFormat={true}
+                    formatFunc={changeSlashToArrow}
+                    onSelect={(val) => form.setFieldValue("namespace", val)}
+                    key="canon-select"
+                    lastValue={form.getFieldValue("namespace")}
+                    id="namespace-select"
+                  />
+                )}
+              </Col>
+              <Col
+                xs={24}
+                sm={24}
+                md={24}
+                lg={24}
+                xl={12}
+                id="category-input-col"
+              >
+                {isLoading ? (
+                  <CustomSkelton
+                    skeltonFor="list"
+                    bodyCount={1}
+                    stylingClass="listSkeleton"
+                    isButton={false}
+                    id="category-skeleton"
+                  />
+                ) : (
+                  <SelectInputs
+                    label={labels.cateLabel}
+                    name="tags"
+                    options={categories}
+                    placeholder={placeholders.catSelect}
+                    allowClear
+                    size={"large"}
+                    dataid="topic-category"
+                    showSearch
+                    optionFilterProp="children"
+                    inputClassName="border-0"
+                    rules={null}
+                    nameKey="title"
+                    prefix={
+                      <AlignIcon
+                        className="flex items-center justify-center px-2"
+                        fill="#242B37"
+                      />
+                    }
+                    onSelect={onTagSelect}
+                    id="category-select"
+                  />
+                )}
+              </Col>
+              <Col xs={24} className="mb-5" id="selected-categories-col">
+            {isLoading ? (
+              <CustomSkelton
+                skeltonFor="list"
+                bodyCount={1}
+                stylingClass="listSkeleton"
+                isButton={false}
+                id="selected-categories-skeleton"
+              />
+            ) : (
+              selectedCats?.map((cat) => (
+                <Tags
+                  className="rounded-lg py-2 px-6 border-canGrey2 text-canBlue bg-canGray mt-0 mb-2 font-medium"
+                  key={cat?.id}
+                  id={`selected-category-tag-${cat?.id}`}
+                >
+                  <span>{cat?.title}</span>
+                  <CloseOutlined
+                    className="mr-2 text-canLight"
+                    onClick={(e) => onCatRemove(e, cat)}
+                    id={`remove-category-icon-${cat?.id}`}
+                  />
+                </Tags>
+              ))
+            )}
+          </Col>
+            </Row>
+          </Panel>
+        </Collapse>
 
         {isLoading ? (
           <CustomSkelton
