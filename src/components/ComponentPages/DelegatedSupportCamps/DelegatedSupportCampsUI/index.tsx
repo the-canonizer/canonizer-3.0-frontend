@@ -79,10 +79,7 @@ export default function DelegatedSupportCampsUI({
         const serialNumber = (currentPage - 1) * 5 + index + 1;
         const searchSerialNumber = (currentSearchPage - 1) * 5 + index + 1;
         return (
-          <span
-            className="text-sm bg-canGrey2 rounded-full h-5 w-6 flex items-center justify-center"
-            id="delegated_supported_camp_serial_number"
-          >
+          <span className="text-sm" id="delegated_supported_camp_serial_number">
             {search.length > 0 ? searchSerialNumber : serialNumber}
           </span>
         );
@@ -282,17 +279,19 @@ export default function DelegatedSupportCampsUI({
   return (
     <div>
       <div
-        className="hidden lg:flex w-full"
+        className="hidden lg:flex w-full [&_#delegated_supported_camp_loader_section>div]:!w-full"
         id="delegated_supported_camp_loader_section"
       >
         {delegateSupportedSkeleton ? (
-          <CustomSkelton
-            id="delegated_supported_camp_loader"
-            skeltonFor="delegateSupportedCampListCard"
-            bodyCount={4}
-            stylingClass=""
-            isButton={false}
-          />
+          <div className="w-full">
+            <CustomSkelton
+              id="delegated_supported_camp_loader"
+              skeltonFor="delegateSupportedCampListCard"
+              bodyCount={4}
+              stylingClass=""
+              isButton={false}
+            />
+          </div>
         ) : (
           <div className="w-full" id="delegated_supported_camp_upper_heading_1">
             <div
@@ -569,17 +568,19 @@ export default function DelegatedSupportCampsUI({
       </div>
 
       <div
-        className="lg:hidden flex w-full"
+        className="lg:hidden flex w-full [&_.ant-typography]:!m-0 [&_.ant-card-head-wrapper]:!gap-2"
         id="delagate_supported_camp_mob_btn_section"
       >
         {delegateSupportedSkeleton ? (
-          <CustomSkelton
-            id="delagate_supported_camp_loader"
-            skeltonFor="delegateSupportedCampListCard"
-            bodyCount={4}
-            stylingClass=""
-            isButton={false}
-          />
+          <div className="w-full">
+            <CustomSkelton
+              id="delagate_supported_camp_loader"
+              skeltonFor="delegateSupportedCampListCard"
+              bodyCount={4}
+              stylingClass=""
+              isButton={false}
+            />
+          </div>
         ) : (
           <div
             className="w-full"

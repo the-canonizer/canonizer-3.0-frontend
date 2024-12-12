@@ -16,7 +16,7 @@ const WithRouteChange = (pageProps) => {
         "/registration",
         "/login/otp",
         "/registration/otp",
-        "/category-preference",
+        "/tags-preference",
         "/forgot-password",
         "/forgot-password/otp",
         "/reset-password",

@@ -61,6 +61,7 @@ function CommanBreadcrumbs({
   const [breadCrumbRes, setBreadCrumbRes] = useState({
     topic_name: "",
     bread_crumb: [],
+    propose_statement_edit: null,
   });
   const didMount = useRef(false);
   const router = useRouter();
@@ -471,8 +472,8 @@ function CommanBreadcrumbs({
 
   const title = (
     <div className="popover_header">
-      <span className="text-xs 2xl:text-sm text-canLight mb-1.5 font-normal">
-        Topic name :
+      <span className="text-xs 2xl:text-sm text-canLight mb-1.5 font-normal capitalize">
+        Topic Name:
       </span>
       <p className="font-bold mb-5 text-sm text-canBlack">
         {topicRecord && topicRecord?.topic_name?.length > 50
@@ -486,7 +487,9 @@ function CommanBreadcrumbs({
     <div className="popoverParent">
       <Row gutter={1}>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
-          <span className="text-canLight text-xs 2xl:text-sm">Author</span>
+          <span className="text-canLight text-xs 2xl:text-sm capitalize">
+            Author:
+          </span>
           <Link
             href={{
               pathname: `/user/supports/${topicRecord?.submitter_nick_id}`,
@@ -499,16 +502,16 @@ function CommanBreadcrumbs({
           </Link>
         </Col>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
-          <span className="text-xs 2xl:text-sm text-canLight">
-            Submitted On :{" "}
+          <span className="text-xs 2xl:text-sm text-canLight capitalize">
+            Submitted On:
           </span>
           <span className="text-sm 2xl !text-black font-medium">
             {topicRecord && covertToTime(topicRecord?.submit_time)}
           </span>
         </Col>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
-          <span className="text-xs 2xl:text-sm text-canLight">
-            Submitted By
+          <span className="text-xs 2xl:text-sm text-canLight capitalize">
+            Submitted By:
           </span>
           <Link
             href={{
@@ -522,22 +525,26 @@ function CommanBreadcrumbs({
           </Link>
         </Col>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
-          <span className="text-xs 2xl:text-sm text-canLight">
-            Go Live Time :{" "}
+          <span className="text-xs 2xl:text-sm text-canLight capitalize">
+            Go Live Time:
           </span>
           <span className="text-sm text-canBlack font-medium">
             {topicRecord && covertToTime(topicRecord?.go_live_time)}
           </span>
         </Col>
         <Col md={12} sm={12} xs={12} className="flex flex-col">
-          <span className="text-xs 2xl:text-sm text-canLight">Canon : </span>
+          <span className="text-xs 2xl:text-sm text-canLight capitalize">
+            Canon:
+          </span>
           <span className="text-sm text-canBlack font-medium">
             {topicRecord && changeSlashToArrow(topicRecord?.namespace_name)}
           </span>
         </Col>
         {tagsArrayList && tagsArrayList?.length > 0 ? (
           <Col md={24} sm={24} xs={24} className="mt-3">
-            <span className="text-xs 2xl:text-sm text-canLight">Tags :</span>
+            <span className="text-xs 2xl:text-sm text-canLight capitalize">
+              Tags:
+            </span>
             <div className="vertical-chips mt-2 flex flex-wrap gap-2">
               {tagsToShow?.map((item: any, index) => (
                 <div key={index}>
@@ -577,8 +584,8 @@ function CommanBreadcrumbs({
 
   const title2 = (
     <div className="popover_header">
-      <span className="text-xs 2xl:text-sm text-canLight mb-1">
-        Camp name :
+      <span className="text-xs 2xl:text-sm text-canLight mb-1 capitalize">
+        Camp Name:
       </span>
       <p className="font-bold mb-5 text-sm text-canBlack line-clamp-1 overflow-hidden">
         <Link
@@ -608,7 +615,9 @@ function CommanBreadcrumbs({
     <div className="popoverParent">
       <Row gutter={5}>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
-          <span className="text-xs 2xl:text-sm text-canLight">Submitter</span>
+          <span className="text-xs 2xl:text-sm text-canLight capitalize">
+            Submitter:
+          </span>
           <Link
             href={{
               pathname: `/user/supports/${campRecord?.submitter_nick_id}`,
@@ -621,16 +630,16 @@ function CommanBreadcrumbs({
           </Link>
         </Col>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
-          <span className="text-xs 2xl:text-sm text-canLight">
-            Submitted On :{" "}
+          <span className="text-xs 2xl:text-sm text-canLight capitalize">
+            Submitted On:
           </span>
           <span className="text-sm text-canBlack">
             {campRecord && covertToTime(campRecord?.submit_time)}
           </span>
         </Col>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
-          <span className="text-xs 2xl:text-sm text-canLight">
-            Camp about nickname :{" "}
+          <span className="text-xs 2xl:text-sm text-canLight capitalize">
+            Camp about nickname:
           </span>
           <Link
             href={{
@@ -643,9 +652,9 @@ function CommanBreadcrumbs({
             </a>
           </Link>
         </Col>
-        <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
-          <span className="text-xs 2xl:text-sm text-canLight">
-            Camp about URL :{" "}
+        <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col break-words">
+          <span className="text-xs 2xl:text-sm text-canLight capitalize">
+            Camp about URL:
           </span>
           <a
             href={campRecord && campRecord.camp_about_url}
@@ -657,23 +666,23 @@ function CommanBreadcrumbs({
           </a>
         </Col>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
-          <span className="text-xs 2xl:text-sm text-canLight">
-            Single level camps only :{" "}
+          <span className="text-xs 2xl:text-sm text-canLight capitalize">
+            Single level camps only:
           </span>
           <span className="text-sm text-canBlack">
             {campRecord && campRecord.is_one_level == 0 ? "No" : "Yes"}
           </span>
         </Col>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
-          <span className="text-xs 2xl:text-sm text-canLight">
-            Disable additional sub camps:{" "}
+          <span className="text-xs 2xl:text-sm text-canLight capitalize">
+            Disable additional sub camps:
           </span>
           <span className="text-sm text-canBlack">
             {campRecord && campRecord.is_disabled == 0 ? "No" : "Yes"}
           </span>
         </Col>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
-          <span className="text-xs 2xl:text-sm text-canLight">
+          <span className="text-xs 2xl:text-sm text-canLight capitalize">
             Camp archive:
           </span>
           <span className="text-sm text-canBlack">
@@ -681,7 +690,7 @@ function CommanBreadcrumbs({
           </span>
         </Col>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
-          <span className="text-xs 2xl:text-sm text-canLight">
+          <span className="text-xs 2xl:text-sm text-canLight capitalize">
             Go live time:
           </span>
           <span className="text-sm text-canBlack">
@@ -689,13 +698,17 @@ function CommanBreadcrumbs({
           </span>
         </Col>
         <Col md={12} sm={12} xs={12} className=" flex flex-col">
-          <span className="text-xs 2xl:text-sm text-canLight">canon:</span>
+          <span className="text-xs 2xl:text-sm text-canLight capitalize">
+            Canon:
+          </span>
           <span className="text-sm text-canBlack">
             {topicRecord && changeSlashToArrow(topicRecord?.namespace_name)}
           </span>
         </Col>
         <Col md={12} sm={12} xs={12} className=" flex flex-col">
-          <span className="text-xs 2xl:text-sm text-canLight">Topic :</span>
+          <span className="text-xs 2xl:text-sm text-canLight capitalize">
+            Topic:
+          </span>
           <span className="text-sm text-canBlack">
             {topicRecord && topicRecord?.topic_name?.length > 50
               ? `${topicRecord?.topic_name.substring(0, 20)}....`
@@ -704,7 +717,7 @@ function CommanBreadcrumbs({
         </Col>
         {campRecord?.camp_leader_nick_name && (
           <Col md={12} sm={12} xs={12} className=" flex flex-col mt-4">
-            <span className="text-xs 2xl:text-sm text-canLight">
+            <span className="text-xs 2xl:text-sm text-canLight capitalize">
               Camp Leader:
             </span>
             <Link
@@ -1099,24 +1112,25 @@ function CommanBreadcrumbs({
                 disabled={campRecord?.is_archive == 1 ? true : false}
                 className="printHIde sm:hidden md:hidden hidden lg:flex !h-[40px] py-2.5 px-5 items-center text-sm"
                 onClick={() => {
-                  router?.push(
-                    `${`/statement/history/${replaceSpecialCharacters(
-                      router?.query?.camp?.at(0),
-                      "-"
-                    )}/${replaceSpecialCharacters(
-                      router?.query?.camp?.at(1) ?? "1-Agreement",
-                      "-"
-                    )}`}`
-                  );
+                  const editId = breadCrumbRes?.propose_statement_edit?.edit_id;
+                  const gracePeriod =
+                    breadCrumbRes?.propose_statement_edit?.grace_period;
+                  if (!editId) return;
+                  const path =
+                    gracePeriod > 0
+                      ? `/manage/statement/${editId}-update`
+                      : `/manage/statement/${editId}`;
+                  router?.push(path);
                 }}
                 id="add-camp-statement-btn"
               >
-                {K?.exceptionalMessages?.manageCampStatementButton}
+                {K?.exceptionalMessages?.ProposeStatementBtn}
                 <Image
                   src="/images/manage-btn-icon.svg"
                   alt=""
                   height={24}
                   width={24}
+                  preview={false}
                 />
               </PrimaryButton>
             </div>
@@ -1141,6 +1155,7 @@ function CommanBreadcrumbs({
                 className="icon-topic"
                 height={16}
                 width={16}
+                preview={false}
               />
             </SecondaryButton>
           )}

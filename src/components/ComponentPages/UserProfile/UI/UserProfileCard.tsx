@@ -191,7 +191,9 @@ export const UserProfileCard = ({
                             <AlignIcon fill="#242B37" />
                             <Link href={data.title_link}>
                               <a className="!text-canBlue hover:!text-canHoverBlue text-sm font-medium">
-                                {data.title}
+                                {data.title.length > 20
+                                  ? `${data.title.substring(0, 20)}...`
+                                  : data.title}
                               </a>
                             </Link>
                           </span>
@@ -225,9 +227,14 @@ export const UserProfileCard = ({
                                 {campData.support_order} :
                               </span>
                             )}
-                            <Link href={campData.camp_link}>
-                              <a className="!text-canBlue hover:!text-canHoverBlue text-sm font-normal">
-                                {campData.camp_name}
+                            <Link
+                              href={campData.camp_link}
+                              className="!whitespace-normal"
+                            >
+                              <a className="!text-canBlue hover:!text-canHoverBlue !break-all text-sm font-normal !whitespace-normal !break-words">
+                                {campData.camp_name.length > 30
+                                  ? `${campData.camp_name.substring(0, 30)}...`
+                                  : campData.camp_name}
                               </a>
                             </Link>
                           </Tag>

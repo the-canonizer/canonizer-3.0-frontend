@@ -275,36 +275,41 @@ const CreateCampFormUI = ({
           )}
           {isEdit && (
             <Fragment>
-              <Col xs={24} sm={24} xl={24} id="form-col-camp-leader">
+              <Col
+                xs={24}
+                sm={parentCamp.length >= 1 ? 24 : 12}
+                xl={parentCamp.length >= 1 ? 24 : 12}
+                id="form-col-camp-leader"
+              >
                 <Form.Item
-                  label={
-                    <Fragment>
-                      Camp Leader
-                      {initialValue && initialValue?.camp_leader_nick_id ? (
-                        <span>
-                          (
-                          <Link
-                            href={`/user/supports/${
-                              campLeaderData &&
-                              campLeaderData?.find(
-                                (CL) => CL?.camp_leader === true
-                              )?.nick_name_id
-                            }?canon=${
-                              topicRecord?.namespace_id
-                                ? topicRecord?.namespace_id
-                                : filterObject?.namespace_id
-                            }`}
-                          >
-                            <a className="text-canBlue" id="camp-leader-link">
-                              {getCampLeaderData() + " "}
-                            </a>
-                          </Link>
-                          is currently the camp leader )
-                        </span>
-                      ) : (
-                        <span>(No one is currently camp leader)</span>
-                      )}
-                    </Fragment>
+                  label="Camp Leader"
+                  extra={
+                    initialValue && initialValue?.camp_leader_nick_id ? (
+                      <span className="text-[10px]">
+                        (
+                        <Link
+                          href={`/user/supports/${
+                            campLeaderData &&
+                            campLeaderData?.find(
+                              (CL) => CL?.camp_leader === true
+                            )?.nick_name_id
+                          }?canon=${
+                            topicRecord?.namespace_id
+                              ? topicRecord?.namespace_id
+                              : filterObject?.namespace_id
+                          }`}
+                        >
+                          <a className="text-canBlue" id="camp-leader-link">
+                            {getCampLeaderData() + " "}
+                          </a>
+                        </Link>
+                        is currently the camp leader )
+                      </span>
+                    ) : (
+                      <span className="text-[10px]">
+                        (No one is currently camp leader)
+                      </span>
+                    )
                   }
                   name="camp_leader_nick_id"
                   className={`text-14 text-canBlack font-medium`}
