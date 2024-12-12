@@ -1230,16 +1230,16 @@ const UploadFileUI = ({
                         setLoadingArray([...fileList]);
                       }}
                       onChange={(info) => {
-                        console.log(info,"infoooo")
+                        console.log(info, "infoooo");
                         try {
                           const { file, fileList } = info; // Destructure 'info' to simplify the logic
                           const length = fileList ? fileList.length : 0;
-                      
+
                           if (file?.status === "uploading") {
                             setAddFileIndicator(true);
                             setLoadingImage(true);
                           }
-                      
+
                           if (file?.status === "done") {
                             setLoadingImage(false);
                             setTimeout(() => {
@@ -1247,10 +1247,13 @@ const UploadFileUI = ({
                               setAddFileIndicator(false);
                             }, 1000);
                           }
-                      
+
                           if (length > 0) {
                             if (fileStatus) {
-                              if (file?.status === "uploading" && file?.percent === 0) {
+                              if (
+                                file?.status === "uploading" &&
+                                file?.percent === 0
+                              ) {
                                 setFolderFiles(fileList);
                                 setFileLists(fileList);
                               }
@@ -1258,7 +1261,7 @@ const UploadFileUI = ({
                               setUploadFileList(fileList || []);
                               setFileLists(fileList || []);
                             }
-                      
+
                             dragBoxHide();
                             crossBtnhide();
                             shownAddButton();
@@ -1268,20 +1271,25 @@ const UploadFileUI = ({
                             uploadOptionsHide();
                             hideButtonAdd();
                           }
-                      
+
                           if (file) {
                             const { status } = file;
-                      
+
                             if (status !== "uploading") {
                               if (status === "done") {
                                 showFiles();
                               } else if (status === "error") {
-                                message.error(`${file.name} file upload failed.`);
+                                message.error(
+                                  `${file.name} file upload failed.`
+                                );
                               }
                             }
                           }
                         } catch (error) {
-                          console.error("An error occurred during file upload:", error);
+                          console.error(
+                            "An error occurred during file upload:",
+                            error
+                          );
                         }
                       }}
                       onDrop={() => {}}

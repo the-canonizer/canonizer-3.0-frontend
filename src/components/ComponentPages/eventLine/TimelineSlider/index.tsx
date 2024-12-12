@@ -394,12 +394,25 @@ any) {
   }, [iteration, mockData]);
 
   const content = (
-    <div id="eventline-timeline-share-container" className="share-popup-content">
-      <Title level={5} id="eventline-timeline-share-text">Share</Title>
-      <Radio.Group onChange={optionChange} value={value} id="eventline-timeline-share-radiobox">
+    <div
+      id="eventline-timeline-share-container"
+      className="share-popup-content"
+    >
+      <Title level={5} id="eventline-timeline-share-text">
+        Share
+      </Title>
+      <Radio.Group
+        onChange={optionChange}
+        value={value}
+        id="eventline-timeline-share-radiobox"
+      >
         <Space direction="vertical">
-          <Radio value={1} id="eventline-timeline-share-radiobox-1">Eventline URL</Radio>
-          <Radio value={2} id="eventline-timeline-share-radiobox-2">Current Event URL</Radio>
+          <Radio value={1} id="eventline-timeline-share-radiobox-1">
+            Eventline URL
+          </Radio>
+          <Radio value={2} id="eventline-timeline-share-radiobox-2">
+            Current Event URL
+          </Radio>
         </Space>
       </Radio.Group>
       <Divider className="my-3" />

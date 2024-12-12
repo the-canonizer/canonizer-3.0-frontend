@@ -1188,6 +1188,18 @@ body {
 //   }
 // }
 
+// .last-child-node-class.last-parent-node-class.last-node-class.first-node-class.ant-tree-treenode.ant-tree-treenode-switcher-open.ant-tree-treenode-leaf-last {
+//   .ant-tree-indent {
+//     .ant-tree-indent-unit.ant-tree-indent-unit-start.ant-tree-indent-unit-end {
+//       &:last-of-type {
+//         &::before {
+//           height: 50%;
+//         }
+//       }
+//     }
+//   }
+// }
+
 .nickNamePopup {
   .ant-select-item-option {
     .ant-select-item-option-content {

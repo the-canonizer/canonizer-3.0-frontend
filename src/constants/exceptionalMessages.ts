@@ -6,7 +6,7 @@ const ExceptionalMessageConstants = {
   deleteCampNewsTooltipMessage:
     "Are you sure you want to delete this news feed?",
   manageCampStatementButton: "Manage Statement",
-  ProposeStatementBtn:"Propose Statement Edit",
+  ProposeStatementBtn: "Propose Statement Edit",
   manageTopicButton: "Manage Topic",
   addCampStatementButton: "Add Statement",
   manageCampButton: "Manage Camp",
