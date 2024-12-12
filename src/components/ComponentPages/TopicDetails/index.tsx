@@ -544,6 +544,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
                           ? 0
                           : totalCampScoreForSupportTree
                       }
+                      hideRank={tree && tree?.["1"]?.rank_hidden}
                     />
                   </div>
                 )}
@@ -689,11 +690,9 @@ const TopicDetails = ({ serverSideCall }: any) => {
                   className={styles.scoreCheckbox}
                   id="topic_detail_section_consesnus_tree_full_score_checkbox"
                 >
-                  <FullScoreCheckbox 
-                    loadingIndicator={loadingIndicator} 
-                    isDisabled={
-                      tree && tree?.["1"]?.score == 0 ? true : false
-                    }
+                  <FullScoreCheckbox
+                    loadingIndicator={loadingIndicator}
+                    isDisabled={tree && tree?.["1"]?.rank_hidden}
                   />
                 </div>
                 <ArchivedCampCheckBox
@@ -704,11 +703,14 @@ const TopicDetails = ({ serverSideCall }: any) => {
                   className="border-1 my-7 border-canGrey2"
                   id="topic_detail_section_consesnus_tree_line_break"
                 />
-                {
-                   tree && tree?.["1"]?.score == 0 && (
-                     <div className="mb-4 italic text-base"><strong>*To view support, add your direct support to the topic or delegate support to another user first.</strong></div>
-                   )
-                }
+                {tree && tree?.["1"]?.rank_hidden === true && (
+                  <div className="mb-4 italic text-base">
+                    <strong>
+                      *To view support, add your direct support to the topic or
+                      delegate support to another user first.
+                    </strong>
+                  </div>
+                )}
                 <CampTree
                   id="topic_detail_section_consesnus_tree_camp_tree"
                   scrollToCampStatement={scrollToCampStatement}

@@ -520,13 +520,12 @@ const CampTree = ({
                           : data[item].score?.toFixed(2)}
                       </span>
                     </span> */}
-                     <ScoreTag
-                        topic_score={
-                          is_checked
-                          ? data[item]?.full_score
-                          : data[item]?.score
-                        }
-                      />
+                    <ScoreTag
+                      topic_score={
+                        is_checked ? data[item]?.full_score : data[item]?.score
+                      }
+                      hideRank={tree && tree?.["0"]?.["1"]?.rank_hidden}
+                    />
                   </div>
                 </div>
               }
