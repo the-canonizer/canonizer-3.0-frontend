@@ -699,6 +699,11 @@ const TopicDetails = ({ serverSideCall }: any) => {
                   className="border-1 my-7 border-canGrey2"
                   id="topic_detail_section_consesnus_tree_line_break"
                 />
+                {
+                   tree && tree?.["1"]?.score == 0 && (
+                     <div className="mb-4 italic text-base"><strong>*To view support, add your direct support to the topic or delegate support to another user first.</strong></div>
+                   )
+                }
                 <CampTree
                   id="topic_detail_section_consesnus_tree_camp_tree"
                   scrollToCampStatement={scrollToCampStatement}
