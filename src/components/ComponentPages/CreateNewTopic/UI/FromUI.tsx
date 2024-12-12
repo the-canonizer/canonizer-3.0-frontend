@@ -46,6 +46,7 @@ const CreateTopicFromUI = ({
   editCampStatementData,
   isEdit = false,
 }) => {
+  
   useEffect(() => {
     if (nickNameList?.length) {
       const defaultNickName = defaultNicknameData(nickNameList);

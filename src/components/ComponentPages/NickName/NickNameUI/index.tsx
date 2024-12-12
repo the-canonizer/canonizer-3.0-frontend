@@ -259,7 +259,7 @@ function NickNameUI({
           </Form.Item>
           <Form.Item>
             <Radio
-              onClick={() => setIsChecked(true)}
+              onClick={() => setIsChecked(!isChecked)}
               checked={isChecked}
             >
               Set as default
