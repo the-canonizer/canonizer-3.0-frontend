@@ -19,6 +19,7 @@ const ScoreTag = ({ topic_score }) => {
           <Popover placement={"topLeft"} content={popoverContent} style={{ width: "50%" }}>
             <Tag
               id="score-tag"
+              style={{ filter: "blur(1px)" }}
               className={
                 "bg-canOrange text-white border-0 rounded-md ml-1 inline-flex py-[2px] flex items-center text-[10px] scoreTag"
               }
