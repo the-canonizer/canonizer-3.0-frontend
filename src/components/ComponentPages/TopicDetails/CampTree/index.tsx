@@ -4,6 +4,8 @@ import { useSelector, useDispatch } from "react-redux";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Image from "next/image";
+import type { DataNode, TreeProps } from "antd/es/tree";
+import { DownOutlined } from "@ant-design/icons";
 
 import styles from "../topicDetails.module.scss";
 
@@ -11,7 +13,6 @@ import useAuthentication from "src/hooks/isUserAuthenticated";
 import { RootState } from "src/store";
 import { setCurrentCamp } from "src/store/slices/filtersSlice";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
-import { DownOutlined } from "@ant-design/icons";
 
 const { TreeNode } = Tree;
 
@@ -615,23 +616,30 @@ const CampTree = ({
     return uniqueArraytoString;
   };
 
-  return tree?.at(0) ? (
-    (showTree && tree?.at(0)["1"]?.title != "" && defaultExpandKeys) ||
-    isForumPage ? (
-      <Tree
-        showLine
-        switcherIcon={<DownOutlined />}
-        onSelect={onSelect}
-        onExpand={onExpand}
-        expandedKeys={[...uniqueKeys]}
-        data-testid="camp-tree"
-      >
-        {tree?.at(0) && renderTreeNodes(tree?.at(0))}
-      </Tree>
-    ) : null
-  ) : (
-    <p data-testid="camp-tree">No Camp Tree Found</p>
-  );
+  let treeContent;
+  
+  if (tree?.at(0)) {
+    if ((showTree && tree?.at(0)["1"]?.title != "" && defaultExpandKeys) || isForumPage) {
+      treeContent = (
+        <Tree
+          showLine
+          switcherIcon={<DownOutlined />}
+          onSelect={onSelect}
+          onExpand={onExpand}
+          expandedKeys={[...uniqueKeys]}
+          data-testid="camp-tree"
+        >
+          {tree?.at(0) && renderTreeNodes(tree?.at(0))}
+        </Tree>
+      );
+    } else {
+      treeContent = null;
+    }
+  } else {
+    treeContent = <p data-testid="camp-tree">No Camp Tree Found</p>;
+  }
+  
+  return treeContent;
 };
 
 export default CampTree;
