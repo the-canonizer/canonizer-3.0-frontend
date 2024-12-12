@@ -538,18 +538,14 @@ const TopicDetails = ({ serverSideCall }: any) => {
                     >
                       <InfoCircleOutlined id="topic_detail_section_heading_info" />
                     </Popover>
-                    {
-                      tree && tree?.["1"]?.rank_hidden == false && (
-                        <ScoreTag
-                          topic_score={
-                            campRecord?.is_archive
-                              ? 0
-                              : totalCampScoreForSupportTree
-                          }
-                          hideRank={tree && tree?.["1"]?.rank_hidden}
-                        />
-                      )
-                    }
+                    <ScoreTag
+                      topic_score={
+                        campRecord?.is_archive
+                          ? 0
+                          : totalCampScoreForSupportTree
+                      }
+                      hideRank={tree && tree?.["1"]?.rank_hidden}
+                    />
                   </div>
                 )}
                 {tree?.["1"]?.is_valid_as_of_time && (
