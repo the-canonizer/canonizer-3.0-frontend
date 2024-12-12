@@ -689,7 +689,12 @@ const TopicDetails = ({ serverSideCall }: any) => {
                   className={styles.scoreCheckbox}
                   id="topic_detail_section_consesnus_tree_full_score_checkbox"
                 >
-                  <FullScoreCheckbox loadingIndicator={loadingIndicator} />
+                  <FullScoreCheckbox 
+                    loadingIndicator={loadingIndicator} 
+                    isDisabled={
+                      tree && tree?.["1"]?.score == 0 ? true : false
+                    }
+                  />
                 </div>
                 <ArchivedCampCheckBox
                   loadingIndicator={loadingIndicator}
