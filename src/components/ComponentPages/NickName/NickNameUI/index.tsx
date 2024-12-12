@@ -28,21 +28,31 @@ function NickNameUI({
   chnageVisibilityStatus,
   fetchNickNameList = () => {},
   isChecked,
-  setIsChecked=false,
-}:any) {
+  setIsChecked = false,
+}: any) {
   const pageSizeLength = 10;
   const isDisable = addEditBtn == "Update";
-  const updateDefaultNickname = async (record) => {
-    const payload = {
-      nick_name_id: record.id,
-    };
-    const res = await setDefaultNickname(payload);
-    if (res && res.status_code === 200) {
-      openNotificationWithIcon(
-        `${res?.data?.nick_name} has been successfully set as the default.`,
-        "success"
-      );
-      fetchNickNameList();
+  const [loadingStates, setLoadingStates] = useState({}); 
+
+  const updateDefaultNickname = async (record, setCancelDisabled) => {
+    setLoadingStates((prev) => ({ ...prev, [record.id]: true })); 
+    setCancelDisabled(true); 
+
+    const payload = { nick_name_id: record.id };
+    try {
+      const res = await setDefaultNickname(payload);
+      if (res && res.status_code === 200) {
+        openNotificationWithIcon(
+          `${res?.data?.nick_name} has been successfully set as the default.`,
+          "success"
+        );
+        fetchNickNameList(); 
+      }
+    } catch (error) {
+      console.error("Error setting default nickname:", error);
+    } finally {
+      setLoadingStates((prev) => ({ ...prev, [record.id]: false })); 
+      setCancelDisabled(false); 
     }
   };
 
@@ -68,12 +78,18 @@ function NickNameUI({
           checked={record?.default > 0}
           onClick={() => {
             if (record?.default === 0) {
+              let cancelDisabled = false; 
               Modal.confirm({
                 title: "Are you sure?",
                 content: `Are you sure you want to set "${record?.nick_name}" as the default nickname?`,
                 okText: "Yes",
                 cancelText: "No",
-                onOk: () => updateDefaultNickname(record), // Call your function on confirmation
+                okButtonProps: { loading: loadingStates[record.id] },
+                cancelButtonProps: { disabled: cancelDisabled },
+                onOk: () =>
+                  updateDefaultNickname(record, (value) => {
+                    cancelDisabled = value; 
+                  }),
               });
             }
           }}
@@ -258,10 +274,7 @@ function NickNameUI({
             </Select>
           </Form.Item>
           <Form.Item>
-            <Radio
-              onClick={() => setIsChecked(!isChecked)}
-              checked={isChecked}
-            >
+            <Radio onClick={() => setIsChecked(!isChecked)} checked={isChecked}>
               Set as default
             </Radio>
           </Form.Item>
