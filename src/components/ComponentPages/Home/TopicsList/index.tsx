@@ -562,6 +562,7 @@ const TopicsList = () => {
                       }
                       maxCount={5}
                       scoreTag={<ScoreTag topic_score={ft?.topic_score} />}
+                      hideRank = {ft?.topic_score == 0 ? true : false}
                       copyLink={
                         <Paragraph
                           className="!mb-0 hidden rightArrow"

@@ -19,6 +19,7 @@ const SingleTopicCard = ({
   topic,
   avatars,
   scoreTag = null,
+  hideRank = false,
   onTopicLinkClick = null,
   tag_key = "topicTags",
   maxCount = 3,
@@ -64,7 +65,7 @@ const SingleTopicCard = ({
             >
               {topic?.topic_name}
             </Typography.Paragraph>
-            <span id={`browse-topic-score-${topic?.id}`}>{scoreTag}</span>
+            <span id={`browse-topic-score-${topic?.id}`} style={{ filter: hideRank ?"blur(1px)": ""}}>{scoreTag}</span>
             <span id={`browse-copy-link-${topic?.id}`}>
               {copyLink && copyLink}
             </span>
