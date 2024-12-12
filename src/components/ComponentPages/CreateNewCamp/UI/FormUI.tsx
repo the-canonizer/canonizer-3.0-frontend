@@ -73,14 +73,14 @@ const CreateCampFormUI = ({
   // const toolTipContent = "This camp is under review";
   const archiveToolTipContent = "This camp is archived";
 
-  useEffect(() => {
-    if (nickNameList?.length) {
-      const defaultNickName = defaultNicknameData(nickNameList);
-      if (defaultNickName) {
-        form.setFieldValue("nick_name", defaultNickName.id);
-      }
-    }
-  }, [nickNameList]);
+  // useEffect(() => {
+  //   if (nickNameList?.length) {
+  //     const defaultNickName = defaultNicknameData(nickNameList);
+  //     if (defaultNickName) {
+  //       form.setFieldValue("nick_name", defaultNickName.id);
+  //     }
+  //   }
+  // }, [nickNameList]);
 
   useEffect(() => {
     campRecord?.is_archive && router.pathname == "/camp/create/[...camp]"
