@@ -463,3 +463,7 @@ export const epochToMinutes = (epochTime): any => {
     return 0;
   }
 };
+
+export const defaultNicknameData = (nickNameList) => {
+  return nickNameList?.find((item) => item.default === 1);
+};

@@ -9,7 +9,10 @@ import {
 } from "@ant-design/icons";
 
 import messages from "src/messages";
-import { changeSlashToArrow } from "src/utils/generalUtility";
+import {
+  changeSlashToArrow,
+  defaultNicknameData,
+} from "src/utils/generalUtility";
 import Inputs from "components/shared/FormInputs";
 import SelectInputs from "components/shared/FormInputs/select";
 import AlignIcon from "./alignIcon";
@@ -43,13 +46,9 @@ const CreateTopicFromUI = ({
   editCampStatementData,
   isEdit = false,
 }) => {
-  const findDefaultNickName = () => {
-    return nickNameList?.find((item) => item.default === 1);
-  };
-
   useEffect(() => {
     if (nickNameList?.length) {
-      const defaultNickName = findDefaultNickName();
+      const defaultNickName = defaultNicknameData(nickNameList);
       if (defaultNickName) {
         form.setFieldValue("nick_name", defaultNickName.id);
       }
@@ -57,6 +56,9 @@ const CreateTopicFromUI = ({
   }, [nickNameList]);
 
   const getNickNameInput = () => {
+    // Determine the default nickname
+    const defaultNickName = defaultNicknameData(nickNameList)?.nick_name || values?.nick_name || defaultNicknameData(nickNameList)?.id || nickNameList[0]?.id;
+
     const selectInputProps: any = {
       label: (
         <Fragment>
@@ -80,25 +82,18 @@ const CreateTopicFromUI = ({
       prefix: <UserOutlined className="px-3 text-canBlack" />,
       onSelect: (val) => form.setFieldValue("nick_name", val),
       lastValue: form.getFieldValue("nick_name"),
-      value: form.getFieldValue("nick_name"),
+      value: form.getFieldValue("nick_name") || defaultNickName,
     };
-
+  
     if (nickNameList?.length) {
-      // selectInputProps.defaultValue = values?.nick_name || nickNameList[0]?.id;
-      // selectInputProps.initialValue = values?.nick_name || nickNameList[0]?.id;
-      selectInputProps.defaultValue =
-        values?.nick_name || findDefaultNickName()?.id
-          ? findDefaultNickName()?.id
-          : nickNameList[0]?.id;
-      (selectInputProps.initialValue =
-        values?.nick_name || findDefaultNickName()?.id
-          ? findDefaultNickName()?.id
-          : nickNameList[0]?.id),
-        (selectInputProps.key = "nickNamesWithKeyName");
+      selectInputProps.defaultValue = defaultNickName;
+      selectInputProps.initialValue = defaultNickName;
+      selectInputProps.key = "nickNamesWithKeyName";
     }
+  
     return <SelectInputs {...selectInputProps} />;
   };
-
+  
   const getAllNameSpaces = async () => {
     await getCanonizedNameSpacesApi();
   };
@@ -137,10 +132,11 @@ const CreateTopicFromUI = ({
         validateTrigger={messages.formValidationTypes()}
         initialValues={{
           topic_name: "",
-          nick_name:
-            values?.nick_name || findDefaultNickName()?.id
-              ? findDefaultNickName()?.id
-              : nickNameList[0]?.id,
+          nick_name: defaultNicknameData(nickNameList)?.nick_name
+            ? defaultNicknameData(nickNameList)?.nick_name
+            : values?.nick_name || defaultNicknameData(nickNameList)?.id
+            ? defaultNicknameData(nickNameList)?.id
+            : nickNameList[0]?.id,
           namespace: getNameSpacesValue(),
           tags: null,
         }}
