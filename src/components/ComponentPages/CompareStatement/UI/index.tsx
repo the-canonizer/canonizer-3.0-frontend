@@ -151,7 +151,7 @@ function CompareStatementUI({
       /> */}
       <CommonBreadcrumbs
         compareMode={compareMode}
-        historyOF={router?.query?.from}
+        historyOF={router?.asPath?.split("/")?.at(1)}
       />
       {/* <Breadcrumbs compareMode={compareMode} historyOF={router?.query?.from} /> */}
 
@@ -165,7 +165,8 @@ function CompareStatementUI({
             className="text-2xl text-canBlack p-1 mb-14 gap-5 flex items-center max-lg:hidden leading-none"
             icon={<i className="icon-back"></i>}
           >
-            {router?.query?.from && capitalizeFirstLetter(router?.query?.from)}{" "}
+            {router?.asPath?.split("/")?.at(1) &&
+              capitalizeFirstLetter(router?.asPath?.split("/")?.at(1))}{" "}
             History Comparison
           </Button>
 

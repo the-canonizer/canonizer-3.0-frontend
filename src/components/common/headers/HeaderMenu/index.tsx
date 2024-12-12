@@ -11,6 +11,7 @@ import {
   PlayCircleOutlined,
   QuestionCircleOutlined,
   SettingOutlined,
+  UploadOutlined,
 } from "@ant-design/icons";
 import { Button, Menu, Typography } from "antd";
 import Link from "next/link";
@@ -44,6 +45,12 @@ const menuItems = [
     linkTitle: "Browse",
     id: 2,
     icon: <GlobalOutlined />,
+  },
+  {
+    link: "/uploadFile",
+    linkTitle: "Upload File",
+    id: 2,
+    icon: <UploadOutlined />,
   },
   {
     link: "/videos",
@@ -81,7 +88,7 @@ const menuItems = [
     isAuthReq: true,
   },
   {
-    link: "/settings?tab=supported_camps",
+    link: "/settings?tab=direct_supported_camps",
     linkTitle: "Supported Camps",
     id: 5,
     isMobile: true,
@@ -116,9 +123,10 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
     <li
       className={`flex-auto flex px-3 font-medium [&_a]:font-medium before:hidden after:hidden tab:before:block tab:after:block rounded-lg h-full ${styles.listItem} ${cls}`}
       key={props.key}
+      id={`list-item-${props.key}`}
     >
       {props?.children}
-      <div className={styles.divider}></div>
+      <div className={styles.divider} id={`divider-${props.key}`}></div>
     </li>
   );
 
@@ -144,27 +152,31 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
 
   const menu = (
     <Menu onClick={onClick}>
-      <Menu.Item key="0" className="hover:text-canHoverBlue">
+      <Menu.Item key="0" className="hover:text-canHoverBlue" id="menu-item-0">
         <Link href="/settings?tab=profile_info" passHref>
-          <a className="!text-sm font-normal hover:text-canHoverBlue">
+          <a
+            className="!text-sm font-normal hover:text-canHoverBlue"
+            id="link-profile-info"
+          >
             <SettingOutlined className="mr-1" />
             Account Settings
           </a>
         </Link>
       </Menu.Item>
-      <Menu.Divider />
-      <Menu.Item key="1" className="hover:text-canHoverBlue">
+      <Menu.Divider id="menu-divider-0" />
+      <Menu.Item key="1" className="hover:text-canHoverBlue" id="menu-item-1">
         <Link href="/settings?tab=direct_supported_camps" passHref>
-          <a className="!text-sm font-normal ">
+          <a className="!text-sm font-normal" id="link-supported-camps">
             <CheckCircleOutlined className="mr-1" />
             Supported Camps
           </a>
         </Link>
       </Menu.Item>
-      <Menu.Divider />
+      <Menu.Divider id="menu-divider-1" />
       <Menu.Item
         key="3"
         className="!text-sm font-normal hover:text-canHoverBlue"
+        id="menu-item-3"
       >
         <LogoutOutlined className="mr-1" />
         Log Out
@@ -184,15 +196,20 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
   return (
     <Fragment>
       <nav
+        id="nav-wrap"
         className={`${
           styles.NavWrap
         } shadow-md tab:shadow-none ${className} [:root:--canHoverBlue:text-canHoverBlue] ${
           isActive ? styles.open : ""
         }`}
       >
-        <div className="flex tab:hidden justify-between items-center">
+        <div
+          id="nav-header"
+          className="flex tab:hidden justify-between items-center"
+        >
           <Logo />
           <Button
+            id="close-button"
             size="middle"
             className="border-0 p-0 block tab:hidden ml-2"
             onClick={toggleMobNav}
@@ -202,22 +219,34 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
           </Button>
         </div>
         {!isUserAuthenticated ? (
-          <div className="flex tab:hidden justify-between items-center mt-5 overflow-hidden py-3 text-center gap-[30px]">
+          <div
+            id="auth-buttons"
+            className="flex tab:hidden justify-between items-center mt-5 overflow-hidden py-3 text-center gap-[30px]"
+          >
             <Link href="/registration">
-              <a className="h-[50px] leading-[0] flex items-center justify-center bg-canBlue hover:bg-canHoverBlue px-3 py-1 rounded-lg w-2/4 text-center text-sm font-medium font-inter text-white hover:text-white">
+              <a
+                id="register-link"
+                className="h-[50px] leading-[0] flex items-center justify-center bg-canBlue hover:bg-canHoverBlue px-3 py-1 rounded-lg w-2/4 text-center text-sm font-medium font-inter text-white hover:text-white"
+              >
                 Register
                 <ArrowRightOutlined className="ml-2" />
               </a>
             </Link>
             <Link href="/login">
-              <a className="h-[50px] leading-[0] flex items-center justify-center px-3 py-1 rounded-lg w-2/4 text-center text-sm font-medium font-inter text-canBlack border-2 border-canBlue hover:text-canBlue hover:border-canHoverBlue">
+              <a
+                id="login-link"
+                className="h-[50px] leading-[0] flex items-center justify-center px-3 py-1 rounded-lg w-2/4 text-center text-sm font-medium font-inter text-canBlack border-2 border-canBlue hover:text-canBlue hover:border-canHoverBlue"
+              >
                 Login
                 <ArrowRightOutlined className="ml-2" />
               </a>
             </Link>
           </div>
         ) : null}
-        <ul className="flex text-sm font-inter font-medium flex-col tab:flex-row tab:items-center mt-4 tab:mt-0 items-center">
+        <ul
+          id="menu-list"
+          className="flex text-sm font-inter font-medium flex-col tab:flex-row tab:items-center mt-4 tab:mt-0 items-center"
+        >
           <ListItem
             cls={`create-topic-header-link relative ${
               router?.asPath === "/create/topic" ? styles.active : ""
@@ -265,7 +294,10 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
                 key={item.id + "_" + item.link + "___" + idx}
               >
                 <Link href={item.link}>
-                  <a className="hover:text-canHoverBlue flex">
+                  <a
+                    id={`menu-item-${item.id}`}
+                    className="hover:text-canHoverBlue flex"
+                  >
                     {isMobile ? (
                       <span className="block tab:hidden mr-2">
                         {item?.icon}
@@ -278,7 +310,10 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
             );
           })}
           {isUserAuthenticated ? (
-            <ListItem cls="after:content-['|'] after:absolute after:ml-[10px] after:text-[darkgray] hidden tab:flex after:right-0">
+            <ListItem
+              key="notifications-li"
+              cls="after:content-['|'] after:absolute after:ml-[10px] after:text-[darkgray] hidden tab:flex after:right-0"
+            >
               <Notifications />
             </ListItem>
           ) : null}
@@ -304,7 +339,10 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
           )}
         </ul>
         {isMobile && isUserAuthenticated ? (
-          <div className="mt-auto flex justify-between items-center">
+          <div
+            id="mobile-profile"
+            className="mt-auto flex justify-between items-center"
+          >
             <div className="flex items-center">
               <ProfileInfoTab
                 isGravatarImage={isGravatarImage}
@@ -316,16 +354,23 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
                 menu={menu}
                 withoutDropdown={true}
               />
-              <div className="ml-3">
-                <Typography.Paragraph className="font-medium text-canBlack !mb-0 text-sm h-auto block tab:hidden">
+              <div id="user-info" className="ml-3">
+                <Typography.Paragraph
+                  id="user-name"
+                  className="font-medium text-canBlack !mb-0 text-sm h-auto block tab:hidden"
+                >
                   {loggedInUser?.first_name} {loggedInUser?.last_name}
                 </Typography.Paragraph>
-                <Typography.Paragraph className="font-medium text-canLight !mb-0 text-xs h-auto block tab:hidden">
+                <Typography.Paragraph
+                  id="user-email"
+                  className="font-medium text-canLight !mb-0 text-xs h-auto block tab:hidden"
+                >
                   {loggedInUser?.email}
                 </Typography.Paragraph>
               </div>
             </div>
             <Button
+              id="sign-out-button"
               type="link"
               className="bg-[#E46B6B1A] text-canRed flex items-center justify-center"
               onClick={onSignOutClick}
@@ -336,6 +381,7 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
         ) : null}
       </nav>
       <Button
+        id="menu-toggle-button"
         size="middle"
         className="border-0 p-0 block -mt-2 tab:hidden ml-2 tab:ml-auto"
         onClick={toggleMobNav}

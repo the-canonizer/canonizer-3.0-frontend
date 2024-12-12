@@ -369,7 +369,9 @@ function ManageStatements({ isEdit = false }) {
         });
       }
 
-      setIsAutoSaving(false);
+      setTimeout(() => {
+        setIsAutoSaving(false);
+      },1000)
     }
   };
 

@@ -298,15 +298,7 @@ const UploadFiles = () => {
       }
     }
   };
-  useEffect(() => {
-    isUserAuthenticated &&
-    loggedInUser?.is_admin == false &&
-    location.pathname == "/uploadFile"
-      ? router?.push("/")
-      : "";
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  //onLoad
+
   useEffect(() => {
     (async () => {
       if (isUserAuthenticated) {

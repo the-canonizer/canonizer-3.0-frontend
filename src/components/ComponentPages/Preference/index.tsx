@@ -39,11 +39,6 @@ const ProfilePrefrences = () => {
   const [userPrifleInfoFirstName, setUserPrifleInfoFirstName] = useState({});
   const [userPrifleInfolastName, setUserPrifleInfolastName] = useState({});
 
-  console.log(
-    userPrifleInfoFirstName,
-    userPrifleInfolastName,
-    "userPrifleInfo"
-  );
   const [formVerify] = Form.useForm();
 
   const { Option } = Select;
@@ -105,6 +100,7 @@ const ProfilePrefrences = () => {
       }
     }
     async function fetchUserProfileInfo() {
+      setLoading(true); // Start loading
       try {
         let res = await GetUserProfileInfo();
         if (res !== undefined) {
@@ -115,7 +111,9 @@ const ProfilePrefrences = () => {
           setSelectedAlgorithmKey(res?.data?.default_algo);
         }
       } catch (error) {
-        console.error("Error fetching algorithms list:", error);
+        console.error("Error fetching user profile info:", error);
+      } finally {
+        setLoading(false); // Stop loading
       }
     }
 
@@ -146,8 +144,8 @@ const ProfilePrefrences = () => {
         if (algoOrLang == "algorithms") {
           option.push(
             <Option
-              key={item.algorithm_key}
-              value={item.algorithm_key}
+              key={item.algorithm_label}
+              value={item.algorithm_label}
               id="prefrence_option"
             >
               {item.algorithm_label}
@@ -291,21 +289,7 @@ const ProfilePrefrences = () => {
       dispatch(setZipCodeForProfileInfo(false));
     }
   };
-  // useEffect(() => {
-  //   // Trigger `onFinish2` with the updated form values when the component renders
-  //   const callOnFinishOnRender = async () => {
-  //     try {
-  //       await formVerify.validateFields(); // Validate form first
-  //       const values = formVerify.getFieldsValue(); // Get current form values
-  //       await onFinish2(values); // Call the onFinish2 function with current values
-  //     } catch (error) {
-  //       console.error("Error during form validation or function call:", error);
-  //     }
-  //   };
 
-  //   callOnFinishOnRender(); // Call the function when component renders
-  //   setIsInitialRender(false);
-  // }, []);
   const handleChangeLanguage = (value) => {
     setSelectedLanguage(value); // Update state with the selected value
   };
@@ -485,10 +469,13 @@ const ProfilePrefrences = () => {
             loading={loading}
             onClick={async (e) => {
               try {
-                await formVerify.validateFields();
-                await onFinish2(formVerify.getFieldsValue());
-                await GetUserProfileInfo();
-              } catch (error) {}
+                setLoading(true); // Start loader
+                await formVerify.validateFields(); // Validate form fields
+                await onFinish2(formVerify.getFieldsValue()); // Submit form values
+                await GetUserProfileInfo(); // Fetch updated profile info
+              } finally {
+                setLoading(false); // Stop loader regardless of success or failure
+              }
             }}
             id="prefrence_tags_save_btn_unique"
           >

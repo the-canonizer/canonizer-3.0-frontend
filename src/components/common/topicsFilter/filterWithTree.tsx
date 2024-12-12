@@ -276,7 +276,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
     if (router.query.asof === "bydate") {
       dispatch(setAsOfValues(3));
       setIsDatePicker(true);
-    }else if(router.query.asof === "review"){
+    } else if (router.query.asof === "review") {
       dispatch(setAsOfValues(1));
     } else {
       dispatch(setAsOfValues(2));
@@ -460,6 +460,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
     await selectAlgorithm(clearAlgoFromRefineFilter);
     // Step 3: Handle different cases based on selectedValue
     if (selectedValue === 2) {
+      delete router?.query?.viewversion;
       dispatch(setViewThisVersion(false));
       setCookie("asof", "default", { path: "/" });
 

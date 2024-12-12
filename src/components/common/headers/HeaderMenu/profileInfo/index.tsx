@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { Dropdown, Space, Avatar } from "antd";
 import { useSelector } from "react-redux";
 import md5 from "md5";
@@ -13,6 +13,7 @@ const ProfileInfo = ({
   isMobile,
   menu = <></>,
   withoutDropdown = false,
+  showGravatar = false,
 }: any) => {
   const { loggedInUser } = useSelector((state: RootState) => ({
     loggedInUser: state.auth.loggedInUser,
@@ -25,7 +26,7 @@ const ProfileInfo = ({
         size={isMobile ? "small" : "default"}
         className="-mb-[10px] cursor-pointer"
       />
-    ) : isGravatarImage && !loadingImage ? (
+    ) : isGravatarImage && showGravatar && !loadingImage ? (
       loggedInUser?.email && (
         <Avatar
           src={`https://www.gravatar.com/avatar/${md5(
@@ -38,7 +39,7 @@ const ProfileInfo = ({
       <Avatar
         style={{ fontSize: `${isMobile ? "12px" : ""}` }}
         size={isMobile ? "small" : "default"}
-        className="uppercase bg-canBlue text-white flex justify-center items-center  text-sm border-[1px] border-solid border-white -mb-[10px]"
+        className="uppercase bg-canBlue text-white flex justify-center items-center text-sm border-[1px] border-solid border-white -mb-[10px]"
       >
         {loggedUser?.first_name?.charAt(0) + loggedUser?.last_name?.charAt(0)}
       </Avatar>
@@ -49,21 +50,23 @@ const ProfileInfo = ({
   }
 
   return (
-    <Fragment>
-      <div className="mt-0 lg:-mt-2 mr-2" key="profile_area">
-        <Dropdown overlay={menu} trigger={["click"]} placement="bottomLeft">
-          <a
-            onClick={(e) => e.preventDefault()}
-            className="[&_.downArrow]:hover:visible [&_.downArrow]:hover:opacity-100"
-          >
-            <Space>
-              {dataMain}
-              <DownOutlined className="text-canLight opacity-0 invisible downArrow" />
-            </Space>
-          </a>
-        </Dropdown>
-      </div>
-    </Fragment>
+    <div id="profile_area" className="mt-0 lg:-mt-2 mr-2" key="profile_area">
+      <Dropdown overlay={menu} trigger={["click"]} placement="bottomLeft">
+        <a
+          id="profile_link"
+          onClick={(e) => e.preventDefault()}
+          className="[&_.downArrow]:hover:visible [&_.downArrow]:hover:opacity-100"
+        >
+          <Space id="profile_space">
+            {dataMain}
+            <DownOutlined
+              id="profile_down_arrow"
+              className="text-canLight opacity-0 invisible downArrow"
+            />
+          </Space>
+        </a>
+      </Dropdown>
+    </div>
   );
 };
 export default ProfileInfo;
