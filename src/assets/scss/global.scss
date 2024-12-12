@@ -995,16 +995,16 @@ body {
 .last-child-node-class.last-parent-node-class.last-node-class.first-node-class.ant-tree-treenode.ant-tree-treenode-switcher-open.ant-tree-treenode-selected.ant-tree-treenode-leaf-last {
   &
     + .ant-tree-treenode.ant-tree-treenode-switcher-close.ant-tree-treenode-leaf-last {
-      .ant-tree-indent {
-        .ant-tree-indent-unit {
-          &:last-of-type {
-            opacity: 0;
-            &::before {
-              height: 50%;
-            }
+    .ant-tree-indent {
+      .ant-tree-indent-unit {
+        &:last-of-type {
+          opacity: 0;
+          &::before {
+            height: 50%;
           }
         }
       }
+    }
   }
 }
 
@@ -1095,6 +1095,15 @@ body {
   @media screen and (max-width: 767px) {
     .afterHeaderClass {
       margin-top: 0;
+    }
+  }
+}
+.nick-radio {
+  .ant-radio {
+    &.ant-radio-checked {
+      ~ span {
+        @apply text-canBlue;
+      }
     }
   }
 }
