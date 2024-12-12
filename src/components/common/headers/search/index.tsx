@@ -29,7 +29,10 @@ import CustomTabs from "components/shared/Tabs";
 
 const getHighlightedText = (text, highlight) => {
   // const parts = text?.split(new RegExp(`(${highlight})`, "gi"));
-  const escapedHighlight = highlight.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+  const escapedHighlight = highlight.replace(
+    /[-[\]{}()*+?.,\\^$|#\s]/g,
+    "\\$&"
+  );
 
   // Create a regular expression using the escaped highlight
   const parts = text?.split(new RegExp(`(${escapedHighlight})`, "gi"));
@@ -54,7 +57,10 @@ const getHighlightedText = (text, highlight) => {
 
 const getHighlightedTextForCampStatement = (text, highlight) => {
   // const parts = text?.split(new RegExp(`(${highlight})`, "gi"));
-  const escapedHighlight = highlight.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+  const escapedHighlight = highlight.replace(
+    /[-[\]{}()*+?.,\\^$|#\s]/g,
+    "\\$&"
+  );
 
   // Create a regular expression using the escaped highlight
   const parts = text?.split(new RegExp(`(${escapedHighlight})`, "gi"));
@@ -107,23 +113,6 @@ const HeaderSearch = ({ className = "" }: any) => {
   const [searchVal, setSearchVal] = useState("");
   const [loadingSekelton, setLoadingSekelton] = useState(true);
   const [isActiveTagHaveData, setIsActiveTagHaveData] = useState(true);
-
-  // useEffect(() => {
-  //   if (searchValue?.length == 0) {
-  //     // const localSearch = localStorage.getItem("searchValue");
-  //     searchValue = router?.asPath
-  //       ?.split("=")[1]
-  //       ?.split("+")
-  //       .join(" ")
-  //       ?.replace(/%20/g, " ");
-  //     setSearchVal("");
-
-  //     if (inputSearch || router?.query?.q) {
-  //       dispatch(setSearchValue(searchValue));
-  //       getGlobalSearchCanonizer(searchValue, true);
-  //     }
-  //   }
-  // }, []);
 
   useEffect(() => {
     const { q } = router.query; // Extract the query parameter from the URL
@@ -321,7 +310,7 @@ const HeaderSearch = ({ className = "" }: any) => {
       setSearchCamps(response.data.data.camp);
       setSearchCampStatement(response.data.data.statement);
       setSearchNickname(response.data.data.nickname);
-      // dispatch(setSearchMetaData(response?.data?.meta_data));
+
       if (
         router.pathname == "/search/topic" ||
         router.pathname == "/search/camp" ||
@@ -331,14 +320,12 @@ const HeaderSearch = ({ className = "" }: any) => {
         dispatch(setSearchMetaData(response?.data?.meta_data));
 
         dispatch(setSearchDataAll(response?.data?.data));
-        // dispatch(setSearchLoadingAction(false));
       }
     }
     dispatch(setSearchLoadingAction(false));
   };
 
   const getGlobalSearchCanonizer = async (queryString, onPresEnter) => {
-    // dispatch(setLoadingAction(true))
     let response = await globalSearchCanonizer(
       queryParams({ term: queryString == undefined ? "" : queryString })
     );
@@ -349,7 +336,6 @@ const HeaderSearch = ({ className = "" }: any) => {
       setSearchNickname(response.data.data.nickname);
       dispatch(setSearchCountForMetaData(response?.data?.meta_data));
       if (onPresEnter) {
-        // dispatch(setSearchLoadingAction(true));
         dispatch(setSearchData(response?.data?.data));
         dispatch(setSearchLoadingAction(false));
       }
@@ -371,6 +357,7 @@ const HeaderSearch = ({ className = "" }: any) => {
   return (
     <Fragment>
       <AutoComplete
+        id="desktop-auto-complete"
         popupClassName={`w-full lg:!w-[54rem] bg-white pt-6 rounded-lg [&_.ant-tabs-nav]:mb-10 [&_.ant-tabs-nav-wrap]:px-12  [&_.ant-select-item-option-content]:!bg-white [&_.ant-select-item-option-grouped]:!bg-white [&_.ant-select-item-option-content]:!px-6 [&_>div]:w-full [&_.ant-select-item-option-grouped]:!px-0 [&_.ant-tabs-tab-btn]:!text-base [&_.ant-tabs-nav-list]:gap-12 [&_.ant-tabs-tab-btn]:!font-normal [&_.ant-tabs-tab-active>div]:!font-semibold [&_.ant-tabs-tab]:!ml-0 [&_.ant-tabs-ink-bar]:!border-b-4 [&_.ant-tabs-ink-bar]:!border-canBlue [&_.ant-tabs-ink-bar]:!rounded-tl-full  [&_.ant-tabs-ink-bar]:!rounded-tr-full  lg:[&_.ant-tabs-ink-bar]:!h-1 [&_.ant-tabs-ink-bar]:!h-1 [&_.ant-tabs-tab-active>div]:!shadow-none [&_.ant-card-head-title]:!font-semibold [&_.ant-tabs-nav-list]:!w-full ${
           !isActiveTagHaveData ? "[&_.ftSearchLink]:hidden" : ""
         } ${styles.searchCategories} `}
@@ -394,8 +381,12 @@ const HeaderSearch = ({ className = "" }: any) => {
         }
         className={`lg:ml-5 transition-all delay-300 [&>div]:!border-0 w-full tab:w-4/12 xl:w-2/5`}
       >
-        <div className={`items-center !hidden lg:!flex ${className}  `}>
+        <div
+          id="desktop-search-input"
+          className={`items-center !hidden lg:!flex ${className}  `}
+        >
           <SearchInputs
+            id="desktop-search-input-field"
             placeholder="Search via keyword"
             value={
               searchVal.length > advanceSearchValueLength
@@ -424,8 +415,12 @@ const HeaderSearch = ({ className = "" }: any) => {
           />
         </div>
       </AutoComplete>
-      <div className=" lg:hidden flex items-center justify-end absolute  py-2">
+      <div
+        id="mobile-auto-complete-container"
+        className=" lg:hidden flex items-center justify-end absolute  py-2"
+      >
         <AutoComplete
+          id="mobile-auto-complete"
           popupClassName={`[&_.ant-select-item-option-active]:!bg-white !top-26 !shadow-none [&_.ant-select-item-option-grouped]:!px-0 ${
             styles.searchCategories
           } [&_.ant-tabs-nav-list]:!gap-5  [&_.ant-tabs-tab]:m-0 [&_.ant-tabs-tab]:gap-8 w-full [&_.ant-tabs-tab]:px-3 [&_.ant-tabs-nav]:!mb-8 [&_.ant-tabs-tab-btn]:text-base [&_.ant-tabs-tab-btn]:font-normal ${
@@ -452,10 +447,14 @@ const HeaderSearch = ({ className = "" }: any) => {
           }
           className={`flex w-full [&_.ant-tabs-nav-list]:!w-full transition-all delay-300 [&>div]:!border-0 bg-white`}
         >
-          <div className="w-full flex bg-white gap-3">
+          <div
+            id="mobile-search-input-container"
+            className="w-full flex bg-white gap-3"
+          >
             {openSearchForMobileView ? (
               <>
                 <div
+                  id="mobile-search-back-button"
                   className="flex items-center"
                   onClick={() => {
                     dispatch(setOpenSearchForMobileView(false));
@@ -469,6 +468,7 @@ const HeaderSearch = ({ className = "" }: any) => {
                   />
                 </div>
                 <SearchInputs
+                  id="mobile-search-input-field"
                   placeholder="Search via keyword"
                   value={
                     searchVal.length > advanceSearchValueLength
@@ -499,9 +499,13 @@ const HeaderSearch = ({ className = "" }: any) => {
           </div>
         </AutoComplete>
       </div>
-      <div className="flex items-center absolute right-8">
+      <div
+        id="mobile-search-icon-container"
+        className="flex items-center absolute right-8"
+      >
         {!openSearchForMobileView ? (
           <Image
+            id="mobile-search-icon"
             src="/images/mobile-header-icon.svg"
             width={24}
             height={24}
@@ -518,8 +522,11 @@ const HeaderSearch = ({ className = "" }: any) => {
 export default HeaderSearch;
 
 const NoData = () => (
-  <Card className={`border-0 text-center`}>
-    <Typography.Text className="text-canBlack uppercase text-sm font-semibold">
+  <Card id="no-data-card" className={`border-0 text-center`}>
+    <Typography.Text
+      id="no-data-text"
+      className="text-canBlack uppercase text-sm font-semibold"
+    >
       no data found
     </Typography.Text>
   </Card>
@@ -536,18 +543,18 @@ const AllItems = ({
     {searchTopics?.length > 0 && (
       <TopicItems searchTopics={searchTopics} searchValue={searchValue} />
     )}
-    <br />
+    <br id="all-items-topic-br" />
     {searchCamps?.length > 0 && (
       <CampItems searchCamps={searchCamps} searchValue={searchValue} />
     )}
-    <br />
+    <br id="all-items-camp-br" />
     {searchCampStatement?.length > 0 && (
       <CampStatementsItems
         searchValue={searchValue}
         searchCampStatement={searchCampStatement}
       />
     )}
-    <br />
+    <br id="all-items-camp-statement-br" />
     {searchNickname?.length > 0 && (
       <NickNamesItems
         searchValue={searchValue}
@@ -564,40 +571,58 @@ const TopicItems = ({ searchTopics, searchValue }) => {
 
   return (
     <Card
+      id="topic-card"
       className={`[&_.ant-empty-normal]:!m-0 [&_.ant-list-empty-text]:!p-0 [&_.ant-card-head-title]:!font-semibold [&_.ant-card-head-title]:uppercase border-0 h-100 bg-canGray lg:rounded-xl [&_.ant-card-head-wrapper]:mb-6 [&_.ant-card-head-title]:!p-0 [&_.ant-card-head]:!p-0  [&_.ant-card-body]:!p-0 py-5 lg:px-6 px-4  ${styles.ItemCard}`}
       title="Topic(s)"
     >
       <List
+        id="topic-list"
         size="small"
         className=""
         locale={{ emptyText: "Currently, topic(s) are not available." }}
         dataSource={searchTopics?.slice(0, 5)}
         footer={
           searchTopics?.length ? (
-            <span className={styles.bold_margin}></span>
+            <span id="topic-list-footer" className={styles.bold_margin}></span>
           ) : (
             ""
           )
         }
         renderItem={(item: any) => (
-          <List.Item className="w-full flex font-medium !border-b !border-canGrey2 !py-3 lg:!py-3.5 !px-0 first:!pt-0 last:!border-none ">
+          <List.Item
+            id={`topic-list-item-${item.id}`}
+            className="w-full flex font-medium !border-b !border-canGrey2 !py-3 lg:!py-3.5 !px-0 first:!pt-0 last:!border-none "
+          >
             <Link
+              id={`topic-link-${item.id}`}
               className="!font-semibold"
               href={`/${replaceSpecialCharactersInLink(item.link)}`}
             >
               <a className="flex justify-between w-full items-start">
                 <span className="flex flex-col w-full">
                   <div className="flex items-center justify-between w-full">
-                    <span className="flex-1 text-base lg:font-medium font-normal text-canBlack mb-2 flex">
+                    <span
+                      id={`topic-title-${item.id}`}
+                      className="flex-1 text-base lg:font-medium font-normal text-canBlack mb-2 flex"
+                    >
                       {getHighlightedText(item.type_value, searchValue)}
                     </span>
 
-                    <RightOutlined className="ml-auto" />
+                    <RightOutlined
+                      id={`topic-icon-${item.id}`}
+                      className="ml-auto"
+                    />
                   </div>
                   <div className="text-left flex gap-7">
-                    <Popover content="Share Topic" placement="top">
-                      <Typography.Paragraph className="bg-transparent border-0 p-0 hover:bg-transparent focus:bg-transparent flex gap-1.5 items-center leading-1 !mb-0 ">
-                        {/* <FlagOutlined className="text-canBlack p-1 text-medium" /> */}
+                    <Popover
+                      id={`topic-popover-${item.id}`}
+                      content="Share Topic"
+                      placement="top"
+                    >
+                      <Typography.Paragraph
+                        id={`topic-namespace-${item.id}`}
+                        className="bg-transparent border-0 p-0 hover:bg-transparent focus:bg-transparent flex gap-1.5 items-center leading-1 !mb-0 "
+                      >
                         <Image
                           src="/images/serach-flag.svg"
                           width={18}
@@ -610,10 +635,6 @@ const TopicItems = ({ searchTopics, searchValue }) => {
                         </Link>
                       </Typography.Paragraph>
                     </Popover>
-                    {/* <Typography.Paragraph className="!m-0 text-canBlack font-medium font-inter text-base flex items-center">
-                      <EyeOutlined className="text-canBlack p-1 text-medium" />{" "}
-                      123
-                    </Typography.Paragraph> */}
                   </div>
                 </span>
               </a>
@@ -632,31 +653,22 @@ const CampItems = ({ searchCamps, searchValue }) => {
 
   return (
     <Card
+      id="camp-card"
       className={`[&_.ant-empty-normal]:!m-0 [&_.ant-list-empty-text]:!p-0 [&_.ant-card-head-title]:uppercase [&_.ant-card-head-title]:!font-semibold border-0 h-100 bg-canGray lg:rounded-xl [&_.ant-card-head-wrapper]:mb-6 [&_.ant-card-head-title]:!p-0 [&_.ant-card-head]:!p-0  [&_.ant-card-body]:!p-0 py-5  lg:px-6 px-4  ${styles.ItemCard}`}
       title="Camp(s)"
     >
       <List
+        id="camp-list"
         size="small"
         dataSource={searchCamps?.slice(0, 5)}
         locale={{ emptyText: "Currently, camp(s) are not available." }}
         footer={
           searchCamps?.length ? (
-            <span className={styles.bold_margin}></span>
+            <span id="camp-list-footer" className={styles.bold_margin}></span>
           ) : null
         }
         renderItem={(item: any) => {
           const jsonData = JSON.parse(item.breadcrumb_data) as Array<any>;
-          // const parsedData = jsonData.reduce((accumulator, currentVal, index) => {
-          //   const accIndex = index + 1;
-          //   accumulator[index] = {
-          //     camp_name:
-          //       currentVal[accIndex]?.camp_name == "Agreement"
-          //         ? currentVal[accIndex]?.topic_name
-          //         : currentVal[accIndex]?.camp_name,
-          //     camp_link: currentVal[accIndex]?.camp_link,
-          //   };
-          //   return accumulator;
-          // }, []);
           const parsedData = jsonData.reduce(
             (accumulator, currentVal, index) => {
               const accIndex = index + 1;
@@ -673,20 +685,35 @@ const CampItems = ({ searchCamps, searchValue }) => {
             []
           );
           return (
-            <List.Item className="w-full flex font-medium !border-b !border-canGrey2 !py-3.5 !px-0 first:!pt-0">
-              <Link href={`/${jsonData?.[0][1]?.camp_link}`}>
+            <List.Item
+              id={`camp-list-item-${item.id}`}
+              className="w-full flex font-medium !border-b !border-canGrey2 !py-3.5 !px-0 first:!pt-0"
+            >
+              <Link
+                id={`camp-link-${item.id}`}
+                href={`/${jsonData?.[0][1]?.camp_link}`}
+              >
                 <a className="flex justify-between w-full items-start">
                   <span className="flex flex-col w-full">
                     <div className="flex items-center justify-between w-full">
-                      <span className="flex-1 text-base font-medium text-canBlack mb-2 flex">
+                      <span
+                        id={`camp-title-${item.id}`}
+                        className="flex-1 text-base font-medium text-canBlack mb-2 flex"
+                      >
                         {" "}
                         {getHighlightedText(item.type_value, searchValue)}
                       </span>
-                      <RightOutlined className="ml-auto" />
+                      <RightOutlined
+                        id={`camp-icon-${item.id}`}
+                        className="ml-auto"
+                      />
                     </div>
 
                     <div className="text-left flex">
-                      <Typography.Paragraph className="text-base font-medium bg-transparent border-0 p-0 hover:bg-transparent focus:bg-transparent   flex gap-1.5 items-center leading-1 !mb-0">
+                      <Typography.Paragraph
+                        id={`camp-topic-${item.id}`}
+                        className="text-base font-medium bg-transparent border-0 p-0 hover:bg-transparent focus:bg-transparent flex gap-1.5 items-center leading-1 !mb-0"
+                      >
                         <Image
                           src="/images/camp-search-icon.svg"
                           width={17}
@@ -716,16 +743,6 @@ const CampItems = ({ searchCamps, searchValue }) => {
                   </span>
                 </a>
               </Link>
-              {/* <div className="">
-                {parsedData?.reverse()?.map((obj, index) => {
-                  return (
-                    <a href={`/${obj.camp_link}`} key={`/${obj.camp_link}`}>
-                      {obj.camp_name}
-                      {index < parsedData?.length - 1 ? "/ " : ""}
-                    </a>
-                  );
-                })}
-              </div> */}
             </List.Item>
           );
         }}
@@ -741,43 +758,42 @@ const CampStatementsItems = ({ searchCampStatement, searchValue }) => {
 
   return (
     <Card
+      id="camp-statement-card"
       className={`[&_.ant-empty-normal]:!m-0 [&_.ant-list-empty-text]:!p-0 [&_.ant-card-head-title]:uppercase [&_.ant-card-head-title]:!font-semibold border-0 h-100 bg-canGray lg:rounded-xl [&_.ant-card-head-wrapper]:mb-6 [&_.ant-card-head-title]:!p-0 [&_.ant-card-head]:!p-0  [&_.ant-card-body]:!p-0 py-5  lg:px-6 px-4 ${styles.ItemCard}`}
       title="Camp Statement(s)"
     >
       <List
+        id="camp-statement-list"
         className="[&_.ant-list-footer]:!hidden"
         size="small"
         dataSource={searchCampStatement?.slice(0, 5)}
         locale={{ emptyText: "Currently, statement(s) are not available." }}
         footer={
           searchCampStatement?.length ? (
-            <span className={styles.bold_margin}></span>
+            <span
+              id="camp-statement-list-footer"
+              className={styles.bold_margin}
+            ></span>
           ) : null
         }
         renderItem={(item: any) => {
           const jsonData = JSON.parse(item?.breadcrumb_data) as Array<any>;
-          // const parsedData = jsonData?.reduce(
-          //   (accumulator, currentVal, index) => {
-          //     const accIndex = index + 1;
-          //     accumulator[index] = {
-          //       camp_name:
-          //         currentVal[accIndex]?.camp_name == "Agreement"
-          //           ? currentVal[accIndex]?.topic_name
-          //           : currentVal[accIndex]?.camp_name,
-          //       camp_link: currentVal[accIndex]?.camp_link,
-          //       topic_name: currentVal[accIndex]?.topic_name,
-          //     };
-          //     return accumulator;
-          //   },
-          //   []
-          // );
 
           return (
-            <List.Item className="w-full flex font-medium !border-b !border-canGrey2 !py-3.5 !px-0 first:!pt-0 last:!border-none last:!pb-0 ">
-              <div className="">
-                <Typography.Paragraph className="bg-transparent border-0 p-0 flex items-center leading-1 mb-2 [&_span]:inline-flex">
+            <List.Item
+              id={`camp-statement-list-item-${item.id}`}
+              className="w-full flex font-medium !border-b !border-canGrey2 !py-3.5 !px-0 first:!pt-0 last:!border-none last:!pb-0 "
+            >
+              <div id={`camp-statement-item-${item.id}`}>
+                <Typography.Paragraph
+                  id={`camp-statement-paragraph-${item.id}`}
+                  className="bg-transparent border-0 p-0 flex items-center leading-1 mb-2 [&_span]:inline-flex"
+                >
                   <Link href={`/${jsonData?.[0][1]?.camp_link}`}>
-                    <a className="flex w-full items-start !text-canBlack text-base font-medium">
+                    <a
+                      id={`camp-statement-link-${item.id}`}
+                      className="flex w-full items-start !text-canBlack text-base font-medium"
+                    >
                       {getHighlightedTextForCampStatement(
                         jsonData?.[0]?.[1]?.camp_name,
                         searchValue
@@ -785,17 +801,20 @@ const CampStatementsItems = ({ searchCampStatement, searchValue }) => {
                     </a>
                   </Link>
                 </Typography.Paragraph>
-                {/* <Typography.Paragraph className="bg-transparent border-0 p-0 inline-flex items-center leading-1 [&_span]:!inline-flex">
-                {getHighlightedTextForCampStatement(item.type_value, searchValue)}
-              </Typography.Paragraph> */}
 
                 {getHighlightedTextForCampStatement(
                   item.type_value,
                   searchValue
                 )}
 
-                <div className="text-left flex">
-                  <Typography.Paragraph className="text-base font-medium bg-transparent border-0 p-0 hover:bg-transparent focus:bg-transparent   flex gap-1.5 items-center leading-1 !mb-0">
+                <div
+                  id={`camp-statement-topic-${item.id}`}
+                  className="text-left flex"
+                >
+                  <Typography.Paragraph
+                    id={`camp-statement-topic-paragraph-${item.id}`}
+                    className="text-base font-medium bg-transparent border-0 p-0 hover:bg-transparent focus:bg-transparent flex gap-1.5 items-center leading-1 !mb-0"
+                  >
                     <Image
                       src="/images/camp-search-icon.svg"
                       width={17}
@@ -803,7 +822,10 @@ const CampStatementsItems = ({ searchCampStatement, searchValue }) => {
                     />
                     Topic:
                     <Link href={`/${jsonData?.[0][1]?.camp_link}`}>
-                      <a className="text-canBlue text-base font-inter font-medium ">
+                      <a
+                        id={`camp-statement-topic-link-${item.id}`}
+                        className="text-canBlue text-base font-inter font-medium "
+                      >
                         {getHighlightedText(
                           jsonData?.[0]?.[1]?.topic_name,
                           searchValue
@@ -812,18 +834,11 @@ const CampStatementsItems = ({ searchCampStatement, searchValue }) => {
                     </Link>
                   </Typography.Paragraph>
                 </div>
-                {/* <div className="">
-                {parsedData?.reverse()?.map((obj, index) => {
-                  return (
-                    <a href={`/${obj.camp_link}`} key={`/${obj.camp_link}`}>
-                      {obj.camp_name}
-                      {index < parsedData?.length - 1 ? "/ " : ""}
-                    </a>
-                  );
-                })}
-              </div> */}
               </div>
-              <RightOutlined className="ml-auto" />
+              <RightOutlined
+                id={`camp-statement-icon-${item.id}`}
+                className="ml-auto"
+              />
             </List.Item>
           );
         }}
@@ -839,35 +854,49 @@ const NickNamesItems = ({ searchNickname, searchValue }) => {
 
   return (
     <Card
+      id="nickname-card"
       className={`[&_.ant-empty-normal]:!m-0 [&_.ant-list-empty-text]:!p-0 [&_.ant-card-head-title]:uppercase [&_.ant-card-head-title]:!font-semibold border-0 h-100 bg-canGray lg:rounded-xl [&_.ant-card-head-wrapper]:mb-6 [&_.ant-card-head-title]:!p-0 [&_.ant-card-head]:!p-0  [&_.ant-card-body]:!p-0 py-5  lg:px-6 px-4 ${styles.ItemCard}`}
       title="Nickname(s)"
     >
       <List
+        id="nickname-list"
         size="small"
         dataSource={searchNickname?.slice(0, 5)}
         locale={{ emptyText: "Currently, nick-name(s) are not available." }}
         footer={
           searchNickname?.length ? (
-            <span className={styles.bold_margin}></span>
+            <span
+              id="nickname-list-footer"
+              className={styles.bold_margin}
+            ></span>
           ) : null
         }
         renderItem={(item: any) => {
           return (
-            <List.Item className="w-full flex !border-none !py-2 lg:!px-5 !px-2.5 bg-white rounded-lg mb-2">
-              <Link href={`${item?.link}`}>
+            <List.Item
+              id={`nickname-list-item-${item.id}`}
+              className="w-full flex !border-none !py-2 lg:!px-5 !px-2.5 bg-white rounded-lg mb-2"
+            >
+              <Link id={`nickname-link-${item.id}`} href={`${item?.link}`}>
                 <a className="flex justify-between w-full items-start">
                   <span className="flex items-center gap-3.5 text-base font-normal">
-                    {/* <UserOutlined /> */}
                     <Image
+                      id={`nickname-image-${item.id}`}
                       src="/images/nickname-user-icon.svg"
                       width={14}
                       height={16}
                     />
                     {getHighlightedText(item.type_value, searchValue)}
                   </span>
-                  <span className="ml_auto text-base font-normal">
+                  <span
+                    id={`nickname-supported-camps-${item.id}`}
+                    className="ml_auto text-base font-normal"
+                  >
                     Supported camps:{" "}
-                    <strong className="text-canOrange text-base !font-normal">
+                    <strong
+                      id={`nickname-support-count-${item.id}`}
+                      className="text-canOrange text-base !font-normal"
+                    >
                       {item?.support_count == "" ? 0 : item?.support_count}
                     </strong>{" "}
                   </span>
@@ -882,12 +911,17 @@ const NickNamesItems = ({ searchNickname, searchValue }) => {
 };
 
 const FooterItems = ({ searchValue, handleSearchfor }) => (
-  <footer className="px-2 pt-5 mt-5 pb-5 text-center lg:border-t lg:border-canGrey2 ftSearchLink">
+  <footer
+    id="footer-items"
+    className="px-2 pt-5 mt-5 pb-5 text-center lg:border-t lg:border-canGrey2 ftSearchLink"
+  >
     <Link
+      id="footer-link"
       href={{ pathname: "/search", query: { q: searchValue } }}
       className="[&_.ant-select-item-option-active]:!bg-white [&_.ant-select-item]:!p-0 [&_.ant-select-item-option]:!p-0 [&_.ant-select-item-option-grouped]:!p-0 "
     >
       <a
+        id="footer-view-all-results"
         onClick={() => handleSearchfor()}
         className="text-base uppercase font-inter font-semibold text-canBlack !p-0"
       >
