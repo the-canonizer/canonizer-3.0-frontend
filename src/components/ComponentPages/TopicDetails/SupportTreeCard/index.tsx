@@ -783,42 +783,49 @@ const SupportTreeCard = ({
         setLoader={setLoader}
         isCampLeader={isCampLeader}
       />
-      <div
-        className="support-tree-sec overflow-hidden overflow-y-auto"
-        id="topic_detail_user_support_camp_tree_card_section"
-      >
-        {campSupportingTree?.length > 0 ? (
-          <Tree
-            className={"Parent_Leaf"}
-            showLine={false}
-            showIcon={false}
-            defaultExpandedKeys={[
-              +router?.query?.camp?.at(1)?.split("-")?.at(0) == 1
-                ? 2
-                : +router?.query?.camp?.at(1)?.split("-")?.at(0),
-            ]}
-            defaultExpandAll={true}
+      {(tree &&
+        tree?.["0"]?.["1"]?.rank_hidden &&
+        tree?.["0"]?.["1"]?.rank_hidden !== true) ||
+      (tree && tree?.["0"]?.["1"]?.rank_hidden == undefined) ? (
+        <>
+          <div
+            className="support-tree-sec overflow-hidden overflow-y-auto"
+            id="topic_detail_user_support_camp_tree_card_section"
           >
-            {campSupportingTree && renderTreeNodes(campSupportingTree)}
-          </Tree>
-        ) : (
-          <p id="topic_detail_user_support_tree_no_data">
-            {" "}
-            No direct supporters of this camp
-          </p>
-        )}
+            {campSupportingTree?.length > 0 ? (
+              <Tree
+                className={"Parent_Leaf"}
+                showLine={false}
+                showIcon={false}
+                defaultExpandedKeys={[
+                  +router?.query?.camp?.at(1)?.split("-")?.at(0) == 1
+                    ? 2
+                    : +router?.query?.camp?.at(1)?.split("-")?.at(0),
+                ]}
+                defaultExpandAll={true}
+              >
+                {campSupportingTree && renderTreeNodes(campSupportingTree)}
+              </Tree>
+            ) : (
+              <p id="topic_detail_user_support_tree_no_data">
+                {" "}
+                No direct supporters of this camp
+              </p>
+            )}
 
-        {campSupportingTree?.length > supportLength && (
-          <CustomButton
-            type="primary"
-            ghost
-            className="load-more-btn"
-            onClick={() => setLoadMore(!loadMore)}
-          >
-            {!loadMore ? "Load More" : "Load Less"}
-          </CustomButton>
-        )}
-      </div>
+            {campSupportingTree?.length > supportLength && (
+              <CustomButton
+                type="primary"
+                ghost
+                className="load-more-btn"
+                onClick={() => setLoadMore(!loadMore)}
+              >
+                {!loadMore ? "Load More" : "Load Less"}
+              </CustomButton>
+            )}
+          </div>
+        </>
+      ) : null}
       <div
         className="topicDetailsCollapseFooter printHIde mt-auto pt-3 w-full flex flex-col gap-2 justify-center"
         id="topic_detail_user_support_tree_btn_section"
