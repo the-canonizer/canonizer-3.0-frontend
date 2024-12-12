@@ -282,16 +282,15 @@ export default function DelegatedSupportCampsUI({
         className="hidden lg:flex w-full [&_#delegated_supported_camp_loader_section>div]:!w-full"
         id="delegated_supported_camp_loader_section"
       >
-        
         {delegateSupportedSkeleton ? (
           <div className="w-full">
-          <CustomSkelton
-            id="delegated_supported_camp_loader"
-            skeltonFor="delegateSupportedCampListCard"
-            bodyCount={4}
-            stylingClass=""
-            isButton={false}
-          />
+            <CustomSkelton
+              id="delegated_supported_camp_loader"
+              skeltonFor="delegateSupportedCampListCard"
+              bodyCount={4}
+              stylingClass=""
+              isButton={false}
+            />
           </div>
         ) : (
           <div className="w-full" id="delegated_supported_camp_upper_heading_1">
@@ -574,13 +573,13 @@ export default function DelegatedSupportCampsUI({
       >
         {delegateSupportedSkeleton ? (
           <div className="w-full">
-          <CustomSkelton
-            id="delagate_supported_camp_loader"
-            skeltonFor="delegateSupportedCampListCard"
-            bodyCount={4}
-            stylingClass=""
-            isButton={false}
-          />
+            <CustomSkelton
+              id="delagate_supported_camp_loader"
+              skeltonFor="delegateSupportedCampListCard"
+              bodyCount={4}
+              stylingClass=""
+              isButton={false}
+            />
           </div>
         ) : (
           <div

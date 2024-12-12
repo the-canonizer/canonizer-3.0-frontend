@@ -48,7 +48,8 @@ const SettingsUI = () => {
   const [selectedTab, setSelectedTab] = useState("Direct_Supported_Camps");
   const [getDataFromUserProfile, setGetDataFromUserProfile] = useState(null);
   const [openKeys, setOpenKeys] = useState([]);
-  const [selectedValueFromSelectTag, setSelectedValueFromSelectTag] = useState("");
+  const [selectedValueFromSelectTag, setSelectedValueFromSelectTag] =
+    useState("");
 
   const onTabChange = (key) => {
     setActiveTabKey(key);
@@ -354,37 +355,37 @@ const SettingsUI = () => {
       getUesrPofileData();
     }
   }, []);
-console.log(router,"rout")
-useEffect(() => {
-  if (router.query.tab) {
-    const tab = router.query.tab as string;
-    switch (tab) {
-      case "nick_name":
-        setSelectedValueFromSelectTag("Nicknames");
-        break;
-      case "profile_info":
-        setSelectedValueFromSelectTag("Personal Info");
-        break;
-      case "user_preferences":
-        setSelectedValueFromSelectTag("Preferences");
-        break;
-      case "direct_supported_camps":
-        setSelectedValueFromSelectTag("Supported Camps");
-        break;
+  console.log(router, "rout");
+  useEffect(() => {
+    if (router.query.tab) {
+      const tab = router.query.tab as string;
+      switch (tab) {
+        case "nick_name":
+          setSelectedValueFromSelectTag("Nicknames");
+          break;
+        case "profile_info":
+          setSelectedValueFromSelectTag("Personal Info");
+          break;
+        case "user_preferences":
+          setSelectedValueFromSelectTag("Preferences");
+          break;
+        case "direct_supported_camps":
+          setSelectedValueFromSelectTag("Supported Camps");
+          break;
         case "delegate_supported_camp":
-        setSelectedValueFromSelectTag("Supported Camps");
-        break;
-      case "social_oauth_verification":
-        setSelectedValueFromSelectTag("Social Auth");
-        break;
-      case "change_password":
-        setSelectedValueFromSelectTag("Change Password");
-        break;
-      default:
-        setSelectedValueFromSelectTag(undefined);
+          setSelectedValueFromSelectTag("Supported Camps");
+          break;
+        case "social_oauth_verification":
+          setSelectedValueFromSelectTag("Social Auth");
+          break;
+        case "change_password":
+          setSelectedValueFromSelectTag("Change Password");
+          break;
+        default:
+          setSelectedValueFromSelectTag(undefined);
+      }
     }
-  }
-}, [router.query.tab]);
+  }, [router.query.tab]);
   return (
     <div
       className="pageContentWrap flex lg:flex-row flex-col gap-10"
@@ -504,7 +505,10 @@ useEffect(() => {
                           {
                             value: "Personal Info",
                             label: (
-                              <span id="setting_section_select_tag_persnol_info" className="span_tagpersonal_info">
+                              <span
+                                id="setting_section_select_tag_persnol_info"
+                                className="span_tagpersonal_info"
+                              >
                                 <Link
                                   href="/settings?tab=profile_info"
                                   className="[&_.ant-menu-item-selected]:!text-canBlue"
@@ -532,7 +536,7 @@ useEffect(() => {
                           {
                             value: "Nicknames",
                             label: (
-                              <span id="setting_section_select_tag_nickname" >
+                              <span id="setting_section_select_tag_nickname">
                                 <Link
                                   href="/settings?tab=nick_name"
                                   className="[&_.ant-menu-item]:!rounded-lg"
@@ -591,7 +595,10 @@ useEffect(() => {
                           {
                             value: "Supported Camps",
                             label: (
-                              <span id="setting_section_select_tag_supported_camps"  className="span_tagpersonal_info">
+                              <span
+                                id="setting_section_select_tag_supported_camps"
+                                className="span_tagpersonal_info"
+                              >
                                 <a
                                   className="flex items-center gap-3"
                                   id="setting_section_select_tag_supported_camps_all_link"

@@ -344,7 +344,11 @@ export default function CanonVideos() {
         </FacebookShareButton>
       </Menu.Item>
       <Menu.Item>
-        <TwitterShareButton url={router?.asPath} id="video-share-twitter-btn" title={currentVideoTitle}>
+        <TwitterShareButton
+          url={router?.asPath}
+          id="video-share-twitter-btn"
+          title={currentVideoTitle}
+        >
           <img src={Twitter.src} alt="twitter" />
         </TwitterShareButton>
       </Menu.Item>
@@ -421,19 +425,22 @@ export default function CanonVideos() {
                         alt=""
                         style={{ minHeight: "50px" }}
                       />
-                      <span id="video-title">
-                        {video?.title}
-                      </span>
+                      <span id="video-title">{video?.title}</span>
                     </li>
                   );
                 })}
               </ul>
             )}
             <div id="video-format-container" className="video-formats">
-              <Title level={5} id="video-format-title">Video Format:</Title>
+              <Title level={5} id="video-format-title">
+                Video Format:
+              </Title>
 
               {videos && !loader ? (
-                <Radio.Group value={videoResolution} id="video-format-radio-group">
+                <Radio.Group
+                  value={videoResolution}
+                  id="video-format-radio-group"
+                >
                   {videos[selectedVideoId - 1]?.resolutions?.map(
                     (data: {
                       id: React.Key;

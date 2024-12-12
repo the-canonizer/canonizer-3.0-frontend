@@ -336,7 +336,11 @@ function ObjectionDrawer({
                     >
                       {nickNameList?.map((nick) => {
                         return (
-                          <Select.Option id="objection-drawer-nickname-item-select" key={nick.id} value={nick.id}>
+                          <Select.Option
+                            id="objection-drawer-nickname-item-select"
+                            key={nick.id}
+                            value={nick.id}
+                          >
                             {nick.nick_name}
                           </Select.Option>
                         );

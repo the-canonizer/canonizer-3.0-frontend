@@ -993,13 +993,14 @@ function SupportTreeDrawer({
                       <i className={`icon-${signCampData?.warning_type}`}></i>
                     }
                   />
-                  {signCampData?.remove_camps && signCampData?.remove_camps?.length > 0 && (
-                    <div className="horizontal-chips">
-                      {signCampData?.remove_camps?.map((item, index) => (
-                        <TagListWithSupportOder key={index} item={item} />
-                      ))}
-                    </div>
-                  )}
+                  {signCampData?.remove_camps &&
+                    signCampData?.remove_camps?.length > 0 && (
+                      <div className="horizontal-chips">
+                        {signCampData?.remove_camps?.map((item, index) => (
+                          <TagListWithSupportOder key={index} item={item} />
+                        ))}
+                      </div>
+                    )}
 
                   {/* {signCampData?.remove_camps?.length > 0 &&
                     signCampData?.remove_camps?.map((tag) => {

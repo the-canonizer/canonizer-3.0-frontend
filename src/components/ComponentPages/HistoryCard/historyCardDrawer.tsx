@@ -47,7 +47,11 @@ function HistoryCardDrawer({
         >
           Support Status
         </Button>
-        <Tabs defaultActiveKey="1" id="history-drawer-tabs-container" className="ch-modal-tabs">
+        <Tabs
+          defaultActiveKey="1"
+          id="history-drawer-tabs-container"
+          className="ch-modal-tabs"
+        >
           <Tabs.TabPane tab="Agreed" key="1" id="history-drawer-agree-list">
             <List
               className="agree-list"
@@ -57,14 +61,21 @@ function HistoryCardDrawer({
               dataSource={agreedSupporters}
               renderItem={(item: any) => (
                 <List.Item>
-                  <Link href={item && item?.nickNameData?.path} id="history-drawer-agree-list-item">
+                  <Link
+                    href={item && item?.nickNameData?.path}
+                    id="history-drawer-agree-list-item"
+                  >
                     {item?.nickNameData?.name}
                   </Link>
                 </List.Item>
               )}
             />
           </Tabs.TabPane>
-          <Tabs.TabPane tab="Not Agreed" key="2" id="history-drawer-not-agreed-list">
+          <Tabs.TabPane
+            tab="Not Agreed"
+            key="2"
+            id="history-drawer-not-agreed-list"
+          >
             <List
               className="agree-list nt-agree"
               header={<div>Nickname </div>}
@@ -73,7 +84,10 @@ function HistoryCardDrawer({
               dataSource={notAgreedSupporters}
               renderItem={(item: any) => (
                 <List.Item>
-                  <Link href={item && item?.nickNameData?.path} id="history-drawer-not-agreed-list-item">
+                  <Link
+                    href={item && item?.nickNameData?.path}
+                    id="history-drawer-not-agreed-list-item"
+                  >
                     {item?.nickNameData?.name}
                   </Link>
                 </List.Item>

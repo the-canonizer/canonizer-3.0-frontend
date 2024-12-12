@@ -76,7 +76,10 @@ const VideosPage = () => {
                                   onCardClick(e, video);
                                 }}
                                 cover={
-                                  <div id="videos-category-thumbnail-container" className="img-wrapper">
+                                  <div
+                                    id="videos-category-thumbnail-container"
+                                    className="img-wrapper"
+                                  >
                                     <img
                                       id="videos-category-thumbnail"
                                       alt=""
@@ -86,7 +89,10 @@ const VideosPage = () => {
                                         video.thumbnail
                                       }
                                     />
-                                    <CaretRightOutlined id="videos-category-play-icon" className="play-btn" />
+                                    <CaretRightOutlined
+                                      id="videos-category-play-icon"
+                                      className="play-btn"
+                                    />
                                   </div>
                                 }
                               >
