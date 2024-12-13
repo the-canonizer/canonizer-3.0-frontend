@@ -95,7 +95,7 @@ const UserProfileDetails = ({
     } else {
       return null;
     }
-  }
+  };
   return (
     <CommonCards className="bg-white lg:bg-canGray mt-10 lg:mt-2">
       <div className={`flex gap-5 flex-wrap`}>
@@ -115,7 +115,9 @@ const UserProfileDetails = ({
               width={100}
               height={100}
               style={{ borderRadius: "50px" }}
-              onError={() => {setProfileImageError(true)}}
+              onError={() => {
+                setProfileImageError(true);
+              }}
             />
           </div>
         )}

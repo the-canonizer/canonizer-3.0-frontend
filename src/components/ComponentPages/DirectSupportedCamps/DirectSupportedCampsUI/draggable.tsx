@@ -36,7 +36,7 @@ export default function Draggable({
     useSensor(MouseSensor, { activationConstraint: { distance: 10 } }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
-    }),
+    })
   );
 
   return (
@@ -113,31 +113,31 @@ function SortableItem(props) {
             closable={true}
             closeIcon={
               <>
-              <Image
-                preview={false}
-                src="/images/minus-user-icon.svg"
-                width={20}
-                height={20}
-                style={{ cursor: "not-allowed", alignSelf: "center" }}
-                alt=""
-              />
-               {props?.item?.recent_activity
-                ? getProperties(props?.item?.recent_activity)?.reason && (
-                    <Tooltip
-                      title={
-                        <div className="w-full">
-                          <ReasonsActivity
-                            CurrentItem={props?.item?.recent_activity}
-                          />
-                        </div>
-                      }
-                      placement="top"
-                      className="pointer text-canGrey2"
-                    >
-                      <i className="icon-info text-xl ml-2 mr-1"></i>
-                    </Tooltip>
-                  )
-                : null}
+                <Image
+                  preview={false}
+                  src="/images/minus-user-icon.svg"
+                  width={20}
+                  height={20}
+                  style={{ cursor: "not-allowed", alignSelf: "center" }}
+                  alt=""
+                />
+                {props?.item?.recent_activity
+                  ? getProperties(props?.item?.recent_activity)?.reason && (
+                      <Tooltip
+                        title={
+                          <div className="w-full">
+                            <ReasonsActivity
+                              CurrentItem={props?.item?.recent_activity}
+                            />
+                          </div>
+                        }
+                        placement="top"
+                        className="pointer text-canGrey2"
+                      >
+                        <i className="icon-info text-xl ml-2 mr-1"></i>
+                      </Tooltip>
+                    )
+                  : null}
               </>
             }
             onClose={(evt) => {
@@ -160,32 +160,32 @@ function SortableItem(props) {
             closable={true}
             closeIcon={
               <>
-              <Image
-                className="cursor-pointer"
-                preview={false}
-                src="/images/minus-user-icon.svg"
-                style={{ cursor: "pointer", alignSelf: "center" }}
-                width={20}
-                height={20}
-                alt=""
-              />
-               {props?.item?.recent_activity
-                ? getProperties(props?.item?.recent_activity)?.reason && (
-                    <Tooltip
-                      title={
-                        <div className="w-full">
-                          <ReasonsActivity
-                            CurrentItem={props?.item?.recent_activity}
-                          />
-                        </div>
-                      }
-                      placement="top"
-                      className="pointer text-canGrey2"
-                    >
-                      <i className="icon-info text-xl ml-3"></i>
-                    </Tooltip>
-                  )
-                : null}
+                <Image
+                  className="cursor-pointer"
+                  preview={false}
+                  src="/images/minus-user-icon.svg"
+                  style={{ cursor: "pointer", alignSelf: "center" }}
+                  width={20}
+                  height={20}
+                  alt=""
+                />
+                {props?.item?.recent_activity
+                  ? getProperties(props?.item?.recent_activity)?.reason && (
+                      <Tooltip
+                        title={
+                          <div className="w-full">
+                            <ReasonsActivity
+                              CurrentItem={props?.item?.recent_activity}
+                            />
+                          </div>
+                        }
+                        placement="top"
+                        className="pointer text-canGrey2"
+                      >
+                        <i className="icon-info text-xl ml-3"></i>
+                      </Tooltip>
+                    )
+                  : null}
               </>
             }
             onClose={(evt) => {

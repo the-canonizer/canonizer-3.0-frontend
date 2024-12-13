@@ -252,8 +252,7 @@ const UpdateTopic = () => {
       });
     }
   };
-
-  const getExistingList = async (val = values?.topic_nam) => {
+  const getExistingList = async (val = values?.topic_name) => {
     setIsopicLoading(true);
     const topicName = val,
       queryParamObj: any = {
@@ -262,7 +261,6 @@ const UpdateTopic = () => {
         page: 1,
         term: topicName?.trim(),
       };
-
     const res = await globalSearchCanonizer(queryParams(queryParamObj)),
       resData = res?.data;
 
