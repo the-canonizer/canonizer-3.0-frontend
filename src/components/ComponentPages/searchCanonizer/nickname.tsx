@@ -181,7 +181,7 @@ const NicknameSearch = () => {
             >
               Search Results for “
               <span
-                className="text-canBlue capitalize"
+                className="text-canBlue capitalize break-all whitespace-break-spaces"
                 id="elastic_nickname_search_text"
               >
                 {router?.query?.q}
