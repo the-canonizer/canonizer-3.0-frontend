@@ -269,32 +269,34 @@ const CreateTopicFromUI = ({
               />
             )}
           </Col>
-          <Col xs={24} className="mb-5" id="selected-categories-col">
-            {isLoading ? (
-              <CustomSkelton
-                skeltonFor="list"
-                bodyCount={1}
-                stylingClass="listSkeleton"
-                isButton={false}
-                id="selected-categories-skeleton"
-              />
-            ) : (
-              selectedCats?.map((cat) => (
-                <Tags
-                  className="rounded-lg py-2 px-6 border-canGrey2 text-canBlue bg-canGray mt-0 mb-2 font-medium"
-                  key={cat?.id}
-                  id={`selected-category-tag-${cat?.id}`}
-                >
-                  <span>{cat?.title}</span>
-                  <CloseOutlined
-                    className="mr-2 text-canLight"
-                    onClick={(e) => onCatRemove(e, cat)}
-                    id={`remove-category-icon-${cat?.id}`}
+          {selectedCats && selectedCats?.length > 0 && (
+              <Col xs={24} className="mb-5" id="selected-categories-col">
+                {isLoading ? (
+                  <CustomSkelton
+                    skeltonFor="list"
+                    bodyCount={1}
+                    stylingClass="listSkeleton"
+                    isButton={false}
+                    id="selected-categories-skeleton"
                   />
-                </Tags>
-              ))
-            )}
-          </Col>
+                ) : (
+                  selectedCats?.map((cat) => (
+                    <Tags
+                      className="rounded-lg py-2 px-6 border-canGrey2 text-canBlue bg-canGray mt-0 mb-2 font-medium"
+                      key={cat?.id}
+                      id={`selected-category-tag-${cat?.id}`}
+                    >
+                      <span>{cat?.title}</span>
+                      <CloseOutlined
+                        className="mr-2 text-canLight"
+                        onClick={(e) => onCatRemove(e, cat)}
+                        id={`remove-category-icon-${cat?.id}`}
+                      />
+                    </Tags>
+                  ))
+                )}
+              </Col>
+          )}
           {isEdit && (
             <Col xs={24} xl={24} id="edit-summary-col">
               <Inputs
@@ -309,15 +311,19 @@ const CreateTopicFromUI = ({
               />
             </Col>
           )}
-          <Form.Item name="rank_hidden" valuePropName="checked">
-          <Checkbox 
-            id="rank_hidden"
-            checked={isRankHidden}
-            onChange={hideRankHandler}
-          >
-            Hide Score
-          </Checkbox>
-          </Form.Item>
+
+          <Col xs={24}>
+            <Form.Item name="rank_hidden" valuePropName="checked">
+              <Checkbox
+                id="rank_hidden"
+                className="hide-rank-checkbox"
+                checked={isRankHidden}
+                onChange={hideRankHandler}
+              >
+                hide the rank
+              </Checkbox>
+            </Form.Item>
+          </Col>
         </Row>
 
         {isLoading ? (
@@ -330,7 +336,7 @@ const CreateTopicFromUI = ({
           />
         ) : (
           <div
-            className="mt-4 flex justify-start items-center"
+            className="flex justify-start items-center"
             id="form-buttons-div"
           >
             <SecondaryButton
