@@ -27,6 +27,12 @@
 }
 .files {
   @apply rounded-lg border border-[#ccd4e7] h-full min-h-[178px];
+  .folder-img-wraper{
+    @apply relative;
+    .ff-icon{
+      @apply absolute top-3 left-2 text-canBlue;
+    }
+  }
 
   .ant-card-body {
     @apply p-0 md:w-[160px];

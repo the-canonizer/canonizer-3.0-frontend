@@ -71,6 +71,10 @@ import TEXT from "../../../../assets/image/icons/text.png";
 import TIFF from "../../../../assets/image/icons/tiff.png";
 import XLS from "../../../../assets/image/icons/xls.png";
 import ZIP from "../../../../assets/image/icons/zip.png";
+import DOC from "../../../../assets/image/icons/doc.png";
+import JSON from "../../../../assets/image/icons/json.png";
+import PPT from "../../../../assets/image/icons/ppt.png";
+import UNKNOWN from "../../../../assets/image/icons/unknown.png";
 
 import {
   showDrageBox,
@@ -241,9 +245,9 @@ const UploadFileUI = ({
     text: TEXT,
     pdf: PDF,
     excel: XLS,
-    doc: TEXT, // Replace with DOC icon if available
-    ppt: TEXT, // Replace with PPT icon if available
-    json: TEXT, // Replace with JSON icon if available
+    doc: DOC,
+    ppt: PPT,
+    json: JSON,
     csv: CSV,
     gif: GIF,
     html: HTML,
@@ -254,7 +258,7 @@ const UploadFileUI = ({
     svg: SVG,
     tiff: TIFF,
     zip: ZIP,
-    unknown: TEXT, // Fallback icon
+    unknown: UNKNOWN,
   };
 
   // Function to match file type
@@ -306,7 +310,7 @@ const UploadFileUI = ({
           <Image
             alt="displayed-file"
             src={imageData}
-            height={100}
+            height={90}
             width={140}
           />
         ) : (
@@ -775,7 +779,7 @@ const UploadFileUI = ({
     const createdAtValue = (val) =>
       moment.unix(val.created_at).format("MMM DD, YYYY");
     let searchName = "";
-    if (!openFolder && search !== "") {
+    if ((!openFolder && search !== "") || datePick !== "") {
       return filteredList;
     }
     return (openFolder ? getFileListFromFolderID : fileLists)?.filter((val) => {
@@ -856,10 +860,10 @@ const UploadFileUI = ({
                 <span
                   className="upload-time block !text-[10px] text-[#777F93]"
                   onClick={() => {
-                    Openfolder(item.id);
+                    Openfolder(item?.id);
                   }}
                 >
-                  <span>{item.uploads_count + " files"}</span>
+                  <span>{item?.uploads_count + " files"}</span>
                   <br></br>
                   <span>
                     {moment?.unix(item.created_at)?.format("DD MMMM YYYY")}
@@ -870,11 +874,14 @@ const UploadFileUI = ({
           </div>
         ) : afterUpload && !toggleFileView && item.type == "file" ? (
           <Card className={`files ${styles.files}`}>
-            <div className={`image-files ${styles.imageFiles}`}>
-              {displayImage(
-                item,
-                `${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/${item.file_path}`
-              )}
+            <div className="folder-img-wraper">
+              <div className={`image-files ${styles.imageFiles}`}>
+                {displayImage(
+                  item,
+                  `${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/${item.file_path}`
+                )}
+              </div>
+              {item?.folder_id && <FolderOpenFilled className="ff-icon" />}
             </div>
             <div className="BoxcopyWrap p-[6px]">
               <div className="flex gap-1 items-center justify-between">
@@ -917,6 +924,11 @@ const UploadFileUI = ({
                       .format("MMM DD, YYYY, h:mm:ss A")
                   : moment(item.lastModified).format("MMM DD, YYYY, h:mm:ss A")}
               </span>
+              {item?.folder_id && (
+                <span className="truncate block !text-[10px] font-medium">
+                  {item?.folder_id}
+                </span>
+              )}
             </div>
           </Card>
         ) : (
@@ -1090,9 +1102,10 @@ const UploadFileUI = ({
   //   message.info("Clicked on Yes.");
   //   removeFiles(keyParam);
   // };
-  const getGlobalSearchUploadFile = async (queryString, date) => {
+  const getGlobalSearchUploadFile = async (queryString, dateString) => {
+    const date = dateString ? Math.floor(dateString.valueOf() / 1000) : "";
     let response = await globalSearchUploadFiles(
-      queryParams({ query: queryString ,date}),
+      queryParams({ query: queryString, date })
     );
     if (response && response.status_code == 200) {
       setFilteredList(response.data.files.map((v) => ({ ...v, type: "file" })));
@@ -1371,7 +1384,13 @@ const UploadFileUI = ({
                   }
                 >
                   <Card
-                    title={`${uploadedLengths?.fileLength} Files, ${uploadedLengths?.folderLength} Folders`}
+                    title={
+                      !search && !datePick
+                        ? `${uploadedLengths?.fileLength} Files, ${uploadedLengths?.folderLength} Folders`
+                        : `${filteredList?.length} ${
+                            filteredList?.length > 1 ? "Files" : "File"
+                          } Found`
+                    }
                     className="upload-inner-card"
                     bordered={false}
                     extra={
