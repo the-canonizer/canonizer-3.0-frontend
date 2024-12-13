@@ -521,7 +521,7 @@ const CampTree = ({
                       </span>
                     </span> */}
                     {
-                      tree && tree?.["1"]?.rank_hidden === undefined && (
+                      tree && tree?.["0"]?.["1"]?.rank_hidden == undefined && (
                         <ScoreTag
                           topic_score={
                             is_checked ? data[item]?.full_score : data[item]?.score
