@@ -362,7 +362,10 @@ function HistoryCard({
           !commited &&
           !!campStatement?.grace_period &&
           moment.now() < campStatement?.submit_time * 1000 + 3600000 && (
-            <div id="history-page-grace-period-container" className="tooltip-count">
+            <div
+              id="history-page-grace-period-container"
+              className="tooltip-count"
+            >
               <Tooltip
                 id="history-page-grace-period-tooltip"
                 title={` Note: This countdown timer is the grace period in which
