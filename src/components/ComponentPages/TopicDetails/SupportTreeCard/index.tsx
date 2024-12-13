@@ -104,6 +104,7 @@ const SupportTreeCard = ({
     isModalOpenSupportCamps,
     selectedAlgorithm,
     tree,
+    userEmail,
   } = useSelector((state: RootState) => ({
     currentGetCheckSupportExistsData:
       state.topicDetails.currentGetCheckSupportExistsData,
@@ -117,6 +118,7 @@ const SupportTreeCard = ({
     isModalOpenSupportCamps: state?.topic?.isModalOpenSupportCamps,
     selectedAlgorithm: state?.filters?.filterObject?.algorithm,
     tree: state?.topicDetails?.tree,
+    userEmail: state?.auth?.loggedInUser?.email,
   }));
   const {
     manageSupportStatusCheck,
@@ -188,6 +190,7 @@ const SupportTreeCard = ({
       algorithm: algorithm,
       update_all: 1,
       fetch_topic_history: +router?.query?.topic_history,
+      current_user: isUserAuthenticated ? userEmail : "",
     };
     await getTreesApi(reqBodyForService);
   };

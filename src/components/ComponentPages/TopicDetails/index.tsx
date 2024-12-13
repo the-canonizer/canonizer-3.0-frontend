@@ -282,6 +282,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
       algorithm: algorithm,
       update_all: 1,
       fetch_topic_history: +router?.query?.topic_history,
+      current_user: isUserAuthenticated ? userEmail : "",
     };
     setRemoveSupportSpinner(true);
     let reqBody = {
@@ -325,6 +326,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
       algorithm: algorithm,
       update_all: 1,
       fetch_topic_history: +router?.query?.topic_history,
+      current_user: isUserAuthenticated ? userEmail : "",
     };
     setRemoveSupportSpinner(true);
 
@@ -366,6 +368,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
       algorithm: algorithm,
       update_all: 1,
       fetch_topic_history: +router?.query?.topic_history,
+      current_user: isUserAuthenticated ? userEmail : "",
     };
     setRemoveSupportSpinner(true);
 

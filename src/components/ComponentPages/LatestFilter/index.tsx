@@ -19,10 +19,13 @@ import { useEffect } from "react";
 import Image from "next/image";
 import calendarIcon from "../../../../public/images/calendar-icon.svg";
 import { setAsOfValues } from "src/store/slices/campDetailSlice";
+import useAuthentication from "src/hooks/isUserAuthenticated";
 
 const LatestFilter = () => {
   const router = useRouter();
   const dispatch = useDispatch();
+  const { isUserAuthenticated } = useAuthentication();
+
   const {
     algorithms,
     selectedAlgorithm,
@@ -40,6 +43,7 @@ const LatestFilter = () => {
     viewThisVersionCheck,
     asofdate,
     selectAlgoBrowsePage,
+    userEmail,
   } = useSelector((state: RootState) => ({
     is_camp_archive_checked: state?.utils?.archived_checkbox,
     loading: state?.loading?.loading,
@@ -59,6 +63,7 @@ const LatestFilter = () => {
     asofdate: state.filters?.filterObject?.asofdate,
     viewThisVersionCheck: state?.filters?.viewThisVersionCheck,
     selectAlgoBrowsePage: state?.filters?.selectAlgoBrowsePage,
+    userEmail: state?.auth?.loggedInUser?.email,
   }));
   const lable = algorithms?.find((obj) => {
     return obj.algorithm_key == selectedAlgorithm;
@@ -191,6 +196,7 @@ const LatestFilter = () => {
     algorithm: "blind_popularity",
     update_all: 1,
     fetch_topic_history: viewThisVersionCheck ? 1 : null,
+    current_user: isUserAuthenticated? userEmail : "",
   };
   const revertScore = () => {
     getTreesApi(reqBodyForService);
