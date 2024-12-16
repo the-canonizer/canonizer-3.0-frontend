@@ -134,7 +134,7 @@ const UploadFileUI = ({
   uploadedLengths,
 }: any) => {
   const router = useRouter();
-  const [uploadStatus] = useState(false);
+  // const [uploadStatus] = useState(false);
   // const [toggleFileView, setToggleFileView] = useState(false);
   const [previewImageIndicator, setPreviewImageIndicator] = useState(false);
   const [addFileIndicator, setAddFileIndicator] = useState(false);
@@ -1100,7 +1100,11 @@ const UploadFileUI = ({
   const getGlobalSearchUploadFile = async (queryString, dateString) => {
     const dateObject = new Date(datePick);
     const epochTimeInMilliseconds = dateObject?.getTime();
-    const date = dateString ? Math.floor(epochTimeInMilliseconds / 1000) : "";
+    const epochTimeInSeconds = Math.floor(epochTimeInMilliseconds / 1000);
+    const dateparams =
+      dateString == null ? "" : Math.floor(dateString?.valueOf() / 1000);
+    const date =
+      dateString == null ? "" : queryString ? epochTimeInSeconds : dateparams;
     let response = await globalSearchUploadFiles(
       queryParams({ query: queryString, date })
     );
@@ -1239,11 +1243,10 @@ const UploadFileUI = ({
                             }
                             disabled={show_UploadOptions || dragBoxStatus}
                             onChange={(date) => {
-                              uploadStatus == true
-                                ? setDatePick("")
-                                : setDatePick(
-                                    date ? date.toLocaleString() : ""
-                                  );
+                              // uploadStatus == true
+                              //   ? setDatePick("")
+                              //   :
+                              setDatePick(date ? date.toLocaleString() : "");
                               getGlobalSearchUploadFile(search, date);
                             }}
                             value={datePick && moment(new Date(datePick))}
