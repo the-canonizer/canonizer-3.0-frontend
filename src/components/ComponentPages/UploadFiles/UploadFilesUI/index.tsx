@@ -1093,7 +1093,11 @@ const UploadFileUI = ({
     const dateparams =
       dateString == null ? "" : Math.floor(dateString?.valueOf() / 1000);
     const date =
-      dateString == null ? "" : queryString ? epochTimeInSeconds : dateparams;
+      dateString == null
+        ? ""
+        : dateString != null
+        ? dateparams
+        : epochTimeInSeconds;
     let response = await globalSearchUploadFiles(
       queryParams({ query: queryString, date })
     );
@@ -1235,7 +1239,7 @@ const UploadFileUI = ({
                               // uploadStatus == true
                               //   ? setDatePick("")
                               //   :
-                              setDatePick(date ? date.toLocaleString() : "");
+                              setDatePick(date && date);
                               getGlobalSearchUploadFile(search, date);
                             }}
                             value={datePick && moment(new Date(datePick))}
