@@ -393,6 +393,7 @@ const UploadFileUI = ({
         data-testid="test3"
         onClick={() => {
           {
+            console.log("navigator",navigator)
             navigator.clipboard.writeText(item?.short_code_path),
               message.success("Perma Link Copied");
           }
