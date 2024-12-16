@@ -389,10 +389,9 @@ const UploadFileUI = ({
           </span>
         </Menu.Item>
       )}
-      {/* <Menu.Item
+      <Menu.Item
         data-testid="test3"
         onClick={() => {
-          debugger
           {
             navigator.clipboard.writeText(item?.short_code_path),
               message.success("Perma Link Copied");
@@ -409,7 +408,7 @@ const UploadFileUI = ({
           />
           <span className={styles.marginLeftView}>Copy Perma Link</span>
         </span>
-      </Menu.Item> */}
+      </Menu.Item>
       <span
         data-testid="test4"
         onClick={() => {
