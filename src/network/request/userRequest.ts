@@ -325,6 +325,21 @@ export default class UserRequest extends Request {
     );
   }
 
+  static setDefaultNickname(values, authToken,) {
+    const body = {
+      ...values,
+    };
+
+    return new Request(
+      K.Network.URL.SetDefaultNickname,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {},
+      authToken
+    );
+  }
+
   // resend otp for registration
   static resendOTPForRegistration(body) {
     return new Request(

@@ -14,6 +14,7 @@ import Inputs from "components/shared/FormInputs";
 import PrimaryButton from "components/shared/Buttons/PrimariButton";
 import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 import GetBreadCrumbs from "./PopupBreadCrumb";
+import { defaultNicknameData } from "src/utils/generalUtility";
 
 const { labels, placeholders, nickNmRule, threadTitleRule } = messages;
 
@@ -58,7 +59,11 @@ const CreateEditThreadPopup = ({
         layout={"vertical"}
         scrollToFirstError
         validateTrigger={messages.formValidationTypes()}
-        initialValues={{ ...initialValue }}
+        initialValues={{
+          nick_name: defaultNicknameData(nickNameList)?.id
+            ? defaultNicknameData(nickNameList)?.id
+            : initialValue?.nick_name,
+        }}
         id="form-create-edit-thread"
       >
         <Row gutter={16} id="row-create-edit-thread">
@@ -83,7 +88,11 @@ const CreateEditThreadPopup = ({
                   </Fragment>
                 }
                 name="nick_name"
-                defaultValue={nickNameList[0]?.id}
+                defaultValue={
+                  defaultNicknameData(nickNameList)?.id
+                    ? defaultNicknameData(nickNameList)?.id
+                    : nickNameList[0]?.id
+                }
                 options={nickNameList}
                 placeholder={placeholders.nickName}
                 allowClear
