@@ -83,7 +83,7 @@ const Search = () => {
               id="auto_search_section_placeholder"
             >
               Search Results for “
-              <span className="text-canBlue capitalize">
+              <span className="text-canBlue capitalize break-all whitespace-break-spaces">
                 {router?.query?.q}
               </span>
               ”

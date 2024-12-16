@@ -36,6 +36,7 @@ import Image from "next/image";
 import styles from "./UploadFile.module.scss";
 import moment from "moment";
 import { useSelector, useDispatch } from "react-redux";
+import { Breakpoint } from "antd/lib/_util/responsiveObserve";
 import { AppDispatch, RootState } from "../../../../store";
 import messages from "../../../../messages";
 import ThreeDots from "../../../../assets/image/threeDots.svg";
@@ -74,7 +75,6 @@ import {
 } from "../../../../network/api/userApi";
 import { labels } from "../../../../messages/label";
 import { setTimeout } from "timers";
-// import SideBar from "../../CampForum/UI/sidebar";
 import queryParams from "src/utils/queryParams";
 import CustomSkelton from "../../../common/customSkelton";
 
@@ -110,7 +110,6 @@ const UploadFileUI = ({
   getUploadFolderLoadingIndicator,
 }: any) => {
   const [uploadStatus] = useState(false);
-  // const [toggleFileView, setToggleFileView] = useState(false);
   const [previewImageIndicator, setPreviewImageIndicator] = useState(false);
   const [addFileIndicator, setAddFileIndicator] = useState(false);
   const [loadingArray, setLoadingArray] = useState([]);
@@ -118,7 +117,6 @@ const UploadFileUI = ({
   const [updateList, setUpdateList] = useState({});
   const [datePick, setDatePick] = useState("");
   const [createFolderForm] = Form.useForm();
-  // const imageTimer = 2500;
   const [rename, setRename] = useState("");
   const [editFolderNameVal, setEditFolderNameVal] = useState("");
   const [editModal, setEditModal] = useState(false);
@@ -151,9 +149,6 @@ const UploadFileUI = ({
     (state: RootState) => state.ui?.visibleUploadOptions
   );
   const afterUpload = useSelector((state: RootState) => state.ui?.uploadAfter);
-  // const showFolderData = useSelector(
-  //   (state: RootState) => state.ui.folderShown
-  // );
   const openFolder = useSelector((state: RootState) => state.ui?.folderOpen);
   const addButtonShow = useSelector((state: RootState) => state.ui?.addButton);
   const fileStatus = useSelector((state: RootState) => state.ui?.fileStatus);
@@ -489,6 +484,7 @@ const UploadFileUI = ({
           </div>
         );
       },
+      responsive: ["md" as Breakpoint],
     },
     {
       title: "Created Date",
@@ -496,7 +492,6 @@ const UploadFileUI = ({
       key: "lastModifiedDate",
       render: (lastModifiedDate, obj) => (
         <div>
-          {" "}
           {obj.updated_at
             ? moment
                 .unix(obj.updated_at)
@@ -508,6 +503,7 @@ const UploadFileUI = ({
                 .toString()}
         </div>
       ),
+      responsive: ["lg" as Breakpoint],
     },
     {
       title: "Action",
@@ -515,111 +511,107 @@ const UploadFileUI = ({
       key: "x",
       render: (keyParam, obj, index) => {
         return (
-          <>
-            <Popover
-              overlayClassName="PopoverCustom"
-              placement="bottom"
-              title=""
-              content={
-                obj.file_type ? (
-                  <>
-                    {imageRegexData.test(obj.file_type) ? (
-                      <div
-                        className={styles.menu_item}
-                        onClick={() => {
-                          setPreview({
-                            previewVisible: true,
-                            previewName: obj.file_name,
-                            previewPath: obj.file_path,
-                            prevShort: obj.short_code_path,
-                            previewCopyShortCode: obj.short_code,
-                            previewCreatedAt: obj.created_at,
-                          });
-                        }}
-                      >
-                        {" "}
-                        <Image
-                          alt="Eye Image"
-                          src={eyeImage}
-                          width={15}
-                          height={11}
-                        />
-                        <span className={styles.marginLeftView}>View File</span>
-                      </div>
-                    ) : (
-                      <div
-                        className={styles.menu_item}
-                        onClick={() => {
-                          window.location.href = `${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/${obj.file_path}`;
-                        }}
-                      >
-                        <Image
-                          alt="downloadFile"
-                          src={download}
-                          width={15}
-                          height={13}
-                        />
-                        <span className={styles.marginLeftView}>
-                          Download File
-                        </span>
-                      </div>
-                    )}
-
+          <Popover
+            overlayClassName="PopoverCustom"
+            placement="bottom"
+            title=""
+            content={
+              obj.file_type ? (
+                <>
+                  {imageRegexData.test(obj.file_type) ? (
                     <div
                       className={styles.menu_item}
                       onClick={() => {
-                        navigator?.clipboard?.writeText(
-                          keyParam.short_code_path
-                        ),
-                          message.success("Perma Link Copied");
+                        setPreview({
+                          previewVisible: true,
+                          previewName: obj.file_name,
+                          previewPath: obj.file_path,
+                          prevShort: obj.short_code_path,
+                          previewCopyShortCode: obj.short_code,
+                          previewCreatedAt: obj.created_at,
+                        });
                       }}
                     >
                       <Image
-                        alt="copyShortCode"
-                        src={CopyShortCode}
-                        width={12}
-                        height={15}
+                        alt="Eye Image"
+                        src={eyeImage}
+                        width={15}
+                        height={11}
+                      />
+                      <span className={styles.marginLeftView}>View File</span>
+                    </div>
+                  ) : (
+                    <div
+                      className={styles.menu_item}
+                      onClick={() => {
+                        window.location.href = `${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/${obj.file_path}`;
+                      }}
+                    >
+                      <Image
+                        alt="downloadFile"
+                        src={download}
+                        width={15}
+                        height={13}
                       />
                       <span className={styles.marginLeftView}>
-                        Copy Perma Link
+                        Download File
                       </span>
                     </div>
-                    <div
-                      className={styles.menu_item}
-                      onClick={() => {
-                        setRemoveFileData({
-                          keyParam: keyParam,
-                          obj: obj,
-                          fileLists: fileLists,
-                        }),
-                          setDeleteConfirmationVisible(true);
-                      }}
-                    >
-                      <Image
-                        alt="Trash Data "
-                        src={Trash}
-                        width={12}
-                        height={15}
-                      />
-                      <span className={styles.marginLeftView}>Delete File</span>
-                    </div>
-                  </>
-                ) : (
-                  menu(index, obj)
-                )
-              }
-              trigger="click"
-              zIndex={1}
-            >
-              <div className="threeDOt">
-                <MoreOutlined />
-              </div>
-            </Popover>
-          </>
+                  )}
+
+                  <div
+                    className={styles.menu_item}
+                    onClick={() => {
+                      navigator?.clipboard?.writeText(keyParam.short_code_path),
+                        message.success("Perma Link Copied");
+                    }}
+                  >
+                    <Image
+                      alt="copyShortCode"
+                      src={CopyShortCode}
+                      width={12}
+                      height={15}
+                    />
+                    <span className={styles.marginLeftView}>
+                      Copy Perma Link
+                    </span>
+                  </div>
+                  <div
+                    className={styles.menu_item}
+                    onClick={() => {
+                      setRemoveFileData({
+                        keyParam: keyParam,
+                        obj: obj,
+                        fileLists: fileLists,
+                      }),
+                        setDeleteConfirmationVisible(true);
+                    }}
+                  >
+                    <Image
+                      alt="Trash Data "
+                      src={Trash}
+                      width={12}
+                      height={15}
+                    />
+                    <span className={styles.marginLeftView}>Delete File</span>
+                  </div>
+                </>
+              ) : (
+                menu(index, obj)
+              )
+            }
+            trigger="click"
+            zIndex={1}
+          >
+            <div className="threeDOt">
+              <MoreOutlined />
+            </div>
+          </Popover>
         );
       },
     },
   ];
+
   const uploadList = () => {
     Object.entries(updateList).map(([k, v]) => {
       const fileIndex = fileLists.findIndex((obj) => k == obj.uid);
@@ -695,10 +687,7 @@ const UploadFileUI = ({
                     <span style={{ cursor: "pointer" }}>{item.name}</span>
                   </div>
                   <div className={styles.dateAndfiles}>
-                    <p>
-                      {" "}
-                      {moment.unix(item.created_at).format("DD MMMM YYYY")}
-                    </p>
+                    <p>{moment.unix(item.created_at).format("DD MMMM YYYY")}</p>
                     <small>{"(" + item.uploads_count + " files)"}</small>
                   </div>
                 </div>
@@ -774,16 +763,17 @@ const UploadFileUI = ({
                 : moment(item.lastModified).format("MMM DD, YYYY, h:mm:ss A")}
             </span>
           </Card>
-        ) : (
-          ""
-        )}
+        ) : null}
       </div>
     );
   };
+
   const subStringData = (fileName) => {
     return fileName?.length > 10 ? fileName.substring(0, 10) + "..." : fileName;
   };
+
   const filterArrList = [];
+
   const searchFilter = () => {
     return (openFolder ? fileLists : filteredArray())?.length > 0 ? (
       (openFolder ? fileLists : filteredArray()).map((item, i) => {
@@ -793,7 +783,7 @@ const UploadFileUI = ({
             className={(() => {
               if (openFolder && item.id != selectedFolderID) {
                 return "";
-              } else if (!openFolder) {
+              } else if (!openFolder && dragBoxStatus == false) {
                 return styles.view_After_Upload;
               } else {
                 return styles.folder_Back_Button;
@@ -822,7 +812,6 @@ const UploadFileUI = ({
                       size="small"
                       title={
                         <h2 className={styles.FolderOpenHeading}>
-                          {" "}
                           <span
                             data-testid="arrow_outlined"
                             style={{ cursor: "pointer" }}
@@ -884,16 +873,13 @@ const UploadFileUI = ({
           </div>
         );
       })
-    ) : dragBoxStatus == true ? (
-      ""
-    ) : !toggleFileView ? (
+    ) : dragBoxStatus == true ? null : !toggleFileView ? (
       <div className={styles.emptyFolderData}>
         <Empty description={<span>No Data Found</span>} />
       </div>
-    ) : (
-      ""
-    );
+    ) : null;
   };
+
   const displayImage = (file, imageData) => {
     const fileText = <FileTextFilled className={styles.FileTextTwoOneClass} />;
     const filePdf = <FilePdfFilled className={styles.FilePdfTwoToneColor} />;
@@ -940,10 +926,7 @@ const UploadFileUI = ({
       </div>
     );
   };
-  // const confirm = (keyParam) => {
-  //   message.info("Clicked on Yes.");
-  //   removeFiles(keyParam);
-  // };
+
   const getGlobalSearchUploadFile = async (queryString) => {
     let response = await globalSearchUploadFiles(
       queryParams({ query: queryString })
@@ -954,10 +937,7 @@ const UploadFileUI = ({
   };
   const openFolderInGridView = (file, i) => {
     return (
-      <div
-        className={styles.view_After_Upload}
-        //key="upload_file_one"
-      >
+      <div className={styles.view_After_Upload}>
         <Card className={styles.files} key={i}>
           <Dropdown
             className={styles.dropdown_menu}
@@ -1009,6 +989,7 @@ const UploadFileUI = ({
       </div>
     );
   };
+
   const handleImageLoaded = () => {
     setPreviewImageIndicator(false);
     setImageStatus("loaded");
@@ -1040,7 +1021,6 @@ const UploadFileUI = ({
           <div className="pageContentWrap">
             <div className={styles.uploadFilesData}>
               <Form
-                //name={editModal ? "Edit your folder name" : labels.CreateaFolder}
                 form={createFolderForm}
                 onFinish={onFinishValidation}
                 validateMessages={validateMessages}
@@ -1146,7 +1126,6 @@ const UploadFileUI = ({
                               addNewFile(),
                                 setToggleFileView(false),
                                 setUpdateList({});
-                              // setUploadStatus(true);
                               setDatePick("");
                               setSearch("");
                             }}
@@ -1159,14 +1138,10 @@ const UploadFileUI = ({
                             />
                             Add a File
                           </Button>
-                        ) : (
-                          ""
-                        )}
+                        ) : null}
 
                         <div className={styles.top_icon}>
-                          {show_UploadOptions || dragBoxStatus ? (
-                            ""
-                          ) : (
+                          {show_UploadOptions || dragBoxStatus ? null : (
                             <span
                               style={{ cursor: "pointer" }}
                               onClick={() => {
@@ -1181,9 +1156,7 @@ const UploadFileUI = ({
                               />
                             </span>
                           )}
-                          {show_UploadOptions || dragBoxStatus ? (
-                            ""
-                          ) : (
+                          {show_UploadOptions || dragBoxStatus ? null : (
                             <span
                               onClick={() => {
                                 setToggleFileView(false), showUploadsAfter();
@@ -1215,9 +1188,7 @@ const UploadFileUI = ({
                           data-testid="handle_x_btn"
                         />
                       </div>
-                    ) : (
-                      ""
-                    )}
+                    ) : null}
 
                     <Upload
                       className={styles.UploadDataFiles}
@@ -1296,9 +1267,7 @@ const UploadFileUI = ({
                       itemRender={(originNode, file) => {
                         const fileSizeFlag = file.size / (1024 * 1024) > 5;
                         return (file.type && file.type == "folder") ||
-                          toggleFileView ? (
-                          ""
-                        ) : (
+                          toggleFileView ? null : (
                           <div className={afterUploadClass}>
                             <Spin
                               size="large"
@@ -1368,9 +1337,6 @@ const UploadFileUI = ({
                                     }
                                     placeholder="Full Name (with no extension)"
                                     onKeyDown={(e) => {
-                                      // ============================ Allowed Special Chracter=====================================================
-                                      // if (/[^\w]|_/g.test(e.key))
-                                      //   return e.preventDefault();
                                       return (
                                         (e.key === "." || e.key === " ") &&
                                         (e.keyCode === 190 ||
@@ -1414,12 +1380,12 @@ const UploadFileUI = ({
                             </div>
                           </Button>
                         </div>
-                      ) : (
-                        ""
-                      )}
+                      ) : null}
                     </Upload>
                   </div>
-                  <div className={styles.fileList}>{searchFilter()}</div>
+                  {!toggleFileView ? (
+                    <div className={styles.fileList}>{searchFilter()}</div>
+                  ) : null}
                   {toggleFileView && fileLists.length > 0 ? (
                     <div className="TableContent">
                       <Table
@@ -1430,9 +1396,7 @@ const UploadFileUI = ({
                         pagination={{ hideOnSinglePage: true }}
                       />
                     </div>
-                  ) : (
-                    ""
-                  )}
+                  ) : null}
 
                   {loadingImage ? (
                     <div>
@@ -1449,9 +1413,7 @@ const UploadFileUI = ({
                       <br />
                       <br />
                     </div>
-                  ) : (
-                    ""
-                  )}
+                  ) : null}
                   <Form.Item>
                     {show_UploadOptions ? (
                       <div className={styles.Upload_Cancel_Btn}>
@@ -1473,9 +1435,7 @@ const UploadFileUI = ({
                           Cancel
                         </Button>
                       </div>
-                    ) : (
-                      ""
-                    )}
+                    ) : null}
                   </Form.Item>
                 </Card>
               </Form>

@@ -281,35 +281,12 @@ const UpdateTopic = () => {
     setIsopicLoading(false);
   };
 
-  // const isMatched = () => {
-  //   const isMatched = existingTopics.some(
-  //     (tp) =>
-  //       values?.topic_name?.trim()?.toLowerCase() ===
-  //       tp?.type_value?.trim()?.toLowerCase()
-  //   );
-
-  //   if (isMatched) {
-  //     setIsError(true);
-  //     return;
-  //   }
-
-  //   if (!isMatched) {
-  //     setIsError(false);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   if (existingTopics?.length) {
-  //     isMatched();
-  //   }
-  // }, [existingTopics, values?.topic_name]);
-
   const onTopicChange = useCallback(
     debounce((e) => {
       const enteredValues = e?.target?.value;
       if (enteredValues && enteredValues?.length > 1) {
         setIsopicLoading(true);
-        // setHaveTopicExist(true);
+
         getExistingList(enteredValues);
       } else {
         setHaveTopicExist(false);
@@ -388,6 +365,7 @@ const UpdateTopic = () => {
               isShowMore={isShowMore}
               isError={isError}
               isLoading={isTopicLoading}
+              isUpdate={true}
             />
           ) : (
             <TopicInfoCard key="topic-info-card" />

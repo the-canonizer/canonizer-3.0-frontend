@@ -1,9 +1,11 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, {  useEffect, useState } from "react";
 import { Tree, Tooltip, Popover } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Image from "next/image";
+import type { DataNode, TreeProps } from "antd/es/tree";
+import { DownOutlined } from "@ant-design/icons";
 
 import styles from "../topicDetails.module.scss";
 
@@ -11,7 +13,6 @@ import useAuthentication from "src/hooks/isUserAuthenticated";
 import { RootState } from "src/store";
 import { setCurrentCamp } from "src/store/slices/filtersSlice";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
-import { DownOutlined } from "@ant-design/icons";
 import ScoreTag from "components/ComponentPages/Home/TrandingTopic/scoreTag";
 
 const { TreeNode } = Tree;
@@ -274,20 +275,25 @@ const CampTree = ({
     ) : null;
   };
 
-  const isOnlyOneChild = () => {
-    const treeData = tree?.at(0);
-    if (!treeData) return false;
-
-    const keys = Object.keys(treeData)
-      .map((key) => [Number(key), treeData[key]])
-      .sort((a, b) => b[1].score - a[1].score);
-
-    const keyName = keys?.at(0)?.[0];
-    if (!keyName) return false;
-
-    const child = treeData[keyName]?.children;
-    return child?.length === 0;
+  const isOnlyOneChild = (node) => {
+    return node?.children && Object.keys(node.children).length === 1;
   };
+
+  const isFirstChild = (data, item) => {
+    const keys = Object.keys(data);
+    return keys[0] === item.toString();
+  };
+
+  const isLastChild = (data, item) => {
+    const keys = Object.keys(data);
+    return keys[keys.length - 1] === item.toString();
+  };
+
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     document.querySelectorAll
+  //   }, 300);
+  // }, [uniqueKeys]);
 
   const renderTreeNodes = (
     data: any,
@@ -325,44 +331,24 @@ const CampTree = ({
         }
       }
 
-      const isLastChild = (data, item) => {
-        const keys = Object.keys(data);
-        return keys[keys.length - 1] === item.toString();
-      };
+      const firstChild = isFirstChild(data, itemWithData[0]);
+      const lastChild = isLastChild(data, itemWithData[0]);
+      const onlyOneChild = isOnlyOneChild(item);
 
-      const isLastParent = (data, item) => {
-        const parentKeys = Object.keys(data);
-        return parentKeys[parentKeys.length - 1] === item.toString();
-      };
-
-      const isLast = isLastChild(data, item) && isLastParent(data, item);
-
-      const isFirstItem = (data, item) => {
-        const keys = Object.keys(data);
-        return keys[0] === item.toString();
-      };
-
-      const isFirstParent = (data, item) => {
-        const parentKeys = Object.keys(data);
-        return parentKeys[0] === item.toString();
-      };
-
-      const isFirst = isFirstItem(data, item) && isFirstParent(data, item);
-
-      const haveOnlyOneChild = isOnlyOneChild();
+      const dynamicClasses = [
+        firstChild ? "first-node-class" : "",
+        lastChild ? "last-node-class" : "",
+        onlyOneChild ? "only-one-child" : "",
+      ]
+        .filter(Boolean)
+        .join(" ");
 
       if (data[item].children) {
         if (data[item].score >= scoreFilter) {
           return data[item].is_archive == 0 ||
             (data[item].is_archive != 0 && is_camp_archive_checked == true) ? (
             <TreeNode
-              className={`[&_.ant-tree-switcher]:!flex [&_.ant-tree-switcher]:!items-center [&_.ant-tree-node-content-wrapper]:hover:!bg-transparent [&_.ant-tree-switcher.ant-tree-switcher-noop>span]:!hidden [&_.ant-tree-node-content-wrapper]:py-1 ${
-                isLastChild ? "last-child-node-class" : ""
-              } ${isLastParent ? "last-parent-node-class" : ""} ${
-                isLast ? "last-node-class" : ""
-              } ${isFirst ? "first-node-class" : ""} ${
-                haveOnlyOneChild ? "only-one-child" : ""
-              }`}
+              className={`[&_.ant-tree-switcher]:!flex [&_.ant-tree-switcher]:!items-center [&_.ant-tree-node-content-wrapper]:hover:!bg-transparent [&_.ant-tree-switcher.ant-tree-switcher-noop>span]:!hidden [&_.ant-tree-node-content-wrapper]:py-1 ${dynamicClasses}`}
               switcherIcon={({ expanded }) => {
                 return data[item].camp_id ===
                   +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1) &&
@@ -626,23 +612,33 @@ const CampTree = ({
     return uniqueArraytoString;
   };
 
-  return tree?.at(0) ? (
-    (showTree && tree?.at(0)["1"]?.title != "" && defaultExpandKeys) ||
-    isForumPage ? (
-      <Tree
-        showLine
-        switcherIcon={<DownOutlined />}
-        onSelect={onSelect}
-        onExpand={onExpand}
-        expandedKeys={[...uniqueKeys]}
-        data-testid="camp-tree"
-      >
-        {tree?.at(0) && renderTreeNodes(tree?.at(0))}
-      </Tree>
-    ) : null
-  ) : (
-    <p data-testid="camp-tree">No Camp Tree Found</p>
-  );
+  let treeContent;
+
+  if (tree?.at(0)) {
+    if (
+      (showTree && tree?.at(0)["1"]?.title != "" && defaultExpandKeys) ||
+      isForumPage
+    ) {
+      treeContent = (
+        <Tree
+          showLine
+          switcherIcon={<DownOutlined />}
+          onSelect={onSelect}
+          onExpand={onExpand}
+          expandedKeys={[...uniqueKeys]}
+          data-testid="camp-tree"
+        >
+          {tree?.at(0) && renderTreeNodes(tree?.at(0))}
+        </Tree>
+      );
+    } else {
+      treeContent = null;
+    }
+  } else {
+    treeContent = <p data-testid="camp-tree">No Camp Tree Found</p>;
+  }
+
+  return treeContent;
 };
 
 export default CampTree;
