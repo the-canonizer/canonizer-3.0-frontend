@@ -69,14 +69,12 @@ const CreateCampFormUI = ({
   const [isAboutFocused, setIsAboutFocused] = useState(false);
   const [isCampLeaderFocused, setIsCampLeaderFocused] = useState(false);
 
-  // const toolTipContent = "This camp is under review";
   const archiveToolTipContent = "This camp is archived";
 
   useEffect(() => {
     campRecord?.is_archive && router.pathname == "/camp/create/[...camp]"
       ? router?.back()
       : "";
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getNickNameInput = () => {
@@ -133,6 +131,10 @@ const CreateCampFormUI = ({
       dataid: "parent-camp-name",
       showSearch: true,
       optionFilterProp: "children",
+      filterOption: (input, option) =>
+        ((option?.children as any)?.props?.children ?? "")
+          .toLowerCase()
+          .includes(input.toLowerCase()),
       inputClassName:
         "border-0 [&_.ant-select-selector]:![&_.ant-select-selection-search]:!w-auto",
       rules: parentCampRule,
@@ -173,13 +175,6 @@ const CreateCampFormUI = ({
     nick_name: values?.nick_name || parentCamp[0]?.id,
     parent_camp_num: values?.parent_camp_num || topicData?.camp_num,
   };
-
-  // const getCampLeaderNickName = () => {
-  //   return (
-  //     campLeaderData &&
-  //     campLeaderData?.find((CL) => CL?.camp_leader === true)?.nick_name
-  //   );
-  // };
 
   return (
     <CommonCards className="border-0 bg-white" id="common-cards">

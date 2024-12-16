@@ -616,7 +616,7 @@ function CommanBreadcrumbs({
       <Row gutter={5}>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
           <span className="text-xs 2xl:text-sm text-canLight capitalize">
-            Submitter:
+            Submitted By:
           </span>
           <Link
             href={{
@@ -633,7 +633,7 @@ function CommanBreadcrumbs({
           <span className="text-xs 2xl:text-sm text-canLight capitalize">
             Submitted On:
           </span>
-          <span className="text-sm text-canBlack">
+          <span className="text-sm text-canBlack font-medium">
             {campRecord && covertToTime(campRecord?.submit_time)}
           </span>
         </Col>
@@ -647,7 +647,7 @@ function CommanBreadcrumbs({
               query: { canon: topicRecord?.namespace_id || 1 },
             }}
           >
-            <a className="text-sm !text-canBlue hover:!text-canHoverBlue">
+            <a className="text-sm !text-canBlue hover:!text-canHoverBlue font-medium">
               {campRecord && campRecord.camp_about_nick_name}
             </a>
           </Link>
@@ -658,7 +658,7 @@ function CommanBreadcrumbs({
           </span>
           <a
             href={campRecord && campRecord.camp_about_url}
-            className="text-sm block !text-canBlue hover:!text-canHoverBlue"
+            className="text-sm block !text-canBlue hover:!text-canHoverBlue font-medium"
             target="_blank"
             rel="noreferrer"
           >
@@ -669,7 +669,7 @@ function CommanBreadcrumbs({
           <span className="text-xs 2xl:text-sm text-canLight capitalize">
             Single level camps only:
           </span>
-          <span className="text-sm text-canBlack">
+          <span className="text-sm text-canBlack font-medium">
             {campRecord && campRecord.is_one_level == 0 ? "No" : "Yes"}
           </span>
         </Col>
@@ -677,7 +677,7 @@ function CommanBreadcrumbs({
           <span className="text-xs 2xl:text-sm text-canLight capitalize">
             Disable additional sub camps:
           </span>
-          <span className="text-sm text-canBlack">
+          <span className="text-sm text-canBlack font-medium">
             {campRecord && campRecord.is_disabled == 0 ? "No" : "Yes"}
           </span>
         </Col>
@@ -685,7 +685,7 @@ function CommanBreadcrumbs({
           <span className="text-xs 2xl:text-sm text-canLight capitalize">
             Camp archive:
           </span>
-          <span className="text-sm text-canBlack">
+          <span className="text-sm text-canBlack font-medium">
             {campRecord && campRecord.is_archive == 0 ? "No" : "Yes"}
           </span>
         </Col>
@@ -693,7 +693,7 @@ function CommanBreadcrumbs({
           <span className="text-xs 2xl:text-sm text-canLight capitalize">
             Go live time:
           </span>
-          <span className="text-sm text-canBlack">
+          <span className="text-sm text-canBlack font-medium">
             {campRecord && covertToTime(campRecord?.go_live_time)}
           </span>
         </Col>
@@ -701,15 +701,15 @@ function CommanBreadcrumbs({
           <span className="text-xs 2xl:text-sm text-canLight capitalize">
             Canon:
           </span>
-          <span className="text-sm text-canBlack">
+          <span className="text-sm text-canBlack font-medium">
             {topicRecord && changeSlashToArrow(topicRecord?.namespace_name)}
           </span>
         </Col>
         <Col md={12} sm={12} xs={12} className=" flex flex-col">
           <span className="text-xs 2xl:text-sm text-canLight capitalize">
-            Topic:
+            Topic Name:
           </span>
-          <span className="text-sm text-canBlack">
+          <span className="text-sm text-canBlack font-medium">
             {topicRecord && topicRecord?.topic_name?.length > 50
               ? `${topicRecord?.topic_name.substring(0, 20)}....`
               : topicRecord?.topic_name}
@@ -729,7 +729,7 @@ function CommanBreadcrumbs({
                 },
               }}
             >
-              <span className="!text-canBlue cursor-pointer">
+              <span className="!text-canBlue cursor-pointer font-medium">
                 {campRecord?.camp_leader_nick_name}
               </span>
             </Link>
