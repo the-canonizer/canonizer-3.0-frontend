@@ -141,7 +141,7 @@ const UploadFileUI = ({
   const [loadingArray, setLoadingArray] = useState([]);
   const [search, setSearch] = useState<any>("");
   const [updateList, setUpdateList] = useState({});
-  const [datePick, setDatePick] = useState("");
+  const [datePick, setDatePick] = useState<any>("");
   const [createFolderForm] = Form.useForm();
   // const imageTimer = 2500;
   const [rename, setRename] = useState("");
@@ -307,12 +307,7 @@ const UploadFileUI = ({
         {fileTypeRegexes.image?.test(file.file_type || file.type) &&
         imageData ? (
           // Render image preview
-          <Image
-            alt="displayed-file"
-            src={imageData}
-            height={90}
-            width={140}
-          />
+          <Image alt="displayed-file" src={imageData} height={90} width={140} />
         ) : (
           // Render file icon
           <Image
@@ -924,9 +919,9 @@ const UploadFileUI = ({
                       .format("MMM DD, YYYY, h:mm:ss A")
                   : moment(item.lastModified).format("MMM DD, YYYY, h:mm:ss A")}
               </span>
-              {item?.folder_id && (
+              {item?.folder?.name && (
                 <span className="truncate block !text-[10px] font-medium">
-                  {item?.folder_id}
+                  {item?.folder?.name}
                 </span>
               )}
             </div>
@@ -1103,7 +1098,9 @@ const UploadFileUI = ({
   //   removeFiles(keyParam);
   // };
   const getGlobalSearchUploadFile = async (queryString, dateString) => {
-    const date = dateString ? Math.floor(dateString.valueOf() / 1000) : "";
+    const dateObject = new Date(datePick);
+    const epochTimeInMilliseconds = dateObject?.getTime();
+    const date = dateString ? Math.floor(epochTimeInMilliseconds / 1000) : "";
     let response = await globalSearchUploadFiles(
       queryParams({ query: queryString, date })
     );
