@@ -209,6 +209,7 @@ const TopicsList = () => {
       sort: sortLatestTopic ? true : false,
       page: "browse",
       topic_tags: getIdsOfFilteredTags(value, allTags),
+      current_user: isUserAuthenticated? userEmail : "",
     };
     const response = await getCanonizedTopicsApi(reqBody);
     setTotalTopics(response);

@@ -20,6 +20,7 @@ const NickName = () => {
   const [disableButton, setDisableButton] = useState(false);
   const [getNickNamesLoadingIndicator, setGetNickNamesIndicator] =
     useState(false);
+  const [isChecked, setIsChecked] = useState(false);
 
   const chnageVisibilityStatus = async (value, record) => {
     const parsedValue = parseInt(value);
@@ -39,6 +40,7 @@ const NickName = () => {
     }
   };
   const handleNickNameCancel = () => {
+    setIsChecked(false);
     setIsNickNameModalVisible(false);
   };
 
@@ -59,11 +61,13 @@ const NickName = () => {
           parseInt(values.visibility_status).toString() == "NaN"
             ? 0
             : parseInt(values.visibility_status),
+        default: isChecked ? 1 : 0,
       };
       let res = await addNickName(formBody);
       if (res && res.status_code === 200) {
         nickNameForm.resetFields();
         setIsNickNameModalVisible(false);
+        setIsChecked(false)
         message.success(res.message);
         setDisableButton(false);
       } else {
@@ -119,6 +123,9 @@ const NickName = () => {
       disableButton={disableButton}
       getNickNamesLoadingIndicator={getNickNamesLoadingIndicator}
       chnageVisibilityStatus={chnageVisibilityStatus}
+      fetchNickNameList={fetchNickNameList}
+      isChecked={isChecked}
+      setIsChecked={setIsChecked}
     />
   );
 };

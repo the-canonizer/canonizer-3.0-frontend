@@ -14,7 +14,10 @@ import {
 } from "src/network/api/campDetailApi";
 import { setCurrentTopic } from "src/store/slices/topicSlice";
 import messages from "src/messages";
-import { replaceSpecialCharacters } from "src/utils/generalUtility";
+import {
+  defaultNicknameData,
+  replaceSpecialCharacters,
+} from "src/utils/generalUtility";
 import isAuth from "src/hooks/isUserAuthenticated";
 import { setShowDrawer } from "src/store/slices/filtersSlice";
 import { RootState } from "src/store";
@@ -159,9 +162,15 @@ const CreateNewCamp = () => {
     const body = { topic_num: q?.topic_num };
     let response = await getAllUsedNickNames(body);
     if (response && response.status_code === 200) {
-      setNickNameList(response.data);
-      setInitialValues({ nick_name: response.data[0]?.id });
-      form.setFieldValue("nick_name", response.data[0]?.id);
+      setNickNameList(response?.data);
+      setInitialValues({
+        nick_name:
+          defaultNicknameData(response?.data)?.id || response.data[0]?.id,
+      });
+      form.setFieldValue(
+        "nick_name",
+        defaultNicknameData(response?.data)?.id || response.data[0]?.id
+      );
       setIsLoading(false);
       return response.status_code;
     } else {

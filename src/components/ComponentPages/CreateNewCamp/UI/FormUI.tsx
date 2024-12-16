@@ -22,6 +22,7 @@ import PrimaryButton from "components/shared/Buttons/PrimariButton";
 import Inputs from "components/shared/FormInputs";
 import AlignIcon from "components/ComponentPages/CreateNewTopic/UI/alignIcon";
 import SelectInputs from "components/shared/FormInputs/select";
+import { defaultNicknameData } from "src/utils/generalUtility";
 
 const { Option } = Select;
 const { Text } = Typography;
@@ -78,6 +79,8 @@ const CreateCampFormUI = ({
   }, []);
 
   const getNickNameInput = () => {
+    const defaultNickName = defaultNicknameData(nickNameList)?.nick_name || values?.nick_name || defaultNicknameData(nickNameList)?.id || nickNameList[0]?.id;
+  
     const selectInputProps: any = {
       label: (
         <Fragment>
@@ -101,13 +104,12 @@ const CreateCampFormUI = ({
       prefix: <UserOutlined className="px-3 text-canBlack" />,
       onSelect: (val) => form.setFieldValue("nick_name", val),
       id: "nickname-dropdown",
-      value: values?.nick_name || nickNameList[0]?.id,
-      lastValue: form.getFieldValue("nick_name"),
+      value: form.getFieldValue("nick_name") || defaultNickName, // Use last set value or default
     };
-
+  
     if (nickNameList?.length) {
-      selectInputProps.defaultValue = values?.nick_name || nickNameList[0]?.id;
-      selectInputProps.initialValue = values?.nick_name || nickNameList[0]?.id;
+      selectInputProps.defaultValue = defaultNickName;
+      selectInputProps.initialValue = defaultNickName;
       selectInputProps.key = "nickNamesWithKeyName";
     }
     return <SelectInputs {...selectInputProps} />;
@@ -172,7 +174,8 @@ const CreateCampFormUI = ({
 
   const formInitValue = {
     ...initialValue,
-    nick_name: values?.nick_name || parentCamp[0]?.id,
+    nick_name: defaultNicknameData(nickNameList)?.id || nickNameList[0]?.id,
+    // nick_name: values?.nick_name || parentCamp[0]?.id,
     parent_camp_num: values?.parent_camp_num || topicData?.camp_num,
   };
 

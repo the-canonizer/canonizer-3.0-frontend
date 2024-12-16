@@ -38,6 +38,7 @@ import {
 } from "src/utils/generalUtility";
 import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 import PrimaryButton from "components/shared/Buttons/PrimariButton";
+import useAuthentication from "src/hooks/isUserAuthenticated";
 
 const TimelineInfoBar = ({
   payload = null,
@@ -53,6 +54,8 @@ const TimelineInfoBar = ({
   historyOF = null,
 }: any) => {
   const dispatch = useDispatch();
+  const { isUserAuthenticated } = useAuthentication();
+
   const [loadingIndicator, setLoadingIndicator] = useState(false);
   const [payloadData, setPayloadData] = useState(payload);
   const [breadCrumbRes, setBreadCrumbRes] = useState({
@@ -75,6 +78,7 @@ const TimelineInfoBar = ({
     algorithm,
     campStatement,
     tree,
+    userEmail,
   } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
     campRecord: state?.topicDetails?.currentCampRecord,
@@ -87,6 +91,7 @@ const TimelineInfoBar = ({
     algorithm: state.filters?.filterObject?.algorithm,
     campStatement: state?.topicDetails?.campStatement,
     tree: state?.topicDetails?.tree && state?.topicDetails?.tree[0],
+    userEmail: state?.auth?.loggedInUser?.email,
   }));
 
   const [campSubscriptionID, setCampSubscriptionID] = useState(
@@ -336,6 +341,7 @@ const TimelineInfoBar = ({
         asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
       algorithm: algorithm,
       update_all: 1,
+      current_user: isUserAuthenticated ? userEmail : "",
     };
     const reqBody = {
       topic_num: campRecord.topic_num ?? payload?.topic_num,
