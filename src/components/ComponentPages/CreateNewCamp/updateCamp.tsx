@@ -20,12 +20,10 @@ import DataNotFound from "../DataNotFound/dataNotFound";
 import CustomSpinner from "components/shared/CustomSpinner";
 import ExistingCampList from "./UI/existingCampList";
 import CampInfoCard from "./UI/rightContent";
-import CampInfoBar from "../TopicDetails/CampInfoBar";
 import FormUI from "./UI/FormUI";
 import { globalSearchCanonizer } from "src/network/api/userApi";
 import queryParams from "src/utils/queryParams";
 import SimilarCampPopup from "./UI/similarCampsPopup";
-import { findSimilarNames } from ".";
 import {
   getEditCampApi,
   updateCampApi,
@@ -339,19 +337,6 @@ const CreateNewCamp = () => {
     return camp_leader_nick_name;
   };
 
-  const isSimilarAvaiable = () => {
-    const namesList = existingCamps?.map((cmp) =>
-      cmp?.type_value?.toLowerCase()
-    );
-
-    const similarNames = findSimilarNames(
-      values?.camp_name?.toLowerCase(),
-      namesList
-    );
-
-    return !!similarNames?.length;
-  };
-
   const submitCampData = async (values) => {
     const editInfo = editStatementData?.data;
     const parent_camp = editInfo?.parent_camp;
@@ -476,13 +461,8 @@ const CreateNewCamp = () => {
 
   const onFinish = async () => {
     setIsLoading(true);
-    const isSimAvalable = isSimilarAvaiable();
 
-    if (isSimAvalable) {
-      setIsSimPopOpen(true);
-    } else {
-      await onFinalSubmit();
-    }
+    await onFinalSubmit();
 
     setIsLoading(false);
   };
@@ -572,7 +552,6 @@ const CreateNewCamp = () => {
   return (
     <CustomSpinner key="create-topic-spinner" spinning={isLoading}>
       {!!payload?.camp_num && (
-        //  <CampInfoBar payload={payload} />
         <CommonBreadcrumbs key="common-breadcrumbs" payload={payload} />
       )}
 
@@ -612,6 +591,7 @@ const CreateNewCamp = () => {
                   isError={isError}
                   onContributeCLick={onContributeCLick}
                   isLoading={isTopicLoading}
+                  isUpdate={true}
                 />
               ) : (
                 <CampInfoCard key="camp-info-card" />

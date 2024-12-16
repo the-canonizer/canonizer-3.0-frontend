@@ -46,15 +46,6 @@ export default function DelegatedSupportCampsUI({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [delegatedSupportCampsList]);
 
-  // const pageChange = (pageNumber, pageSize) => {
-  //   setCurrentPage(pageNumber);
-  //   const startingPosition = (pageNumber - 1) * pageSize;
-  //   const endingPosition = startingPosition + pageSize;
-  //   setDisplayList(
-  //     delegatedSupportCampsList?.slice(startingPosition, endingPosition)
-  //   );
-  // };
-
   useEffect(() => {
     const startingPosition = (currentPage - 1) * pageSize;
     const endingPosition = startingPosition + pageSize;
@@ -261,9 +252,6 @@ export default function DelegatedSupportCampsUI({
     }
   }, [search, displayList, delegatedSupportCampsList, currentSearchPage]);
 
-  // useEffect(() => {
-  //   pageChange(1);
-  // }, [delegatedSupportCampsList]);
   useEffect(() => {
     // Update the filtered list based on the search
     if (search) {
@@ -276,6 +264,7 @@ export default function DelegatedSupportCampsUI({
       setFilteredList(delegatedSupportCampsList);
     }
   }, [search, delegatedSupportCampsList]);
+  
   return (
     <div>
       <div

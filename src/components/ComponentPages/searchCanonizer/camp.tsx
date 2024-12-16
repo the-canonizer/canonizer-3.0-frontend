@@ -130,7 +130,7 @@ const CampSearch = () => {
             >
               Search Results for “
               <span
-                className="text-canBlue capitalize"
+                className="text-canBlue capitalize break-all whitespace-break-spaces"
                 id="search_camp_section_heading_text_value"
               >
                 {router?.query?.q}

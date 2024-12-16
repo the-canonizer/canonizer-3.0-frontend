@@ -169,7 +169,7 @@ const TopicSearch = () => {
               id="elastic_topic_search_section_heading"
             >
               Search Results for “
-              <span className="text-canBlue capitalize">
+              <span className="text-canBlue capitalize break-all whitespace-break-spaces">
                 {router?.query?.q}
               </span>
               ”

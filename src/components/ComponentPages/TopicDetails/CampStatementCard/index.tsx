@@ -181,8 +181,8 @@ const CampStatementCard = ({ loadingIndicator }) => {
       }}
       className={
         fullScreen
-          ? "fixed top-0 left-0 w-full h-full z-[9999] bg-white border-none flex justify-start items-start shadow-md flex-col [&_.ant-card-head]:w-full"
-          : `border-0 h-100 bg-white [&_.ant-card-body]:p-0  [&_.ant-card-body]:lg:p-[24px] [&_.ant-card-body]:flex overflow-hidden lg:bg-canGray mb-8 lg:mb-14 border-t-8 
+          ? "[&_.ant-card-body]:h-full [&_.ant-card-body]:w-full [&_.ant-card-body]:items-center fixed top-0  left-0 w-full h-full z-[9999] bg-white border-none flex justify-start items-start shadow-md flex-col [&_.ant-card-head]:w-full"
+          : `border-0 h-100  bg-white [&_.ant-card-body]:p-0  [&_.ant-card-body]:lg:p-[24px] [&_.ant-card-body]:h-full [&_.ant-card-body]:flex overflow-hidden lg:bg-canGray mb-8 lg:mb-14 border-t-8  
             ${
               router?.query?.viewversion == "1"
                 ? "!border-canOrange"
@@ -197,7 +197,7 @@ const CampStatementCard = ({ loadingIndicator }) => {
       data-testid="algoSelect"
       id="statementCard"
       title={
-        <div className="flex justify-between items-start flex-wrap">
+        <div className="flex justify-between items-start flex-wrap bg-green">
           <div className="w-full">
             <div className="camp-agreement-header flex items-center mb-2.5 lg:mb-1 gap-2 justify-between">
               <div className="flex gap-2.5 items-center">
@@ -260,7 +260,7 @@ const CampStatementCard = ({ loadingIndicator }) => {
       }
     >
       <div
-        className={`camp-agrrement-new overflow-hidden !overflow-y-auto w-full pr-4 ${
+        className={`camp-agrrement-new overflow-hidden !overflow-y-auto w-full h-full flex  justify-center pr-4 ${
           campStatement?.length && campStatement[0]?.parsed_value
             ? ""
             : "my-auto"

@@ -13,7 +13,7 @@ type propVal = {
   loadingIndicator?: boolean;
 };
 
-const FullScoreCheckbox = ({ loadingIndicator = false }: propVal) => {
+const FullScoreCheckbox = ({ loadingIndicator = false , isDisabled = false}: any) => {
   const router = useRouter();
   const { is_checked, loading } = useSelector((state: RootState) => ({
     is_checked: state?.utils?.score_checkbox,
@@ -39,7 +39,7 @@ const FullScoreCheckbox = ({ loadingIndicator = false }: propVal) => {
         checked={isChecked}
         className="text-canBlack !text-sm leading-[24px] !font-normal [&_.ant-checkbox-inner]:!w-[22px] [&_.ant-checkbox-inner]:!h-[22px] [&_.ant-checkbox-inner]:!border-canBlue [&_.ant-checkbox-inner]:!rounded-md"
         disabled={
-          !router?.asPath?.includes("topic") ? loading : loadingIndicator
+          !router?.asPath?.includes("topic") ? loading : loadingIndicator || isDisabled
         }
       >
         100% of canonized score on all supported camps

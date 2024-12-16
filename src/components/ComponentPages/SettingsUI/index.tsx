@@ -1,20 +1,10 @@
 import { useState, useEffect } from "react";
-import {
-  Card,
-  Button,
-  Tabs,
-  Input,
-  MenuProps,
-  Menu,
-  Radio,
-  Select,
-} from "antd";
+import { Card, Tabs, MenuProps, Menu, Radio, Select } from "antd";
 import { useRouter } from "next/router";
 import Sider from "antd/lib/layout/Sider";
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useSelector } from "react-redux";
 
 import styles from "./Settings.module.scss";
 
@@ -27,7 +17,6 @@ import SocialOauth from "../socialAuthVerification";
 import SubscriptionsList from "../SubscriptionsList";
 import messages from "src/messages";
 import ImageUploader from "../ImageUploader";
-import { RootState } from "src/store";
 import { GetUserProfileInfo, logout } from "src/network/api/userApi";
 import SectionHeading from "../Home/FeaturedTopic/sectionsHeading";
 import ProfilePrefrences from "../Preference";
@@ -41,7 +30,7 @@ export const logOut = async (_router) => {
 };
 
 const SettingsUI = () => {
-  const [search, setSearch] = useState("");
+  const [search] = useState("");
   const [activeTabKey, setActiveTabKey] = useState("");
   const [showSupportedCampsTab, setshowSupportedCampsTab] = useState(false);
   const [selectedValue, setSelectedValue] = useState("");
@@ -78,30 +67,6 @@ const SettingsUI = () => {
     delegate_supported_camp: <DelegatedSupportCamps search={search} />,
     supported_camps: (
       <div className={styles.supported_camps}>
-        {/* <div className={styles.search_users}>
-          <div className={styles.search_box}>
-            <div className={styles.search01}>
-              <Input
-                data-testid="settingSearch"
-                value={search}
-                placeholder="Search by topic name"
-                type="text"
-                name="search"
-                onChange={(e) => {
-                  setSearch(e.target.value);
-                }}
-              />
-            </div>
-            <Button
-              data-testid="reset"
-              onClick={() => setSearch("")}
-              className={styles.btn}
-            >
-              Reset
-            </Button>
-          </div>
-        </div> */}
-
         <Tabs onChange={callback} type="card" className={styles.supptab}>
           <TabPane tab="Direct Supported Camps" key="1">
             <div className={styles.text_checkbox_cont}>
@@ -150,7 +115,9 @@ const SettingsUI = () => {
       setSelectedValue("profile_info");
     }
   }, [router.asPath]);
+
   const { tab } = router.query;
+
   useEffect(() => {
     // Set the correct tab based on the URL query parameter
     if (tab) {
@@ -500,7 +467,6 @@ const SettingsUI = () => {
                             alt=""
                           />
                         }
-                        // onChange={handleSavedValue}
                         options={[
                           {
                             value: "Personal Info",

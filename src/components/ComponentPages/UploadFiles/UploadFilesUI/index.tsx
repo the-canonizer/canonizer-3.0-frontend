@@ -40,6 +40,7 @@ import Image from "next/image";
 import styles from "./UploadFile.module.scss";
 import moment from "moment";
 import { useSelector, useDispatch } from "react-redux";
+import { Breakpoint } from "antd/lib/_util/responsiveObserve";
 import { AppDispatch, RootState } from "../../../../store";
 import messages from "../../../../messages";
 import ThreeDots from "../../../../assets/image/threeDots.svg";
@@ -96,7 +97,6 @@ import {
 } from "../../../../network/api/userApi";
 import { labels } from "../../../../messages/label";
 import { setTimeout } from "timers";
-// import SideBar from "../../CampForum/UI/sidebar";
 import queryParams from "src/utils/queryParams";
 import CustomSkelton from "../../../common/customSkelton";
 import { useRouter } from "next/router";
@@ -143,7 +143,6 @@ const UploadFileUI = ({
   const [updateList, setUpdateList] = useState({});
   const [datePick, setDatePick] = useState<any>("");
   const [createFolderForm] = Form.useForm();
-  // const imageTimer = 2500;
   const [rename, setRename] = useState("");
   const [editFolderNameVal, setEditFolderNameVal] = useState("");
   const [editModal, setEditModal] = useState(false);
@@ -176,9 +175,6 @@ const UploadFileUI = ({
     (state: RootState) => state.ui?.visibleUploadOptions
   );
   const afterUpload = useSelector((state: RootState) => state.ui?.uploadAfter);
-  // const showFolderData = useSelector(
-  //   (state: RootState) => state.ui.folderShown
-  // );
   const openFolder = useSelector((state: RootState) => state.ui?.folderOpen);
   const addButtonShow = useSelector((state: RootState) => state.ui?.addButton);
   const fileStatus = useSelector((state: RootState) => state.ui?.fileStatus);
@@ -623,6 +619,7 @@ const UploadFileUI = ({
           </div>
         );
       },
+      responsive: ["md" as Breakpoint],
     },
     {
       title: "Created Date",
@@ -630,7 +627,6 @@ const UploadFileUI = ({
       key: "lastModifiedDate",
       render: (lastModifiedDate, obj) => (
         <div>
-          {" "}
           {obj.updated_at
             ? moment
                 .unix(obj.updated_at)
@@ -642,6 +638,7 @@ const UploadFileUI = ({
                 .toString()}
         </div>
       ),
+      responsive: ["lg" as Breakpoint],
     },
     {
       title: "Action",
@@ -649,111 +646,107 @@ const UploadFileUI = ({
       key: "x",
       render: (keyParam, obj, index) => {
         return (
-          <>
-            <Popover
-              overlayClassName="PopoverCustom"
-              placement="bottom"
-              title=""
-              content={
-                obj.file_type ? (
-                  <>
-                    {imageRegexData.test(obj.file_type) ? (
-                      <div
-                        className={styles.menu_item}
-                        onClick={() => {
-                          setPreview({
-                            previewVisible: true,
-                            previewName: obj.file_name,
-                            previewPath: obj.file_path,
-                            prevShort: obj.short_code_path,
-                            previewCopyShortCode: obj.short_code,
-                            previewCreatedAt: obj.created_at,
-                          });
-                        }}
-                      >
-                        {" "}
-                        <Image
-                          alt="Eye Image"
-                          src={eyeImage}
-                          width={15}
-                          height={11}
-                        />
-                        <span className={styles.marginLeftView}>View File</span>
-                      </div>
-                    ) : (
-                      <div
-                        className={styles.menu_item}
-                        onClick={() => {
-                          window.location.href = `${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/${obj.file_path}`;
-                        }}
-                      >
-                        <Image
-                          alt="downloadFile"
-                          src={download}
-                          width={15}
-                          height={13}
-                        />
-                        <span className={styles.marginLeftView}>
-                          Download File
-                        </span>
-                      </div>
-                    )}
-
+          <Popover
+            overlayClassName="PopoverCustom"
+            placement="bottom"
+            title=""
+            content={
+              obj.file_type ? (
+                <>
+                  {imageRegexData.test(obj.file_type) ? (
                     <div
                       className={styles.menu_item}
                       onClick={() => {
-                        navigator?.clipboard?.writeText(
-                          keyParam.short_code_path
-                        ),
-                          message.success("Perma Link Copied");
+                        setPreview({
+                          previewVisible: true,
+                          previewName: obj.file_name,
+                          previewPath: obj.file_path,
+                          prevShort: obj.short_code_path,
+                          previewCopyShortCode: obj.short_code,
+                          previewCreatedAt: obj.created_at,
+                        });
                       }}
                     >
                       <Image
-                        alt="copyShortCode"
-                        src={CopyShortCode}
-                        width={12}
-                        height={15}
+                        alt="Eye Image"
+                        src={eyeImage}
+                        width={15}
+                        height={11}
+                      />
+                      <span className={styles.marginLeftView}>View File</span>
+                    </div>
+                  ) : (
+                    <div
+                      className={styles.menu_item}
+                      onClick={() => {
+                        window.location.href = `${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/${obj.file_path}`;
+                      }}
+                    >
+                      <Image
+                        alt="downloadFile"
+                        src={download}
+                        width={15}
+                        height={13}
                       />
                       <span className={styles.marginLeftView}>
-                        Copy Perma Link
+                        Download File
                       </span>
                     </div>
-                    <div
-                      className={styles.menu_item}
-                      onClick={() => {
-                        setRemoveFileData({
-                          keyParam: keyParam,
-                          obj: obj,
-                          fileLists: fileLists,
-                        }),
-                          setDeleteConfirmationVisible(true);
-                      }}
-                    >
-                      <Image
-                        alt="Trash Data "
-                        src={Trash}
-                        width={12}
-                        height={15}
-                      />
-                      <span className={styles.marginLeftView}>Delete File</span>
-                    </div>
-                  </>
-                ) : (
-                  menu(index, obj)
-                )
-              }
-              trigger="click"
-              zIndex={1}
-            >
-              <div className="threeDOt">
-                <MoreOutlined />
-              </div>
-            </Popover>
-          </>
+                  )}
+
+                  <div
+                    className={styles.menu_item}
+                    onClick={() => {
+                      navigator?.clipboard?.writeText(keyParam.short_code_path),
+                        message.success("Perma Link Copied");
+                    }}
+                  >
+                    <Image
+                      alt="copyShortCode"
+                      src={CopyShortCode}
+                      width={12}
+                      height={15}
+                    />
+                    <span className={styles.marginLeftView}>
+                      Copy Perma Link
+                    </span>
+                  </div>
+                  <div
+                    className={styles.menu_item}
+                    onClick={() => {
+                      setRemoveFileData({
+                        keyParam: keyParam,
+                        obj: obj,
+                        fileLists: fileLists,
+                      }),
+                        setDeleteConfirmationVisible(true);
+                    }}
+                  >
+                    <Image
+                      alt="Trash Data "
+                      src={Trash}
+                      width={12}
+                      height={15}
+                    />
+                    <span className={styles.marginLeftView}>Delete File</span>
+                  </div>
+                </>
+              ) : (
+                menu(index, obj)
+              )
+            }
+            trigger="click"
+            zIndex={1}
+          >
+            <div className="threeDOt">
+              <MoreOutlined />
+            </div>
+          </Popover>
         );
       },
     },
   ];
+
   const uploadList = () => {
     Object.entries(updateList).map(([k, v]) => {
       const fileIndex = fileLists.findIndex((obj) => k == obj.uid);
@@ -926,16 +919,17 @@ const UploadFileUI = ({
               )}
             </div>
           </Card>
-        ) : (
-          ""
-        )}
+        ) : null}
       </div>
     );
   };
+
   const subStringData = (fileName) => {
     return fileName?.length > 10 ? fileName.substring(0, 10) + "..." : fileName;
   };
+
   const filterArrList = [];
+
   const searchFilter = () => {
     return (openFolder ? fileLists : filteredArray())?.length > 0 ? (
       (openFolder ? fileLists : filteredArray()).map((item, i) => {
@@ -945,7 +939,7 @@ const UploadFileUI = ({
             className={(() => {
               if (openFolder && item.id != selectedFolderID) {
                 return "";
-              } else if (!openFolder) {
+              } else if (!openFolder && dragBoxStatus == false) {
                 return styles.view_After_Upload;
               } else {
                 return styles.folder_Back_Button;
@@ -974,7 +968,6 @@ const UploadFileUI = ({
                       size="small"
                       title={
                         <h2 className={styles.FolderOpenHeading}>
-                          {" "}
                           <span
                             data-testid="arrow_outlined"
                             style={{ cursor: "pointer" }}
@@ -1036,15 +1029,11 @@ const UploadFileUI = ({
           </div>
         );
       })
-    ) : dragBoxStatus == true ? (
-      ""
-    ) : !toggleFileView ? (
+    ) : dragBoxStatus == true ? null : !toggleFileView ? (
       <div className={styles.emptyFolderData}>
         <Empty description={<span>No Data Found</span>} />
       </div>
-    ) : (
-      ""
-    );
+    ) : null;
   };
   // const displayImage = (file, imageData) => {
   //   const fileText = <img src={TEXT.src} alt="" />;
@@ -1173,6 +1162,7 @@ const UploadFileUI = ({
       </div>
     );
   };
+
   const handleImageLoaded = () => {
     setPreviewImageIndicator(false);
     setImageStatus("loaded");
@@ -1204,7 +1194,6 @@ const UploadFileUI = ({
           <div className="pageContentWrap">
             <div className={styles.uploadFilesData}>
               <Form
-                //name={editModal ? "Edit your folder name" : labels.CreateaFolder}
                 form={createFolderForm}
                 onFinish={onFinishValidation}
                 validateMessages={validateMessages}
@@ -1325,7 +1314,6 @@ const UploadFileUI = ({
                               addNewFile(),
                                 setToggleFileView(false),
                                 setUpdateList({});
-                              // setUploadStatus(true);
                               setDatePick("");
                               setSearch("");
                             }}
@@ -1338,14 +1326,10 @@ const UploadFileUI = ({
                             />
                             Add a File
                           </Button>
-                        ) : (
-                          ""
-                        )}
+                        ) : null}
 
                         <div className={styles.top_icon}>
-                          {show_UploadOptions || dragBoxStatus ? (
-                            ""
-                          ) : (
+                          {show_UploadOptions || dragBoxStatus ? null : (
                             <span
                               style={{ cursor: "pointer" }}
                               onClick={() => {
@@ -1360,9 +1344,7 @@ const UploadFileUI = ({
                               />
                             </span>
                           )}
-                          {show_UploadOptions || dragBoxStatus ? (
-                            ""
-                          ) : (
+                          {show_UploadOptions || dragBoxStatus ? null : (
                             <span
                               onClick={() => {
                                 setToggleFileView(false), showUploadsAfter();
