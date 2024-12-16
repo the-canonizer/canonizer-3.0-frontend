@@ -12,6 +12,7 @@ import { RootState } from "src/store";
 import { setCurrentCamp } from "src/store/slices/filtersSlice";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
 import { DownOutlined } from "@ant-design/icons";
+import ScoreTag from "components/ComponentPages/Home/TrandingTopic/scoreTag";
 
 const { TreeNode } = Tree;
 
@@ -506,7 +507,7 @@ const CampTree = ({
                           data[item]
                         )}
                     </span>
-                    <span className="bg-canOrange px-[0.30rem] rounded-md flex items-center gap-1">
+                    {/* <span className="bg-canOrange px-[0.30rem] rounded-md flex items-center gap-1">
                       <Image
                         src="/images/hand-icon.svg"
                         alt="svg"
@@ -518,7 +519,17 @@ const CampTree = ({
                           ? data[item].full_score?.toFixed(2)
                           : data[item].score?.toFixed(2)}
                       </span>
-                    </span>
+                    </span> */}
+                    {
+                      tree && tree?.["0"]?.["1"]?.rank_hidden == undefined && (
+                        <ScoreTag
+                          topic_score={
+                            is_checked ? data[item]?.full_score : data[item]?.score
+                          }
+                          hideRank={tree && tree?.["0"]?.["1"]?.rank_hidden}
+                        />
+                      )
+                    }
                   </div>
                 </div>
               }

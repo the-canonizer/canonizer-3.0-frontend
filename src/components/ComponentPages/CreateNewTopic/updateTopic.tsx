@@ -45,6 +45,7 @@ const UpdateTopic = () => {
   const [currentTopicNickNames, setCurrentTopicNckNames] = useState(null);
   const [isSubmitReq, setIsSubmitReq] = useState(false);
   const [editCampStatementData, setEditCampStatementData] = useState("");
+  const [isRankHidden, setIsRankHidden] = useState(false);
 
   const router = useRouter();
   const dispatch = useDispatch();
@@ -77,7 +78,8 @@ const UpdateTopic = () => {
       currentTopicNickNames?.at(0)?.id !== values?.nick_name ||
       currentTopic?.namespace_id !== values?.namespace ||
       currentTopic?.edit_summary !== values?.edit_summary ||
-      !compareTags(currentTopic?.tags, selectedCats)
+      !compareTags(currentTopic?.tags, selectedCats) ||
+      currentTopic?.is_rank_hidden !== values?.rank_hidden
     ) {
       setIsSubmitReq(true);
     } else {
@@ -112,6 +114,8 @@ const UpdateTopic = () => {
 
         setCurrentTopic(topicData);
 
+        setIsRankHidden(!!topicData?.is_rank_hidden);
+
         setEditCampStatementData(topicData?.note);
 
         const result = await getAllUsedNickNames({
@@ -125,6 +129,7 @@ const UpdateTopic = () => {
           await form.setFieldValue("topic_name", topicData?.topic_name);
           await form.setFieldValue("namespace", topicData?.namespace_id);
           await form.setFieldValue("edit_summary", topicData?.edit_summary);
+          await form.setFieldValue("rank_hidden", topicData?.is_rank_hidden);
 
           setNickNameList(resData);
         }
@@ -157,6 +162,7 @@ const UpdateTopic = () => {
       tags: selectedCats?.map((cat) => cat?.id),
       event_type: update ? "edit" : "update",
       note: values?.edit_summary || null,
+      is_rank_hidden: isRankHidden,
     };
 
     const res = await updateTopicApi(body);
@@ -322,6 +328,12 @@ const UpdateTopic = () => {
     }
   };
 
+  const hideRankHandler = (e) => {
+    form.setFieldValue("rank_hidden", e.target.checked);
+    setIsRankHidden(e.target.checked)
+  };
+
+
   return (
     <CustomSpinner key="create-topic-spinner" spinning={isLoading}>
       <Breadcrumbs
@@ -363,6 +375,8 @@ const UpdateTopic = () => {
             values={values}
             isLoading={isLoading}
             editCampStatementData={editCampStatementData}
+            isRankHidden = {isRankHidden}
+            hideRankHandler={hideRankHandler}
           />
         </Col>
         <Col lg={12} key="col-topic-info">

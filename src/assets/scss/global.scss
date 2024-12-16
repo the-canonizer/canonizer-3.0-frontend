@@ -1092,6 +1092,11 @@ body {
     }
   }
 }
+.hide-rank-checkbox{
+  .ant-checkbox-inner{
+    @apply m-0;
+  }
+}
 
 .cn-card-home {
   a {
