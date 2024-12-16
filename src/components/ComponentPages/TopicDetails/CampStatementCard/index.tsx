@@ -260,11 +260,11 @@ const CampStatementCard = ({ loadingIndicator }) => {
       }
     >
       <div
-        className={`camp-agrrement-new overflow-hidden !overflow-y-auto w-full h-full flex  justify-center pr-4 ${
-          campStatement?.length && campStatement[0]?.parsed_value
-            ? ""
-            : "my-auto"
-        }`}
+       className={`camp-agrrement-new overflow-hidden !overflow-y-auto w-full pr-4 ${
+        !campStatement?.[0]?.value?.length ? "h-full flex justify-center my-auto" : ""
+      } ${
+        campStatement?.length > 0 && campStatement[0]?.parsed_value ? "" : "my-auto"
+      }`}
       >
         <div
           className={`flex flex-col ${
