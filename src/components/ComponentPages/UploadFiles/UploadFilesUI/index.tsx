@@ -392,8 +392,9 @@ const UploadFileUI = ({
       <Menu.Item
         data-testid="test3"
         onClick={() => {
+          debugger
           {
-            navigator.clipboard.writeText(item.short_code_path),
+            navigator.clipboard.writeText(item?.short_code_path),
               message.success("Perma Link Copied");
           }
         }}
