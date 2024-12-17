@@ -1399,21 +1399,24 @@ const UploadFileUI = ({
                     bordered={false}
                     extra={
                       <>
-                        <Button
-                          className="min-w-[200px] gap-2 flex items-center justify-center border border-canBlue bg-[#98B7E61A] rounded-lg text-canBlack text-base font-medium"
-                          size="large"
-                          onClick={() => {
-                            addNewFile(),
-                              setToggleFileView(false),
-                              setUpdateList({});
-                            // setUploadStatus(true);
-                            setDatePick("");
-                            setSearch("");
-                          }}
-                        >
-                          Upload New File
-                          <CloudUploadOutlined />
-                        </Button>
+                        {uploadedLengths?.fileLength >1 &&
+                          uploadedLengths?.folderLength > 1 && (
+                            <Button
+                              className="min-w-[200px] gap-2 flex items-center justify-center border border-canBlue bg-[#98B7E61A] rounded-lg text-canBlack text-base font-medium"
+                              size="large"
+                              onClick={() => {
+                                addNewFile(),
+                                  setToggleFileView(false),
+                                  setUpdateList({});
+                                // setUploadStatus(true);
+                                setDatePick("");
+                                setSearch("");
+                              }}
+                            >
+                              Upload New File
+                              <CloudUploadOutlined />
+                            </Button>
+                          )}
                       </>
                     }
                   >
