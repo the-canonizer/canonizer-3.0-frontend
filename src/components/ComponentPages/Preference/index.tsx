@@ -144,8 +144,8 @@ const ProfilePrefrences = () => {
         if (algoOrLang == "algorithms") {
           option.push(
             <Option
-              key={item.algorithm_label}
-              value={item.algorithm_label}
+              key={item.algorithm_key}
+              value={item.algorithm_key}
               id="prefrence_option"
             >
               {item.algorithm_label}
