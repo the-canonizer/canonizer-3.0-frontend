@@ -5,6 +5,13 @@ export const formValidationTypes = () => {
   return ["onSubmit", "onBlur"];
 };
 
+// Regex to validate input:
+// - Contains at least one alphanumeric character (letters or digits)
+// - Allows spaces and specific special characters
+// - Prevents inputs that are URLs (http, https, www)
+export const validInputRegex = /^(?=.*[a-zA-Z0-9])(?!https?:\/\/|www\.)[\w\s!@#$%^&*(),.?":{}|<>-]+$/;
+
+
 export const phoneNumberRule = {
   rules: [
     // {
@@ -329,8 +336,9 @@ export const topicNameRule = {
       message: validations.topiNameMax80,
     },
     {
-      pattern: /[^ \s]/,
-      message: "Enter a valid Topic Name",
+      pattern:validInputRegex,
+      message:
+        "Enter a valid Topic Name: it must include letters or digits, and cannot be only special characters or a URL.",
     },
     emojiValidation(patterns.emoji_restrication),
   ],
@@ -365,6 +373,11 @@ export const campNameRule = {
     {
       max: 80,
       message: validations.topiNameMax80,
+    },
+    {
+      pattern:validInputRegex,
+      message:
+        "Enter a valid Camp Name: it must include letters or digits, and cannot be only special characters or a URL.",
     },
     emojiValidation(patterns.emoji_restrication),
   ],

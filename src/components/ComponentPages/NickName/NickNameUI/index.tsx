@@ -10,6 +10,7 @@ import PrimaryButton from "components/shared/Buttons/PrimariButton";
 import { setDefaultNickname } from "src/network/api/userApi";
 import { openNotificationWithIcon } from "components/common/notification/notificationBar";
 import { useState } from "react";
+import { validInputRegex } from "src/messages/validationRules";
 
 const { Option } = Select;
 
@@ -32,11 +33,11 @@ function NickNameUI({
 }: any) {
   const pageSizeLength = 10;
   const isDisable = addEditBtn == "Update";
-  const [loadingStates, setLoadingStates] = useState({}); 
+  const [loadingStates, setLoadingStates] = useState({});
 
   const updateDefaultNickname = async (record, setCancelDisabled) => {
-    setLoadingStates((prev) => ({ ...prev, [record.id]: true })); 
-    setCancelDisabled(true); 
+    setLoadingStates((prev) => ({ ...prev, [record.id]: true }));
+    setCancelDisabled(true);
 
     const payload = { nick_name_id: record.id };
     try {
@@ -46,13 +47,13 @@ function NickNameUI({
           `${res?.data?.nick_name} has been successfully set as the default.`,
           "success"
         );
-        fetchNickNameList(); 
+        fetchNickNameList();
       }
     } catch (error) {
       console.error("Error setting default nickname:", error);
     } finally {
-      setLoadingStates((prev) => ({ ...prev, [record.id]: false })); 
-      setCancelDisabled(false); 
+      setLoadingStates((prev) => ({ ...prev, [record.id]: false }));
+      setCancelDisabled(false);
     }
   };
 
@@ -78,7 +79,7 @@ function NickNameUI({
           checked={record?.default > 0}
           onClick={() => {
             if (record?.default === 0) {
-              let cancelDisabled = false; 
+              let cancelDisabled = false;
               Modal.confirm({
                 title: "Are you sure?",
                 content: `Are you sure you want to set "${record?.nick_name}" as the default nickname?`,
@@ -88,7 +89,7 @@ function NickNameUI({
                 cancelButtonProps: { disabled: cancelDisabled },
                 onOk: () =>
                   updateDefaultNickname(record, (value) => {
-                    cancelDisabled = value; 
+                    cancelDisabled = value;
                   }),
               });
             }
@@ -230,8 +231,9 @@ function NickNameUI({
                 message: "Please enter a nickname.",
               },
               {
-                pattern: /[a-zA-Z0-9]/, // Allow alphanumeric characters, spaces, hyphens, and underscores
-                message: "Nickname must contain at least one letter or number.",
+                pattern: validInputRegex,
+                message:
+                  "Enter a valid Nickname: it must include letters or digits and cannot be only special characters or a URL.",
               },
             ]}
           >

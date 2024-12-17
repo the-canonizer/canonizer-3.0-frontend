@@ -42,6 +42,7 @@ import PrimaryButton from "components/shared/Buttons/PrimariButton";
 import PlacesAutocomplete from "react-places-autocomplete";
 import React from "react";
 import VerifyMobileNumberForm from "./VerifyMobileNumberForm";
+import { validInputRegex } from "src/messages/validationRules";
 
 const { Option } = Select;
 
@@ -747,12 +748,9 @@ function ProfileInfoForm({
                     validator: (_, value) => {
                       if (!value) return Promise.resolve();
 
-                      // Regular expressions to check for letters and digits
-                      const letterOrDigitRegex = /[a-zA-Z0-9]/; // Checks if there's at least one letter or digit
-
-                      if (!letterOrDigitRegex.test(value)) {
+                      if (!validInputRegex.test(value)) {
                         return Promise.reject(
-                          "Address must contain at least one letter or number."
+                          "Address must contain at least one letter or number and cannot be only special characters or a URL."
                         );
                       }
 
@@ -844,12 +842,10 @@ function ProfileInfoForm({
                     validator: (_, value) => {
                       if (!value) return Promise.resolve();
 
-                      // Regular expressions to check for letters and digits
-                      const letterOrDigitRegex = /[a-zA-Z0-9]/; // Checks if there's at least one letter or digit
 
-                      if (!letterOrDigitRegex.test(value)) {
+                      if (!validInputRegex.test(value)) {
                         return Promise.reject(
-                          "Address must contain at least one letter or number."
+                          "Address must contain at least one letter or number and cannot be only special characters or a URL."
                         );
                       }
 
