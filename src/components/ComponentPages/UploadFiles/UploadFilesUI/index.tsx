@@ -393,7 +393,6 @@ const UploadFileUI = ({
         data-testid="test3"
         onClick={() => {
           {
-            console.log("navigator",navigator)
             navigator.clipboard.writeText(item?.short_code_path),
               message.success("Perma Link Copied");
           }
@@ -870,7 +869,18 @@ const UploadFileUI = ({
                   `${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/${item.file_path}`
                 )}
               </div>
-              {item?.folder_id && <FolderOpenFilled className="ff-icon" />}
+              {(() => {
+                // Check if the file is an image and the item has a folder ID
+                if (
+                  !fileTypeRegexes.image?.test(item.file_type || item.type) &&
+                  item?.folder_id
+                ) {
+                  return <FolderOpenFilled className="ff-icon" />;
+                }
+
+                // Return null if the condition is not met to avoid rendering issues
+                return null;
+              })()}
             </div>
             <div className="BoxcopyWrap p-[6px]">
               <div className="flex gap-1 items-center justify-between">
@@ -915,6 +925,10 @@ const UploadFileUI = ({
               </span>
               {item?.folder?.name && (
                 <span className="truncate block !text-[10px] font-medium">
+                  {fileTypeRegexes.image?.test(item.file_type || item.type) &&
+                    item?.folder_id && (
+                      <FolderOpenFilled className="ff-icon mr-1 text-canBlue" />
+                    )}
                   {item?.folder?.name}
                 </span>
               )}
@@ -1159,7 +1173,7 @@ const UploadFileUI = ({
                 height={15}
               />
             </span> */}
-            <span>
+            <span className="!text-[10px] text-[#777F93]">
               {moment.unix(file.created_at).format("MMM DD, YYYY, h:mm:ss A")}
             </span>
           </div>
@@ -1310,7 +1324,7 @@ const UploadFileUI = ({
                           />
                           Create a Folder
                         </Button>
-                        {addButtonShow && !dragBoxStatus ? (
+                        {/* {addButtonShow && !dragBoxStatus ? (
                           <Button
                             data-testid="addAFileBtn"
                             id="addAFileBtn"
@@ -1331,7 +1345,7 @@ const UploadFileUI = ({
                             />
                             Add a File
                           </Button>
-                        ) : null}
+                        ) : null} */}
 
                         <div className={styles.top_icon}>
                           {show_UploadOptions || dragBoxStatus ? null : (
@@ -1382,21 +1396,25 @@ const UploadFileUI = ({
                     bordered={false}
                     extra={
                       <>
-                        <Button
-                          className="min-w-[200px] gap-2 flex items-center justify-center border border-canBlue bg-[#98B7E61A] rounded-lg text-canBlack text-base font-medium"
-                          size="large"
-                          onClick={() => {
-                            addNewFile(),
-                              setToggleFileView(false),
-                              setUpdateList({});
-                            // setUploadStatus(true);
-                            setDatePick("");
-                            setSearch("");
-                          }}
-                        >
-                          Upload New File
-                          <CloudUploadOutlined />
-                        </Button>
+                        {(addButtonShow && !dragBoxStatus) ||
+                        (uploadedLengths?.fileLength < 1 &&
+                          uploadedLengths?.folderLength < 1) ? (
+                          <Button
+                            className="min-w-[200px] gap-2 flex items-center justify-center border border-canBlue bg-[#98B7E61A] rounded-lg text-canBlack text-base font-medium"
+                            size="large"
+                            onClick={() => {
+                              addNewFile(),
+                                setToggleFileView(false),
+                                setUpdateList({});
+                              // setUploadStatus(true);
+                              setDatePick("");
+                              setSearch("");
+                            }}
+                          >
+                            Upload New File
+                            <CloudUploadOutlined />
+                          </Button>
+                        ) : null}
                       </>
                     }
                   >
@@ -1646,7 +1664,7 @@ const UploadFileUI = ({
                     ) : (
                       ""
                     )}
-                    <Form.Item>
+                    <Form.Item className="mb-0"> 
                       {show_UploadOptions ? (
                         <div className={styles.Upload_Cancel_Btn}>
                           <Button

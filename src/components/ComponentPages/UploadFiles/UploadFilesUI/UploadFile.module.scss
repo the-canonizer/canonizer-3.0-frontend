@@ -83,21 +83,21 @@
 }
 
 .Upload_Cancel_Btn {
-  @apply mt-0 ml-[10px];
+  @apply   mt-2;
 }
 
 .Upload_Cancel_Btn .Upload_Btn {
-  @apply mr-[10px] bg-[rgb(249_157_22)] border-[rgb(249_157_22)] text-white rounded-sm w-[130px] h-[30px] text-base;
+  @apply mr-[10px] bg-[rgb(249_157_22)] border-[rgb(249_157_22)] text-white rounded-sm min-w-[130px] h-[38px] text-base;
 }
 
 .Upload_Cancel_Btn .Upload_Btn:hover {
   @apply bg-[rgb(249_157_22)] border-[rgb(249_157_22)] text-white;
 }
 .cancel_Btn {
-  @apply border-canBlue text-canBlue h-[38px] rounded-sm w-auto font-semibold;
+  @apply border-canBlue text-canBlue h-[38px] w-[130px] rounded-sm  font-semibold ;
 }
 .cancel_Btn:hover {
-  @apply border-canBlue text-white;
+  @apply border-canBlue;
 }
 .top_btn {
   @apply w-auto flex relative flex-wrap gap-2;
