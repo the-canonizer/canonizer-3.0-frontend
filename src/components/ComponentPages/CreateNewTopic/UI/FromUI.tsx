@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useState } from "react";
-import { Form, Row, Col, Typography, Checkbox } from "antd";
+import { Form, Row, Col, Typography, Checkbox, Collapse } from "antd";
 import {
   CloseOutlined,
   FileTextOutlined,
@@ -27,6 +27,8 @@ import { useDispatch } from "react-redux";
 
 const { labels, placeholders, nickNmRule, topicNameRule, namespaceRule } =
   messages;
+const { Panel } = Collapse;
+const { Text } = Typography;
 
 const CreateTopicFromUI = ({
   onFinish,
@@ -48,7 +50,6 @@ const CreateTopicFromUI = ({
   isRankHidden,
   hideRankHandler,
 }) => {
-  
   useEffect(() => {
     if (nickNameList?.length) {
       const defaultNickName = defaultNicknameData(nickNameList);
@@ -60,7 +61,11 @@ const CreateTopicFromUI = ({
 
   const getNickNameInput = () => {
     // Determine the default nickname
-    const defaultNickName = defaultNicknameData(nickNameList)?.nick_name || values?.nick_name || defaultNicknameData(nickNameList)?.id || nickNameList[0]?.id;
+    const defaultNickName =
+      defaultNicknameData(nickNameList)?.nick_name ||
+      values?.nick_name ||
+      defaultNicknameData(nickNameList)?.id ||
+      nickNameList[0]?.id;
 
     const selectInputProps: any = {
       label: (
@@ -87,16 +92,16 @@ const CreateTopicFromUI = ({
       lastValue: form.getFieldValue("nick_name"),
       value: form.getFieldValue("nick_name") || defaultNickName,
     };
-  
+
     if (nickNameList?.length) {
       selectInputProps.defaultValue = defaultNickName;
       selectInputProps.initialValue = defaultNickName;
       selectInputProps.key = "nickNamesWithKeyName";
     }
-  
+
     return <SelectInputs {...selectInputProps} />;
   };
-  
+
   const getAllNameSpaces = async () => {
     await getCanonizedNameSpacesApi();
   };
@@ -256,7 +261,7 @@ const CreateTopicFromUI = ({
               />
             )}
           </Col>
-          <Col xs={24} sm={24} md={24} lg={24} xl={12} id="category-input-col">
+          {/* <Col xs={24} sm={24} md={24} lg={24} xl={12} id="category-input-col">
             {isLoading ? (
               <CustomSkelton
                 skeltonFor="list"
@@ -289,35 +294,102 @@ const CreateTopicFromUI = ({
                 id="category-select"
               />
             )}
-          </Col>
-          {selectedCats && selectedCats?.length > 0 && (
-              <Col xs={24} className="mb-5" id="selected-categories-col">
-                {isLoading ? (
-                  <CustomSkelton
-                    skeltonFor="list"
-                    bodyCount={1}
-                    stylingClass="listSkeleton"
-                    isButton={false}
-                    id="selected-categories-skeleton"
-                  />
-                ) : (
-                  selectedCats?.map((cat) => (
-                    <Tags
-                      className="rounded-lg py-2 px-6 border-canGrey2 text-canBlue bg-canGray mt-0 mb-2 font-medium"
-                      key={cat?.id}
-                      id={`selected-category-tag-${cat?.id}`}
-                    >
-                      <span>{cat?.title}</span>
-                      <CloseOutlined
-                        className="mr-2 text-canLight"
-                        onClick={(e) => onCatRemove(e, cat)}
-                        id={`remove-category-icon-${cat?.id}`}
+          </Col> */}
+          <Collapse
+            className="camp-accordion"
+            ghost
+            expandIconPosition="right"
+            defaultActiveKey={["1"]}
+            style={{ width: "100%" }}
+          >
+            <Panel
+              header={
+                <>
+                  Advanced Settings<br></br>{" "}
+                  <Text
+                    className="block mt-1 text-xs text-[#777F93]"
+                    id="keywords-text"
+                  >
+                    {labels.cr_keywords_sp}
+                  </Text>
+                </>
+              }
+              key="1"
+            >
+              <Row gutter={16} id="form-row-2">
+                <Col
+                  xs={24}
+                  sm={24}
+                  md={24}
+                  lg={12}
+                  xl={12}
+                  id="category-input-col"
+                >
+                  {isLoading ? (
+                    <CustomSkelton
+                      skeltonFor="list"
+                      bodyCount={1}
+                      stylingClass="listSkeleton"
+                      isButton={false}
+                      id="category-skeleton"
+                    />
+                  ) : (
+                    <SelectInputs
+                      label={labels.cateLabel}
+                      name="tags"
+                      options={categories}
+                      placeholder={placeholders.catSelect}
+                      allowClear
+                      size={"large"}
+                      dataid="topic-category"
+                      showSearch
+                      optionFilterProp="children"
+                      inputClassName="border-0"
+                      rules={null}
+                      nameKey="title"
+                      prefix={
+                        <AlignIcon
+                          className="flex items-center justify-center px-2"
+                          fill="#242B37"
+                        />
+                      }
+                      onSelect={onTagSelect}
+                      id="category-select"
+                    />
+                  )}
+                </Col>
+                {selectedCats && selectedCats?.length > 0 && (
+                  <Col xs={24} className="mb-5" id="selected-categories-col">
+                    {isLoading ? (
+                      <CustomSkelton
+                        skeltonFor="list"
+                        bodyCount={1}
+                        stylingClass="listSkeleton"
+                        isButton={false}
+                        id="selected-categories-skeleton"
                       />
-                    </Tags>
-                  ))
+                    ) : (
+                      selectedCats?.map((cat) => (
+                        <Tags
+                          className="rounded-lg py-2 px-6 border-canGrey2 text-canBlue bg-canGray mt-0 mb-2 font-medium"
+                          key={cat?.id}
+                          id={`selected-category-tag-${cat?.id}`}
+                        >
+                          <span>{cat?.title}</span>
+                          <CloseOutlined
+                            className="mr-2 text-canLight"
+                            onClick={(e) => onCatRemove(e, cat)}
+                            id={`remove-category-icon-${cat?.id}`}
+                          />
+                        </Tags>
+                      ))
+                    )}
+                  </Col>
                 )}
-              </Col>
-          )}
+              </Row>
+            </Panel>
+          </Collapse>
+
           {isEdit && (
             <Col xs={24} xl={24} id="edit-summary-col">
               <Inputs
@@ -333,18 +405,18 @@ const CreateTopicFromUI = ({
             </Col>
           )}
 
-          <Col xs={24}>
             <Form.Item name="rank_hidden" valuePropName="checked">
               <Checkbox
                 id="rank_hidden"
-                className="hide-rank-checkbox"
+                className="hide-rank-checkbox mt-5"
                 checked={isRankHidden}
                 onChange={hideRankHandler}
               >
-                Hide the rank
+                <div className="text-canBlack font-medium">
+                  Hide the rank
+                </div>
               </Checkbox>
             </Form.Item>
-          </Col>
         </Row>
 
         {isLoading ? (

@@ -1,7 +1,15 @@
 import { useRouter } from "next/router";
 import { Fragment, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Alert, BackTop, Image, Popover, Select, Typography } from "antd";
+import {
+  Alert,
+  BackTop,
+  Image,
+  Popover,
+  Select,
+  Typography,
+  Collapse,
+} from "antd";
 import moment from "moment";
 
 import styles from "./topicDetails.module.scss";
@@ -65,6 +73,7 @@ import CampRecentActivities from "./CampRecentActivities";
 import { InfoCircleOutlined } from "@ant-design/icons";
 
 const { Link: AntLink } = Typography;
+const { Panel } = Collapse;
 
 const TopicDetails = ({ serverSideCall }: any) => {
   const myRefToCampStatement = useRef(null);
@@ -689,7 +698,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
                     options={scoreOptions}
                   />
                 </div>
-                <div
+                {/* <div
                   className={styles.scoreCheckbox}
                   id="topic_detail_section_consesnus_tree_full_score_checkbox"
                 >
@@ -701,7 +710,37 @@ const TopicDetails = ({ serverSideCall }: any) => {
                 <ArchivedCampCheckBox
                   loadingIndicator={loadingIndicator}
                   id="topic_detail_section_consesnus_tree_archive_checkbox"
-                />
+                /> */}
+                <Collapse
+                  className="camp-accordion"
+                  ghost
+                  expandIconPosition="right"
+                  defaultActiveKey={["1"]}
+                  style={{width: "55%"}}
+                >
+                  <Panel
+                    header={
+                      <>
+                        Advanced Settings<br></br>{" "}
+                      </>
+                    }
+                    key="1"
+                  >
+                    <div
+                      className={styles.scoreCheckbox}
+                      id="topic_detail_section_consesnus_tree_full_score_checkbox"
+                    >
+                      <FullScoreCheckbox
+                        loadingIndicator={loadingIndicator}
+                        isDisabled={tree && tree?.["1"]?.rank_hidden}
+                      />
+                    </div>
+                    <ArchivedCampCheckBox
+                      loadingIndicator={loadingIndicator}
+                      id="topic_detail_section_consesnus_tree_archive_checkbox"
+                    />
+                  </Panel>
+                </Collapse>
                 <hr
                   className="border-1 my-7 border-canGrey2"
                   id="topic_detail_section_consesnus_tree_line_break"
