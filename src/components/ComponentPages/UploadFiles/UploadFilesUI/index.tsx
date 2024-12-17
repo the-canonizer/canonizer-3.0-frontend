@@ -1397,8 +1397,8 @@ const UploadFileUI = ({
                     extra={
                       <>
                         {(addButtonShow && !dragBoxStatus) ||
-                        (uploadedLengths?.fileLength < 1 &&
-                          uploadedLengths?.folderLength < 1) ? (
+                        (uploadedLengths?.fileLength < 0 &&
+                          uploadedLengths?.folderLength < 0) ? (
                           <Button
                             className="min-w-[200px] gap-2 flex items-center justify-center border border-canBlue bg-[#98B7E61A] rounded-lg text-canBlack text-base font-medium"
                             size="large"
