@@ -36,6 +36,7 @@ const ExistingTopicList = ({
   data,
   isShowMore,
   isError,
+  isUpdate = false,
 }) => {
   const dispatch = useDispatch();
   return (
@@ -83,68 +84,77 @@ const ExistingTopicList = ({
           id="loading-skeleton"
         />
       ) : (
-        <List
-          dataSource={data}
-          locale={{ emptyText: "There are no related topics available" }}
-          className="!list-disc"
-          footer={
-            isShowMore && (
-              <Link
-                href={{ pathname: "/search/topic", query: { q: topicName } }}
-              >
-                <a
-                  className="text-canBlue uppercase text-xs font-semibold hocus:text-canHoverBlue "
-                  target="_blank"
-                  role="button" // Adds button role
-                  tabIndex={0} // Makes it focusable via keyboard
-                  onClick={() => {
-                    dispatch(setSearchValue(""));
-                    dispatch(
-                      setFilterCanonizedTopics({
-                        // asofdate: Date.now() / 1000,
-                        asof: "default",
-                      })
-                    );
-                  }}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      dispatch(setSearchValue(""));
-                    }
-                  }}
-                  id="see-more-results"
+        <div className="w-full h-full">
+          <div
+            className={`${
+              isUpdate ? "max-h-[850px]" : "max-h-[500px]"
+            } overflow-y-auto overflow-x-hidden pr-3 mb-4`}
+          >
+            <List
+              dataSource={data}
+              locale={{ emptyText: "There are no related topics available" }}
+              className="!list-disc"
+              renderItem={(item: {
+                id: string;
+                link: string;
+                type_value: string;
+              }) => (
+                <List.Item
+                  className="!border-b-0 mt-0 pt-0 text-lg font-[300]"
+                  key={item?.id}
+                  id={`list-item-${item?.id}`}
                 >
-                  See more results
-                </a>
-              </Link>
-            )
-          }
-          renderItem={(item: {
-            id: string;
-            link: string;
-            type_value: string;
-          }) => (
-            <List.Item
-              className="!border-b-0 mt-0 pt-0 text-lg font-[300]"
-              key={item?.id}
-              id={`list-item-${item?.id}`}
+                  <Link href={{ pathname: "/" + item?.link }}>
+                    <a
+                      className="flex justify-start items-start whitespace-break-spaces break-all text-wrap line-clamp-1"
+                      target="_blank"
+                      id={`list-item-link-${item?.id}`}
+                    >
+                      <div
+                        className="w-[5px] h-[5px] rounded-full bg-canBlack mr-3 mt-2.5"
+                        id={`list-item-dot-${item?.id}`}
+                      ></div>
+                      {getHighlightedText(item?.type_value, topicName)}
+                    </a>
+                  </Link>
+                </List.Item>
+              )}
+              id="topics-list"
+            />
+          </div>
+          {isShowMore && (
+            <Link
+              href={{
+                pathname: "/search/topic",
+                query: { q: topicName },
+              }}
             >
-              <Link href={{ pathname: "/" + item?.link }}>
-                <a
-                  className="flex justify-start items-start whitespace-break-spaces break-all text-wrap line-clamp-1"
-                  target="_blank"
-                  id={`list-item-link-${item?.id}`}
-                >
-                  <div
-                    className="w-[5px] h-[5px] rounded-full bg-canBlack mr-3 mt-2.5"
-                    id={`list-item-dot-${item?.id}`}
-                  ></div>
-                  {getHighlightedText(item?.type_value, topicName)}
-                </a>
-              </Link>
-            </List.Item>
+              <a
+                className="text-canBlue uppercase text-xs font-semibold hocus:text-canHoverBlue "
+                target="_blank"
+                role="button" // Adds button role
+                tabIndex={0} // Makes it focusable via keyboard
+                onClick={() => {
+                  dispatch(setSearchValue(""));
+                  dispatch(
+                    setFilterCanonizedTopics({
+                      // asofdate: Date.now() / 1000,
+                      asof: "default",
+                    })
+                  );
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    dispatch(setSearchValue(""));
+                  }
+                }}
+                id="see-more-results"
+              >
+                See more results
+              </a>
+            </Link>
           )}
-          id="topics-list"
-        />
+        </div>
       )}
     </CommonCards>
   );

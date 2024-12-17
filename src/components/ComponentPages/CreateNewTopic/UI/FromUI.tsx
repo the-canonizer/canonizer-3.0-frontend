@@ -1,5 +1,5 @@
-import { Fragment, useEffect } from "react";
-import { Form, Row, Col, Typography } from "antd";
+import { Fragment, useEffect, useState } from "react";
+import { Form, Row, Col, Typography, Checkbox } from "antd";
 import {
   CloseOutlined,
   FileTextOutlined,
@@ -9,7 +9,10 @@ import {
 } from "@ant-design/icons";
 
 import messages from "src/messages";
-import { changeSlashToArrow } from "src/utils/generalUtility";
+import {
+  changeSlashToArrow,
+  defaultNicknameData,
+} from "src/utils/generalUtility";
 import Inputs from "components/shared/FormInputs";
 import SelectInputs from "components/shared/FormInputs/select";
 import AlignIcon from "./alignIcon";
@@ -42,8 +45,23 @@ const CreateTopicFromUI = ({
   isLoading,
   editCampStatementData,
   isEdit = false,
+  isRankHidden,
+  hideRankHandler,
 }) => {
+  
+  useEffect(() => {
+    if (nickNameList?.length) {
+      const defaultNickName = defaultNicknameData(nickNameList);
+      if (defaultNickName) {
+        form.setFieldValue("nick_name", defaultNickName.id);
+      }
+    }
+  }, [nickNameList]);
+
   const getNickNameInput = () => {
+    // Determine the default nickname
+    const defaultNickName = defaultNicknameData(nickNameList)?.nick_name || values?.nick_name || defaultNicknameData(nickNameList)?.id || nickNameList[0]?.id;
+
     const selectInputProps: any = {
       label: (
         <Fragment>
@@ -67,17 +85,18 @@ const CreateTopicFromUI = ({
       prefix: <UserOutlined className="px-3 text-canBlack" />,
       onSelect: (val) => form.setFieldValue("nick_name", val),
       lastValue: form.getFieldValue("nick_name"),
-      value: form.getFieldValue("nick_name"),
+      value: form.getFieldValue("nick_name") || defaultNickName,
     };
-
+  
     if (nickNameList?.length) {
-      selectInputProps.defaultValue = values?.nick_name || nickNameList[0]?.id;
-      selectInputProps.initialValue = values?.nick_name || nickNameList[0]?.id;
+      selectInputProps.defaultValue = defaultNickName;
+      selectInputProps.initialValue = defaultNickName;
       selectInputProps.key = "nickNamesWithKeyName";
     }
+  
     return <SelectInputs {...selectInputProps} />;
   };
-
+  
   const getAllNameSpaces = async () => {
     await getCanonizedNameSpacesApi();
   };
@@ -116,7 +135,11 @@ const CreateTopicFromUI = ({
         validateTrigger={messages.formValidationTypes()}
         initialValues={{
           topic_name: "",
-          nick_name: values?.nick_name || nickNameList[0]?.id,
+          nick_name: defaultNicknameData(nickNameList)?.nick_name
+            ? defaultNicknameData(nickNameList)?.nick_name
+            : values?.nick_name || defaultNicknameData(nickNameList)?.id
+            ? defaultNicknameData(nickNameList)?.id
+            : nickNameList[0]?.id,
           namespace: getNameSpacesValue(),
           tags: null,
         }}
@@ -267,32 +290,34 @@ const CreateTopicFromUI = ({
               />
             )}
           </Col>
-          <Col xs={24} className="mb-5" id="selected-categories-col">
-            {isLoading ? (
-              <CustomSkelton
-                skeltonFor="list"
-                bodyCount={1}
-                stylingClass="listSkeleton"
-                isButton={false}
-                id="selected-categories-skeleton"
-              />
-            ) : (
-              selectedCats?.map((cat) => (
-                <Tags
-                  className="rounded-lg py-2 px-6 border-canGrey2 text-canBlue bg-canGray mt-0 mb-2 font-medium"
-                  key={cat?.id}
-                  id={`selected-category-tag-${cat?.id}`}
-                >
-                  <span>{cat?.title}</span>
-                  <CloseOutlined
-                    className="mr-2 text-canLight"
-                    onClick={(e) => onCatRemove(e, cat)}
-                    id={`remove-category-icon-${cat?.id}`}
+          {selectedCats && selectedCats?.length > 0 && (
+              <Col xs={24} className="mb-5" id="selected-categories-col">
+                {isLoading ? (
+                  <CustomSkelton
+                    skeltonFor="list"
+                    bodyCount={1}
+                    stylingClass="listSkeleton"
+                    isButton={false}
+                    id="selected-categories-skeleton"
                   />
-                </Tags>
-              ))
-            )}
-          </Col>
+                ) : (
+                  selectedCats?.map((cat) => (
+                    <Tags
+                      className="rounded-lg py-2 px-6 border-canGrey2 text-canBlue bg-canGray mt-0 mb-2 font-medium"
+                      key={cat?.id}
+                      id={`selected-category-tag-${cat?.id}`}
+                    >
+                      <span>{cat?.title}</span>
+                      <CloseOutlined
+                        className="mr-2 text-canLight"
+                        onClick={(e) => onCatRemove(e, cat)}
+                        id={`remove-category-icon-${cat?.id}`}
+                      />
+                    </Tags>
+                  ))
+                )}
+              </Col>
+          )}
           {isEdit && (
             <Col xs={24} xl={24} id="edit-summary-col">
               <Inputs
@@ -307,6 +332,19 @@ const CreateTopicFromUI = ({
               />
             </Col>
           )}
+
+          <Col xs={24}>
+            <Form.Item name="rank_hidden" valuePropName="checked">
+              <Checkbox
+                id="rank_hidden"
+                className="hide-rank-checkbox"
+                checked={isRankHidden}
+                onChange={hideRankHandler}
+              >
+                Hide the rank
+              </Checkbox>
+            </Form.Item>
+          </Col>
         </Row>
 
         {isLoading ? (
@@ -319,7 +357,7 @@ const CreateTopicFromUI = ({
           />
         ) : (
           <div
-            className="mt-4 flex justify-start items-center"
+            className="flex justify-start items-center"
             id="form-buttons-div"
           >
             <SecondaryButton

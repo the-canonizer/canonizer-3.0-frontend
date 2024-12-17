@@ -18,10 +18,10 @@ import {
   useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Image, Tag, Tooltip } from "antd";
+import { Image, Tag } from "antd";
 import { MenuOutlined } from "@ant-design/icons";
-import { getProperties } from "src/utils/generalUtility";
-import ReasonsActivity from "components/common/SupportReasonActivity";
+// import { getProperties } from "src/utils/generalUtility";
+// import ReasonsActivity from "components/common/SupportReasonActivity";
 
 export default function Draggable({
   tags,
@@ -121,7 +121,7 @@ function SortableItem(props) {
                   style={{ cursor: "not-allowed", alignSelf: "center" }}
                   alt=""
                 />
-                {props?.item?.recent_activity
+                {/* {props?.item?.recent_activity
                   ? getProperties(props?.item?.recent_activity)?.reason && (
                       <Tooltip
                         title={
@@ -137,7 +137,7 @@ function SortableItem(props) {
                         <i className="icon-info text-xl ml-2 mr-1"></i>
                       </Tooltip>
                     )
-                  : null}
+                  : null} */}
               </>
             }
             onClose={(evt) => {
@@ -169,7 +169,7 @@ function SortableItem(props) {
                   height={20}
                   alt=""
                 />
-                {props?.item?.recent_activity
+                {/* {props?.item?.recent_activity
                   ? getProperties(props?.item?.recent_activity)?.reason && (
                       <Tooltip
                         title={
@@ -185,7 +185,7 @@ function SortableItem(props) {
                         <i className="icon-info text-xl ml-3"></i>
                       </Tooltip>
                     )
-                  : null}
+                  : null} */}
               </>
             }
             onClose={(evt) => {

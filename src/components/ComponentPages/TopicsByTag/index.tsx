@@ -18,6 +18,7 @@ import CustomPagination from "components/shared/CustomPagination/intex";
 import Layout from "src/hoc/layout";
 import SingleTopicCard from "../Home/HotTopics/topicCard";
 import ScoreTag from "../Home/TrandingTopic/scoreTag";
+import useAuthentication from "src/hooks/isUserAuthenticated";
 
 const { Title } = Typography;
 const { Search } = Input;
@@ -40,6 +41,7 @@ const infoContent = (
 const TopicsListByCats = () => {
   const router = useRouter();
   const dispatch = useDispatch();
+  const { isUserAuthenticated } = useAuthentication();
 
   const {
     nameSpaces,
@@ -123,6 +125,7 @@ const TopicsListByCats = () => {
       sort: sortLatestTopic ? true : false,
       page: "browse",
       topic_tags: [+router?.query?.id],
+      current_user: isUserAuthenticated? userEmail : "",
     };
 
     const response = await getCanonizedTopicsApi(reqBody);

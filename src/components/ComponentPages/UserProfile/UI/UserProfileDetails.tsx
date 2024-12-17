@@ -96,10 +96,20 @@ const UserProfileDetails = ({
       return null;
     }
   };
-  return (
-    <CommonCards className="bg-white lg:bg-canGray mt-10 lg:mt-2">
-      <div className={`flex gap-5 flex-wrap`}>
-        {!imagePath || profileImageError ? (
+
+  const renderUserImage = () => {
+    return (
+      <>
+        {!imagePath &&
+        (profileData?.first_name == undefined ||
+          profileData?.last_name == undefined) ? (
+          <Avatar
+            style={{ fontSize: `${isMobile ? "25px" : "30px"}` }}
+            size={95}
+            className="uppercase bg-canBlue text-white flex justify-center items-center  text-sm border-[1px] border-solid border-white -mb-[10px]"
+            icon={<UserOutlined />}
+          />
+        ) : !imagePath ? (
           <Avatar
             style={{ fontSize: `${isMobile ? "25px" : "20px"}` }}
             size={100}
@@ -121,7 +131,36 @@ const UserProfileDetails = ({
             />
           </div>
         )}
+      </>
+    );
+  };
+  return (
+    <CommonCards className="bg-white lg:bg-canGray mt-10 lg:mt-2">
+      <div className={`flex gap-5 flex-wrap`}>
+        {/* {!imagePath || profileImageError ? (
+          <Avatar
+            style={{ fontSize: `${isMobile ? "25px" : "20px"}` }}
+            size={100}
+            className="uppercase bg-canBlue text-white flex justify-center items-center  text-sm border-[1px] border-solid border-white -mb-[10px]"
+          >
+            {getNameInitials(profileData?.first_name, profileData?.last_name)}
+          </Avatar>
+        ) : (
+          <div className="w-[100px] h-[100px] rounded-full overflow-hidden object-cover [&_img]:object-cover [&_img]:object-top">
+            <Image
+              src={imagePath}
+              alt="profile-picture"
+              width={100}
+              height={100}
+              style={{ borderRadius: "50px" }}
+              onError={() => {
+                setProfileImageError(true);
+              }}
+            />
+          </div>
+        )} */}
 
+        {renderUserImage()}
         <div className="flex flex-wrap gap-4">
           {profileData?.first_name || profileData?.last_name ? (
             <ItemCard

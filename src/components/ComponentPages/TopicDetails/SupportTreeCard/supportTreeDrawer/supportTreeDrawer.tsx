@@ -50,6 +50,7 @@ import { setCheckSupportExistsData } from "src/store/slices/campDetailSlice";
 import queryParams from "src/utils/queryParams";
 import DrawerBreadcrumbs from "./drawerBreadcrumbs";
 import dynamic from "next/dynamic";
+import { defaultNicknameData } from "src/utils/generalUtility";
 const DraggableTags = dynamic(() => import("./draggable"), { ssr: false });
 
 const { TextArea } = Input;
@@ -747,12 +748,18 @@ function SupportTreeDrawer({
                         id="delegate-support-drawer-nickname-select"
                         className="w-100 cn-select"
                         size="large"
-                        defaultValue={nickNameList?.at(0)?.nick_name}
+                        defaultValue={
+                          defaultNicknameData(nickNameList)?.nick_name
+                            ? defaultNicknameData(nickNameList)?.nick_name
+                            : nickNameList?.at(0)?.nick_name
+                        }
                         suffixIcon={<i className="icon-chevron-down"></i>}
                         showSearch
                         value={
                           selectedtNickname
                             ? selectedtNickname
+                            : defaultNicknameData(nickNameList)?.nick_name
+                            ? defaultNicknameData(nickNameList)?.nick_name
                             : nickNameList?.at(0)?.nick_name
                         }
                         onChange={(value) => {
@@ -1036,12 +1043,18 @@ function SupportTreeDrawer({
                         id="petition-drawer-nickname-select"
                         className="w-100 cn-select"
                         size="large"
-                        defaultValue={nickNameList?.at(0)?.nick_name}
+                        defaultValue={
+                          defaultNicknameData(nickNameList)?.nick_name
+                            ? defaultNicknameData(nickNameList)?.nick_name
+                            : nickNameList?.at(0)?.nick_name
+                        }
                         suffixIcon={<i className="icon-chevron-down"></i>}
                         showSearch
                         value={
                           selectedtNickname
                             ? selectedtNickname
+                            : defaultNicknameData(nickNameList)?.nick_name
+                            ? defaultNicknameData(nickNameList)?.nick_name
                             : nickNameList?.at(0)?.nick_name
                         }
                         onChange={(value) => {

@@ -22,6 +22,7 @@ import PrimaryButton from "components/shared/Buttons/PrimariButton";
 import Inputs from "components/shared/FormInputs";
 import AlignIcon from "components/ComponentPages/CreateNewTopic/UI/alignIcon";
 import SelectInputs from "components/shared/FormInputs/select";
+import { defaultNicknameData } from "src/utils/generalUtility";
 
 const { Option } = Select;
 const { Text } = Typography;
@@ -69,17 +70,17 @@ const CreateCampFormUI = ({
   const [isAboutFocused, setIsAboutFocused] = useState(false);
   const [isCampLeaderFocused, setIsCampLeaderFocused] = useState(false);
 
-  // const toolTipContent = "This camp is under review";
   const archiveToolTipContent = "This camp is archived";
 
   useEffect(() => {
     campRecord?.is_archive && router.pathname == "/camp/create/[...camp]"
       ? router?.back()
       : "";
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getNickNameInput = () => {
+    const defaultNickName = defaultNicknameData(nickNameList)?.nick_name || values?.nick_name || defaultNicknameData(nickNameList)?.id || nickNameList[0]?.id;
+  
     const selectInputProps: any = {
       label: (
         <Fragment>
@@ -103,13 +104,12 @@ const CreateCampFormUI = ({
       prefix: <UserOutlined className="px-3 text-canBlack" />,
       onSelect: (val) => form.setFieldValue("nick_name", val),
       id: "nickname-dropdown",
-      value: values?.nick_name || nickNameList[0]?.id,
-      lastValue: form.getFieldValue("nick_name"),
+      value: form.getFieldValue("nick_name") || defaultNickName, // Use last set value or default
     };
-
+  
     if (nickNameList?.length) {
-      selectInputProps.defaultValue = values?.nick_name || nickNameList[0]?.id;
-      selectInputProps.initialValue = values?.nick_name || nickNameList[0]?.id;
+      selectInputProps.defaultValue = defaultNickName;
+      selectInputProps.initialValue = defaultNickName;
       selectInputProps.key = "nickNamesWithKeyName";
     }
     return <SelectInputs {...selectInputProps} />;
@@ -133,6 +133,10 @@ const CreateCampFormUI = ({
       dataid: "parent-camp-name",
       showSearch: true,
       optionFilterProp: "children",
+      filterOption: (input, option) =>
+        ((option?.children as any)?.props?.children ?? "")
+          .toLowerCase()
+          .includes(input.toLowerCase()),
       inputClassName:
         "border-0 [&_.ant-select-selector]:![&_.ant-select-selection-search]:!w-auto",
       rules: parentCampRule,
@@ -170,16 +174,10 @@ const CreateCampFormUI = ({
 
   const formInitValue = {
     ...initialValue,
-    nick_name: values?.nick_name || parentCamp[0]?.id,
+    nick_name: defaultNicknameData(nickNameList)?.id || nickNameList[0]?.id,
+    // nick_name: values?.nick_name || parentCamp[0]?.id,
     parent_camp_num: values?.parent_camp_num || topicData?.camp_num,
   };
-
-  // const getCampLeaderNickName = () => {
-  //   return (
-  //     campLeaderData &&
-  //     campLeaderData?.find((CL) => CL?.camp_leader === true)?.nick_name
-  //   );
-  // };
 
   return (
     <CommonCards className="border-0 bg-white" id="common-cards">

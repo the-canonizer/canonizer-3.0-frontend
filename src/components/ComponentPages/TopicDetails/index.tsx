@@ -87,6 +87,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
     openConsensusTreePopup,
     totalScoreforTreeCard,
     treeExpandValue,
+    userEmail,
   } = useSelector((state: RootState) => ({
     algorithms: state.homePage?.algorithms,
     asof: state?.filters?.filterObject?.asof,
@@ -100,6 +101,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
     openConsensusTreePopup: state.hotTopic.openConsensusTreePopup,
     totalScoreforTreeCard: state.topicDetails.totalScoreforTreeCard,
     treeExpandValue: state?.filters?.treeExpandValue,
+    userEmail: state?.auth?.loggedInUser?.email,
   }));
 
   const { isUserAuthenticated } = isAuth();
@@ -174,6 +176,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
           algorithm: algorithm,
           update_all: 1,
           fetch_topic_history: viewThisVersionCheck ? 1 : null,
+          current_user: isUserAuthenticated ? userEmail : "",
         };
 
         const reqBody = {
@@ -279,6 +282,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
       algorithm: algorithm,
       update_all: 1,
       fetch_topic_history: +router?.query?.topic_history,
+      current_user: isUserAuthenticated ? userEmail : "",
     };
     setRemoveSupportSpinner(true);
     let reqBody = {
@@ -322,6 +326,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
       algorithm: algorithm,
       update_all: 1,
       fetch_topic_history: +router?.query?.topic_history,
+      current_user: isUserAuthenticated ? userEmail : "",
     };
     setRemoveSupportSpinner(true);
 
@@ -363,6 +368,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
       algorithm: algorithm,
       update_all: 1,
       fetch_topic_history: +router?.query?.topic_history,
+      current_user: isUserAuthenticated ? userEmail : "",
     };
     setRemoveSupportSpinner(true);
 
@@ -541,6 +547,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
                           ? 0
                           : totalCampScoreForSupportTree
                       }
+                      hideRank={tree && tree?.["1"]?.rank_hidden}
                     />
                   </div>
                 )}
@@ -686,7 +693,10 @@ const TopicDetails = ({ serverSideCall }: any) => {
                   className={styles.scoreCheckbox}
                   id="topic_detail_section_consesnus_tree_full_score_checkbox"
                 >
-                  <FullScoreCheckbox loadingIndicator={loadingIndicator} />
+                  <FullScoreCheckbox
+                    loadingIndicator={loadingIndicator}
+                    isDisabled={tree && tree?.["1"]?.rank_hidden}
+                  />
                 </div>
                 <ArchivedCampCheckBox
                   loadingIndicator={loadingIndicator}
@@ -696,6 +706,14 @@ const TopicDetails = ({ serverSideCall }: any) => {
                   className="border-1 my-7 border-canGrey2"
                   id="topic_detail_section_consesnus_tree_line_break"
                 />
+                {tree && tree?.["1"]?.rank_hidden === true && (
+                  <div className="mb-4 italic text-base">
+                    <strong>
+                      *To view support, add your direct support to the topic or
+                      delegate support to another user first.
+                    </strong>
+                  </div>
+                )}
                 <CampTree
                   id="topic_detail_section_consesnus_tree_camp_tree"
                   scrollToCampStatement={scrollToCampStatement}

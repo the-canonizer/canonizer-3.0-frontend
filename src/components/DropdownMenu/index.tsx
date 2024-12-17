@@ -45,6 +45,7 @@ const DropDownMenu = () => {
     selectedAsOf,
     algorithms,
     currentGetCheckSupportExistsData,
+    userEmail,
   } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
     campRecord: state?.topicDetails?.currentCampRecord,
@@ -65,6 +66,7 @@ const DropDownMenu = () => {
     algorithms: state.homePage?.algorithms,
     currentGetCheckSupportExistsData:
       state.topicDetails.currentGetCheckSupportExistsData,
+      userEmail: state?.auth?.loggedInUser?.email,
   }));
   const [topicSubscriptionID, setTopicSubscriptionID] = useState(
     topicRecord?.topicSubscriptionId
@@ -92,6 +94,7 @@ const DropDownMenu = () => {
         asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
       algorithm: algorithm,
       update_all: 1,
+      current_user: isUserAuthenticated ? userEmail : "",
     };
     const reqBody = {
       topic_num: campRecord.topic_num ?? payload?.topic_num,

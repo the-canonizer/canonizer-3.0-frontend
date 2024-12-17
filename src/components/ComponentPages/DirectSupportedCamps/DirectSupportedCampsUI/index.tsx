@@ -284,12 +284,15 @@ export default function DirectSupportedCampsUI({
 
   const onRemoveFinish = async (values) => {
     setRemoveSupportSpinner(true);
+
     if (showSaveChanges && idData == currentCamp) {
       await saveChanges(values);
     } else {
       await removeSupport(values);
     }
+
     removeForm.resetFields();
+
     setRemoveSupportSpinner(false);
   };
   const showEmpty = (msg) => {
@@ -368,14 +371,6 @@ export default function DirectSupportedCampsUI({
   // Extracted Content
   const drawerContent = (
     <>
-      {/* <p className="text-sm font-normal text-canRed mb-8">
-        Note: You are about to remove your support from all the camps from the
-        topic:
-        <span className="text-sm font-semibold">
-          &quot;{removeSupportCampsData.title}&quot;
-        </span>
-        . You can optionally add a helpful reason, along with a citation link.
-      </p> */}
       <p
         className="text-sm font-normal text-canRed mb-8"
         id="direct_supported_camp_change_order_text"

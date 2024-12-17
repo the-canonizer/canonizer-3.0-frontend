@@ -14,7 +14,10 @@ import {
 } from "src/network/api/campDetailApi";
 import { setCurrentTopic } from "src/store/slices/topicSlice";
 import messages from "src/messages";
-import { replaceSpecialCharacters } from "src/utils/generalUtility";
+import {
+  defaultNicknameData,
+  replaceSpecialCharacters,
+} from "src/utils/generalUtility";
 import isAuth from "src/hooks/isUserAuthenticated";
 import { setShowDrawer } from "src/store/slices/filtersSlice";
 import { RootState } from "src/store";
@@ -22,7 +25,6 @@ import DataNotFound from "../DataNotFound/dataNotFound";
 import CustomSpinner from "components/shared/CustomSpinner";
 import ExistingCampList from "./UI/existingCampList";
 import CampInfoCard from "./UI/rightContent";
-import CampInfoBar from "../TopicDetails/CampInfoBar";
 import FormUI from "./UI/FormUI";
 import { globalSearchCanonizer } from "src/network/api/userApi";
 import queryParams from "src/utils/queryParams";
@@ -42,8 +44,6 @@ const getSimilarity = (str1, str2) => {
 };
 
 const findSimilarNames = (inputName, namesList) => {
-  console.log("inputName", inputName);
-  console.log("namesList", namesList);
   const threshold = 0.6; // adjust for desired sensitivity
   return namesList.filter(
     (name) => getSimilarity(inputName, name) >= threshold
@@ -162,9 +162,15 @@ const CreateNewCamp = () => {
     const body = { topic_num: q?.topic_num };
     let response = await getAllUsedNickNames(body);
     if (response && response.status_code === 200) {
-      setNickNameList(response.data);
-      setInitialValues({ nick_name: response.data[0]?.id });
-      form.setFieldValue("nick_name", response.data[0]?.id);
+      setNickNameList(response?.data);
+      setInitialValues({
+        nick_name:
+          defaultNicknameData(response?.data)?.id || response.data[0]?.id,
+      });
+      form.setFieldValue(
+        "nick_name",
+        defaultNicknameData(response?.data)?.id || response.data[0]?.id
+      );
       setIsLoading(false);
       return response.status_code;
     } else {
@@ -206,19 +212,6 @@ const CreateNewCamp = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isUserAuthenticated]);
-
-  const isSimilarAvaiable = () => {
-    const namesList = existingCamps?.map((cmp) =>
-      cmp?.type_value?.toLowerCase()
-    );
-
-    const similarNames = findSimilarNames(
-      values?.camp_name?.toLowerCase(),
-      namesList
-    );
-
-    return !!similarNames?.length;
-  };
 
   const getURLParams = () => {
     const searchParams = new URLSearchParams();
@@ -346,13 +339,8 @@ const CreateNewCamp = () => {
 
   const onFinish = async (values) => {
     setIsLoading(true);
-    const isSimAvalable = isSimilarAvaiable();
 
-    if (isSimAvalable) {
-      setIsSimPopOpen(true);
-    } else {
-      await onFinalSubmit();
-    }
+    await onFinalSubmit();
 
     setIsLoading(false);
   };
@@ -446,7 +434,6 @@ const CreateNewCamp = () => {
 
   return (
     <CustomSpinner key="create-topic-spinner" spinning={isLoading}>
-      {/* <CampInfoBar payload={payload} isHtmlContent={<></>} isTopicPage={true} /> */}
       <CommonBreadcrumbs
         key="common-breadcrumbs"
         payload={payload}

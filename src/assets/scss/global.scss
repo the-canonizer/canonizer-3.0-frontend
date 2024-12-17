@@ -62,6 +62,7 @@ body {
     "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
     "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
   background: #fff;
+  overflow-x: hidden;
 }
 
 .fullHeightCard {
@@ -881,31 +882,7 @@ body {
   }
 }
 
-.ant-tree-switcher-leaf-line {
-  position: relative;
-  z-index: 1;
-  display: inline-block;
-  width: 100%;
-  height: 100%;
-
-  &:before {
-    position: absolute;
-    top: 0;
-    right: 12px;
-    bottom: -4px;
-    margin-left: -1px;
-    border-right: 1px solid #d9d9d9;
-    content: " ";
-  }
-  &:after {
-    position: absolute;
-    width: 10px;
-    height: 14px;
-    border-bottom: 1px solid #d9d9d9;
-    content: " ";
-  }
-}
-
+// tree connecitity
 .ant-tree-switcher.ant-tree-switcher_close,
 .ant-tree-switcher.ant-tree-switcher_open {
   &::before {
@@ -921,17 +898,6 @@ body {
   }
 }
 
-.first-node-class {
-  &:first-of-type {
-    .ant-tree-switcher.ant-tree-switcher_close,
-    .ant-tree-switcher.ant-tree-switcher_open {
-      &::before {
-        border-color: transparent;
-      }
-    }
-  }
-}
-
 .ant-tree-switcher.ant-tree-switcher-noop:before {
   display: block;
   position: absolute;
@@ -943,35 +909,66 @@ body {
   transform: rotate(90deg);
 }
 
-.ant-tree-switcher.ant-tree-switcher-noop:has(
-    .ant-tree-switcher-leaf-line
-  )::before {
-  border-color: transparent;
+.ant-tree-switcher.ant-tree-switcher-noop:has(.ant-tree-switcher-leaf-line) {
+  &::before {
+    border-color: transparent;
+  }
 }
 
-.ant-tree-show-line .ant-tree-indent-unit:before {
+.ant-tree-show-line .ant-tree-indent .ant-tree-indent-unit:before {
   display: block;
-  position: absolute;
-  top: 0;
-  right: 12px;
-  bottom: -4px;
-  border-right: 1px solid #d9d9d9;
-  content: "";
 }
 
-.ant-tree-treenode.ant-tree-treenode-switcher-close.ant-tree-treenode-leaf-last.last-child-node-class {
-  &:last-of-type {
-    .ant-tree-indent-unit.ant-tree-indent-unit-start.ant-tree-indent-unit-end {
-      &::before {
-        height: 50%;
+.last-node-class.ant-tree-treenode.ant-tree-treenode-leaf-last {
+  .ant-tree-indent {
+    .ant-tree-indent-unit.ant-tree-indent-unit-end {
+      &:last-of-type {
+        &:before {
+          // height: 50%;
+        }
       }
     }
   }
 }
 
-.last-child-node-class.last-parent-node-class.ant-tree-treenode.ant-tree-treenode-switcher-close.ant-tree-treenode-leaf-last {
+// .last-node-class.ant-tree-treenode.ant-tree-treenode-switcher-open.ant-tree-treenode-leaf-last
+//   + .ant-tree-treenode.ant-tree-treenode-switcher-close.ant-tree-treenode-leaf-last:has(
+//     .ant-tree-switcher.ant-tree-switcher-noop .ant-tree-switcher-leaf-line
+//   ) {
+//   .ant-tree-indent {
+//     .ant-tree-indent-unit {
+//       &:last-of-type {
+//         &:before {
+//           height: 50%;
+//         }
+//       }
+//     }
+//   }
+// }
+
+// .last-node-class.ant-tree-treenode.ant-tree-treenode-switcher-open.ant-tree-treenode-selected.ant-tree-treenode-leaf-last {
+//   .ant-tree-indent {
+//     .ant-tree-indent-unit {
+//       &:last-of-type {
+//         &::before {
+//           height: 50%;
+//         }
+//       }
+//     }
+//   }
+// }
+
+.first-node-class.last-node-class.ant-tree-treenode.ant-tree-treenode-switcher-open.ant-tree-treenode-leaf-last
+  + .ant-tree-treenode.ant-tree-treenode-switcher-close.ant-tree-treenode-leaf-last:has(
+    .ant-tree-switcher.ant-tree-switcher-noop .ant-tree-switcher-leaf-line
+  ) {
   .ant-tree-indent {
-    .ant-tree-indent-unit {
+    // .ant-tree-indent-unit {
+    //   &::before {
+    //     opacity: 0;
+    //   }
+    // }
+    .ant-tree-indent-unit.ant-tree-indent-unit-start.ant-tree-indent-unit-end {
       &:last-of-type {
         &::before {
           height: 50%;
@@ -996,25 +993,9 @@ body {
 .last-child-node-class.last-parent-node-class.last-node-class.first-node-class.ant-tree-treenode.ant-tree-treenode-switcher-open.ant-tree-treenode-selected.ant-tree-treenode-leaf-last {
   &
     + .ant-tree-treenode.ant-tree-treenode-switcher-close.ant-tree-treenode-leaf-last {
-      .ant-tree-indent {
-        .ant-tree-indent-unit {
-          &:last-of-type {
-            opacity: 0;
-            &::before {
-              height: 50%;
-            }
-          }
-        }
-      }
-  }
-}
-
-.last-child-node-class.last-parent-node-class.only-one-child.last-node-class.first-node-class.ant-tree-treenode.ant-tree-treenode-switcher-open.ant-tree-treenode-leaf-last {
-  &
-    + .ant-tree-treenode.ant-tree-treenode-switcher-close.ant-tree-treenode-leaf-last {
     .ant-tree-indent {
       .ant-tree-indent-unit {
-        &:nth-child(1) {
+        &:last-of-type {
           opacity: 0;
           &::before {
             height: 50%;
@@ -1025,9 +1006,76 @@ body {
   }
 }
 
-.last-child-node-class.last-parent-node-class.last-node-class.first-node-class.ant-tree-treenode.ant-tree-treenode-switcher-open.ant-tree-treenode-leaf-last {
+.last-child-node-class.last-parent-node-class.only-one-child.last-node-class.first-node-class.ant-tree-treenode.ant-tree-treenode-switcher-open.ant-tree-treenode-leaf-last {
+  &
+    + .ant-tree-treenode.ant-tree-treenode-switcher-close.ant-tree-treenode-leaf-last {
+    .ant-tree-indent {
+      .ant-tree-indent-unit {
+        &:nth-child(1) {
+          opacity: 0;
+        }
+      }
+    }
+  }
+}
+
+.last-node-class.ant-tree-treenode.ant-tree-treenode-switcher-open.ant-tree-treenode-leaf-last
+  + .ant-tree-treenode.ant-tree-treenode-switcher-close.ant-tree-treenode-leaf-last:has(
+    .ant-tree-switcher.ant-tree-switcher-noop .ant-tree-switcher-leaf-line
+  ) {
   .ant-tree-indent {
-    .ant-tree-indent-unit.ant-tree-indent-unit-start.ant-tree-indent-unit-end {
+    .ant-tree-indent-unit.ant-tree-indent-unit-end {
+      &:last-of-type {
+        &::before {
+          opacity: 0;
+        }
+      }
+    }
+  }
+}
+
+.first-node-class.last-node-class.ant-tree-treenode.ant-tree-treenode-switcher-open.ant-tree-treenode-leaf-last,
+.first-node-class.last-node-class.ant-tree-treenode.ant-tree-treenode-switcher-close.ant-tree-treenode-leaf-last {
+  &:first-of-type {
+    .ant-tree-switcher.ant-tree-switcher_open,
+    .ant-tree-switcher.ant-tree-switcher_close {
+      &::before {
+        opacity: 0;
+      }
+    }
+  }
+  // &:last-of-type {
+  // .ant-tree-indent {
+  //   .ant-tree-indent-unit {
+  //     &:last-of-type {
+  //       background: aquamarine;
+  //       &::before {
+  //         height: 50%;
+  //       }
+  //     }
+  //   }
+  // }
+  // }
+}
+
+// .ant-tree-indent-unit-start.ant-tree-indent-unit-end
+
+.first-node-class.last-node-class.ant-tree-treenode.ant-tree-treenode-leaf-last:last-of-type {
+  .ant-tree-indent {
+    .ant-tree-indent-unit {
+      &:last-of-type {
+        // background: aquamarine;
+        &::before {
+          height: 50%;
+        }
+      }
+    }
+  }
+}
+
+.ant-tree-treenode.ant-tree-treenode-switcher-close.ant-tree-treenode-leaf-last {
+  .ant-tree-indent {
+    .ant-tree-indent-unit {
       &:last-of-type {
         &::before {
           height: 50%;
@@ -1036,6 +1084,49 @@ body {
     }
   }
 }
+
+// .first-node-class.last-node-class.ant-tree-treenode.ant-tree-treenode-switcher-open.ant-tree-treenode-leaf-last:last-of-type {
+//   background: red;
+// }
+
+// .first-node-class.last-node-class.ant-tree-treenode.ant-tree-treenode-switcher-open.ant-tree-treenode-leaf-last
+//   + .ant-tree-treenode.ant-tree-treenode-switcher-close.ant-tree-treenode-leaf-last:has(
+//     .ant-tree-switcher.ant-tree-switcher-noop .ant-tree-switcher-leaf-line
+//   )
+//   ~ .first-node-class.last-node-class.ant-tree-treenode.ant-tree-treenode-switcher-open.ant-tree-treenode-leaf-last {
+//   .ant-tree-indent {
+//     .ant-tree-indent-unit {
+//       &:last-of-type {
+//         // background: red;
+//         &::before {
+//           // height: 50%;
+//         }
+//       }
+//     }
+//   }
+// }
+
+// .first-node-class.last-node-class.ant-tree-treenode.ant-tree-treenode-switcher-open.ant-tree-treenode-leaf-last {
+//   .ant-tree-indent {
+//     .ant-tree-indent-unit:last-of-type {
+//       background: red;
+
+//       &::before {
+//         // Adjust height or other styles as needed
+//         // height: 50%;
+//       }
+//     }
+//   }
+
+//   // Target adjacent elements if necessary
+//   & + .ant-tree-treenode.ant-tree-treenode-switcher-close.ant-tree-treenode-leaf-last {
+//     &:has(.ant-tree-switcher.ant-tree-switcher-noop .ant-tree-switcher-leaf-line) {
+//       // Additional styles for adjacent sibling
+//     }
+//   }
+// }
+
+// end tree connectivity
 
 .nickNamePopup {
   .ant-select-item-option {
@@ -1093,6 +1184,11 @@ body {
     }
   }
 }
+.hide-rank-checkbox{
+  .ant-checkbox-inner{
+    @apply m-0;
+  }
+}
 
 .cn-card-home {
   a {
@@ -1108,6 +1204,15 @@ body {
   @media screen and (max-width: 767px) {
     .afterHeaderClass {
       margin-top: 0;
+    }
+  }
+}
+.nick-radio {
+  .ant-radio {
+    &.ant-radio-checked {
+      ~ span {
+        @apply text-canBlue;
+      }
     }
   }
 }
