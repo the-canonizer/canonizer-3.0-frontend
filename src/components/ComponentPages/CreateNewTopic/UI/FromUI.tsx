@@ -412,7 +412,9 @@ const CreateTopicFromUI = ({
                 checked={isRankHidden}
                 onChange={hideRankHandler}
               >
-                Hide the rank
+                <div className="text-canBlack font-medium">
+                  Hide the rank
+                </div>
               </Checkbox>
             </Form.Item>
         </Row>
