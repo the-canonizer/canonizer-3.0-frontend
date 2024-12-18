@@ -19,17 +19,13 @@ import {
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
 import Layout from "src/hoc/layout";
 import CustomSpinner from "components/shared/CustomSpinner";
-import CampInfoBar from "../TopicDetails/CampInfoBar";
 import PrimaryButton from "components/shared/Buttons/PrimariButton";
 import Post from "./UI/PostList";
 import CreatePostPopup from "./CreatePostPopup";
-import {
-  getCurrentCampRecordApi,
-  getCurrentTopicRecordApi,
-} from "src/network/api/campDetailApi";
 import { RootState } from "src/store";
 import CommonBreadcrumbs from "../Breadcrumbs/commonBreadcrumbs";
 import { useIsMobile } from "src/hooks/useIsMobile";
+import { getSelectedNode } from ".";
 
 const { Text } = Typography;
 
@@ -63,32 +59,16 @@ const CommentsList = () => {
 
   const setCurrentPost = (data) => dispatch(setPost(data));
 
-  const getSelectedNode = async (nodeKey) => {
-    const queries = router?.query;
-    const topicArr = (queries.topic as string).split("-");
-    const topic_num = topicArr.shift();
-
-    const reqBody = {
-      topic_num: +topic_num,
-      camp_num: +nodeKey,
-      as_of: asof,
-      as_of_date: asofdate || Date.now() / 1000,
-      algorithm: algorithm,
-      update_all: 1,
-    };
-
-    await Promise.all([
-      getCurrentTopicRecordApi(reqBody),
-      getCurrentCampRecordApi(reqBody),
-    ]);
-  };
-
   useEffect(() => {
     if (router && router?.query) {
       const queries = router?.query;
       const campArr = (queries.camp as string).split("-");
       const camp_num = campArr.shift();
-      getSelectedNode(camp_num);
+
+      const topicArr = (queries.topic as string).split("-");
+      const topic_num = topicArr.shift();
+
+      getSelectedNode(topic_num, camp_num, asof, asofdate, algorithm);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router?.query]);

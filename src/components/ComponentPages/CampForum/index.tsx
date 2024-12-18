@@ -23,6 +23,30 @@ import { RootState } from "src/store";
 import CommonBreadcrumbs from "../Breadcrumbs/commonBreadcrumbs";
 import moment from "moment";
 
+export const getSelectedNode = async (
+  topic_num,
+  camp_num,
+  as_of,
+  as_of_date,
+  algorithm
+) => {
+  const reqBody = {
+    topic_num,
+    camp_num,
+    as_of,
+    as_of_date:
+      moment.utc(as_of_date * 1000).format("DD-MM-YYYY H:mm:ss") ||
+      Date.now() / 1000,
+    algorithm: algorithm,
+    update_all: 1,
+  };
+
+  await Promise.all([
+    getCurrentTopicRecordApi(reqBody),
+    getCurrentCampRecordApi(reqBody),
+  ]);
+};
+
 const ForumComponent = () => {
   const router = useRouter();
 
@@ -54,28 +78,6 @@ const ForumComponent = () => {
   );
 
   const setCurrentThread = (data) => dispatch(setThread(data));
-
-  const getSelectedNode = async (nodeKey) => {
-    const queries = router?.query;
-    const topicArr = (queries.topic as string).split("-");
-    const topic_num = topicArr.shift();
-
-    const reqBody = {
-      topic_num: +topic_num,
-      camp_num: +nodeKey,
-      as_of: asof,
-      as_of_date:
-        moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss") ||
-        Date.now() / 1000,
-      algorithm: algorithm,
-      update_all: 1,
-    };
-
-    await Promise.all([
-      getCurrentTopicRecordApi(reqBody),
-      getCurrentCampRecordApi(reqBody),
-    ]);
-  };
 
   async function getThreads(
     camp,
@@ -111,7 +113,11 @@ const ForumComponent = () => {
       const queries = router?.query;
       const campArr = (queries.camp as string).split("-");
       const camp_num = campArr.shift();
-      getSelectedNode(camp_num);
+
+      const topicArr = (queries.topic as string).split("-");
+      const topic_num = topicArr.shift();
+
+      getSelectedNode(topic_num, camp_num, asof, asofdate, algorithm);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router?.query]);
