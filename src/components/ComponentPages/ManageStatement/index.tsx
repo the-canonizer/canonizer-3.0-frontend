@@ -79,6 +79,15 @@ function ManageStatements({ isEdit = false }) {
   };
 
   useEffect(() => {
+    if (router?.asPath?.split("/")?.[1] === "create") {
+      const topic = router?.query?.statement?.[0]?.split("-")?.at(1) || "";
+      const camp = router?.query?.statement?.[1]?.split("-")?.splice(1)?.join("-") || "";
+      const contentText = camp === "Agreement" ? topic : camp;
+      setEditorState(`<h2>${contentText}</h2><p>&nbsp;</p>`);
+    }
+  }, [router]);
+
+  useEffect(() => {
     const updateCurrentTime = () => {
       setTime((prevTime) => ({
         ...prevTime,
@@ -371,7 +380,7 @@ function ManageStatements({ isEdit = false }) {
 
       setTimeout(() => {
         setIsAutoSaving(false);
-      },1000)
+      }, 1000);
     }
   };
 
