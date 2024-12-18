@@ -6,33 +6,24 @@ import CustomSkelton from "components/common/customSkelton";
 import CommonCards from "components/shared/Card";
 import NotificationSwitch from "components/common/headers/notification/switch";
 import SecondaryButton from "components/shared/Buttons/SecondaryButton";
+import PrimaryButton from "components/shared/Buttons/PrimariButton";
 
 const { Title } = Typography;
 
-const getCount = (data) => {
-  let readCount = 0;
-  let unreadCount = 0;
-
-  data.forEach((notification) => {
-    if (notification.is_seen === 1) {
-      readCount++;
-    } else {
-      unreadCount++;
-    }
-  });
-
-  return { readCount, unreadCount };
-};
-
 const NotificationsListUI = ({
   list,
-  rendredNotsList,
   isLoading,
   onBackClick,
   onAllReadClick,
   router,
   onFilterClick,
   onAllDelete,
+  loadMoreNotifications,
+  total,
+  readCount,
+  unreadCount,
+  isFetchingData,
+  isLastReached,
 }) => {
   const getBtnClass = (btn) => {
     let baseClass =
@@ -40,13 +31,11 @@ const NotificationsListUI = ({
     const { filter } = router?.query || {};
 
     if ((filter === undefined && btn === "") || filter === btn) {
-      baseClass += " bg-[#5482C833] border-[#5482C833]";
+      baseClass += " !bg-[#5482C833] !border-[#5482C833]";
     }
 
     return baseClass;
   };
-
-  const { readCount, unreadCount } = getCount(list);
 
   return (
     <CommonCards
@@ -102,7 +91,7 @@ const NotificationsListUI = ({
               block
               id="filter-all-button"
             >
-              All ({list?.length})
+              All ({total})
             </SecondaryButton>
             <SecondaryButton
               onClick={(e) => onFilterClick(e, "1")}
@@ -134,6 +123,17 @@ const NotificationsListUI = ({
             className="border rounded-lg py-4 px-6 w-full h-96 overflow-x-hidden overflow-y-auto scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar scrollbar-thumb-canGrey3 scrollbar-track-canGrey2 scrollbar-thin"
             id="notifications-list-container"
           >
+            <Lists
+              list={list}
+              isFooter={!isLastReached && list?.length > 0}
+              LoadMoreTopics={
+                <PrimaryButton onClick={loadMoreNotifications}>
+                  Load more
+                </PrimaryButton>
+              }
+              id="notifications-list"
+            />
+
             {isLoading ? (
               <CustomSkelton
                 skeltonFor="list"
@@ -143,12 +143,16 @@ const NotificationsListUI = ({
                 isButton={false}
                 id="custom-skelton"
               />
-            ) : (
-              <Lists
-                list={rendredNotsList}
-                isFooter={false}
-                LoadMoreTopics={null}
-                id="notifications-list"
+            ) : null}
+
+            {isFetchingData && (
+              <CustomSkelton
+                skeltonFor="list"
+                bodyCount={5}
+                stylingClass="py-3"
+                listStyle="py-2"
+                isButton={false}
+                id="custom-skelton"
               />
             )}
           </div>
