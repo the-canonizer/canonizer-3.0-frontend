@@ -27,6 +27,7 @@ import SectionHeading from "../Home/FeaturedTopic/sectionsHeading";
 import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 import { CloseOutlined, SaveOutlined } from "@ant-design/icons";
 import PrimaryButton from "components/shared/Buttons/PrimariButton";
+import CustomSkelton from "components/common/customSkelton";
 
 const ProfilePrefrences = () => {
   const [languageList, setLanguageList] = useState([]);
@@ -144,8 +145,8 @@ const ProfilePrefrences = () => {
         if (algoOrLang == "algorithms") {
           option.push(
             <Option
-              key={item.algorithm_label}
-              value={item.algorithm_label}
+              key={item.algorithm_key}
+              value={item.algorithm_key}
               id="prefrence_option"
             >
               {item.algorithm_label}
@@ -305,185 +306,208 @@ const ProfilePrefrences = () => {
         icon={null}
         className="lg:mt-0 mt-10 mb-5"
       />
-      <Row gutter={30} id="prefrence_row_unique">
-        <Col
-          md={12}
-          sm={24}
-          className="w-full lg:mb-0 mb-5"
-          id="prefrence_col_unique_1"
-        >
-          <p
-            className="mb-2 mt-3 text-sm font-normal text-canBlack"
-            id="prefrence_select_heading_language_unique"
-          >
-            Language
-          </p>
-          <Select
-            id="prefrence_select_unique"
-            size="large"
-            placeholder={"Select a language"}
-            showSearch
-            optionFilterProp="children"
-            value={selectedLanguage}
-            suffixIcon={
-              <Image
-                src="/images/caret-icon.svg"
-                width={16}
-                height={9}
-                alt=""
-              />
-            }
-            onChange={handleChangeLanguage}
-            className="text-canBlack font-normal  [&_.ant-select-selector]:!rounded-lg [&_.ant-select-selector]:!outline-none [&_.ant-select-selector]:!shadow-none commonSelectClass [&_.ant-select-arrow]:text-canBlack [&_.ant-select-arrow>svg]:fill-canBlack  [&_.ant-select-selector]:!h-11 [&_.ant-select-selector]:!flex [&_.ant-select-selector]:!items-center [&_.ant-select-selection-search>input]:!text-base placeholder:!text-base w-full [&_.ant-select-arrow]:!h-full [&_.ant-select-arrow]:!flex [&_.ant-select-arrow]:!items-center [&_.ant-select-arrow]:border-l [&_.ant-select-arrow]:border-canGrey2 [&_.ant-select-arrow]:!pl-2.5 [&_.ant-select-arrow]:!top-1/2 [&_.ant-select-arrow]:!-translate-y-1/2 [&_.ant-select-arrow]:!mt-0 "
-          >
-            {listOfOption(languageList, "languages")}
-          </Select>
-        </Col>
-        <Col md={12} sm={24} className="w-full" id="prefrence_col_unique_2">
-          <p
-            className="mb-2 mt-3 text-sm font-normal text-canBlack"
-            id="prefrence_select_heading_algorithm_unique"
-          >
-            Default Algorithm Preferences
-          </p>
-          <Select
-            id="prefrence_select_algorithm_unique"
-            size="large"
-            placeholder={messages.placeholders.algorithm}
-            showSearch
-            optionFilterProp="children"
-            value={selectedAlgorithmKey}
-            suffixIcon={
-              <Image
-                src="/images/caret-icon.svg"
-                width={16}
-                height={9}
-                alt=""
-              />
-            }
-            onChange={handleAlgorithmChange}
-            className="text-canBlack font-normal  [&_.ant-select-selector]:!rounded-lg [&_.ant-select-selector]:!outline-none [&_.ant-select-selector]:!shadow-none commonSelectClass [&_.ant-select-arrow]:text-canBlack [&_.ant-select-arrow>svg]:fill-canBlack  [&_.ant-select-selector]:!h-11 [&_.ant-select-selector]:!flex [&_.ant-select-selector]:!items-center [&_.ant-select-selection-search>input]:!text-base placeholder:!text-base w-full [&_.ant-select-arrow]:!h-full [&_.ant-select-arrow]:!flex [&_.ant-select-arrow]:!items-center [&_.ant-select-arrow]:border-l [&_.ant-select-arrow]:border-canGrey2 [&_.ant-select-arrow]:!pl-2.5 [&_.ant-select-arrow]:!top-1/2 [&_.ant-select-arrow]:!-translate-y-1/2 [&_.ant-select-arrow]:!mt-0 [&_.ant-select-selection-placeholder]:!text-base  "
-          >
-            {listOfOption(algorithmList, "algorithms")}
-          </Select>
-        </Col>
-      </Row>
-
-      <hr className="my-10" id="prefrence_line_space_unique" />
-
-      <div className="lg:mt-0 mt-12" id="prefrence_section_for_tags_unique">
-        <SectionHeading
-          title="Topic Tags"
-          icon={null}
-          className="lg:mb-5 mb-7"
-        />
-        <div
-          className="flex lg:justify-between lg:items-center mb-5 lg:flex-row flex-col"
-          id="prefrence_tags_section_unique"
-        >
-          <div
-            className="flex-1 order-2 lg:order-1"
-            id="prefrence_tags_section_2_unique"
+      {loading ? (
+        <div>
+          <CustomSkelton
+            skeltonFor="profileInfoForm"
+            bodyCount={1}
+            stylingClass=""
+            isButton={false}
+          />{" "}
+        </div>
+      ) : (
+        <Row gutter={30} id="prefrence_row_unique">
+          <Col
+            md={12}
+            sm={24}
+            className="w-full lg:mb-0 mb-5"
+            id="prefrence_col_unique_1"
           >
             <p
-              className="text-sm font-medium"
-              id="prefrence_tags_section_note_unique"
+              className="mb-2 mt-3 text-sm font-normal text-canBlack"
+              id="prefrence_select_heading_language_unique"
             >
-              You have set{" "}
-              <span
-                className="text-canBlue"
-                id="prefrence_tags_section_note_as_your_pref_unique"
-              >
-                {selectedCount} Topic Tags{" "}
-              </span>
-              as your preference
+              Language
             </p>
-          </div>
-          <Input
-            id="prefrence_tags_search_input_unique"
-            placeholder="Search via Topic Tags name"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="lg:w-72 w-full h-11 rounded-lg border-canGrey2 lg:mb-0 mb-7 lg:order-0 order-1 placeholder:!text-base placeholder:!text-canBlue placeholder:!font-normal focus:!border-canGrey2 focus:!shadow-none hover:!border-canGrey2 [&_.ant-input-suffix]:border-l [&_.ant-input-suffix]:!border-canGrey2 [&_.ant-input-suffix]:px-2.5 !p-0 [&_.ant-input]:!px-2.5 [&_.ant-input]:rounded-lg  [&_.ant-input-suffix]:!ml-0  "
-            suffix={
-              <Image
-                src="/images/search-icon.svg"
-                width={16}
-                height={16}
-                alt=""
-                id="search_icon_unique"
-              />
-            }
+            <Select
+              id="prefrence_select_unique"
+              size="large"
+              placeholder={"Select a language"}
+              showSearch
+              optionFilterProp="children"
+              value={selectedLanguage}
+              suffixIcon={
+                <Image
+                  src="/images/caret-icon.svg"
+                  width={16}
+                  height={9}
+                  alt=""
+                />
+              }
+              onChange={handleChangeLanguage}
+              className="text-canBlack font-normal  [&_.ant-select-selector]:!rounded-lg [&_.ant-select-selector]:!outline-none [&_.ant-select-selector]:!shadow-none commonSelectClass [&_.ant-select-arrow]:text-canBlack [&_.ant-select-arrow>svg]:fill-canBlack  [&_.ant-select-selector]:!h-11 [&_.ant-select-selector]:!flex [&_.ant-select-selector]:!items-center [&_.ant-select-selection-search>input]:!text-base placeholder:!text-base w-full [&_.ant-select-arrow]:!h-full [&_.ant-select-arrow]:!flex [&_.ant-select-arrow]:!items-center [&_.ant-select-arrow]:border-l [&_.ant-select-arrow]:border-canGrey2 [&_.ant-select-arrow]:!pl-2.5 [&_.ant-select-arrow]:!top-1/2 [&_.ant-select-arrow]:!-translate-y-1/2 [&_.ant-select-arrow]:!mt-0 "
+            >
+              {listOfOption(languageList, "languages")}
+            </Select>
+          </Col>
+          <Col md={12} sm={24} className="w-full" id="prefrence_col_unique_2">
+            <p
+              className="mb-2 mt-3 text-sm font-normal text-canBlack"
+              id="prefrence_select_heading_algorithm_unique"
+            >
+              Default Algorithm Preferences
+            </p>
+            <Select
+              id="prefrence_select_algorithm_unique"
+              size="large"
+              placeholder={messages.placeholders.algorithm}
+              showSearch
+              optionFilterProp="children"
+              value={selectedAlgorithmKey}
+              suffixIcon={
+                <Image
+                  src="/images/caret-icon.svg"
+                  width={16}
+                  height={9}
+                  alt=""
+                />
+              }
+              onChange={handleAlgorithmChange}
+              className="text-canBlack font-normal  [&_.ant-select-selector]:!rounded-lg [&_.ant-select-selector]:!outline-none [&_.ant-select-selector]:!shadow-none commonSelectClass [&_.ant-select-arrow]:text-canBlack [&_.ant-select-arrow>svg]:fill-canBlack  [&_.ant-select-selector]:!h-11 [&_.ant-select-selector]:!flex [&_.ant-select-selector]:!items-center [&_.ant-select-selection-search>input]:!text-base placeholder:!text-base w-full [&_.ant-select-arrow]:!h-full [&_.ant-select-arrow]:!flex [&_.ant-select-arrow]:!items-center [&_.ant-select-arrow]:border-l [&_.ant-select-arrow]:border-canGrey2 [&_.ant-select-arrow]:!pl-2.5 [&_.ant-select-arrow]:!top-1/2 [&_.ant-select-arrow]:!-translate-y-1/2 [&_.ant-select-arrow]:!mt-0 [&_.ant-select-selection-placeholder]:!text-base  "
+            >
+              {listOfOption(algorithmList, "algorithms")}
+            </Select>
+          </Col>
+        </Row>
+      )}
+
+      {loading ? (
+        <div className="mt-20">
+          <CustomSkelton
+            skeltonFor="prefrences"
+            bodyCount={1}
+            stylingClass=""
+            isButton={false}
           />
         </div>
-      </div>
-
-      <div
-        className="w-full my-4 px-1 focus:overscroll-contain custom-checkbox-preference flex flex-wrap gap-3"
-        id="prefrence_tags_checkbox_section_unique"
-      >
-        {filteredTags.length > 0 ? (
-          filteredTags.map((ch) => {
-            const isChecked =
-              ch.checked !== undefined
-                ? ch.checked
-                : profileUserTags.some((tag) => tag.tag_id === ch.id);
-            return (
-              <CustomCheckbox
-                id={`custom_checkbox_${ch.id}`}
-                key={ch.id}
-                onChange={() => onChange({ ...ch, checked: isChecked })}
-                checked={isChecked}
-                className="text-sm"
+      ) : (
+        <div>
+          <hr className="my-10" id="prefrence_line_space_unique" />
+          <div className="lg:mt-0 mt-12" id="prefrence_section_for_tags_unique">
+            <SectionHeading
+              title="Topic Tags"
+              icon={null}
+              className="lg:mb-5 mb-7"
+            />
+            <div
+              className="flex lg:justify-between lg:items-center mb-5 lg:flex-row flex-col"
+              id="prefrence_tags_section_unique"
+            >
+              <div
+                className="flex-1 order-2 lg:order-1"
+                id="prefrence_tags_section_2_unique"
               >
-                {ch.title}
-              </CustomCheckbox>
-            );
-          })
-        ) : (
-          <p id="prefrence_no_tags_found_unique">No tags found</p>
-        )}
-      </div>
+                <p
+                  className="text-sm font-medium"
+                  id="prefrence_tags_section_note_unique"
+                >
+                  You have set{" "}
+                  <span
+                    className="text-canBlue"
+                    id="prefrence_tags_section_note_as_your_pref_unique"
+                  >
+                    {selectedCount} Topic Tags{" "}
+                  </span>
+                  as your preference
+                </p>
+              </div>
+              <Input
+                id="prefrence_tags_search_input_unique"
+                placeholder="Search via Topic Tags name"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="lg:w-72 w-full h-11 rounded-lg border-canGrey2 lg:mb-0 mb-7 lg:order-0 order-1 placeholder:!text-base placeholder:!text-canBlue placeholder:!font-normal focus:!border-canGrey2 focus:!shadow-none hover:!border-canGrey2 [&_.ant-input-suffix]:border-l [&_.ant-input-suffix]:!border-canGrey2 [&_.ant-input-suffix]:px-2.5 !p-0 [&_.ant-input]:!px-2.5 [&_.ant-input]:rounded-lg  [&_.ant-input-suffix]:!ml-0  "
+                suffix={
+                  <Image
+                    src="/images/search-icon.svg"
+                    width={16}
+                    height={16}
+                    alt=""
+                    id="search_icon_unique"
+                  />
+                }
+              />
+            </div>
+          </div>
 
-      <div
-        className="flex justify-center gap-5 mt-10"
-        id="prefrence_tags_discard_btn_unique"
-      >
-        <SecondaryButton
-          onClick={onDiscard}
-          disabled={loading}
-          className="flex gap-2.5 items-center justify-center w-[12.5rem] h-auto"
-          id="secondary_button_unique"
-        >
-          Discard{" "}
-          <CloseOutlined id="prefrence_tags_discard_btn_closeoutline_unique" />
-        </SecondaryButton>
-
-        <Form
-          form={formVerify}
-          onFinish={onFinish2}
-          id="form_for_prefrence_unique"
-        >
-          <PrimaryButton
-            className="flex gap-2.5 items-center justify-center w-[12.5rem] h-auto"
-            loading={loading}
-            onClick={async (e) => {
-              try {
-                setLoading(true); // Start loader
-                await formVerify.validateFields(); // Validate form fields
-                await onFinish2(formVerify.getFieldsValue()); // Submit form values
-                await GetUserProfileInfo(); // Fetch updated profile info
-              } finally {
-                setLoading(false); // Stop loader regardless of success or failure
-              }
-            }}
-            id="prefrence_tags_save_btn_unique"
+          <div
+            className="w-full my-4 px-1 focus:overscroll-contain custom-checkbox-preference flex flex-wrap gap-3"
+            id="prefrence_tags_checkbox_section_unique"
           >
-            Save{" "}
-            <SaveOutlined id="prefrence_tags_save_btn_saveoutline_unique" />
-          </PrimaryButton>
-        </Form>
-      </div>
+            {filteredTags.length > 0 ? (
+              filteredTags.map((ch) => {
+                const isChecked =
+                  ch.checked !== undefined
+                    ? ch.checked
+                    : profileUserTags.some((tag) => tag.tag_id === ch.id);
+                return (
+                  <CustomCheckbox
+                    id={`custom_checkbox_${ch.id}`}
+                    key={ch.id}
+                    onChange={() => onChange({ ...ch, checked: isChecked })}
+                    checked={isChecked}
+                    className="text-sm"
+                  >
+                    {ch.title}
+                  </CustomCheckbox>
+                );
+              })
+            ) : (
+              <p id="prefrence_no_tags_found_unique">No tags found</p>
+            )}
+          </div>
+
+          <div
+            className="flex justify-center gap-5 mt-10"
+            id="prefrence_tags_discard_btn_unique"
+          >
+            <SecondaryButton
+              onClick={onDiscard}
+              disabled={loading}
+              className="flex gap-2.5 items-center justify-center w-[12.5rem] h-auto"
+              id="secondary_button_unique"
+            >
+              Discard{" "}
+              <CloseOutlined id="prefrence_tags_discard_btn_closeoutline_unique" />
+            </SecondaryButton>
+
+            <Form
+              form={formVerify}
+              onFinish={onFinish2}
+              id="form_for_prefrence_unique"
+            >
+              <PrimaryButton
+                className="flex gap-2.5 items-center justify-center w-[12.5rem] h-auto"
+                loading={loading}
+                onClick={async (e) => {
+                  try {
+                    setLoading(true); // Start loader
+                    await formVerify.validateFields(); // Validate form fields
+                    await onFinish2(formVerify.getFieldsValue()); // Submit form values
+                    await GetUserProfileInfo(); // Fetch updated profile info
+                  } finally {
+                    setLoading(false); // Stop loader regardless of success or failure
+                  }
+                }}
+                id="prefrence_tags_save_btn_unique"
+              >
+                Save{" "}
+                <SaveOutlined id="prefrence_tags_save_btn_saveoutline_unique" />
+              </PrimaryButton>
+            </Form>
+          </div>
+        </div>
+      )}
     </section>
   );
 };

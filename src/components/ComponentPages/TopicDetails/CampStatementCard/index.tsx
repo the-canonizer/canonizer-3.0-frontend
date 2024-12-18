@@ -212,18 +212,31 @@ const CampStatementCard = ({ loadingIndicator }) => {
                   className="!gap-1"
                 />
               </div>
-              <Button
-                className="border-none bg-transparent hover:bg-transparent shadow-none focus:!bg-transparent"
-                onClick={() => {
-                  setFullScreen(!fullScreen);
-                }}
-              >
-                {fullScreen ? (
-                  <FullscreenExitOutlined style={{ fontSize: "20px" }} />
-                ) : (
-                  <FullscreenOutlined style={{ fontSize: "20px" }} />
-                )}
-              </Button>
+              <div>
+                {fullScreen &&
+                campStatement?.length &&
+                campStatement[0]?.parsed_value &&
+                campStatement[0]?.draft_record_id ? (
+                  <SecondaryButton
+                    className="px-8 h-auto py-2 ml-auto"
+                    onClick={onEditDraftClick}
+                  >
+                    Edit Draft <EditOutlined />
+                  </SecondaryButton>
+                ) : null}
+                <Button
+                  className="border-none bg-transparent hover:bg-transparent shadow-none focus:!bg-transparent"
+                  onClick={() => {
+                    setFullScreen(!fullScreen);
+                  }}
+                >
+                  {fullScreen ? (
+                    <FullscreenExitOutlined style={{ fontSize: "20px" }} />
+                  ) : (
+                    <FullscreenOutlined style={{ fontSize: "20px" }} />
+                  )}
+                </Button>
+              </div>
             </div>
 
             {campStatement?.[0]?.go_live_time && (
@@ -246,7 +259,8 @@ const CampStatementCard = ({ loadingIndicator }) => {
               </div>
             )}
           </div>
-          {campStatement?.length &&
+          {!fullScreen &&
+          campStatement?.length &&
           campStatement[0]?.parsed_value &&
           campStatement[0]?.draft_record_id ? (
             <SecondaryButton
@@ -260,8 +274,12 @@ const CampStatementCard = ({ loadingIndicator }) => {
       }
     >
       <div
-        className={`camp-agrrement-new overflow-hidden !overflow-y-auto w-full h-full flex  justify-center pr-4 ${
-          campStatement?.length && campStatement[0]?.parsed_value
+        className={`camp-agrrement-new overflow-hidden !overflow-y-auto w-full pr-4 ${
+          !campStatement?.[0]?.value?.length
+            ? "h-full flex justify-center my-auto"
+            : ""
+        } ${
+          campStatement?.length > 0 && campStatement[0]?.parsed_value
             ? ""
             : "my-auto"
         }`}

@@ -36,10 +36,17 @@ const CreatePostPopup = ({ onSubmittedSucess = null }) => {
   const [isUpdateSubmit, serIsUpdateSubmit] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
+  const [breadcrumb, setBreadcrumb] = useState({ topic: null, camp: null });
 
   const [form] = Form.useForm();
 
   const values = Form.useWatch([], form);
+
+  useEffect(() => {
+    if (topicRecord && campRecord) {
+      setBreadcrumb({ topic: topicRecord, camp: campRecord });
+    }
+  }, [topicRecord, campRecord]);
 
   useEffect(() => {
     form
@@ -184,8 +191,8 @@ const CreatePostPopup = ({ onSubmittedSucess = null }) => {
         isPostUpdate={isPostUpdate}
         onClose={onCancel}
         isOpen={isOpen}
-        topicRecord={topicRecord}
-        campRecord={campRecord}
+        topicRecord={breadcrumb?.topic}
+        campRecord={breadcrumb?.camp}
         isDisabled={isDisabled}
         isUpdateSubmit={isUpdateSubmit}
         isError={isError}
