@@ -1220,3 +1220,8 @@ body {
 .camp-accordion{
   @apply bg-[#F7F8FC] rounded-[10px];
 }
+.popver-confirm{
+  .ant-popover-buttons{
+    @apply text-center;
+  }
+}

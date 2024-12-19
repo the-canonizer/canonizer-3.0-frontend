@@ -1,8 +1,10 @@
 import {
+  Alert,
   Breadcrumb,
   Button,
   Col,
   Image,
+  Popconfirm,
   Popover,
   Row,
   Spin,
@@ -1108,7 +1110,7 @@ function CommanBreadcrumbs({
             campStatement?.at(0)?.grace_period_record_count > 0 ||
             campStatement?.at(0)?.parsed_value) ? (
             <div className="topicDetailsCollapseFooter printHIde camp">
-              <PrimaryButton
+              {/* <PrimaryButton
                 disabled={campRecord?.is_archive == 1 ? true : false}
                 className="printHIde sm:hidden md:hidden hidden lg:flex !h-[40px] py-2.5 px-5 items-center text-sm"
                 onClick={() => {
@@ -1132,7 +1134,43 @@ function CommanBreadcrumbs({
                   width={24}
                   preview={false}
                 />
-              </PrimaryButton>
+              </PrimaryButton> */}
+              <Popconfirm
+                overlayStyle={{
+                  width: "25%",
+                }}
+                overlayClassName="popver-confirm"
+                placement="bottom"
+                icon={<i className="icon-warning !text-canRed mt-1"></i>}
+                title="There are some changes that are recent than the current live version of statement, You can review those changes OR can continue to edit the current live version"
+                okText="Continue"
+                cancelText="Manage Statement"
+
+                cancelButtonProps={{
+                  size: "middle",
+                  type: "primary"
+                }}
+                okButtonProps={{
+                  size: "middle",
+                  type:"ghost"
+                }}
+              >
+                <PrimaryButton
+                  disabled={campRecord?.is_archive == 1 ? true : false}
+                  className="printHIde sm:hidden md:hidden hidden lg:flex !h-[40px] py-2.5 px-5 items-center text-sm"
+                  onClick={() => {}}
+                  id="add-camp-statement-btn"
+                >
+                  {K?.exceptionalMessages?.ProposeStatementBtn}
+                  <Image
+                    src="/images/manage-btn-icon.svg"
+                    alt=""
+                    height={24}
+                    width={24}
+                    preview={false}
+                  />
+                </PrimaryButton>
+              </Popconfirm>
             </div>
           ) : null}
           {!!(
