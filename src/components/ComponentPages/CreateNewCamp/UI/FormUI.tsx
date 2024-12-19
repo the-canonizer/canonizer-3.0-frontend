@@ -1,5 +1,14 @@
 import { Fragment, useEffect, useState } from "react";
-import { Form, Input, Select, Row, Col, Typography, Tooltip } from "antd";
+import {
+  Form,
+  Input,
+  Select,
+  Row,
+  Col,
+  Typography,
+  Tooltip,
+  Collapse,
+} from "antd";
 import {
   ApartmentOutlined,
   CloseOutlined,
@@ -26,6 +35,7 @@ import { defaultNicknameData } from "src/utils/generalUtility";
 
 const { Option } = Select;
 const { Text } = Typography;
+const { Panel } = Collapse;
 
 const {
   labels,
@@ -79,8 +89,12 @@ const CreateCampFormUI = ({
   }, []);
 
   const getNickNameInput = () => {
-    const defaultNickName = defaultNicknameData(nickNameList)?.nick_name || values?.nick_name || defaultNicknameData(nickNameList)?.id || nickNameList[0]?.id;
-  
+    const defaultNickName =
+      defaultNicknameData(nickNameList)?.nick_name ||
+      values?.nick_name ||
+      defaultNicknameData(nickNameList)?.id ||
+      nickNameList[0]?.id;
+
     const selectInputProps: any = {
       label: (
         <Fragment>
@@ -106,7 +120,7 @@ const CreateCampFormUI = ({
       id: "nickname-dropdown",
       value: form.getFieldValue("nick_name") || defaultNickName, // Use last set value or default
     };
-  
+
     if (nickNameList?.length) {
       selectInputProps.defaultValue = defaultNickName;
       selectInputProps.initialValue = defaultNickName;
@@ -393,7 +407,7 @@ const CreateCampFormUI = ({
           )}
         </Row>
 
-        <Row
+        {/* <Row
           gutter={16}
           className="bg-canGray mb-3 py-3 rounded-lg"
           id="form-row-2"
@@ -494,9 +508,128 @@ const CreateCampFormUI = ({
               )}
             </Form.Item>
           </Col>
-        </Row>
+        </Row> */}
 
-        <Row gutter={16} id="form-row-3">
+        <Collapse
+          className="camp-accordion"
+          ghost
+          expandIconPosition="right"
+          defaultActiveKey={["1"]}
+        >
+          <Panel
+            header={
+              <>
+                Advanced Settings<br></br>{" "}
+                <Text
+                  className="block mt-1 text-xs text-[#777F93]"
+                  id="keywords-text"
+                >
+                  {labels.cr_keywords_sp}
+                </Text>
+              </>
+            }
+            key="1"
+          >
+            <Row
+              gutter={16}
+              className="bg-canGray mb-3 py-3 rounded-lg"
+              id="form-row-2"
+            >
+              <Col xs={24} sm={12} id="form-col-camp-url">
+                {isLoading ? (
+                  <CustomSkelton
+                    skeltonFor="list"
+                    bodyCount={1}
+                    stylingClass="listSkeleton"
+                    isButton={false}
+                    id="camp-url-skeleton"
+                  />
+                ) : (
+                  <Inputs
+                    label={labels.cr_camp_url}
+                    name="camp_about_url"
+                    rules={campAboutUrlRule}
+                    placeholder="Enter Here"
+                    size={"large"}
+                    maxLength={1024}
+                    prefix={
+                      <div className="pr-3">
+                        <LinkOutlined />
+                      </div>
+                    }
+                    id="camp-url-input"
+                  />
+                )}
+              </Col>
+
+              <Col xs={24} sm={12} id="form-col-camp-about-nick">
+                <Form.Item
+                  label={labels.cr_nick_name_about}
+                  name="camp_about_nick_id"
+                  className={`text-14 text-canBlack font-medium`}
+                  initialValue={values?.camp_about_nick_id}
+                  id="camp-about-nick-item"
+                >
+                  {isLoading ? (
+                    <CustomSkelton
+                      skeltonFor="list"
+                      bodyCount={1}
+                      stylingClass="listSkeleton"
+                      isButton={false}
+                      id="camp-about-nick-skeleton"
+                    />
+                  ) : (
+                    <div
+                      className={`outerDiv flex border rounded ${
+                        isAboutFocused
+                          ? "border-[#40a9ff] shadow-[0 0 0 2px rgba(24, 144, 255, 0.2)"
+                          : ""
+                      }`}
+                      id="camp-about-nick-select-wrapper"
+                    >
+                      <UserOutlined
+                        className="px-3 text-canBlack bg-white"
+                        id="camp-about-nick-icon"
+                      />
+                      <Select
+                        placeholder={placeholders.campAboutNickName}
+                        allowClear
+                        size={"large"}
+                        data-id="camp-about-nick-id"
+                        showSearch
+                        optionFilterProp="children"
+                        id="camp-about-nick-dropdown"
+                        className={`text-canBlack font-normal h-[40px] [&_.ant-select-selector]:!border-0 [&_.ant-select-selector]:!outline-none [&_.ant-select-selector]:!shadow-none border-0 [&_.ant-select-selector]:![&_.ant-select-selection-search]:!w-auto commonSelectClass`}
+                        onFocus={() => setIsAboutFocused(true)}
+                        onBlur={() => setIsAboutFocused(false)}
+                        onChange={(val) =>
+                          form?.setFieldValue("camp_about_nick_id", val)
+                        }
+                        defaultValue={values?.camp_about_nick_id}
+                        value={values?.camp_about_nick_id}
+                      >
+                        <Option value="" id="camp-about-nick-custom">
+                          {placeholders.campAboutNickName}
+                        </Option>
+                        {campNickName.map((nc) => (
+                          <Option
+                            value={nc.id}
+                            key={nc.id}
+                            id={`camp-about-nick-${nc.id}`}
+                          >
+                            {nc.nick_name}
+                          </Option>
+                        ))}
+                      </Select>
+                    </div>
+                  )}
+                </Form.Item>
+              </Col>
+            </Row>
+          </Panel>
+        </Collapse>
+
+        <Row gutter={16} className="mt-6" id="form-row-3">
           <Col
             className="flex flex-col [&_.ant-checkbox-wrapper]:ml-0 [&_.ant-checkbox-wrapper]:mb-4 [&_.ant-checkbox-wrapper>span]:text-canBlack [&_.ant-checkbox-wrapper>span]:text-sm [&_.ant-checkbox-wrapper>span]:font-medium"
             id="form-col-prevent-sub-camps"
