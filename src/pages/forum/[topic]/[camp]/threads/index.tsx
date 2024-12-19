@@ -4,6 +4,11 @@ import { useRouter } from "next/router";
 import { getThreadsList } from "src/network/api/campForumApi";
 import CampThreadComponent from "components/ComponentPages/CampForum";
 import { createToken } from "src/network/api/userApi";
+import { store } from "src/store";
+import {
+  setCurrentCampRecord,
+  setCurrentTopicRecord,
+} from "src/store/slices/campDetailSlice";
 
 function CampForumListPage({ threadList }) {
   const router = useRouter();
@@ -17,12 +22,20 @@ function CampForumListPage({ threadList }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    return () => {
+      store.dispatch(setCurrentTopicRecord(null));
+      store.dispatch(setCurrentCampRecord(null));
+    };
+  }, []);
+
   return (
     <div className="w-full">
       {threadList?.status_code != "404" && <CampThreadComponent />}
     </div>
   );
 }
+
 export async function getServerSideProps({ req, resolvedUrl }) {
   const topicNum = +resolvedUrl?.split("/")[2].split("-")[0];
   const campNum = +(resolvedUrl?.split("/")[3].split("-")[0] ?? 1);
