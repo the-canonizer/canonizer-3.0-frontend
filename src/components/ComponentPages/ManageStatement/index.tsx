@@ -113,11 +113,11 @@ function ManageStatements({ isEdit = false }) {
   };
 
   useEffect(() => {
-    getBreadCrumbApiCall();
-
+    if (router?.asPath?.split("/")?.[1] === "create") {
+      getBreadCrumbApiCall();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
-
 
   useEffect(() => {
     const updateCurrentTime = () => {
