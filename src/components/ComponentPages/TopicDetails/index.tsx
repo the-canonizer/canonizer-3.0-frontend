@@ -562,11 +562,19 @@ const TopicDetails = ({ serverSideCall }: any) => {
                 )}
                 {tree?.["1"]?.is_valid_as_of_time && (
                   <div
-                    className={tree && tree?.["1"]?.rank_hidden == true ?"bg-canGray py-7 px-2.5 lg:px-6 rounded-lg": "bg-canGray py-7 px-2.5 lg:px-6 rounded-lg h-[400px] xl:h-[600px]"}
+                    className={
+                      tree && tree?.["1"]?.rank_hidden == true
+                        ? "bg-canGray py-7 px-2.5 lg:px-6 rounded-lg"
+                        : "bg-canGray py-7 px-2.5 lg:px-6 rounded-lg h-[400px] xl:h-[600px]"
+                    }
                     id="topic_detail_section_heading_support_tree"
                   >
                     <div
-                      className={tree && tree?.["1"]?.rank_hidden == true? null: "border border-canGrey2 bg-white rounded-lg lg:p-2 p-2.5 h-full"}
+                      className={
+                        tree && tree?.["1"]?.rank_hidden == true
+                          ? null
+                          : "border border-canGrey2 bg-white rounded-lg lg:p-2 p-2.5 h-full"
+                      }
                       id="topic_detail_section_heading_support_tree_1"
                     >
                       <SupportTreeCard
@@ -717,7 +725,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
                   ghost
                   expandIconPosition="right"
                   defaultActiveKey={["1"]}
-                  style={{width: "55%"}}
+                  style={{ width: "55%" }}
                 >
                   <Panel
                     header={
@@ -748,15 +756,16 @@ const TopicDetails = ({ serverSideCall }: any) => {
                 />
                 {tree && tree?.["1"]?.rank_hidden === true && (
                   <Alert
-                  type="warning"
-                  showIcon
-                  icon={<i className="icon-warning !text-canRed text-[1.125rem]"></i>}
-                  message="To view support, add your direct support to the topic or delegate support to another user first."
-                  className="bg-transparent border-0 font-medium text-canBlack p-0 mb-[1rem]"
+                    type="warning"
+                    showIcon
+                    icon={
+                      <i className="icon-warning !text-canRed text-[1.125rem]"></i>
+                    }
+                    message="To view support, add your direct support to the topic or delegate support to another user first."
+                    className="bg-transparent border-0 font-medium text-canBlack p-0 mb-[1rem]"
                   />
-
                 )}
-                  {/* <div className="mb-4 italic text-base">
+                {/* <div className="mb-4 italic text-base">
                     <strong>
                       *To view support, add your direct support to the topic or
                       delegate support to another user first.

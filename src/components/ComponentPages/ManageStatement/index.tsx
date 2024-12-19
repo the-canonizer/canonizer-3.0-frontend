@@ -371,7 +371,7 @@ function ManageStatements({ isEdit = false }) {
 
       setTimeout(() => {
         setIsAutoSaving(false);
-      },1000)
+      }, 1000);
     }
   };
 

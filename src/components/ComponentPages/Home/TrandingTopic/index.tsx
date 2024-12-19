@@ -60,7 +60,7 @@ const TrandingTopics = () => {
       user_email: "",
       is_archive: 0,
       sort: false,
-      current_user: isUserAuthenticated? userEmail : "",
+      current_user: isUserAuthenticated ? userEmail : "",
     };
 
     await getCanonizedTopicsApi(reqBody, loadMore);

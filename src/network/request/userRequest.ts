@@ -325,7 +325,7 @@ export default class UserRequest extends Request {
     );
   }
 
-  static setDefaultNickname(values, authToken,) {
+  static setDefaultNickname(values, authToken) {
     const body = {
       ...values,
     };

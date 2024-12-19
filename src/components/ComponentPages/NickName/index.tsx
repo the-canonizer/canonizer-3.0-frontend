@@ -67,7 +67,7 @@ const NickName = () => {
       if (res && res.status_code === 200) {
         nickNameForm.resetFields();
         setIsNickNameModalVisible(false);
-        setIsChecked(false)
+        setIsChecked(false);
         message.success(res.message);
         setDisableButton(false);
       } else {

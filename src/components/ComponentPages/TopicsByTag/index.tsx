@@ -125,7 +125,7 @@ const TopicsListByCats = () => {
       sort: sortLatestTopic ? true : false,
       page: "browse",
       topic_tags: [+router?.query?.id],
-      current_user: isUserAuthenticated? userEmail : "",
+      current_user: isUserAuthenticated ? userEmail : "",
     };
 
     const response = await getCanonizedTopicsApi(reqBody);

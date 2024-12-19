@@ -813,11 +813,11 @@ const SupportTreeCard = ({
             <>
               {hideRank ? (
                 <Alert
-                type="warning"
-                showIcon
-                icon={<i className="icon-warning !text-canRed mt-1"></i>}
-                description="To view the support on this topic, you need to add your direct support or delegate support to another user first."
-                className="bg-transparent border-0"
+                  type="warning"
+                  showIcon
+                  icon={<i className="icon-warning !text-canRed mt-1"></i>}
+                  description="To view the support on this topic, you need to add your direct support or delegate support to another user first."
+                  className="bg-transparent border-0"
                 />
               ) : (
                 <p id="topic_detail_user_support_tree_no_data">
