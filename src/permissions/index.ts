@@ -99,6 +99,11 @@ const PermissionsForPages: PermissionsObj = {
     isPermissionRequired: false,
     permissionName: "all_categories",
   },
+  FacebookDeletionStatus: {
+    isAuthenticationRequired: false,
+    isPermissionRequired: false,
+    permissionName: "facebook_deletion_status",
+  },
 };
 
 export default PermissionsForPages;

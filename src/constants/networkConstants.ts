@@ -223,6 +223,9 @@ const NetworkConstants = {
 
     // PostStatementCount
     postStatementCount: `${BaseCanonizerApiUrl}/post-statement-count`,
+
+    // Facebook account deletion status
+    CheckFacebookDeleteDataStatus: `${BaseCanonizerApiUrl}/check-facebook-delete-data-status`,
   },
   Method: {
     GET: "GET",

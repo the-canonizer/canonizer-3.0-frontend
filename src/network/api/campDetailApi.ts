@@ -292,3 +292,18 @@ export const campSignApi = async (reqBody, loginToken = null) => {
     openNotificationWithIcon(error?.error?.data?.message, "error");
   }
 };
+
+export const getPopupStatement = async (reqBody) => {
+  try {
+    const res = await NetworkCall.fetch(
+      TreeRequest.getCampStatement(reqBody, null),
+      false
+    );
+
+    return res;
+  } catch (error) {
+    if (error?.error?.data?.status_code == 404) {
+      store.dispatch(setCampStatement([]));
+    }
+  }
+};
