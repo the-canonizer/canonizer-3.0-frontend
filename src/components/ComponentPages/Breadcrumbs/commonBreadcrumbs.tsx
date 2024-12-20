@@ -345,39 +345,6 @@ function CommanBreadcrumbs({
     changeGoneLive,
   ]);
 
-  //   let payload = history && {
-  //     camp_num: router?.query?.camp?.at(1)?.split("-")?.at(0) ?? "1",
-  //     topic_num: router?.query?.camp?.at(0)?.split("-")?.at(0),
-  //   };
-  //   useEffect(() => {
-  //     async function getBreadCrumbApiCall() {
-  //       setLoadingIndicator(true);
-  //       let reqBody = {
-  //         topic_num: compareMode
-  //           ? router.query.routes?.at(0).split("-")?.at(0)
-  //           : payload?.topic_num,
-  //         camp_num: payload?.camp_num,
-  //         as_of: router?.pathname == "/topic/[...camp]" ? asof : "default",
-  //         as_of_date:
-  //           asof == "default" || asof == "review"
-  //             ? Date.now() / 1000
-  //             : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
-  //       };
-
-  //       let res = await getCampBreadCrumbApi(reqBody);
-  //       setBreadCrumbRes(res?.data);
-  //       setLoadingIndicator(false);
-  //     }
-
-  //     if (
-  //       (payload && Object.keys(payload).length > 0,
-  //       !!(getCookies() as any)?.loginToken)
-  //     ) {
-  //       getBreadCrumbApiCall();
-  //     }
-
-  //     // eslint-disable-next-line react-hooks/exhaustive-deps
-  //   }, []);
   const handleTopicwarningIcon = () => {
     const topicNum = payload?.topic_num || topicId;
     const topicName = replaceSpecialCharacters(
