@@ -41,10 +41,10 @@ export const getSelectedNode = async (
     update_all: 1,
   };
 
-  await Promise.all([
-    getCurrentTopicRecordApi(reqBody),
-    getCurrentCampRecordApi(reqBody),
-  ]);
+  await getCurrentTopicRecordApi(reqBody);
+  await setTimeout(async () => {
+    await getCurrentCampRecordApi(reqBody);
+  }, 200);
 };
 
 const ForumComponent = () => {
@@ -117,9 +117,9 @@ const ForumComponent = () => {
       const topicArr = (queries.topic as string).split("-");
       const topic_num = topicArr.shift();
 
-      setTimeout(() => {
-        getSelectedNode(topic_num, camp_num, asof, asofdate, algorithm);
-      }, 300);
+      // setTimeout(() => {
+      getSelectedNode(topic_num, camp_num, asof, asofdate, algorithm);
+      // }, 300);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router?.query]);
