@@ -69,7 +69,7 @@ const CommentsList = () => {
       const topic_num = topicArr.shift();
 
       // setTimeout(() => {
-        getSelectedNode(topic_num, camp_num, asof, asofdate, algorithm);
+      getSelectedNode(topic_num, camp_num, asof, asofdate, algorithm);
       // }, 300);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

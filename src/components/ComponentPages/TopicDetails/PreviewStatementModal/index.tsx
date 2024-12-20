@@ -107,7 +107,9 @@ const StatementPreviewModal = () => {
               }}
             />
           ) : (
-            <span className="text-sm text-center block">No statement available.</span>
+            <span className="text-sm text-center block">
+              No statement available.
+            </span>
           )}
         </div>
       </CommonCard>

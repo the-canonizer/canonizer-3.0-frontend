@@ -554,11 +554,11 @@ const CampTree = ({
                           }}
                         >
                           <a className="!text-canGreen font-semibold italic text-sm">
-                            <Image
+                            {/* <Image
                               src="/images/start-new-tree.svg"
                               width={16}
                               height={17}
-                            />
+                            /> */}
                             {`Start new`}{" "}
                           </a>
                         </Link>
