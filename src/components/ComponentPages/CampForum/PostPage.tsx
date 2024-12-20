@@ -34,8 +34,6 @@ const CommentsList = () => {
     useSelector((state: RootState) => ({
       currentThread: state.forum.currentThread,
       currentPost: state.forum.currentPost,
-      campRecord: state?.topicDetails?.currentCampRecord,
-      topicRecord: state?.topicDetails?.currentTopicRecord,
       asof: state?.filters?.filterObject?.asof,
       asofdate: state.filters?.filterObject?.asofdate,
       algorithm: state.filters?.filterObject?.algorithm,
@@ -68,12 +66,11 @@ const CommentsList = () => {
       const topicArr = (queries.topic as string).split("-");
       const topic_num = topicArr.shift();
 
-      // setTimeout(() => {
-      getSelectedNode(topic_num, camp_num, asof, asofdate, algorithm);
-      // }, 300);
+      if (camp_num && topic_num)
+        getSelectedNode(topic_num, camp_num, asof, asofdate, algorithm);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router?.query]);
+  }, [router?.asPath]);
 
   const getPosts = async (id, page = 1, like = "", per_page = postperPage) => {
     setPostLoading(true);
