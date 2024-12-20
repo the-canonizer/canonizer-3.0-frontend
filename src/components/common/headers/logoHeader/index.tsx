@@ -10,6 +10,7 @@ const LogoHeader = () => {
       id="logo-link"
       rel="noopener noreferrer"
     >
+      {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
       <a href="/">
         <div
           className="w-auto h-auto flex items-center cursor-pointer"
