@@ -1112,19 +1112,19 @@ function CommanBreadcrumbs({
                 disabled={campRecord?.is_archive == 1 ? true : false}
                 className="printHIde sm:hidden md:hidden hidden lg:flex !h-[40px] py-2.5 px-5 items-center text-sm"
                 onClick={() => {
-                  const editId = breadCrumbRes?.propose_statement_edit?.edit_id;
-                  const gracePeriod =
-                    breadCrumbRes?.propose_statement_edit?.grace_period;
-                  if (!editId) return;
-                  const path =
-                    gracePeriod > 0
-                      ? `/manage/statement/${editId}-update`
-                      : `/manage/statement/${editId}`;
-                  router?.push(path);
+                  router?.push(
+                    `${`/statement/history/${replaceSpecialCharacters(
+                      router?.query?.camp?.at(0),
+                      "-"
+                    )}/${replaceSpecialCharacters(
+                      router?.query?.camp?.at(1) ?? "1-Agreement",
+                      "-"
+                    )}`}`
+                  );
                 }}
                 id="add-camp-statement-btn"
               >
-                {K?.exceptionalMessages?.ProposeStatementBtn}
+                {K?.exceptionalMessages?.manageCampStatementButton}
                 <Image
                   src="/images/manage-btn-icon.svg"
                   alt=""
