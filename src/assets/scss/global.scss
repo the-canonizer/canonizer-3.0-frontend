@@ -889,7 +889,7 @@ body {
     content: "";
     display: block;
     position: absolute;
-    top: 10px;
+    top: 15px;
     right: 30px;
     bottom: 0;
     border-left: 1px solid #d9d9d9;
@@ -902,7 +902,7 @@ body {
   display: block;
   position: absolute;
   top: 0;
-  right: 20px;
+  right: 16px;
   bottom: 0px;
   border-right: 1px solid #d9d9d9;
   content: "";
@@ -1184,8 +1184,8 @@ body {
     }
   }
 }
-.hide-rank-checkbox{
-  .ant-checkbox-inner{
+.hide-rank-checkbox {
+  .ant-checkbox-inner {
     @apply m-0;
   }
 }
@@ -1217,6 +1217,18 @@ body {
   }
 }
 
-.camp-accordion{
+.camp-accordion {
   @apply bg-[#F7F8FC] rounded-[10px];
+}
+
+.treeHoover {
+  &:hover {
+    .previewBTN {
+      @apply opacity-100 visible;
+    }
+  }
+}
+
+.ant-tree .ant-tree-node-content-wrapper.ant-tree-node-selected {
+  background-color: transparent;
 }
