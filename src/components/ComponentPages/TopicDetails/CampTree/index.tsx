@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from "react-redux";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import type { DataNode, TreeProps } from "antd/es/tree";
 import { DownOutlined } from "@ant-design/icons";
 
 import styles from "../topicDetails.module.scss";
@@ -14,6 +13,8 @@ import { RootState } from "src/store";
 import { setCurrentCamp } from "src/store/slices/filtersSlice";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
 import ScoreTag from "components/ComponentPages/Home/TrandingTopic/scoreTag";
+import SecondaryButton from "components/shared/Buttons/SecondaryButton";
+import { setStatementPreview } from "src/store/slices/topicSlice";
 
 const { TreeNode } = Tree;
 
@@ -21,7 +22,6 @@ const CampTree = ({
   scrollToCampStatement,
   setTotalCampScoreForSupportTree,
   setSupportTreeForCamp,
-  // treeExpandValue,
   prevTreeValueRef,
   isForumPage = false,
 }: any) => {
@@ -52,7 +52,6 @@ const CampTree = ({
   let childExpandTree = [];
   const [defaultExpandKeys, setDefaultExpandKeys] = useState([]);
   const [uniqueKeys, setUniqueKeys] = useState([]);
-  // const [showScoreBars, setShowScoreBars] = useState(false);
   const [selectedExpand, setSelectedExpand] = useState([]);
   const [scoreFilter, setScoreFilter] = useState(filterByScore);
   const [includeReview, setIncludeReview] = useState(
@@ -77,6 +76,16 @@ const CampTree = ({
   };
 
   const { isUserAuthenticated, userID } = useAuthentication();
+
+  const onTreePreviewStatementClick = (
+    e: { preventDefault: () => void; stopPropagation: () => void },
+    item: any
+  ) => {
+    e?.preventDefault();
+    e?.stopPropagation();
+
+    dispatch(setStatementPreview(item));
+  };
 
   const showSelectedCamp = (data, select_camp, campExist) => {
     Object?.keys(data).map((item) => {
@@ -244,7 +253,6 @@ const CampTree = ({
       Object.keys(subscribedUsers)?.includes(`${userID}`) ? (
       subscribedUsers[userID].explicit ? (
         <Tooltip
-          // title="You have subscribed to the entire topic."
           title={
             topicRecord?.topicSubscriptionId &&
             (data?.title === topicRecord?.topic_name ||
@@ -265,7 +273,6 @@ const CampTree = ({
               ? subscribedUsers[userID].child_camp_name
               : "child camp."
           }`}
-          // title="You have subscribed to the entire topic."
         >
           <i
             className={`icon-subscribe small text-xs !text-canBlack !font-[300]  ${styles.implicitIcon}`}
@@ -288,12 +295,6 @@ const CampTree = ({
     const keys = Object.keys(data);
     return keys[keys.length - 1] === item.toString();
   };
-
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     document.querySelectorAll
-  //   }, 300);
-  // }, [uniqueKeys]);
 
   const renderTreeNodes = (
     data: any,
@@ -348,7 +349,7 @@ const CampTree = ({
           return data[item].is_archive == 0 ||
             (data[item].is_archive != 0 && is_camp_archive_checked == true) ? (
             <TreeNode
-              className={`[&_.ant-tree-switcher]:!flex [&_.ant-tree-switcher]:!items-center [&_.ant-tree-node-content-wrapper]:hover:!bg-transparent [&_.ant-tree-switcher.ant-tree-switcher-noop>span]:!hidden [&_.ant-tree-node-content-wrapper]:py-1 ${dynamicClasses}`}
+              className={`[&_.ant-tree-switcher]:!flex [&_.ant-tree-switcher]:!items-center [&_.ant-tree-node-content-wrapper]:hover:!bg-transparent [&_.ant-tree-switcher.ant-tree-switcher-noop>span]:!hidden [&_.ant-tree-node-content-wrapper]:py-1 ${dynamicClasses} treeHoover`}
               switcherIcon={({ expanded }) => {
                 return data[item].camp_id ===
                   +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1) &&
@@ -493,19 +494,6 @@ const CampTree = ({
                           data[item]
                         )}
                     </span>
-                    {/* <span className="bg-canOrange px-[0.30rem] rounded-md flex items-center gap-1">
-                      <Image
-                        src="/images/hand-icon.svg"
-                        alt="svg"
-                        height={12}
-                        width={12}
-                      />
-                      <span className="text-[10px] text-white">
-                        {is_checked
-                          ? data[item].full_score?.toFixed(2)
-                          : data[item].score?.toFixed(2)}
-                      </span>
-                    </span> */}
                     {tree && tree?.["0"]?.["1"]?.rank_hidden == undefined && (
                       <ScoreTag
                         topic_score={
@@ -516,6 +504,14 @@ const CampTree = ({
                         hideRank={tree && tree?.["0"]?.["1"]?.rank_hidden}
                       />
                     )}
+                    <SecondaryButton
+                      onClick={(e) =>
+                        onTreePreviewStatementClick(e, data[item])
+                      }
+                      className="!text-canBlue hover:!text-canHoverBlue !text-[12px] !font-semibold !bg-transparent !border-0 !p-0 !shadow-none ml-4 previewBTN opacity-0 invisible"
+                    >
+                      Preview Statement
+                    </SecondaryButton>
                   </div>
                 </div>
               }
