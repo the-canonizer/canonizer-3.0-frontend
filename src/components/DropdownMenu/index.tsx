@@ -66,7 +66,7 @@ const DropDownMenu = () => {
     algorithms: state.homePage?.algorithms,
     currentGetCheckSupportExistsData:
       state.topicDetails.currentGetCheckSupportExistsData,
-      userEmail: state?.auth?.loggedInUser?.email,
+    userEmail: state?.auth?.loggedInUser?.email,
   }));
   const [topicSubscriptionID, setTopicSubscriptionID] = useState(
     topicRecord?.topicSubscriptionId

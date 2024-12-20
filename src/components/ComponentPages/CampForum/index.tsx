@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { PlusOutlined } from "@ant-design/icons";
+import moment from "moment";
 
 import useIsUserAuthenticated from "src/hooks/isUserAuthenticated";
 import CustomSpinner from "components/shared/CustomSpinner";
@@ -21,7 +22,6 @@ import PrimaryButton from "components/shared/Buttons/PrimariButton";
 import ManageThread from "./CreateThreadPopup";
 import { RootState } from "src/store";
 import CommonBreadcrumbs from "../Breadcrumbs/commonBreadcrumbs";
-import moment from "moment";
 
 export const getSelectedNode = async (
   topic_num,
@@ -117,7 +117,9 @@ const ForumComponent = () => {
       const topicArr = (queries.topic as string).split("-");
       const topic_num = topicArr.shift();
 
-      getSelectedNode(topic_num, camp_num, asof, asofdate, algorithm);
+      setTimeout(() => {
+        getSelectedNode(topic_num, camp_num, asof, asofdate, algorithm);
+      }, 300);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router?.query]);

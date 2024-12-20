@@ -33,15 +33,20 @@ const SignCamp = ({
   const [loadingNickname, setLoadingNickname] = useState(false);
   const [signCampData, setSignCampData] = useState(null);
 
-  const { algorithm, asofdate, asof, currentDelegatedSupportedClick, userEmail } =
-    useSelector((state: RootState) => ({
-      algorithm: state.filters?.filterObject?.algorithm,
-      asofdate: state.filters?.filterObject?.asofdate,
-      asof: state.filters?.filterObject?.asof,
-      currentDelegatedSupportedClick:
-        state.supportTreeCard.currentDelegatedSupportedClick,
-        userEmail: state?.auth?.loggedInUser?.email,
-    }));
+  const {
+    algorithm,
+    asofdate,
+    asof,
+    currentDelegatedSupportedClick,
+    userEmail,
+  } = useSelector((state: RootState) => ({
+    algorithm: state.filters?.filterObject?.algorithm,
+    asofdate: state.filters?.filterObject?.asofdate,
+    asof: state.filters?.filterObject?.asof,
+    currentDelegatedSupportedClick:
+      state.supportTreeCard.currentDelegatedSupportedClick,
+    userEmail: state?.auth?.loggedInUser?.email,
+  }));
 
   const CheckDelegatedOrDirect =
     currentDelegatedSupportedClick.delegatedSupportClick;

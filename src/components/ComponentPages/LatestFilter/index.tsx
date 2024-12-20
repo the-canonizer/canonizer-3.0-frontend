@@ -196,7 +196,7 @@ const LatestFilter = () => {
     algorithm: "blind_popularity",
     update_all: 1,
     fetch_topic_history: viewThisVersionCheck ? 1 : null,
-    current_user: isUserAuthenticated? userEmail : "",
+    current_user: isUserAuthenticated ? userEmail : "",
   };
   const revertScore = () => {
     getTreesApi(reqBodyForService);

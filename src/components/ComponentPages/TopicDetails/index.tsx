@@ -1,7 +1,15 @@
 import { useRouter } from "next/router";
 import { Fragment, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Alert, BackTop, Image, Popover, Select, Typography } from "antd";
+import {
+  Alert,
+  BackTop,
+  Image,
+  Popover,
+  Select,
+  Typography,
+  Collapse,
+} from "antd";
 import moment from "moment";
 
 import styles from "./topicDetails.module.scss";
@@ -65,6 +73,7 @@ import CampRecentActivities from "./CampRecentActivities";
 import { InfoCircleOutlined } from "@ant-design/icons";
 
 const { Link: AntLink } = Typography;
+const { Panel } = Collapse;
 
 const TopicDetails = ({ serverSideCall }: any) => {
   const myRefToCampStatement = useRef(null);
@@ -553,11 +562,19 @@ const TopicDetails = ({ serverSideCall }: any) => {
                 )}
                 {tree?.["1"]?.is_valid_as_of_time && (
                   <div
-                    className="bg-canGray py-7 px-2.5 lg:px-6 rounded-lg h-[400px] xl:h-[600px]"
+                    className={
+                      tree && tree?.["1"]?.rank_hidden == true
+                        ? "bg-canGray py-7 px-2.5 lg:px-6 rounded-lg"
+                        : "bg-canGray py-7 px-2.5 lg:px-6 rounded-lg h-[400px] xl:h-[600px]"
+                    }
                     id="topic_detail_section_heading_support_tree"
                   >
                     <div
-                      className="border border-canGrey2 bg-white rounded-lg lg:p-2 p-2.5 h-full"
+                      className={
+                        tree && tree?.["1"]?.rank_hidden == true
+                          ? null
+                          : "border border-canGrey2 bg-white rounded-lg lg:p-2 p-2.5 h-full"
+                      }
                       id="topic_detail_section_heading_support_tree_1"
                     >
                       <SupportTreeCard
@@ -595,6 +612,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
                         setTotalCampScoreForSupportTree={
                           setTotalCampScoreForSupportTree
                         }
+                        hideRank={tree && tree?.["1"]?.rank_hidden}
                       />
                     </div>
                   </div>
@@ -689,7 +707,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
                     options={scoreOptions}
                   />
                 </div>
-                <div
+                {/* <div
                   className={styles.scoreCheckbox}
                   id="topic_detail_section_consesnus_tree_full_score_checkbox"
                 >
@@ -701,19 +719,58 @@ const TopicDetails = ({ serverSideCall }: any) => {
                 <ArchivedCampCheckBox
                   loadingIndicator={loadingIndicator}
                   id="topic_detail_section_consesnus_tree_archive_checkbox"
-                />
+                /> */}
+                <Collapse
+                  className="camp-accordion"
+                  ghost
+                  expandIconPosition="right"
+                  defaultActiveKey={["1"]}
+                  style={{ width: "55%" }}
+                >
+                  <Panel
+                    header={
+                      <>
+                        Advanced Settings<br></br>{" "}
+                      </>
+                    }
+                    key="1"
+                  >
+                    <div
+                      className={styles.scoreCheckbox}
+                      id="topic_detail_section_consesnus_tree_full_score_checkbox"
+                    >
+                      <FullScoreCheckbox
+                        loadingIndicator={loadingIndicator}
+                        isDisabled={tree && tree?.["1"]?.rank_hidden}
+                      />
+                    </div>
+                    <ArchivedCampCheckBox
+                      loadingIndicator={loadingIndicator}
+                      id="topic_detail_section_consesnus_tree_archive_checkbox"
+                    />
+                  </Panel>
+                </Collapse>
                 <hr
                   className="border-1 my-7 border-canGrey2"
                   id="topic_detail_section_consesnus_tree_line_break"
                 />
                 {tree && tree?.["1"]?.rank_hidden === true && (
-                  <div className="mb-4 italic text-base">
+                  <Alert
+                    type="warning"
+                    showIcon
+                    icon={
+                      <i className="icon-warning !text-canRed text-[1.125rem]"></i>
+                    }
+                    message="To view support, add your direct support to the topic or delegate support to another user first."
+                    className="bg-transparent border-0 font-medium text-canBlack p-0 mb-[1rem]"
+                  />
+                )}
+                {/* <div className="mb-4 italic text-base">
                     <strong>
                       *To view support, add your direct support to the topic or
                       delegate support to another user first.
                     </strong>
-                  </div>
-                )}
+                  </div> */}
                 <CampTree
                   id="topic_detail_section_consesnus_tree_camp_tree"
                   scrollToCampStatement={scrollToCampStatement}

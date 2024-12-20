@@ -264,7 +264,7 @@ export default function DelegatedSupportCampsUI({
       setFilteredList(delegatedSupportCampsList);
     }
   }, [search, delegatedSupportCampsList]);
-  
+
   return (
     <div>
       <div

@@ -245,12 +245,14 @@ function ManageStatementUI({
                   }
                   id="publish-button"
                 >
-                  {isAutoSaving? "Saving as draft ...":
+                  {isAutoSaving ? (
+                    "Saving as draft ..."
+                  ) : (
                     <>
                       Publish Statement
-                      <UploadOutlined className="ml-2"/>
+                      <UploadOutlined className="ml-2" />
                     </>
-                  } 
+                  )}
                 </PrimaryButton>
               </Form.Item>
               <SecondaryButton

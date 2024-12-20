@@ -9,7 +9,10 @@ import {
 } from "@ant-design/icons";
 // import OpenAI from "openai";
 
-import { getAllUsedNickNames } from "src/network/api/campDetailApi";
+import {
+  getAllUsedNickNames,
+  getCampBreadCrumbApi,
+} from "src/network/api/campDetailApi";
 import useAuthentication from "src/hooks/isUserAuthenticated";
 import {
   getEditStatementApi,
@@ -28,6 +31,9 @@ import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 import ManageStatementUI from "./UI";
 import StatementPreview from "./UI/preview";
 import StatementAIPreview from "./UI/aiPreview";
+import moment from "moment";
+import { useSelector } from "react-redux";
+import { RootState } from "src/store";
 // import { openNotificationWithIcon } from "components/common/notification/notificationBar";
 
 // const systemPropPt = `You are a text converter for a website where people put their opinions on various topics, while writing and posting the content they are given a feature of Improve with AI, Your role is to improve that text accordingly.
@@ -77,6 +83,41 @@ function ManageStatements({ isEdit = false }) {
   const getEpochTime = () => {
     return Math.floor(Date.now() / 1000);
   };
+
+  const { asofdate, asof } = useSelector((state: RootState) => ({
+    asofdate: state.filters?.filterObject?.asofdate,
+    asof: state?.filters?.filterObject?.asof,
+  }));
+
+  const getBreadCrumbApiCall = async () => {
+    let reqBody = {
+      topic_num: router?.query?.statement?.[0]?.split("-")?.at(0),
+      camp_num: router?.query?.statement?.[1]?.split("-")?.at(0),
+      as_of: router?.pathname == "/topic/[...camp]" ? asof : "default",
+      as_of_date:
+        asof == "default" || asof == "review"
+          ? Date.now() / 1000
+          : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
+    };
+
+    let res = await getCampBreadCrumbApi(reqBody);
+    if (router?.asPath?.split("/")?.[1] === "create") {
+      const campName =
+        router?.query?.statement?.[1]?.split("-")?.splice(1)?.join("-") || "";
+      const contentText =
+        campName === "Agreement"
+          ? res?.data?.topic_name
+          : res?.data?.bread_crumb?.at(-1)?.camp_name;
+      setEditorState(`<h2>${contentText}</h2><p>&nbsp;</p>`);
+    }
+  };
+
+  useEffect(() => {
+    if (router?.asPath?.split("/")?.[1] === "create") {
+      getBreadCrumbApiCall();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router]);
 
   useEffect(() => {
     const updateCurrentTime = () => {
@@ -371,7 +412,7 @@ function ManageStatements({ isEdit = false }) {
 
       setTimeout(() => {
         setIsAutoSaving(false);
-      },1000)
+      }, 1000);
     }
   };
 

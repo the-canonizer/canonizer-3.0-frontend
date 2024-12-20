@@ -307,9 +307,8 @@ const UpdateTopic = () => {
 
   const hideRankHandler = (e) => {
     form.setFieldValue("rank_hidden", e.target.checked);
-    setIsRankHidden(e.target.checked)
+    setIsRankHidden(e.target.checked);
   };
-
 
   return (
     <CustomSpinner key="create-topic-spinner" spinning={isLoading}>
@@ -352,7 +351,7 @@ const UpdateTopic = () => {
             values={values}
             isLoading={isLoading}
             editCampStatementData={editCampStatementData}
-            isRankHidden = {isRankHidden}
+            isRankHidden={isRankHidden}
             hideRankHandler={hideRankHandler}
           />
         </Col>

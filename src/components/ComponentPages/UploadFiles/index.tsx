@@ -88,7 +88,10 @@ const UploadFiles = () => {
     useState(false);
   const [getUploadFolderLoadingIndicator, setGetUploadFolderLoadingIndicator] =
     useState(false);
-  const [uploadedLengths, setUploadedLengths] = useState({ fileLength: 0, folderLength: 0 });
+  const [uploadedLengths, setUploadedLengths] = useState({
+    fileLength: 0,
+    folderLength: 0,
+  });
 
   const { isUserAuthenticated } = isAuth();
   const closeFolder = () => {
@@ -278,7 +281,7 @@ const UploadFiles = () => {
     if (response) {
       const fileLength = response.data.files?.length || 0;
       const folderLength = response.data.folders?.length || 0;
-      setUploadedLengths({ fileLength, folderLength })
+      setUploadedLengths({ fileLength, folderLength });
       let filesArr = response.data.files;
       let FileArrData = filesArr.map((v) => ({ ...v, type: "file" }));
       let folderArr = response.data.folders;
