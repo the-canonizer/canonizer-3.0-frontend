@@ -90,6 +90,15 @@ export default function Editorck(
                 );
               });
 
+            // Move the cursor to the end of the content
+            editor.model.change((writer) => {
+              // Get the root of the editor's model
+              const root = editor.model.document.getRoot();
+
+              // Set the selection to the end of the content
+              writer.setSelection(writer.createPositionAt(root, "end"));
+            });
+
             editor.editing.view.focus();
           }}
           onChange={(event, editor: any) => {
