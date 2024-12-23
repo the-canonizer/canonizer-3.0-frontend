@@ -1,29 +1,12 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Button, Row, Col, Tabs } from "antd";
-import styles from "./index.module.scss";
+import moment from "moment";
 
 import CustomSkelton from "../../../common/customSkelton";
 import { capitalizeFirstLetter } from "src/utils/generalUtility";
-import Breadcrumbs from "components/ComponentPages/Breadcrumbs/breadcrumbs";
 import HistoryCard from "components/ComponentPages/HistoryCard/historyCard";
-import moment from "moment";
-import TimelineInfoBar from "components/ComponentPages/TopicDetails/CampInfoBar";
-import {
-  getCurrentCampRecordApi,
-  getCurrentTopicRecordApi,
-} from "src/network/api/campDetailApi";
-import { useSelector } from "react-redux";
-import { RootState } from "src/store";
 import CommonBreadcrumbs from "components/ComponentPages/Breadcrumbs/commonBreadcrumbs";
-const validUrl = (url) => {
-  try {
-    new URL(url);
-    return true;
-  } catch (error) {
-    return false;
-  }
-};
 
 function CompareStatementUI({
   statements,
@@ -31,23 +14,13 @@ function CompareStatementUI({
   liveStatement,
   itemsStatus,
 }: any) {
-  const [compareMode, setCompareMode] = useState(true);
-  const [currentVersion, setCurrentVersion] = useState(true);
+  const [compareMode] = useState(true);
+  const [currentVersion] = useState(true);
   const [tabId, setTabId] = useState("1");
   const router = useRouter();
 
-  const { asofdate, topicRecord, asof, campRecord } = useSelector(
-    (state: RootState) => ({
-      asofdate: state.filters?.filterObject?.asofdate,
-      topicRecord: state?.topicDetails?.currentTopicRecord,
-      asof: state?.filters?.filterObject?.asof,
-      campRecord: state?.topicDetails?.currentCampRecord,
-    })
-  );
-
   const s1 = statements?.at(0) || {},
-    s2 = statements?.at(1) || {},
-    from = router?.query?.from;
+    s2 = statements?.at(1) || {};
 
   const breakpoint = 768;
 
@@ -91,11 +64,6 @@ function CompareStatementUI({
     };
   }, [breakpoint]);
 
-  let payload = {
-    camp_num: router?.query?.routes[1]?.split("-")[0] ?? "1",
-    topic_num: router?.query?.routes[0]?.split("-")[0],
-  };
-
   const getBackUrl = () => {
     const query = router?.query;
     if (query.from === "topic") {
@@ -113,47 +81,12 @@ function CompareStatementUI({
     }
   };
 
-  // useEffect(() => {
-  //   const isDefaultOrReview = asof === "default" || asof === "review";
-
-  //   const reqBody = {
-  //     topic_num: parseInt(router?.query?.camp?.at(0)?.split("-")?.at(0), 10),
-  //     camp_num:
-  //       parseInt(router?.query?.camp?.at(1)?.split("-")?.at(0), 10) || 1,
-  //     as_of: asof,
-  //     as_of_date: isDefaultOrReview
-  //       ? Math.floor(Date.now() / 1000)
-  //       : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
-  //   };
-
-  //   const fetchTopicRecord = async () => {
-  //     await getCurrentTopicRecordApi(reqBody);
-  //   };
-
-  //   const fetchCampRecord = async () => {
-  //     await getCurrentCampRecordApi(reqBody);
-  //   };
-
-  //   if (campRecord === null) {
-  //     fetchCampRecord();
-  //   }
-
-  //   if (topicRecord === null) {
-  //     fetchTopicRecord();
-  //   }
-  // }, []);
-
   return (
     <>
-      {/* <TimelineInfoBar
-        compareMode={compareMode}
-        historyOF={router?.query?.from}
-      /> */}
       <CommonBreadcrumbs
         compareMode={compareMode}
         historyOF={router?.asPath?.split("/")?.at(1)}
       />
-      {/* <Breadcrumbs compareMode={compareMode} historyOF={router?.query?.from} /> */}
 
       {isLoading ? (
         <CustomSkelton skeltonFor="comparisonPage" />
@@ -201,59 +134,71 @@ function CompareStatementUI({
           )}
 
           {isMobileView && (
-            <Tabs
-              defaultActiveKey="1"
-              centered
-              className={`comparision-mobile-tabs ${
-                tabId && tabId === "1"
-                  ? getStatusClass(itemsStatus[s1?.id])
-                  : getStatusClass(itemsStatus[s2?.id])
-              }`}
-              onChange={(id) => {
-                setTabId(id);
-              }}
-            >
-              <Tabs.TabPane
-                className="comparison-tab-content"
-                tab={
-                  <>
-                    <p>{convertToDate(s1?.submit_time)}</p>
-                    <span>{convertToTime(s1?.submit_time)}</span>
-                  </>
-                }
-                key="1"
+            <Fragment>
+              <Tabs
+                defaultActiveKey="1"
+                centered
+                className={`comparision-mobile-tabs ${
+                  tabId && tabId === "1"
+                    ? getStatusClass(itemsStatus[s1?.id])
+                    : getStatusClass(itemsStatus[s2?.id])
+                }`}
+                onChange={(id) => {
+                  setTabId(id);
+                }}
               >
-                <Col xs={24} md={12}>
-                  <HistoryCard
-                    compareMode={compareMode}
-                    comparisonData={s1}
-                    status={itemsStatus[s1?.id]}
-                    s1={true}
-                    isMobileView={isMobileView}
-                  />
-                </Col>
-              </Tabs.TabPane>
+                <Tabs.TabPane
+                  className="comparison-tab-content"
+                  tab={
+                    <>
+                      <p>{convertToDate(s1?.submit_time)}</p>
+                      <span>{convertToTime(s1?.submit_time)}</span>
+                    </>
+                  }
+                  key="1"
+                >
+                  <Col xs={24} md={12}>
+                    <HistoryCard
+                      compareMode={compareMode}
+                      comparisonData={s1}
+                      status={itemsStatus[s1?.id]}
+                      s1={true}
+                      isMobileView={isMobileView}
+                    />
+                  </Col>
+                </Tabs.TabPane>
 
-              <Tabs.TabPane
-                className="comparison-tab-content"
-                tab={
-                  <>
-                    <p>{convertToDate(s2?.submit_time)}</p>
-                    <span>{convertToTime(s2?.submit_time)}</span>
-                  </>
-                }
-                key="2"
-              >
-                <Col xs={24} md={12}>
+                <Tabs.TabPane
+                  className="comparison-tab-content"
+                  tab={
+                    <>
+                      <p>{convertToDate(s2?.submit_time)}</p>
+                      <span>{convertToTime(s2?.submit_time)}</span>
+                    </>
+                  }
+                  key="2"
+                >
+                  <Col xs={24} md={12}>
+                    <HistoryCard
+                      compareMode={compareMode}
+                      comparisonData={s2}
+                      status={itemsStatus[s2?.id]}
+                      isMobileView={isMobileView}
+                    />
+                  </Col>
+                </Tabs.TabPane>
+              </Tabs>
+              {liveStatement !== null && (
+                <div className="mt-10">
                   <HistoryCard
                     compareMode={compareMode}
-                    comparisonData={s2}
-                    status={itemsStatus[s2?.id]}
-                    isMobileView={isMobileView}
+                    comparisonData={liveStatement}
+                    status={liveStatement?.status}
+                    currentVersion={currentVersion}
                   />
-                </Col>
-              </Tabs.TabPane>
-            </Tabs>
+                </div>
+              )}
+            </Fragment>
           )}
         </div>
       )}
