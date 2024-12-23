@@ -188,10 +188,6 @@ function HistoryContainer() {
     setActiveTab(tabName);
   };
 
-  const campRoute = () => {
-    setLoadingIndicator(true);
-  };
-
   const onSelectCompare = ({ id, status }, e: CheckboxChangeEvent) => {
     let oldTopics = [...selectedTopic];
     let oldTopicsStatus = [...selectedTopicStatus];

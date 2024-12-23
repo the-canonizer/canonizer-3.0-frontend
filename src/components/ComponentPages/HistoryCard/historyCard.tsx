@@ -7,7 +7,6 @@ import {
   Space,
   Tag,
   Tooltip,
-  message,
   Modal,
 } from "antd";
 
@@ -22,7 +21,6 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useAuthentication from "src/hooks/isUserAuthenticated";
 import HistoryCardDrawer from "./historyCardDrawer";
-// import "./historyCard.scss";
 import {
   setFilterCanonizedTopics,
   setViewThisVersion,
@@ -81,13 +79,11 @@ function HistoryCard({
   currentVersion = null,
   s1 = false,
   isMobileView = false,
-  loadingIndicator = false,
   changeObjection,
 }: any) {
   const router = useRouter();
   const [commited, setCommited] = useState(false);
   const [isSelectChecked, setIsSelectChecked] = useState(false);
-  const [collapseKey, setCollapseKey] = useState(collapseKeys);
 
   const [modal1Open, setModal1Open] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -179,7 +175,6 @@ function HistoryCard({
 
     let res = await changeCommitStatement(reqBody);
     if (res?.status_code === 200) {
-      // setCommited(true);
       dispatch(setChangeGoneLive(!changeGoneLive));
       if (historyOf == "camp" || historyOf == "topic") {
         updateHistory();
@@ -187,7 +182,6 @@ function HistoryCard({
     }
     changeAgree();
     setLoadingChanges(false);
-    // await getTreesApi(reqBodyForService);
   };
 
   const discardChanges = async () => {
@@ -429,7 +423,7 @@ function HistoryCard({
                     Statement
                   </h5>
                   <div
-                    className="text-canBlack pb-[1.25rem] editorContent [&_a]:!text-canBlue [&_a]:hover:!text-canHoverBlue"
+                    className="text-canBlack pb-[1.25rem] editorContent [&_a]:!text-canBlue [&_a]:hover:!text-canHoverBlue break-all whitespace-break-spaces"
                     dangerouslySetInnerHTML={{
                       __html: campStatement?.parsed_value,
                     }}
