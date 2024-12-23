@@ -19,7 +19,10 @@ import CustomSkelton from "components/common/customSkelton";
 import { getAllUsedNickNames } from "src/network/api/campDetailApi";
 import useAuthentication from "src/hooks/isUserAuthenticated";
 import K from "src/constants";
-import { replaceSpecialCharacters } from "src/utils/generalUtility";
+import {
+  defaultNicknameData,
+  replaceSpecialCharacters,
+} from "src/utils/generalUtility";
 import CommonCards from "components/shared/Card";
 import CustomSpinner from "components/shared/CustomSpinner";
 import SectionHeading from "../Home/FeaturedTopic/sectionsHeading";
@@ -161,7 +164,8 @@ function AddOrEdit({ edit }) {
         };
         const result = await getAllUsedNickNames(reqBodyNickName);
         form.setFieldsValue({
-          nick_name: result?.data[0]?.id,
+          nick_name:
+            defaultNicknameData(result?.data)?.id || result?.data[0]?.id,
         });
         setNickNameData(result?.data);
         setScreenLoading(false);
@@ -171,7 +175,8 @@ function AddOrEdit({ edit }) {
         };
         const result = await getAllUsedNickNames(reqBody);
         form.setFieldsValue({
-          nick_name: result?.data[0]?.id,
+          nick_name:
+            defaultNicknameData(result?.data)?.id || result?.data[0]?.id,
         });
         setNickNameData(result?.data);
         setScreenLoading(false);
@@ -244,8 +249,14 @@ function AddOrEdit({ edit }) {
                   prefix={
                     <UserOutlined className="flex items-center justify-center px-2" />
                   }
-                  defaultValue={nickNameData?.at(0)?.id}
-                  initialValue={nickNameData?.at(0)?.id}
+                  defaultValue={
+                    defaultNicknameData(nickNameData)?.id ||
+                    nickNameData?.at(0)?.id
+                  }
+                  initialValue={
+                    defaultNicknameData(nickNameData)?.id ||
+                    nickNameData?.at(0)?.id
+                  }
                   value={form.getFieldValue("nick_name")}
                   key="canon-select"
                   lastValue={form.getFieldValue("nick_name")}
