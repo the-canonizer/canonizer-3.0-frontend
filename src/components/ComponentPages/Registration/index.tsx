@@ -154,7 +154,7 @@ const Registration = () => {
 
   const onBrowseClick = (e) => {
     e?.preventDefault();
-    router?.back();
+    router?.push("/");
   };
 
   return (

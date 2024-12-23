@@ -762,7 +762,7 @@ body {
   }
 
   .ant-tabs-nav {
-    @apply sticky top-0 bg-white z-50 max-lg:mx-[-14px];
+    @apply sticky top-0 bg-white z-0 max-lg:mx-[-14px];
 
     .ant-tabs-nav-list {
       @apply w-full;
