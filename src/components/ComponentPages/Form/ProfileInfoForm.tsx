@@ -489,6 +489,12 @@ function ProfileInfoForm({
               }
               className="text-sm text-canBlack font-normal [&_label]:text-sm [&_label]:font-medium [&_.ant-form-item-explain-error]:mb-6 [&_.ant-input-group-addon]:!w-[5rem] [&_.ant-select-selection-item]:!pr-6 [&_.ant-input-group-addon]:!bg-canGray [&_.ant-input-affix-wrapper]:focus:!border-canGrey2 [&_.ant-input-affix-wrapper-focused]:!shadow-none  [&_.ant-input-affix-wrapper-focused]:!border-canGrey2 [&_.ant-input-affix-wrapper]:!border-canGrey2 [&_.ant-input-affix-wrapper]:!shadow-none"
               {...messages.firstNameRule}
+              rules={[
+                {
+                  pattern: /^[a-zA-Z]*$/,
+                  message:"Please enter a valid first name (only letters allowed)",
+                },
+              ]}
             >
               <Input
                 onChange={handleChange}
@@ -535,6 +541,12 @@ function ProfileInfoForm({
               }
               className="text-sm text-canBlack font-normal [&_label]:text-sm [&_label]:font-medium [&_.ant-form-item-explain-error]:mb-6 [&_.ant-input-group-addon]:!w-[5rem] [&_.ant-select-selection-item]:!pr-6 [&_.ant-input-group-addon]:!bg-canGray [&_.ant-input-affix-wrapper]:focus:!border-canGrey2 [&_.ant-input-affix-wrapper-focused]:!shadow-none  [&_.ant-input-affix-wrapper-focused]:!border-canGrey2 [&_.ant-input-affix-wrapper]:!border-canGrey2 [&_.ant-input-affix-wrapper]:!shadow-none"
               {...messages.lastNameRule}
+                rules={[
+                {
+                  pattern: /^[a-zA-Z]*$/,
+                  message: "Please enter a valid last name (only letters allowed)"
+                },
+              ]}
             >
               <Input
                 onChange={handleChange}

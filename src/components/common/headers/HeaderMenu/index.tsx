@@ -80,7 +80,7 @@ const menuItems = [
     isMobile: true,
   },
   {
-    link: "/settings",
+    link: "/settings?tab=profile_info",
     linkTitle: "Settings",
     id: 5,
     isMobile: true,
