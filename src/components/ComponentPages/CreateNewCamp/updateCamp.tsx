@@ -13,7 +13,10 @@ import {
 } from "src/network/api/campDetailApi";
 import { setCurrentTopic } from "src/store/slices/topicSlice";
 import messages from "src/messages";
-import { replaceSpecialCharacters } from "src/utils/generalUtility";
+import {
+  defaultNicknameData,
+  replaceSpecialCharacters,
+} from "src/utils/generalUtility";
 import isAuth from "src/hooks/isUserAuthenticated";
 import { setShowDrawer } from "src/store/slices/filtersSlice";
 import DataNotFound from "../DataNotFound/dataNotFound";
@@ -222,7 +225,9 @@ const CreateNewCamp = () => {
       if (result?.status_code == 200) {
         const fieldSValuesForForm = {
           camp_name: resData?.camp?.camp_name,
-          nick_name: resData?.nick_name?.at(0)?.id,
+          nick_name:
+            defaultNicknameData(resData?.nick_name)?.id ||
+            resData?.nick_name?.at(0)?.id,
           parent_camp_num: resData?.camp?.parent_camp_num,
           camp_about_url: resData?.camp?.camp_about_url,
           camp_about_nick_id:

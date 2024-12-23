@@ -113,7 +113,7 @@ function ManageStatementUI({
           initialValues={{
             available_for_child: 0,
             nick_name: defaultNicknameData(nickNameData)?.id
-              ? -defaultNicknameData(nickNameData)?.id
+              ? defaultNicknameData(nickNameData)?.id
               : nickNameData[0]?.id,
           }}
           onValuesChange={handleformvalues}
