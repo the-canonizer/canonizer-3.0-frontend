@@ -99,6 +99,14 @@ const Login = () => {
     }
 
     if (res && res.status_code === 200) {
+      document.cookie = "current_user=" +
+      username +
+      "; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
+
+      document.cookie = "isUserAuthenticated=" +
+      true +
+      "; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
+
       dispatch(
         setFilterCanonizedTopics({
           algorithm: res?.data?.user?.default_algo,
