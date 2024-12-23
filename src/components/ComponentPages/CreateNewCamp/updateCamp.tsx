@@ -372,7 +372,7 @@ const CreateNewCamp = () => {
       parent_camp_num:
         editInfo?.parent_camp.length > 1 ? values?.parent_camp_num : null,
       old_parent_camp_num: editInfo?.camp?.parent_camp_num,
-      camp_leader_nick_id: nicknameExists? values?.camp_leader_nick_id : null,
+      camp_leader_nick_id: nicknameExists? values?.camp_leader_nick_id : editCampData?.camp?.camp_leader_nick_id,
     };
 
     options.map((op) => (reqBody[op.id] = op.checked ? 1 : 0));
