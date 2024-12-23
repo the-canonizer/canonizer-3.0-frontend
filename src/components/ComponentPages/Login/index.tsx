@@ -163,7 +163,7 @@ const Login = () => {
 
   const onBrowseClick = (e) => {
     e?.preventDefault();
-    router?.back();
+    router?.push("/");
   };
 
   const onForgotPasswordClick = (e) => {

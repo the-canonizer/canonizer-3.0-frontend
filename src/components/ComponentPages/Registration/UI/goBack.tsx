@@ -9,7 +9,7 @@ function RegistrationUiGoBack({ onBrowseClick }) {
       onClick={onBrowseClick}
       id="go-back-button"
     >
-      <LeftOutlined /> Go Back
+      <LeftOutlined /> Back
     </Button>
   );
 }
