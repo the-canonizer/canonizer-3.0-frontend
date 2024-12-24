@@ -118,6 +118,7 @@ const CreateCampFormUI = ({
       prefix: <UserOutlined className="px-3 text-canBlack" />,
       onSelect: (val) => form.setFieldValue("nick_name", val),
       id: "nickname-dropdown",
+      lastValue: form.getFieldValue("nick_name"),
       value: form.getFieldValue("nick_name") || defaultNickName, // Use last set value or default
     };
 
@@ -514,7 +515,7 @@ const CreateCampFormUI = ({
           className="camp-accordion"
           ghost
           expandIconPosition="right"
-          defaultActiveKey={["1"]}
+          defaultActiveKey={["0"]}
         >
           <Panel
             header={
