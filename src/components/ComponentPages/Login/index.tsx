@@ -106,13 +106,22 @@ const Login = () => {
       );
 
       form.resetFields();
+
       fetchNickNameList();
 
-      closeModal();
+      if (values.remember) {
+        dispatch(
+          setValue({
+            label: "remember_me",
+            value: {
+              username: values.username?.trim(),
+              password: values.password,
+            },
+          })
+        );
+      }
 
       const returnUrl: any = router?.query?.returnUrl;
-
-      console.log(returnUrl);
 
       if (returnUrl) {
         router?.push(returnUrl);
@@ -123,21 +132,13 @@ const Login = () => {
       } else {
         closeModal();
       }
+
+      closeModal();
     }
 
-    if (values.remember) {
-      dispatch(
-        setValue({
-          label: "remember_me",
-          value: {
-            username: values.username?.trim(),
-            password: values.password,
-          },
-        })
-      );
-    }
-
-    setLoading(false);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1200);
   };
 
   const onOTPClick = async (e) => {
