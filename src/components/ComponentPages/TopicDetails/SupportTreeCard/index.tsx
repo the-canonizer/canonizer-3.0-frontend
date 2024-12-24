@@ -847,7 +847,7 @@ const SupportTreeCard = ({
       >
         <CustomButton
           onClick={handleClickSupportCheck}
-          className="w-full justify-center bg-canGreen hover:!bg-canGreen hover:!text-white hover:!border-transparent !border-transparent h-auto py-2 text-white flex items-center rounded-lg font-medium text-sm gap-2"
+          className="w-full justify-center bg-canGreen focus:!bg-canGreen focus:!text-white hover:!bg-canGreen hover:!text-white hover:!border-transparent !border-transparent h-auto py-2 text-white flex items-center rounded-lg font-medium text-sm gap-2"
           disabled={asof == "bydate" || campRecord?.is_archive == 1}
           id="manage-support-btn"
         >
