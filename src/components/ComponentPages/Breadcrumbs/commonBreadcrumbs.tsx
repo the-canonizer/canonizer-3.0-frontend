@@ -916,7 +916,7 @@ function CommanBreadcrumbs({
                           breadCrumbRes?.bread_crumb?.at(-1)?.camp_num
                         }-${breadCrumbRes?.bread_crumb?.at(-1)?.camp_name}`}
                       >
-                        {breadCrumbRes?.bread_crumb?.at(-1)?.camp_name}
+                        <a className="!break-all">{breadCrumbRes?.bread_crumb?.at(-1)?.camp_name}</a>
                       </Link>
                       {isMobile && (
                         <Popover
@@ -976,7 +976,7 @@ function CommanBreadcrumbs({
                             <Link
                               href={`${topicLink}/${camp?.camp_num}-${camp?.camp_name}`}
                             >
-                              {camp?.camp_name}
+                              <a className="!break-all">{camp?.camp_name}</a>
                             </Link>
                             {isMobile && (
                               <Popover
@@ -1015,7 +1015,7 @@ function CommanBreadcrumbs({
                           <Link
                             href={`${topicLink}/${camp.camp_num}-${camp.camp_name}`}
                           >
-                            {camp?.camp_name}
+                            <a className="!break-all">{camp?.camp_name}</a>
                           </Link>
                         </>
                       )}
