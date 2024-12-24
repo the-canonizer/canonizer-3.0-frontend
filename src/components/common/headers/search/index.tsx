@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import debounce from "lodash/debounce";
 import { AutoComplete, Card, Empty, List, Popover, Typography } from "antd";
-import { EyeOutlined, RightOutlined } from "@ant-design/icons";
+import { RightOutlined } from "@ant-design/icons";
 import Image from "next/image";
 
 import type { TabsProps } from "antd";
@@ -28,7 +28,6 @@ import SearchInputs from "components/shared/FormInputs/search";
 import CustomTabs from "components/shared/Tabs";
 
 const getHighlightedText = (text, highlight) => {
-  // const parts = text?.split(new RegExp(`(${highlight})`, "gi"));
   const escapedHighlight = highlight.replace(
     /[-[\]{}()*+?.,\\^$|#\s]/g,
     "\\$&"
@@ -56,7 +55,6 @@ const getHighlightedText = (text, highlight) => {
 };
 
 const getHighlightedTextForCampStatement = (text, highlight) => {
-  // const parts = text?.split(new RegExp(`(${highlight})`, "gi"));
   const escapedHighlight = highlight.replace(
     /[-[\]{}()*+?.,\\^$|#\s]/g,
     "\\$&"
@@ -380,6 +378,7 @@ const HeaderSearch = ({ className = "" }: any) => {
             : searchVal
         }
         className={`lg:ml-5 transition-all delay-300 [&>div]:!border-0 w-full tab:w-4/12 xl:w-2/5`}
+        open={true}
       >
         <div
           id="desktop-search-input"
@@ -584,9 +583,7 @@ const TopicItems = ({ searchTopics, searchValue }) => {
         footer={
           searchTopics?.length ? (
             <span id="topic-list-footer" className={styles.bold_margin}></span>
-          ) : (
-            ""
-          )
+          ) : null
         }
         renderItem={(item: any) => (
           <List.Item
@@ -598,12 +595,12 @@ const TopicItems = ({ searchTopics, searchValue }) => {
               className="!font-semibold"
               href={`/${replaceSpecialCharactersInLink(item.link)}`}
             >
-              <a className="flex justify-between w-full items-start">
+              <a className="flex justify-between w-full items-start break-all whitespace-break-spaces">
                 <span className="flex flex-col w-full">
-                  <div className="flex items-center justify-between w-full">
+                  <div className="flex items-center justify-between w-full gap-2">
                     <span
                       id={`topic-title-${item.id}`}
-                      className="flex-1 text-base lg:font-medium font-normal text-canBlack mb-2 flex"
+                      className="text-base lg:font-medium font-normal text-canBlack mb-2 line-clamp-1"
                     >
                       {getHighlightedText(item.type_value, searchValue)}
                     </span>
@@ -693,14 +690,13 @@ const CampItems = ({ searchCamps, searchValue }) => {
                 id={`camp-link-${item.id}`}
                 href={`/${jsonData?.[0][1]?.camp_link}`}
               >
-                <a className="flex justify-between w-full items-start">
-                  <span className="flex flex-col w-full">
-                    <div className="flex items-center justify-between w-full">
+                <a className="flex justify-between w-full items-start break-all whitespace-break-spaces">
+                  <span className="flex flex-col w-full break-all whitespace-break-spaces">
+                    <div className="flex items-center justify-between w-full gap-2">
                       <span
                         id={`camp-title-${item.id}`}
-                        className="flex-1 text-base font-medium text-canBlack mb-2 flex"
+                        className="text-base font-medium text-canBlack mb-2 line-clamp-1"
                       >
-                        {" "}
                         {getHighlightedText(item.type_value, searchValue)}
                       </span>
                       <RightOutlined
@@ -709,36 +705,62 @@ const CampItems = ({ searchCamps, searchValue }) => {
                       />
                     </div>
 
-                    <div className="text-left flex">
-                      <Typography.Paragraph
-                        id={`camp-topic-${item.id}`}
-                        className="text-base font-medium bg-transparent border-0 p-0 hover:bg-transparent focus:bg-transparent flex gap-1.5 items-center leading-1 !mb-0"
-                      >
-                        <Image
-                          src="/images/camp-search-icon.svg"
-                          width={17}
-                          height={19}
-                        />
-                        Topic:
-                        {parsedData.reverse().map((obj, index) => {
-                          return (
-                            <>
-                              <a
-                                className="text-base text-canBlue flex items-center gap-2.5 font-medium"
-                                href={`/${obj?.camp_link}`}
-                                key={`/${obj?.camp_link}`}
-                              >
-                                {/* {obj.camp_name} */}
-                                {getHighlightedText(
-                                  obj?.camp_name,
-                                  searchValue
-                                )}
-                                {index < parsedData.length - 1 ? "/ " : ""}
-                              </a>
-                            </>
-                          );
-                        })}
-                      </Typography.Paragraph>
+                    <div
+                      className="text-left grid gap-2"
+                      style={{
+                        gridTemplateColumns:
+                          "repeat(auto-fill, minmax(250px, 1fr))",
+                      }}
+                    >
+                      {parsedData.reverse().map((obj, index) => (
+                        <Typography.Paragraph
+                          id={`camp-topic-${item.id}`}
+                          className="text-base font-medium bg-transparent border-0 p-0 hover:bg-transparent focus:bg-transparent !mb-0 flex gap-2 break-all whitespace-break-spaces items-start justify-start"
+                          key={`/${obj?.camp_link}`}
+                        >
+                          <div className="w-[15px] h-[15px] mt-1">
+                            <svg
+                              width="15"
+                              height="15"
+                              viewBox="0 0 15 15"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <g clip-path="url(#clip0_31_13108)">
+                                <path
+                                  d="M3.4066 2.96875C3.07267 2.96875 2.79946 3.23594 2.79946 3.5625V15.4375C2.79946 15.7641 3.07267 16.0312 3.4066 16.0312H11.9066V13.0625C11.9066 12.4057 12.4492 11.875 13.1209 11.875H16.1566V3.5625C16.1566 3.23594 15.8834 2.96875 15.5495 2.96875H3.4066ZM11.9066 17.8125H3.4066C2.06709 17.8125 0.978027 16.7475 0.978027 15.4375V3.5625C0.978027 2.25254 2.06709 1.1875 3.4066 1.1875H15.5495C16.889 1.1875 17.978 2.25254 17.978 3.5625V11.875V12.0791C17.978 12.71 17.7238 13.3148 17.2684 13.7602L13.8343 17.1186C13.3789 17.5639 12.7604 17.8125 12.1153 17.8125H11.9066Z"
+                                  fill="#242B37"
+                                />
+                                <path
+                                  d="M9.88172 4.88394C9.8077 4.73405 9.65128 4.63867 9.47949 4.63867C9.3077 4.63867 9.15267 4.73405 9.07726 4.88394L8.17922 6.68667L6.17364 6.97555C6.00605 7.00007 5.86638 7.11453 5.81471 7.27123C5.76303 7.42793 5.80493 7.60099 5.92504 7.71681L7.38034 9.12166L7.03677 11.107C7.00883 11.2705 7.07867 11.4367 7.21693 11.5335C7.3552 11.6302 7.53816 11.6425 7.689 11.5648L9.48089 10.6314L11.2728 11.5648C11.4236 11.6425 11.6066 11.6316 11.7448 11.5335C11.8831 11.4354 11.9529 11.2705 11.925 11.107L11.58 9.12166L13.0353 7.71681C13.1554 7.60099 13.1987 7.42793 13.1457 7.27123C13.0926 7.11453 12.9543 7.00007 12.7867 6.97555L10.7798 6.68667L9.88172 4.88394Z"
+                                  fill="#242B37"
+                                />
+                              </g>
+                              <defs>
+                                <clipPath id="clip0_31_13108">
+                                  <rect
+                                    width="15"
+                                    height="15"
+                                    fill="white"
+                                    transform="translate(0.978027)"
+                                  />
+                                </clipPath>
+                              </defs>
+                            </svg>
+                          </div>
+
+                          <span className="break-normal whitespace-nowrap">
+                            Topic:
+                          </span>
+
+                          <a
+                            className="text-base text-canBlue font-medium line-clamp-1"
+                            href={`/${obj?.camp_link}`}
+                          >
+                            {getHighlightedText(obj?.camp_name, searchValue)}
+                          </a>
+                        </Typography.Paragraph>
+                      ))}
                     </div>
                   </span>
                 </a>
@@ -785,31 +807,19 @@ const CampStatementsItems = ({ searchCampStatement, searchValue }) => {
               className="w-full flex font-medium !border-b !border-canGrey2 !py-3.5 !px-0 first:!pt-0 last:!border-none last:!pb-0 "
             >
               <div id={`camp-statement-item-${item.id}`}>
-                <Typography.Paragraph
-                  id={`camp-statement-paragraph-${item.id}`}
-                  className="bg-transparent border-0 p-0 flex items-center leading-1 mb-2 [&_span]:inline-flex"
-                >
-                  <Link href={`/${jsonData?.[0][1]?.camp_link}`}>
-                    <a
-                      id={`camp-statement-link-${item.id}`}
-                      className="flex w-full items-start !text-canBlack text-base font-medium"
-                    >
-                      {getHighlightedTextForCampStatement(
-                        jsonData?.[0]?.[1]?.camp_name,
-                        searchValue
-                      )}
-                    </a>
-                  </Link>
-                </Typography.Paragraph>
-
-                {getHighlightedTextForCampStatement(
-                  item.type_value,
-                  searchValue
-                )}
-
+                <div className="w-full [&_div]:inline">
+                  {getHighlightedTextForCampStatement(
+                    item.type_value,
+                    searchValue
+                  )}
+                </div>
                 <div
                   id={`camp-statement-topic-${item.id}`}
-                  className="text-left flex"
+                  className="text-left grid gap-2 w-full mt-3"
+                  style={{
+                    gridTemplateColumns:
+                      "repeat(auto-fill, minmax(250px, 1fr))",
+                  }}
                 >
                   <Typography.Paragraph
                     id={`camp-statement-topic-paragraph-${item.id}`}
@@ -824,10 +834,29 @@ const CampStatementsItems = ({ searchCampStatement, searchValue }) => {
                     <Link href={`/${jsonData?.[0][1]?.camp_link}`}>
                       <a
                         id={`camp-statement-topic-link-${item.id}`}
-                        className="text-canBlue text-base font-inter font-medium "
+                        className="text-canBlue text-base font-inter font-medium line-clamp-1"
                       >
                         {getHighlightedText(
                           jsonData?.[0]?.[1]?.topic_name,
+                          searchValue
+                        )}
+                      </a>
+                    </Link>
+                  </Typography.Paragraph>
+                  <Typography.Paragraph
+                    id={`camp-statement-paragraph-${item.id}`}
+                    className="bg-transparent border-0 p-0 flex items-center leading-1 mb-2 [&_span]:inline-flex gap-2 !mb-0"
+                  >
+                    <span className="break-normal whitespace-nowrap">
+                      Camp:
+                    </span>
+                    <Link href={`/${jsonData?.[0][1]?.camp_link}`}>
+                      <a
+                        id={`camp-statement-link-${item.id}`}
+                        className="flex w-full items-start !text-canBlue hover:!text-canHoverBlue text-base font-medium"
+                      >
+                        {getHighlightedTextForCampStatement(
+                          jsonData?.[0]?.[1]?.camp_name,
                           searchValue
                         )}
                       </a>
