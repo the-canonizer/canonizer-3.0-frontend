@@ -250,7 +250,14 @@ const ForumComponent = () => {
   };
 
   const onBackClick = () => {
-    router.back();
+    const queries = router?.query;
+
+    router.push({
+      pathname: `/topic/${replaceSpecialCharacters(
+        queries.topic as string,
+        "-"
+      )}/${replaceSpecialCharacters(queries.camp as string, "-")}`,
+    });
   };
 
   return (
