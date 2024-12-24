@@ -215,7 +215,15 @@ const CommentsList = () => {
   };
 
   const onBackClick = () => {
-    router?.back();
+    router?.push({
+      pathname: `/forum/${replaceSpecialCharacters(
+        router?.query?.topic as string,
+        "-"
+      )}/${replaceSpecialCharacters(
+        router?.query?.camp as string,
+        "-"
+      )}/threads`,
+    });
   };
 
   const onSubmittedSucess = async () => {

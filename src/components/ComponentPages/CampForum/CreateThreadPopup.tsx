@@ -43,9 +43,6 @@ const ManageThread = ({ onSubmittedSucess = null }) => {
   const values = Form.useWatch([], form);
 
   useEffect(() => {
-    console.log("topicRecord ------>", topicRecord);
-
-    console.log("campRecord ------>", campRecord);
     if (topicRecord && campRecord) {
       setBreadcrumb({ topic: topicRecord, camp: campRecord });
     }
