@@ -441,7 +441,7 @@
     @apply relative mb-[10px];
   }
   span {
-    @apply absolute top-[7px] right-[8px] text-[19px] text-[#aaa] z-[999] pointer-events-none;
+    @apply absolute top-[7px] right-[8px] text-[19px] text-[#aaa] z-[9] pointer-events-none;
     @media screen and (max-width: 1280px) {
       @apply relative border border-[#ddd] h-[32px] w-[32px] top-0 rounded-sm flex right-0 items-center justify-center;
     }
@@ -452,7 +452,7 @@
     @media screen and (max-width: 1280px) {
       transition: all 0.3s ease-in-out 0s;
 
-      @apply w-[35px] block absolute right-0 p-0 top-0 z-[99] bg-white opacity-[1] text-[0] shadow-none;
+      @apply w-[35px] block absolute right-0 p-0 top-0  bg-white opacity-[1] text-[0] shadow-none;
       &:focus {
         @apply text-[14px] w-[200px] py-0 pr-[30px] pl-[15px];
       }
