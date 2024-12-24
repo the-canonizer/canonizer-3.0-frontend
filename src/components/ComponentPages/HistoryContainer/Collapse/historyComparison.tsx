@@ -5,6 +5,9 @@ import styles from "../campHistory.module.scss";
 import { useRouter } from "next/router";
 import { capitalizeFirstLetter } from "src/utils/generalUtility";
 
+import ReactJoyride, { CallBackProps, STATUS, Step } from "react-joyride";
+import { useState } from "react";
+
 const { Title } = Typography;
 const { Panel } = Collapse;
 
@@ -15,11 +18,51 @@ const HistoryComparison = ({
 }: any) => {
   const router = useRouter();
   const historyOf = router?.asPath?.split("/")?.at(1);
-
-  const covertToTime = (unixTime) =>
+  const covertToTime = (unixTime: number) =>
     moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
+  
+  const [isTourRunning, setIsTourRunning] = useState(true);
+  const steps: Step[] = [
+    {
+      target: "#comparison-topic-camp-name-container",
+      content: "This section shows the topic or camp name.",
+      disableBeacon: true, // No blinking beacon for the first step
+  
+    },
+    {
+      target: "#comparison-topic-camp-updates",
+      content: "This is where updates for the selected history type are displayed.",
+    },
+    {
+      target: ".comparision-collapse",
+      content: "Expand this panel to view detailed information about the statement.",
+    },
+    {
+      target: "#edit-summary",
+      content: "Here is the edit summary for this history item.",
+    },
+    {
+      target: "#submitter-info",
+      content: "This section displays the name and details of the submitter.",
+    },
+    {
+      target: "#start-tour-button",
+      content: "Click this button to start the tour again.",
+    },
+  ];
 
-  const validUrl = (url) => {
+  const handleTourCallback = (data: CallBackProps) => {
+    const { status } = data;
+    if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status)) {
+      setIsTourRunning(false);
+    }
+  };
+
+  const handleStartTour = () => {
+    setIsTourRunning(true);
+  };
+
+  const validUrl = (url: string) => {
     try {
       new URL(url);
       return true;
@@ -29,22 +72,39 @@ const HistoryComparison = ({
   };
 
   const topicName = router?.query?.routes[0];
-  const topic_name = topicName.split("-").slice(1).join(" ");
+  const topic_name = topicName?.split("-")?.slice(1)?.join(" ");
 
   const getTitle = () => {
     if (historyOf === "camp" || historyOf === "topic") return "Updates";
     if (historyOf === "statement") return s1 ? "EDITS" : "DETAILS";
-    return null; // or a default value if needed
+    return null;
   };
 
   return (
     <>
+      <ReactJoyride
+        steps={steps}
+        continuous
+        scrollToFirstStep
+        showSkipButton
+        run={isTourRunning} 
+        callback={handleTourCallback}
+        startIndex={0}
+        styles={{
+          options: {
+            zIndex: 10000, // Ensure tooltips are above other elements
+          },
+        }}
+      />
+      <button id="start-tour-button" onClick={handleStartTour}>
+        Start Tour
+      </button>
       {historyOf === "topic" || historyOf === "camp" ? (
         <p
           id="comparison-topic-camp-name-container"
           className="mb-2.5 break-all"
         >
-          {capitalizeFirstLetter(historyOf)} Name:{" "}
+          {capitalizeFirstLetter(historyOf)} Name: {" "}
           <span>{campStatement?.parsed_value}</span>
         </p>
       ) : null}
@@ -59,11 +119,11 @@ const HistoryComparison = ({
       <div>
         {historyOf === "topic" && (
           <>
-            <p className="break-all">
+            <p id="edit-summary" className="break-all">
               Edit summary: <span>{campStatement?.note}</span>
             </p>
             <p>
-              Canon:{" "}
+              Canon: {" "}
               <span>
                 {campStatement?.namespace &&
                   campStatement?.namespace
@@ -77,19 +137,14 @@ const HistoryComparison = ({
           <>
             {!!campStatement?.parent_camp_name && (
               <p>
-                Parent Camp :<span>{campStatement?.parent_camp_name}</span>
+                Parent Camp: <span>{campStatement?.parent_camp_name}</span>
               </p>
             )}
-            {/* {campStatement?.key_words && (
-              <p>
-                Keywords: <span>{campStatement?.key_words}</span>
-              </p>
-            )} */}
-            <p className="break-all">
+            <p id="edit-summary" className="break-all">
               Edit summary: <span>{campStatement?.note}</span>
             </p>
             <p>
-              Camp about URL:{" "}
+              Camp about URL: {" "}
               <span>
                 {validUrl(campStatement?.camp_about_url) ? (
                   <Link href={campStatement?.camp_about_url || ""}>
@@ -98,116 +153,21 @@ const HistoryComparison = ({
                 ) : null}
               </span>
             </p>
-            <p>
-              Camp about Nickname:{" "}
+            <p id="submitter-info">
+              Submitter nickname: {" "}
               <span>
                 <Link
                   href={`/user/supports/${
-                    campStatement?.camp_about_nick_id || ""
+                    campStatement?.submitter_nick_id || ""
                   }?canon=${topicNamespaceId || ""}`}
-                  passHref
-                >
-                  <a>{campStatement?.camp_about_nick_name}</a>
-                </Link>
-              </span>
-            </p>
-            <p>
-              Submitter nickname:{" "}
-              <span>
-                <Link
-                  href={{
-                    pathname: `/user/supports/${
-                      campStatement?.submitter_nick_id || ""
-                    }`,
-                    query: {
-                      canon: topicNamespaceId || "",
-                    },
-                  }}
                   passHref
                 >
                   <a>{campStatement?.submitter_nick_name}</a>
                 </Link>
               </span>
             </p>
-            <p>
-              Disable additional sub-camps:{" "}
-              <span>{campStatement?.is_disabled === 1 ? "Yes" : "No"}</span>
-            </p>
-            <p>
-              Single level Camps only:{" "}
-              <span>{campStatement?.is_one_level === 1 ? "Yes" : "No"}</span>
-            </p>
-            <p>
-              Camp archived:{" "}
-              <span>{campStatement?.is_archive === 1 ? "Yes" : "No"}</span>
-            </p>
           </>
         )}
-        {historyOf === "statement" && (
-          <>
-            <p className="break-all">
-              Edit summary: <span>{campStatement?.note}</span>
-            </p>
-          </>
-        )}
-        {(historyOf === "statement" || historyOf === "topic") && (
-          <p>
-            Submitted by:{" "}
-            <span>
-              <Link
-                href={{
-                  pathname: `/user/supports/${
-                    campStatement?.submitter_nick_id || ""
-                  }`,
-                  query: {
-                    canon: topicNamespaceId || "",
-                  },
-                }}
-                passHref
-              >
-                <a>{campStatement?.submitter_nick_name}</a>
-              </Link>
-            </span>
-          </p>
-        )}
-        {historyOf === "camp" && (
-          <p>
-            Camp Leader:{" "}
-            <span>
-              {campStatement && campStatement?.camp_leader_nick_name ? (
-                <>
-                  <Link
-                    href={{
-                      pathname: `/user/supports/${
-                        campStatement?.camp_leader_nick_id || ""
-                      }`,
-                      query: {
-                        canon: topicNamespaceId || "",
-                      },
-                    }}
-                    passHref
-                  >
-                    <a>{campStatement?.camp_leader_nick_name}</a>
-                  </Link>
-                </>
-              ) : (
-                <>No</>
-              )}
-            </span>
-          </p>
-        )}
-        <p>
-          Submitted on: <span>{covertToTime(campStatement?.submit_time)}</span>
-        </p>
-        <p>
-          {campStatement &&
-          (campStatement?.status == "live" ||
-            campStatement?.status == "old" ||
-            campStatement?.status == "objected")
-            ? "Go Live Time"
-            : "Going live on"}{" "}
-          :<span>{covertToTime(campStatement?.go_live_time)}</span>
-        </p>
         {historyOf === "statement" && (
           <Collapse
             expandIconPosition="end"
@@ -237,6 +197,18 @@ const HistoryComparison = ({
             </Panel>
           </Collapse>
         )}
+        <p>
+          Submitted on: <span>{covertToTime(campStatement?.submit_time)}</span>
+        </p>
+        <p>
+          {campStatement &&
+          (campStatement?.status === "live" ||
+            campStatement?.status === "old" ||
+            campStatement?.status === "objected")
+            ? "Go Live Time"
+            : "Going live on"} {" "}
+          :<span>{covertToTime(campStatement?.go_live_time)}</span>
+        </p>
       </div>
     </>
   );
