@@ -125,7 +125,7 @@ const ExistingCampList = ({
             } overflow-y-auto overflow-x-hidden pr-3 mb-4`}
           >
             <List
-              dataSource={data}
+              dataSource={data.slice(0, 7)}
               locale={{ emptyText: "There are no related camps available" }}
               className="!list-disc"
               renderItem={(item: {
