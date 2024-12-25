@@ -117,11 +117,11 @@ const CustomSkelton = ({
     <Skeleton height={20} width={120} style={{ margin: "2px 0" }} count={1} />
   ) : skeltonFor == "profileInfoForm" ? (
     <Form layout="vertical">
-      <Row gutter={30}>
-        <Col md={12}>
+      <Row gutter={[16, 16]}>
+        <Col xs={24} sm={12} md={12}>
           <Skeleton className={styles.profileInfoForm} count={bodyCount} />
         </Col>
-        <Col md={12}>
+        <Col xs={24} sm={12} md={12}>
           <Skeleton className={styles.profileInfoForm} count={bodyCount} />
         </Col>
       </Row>
@@ -158,6 +158,17 @@ const CustomSkelton = ({
           <Skeleton className={styles.userProfileLabel} count={bodyCount} />
         </Col>
       </Row>
+    </div>
+  ) : skeltonFor == "prefrences" ? (
+    <div>
+      {/* <Form layout="vertical"> */}
+        <Col xs={24} sm={24} md={24}>
+        <div className="w-full [&>span:first-child]:flex [&>span:first-child]:gap-2 [&>span:first-child]:w-full ">
+        <Skeleton className={`${styles.prefrenceForm} `} count={bodyCount} />
+        </div>
+        
+        </Col>
+    {/* </Form> */}
     </div>
   ) : skeltonFor == "comparisonPage" ? (
     <div className="ch-wrapper">
