@@ -74,13 +74,13 @@ const PostFormPopup = ({
   return (
     <Drawer
       closeIcon={<LeftOutlined className="text-xl" />}
-      placement={isMobile ? "top" : "right"}
+      // placement={isMobile ? "top" : "right"}
       title={isPostUpdate ? "Update Comment" : "Comment in this thread"}
       destroyOnClose
       onClose={onClose}
       open={isOpen}
-      height={700}
-      width={560}
+      height={isMobile ? "" : 700}
+      width={isMobile ? "" : 560}
       extra={
         <GetBreadCrumbs topicRecord={topicRecord} campRecord={campRecord} />
       }
