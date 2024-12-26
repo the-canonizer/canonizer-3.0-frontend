@@ -246,6 +246,7 @@ function ManageStatements({ isEdit = false }) {
       setScreenLoading(true);
 
       let editData, nickNames;
+      let noStatus = false;
 
       if (isEdit) {
         const editRes = await getEditStatementApi({
@@ -265,6 +266,7 @@ function ManageStatements({ isEdit = false }) {
 
         if (editRes?.status_code === 404) {
           setNotFoundStatus({ status: true, name: "Statement" });
+          noStatus = true;
         } else if (editRes?.status_code === 200) {
           const statement = editRes.data.statement;
           if (
@@ -281,27 +283,29 @@ function ManageStatements({ isEdit = false }) {
         }
       }
 
-      const nickNameRes = await getAllUsedNickNames({
-        topic_num: isEdit
-          ? editData?.topic?.topic_num
-          : router?.query?.statement?.[0]?.split("-")[0],
-      });
+      if(noStatus === false){
+        const nickNameRes = await getAllUsedNickNames({
+          topic_num: isEdit
+            ? editData?.topic?.topic_num
+            : router?.query?.statement?.[0]?.split("-")[0],
+        });
 
-      if (nickNameRes?.status_code === 200) {
-        nickNames = nickNameRes.data;
-        const formData = isEdit
-          ? {
-              nick_name: editData?.nick_name?.[0]?.id,
-              parent_camp_num: editData?.statement?.camp_num,
-              statement: editData?.statement?.parsed_value,
-              edit_summary: editData?.statement?.note,
-            }
-          : {
-              nick_name: nickNameRes.data?.[0]?.id,
-            };
-
-        form.setFieldsValue(formData);
-        setNickNameData(nickNames);
+        if (nickNameRes?.status_code === 200) {
+          nickNames = nickNameRes.data;
+          const formData = isEdit
+            ? {
+                nick_name: editData?.nick_name?.[0]?.id,
+                parent_camp_num: editData?.statement?.camp_num,
+                statement: editData?.statement?.parsed_value,
+                edit_summary: editData?.statement?.note,
+              }
+            : {
+                nick_name: nickNameRes.data?.[0]?.id,
+              };
+  
+          form.setFieldsValue(formData);
+          setNickNameData(nickNames);
+        }
       }
 
       setScreenLoading(false);
@@ -872,63 +876,69 @@ function ManageStatements({ isEdit = false }) {
 
   return (
     <CustomSpinner key="create-statement-spinner" spinning={screenLoading}>
-      <Row
-        id="breadcrumb-row"
-        className="bg-canGray rounded-lg [&_nav]:p-0 [&_nav]:mb-0 py-5 px-4"
-        gutter={20}
-      >
-        <Col
-          id="breadcrumb-col"
-          md={12}
-          className="flex justify-start items-center"
+      {console.log("notFoundStatus", notFoundStatus)}
+      {notFoundStatus?.status ? null : (
+        <Row
+          id="breadcrumb-row"
+          className="bg-canGray rounded-lg [&_nav]:p-0 [&_nav]:mb-0 py-5 px-4"
+          gutter={20}
         >
-          <Breadcrumbs
-            id="breadcrumbs"
-            items={[
-              { icon: <HomeOutlined className="text-canBlack" />, href: "/" },
-              {
-                href: getBackURL(),
-                label:
-                  !isEdit || isDraft ? "Topic Details" : "Statement History",
-              },
-              {
-                label: !isEdit
-                  ? "Adding a camp statement"
-                  : "Updating camp statement",
-              },
-            ]}
-          />
-        </Col>
-        <Col
-          id="save-draft-col"
-          className="flex justify-end items-center"
-          md={12}
-        >
-          <Typography.Paragraph id="auto-save-message" className="!mb-0 mr-7">
-            {isAutoSaving ? (
-              "Saving ..."
-            ) : (
-              <>
-                {autoSaveDisplayMessage && (
-                  <>
-                    {autoSaveDisplayMessage + " "}
-                    <CloudUploadOutlined />
-                  </>
-                )}
-              </>
-            )}
-          </Typography.Paragraph>
-          <SecondaryButton
-            id="save-draft-button"
-            className="flex items-center justify-center py-2 px-8 h-auto"
-            onClick={saveDraftHandler}
-            loading={isSavingDraft}
+          <Col
+            id="breadcrumb-col"
+            md={12}
+            className="flex justify-start items-center"
           >
-            Save As Draft
-            <FileTextOutlined />
-          </SecondaryButton>
-        </Col>
-      </Row>
+            <Breadcrumbs
+              id="breadcrumbs"
+              items={[
+                {
+                  icon: <HomeOutlined className="text-canBlack" />,
+                  href: "/",
+                },
+                {
+                  href: getBackURL(),
+                  label:
+                    !isEdit || isDraft ? "Topic Details" : "Statement History",
+                },
+                {
+                  label: !isEdit
+                    ? "Adding a camp statement"
+                    : "Updating camp statement",
+                },
+              ]}
+            />
+          </Col>
+          <Col
+            id="save-draft-col"
+            className="flex justify-end items-center"
+            md={12}
+          >
+            <Typography.Paragraph id="auto-save-message" className="!mb-0 mr-7">
+              {isAutoSaving ? (
+                "Saving ..."
+              ) : (
+                <>
+                  {autoSaveDisplayMessage && (
+                    <>
+                      {autoSaveDisplayMessage + " "}
+                      <CloudUploadOutlined />
+                    </>
+                  )}
+                </>
+              )}
+            </Typography.Paragraph>
+            <SecondaryButton
+              id="save-draft-button"
+              className="flex items-center justify-center py-2 px-8 h-auto"
+              onClick={saveDraftHandler}
+              loading={isSavingDraft}
+            >
+              Save As Draft
+              <FileTextOutlined />
+            </SecondaryButton>
+          </Col>
+        </Row>
+      )}
       <Row id="main-content-row" gutter={20} className="mt-5">
         <Col id="main-content-col" md={20}>
           {notFoundStatus?.status ? (
