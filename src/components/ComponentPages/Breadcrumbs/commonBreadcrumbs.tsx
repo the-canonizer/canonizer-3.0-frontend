@@ -916,7 +916,9 @@ function CommanBreadcrumbs({
                           breadCrumbRes?.bread_crumb?.at(-1)?.camp_num
                         }-${breadCrumbRes?.bread_crumb?.at(-1)?.camp_name}`}
                       >
-                        <a className="!break-all">{breadCrumbRes?.bread_crumb?.at(-1)?.camp_name}</a>
+                        <a className="!break-all">
+                          {breadCrumbRes?.bread_crumb?.at(-1)?.camp_name}
+                        </a>
                       </Link>
                       {isMobile && (
                         <Popover
