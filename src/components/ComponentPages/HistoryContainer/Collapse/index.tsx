@@ -289,7 +289,7 @@ function HistoryCollapse({
                     <InfoCircleOutlined />
                   </Tooltip>
 
-                  <p>Grace period countdown</p>
+                  <p className="text-[16px]">Grace period countdown</p>
                   <Tag
                     className={
                       "bg-[#5482C833] border-0 rounded-md inline-flex py-[3px] items-center"

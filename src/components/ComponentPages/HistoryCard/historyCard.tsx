@@ -375,7 +375,7 @@ function HistoryCard({
               >
                 <InfoCircleOutlined />
               </Tooltip>
-              <p id="history-page-grace-period-title">Grace period countdown</p>
+              <p id="history-page-grace-period-title" className="text-[16px]">Grace period countdown</p>
               <Tag
                 className={
                   "bg-canBlue_Opacity20 border-0 rounded-md inline-flex py-[3px] items-center"

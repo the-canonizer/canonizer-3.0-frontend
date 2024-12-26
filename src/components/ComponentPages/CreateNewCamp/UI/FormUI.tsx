@@ -223,7 +223,7 @@ const CreateCampFormUI = ({
         id="create-new-camp-form"
       >
         <Row gutter={16} id="form-row-1">
-          <Col md={24} id="form-col-camp-name">
+          <Col md={24} xs={24} id="form-col-camp-name">
             {isLoading ? (
               <CustomSkelton
                 skeltonFor="list"
