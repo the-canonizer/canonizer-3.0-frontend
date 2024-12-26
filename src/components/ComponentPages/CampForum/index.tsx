@@ -22,6 +22,7 @@ import PrimaryButton from "components/shared/Buttons/PrimariButton";
 import ManageThread from "./CreateThreadPopup";
 import { RootState } from "src/store";
 import CommonBreadcrumbs from "../Breadcrumbs/commonBreadcrumbs";
+import { useIsMobile } from "src/hooks/useIsMobile";
 
 export const getSelectedNode = async (
   topic_num,
@@ -58,8 +59,10 @@ export const getSelectedNode = async (
 
 const ForumComponent = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const { isUserAuthenticated } = useIsUserAuthenticated();
+  const isMobile = useIsMobile();
 
   const [paramsList, setParamsList] = useState({});
   const [threadList, setThreadList] = useState([]);
@@ -69,8 +72,6 @@ const ForumComponent = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(isUserAuthenticated);
   const [loading, setLoading] = useState(false);
   const [perPage] = useState(10);
-
-  const dispatch = useDispatch();
 
   useEffect(() => {
     setIsLoggedIn(isUserAuthenticated);
@@ -266,22 +267,38 @@ const ForumComponent = () => {
         routeName={"forum"}
         className="[&_.inforBarClass]:mb-0 [&_.afterHeaderClass]:mb-5"
         afterHeader={
-          <CommonBreadcrumbs
-            key="common-breadcrumbs"
-            payload={payload}
-            isForumPage={false}
-            isHtmlContent={
-              <PrimaryButton
-                key="create-thread-button"
-                className="flex justify-center items-center h-auto py-2 px-7"
-                onClick={onCreateThread}
-              >
-                Create a Thread <PlusOutlined />
-              </PrimaryButton>
-            }
-          />
+          <div className={`badNav ${isMobile ? "[&_.bdNav]:mb-2" : ""}`}>
+            <CommonBreadcrumbs
+              key="common-breadcrumbs"
+              payload={payload}
+              isForumPage={false}
+              isHtmlContent={
+                !isMobile ? (
+                  <PrimaryButton
+                    key="create-thread-button"
+                    id="create-thread-button"
+                    className="flex justify-center items-center h-auto py-2 px-7 createBtn"
+                    onClick={onCreateThread}
+                  >
+                    Create a Thread <PlusOutlined />
+                  </PrimaryButton>
+                ) : null
+              }
+            />
+          </div>
         }
       >
+        {isMobile ? (
+          <PrimaryButton
+            key="mobile-create-thread-button"
+            id="mobile-create-thread-button"
+            className="flex justify-center items-center h-auto py-2 px-7 createBtn mb-3 ml-auto"
+            onClick={onCreateThread}
+          >
+            Create a Thread <PlusOutlined />
+          </PrimaryButton>
+        ) : null}
+
         <ThreadListUI
           key="thread-list-ui"
           onSearch={onSearch}
