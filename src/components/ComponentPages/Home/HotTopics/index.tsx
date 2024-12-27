@@ -51,7 +51,7 @@ const HotTopics = () => {
               <SingleTopicCard
                 topic={ft}
                 onTopicLinkClick={() => setLoadMoreIndicator(false)}
-                avatars={ft?.supporterData?.slice(0, 3)}
+                avatars={ft?.supporterData?.slice(0, 5)}
               />
             )}
           </Col>

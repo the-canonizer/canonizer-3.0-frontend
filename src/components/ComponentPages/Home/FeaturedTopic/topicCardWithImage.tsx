@@ -142,6 +142,7 @@ const SingleTopicWithImage = ({ topic, onTopicClick = null }) => {
               maxCount={5}
               maxPopoverTrigger="click"
               id={`avatar-group-${topic?.id}`}
+              haveShowMore={topic?.total_supporters_count}
             />
           </div>
         </Col>
