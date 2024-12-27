@@ -33,7 +33,7 @@ const HotTopics = () => {
         {topicData?.map((ft) => (
           <Col
             md={12}
-            lg={8}
+            lg={12}
             xs={24}
             sm={24}
             key={ft?.id}
