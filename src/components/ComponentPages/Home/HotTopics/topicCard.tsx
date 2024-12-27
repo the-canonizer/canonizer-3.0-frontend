@@ -21,7 +21,7 @@ const SingleTopicCard = ({
   scoreTag = null,
   onTopicLinkClick = null,
   tag_key = "topicTags",
-  maxCount = 3,
+  maxCount = 5,
   cardClassName = "",
   copyLink = null,
   imageBaseURL = "",
@@ -108,6 +108,7 @@ const SingleTopicCard = ({
             }}
             imageBaseURL={imageBaseURL}
             id={`avatar-group-${topic?.id}`}
+            haveShowMore={topic?.total_supporters_count}
           />
         </div>
       </CommonCard>
