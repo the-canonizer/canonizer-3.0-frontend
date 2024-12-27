@@ -876,7 +876,6 @@ function ManageStatements({ isEdit = false }) {
 
   return (
     <CustomSpinner key="create-statement-spinner" spinning={screenLoading}>
-      {console.log("notFoundStatus", notFoundStatus)}
       {notFoundStatus?.status ? null : (
         <Row
           id="breadcrumb-row"
