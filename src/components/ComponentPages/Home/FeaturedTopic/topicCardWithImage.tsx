@@ -12,9 +12,15 @@ import TopicCatsLabel from "components/shared/TopicCategories";
 
 const propTypes = {
   topic: PropTypes.object,
+  onTopicClick: PropTypes.func,
+  descriptionTextLength: PropTypes.number,
 };
 
-const SingleTopicWithImage = ({ topic, onTopicClick = null }) => {
+const SingleTopicWithImage = ({
+  topic,
+  onTopicClick = null,
+  descriptionTextLength = 400,
+}) => {
   if (!topic) {
     return null;
   }
@@ -107,7 +113,11 @@ const SingleTopicWithImage = ({ topic, onTopicClick = null }) => {
               />
             </div>
           </div>
-          <CardDescription description={topic?.description} className="mb-6" />
+          <CardDescription
+            description={topic?.description}
+            descriptionTextLength={descriptionTextLength}
+            className="mb-6"
+          />
           <div
             className="flex justify-between pt-3 mt-auto ftItems"
             id={`div-footer-${topic?.id}`}

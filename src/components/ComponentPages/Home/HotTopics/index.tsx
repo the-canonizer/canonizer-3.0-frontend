@@ -52,6 +52,7 @@ const HotTopics = () => {
                 topic={ft}
                 onTopicLinkClick={() => setLoadMoreIndicator(false)}
                 avatars={ft?.supporterData?.slice(0, 5)}
+                descriptionTextLength={320}
               />
             )}
           </Col>

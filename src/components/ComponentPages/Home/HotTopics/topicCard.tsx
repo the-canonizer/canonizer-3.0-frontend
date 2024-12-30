@@ -13,6 +13,15 @@ import { useIsMobile } from "src/hooks/useIsMobile";
 
 const propTypes = {
   topic: PropTypes.object,
+  avatars: PropTypes.array,
+  scoreTag: PropTypes.node,
+  onTopicLinkClick: PropTypes.func,
+  tag_key: PropTypes.string,
+  maxCount: PropTypes.number,
+  cardClassName: PropTypes.string,
+  copyLink: PropTypes.node,
+  imageBaseURL: PropTypes.string,
+  descriptionTextLength: PropTypes.number,
 };
 
 const SingleTopicCard = ({
@@ -25,6 +34,7 @@ const SingleTopicCard = ({
   cardClassName = "",
   copyLink = null,
   imageBaseURL = "",
+  descriptionTextLength = 220,
 }) => {
   const isMobile = useIsMobile();
 
@@ -77,6 +87,7 @@ const SingleTopicCard = ({
         <CardDescription
           className="topicDesc"
           description={topic?.statement?.parsed_value || topic?.statement}
+          descriptionTextLength={descriptionTextLength}
         />
         <div
           className="flex justify-between mt-auto pt-5 flex-row items-center"
