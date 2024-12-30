@@ -14,12 +14,12 @@ import { useIsMobile } from "src/hooks/useIsMobile";
 const propTypes = {
   topic: PropTypes.object,
   avatars: PropTypes.array,
-  scoreTag: PropTypes.node,
+  scoreTag: PropTypes.any,
   onTopicLinkClick: PropTypes.func,
   tag_key: PropTypes.string,
   maxCount: PropTypes.number,
   cardClassName: PropTypes.string,
-  copyLink: PropTypes.node,
+  copyLink: PropTypes.any,
   imageBaseURL: PropTypes.string,
   descriptionTextLength: PropTypes.number,
 };
