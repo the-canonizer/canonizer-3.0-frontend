@@ -693,4 +693,16 @@ export default class UserRequest extends Request {
       {}
     );
   }
+
+  static checkFacebookAccountDeleteStatus(confirmation_code: string): Request {
+    return new Request(
+      K.Network.URL.CheckFacebookDeleteDataStatus +
+        "?confirmation_code=" +
+        confirmation_code,
+      K.Network.Method.GET,
+      {},
+      K.Network.Header.Type.Json,
+      {}
+    );
+  }
 }

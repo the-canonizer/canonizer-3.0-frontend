@@ -6,7 +6,10 @@ import CampForumComponent from "components/ComponentPages/CampForum/PostPage";
 import DataNotFound from "src/components/ComponentPages/DataNotFound/dataNotFound";
 import { createToken } from "src/network/api/userApi";
 import { store } from "src/store";
-import { setCurrentTopicRecord, setCurrentCampRecord } from "src/store/slices/campDetailSlice";
+import {
+  setCurrentTopicRecord,
+  setCurrentCampRecord,
+} from "src/store/slices/campDetailSlice";
 
 function CampForumPostPage({ notFoundStatus, notFoundMessage }) {
   const router = useRouter();

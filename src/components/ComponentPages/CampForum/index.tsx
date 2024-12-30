@@ -41,10 +41,19 @@ export const getSelectedNode = async (
     update_all: 1,
   };
 
-  await Promise.all([
-    getCurrentTopicRecordApi(reqBody),
-    getCurrentCampRecordApi(reqBody),
-  ]);
+  let campRecord = null,
+    topicRecord = null;
+
+  setTimeout(async () => {
+    topicRecord = await getCurrentTopicRecordApi(reqBody);
+    const res = await getCurrentCampRecordApi(reqBody);
+
+    if (res?.status_code === 200) {
+      campRecord = res?.campData;
+    }
+  }, 300);
+
+  return { campRecord, topicRecord };
 };
 
 const ForumComponent = () => {
@@ -70,7 +79,6 @@ const ForumComponent = () => {
   const { campRecord, asof, asofdate, algorithm } = useSelector(
     (state: RootState) => ({
       campRecord: state?.topicDetails?.currentCampRecord,
-      topicRecord: state?.topicDetails?.currentTopicRecord,
       asof: state?.filters?.filterObject?.asof,
       asofdate: state?.filters?.filterObject?.asofdate,
       algorithm: state?.filters?.filterObject?.algorithm,
@@ -117,12 +125,11 @@ const ForumComponent = () => {
       const topicArr = (queries.topic as string).split("-");
       const topic_num = topicArr.shift();
 
-      setTimeout(() => {
+      if (camp_num && topic_num)
         getSelectedNode(topic_num, camp_num, asof, asofdate, algorithm);
-      }, 300);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router?.query]);
+  }, [router?.asPath]);
 
   useEffect(() => {
     const queries = router?.query;

@@ -1070,3 +1070,15 @@ export const ReplaceAndUpdateNewEmail = async (body) => {
     }
   }
 };
+
+export const facebookAccountDeletionStatus = async (confirmation_code) => {
+  try {
+    const res = await NetworkCall.fetch(
+      UserRequest.checkFacebookAccountDeleteStatus(confirmation_code)
+    );
+    return res;
+  } catch (err) {
+    handleError(err);
+    return err.error.data;
+  }
+};
