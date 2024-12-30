@@ -208,7 +208,7 @@ const CreateTopicFromUI = ({
               getNickNameInput()
             )}
           </Col>
-          <Col
+          {/* <Col
             xs={24}
             sm={24}
             md={24}
@@ -260,7 +260,7 @@ const CreateTopicFromUI = ({
                 id="namespace-select"
               />
             )}
-          </Col>
+          </Col> */}
           {/* <Col xs={24} sm={24} md={24} lg={24} xl={12} id="category-input-col">
             {isLoading ? (
               <CustomSkelton
@@ -317,14 +317,7 @@ const CreateTopicFromUI = ({
               key="1"
             >
               <Row gutter={16} id="form-row-2">
-                <Col
-                  xs={24}
-                  sm={24}
-                  md={24}
-                  lg={12}
-                  xl={12}
-                  id="category-input-col"
-                >
+                <Col xs={24} sm={24} xl={12} id="category-input-col">
                   {isLoading ? (
                     <CustomSkelton
                       skeltonFor="list"
@@ -357,35 +350,81 @@ const CreateTopicFromUI = ({
                       id="category-select"
                     />
                   )}
+                  {selectedCats && selectedCats?.length > 0 && (
+                    <>
+                      {isLoading ? (
+                        <CustomSkelton
+                          skeltonFor="list"
+                          bodyCount={1}
+                          stylingClass="listSkeleton"
+                          isButton={false}
+                          id="selected-categories-skeleton"
+                        />
+                      ) : (
+                        selectedCats?.map((cat) => (
+                          <Tags
+                            className="rounded-lg py-2 px-6 border-canGrey2 text-canBlue bg-canGray mt-0 mb-2 font-medium"
+                            key={cat?.id}
+                            id={`selected-category-tag-${cat?.id}`}
+                          >
+                            <span>{cat?.title}</span>
+                            <CloseOutlined
+                              className="mr-2 text-canLight"
+                              onClick={(e) => onCatRemove(e, cat)}
+                              id={`remove-category-icon-${cat?.id}`}
+                            />
+                          </Tags>
+                        ))
+                      )}
+                    </>
+                  )}
                 </Col>
-                {selectedCats && selectedCats?.length > 0 && (
-                  <Col xs={24} className="mb-5" id="selected-categories-col">
-                    {isLoading ? (
-                      <CustomSkelton
-                        skeltonFor="list"
-                        bodyCount={1}
-                        stylingClass="listSkeleton"
-                        isButton={false}
-                        id="selected-categories-skeleton"
-                      />
-                    ) : (
-                      selectedCats?.map((cat) => (
-                        <Tags
-                          className="rounded-lg py-2 px-6 border-canGrey2 text-canBlue bg-canGray mt-0 mb-2 font-medium"
-                          key={cat?.id}
-                          id={`selected-category-tag-${cat?.id}`}
-                        >
-                          <span>{cat?.title}</span>
-                          <CloseOutlined
-                            className="mr-2 text-canLight"
-                            onClick={(e) => onCatRemove(e, cat)}
-                            id={`remove-category-icon-${cat?.id}`}
-                          />
-                        </Tags>
-                      ))
-                    )}
-                  </Col>
-                )}
+
+                <Col xs={24} sm={24} xl={12} id="nickname-input-col">
+                  {isLoading ? (
+                    <CustomSkelton
+                      skeltonFor="list"
+                      bodyCount={1}
+                      stylingClass="listSkeleton"
+                      isButton={false}
+                      id="namespace-skeleton"
+                    />
+                  ) : (
+                    <SelectInputs
+                      label={
+                        <Fragment>
+                          {labels.cr_namespace}
+                          <span className="required">*</span>
+                        </Fragment>
+                      }
+                      extra={
+                        <span className="text-[10px]">
+                          (General is recommended, unless you know otherwise)
+                        </span>
+                      }
+                      name="namespace"
+                      options={nameSpaces}
+                      placeholder={placeholders.namespace}
+                      allowClear
+                      size={"large"}
+                      dataid="canon-namespace"
+                      showSearch
+                      optionFilterProp="children"
+                      inputClassName="border-0"
+                      rules={namespaceRule}
+                      prefix={<FlagOutlined className="px-3 text-canBlack" />}
+                      defaultValue={getNameSpacesValue()}
+                      initialValue={getNameSpacesValue()}
+                      value={form.getFieldValue("namespace")}
+                      isLabelRequiredFormat={true}
+                      formatFunc={changeSlashToArrow}
+                      onSelect={(val) => form.setFieldValue("namespace", val)}
+                      key="canon-select"
+                      lastValue={form.getFieldValue("namespace")}
+                      id="namespace-select"
+                    />
+                  )}
+                </Col>
               </Row>
             </Panel>
           </Collapse>
