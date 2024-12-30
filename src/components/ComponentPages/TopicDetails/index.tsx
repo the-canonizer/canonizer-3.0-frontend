@@ -71,9 +71,11 @@ import CommanBreadcrumbs from "../Breadcrumbs/commonBreadcrumbs";
 import ActivityNewsCard from "./ActivityNewsCard";
 import CampRecentActivities from "./CampRecentActivities";
 import { InfoCircleOutlined } from "@ant-design/icons";
+import { labels } from "src/messages/label";
 
 const { Link: AntLink } = Typography;
 const { Panel } = Collapse;
+const { Text } = Typography;
 
 const TopicDetails = ({ serverSideCall }: any) => {
   const myRefToCampStatement = useRef(null);
@@ -683,7 +685,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
                       <CloseOutlined />
                     </SecondaryButton>
                   </div>
-                  <p
+                  {/* <p
                     className="text-sm  font-normal !text-canBlack mt-4"
                     id="topic_detail_section_collapse_camps_text"
                   >
@@ -705,7 +707,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
                     defaultValue={`${treeExpandValue}`}
                     onChange={handleChange}
                     options={scoreOptions}
-                  />
+                  /> */}
                 </div>
                 {/* <div
                   className={styles.scoreCheckbox}
@@ -721,33 +723,61 @@ const TopicDetails = ({ serverSideCall }: any) => {
                   id="topic_detail_section_consesnus_tree_archive_checkbox"
                 /> */}
                 <Collapse
-                  className="camp-accordion"
+                  className="camp-accordion topic-d-accordion"
                   ghost
                   expandIconPosition="right"
-                  defaultActiveKey={["1"]}
-                  style={{ width: "55%" }}
+                  defaultActiveKey={["0"]}
                 >
                   <Panel
                     header={
                       <>
                         Advanced Settings<br></br>{" "}
+                        <Text className="block mt-1 text-xs text-[#777F93]">
+                          {labels.cr_keywords_sp}
+                        </Text>
                       </>
                     }
                     key="1"
                   >
-                    <div
-                      className={styles.scoreCheckbox}
-                      id="topic_detail_section_consesnus_tree_full_score_checkbox"
-                    >
-                      <FullScoreCheckbox
-                        loadingIndicator={loadingIndicator}
-                        isDisabled={tree && tree?.["1"]?.rank_hidden}
+                    <>
+                      <p
+                        className="text-sm  font-normal !text-canBlack"
+                        id="topic_detail_section_collapse_camps_text"
+                      >
+                        Collapse camps with support less than
+                      </p>
+
+                      <Select
+                        id="topic_detail_section_consesnus_tree_select_tag"
+                        className="flex items-center [&_.ant-select-selector]:!bg-transparent [&_.ant-select-selector]:!border-none [&_.ant-select-selector]:focus:!border-none !border !border-canGrey2 !shadow-none rounded-md !w-[200px] !mt-2.5 !mb-5 h-[40px]"
+                        suffixIcon={
+                          <Image
+                            src="/images/select-caret.svg"
+                            alt=""
+                            height={7}
+                            width={15}
+                          />
+                        }
+                        value={`${treeExpandValue}`}
+                        defaultValue={`${treeExpandValue}`}
+                        onChange={handleChange}
+                        options={scoreOptions}
                       />
-                    </div>
-                    <ArchivedCampCheckBox
-                      loadingIndicator={loadingIndicator}
-                      id="topic_detail_section_consesnus_tree_archive_checkbox"
-                    />
+
+                      <div
+                        className={styles.scoreCheckbox}
+                        id="topic_detail_section_consesnus_tree_full_score_checkbox"
+                      >
+                        <FullScoreCheckbox
+                          loadingIndicator={loadingIndicator}
+                          isDisabled={tree && tree?.["1"]?.rank_hidden}
+                        />
+                      </div>
+                      <ArchivedCampCheckBox
+                        loadingIndicator={loadingIndicator}
+                        id="topic_detail_section_consesnus_tree_archive_checkbox"
+                      />
+                    </>
                   </Panel>
                 </Collapse>
                 <hr
