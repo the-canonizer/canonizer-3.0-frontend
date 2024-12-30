@@ -1219,6 +1219,14 @@ body {
 
 .camp-accordion {
   @apply bg-[#F7F8FC] rounded-[10px];
+  &.topic-d-accordion{
+    @apply lg:w-[55%]
+  }
+}
+.popver-confirm{
+  .ant-popover-buttons{
+    @apply text-center;
+  }
 }
 
 .treeHoover {

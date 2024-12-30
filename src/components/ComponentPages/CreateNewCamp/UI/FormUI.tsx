@@ -514,7 +514,7 @@ const CreateCampFormUI = ({
           className="camp-accordion"
           ghost
           expandIconPosition="right"
-          defaultActiveKey={["1"]}
+          defaultActiveKey={["0"]}
         >
           <Panel
             header={
