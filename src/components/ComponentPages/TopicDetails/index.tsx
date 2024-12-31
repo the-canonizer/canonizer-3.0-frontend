@@ -775,7 +775,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
                       </div>
                       <ArchivedCampCheckBox
                         loadingIndicator={loadingIndicator}
-                        id="topic_detail_section_consesnus_tree_archive_checkbox"
+                        isDisabled={tree && tree?.["1"]?.rank_hidden}
                       />
                     </>
                   </Panel>
