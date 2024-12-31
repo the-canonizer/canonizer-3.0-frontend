@@ -29,7 +29,12 @@ const ItemCard = ({ icon, label, text, showTooltip }) => {
         onMouseLeave={() => setIsHovered(false)}
       >
         <Tooltip
-          title="Consult with the owner of the data to make it public"
+          title={
+            <span>
+              You are not able to see this because the owner of this information
+              has set this as <b>Private</b>.
+            </span>
+          }
           visible={showTooltip && isHovered}
         >
           {text}
@@ -127,9 +132,12 @@ const UserProfileDetails = ({
       <Tooltip
         key={key}
         title={
-          checkFieldIsPrivate(key)
-            ? "Consult with the owner of the data to make it public"
-            : undefined
+          checkFieldIsPrivate(key) ? (
+            <span>
+              You are not able to see this because the owner of this information
+              has set this as <b>Private</b>.
+            </span>
+          ) : undefined
         }
       >
         <span>
