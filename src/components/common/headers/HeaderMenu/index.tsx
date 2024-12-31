@@ -31,6 +31,11 @@ import Logo from "../logoHeader";
 import Notifications from "../notification";
 import ProfileInfoTab from "./profileInfo";
 import { setLogOutType } from "src/store/slices/authSlice";
+import TourGuide from "components/common/tourGuide";
+import {
+  homePageSteps,
+  searchBar,
+} from "src/constants/tourGuideSteps";
 
 const menuItems = [
   {
@@ -49,7 +54,7 @@ const menuItems = [
   {
     link: "/uploadFile",
     linkTitle: "Upload File",
-    id: 2,
+    id: 3,
     icon: <UploadOutlined />,
   },
   {
@@ -129,17 +134,33 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
       <div className={styles.divider} id={`divider-${props.key}`}></div>
     </li>
   );
+  const visibleMenuItems = menuItems.filter(
+    (item) =>
+      !(item.isAuthReq && !isUserAuthenticated) &&
+      !(item.hideOnLogin && isUserAuthenticated)
+  );
+
+  const tourSteps = visibleMenuItems.map((item) => ({
+    target: `#menu-item-${item.id}`,
+    content: `This is the ${
+      item.linkTitle
+    } menu item. Click here to navigate to ${item.linkTitle.toLowerCase()}.`,
+  }));
+
+  console.log("tourSteps", tourSteps);
 
   const onClick = ({ key }) => {
     if (key == 3) {
       logOut(router);
-      document.cookie = "current_user=" +
-      "" +
-      "; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
+      document.cookie =
+        "current_user=" +
+        "" +
+        "; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
 
-      document.cookie = "isUserAuthenticated=" +
-      false +
-      "; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
+      document.cookie =
+        "isUserAuthenticated=" +
+        false +
+        "; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
       console.log("logout");
     }
   };
@@ -203,6 +224,10 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
 
   return (
     <Fragment>
+      <TourGuide
+        steps={[...searchBar, ...tourSteps, ...homePageSteps]}
+        cookieKey="homePageTour"
+      />
       <nav
         id="nav-wrap"
         className={`${
