@@ -111,6 +111,7 @@ export async function getServerSideProps({ req, query, res }) {
   let topicName = query?.camp[0];
   let campName = query?.camp[1];
   let token = null;
+  let userEmail = req.cookies?.isUserAuthenticated ? req.cookies?.current_user : "";
 
   let hashValue;
   let cookies;
@@ -167,6 +168,7 @@ export async function getServerSideProps({ req, query, res }) {
     update_all: 1,
     fetch_topic_history: query?.viewversion == "1" ? 1 : null,
     view: req.cookies[cookieKey] ? req.cookies[cookieKey] : hashValue,
+    current_user: userEmail,
   };
 
   const reqBody = {

@@ -14,6 +14,7 @@ import PrimaryButton from "components/shared/Buttons/PrimariButton";
 import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 import GetBreadCrumbs from "./PopupBreadCrumb";
 import CustomSkelton from "components/common/customSkelton";
+import { defaultNicknameData } from "src/utils/generalUtility";
 
 const Editorckl = dynamic(
   () => import("src/components/common/editorck/index"),
@@ -73,13 +74,13 @@ const PostFormPopup = ({
   return (
     <Drawer
       closeIcon={<LeftOutlined className="text-xl" />}
-      placement={isMobile ? "top" : "right"}
+      // placement={isMobile ? "top" : "right"}
       title={isPostUpdate ? "Update Comment" : "Comment in this thread"}
       destroyOnClose
       onClose={onClose}
       open={isOpen}
-      height={700}
-      width={560}
+      height={isMobile ? "" : 700}
+      width={isMobile ? "" : 560}
       extra={
         <GetBreadCrumbs topicRecord={topicRecord} campRecord={campRecord} />
       }
@@ -116,7 +117,9 @@ const PostFormPopup = ({
                 </Fragment>
               }
               name="nick_name"
-              defaultValue={nickNameList[0]?.id}
+              defaultValue={
+                defaultNicknameData(nickNameList)?.id || nickNameList[0]?.id
+              }
               options={nickNameList}
               placeholder={placeholders.nickName}
               allowClear
@@ -131,7 +134,10 @@ const PostFormPopup = ({
               prefix={<UserOutlined className="px-3 text-canBlack" />}
               onSelect={(val) => form.setFieldValue("nick_name", val)}
               lastValue={form.getFieldValue("nick_name")}
-              value={form.getFieldValue("nick_name")}
+              value={
+                defaultNicknameData(nickNameList)?.id ||
+                form.getFieldValue("nick_name")
+              }
               id="select-nick-name"
             />
           </Col>

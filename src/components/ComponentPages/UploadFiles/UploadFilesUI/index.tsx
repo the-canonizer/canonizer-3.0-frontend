@@ -132,6 +132,7 @@ const UploadFileUI = ({
   getUploadFilesLoadingIndicator,
   getUploadFolderLoadingIndicator,
   uploadedLengths,
+  uploadLoader,
 }: any) => {
   const router = useRouter();
   // const [uploadStatus] = useState(false);
@@ -1672,6 +1673,7 @@ const UploadFileUI = ({
                             id="uploadBtn"
                             htmlType="submit"
                             className={styles.Upload_Btn}
+                            loading={uploadLoader}
                           >
                             Upload
                           </Button>

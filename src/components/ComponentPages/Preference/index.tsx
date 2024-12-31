@@ -385,7 +385,7 @@ const ProfilePrefrences = () => {
         <div className="mt-20">
           <CustomSkelton
             skeltonFor="prefrences"
-            bodyCount={1}
+            bodyCount={8}
             stylingClass=""
             isButton={false}
           />

@@ -762,7 +762,7 @@ body {
   }
 
   .ant-tabs-nav {
-    @apply sticky top-0 bg-white z-50 max-lg:mx-[-14px];
+    @apply sticky top-0 bg-white z-0 max-lg:mx-[-14px];
 
     .ant-tabs-nav-list {
       @apply w-full;
@@ -1239,4 +1239,42 @@ body {
 
 .ant-tree .ant-tree-node-content-wrapper.ant-tree-node-selected {
   background-color: transparent;
+}
+
+.badNav {
+  @media screen and (max-width: 1024px) {
+    .bdNav {
+      @apply flex-wrap;
+    }
+    .otherContent {
+      @apply w-full mt-2;
+      .createBtn {
+        @apply ml-auto;
+      }
+    }
+    .ant-breadcrumb.cn-breadcrumbs {
+      @apply w-full;
+      ol {
+        @apply w-full;
+      }
+    }
+  }
+  @media screen and (max-width: 767px) {
+    .ant-breadcrumb.cn-breadcrumbs {
+      ol {
+        li {
+          & > span {
+            div {
+              a {
+                @apply line-clamp-1;
+                word-break: break-all;
+                word-wrap: break-word;
+                white-space: break-spaces;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }

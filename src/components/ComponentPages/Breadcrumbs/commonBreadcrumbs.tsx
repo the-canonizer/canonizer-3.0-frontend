@@ -7,31 +7,13 @@ import {
   Popconfirm,
   Popover,
   Row,
-  Spin,
   Tag,
   Tooltip,
 } from "antd";
-
 import { useEffect, useRef, useState } from "react";
-import {
-  getCampBreadCrumbApi,
-  getCurrentCampRecordApi,
-  getCurrentTopicRecordApi,
-  getTreesApi,
-  subscribeToCampApi,
-} from "src/network/api/campDetailApi";
 import { useRouter } from "next/router";
-import { RootState } from "src/store";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
-import {
-  changeSlashToArrow,
-  getCookies,
-  replaceSpecialCharacters,
-} from "src/utils/generalUtility";
-import PrimaryButton from "components/shared/Buttons/PrimariButton";
-import { setManageSupportStatusCheck } from "src/store/slices/campDetailSlice";
-import K from "src/constants";
 import Link from "next/link";
 import {
   DoubleLeftOutlined,
@@ -40,6 +22,21 @@ import {
   InfoCircleOutlined,
   WarningOutlined,
 } from "@ant-design/icons";
+
+import {
+  getCampBreadCrumbApi,
+  getCurrentCampRecordApi,
+  getCurrentTopicRecordApi,
+} from "src/network/api/campDetailApi";
+import { RootState } from "src/store";
+import {
+  changeSlashToArrow,
+  getCookies,
+  replaceSpecialCharacters,
+} from "src/utils/generalUtility";
+import PrimaryButton from "components/shared/Buttons/PrimariButton";
+import { setManageSupportStatusCheck } from "src/store/slices/campDetailSlice";
+import K from "src/constants";
 import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 import CustomSkelton from "src/components/common/customSkelton";
 
@@ -781,7 +778,7 @@ function CommanBreadcrumbs({
   };
 
   return (
-    <div className="max-md:mx-[-1rem] max-md:shadow-[0px_10px_10px_0px_#0000001A] md:bg-canGrey1_Opacity70 p-[1.5rem] md:rounded-[1.25rem] flex items-center justify-between gap-2 mb-10">
+    <div className="max-md:mx-[-1rem] max-md:shadow-[0px_10px_10px_0px_#0000001A] md:bg-canGrey1_Opacity70 p-[1.5rem] md:rounded-[1.25rem] flex items-center justify-between gap-2 mb-10 bdNav">
       {isForumPage ? (
         <Popover
           content="Back to camp forum page"
@@ -918,7 +915,9 @@ function CommanBreadcrumbs({
                           breadCrumbRes?.bread_crumb?.at(-1)?.camp_num
                         }-${breadCrumbRes?.bread_crumb?.at(-1)?.camp_name}`}
                       >
-                        {breadCrumbRes?.bread_crumb?.at(-1)?.camp_name}
+                        <a className="!break-all">
+                          {breadCrumbRes?.bread_crumb?.at(-1)?.camp_name}
+                        </a>
                       </Link>
                       {isMobile && (
                         <Popover
@@ -978,7 +977,7 @@ function CommanBreadcrumbs({
                             <Link
                               href={`${topicLink}/${camp?.camp_num}-${camp?.camp_name}`}
                             >
-                              {camp?.camp_name}
+                              <a className="!break-all">{camp?.camp_name}</a>
                             </Link>
                             {isMobile && (
                               <Popover
@@ -1017,7 +1016,7 @@ function CommanBreadcrumbs({
                           <Link
                             href={`${topicLink}/${camp.camp_num}-${camp.camp_name}`}
                           >
-                            {camp?.camp_name}
+                            <a className="!break-all">{camp?.camp_name}</a>
                           </Link>
                         </>
                       )}
@@ -1069,7 +1068,7 @@ function CommanBreadcrumbs({
       </Breadcrumb>
       {getCurrentUpdateButton()}
       {!isEventLine && (
-        <div className="flex items-center gap-3 shrink-0">
+        <div className="flex items-center gap-3 shrink-0 otherContent">
           {!isHtmlContent &&
           isTopicPage &&
           campStatement?.length > 0 &&

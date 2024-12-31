@@ -215,7 +215,15 @@ const CommentsList = () => {
   };
 
   const onBackClick = () => {
-    router?.back();
+    router?.push({
+      pathname: `/forum/${replaceSpecialCharacters(
+        router?.query?.topic as string,
+        "-"
+      )}/${replaceSpecialCharacters(
+        router?.query?.camp as string,
+        "-"
+      )}/threads`,
+    });
   };
 
   const onSubmittedSucess = async () => {
@@ -232,33 +240,36 @@ const CommentsList = () => {
       <Layout
         routeName={"forum"}
         afterHeader={
-          <CommonBreadcrumbs
-            payload={payload}
-            isForumPage={false}
-            isHtmlContent={
-              !isMobile ? (
-                <>
-                  {!isUserAuthenticated ? (
-                    <Text
-                      id="sign-in-msg-desktop"
-                      data-testid="logincheck-desktop"
-                    >
-                      Please <Link href={{ pathname: "/login" }}>Sign In</Link>{" "}
-                      to comment on this Thread
-                    </Text>
-                  ) : (
-                    <PrimaryButton
-                      id="comment-button-desktop"
-                      className="flex justify-center items-center h-auto py-2 px-7"
-                      onClick={onCreatePost}
-                    >
-                      Comment in This Thread <PlusOutlined />
-                    </PrimaryButton>
-                  )}
-                </>
-              ) : null
-            }
-          />
+          <div className="badNav">
+            <CommonBreadcrumbs
+              payload={payload}
+              isForumPage={false}
+              isHtmlContent={
+                !isMobile ? (
+                  <>
+                    {!isUserAuthenticated ? (
+                      <Text
+                        id="sign-in-msg-desktop"
+                        data-testid="logincheck-desktop"
+                      >
+                        Please{" "}
+                        <Link href={{ pathname: "/login" }}>Sign In</Link> to
+                        comment on this Thread
+                      </Text>
+                    ) : (
+                      <PrimaryButton
+                        id="comment-button-desktop"
+                        className="flex justify-center items-center h-auto py-2 px-7"
+                        onClick={onCreatePost}
+                      >
+                        Comment in This Thread <PlusOutlined />
+                      </PrimaryButton>
+                    )}
+                  </>
+                ) : null
+              }
+            />
+          </div>
         }
       >
         {isMobile && (

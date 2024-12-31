@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import HtmlDiff from "htmldiff-js";
 
-// import CompareStatementUI from "./UI/index-old";
-
 import { getCompareStatement } from "../../../network/api/history";
 import useAuthentication from "src/hooks/isUserAuthenticated";
 import CompareStatementUI from "./UI";
@@ -27,7 +25,6 @@ function CompareStatement() {
       topic_num: +router?.query.routes?.at(0)?.split("-")[0],
       camp_num: +router?.query.routes?.at(1).split("-")[0],
       compare: router?.asPath?.split("/")?.at(1),
-      // compare: router?.query?.from,
     };
     const res = await getCompareStatement(reqBody);
 
