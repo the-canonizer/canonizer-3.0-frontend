@@ -32,10 +32,7 @@ import Notifications from "../notification";
 import ProfileInfoTab from "./profileInfo";
 import { setLogOutType } from "src/store/slices/authSlice";
 import TourGuide from "components/common/tourGuide";
-import {
-  homePageSteps,
-  searchBar,
-} from "src/constants/tourGuideSteps";
+import { homePageSteps, searchBar } from "src/constants/tourGuideSteps";
 
 const menuItems = [
   {
@@ -147,8 +144,6 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
     } menu item. Click here to navigate to ${item.linkTitle.toLowerCase()}.`,
   }));
 
-  console.log("tourSteps", tourSteps);
-
   const onClick = ({ key }) => {
     if (key == 3) {
       logOut(router);
@@ -224,10 +219,12 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
 
   return (
     <Fragment>
-      <TourGuide
-        steps={[...searchBar, ...tourSteps, ...homePageSteps]}
-        cookieKey="homePageTour"
-      />
+      {!isMobile && (
+        <TourGuide
+          steps={[...searchBar, ...tourSteps, ...homePageSteps]}
+          cookieKey="homePageTour"
+        />
+      )}
       <nav
         id="nav-wrap"
         className={`${

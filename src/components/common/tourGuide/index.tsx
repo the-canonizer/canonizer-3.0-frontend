@@ -3,15 +3,14 @@ import Joyride, { CallBackProps, Step } from "react-joyride";
 import { useCookies } from "react-cookie";
 
 interface TourGuideProps {
-  steps: Step[]; // Steps specific to the component
-  cookieKey?: string; // Cookie key to track whether the tour has been viewed
+  steps: Step[]; 
+  cookieKey?: string; 
 }
 
-const TourGuide: React.FC<TourGuideProps> = ({ steps, cookieKey = "layoutTour" }) => {
+const TourGuide: React.FC<TourGuideProps> = ({ steps, cookieKey }) => {
   const [cookies, setCookie] = useCookies([cookieKey]);
   const [runTour, setRunTour] = useState(false);
   const[allSteps, setAllSteps] = useState<Step[]>([]);
-console.log("steps", allSteps);
 
 useEffect(()=>{
   setAllSteps(steps);
