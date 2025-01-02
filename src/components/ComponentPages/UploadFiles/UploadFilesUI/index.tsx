@@ -31,11 +31,16 @@ import {
   FileOutlined,
   FileExcelOutlined,
   FileWordOutlined,
+  LeftOutlined,
+  CloudUploadOutlined,
+  FolderOpenOutlined,
+  FolderOpenFilled,
 } from "@ant-design/icons";
 import Image from "next/image";
 import styles from "./UploadFile.module.scss";
 import moment from "moment";
 import { useSelector, useDispatch } from "react-redux";
+import { Breakpoint } from "antd/lib/_util/responsiveObserve";
 import { AppDispatch, RootState } from "../../../../store";
 import messages from "../../../../messages";
 import ThreeDots from "../../../../assets/image/threeDots.svg";
@@ -54,6 +59,24 @@ import Trash from "../../../../assets/image/trash.svg";
 import ArrowLeft from "../../../../assets/image/arrow_small_left.svg";
 import CopyShortCodeImage from "../../../../assets/image/copyShort.png";
 import DatePickerImage from "../../../../assets/image/datePicker.png";
+import CSV from "../../../../assets/image/icons/csv.png";
+import EPS from "../../../../assets/image/icons/eps.png";
+import GIF from "../../../../assets/image/icons/gif.png";
+import HTML from "../../../../assets/image/icons/html.png";
+import JPG from "../../../../assets/image/icons/jpg.png";
+import MOV from "../../../../assets/image/icons/mov.png";
+import PDF from "../../../../assets/image/icons/pdf.png";
+import PNG from "../../../../assets/image/icons/png.png";
+import SVG from "../../../../assets/image/icons/svg.png";
+import TEXT from "../../../../assets/image/icons/text.png";
+import TIFF from "../../../../assets/image/icons/tiff.png";
+import XLS from "../../../../assets/image/icons/xls.png";
+import ZIP from "../../../../assets/image/icons/zip.png";
+import DOC from "../../../../assets/image/icons/doc.png";
+import JSON from "../../../../assets/image/icons/json.png";
+import PPT from "../../../../assets/image/icons/ppt.png";
+import UNKNOWN from "../../../../assets/image/icons/unknown.png";
+
 import {
   showDrageBox,
   hideDrageBox,
@@ -74,9 +97,9 @@ import {
 } from "../../../../network/api/userApi";
 import { labels } from "../../../../messages/label";
 import { setTimeout } from "timers";
-// import SideBar from "../../CampForum/UI/sidebar";
 import queryParams from "src/utils/queryParams";
 import CustomSkelton from "../../../common/customSkelton";
+import { useRouter } from "next/router";
 
 const UploadFileUI = ({
   input,
@@ -108,17 +131,19 @@ const UploadFileUI = ({
   setToggleFileView,
   getUploadFilesLoadingIndicator,
   getUploadFolderLoadingIndicator,
+  uploadedLengths,
+  uploadLoader,
 }: any) => {
-  const [uploadStatus] = useState(false);
+  const router = useRouter();
+  // const [uploadStatus] = useState(false);
   // const [toggleFileView, setToggleFileView] = useState(false);
   const [previewImageIndicator, setPreviewImageIndicator] = useState(false);
   const [addFileIndicator, setAddFileIndicator] = useState(false);
   const [loadingArray, setLoadingArray] = useState([]);
   const [search, setSearch] = useState<any>("");
   const [updateList, setUpdateList] = useState({});
-  const [datePick, setDatePick] = useState("");
+  const [datePick, setDatePick] = useState<any>("");
   const [createFolderForm] = Form.useForm();
-  // const imageTimer = 2500;
   const [rename, setRename] = useState("");
   const [editFolderNameVal, setEditFolderNameVal] = useState("");
   const [editModal, setEditModal] = useState(false);
@@ -151,9 +176,6 @@ const UploadFileUI = ({
     (state: RootState) => state.ui?.visibleUploadOptions
   );
   const afterUpload = useSelector((state: RootState) => state.ui?.uploadAfter);
-  // const showFolderData = useSelector(
-  //   (state: RootState) => state.ui.folderShown
-  // );
   const openFolder = useSelector((state: RootState) => state.ui?.folderOpen);
   const addButtonShow = useSelector((state: RootState) => state.ui?.addButton);
   const fileStatus = useSelector((state: RootState) => state.ui?.fileStatus);
@@ -192,6 +214,107 @@ const UploadFileUI = ({
   const pptRegexData =
     /^application\/(vnd.ms-powerpoint.template.macroEnabled.12$|vnd.openxmlformats-officedocument.presentationml.template$|vnd.ms-powerpoint.addin.macroEnabled.12$|vnd.openxmlformats-officedocument.presentationml.slideshow$|vnd.openxmlformats-officedocument.presentationml.slideshow$|vnd.ms-powerpoint.slideshow.macroEnabled.12$|vnd.ms-powerpoint$|vnd.ms-powerpoint.presentation.macroEnabled.12$|vnd.openxmlformats-officedocument.presentationml.presentation$)/;
   const fileJsonRegex = /^application\/(json$)/;
+
+  // File type regex mappings
+  const fileTypeRegexes = {
+    text: /^text\/(plain|html|rtf|csv)$/,
+    pdf: /^application\/pdf$/,
+    excel:
+      /^application\/(vnd\.ms-excel|vnd\.openxmlformats-officedocument\.spreadsheetml\.sheet)$/,
+    doc: /^application\/(msword|vnd\.openxmlformats-officedocument\.wordprocessingml\.document)$/,
+    image: /^image\/(jpeg|png|jpg|gif|bmp)$/,
+    ppt: /^application\/(vnd\.ms-powerpoint|vnd\.openxmlformats-officedocument\.presentationml\.presentation)$/,
+    json: /^application\/json$/,
+    csv: /^text\/csv$/,
+    gif: /^image\/gif$/,
+    html: /^text\/html$/,
+    eps: /^application\/postscript$/,
+    jpg: /^image\/(jpeg|jpg)$/,
+    mov: /^video\/quicktime$/,
+    png: /^image\/png$/,
+    svg: /^image\/svg\+xml$/,
+    tiff: /^image\/tiff$/,
+    zip: /^application\/(zip|x-zip-compressed)$/,
+  };
+
+  // File type to image icon mappings
+  const fileTypeIcons = {
+    text: TEXT,
+    pdf: PDF,
+    excel: XLS,
+    doc: DOC,
+    ppt: PPT,
+    json: JSON,
+    csv: CSV,
+    gif: GIF,
+    html: HTML,
+    eps: EPS,
+    jpg: JPG,
+    mov: MOV,
+    png: PNG,
+    svg: SVG,
+    tiff: TIFF,
+    zip: ZIP,
+    unknown: UNKNOWN,
+  };
+
+  // Function to match file type
+  const matchFileType = (fileType) =>
+    Object.keys(fileTypeRegexes).find((key) =>
+      fileTypeRegexes[key].test(fileType)
+    ) || "unknown";
+
+  // Function to display image or folder
+  const displayColumnListImage = (obj) => {
+    const fileType = matchFileType(obj.file_type);
+
+    return (
+      <div>
+        {fileTypeRegexes.image?.test(obj.file_type) && obj.file_path ? (
+          // Render file image if it's an image type
+          <Image
+            alt="uploaded-file"
+            src={`${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/${obj.file_path}`}
+            height={150}
+            width={140}
+          />
+        ) : obj.type === "folder" ? (
+          // Render folder icon with interaction
+          <FolderFilled className="text-canBlue" />
+        ) : (
+          // Render file type icon for other file types
+          <Image
+            alt={`${fileType}-icon`}
+            src={fileTypeIcons[fileType] || fileTypeIcons.unknown}
+            height={40}
+            width={40}
+            className={styles.folder_icons}
+          />
+        )}
+      </div>
+    );
+  };
+
+  // Function to display detailed file
+  const displayImage = (file, imageData) => {
+    const fileType = matchFileType(file.file_type || file.type);
+
+    return (
+      <div id="display_image">
+        {fileTypeRegexes.image?.test(file.file_type || file.type) &&
+        imageData ? (
+          // Render image preview
+          <Image alt="displayed-file" src={imageData} height={90} width={140} />
+        ) : (
+          // Render file icon
+          <Image
+            alt={`${fileType}-icon`}
+            src={fileTypeIcons[fileType] || fileTypeIcons.unknown}
+          />
+        )}
+      </div>
+    );
+  };
   const menu = (i, obj) => (
     <Menu>
       <Menu.Item
@@ -271,7 +394,7 @@ const UploadFileUI = ({
         data-testid="test3"
         onClick={() => {
           {
-            navigator.clipboard.writeText(item.short_code_path),
+            navigator.clipboard.writeText(item?.short_code_path),
               message.success("Perma Link Copied");
           }
         }}
@@ -315,61 +438,61 @@ const UploadFileUI = ({
       </span>
     </Menu>
   );
-  const displayColumnListImage = (obj) => {
-    const fileText = <FileTextFilled className={styles.folder_icons_fileTxt} />;
-    const filePdf = <FilePdfFilled className={styles.folder_icons_pdf} />;
-    const fileUnknown = <FileUnknownFilled className={styles.folder_icons} />;
+  // const displayColumnListImage = (obj) => {
+  //   const fileText = <FileTextFilled className={styles.folder_icons_fileTxt} />;
+  //   const filePdf = <FilePdfFilled className={styles.folder_icons_pdf} />;
+  //   const fileUnknown = <FileUnknownFilled className={styles.folder_icons} />;
 
-    const filePpt = <FilePptOutlined className={styles.folder_icons_fileTxt} />;
-    const fileJson = <FileOutlined className={styles.folder_icons_fileTxt} />;
-    const fileXcel = (
-      <FileExcelOutlined className={styles.folder_icons_fileTxt} />
-    );
-    const fileDocs = (
-      <FileWordOutlined className={styles.folder_icons_fileTxt} />
-    );
-    return (
-      <div>
-        {(() => {
-          if (imageRegexData.test(obj.file_type) && obj.file_path) {
-            return (
-              <Image
-                alt="uploaded-file"
-                src={`${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/${obj.file_path}`}
-                height={150}
-                width={140}
-              />
-            );
-          } else if (obj.type == "folder") {
-            return (
-              <FolderFilled
-                data-testid="folderFilled"
-                className={styles.folder_icons}
-                style={{ cursor: "pointer" }}
-                onClick={() => {
-                  Openfolder(obj.id);
-                }}
-              />
-            );
-          } else if (textFileRegex.test(obj.file_type)) {
-            return fileText;
-          } else if (pdfFileRegex.test(obj.file_type)) {
-            return filePdf;
-          } else if (excelFileRegex.test(obj.file_type)) {
-            return fileXcel;
-          } else if (docFileRegex.test(obj.file_type)) {
-            return fileDocs;
-          } else if (pptRegexData.test(obj.file_type)) {
-            return filePpt;
-          } else if (fileJsonRegex.test(obj.file_type)) {
-            return fileJson;
-          } else {
-            return fileUnknown;
-          }
-        })()}
-      </div>
-    );
-  };
+  //   const filePpt = <FilePptOutlined className={styles.folder_icons_fileTxt} />;
+  //   const fileJson = <FileOutlined className={styles.folder_icons_fileTxt} />;
+  //   const fileXcel = (
+  //     <FileExcelOutlined className={styles.folder_icons_fileTxt} />
+  //   );
+  //   const fileDocs = (
+  //     <FileWordOutlined className={styles.folder_icons_fileTxt} />
+  //   );
+  //   return (
+  //     <div>
+  //       {(() => {
+  //         if (imageRegexData.test(obj.file_type) && obj.file_path) {
+  //           return (
+  //             <Image
+  //               alt="uploaded-file"
+  //               src={`${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/${obj.file_path}`}
+  //               height={150}
+  //               width={140}
+  //             />
+  //           );
+  //         } else if (obj.type == "folder") {
+  //           return (
+  //             <FolderFilled
+  //               data-testid="folderFilled"
+  //               className={styles.folder_icons}
+  //               style={{ cursor: "pointer" }}
+  //               onClick={() => {
+  //                 Openfolder(obj.id);
+  //               }}
+  //             />
+  //           );
+  //         } else if (textFileRegex.test(obj.file_type)) {
+  //           return fileText;
+  //         } else if (pdfFileRegex.test(obj.file_type)) {
+  //           return filePdf;
+  //         } else if (excelFileRegex.test(obj.file_type)) {
+  //           return fileXcel;
+  //         } else if (docFileRegex.test(obj.file_type)) {
+  //           return fileDocs;
+  //         } else if (pptRegexData.test(obj.file_type)) {
+  //           return filePpt;
+  //         } else if (fileJsonRegex.test(obj.file_type)) {
+  //           return fileJson;
+  //         } else {
+  //           return fileUnknown;
+  //         }
+  //       })()}
+  //     </div>
+  //   );
+  // };
   const editFolder = (obj) => {
     createFolderForm.resetFields();
     setEditModal(true);
@@ -385,6 +508,14 @@ const UploadFileUI = ({
   const cancelBtn = () => {
     handleCancel();
     setLoadingImage(false);
+  };
+
+  const handleGoBack = () => {
+    if (document.referrer) {
+      router.back(); // Navigate to the previous page
+    } else {
+      router.push("/"); // Fallback if there's no previous page
+    }
   };
 
   const changeFolderName = async () => {
@@ -489,6 +620,7 @@ const UploadFileUI = ({
           </div>
         );
       },
+      responsive: ["md" as Breakpoint],
     },
     {
       title: "Created Date",
@@ -496,7 +628,6 @@ const UploadFileUI = ({
       key: "lastModifiedDate",
       render: (lastModifiedDate, obj) => (
         <div>
-          {" "}
           {obj.updated_at
             ? moment
                 .unix(obj.updated_at)
@@ -508,6 +639,7 @@ const UploadFileUI = ({
                 .toString()}
         </div>
       ),
+      responsive: ["lg" as Breakpoint],
     },
     {
       title: "Action",
@@ -515,111 +647,107 @@ const UploadFileUI = ({
       key: "x",
       render: (keyParam, obj, index) => {
         return (
-          <>
-            <Popover
-              overlayClassName="PopoverCustom"
-              placement="bottom"
-              title=""
-              content={
-                obj.file_type ? (
-                  <>
-                    {imageRegexData.test(obj.file_type) ? (
-                      <div
-                        className={styles.menu_item}
-                        onClick={() => {
-                          setPreview({
-                            previewVisible: true,
-                            previewName: obj.file_name,
-                            previewPath: obj.file_path,
-                            prevShort: obj.short_code_path,
-                            previewCopyShortCode: obj.short_code,
-                            previewCreatedAt: obj.created_at,
-                          });
-                        }}
-                      >
-                        {" "}
-                        <Image
-                          alt="Eye Image"
-                          src={eyeImage}
-                          width={15}
-                          height={11}
-                        />
-                        <span className={styles.marginLeftView}>View File</span>
-                      </div>
-                    ) : (
-                      <div
-                        className={styles.menu_item}
-                        onClick={() => {
-                          window.location.href = `${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/${obj.file_path}`;
-                        }}
-                      >
-                        <Image
-                          alt="downloadFile"
-                          src={download}
-                          width={15}
-                          height={13}
-                        />
-                        <span className={styles.marginLeftView}>
-                          Download File
-                        </span>
-                      </div>
-                    )}
-
+          <Popover
+            overlayClassName="PopoverCustom"
+            placement="bottom"
+            title=""
+            content={
+              obj.file_type ? (
+                <>
+                  {imageRegexData.test(obj.file_type) ? (
                     <div
                       className={styles.menu_item}
                       onClick={() => {
-                        navigator?.clipboard?.writeText(
-                          keyParam.short_code_path
-                        ),
-                          message.success("Perma Link Copied");
+                        setPreview({
+                          previewVisible: true,
+                          previewName: obj.file_name,
+                          previewPath: obj.file_path,
+                          prevShort: obj.short_code_path,
+                          previewCopyShortCode: obj.short_code,
+                          previewCreatedAt: obj.created_at,
+                        });
                       }}
                     >
                       <Image
-                        alt="copyShortCode"
-                        src={CopyShortCode}
-                        width={12}
-                        height={15}
+                        alt="Eye Image"
+                        src={eyeImage}
+                        width={15}
+                        height={11}
+                      />
+                      <span className={styles.marginLeftView}>View File</span>
+                    </div>
+                  ) : (
+                    <div
+                      className={styles.menu_item}
+                      onClick={() => {
+                        window.location.href = `${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/${obj.file_path}`;
+                      }}
+                    >
+                      <Image
+                        alt="downloadFile"
+                        src={download}
+                        width={15}
+                        height={13}
                       />
                       <span className={styles.marginLeftView}>
-                        Copy Perma Link
+                        Download File
                       </span>
                     </div>
-                    <div
-                      className={styles.menu_item}
-                      onClick={() => {
-                        setRemoveFileData({
-                          keyParam: keyParam,
-                          obj: obj,
-                          fileLists: fileLists,
-                        }),
-                          setDeleteConfirmationVisible(true);
-                      }}
-                    >
-                      <Image
-                        alt="Trash Data "
-                        src={Trash}
-                        width={12}
-                        height={15}
-                      />
-                      <span className={styles.marginLeftView}>Delete File</span>
-                    </div>
-                  </>
-                ) : (
-                  menu(index, obj)
-                )
-              }
-              trigger="click"
-              zIndex={1}
-            >
-              <div className="threeDOt">
-                <MoreOutlined />
-              </div>
-            </Popover>
-          </>
+                  )}
+
+                  <div
+                    className={styles.menu_item}
+                    onClick={() => {
+                      navigator?.clipboard?.writeText(keyParam.short_code_path),
+                        message.success("Perma Link Copied");
+                    }}
+                  >
+                    <Image
+                      alt="copyShortCode"
+                      src={CopyShortCode}
+                      width={12}
+                      height={15}
+                    />
+                    <span className={styles.marginLeftView}>
+                      Copy Perma Link
+                    </span>
+                  </div>
+                  <div
+                    className={styles.menu_item}
+                    onClick={() => {
+                      setRemoveFileData({
+                        keyParam: keyParam,
+                        obj: obj,
+                        fileLists: fileLists,
+                      }),
+                        setDeleteConfirmationVisible(true);
+                    }}
+                  >
+                    <Image
+                      alt="Trash Data "
+                      src={Trash}
+                      width={12}
+                      height={15}
+                    />
+                    <span className={styles.marginLeftView}>Delete File</span>
+                  </div>
+                </>
+              ) : (
+                menu(index, obj)
+              )
+            }
+            trigger="click"
+            zIndex={1}
+          >
+            <div className="threeDOt">
+              <MoreOutlined />
+            </div>
+          </Popover>
         );
       },
     },
   ];
+
   const uploadList = () => {
     Object.entries(updateList).map(([k, v]) => {
       const fileIndex = fileLists.findIndex((obj) => k == obj.uid);
@@ -640,7 +768,7 @@ const UploadFileUI = ({
     const createdAtValue = (val) =>
       moment.unix(val.created_at).format("MMM DD, YYYY");
     let searchName = "";
-    if (!openFolder && search !== "") {
+    if ((!openFolder && search !== "") || datePick !== "") {
       return filteredList;
     }
     return (openFolder ? getFileListFromFolderID : fileLists)?.filter((val) => {
@@ -682,77 +810,99 @@ const UploadFileUI = ({
     ) : (
       <div className={"folderId" + item.id} id={"folderId" + item.id}>
         {item && item.type && item.type == "folder" && !toggleFileView ? (
-          <div className={styles.Folder_container}>
-            <Card
-              className={styles.FolderData}
-              onClick={() => {
-                Openfolder(item.id);
-              }}
-            >
-              <div className={styles.folder_icon}>
-                <div className="folder--wrap">
-                  <div className="foldername">
-                    <span style={{ cursor: "pointer" }}>{item.name}</span>
-                  </div>
-                  <div className={styles.dateAndfiles}>
-                    <p>
-                      {" "}
-                      {moment.unix(item.created_at).format("DD MMMM YYYY")}
-                    </p>
-                    <small>{"(" + item.uploads_count + " files)"}</small>
-                  </div>
+          <div className={`${styles.Folder_container} folder-container`}>
+            <Card className={`${styles.files} files`}>
+              <div
+                className={`${styles.imageFiles} image-files`}
+                onClick={() => {
+                  Openfolder(item.id);
+                }}
+              >
+                <FolderOpenFilled />
+              </div>
+              <div className="BoxcopyWrap p-[6px]">
+                <div className="flex gap-1 items-center justify-between">
+                  <span
+                    className="value truncate cursor-pointer"
+                    onClick={() => {
+                      Openfolder(item.id);
+                    }}
+                  >
+                    {item?.name}
+                  </span>
+                  <Dropdown
+                    className="cursor-pointer"
+                    overlay={menu(i, item)}
+                    trigger={["click"]}
+                    placement="bottomRight"
+                    // placement="topCenter"
+                  >
+                    <div
+                      data-testid="open_folder_render_mennu"
+                      className="ant-dropdown-link"
+                      onClick={(e) => e.preventDefault()}
+                    >
+                      <MoreOutlined />
+                    </div>
+                  </Dropdown>
                 </div>
+                <span
+                  className="upload-time block !text-[10px] text-[#777F93]"
+                  onClick={() => {
+                    Openfolder(item?.id);
+                  }}
+                >
+                  <span>{item?.uploads_count + " files"}</span>
+                  <br></br>
+                  <span>
+                    {moment?.unix(item.created_at)?.format("DD MMMM YYYY")}
+                  </span>
+                </span>
               </div>
             </Card>
-            <div className={styles.dropdown} data-testid="overlay_menu">
-              <Dropdown
-                overlay={menu(i, item)}
-                trigger={["click"]}
-                placement="topCenter"
-              >
-                <div
-                  data-testid="open_folder_render_mennu"
-                  className="ant-dropdown-link"
-                  onClick={(e) => e.preventDefault()}
-                >
-                  <MoreOutlined />
-                </div>
-              </Dropdown>
-            </div>
           </div>
         ) : afterUpload && !toggleFileView && item.type == "file" ? (
-          <Card className={styles.files}>
-            <Dropdown
-              className={styles.dropdown_menu}
-              overlay={menu_files(item.id, item)}
-              trigger={["click"]}
-              placement="bottomRight"
-            >
-              <div
-                className="ant-dropdown-link"
-                onClick={(e) => e.preventDefault()}
-              >
-                <Image
-                  id="threeDots"
-                  className={styles.Menu_Iconss}
-                  alt="Three Dots"
-                  src={ThreeDots}
-                  width={15}
-                  height={20}
-                />
+          <Card className={`files ${styles.files}`}>
+            <div className="folder-img-wraper">
+              <div className={`image-files ${styles.imageFiles}`}>
+                {displayImage(
+                  item,
+                  `${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/${item.file_path}`
+                )}
               </div>
-            </Dropdown>
-            <div className={styles.imageFiles}>
-              {displayImage(
-                item,
-                `${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/${item.file_path}`
-              )}
+              {(() => {
+                // Check if the file is an image and the item has a folder ID
+                if (
+                  !fileTypeRegexes.image?.test(item.file_type || item.type) &&
+                  item?.folder_id
+                ) {
+                  return <FolderOpenFilled className="ff-icon" />;
+                }
+
+                // Return null if the condition is not met to avoid rendering issues
+                return null;
+              })()}
             </div>
-            <h3 className="BoxcopyWrap">
-              <span className="value">
-                {subStringData(item.name ? item.name : item.file_name)}
-              </span>
-              <span
+            <div className="BoxcopyWrap p-[6px]">
+              <div className="flex gap-1 items-center justify-between">
+                <span className="value truncate">
+                  {subStringData(item.name ? item.name : item.file_name)}
+                </span>
+                <Dropdown
+                  className="dropdown-menu leading-none"
+                  overlay={menu_files(item.id, item)}
+                  trigger={["click"]}
+                  placement="bottomRight"
+                >
+                  <div
+                    className="ant-dropdown-link"
+                    onClick={(e) => e.preventDefault()}
+                  >
+                    <MoreOutlined className="!text-sm cursor-pointer" />
+                  </div>
+                </Dropdown>
+              </div>
+              {/* <span
                 data-testid="cpoy_span"
                 className="copySpan"
                 onClick={() => {
@@ -766,24 +916,36 @@ const UploadFileUI = ({
                   width={12}
                   height={15}
                 />
+              </span> */}
+              <span className="upload-time block !text-[10px] text-[#777F93]">
+                {item.created_at
+                  ? moment
+                      .unix(item.created_at)
+                      .format("MMM DD, YYYY, h:mm:ss A")
+                  : moment(item.lastModified).format("MMM DD, YYYY, h:mm:ss A")}
               </span>
-            </h3>
-            <span>
-              {item.created_at
-                ? moment.unix(item.created_at).format("MMM DD, YYYY, h:mm:ss A")
-                : moment(item.lastModified).format("MMM DD, YYYY, h:mm:ss A")}
-            </span>
+              {item?.folder?.name && (
+                <span className="truncate block !text-[10px] font-medium">
+                  {fileTypeRegexes.image?.test(item.file_type || item.type) &&
+                    item?.folder_id && (
+                      <FolderOpenFilled className="ff-icon mr-1 text-canBlue" />
+                    )}
+                  {item?.folder?.name}
+                </span>
+              )}
+            </div>
           </Card>
-        ) : (
-          ""
-        )}
+        ) : null}
       </div>
     );
   };
+
   const subStringData = (fileName) => {
     return fileName?.length > 10 ? fileName.substring(0, 10) + "..." : fileName;
   };
+
   const filterArrList = [];
+
   const searchFilter = () => {
     return (openFolder ? fileLists : filteredArray())?.length > 0 ? (
       (openFolder ? fileLists : filteredArray()).map((item, i) => {
@@ -793,7 +955,7 @@ const UploadFileUI = ({
             className={(() => {
               if (openFolder && item.id != selectedFolderID) {
                 return "";
-              } else if (!openFolder) {
+              } else if (!openFolder && dragBoxStatus == false) {
                 return styles.view_After_Upload;
               } else {
                 return styles.folder_Back_Button;
@@ -822,7 +984,6 @@ const UploadFileUI = ({
                       size="small"
                       title={
                         <h2 className={styles.FolderOpenHeading}>
-                          {" "}
                           <span
                             data-testid="arrow_outlined"
                             style={{ cursor: "pointer" }}
@@ -884,69 +1045,77 @@ const UploadFileUI = ({
           </div>
         );
       })
-    ) : dragBoxStatus == true ? (
-      ""
-    ) : !toggleFileView ? (
+    ) : dragBoxStatus == true ? null : !toggleFileView ? (
       <div className={styles.emptyFolderData}>
         <Empty description={<span>No Data Found</span>} />
       </div>
-    ) : (
-      ""
-    );
+    ) : null;
   };
-  const displayImage = (file, imageData) => {
-    const fileText = <FileTextFilled className={styles.FileTextTwoOneClass} />;
-    const filePdf = <FilePdfFilled className={styles.FilePdfTwoToneColor} />;
-    const fileUnknown = (
-      <FileUnknownFilled className={styles.FileTextTwoOneClass} />
-    );
-    const filePpt = <FilePptOutlined className={styles.FileTextTwoOneClass} />;
-    const fileJson = <FileOutlined className={styles.FileTextTwoOneClass} />;
-    const fileXcel = (
-      <FileExcelOutlined className={styles.FileTextTwoOneClass} />
-    );
-    const fileDocs = (
-      <FileWordOutlined className={styles.FileTextTwoOneClass} />
-    );
+  // const displayImage = (file, imageData) => {
+  //   const fileText = <img src={TEXT.src} alt="" />;
+  //   // const filePdf = <FilePdfFilled className={styles.FilePdfTwoToneColor} />;
+  //   const filePdf = <img src={PDF.src} alt="" />;
+  //   const fileUnknown = (
+  //     <FileUnknownFilled className={styles.FileTextTwoOneClass} />
+  //   );
+  //   const filePpt = <FilePptOutlined className={styles.FileTextTwoOneClass} />;
+  //   const fileJson = <FileOutlined className={styles.FileTextTwoOneClass} />;
+  //   const fileXcel = (
+  //     <FileExcelOutlined className={styles.FileTextTwoOneClass} />
+  //   );
+  //   const fileDocs = (
+  //     <FileWordOutlined className={styles.FileTextTwoOneClass} />
+  //   );
 
-    return (
-      <div id="display_image">
-        {(() => {
-          if (imageRegexData.test(file.file_type || file.type) && imageData) {
-            return (
-              <Image
-                alt="displayed-file"
-                src={imageData}
-                height={150}
-                width={140}
-              />
-            );
-          } else if (textFileRegex.test(file.file_type || file.type)) {
-            return fileText;
-          } else if (pdfFileRegex.test(file.file_type || file.type)) {
-            return filePdf;
-          } else if (excelFileRegex.test(file.file_type || file.type)) {
-            return fileXcel;
-          } else if (docFileRegex.test(file.file_type || file.type)) {
-            return fileDocs;
-          } else if (pptRegexData.test(file.file_type || file.type)) {
-            return filePpt;
-          } else if (fileJsonRegex.test(file.file_type || file.type)) {
-            return fileJson;
-          } else {
-            return fileUnknown;
-          }
-        })()}
-      </div>
-    );
-  };
+  //   return (
+  //     <div id="display_image">
+  //       {(() => {
+  //         if (imageRegexData.test(file.file_type || file.type) && imageData) {
+  //           return (
+  //             <Image
+  //               alt="displayed-file"
+  //               src={imageData}
+  //               height={150}
+  //               width={140}
+  //             />
+  //           );
+  //         } else if (textFileRegex.test(file.file_type || file.type)) {
+  //           return fileText;
+  //         } else if (pdfFileRegex.test(file.file_type || file.type)) {
+  //           return filePdf;
+  //         } else if (excelFileRegex.test(file.file_type || file.type)) {
+  //           return fileXcel;
+  //         } else if (docFileRegex.test(file.file_type || file.type)) {
+  //           return fileDocs;
+  //         } else if (pptRegexData.test(file.file_type || file.type)) {
+  //           return filePpt;
+  //         } else if (fileJsonRegex.test(file.file_type || file.type)) {
+  //           return fileJson;
+  //         } else {
+  //           return fileUnknown;
+  //         }
+  //       })()}
+  //     </div>
+  //   );
+  // };
   // const confirm = (keyParam) => {
   //   message.info("Clicked on Yes.");
   //   removeFiles(keyParam);
   // };
-  const getGlobalSearchUploadFile = async (queryString) => {
+  const getGlobalSearchUploadFile = async (queryString, dateString) => {
+    const dateObject = new Date(datePick);
+    const epochTimeInMilliseconds = dateObject?.getTime();
+    const epochTimeInSeconds = Math.floor(epochTimeInMilliseconds / 1000);
+    const dateparams =
+      dateString == null ? "" : Math.floor(dateString?.valueOf() / 1000);
+    const date =
+      dateString == null
+        ? ""
+        : dateString != null
+        ? dateparams
+        : epochTimeInSeconds;
     let response = await globalSearchUploadFiles(
-      queryParams({ query: queryString })
+      queryParams({ query: queryString, date })
     );
     if (response && response.status_code == 200) {
       setFilteredList(response.data.files.map((v) => ({ ...v, type: "file" })));
@@ -958,35 +1127,39 @@ const UploadFileUI = ({
         className={styles.view_After_Upload}
         //key="upload_file_one"
       >
-        <Card className={styles.files} key={i}>
-          <Dropdown
-            className={styles.dropdown_menu}
-            overlay={menu_files(file.id, file)}
-            trigger={["click"]}
-          >
-            <div
-              className="ant-dropdown-link"
-              onClick={(e) => e.preventDefault()}
-            >
-              <Image
-                id="menuFilesThreeDots"
-                className={styles.Menu_Iconss}
-                alt="Three Dots"
-                src={ThreeDots}
-                width={15}
-                height={20}
-              />
-            </div>
-          </Dropdown>
-          <div className={styles.imageFiles}>
+        <Card className={`${styles.files} files`} key={i}>
+          <div className={`${styles.imageFiles} image-files`}>
             {displayImage(
               file,
               `${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/${file.file_path}`
             )}
           </div>
-          <h3 className="BoxcopyWrap">
-            <span className="value">{subStringData(file.file_name)}</span>
-            <span
+          <div className="BoxcopyWrap p-[6px]">
+            <div className="flex gap-1 items-center justify-between">
+              <span className="value truncate">
+                {subStringData(file?.file_name)}
+              </span>
+              <Dropdown
+                className={styles.dropdown_menu}
+                overlay={menu_files(file.id, file)}
+                trigger={["click"]}
+              >
+                <div
+                  className="ant-dropdown-link"
+                  onClick={(e) => e.preventDefault()}
+                >
+                  <Image
+                    id="menuFilesThreeDots"
+                    className={styles.Menu_Iconss}
+                    alt="Three Dots"
+                    src={ThreeDots}
+                    width={15}
+                    height={20}
+                  />
+                </div>
+              </Dropdown>
+            </div>
+            {/* <span
               data-testid="copySpan"
               className="copySpan"
               onClick={() => {
@@ -1000,15 +1173,16 @@ const UploadFileUI = ({
                 width={12}
                 height={15}
               />
+            </span> */}
+            <span className="!text-[10px] text-[#777F93]">
+              {moment.unix(file.created_at).format("MMM DD, YYYY, h:mm:ss A")}
             </span>
-          </h3>
-          <span>
-            {moment.unix(file.created_at).format("MMM DD, YYYY, h:mm:ss A")}
-          </span>
+          </div>
         </Card>
       </div>
     );
   };
+
   const handleImageLoaded = () => {
     setPreviewImageIndicator(false);
     setImageStatus("loaded");
@@ -1040,7 +1214,6 @@ const UploadFileUI = ({
           <div className="pageContentWrap">
             <div className={styles.uploadFilesData}>
               <Form
-                //name={editModal ? "Edit your folder name" : labels.CreateaFolder}
                 form={createFolderForm}
                 onFinish={onFinishValidation}
                 validateMessages={validateMessages}
@@ -1049,14 +1222,26 @@ const UploadFileUI = ({
               >
                 <Card
                   title={
-                    <h3>
-                      {messages.labels.uploadFiles}{" "}
-                      <span className={styles.span}>
-                        {messages.labels.maxSize}
-                      </span>
-                    </h3>
+                    <>
+                      <Button
+                        type="link"
+                        className="upload-back-btn"
+                        icon={<LeftOutlined />}
+                        size="large"
+                        onClick={handleGoBack}
+                      >
+                        File(s) Uploaded
+                      </Button>
+                      {/* <h3>
+                        {messages.labels.uploadFiles}
+                        <span className={styles.span}>
+                          {messages.labels.maxSize}
+                        </span>
+                      </h3> */}
+                    </>
                   }
-                  className={styles.Card}
+                  bordered={false}
+                  className="upload-card-wrapper"
                   extra={
                     <div className="d-flex">
                       <div className={styles.top_btn}>
@@ -1067,11 +1252,11 @@ const UploadFileUI = ({
                             }
                             disabled={show_UploadOptions || dragBoxStatus}
                             onChange={(date) => {
-                              uploadStatus == true
-                                ? setDatePick("")
-                                : setDatePick(
-                                    date ? date.toLocaleString() : ""
-                                  );
+                              // uploadStatus == true
+                              //   ? setDatePick("")
+                              //   :
+                              setDatePick(date && date);
+                              getGlobalSearchUploadFile(search, date);
                             }}
                             value={datePick && moment(new Date(datePick))}
                           />
@@ -1094,7 +1279,10 @@ const UploadFileUI = ({
                               setSearch(e.target.value);
                               openFolder
                                 ? filteredArray()
-                                : getGlobalSearchUploadFile(e.target.value);
+                                : getGlobalSearchUploadFile(
+                                    e.target.value,
+                                    datePick
+                                  );
                             }}
                           />
                         </div>
@@ -1137,7 +1325,7 @@ const UploadFileUI = ({
                           />
                           Create a Folder
                         </Button>
-                        {addButtonShow && !dragBoxStatus ? (
+                        {/* {addButtonShow && !dragBoxStatus ? (
                           <Button
                             data-testid="addAFileBtn"
                             id="addAFileBtn"
@@ -1146,7 +1334,6 @@ const UploadFileUI = ({
                               addNewFile(),
                                 setToggleFileView(false),
                                 setUpdateList({});
-                              // setUploadStatus(true);
                               setDatePick("");
                               setSearch("");
                             }}
@@ -1159,14 +1346,10 @@ const UploadFileUI = ({
                             />
                             Add a File
                           </Button>
-                        ) : (
-                          ""
-                        )}
+                        ) : null} */}
 
                         <div className={styles.top_icon}>
-                          {show_UploadOptions || dragBoxStatus ? (
-                            ""
-                          ) : (
+                          {show_UploadOptions || dragBoxStatus ? null : (
                             <span
                               style={{ cursor: "pointer" }}
                               onClick={() => {
@@ -1181,9 +1364,7 @@ const UploadFileUI = ({
                               />
                             </span>
                           )}
-                          {show_UploadOptions || dragBoxStatus ? (
-                            ""
-                          ) : (
+                          {show_UploadOptions || dragBoxStatus ? null : (
                             <span
                               onClick={() => {
                                 setToggleFileView(false), showUploadsAfter();
@@ -1204,265 +1385,313 @@ const UploadFileUI = ({
                     </div>
                   }
                 >
-                  <div className={styles.uploded_Files}>
-                    {showCrossBtn ? (
-                      <div className={styles.Back_from_browser}>
-                        <CloseCircleOutlined
-                          onClick={() => {
-                            handle_X_btn();
-                            setSearch("");
+                  <Card
+                    title={
+                      !search && !datePick
+                        ? `${uploadedLengths?.fileLength} Files, ${uploadedLengths?.folderLength} Folders`
+                        : `${filteredList?.length} ${
+                            filteredList?.length > 1 ? "Files" : "File"
+                          } Found`
+                    }
+                    className="upload-inner-card"
+                    bordered={false}
+                    extra={
+                      <>
+                        {(addButtonShow && !dragBoxStatus) ||
+                        (uploadedLengths?.fileLength < 0 &&
+                          uploadedLengths?.folderLength < 0) ? (
+                          <Button
+                            className="min-w-[200px] gap-2 flex items-center justify-center border border-canBlue bg-[#98B7E61A] rounded-lg text-canBlack text-base font-medium"
+                            size="large"
+                            onClick={() => {
+                              addNewFile(),
+                                setToggleFileView(false),
+                                setUpdateList({});
+                              // setUploadStatus(true);
+                              setDatePick("");
+                              setSearch("");
+                            }}
+                          >
+                            Upload New File
+                            <CloudUploadOutlined />
+                          </Button>
+                        ) : null}
+                      </>
+                    }
+                  >
+                    <div className={styles.uploded_Files}>
+                      {showCrossBtn ? (
+                        <div className={styles.Back_from_browser}>
+                          <CloseCircleOutlined
+                            onClick={() => {
+                              handle_X_btn();
+                              setSearch("");
+                            }}
+                            data-testid="handle_x_btn"
+                          />
+                        </div>
+                      ) : (
+                        ""
+                      )}
+
+                      <Upload
+                        className={`upload-data ${styles.UploadDataFiles}`}
+                        name="file"
+                        listType="picture"
+                        multiple
+                        data-testid="upload_images"
+                        fileList={fileStatus ? folderFiles : uploadFileList}
+                        beforeUpload={(file, fileList) => {
+                          setLoadingArray([...fileList]);
+                        }}
+                        onChange={(info) => {
+                          let length = info.fileList.length;
+                          if (info.file.status == "uploading") {
+                            setAddFileIndicator(true);
+                            setLoadingImage(true);
+                          }
+                          if (info.file.status == "done") {
+                            setLoadingImage(false);
+                            setTimeout(() => {
+                              setLoadingArray([]);
+                              setAddFileIndicator(false);
+                            }, 1000);
+                          }
+                          if (length) {
+                            if (fileStatus) {
+                              if (
+                                info.file.status == "uploading" &&
+                                info.file.percent == 0
+                              ) {
+                                setFolderFiles(info.fileList);
+                                //setUploadFileList(info.fileList);
+                                setFileLists(info.fileList);
+                              }
+                            } else {
+                              let dataValues = info.fileList;
+
+                              setUploadFileList(dataValues);
+                              setFileLists(info.fileList);
+                            }
+                            dragBoxHide();
+                            crossBtnhide();
+                            shownAddButton();
+                            uploadOptionsShow();
+                          } else {
+                            dragBoxShow();
+                            uploadOptionsHide();
+                            hideButtonAdd();
+                          }
+
+                          const { status } = info.file;
+                          if (status !== "uploading")
+                            if (status === "done") {
+                              showFiles();
+                            } else if (status === "error") {
+                              message.error(
+                                `${info.file.name} file upload failed.`
+                              );
+                            }
+                        }}
+                        onDrop={() => {}}
+                        itemRender={(originNode, file) => {
+                          const fileSizeFlag = file.size / (1024 * 1024) > 5;
+                          return (file.type && file.type == "folder") ||
+                            toggleFileView ? (
+                            ""
+                          ) : (
+                            <div className={afterUploadClass}>
+                              <Spin
+                                size="large"
+                                className="styles_spin"
+                                spinning={
+                                  addFileIndicator &&
+                                  loadingArray.findIndex(
+                                    (o) => o.uid === file.uid
+                                  ) > -1
+                                }
+                              >
+                                <div
+                                  className={styles.After_Upload}
+                                  style={
+                                    fileSizeFlag
+                                      ? { border: "1px solid red" }
+                                      : {}
+                                  }
+                                >
+                                  <CloseCircleOutlined
+                                    data-testid="remove_upload_files"
+                                    onClick={() => {
+                                      removeUploadFiles(
+                                        originNode,
+                                        file,
+                                        fileStatus
+                                          ? folderFiles
+                                          : uploadFileList
+                                      );
+                                    }}
+                                  />
+                                  <div className="imgWrap">
+                                    {(!imageRegexData.test(file.type) ||
+                                      (imageRegexData.test(file.type) &&
+                                        file.thumbUrl)) &&
+                                      displayImage(file, file.thumbUrl)}
+                                  </div>
+
+                                  <br />
+                                  <label
+                                    className={
+                                      fileSizeFlag
+                                        ? "fileName_label_max_limit block w-full text-sm font-medium mt-2 border-t pt-2 mb-4"
+                                        : "fileName_label block w-full text-sm font-medium mt-2 border-t pt-2 mb-4"
+                                    }
+                                  >
+                                    {file.name}
+                                  </label>
+                                  <Form.Item
+                                    label="Enter file name"
+                                    className={
+                                      "fileName_span mb-2 [&_label]:font-normal [&_label]:text-sm [&_.ant-form-item-label]:mb-0 [&_.ant-form-item-label]:pb-0"
+                                    }
+                                    name={file.uid}
+                                    rules={[
+                                      {
+                                        required: true,
+                                        message: "File Name is required",
+                                      },
+                                    ]}
+                                  >
+                                    <Input
+                                      data-testid="enterFileName"
+                                      id="enterFileName"
+                                      className="mr-0 text-sm font-medium rounded-md"
+                                      name={file.uid}
+                                      onChange={(e) =>
+                                        handleChangeFileName(e, file.uid)
+                                      }
+                                      placeholder="Full Name (with no extension)"
+                                      onKeyDown={(e) => {
+                                        // ============================ Allowed Special Chracter=====================================================
+                                        // if (/[^\w]|_/g.test(e.key))
+                                        //   return e.preventDefault();
+                                        return (
+                                          (e.key === "." || e.key === " ") &&
+                                          (e.keyCode === 190 ||
+                                            e.keyCode === 32) &&
+                                          e.preventDefault()
+                                        );
+                                      }}
+                                    />
+                                  </Form.Item>
+                                </div>
+                                {fileSizeFlag
+                                  ? (uploadOptionsHide(),
+                                    (
+                                      <p className={styles.maxLimit}>
+                                        This file is exceeding the max limit and
+                                        will not be uploaded{" "}
+                                      </p>
+                                    ))
+                                  : " "}
+                              </Spin>
+                            </div>
+                          );
+                        }}
+                      >
+                        {drageBoxVisible !== false ? (
+                          <div className={styles.Dragebox}>
+                            <Button
+                              id="clickOrDragAreaBtn"
+                              className={styles.Drager}
+                            >
+                              <div
+                                className="uploadBTn"
+                                data-testid="drag_file"
+                              >
+                                <InboxOutlined />
+                                <h2>
+                                  <b>
+                                    Click or drag file to this area to upload
+                                  </b>
+                                </h2>
+                                <p className="ant-upload-hint">
+                                  Support for a single or bulk upload. Strictly
+                                  prohibit from uploading company data or other
+                                  band files
+                                </p>
+                              </div>
+                            </Button>
+                          </div>
+                        ) : (
+                          ""
+                        )}
+                      </Upload>
+                    </div>
+
+                    <div className={styles.fileList}>{searchFilter()}</div>
+                    {toggleFileView && fileLists.length > 0 ? (
+                      <div className="TableContent">
+                        <Table
+                          bordered={true}
+                          id="tableColumn"
+                          className="contentValue"
+                          dataSource={filteredArray()}
+                          columns={columns}
+                          scroll={{
+                            x: 992,
                           }}
-                          data-testid="handle_x_btn"
+                          pagination={{ hideOnSinglePage: true }}
                         />
                       </div>
                     ) : (
                       ""
                     )}
 
-                    <Upload
-                      className={styles.UploadDataFiles}
-                      name="file"
-                      listType="picture"
-                      multiple
-                      data-testid="upload_images"
-                      fileList={fileStatus ? folderFiles : uploadFileList}
-                      beforeUpload={(file, fileList) => {
-                        setLoadingArray([...fileList]);
-                      }}
-                      onChange={(info) => {
-                        let length = info.fileList.length;
-                        if (info.file.status == "uploading") {
-                          setAddFileIndicator(true);
-                          setLoadingImage(true);
-                        }
-                        if (info.file.status == "done") {
-                          setLoadingImage(false);
-                          setTimeout(() => {
-                            setLoadingArray([]);
-                            setAddFileIndicator(false);
-                          }, 1000);
-                        }
-                        if (length) {
-                          if (fileStatus) {
-                            if (
-                              info.file.status == "uploading" &&
-                              info.file.percent == 0
-                            ) {
-                              setFolderFiles(info.fileList);
-                              //setUploadFileList(info.fileList);
-                              setFileLists(info.fileList);
-                            }
-                          } else {
-                            let dataValues = info.fileList;
-
-                            setUploadFileList(dataValues);
-                            setFileLists(info.fileList);
-                          }
-                          dragBoxHide();
-                          crossBtnhide();
-                          shownAddButton();
-                          uploadOptionsShow();
-                        } else {
-                          dragBoxShow();
-                          uploadOptionsHide();
-                          hideButtonAdd();
-                        }
-
-                        const { status } = info.file;
-                        if (status !== "uploading")
-                          if (status === "done") {
-                            showFiles();
-                          } else if (status === "error") {
-                            message.error(
-                              `${info.file.name} file upload failed.`
-                            );
-                          }
-                      }}
-                      onDrop={() => {}}
-                      itemRender={(originNode, file) => {
-                        const fileSizeFlag = file.size / (1024 * 1024) > 5;
-                        return (file.type && file.type == "folder") ||
-                          toggleFileView ? (
-                          ""
-                        ) : (
-                          <div className={afterUploadClass}>
-                            <Spin
-                              size="large"
-                              className="styles_spin"
-                              spinning={
-                                addFileIndicator &&
-                                loadingArray.findIndex(
-                                  (o) => o.uid === file.uid
-                                ) > -1
-                              }
-                            >
-                              <div
-                                className={styles.After_Upload}
-                                style={
-                                  fileSizeFlag
-                                    ? { border: "1px solid red" }
-                                    : {}
-                                }
-                              >
-                                <CloseCircleOutlined
-                                  data-testid="remove_upload_files"
-                                  onClick={() => {
-                                    removeUploadFiles(
-                                      originNode,
-                                      file,
-                                      fileStatus ? folderFiles : uploadFileList
-                                    );
-                                  }}
-                                />
-                                <div className="imgWrap">
-                                  {(!imageRegexData.test(file.type) ||
-                                    (imageRegexData.test(file.type) &&
-                                      file.thumbUrl)) &&
-                                    displayImage(file, file.thumbUrl)}
-                                </div>
-
-                                <br />
-                                <label
-                                  className={
-                                    fileSizeFlag
-                                      ? "fileName_label_max_limit block w-full text-sm font-medium mt-2 border-t pt-2 mb-4"
-                                      : "fileName_label block w-full text-sm font-medium mt-2 border-t pt-2 mb-4"
-                                  }
-                                >
-                                  {file.name}
-                                </label>
-                                <Form.Item
-                                  label="Enter file name"
-                                  className={
-                                    "fileName_span mb-2 [&_label]:font-normal [&_label]:text-sm [&_.ant-form-item-label]:mb-0 [&_.ant-form-item-label]:pb-0"
-                                  }
-                                  name={file.uid}
-                                  rules={[
-                                    {
-                                      required: true,
-                                      message: "File Name is required",
-                                    },
-                                  ]}
-                                >
-                                  <Input
-                                    data-testid="enterFileName"
-                                    id="enterFileName"
-                                    className="mr-0 text-sm font-medium rounded-md"
-                                    name={file.uid}
-                                    onChange={(e) =>
-                                      handleChangeFileName(e, file.uid)
-                                    }
-                                    placeholder="Full Name (with no extension)"
-                                    onKeyDown={(e) => {
-                                      // ============================ Allowed Special Chracter=====================================================
-                                      // if (/[^\w]|_/g.test(e.key))
-                                      //   return e.preventDefault();
-                                      return (
-                                        (e.key === "." || e.key === " ") &&
-                                        (e.keyCode === 190 ||
-                                          e.keyCode === 32) &&
-                                        e.preventDefault()
-                                      );
-                                    }}
-                                  />
-                                </Form.Item>
-                              </div>
-                              {fileSizeFlag
-                                ? (uploadOptionsHide(),
-                                  (
-                                    <p className={styles.maxLimit}>
-                                      This file is exceeding the max limit and
-                                      will not be uploaded{" "}
-                                    </p>
-                                  ))
-                                : " "}
-                            </Spin>
-                          </div>
-                        );
-                      }}
-                    >
-                      {drageBoxVisible !== false ? (
-                        <div className={styles.Dragebox}>
+                    {loadingImage ? (
+                      <div>
+                        <Spin
+                          tip="Loading..."
+                          spinning={loadingImage}
+                          size="large"
+                        >
+                          <Alert
+                            message="Image is loading. Please wait..."
+                            type="info"
+                          />
+                        </Spin>
+                        <br />
+                        <br />
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                    <Form.Item className="mb-0">
+                      {show_UploadOptions ? (
+                        <div className={styles.Upload_Cancel_Btn}>
                           <Button
-                            id="clickOrDragAreaBtn"
-                            className={styles.Drager}
+                            data-testid="upload_btn"
+                            id="uploadBtn"
+                            htmlType="submit"
+                            className={styles.Upload_Btn}
+                            loading={uploadLoader}
                           >
-                            <div className="uploadBTn" data-testid="drag_file">
-                              <InboxOutlined />
-                              <h2>
-                                <b>Click or drag file to this area to upload</b>
-                              </h2>
-                              <p className="ant-upload-hint">
-                                Support for a single or bulk upload. Strictly
-                                prohibit from uploading company data or other
-                                band files
-                              </p>
-                            </div>
+                            Upload
+                          </Button>
+                          <Button
+                            data-testid="cancel_btn"
+                            id="cancelBtn"
+                            htmlType="button"
+                            className={styles.cancel_Btn}
+                            onClick={cancelBtn}
+                          >
+                            Cancel
                           </Button>
                         </div>
                       ) : (
                         ""
                       )}
-                    </Upload>
-                  </div>
-                  <div className={styles.fileList}>{searchFilter()}</div>
-                  {toggleFileView && fileLists.length > 0 ? (
-                    <div className="TableContent">
-                      <Table
-                        id="tableColumn"
-                        className="contentValue"
-                        dataSource={filteredArray()}
-                        columns={columns}
-                        pagination={{ hideOnSinglePage: true }}
-                      />
-                    </div>
-                  ) : (
-                    ""
-                  )}
-
-                  {loadingImage ? (
-                    <div>
-                      <Spin
-                        tip="Loading..."
-                        spinning={loadingImage}
-                        size="large"
-                      >
-                        <Alert
-                          message="Image is loading. Please wait..."
-                          type="info"
-                        />
-                      </Spin>
-                      <br />
-                      <br />
-                    </div>
-                  ) : (
-                    ""
-                  )}
-                  <Form.Item>
-                    {show_UploadOptions ? (
-                      <div className={styles.Upload_Cancel_Btn}>
-                        <Button
-                          data-testid="upload_btn"
-                          id="uploadBtn"
-                          htmlType="submit"
-                          className={styles.Upload_Btn}
-                        >
-                          Upload
-                        </Button>
-                        <Button
-                          data-testid="cancel_btn"
-                          id="cancelBtn"
-                          htmlType="button"
-                          className={styles.cancel_Btn}
-                          onClick={cancelBtn}
-                        >
-                          Cancel
-                        </Button>
-                      </div>
-                    ) : (
-                      ""
-                    )}
-                  </Form.Item>
+                    </Form.Item>
+                  </Card>
                 </Card>
               </Form>
             </div>
@@ -1590,10 +1819,7 @@ const UploadFileUI = ({
           <Form.Item style={{ marginBottom: "0px" }}>
             <p>Are you sure you want to delete ?</p>
           </Form.Item>
-          <Form.Item
-            className={styles.text_right}
-            style={{ marginBottom: "0px" }}
-          >
+          <Form.Item className="text-center" style={{ marginBottom: "0px" }}>
             <Button
               data-testid="remove_files"
               onClick={async () => {

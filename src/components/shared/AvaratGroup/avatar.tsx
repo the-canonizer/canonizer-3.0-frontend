@@ -29,47 +29,45 @@ const SingleAvatar = ({ user, imageBaseURL = "" }) => {
   }, [user?.email]);
 
   const userName = useMemo(() => {
-    return `${user?.first_name || ""} ${user?.middle_name || ""} ${
-      user?.last_name || ""
-    }`;
-  }, [user?.first_name, user?.middle_name, user?.last_name]);
+    return `${user?.first_name || ""} ${user?.last_name || ""}`;
+  }, [user?.first_name, user?.last_name]);
 
   const renderAvatar = () => {
     if (user?.profile_picture_path) {
       return (
-        <div id={`browse-topic-avatar-item-${user?.id}`}>
-          <Avatar
-            className="dddd"
-            src={imageBaseURL + user?.profile_picture_path}
-          />
-        </div>
+        <Avatar
+          className="dddd"
+          src={imageBaseURL + user?.profile_picture_path}
+          data-testId={`browse-topic-avatar-item-${user?.id}`}
+        />
       );
     }
 
     if (!user?.profile_picture_path && isGravatarAvailable) {
       return (
-        <div id={`gravatar-avatar-${user?.id}`}>
-          <Avatar
-            src={`https://www.gravatar.com/avatar/${md5(user?.email)}.png`}
-          />
-        </div>
+        <Avatar
+          src={`https://www.gravatar.com/avatar/${md5(user?.email)}.png`}
+          data-testId={`gravatar-avatar-${user?.id}`}
+        />
       );
     }
 
     if (!user?.profile_picture_path && !isGravatarAvailable) {
       return (
-        <div id={`initial-avatar-${user?.id}`}>
-          <Avatar className="uppercase flex justify-center items-center text-xs">
-            {user?.first_name?.charAt(0)}
-          </Avatar>
-        </div>
+        <Avatar
+          className="uppercase flex justify-center items-center text-xs"
+          data-testId={`initial-avatar-${user?.id}`}
+        >
+          {user?.first_name?.charAt(0)}
+        </Avatar>
       );
     }
 
     return (
-      <div id={`default-avatar-${user?.id}`}>
-        <Avatar icon={<UserOutlined />} />
-      </div>
+      <Avatar
+        icon={<UserOutlined />}
+        data-testId={`default-avatar-${user?.id}`}
+      />
     );
   };
 

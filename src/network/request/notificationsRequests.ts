@@ -10,10 +10,11 @@ export default class NotificationRequest extends Request {
     page: number,
     per_page: number,
     is_seen: number,
-    token
+    type: string,
+    token: string
   ) {
     return new Request(
-      `${K.Network.URL.GetList}?page=${page}&per_page=${per_page}&is_seen=${is_seen}`,
+      `${K.Network.URL.GetList}?page=${page}&per_page=${per_page}&is_seen=${is_seen}&type=${type}`,
       K.Network.Method.GET,
       null,
       K.Network.Header.Type.Json,

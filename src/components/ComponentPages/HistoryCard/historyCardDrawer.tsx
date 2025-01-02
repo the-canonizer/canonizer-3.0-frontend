@@ -1,9 +1,8 @@
-import { Button, Drawer, List, Modal, Tabs, Typography } from "antd";
+import { Button, Drawer, List, Tabs } from "antd";
 import Link from "next/link";
-
 import { useState } from "react";
 
-const { Title } = Typography;
+import { useIsMobile } from "src/hooks/useIsMobile";
 
 function HistoryCardDrawer({
   onClick,
@@ -11,14 +10,19 @@ function HistoryCardDrawer({
   agreedSupporters = [],
   notAgreedSupporters = [],
 }: any) {
+  const isMobile = useIsMobile();
+
   const [open, setOpen] = useState(false);
+
   const showDrawer = () => {
     onClick();
     setOpen(true);
   };
+
   const onClose = () => {
     setOpen(false);
   };
+
   return (
     <div
       onClick={open ? onClose : showDrawer}
@@ -37,17 +41,21 @@ function HistoryCardDrawer({
         placement="right"
         onClose={onClose}
         open={open}
-        width={627}
+        width={isMobile ? 300 : 627}
       >
         <Button
           id="history-drawer-back-button"
           type="link"
-          className="text-2xl text-canBlack p-0 mb-8 gap-5 flex items-center leading-none"
+          className="text-lg lg:text-2xl text-canBlack p-0 mb-8 gap-5 flex items-center leading-none"
           icon={<i className="icon-back"></i>}
         >
           Support Status
         </Button>
-        <Tabs defaultActiveKey="1" id="history-drawer-tabs-container" className="ch-modal-tabs">
+        <Tabs
+          defaultActiveKey="1"
+          id="history-drawer-tabs-container"
+          className="ch-modal-tabs"
+        >
           <Tabs.TabPane tab="Agreed" key="1" id="history-drawer-agree-list">
             <List
               className="agree-list"
@@ -57,14 +65,21 @@ function HistoryCardDrawer({
               dataSource={agreedSupporters}
               renderItem={(item: any) => (
                 <List.Item>
-                  <Link href={item && item?.nickNameData?.path} id="history-drawer-agree-list-item">
+                  <Link
+                    href={item && item?.nickNameData?.path}
+                    id="history-drawer-agree-list-item"
+                  >
                     {item?.nickNameData?.name}
                   </Link>
                 </List.Item>
               )}
             />
           </Tabs.TabPane>
-          <Tabs.TabPane tab="Not Agreed" key="2" id="history-drawer-not-agreed-list">
+          <Tabs.TabPane
+            tab="Not Agreed"
+            key="2"
+            id="history-drawer-not-agreed-list"
+          >
             <List
               className="agree-list nt-agree"
               header={<div>Nickname </div>}
@@ -73,7 +88,10 @@ function HistoryCardDrawer({
               dataSource={notAgreedSupporters}
               renderItem={(item: any) => (
                 <List.Item>
-                  <Link href={item && item?.nickNameData?.path} id="history-drawer-not-agreed-list-item">
+                  <Link
+                    href={item && item?.nickNameData?.path}
+                    id="history-drawer-not-agreed-list-item"
+                  >
                     {item?.nickNameData?.name}
                   </Link>
                 </List.Item>

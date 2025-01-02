@@ -325,6 +325,21 @@ export default class UserRequest extends Request {
     );
   }
 
+  static setDefaultNickname(values, authToken) {
+    const body = {
+      ...values,
+    };
+
+    return new Request(
+      K.Network.URL.SetDefaultNickname,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {},
+      authToken
+    );
+  }
+
   // resend otp for registration
   static resendOTPForRegistration(body) {
     return new Request(
@@ -674,6 +689,18 @@ export default class UserRequest extends Request {
       K.Network.URL.ReplaceExistOneUpdateNewEmail,
       K.Network.Method.POST,
       body,
+      K.Network.Header.Type.Json,
+      {}
+    );
+  }
+
+  static checkFacebookAccountDeleteStatus(confirmation_code: string): Request {
+    return new Request(
+      K.Network.URL.CheckFacebookDeleteDataStatus +
+        "?confirmation_code=" +
+        confirmation_code,
+      K.Network.Method.GET,
+      {},
       K.Network.Header.Type.Json,
       {}
     );

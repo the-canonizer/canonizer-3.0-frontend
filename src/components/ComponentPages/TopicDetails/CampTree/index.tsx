@@ -1,9 +1,10 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Tree, Tooltip, Popover } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Image from "next/image";
+import { DownOutlined } from "@ant-design/icons";
 
 import styles from "../topicDetails.module.scss";
 
@@ -11,7 +12,9 @@ import useAuthentication from "src/hooks/isUserAuthenticated";
 import { RootState } from "src/store";
 import { setCurrentCamp } from "src/store/slices/filtersSlice";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
-import { DownOutlined } from "@ant-design/icons";
+import ScoreTag from "components/ComponentPages/Home/TrandingTopic/scoreTag";
+import SecondaryButton from "components/shared/Buttons/SecondaryButton";
+import { setStatementPreview } from "src/store/slices/topicSlice";
 
 const { TreeNode } = Tree;
 
@@ -19,7 +22,6 @@ const CampTree = ({
   scrollToCampStatement,
   setTotalCampScoreForSupportTree,
   setSupportTreeForCamp,
-  // treeExpandValue,
   prevTreeValueRef,
   isForumPage = false,
 }: any) => {
@@ -50,7 +52,6 @@ const CampTree = ({
   let childExpandTree = [];
   const [defaultExpandKeys, setDefaultExpandKeys] = useState([]);
   const [uniqueKeys, setUniqueKeys] = useState([]);
-  // const [showScoreBars, setShowScoreBars] = useState(false);
   const [selectedExpand, setSelectedExpand] = useState([]);
   const [scoreFilter, setScoreFilter] = useState(filterByScore);
   const [includeReview, setIncludeReview] = useState(
@@ -75,6 +76,16 @@ const CampTree = ({
   };
 
   const { isUserAuthenticated, userID } = useAuthentication();
+
+  const onTreePreviewStatementClick = (
+    e: { preventDefault: () => void; stopPropagation: () => void },
+    item: any
+  ) => {
+    e?.preventDefault();
+    e?.stopPropagation();
+
+    dispatch(setStatementPreview(item));
+  };
 
   const showSelectedCamp = (data, select_camp, campExist) => {
     Object?.keys(data).map((item) => {
@@ -242,7 +253,6 @@ const CampTree = ({
       Object.keys(subscribedUsers)?.includes(`${userID}`) ? (
       subscribedUsers[userID].explicit ? (
         <Tooltip
-          // title="You have subscribed to the entire topic."
           title={
             topicRecord?.topicSubscriptionId &&
             (data?.title === topicRecord?.topic_name ||
@@ -263,7 +273,6 @@ const CampTree = ({
               ? subscribedUsers[userID].child_camp_name
               : "child camp."
           }`}
-          // title="You have subscribed to the entire topic."
         >
           <i
             className={`icon-subscribe small text-xs !text-canBlack !font-[300]  ${styles.implicitIcon}`}
@@ -273,19 +282,18 @@ const CampTree = ({
     ) : null;
   };
 
-  const isOnlyOneChild = () => {
-    const treeData = tree?.at(0);
-    if (!treeData) return false;
+  const isOnlyOneChild = (node) => {
+    return node?.children && Object.keys(node.children).length === 1;
+  };
 
-    const keys = Object.keys(treeData)
-      .map((key) => [Number(key), treeData[key]])
-      .sort((a, b) => b[1].score - a[1].score);
+  const isFirstChild = (data, item) => {
+    const keys = Object.keys(data);
+    return keys[0] === item.toString();
+  };
 
-    const keyName = keys?.at(0)?.[0];
-    if (!keyName) return false;
-
-    const child = treeData[keyName]?.children;
-    return child?.length === 0;
+  const isLastChild = (data, item) => {
+    const keys = Object.keys(data);
+    return keys[keys.length - 1] === item.toString();
   };
 
   const renderTreeNodes = (
@@ -324,44 +332,24 @@ const CampTree = ({
         }
       }
 
-      const isLastChild = (data, item) => {
-        const keys = Object.keys(data);
-        return keys[keys.length - 1] === item.toString();
-      };
+      const firstChild = isFirstChild(data, itemWithData[0]);
+      const lastChild = isLastChild(data, itemWithData[0]);
+      const onlyOneChild = isOnlyOneChild(item);
 
-      const isLastParent = (data, item) => {
-        const parentKeys = Object.keys(data);
-        return parentKeys[parentKeys.length - 1] === item.toString();
-      };
-
-      const isLast = isLastChild(data, item) && isLastParent(data, item);
-
-      const isFirstItem = (data, item) => {
-        const keys = Object.keys(data);
-        return keys[0] === item.toString();
-      };
-
-      const isFirstParent = (data, item) => {
-        const parentKeys = Object.keys(data);
-        return parentKeys[0] === item.toString();
-      };
-
-      const isFirst = isFirstItem(data, item) && isFirstParent(data, item);
-
-      const haveOnlyOneChild = isOnlyOneChild();
+      const dynamicClasses = [
+        firstChild ? "first-node-class" : "",
+        lastChild ? "last-node-class" : "",
+        onlyOneChild ? "only-one-child" : "",
+      ]
+        .filter(Boolean)
+        .join(" ");
 
       if (data[item].children) {
         if (data[item].score >= scoreFilter) {
           return data[item].is_archive == 0 ||
             (data[item].is_archive != 0 && is_camp_archive_checked == true) ? (
             <TreeNode
-              className={`[&_.ant-tree-switcher]:!flex [&_.ant-tree-switcher]:!items-center [&_.ant-tree-node-content-wrapper]:hover:!bg-transparent [&_.ant-tree-switcher.ant-tree-switcher-noop>span]:!hidden [&_.ant-tree-node-content-wrapper]:py-1 ${
-                isLastChild ? "last-child-node-class" : ""
-              } ${isLastParent ? "last-parent-node-class" : ""} ${
-                isLast ? "last-node-class" : ""
-              } ${isFirst ? "first-node-class" : ""} ${
-                haveOnlyOneChild ? "only-one-child" : ""
-              }`}
+              className={`[&_.ant-tree-switcher]:!flex [&_.ant-tree-switcher]:!items-center [&_.ant-tree-node-content-wrapper]:hover:!bg-transparent [&_.ant-tree-switcher.ant-tree-switcher-noop>span]:!hidden [&_.ant-tree-node-content-wrapper]:py-1 ${dynamicClasses} treeHoover`}
               switcherIcon={({ expanded }) => {
                 return data[item].camp_id ===
                   +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1) &&
@@ -415,9 +403,9 @@ const CampTree = ({
                       className={
                         "treeListItemTitle " +
                         styles.treeListItemTitle +
-                        ` !text-sm !text-canBlack font-normal hover:!text-canblack ${
+                        ` !text-sm !text-canBlack font-normal hover:!text-canblack  !break-all${
                           uniqueKeys.includes(data[item].camp_id.toString())
-                            ? "!font-bold"
+                            ? "!font-bold !break-all"
                             : ""
                         }`
                       }
@@ -451,7 +439,7 @@ const CampTree = ({
                         <a
                           className={`${
                             data[item].is_archive == 1
-                              ? `font-bold !text-canBlack hover:!text-canBlack   ${styles.archive_grey}`
+                              ? `font-bold !text-canBlack hover:!text-canBlack !break-all"  ${styles.archive_grey}`
                               : !isForumPage &&
                                 (data[item]?.camp_id ==
                                   router?.query?.camp
@@ -459,8 +447,8 @@ const CampTree = ({
                                     ?.split("-")
                                     ?.at(0) ??
                                   "1")
-                              ? `font-weight-bold text-sm hover:!text-canBlack  ${styles.activeCamp}`
-                              : " hover:!text-canBlack"
+                              ? `font-weight-bold text-sm hover:!text-canBlack !break-all"  ${styles.activeCamp}`
+                              : " hover:!text-canBlack !break-all"
                           } ${
                             isForumPage &&
                             data[item]?.camp_id ==
@@ -506,19 +494,24 @@ const CampTree = ({
                           data[item]
                         )}
                     </span>
-                    <span className="bg-canOrange px-[0.30rem] rounded-md flex items-center gap-1">
-                      <Image
-                        src="/images/hand-icon.svg"
-                        alt="svg"
-                        height={12}
-                        width={12}
+                    {tree && tree?.["0"]?.["1"]?.rank_hidden == undefined && (
+                      <ScoreTag
+                        topic_score={
+                          is_checked
+                            ? data[item]?.full_score
+                            : data[item]?.score
+                        }
+                        hideRank={tree && tree?.["0"]?.["1"]?.rank_hidden}
                       />
-                      <span className="text-[10px] text-white">
-                        {is_checked
-                          ? data[item].full_score?.toFixed(2)
-                          : data[item].score?.toFixed(2)}
-                      </span>
-                    </span>
+                    )}
+                    <SecondaryButton
+                      onClick={(e) =>
+                        onTreePreviewStatementClick(e, data[item])
+                      }
+                      className="!text-canBlue hover:!text-canHoverBlue !text-[12px] !font-semibold !bg-transparent !border-0 !p-0 !shadow-none ml-4 previewBTN opacity-0 invisible"
+                    >
+                      Preview Statement
+                    </SecondaryButton>
                   </div>
                 </div>
               }
@@ -561,11 +554,11 @@ const CampTree = ({
                           }}
                         >
                           <a className="!text-canGreen font-semibold italic text-sm">
-                            <Image
+                            {/* <Image
                               src="/images/start-new-tree.svg"
                               width={16}
                               height={17}
-                            />
+                            /> */}
                             {`Start new`}{" "}
                           </a>
                         </Link>
@@ -615,23 +608,33 @@ const CampTree = ({
     return uniqueArraytoString;
   };
 
-  return tree?.at(0) ? (
-    (showTree && tree?.at(0)["1"]?.title != "" && defaultExpandKeys) ||
-    isForumPage ? (
-      <Tree
-        showLine
-        switcherIcon={<DownOutlined />}
-        onSelect={onSelect}
-        onExpand={onExpand}
-        expandedKeys={[...uniqueKeys]}
-        data-testid="camp-tree"
-      >
-        {tree?.at(0) && renderTreeNodes(tree?.at(0))}
-      </Tree>
-    ) : null
-  ) : (
-    <p data-testid="camp-tree">No Camp Tree Found</p>
-  );
+  let treeContent;
+
+  if (tree?.at(0)) {
+    if (
+      (showTree && tree?.at(0)["1"]?.title != "" && defaultExpandKeys) ||
+      isForumPage
+    ) {
+      treeContent = (
+        <Tree
+          showLine
+          switcherIcon={<DownOutlined />}
+          onSelect={onSelect}
+          onExpand={onExpand}
+          expandedKeys={[...uniqueKeys]}
+          data-testid="camp-tree"
+        >
+          {tree?.at(0) && renderTreeNodes(tree?.at(0))}
+        </Tree>
+      );
+    } else {
+      treeContent = null;
+    }
+  } else {
+    treeContent = <p data-testid="camp-tree">No Camp Tree Found</p>;
+  }
+
+  return treeContent;
 };
 
 export default CampTree;

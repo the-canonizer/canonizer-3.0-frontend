@@ -209,6 +209,7 @@ const TopicsList = () => {
       sort: sortLatestTopic ? true : false,
       page: "browse",
       topic_tags: getIdsOfFilteredTags(value, allTags),
+      current_user: isUserAuthenticated ? userEmail : "",
     };
     const response = await getCanonizedTopicsApi(reqBody);
     setTotalTopics(response);
@@ -259,7 +260,7 @@ const TopicsList = () => {
         throttled = null;
       }
     };
-  }, [searchTerm]);
+  }, [searchTerm, String(nameSpaceId), value]);
 
   const handleTopicNameClick = (
     value: string,
@@ -272,7 +273,7 @@ const TopicsList = () => {
     }
   };
 
-  const onSearchInput = async (value: string) => {
+  const onSearchInput = async (sValue: string) => {
     try {
       const reqBody = {
         algorithm: algorithm,
@@ -283,11 +284,14 @@ const TopicsList = () => {
         namespace_id: String(nameSpaceId),
         page_number: pageNumber,
         page_size: 15,
-        search: value,
+        search: sValue,
         filter: filterByScore,
         asof: asof,
         user_email: onlyMyTopicsCheck ? userEmail : "",
         is_archive: is_camp_archive_checked ? 1 : 0,
+        sort: sortLatestTopic ? true : false,
+        page: "browse",
+        topic_tags: getIdsOfFilteredTags(value, allTags),
       };
       const res = await getCanonizedTopicsForSuggestion(reqBody);
 
@@ -320,16 +324,13 @@ const TopicsList = () => {
       setAllowClear(true);
     }
     getAllNameSpaces();
-    // if (!(nameSpaces?.length > 0)) {
-    //   getCanonizedNameSpacesApi();
-    // }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {}, [searchTerm, onSearch]);
 
   /* eslint-enable */
-
   useEffect(() => {
     setSelectedNameSpace(() => filterNameSpace);
     if (nameSpaceId !== filterNameSpaceId) {

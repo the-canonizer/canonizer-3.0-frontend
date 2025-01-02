@@ -80,7 +80,13 @@ const CampSearch = () => {
     );
   };
   const getHighlightedText = (text, highlight) => {
-    const parts = text?.split(new RegExp(`(${highlight})`, "gi"));
+    const escapedHighlight = highlight.replace(
+      /[-[\]{}()*+?.,\\^$|#\s]/g,
+      "\\$&"
+    );
+
+    // Create a regular expression using the escaped highlight
+    const parts = text?.split(new RegExp(`(${escapedHighlight})`, "gi"));
     return (
       <span>
         {" "}
@@ -124,7 +130,7 @@ const CampSearch = () => {
             >
               Search Results for “
               <span
-                className="text-canBlue capitalize"
+                className="text-canBlue capitalize break-all whitespace-break-spaces"
                 id="search_camp_section_heading_text_value"
               >
                 {router?.query?.q}

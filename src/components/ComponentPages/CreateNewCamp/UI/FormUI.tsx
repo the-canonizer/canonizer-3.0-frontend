@@ -1,5 +1,14 @@
 import { Fragment, useEffect, useState } from "react";
-import { Form, Input, Select, Row, Col, Typography, Tooltip } from "antd";
+import {
+  Form,
+  Input,
+  Select,
+  Row,
+  Col,
+  Typography,
+  Tooltip,
+  Collapse,
+} from "antd";
 import {
   ApartmentOutlined,
   CloseOutlined,
@@ -22,9 +31,11 @@ import PrimaryButton from "components/shared/Buttons/PrimariButton";
 import Inputs from "components/shared/FormInputs";
 import AlignIcon from "components/ComponentPages/CreateNewTopic/UI/alignIcon";
 import SelectInputs from "components/shared/FormInputs/select";
+import { defaultNicknameData } from "src/utils/generalUtility";
 
 const { Option } = Select;
 const { Text } = Typography;
+const { Panel } = Collapse;
 
 const {
   labels,
@@ -69,17 +80,21 @@ const CreateCampFormUI = ({
   const [isAboutFocused, setIsAboutFocused] = useState(false);
   const [isCampLeaderFocused, setIsCampLeaderFocused] = useState(false);
 
-  // const toolTipContent = "This camp is under review";
   const archiveToolTipContent = "This camp is archived";
 
   useEffect(() => {
     campRecord?.is_archive && router.pathname == "/camp/create/[...camp]"
       ? router?.back()
       : "";
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getNickNameInput = () => {
+    const defaultNickName =
+      defaultNicknameData(nickNameList)?.nick_name ||
+      values?.nick_name ||
+      defaultNicknameData(nickNameList)?.id ||
+      nickNameList[0]?.id;
+
     const selectInputProps: any = {
       label: (
         <Fragment>
@@ -103,13 +118,13 @@ const CreateCampFormUI = ({
       prefix: <UserOutlined className="px-3 text-canBlack" />,
       onSelect: (val) => form.setFieldValue("nick_name", val),
       id: "nickname-dropdown",
-      value: values?.nick_name || nickNameList[0]?.id,
       lastValue: form.getFieldValue("nick_name"),
+      value: form.getFieldValue("nick_name") || defaultNickName, // Use last set value or default
     };
 
     if (nickNameList?.length) {
-      selectInputProps.defaultValue = values?.nick_name || nickNameList[0]?.id;
-      selectInputProps.initialValue = values?.nick_name || nickNameList[0]?.id;
+      selectInputProps.defaultValue = defaultNickName;
+      selectInputProps.initialValue = defaultNickName;
       selectInputProps.key = "nickNamesWithKeyName";
     }
     return <SelectInputs {...selectInputProps} />;
@@ -133,6 +148,10 @@ const CreateCampFormUI = ({
       dataid: "parent-camp-name",
       showSearch: true,
       optionFilterProp: "children",
+      filterOption: (input, option) =>
+        ((option?.children as any)?.props?.children ?? "")
+          .toLowerCase()
+          .includes(input.toLowerCase()),
       inputClassName:
         "border-0 [&_.ant-select-selector]:![&_.ant-select-selection-search]:!w-auto",
       rules: parentCampRule,
@@ -170,16 +189,10 @@ const CreateCampFormUI = ({
 
   const formInitValue = {
     ...initialValue,
-    nick_name: values?.nick_name || parentCamp[0]?.id,
+    nick_name: defaultNicknameData(nickNameList)?.id || nickNameList[0]?.id,
+    // nick_name: values?.nick_name || parentCamp[0]?.id,
     parent_camp_num: values?.parent_camp_num || topicData?.camp_num,
   };
-
-  // const getCampLeaderNickName = () => {
-  //   return (
-  //     campLeaderData &&
-  //     campLeaderData?.find((CL) => CL?.camp_leader === true)?.nick_name
-  //   );
-  // };
 
   return (
     <CommonCards className="border-0 bg-white" id="common-cards">
@@ -210,7 +223,7 @@ const CreateCampFormUI = ({
         id="create-new-camp-form"
       >
         <Row gutter={16} id="form-row-1">
-          <Col md={24} id="form-col-camp-name">
+          <Col md={24} xs={24} id="form-col-camp-name">
             {isLoading ? (
               <CustomSkelton
                 skeltonFor="list"
@@ -275,36 +288,41 @@ const CreateCampFormUI = ({
           )}
           {isEdit && (
             <Fragment>
-              <Col xs={24} sm={24} xl={24} id="form-col-camp-leader">
+              <Col
+                xs={24}
+                sm={parentCamp.length >= 1 ? 24 : 12}
+                xl={parentCamp.length >= 1 ? 24 : 12}
+                id="form-col-camp-leader"
+              >
                 <Form.Item
-                  label={
-                    <Fragment>
-                      Camp Leader
-                      {initialValue && initialValue?.camp_leader_nick_id ? (
-                        <span>
-                          (
-                          <Link
-                            href={`/user/supports/${
-                              campLeaderData &&
-                              campLeaderData?.find(
-                                (CL) => CL?.camp_leader === true
-                              )?.nick_name_id
-                            }?canon=${
-                              topicRecord?.namespace_id
-                                ? topicRecord?.namespace_id
-                                : filterObject?.namespace_id
-                            }`}
-                          >
-                            <a className="text-canBlue" id="camp-leader-link">
-                              {getCampLeaderData() + " "}
-                            </a>
-                          </Link>
-                          is currently the camp leader )
-                        </span>
-                      ) : (
-                        <span>(No one is currently camp leader)</span>
-                      )}
-                    </Fragment>
+                  label="Camp Leader"
+                  extra={
+                    initialValue && initialValue?.camp_leader_nick_id ? (
+                      <span className="text-[10px]">
+                        (
+                        <Link
+                          href={`/user/supports/${
+                            campLeaderData &&
+                            campLeaderData?.find(
+                              (CL) => CL?.camp_leader === true
+                            )?.nick_name_id
+                          }?canon=${
+                            topicRecord?.namespace_id
+                              ? topicRecord?.namespace_id
+                              : filterObject?.namespace_id
+                          }`}
+                        >
+                          <a className="text-canBlue" id="camp-leader-link">
+                            {getCampLeaderData() + " "}
+                          </a>
+                        </Link>
+                        is currently the camp leader )
+                      </span>
+                    ) : (
+                      <span className="text-[10px]">
+                        (No one is currently camp leader)
+                      </span>
+                    )
                   }
                   name="camp_leader_nick_id"
                   className={`text-14 text-canBlack font-medium`}
@@ -390,7 +408,7 @@ const CreateCampFormUI = ({
           )}
         </Row>
 
-        <Row
+        {/* <Row
           gutter={16}
           className="bg-canGray mb-3 py-3 rounded-lg"
           id="form-row-2"
@@ -491,9 +509,128 @@ const CreateCampFormUI = ({
               )}
             </Form.Item>
           </Col>
-        </Row>
+        </Row> */}
 
-        <Row gutter={16} id="form-row-3">
+        <Collapse
+          className="camp-accordion"
+          ghost
+          expandIconPosition="right"
+          defaultActiveKey={["0"]}
+        >
+          <Panel
+            header={
+              <>
+                Advanced Settings<br></br>{" "}
+                <Text
+                  className="block mt-1 text-xs text-[#777F93]"
+                  id="keywords-text"
+                >
+                  {labels.cr_keywords_sp}
+                </Text>
+              </>
+            }
+            key="1"
+          >
+            <Row
+              gutter={16}
+              className="bg-canGray mb-3 py-3 rounded-lg"
+              id="form-row-2"
+            >
+              <Col xs={24} sm={12} id="form-col-camp-url">
+                {isLoading ? (
+                  <CustomSkelton
+                    skeltonFor="list"
+                    bodyCount={1}
+                    stylingClass="listSkeleton"
+                    isButton={false}
+                    id="camp-url-skeleton"
+                  />
+                ) : (
+                  <Inputs
+                    label={labels.cr_camp_url}
+                    name="camp_about_url"
+                    rules={campAboutUrlRule}
+                    placeholder="Enter Here"
+                    size={"large"}
+                    maxLength={1024}
+                    prefix={
+                      <div className="pr-3">
+                        <LinkOutlined />
+                      </div>
+                    }
+                    id="camp-url-input"
+                  />
+                )}
+              </Col>
+
+              <Col xs={24} sm={12} id="form-col-camp-about-nick">
+                <Form.Item
+                  label={labels.cr_nick_name_about}
+                  name="camp_about_nick_id"
+                  className={`text-14 text-canBlack font-medium`}
+                  initialValue={values?.camp_about_nick_id}
+                  id="camp-about-nick-item"
+                >
+                  {isLoading ? (
+                    <CustomSkelton
+                      skeltonFor="list"
+                      bodyCount={1}
+                      stylingClass="listSkeleton"
+                      isButton={false}
+                      id="camp-about-nick-skeleton"
+                    />
+                  ) : (
+                    <div
+                      className={`outerDiv flex border rounded ${
+                        isAboutFocused
+                          ? "border-[#40a9ff] shadow-[0 0 0 2px rgba(24, 144, 255, 0.2)"
+                          : ""
+                      }`}
+                      id="camp-about-nick-select-wrapper"
+                    >
+                      <UserOutlined
+                        className="px-3 text-canBlack bg-white"
+                        id="camp-about-nick-icon"
+                      />
+                      <Select
+                        placeholder={placeholders.campAboutNickName}
+                        allowClear
+                        size={"large"}
+                        data-id="camp-about-nick-id"
+                        showSearch
+                        optionFilterProp="children"
+                        id="camp-about-nick-dropdown"
+                        className={`text-canBlack font-normal h-[40px] [&_.ant-select-selector]:!border-0 [&_.ant-select-selector]:!outline-none [&_.ant-select-selector]:!shadow-none border-0 [&_.ant-select-selector]:![&_.ant-select-selection-search]:!w-auto commonSelectClass`}
+                        onFocus={() => setIsAboutFocused(true)}
+                        onBlur={() => setIsAboutFocused(false)}
+                        onChange={(val) =>
+                          form?.setFieldValue("camp_about_nick_id", val)
+                        }
+                        defaultValue={values?.camp_about_nick_id}
+                        value={values?.camp_about_nick_id}
+                      >
+                        <Option value="" id="camp-about-nick-custom">
+                          {placeholders.campAboutNickName}
+                        </Option>
+                        {campNickName.map((nc) => (
+                          <Option
+                            value={nc.id}
+                            key={nc.id}
+                            id={`camp-about-nick-${nc.id}`}
+                          >
+                            {nc.nick_name}
+                          </Option>
+                        ))}
+                      </Select>
+                    </div>
+                  )}
+                </Form.Item>
+              </Col>
+            </Row>
+          </Panel>
+        </Collapse>
+
+        <Row gutter={16} className="mt-6" id="form-row-3">
           <Col
             className="flex flex-col [&_.ant-checkbox-wrapper]:ml-0 [&_.ant-checkbox-wrapper]:mb-4 [&_.ant-checkbox-wrapper>span]:text-canBlack [&_.ant-checkbox-wrapper>span]:text-sm [&_.ant-checkbox-wrapper>span]:font-medium"
             id="form-col-prevent-sub-camps"

@@ -11,6 +11,7 @@ import PostFormPopup from "./UI/PostForm";
 import { useIsMobile } from "src/hooks/useIsMobile";
 import { RootState } from "src/store";
 import CustomSpinner from "components/shared/CustomSpinner";
+import { defaultNicknameData } from "src/utils/generalUtility";
 
 const CreatePostPopup = ({ onSubmittedSucess = null }) => {
   const { campRecord, currentPost, topicRecord, isOpen }: any = useSelector(
@@ -36,10 +37,17 @@ const CreatePostPopup = ({ onSubmittedSucess = null }) => {
   const [isUpdateSubmit, serIsUpdateSubmit] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
+  const [breadcrumb, setBreadcrumb] = useState({ topic: null, camp: null });
 
   const [form] = Form.useForm();
 
   const values = Form.useWatch([], form);
+
+  useEffect(() => {
+    if (topicRecord && campRecord) {
+      setBreadcrumb({ topic: topicRecord, camp: campRecord });
+    }
+  }, [topicRecord, campRecord]);
 
   useEffect(() => {
     form
@@ -90,7 +98,10 @@ const CreatePostPopup = ({ onSubmittedSucess = null }) => {
       let response = await getAllUsedNickNames(body);
       if (response && response.status_code === 200) {
         setNickNameList(response.data);
-        setInitialValues({ nick_name: response.data[0]?.id });
+        setInitialValues({
+          nick_name:
+            defaultNicknameData(response?.data)?.id || response.data[0]?.id,
+        });
       }
       setIsLoading(false);
     }
@@ -184,8 +195,8 @@ const CreatePostPopup = ({ onSubmittedSucess = null }) => {
         isPostUpdate={isPostUpdate}
         onClose={onCancel}
         isOpen={isOpen}
-        topicRecord={topicRecord}
-        campRecord={campRecord}
+        topicRecord={breadcrumb?.topic}
+        campRecord={breadcrumb?.camp}
         isDisabled={isDisabled}
         isUpdateSubmit={isUpdateSubmit}
         isError={isError}

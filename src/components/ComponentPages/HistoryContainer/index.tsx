@@ -5,10 +5,9 @@ import type { CheckboxChangeEvent } from "antd/es/checkbox";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useRef, useState } from "react";
-import { RootState } from "src/store";
 import useIsUserAuthenticated from "src/hooks/isUserAuthenticated";
 import { getAllUsedNickNames } from "src/network/api/campDetailApi";
-import { store } from "src/store";
+import { RootState, store } from "src/store";
 import { setTree } from "src/store/slices/campDetailSlice";
 import { getHistoryApi } from "src/network/api/history";
 import { setCurrentCamp } from "src/store/slices/filtersSlice";
@@ -17,7 +16,6 @@ import InfiniteScroll from "react-infinite-scroller";
 import CustomSkelton from "../../common/customSkelton";
 import HistoryCard from "../HistoryCard/historyCard";
 import CustomLayout from "src/hoc/layout/";
-import TimelineInfoBar from "../TopicDetails/CampInfoBar";
 import CommanBreadcrumbs from "../Breadcrumbs/commonBreadcrumbs";
 
 function HistoryContainer() {
@@ -190,10 +188,6 @@ function HistoryContainer() {
     setActiveTab(tabName);
   };
 
-  const campRoute = () => {
-    setLoadingIndicator(true);
-  };
-
   const onSelectCompare = ({ id, status }, e: CheckboxChangeEvent) => {
     let oldTopics = [...selectedTopic];
     let oldTopicsStatus = [...selectedTopicStatus];
@@ -217,11 +211,11 @@ function HistoryContainer() {
 
   const onCompareClick = () => {
     router?.push({
-      pathname: `/statement/compare/${router?.query.camp[0]}/${
+      pathname: `/${historyOf}/compare/${router?.query.camp[0]}/${
         router?.query.camp[1] ? router?.query.camp[1] : "1-Agreement"
       }`,
       query: {
-        statements: selectedTopic?.at(0) + "_" + selectedTopic?.at(1),
+        comparison_ids: selectedTopic?.at(0) + "_" + selectedTopic?.at(1),
         from:
           historyOf == "statement"
             ? "statement"
@@ -241,10 +235,8 @@ function HistoryContainer() {
     statement_id: null,
     camp_num: campHistory?.items?.at(0)?.camp_num,
     nick_name: nickName?.at(0)?.id,
-    // nick_name_id:userNickNameData?.[0]?.n,
     submitter: campHistory?.items?.at(0)?.submitter_nick_id,
-    statement: "", //JSON.stringify(convertToRaw(contentState)),//values?.statement?.blocks[0].text.trim(),
-    //statement: values?.statement?.trim(), //JSON.stringify(convertToRaw(contentState)),//values?.statement?.blocks[0].text.trim(),
+    statement: "",
     event_type: "update",
     objection_reason: null,
     statement_update: null,
@@ -407,10 +399,6 @@ function HistoryContainer() {
   return (
     <CustomLayout
       afterHeader={
-        // <TimelineInfoBar
-        //   updateId={liveRecordId}
-        //   isHistoryPage={isHistoryPage}
-        // />
         <CommanBreadcrumbs
           updateId={liveRecordId}
           isHistoryPage={isHistoryPage}
@@ -429,7 +417,10 @@ function HistoryContainer() {
             >
               {`${historyTitle(historyOf)} History`}
             </Button>
-            <Typography.Paragraph id="history-page-title" className="mb-6 text-base font-medium">
+            <Typography.Paragraph
+              id="history-page-title"
+              className="mb-6 text-base font-medium"
+            >
               {`${historyTitle(
                 historyOf
               ).toUpperCase()} HISTORY BASED ON STATUS`}

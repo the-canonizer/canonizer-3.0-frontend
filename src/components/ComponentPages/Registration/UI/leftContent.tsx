@@ -12,7 +12,7 @@ const LeftContent = ({ onBrowseClick }) => {
         className="h-[50px] text-sm w-2/12 text-canBlack flex items-start justify-start text-sm font-medium p-0 mb-4"
         onClick={onBrowseClick}
       >
-        <LeftOutlined /> Go Back
+        <LeftOutlined /> Back
       </Button>
       <div id="content-body" className="my-auto">
         <Headings

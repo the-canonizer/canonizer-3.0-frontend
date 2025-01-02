@@ -23,45 +23,64 @@ const NotificationPage = () => {
 
   const [isLoading, setIsLoading] = useState(true),
     [notsList, setNotsList] = useState([]),
-    [rendredNotsList, setRendredNotsList] = useState([]),
     [isDeleteOpen, setIsDeleteOpen] = useState(false),
     [isDeleteDisabled, setIsDeleteDisabled] = useState(false),
     [isReadOpen, setIsReadOpen] = useState(false),
-    [isReadDisabled, setIsReadDisabled] = useState(false);
+    [isReadDisabled, setIsReadDisabled] = useState(false),
+    [page, setPage] = useState(1),
+    [loadMore, setLoadMore] = useState(false),
+    [limit] = useState(10),
+    [total, setTotal] = useState(0),
+    [readCount, setReadCount] = useState(0),
+    [unreadCount, setUnreadCount] = useState(0),
+    [isFetchingData, setIsFetchingData] = useState(false),
+    [isLastReached, setIsLastReached] = useState(false),
+    [type, setType] = useState("all");
 
   useEffect(() => {
-    const filterType = router.query.filter;
-    if (filterType) {
-      let filteredList = [];
+    setNotsList(list);
+  }, [list]);
 
-      if (filterType === "1") {
-        filteredList = list?.filter((n) => +n?.is_seen === 1);
-      }
-
-      if (filterType === "2") {
-        filteredList = list?.filter((n) => +n?.is_seen === 0);
-      }
-
-      setRendredNotsList(filteredList);
-
-      setNotsList(list);
+  useEffect(() => {
+    if (router?.query?.filter === "1") {
+      setType("read");
+      setPage(1);
+    } else if (router?.query?.filter === "2") {
+      setType("unread");
+      setPage(1);
     } else {
-      setNotsList(list);
-      setRendredNotsList(list);
+      setType("all");
+      setPage(1);
     }
-  }, [list, router.query.filter]);
+  }, [router?.query?.filter]);
 
-  const getList = async (p = 1) => {
+  const getList = async () => {
     setIsLoading(true);
 
-    await getNotificationsList(p, -1);
+    const isSeen = 0;
+
+    const res = await getNotificationsList(page, limit, isSeen, type, loadMore);
+
+    if (res?.status_code === 200) {
+      setIsFetchingData(false);
+      setLoadMore(false);
+      setTotal(res?.data?.all_count);
+      setReadCount(res?.data?.read_count);
+      setUnreadCount(res?.data?.unread_count);
+
+      if (+res?.data?.last_page === +page) {
+        setIsLastReached(true);
+      } else {
+        setIsLastReached(false);
+      }
+    }
 
     setIsLoading(false);
   };
 
   useEffect(() => {
     getList();
-  }, []);
+  }, [page, type]);
 
   const onBackClick = (e) => {
     e?.preventDefault();
@@ -95,18 +114,21 @@ const NotificationPage = () => {
   };
 
   const deleteAll = async () => {
-    const ids = notsList?.map((n) => n?.id);
-
-    const body = { ids: ids };
+    // Mark all notifications as read send is_read = "all" and ids = []
+    // or selected item delete send is_delete = "selected" and ids = [id1, id2, id3]
+    const body = { ids: [], is_delete: "all" };
 
     const res = await deleteAllNotifications(body);
 
     if (res?.status_code === 200) {
       message.success(res?.message);
+
       if (router?.query?.filter === "2" || router?.query?.filter === "1") {
         delete router.query.filter;
         router?.push(router, null, { shallow: true });
       }
+
+      getList();
     } else {
       message.error(res?.message || "Something went wrong!");
     }
@@ -127,17 +149,11 @@ const NotificationPage = () => {
   };
 
   const allReadMark = async () => {
-    const ids = [];
+    // Mark all notifications as read send is_read = "all" and ids = []
+    // or selected item read send is_read = "selected" and ids =  [id1, id2, id3]
+    const body = { ids: [], is_read: "all" };
 
-    notsList?.forEach((n) => {
-      if (+n?.is_seen === 0) {
-        ids?.push(n?.id);
-      }
-    });
-
-    const body = { ids: ids };
-
-    const res = await markAllNotificationRead(body, 1, -1);
+    const res = await markAllNotificationRead(body);
 
     if (res?.status_code === 200) {
       message.success(res?.message);
@@ -146,6 +162,8 @@ const NotificationPage = () => {
         delete router.query.filter;
         router?.push(router, null, { shallow: true });
       }
+
+      getList();
     } else {
       message.error(res?.message || "Something went wrong!");
     }
@@ -160,17 +178,28 @@ const NotificationPage = () => {
     allReadMark();
   };
 
+  const loadMoreNotifications = async () => {
+    setIsFetchingData(true);
+    setLoadMore(true);
+    setPage((prev) => prev + 1);
+  };
+
   return (
     <CustomSpinner key="notification-spinner" spinning={isLoading}>
       <NotificationsListUI
         list={notsList}
-        rendredNotsList={rendredNotsList}
         isLoading={isLoading}
         onBackClick={onBackClick}
         onAllReadClick={onAllReadClick}
         router={router}
         onFilterClick={onFilterClick}
         onAllDelete={onAllDelete}
+        loadMoreNotifications={loadMoreNotifications}
+        readCount={readCount}
+        unreadCount={unreadCount}
+        total={total}
+        isFetchingData={isFetchingData}
+        isLastReached={isLastReached}
       />
       <DeleteAllPopup
         onClose={onDeleteClose}

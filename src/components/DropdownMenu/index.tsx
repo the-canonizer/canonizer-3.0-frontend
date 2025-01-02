@@ -45,6 +45,7 @@ const DropDownMenu = () => {
     selectedAsOf,
     algorithms,
     currentGetCheckSupportExistsData,
+    userEmail,
   } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
     campRecord: state?.topicDetails?.currentCampRecord,
@@ -65,6 +66,7 @@ const DropDownMenu = () => {
     algorithms: state.homePage?.algorithms,
     currentGetCheckSupportExistsData:
       state.topicDetails.currentGetCheckSupportExistsData,
+    userEmail: state?.auth?.loggedInUser?.email,
   }));
   const [topicSubscriptionID, setTopicSubscriptionID] = useState(
     topicRecord?.topicSubscriptionId
@@ -92,6 +94,7 @@ const DropDownMenu = () => {
         asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
       algorithm: algorithm,
       update_all: 1,
+      current_user: isUserAuthenticated ? userEmail : "",
     };
     const reqBody = {
       topic_num: campRecord.topic_num ?? payload?.topic_num,
@@ -224,7 +227,10 @@ const DropDownMenu = () => {
 
   return (
     <div id="threedot_dropdown_section">
-      <Menu className={styles.campForumDropdownMenu} id="threedot_dropdown_event_line_menu">
+      <Menu
+        className={styles.campForumDropdownMenu}
+        id="threedot_dropdown_event_line_menu"
+      >
         <Menu.Item
           id="threedot_dropdown_event_line_menu_item"
           icon={
@@ -234,19 +240,38 @@ const DropDownMenu = () => {
           }
         >
           {isTopicPage && (
-            <a onClick={eventLinePath} id="threedot_dropdown_event_line_menu_item_link">
-              <span id="threedot_dropdown_event_line_menu_item_text">Event Line</span>
+            <a
+              onClick={eventLinePath}
+              id="threedot_dropdown_event_line_menu_item_link"
+            >
+              <span id="threedot_dropdown_event_line_menu_item_text">
+                Event Line
+              </span>
             </a>
           )}
         </Menu.Item>
         {isUserAuthenticated && is_admin && (
-          <Menu.Item key="0" icon={<i className="icon-newspaper" id="threedot_dropdown_add_news_menu_item"></i>}>
+          <Menu.Item
+            key="0"
+            icon={
+              <i
+                className="icon-newspaper"
+                id="threedot_dropdown_add_news_menu_item"
+              ></i>
+            }
+          >
             {router?.pathname == "/support/[...manageSupport]" ? (
-              <Link href={router?.asPath.replace("support", "addnews")} id="threedot_dropdown_add_news_menu_item_link_1">
+              <Link
+                href={router?.asPath.replace("support", "addnews")}
+                id="threedot_dropdown_add_news_menu_item_link_1"
+              >
                 Add News
               </Link>
             ) : (
-              <Link href={router?.asPath.replace("topic", "addnews")} id="threedot_dropdown_add_news_menu_item_link_2">
+              <Link
+                href={router?.asPath.replace("topic", "addnews")}
+                id="threedot_dropdown_add_news_menu_item_link_2"
+              >
                 Add News
               </Link>
             )}
@@ -313,7 +338,7 @@ const DropDownMenu = () => {
             </Tooltip>
           ) : campRecord?.length == 0 ? (
             <Tooltip
-               id="threedot_dropdown_unsubscribe_camp_menu_item_tooltip_2"
+              id="threedot_dropdown_unsubscribe_camp_menu_item_tooltip_2"
               title={`You can't modify history, please go to the current state. `}
             >
               Subscribe to the Camp
@@ -323,7 +348,7 @@ const DropDownMenu = () => {
           )}
         </Menu.Item>
         <Menu.Item
-           id="threedot_dropdown_manage_support_btn__menu_item"
+          id="threedot_dropdown_manage_support_btn__menu_item"
           icon={<HeartOutlined />}
           disabled={asof == "bydate" || campRecord?.is_archive}
         >
@@ -362,7 +387,14 @@ const DropDownMenu = () => {
             </Link>
           )}
         </Menu.Item>
-        <Menu.Item icon={<i className="icon-camp" id="threedot_dropdown_manage_camp_btn__menu_item"></i>}>
+        <Menu.Item
+          icon={
+            <i
+              className="icon-camp"
+              id="threedot_dropdown_manage_camp_btn__menu_item"
+            ></i>
+          }
+        >
           {isTopicPage && (
             <Link
               id="threedot_dropdown_manage_camp_btn__menu_item_link"
@@ -378,11 +410,16 @@ const DropDownMenu = () => {
                 "-"
               )}`}
             >
-              <a id="threedot_dropdown_manage_camp_btn__menu_item_text">{K?.exceptionalMessages?.manageCampButton}</a>
+              <a id="threedot_dropdown_manage_camp_btn__menu_item_text">
+                {K?.exceptionalMessages?.manageCampButton}
+              </a>
             </Link>
           )}
         </Menu.Item>
-        <Menu.Item icon={<i className="icon-topic"></i>} id="threedot_dropdown_manage_topic_btn__menu_item">
+        <Menu.Item
+          icon={<i className="icon-topic"></i>}
+          id="threedot_dropdown_manage_topic_btn__menu_item"
+        >
           {isTopicPage && (
             <Link
               id="threedot_dropdown_manage_topic_btn__menu_item_link"
@@ -393,7 +430,9 @@ const DropDownMenu = () => {
                 "-"
               )}`}
             >
-              <a id="threedot_dropdown_manage_topic_btn__menu_item_text">{K?.exceptionalMessages?.manageTopicButton} </a>
+              <a id="threedot_dropdown_manage_topic_btn__menu_item_text">
+                {K?.exceptionalMessages?.manageTopicButton}{" "}
+              </a>
             </Link>
           )}
         </Menu.Item>
@@ -403,15 +442,23 @@ const DropDownMenu = () => {
           disabled={campRecord?.is_archive}
         >
           {isTopicPage && (
-            <Link href={getCreateCampUr()} id="threedot_dropdown_btn_lable_menu_item_link">
-              <a id="threedot_dropdown_btn_lable_menu_item_text">{getButtonLabel()}</a>
+            <Link
+              href={getCreateCampUr()}
+              id="threedot_dropdown_btn_lable_menu_item_link"
+            >
+              <a id="threedot_dropdown_btn_lable_menu_item_text">
+                {getButtonLabel()}
+              </a>
             </Link>
           )}
         </Menu.Item>
         <Menu.Item
           id="threedot_dropdown_generate_modal_menu_item"
           icon={
-            <span className={styles.svgIconCode} id="threedot_dropdown_generate_modal_menu_item_code_icon">
+            <span
+              className={styles.svgIconCode}
+              id="threedot_dropdown_generate_modal_menu_item_code_icon"
+            >
               <CodeIcon />
             </span>
           }
@@ -432,8 +479,13 @@ const DropDownMenu = () => {
           }
         >
           {isTopicPage && (
-            <a onClick={onPrintCamp} id="threedot_dropdown_print_outline_menu_item_link">
-              <span id="threedot_dropdown_print_outline_menu_item_text">Print</span>
+            <a
+              onClick={onPrintCamp}
+              id="threedot_dropdown_print_outline_menu_item_link"
+            >
+              <span id="threedot_dropdown_print_outline_menu_item_text">
+                Print
+              </span>
             </a>
           )}
         </Menu.Item>

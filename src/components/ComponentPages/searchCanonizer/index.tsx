@@ -34,7 +34,13 @@ const Search = () => {
     return link.replace(/[-\\^$*+?.()|%#|[\]{}@]/g, "-");
   }
   const getHighlightedText = (text, highlight) => {
-    const parts = text?.split(new RegExp(`(${highlight})`, "gi"));
+    const escapedHighlight = highlight.replace(
+      /[-[\]{}()*+?.,\\^$|#\s]/g,
+      "\\$&"
+    );
+
+    // Create a regular expression using the escaped highlight
+    const parts = text?.split(new RegExp(`(${escapedHighlight})`, "gi"));
     return (
       <span>
         {" "}
@@ -77,7 +83,7 @@ const Search = () => {
               id="auto_search_section_placeholder"
             >
               Search Results for “
-              <span className="text-canBlue capitalize">
+              <span className="text-canBlue capitalize break-all whitespace-break-spaces">
                 {router?.query?.q}
               </span>
               ”

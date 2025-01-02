@@ -25,7 +25,7 @@ function PreferencesUI({ onChange, tags, onFinish, onSkip }) {
           className="mt-4 text-sm text-canBlack font-medium"
           id="registration-title"
         >
-          Select your preferred categories
+          Select your preferred topic tags
         </Title>
         <Button
           type="link"

@@ -88,6 +88,11 @@ const UploadFiles = () => {
     useState(false);
   const [getUploadFolderLoadingIndicator, setGetUploadFolderLoadingIndicator] =
     useState(false);
+  const [uploadedLengths, setUploadedLengths] = useState({
+    fileLength: 0,
+    folderLength: 0,
+  });
+  const [uploadLoader, setUploadLoader] = useState(false);
 
   const { isUserAuthenticated } = isAuth();
   const closeFolder = () => {
@@ -102,6 +107,7 @@ const UploadFiles = () => {
   };
   const router = useRouter();
   const uploadFun = async () => {
+    setUploadLoader(true);
     //addButtonHide is use to, when upload fun is loaded button is hide
     addButtonHide();
     enabledResetBtn();
@@ -157,17 +163,20 @@ const UploadFiles = () => {
         GetUploadFileAndFolder();
       }
       if (res && res.status_code == 400) {
+        setUploadLoader(false);
         //when response is getting 400 issue screen show same
       }
     } //else condition show error message if file name is same when upload new image
     else {
       message.error("File Name is Repeated please Fill Again");
     }
+    setUploadLoader(false);
   };
   const handleCancel = () => {
     //if open folder is open and check using local storage
     //useSelecter
 
+setUploadLoader(false);
     if (openFolder) {
       setFolderFiles([]);
       uploadOptionsHide();
@@ -275,6 +284,9 @@ const UploadFiles = () => {
   const GetUploadFileAndFolder = async () => {
     let response = await getUploadFileAndFolder();
     if (response) {
+      const fileLength = response.data.files?.length || 0;
+      const folderLength = response.data.folders?.length || 0;
+      setUploadedLengths({ fileLength, folderLength });
       let filesArr = response.data.files;
       let FileArrData = filesArr.map((v) => ({ ...v, type: "file" }));
       let folderArr = response.data.folders;
@@ -342,6 +354,8 @@ const UploadFiles = () => {
       setToggleFileView={setToggleFileView}
       getUploadFilesLoadingIndicator={getUploadFilesLoadingIndicator}
       getUploadFolderLoadingIndicator={getUploadFolderLoadingIndicator}
+      uploadedLengths={uploadedLengths}
+      uploadLoader={uploadLoader}
     />
   );
 };

@@ -50,6 +50,7 @@ import { setCheckSupportExistsData } from "src/store/slices/campDetailSlice";
 import queryParams from "src/utils/queryParams";
 import DrawerBreadcrumbs from "./drawerBreadcrumbs";
 import dynamic from "next/dynamic";
+import { defaultNicknameData } from "src/utils/generalUtility";
 const DraggableTags = dynamic(() => import("./draggable"), { ssr: false });
 
 const { TextArea } = Input;
@@ -290,7 +291,8 @@ function SupportTreeDrawer({
       res = tagsArrayList?.map((item, index) => {
         return {
           ...item,
-          disabled: item?.id == camp_num && drawerFor=="directAdd" ? false: true,
+          disabled:
+            item?.id == camp_num && drawerFor == "directAdd" ? false : true,
         };
       });
     } else {
@@ -442,7 +444,7 @@ function SupportTreeDrawer({
     } else if (drawerFor === "signPetition") {
       await signPetitionHandler();
     }
-    setIsQuickActionSelected(false)
+    setIsQuickActionSelected(false);
     setLoader(false);
   };
 
@@ -519,9 +521,9 @@ function SupportTreeDrawer({
       }
 
       if (drawerFor === "signPetition") {
-        if (isCampLeader()?.campLeaderExist) {
-          GetCheckStatusData();
-        }
+        // if (isCampLeader()?.campLeaderExist) {
+        //   GetCheckStatusData();
+        // }
         getCanonizedNicknameList();
         getSignPetitionData();
       }
@@ -660,7 +662,10 @@ function SupportTreeDrawer({
                       />
                       {parentSupportDataList &&
                         parentSupportDataList.length > 0 && (
-                          <div id="support-drawer-supported-camps-container" className="horizontal-chips">
+                          <div
+                            id="support-drawer-supported-camps-container"
+                            className="horizontal-chips"
+                          >
                             {parentSupportDataList?.map((item, index) => (
                               <TagList key={index} name={item?.camp_name} />
                             ))}
@@ -743,12 +748,18 @@ function SupportTreeDrawer({
                         id="delegate-support-drawer-nickname-select"
                         className="w-100 cn-select"
                         size="large"
-                        defaultValue={nickNameList?.at(0)?.nick_name}
+                        defaultValue={
+                          defaultNicknameData(nickNameList)?.nick_name
+                            ? defaultNicknameData(nickNameList)?.nick_name
+                            : nickNameList?.at(0)?.nick_name
+                        }
                         suffixIcon={<i className="icon-chevron-down"></i>}
                         showSearch
                         value={
                           selectedtNickname
                             ? selectedtNickname
+                            : defaultNicknameData(nickNameList)?.nick_name
+                            ? defaultNicknameData(nickNameList)?.nick_name
                             : nickNameList?.at(0)?.nick_name
                         }
                         onChange={(value) => {
@@ -757,7 +768,11 @@ function SupportTreeDrawer({
                       >
                         {nickNameList?.map((nick) => {
                           return (
-                            <Select.Option id="delegate-support-drawer-nickname-select-item" key={nick.id} value={nick.id}>
+                            <Select.Option
+                              id="delegate-support-drawer-nickname-select-item"
+                              key={nick.id}
+                              value={nick.id}
+                            >
                               {nick.nick_name}
                             </Select.Option>
                           );
@@ -797,11 +812,19 @@ function SupportTreeDrawer({
                           showSearch
                         >
                           {availableReasons?.map((res) => (
-                            <Select.Option id="delegate-support-drawer-reason-select-item" key={res?.id} value={res?.label}>
+                            <Select.Option
+                              id="delegate-support-drawer-reason-select-item"
+                              key={res?.id}
+                              value={res?.label}
+                            >
                               {res?.label}
                             </Select.Option>
                           ))}
-                          <Select.Option id="delegate-support-drawer-custom-reason-title" key="custom_reason" value="custom">
+                          <Select.Option
+                            id="delegate-support-drawer-custom-reason-title"
+                            key="custom_reason"
+                            value="custom"
+                          >
                             Custom reason
                           </Select.Option>
                         </Select>
@@ -812,7 +835,11 @@ function SupportTreeDrawer({
                 {selectedValue && selectedValue == "custom" && (
                   <Col span={24}>
                     <Form.Item name="reason_summary" label="Description">
-                      <TextArea id="support-drawer-custom-reason" className="thm-input" rows={4} />
+                      <TextArea
+                        id="support-drawer-custom-reason"
+                        className="thm-input"
+                        rows={4}
+                      />
                     </Form.Item>
                   </Col>
                 )}
@@ -888,7 +915,11 @@ function SupportTreeDrawer({
                       onChange={handleChange}
                     >
                       {availableReasons?.map((res) => (
-                        <Select.Option id="remove-support-drawer-reason-select-item" key={res.id} value={res.label}>
+                        <Select.Option
+                          id="remove-support-drawer-reason-select-item"
+                          key={res.id}
+                          value={res.label}
+                        >
                           {res.label}
                         </Select.Option>
                       ))}
@@ -969,13 +1000,14 @@ function SupportTreeDrawer({
                       <i className={`icon-${signCampData?.warning_type}`}></i>
                     }
                   />
-                  {supportListArray && supportListArray.length > 0 && (
-                    <div className="horizontal-chips">
-                      {supportListArray?.map((item, index) => (
-                        <TagListWithSupportOder key={index} item={item} />
-                      ))}
-                    </div>
-                  )}
+                  {signCampData?.remove_camps &&
+                    signCampData?.remove_camps?.length > 0 && (
+                      <div className="horizontal-chips">
+                        {signCampData?.remove_camps?.map((item, index) => (
+                          <TagListWithSupportOder key={index} item={item} />
+                        ))}
+                      </div>
+                    )}
 
                   {/* {signCampData?.remove_camps?.length > 0 &&
                     signCampData?.remove_camps?.map((tag) => {
@@ -1011,12 +1043,18 @@ function SupportTreeDrawer({
                         id="petition-drawer-nickname-select"
                         className="w-100 cn-select"
                         size="large"
-                        defaultValue={nickNameList?.at(0)?.nick_name}
+                        defaultValue={
+                          defaultNicknameData(nickNameList)?.nick_name
+                            ? defaultNicknameData(nickNameList)?.nick_name
+                            : nickNameList?.at(0)?.nick_name
+                        }
                         suffixIcon={<i className="icon-chevron-down"></i>}
                         showSearch
                         value={
                           selectedtNickname
                             ? selectedtNickname
+                            : defaultNicknameData(nickNameList)?.nick_name
+                            ? defaultNicknameData(nickNameList)?.nick_name
                             : nickNameList?.at(0)?.nick_name
                         }
                         onChange={(value) => {
@@ -1025,7 +1063,11 @@ function SupportTreeDrawer({
                       >
                         {nickNameList?.map((nick) => {
                           return (
-                            <Select.Option id="petition-drawer-nickname-select-item" key={nick.id} value={nick.id}>
+                            <Select.Option
+                              id="petition-drawer-nickname-select-item"
+                              key={nick.id}
+                              value={nick.id}
+                            >
                               {nick.nick_name}
                             </Select.Option>
                           );

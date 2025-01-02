@@ -39,6 +39,7 @@ import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 import PrimaryButton from "components/shared/Buttons/PrimariButton";
 import RefineIcon from "components/ComponentPages/TopicDetails/CampInfoBar/refineIcon";
 import { setOpenConsensusTreePopup } from "src/store/slices/hotTopicSlice";
+import useAuthentication from "src/hooks/isUserAuthenticated";
 
 const { Title, Text, Paragraph } = Typography;
 const { Option } = Select;
@@ -85,6 +86,8 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
   const dispatch = useDispatch();
   const router = useRouter();
 
+  const { isUserAuthenticated } = useAuthentication();
+
   // eslint-disable-next-line no-unused-vars
   const [_cookie, setCookie] = useCookies(["canAlgo", "asof", "asofDate"]);
 
@@ -107,6 +110,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
     clearAlgoFromRefineFilter,
     clearScoreFromRefineFilter,
     disbaleApplyBtn,
+    userEmail,
   } = useSelector((state: RootState) => ({
     algorithms: state.homePage?.algorithms,
     filteredScore: state?.filters?.filterObject?.filterByScore,
@@ -127,6 +131,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
     clearAlgoFromRefineFilter: state.topicDetails.clearAlgoFromRefineFilter,
     clearScoreFromRefineFilter: state.topicDetails.clearScoreFromRefineFilter,
     disbaleApplyBtn: state.topicDetails.disbaleApplyBtn,
+    userEmail: state?.auth?.loggedInUser?.email,
   }));
 
   const [selectedAsOFDate, setSelectedAsOFDate] = useState(filteredAsOfDate);
@@ -276,7 +281,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
     if (router.query.asof === "bydate") {
       dispatch(setAsOfValues(3));
       setIsDatePicker(true);
-    }else if(router.query.asof === "review"){
+    } else if (router.query.asof === "review") {
       dispatch(setAsOfValues(1));
     } else {
       dispatch(setAsOfValues(2));
@@ -294,6 +299,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
     algorithm: clearAlgoFromRefineFilter,
     update_all: 1,
     fetch_topic_history: viewThisVersionCheck ? 1 : null,
+    current_user: isUserAuthenticated ? userEmail : "",
   };
 
   const revertScore = async () => {
@@ -460,6 +466,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
     await selectAlgorithm(clearAlgoFromRefineFilter);
     // Step 3: Handle different cases based on selectedValue
     if (selectedValue === 2) {
+      delete router?.query?.viewversion;
       dispatch(setViewThisVersion(false));
       setCookie("asof", "default", { path: "/" });
 

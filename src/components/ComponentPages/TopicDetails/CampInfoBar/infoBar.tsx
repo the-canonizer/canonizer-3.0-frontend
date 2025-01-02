@@ -113,11 +113,7 @@ const InfoBar = ({ isTopicPage = false }: any) => {
             className="btnsWrap w-full"
             id="info_bar_topic_detail_page_section_tooltip"
           >
-            {isCampBtnVisible &&
-            currentCampNode?._isDisabled == 0 &&
-            currentCampNode?.parentIsOneLevel == 0 &&
-            (campRecord?.is_archive == 0 ||
-              campRecord?.is_archive == undefined) ? (
+            {tree?.["1"]?.is_valid_as_of_time ? (
               <Tooltip
                 id="tooltip"
                 title={

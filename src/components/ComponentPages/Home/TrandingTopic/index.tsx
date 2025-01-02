@@ -17,17 +17,20 @@ import SectionHeading from "../FeaturedTopic/sectionsHeading";
 import SeeMoreLInk from "../FeaturedTopic/seeMoreLink";
 import ScoreTag from "./scoreTag";
 import { setTrandingAlgo } from "src/store/slices/homePageSlice";
+import useAuthentication from "src/hooks/isUserAuthenticated";
 
 const { Option } = Select;
 
 const TrandingTopics = () => {
   const dispatch = useDispatch();
+  const { isUserAuthenticated } = useAuthentication();
 
-  const { canonizedTopics, algorithms, algorithm } = useSelector(
+  const { canonizedTopics, algorithms, algorithm, userEmail } = useSelector(
     (state: RootState) => ({
       canonizedTopics: state.homePage?.canonizedTopicsData,
       algorithms: state.homePage?.algorithms,
       algorithm: state?.homePage?.trandingAlgo,
+      userEmail: state?.auth?.loggedInUser?.email,
     })
   );
 
@@ -57,6 +60,7 @@ const TrandingTopics = () => {
       user_email: "",
       is_archive: 0,
       sort: false,
+      current_user: isUserAuthenticated ? userEmail : "",
     };
 
     await getCanonizedTopicsApi(reqBody, loadMore);

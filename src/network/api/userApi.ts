@@ -511,6 +511,22 @@ export const updateNickName = async (values: object, id: string) => {
   return res;
 };
 
+export const setDefaultNickname = async (values: object) => {
+  let state = store.getState();
+  const { auth } = state;
+
+  const res = await NetworkCall.fetch(
+    UserRequest.setDefaultNickname(values, auth?.token)
+  )
+    .then((value) => {
+      return value;
+    })
+    .catch((errors) => {
+      handleError(errors);
+    });
+  return res;
+};
+
 export const resendOTPForRegistration = async (values: object) => {
   try {
     const res = await NetworkCall.fetch(
@@ -1052,5 +1068,17 @@ export const ReplaceAndUpdateNewEmail = async (body) => {
     ) {
       return err.error.data;
     }
+  }
+};
+
+export const facebookAccountDeletionStatus = async (confirmation_code) => {
+  try {
+    const res = await NetworkCall.fetch(
+      UserRequest.checkFacebookAccountDeleteStatus(confirmation_code)
+    );
+    return res;
+  } catch (err) {
+    handleError(err);
+    return err.error.data;
   }
 };

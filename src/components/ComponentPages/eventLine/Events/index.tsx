@@ -54,8 +54,15 @@ const Events = ({ timelineDescript, loadingEvents }: any) => {
 
   return (
     <>
-      <div id="eventline-sidebar-activities-container" className="activites-wrapper">
-        <Title level={5} id="eventline-sidebar-activities-title" className="uppercase">
+      <div
+        id="eventline-sidebar-activities-container"
+        className="activites-wrapper"
+      >
+        <Title
+          level={5}
+          id="eventline-sidebar-activities-title"
+          className="uppercase"
+        >
           activities
         </Title>
         {loadingEvents || timelineDescript?.length == 0 ? (

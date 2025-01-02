@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { PlusOutlined } from "@ant-design/icons";
+import moment from "moment";
 
 import useIsUserAuthenticated from "src/hooks/isUserAuthenticated";
 import CustomSpinner from "components/shared/CustomSpinner";
@@ -21,12 +22,47 @@ import PrimaryButton from "components/shared/Buttons/PrimariButton";
 import ManageThread from "./CreateThreadPopup";
 import { RootState } from "src/store";
 import CommonBreadcrumbs from "../Breadcrumbs/commonBreadcrumbs";
-import moment from "moment";
+import { useIsMobile } from "src/hooks/useIsMobile";
+
+export const getSelectedNode = async (
+  topic_num,
+  camp_num,
+  as_of,
+  as_of_date,
+  algorithm
+) => {
+  const reqBody = {
+    topic_num,
+    camp_num,
+    as_of,
+    as_of_date:
+      moment.utc(as_of_date * 1000).format("DD-MM-YYYY H:mm:ss") ||
+      Date.now() / 1000,
+    algorithm: algorithm,
+    update_all: 1,
+  };
+
+  let campRecord = null,
+    topicRecord = null;
+
+  setTimeout(async () => {
+    topicRecord = await getCurrentTopicRecordApi(reqBody);
+    const res = await getCurrentCampRecordApi(reqBody);
+
+    if (res?.status_code === 200) {
+      campRecord = res?.campData;
+    }
+  }, 300);
+
+  return { campRecord, topicRecord };
+};
 
 const ForumComponent = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const { isUserAuthenticated } = useIsUserAuthenticated();
+  const isMobile = useIsMobile();
 
   const [paramsList, setParamsList] = useState({});
   const [threadList, setThreadList] = useState([]);
@@ -37,8 +73,6 @@ const ForumComponent = () => {
   const [loading, setLoading] = useState(false);
   const [perPage] = useState(10);
 
-  const dispatch = useDispatch();
-
   useEffect(() => {
     setIsLoggedIn(isUserAuthenticated);
   }, [isUserAuthenticated]);
@@ -46,7 +80,6 @@ const ForumComponent = () => {
   const { campRecord, asof, asofdate, algorithm } = useSelector(
     (state: RootState) => ({
       campRecord: state?.topicDetails?.currentCampRecord,
-      topicRecord: state?.topicDetails?.currentTopicRecord,
       asof: state?.filters?.filterObject?.asof,
       asofdate: state?.filters?.filterObject?.asofdate,
       algorithm: state?.filters?.filterObject?.algorithm,
@@ -54,28 +87,6 @@ const ForumComponent = () => {
   );
 
   const setCurrentThread = (data) => dispatch(setThread(data));
-
-  const getSelectedNode = async (nodeKey) => {
-    const queries = router?.query;
-    const topicArr = (queries.topic as string).split("-");
-    const topic_num = topicArr.shift();
-
-    const reqBody = {
-      topic_num: +topic_num,
-      camp_num: +nodeKey,
-      as_of: asof,
-      as_of_date:
-        moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss") ||
-        Date.now() / 1000,
-      algorithm: algorithm,
-      update_all: 1,
-    };
-
-    await Promise.all([
-      getCurrentTopicRecordApi(reqBody),
-      getCurrentCampRecordApi(reqBody),
-    ]);
-  };
 
   async function getThreads(
     camp,
@@ -111,10 +122,15 @@ const ForumComponent = () => {
       const queries = router?.query;
       const campArr = (queries.camp as string).split("-");
       const camp_num = campArr.shift();
-      getSelectedNode(camp_num);
+
+      const topicArr = (queries.topic as string).split("-");
+      const topic_num = topicArr.shift();
+
+      if (camp_num && topic_num)
+        getSelectedNode(topic_num, camp_num, asof, asofdate, algorithm);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router?.query]);
+  }, [router?.asPath]);
 
   useEffect(() => {
     const queries = router?.query;
@@ -235,7 +251,14 @@ const ForumComponent = () => {
   };
 
   const onBackClick = () => {
-    router.back();
+    const queries = router?.query;
+
+    router.push({
+      pathname: `/topic/${replaceSpecialCharacters(
+        queries.topic as string,
+        "-"
+      )}/${replaceSpecialCharacters(queries.camp as string, "-")}`,
+    });
   };
 
   return (
@@ -244,22 +267,38 @@ const ForumComponent = () => {
         routeName={"forum"}
         className="[&_.inforBarClass]:mb-0 [&_.afterHeaderClass]:mb-5"
         afterHeader={
-          <CommonBreadcrumbs
-            key="common-breadcrumbs"
-            payload={payload}
-            isForumPage={false}
-            isHtmlContent={
-              <PrimaryButton
-                key="create-thread-button"
-                className="flex justify-center items-center h-auto py-2 px-7"
-                onClick={onCreateThread}
-              >
-                Create a Thread <PlusOutlined />
-              </PrimaryButton>
-            }
-          />
+          <div className={`badNav ${isMobile ? "[&_.bdNav]:mb-2" : ""}`}>
+            <CommonBreadcrumbs
+              key="common-breadcrumbs"
+              payload={payload}
+              isForumPage={false}
+              isHtmlContent={
+                !isMobile ? (
+                  <PrimaryButton
+                    key="create-thread-button"
+                    id="create-thread-button"
+                    className="flex justify-center items-center h-auto py-2 px-7 createBtn"
+                    onClick={onCreateThread}
+                  >
+                    Create a Thread <PlusOutlined />
+                  </PrimaryButton>
+                ) : null
+              }
+            />
+          </div>
         }
       >
+        {isMobile ? (
+          <PrimaryButton
+            key="mobile-create-thread-button"
+            id="mobile-create-thread-button"
+            className="flex justify-center items-center h-auto py-2 px-7 createBtn mb-3 ml-auto"
+            onClick={onCreateThread}
+          >
+            Create a Thread <PlusOutlined />
+          </PrimaryButton>
+        ) : null}
+
         <ThreadListUI
           key="thread-list-ui"
           onSearch={onSearch}

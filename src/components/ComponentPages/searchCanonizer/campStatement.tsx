@@ -79,7 +79,13 @@ const CampStatementSearch = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedStatementFromAdvanceFilterAlgorithm]);
   const getHighlightedText = (text, highlight) => {
-    const parts = text?.split(new RegExp(`(${highlight})`, "gi"));
+    const escapedHighlight = highlight.replace(
+      /[-[\]{}()*+?.,\\^$|#\s]/g,
+      "\\$&"
+    );
+
+    // Create a regular expression using the escaped highlight
+    const parts = text?.split(new RegExp(`(${escapedHighlight})`, "gi"));
     return (
       <span>
         {" "}
@@ -99,7 +105,13 @@ const CampStatementSearch = () => {
     );
   };
   const getHighlightedText2 = (text, highlight) => {
-    const parts = text?.split(new RegExp(`(${highlight})`, "gi"));
+    const escapedHighlight = highlight.replace(
+      /[-[\]{}()*+?.,\\^$|#\s]/g,
+      "\\$&"
+    );
+
+    // Create a regular expression using the escaped highlight
+    const parts = text?.split(new RegExp(`(${escapedHighlight})`, "gi"));
     return (
       <span>
         {" "}
@@ -156,7 +168,7 @@ const CampStatementSearch = () => {
             >
               Search Results for “
               <span
-                className="text-canBlue capitalize"
+                className="text-canBlue capitalize break-all whitespace-break-spaces"
                 id="search_section_camp_statement_text_value"
               >
                 {router?.query?.q}

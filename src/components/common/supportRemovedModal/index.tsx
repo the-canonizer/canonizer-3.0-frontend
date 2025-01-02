@@ -51,6 +51,7 @@ const SupportRemovedModal = ({
   }, [reasons]);
 
   const onSelectChange = (value) => {
+    form.setFieldValue("reason", value);
     setSelectedValue(value);
   };
 
@@ -176,16 +177,6 @@ const SupportRemovedModal = ({
       {!isAdd && (
         <div className="lg:py-20 py-6 ">
           <div className="flex items-center justify-center gap-5 lg:flex-row flex-col">
-            {/* <Button
-              type="primary"
-              htmlType="button"
-              size={"large"}
-              className={`${classes.cancel_btn}`}
-              onClick={handleCancel}
-              id="cancel-btn"
-            >
-              Cancel
-            </Button> */}
             <Button
               className="Profile_btn ant-btn ant-btn-orange ant-btn-lg hover:text-canBlack flex gap-2.5 items-center bg-btnBg bg-opacity-10 hover:!bg-btnBg hover:!bg-opacity-10 text-canBlack text-base font-medium rounded-lg border-canBlue hover:border-canBlue justify-center w-[12.5rem] active:bg-btnBg active:bg-opacity-10 active:border-canBlue active:text-canBlack"
               type="primary"

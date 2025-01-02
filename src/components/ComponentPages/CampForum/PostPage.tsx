@@ -19,17 +19,13 @@ import {
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
 import Layout from "src/hoc/layout";
 import CustomSpinner from "components/shared/CustomSpinner";
-import CampInfoBar from "../TopicDetails/CampInfoBar";
 import PrimaryButton from "components/shared/Buttons/PrimariButton";
 import Post from "./UI/PostList";
 import CreatePostPopup from "./CreatePostPopup";
-import {
-  getCurrentCampRecordApi,
-  getCurrentTopicRecordApi,
-} from "src/network/api/campDetailApi";
 import { RootState } from "src/store";
 import CommonBreadcrumbs from "../Breadcrumbs/commonBreadcrumbs";
 import { useIsMobile } from "src/hooks/useIsMobile";
+import { getSelectedNode } from ".";
 
 const { Text } = Typography;
 
@@ -38,8 +34,6 @@ const CommentsList = () => {
     useSelector((state: RootState) => ({
       currentThread: state.forum.currentThread,
       currentPost: state.forum.currentPost,
-      campRecord: state?.topicDetails?.currentCampRecord,
-      topicRecord: state?.topicDetails?.currentTopicRecord,
       asof: state?.filters?.filterObject?.asof,
       asofdate: state.filters?.filterObject?.asofdate,
       algorithm: state.filters?.filterObject?.algorithm,
@@ -63,35 +57,20 @@ const CommentsList = () => {
 
   const setCurrentPost = (data) => dispatch(setPost(data));
 
-  const getSelectedNode = async (nodeKey) => {
-    const queries = router?.query;
-    const topicArr = (queries.topic as string).split("-");
-    const topic_num = topicArr.shift();
-
-    const reqBody = {
-      topic_num: +topic_num,
-      camp_num: +nodeKey,
-      as_of: asof,
-      as_of_date: asofdate || Date.now() / 1000,
-      algorithm: algorithm,
-      update_all: 1,
-    };
-
-    await Promise.all([
-      getCurrentTopicRecordApi(reqBody),
-      getCurrentCampRecordApi(reqBody),
-    ]);
-  };
-
   useEffect(() => {
     if (router && router?.query) {
       const queries = router?.query;
       const campArr = (queries.camp as string).split("-");
       const camp_num = campArr.shift();
-      getSelectedNode(camp_num);
+
+      const topicArr = (queries.topic as string).split("-");
+      const topic_num = topicArr.shift();
+
+      if (camp_num && topic_num)
+        getSelectedNode(topic_num, camp_num, asof, asofdate, algorithm);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router?.query]);
+  }, [router?.asPath]);
 
   const getPosts = async (id, page = 1, like = "", per_page = postperPage) => {
     setPostLoading(true);
@@ -236,7 +215,15 @@ const CommentsList = () => {
   };
 
   const onBackClick = () => {
-    router?.back();
+    router?.push({
+      pathname: `/forum/${replaceSpecialCharacters(
+        router?.query?.topic as string,
+        "-"
+      )}/${replaceSpecialCharacters(
+        router?.query?.camp as string,
+        "-"
+      )}/threads`,
+    });
   };
 
   const onSubmittedSucess = async () => {
@@ -253,33 +240,36 @@ const CommentsList = () => {
       <Layout
         routeName={"forum"}
         afterHeader={
-          <CommonBreadcrumbs
-            payload={payload}
-            isForumPage={false}
-            isHtmlContent={
-              !isMobile ? (
-                <>
-                  {!isUserAuthenticated ? (
-                    <Text
-                      id="sign-in-msg-desktop"
-                      data-testid="logincheck-desktop"
-                    >
-                      Please <Link href={{ pathname: "/login" }}>Sign In</Link>{" "}
-                      to comment on this Thread
-                    </Text>
-                  ) : (
-                    <PrimaryButton
-                      id="comment-button-desktop"
-                      className="flex justify-center items-center h-auto py-2 px-7"
-                      onClick={onCreatePost}
-                    >
-                      Comment in This Thread <PlusOutlined />
-                    </PrimaryButton>
-                  )}
-                </>
-              ) : null
-            }
-          />
+          <div className="badNav">
+            <CommonBreadcrumbs
+              payload={payload}
+              isForumPage={false}
+              isHtmlContent={
+                !isMobile ? (
+                  <>
+                    {!isUserAuthenticated ? (
+                      <Text
+                        id="sign-in-msg-desktop"
+                        data-testid="logincheck-desktop"
+                      >
+                        Please{" "}
+                        <Link href={{ pathname: "/login" }}>Sign In</Link> to
+                        comment on this Thread
+                      </Text>
+                    ) : (
+                      <PrimaryButton
+                        id="comment-button-desktop"
+                        className="flex justify-center items-center h-auto py-2 px-7"
+                        onClick={onCreatePost}
+                      >
+                        Comment in This Thread <PlusOutlined />
+                      </PrimaryButton>
+                    )}
+                  </>
+                ) : null
+              }
+            />
+          </div>
         }
       >
         {isMobile && (

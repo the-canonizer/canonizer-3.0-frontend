@@ -44,6 +44,7 @@ const NetworkConstants = {
     AddNickName: `${BaseCanonizerApiUrl}/add-nick-name`,
     GetNickNameList: `${BaseCanonizerApiUrl}/get-nick-name-list`,
     UpdateNickName: `${BaseCanonizerApiUrl}/update-nick-name`,
+    SetDefaultNickname: `${BaseCanonizerApiUrl}/set-default-nick-name`,
     //Direct Supported camps
     GetDirectSupportedCamps: `${BaseCanonizerApiUrl}/get-direct-supported-camps`,
     RemoveOrUpdateDirectSupportCamps: `${BaseCanonizerApiUrl}/support/update`,
@@ -222,6 +223,9 @@ const NetworkConstants = {
 
     // PostStatementCount
     postStatementCount: `${BaseCanonizerApiUrl}/post-statement-count`,
+
+    // Facebook account deletion status
+    CheckFacebookDeleteDataStatus: `${BaseCanonizerApiUrl}/check-facebook-delete-data-status`,
   },
   Method: {
     GET: "GET",

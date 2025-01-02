@@ -33,7 +33,7 @@ const HotTopics = () => {
         {topicData?.map((ft) => (
           <Col
             md={12}
-            lg={8}
+            lg={12}
             xs={24}
             sm={24}
             key={ft?.id}
@@ -51,7 +51,8 @@ const HotTopics = () => {
               <SingleTopicCard
                 topic={ft}
                 onTopicLinkClick={() => setLoadMoreIndicator(false)}
-                avatars={ft?.supporterData?.slice(0, 3)}
+                avatars={ft?.supporterData?.slice(0, 5)}
+                descriptionTextLength={320}
               />
             )}
           </Col>

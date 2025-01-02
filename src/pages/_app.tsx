@@ -54,8 +54,8 @@ function WrappedApp({
     if (authToken) {
       localStorage.removeItem("auth_token");
     }
-    document.cookie =
-      "loginToken=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
+    // document.cookie =
+    //   "loginToken=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
     emptyCacheStorage();
   }
 
@@ -189,7 +189,6 @@ WrappedApp.getInitialProps = async (
     0,
     appContext?.router?.asPath.lastIndexOf("/")
   );
-
   let path;
 
   if (prePath == "/manage/camp") {
@@ -210,10 +209,23 @@ WrappedApp.getInitialProps = async (
 
   let canonical_url =
     process.env.NEXT_PUBLIC_BASE_URL + appContext?.router?.asPath;
+  const queryValue = appContext.router?.query?.q;
 
+  // Ensure the value is a string before calling replace
+  const formattedQuery = Array.isArray(queryValue)
+    ? queryValue.join(" ").replace(/ /g, "+") // Join array elements and replace spaces
+    : queryValue?.replace(/ /g, "+"); // Replace spaces if it's a string
   const req = {
     page_name:
-      componentName === "SocialLoginCallbackPage" ? "Home" : componentName,
+      componentName === "SocialLoginCallbackPage"
+        ? "Home"
+        : componentName === "Search" ||
+          componentName === "SearchTopic" ||
+          componentName === "SearchCamp" ||
+          componentName === "SearchCampStatement" ||
+          componentName === "SearchNickname"
+        ? "SearchResultsPage"
+        : componentName,
     keys: {
       topic_num: appContext.router?.asPath.includes("forum")
         ? path?.topic?.toLocaleString().split("-")[0]
@@ -233,6 +245,14 @@ WrappedApp.getInitialProps = async (
         appContext?.ctx?.query && componentName === "VideosPage"
           ? appContext?.ctx?.query?.video?.at(1)?.split("-")?.at(0)
           : null,
+      keywords:
+        componentName === "Search" ||
+        componentName === "SearchTopic" ||
+        componentName === "SearchCamp" ||
+        componentName === "SearchCampStatement" ||
+        componentName === "SearchNickname"
+          ? formattedQuery
+          : "",
     },
   };
 

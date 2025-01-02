@@ -40,6 +40,7 @@ const CreateNewTopic = () => {
   const [isShowMore, setIsShowMore] = useState(false);
   const [haveTopicExist, setHaveTopicExist] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [isRankHidden, setIsRankHidden] = useState(false);
 
   const router = useRouter();
   const dispatch = useDispatch();
@@ -88,6 +89,7 @@ const CreateNewTopic = () => {
       namespace: values.namespace,
       nick_name: values.nick_name,
       tags: selectedCats?.map((cat) => cat?.id),
+      is_rank_hidden: isRankHidden,
     };
 
     const res = await createTopic(body);
@@ -215,43 +217,6 @@ const CreateNewTopic = () => {
     setIsopicLoading(false);
   };
 
-  // const isMatched = () => {
-  //   const isMatched = existingTopics.some(
-  //     (tp) =>
-  //       values?.topic_name?.trim()?.toLowerCase() ===
-  //       tp?.type_value?.trim()?.toLowerCase()
-  //   );
-
-  //   if (isMatched) {
-  //     setIsError(true);
-  //     form.setFields([
-  //       {
-  //         name: ["topic_name"],
-  //         value: values?.topic_name,
-  //         errors: ["The topic name has already been taken."],
-  //       },
-  //     ]);
-  //     return;
-  //   }
-
-  //   if (!isMatched) {
-  //     form.setFields([
-  //       {
-  //         name: ["topic_name"],
-  //         value: values?.topic_name,
-  //         errors: [],
-  //       },
-  //     ]);
-  //     setIsError(false);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   if (existingTopics?.length) {
-  //     isMatched();
-  //   }
-  // }, [existingTopics, values?.topic_name]);
-
   const onTopicChange = useCallback(
     debounce((e) => {
       const enteredValues = e?.target?.value;
@@ -267,6 +232,11 @@ const CreateNewTopic = () => {
 
   const onTopicNameBlur = () => {
     setIsError(false);
+  };
+
+  const hideRankHandler = (e) => {
+    form.setFieldValue("rank_hidden", e.target.checked);
+    setIsRankHidden(e.target.checked);
   };
 
   return (
@@ -301,6 +271,8 @@ const CreateNewTopic = () => {
             values={values}
             isLoading={isLoading}
             editCampStatementData={null}
+            isRankHidden={isRankHidden}
+            hideRankHandler={hideRankHandler}
           />
         </Col>
         <Col lg={12} key="info-col">

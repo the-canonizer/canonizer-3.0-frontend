@@ -11,11 +11,18 @@ export const getLists = async (
   page: number = 1,
   per_page: number = 5,
   is_seen: number = 0,
+  type = "all",
   loginToken = null
 ) => {
   try {
     const res = await NetworkCall.fetch(
-      NotificationRequests.getNotification(page, per_page, is_seen, loginToken),
+      NotificationRequests.getNotification(
+        page,
+        per_page,
+        is_seen,
+        type,
+        loginToken
+      ),
       false
     );
 
@@ -35,7 +42,7 @@ export const getLists = async (
 
 export const getGravatarPicApi = async (email) => {
   try {
-    let url = `https://www.gravatar.com/avatar/${md5(email)}?d=404`;
+    let url = `https://www.gravatar.com/avatar/${md5(email)}?d=identicon`;
     let res = await axios.get(url);
     return res;
   } catch (error) {
@@ -45,18 +52,31 @@ export const getGravatarPicApi = async (email) => {
 
 export const getNotificationsList = async (
   page: number = 1,
-  per_page: number = -1,
+  per_page: number = 10,
   is_seen: number = 0,
+  type = "all",
+  loadMore = false,
   loginToken = null
 ) => {
   try {
     const res = await NetworkCall.fetch(
-      NotificationRequests.getNotification(page, per_page, is_seen, loginToken),
+      NotificationRequests.getNotification(
+        page,
+        per_page,
+        is_seen,
+        type,
+        loginToken
+      ),
       false
     );
 
     if (res && res?.status_code == 200) {
-      store.dispatch(setData(res?.data?.items));
+      if (loadMore) {
+        const oldData = await store.getState().notifications.data;
+        store.dispatch(setData([...oldData, ...res?.data?.items]));
+      } else {
+        store.dispatch(setData(res?.data?.items));
+      }
     }
 
     return res;
@@ -75,7 +95,6 @@ export const markNotificationRead = async (id: number) => {
     );
 
     if (res && res?.status_code == 200) {
-      await getNotificationsList(1, -1);
       await getLists();
     }
 
@@ -85,11 +104,7 @@ export const markNotificationRead = async (id: number) => {
   }
 };
 
-export const markAllNotificationRead = async (
-  body: { ids: any[] },
-  page = 1,
-  perPage = -1
-) => {
+export const markAllNotificationRead = async (body: { ids: any[] }) => {
   try {
     const res = await NetworkCall.fetch(
       NotificationRequests.markAllReadNotification(body),
@@ -97,7 +112,6 @@ export const markAllNotificationRead = async (
     );
 
     if (res && res?.status_code == 200) {
-      await getNotificationsList(1, -1);
       await getLists();
     }
 
@@ -107,11 +121,7 @@ export const markAllNotificationRead = async (
   }
 };
 
-export const deleteAllNotifications = async (
-  body: { ids: any[] },
-  page = 1,
-  perPage = -1
-) => {
+export const deleteAllNotifications = async (body: { ids: any[] }) => {
   try {
     const res = await NetworkCall.fetch(
       NotificationRequests.deleteAllNotification(body),
@@ -119,7 +129,6 @@ export const deleteAllNotifications = async (
     );
 
     if (res && res?.status_code == 200) {
-      await getNotificationsList(1, -1);
       await getLists();
     }
 

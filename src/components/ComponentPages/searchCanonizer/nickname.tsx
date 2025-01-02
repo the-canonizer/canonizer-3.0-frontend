@@ -128,7 +128,13 @@ const NicknameSearch = () => {
     }
   };
   const getHighlightedText = (text, highlight) => {
-    const parts = text?.split(new RegExp(`(${highlight})`, "gi"));
+    const escapedHighlight = highlight.replace(
+      /[-[\]{}()*+?.,\\^$|#\s]/g,
+      "\\$&"
+    );
+
+    // Create a regular expression using the escaped highlight
+    const parts = text?.split(new RegExp(`(${escapedHighlight})`, "gi"));
     return (
       <span>
         {" "}
@@ -175,7 +181,7 @@ const NicknameSearch = () => {
             >
               Search Results for “
               <span
-                className="text-canBlue capitalize"
+                className="text-canBlue capitalize break-all whitespace-break-spaces"
                 id="elastic_nickname_search_text"
               >
                 {router?.query?.q}

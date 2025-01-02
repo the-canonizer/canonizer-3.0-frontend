@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import HtmlDiff from "htmldiff-js";
 
-// import CompareStatementUI from "./UI/index-old";
-
 import { getCompareStatement } from "../../../network/api/history";
 import useAuthentication from "src/hooks/isUserAuthenticated";
 import CompareStatementUI from "./UI";
@@ -26,7 +24,7 @@ function CompareStatement() {
       ids,
       topic_num: +router?.query.routes?.at(0)?.split("-")[0],
       camp_num: +router?.query.routes?.at(1).split("-")[0],
-      compare: router?.query?.from,
+      compare: router?.asPath?.split("/")?.at(1),
     };
     const res = await getCompareStatement(reqBody);
 
@@ -52,7 +50,7 @@ function CompareStatement() {
   };
 
   useEffect(() => {
-    const ids = (router?.query?.statements as String)?.split("_");
+    const ids = (router?.query?.comparison_ids as String)?.split("_");
     const status = (router?.query?.status as String)?.split("-");
     if (isLoggedIn) {
       if (ids?.length) getStatement(ids);

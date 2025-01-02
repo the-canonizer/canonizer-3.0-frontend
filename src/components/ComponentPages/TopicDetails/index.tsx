@@ -1,7 +1,15 @@
 import { useRouter } from "next/router";
 import { Fragment, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Alert, BackTop, Image, Popover, Select, Typography } from "antd";
+import {
+  Alert,
+  BackTop,
+  Image,
+  Popover,
+  Select,
+  Typography,
+  Collapse,
+} from "antd";
 import moment from "moment";
 
 import styles from "./topicDetails.module.scss";
@@ -63,8 +71,11 @@ import CommanBreadcrumbs from "../Breadcrumbs/commonBreadcrumbs";
 import ActivityNewsCard from "./ActivityNewsCard";
 import CampRecentActivities from "./CampRecentActivities";
 import { InfoCircleOutlined } from "@ant-design/icons";
+import { labels } from "src/messages/label";
 
 const { Link: AntLink } = Typography;
+const { Panel } = Collapse;
+const { Text } = Typography;
 
 const TopicDetails = ({ serverSideCall }: any) => {
   const myRefToCampStatement = useRef(null);
@@ -87,6 +98,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
     openConsensusTreePopup,
     totalScoreforTreeCard,
     treeExpandValue,
+    userEmail,
   } = useSelector((state: RootState) => ({
     algorithms: state.homePage?.algorithms,
     asof: state?.filters?.filterObject?.asof,
@@ -100,6 +112,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
     openConsensusTreePopup: state.hotTopic.openConsensusTreePopup,
     totalScoreforTreeCard: state.topicDetails.totalScoreforTreeCard,
     treeExpandValue: state?.filters?.treeExpandValue,
+    userEmail: state?.auth?.loggedInUser?.email,
   }));
 
   const { isUserAuthenticated } = isAuth();
@@ -174,6 +187,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
           algorithm: algorithm,
           update_all: 1,
           fetch_topic_history: viewThisVersionCheck ? 1 : null,
+          current_user: isUserAuthenticated ? userEmail : "",
         };
 
         const reqBody = {
@@ -279,6 +293,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
       algorithm: algorithm,
       update_all: 1,
       fetch_topic_history: +router?.query?.topic_history,
+      current_user: isUserAuthenticated ? userEmail : "",
     };
     setRemoveSupportSpinner(true);
     let reqBody = {
@@ -322,6 +337,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
       algorithm: algorithm,
       update_all: 1,
       fetch_topic_history: +router?.query?.topic_history,
+      current_user: isUserAuthenticated ? userEmail : "",
     };
     setRemoveSupportSpinner(true);
 
@@ -363,6 +379,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
       algorithm: algorithm,
       update_all: 1,
       fetch_topic_history: +router?.query?.topic_history,
+      current_user: isUserAuthenticated ? userEmail : "",
     };
     setRemoveSupportSpinner(true);
 
@@ -507,6 +524,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
   return (
     <Fragment>
       <Layout
+        className="topicDetailsPageLayout"
         rightSidebar={
           !openConsensusTreePopup &&
           tree?.["1"]?.is_valid_as_of_time && (
@@ -540,16 +558,25 @@ const TopicDetails = ({ serverSideCall }: any) => {
                           ? 0
                           : totalCampScoreForSupportTree
                       }
+                      hideRank={tree && tree?.["1"]?.rank_hidden}
                     />
                   </div>
                 )}
                 {tree?.["1"]?.is_valid_as_of_time && (
                   <div
-                    className="bg-canGray py-7 px-2.5 lg:px-6 rounded-lg h-[400px] xl:h-[600px]"
+                    className={
+                      tree && tree?.["1"]?.rank_hidden == true
+                        ? "bg-canGray py-7 px-2.5 lg:px-6 rounded-lg"
+                        : "bg-canGray py-7 px-2.5 lg:px-6 rounded-lg h-[400px] xl:h-[600px]"
+                    }
                     id="topic_detail_section_heading_support_tree"
                   >
                     <div
-                      className="border border-canGrey2 bg-white rounded-lg lg:p-2 p-2.5 h-full"
+                      className={
+                        tree && tree?.["1"]?.rank_hidden == true
+                          ? null
+                          : "border border-canGrey2 bg-white rounded-lg lg:p-2 p-2.5 h-full"
+                      }
                       id="topic_detail_section_heading_support_tree_1"
                     >
                       <SupportTreeCard
@@ -587,6 +614,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
                         setTotalCampScoreForSupportTree={
                           setTotalCampScoreForSupportTree
                         }
+                        hideRank={tree && tree?.["1"]?.rank_hidden}
                       />
                     </div>
                   </div>
@@ -657,7 +685,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
                       <CloseOutlined />
                     </SecondaryButton>
                   </div>
-                  <p
+                  {/* <p
                     className="text-sm  font-normal !text-canBlack mt-4"
                     id="topic_detail_section_collapse_camps_text"
                   >
@@ -679,22 +707,100 @@ const TopicDetails = ({ serverSideCall }: any) => {
                     defaultValue={`${treeExpandValue}`}
                     onChange={handleChange}
                     options={scoreOptions}
-                  />
+                  /> */}
                 </div>
-                <div
+                {/* <div
                   className={styles.scoreCheckbox}
                   id="topic_detail_section_consesnus_tree_full_score_checkbox"
                 >
-                  <FullScoreCheckbox loadingIndicator={loadingIndicator} />
+                  <FullScoreCheckbox
+                    loadingIndicator={loadingIndicator}
+                    isDisabled={tree && tree?.["1"]?.rank_hidden}
+                  />
                 </div>
                 <ArchivedCampCheckBox
                   loadingIndicator={loadingIndicator}
                   id="topic_detail_section_consesnus_tree_archive_checkbox"
-                />
+                /> */}
+                <Collapse
+                  className="camp-accordion topic-d-accordion"
+                  ghost
+                  expandIconPosition="right"
+                  defaultActiveKey={["0"]}
+                >
+                  <Panel
+                    header={
+                      <>
+                        Advanced Settings<br></br>{" "}
+                        <Text className="block mt-1 text-xs text-[#777F93]">
+                          {labels.cr_keywords_sp}
+                        </Text>
+                      </>
+                    }
+                    key="1"
+                  >
+                    <>
+                      <p
+                        className="text-sm  font-normal !text-canBlack"
+                        id="topic_detail_section_collapse_camps_text"
+                      >
+                        Collapse camps with support less than
+                      </p>
+
+                      <Select
+                        id="topic_detail_section_consesnus_tree_select_tag"
+                        className="flex items-center [&_.ant-select-selector]:!bg-transparent [&_.ant-select-selector]:!border-none [&_.ant-select-selector]:focus:!border-none !border !border-canGrey2 !shadow-none rounded-md !w-[200px] !mt-2.5 !mb-5 h-[40px]"
+                        suffixIcon={
+                          <Image
+                            src="/images/select-caret.svg"
+                            alt=""
+                            height={7}
+                            width={15}
+                          />
+                        }
+                        value={`${treeExpandValue}`}
+                        defaultValue={`${treeExpandValue}`}
+                        onChange={handleChange}
+                        options={scoreOptions}
+                      />
+
+                      <div
+                        className={styles.scoreCheckbox}
+                        id="topic_detail_section_consesnus_tree_full_score_checkbox"
+                      >
+                        <FullScoreCheckbox
+                          loadingIndicator={loadingIndicator}
+                          isDisabled={tree && tree?.["1"]?.rank_hidden}
+                        />
+                      </div>
+                      <ArchivedCampCheckBox
+                        loadingIndicator={loadingIndicator}
+                        isDisabled={tree && tree?.["1"]?.rank_hidden}
+                      />
+                    </>
+                  </Panel>
+                </Collapse>
                 <hr
                   className="border-1 my-7 border-canGrey2"
                   id="topic_detail_section_consesnus_tree_line_break"
                 />
+                {tree && tree?.["1"]?.rank_hidden === true && (
+                  <Alert
+                    type="warning"
+                    showIcon
+                    icon={
+                      <i className="icon-warning !text-canRed text-[1.125rem]"></i>
+                    }
+                    message="To view support, add your direct support to the topic or delegate support to another user first."
+                    className="bg-transparent border-0 font-medium text-canBlack p-0 mb-[1rem]"
+                  />
+                )}
+                {/* <div className="mb-4 italic text-base">
+                    <strong>
+                      *To view support, add your direct support to the topic or
+                      delegate support to another user first.
+                    </strong>
+                  </div> */}
                 <CampTree
                   id="topic_detail_section_consesnus_tree_camp_tree"
                   scrollToCampStatement={scrollToCampStatement}

@@ -18,6 +18,7 @@ import PrimaryButton from "components/shared/Buttons/PrimariButton";
 import Inputs from "components/shared/FormInputs";
 import ManageStatementUISkelaton from "./skelaton";
 import CustomSkelton from "components/common/customSkelton";
+import { defaultNicknameData } from "src/utils/generalUtility";
 // import StarIcon from "./starIcon";
 
 //Ckeditor
@@ -111,7 +112,9 @@ function ManageStatementUI({
           validateTrigger={messages.formValidationTypes()}
           initialValues={{
             available_for_child: 0,
-            nick_name: nickNameData[0]?.id,
+            nick_name: defaultNicknameData(nickNameData)?.id
+              ? defaultNicknameData(nickNameData)?.id
+              : nickNameData[0]?.id,
           }}
           onValuesChange={handleformvalues}
           onFinish={onFinish}
@@ -126,7 +129,11 @@ function ManageStatementUI({
                   </span>
                 }
                 name="nick_name"
-                defaultValue={nickNameData[0]?.id}
+                defaultValue={
+                  defaultNicknameData(nickNameData)?.id
+                    ? defaultNicknameData(nickNameData)?.id
+                    : nickNameData[0]?.id
+                }
                 options={nickNameData}
                 allowClear
                 size="large"
@@ -238,8 +245,14 @@ function ManageStatementUI({
                   }
                   id="publish-button"
                 >
-                  Publish Statement
-                  <UploadOutlined />
+                  {isAutoSaving ? (
+                    "Saving as draft ..."
+                  ) : (
+                    <>
+                      Publish Statement
+                      <UploadOutlined className="ml-2" />
+                    </>
+                  )}
                 </PrimaryButton>
               </Form.Item>
               <SecondaryButton

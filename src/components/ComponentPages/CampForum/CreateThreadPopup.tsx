@@ -36,10 +36,17 @@ const ManageThread = ({ onSubmittedSucess = null }) => {
   const [initialValue, setInitialValues] = useState({});
   const [isThreadUpdate, setIsThreadUpdate] = useState(false);
   const [isUpdateSubmit, serIsUpdateSubmit] = useState(false);
+  const [breadcrumb, setBreadcrumb] = useState({ topic: null, camp: null });
 
   const [form] = Form.useForm();
 
   const values = Form.useWatch([], form);
+
+  useEffect(() => {
+    if (topicRecord && campRecord) {
+      setBreadcrumb({ topic: topicRecord, camp: campRecord });
+    }
+  }, [topicRecord, campRecord]);
 
   useEffect(() => {
     form
@@ -187,8 +194,8 @@ const ManageThread = ({ onSubmittedSucess = null }) => {
         onCancel={closeDrawer}
         isLoading={isLoading}
         isDisabled={isDisabled}
-        topicRecord={topicRecord}
-        campRecord={campRecord}
+        topicRecord={breadcrumb?.topic}
+        campRecord={breadcrumb?.camp}
         isUpdateSubmit={isUpdateSubmit}
       />
     </CustomSpinner>

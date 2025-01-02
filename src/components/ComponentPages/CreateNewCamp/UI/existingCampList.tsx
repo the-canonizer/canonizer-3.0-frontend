@@ -27,7 +27,7 @@ export const getTopicNameLink = (
 ) => {
   const bd = JSON.parse(item?.breadcrumb_data);
   return (
-    <div className={"flex" + className} id={`topic-link-${item.id}`}>
+    <div className={"flex " + className} id={`topic-link-${item.id}`}>
       <div
         className="w-[5px] h-[5px] rounded-full bg-canBlack mr-2 mt-2.5"
         id={`dot-${item.id}`}
@@ -70,6 +70,7 @@ const ExistingCampList = ({
   isError,
   onContributeCLick,
   isLoading,
+  isUpdate = false,
 }) => {
   const dispatch = useDispatch();
   return (
@@ -117,65 +118,71 @@ const ExistingCampList = ({
           id="loading-skeleton"
         />
       ) : (
-        <List
-          dataSource={data}
-          locale={{ emptyText: "There are no related camps available" }}
-          className="!list-disc"
-          footer={
-            isShowMore && (
-              <Link href={{ pathname: "/search/camp", query: { q: campName } }}>
-                <a
-                  className="text-canBlue uppercase text-xs font-semibold hocus:text-canHoverBlue"
-                  role="button" // Adds button role
-                  tabIndex={0} // Makes it focusable via keyboard
-                  onClick={() => {
-                    dispatch(setSearchValue(""));
-                    dispatch(
-                      setFilterCanonizedTopics({
-                        // asofdate: Date.now() / 1000,
-                        asof: "default",
-                      })
-                    );
-                  }}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      dispatch(setSearchValue(""));
-                    }
-                  }}
-                  id="see-more-results"
+        <div className="w-full h-full">
+          <div
+            className={`${
+              isUpdate ? "max-h-[850px]" : "max-h-[500px]"
+            } overflow-y-auto overflow-x-hidden pr-3 mb-4`}
+          >
+            <List
+              dataSource={data.slice(0, 7)}
+              locale={{ emptyText: "There are no related camps available" }}
+              className="!list-disc"
+              renderItem={(item: {
+                id: string;
+                link: string;
+                type_value: string;
+              }) => (
+                <List.Item
+                  className="!border-b-0 mt-0 text-lg font-medium hover:shadow-lg !p-4 rounded-lg"
+                  key={item?.id}
+                  id={`list-item-${item?.id}`}
                 >
-                  See more results
-                </a>
-              </Link>
-            )
-          }
-          renderItem={(item: {
-            id: string;
-            link: string;
-            type_value: string;
-          }) => (
-            <List.Item
-              className="!border-b-0 mt-0 text-lg font-medium hover:shadow-lg !p-4 rounded-lg"
-              key={item?.id}
-              id={`list-item-${item?.id}`}
-            >
-              {getTopicNameLink(item, campName)}
-              <SecondaryButton
-                className="flex p-0 !bg-transparent h-auto shadow-none border-0 uppercase text-xs font-semibold text-canBlue hocus:text-canBlue hocus:[&_>svg]:fill-canBlue"
-                onClick={onContributeCLick.bind(this, item)}
-                id={`contribute-button-${item?.id}`}
+                  {getTopicNameLink(item, campName)}
+                  <SecondaryButton
+                    className="flex p-0 !bg-transparent h-auto shadow-none border-0 uppercase text-xs font-semibold text-canBlue hocus:text-canBlue hocus:[&_>svg]:fill-canBlue"
+                    onClick={onContributeCLick.bind(this, item)}
+                    id={`contribute-button-${item?.id}`}
+                  >
+                    contribute{" "}
+                    <UserEditIcon
+                      className="[&_>svg]:text-sm ml-2"
+                      width="18"
+                      height=""
+                    />
+                  </SecondaryButton>
+                </List.Item>
+              )}
+              id="camp-list"
+            />
+          </div>
+          {isShowMore && (
+            <Link href={{ pathname: "/search/camp", query: { q: campName } }}>
+              <a
+                className="text-canBlue uppercase text-xs font-semibold hocus:text-canHoverBlue"
+                role="button" // Adds button role
+                tabIndex={0} // Makes it focusable via keyboard
+                onClick={() => {
+                  dispatch(setSearchValue(""));
+                  dispatch(
+                    setFilterCanonizedTopics({
+                      // asofdate: Date.now() / 1000,
+                      asof: "default",
+                    })
+                  );
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    dispatch(setSearchValue(""));
+                  }
+                }}
+                id="see-more-results"
               >
-                contribute{" "}
-                <UserEditIcon
-                  className="[&_>svg]:text-sm ml-2"
-                  width="18"
-                  height=""
-                />
-              </SecondaryButton>
-            </List.Item>
+                See more results
+              </a>
+            </Link>
           )}
-          id="camp-list"
-        />
+        </div>
       )}
     </CommonCards>
   );

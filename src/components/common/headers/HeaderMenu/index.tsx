@@ -80,7 +80,7 @@ const menuItems = [
     isMobile: true,
   },
   {
-    link: "/settings",
+    link: "/settings?tab=profile_info",
     linkTitle: "Settings",
     id: 5,
     isMobile: true,
@@ -88,7 +88,7 @@ const menuItems = [
     isAuthReq: true,
   },
   {
-    link: "/settings?tab=supported_camps",
+    link: "/settings?tab=direct_supported_camps",
     linkTitle: "Supported Camps",
     id: 5,
     isMobile: true,
@@ -133,6 +133,14 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
   const onClick = ({ key }) => {
     if (key == 3) {
       logOut(router);
+      document.cookie = "current_user=" +
+      "" +
+      "; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
+
+      document.cookie = "isUserAuthenticated=" +
+      false +
+      "; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
+      console.log("logout");
     }
   };
 

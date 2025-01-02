@@ -248,7 +248,6 @@ export default function RecentActivities() {
   };
 
   const isMobile = useIsMobile();
-  // const isMobile = window.matchMedia("(max-width: 991px)").matches;
 
   const getTopicCampName = (activity, decodedProperties) => {
     const subjectType = activity?.activity?.subject_type;
@@ -292,41 +291,45 @@ export default function RecentActivities() {
             className={isActivitiesPage ? "inline-flex gap-4 ml-auto" : ""}
           />
           {isActivitiesPage ? (
-            <Tabs
-              tabPosition={!isMobile ? "left" : "top"}
-              className={`custom-tabs [&_.ant-tabs-nav]:mb-0 [&_.ant-tabs-nav-wrap]:w-full [&_.ant-tabs-nav-wrap]:justify-center [&_.ant-tabs-nav-list]:w-full [&_.ant-tabs-tab-btn]:text-canBlack [&_.ant-tabs-tab-active]:!text-canBlue  [&_.ant-tabs-tab-btn]:!px-0 [&_.ant-tabs-ink-bar]:!h-[3px] [&_.ant-tabs-tab]:!px-0 [&_.ant-tabs-tab-btn]:text-base  [&_.ant-tabs-tab-btn]:font-semibold [&_.ant-tabs-tab-btn]:!pr-8 lg:[&_.ant-tabs-tab-btn]:!mr-28 [&_.ant-tabs-content-holder]:!border [&_.ant-tabs-content-holder]:!border-canGrey2 [&_.ant-tabs-content-holder]:!rounded-xl [&_.ant-tabs-content-holder]:!py-4 lg:[&_.ant-tabs-content-holder]:!px-8 [&_.ant-tabs-tabpane]:!p-0 [&_.ant-tabs-tab-btn]:!py-2.5 [&_.ant-tabs-ink-bar]:!hidden [&_.ant-list-item]:!border-b [&_.ant-list-item]:!border-canDarkBlack [&_.ant-list-item]:!border-opacity-10 [&_.ant-tabs-content-holder]:!px-4 [&_.ant-tabs-content-holder]:relative ${
-                isOnlyCamp ? "[&_.ant-tabs-nav]:hidden" : ""
-              }`}
-              defaultActiveKey={`${defaultActiveKey}`}
-              tabBarExtraContent={slot}
-              onChange={handleTabChange}
-              id="tabs"
+            <div
+              className="bg-white border p-2 rounded-lg min-h-80"
+              id="activities-container"
             >
-              {!isOnlyCamp && (
-                <TabPane tab="Camps" key="topic/camps" id="tab-pane-camps">
-                  <TopicCampsTab
-                    getTopicsLoadingIndicator={getTopicsLoadingIndicator}
-                    recentActivities={recentActivities}
-                    handleTextOverflow={handleTextOverflow}
-                    getTopicCampName={getTopicCampName}
-                    covertToTime={covertToTime}
-                    bodyCount={15}
-                  />
-                </TabPane>
-              )}
-              {
-                <TabPane tab="Threads" key="threads" id="tab-pane-threads">
-                  <ThreadTab
-                    getTopicsLoadingIndicator={getTopicsLoadingIndicator}
-                    recentActivities={recentActivities}
-                    decodeUrlLink={decodeUrlLink}
-                    handleTextOverflow={handleTextOverflow}
-                    covertToTime={covertToTime}
-                    bodyCount={15}
-                  />
-                </TabPane>
-              }
-            </Tabs>
+              <Tabs
+                className={`custom-tabs [&_.ant-tabs-nav]:mb-0 [&_.ant-tabs-nav-wrap]:w-full [&_.ant-tabs-nav-wrap]:justify-center [&_.ant-tabs-nav-list]:w-full [&_.ant-tabs-tab-btn]:text-canBlack [&_.ant-tabs-tab-active]:!text-canBlue [&_.ant-tabs-tab-btn]:!px-4 [&_.ant-tabs-ink-bar]:!h-[3px] [&_.ant-tabs-tabpane]:!p-0 [&_.ant-tabs-ink-bar]:!hidden [&_.ant-list-item]:!border-b [&_.ant-list-item]:!border-canDarkBlack [&_.ant-list-item]:!border-opacity-10  [&_.ant-tabs-content-holder]:relative ${
+                  isOnlyCamp ? "[&_.ant-tabs-nav]:hidden" : ""
+                }`}
+                defaultActiveKey={`${defaultActiveKey}`}
+                tabBarExtraContent={slot}
+                onChange={handleTabChange}
+                id="tabs"
+              >
+                {!isOnlyCamp && (
+                  <TabPane tab="Camps" key="topic/camps" id="tab-pane-camps">
+                    <TopicCampsTab
+                      getTopicsLoadingIndicator={getTopicsLoadingIndicator}
+                      recentActivities={recentActivities}
+                      handleTextOverflow={handleTextOverflow}
+                      getTopicCampName={getTopicCampName}
+                      covertToTime={covertToTime}
+                      bodyCount={15}
+                    />
+                  </TabPane>
+                )}
+                {
+                  <TabPane tab="Threads" key="threads" id="tab-pane-threads">
+                    <ThreadTab
+                      getTopicsLoadingIndicator={getTopicsLoadingIndicator}
+                      recentActivities={recentActivities}
+                      decodeUrlLink={decodeUrlLink}
+                      handleTextOverflow={handleTextOverflow}
+                      covertToTime={covertToTime}
+                      bodyCount={15}
+                    />
+                  </TabPane>
+                }
+              </Tabs>
+            </div>
           ) : (
             <div
               className="bg-white border p-2 rounded-lg min-h-80"
@@ -374,7 +377,7 @@ export default function RecentActivities() {
           )}
         </CommonCard>
         {isActivitiesPage && (
-          <div className="lg:ml-[206px] mt-5" id="load-more-container">
+          <div className="mt-5" id="load-more-container">
             {checkLogType === "topic/camps"
               ? LoadMoreTopics("topic/camps")
               : LoadMoreTopics("threads")}

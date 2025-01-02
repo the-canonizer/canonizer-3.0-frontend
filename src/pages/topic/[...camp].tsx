@@ -1,5 +1,13 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
+import { argon2id } from "hash-wasm";
+
+import {
+  formatTheDate,
+  parseCookies,
+  replaceSpecialCharacters,
+} from "src/utils/generalUtility";
+import { getHistoryApi } from "../../network/api/history";
 import {
   getCanonizedCampStatementApi,
   getNewsFeedApi,
@@ -13,19 +21,13 @@ import {
   setCampStatement,
   setCurrentTopicRecord,
   setCurrentCampRecord,
+  setHistory,
 } from "../../store/slices/campDetailSlice";
-import { formatTheDate, parseCookies } from "src/utils/generalUtility";
-import { replaceSpecialCharacters } from "src/utils/generalUtility";
-import { setHistory } from "../../store/slices/campDetailSlice";
-
-import { getHistoryApi } from "../../network/api/history";
-
 import TopicDetails from "src/components/ComponentPages/TopicDetails";
 import { setCurrentDate } from "src/store/slices/filtersSlice";
-import { useEffect, useRef } from "react";
 import DataNotFound from "src/components/ComponentPages/DataNotFound/dataNotFound";
 import { createToken } from "src/network/api/userApi";
-import { argon2id } from "hash-wasm";
+import StatementPreviewModal from "components/ComponentPages/TopicDetails/PreviewStatementModal";
 
 const TopicDetailsPage = ({
   current_date,
@@ -73,6 +75,8 @@ const TopicDetailsPage = ({
       ) : (
         <TopicDetails serverSideCall={serverSideCall} />
       )}
+
+      <StatementPreviewModal />
     </Fragment>
   );
 };
@@ -107,6 +111,7 @@ export async function getServerSideProps({ req, query, res }) {
   let topicName = query?.camp[0];
   let campName = query?.camp[1];
   let token = null;
+  let userEmail = req.cookies?.isUserAuthenticated ? req.cookies?.current_user : "";
 
   let hashValue;
   let cookies;
@@ -163,6 +168,7 @@ export async function getServerSideProps({ req, query, res }) {
     update_all: 1,
     fetch_topic_history: query?.viewversion == "1" ? 1 : null,
     view: req.cookies[cookieKey] ? req.cookies[cookieKey] : hashValue,
+    current_user: userEmail,
   };
 
   const reqBody = {
