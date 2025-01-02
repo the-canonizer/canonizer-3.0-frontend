@@ -176,7 +176,7 @@ const UploadFiles = () => {
     //if open folder is open and check using local storage
     //useSelecter
 
-setUploadLoader(false);
+    setUploadLoader(false);
     if (openFolder) {
       setFolderFiles([]);
       uploadOptionsHide();

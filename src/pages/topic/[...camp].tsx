@@ -111,7 +111,9 @@ export async function getServerSideProps({ req, query, res }) {
   let topicName = query?.camp[0];
   let campName = query?.camp[1];
   let token = null;
-  let userEmail = req.cookies?.isUserAuthenticated ? req.cookies?.current_user : "";
+  let userEmail = req.cookies?.isUserAuthenticated
+    ? req.cookies?.current_user
+    : "";
 
   let hashValue;
   let cookies;
