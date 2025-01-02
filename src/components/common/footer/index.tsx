@@ -80,7 +80,8 @@ function Footer() {
   const [mockLinks, setMockLinks] = useState(mockLinks1);
 
   useEffect(() => {
-    setMockLinks(mockLinks1);
+      setMockLinks(mockLinks1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedInUser]);
 
   return (
