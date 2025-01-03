@@ -7,7 +7,7 @@ import {
   UploadOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 import K from "src/constants";
 import messages from "src/messages";
@@ -19,6 +19,11 @@ import Inputs from "components/shared/FormInputs";
 import ManageStatementUISkelaton from "./skelaton";
 import CustomSkelton from "components/common/customSkelton";
 import { defaultNicknameData } from "src/utils/generalUtility";
+import {
+  uploadFile,
+} from "src/network/api/userApi";
+import { useSelector } from "react-redux";
+import { RootState } from "src/store";
 // import StarIcon from "./starIcon";
 
 //Ckeditor
@@ -84,6 +89,84 @@ function ManageStatementUI({
   // isGenerating,
 }) {
   const editorRef = useRef(null);
+  const [getBinaryData,setGetbinaryData] = useState("")
+  const extractImgSrc = (htmlString) => {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(htmlString, 'text/html');
+    const imgElement = doc.querySelector('img');
+    return imgElement ? imgElement.src : null;
+  };
+  const convertBase64ToBinary = (base64Str) => {
+    const byteCharacters = atob(base64Str.split(',')[1]); // Remove the "data:image..." part
+    const byteArrays = [];
+    
+    for (let offset = 0; offset < byteCharacters.length; offset++) {
+      const byte = byteCharacters.charCodeAt(offset);
+      byteArrays.push(byte);
+    }
+  
+    const binaryData = new Uint8Array(byteArrays);
+    return binaryData;
+  };
+
+  // console.log(editorState,"editor");
+  
+  // Example base64 image string
+    const {
+      topicRecord,
+    } = useSelector((state: RootState) => ({
+      topicRecord: state?.topicDetails?.currentTopicRecord,
+    }));
+console.log(topicRecord,"topic")
+  function handleButtonClick() {
+    // Match all <img> tags in the editorState
+    const imgTags = editorState.match(/<img[^>]*>/gi);
+  
+    if (!imgTags || imgTags.length === 0) {
+      console.error("No images found in the editor.");
+      return;
+    }
+  
+    // Prepare the FormData object
+    const formData = new FormData();
+    const folderId = ""; // Optional or empty
+  
+    // Loop through each <img> tag, extract the base64 data, and append to FormData
+    imgTags.forEach((imgTag, index) => {
+      const base64Image = extractImgSrc(imgTag);
+  
+      // Convert base64 to binary
+      const binaryData = convertBase64ToBinary(base64Image);
+  
+      // Check if binaryData is valid
+      if (!binaryData) {
+        console.error(`No binary data found for image ${index + 1}`);
+        return;
+      }
+      // Create a unique name for each image
+      const name = `${topicRecord?.topic_name}_${Date.now()}_${index + 1}.jpg`;
+  
+      // Add the binary data as a Blob to FormData
+      const file = new Blob([binaryData], { type: "image/jpeg" });
+      formData.append("file[]", file); // Add the binary file
+      formData.append("name[]", name); // Add the file name
+    });
+  
+    // Add folder_id (if applicable)
+    formData.append("folder_id", folderId);
+  
+    // Call the uploadFile API
+    uploadFile(formData)
+      .then((response) => {
+        // Handle success
+        console.log("Files uploaded successfully:", response);
+      })
+      .catch((error) => {
+        // Handle error
+        console.error("Error uploading files:", error);
+      });
+  }
+  
 
   return (
     <CommonCards className="border-0 bg-white" id="common-cards">
@@ -244,6 +327,7 @@ function ManageStatementUI({
                     (submitIsDisable && isEdit) || !isDisabled || isAutoSaving
                   }
                   id="publish-button"
+                  onClick={handleButtonClick}
                 >
                   {isAutoSaving ? (
                     "Saving as draft ..."
