@@ -22,6 +22,8 @@ const DelegatedSupportCamps = ({ search }: any) => {
   const [viewMoreDataValue, setviewMoreDataValue] = useState([]);
   const [delegateSupportedSkeleton, setDelegateSupportedSkeleton] =
     useState(false);
+  const [page, setPage] = useState(1);
+  const [perPage] = useState(10);
 
   const handleSupportedCampsCancel = () => {
     setIsRemoveSupportModalVisible(false);

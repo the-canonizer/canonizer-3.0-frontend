@@ -239,6 +239,7 @@ export default function DelegatedSupportCampsUI({
     const endingPosition = startingPosition + 5;
     return filteredArray.slice(startingPosition, endingPosition);
   };
+
   const filteredArray = useMemo(() => {
     if (search.trim() == "") {
       return displayList;
@@ -302,11 +303,7 @@ export default function DelegatedSupportCampsUI({
                 className="w-full flex justify-end gap-2.5 items-center"
                 id="delegated_supported_camp_reset_btn"
               >
-                <PrimaryButton
-                  onClick={() => {
-                    setSearch("");
-                  }}
-                >
+                <PrimaryButton onClick={() => setSearch("")}>
                   Reset
                 </PrimaryButton>
                 <Input
@@ -326,9 +323,7 @@ export default function DelegatedSupportCampsUI({
                   type="text"
                   name="search"
                   className="!h-10 rounded-lg border border-canGrey2 text-sm font-normal lg:w-auto w-full"
-                  onChange={(e) => {
-                    setSearch(e.target.value);
-                  }}
+                  onChange={(e) => setSearch(e.target.value)}
                 />
               </div>
             </div>

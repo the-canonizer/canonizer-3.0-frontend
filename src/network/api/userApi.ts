@@ -539,12 +539,16 @@ export const resendOTPForRegistration = async (values: object) => {
   }
 };
 
-export const getDirectSupportedCampsList = async () => {
+export const getDirectSupportedCampsList = async (
+  page = 1,
+  perPage = 10,
+  search = ""
+) => {
   let state = store.getState();
   const { auth } = state;
 
   const res = await NetworkCall.fetch(
-    UserRequest.getDirectSupportedCampsList(auth?.token)
+    UserRequest.getDirectSupportedCampsList(page, perPage, search, auth?.token)
   )
     .then((value) => {
       return value;

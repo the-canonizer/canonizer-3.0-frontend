@@ -351,9 +351,15 @@ export default class UserRequest extends Request {
     );
   }
 
-  static getDirectSupportedCampsList(authToken) {
+  static getDirectSupportedCampsList(page, perPage, search, authToken) {
     return new Request(
-      K.Network.URL.GetDirectSupportedCamps,
+      K.Network.URL.GetDirectSupportedCamps +
+        "?page=" +
+        page +
+        "&per_page=" +
+        perPage +
+        "&search=" +
+        search,
       K.Network.Method.GET,
       {},
       K.Network.Header.Type.Json,
