@@ -1231,6 +1231,11 @@ const UploadFileUI = ({
                         onClick={handleGoBack}
                       >
                         File(s) Uploaded
+                        <h3>
+                          <span className={`${styles.span} ml-1.5`}>
+                            {messages.labels.maxSize}
+                          </span>
+                        </h3>
                       </Button>
                       {/* <h3>
                         {messages.labels.uploadFiles}
