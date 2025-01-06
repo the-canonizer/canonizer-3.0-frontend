@@ -90,7 +90,7 @@ function StatementDescPreview({ statement, isLoading }) {
             "tr",
             "img",
           ],
-          allowedSchemes: ["http", "https", "ftp", "mailto", "tel"],
+          allowedSchemes: ["http", "https", "ftp", "mailto", "tel","data"],
           allowedSchemesAppliedToAttributes: ["href", "src", "cite"],
           allowedAttributes: {
             "*": [
