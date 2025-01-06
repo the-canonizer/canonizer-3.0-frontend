@@ -1388,7 +1388,13 @@ const UploadFileUI = ({
                   <Card
                     title={
                       !search && !datePick
-                        ? `${uploadedLengths?.fileLength} Files, ${uploadedLengths?.folderLength} Folders`
+                        ? `${uploadedLengths?.fileLength} ${
+                            uploadedLengths?.fileLength > 1 ? "Files" : "File"
+                          }, ${uploadedLengths?.folderLength} ${
+                            uploadedLengths?.folderLength > 1
+                              ? "Folders"
+                              : "Folder"
+                          }`
                         : `${filteredList?.length} ${
                             filteredList?.length > 1 ? "Files" : "File"
                           } Found`
