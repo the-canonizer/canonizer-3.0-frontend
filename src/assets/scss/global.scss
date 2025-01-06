@@ -899,14 +899,16 @@ body {
 }
 
 .ant-tree-switcher.ant-tree-switcher-noop:before {
+  width: 1px;
   display: block;
   position: absolute;
   top: 0;
-  right: 16px;
+  right: 30px;
   bottom: 0px;
   border-right: 1px solid #d9d9d9;
   content: "";
   transform: rotate(90deg);
+  height: 10px;
 }
 
 .ant-tree-switcher.ant-tree-switcher-noop:has(.ant-tree-switcher-leaf-line) {
