@@ -131,6 +131,7 @@ const ProfileInfo = () => {
     let res = await UpdateUserProfileInfo(values);
     setgetAddress1(res?.data?.address_1);
     if (res && res.status_code === 200) {
+      fetchUserProfileInfo();
       message.success(res.message);
       if (values?.default_algo) {
         dispatch(
@@ -228,8 +229,8 @@ const ProfileInfo = () => {
     const results = await geocodeByAddress(address);
     const [place] = await geocodeByPlaceId(placeId);
     const { long_name: postalCode = "" } =
-      place.address_components.find((c) => c.types.includes("postal_code")) ||
-      {};
+    place.address_components.find((c) => c.types.includes("postal_code")) || {};
+    
     let city = "",
       country = "",
       state = "",
@@ -263,6 +264,7 @@ const ProfileInfo = () => {
       ["state"]: state,
       ["country"]: country,
     });
+
     const updateAdd: UpdateAddress = {
       city: city,
       state: state,
@@ -271,14 +273,12 @@ const ProfileInfo = () => {
       // postal_code: updateAddress?.postal_code
     };
     if (postalCode) updateAdd.postal_code = postalCode;
-    setUpdateAddress(updateAdd);
-    dispatch(setUpdateAddressForProfileInfo(updateAdd));
+      setUpdateAddress(updateAdd);
+      dispatch(setUpdateAddressForProfileInfo(updateAdd));
   };
+
   const getAddress = (type, address, component) => {
-    if (
-      type.match(
-        /^political|^neighborhood$|^sublocality_level_2$|^sublocality_level_1$/
-      )
+    if ( type.match( /^political|^neighborhood$|^sublocality_level_2$|^sublocality_level_1$/ )
     ) {
       return address + ", " + component.long_name;
     } else {
@@ -292,6 +292,75 @@ const ProfileInfo = () => {
       setToggleVerifyButton(0);
     }
   };
+
+  async function fetchUserProfileInfo() {
+    let res = await GetUserProfileInfo();
+    if (res != undefined) {
+      if (res.data != undefined) {
+        let profileData = res.data;
+        setViewEmail(profileData?.email);
+        setUserProfileData(profileData);
+        dispatch(setGlobalUserProfileData(profileData?.first_name));
+        dispatch(setGlobalUserProfileDataLastName(profileData?.last_name));
+        dispatch(setGlobalUserProfileDataEmail(profileData?.email));
+        const verify = {
+          phone_number: profileData.phone_number,
+          mobile_carrier:
+            parseInt(profileData.mobile_carrier).toString() == "NaN"
+              ? ""
+              : parseInt(profileData.mobile_carrier),
+        };
+        formVerify.setFieldsValue(verify);
+        //format date for datepicker
+        if (profileData.birthday != null && profileData.birthday != "")
+          profileData.birthday = moment(profileData.birthday, "YYYY-MM-DD");
+        if (profileData.postal_code) {
+          setPostalCodeDisable(true);
+          dispatch(setPostalCodeDisableForProfileInfo(true));
+        }
+        form.setFieldsValue(profileData);
+        setPrivateFlags(profileData.private_flags);
+        setPrivateList(
+          profileData.private_flags
+            ? profileData.private_flags.split(",")
+            : ""
+        );
+        dispatch(
+          setPrivateListForProfileInfo(
+            profileData.private_flags
+              ? profileData.private_flags.split(",")
+              : ""
+          )
+        );
+
+        setAddress(profileData.address_1);
+        dispatch(setAddressForProfileInfo(profileData.address_1));
+        setMobileNumber(profileData.phone_number);
+        setToggleVerifyButton(profileData.mobile_verified);
+        setMobileVerified(profileData.mobile_verified);
+        const updateAddress: UpdateAddress = {
+          city: profileData.city,
+          state: profileData.state,
+          country: profileData.country,
+          email: profileData?.email,
+          // postal_code: profileData?.postal_code,
+        };
+        if (profileData.postalCode)
+          updateAddress.postal_code = profileData.postalCode;
+        if (profileData.postal_code !== "") {
+          setZipCode(true);
+          dispatch(setZipCodeForProfileInfo(true));
+        }
+        if (profileData.address_1 !== "") {
+          setAdd(true);
+          dispatch(setAddForProfileInfo(true));
+        }
+        setUpdateAddress(updateAddress);
+        dispatch(setUpdateAddressForProfileInfo(updateAddress));
+      }
+    }
+  }
+
   useEffect(() => {
     async function fetchMobileCarrier() {
       let res = await GetMobileCarrier();
@@ -299,7 +368,6 @@ const ProfileInfo = () => {
         setMobileCarrier(res.data);
       }
     }
-
     async function fetchAlgorithmsList() {
       let res = await GetAlgorithmsList();
       if (res != undefined) {
@@ -311,74 +379,6 @@ const ProfileInfo = () => {
       if (res != undefined) {
         setLanguageList(res.data);
         dispatch(setUserLanguageList(res.data));
-      }
-    }
-
-    async function fetchUserProfileInfo() {
-      let res = await GetUserProfileInfo();
-      if (res != undefined) {
-        if (res.data != undefined) {
-          let profileData = res.data;
-          setViewEmail(profileData?.email);
-          setUserProfileData(profileData);
-          dispatch(setGlobalUserProfileData(profileData?.first_name));
-          dispatch(setGlobalUserProfileDataLastName(profileData?.last_name));
-          dispatch(setGlobalUserProfileDataEmail(profileData?.email));
-          const verify = {
-            phone_number: profileData.phone_number,
-            mobile_carrier:
-              parseInt(profileData.mobile_carrier).toString() == "NaN"
-                ? ""
-                : parseInt(profileData.mobile_carrier),
-          };
-          formVerify.setFieldsValue(verify);
-          //format date for datepicker
-          if (profileData.birthday != null && profileData.birthday != "")
-            profileData.birthday = moment(profileData.birthday, "YYYY-MM-DD");
-          if (profileData.postal_code) {
-            setPostalCodeDisable(true);
-            dispatch(setPostalCodeDisableForProfileInfo(true));
-          }
-          form.setFieldsValue(profileData);
-          setPrivateFlags(profileData.private_flags);
-          setPrivateList(
-            profileData.private_flags
-              ? profileData.private_flags.split(",")
-              : ""
-          );
-          dispatch(
-            setPrivateListForProfileInfo(
-              profileData.private_flags
-                ? profileData.private_flags.split(",")
-                : ""
-            )
-          );
-
-          setAddress(profileData.address_1);
-          dispatch(setAddressForProfileInfo(profileData.address_1));
-          setMobileNumber(profileData.phone_number);
-          setToggleVerifyButton(profileData.mobile_verified);
-          setMobileVerified(profileData.mobile_verified);
-          const updateAddress: UpdateAddress = {
-            city: profileData.city,
-            state: profileData.state,
-            country: profileData.country,
-            email: profileData?.email,
-            // postal_code: profileData?.postal_code,
-          };
-          if (profileData.postalCode)
-            updateAddress.postal_code = profileData.postalCode;
-          if (profileData.postal_code !== "") {
-            setZipCode(true);
-            dispatch(setZipCodeForProfileInfo(true));
-          }
-          if (profileData.address_1 !== "") {
-            setAdd(true);
-            dispatch(setAddForProfileInfo(true));
-          }
-          setUpdateAddress(updateAddress);
-          dispatch(setUpdateAddressForProfileInfo(updateAddress));
-        }
       }
     }
     if (isUserAuthenticated) {
