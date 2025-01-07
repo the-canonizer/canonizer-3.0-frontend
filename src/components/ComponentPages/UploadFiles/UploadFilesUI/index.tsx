@@ -511,10 +511,18 @@ const UploadFileUI = ({
   };
 
   const handleGoBack = () => {
-    if (document.referrer) {
-      router.back(); // Navigate to the previous page
-    } else {
-      router.push("/"); // Fallback if there's no previous page
+
+    if(disabledCreateFolder){
+      closeFolder();
+      StatusHideFile();
+      setFlickringData(false);
+      setSearch("");
+    }else{
+      if (document.referrer) {
+        router.back(); // Navigate to the previous page
+      } else {
+        router.push("/"); // Fallback if there's no previous page
+      }
     }
   };
 
@@ -984,7 +992,7 @@ const UploadFileUI = ({
                       size="small"
                       title={
                         <h2 className={styles.FolderOpenHeading}>
-                          <span
+                          {/* <span
                             data-testid="arrow_outlined"
                             style={{ cursor: "pointer" }}
                             onClick={() => {
@@ -1001,7 +1009,7 @@ const UploadFileUI = ({
                               width={14}
                               height={17}
                             />
-                          </span>
+                          </span> */}
                           <span className={styles.marginLeftView}>
                             {" " + item.name + " "}
                           </span>
