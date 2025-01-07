@@ -1242,6 +1242,13 @@ body {
 .ant-tree .ant-tree-node-content-wrapper.ant-tree-node-selected {
   background-color: transparent;
 }
+.ant-tree{
+  @media screen and (max-width: 767px) {
+  overflow-x: auto !important; /* Enable horizontal scrolling */
+  max-width: 100% !important; /* Limit the width to the container */
+  overflow-y: hidden;
+  }
+}
 
 .badNav {
   @media screen and (max-width: 1024px) {
@@ -1280,3 +1287,5 @@ body {
     }
   }
 }
+
+
