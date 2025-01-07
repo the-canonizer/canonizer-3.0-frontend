@@ -30,6 +30,7 @@ import loadingSlice from "./slices/loading";
 import hotTopicSlice from "./slices/hotTopicSlice";
 import searchSlice from "./slices/searchSlice";
 import tagsSlice from "./slices/tagsSlice";
+import tourSlice from "./slices/tourSlice";
 // reducers
 
 let combinedReducer = combineReducers({
@@ -49,6 +50,7 @@ let combinedReducer = combineReducers({
   hotTopic: hotTopicSlice,
   searchSlice: searchSlice,
   tag: tagsSlice,
+  tour: tourSlice,
 });
 
 const rootReducer = (state, action) => {

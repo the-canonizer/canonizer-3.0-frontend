@@ -72,6 +72,8 @@ import ActivityNewsCard from "./ActivityNewsCard";
 import CampRecentActivities from "./CampRecentActivities";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import { labels } from "src/messages/label";
+import TourGuide from "components/common/tourGuide";
+import { detailPageSteps } from "src/constants/tourGuideSteps";
 
 const { Link: AntLink } = Typography;
 const { Panel } = Collapse;
@@ -523,6 +525,12 @@ const TopicDetails = ({ serverSideCall }: any) => {
 
   return (
     <Fragment>
+      {/* {!isMobile && (
+        <TourGuide
+          steps={[...detailPageSteps]}
+          cookieKey="detailPageTour" 
+        />
+      )} */}
       <Layout
         className="topicDetailsPageLayout"
         rightSidebar={

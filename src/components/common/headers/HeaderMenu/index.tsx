@@ -32,7 +32,11 @@ import Notifications from "../notification";
 import ProfileInfoTab from "./profileInfo";
 import { setLogOutType } from "src/store/slices/authSlice";
 import TourGuide from "components/common/tourGuide";
-import { homePageSteps, searchBar } from "src/constants/tourGuideSteps";
+import {
+  detailPageSteps,
+  homePageSteps,
+  searchBar,
+} from "src/constants/tourGuideSteps";
 
 const menuItems = [
   {
@@ -131,13 +135,13 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
       <div className={styles.divider} id={`divider-${props.key}`}></div>
     </li>
   );
-  const visibleMenuItems = menuItems.filter(
+  const visibleMenuItems = menuItems?.filter(
     (item) =>
       !(item.isAuthReq && !isUserAuthenticated) &&
       !(item.hideOnLogin && isUserAuthenticated)
   );
 
-  const tourSteps = visibleMenuItems.map((item) => ({
+  const tourSteps = visibleMenuItems?.map((item) => ({
     target: `#menu-item-${item.id}`,
     content: `This is the ${
       item.linkTitle
@@ -221,7 +225,12 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
     <Fragment>
       {!isMobile && (
         <TourGuide
-          steps={[...searchBar, ...tourSteps, ...homePageSteps]}
+          steps={[
+            ...searchBar,
+            ...tourSteps,
+            ...homePageSteps,
+            // ...detailPageSteps,
+          ]}
           cookieKey="homePageTour"
         />
       )}
