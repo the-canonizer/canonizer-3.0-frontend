@@ -3,7 +3,7 @@ import moment from "moment";
 import Link from "next/link";
 import styles from "../campHistory.module.scss";
 import { useRouter } from "next/router";
-import { capitalizeFirstLetter } from "src/utils/generalUtility";
+import { capitalizeFirstLetter, commaSeparated } from "src/utils/generalUtility";
 
 const { Title } = Typography;
 const { Panel } = Collapse;
@@ -35,10 +35,6 @@ const HistoryComparison = ({
     if (historyOf === "camp" || historyOf === "topic") return "Updates";
     if (historyOf === "statement") return s1 ? "EDITS" : "DETAILS";
     return null; // or a default value if needed
-  };
-
-  const commaSeparated = (item, isLastIndex) => {
-    return item + (isLastIndex ? "" : ", ") 
   };
 
   return (
