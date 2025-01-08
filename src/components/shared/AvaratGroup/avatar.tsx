@@ -33,6 +33,17 @@ const SingleAvatar = ({ user, imageBaseURL = "" }) => {
   }, [user?.first_name, user?.last_name]);
 
   const renderAvatar = () => {
+    if (user?.profile_picture_path && !isGravatarAvailable) {
+      return (
+        <Avatar
+          className="uppercase flex justify-center items-center text-xs"
+          data-testId={`initial-avatar-${user?.id}`}
+        >
+          {user?.first_name?.charAt(0)}
+        </Avatar>
+      );
+    }
+
     if (user?.profile_picture_path) {
       return (
         <Avatar

@@ -81,7 +81,7 @@ const menuItems = [
   },
   {
     link: "/settings?tab=profile_info",
-    linkTitle: "Settings",
+    linkTitle: "Account Settings",
     id: 5,
     isMobile: true,
     icon: <SettingOutlined />,

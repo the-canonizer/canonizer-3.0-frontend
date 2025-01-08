@@ -118,7 +118,7 @@ function WrappedApp({
       window.removeEventListener("beforeunload", handleTabClose);
     };
   }, [router.events]);
-
+  
   return (
     <CookiesProvider>
       <Provider store={store}>
@@ -190,7 +190,6 @@ WrappedApp.getInitialProps = async (
     appContext?.router?.asPath.lastIndexOf("/")
   );
   let path;
-
   if (prePath == "/manage/camp") {
     path =
       appContext?.router?.components &&
@@ -209,17 +208,16 @@ WrappedApp.getInitialProps = async (
 
   let canonical_url =
     process.env.NEXT_PUBLIC_BASE_URL + appContext?.router?.asPath;
-  const queryValue = appContext.router?.query?.q;
-
+  const querval2 = appContext.ctx?.query?.q;
   // Ensure the value is a string before calling replace
-  const formattedQuery = Array.isArray(queryValue)
-    ? queryValue.join(" ").replace(/ /g, "+") // Join array elements and replace spaces
-    : queryValue?.replace(/ /g, "+"); // Replace spaces if it's a string
+  const formattedQuery = Array.isArray(querval2)
+    ? querval2.join(" ").replace(/ /g, "+") // Join array elements and replace spaces
+    : querval2?.replace(/ /g, "+"); // Replace spaces if it's a string
   const req = {
     page_name:
       componentName === "SocialLoginCallbackPage"
         ? "Home"
-        : componentName === "Search" ||
+        : appContext.Component.name === "SearchAll" ||
           componentName === "SearchTopic" ||
           componentName === "SearchCamp" ||
           componentName === "SearchCampStatement" ||
@@ -246,7 +244,7 @@ WrappedApp.getInitialProps = async (
           ? appContext?.ctx?.query?.video?.at(1)?.split("-")?.at(0)
           : null,
       keywords:
-        componentName === "Search" ||
+      appContext.Component.name === "SearchAll" ||
         componentName === "SearchTopic" ||
         componentName === "SearchCamp" ||
         componentName === "SearchCampStatement" ||
