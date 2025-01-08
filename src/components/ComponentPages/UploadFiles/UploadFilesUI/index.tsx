@@ -66,7 +66,7 @@ import HTML from "../../../../assets/image/icons/html.png";
 import JPG from "../../../../assets/image/icons/jpg.png";
 import MOV from "../../../../assets/image/icons/mov.png";
 import PDF from "../../../../assets/image/icons/pdf.png";
-import PNG from "../../../../assets/image/icons/text.png";
+import PNG from "../../../../assets/image/icons/png.png";
 import SVG from "../../../../assets/image/icons/svg.png";
 import TEXT from "../../../../assets/image/icons/text.png";
 import TIFF from "../../../../assets/image/icons/tiff.png";

@@ -162,13 +162,12 @@ const CustomSkelton = ({
   ) : skeltonFor == "prefrences" ? (
     <div>
       {/* <Form layout="vertical"> */}
-        <Col xs={24} sm={24} md={24}>
+      <Col xs={24} sm={24} md={24}>
         <div className="w-full [&>span:first-child]:flex [&>span:first-child]:gap-2 [&>span:first-child]:w-full ">
-        <Skeleton className={`${styles.prefrenceForm} `} count={bodyCount} />
+          <Skeleton className={`${styles.prefrenceForm} `} count={bodyCount} />
         </div>
-        
-        </Col>
-    {/* </Form> */}
+      </Col>
+      {/* </Form> */}
     </div>
   ) : skeltonFor == "comparisonPage" ? (
     <div className="ch-wrapper">
