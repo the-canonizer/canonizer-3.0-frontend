@@ -377,7 +377,7 @@ export default function AdvanceFilter() {
     // loadMore ? setPageNumber(pageNumber + 1) : setPageNumber(1);
     const rebody = {
       type: "camp",
-      search: "",
+      search: searchValue,
       query: "",
       algo: algorithm,
       asof: asof,
@@ -396,7 +396,7 @@ export default function AdvanceFilter() {
     // loadMore ? setPageNumber(pageNumber + 1) : setPageNumber(1);
     const rebody = {
       type: "statement",
-      search: "",
+      search: searchValue,
       query: "",
       algo: algorithm,
       asof: asof,
