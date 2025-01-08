@@ -846,7 +846,7 @@ function CommanBreadcrumbs({
                       getQueryParams()?.returnQuery || ""
                     }`}
                   >
-                    {breadCrumbRes?.topic_name}
+                    <a className="!break-all">{breadCrumbRes?.topic_name}</a>
                   </Link>
                   {isMobile && (
                     <Popover
