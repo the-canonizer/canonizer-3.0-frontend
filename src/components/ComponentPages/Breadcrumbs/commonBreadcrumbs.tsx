@@ -1125,7 +1125,7 @@ function CommanBreadcrumbs({
                   overlayClassName="popver-confirm"
                   placement="bottom"
                   icon={<i className="icon-warning !text-canRed mt-1"></i>}
-                  title="There are some changes that are recent than the current live version of statement, You can review those changes OR can continue to edit the current live version"
+                  title="Some changes exist. Review them or continue to edit."
                   onConfirm={handleEditStatementClick}
                   onCancel={handleManageClick}
                   okText="Continue"
