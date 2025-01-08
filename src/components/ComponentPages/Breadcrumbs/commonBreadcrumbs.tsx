@@ -121,7 +121,9 @@ function CommanBreadcrumbs({
     const isDefaultOrReview = asof === "default" || asof === "review";
 
     const reqBody = {
-      topic_num: parseInt(router?.query?.camp?.at(0)?.split("-")?.at(0), 10),
+      topic_num: compareMode
+        ? router?.query?.routes?.at(0)?.split("-")?.at(0)
+        : parseInt(router?.query?.camp?.at(0)?.split("-")?.at(0), 10),
       camp_num:
         parseInt(router?.query?.camp?.at(1)?.split("-")?.at(0), 10) || 1,
       as_of: asof,
