@@ -778,7 +778,27 @@ function CommanBreadcrumbs({
 
     router.push(link);
   };
-
+  const handleManageClick = () => {
+    router?.push(
+      `${`/statement/history/${replaceSpecialCharacters(
+        router?.query?.camp?.at(0),
+        "-"
+      )}/${replaceSpecialCharacters(
+        router?.query?.camp?.at(1) ?? "1-Agreement",
+        "-"
+      )}`}`
+    );
+  };
+  const handleEditStatementClick = () => {
+    const editId = breadCrumbRes?.propose_statement_edit?.edit_id;
+    const gracePeriod = breadCrumbRes?.propose_statement_edit?.grace_period;
+    if (!editId) return;
+    const path =
+      gracePeriod > 0
+        ? `/manage/statement/${editId}-update`
+        : `/manage/statement/${editId}`;
+    router?.push(path);
+  };
   return (
     <div className="max-md:mx-[-1rem] max-md:shadow-[0px_10px_10px_0px_#0000001A] md:bg-canGrey1_Opacity70 p-[1.5rem] md:rounded-[1.25rem] flex items-center justify-between gap-2 mb-10 bdNav">
       {isForumPage ? (
@@ -1078,31 +1098,65 @@ function CommanBreadcrumbs({
             campStatement?.at(0)?.grace_period_record_count > 0 ||
             campStatement?.at(0)?.parsed_value) ? (
             <div className="topicDetailsCollapseFooter printHIde camp">
-              <PrimaryButton
-                disabled={campRecord?.is_archive == 1 ? true : false}
-                className="printHIde sm:hidden md:hidden hidden lg:flex !h-[40px] py-2.5 px-5 items-center text-sm"
-                onClick={() => {
-                  router?.push(
-                    `${`/statement/history/${replaceSpecialCharacters(
-                      router?.query?.camp?.at(0),
-                      "-"
-                    )}/${replaceSpecialCharacters(
-                      router?.query?.camp?.at(1) ?? "1-Agreement",
-                      "-"
-                    )}`}`
-                  );
-                }}
-                id="add-camp-statement-btn"
-              >
-                {K?.exceptionalMessages?.manageCampStatementButton}
-                <Image
-                  src="/images/manage-btn-icon.svg"
-                  alt=""
-                  height={24}
-                  width={24}
-                  preview={false}
-                />
-              </PrimaryButton>
+              {breadCrumbRes?.propose_statement_edit?.status == "live" ||
+              breadCrumbRes?.propose_statement_edit?.status == "objected" ? (
+                <PrimaryButton
+                  disabled={campRecord?.is_archive == 1 ? true : false}
+                  className="printHIde sm:hidden md:hidden hidden lg:flex !h-[40px] py-2.5 px-5 items-center text-sm"
+                  onClick={() => {
+                    breadCrumbRes?.propose_statement_edit?.status == "objected"
+                      ? handleManageClick()
+                      : handleEditStatementClick();
+                  }}
+                  id="add-camp-statement-btn"
+                >
+                  {K?.exceptionalMessages?.ProposeStatementBtn}
+                  <Image
+                    src="/images/manage-btn-icon.svg"
+                    alt=""
+                    height={24}
+                    width={24}
+                    preview={false}
+                  />
+                </PrimaryButton>
+              ) : (
+                <Popconfirm
+                  overlayStyle={{
+                    width: "25%",
+                  }}
+                  overlayClassName="popver-confirm"
+                  placement="bottom"
+                  icon={<i className="icon-warning !text-canRed mt-1"></i>}
+                  title="There are some changes that are recent than the current live version of statement, You can review those changes OR can continue to edit the current live version"
+                  onConfirm={handleEditStatementClick}
+                  onCancel={handleManageClick}
+                  okText="Continue"
+                  cancelText="Manage Statement"
+                  cancelButtonProps={{
+                    size: "middle",
+                    type: "primary",
+                  }}
+                  okButtonProps={{
+                    size: "middle",
+                    type: "ghost",
+                  }}
+                >
+                  <PrimaryButton
+                    disabled={campRecord?.is_archive == 1 ? true : false}
+                    className="printHIde sm:hidden md:hidden hidden lg:flex !h-[40px] py-2.5 px-5 items-center text-sm"
+                    id="add-camp-statement-btn"
+                  >
+                    {K?.exceptionalMessages?.ProposeStatementBtn}
+                    <Image
+                      src="/images/manage-btn-icon.svg"
+                      alt=""
+                      height={24}
+                      width={24}
+                      preview={false}
+                    />
+                  </PrimaryButton>
+                </Popconfirm>
+              )}
             </div>
           ) : null}
           {!!(
