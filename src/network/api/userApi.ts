@@ -624,12 +624,36 @@ export const addDelegateSupportCamps = async (body) => {
   return res;
 };
 
-export const getDelegatedSupportCampsList = async () => {
+
+// export const getDirectSupportedCampsList = async (
+//   page = 1,
+//   perPage = 10,
+//   search = ""
+// ) => {
+//   let state = store.getState();
+//   const { auth } = state;
+
+//   const res = await NetworkCall.fetch(
+//     UserRequest.getDirectSupportedCampsList(page, perPage, search, auth?.token)
+//   )
+//     .then((value) => {
+//       return value;
+//     })
+//     .catch((errors) => {
+//       handleError(errors);
+//     });
+//   return res;
+// };
+
+
+
+export const getDelegatedSupportCampsList = async ( page = 1, perPage = 10, search = "") => {
+  
   let state = store.getState();
   const { auth } = state;
 
   const res = await NetworkCall.fetch(
-    UserRequest.getDelegatedSupportCampsList(auth?.token)
+    UserRequest.getDelegatedSupportCampsList(page, perPage, search, auth?.token)
   )
     .then((value) => {
       return value;
