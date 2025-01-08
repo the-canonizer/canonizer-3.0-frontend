@@ -37,6 +37,10 @@ const HistoryComparison = ({
     return null; // or a default value if needed
   };
 
+  const commaSeparated = (item, isLastIndex) => {
+    return item + (isLastIndex ? "" : ", ") 
+  };
+
   return (
     <>
       {historyOf === "topic" || historyOf === "camp" ? (
@@ -211,6 +215,20 @@ const HistoryComparison = ({
         <p>
           Go Live Time:{" "}
           <span>{covertToTime(campStatement?.go_live_time)}</span>
+        </p>
+        <p>
+          Topic Tags{"(s)"}:
+          <span>
+            {campStatement?.topic_tags?.map((tag,index)=>{
+                let lastIndex = index +1 === campStatement?.topic_tags?.length
+                return commaSeparated(tag?.tag?.title,lastIndex)
+              })
+            }
+          </span>
+        </p>
+        <p>
+          Hide Rank:
+          <span>{campStatement?.is_rank_hidden === 1 ? "Yes" : "No"}</span>
         </p>
         {historyOf === "statement" && (
           <Collapse
