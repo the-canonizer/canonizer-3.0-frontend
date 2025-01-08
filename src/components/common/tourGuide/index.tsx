@@ -80,8 +80,25 @@ const TourGuide: React.FC<TourGuideProps> = ({ steps, cookieKey }) => {
         }
       }}
       styles={{
-        options: {
-          zIndex: 10000,
+        tooltipContainer: {
+          textAlign: "left",
+        },
+        buttonNext: {
+          backgroundColor: "#5482C8",
+          fontSize: "14px",
+          fontWeight: "bold",
+          borderColor: "transparent",
+          borderRadius: "8px",
+          border: "none",
+          color: "white",
+          outline: "none",
+        },
+        buttonBack: {
+          fontSize: "14px",
+          borderColor: "#fafafa",
+          border: "1px solid #fafafa",
+          borderRadius: "8px",
+          color: "rgb(51, 51, 51)",
         },
       }}
     />

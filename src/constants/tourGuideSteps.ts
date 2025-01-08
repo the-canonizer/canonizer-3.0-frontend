@@ -27,16 +27,26 @@ export const homePageSteps: any = [
 ];
 
 export const searchBar: any = [
+  // {
+  //   title: "Welcome",
+  //   content:
+  //     "Welcome to Canonizer! Would you like to take a tour or skip it? You can always come back to it later.",
+  //   disableBeacon: true,
+  //   placement: "center",
+  //   disableOverlay: true,
+  // },
   {
     target: "#desktop-search-input-field",
+    title: "Global Search",
     content:
-      "This is the search bar on desktop. Type your search query and hit Enter to search.",
-    disableBeacon: true, // No blinking beacon for the first step
+      "Need to find something specific? Our global search feature allows you to explore topics, camps, statements, and nicknames effortlessly. Simply start typing and let Canonizer do the rest.",
+    disableBeacon: true,
   },
   {
     target: "#create-topic-link",
+    title: "Create Topic",
     content:
-      "This is the 'Create a topic' link. Click here to create a new topic.",
+      "Ready to contribute to the discourse? Create your own topic and share your unique perspective with the world. This is where meaningful conversations begin, where ideas converge, and new insights emerge.",
   },
 ];
 
@@ -102,5 +112,52 @@ export const detailPageSteps = [
     target: "#topic_detail_section_activity_card",
     content: "Activity card details go here.",
     placement: "top",
+  },
+];
+
+export const navBarSteps = [
+  {
+    target: "#menu-item-2",
+    title: "Browse Topics",
+    content:
+      "Explore an extensive list of topics for your exploration and debate. Filter by Canon to refine your search and sort the score value or the latest date to stay updated.",
+  },
+  {
+    target: "#menu-item-3",
+    content:
+      "This is the Upload File menu item. Click here to navigate to upload file.",
+  },
+  {
+    target: "#menu-item-6",
+    content: "This is the Videos menu item. Click here to navigate to videos.",
+  },
+  {
+    target: "#menu-item-4",
+    content: "This is the Help menu item. Click here to navigate to help.",
+  },
+  {
+    target: "#menu-item-10",
+    content:
+      "This is the Notifications menu item. Click here to navigate to notifications.",
+  },
+  {
+    target: "#menu-item-5",
+    content:
+      "This is the Settings menu item. Click here to navigate to settings.",
+  },
+  {
+    target: "#menu-item-5",
+    content:
+      "This is the Supported Camps menu item. Click here to navigate to supported camps.",
+  },
+  {
+    target: "#menu-item-19",
+    content: "This is the Login menu item. Click here to navigate to login.",
+  },
+  {
+    target: "#join-canonizer-link",
+    title: "Join Canonizer",
+    content:
+      "Join our community by creating an account.Registration unlocks a world of possibilities, enabling you to actively participate in shaping discussions, engaging with fellow members, and contributing to something greater than yourself",
   },
 ];

@@ -35,6 +35,7 @@ import TourGuide from "components/common/tourGuide";
 import {
   detailPageSteps,
   homePageSteps,
+  navBarSteps,
   searchBar,
 } from "src/constants/tourGuideSteps";
 
@@ -135,19 +136,6 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
       <div className={styles.divider} id={`divider-${props.key}`}></div>
     </li>
   );
-  const visibleMenuItems = menuItems?.filter(
-    (item) =>
-      !(item.isAuthReq && !isUserAuthenticated) &&
-      !(item.hideOnLogin && isUserAuthenticated)
-  );
-
-  const tourSteps = visibleMenuItems?.map((item) => ({
-    target: `#menu-item-${item.id}`,
-    content: `This is the ${
-      item.linkTitle
-    } menu item. Click here to navigate to ${item.linkTitle.toLowerCase()}.`,
-  }));
-
   const onClick = ({ key }) => {
     if (key == 3) {
       logOut(router);
@@ -227,9 +215,9 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
         <TourGuide
           steps={[
             ...searchBar,
-            ...tourSteps,
+            ...navBarSteps,
             ...homePageSteps,
-            // ...detailPageSteps,
+            ...detailPageSteps,
           ]}
           cookieKey="homePageTour"
         />
