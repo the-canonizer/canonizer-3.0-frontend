@@ -313,6 +313,10 @@ export const nickNameRule = {
       max: 50,
       message: validations.nickNameMax,
     },
+    {
+      pattern: new RegExp(/^[a-zA-Z0-9\s]*$/), // Allow alphanumeric characters and spaces
+      message: 'Nick Name can only contain letters, numbers, and spaces.',
+    }
   ],
 };
 
