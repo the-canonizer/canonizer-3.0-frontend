@@ -354,7 +354,7 @@ export const topicNameRule = {
     },
     {
       pattern: /^[a-zA-Z0-9 ]+$/, 
-      message: 'Please enter only alphanumeric characters or spaces for Topic Name.',
+      message: 'Please enter only alphabetic or alphanumeric characters or spaces for Topic Name.',
     },
     {
       pattern: /^(?!^[0-9]+$)(?!^[^a-zA-Z0-9 ]+$).*/, 
@@ -397,7 +397,7 @@ export const campNameRule = {
     },
     {
       pattern: /^[a-zA-Z0-9 ]+$/,
-      message: 'Please enter only alphanumeric characters or spaces for Camp Name.',
+      message: 'Please enter only alphabetic or alphanumeric characters or spaces for Camp Name.',
     },
     {
       pattern: /^(?!^[0-9]+$)(?!^[^a-zA-Z0-9 ]+$).*/,
