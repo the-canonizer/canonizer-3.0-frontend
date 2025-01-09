@@ -40,15 +40,32 @@ export const getLists = async (
   }
 };
 
+
 export const getGravatarPicApi = async (email) => {
   try {
-    let url = `https://www.gravatar.com/avatar/${md5(email)}?d=404`;
-    let res = await axios.get(url);
+    const postData = {
+      email: email,
+    };
+    //const url = await NetworkCall.fetch('gravatar');
+    const url = "http://canonizer3.local/api/v3/gravatar";
+    let res = await axios.post(url, postData); 
     return res;
   } catch (error) {
-    return error;
+    return error; // Return the error
   }
 };
+
+
+// export const getGravatarPicApi2= async (email) => {
+//   console.log(email, "email");
+//   try {
+//     let url = `https://www.gravatar.com/avatar/${md5(email)}?d=404`;
+//     let res = await axios.get(url);
+//     return res;
+//   } catch (error) {
+//     return error;
+//   }
+// };
 
 export const getNotificationsList = async (
   page: number = 1,
