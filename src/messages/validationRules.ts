@@ -379,6 +379,7 @@ export const summaryRule = {
   ],
 };
 
+
 // create new camp
 export const campNameRule = {
   rules: [
