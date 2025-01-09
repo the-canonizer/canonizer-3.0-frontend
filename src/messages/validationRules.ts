@@ -353,8 +353,8 @@ export const topicNameRule = {
       message: "Enter a valid Topic Name",
     },
     {
-      pattern: /^[a-zA-Z0-9 ]+$/, 
-      message: 'Please enter only alphabetic or alphanumeric characters or spaces for Topic Name.',
+      pattern: /^[a-zA-Z0-9\s\.,\!\@\#\$\%\^\&\*\(\)\-\+=\{\}\[\]\|\\:\;\<\>\?\/\~\`\']*$/, 
+      message: 'Please enter valid characters for Topic Name.',
     },
     {
       pattern: /^(?!^[0-9]+$)(?!^[^a-zA-Z0-9 ]+$).*/, 
@@ -396,8 +396,8 @@ export const campNameRule = {
       message: validations.topiNameMax80,
     },
     {
-      pattern: /^[a-zA-Z0-9 ]+$/,
-      message: 'Please enter only alphabetic or alphanumeric characters or spaces for Camp Name.',
+      pattern: /^[a-zA-Z0-9\s\.,\!\@\#\$\%\^\&\*\(\)\-\+=\{\}\[\]\|\\:\;\<\>\?\/\~\`\']*$/, 
+      message: 'Please enter valid characters for Camp Name.',
     },
     {
       pattern: /^(?!^[0-9]+$)(?!^[^a-zA-Z0-9 ]+$).*/,
