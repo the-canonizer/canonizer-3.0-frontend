@@ -6,15 +6,23 @@ import md5 from "md5";
 import { getGravatarPicApi } from "src/network/api/notificationAPI";
 
 export const getGravatarImage = async (email) => {
-  let data = await getGravatarPicApi(email);
-  if (data?.status == 200) {
-    return true;
+  try {
+    const res = await getGravatarPicApi(email);
+    if (res?.data?.status_code === 200) {
+      if (res?.data.data!==null) {
+        return `data:image/jpeg;base64,${res.data.data.image_data}`;
+      }
+      return false;
+    }
+    return false; // If status_code is not 200, return null
+  } catch (error) {
+      console.error("Error fetching Gravatar:", error);
+    return false;
   }
-  return false;
 };
 
 const SingleAvatar = ({ user, imageBaseURL = "" }) => {
-  const [isGravatarAvailable, setIsGravatarAvailable] = useState(false);
+  const [isGravatarAvailable, setIsGravatarAvailable] = useState(null);
 
   useEffect(() => {
     const fetchGravatarImage = async () => {
