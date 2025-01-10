@@ -283,7 +283,10 @@ export default function DelegatedSupportCampsUI({
                   type="text"
                   name="search"
                   className="!h-10 rounded-lg border border-canGrey2 text-sm font-normal lg:w-auto w-full"
-                  onChange={(e) => setSearchText(e.target.value)}
+                  onChange={(e) => {
+                    setSearchText(e.target.value);
+                    setPage(1);
+                  }}
                 />
               </div>
             </div>
