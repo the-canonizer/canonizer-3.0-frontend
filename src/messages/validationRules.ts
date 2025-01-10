@@ -313,6 +313,10 @@ export const nickNameRule = {
       max: 50,
       message: validations.nickNameMax,
     },
+    {
+      pattern: new RegExp(/^[a-zA-Z0-9\s]*$/), // Allow alphanumeric characters and spaces
+      message: 'Nick Name can only contain letters, numbers, and spaces.',
+    }
   ],
 };
 
@@ -349,9 +353,8 @@ export const topicNameRule = {
       message: "Enter a valid Topic Name",
     },
     {
-      pattern: /^[a-zA-Z0-9 ]+$/,
-      message:
-        "Please enter only alphanumeric characters or spaces for Topic Name.",
+      pattern: /^[a-zA-Z0-9\s\.,\!\@\#\$\%\^\&\*\(\)\-\+=\{\}\[\]\|\\:\;\<\>\?\/\~\`\']*$/, 
+      message: 'Please enter valid characters for Topic Name.',
     },
     {
       pattern: /^(?!^[0-9]+$)(?!^[^a-zA-Z0-9 ]+$).*/,
@@ -381,6 +384,7 @@ export const summaryRule = {
   ],
 };
 
+
 // create new camp
 export const campNameRule = {
   rules: [
@@ -393,9 +397,12 @@ export const campNameRule = {
       message: validations.topiNameMax80,
     },
     {
-      pattern: /^[a-zA-Z0-9 ]+$/,
-      message:
-        "Please enter only alphanumeric characters or spaces for Camp Name.",
+      pattern: /[^ \s]/,
+      message: "Enter a valid Camp Name",
+    },
+    {
+      pattern: /^[a-zA-Z0-9\s\.,\!\@\#\$\%\^\&\*\(\)\-\+=\{\}\[\]\|\\:\;\<\>\?\/\~\`\']*$/, 
+      message: 'Please enter valid characters for Camp Name.',
     },
     {
       pattern: /^(?!^[0-9]+$)(?!^[^a-zA-Z0-9 ]+$).*/,
