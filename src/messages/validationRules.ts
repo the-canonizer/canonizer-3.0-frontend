@@ -354,7 +354,7 @@ export const topicNameRule = {
         "Please enter only alphanumeric characters or spaces for Topic Name.",
     },
     {
-      pattern: /^(?!^[\d]+$)(?!^[^a-zA-Z0-9 ]+$).*/,
+      pattern: /^(?!^[0-9]+$)(?!^[^a-zA-Z0-9 ]+$).*/,
       message:
         "Topic Name cannot contain only numbers or only special characters.",
     },
@@ -398,7 +398,7 @@ export const campNameRule = {
         "Please enter only alphanumeric characters or spaces for Camp Name.",
     },
     {
-      pattern: /^(?!^[\d]+$)(?!^[^a-zA-Z0-9 ]+$).*/,
+      pattern: /^(?!^[0-9]+$)(?!^[^a-zA-Z0-9 ]+$).*/,
       message:
         "Camp Name cannot contain only numbers or only special characters.",
     },
