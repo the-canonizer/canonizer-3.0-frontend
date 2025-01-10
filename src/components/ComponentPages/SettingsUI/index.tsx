@@ -63,7 +63,7 @@ const SettingsUI = () => {
     nick_name: <NickName />,
     user_preferences: <ProfilePrefrences />,
     change_password: <ChangePassword />,
-    direct_supported_camps: <DirectSupportedCamps search={search} />,
+    direct_supported_camps: <DirectSupportedCamps />,
     delegate_supported_camp: <DelegatedSupportCamps search={search} />,
     supported_camps: (
       <div className={styles.supported_camps}>
@@ -72,7 +72,7 @@ const SettingsUI = () => {
             <div className={styles.text_checkbox_cont}>
               <div className={styles.notes}>{messages.labels.settingNote}</div>
             </div>
-            <DirectSupportedCamps search={search} />
+            <DirectSupportedCamps />
           </TabPane>
           <TabPane tab="Delegated Support Camps" key="2">
             <DelegatedSupportCamps search={search} />
