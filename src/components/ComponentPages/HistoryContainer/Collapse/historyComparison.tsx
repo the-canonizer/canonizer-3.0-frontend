@@ -3,7 +3,10 @@ import moment from "moment";
 import Link from "next/link";
 import styles from "../campHistory.module.scss";
 import { useRouter } from "next/router";
-import { capitalizeFirstLetter, commaSeparated } from "src/utils/generalUtility";
+import {
+  capitalizeFirstLetter,
+  commaSeparated,
+} from "src/utils/generalUtility";
 
 const { Title } = Typography;
 const { Panel } = Collapse;
@@ -214,11 +217,10 @@ const HistoryComparison = ({
         <p>
           Topic Tags{"(s)"}:
           <span>
-            {campStatement?.tags?.map((tag,index)=>{
-                let lastIndex = index +1 === campStatement?.topic_tags?.length
-                return commaSeparated(tag?.title,lastIndex)
-              })
-            }
+            {campStatement?.tags?.map((tag, index) => {
+              let lastIndex = index + 1 === campStatement?.topic_tags?.length;
+              return commaSeparated(tag?.title, lastIndex);
+            })}
           </span>
         </p>
         <p>
