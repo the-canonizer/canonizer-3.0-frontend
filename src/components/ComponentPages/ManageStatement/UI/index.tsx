@@ -1,4 +1,4 @@
-import { Form, Row, Col, Typography } from "antd";
+import { Form, Row, Col, Typography, Modal } from "antd";
 import dynamic from "next/dynamic";
 import {
   CloseOutlined,
@@ -19,9 +19,7 @@ import Inputs from "components/shared/FormInputs";
 import ManageStatementUISkelaton from "./skelaton";
 import CustomSkelton from "components/common/customSkelton";
 import { defaultNicknameData } from "src/utils/generalUtility";
-import {
-  uploadFile,
-} from "src/network/api/userApi";
+import { uploadFile } from "src/network/api/userApi";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
 // import StarIcon from "./starIcon";
@@ -75,7 +73,6 @@ function ManageStatementUI({
   nickNameData,
   isEdit,
   editorState,
-  onEditorStateChange,
   submitIsDisable,
   editCampStatementData,
   onDiscardClick,
@@ -85,56 +82,83 @@ function ManageStatementUI({
   autoSave,
   isAutoSaving,
   values,
+  setEditorState,
   // onImproveClick,
   // isGenerating,
 }) {
   const editorRef = useRef(null);
-  const [getBinaryData,setGetbinaryData] = useState("")
+  const [alertModal, setAlertModal] = useState(false); // Controls modal visibility
+
+  const onEditorStateChange = (changedata: any) => {
+    const datachangec = `${changedata}`;
+    setEditorState(datachangec); // Update editor state
+    form.setFieldsValue({ statement: datachangec }); // Update form values
+    handleformvalues(); // Handle any additional form logic
+};
+
+
   const extractImgSrc = (htmlString) => {
     const parser = new DOMParser();
-    const doc = parser.parseFromString(htmlString, 'text/html');
-    const imgElement = doc.querySelector('img');
+    const doc = parser.parseFromString(htmlString, "text/html");
+    const imgElement = doc.querySelector("img");
     return imgElement ? imgElement.src : null;
   };
   const convertBase64ToBinary = (base64Str) => {
-    const byteCharacters = atob(base64Str.split(',')[1]); // Remove the "data:image..." part
-    const byteArrays = [];
-    
-    for (let offset = 0; offset < byteCharacters.length; offset++) {
-      const byte = byteCharacters.charCodeAt(offset);
-      byteArrays.push(byte);
+    // Check if the string starts with a valid base64 prefix
+    if (!base64Str.startsWith("data:image/")) {
+      console.error("The provided string is not a base64-encoded image.");
+      return null; // Return null for non-base64 strings
     }
   
-    const binaryData = new Uint8Array(byteArrays);
-    return binaryData;
+    try {
+      const byteCharacters = atob(base64Str.split(",")[1]); // Decode the base64 string
+      const binaryData = new Uint8Array(byteCharacters.length);
+      for (let i = 0; i < byteCharacters.length; i++) {
+        binaryData[i] = byteCharacters.charCodeAt(i);
+      }
+      return binaryData;
+    } catch (error) {
+      console.error("Failed to decode base64 string:", error);
+      return null;
+    }
   };
 
   // console.log(editorState,"editor");
-  
+
   // Example base64 image string
-    const {
-      topicRecord,
-    } = useSelector((state: RootState) => ({
-      topicRecord: state?.topicDetails?.currentTopicRecord,
-    }));
-console.log(topicRecord,"topic")
-  function handleButtonClick() {
+  const { topicRecord } = useSelector((state: RootState) => ({
+    topicRecord: state?.topicDetails?.currentTopicRecord,
+  }));
+  console.log(editorState,"editorState")
+  function handleButtonClick(e) {
+    e.preventDefault(); // Prevent form submission by default
+    
     // Match all <img> tags in the editorState
     const imgTags = editorState.match(/<img[^>]*>/gi);
   
     if (!imgTags || imgTags.length === 0) {
       console.error("No images found in the editor.");
-      return;
+      return false;
     }
+  
+    // Maximum size in bytes (5 MB)
+    const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
+  
+    // Array to hold oversized image names
+    const oversized = [];
   
     // Prepare the FormData object
     const formData = new FormData();
     const folderId = ""; // Optional or empty
-  
-    // Loop through each <img> tag, extract the base64 data, and append to FormData
+    let isImageUrl = false;
     imgTags.forEach((imgTag, index) => {
       const base64Image = extractImgSrc(imgTag);
-  
+
+      if (base64Image.startsWith("http") || base64Image.startsWith("https")) {
+        isImageUrl = true;
+        console.log(`Skipping image ${index + 1}: Linked image detected.`);
+        return; // Skip images with external links
+      }
       // Convert base64 to binary
       const binaryData = convertBase64ToBinary(base64Image);
   
@@ -143,6 +167,13 @@ console.log(topicRecord,"topic")
         console.error(`No binary data found for image ${index + 1}`);
         return;
       }
+  
+      // Check the size of the binary data
+      if (binaryData.byteLength > MAX_IMAGE_SIZE) {
+        oversized.push(`Image ${index + 1} exceeds 5 MB.`);
+        return;
+      }
+  
       // Create a unique name for each image
       const name = `${topicRecord?.topic_name}_${Date.now()}_${index + 1}.jpg`;
   
@@ -152,21 +183,37 @@ console.log(topicRecord,"topic")
       formData.append("name[]", name); // Add the file name
     });
   
+    if (oversized.length > 0) {
+      console.error("Oversized images detected:", oversized);
+      setAlertModal(true); // Show alert modal if necessary
+      return false; // Stop further execution
+    }
+
     // Add folder_id (if applicable)
     formData.append("folder_id", folderId);
   
     // Call the uploadFile API
-    uploadFile(formData)
-      .then((response) => {
-        // Handle success
-        console.log("Files uploaded successfully:", response);
-      })
-      .catch((error) => {
-        // Handle error
-        console.error("Error uploading files:", error);
-      });
+    if(!isImageUrl){
+      uploadFile(formData)
+        .then((response) => {
+          // Handle success
+          console.log("Files uploaded successfully:", response);
+        })
+        .catch((error) => {
+          // Handle error
+          console.error("Error uploading files:", error);
+        });
+    }
+    return true; // Allow form submission
   }
   
+  function handleModalOk() {
+    setAlertModal(false); // Close the modal
+  }
+
+  function handleModalCancel() {
+    setAlertModal(false); // Close the modal
+  }
 
   return (
     <CommonCards className="border-0 bg-white" id="common-cards">
@@ -327,7 +374,12 @@ console.log(topicRecord,"topic")
                     (submitIsDisable && isEdit) || !isDisabled || isAutoSaving
                   }
                   id="publish-button"
-                  onClick={handleButtonClick}
+                  onClick={(e) => {
+                    const canSubmit = handleButtonClick(e);
+                    if (canSubmit) {
+                      form.submit(); // Only submit the form if no oversized images
+                    }
+                  }}
                 >
                   {isAutoSaving ? (
                     "Saving as draft ..."
@@ -350,6 +402,23 @@ console.log(topicRecord,"topic")
           </Row>
         </Form>
       )}
+      <Modal
+        className="[&_.ant-modal-content]:!rounded-xl [&_.ant-modal-header]:rounded-tl-xl [&_.ant-modal-header]:rounded-tr-xl"
+        open={alertModal}
+        title={<span className="text-lg font-medium"> Alert: Image size exceed</span>}
+        onOk={handleModalOk}
+        onCancel={handleModalCancel}
+        footer={null}
+      >
+        {/* <ul>
+          {oversizedImages.map((msg, index) => (
+            <li key={index}>{msg}</li>
+          ))}
+        </ul> */}
+        <span className="text-lg font-medium">
+          This image is not uploaded because its file size exceeds 5 MB.
+        </span>
+      </Modal>
     </CommonCards>
   );
 }

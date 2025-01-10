@@ -782,12 +782,7 @@ function ManageStatements({ isEdit = false }) {
     return res;
   };
 
-  const onEditorStateChange = (changedata: any) => {
-    const datachangec = `${changedata}`;
-    setEditorState(datachangec);
-    form.setFieldsValue({ statement: datachangec });
-    handleformvalues();
-  };
+
 
   const handleformvalues = () => {
     const cleanValues = (values) =>
@@ -955,7 +950,7 @@ function ManageStatements({ isEdit = false }) {
               nickNameData={nickNameData}
               isEdit={isEdit}
               editorState={editorState}
-              onEditorStateChange={onEditorStateChange}
+              setEditorState={setEditorState}
               submitIsDisable={submitIsDisable}
               editCampStatementData={editCampStatementData}
               onDiscardClick={onDiscardClick}
