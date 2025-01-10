@@ -88,14 +88,13 @@ const UserProfileDetails = ({
   }
 
 let imagePath = null;
-
 // Check if profile picture is available, otherwise check if Gravatar is available
   if (profileData?.profile_picture) {
     imagePath = profileData.profile_picture;
   } else if (!profileData?.profile_picture && gravatarAvailable) {
     imagePath = gravatarAvailable;
   }
-  
+
   const address_data = {
     address_1: profileData?.address_1,
     address_2: profileData?.address_2,
@@ -103,11 +102,6 @@ let imagePath = null;
     country: profileData?.country,
     postal_code: profileData?.postal_code ? `- ${profileData.postal_code}` : "",
   };
-
-  // const address = addressParts
-  //   .filter(Boolean) // Filters out any falsy values (null, undefined, empty string)
-  //   .join(", ") // Joins the non-empty parts with a comma and space
-  //   .trim(); // Ensures no leading or trailing spaces
 
   const getNameInitials = (first_name, last_name) => {
     if (first_name && last_name) {
