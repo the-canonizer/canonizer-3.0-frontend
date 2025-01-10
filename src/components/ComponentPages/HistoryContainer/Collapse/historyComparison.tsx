@@ -224,7 +224,7 @@ const HistoryComparison = ({
           </span>
         </p>
         <p>
-          Hide Rank:
+          Hide Rank:{" "}
           <span>{campStatement?.is_rank_hidden === 1 ? "Yes" : "No"}</span>
         </p>
         {historyOf === "statement" && (
