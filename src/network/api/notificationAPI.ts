@@ -40,20 +40,33 @@ export const getLists = async (
   }
 };
 
-
 export const getGravatarPicApi = async (email) => {
+const BaseCanonizerApiUrl = process.env.NEXT_PUBLIC_BASE_API_URL;
   try {
     const postData = {
       email: email,
     };
-    //const url = await NetworkCall.fetch('gravatar');
-    const url = "http://canonizer3.local/api/v3/gravatar";
+    const url = `${BaseCanonizerApiUrl}/gravatar`;
     let res = await axios.post(url, postData); 
     return res;
   } catch (error) {
     return error; // Return the error
   }
 };
+
+// export const getGravatarPicApi = async (email) => {
+//   try {
+//     const postData = {
+//       email: email,
+//     };
+//     //const url = await NetworkCall.fetch('gravatar');
+//     const url = "{BaseCanonizerApiUrl}/api/v3/gravatar";
+//     let res = await axios.post(url, postData); 
+//     return res;
+//   } catch (error) {
+//     return error; // Return the error
+//   }
+// };
 
 
 // export const getGravatarPicApi2= async (email) => {
