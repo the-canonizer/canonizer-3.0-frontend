@@ -396,6 +396,10 @@ export const campNameRule = {
       message: validations.topiNameMax80,
     },
     {
+      pattern: /[^ \s]/,
+      message: "Enter a valid Camp Name",
+    },
+    {
       pattern: /^[a-zA-Z0-9\s\.,\!\@\#\$\%\^\&\*\(\)\-\+=\{\}\[\]\|\\:\;\<\>\?\/\~\`\']*$/, 
       message: 'Please enter valid characters for Camp Name.',
     },
