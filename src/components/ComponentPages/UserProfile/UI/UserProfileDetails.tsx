@@ -60,7 +60,6 @@ const UserProfileDetails = ({
         setGravatarAvailable(res);
     }
     };
-
     fetchGravatarImage();
   }, [profileData?.email]);
 
@@ -88,20 +87,15 @@ const UserProfileDetails = ({
     );
   }
 
-  const imagePath = profileData?.profile_picture 
-    ? profileData?.profile_picture
-    : !profileData?.profile_picture && gravatarAvailable
-    ? gravatarAvailable
-    : null;
+let imagePath = null;
 
-  // const addressParts = [
-  //   profileData?.address_1,
-  //   profileData?.address_2,
-  //   profileData?.city,
-  //   profileData?.country,
-  //   profileData?.postal_code ? `- ${profileData.postal_code}` : "",
-  // ];
-
+// Check if profile picture is available, otherwise check if Gravatar is available
+  if (profileData?.profile_picture) {
+    imagePath = profileData.profile_picture;
+  } else if (!profileData?.profile_picture && gravatarAvailable) {
+    imagePath = gravatarAvailable;
+  }
+  
   const address_data = {
     address_1: profileData?.address_1,
     address_2: profileData?.address_2,

@@ -163,11 +163,6 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
     fetchGravatarImage();
   }, [loggedInUser, isUserAuthenticated]);
 
-  // useEffect(() => {
-  //   if (isUserAuthenticated && loggedInUser && !loggedInUser?.profile_picture)
-  //     getGravatarImage(loggedInUser?.email);
-  // }, [loggedInUser]);
-
   const menu = (
     <Menu onClick={onClick}>
       <Menu.Item key="0" className="hover:text-canHoverBlue" id="menu-item-0">
