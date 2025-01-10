@@ -54,32 +54,6 @@ const BaseCanonizerApiUrl = process.env.NEXT_PUBLIC_BASE_API_URL;
   }
 };
 
-// export const getGravatarPicApi = async (email) => {
-//   try {
-//     const postData = {
-//       email: email,
-//     };
-//     //const url = await NetworkCall.fetch('gravatar');
-//     const url = "{BaseCanonizerApiUrl}/api/v3/gravatar";
-//     let res = await axios.post(url, postData); 
-//     return res;
-//   } catch (error) {
-//     return error; // Return the error
-//   }
-// };
-
-
-// export const getGravatarPicApi2= async (email) => {
-//   console.log(email, "email");
-//   try {
-//     let url = `https://www.gravatar.com/avatar/${md5(email)}?d=404`;
-//     let res = await axios.get(url);
-//     return res;
-//   } catch (error) {
-//     return error;
-//   }
-// };
-
 export const getNotificationsList = async (
   page: number = 1,
   per_page: number = 10,
