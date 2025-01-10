@@ -283,7 +283,7 @@ function ManageStatements({ isEdit = false }) {
         }
       }
 
-      if(noStatus === false){
+      if (noStatus === false) {
         const nickNameRes = await getAllUsedNickNames({
           topic_num: isEdit
             ? editData?.topic?.topic_num
@@ -302,7 +302,7 @@ function ManageStatements({ isEdit = false }) {
             : {
                 nick_name: nickNameRes.data?.[0]?.id,
               };
-  
+
           form.setFieldsValue(formData);
           setNickNameData(nickNames);
         }

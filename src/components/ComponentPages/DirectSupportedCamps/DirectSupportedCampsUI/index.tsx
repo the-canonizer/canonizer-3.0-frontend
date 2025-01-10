@@ -10,23 +10,23 @@ import {
   Input,
   Card,
 } from "antd";
-import { DraggableArea } from "react-draggable-tags";
+import dynamic from "next/dynamic";
 import Link from "next/link";
+import { useDispatch, useSelector } from "react-redux";
+import Image from "next/image";
 
 import styles from "./DirectSupportedCamps.module.scss";
 
 import CustomSkelton from "../../../common/customSkelton";
 import SupportRemovedModal from "../../../common/supportRemovedModal";
-import Image from "next/image";
-import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "src/store";
 import {
   setDisableSubmitButtonForDirectSupportedCamp,
   setOpenDrawerForDirectSupportedCamp,
 } from "src/store/slices/campDetailSlice";
 import PrimaryButton from "components/shared/Buttons/PrimariButton";
-import dynamic from "next/dynamic";
 import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
+
 const DraggableTags = dynamic(() => import("./draggable"), { ssr: false });
 
 export default function DirectSupportedCampsUI({
@@ -54,16 +54,19 @@ export default function DirectSupportedCampsUI({
   removeCampLink,
   isChangingOrder,
   setIsChangingOrder,
-}: any) {
+  page,
+  perPage,
+  total,
+  setPage,
+  searchText,
+  setSearchText,
+}) {
   const [valData, setValData] = useState({});
   const [tagsDataArrValue, setTagsDataArrValue] = useState([]);
   const [tagsCampsOrderID, setTagsCampsOrderID] = useState("");
   const [displayList, setDisplayList] = useState([]);
   const [removeSupportSpinner, setRemoveSupportSpinner] = useState(false);
   const [currentCamp, setCurrentCamp] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [currentSearchPage, setCurrentSearchPage] = useState(1);
-  const [search, setSearch] = useState("");
   const [activeTopic, setActiveTopic] = useState(null);
   const [reOrderedTags, setReOrderedTags] = useState(null);
 
@@ -76,11 +79,14 @@ export default function DirectSupportedCampsUI({
     disableSubmitButtonForDirectSupportedCamp:
       state.topicDetails.disableSubmitButtonForDirectSupportedCamp,
   }));
-  console.log(
-    disableSubmitButtonForDirectSupportedCamp,
-    "disableSubmitButtonForDirectSupportedCamp"
-  );
+
+  // console.log(
+  //   disableSubmitButtonForDirectSupportedCamp,
+  //   "disableSubmitButtonForDirectSupportedCamp"
+  // );
+
   const dispatch = useDispatch();
+
   interface Tag {
     id: number;
     camp_num: number;
@@ -96,18 +102,16 @@ export default function DirectSupportedCampsUI({
     title_link: string;
     camps: Tag[];
   }
+
   const columns = [
     {
       title: "Sr.",
       dataIndex: "sr",
       key: "sr",
-      render: (_text, _record, index) => {
-        // Calculate the serial number based on the current page and page size
-        const serialNumber = (currentPage - 1) * 5 + index + 1;
-        const searchSerialNumber = (currentSearchPage - 1) * 5 + index + 1;
+      render: (_, _d, idx) => {
         return (
           <span className="text-sm" id="direct_supported_camp_serial_number">
-            {search.length > 0 ? searchSerialNumber : serialNumber}
+            {(page - 1) * perPage + idx + 1}
           </span>
         );
       },
@@ -197,7 +201,7 @@ export default function DirectSupportedCampsUI({
                 onClick={() => {
                   setCurrentCamp(record.topic_num);
                   handleSupportedCampsOpen(record);
-                  pageChange(currentPage, 5);
+                  pageChange(page);
                   dispatch(setOpenDrawerForDirectSupportedCamp(true));
                   dispatch(setDisableSubmitButtonForDirectSupportedCamp(false));
                 }}
@@ -243,41 +247,16 @@ export default function DirectSupportedCampsUI({
     }
   }, [tagsDataArrValue]);
 
-  const filteredArray = () => {
-    if (search.trim() == "") {
-      return displayList;
-    } else {
-      return directSupportedCampsList.filter((val: any) => {
-        if (
-          val.title.toLowerCase().trim().includes(search.toLowerCase().trim())
-        ) {
-          return val;
-        }
-      });
-    }
-  };
-
   useEffect(() => {
-    pageChange(currentPage, 5);
+    if (directSupportedCampsList) setDisplayList(directSupportedCampsList);
   }, [directSupportedCampsList]);
 
-  const pageChange = (pageNumber, pageSize) => {
-    setCurrentPage(pageNumber);
-    const startingPosition = (pageNumber - 1) * pageSize;
-    const endingPosition = startingPosition + pageSize;
-    setDisplayList(
-      directSupportedCampsList.slice(startingPosition, endingPosition)
-    );
-  };
-
-  const filteredSearchArray = () => {
-    const startingPosition = (currentSearchPage - 1) * 5;
-    const endingPosition = startingPosition + 5;
-    return filteredArray().slice(startingPosition, endingPosition);
+  const pageChange = (pageNumber) => {
+    setPage(pageNumber);
   };
 
   const searchPageChange = (pageNumber) => {
-    setCurrentSearchPage(pageNumber);
+    setPage(pageNumber);
   };
 
   const [removeForm] = Form.useForm();
@@ -295,47 +274,37 @@ export default function DirectSupportedCampsUI({
 
     setRemoveSupportSpinner(false);
   };
+
   const showEmpty = (msg) => {
     return <Empty description={msg} />;
   };
-  const hasDirectSupportedCamps =
-    directSupportedCampsList && directSupportedCampsList.length > 0;
-  const hasFilteredArray = filteredArray().length > 0;
-  let displayContent;
 
-  if (hasDirectSupportedCamps) {
-    if (hasFilteredArray) {
-      displayContent = (
-        <>
-          <Table
-            id="direct_supported_camp_table_section"
-            dataSource={
-              search.length > 0 ? filteredSearchArray() : filteredArray()
-            }
-            columns={columns}
-            pagination={false}
-            rowKey="topic_num"
-            className="[&_.ant-table-thead>tr>th]:!bg-canGray [&_.ant-table-cell]:max-w-[200px]"
+  const displayContent =
+    displayList.length > 0 ? (
+      <>
+        <Table
+          id="direct_supported_camp_table_section"
+          dataSource={displayList}
+          columns={columns}
+          pagination={false}
+          rowKey="topic_num"
+          className="[&_.ant-table-thead>tr>th]:!bg-canGray [&_.ant-table-cell]:max-w-[200px]"
+        />
+        {total > perPage ? (
+          <Pagination
+            hideOnSinglePage={true}
+            total={total}
+            pageSize={perPage}
+            current={page}
+            onChange={searchPageChange}
+            showSizeChanger={false}
+            className="mt-5"
           />
-          {search.length > 0 ? (
-            <Pagination
-              hideOnSinglePage={true}
-              total={filteredArray().length}
-              pageSize={5}
-              current={currentSearchPage}
-              onChange={searchPageChange}
-              showSizeChanger={false}
-              className="mt-5"
-            />
-          ) : null}
-        </>
-      );
-    } else {
-      displayContent = showEmpty("No Data Found");
-    }
-  } else {
-    displayContent = showEmpty("No Data Found");
-  }
+        ) : null}
+      </>
+    ) : (
+      showEmpty("No Data Found")
+    );
 
   const drawerTitle = (
     <p id="all_camps_topics" className="lg:text-2xl text-base font-normal">
@@ -405,31 +374,13 @@ export default function DirectSupportedCampsUI({
       />
     </>
   );
-  const [filteredArrayForMob, setFilteredArrayForMob] = useState([]);
-
-  useEffect(() => {
-    setFilteredArrayForMob(
-      search.trim() === ""
-        ? directSupportedCampsList
-        : directSupportedCampsList.filter((val) =>
-            val.title.toLowerCase().includes(search.toLowerCase().trim())
-          )
-    );
-  }, [search, directSupportedCampsList]);
 
   let displayContentForMob;
 
-  const hasDirectSupportedCampsForMob =
-    directSupportedCampsList && directSupportedCampsList.length > 0;
-  const hasFilteredArrayForMob = filteredArrayForMob.length > 0;
+  const hasDirectSupportedCampsForMob = displayList.length > 0;
+  const hasFilteredArrayForMob = displayList.length > 0;
 
   if (hasDirectSupportedCampsForMob) {
-    const startIndex = (currentPage - 1) * 5; // Page size is 5
-    const endIndex = startIndex + 5;
-
-    // Slice the array to get records for the current page
-    const paginatedArray = filteredArrayForMob.slice(startIndex, endIndex);
-
     displayContentForMob = (
       <>
         {/* Search and Reset Section */}
@@ -438,11 +389,7 @@ export default function DirectSupportedCampsUI({
           id="direct_supported_camp_reset_btn"
         >
           <div className="mr-2" id="direct_supported_camp_reset_btn_1">
-            <PrimaryButton
-              onClick={() => {
-                setSearch("");
-              }}
-            >
+            <PrimaryButton onClick={() => setSearchText("")}>
               Reset
             </PrimaryButton>
           </div>
@@ -457,21 +404,19 @@ export default function DirectSupportedCampsUI({
               />
             }
             data-testid="settingSearch"
-            value={search}
+            value={searchText}
             placeholder="Search via topic name"
             type="text"
             name="search"
             className="!h-10 rounded-lg border border-canGrey2 text-sm font-normal lg:w-auto w-full [&_.ant-input-affix-wrapper]:hover:!border-canGrey2 focus:!border-canGrey2 focus:shadow-none "
-            onChange={(e) => {
-              setSearch(e.target.value);
-            }}
+            onChange={(e) => setSearchText(e.target.value)}
           />
         </div>
 
         {/* Check if there is data to display */}
         {hasFilteredArrayForMob ? (
           <>
-            {paginatedArray.map((record) => (
+            {displayList.map((record) => (
               <Card
                 key={record.topic_num}
                 className="mb-5 bg-white shadow-none"
@@ -575,7 +520,7 @@ export default function DirectSupportedCampsUI({
                         onClick={() => {
                           setCurrentCamp(record.topic_num);
                           handleSupportedCampsOpen(record);
-                          pageChange(currentPage, 5);
+                          pageChange(page);
                           dispatch(setOpenDrawerForDirectSupportedCamp(true));
                           dispatch(
                             setDisableSubmitButtonForDirectSupportedCamp(false)
@@ -603,9 +548,9 @@ export default function DirectSupportedCampsUI({
 
             <Pagination
               hideOnSinglePage={true}
-              total={filteredArrayForMob.length}
-              pageSize={5}
-              current={currentPage}
+              total={total}
+              pageSize={perPage}
+              current={page}
               onChange={pageChange}
               showSizeChanger={false}
               className="mt-5"
@@ -670,11 +615,7 @@ export default function DirectSupportedCampsUI({
                   className="lg:w-auto w-full flex justify-end gap-2.5 items-center"
                   id="direct_supported_camp_search_rest_btn"
                 >
-                  <PrimaryButton
-                    onClick={() => {
-                      setSearch("");
-                    }}
-                  >
+                  <PrimaryButton onClick={() => setSearchText("")}>
                     Reset
                   </PrimaryButton>
                   <Input
@@ -688,35 +629,19 @@ export default function DirectSupportedCampsUI({
                       />
                     }
                     data-testid="settingSearch"
-                    value={search}
+                    value={searchText}
                     placeholder="Search via topic name"
                     type="text"
                     name="search"
                     className="!h-10 rounded-lg border border-canGrey2 text-sm font-normal lg:w-auto w-full [&_.ant-input-affix-wrapper]:hover:!border-canGrey2 focus:!border-canGrey2 focus:shadow-none "
                     onChange={(e) => {
-                      setSearch(e.target.value);
-                      setCurrentPage(1);
-                      setCurrentSearchPage(1);
+                      setSearchText(e.target.value);
+                      setPage(1);
                     }}
                   />
                 </div>
               </div>
-              {isMobile && (
-                <>
-                  {displayContent}
-                  {search.length === 0 && (
-                    <Pagination
-                      hideOnSinglePage={true}
-                      total={directSupportedCampsList.length}
-                      pageSize={5}
-                      defaultCurrent={currentPage}
-                      onChange={pageChange}
-                      showSizeChanger={false}
-                      className="mt-5"
-                    />
-                  )}
-                </>
-              )}
+              {isMobile && displayContent}
             </div>
           )}
 
@@ -732,6 +657,7 @@ export default function DirectSupportedCampsUI({
           >
             <h1 id="changesWillBeReverted">Changes will be reverted ?</h1>
           </Modal>
+
           <Drawer
             className="lg:flex hidden [&_.ant-drawer-header-title]:!items-start [&_.ant-drawer-close]:!mt-2 [&_.ant-drawer-body]:!p-14 "
             open={openDrawerForDirectSupportedCamp}

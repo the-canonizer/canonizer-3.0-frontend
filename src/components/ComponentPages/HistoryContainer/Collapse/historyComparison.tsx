@@ -209,8 +209,7 @@ const HistoryComparison = ({
           :<span>{covertToTime(campStatement?.go_live_time)}</span>
         </p> */}
         <p>
-          Go Live Time:{" "}
-          <span>{covertToTime(campStatement?.go_live_time)}</span>
+          Go Live Time: <span>{covertToTime(campStatement?.go_live_time)}</span>
         </p>
         <p>
           Topic Tags{"(s)"}:
