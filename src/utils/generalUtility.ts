@@ -467,3 +467,7 @@ export const epochToMinutes = (epochTime): any => {
 export const defaultNicknameData = (nickNameList) => {
   return nickNameList?.find((item) => item.default === 1);
 };
+
+export const commaSeparated = (item, isLastIndex) => {
+  return item + (isLastIndex ? "" : ", ") 
+};
