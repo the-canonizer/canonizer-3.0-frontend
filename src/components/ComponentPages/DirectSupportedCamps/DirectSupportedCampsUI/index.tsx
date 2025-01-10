@@ -80,11 +80,6 @@ export default function DirectSupportedCampsUI({
       state.topicDetails.disableSubmitButtonForDirectSupportedCamp,
   }));
 
-  console.log(
-    disableSubmitButtonForDirectSupportedCamp,
-    "disableSubmitButtonForDirectSupportedCamp"
-  );
-
   const dispatch = useDispatch();
 
   interface Tag {
