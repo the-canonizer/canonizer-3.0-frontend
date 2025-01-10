@@ -1,5 +1,6 @@
 import moment from "moment";
 import Link from "next/link";
+import { commaSeparated } from "src/utils/generalUtility";
 
 const TopicHistory = ({ campStatement, topicNamespaceId }: any) => {
   const covertToTime = (unixTime) => {
@@ -73,6 +74,19 @@ const TopicHistory = ({ campStatement, topicNamespaceId }: any) => {
           ? "Go Live Time"
           : "Going live on"}{" "}
         :<span>{covertToTime(campStatement?.go_live_time)}</span>
+      </p>
+      <p>
+        Topic Tag{"(s)"}:
+        <span>
+          {campStatement?.tags?.map((tag, index) => {
+            let lastIndex = index + 1 === campStatement?.topic_tags?.length;
+            return commaSeparated(tag?.title, lastIndex);
+          })}
+        </span>
+      </p>
+      <p>
+        Hide Rank:
+        <span>{campStatement?.is_rank_hidden === 1 ? "Yes" : "No"}</span>
       </p>
     </div>
   );
