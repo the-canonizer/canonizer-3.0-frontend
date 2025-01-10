@@ -29,49 +29,41 @@ export default function DelegatedSupportCampsUI({
   viewMoreDataValue,
   viewMoreModalVisible,
   delegatedSupportCampsList,
-  // search,
   removeSupport,
   removeSupportCampsData,
   delegateSupportedSkeleton,
+  page,
+  perPage,
+  total,
+  setPage,
+  searchText,
+  setSearchText
 }: any) {
   const [displayList, setDisplayList] = useState([]);
   const limit = delegatedSupportCampsList.length;
-  const [search, setSearch] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [currentSearchPage, setCurrentSearchPage] = useState(1);
-  const [filteredList, setFilteredList] = useState(delegatedSupportCampsList);
-
+  
   useEffect(() => {
-    pageChange(1);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [delegatedSupportCampsList]);
+    if (delegatedSupportCampsList) 
+        setDisplayList(delegatedSupportCampsList);
+    }, [delegatedSupportCampsList]);
 
-  useEffect(() => {
-    const startingPosition = (currentPage - 1) * pageSize;
-    const endingPosition = startingPosition + pageSize;
+    const pageChange = (pageNumber) => {
+      setPage(pageNumber);
+    };
 
-    setDisplayList(filteredList.slice(startingPosition, endingPosition));
-  }, [filteredList, currentPage]);
+    const searchPageChange = (pageNumber) => {
+      setPage(pageNumber);
+    };
 
-  // Page change handler
-  const pageChange = (pageNumber) => {
-    setCurrentPage(pageNumber); // Update current page
-  };
-  const searchPageChange = (pageNumber) => {
-    setCurrentSearchPage(pageNumber); // Update current search
-  };
-  const pageSize = 5;
   const columns = [
     {
       title: "Sr.",
       dataIndex: "sr",
       key: "sr",
-      render: (_text, _record, index) => {
-        const serialNumber = (currentPage - 1) * 5 + index + 1;
-        const searchSerialNumber = (currentSearchPage - 1) * 5 + index + 1;
+      render: (_, _d, idx) => {
         return (
-          <span className="text-sm" id="delegated_supported_camp_serial_number">
-            {search.length > 0 ? searchSerialNumber : serialNumber}
+          <span className="text-sm" id="direct_supported_camp_serial_number">
+            {(page - 1) * perPage + idx + 1}
           </span>
         );
       },
@@ -234,37 +226,6 @@ export default function DelegatedSupportCampsUI({
     );
   }
 
-  const filteredSearchArray = () => {
-    const startingPosition = (currentSearchPage - 1) * 5;
-    const endingPosition = startingPosition + 5;
-    return filteredArray.slice(startingPosition, endingPosition);
-  };
-  const filteredArray = useMemo(() => {
-    if (search.trim() == "") {
-      return displayList;
-    } else {
-      return delegatedSupportCampsList.filter((val: any) => {
-        return val.title
-          .toLowerCase()
-          .trim()
-          .includes(search.toLowerCase().trim());
-      });
-    }
-  }, [search, displayList, delegatedSupportCampsList, currentSearchPage]);
-
-  useEffect(() => {
-    // Update the filtered list based on the search
-    if (search) {
-      const filtered = delegatedSupportCampsList.filter((item) =>
-        item.title.toLowerCase().includes(search.toLowerCase())
-      );
-      setFilteredList(filtered);
-      setCurrentPage(1); // Reset to the first page when searching
-    } else {
-      setFilteredList(delegatedSupportCampsList);
-    }
-  }, [search, delegatedSupportCampsList]);
-
   return (
     <div>
       <div
@@ -302,11 +263,7 @@ export default function DelegatedSupportCampsUI({
                 className="w-full flex justify-end gap-2.5 items-center"
                 id="delegated_supported_camp_reset_btn"
               >
-                <PrimaryButton
-                  onClick={() => {
-                    setSearch("");
-                  }}
-                >
+                <PrimaryButton onClick={() => setSearchText("")}>
                   Reset
                 </PrimaryButton>
                 <Input
@@ -321,26 +278,25 @@ export default function DelegatedSupportCampsUI({
                     />
                   }
                   data-testid="settingSearch"
-                  value={search}
+                  value={searchText}
                   placeholder="Search via topic name"
                   type="text"
                   name="search"
                   className="!h-10 rounded-lg border border-canGrey2 text-sm font-normal lg:w-auto w-full"
                   onChange={(e) => {
-                    setSearch(e.target.value);
+                    setSearchText(e.target.value);
+                    setPage(1);
                   }}
                 />
               </div>
             </div>
 
-            {delegatedSupportCampsList &&
-            delegatedSupportCampsList.length > 0 ? (
+            {displayList &&
+            displayList.length > 0 ? (
               <>
                 <Table
                   columns={columns}
-                  dataSource={
-                    search.length > 0 ? filteredSearchArray() : filteredArray
-                  }
+                  dataSource={displayList}
                   pagination={false}
                   rowKey={(record) => record.title}
                   scroll={{ x: "1060" }}
@@ -348,22 +304,22 @@ export default function DelegatedSupportCampsUI({
                 [&_.ant-table-cell:nth-child(2)]:before:!hidden 
                  [&_.ant-table-cell:nth-child(5)]:!border-l  [&_.ant-table-cell:nth-child(5)]:!border-black [&_.ant-table-cell:nth-child(5)]:!border-opacity-5  [&_.ant-table-thead>tr>th:nth-child(5)]:!border-l-0 [&_.ant-table-thead>tr>th:nth-child(6)]:!border-l-0"
                 />
-                {search.length > 0 ? (
+                {total > perPage ? (
                   <Pagination
-                    hideOnSinglePage={true}
-                    total={filteredArray.length}
-                    pageSize={5}
-                    current={currentSearchPage}
-                    onChange={searchPageChange}
-                    showSizeChanger={false}
-                    className="mt-5"
+                  hideOnSinglePage={true}
+                  total={total}
+                  pageSize={perPage}
+                  current={page}
+                  onChange={searchPageChange}
+                  showSizeChanger={false}
+                  className="mt-5"
                   />
                 ) : null}
               </>
             ) : (
               <Empty description="No Data Found" />
             )}
-            {delegatedSupportCampsList &&
+            {/* {delegatedSupportCampsList &&
             delegatedSupportCampsList.length > 0 &&
             search.length === 0 ? (
               <Pagination
@@ -376,7 +332,7 @@ export default function DelegatedSupportCampsUI({
               />
             ) : (
               ""
-            )}
+            )} */}
           </div>
         )}
         <Modal
@@ -585,7 +541,7 @@ export default function DelegatedSupportCampsUI({
               >
                 <PrimaryButton
                   onClick={() => {
-                    setSearch("");
+                    setSearchText("");
                   }}
                   id="delagate_supported_camp_mob_btn_reset"
                 >
@@ -604,13 +560,13 @@ export default function DelegatedSupportCampsUI({
                   />
                 }
                 data-testid="settingSearch"
-                value={search}
+                value={searchText}
                 placeholder="Search via topic name"
                 type="text"
                 name="search"
                 className="!h-10 rounded-lg border border-canGrey2 text-sm font-normal lg:w-auto w-full [&_.ant-input-affix-wrapper]:hover:!border-canGrey2 focus:!border-canGrey2 focus:!shadow-none "
                 onChange={(e) => {
-                  setSearch(e.target.value);
+                  setSearchText(e.target.value);
                 }}
               />
             </div>
@@ -714,11 +670,12 @@ export default function DelegatedSupportCampsUI({
 
             {delegatedSupportCampsList &&
               delegatedSupportCampsList.length > 0 &&
-              search.length === 0 && (
+              searchText.length === 0 && (
                 <Pagination
                   hideOnSinglePage={true}
-                  total={delegatedSupportCampsList.length}
-                  pageSize={5}
+                  total={total}
+                  pageSize={perPage}
+                  current={page}
                   onChange={pageChange}
                   showSizeChanger={false}
                   className="mt-5"
