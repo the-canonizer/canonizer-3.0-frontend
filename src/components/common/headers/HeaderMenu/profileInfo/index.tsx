@@ -1,41 +1,54 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Dropdown, Space, Avatar } from "antd";
 import { useSelector } from "react-redux";
-import md5 from "md5";
 import { DownOutlined } from "@ant-design/icons";
-
+import { getGravatarImage } from "components/shared/AvaratGroup/avatar"; // Your async gravatar fetch function
 import { RootState } from "src/store";
 
 const ProfileInfo = ({
-  isGravatarImage,
-  loadingImage,
-  loggedUser,
-  isMobile,
-  menu = <></>,
+  isGravatarImage, loadingImage, loggedUser,
+  isMobile, menu = <></>,
   withoutDropdown = false,
   showGravatar = false,
-}: any) => {
+}: any) => { 
   const { loggedInUser } = useSelector((state: RootState) => ({
     loggedInUser: state.auth.loggedInUser,
   }));
 
-  let dataMain =
-    loggedInUser?.profile_picture && !loadingImage ? (
+  // State to store Gravatar Image URL
+  const [gravatarUrl, setGravatarUrl] = useState<string | null>(null);
+
+  // Fetch Gravatar image when loggedInUser email changes
+  useEffect(() => {
+    const fetchGravatarImage = async () => {
+      if (loggedInUser?.email && showGravatar) {
+        const gravatar = await getGravatarImage(loggedInUser?.email);
+        setGravatarUrl(gravatar || null); 
+        showGravatar= true;// Set gravatar URL or null if not found
+      }
+    };
+    fetchGravatarImage();
+  }, [loggedInUser?.email, showGravatar]); // Dependency on email and showGravatar
+
+  let dataMain;
+
+  if (loggedInUser?.profile_picture && !loadingImage) {
+    dataMain = (
       <Avatar
         src={loggedInUser?.profile_picture}
         size={isMobile ? "small" : "default"}
         className="-mb-[10px] cursor-pointer"
       />
-    ) : isGravatarImage && showGravatar && !loadingImage ? (
-      loggedInUser?.email && (
-        <Avatar
-          src={`https://www.gravatar.com/avatar/${md5(
-            loggedInUser?.email
-          )}.png`}
-          className="-mb-[10px] cursor-pointer"
-        />
-      )
-    ) : (
+    );
+  } else if (!loadingImage && gravatarUrl) {
+    dataMain = (
+      <Avatar
+        src={gravatarUrl}
+        className="-mb-[10px] cursor-pointer"
+      />
+    );
+  } else {
+    dataMain = (
       <Avatar
         style={{ fontSize: `${isMobile ? "12px" : ""}` }}
         size={isMobile ? "small" : "default"}
@@ -44,7 +57,8 @@ const ProfileInfo = ({
         {loggedUser?.first_name?.charAt(0) + loggedUser?.last_name?.charAt(0)}
       </Avatar>
     );
-
+  }
+  
   if (withoutDropdown) {
     return dataMain;
   }
@@ -69,4 +83,5 @@ const ProfileInfo = ({
     </div>
   );
 };
+
 export default ProfileInfo;

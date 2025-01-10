@@ -29,7 +29,7 @@ const SingleTopicCard = ({
   avatars,
   scoreTag = null,
   onTopicLinkClick = null,
-  tag_key = "topicTags",
+  tag_key = "tags",
   maxCount = 5,
   cardClassName = "",
   copyLink = null,
