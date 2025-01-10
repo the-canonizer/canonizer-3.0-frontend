@@ -1,24 +1,36 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Dropdown, Space, Avatar } from "antd";
 import { useSelector } from "react-redux";
-import md5 from "md5";
 import { DownOutlined } from "@ant-design/icons";
-
+import { getGravatarImage } from "components/shared/AvaratGroup/avatar"; // Your async gravatar fetch function
 import { RootState } from "src/store";
 
 const ProfileInfo = ({
-  isGravatarImage,
-  loadingImage,
-  loggedUser,
-  isMobile,
-  menu = <></>,
+  isGravatarImage, loadingImage, loggedUser,
+  isMobile, menu = <></>,
   withoutDropdown = false,
   showGravatar = false,
-}: any) => {
+}: any) => { 
   const { loggedInUser } = useSelector((state: RootState) => ({
     loggedInUser: state.auth.loggedInUser,
   }));
 
+  // State to store Gravatar Image URL
+  const [gravatarUrl, setGravatarUrl] = useState<string | null>(null);
+
+  // Fetch Gravatar image when loggedInUser email changes
+  useEffect(() => {
+    const fetchGravatarImage = async () => {
+      if (loggedInUser?.email && showGravatar) {
+        const gravatar = await getGravatarImage(loggedInUser?.email);
+        setGravatarUrl(gravatar || null); 
+        showGravatar= true;// Set gravatar URL or null if not found
+      }
+    };
+    fetchGravatarImage();
+  }, [loggedInUser?.email, showGravatar]); // Dependency on email and showGravatar
+
+  console.log( loggedInUser?.profile_picture);
   let dataMain =
     loggedInUser?.profile_picture && !loadingImage ? (
       <Avatar
@@ -26,15 +38,11 @@ const ProfileInfo = ({
         size={isMobile ? "small" : "default"}
         className="-mb-[10px] cursor-pointer"
       />
-    ) : isGravatarImage && showGravatar && !loadingImage ? (
-      loggedInUser?.email && (
-        <Avatar
-          src={`https://www.gravatar.com/avatar/${md5(
-            loggedInUser?.email
-          )}.png`}
-          className="-mb-[10px] cursor-pointer"
-        />
-      )
+    ) : !loadingImage && gravatarUrl ? (
+      <Avatar
+        src={gravatarUrl}
+        className="-mb-[10px] cursor-pointer"
+      />
     ) : (
       <Avatar
         style={{ fontSize: `${isMobile ? "12px" : ""}` }}
@@ -69,4 +77,5 @@ const ProfileInfo = ({
     </div>
   );
 };
+
 export default ProfileInfo;

@@ -23,7 +23,6 @@ export const getGravatarImage = async (email) => {
 
 const SingleAvatar = ({ user, imageBaseURL = "" }) => {
   const [isGravatarAvailable, setIsGravatarAvailable] = useState(null);
-
   useEffect(() => {
     const fetchGravatarImage = async () => {
       if (!user?.profile_picture_path && user?.email) {
@@ -65,7 +64,7 @@ const SingleAvatar = ({ user, imageBaseURL = "" }) => {
     if (!user?.profile_picture_path && isGravatarAvailable) {
       return (
         <Avatar
-          src={`https://www.gravatar.com/avatar/${md5(user?.email)}.png`}
+          src={isGravatarAvailable}
           data-testId={`gravatar-avatar-${user?.id}`}
         />
       );
