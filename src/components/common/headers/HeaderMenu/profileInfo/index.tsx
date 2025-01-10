@@ -30,20 +30,25 @@ const ProfileInfo = ({
     fetchGravatarImage();
   }, [loggedInUser?.email, showGravatar]); // Dependency on email and showGravatar
 
-  console.log( loggedInUser?.profile_picture);
-  let dataMain =
-    loggedInUser?.profile_picture && !loadingImage ? (
+  let dataMain;
+
+  if (loggedInUser?.profile_picture && !loadingImage) {
+    dataMain = (
       <Avatar
         src={loggedInUser?.profile_picture}
         size={isMobile ? "small" : "default"}
         className="-mb-[10px] cursor-pointer"
       />
-    ) : !loadingImage && gravatarUrl ? (
+    );
+  } else if (!loadingImage && gravatarUrl) {
+    dataMain = (
       <Avatar
         src={gravatarUrl}
         className="-mb-[10px] cursor-pointer"
       />
-    ) : (
+    );
+  } else {
+    dataMain = (
       <Avatar
         style={{ fontSize: `${isMobile ? "12px" : ""}` }}
         size={isMobile ? "small" : "default"}
@@ -52,7 +57,8 @@ const ProfileInfo = ({
         {loggedUser?.first_name?.charAt(0) + loggedUser?.last_name?.charAt(0)}
       </Avatar>
     );
-
+  }
+  
   if (withoutDropdown) {
     return dataMain;
   }
