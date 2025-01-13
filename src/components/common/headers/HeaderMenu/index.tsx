@@ -31,6 +31,7 @@ import Logo from "../logoHeader";
 import Notifications from "../notification";
 import ProfileInfoTab from "./profileInfo";
 import { setLogOutType } from "src/store/slices/authSlice";
+import { getGravatarImage } from "components/shared/AvaratGroup/avatar";
 
 const menuItems = [
   {
@@ -115,7 +116,7 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
     loggedInUser: state.auth.loggedInUser,
   }));
 
-  const [isGravatarImage, setIsGravatarImage] = useState(false);
+  const [isGravatarImage, setIsGravatarImage] = useState(null);
   const [loadingImage, setLoadingImage] = useState(false);
   const [isActive, setActive] = useState(false);
 
@@ -133,30 +134,34 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
   const onClick = ({ key }) => {
     if (key == 3) {
       logOut(router);
-      document.cookie = "current_user=" +
-      "" +
-      "; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
+      document.cookie =
+        "current_user=" +
+        "" +
+        "; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
 
-      document.cookie = "isUserAuthenticated=" +
-      false +
-      "; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
+      document.cookie =
+        "isUserAuthenticated=" +
+        false +
+        "; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
       console.log("logout");
     }
   };
 
-  const getGravatarImage = async (email) => {
-    setLoadingImage(true);
-    let data = await getGravatarPicApi(email);
-    if (data?.status == 200) {
-      setIsGravatarImage(true);
-    }
-    setLoadingImage(false);
-  };
-
   useEffect(() => {
-    if (isUserAuthenticated && loggedInUser && !loggedInUser?.profile_picture)
-      getGravatarImage(loggedInUser?.email);
-  }, [loggedInUser]);
+    const fetchGravatarImage = async () => {
+      if (isUserAuthenticated && loggedInUser && !loggedInUser?.profile_picture){
+        setLoadingImage(true);
+        const res = await getGravatarImage(loggedInUser?.email);
+        if (res) {
+          setIsGravatarImage(res);  // Set Gravatar image if found
+        } else {
+          setIsGravatarImage(false);  // Fallback to initials if Gravatar not found
+        }
+        setLoadingImage(false);
+      }
+    };
+    fetchGravatarImage();
+  }, [loggedInUser, isUserAuthenticated]);
 
   const menu = (
     <Menu onClick={onClick}>

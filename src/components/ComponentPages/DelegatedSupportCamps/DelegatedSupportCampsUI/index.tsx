@@ -29,49 +29,71 @@ export default function DelegatedSupportCampsUI({
   viewMoreDataValue,
   viewMoreModalVisible,
   delegatedSupportCampsList,
-  // search,
   removeSupport,
   removeSupportCampsData,
   delegateSupportedSkeleton,
+  page,
+  perPage,
+  total,
+  setPage,
+  searchText,
+  setSearchText
 }: any) {
   const [displayList, setDisplayList] = useState([]);
   const limit = delegatedSupportCampsList.length;
-  const [search, setSearch] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [currentSearchPage, setCurrentSearchPage] = useState(1);
-  const [filteredList, setFilteredList] = useState(delegatedSupportCampsList);
-
+  
   useEffect(() => {
-    pageChange(1);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [delegatedSupportCampsList]);
+    if (delegatedSupportCampsList) 
+        setDisplayList(delegatedSupportCampsList);
+    }, [delegatedSupportCampsList]);
 
-  useEffect(() => {
-    const startingPosition = (currentPage - 1) * pageSize;
-    const endingPosition = startingPosition + pageSize;
+    const pageChange = (pageNumber) => {
+      setPage(pageNumber);
+    };
 
-    setDisplayList(filteredList.slice(startingPosition, endingPosition));
-  }, [filteredList, currentPage]);
+    const searchPageChange = (pageNumber) => {
+      setPage(pageNumber);
+    };
 
-  // Page change handler
-  const pageChange = (pageNumber) => {
-    setCurrentPage(pageNumber); // Update current page
-  };
-  const searchPageChange = (pageNumber) => {
-    setCurrentSearchPage(pageNumber); // Update current search
-  };
-  const pageSize = 5;
+  const renderResetButton = (isMobile = false) => (
+    <PrimaryButton
+      onClick={() => {
+        setSearchText('');
+        setPage(1);
+      }}
+      id={isMobile ? 'delagate_supported_camp_mob_btn_reset' : 'delegated_supported_camp_reset_btn'}
+    >
+      Reset
+    </PrimaryButton>
+  );
+
+  const renderSearchInput = (isMobile = false) => (
+    <Input
+      id={isMobile ? 'delagate_supported_camp_mob_search_input' : 'delegated_supported_camp_search_input'}
+      suffix={<Image src="/images/search-icon.svg" width={15} height={15} alt="" />}
+      data-testid="settingSearch"
+      value={searchText}
+      placeholder="Search via topic name"
+      type="text"
+      name="search"
+      className={`!h-10 rounded-lg border border-canGrey2 text-sm font-normal ${isMobile ? 'lg:w-auto w-full' : 'w-full'}`}
+      onChange={(e) => {
+        setSearchText(e.target.value);
+        setPage(1);
+      }}
+    />
+  );
+
   const columns = [
     {
       title: "Sr.",
       dataIndex: "sr",
       key: "sr",
-      render: (_text, _record, index) => {
-        const serialNumber = (currentPage - 1) * 5 + index + 1;
-        const searchSerialNumber = (currentSearchPage - 1) * 5 + index + 1;
+      render: (_, _d, idx) => {
         return (
-          <span className="text-sm" id="delegated_supported_camp_serial_number">
-            {search.length > 0 ? searchSerialNumber : serialNumber}
+          <span className="text-sm" id="direct_supported_camp_serial_number">
+            
+            {(page - 1) * perPage + idx + 1}
           </span>
         );
       },
@@ -234,43 +256,9 @@ export default function DelegatedSupportCampsUI({
     );
   }
 
-  const filteredSearchArray = () => {
-    const startingPosition = (currentSearchPage - 1) * 5;
-    const endingPosition = startingPosition + 5;
-    return filteredArray.slice(startingPosition, endingPosition);
-  };
-  const filteredArray = useMemo(() => {
-    if (search.trim() == "") {
-      return displayList;
-    } else {
-      return delegatedSupportCampsList.filter((val: any) => {
-        return val.title
-          .toLowerCase()
-          .trim()
-          .includes(search.toLowerCase().trim());
-      });
-    }
-  }, [search, displayList, delegatedSupportCampsList, currentSearchPage]);
-
-  useEffect(() => {
-    // Update the filtered list based on the search
-    if (search) {
-      const filtered = delegatedSupportCampsList.filter((item) =>
-        item.title.toLowerCase().includes(search.toLowerCase())
-      );
-      setFilteredList(filtered);
-      setCurrentPage(1); // Reset to the first page when searching
-    } else {
-      setFilteredList(delegatedSupportCampsList);
-    }
-  }, [search, delegatedSupportCampsList]);
-
   return (
     <div>
-      <div
-        className="hidden lg:flex w-full [&_#delegated_supported_camp_loader_section>div]:!w-full"
-        id="delegated_supported_camp_loader_section"
-      >
+      <div className="hidden lg:flex w-full [&_#delegated_supported_camp_loader_section>div]:!w-full" id="delegated_supported_camp_loader_section">
         {delegateSupportedSkeleton ? (
           <div className="w-full">
             <CustomSkelton
@@ -283,64 +271,24 @@ export default function DelegatedSupportCampsUI({
           </div>
         ) : (
           <div className="w-full" id="delegated_supported_camp_upper_heading_1">
-            <div
-              className="flex lg:flex-row flex-col justify-between items-center mb-5 lg:gap-0 gap-2.5"
-              id="delegated_supported_camp_upper_heading_2"
-            >
-              <div
-                className="w-full"
-                id="delegated_supported_camp_upper_heading_3"
-              >
-                <h3
-                  className="text-sm font-medium text-canBlack"
-                  id="delegated_supported_camp_upper_heading_text"
-                >
+            <div className="flex lg:flex-row flex-col justify-between items-center mb-5 lg:gap-0 gap-2.5" id="delegated_supported_camp_upper_heading_2">
+              <div className="w-full" id="delegated_supported_camp_upper_heading_3">
+                <h3 className="text-sm font-medium text-canBlack" id="delegated_supported_camp_upper_heading_text">
                   DELEGATED SUPPORTED CAMPS
                 </h3>
               </div>
-              <div
-                className="w-full flex justify-end gap-2.5 items-center"
-                id="delegated_supported_camp_reset_btn"
-              >
-                <PrimaryButton
-                  onClick={() => {
-                    setSearch("");
-                  }}
-                >
-                  Reset
-                </PrimaryButton>
-                <Input
-                  id="delegated_supported_camp_search_input"
-                  suffix={
-                    <Image
-                      id="delegated_supported_camp_search_input_search_icon"
-                      src="/images/search-icon.svg"
-                      width={15}
-                      height={15}
-                      alt=""
-                    />
-                  }
-                  data-testid="settingSearch"
-                  value={search}
-                  placeholder="Search via topic name"
-                  type="text"
-                  name="search"
-                  className="!h-10 rounded-lg border border-canGrey2 text-sm font-normal lg:w-auto w-full"
-                  onChange={(e) => {
-                    setSearch(e.target.value);
-                  }}
-                />
+              <div className="w-full flex justify-end gap-2.5 items-center" id="delegated_supported_camp_reset_btn">
+                {renderResetButton()}
+                {renderSearchInput()}
               </div>
             </div>
 
-            {delegatedSupportCampsList &&
-            delegatedSupportCampsList.length > 0 ? (
+            {displayList &&
+            displayList.length > 0 ? (
               <>
                 <Table
                   columns={columns}
-                  dataSource={
-                    search.length > 0 ? filteredSearchArray() : filteredArray
-                  }
+                  dataSource={displayList}
                   pagination={false}
                   rowKey={(record) => record.title}
                   scroll={{ x: "1060" }}
@@ -348,12 +296,12 @@ export default function DelegatedSupportCampsUI({
                 [&_.ant-table-cell:nth-child(2)]:before:!hidden 
                  [&_.ant-table-cell:nth-child(5)]:!border-l  [&_.ant-table-cell:nth-child(5)]:!border-black [&_.ant-table-cell:nth-child(5)]:!border-opacity-5  [&_.ant-table-thead>tr>th:nth-child(5)]:!border-l-0 [&_.ant-table-thead>tr>th:nth-child(6)]:!border-l-0"
                 />
-                {search.length > 0 ? (
+                {total > perPage ? (
                   <Pagination
                     hideOnSinglePage={true}
-                    total={filteredArray.length}
-                    pageSize={5}
-                    current={currentSearchPage}
+                    total={total}
+                    pageSize={perPage}
+                    current={page}
                     onChange={searchPageChange}
                     showSizeChanger={false}
                     className="mt-5"
@@ -362,20 +310,6 @@ export default function DelegatedSupportCampsUI({
               </>
             ) : (
               <Empty description="No Data Found" />
-            )}
-            {delegatedSupportCampsList &&
-            delegatedSupportCampsList.length > 0 &&
-            search.length === 0 ? (
-              <Pagination
-                hideOnSinglePage={true}
-                total={delegatedSupportCampsList.length}
-                pageSize={5}
-                onChange={pageChange}
-                showSizeChanger={false}
-                className="mt-5"
-              />
-            ) : (
-              ""
             )}
           </div>
         )}
@@ -556,9 +490,8 @@ export default function DelegatedSupportCampsUI({
         </Modal>
       </div>
 
-      <div
-        className="lg:hidden flex w-full [&_.ant-typography]:!m-0 [&_.ant-card-head-wrapper]:!gap-2"
-        id="delagate_supported_camp_mob_btn_section"
+{/* Mobile Device */}
+      <div className="lg:hidden flex w-full [&_.ant-typography]:!m-0 [&_.ant-card-head-wrapper]:!gap-2" id="delagate_supported_camp_mob_btn_section"
       >
         {delegateSupportedSkeleton ? (
           <div className="w-full">
@@ -571,54 +504,16 @@ export default function DelegatedSupportCampsUI({
             />
           </div>
         ) : (
-          <div
-            className="w-full"
-            id="delagate_supported_camp_mob_btn_section_1"
-          >
-            <div
-              className="w-full flex justify-end mb-5"
-              id="delagate_supported_camp_mob_btn_section_2"
-            >
-              <div
-                className="mr-2"
-                id="delagate_supported_camp_mob_btn_section_reset"
-              >
-                <PrimaryButton
-                  onClick={() => {
-                    setSearch("");
-                  }}
-                  id="delagate_supported_camp_mob_btn_reset"
-                >
-                  Reset
-                </PrimaryButton>
+          <div className="w-full" id="delagate_supported_camp_mob_btn_section_1" >
+            <div className="w-full flex justify-end mb-5" id="delagate_supported_camp_mob_btn_section_2">
+              <div className="mr-2" id="delagate_supported_camp_mob_btn_section_reset" >
+                {renderResetButton(true)}
               </div>
-
-              <Input
-                id="delagate_supported_camp_mob_search_input"
-                suffix={
-                  <Image
-                    src="/images/search-icon.svg"
-                    width={15}
-                    height={15}
-                    alt=""
-                  />
-                }
-                data-testid="settingSearch"
-                value={search}
-                placeholder="Search via topic name"
-                type="text"
-                name="search"
-                className="!h-10 rounded-lg border border-canGrey2 text-sm font-normal lg:w-auto w-full [&_.ant-input-affix-wrapper]:hover:!border-canGrey2 focus:!border-canGrey2 focus:!shadow-none "
-                onChange={(e) => {
-                  setSearch(e.target.value);
-                }}
-              />
+                {renderSearchInput(true)}
             </div>
             {displayList && displayList.length > 0
               ? displayList.map((data, i) => (
-                  <div
-                    id="delagate_supported_camp_mob_card_section"
-                    key={data.topic_num}
+                  <div id="delagate_supported_camp_mob_card_section" key={data.topic_num}
                     className="!border !border-canGrey2 rounded-lg mb-5 last:mb-0 px-2.5"
                   >
                     <Card
@@ -710,20 +605,17 @@ export default function DelegatedSupportCampsUI({
                     </Card>
                   </div>
                 ))
-              : showEmpty("No Data Found")}
-
-            {delegatedSupportCampsList &&
-              delegatedSupportCampsList.length > 0 &&
-              search.length === 0 && (
-                <Pagination
-                  hideOnSinglePage={true}
-                  total={delegatedSupportCampsList.length}
-                  pageSize={5}
-                  onChange={pageChange}
-                  showSizeChanger={false}
-                  className="mt-5"
-                />
-              )}
+              : showEmpty("No Data Found")
+            }
+            <Pagination
+              hideOnSinglePage={true}
+              total={total}
+              pageSize={perPage}
+              current={page}
+              onChange={pageChange}
+              showSizeChanger={false}
+              className="mt-5"
+            />
           </div>
         )}
       </div>
