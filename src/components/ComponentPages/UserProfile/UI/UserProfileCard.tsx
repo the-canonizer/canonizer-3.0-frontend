@@ -172,7 +172,7 @@ export const UserProfileCard = ({
       />
 
 {!userSupportedCampsList || userSupportedCampsList.length === 0 ? (
-  <span className="italic text-canLight" id="auto_search_section_empty_data">
+  <span className="italic text-canLight">
     There is no data to show in this category.</span> // Message when data is null or empty
 ) : (
   userSupportedCampsList.map((supportedCampList, i) => {
