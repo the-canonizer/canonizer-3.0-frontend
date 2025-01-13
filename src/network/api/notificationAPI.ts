@@ -41,12 +41,16 @@ export const getLists = async (
 };
 
 export const getGravatarPicApi = async (email) => {
+const BaseCanonizerApiUrl = process.env.NEXT_PUBLIC_BASE_API_URL;
   try {
-    let url = `https://www.gravatar.com/avatar/${md5(email)}?d=identicon`;
-    let res = await axios.get(url);
+    const postData = {
+      email: email,
+    };
+    const url = `${BaseCanonizerApiUrl}/gravatar`;
+    let res = await axios.post(url, postData); 
     return res;
   } catch (error) {
-    return error;
+    return error; // Return the error
   }
 };
 

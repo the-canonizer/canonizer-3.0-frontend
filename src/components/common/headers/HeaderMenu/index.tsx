@@ -38,6 +38,7 @@ import {
   navBarSteps,
   searchBar,
 } from "src/constants/tourGuideSteps";
+import { getGravatarImage } from "components/shared/AvaratGroup/avatar";
 
 const menuItems = [
   {
@@ -88,7 +89,7 @@ const menuItems = [
   },
   {
     link: "/settings?tab=profile_info",
-    linkTitle: "Settings",
+    linkTitle: "Account Settings",
     id: 5,
     isMobile: true,
     icon: <SettingOutlined />,
@@ -122,7 +123,7 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
     loggedInUser: state.auth.loggedInUser,
   }));
 
-  const [isGravatarImage, setIsGravatarImage] = useState(false);
+  const [isGravatarImage, setIsGravatarImage] = useState(null);
   const [loadingImage, setLoadingImage] = useState(false);
   const [isActive, setActive] = useState(false);
 
@@ -152,19 +153,21 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
     }
   };
 
-  const getGravatarImage = async (email) => {
-    setLoadingImage(true);
-    let data = await getGravatarPicApi(email);
-    if (data?.status == 200) {
-      setIsGravatarImage(true);
-    }
-    setLoadingImage(false);
-  };
-
   useEffect(() => {
-    if (isUserAuthenticated && loggedInUser && !loggedInUser?.profile_picture)
-      getGravatarImage(loggedInUser?.email);
-  }, [loggedInUser]);
+    const fetchGravatarImage = async () => {
+      if (isUserAuthenticated && loggedInUser && !loggedInUser?.profile_picture){
+        setLoadingImage(true);
+        const res = await getGravatarImage(loggedInUser?.email);
+        if (res) {
+          setIsGravatarImage(res);  // Set Gravatar image if found
+        } else {
+          setIsGravatarImage(false);  // Fallback to initials if Gravatar not found
+        }
+        setLoadingImage(false);
+      }
+    };
+    fetchGravatarImage();
+  }, [loggedInUser, isUserAuthenticated]);
 
   const menu = (
     <Menu onClick={onClick}>
