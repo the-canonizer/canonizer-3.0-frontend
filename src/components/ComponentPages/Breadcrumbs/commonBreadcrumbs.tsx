@@ -412,7 +412,8 @@ function CommanBreadcrumbs({
   const disableCreateBtn = () => {
     const isOneLevel =
       (campRecord?.is_one_level == 0 && campRecord?.parent_is_one_level == 0) ||
-      (campRecord?.is_one_level == 1 && campRecord?.parent_is_one_level == 1)
+      (campRecord?.is_one_level == 1 && campRecord?.parent_is_one_level == 1) ||
+      campRecord?.parent_is_one_level == false
         ? false
         : true;
     return isOneLevel || campRecord?.is_disabled ? false : true;
