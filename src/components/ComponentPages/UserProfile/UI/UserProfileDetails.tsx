@@ -4,6 +4,7 @@ import {
   CalendarOutlined,
   MailOutlined,
   UserOutlined,
+  EnvironmentOutlined
 } from "@ant-design/icons";
 import md5 from "md5";
 
@@ -49,17 +50,16 @@ const UserProfileDetails = ({
   userProfileCardSkeleton,
 }) => {
   const isMobile = useIsMobile();
-  const [isGravatarAvailable, setIsGravatarAvailable] = useState(false);
+  const [gravatarAvailable, setGravatarAvailable] = useState(null);
   const [profileImageError, setProfileImageError] = useState(false);
 
   useEffect(() => {
     const fetchGravatarImage = async () => {
-      if (!profileData?.profile_picture && profileData?.email) {
-        const available = await getGravatarImage(profileData?.email);
-        setIsGravatarAvailable(available);
-      }
+     if (!profileData?.profile_picture && profileData?.email) {
+        const res = await getGravatarImage(profileData?.email);
+        setGravatarAvailable(res);
+    }
     };
-
     fetchGravatarImage();
   }, [profileData?.email]);
 
@@ -87,19 +87,13 @@ const UserProfileDetails = ({
     );
   }
 
-  const imagePath = profileData?.profile_picture
-    ? profileData?.profile_picture
-    : !profileData?.profile_picture && isGravatarAvailable
-    ? `https://www.gravatar.com/avatar/${md5(profileData?.email)}.png`
-    : null;
-
-  // const addressParts = [
-  //   profileData?.address_1,
-  //   profileData?.address_2,
-  //   profileData?.city,
-  //   profileData?.country,
-  //   profileData?.postal_code ? `- ${profileData.postal_code}` : "",
-  // ];
+let imagePath = null;
+// Check if profile picture is available, otherwise check if Gravatar is available
+  if (profileData?.profile_picture) {
+    imagePath = profileData.profile_picture;
+  } else if (!profileData?.profile_picture && gravatarAvailable) {
+    imagePath = gravatarAvailable;
+  }
 
   const address_data = {
     address_1: profileData?.address_1,
@@ -108,11 +102,6 @@ const UserProfileDetails = ({
     country: profileData?.country,
     postal_code: profileData?.postal_code ? `- ${profileData.postal_code}` : "",
   };
-
-  // const address = addressParts
-  //   .filter(Boolean) // Filters out any falsy values (null, undefined, empty string)
-  //   .join(", ") // Joins the non-empty parts with a comma and space
-  //   .trim(); // Ensures no leading or trailing spaces
 
   const getNameInitials = (first_name, last_name) => {
     if (first_name && last_name) {
@@ -260,7 +249,7 @@ const UserProfileDetails = ({
           ) : null}
           {Object?.keys(address_data)?.length ? (
             <ItemCard
-              icon={<MailOutlined />}
+              icon={<EnvironmentOutlined />}
               label={messages.labels.address}
               text={<>{renderedAddress}</>}
               showTooltip={false} // Tooltips are handled individually
