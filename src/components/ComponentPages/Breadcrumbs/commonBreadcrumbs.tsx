@@ -409,7 +409,14 @@ function CommanBreadcrumbs({
   //     getTreesApi(reqBodyForService);
   //   }
   // };
-
+  const disableCreateBtn = () => {
+    const isOneLevel =
+      (campRecord?.is_one_level == 0 && campRecord?.parent_is_one_level == 0) ||
+      (campRecord?.is_one_level == 1 && campRecord?.parent_is_one_level == 1)
+        ? false
+        : true;
+    return isOneLevel || campRecord?.is_disabled ? false : true;
+  };
   const covertToTime = (unixTime) => {
     return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
   };
@@ -1165,28 +1172,25 @@ function CommanBreadcrumbs({
             !compareMode &&
             campRecord?.is_archive == 0 &&
             breadCrumbRes?.bread_crumb?.length
-          ) && (
-            <SecondaryButton
-              className="hidden px-8 py-2.5 lg:flex items-center text-sm gap-1"
-              size="large"
-              onClick={handleClick}
-              disabled={
-                !tree?.["1"]?.is_valid_as_of_time
-                  ? true
-                  : false || campRecord.is_disabled == 1
-              }
-            >
-              Create Camp
-              <Image
-                src="/images/Icon-plus.svg"
-                alt="svg"
-                className="icon-topic"
-                height={16}
-                width={16}
-                preview={false}
-              />
-            </SecondaryButton>
-          )}
+          ) &&
+            disableCreateBtn() && (
+              <SecondaryButton
+                className="hidden px-8 py-2.5 lg:flex items-center text-sm gap-1"
+                size="large"
+                onClick={handleClick}
+                disabled={!tree?.["1"]?.is_valid_as_of_time ? true : false}
+              >
+                Create Camp
+                <Image
+                  src="/images/Icon-plus.svg"
+                  alt="svg"
+                  className="icon-topic"
+                  height={16}
+                  width={16}
+                  preview={false}
+                />
+              </SecondaryButton>
+            )}
           {isHtmlContent}
         </div>
       )}
