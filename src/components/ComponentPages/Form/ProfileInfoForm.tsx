@@ -762,9 +762,9 @@ function ProfileInfoForm({
                   {
                     required: true,
                     type: 'string',
-                    pattern: new RegExp(/^[a-zA-Z0-9\s\.\-\']*$/), // Allow characters, numbers, spaces, periods, hyphens, and apostrophes
-                    message: 'Invalid address format.',
-                  }
+                    pattern: new RegExp(/^[a-zA-Z0-9\s\.\-\',\s]*$/), // Allow characters, numbers, spaces, periods, hyphens, apostrophes, and commas
+                    message: `Address must only contain letters, numbers and combinations of special characters (i.e ".","-","'",",") `,
+                  },
                 ]}
                 name="address_1"
                 label={messages.labels.addressLine1}
@@ -863,10 +863,9 @@ function ProfileInfoForm({
                   //   },
                   // },
                   {
-                    required: true,
                     type: 'string',
-                    pattern: new RegExp(/^[a-zA-Z0-9\s\.\-\']*$/), // Allow characters, numbers, spaces, periods, hyphens, and apostrophes
-                    message: 'Invalid address format.',
+                    pattern: new RegExp(/^[a-zA-Z0-9\s\.\-\',\s]*$/), // Allow characters, numbers, spaces, periods, hyphens, apostrophes, and commas
+                    message: `Address must only contain letters, numbers and combinations of special characters (i.e ".","-","'",",") `,
                   }
                 ]}
                 name="address_2"
