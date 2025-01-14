@@ -410,14 +410,18 @@ function CommanBreadcrumbs({
   //   }
   // };
   const disableCreateBtn = () => {
-    const isOneLevel =
+    if (campRecord?.is_disabled == 1) {
+      return false; // Button should be disabled
+    }
+    if (
       (campRecord?.is_one_level == 0 && campRecord?.parent_is_one_level == 0) ||
       (campRecord?.is_one_level == 1 && campRecord?.parent_is_one_level == 1) ||
-      campRecord?.parent_is_one_level == false
-        ? false
-        : true;
-    return isOneLevel || campRecord?.is_disabled ? false : true;
+      campRecord?.parent_is_one_level === false
+    ) {
+      return true; // Button should be enabled
+    }
   };
+
   const covertToTime = (unixTime) => {
     return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
   };
