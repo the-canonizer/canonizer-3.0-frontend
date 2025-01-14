@@ -342,6 +342,9 @@ const SettingsUI = () => {
         case "delegate_supported_camp":
           setSelectedValueFromSelectTag("Supported Camps");
           break;
+        case "subscriptions":
+          setSelectedValueFromSelectTag("My Subscriptions");
+          break;
         case "social_oauth_verification":
           setSelectedValueFromSelectTag("Social Auth");
           break;
@@ -602,6 +605,35 @@ const SettingsUI = () => {
                                     alt=""
                                   />
                                 </a>
+                              </span>
+                            ),
+                          },
+                          {
+                            value: "My Subscriptions",
+                            label: (
+                              <span id="setting_section_select_tag_my_subscription">
+                                <Link
+                                  href={
+                                    "/settings?tab=subscriptions"
+                                  }
+                                >
+                                  <a
+                                    className="flex items-center gap-3"
+                                    id="setting_section_select_tag_my_subscription_link"
+                                  >
+                                    <span className="text-base font-medium text-canBlack">
+                                      {" "}
+                                      My Subscriptions
+                                    </span>
+                                    <Image
+                                      id="setting_section_select_tag_my_subscription_img"
+                                      src="/images/subscription-icon.svg"
+                                      width={24}
+                                      height={24}
+                                      alt=""
+                                    />
+                                  </a>
+                                </Link>
                               </span>
                             ),
                           },
