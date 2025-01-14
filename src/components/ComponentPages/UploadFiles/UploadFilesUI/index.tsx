@@ -511,13 +511,12 @@ const UploadFileUI = ({
   };
 
   const handleGoBack = () => {
-
-    if(disabledCreateFolder){
+    if (disabledCreateFolder) {
       closeFolder();
       StatusHideFile();
       setFlickringData(false);
       setSearch("");
-    }else{
+    } else {
       if (document.referrer) {
         router.back(); // Navigate to the previous page
       } else {
@@ -1237,11 +1236,11 @@ const UploadFileUI = ({
                         icon={
                           <LeftOutlined
                             onClick={handleGoBack}
-                            className="pointer-events-auto cursor-pointer" 
+                            className="pointer-events-auto cursor-pointer"
                           />
                         }
                         size="large"
-                        // onClick={handleGoBack} 
+                        // onClick={handleGoBack}
                       >
                         File(s) Uploaded
                         <h3>
@@ -1406,7 +1405,13 @@ const UploadFileUI = ({
                   <Card
                     title={
                       !search && !datePick
-                        ? `${uploadedLengths?.fileLength} Files, ${uploadedLengths?.folderLength} Folders`
+                        ? `${uploadedLengths?.fileLength} ${
+                            uploadedLengths?.fileLength > 1 ? "Files" : "File"
+                          }, ${uploadedLengths?.folderLength} ${
+                            uploadedLengths?.folderLength > 1
+                              ? "Folders"
+                              : "Folder"
+                          }`
                         : `${filteredList?.length} ${
                             filteredList?.length > 1 ? "Files" : "File"
                           } Found`
