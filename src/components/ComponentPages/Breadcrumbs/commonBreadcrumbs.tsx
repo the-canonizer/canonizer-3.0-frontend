@@ -294,7 +294,7 @@ function CommanBreadcrumbs({
       let reqBody = {
         topic_num: payload?.topic_num ? payload?.topic_num : topicId,
         camp_num: payload?.camp_num ? payload?.camp_num : campId ? campId : 1,
-        as_of: router?.pathname == "/topic/[...camp]" ? asof : "default",
+        as_of: !didMount.current? "default": asof,
         as_of_date:
           asof == "default" || asof == "review"
             ? Date.now() / 1000
