@@ -343,7 +343,7 @@ function CommanBreadcrumbs({
   }, [
     router?.asPath || filterObject,
     !!(getCookies() as any)?.loginToken,
-    changeGoneLive,
+    changeGoneLive,asof
   ]);
 
   const handleTopicwarningIcon = () => {
