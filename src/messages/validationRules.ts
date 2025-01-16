@@ -57,10 +57,6 @@ export const firstNameRule = {
       max: 100,
       message: validations.firstNameMax,
     },
-    {
-      pattern: /^[a-zA-Z]+$/,
-      message: "Please enter only alphabets for First Name.",
-    },
     emojiValidation(patterns.emoji_restrication),
   ],
 };
@@ -74,10 +70,6 @@ export const lastNameRule = {
     {
       max: 100,
       message: validations.firstNameMax,
-    },
-    {
-      pattern: /^[a-zA-Z]+$/,
-      message: "Please enter only alphabets for Last Name.",
     },
     emojiValidation(patterns.emoji_restrication),
   ],
@@ -348,19 +340,7 @@ export const topicNameRule = {
       max: 80,
       message: validations.topiNameMax80,
     },
-    {
-      pattern: /[^ \s]/,
-      message: "Enter a valid Topic Name",
-    },
-    {
-      pattern: /^[a-zA-Z0-9\s\.,\!\@\#\$\%\^\&\*\(\)\-\+=\{\}\[\]\|\\:\;\<\>\?\/\~\`\']*$/, 
-      message: 'Please enter valid characters for Topic Name.',
-    },
-    {
-      pattern: /^(?!^[0-9]+$)(?!^[^a-zA-Z0-9 ]+$).*/,
-      message:
-        "Topic Name cannot contain only numbers or only special characters.",
-    },
+    { pattern: /^\S.*$/, message: 'Topic name cannot start with a space' },
     emojiValidation(patterns.emoji_restrication),
   ],
 };
@@ -396,19 +376,7 @@ export const campNameRule = {
       max: 80,
       message: validations.topiNameMax80,
     },
-    {
-      pattern: /[^ \s]/,
-      message: "Enter a valid Camp Name",
-    },
-    {
-      pattern: /^[a-zA-Z0-9\s\.,\!\@\#\$\%\^\&\*\(\)\-\+=\{\}\[\]\|\\:\;\<\>\?\/\~\`\']*$/, 
-      message: 'Please enter valid characters for Camp Name.',
-    },
-    {
-      pattern: /^(?!^[0-9]+$)(?!^[^a-zA-Z0-9 ]+$).*/,
-      message:
-        "Camp Name cannot contain only numbers or only special characters.",
-    },
+    { pattern: /^\S.*$/, message: 'Camp name cannot start with a space' },
     emojiValidation(patterns.emoji_restrication),
   ],
 };
