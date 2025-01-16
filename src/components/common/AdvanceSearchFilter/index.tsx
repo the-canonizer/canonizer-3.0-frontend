@@ -653,7 +653,7 @@ export default function AdvanceFilter() {
           }
         >
           <div
-            className="advance_close flex justify-between items-center w-full mb-10"
+            className="advance_close flex justify-between items-center w-full mb-3"
             data-testid="cross_icon"
           >
             <h4 className="text-sm text-canBlack font-medium">
@@ -781,11 +781,11 @@ export default function AdvanceFilter() {
                 placeholder="Search a Keyword"
               />
               {searchTopics.length || searchCamps.length ? (
-                <div className="advance_filter_dropdown">
+                <div className="advance_filter_dropdown overflow-auto max-h-64">
                   {searchVal ? (
                     <div className="search_outer">
                       {searchTopics.length ? (
-                        <label>
+                        <label className="mt-2 inline-flex gap-2 items-center">
                           <i className="icon-topic"></i>
                           <span>Topic</span>
                         </label>
@@ -812,7 +812,7 @@ export default function AdvanceFilter() {
                               };
                               return (
                                 <>
-                                  <li style={{ cursor: "default" }}>
+                                  <li className="border-t border-solid border-gray-100 w-full " style={{ cursor: "default" }}>
                                     <a
                                       onClick={() => {
                                         dispatch(
@@ -824,6 +824,7 @@ export default function AdvanceFilter() {
                                           x.camp_num
                                         );
                                       }}
+                                      className="p-2 w-full inline-block"
                                     >
                                       <Highlighted
                                         text={x.title}
@@ -846,7 +847,7 @@ export default function AdvanceFilter() {
                   {searchVal ? (
                     <div className="search_outer">
                       {searchCamps.length ? (
-                        <label>
+                        <label className="mt-2 inline-flex gap-2 items-center" >
                           <i className="icon-camp"></i>
                           <span>camp</span>
                         </label>
@@ -891,9 +892,9 @@ export default function AdvanceFilter() {
                               };
                               return (
                                 <>
-                                  <li style={{ cursor: "default" }}>
+                                  <li className="border-t border-solid border-gray-100 w-full " style={{ cursor: "default" }}>
                                     <a
-                                      className={styles.camp_heading_color}
+                                      className={`${styles.camp_heading_color} p-2 w-full inline-block `}
                                       onClick={() => {
                                         dispatch(
                                           setClickAdvanceFilterOption(true)
