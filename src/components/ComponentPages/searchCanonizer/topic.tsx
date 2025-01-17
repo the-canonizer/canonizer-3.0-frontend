@@ -23,6 +23,7 @@ const TopicSearch = () => {
   const {
     searchMetaData,
     selectedTopicFromAdvanceFilterAlgorithm,
+    selectedTopicFromAdvanceFilterAlgorithmRecords,
     asof,
     filterByScore,
     algorithm,
@@ -30,6 +31,8 @@ const TopicSearch = () => {
     searchMetaData: state?.searchSlice?.searchMetaData,
     selectedTopicFromAdvanceFilterAlgorithm:
       state?.searchSlice?.selectedTopicFromAdvanceFilterAlgorithm,
+    selectedTopicFromAdvanceFilterAlgorithmRecords:
+      state?.searchSlice?.selectedTopicFromAdvanceFilterAlgorithmRecords,
     asof: state.filters?.filterObject?.asof,
     filterByScore: state.filters?.filterObject?.filterByScore,
     algorithm: state.filters?.filterObject?.algorithm,
@@ -44,7 +47,6 @@ const TopicSearch = () => {
   const [displayedDataforAlgo, setDisplayedDataforAlgo] = useState([]);
 
   const dispatch = useDispatch();
-
   const pageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
     dispatch(setPageNumber(pageNumber));
@@ -118,29 +120,15 @@ const TopicSearch = () => {
     );
   };
   const router = useRouter();
-  // console.log(searchDataAll.topic.length,"ggggggggg")
+
   const pageSize = 20;
   useEffect(() => {
-    // Calculate the starting and ending index for slicing the data
-    const startIndex = (currentPage - 1) * pageSize;
-    const endIndex = startIndex + pageSize;
-
-    // Slice the data to show only 20 items for the current page
-    setDisplayedData(searchDataAll?.topic?.slice(startIndex, endIndex));
-
+    setDisplayedData(searchDataAll?.topic);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchDataAll?.topic, currentPage]);
 
   useEffect(() => {
-    // Calculate the starting and ending index for slicing the data
-    const startIndex = (currentPage - 1) * pageSize;
-    const endIndex = startIndex + pageSize;
-
-    // Slice the data to show only 20 items for the current page
-    setDisplayedDataforAlgo(
-      selectedTopicFromAdvanceFilterAlgorithm?.slice(startIndex, endIndex)
-    );
-
+    setDisplayedDataforAlgo(selectedTopicFromAdvanceFilterAlgorithm);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedTopicFromAdvanceFilterAlgorithm, currentPage]);
   return (
@@ -412,7 +400,7 @@ const TopicSearch = () => {
                 asof == "bydate" ||
                 filterByScore != 0 ||
                 algorithm !== "blind_popularity"
-                  ? selectedTopicFromAdvanceFilterAlgorithm?.length
+                  ? selectedTopicFromAdvanceFilterAlgorithmRecords
                   : searchMetaData.total
               }
               pageSize={20}
