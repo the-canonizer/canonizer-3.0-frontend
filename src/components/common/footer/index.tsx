@@ -28,12 +28,12 @@ function Footer() {
       linkTitle: "Upload File",
       id: 5,
     },
-    {
-      link: "/sitemap",
-      linkTitle: "Sitemap",
-      id: 10,
-      external: true,
-    },
+    // {
+    //   link: "/sitemap",
+    //   linkTitle: "Sitemap",
+    //   id: 10,
+    //   external: true,
+    // },
     {
       link: "/videos",
       linkTitle: "Videos",
@@ -60,11 +60,11 @@ function Footer() {
     //   id: 7,
     //   external: true,
     // },
-    {
-      link: "/topic/6-Canonizer-Jobs/1-Agreement?is_tree_open=1",
-      linkTitle: "Jobs",
-      id: 8,
-    },
+    // {
+    //   link: "/topic/6-Canonizer-Jobs/1-Agreement?is_tree_open=1",
+    //   linkTitle: "Jobs",
+    //   id: 8,
+    // },
     {
       link: "/privacy-policy",
       linkTitle: "Privacy Policy",
