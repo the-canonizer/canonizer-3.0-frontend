@@ -759,14 +759,8 @@ function ProfileInfoForm({
                   //     return Promise.resolve();
                   //   },
                   // },
-                  {
-                    required: true,
-                    message: "This field is required",
-                  },
-                  {
-                    pattern: /^(?![.,' -])(?!.*(?:^|[^a-zA-Z0-9])[.,'-][^a-zA-Z0-9])(?!.*[!@#$%^&*()])[a-zA-Z0-9.,' -]+$/,
-                    message: "Only letters, numbers, special characters with character combinations are allowed",
-                  },
+                  { pattern: /^\S.*$/, message: 'Address cannot start with a space' },
+
                 ]}
                 name="address_1"
                 label={messages.labels.addressLine1}
@@ -864,11 +858,7 @@ function ProfileInfoForm({
                   //     return Promise.resolve();
                   //   },
                   // },
-                  {
-                    type: 'string',
-                    pattern: new RegExp(/^[a-zA-Z0-9\s\.\-\',\s]*$/), // Allow characters, numbers, spaces, periods, hyphens, apostrophes, and commas
-                    message: `Address must only contain letters, numbers and combinations of special characters (i.e ".","-","'",",") `,
-                  }
+                  { pattern: /^\S.*$/, message: 'Address cannot start with a space' },
                 ]}
                 name="address_2"
                 label={messages.labels.addressLine2}
