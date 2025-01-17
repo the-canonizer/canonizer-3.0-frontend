@@ -5,12 +5,14 @@ import Link from "next/link";
 import { useSelector } from "react-redux";
 
 import { RootState } from "src/store";
+import useAuthentication from "src/hooks/isUserAuthenticated";
 
 function Footer() {
   const router = useRouter();
   const loggedInUser = useSelector(
     (state: RootState) => state.auth.loggedInUser
   );
+  const { isUserAuthenticated } = useAuthentication();
 
   const mockLinks1 = [
     {
@@ -119,11 +121,13 @@ function Footer() {
             </a>{" "}
             project designed to build consensus and bring people together. Your
             collaboration can make all the difference.{" "}
-            <Link href="/login">
-              <a className="font-semibold underline" id="footer-join-link">
-                Join us!
-              </a>
-            </Link>
+            {!isUserAuthenticated && (
+              <Link href="/registration">
+                <a className="font-semibold underline" id="footer-join-link">
+                  Join us!
+                </a>
+              </Link>
+            )}
           </p>
           <p
             className="font-semibold text-white text-xs mt-3"
