@@ -229,10 +229,6 @@ function NickNameUI({
                 required: true,
                 message: "Please enter a nickname.",
               },
-              {
-                pattern: /[a-zA-Z0-9]/, // Allow alphanumeric characters, spaces, hyphens, and underscores
-                message: "Nickname must contain at least one letter or number.",
-              },
             ]}
           >
             <Input
