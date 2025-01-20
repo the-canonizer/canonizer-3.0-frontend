@@ -217,7 +217,7 @@ WrappedApp.getInitialProps = async (
     page_name:
       componentName === "SocialLoginCallbackPage"
         ? "Home"
-        : appContext.Component.name === "SearchAll" ||
+        : componentName === "Search" ||
           componentName === "SearchTopic" ||
           componentName === "SearchCamp" ||
           componentName === "SearchCampStatement" ||
@@ -245,6 +245,7 @@ WrappedApp.getInitialProps = async (
           : null,
       keywords:
         appContext.Component.name === "SearchAll" ||
+        componentName === "Search" ||
         componentName === "SearchTopic" ||
         componentName === "SearchCamp" ||
         componentName === "SearchCampStatement" ||
