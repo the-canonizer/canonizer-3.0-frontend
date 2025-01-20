@@ -29,11 +29,11 @@ export default class Request {
       } else if (!relativeURL?.includes("client-token")) {
         Request.counter++;
         // create token
-        (async () => {
-          const res = await createToken();
-
-          bearerToken = res?.data?.access_token;
-        })();
+        // (async () => {
+        //   console.log("create token from request:");
+        //   const res = await createToken(null, null,false);
+        //   bearerToken = res;
+        // })();
       }
     }
 

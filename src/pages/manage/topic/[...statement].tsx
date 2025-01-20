@@ -31,14 +31,17 @@ const ManageTopicPage = ({ nameSpacesList, algorithms, cats }) => {
   );
 };
 
-export async function getServerSideProps({ req }) {
+export async function getServerSideProps({ req ,res}) {
   let token = null;
-  if (req.cookies["loginToken"]) {
-    token = req.cookies["loginToken"];
-  } else {
-    const response = await createToken();
-    token = response?.access_token;
-  }
+  token = await createToken(req, res,false);
+
+  // if (req.cookies["loginToken"]) {
+  //   token = req.cookies["loginToken"];
+  // } else {
+  //   console.log("No login token on statement page");
+  //   const response = await createToken();
+  //   token = response?.access_token;
+  // }
 
   const nameSpaces = await getCanonizedNameSpacesApi(token);
   const canonizedAlgorithms = await getCanonizedAlgorithmsApi(token);

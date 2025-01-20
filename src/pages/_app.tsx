@@ -24,8 +24,9 @@ import WithRouteChange from "src/hoc/withRouteChange";
 import { checkTopicCampExistAPICall } from "src/network/api/campDetailApi";
 import { metaTagsApi } from "src/network/api/metaTagsAPI";
 import { createToken } from "src/network/api/userApi";
-import { getCookies } from "src/utils/generalUtility";
+import { getCookies, serverRoutes } from "src/utils/generalUtility";
 import WithAuthCheck from "src/hoc/withAuth";
+import { Console, log } from "console";
 
 type AppOwnProps = { meta: any; canonical_url: string; returnURL: string };
 
@@ -50,10 +51,10 @@ function WrappedApp({
   ) {
     console.info({ latestVersion });
     console.log(`Cache Cleared: ${latestVersion}`);
-    const authToken = localStorage.getItem("auth_token");
-    if (authToken) {
-      localStorage.removeItem("auth_token");
-    }
+    // const authToken = localStorage.getItem("auth_token");
+    // if (authToken) {
+    //   localStorage.removeItem("auth_token");
+    // }
     // document.cookie =
     //   "loginToken=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
     emptyCacheStorage();
@@ -73,7 +74,7 @@ function WrappedApp({
       if (!(getCookies() as any)?.loginToken) {
         setIsAuthenticated(false);
         try {
-          await createToken();
+          await createToken(null, null,false);
         } catch (error) {
           // eslint-disable-next-line
           console.error("Error fetching data:", error);
@@ -83,7 +84,11 @@ function WrappedApp({
       }
     };
 
-    fetchToken();
+    if (!serverRoutes.includes(router?.pathname)) {
+      console.log("------------------------fetchToken-------------------")
+      fetchToken();
+    }
+
     /* eslint-disable */
   }, [
     router.pathname,
@@ -118,7 +123,7 @@ function WrappedApp({
       window.removeEventListener("beforeunload", handleTabClose);
     };
   }, [router.events]);
-  
+
   return (
     <CookiesProvider>
       <Provider store={store}>
@@ -244,7 +249,7 @@ WrappedApp.getInitialProps = async (
           ? appContext?.ctx?.query?.video?.at(1)?.split("-")?.at(0)
           : null,
       keywords:
-        componentName === "Search"  ||
+        appContext.Component.name === "SearchAll" ||
         componentName === "SearchTopic" ||
         componentName === "SearchCamp" ||
         componentName === "SearchCampStatement" ||

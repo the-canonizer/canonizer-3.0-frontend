@@ -469,5 +469,15 @@ export const defaultNicknameData = (nickNameList) => {
 };
 
 export const commaSeparated = (item, isLastIndex) => {
-  return item + (isLastIndex ? "" : ", ") 
+  return item + (isLastIndex ? "" : ", ");
 };
+
+export const serverRoutes = [
+  "/",
+  "/camp/create/[...camp]",
+  "/camp/history/[...camp]",
+  "/create/topic",
+  "/forum/[topic]/[camp]/threads/[id]",
+  "/manage/topic/[...statement]",
+  "/topic/[...camp]",
+];

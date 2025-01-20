@@ -21,24 +21,45 @@ import {
 import { setHeaderData } from "src/store/slices/notificationSlice";
 import { setIsChecked } from "src/store/slices/recentActivitiesSlice";
 
-export const createToken = async () => {
-  try {
-    const token = await NetworkCall.fetch(UserRequest.createToken());
+export const createToken = async (req , res,ssg) => {
+  if (isServer) {
+    if (!ssg && req?.cookies["loginToken"]) {
+      return req.cookies["loginToken"];
+    } else {
+      try {
+        const token = await NetworkCall.fetch(UserRequest.createToken());
+        res.setHeader(
+          "Set-Cookie",
+          "loginToken" +
+            "=" +
+            token?.data?.access_token +
+            ";expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/"
+        );
+        store.dispatch(setAuthToken(token?.data?.access_token));
 
-    if (!isServer()) {
-      document.cookie =
-        "loginToken=" +
-        token?.data?.access_token +
-        "; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
-      localStorage.setItem("auth_token", token?.data?.access_token);
+        return token.data?.access_token;
+      } catch (error) {
+        handleError(error);
+      }
     }
+  } else
+    try {
+      const token = await NetworkCall.fetch(UserRequest.createToken());
 
-    store.dispatch(setAuthToken(token?.data?.access_token));
+      if (!isServer()) {
+        document.cookie =
+          "loginToken=" +
+          token?.data?.access_token +
+          "; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
+        // localStorage.setItem("auth_token", token?.data?.access_token);
+      }
 
-    return token.data;
-  } catch (error) {
-    handleError(error);
-  }
+      store.dispatch(setAuthToken(token?.data?.access_token));
+
+      return token.data?.access_token;
+    } catch (error) {
+      handleError(error);
+    }
 };
 
 export const login = async (email: string, password: string) => {
@@ -119,7 +140,7 @@ export const logout = async (error = "", status = null, count: number = 1) => {
         "loginToken=; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
 
       if (!(getCookies() as any)?.loginToken) {
-        const tRes = await createToken();
+        const tRes = await createToken(null, null,false);
         if (tRes?.access_token) {
           store.dispatch(setLogout());
           store.dispatch(setIsChecked(false));
@@ -624,7 +645,6 @@ export const addDelegateSupportCamps = async (body) => {
   return res;
 };
 
-
 // export const getDirectSupportedCampsList = async (
 //   page = 1,
 //   perPage = 10,
@@ -645,10 +665,11 @@ export const addDelegateSupportCamps = async (body) => {
 //   return res;
 // };
 
-
-
-export const getDelegatedSupportCampsList = async ( page = 1, perPage = 10, search = "") => {
-  
+export const getDelegatedSupportCampsList = async (
+  page = 1,
+  perPage = 10,
+  search = ""
+) => {
   let state = store.getState();
   const { auth } = state;
 

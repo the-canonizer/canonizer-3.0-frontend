@@ -32,7 +32,7 @@ const CreateNewCampPage = ({ topicRecord, campRecord }) => {
 
 CreateNewCampPage.displayName = "CreateNewCampPage";
 
-export async function getServerSideProps({ req, query }) {
+export async function getServerSideProps({ req, query, res }) {
   let topicNum = query?.camp[0]?.split("-")[0];
   let campNum = query?.camp[1]?.split("-")[0] || 1;
   let token = null;
@@ -47,12 +47,15 @@ export async function getServerSideProps({ req, query }) {
         : Date.now() / 1000,
   };
 
-  if (req.cookies["loginToken"]) {
-    token = req.cookies["loginToken"];
-  } else {
-    const response = await createToken();
-    token = response?.access_token;
-  }
+  token = await createToken(req, res,false);
+
+  // if (req.cookies["loginToken"]) {
+  //   token = req.cookies["loginToken"];
+  // } else {
+  //   console.log("No login token on create new camp page");
+  //   const response = await createToken();
+  //   token = response?.access_token;
+  // }
 
   const [topicRecord, campRecord] = await Promise.all([
     getCurrentTopicRecordApi(reqBody, token),

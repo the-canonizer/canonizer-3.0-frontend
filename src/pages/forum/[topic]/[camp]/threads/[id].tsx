@@ -34,19 +34,21 @@ function CampForumPostPage({ notFoundStatus, notFoundMessage }) {
   );
 }
 
-export async function getServerSideProps({ req, resolvedUrl }) {
+export async function getServerSideProps({ req, resolvedUrl,res }) {
   const id = resolvedUrl?.split("/")[5];
   const topicNum = +resolvedUrl?.split("/")[2].split("-")[0];
   const campNum = +(resolvedUrl?.split("/")[3].split("-")[0] ?? 1);
 
   let token = null;
+  token = await createToken(req, res,false);
 
-  if (req.cookies["loginToken"]) {
-    token = req.cookies["loginToken"];
-  } else {
-    const response = await createToken();
-    token = response?.access_token;
-  }
+  // if (req.cookies["loginToken"]) {
+  //   token = req.cookies["loginToken"];
+  // } else {
+  //   console.log("=====Token is not set forum post page  =================")
+  //   const response = await createToken();
+  //   token = response?.access_token;
+  // }
 
   const threadRes = await getThreadData(
     id,

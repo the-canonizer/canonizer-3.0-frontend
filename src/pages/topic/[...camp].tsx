@@ -28,6 +28,7 @@ import { setCurrentDate } from "src/store/slices/filtersSlice";
 import DataNotFound from "src/components/ComponentPages/DataNotFound/dataNotFound";
 import { createToken } from "src/network/api/userApi";
 import StatementPreviewModal from "components/ComponentPages/TopicDetails/PreviewStatementModal";
+import { log } from "console";
 
 const TopicDetailsPage = ({
   current_date,
@@ -191,12 +192,15 @@ export async function getServerSideProps({ req, query, res }) {
     page: 1,
   };
 
-  if (req.cookies["loginToken"]) {
-    token = req.cookies["loginToken"];
-  } else {
-    const response = await createToken();
-    token = response?.access_token;
-  }
+  // if (req.cookies["loginToken"]) {
+  //   token = req.cookies["loginToken"];
+  // } else {
+  //   const response = await createToken(req,res);
+  //   token = response?.access_token;
+  // }
+
+  token = await createToken(req, res,false);
+  console.log("detail page server token",token);
 
   const [
     newsFeed,

@@ -85,7 +85,7 @@ function Home({ current_date, hotTopicData, featuredData, prefData }: any) {
     };
 
     if (accessToken) {
-      localStorage.setItem("auth_token", accessToken);
+      // localStorage.setItem("auth_token", accessToken);
       dispatch(setAuthToken(accessToken));
       getData(accessToken);
     }
@@ -105,15 +105,18 @@ function Home({ current_date, hotTopicData, featuredData, prefData }: any) {
   );
 }
 
-export async function getServerSideProps({ req }) {
+export async function getServerSideProps({ req, res }) {
   const currentDate = new Date().valueOf();
   let token = null;
-  if (req.cookies["loginToken"]) {
-    token = req.cookies["loginToken"];
-  } else {
-    const response = await createToken();
-    token = response?.access_token;
-  }
+  token = await createToken(req, res,false);
+
+  // if (req.cookies["loginToken"]) {
+  //   token = req.cookies["loginToken"];
+  // } else {
+  //   console.log("No login token on home page");
+  //   const response = await createToken();
+  //   token = response?.access_token;
+  // }
 
   const resData = await GetHotTopicDetails(1, 6, token as string);
   const featuredData = await GetFeaturedTopicDetails(token as string);

@@ -13,11 +13,12 @@ function TermAndService({ termsAndServicesContent }: any) {
   );
 }
 export async function getStaticProps() {
-  const response = await createToken();
-  const res = await getTermsAndServicesContent(response?.access_token);
+  let ssg=true
+  const response = await createToken(null, null,ssg);
+  const resp = await getTermsAndServicesContent(response);
   return {
     props: {
-      termsAndServicesContent: res || [],
+      termsAndServicesContent: resp || [],
     },
   };
 }
