@@ -163,11 +163,11 @@ const NotificationsListUI = ({
             <Button
               onClick={onAllDelete}
               type="link"
-              className="text-canRed hover:text-canOrange font-medium text-md mt-3 py-0 float-right flex items-start justify-center"
+              className="text-canRed hover:text-canOrange font-medium text-md mt-3 py-0 float-right flex items-center justify-center leading-4"
               disabled={list?.length === 0}
               id="delete-all-button"
             >
-              <DeleteOutlined className="text-sm" />
+              <DeleteOutlined className="text-sm leading-4" />
               Delete All Notifications
             </Button>
           </Popover>
