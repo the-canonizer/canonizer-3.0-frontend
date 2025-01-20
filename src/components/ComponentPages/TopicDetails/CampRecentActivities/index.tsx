@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import Image from "next/image";
 import moment from "moment";
-import { convert } from "html-to-text";
 
 import { RootState, store } from "src/store";
 import { setCampActivityData } from "src/store/slices/recentActivitiesSlice";
@@ -49,40 +48,10 @@ function CampRecentActivities({ onShowAllSet }) {
     router?.query?.camp[0]?.split("-")[0],
   ]);
 
-  const handleTextOverflow = (text) => {
-    let str = convert(text?.replace(/<img[^>]*>/gi, ""), {
-      wordwrap: 130,
-    });
-    return str?.length > 90 ? str?.substring(0, 90) + "..." : str;
-  };
-
-  const getTopicCampName = (activity, decodedProperties) => {
-    const subjectType = activity?.subject_type;
-
-    const subjectTypeMap = {
-      "App\\Models\\Camp": decodedProperties?.camp_name,
-      "App\\Models\\Topic": decodedProperties?.topic_name,
-    };
-
-    const result =
-      subjectTypeMap[subjectType] ||
-      convert(decodedProperties?.description?.replace(/<img[^>]*>/gi, ""), {
-        wordwrap: 130,
-      });
-
-    return handleTextOverflow(
-      convert(result?.replace(/<img[^>]*>/gi, ""), {
-        wordwrap: 130,
-      })
-    );
-  };
-
   return data?.length ? (
     <TopicCampsTab
       getTopicsLoadingIndicator={loadingIndicator}
       recentActivities={{ topics: data }}
-      handleTextOverflow={handleTextOverflow}
-      getTopicCampName={getTopicCampName}
       covertToTime={covertToTime}
     />
   ) : (

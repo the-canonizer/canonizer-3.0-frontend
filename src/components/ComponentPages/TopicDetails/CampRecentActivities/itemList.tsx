@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { Typography, List, Tooltip, Popover } from "antd";
+import { Typography, List, Tooltip } from "antd";
 
 import CustomSkelton from "components/common/customSkelton";
 import { getProperties } from "src/utils/generalUtility";
@@ -10,8 +10,6 @@ const { Link: AntLink, Text } = Typography;
 function TopicCampsTab({
   getTopicsLoadingIndicator,
   recentActivities,
-  handleTextOverflow,
-  getTopicCampName,
   covertToTime,
   bodyCount = 5,
 }) {
@@ -40,21 +38,6 @@ function TopicCampsTab({
               <Fragment>
                 <Text className="text-canBlack text-sm font-normal mb-0">
                   {activity?.description}{" "}
-                  {/* <Text className="text-canBlue font-medium">
-                    <Tooltip
-                      placement={"topLeft"}
-                      title={
-                        decodedProperties?.topic_name
-                          ? `Topic: ${decodedProperties?.topic_name}` +
-                            (decodedProperties?.camp_name
-                              ? ` | Camp: ${decodedProperties?.camp_name}`
-                              : "")
-                          : handleTextOverflow(decodedProperties?.description)
-                      }
-                    >
-                      {getTopicCampName(activity, decodedProperties)}
-                    </Tooltip>
-                  </Text> */}
                   {activity?.log_name === "support" &&
                     getProperties(activity)?.reason && (
                       <Tooltip
@@ -66,7 +49,6 @@ function TopicCampsTab({
                         placement="top"
                         className="pointer text-canGrey2"
                       >
-                        {console.log("---", activity)}
                         <i className="icon-info ml-1"></i>
                       </Tooltip>
                     )}
