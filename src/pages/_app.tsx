@@ -1,10 +1,12 @@
 import App, { AppContext, AppInitialProps, AppProps } from "next/app";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, Suspense } from "react";
 import { useClearCache } from "react-clear-cache";
 import { CookiesProvider } from "react-cookie";
 import { Provider } from "react-redux";
 import useState from "react-usestateref";
+// import { usePromiseTracker, promiseTrackerHoc } from "react-promise-tracker";
+// import { ClockLoader } from "react-spinners";
 
 import "antd/dist/antd.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -35,6 +37,8 @@ function WrappedApp({
   meta,
   canonical_url,
 }: AppProps & AppOwnProps) {
+  // const { promiseInProgress } = usePromiseTracker();
+
   const router = useRouter(),
     // eslint-disable-next-line
     [_, setIsAuthenticated, isAuthenticatedRef] = useState(
@@ -119,6 +123,8 @@ function WrappedApp({
     };
   }, [router.events]);
 
+  // console.log("promiseInProgress----", promiseInProgress);
+
   return (
     <CookiesProvider>
       <Provider store={store}>
@@ -126,6 +132,8 @@ function WrappedApp({
           <WithAuthCheck
             componentName={Component.displayName || Component.name}
           >
+            {/* <Suspense fallback={<ClockLoader />}> */}
+            {/* {promiseInProgress ? <ClockLoader /> : null} */}
             <HeadContentAndPermissionComponent
               componentName={Component.displayName || Component.name}
               metaContent={meta}
@@ -138,6 +146,7 @@ function WrappedApp({
                 <Component {...pageProps} />
               ) : null}
             </WithRouteChange>
+            {/* </Suspense> */}
           </WithAuthCheck>
         </ErrorBoundary>
       </Provider>
