@@ -26,6 +26,7 @@ import {
 import { setManageSupportStatusCheck } from "src/store/slices/campDetailSlice";
 import HeaderMenu from "../HeaderMenu";
 import ProfileInfoTab from "./profileInfoTab";
+import { getGravatarImage } from "components/shared/AvaratGroup/avatar";
 
 const { Header } = Layout;
 
@@ -45,7 +46,7 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
   }));
 
   const { isUserAuthenticated } = useAuthentication();
-  const [isGravatarImage, setIsGravatarImage] = useState(false);
+  const [isGravatarImage, setIsGravatarImage] = useState(null);
   const [loadingImage, setLoadingImage] = useState(false);
   const dispatch = useDispatch();
   const router = useRouter();
@@ -128,22 +129,22 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
     </Menu>
   );
 
-  const getGravatarImage = async (email) => {
-    setLoadingImage(true);
-    let data = await getGravatarPicApi(email);
-    if (data?.status == 200) {
-      setIsGravatarImage(true);
-    }
-    setLoadingImage(false);
-  };
-
   useEffect(() => {
     setLoggedUser(loggedInUser);
-    if (isUserAuthenticated && loggedInUser && !loggedInUser?.profile_picture) {
-      getGravatarImage(loggedInUser?.email);
-    }
-    //eslint-disable-next-line
-  }, [loggedInUser]);
+    const fetchGravatarImage = async () => {
+      if (isUserAuthenticated && loggedInUser && !loggedInUser?.profile_picture) {
+        setLoadingImage(true);
+        const res = await getGravatarImage(loggedInUser?.email);
+        if (res) {
+          setIsGravatarImage(res);  // Set Gravatar image if found
+        } else {
+          setIsGravatarImage(false);  // Fallback to initials if Gravatar not found
+        }
+          setLoadingImage(false);
+        }
+    };
+    fetchGravatarImage();
+  }, [loggedInUser, isUserAuthenticated]);
 
   return (
     <Header className={`${styles.wrap} printHIde`}>
@@ -184,10 +185,7 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
         ) : null}
       </div>
 
-      <div
-        className={`${styles.right} ${!isLoginPage ? styles.onlogin : ""}`}
-        key="right-area"
-      >
+      <div className={`${styles.right} ${!isLoginPage ? styles.onlogin : ""}`} key="right-area">
         {!isLoginPage ? (
           <ProfileInfoTab
             isGravatarImage={isGravatarImage}

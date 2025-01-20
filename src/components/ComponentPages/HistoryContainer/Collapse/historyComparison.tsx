@@ -3,7 +3,10 @@ import moment from "moment";
 import Link from "next/link";
 import styles from "../campHistory.module.scss";
 import { useRouter } from "next/router";
-import { capitalizeFirstLetter } from "src/utils/generalUtility";
+import {
+  capitalizeFirstLetter,
+  commaSeparated,
+} from "src/utils/generalUtility";
 
 const { Title } = Typography;
 const { Panel } = Collapse;
@@ -210,6 +213,19 @@ const HistoryComparison = ({
         </p> */}
         <p>
           Go Live Time: <span>{covertToTime(campStatement?.go_live_time)}</span>
+        </p>
+        <p>
+          Topic Tags{"(s)"}:
+          <span>
+            {campStatement?.tags?.map((tag, index) => {
+              let lastIndex = index + 1 === campStatement?.topic_tags?.length;
+              return commaSeparated(tag?.title, lastIndex);
+            })}
+          </span>
+        </p>
+        <p>
+          Hide Rank:{" "}
+          <span>{campStatement?.is_rank_hidden === 1 ? "Yes" : "No"}</span>
         </p>
         {historyOf === "statement" && (
           <Collapse

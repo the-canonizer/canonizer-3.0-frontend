@@ -1,12 +1,10 @@
 import App, { AppContext, AppInitialProps, AppProps } from "next/app";
 import { useRouter } from "next/router";
-import { useEffect, Suspense } from "react";
+import { useEffect } from "react";
 import { useClearCache } from "react-clear-cache";
 import { CookiesProvider } from "react-cookie";
 import { Provider } from "react-redux";
 import useState from "react-usestateref";
-// import { usePromiseTracker, promiseTrackerHoc } from "react-promise-tracker";
-// import { ClockLoader } from "react-spinners";
 
 import "antd/dist/antd.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -37,8 +35,6 @@ function WrappedApp({
   meta,
   canonical_url,
 }: AppProps & AppOwnProps) {
-  // const { promiseInProgress } = usePromiseTracker();
-
   const router = useRouter(),
     // eslint-disable-next-line
     [_, setIsAuthenticated, isAuthenticatedRef] = useState(
@@ -123,8 +119,6 @@ function WrappedApp({
     };
   }, [router.events]);
 
-  // console.log("promiseInProgress----", promiseInProgress);
-
   return (
     <CookiesProvider>
       <Provider store={store}>
@@ -132,8 +126,6 @@ function WrappedApp({
           <WithAuthCheck
             componentName={Component.displayName || Component.name}
           >
-            {/* <Suspense fallback={<ClockLoader />}> */}
-            {/* {promiseInProgress ? <ClockLoader /> : null} */}
             <HeadContentAndPermissionComponent
               componentName={Component.displayName || Component.name}
               metaContent={meta}
@@ -146,7 +138,6 @@ function WrappedApp({
                 <Component {...pageProps} />
               ) : null}
             </WithRouteChange>
-            {/* </Suspense> */}
           </WithAuthCheck>
         </ErrorBoundary>
       </Provider>
@@ -199,7 +190,6 @@ WrappedApp.getInitialProps = async (
     appContext?.router?.asPath.lastIndexOf("/")
   );
   let path;
-
   if (prePath == "/manage/camp") {
     path =
       appContext?.router?.components &&
@@ -218,17 +208,16 @@ WrappedApp.getInitialProps = async (
 
   let canonical_url =
     process.env.NEXT_PUBLIC_BASE_URL + appContext?.router?.asPath;
-  const queryValue = appContext.router?.query?.q;
-
+  const querval2 = appContext.ctx?.query?.q;
   // Ensure the value is a string before calling replace
-  const formattedQuery = Array.isArray(queryValue)
-    ? queryValue.join(" ").replace(/ /g, "+") // Join array elements and replace spaces
-    : queryValue?.replace(/ /g, "+"); // Replace spaces if it's a string
+  const formattedQuery = Array.isArray(querval2)
+    ? querval2.join(" ").replace(/ /g, "+") // Join array elements and replace spaces
+    : querval2?.replace(/ /g, "+"); // Replace spaces if it's a string
   const req = {
     page_name:
       componentName === "SocialLoginCallbackPage"
         ? "Home"
-        : componentName === "Search" ||
+        : appContext.Component.name === "SearchAll" ||
           componentName === "SearchTopic" ||
           componentName === "SearchCamp" ||
           componentName === "SearchCampStatement" ||
@@ -255,7 +244,7 @@ WrappedApp.getInitialProps = async (
           ? appContext?.ctx?.query?.video?.at(1)?.split("-")?.at(0)
           : null,
       keywords:
-        componentName === "Search" ||
+        appContext.Component.name === "SearchAll" ||
         componentName === "SearchTopic" ||
         componentName === "SearchCamp" ||
         componentName === "SearchCampStatement" ||

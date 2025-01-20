@@ -6,6 +6,7 @@ import {
   removeSupportedCampsEntireTopic,
 } from "src/network/api/userApi";
 import DelegatedSupportCampsUI from "./DelegatedSupportCampsUI";
+import { debounce } from "lodash";
 
 const DelegatedSupportCamps = ({ search }: any) => {
   const [delegatedSupportCampsList, setDelegatedSupportCampsList] = useState(
@@ -20,10 +21,11 @@ const DelegatedSupportCamps = ({ search }: any) => {
   const [statusFlag, setStatusFlag] = useState(true);
   const [viewMoreModalVisible, setViewmoreModalVisible] = useState(false);
   const [viewMoreDataValue, setviewMoreDataValue] = useState([]);
-  const [delegateSupportedSkeleton, setDelegateSupportedSkeleton] =
-    useState(false);
+  const [delegateSupportedSkeleton, setDelegateSupportedSkeleton] = useState(false);
   const [page, setPage] = useState(1);
   const [perPage] = useState(10);
+  const [total, setTotal] = useState(0);
+  const [searchText, setSearchText] = useState("");
 
   const handleSupportedCampsCancel = () => {
     setIsRemoveSupportModalVisible(false);
@@ -69,30 +71,65 @@ const DelegatedSupportCamps = ({ search }: any) => {
     }
   };
 
-  const fetchDelegatedSupportCampsList = async () => {
-    setDelegateSupportedSkeleton(true);
-    let response = await getDelegatedSupportCampsList();
-    if (response && response.status_code === 200) {
-      {
-        response.data.length > 0 ? "" : setStatusFlag(false);
+
+
+    const fetchDelegatedSupportCampsList = async () => {
+      setDelegateSupportedSkeleton(true);
+      const res = await getDelegatedSupportCampsList(page, perPage, searchText);
+      if (res?.status_code === 200) {
+        const resData = res?.data;
+  
+        if (resData?.items?.length === 0) {
+          setStatusFlag(false);
+        }
+  
+        setDelegatedSupportCampsList(resData?.items);
+        setTotal(resData?.total);
       }
-      setDelegatedSupportCampsList(response.data);
-    }
-    setDelegateSupportedSkeleton(false);
-  };
+      setDelegateSupportedSkeleton(false);
+    };
+
+  // const fetchDelegatedSupportCampsList = async () => {
+  //   setDelegateSupportedSkeleton(true);
+  //   let response = await getDelegatedSupportCampsList();
+  //   if (response && response.status_code === 200) {
+  //     {
+  //       response.data.length > 0 ? "" : setStatusFlag(false);
+  //     }
+  //     setDelegatedSupportCampsList(response.data);
+  //   }
+  //   setDelegateSupportedSkeleton(false);
+  // };
 
   useEffect(() => {}, [statusFlag]);
 
   //onLoad
-  useEffect(() => {
-    fetchDelegatedSupportCampsList();
-  }, []);
 
-  useEffect(() => {
-    return () => {
-      setDelegatedSupportCampsList(null);
-    };
-  }, []);
+    //onLoad
+    useEffect(() => {
+      const throttledFetch = debounce(() => {
+        fetchDelegatedSupportCampsList();
+      }, 900);
+  
+      if (searchText) {
+        throttledFetch();
+      } else {
+        fetchDelegatedSupportCampsList();
+      }
+  
+      // Cleanup
+      return () => throttledFetch.cancel();
+    }, [page, searchText]);
+  
+  // useEffect(() => {
+  //   fetchDelegatedSupportCampsList();
+  // }, []);
+
+  // useEffect(() => {
+  //   return () => {
+  //     setDelegatedSupportCampsList(null);
+  //   };
+  // }, []);
 
   return (
     <DelegatedSupportCampsUI
@@ -109,6 +146,12 @@ const DelegatedSupportCamps = ({ search }: any) => {
       removeSupportCampsData={removeSupportCampsData}
       statusFlag={statusFlag}
       delegateSupportedSkeleton={delegateSupportedSkeleton}
+      page={page}
+      perPage={perPage}
+      total={total}
+      setPage={setPage}
+      searchText={searchText}
+      setSearchText={setSearchText}
     />
   );
 };

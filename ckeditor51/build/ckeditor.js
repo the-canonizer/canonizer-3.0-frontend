@@ -46508,14 +46508,14 @@
 			const n = t.plugins.get("ImageUtils");
 			return Array.from(t.model.createRangeOn(e)).filter((t => n.isImage(t.item))).map((t => t.item))
 		}
-		// class RV extends Yu {
-		// 	static get pluginName() {
-		// 		return "ImageUpload"
-		// 	}
-		// 	static get requires() {
-		// 		return [NV, aV, AV]
-		// 	}
-		// }
+		class RV extends Yu {
+			static get pluginName() {
+				return "ImageUpload"
+			}
+			static get requires() {
+				return [NV, aV, AV]
+			}
+		}
 		var VV = n(5150);
 		var OV = {
 			injectType: "singletonStyleTag",
@@ -63829,7 +63829,7 @@
 			}
 		}
 		class JQ extends ID {}
-		JQ.builtinPlugins = [KD, pM, _M, IB, zB, OB, QB, iL, mL, tN, IL, fN, WN, mz, wz, Sz, Kz, AP, OP, JP, dR, uR, jR, ZR, JV, hO, WO, GO, QO, iF, lF, UF, tj, Kj, OH, wU, AU, oW, pW, EP, cG, mN, TG,YTQ, SG, IG, NG, BG, MG, LG, FG, vq, Sq, zq, XK, wZ, KZ, _Q, CQ, PT, UQ, YQ, QQ];
+		JQ.builtinPlugins = [KD, pM, _M, IB, zB, OB, QB, iL, mL, tN, IL, fN, WN, mz, wz, Sz, Kz, AP, OP, JP, dR, uR, jR, ZR, JV, hO, WO, GO, QO, iF, lF, UF, tj, Kj, OH, wU, AU, oW, pW, EP, cG, mN, TG,YTQ, SG, IG, NG, BG, MG, LG, FG, vq, Sq, zq, XK, wZ, KZ, _Q, CQ, PT, UQ, YQ, QQ,RV];
 		JQ.defaultConfig = {
 			toolbar: {
 				items: ["heading", "|", "bold", "italic", "link", "bulletedList", "numberedList", "|", "outdent", "indent", "|", "blockQuote", "insertTable", "undo", "redo", "alignment", "findAndReplace", "|", "mediaEmbed", "imageInsert", "|", "fontBackgroundColor", "fontColor", "fontFamily", "fontSize", "highlight", "|", "horizontalLine", "pageBreak", "selectAll", "|", "specialCharacters", "strikethrough", "subscript", "superscript", "todoList", "underline"]
