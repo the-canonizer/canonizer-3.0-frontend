@@ -61,7 +61,7 @@ export default function SearchSideBar() {
   const isReviewOrByDate =
     router.query.asof === "review" || router.query.asof === "bydate";
 
-  const isCampPage = router?.pathname?.includes("/camp");
+  const isCampPage = router?.pathname == "/search/camp";
 
   const campTotal =
     searchValue === ""
@@ -145,7 +145,7 @@ export default function SearchSideBar() {
                         ? searchMetaData?.topic_total
                         : (router.query.asof == "review" ||
                             router.query.asof == "bydate") &&
-                          router?.pathname?.includes("/topic")
+                          router?.pathname == "/search/topic"
                         ? selectedTopicFromAdvanceFilterAlgorithmRecords
                         : searchCountForMetaData?.topic_total}
                       )
@@ -231,7 +231,7 @@ export default function SearchSideBar() {
                         ? searchMetaData?.statement_total
                         : (router.query.asof == "review" ||
                             router.query.asof == "bydate") &&
-                          router?.pathname?.includes("/camp_statement")
+                          router?.pathname == "/search/camp_statement"
                         ? selectedCampStatementFromAdvanceFilterAlgorithmRecords
                         : searchCountForMetaData?.statement_total}
                       )
