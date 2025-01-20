@@ -47,6 +47,7 @@ import {
 import { getCanonizedTopicsApi } from "src/network/api/homePageApi";
 import moment from "moment";
 import K from "../../../constants";
+import { setSearchLoadingAction } from "src/store/slices/loading";
 
 export default function AdvanceFilter() {
   const [searchVal, setSearchVal] = useState("");
@@ -569,29 +570,26 @@ export default function AdvanceFilter() {
   }, [filteredAsOfDate]);
 
   useEffect(() => {
-    if (
-      (router?.pathname == "/search/topic" && asof == "review") ||
-      asof == "bydate" ||
-      filterByScore != 0 ||
-      algorithm !== "blind_popularity"
-    ) {
-      getTopicsApiCallWithReqBody();
-    } else if (
-      (router?.pathname == "/search/camp" && asof == "review") ||
-      asof == "bydate" ||
-      filterByScore != 0 ||
-      algorithm !== "blind_popularity"
-    ) {
-      getCampsApiCallWithReqBody();
-    } else if (
-      (router?.pathname == "/search/camp_statement" && asof == "review") ||
-      asof == "bydate" ||
-      filterByScore != 0 ||
-      algorithm !== "blind_popularity"
-    ) {
-      getStatementApiCallWithReqBody();
-    }
-
+    const fetchData = async () => {
+      const isReviewOrByDate = asof === "review" || asof === "bydate";
+      const isFilterApplied = filterByScore !== 0 || algorithm !== "blind_popularity";
+  
+      if (router?.pathname === "/search/topic" && (isReviewOrByDate || isFilterApplied)) {
+        dispatch(setSearchLoadingAction(true));
+        await getTopicsApiCallWithReqBody();
+        dispatch(setSearchLoadingAction(false));
+      } else if (router?.pathname === "/search/camp" && (isReviewOrByDate || isFilterApplied)) {
+        dispatch(setSearchLoadingAction(true));
+        await getCampsApiCallWithReqBody();
+        dispatch(setSearchLoadingAction(false));
+      } else if (router?.pathname === "/search/camp_statement" && (isReviewOrByDate || isFilterApplied)) {
+        dispatch(setSearchLoadingAction(true));
+        await getStatementApiCallWithReqBody();
+        dispatch(setSearchLoadingAction(false));
+      }
+    };
+  
+    fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [asof, filterByScore, algorithm, asofdate, pageNumber]);
 
