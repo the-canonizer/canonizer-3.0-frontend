@@ -43,7 +43,7 @@ export default function NotificationList({
                 href={{
                   pathname:
                     item?.notification_type?.toLowerCase() === "support"
-                      ? item?.url?.replace("/support/", "/topic/")
+                      ? item?.url?.replace("/support/", "/topic/")?.replaceAll(" ", "-")
                       : item["url"]
                           ?.replace("#statement", "")
                           ?.replaceAll(" ", "-"),

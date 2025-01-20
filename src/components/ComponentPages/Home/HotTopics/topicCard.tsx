@@ -43,6 +43,12 @@ const SingleTopicCard = ({
   }
 
   return (
+    <a
+      href={`/topic/${topic?.topic_num}-${
+        replaceSpecialCharacters(topic?.topic_name, "-") || ""
+      }/${topic?.camp_num || 1}-${
+        replaceSpecialCharacters(topic?.camp_name, "-") || "Agreement"
+      }`}>
     <Link
       href={`/topic/${topic?.topic_num}-${
         replaceSpecialCharacters(topic?.topic_name, "-") || ""
@@ -124,6 +130,7 @@ const SingleTopicCard = ({
         </div>
       </CommonCard>
     </Link>
+    </a>
   );
 };
 
