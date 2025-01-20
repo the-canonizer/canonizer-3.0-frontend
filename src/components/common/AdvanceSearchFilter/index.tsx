@@ -30,9 +30,12 @@ import {
   setSelectNickNameIdFromDirectSupportTree,
   setSelectNicknameIdFromGetApi,
   setSelectedTopicFromAdvanceFilterAlgorithm,
+  setSelectedTopicFromAdvanceFilterAlgorithmRecords,
   setSelectedCampFromAdvanceFilterAlgorithm,
   setSelectedTopicFromAdvnaceFilterNickname,
   setSelectedStatementFromAdvanceFilterAlgorithm,
+  setSelectedCampFromAdvanceFilterAlgorithmRecords,
+  setSelectedCampStatementFromAdvanceFilterAlgorithmRecords,
 } from "src/store/slices/searchSlice";
 import debounce from "lodash/debounce";
 import { getTreesApi } from "src/network/api/campDetailApi";
@@ -79,6 +82,8 @@ export default function AdvanceFilter() {
     current_date_filter,
     filteredAsOfDate,
     loading,
+    searchMetaData,
+    pageNumber,
     // selectedCampFromAdvanceFilterAlgorithm,
   } = useSelector((state: RootState) => ({
     searchValue: state?.searchSlice?.searchValue,
@@ -104,7 +109,11 @@ export default function AdvanceFilter() {
     loading: state?.loading?.loading,
     // selectedCampFromAdvanceFilterAlgorithm:
     //   state?.searchSlice?.selectedCampFromAdvanceFilterAlgorithm,
+    searchMetaData: state?.searchSlice?.searchMetaData,
+    pageNumber: state?.searchSlice?.pageNumber,
   }));
+  console.log(pageNumber, "pageNumber");
+
   const { searchDataAll, searchData } = useSelector((state: RootState) => ({
     searchDataAll: state?.searchSlice?.searchDataAll,
     searchData: state?.searchSlice?.searchData,
@@ -167,7 +176,7 @@ export default function AdvanceFilter() {
       </div>
     </>
   );
-
+  console.log(searchMetaData?.search_ids?.topic_ids, "searchMetaData");
   const extractNumbers = (dataArray) => {
     return dataArray?.map((item) => {
       // Split each string by hyphen
@@ -364,13 +373,20 @@ export default function AdvanceFilter() {
       algo: algorithm,
       asof: asof,
       score: filterByScore,
-      topic_ids: stringTopicIdForElasticSearch,
+      topic_ids: searchMetaData?.search_ids?.topic_ids,
       asofdate:
         asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
+      page_size: 20,
+      page_number: pageNumber,
     };
 
     const response = await AdvanceFilterSeacrhApi(rebody);
     dispatch(setSelectedTopicFromAdvanceFilterAlgorithm(response?.data?.topic));
+    dispatch(
+      setSelectedTopicFromAdvanceFilterAlgorithmRecords(
+        response?.data?.topic_total || 0
+      )
+    );
   }
 
   async function getCampsApiCallWithReqBody() {
@@ -382,13 +398,20 @@ export default function AdvanceFilter() {
       algo: algorithm,
       asof: asof,
       score: filterByScore,
-      camp_ids: stringCampArray,
-      topic_ids: stringTopicArray,
+      camp_ids: searchMetaData?.search_ids?.camp_ids,
+      topic_ids: searchMetaData?.search_ids?.topic_ids,
       asofdate:
         asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
+      page_size: 20,
+      page_number: pageNumber,
     };
     const response = await AdvanceFilterSeacrhApi(rebody);
     dispatch(setSelectedCampFromAdvanceFilterAlgorithm(response?.data?.camp));
+    dispatch(
+      setSelectedCampFromAdvanceFilterAlgorithmRecords(
+        response?.data?.camp_total || 0
+      )
+    );
     // setLoadMoreIndicator(false);
   }
 
@@ -401,14 +424,21 @@ export default function AdvanceFilter() {
       algo: algorithm,
       asof: asof,
       score: filterByScore,
-      camp_ids: stringCampArray1,
-      topic_ids: stringTopicArray1,
+      camp_ids: searchMetaData?.search_ids?.camp_ids,
+      topic_ids: searchMetaData?.search_ids?.topic_ids,
       asofdate:
         asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
+      page_size: 20,
+      page_number: pageNumber,
     };
     const response = await AdvanceFilterSeacrhApi(rebody);
     dispatch(
       setSelectedStatementFromAdvanceFilterAlgorithm(response?.data?.statement)
+    );
+    dispatch(
+      setSelectedCampStatementFromAdvanceFilterAlgorithmRecords(
+        response?.data?.statement_total || 0
+      )
     );
     // setLoadMoreIndicator(false);
   }
@@ -539,36 +569,41 @@ export default function AdvanceFilter() {
   }, [filteredAsOfDate]);
 
   useEffect(() => {
-    if (router?.pathname == "/search/topic") {
+    if (
+      (router?.pathname == "/search/topic" && asof == "review") ||
+      asof == "bydate" ||
+      filterByScore != 0 ||
+      algorithm !== "blind_popularity"
+    ) {
       getTopicsApiCallWithReqBody();
     } else if (
-      router?.pathname == "/search/camp" &&
-      stringCampArray &&
-      stringTopicArray &&
-      searchDataAll?.camp?.length != 0
+      (router?.pathname == "/search/camp" && asof == "review") ||
+      asof == "bydate" ||
+      filterByScore != 0 ||
+      algorithm !== "blind_popularity"
     ) {
       getCampsApiCallWithReqBody();
     } else if (
-      router?.pathname == "/search/camp_statement" &&
-      stringCampArray1 &&
-      stringTopicArray1 &&
-      searchDataAll?.statement?.length != 0
+      (router?.pathname == "/search/camp_statement" && asof == "review") ||
+      asof == "bydate" ||
+      filterByScore != 0 ||
+      algorithm !== "blind_popularity"
     ) {
       getStatementApiCallWithReqBody();
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [asof, filterByScore, algorithm, asofdate]);
-  useEffect(() => {
-    if (
-      router?.pathname == "/search/camp" &&
-      stringCampArray &&
-      stringTopicArray &&
-      searchDataAll?.camp?.length != 0
-    ) {
-      getCampsApiCallWithReqBody();
-    }
-  }, [searchDataAll]);
+  }, [asof, filterByScore, algorithm, asofdate, pageNumber]);
+
+  // useEffect(() => {
+  //   if (
+  //     router?.pathname == "/search/camp" && asof == "review" || asof == "bydate" ||
+  //     filterByScore != 0 ||
+  //     algorithm !== "blind_popularity"
+  //   ) {
+  //     getCampsApiCallWithReqBody();
+  //   }
+  // }, [searchDataAll]);
 
   const handleCollapseChange = (key) => {
     setActive(key);
@@ -653,7 +688,7 @@ export default function AdvanceFilter() {
           }
         >
           <div
-            className="advance_close flex justify-between items-center w-full mb-10"
+            className="advance_close flex justify-between items-center w-full mb-3"
             data-testid="cross_icon"
           >
             <h4 className="text-sm text-canBlack font-medium">
@@ -781,11 +816,11 @@ export default function AdvanceFilter() {
                 placeholder="Search a Keyword"
               />
               {searchTopics.length || searchCamps.length ? (
-                <div className="advance_filter_dropdown">
+                <div className="advance_filter_dropdown overflow-auto max-h-64">
                   {searchVal ? (
                     <div className="search_outer">
                       {searchTopics.length ? (
-                        <label>
+                        <label className="mt-2 inline-flex gap-2 items-center">
                           <i className="icon-topic"></i>
                           <span>Topic</span>
                         </label>
@@ -812,7 +847,10 @@ export default function AdvanceFilter() {
                               };
                               return (
                                 <>
-                                  <li style={{ cursor: "default" }}>
+                                  <li
+                                    className="border-t border-solid border-gray-100 w-full "
+                                    style={{ cursor: "default" }}
+                                  >
                                     <a
                                       onClick={() => {
                                         dispatch(
@@ -824,6 +862,7 @@ export default function AdvanceFilter() {
                                           x.camp_num
                                         );
                                       }}
+                                      className="p-2 w-full inline-block"
                                     >
                                       <Highlighted
                                         text={x.title}
@@ -846,7 +885,7 @@ export default function AdvanceFilter() {
                   {searchVal ? (
                     <div className="search_outer">
                       {searchCamps.length ? (
-                        <label>
+                        <label className="mt-2 inline-flex gap-2 items-center">
                           <i className="icon-camp"></i>
                           <span>camp</span>
                         </label>
@@ -891,9 +930,12 @@ export default function AdvanceFilter() {
                               };
                               return (
                                 <>
-                                  <li style={{ cursor: "default" }}>
+                                  <li
+                                    className="border-t border-solid border-gray-100 w-full "
+                                    style={{ cursor: "default" }}
+                                  >
                                     <a
-                                      className={styles.camp_heading_color}
+                                      className={`${styles.camp_heading_color} p-2 w-full inline-block `}
                                       onClick={() => {
                                         dispatch(
                                           setClickAdvanceFilterOption(true)
