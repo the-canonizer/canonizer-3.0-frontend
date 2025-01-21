@@ -266,15 +266,13 @@ const HeaderSearch = ({ className = "" }: any) => {
   const [preventInitialRender, setPreventInitialRender] = useState(true);
 
   useEffect(() => {
+    if (asof === "review" || asof === "bydate") return;
     if (preventInitialRender && pageNumber !== 1)
       setPreventInitialRender(false);
     else if (
       ((inputSearch || searchValue || router?.query?.q) &&
         router.pathname.includes("/search") &&
-        asof !== "review") ||
-      asof !== "bydate" ||
-      filterByScore == 0 ||
-      algorithm == "blind_popularity"
+        asof === "default")
     ) {
       getGlobalSearchCanonizerNav(router?.query?.q);
     }
@@ -283,7 +281,7 @@ const HeaderSearch = ({ className = "" }: any) => {
       setPreventInitialRender(true);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pageNumber, router?.pathname]);
+  }, [pageNumber, router?.pathname,asof]);
 
   const getGlobalSearchCanonizerNav = async (queryString) => {
     let queryParamObj: any = {
