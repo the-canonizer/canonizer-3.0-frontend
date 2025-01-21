@@ -36,6 +36,7 @@ import {
   setSelectedStatementFromAdvanceFilterAlgorithm,
   setSelectedCampFromAdvanceFilterAlgorithmRecords,
   setSelectedCampStatementFromAdvanceFilterAlgorithmRecords,
+  setPageNumber,
 } from "src/store/slices/searchSlice";
 import debounce from "lodash/debounce";
 import { getTreesApi } from "src/network/api/campDetailApi";
@@ -726,6 +727,7 @@ export default function AdvanceFilter() {
                       viewThisVersion
                     );
                     // getTopicsApiCallWithReqBody()
+                    dispatch(setPageNumber(1))
                   }}
                 >
                   Search include review
@@ -749,6 +751,7 @@ export default function AdvanceFilter() {
                       filterObject?.namespace_id,
                       viewThisVersion
                     );
+                    dispatch(setPageNumber(1))
                   }}
                 >
                   Default
@@ -760,6 +763,7 @@ export default function AdvanceFilter() {
                     dispatch(setViewThisVersion(false));
                     handleAsOfClick();
                     // getTopicsApiCallWithReqBody()
+                    dispatch(setPageNumber(1))
                   }}
                 >
                   Search historical
