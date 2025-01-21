@@ -9,7 +9,7 @@ const LeftContent = ({ onBrowseClick }) => {
       <Button
         id="go-back-button"
         type="link"
-        className="h-[50px] text-sm w-2/12 text-canBlack flex items-start justify-start text-sm font-medium p-0 mb-4"
+        className="h-[50px] text-sm w-2/12 text-canBlack flex items-center justify-start text-sm font-medium p-0 mb-4"
         onClick={onBrowseClick}
       >
         <LeftOutlined /> Back

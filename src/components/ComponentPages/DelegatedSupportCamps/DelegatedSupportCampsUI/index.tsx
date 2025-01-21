@@ -103,7 +103,7 @@ export default function DelegatedSupportCampsUI({
       dataIndex: "title",
       key: "title",
       render: (text, record) => (
-        <div className="max-w-[300px]">
+        <div className="max-w-[300px] cn-card-home">
           <Link href={record.title_link}>
             <a
               className="text-sm font-medium text-canBlack"

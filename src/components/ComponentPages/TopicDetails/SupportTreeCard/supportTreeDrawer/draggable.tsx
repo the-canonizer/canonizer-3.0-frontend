@@ -8,6 +8,7 @@ import {
   MouseSensor,
   useSensor,
   useSensors,
+  TouchSensor,
 } from "@dnd-kit/core";
 import {
   arrayMove,
@@ -29,9 +30,10 @@ export default function Draggable({
   setIsOrderChange,
 }: any) {
   const sensors = useSensors(
-    useSensor(MouseSensor, { activationConstraint: { distance: 10 } }),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
+     useSensor(TouchSensor, { activationConstraint: { distance: 10 } }),
+     useSensor(MouseSensor, { activationConstraint: { distance: 10 } }),
+     useSensor(KeyboardSensor, {
+        coordinateGetter: sortableKeyboardCoordinates,
     })
   );
 
@@ -85,6 +87,7 @@ function SortableItem(props) {
     transform: CSS.Transform.toString(transform),
     transition,
     cursor: "pointer",
+    touchAction: "none",
   };
   return (
     <div
