@@ -630,15 +630,14 @@ const TopicItems = ({ searchTopics, searchValue }) => {
                         className="bg-transparent border-0 p-0 hover:bg-transparent focus:bg-transparent flex gap-1.5 items-center leading-1 !mb-0 "
                       >
                         <Image
+                          className="cursor-default"
                           src="/images/serach-flag.svg"
                           width={18}
                           height={20}
                         />
-                        <Link href="">
-                          <a className="text-canBlue text-base font-inter font-normal lg:font-medium">
+                          <span className="text-canBlue text-base font-inter font-normal cursor-default lg:font-medium">
                             {item?.namespace}
-                          </a>
-                        </Link>
+                          </span>
                       </Typography.Paragraph>
                     </Popover>
                   </div>
