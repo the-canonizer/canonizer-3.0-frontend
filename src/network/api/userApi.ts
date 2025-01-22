@@ -1,6 +1,12 @@
 import { message } from "antd";
 
-import { getCookies, handleError, isServer } from "../../utils/generalUtility";
+import {
+  getCookies,
+  getCookiesExpirationTime,
+  handleError,
+  isServer,
+  isTokenExpired,
+} from "../../utils/generalUtility";
 import {
   setAuthToken,
   removeAuthToken,
@@ -21,36 +27,62 @@ import {
 import { setHeaderData } from "src/store/slices/notificationSlice";
 import { setIsChecked } from "src/store/slices/recentActivitiesSlice";
 
-export const createToken = async (req , res,ssg) => {
-  if (isServer) {
-    if (!ssg && req?.cookies["loginToken"]) {
-      return req.cookies["loginToken"];
-    } else {
-      try {
-        const token = await NetworkCall.fetch(UserRequest.createToken());
-        res.setHeader(
-          "Set-Cookie",
-          "loginToken" +
-            "=" +
-            token?.data?.access_token +
-            ";expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/"
-        );
-        store.dispatch(setAuthToken(token?.data?.access_token));
+const createNewToken = async (req, res) => {
+  try {
+    const token = await NetworkCall.fetch(UserRequest.createToken());
 
-        return token.data?.access_token;
-      } catch (error) {
-        handleError(error);
+    console.log(
+      "respone token api:-------------->>>> " + token.data?.access_token
+    );
+
+    res.setHeader(
+      "Set-Cookie",
+      "loginToken" +
+        "=" +
+        token?.data?.access_token +
+        getCookiesExpirationTime()
+    );
+    store.dispatch(setAuthToken(token?.data?.access_token));
+
+    return token.data?.access_token;
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+export const createToken = async (req, res, ssg) => {
+  if (isServer()) {
+    if (!ssg && req?.cookies["loginToken"]) {
+      const isValidToken = isTokenExpired(req?.cookies["loginToken"]);
+      console.log("------------------------------>> " + isValidToken);
+      if (isValidToken) {
+        return req.cookies["loginToken"];
+      } else {
+        return await createNewToken(req, res);
       }
+    } else {
+      return await createNewToken(req, res);
     }
   } else
     try {
-      const token = await NetworkCall.fetch(UserRequest.createToken());
-
+      let isValidToken;
+      let token;
+      if (!isServer()) {
+        if ((getCookies() as any)?.loginToken) {
+          isValidToken = isTokenExpired((getCookies() as any)?.loginToken);
+        }
+        if (isValidToken) {
+          return (getCookies() as any)?.loginToken;
+        } else {
+          token = await NetworkCall.fetch(UserRequest.createToken());
+        }
+      }
       if (!isServer()) {
         document.cookie =
           "loginToken=" +
           token?.data?.access_token +
-          "; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
+          getCookiesExpirationTime();
+
         // localStorage.setItem("auth_token", token?.data?.access_token);
       }
 
@@ -71,9 +103,7 @@ export const login = async (email: string, password: string) => {
     store.dispatch(setAuthToken(res.data.auth?.access_token));
 
     document.cookie =
-      "loginToken=" +
-      res.data.auth?.access_token +
-      "; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
+      "loginToken=" + res.data.auth?.access_token + getCookiesExpirationTime();
 
     let payload = {
       ...res.data.user,
@@ -136,11 +166,10 @@ export const logout = async (error = "", status = null, count: number = 1) => {
     let res = await NetworkCall.fetch(UserRequest.logoutCall(auth.token));
 
     if (res?.status_code === 200) {
-      document.cookie =
-        "loginToken=; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
+      document.cookie = `loginToken=${getCookiesExpirationTime()}`;
 
       if (!(getCookies() as any)?.loginToken) {
-        const tRes = await createToken(null, null,false);
+        const tRes = await createToken(null, null, false);
         if (tRes?.access_token) {
           store.dispatch(setLogout());
           store.dispatch(setIsChecked(false));
@@ -191,9 +220,7 @@ export const verifyOtp = async (values: object) => {
     };
 
     document.cookie =
-      "loginToken=" +
-      res.data.auth?.access_token +
-      "; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
+      "loginToken=" + res.data.auth?.access_token + getCookiesExpirationTime();
 
     store.dispatch(setLoggedInUser(payload));
 
@@ -932,9 +959,7 @@ export const verifyEmailOnSocial = async (body) => {
       ...res.data.user,
     };
     document.cookie =
-      "loginToken=" +
-      res.data.auth?.access_token +
-      "; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
+      "loginToken=" + res.data.auth?.access_token + getCookiesExpirationTime();
     store.dispatch(setLoggedInUser(payload));
 
     return res;

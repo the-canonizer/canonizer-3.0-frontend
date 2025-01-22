@@ -26,6 +26,7 @@ import {
   GetPreferedTopicDetails,
 } from "src/network/api/topicAPI";
 import { store } from "src/store";
+import { getCookiesExpirationTime } from "src/utils/generalUtility";
 
 const Tour = dynamic(() => import("src/components/ComponentPages/Home/Tour"), {
   ssr: false,
@@ -74,9 +75,7 @@ function Home({ current_date, hotTopicData, featuredData, prefData }: any) {
           })
         );
         document.cookie =
-          "loginToken=" +
-          accessToken +
-          "; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
+          "loginToken=" + accessToken + getCookiesExpirationTime();
         // eslint-disable-next-line no-unused-vars
         const { access_token, ...rest } = router?.query;
         router.query = rest;
@@ -108,7 +107,7 @@ function Home({ current_date, hotTopicData, featuredData, prefData }: any) {
 export async function getServerSideProps({ req, res }) {
   const currentDate = new Date().valueOf();
   let token = null;
-  token = await createToken(req, res,false);
+  token = await createToken(req, res, false);
 
   // if (req.cookies["loginToken"]) {
   //   token = req.cookies["loginToken"];

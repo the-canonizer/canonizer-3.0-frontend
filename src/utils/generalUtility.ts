@@ -1,6 +1,7 @@
 import { message } from "antd";
 import { openNotificationWithIcon } from "components/common/notification/notificationBar";
 import moment from "moment";
+import { jwtDecode } from "jwt-decode";
 
 export const handleError = (error, log = false) => {
   // eslint-disable-next-line
@@ -481,3 +482,20 @@ export const serverRoutes = [
   "/manage/topic/[...statement]",
   "/topic/[...camp]",
 ];
+
+export const isTokenExpired = (token): boolean => {
+  const decodedToken: any = jwtDecode(token);
+  return decodedToken.exp > Math.floor(Date.now() / 1000);
+};
+
+export const getCookiesExpirationTime = () => {
+  const oneYearFromNow = new Date();
+  oneYearFromNow.setFullYear(oneYearFromNow.getFullYear() + 1); // Add one year to the current date
+  oneYearFromNow.setUTCHours(0, 0, 0, 0); // Set time to 00:00:00 UTC
+
+  // Convert the date to the required format and replace GMT with UTC
+  const expirationDate = oneYearFromNow.toUTCString().replace("GMT", "UTC");
+
+  // Return the full cookie attributes string
+  return `;expires=${expirationDate}; path=/`;
+};

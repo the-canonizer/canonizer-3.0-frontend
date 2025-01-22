@@ -199,9 +199,10 @@ export async function getServerSideProps({ req, query, res }) {
   //   token = response?.access_token;
   // }
 
-  token = await createToken(req, res,false);
-  console.log("detail page server token",token);
+  token = await createToken(req, res, false);
+  console.log("1: =>>>>>>>>>>>>>>>",token);
 
+  
   const [
     newsFeed,
     topicRecord,
@@ -215,7 +216,7 @@ export async function getServerSideProps({ req, query, res }) {
     getCurrentCampRecordApi(reqBody, token),
     getCanonizedCampStatementApi(reqBody, token),
     getHistoryApi(reqBodyForCampData, "1", "statement", token),
-    getTreesApi(reqBodyForService),
+    getTreesApi(reqBodyForService, token),
   ]);
 
   const resTopicName = topicRecord?.topic_name?.replaceAll(" ", "-");
