@@ -36,6 +36,11 @@ export default function SearchSideBar() {
     selectedTopicFromAdvanceFilterAlgorithm,
     selectedCampFromAdvanceFilterAlgorithm,
     selectedStatementFromAdvanceFilterAlgorithm,
+    selectedTopicFromAdvanceFilterAlgorithmRecords,
+    selectedCampFromAdvanceFilterAlgorithmRecords,
+    selectedCampStatementFromAdvanceFilterAlgorithmRecords,
+    detectPressEnterInSearch,
+    storeOnPressEnterSearchCountForMetaData,
   } = useSelector((state: RootState) => ({
     searchDataAll: state?.searchSlice?.searchDataAll,
     searchData: state?.searchSlice?.searchData,
@@ -47,13 +52,34 @@ export default function SearchSideBar() {
       state?.searchSlice?.selectedCampFromAdvanceFilterAlgorithm,
     selectedStatementFromAdvanceFilterAlgorithm:
       state?.searchSlice?.selectedStatementFromAdvanceFilterAlgorithm,
+    selectedTopicFromAdvanceFilterAlgorithmRecords:
+      state?.searchSlice?.selectedTopicFromAdvanceFilterAlgorithmRecords,
+    selectedCampFromAdvanceFilterAlgorithmRecords:
+      state?.searchSlice?.selectedCampFromAdvanceFilterAlgorithmRecords,
+    selectedCampStatementFromAdvanceFilterAlgorithmRecords:
+      state?.searchSlice
+        ?.selectedCampStatementFromAdvanceFilterAlgorithmRecords,
+    detectPressEnterInSearch: state?.searchSlice?.detectPressEnterInSearch,
+    storeOnPressEnterSearchCountForMetaData:
+      state?.searchSlice?.storeOnPressEnterSearchCountForMetaData,
   }));
+
+  const isReviewOrByDate =
+    router.query.asof === "review" || router.query.asof === "bydate";
+
+  const isCampPage = router?.pathname == "/search/camp";
+
   const campTotal =
     searchValue === ""
-      ? searchMetaData?.camp_total
-      : router.query.asof === "review" || router.query.asof === "bydate"
-      ? selectedCampFromAdvanceFilterAlgorithm?.length
-      : searchCountForMetaData?.camp_total;
+      ? storeOnPressEnterSearchCountForMetaData?.camp_total
+      : isReviewOrByDate && isCampPage
+      ? selectedCampFromAdvanceFilterAlgorithmRecords
+      : detectPressEnterInSearch
+      ? searchCountForMetaData?.camp_total
+      : storeOnPressEnterSearchCountForMetaData?.camp_total;
+
+
+      console.log(storeOnPressEnterSearchCountForMetaData,"storeOnPressEnterSearchCountForMetaData")
   return (
     <>
       <div className="leftSideBar_Card noFilter">
@@ -126,12 +152,15 @@ export default function SearchSideBar() {
                     <span>
                       {" "}
                       &nbsp;(
-                      {searchValue == ""
-                        ? searchMetaData?.topic_total
-                        : router.query.asof == "review" ||
-                          router.query.asof == "bydate"
-                        ? selectedTopicFromAdvanceFilterAlgorithm?.length
-                        : searchCountForMetaData?.topic_total}
+                      {searchValue === ""
+                        ? storeOnPressEnterSearchCountForMetaData?.topic_total
+                        : (router.query.asof === "review" ||
+                            router.query.asof === "bydate") &&
+                          router?.pathname === "/search/topic"
+                        ? selectedTopicFromAdvanceFilterAlgorithmRecords
+                        : detectPressEnterInSearch
+                        ? searchCountForMetaData?.topic_total
+                        : storeOnPressEnterSearchCountForMetaData?.topic_total}
                       )
                     </span>
                   </a>
@@ -212,11 +241,14 @@ export default function SearchSideBar() {
                       {" "}
                       &nbsp;(
                       {searchValue == ""
-                        ? searchMetaData?.statement_total
-                        : router.query.asof == "review" ||
-                          router.query.asof == "bydate"
-                        ? selectedStatementFromAdvanceFilterAlgorithm.length
-                        : searchCountForMetaData?.statement_total}
+                        ? storeOnPressEnterSearchCountForMetaData?.statement_total
+                        : (router.query.asof == "review" ||
+                            router.query.asof == "bydate") &&
+                          router?.pathname == "/search/camp_statement"
+                        ? selectedCampStatementFromAdvanceFilterAlgorithmRecords
+                        : detectPressEnterInSearch
+                        ? searchCountForMetaData?.statement_total
+                        : storeOnPressEnterSearchCountForMetaData?.statement_total}
                       )
                     </span>
                   </a>
@@ -260,9 +292,8 @@ export default function SearchSideBar() {
                     <span>
                       {" "}
                       &nbsp;(
-                      {searchValue == ""
-                        ? searchMetaData?.nickname_total
-                        : searchCountForMetaData?.nickname_total}
+                      {
+                        storeOnPressEnterSearchCountForMetaData?.nickname_total}
                       )
                     </span>
                   </a>

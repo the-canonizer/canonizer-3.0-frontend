@@ -131,7 +131,6 @@ const ProfileInfo = () => {
     let res = await UpdateUserProfileInfo(values);
     setgetAddress1(res?.data?.address_1);
     if (res && res.status_code === 200) {
-      fetchUserProfileInfo();
       message.success(res.message);
       if (values?.default_algo) {
         dispatch(

@@ -137,7 +137,6 @@ function ManageStatementUI({
     const imgTags = editorState.match(/<img[^>]*>/gi);
   
     if (!imgTags || imgTags.length === 0) {
-      console.error("No images found in the editor.Proceeding with form submission.");
       return true;
     }
   
