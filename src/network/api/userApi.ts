@@ -32,7 +32,8 @@ const createNewToken = async (req, res) => {
     const token = await NetworkCall.fetch(UserRequest.createToken());
 
     console.log(
-      "respone token api:-------------->>>> " + token.data?.access_token
+      "server side new token created :-------------->>>> " +
+        token.data?.access_token
     );
 
     res.setHeader(
@@ -54,7 +55,7 @@ export const createToken = async (req, res, ssg) => {
   if (isServer()) {
     if (!ssg && req?.cookies["loginToken"]) {
       const isValidToken = isTokenExpired(req?.cookies["loginToken"]);
-      console.log("------------------------------>> " + isValidToken);
+      console.log("--> 1 ------------------------------>> " + isValidToken);
       if (isValidToken) {
         return req.cookies["loginToken"];
       } else {
@@ -75,6 +76,8 @@ export const createToken = async (req, res, ssg) => {
           return (getCookies() as any)?.loginToken;
         } else {
           token = await NetworkCall.fetch(UserRequest.createToken());
+          "---> 2 client side new token created :-------------->>>> " +
+            token.data?.access_token;
         }
       }
       if (!isServer()) {
