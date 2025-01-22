@@ -712,6 +712,7 @@ function SupportTreeDrawer({
                     currentCampId={campRecord?.camp_num}
                     drawerFor={drawerFor}
                     setIsOrderChange={setIsOrderChange}
+                    isQuickActionSelected={isQuickActionSelected}
                   />
                 </div>
               </>
