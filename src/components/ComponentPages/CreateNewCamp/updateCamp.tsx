@@ -342,14 +342,17 @@ const CreateNewCamp = () => {
     return camp_leader_nick_name;
   };
 
-  const checkSelectedNicknameExists = (arr, id) =>{
-    return arr.some(obj => obj.nick_name_id === id);
-  }
+  const checkSelectedNicknameExists = (arr, id) => {
+    return arr.some((obj) => obj.nick_name_id === id);
+  };
 
   const submitCampData = async (values) => {
     const editInfo = editStatementData?.data;
     const parent_camp = editInfo?.parent_camp;
-    let nicknameExists = checkSelectedNicknameExists(campLeaderData, values?.camp_leader_nick_id);
+    let nicknameExists = checkSelectedNicknameExists(
+      campLeaderData,
+      values?.camp_leader_nick_id
+    );
 
     const reqBody = {
       topic_num: parent_camp[parent_camp?.length - 1]?.topic_num,
@@ -372,7 +375,9 @@ const CreateNewCamp = () => {
       parent_camp_num:
         editInfo?.parent_camp.length > 1 ? values?.parent_camp_num : null,
       old_parent_camp_num: editInfo?.camp?.parent_camp_num,
-      camp_leader_nick_id: nicknameExists? values?.camp_leader_nick_id : editCampData?.camp?.camp_leader_nick_id,
+      camp_leader_nick_id: nicknameExists
+        ? values?.camp_leader_nick_id
+        : editCampData?.camp?.camp_leader_nick_id,
     };
 
     options.map((op) => (reqBody[op.id] = op.checked ? 1 : 0));

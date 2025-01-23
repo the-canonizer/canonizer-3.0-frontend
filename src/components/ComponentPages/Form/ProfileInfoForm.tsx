@@ -743,22 +743,24 @@ function ProfileInfoForm({
               <Form.Item
                 id="form_for_address1"
                 rules={[
-                  {
-                    validator: (_, value) => {
-                      if (!value) return Promise.resolve();
+                  // {
+                  //   validator: (_, value) => {
+                  //     if (!value) return Promise.resolve();
 
-                      // Regular expressions to check for letters and digits
-                      const letterOrDigitRegex = /[a-zA-Z0-9]/; // Checks if there's at least one letter or digit
+                  //     // Regular expressions to check for letters and digits
+                  //     const letterOrDigitRegex = /[a-zA-Z0-9]/; // Checks if there's at least one letter or digit
 
-                      if (!letterOrDigitRegex.test(value)) {
-                        return Promise.reject(
-                          "Address must contain at least one letter or number."
-                        );
-                      }
+                  //     if (!letterOrDigitRegex.test(value)) {
+                  //       return Promise.reject(
+                  //         "Address must contain at least one letter or number."
+                  //       );
+                  //     }
 
-                      return Promise.resolve();
-                    },
-                  },
+                  //     return Promise.resolve();
+                  //   },
+                  // },
+                  { pattern: /^\S.*$/, message: 'Address cannot start with a space' },
+
                 ]}
                 name="address_1"
                 label={messages.labels.addressLine1}
@@ -840,22 +842,23 @@ function ProfileInfoForm({
               <Form.Item
                 id="form_for_address_2"
                 rules={[
-                  {
-                    validator: (_, value) => {
-                      if (!value) return Promise.resolve();
+                  // {
+                  //   validator: (_, value) => {
+                  //     if (!value) return Promise.resolve();
 
-                      // Regular expressions to check for letters and digits
-                      const letterOrDigitRegex = /[a-zA-Z0-9]/; // Checks if there's at least one letter or digit
+                  //     // Regular expressions to check for letters and digits
+                  //     const letterOrDigitRegex = /[a-zA-Z0-9]/; // Checks if there's at least one letter or digit
 
-                      if (!letterOrDigitRegex.test(value)) {
-                        return Promise.reject(
-                          "Address must contain at least one letter or number."
-                        );
-                      }
+                  //     if (!letterOrDigitRegex.test(value)) {
+                  //       return Promise.reject(
+                  //         "Address must contain at least one letter or number."
+                  //       );
+                  //     }
 
-                      return Promise.resolve();
-                    },
-                  },
+                  //     return Promise.resolve();
+                  //   },
+                  // },
+                  { pattern: /^\S.*$/, message: 'Address cannot start with a space' },
                 ]}
                 name="address_2"
                 label={messages.labels.addressLine2}
@@ -907,11 +910,11 @@ function ProfileInfoForm({
                       if (!value) return Promise.resolve();
 
                       // Check if the value contains only digits
-                      if (!/^\d+$/.test(value)) {
-                        return Promise.reject(
-                          "Zip code must contain only numbers."
-                        );
-                      }
+                      // if (!/^\d+$/.test(value)) {
+                      //   return Promise.reject(
+                      //     "Zip code must contain only numbers."
+                      //   );
+                      // }
 
                       // Check if the value consists only of zeros
                       if (/^0+$/.test(value)) {
@@ -921,6 +924,10 @@ function ProfileInfoForm({
                       return Promise.resolve();
                     },
                   },
+                  {
+                    pattern: new RegExp('^[0-9-]+$'),
+                    message: 'Zip Code can only contain numbers and hyphens.',
+                  }
                 ]}
                 name="postal_code"
                 label={messages.labels.zipCode}

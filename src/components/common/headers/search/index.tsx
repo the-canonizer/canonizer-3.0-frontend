@@ -95,13 +95,21 @@ const HeaderSearch = ({ className = "" }: any) => {
   const router = useRouter(),
     dispatch = useDispatch();
 
-  let { searchValue, pageNumber, openSearchForMobileView } = useSelector(
-    (state: RootState) => ({
-      searchValue: state?.searchSlice?.searchValue,
-      pageNumber: state?.searchSlice?.pageNumber,
-      openSearchForMobileView: state?.searchSlice?.openSearchForMobileView,
-    })
-  );
+  let {
+    searchValue,
+    pageNumber,
+    openSearchForMobileView,
+    asof,
+    filterByScore,
+    algorithm,
+  } = useSelector((state: RootState) => ({
+    searchValue: state?.searchSlice?.searchValue,
+    pageNumber: state?.searchSlice?.pageNumber,
+    openSearchForMobileView: state?.searchSlice?.openSearchForMobileView,
+    asof: state.filters?.filterObject?.asof,
+    filterByScore: state.filters?.filterObject?.filterByScore,
+    algorithm: state.filters?.filterObject?.algorithm,
+  }));
 
   const [inputSearch, setInputSearch] = useState("");
   const [searchTopics, setSearchTopics] = useState([]);
@@ -258,11 +266,13 @@ const HeaderSearch = ({ className = "" }: any) => {
   const [preventInitialRender, setPreventInitialRender] = useState(true);
 
   useEffect(() => {
+    if (asof === "review" || asof === "bydate") return;
     if (preventInitialRender && pageNumber !== 1)
       setPreventInitialRender(false);
     else if (
-      (inputSearch || searchValue || router?.query?.q) &&
-      router.pathname.includes("/search")
+      ((inputSearch || searchValue || router?.query?.q) &&
+        router.pathname.includes("/search") &&
+        asof === "default")
     ) {
       getGlobalSearchCanonizerNav(router?.query?.q);
     }
@@ -271,7 +281,7 @@ const HeaderSearch = ({ className = "" }: any) => {
       setPreventInitialRender(true);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pageNumber, router?.pathname]);
+  }, [pageNumber, router?.pathname,asof]);
 
   const getGlobalSearchCanonizerNav = async (queryString) => {
     let queryParamObj: any = {
@@ -328,10 +338,10 @@ const HeaderSearch = ({ className = "" }: any) => {
       queryParams({ term: queryString == undefined ? "" : queryString })
     );
     if (response) {
-      setSearchTopics(response.data.data.topic);
-      setSearchCamps(response.data.data.camp);
-      setSearchCampStatement(response.data.data.statement);
-      setSearchNickname(response.data.data.nickname);
+      setSearchTopics(response?.data?.data?.topic);
+      setSearchCamps(response?.data?.data?.camp);
+      setSearchCampStatement(response?.data?.data?.statement);
+      setSearchNickname(response?.data?.data?.nickname);
       dispatch(setSearchCountForMetaData(response?.data?.meta_data));
       if (onPresEnter) {
         dispatch(setSearchData(response?.data?.data));

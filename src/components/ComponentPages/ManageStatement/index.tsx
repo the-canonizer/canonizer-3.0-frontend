@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Form, Row, Col, Typography, Modal } from "antd";
 import { useRouter } from "next/router";
 import {
@@ -20,7 +20,6 @@ import {
   updateStatementApi,
 } from "src/network/api/campManageStatementApi";
 import {
-  epochToMinutes,
   replaceSpecialCharacters,
 } from "src/utils/generalUtility";
 import DataNotFound from "../DataNotFound/dataNotFound";
@@ -79,6 +78,7 @@ function ManageStatements({ isEdit = false }) {
   const values = Form.useWatch([], form);
   const [isSavingDraft, setIsSavingDraft] = useState(false);
   // const [isGenerating, setIsGenerating] = useState(false);
+  const isFirstRender = useRef(true);
 
   const getEpochTime = () => {
     return Math.floor(Date.now() / 1000);
@@ -121,23 +121,21 @@ function ManageStatements({ isEdit = false }) {
 
   useEffect(() => {
     const updateCurrentTime = () => {
-      setTime((prevTime) => ({
-        ...prevTime,
-        current_time: getEpochTime(),
-      }));
-
-      let timeDifference = getEpochTime() - time?.last_save_time;
-
-      if (epochToMinutes(time?.last_save_time) == 0) {
-        setAutoSaveDisplayMessage("");
-      } else if (epochToMinutes(timeDifference) == 0) {
-        setAutoSaveDisplayMessage("Saved just now");
-      } else {
+        setTime((prevTime) => ({
+          ...prevTime,
+          current_time: getEpochTime(),
+        }));
+        
+        
         setAutoSaveDisplayMessage(
-          `Saved ${epochToMinutes(timeDifference)} min ago`
+          `Saved ${moment.unix(time?.last_save_time).fromNow()}`
         );
-      }
     };
+
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return; // Skip running on initial render
+    }
 
     const interval = setInterval(updateCurrentTime, 700);
 
@@ -283,7 +281,7 @@ function ManageStatements({ isEdit = false }) {
         }
       }
 
-      if(noStatus === false){
+      if (noStatus === false) {
         const nickNameRes = await getAllUsedNickNames({
           topic_num: isEdit
             ? editData?.topic?.topic_num
@@ -302,7 +300,7 @@ function ManageStatements({ isEdit = false }) {
             : {
                 nick_name: nickNameRes.data?.[0]?.id,
               };
-  
+
           form.setFieldsValue(formData);
           setNickNameData(nickNames);
         }
@@ -782,12 +780,7 @@ function ManageStatements({ isEdit = false }) {
     return res;
   };
 
-  const onEditorStateChange = (changedata: any) => {
-    const datachangec = `${changedata}`;
-    setEditorState(datachangec);
-    form.setFieldsValue({ statement: datachangec });
-    handleformvalues();
-  };
+
 
   const handleformvalues = () => {
     const cleanValues = (values) =>
@@ -955,7 +948,7 @@ function ManageStatements({ isEdit = false }) {
               nickNameData={nickNameData}
               isEdit={isEdit}
               editorState={editorState}
-              onEditorStateChange={onEditorStateChange}
+              setEditorState={setEditorState}
               submitIsDisable={submitIsDisable}
               editCampStatementData={editCampStatementData}
               onDiscardClick={onDiscardClick}
