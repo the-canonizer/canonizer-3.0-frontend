@@ -1,4 +1,4 @@
-import { getCookies } from "src/utils/generalUtility";
+import { getCookies, isTokenExpired } from "src/utils/generalUtility";
 import K from "../../constants";
 import { createToken } from "../api/userApi";
 
@@ -25,7 +25,11 @@ export default class Request {
       const cc: any = getCookies();
 
       if (cc?.loginToken) {
-        bearerToken = cc.loginToken;
+        if (isTokenExpired(cc.loginToken)) {
+          bearerToken = cc.loginToken;
+        }else{
+          console.log("---token expired---")
+        }
       } else if (!relativeURL?.includes("client-token")) {
         Request.counter++;
         // create token
@@ -36,6 +40,14 @@ export default class Request {
         })();
       }
     }
+
+    console.log(
+      "============================================================================"
+    );
+    console.log("=====> final bearerToken token <=====", bearerToken);
+    console.log(
+      "============================================================================"
+    );
 
     headers = {
       ...(defaultHeaderType === K.Network.Header.Type.Json ||

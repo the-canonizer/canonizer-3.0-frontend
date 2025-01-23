@@ -490,12 +490,10 @@ export const isTokenExpired = (token): boolean => {
 
 export const getCookiesExpirationTime = () => {
   const oneYearFromNow = new Date();
-  oneYearFromNow.setFullYear(oneYearFromNow.getFullYear() + 1); // Add one year to the current date
-  oneYearFromNow.setUTCHours(0, 0, 0, 0); // Set time to 00:00:00 UTC
+  oneYearFromNow.setFullYear(oneYearFromNow.getFullYear() + 1); 
+  oneYearFromNow.setUTCHours(0, 0, 0, 0); 
 
-  // Convert the date to the required format and replace GMT with UTC
   const expirationDate = oneYearFromNow.toUTCString().replace("GMT", "UTC");
 
-  // Return the full cookie attributes string
   return `;expires=${expirationDate}; path=/`;
 };
