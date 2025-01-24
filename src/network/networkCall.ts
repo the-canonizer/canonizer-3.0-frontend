@@ -5,6 +5,7 @@ import K from "../constants";
 import {
   camelCaseKeys,
   getCookies,
+  isServer,
   isTokenExpired,
 } from "../utils/generalUtility";
 import { createNewToken, logout } from "./api/userApi";
@@ -17,7 +18,6 @@ export default class NetworkCall {
 
   static async fetch(request, useLoading = true) {
     store.dispatch(setLoadingAction(true));
-
     const axiosCall = (newRequest) => {
       return NetworkCall.axios({
         method: request.method,
@@ -31,14 +31,30 @@ export default class NetworkCall {
     };
 
     try {
-      let newHeader = await (request?.url?.includes("client-token")
-        ? ""
-        : !isTokenExpired(
-            request.headers.Authorization?.split(" ")?.at(1) ||
-              getCookies()?.loginToken
-          )
-        ? K.Network.Header.Default(await createNewToken(null, null))
-        : request.headers);
+      let newHeader;
+
+      if (request?.url?.includes("client-token")) {
+        newHeader = K.Network.Header.Default("");
+      } else if (
+        !isTokenExpired(
+          request.headers.Authorization?.split(" ")?.at(1) ||
+            getCookies()?.loginToken
+        )
+      ) {
+        let newToken = await createNewToken(null, null);
+        newHeader = K.Network.Header.Default(newToken);
+      } else {
+        newHeader = isServer()
+          ? request.headers
+          : K.Network.Header.Default(getCookies()?.loginToken);
+      }
+      // ? ""
+      // : !isTokenExpired(
+      //     request.headers.Authorization?.split(" ")?.at(1) ||
+      //       getCookies()?.loginToken
+      //   )
+      // ? K.Network.Header.Default(await createNewToken(null, null))
+      // : request.headers);
 
       const response: any = useLoading
         ? await trackPromise(axiosCall(newHeader))
