@@ -201,7 +201,7 @@ export default function AdvanceFilter() {
   };
   const reqBody = {
     type: router?.pathname == "/search/nickname" ? "nickname" : "",
-    search: searchValue,
+    search: router?.query?.q,
     query: searchQueryValue,
     nick_ids: extractNumbers(findNicknameId),
   };
