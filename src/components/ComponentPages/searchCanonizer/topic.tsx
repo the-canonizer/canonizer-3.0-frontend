@@ -27,6 +27,7 @@ const TopicSearch = () => {
     asof,
     filterByScore,
     algorithm,
+    pageNumber
   } = useSelector((state: RootState) => ({
     searchMetaData: state?.searchSlice?.searchMetaData,
     selectedTopicFromAdvanceFilterAlgorithm:
@@ -36,6 +37,7 @@ const TopicSearch = () => {
     asof: state.filters?.filterObject?.asof,
     filterByScore: state.filters?.filterObject?.filterByScore,
     algorithm: state.filters?.filterObject?.algorithm,
+    pageNumber: state?.searchSlice?.pageNumber,
   }));
 
   const { loading } = useSelector((state: RootState) => ({
@@ -51,10 +53,7 @@ const TopicSearch = () => {
     setCurrentPage(pageNumber);
     dispatch(setPageNumber(pageNumber));
   };
-  useEffect(() => {
-    pageChange(currentPage);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchDataAll?.topic]);
+ 
   const showEmpty = (msg) => {
     return <Empty description={msg} />;
   };
@@ -393,6 +392,7 @@ const TopicSearch = () => {
               </div>
             )}
             <Pagination
+              current={pageNumber}
               className="mt-5 [&_.ant-pagination-item]:!mr-1 lg:[&_.ant-pagination-item]:!mr-2"
               hideOnSinglePage={true}
               total={

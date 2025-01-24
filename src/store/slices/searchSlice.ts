@@ -34,6 +34,13 @@ export const searchSlice = createSlice({
       nickname_total: 0,
     },
 
+    storeOnPressEnterSearchCountForMetaData:{
+      topic_total: 0,
+      camp_total: 0,
+      statement_total: 0,
+      nickname_total: 0,
+    } as any,
+
     searchValue: "",
     pageNumber: 1,
     searchQueryValue: "",
@@ -48,6 +55,7 @@ export const searchSlice = createSlice({
     selectedCampStatementFromAdvanceFilterAlgorithmRecords: 0,
     selectedCampFromAdvanceFilterAlgorithm: [],
     selectedStatementFromAdvanceFilterAlgorithm: [],
+    detectPressEnterInSearch:false
   },
   reducers: {
     setSearchData: (state, action) => {
@@ -82,6 +90,14 @@ export const searchSlice = createSlice({
     },
     setSearchCountForMetaData: (state, action) => {
       state.searchCountForMetaData = {
+        topic_total: action?.payload?.topic_total,
+        camp_total: action?.payload?.camp_total,
+        statement_total: action?.payload?.statement_total,
+        nickname_total: action?.payload?.nickname_total,
+      };
+    },
+    setStoreOnPressEnterSearchCountForMetaData: (state, action) => {
+      state.storeOnPressEnterSearchCountForMetaData = {
         topic_total: action?.payload?.topic_total,
         camp_total: action?.payload?.camp_total,
         statement_total: action?.payload?.statement_total,
@@ -130,6 +146,9 @@ export const searchSlice = createSlice({
     setSelectedStatementFromAdvanceFilterAlgorithm: (state, action) => {
       state.selectedStatementFromAdvanceFilterAlgorithm = action.payload;
     },
+    setDetectPressEnterInSearch: (state, action) => {
+      state.detectPressEnterInSearch = action.payload;
+    },
   },
 });
 
@@ -152,6 +171,8 @@ export const {
   setSelectedCampFromAdvanceFilterAlgorithmRecords,
   setSelectedCampStatementFromAdvanceFilterAlgorithmRecords,
   setSearchCountForMetaData,
+  setDetectPressEnterInSearch,
+  setStoreOnPressEnterSearchCountForMetaData
 } = searchSlice.actions;
 
 export default searchSlice.reducer;

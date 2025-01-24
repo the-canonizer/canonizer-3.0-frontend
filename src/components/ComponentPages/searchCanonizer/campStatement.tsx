@@ -492,6 +492,7 @@ const CampStatementSearch = () => {
               </div>
             )}
             <Pagination
+              current={pageNumber}
               className="mt-5 [&_.ant-pagination-item]:!mr-1 lg:[&_.ant-pagination-item]:!mr-2"
               hideOnSinglePage={true}
               total={

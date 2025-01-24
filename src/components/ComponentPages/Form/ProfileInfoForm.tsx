@@ -761,12 +761,6 @@ function ProfileInfoForm({
                   // },
                   { pattern: /^\S.*$/, message: 'Address cannot start with a space' },
 
-                  {
-                    required: true,
-                    type: "string",
-                    pattern: new RegExp(/^[a-zA-Z0-9\s\.\-\']*$/), // Allow characters, numbers, spaces, periods, hyphens, and apostrophes
-                    message: "Invalid address format.",
-                  },
                 ]}
                 name="address_1"
                 label={messages.labels.addressLine1}
@@ -865,12 +859,6 @@ function ProfileInfoForm({
                   //   },
                   // },
                   { pattern: /^\S.*$/, message: 'Address cannot start with a space' },
-                  {
-                    required: true,
-                    type: "string",
-                    pattern: new RegExp(/^[a-zA-Z0-9\s\.\-\']*$/), // Allow characters, numbers, spaces, periods, hyphens, and apostrophes
-                    message: "Invalid address format.",
-                  },
                 ]}
                 name="address_2"
                 label={messages.labels.addressLine2}
