@@ -370,7 +370,7 @@ export default function AdvanceFilter() {
 
     const rebody = {
       type: "topic",
-      search: searchValue,
+      search: router?.query?.q,
       query: "",
       algo: algorithm,
       asof: asof,
@@ -395,7 +395,7 @@ export default function AdvanceFilter() {
     // loadMore ? setPageNumber(pageNumber + 1) : setPageNumber(1);
     const rebody = {
       type: "camp",
-      search: searchValue,
+      search: router?.query?.q,
       query: "",
       algo: algorithm,
       asof: asof,
@@ -421,7 +421,7 @@ export default function AdvanceFilter() {
     // loadMore ? setPageNumber(pageNumber + 1) : setPageNumber(1);
     const rebody = {
       type: "statement",
-      search: searchValue,
+      search: router?.query?.q,
       query: "",
       algo: algorithm,
       asof: asof,

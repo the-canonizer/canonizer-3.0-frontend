@@ -107,6 +107,14 @@ export default function SearchSideBar() {
                      router?.asPath.includes("/search?") ? "active" : "btn"
                    }`}
                   disabled={router?.pathname == "/search" ? true : false}
+                  onClick={()=>{
+                    dispatch(
+                      setFilterCanonizedTopics({
+                        asofdate: Date.now() / 1000,
+                        asof: "default",
+                      })
+                    );
+                  }}
                 >
                   All Results
                 </Button>
@@ -274,6 +282,12 @@ export default function SearchSideBar() {
                   }
                   onClick={() => {
                     dispatch(setClickAdvanceFilterOption(false));
+                    dispatch(
+                      setFilterCanonizedTopics({
+                        asofdate: Date.now() / 1000,
+                        asof: "default",
+                      })
+                    );
                   }}
                 >
                   {/* <Image
