@@ -37,6 +37,7 @@ import {
   setSelectedCampFromAdvanceFilterAlgorithmRecords,
   setSelectedCampStatementFromAdvanceFilterAlgorithmRecords,
   setPageNumber,
+  setDetectPressEnterInSearch,
 } from "src/store/slices/searchSlice";
 import debounce from "lodash/debounce";
 import { getTreesApi } from "src/network/api/campDetailApi";
@@ -114,7 +115,6 @@ export default function AdvanceFilter() {
     searchMetaData: state?.searchSlice?.searchMetaData,
     pageNumber: state?.searchSlice?.pageNumber,
   }));
-  console.log(pageNumber, "pageNumber");
 
   const { searchDataAll, searchData } = useSelector((state: RootState) => ({
     searchDataAll: state?.searchSlice?.searchDataAll,
@@ -178,7 +178,7 @@ export default function AdvanceFilter() {
       </div>
     </>
   );
-  console.log(searchMetaData?.search_ids?.topic_ids, "searchMetaData");
+
   const extractNumbers = (dataArray) => {
     return dataArray?.map((item) => {
       // Split each string by hyphen
@@ -728,6 +728,7 @@ export default function AdvanceFilter() {
                     );
                     // getTopicsApiCallWithReqBody()
                     dispatch(setPageNumber(1))
+                    dispatch(setDetectPressEnterInSearch(false))
                   }}
                 >
                   Search include review
@@ -764,6 +765,7 @@ export default function AdvanceFilter() {
                     handleAsOfClick();
                     // getTopicsApiCallWithReqBody()
                     dispatch(setPageNumber(1))
+                    dispatch(setDetectPressEnterInSearch(false))
                   }}
                 >
                   Search historical

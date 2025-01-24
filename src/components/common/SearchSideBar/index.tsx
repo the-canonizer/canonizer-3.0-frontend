@@ -70,16 +70,13 @@ export default function SearchSideBar() {
   const isCampPage = router?.pathname == "/search/camp";
 
   const campTotal =
-    searchValue === ""
+  router?.query?.q === ""
       ? storeOnPressEnterSearchCountForMetaData?.camp_total
       : isReviewOrByDate && isCampPage
       ? selectedCampFromAdvanceFilterAlgorithmRecords
       : detectPressEnterInSearch
       ? searchCountForMetaData?.camp_total
       : storeOnPressEnterSearchCountForMetaData?.camp_total;
-
-
-      console.log(storeOnPressEnterSearchCountForMetaData,"storeOnPressEnterSearchCountForMetaData")
   return (
     <>
       <div className="leftSideBar_Card noFilter">
@@ -152,7 +149,7 @@ export default function SearchSideBar() {
                     <span>
                       {" "}
                       &nbsp;(
-                      {searchValue === ""
+                      {router?.query?.q === ""
                         ? storeOnPressEnterSearchCountForMetaData?.topic_total
                         : (router.query.asof === "review" ||
                             router.query.asof === "bydate") &&
@@ -240,7 +237,7 @@ export default function SearchSideBar() {
                     <span>
                       {" "}
                       &nbsp;(
-                      {searchValue == ""
+                      {router?.query?.q === ""
                         ? storeOnPressEnterSearchCountForMetaData?.statement_total
                         : (router.query.asof == "review" ||
                             router.query.asof == "bydate") &&
