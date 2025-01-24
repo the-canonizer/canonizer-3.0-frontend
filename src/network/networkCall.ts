@@ -38,7 +38,7 @@ export default class NetworkCall {
       } else if (
         !isTokenExpired(
           request.headers.Authorization?.split(" ")?.at(1) ||
-            getCookies()?.loginToken
+            (getCookies() as any)?.loginToken
         )
       ) {
         let newToken = await createNewToken(null, null);
@@ -46,7 +46,7 @@ export default class NetworkCall {
       } else {
         newHeader = isServer()
           ? request.headers
-          : K.Network.Header.Default(getCookies()?.loginToken);
+          : K.Network.Header.Default((getCookies() as any)?.loginToken);
       }
       // ? ""
       // : !isTokenExpired(
