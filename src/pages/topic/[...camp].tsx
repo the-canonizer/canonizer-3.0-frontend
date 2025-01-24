@@ -28,7 +28,6 @@ import { setCurrentDate } from "src/store/slices/filtersSlice";
 import DataNotFound from "src/components/ComponentPages/DataNotFound/dataNotFound";
 import { createToken } from "src/network/api/userApi";
 import StatementPreviewModal from "components/ComponentPages/TopicDetails/PreviewStatementModal";
-import { log } from "console";
 
 const TopicDetailsPage = ({
   current_date,
@@ -200,9 +199,7 @@ export async function getServerSideProps({ req, query, res }) {
   // }
 
   token = await createToken(req, res, false);
-  console.log("1: =>>>>>>>>>>>>>>>",token);
 
-  
   const [
     newsFeed,
     topicRecord,

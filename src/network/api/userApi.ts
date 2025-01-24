@@ -27,13 +27,9 @@ import {
 import { setHeaderData } from "src/store/slices/notificationSlice";
 import { setIsChecked } from "src/store/slices/recentActivitiesSlice";
 
-const createNewToken = async (req, res) => {
+export const createNewToken = async (req, res) => {
   try {
     const token = await NetworkCall.fetch(UserRequest.createToken());
-
-    console.log(
-      "---->  new token created :-------------->>>> " + token.data?.access_token
-    );
 
     if (isServer()) {
       res.setHeader(
@@ -61,13 +57,9 @@ export const createToken = async (req, res, ssg) => {
   if (isServer()) {
     if (!ssg && req?.cookies["loginToken"]) {
       const isValidToken = isTokenExpired(req?.cookies["loginToken"]);
-      console.log("--> 1 ------------------------------>> " + isValidToken);
       if (isValidToken) {
         return req.cookies["loginToken"];
       } else {
-        console.log(
-          "---> 2 server side new token created :-------------->>>> "
-        );
         return await createNewToken(req, res);
       }
     } else {
@@ -78,9 +70,10 @@ export const createToken = async (req, res, ssg) => {
       const isValidToken = isTokenExpired((getCookies() as any)?.loginToken);
       if (isValidToken) {
         return (getCookies() as any)?.loginToken;
+      } else {
+        return await createNewToken(null, null);
       }
     } else {
-      console.log("---> 3 client side new token created :-------------->>>> ");
       return await createNewToken(null, null);
     }
   }

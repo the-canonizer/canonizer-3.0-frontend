@@ -19,35 +19,30 @@ export default class Request {
   ) {
     let bearerToken = "";
     if (token) {
-      //coming from server side use it
       bearerToken = token;
-    } else {
-      const cc: any = getCookies();
-
-      if (cc?.loginToken) {
-        if (isTokenExpired(cc.loginToken)) {
-          bearerToken = cc.loginToken;
-        }else{
-          console.log("---token expired---")
-        }
-      } else if (!relativeURL?.includes("client-token")) {
-        Request.counter++;
-        // create token
-        (async () => {
-          console.log("2:create token from network layer:");
-          const res = await createToken(null, null, false);
-          bearerToken = res;
-        })();
-      }
     }
+    // if (token) {
+    //   //coming from server side use it
+    //   bearerToken = token;
+    // } else {
+    //   const cc: any = getCookies();
 
-    console.log(
-      "============================================================================"
-    );
-    console.log("=====> final bearerToken token <=====", bearerToken);
-    console.log(
-      "============================================================================"
-    );
+    //   if (cc?.loginToken) {
+    //     if (isTokenExpired(cc.loginToken)) {
+    //       bearerToken = cc.loginToken;
+    //     }else{
+    //       console.log("---token expired---")
+    //     }
+    //   } else if (!relativeURL?.includes("client-token")) {
+    //     Request.counter++;
+    //     // create token
+    //     (async () => {
+    //       console.log("2:create token from network layer:");
+    //       const res = await createToken(null, null, false);
+    //       bearerToken = res;
+    //     })();
+    //   }
+    // }
 
     headers = {
       ...(defaultHeaderType === K.Network.Header.Type.Json ||

@@ -2,8 +2,12 @@ import axios from "axios";
 import { trackPromise } from "react-promise-tracker";
 
 import K from "../constants";
-import { camelCaseKeys } from "../utils/generalUtility";
-import { logout } from "./api/userApi";
+import {
+  camelCaseKeys,
+  getCookies,
+  isTokenExpired,
+} from "../utils/generalUtility";
+import { createNewToken, logout } from "./api/userApi";
 import { store } from "../store";
 import { updateStatus } from "../store/slices/uiSlice";
 import { setLoadingAction } from "src/store/slices/loading";
@@ -13,12 +17,13 @@ export default class NetworkCall {
 
   static async fetch(request, useLoading = true) {
     store.dispatch(setLoadingAction(true));
-    const axiosCall = () => {
+
+    const axiosCall = (newRequest) => {
       return NetworkCall.axios({
         method: request.method,
         url: request.url,
         data: request.body,
-        headers: request.headers,
+        headers: { ...newRequest },
         validateStatus: (status) => {
           return status == 200;
         },
@@ -26,9 +31,18 @@ export default class NetworkCall {
     };
 
     try {
+      let newHeader = await (request?.url?.includes("client-token")
+        ? ""
+        : !isTokenExpired(
+            request.headers.Authorization?.split(" ")?.at(1) ||
+              getCookies()?.loginToken
+          )
+        ? K.Network.Header.Default(await createNewToken(null, null))
+        : request.headers);
+
       const response: any = useLoading
-        ? await trackPromise(axiosCall())
-        : await axiosCall();
+        ? await trackPromise(axiosCall(newHeader))
+        : await axiosCall(newHeader);
       if (response?.data?.auth?.access_token) {
         NetworkCall.counter = 1;
       }

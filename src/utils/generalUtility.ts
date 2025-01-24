@@ -484,14 +484,18 @@ export const serverRoutes = [
 ];
 
 export const isTokenExpired = (token): boolean => {
-  const decodedToken: any = jwtDecode(token);
-  return decodedToken.exp > Math.floor(Date.now() / 1000);
+  if (token) {
+    const decodedToken: any = jwtDecode(token);
+    return decodedToken.exp > Math.floor(Date.now() / 1000);
+  } else {
+    return false;
+  }
 };
 
 export const getCookiesExpirationTime = () => {
   const oneYearFromNow = new Date();
-  oneYearFromNow.setFullYear(oneYearFromNow.getFullYear() + 1); 
-  oneYearFromNow.setUTCHours(0, 0, 0, 0); 
+  oneYearFromNow.setFullYear(oneYearFromNow.getFullYear() + 1);
+  oneYearFromNow.setUTCHours(0, 0, 0, 0);
 
   const expirationDate = oneYearFromNow.toUTCString().replace("GMT", "UTC");
 
