@@ -21,6 +21,8 @@ import {
   setSearchDataAll,
   setOpenSearchForMobileView,
   setSearchCountForMetaData,
+  setDetectPressEnterInSearch,
+  setStoreOnPressEnterSearchCountForMetaData,
 } from "src/store/slices/searchSlice";
 import CustomSkelton from "../../customSkelton";
 import { setSearchLoadingAction } from "src/store/slices/loading";
@@ -123,7 +125,7 @@ const HeaderSearch = ({ className = "" }: any) => {
   useEffect(() => {
     const { q } = router.query; // Extract the query parameter from the URL
 
-    if (typeof q === "string") {
+    if (typeof q === "string" && router?.pathname== "/search") {
       // Check if q is a string
       // If 'q' is present, format and set the search value, then call the search function
       const formattedSearchValue = q.split("+").join(" ").replace(/%20/g, " ");
@@ -270,9 +272,9 @@ const HeaderSearch = ({ className = "" }: any) => {
     if (preventInitialRender && pageNumber !== 1)
       setPreventInitialRender(false);
     else if (
-      ((inputSearch || searchValue || router?.query?.q) &&
-        router.pathname.includes("/search") &&
-        asof === "default")
+      (inputSearch || searchValue || router?.query?.q) &&
+      router.pathname.includes("/search") &&
+      asof === "default"
     ) {
       getGlobalSearchCanonizerNav(router?.query?.q);
     }
@@ -281,7 +283,7 @@ const HeaderSearch = ({ className = "" }: any) => {
       setPreventInitialRender(true);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pageNumber, router?.pathname,asof]);
+  }, [pageNumber, router?.pathname, asof]);
 
   const getGlobalSearchCanonizerNav = async (queryString) => {
     let queryParamObj: any = {
@@ -318,7 +320,6 @@ const HeaderSearch = ({ className = "" }: any) => {
       setSearchCamps(response.data.data.camp);
       setSearchCampStatement(response.data.data.statement);
       setSearchNickname(response.data.data.nickname);
-
       if (
         router.pathname == "/search/topic" ||
         router.pathname == "/search/camp" ||
@@ -330,7 +331,10 @@ const HeaderSearch = ({ className = "" }: any) => {
         dispatch(setSearchDataAll(response?.data?.data));
       }
     }
-    dispatch(setSearchLoadingAction(false));
+    setTimeout(()=>{
+      dispatch(setSearchLoadingAction(false));
+
+      },100)
   };
 
   const getGlobalSearchCanonizer = async (queryString, onPresEnter) => {
@@ -345,7 +349,12 @@ const HeaderSearch = ({ className = "" }: any) => {
       dispatch(setSearchCountForMetaData(response?.data?.meta_data));
       if (onPresEnter) {
         dispatch(setSearchData(response?.data?.data));
+        dispatch(
+          setStoreOnPressEnterSearchCountForMetaData(response?.data?.meta_data)
+        );
+        setTimeout(()=>{
         dispatch(setSearchLoadingAction(false));
+        },100)
       }
       setLoadingSekelton(false);
     }
@@ -410,14 +419,21 @@ const HeaderSearch = ({ className = "" }: any) => {
               setSearchVal(e.target.value);
               debounceFn.cancel();
               if (e?.target?.value) debounceFn(e.target.value, false);
+              dispatch(setDetectPressEnterInSearch(false));
             }}
             onPressEnter={(e) => {
+              const value = (e.target as HTMLTextAreaElement).value;
+
+              if (value === "") {
+                return; // Exit the function if the input value is empty
+              }
               handlePress();
               if ((e.target as HTMLTextAreaElement).value)
                 getGlobalSearchCanonizer(
                   (e.target as HTMLTextAreaElement).value,
                   true
                 );
+              dispatch(setDetectPressEnterInSearch(true));
             }}
             onSearch={handlePress}
           />
@@ -630,15 +646,14 @@ const TopicItems = ({ searchTopics, searchValue }) => {
                         className="bg-transparent border-0 p-0 hover:bg-transparent focus:bg-transparent flex gap-1.5 items-center leading-1 !mb-0 "
                       >
                         <Image
+                          className="cursor-default"
                           src="/images/serach-flag.svg"
                           width={18}
                           height={20}
                         />
-                        <Link href="">
-                          <a className="text-canBlue text-base font-inter font-normal lg:font-medium">
+                          <span className="text-canBlue text-base font-inter font-normal cursor-default lg:font-medium">
                             {item?.namespace}
-                          </a>
-                        </Link>
+                          </span>
                       </Typography.Paragraph>
                     </Popover>
                   </div>
