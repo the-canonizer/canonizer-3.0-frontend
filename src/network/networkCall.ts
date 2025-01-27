@@ -6,7 +6,7 @@ import {
   camelCaseKeys,
   getCookies,
   isServer,
-  isTokenExpired,
+  isTokenValid,
 } from "../utils/generalUtility";
 import { createNewToken, logout } from "./api/userApi";
 import { store } from "../store";
@@ -36,7 +36,7 @@ export default class NetworkCall {
       if (request?.url?.includes("client-token")) {
         newHeader = K.Network.Header.Default("");
       } else if (
-        !isTokenExpired(
+        !isTokenValid(
           request.headers.Authorization?.split(" ")?.at(1) ||
             (getCookies() as any)?.loginToken
         )
@@ -49,7 +49,7 @@ export default class NetworkCall {
           : K.Network.Header.Default((getCookies() as any)?.loginToken);
       }
       // ? ""
-      // : !isTokenExpired(
+      // : !isTokenValid(
       //     request.headers.Authorization?.split(" ")?.at(1) ||
       //       getCookies()?.loginToken
       //   )

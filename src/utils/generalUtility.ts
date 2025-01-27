@@ -483,7 +483,7 @@ export const serverRoutes = [
   "/topic/[...camp]",
 ];
 
-export const isTokenExpired = (token): boolean => {
+export const isTokenValid = (token): boolean => {
   if (token) {
     const decodedToken: any = jwtDecode(token);
     return decodedToken.exp > Math.floor(Date.now() / 1000);

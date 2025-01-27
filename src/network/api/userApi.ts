@@ -5,7 +5,7 @@ import {
   getCookiesExpirationTime,
   handleError,
   isServer,
-  isTokenExpired,
+  isTokenValid,
 } from "../../utils/generalUtility";
 import {
   setAuthToken,
@@ -56,7 +56,7 @@ export const createNewToken = async (req, res) => {
 export const createToken = async (req, res, ssg) => {
   if (isServer()) {
     if (!ssg && req?.cookies["loginToken"]) {
-      const isValidToken = isTokenExpired(req?.cookies["loginToken"]);
+      const isValidToken = isTokenValid(req?.cookies["loginToken"]);
       if (isValidToken) {
         return req.cookies["loginToken"];
       } else {
@@ -67,7 +67,7 @@ export const createToken = async (req, res, ssg) => {
     }
   } else {
     if ((getCookies() as any)?.loginToken) {
-      const isValidToken = isTokenExpired((getCookies() as any)?.loginToken);
+      const isValidToken = isTokenValid((getCookies() as any)?.loginToken);
       if (isValidToken) {
         return (getCookies() as any)?.loginToken;
       } else {
@@ -83,7 +83,7 @@ export const createToken = async (req, res, ssg) => {
   //   let token;
   //   if (!isServer()) {
   //     if ((getCookies() as any)?.loginToken) {
-  //       isValidToken = isTokenExpired((getCookies() as any)?.loginToken);
+  //       isValidToken = isTokenValid((getCookies() as any)?.loginToken);
   //     }
   //     if (isValidToken) {
   //       return (getCookies() as any)?.loginToken;

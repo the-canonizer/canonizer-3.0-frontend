@@ -1,4 +1,4 @@
-import { getCookies, isTokenExpired } from "src/utils/generalUtility";
+import { getCookies, isTokenValid } from "src/utils/generalUtility";
 import K from "../../constants";
 import { createToken } from "../api/userApi";
 
@@ -28,7 +28,7 @@ export default class Request {
     //   const cc: any = getCookies();
 
     //   if (cc?.loginToken) {
-    //     if (isTokenExpired(cc.loginToken)) {
+    //     if (isTokenValid(cc.loginToken)) {
     //       bearerToken = cc.loginToken;
     //     }else{
     //       console.log("---token expired---")
