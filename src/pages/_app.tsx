@@ -78,10 +78,8 @@ function WrappedApp({
   //   }
   // };
 
-  
   useEffect(() => {
- 
-    // validateToken();  // method that validates the token when the user navigates in the APP 
+    // validateToken();  // method that validates the token when the user navigates in the APP
     const fetchToken = async () => {
       if (router?.asPath) {
         let pre_route =

@@ -15,6 +15,8 @@ import { setLoadingAction } from "src/store/slices/loading";
 
 export default class NetworkCall {
   static counter = 1;
+  static isRefreshingToken = false;
+  static refreshTokenPromise = null;
 
   static async fetch(request, useLoading = true) {
     store.dispatch(setLoadingAction(true));
@@ -33,32 +35,48 @@ export default class NetworkCall {
     try {
       let newHeader;
 
+      // Handle token validation and refresh logic
       if (request?.url?.includes("client-token")) {
         newHeader = K.Network.Header.Default("");
-      } else if (
-        !isTokenValid(
-          request.headers.Authorization?.split(" ")?.at(1) ||
-            (getCookies() as any)?.loginToken
-        )
-      ) {
-        let newToken = await createNewToken(null, null);
-        newHeader = K.Network.Header.Default(newToken);
       } else {
-        newHeader = isServer()
-          ? request.headers
-          : K.Network.Header.Default((getCookies() as any)?.loginToken);
+        const currentToken =
+          request.headers.Authorization?.split(" ")?.at(1) ||
+          (getCookies() as any)?.loginToken;
+
+        // Check if the token is invalid
+        if (!isTokenValid(currentToken)) {
+          // Handle token refresh: Ensure only one token is created
+          if (!NetworkCall.isRefreshingToken) {
+            NetworkCall.isRefreshingToken = true;
+
+            // Initiate token refresh and save the resulting promise
+            NetworkCall.refreshTokenPromise = createNewToken(null, null)
+              .then((newToken) => {
+                newHeader = K.Network.Header.Default(newToken);
+                NetworkCall.isRefreshingToken = false;
+                return newToken;
+              })
+              .catch((err) => {
+                NetworkCall.isRefreshingToken = false;
+                throw err;
+              });
+          }
+
+          // Wait for the existing token refresh promise to resolve
+          const newToken = await NetworkCall.refreshTokenPromise;
+          newHeader = K.Network.Header.Default(newToken);
+        } else {
+          // Use existing valid token
+          newHeader = isServer()
+            ? request.headers
+            : K.Network.Header.Default((getCookies() as any)?.loginToken);
+        }
       }
-      // ? ""
-      // : !isTokenValid(
-      //     request.headers.Authorization?.split(" ")?.at(1) ||
-      //       getCookies()?.loginToken
-      //   )
-      // ? K.Network.Header.Default(await createNewToken(null, null))
-      // : request.headers);
 
       const response: any = useLoading
         ? await trackPromise(axiosCall(newHeader))
         : await axiosCall(newHeader);
+
       if (response?.data?.auth?.access_token) {
         NetworkCall.counter = 1;
       }
@@ -88,7 +106,6 @@ export default class NetworkCall {
       return Promise.reject({ error: error });
     }
   }
-  /* eslint-disable */
   static axios(arg0: {
     method: any;
     url: any;
@@ -99,7 +116,6 @@ export default class NetworkCall {
     throw new Error("Method not implemented.");
   }
 }
-/* eslint-enable */
 NetworkCall.axios = axios.create({
   baseURL: K.Network.URL.BaseAPI,
   timeout: +K.Network.URL.Timeout,
