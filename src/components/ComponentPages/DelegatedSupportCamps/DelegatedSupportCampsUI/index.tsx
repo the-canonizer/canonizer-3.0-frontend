@@ -40,7 +40,7 @@ export default function DelegatedSupportCampsUI({
   setSearchText
 }: any) {
   const [displayList, setDisplayList] = useState([]);
-  const limit = delegatedSupportCampsList.length;
+  const limit = delegatedSupportCampsList?.length;
   
   useEffect(() => {
     if (delegatedSupportCampsList) 
