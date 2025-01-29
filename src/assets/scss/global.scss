@@ -839,16 +839,16 @@ body {
 }
 
 .editorContent {
-  h1 {
-    @apply text-xl;
-  }
-
   h2 {
-    @apply text-lg;
+    @apply text-3xl;
   }
 
   h3 {
-    @apply text-sm;
+    @apply text-2xl;
+  }
+
+  h4 {
+    @apply text-xl;
   }
 
   ul {
@@ -857,6 +857,9 @@ body {
 
   ol {
     @apply list-decimal pl-5;
+  }
+  a {
+    @apply text-blue-500 underline; /* Apply blue color and underline */
   }
 }
 
