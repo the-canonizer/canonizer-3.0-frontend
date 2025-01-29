@@ -174,7 +174,7 @@ const CampStatementCard = ({ loadingIndicator }) => {
     );
   };
 
-  console.log('tree----',tree)
+  console.log("tree----", tree);
 
   return (
     <CommonCard

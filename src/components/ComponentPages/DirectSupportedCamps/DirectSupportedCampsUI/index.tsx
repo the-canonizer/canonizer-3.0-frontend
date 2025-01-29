@@ -384,11 +384,12 @@ export default function DirectSupportedCampsUI({
           id="direct_supported_camp_reset_btn"
         >
           <div className="mr-2" id="direct_supported_camp_reset_btn_1">
-            <PrimaryButton onClick={() => {
-              setSearchText("")
-              setPage(1);
-            }
-            }>
+            <PrimaryButton
+              onClick={() => {
+                setSearchText("");
+                setPage(1);
+              }}
+            >
               Reset
             </PrimaryButton>
           </div>
@@ -617,11 +618,12 @@ export default function DirectSupportedCampsUI({
                   className="lg:w-auto w-full flex justify-end gap-2.5 items-center"
                   id="direct_supported_camp_search_rest_btn"
                 >
-                  <PrimaryButton onClick={() => {
-                    setSearchText("")
-                    setPage(1);
-                  }
-                  }>
+                  <PrimaryButton
+                    onClick={() => {
+                      setSearchText("");
+                      setPage(1);
+                    }}
+                  >
                     Reset
                   </PrimaryButton>
                   <Input

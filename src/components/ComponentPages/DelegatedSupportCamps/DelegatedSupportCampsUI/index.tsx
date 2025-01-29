@@ -37,31 +37,34 @@ export default function DelegatedSupportCampsUI({
   total,
   setPage,
   searchText,
-  setSearchText
+  setSearchText,
 }: any) {
   const [displayList, setDisplayList] = useState([]);
   const limit = delegatedSupportCampsList?.length;
-  
+
   useEffect(() => {
-    if (delegatedSupportCampsList) 
-        setDisplayList(delegatedSupportCampsList);
-    }, [delegatedSupportCampsList]);
+    if (delegatedSupportCampsList) setDisplayList(delegatedSupportCampsList);
+  }, [delegatedSupportCampsList]);
 
-    const pageChange = (pageNumber) => {
-      setPage(pageNumber);
-    };
+  const pageChange = (pageNumber) => {
+    setPage(pageNumber);
+  };
 
-    const searchPageChange = (pageNumber) => {
-      setPage(pageNumber);
-    };
+  const searchPageChange = (pageNumber) => {
+    setPage(pageNumber);
+  };
 
   const renderResetButton = (isMobile = false) => (
     <PrimaryButton
       onClick={() => {
-        setSearchText('');
+        setSearchText("");
         setPage(1);
       }}
-      id={isMobile ? 'delagate_supported_camp_mob_btn_reset' : 'delegated_supported_camp_reset_btn'}
+      id={
+        isMobile
+          ? "delagate_supported_camp_mob_btn_reset"
+          : "delegated_supported_camp_reset_btn"
+      }
     >
       Reset
     </PrimaryButton>
@@ -69,14 +72,22 @@ export default function DelegatedSupportCampsUI({
 
   const renderSearchInput = (isMobile = false) => (
     <Input
-      id={isMobile ? 'delagate_supported_camp_mob_search_input' : 'delegated_supported_camp_search_input'}
-      suffix={<Image src="/images/search-icon.svg" width={15} height={15} alt="" />}
+      id={
+        isMobile
+          ? "delagate_supported_camp_mob_search_input"
+          : "delegated_supported_camp_search_input"
+      }
+      suffix={
+        <Image src="/images/search-icon.svg" width={15} height={15} alt="" />
+      }
       data-testid="settingSearch"
       value={searchText}
       placeholder="Search via topic name"
       type="text"
       name="search"
-      className={`!h-10 rounded-lg border border-canGrey2 text-sm font-normal ${isMobile ? 'lg:w-auto w-full' : 'w-full'}`}
+      className={`!h-10 rounded-lg border border-canGrey2 text-sm font-normal ${
+        isMobile ? "lg:w-auto w-full" : "w-full"
+      }`}
       onChange={(e) => {
         setSearchText(e.target.value);
         setPage(1);
@@ -92,7 +103,6 @@ export default function DelegatedSupportCampsUI({
       render: (_, _d, idx) => {
         return (
           <span className="text-sm" id="direct_supported_camp_serial_number">
-            
             {(page - 1) * perPage + idx + 1}
           </span>
         );
@@ -258,7 +268,10 @@ export default function DelegatedSupportCampsUI({
 
   return (
     <div>
-      <div className="hidden lg:flex w-full [&_#delegated_supported_camp_loader_section>div]:!w-full" id="delegated_supported_camp_loader_section">
+      <div
+        className="hidden lg:flex w-full [&_#delegated_supported_camp_loader_section>div]:!w-full"
+        id="delegated_supported_camp_loader_section"
+      >
         {delegateSupportedSkeleton ? (
           <div className="w-full">
             <CustomSkelton
@@ -271,20 +284,31 @@ export default function DelegatedSupportCampsUI({
           </div>
         ) : (
           <div className="w-full" id="delegated_supported_camp_upper_heading_1">
-            <div className="flex lg:flex-row flex-col justify-between items-center mb-5 lg:gap-0 gap-2.5" id="delegated_supported_camp_upper_heading_2">
-              <div className="w-full" id="delegated_supported_camp_upper_heading_3">
-                <h3 className="text-sm font-medium text-canBlack" id="delegated_supported_camp_upper_heading_text">
+            <div
+              className="flex lg:flex-row flex-col justify-between items-center mb-5 lg:gap-0 gap-2.5"
+              id="delegated_supported_camp_upper_heading_2"
+            >
+              <div
+                className="w-full"
+                id="delegated_supported_camp_upper_heading_3"
+              >
+                <h3
+                  className="text-sm font-medium text-canBlack"
+                  id="delegated_supported_camp_upper_heading_text"
+                >
                   DELEGATED SUPPORTED CAMPS
                 </h3>
               </div>
-              <div className="w-full flex justify-end gap-2.5 items-center" id="delegated_supported_camp_reset_btn">
+              <div
+                className="w-full flex justify-end gap-2.5 items-center"
+                id="delegated_supported_camp_reset_btn"
+              >
                 {renderResetButton()}
                 {renderSearchInput()}
               </div>
             </div>
 
-            {displayList &&
-            displayList.length > 0 ? (
+            {displayList && displayList.length > 0 ? (
               <>
                 <Table
                   columns={columns}
@@ -490,8 +514,10 @@ export default function DelegatedSupportCampsUI({
         </Modal>
       </div>
 
-{/* Mobile Device */}
-      <div className="lg:hidden flex w-full [&_.ant-typography]:!m-0 [&_.ant-card-head-wrapper]:!gap-2" id="delagate_supported_camp_mob_btn_section"
+      {/* Mobile Device */}
+      <div
+        className="lg:hidden flex w-full [&_.ant-typography]:!m-0 [&_.ant-card-head-wrapper]:!gap-2"
+        id="delagate_supported_camp_mob_btn_section"
       >
         {delegateSupportedSkeleton ? (
           <div className="w-full">
@@ -504,16 +530,27 @@ export default function DelegatedSupportCampsUI({
             />
           </div>
         ) : (
-          <div className="w-full" id="delagate_supported_camp_mob_btn_section_1" >
-            <div className="w-full flex justify-end mb-5" id="delagate_supported_camp_mob_btn_section_2">
-              <div className="mr-2" id="delagate_supported_camp_mob_btn_section_reset" >
+          <div
+            className="w-full"
+            id="delagate_supported_camp_mob_btn_section_1"
+          >
+            <div
+              className="w-full flex justify-end mb-5"
+              id="delagate_supported_camp_mob_btn_section_2"
+            >
+              <div
+                className="mr-2"
+                id="delagate_supported_camp_mob_btn_section_reset"
+              >
                 {renderResetButton(true)}
               </div>
-                {renderSearchInput(true)}
+              {renderSearchInput(true)}
             </div>
             {displayList && displayList.length > 0
               ? displayList.map((data, i) => (
-                  <div id="delagate_supported_camp_mob_card_section" key={data.topic_num}
+                  <div
+                    id="delagate_supported_camp_mob_card_section"
+                    key={data.topic_num}
                     className="!border !border-canGrey2 rounded-lg mb-5 last:mb-0 px-2.5"
                   >
                     <Card
@@ -605,8 +642,7 @@ export default function DelegatedSupportCampsUI({
                     </Card>
                   </div>
                 ))
-              : showEmpty("No Data Found")
-            }
+              : showEmpty("No Data Found")}
             <Pagination
               hideOnSinglePage={true}
               total={total}

@@ -240,7 +240,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
       dispatch(setClearAlgoFromRefineFilter(router?.query?.algo));
     }
   }, [openDrawer]);
-  
+
   useEffect(() => {
     if (!didMount.current) {
       let newObject = removeEmptyValues({
@@ -525,7 +525,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
       dispatch(setClearScoreFromRefineFilter(value));
     }
   };
-  
+
   const handleChangeAlgo = (algo) => {
     dispatch(setClearAlgoFromRefineFilter(algo));
 

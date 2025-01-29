@@ -9,14 +9,14 @@ export const getGravatarImage = async (email) => {
   try {
     const res = await getGravatarPicApi(email);
     if (res?.data?.status_code === 200) {
-      if (res?.data.data!==null) {
+      if (res?.data.data !== null) {
         return `data:image/jpeg;base64,${res.data.data.image_data}`;
       }
       return false;
     }
     return false; // If status_code is not 200, return null
   } catch (error) {
-      console.error("Error fetching Gravatar:", error);
+    console.error("Error fetching Gravatar:", error);
     return false;
   }
 };

@@ -97,7 +97,7 @@ const ProfileInfo = () => {
 
   //on update profile click
   const onFinish = async (values: any) => {
-    setIsLoading(true)
+    setIsLoading(true);
     let birthday = values.birthday?._d;
     let code = values.postal_code;
     setDisableButton(true);
@@ -154,7 +154,7 @@ const ProfileInfo = () => {
       setZipCode(false);
       dispatch(setZipCodeForProfileInfo(false));
     }
-    setIsLoading(false)
+    setIsLoading(false);
   };
 
   const { isUserAuthenticated } = isAuth();
@@ -301,7 +301,7 @@ const ProfileInfo = () => {
   };
 
   async function fetchUserProfileInfo() {
-    setIsLoading(true)
+    setIsLoading(true);
     let res = await GetUserProfileInfo();
     if (res != undefined) {
       if (res.data != undefined) {
@@ -365,7 +365,7 @@ const ProfileInfo = () => {
         dispatch(setUpdateAddressForProfileInfo(updateAddress));
       }
     }
-    setIsLoading(false)
+    setIsLoading(false);
   }
 
   useEffect(() => {

@@ -25,7 +25,7 @@ export const searchSlice = createSlice({
       camp_total: 0,
       statement_total: 0,
       nickname_total: 0,
-      search_ids:{}
+      search_ids: {},
     } as any,
     searchCountForMetaData: {
       topic_total: 0,
@@ -34,7 +34,7 @@ export const searchSlice = createSlice({
       nickname_total: 0,
     },
 
-    storeOnPressEnterSearchCountForMetaData:{
+    storeOnPressEnterSearchCountForMetaData: {
       topic_total: 0,
       camp_total: 0,
       statement_total: 0,
@@ -55,7 +55,7 @@ export const searchSlice = createSlice({
     selectedCampStatementFromAdvanceFilterAlgorithmRecords: 0,
     selectedCampFromAdvanceFilterAlgorithm: [],
     selectedStatementFromAdvanceFilterAlgorithm: [],
-    detectPressEnterInSearch:false
+    detectPressEnterInSearch: false,
   },
   reducers: {
     setSearchData: (state, action) => {
@@ -85,7 +85,7 @@ export const searchSlice = createSlice({
         camp_total: action?.payload?.camp_total,
         statement_total: action?.payload?.statement_total,
         nickname_total: action?.payload?.nickname_total,
-        search_ids:action?.payload?.search_ids,
+        search_ids: action?.payload?.search_ids,
       };
     },
     setSearchCountForMetaData: (state, action) => {
@@ -137,8 +137,12 @@ export const searchSlice = createSlice({
     setSelectedCampFromAdvanceFilterAlgorithmRecords: (state, action) => {
       state.selectedCampFromAdvanceFilterAlgorithmRecords = action.payload;
     },
-    setSelectedCampStatementFromAdvanceFilterAlgorithmRecords: (state, action) => {
-      state.selectedCampStatementFromAdvanceFilterAlgorithmRecords = action.payload;
+    setSelectedCampStatementFromAdvanceFilterAlgorithmRecords: (
+      state,
+      action
+    ) => {
+      state.selectedCampStatementFromAdvanceFilterAlgorithmRecords =
+        action.payload;
     },
     setSelectedCampFromAdvanceFilterAlgorithm: (state, action) => {
       state.selectedCampFromAdvanceFilterAlgorithm = action.payload;
@@ -172,7 +176,7 @@ export const {
   setSelectedCampStatementFromAdvanceFilterAlgorithmRecords,
   setSearchCountForMetaData,
   setDetectPressEnterInSearch,
-  setStoreOnPressEnterSearchCountForMetaData
+  setStoreOnPressEnterSearchCountForMetaData,
 } = searchSlice.actions;
 
 export default searchSlice.reducer;
