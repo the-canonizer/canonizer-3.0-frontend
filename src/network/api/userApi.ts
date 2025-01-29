@@ -46,6 +46,7 @@ export const createNewToken = async (req, res) => {
       // localStorage.setItem("auth_token", token?.data?.access_token);
     }
     store.dispatch(setAuthToken(token?.data?.access_token));
+    store.dispatch(logoutUser());
 
     return token.data?.access_token;
   } catch (error) {
@@ -78,34 +79,6 @@ export const createToken = async (req, res, ssg) => {
     }
   }
 
-  // try {
-  //   let isValidToken;
-  //   let token;
-  //   if (!isServer()) {
-  //     if ((getCookies() as any)?.loginToken) {
-  //       isValidToken = isTokenValid((getCookies() as any)?.loginToken);
-  //     }
-  //     if (isValidToken) {
-  //       return (getCookies() as any)?.loginToken;
-  //     } else {
-  //       token = await NetworkCall.fetch(UserRequest.createToken());
-  //       "---> 2 client side new token created :-------------->>>> " +
-  //         token.data?.access_token;
-  //     }
-  //   }
-  //   if (!isServer()) {
-  //     document.cookie =
-  //       "loginToken=" + token?.data?.access_token + getCookiesExpirationTime();
-
-  //     // localStorage.setItem("auth_token", token?.data?.access_token);
-  //   }
-
-  //   store.dispatch(setAuthToken(token?.data?.access_token));
-
-  //   return token.data?.access_token;
-  // } catch (error) {
-  //   handleError(error);
-  // }
 };
 
 export const login = async (email: string, password: string) => {
@@ -147,6 +120,8 @@ export const logout = async (error = "", status = null, count: number = 1) => {
     if (error) {
       document.cookie =
         "loginToken=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
+      document.cookie =
+        "isUserAuthenticated=" + false + getCookiesExpirationTime();
       store.dispatch(logoutUser());
       store.dispatch(removeAuthToken());
       store.dispatch(updateStatus(status));
@@ -175,6 +150,11 @@ export const logout = async (error = "", status = null, count: number = 1) => {
 
       count === 1 &&
         message.error("Your session has expired. Please log in again!");
+
+      if (typeof window !== "undefined") {
+        window.location.href =
+          window.location.protocol + "//" + window.location.host + "/login";
+      }
 
       return true;
     }
