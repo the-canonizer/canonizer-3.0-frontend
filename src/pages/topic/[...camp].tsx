@@ -27,7 +27,7 @@ import TopicDetails from "src/components/ComponentPages/TopicDetails";
 import { setCurrentDate } from "src/store/slices/filtersSlice";
 import DataNotFound from "src/components/ComponentPages/DataNotFound/dataNotFound";
 import { createToken } from "src/network/api/userApi";
-import StatementPreviewModal from "components/ComponentPages/TopicDetails/PreviewStatementModal";
+// import StatementPreviewModal from "components/ComponentPages/TopicDetails/PreviewStatementModal";
 
 const TopicDetailsPage = ({
   current_date,
@@ -76,7 +76,7 @@ const TopicDetailsPage = ({
         <TopicDetails serverSideCall={serverSideCall} />
       )}
 
-      <StatementPreviewModal />
+      {/* <StatementPreviewModal /> */}
     </Fragment>
   );
 };

@@ -125,7 +125,7 @@ const HeaderSearch = ({ className = "" }: any) => {
   useEffect(() => {
     const { q } = router.query; // Extract the query parameter from the URL
 
-    if (typeof q === "string" && router?.pathname== "/search") {
+    if (typeof q === "string" && router?.pathname == "/search") {
       // Check if q is a string
       // If 'q' is present, format and set the search value, then call the search function
       const formattedSearchValue = q.split("+").join(" ").replace(/%20/g, " ");
@@ -331,10 +331,9 @@ const HeaderSearch = ({ className = "" }: any) => {
         dispatch(setSearchDataAll(response?.data?.data));
       }
     }
-    setTimeout(()=>{
+    setTimeout(() => {
       dispatch(setSearchLoadingAction(false));
-
-      },100)
+    }, 100);
   };
 
   const getGlobalSearchCanonizer = async (queryString, onPresEnter) => {
@@ -352,9 +351,9 @@ const HeaderSearch = ({ className = "" }: any) => {
         dispatch(
           setStoreOnPressEnterSearchCountForMetaData(response?.data?.meta_data)
         );
-        setTimeout(()=>{
-        dispatch(setSearchLoadingAction(false));
-        },100)
+        setTimeout(() => {
+          dispatch(setSearchLoadingAction(false));
+        }, 100);
       }
       setLoadingSekelton(false);
     }
@@ -651,9 +650,9 @@ const TopicItems = ({ searchTopics, searchValue }) => {
                           width={18}
                           height={20}
                         />
-                          <span className="text-canBlue text-base font-inter font-normal cursor-default lg:font-medium">
-                            {item?.namespace}
-                          </span>
+                        <span className="text-canBlue text-base font-inter font-normal cursor-default lg:font-medium">
+                          {item?.namespace}
+                        </span>
                       </Typography.Paragraph>
                     </Popover>
                   </div>
