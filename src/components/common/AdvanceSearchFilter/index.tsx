@@ -573,17 +573,16 @@ export default function AdvanceFilter() {
   useEffect(() => {
     const fetchData = async () => {
       const isReviewOrByDate = asof === "review" || asof === "bydate";
-      const isFilterApplied = filterByScore !== 0 || algorithm !== "blind_popularity";
   
-      if (router?.pathname === "/search/topic" && (isReviewOrByDate || isFilterApplied)) {
+      if (router?.pathname === "/search/topic" && (isReviewOrByDate)) {
         dispatch(setSearchLoadingAction(true));
         await getTopicsApiCallWithReqBody();
         dispatch(setSearchLoadingAction(false));
-      } else if (router?.pathname === "/search/camp" && (isReviewOrByDate || isFilterApplied)) {
+      } else if (router?.pathname === "/search/camp" && (isReviewOrByDate)) {
         dispatch(setSearchLoadingAction(true));
         await getCampsApiCallWithReqBody();
         dispatch(setSearchLoadingAction(false));
-      } else if (router?.pathname === "/search/camp_statement" && (isReviewOrByDate || isFilterApplied)) {
+      } else if (router?.pathname === "/search/camp_statement" && (isReviewOrByDate)) {
         dispatch(setSearchLoadingAction(true));
         await getStatementApiCallWithReqBody();
         dispatch(setSearchLoadingAction(false));
