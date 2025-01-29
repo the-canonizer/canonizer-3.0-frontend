@@ -459,5 +459,5 @@ export const defaultNicknameData = (nickNameList) => {
 };
 
 export const commaSeparated = (item, isLastIndex) => {
-  return item + (isLastIndex ? "" : ", ") 
+  return item + (isLastIndex ? "" : ", ");
 };

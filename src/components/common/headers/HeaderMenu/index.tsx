@@ -149,13 +149,17 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
 
   useEffect(() => {
     const fetchGravatarImage = async () => {
-      if (isUserAuthenticated && loggedInUser && !loggedInUser?.profile_picture){
+      if (
+        isUserAuthenticated &&
+        loggedInUser &&
+        !loggedInUser?.profile_picture
+      ) {
         setLoadingImage(true);
         const res = await getGravatarImage(loggedInUser?.email);
         if (res) {
-          setIsGravatarImage(res);  // Set Gravatar image if found
+          setIsGravatarImage(res); // Set Gravatar image if found
         } else {
-          setIsGravatarImage(false);  // Fallback to initials if Gravatar not found
+          setIsGravatarImage(false); // Fallback to initials if Gravatar not found
         }
         setLoadingImage(false);
       }

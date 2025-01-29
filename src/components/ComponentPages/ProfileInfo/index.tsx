@@ -29,6 +29,7 @@ import {
 } from "src/store/slices/campDetailSlice";
 import { RootState } from "src/store";
 import ProfileInfoForm from "../Form/ProfileInfoForm";
+import CustomSpinner from "components/shared/CustomSpinner";
 
 type UpdateAddress = {
   city?: string;
@@ -64,6 +65,7 @@ const ProfileInfo = () => {
   const [viewEmail, setViewEmail] = useState("");
   const [userProfileData, setUserProfileData] = useState("");
   const [getAddress1, setgetAddress1] = useState("");
+  const [isLoadin, setIsLoading] = useState(false);
 
   const { addForProfileInfo, zipCodeForProfileInfo } = useSelector(
     (state: RootState) => ({
@@ -95,6 +97,7 @@ const ProfileInfo = () => {
 
   //on update profile click
   const onFinish = async (values: any) => {
+    setIsLoading(true);
     let birthday = values.birthday?._d;
     let code = values.postal_code;
     setDisableButton(true);
@@ -151,6 +154,7 @@ const ProfileInfo = () => {
       setZipCode(false);
       dispatch(setZipCodeForProfileInfo(false));
     }
+    setIsLoading(false);
   };
 
   const { isUserAuthenticated } = isAuth();
@@ -228,8 +232,9 @@ const ProfileInfo = () => {
     const results = await geocodeByAddress(address);
     const [place] = await geocodeByPlaceId(placeId);
     const { long_name: postalCode = "" } =
-    place.address_components.find((c) => c.types.includes("postal_code")) || {};
-    
+      place.address_components.find((c) => c.types.includes("postal_code")) ||
+      {};
+
     let city = "",
       country = "",
       state = "",
@@ -272,12 +277,15 @@ const ProfileInfo = () => {
       // postal_code: updateAddress?.postal_code
     };
     if (postalCode) updateAdd.postal_code = postalCode;
-      setUpdateAddress(updateAdd);
-      dispatch(setUpdateAddressForProfileInfo(updateAdd));
+    setUpdateAddress(updateAdd);
+    dispatch(setUpdateAddressForProfileInfo(updateAdd));
   };
 
   const getAddress = (type, address, component) => {
-    if ( type.match( /^political|^neighborhood$|^sublocality_level_2$|^sublocality_level_1$/ )
+    if (
+      type.match(
+        /^political|^neighborhood$|^sublocality_level_2$|^sublocality_level_1$/
+      )
     ) {
       return address + ", " + component.long_name;
     } else {
@@ -293,6 +301,7 @@ const ProfileInfo = () => {
   };
 
   async function fetchUserProfileInfo() {
+    setIsLoading(true);
     let res = await GetUserProfileInfo();
     if (res != undefined) {
       if (res.data != undefined) {
@@ -320,9 +329,7 @@ const ProfileInfo = () => {
         form.setFieldsValue(profileData);
         setPrivateFlags(profileData.private_flags);
         setPrivateList(
-          profileData.private_flags
-            ? profileData.private_flags.split(",")
-            : ""
+          profileData.private_flags ? profileData.private_flags.split(",") : ""
         );
         dispatch(
           setPrivateListForProfileInfo(
@@ -358,6 +365,7 @@ const ProfileInfo = () => {
         dispatch(setUpdateAddressForProfileInfo(updateAddress));
       }
     }
+    setIsLoading(false);
   }
 
   useEffect(() => {
@@ -396,34 +404,36 @@ const ProfileInfo = () => {
   }, [isUserAuthenticated]);
 
   return (
-    <ProfileInfoForm
-      form={form}
-      onFinish={onFinish}
-      handleselectAfter={handleselectAfter}
-      privateFlags={privateFlags}
-      disableButton={disableButton}
-      postalCodeDisable={postalCodeDisable}
-      viewEmail={viewEmail}
-      userProfileData={userProfileData}
-      handleAddressChange={handleAddressChange}
-      handleAddressSelect={handleAddressSelect}
-      address={address}
-      mobileCarrier={mobileCarrier}
-      formVerify={formVerify}
-      isOTPModalVisible={isOTPModalVisible}
-      setIsOTPModalVisible={setIsOTPModalVisible}
-      handleOTPCancel={handleOTPCancel}
-      otp={otp}
-      handleChangeOTP={handleChangeOTP}
-      toggleVerifyButton={toggleVerifyButton}
-      handleMobileNumberChange={handleMobileNumberChange}
-      userProfileSkeletonV={userProfileSkeleton}
-      setOTP={setOTP}
-      setToggleVerifyButton={setToggleVerifyButton}
-      setAddress={setAddress}
-      getAddress1={getAddress1}
-      setDisableButton={setDisableButton}
-    />
+    <CustomSpinner key="create-thread-spinner" spinning={isLoadin}>
+      <ProfileInfoForm
+        form={form}
+        onFinish={onFinish}
+        handleselectAfter={handleselectAfter}
+        privateFlags={privateFlags}
+        disableButton={disableButton}
+        postalCodeDisable={postalCodeDisable}
+        viewEmail={viewEmail}
+        userProfileData={userProfileData}
+        handleAddressChange={handleAddressChange}
+        handleAddressSelect={handleAddressSelect}
+        address={address}
+        mobileCarrier={mobileCarrier}
+        formVerify={formVerify}
+        isOTPModalVisible={isOTPModalVisible}
+        setIsOTPModalVisible={setIsOTPModalVisible}
+        handleOTPCancel={handleOTPCancel}
+        otp={otp}
+        handleChangeOTP={handleChangeOTP}
+        toggleVerifyButton={toggleVerifyButton}
+        handleMobileNumberChange={handleMobileNumberChange}
+        userProfileSkeletonV={userProfileSkeleton}
+        setOTP={setOTP}
+        setToggleVerifyButton={setToggleVerifyButton}
+        setAddress={setAddress}
+        getAddress1={getAddress1}
+        setDisableButton={setDisableButton}
+      />
+    </CustomSpinner>
   );
 };
 

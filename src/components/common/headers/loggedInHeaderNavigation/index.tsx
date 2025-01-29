@@ -132,16 +132,20 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
   useEffect(() => {
     setLoggedUser(loggedInUser);
     const fetchGravatarImage = async () => {
-      if (isUserAuthenticated && loggedInUser && !loggedInUser?.profile_picture) {
+      if (
+        isUserAuthenticated &&
+        loggedInUser &&
+        !loggedInUser?.profile_picture
+      ) {
         setLoadingImage(true);
         const res = await getGravatarImage(loggedInUser?.email);
         if (res) {
-          setIsGravatarImage(res);  // Set Gravatar image if found
+          setIsGravatarImage(res); // Set Gravatar image if found
         } else {
-          setIsGravatarImage(false);  // Fallback to initials if Gravatar not found
+          setIsGravatarImage(false); // Fallback to initials if Gravatar not found
         }
-          setLoadingImage(false);
-        }
+        setLoadingImage(false);
+      }
     };
     fetchGravatarImage();
   }, [loggedInUser, isUserAuthenticated]);
@@ -185,7 +189,10 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
         ) : null}
       </div>
 
-      <div className={`${styles.right} ${!isLoginPage ? styles.onlogin : ""}`} key="right-area">
+      <div
+        className={`${styles.right} ${!isLoginPage ? styles.onlogin : ""}`}
+        key="right-area"
+      >
         {!isLoginPage ? (
           <ProfileInfoTab
             isGravatarImage={isGravatarImage}

@@ -20,8 +20,8 @@ import { useRouter } from "next/router";
 import styles from "./topicListFilter.module.scss";
 
 import { RootState } from "src/store";
-import { setIsReviewCanonizedTopics } from "src/store/slices/filtersSlice";
 import {
+  setIsReviewCanonizedTopics,
   setViewThisVersion,
   setFilterCanonizedTopics,
 } from "src/store/slices/filtersSlice";
@@ -38,43 +38,39 @@ import {
 import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 import PrimaryButton from "components/shared/Buttons/PrimariButton";
 import RefineIcon from "components/ComponentPages/TopicDetails/CampInfoBar/refineIcon";
-import { setOpenConsensusTreePopup } from "src/store/slices/hotTopicSlice";
+// import { setOpenConsensusTreePopup } from "src/store/slices/hotTopicSlice";
 import useAuthentication from "src/hooks/isUserAuthenticated";
 
 const { Title, Text, Paragraph } = Typography;
 const { Option } = Select;
 
 const infoContent = (
-  <>
-    <div className={styles.infoText}>
-      <Title level={5}>Score Value Filter </Title>
-      <p>
-        This option filters down the camp list with a score value greater than
-        the entered value. By default, the score value filter is 0, displaying
-        all camps.
-      </p>
-    </div>
-  </>
+  <div className={styles.infoText}>
+    <Title level={5}>Score Value Filter </Title>
+    <p>
+      This option filters down the camp list with a score value greater than the
+      entered value. By default, the score value filter is 0, displaying all
+      camps.
+    </p>
+  </div>
 );
 
 const asContent = (
-  <>
-    <div className={styles.asfoText}>
-      <Title level={5}>Include review</Title>
-      <Paragraph>
-        In addition to the published camps, this option shows camps in Review.
-      </Paragraph>
-      <Title level={5}>Default</Title>
-      <Paragraph>
-        This option lists down the latest (current date) version of camps.
-      </Paragraph>
-      <Title level={5}>As of date</Title>
-      <Paragraph>
-        This option shows the historical view of camps according to the selected
-        date.
-      </Paragraph>
-    </div>
-  </>
+  <div className={styles.asfoText}>
+    <Title level={5}>Include review</Title>
+    <Paragraph>
+      In addition to the published camps, this option shows camps in Review.
+    </Paragraph>
+    <Title level={5}>Default</Title>
+    <Paragraph>
+      This option lists down the latest (current date) version of camps.
+    </Paragraph>
+    <Title level={5}>As of date</Title>
+    <Paragraph>
+      This option shows the historical view of camps according to the selected
+      date.
+    </Paragraph>
+  </div>
 );
 
 const FilterWithTree = ({ loadingIndicator }: any) => {
@@ -244,6 +240,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
       dispatch(setClearAlgoFromRefineFilter(router?.query?.algo));
     }
   }, [openDrawer]);
+
   useEffect(() => {
     if (!didMount.current) {
       let newObject = removeEmptyValues({
@@ -528,6 +525,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
       dispatch(setClearScoreFromRefineFilter(value));
     }
   };
+
   const handleChangeAlgo = (algo) => {
     dispatch(setClearAlgoFromRefineFilter(algo));
 

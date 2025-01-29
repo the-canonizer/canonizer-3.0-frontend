@@ -21,7 +21,8 @@ const DelegatedSupportCamps = ({ search }: any) => {
   const [statusFlag, setStatusFlag] = useState(true);
   const [viewMoreModalVisible, setViewmoreModalVisible] = useState(false);
   const [viewMoreDataValue, setviewMoreDataValue] = useState([]);
-  const [delegateSupportedSkeleton, setDelegateSupportedSkeleton] = useState(false);
+  const [delegateSupportedSkeleton, setDelegateSupportedSkeleton] =
+    useState(false);
   const [page, setPage] = useState(1);
   const [perPage] = useState(10);
   const [total, setTotal] = useState(0);
@@ -71,23 +72,21 @@ const DelegatedSupportCamps = ({ search }: any) => {
     }
   };
 
+  const fetchDelegatedSupportCampsList = async () => {
+    setDelegateSupportedSkeleton(true);
+    const res = await getDelegatedSupportCampsList(page, perPage, searchText);
+    if (res?.status_code === 200) {
+      const resData = res?.data;
 
-
-    const fetchDelegatedSupportCampsList = async () => {
-      setDelegateSupportedSkeleton(true);
-      const res = await getDelegatedSupportCampsList(page, perPage, searchText);
-      if (res?.status_code === 200) {
-        const resData = res?.data;
-  
-        if (resData?.items?.length === 0) {
-          setStatusFlag(false);
-        }
-  
-        setDelegatedSupportCampsList(resData?.items);
-        setTotal(resData?.total);
+      if (resData?.items?.length === 0) {
+        setStatusFlag(false);
       }
-      setDelegateSupportedSkeleton(false);
-    };
+
+      setDelegatedSupportCampsList(resData?.items);
+      setTotal(resData?.total);
+    }
+    setDelegateSupportedSkeleton(false);
+  };
 
   // const fetchDelegatedSupportCampsList = async () => {
   //   setDelegateSupportedSkeleton(true);
@@ -105,22 +104,22 @@ const DelegatedSupportCamps = ({ search }: any) => {
 
   //onLoad
 
-    //onLoad
-    useEffect(() => {
-      const throttledFetch = debounce(() => {
-        fetchDelegatedSupportCampsList();
-      }, 900);
-  
-      if (searchText) {
-        throttledFetch();
-      } else {
-        fetchDelegatedSupportCampsList();
-      }
-  
-      // Cleanup
-      return () => throttledFetch.cancel();
-    }, [page, searchText]);
-  
+  //onLoad
+  useEffect(() => {
+    const throttledFetch = debounce(() => {
+      fetchDelegatedSupportCampsList();
+    }, 900);
+
+    if (searchText) {
+      throttledFetch();
+    } else {
+      fetchDelegatedSupportCampsList();
+    }
+
+    // Cleanup
+    return () => throttledFetch.cancel();
+  }, [page, searchText]);
+
   // useEffect(() => {
   //   fetchDelegatedSupportCampsList();
   // }, []);

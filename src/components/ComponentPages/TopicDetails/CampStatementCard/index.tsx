@@ -6,6 +6,8 @@ import {
   FullscreenExitOutlined,
   FullscreenOutlined,
 } from "@ant-design/icons";
+import { useState } from "react";
+import { Button } from "antd";
 
 import styles from "../topicDetails.module.scss";
 
@@ -21,17 +23,16 @@ import PrimaryButton from "components/shared/Buttons/PrimariButton";
 import CommonCard from "components/shared/Card";
 import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 import SectionHeading from "components/ComponentPages/Home/FeaturedTopic/sectionsHeading";
-import { useState } from "react";
-import { Button } from "antd";
 
 const CampStatementCard = ({ loadingIndicator }) => {
   const router = useRouter();
 
-  const { campRecord, campStatement, tree } = useSelector(
+  const { campRecord, campStatement, tree, haveStatementPreview } = useSelector(
     (state: RootState) => ({
       campStatement: state?.topicDetails?.campStatement,
       campRecord: state?.topicDetails?.currentCampRecord,
       tree: state?.topicDetails?.tree && state?.topicDetails?.tree[0],
+      haveStatementPreview: state?.topic?.haveStatementPreview,
     })
   );
   const [fullScreen, setFullScreen] = useState(false);
@@ -173,6 +174,8 @@ const CampStatementCard = ({ loadingIndicator }) => {
     );
   };
 
+  console.log("tree----", tree);
+
   return (
     <CommonCard
       style={{
@@ -202,7 +205,9 @@ const CampStatementCard = ({ loadingIndicator }) => {
             <div className="camp-agreement-header flex items-center mb-2.5 lg:mb-1 gap-2 justify-between">
               <div className="flex gap-2.5 items-center">
                 <SectionHeading
-                  title={campRecord?.camp_name}
+                  title={
+                    haveStatementPreview?.review_title || campRecord?.camp_name
+                  }
                   infoContent=""
                   icon={null}
                   className="text-sm lg:text-base normal-case text-canBlack text-left font-semibold !mb-0"
@@ -226,9 +231,7 @@ const CampStatementCard = ({ loadingIndicator }) => {
                 ) : null}
                 <Button
                   className="border-none bg-transparent hover:bg-transparent shadow-none focus:!bg-transparent"
-                  onClick={() => {
-                    setFullScreen(!fullScreen);
-                  }}
+                  onClick={() => setFullScreen(!fullScreen)}
                 >
                   {fullScreen ? (
                     <FullscreenExitOutlined style={{ fontSize: "20px" }} />

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { DownOutlined } from "@ant-design/icons";
+import moment from "moment";
 
 import styles from "../topicDetails.module.scss";
 
@@ -14,6 +15,7 @@ import { setCurrentCamp } from "src/store/slices/filtersSlice";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
 import ScoreTag from "components/ComponentPages/Home/TrandingTopic/scoreTag";
 import SecondaryButton from "components/shared/Buttons/SecondaryButton";
+import { getCanonizedCampStatementApi } from "src/network/api/campDetailApi";
 import { setStatementPreview } from "src/store/slices/topicSlice";
 
 const { TreeNode } = Tree;
@@ -36,6 +38,9 @@ const CampTree = ({
     is_camp_archive_checked,
     campRecord,
     treeExpandValue,
+    asof,
+    asofdate,
+    haveStatementPreview,
   } = useSelector((state: RootState) => ({
     tree: state?.topicDetails?.tree,
     filterByScore: state.filters?.filterObject?.filterByScore,
@@ -47,6 +52,9 @@ const CampTree = ({
     is_camp_archive_checked: state?.utils?.archived_checkbox,
     campRecord: state?.topicDetails?.currentCampRecord,
     treeExpandValue: state?.filters?.treeExpandValue,
+    asof: state?.filters?.filterObject?.asof,
+    asofdate: state.filters?.filterObject?.asofdate,
+    haveStatementPreview: state?.topic?.haveStatementPreview,
   }));
 
   let childExpandTree = [];
@@ -85,6 +93,22 @@ const CampTree = ({
     e?.stopPropagation();
 
     dispatch(setStatementPreview(item));
+
+    const reqBody = {
+      topic_num: +item?.topic_id,
+      camp_num: +item?.camp_id,
+      as_of: asof,
+      as_of_date:
+        asof == "default" || asof == "review"
+          ? Date.now() / 1000
+          : router?.query?.asofdate
+          ? moment
+              .utc(+router?.query?.asofdate * 1000)
+              .format("DD-MM-YYYY H:mm:ss")
+          : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
+    };
+
+    getCanonizedCampStatementApi(reqBody);
   };
 
   const showSelectedCamp = (data, select_camp, campExist) => {
@@ -469,6 +493,10 @@ const CampTree = ({
                             campRecord?.is_archive == 0
                               ? `!text-canGreen font-semibold text-sm`
                               : ""
+                          } ${
+                            haveStatementPreview?.camp_id === data[item].camp_id
+                              ? "font-bold"
+                              : ""
                           }`}
                         >
                           {data[item].is_archive == 1 ? (
@@ -508,7 +536,11 @@ const CampTree = ({
                       onClick={(e) =>
                         onTreePreviewStatementClick(e, data[item])
                       }
-                      className="!text-canBlue hover:!text-canHoverBlue !text-[12px] !font-semibold !bg-transparent !border-0 !p-0 !shadow-none ml-4 previewBTN opacity-0 invisible"
+                      className={`!text-canBlue hover:!text-canHoverBlue !text-[12px] !font-semibold !bg-transparent !border-0 !p-0 !shadow-none ml-4 previewBTN opacity-0 invisible ${
+                        haveStatementPreview?.camp_id === data[item].camp_id
+                          ? "!pointer-events-none !opacity-0 !invisible !cursor-default"
+                          : ""
+                      }`}
                     >
                       Preview Statement
                     </SecondaryButton>

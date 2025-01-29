@@ -70,7 +70,7 @@ export default function SearchSideBar() {
   const isCampPage = router?.pathname == "/search/camp";
 
   const campTotal =
-  router?.query?.q === ""
+    router?.query?.q === ""
       ? storeOnPressEnterSearchCountForMetaData?.camp_total
       : isReviewOrByDate && isCampPage
       ? selectedCampFromAdvanceFilterAlgorithmRecords
@@ -107,7 +107,7 @@ export default function SearchSideBar() {
                      router?.asPath.includes("/search?") ? "active" : "btn"
                    }`}
                   disabled={router?.pathname == "/search" ? true : false}
-                  onClick={()=>{
+                  onClick={() => {
                     dispatch(
                       setFilterCanonizedTopics({
                         asofdate: Date.now() / 1000,
@@ -303,9 +303,7 @@ export default function SearchSideBar() {
                     <span>
                       {" "}
                       &nbsp;(
-                      {
-                        storeOnPressEnterSearchCountForMetaData?.nickname_total}
-                      )
+                      {storeOnPressEnterSearchCountForMetaData?.nickname_total})
                     </span>
                   </a>
                 </Button>

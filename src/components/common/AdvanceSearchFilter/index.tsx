@@ -573,23 +573,25 @@ export default function AdvanceFilter() {
   useEffect(() => {
     const fetchData = async () => {
       const isReviewOrByDate = asof === "review" || asof === "bydate";
-      const isFilterApplied = filterByScore !== 0 || algorithm !== "blind_popularity";
-  
-      if (router?.pathname === "/search/topic" && (isReviewOrByDate || isFilterApplied)) {
+
+      if (router?.pathname === "/search/topic" && isReviewOrByDate) {
         dispatch(setSearchLoadingAction(true));
         await getTopicsApiCallWithReqBody();
         dispatch(setSearchLoadingAction(false));
-      } else if (router?.pathname === "/search/camp" && (isReviewOrByDate || isFilterApplied)) {
+      } else if (router?.pathname === "/search/camp" && isReviewOrByDate) {
         dispatch(setSearchLoadingAction(true));
         await getCampsApiCallWithReqBody();
         dispatch(setSearchLoadingAction(false));
-      } else if (router?.pathname === "/search/camp_statement" && (isReviewOrByDate || isFilterApplied)) {
+      } else if (
+        router?.pathname === "/search/camp_statement" &&
+        isReviewOrByDate
+      ) {
         dispatch(setSearchLoadingAction(true));
         await getStatementApiCallWithReqBody();
         dispatch(setSearchLoadingAction(false));
       }
     };
-  
+
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [asof, filterByScore, algorithm, asofdate, pageNumber]);
@@ -727,8 +729,8 @@ export default function AdvanceFilter() {
                       viewThisVersion
                     );
                     // getTopicsApiCallWithReqBody()
-                    dispatch(setPageNumber(1))
-                    dispatch(setDetectPressEnterInSearch(false))
+                    dispatch(setPageNumber(1));
+                    dispatch(setDetectPressEnterInSearch(false));
                   }}
                 >
                   Search include review
@@ -752,7 +754,7 @@ export default function AdvanceFilter() {
                       filterObject?.namespace_id,
                       viewThisVersion
                     );
-                    dispatch(setPageNumber(1))
+                    dispatch(setPageNumber(1));
                   }}
                 >
                   Default
@@ -764,8 +766,8 @@ export default function AdvanceFilter() {
                     dispatch(setViewThisVersion(false));
                     handleAsOfClick();
                     // getTopicsApiCallWithReqBody()
-                    dispatch(setPageNumber(1))
-                    dispatch(setDetectPressEnterInSearch(false))
+                    dispatch(setPageNumber(1));
+                    dispatch(setDetectPressEnterInSearch(false));
                   }}
                 >
                   Search historical
