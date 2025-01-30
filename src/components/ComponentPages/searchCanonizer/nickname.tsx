@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import SearchSideBar from "../../common/SearchSideBar";
 import styles from "./search.module.scss";
-import AdvanceFilter from "../../common/AdvanceSearchFilter";
+// import AdvanceFilter from "../../common/AdvanceSearchFilter";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "src/store";
 import Link from "next/link";
@@ -190,7 +190,7 @@ const NicknameSearch = () => {
             </h3>
           </div>
         </div>
-        <AdvanceFilter />
+        {/* <AdvanceFilter /> */}
       </div>
       <div
         className="flex lg:flex-row flex-col gap-10"
