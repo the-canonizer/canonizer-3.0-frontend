@@ -27,7 +27,7 @@ const TopicSearch = () => {
     asof,
     filterByScore,
     algorithm,
-    pageNumber
+    pageNumber,
   } = useSelector((state: RootState) => ({
     searchMetaData: state?.searchSlice?.searchMetaData,
     selectedTopicFromAdvanceFilterAlgorithm:
@@ -53,7 +53,7 @@ const TopicSearch = () => {
     setCurrentPage(pageNumber);
     dispatch(setPageNumber(pageNumber));
   };
- 
+
   const showEmpty = (msg) => {
     return <Empty description={msg} />;
   };

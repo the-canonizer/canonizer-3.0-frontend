@@ -19,9 +19,7 @@ import {
   postStatementCountApi,
   updateStatementApi,
 } from "src/network/api/campManageStatementApi";
-import {
-  replaceSpecialCharacters,
-} from "src/utils/generalUtility";
+import { replaceSpecialCharacters } from "src/utils/generalUtility";
 import DataNotFound from "../DataNotFound/dataNotFound";
 import Breadcrumbs from "components/shared/Breadcrumbs";
 import CustomSpinner from "components/shared/CustomSpinner";
@@ -121,15 +119,14 @@ function ManageStatements({ isEdit = false }) {
 
   useEffect(() => {
     const updateCurrentTime = () => {
-        setTime((prevTime) => ({
-          ...prevTime,
-          current_time: getEpochTime(),
-        }));
-        
-        
-        setAutoSaveDisplayMessage(
-          `Saved ${moment.unix(time?.last_save_time).fromNow()}`
-        );
+      setTime((prevTime) => ({
+        ...prevTime,
+        current_time: getEpochTime(),
+      }));
+
+      setAutoSaveDisplayMessage(
+        `Saved ${moment.unix(time?.last_save_time).fromNow()}`
+      );
     };
 
     if (isFirstRender.current) {
@@ -779,8 +776,6 @@ function ManageStatements({ isEdit = false }) {
     const res = await updateStatementApi(reqBody);
     return res;
   };
-
-
 
   const handleformvalues = () => {
     const cleanValues = (values) =>

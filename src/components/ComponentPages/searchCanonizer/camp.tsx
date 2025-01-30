@@ -26,7 +26,7 @@ const CampSearch = () => {
     filterByScore,
     selectedCampFromAdvanceFilterAlgorithm,
     selectedCampFromAdvanceFilterAlgorithmRecords,
-    pageNumber
+    pageNumber,
   } = useSelector((state: RootState) => ({
     searchMetaData: state?.searchSlice?.searchMetaData,
     asof: state.filters?.filterObject?.asof,
@@ -36,7 +36,7 @@ const CampSearch = () => {
     algorithm: state.filters?.filterObject?.algorithm,
     loading: state?.loading?.searchLoading,
     selectedCampFromAdvanceFilterAlgorithmRecords:
-    state?.searchSlice?.selectedCampFromAdvanceFilterAlgorithmRecords,
+      state?.searchSlice?.selectedCampFromAdvanceFilterAlgorithmRecords,
     pageNumber: state?.searchSlice?.pageNumber,
   }));
 
@@ -75,9 +75,7 @@ const CampSearch = () => {
   }, [selectedCampFromAdvanceFilterAlgorithm]);
 
   const pageChange1 = (pageNumber, pageSize) => {
-    setDisplayList(
-      selectedCampFromAdvanceFilterAlgorithm
-    );
+    setDisplayList(selectedCampFromAdvanceFilterAlgorithm);
     dispatch(setPageNumber(pageNumber));
   };
   const getHighlightedText = (text, highlight) => {

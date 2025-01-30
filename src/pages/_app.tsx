@@ -118,7 +118,7 @@ function WrappedApp({
       window.removeEventListener("beforeunload", handleTabClose);
     };
   }, [router.events]);
-  
+
   return (
     <CookiesProvider>
       <Provider store={store}>
@@ -205,7 +205,7 @@ WrappedApp.getInitialProps = async (
   } else {
     path = appContext.router?.query;
   }
-  
+
   let canonical_url =
     process.env.NEXT_PUBLIC_BASE_URL + appContext?.router?.asPath;
   const querval2 = appContext.ctx?.query?.q;
@@ -244,7 +244,8 @@ WrappedApp.getInitialProps = async (
           ? appContext?.ctx?.query?.video?.at(1)?.split("-")?.at(0)
           : null,
       keywords:
-        componentName === "Search"  ||
+        appContext.Component.name === "SearchAll" ||
+        componentName === "Search" ||
         componentName === "SearchTopic" ||
         componentName === "SearchCamp" ||
         componentName === "SearchCampStatement" ||

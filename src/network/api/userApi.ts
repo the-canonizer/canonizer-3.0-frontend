@@ -624,7 +624,6 @@ export const addDelegateSupportCamps = async (body) => {
   return res;
 };
 
-
 // export const getDirectSupportedCampsList = async (
 //   page = 1,
 //   perPage = 10,
@@ -645,10 +644,11 @@ export const addDelegateSupportCamps = async (body) => {
 //   return res;
 // };
 
-
-
-export const getDelegatedSupportCampsList = async ( page = 1, perPage = 10, search = "") => {
-  
+export const getDelegatedSupportCampsList = async (
+  page = 1,
+  perPage = 10,
+  search = ""
+) => {
   let state = store.getState();
   const { auth } = state;
 

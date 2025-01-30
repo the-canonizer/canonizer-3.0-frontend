@@ -10,12 +10,10 @@ import {
   Space,
   Modal,
   Drawer,
-  Button,
 } from "antd";
 import moment from "moment";
 import {
   ArrowRightOutlined,
-  CalendarOutlined,
   CloseOutlined,
   EditOutlined,
   LeftOutlined,
@@ -759,8 +757,10 @@ function ProfileInfoForm({
                   //     return Promise.resolve();
                   //   },
                   // },
-                  { pattern: /^\S.*$/, message: 'Address cannot start with a space' },
-
+                  {
+                    pattern: /^\S.*$/,
+                    message: "Address cannot start with a space",
+                  },
                 ]}
                 name="address_1"
                 label={messages.labels.addressLine1}
@@ -858,7 +858,10 @@ function ProfileInfoForm({
                   //     return Promise.resolve();
                   //   },
                   // },
-                  { pattern: /^\S.*$/, message: 'Address cannot start with a space' },
+                  {
+                    pattern: /^\S.*$/,
+                    message: "Address cannot start with a space",
+                  },
                 ]}
                 name="address_2"
                 label={messages.labels.addressLine2}

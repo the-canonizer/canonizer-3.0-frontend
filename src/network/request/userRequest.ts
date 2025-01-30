@@ -412,7 +412,13 @@ export default class UserRequest extends Request {
 
   static getDelegatedSupportCampsList(page, perPage, search, authToken) {
     return new Request(
-      K.Network.URL.GetDelegatedSupportCamps + "?page="+page +"&per_page=" +perPage +"&search=" +search,
+      K.Network.URL.GetDelegatedSupportCamps +
+        "?page=" +
+        page +
+        "&per_page=" +
+        perPage +
+        "&search=" +
+        search,
       K.Network.Method.GET,
       {},
       K.Network.Header.Type.Json,

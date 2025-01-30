@@ -612,11 +612,7 @@ const SettingsUI = () => {
                             value: "My Subscriptions",
                             label: (
                               <span id="setting_section_select_tag_my_subscription">
-                                <Link
-                                  href={
-                                    "/settings?tab=subscriptions"
-                                  }
-                                >
+                                <Link href={"/settings?tab=subscriptions"}>
                                   <a
                                     className="flex items-center gap-3"
                                     id="setting_section_select_tag_my_subscription_link"
