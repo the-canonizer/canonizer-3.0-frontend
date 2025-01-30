@@ -1,7 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import SearchSideBar from "../../common/SearchSideBar";
 import styles from "./search.module.scss";
-// import AdvanceFilter from "../../common/AdvanceSearchFilter";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "src/store";
 import moment from "moment";
