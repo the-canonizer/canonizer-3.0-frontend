@@ -31,6 +31,10 @@ export const createNewToken = async (req, res) => {
   try {
     const token = await NetworkCall.fetch(UserRequest.createToken());
 
+    if (!token) {
+      console.log("Failed to retrieve access token");
+    }
+
     if (isServer()) {
       res.setHeader(
         "Set-Cookie",
@@ -43,7 +47,6 @@ export const createNewToken = async (req, res) => {
     if (!isServer()) {
       document.cookie =
         "loginToken=" + token?.data?.access_token + getCookiesExpirationTime();
-      // localStorage.setItem("auth_token", token?.data?.access_token);
     }
     store.dispatch(setAuthToken(token?.data?.access_token));
     store.dispatch(logoutUser());
@@ -55,31 +58,44 @@ export const createNewToken = async (req, res) => {
 };
 
 export const createToken = async (req, res, ssg) => {
-  if (isServer()) {
-    if (!ssg && req?.cookies["loginToken"]) {
-      const isValidToken = isTokenValid(req?.cookies["loginToken"]);
-      if (isValidToken) {
-        return req.cookies["loginToken"];
-      } else {
-        return await createNewToken(req, res);
-      }
-    } else {
-      return await createNewToken(req, res);
-    }
-  } else {
-    if ((getCookies() as any)?.loginToken) {
-      const isValidToken = isTokenValid((getCookies() as any)?.loginToken);
-      if (isValidToken) {
-        return (getCookies() as any)?.loginToken;
-      } else {
-        return await createNewToken(null, null);
-      }
-    } else {
-      return await createNewToken(null, null);
-    }
+  // ssg is bolean that true only for build (privacy, term and condition pages)
+  const getTokenFromCookies = () =>
+    isServer() ? req?.cookies?.loginToken : (getCookies() as any)?.loginToken;
+
+  let existingToken = getTokenFromCookies();
+
+  if (!ssg && existingToken && isTokenValid(existingToken)) {
+    return existingToken;
   }
 
+  return await createNewToken(req, res);
 };
+
+// export const createToken = async (req, res, ssg) => {
+//   if (isServer()) {
+//     if (!ssg && req?.cookies["loginToken"]) {
+//       const isValidToken = isTokenValid(req?.cookies["loginToken"]);
+//       if (isValidToken) {
+//         return req.cookies["loginToken"];
+//       } else {
+//         return await createNewToken(req, res);
+//       }
+//     } else {
+//       return await createNewToken(req, res);
+//     }
+//   } else {
+//     if ((getCookies() as any)?.loginToken) {
+//       const isValidToken = isTokenValid((getCookies() as any)?.loginToken);
+//       if (isValidToken) {
+//         return (getCookies() as any)?.loginToken;
+//       } else {
+//         return await createNewToken(null, null);
+//       }
+//     } else {
+//       return await createNewToken(null, null);
+//     }
+//   }
+// };
 
 export const login = async (email: string, password: string) => {
   try {
