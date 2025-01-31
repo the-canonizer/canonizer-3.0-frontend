@@ -27,6 +27,15 @@ import {
 import { setHeaderData } from "src/store/slices/notificationSlice";
 import { setIsChecked } from "src/store/slices/recentActivitiesSlice";
 
+export const createTokenForSSG = async () => {
+  try {
+    const token = await NetworkCall.fetch(UserRequest.createToken());
+    return token.data?.access_token;
+  } catch (error) {
+    handleError(error);
+  }
+};
+
 export const createNewToken = async (req, res) => {
   try {
     const token = await NetworkCall.fetch(UserRequest.createToken());
@@ -57,17 +66,13 @@ export const createNewToken = async (req, res) => {
   }
 };
 
-export const createToken = async (req, res, ssg) => {
-  // ssg is bolean that true only for build (privacy, term and condition pages)
+export const createToken = async (req, res) => {
   const getTokenFromCookies = () =>
     isServer() ? req?.cookies?.loginToken : (getCookies() as any)?.loginToken;
-
   let existingToken = getTokenFromCookies();
-
-  if (!ssg && existingToken && isTokenValid(existingToken)) {
+  if (existingToken && isTokenValid(existingToken)) {
     return existingToken;
   }
-
   return await createNewToken(req, res);
 };
 
@@ -182,7 +187,7 @@ export const logout = async (error = "", status = null, count: number = 1) => {
       document.cookie = `loginToken=${getCookiesExpirationTime()}`;
 
       if (!(getCookies() as any)?.loginToken) {
-        const tRes = await createToken(null, null, false);
+        const tRes = await createToken(null, null);
         if (tRes?.access_token) {
           store.dispatch(setLogout());
           store.dispatch(setIsChecked(false));
