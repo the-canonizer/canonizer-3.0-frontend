@@ -110,11 +110,9 @@ export async function getServerSideProps({ req, query, res }) {
   let campNum = query?.camp[1]?.split("-")[0] || 1;
   let topicName = query?.camp[0];
   let campName = query?.camp[1];
-  let token = null;
   let userEmail = req.cookies?.isUserAuthenticated
     ? req.cookies?.current_user
     : "";
-
   let hashValue;
   let cookies;
   const cookieKey = topicNum + "." + campNum;
@@ -124,9 +122,7 @@ export async function getServerSideProps({ req, query, res }) {
       query?.asofdate && query?.asof == "bydate"
         ? parseFloat(query?.asofdate)
         : Date.now() / 1000;
-
     const data = Math.ceil(asOfData);
-
     const hash = await argon2id({
       password: data.toString(),
       salt,
@@ -139,7 +135,6 @@ export async function getServerSideProps({ req, query, res }) {
 
     const parts = hash?.split("$");
     hashValue = "$" + parts[parts?.length - 2] + "$" + parts[parts?.length - 1];
-
     let cookiesString = req.headers.cookie || "";
     cookies = parseCookies(cookiesString);
 
@@ -155,7 +150,6 @@ export async function getServerSideProps({ req, query, res }) {
   }
 
   await generateHashValue();
-
   const currentDate = new Date().valueOf();
   const reqBodyForService = {
     topic_num: topicNum,
@@ -172,7 +166,6 @@ export async function getServerSideProps({ req, query, res }) {
     view: req.cookies[cookieKey] ? req.cookies[cookieKey] : hashValue,
     current_user: userEmail,
   };
-
   const reqBody = {
     topic_num: topicNum,
     camp_num: campNum,
@@ -182,7 +175,6 @@ export async function getServerSideProps({ req, query, res }) {
         ? formatTheDate(query?.asofdate * 1000, "DD-MM-YYYY H:mm:ss")
         : Date.now() / 1000,
   };
-
   const reqBodyForCampData = {
     topic_num: topicNum,
     camp_num: campNum,
@@ -191,8 +183,7 @@ export async function getServerSideProps({ req, query, res }) {
     page: 1,
   };
 
-
-  token = await createToken(req, res, false);
+  let token = await createToken(req, res, false);
 
   const [
     newsFeed,

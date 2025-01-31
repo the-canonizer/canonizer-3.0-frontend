@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-
 import UpdateTopic from "components/ComponentPages/CreateNewTopic/updateTopic";
 import Layout from "src/hoc/layout";
 import {
@@ -32,13 +31,10 @@ const ManageTopicPage = ({ nameSpacesList, algorithms, cats }) => {
 };
 
 export async function getServerSideProps({ req ,res}) {
-  let token = null;
-  token = await createToken(req, res,false);
-
+  let token = await createToken(req, res,false);
   const nameSpaces = await getCanonizedNameSpacesApi(token);
   const canonizedAlgorithms = await getCanonizedAlgorithmsApi(token);
   const categories = await getAllTags(null, null, "", "asc", token);
-
   return {
     props: {
       nameSpacesList: nameSpaces || [],

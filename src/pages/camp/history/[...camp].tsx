@@ -1,7 +1,6 @@
 import HistoryContainer from "components/ComponentPages/HistoryContainer";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-
 import {
   getCurrentCampRecordApi,
   getCurrentTopicRecordApi,
@@ -21,7 +20,6 @@ const CampHistoryPage = ({ topicRecord, campRecord }) => {
     dispatch(setCurrentCampRecord(campRecord?.campData));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
   return <HistoryContainer />;
 };
 
@@ -30,8 +28,6 @@ CampHistoryPage.displayName = "CampHistoryPage";
 export async function getServerSideProps({ req, query, res }) {
   let topicNum = query?.camp[0]?.split("-")[0];
   let campNum = query?.camp[1]?.split("-")[0] || 1;
-  let token = null;
-
   const reqBody = {
     topic_num: topicNum,
     camp_num: campNum,
@@ -41,9 +37,7 @@ export async function getServerSideProps({ req, query, res }) {
         ? formatTheDate(query?.asofdate * 1000, "DD-MM-YYYY H:mm:ss")
         : Date.now() / 1000,
   };
-
-  token = await createToken(req, res, false);
-
+  let token = await createToken(req, res, false);
   const [topicRecord, campRecord] = await Promise.all([
     getCurrentTopicRecordApi(reqBody, token),
     getCurrentCampRecordApi(reqBody, token),

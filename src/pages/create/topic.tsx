@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-
 import {
   getCanonizedAlgorithmsApi,
   getCanonizedNameSpacesApi,
@@ -17,7 +16,6 @@ import { getAllTags } from "src/network/api/tagsApi";
 
 const CreateTopicPage = ({ nameSpacesList, algorithms, cats }) => {
   const dispatch = useDispatch();
-
   useEffect(() => {
     dispatch(setCanonizedNameSpaces(nameSpacesList));
     dispatch(setCanonizedAlgorithms(algorithms));
@@ -32,13 +30,10 @@ const CreateTopicPage = ({ nameSpacesList, algorithms, cats }) => {
 };
 
 export async function getServerSideProps({ req, res }) {
-  let token = null;
-  token = await createToken(req, res, false);
-
+  let token = await createToken(req, res, false);
   const nameSpaces = await getCanonizedNameSpacesApi(token);
   const canonizedAlgorithms = await getCanonizedAlgorithmsApi(token);
   const categories = await getAllTags(null, null, "", "asc", token);
-
   return {
     props: {
       nameSpacesList: nameSpaces || [],

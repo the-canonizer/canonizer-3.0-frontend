@@ -1,6 +1,5 @@
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-
 import { getThreadData } from "src/network/api/campForumApi";
 import CampForumComponent from "components/ComponentPages/CampForum/PostPage";
 import DataNotFound from "src/components/ComponentPages/DataNotFound/dataNotFound";
@@ -10,10 +9,8 @@ import {
   setCurrentTopicRecord,
   setCurrentCampRecord,
 } from "src/store/slices/campDetailSlice";
-
 function CampForumPostPage({ notFoundStatus, notFoundMessage }) {
   const router = useRouter();
-
   useEffect(() => {
     return () => {
       store.dispatch(setCurrentTopicRecord(null));
@@ -34,22 +31,17 @@ function CampForumPostPage({ notFoundStatus, notFoundMessage }) {
   );
 }
 
-export async function getServerSideProps({ req, resolvedUrl,res }) {
+export async function getServerSideProps({ req, resolvedUrl, res }) {
   const id = resolvedUrl?.split("/")[5];
   const topicNum = +resolvedUrl?.split("/")[2].split("-")[0];
   const campNum = +(resolvedUrl?.split("/")[3].split("-")[0] ?? 1);
-
-  let token = null;
-  token = await createToken(req, res,false);
-
-
+  let token = await createToken(req, res, false);
   const threadRes = await getThreadData(
     id,
     String(topicNum),
     String(campNum),
     token
   );
-
   if (threadRes?.data?.status_code === 404) {
     return {
       props: {
