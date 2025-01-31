@@ -35,7 +35,7 @@ export async function getServerSideProps({ req, resolvedUrl, res }) {
   const id = resolvedUrl?.split("/")[5];
   const topicNum = +resolvedUrl?.split("/")[2].split("-")[0];
   const campNum = +(resolvedUrl?.split("/")[3].split("-")[0] ?? 1);
-  let token = await createToken(req, res, false);
+  let token = await createToken(req, res);
   const threadRes = await getThreadData(
     id,
     String(topicNum),

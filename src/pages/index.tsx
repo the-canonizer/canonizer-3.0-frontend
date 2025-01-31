@@ -106,7 +106,7 @@ function Home({ current_date, hotTopicData, featuredData, prefData }: any) {
 export async function getServerSideProps({ req, res }) {
   const currentDate = new Date().valueOf();
   let token = null;
-  token = await createToken(req, res, false);
+  token = await createToken(req, res);
   const resData = await GetHotTopicDetails(1, 6, token as string);
   const featuredData = await GetFeaturedTopicDetails(token as string);
   const prefData = await GetPreferedTopicDetails(1, 6, true, token as string);

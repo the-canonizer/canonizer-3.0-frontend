@@ -42,7 +42,7 @@ export async function getServerSideProps({ req, query, res }) {
         ? formatTheDate(query?.asofdate * 1000, "DD-MM-YYYY H:mm:ss")
         : Date.now() / 1000,
   };
-  let token = await createToken(req, res, false);
+  let token = await createToken(req, res);
   const [topicRecord, campRecord] = await Promise.all([
     getCurrentTopicRecordApi(reqBody, token),
     getCurrentCampRecordApi(reqBody, token),
