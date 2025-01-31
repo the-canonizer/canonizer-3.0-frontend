@@ -14,7 +14,7 @@ function GoogleAd({
     }
   }, []);
 
-  if (window?.location?.hostname === "canonizer.com") {
+  if (isShowAds()) {
     return (
       <div className="ad_area p-4 bg-canGray mb-4">
         <ins
@@ -38,6 +38,7 @@ function GoogleAd({
 }
 
 import PropTypes from "prop-types";
+import { isShowAds } from "src/utils/generalUtility";
 
 GoogleAd.propTypes = {
   ad_client: PropTypes.string,
