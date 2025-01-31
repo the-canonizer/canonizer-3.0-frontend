@@ -1,6 +1,4 @@
-import { getCookies, isTokenValid } from "src/utils/generalUtility";
 import K from "../../constants";
-import { createToken } from "../api/userApi";
 
 export default class Request {
   static counter = 0;

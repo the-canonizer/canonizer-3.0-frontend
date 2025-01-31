@@ -42,9 +42,8 @@ export async function getServerSideProps({ req, query, res }) {
         : Date.now() / 1000,
   };
 
-  token = await createToken(req, res,false);
+  token = await createToken(req, res, false);
 
- 
   const [topicRecord, campRecord] = await Promise.all([
     getCurrentTopicRecordApi(reqBody, token),
     getCurrentCampRecordApi(reqBody, token),

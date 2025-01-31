@@ -84,7 +84,6 @@ function Home({ current_date, hotTopicData, featuredData, prefData }: any) {
     };
 
     if (accessToken) {
-      // localStorage.setItem("auth_token", accessToken);
       dispatch(setAuthToken(accessToken));
       getData(accessToken);
     }

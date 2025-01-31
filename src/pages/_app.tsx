@@ -26,7 +26,6 @@ import { metaTagsApi } from "src/network/api/metaTagsAPI";
 import { createToken } from "src/network/api/userApi";
 import {
   getCookies,
-  isTokenValid,
   parseCookies,
   serverRoutes,
 } from "src/utils/generalUtility";
@@ -63,8 +62,6 @@ function WrappedApp({
     //   "loginToken=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
     emptyCacheStorage();
   }
-
-
 
   useEffect(() => {
     const fetchToken = async () => {
