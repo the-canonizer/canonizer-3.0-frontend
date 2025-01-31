@@ -572,7 +572,12 @@ const TopicsList = () => {
                       avatars={
                         ft?.tree_structure &&
                         ft?.tree_structure[1]?.support_tree
-                          ?.map((support) => support?.user)
+                          ?.map((support) => {
+                            return {
+                              ...support?.user,
+                              nick_name: support?.nick_name,
+                            };
+                          })
                           ?.slice(0, 5)
                       }
                       maxCount={5}
