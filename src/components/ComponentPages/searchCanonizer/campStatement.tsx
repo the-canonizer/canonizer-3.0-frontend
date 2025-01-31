@@ -1,7 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import SearchSideBar from "../../common/SearchSideBar";
 import styles from "./search.module.scss";
-import AdvanceFilter from "../../common/AdvanceSearchFilter";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "src/store";
 import moment from "moment";
@@ -22,6 +21,8 @@ const CampStatementSearch = () => {
     asof,
     filterByScore,
     algorithm,
+    selectedCampStatementFromAdvanceFilterAlgorithmRecords,
+    pageNumber,
   } = useSelector((state: RootState) => ({
     searchMetaData: state?.searchSlice?.searchMetaData,
     selectedStatementFromAdvanceFilterAlgorithm:
@@ -29,6 +30,10 @@ const CampStatementSearch = () => {
     asof: state.filters?.filterObject?.asof,
     filterByScore: state.filters?.filterObject?.filterByScore,
     algorithm: state.filters?.filterObject?.algorithm,
+    selectedCampStatementFromAdvanceFilterAlgorithmRecords:
+      state?.searchSlice
+        ?.selectedCampStatementFromAdvanceFilterAlgorithmRecords,
+    pageNumber: state?.searchSlice?.pageNumber,
   }));
   const { loading } = useSelector((state: RootState) => ({
     loading: state?.loading?.searchLoading,
@@ -42,14 +47,8 @@ const CampStatementSearch = () => {
     dispatch(setPageNumber(pageNumber));
   };
   const pageChange1 = (pageNumber, pageSize) => {
-    const startingPosition = (pageNumber - 1) * pageSize;
-    const endingPosition = startingPosition + pageSize;
-    setDisplayList(
-      selectedStatementFromAdvanceFilterAlgorithm?.slice(
-        startingPosition,
-        endingPosition
-      )
-    );
+    setDisplayList(selectedStatementFromAdvanceFilterAlgorithm);
+    dispatch(setPageNumber(pageNumber));
   };
   useEffect(() => {
     pageChange(currentPage);
@@ -74,7 +73,7 @@ const CampStatementSearch = () => {
       filterByScore != 0 ||
       algorithm !== "blind_popularity"
     ) {
-      pageChange1(1, 20);
+      pageChange1(pageNumber, 20);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedStatementFromAdvanceFilterAlgorithm]);
@@ -177,7 +176,7 @@ const CampStatementSearch = () => {
             </h3>
           </div>
         </div>
-        <AdvanceFilter />
+        {/* <AdvanceFilter /> */}
       </div>
       <div
         className="flex lg:flex-row flex-col gap-10"
@@ -492,11 +491,12 @@ const CampStatementSearch = () => {
               </div>
             )}
             <Pagination
+              current={pageNumber}
               className="mt-5 [&_.ant-pagination-item]:!mr-1 lg:[&_.ant-pagination-item]:!mr-2"
               hideOnSinglePage={true}
               total={
                 asof == "review" || asof == "bydate"
-                  ? selectedStatementFromAdvanceFilterAlgorithm?.length
+                  ? selectedCampStatementFromAdvanceFilterAlgorithmRecords
                   : searchMetaData.total
               }
               pageSize={20}

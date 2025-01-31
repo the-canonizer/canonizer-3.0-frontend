@@ -267,6 +267,7 @@ WrappedApp.getInitialProps = async (
           : null,
       keywords:
         appContext.Component.name === "SearchAll" ||
+        componentName === "Search" ||
         componentName === "SearchTopic" ||
         componentName === "SearchCamp" ||
         componentName === "SearchCampStatement" ||

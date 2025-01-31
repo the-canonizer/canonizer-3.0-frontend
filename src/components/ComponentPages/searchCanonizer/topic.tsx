@@ -1,7 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import SearchSideBar from "../../common/SearchSideBar";
 import styles from "./search.module.scss";
-import AdvanceFilter from "../../common/AdvanceSearchFilter";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "src/store";
@@ -23,16 +22,21 @@ const TopicSearch = () => {
   const {
     searchMetaData,
     selectedTopicFromAdvanceFilterAlgorithm,
+    selectedTopicFromAdvanceFilterAlgorithmRecords,
     asof,
     filterByScore,
     algorithm,
+    pageNumber,
   } = useSelector((state: RootState) => ({
     searchMetaData: state?.searchSlice?.searchMetaData,
     selectedTopicFromAdvanceFilterAlgorithm:
       state?.searchSlice?.selectedTopicFromAdvanceFilterAlgorithm,
+    selectedTopicFromAdvanceFilterAlgorithmRecords:
+      state?.searchSlice?.selectedTopicFromAdvanceFilterAlgorithmRecords,
     asof: state.filters?.filterObject?.asof,
     filterByScore: state.filters?.filterObject?.filterByScore,
     algorithm: state.filters?.filterObject?.algorithm,
+    pageNumber: state?.searchSlice?.pageNumber,
   }));
 
   const { loading } = useSelector((state: RootState) => ({
@@ -44,15 +48,11 @@ const TopicSearch = () => {
   const [displayedDataforAlgo, setDisplayedDataforAlgo] = useState([]);
 
   const dispatch = useDispatch();
-
   const pageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
     dispatch(setPageNumber(pageNumber));
   };
-  useEffect(() => {
-    pageChange(currentPage);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchDataAll?.topic]);
+
   const showEmpty = (msg) => {
     return <Empty description={msg} />;
   };
@@ -118,29 +118,15 @@ const TopicSearch = () => {
     );
   };
   const router = useRouter();
-  // console.log(searchDataAll.topic.length,"ggggggggg")
+
   const pageSize = 20;
   useEffect(() => {
-    // Calculate the starting and ending index for slicing the data
-    const startIndex = (currentPage - 1) * pageSize;
-    const endIndex = startIndex + pageSize;
-
-    // Slice the data to show only 20 items for the current page
-    setDisplayedData(searchDataAll?.topic?.slice(startIndex, endIndex));
-
+    setDisplayedData(searchDataAll?.topic);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchDataAll?.topic, currentPage]);
 
   useEffect(() => {
-    // Calculate the starting and ending index for slicing the data
-    const startIndex = (currentPage - 1) * pageSize;
-    const endIndex = startIndex + pageSize;
-
-    // Slice the data to show only 20 items for the current page
-    setDisplayedDataforAlgo(
-      selectedTopicFromAdvanceFilterAlgorithm?.slice(startIndex, endIndex)
-    );
-
+    setDisplayedDataforAlgo(selectedTopicFromAdvanceFilterAlgorithm);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedTopicFromAdvanceFilterAlgorithm, currentPage]);
   return (
@@ -176,7 +162,7 @@ const TopicSearch = () => {
             </h3>
           </div>
         </div>
-        <AdvanceFilter />
+        {/* <AdvanceFilter /> */}
       </div>
       <div
         className="flex lg:flex-row flex-col gap-10"
@@ -405,6 +391,7 @@ const TopicSearch = () => {
               </div>
             )}
             <Pagination
+              current={pageNumber}
               className="mt-5 [&_.ant-pagination-item]:!mr-1 lg:[&_.ant-pagination-item]:!mr-2"
               hideOnSinglePage={true}
               total={
@@ -412,7 +399,7 @@ const TopicSearch = () => {
                 asof == "bydate" ||
                 filterByScore != 0 ||
                 algorithm !== "blind_popularity"
-                  ? selectedTopicFromAdvanceFilterAlgorithm?.length
+                  ? selectedTopicFromAdvanceFilterAlgorithmRecords
                   : searchMetaData.total
               }
               pageSize={20}

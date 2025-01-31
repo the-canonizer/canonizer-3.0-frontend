@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { PlusOutlined } from "@ant-design/icons";
 import moment from "moment";
+import { Col, Row } from "antd";
 
 import useIsUserAuthenticated from "src/hooks/isUserAuthenticated";
 import CustomSpinner from "components/shared/CustomSpinner";
@@ -23,6 +24,7 @@ import ManageThread from "./CreateThreadPopup";
 import { RootState } from "src/store";
 import CommonBreadcrumbs from "../Breadcrumbs/commonBreadcrumbs";
 import { useIsMobile } from "src/hooks/useIsMobile";
+import GoogleAd from "components/googleAds";
 
 export const getSelectedNode = async (
   topic_num,
@@ -299,20 +301,27 @@ const ForumComponent = () => {
           </PrimaryButton>
         ) : null}
 
-        <ThreadListUI
-          key="thread-list-ui"
-          onSearch={onSearch}
-          onChange={onChange}
-          threadList={threadList}
-          onThreadClick={onThreadClick}
-          current={page}
-          total={totalRecords}
-          filterThread={filterThread}
-          paramsList={paramsList}
-          isLoading={loading}
-          onThreadEdit={onThreadEdit}
-          onBackClick={onBackClick}
-        />
+        <Row>
+          <Col md={20} className="mb-14" id="forum-component">
+            <ThreadListUI
+              key="thread-list-ui"
+              onSearch={onSearch}
+              onChange={onChange}
+              threadList={threadList}
+              onThreadClick={onThreadClick}
+              current={page}
+              total={totalRecords}
+              filterThread={filterThread}
+              paramsList={paramsList}
+              isLoading={loading}
+              onThreadEdit={onThreadEdit}
+              onBackClick={onBackClick}
+            />
+          </Col>
+          <Col md={4} className="mb-14" id="forum-ad">
+            <GoogleAd />
+          </Col>
+        </Row>
       </Layout>
 
       <ManageThread key="manage-thread" onSubmittedSucess={onSubmittedSucess} />

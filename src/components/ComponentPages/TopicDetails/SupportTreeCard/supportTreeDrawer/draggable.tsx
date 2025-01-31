@@ -28,12 +28,13 @@ export default function Draggable({
   currentCampId = null,
   drawerFor = "",
   setIsOrderChange,
+  isQuickActionSelected,
 }: any) {
   const sensors = useSensors(
-     useSensor(TouchSensor, { activationConstraint: { distance: 10 } }),
-     useSensor(MouseSensor, { activationConstraint: { distance: 10 } }),
-     useSensor(KeyboardSensor, {
-        coordinateGetter: sortableKeyboardCoordinates,
+    useSensor(TouchSensor, { activationConstraint: { distance: 10 } }),
+    useSensor(MouseSensor, { activationConstraint: { distance: 10 } }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
     })
   );
 
@@ -58,6 +59,7 @@ export default function Draggable({
               enableDisableTagsHandler={enableDisableTagsHandler}
               currentCampId={currentCampId}
               drawerFor={drawerFor}
+              isQuickActionSelected={isQuickActionSelected}
             />
           ))}
         </SortableContext>
@@ -108,7 +110,11 @@ function SortableItem(props) {
         >
           <span
             style={{
-              color: props?.id == props?.currentCampId ? "#5482C8" : "#242B37",
+              color:
+                props?.id == props?.currentCampId &&
+                !props?.isQuickActionSelected
+                  ? "#5482C8"
+                  : "#242B37",
             }}
           >
             {`${props?.index + 1}-${props?.item?.content}`}

@@ -90,12 +90,13 @@ function ManageStatementUI({
   const [alertModal, setAlertModal] = useState(false); // Controls modal visibility
 
   const onEditorStateChange = (changedata: any) => {
+    // Convert the editor data to a string
     const datachangec = `${changedata}`;
+    // Parse the content to look for anchor tags and add a style attribute for blue links
     setEditorState(datachangec); // Update editor state
     form.setFieldsValue({ statement: datachangec }); // Update form values
-    handleformvalues(); // Handle any additional form logic
-};
-
+    handleformvalues();
+  };
 
   const extractImgSrc = (htmlString) => {
     const parser = new DOMParser();
@@ -109,7 +110,7 @@ function ManageStatementUI({
       console.error("The provided string is not a base64-encoded image.");
       return null; // Return null for non-base64 strings
     }
-  
+
     try {
       const byteCharacters = atob(base64Str.split(",")[1]); // Decode the base64 string
       const binaryData = new Uint8Array(byteCharacters.length);
@@ -123,30 +124,26 @@ function ManageStatementUI({
     }
   };
 
-  // console.log(editorState,"editor");
-
   // Example base64 image string
   const { topicRecord } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
   }));
-  console.log(editorState,"editorState")
   function handleButtonClick(e) {
     e.preventDefault(); // Prevent form submission by default
-    
+
     // Match all <img> tags in the editorState
     const imgTags = editorState.match(/<img[^>]*>/gi);
-  
+
     if (!imgTags || imgTags.length === 0) {
-      console.error("No images found in the editor.Proceeding with form submission.");
       return true;
     }
-  
+
     // Maximum size in bytes (5 MB)
     const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
-  
+
     // Array to hold oversized image names
     const oversized = [];
-  
+
     // Prepare the FormData object
     const formData = new FormData();
     const folderId = ""; // Optional or empty
@@ -161,39 +158,38 @@ function ManageStatementUI({
       }
       // Convert base64 to binary
       const binaryData = convertBase64ToBinary(base64Image);
-  
+
       // Check if binaryData is valid
       if (!binaryData) {
         console.error(`No binary data found for image ${index + 1}`);
         return;
       }
-  
+
       // Check the size of the binary data
       if (binaryData.byteLength > MAX_IMAGE_SIZE) {
         oversized.push(`Image ${index + 1} exceeds 5 MB.`);
         return;
       }
-  
+
       // Create a unique name for each image
       const name = `${topicRecord?.topic_name}_${Date.now()}_${index + 1}.jpg`;
-  
+
       // Add the binary data as a Blob to FormData
       const file = new Blob([binaryData], { type: "image/jpeg" });
       formData.append("file[]", file); // Add the binary file
       formData.append("name[]", name); // Add the file name
     });
-  
+
     if (oversized.length > 0) {
       console.error("Oversized images detected:", oversized);
       setAlertModal(true); // Show alert modal if necessary
       return false; // Stop further execution
     }
-
     // Add folder_id (if applicable)
     formData.append("folder_id", folderId);
-  
+
     // Call the uploadFile API
-    if(!isImageUrl){
+    if (!isImageUrl) {
       uploadFile(formData)
         .then((response) => {
           // Handle success
@@ -206,7 +202,7 @@ function ManageStatementUI({
     }
     return true; // Allow form submission
   }
-  
+
   function handleModalOk() {
     setAlertModal(false); // Close the modal
   }
@@ -214,7 +210,7 @@ function ManageStatementUI({
   function handleModalCancel() {
     setAlertModal(false); // Close the modal
   }
-
+  console.log(editorState, "editorState");
   return (
     <CommonCards className="border-0 bg-white" id="common-cards">
       <header className="mb-14" id="header">
@@ -286,6 +282,14 @@ function ManageStatementUI({
               />
             </Col>
             <Col xs={24} xl={24} id="statement-col">
+              <p
+                className="mt-1 mb-5 text-sm font-normal text-red-500"
+                id="nickanme_note"
+              >
+                Note: You can&rsquo;t upload an image with a size of 5 MB or
+                more, and it should not be saved as a draft
+              </p>
+
               <Form.Item
                 className="mb-2 editorContent [&_.ant-form-item-label>label]:w-full"
                 name="statement"
@@ -318,10 +322,52 @@ function ManageStatementUI({
                     placeholder="Write Your Statement Here"
                     items={EditorToolbarItems}
                     saveContent={(data) => {
-                      autoSave({
-                        statement: data,
-                        nick_name: values?.nick_name,
-                      });
+                      const imgTags = data.match(/<img[^>]*>/gi);
+                      let oversizedImageDetected = false;
+
+                      if (imgTags) {
+                        imgTags.forEach((imgTag) => {
+                          // Extract the src attribute
+                          const srcMatch = imgTag.match(/src="([^"]*)"/i);
+                          if (srcMatch && srcMatch[1]) {
+                            const imgSrc = srcMatch[1];
+
+                            // Check if the image source is a file (base64 or blob)
+                            if (imgSrc.startsWith("data:image/")) {
+                              // Calculate the file size in bytes
+                              const base64String = imgSrc.split(",")[1];
+                              const fileSizeInBytes =
+                                (base64String.length * 3) / 4 -
+                                (base64String.endsWith("==")
+                                  ? 2
+                                  : base64String.endsWith("=")
+                                  ? 1
+                                  : 0);
+                              const fileSizeInMB =
+                                fileSizeInBytes / (1024 * 1024);
+
+                              if (fileSizeInMB >= 5) {
+                                oversizedImageDetected = true; // Mark as oversized
+                                console.log(
+                                  "Image size is 5MB or more:",
+                                  fileSizeInMB
+                                );
+                              }
+                            }
+                          }
+                        });
+                      }
+
+                      if (!oversizedImageDetected) {
+                        autoSave({
+                          statement: data,
+                          nick_name: values?.nick_name,
+                        });
+                      } else {
+                        console.warn(
+                          "AutoSave skipped due to oversized image."
+                        );
+                      }
                     }}
                     id="statement-editor"
                   ></Editorckl>
@@ -405,7 +451,9 @@ function ManageStatementUI({
       <Modal
         className="[&_.ant-modal-content]:!rounded-xl [&_.ant-modal-header]:rounded-tl-xl [&_.ant-modal-header]:rounded-tr-xl"
         open={alertModal}
-        title={<span className="text-lg font-medium"> Alert: Image size exceed</span>}
+        title={
+          <span className="text-lg font-medium"> Alert: Image size exceed</span>
+        }
         onOk={handleModalOk}
         onCancel={handleModalCancel}
         footer={null}

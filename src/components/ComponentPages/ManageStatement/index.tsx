@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Form, Row, Col, Typography, Modal } from "antd";
 import { useRouter } from "next/router";
 import {
@@ -19,10 +19,7 @@ import {
   postStatementCountApi,
   updateStatementApi,
 } from "src/network/api/campManageStatementApi";
-import {
-  epochToMinutes,
-  replaceSpecialCharacters,
-} from "src/utils/generalUtility";
+import { replaceSpecialCharacters } from "src/utils/generalUtility";
 import DataNotFound from "../DataNotFound/dataNotFound";
 import Breadcrumbs from "components/shared/Breadcrumbs";
 import CustomSpinner from "components/shared/CustomSpinner";
@@ -79,6 +76,7 @@ function ManageStatements({ isEdit = false }) {
   const values = Form.useWatch([], form);
   const [isSavingDraft, setIsSavingDraft] = useState(false);
   // const [isGenerating, setIsGenerating] = useState(false);
+  const isFirstRender = useRef(true);
 
   const getEpochTime = () => {
     return Math.floor(Date.now() / 1000);
@@ -126,18 +124,15 @@ function ManageStatements({ isEdit = false }) {
         current_time: getEpochTime(),
       }));
 
-      let timeDifference = getEpochTime() - time?.last_save_time;
-
-      if (epochToMinutes(time?.last_save_time) == 0) {
-        setAutoSaveDisplayMessage("");
-      } else if (epochToMinutes(timeDifference) == 0) {
-        setAutoSaveDisplayMessage("Saved just now");
-      } else {
-        setAutoSaveDisplayMessage(
-          `Saved ${epochToMinutes(timeDifference)} min ago`
-        );
-      }
+      setAutoSaveDisplayMessage(
+        `Saved ${moment.unix(time?.last_save_time).fromNow()}`
+      );
     };
+
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return; // Skip running on initial render
+    }
 
     const interval = setInterval(updateCurrentTime, 700);
 
@@ -781,8 +776,6 @@ function ManageStatements({ isEdit = false }) {
     const res = await updateStatementApi(reqBody);
     return res;
   };
-
-
 
   const handleformvalues = () => {
     const cleanValues = (values) =>

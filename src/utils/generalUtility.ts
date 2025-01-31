@@ -455,16 +455,6 @@ export const covertToTime = (unixTime) => {
   return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
 };
 
-export const epochToMinutes = (epochTime): any => {
-  if (epochTime > 0) {
-    return Number(
-      new Date(epochTime * 1000).toLocaleString()?.split(",")[1].split(":")[1]
-    );
-  } else {
-    return 0;
-  }
-};
-
 export const defaultNicknameData = (nickNameList) => {
   return nickNameList?.find((item) => item.default === 1);
 };
@@ -500,4 +490,10 @@ export const getCookiesExpirationTime = () => {
   const expirationDate = oneYearFromNow.toUTCString().replace("GMT", "UTC");
 
   return `;expires=${expirationDate}; path=/`;
+};
+export const isShowAds = () => {
+  const urls = ["canonizer.com", "www.canonizer.com"];
+  if (typeof window !== "undefined") {
+    return urls.includes(window?.location?.hostname);
+  }
 };
