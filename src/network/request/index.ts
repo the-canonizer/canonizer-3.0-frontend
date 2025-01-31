@@ -21,6 +21,7 @@ export default class Request {
     if (token) {
       bearerToken = token;
     }
+    // TODO: Remove after testing
     // if (token) {
     //   //coming from server side use it
     //   bearerToken = token;

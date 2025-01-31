@@ -191,12 +191,6 @@ export async function getServerSideProps({ req, query, res }) {
     page: 1,
   };
 
-  // if (req.cookies["loginToken"]) {
-  //   token = req.cookies["loginToken"];
-  // } else {
-  //   const response = await createToken(req,res);
-  //   token = response?.access_token;
-  // }
 
   token = await createToken(req, res, false);
 

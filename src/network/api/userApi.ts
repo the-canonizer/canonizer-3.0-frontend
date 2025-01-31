@@ -71,6 +71,7 @@ export const createToken = async (req, res, ssg) => {
   return await createNewToken(req, res);
 };
 
+// TODO: remove after testing
 // export const createToken = async (req, res, ssg) => {
 //   if (isServer()) {
 //     if (!ssg && req?.cookies["loginToken"]) {

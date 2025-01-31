@@ -64,22 +64,9 @@ function WrappedApp({
     emptyCacheStorage();
   }
 
-  // const validateToken = async () => {
-  //   if ((getCookies() as any)?.loginToken) {
-  //     const isValidToken = isTokenValid((getCookies() as any)?.loginToken);
-  //     if (!isValidToken) {
-  //       try {
-  //         await createToken(null, null, false);
-  //       } catch (error) {
-  //         // eslint-disable-next-line
-  //         console.error("Error fetching data:", error);
-  //       }
-  //     }
-  //   }
-  // };
+
 
   useEffect(() => {
-    // validateToken();  // method that validates the token when the user navigates in the APP
     const fetchToken = async () => {
       if (router?.asPath) {
         let pre_route =

@@ -108,15 +108,6 @@ export async function getServerSideProps({ req, res }) {
   const currentDate = new Date().valueOf();
   let token = null;
   token = await createToken(req, res, false);
-
-  // if (req.cookies["loginToken"]) {
-  //   token = req.cookies["loginToken"];
-  // } else {
-  //   console.log("No login token on home page");
-  //   const response = await createToken();
-  //   token = response?.access_token;
-  // }
-
   const resData = await GetHotTopicDetails(1, 6, token as string);
   const featuredData = await GetFeaturedTopicDetails(token as string);
   const prefData = await GetPreferedTopicDetails(1, 6, true, token as string);

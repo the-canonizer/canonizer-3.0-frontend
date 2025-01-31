@@ -7,7 +7,6 @@ import LoginUI from "./UI";
 
 import CustomSpinner from "components/shared/CustomSpinner";
 import {
-  createToken,
   getNickNameList,
   login,
   resendOTPForRegistration,
@@ -93,8 +92,6 @@ const Login = () => {
 
     const username = values.username?.trim();
     const pass = values.password?.trim();
-
-    // await createToken(null, null, null);
 
     let res = await login(username, pass);
 

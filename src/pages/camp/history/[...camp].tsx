@@ -44,14 +44,7 @@ export async function getServerSideProps({ req, query, res }) {
 
   token = await createToken(req, res,false);
 
-  // if (req.cookies["loginToken"]) {
-  //   token = req.cookies["loginToken"];
-  // } else {
-  //   console.log("No login token on camp history page");
-  //   const response = await createToken();
-  //   token = response?.access_token;
-  // }
-
+ 
   const [topicRecord, campRecord] = await Promise.all([
     getCurrentTopicRecordApi(reqBody, token),
     getCurrentCampRecordApi(reqBody, token),

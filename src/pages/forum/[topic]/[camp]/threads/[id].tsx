@@ -42,13 +42,6 @@ export async function getServerSideProps({ req, resolvedUrl,res }) {
   let token = null;
   token = await createToken(req, res,false);
 
-  // if (req.cookies["loginToken"]) {
-  //   token = req.cookies["loginToken"];
-  // } else {
-  //   console.log("=====Token is not set forum post page  =================")
-  //   const response = await createToken();
-  //   token = response?.access_token;
-  // }
 
   const threadRes = await getThreadData(
     id,
