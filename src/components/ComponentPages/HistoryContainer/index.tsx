@@ -17,6 +17,7 @@ import CustomSkelton from "../../common/customSkelton";
 import HistoryCard from "../HistoryCard/historyCard";
 import CustomLayout from "src/hoc/layout/";
 import CommanBreadcrumbs from "../Breadcrumbs/commonBreadcrumbs";
+import GoogleAd from "components/googleAds";
 
 function HistoryContainer() {
   const { isUserAuthenticated } = useIsUserAuthenticated();
@@ -441,6 +442,9 @@ function HistoryContainer() {
               Compare {`${historyTitle(historyOf)}s`}
               <i className="icon-compare-statement"></i>
             </Button>
+            <div className="mt-5">
+              <GoogleAd />
+            </div>
           </div>
           {activeTab === "live"
             ? campHistory?.items?.length > 0 && renderContent()

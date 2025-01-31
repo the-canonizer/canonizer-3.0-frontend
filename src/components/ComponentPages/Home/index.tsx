@@ -11,6 +11,7 @@ import WhatsNew from "./WhatsNew";
 import PreferedTopics from "./PreferedTopic";
 import RecentActivities from "./RecentActivities";
 import { RootState } from "src/store";
+import GoogleAd from "components/googleAds";
 
 const HomePageContainer = () => {
   const { isUserAuthenticated } = useAuthentication();
@@ -37,6 +38,8 @@ const HomePageContainer = () => {
               <RecentActivities />
             </div>
           ) : null}
+
+          <GoogleAd />
         </div>
       }
     >
