@@ -199,7 +199,7 @@ const TopicsList = () => {
 
   async function getTopicsApiCallWithReqBody() {
     const reqBody = {
-      algorithm: findAlgorithmKey(algorithm, allAlgorithms),
+      algorithm: findAlgorithmKey(algorithm, allAlgorithms) || algorithm,
       asofdate:
         asof == ("default" || asof == "review") ? Date.now() / 1000 : asofdate,
       namespace_id: String(nameSpaceId),
@@ -394,11 +394,11 @@ const TopicsList = () => {
     dispatch(setAlgorithms(res?.data));
   };
 
-  useEffect(()=>{
-    if(allAlgorithms == null){
-      getAllAlgos()
+  useEffect(() => {
+    if (allAlgorithms == null) {
+      getAllAlgos();
     }
-  },[])
+  }, []);
 
   return (
     <Layout routeName={"browse"}>
