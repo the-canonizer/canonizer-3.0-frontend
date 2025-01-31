@@ -24,7 +24,11 @@ import WithRouteChange from "src/hoc/withRouteChange";
 import { checkTopicCampExistAPICall } from "src/network/api/campDetailApi";
 import { metaTagsApi } from "src/network/api/metaTagsAPI";
 import { createToken } from "src/network/api/userApi";
-import { getCookies } from "src/utils/generalUtility";
+import {
+  getCookies,
+  parseCookies,
+  serverRoutes,
+} from "src/utils/generalUtility";
 import WithAuthCheck from "src/hoc/withAuth";
 
 type AppOwnProps = { meta: any; canonical_url: string; returnURL: string };
@@ -50,10 +54,10 @@ function WrappedApp({
   ) {
     console.info({ latestVersion });
     console.log(`Cache Cleared: ${latestVersion}`);
-    const authToken = localStorage.getItem("auth_token");
-    if (authToken) {
-      localStorage.removeItem("auth_token");
-    }
+    // const authToken = localStorage.getItem("auth_token");
+    // if (authToken) {
+    //   localStorage.removeItem("auth_token");
+    // }
     // document.cookie =
     //   "loginToken=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
     emptyCacheStorage();
@@ -73,7 +77,7 @@ function WrappedApp({
       if (!(getCookies() as any)?.loginToken) {
         setIsAuthenticated(false);
         try {
-          await createToken();
+          await createToken(null, null, false);
         } catch (error) {
           // eslint-disable-next-line
           console.error("Error fetching data:", error);
@@ -83,7 +87,10 @@ function WrappedApp({
       }
     };
 
-    fetchToken();
+    if (!serverRoutes.includes(router?.pathname)) {
+      fetchToken();
+    }
+
     /* eslint-disable */
   }, [
     router.pathname,
@@ -146,7 +153,7 @@ function WrappedApp({
 }
 
 let lastAppName: string = "";
-const getTagData = async (req) => {
+const getTagData = async (req, token) => {
   const defaultTags = {
     page_name: "Home",
     title: "Build consensus by canonizing what you believe is right",
@@ -163,13 +170,13 @@ const getTagData = async (req) => {
       lastAppName?.trim()?.toLowerCase()
     ) {
       lastAppName = req?.page_name?.trim()?.toLowerCase();
-      metaResults = await metaTagsApi(req);
+      metaResults = await metaTagsApi(req, token);
       metaData = metaResults?.data;
       return metaData;
     }
   } else {
     lastAppName = req?.page_name?.trim()?.toLowerCase();
-    metaResults = await metaTagsApi(req);
+    metaResults = await metaTagsApi(req, token);
     metaData = metaResults?.data;
     return metaData;
   }
@@ -205,7 +212,6 @@ WrappedApp.getInitialProps = async (
   } else {
     path = appContext.router?.query;
   }
-
   let canonical_url =
     process.env.NEXT_PUBLIC_BASE_URL + appContext?.router?.asPath;
   const querval2 = appContext.ctx?.query?.q;
@@ -255,7 +261,10 @@ WrappedApp.getInitialProps = async (
     },
   };
 
-  const metaData = await getTagData(req);
+  const token =
+    parseCookies(appContext?.ctx?.req?.headers?.cookie)["loginToken"] || "";
+
+  const metaData = await getTagData(req, token);
 
   /**
    *

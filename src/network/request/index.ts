@@ -1,6 +1,4 @@
-import { getCookies } from "src/utils/generalUtility";
 import K from "../../constants";
-import { createToken } from "../api/userApi";
 
 export default class Request {
   static counter = 0;
@@ -19,23 +17,31 @@ export default class Request {
   ) {
     let bearerToken = "";
     if (token) {
-      //coming from server side use it
       bearerToken = token;
-    } else {
-      const cc: any = getCookies();
-
-      if (cc?.loginToken) {
-        bearerToken = cc.loginToken;
-      } else if (!relativeURL?.includes("client-token")) {
-        Request.counter++;
-        // create token
-        (async () => {
-          const res = await createToken();
-
-          bearerToken = res?.data?.access_token;
-        })();
-      }
     }
+    // TODO: Remove after testing
+    // if (token) {
+    //   //coming from server side use it
+    //   bearerToken = token;
+    // } else {
+    //   const cc: any = getCookies();
+
+    //   if (cc?.loginToken) {
+    //     if (isTokenValid(cc.loginToken)) {
+    //       bearerToken = cc.loginToken;
+    //     }else{
+    //       console.log("---token expired---")
+    //     }
+    //   } else if (!relativeURL?.includes("client-token")) {
+    //     Request.counter++;
+    //     // create token
+    //     (async () => {
+    //       console.log("2:create token from network layer:");
+    //       const res = await createToken(null, null, false);
+    //       bearerToken = res;
+    //     })();
+    //   }
+    // }
 
     headers = {
       ...(defaultHeaderType === K.Network.Header.Type.Json ||

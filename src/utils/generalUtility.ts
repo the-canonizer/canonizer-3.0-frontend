@@ -1,6 +1,7 @@
 import { message } from "antd";
 import { openNotificationWithIcon } from "components/common/notification/notificationBar";
 import moment from "moment";
+import { jwtDecode } from "jwt-decode";
 
 export const handleError = (error, log = false) => {
   // eslint-disable-next-line
@@ -462,6 +463,34 @@ export const commaSeparated = (item, isLastIndex) => {
   return item + (isLastIndex ? "" : ", ");
 };
 
+export const serverRoutes = [
+  "/",
+  "/camp/create/[...camp]",
+  "/camp/history/[...camp]",
+  "/create/topic",
+  "/forum/[topic]/[camp]/threads/[id]",
+  "/manage/topic/[...statement]",
+  "/topic/[...camp]",
+];
+
+export const isTokenValid = (token): boolean => {
+  if (token) {
+    const decodedToken: any = jwtDecode(token);
+    return decodedToken.exp > Math.floor(Date.now() / 1000);
+  } else {
+    return false;
+  }
+};
+
+export const getCookiesExpirationTime = () => {
+  const oneYearFromNow = new Date();
+  oneYearFromNow.setFullYear(oneYearFromNow.getFullYear() + 1);
+  oneYearFromNow.setUTCHours(0, 0, 0, 0);
+
+  const expirationDate = oneYearFromNow.toUTCString().replace("GMT", "UTC");
+
+  return `;expires=${expirationDate}; path=/`;
+};
 export const isShowAds = () => {
   const urls = ["canonizer.com", "www.canonizer.com"];
   if (typeof window !== "undefined") {
