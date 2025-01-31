@@ -300,7 +300,7 @@ const CampStatementCard = ({ loadingIndicator }) => {
             {campStatement?.length && campStatement[0]?.parsed_value ? (
               <div
                 dangerouslySetInnerHTML={{
-                  __html: `<div class="ck-content">${campStatement[0]?.parsed_value}</div>`,
+                  __html: `<div class="ck-content editorContent">${campStatement[0]?.parsed_value}</div>`,
                 }}
               />
             ) : (

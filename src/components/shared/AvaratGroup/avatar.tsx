@@ -90,7 +90,11 @@ const SingleAvatar = ({ user, imageBaseURL = "" }) => {
   };
 
   return (
-    <Popover id={`popover-${user?.id}`} content={userName} placement="top">
+    <Popover
+      id={`popover-${user?.id}`}
+      content={user?.nick_name}
+      placement="top"
+    >
       {renderAvatar()}
     </Popover>
   );
