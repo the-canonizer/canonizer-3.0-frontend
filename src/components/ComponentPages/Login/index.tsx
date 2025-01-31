@@ -17,6 +17,7 @@ import { setManageSupportStatusCheck } from "src/store/slices/campDetailSlice";
 import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
 import { setValue } from "src/store/slices/utilsSlice";
 import LeftContent from "./UI/leftContent";
+import { getCookiesExpirationTime } from "src/utils/generalUtility";
 
 const Login = () => {
   const remember = useSelector((state: RootState) => state.utils.remember_me);
@@ -99,15 +100,10 @@ const Login = () => {
     }
 
     if (res && res.status_code === 200) {
-      document.cookie =
-        "current_user=" +
-        username +
-        "; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
+      document.cookie = "current_user=" + username + getCookiesExpirationTime();
 
       document.cookie =
-        "isUserAuthenticated=" +
-        true +
-        "; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
+        "isUserAuthenticated=" + true + getCookiesExpirationTime();
 
       dispatch(
         setFilterCanonizedTopics({

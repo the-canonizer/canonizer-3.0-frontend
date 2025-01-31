@@ -12,11 +12,12 @@ function PrivacyPolicy({ privacyPolicyContent }: any) {
   );
 }
 export async function getStaticProps() {
-  const response = await createToken();
-  const res = await getPrivacyPolicyContent(response?.access_token);
+  let ssg=true
+  const response = await createToken(null,null,ssg);
+  const resp = await getPrivacyPolicyContent(response);
   return {
     props: {
-      privacyPolicyContent: res || [],
+      privacyPolicyContent: resp || [],
     },
   };
 }
