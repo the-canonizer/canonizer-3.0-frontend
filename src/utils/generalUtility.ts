@@ -461,3 +461,10 @@ export const defaultNicknameData = (nickNameList) => {
 export const commaSeparated = (item, isLastIndex) => {
   return item + (isLastIndex ? "" : ", ");
 };
+
+export const isShowAds = () => {
+  const urls = ["canonizer.com", "www.canonizer.com"];
+  if (typeof window !== "undefined") {
+    return urls.includes(window?.location?.hostname);
+  }
+};
