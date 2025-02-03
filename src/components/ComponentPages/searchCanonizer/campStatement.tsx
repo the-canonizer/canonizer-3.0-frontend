@@ -78,30 +78,17 @@ const CampStatementSearch = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedStatementFromAdvanceFilterAlgorithm]);
   const getHighlightedText = (text, highlight) => {
+    if (!text || !highlight) return text;
+
     const escapedHighlight = highlight.replace(
       /[-[\]{}()*+?.,\\^$|#\s]/g,
       "\\$&"
     );
 
     // Create a regular expression using the escaped highlight
-    const parts = text?.split(new RegExp(`(${escapedHighlight})`, "gi"));
-    return (
-      <span>
-        {" "}
-        {parts?.map((part, i) => (
-          <span
-            key={part + i}
-            style={
-              part.toLowerCase() === highlight.toLowerCase()
-                ? { fontWeight: 700 }
-                : {}
-            }
-          >
-            <div dangerouslySetInnerHTML={{ __html: part }}></div>
-          </span>
-        ))}{" "}
-      </span>
-    );
+    const regex = new RegExp(`(${escapedHighlight})`, "gi");
+
+    return text.replace(regex, (match) => `<strong>${match}</strong>`);
   };
   const getHighlightedText2 = (text, highlight) => {
     const escapedHighlight = highlight.replace(
@@ -272,11 +259,11 @@ const CampStatementSearch = () => {
                                         {jsonData?.length > 1
                                           ? getHighlightedText2(
                                               jsonData?.[0]?.[1]?.camp_name,
-                                              searchValue
+                                              router?.query?.q
                                             )
                                           : getHighlightedText2(
                                               jsonData?.[0]?.[1]?.topic_name,
-                                              searchValue
+                                              router?.query?.q
                                             )}
                                       </h3>
                                     </a>
@@ -307,7 +294,7 @@ const CampStatementSearch = () => {
                                         0,
                                         fileNameLength
                                       ) + "...",
-                                      searchValue
+                                      router?.query?.q
                                     )}
                                   </div>
 
@@ -346,7 +333,7 @@ const CampStatementSearch = () => {
                                             >
                                               {getHighlightedText2(
                                                 obj.camp_name,
-                                                searchValue
+                                                router?.query?.q
                                               )}
                                               {index < parsedData.length - 1
                                                 ? "/ "
@@ -405,11 +392,11 @@ const CampStatementSearch = () => {
                                     {jsonData?.length > 1
                                       ? getHighlightedText2(
                                           jsonData?.[0]?.[1]?.camp_name,
-                                          searchValue
+                                          router?.query?.q
                                         )
                                       : getHighlightedText2(
                                           jsonData?.[0]?.[1]?.topic_name,
-                                          searchValue
+                                          router?.query?.q
                                         )}
                                   </h3>
                                 </a>
@@ -433,13 +420,17 @@ const CampStatementSearch = () => {
                                         ) + "...",
                                     }}
                                   ></div> */}
-                                <div>
-                                  {getHighlightedText(
-                                    x.type_value.substring(0, fileNameLength) +
-                                      "...",
-                                    searchValue
-                                  )}
-                                </div>
+                                <div
+                                  dangerouslySetInnerHTML={{
+                                    __html: getHighlightedText(
+                                      x.type_value.substring(
+                                        0,
+                                        fileNameLength
+                                      ) + "...",
+                                      router?.query?.q
+                                    ),
+                                  }}
+                                ></div>
                               </div>
                               <div className="text-base  flex flex-wrap items-center gap-2.5">
                                 <div className="flex gap-2.5">
@@ -464,7 +455,7 @@ const CampStatementSearch = () => {
                                       >
                                         {getHighlightedText2(
                                           obj.camp_name,
-                                          searchValue
+                                          router?.query?.q
                                         )}
                                         {index < parsedData.length - 1
                                           ? "/ "
