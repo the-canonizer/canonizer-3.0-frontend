@@ -73,6 +73,7 @@ function ManageStatements({ isEdit = false }) {
   const [isAIPreviewOpen, setIsAIPreviewOpen] = useState(false);
   const [improvedContent, setImprovedContent] = useState(null);
 
+
   const values = Form.useWatch([], form);
   const [isSavingDraft, setIsSavingDraft] = useState(false);
   // const [isGenerating, setIsGenerating] = useState(false);
@@ -716,7 +717,7 @@ function ManageStatements({ isEdit = false }) {
       namespace_id: null,
       nick_name: values?.nick_name,
       note: values?.edit_summary?.trim(),
-      statement: blocks,
+      statement: statement,
       objection_reason: null,
       camp_id: null,
       camp_name: null,
