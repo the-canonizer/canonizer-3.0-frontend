@@ -88,6 +88,7 @@ function ManageStatementUI({
 }) {
   const editorRef = useRef(null);
   const [alertModal, setAlertModal] = useState(false); // Controls modal visibility
+  const [findLength, setFindlength] = useState(0);
 
   const onEditorStateChange = (changedata: any) => {
     // Convert the editor data to a string
@@ -282,14 +283,6 @@ function ManageStatementUI({
               />
             </Col>
             <Col xs={24} xl={24} id="statement-col">
-              <p
-                className="mt-1 mb-5 text-sm font-normal text-red-500"
-                id="nickanme_note"
-              >
-                Note: You can&rsquo;t upload an image with a size of 5 MB or
-                more, and it should not be saved as a draft
-              </p>
-
               <Form.Item
                 className="mb-2 editorContent [&_.ant-form-item-label>label]:w-full"
                 name="statement"
@@ -321,20 +314,29 @@ function ManageStatementUI({
                     oneditorchange={onEditorStateChange}
                     placeholder="Write Your Statement Here"
                     items={EditorToolbarItems}
-                    saveContent={(data) => {
+                    saveContent={async (data, index) => {
                       const imgTags = data.match(/<img[^>]*>/gi);
                       let oversizedImageDetected = false;
-
-                      if (imgTags) {
-                        imgTags.forEach((imgTag) => {
-                          // Extract the src attribute
+                      const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5MB
+                      let updatedData = data;
+                      let imageIndex = 0; // Start indexing based on the provided index
+                      setFindlength(imgTags?.length);
+                      if (imgTags && findLength < imgTags.length) {
+                        for (let imgTag of imgTags) {
+                          imageIndex = imageIndex + 1;
+                          const formData = new FormData();
                           const srcMatch = imgTag.match(/src="([^"]*)"/i);
                           if (srcMatch && srcMatch[1]) {
                             const imgSrc = srcMatch[1];
 
-                            // Check if the image source is a file (base64 or blob)
+                            if (
+                              imgSrc.startsWith("http") ||
+                              imgSrc.startsWith("https")
+                            ) {
+                              continue;
+                            }
+
                             if (imgSrc.startsWith("data:image/")) {
-                              // Calculate the file size in bytes
                               const base64String = imgSrc.split(",")[1];
                               const fileSizeInBytes =
                                 (base64String.length * 3) / 4 -
@@ -343,24 +345,63 @@ function ManageStatementUI({
                                   : base64String.endsWith("=")
                                   ? 1
                                   : 0);
-                              const fileSizeInMB =
-                                fileSizeInBytes / (1024 * 1024);
 
-                              if (fileSizeInMB >= 5) {
-                                oversizedImageDetected = true; // Mark as oversized
-                                console.log(
-                                  "Image size is 5MB or more:",
-                                  fileSizeInMB
+                              if (fileSizeInBytes >= MAX_IMAGE_SIZE) {
+                                oversizedImageDetected = true;
+                                setAlertModal(true);
+                                console.warn(
+                                  "Skipping oversized image:",
+                                  fileSizeInBytes
                                 );
+                                continue;
+                              }
+
+                              const binaryData = atob(base64String);
+                              const arrayBuffer = new Uint8Array(
+                                binaryData.length
+                              );
+                              for (let i = 0; i < binaryData.length; i++) {
+                                arrayBuffer[i] = binaryData.charCodeAt(i);
+                              }
+                              const file = new Blob([arrayBuffer], {
+                                type: "image/jpeg",
+                              });
+
+                              // Use only index for unique naming
+                              const name = `${
+                                topicRecord?.topic_name
+                              }_${Date.now()}_${imageIndex}.jpg`;
+                              imageIndex++; // Increment index
+
+                              formData.append("file[]", file);
+                              formData.append("name[]", name);
+
+                              try {
+                                const response = await uploadFile(formData);
+                                const uploadedUrl =
+                                  response?.data?.[0]?.short_code_path;
+                                const shortCodepath = response?.data?.map(
+                                  (obj) => {
+                                    return obj?.short_code_path;
+                                  }
+                                );
+                                if (uploadedUrl) {
+                                  updatedData = updatedData.replace(
+                                    imgSrc,
+                                    uploadedUrl
+                                  );
+                                }
+                              } catch (error) {
+                                console.error("Error uploading image:", error);
                               }
                             }
                           }
-                        });
+                        }
                       }
 
                       if (!oversizedImageDetected) {
                         autoSave({
-                          statement: data,
+                          statement: updatedData,
                           nick_name: values?.nick_name,
                         });
                       } else {
@@ -420,12 +461,6 @@ function ManageStatementUI({
                     (submitIsDisable && isEdit) || !isDisabled || isAutoSaving
                   }
                   id="publish-button"
-                  onClick={(e) => {
-                    const canSubmit = handleButtonClick(e);
-                    if (canSubmit) {
-                      form.submit(); // Only submit the form if no oversized images
-                    }
-                  }}
                 >
                   {isAutoSaving ? (
                     "Saving as draft ..."
