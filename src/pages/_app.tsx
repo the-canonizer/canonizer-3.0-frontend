@@ -77,7 +77,7 @@ function WrappedApp({
       if (!(getCookies() as any)?.loginToken) {
         setIsAuthenticated(false);
         try {
-          await createToken(null, null, false);
+          await createToken(null, null);
         } catch (error) {
           // eslint-disable-next-line
           console.error("Error fetching data:", error);

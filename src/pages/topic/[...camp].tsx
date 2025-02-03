@@ -183,7 +183,7 @@ export async function getServerSideProps({ req, query, res }) {
     page: 1,
   };
 
-  let token = await createToken(req, res, false);
+  let token = await createToken(req, res);
 
   const [
     newsFeed,
