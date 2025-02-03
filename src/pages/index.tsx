@@ -26,6 +26,7 @@ import {
   GetPreferedTopicDetails,
 } from "src/network/api/topicAPI";
 import { store } from "src/store";
+import { getCookiesExpirationTime } from "src/utils/generalUtility";
 
 const Tour = dynamic(() => import("src/components/ComponentPages/Home/Tour"), {
   ssr: false,
@@ -74,9 +75,7 @@ function Home({ current_date, hotTopicData, featuredData, prefData }: any) {
           })
         );
         document.cookie =
-          "loginToken=" +
-          accessToken +
-          "; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
+          "loginToken=" + accessToken + getCookiesExpirationTime();
         // eslint-disable-next-line no-unused-vars
         const { access_token, ...rest } = router?.query;
         router.query = rest;
@@ -85,7 +84,6 @@ function Home({ current_date, hotTopicData, featuredData, prefData }: any) {
     };
 
     if (accessToken) {
-      localStorage.setItem("auth_token", accessToken);
       dispatch(setAuthToken(accessToken));
       getData(accessToken);
     }
@@ -105,16 +103,10 @@ function Home({ current_date, hotTopicData, featuredData, prefData }: any) {
   );
 }
 
-export async function getServerSideProps({ req }) {
+export async function getServerSideProps({ req, res }) {
   const currentDate = new Date().valueOf();
   let token = null;
-  if (req.cookies["loginToken"]) {
-    token = req.cookies["loginToken"];
-  } else {
-    const response = await createToken();
-    token = response?.access_token;
-  }
-
+  token = await createToken(req, res);
   const resData = await GetHotTopicDetails(1, 6, token as string);
   const featuredData = await GetFeaturedTopicDetails(token as string);
   const prefData = await GetPreferedTopicDetails(1, 6, true, token as string);

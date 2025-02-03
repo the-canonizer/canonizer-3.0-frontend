@@ -4,7 +4,7 @@ import {
   CalendarOutlined,
   MailOutlined,
   UserOutlined,
-  EnvironmentOutlined
+  EnvironmentOutlined,
 } from "@ant-design/icons";
 import md5 from "md5";
 
@@ -55,10 +55,10 @@ const UserProfileDetails = ({
 
   useEffect(() => {
     const fetchGravatarImage = async () => {
-     if (!profileData?.profile_picture && profileData?.email) {
+      if (!profileData?.profile_picture && profileData?.email) {
         const res = await getGravatarImage(profileData?.email);
         setGravatarAvailable(res);
-    }
+      }
     };
     fetchGravatarImage();
   }, [profileData?.email]);
@@ -87,8 +87,8 @@ const UserProfileDetails = ({
     );
   }
 
-let imagePath = null;
-// Check if profile picture is available, otherwise check if Gravatar is available
+  let imagePath = null;
+  // Check if profile picture is available, otherwise check if Gravatar is available
   if (profileData?.profile_picture) {
     imagePath = profileData.profile_picture;
   } else if (!profileData?.profile_picture && gravatarAvailable) {

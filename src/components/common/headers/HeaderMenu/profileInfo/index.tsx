@@ -6,11 +6,14 @@ import { getGravatarImage } from "components/shared/AvaratGroup/avatar"; // Your
 import { RootState } from "src/store";
 
 const ProfileInfo = ({
-  isGravatarImage, loadingImage, loggedUser,
-  isMobile, menu = <></>,
+  isGravatarImage,
+  loadingImage,
+  loggedUser,
+  isMobile,
+  menu = <></>,
   withoutDropdown = false,
   showGravatar = false,
-}: any) => { 
+}: any) => {
   const { loggedInUser } = useSelector((state: RootState) => ({
     loggedInUser: state.auth.loggedInUser,
   }));
@@ -23,8 +26,8 @@ const ProfileInfo = ({
     const fetchGravatarImage = async () => {
       if (loggedInUser?.email && showGravatar) {
         const gravatar = await getGravatarImage(loggedInUser?.email);
-        setGravatarUrl(gravatar || null); 
-        showGravatar= true;// Set gravatar URL or null if not found
+        setGravatarUrl(gravatar || null);
+        showGravatar = true; // Set gravatar URL or null if not found
       }
     };
     fetchGravatarImage();
@@ -42,10 +45,7 @@ const ProfileInfo = ({
     );
   } else if (!loadingImage && gravatarUrl) {
     dataMain = (
-      <Avatar
-        src={gravatarUrl}
-        className="-mb-[10px] cursor-pointer"
-      />
+      <Avatar src={gravatarUrl} className="-mb-[10px] cursor-pointer" />
     );
   } else {
     dataMain = (
@@ -58,7 +58,7 @@ const ProfileInfo = ({
       </Avatar>
     );
   }
-  
+
   if (withoutDropdown) {
     return dataMain;
   }

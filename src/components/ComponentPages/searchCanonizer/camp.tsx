@@ -1,7 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import SearchSideBar from "../../common/SearchSideBar";
 import styles from "./search.module.scss";
-import AdvanceFilter from "../../common/AdvanceSearchFilter";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "src/store";
 import { Empty, Pagination } from "antd";
@@ -25,6 +24,8 @@ const CampSearch = () => {
     algorithm,
     filterByScore,
     selectedCampFromAdvanceFilterAlgorithm,
+    selectedCampFromAdvanceFilterAlgorithmRecords,
+    pageNumber,
   } = useSelector((state: RootState) => ({
     searchMetaData: state?.searchSlice?.searchMetaData,
     asof: state.filters?.filterObject?.asof,
@@ -33,6 +34,9 @@ const CampSearch = () => {
     filterByScore: state.filters?.filterObject?.filterByScore,
     algorithm: state.filters?.filterObject?.algorithm,
     loading: state?.loading?.searchLoading,
+    selectedCampFromAdvanceFilterAlgorithmRecords:
+      state?.searchSlice?.selectedCampFromAdvanceFilterAlgorithmRecords,
+    pageNumber: state?.searchSlice?.pageNumber,
   }));
 
   const [isReview, setIsReview] = useState(asof == "review");
@@ -64,20 +68,14 @@ const CampSearch = () => {
       filterByScore != 0 ||
       algorithm !== "blind_popularity"
     ) {
-      pageChange1(1, 20);
+      pageChange1(pageNumber, 20);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCampFromAdvanceFilterAlgorithm]);
 
   const pageChange1 = (pageNumber, pageSize) => {
-    const startingPosition = (pageNumber - 1) * pageSize;
-    const endingPosition = startingPosition + pageSize;
-    setDisplayList(
-      selectedCampFromAdvanceFilterAlgorithm?.slice(
-        startingPosition,
-        endingPosition
-      )
-    );
+    setDisplayList(selectedCampFromAdvanceFilterAlgorithm);
+    dispatch(setPageNumber(pageNumber));
   };
   const getHighlightedText = (text, highlight) => {
     const escapedHighlight = highlight.replace(
@@ -139,7 +137,7 @@ const CampSearch = () => {
             </h3>
           </div>
         </div>
-        <AdvanceFilter />
+        {/* <AdvanceFilter /> */}
       </div>
       <div
         className="flex lg:flex-row flex-col gap-10"
@@ -433,11 +431,12 @@ const CampSearch = () => {
             )}
 
             <Pagination
+              current={pageNumber}
               className="mt-5 [&_.ant-pagination-item]:!mr-1 lg:[&_.ant-pagination-item]:!mr-2"
               hideOnSinglePage={true}
               total={
                 asof == "review" || asof == "bydate"
-                  ? selectedCampFromAdvanceFilterAlgorithm?.length
+                  ? selectedCampFromAdvanceFilterAlgorithmRecords
                   : searchMetaData.total
               }
               pageSize={20}

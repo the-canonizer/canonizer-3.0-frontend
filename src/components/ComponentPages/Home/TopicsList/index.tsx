@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 
 import {
+  getCanonizedAlgorithmsApi,
   getCanonizedNameSpacesApi,
   getCanonizedTopicsApi,
   getCanonizedTopicsForSuggestion,
@@ -20,7 +21,7 @@ import {
   setOnlyMyTopic,
 } from "src/store/slices/filtersSlice";
 import { RootState } from "src/store";
-import { changeSlashToArrow } from "src/utils/generalUtility";
+import { changeSlashToArrow, findAlgorithmKey } from "src/utils/generalUtility";
 import SortTopics from "components/ComponentPages/SortingTopics";
 import CustomSkelton from "components/common/customSkelton";
 import CustomPagination from "components/shared/CustomPagination/intex";
@@ -30,6 +31,7 @@ import ScoreTag from "../TrandingTopic/scoreTag";
 import { getAllTags } from "src/network/api/tagsApi";
 import useAuthentication from "src/hooks/isUserAuthenticated";
 import { setLoadingAction } from "src/store/slices/loading";
+import { setAlgorithms } from "src/store/slices/algoSlice";
 
 const { Title } = Typography;
 const { Search } = Input;
@@ -56,6 +58,7 @@ const TopicsList = () => {
     sortScoreViewTopic,
     is_camp_archive_checked,
     filterByScore,
+    allAlgorithms,
   } = useSelector((state: RootState) => ({
     canonizedTopics: state.homePage?.canonizedTopicsData,
     asofdate: state.filters?.filterObject?.asofdate,
@@ -72,6 +75,7 @@ const TopicsList = () => {
     sortScoreViewTopic: state?.utils?.sortScoreViewTopic,
     is_camp_archive_checked: state?.utils?.archived_checkbox,
     filterByScore: state.filters?.filterObject?.filterByScore,
+    allAlgorithms: state.algorithms?.algorithms,
   }));
 
   const [topicsData, setTopicsData] = useState(canonizedTopics);
@@ -195,7 +199,7 @@ const TopicsList = () => {
 
   async function getTopicsApiCallWithReqBody() {
     const reqBody = {
-      algorithm: algorithm,
+      algorithm: findAlgorithmKey(algorithm, allAlgorithms) || algorithm,
       asofdate:
         asof == ("default" || asof == "review") ? Date.now() / 1000 : asofdate,
       namespace_id: String(nameSpaceId),
@@ -385,6 +389,17 @@ const TopicsList = () => {
     dispatch(setLoadingAction(false));
   };
 
+  const getAllAlgos = async () => {
+    let res = await getCanonizedAlgorithmsApi();
+    dispatch(setAlgorithms(res?.data));
+  };
+
+  useEffect(() => {
+    if (allAlgorithms == null) {
+      getAllAlgos();
+    }
+  }, []);
+
   return (
     <Layout routeName={"browse"}>
       <div className="browse-wrapper pb-4 mt-3">
@@ -557,7 +572,12 @@ const TopicsList = () => {
                       avatars={
                         ft?.tree_structure &&
                         ft?.tree_structure[1]?.support_tree
-                          ?.map((support) => support?.user)
+                          ?.map((support) => {
+                            return {
+                              ...support?.user,
+                              nick_name: support?.nick_name,
+                            };
+                          })
                           ?.slice(0, 5)
                       }
                       maxCount={5}

@@ -50,14 +50,22 @@ const SiblingCamps = () => {
     <div className="flex flex-col mt-14">
       <SectionHeading title="SIBLING CAMPS" icon={null} />
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 my-6">
-        {siblingCampsData?.map((obj) => (
-          <SingleTopicCard
-            topic={{ ...obj, topic_name: obj?.camp_name }}
-            tag_key=""
-            key={obj?.id}
-            avatars={obj?.supporterData?.slice(0, 3)}
-          />
-        ))}
+        {siblingCampsData?.map((obj) => {
+          const data = obj?.supporterData?.slice(0, 3) || [];
+          const newObj = data?.map((item) => ({
+            ...item,
+            first_name: item?.user?.first_name,
+            email: item?.user?.email,
+          }));
+          return (
+            <SingleTopicCard
+              topic={{ ...obj, topic_name: obj?.camp_name }}
+              tag_key=""
+              key={obj?.id}
+              avatars={newObj}
+            />
+          );
+        })}
       </div>
     </div>
   );

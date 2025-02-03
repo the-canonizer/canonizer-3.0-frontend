@@ -27,7 +27,8 @@ import SectionHeading from "../Home/FeaturedTopic/sectionsHeading";
 import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 import { CloseOutlined, SaveOutlined } from "@ant-design/icons";
 import PrimaryButton from "components/shared/Buttons/PrimariButton";
-import CustomSkelton from "components/common/customSkelton";
+// import CustomSkelton from "components/common/customSkelton";
+import CustomSpinner from "components/shared/CustomSpinner";
 
 const ProfilePrefrences = () => {
   const [languageList, setLanguageList] = useState([]);
@@ -44,12 +45,12 @@ const ProfilePrefrences = () => {
 
   const { Option } = Select;
   const {
-    globalUserProfileData,
+    // globalUserProfileData,
     privateList,
     address,
     updateAddress,
     birthdayForProfileInfo,
-    globalUserProfileDataLastName,
+    // globalUserProfileDataLastName,
     globalUserProfileDataLanguage,
     globalUserProfileDataAlgo,
   } = useSelector((state: RootState) => ({
@@ -300,22 +301,24 @@ const ProfilePrefrences = () => {
   };
 
   return (
-    <section id="prefrence_section_unique">
-      <SectionHeading
-        title="PREFERENCES"
-        icon={null}
-        className="lg:mt-0 mt-10 mb-5"
-      />
-      {loading ? (
-        <div>
-          <CustomSkelton
-            skeltonFor="profileInfoForm"
-            bodyCount={1}
-            stylingClass=""
-            isButton={false}
-          />{" "}
-        </div>
-      ) : (
+    <CustomSpinner key="create-thread-spinner" spinning={loading}>
+      <section id="prefrence_section_unique">
+        <SectionHeading
+          title="PREFERENCES"
+          icon={null}
+          className="lg:mt-0 mt-10 mb-5"
+        />
+        {/* {loading ? (
+          <div>
+            <CustomSkelton
+              skeltonFor="profileInfoForm"
+              bodyCount={1}
+              stylingClass=""
+              isButton={false}
+            />{" "}
+          </div>
+        ) : (
+        )} */}
         <Row gutter={30} id="prefrence_row_unique">
           <Col
             md={12}
@@ -379,18 +382,18 @@ const ProfilePrefrences = () => {
             </Select>
           </Col>
         </Row>
-      )}
 
-      {loading ? (
-        <div className="mt-20">
-          <CustomSkelton
-            skeltonFor="prefrences"
-            bodyCount={8}
-            stylingClass=""
-            isButton={false}
-          />
-        </div>
-      ) : (
+        {/* {loading ? (
+          <div className="mt-20">
+            <CustomSkelton
+              skeltonFor="prefrences"
+              bodyCount={8}
+              stylingClass=""
+              isButton={false}
+            />
+          </div>
+        ) : (
+        )} */}
         <div>
           <hr className="my-10" id="prefrence_line_space_unique" />
           <div className="lg:mt-0 mt-12" id="prefrence_section_for_tags_unique">
@@ -507,8 +510,8 @@ const ProfilePrefrences = () => {
             </Form>
           </div>
         </div>
-      )}
-    </section>
+      </section>
+    </CustomSpinner>
   );
 };
 

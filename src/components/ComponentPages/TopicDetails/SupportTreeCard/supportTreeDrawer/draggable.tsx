@@ -31,10 +31,10 @@ export default function Draggable({
   isQuickActionSelected,
 }: any) {
   const sensors = useSensors(
-     useSensor(TouchSensor, { activationConstraint: { distance: 10 } }),
-     useSensor(MouseSensor, { activationConstraint: { distance: 10 } }),
-     useSensor(KeyboardSensor, {
-        coordinateGetter: sortableKeyboardCoordinates,
+    useSensor(TouchSensor, { activationConstraint: { distance: 10 } }),
+    useSensor(MouseSensor, { activationConstraint: { distance: 10 } }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
     })
   );
 
@@ -110,7 +110,11 @@ function SortableItem(props) {
         >
           <span
             style={{
-              color: props?.id == props?.currentCampId && !props?.isQuickActionSelected? "#5482C8" : "#242B37",
+              color:
+                props?.id == props?.currentCampId &&
+                !props?.isQuickActionSelected
+                  ? "#5482C8"
+                  : "#242B37",
             }}
           >
             {`${props?.index + 1}-${props?.item?.content}`}

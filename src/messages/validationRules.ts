@@ -307,8 +307,8 @@ export const nickNameRule = {
     },
     {
       pattern: new RegExp(/^[a-zA-Z0-9\s]*$/), // Allow alphanumeric characters and spaces
-      message: 'Nick Name can only contain letters, numbers, and spaces.',
-    }
+      message: "Nick Name can only contain letters, numbers, and spaces.",
+    },
   ],
 };
 
@@ -340,7 +340,7 @@ export const topicNameRule = {
       max: 80,
       message: validations.topiNameMax80,
     },
-    { pattern: /^\S.*$/, message: 'Topic name cannot start with a space' },
+    { pattern: /^\S.*$/, message: "Topic name cannot start with a space" },
     emojiValidation(patterns.emoji_restrication),
   ],
 };
@@ -364,7 +364,6 @@ export const summaryRule = {
   ],
 };
 
-
 // create new camp
 export const campNameRule = {
   rules: [
@@ -376,7 +375,7 @@ export const campNameRule = {
       max: 80,
       message: validations.topiNameMax80,
     },
-    { pattern: /^\S.*$/, message: 'Camp name cannot start with a space' },
+    { pattern: /^\S.*$/, message: "Camp name cannot start with a space" },
     emojiValidation(patterns.emoji_restrication),
   ],
 };

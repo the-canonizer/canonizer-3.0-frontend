@@ -19,9 +19,7 @@ import {
   postStatementCountApi,
   updateStatementApi,
 } from "src/network/api/campManageStatementApi";
-import {
-  replaceSpecialCharacters,
-} from "src/utils/generalUtility";
+import { replaceSpecialCharacters } from "src/utils/generalUtility";
 import DataNotFound from "../DataNotFound/dataNotFound";
 import Breadcrumbs from "components/shared/Breadcrumbs";
 import CustomSpinner from "components/shared/CustomSpinner";
@@ -75,6 +73,7 @@ function ManageStatements({ isEdit = false }) {
   const [isAIPreviewOpen, setIsAIPreviewOpen] = useState(false);
   const [improvedContent, setImprovedContent] = useState(null);
 
+
   const values = Form.useWatch([], form);
   const [isSavingDraft, setIsSavingDraft] = useState(false);
   // const [isGenerating, setIsGenerating] = useState(false);
@@ -121,15 +120,14 @@ function ManageStatements({ isEdit = false }) {
 
   useEffect(() => {
     const updateCurrentTime = () => {
-        setTime((prevTime) => ({
-          ...prevTime,
-          current_time: getEpochTime(),
-        }));
-        
-        
-        setAutoSaveDisplayMessage(
-          `Saved ${moment.unix(time?.last_save_time).fromNow()}`
-        );
+      setTime((prevTime) => ({
+        ...prevTime,
+        current_time: getEpochTime(),
+      }));
+
+      setAutoSaveDisplayMessage(
+        `Saved ${moment.unix(time?.last_save_time).fromNow()}`
+      );
     };
 
     if (isFirstRender.current) {
@@ -719,7 +717,7 @@ function ManageStatements({ isEdit = false }) {
       namespace_id: null,
       nick_name: values?.nick_name,
       note: values?.edit_summary?.trim(),
-      statement: blocks,
+      statement: statement,
       objection_reason: null,
       camp_id: null,
       camp_name: null,
@@ -779,8 +777,6 @@ function ManageStatements({ isEdit = false }) {
     const res = await updateStatementApi(reqBody);
     return res;
   };
-
-
 
   const handleformvalues = () => {
     const cleanValues = (values) =>
