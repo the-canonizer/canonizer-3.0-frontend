@@ -570,7 +570,7 @@ any) {
               : "skeleton-rangslider"
           }`}
           tooltip={{
-            open: true,
+            // open: true,
             formatter,
             getPopupContainer: (triggerNode) => triggerNode.parentElement,
           }}
