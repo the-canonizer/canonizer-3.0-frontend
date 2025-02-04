@@ -177,6 +177,7 @@ const TopicsListByCats = () => {
     sortScoreViewTopic,
     pageSize,
     pageNumber,
+    +router?.query?.id,
   ]);
 
   const memoizedOptions = useMemo(() => {
