@@ -283,6 +283,12 @@ function ManageStatementUI({
               />
             </Col>
             <Col xs={24} xl={24} id="statement-col">
+              <p
+                className="mt-1 mb-5 text-sm font-normal text-canBlack opacity-80"
+                id="nickanme_note"
+              >
+                Note: The maximum allowed file size is 5 MB.
+              </p>
               <Form.Item
                 className="mb-2 editorContent [&_.ant-form-item-label>label]:w-full"
                 name="statement"
