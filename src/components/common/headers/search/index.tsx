@@ -395,7 +395,7 @@ const HeaderSearch = ({ className = "" }: any) => {
             ? searchVal.substring(0, advanceSearchValueLength)
             : searchVal
         }
-        className={`lg:ml-5 transition-all delay-300 [&>div]:!border-0 w-full tab:w-4/12 xl:w-2/5`}
+        className={`lg:ml-5 transition-all delay-300 [&>div]:!border-0 w-full tab:w-4/12 xl:w-2/6`}
       >
         <div
           id="desktop-search-input"
