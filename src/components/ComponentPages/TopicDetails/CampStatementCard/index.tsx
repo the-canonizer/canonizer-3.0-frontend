@@ -27,14 +27,19 @@ import SectionHeading from "components/ComponentPages/Home/FeaturedTopic/section
 const CampStatementCard = ({ loadingIndicator }) => {
   const router = useRouter();
 
-  const { campRecord, campStatement, tree, haveStatementPreview } = useSelector(
-    (state: RootState) => ({
-      campStatement: state?.topicDetails?.campStatement,
-      campRecord: state?.topicDetails?.currentCampRecord,
-      tree: state?.topicDetails?.tree && state?.topicDetails?.tree[0],
-      haveStatementPreview: state?.topic?.haveStatementPreview,
-    })
-  );
+  const {
+    campRecord,
+    campStatement,
+    tree,
+    haveStatementPreview,
+    openConsensusTreePopup,
+  } = useSelector((state: RootState) => ({
+    campStatement: state?.topicDetails?.campStatement,
+    campRecord: state?.topicDetails?.currentCampRecord,
+    tree: state?.topicDetails?.tree && state?.topicDetails?.tree[0],
+    haveStatementPreview: state?.topic?.haveStatementPreview,
+    openConsensusTreePopup: state.hotTopic.openConsensusTreePopup,
+  }));
   const [fullScreen, setFullScreen] = useState(false);
 
   if (loadingIndicator || !campStatement) {
@@ -174,8 +179,6 @@ const CampStatementCard = ({ loadingIndicator }) => {
     );
   };
 
-  console.log("tree----", tree);
-
   return (
     <CommonCard
       style={{
@@ -195,7 +198,9 @@ const CampStatementCard = ({ loadingIndicator }) => {
                 ? "border-[#4786CB]"
                 : "!border-canGreen"
             } 
-            h-[400px] xl:h-[600px] statementCardBody`
+            ${
+              openConsensusTreePopup ? "[&_.ant-card-body]:!h-[700px]" : "h-[400px] xl:h-[600px]"
+            } statementCardBody`
       }
       data-testid="algoSelect"
       id="statementCard"
