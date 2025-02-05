@@ -23,6 +23,7 @@ const LoginUi = ({
   isOTPDisabled,
   onForgotPasswordClick,
   onRegister,
+  loading,
 }) => {
   return (
     <Card
@@ -114,7 +115,8 @@ const LoginUi = ({
             htmlType="submit"
             className="h-[40px] text-sm rounded-lg !w-8/12 lg:!w-4/12 mb-6 flex justify-center items-center mx-auto"
             id="login-submit-btn"
-            disabled={!isDisabled}
+            disabled={!isDisabled || loading}
+            // icon={loading ? <LoadingOutlined spin /> : null}
           >
             Log In <ArrowRightOutlined />
           </PrimaryButton>
@@ -124,7 +126,7 @@ const LoginUi = ({
             onClick={onOTPClick}
             id="login-request-otp-btn"
             data-testid="request-otp-btn"
-            disabled={!isOTPDisabled}
+            disabled={!isOTPDisabled || loading}
           >
             Request OTP
           </SecondaryButton>
