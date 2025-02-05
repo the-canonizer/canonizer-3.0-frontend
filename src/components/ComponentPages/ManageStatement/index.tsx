@@ -73,7 +73,6 @@ function ManageStatements({ isEdit = false }) {
   const [isAIPreviewOpen, setIsAIPreviewOpen] = useState(false);
   const [improvedContent, setImprovedContent] = useState(null);
 
-
   const values = Form.useWatch([], form);
   const [isSavingDraft, setIsSavingDraft] = useState(false);
   // const [isGenerating, setIsGenerating] = useState(false);
