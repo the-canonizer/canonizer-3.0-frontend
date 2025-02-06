@@ -82,15 +82,28 @@ function ManageStatements({ isEdit = false }) {
     return Math.floor(Date.now() / 1000);
   };
 
+  const hasArchivedCamp = (data) => {
+    return data?.some(camp => camp?.camp_is_archive === 1);
+  }
+
   const { asofdate, asof } = useSelector((state: RootState) => ({
     asofdate: state.filters?.filterObject?.asofdate,
     asof: state?.filters?.filterObject?.asof,
   }));
 
-  const getBreadCrumbApiCall = async () => {
+    const { currentGetCheckSupportExistsData } = useSelector(
+      (state: RootState) => ({
+        currentGetCheckSupportExistsData:
+          state.topicDetails.currentGetCheckSupportExistsData,
+      })
+    );
+
+  const getBreadCrumbApiCall = async (topicId, campId) => {
     let reqBody = {
-      topic_num: router?.query?.statement?.[0]?.split("-")?.at(0),
-      camp_num: router?.query?.statement?.[1]?.split("-")?.at(0),
+      // topic_num: router?.query?.statement?.[0]?.split("-")?.at(0) || topicId,
+      // camp_num: router?.query?.statement?.[1]?.split("-")?.at(0)  || campId ,
+      topic_num: currentGetCheckSupportExistsData?.topic_num,
+      camp_num: currentGetCheckSupportExistsData?.camp_num,
       as_of: router?.pathname == "/topic/[...camp]" ? asof : "default",
       as_of_date:
         asof == "default" || asof == "review"
@@ -99,6 +112,10 @@ function ManageStatements({ isEdit = false }) {
     };
 
     let res = await getCampBreadCrumbApi(reqBody);
+
+    if(hasArchivedCamp(res?.data?.bread_crumb)){
+      router.push(`/topic/${reqBody?.topic_num}/${reqBody?.camp_num}`);
+    }
     if (router?.asPath?.split("/")?.[1] === "create") {
       const campName =
         router?.query?.statement?.[1]?.split("-")?.splice(1)?.join("-") || "";
@@ -111,9 +128,9 @@ function ManageStatements({ isEdit = false }) {
   };
 
   useEffect(() => {
-    if (router?.asPath?.split("/")?.[1] === "create") {
-      getBreadCrumbApiCall();
-    }
+    // if (router?.asPath?.split("/")?.[1] === "create") {
+      getBreadCrumbApiCall(null,null);
+    // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
@@ -302,6 +319,7 @@ function ManageStatements({ isEdit = false }) {
           setNickNameData(nickNames);
         }
       }
+      getBreadCrumbApiCall(editData?.statement?.topic_num, editData?.statement?.camp_num);
 
       setScreenLoading(false);
     };
