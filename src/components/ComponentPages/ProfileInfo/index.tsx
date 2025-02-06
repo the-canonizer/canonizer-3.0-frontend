@@ -26,6 +26,9 @@ import {
   setZipCodeForProfileInfo,
   setBirthdayForProfileInfo,
   setGlobalUserProfileDataLastName,
+  setGlobalUserProfileDataUpdatedLastName,
+  setGlobalUserProfileDataUpdatedFirstName,
+  setGlobalUserProfileDataUpdatedEmail,
 } from "src/store/slices/campDetailSlice";
 import { RootState } from "src/store";
 import ProfileInfoForm from "../Form/ProfileInfoForm";
@@ -147,6 +150,9 @@ const ProfileInfo = () => {
       dispatch(setAddForProfileInfo(false));
       setZipCode(false);
       dispatch(setZipCodeForProfileInfo(false));
+      dispatch(setGlobalUserProfileDataUpdatedFirstName(res?.data?.first_name))
+      dispatch(setGlobalUserProfileDataUpdatedLastName(res?.data?.last_name))
+      dispatch(setGlobalUserProfileDataUpdatedEmail(res?.data?.email))
     } else {
       setDisableButton(false);
       setAdd(false);

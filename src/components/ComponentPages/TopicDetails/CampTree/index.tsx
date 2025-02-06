@@ -487,8 +487,6 @@ const CampTree = ({
                                 router?.query?.camp?.at(1)?.split("-")?.at(0) ??
                                 1
                               ) &&
-                            _isDisabled == 0 &&
-                            parentIsOneLevel == 0 &&
                             _isArchive == 0 &&
                             campRecord?.is_archive == 0
                               ? `!text-canGreen font-semibold text-sm`
