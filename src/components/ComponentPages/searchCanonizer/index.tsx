@@ -29,8 +29,6 @@ const Search = () => {
     return <Empty description={msg} />;
   };
   function replaceSpecialCharactersInLink(link) {
-    // Replace each special character with a series of hyphens
-    // return link.replace(/[-\\^$*+?.()|%#|[\]{}]/g, "-");
     return link.replace(/[-\\^$*+?.()|%#|[\]{}@]/g, "-");
   }
   const getHighlightedText = (text, highlight) => {
@@ -90,7 +88,7 @@ const Search = () => {
             </h3>
           </div>
         </div>
-        {/* <AdvanceFilter /> */}
+        <AdvanceFilter />
       </div>
       <div
         className="flex lg:flex-row flex-col gap-10"
@@ -231,10 +229,9 @@ const Search = () => {
                         id="auto_search_section_camp_ul"
                       >
                         {searchData?.camp?.slice(0, 5)?.map((x) => {
-                          const jsonData = JSON.parse(
-                            x.breadcrumb_data
-                          ) as Array<any>;
-                          const parsedData = jsonData.reduce(
+                          const jsonData = JSON.parse(x.breadcrumb_data) as Array<any>;
+                          const jsonData1 = Array.isArray(jsonData) ? jsonData : [];
+                          const parsedData = jsonData1.reduce(
                             (accumulator, currentVal, index) => {
                               const accIndex = index + 1;
                               accumulator[index] = {
@@ -255,7 +252,7 @@ const Search = () => {
                                 className="flex flex-col py-3 first:pt-0 border-b border-canGrey2 last:border-none last:pb-0 "
                                 id="auto_search_section_camp_li"
                               >
-                                <Link href={`/${jsonData?.[0][1]?.camp_link}`}>
+                              <Link href={`/${jsonData?.[0]?.[1]?.camp_link ?? ''}`}>
                                   <div
                                     className="flex justify-between items-center"
                                     id="auto_search_section_camp_li_list"
@@ -271,7 +268,7 @@ const Search = () => {
                                       )}
                                     </a>
                                     <a
-                                      href={`/${jsonData[0][1]?.camp_link}`}
+                                      href={`/${jsonData?.[0]?.[1]?.camp_link ?? "#"}`}
                                       id="auto_search_section_camp_sub_camp_link"
                                     >
                                       <Image
