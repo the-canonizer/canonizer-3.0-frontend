@@ -482,11 +482,13 @@ const TopicsList = () => {
                   onSearch={onSearch}
                   ref={inputRef}
                   // disabled={loading}
-                  onChange={handleKeyUpSearch}
-                  onBlur={() => {
+                  // onChange={handleKeyUpSearch}
+                  onBlur={async() => {
                     setTimeout(() => {
                       setShowSearchDropdown(false);
                     }, 300);
+
+                    await getTopicsApiCallWithReqBody();
                   }}
                   onFocus={() => {
                     setSearchLoading(false);
