@@ -86,22 +86,16 @@ function ManageStatements({ isEdit = false }) {
     return data?.some(camp => camp?.camp_is_archive === 1);
   }
 
-  const { asofdate, asof } = useSelector((state: RootState) => ({
+  const { asofdate, asof, currentGetCheckSupportExistsData } = useSelector((state: RootState) => ({
     asofdate: state.filters?.filterObject?.asofdate,
     asof: state?.filters?.filterObject?.asof,
+    currentGetCheckSupportExistsData: state.topicDetails.currentGetCheckSupportExistsData,
   }));
 
-    const { currentGetCheckSupportExistsData } = useSelector(
-      (state: RootState) => ({
-        currentGetCheckSupportExistsData:
-          state.topicDetails.currentGetCheckSupportExistsData,
-      })
-    );
-
-  const getBreadCrumbApiCall = async (topicId, campId) => {
+  const getBreadCrumbApiCall = async () => {
     let reqBody = {
-      // topic_num: router?.query?.statement?.[0]?.split("-")?.at(0) || topicId,
-      // camp_num: router?.query?.statement?.[1]?.split("-")?.at(0)  || campId ,
+      // topic_num: router?.query?.statement?.[0]?.split("-")?.at(0),
+      // camp_num: router?.query?.statement?.[1]?.split("-")?.at(0),
       topic_num: currentGetCheckSupportExistsData?.topic_num,
       camp_num: currentGetCheckSupportExistsData?.camp_num,
       as_of: router?.pathname == "/topic/[...camp]" ? asof : "default",
@@ -129,7 +123,7 @@ function ManageStatements({ isEdit = false }) {
 
   useEffect(() => {
     // if (router?.asPath?.split("/")?.[1] === "create") {
-      getBreadCrumbApiCall(null,null);
+      getBreadCrumbApiCall();
     // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
@@ -319,7 +313,7 @@ function ManageStatements({ isEdit = false }) {
           setNickNameData(nickNames);
         }
       }
-      getBreadCrumbApiCall(editData?.statement?.topic_num, editData?.statement?.camp_num);
+      getBreadCrumbApiCall();
 
       setScreenLoading(false);
     };
