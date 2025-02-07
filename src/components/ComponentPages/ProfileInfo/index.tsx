@@ -150,9 +150,9 @@ const ProfileInfo = () => {
       dispatch(setAddForProfileInfo(false));
       setZipCode(false);
       dispatch(setZipCodeForProfileInfo(false));
-      dispatch(setGlobalUserProfileDataUpdatedFirstName(res?.data?.first_name))
-      dispatch(setGlobalUserProfileDataUpdatedLastName(res?.data?.last_name))
-      dispatch(setGlobalUserProfileDataUpdatedEmail(res?.data?.email))
+      dispatch(setGlobalUserProfileDataUpdatedFirstName(res?.data?.first_name));
+      dispatch(setGlobalUserProfileDataUpdatedLastName(res?.data?.last_name));
+      dispatch(setGlobalUserProfileDataUpdatedEmail(res?.data?.email));
     } else {
       setDisableButton(false);
       setAdd(false);
