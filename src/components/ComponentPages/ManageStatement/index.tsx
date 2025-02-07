@@ -313,7 +313,6 @@ function ManageStatements({ isEdit = false }) {
           setNickNameData(nickNames);
         }
       }
-      getBreadCrumbApiCall();
 
       setScreenLoading(false);
     };
