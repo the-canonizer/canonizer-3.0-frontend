@@ -277,7 +277,7 @@ export const {
   setDisbaleApplyBtn,
   setGlobalUserProfileDataUpdatedFirstName,
   setGlobalUserProfileDataUpdatedLastName,
-  setGlobalUserProfileDataUpdatedEmail
+  setGlobalUserProfileDataUpdatedEmail,
   // setOpenConsensusTreePopup,
 } = treeSlice.actions;
 
