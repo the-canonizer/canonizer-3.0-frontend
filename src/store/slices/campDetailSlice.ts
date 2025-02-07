@@ -39,6 +39,9 @@ export const treeSlice = createSlice({
     globalUserProfileDataLanguage: "",
     globalUserProfileDataAlgo: "",
     globalUserProfileDataLastName: "",
+    globalUserProfileDataUpdatedLastName: "",
+    globalUserProfileDataUpdatedFirstName: "",
+    globalUserProfileDataUpdatedEmail: "",
     globalUserProfileDataEmail: "",
     address: "",
     updateAddress: {},
@@ -166,6 +169,9 @@ export const treeSlice = createSlice({
     setGlobalUserProfileDataEmail: (state, action) => {
       state.globalUserProfileDataEmail = action.payload;
     },
+    setGlobalUserProfileDataUpdatedEmail: (state, action) => {
+      state.globalUserProfileDataUpdatedEmail = action.payload;
+    },
     setOpenDrawerForDirectSupportedCamp: (state, action) => {
       state.openDrawerForDirectSupportedCamp = action.payload;
     },
@@ -198,6 +204,12 @@ export const treeSlice = createSlice({
     },
     setGlobalUserProfileDataLastName: (state, action) => {
       state.globalUserProfileDataLastName = action.payload;
+    },
+    setGlobalUserProfileDataUpdatedLastName: (state, action) => {
+      state.globalUserProfileDataUpdatedLastName = action.payload;
+    },
+    setGlobalUserProfileDataUpdatedFirstName: (state, action) => {
+      state.globalUserProfileDataUpdatedFirstName = action.payload;
     },
     setGlobalUserProfileDataLanguage: (state, action) => {
       state.globalUserProfileDataLanguage = action.payload;
@@ -263,6 +275,9 @@ export const {
   setDisableSubmitButtonForDirectSupportedCamp,
   settotalScoreforTreeCard,
   setDisbaleApplyBtn,
+  setGlobalUserProfileDataUpdatedFirstName,
+  setGlobalUserProfileDataUpdatedLastName,
+  setGlobalUserProfileDataUpdatedEmail
   // setOpenConsensusTreePopup,
 } = treeSlice.actions;
 
