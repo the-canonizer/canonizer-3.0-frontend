@@ -487,8 +487,6 @@ const TopicsList = () => {
                     setTimeout(() => {
                       setShowSearchDropdown(false);
                     }, 300);
-
-                    await getTopicsApiCallWithReqBody();
                   }}
                   onFocus={() => {
                     setSearchLoading(false);
