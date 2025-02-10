@@ -463,37 +463,43 @@ function HistoryCard({
           />
         )}
 
-        {campStatement?.status == "in_review" &&
-          (!campStatement?.grace_period || commited) &&
-          isUserAuthenticated &&
-          campStatement?.total_supporters > 1 && (
-            <>
-              <div className="agreement-wrapper">
-                {(campStatement?.ifICanAgreeAndObject ||
-                  campStatement?.ifICanAgreeAndObject == undefined) &&
-                  !!(
-                    campStatement?.ifIamSupporter != 0 ||
-                    campStatement?.ifIAmExplicitSupporter
-                  ) &&
-                  isUserAuthenticated &&
-                  !campStatement?.isAuthor && (
-                    <>
-                      <Checkbox
-                        id="history-page-agree-checkbox"
-                        defaultChecked={campStatement?.agreed_to_change}
-                        disabled={disableAgreeCheckbox()}
-                        onChange={agreeWithChange}
-                      >
-                        Agree With Change
-                      </Checkbox>
-                    </>
-                  )}
+        {campStatement?.status == "in_review" && (
+          <div className="agreement-wrapper wrapper-top-border">
+            {campStatement?.status == "in_review" &&
+              (!campStatement?.grace_period || commited) &&
+              isUserAuthenticated &&
+              campStatement?.total_supporters > 1 && (
+                <>
+                  {(campStatement?.ifICanAgreeAndObject ||
+                    campStatement?.ifICanAgreeAndObject == undefined) &&
+                    !!(
+                      campStatement?.ifIamSupporter != 0 ||
+                      campStatement?.ifIAmExplicitSupporter
+                    ) &&
+                    isUserAuthenticated &&
+                    !campStatement?.isAuthor && (
+                      <div>
+                        <Checkbox
+                          id="history-page-agree-checkbox"
+                          defaultChecked={campStatement?.agreed_to_change}
+                          disabled={disableAgreeCheckbox()}
+                          onChange={agreeWithChange}
+                        >
+                          Agree With Change
+                        </Checkbox>
+                      </div>
+                    )}
+                </>
+              )}
+
+            {campStatement?.status == "in_review" && (
+              <div>
                 <Space>
-                  {!!(
+                  {/* {!!(
                     campStatement?.ifIamSupporter != 0 ||
                     campStatement?.ifIAmExplicitSupporter ||
                     campStatement?.isAuthor
-                  ) && (
+                  ) && ( */}
                     <>
                       <HistoryCardDrawer
                         onClick={async () => {
@@ -561,15 +567,16 @@ function HistoryCard({
                         )}
                       />
                     </>
-                  )}
+                  {/* )} */}
                 </Space>
               </div>
-            </>
-          )}
+            )}
+          </div>
+        )}
 
         {!compareMode && (!campStatement?.grace_period || commited) && (
           <>
-            <div className="cn-footer-btn">
+            <div className="cn-footer-btn wrapper-top-border">
               <div className="cn-card-btn">
                 <PrimaryButton
                   size="large"
@@ -736,7 +743,10 @@ function HistoryCard({
           !!campStatement?.grace_period &&
           moment.now() < campStatement?.submit_time * 1000 + 3600000 && (
             <>
-              <div id="history-page-footer-container" className="cn-footer-btn">
+              <div
+                id="history-page-footer-container"
+                className="cn-footer-btn wrapper-top-border"
+              >
                 <div className="cn-card-btn">
                   <PrimaryButton
                     size="large"
