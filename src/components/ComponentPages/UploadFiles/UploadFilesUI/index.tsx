@@ -1,6 +1,4 @@
-import React, { Fragment } from "react";
-import { useState, useEffect } from "react";
-
+import React, { Fragment, useState, useEffect } from "react";
 import {
   Card,
   Button,
@@ -15,7 +13,6 @@ import {
   Popover,
   Table,
   Spin,
-  Alert,
   Empty,
 } from "antd";
 import {
@@ -23,23 +20,20 @@ import {
   SearchOutlined,
   CloseCircleOutlined,
   FolderFilled,
-  FileTextFilled,
-  FilePdfFilled,
-  FileUnknownFilled,
   MoreOutlined,
-  FilePptOutlined,
-  FileOutlined,
-  FileExcelOutlined,
-  FileWordOutlined,
   LeftOutlined,
   CloudUploadOutlined,
-  FolderOpenOutlined,
   FolderOpenFilled,
 } from "@ant-design/icons";
 import Image from "next/image";
-import styles from "./UploadFile.module.scss";
 import moment from "moment";
 import { useSelector, useDispatch } from "react-redux";
+import { labels } from "../../../../messages/label";
+import { useRouter } from "next/router";
+import { setTimeout } from "timers";
+
+import styles from "./UploadFile.module.scss";
+
 import { Breakpoint } from "antd/lib/_util/responsiveObserve";
 import { AppDispatch, RootState } from "../../../../store";
 import messages from "../../../../messages";
@@ -53,10 +47,8 @@ import CopyShortCode from "../../../../assets/image/copyShortCode.svg";
 import eyeImage from "../../../../assets/image/eye.svg";
 import reset from "../../../../assets/image/reset.png";
 import addFolder from "../../../../assets/image/add-folder.png";
-import addFile from "../../../../assets/image/add.png";
 import download from "../../../../assets/image/DownloadFile.svg";
 import Trash from "../../../../assets/image/trash.svg";
-import ArrowLeft from "../../../../assets/image/arrow_small_left.svg";
 import CopyShortCodeImage from "../../../../assets/image/copyShort.png";
 import DatePickerImage from "../../../../assets/image/datePicker.png";
 import CSV from "../../../../assets/image/icons/csv.png";
@@ -89,17 +81,14 @@ import {
   showUploadFiles,
   showFolder,
   showAfterUploads,
-} from "../../../../store/slices/uiSlice";
+} from "src/store/slices/uiSlice";
 import CreateFolder from "../CreateFolder";
 import {
   createFolderApi,
   globalSearchUploadFiles,
-} from "../../../../network/api/userApi";
-import { labels } from "../../../../messages/label";
-import { setTimeout } from "timers";
+} from "src/network/api/userApi";
 import queryParams from "src/utils/queryParams";
 import CustomSkelton from "../../../common/customSkelton";
-import { useRouter } from "next/router";
 
 const UploadFileUI = ({
   input,
@@ -135,8 +124,7 @@ const UploadFileUI = ({
   uploadLoader,
 }: any) => {
   const router = useRouter();
-  // const [uploadStatus] = useState(false);
-  // const [toggleFileView, setToggleFileView] = useState(false);
+
   const [previewImageIndicator, setPreviewImageIndicator] = useState(false);
   const [addFileIndicator, setAddFileIndicator] = useState(false);
   const [loadingArray, setLoadingArray] = useState([]);
@@ -163,26 +151,34 @@ const UploadFileUI = ({
     obj: {},
     fileLists: [],
   });
+
   const dispatch = useDispatch<AppDispatch>();
-  const drageBoxVisible = useSelector((state: RootState) => state.ui?.dragBox);
-  const disabledCreateFolder = useSelector(
-    (state: RootState) => state.ui?.disabledCreateFolderBtn
-  );
-  const disabledResetButton = useSelector(
-    (state: RootState) => state.ui?.disabledResetBtn
-  );
-  const dragBoxStatus = useSelector((state: RootState) => state.ui?.dragBox);
-  const show_UploadOptions = useSelector(
-    (state: RootState) => state.ui?.visibleUploadOptions
-  );
-  const afterUpload = useSelector((state: RootState) => state.ui?.uploadAfter);
-  const openFolder = useSelector((state: RootState) => state.ui?.folderOpen);
-  const addButtonShow = useSelector((state: RootState) => state.ui?.addButton);
-  const fileStatus = useSelector((state: RootState) => state.ui?.fileStatus);
-  const showCrossBtn = useSelector((state: RootState) => state.ui?.crossBtn);
-  const afterUploadClass = useSelector(
-    (state: RootState) => state.ui?.showFiles
-  );
+
+  const {
+    drageBoxVisible,
+    disabledCreateFolder,
+    disabledResetButton,
+    dragBoxStatus,
+    show_UploadOptions,
+    afterUpload,
+    openFolder,
+    addButtonShow,
+    fileStatus,
+    showCrossBtn,
+    afterUploadClass,
+  } = useSelector((state: RootState) => ({
+    drageBoxVisible: state.ui?.dragBox,
+    disabledCreateFolder: state.ui?.disabledCreateFolderBtn,
+    disabledResetButton: state.ui?.disabledResetBtn,
+    dragBoxStatus: state.ui?.dragBox,
+    show_UploadOptions: state.ui?.visibleUploadOptions,
+    afterUpload: state.ui?.uploadAfter,
+    openFolder: state.ui?.folderOpen,
+    addButtonShow: state.ui?.addButton,
+    fileStatus: state.ui?.fileStatus,
+    showCrossBtn: state.ui?.crossBtn,
+    afterUploadClass: state.ui?.showFiles,
+  }));
 
   const dragBoxShow = () => dispatch(showDrageBox());
   const dragBoxHide = () => dispatch(hideDrageBox());
@@ -195,8 +191,10 @@ const UploadFileUI = ({
   const showFiles = () => dispatch(showUploadFiles());
   const shownFolder = () => dispatch(showFolder());
   const showUploadsAfter = () => dispatch(showAfterUploads());
+
   const [imageStatus, setImageStatus] = useState("file");
   const [loadingImage, setLoadingImage] = useState(false);
+
   const validateMessages = {
     required: "${name} is required !",
   };
@@ -204,16 +202,7 @@ const UploadFileUI = ({
   const fileNameLength = 30;
 
   //Regex
-  const textFileRegex = /^text\/(plain$|html$|rtf$|csv$)/;
-  const pdfFileRegex = /^application\/(pdf$)/;
-  const excelFileRegex =
-    /^application\/(vnd.ms-excel.sheet.macroEnabled.12$|vnd.ms-excel$|vnd.ms-excel.sheet.binary.macroEnabled.12$|vnd.openxmlformats-officedocument.spreadsheetml.sheet$)/;
-  const docFileRegex =
-    /^application\/(msword$|vnd.openxmlformats-officedocument.wordprocessingml.template$|vnd.ms-word.template.macroEnabled.12$|vnd.openxmlformats-officedocument.wordprocessingml.document$| vnd.ms-word.document.macroEnabled.12$|msword$)/;
   const imageRegexData = /^image\/(jpeg$|png$|jpg$|gif$|bmp$)/;
-  const pptRegexData =
-    /^application\/(vnd.ms-powerpoint.template.macroEnabled.12$|vnd.openxmlformats-officedocument.presentationml.template$|vnd.ms-powerpoint.addin.macroEnabled.12$|vnd.openxmlformats-officedocument.presentationml.slideshow$|vnd.openxmlformats-officedocument.presentationml.slideshow$|vnd.ms-powerpoint.slideshow.macroEnabled.12$|vnd.ms-powerpoint$|vnd.ms-powerpoint.presentation.macroEnabled.12$|vnd.openxmlformats-officedocument.presentationml.presentation$)/;
-  const fileJsonRegex = /^application\/(json$)/;
 
   // File type regex mappings
   const fileTypeRegexes = {
@@ -279,10 +268,8 @@ const UploadFileUI = ({
             width={140}
           />
         ) : obj.type === "folder" ? (
-          // Render folder icon with interaction
           <FolderFilled className="text-canBlue" />
         ) : (
-          // Render file type icon for other file types
           <Image
             alt={`${fileType}-icon`}
             src={fileTypeIcons[fileType] || fileTypeIcons.unknown}
@@ -315,6 +302,7 @@ const UploadFileUI = ({
       </div>
     );
   };
+
   const menu = (i, obj) => (
     <Menu>
       <Menu.Item
@@ -341,6 +329,7 @@ const UploadFileUI = ({
       </span>
     </Menu>
   );
+
   const menu_files = (i, item) => (
     <Menu>
       {imageRegexData.test(item.file_type) ? (
@@ -438,61 +427,7 @@ const UploadFileUI = ({
       </span>
     </Menu>
   );
-  // const displayColumnListImage = (obj) => {
-  //   const fileText = <FileTextFilled className={styles.folder_icons_fileTxt} />;
-  //   const filePdf = <FilePdfFilled className={styles.folder_icons_pdf} />;
-  //   const fileUnknown = <FileUnknownFilled className={styles.folder_icons} />;
 
-  //   const filePpt = <FilePptOutlined className={styles.folder_icons_fileTxt} />;
-  //   const fileJson = <FileOutlined className={styles.folder_icons_fileTxt} />;
-  //   const fileXcel = (
-  //     <FileExcelOutlined className={styles.folder_icons_fileTxt} />
-  //   );
-  //   const fileDocs = (
-  //     <FileWordOutlined className={styles.folder_icons_fileTxt} />
-  //   );
-  //   return (
-  //     <div>
-  //       {(() => {
-  //         if (imageRegexData.test(obj.file_type) && obj.file_path) {
-  //           return (
-  //             <Image
-  //               alt="uploaded-file"
-  //               src={`${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/${obj.file_path}`}
-  //               height={150}
-  //               width={140}
-  //             />
-  //           );
-  //         } else if (obj.type == "folder") {
-  //           return (
-  //             <FolderFilled
-  //               data-testid="folderFilled"
-  //               className={styles.folder_icons}
-  //               style={{ cursor: "pointer" }}
-  //               onClick={() => {
-  //                 Openfolder(obj.id);
-  //               }}
-  //             />
-  //           );
-  //         } else if (textFileRegex.test(obj.file_type)) {
-  //           return fileText;
-  //         } else if (pdfFileRegex.test(obj.file_type)) {
-  //           return filePdf;
-  //         } else if (excelFileRegex.test(obj.file_type)) {
-  //           return fileXcel;
-  //         } else if (docFileRegex.test(obj.file_type)) {
-  //           return fileDocs;
-  //         } else if (pptRegexData.test(obj.file_type)) {
-  //           return filePpt;
-  //         } else if (fileJsonRegex.test(obj.file_type)) {
-  //           return fileJson;
-  //         } else {
-  //           return fileUnknown;
-  //         }
-  //       })()}
-  //     </div>
-  //   );
-  // };
   const editFolder = (obj) => {
     createFolderForm.resetFields();
     setEditModal(true);
@@ -555,6 +490,7 @@ const UploadFileUI = ({
   const onFinish = () => {
     editModal ? changeFolderName() : createNewFolder();
   };
+
   const onFinishValidation = () => {
     uploadList(), uploadFun();
   };
@@ -766,6 +702,7 @@ const UploadFileUI = ({
       }
     });
   };
+
   const handleChangeFileName = (e, id) => {
     setUpdateList({ ...updateList, [id]: e.target.value });
   };
@@ -842,7 +779,6 @@ const UploadFileUI = ({
                     overlay={menu(i, item)}
                     trigger={["click"]}
                     placement="bottomRight"
-                    // placement="topCenter"
                   >
                     <div
                       data-testid="open_folder_render_mennu"
@@ -909,21 +845,6 @@ const UploadFileUI = ({
                   </div>
                 </Dropdown>
               </div>
-              {/* <span
-                data-testid="cpoy_span"
-                className="copySpan"
-                onClick={() => {
-                  navigator.clipboard.writeText(item.short_code_path),
-                    message.success("Perma Link Copied");
-                }}
-              >
-                <Image
-                  alt="copyShortCode"
-                  src={CopyShortCode}
-                  width={12}
-                  height={15}
-                />
-              </span> */}
               <span className="upload-time block !text-[10px] text-[#777F93]">
                 {item.created_at
                   ? moment
@@ -991,24 +912,6 @@ const UploadFileUI = ({
                       size="small"
                       title={
                         <h2 className={styles.FolderOpenHeading}>
-                          {/* <span
-                            data-testid="arrow_outlined"
-                            style={{ cursor: "pointer" }}
-                            onClick={() => {
-                              closeFolder();
-                              StatusHideFile();
-                              setFlickringData(false);
-                              setSearch("");
-                            }}
-                          >
-                            <Image
-                              id="arrowLeftOutlined"
-                              alt="Arrow Left"
-                              src={ArrowLeft}
-                              width={14}
-                              height={17}
-                            />
-                          </span> */}
                           <span className={styles.marginLeftView}>
                             {" " + item.name + " "}
                           </span>
@@ -1058,57 +961,7 @@ const UploadFileUI = ({
       </div>
     ) : null;
   };
-  // const displayImage = (file, imageData) => {
-  //   const fileText = <img src={TEXT.src} alt="" />;
-  //   // const filePdf = <FilePdfFilled className={styles.FilePdfTwoToneColor} />;
-  //   const filePdf = <img src={PDF.src} alt="" />;
-  //   const fileUnknown = (
-  //     <FileUnknownFilled className={styles.FileTextTwoOneClass} />
-  //   );
-  //   const filePpt = <FilePptOutlined className={styles.FileTextTwoOneClass} />;
-  //   const fileJson = <FileOutlined className={styles.FileTextTwoOneClass} />;
-  //   const fileXcel = (
-  //     <FileExcelOutlined className={styles.FileTextTwoOneClass} />
-  //   );
-  //   const fileDocs = (
-  //     <FileWordOutlined className={styles.FileTextTwoOneClass} />
-  //   );
 
-  //   return (
-  //     <div id="display_image">
-  //       {(() => {
-  //         if (imageRegexData.test(file.file_type || file.type) && imageData) {
-  //           return (
-  //             <Image
-  //               alt="displayed-file"
-  //               src={imageData}
-  //               height={150}
-  //               width={140}
-  //             />
-  //           );
-  //         } else if (textFileRegex.test(file.file_type || file.type)) {
-  //           return fileText;
-  //         } else if (pdfFileRegex.test(file.file_type || file.type)) {
-  //           return filePdf;
-  //         } else if (excelFileRegex.test(file.file_type || file.type)) {
-  //           return fileXcel;
-  //         } else if (docFileRegex.test(file.file_type || file.type)) {
-  //           return fileDocs;
-  //         } else if (pptRegexData.test(file.file_type || file.type)) {
-  //           return filePpt;
-  //         } else if (fileJsonRegex.test(file.file_type || file.type)) {
-  //           return fileJson;
-  //         } else {
-  //           return fileUnknown;
-  //         }
-  //       })()}
-  //     </div>
-  //   );
-  // };
-  // const confirm = (keyParam) => {
-  //   message.info("Clicked on Yes.");
-  //   removeFiles(keyParam);
-  // };
   const getGlobalSearchUploadFile = async (queryString, dateString) => {
     const dateObject = new Date(datePick);
     const epochTimeInMilliseconds = dateObject?.getTime();
@@ -1128,12 +981,10 @@ const UploadFileUI = ({
       setFilteredList(response.data.files.map((v) => ({ ...v, type: "file" })));
     }
   };
+
   const openFolderInGridView = (file, i) => {
     return (
-      <div
-        className={styles.view_After_Upload}
-        //key="upload_file_one"
-      >
+      <div className={styles.view_After_Upload}>
         <Card className={`${styles.files} files`} key={i}>
           <div className={`${styles.imageFiles} image-files`}>
             {displayImage(
@@ -1166,21 +1017,6 @@ const UploadFileUI = ({
                 </div>
               </Dropdown>
             </div>
-            {/* <span
-              data-testid="copySpan"
-              className="copySpan"
-              onClick={() => {
-                navigator.clipboard.writeText(file.short_code_path),
-                  message.success("Perma Link Copied");
-              }}
-            >
-              <Image
-                alt="copyShortCode"
-                src={CopyShortCode}
-                width={12}
-                height={15}
-              />
-            </span> */}
             <span className="!text-[10px] text-[#777F93]">
               {moment.unix(file.created_at).format("MMM DD, YYYY, h:mm:ss A")}
             </span>
@@ -1229,33 +1065,24 @@ const UploadFileUI = ({
               >
                 <Card
                   title={
-                    <>
-                      <Button
-                        type="link"
-                        className="upload-back-btn pointer-events-none"
-                        icon={
-                          <LeftOutlined
-                            onClick={handleGoBack}
-                            className="pointer-events-auto cursor-pointer"
-                          />
-                        }
-                        size="large"
-                        // onClick={handleGoBack}
-                      >
-                        File(s) Uploaded
-                        <h3>
-                          <span className={`${styles.span} ml-1.5`}>
-                            {messages.labels.maxSize}
-                          </span>
-                        </h3>
-                      </Button>
-                      {/* <h3>
-                        {messages.labels.uploadFiles}
-                        <span className={styles.span}>
+                    <Button
+                      type="link"
+                      className="upload-back-btn pointer-events-none"
+                      icon={
+                        <LeftOutlined
+                          onClick={handleGoBack}
+                          className="pointer-events-auto cursor-pointer"
+                        />
+                      }
+                      size="large"
+                    >
+                      File(s) Uploaded
+                      <h3>
+                        <span className={`${styles.span} ml-1.5`}>
                           {messages.labels.maxSize}
                         </span>
-                      </h3> */}
-                    </>
+                      </h3>
+                    </Button>
                   }
                   bordered={false}
                   className="upload-card-wrapper"
@@ -1269,9 +1096,6 @@ const UploadFileUI = ({
                             }
                             disabled={show_UploadOptions || dragBoxStatus}
                             onChange={(date) => {
-                              // uploadStatus == true
-                              //   ? setDatePick("")
-                              //   :
                               setDatePick(date && date);
                               getGlobalSearchUploadFile(search, date);
                             }}
@@ -1342,29 +1166,6 @@ const UploadFileUI = ({
                           />
                           Create a Folder
                         </Button>
-                        {/* {addButtonShow && !dragBoxStatus ? (
-                          <Button
-                            data-testid="addAFileBtn"
-                            id="addAFileBtn"
-                            className={styles.add_file_btn}
-                            onClick={() => {
-                              addNewFile(),
-                                setToggleFileView(false),
-                                setUpdateList({});
-                              setDatePick("");
-                              setSearch("");
-                            }}
-                          >
-                            <Image
-                              alt="adOne"
-                              src={addFile}
-                              width={20}
-                              height={18}
-                            />
-                            Add a File
-                          </Button>
-                        ) : null} */}
-
                         <div className={styles.top_icon}>
                           {show_UploadOptions || dragBoxStatus ? null : (
                             <span
@@ -1487,7 +1288,6 @@ const UploadFileUI = ({
                                 info.file.percent == 0
                               ) {
                                 setFolderFiles(info.fileList);
-                                //setUploadFileList(info.fileList);
                                 setFileLists(info.fileList);
                               }
                             } else {
@@ -1595,8 +1395,6 @@ const UploadFileUI = ({
                                       placeholder="Full Name (with no extension)"
                                       onKeyDown={(e) => {
                                         // ============================ Allowed Special Chracter=====================================================
-                                        // if (/[^\w]|_/g.test(e.key))
-                                        //   return e.preventDefault();
                                         return (
                                           (e.key === "." || e.key === " ") &&
                                           (e.keyCode === 190 ||
@@ -1666,28 +1464,7 @@ const UploadFileUI = ({
                           pagination={{ hideOnSinglePage: true }}
                         />
                       </div>
-                    ) : (
-                      ""
-                    )}
-
-                    {loadingImage ? (
-                      <div>
-                        <Spin
-                          tip="Loading..."
-                          spinning={loadingImage}
-                          size="large"
-                        >
-                          <Alert
-                            message="Image is loading. Please wait..."
-                            type="info"
-                          />
-                        </Spin>
-                        <br />
-                        <br />
-                      </div>
-                    ) : (
-                      ""
-                    )}
+                    ) : null}
                     <Form.Item className="mb-0">
                       {show_UploadOptions ? (
                         <div className={styles.Upload_Cancel_Btn}>
@@ -1710,9 +1487,7 @@ const UploadFileUI = ({
                             Cancel
                           </Button>
                         </div>
-                      ) : (
-                        ""
-                      )}
+                      ) : null}
                     </Form.Item>
                   </Card>
                 </Card>
@@ -1790,7 +1565,6 @@ const UploadFileUI = ({
                     height={10}
                   />
                   <span>
-                    {" "}
                     [[
                     {preview.prevShort.length > fileNameLength
                       ? preview.prevShort.substring(0, fileNameLength) + "..."
@@ -1853,7 +1627,6 @@ const UploadFileUI = ({
                   removeFileData.fileLists
                 );
                 setDeleteLoading(false);
-                //keyParam, obj, fileLists
               }}
               type="primary"
               style={{
@@ -1884,4 +1657,5 @@ const UploadFileUI = ({
     </Fragment>
   );
 };
+
 export default UploadFileUI;
