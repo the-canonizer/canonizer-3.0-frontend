@@ -229,8 +229,12 @@ const Search = () => {
                         id="auto_search_section_camp_ul"
                       >
                         {searchData?.camp?.slice(0, 5)?.map((x) => {
-                          const jsonData = JSON.parse(x.breadcrumb_data) as Array<any>;
-                          const jsonData1 = Array.isArray(jsonData) ? jsonData : [];
+                          const jsonData = JSON.parse(
+                            x.breadcrumb_data
+                          ) as Array<any>;
+                          const jsonData1 = Array.isArray(jsonData)
+                            ? jsonData
+                            : [];
                           const parsedData = jsonData1.reduce(
                             (accumulator, currentVal, index) => {
                               const accIndex = index + 1;
@@ -252,7 +256,11 @@ const Search = () => {
                                 className="flex flex-col py-3 first:pt-0 border-b border-canGrey2 last:border-none last:pb-0 "
                                 id="auto_search_section_camp_li"
                               >
-                              <Link href={`/${jsonData?.[0]?.[1]?.camp_link ?? ''}`}>
+                                <Link
+                                  href={`/${
+                                    jsonData?.[0]?.[1]?.camp_link ?? ""
+                                  }`}
+                                >
                                   <div
                                     className="flex justify-between items-center"
                                     id="auto_search_section_camp_li_list"
@@ -268,7 +276,9 @@ const Search = () => {
                                       )}
                                     </a>
                                     <a
-                                      href={`/${jsonData?.[0]?.[1]?.camp_link ?? "#"}`}
+                                      href={`/${
+                                        jsonData?.[0]?.[1]?.camp_link ?? "#"
+                                      }`}
                                       id="auto_search_section_camp_sub_camp_link"
                                     >
                                       <Image

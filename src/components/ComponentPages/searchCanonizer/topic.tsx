@@ -18,7 +18,8 @@ const TopicSearch = () => {
       searchDataAll: state?.searchSlice?.searchDataAll,
       searchData: state?.searchSlice?.searchData,
       searchValue: state?.searchSlice?.searchValue,
-    }));
+    })
+  );
   const {
     searchMetaData,
     selectedTopicFromAdvanceFilterAlgorithm,
@@ -55,58 +56,67 @@ const TopicSearch = () => {
 
   function replaceSpecialCharactersInLink(link) {
     if (!link) return ""; // Handle null/undefined cases
-  
+
     // Replace special characters (excluding slashes) with hyphens
     link = link.replace(/[^a-zA-Z0-9/_-]/g, "-");
-  
+
     const topicString = "/topic/";
     const topicIndex = link.indexOf(topicString);
-  
+
     // If '/topic/' is not found, return the sanitized link
     if (topicIndex === -1) {
       return link;
     }
-  
+
     // Find the last slash in the link
     const lastSlashIndex = link.lastIndexOf("/");
-  
+
     // If the last slash is before '/topic/', return as is
     if (lastSlashIndex <= topicIndex + topicString.length) {
       return link;
     }
-  
+
     // Extract parts of the URL
     const beforeTopic = link.substring(0, topicIndex + topicString.length); // Keep '/topic/' part
-    let betweenTopicAndLast = link.substring(topicIndex + topicString.length, lastSlashIndex);
+    let betweenTopicAndLast = link.substring(
+      topicIndex + topicString.length,
+      lastSlashIndex
+    );
     const afterLastSlash = link.substring(lastSlashIndex);
-  
+
     // Replace slashes in the part between '/topic/' and the last slash with hyphens
     betweenTopicAndLast = betweenTopicAndLast.replace(/\//g, "-");
-  
+
     return beforeTopic + betweenTopicAndLast + afterLastSlash;
   }
-  
+
   const getHighlightedText = (text = "", highlight = "") => {
     if (!text || !highlight) return text; // Handle null/empty cases gracefully
-  
+
     // Escape special characters in the highlight text for regex
-    const escapedHighlight = highlight.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
-  
+    const escapedHighlight = highlight.replace(
+      /[-[\]{}()*+?.,\\^$|#\s]/g,
+      "\\$&"
+    );
+
     // Create a case-insensitive regex pattern
     const parts = text.split(new RegExp(`(${escapedHighlight})`, "gi"));
     const highlightLower = highlight.toLowerCase();
-  
+
     return parts.map((part, i) => (
-      <span key={i} style={part.toLowerCase() === highlightLower ? { fontWeight: 700 } : {}}>
+      <span
+        key={i}
+        style={part.toLowerCase() === highlightLower ? { fontWeight: 700 } : {}}
+      >
         {part}
       </span>
     ));
   };
-  
+
   useEffect(() => {
     setIsReview(asof == "review");
   }, [asof]);
-  
+
   useEffect(() => {
     setDisplayedData(searchDataAll?.topic);
   }, [searchDataAll?.topic, currentPage]);
@@ -117,9 +127,18 @@ const TopicSearch = () => {
 
   return (
     <Fragment>
-      <div className="flex justify-between lg:items-center lg:flex-row flex-col items-start mb-10 mt-2.5 lg:gap-0 gap-5"   id="elastic_topic_search_section">
-        <div className="flex  items-center" id="elastic_topic_search_section_heading_content">
-          <div className="flex items-center gap-2.5" id="elastic_topic_search_section_img_content">
+      <div
+        className="flex justify-between lg:items-center lg:flex-row flex-col items-start mb-10 mt-2.5 lg:gap-0 gap-5"
+        id="elastic_topic_search_section"
+      >
+        <div
+          className="flex  items-center"
+          id="elastic_topic_search_section_heading_content"
+        >
+          <div
+            className="flex items-center gap-2.5"
+            id="elastic_topic_search_section_img_content"
+          >
             <Image
               id="elastic_topic_search_section_img"
               src="/images/recent-activiity-arrow.svg"
@@ -140,14 +159,28 @@ const TopicSearch = () => {
         </div>
         <AdvanceFilter />
       </div>
-      <div className="flex lg:flex-row flex-col gap-10" id="elastic_topic_search_section_sidebar">
-        <aside className="leftSideBar miniSideBar" id="elastic_topic_search_section_sidebar_sub">
-          <div className="leftSideBar_Card p-0 m-0" id="elastic_topic_search_section_sidebar_sub1">
+      <div
+        className="flex lg:flex-row flex-col gap-10"
+        id="elastic_topic_search_section_sidebar"
+      >
+        <aside
+          className="leftSideBar miniSideBar"
+          id="elastic_topic_search_section_sidebar_sub"
+        >
+          <div
+            className="leftSideBar_Card p-0 m-0"
+            id="elastic_topic_search_section_sidebar_sub1"
+          >
             <SearchSideBar />
           </div>
         </aside>
-        <div className="pageContentWrap flex-1" id="elastic_topic_search_section_topic_heading">
-          <div className={`bg-canGray lg:py-5 lg:px-8 py-4 px-4 rounded-xl mb-5`} >
+        <div
+          className="pageContentWrap flex-1"
+          id="elastic_topic_search_section_topic_heading"
+        >
+          <div
+            className={`bg-canGray lg:py-5 lg:px-8 py-4 px-4 rounded-xl mb-5`}
+          >
             <div className="d-flex mb-2 align-items-center flex-wrap relative">
               <h4
                 data-testid="topic_heading"
@@ -166,7 +199,10 @@ const TopicSearch = () => {
                 id="elastic_topic_search_section_loader"
               />
             ) : (
-              <div className={styles.search_lists} id="elastic_topic_search_list_section">
+              <div
+                className={styles.search_lists}
+                id="elastic_topic_search_list_section"
+              >
                 {searchDataAll.topic?.length ? (
                   <div>
                     {isReview || asof == "bydate" ? (
@@ -179,14 +215,28 @@ const TopicSearch = () => {
                                 className="flex flex-col py-3 first:pt-0 border-b border-canGrey2 last:border-none last:pb-0"
                                 id="elastic_topic_search_li_section"
                               >
-                                <Link href={`/topic/${x?.topic_num}-${replaceSpecialCharacters(x?.type_value, "-")}/1-Agreement`} passHref>
-                                  <div className="flex justify-between items-center" id="elastic_topic_search_value">
+                                <Link
+                                  href={`/topic/${
+                                    x?.topic_num
+                                  }-${replaceSpecialCharacters(
+                                    x?.type_value,
+                                    "-"
+                                  )}/1-Agreement`}
+                                  passHref
+                                >
+                                  <div
+                                    className="flex justify-between items-center"
+                                    id="elastic_topic_search_value"
+                                  >
                                     <label
                                       style={{ cursor: "pointer" }}
                                       className="text-base font-medium text-canBlack flex !mb-2"
                                       id="elastic_topic_search_value_label"
                                     >
-                                      {getHighlightedText(x?.type_value, searchValue)}
+                                      {getHighlightedText(
+                                        x?.type_value,
+                                        searchValue
+                                      )}
                                     </label>
                                     <Image
                                       id="elastic_topic_search_value_arrow_img"
@@ -198,11 +248,25 @@ const TopicSearch = () => {
                                     />
                                   </div>
                                 </Link>
-                                <div className="text-base text-canBlue flex items-center gap-2.5" id="elastic_topic_search_canon_section">
-                                  <Image id="elastic_topic_search_canon_img" src="/images/flagicon.svg" width={18} height={20} />
-                                  <span className="text-base !text-canBlack font-medium" id="elastic_topic_search_canon_text">
+                                <div
+                                  className="text-base text-canBlue flex items-center gap-2.5"
+                                  id="elastic_topic_search_canon_section"
+                                >
+                                  <Image
+                                    id="elastic_topic_search_canon_img"
+                                    src="/images/flagicon.svg"
+                                    width={18}
+                                    height={20}
+                                  />
+                                  <span
+                                    className="text-base !text-canBlack font-medium"
+                                    id="elastic_topic_search_canon_text"
+                                  >
                                     Canon:
-                                    <span className="font-medium !text-canBlue ml-1" id="elastic_topic_search_canon_value">
+                                    <span
+                                      className="font-medium !text-canBlue ml-1"
+                                      id="elastic_topic_search_canon_value"
+                                    >
                                       {x.namespace}
                                     </span>
                                   </span>
@@ -212,7 +276,10 @@ const TopicSearch = () => {
                           </ul>
                         </div>
                       ) : (
-                        <span className="italic text-canLight" id="elastic_topic_search_no_data">
+                        <span
+                          className="italic text-canLight"
+                          id="elastic_topic_search_no_data"
+                        >
                           There is no data to show in this category.
                         </span>
                       )
@@ -224,14 +291,25 @@ const TopicSearch = () => {
                             className="flex flex-col py-3 first:pt-0 border-b border-canGrey2 last:border-none last:pb-0"
                             id="elastic_topic_search_display_data_li"
                           >
-                            <Link href={`/${replaceSpecialCharactersInLink(x?.link ?? '')}`} passHref>
-                              <div className="flex justify-between items-center" id="elastic_topic_search_display_data_list_section">
+                            <Link
+                              href={`/${replaceSpecialCharactersInLink(
+                                x?.link ?? ""
+                              )}`}
+                              passHref
+                            >
+                              <div
+                                className="flex justify-between items-center"
+                                id="elastic_topic_search_display_data_list_section"
+                              >
                                 <label
                                   style={{ cursor: "pointer" }}
                                   className="text-base font-medium text-canBlack flex !mb-2"
                                   id="elastic_topic_search_display_data_value"
                                 >
-                                  {getHighlightedText(x?.type_value, searchValue)}
+                                  {getHighlightedText(
+                                    x?.type_value,
+                                    searchValue
+                                  )}
                                 </label>
                                 <Image
                                   id="elastic_topic_search_display_data_img"
@@ -243,16 +321,25 @@ const TopicSearch = () => {
                                 />
                               </div>
                             </Link>
-                            <div className="text-base text-canBlue flex items-center gap-2.5" id="elastic_topic_search_display_data_canon">
-                              <Image 
-                                id="elastic_topic_search_display_data_canon_img" 
-                                src="/images/flagicon.svg" 
-                                width={18} 
-                                height={20} 
+                            <div
+                              className="text-base text-canBlue flex items-center gap-2.5"
+                              id="elastic_topic_search_display_data_canon"
+                            >
+                              <Image
+                                id="elastic_topic_search_display_data_canon_img"
+                                src="/images/flagicon.svg"
+                                width={18}
+                                height={20}
                               />
-                              <span className="text-base !text-canBlack font-medium" id="elastic_topic_search_display_data_canon_text">
+                              <span
+                                className="text-base !text-canBlack font-medium"
+                                id="elastic_topic_search_display_data_canon_text"
+                              >
                                 Canon:
-                                <span className="font-medium !text-canBlue ml-1" id="elastic_topic_search_display_data_canon_value">
+                                <span
+                                  className="font-medium !text-canBlue ml-1"
+                                  id="elastic_topic_search_display_data_canon_value"
+                                >
                                   {x.namespace}
                                 </span>
                               </span>
@@ -263,7 +350,10 @@ const TopicSearch = () => {
                     )}
                   </div>
                 ) : (
-                  <span className="italic text-canLight" id="elastic_topic_search_display_no_data">
+                  <span
+                    className="italic text-canLight"
+                    id="elastic_topic_search_display_no_data"
+                  >
                     There is no data to show in this category.
                   </span>
                 )}
