@@ -54,7 +54,7 @@ const HomePageContainer = () => {
         {isUserAuthenticated && preferredTopic?.length ? (
           <Col
             md={24}
-            className="mb-14"
+            className="mb-14 w-full"
             data-testid="preferedTopic"
             id="prefered-topic"
           >

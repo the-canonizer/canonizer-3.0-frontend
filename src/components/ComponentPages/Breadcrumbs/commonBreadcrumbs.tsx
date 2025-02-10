@@ -860,7 +860,7 @@ function CommanBreadcrumbs({
               </Popover>
             )}
 
-            <div className="flex items-center gap-1.5">
+            <div className="flex items-center gap-1.5 text-sm">
               Topic:{" "}
               {loadingIndicator ? (
                 <CustomSkelton skeltonFor="topicName" bodyCount={1} />
@@ -927,7 +927,7 @@ function CommanBreadcrumbs({
                   </Popover>
                 )}
 
-                <div className="flex items-center gap-1.5">
+                <div className="flex items-center gap-1.5 text-sm">
                   Camp:{" "}
                   {loadingIndicator ? (
                     <CustomSkelton skeltonFor="topicName" bodyCount={1} />
@@ -991,7 +991,7 @@ function CommanBreadcrumbs({
                         </Popover>
                       )}
 
-                      <div className="flex items-center gap-1.5">
+                      <div className="flex items-center gap-1.5 text-sm">
                         Camp:{" "}
                         {loadingIndicator ? (
                           <CustomSkelton skeltonFor="topicName" bodyCount={1} />
@@ -1029,7 +1029,7 @@ function CommanBreadcrumbs({
                     </Breadcrumb.Item>
                   ) : (
                     <Breadcrumb.Item
-                      className="flex items-center gap-1.5"
+                      className="flex items-center gap-1.5 text-sm"
                       key={index}
                     >
                       {loadingIndicator ? (
