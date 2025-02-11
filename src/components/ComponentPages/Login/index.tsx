@@ -86,69 +86,70 @@ const Login = () => {
     }
   };
 
-    const onFinish = async (values: any) => {
-      setLoading(true);
-      dispatch(setEmailForOTP(values.username?.trim()));
+  const onFinish = async (values: any) => {
+    setLoading(true);
+    dispatch(setEmailForOTP(values.username?.trim()));
 
-      const username = values.username?.trim();
-      const pass = values.password?.trim();
+    const username = values.username?.trim();
+    const pass = values.password?.trim();
 
-      try {
-        let res = await login(username, pass);
+    try {
+      let res = await login(username, pass);
 
-        if (res && res.status_code === 402) {
-          setErrorMsg(res.message);
-        }
+      if (res && res.status_code === 402) {
+        setErrorMsg(res.message);
+      }
 
-        if (res && res.status_code === 200) {
-          document.cookie = "current_user=" + username + getCookiesExpirationTime();
+      if (res && res.status_code === 200) {
+        document.cookie =
+          "current_user=" + username + getCookiesExpirationTime();
 
-          document.cookie =
-            "isUserAuthenticated=" + true + getCookiesExpirationTime();
+        document.cookie =
+          "isUserAuthenticated=" + true + getCookiesExpirationTime();
 
+        dispatch(
+          setFilterCanonizedTopics({
+            algorithm: res?.data?.user?.default_algo,
+          })
+        );
+
+        form.resetFields();
+
+        fetchNickNameList();
+
+        if (values.remember) {
           dispatch(
-            setFilterCanonizedTopics({
-              algorithm: res?.data?.user?.default_algo,
+            setValue({
+              label: "remember_me",
+              value: {
+                username: values.username?.trim(),
+                password: values.password,
+              },
             })
           );
+        }
 
-          form.resetFields();
+        const returnUrl: any = router?.query?.returnUrl;
 
-          fetchNickNameList();
-
-          if (values.remember) {
-            dispatch(
-              setValue({
-                label: "remember_me",
-                value: {
-                  username: values.username?.trim(),
-                  password: values.password,
-                },
-              })
-            );
-          }
-
-          const returnUrl: any = router?.query?.returnUrl;
-
-          if (returnUrl) {
-            router?.push(returnUrl);
-          } else if (currentReturnUrl) {
-            router?.push(currentReturnUrl);
-          } else if (router?.pathname === "/login") {
-            router?.push("/");
-          } else {
-            closeModal();
-          }
-
+        if (returnUrl) {
+          router?.push(returnUrl);
+        } else if (currentReturnUrl) {
+          router?.push(currentReturnUrl);
+        } else if (router?.pathname === "/login") {
+          router?.push("/");
+        } else {
           closeModal();
         }
-      } catch (error) {
-        console.error("Login error:", error);
-        setErrorMsg("An error occurred during login. Please try again.");
-      } finally {
-        setLoading(false);
+
+        closeModal();
       }
-    };
+    } catch (error) {
+      console.error("Login error:", error);
+      setErrorMsg("An error occurred during login. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const onOTPClick = async (e) => {
     e.preventDefault();

@@ -9,6 +9,7 @@ import { setPageNumber } from "src/store/slices/searchSlice";
 import CustomSkelton from "../../common/customSkelton";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import AdvanceFilter from "components/common/AdvanceSearchFilter";
 
 const CampSearch = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -41,7 +42,7 @@ const CampSearch = () => {
 
   const [isReview, setIsReview] = useState(asof == "review");
   const [displayList, setDisplayList] = useState([]);
-
+  const router = useRouter();
   const dispatch = useDispatch();
 
   const pageChange = (pageNumber) => {
@@ -51,12 +52,8 @@ const CampSearch = () => {
 
   useEffect(() => {
     pageChange(currentPage);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchDataAll?.camp]);
-  const showEmpty = (msg) => {
-    return <Empty description={msg} />;
-  };
-
+  
   useEffect(() => {
     setIsReview(asof == "review");
   }, [asof]);
@@ -77,33 +74,36 @@ const CampSearch = () => {
     setDisplayList(selectedCampFromAdvanceFilterAlgorithm);
     dispatch(setPageNumber(pageNumber));
   };
-  const getHighlightedText = (text, highlight) => {
-    const escapedHighlight = highlight.replace(
-      /[-[\]{}()*+?.,\\^$|#\s]/g,
-      "\\$&"
-    );
-
-    // Create a regular expression using the escaped highlight
-    const parts = text?.split(new RegExp(`(${escapedHighlight})`, "gi"));
+  
+  const getHighlightedText = (text = "", highlight = "") => {
+    if (!text || !highlight) return text; // If no text or highlight, return the original text.
+  
+    // Escape special characters in the highlight for regex
+    const escapedHighlight = highlight.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+  
+    // Create a regular expression with the escaped highlight (case-insensitive)
+    const regex = new RegExp(`(${escapedHighlight})`, "gi");
+  
+    // Split the text using the regex pattern
+    const parts = text.split(regex);
+  
     return (
       <span>
-        {" "}
-        {parts?.map((part, i) => (
-          <span
-            key={i}
-            style={
-              part.toLowerCase() === highlight.toLowerCase()
-                ? { fontWeight: 700 }
-                : {}
-            }
-          >
-            {part}
-          </span>
-        ))}{" "}
+        {parts.map((part, i) =>
+          // If the part matches the highlight, wrap it in a <mark> tag (can be styled with CSS)
+          regex.test(part) ? (
+            <mark key={i} className="highlighted-text">
+              {part}
+            </mark>
+          ) : (
+            // Otherwise, return the part as regular text
+            <span key={i}>{part}</span>
+          )
+        )}
       </span>
     );
   };
-  const router = useRouter();
+  
   return (
     <Fragment>
       <div
@@ -137,7 +137,7 @@ const CampSearch = () => {
             </h3>
           </div>
         </div>
-        {/* <AdvanceFilter /> */}
+        <AdvanceFilter />
       </div>
       <div
         className="flex lg:flex-row flex-col gap-10"
@@ -173,7 +173,6 @@ const CampSearch = () => {
               >
                 Camp(S)
               </h4>
-              {/* <AdvanceFilter /> */}
             </div>
             {loading ? (
               <CustomSkelton
@@ -195,10 +194,9 @@ const CampSearch = () => {
                         {selectedCampFromAdvanceFilterAlgorithm?.length ? (
                           <ul id="search_camp_section_ul">
                             {displayList?.map((x) => {
-                              const jsonData = JSON.parse(
-                                x.breadcrumb
-                              ) as Array<any>;
-                              const parsedData = jsonData.reduce(
+                              const jsonData = JSON.parse(x.breadcrumb_data) as Array<any>;
+                              const parsedDataArray = Array.isArray(jsonData) ? jsonData : [];
+                              const parsedData = parsedDataArray.reduce(
                                 (accumulator, currentVal, index) => {
                                   const accIndex = index + 1;
                                   accumulator[index] = {
@@ -208,8 +206,7 @@ const CampSearch = () => {
                                         ? currentVal[accIndex]?.topic_name
                                         : currentVal[accIndex]?.camp_name,
                                     camp_link: currentVal[accIndex]?.camp_link,
-                                    topic_name:
-                                      currentVal[accIndex]?.topic_name,
+                                    topic_name:currentVal[accIndex]?.topic_name,
                                   };
                                   return accumulator;
                                 },
@@ -221,36 +218,19 @@ const CampSearch = () => {
                                     className="flex flex-col py-3 first:pt-0 border-b border-canGrey2 last:border-none"
                                     id="search_camp_section_ul_li"
                                   >
-                                    <Link
-                                      href={`/${jsonData[0][1]?.camp_link}`}
-                                    >
-                                      <div
-                                        className="flex justify-between items-center"
-                                        id="search_camp_section_ul_li_div"
-                                      >
-                                        <a
-                                          className="text-base font-medium text-canBlack flex !mb-2"
-                                          id="search_camp_section_ul_li_link_value"
-                                        >
-                                          {" "}
-                                          {/* {x.camp_name} */}
-                                          {getHighlightedText(
-                                            x?.camp_name,
-                                            searchValue
-                                          )}
+                                    <Link href={`/${jsonData?.[0]?.[1]?.camp_link ?? "#"}`} passHref>
+                                      <div className="flex justify-between items-center">
+                                        <a className="text-base font-medium text-canBlack flex !mb-2" id="search_camp_section_ul_li_advance_link_value">
+                                          {getHighlightedText(x?.type_value, searchValue)}
                                         </a>
-                                        <a
-                                          id="search_camp_section_ul_li_link"
-                                          href={`/${jsonData[0][1]?.camp_link}`}
-                                        >
-                                          <Image
-                                            id="search_camp_section_ul_li_img"
-                                            src="/images/search-page-arrow.svg"
-                                            width={16}
-                                            height={10}
-                                            alt={"check"}
-                                          />
-                                        </a>
+                                        <Image
+                                          id="search_camp_section_ul_li_advance_img"
+                                          src="/images/search-page-arrow.svg"
+                                          width={16}
+                                          height={10}
+                                          alt="check"
+                                          className="cursor-pointer"
+                                        />
                                       </div>
                                     </Link>
                                     <div
@@ -286,7 +266,6 @@ const CampSearch = () => {
                                                 href={`/${obj?.camp_link}`}
                                                 key={`/${obj?.camp_link}`}
                                               >
-                                                {/* {obj.camp_name} */}
                                                 {getHighlightedText(
                                                   obj?.camp_name,
                                                   searchValue
@@ -316,10 +295,9 @@ const CampSearch = () => {
                     ) : (
                       <ul id="search_camp_section_advance">
                         {searchDataAll?.camp.map((x) => {
-                          const jsonData = JSON.parse(
-                            x.breadcrumb_data
-                          ) as Array<any>;
-                          const parsedData = jsonData.reduce(
+                          const jsonData = JSON.parse(x.breadcrumb_data) as Array<any>;
+                          const parsedDataArray = Array.isArray(jsonData) ? jsonData : [];
+                          const parsedData = parsedDataArray.reduce(
                             (accumulator, currentVal, index) => {
                               const accIndex = index + 1;
                               accumulator[index] = {
@@ -336,45 +314,25 @@ const CampSearch = () => {
                           );
                           return (
                             <>
-                              <li
-                                className="flex flex-col py-3 first:pt-0 border-b border-canGrey2 last:border-none"
-                                id="search_camp_section_ul_li_advance"
-                              >
-                                <Link href={`/${jsonData?.[0][1]?.camp_link}`}>
+                              <li className="flex flex-col py-3 first:pt-0 border-b border-canGrey2 last:border-none" id="search_camp_section_ul_li_advance">
+                              <Link href={`/${jsonData?.[0]?.[1]?.camp_link ?? "#"}`} passHref>
                                   <div className="flex justify-between items-center">
-                                    <a
-                                      className="text-base font-medium text-canBlack flex !mb-2 "
-                                      id="search_camp_section_ul_li_advance_link_value"
-                                    >
-                                      {" "}
-                                      {/* {x.type_value} */}
-                                      {getHighlightedText(
-                                        x?.type_value,
-                                        searchValue
-                                      )}
+                                    <a className="text-base font-medium text-canBlack flex !mb-2" id="search_camp_section_ul_li_advance_link_value">
+                                      {getHighlightedText(x?.type_value, searchValue)}
                                     </a>
-                                    <a
-                                      href={`/${jsonData[0][1]?.camp_link}`}
-                                      id="search_camp_section_ul_li_advance_link"
-                                    >
-                                      <Image
-                                        id="search_camp_section_ul_li_advance_img"
-                                        src="/images/search-page-arrow.svg"
-                                        width={16}
-                                        height={10}
-                                        alt={"check"}
-                                      />
-                                    </a>
+                                    <Image
+                                      id="search_camp_section_ul_li_advance_img"
+                                      src="/images/search-page-arrow.svg"
+                                      width={16}
+                                      height={10}
+                                      alt="check"
+                                      className="cursor-pointer"
+                                    />
                                   </div>
                                 </Link>
-                                <div
-                                  className="text-base  flex flex-wrap items-center gap-2.5"
-                                  id="search_camp_section_ul_li_advance_parsed_area"
-                                >
-                                  <div
-                                    className="flex gap-2.5"
-                                    id="search_camp_section_ul_li_advance_parsed_area_div_1"
-                                  >
+
+                                <div className="text-base  flex flex-wrap items-center gap-2.5" id="search_camp_section_ul_li_advance_parsed_area">
+                                  <div className="flex gap-2.5" id="search_camp_section_ul_li_advance_parsed_area_div_1">
                                     <Image
                                       id="search_camp_section_ul_li_advance_parsed_area_img"
                                       src="/images/note-sticky.svg"
