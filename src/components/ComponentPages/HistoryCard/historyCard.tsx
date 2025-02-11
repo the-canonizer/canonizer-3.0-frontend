@@ -96,6 +96,9 @@ function HistoryCard({
     campObjection: "campObjection",
     statementObjection: "statementObjection",
   };
+
+  // When any change is submitted and committed as well, below check (changeIsCommittedAndInReview) will be true then...
+  let changeIsCommittedAndInReview = campStatement?.status == "in_review" && campStatement?.grace_period==0;
   const manageFor = router?.asPath?.split("/")?.at(1);
 
   const dispatch = useDispatch();
@@ -464,7 +467,7 @@ function HistoryCard({
         )}
 
         {campStatement?.status == "in_review" && (
-          <div className="agreement-wrapper wrapper-top-border">
+          <div className={changeIsCommittedAndInReview ?`agreement-wrapper wrapper-top-border`:null}>
             {campStatement?.status == "in_review" &&
               (!campStatement?.grace_period || commited) &&
               isUserAuthenticated &&
@@ -492,14 +495,9 @@ function HistoryCard({
                 </>
               )}
 
-            {campStatement?.status == "in_review" && (
+            {changeIsCommittedAndInReview && (
               <div>
                 <Space>
-                  {/* {!!(
-                    campStatement?.ifIamSupporter != 0 ||
-                    campStatement?.ifIAmExplicitSupporter ||
-                    campStatement?.isAuthor
-                  ) && ( */}
                     <>
                       <HistoryCardDrawer
                         onClick={async () => {
@@ -567,7 +565,6 @@ function HistoryCard({
                         )}
                       />
                     </>
-                  {/* )} */}
                 </Space>
               </div>
             )}
