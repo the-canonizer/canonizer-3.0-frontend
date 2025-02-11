@@ -495,7 +495,7 @@ export default function AdvanceFilter() {
 
       if (router?.pathname === "/search/topic" && isReviewOrByDate) {
         dispatch(setSearchLoadingAction(true));
-        await  getApiData("topic");;
+        await  getApiData("topic");
         dispatch(setSearchLoadingAction(false));
       } else if (router?.pathname === "/search/camp" && isReviewOrByDate) {
         dispatch(setSearchLoadingAction(true));
