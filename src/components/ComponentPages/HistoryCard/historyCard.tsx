@@ -300,6 +300,34 @@ function HistoryCard({
     }
   };
 
+  const getChangeSupportHandler = async() => {
+    let req = {
+      topic_num: router?.query?.camp[0]?.split("-")[0],
+      camp_num: historyOf == "topic" ? 1 : router?.query?.camp[1]?.split("-")[0],
+      change_id: campStatement?.id,
+      type: historyOf,
+    };
+    let res = await getChangeSupporters(req);
+    if (res.status_code == 200) {
+      let supportersData = res?.data?.supporters?.map(
+        (data, key) => {
+          return {
+            key: key,
+            status: data?.agreed,
+            nickNameData: {
+              name: data?.nick_name,
+              path: `/user/supports/${data?.id || ""}?canon=${
+                topicNamespaceId || ""
+              }`,
+            },
+          };
+        }
+      );
+      setSupporters(supportersData);
+    }
+    setIsModalOpen(true);
+  }
+
   return (
     <div
       id="history-card-container"
@@ -512,36 +540,7 @@ function HistoryCard({
                   campStatement?.isAuthor
                 ) && (
                   <HistoryCardDrawer
-                    onClick={async () => {
-                      let req = {
-                        topic_num: router?.query.camp[0].split("-")[0],
-                        camp_num:
-                          historyOf == "topic"
-                            ? 1
-                            : router?.query.camp[1].split("-")[0],
-                        change_id: campStatement?.id,
-                        type: historyOf,
-                      };
-                      let res = await getChangeSupporters(req);
-                      if (res.status_code == 200) {
-                        let supportersData = res?.data.supporters?.map(
-                          (data, key) => {
-                            return {
-                              key: key,
-                              status: data?.agreed,
-                              nickNameData: {
-                                name: data?.nick_name,
-                                path: `/user/supports/${data?.id || ""}?canon=${
-                                  topicNamespaceId || ""
-                                }`,
-                              },
-                            };
-                          }
-                        );
-                        setSupporters(supportersData);
-                      }
-                      setIsModalOpen(true);
-                    }}
+                    onClick={async () => { getChangeSupportHandler() }}
                     displayText={
                       <p id="history-page-supporters-text">
                         <u>
