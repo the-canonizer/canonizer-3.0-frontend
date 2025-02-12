@@ -300,6 +300,60 @@ function HistoryCard({
     }
   };
 
+  const getChangeSupportHandler = async() => {
+    let req = {
+      topic_num: router?.query?.camp[0]?.split("-")[0],
+      camp_num: historyOf == "topic" ? 1 : router?.query?.camp[1]?.split("-")[0],
+      change_id: campStatement?.id,
+      type: historyOf,
+    };
+    let res = await getChangeSupporters(req);
+    if (res.status_code == 200) {
+      let supportersData = res?.data?.supporters?.map(
+        (data, key) => {
+          return {
+            key: key,
+            status: data?.agreed,
+            nickNameData: {
+              name: data?.nick_name,
+              path: `/user/supports/${data?.id || ""}?canon=${
+                topicNamespaceId || ""
+              }`,
+            },
+          };
+        }
+      );
+      setSupporters(supportersData);
+    }
+    setIsModalOpen(true);
+  }
+
+  const disableObjectChangesBtn = () => {
+    return historyOf == "camp"
+    ? !campStatement?.ifICanAgreeAndObject
+    : false
+  }
+
+  const disableEditOrUnArchiveBtn = () => {
+    return unarchiveChangeSubmitted ||
+    (campHistoryItems &&
+      campHistoryItems[0]?.status == "in_review" &&
+      !commited &&
+      !!campHistoryItems[0]?.grace_period) ||
+    (campHistoryItems?.at(0)?.status == "live" &&
+      campHistoryItems?.at(0)?.is_archive == 1 &&
+      campStatement.status == "old") ||
+    (parentArchived == 1 && directarchived == 0) ||
+    (parentArchived == 1 &&
+      directarchived == 1 &&
+      historyOf == "topic") ||
+    (campHistoryItems?.at(0)?.is_archive == 1 &&
+      campHistoryItems?.at(0)?.status == "live" &&
+      campStatement.status == "objected")
+      ? true
+      : false
+  }
+
   return (
     <div
       id="history-card-container"
@@ -512,36 +566,7 @@ function HistoryCard({
                   campStatement?.isAuthor
                 ) && (
                   <HistoryCardDrawer
-                    onClick={async () => {
-                      let req = {
-                        topic_num: router?.query.camp[0].split("-")[0],
-                        camp_num:
-                          historyOf == "topic"
-                            ? 1
-                            : router?.query.camp[1].split("-")[0],
-                        change_id: campStatement?.id,
-                        type: historyOf,
-                      };
-                      let res = await getChangeSupporters(req);
-                      if (res.status_code == 200) {
-                        let supportersData = res?.data.supporters?.map(
-                          (data, key) => {
-                            return {
-                              key: key,
-                              status: data?.agreed,
-                              nickNameData: {
-                                name: data?.nick_name,
-                                path: `/user/supports/${data?.id || ""}?canon=${
-                                  topicNamespaceId || ""
-                                }`,
-                              },
-                            };
-                          }
-                        );
-                        setSupporters(supportersData);
-                      }
-                      setIsModalOpen(true);
-                    }}
+                    onClick={async () => { getChangeSupportHandler() }}
                     displayText={
                       <p id="history-page-supporters-text">
                         <u>
@@ -602,23 +627,7 @@ function HistoryCard({
                     : submitUpdateRedirect(historyOf);
                 }}
                 disabled={
-                  unarchiveChangeSubmitted ||
-                  (campHistoryItems &&
-                    campHistoryItems[0]?.status == "in_review" &&
-                    !commited &&
-                    !!campHistoryItems[0]?.grace_period) ||
-                  (campHistoryItems?.at(0)?.status == "live" &&
-                    campHistoryItems?.at(0)?.is_archive == 1 &&
-                    campStatement.status == "old") ||
-                  (parentArchived == 1 && directarchived == 0) ||
-                  (parentArchived == 1 &&
-                    directarchived == 1 &&
-                    historyOf == "topic") ||
-                  (campHistoryItems?.at(0)?.is_archive == 1 &&
-                    campHistoryItems?.at(0)?.status == "live" &&
-                    campStatement.status == "objected")
-                    ? true
-                    : false
+                    disableEditOrUnArchiveBtn()
                 }
               >
                 {campStatement?.is_archive == 1 &&
@@ -647,11 +656,7 @@ function HistoryCard({
                   >
                     <Button
                       size="large"
-                      disabled={
-                        historyOf == "camp"
-                          ? !campStatement?.ifICanAgreeAndObject
-                          : false
-                      }
+                      disabled={disableObjectChangesBtn()}
                       id={`object-change-${campStatement?.id}`}
                       className="flex items-center bg-canRed_Opacity10 border-canRed hover:border-canRed hover:text-canRed focus:text-canRed focus:border-canRed justify-center text-sm rounded-xl gap-3.5 leading-none w-100 font-medium"
                       onClick={() => objectionHandler()}
