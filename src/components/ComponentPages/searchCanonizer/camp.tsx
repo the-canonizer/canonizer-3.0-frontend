@@ -78,13 +78,11 @@ const CampSearch = () => {
   
     // Escape special characters in the highlight for regex
     const escapedHighlight = highlight.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
-  
     // Create a regular expression with the escaped highlight (case-insensitive)
     const regex = new RegExp(`(${escapedHighlight})`, "gi");
-  
     // Split the text using the regex pattern
     const parts = text.split(regex);
-  
+
     return (
       <span>
         {parts.map((part, i) =>
@@ -129,7 +127,7 @@ const CampSearch = () => {
           >
             <Link href={`/${parsedData?.[0]?.camp_link ?? "#"}`} passHref>
               <div className="flex justify-between items-center">
-                <a className="text-base font-medium text-canBlack flex !mb-2">
+                <a className="text-base font-medium text-canBlack flex !mb-2 break-words overflow-hidden">
                   {getHighlightedText(x?.type_value, searchValue)}
                 </a>
                 <Image src="/images/search-page-arrow.svg" width={16} height={10} alt="check" className="cursor-pointer" />
@@ -141,7 +139,7 @@ const CampSearch = () => {
                 <span className="text-base font-medium text-canBlack mr-1">Topic:</span>
               </div>
               {parsedData.reverse().map((obj, index) => (
-                <a className="text-base text-canBlue flex items-center gap-2.5 font-medium" href={`/${obj?.camp_link}`} key={obj?.camp_link}>
+                <a className="text-base text-canBlue flex items-center gap-2.5 font-medium break-words overflow-hidden" href={`/${obj?.camp_link}`} key={obj?.camp_link}>
                   {getHighlightedText(obj?.camp_name, searchValue)}
                   {index < parsedData.length - 1 ? "/ " : ""}
                 </a>

@@ -195,7 +195,7 @@ const CampStatementSearch = () => {
             <SearchSideBar />
           </div>
         </aside>
-        <div className="pageContentWrap flex-1" id="search_section_camp_statement_header">
+        <div className="pageContentWrap flex-1 w-full lg:w-4/5 md:w-11/12 sm:w-full" id="search_section_camp_statement_header">
           <div className="bg-canGray lg:py-5 lg:px-8 py-4 px-4 rounded-xl mb-5" id="search_section_camp_statement_header_1">
             <div className="d-flex mb-2 align-items-center flex-wrap relative" id="search_section_camp_statement_header_2">
               <h4 data-testid="camp_statment_heading" className="!mb-6 !text-base !font-semibold !text-canBlack" id="search_section_camp_statement_header_text">
