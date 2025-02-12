@@ -105,7 +105,6 @@ const CampSearch = () => {
   const parseBreadcrumbData = (breadcrumbData: string) => {
     const jsonData = JSON.parse(breadcrumbData) as Array<any>;
     const parsedDataArray = Array.isArray(jsonData) ? jsonData : [];
-  
     return parsedDataArray.reduce((accumulator, currentVal, index) => {
       const accIndex = index + 1;
       accumulator[index] = {
