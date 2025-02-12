@@ -392,7 +392,6 @@ const SettingsUI = () => {
           >
             <Menu
               id="setting_section_menu"
-              title="PROFILE SETTINGS"
               mode="inline"
               items={items}
               className="custom-menu"

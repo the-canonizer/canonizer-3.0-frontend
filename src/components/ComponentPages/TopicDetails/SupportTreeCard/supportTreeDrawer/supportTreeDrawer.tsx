@@ -623,6 +623,7 @@ function SupportTreeDrawer({
       open={open || openDrawerForManageSupport}
       contentWrapperStyle={{ maxWidth: "730px", width: "100%" }}
     >
+      <div>
       <CustomSpinner key="create-thread-spinner" spinning={loader}>
         <div className="page-breadcrums-wrapper">
           <PageHeader
@@ -1115,6 +1116,8 @@ function SupportTreeDrawer({
           </Form>
         ) : null}
       </CustomSpinner>
+      </div>
+      
     </Drawer>
   );
 }
