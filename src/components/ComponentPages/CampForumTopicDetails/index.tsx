@@ -100,7 +100,7 @@ function Campforum() {
                       <Typography.Paragraph className="!mb-0 text-sm text-canBlack text-ellipsis font-normal row-start-1 md:row-start-0 col-span-2 md:col-span-2 headingTitle">
                         {obj.body}
                       </Typography.Paragraph>
-                      <Typography.Paragraph className="text-canBlack text-opacity-50 font-medium text-[10px] 2xl:text-xs !mb-0 flex items-center mt-1 row-start-2 row-span-2 col-span-2 md:col-span-2 md:row-start-0 md:row-span-0">
+                      <Typography.Paragraph className="text-canBlack text-opacity-50 font-medium text-xs 2xl:text-xs !mb-0 flex items-center mt-1 row-start-2 row-span-2 col-span-2 md:col-span-2 md:row-start-0 md:row-span-0">
                         {covertToTime(obj?.created_at)}
                       </Typography.Paragraph>
                       <div className="flex justify-end items-center gap-3 row-start-2 row-span-2 md:row-start-0 md:row-span-2">
