@@ -218,7 +218,7 @@ const CreateNewCamp = () => {
 
     if (filterByScore && filterByScore != 0)
       searchParams.append("score", filterByScore);
-    if (filterObject?.algorithm)
+    if (filterObject?.algorithm !== "blind_popularity")
       searchParams.append("algo", filterObject.algorithm);
     if (filterObject?.asof && filterObject?.asof !== "default")
       searchParams.append("asof", filterObject.asof);
@@ -229,7 +229,6 @@ const CreateNewCamp = () => {
       searchParams.append("canon", filterObject.namespace_id);
     if (viewThisVersion) searchParams.append("viewversion", "1");
 
-    console.log("searchParams", searchParams.toString());
     return searchParams.toString();
   };
 
@@ -242,6 +241,7 @@ const CreateNewCamp = () => {
           value: "",
         },
       ]);
+      
       form.validateFields(["camp_name"]);
       setIsLoading(false);
       return true;
