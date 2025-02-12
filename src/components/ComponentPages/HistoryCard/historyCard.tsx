@@ -97,6 +97,8 @@ function HistoryCard({
     statementObjection: "statementObjection",
   };
   const manageFor = router?.asPath?.split("/")?.at(1);
+  // When any change is submitted and committed as well, below check (changeIsCommittedAndInReview) will be true then...
+  let changeIsCommittedAndInReview = campStatement?.status == "in_review" && campStatement?.grace_period==0;
 
   const dispatch = useDispatch();
   const { isUserAuthenticated } = useAuthentication();
@@ -532,78 +534,80 @@ function HistoryCard({
           />
         )}
 
-        {campStatement?.status == "in_review" &&
-          (!campStatement?.grace_period || commited) &&
-          isUserAuthenticated &&
-          campStatement?.total_supporters > 1 && (
-            <div className="agreement-wrapper">
-              {(campStatement?.ifICanAgreeAndObject ||
-                campStatement?.ifICanAgreeAndObject == undefined) &&
-                !!(
-                  campStatement?.ifIamSupporter != 0 ||
-                  campStatement?.ifIAmExplicitSupporter
-                ) &&
-                isUserAuthenticated &&
-                !campStatement?.isAuthor && (
-                  <Checkbox
-                    id="history-page-agree-checkbox"
-                    defaultChecked={campStatement?.agreed_to_change}
-                    disabled={disableAgreeCheckbox()}
-                    onChange={agreeWithChange}
-                  >
-                    Agree With Change
-                  </Checkbox>
-                )}
-              <Space>
-                {!!(
-                  campStatement?.ifIamSupporter != 0 ||
-                  campStatement?.ifIAmExplicitSupporter ||
-                  campStatement?.isAuthor
-                ) && (
-                  <HistoryCardDrawer
-                    onClick={async () => {
-                      getChangeSupportHandler();
-                    }}
-                    displayText={
-                      <p id="history-page-supporters-text">
-                        <u>
-                          {campStatement?.agreed_supporters} out of{" "}
-                          {campStatement?.total_supporters} required supporters
-                          have agreed
-                        </u>
-                        {(campStatement?.ifICanAgreeAndObject ||
-                          campStatement?.ifICanAgreeAndObject == undefined) &&
-                          !!(
-                            campStatement?.ifIamSupporter != 0 ||
-                            campStatement?.ifIAmExplicitSupporter
-                          ) &&
-                          isUserAuthenticated &&
-                          !campStatement?.isAuthor &&
-                          campStatement?.total_supporters -
-                            campStatement?.agreed_supporters ==
-                            1 &&
-                          !campStatement?.agreed_to_change && (
-                            <>
-                              , Since you are the last hold out, the instant you
-                              agree, this will go live.
-                            </>
-                          )}
-                      </p>
-                    }
-                    agreedSupporters={supporters?.filter(
-                      (obj) => obj?.status === true
+        {campStatement?.status == "in_review" && (
+            <div className={changeIsCommittedAndInReview ?`agreement-wrapper wrapper-top-border`:null}>
+            {campStatement?.status == "in_review" &&
+              (!campStatement?.grace_period || commited) &&
+              isUserAuthenticated &&
+              campStatement?.total_supporters > 1 && (
+                <>
+                  {(campStatement?.ifICanAgreeAndObject ||
+                    campStatement?.ifICanAgreeAndObject == undefined) &&
+                    !!(
+                      campStatement?.ifIamSupporter != 0 ||
+                      campStatement?.ifIAmExplicitSupporter
+                    ) &&
+                    isUserAuthenticated &&
+                    !campStatement?.isAuthor && (
+                        <Checkbox
+                          id="history-page-agree-checkbox"
+                          defaultChecked={campStatement?.agreed_to_change}
+                          disabled={disableAgreeCheckbox()}
+                          onChange={agreeWithChange}
+                        >
+                          Agree With Change
+                        </Checkbox>
                     )}
-                    notAgreedSupporters={supporters?.filter(
-                      (obj) => obj?.status === false
-                    )}
-                  />
-                )}
-              </Space>
-            </div>
-          )}
+                </>
+              )}
+
+            {changeIsCommittedAndInReview && (
+              <div>
+                <Space>
+                    <>
+                      <HistoryCardDrawer
+                        onClick={async () => { getChangeSupportHandler() }}
+                        displayText={
+                          <p id="history-page-supporters-text">
+                            <u>
+                              {campStatement?.agreed_supporters} out of{" "}
+                              {campStatement?.total_supporters} required supporters have agreed
+                            </u>
+                            {(campStatement?.ifICanAgreeAndObject ||
+                              campStatement?.ifICanAgreeAndObject == undefined) &&
+                              !!(
+                                campStatement?.ifIamSupporter != 0 ||
+                                campStatement?.ifIAmExplicitSupporter
+                              ) &&
+                              isUserAuthenticated &&
+                              !campStatement?.isAuthor &&
+                              campStatement?.total_supporters -
+                                campStatement?.agreed_supporters ==
+                                1 &&
+                              !campStatement?.agreed_to_change && (
+                                <>
+                                  , Since you are the last hold out, the instant
+                                  you agree, this will go live.
+                                </>
+                              )}
+                          </p>
+                        }
+                        agreedSupporters={supporters?.filter(
+                          (obj) => obj?.status === true
+                        )}
+                        notAgreedSupporters={supporters?.filter(
+                          (obj) => obj?.status === false
+                        )}
+                      />
+                    </>
+                </Space>
+              </div>
+            )}
+          </div>
+        )}
 
         {!compareMode && (!campStatement?.grace_period || commited) && (
-          <div className="cn-footer-btn">
+          <div className="cn-footer-btn wrapper-top-border">
             <div className="cn-card-btn">
               <PrimaryButton
                 size="large"
@@ -744,7 +748,7 @@ function HistoryCard({
           !commited &&
           !!campStatement?.grace_period &&
           moment.now() < campStatement?.submit_time * 1000 + 3600000 && (
-            <div id="history-page-footer-container" className="cn-footer-btn">
+            <div id="history-page-footer-container" className="cn-footer-btn wrapper-top-border">
               <div className="cn-card-btn">
                 <PrimaryButton
                   size="large"
