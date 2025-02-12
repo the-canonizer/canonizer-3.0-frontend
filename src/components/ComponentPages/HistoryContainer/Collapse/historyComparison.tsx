@@ -34,7 +34,7 @@ const HistoryComparison = ({
   const getTitle = () => {
     if (historyOf === "camp" || historyOf === "topic") return "Updates";
     if (historyOf === "statement") return s1 ? "EDITS" : "DETAILS";
-    return null; 
+    return null;
   };
 
   return (
@@ -196,10 +196,14 @@ const HistoryComparison = ({
         <p>
           Topic Tags{"(s)"}:
           <span>
-            {campStatement?.tags?.map((tag, index) => {
-              let lastIndex = index + 1 === campStatement?.topic_tags?.length;
-              return commaSeparated(tag?.title, lastIndex);
-            })}
+            {
+              campStatement?.tags?.length>0?
+              campStatement?.tags?.map((tag, index) => {
+                let lastIndex = index + 1 === campStatement?.topic_tags?.length;
+                return commaSeparated(tag?.title, lastIndex);
+              })
+              :"None"
+            }
           </span>
         </p>
         <p>

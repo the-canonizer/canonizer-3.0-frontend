@@ -3,13 +3,12 @@ import SearchSideBar from "../../common/SearchSideBar";
 import styles from "./search.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "src/store";
-import moment from "moment";
-import { Empty, Pagination } from "antd";
+import { Pagination } from "antd";
 import { setPageNumber } from "src/store/slices/searchSlice";
 import CustomSkelton from "../../common/customSkelton";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import AdvanceFilter from "components/common/AdvanceSearchFilter";
+import AdvanceSearchHeader from "./AdvanceSearchHeader";
 
 const CampStatementSearch = () => {
   const { searchDataAll, searchValue } = useSelector((state: RootState) => ({
@@ -42,55 +41,45 @@ const CampStatementSearch = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [isReview, setIsReview] = useState(asof == "review");
   const [displayList, setDisplayList] = useState([]);
+  const fileNameLength = 800;
+  const router = useRouter();
   const dispatch = useDispatch();
+
   const pageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
     dispatch(setPageNumber(pageNumber));
   };
+
   const pageChange1 = (pageNumber, pageSize) => {
     setDisplayList(selectedStatementFromAdvanceFilterAlgorithm);
     dispatch(setPageNumber(pageNumber));
   };
+
   useEffect(() => {
     pageChange(currentPage);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchDataAll?.statement]);
-  const covertToTime = (unixTime) => {
-    return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
-  };
-  const fileNameLength = 800;
-  const showEmpty = (msg) => {
-    return <Empty description={msg} />;
-  };
 
   useEffect(() => {
     setIsReview(asof == "review");
   }, [asof]);
 
   useEffect(() => {
-    if (
-      asof == "review" ||
-      asof == "bydate" ||
-      filterByScore != 0 ||
-      algorithm !== "blind_popularity"
-    ) {
+    if (asof == "review" || asof == "bydate") {
       pageChange1(pageNumber, 20);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedStatementFromAdvanceFilterAlgorithm]);
+
   const getHighlightedText = (text, highlight) => {
     if (!text || !highlight) return text;
-
     const escapedHighlight = highlight.replace(
       /[-[\]{}()*+?.,\\^$|#\s]/g,
       "\\$&"
     );
-
     // Create a regular expression using the escaped highlight
     const regex = new RegExp(`(${escapedHighlight})`, "gi");
-
     return text.replace(regex, (match) => `<strong>${match}</strong>`);
   };
+
   const getHighlightedText2 = (text, highlight) => {
     const escapedHighlight = highlight.replace(
       /[-[\]{}()*+?.,\\^$|#\s]/g,
@@ -117,7 +106,7 @@ const CampStatementSearch = () => {
       </span>
     );
   };
-  const router = useRouter();
+
   const ArrowLink = ({ campLink }) => (
     <a href={`/${campLink}`}>
       <Image
@@ -131,9 +120,13 @@ const CampStatementSearch = () => {
 
   const StatementList = ({ statements, router, fileNameLength }) => {
     if (!statements?.length) {
-      return <span className="italic text-canLight">There is no data to show in this category.</span>;
+      return (
+        <span className="italic text-canLight">
+          There is no data to show in this category.
+        </span>
+      );
     }
-  
+
     return (
       <ul id="advance_search_section_camp_statement_search_all_ul">
         {statements.map((x) => {
@@ -150,15 +143,24 @@ const CampStatementSearch = () => {
             };
             return acc;
           }, []);
-  
+
           return (
-            <li className="flex flex-col py-3 border-b border-canGrey2 last:border-none last:pb-0" key={x.id}>
+            <li
+              className="flex flex-col py-3 border-b border-canGrey2 last:border-none last:pb-0"
+              key={x.id}
+            >
               <div className="flex justify-between items-center">
                 <a href={`/${jsonData?.[0]?.[1]?.camp_link}`}>
                   <h3 className="font-medium mb-2 text-canBlack text-base">
                     {jsonData?.length > 1
-                      ? getHighlightedText2(jsonData?.[0]?.[1]?.camp_name, router?.query?.q)
-                      : getHighlightedText2(jsonData?.[0]?.[1]?.topic_name, router?.query?.q)}
+                      ? getHighlightedText2(
+                          jsonData?.[0]?.[1]?.camp_name,
+                          router?.query?.q
+                        )
+                      : getHighlightedText2(
+                          jsonData?.[0]?.[1]?.topic_name,
+                          router?.query?.q
+                        )}
                   </h3>
                 </a>
                 <ArrowLink campLink={jsonData?.[0]?.[1]?.camp_link} />
@@ -166,17 +168,27 @@ const CampStatementSearch = () => {
               <div className="d-flex flex-wrap w-100 mb-1">
                 <div
                   dangerouslySetInnerHTML={{
-                    __html: getHighlightedText(x.type_value.substring(0, fileNameLength) + "...", router?.query?.q),
+                    __html: getHighlightedText(
+                      x.type_value.substring(0, fileNameLength) + "...",
+                      router?.query?.q
+                    ),
                   }}
                 ></div>
               </div>
               <div className="text-base flex flex-wrap items-center gap-2.5">
                 <div className="flex gap-2.5">
                   <Image src="/images/note-sticky.svg" width={17} height={19} />
-                  <span className="text-base font-medium text-canBlack mr-1"> Topic: </span>
+                  <span className="text-base font-medium text-canBlack mr-1">
+                    {" "}
+                    Topic:{" "}
+                  </span>
                 </div>
                 {parsedData?.reverse()?.map((obj, index) => (
-                  <a className="text-base !text-canBlue flex items-center gap-2.5 font-medium" href={`/${obj?.camp_link}`} key={`/${obj?.camp_link}`}>
+                  <a
+                    className="text-base !text-canBlue flex items-center gap-2.5 font-medium"
+                    href={`/${obj?.camp_link}`}
+                    key={`/${obj?.camp_link}`}
+                  >
                     {getHighlightedText2(obj.camp_name, router?.query?.q)}
                     {index < parsedData.length - 1 ? " / " : ""}
                   </a>
@@ -190,42 +202,13 @@ const CampStatementSearch = () => {
   };
   return (
     <Fragment>
-      <div
-        className="flex justify-between lg:items-center lg:flex-row flex-col items-start mb-10 mt-2.5 lg:gap-0 gap-5"
-        id="search_section_camp_statement_heading"
-      >
-        <div
-          className="flex  items-center"
-          id="search_section_camp_statement_heading_1"
-        >
-          <div
-            className="flex items-center gap-2.5"
-            id="search_section_camp_statement_heading_2"
-          >
-            <Image
-              id="search_section_camp_statement_img"
-              src="/images/recent-activiity-arrow.svg"
-              width={16}
-              height={24}
-            />
-
-            <h3
-              className="lg:text-3xl text-xl   text-canBlack font-medium"
-              id="search_section_camp_statement_text"
-            >
-              Search Results for “
-              <span
-                className="text-canBlue capitalize break-all whitespace-break-spaces"
-                id="search_section_camp_statement_text_value"
-              >
-                {router?.query?.q}
-              </span>
-              ”
-            </h3>
-          </div>
-        </div>
-        <AdvanceFilter />
-      </div>
+      <AdvanceSearchHeader
+        sectionId="search_section_camp_statement_heading"
+        subSectionId="search_section_camp_statement_heading_1"
+        headingId="search_section_camp_statement_heading_2"
+        imgId="search_section_camp_statement_img"
+        headingTextId="search_section_camp_statement_text"
+      />
       <div
         className="flex lg:flex-row flex-col gap-10"
         id="search_section_camp_statement_text_sidebar"
@@ -241,10 +224,23 @@ const CampStatementSearch = () => {
             <SearchSideBar />
           </div>
         </aside>
-        <div className="pageContentWrap flex-1" id="search_section_camp_statement_header">
-          <div className="bg-canGray lg:py-5 lg:px-8 py-4 px-4 rounded-xl mb-5" id="search_section_camp_statement_header_1">
-            <div className="d-flex mb-2 align-items-center flex-wrap relative" id="search_section_camp_statement_header_2">
-              <h4 data-testid="camp_statment_heading" className="!mb-6 !text-base !font-semibold !text-canBlack" id="search_section_camp_statement_header_text">
+        <div
+          className="pageContentWrap flex-1"
+          id="search_section_camp_statement_header"
+        >
+          <div
+            className="bg-canGray lg:py-5 lg:px-8 py-4 px-4 rounded-xl mb-5"
+            id="search_section_camp_statement_header_1"
+          >
+            <div
+              className="d-flex mb-2 align-items-center flex-wrap relative"
+              id="search_section_camp_statement_header_2"
+            >
+              <h4
+                data-testid="camp_statment_heading"
+                className="!mb-6 !text-base !font-semibold !text-canBlack"
+                id="search_section_camp_statement_header_text"
+              >
                 Camp Statement(S)
               </h4>
             </div>
@@ -257,255 +253,26 @@ const CampStatementSearch = () => {
                 id="search_section_camp_statement_loader"
               />
             ) : (
-              <div className={styles.search_lists} id="search_section_camp_statement_search_all">
-              {searchDataAll.statement?.length ? (
-                <StatementList
-                  statements={isReview || asof === "bydate" ? selectedStatementFromAdvanceFilterAlgorithm : searchDataAll.statement}
-                  router={router}
-                  fileNameLength={fileNameLength}
-                />
-              ) : (
-                <span className="italic text-canLight">There is no data to show in this category.</span>
-              )}
-            </div>
-              // <div className={styles.search_lists} id="search_section_camp_statement_search_all" >
-              //   {searchDataAll.statement?.length ? (
-              //     <div id="advance_search_section_camp_statement_search_all">
-              //       {isReview || asof == "bydate" ? (
-              //         <div>
-              //           {selectedStatementFromAdvanceFilterAlgorithm?.length ? (
-              //             <ul id="advance_search_section_camp_statement_search_all_ul">
-              //               {displayList?.map((x) => {
-              //                 const jsonData = JSON.parse(x.breadcrumb_data) as Array<any>;
-              //                 const parsedData = jsonData?.reduce(
-              //                   (accumulator, currentVal, index) => {
-              //                     const accIndex = index + 1;
-              //                     accumulator[index] = {
-              //                       camp_name:
-              //                         currentVal[accIndex]?.camp_name ==
-              //                         "Agreement"
-              //                           ? currentVal[accIndex]?.topic_name
-              //                           : currentVal[accIndex]?.camp_name,
-              //                       camp_link: currentVal[accIndex]?.camp_link,
-              //                       topic_name:currentVal[accIndex]?.topic_name,
-              //                     };
-              //                     return accumulator;
-              //                   },
-              //                   []
-              //                 );
-              //                 return (
-              //                   <li
-              //                     className="flex flex-col py-3 first:pt-0 border-b border-canGrey2 last:border-none last:pb-0"
-              //                     key={x.id}
-              //                     id="advance_search_section_camp_statement_search_all_li"
-              //                   >
-              //                     <div
-              //                       className="flex justify-between items-center"
-              //                       id="advance_search_section_camp_statement_search_all_li_link_area"
-              //                     >
-              //                       <a
-              //                         href={`/${jsonData?.[0]?.[1]?.camp_link}`}
-              //                         id="advance_search_section_camp_statement_search_all_li_parsed_link"
-              //                       >
-              //                         <h3 className="font-medium mb-2 text-canBlack text-base">
-              //                           {jsonData?.length > 1
-              //                             ? getHighlightedText2(
-              //                                 jsonData?.[0]?.[1]?.camp_name,
-              //                                 router?.query?.q
-              //                               )
-              //                             : getHighlightedText2(
-              //                                 jsonData?.[0]?.[1]?.topic_name,
-              //                                 router?.query?.q
-              //                               )}
-              //                         </h3>
-              //                       </a>
-              //                       <ArrowLink
-              //                         campLink={jsonData?.[0]?.[1]?.camp_link}
-              //                       />
-              //                     </div>
-              //                     <div
-              //                       className="d-flex flex-wrap w-100 mb-1"
-              //                       id="advance_search_section_camp_statement_search_all_li_parsed_highlighted_text"
-              //                     >
-              //                       <div
-              //                       dangerouslySetInnerHTML={{
-              //                         __html: getHighlightedText(
-              //                           x.type_value.substring(
-              //                             0,
-              //                             fileNameLength
-              //                           ) + "...",
-              //                           router?.query?.q
-              //                         ),
-              //                       }}></div>
-              //                     </div>
-
-              //                     <div
-              //                       className="text-base  flex flex-wrap items-center gap-2.5"
-              //                       id="advance_search_section_camp_statement_search_all_li_parsed_img_div"
-              //                     >
-              //                       <div
-              //                         className="flex gap-2.5"
-              //                         id="advance_search_section_camp_statement_search_all_li_parsed_img_1"
-              //                       >
-              //                         <Image
-              //                           id="advance_search_section_camp_statement_search_all_li_parsed_img"
-              //                           src="/images/note-sticky.svg"
-              //                           width={17}
-              //                           height={19}
-              //                         />
-              //                         <span
-              //                           className="text-base font-medium text-canBlack mr-1"
-              //                           id="advance_search_section_camp_statement_search_all_li_parsed_text"
-              //                         >
-              //                           {" "}
-              //                           Topic:
-              //                         </span>
-              //                       </div>
-              //                       {parsedData
-              //                         ?.reverse()
-              //                         ?.map((obj, index) => {
-              //                           return (
-              //                             <>
-              //                               <a
-              //                                 id="advance_search_section_camp_statement_search_all_li_parsed_link_data"
-              //                                 className="text-base !text-canBlue flex items-center gap-2.5 font-medium"
-              //                                 href={`/${obj?.camp_link}`}
-              //                                 key={`/${obj?.camp_link}`}
-              //                               >
-              //                                 {getHighlightedText2(
-              //                                   obj.camp_name,
-              //                                   router?.query?.q
-              //                                 )}
-              //                                 {index < parsedData.length - 1
-              //                                   ? "/ "
-              //                                   : ""}
-              //                               </a>
-              //                             </>
-              //                           );
-              //                         })}
-              //                     </div>
-              //                   </li>
-              //                 );
-              //               })}
-              //             </ul>
-              //           ) : (
-              //             <span
-              //               className="italic text-canLight"
-              //               id="advance_search_section_camp_statement_search_all_li_parsed_text_no_data"
-              //             >
-              //               There is no data to show in this category.
-              //             </span>
-              //           )}
-              //         </div>
-              //       ) : (
-              //         <ul>
-              //           {searchDataAll?.statement.map((x) => {
-              //             const jsonData = JSON.parse(
-              //               x.breadcrumb_data
-              //             ) as Array<any>;
-              //             const parsedData = jsonData?.reduce(
-              //               (accumulator, currentVal, index) => {
-              //                 const accIndex = index + 1;
-              //                 accumulator[index] = {
-              //                   camp_name:
-              //                     currentVal[accIndex]?.camp_name == "Agreement"
-              //                       ? currentVal[accIndex]?.topic_name
-              //                       : currentVal[accIndex]?.camp_name,
-              //                   camp_link: currentVal[accIndex]?.camp_link,
-              //                   topic_name: currentVal[accIndex]?.topic_name,
-              //                 };
-              //                 return accumulator;
-              //               },
-              //               []
-              //             );
-              //             return (
-              //               <li
-              //                 id="advance_search_section_camp_statement_search_all_li_parsed_text_value"
-              //                 className="flex flex-col py-3 first:pt-0 border-b border-canGrey2 last:border-none last:pb-0"
-              //                 key={x.id}
-              //               >
-              //                 <div className="flex justify-between items-center">
-              //                   <a
-              //                     href={`/${jsonData?.[0]?.[1]?.camp_link}`}
-              //                     id="advance_search_section_camp_statement_search_all_li_parsed_value_link"
-              //                   >
-              //                     <h3 className="font-medium mb-2 text-canBlack text-base">
-              //                       {jsonData?.length > 1
-              //                         ? getHighlightedText2(
-              //                             jsonData?.[0]?.[1]?.camp_name,
-              //                             router?.query?.q
-              //                           )
-              //                         : getHighlightedText2(
-              //                             jsonData?.[0]?.[1]?.topic_name,
-              //                             router?.query?.q
-              //                           )}
-              //                     </h3>
-              //                   </a>
-              //                   <ArrowLink
-              //                     campLink={jsonData?.[0]?.[1]?.camp_link}
-              //                   />
-              //                 </div>
-              //                 <div className="d-flex flex-wrap w-100 mb-1">
-              //                   <div
-              //                     dangerouslySetInnerHTML={{
-              //                       __html: getHighlightedText(
-              //                         x.type_value.substring(
-              //                           0,
-              //                           fileNameLength
-              //                         ) + "...",
-              //                         router?.query?.q
-              //                       ),
-              //                     }}
-              //                   ></div>
-              //                 </div>
-              //                 <div className="text-base  flex flex-wrap items-center gap-2.5">
-              //                   <div className="flex gap-2.5">
-              //                     <Image
-              //                       id="advance_search_section_camp_statement_search_all_li_parsed_text_value_img"
-              //                       src="/images/note-sticky.svg"
-              //                       width={17}
-              //                       height={19}
-              //                     />
-              //                     <span className="text-base font-medium text-canBlack mr-1">
-              //                       {" "}
-              //                       Topic:
-              //                     </span>
-              //                   </div>
-              //                   {parsedData?.reverse()?.map((obj, index) => {
-              //                     return (
-              //                       <>
-              //                         <a
-              //                           className="text-base !text-canBlue flex items-center gap-2.5 font-medium"
-              //                           href={`/${obj?.camp_link}`}
-              //                           key={`/${obj?.camp_link}`}
-              //                         >
-              //                           {getHighlightedText2(
-              //                             obj.camp_name,
-              //                             router?.query?.q
-              //                           )}
-              //                           {index < parsedData.length - 1
-              //                             ? "/ "
-              //                             : ""}
-              //                         </a>
-              //                       </>
-              //                     );
-              //                   })}
-              //                 </div>
-              //               </li>
-              //             );
-              //           })}
-              //         </ul>
-              //       )}
-              //     </div>
-              //   ) : (
-              //     <span
-              //       className="italic text-canLight"
-              //       id="advance_search_section_camp_statement_search_all_li_parsed_text_value_no_data"
-              //     >
-              //       There is no data to show in this category.
-              //     </span>
-              //   )}
-              // </div>
+              <div
+                className={styles.search_lists}
+                id="search_section_camp_statement_search_all"
+              >
+                {searchDataAll.statement?.length ? (
+                  <StatementList
+                    statements={
+                      isReview || asof === "bydate"
+                        ? selectedStatementFromAdvanceFilterAlgorithm
+                        : searchDataAll.statement
+                    }
+                    router={router}
+                    fileNameLength={fileNameLength}
+                  />
+                ) : (
+                  <span className="italic text-canLight">
+                    There is no data to show in this category.
+                  </span>
+                )}
+              </div>
             )}
             <Pagination
               current={pageNumber}
@@ -525,13 +292,8 @@ const CampStatementSearch = () => {
           </div>
         </div>
       </div>
-
-
-      
     </Fragment>
   );
-
 };
-
 
 export default CampStatementSearch;

@@ -83,14 +83,17 @@ function ManageStatements({ isEdit = false }) {
   };
 
   const hasArchivedCamp = (data) => {
-    return data?.some(camp => camp?.camp_is_archive === 1);
-  }
+    return data?.some((camp) => camp?.camp_is_archive === 1);
+  };
 
-  const { asofdate, asof, currentGetCheckSupportExistsData } = useSelector((state: RootState) => ({
-    asofdate: state.filters?.filterObject?.asofdate,
-    asof: state?.filters?.filterObject?.asof,
-    currentGetCheckSupportExistsData: state.topicDetails.currentGetCheckSupportExistsData,
-  }));
+  const { asofdate, asof, currentGetCheckSupportExistsData } = useSelector(
+    (state: RootState) => ({
+      asofdate: state.filters?.filterObject?.asofdate,
+      asof: state?.filters?.filterObject?.asof,
+      currentGetCheckSupportExistsData:
+        state.topicDetails.currentGetCheckSupportExistsData,
+    })
+  );
 
   const getBreadCrumbApiCall = async () => {
     let reqBody = {
@@ -107,7 +110,7 @@ function ManageStatements({ isEdit = false }) {
 
     let res = await getCampBreadCrumbApi(reqBody);
 
-    if(hasArchivedCamp(res?.data?.bread_crumb)){
+    if (hasArchivedCamp(res?.data?.bread_crumb)) {
       router.push(`/topic/${reqBody?.topic_num}/${reqBody?.camp_num}`);
     }
     if (router?.asPath?.split("/")?.[1] === "create") {
@@ -123,7 +126,7 @@ function ManageStatements({ isEdit = false }) {
 
   useEffect(() => {
     // if (router?.asPath?.split("/")?.[1] === "create") {
-      getBreadCrumbApiCall();
+    getBreadCrumbApiCall();
     // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);

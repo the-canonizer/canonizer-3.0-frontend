@@ -18,6 +18,7 @@ import HistoryCard from "../HistoryCard/historyCard";
 import CustomLayout from "src/hoc/layout/";
 import CommanBreadcrumbs from "../Breadcrumbs/commonBreadcrumbs";
 import GoogleAd from "components/googleAds";
+import SideNavigationTabs from "./sideNavigationTabs";
 
 function HistoryContainer() {
   const { isUserAuthenticated } = useIsUserAuthenticated();
@@ -408,7 +409,7 @@ function HistoryContainer() {
     >
       <div className="ch-wrapper">
         <div className="ch-history">
-          <div className="statement-status-sider">
+          {/* <div className="statement-status-sider">
             <Button
               type="link"
               id="history-page-back-button"
@@ -445,7 +446,16 @@ function HistoryContainer() {
             <div className="mt-5">
               <GoogleAd />
             </div>
-          </div>
+          </div> */}
+
+          <SideNavigationTabs
+            handleBackButton={handleBackButton}
+            historyOf={historyOf}
+            selectedTopic={selectedTopic}
+            campHistory={campHistory}
+            onCompareClick={onCompareClick}
+            renderButtons={renderButtons}
+          />
           {activeTab === "live"
             ? campHistory?.items?.length > 0 && renderContent()
             : campHistory?.items?.length > 0 && (
