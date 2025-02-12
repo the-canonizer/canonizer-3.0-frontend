@@ -156,13 +156,13 @@ const NicknameSearch = () => {
   const router = useRouter();
   return (
     <Fragment>
-    <AdvanceSearchHeader
-       sectionId="elastic_nickname_search"
-       subSectionId="elastic_nickname_search_sub_section"
-       headingId="elastic_nickname_search_heading_section"
-       imgId="elastic_nickname_search_img"
-       headingTextId="elastic_nickname_search_heading_text"
-    />
+      <AdvanceSearchHeader
+        sectionId="elastic_nickname_search"
+        subSectionId="elastic_nickname_search_sub_section"
+        headingId="elastic_nickname_search_heading_section"
+        imgId="elastic_nickname_search_img"
+        headingTextId="elastic_nickname_search_heading_text"
+      />
 
       {/* <div className="flex justify-between lg:items-center lg:flex-row flex-col items-start mb-10 mt-2.5 lg:gap-0 gap-5" id="">
         <div className="flex  items-center" id="">

@@ -64,10 +64,7 @@ const CampStatementSearch = () => {
   }, [asof]);
 
   useEffect(() => {
-    if (
-      asof == "review" ||
-      asof == "bydate" 
-    ) {
+    if (asof == "review" || asof == "bydate") {
       pageChange1(pageNumber, 20);
     }
   }, [selectedStatementFromAdvanceFilterAlgorithm]);
@@ -123,9 +120,13 @@ const CampStatementSearch = () => {
 
   const StatementList = ({ statements, router, fileNameLength }) => {
     if (!statements?.length) {
-      return <span className="italic text-canLight">There is no data to show in this category.</span>;
+      return (
+        <span className="italic text-canLight">
+          There is no data to show in this category.
+        </span>
+      );
     }
-  
+
     return (
       <ul id="advance_search_section_camp_statement_search_all_ul">
         {statements.map((x) => {
@@ -142,15 +143,24 @@ const CampStatementSearch = () => {
             };
             return acc;
           }, []);
-  
+
           return (
-            <li className="flex flex-col py-3 border-b border-canGrey2 last:border-none last:pb-0" key={x.id}>
+            <li
+              className="flex flex-col py-3 border-b border-canGrey2 last:border-none last:pb-0"
+              key={x.id}
+            >
               <div className="flex justify-between items-center">
                 <a href={`/${jsonData?.[0]?.[1]?.camp_link}`}>
                   <h3 className="font-medium mb-2 text-canBlack text-base">
                     {jsonData?.length > 1
-                      ? getHighlightedText2(jsonData?.[0]?.[1]?.camp_name, router?.query?.q)
-                      : getHighlightedText2(jsonData?.[0]?.[1]?.topic_name, router?.query?.q)}
+                      ? getHighlightedText2(
+                          jsonData?.[0]?.[1]?.camp_name,
+                          router?.query?.q
+                        )
+                      : getHighlightedText2(
+                          jsonData?.[0]?.[1]?.topic_name,
+                          router?.query?.q
+                        )}
                   </h3>
                 </a>
                 <ArrowLink campLink={jsonData?.[0]?.[1]?.camp_link} />
@@ -158,17 +168,27 @@ const CampStatementSearch = () => {
               <div className="d-flex flex-wrap w-100 mb-1">
                 <div
                   dangerouslySetInnerHTML={{
-                    __html: getHighlightedText(x.type_value.substring(0, fileNameLength) + "...", router?.query?.q),
+                    __html: getHighlightedText(
+                      x.type_value.substring(0, fileNameLength) + "...",
+                      router?.query?.q
+                    ),
                   }}
                 ></div>
               </div>
               <div className="text-base flex flex-wrap items-center gap-2.5">
                 <div className="flex gap-2.5">
                   <Image src="/images/note-sticky.svg" width={17} height={19} />
-                  <span className="text-base font-medium text-canBlack mr-1"> Topic: </span>
+                  <span className="text-base font-medium text-canBlack mr-1">
+                    {" "}
+                    Topic:{" "}
+                  </span>
                 </div>
                 {parsedData?.reverse()?.map((obj, index) => (
-                  <a className="text-base !text-canBlue flex items-center gap-2.5 font-medium" href={`/${obj?.camp_link}`} key={`/${obj?.camp_link}`}>
+                  <a
+                    className="text-base !text-canBlue flex items-center gap-2.5 font-medium"
+                    href={`/${obj?.camp_link}`}
+                    key={`/${obj?.camp_link}`}
+                  >
                     {getHighlightedText2(obj.camp_name, router?.query?.q)}
                     {index < parsedData.length - 1 ? " / " : ""}
                   </a>
@@ -189,16 +209,38 @@ const CampStatementSearch = () => {
         imgId="search_section_camp_statement_img"
         headingTextId="search_section_camp_statement_text"
       />
-      <div className="flex lg:flex-row flex-col gap-10" id="search_section_camp_statement_text_sidebar">
-        <aside className="leftSideBar miniSideBar" id="search_section_camp_statement_text_sidebar_1">
-          <div className="leftSideBar_Card p-0 m-0" id="search_section_camp_statement_text_sidebar_2">
+      <div
+        className="flex lg:flex-row flex-col gap-10"
+        id="search_section_camp_statement_text_sidebar"
+      >
+        <aside
+          className="leftSideBar miniSideBar"
+          id="search_section_camp_statement_text_sidebar_1"
+        >
+          <div
+            className="leftSideBar_Card p-0 m-0"
+            id="search_section_camp_statement_text_sidebar_2"
+          >
             <SearchSideBar />
           </div>
         </aside>
-        <div className="pageContentWrap flex-1" id="search_section_camp_statement_header">
-          <div className="bg-canGray lg:py-5 lg:px-8 py-4 px-4 rounded-xl mb-5" id="search_section_camp_statement_header_1">
-            <div className="d-flex mb-2 align-items-center flex-wrap relative" id="search_section_camp_statement_header_2">
-              <h4 data-testid="camp_statment_heading" className="!mb-6 !text-base !font-semibold !text-canBlack" id="search_section_camp_statement_header_text">
+        <div
+          className="pageContentWrap flex-1"
+          id="search_section_camp_statement_header"
+        >
+          <div
+            className="bg-canGray lg:py-5 lg:px-8 py-4 px-4 rounded-xl mb-5"
+            id="search_section_camp_statement_header_1"
+          >
+            <div
+              className="d-flex mb-2 align-items-center flex-wrap relative"
+              id="search_section_camp_statement_header_2"
+            >
+              <h4
+                data-testid="camp_statment_heading"
+                className="!mb-6 !text-base !font-semibold !text-canBlack"
+                id="search_section_camp_statement_header_text"
+              >
                 Camp Statement(S)
               </h4>
             </div>
@@ -211,17 +253,26 @@ const CampStatementSearch = () => {
                 id="search_section_camp_statement_loader"
               />
             ) : (
-              <div className={styles.search_lists} id="search_section_camp_statement_search_all">
-              {searchDataAll.statement?.length ? (
-                <StatementList
-                  statements={isReview || asof === "bydate" ? selectedStatementFromAdvanceFilterAlgorithm : searchDataAll.statement}
-                  router={router}
-                  fileNameLength={fileNameLength}
-                />
-              ) : (
-                <span className="italic text-canLight">There is no data to show in this category.</span>
-              )}
-            </div>
+              <div
+                className={styles.search_lists}
+                id="search_section_camp_statement_search_all"
+              >
+                {searchDataAll.statement?.length ? (
+                  <StatementList
+                    statements={
+                      isReview || asof === "bydate"
+                        ? selectedStatementFromAdvanceFilterAlgorithm
+                        : searchDataAll.statement
+                    }
+                    router={router}
+                    fileNameLength={fileNameLength}
+                  />
+                ) : (
+                  <span className="italic text-canLight">
+                    There is no data to show in this category.
+                  </span>
+                )}
+              </div>
             )}
             <Pagination
               current={pageNumber}

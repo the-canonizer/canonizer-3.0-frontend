@@ -34,7 +34,7 @@ const HistoryComparison = ({
   const getTitle = () => {
     if (historyOf === "camp" || historyOf === "topic") return "Updates";
     if (historyOf === "statement") return s1 ? "EDITS" : "DETAILS";
-    return null; 
+    return null;
   };
 
   return (
