@@ -556,9 +556,7 @@ export default function AdvanceFilter() {
     <div
       ref={panelRef}
       className={
-        router?.pathname == "/search/nickname"
-          ? "advanceFilter"
-          : "NicknameadvanceFilter advanceFilter"
+        router?.pathname == "/search/nickname" ? "advanceFilter" : "NicknameadvanceFiltersss advanceFilter"
       }
     >
       <Collapse
