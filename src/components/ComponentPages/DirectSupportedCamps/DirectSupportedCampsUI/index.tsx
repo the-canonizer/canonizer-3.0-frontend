@@ -97,7 +97,7 @@ export default function DirectSupportedCampsUI({
     title_link: string;
     camps: Tag[];
   }
-const textMaxLimit = 30
+  const textMaxLimit = 30;
   const columns = [
     {
       title: "Sr.",
@@ -147,7 +147,9 @@ const textMaxLimit = 30
               }}
               style={{ cursor: "pointer" }} // Provide visual feedback
             >
-              {text.length > textMaxLimit ? text.substring(0, textMaxLimit) + "..." : text}
+              {text.length > textMaxLimit
+                ? text.substring(0, textMaxLimit) + "..."
+                : text}
             </a>
           </Link>
           <Image
@@ -315,14 +317,20 @@ const textMaxLimit = 30
           {modalPopupText ? (
             <Link href={{ pathname: removeSupportCampsData.title_link }}>
               <a className="text-canGreen lg:text-2xl text-base font-semibold">
-                {removeSupportCampsData?.title?.length> textMaxLimit ?removeSupportCampsData?.title?.substring(0, textMaxLimit) + "..." :removeSupportCampsData?.title }
+                {removeSupportCampsData?.title?.length > textMaxLimit
+                  ? removeSupportCampsData?.title?.substring(0, textMaxLimit) +
+                    "..."
+                  : removeSupportCampsData?.title}
               </a>
             </Link>
           ) : (
             removeCampLink?.map((val, index) => (
               <Link key={val?.camp_num} href={{ pathname: val?.camp_link }}>
                 <a className="text-canGreen text-2xl font-semibold">
-                  {(index ? ", " : "") + (val.camp_name?.length > textMaxLimit ? val?.camp_name.substring(0, textMaxLimit) + "..." :val?.camp_name) }
+                  {(index ? ", " : "") +
+                    (val.camp_name?.length > textMaxLimit
+                      ? val?.camp_name.substring(0, textMaxLimit) + "..."
+                      : val?.camp_name)}
                 </a>
               </Link>
             ))
@@ -349,7 +357,12 @@ const textMaxLimit = 30
               className="text-sm font-semibold"
               id="direct_supported_camp_removeSupportCampsData_title"
             >
-              &quot;{removeSupportCampsData.title.length> textMaxLimit ?removeSupportCampsData.title.substring(0, textMaxLimit) + "..." :removeSupportCampsData.title }&quot;
+              &quot;
+              {removeSupportCampsData.title.length > textMaxLimit
+                ? removeSupportCampsData.title.substring(0, textMaxLimit) +
+                  "..."
+                : removeSupportCampsData.title}
+              &quot;
             </span>
             . You can optionally add a helpful reason, along with a citation
             link.

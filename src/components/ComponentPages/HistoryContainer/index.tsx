@@ -448,13 +448,13 @@ function HistoryContainer() {
             </div>
           </div> */}
 
-          <SideNavigationTabs 
-             handleBackButton={handleBackButton}
-             historyOf={historyOf}
-             selectedTopic={selectedTopic}
-             campHistory={campHistory}
-             onCompareClick={onCompareClick}
-             renderButtons={renderButtons}
+          <SideNavigationTabs
+            handleBackButton={handleBackButton}
+            historyOf={historyOf}
+            selectedTopic={selectedTopic}
+            campHistory={campHistory}
+            onCompareClick={onCompareClick}
+            renderButtons={renderButtons}
           />
           {activeTab === "live"
             ? campHistory?.items?.length > 0 && renderContent()

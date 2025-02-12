@@ -108,20 +108,21 @@ const CampSearch = () => {
   const parseBreadcrumbData = (breadcrumbData: string) => {
     const jsonData = JSON.parse(breadcrumbData) as Array<any>;
     const parsedDataArray = Array.isArray(jsonData) ? jsonData : [];
-  
+
     return parsedDataArray.reduce((accumulator, currentVal, index) => {
       const accIndex = index + 1;
       accumulator[index] = {
-        camp_name: currentVal[accIndex]?.camp_name === "Agreement"
-          ? currentVal[accIndex]?.topic_name
-          : currentVal[accIndex]?.camp_name,
+        camp_name:
+          currentVal[accIndex]?.camp_name === "Agreement"
+            ? currentVal[accIndex]?.topic_name
+            : currentVal[accIndex]?.camp_name,
         camp_link: currentVal[accIndex]?.camp_link,
         topic_name: currentVal[accIndex]?.topic_name,
       };
       return accumulator;
     }, []);
   };
-  
+
   const CampList = ({ campData, searchValue }) => (
     <ul id="search_camp_section_list">
       {campData.map((x) => {
@@ -136,16 +137,28 @@ const CampSearch = () => {
                 <a className="text-base font-medium text-canBlack flex !mb-2">
                   {getHighlightedText(x?.type_value, searchValue)}
                 </a>
-                <Image src="/images/search-page-arrow.svg" width={16} height={10} alt="check" className="cursor-pointer" />
+                <Image
+                  src="/images/search-page-arrow.svg"
+                  width={16}
+                  height={10}
+                  alt="check"
+                  className="cursor-pointer"
+                />
               </div>
             </Link>
             <div className="text-base flex flex-wrap items-center gap-2.5">
               <div className="flex gap-2.5">
                 <Image src="/images/note-sticky.svg" width={17} height={19} />
-                <span className="text-base font-medium text-canBlack mr-1">Topic:</span>
+                <span className="text-base font-medium text-canBlack mr-1">
+                  Topic:
+                </span>
               </div>
               {parsedData.reverse().map((obj, index) => (
-                <a className="text-base text-canBlue flex items-center gap-2.5 font-medium" href={`/${obj?.camp_link}`} key={obj?.camp_link}>
+                <a
+                  className="text-base text-canBlue flex items-center gap-2.5 font-medium"
+                  href={`/${obj?.camp_link}`}
+                  key={obj?.camp_link}
+                >
                   {getHighlightedText(obj?.camp_name, searchValue)}
                   {index < parsedData.length - 1 ? "/ " : ""}
                 </a>
@@ -156,26 +169,48 @@ const CampSearch = () => {
       })}
     </ul>
   );
-  
+
   return (
     <Fragment>
       <AdvanceSearchHeader
-          sectionId="search_camp_section"
-          subSectionId="search_camp_section_sub"
-          headingId="search_camp_section_heading"
-          imgId="search_camp_section_heading_img"
-          headingTextId="search_camp_section_heading_text"
+        sectionId="search_camp_section"
+        subSectionId="search_camp_section_sub"
+        headingId="search_camp_section_heading"
+        imgId="search_camp_section_heading_img"
+        headingTextId="search_camp_section_heading_text"
       />
-      <div className="flex lg:flex-row flex-col gap-10" id="search_camp_section_sidebar">
-        <aside className="leftSideBar miniSideBar" id="search_camp_section_sidebar_2">
-          <div className="leftSideBar_Card p-0 m-0" id="search_camp_section_heading_sidebar_3">
+      <div
+        className="flex lg:flex-row flex-col gap-10"
+        id="search_camp_section_sidebar"
+      >
+        <aside
+          className="leftSideBar miniSideBar"
+          id="search_camp_section_sidebar_2"
+        >
+          <div
+            className="leftSideBar_Card p-0 m-0"
+            id="search_camp_section_heading_sidebar_3"
+          >
             <SearchSideBar />
           </div>
         </aside>
-        <div className="pageContentWrap flex-1" id="search_camp_section_text_div">
-          <div className="bg-canGray lg:py-5 lg:px-8 py-4 px-4 rounded-xl mb-5" id="search_camp_section_text_div_1">
-            <div className="d-flex mb-2 align-items-center flex-wrap relative" id="search_camp_section_text_div_2">
-              <h4 data-testid="camp_heading" className="!mb-6 !text-base !font-semibold !text-canBlack" id="search_camp_section_text_heading">
+        <div
+          className="pageContentWrap flex-1"
+          id="search_camp_section_text_div"
+        >
+          <div
+            className="bg-canGray lg:py-5 lg:px-8 py-4 px-4 rounded-xl mb-5"
+            id="search_camp_section_text_div_1"
+          >
+            <div
+              className="d-flex mb-2 align-items-center flex-wrap relative"
+              id="search_camp_section_text_div_2"
+            >
+              <h4
+                data-testid="camp_heading"
+                className="!mb-6 !text-base !font-semibold !text-canBlack"
+                id="search_camp_section_text_heading"
+              >
                 Camp(S)
               </h4>
             </div>
@@ -187,24 +222,34 @@ const CampSearch = () => {
                 stylingClass="listSkeleton"
                 isButton={false}
               />
-             ) : (
-                  <div className={styles.search_lists}>
-                    {searchDataAll.camp?.length ? (
-                    isReview || asof == "bydate" ? (
-                        selectedCampFromAdvanceFilterAlgorithm?.length ? (
-                            <CampList campData={selectedCampFromAdvanceFilterAlgorithm} searchValue={searchValue} />
-                          ): (
-                            <span className="italic text-canLight">There is no data to show in this category.</span>
-                          )):(
-                            <CampList campData={searchDataAll.camp} searchValue={searchValue} />
-                          )
-                        ):
-                        (
-                          <span className="italic text-canLight">There is no data to show in this category.</span>
-                        )}
-                      </div>
-                    )}
-                      
+            ) : (
+              <div className={styles.search_lists}>
+                {searchDataAll.camp?.length ? (
+                  isReview || asof == "bydate" ? (
+                    selectedCampFromAdvanceFilterAlgorithm?.length ? (
+                      <CampList
+                        campData={selectedCampFromAdvanceFilterAlgorithm}
+                        searchValue={searchValue}
+                      />
+                    ) : (
+                      <span className="italic text-canLight">
+                        There is no data to show in this category.
+                      </span>
+                    )
+                  ) : (
+                    <CampList
+                      campData={searchDataAll.camp}
+                      searchValue={searchValue}
+                    />
+                  )
+                ) : (
+                  <span className="italic text-canLight">
+                    There is no data to show in this category.
+                  </span>
+                )}
+              </div>
+            )}
+
             <Pagination
               current={pageNumber}
               className="mt-5 [&_.ant-pagination-item]:!mr-1 lg:[&_.ant-pagination-item]:!mr-2"
@@ -220,9 +265,9 @@ const CampSearch = () => {
               }
               showSizeChanger={false}
             />
+          </div>
         </div>
       </div>
-    </div>
     </Fragment>
   );
 };

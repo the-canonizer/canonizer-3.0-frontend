@@ -75,24 +75,26 @@ export default function SearchSideBar() {
       ? searchCountForMetaData?.camp_total
       : storeOnPressEnterSearchCountForMetaData?.camp_total;
 
-  const statementTotal = router?.query?.q === ""
-    ? storeOnPressEnterSearchCountForMetaData?.statement_total
-    : (router.query.asof === "review" || router.query.asof === "bydate") &&
-      router?.pathname === "/search/camp_statement"
-    ? selectedCampStatementFromAdvanceFilterAlgorithmRecords
-    : detectPressEnterInSearch
-    ? searchCountForMetaData?.statement_total
-    : storeOnPressEnterSearchCountForMetaData?.statement_total;
+  const statementTotal =
+    router?.query?.q === ""
+      ? storeOnPressEnterSearchCountForMetaData?.statement_total
+      : (router.query.asof === "review" || router.query.asof === "bydate") &&
+        router?.pathname === "/search/camp_statement"
+      ? selectedCampStatementFromAdvanceFilterAlgorithmRecords
+      : detectPressEnterInSearch
+      ? searchCountForMetaData?.statement_total
+      : storeOnPressEnterSearchCountForMetaData?.statement_total;
 
-  const topicTotal = router?.query?.q === ""
-  ? storeOnPressEnterSearchCountForMetaData?.topic_total
-  : (router.query.asof === "review" || router.query.asof === "bydate") &&
-    router?.pathname === "/search/topic"
-  ? selectedTopicFromAdvanceFilterAlgorithmRecords
-  : detectPressEnterInSearch
-  ? searchCountForMetaData?.topic_total
-  : storeOnPressEnterSearchCountForMetaData?.topic_total;
-  
+  const topicTotal =
+    router?.query?.q === ""
+      ? storeOnPressEnterSearchCountForMetaData?.topic_total
+      : (router.query.asof === "review" || router.query.asof === "bydate") &&
+        router?.pathname === "/search/topic"
+      ? selectedTopicFromAdvanceFilterAlgorithmRecords
+      : detectPressEnterInSearch
+      ? searchCountForMetaData?.topic_total
+      : storeOnPressEnterSearchCountForMetaData?.topic_total;
+
   return (
     <>
       <div className="leftSideBar_Card noFilter">
@@ -112,9 +114,11 @@ export default function SearchSideBar() {
               }}
               passHref
             >
-              <Button 
+              <Button
                 size="large"
-                className={`p-0 shadow-none border-transparent !rounded-0 !border-t-0 !border-l-0 !border-r-0 active:!bg-transparent disabled:!bg-transparent disabled:!text-canBlue text-base font-normal disabled:!font-semibold active:!text-canBlue disabled:!border-b-2 disabled:!border-canBlue active:!border-none active:!border-transparent hover:!border-transparent focus:!border-transparent ${router?.pathname === "/search" ? "active" : "btn"}`}
+                className={`p-0 shadow-none border-transparent !rounded-0 !border-t-0 !border-l-0 !border-r-0 active:!bg-transparent disabled:!bg-transparent disabled:!text-canBlue text-base font-normal disabled:!font-semibold active:!text-canBlue disabled:!border-b-2 disabled:!border-canBlue active:!border-none active:!border-transparent hover:!border-transparent focus:!border-transparent ${
+                  router?.pathname === "/search" ? "active" : "btn"
+                }`}
                 onClick={() => {
                   dispatch(
                     setFilterCanonizedTopics({
@@ -124,105 +128,110 @@ export default function SearchSideBar() {
                   );
                 }}
               >
-              <span className="text-left w-full block">All Results</span>
+                <span className="text-left w-full block">All Results</span>
               </Button>
             </Link>
             <Link
-                href={{
-                  pathname: "/search/topic",
-                  query: {
-                    q: router?.query?.q
-                  },
-                }}
-                passHref
-                >
-                <Button
-                  size="large"
-                  className={`p-0 shadow-none border-transparent !rounded-0 !border-t-0 !border-l-0 !border-r-0 
+              href={{
+                pathname: "/search/topic",
+                query: {
+                  q: router?.query?.q,
+                },
+              }}
+              passHref
+            >
+              <Button
+                size="large"
+                className={`p-0 shadow-none border-transparent !rounded-0 !border-t-0 !border-l-0 !border-r-0 
                     active:!bg-transparent disabled:!bg-transparent disabled:!text-canBlue text-base font-normal 
                     disabled:!font-semibold active:!text-canBlue disabled:!border-b-2 disabled:!border-canBlue 
                     active:!border-none active:!border-transparent hover:!border-transparent focus:!border-transparent  
                     ${router?.pathname === "/search/topic" ? "active" : "btn"}`}
-                    // disabled={router?.pathname == "/search/topic" ? true : false}
-                  // disabled={router?.pathname === "/search/topic"}
-                  onClick={() => {
-                    dispatch(
-                      setFilterCanonizedTopics({
-                        asofdate: Date.now() / 1000,
-                        asof: "default",
-                      })
-                    );
-                  }}
-                >
+                // disabled={router?.pathname == "/search/topic" ? true : false}
+                // disabled={router?.pathname === "/search/topic"}
+                onClick={() => {
+                  dispatch(
+                    setFilterCanonizedTopics({
+                      asofdate: Date.now() / 1000,
+                      asof: "default",
+                    })
+                  );
+                }}
+              >
                 <span className="text-left w-full block">
-                    Topic <span>&nbsp;({topicTotal})</span>
+                  Topic <span>&nbsp;({topicTotal})</span>
                 </span>
-                </Button>
-            </Link>         
+              </Button>
+            </Link>
             <Link
-            href={{
-              pathname: "/search/camp",
-              query: {
-                q: router?.query?.q,
-              },
-            }}
-            passHref
-          >
-            <Button
-              size="large"
-              className={`p-0 shadow-none border-transparent !rounded-0 !border-t-0 !border-l-0 !border-r-0 
+              href={{
+                pathname: "/search/camp",
+                query: {
+                  q: router?.query?.q,
+                },
+              }}
+              passHref
+            >
+              <Button
+                size="large"
+                className={`p-0 shadow-none border-transparent !rounded-0 !border-t-0 !border-l-0 !border-r-0 
                 active:!bg-transparent disabled:!bg-transparent disabled:!text-canBlue text-base font-normal 
                 disabled:!font-semibold active:!text-canBlue disabled:!border-b-2 disabled:!border-canBlue 
                 active:!border-none active:!border-transparent hover:!border-transparent focus:!border-transparent 
                 ${router?.pathname === "/search/camp" ? "active" : "btn"}`}
                 // disabled={router?.pathname !== "/search/camp"}
-              onClick={() => {
-                dispatch(
-                  setFilterCanonizedTopics({
-                    asofdate: Date.now() / 1000,
-                    asof: "default",
-                  })
-                );
-              }}
-            >
-            <span className="text-left w-full block">
-                    Camp <span>&nbsp;({campTotal})</span>
-            </span>
-            </Button>
+                onClick={() => {
+                  dispatch(
+                    setFilterCanonizedTopics({
+                      asofdate: Date.now() / 1000,
+                      asof: "default",
+                    })
+                  );
+                }}
+              >
+                <span className="text-left w-full block">
+                  Camp <span>&nbsp;({campTotal})</span>
+                </span>
+              </Button>
             </Link>
-            <Link 
+            <Link
               href={{
-              pathname: "/search/camp_statement",
-              query: { q: router?.query?.q },
-            }} passHref >
-            <Button
-              size="large"
-              className={`p-0 shadow-none border-transparent !rounded-0 !border-t-0 !border-l-0 !border-r-0 
+                pathname: "/search/camp_statement",
+                query: { q: router?.query?.q },
+              }}
+              passHref
+            >
+              <Button
+                size="large"
+                className={`p-0 shadow-none border-transparent !rounded-0 !border-t-0 !border-l-0 !border-r-0 
                 active:!bg-transparent disabled:!bg-transparent disabled:!text-canBlue text-base font-normal 
                 disabled:!font-semibold active:!text-canBlue disabled:!border-b-2 disabled:!border-canBlue 
                 active:!border-none active:!border-transparent hover:!border-transparent focus:!border-transparent 
-                ${router?.pathname === "/search/camp_statement" ? "active" : "btn"}`}
-              // disabled={router?.pathname === "/search/camp_statement"}
-              onClick={() => {
-                dispatch(
-                  setFilterCanonizedTopics({
-                    asofdate: Date.now() / 1000,
-                    asof: "default",
-                  })
-                );
-              }}
-            >
-              Camp Statement{" "}
-              <span>&nbsp;({statementTotal})</span>
-            </Button>
-            </Link>            
+                ${
+                  router?.pathname === "/search/camp_statement"
+                    ? "active"
+                    : "btn"
+                }`}
+                // disabled={router?.pathname === "/search/camp_statement"}
+                onClick={() => {
+                  dispatch(
+                    setFilterCanonizedTopics({
+                      asofdate: Date.now() / 1000,
+                      asof: "default",
+                    })
+                  );
+                }}
+              >
+                Camp Statement <span>&nbsp;({statementTotal})</span>
+              </Button>
+            </Link>
             <Link
               href={{
                 pathname: "/search/nickname",
                 query: { q: router?.query?.q },
               }}
               passHref
-              >
+            >
               <Button
                 size="large"
                 className={`
@@ -244,13 +253,14 @@ export default function SearchSideBar() {
                 }}
               >
                 <span className="text-left w-full block">
-                  Nickname 
-                  <span>&nbsp;({storeOnPressEnterSearchCountForMetaData?.nickname_total})</span>
+                  Nickname
+                  <span>
+                    &nbsp;(
+                    {storeOnPressEnterSearchCountForMetaData?.nickname_total})
+                  </span>
                 </span>
               </Button>
             </Link>
-
-
           </div>
         )}
       </div>

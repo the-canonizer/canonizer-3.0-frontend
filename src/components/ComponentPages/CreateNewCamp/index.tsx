@@ -241,7 +241,7 @@ const CreateNewCamp = () => {
           value: "",
         },
       ]);
-      
+
       form.validateFields(["camp_name"]);
       setIsLoading(false);
       return true;

@@ -26,8 +26,16 @@ const AdvanceSearchHeader: React.FC<AdvanceSearchHeaderProps> = ({
     >
       <div className="flex items-center" id={subSectionId}>
         <div className="flex items-center gap-2.5" id={headingId}>
-          <Image id={imgId} src="/images/recent-activiity-arrow.svg" width={16} height={24} />
-          <h3 className="lg:text-3xl text-xl text-canBlack font-medium" id={headingTextId}>
+          <Image
+            id={imgId}
+            src="/images/recent-activiity-arrow.svg"
+            width={16}
+            height={24}
+          />
+          <h3
+            className="lg:text-3xl text-xl text-canBlack font-medium"
+            id={headingTextId}
+          >
             Search Results for “
             <span className="text-canBlue capitalize break-all whitespace-break-spaces">
               {router?.query?.q}
