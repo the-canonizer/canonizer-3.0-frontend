@@ -483,7 +483,7 @@ const TopicsList = () => {
                   ref={inputRef}
                   // disabled={loading}
                   // onChange={handleKeyUpSearch}
-                  onBlur={async() => {
+                  onBlur={async () => {
                     setTimeout(() => {
                       setShowSearchDropdown(false);
                     }, 300);
