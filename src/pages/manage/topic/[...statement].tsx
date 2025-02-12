@@ -30,7 +30,7 @@ const ManageTopicPage = ({ nameSpacesList, algorithms, cats }) => {
   );
 };
 
-export async function getServerSideProps({ req ,res}) {
+export async function getServerSideProps({ req, res }) {
   let token = await createToken(req, res);
   const nameSpaces = await getCanonizedNameSpacesApi(token);
   const canonizedAlgorithms = await getCanonizedAlgorithmsApi(token);

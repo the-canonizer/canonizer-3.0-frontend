@@ -142,6 +142,21 @@ function HistoryCard({
     }
   };
 
+  const getTextClass = (status: any) => {
+    switch (status) {
+      case "live":
+        return "text-canGreen";
+      case "in_review":
+        return "text-canOrange";
+      case "objected":
+        return "text-canRed";
+      case "old":
+        return "text-canBlue";
+      default:
+        return "";
+    }
+  };
+
   const updateHistory = async () => {
     const query: any = router?.query;
 
@@ -285,6 +300,55 @@ function HistoryCard({
     }
   };
 
+  const getChangeSupportHandler = async () => {
+    let req = {
+      topic_num: router?.query?.camp[0]?.split("-")[0],
+      camp_num:
+        historyOf == "topic" ? 1 : router?.query?.camp[1]?.split("-")[0],
+      change_id: campStatement?.id,
+      type: historyOf,
+    };
+    let res = await getChangeSupporters(req);
+    if (res.status_code == 200) {
+      let supportersData = res?.data?.supporters?.map((data, key) => {
+        return {
+          key: key,
+          status: data?.agreed,
+          nickNameData: {
+            name: data?.nick_name,
+            path: `/user/supports/${data?.id || ""}?canon=${
+              topicNamespaceId || ""
+            }`,
+          },
+        };
+      });
+      setSupporters(supportersData);
+    }
+    setIsModalOpen(true);
+  };
+
+  const disableObjectChangesBtn = () => {
+    return historyOf == "camp" ? !campStatement?.ifICanAgreeAndObject : false;
+  };
+
+  const disableEditOrUnArchiveBtn = () => {
+    return unarchiveChangeSubmitted ||
+      (campHistoryItems &&
+        campHistoryItems[0]?.status == "in_review" &&
+        !commited &&
+        !!campHistoryItems[0]?.grace_period) ||
+      (campHistoryItems?.at(0)?.status == "live" &&
+        campHistoryItems?.at(0)?.is_archive == 1 &&
+        campStatement.status == "old") ||
+      (parentArchived == 1 && directarchived == 0) ||
+      (parentArchived == 1 && directarchived == 1 && historyOf == "topic") ||
+      (campHistoryItems?.at(0)?.is_archive == 1 &&
+        campHistoryItems?.at(0)?.status == "live" &&
+        campStatement.status == "objected")
+      ? true
+      : false;
+  };
+
   return (
     <div
       id="history-card-container"
@@ -421,7 +485,11 @@ function HistoryCard({
             >
               <Panel header="" key="1">
                 <div>
-                  <h5 className="font-semibold text-canOrange mb-3">
+                  <h5
+                    className={`font-semibold ${getTextClass(
+                      campStatement?.status
+                    )} mb-3`}
+                  >
                     Statement
                   </h5>
                   <div
@@ -440,6 +508,7 @@ function HistoryCard({
             campStatement={comparisonData}
             topicNamespaceId={topicNamespaceId}
             s1={s1}
+            textColor={getTextClass(status)}
           />
         )}
 
@@ -467,323 +536,261 @@ function HistoryCard({
           (!campStatement?.grace_period || commited) &&
           isUserAuthenticated &&
           campStatement?.total_supporters > 1 && (
-            <>
-              <div className="agreement-wrapper">
-                {(campStatement?.ifICanAgreeAndObject ||
-                  campStatement?.ifICanAgreeAndObject == undefined) &&
-                  !!(
-                    campStatement?.ifIamSupporter != 0 ||
-                    campStatement?.ifIAmExplicitSupporter
-                  ) &&
-                  isUserAuthenticated &&
-                  !campStatement?.isAuthor && (
-                    <>
-                      <Checkbox
-                        id="history-page-agree-checkbox"
-                        defaultChecked={campStatement?.agreed_to_change}
-                        disabled={disableAgreeCheckbox()}
-                        onChange={agreeWithChange}
-                      >
-                        Agree With Change
-                      </Checkbox>
-                    </>
-                  )}
-                <Space>
-                  {!!(
-                    campStatement?.ifIamSupporter != 0 ||
-                    campStatement?.ifIAmExplicitSupporter ||
-                    campStatement?.isAuthor
-                  ) && (
-                    <>
-                      <HistoryCardDrawer
-                        onClick={async () => {
-                          let req = {
-                            topic_num: router?.query.camp[0].split("-")[0],
-                            camp_num:
-                              historyOf == "topic"
-                                ? 1
-                                : router?.query.camp[1].split("-")[0],
-                            change_id: campStatement?.id,
-                            type: historyOf,
-                          };
-                          let res = await getChangeSupporters(req);
-                          if (res.status_code == 200) {
-                            let supportersData = res?.data.supporters?.map(
-                              (data, key) => {
-                                return {
-                                  key: key,
-                                  status: data?.agreed,
-                                  nickNameData: {
-                                    name: data?.nick_name,
-                                    path: `/user/supports/${
-                                      data?.id || ""
-                                    }?canon=${topicNamespaceId || ""}`,
-                                  },
-                                };
-                              }
-                            );
-                            setSupporters(supportersData);
-                          }
-                          setIsModalOpen(true);
-                        }}
-                        displayText={
-                          <p id="history-page-supporters-text">
-                            <u>
-                              {campStatement?.agreed_supporters} out of{" "}
-                              {campStatement?.total_supporters} required
-                              supporters have agreed
-                            </u>
-                            {(campStatement?.ifICanAgreeAndObject ||
-                              campStatement?.ifICanAgreeAndObject ==
-                                undefined) &&
-                              !!(
-                                campStatement?.ifIamSupporter != 0 ||
-                                campStatement?.ifIAmExplicitSupporter
-                              ) &&
-                              isUserAuthenticated &&
-                              !campStatement?.isAuthor &&
-                              campStatement?.total_supporters -
-                                campStatement?.agreed_supporters ==
-                                1 &&
-                              !campStatement?.agreed_to_change && (
-                                <>
-                                  , Since you are the last hold out, the instant
-                                  you agree, this will go live.
-                                </>
-                              )}
-                          </p>
-                        }
-                        agreedSupporters={supporters?.filter(
-                          (obj) => obj?.status === true
-                        )}
-                        notAgreedSupporters={supporters?.filter(
-                          (obj) => obj?.status === false
-                        )}
-                      />
-                    </>
-                  )}
-                </Space>
-              </div>
-            </>
+            <div className="agreement-wrapper">
+              {(campStatement?.ifICanAgreeAndObject ||
+                campStatement?.ifICanAgreeAndObject == undefined) &&
+                !!(
+                  campStatement?.ifIamSupporter != 0 ||
+                  campStatement?.ifIAmExplicitSupporter
+                ) &&
+                isUserAuthenticated &&
+                !campStatement?.isAuthor && (
+                  <Checkbox
+                    id="history-page-agree-checkbox"
+                    defaultChecked={campStatement?.agreed_to_change}
+                    disabled={disableAgreeCheckbox()}
+                    onChange={agreeWithChange}
+                  >
+                    Agree With Change
+                  </Checkbox>
+                )}
+              <Space>
+                {!!(
+                  campStatement?.ifIamSupporter != 0 ||
+                  campStatement?.ifIAmExplicitSupporter ||
+                  campStatement?.isAuthor
+                ) && (
+                  <HistoryCardDrawer
+                    onClick={async () => {
+                      getChangeSupportHandler();
+                    }}
+                    displayText={
+                      <p id="history-page-supporters-text">
+                        <u>
+                          {campStatement?.agreed_supporters} out of{" "}
+                          {campStatement?.total_supporters} required supporters
+                          have agreed
+                        </u>
+                        {(campStatement?.ifICanAgreeAndObject ||
+                          campStatement?.ifICanAgreeAndObject == undefined) &&
+                          !!(
+                            campStatement?.ifIamSupporter != 0 ||
+                            campStatement?.ifIAmExplicitSupporter
+                          ) &&
+                          isUserAuthenticated &&
+                          !campStatement?.isAuthor &&
+                          campStatement?.total_supporters -
+                            campStatement?.agreed_supporters ==
+                            1 &&
+                          !campStatement?.agreed_to_change && (
+                            <>
+                              , Since you are the last hold out, the instant you
+                              agree, this will go live.
+                            </>
+                          )}
+                      </p>
+                    }
+                    agreedSupporters={supporters?.filter(
+                      (obj) => obj?.status === true
+                    )}
+                    notAgreedSupporters={supporters?.filter(
+                      (obj) => obj?.status === false
+                    )}
+                  />
+                )}
+              </Space>
+            </div>
           )}
 
         {!compareMode && (!campStatement?.grace_period || commited) && (
-          <>
-            <div className="cn-footer-btn">
-              <div className="cn-card-btn">
-                <PrimaryButton
-                  size="large"
-                  type="primary"
-                  id={`submit-update-${campStatement?.id}`}
-                  className="flex items-center justify-center text-sm gap-3.5 leading-none w-100"
-                  onClick={() => {
-                    campStatement?.is_archive == 1 &&
-                    campStatement?.status == "live"
-                      ? !isUserAuthenticated
-                        ? router?.push({
-                            pathname: "/login",
-                            query: {
-                              returnUrl: `/manage/${historyOf}/${campStatement?.id}`,
-                            },
-                          })
-                        : callManageCampApi()
-                      : submitUpdateRedirect(historyOf);
-                  }}
-                  disabled={
-                    unarchiveChangeSubmitted ||
-                    (campHistoryItems &&
-                      campHistoryItems[0]?.status == "in_review" &&
-                      !commited &&
-                      !!campHistoryItems[0]?.grace_period) ||
-                    (campHistoryItems?.at(0)?.status == "live" &&
-                      campHistoryItems?.at(0)?.is_archive == 1 &&
-                      campStatement.status == "old") ||
-                    (parentArchived == 1 && directarchived == 0) ||
-                    (parentArchived == 1 &&
-                      directarchived == 1 &&
-                      historyOf == "topic") ||
-                    (campHistoryItems?.at(0)?.is_archive == 1 &&
-                      campHistoryItems?.at(0)?.status == "live" &&
-                      campStatement.status == "objected")
-                      ? true
-                      : false
-                  }
-                >
-                  {campStatement?.is_archive == 1 &&
+          <div className="cn-footer-btn">
+            <div className="cn-card-btn">
+              <PrimaryButton
+                size="large"
+                type="primary"
+                id={`submit-update-${campStatement?.id}`}
+                className="flex items-center justify-center text-sm gap-3.5 leading-none w-100"
+                onClick={() => {
+                  campStatement?.is_archive == 1 &&
                   campStatement?.status == "live"
-                    ? "Un-Archive This Camp"
-                    : "Edit Based on This"}
-                  <i className="icon-edit"></i>
-                </PrimaryButton>
+                    ? !isUserAuthenticated
+                      ? router?.push({
+                          pathname: "/login",
+                          query: {
+                            returnUrl: `/manage/${historyOf}/${campStatement?.id}`,
+                          },
+                        })
+                      : callManageCampApi()
+                    : submitUpdateRedirect(historyOf);
+                }}
+                disabled={disableEditOrUnArchiveBtn()}
+              >
+                {campStatement?.is_archive == 1 &&
+                campStatement?.status == "live"
+                  ? "Un-Archive This Camp"
+                  : "Edit Based on This"}
+                <i className="icon-edit"></i>
+              </PrimaryButton>
 
-                {campStatement?.status == "in_review" && (
-                  <>
-                    <Tooltip
-                      id="history-page-objected-tooltip"
-                      title={
-                        (
-                          !isUserAuthenticated
-                            ? true
-                            : !campStatement?.ifIAmExplicitSupporter &&
-                              campStatement?.ifIamSupporter == 0
-                            ? true
-                            : false
-                        )
-                          ? K?.exceptionalMessages?.objectedTooltipMsg
-                          : ""
-                      }
-                    >
-                      <Button
-                        size="large"
-                        disabled={
-                          historyOf == "camp"
-                            ? !campStatement?.ifICanAgreeAndObject
-                            : false
-                        }
-                        id={`object-change-${campStatement?.id}`}
-                        className="flex items-center bg-canRed_Opacity10 border-canRed hover:border-canRed hover:text-canRed focus:text-canRed focus:border-canRed justify-center text-sm rounded-xl gap-3.5 leading-none w-100 font-medium"
-                        onClick={() => objectionHandler()}
-                      >
-                        Object Changes
-                        <i className="icon-thumb-down text-canRed"></i>
-                      </Button>
-                    </Tooltip>
-                    <Modal
-                      title={K?.exceptionalMessages?.objectedModelTitle}
-                      style={{
-                        top: 20,
-                      }}
-                      centered
-                      okText="Close"
-                      visible={modal1Open}
-                      footer={[
-                        <Button
-                          key="submit"
-                          danger
-                          type="primary"
-                          onClick={() => setModal1Open(false)}
-                        >
-                          Close
-                        </Button>,
-                      ]}
-                      onCancel={() => setModal1Open(false)}
-                    >
-                      <p>{K?.exceptionalMessages?.objectedModalMsg}</p>
-                      <p>
-                        {K?.exceptionalMessages?.objectedModalMsgForMoreInfo}
-                      </p>
-                      <Link href="/topic/132-Help/4-Disagreement?is_tree_open=1">
-                        <a className="text-canBlue">
-                          https://canonizer.com/topic/132-Help/4-Disagreement
-                        </a>
-                      </Link>
-                    </Modal>
-                  </>
-                )}
-              </div>
-              <div className="cn-link-btn">
-                <Button
-                  size="large"
-                  type="link"
-                  id={`view-this-version-${campStatement?.id}`}
-                  className="flex items-center justify-center text-sm leading-none text-canBlack"
-                  onClick={() =>
-                    handleViewThisVersion(campStatement?.go_live_time)
-                  }
-                >
-                  <Link
-                    href={`/topic/${
-                      replaceSpecialCharacters(
-                        historyOf == "topic"
-                          ? replaceSpecialCharacters(
-                              campStatement?.topic_num +
-                                "-" +
-                                campStatement?.topic_name?.replace(/ /g, "-"),
-                              "-"
-                            )
-                          : router?.query?.camp?.at(0),
-                        "-"
-                      ) +
-                      "/" +
-                      (historyOf != "topic"
-                        ? historyOf == "camp"
-                          ? replaceSpecialCharacters(
-                              campStatement?.camp_num +
-                                "-" +
-                                campStatement?.camp_name?.replace(/ /g, "-"),
-                              "-"
-                            )
-                          : replaceSpecialCharacters(
-                              router?.query?.camp?.at(1),
-                              "-"
-                            )
-                        : "1-Agreement")
-                    }?algo=${algorithm}&asofdate=${
-                      campStatement?.go_live_time
-                    }&asof=bydate&canon=${namespace_id}&viewversion=${1}`}
+              {campStatement?.status == "in_review" && (
+                <>
+                  <Tooltip
+                    id="history-page-objected-tooltip"
+                    title={
+                      (
+                        !isUserAuthenticated
+                          ? true
+                          : !campStatement?.ifIAmExplicitSupporter &&
+                            campStatement?.ifIamSupporter == 0
+                          ? true
+                          : false
+                      )
+                        ? K?.exceptionalMessages?.objectedTooltipMsg
+                        : ""
+                    }
                   >
-                    View This Version
-                  </Link>
-                  <EyeOutlined className="ml-2" />
-                </Button>
-              </div>
+                    <Button
+                      size="large"
+                      disabled={disableObjectChangesBtn()}
+                      id={`object-change-${campStatement?.id}`}
+                      className="flex items-center bg-canRed_Opacity10 border-canRed hover:border-canRed hover:text-canRed focus:text-canRed focus:border-canRed justify-center text-sm rounded-xl gap-3.5 leading-none w-100 font-medium"
+                      onClick={() => objectionHandler()}
+                    >
+                      Object Changes
+                      <i className="icon-thumb-down text-canRed"></i>
+                    </Button>
+                  </Tooltip>
+                  <Modal
+                    title={K?.exceptionalMessages?.objectedModelTitle}
+                    style={{
+                      top: 20,
+                    }}
+                    centered
+                    okText="Close"
+                    visible={modal1Open}
+                    footer={[
+                      <Button
+                        key="submit"
+                        danger
+                        type="primary"
+                        onClick={() => setModal1Open(false)}
+                      >
+                        Close
+                      </Button>,
+                    ]}
+                    onCancel={() => setModal1Open(false)}
+                  >
+                    <p>{K?.exceptionalMessages?.objectedModalMsg}</p>
+                    <p>{K?.exceptionalMessages?.objectedModalMsgForMoreInfo}</p>
+                    <Link href="/topic/132-Help/4-Disagreement?is_tree_open=1">
+                      <a className="text-canBlue">
+                        https://canonizer.com/topic/132-Help/4-Disagreement
+                      </a>
+                    </Link>
+                  </Modal>
+                </>
+              )}
             </div>
-          </>
+            <div className="cn-link-btn">
+              <Button
+                size="large"
+                type="link"
+                id={`view-this-version-${campStatement?.id}`}
+                className="flex items-center justify-center text-sm leading-none text-canBlack"
+                onClick={() =>
+                  handleViewThisVersion(campStatement?.go_live_time)
+                }
+              >
+                <Link
+                  href={`/topic/${
+                    replaceSpecialCharacters(
+                      historyOf == "topic"
+                        ? replaceSpecialCharacters(
+                            campStatement?.topic_num +
+                              "-" +
+                              campStatement?.topic_name?.replace(/ /g, "-"),
+                            "-"
+                          )
+                        : router?.query?.camp?.at(0),
+                      "-"
+                    ) +
+                    "/" +
+                    (historyOf != "topic"
+                      ? historyOf == "camp"
+                        ? replaceSpecialCharacters(
+                            campStatement?.camp_num +
+                              "-" +
+                              campStatement?.camp_name?.replace(/ /g, "-"),
+                            "-"
+                          )
+                        : replaceSpecialCharacters(
+                            router?.query?.camp?.at(1),
+                            "-"
+                          )
+                      : "1-Agreement")
+                  }?algo=${algorithm}&asofdate=${
+                    campStatement?.go_live_time
+                  }&asof=bydate&canon=${namespace_id}&viewversion=${1}`}
+                >
+                  View This Version
+                </Link>
+                <EyeOutlined className="ml-2" />
+              </Button>
+            </div>
+          </div>
         )}
 
         {campStatement?.status == "in_review" &&
           !commited &&
           !!campStatement?.grace_period &&
           moment.now() < campStatement?.submit_time * 1000 + 3600000 && (
-            <>
-              <div id="history-page-footer-container" className="cn-footer-btn">
-                <div className="cn-card-btn">
-                  <PrimaryButton
-                    size="large"
-                    type="primary"
-                    id={`commit-change-${campStatement?.id}`}
-                    className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none min-w-[200px]"
-                    onClick={commitChanges}
-                    disabled={loadingChanges}
+            <div id="history-page-footer-container" className="cn-footer-btn">
+              <div className="cn-card-btn">
+                <PrimaryButton
+                  size="large"
+                  type="primary"
+                  id={`commit-change-${campStatement?.id}`}
+                  className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none min-w-[200px]"
+                  onClick={commitChanges}
+                  disabled={loadingChanges}
+                >
+                  Commit Changes
+                  <i className="icon-upload"></i>
+                </PrimaryButton>
+                <Button
+                  size="large"
+                  id={`edit-change-${campStatement?.id}`}
+                  className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none btn-light-primary min-w-[200px]"
+                >
+                  <Link
+                    href={
+                      historyOf == "camp"
+                        ? `/manage/camp/${campStatement?.id}-update`
+                        : historyOf == "topic"
+                        ? `/manage/topic/${campStatement?.id}-update`
+                        : `/manage/statement/${campStatement?.id}-update`
+                    }
                   >
-                    Commit Changes
-                    <i className="icon-upload"></i>
-                  </PrimaryButton>
-                  <Button
-                    size="large"
-                    id={`edit-change-${campStatement?.id}`}
-                    className="flex items-center justify-center rounded-[10px] gap-3.5 leading-none btn-light-primary min-w-[200px]"
-                  >
-                    <Link
-                      href={
-                        historyOf == "camp"
-                          ? `/manage/camp/${campStatement?.id}-update`
-                          : historyOf == "topic"
-                          ? `/manage/topic/${campStatement?.id}-update`
-                          : `/manage/statement/${campStatement?.id}-update`
-                      }
-                    >
-                      Edit Change
-                    </Link>
-                    <i className="icon-edit"></i>
-                  </Button>
-                </div>
-                <div className="cn-link-btn">
-                  <Button
-                    type="link"
-                    danger
-                    size="large"
-                    id={`commit-change-${campStatement?.id}`}
-                    className="flex items-center justify-center gap-2 rounded-[10px] leading-none"
-                    onClick={() => cancelConfirm()}
-                    disabled={loadingChanges}
-                  >
-                    Delete
-                    <i className="icon-delete"></i>
-                  </Button>
-                </div>
+                    Edit Change
+                  </Link>
+                  <i className="icon-edit"></i>
+                </Button>
               </div>
-            </>
+              <div className="cn-link-btn">
+                <Button
+                  type="link"
+                  danger
+                  size="large"
+                  id={`commit-change-${campStatement?.id}`}
+                  className="flex items-center justify-center gap-2 rounded-[10px] leading-none"
+                  onClick={() => cancelConfirm()}
+                  disabled={loadingChanges}
+                >
+                  Delete
+                  <i className="icon-delete"></i>
+                </Button>
+              </div>
+            </div>
           )}
       </Card>
       <div id="history-page-objection-drawer-container">

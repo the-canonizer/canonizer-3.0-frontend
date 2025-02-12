@@ -93,58 +93,62 @@ const Login = () => {
     const username = values.username?.trim();
     const pass = values.password?.trim();
 
-    let res = await login(username, pass);
+    try {
+      let res = await login(username, pass);
 
-    if (res && res.status_code === 402) {
-      setErrorMsg(res.message);
-    }
+      if (res && res.status_code === 402) {
+        setErrorMsg(res.message);
+      }
 
-    if (res && res.status_code === 200) {
-      document.cookie = "current_user=" + username + getCookiesExpirationTime();
+      if (res && res.status_code === 200) {
+        document.cookie =
+          "current_user=" + username + getCookiesExpirationTime();
 
-      document.cookie =
-        "isUserAuthenticated=" + true + getCookiesExpirationTime();
+        document.cookie =
+          "isUserAuthenticated=" + true + getCookiesExpirationTime();
 
-      dispatch(
-        setFilterCanonizedTopics({
-          algorithm: res?.data?.user?.default_algo,
-        })
-      );
-
-      form.resetFields();
-
-      fetchNickNameList();
-
-      if (values.remember) {
         dispatch(
-          setValue({
-            label: "remember_me",
-            value: {
-              username: values.username?.trim(),
-              password: values.password,
-            },
+          setFilterCanonizedTopics({
+            algorithm: res?.data?.user?.default_algo,
           })
         );
-      }
 
-      const returnUrl: any = router?.query?.returnUrl;
+        form.resetFields();
 
-      if (returnUrl) {
-        router?.push(returnUrl);
-      } else if (currentReturnUrl) {
-        router?.push(currentReturnUrl);
-      } else if (router?.pathname === "/login") {
-        router?.push("/");
-      } else {
+        fetchNickNameList();
+
+        if (values.remember) {
+          dispatch(
+            setValue({
+              label: "remember_me",
+              value: {
+                username: values.username?.trim(),
+                password: values.password,
+              },
+            })
+          );
+        }
+
+        const returnUrl: any = router?.query?.returnUrl;
+
+        if (returnUrl) {
+          router?.push(returnUrl);
+        } else if (currentReturnUrl) {
+          router?.push(currentReturnUrl);
+        } else if (router?.pathname === "/login") {
+          router?.push("/");
+        } else {
+          closeModal();
+        }
+
         closeModal();
       }
-
-      closeModal();
-    }
-
-    setTimeout(() => {
+    } catch (error) {
+      console.error("Login error:", error);
+      setErrorMsg("An error occurred during login. Please try again.");
+    } finally {
       setLoading(false);
-    }, 1200);
+    }
   };
 
   const onOTPClick = async (e) => {
@@ -212,6 +216,7 @@ const Login = () => {
               isOTPDisabled={isOTPDisabled}
               onForgotPasswordClick={onForgotPasswordClick}
               onRegister={onRegister}
+              loading={loading}
             />
           </Col>
         </Row>

@@ -14,6 +14,7 @@ import CustomSkelton from "../../common/customSkelton";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import AdvanceSearchHeader from "./AdvanceSearchHeader";
 
 const NicknameSearch = () => {
   const { searchDataAll, searchValue } = useSelector((state: RootState) => ({
@@ -155,42 +156,36 @@ const NicknameSearch = () => {
   const router = useRouter();
   return (
     <Fragment>
-      <div
-        className="flex justify-between lg:items-center lg:flex-row flex-col items-start mb-10 mt-2.5 lg:gap-0 gap-5"
-        id="elastic_nickname_search"
-      >
-        <div
-          className="flex  items-center  "
-          id="elastic_nickname_search_sub_section"
-        >
-          <div
-            className="flex items-center gap-2.5"
-            id="elastic_nickname_search_heading_section"
-          >
+      <AdvanceSearchHeader
+        sectionId="elastic_nickname_search"
+        subSectionId="elastic_nickname_search_sub_section"
+        headingId="elastic_nickname_search_heading_section"
+        imgId="elastic_nickname_search_img"
+        headingTextId="elastic_nickname_search_heading_text"
+      />
+
+      {/* <div className="flex justify-between lg:items-center lg:flex-row flex-col items-start mb-10 mt-2.5 lg:gap-0 gap-5" id="">
+        <div className="flex  items-center" id="">
+          <div className="flex items-center gap-2.5" id="">
             <Image
-              id="elastic_nickname_search_img"
+              id=""
               src="/images/recent-activiity-arrow.svg"
               width={16}
               height={24}
             />
 
-            <h3
-              className="lg:text-3xl text-xl   text-canBlack font-medium"
-              id="elastic_nickname_search_heading_text"
-            >
+            <h3 className="lg:text-3xl text-xl   text-canBlack font-medium" id="">
               Search Results for “
-              <span
-                className="text-canBlue capitalize break-all whitespace-break-spaces"
-                id="elastic_nickname_search_text"
-              >
+              <span className="text-canBlue capitalize break-all whitespace-break-spaces" id="elastic_nickname_search_text">
                 {router?.query?.q}
               </span>
               ”
             </h3>
           </div>
         </div>
-        {/* <AdvanceFilter /> */}
-      </div>
+        <AdvanceFilter />
+      </div> */}
+
       <div
         className="flex lg:flex-row flex-col gap-10"
         id="elastic_nickname_search_sidebar_section"

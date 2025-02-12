@@ -124,36 +124,36 @@ export default function AdvanceFilter() {
     return obj.id;
   });
 
-  const findTopicId = searchDataAll?.camp?.map((obj) => {
-    return obj.topic_num;
-  });
+  // const findTopicId = searchDataAll?.camp?.map((obj) => {
+  //   return obj.topic_num;
+  // });
 
-  const topicIdForElasticSearch = searchDataAll?.topic?.map((obj) => {
-    return obj.topic_num;
-  });
+  // const topicIdForElasticSearch = searchDataAll?.topic?.map((obj) => {
+  //   return obj.topic_num;
+  // });
 
-  const stringTopicIdForElasticSearch = topicIdForElasticSearch?.map(
-    (element) => element?.toString()
-  );
+  // const stringTopicIdForElasticSearch = topicIdForElasticSearch?.map(
+  //   (element) => element?.toString()
+  // );
 
-  let stringTopicArray = findTopicId?.map((element) => element?.toString());
+  // let stringTopicArray = findTopicId?.map((element) => element?.toString());
 
-  const findCampId = searchDataAll?.camp?.map((obj) => {
-    return obj.camp_num;
-  });
+  // const findCampId = searchDataAll?.camp?.map((obj) => {
+  //   return obj.camp_num;
+  // });
 
-  let stringCampArray = findCampId?.map((element) => element?.toString());
-  const findTopicId1 = searchData?.camp?.map((obj) => {
-    return obj.topic_num;
-  });
+  // let stringCampArray = findCampId?.map((element) => element?.toString());
+  // const findTopicId1 = searchData?.camp?.map((obj) => {
+  //   return obj.topic_num;
+  // });
 
-  let stringTopicArray1 = findTopicId1?.map((element) => element.toString());
+  // let stringTopicArray1 = findTopicId1?.map((element) => element.toString());
 
-  const findCampId1 = searchData?.camp?.map((obj) => {
-    return obj.camp_num;
-  });
+  // const findCampId1 = searchData?.camp?.map((obj) => {
+  //   return obj.camp_num;
+  // });
 
-  let stringCampArray1 = findCampId1?.map((element) => element.toString());
+  // let stringCampArray1 = findCampId1?.map((element) => element.toString());
 
   const [timer, setTimer] = useState(null);
   const [inputValue, setInputValue] = useState(
@@ -166,18 +166,6 @@ export default function AdvanceFilter() {
   const [datePickerValue, setDatePickerValue] = useState(null);
   const [isDatePicker, setIsDatePicker] = useState(false);
   const [active, setActive] = useState([]);
-  const infoContent = (
-    <>
-      <div className={styles.infoTextWidthBox}>
-        <Title level={5}>Score Value Filter </Title>
-        <p>
-          This option filters down the camp list with a score value greater than
-          the entered value. By default, the score value filter is 0, displaying
-          all camps.
-        </p>
-      </div>
-    </>
-  );
 
   const extractNumbers = (dataArray) => {
     return dataArray?.map((item) => {
@@ -278,16 +266,12 @@ export default function AdvanceFilter() {
     );
   };
   const onChangeRoute = (
-    // filterByScore = filterObject?.filterByScore,
-    // algorithm = filterObject?.algorithm,
     asof = filterObject?.asof,
     asofdate = filterObject?.asofdate,
     namespace_id = filterObject?.namespace_id,
     viewversion = viewThisVersion
   ) => {
     let query: any = {
-      // score: filterByScore,
-      // algo: algorithm,
       canon: namespace_id,
       asof: asof,
       filter: campScoreValue || "10",
@@ -307,10 +291,6 @@ export default function AdvanceFilter() {
       delete router.query.asofdate;
     }
 
-    // if (String(filterByScore) === "0") {
-    //   delete router.query.score;
-    // }
-
     if (String(namespace_id) === "1") {
       delete router.query.canon;
     }
@@ -322,14 +302,6 @@ export default function AdvanceFilter() {
     if (asof === "default") {
       delete router.query.asof;
     }
-
-    // if (!query?.canon) {
-    //   delete router.query.canon;
-    // }
-
-    // if (algorithm === "blind_popularity") {
-    //   delete router.query.algo;
-    // }
 
     if (String(campScoreValue) === "10") {
       delete router.query.filter;
@@ -346,104 +318,76 @@ export default function AdvanceFilter() {
 
     router?.replace(router, null, { shallow: true });
   };
-  // const selectAlgorithm = (value) => {
-  //   dispatch(setFilterCanonizedTopics({ algorithm: value }));
-  //   onChangeRoute(
-  //     filterObject?.filterByScore,
-  //     value,
-  //     filterObject?.asof,
-  //     filterObject?.asofdate,
-  //     filterObject?.namespace_id,
-  //     viewThisVersion
-  //   );
-  //   // getTopicsApiCallWithReqBody()
-  // };
 
-  async function getTopicsApiCallWithReqBody() {
-    const stringTopicIdForElasticSearch =
-      searchDataAll?.topic?.map((obj) => obj.topic_num?.toString()) || [];
+  const getApiData = async (type: "topic" | "camp" | "statement") => {
+    try {
+      const requestBody = {
+        type,
+        search: router?.query?.q || "",
+        query: "",
+        algo: algorithm,
+        asof: asof,
+        score: filterByScore,
+        asofdate:
+          asof === "default" || asof === "review"
+            ? Date.now() / 1000
+            : asofdate,
+        page_size: 20,
+        page_number: pageNumber,
+      };
 
-    if (!stringTopicIdForElasticSearch.length) {
-      console.warn("No topic IDs available for the API call.");
-      return; // Skip the call if no topic IDs
+      const response = await AdvanceFilterSeacrhApi(requestBody);
+
+      if (!response?.data) {
+        console.warn(`No data received for ${type}`);
+        return;
+      }
+
+      // Dispatch actions dynamically based on `type`
+      switch (type) {
+        case "topic":
+          dispatch(
+            setSelectedTopicFromAdvanceFilterAlgorithm(response.data.topic)
+          );
+          dispatch(
+            setSelectedTopicFromAdvanceFilterAlgorithmRecords(
+              response.data.topic_total || 0
+            )
+          );
+          break;
+
+        case "camp":
+          dispatch(
+            setSelectedCampFromAdvanceFilterAlgorithm(response.data.camp)
+          );
+          dispatch(
+            setSelectedCampFromAdvanceFilterAlgorithmRecords(
+              response.data.camp_total || 0
+            )
+          );
+          break;
+
+        case "statement":
+          dispatch(
+            setSelectedStatementFromAdvanceFilterAlgorithm(
+              response.data.statement
+            )
+          );
+          dispatch(
+            setSelectedCampStatementFromAdvanceFilterAlgorithmRecords(
+              response.data.statement_total || 0
+            )
+          );
+          break;
+
+        default:
+          console.warn(`Unhandled type: ${type}`);
+      }
+    } catch (error) {
+      console.error(`Error fetching ${type} data:`, error);
     }
+  };
 
-    const rebody = {
-      type: "topic",
-      search: router?.query?.q,
-      query: "",
-      algo: algorithm,
-      asof: asof,
-      score: filterByScore,
-      topic_ids: searchMetaData?.search_ids?.topic_ids,
-      asofdate:
-        asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
-      page_size: 20,
-      page_number: pageNumber,
-    };
-
-    const response = await AdvanceFilterSeacrhApi(rebody);
-    dispatch(setSelectedTopicFromAdvanceFilterAlgorithm(response?.data?.topic));
-    dispatch(
-      setSelectedTopicFromAdvanceFilterAlgorithmRecords(
-        response?.data?.topic_total || 0
-      )
-    );
-  }
-
-  async function getCampsApiCallWithReqBody() {
-    // loadMore ? setPageNumber(pageNumber + 1) : setPageNumber(1);
-    const rebody = {
-      type: "camp",
-      search: router?.query?.q,
-      query: "",
-      algo: algorithm,
-      asof: asof,
-      score: filterByScore,
-      camp_ids: searchMetaData?.search_ids?.camp_ids,
-      topic_ids: searchMetaData?.search_ids?.topic_ids,
-      asofdate:
-        asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
-      page_size: 20,
-      page_number: pageNumber,
-    };
-    const response = await AdvanceFilterSeacrhApi(rebody);
-    dispatch(setSelectedCampFromAdvanceFilterAlgorithm(response?.data?.camp));
-    dispatch(
-      setSelectedCampFromAdvanceFilterAlgorithmRecords(
-        response?.data?.camp_total || 0
-      )
-    );
-    // setLoadMoreIndicator(false);
-  }
-
-  async function getStatementApiCallWithReqBody() {
-    // loadMore ? setPageNumber(pageNumber + 1) : setPageNumber(1);
-    const rebody = {
-      type: "statement",
-      search: router?.query?.q,
-      query: "",
-      algo: algorithm,
-      asof: asof,
-      score: filterByScore,
-      camp_ids: searchMetaData?.search_ids?.camp_ids,
-      topic_ids: searchMetaData?.search_ids?.topic_ids,
-      asofdate:
-        asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
-      page_size: 20,
-      page_number: pageNumber,
-    };
-    const response = await AdvanceFilterSeacrhApi(rebody);
-    dispatch(
-      setSelectedStatementFromAdvanceFilterAlgorithm(response?.data?.statement)
-    );
-    dispatch(
-      setSelectedCampStatementFromAdvanceFilterAlgorithmRecords(
-        response?.data?.statement_total || 0
-      )
-    );
-    // setLoadMoreIndicator(false);
-  }
   const filterOnScore = (e) => {
     const { value } = e.target;
     setInputValue(value);
@@ -456,19 +400,11 @@ export default function AdvanceFilter() {
             filterByScore: value,
           })
         );
-        // onChangeRoute(
-        //   value,
-        //   filterObject?.algorithm,
-        //   filterObject?.asof,
-        //   filterObject?.asofdate,
-        //   filterObject?.namespace_id,
-        //   viewThisVersion
-        // );
       }, 1000);
       setTimer(newTimer);
     }
-    // getTopicsApiCallWithReqBody()
   };
+
   const onChange = (e) => {
     if (e.target.value === 3) {
       setIsDatePicker(true);
@@ -477,10 +413,12 @@ export default function AdvanceFilter() {
     }
     setValue(e.target.value);
   };
+
   useEffect(() => {
     setValue(selectedAsOf == "default" ? 2 : selectedAsOf == "review" ? 1 : 3);
     panelColorRef.current = selectedAsOf;
   }, [selectedAsOf]);
+
   const handleAsOfClick = () => {
     if (datePickerValue !== null) {
       let dateValue =
@@ -526,9 +464,11 @@ export default function AdvanceFilter() {
       );
     }
   };
+
   function momentDateObject(e) {
     return e?._d;
   }
+
   const pickDate = (e) => {
     dispatch(setViewThisVersion(false));
     let IsoDateFormat;
@@ -565,6 +505,7 @@ export default function AdvanceFilter() {
       viewThisVersion
     );
   };
+
   useEffect(() => {
     setSelectedAsOFDate(filteredAsOfDate);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -576,18 +517,18 @@ export default function AdvanceFilter() {
 
       if (router?.pathname === "/search/topic" && isReviewOrByDate) {
         dispatch(setSearchLoadingAction(true));
-        await getTopicsApiCallWithReqBody();
+        await getApiData("topic");
         dispatch(setSearchLoadingAction(false));
       } else if (router?.pathname === "/search/camp" && isReviewOrByDate) {
         dispatch(setSearchLoadingAction(true));
-        await getCampsApiCallWithReqBody();
+        await getApiData("camp");
         dispatch(setSearchLoadingAction(false));
       } else if (
         router?.pathname === "/search/camp_statement" &&
         isReviewOrByDate
       ) {
         dispatch(setSearchLoadingAction(true));
-        await getStatementApiCallWithReqBody();
+        await getApiData("statement");
         dispatch(setSearchLoadingAction(false));
       }
     };
@@ -596,23 +537,15 @@ export default function AdvanceFilter() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [asof, filterByScore, algorithm, asofdate, pageNumber]);
 
-  // useEffect(() => {
-  //   if (
-  //     router?.pathname == "/search/camp" && asof == "review" || asof == "bydate" ||
-  //     filterByScore != 0 ||
-  //     algorithm !== "blind_popularity"
-  //   ) {
-  //     getCampsApiCallWithReqBody();
-  //   }
-  // }, [searchDataAll]);
-
   const handleCollapseChange = (key) => {
     setActive(key);
     // Do something with the collapsed key
   };
+
   const handleClosePanel = () => {
     setActive([]);
   };
+
   const panelRef = useRef(null);
   const selectRef = useRef(null);
   const handleClickOutside = (event) => {
@@ -634,6 +567,7 @@ export default function AdvanceFilter() {
       setActive([]); // Close the panel if click occurs outside of it
     }
   };
+
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
@@ -646,7 +580,7 @@ export default function AdvanceFilter() {
       className={
         router?.pathname == "/search/nickname"
           ? "advanceFilter"
-          : "NicknameadvanceFilter advanceFilter"
+          : "NicknameadvanceFiltersss advanceFilter"
       }
     >
       <Collapse
@@ -667,15 +601,7 @@ export default function AdvanceFilter() {
           data-testid="panel_click"
           header={
             <span className="filter-heading text-base font-medium">
-              {/* <Image
-                id="viewFile"
-                alt="Eye Image"
-                src={filter}
-                width={15}
-                height={11}
-              /> */}
               Advance Filter
-              {/* <Image  src="/images/caret-icon.svg" width={20} height={20} /> */}
             </span>
           }
           key={"1"}
@@ -721,8 +647,6 @@ export default function AdvanceFilter() {
                       })
                     );
                     onChangeRoute(
-                      // filterObject?.filterByScore,
-                      // filterObject?.algorithm,
                       "review",
                       Date.now() / 1000,
                       filterObject?.namespace_id,
@@ -747,8 +671,6 @@ export default function AdvanceFilter() {
                       })
                     );
                     onChangeRoute(
-                      // filterObject?.filterByScore,
-                      // filterObject?.algorithm,
                       "default",
                       Date.now() / 1000,
                       filterObject?.namespace_id,
@@ -765,7 +687,6 @@ export default function AdvanceFilter() {
                   onClick={() => {
                     dispatch(setViewThisVersion(false));
                     handleAsOfClick();
-                    // getTopicsApiCallWithReqBody()
                     dispatch(setPageNumber(1));
                     dispatch(setDetectPressEnterInSearch(false));
                   }}
@@ -875,7 +796,6 @@ export default function AdvanceFilter() {
                                         highlight={searchVal}
                                       />
                                     </a>
-                                    {/* </Link> */}
                                   </li>
                                 </>
                               );
@@ -902,7 +822,7 @@ export default function AdvanceFilter() {
                         <ul>
                           {searchCamps?.slice(0, 5)?.map((x) => {
                             const jsonData = JSON.parse(
-                              x.breadcrumb
+                              x.breadcrumb_data
                             ) as Array<any>;
                             const parsedData = jsonData.reduce(
                               (accumulator, currentVal, index) => {
