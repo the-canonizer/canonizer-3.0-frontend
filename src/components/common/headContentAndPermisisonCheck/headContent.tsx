@@ -2,6 +2,7 @@ import React from "react";
 import Head from "next/head";
 
 import schemaGet, { schemas } from "./schemaContent";
+import { isShowAds } from "src/utils/generalUtility";
 
 type HeadContentProps = {
   description: string;
@@ -32,10 +33,14 @@ function HeadContent({
   const image_url = `${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/canonizer_logo.jpg`;
   return (
     <Head>
-      <script
-        async
-        src={`Https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT}`}
-      ></script>
+      {isShowAds() && (
+        <script
+          async
+          src={`Https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT}`}
+          crossOrigin="anonymous"
+        ></script>
+      )}
+
       {/* Meta tags for browser link preview  */}
       <title>{title}</title>
 

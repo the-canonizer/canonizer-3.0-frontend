@@ -1,7 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import SearchSideBar from "../../common/SearchSideBar";
 import styles from "./search.module.scss";
-import AdvanceFilter from "../../common/AdvanceSearchFilter";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "src/store";
 import { Empty, Pagination } from "antd";
@@ -26,7 +25,7 @@ const CampSearch = () => {
     filterByScore,
     selectedCampFromAdvanceFilterAlgorithm,
     selectedCampFromAdvanceFilterAlgorithmRecords,
-    pageNumber
+    pageNumber,
   } = useSelector((state: RootState) => ({
     searchMetaData: state?.searchSlice?.searchMetaData,
     asof: state.filters?.filterObject?.asof,
@@ -36,7 +35,7 @@ const CampSearch = () => {
     algorithm: state.filters?.filterObject?.algorithm,
     loading: state?.loading?.searchLoading,
     selectedCampFromAdvanceFilterAlgorithmRecords:
-    state?.searchSlice?.selectedCampFromAdvanceFilterAlgorithmRecords,
+      state?.searchSlice?.selectedCampFromAdvanceFilterAlgorithmRecords,
     pageNumber: state?.searchSlice?.pageNumber,
   }));
 
@@ -75,9 +74,7 @@ const CampSearch = () => {
   }, [selectedCampFromAdvanceFilterAlgorithm]);
 
   const pageChange1 = (pageNumber, pageSize) => {
-    setDisplayList(
-      selectedCampFromAdvanceFilterAlgorithm
-    );
+    setDisplayList(selectedCampFromAdvanceFilterAlgorithm);
     dispatch(setPageNumber(pageNumber));
   };
   const getHighlightedText = (text, highlight) => {
@@ -140,7 +137,7 @@ const CampSearch = () => {
             </h3>
           </div>
         </div>
-        <AdvanceFilter />
+        {/* <AdvanceFilter /> */}
       </div>
       <div
         className="flex lg:flex-row flex-col gap-10"

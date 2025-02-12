@@ -171,93 +171,100 @@ export const UserProfileCard = ({
         className="mt-6 !mb-7"
       />
 
-      {userSupportedCampsList?.map((supportedCampList, i) => {
-        const filteredTopics = supportedCampList.topic?.filter(
-          (obj) => dropdownNameSpaceList == obj.namespace_id
-        );
-
-        return (
-          <div key={i} className="w-full">
-            {filteredTopics && filteredTopics.length > 0
-              ? filteredTopics
-                  .slice(startingPosition, endingPosition)
-                  .map((data, idx) => (
-                    <Card
-                      key={data.title_link || idx} // Use a unique identifier if available
-                      className="rounded-lg [&:not(:last-child)]:mb-7 shadow-md hover:shadow-lg [&_.ant-card-body]:gap-3 [&_.ant-card-body]:inline-flex [&_.ant-card-body]:flex-wrap [&_.ant-card-body]:before:hidden"
-                      title={
-                        <div className="flex flex-col items-start justify-center gap-2">
-                          <span className="flex items-center justify-start gap-4">
-                            <AlignIcon fill="#242B37" />
-                            <Link href={data.title_link}>
-                              <a className="!text-canBlue hover:!text-canHoverBlue text-sm font-medium">
-                                {data.title.length > 20
-                                  ? `${data.title.substring(0, 20)}...`
-                                  : data.title}
-                              </a>
-                            </Link>
-                          </span>
-                          {data.delegate_nick_name_id && (
-                            <div className="ml-8 text-sm text-canLight">
-                              (Support Delegated To{" "}
-                              <Link
-                                href={{
-                                  pathname: `/user/supports/${data.delegate_nick_name_id}`,
-                                  query: { canon: data?.namespace_id },
-                                }}
-                              >
+      {!userSupportedCampsList || userSupportedCampsList.length === 0 ? (
+        <span className="italic text-canLight">
+          There is no data to show in this category.
+        </span> // Message when data is null or empty
+      ) : (
+        userSupportedCampsList.map((supportedCampList, i) => {
+          const filteredTopics = supportedCampList.topic?.filter(
+            (obj) => dropdownNameSpaceList == obj.namespace_id
+          );
+          return (
+            <div key={i} className="w-full">
+              {filteredTopics && filteredTopics.length > 0
+                ? filteredTopics
+                    .slice(startingPosition, endingPosition)
+                    .map((data, idx) => (
+                      <Card
+                        key={data.title_link || idx} // Use a unique identifier if available
+                        className="rounded-lg [&:not(:last-child)]:mb-7 shadow-md hover:shadow-lg [&_.ant-card-body]:gap-3 [&_.ant-card-body]:inline-flex [&_.ant-card-body]:flex-wrap [&_.ant-card-body]:before:hidden"
+                        title={
+                          <div className="flex flex-col items-start justify-center gap-2">
+                            <span className="flex items-center justify-start gap-4">
+                              <AlignIcon fill="#242B37" />
+                              <Link href={data.title_link}>
                                 <a className="!text-canBlue hover:!text-canHoverBlue text-sm font-medium">
-                                  {data.delegate_nick_name})
+                                  {data.title.length > 20
+                                    ? `${data.title.substring(0, 20)}...`
+                                    : data.title}
                                 </a>
                               </Link>
-                            </div>
-                          )}
-                        </div>
-                      }
-                    >
-                      {data.camps?.length > 0 ? (
-                        data.camps.map((campData, campIdx) => (
+                            </span>
+                            {data.delegate_nick_name_id && (
+                              <div className="ml-8 text-sm text-canLight">
+                                (Support Delegated To{" "}
+                                <Link
+                                  href={{
+                                    pathname: `/user/supports/${data.delegate_nick_name_id}`,
+                                    query: { canon: data?.namespace_id },
+                                  }}
+                                >
+                                  <a className="!text-canBlue hover:!text-canHoverBlue text-sm font-medium">
+                                    {data.delegate_nick_name})
+                                  </a>
+                                </Link>
+                              </div>
+                            )}
+                          </div>
+                        }
+                      >
+                        {data.camps?.length > 0 ? (
+                          data.camps.map((campData, campIdx) => (
+                            <Tag
+                              className="rounded-md text-sm font-medium border-0 text-canBlue py-1 px-4 bg-canLightGrey"
+                              key={campIdx}
+                            >
+                              {console.log(campData)}
+                              {data.delegate_nick_name_id && (
+                                <span className="text-canBlue">
+                                  {campData.support_order} :
+                                </span>
+                              )}
+                              <Link
+                                href={campData.camp_link}
+                                className="!whitespace-normal"
+                              >
+                                <a className="!text-canBlue hover:!text-canHoverBlue !break-all text-sm font-normal !whitespace-normal !break-words">
+                                  {campData.camp_name.length > 30
+                                    ? `${campData.camp_name.substring(
+                                        0,
+                                        30
+                                      )}...`
+                                    : campData.camp_name}
+                                </a>
+                              </Link>
+                            </Tag>
+                          ))
+                        ) : (
                           <Tag
                             className="rounded-md text-sm font-medium border-0 text-canBlue py-1 px-4 bg-canLightGrey"
-                            key={campIdx}
+                            key={data.topic_num}
                           >
-                            {console.log(campData)}
-                            {data.delegate_nick_name_id && (
-                              <span className="text-canBlue">
-                                {campData.support_order} :
-                              </span>
-                            )}
-                            <Link
-                              href={campData.camp_link}
-                              className="!whitespace-normal"
-                            >
-                              <a className="!text-canBlue hover:!text-canHoverBlue !break-all text-sm font-normal !whitespace-normal !break-words">
-                                {campData.camp_name.length > 30
-                                  ? `${campData.camp_name.substring(0, 30)}...`
-                                  : campData.camp_name}
+                            <Link href={data.title_link}>
+                              <a className="!text-canBlue hover:!text-canHoverBlue text-sm font-normal">
+                                Agreement
                               </a>
                             </Link>
                           </Tag>
-                        ))
-                      ) : (
-                        <Tag
-                          className="rounded-md text-sm font-medium border-0 text-canBlue py-1 px-4 bg-canLightGrey"
-                          key={data.topic_num}
-                        >
-                          <Link href={data.title_link}>
-                            <a className="!text-canBlue hover:!text-canHoverBlue text-sm font-normal">
-                              Agreement
-                            </a>
-                          </Link>
-                        </Tag>
-                      )}
-                    </Card>
-                  ))
-              : noData && <div>No Data Available!</div>}
-          </div>
-        );
-      })}
-
+                        )}
+                      </Card>
+                    ))
+                : noData && <div>No Data Available!</div>}
+            </div>
+          );
+        })
+      )}
       <hr className="my-7" />
       {userSupportedCampsList ? (
         <div>

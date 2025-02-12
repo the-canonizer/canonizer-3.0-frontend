@@ -10,12 +10,10 @@ import {
   Space,
   Modal,
   Drawer,
-  Button,
 } from "antd";
 import moment from "moment";
 import {
   ArrowRightOutlined,
-  CalendarOutlined,
   CloseOutlined,
   EditOutlined,
   LeftOutlined,
@@ -604,7 +602,7 @@ function ProfileInfoForm({
               label="Date of Birth"
               className="mb-0 [&_.ant-form-item]:!border-none [&_.ant-input-group-addon]:!bg-canGray text-sm text-canBlack font-normal [&_label]:text-sm [&_label]:font-medium [&_.ant-form-item-explain-error]:mb-6"
             >
-              <Input.Group compact className="!flex">
+              <Input.Group compact className="!flex z-0">
                 <span
                   className="flex absolute left-4 top-1/3 -translate-y-1/2 z-50 pointer-events-none border-none"
                   id="calender_image_icon"
@@ -759,8 +757,10 @@ function ProfileInfoForm({
                   //     return Promise.resolve();
                   //   },
                   // },
-                  { pattern: /^\S.*$/, message: 'Address cannot start with a space' },
-
+                  {
+                    pattern: /^\S.*$/,
+                    message: "Address cannot start with a space",
+                  },
                 ]}
                 name="address_1"
                 label={messages.labels.addressLine1}
@@ -858,7 +858,10 @@ function ProfileInfoForm({
                   //     return Promise.resolve();
                   //   },
                   // },
-                  { pattern: /^\S.*$/, message: 'Address cannot start with a space' },
+                  {
+                    pattern: /^\S.*$/,
+                    message: "Address cannot start with a space",
+                  },
                 ]}
                 name="address_2"
                 label={messages.labels.addressLine2}
@@ -925,9 +928,9 @@ function ProfileInfoForm({
                     },
                   },
                   {
-                    pattern: new RegExp('^[0-9-]+$'),
-                    message: 'Zip Code can only contain numbers and hyphens.',
-                  }
+                    pattern: new RegExp("^[0-9-]+$"),
+                    message: "Zip Code can only contain numbers and hyphens.",
+                  },
                 ]}
                 name="postal_code"
                 label={messages.labels.zipCode}

@@ -1,7 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import SearchSideBar from "../../common/SearchSideBar";
 import styles from "./search.module.scss";
-import AdvanceFilter from "../../common/AdvanceSearchFilter";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "src/store";
@@ -27,7 +26,7 @@ const TopicSearch = () => {
     asof,
     filterByScore,
     algorithm,
-    pageNumber
+    pageNumber,
   } = useSelector((state: RootState) => ({
     searchMetaData: state?.searchSlice?.searchMetaData,
     selectedTopicFromAdvanceFilterAlgorithm:
@@ -53,7 +52,7 @@ const TopicSearch = () => {
     setCurrentPage(pageNumber);
     dispatch(setPageNumber(pageNumber));
   };
- 
+
   const showEmpty = (msg) => {
     return <Empty description={msg} />;
   };
@@ -163,7 +162,7 @@ const TopicSearch = () => {
             </h3>
           </div>
         </div>
-        <AdvanceFilter />
+        {/* <AdvanceFilter /> */}
       </div>
       <div
         className="flex lg:flex-row flex-col gap-10"

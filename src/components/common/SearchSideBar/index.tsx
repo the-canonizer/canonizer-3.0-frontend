@@ -39,6 +39,8 @@ export default function SearchSideBar() {
     selectedTopicFromAdvanceFilterAlgorithmRecords,
     selectedCampFromAdvanceFilterAlgorithmRecords,
     selectedCampStatementFromAdvanceFilterAlgorithmRecords,
+    detectPressEnterInSearch,
+    storeOnPressEnterSearchCountForMetaData,
   } = useSelector((state: RootState) => ({
     searchDataAll: state?.searchSlice?.searchDataAll,
     searchData: state?.searchSlice?.searchData,
@@ -57,18 +59,24 @@ export default function SearchSideBar() {
     selectedCampStatementFromAdvanceFilterAlgorithmRecords:
       state?.searchSlice
         ?.selectedCampStatementFromAdvanceFilterAlgorithmRecords,
+    detectPressEnterInSearch: state?.searchSlice?.detectPressEnterInSearch,
+    storeOnPressEnterSearchCountForMetaData:
+      state?.searchSlice?.storeOnPressEnterSearchCountForMetaData,
   }));
+
   const isReviewOrByDate =
     router.query.asof === "review" || router.query.asof === "bydate";
 
   const isCampPage = router?.pathname == "/search/camp";
 
   const campTotal =
-    searchValue === ""
-      ? searchMetaData?.camp_total
+    router?.query?.q === ""
+      ? storeOnPressEnterSearchCountForMetaData?.camp_total
       : isReviewOrByDate && isCampPage
       ? selectedCampFromAdvanceFilterAlgorithmRecords
-      : searchCountForMetaData?.camp_total;
+      : detectPressEnterInSearch
+      ? searchCountForMetaData?.camp_total
+      : storeOnPressEnterSearchCountForMetaData?.camp_total;
   return (
     <>
       <div className="leftSideBar_Card noFilter">
@@ -99,6 +107,14 @@ export default function SearchSideBar() {
                      router?.asPath.includes("/search?") ? "active" : "btn"
                    }`}
                   disabled={router?.pathname == "/search" ? true : false}
+                  onClick={() => {
+                    dispatch(
+                      setFilterCanonizedTopics({
+                        asofdate: Date.now() / 1000,
+                        asof: "default",
+                      })
+                    );
+                  }}
                 >
                   All Results
                 </Button>
@@ -141,13 +157,15 @@ export default function SearchSideBar() {
                     <span>
                       {" "}
                       &nbsp;(
-                      {searchValue == ""
-                        ? searchMetaData?.topic_total
-                        : (router.query.asof == "review" ||
-                            router.query.asof == "bydate") &&
-                          router?.pathname == "/search/topic"
+                      {router?.query?.q === ""
+                        ? storeOnPressEnterSearchCountForMetaData?.topic_total
+                        : (router.query.asof === "review" ||
+                            router.query.asof === "bydate") &&
+                          router?.pathname === "/search/topic"
                         ? selectedTopicFromAdvanceFilterAlgorithmRecords
-                        : searchCountForMetaData?.topic_total}
+                        : detectPressEnterInSearch
+                        ? searchCountForMetaData?.topic_total
+                        : storeOnPressEnterSearchCountForMetaData?.topic_total}
                       )
                     </span>
                   </a>
@@ -227,13 +245,15 @@ export default function SearchSideBar() {
                     <span>
                       {" "}
                       &nbsp;(
-                      {searchValue == ""
-                        ? searchMetaData?.statement_total
+                      {router?.query?.q === ""
+                        ? storeOnPressEnterSearchCountForMetaData?.statement_total
                         : (router.query.asof == "review" ||
                             router.query.asof == "bydate") &&
                           router?.pathname == "/search/camp_statement"
                         ? selectedCampStatementFromAdvanceFilterAlgorithmRecords
-                        : searchCountForMetaData?.statement_total}
+                        : detectPressEnterInSearch
+                        ? searchCountForMetaData?.statement_total
+                        : storeOnPressEnterSearchCountForMetaData?.statement_total}
                       )
                     </span>
                   </a>
@@ -262,6 +282,12 @@ export default function SearchSideBar() {
                   }
                   onClick={() => {
                     dispatch(setClickAdvanceFilterOption(false));
+                    dispatch(
+                      setFilterCanonizedTopics({
+                        asofdate: Date.now() / 1000,
+                        asof: "default",
+                      })
+                    );
                   }}
                 >
                   {/* <Image
@@ -277,10 +303,7 @@ export default function SearchSideBar() {
                     <span>
                       {" "}
                       &nbsp;(
-                      {searchValue == ""
-                        ? searchMetaData?.nickname_total
-                        : searchCountForMetaData?.nickname_total}
-                      )
+                      {storeOnPressEnterSearchCountForMetaData?.nickname_total})
                     </span>
                   </a>
                 </Button>

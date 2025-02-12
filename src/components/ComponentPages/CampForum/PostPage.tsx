@@ -1,6 +1,6 @@
 import { useState, useEffect, Fragment } from "react";
 import { useRouter } from "next/router";
-import { message, Modal, Typography } from "antd";
+import { Col, message, Modal, Row, Typography } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { CloseOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import Link from "next/link";
@@ -26,6 +26,7 @@ import { RootState } from "src/store";
 import CommonBreadcrumbs from "../Breadcrumbs/commonBreadcrumbs";
 import { useIsMobile } from "src/hooks/useIsMobile";
 import { getSelectedNode } from ".";
+import GoogleAd from "components/googleAds";
 
 const { Text } = Typography;
 
@@ -290,20 +291,28 @@ const CommentsList = () => {
             )}
           </div>
         )}
-        <Post
-          postList={postList}
-          pCurrent={ppage}
-          pTotal={pTotalRecords}
-          pOnChange={pOnChange}
-          onEditClick={onPostEditClick}
-          onDeleteClick={onDeleteClick}
-          currentThread={currentThread}
-          isLoading={postLoading}
-          postperPage={postperPage}
-          threadDetailsLoading={threadDetailsLoading}
-          createdAt={createdAt}
-          onBackClick={onBackClick}
-        />
+
+        <Row>
+          <Col md={20} className="mb-14" id="post-component">
+            <Post
+              postList={postList}
+              pCurrent={ppage}
+              pTotal={pTotalRecords}
+              pOnChange={pOnChange}
+              onEditClick={onPostEditClick}
+              onDeleteClick={onDeleteClick}
+              currentThread={currentThread}
+              isLoading={postLoading}
+              postperPage={postperPage}
+              threadDetailsLoading={threadDetailsLoading}
+              createdAt={createdAt}
+              onBackClick={onBackClick}
+            />
+          </Col>
+          <Col md={4} className="mb-14" id="post-ad">
+            <GoogleAd />
+          </Col>
+        </Row>
       </Layout>
 
       <CreatePostPopup onSubmittedSucess={onSubmittedSucess} />

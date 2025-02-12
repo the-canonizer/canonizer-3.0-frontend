@@ -344,6 +344,7 @@ function CommanBreadcrumbs({
     router?.asPath || filterObject,
     !!(getCookies() as any)?.loginToken,
     changeGoneLive,
+    asof,
   ]);
 
   const handleTopicwarningIcon = () => {
@@ -409,6 +410,18 @@ function CommanBreadcrumbs({
   //     getTreesApi(reqBodyForService);
   //   }
   // };
+  const disableCreateBtn = () => {
+    if (campRecord?.is_disabled == 1) {
+      return false; // Button should be disabled
+    }
+    if (
+      (campRecord?.is_one_level == 0 && campRecord?.parent_is_one_level == 0) ||
+      (campRecord?.is_one_level == 1 && campRecord?.parent_is_one_level == 1) ||
+      campRecord?.parent_is_one_level === false
+    ) {
+      return true; // Button should be enabled
+    }
+  };
 
   const covertToTime = (unixTime) => {
     return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
@@ -1165,24 +1178,25 @@ function CommanBreadcrumbs({
             !compareMode &&
             campRecord?.is_archive == 0 &&
             breadCrumbRes?.bread_crumb?.length
-          ) && (
-            <SecondaryButton
-              className="hidden px-8 py-2.5 lg:flex items-center text-sm gap-1"
-              size="large"
-              onClick={handleClick}
-              disabled={!tree?.["1"]?.is_valid_as_of_time ? true : false}
-            >
-              Create Camp
-              <Image
-                src="/images/Icon-plus.svg"
-                alt="svg"
-                className="icon-topic"
-                height={16}
-                width={16}
-                preview={false}
-              />
-            </SecondaryButton>
-          )}
+          ) &&
+            disableCreateBtn() && (
+              <SecondaryButton
+                className="hidden px-8 py-2.5 lg:flex items-center text-sm gap-1"
+                size="large"
+                onClick={handleClick}
+                disabled={!tree?.["1"]?.is_valid_as_of_time ? true : false}
+              >
+                Create Camp
+                <Image
+                  src="/images/Icon-plus.svg"
+                  alt="svg"
+                  className="icon-topic"
+                  height={16}
+                  width={16}
+                  preview={false}
+                />
+              </SecondaryButton>
+            )}
           {isHtmlContent}
         </div>
       )}

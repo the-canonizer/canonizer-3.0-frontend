@@ -25,7 +25,7 @@ export const searchSlice = createSlice({
       camp_total: 0,
       statement_total: 0,
       nickname_total: 0,
-      search_ids:{}
+      search_ids: {},
     } as any,
     searchCountForMetaData: {
       topic_total: 0,
@@ -33,6 +33,13 @@ export const searchSlice = createSlice({
       statement_total: 0,
       nickname_total: 0,
     },
+
+    storeOnPressEnterSearchCountForMetaData: {
+      topic_total: 0,
+      camp_total: 0,
+      statement_total: 0,
+      nickname_total: 0,
+    } as any,
 
     searchValue: "",
     pageNumber: 1,
@@ -48,6 +55,7 @@ export const searchSlice = createSlice({
     selectedCampStatementFromAdvanceFilterAlgorithmRecords: 0,
     selectedCampFromAdvanceFilterAlgorithm: [],
     selectedStatementFromAdvanceFilterAlgorithm: [],
+    detectPressEnterInSearch: false,
   },
   reducers: {
     setSearchData: (state, action) => {
@@ -77,11 +85,19 @@ export const searchSlice = createSlice({
         camp_total: action?.payload?.camp_total,
         statement_total: action?.payload?.statement_total,
         nickname_total: action?.payload?.nickname_total,
-        search_ids:action?.payload?.search_ids,
+        search_ids: action?.payload?.search_ids,
       };
     },
     setSearchCountForMetaData: (state, action) => {
       state.searchCountForMetaData = {
+        topic_total: action?.payload?.topic_total,
+        camp_total: action?.payload?.camp_total,
+        statement_total: action?.payload?.statement_total,
+        nickname_total: action?.payload?.nickname_total,
+      };
+    },
+    setStoreOnPressEnterSearchCountForMetaData: (state, action) => {
+      state.storeOnPressEnterSearchCountForMetaData = {
         topic_total: action?.payload?.topic_total,
         camp_total: action?.payload?.camp_total,
         statement_total: action?.payload?.statement_total,
@@ -121,14 +137,21 @@ export const searchSlice = createSlice({
     setSelectedCampFromAdvanceFilterAlgorithmRecords: (state, action) => {
       state.selectedCampFromAdvanceFilterAlgorithmRecords = action.payload;
     },
-    setSelectedCampStatementFromAdvanceFilterAlgorithmRecords: (state, action) => {
-      state.selectedCampStatementFromAdvanceFilterAlgorithmRecords = action.payload;
+    setSelectedCampStatementFromAdvanceFilterAlgorithmRecords: (
+      state,
+      action
+    ) => {
+      state.selectedCampStatementFromAdvanceFilterAlgorithmRecords =
+        action.payload;
     },
     setSelectedCampFromAdvanceFilterAlgorithm: (state, action) => {
       state.selectedCampFromAdvanceFilterAlgorithm = action.payload;
     },
     setSelectedStatementFromAdvanceFilterAlgorithm: (state, action) => {
       state.selectedStatementFromAdvanceFilterAlgorithm = action.payload;
+    },
+    setDetectPressEnterInSearch: (state, action) => {
+      state.detectPressEnterInSearch = action.payload;
     },
   },
 });
@@ -152,6 +175,8 @@ export const {
   setSelectedCampFromAdvanceFilterAlgorithmRecords,
   setSelectedCampStatementFromAdvanceFilterAlgorithmRecords,
   setSearchCountForMetaData,
+  setDetectPressEnterInSearch,
+  setStoreOnPressEnterSearchCountForMetaData,
 } = searchSlice.actions;
 
 export default searchSlice.reducer;

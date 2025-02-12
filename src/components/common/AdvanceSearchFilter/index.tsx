@@ -37,6 +37,7 @@ import {
   setSelectedCampFromAdvanceFilterAlgorithmRecords,
   setSelectedCampStatementFromAdvanceFilterAlgorithmRecords,
   setPageNumber,
+  setDetectPressEnterInSearch,
 } from "src/store/slices/searchSlice";
 import debounce from "lodash/debounce";
 import { getTreesApi } from "src/network/api/campDetailApi";
@@ -114,7 +115,6 @@ export default function AdvanceFilter() {
     searchMetaData: state?.searchSlice?.searchMetaData,
     pageNumber: state?.searchSlice?.pageNumber,
   }));
-  console.log(pageNumber, "pageNumber");
 
   const { searchDataAll, searchData } = useSelector((state: RootState) => ({
     searchDataAll: state?.searchSlice?.searchDataAll,
@@ -178,7 +178,7 @@ export default function AdvanceFilter() {
       </div>
     </>
   );
-  console.log(searchMetaData?.search_ids?.topic_ids, "searchMetaData");
+
   const extractNumbers = (dataArray) => {
     return dataArray?.map((item) => {
       // Split each string by hyphen
@@ -201,7 +201,7 @@ export default function AdvanceFilter() {
   };
   const reqBody = {
     type: router?.pathname == "/search/nickname" ? "nickname" : "",
-    search: searchValue,
+    search: router?.query?.q,
     query: searchQueryValue,
     nick_ids: extractNumbers(findNicknameId),
   };
@@ -370,7 +370,7 @@ export default function AdvanceFilter() {
 
     const rebody = {
       type: "topic",
-      search: searchValue,
+      search: router?.query?.q,
       query: "",
       algo: algorithm,
       asof: asof,
@@ -395,7 +395,7 @@ export default function AdvanceFilter() {
     // loadMore ? setPageNumber(pageNumber + 1) : setPageNumber(1);
     const rebody = {
       type: "camp",
-      search: searchValue,
+      search: router?.query?.q,
       query: "",
       algo: algorithm,
       asof: asof,
@@ -421,7 +421,7 @@ export default function AdvanceFilter() {
     // loadMore ? setPageNumber(pageNumber + 1) : setPageNumber(1);
     const rebody = {
       type: "statement",
-      search: searchValue,
+      search: router?.query?.q,
       query: "",
       algo: algorithm,
       asof: asof,
@@ -573,23 +573,25 @@ export default function AdvanceFilter() {
   useEffect(() => {
     const fetchData = async () => {
       const isReviewOrByDate = asof === "review" || asof === "bydate";
-      const isFilterApplied = filterByScore !== 0 || algorithm !== "blind_popularity";
-  
-      if (router?.pathname === "/search/topic" && (isReviewOrByDate || isFilterApplied)) {
+
+      if (router?.pathname === "/search/topic" && isReviewOrByDate) {
         dispatch(setSearchLoadingAction(true));
         await getTopicsApiCallWithReqBody();
         dispatch(setSearchLoadingAction(false));
-      } else if (router?.pathname === "/search/camp" && (isReviewOrByDate || isFilterApplied)) {
+      } else if (router?.pathname === "/search/camp" && isReviewOrByDate) {
         dispatch(setSearchLoadingAction(true));
         await getCampsApiCallWithReqBody();
         dispatch(setSearchLoadingAction(false));
-      } else if (router?.pathname === "/search/camp_statement" && (isReviewOrByDate || isFilterApplied)) {
+      } else if (
+        router?.pathname === "/search/camp_statement" &&
+        isReviewOrByDate
+      ) {
         dispatch(setSearchLoadingAction(true));
         await getStatementApiCallWithReqBody();
         dispatch(setSearchLoadingAction(false));
       }
     };
-  
+
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [asof, filterByScore, algorithm, asofdate, pageNumber]);
@@ -727,7 +729,8 @@ export default function AdvanceFilter() {
                       viewThisVersion
                     );
                     // getTopicsApiCallWithReqBody()
-                    dispatch(setPageNumber(1))
+                    dispatch(setPageNumber(1));
+                    dispatch(setDetectPressEnterInSearch(false));
                   }}
                 >
                   Search include review
@@ -751,7 +754,7 @@ export default function AdvanceFilter() {
                       filterObject?.namespace_id,
                       viewThisVersion
                     );
-                    dispatch(setPageNumber(1))
+                    dispatch(setPageNumber(1));
                   }}
                 >
                   Default
@@ -763,7 +766,8 @@ export default function AdvanceFilter() {
                     dispatch(setViewThisVersion(false));
                     handleAsOfClick();
                     // getTopicsApiCallWithReqBody()
-                    dispatch(setPageNumber(1))
+                    dispatch(setPageNumber(1));
+                    dispatch(setDetectPressEnterInSearch(false));
                   }}
                 >
                   Search historical

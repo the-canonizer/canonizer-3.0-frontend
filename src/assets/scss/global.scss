@@ -839,16 +839,16 @@ body {
 }
 
 .editorContent {
-  h1 {
-    @apply text-xl;
-  }
-
   h2 {
-    @apply text-lg;
+    @apply text-3xl;
   }
 
   h3 {
-    @apply text-sm;
+    @apply text-2xl;
+  }
+
+  h4 {
+    @apply text-xl;
   }
 
   ul {
@@ -857,6 +857,9 @@ body {
 
   ol {
     @apply list-decimal pl-5;
+  }
+  a {
+    @apply text-blue-500 underline; /* Apply blue color and underline */
   }
 }
 
@@ -902,13 +905,13 @@ body {
   width: 1px;
   display: block;
   position: absolute;
-  top: 0;
-  right: 30px;
+  top: 12px;
+  right: 28px;
   bottom: 0px;
   border-right: 1px solid #d9d9d9;
   content: "";
   transform: rotate(90deg);
-  height: 10px;
+  height: 15px;
 }
 
 .ant-tree-switcher.ant-tree-switcher-noop:has(.ant-tree-switcher-leaf-line) {

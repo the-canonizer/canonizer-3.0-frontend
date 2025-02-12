@@ -41,13 +41,13 @@ export const getLists = async (
 };
 
 export const getGravatarPicApi = async (email) => {
-const BaseCanonizerApiUrl = process.env.NEXT_PUBLIC_BASE_API_URL;
+  const BaseCanonizerApiUrl = process.env.NEXT_PUBLIC_BASE_API_URL;
   try {
     const postData = {
       email: email,
     };
     const url = `${BaseCanonizerApiUrl}/gravatar`;
-    let res = await axios.post(url, postData); 
+    let res = await axios.post(url, postData);
     return res;
   } catch (error) {
     return error; // Return the error

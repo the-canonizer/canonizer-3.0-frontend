@@ -7,7 +7,7 @@ import FooterComp from "src/components/common/footer";
 import RegistrationModal from "src/components/ComponentPages/Registration/registrationModal";
 import DisclaimerMsg from "src/components/common/disclaimer";
 import ArchivedCampMsg from "src/components/common/ArchivedCampMsg";
-// import GoogleAd from "src/components/googleAds";
+import GoogleAd from "src/components/googleAds";
 
 const { Header, Footer } = Layout;
 
@@ -68,12 +68,7 @@ function CustomLayout(props: any) {
           </aside>
         ) : null}
       </Layout>
-      {/* <div className="ad_area p-4">
-        <GoogleAd
-          ad_client={process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT}
-          ad_slot={process.env.NEXT_PUBLIC_GOOGLE_ADS_RIGHT_SLOT}
-        />
-      </div> */}
+      <GoogleAd />
       <Footer className={`p-0`}>
         <FooterComp />
       </Footer>
