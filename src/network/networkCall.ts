@@ -88,13 +88,23 @@ export default class NetworkCall {
       if (error === undefined) {
         return Promise.reject({ error: error });
       } else if (error.status === K.Network.StatusCode.Invalid) {
+        // let authenticatedApi =
+        //   error.config.url?.includes("support-reason-list") ||
+        //   error.config.url?.includes("support/check") ||
+        //   error.config.url?.includes("camp/get-topic-nickname-used");
+
         if (
           !(
             error.config.url?.includes("/user/login") ||
             error.config.url?.includes("/forgot-password/verify-otp")
           )
         ) {
-          logout("Invalid User", error.status, NetworkCall.counter);
+          logout(
+            "Invalid User",
+            error.status,
+            NetworkCall.counter,
+            // authenticatedApi
+          );
           NetworkCall.counter++;
         }
 
