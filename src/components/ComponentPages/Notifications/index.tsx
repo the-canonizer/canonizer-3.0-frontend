@@ -162,8 +162,6 @@ const NotificationPage = () => {
       }
 
       getList();
-    } else {
-      message.error(res?.message);
     }
 
     setIsReadOpen(false);
