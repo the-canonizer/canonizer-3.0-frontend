@@ -1,6 +1,7 @@
 import NetworkCall from "../networkCall";
 import { message } from "antd";
 import { campManageStatementRequest } from "../request/campManageStatementRequest";
+import { handleError } from "src/utils/generalUtility";
 
 export const getEditStatementApi = async (body, loginToken = null) => {
   try {
@@ -10,8 +11,9 @@ export const getEditStatementApi = async (body, loginToken = null) => {
     );
     return res;
   } catch (error) {
-    message?.error(error?.error?.data?.message);
-    return error?.error?.data;
+    handleError(error);
+    // message?.error(error?.error?.data?.message);
+    // return error?.error?.data;
   }
 };
 export const getEditCampApi = async (body, loginToken = null) => {
@@ -22,8 +24,9 @@ export const getEditCampApi = async (body, loginToken = null) => {
     );
     return res;
   } catch (error) {
-    message.error(error?.error?.data?.message);
-    return error?.error?.data;
+    handleError(error);
+    // message.error(error?.error?.data?.message);
+    // return error?.error?.data;
   }
 };
 
@@ -35,8 +38,9 @@ export const getEditTopicApi = async (body, loginToken = null) => {
     );
     return res;
   } catch (error) {
-    message.error(error?.error?.data?.message);
-    return error?.error?.data;
+    handleError(error);
+    // message.error(error?.error?.data?.message);
+    // return error?.error?.data;
   }
 };
 export const getParseCampStatementApi = async (body) => {
