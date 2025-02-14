@@ -17,7 +17,10 @@ import { openNotificationWithIcon } from "components/common/notification/notific
 
 export const getTreesApi = async (reqBody, loginToken = null) => {
   try {
-    const trees = await NetworkCall.fetch(TreeRequest.getTrees(reqBody,loginToken), false);
+    const trees = await NetworkCall.fetch(
+      TreeRequest.getTrees(reqBody, loginToken),
+      false
+    );
     store.dispatch(setTree(trees?.data || []));
     return {
       treeData: trees?.data?.at(0),

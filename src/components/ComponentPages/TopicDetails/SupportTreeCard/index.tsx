@@ -547,7 +547,7 @@ const SupportTreeCard = ({
                           )}
 
                           <span
-                            className="text-canBlack text-xs 2xl:text-sm font-normal"
+                            className="text-canBlack text-sm 2xl:text-sm font-normal"
                             id="topic_detail_user_support_tree_card_nick_name_1"
                           >
                             {data[item].nick_name}

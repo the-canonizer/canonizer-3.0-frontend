@@ -1,7 +1,6 @@
 import { Collapse, Typography } from "antd";
 import moment from "moment";
 import Link from "next/link";
-import styles from "../campHistory.module.scss";
 import { useRouter } from "next/router";
 import {
   capitalizeFirstLetter,
@@ -15,6 +14,7 @@ const HistoryComparison = ({
   campStatement,
   topicNamespaceId,
   s1 = false,
+  textColor = "",
 }: any) => {
   const router = useRouter();
   const historyOf = router?.asPath?.split("/")?.at(1);
@@ -31,13 +31,10 @@ const HistoryComparison = ({
     }
   };
 
-  const topicName = router?.query?.routes[0];
-  const topic_name = topicName.split("-").slice(1).join(" ");
-
   const getTitle = () => {
     if (historyOf === "camp" || historyOf === "topic") return "Updates";
     if (historyOf === "statement") return s1 ? "EDITS" : "DETAILS";
-    return null; // or a default value if needed
+    return null;
   };
 
   return (
@@ -83,11 +80,6 @@ const HistoryComparison = ({
                 Parent Camp :<span>{campStatement?.parent_camp_name}</span>
               </p>
             )}
-            {/* {campStatement?.key_words && (
-              <p>
-                Keywords: <span>{campStatement?.key_words}</span>
-              </p>
-            )} */}
             <p className="break-all">
               Edit summary: <span>{campStatement?.note}</span>
             </p>
@@ -147,11 +139,9 @@ const HistoryComparison = ({
           </>
         )}
         {historyOf === "statement" && (
-          <>
-            <p className="break-all">
-              Edit summary: <span>{campStatement?.note}</span>
-            </p>
-          </>
+          <p className="break-all">
+            Edit summary: <span>{campStatement?.note}</span>
+          </p>
         )}
         {(historyOf === "statement" || historyOf === "topic") && (
           <p>
@@ -178,21 +168,19 @@ const HistoryComparison = ({
             Camp Leader:{" "}
             <span>
               {campStatement && campStatement?.camp_leader_nick_name ? (
-                <>
-                  <Link
-                    href={{
-                      pathname: `/user/supports/${
-                        campStatement?.camp_leader_nick_id || ""
-                      }`,
-                      query: {
-                        canon: topicNamespaceId || "",
-                      },
-                    }}
-                    passHref
-                  >
-                    <a>{campStatement?.camp_leader_nick_name}</a>
-                  </Link>
-                </>
+                <Link
+                  href={{
+                    pathname: `/user/supports/${
+                      campStatement?.camp_leader_nick_id || ""
+                    }`,
+                    query: {
+                      canon: topicNamespaceId || "",
+                    },
+                  }}
+                  passHref
+                >
+                  <a>{campStatement?.camp_leader_nick_name}</a>
+                </Link>
               ) : (
                 <>No</>
               )}
@@ -202,25 +190,19 @@ const HistoryComparison = ({
         <p>
           Submitted on: <span>{covertToTime(campStatement?.submit_time)}</span>
         </p>
-        {/* <p>
-          {campStatement &&
-          (campStatement?.status == "live" ||
-            campStatement?.status == "old" ||
-            campStatement?.status == "objected")
-            ? "Go Live Time"
-            : "Going live on"}{" "}
-          :<span>{covertToTime(campStatement?.go_live_time)}</span>
-        </p> */}
         <p>
           Go Live Time: <span>{covertToTime(campStatement?.go_live_time)}</span>
         </p>
         <p>
           Topic Tags{"(s)"}:
           <span>
-            {campStatement?.tags?.map((tag, index) => {
-              let lastIndex = index + 1 === campStatement?.topic_tags?.length;
-              return commaSeparated(tag?.title, lastIndex);
-            })}
+            {campStatement?.tags?.length > 0
+              ? campStatement?.tags?.map((tag, index) => {
+                  let lastIndex =
+                    index + 1 === campStatement?.topic_tags?.length;
+                  return commaSeparated(tag?.title, lastIndex);
+                })
+              : "None"}
           </span>
         </p>
         <p>
@@ -243,7 +225,7 @@ const HistoryComparison = ({
           >
             <Panel header="" key="1">
               <div>
-                <h5 className="font-semibold text-canOrange mb-3">Statement</h5>
+                <h5 className={`font-semibold ${textColor} mb-3`}>Statement</h5>
                 <div
                   className="text-canBlack compare-card-internal"
                   dangerouslySetInnerHTML={{

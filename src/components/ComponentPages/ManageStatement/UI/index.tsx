@@ -89,6 +89,7 @@ function ManageStatementUI({
   const editorRef = useRef(null);
   const [alertModal, setAlertModal] = useState(false); // Controls modal visibility
   const [findLength, setFindlength] = useState(0);
+  const [checkFileExceed, setCheckFileExceed] = useState(false);
 
   const onEditorStateChange = (changedata: any) => {
     // Convert the editor data to a string
@@ -211,7 +212,7 @@ function ManageStatementUI({
   function handleModalCancel() {
     setAlertModal(false); // Close the modal
   }
-  console.log(editorState, "editorState");
+
   return (
     <CommonCards className="border-0 bg-white" id="common-cards">
       <header className="mb-14" id="header">
@@ -287,7 +288,8 @@ function ManageStatementUI({
                 className="mt-1 mb-5 text-sm font-normal text-canBlack opacity-80"
                 id="nickanme_note"
               >
-                Note: You can drag and drop image files into the editor. The maximum allowed file size is 5 MB.
+                Note: You can drag and drop image files into the editor. The
+                maximum allowed file size is 5 MB.
               </p>
               <Form.Item
                 className="mb-2 editorContent [&_.ant-form-item-label>label]:w-full"
@@ -354,6 +356,7 @@ function ManageStatementUI({
 
                               if (fileSizeInBytes >= MAX_IMAGE_SIZE) {
                                 oversizedImageDetected = true;
+                                setCheckFileExceed(true);
                                 setAlertModal(true);
                                 console.warn(
                                   "Skipping oversized image:",
@@ -410,6 +413,7 @@ function ManageStatementUI({
                           statement: updatedData,
                           nick_name: values?.nick_name,
                         });
+                        setCheckFileExceed(false);
                       } else {
                         console.warn(
                           "AutoSave skipped due to oversized image."
@@ -464,7 +468,10 @@ function ManageStatementUI({
                   htmlType="submit"
                   className="inline-flex items-center justify-center h-auto py-2 px-7 h-auto"
                   disabled={
-                    (submitIsDisable && isEdit) || !isDisabled || isAutoSaving
+                    (submitIsDisable && isEdit) ||
+                    !isDisabled ||
+                    isAutoSaving ||
+                    checkFileExceed
                   }
                   id="publish-button"
                 >

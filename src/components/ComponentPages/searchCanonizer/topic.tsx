@@ -1,15 +1,16 @@
 import React, { Fragment, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "src/store";
+import { Pagination } from "antd";
+import { setPageNumber } from "src/store/slices/searchSlice";
+import { replaceSpecialCharacters } from "src/utils/generalUtility";
+import { useRouter } from "next/router";
 import SearchSideBar from "../../common/SearchSideBar";
 import styles from "./search.module.scss";
 import Link from "next/link";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "src/store";
-import { Empty, Pagination } from "antd";
-import { setPageNumber } from "src/store/slices/searchSlice";
 import CustomSkelton from "../../common/customSkelton";
 import Image from "next/image";
-import { replaceSpecialCharacters } from "src/utils/generalUtility";
-import { useRouter } from "next/router";
+import AdvanceSearchHeader from "./AdvanceSearchHeader";
 
 const TopicSearch = () => {
   const { searchDataAll, searchData, searchValue } = useSelector(
@@ -19,12 +20,12 @@ const TopicSearch = () => {
       searchValue: state?.searchSlice?.searchValue,
     })
   );
+
   const {
     searchMetaData,
     selectedTopicFromAdvanceFilterAlgorithm,
     selectedTopicFromAdvanceFilterAlgorithmRecords,
     asof,
-    filterByScore,
     algorithm,
     pageNumber,
   } = useSelector((state: RootState) => ({
@@ -46,124 +47,158 @@ const TopicSearch = () => {
   const [isReview, setIsReview] = useState(asof == "review");
   const [displayedData, setDisplayedData] = useState([]);
   const [displayedDataforAlgo, setDisplayedDataforAlgo] = useState([]);
-
+  const router = useRouter();
   const dispatch = useDispatch();
+
   const pageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
     dispatch(setPageNumber(pageNumber));
   };
 
-  const showEmpty = (msg) => {
-    return <Empty description={msg} />;
-  };
   function replaceSpecialCharactersInLink(link) {
-    // Replace each special character (excluding slashes) with a hyphen
-    link = link.replace(/[-\\^$*+?.()|%#@[\]{}]/g, "-");
+    if (!link) return ""; // Handle null/undefined cases
 
-    // Define the "/topic/" string
-    let topicString = "/topic/";
-    let topicIndex = link.indexOf(topicString);
-    if (topicIndex === 1) {
-      // If '/topic/' is not found, return the modified link with special characters replaced
+    // Replace special characters (excluding slashes) with hyphens
+    link = link.replace(/[^a-zA-Z0-9/_-]/g, "-");
+
+    const topicString = "/topic/";
+    const topicIndex = link.indexOf(topicString);
+
+    // If '/topic/' is not found, return the sanitized link
+    if (topicIndex === -1) {
       return link;
     }
 
-    // Find the index of the last slash in the link
-    let lastSlashIndex = link.lastIndexOf("/");
+    // Find the last slash in the link
+    const lastSlashIndex = link.lastIndexOf("/");
+
+    // If the last slash is before '/topic/', return as is
+    if (lastSlashIndex <= topicIndex + topicString.length) {
+      return link;
+    }
 
     // Extract parts of the URL
-    let beforeTopic = link.substring(0, topicIndex + topicString.length); // '/topic/' part
+    const beforeTopic = link.substring(0, topicIndex + topicString.length); // Keep '/topic/' part
     let betweenTopicAndLast = link.substring(
       topicIndex + topicString.length,
       lastSlashIndex
     );
-    let afterLastSlash = link.substring(lastSlashIndex);
+    const afterLastSlash = link.substring(lastSlashIndex);
 
     // Replace slashes in the part between '/topic/' and the last slash with hyphens
     betweenTopicAndLast = betweenTopicAndLast.replace(/\//g, "-");
 
-    // Reconstruct the final link
-    let finalLink = beforeTopic + betweenTopicAndLast + afterLastSlash;
-    return finalLink;
+    return beforeTopic + betweenTopicAndLast + afterLastSlash;
   }
-  useEffect(() => {
-    setIsReview(asof == "review");
-    // setBackGroundColorClass(asof);
-  }, [asof]);
 
-  const getHighlightedText = (text, highlight) => {
+  const getHighlightedText = (text = "", highlight = "") => {
+    if (!text || !highlight) return text; // Handle null/empty cases gracefully
+
+    // Escape special characters in the highlight text for regex
     const escapedHighlight = highlight.replace(
       /[-[\]{}()*+?.,\\^$|#\s]/g,
       "\\$&"
     );
 
-    // Create a regular expression using the escaped highlight
-    const parts = text?.split(new RegExp(`(${escapedHighlight})`, "gi"));
-    return (
-      <span>
-        {" "}
-        {parts?.map((part, i) => (
-          <span
-            key={i}
-            style={
-              part.toLowerCase() === highlight.toLowerCase()
-                ? { fontWeight: 700 }
-                : {}
-            }
-          >
-            {part}
-          </span>
-        ))}{" "}
-      </span>
-    );
-  };
-  const router = useRouter();
+    // Create a case-insensitive regex pattern
+    const parts = text.split(new RegExp(`(${escapedHighlight})`, "gi"));
+    const highlightLower = highlight.toLowerCase();
 
-  const pageSize = 20;
+    return parts.map((part, i) => (
+      <span
+        key={i}
+        style={part.toLowerCase() === highlightLower ? { fontWeight: 700 } : {}}
+      >
+        {part}
+      </span>
+    ));
+  };
+
+  useEffect(() => {
+    setIsReview(asof == "review");
+  }, [asof]);
+
   useEffect(() => {
     setDisplayedData(searchDataAll?.topic);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchDataAll?.topic, currentPage]);
 
   useEffect(() => {
     setDisplayedDataforAlgo(selectedTopicFromAdvanceFilterAlgorithm);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedTopicFromAdvanceFilterAlgorithm, currentPage]);
+
+  const TopicItem = ({ item, searchValue, isAlgorithm }) => {
+    const topicLink = isAlgorithm
+      ? `/topic/${item?.topic_num}-${replaceSpecialCharacters(
+          item?.type_value,
+          "-"
+        )}/1-Agreement`
+      : `/${replaceSpecialCharactersInLink(item?.link ?? "")}`;
+
+    return (
+      <li className="flex flex-col py-3 first:pt-0 border-b border-canGrey2 last:border-none last:pb-0">
+        <Link href={topicLink} passHref>
+          <div className="flex justify-between items-center">
+            <label
+              className="text-base font-medium text-canBlack flex !mb-2"
+              style={{ cursor: "pointer" }}
+            >
+              {getHighlightedText(item?.type_value, searchValue)}
+            </label>
+            <Image
+              src="/images/search-page-arrow.svg"
+              width={16}
+              height={10}
+              alt="check"
+              className="cursor-pointer"
+            />
+          </div>
+        </Link>
+        <div className="text-base text-canBlue flex items-center gap-2.5">
+          <Image src="/images/flagicon.svg" width={18} height={20} />
+          <span className="text-base !text-canBlack font-medium">
+            Canon:
+            <span className="font-medium !text-canBlue ml-1">
+              {item.namespace}
+            </span>
+          </span>
+        </div>
+      </li>
+    );
+  };
+
+  const TopicList = ({ data, searchValue, isAlgorithm }) => {
+    if (!data?.length) {
+      return (
+        <span className="italic text-canLight">
+          There is no data to show in this category.
+        </span>
+      );
+    }
+
+    return (
+      <ul>
+        {data.map((item) => (
+          <TopicItem
+            key={item?.topic_num || item?.link}
+            item={item}
+            searchValue={searchValue}
+            isAlgorithm={isAlgorithm}
+          />
+        ))}
+      </ul>
+    );
+  };
+  const isAlgorithmSearch = isReview || asof === "bydate";
+
   return (
     <Fragment>
-      <div
-        className="flex justify-between lg:items-center lg:flex-row flex-col items-start mb-10 mt-2.5 lg:gap-0 gap-5"
-        id="elastic_topic_search_section"
-      >
-        <div
-          className="flex  items-center  "
-          id="elastic_topic_search_section_heading_content"
-        >
-          <div
-            className="flex items-center gap-2.5"
-            id="elastic_topic_search_section_img_content"
-          >
-            <Image
-              id="elastic_topic_search_section_img"
-              src="/images/recent-activiity-arrow.svg"
-              width={16}
-              height={24}
-            />
-
-            <h3
-              className="lg:text-3xl text-xl   text-canBlack font-medium"
-              id="elastic_topic_search_section_heading"
-            >
-              Search Results for “
-              <span className="text-canBlue capitalize break-all whitespace-break-spaces">
-                {router?.query?.q}
-              </span>
-              ”
-            </h3>
-          </div>
-        </div>
-        {/* <AdvanceFilter /> */}
-      </div>
+      <AdvanceSearchHeader
+        sectionId="elastic_topic_search_section"
+        subSectionId="elastic_topic_search_section_heading_content"
+        headingId="elastic_topic_search_section_img_content"
+        imgId="elastic_topic_search_section_img"
+        headingTextId="elastic_topic_search_section_heading"
+      />
       <div
         className="flex lg:flex-row flex-col gap-10"
         id="elastic_topic_search_section_sidebar"
@@ -179,7 +214,6 @@ const TopicSearch = () => {
             <SearchSideBar />
           </div>
         </aside>
-
         <div
           className="pageContentWrap flex-1"
           id="elastic_topic_search_section_topic_heading"
@@ -202,189 +236,27 @@ const TopicSearch = () => {
                 bodyCount={10}
                 stylingClass="listSkeleton"
                 isButton={false}
-                id="elastic_topic_search_section_loader"
               />
             ) : (
-              <div
-                className={styles.search_lists}
-                id="elastic_topic_search_list_section"
-              >
-                {searchDataAll.topic?.length ? (
+              <div className={styles.search_lists}>
+                {searchDataAll?.topic?.length ? (
                   <div>
-                    {isReview || asof == "bydate" ? (
-                      selectedTopicFromAdvanceFilterAlgorithm?.length ? (
-                        <div id="elastic_topic_search_section_ul">
-                          <ul id="elastic_topic_search_ul">
-                            {displayedDataforAlgo?.map((x) => {
-                              return (
-                                <>
-                                  <li
-                                    className="flex flex-col py-3 first:pt-0 border-b border-canGrey2 last:border-none last:pb-0 "
-                                    id="elastic_topic_search_li_section"
-                                  >
-                                    <Link
-                                      href={`/topic/${
-                                        x?.topic_num
-                                      }-${replaceSpecialCharacters(
-                                        x?.topic_name,
-                                        "-"
-                                      )}/1-Agreement`}
-                                    >
-                                      <div
-                                        className="flex justify-between items-center"
-                                        id="elastic_topic_search_value"
-                                      >
-                                        <a id="elastic_topic_search_value_link">
-                                          <label
-                                            style={{ cursor: "pointer" }}
-                                            className="text-base font-medium text-canBlack flex !mb-2"
-                                            id="elastic_topic_search_value_lable"
-                                          >
-                                            {/* {x?.topic_name} */}
-                                            {getHighlightedText(
-                                              x?.topic_name,
-                                              searchValue
-                                            )}
-                                          </label>
-                                        </a>
-                                        <a
-                                          href={`/topic/${
-                                            x?.topic_num
-                                          }-${replaceSpecialCharacters(
-                                            x?.topic_name,
-                                            "-"
-                                          )}/1-Agreement`}
-                                          id="elastic_topic_search_value_link_2"
-                                        >
-                                          <Image
-                                            id="elastic_topic_search_value_arrow_img"
-                                            src="/images/search-page-arrow.svg"
-                                            width={16}
-                                            height={10}
-                                            alt={"check"}
-                                          />
-                                        </a>
-                                      </div>
-                                    </Link>
-
-                                    <div
-                                      className="text-base text-canBlue flex items-center gap-2.5"
-                                      id="elastic_topic_search_canon_section"
-                                    >
-                                      <Image
-                                        id="elastic_topic_search_canon_img"
-                                        src="/images/flagicon.svg"
-                                        width={18}
-                                        height={20}
-                                      />
-                                      <span
-                                        className="text-base !text-canBlack font-medium"
-                                        id="elastic_topic_search_canon_text"
-                                      >
-                                        Canon:
-                                        <span
-                                          className="font-medium !text-canBlue ml-1"
-                                          id="elastic_topic_search_canon_value"
-                                        >
-                                          {x.namespace}
-                                        </span>
-                                      </span>
-                                    </div>
-                                  </li>
-                                </>
-                              );
-                            })}
-                          </ul>
-                        </div>
-                      ) : (
-                        <span
-                          className="italic text-canLight"
-                          id="elastic_topic_search_no_data"
-                        >
-                          There is no data to show in this category.
-                        </span>
-                      )
+                    {isAlgorithmSearch ? (
+                      <TopicList
+                        data={displayedDataforAlgo}
+                        searchValue={searchValue}
+                        isAlgorithm={true}
+                      />
                     ) : (
-                      <ul id="elastic_topic_search_display_data_ul">
-                        {displayedData?.map((x) => {
-                          return (
-                            <>
-                              <li
-                                className="flex flex-col py-3 first:pt-0 border-b border-canGrey2 last:border-none last:pb-0 "
-                                id="elastic_topic_search_display_data_li"
-                              >
-                                <Link
-                                  href={`/${replaceSpecialCharactersInLink(
-                                    x?.link
-                                  )}`}
-                                >
-                                  <div
-                                    className="flex justify-between items-center"
-                                    id="elastic_topic_search_display_data_list_section"
-                                  >
-                                    <a>
-                                      <label
-                                        style={{ cursor: "pointer" }}
-                                        className="text-base font-medium text-canBlack flex !mb-2"
-                                        id="elastic_topic_search_display_data_value"
-                                      >
-                                        {getHighlightedText(
-                                          x?.type_value,
-                                          searchValue
-                                        )}
-                                      </label>
-                                    </a>
-                                    <a
-                                      href={`/${replaceSpecialCharactersInLink(
-                                        x?.link
-                                      )}`}
-                                      id="elastic_topic_search_display_data_link"
-                                    >
-                                      <Image
-                                        id="elastic_topic_search_display_data_img"
-                                        src="/images/search-page-arrow.svg"
-                                        width={16}
-                                        height={10}
-                                        alt={"check"}
-                                      />
-                                    </a>
-                                  </div>
-                                </Link>
-                                <div
-                                  className="text-base text-canBlue flex items-center gap-2.5"
-                                  id="elastic_topic_search_display_data_canon"
-                                >
-                                  <Image
-                                    id="elastic_topic_search_display_data_canon_img"
-                                    src="/images/flagicon.svg"
-                                    width={18}
-                                    height={20}
-                                  />
-                                  <span
-                                    className="text-base !text-canBlack font-medium"
-                                    id="elastic_topic_search_display_data_canon_text"
-                                  >
-                                    Canon:
-                                    <span
-                                      className="font-medium !text-canBlue ml-1"
-                                      id="elastic_topic_search_display_data_canon_value"
-                                    >
-                                      {x.namespace}
-                                    </span>
-                                  </span>
-                                </div>
-                              </li>
-                            </>
-                          );
-                        })}
-                      </ul>
+                      <TopicList
+                        data={displayedData}
+                        searchValue={searchValue}
+                        isAlgorithm={false}
+                      />
                     )}
                   </div>
                 ) : (
-                  <span
-                    className="italic text-canLight"
-                    id="elastic_topic_search_display_no_data"
-                  >
+                  <span className="italic text-canLight">
                     There is no data to show in this category.
                   </span>
                 )}
@@ -397,7 +269,6 @@ const TopicSearch = () => {
               total={
                 asof == "review" ||
                 asof == "bydate" ||
-                filterByScore != 0 ||
                 algorithm !== "blind_popularity"
                   ? selectedTopicFromAdvanceFilterAlgorithmRecords
                   : searchMetaData.total
