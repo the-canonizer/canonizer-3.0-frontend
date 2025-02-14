@@ -694,7 +694,7 @@ function ManageStatements({ isEdit = false }) {
           return;
         }
         return;
-      } else if (isEdit) {
+      } else if (isEdit && res?.status_code === 200) {
         if (isSaveDraft) {
           router?.push({ pathname: topicURL() });
           return;
