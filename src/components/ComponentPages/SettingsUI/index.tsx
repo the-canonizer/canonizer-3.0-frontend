@@ -20,6 +20,8 @@ import ImageUploader from "../ImageUploader";
 import { GetUserProfileInfo, logout } from "src/network/api/userApi";
 import SectionHeading from "../Home/FeaturedTopic/sectionsHeading";
 import ProfilePrefrences from "../Preference";
+import { useSelector } from "react-redux";
+import { RootState } from "src/store";
 
 const { TabPane } = Tabs;
 
@@ -39,7 +41,18 @@ const SettingsUI = () => {
   const [openKeys, setOpenKeys] = useState([]);
   const [selectedValueFromSelectTag, setSelectedValueFromSelectTag] =
     useState("");
-
+  const {
+    globalUserProfileDataUpdatedLastName,
+    globalUserProfileDataUpdatedFirstName,
+    globalUserProfileDataUpdatedEmail,
+  } = useSelector((state: RootState) => ({
+    globalUserProfileDataUpdatedFirstName:
+      state.topicDetails.globalUserProfileDataUpdatedFirstName,
+    globalUserProfileDataUpdatedLastName:
+      state.topicDetails.globalUserProfileDataUpdatedLastName,
+    globalUserProfileDataUpdatedEmail:
+      state.topicDetails.globalUserProfileDataUpdatedEmail,
+  }));
   const onTabChange = (key) => {
     setActiveTabKey(key);
     router?.push("/settings?tab=" + key);
@@ -322,7 +335,7 @@ const SettingsUI = () => {
       getUesrPofileData();
     }
   }, []);
-  console.log(router, "rout");
+
   useEffect(() => {
     if (router.query.tab) {
       const tab = router.query.tab as string;
@@ -379,7 +392,6 @@ const SettingsUI = () => {
           >
             <Menu
               id="setting_section_menu"
-              title="PROFILE SETTINGS"
               mode="inline"
               items={items}
               className="custom-menu"
@@ -440,14 +452,17 @@ const SettingsUI = () => {
                         className="lg:text-xl text-base text-canBlack font-medium"
                         id="setting_section_user_profile_name"
                       >
-                        {getDataFromUserProfile?.first_name}{" "}
-                        {getDataFromUserProfile?.last_name}
+                        {globalUserProfileDataUpdatedFirstName ||
+                          getDataFromUserProfile?.first_name}{" "}
+                        {globalUserProfileDataUpdatedLastName ||
+                          getDataFromUserProfile?.last_name}
                       </h3>
                       <p
                         className="text-sm font-normal text-canLight"
                         id="setting_section_user_profile_email"
                       >
-                        {getDataFromUserProfile?.email}
+                        {globalUserProfileDataUpdatedEmail ||
+                          getDataFromUserProfile?.email}
                       </p>
                     </div>
                   </div>

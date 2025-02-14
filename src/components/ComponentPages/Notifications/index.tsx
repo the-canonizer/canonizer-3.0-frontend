@@ -130,7 +130,7 @@ const NotificationPage = () => {
 
       getList();
     } else {
-      message.error(res?.message || "Something went wrong!");
+      message.error(res?.message);
     }
 
     setIsDeleteOpen(false);
@@ -165,7 +165,7 @@ const NotificationPage = () => {
 
       getList();
     } else {
-      message.error(res?.message || "Something went wrong!");
+      message.error(res?.message);
     }
 
     setIsReadOpen(false);

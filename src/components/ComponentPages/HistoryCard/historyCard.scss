@@ -137,7 +137,7 @@
       @apply content-[''] block absolute top-0 border-r-[36px] border-r-transparent border-t-[36px] rounded-tl-xl;
     }
     .agreement-wrapper {
-      @apply flex flex-col border-t border-t-[#242B3733] pt-[1.125rem] mt-[1.125rem];
+      @apply flex flex-col pt-[1.125rem] mt-[1.125rem];
       .ant-checkbox-wrapper {
         @apply mb-2;
         .ant-checkbox {
@@ -162,8 +162,14 @@
         }
       }
     }
+    .wrapper-top-border{
+      @apply border-t border-t-[#242B3733];
+    }
+    .wrapper-bottom-border{
+      @apply border-b border-b-[#242B3733];
+    }
     .cn-footer-btn {
-      @apply flex gap-4 justify-between max-xl:flex-col border-t border-t-[#242B3733] pt-[1.125rem] mt-[1.125rem];
+      @apply flex gap-4 justify-between max-xl:flex-col pt-[1.125rem] mt-[1.125rem];
       .cn-card-btn {
         @apply flex gap-3 max-xl:order-2 max-sm:flex-col;
         button {

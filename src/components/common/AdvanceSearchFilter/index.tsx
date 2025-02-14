@@ -329,35 +329,57 @@ export default function AdvanceFilter() {
         asof: asof,
         score: filterByScore,
         asofdate:
-          asof === "default" || asof === "review" ? Date.now() / 1000 : asofdate,
+          asof === "default" || asof === "review"
+            ? Date.now() / 1000
+            : asofdate,
         page_size: 20,
         page_number: pageNumber,
       };
-  
+
       const response = await AdvanceFilterSeacrhApi(requestBody);
-  
+
       if (!response?.data) {
         console.warn(`No data received for ${type}`);
         return;
       }
-  
+
       // Dispatch actions dynamically based on `type`
       switch (type) {
         case "topic":
-          dispatch(setSelectedTopicFromAdvanceFilterAlgorithm(response.data.topic));
-          dispatch(setSelectedTopicFromAdvanceFilterAlgorithmRecords(response.data.topic_total || 0));
+          dispatch(
+            setSelectedTopicFromAdvanceFilterAlgorithm(response.data.topic)
+          );
+          dispatch(
+            setSelectedTopicFromAdvanceFilterAlgorithmRecords(
+              response.data.topic_total || 0
+            )
+          );
           break;
-  
+
         case "camp":
-          dispatch(setSelectedCampFromAdvanceFilterAlgorithm(response.data.camp));
-          dispatch(setSelectedCampFromAdvanceFilterAlgorithmRecords(response.data.camp_total || 0));
+          dispatch(
+            setSelectedCampFromAdvanceFilterAlgorithm(response.data.camp)
+          );
+          dispatch(
+            setSelectedCampFromAdvanceFilterAlgorithmRecords(
+              response.data.camp_total || 0
+            )
+          );
           break;
-  
+
         case "statement":
-          dispatch(setSelectedStatementFromAdvanceFilterAlgorithm(response.data.statement));
-          dispatch(setSelectedCampStatementFromAdvanceFilterAlgorithmRecords(response.data.statement_total || 0));
+          dispatch(
+            setSelectedStatementFromAdvanceFilterAlgorithm(
+              response.data.statement
+            )
+          );
+          dispatch(
+            setSelectedCampStatementFromAdvanceFilterAlgorithmRecords(
+              response.data.statement_total || 0
+            )
+          );
           break;
-  
+
         default:
           console.warn(`Unhandled type: ${type}`);
       }
@@ -365,7 +387,7 @@ export default function AdvanceFilter() {
       console.error(`Error fetching ${type} data:`, error);
     }
   };
-  
+
   const filterOnScore = (e) => {
     const { value } = e.target;
     setInputValue(value);
@@ -495,7 +517,7 @@ export default function AdvanceFilter() {
 
       if (router?.pathname === "/search/topic" && isReviewOrByDate) {
         dispatch(setSearchLoadingAction(true));
-        await  getApiData("topic");;
+        await getApiData("topic");
         dispatch(setSearchLoadingAction(false));
       } else if (router?.pathname === "/search/camp" && isReviewOrByDate) {
         dispatch(setSearchLoadingAction(true));
@@ -506,7 +528,7 @@ export default function AdvanceFilter() {
         isReviewOrByDate
       ) {
         dispatch(setSearchLoadingAction(true));
-        await getApiData('statement');
+        await getApiData("statement");
         dispatch(setSearchLoadingAction(false));
       }
     };
@@ -556,7 +578,9 @@ export default function AdvanceFilter() {
     <div
       ref={panelRef}
       className={
-        router?.pathname == "/search/nickname" ? "advanceFilter" : "NicknameadvanceFiltersss advanceFilter"
+        router?.pathname == "/search/nickname"
+          ? "advanceFilter"
+          : "NicknameadvanceFiltersss advanceFilter"
       }
     >
       <Collapse

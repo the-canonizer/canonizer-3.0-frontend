@@ -556,7 +556,9 @@ const TopicDetails = ({ serverSideCall }: any) => {
         rightSidebar={
           <Fragment>
             {openConsensusTreePopup ? (
-              <CampStatementCard loadingIndicator={loadingIndicator} />
+              <div className="w-full sticky top-8 z-50">
+                <CampStatementCard loadingIndicator={loadingIndicator} />
+              </div>
             ) : null}
             {tree?.["1"]?.is_valid_as_of_time && (
               <div

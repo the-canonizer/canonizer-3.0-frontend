@@ -6,16 +6,12 @@ export const algorithmSlice = createSlice({
     algorithms: null,
   },
   reducers: {
-
     setAlgorithms: (state, action) => {
       state.algorithms = action.payload;
     },
-    
   },
 });
 
-export const {
-    setAlgorithms,  
-} = algorithmSlice.actions;
+export const { setAlgorithms } = algorithmSlice.actions;
 
 export default algorithmSlice.reducer;

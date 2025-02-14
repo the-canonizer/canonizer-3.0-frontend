@@ -2,7 +2,7 @@ import Layout from "../hoc/layout";
 
 import TermsAndPrivacy from "../components/ComponentPages/TermsAndPrivacy";
 import { getPrivacyPolicyContent } from "src/network/api/termsAndPrivacyApi";
-import {  createTokenForSSG } from "src/network/api/userApi";
+import { createTokenForSSG } from "src/network/api/userApi";
 
 function PrivacyPolicy({ privacyPolicyContent }: any) {
   return (
