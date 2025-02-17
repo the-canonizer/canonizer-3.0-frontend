@@ -80,7 +80,7 @@ const TopicHistory = ({ campStatement, topicNamespaceId }: any) => {
         <span>
           {campStatement?.tags?.length > 0
             ? campStatement?.tags?.map((tag, index) => {
-                let lastIndex = index + 1 === campStatement?.topic_tags?.length;
+                let lastIndex = index + 1 === campStatement?.tags?.length;
                 return commaSeparated(tag?.title, lastIndex);
               })
             : "None"}
