@@ -320,6 +320,40 @@ const CampTree = ({
     return keys[keys.length - 1] === item.toString();
   };
 
+  const getURLParams = () => {
+    const searchParams = new URLSearchParams();
+
+    if (treeExpandValue && treeExpandValue != 10) {
+      searchParams.append("filter", treeExpandValue.toString());
+    }
+
+    if (filterByScore && filterByScore != 0) {
+      searchParams.append("score", filterByScore.toString());
+    }
+
+    if (filterObject?.algorithm !== "blind_popularity") {
+      searchParams.append("algo", filterObject.algorithm);
+    }
+
+    if (filterObject?.asof && filterObject?.asof !== "default") {
+      searchParams.append("asof", filterObject.asof);
+    }
+
+    if (filterObject?.asof === "bydate" && filterObject?.asofdate) {
+      searchParams.append("asofdate", filterObject?.asofdate.toString());
+    }
+
+    if (filterObject?.namespace_id && filterObject?.namespace_id != 1) {
+      searchParams.append("canon", filterObject.namespace_id.toString());
+    }
+
+    if (viewThisVersion) {
+      searchParams.append("viewversion", "1");
+    }
+
+    return searchParams.toString();
+  };
+
   const renderTreeNodes = (
     data: any,
     isDisabled = 0,
@@ -450,15 +484,7 @@ const CampTree = ({
                                 ?.replace("#statement", "")
                                 ?.replace("/topic/", "/forum/") + "/threads"
                             : data[item]?.link?.replace("#statement", "")
-                        }?filter=${treeExpandValue}&score=${filterByScore}&algo=${
-                          filterObject?.algorithm
-                        }${
-                          filterObject?.asof == "bydate"
-                            ? "&asofdate=" + filterObject?.asofdate
-                            : ""
-                        }&asof=${filterObject?.asof}&canon=${
-                          filterObject?.namespace_id
-                        }${viewThisVersion ? "&viewversion=1" : ""}`}
+                        }?${getURLParams()}`}
                       >
                         <a
                           className={`${
@@ -487,8 +513,6 @@ const CampTree = ({
                                 router?.query?.camp?.at(1)?.split("-")?.at(0) ??
                                 1
                               ) &&
-                            _isDisabled == 0 &&
-                            parentIsOneLevel == 0 &&
                             _isArchive == 0 &&
                             campRecord?.is_archive == 0
                               ? `!text-canGreen font-semibold text-sm`

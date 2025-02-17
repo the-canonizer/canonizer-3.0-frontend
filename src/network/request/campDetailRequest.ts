@@ -9,7 +9,7 @@ export default class TreeRequest extends Request {
 
   // Define request functions below.
 
-  static getTrees(reqBody,token) {
+  static getTrees(reqBody, token) {
     return new Request(
       K.Network.URL.GetTree,
       K.Network.Method.POST,

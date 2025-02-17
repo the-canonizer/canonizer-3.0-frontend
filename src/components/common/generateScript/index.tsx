@@ -50,7 +50,7 @@ export default function GenerateModal({ topic_num, camp_num }: any) {
           });
       }
     } catch (error) {
-      message.error(error.message || "Something went wrong!");
+      message.error(error.message);
     }
 
     // handleCancel();

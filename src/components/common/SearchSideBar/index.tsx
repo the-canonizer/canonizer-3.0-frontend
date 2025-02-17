@@ -1,9 +1,6 @@
 import { useRouter } from "next/router";
 import { Button } from "antd";
 import Link from "next/link";
-import styles from "./searchSideBar.module.scss";
-import Image from "next/image";
-import filter from "src/assets/image/face.png";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "src/store";
 import CustomSkelton from "../customSkelton";
@@ -12,15 +9,15 @@ import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
 
 export default function SearchSideBar() {
   const router = useRouter();
-  let { searchValue, filterByScore, algorithm, asof, asofdate } = useSelector(
-    (state: RootState) => ({
-      searchValue: state?.searchSlice?.searchValue,
-      filterByScore: state.filters?.filterObject?.filterByScore,
-      algorithm: state.filters?.filterObject?.algorithm,
-      asof: state?.filters?.filterObject?.asof,
-      asofdate: state.filters?.filterObject?.asofdate,
-    })
-  );
+  // let { searchValue, filterByScore, algorithm, asof, asofdate } = useSelector(
+  //   (state: RootState) => ({
+  //     searchValue: state?.searchSlice?.searchValue,
+  //     filterByScore: state.filters?.filterObject?.filterByScore,
+  //     algorithm: state.filters?.filterObject?.algorithm,
+  //     asof: state?.filters?.filterObject?.asof,
+  //     asofdate: state.filters?.filterObject?.asofdate,
+  //   })
+  // );
 
   const { loading } = useSelector((state: RootState) => ({
     loading: state?.loading?.searchLoading,
@@ -32,10 +29,10 @@ export default function SearchSideBar() {
   const dispatch = useDispatch();
   const {
     searchCountForMetaData,
-    searchMetaData,
-    selectedTopicFromAdvanceFilterAlgorithm,
-    selectedCampFromAdvanceFilterAlgorithm,
-    selectedStatementFromAdvanceFilterAlgorithm,
+    // searchMetaData,
+    // selectedTopicFromAdvanceFilterAlgorithm,
+    // selectedCampFromAdvanceFilterAlgorithm,
+    // selectedStatementFromAdvanceFilterAlgorithm,
     selectedTopicFromAdvanceFilterAlgorithmRecords,
     selectedCampFromAdvanceFilterAlgorithmRecords,
     selectedCampStatementFromAdvanceFilterAlgorithmRecords,
@@ -77,6 +74,27 @@ export default function SearchSideBar() {
       : detectPressEnterInSearch
       ? searchCountForMetaData?.camp_total
       : storeOnPressEnterSearchCountForMetaData?.camp_total;
+
+  const statementTotal =
+    router?.query?.q === ""
+      ? storeOnPressEnterSearchCountForMetaData?.statement_total
+      : (router.query.asof === "review" || router.query.asof === "bydate") &&
+        router?.pathname === "/search/camp_statement"
+      ? selectedCampStatementFromAdvanceFilterAlgorithmRecords
+      : detectPressEnterInSearch
+      ? searchCountForMetaData?.statement_total
+      : storeOnPressEnterSearchCountForMetaData?.statement_total;
+
+  const topicTotal =
+    router?.query?.q === ""
+      ? storeOnPressEnterSearchCountForMetaData?.topic_total
+      : (router.query.asof === "review" || router.query.asof === "bydate") &&
+        router?.pathname === "/search/topic"
+      ? selectedTopicFromAdvanceFilterAlgorithmRecords
+      : detectPressEnterInSearch
+      ? searchCountForMetaData?.topic_total
+      : storeOnPressEnterSearchCountForMetaData?.topic_total;
+
   return (
     <>
       <div className="leftSideBar_Card noFilter">
@@ -96,119 +114,85 @@ export default function SearchSideBar() {
               }}
               passHref
             >
-              <a>
-                <Button
-                  size="large"
-                  // className={
-                  //   router?.asPath.includes("/search?") ? "active" : "btn"
-                  // }
-                  className={`p-0 shadow-none border-transparent !rounded-0 !border-t-0 !border-l-0 !border-r-0 active:!bg-transparent disabled:!bg-transparent disabled:!text-canBlue text-base font-normal disabled:!font-semibold active:!text-canBlue disabled:!border-b-2  disabled:!border-canBlue 
-                   active:!border-none active:!border-transparent hover:!border-transparent focus:!border-transparent  ${
-                     router?.asPath.includes("/search?") ? "active" : "btn"
-                   }`}
-                  disabled={router?.pathname == "/search" ? true : false}
-                  onClick={() => {
-                    dispatch(
-                      setFilterCanonizedTopics({
-                        asofdate: Date.now() / 1000,
-                        asof: "default",
-                      })
-                    );
-                  }}
-                >
-                  All Results
-                </Button>
-              </a>
+              <Button
+                size="large"
+                className={`p-0 shadow-none border-transparent !rounded-0 !border-t-0 !border-l-0 !border-r-0 active:!bg-transparent disabled:!bg-transparent disabled:!text-canBlue text-base font-normal disabled:!font-semibold active:!text-canBlue disabled:!border-b-2 disabled:!border-canBlue active:!border-none active:!border-transparent hover:!border-transparent focus:!border-transparent ${
+                  router?.pathname === "/search" ? "active" : "btn"
+                }`}
+                onClick={() => {
+                  dispatch(
+                    setFilterCanonizedTopics({
+                      asofdate: Date.now() / 1000,
+                      asof: "default",
+                    })
+                  );
+                }}
+              >
+                <span className="text-left w-full block">All Results</span>
+              </Button>
             </Link>
             <Link
               href={{
                 pathname: "/search/topic",
                 query: {
                   q: router?.query?.q,
-                  // ...(asof !== "default" && { asof: asof }),
-                  // ...(asof == "bydate" && { asofdate: asofdate }),
                 },
               }}
               passHref
             >
-              <a>
-                <Button
-                  size="large"
-                  className={`p-0 shadow-none border-transparent !rounded-0 !border-t-0 !border-l-0 !border-r-0 active:!bg-transparent disabled:!bg-transparent disabled:!text-canBlue text-base font-normal disabled:!font-semibold active:!text-canBlue disabled:!border-b-2  disabled:!border-canBlue 
-                   active:!border-none active:!border-transparent  hover:!border-transparent focus:!border-transparent  
-                    ${
-                      router?.asPath.includes("/search/topic?")
-                        ? "active"
-                        : "btn"
-                    } `}
-                  disabled={router?.pathname == "/search/topic" ? true : false}
-                  onClick={() => {
-                    dispatch(
-                      setFilterCanonizedTopics({
-                        asofdate: Date.now() / 1000,
-                        asof: "default",
-                      })
-                    );
-                  }}
-                >
-                  {/* <i className="icon-topic"></i> */}
-                  <a>
-                    Topic{" "}
-                    <span>
-                      {" "}
-                      &nbsp;(
-                      {router?.query?.q === ""
-                        ? storeOnPressEnterSearchCountForMetaData?.topic_total
-                        : (router.query.asof === "review" ||
-                            router.query.asof === "bydate") &&
-                          router?.pathname === "/search/topic"
-                        ? selectedTopicFromAdvanceFilterAlgorithmRecords
-                        : detectPressEnterInSearch
-                        ? searchCountForMetaData?.topic_total
-                        : storeOnPressEnterSearchCountForMetaData?.topic_total}
-                      )
-                    </span>
-                  </a>
-                </Button>
-              </a>
+              <Button
+                size="large"
+                className={`p-0 shadow-none border-transparent !rounded-0 !border-t-0 !border-l-0 !border-r-0 
+                    active:!bg-transparent disabled:!bg-transparent disabled:!text-canBlue text-base font-normal 
+                    disabled:!font-semibold active:!text-canBlue disabled:!border-b-2 disabled:!border-canBlue 
+                    active:!border-none active:!border-transparent hover:!border-transparent focus:!border-transparent  
+                    ${router?.pathname === "/search/topic" ? "active" : "btn"}`}
+                // disabled={router?.pathname == "/search/topic" ? true : false}
+                // disabled={router?.pathname === "/search/topic"}
+                onClick={() => {
+                  dispatch(
+                    setFilterCanonizedTopics({
+                      asofdate: Date.now() / 1000,
+                      asof: "default",
+                    })
+                  );
+                }}
+              >
+                <span className="text-left w-full block">
+                  Topic <span>&nbsp;({topicTotal})</span>
+                </span>
+              </Button>
             </Link>
             <Link
               href={{
                 pathname: "/search/camp",
                 query: {
                   q: router?.query?.q,
-                  // ...(asof !== "default" && { asof: asof }),
-                  // ...(asof == "bydate" && { asofdate: asofdate }),
                 },
               }}
               passHref
             >
-              <a>
-                <Button
-                  size="large"
-                  className={` p-0 shadow-none border-transparent !rounded-0 !border-t-0 !border-l-0 !border-r-0 active:!bg-transparent disabled:!bg-transparent disabled:!text-canBlue text-base font-normal disabled:!font-semibold active:!text-canBlue disabled:!border-b-2  disabled:!border-canBlue 
-                   active:!border-none active:!border-transparent  hover:!border-transparent focus:!border-transparent 
-                    ${
-                      router?.asPath.includes("/search/camp?")
-                        ? "active"
-                        : "btn"
-                    }`}
-                  disabled={router?.pathname == "/search/camp" ? true : false}
-                  onClick={() => {
-                    dispatch(
-                      setFilterCanonizedTopics({
-                        asofdate: Date.now() / 1000,
-                        asof: "default",
-                      })
-                    );
-                  }}
-                >
-                  {/* <i className="icon-camp"></i> */}
-                  <a>
-                    Camp <span> &nbsp;({campTotal})</span>
-                  </a>
-                </Button>
-              </a>
+              <Button
+                size="large"
+                className={`p-0 shadow-none border-transparent !rounded-0 !border-t-0 !border-l-0 !border-r-0 
+                active:!bg-transparent disabled:!bg-transparent disabled:!text-canBlue text-base font-normal 
+                disabled:!font-semibold active:!text-canBlue disabled:!border-b-2 disabled:!border-canBlue 
+                active:!border-none active:!border-transparent hover:!border-transparent focus:!border-transparent 
+                ${router?.pathname === "/search/camp" ? "active" : "btn"}`}
+                // disabled={router?.pathname !== "/search/camp"}
+                onClick={() => {
+                  dispatch(
+                    setFilterCanonizedTopics({
+                      asofdate: Date.now() / 1000,
+                      asof: "default",
+                    })
+                  );
+                }}
+              >
+                <span className="text-left w-full block">
+                  Camp <span>&nbsp;({campTotal})</span>
+                </span>
+              </Button>
             </Link>
             <Link
               href={{
@@ -217,48 +201,29 @@ export default function SearchSideBar() {
               }}
               passHref
             >
-              <a>
-                <Button
-                  size="large"
-                  className={`p-0 shadow-none border-transparent !rounded-0 !border-t-0 !border-l-0 !border-r-0 active:!bg-transparent disabled:!bg-transparent disabled:!text-canBlue text-base font-normal disabled:!font-semibold active:!text-canBlue disabled:!border-b-2  disabled:!border-canBlue 
-                   active:!border-none active:!border-transparent  hover:!border-transparent focus:!border-transparent 
-                    ${
-                      router?.asPath.includes("/search/camp_statement?")
-                        ? "active"
-                        : "btn"
-                    }`}
-                  disabled={
-                    router?.pathname == "/search/camp_statement" ? true : false
-                  }
-                  onClick={() => {
-                    dispatch(
-                      setFilterCanonizedTopics({
-                        asofdate: Date.now() / 1000,
-                        asof: "default",
-                      })
-                    );
-                  }}
-                >
-                  {/* <i className="icon-camp"></i> */}
-                  <a>
-                    Camp Statement{" "}
-                    <span>
-                      {" "}
-                      &nbsp;(
-                      {router?.query?.q === ""
-                        ? storeOnPressEnterSearchCountForMetaData?.statement_total
-                        : (router.query.asof == "review" ||
-                            router.query.asof == "bydate") &&
-                          router?.pathname == "/search/camp_statement"
-                        ? selectedCampStatementFromAdvanceFilterAlgorithmRecords
-                        : detectPressEnterInSearch
-                        ? searchCountForMetaData?.statement_total
-                        : storeOnPressEnterSearchCountForMetaData?.statement_total}
-                      )
-                    </span>
-                  </a>
-                </Button>
-              </a>
+              <Button
+                size="large"
+                className={`p-0 shadow-none border-transparent !rounded-0 !border-t-0 !border-l-0 !border-r-0 
+                active:!bg-transparent disabled:!bg-transparent disabled:!text-canBlue text-base font-normal 
+                disabled:!font-semibold active:!text-canBlue disabled:!border-b-2 disabled:!border-canBlue 
+                active:!border-none active:!border-transparent hover:!border-transparent focus:!border-transparent 
+                ${
+                  router?.pathname === "/search/camp_statement"
+                    ? "active"
+                    : "btn"
+                }`}
+                // disabled={router?.pathname === "/search/camp_statement"}
+                onClick={() => {
+                  dispatch(
+                    setFilterCanonizedTopics({
+                      asofdate: Date.now() / 1000,
+                      asof: "default",
+                    })
+                  );
+                }}
+              >
+                Camp Statement <span>&nbsp;({statementTotal})</span>
+              </Button>
             </Link>
             <Link
               href={{
@@ -267,47 +232,34 @@ export default function SearchSideBar() {
               }}
               passHref
             >
-              <a>
-                <Button
-                  size="large"
-                  className={`p-0 shadow-none border-transparent !rounded-0 !border-t-0 !border-l-0 !border-r-0 active:!bg-transparent disabled:!bg-transparent disabled:!text-canBlue text-base font-normal disabled:!font-semibold active:!text-canBlue disabled:!border-b-2  disabled:!border-canBlue 
-                   active:!border-none active:!border-transparent  hover:!border-transparent focus:!border-transparent 
-                    ${
-                      router?.asPath.includes("/search/nickname?")
-                        ? "active"
-                        : "btn"
-                    }`}
-                  disabled={
-                    router.pathname == "/search/nickname" ? true : false
-                  }
-                  onClick={() => {
-                    dispatch(setClickAdvanceFilterOption(false));
-                    dispatch(
-                      setFilterCanonizedTopics({
-                        asofdate: Date.now() / 1000,
-                        asof: "default",
-                      })
-                    );
-                  }}
-                >
-                  {/* <Image
-                    className={styles.nickname_icon}
-                    id="nick_name"
-                    alt="face Image"
-                    src={filter}
-                    width={15}
-                    height={15}
-                  /> */}
-                  <a>
-                    Nickname{" "}
-                    <span>
-                      {" "}
-                      &nbsp;(
-                      {storeOnPressEnterSearchCountForMetaData?.nickname_total})
-                    </span>
-                  </a>
-                </Button>
-              </a>
+              <Button
+                size="large"
+                className={`
+                  p-0 shadow-none border-transparent !rounded-0 !border-t-0 !border-l-0 !border-r-0 
+                  active:!bg-transparent disabled:!bg-transparent disabled:!text-canBlue text-base font-normal 
+                  disabled:!font-semibold active:!text-canBlue disabled:!border-b-2 disabled:!border-canBlue 
+                  active:!border-none active:!border-transparent hover:!border-transparent focus:!border-transparent 
+                  ${router.pathname === "/search/nickname" ? "active" : "btn"}
+                `}
+                // disabled={router.pathname === "/search/nickname"}
+                onClick={() => {
+                  dispatch(setClickAdvanceFilterOption(false));
+                  dispatch(
+                    setFilterCanonizedTopics({
+                      asofdate: Date.now() / 1000,
+                      asof: "default",
+                    })
+                  );
+                }}
+              >
+                <span className="text-left w-full block">
+                  Nickname
+                  <span>
+                    &nbsp;(
+                    {storeOnPressEnterSearchCountForMetaData?.nickname_total})
+                  </span>
+                </span>
+              </Button>
             </Link>
           </div>
         )}

@@ -463,12 +463,12 @@ export const commaSeparated = (item, isLastIndex) => {
   return item + (isLastIndex ? "" : ", ");
 };
 
-
-export const findAlgorithmKey =(target, list) => {
-  const found = list?.find(item => item?.algorithm_key === target || item?.algorithm_label === target);
+export const findAlgorithmKey = (target, list) => {
+  const found = list?.find(
+    (item) => item?.algorithm_key === target || item?.algorithm_label === target
+  );
   return found ? found?.algorithm_key : target; // Return the algorithm_key if found, otherwise null
 };
-
 
 export const serverRoutes = [
   "/",
