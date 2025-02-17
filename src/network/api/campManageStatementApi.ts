@@ -71,7 +71,8 @@ export const postStatementCountApi = async (body, loginToken = null) => {
     );
     return res;
   } catch (error) {
-    message.error(error?.error?.data?.message);
+    // message.error(error?.error?.data?.message);
+    handleError(error);
     return error?.error?.data;
   }
 };
