@@ -330,7 +330,11 @@ const TopicDetails = ({ serverSideCall }: any) => {
     const res = await removeSupportedCamps(supportedCampsRemove);
     if (res && res.status_code == 200) {
       let type = "success";
-      openNotificationWithIcon(res?.message, type);
+      let obj = {
+        ...res?.message,
+        isSupport: true,
+      }
+      openNotificationWithIcon(obj, type);
       setIsSupportTreeCardModal(false);
       GetCheckStatusData();
       await getTreesApi(reqBodyForService);
