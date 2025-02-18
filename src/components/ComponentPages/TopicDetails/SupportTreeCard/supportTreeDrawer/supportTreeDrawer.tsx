@@ -209,7 +209,7 @@ function SupportTreeDrawer({
       topicSupportList.push(obj);
     }
 
-    topicSupportList = topicSupportList.sort(
+    topicSupportList = topicSupportList?.sort(
       (a, b) => a?.support_order - b?.support_order
     );
 
@@ -367,7 +367,11 @@ function SupportTreeDrawer({
       let res = await removeSupportedCamps(payload);
       if (res && res.status_code == 200) {
         let type = "success";
-        openNotificationWithIcon(res?.message, type);
+        let obj = {
+          ...res?.message,
+          isSupport: true,
+        }
+        openNotificationWithIcon(obj, type);
         await handleCancelSupportCamps({ isCallApiStatus: true });
         getCurrentCampRecordApi(reqBody);
         setDrawerFor("");
@@ -406,7 +410,11 @@ function SupportTreeDrawer({
       let res = await addSupport(payload);
       if (res && res.status_code == 200) {
         let type = "success";
-        openNotificationWithIcon(res?.message, type);
+        let obj = {
+          ...res?.message,
+          isSupport: true,
+        }
+        openNotificationWithIcon(obj, type);
         await handleCancelSupportCamps({ isCallApiStatus: true });
         getCurrentCampRecordApi(reqBody);
         setDrawerFor("");
@@ -427,7 +435,11 @@ function SupportTreeDrawer({
     let res = await addDelegateSupportCamps(addDelegatedSupport);
     if (res && res.status_code == 200) {
       let type = "success";
-      openNotificationWithIcon(res?.message, type);
+      let obj = {
+        ...res?.message,
+        isSupport: true,
+      }
+      openNotificationWithIcon(obj, type);
       setDrawerFor("");
       onClose();
 

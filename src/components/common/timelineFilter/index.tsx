@@ -64,6 +64,7 @@ const CreateTopic = ({ onCreateCamp = () => {} }: any) => {
           id="eventline-sidebar-algorithm-select"
           size="large"
           showSearch
+          dropdownStyle={{ zIndex: 0 }}
           optionFilterProp="children"
           className="algo-select"
           defaultValue={
