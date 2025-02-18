@@ -64,10 +64,10 @@ const UserProfileDetails = ({
   }, [profileData?.email]);
 
   const checkFieldIsPrivate = (field) => {
-    if (profileData?.private_flags) {
-      return profileData?.private_flags?.split(",")?.includes(field);
-    } else {
+    if (!profileData?.private_flags) {
       return false;
+    } else {
+      return profileData.private_flags.split(",").includes(field);
     }
   };
 
