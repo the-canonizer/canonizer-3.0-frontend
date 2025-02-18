@@ -160,6 +160,7 @@ const ProfileInfo = () => {
       setZipCode(false);
       dispatch(setZipCodeForProfileInfo(false));
     }
+    await fetchUserProfileInfo()
     setIsLoading(false);
   };
 
@@ -199,18 +200,22 @@ const ProfileInfo = () => {
 
   //private public selection of fields, create PrivateFlag list
   const handleselectAfter = (data) => (value) => {
-    if (value == "private") {
+    if (value === "private") {
       if (!privateList.includes(data)) {
-        setPrivateList((oldArray) => [...oldArray, data]);
-        dispatch(
-          setPrivateListForProfileInfo((oldArray) => [...oldArray, data])
-        );
-        publicList.splice(publicList.indexOf(data), 1);
+        const newPrivateList = [...privateList, data]; // Compute new state
+        setPrivateList(newPrivateList);
+        dispatch(setPrivateListForProfileInfo(newPrivateList)); // 
+  
+        // Remove from public list
+        setPublicList((oldArray) => oldArray.filter((item) => item !== data));
       }
-    } else if (value == "public") {
+    } else if (value === "public") {
       if (!publicList.includes(data)) {
-        setPublicList((oldArray) => [...oldArray, data]);
-        privateList.splice(privateList.indexOf(data), 1);
+        const newPublicList = [...publicList, data]; // Compute new state
+        setPublicList(newPublicList);
+  
+        // Remove from private list
+        setPrivateList((oldArray) => oldArray.filter((item) => item !== data));
       }
     }
   };
