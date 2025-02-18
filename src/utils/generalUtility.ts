@@ -30,9 +30,9 @@ export const handleError = (error, log = false) => {
   } else {
     if (nestedErrs.message) {
       // message.error(nestedErrs.message);
-      let type = "error";
-      openNotificationWithIcon(nestedErrs.message, type);
-    }
+        let type = "error";
+        openNotificationWithIcon(nestedErrs.message, type);
+      }
     if (error.message) {
       // message.error(error.message);
       let type = "error";
