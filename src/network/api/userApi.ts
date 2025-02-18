@@ -134,12 +134,7 @@ export const login = async (email: string, password: string) => {
   }
 };
 
-export const logout = async (
-  error = "",
-  status = null,
-  count: number = 1,
-  // authenticatedApi = false
-) => {
+export const logout = async (error = "", status = null, count: number = 1) => {
   let state = store.getState();
   const { auth } = state;
 
@@ -175,12 +170,6 @@ export const logout = async (
 
       count === 1 &&
         message.error("Your session has expired. Please log in again!");
-
-      // if (typeof window !== "undefined" && authenticatedApi) {
-      //   console.log("3: ----------redirecting to login page...");
-      //   window.location.href =
-      //     window.location.protocol + "//" + window.location.host + "/login";
-      // }
 
       return true;
     }
