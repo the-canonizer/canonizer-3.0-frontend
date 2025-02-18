@@ -19,7 +19,7 @@ import {
   postStatementCountApi,
   updateStatementApi,
 } from "src/network/api/campManageStatementApi";
-import { replaceSpecialCharacters } from "src/utils/generalUtility";
+import { convertToSlug, replaceSpecialCharacters } from "src/utils/generalUtility";
 import DataNotFound from "../DataNotFound/dataNotFound";
 import Breadcrumbs from "components/shared/Breadcrumbs";
 import CustomSpinner from "components/shared/CustomSpinner";
@@ -31,7 +31,6 @@ import StatementAIPreview from "./UI/aiPreview";
 import moment from "moment";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
-// import { openNotificationWithIcon } from "components/common/notification/notificationBar";
 
 // const systemPropPt = `You are a text converter for a website where people put their opinions on various topics, while writing and posting the content they are given a feature of Improve with AI, Your role is to improve that text accordingly.
 
@@ -75,7 +74,6 @@ function ManageStatements({ isEdit = false }) {
 
   const values = Form.useWatch([], form);
   const [isSavingDraft, setIsSavingDraft] = useState(false);
-  // const [isGenerating, setIsGenerating] = useState(false);
   const isFirstRender = useRef(true);
 
   const getEpochTime = () => {
@@ -125,9 +123,7 @@ function ManageStatements({ isEdit = false }) {
   };
 
   useEffect(() => {
-    // if (router?.asPath?.split("/")?.[1] === "create") {
     getBreadCrumbApiCall();
-    // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
@@ -432,6 +428,14 @@ function ManageStatements({ isEdit = false }) {
   const saveDraftHandler = async () => {
     setIsSavingDraft(true);
 
+    const redirectToDetailPage = () => {
+      router.push(
+        `/topic/${getTopicAndCampIds().topicNum}-${
+          convertToSlug(getTopicAndCampIds().topicName)
+        }/${getTopicAndCampIds().campNum}`
+      );
+    };
+
     let payload = {
       camp_num: null,
       event_type: null,
@@ -509,6 +513,9 @@ function ManageStatements({ isEdit = false }) {
         ...time,
         last_save_time: getEpochTime(),
       });
+      if (res?.status_code == 200) {
+        redirectToDetailPage();
+      }
     } else {
       localStorage.setItem("autosaveContent", payload?.statement); // Save to local storage if offline
 
@@ -516,14 +523,10 @@ function ManageStatements({ isEdit = false }) {
         ...time,
         last_save_time: getEpochTime(),
       });
+      redirectToDetailPage();
     }
 
     setTimeout(() => setIsSavingDraft(false), 2000);
-    router.push(
-      `/topic/${getTopicAndCampIds().topicNum}-${
-        getTopicAndCampIds().topicName
-      }/${getTopicAndCampIds().campNum}`
-    );
   };
 
   const onFinish = async (values: any) => {
@@ -694,7 +697,7 @@ function ManageStatements({ isEdit = false }) {
           return;
         }
         return;
-      } else if (isEdit) {
+      } else if (isEdit && res?.status_code === 200) {
         if (isSaveDraft) {
           router?.push({ pathname: topicURL() });
           return;
@@ -717,7 +720,6 @@ function ManageStatements({ isEdit = false }) {
   };
 
   const saveStatement = async (values) => {
-    const blocks = editorState;
     const editInfo = editStatementData;
     const parentCamp = editInfo?.parent_camp;
 

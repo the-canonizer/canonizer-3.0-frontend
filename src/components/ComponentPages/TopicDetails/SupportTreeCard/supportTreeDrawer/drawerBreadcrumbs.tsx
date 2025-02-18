@@ -1,9 +1,19 @@
 import { EllipsisOutlined } from "@ant-design/icons";
 import { Breadcrumb, Button } from "antd";
-import React, { useState } from "react";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
+import useAuthentication from "src/hooks/isUserAuthenticated";
 
 function DrawerBreadcrumbs({ topicRecord, campRecord, topic_name }: any) {
   const [showAll, setShowAll] = useState(false);
+  const router = useRouter();
+  const { isUserAuthenticated } = useAuthentication();
+
+  useEffect(() => {
+    !isUserAuthenticated && router?.push("/login");
+    // eslint-disable-next-line
+  }, []);
+
   return (
     <Breadcrumb
       className="drawer-breadcrumbs ml-6"

@@ -209,7 +209,7 @@ function SupportTreeDrawer({
       topicSupportList.push(obj);
     }
 
-    topicSupportList = topicSupportList.sort(
+    topicSupportList = topicSupportList?.sort(
       (a, b) => a?.support_order - b?.support_order
     );
 
