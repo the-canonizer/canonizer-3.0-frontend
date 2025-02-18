@@ -1,6 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react";
 import SearchSideBar from "../../common/SearchSideBar";
-import styles from "./search.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "src/store";
 import Link from "next/link";
@@ -164,58 +163,17 @@ const NicknameSearch = () => {
         headingTextId="elastic_nickname_search_heading_text"
       />
 
-      {/* <div className="flex justify-between lg:items-center lg:flex-row flex-col items-start mb-10 mt-2.5 lg:gap-0 gap-5" id="">
-        <div className="flex  items-center" id="">
-          <div className="flex items-center gap-2.5" id="">
-            <Image
-              id=""
-              src="/images/recent-activiity-arrow.svg"
-              width={16}
-              height={24}
-            />
-
-            <h3 className="lg:text-3xl text-xl   text-canBlack font-medium" id="">
-              Search Results for “
-              <span className="text-canBlue capitalize break-all whitespace-break-spaces" id="elastic_nickname_search_text">
-                {router?.query?.q}
-              </span>
-              ”
-            </h3>
-          </div>
-        </div>
-        <AdvanceFilter />
-      </div> */}
-
-      <div
-        className="flex lg:flex-row flex-col gap-10"
-        id="elastic_nickname_search_sidebar_section"
-      >
-        <aside
-          className="leftSideBar miniSideBar"
-          id="elastic_nickname_search_sidebar_section_asidebar"
-        >
-          <div
-            className="leftSideBar_Card p-0 m-0"
-            id="elastic_nickname_search_sidebar_section_search_sidebar"
-          >
+      <div className="flex lg:flex-row flex-col gap-10" id="elastic_nickname_search_sidebar_section">
+        <aside className="leftSideBar miniSideBar" id="elastic_nickname_search_sidebar_section_asidebar">
+          <div className="leftSideBar_Card p-0 m-0" id="elastic_nickname_search_sidebar_section_search_sidebar">
             <SearchSideBar />
           </div>
         </aside>
-        <div
-          className="pageContentWrap flex-1"
-          id="elastic_nickname_search_nickname_list_advance"
-        >
-          <div
-            className="bg-canGray lg:py-5 lg:px-8 py-4 px-4 rounded-xl mb-5"
-            id="elastic_nickname_search_nickname_list_advance_sub"
-          >
-            <div
-              className="d-flex mb-2 align-items-center flex-wrap relative ant_tags"
-              id="elastic_nickname_search_nickname_list_advance_ul"
-            >
+        <div className="pageContentWrap flex-1" id="elastic_nickname_search_nickname_list_advance">
+          <div className="bg-canGray lg:py-5 lg:px-8 py-4 px-4 rounded-xl mb-5" id="elastic_nickname_search_nickname_list_advance_sub">
+            <div className="d-flex mb-2 align-items-center flex-wrap relative ant_tags" id="elastic_nickname_search_nickname_list_advance_ul">
               {clickAdvanceFilterOption ? (
                 <Space size={[0, 18]} wrap>
-                  {/* <Tag onClose={()=>{handleTagClose()}}>{selectedTopicFromAdvnaceFilterNickname}</Tag> */}
                   {selectedTopicFromAdvnaceFilterNickname.map(
                     (topic, index) => (
                       <Tag key={index}>
@@ -236,9 +194,7 @@ const NicknameSearch = () => {
               ) : (
                 ""
               )}
-              {/* <AdvanceFilter /> */}
             </div>
-
             <div className="mb-2" id="elastic_nickname_search_nickname_list">
               <h4
                 className="!mb-6 !text-base !font-semibold !text-canBlack"
@@ -276,22 +232,17 @@ const NicknameSearch = () => {
                               id="elastic_nickname_search_nickname_list_li"
                             >
                               <Link href={`${x?.link}`}>
-                                <a
-                                  className="flex gap-2.5"
-                                  id="elastic_nickname_search_nickname_list_link"
-                                >
+                                <a className="flex gap-2.5" id="elastic_nickname_search_nickname_list_link">
                                   <Image
                                     src="/images/nickname-user-icon.svg"
                                     width={14}
                                     height={16}
                                     id="elastic_nickname_search_nickname_list_img"
                                   />
-                                  <label
-                                    style={{ cursor: "pointer" }}
+                                  <label style={{ cursor: "pointer" }}
                                     className="font-medium text-base"
                                     id="elastic_nickname_search_nickname_list_lable"
                                   >
-                                    {/* {x?.type_value} */}
                                     {getHighlightedText(
                                       x?.type_value,
                                       searchValue
@@ -299,11 +250,7 @@ const NicknameSearch = () => {
                                   </label>
                                 </a>
                               </Link>
-
-                              <span
-                                className="font-normal text-base"
-                                id="elastic_nickname_search_nickname_list_supported_camps"
-                              >
+                              <span className="font-normal text-base" id="elastic_nickname_search_nickname_list_supported_camps">
                                 Supported camps:{" "}
                                 <strong
                                   className="text-canOrange font-semibold text-base"
@@ -319,10 +266,7 @@ const NicknameSearch = () => {
                     </ul>
                   </div>
                 ) : (
-                  <span
-                    className="italic text-canLight"
-                    id="elastic_nickname_search_nickname_list_no_data"
-                  >
+                  <span className="italic text-canLight" id="elastic_nickname_search_nickname_list_no_data">
                     There is no data to show in this category.
                   </span>
                 )}
