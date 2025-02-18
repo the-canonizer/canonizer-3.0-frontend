@@ -505,3 +505,12 @@ export const isShowAds = () => {
     return urls.includes(window?.location?.hostname);
   }
 };
+
+export const convertToSlug = (url) => {
+  return url
+  .toLowerCase()        // Convert to lowercase
+  .replace(/\s+/g, '-') // Replace spaces with dashes (if any)
+  .replace(/[^\w-]+/g, '') // Remove special characters except dashes
+  .replace(/-+/g, '-')  // Remove multiple dashes
+  .replace(/^\/+|\/+$/g, ''); // Trim leading/trailing slashes
+}
