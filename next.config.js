@@ -15,7 +15,7 @@ module.exports = withBundleAnalyzer({
       "canonizer-bucket.s3.ap-south-1.amazonaws.com",
       "www.gravatar.com",
       "canonizer-bucket-4276.s3.ap-south-1.amazonaws.com",
-      "development.canonizer.com"
+      "ux-dev.canonizer.com"
     ],
   },
   typescript: {},
