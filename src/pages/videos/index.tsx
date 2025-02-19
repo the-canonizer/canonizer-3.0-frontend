@@ -1,7 +1,7 @@
 //* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useState } from "react";
 import Layout from "../../hoc/layout";
-import { Row, Col} from "antd";
+import { Row, Col } from "antd";
 import { Card } from "antd";
 import { useRouter } from "next/router";
 import { CaretRightOutlined } from "@ant-design/icons";
@@ -75,8 +75,7 @@ const VideosPage = () => {
                                     className="img-wrapper"
                                   >
                                     <Image
-                                      height={300}
-                                      width={200}
+                                      layout="fill"
                                       id="videos-category-thumbnail"
                                       alt=""
                                       src={`${process.env.NEXT_PUBLIC_BETA_URL}files/videos/consciousness/${video.thumbnail}`}
