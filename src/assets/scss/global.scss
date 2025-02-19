@@ -1185,3 +1185,9 @@ body {
     }
   }
 }
+
+.right-whitePnl {
+  ul {
+    @apply list-disc pl-10;
+  }
+}
