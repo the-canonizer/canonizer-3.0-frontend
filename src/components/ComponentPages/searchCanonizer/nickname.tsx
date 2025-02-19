@@ -163,15 +163,33 @@ const NicknameSearch = () => {
         headingTextId="elastic_nickname_search_heading_text"
       />
 
-      <div className="flex lg:flex-row flex-col gap-10" id="elastic_nickname_search_sidebar_section">
-        <aside className="leftSideBar miniSideBar" id="elastic_nickname_search_sidebar_section_asidebar">
-          <div className="leftSideBar_Card p-0 m-0" id="elastic_nickname_search_sidebar_section_search_sidebar">
+      <div
+        className="flex lg:flex-row flex-col gap-10"
+        id="elastic_nickname_search_sidebar_section"
+      >
+        <aside
+          className="leftSideBar miniSideBar"
+          id="elastic_nickname_search_sidebar_section_asidebar"
+        >
+          <div
+            className="leftSideBar_Card p-0 m-0"
+            id="elastic_nickname_search_sidebar_section_search_sidebar"
+          >
             <SearchSideBar />
           </div>
         </aside>
-        <div className="pageContentWrap flex-1" id="elastic_nickname_search_nickname_list_advance">
-          <div className="bg-canGray lg:py-5 lg:px-8 py-4 px-4 rounded-xl mb-5" id="elastic_nickname_search_nickname_list_advance_sub">
-            <div className="d-flex mb-2 align-items-center flex-wrap relative ant_tags" id="elastic_nickname_search_nickname_list_advance_ul">
+        <div
+          className="pageContentWrap flex-1"
+          id="elastic_nickname_search_nickname_list_advance"
+        >
+          <div
+            className="bg-canGray lg:py-5 lg:px-8 py-4 px-4 rounded-xl mb-5"
+            id="elastic_nickname_search_nickname_list_advance_sub"
+          >
+            <div
+              className="d-flex mb-2 align-items-center flex-wrap relative ant_tags"
+              id="elastic_nickname_search_nickname_list_advance_ul"
+            >
               {clickAdvanceFilterOption ? (
                 <Space size={[0, 18]} wrap>
                   {selectedTopicFromAdvnaceFilterNickname.map(
@@ -232,14 +250,18 @@ const NicknameSearch = () => {
                               id="elastic_nickname_search_nickname_list_li"
                             >
                               <Link href={`${x?.link}`}>
-                                <a className="flex gap-2.5" id="elastic_nickname_search_nickname_list_link">
+                                <a
+                                  className="flex gap-2.5"
+                                  id="elastic_nickname_search_nickname_list_link"
+                                >
                                   <Image
                                     src="/images/nickname-user-icon.svg"
                                     width={14}
                                     height={16}
                                     id="elastic_nickname_search_nickname_list_img"
                                   />
-                                  <label style={{ cursor: "pointer" }}
+                                  <label
+                                    style={{ cursor: "pointer" }}
                                     className="font-medium text-base"
                                     id="elastic_nickname_search_nickname_list_lable"
                                   >
@@ -250,7 +272,10 @@ const NicknameSearch = () => {
                                   </label>
                                 </a>
                               </Link>
-                              <span className="font-normal text-base" id="elastic_nickname_search_nickname_list_supported_camps">
+                              <span
+                                className="font-normal text-base"
+                                id="elastic_nickname_search_nickname_list_supported_camps"
+                              >
                                 Supported camps:{" "}
                                 <strong
                                   className="text-canOrange font-semibold text-base"
@@ -266,7 +291,10 @@ const NicknameSearch = () => {
                     </ul>
                   </div>
                 ) : (
-                  <span className="italic text-canLight" id="elastic_nickname_search_nickname_list_no_data">
+                  <span
+                    className="italic text-canLight"
+                    id="elastic_nickname_search_nickname_list_no_data"
+                  >
                     There is no data to show in this category.
                   </span>
                 )}

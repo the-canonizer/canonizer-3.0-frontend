@@ -61,19 +61,19 @@ export default function SearchSideBar() {
       state?.searchSlice?.storeOnPressEnterSearchCountForMetaData,
   }));
 
-
   const isQueryEmpty = router?.query?.q === "";
-  const isReviewOrByDate = router.query.asof === "review" || router.query.asof === "bydate";
+  const isReviewOrByDate =
+    router.query.asof === "review" || router.query.asof === "bydate";
   const isCampPage = router?.pathname == "/search/camp";
   const isTopicPage = router?.pathname == "/search/topic";
   const isStatementPage = router?.pathname == "/search/camp_statement";
 
-const getTotal = (defaultCount, reviewRecords, searchCount, isPage) => {
-  if (isQueryEmpty) return defaultCount;
-  if (isReviewOrByDate && isPage) return reviewRecords;
-  if (detectPressEnterInSearch) return searchCount;
-  return defaultCount;
-};
+  const getTotal = (defaultCount, reviewRecords, searchCount, isPage) => {
+    if (isQueryEmpty) return defaultCount;
+    if (isReviewOrByDate && isPage) return reviewRecords;
+    if (detectPressEnterInSearch) return searchCount;
+    return defaultCount;
+  };
 
   const campTotal = getTotal(
     storeOnPressEnterSearchCountForMetaData?.camp_total,
@@ -108,8 +108,15 @@ const getTotal = (defaultCount, reviewRecords, searchCount, isPage) => {
           />
         ) : (
           <div className="search_tabs lg:flex-col flex overflow-x-auto gap-5">
-            <Link href={{ pathname: "/search", query: { q: router?.query?.q } }} passHref>
-              <a className={`${router?.asPath.includes("/search?") ? "active" : "btn"}`}>
+            <Link
+              href={{ pathname: "/search", query: { q: router?.query?.q } }}
+              passHref
+            >
+              <a
+                className={`${
+                  router?.asPath.includes("/search?") ? "active" : "btn"
+                }`}
+              >
                 <Button
                   size="large"
                   className={`p-0 shadow-none border-transparent !rounded-0 !border-t-0 !border-l-0 !border-r-0 
@@ -117,7 +124,14 @@ const getTotal = (defaultCount, reviewRecords, searchCount, isPage) => {
                     disabled:!font-semibold active:!text-canBlue disabled:!border-b-2 disabled:!border-canBlue 
                     active:!border-none hover:!border-transparent focus:!border-transparent`}
                   disabled={router?.pathname === "/search"}
-                  onClick={() => dispatch(setFilterCanonizedTopics({ asofdate: Date.now() / 1000, asof: "default" }))}
+                  onClick={() =>
+                    dispatch(
+                      setFilterCanonizedTopics({
+                        asofdate: Date.now() / 1000,
+                        asof: "default",
+                      })
+                    )
+                  }
                 >
                   All Results
                 </Button>
@@ -127,26 +141,46 @@ const getTotal = (defaultCount, reviewRecords, searchCount, isPage) => {
               href={{
                 pathname: "/search/topic",
                 query: {
-                  q: router?.query?.q
+                  q: router?.query?.q,
                 },
               }}
               passHref
             >
-              <a className={`${router?.asPath.includes("/search/topic?") ? "active": "btn"}`}>
+              <a
+                className={`${
+                  router?.asPath.includes("/search/topic?") ? "active" : "btn"
+                }`}
+              >
                 <Button
                   size="large"
                   className={`p-0 shadow-none border-transparent !rounded-0 !border-t-0 !border-l-0 !border-r-0 active:!bg-transparent disabled:!bg-transparent disabled:!text-canBlue text-base font-normal disabled:!font-semibold active:!text-canBlue disabled:!border-b-2  disabled:!border-canBlue 
-                  active:!border-none active:!border-transparent  hover:!border-transparent focus:!border-transparent`}  
+                  active:!border-none active:!border-transparent  hover:!border-transparent focus:!border-transparent`}
                   disabled={router?.pathname == "/search/topic" ? true : false}
-                  onClick={() => dispatch(setFilterCanonizedTopics({ asofdate: Date.now() / 1000, asof: "default" }))}
-                  >
-                    Topic{" "}
-                    <span>{" "}&nbsp;({topicTotal})</span>
+                  onClick={() =>
+                    dispatch(
+                      setFilterCanonizedTopics({
+                        asofdate: Date.now() / 1000,
+                        asof: "default",
+                      })
+                    )
+                  }
+                >
+                  Topic <span> &nbsp;({topicTotal})</span>
                 </Button>
               </a>
             </Link>
-            <Link href={{ pathname: "/search/camp", query: {q: router?.query?.q },}} passHref >
-              <a className={`${router?.asPath.includes("/search/camp?") ? "active" : "btn"}`}>
+            <Link
+              href={{
+                pathname: "/search/camp",
+                query: { q: router?.query?.q },
+              }}
+              passHref
+            >
+              <a
+                className={`${
+                  router?.asPath.includes("/search/camp?") ? "active" : "btn"
+                }`}
+              >
                 <Button
                   size="large"
                   className={` p-0 shadow-none border-transparent !rounded-0 !border-t-0 !border-l-0 !border-r-0 active:!bg-transparent disabled:!bg-transparent disabled:!text-canBlue text-base font-normal disabled:!font-semibold active:!text-canBlue disabled:!border-b-2  disabled:!border-canBlue 
@@ -161,13 +195,24 @@ const getTotal = (defaultCount, reviewRecords, searchCount, isPage) => {
                     );
                   }}
                 >
-                Camp <span>{" "}&nbsp;({campTotal})</span>
+                  Camp <span> &nbsp;({campTotal})</span>
                 </Button>
               </a>
             </Link>
             <Link
-              href={{ pathname: "/search/camp_statement", query: { q: router?.query?.q }}} passHref>
-              <a className={`${ router?.asPath.includes("/search/camp_statement?") ? "active": "btn" }`}>
+              href={{
+                pathname: "/search/camp_statement",
+                query: { q: router?.query?.q },
+              }}
+              passHref
+            >
+              <a
+                className={`${
+                  router?.asPath.includes("/search/camp_statement?")
+                    ? "active"
+                    : "btn"
+                }`}
+              >
                 <Button
                   size="large"
                   className={`p-0 shadow-none border-transparent !rounded-0 !border-t-0 !border-l-0 !border-r-0 active:!bg-transparent disabled:!bg-transparent disabled:!text-canBlue text-base font-normal disabled:!font-semibold active:!text-canBlue disabled:!border-b-2  disabled:!border-canBlue 
@@ -184,13 +229,12 @@ const getTotal = (defaultCount, reviewRecords, searchCount, isPage) => {
                     );
                   }}
                 >
-                    Camp Statement{" "}
-                    <span>
-                      {" "}
-                      &nbsp;(
-                      {statementTotal}
-                      )
-                    </span>
+                  Camp Statement{" "}
+                  <span>
+                    {" "}
+                    &nbsp;(
+                    {statementTotal})
+                  </span>
                 </Button>
               </a>
             </Link>
@@ -201,11 +245,13 @@ const getTotal = (defaultCount, reviewRecords, searchCount, isPage) => {
               }}
               passHref
             >
-              <a className={` ${
-                      router?.asPath.includes("/search/nickname?")
-                        ? "active"
-                        : "btn"
-                    }`}>
+              <a
+                className={` ${
+                  router?.asPath.includes("/search/nickname?")
+                    ? "active"
+                    : "btn"
+                }`}
+              >
                 <Button
                   size="large"
                   className={`p-0 shadow-none border-transparent !rounded-0 !border-t-0 !border-l-0 !border-r-0 active:!bg-transparent disabled:!bg-transparent disabled:!text-canBlue text-base font-normal disabled:!font-semibold active:!text-canBlue disabled:!border-b-2  disabled:!border-canBlue 
@@ -223,13 +269,12 @@ const getTotal = (defaultCount, reviewRecords, searchCount, isPage) => {
                     );
                   }}
                 >
-                  
-                    Nickname{" "}
-                    <span>
-                      {" "}
-                      &nbsp;(
-                      {storeOnPressEnterSearchCountForMetaData?.nickname_total})
-                    </span>
+                  Nickname{" "}
+                  <span>
+                    {" "}
+                    &nbsp;(
+                    {storeOnPressEnterSearchCountForMetaData?.nickname_total})
+                  </span>
                 </Button>
               </a>
             </Link>

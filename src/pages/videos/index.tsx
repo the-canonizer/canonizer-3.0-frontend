@@ -1,7 +1,7 @@
 //* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useState } from "react";
 import Layout from "../../hoc/layout";
-import { Row, Col} from "antd";
+import { Row, Col } from "antd";
 import { Card } from "antd";
 import { useRouter } from "next/router";
 import { CaretRightOutlined } from "@ant-design/icons";

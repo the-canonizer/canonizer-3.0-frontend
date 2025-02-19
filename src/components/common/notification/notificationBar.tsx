@@ -11,7 +11,8 @@ export const openNotificationWithIcon = (messageData, type = "error") => {
 
   const showMessage = (type, message) => {
     notification[type]({
-      duration: typeof messageData == "object" && "isSupport" in messageData ? 4 : 3,      
+      duration:
+        typeof messageData == "object" && "isSupport" in messageData ? 4 : 3,
       closeIcon: null,
       className: "thm-notification",
       icon: <CheckCircleFilled />,

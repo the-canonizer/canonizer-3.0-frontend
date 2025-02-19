@@ -223,7 +223,9 @@ const ProfilePrefrences = () => {
   };
 
   const isPublicOrPrivate = (field_value) => {
-    return Array.isArray(privateList) && privateList.includes(field_value) ? 0 : 1;
+    return Array.isArray(privateList) && privateList.includes(field_value)
+      ? 0
+      : 1;
   };
 
   //on update profile click

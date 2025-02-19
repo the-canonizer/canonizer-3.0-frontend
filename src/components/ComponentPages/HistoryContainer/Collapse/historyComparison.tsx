@@ -198,8 +198,7 @@ const HistoryComparison = ({
           <span>
             {campStatement?.tags?.length > 0
               ? campStatement?.tags?.map((tag, index) => {
-                  let lastIndex =
-                    index + 1 === campStatement?.tags?.length;
+                  let lastIndex = index + 1 === campStatement?.tags?.length;
                   return commaSeparated(tag?.title, lastIndex);
                 })
               : "None"}

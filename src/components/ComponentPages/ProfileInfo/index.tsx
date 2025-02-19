@@ -160,7 +160,7 @@ const ProfileInfo = () => {
       setZipCode(false);
       dispatch(setZipCodeForProfileInfo(false));
     }
-    await fetchUserProfileInfo()
+    await fetchUserProfileInfo();
     setIsLoading(false);
   };
 
@@ -204,8 +204,8 @@ const ProfileInfo = () => {
       if (!privateList.includes(data)) {
         const newPrivateList = [...privateList, data]; // Compute new state
         setPrivateList(newPrivateList);
-        dispatch(setPrivateListForProfileInfo(newPrivateList)); // 
-  
+        dispatch(setPrivateListForProfileInfo(newPrivateList)); //
+
         // Remove from public list
         setPublicList((oldArray) => oldArray.filter((item) => item !== data));
       }
@@ -213,7 +213,7 @@ const ProfileInfo = () => {
       if (!publicList.includes(data)) {
         const newPublicList = [...publicList, data]; // Compute new state
         setPublicList(newPublicList);
-  
+
         // Remove from private list
         setPrivateList((oldArray) => oldArray.filter((item) => item !== data));
       }

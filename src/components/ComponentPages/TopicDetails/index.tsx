@@ -333,7 +333,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
       let obj = {
         ...res?.message,
         isSupport: true,
-      }
+      };
       openNotificationWithIcon(obj, type);
       setIsSupportTreeCardModal(false);
       GetCheckStatusData();
