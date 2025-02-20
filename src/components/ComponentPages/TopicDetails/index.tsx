@@ -228,7 +228,18 @@ const TopicDetails = ({ serverSideCall }: any) => {
     +(router?.query?.camp[1]?.split("-")[0] ?? 1),
     router?.query?.camp[0]?.split("-")[0],
   ]);
+  useEffect(() => {
+    const query = { ...router.query, is_tree_open: openConsensusTreePopup ? "1" : "0" };
 
+    router.replace(
+      {
+        pathname: router.pathname,
+        query,
+      },
+      undefined,
+      { shallow: true } // Prevents a full page reload
+    );
+  }, [openConsensusTreePopup]);
   useEffect(() => {
     const getStatement = async () => {
       const body = {
@@ -330,7 +341,11 @@ const TopicDetails = ({ serverSideCall }: any) => {
     const res = await removeSupportedCamps(supportedCampsRemove);
     if (res && res.status_code == 200) {
       let type = "success";
-      openNotificationWithIcon(res?.message, type);
+      let obj = {
+        ...res?.message,
+        isSupport: true,
+      }
+      openNotificationWithIcon(obj, type);
       setIsSupportTreeCardModal(false);
       GetCheckStatusData();
       await getTreesApi(reqBodyForService);
