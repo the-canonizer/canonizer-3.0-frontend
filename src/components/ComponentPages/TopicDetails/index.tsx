@@ -228,7 +228,18 @@ const TopicDetails = ({ serverSideCall }: any) => {
     +(router?.query?.camp[1]?.split("-")[0] ?? 1),
     router?.query?.camp[0]?.split("-")[0],
   ]);
+  useEffect(() => {
+    const query = { ...router.query, is_tree_open: openConsensusTreePopup ? "1" : "0" };
 
+    router.replace(
+      {
+        pathname: router.pathname,
+        query,
+      },
+      undefined,
+      { shallow: true } // Prevents a full page reload
+    );
+  }, [openConsensusTreePopup]);
   useEffect(() => {
     const getStatement = async () => {
       const body = {
