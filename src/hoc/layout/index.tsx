@@ -71,6 +71,17 @@ function CustomLayout(props: any) {
       <GoogleAd />
       <Footer className={`p-0`}>
         <FooterComp />
+        {/* // eslint-disable-next-line @next/next/no-sync-scripts */}
+        <span id="siteseal">
+          <script
+            async
+            type="text/javascript"
+            src={
+              "https://seal.godaddy.com/getSeal?sealID=" +
+              process.env.NEXT_PUBLIC_SSL_SEAL_ID
+            }
+          ></script>
+        </span>
       </Footer>
     </Layout>
   );
