@@ -151,7 +151,7 @@
 }
 
 .share-popover-wrapper {
-  @apply max-w-[300px] w-full;
+  @apply max-w-[300px] w-full z-0;
   .ant-popover-inner {
     @apply rounded-lg;
     .ant-popover-inner-content {
