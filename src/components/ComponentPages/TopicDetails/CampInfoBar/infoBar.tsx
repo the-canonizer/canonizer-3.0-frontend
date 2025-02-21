@@ -48,7 +48,7 @@ const InfoBar = ({ isTopicPage = false }: any) => {
   }));
 
   const isMobile = window.matchMedia("(min-width: 1280px)").matches;
-  const [isInitialized, setIsInitialized] = useState(false); 
+  const [isInitialized, setIsInitialized] = useState(false);
   useEffect(() => {
     if (isTopicPage) {
       dispatch(setManageSupportStatusCheck(false));
@@ -92,7 +92,7 @@ const InfoBar = ({ isTopicPage = false }: any) => {
     const newState = !openConsensusTreePopup;
     dispatch(setOpenConsensusTreePopup(newState));
   };
-  
+
   const lable = algorithms?.find((obj) => {
     return obj.algorithm_key == selectedAlgorithm;
   });
