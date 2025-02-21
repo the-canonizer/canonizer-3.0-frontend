@@ -94,11 +94,17 @@ function ManageStatements({ isEdit = false }) {
   );
 
   const getBreadCrumbApiCall = async () => {
+    const topicNum =
+      currentGetCheckSupportExistsData?.topic_num ||
+      router?.query?.statement?.[0]?.split("-")?.at(0);
+
+    const campNum =
+      currentGetCheckSupportExistsData?.camp_num ||
+      router?.query?.statement?.[1]?.split("-")?.at(0);
+
     let reqBody = {
-      // topic_num: router?.query?.statement?.[0]?.split("-")?.at(0),
-      // camp_num: router?.query?.statement?.[1]?.split("-")?.at(0),
-      topic_num: currentGetCheckSupportExistsData?.topic_num,
-      camp_num: currentGetCheckSupportExistsData?.camp_num,
+      topic_num: topicNum,
+      camp_num: campNum,
       as_of: router?.pathname == "/topic/[...camp]" ? asof : "default",
       as_of_date:
         asof == "default" || asof == "review"
