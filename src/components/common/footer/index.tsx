@@ -46,7 +46,7 @@ function Footer() {
 
   const mockLinks2 = [
     {
-      link: "/topic/132-Help/1-Agreement?is_tree_open=1",
+      link: "/topic/132-Help/1-Agreement",
       linkTitle: "Help",
       id: 4,
     },
