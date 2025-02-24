@@ -26,7 +26,9 @@ import {
   GetPreferedTopicDetails,
 } from "src/network/api/topicAPI";
 import { store } from "src/store";
-import { getCookiesExpirationTime } from "src/utils/generalUtility";
+import { getCookiesExpirationTime, isShowAds } from "src/utils/generalUtility";
+import Head from "next/head";
+import GoogleAd from "components/googleAds";
 
 const Tour = dynamic(() => import("src/components/ComponentPages/Home/Tour"), {
   ssr: false,
@@ -97,7 +99,17 @@ function Home({ current_date, hotTopicData, featuredData, prefData }: any) {
 
   return (
     <Fragment>
+      <Head>
+        {isShowAds() && (
+          <script
+            async
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT}`}
+            crossOrigin="anonymous"
+          ></script>
+        )}
+      </Head>
       <HomePageContainer />
+
       <Tour />
     </Fragment>
   );

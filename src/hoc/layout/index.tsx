@@ -68,7 +68,7 @@ function CustomLayout(props: any) {
           </aside>
         ) : null}
       </Layout>
-      <GoogleAd />
+      {props?.isHomePage && <GoogleAd />}
       <Footer className={`p-0`}>
         <FooterComp />
       </Footer>
