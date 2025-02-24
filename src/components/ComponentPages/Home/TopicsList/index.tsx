@@ -198,7 +198,6 @@ const TopicsList = () => {
   };
 
   async function getTopicsApiCallWithReqBody() {
-    console.log("isCanonChange",isCanonChange, pageNumber)
     const reqBody = {
       algorithm: findAlgorithmKey(algorithm, allAlgorithms) || algorithm,
       asofdate:
