@@ -198,6 +198,7 @@ const TopicsList = () => {
   };
 
   async function getTopicsApiCallWithReqBody() {
+    console.log("isCanonChange",isCanonChange, pageNumber)
     const reqBody = {
       algorithm: findAlgorithmKey(algorithm, allAlgorithms) || algorithm,
       asofdate:
@@ -387,6 +388,7 @@ const TopicsList = () => {
     dispatch(setLoadingAction(true));
     dispatch(setOnlyMyTopic(e?.target?.checked));
     dispatch(setLoadingAction(false));
+    setPageNumber(1)
   };
 
   const getAllAlgos = async () => {
@@ -455,6 +457,9 @@ const TopicsList = () => {
                   showArrow
                   {...sharedProps}
                   {...selectProps}
+                  onSelect={()=>{
+                    setPageNumber(1);
+                  }}
                 />
               </Form.Item>
             </div>
@@ -486,6 +491,7 @@ const TopicsList = () => {
                   onBlur={async () => {
                     setTimeout(() => {
                       setShowSearchDropdown(false);
+                      setPageNumber(1);
                     }, 300);
                   }}
                   onFocus={() => {
@@ -521,7 +527,7 @@ const TopicsList = () => {
                   </div>
                 )} */}
               </div>
-              <SortTopics />
+              <SortTopics setPageNumber={setPageNumber}/>
             </div>
           </div>
         </Form>

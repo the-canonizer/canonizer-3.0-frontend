@@ -9,7 +9,7 @@ import { RootState } from "src/store";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-const SortTopics = () => {
+const SortTopics = ({setPageNumber}) => {
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -53,8 +53,10 @@ const SortTopics = () => {
         onChange={(value) => {
           if (value === "Latest") {
             handleLatestTopic();
+            setPageNumber(1)
           } else if (value === "ScoreValue") {
             handleScoreViewTopic();
+            setPageNumber(1)
           }
         }}
       >
