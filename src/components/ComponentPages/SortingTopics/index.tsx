@@ -9,7 +9,7 @@ import { RootState } from "src/store";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-const SortTopics = ({setPageNumber}) => {
+const SortTopics = ({setPageNumber}:any) => {
   const dispatch = useDispatch();
   const router = useRouter();
 
