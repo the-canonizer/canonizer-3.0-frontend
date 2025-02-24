@@ -490,7 +490,6 @@ const TopicsList = () => {
                   onBlur={async () => {
                     setTimeout(() => {
                       setShowSearchDropdown(false);
-                      setPageNumber(1);
                     }, 300);
                   }}
                   onFocus={() => {
