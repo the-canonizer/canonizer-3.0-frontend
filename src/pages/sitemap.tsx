@@ -22,6 +22,7 @@ const SitemapPage = () => {
       try {
         await router.replace("/sitemap.xml");
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.error("Sitemap not available:", error);
         setIsSitemapAvailable(false);
         setIsLoading(false);
