@@ -85,13 +85,15 @@ function SocialLoginCallback() {
         message.success(response.message);
 
         localStorage.removeItem("redirectTab");
-        router?.push("/settings?tab=social");
+        router?.push("/settings?tab=social&provider=" + router?.query?.provider);
       }
 
       if (response && response.status_code === 403) {
         localStorage.removeItem("redirectTab");
         message.error(response.message);
-        router?.push("/settings?tab=social&status=403");
+        router?.push(
+          "/settings?tab=social&status=403&provider=" + router?.query?.provider
+        );
       }
     }
   };
@@ -119,7 +121,7 @@ function SocialLoginCallback() {
             router?.push("/");
           }
         } else {
-          router?.push("/settings?tab=social");
+          router?.push("/settings?tab=social&provider=" + router?.query?.provider);
         }
       }
     } catch (error) {
