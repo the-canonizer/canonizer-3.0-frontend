@@ -387,7 +387,7 @@ const TopicsList = () => {
     dispatch(setLoadingAction(true));
     dispatch(setOnlyMyTopic(e?.target?.checked));
     dispatch(setLoadingAction(false));
-    setPageNumber(1)
+    setPageNumber(1);
   };
 
   const getAllAlgos = async () => {
@@ -456,7 +456,7 @@ const TopicsList = () => {
                   showArrow
                   {...sharedProps}
                   {...selectProps}
-                  onSelect={()=>{
+                  onSelect={() => {
                     setPageNumber(1);
                   }}
                 />
@@ -525,7 +525,7 @@ const TopicsList = () => {
                   </div>
                 )} */}
               </div>
-              <SortTopics setPageNumber={setPageNumber}/>
+              <SortTopics setPageNumber={setPageNumber} />
             </div>
           </div>
         </Form>

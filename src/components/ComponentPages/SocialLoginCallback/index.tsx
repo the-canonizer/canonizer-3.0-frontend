@@ -85,7 +85,9 @@ function SocialLoginCallback() {
         message.success(response.message);
 
         localStorage.removeItem("redirectTab");
-        router?.push("/settings?tab=social&provider=" + router?.query?.provider);
+        router?.push(
+          "/settings?tab=social&provider=" + router?.query?.provider
+        );
       }
 
       if (response && response.status_code === 403) {
@@ -121,7 +123,9 @@ function SocialLoginCallback() {
             router?.push("/");
           }
         } else {
-          router?.push("/settings?tab=social&provider=" + router?.query?.provider);
+          router?.push(
+            "/settings?tab=social&provider=" + router?.query?.provider
+          );
         }
       }
     } catch (error) {

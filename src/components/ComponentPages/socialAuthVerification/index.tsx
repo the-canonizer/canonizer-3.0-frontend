@@ -56,7 +56,7 @@ function SocialAuthVerification() {
   };
 
   // Unlink social account
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line no-unused-vars
   const onUnlinkClick = async (_provider: any, id: string) => {
     const res = await userSocialAccountDelete(id);
 
