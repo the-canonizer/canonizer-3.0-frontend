@@ -242,6 +242,8 @@ function SupportTreeDrawer({
         setcampIds(campsIds);
         setParentSupportDataList(response?.data?.remove_camps);
         dispatch(setCheckSupportExistsData(response?.data));
+      }else{
+        setcampIds([])
       }
       getActiveSupportTopic(response?.data?.remove_camps);
     }
