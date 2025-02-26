@@ -94,11 +94,7 @@ export default class NetworkCall {
             error.config.url?.includes("/forgot-password/verify-otp")
           )
         ) {
-          logout(
-            "Invalid User",
-            error.status,
-            NetworkCall.counter,
-          );
+          logout("Invalid User", error.status, NetworkCall.counter);
           NetworkCall.counter++;
         }
 

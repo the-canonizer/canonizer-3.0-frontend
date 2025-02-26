@@ -229,7 +229,10 @@ const TopicDetails = ({ serverSideCall }: any) => {
     router?.query?.camp[0]?.split("-")[0],
   ]);
   useEffect(() => {
-    const query = { ...router.query, is_tree_open: openConsensusTreePopup ? "1" : "0" };
+    const query = {
+      ...router.query,
+      is_tree_open: openConsensusTreePopup ? "1" : "0",
+    };
 
     router.replace(
       {
@@ -344,7 +347,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
       let obj = {
         ...res?.message,
         isSupport: true,
-      }
+      };
       openNotificationWithIcon(obj, type);
       setIsSupportTreeCardModal(false);
       GetCheckStatusData();

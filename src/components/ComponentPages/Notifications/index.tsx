@@ -79,7 +79,7 @@ const NotificationPage = () => {
   };
 
   useEffect(() => {
-      getList();
+    getList();
   }, [page, type]);
 
   const onBackClick = (e) => {

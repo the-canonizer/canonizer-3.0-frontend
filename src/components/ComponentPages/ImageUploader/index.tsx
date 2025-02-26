@@ -110,7 +110,7 @@ const ImageUploader: React.FC = () => {
         }
       } catch (error) {
         setLoading(false);
-        handleError(error)
+        handleError(error);
         // message.error(error?.error?.data?.error?.profile_picture[0]);
       }
     }

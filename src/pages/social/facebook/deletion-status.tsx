@@ -31,6 +31,7 @@ const FacebookDeletionStatus: React.FC = () => {
     };
 
     fetchDeletionStatus();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getContent = () => {

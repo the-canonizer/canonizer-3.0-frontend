@@ -372,7 +372,7 @@ function SupportTreeDrawer({
         let obj = {
           ...res?.message,
           isSupport: true,
-        }
+        };
         openNotificationWithIcon(obj, type);
         await handleCancelSupportCamps({ isCallApiStatus: true });
         getCurrentCampRecordApi(reqBody);
@@ -415,7 +415,7 @@ function SupportTreeDrawer({
         let obj = {
           ...res?.message,
           isSupport: true,
-        }
+        };
         openNotificationWithIcon(obj, type);
         await handleCancelSupportCamps({ isCallApiStatus: true });
         getCurrentCampRecordApi(reqBody);
@@ -440,7 +440,7 @@ function SupportTreeDrawer({
       let obj = {
         ...res?.message,
         isSupport: true,
-      }
+      };
       openNotificationWithIcon(obj, type);
       setDrawerFor("");
       onClose();

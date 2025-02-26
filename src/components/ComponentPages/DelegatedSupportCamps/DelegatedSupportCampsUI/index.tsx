@@ -269,7 +269,10 @@ export default function DelegatedSupportCampsUI({
 
   return (
     <div>
-      <div className="hidden lg:flex w-full [&_#delegated_supported_camp_loader_section>div]:!w-full" id="delegated_supported_camp_loader_section">
+      <div
+        className="hidden lg:flex w-full [&_#delegated_supported_camp_loader_section>div]:!w-full"
+        id="delegated_supported_camp_loader_section"
+      >
         {delegateSupportedSkeleton ? (
           <div className="w-full">
             <CustomSkelton
@@ -282,13 +285,25 @@ export default function DelegatedSupportCampsUI({
           </div>
         ) : (
           <div className="w-full" id="delegated_supported_camp_upper_heading_1">
-            <div className="flex lg:flex-row flex-col justify-between items-center mb-5 lg:gap-0 gap-2.5" id="delegated_supported_camp_upper_heading_2">
-              <div className="w-full" id="delegated_supported_camp_upper_heading_3">
-                <h3 className="text-sm font-medium text-canBlack" id="delegated_supported_camp_upper_heading_text">
+            <div
+              className="flex lg:flex-row flex-col justify-between items-center mb-5 lg:gap-0 gap-2.5"
+              id="delegated_supported_camp_upper_heading_2"
+            >
+              <div
+                className="w-full"
+                id="delegated_supported_camp_upper_heading_3"
+              >
+                <h3
+                  className="text-sm font-medium text-canBlack"
+                  id="delegated_supported_camp_upper_heading_text"
+                >
                   DELEGATED SUPPORTED CAMPS
                 </h3>
               </div>
-              <div className="w-full flex justify-end gap-2.5 items-center" id="delegated_supported_camp_reset_btn">
+              <div
+                className="w-full flex justify-end gap-2.5 items-center"
+                id="delegated_supported_camp_reset_btn"
+              >
                 {renderResetButton()}
                 {renderSearchInput()}
               </div>

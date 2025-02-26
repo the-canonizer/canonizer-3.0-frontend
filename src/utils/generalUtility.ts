@@ -30,9 +30,9 @@ export const handleError = (error, log = false) => {
   } else {
     if (nestedErrs.message) {
       // message.error(nestedErrs.message);
-        let type = "error";
-        openNotificationWithIcon(nestedErrs.message, type);
-      }
+      let type = "error";
+      openNotificationWithIcon(nestedErrs.message, type);
+    }
     if (error.message) {
       // message.error(error.message);
       let type = "error";
@@ -508,9 +508,9 @@ export const isShowAds = () => {
 
 export const convertToSlug = (url) => {
   return url
-  .toLowerCase()        // Convert to lowercase
-  .replace(/\s+/g, '-') // Replace spaces with dashes (if any)
-  .replace(/[^\w-]+/g, '') // Remove special characters except dashes
-  .replace(/-+/g, '-')  // Remove multiple dashes
-  .replace(/^\/+|\/+$/g, ''); // Trim leading/trailing slashes
-}
+    .toLowerCase() // Convert to lowercase
+    .replace(/\s+/g, "-") // Replace spaces with dashes (if any)
+    .replace(/[^\w-]+/g, "") // Remove special characters except dashes
+    .replace(/-+/g, "-") // Remove multiple dashes
+    .replace(/^\/+|\/+$/g, ""); // Trim leading/trailing slashes
+};

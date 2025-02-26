@@ -19,7 +19,10 @@ import {
   postStatementCountApi,
   updateStatementApi,
 } from "src/network/api/campManageStatementApi";
-import { convertToSlug, replaceSpecialCharacters } from "src/utils/generalUtility";
+import {
+  convertToSlug,
+  replaceSpecialCharacters,
+} from "src/utils/generalUtility";
 import DataNotFound from "../DataNotFound/dataNotFound";
 import Breadcrumbs from "components/shared/Breadcrumbs";
 import CustomSpinner from "components/shared/CustomSpinner";
@@ -436,9 +439,9 @@ function ManageStatements({ isEdit = false }) {
 
     const redirectToDetailPage = () => {
       router.push(
-        `/topic/${getTopicAndCampIds().topicNum}-${
-          convertToSlug(getTopicAndCampIds().topicName)
-        }/${getTopicAndCampIds().campNum}`
+        `/topic/${getTopicAndCampIds().topicNum}-${convertToSlug(
+          getTopicAndCampIds().topicName
+        )}/${getTopicAndCampIds().campNum}`
       );
     };
 

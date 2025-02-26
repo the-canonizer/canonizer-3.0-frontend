@@ -19,12 +19,14 @@ const ResetPasswordPage = () => {
     if (!isPasswordVerfied) {
       router?.push({ pathname: "/forgot-password" });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isPasswordVerfied]);
 
   useEffect(() => {
     return () => {
       dispatch(setIsPasswordVerfied(null));
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
