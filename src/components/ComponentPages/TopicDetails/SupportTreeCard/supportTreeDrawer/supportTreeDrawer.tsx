@@ -254,7 +254,11 @@ function SupportTreeDrawer({
     let res = await getAllUsedNickNames(topicNum && body);
     if (res && res?.status_code == 200) {
       setNickNameList(res?.data);
-      setNickNameId(res?.data?.at(0)?.id);
+      const nickName_id = defaultNicknameData(res?.data)?.id
+        ? defaultNicknameData(res?.data)?.id
+        : res?.data?.at(0)?.id;
+
+      setNickNameId(nickName_id);
     }
   };
 
