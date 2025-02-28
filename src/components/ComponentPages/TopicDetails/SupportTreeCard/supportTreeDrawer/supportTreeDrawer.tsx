@@ -69,6 +69,7 @@ function SupportTreeDrawer({
   loader = false,
   setLoader,
   isCampLeader,
+  renderSupportBtn,
 }: any) {
   const {
     reasons,
@@ -694,29 +695,31 @@ function SupportTreeDrawer({
                 )}
                 {drawerFor !== "delegateAdd" && (
                   <>
-                    <div className="checkbox-wrapper">
-                      <Form.Item label="Quick Action" className="mb-0">
-                        <Checkbox
-                          id="support-drawer-quick-action-checkbox"
-                          checked={isQuickActionSelected}
-                          onChange={(e) => {
-                            removeAllSupportHandler(e);
+                    {renderSupportBtn() == "Manage Support" && !loader&& (
+                      <div className="checkbox-wrapper">
+                        <Form.Item label="Quick Action" className="mb-0">
+                          <Checkbox
+                            id="support-drawer-quick-action-checkbox"
+                            checked={isQuickActionSelected}
+                            onChange={(e) => {
+                              removeAllSupportHandler(e);
+                            }}
+                          >
+                            Remove All Support
+                          </Checkbox>
+                        </Form.Item>
+                        <Button
+                          id="support-drawer-clear-btn"
+                          size="large"
+                          className="min-w-[200px] gap-2 flex items-center justify-center border border-canBlue bg-[#98B7E61A] rounded-lg text-canBlack text-base font-medium"
+                          onClick={() => {
+                            clearChangesHandler();
                           }}
                         >
-                          Remove All Support
-                        </Checkbox>
-                      </Form.Item>
-                      <Button
-                        id="support-drawer-clear-btn"
-                        size="large"
-                        className="min-w-[200px] gap-2 flex items-center justify-center border border-canBlue bg-[#98B7E61A] rounded-lg text-canBlack text-base font-medium"
-                        onClick={() => {
-                          clearChangesHandler();
-                        }}
-                      >
-                        Clear All Changes
-                      </Button>
-                    </div>
+                          Clear All Changes
+                        </Button>
+                      </div>
+                    )}
                     <div id="support-drawer-tags" className="chips-wrapper">
                       <p className="text-[#DB4F4F] mb-9">
                         Note : To change support order of camp, drag & drop the

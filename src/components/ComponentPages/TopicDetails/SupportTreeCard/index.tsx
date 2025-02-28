@@ -788,6 +788,7 @@ const SupportTreeCard = ({
         loader={loader}
         setLoader={setLoader}
         isCampLeader={isCampLeader}
+        renderSupportBtn={renderSupportBtn}
       />
 
       <>
