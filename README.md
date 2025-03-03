@@ -3,7 +3,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://canonizer3.canonizer.com">
+  <a href="https://ux-dev.canonizer.com">
     <img src="https://canonizer.com/images/logo.svg" alt="Logo" width="150">
   </a>
   <h3 align="center">Canonizer-3.0-Frontend</h3>
@@ -178,7 +178,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 Brent Allsop - [@Brent's_twitter](https://twitter.com/your_username) - brent.allsop@gmail.com
 
-Project Link: [https://canonizer3.canonizer.com](https://canonizer3.canonizer.com)
+Project Link: [https://ux-dev.canonizer.com](https://ux-dev.canonizer.com)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
