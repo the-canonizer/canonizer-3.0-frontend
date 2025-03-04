@@ -888,7 +888,7 @@ function ManageStatements({ isEdit = false }) {
   };
 
   return (
-    <CustomSpinner key="create-statement-spinner" spinning={screenLoading}>
+    <div>
       {notFoundStatus?.status ? null : (
         <Row
           id="breadcrumb-row"
@@ -997,7 +997,7 @@ function ManageStatements({ isEdit = false }) {
         onPreveiwClose={onAiPreveiwClose}
         onInsertClick={onInsertClick}
       />
-    </CustomSpinner>
+       </div>
   );
 }
 
