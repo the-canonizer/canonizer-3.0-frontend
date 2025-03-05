@@ -70,6 +70,7 @@ import ActivityNewsCard from "./ActivityNewsCard";
 import { labels } from "src/messages/label";
 import { setStatementPreview } from "src/store/slices/topicSlice";
 import GoogleAd from "components/googleAds";
+// import GoogleAd from "components/googleAds";
 
 const { Link: AntLink } = Typography;
 const { Panel } = Collapse;

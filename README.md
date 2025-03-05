@@ -125,9 +125,20 @@ If you have a suggestion that would make this better, please fork the repo and c
 
 ### Create a branch
 
-1. `git checkout UI-UX-Overhaul` from any folder in your local `canonizer-3.0-frontend` repository
-2. `git pull origin UI-UX-Overhaul` to ensure you have the latest main code
-3. `git checkout -b the-name-of-my-branch` (replacing `the-name-of-my-branch` with a suitable name) to create a branch. we suggest that pick a name that suit to the feature.
+1. `git checkout development` from any folder in your local `canonizer-3.0-frontend` repository
+2. `git pull origin development` to ensure you have the latest main code
+3. `git checkout -b the-name-of-my-branch` (replacing `the-name-of-my-branch` with a suitable name) to create a branch
+
+<!--
+1. Clone the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Pretty the code for standard indentation (`npm run format`)
+4. Make sure no one test case is being failed (`npm run test`)
+5. Make sure Build is created successfully (`npm run build`)
+6. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+7. Push to the Branch (`git push origin feature/AmazingFeature`)
+8. Open a Pull Request
+ -->
 
 ### Make the change
 

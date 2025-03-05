@@ -443,7 +443,7 @@ function HistoryContainer() {
               Compare {`${historyTitle(historyOf)}s`}
               <i className="icon-compare-statement"></i>
             </Button>
-            <div className="mt-5">
+            {/* <div className="mt-5">
               <GoogleAd />
             </div>
           </div> */}
