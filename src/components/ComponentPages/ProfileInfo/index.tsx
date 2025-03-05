@@ -318,6 +318,10 @@ const ProfileInfo = () => {
       if (res.data != undefined) {
         let profileData = res.data;
         setViewEmail(profileData?.email);
+         //format date for datepicker
+         if (profileData.birthday != null && profileData.birthday != ""){
+          profileData.birthday = moment(profileData.birthday, "YYYY-MM-DD");
+         }
         setUserProfileData(profileData);
         dispatch(setGlobalUserProfileData(profileData?.first_name));
         dispatch(setGlobalUserProfileDataLastName(profileData?.last_name));
@@ -330,9 +334,6 @@ const ProfileInfo = () => {
               : parseInt(profileData.mobile_carrier),
         };
         formVerify.setFieldsValue(verify);
-        //format date for datepicker
-        if (profileData.birthday != null && profileData.birthday != "")
-          profileData.birthday = moment(profileData.birthday, "YYYY-MM-DD");
         if (profileData.postal_code) {
           setPostalCodeDisable(true);
           dispatch(setPostalCodeDisableForProfileInfo(true));
