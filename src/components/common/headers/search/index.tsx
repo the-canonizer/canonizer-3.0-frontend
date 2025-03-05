@@ -395,7 +395,7 @@ const HeaderSearch = ({ className = "" }: any) => {
             ? searchVal.substring(0, advanceSearchValueLength)
             : searchVal
         }
-        className={`lg:ml-5 transition-all delay-300 [&>div]:!border-0 w-full tab:w-4/12 xl:w-2/5`}
+        className={`lg:ml-5 transition-all delay-300 [&>div]:!border-0 w-full tab:w-4/12 xl:w-2/6`}
       >
         <div
           id="desktop-search-input"
@@ -711,7 +711,7 @@ const CampItems = ({ searchCamps, searchValue }) => {
             >
               <Link
                 id={`camp-link-${item.id}`}
-                href={`/${jsonData?.[0][1]?.camp_link}`}
+                href={`/${jsonData?.[0]?.[1]?.camp_link}`}
               >
                 <a className="flex justify-between w-full items-start break-all whitespace-break-spaces">
                   <span className="flex flex-col w-full break-all whitespace-break-spaces">
@@ -854,7 +854,7 @@ const CampStatementsItems = ({ searchCampStatement, searchValue }) => {
                       height={19}
                     />
                     Topic:
-                    <Link href={`/${jsonData?.[0][1]?.camp_link}`}>
+                    <Link href={`/${jsonData?.[0]?.[1]?.camp_link}`}>
                       <a
                         id={`camp-statement-topic-link-${item.id}`}
                         className="text-canBlue text-base font-inter font-medium line-clamp-1"
@@ -873,7 +873,7 @@ const CampStatementsItems = ({ searchCampStatement, searchValue }) => {
                     <span className="break-normal whitespace-nowrap">
                       Camp:
                     </span>
-                    <Link href={`/${jsonData?.[0][1]?.camp_link}`}>
+                    <Link href={`/${jsonData?.[0]?.[1]?.camp_link}`}>
                       <a
                         id={`camp-statement-link-${item.id}`}
                         className="flex w-full items-start !text-canBlue hover:!text-canHoverBlue text-base font-medium"

@@ -741,22 +741,22 @@ function ProfileInfoForm({
               <Form.Item
                 id="form_for_address1"
                 rules={[
-                  // {
-                  //   validator: (_, value) => {
-                  //     if (!value) return Promise.resolve();
+                  {
+                    validator: (_, value) => {
+                      if (!value) return Promise.resolve();
 
-                  //     // Regular expressions to check for letters and digits
-                  //     const letterOrDigitRegex = /[a-zA-Z0-9]/; // Checks if there's at least one letter or digit
+                      // Regular expressions to check for letters and digits
+                      const letterOrDigitRegex = /[a-zA-Z0-9]/; // Checks if there's at least one letter or digit
 
-                  //     if (!letterOrDigitRegex.test(value)) {
-                  //       return Promise.reject(
-                  //         "Address must contain at least one letter or number."
-                  //       );
-                  //     }
+                      if (!letterOrDigitRegex.test(value)) {
+                        return Promise.reject(
+                          "Address must contain at least one letter or number."
+                        );
+                      }
 
-                  //     return Promise.resolve();
-                  //   },
-                  // },
+                      return Promise.resolve();
+                    },
+                  },
                   {
                     pattern: /^\S.*$/,
                     message: "Address cannot start with a space",
@@ -842,22 +842,22 @@ function ProfileInfoForm({
               <Form.Item
                 id="form_for_address_2"
                 rules={[
-                  // {
-                  //   validator: (_, value) => {
-                  //     if (!value) return Promise.resolve();
+                  {
+                    validator: (_, value) => {
+                      if (!value) return Promise.resolve();
 
-                  //     // Regular expressions to check for letters and digits
-                  //     const letterOrDigitRegex = /[a-zA-Z0-9]/; // Checks if there's at least one letter or digit
+                      // Regular expressions to check for letters and digits
+                      const letterOrDigitRegex = /[a-zA-Z0-9]/; // Checks if there's at least one letter or digit
 
-                  //     if (!letterOrDigitRegex.test(value)) {
-                  //       return Promise.reject(
-                  //         "Address must contain at least one letter or number."
-                  //       );
-                  //     }
+                      if (!letterOrDigitRegex.test(value)) {
+                        return Promise.reject(
+                          "Address must contain at least one letter or number."
+                        );
+                      }
 
-                  //     return Promise.resolve();
-                  //   },
-                  // },
+                      return Promise.resolve();
+                    },
+                  },
                   {
                     pattern: /^\S.*$/,
                     message: "Address cannot start with a space",

@@ -387,6 +387,7 @@ const TopicsList = () => {
     dispatch(setLoadingAction(true));
     dispatch(setOnlyMyTopic(e?.target?.checked));
     dispatch(setLoadingAction(false));
+    setPageNumber(1);
   };
 
   const getAllAlgos = async () => {
@@ -455,6 +456,9 @@ const TopicsList = () => {
                   showArrow
                   {...sharedProps}
                   {...selectProps}
+                  onSelect={() => {
+                    setPageNumber(1);
+                  }}
                 />
               </Form.Item>
             </div>
@@ -476,14 +480,14 @@ const TopicsList = () => {
                   size="large"
                   id="browse-search-input"
                   className="browse-search mainInput"
-                  placeholder="Search via keyword"
+                  placeholder="Search via topic name"
                   allowClear={allowClear}
                   defaultValue={inputSearch}
                   onSearch={onSearch}
                   ref={inputRef}
-                  disabled={loading}
-                  onChange={handleKeyUpSearch}
-                  onBlur={() => {
+                  // disabled={loading}
+                  // onChange={handleKeyUpSearch}
+                  onBlur={async () => {
                     setTimeout(() => {
                       setShowSearchDropdown(false);
                     }, 300);
@@ -493,7 +497,7 @@ const TopicsList = () => {
                     setShowSearchDropdown(true);
                   }}
                 />
-                {showSearchDropdown && searchTerm && (
+                {/* {showSearchDropdown && searchTerm && (
                   <div className="suggestion-list">
                     <ul>
                       {searchLoading ? (
@@ -519,9 +523,9 @@ const TopicsList = () => {
                       )}
                     </ul>
                   </div>
-                )}
+                )} */}
               </div>
-              <SortTopics />
+              <SortTopics setPageNumber={setPageNumber} />
             </div>
           </div>
         </Form>

@@ -16,6 +16,7 @@ import { setProfilePicture } from "src/store/slices/authSlice";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Spin } from "antd";
 import Image from "next/image";
+import { handleError } from "src/utils/generalUtility";
 const getBase64 = (file: RcFile): Promise<string> =>
   new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -109,7 +110,8 @@ const ImageUploader: React.FC = () => {
         }
       } catch (error) {
         setLoading(false);
-        message.error(error?.error?.data?.error?.profile_picture[0]);
+        handleError(error);
+        // message.error(error?.error?.data?.error?.profile_picture[0]);
       }
     }
   };

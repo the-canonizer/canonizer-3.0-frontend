@@ -1,13 +1,6 @@
 import { message } from "antd";
 import { Fragment, useEffect, useState } from "react";
 import Image from "next/image";
-import {
-  FacebookFilled,
-  GithubFilled,
-  LinkedinFilled,
-} from "@ant-design/icons";
-
-import styles from "./Social.module.scss";
 
 import {
   socialLogin,
@@ -30,11 +23,18 @@ function SocialAuthVerification() {
     if (res && res.status_code === 200) {
       const socialData = {};
 
-      res.data.forEach((s) => {
-        socialData[s.provider] = s.id;
-        socialData[s.provider + "_email"] = s.social_email;
-        socialData[s.provider + "_name"] = s.social_name;
-      });
+      res.data.forEach(
+        (s: {
+          provider: string;
+          id: any;
+          social_email: any;
+          social_name: any;
+        }) => {
+          socialData[s.provider] = s.id;
+          socialData[s.provider + "_email"] = s.social_email;
+          socialData[s.provider + "_name"] = s.social_name;
+        }
+      );
 
       setSocialLinks(socialData);
     }
@@ -46,7 +46,7 @@ function SocialAuthVerification() {
     }
   }, [isUserAuthenticated]);
 
-  const onLinkClick = async (provider) => {
+  const onLinkClick = async (provider: string) => {
     const res = await socialLogin({ provider });
 
     if (res && res.status_code === 200) {
@@ -55,9 +55,9 @@ function SocialAuthVerification() {
     }
   };
 
-  const onUnlinkClick = async (provider, id) => {
-    console.log("provider", provider, id);
-
+  // Unlink social account
+  // eslint-disable-next-line no-unused-vars
+  const onUnlinkClick = async (_provider: any, id: string) => {
     const res = await userSocialAccountDelete(id);
 
     if (res && res.status_code === 200) {

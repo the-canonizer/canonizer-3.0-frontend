@@ -5,12 +5,12 @@ import schemaGet, { schemas } from "./schemaContent";
 import { isShowAds } from "src/utils/generalUtility";
 
 type HeadContentProps = {
-  description: string;
-  title: string;
-  route: string;
-  author: string;
-  componentName: string;
-  canonical: string;
+  readonly description: string;
+  readonly title: string;
+  readonly route: string;
+  readonly author: string;
+  readonly componentName: string;
+  readonly canonical: string;
 };
 
 declare global {
@@ -33,24 +33,8 @@ function HeadContent({
   const image_url = `${process.env.NEXT_PUBLIC_BASE_IMAGES_URL}/canonizer_logo.jpg`;
   return (
     <Head>
-      {/* {isShowAds() && (
-        <script
-          async
-          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT}`}
-          crossOrigin="anonymous"
-        ></script>
-      )} */}
-
       {/* Meta tags for browser link preview  */}
       <title>{title}</title>
-
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html:
-            schemaGet(componentName, title, route) || schemas[componentName],
-        }}
-      ></script>
 
       <meta charSet="utf-8" />
       <meta name="title" content={title} />
@@ -97,6 +81,22 @@ function HeadContent({
           __html: `window.dataLayer = window.dataLayer || []; function gtag(){window.dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', '${GA_TRACKING_ID}');`,
         }}
       />
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html:
+            schemaGet(componentName, title, route) || schemas[componentName],
+        }}
+      ></script>
+
+      {isShowAds() && (
+        <script
+          async
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT}`}
+          crossOrigin="anonymous"
+        ></script>
+      )}
     </Head>
   );
 }

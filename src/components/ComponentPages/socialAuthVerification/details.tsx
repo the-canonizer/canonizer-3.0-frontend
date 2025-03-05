@@ -1,12 +1,8 @@
-import { Button, Popconfirm, Typography } from "antd";
 import { Fragment } from "react";
 import Image from "next/image";
-
-import styles from "./Social.module.scss";
+import { Button, Popconfirm } from "antd";
 
 import SecondaryButton from "components/shared/Buttons/SecondaryButton";
-
-const { Text } = Typography;
 
 function Details({ socialLinks, onUnlinkClick, onLinkClick, provider }) {
   const text = "Are you sure to unlink this account?";

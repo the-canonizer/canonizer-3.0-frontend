@@ -8,7 +8,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
 
 @import "./fonts";
-@import "./video";
 @import "./speed-controller";
 @import "../../components/ComponentPages/Breadcrumbs/breadcrumbs.scss";
 @import "../../components/ComponentPages/HistoryCard/historyCard.scss";
@@ -34,7 +33,7 @@
 
 html {
   @apply max-sm:text-sm;
-  font-size: 14px;
+  font-size: 15px;
   @media screen and (min-width: 1300px) {
     font-size: 100%;
   }
@@ -530,10 +529,6 @@ body {
   @apply bg-canBlue border-canBlue;
 }
 
-// .ant-tabs-tab-active .ant-tabs-tab-btn {
-//   @apply border-canBlue border-b-4;
-// }
-
 .compare-card-internal {
   ins {
     @apply no-underline bg-[#e0eafb];
@@ -924,55 +919,11 @@ body {
   display: block;
 }
 
-.last-node-class.ant-tree-treenode.ant-tree-treenode-leaf-last {
-  .ant-tree-indent {
-    .ant-tree-indent-unit.ant-tree-indent-unit-end {
-      &:last-of-type {
-        &:before {
-          // height: 50%;
-        }
-      }
-    }
-  }
-}
-
-// .last-node-class.ant-tree-treenode.ant-tree-treenode-switcher-open.ant-tree-treenode-leaf-last
-//   + .ant-tree-treenode.ant-tree-treenode-switcher-close.ant-tree-treenode-leaf-last:has(
-//     .ant-tree-switcher.ant-tree-switcher-noop .ant-tree-switcher-leaf-line
-//   ) {
-//   .ant-tree-indent {
-//     .ant-tree-indent-unit {
-//       &:last-of-type {
-//         &:before {
-//           height: 50%;
-//         }
-//       }
-//     }
-//   }
-// }
-
-// .last-node-class.ant-tree-treenode.ant-tree-treenode-switcher-open.ant-tree-treenode-selected.ant-tree-treenode-leaf-last {
-//   .ant-tree-indent {
-//     .ant-tree-indent-unit {
-//       &:last-of-type {
-//         &::before {
-//           height: 50%;
-//         }
-//       }
-//     }
-//   }
-// }
-
 .first-node-class.last-node-class.ant-tree-treenode.ant-tree-treenode-switcher-open.ant-tree-treenode-leaf-last
   + .ant-tree-treenode.ant-tree-treenode-switcher-close.ant-tree-treenode-leaf-last:has(
     .ant-tree-switcher.ant-tree-switcher-noop .ant-tree-switcher-leaf-line
   ) {
   .ant-tree-indent {
-    // .ant-tree-indent-unit {
-    //   &::before {
-    //     opacity: 0;
-    //   }
-    // }
     .ant-tree-indent-unit.ant-tree-indent-unit-start.ant-tree-indent-unit-end {
       &:last-of-type {
         &::before {
@@ -1049,27 +1000,12 @@ body {
       }
     }
   }
-  // &:last-of-type {
-  // .ant-tree-indent {
-  //   .ant-tree-indent-unit {
-  //     &:last-of-type {
-  //       background: aquamarine;
-  //       &::before {
-  //         height: 50%;
-  //       }
-  //     }
-  //   }
-  // }
-  // }
 }
-
-// .ant-tree-indent-unit-start.ant-tree-indent-unit-end
 
 .first-node-class.last-node-class.ant-tree-treenode.ant-tree-treenode-leaf-last:last-of-type {
   .ant-tree-indent {
     .ant-tree-indent-unit {
       &:last-of-type {
-        // background: aquamarine;
         &::before {
           height: 50%;
         }
@@ -1089,47 +1025,6 @@ body {
     }
   }
 }
-
-// .first-node-class.last-node-class.ant-tree-treenode.ant-tree-treenode-switcher-open.ant-tree-treenode-leaf-last:last-of-type {
-//   background: red;
-// }
-
-// .first-node-class.last-node-class.ant-tree-treenode.ant-tree-treenode-switcher-open.ant-tree-treenode-leaf-last
-//   + .ant-tree-treenode.ant-tree-treenode-switcher-close.ant-tree-treenode-leaf-last:has(
-//     .ant-tree-switcher.ant-tree-switcher-noop .ant-tree-switcher-leaf-line
-//   )
-//   ~ .first-node-class.last-node-class.ant-tree-treenode.ant-tree-treenode-switcher-open.ant-tree-treenode-leaf-last {
-//   .ant-tree-indent {
-//     .ant-tree-indent-unit {
-//       &:last-of-type {
-//         // background: red;
-//         &::before {
-//           // height: 50%;
-//         }
-//       }
-//     }
-//   }
-// }
-
-// .first-node-class.last-node-class.ant-tree-treenode.ant-tree-treenode-switcher-open.ant-tree-treenode-leaf-last {
-//   .ant-tree-indent {
-//     .ant-tree-indent-unit:last-of-type {
-//       background: red;
-
-//       &::before {
-//         // Adjust height or other styles as needed
-//         // height: 50%;
-//       }
-//     }
-//   }
-
-//   // Target adjacent elements if necessary
-//   & + .ant-tree-treenode.ant-tree-treenode-switcher-close.ant-tree-treenode-leaf-last {
-//     &:has(.ant-tree-switcher.ant-tree-switcher-noop .ant-tree-switcher-leaf-line) {
-//       // Additional styles for adjacent sibling
-//     }
-//   }
-// }
 
 // end tree connectivity
 
@@ -1224,12 +1119,12 @@ body {
 
 .camp-accordion {
   @apply bg-[#F7F8FC] rounded-[10px];
-  &.topic-d-accordion{
-    @apply lg:w-[55%]
+  &.topic-d-accordion {
+    @apply lg:w-[55%];
   }
 }
-.popver-confirm{
-  .ant-popover-buttons{
+.popver-confirm {
+  .ant-popover-buttons {
     @apply text-center;
   }
 }
@@ -1245,11 +1140,11 @@ body {
 .ant-tree .ant-tree-node-content-wrapper.ant-tree-node-selected {
   background-color: transparent;
 }
-.ant-tree{
+.ant-tree {
   @media screen and (max-width: 767px) {
-  overflow-x: auto !important; /* Enable horizontal scrolling */
-  max-width: 100% !important; /* Limit the width to the container */
-  overflow-y: hidden;
+    overflow-x: auto !important; /* Enable horizontal scrolling */
+    max-width: 100% !important; /* Limit the width to the container */
+    overflow-y: hidden;
   }
 }
 
@@ -1291,4 +1186,17 @@ body {
   }
 }
 
+.right-whitePnl {
+  ul {
+    @apply list-disc pl-10;
+  }
+}
 
+.trust-seals {
+  background: #fafafa;
+  color: #333;
+  border: 1px solid #f2f2f2;
+  padding: 10px;
+  width: 50%;
+  margin-bottom: 20px;
+}

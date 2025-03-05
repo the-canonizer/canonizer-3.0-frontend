@@ -17,7 +17,10 @@ import { openNotificationWithIcon } from "components/common/notification/notific
 
 export const getTreesApi = async (reqBody, loginToken = null) => {
   try {
-    const trees = await NetworkCall.fetch(TreeRequest.getTrees(reqBody,loginToken), false);
+    const trees = await NetworkCall.fetch(
+      TreeRequest.getTrees(reqBody, loginToken),
+      false
+    );
     store.dispatch(setTree(trees?.data || []));
     return {
       treeData: trees?.data?.at(0),
@@ -183,7 +186,7 @@ export const getAllUsedNickNames = async (body) => {
     return res;
   } catch (error) {
     handleError(error);
-    return error.error;
+    // return error.error;
   }
 };
 export const getCampBreadCrumbApi = async (reqBody, loginToken = null) => {
@@ -261,6 +264,7 @@ export const checkTopicCampExistAPICall = async (
     const res = await NetworkCall.fetch(
       TreeRequest.checkTopicCampExistRequest(body, loginToken)
     );
+
     return res;
   } catch (err) {
     handleError(err);

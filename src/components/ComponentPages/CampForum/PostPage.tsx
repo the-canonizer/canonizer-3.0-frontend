@@ -110,9 +110,7 @@ const CommentsList = () => {
       setCreatedAt(res.data.created_at);
 
       if (res?.data?.status_code === 404) {
-        message?.error(
-          res?.data?.error?.thread_id?.at(0) || "Something went wrong"
-        );
+        message?.error(res?.data?.error?.thread_id?.at(0));
         setCurrentThread({});
       }
 

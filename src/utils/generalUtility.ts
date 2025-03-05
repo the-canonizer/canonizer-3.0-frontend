@@ -463,12 +463,12 @@ export const commaSeparated = (item, isLastIndex) => {
   return item + (isLastIndex ? "" : ", ");
 };
 
-
-export const findAlgorithmKey =(target, list) => {
-  const found = list?.find(item => item?.algorithm_key === target || item?.algorithm_label === target);
+export const findAlgorithmKey = (target, list) => {
+  const found = list?.find(
+    (item) => item?.algorithm_key === target || item?.algorithm_label === target
+  );
   return found ? found?.algorithm_key : target; // Return the algorithm_key if found, otherwise null
 };
-
 
 export const serverRoutes = [
   "/",
@@ -504,4 +504,13 @@ export const isShowAds = () => {
   if (typeof window !== "undefined") {
     return urls.includes(window?.location?.hostname);
   }
+};
+
+export const convertToSlug = (url) => {
+  return url
+    .toLowerCase() // Convert to lowercase
+    .replace(/\s+/g, "-") // Replace spaces with dashes (if any)
+    .replace(/[^\w-]+/g, "") // Remove special characters except dashes
+    .replace(/-+/g, "-") // Remove multiple dashes
+    .replace(/^\/+|\/+$/g, ""); // Trim leading/trailing slashes
 };

@@ -1,13 +1,14 @@
 //* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useState } from "react";
 import Layout from "../../hoc/layout";
-import { Row, Col, PageHeader } from "antd";
+import { Row, Col } from "antd";
 import { Card } from "antd";
 import { useRouter } from "next/router";
 import { CaretRightOutlined } from "@ant-design/icons";
 import { getVideosContentApi } from "src/network/api/videos";
 import { replaceSpecialCharacters } from "src/utils/generalUtility";
 import CustomSkeleton from "../../components/common/customSkelton";
+import Image from "next/image";
 
 // eslint-disable-next-line @next/next/no-img-element
 const { Meta } = Card;
@@ -50,13 +51,6 @@ const VideosPage = () => {
             {categories?.map((category) => {
               return (
                 <>
-                  {/* <PageHeader
-                    className="px-0 [&_.ant-page-header-heading-title]:!text-xl"
-                    ghost
-                    backIcon={<i className="icon-back text-sm"></i>}
-                    onBack={() => router?.push("/")}
-                    title="Videos"
-                  /> */}
                   <Card
                     id="videos-category-title"
                     className="video-parent-card"
@@ -80,14 +74,11 @@ const VideosPage = () => {
                                     id="videos-category-thumbnail-container"
                                     className="img-wrapper"
                                   >
-                                    <img
+                                    <Image
+                                      layout="fill"
                                       id="videos-category-thumbnail"
                                       alt=""
-                                      src={
-                                        process.env.NEXT_PUBLIC_BETA_URL +
-                                        "files/videos/consciousness/" +
-                                        video.thumbnail
-                                      }
+                                      src={`${process.env.NEXT_PUBLIC_BETA_URL}files/videos/consciousness/${video.thumbnail}`}
                                     />
                                     <CaretRightOutlined
                                       id="videos-category-play-icon"

@@ -69,6 +69,7 @@ import CommanBreadcrumbs from "../Breadcrumbs/commonBreadcrumbs";
 import ActivityNewsCard from "./ActivityNewsCard";
 import { labels } from "src/messages/label";
 import { setStatementPreview } from "src/store/slices/topicSlice";
+import GoogleAd from "components/googleAds";
 // import GoogleAd from "components/googleAds";
 
 const { Link: AntLink } = Typography;
@@ -228,7 +229,21 @@ const TopicDetails = ({ serverSideCall }: any) => {
     +(router?.query?.camp[1]?.split("-")[0] ?? 1),
     router?.query?.camp[0]?.split("-")[0],
   ]);
+  useEffect(() => {
+    const query = {
+      ...router.query,
+      is_tree_open: openConsensusTreePopup ? "1" : "0",
+    };
 
+    router.replace(
+      {
+        pathname: router.pathname,
+        query,
+      },
+      undefined,
+      { shallow: true } // Prevents a full page reload
+    );
+  }, [openConsensusTreePopup]);
   useEffect(() => {
     const getStatement = async () => {
       const body = {
@@ -330,7 +345,11 @@ const TopicDetails = ({ serverSideCall }: any) => {
     const res = await removeSupportedCamps(supportedCampsRemove);
     if (res && res.status_code == 200) {
       let type = "success";
-      openNotificationWithIcon(res?.message, type);
+      let obj = {
+        ...res?.message,
+        isSupport: true,
+      };
+      openNotificationWithIcon(obj, type);
       setIsSupportTreeCardModal(false);
       GetCheckStatusData();
       await getTreesApi(reqBodyForService);
@@ -554,109 +573,120 @@ const TopicDetails = ({ serverSideCall }: any) => {
       <Layout
         className="topicDetailsPageLayout"
         rightSidebar={
-          !openConsensusTreePopup &&
-          tree?.["1"]?.is_valid_as_of_time && (
-            <Fragment>
+          <Fragment>
+            {openConsensusTreePopup ? (
+              <div className="w-full sticky top-8 z-50">
+                <CampStatementCard loadingIndicator={loadingIndicator} />
+              </div>
+            ) : null}
+            {tree?.["1"]?.is_valid_as_of_time && (
               <div
-                className="support-tree-parent-box w-full mt-14 lg:mt-0"
-                id="topic_detail_section"
+                className={`w-full ${openConsensusTreePopup ? "hidden" : ""}`}
               >
-                {tree?.["1"]?.is_valid_as_of_time && (
-                  <div
-                    className="flex gap-1 items-center mb-4"
-                    id="topic_detail_section_heading"
-                  >
-                    <SectionHeading
-                      title="Support Tree"
-                      infoContent=""
-                      icon={null}
-                      className="!mb-0 [&_span]:mr-1"
-                    />
-                    <Popover
-                      id="topic_detail_section_heading_pop_over"
-                      content={supportRelatedInfo}
-                      className="title-popover"
-                      placement="top"
-                    >
-                      <InfoCircleOutlined id="topic_detail_section_heading_info" />
-                    </Popover>
-                    <ScoreTag
-                      topic_score={
-                        campRecord?.is_archive
-                          ? 0
-                          : totalCampScoreForSupportTree
-                      }
-                      hideRank={tree && tree?.["1"]?.rank_hidden}
-                    />
-                  </div>
-                )}
-                {tree?.["1"]?.is_valid_as_of_time && (
-                  <div
-                    className={
-                      tree && tree?.["1"]?.rank_hidden == true
-                        ? "bg-canGray py-7 px-2.5 lg:px-6 rounded-lg"
-                        : "bg-canGray py-7 px-2.5 lg:px-6 rounded-lg h-[400px] xl:h-[600px]"
-                    }
-                    id="topic_detail_section_heading_support_tree"
-                  >
+                <div
+                  className="support-tree-parent-box w-full mt-14 lg:mt-0"
+                  id="topic_detail_section"
+                >
+                  {tree?.["1"]?.is_valid_as_of_time && (
                     <div
-                      className={
-                        tree && tree?.["1"]?.rank_hidden == true
-                          ? null
-                          : "border border-canGrey2 bg-white rounded-lg lg:p-2 p-2.5 h-full"
-                      }
-                      id="topic_detail_section_heading_support_tree_1"
+                      className="flex gap-1 items-center mb-4"
+                      id="topic_detail_section_heading"
                     >
-                      <SupportTreeCard
-                        loadingIndicator={loadingIndicator}
-                        isRemovingSupport={isRemovingSupport}
-                        handleLoadMoreSupporters={handleLoadMoreSupporters}
-                        getCheckSupportStatus={getCheckSupportStatus}
-                        removeApiSupport={removeApiSupport}
-                        totalSupportScore={totalSupportScore}
-                        totalFullSupportScore={totalFullSupportScore}
-                        removeSupport={removeSupport}
-                        topicList={topicList}
-                        removeSupportForDelegate={removeSupportForDelegate}
-                        isSupportTreeCardModal={isSupportTreeCardModal}
-                        setIsSupportTreeCardModal={setIsSupportTreeCardModal}
-                        isDelegateSupportTreeCardModal={
-                          isDelegateSupportTreeCardModal
-                        }
-                        setIsDelegateSupportTreeCardModal={
-                          setIsDelegateSupportTreeCardModal
-                        }
-                        handleSupportTreeCardCancel={
-                          handleSupportTreeCardCancel
-                        }
-                        removeSupportSpinner={removeSupportSpinner}
-                        supportTreeForCamp={supportTreeForCamp}
-                        totalCampScoreForSupportTree={
-                          totalCampScoreForSupportTree
-                        }
-                        backGroundColorClass={backGroundColorClass}
-                        getCheckStatusAPI={GetCheckStatusData}
-                        GetActiveSupportTopic={GetActiveSupportTopic}
-                        GetActiveSupportTopicList={GetActiveSupportTopicList}
-                        setSupportTreeForCamp={setSupportTreeForCamp}
-                        setTotalCampScoreForSupportTree={
-                          setTotalCampScoreForSupportTree
+                      <SectionHeading
+                        title="Support Tree"
+                        infoContent=""
+                        icon={null}
+                        className="!mb-0 [&_span]:mr-1"
+                      />
+                      <Popover
+                        id="topic_detail_section_heading_pop_over"
+                        content={supportRelatedInfo}
+                        className="title-popover"
+                        placement="top"
+                      >
+                        <InfoCircleOutlined id="topic_detail_section_heading_info" />
+                      </Popover>
+                      <ScoreTag
+                        topic_score={
+                          campRecord?.is_archive
+                            ? 0
+                            : totalCampScoreForSupportTree
                         }
                         hideRank={tree && tree?.["1"]?.rank_hidden}
                       />
                     </div>
-                    {/* <GoogleAd /> */}
+                  )}
+                  {tree?.["1"]?.is_valid_as_of_time && (
+                    <div
+                      className={
+                        tree && tree?.["1"]?.rank_hidden == true
+                          ? "bg-canGray py-7 px-2.5 lg:px-6 rounded-lg"
+                          : "bg-canGray py-7 px-2.5 lg:px-6 rounded-lg h-[400px] xl:h-[600px]"
+                      }
+                      id="topic_detail_section_heading_support_tree"
+                    >
+                      <div
+                        className={
+                          tree && tree?.["1"]?.rank_hidden == true
+                            ? null
+                            : "border border-canGrey2 bg-white rounded-lg lg:p-2 p-2.5 h-full"
+                        }
+                        id="topic_detail_section_heading_support_tree_1"
+                      >
+                        <SupportTreeCard
+                          loadingIndicator={loadingIndicator}
+                          isRemovingSupport={isRemovingSupport}
+                          handleLoadMoreSupporters={handleLoadMoreSupporters}
+                          getCheckSupportStatus={getCheckSupportStatus}
+                          removeApiSupport={removeApiSupport}
+                          totalSupportScore={totalSupportScore}
+                          totalFullSupportScore={totalFullSupportScore}
+                          removeSupport={removeSupport}
+                          topicList={topicList}
+                          removeSupportForDelegate={removeSupportForDelegate}
+                          isSupportTreeCardModal={isSupportTreeCardModal}
+                          setIsSupportTreeCardModal={setIsSupportTreeCardModal}
+                          isDelegateSupportTreeCardModal={
+                            isDelegateSupportTreeCardModal
+                          }
+                          setIsDelegateSupportTreeCardModal={
+                            setIsDelegateSupportTreeCardModal
+                          }
+                          handleSupportTreeCardCancel={
+                            handleSupportTreeCardCancel
+                          }
+                          removeSupportSpinner={removeSupportSpinner}
+                          supportTreeForCamp={supportTreeForCamp}
+                          totalCampScoreForSupportTree={
+                            totalCampScoreForSupportTree
+                          }
+                          backGroundColorClass={backGroundColorClass}
+                          getCheckStatusAPI={GetCheckStatusData}
+                          GetActiveSupportTopic={GetActiveSupportTopic}
+                          GetActiveSupportTopicList={GetActiveSupportTopicList}
+                          setSupportTreeForCamp={setSupportTreeForCamp}
+                          setTotalCampScoreForSupportTree={
+                            setTotalCampScoreForSupportTree
+                          }
+                          hideRank={tree && tree?.["1"]?.rank_hidden}
+                        />
+                      </div>
+                      <GoogleAd />
+                    </div>
+                  )}
+                </div>
+
+                {tree?.["1"]?.is_valid_as_of_time && (
+                  <div
+                    className="my-14"
+                    id="topic_detail_section_activity_card"
+                  >
+                    <ActivityNewsCard />
                   </div>
                 )}
               </div>
-
-              {tree?.["1"]?.is_valid_as_of_time && (
-                <div className="my-14" id="topic_detail_section_activity_card">
-                  <ActivityNewsCard />
-                </div>
-              )}
-            </Fragment>
-          )
+            )}
+          </Fragment>
         }
         afterHeader={
           <Fragment>
@@ -697,9 +727,9 @@ const TopicDetails = ({ serverSideCall }: any) => {
         }
       >
         <div className={styles.pageContent + " pageContentWrap"} id="printWrap">
-          {openConsensusTreePopup == true ? (
-            <div className="flex justify-between gap-3 items-start w-full h-full">
-              <div className="bg-canGray py-7 px-5 rounded-lg lg:w-[68%] w-full">
+          {openConsensusTreePopup ? (
+            <div className="flex justify-between gap-3 items-start w-full h-full mb-6">
+              <div className="bg-canGray py-7 px-5 rounded-lg w-full">
                 <div className="border border-canGrey2 bg-white rounded-lg p-5 w-full">
                   <div className="consensu-tree-section">
                     <div className="flex justify-between items-start">
@@ -801,26 +831,31 @@ const TopicDetails = ({ serverSideCall }: any) => {
                   />
                 </div>
               </div>
-              <div className="lg:w-[30%] w-full">
-                <CampStatementCard loadingIndicator={loadingIndicator} />
-              </div>
             </div>
-          ) : (
-            <div
-              className=""
-              id="topic_detail_section_consesnus_tree_camp_disclaimer"
-            >
-              {tree?.["1"]?.is_valid_as_of_time && (
-                <div>
+          ) : null}
+
+          <div
+            className=""
+            id="topic_detail_section_consesnus_tree_camp_disclaimer"
+          >
+            {tree?.["1"]?.is_valid_as_of_time && (
+              <div
+                className={`w-full ${openConsensusTreePopup ? "hidden" : ""}`}
+              >
+                <div
+                  className={`w-full ${
+                    openConsensusTreePopup ? "hidden" : "block"
+                  }`}
+                >
                   {isMobile && <CampDisclaimer />}
 
                   <CampStatementCard loadingIndicator={loadingIndicator} />
-                  <Campforum />
-                  <SiblingCamps />
                 </div>
-              )}
-            </div>
-          )}
+                <Campforum />
+                <SiblingCamps />
+              </div>
+            )}
+          </div>
 
           {isClient && tree && !tree["1"]?.is_valid_as_of_time && (
             <div

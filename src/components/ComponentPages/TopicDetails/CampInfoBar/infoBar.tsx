@@ -1,6 +1,6 @@
 import { Spin, Tooltip, Typography, Button } from "antd";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { ApartmentOutlined } from "@ant-design/icons";
 
@@ -48,7 +48,7 @@ const InfoBar = ({ isTopicPage = false }: any) => {
   }));
 
   const isMobile = window.matchMedia("(min-width: 1280px)").matches;
-
+  const [isInitialized, setIsInitialized] = useState(false);
   useEffect(() => {
     if (isTopicPage) {
       dispatch(setManageSupportStatusCheck(false));
@@ -81,9 +81,16 @@ const InfoBar = ({ isTopicPage = false }: any) => {
     dispatch(setOpenDrawer(true));
     dispatch(setDisbaleApplyBtn(false));
   };
-
+  useEffect(() => {
+    if (!isInitialized) {
+      const { is_tree_open } = router.query;
+      dispatch(setOpenConsensusTreePopup(is_tree_open === "1"));
+      setIsInitialized(true); // Prevent further updates from re-triggering the effect
+    }
+  }, [router.query.is_tree_open]);
   const showConsensusTree = () => {
-    dispatch(setOpenConsensusTreePopup(!openConsensusTreePopup));
+    const newState = !openConsensusTreePopup;
+    dispatch(setOpenConsensusTreePopup(newState));
   };
 
   const lable = algorithms?.find((obj) => {

@@ -19,7 +19,10 @@ import {
   postStatementCountApi,
   updateStatementApi,
 } from "src/network/api/campManageStatementApi";
-import { replaceSpecialCharacters } from "src/utils/generalUtility";
+import {
+  convertToSlug,
+  replaceSpecialCharacters,
+} from "src/utils/generalUtility";
 import DataNotFound from "../DataNotFound/dataNotFound";
 import Breadcrumbs from "components/shared/Breadcrumbs";
 import CustomSpinner from "components/shared/CustomSpinner";
@@ -31,7 +34,6 @@ import StatementAIPreview from "./UI/aiPreview";
 import moment from "moment";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
-// import { openNotificationWithIcon } from "components/common/notification/notificationBar";
 
 // const systemPropPt = `You are a text converter for a website where people put their opinions on various topics, while writing and posting the content they are given a feature of Improve with AI, Your role is to improve that text accordingly.
 
@@ -73,25 +75,33 @@ function ManageStatements({ isEdit = false }) {
   const [isAIPreviewOpen, setIsAIPreviewOpen] = useState(false);
   const [improvedContent, setImprovedContent] = useState(null);
 
-
   const values = Form.useWatch([], form);
   const [isSavingDraft, setIsSavingDraft] = useState(false);
-  // const [isGenerating, setIsGenerating] = useState(false);
   const isFirstRender = useRef(true);
 
   const getEpochTime = () => {
     return Math.floor(Date.now() / 1000);
   };
 
-  const { asofdate, asof } = useSelector((state: RootState) => ({
-    asofdate: state.filters?.filterObject?.asofdate,
-    asof: state?.filters?.filterObject?.asof,
-  }));
+  const hasArchivedCamp = (data) => {
+    return data?.some((camp) => camp?.camp_is_archive === 1);
+  };
+
+  const { asofdate, asof, currentGetCheckSupportExistsData } = useSelector(
+    (state: RootState) => ({
+      asofdate: state.filters?.filterObject?.asofdate,
+      asof: state?.filters?.filterObject?.asof,
+      currentGetCheckSupportExistsData:
+        state.topicDetails.currentGetCheckSupportExistsData,
+    })
+  );
 
   const getBreadCrumbApiCall = async () => {
     let reqBody = {
-      topic_num: router?.query?.statement?.[0]?.split("-")?.at(0),
-      camp_num: router?.query?.statement?.[1]?.split("-")?.at(0),
+      // topic_num: router?.query?.statement?.[0]?.split("-")?.at(0),
+      // camp_num: router?.query?.statement?.[1]?.split("-")?.at(0),
+      topic_num: currentGetCheckSupportExistsData?.topic_num,
+      camp_num: currentGetCheckSupportExistsData?.camp_num,
       as_of: router?.pathname == "/topic/[...camp]" ? asof : "default",
       as_of_date:
         asof == "default" || asof == "review"
@@ -100,6 +110,10 @@ function ManageStatements({ isEdit = false }) {
     };
 
     let res = await getCampBreadCrumbApi(reqBody);
+
+    if (hasArchivedCamp(res?.data?.bread_crumb)) {
+      router.push(`/topic/${reqBody?.topic_num}/${reqBody?.camp_num}`);
+    }
     if (router?.asPath?.split("/")?.[1] === "create") {
       const campName =
         router?.query?.statement?.[1]?.split("-")?.splice(1)?.join("-") || "";
@@ -112,9 +126,7 @@ function ManageStatements({ isEdit = false }) {
   };
 
   useEffect(() => {
-    if (router?.asPath?.split("/")?.[1] === "create") {
-      getBreadCrumbApiCall();
-    }
+    getBreadCrumbApiCall();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
@@ -419,6 +431,14 @@ function ManageStatements({ isEdit = false }) {
   const saveDraftHandler = async () => {
     setIsSavingDraft(true);
 
+    const redirectToDetailPage = () => {
+      router.push(
+        `/topic/${getTopicAndCampIds().topicNum}-${convertToSlug(
+          getTopicAndCampIds().topicName
+        )}/${getTopicAndCampIds().campNum}`
+      );
+    };
+
     let payload = {
       camp_num: null,
       event_type: null,
@@ -496,6 +516,9 @@ function ManageStatements({ isEdit = false }) {
         ...time,
         last_save_time: getEpochTime(),
       });
+      if (res?.status_code == 200) {
+        redirectToDetailPage();
+      }
     } else {
       localStorage.setItem("autosaveContent", payload?.statement); // Save to local storage if offline
 
@@ -503,14 +526,10 @@ function ManageStatements({ isEdit = false }) {
         ...time,
         last_save_time: getEpochTime(),
       });
+      redirectToDetailPage();
     }
 
     setTimeout(() => setIsSavingDraft(false), 2000);
-    router.push(
-      `/topic/${getTopicAndCampIds().topicNum}-${
-        getTopicAndCampIds().topicName
-      }/${getTopicAndCampIds().campNum}`
-    );
   };
 
   const onFinish = async (values: any) => {
@@ -681,7 +700,7 @@ function ManageStatements({ isEdit = false }) {
           return;
         }
         return;
-      } else if (isEdit) {
+      } else if (isEdit && res?.status_code === 200) {
         if (isSaveDraft) {
           router?.push({ pathname: topicURL() });
           return;
@@ -704,7 +723,6 @@ function ManageStatements({ isEdit = false }) {
   };
 
   const saveStatement = async (values) => {
-    const blocks = editorState;
     const editInfo = editStatementData;
     const parentCamp = editInfo?.parent_camp;
 
@@ -864,7 +882,7 @@ function ManageStatements({ isEdit = false }) {
   };
 
   return (
-    <CustomSpinner key="create-statement-spinner" spinning={screenLoading}>
+    <div>
       {notFoundStatus?.status ? null : (
         <Row
           id="breadcrumb-row"
@@ -973,7 +991,7 @@ function ManageStatements({ isEdit = false }) {
         onPreveiwClose={onAiPreveiwClose}
         onInsertClick={onInsertClick}
       />
-    </CustomSpinner>
+       </div>
   );
 }
 

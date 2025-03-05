@@ -45,21 +45,13 @@ function WrappedApp({
       !!(getCookies() as any)?.loginToken
     );
 
-  const { isLatestVersion, emptyCacheStorage, latestVersion } = useClearCache();
+  const { isLatestVersion, emptyCacheStorage } = useClearCache();
 
   if (
     !isLatestVersion ||
     (typeof window !== "undefined" &&
       localStorage.getItem("APP_VERSION") === null)
   ) {
-    console.info({ latestVersion });
-    console.log(`Cache Cleared: ${latestVersion}`);
-    // const authToken = localStorage.getItem("auth_token");
-    // if (authToken) {
-    //   localStorage.removeItem("auth_token");
-    // }
-    // document.cookie =
-    //   "loginToken=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
     emptyCacheStorage();
   }
 
@@ -303,7 +295,7 @@ WrappedApp.getInitialProps = async (
       is_type,
       refererURL,
     };
-    const checkRes = await checkTopicCampExistAPICall(reqBody);
+    const checkRes = await checkTopicCampExistAPICall(reqBody, token);
 
     if (checkRes && checkRes?.status_code === 200 && checkRes?.data?.is_exist) {
       return url;
@@ -312,15 +304,17 @@ WrappedApp.getInitialProps = async (
   };
 
   const aspath = appContext.router?.asPath;
+
   let returnData: string;
 
   if (aspath?.includes(".asp")) {
     if (aspath?.includes("topic.asp") || aspath?.includes("topoc.asp")) {
       const replaced = aspath.replace(".asp", "");
       let spilitedPath = replaced?.split("/");
+
       if (spilitedPath?.length > 3) {
         const topic = +spilitedPath[spilitedPath?.length - 2]?.split("-")[0],
-          camp = +spilitedPath[spilitedPath?.length - 1]?.split("-")[0] ?? 1;
+          camp = +spilitedPath[spilitedPath?.length - 1]?.split("-")[0] || 1;
         returnData = await redirect(
           `/topic/${topic}/${camp}`,
           topic,
@@ -330,6 +324,7 @@ WrappedApp.getInitialProps = async (
       } else {
         const topic = +spilitedPath[spilitedPath?.length - 1],
           camp = 1;
+
         returnData = await redirect(
           `/topic/${topic}/${camp}`,
           topic,

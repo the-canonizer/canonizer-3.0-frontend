@@ -41,6 +41,7 @@ export default function DelegatedSupportCampsUI({
 }: any) {
   const [displayList, setDisplayList] = useState([]);
   const limit = delegatedSupportCampsList?.length;
+  console.log(viewMoreModalVisible, "viewMoreModalVisible");
 
   useEffect(() => {
     if (delegatedSupportCampsList) setDisplayList(delegatedSupportCampsList);
@@ -130,7 +131,7 @@ export default function DelegatedSupportCampsUI({
       dataIndex: "camps",
       key: "camps",
       render: (camps, _record) =>
-        camps.slice(0, limit).map((camp, i) => (
+        camps?.map((camp, i) => (
           <p
             id="delegated_supported_columns_camp_name"
             key={camp.camp_num}

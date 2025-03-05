@@ -1,6 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react";
 import SearchSideBar from "../../common/SearchSideBar";
-import styles from "./search.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "src/store";
 import Link from "next/link";
@@ -14,6 +13,7 @@ import CustomSkelton from "../../common/customSkelton";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import AdvanceSearchHeader from "./AdvanceSearchHeader";
 
 const NicknameSearch = () => {
   const { searchDataAll, searchValue } = useSelector((state: RootState) => ({
@@ -155,42 +155,14 @@ const NicknameSearch = () => {
   const router = useRouter();
   return (
     <Fragment>
-      <div
-        className="flex justify-between lg:items-center lg:flex-row flex-col items-start mb-10 mt-2.5 lg:gap-0 gap-5"
-        id="elastic_nickname_search"
-      >
-        <div
-          className="flex  items-center  "
-          id="elastic_nickname_search_sub_section"
-        >
-          <div
-            className="flex items-center gap-2.5"
-            id="elastic_nickname_search_heading_section"
-          >
-            <Image
-              id="elastic_nickname_search_img"
-              src="/images/recent-activiity-arrow.svg"
-              width={16}
-              height={24}
-            />
+      <AdvanceSearchHeader
+        sectionId="elastic_nickname_search"
+        subSectionId="elastic_nickname_search_sub_section"
+        headingId="elastic_nickname_search_heading_section"
+        imgId="elastic_nickname_search_img"
+        headingTextId="elastic_nickname_search_heading_text"
+      />
 
-            <h3
-              className="lg:text-3xl text-xl   text-canBlack font-medium"
-              id="elastic_nickname_search_heading_text"
-            >
-              Search Results for “
-              <span
-                className="text-canBlue capitalize break-all whitespace-break-spaces"
-                id="elastic_nickname_search_text"
-              >
-                {router?.query?.q}
-              </span>
-              ”
-            </h3>
-          </div>
-        </div>
-        {/* <AdvanceFilter /> */}
-      </div>
       <div
         className="flex lg:flex-row flex-col gap-10"
         id="elastic_nickname_search_sidebar_section"
@@ -220,7 +192,6 @@ const NicknameSearch = () => {
             >
               {clickAdvanceFilterOption ? (
                 <Space size={[0, 18]} wrap>
-                  {/* <Tag onClose={()=>{handleTagClose()}}>{selectedTopicFromAdvnaceFilterNickname}</Tag> */}
                   {selectedTopicFromAdvnaceFilterNickname.map(
                     (topic, index) => (
                       <Tag key={index}>
@@ -241,9 +212,7 @@ const NicknameSearch = () => {
               ) : (
                 ""
               )}
-              {/* <AdvanceFilter /> */}
             </div>
-
             <div className="mb-2" id="elastic_nickname_search_nickname_list">
               <h4
                 className="!mb-6 !text-base !font-semibold !text-canBlack"
@@ -296,7 +265,6 @@ const NicknameSearch = () => {
                                     className="font-medium text-base"
                                     id="elastic_nickname_search_nickname_list_lable"
                                   >
-                                    {/* {x?.type_value} */}
                                     {getHighlightedText(
                                       x?.type_value,
                                       searchValue
@@ -304,7 +272,6 @@ const NicknameSearch = () => {
                                   </label>
                                 </a>
                               </Link>
-
                               <span
                                 className="font-normal text-base"
                                 id="elastic_nickname_search_nickname_list_supported_camps"

@@ -129,8 +129,6 @@ const NotificationPage = () => {
       }
 
       getList();
-    } else {
-      message.error(res?.message || "Something went wrong!");
     }
 
     setIsDeleteOpen(false);
@@ -164,8 +162,6 @@ const NotificationPage = () => {
       }
 
       getList();
-    } else {
-      message.error(res?.message || "Something went wrong!");
     }
 
     setIsReadOpen(false);
