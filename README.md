@@ -55,7 +55,7 @@
 
 [![Product Name Screen Shot][product-screenshot]](https://canonizer3.canonizer.com)
 
-A wiki system that solves the critical liabilities of Wikipedia. It solves petty "edit wars" by providing contributors the ability to create and join camps and present their views without having them immediately erased. It also provides ways to standardise definitions and vocabulary, especially important in new fields.
+A wiki system that solves the critical liabilities of Wikipedia. It solves petty "edit wars" by providing contributors the ability to create and join camps and present their views without having them immediately erased. It also provides ways to standardise definitions and vocabulary, which is especially important in new fields.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -64,6 +64,7 @@ A wiki system that solves the critical liabilities of Wikipedia. It solves petty
 - [Next.js](https://nextjs.org/)
 - [Redux Toolkit](https://redux-toolkit.js.org/)
 - [Ant Design](https://ant.design/)
+- [Tailwind Css](https://tailwindcss.com/)
 - [Typescript](https://www.typescriptlang.org/)
 - Unit Testing
   - [Jest](https://jestjs.io/)
@@ -75,12 +76,12 @@ A wiki system that solves the critical liabilities of Wikipedia. It solves petty
 
 ## Getting Started
 
-To get a local copy up and running follow these simple steps.
+To get a local copy up and running, follow these simple steps.
 
 ### Prerequisites
 
 1. Git
-2. Node: any 12.x version starting with v12.0.0 or greater
+2. Node: any 18.x version starting with v18.17.0 or greater
 3. Yarn v1: See [Yarn website for installation instructions](https://classic.yarnpkg.com/en/docs/install/#mac-stable)
 4. A fork of the repo (for any contributions)
 5. A clone of the [canonizer-3.0-frontend](https://github.com/the-canonizer/canonizer-3.0-frontend) repo on your local machine
@@ -95,7 +96,7 @@ To get a local copy up and running follow these simple steps.
    ```sh
    cd canonizer-3.0-frontend
    ```
-3. Copy environment variables from `.env.example` to `.env` file
+3. Copy environment variables from `.env.example` to the `.env` file
    ```sh
    cp .env.example .env
    ```
@@ -132,9 +133,9 @@ Don't forget to give the project a star! Thanks again!
 <!--
 1. Clone the Project
 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Pretiffy the code for standard indendation (`npm run format`)
+3. Pretty the code for standard indentation (`npm run format`)
 4. Make sure no one test case is being failed (`npm run test`)
-5. Make sure Build is created successfuly (`npm run build`)
+5. Make sure Build is created successfully (`npm run build`)
 6. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
 7. Push to the Branch (`git push origin feature/AmazingFeature`)
 8. Open a Pull Request
@@ -147,10 +148,10 @@ Don't forget to give the project a star! Thanks again!
 
 ### Test the change
 
-1. If possible, test any visual changes in all latest versions of common browsers, on both desktop and mobile.
+1. If possible, test any visual changes in all the latest versions of common browsers on both desktop and mobile.
 2. Run `yarn test` from the project root to ensure that no one test case is being failed.
 3. Run `yarn format` from the project root. (This will run Prettier)
-4. Run `yarn build` from the project root to ensure that build is created successfully.
+4. Run `yarn build` from the project root to ensure that the build is created successfully.
 
 ### Push the change
 
