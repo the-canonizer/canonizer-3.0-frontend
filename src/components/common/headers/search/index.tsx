@@ -516,6 +516,7 @@ const HeaderSearch = ({ className = "" }: any) => {
                         true
                       );
                   }}
+                  onSearch={handlePress}
                 />
               </>
             ) : null}

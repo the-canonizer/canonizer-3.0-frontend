@@ -87,7 +87,7 @@ const SimilarCampPopup = ({
               <UserEditIcon
                 className="[&_>svg]:text-sm ml-2"
                 width="18"
-                height=""
+                height="16"
               />
             </SecondaryButton>
           </List.Item>
