@@ -55,7 +55,7 @@ function ManageStatements({ isEdit = false }) {
     name: "",
   });
   const [editStatementData, setEditStatementData] = useState(null);
-  const [submitIsDisable, setSubmitIsDisable] = useState(false);
+  const [submitIsDisable, setSubmitIsDisable] = useState(true);
   const [nickNameData, setNickNameData] = useState([]);
   const [screenLoading, setScreenLoading] = useState(false);
   const [editorState, setEditorState] = useState("");
@@ -177,7 +177,7 @@ function ManageStatements({ isEdit = false }) {
     const nickNameId = backdata?.nick_name[0]?.id;
 
     const isStatementDifferent =
-      JSON.stringify(statementValue) !=
+      JSON.stringify(statementValue) !==
       JSON.stringify(values?.statement?.trim());
     const isNicknameDifferent =
       nickNameId != values?.nick_name && values?.nick_name;
@@ -288,7 +288,7 @@ function ManageStatements({ isEdit = false }) {
             !statement.parsed_value.startsWith("<p>") &&
             !statement.parsed_value.startsWith("<div>")
           ) {
-            statement.parsed_value = `<div><div/>${statement.parsed_value}`;
+            statement.parsed_value 
           }
           setEditCampStatementData(editRes?.data?.statement?.note);
           setEditStatementData(editRes.data);
