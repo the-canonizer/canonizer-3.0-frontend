@@ -107,6 +107,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
     clearScoreFromRefineFilter,
     disbaleApplyBtn,
     userEmail,
+    algorithm
   } = useSelector((state: RootState) => ({
     algorithms: state.homePage?.algorithms,
     filteredScore: state?.filters?.filterObject?.filterByScore,
@@ -229,7 +230,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
   useEffect(() => {
     if (!router?.query?.algo) {
       // setSelectAlgo("blind_popularity");
-      dispatch(setClearAlgoFromRefineFilter("blind_popularity"));
+      dispatch(setClearAlgoFromRefineFilter(algorithm));
       if (!router?.query?.score) {
         dispatch(setClearScoreFromRefineFilter(0));
       }
