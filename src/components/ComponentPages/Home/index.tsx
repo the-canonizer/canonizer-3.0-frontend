@@ -42,6 +42,7 @@ const HomePageContainer = () => {
           <GoogleAd />
         </div>
       }
+      isHomePage={true}
     >
       <Row
         className="pt-4 w-100"

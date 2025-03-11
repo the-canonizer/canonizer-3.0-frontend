@@ -15,7 +15,6 @@ const WithRouteChange = (pageProps) => {
   useEffect(() => {
     const handleRouteChange = (url: string) => {
       setIsChanging(true);
-      console.log("Started....");
 
       const currentUrl = router.asPath;
 
