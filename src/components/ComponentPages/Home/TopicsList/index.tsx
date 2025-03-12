@@ -573,17 +573,18 @@ const TopicsList = () => {
                         topicTags: ft?.tags,
                         views: ft?.camp_views,
                       }}
-                      avatars={
-                        ft?.tree_structure &&
-                        ft?.tree_structure[1]?.support_tree
-                          ?.map((support) => {
-                            return {
-                              ...support?.user,
-                              nick_name: support?.nick_name,
-                            };
-                          })
-                          ?.slice(0, 5)
-                      }
+                      // avatars={
+                      //   ft?.tree_structure &&
+                      //   ft?.tree_structure[1]?.support_tree
+                      //     ?.map((support) => {
+                      //       return {
+                      //         ...support?.user,
+                      //         nick_name: support?.nick_name,
+                      //       };
+                      //     })
+                      //     ?.slice(0, 5)
+                      // }
+                      avatars={ft?.supporterData?.slice(0, 5)}
                       maxCount={5}
                       scoreTag={<ScoreTag topic_score={ft?.topic_score} />}
                       copyLink={
