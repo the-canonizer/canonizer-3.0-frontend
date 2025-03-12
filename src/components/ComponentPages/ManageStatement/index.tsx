@@ -100,10 +100,10 @@ function ManageStatements({ isEdit = false }) {
     const topicNum =
       router?.query?.statement?.[0]?.split("-")?.at(0) ||
       currentGetCheckSupportExistsData?.topic_num;
-
     const campNum =
       router?.query?.statement?.[1]?.split("-")?.at(0) ||
       currentGetCheckSupportExistsData?.camp_num;
+      
     let reqBody = {
       topic_num: topicNum,
       camp_num: campNum,
@@ -996,7 +996,7 @@ function ManageStatements({ isEdit = false }) {
         onPreveiwClose={onAiPreveiwClose}
         onInsertClick={onInsertClick}
       />
-       </div>
+    </div>
   );
 }
 

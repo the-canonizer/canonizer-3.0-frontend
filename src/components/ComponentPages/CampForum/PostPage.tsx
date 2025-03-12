@@ -26,7 +26,7 @@ import { RootState } from "src/store";
 import CommonBreadcrumbs from "../Breadcrumbs/commonBreadcrumbs";
 import { useIsMobile } from "src/hooks/useIsMobile";
 import { getSelectedNode } from ".";
-import GoogleAd from "components/googleAds";
+// import GoogleAd from "components/googleAds";
 
 const { Text } = Typography;
 
@@ -307,9 +307,9 @@ const CommentsList = () => {
               onBackClick={onBackClick}
             />
           </Col>
-          <Col md={4} className="mb-14" id="post-ad">
+          {/* <Col md={4} className="mb-14" id="post-ad">
             <GoogleAd />
-          </Col>
+          </Col> */}
         </Row>
       </Layout>
 
