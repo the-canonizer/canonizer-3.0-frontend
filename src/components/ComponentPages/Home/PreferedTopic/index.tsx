@@ -70,7 +70,7 @@ const PreferedTopics = ({ isPage = false }) => {
         <Row id="section-heading-row" gutter={15}>
           <Col id="section-heading-col" md={12} sm={12} xs={12}>
             <SectionHeading
-              title="Your preferred topics."
+              title="Your preferred topics"
               infoContent="Preferred Topics are a personalized list of subjects shown to you based on the topic tags or categories you selected during registration. These topics align with your interests, making it easier for you to engage in discussions that matter most to you"
             />
           </Col>

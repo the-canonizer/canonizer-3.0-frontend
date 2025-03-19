@@ -55,6 +55,10 @@ function WrappedApp({
     emptyCacheStorage();
   }
 
+  console.log("build details", {
+    isLatestVersion,
+    APP_VERSION: localStorage.getItem("APP_VERSION"),
+  });
   useEffect(() => {
     const fetchToken = async () => {
       if (router?.asPath) {
