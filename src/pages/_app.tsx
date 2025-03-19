@@ -45,7 +45,7 @@ function WrappedApp({
       !!(getCookies() as any)?.loginToken
     );
 
-  const { isLatestVersion, emptyCacheStorage } = useClearCache();
+  const { isLatestVersion, emptyCacheStorage, latestVersion } = useClearCache();
 
   if (
     !isLatestVersion ||
@@ -57,7 +57,8 @@ function WrappedApp({
 
   console.log("build details", {
     isLatestVersion,
-    APP_VERSION: localStorage.getItem("APP_VERSION"),
+    latestVersion,
+    APP_VERSION: typeof window !== "undefined" && localStorage.getItem("APP_VERSION"),
   });
   useEffect(() => {
     const fetchToken = async () => {
