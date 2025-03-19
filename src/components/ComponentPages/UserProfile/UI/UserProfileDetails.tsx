@@ -11,7 +11,6 @@ import md5 from "md5";
 import messages from "src/messages";
 import CustomSkelton from "components/common/customSkelton";
 import CommonCards from "components/shared/Card";
-import { getGravatarImage } from "components/shared/AvaratGroup/avatar";
 import { Avatar, Tooltip } from "antd";
 import { useIsMobile } from "src/hooks/useIsMobile";
 
@@ -50,18 +49,6 @@ const UserProfileDetails = ({
   userProfileCardSkeleton,
 }) => {
   const isMobile = useIsMobile();
-  const [gravatarAvailable, setGravatarAvailable] = useState(null);
-  const [profileImageError, setProfileImageError] = useState(false);
-
-  useEffect(() => {
-    const fetchGravatarImage = async () => {
-      if (!profileData?.profile_picture && profileData?.email) {
-        const res = await getGravatarImage(profileData?.email);
-        setGravatarAvailable(res);
-      }
-    };
-    fetchGravatarImage();
-  }, [profileData?.email]);
 
   const checkFieldIsPrivate = (field) => {
     if (!profileData?.private_flags) {
@@ -95,10 +82,7 @@ const UserProfileDetails = ({
   // Check if profile picture is available, otherwise check if Gravatar is available
   if (profileData?.profile_picture) {
     imagePath = profileData.profile_picture;
-  } else if (!profileData?.profile_picture && gravatarAvailable) {
-    imagePath = gravatarAvailable;
   }
-
   const address_data = {
     address_1: profileData?.address_1,
     address_2: profileData?.address_2,
@@ -173,9 +157,6 @@ const UserProfileDetails = ({
               width={100}
               height={100}
               style={{ borderRadius: "50px" }}
-              onError={() => {
-                setProfileImageError(true);
-              }}
             />
           </div>
         )}

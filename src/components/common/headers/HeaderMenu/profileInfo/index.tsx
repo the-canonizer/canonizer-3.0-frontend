@@ -2,10 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Dropdown, Space, Avatar } from "antd";
 import { useSelector } from "react-redux";
 import { DownOutlined } from "@ant-design/icons";
-import { getGravatarImage } from "components/shared/AvaratGroup/avatar"; // Your async gravatar fetch function
 import { RootState } from "src/store";
 
-const ProfileInfo = ({
+const ProfileInfo = ({ 
   isGravatarImage,
   loadingImage,
   loggedUser,
@@ -18,20 +17,6 @@ const ProfileInfo = ({
     loggedInUser: state.auth.loggedInUser,
   }));
 
-  // State to store Gravatar Image URL
-  const [gravatarUrl, setGravatarUrl] = useState<string | null>(null);
-
-  // Fetch Gravatar image when loggedInUser email changes
-  useEffect(() => {
-    const fetchGravatarImage = async () => {
-      if (loggedInUser?.email && showGravatar) {
-        const gravatar = await getGravatarImage(loggedInUser?.email);
-        setGravatarUrl(gravatar || null);
-        showGravatar = true; // Set gravatar URL or null if not found
-      }
-    };
-    fetchGravatarImage();
-  }, [loggedInUser?.email, showGravatar]); // Dependency on email and showGravatar
 
   let dataMain;
 
@@ -43,9 +28,9 @@ const ProfileInfo = ({
         className="-mb-[10px] cursor-pointer"
       />
     );
-  } else if (!loadingImage && gravatarUrl) {
+  } else if (!loadingImage) {
     dataMain = (
-      <Avatar src={gravatarUrl} className="-mb-[10px] cursor-pointer" />
+      <Avatar src={loggedInUser?.profile_picture} className="-mb-[10px] cursor-pointer" />
     );
   } else {
     dataMain = (

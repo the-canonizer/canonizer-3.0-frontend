@@ -23,18 +23,6 @@ export const getGravatarImage = async (email) => {
 
 const SingleAvatar = ({ user, imageBaseURL = "" }) => {
   const [isGravatarAvailable, setIsGravatarAvailable] = useState(null);
-  useEffect(() => {
-    const fetchGravatarImage = async () => {
-      if (!user?.profile_picture_path && user?.email) {
-        getGravatarImage(user?.email)
-          .then((res) => setIsGravatarAvailable(res))
-          .catch((err) => setIsGravatarAvailable(false));
-      }
-    };
-
-    fetchGravatarImage();
-  }, [user?.email]);
-
   const userName = useMemo(() => {
     return `${user?.first_name || ""} ${user?.last_name || ""}`;
   }, [user?.first_name, user?.last_name]);
@@ -46,7 +34,7 @@ const SingleAvatar = ({ user, imageBaseURL = "" }) => {
           className="uppercase flex justify-center items-center text-xs"
           data-testId={`initial-avatar-${user?.id}`}
         >
-          {user?.first_name?.charAt(0)}
+          {user?.nick_name?.charAt(0)}
         </Avatar>
       );
     }
@@ -76,7 +64,7 @@ const SingleAvatar = ({ user, imageBaseURL = "" }) => {
           className="uppercase flex justify-center items-center text-xs"
           data-testId={`initial-avatar-${user?.id}`}
         >
-          {user?.first_name?.charAt(0)}
+          {user?.nick_name?.charAt(0)}
         </Avatar>
       );
     }
