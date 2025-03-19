@@ -34,7 +34,7 @@ const SingleAvatar = ({ user, imageBaseURL = "" }) => {
           className="uppercase flex justify-center items-center text-xs"
           data-testId={`initial-avatar-${user?.id}`}
         >
-          {user?.first_name?.charAt(0)}
+          {user?.nick_name?.charAt(0)}
         </Avatar>
       );
     }
@@ -64,7 +64,7 @@ const SingleAvatar = ({ user, imageBaseURL = "" }) => {
           className="uppercase flex justify-center items-center text-xs"
           data-testId={`initial-avatar-${user?.id}`}
         >
-          {user?.first_name?.charAt(0)}
+          {user?.nick_name?.charAt(0)}
         </Avatar>
       );
     }
