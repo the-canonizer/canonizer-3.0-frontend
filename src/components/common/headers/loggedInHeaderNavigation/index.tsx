@@ -26,7 +26,6 @@ import {
 import { setManageSupportStatusCheck } from "src/store/slices/campDetailSlice";
 import HeaderMenu from "../HeaderMenu";
 import ProfileInfoTab from "./profileInfoTab";
-import { getGravatarImage } from "components/shared/AvaratGroup/avatar";
 
 const { Header } = Layout;
 
@@ -46,8 +45,6 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
   }));
 
   const { isUserAuthenticated } = useAuthentication();
-  const [isGravatarImage, setIsGravatarImage] = useState(null);
-  const [loadingImage, setLoadingImage] = useState(false);
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -129,26 +126,6 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
     </Menu>
   );
 
-  useEffect(() => {
-    setLoggedUser(loggedInUser);
-    const fetchGravatarImage = async () => {
-      if (
-        isUserAuthenticated &&
-        loggedInUser &&
-        !loggedInUser?.profile_picture
-      ) {
-        setLoadingImage(true);
-        const res = await getGravatarImage(loggedInUser?.email);
-        if (res) {
-          setIsGravatarImage(res); // Set Gravatar image if found
-        } else {
-          setIsGravatarImage(false); // Fallback to initials if Gravatar not found
-        }
-        setLoadingImage(false);
-      }
-    };
-    fetchGravatarImage();
-  }, [loggedInUser, isUserAuthenticated]);
 
   return (
     <Header className={`${styles.wrap} printHIde`}>
@@ -177,8 +154,6 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
 
             {isSmallMobile && (
               <ProfileInfoTab
-                isGravatarImage={isGravatarImage}
-                loadingImage={loadingImage}
                 loggedUser={loggedUser}
                 toggleMobNav={toggleMobNav}
                 logOut={logOut}
@@ -195,8 +170,6 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
       >
         {!isLoginPage ? (
           <ProfileInfoTab
-            isGravatarImage={isGravatarImage}
-            loadingImage={loadingImage}
             loggedUser={loggedUser}
             toggleMobNav={toggleMobNav}
             logOut={logOut}

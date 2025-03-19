@@ -126,7 +126,7 @@ function ManageStatements({ isEdit = false }) {
         campName === "Agreement"
           ? res?.data?.topic_name
           : res?.data?.bread_crumb?.at(-1)?.camp_name;
-      setEditorState(`<h2>${contentText}</h2><p>&nbsp;</p>`);
+      setEditorState(`<h2><b>${contentText}</b></h2><p>&nbsp;</p>`);
     }
   };
 
