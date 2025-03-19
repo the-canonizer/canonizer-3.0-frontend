@@ -7,6 +7,7 @@ import { ArrowRightOutlined } from "@ant-design/icons";
 import useAuthentication from "src/hooks/isUserAuthenticated";
 import { RootState } from "src/store";
 import SecondaryButton from "components/shared/Buttons/SecondaryButton";
+import { useClearCache } from "react-clear-cache";
 // import PrimaryButton from "components/shared/Buttons/PrimariButton";
 
 const { Text, Paragraph } = Typography;
@@ -46,6 +47,7 @@ const WelcomeContent = () => {
   //   e?.preventDefault();
   //   router?.push({ pathname: "/create/topic" });
   // };
+  const { emptyCacheStorage } = useClearCache();
 
   return (
     <Layout id="welcome-layout" className="bg-canGray rounded-lg py-6 px-6 ">
@@ -86,7 +88,14 @@ const WelcomeContent = () => {
         >
           Browse More <ArrowRightOutlined />
         </SecondaryButton>
-      </div>
+        <SecondaryButton
+          id="browse-button"
+          className="lg:h-[40px] text-sm px-5 md:px-20 flex items-center justify-center lg:ml-auto"
+          onClick={() => {emptyCacheStorage()}}
+        >
+          Clear Cache
+        </SecondaryButton>
+        </div>
     </Layout>
   );
 };
