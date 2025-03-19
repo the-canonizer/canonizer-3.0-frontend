@@ -88,7 +88,6 @@ const WelcomeContent = () => {
         >
           Browse More <ArrowRightOutlined />
         </SecondaryButton>
-        {router?.asPath?.includes("192.168.10.228:4001") && (
           <SecondaryButton
             id="browse-button"
             className="lg:h-[40px] text-sm px-5 md:px-20 flex items-center justify-center lg:ml-auto"
@@ -98,7 +97,6 @@ const WelcomeContent = () => {
           >
             Clear Cache
           </SecondaryButton>
-        )}
       </div>
     </Layout>
   );
