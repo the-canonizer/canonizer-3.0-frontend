@@ -23,18 +23,6 @@ export const getGravatarImage = async (email) => {
 
 const SingleAvatar = ({ user, imageBaseURL = "" }) => {
   const [isGravatarAvailable, setIsGravatarAvailable] = useState(null);
-  useEffect(() => {
-    const fetchGravatarImage = async () => {
-      if (!user?.profile_picture_path && user?.email) {
-        getGravatarImage(user?.email)
-          .then((res) => setIsGravatarAvailable(res))
-          .catch((err) => setIsGravatarAvailable(false));
-      }
-    };
-
-    fetchGravatarImage();
-  }, [user?.email]);
-
   const userName = useMemo(() => {
     return `${user?.first_name || ""} ${user?.last_name || ""}`;
   }, [user?.first_name, user?.last_name]);
