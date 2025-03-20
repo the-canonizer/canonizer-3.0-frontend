@@ -198,6 +198,7 @@ const TopicsList = () => {
   };
 
   async function getTopicsApiCallWithReqBody() {
+    dispatch(setLoadingAction(true));
     const reqBody = {
       algorithm: findAlgorithmKey(algorithm, allAlgorithms) || algorithm,
       asofdate:
@@ -217,6 +218,7 @@ const TopicsList = () => {
     };
     const response = await getCanonizedTopicsApi(reqBody);
     setTotalTopics(response);
+    dispatch(setLoadingAction(false));
   }
 
   const handleKeyUpSearch = (event: any) => {
@@ -337,9 +339,9 @@ const TopicsList = () => {
   /* eslint-enable */
   useEffect(() => {
     setSelectedNameSpace(() => filterNameSpace);
-    if (nameSpaceId !== filterNameSpaceId) {
-      setNameSpaceId(() => String(filterNameSpaceId));
-    }
+    // if (nameSpaceId !== filterNameSpaceId) {
+    //   setNameSpaceId(() => String(filterNameSpaceId));
+    // }
     setInputSearch(() => search.trim());
     setNameSpacesList(() => nameSpaces);
   }, [filterNameSpace, filterNameSpaceId, search, nameSpaces]);
