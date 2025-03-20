@@ -38,9 +38,12 @@ const TopicDetailsPage = ({
   statementHistory,
   tree,
   serverCall,
+  reqBodyForService,
 }: any) => {
   const dispatch = useDispatch();
   const serverSideCall = useRef(serverCall || false);
+
+  console.log("client-side-payload ---------------->>>>: ", reqBodyForService);
 
   useEffect(() => {
     dispatch(setNewsFeed(newsFeed));
@@ -183,6 +186,8 @@ export async function getServerSideProps({ req, query, res }) {
     page: 1,
   };
 
+  console.log("server-side-payload ---------------->>>>: ", reqBodyForService);
+
   let token = await createToken(req, res);
 
   const [
@@ -229,6 +234,7 @@ export async function getServerSideProps({ req, query, res }) {
         statementHistory: statementHistory?.data || {},
         tree: tree || [],
         serverCall: true,
+        reqBodyForService,
       },
     };
   }
@@ -243,6 +249,7 @@ export async function getServerSideProps({ req, query, res }) {
       statementHistory: statementHistory?.data || {},
       tree: tree || [],
       serverCall: true,
+      reqBodyForService,
     },
   };
 }
