@@ -159,3 +159,7 @@ body {
 img {
   touch-action: manipulation;
 }
+.popover-content-wrap .ant-popover-inner{
+  width: 100%;
+  max-width: 1000px;
+}
