@@ -541,7 +541,8 @@ function CommanBreadcrumbs({
                 </div>
                 <div className="text-center mt-4">
                   {tagsArrayList && tagsArrayList?.length > 4 && (
-                    <Button type="link"
+                    <Button
+                      type="link"
                       className=" text-canBlue view-toggle-btn"
                       onClick={() => setShowAll(!showAll)}
                     >
@@ -553,13 +554,13 @@ function CommanBreadcrumbs({
             ) : null}
           </Row>
           <div className="content-btn-wrap">
-          <PrimaryButton
-            className="mx-auto flex items-center justify-center font-medium h-auto gap-1"
-            onClick={() => handleTopicUrl()}
-          >
-            {K?.exceptionalMessages?.manageTopicButton}
-            <EditOutlined />
-          </PrimaryButton>
+            <PrimaryButton
+              className="mx-auto flex items-center justify-center font-medium h-auto gap-1"
+              onClick={() => handleTopicUrl()}
+            >
+              {K?.exceptionalMessages?.manageTopicButton}
+              <EditOutlined />
+            </PrimaryButton>
           </div>
         </Col>
         <Col span={2} className="text-center">
@@ -715,16 +716,16 @@ function CommanBreadcrumbs({
             )}
           </Row>
           <div className="content-btn-wrap">
-          <PrimaryButton className="flex items-center justify-center h-auto mx-auto gap-1">
-            <Link href={campHref}>
-              <a className="flex items-center justify-center h-auto mx-auto gap-1">
-                <span className="flex items-center justify-center h-auto mx-auto gap-1">
-                  {K?.exceptionalMessages?.manageCampButton}
-                  <EditOutlined />
-                </span>
-              </a>
-            </Link>
-          </PrimaryButton>
+            <PrimaryButton className="flex items-center justify-center h-auto mx-auto gap-1">
+              <Link href={campHref}>
+                <a className="flex items-center justify-center h-auto mx-auto gap-1">
+                  <span className="flex items-center justify-center h-auto mx-auto gap-1">
+                    {K?.exceptionalMessages?.manageCampButton}
+                    <EditOutlined />
+                  </span>
+                </a>
+              </Link>
+            </PrimaryButton>
           </div>
         </Col>
       </Row>
@@ -1008,9 +1009,6 @@ function CommanBreadcrumbs({
         className="cn-breadcrumbs"
         separator={<i className="icon-angle-right-arrow !leading-[0]"></i>}
       >
-        {/* <Breadcrumb.Item href="/">
-          <i className="icon-home"></i>
-        </Breadcrumb.Item> */}
         {
           <Breadcrumb.Item className="flex items-center gap-1.5">
             {topicRecord?.in_review_changes > 0 && (
@@ -1033,16 +1031,24 @@ function CommanBreadcrumbs({
                 <CustomSkelton skeltonFor="topicName" bodyCount={1} />
               ) : (
                 <>
-                  {breadCrumbRes && !!topicSubscriptionID && (
-                    <Tooltip
-                      title="You have subscribed to the entire topic."
-                      key="camp_subscribed_icon"
-                    >
-                      <small style={{ alignSelf: "center" }}>
-                        <i className="icon-subscribe text-canBlue"></i>
-                      </small>
-                    </Tooltip>
-                  )}
+                  {breadCrumbRes &&
+                    (topicSubscriptionID || campSubscriptionID) && (
+                      <Tooltip
+                        title={
+                          topicSubscriptionID && campSubscriptionID
+                            ? "You have subscribed to both the entire topic and camp."
+                            : topicSubscriptionID
+                            ? "You have subscribed to the entire topic."
+                            : "You have subscribed to the entire camp."
+                        }
+                        key="camp_subscribed_icon"
+                      >
+                        <small style={{ alignSelf: "center" }}>
+                          <i className="icon-subscribe text-canBlue"></i>
+                        </small>
+                      </Tooltip>
+                    )}
+
                   <Link
                     href={`${topicLink}/1-Agreement?${
                       getQueryParams()?.returnQuery || ""
@@ -1054,7 +1060,7 @@ function CommanBreadcrumbs({
                   </Link>
                   {isMobile && (
                     <Popover
-                      // open={true} 
+                      // open={true}
                       placement="topLeft"
                       content={topicContent}
                       // title={title}
@@ -1072,7 +1078,7 @@ function CommanBreadcrumbs({
         {isEventLine ? (
           ""
         ) : breadCrumbRes ? (
-          breadCrumbRes?.bread_crumb?.length > 1 && !showAll ? (
+          breadCrumbRes?.bread_crumb?.length > 2 && !showAll ? (
             <>
               <Breadcrumb.Item>
                 <Button
