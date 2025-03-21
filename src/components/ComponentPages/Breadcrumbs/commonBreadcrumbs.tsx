@@ -450,10 +450,10 @@ function CommanBreadcrumbs({
   //   </div>
   // );
 
-  const content = (
+  const topicContent = (
     <div className="popoverParent">
       <Row>
-        <Col span={24} md={11}>
+        <Col span={24} md={11} className="relative">
           <div className="popover_header">
             <span className="text-xs 2xl:text-sm text-canLight mb-1.5 font-normal capitalize">
               Topic Name:
@@ -465,7 +465,7 @@ function CommanBreadcrumbs({
             </p>
           </div>
           <hr className="horizontal_line my-5" />
-          <Row gutter={1}>
+          <Row gutter={1} className="pb-[4.5rem]">
             <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
               <span className="text-canLight text-xs 2xl:text-sm capitalize">
                 Author:
@@ -539,10 +539,10 @@ function CommanBreadcrumbs({
                     </div>
                   ))}
                 </div>
-                <div className="text-center mt-2">
+                <div className="text-center mt-4">
                   {tagsArrayList && tagsArrayList?.length > 4 && (
-                    <Button
-                      className=" text-canBlue"
+                    <Button type="link"
+                      className=" text-canBlue view-toggle-btn"
                       onClick={() => setShowAll(!showAll)}
                     >
                       {showAll ? "Show Less" : "Show More"}
@@ -552,7 +552,7 @@ function CommanBreadcrumbs({
               </Col>
             ) : null}
           </Row>
-          <hr className="horizontal_line my-5" />
+          <div className="content-btn-wrap">
           <PrimaryButton
             className="mx-auto flex items-center justify-center font-medium h-auto gap-1"
             onClick={() => handleTopicUrl()}
@@ -560,12 +560,13 @@ function CommanBreadcrumbs({
             {K?.exceptionalMessages?.manageTopicButton}
             <EditOutlined />
           </PrimaryButton>
+          </div>
         </Col>
         <Col span={2} className="text-center">
           {" "}
           <Divider type="vertical" className="h-full" />
         </Col>
-        <Col span={24} md={11}>
+        <Col span={24} md={11} className="relative">
           <div className="popover_header">
             <span className="text-xs 2xl:text-sm text-canLight mb-1.5 font-normal capitalize">
               Camp Name:
@@ -585,7 +586,7 @@ function CommanBreadcrumbs({
             </p>
           </div>
           <hr className="horizontal_line my-5" />
-          <Row gutter={1}>
+          <Row gutter={1} className="pb-[4.5rem]">
             <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
               <span className="text-xs 2xl:text-sm text-canLight capitalize">
                 Submitted By:
@@ -713,7 +714,7 @@ function CommanBreadcrumbs({
               </Col>
             )}
           </Row>
-          <hr className="horizontal_line my-5" />
+          <div className="content-btn-wrap">
           <PrimaryButton className="flex items-center justify-center h-auto mx-auto gap-1">
             <Link href={campHref}>
               <a className="flex items-center justify-center h-auto mx-auto gap-1">
@@ -724,6 +725,7 @@ function CommanBreadcrumbs({
               </a>
             </Link>
           </PrimaryButton>
+          </div>
         </Col>
       </Row>
     </div>
@@ -976,6 +978,7 @@ function CommanBreadcrumbs({
         : `/manage/statement/${editId}`;
     router?.push(path);
   };
+
   return (
     <div className="max-md:mx-[-1rem] max-md:shadow-[0px_10px_10px_0px_#0000001A] md:bg-canGrey1_Opacity70 p-[1.5rem] md:rounded-[1.25rem] flex items-center justify-between gap-2 mb-10 bdNav">
       {isForumPage ? (
@@ -1051,8 +1054,9 @@ function CommanBreadcrumbs({
                   </Link>
                   {isMobile && (
                     <Popover
-                      // placement="topLeft"
-                      content={content}
+                      // open={true} 
+                      placement="topLeft"
+                      content={topicContent}
                       // title={title}
                       className="title-popover"
                       overlayClassName="max-lg:hidden popover-content-wrap"
