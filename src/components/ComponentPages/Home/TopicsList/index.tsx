@@ -99,6 +99,7 @@ const TopicsList = () => {
   const [showSearchDropdown, setShowSearchDropdown] = useState(false);
   const [searchLoading, setSearchLoading] = useState(false);
   const [searchedResult, setSearchedResult] = useState([]);
+  const [loader,setLoader] = useState(false);
   const [isReview, setIsReview] = useState(asof == "review");
 
   const mapItemsToValueLabel = (items) => {
@@ -198,7 +199,9 @@ const TopicsList = () => {
   };
 
   async function getTopicsApiCallWithReqBody() {
-    dispatch(setLoadingAction(true));
+    // dispatch(setLoadingAction(true));
+    // setSearchLoading(true);
+    setLoader(true);
     const reqBody = {
       algorithm: findAlgorithmKey(algorithm, allAlgorithms) || algorithm,
       asofdate:
@@ -218,7 +221,9 @@ const TopicsList = () => {
     };
     const response = await getCanonizedTopicsApi(reqBody);
     setTotalTopics(response);
-    dispatch(setLoadingAction(false));
+    // dispatch(setLoadingAction(false));
+    setLoader(false);
+
   }
 
   const handleKeyUpSearch = (event: any) => {
@@ -546,7 +551,7 @@ const TopicsList = () => {
             </Button>
           </div>
         )}
-        {(loading && !searchTerm) || topicsData?.topics == null ? (
+        {(loading && !searchTerm) || topicsData?.topics == null ||loader ? (
           <CustomSkelton skeltonFor="browse" />
         ) : (
           <>
