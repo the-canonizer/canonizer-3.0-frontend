@@ -340,9 +340,9 @@ const TopicsList = () => {
   /* eslint-enable */
   useEffect(() => {
     setSelectedNameSpace(() => filterNameSpace);
-    if (nameSpaceId !== filterNameSpaceId) {
-      setNameSpaceId(() => String(filterNameSpaceId));
-    }
+    // if (nameSpaceId !== filterNameSpaceId) {
+    //   setNameSpaceId(() => String(filterNameSpaceId));
+    // }
     setInputSearch(() => search.trim());
     setNameSpacesList(() => nameSpaces);
   }, [filterNameSpace, filterNameSpaceId, search, nameSpaces]);
