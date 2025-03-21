@@ -24,7 +24,7 @@ import ManageThread from "./CreateThreadPopup";
 import { RootState } from "src/store";
 import CommonBreadcrumbs from "../Breadcrumbs/commonBreadcrumbs";
 import { useIsMobile } from "src/hooks/useIsMobile";
-import GoogleAd from "components/googleAds";
+// import GoogleAd from "components/googleAds";
 
 export const getSelectedNode = async (
   topic_num,
@@ -318,9 +318,9 @@ const ForumComponent = () => {
               onBackClick={onBackClick}
             />
           </Col>
-          <Col md={4} className="mb-14" id="forum-ad">
+          {/* <Col md={4} className="mb-14" id="forum-ad">
             <GoogleAd />
-          </Col>
+          </Col> */}
         </Row>
       </Layout>
 

@@ -47,6 +47,48 @@ const {
   parentCampRule,
 } = messages;
 
+function shouldHideCamp(camps, campNum) {
+  // Create a map for faster lookups
+  const campMap = {};
+
+  camps.forEach((camp) => {
+    campMap[camp.camp_num] = camp;
+  });
+
+  // Start with the current camp
+  let currentCamp = campMap[campNum];
+
+  // Check if the current camp exists
+  if (!currentCamp) {
+    return false;
+  }
+
+  // First, check if the current camp is disabled or one-level
+  if (currentCamp.is_disabled === 1 || currentCamp.is_one_level === 1) {
+    return true;
+  }
+
+  // Then traverse up the ancestry chain
+  while (currentCamp && currentCamp.parent_camp_num !== null) {
+    // Get the parent camp
+    const parentCamp = campMap[currentCamp.parent_camp_num];
+
+    // If parent doesn't exist, break the loop
+    if (!parentCamp) break;
+
+    // Check if parent is disabled or one-level
+    if (parentCamp.is_disabled === 1 || parentCamp.is_one_level === 1) {
+      return true;
+    }
+
+    // Move up to the parent
+    currentCamp = parentCamp;
+  }
+
+  // Camp is not disabled
+  return false;
+}
+
 const CreateCampFormUI = ({
   onFinish,
   onCancel,
@@ -192,6 +234,23 @@ const CreateCampFormUI = ({
     nick_name: defaultNicknameData(nickNameList)?.id || nickNameList[0]?.id,
     // nick_name: values?.nick_name || parentCamp[0]?.id,
     parent_camp_num: values?.parent_camp_num || topicData?.camp_num,
+  };
+
+  const selectedParentCamp = parentCamp.find(
+    (camp) => camp.camp_num === values?.parent_camp_num
+  );
+
+  const isHidden = shouldHideCamp(parentCamp, values?.parent_camp_num);
+
+  const shouldDisableOneLevelAndAdditionalCheckbox = () => {
+    return !!(
+      parentCamp.length < 1 ||
+      isHidden ||
+      selectedParentCamp?.is_one_level === 1 ||
+      selectedParentCamp?.is_disabled === 1 ||
+      selectedParentCamp?.parent_is_one_level ||
+      selectedParentCamp?.parent_is_disabled
+    );
   };
 
   return (
@@ -408,109 +467,6 @@ const CreateCampFormUI = ({
           )}
         </Row>
 
-        {/* <Row
-          gutter={16}
-          className="bg-canGray mb-3 py-3 rounded-lg"
-          id="form-row-2"
-        >
-          <Col xs={24} sm={24} id="form-col-keywords">
-            <Text className="mt-1 mb-4 block text-canRed" id="keywords-text">
-              {labels.cr_keywords_sp}
-            </Text>
-          </Col>
-
-          <Col xs={24} sm={12} id="form-col-camp-url">
-            {isLoading ? (
-              <CustomSkelton
-                skeltonFor="list"
-                bodyCount={1}
-                stylingClass="listSkeleton"
-                isButton={false}
-                id="camp-url-skeleton"
-              />
-            ) : (
-              <Inputs
-                label={labels.cr_camp_url}
-                name="camp_about_url"
-                rules={campAboutUrlRule}
-                placeholder="Enter Here"
-                size={"large"}
-                maxLength={1024}
-                prefix={
-                  <div className="pr-3">
-                    <LinkOutlined />
-                  </div>
-                }
-                id="camp-url-input"
-              />
-            )}
-          </Col>
-
-          <Col xs={24} sm={12} id="form-col-camp-about-nick">
-            <Form.Item
-              label={labels.cr_nick_name_about}
-              name="camp_about_nick_id"
-              className={`text-14 text-canBlack font-medium`}
-              initialValue={values?.camp_about_nick_id}
-              id="camp-about-nick-item"
-            >
-              {isLoading ? (
-                <CustomSkelton
-                  skeltonFor="list"
-                  bodyCount={1}
-                  stylingClass="listSkeleton"
-                  isButton={false}
-                  id="camp-about-nick-skeleton"
-                />
-              ) : (
-                <div
-                  className={`outerDiv flex border rounded ${
-                    isAboutFocused
-                      ? "border-[#40a9ff] shadow-[0 0 0 2px rgba(24, 144, 255, 0.2)"
-                      : ""
-                  }`}
-                  id="camp-about-nick-select-wrapper"
-                >
-                  <UserOutlined
-                    className="px-3 text-canBlack bg-white"
-                    id="camp-about-nick-icon"
-                  />
-                  <Select
-                    placeholder={placeholders.campAboutNickName}
-                    allowClear
-                    size={"large"}
-                    data-id="camp-about-nick-id"
-                    showSearch
-                    optionFilterProp="children"
-                    id="camp-about-nick-dropdown"
-                    className={`text-canBlack font-normal h-[40px] [&_.ant-select-selector]:!border-0 [&_.ant-select-selector]:!outline-none [&_.ant-select-selector]:!shadow-none border-0 [&_.ant-select-selector]:![&_.ant-select-selection-search]:!w-auto commonSelectClass`}
-                    onFocus={() => setIsAboutFocused(true)}
-                    onBlur={() => setIsAboutFocused(false)}
-                    onChange={(val) =>
-                      form?.setFieldValue("camp_about_nick_id", val)
-                    }
-                    defaultValue={values?.camp_about_nick_id}
-                    value={values?.camp_about_nick_id}
-                  >
-                    <Option value="" id="camp-about-nick-custom">
-                      {placeholders.campAboutNickName}
-                    </Option>
-                    {campNickName.map((nc) => (
-                      <Option
-                        value={nc.id}
-                        key={nc.id}
-                        id={`camp-about-nick-${nc.id}`}
-                      >
-                        {nc.nick_name}
-                      </Option>
-                    ))}
-                  </Select>
-                </div>
-              )}
-            </Form.Item>
-          </Col>
-        </Row> */}
-
         <Collapse
           className="camp-accordion"
           ghost
@@ -630,9 +586,19 @@ const CreateCampFormUI = ({
           </Panel>
         </Collapse>
 
-        <Row gutter={16} className="mt-6" id="form-row-3">
+        <Row
+          gutter={16}
+          className={`mt-6 pt-[1rem] rounded-md relative ${
+            shouldDisableOneLevelAndAdditionalCheckbox() ? "bg-[#f7f8fc]" : ""
+          }`}
+          id="form-row-3"
+        >
           <Col
-            className="flex flex-col [&_.ant-checkbox-wrapper]:ml-0 [&_.ant-checkbox-wrapper]:mb-4 [&_.ant-checkbox-wrapper>span]:text-canBlack [&_.ant-checkbox-wrapper>span]:text-sm [&_.ant-checkbox-wrapper>span]:font-medium"
+            className={`flex flex-col [&_.ant-checkbox-wrapper]:ml-0 [&_.ant-checkbox-wrapper]:mb-4 [&_.ant-checkbox-wrapper>span]:text-canBlack [&_.ant-checkbox-wrapper>span]:text-sm [&_.ant-checkbox-wrapper>span]:font-medium ${
+              shouldDisableOneLevelAndAdditionalCheckbox()
+                ? "pointer-events-none opacity-70"
+                : ""
+            }`}
             id="form-col-prevent-sub-camps"
           >
             <PreventSubCamps
@@ -641,6 +607,21 @@ const CreateCampFormUI = ({
               id="prevent-sub-camps"
             />
           </Col>
+          {shouldDisableOneLevelAndAdditionalCheckbox() && (
+            <Text
+              className="text-xs text-[#777F93] mt-2 absolute top-2 right-5"
+              id="disable-checkbox-text"
+            >
+              <Tooltip
+                title="The parent camp does not allow the creation of multiple sub-camps."
+                key="camp_subscribed_icon"
+              >
+                <small style={{ alignSelf: "center" }}>
+                  <i className="icon-info"></i>
+                </small>
+              </Tooltip>
+            </Text>
+          )}
         </Row>
 
         {isLoading ? (

@@ -1,8 +1,10 @@
-import { Typography, List, Tooltip } from "antd";
+import { Typography, List, Tooltip, Popover } from "antd";
 import Link from "next/link";
 import { convert } from "html-to-text";
 
 import CustomSkelton from "src/components/common/customSkelton";
+import { getProperties } from "src/utils/generalUtility";
+import ReasonsActivity from "components/common/SupportReasonActivity";
 
 const { Text } = Typography;
 
@@ -13,6 +15,7 @@ function ThreadTab({
   handleTextOverflow,
   covertToTime,
   bodyCount = 5,
+  isOnlyCamp = false,
 }) {
   return getTopicsLoadingIndicator ? (
     <CustomSkelton
@@ -29,7 +32,7 @@ function ThreadTab({
         emptyText: "You don't have any recent activity right now.",
       }}
       dataSource={recentActivities?.topics}
-      renderItem={(activity: any) => {
+      renderItem={(activity: any, idx) => {
         const decodedProperties = JSON.parse(activity?.activity?.properties);
 
         return (
@@ -47,27 +50,52 @@ function ThreadTab({
                   className="!text-canBlack text-sm font-normal mb-0 block w-full"
                 >
                   {activity?.activity?.description}{" "}
-                  <Text
-                    id={`tooltip-${activity.id}`}
-                    className="text-canBlue font-medium"
-                  >
-                    <Tooltip
-                      placement={"topLeft"}
-                      title={handleTextOverflow(decodedProperties?.description)}
+                  {!isOnlyCamp && (
+                    <Text
+                      id={`tooltip-${activity.id}`}
+                      className="text-canBlue font-medium"
                     >
-                      {handleTextOverflow(
-                        convert(
-                          decodedProperties?.description?.replace(
-                            /<img[^>]*>/gi,
-                            ""
-                          ),
-                          {
-                            wordwrap: 130,
-                          }
-                        )
-                      )}
-                    </Tooltip>
-                  </Text>
+                      <Tooltip
+                        placement={"topLeft"}
+                        title={handleTextOverflow(
+                          decodedProperties?.description
+                        )}
+                      >
+                        {handleTextOverflow(
+                          convert(
+                            decodedProperties?.description?.replace(
+                              /<img[^>]*>/gi,
+                              ""
+                            ),
+                            {
+                              wordwrap: 130,
+                            }
+                          )
+                        )}
+                      </Tooltip>
+                    </Text>
+                  )}
+                  {activity?.activity?.log_name === "support" &&
+                    getProperties(activity?.activity)?.reason && (
+                      <Popover
+                        content={
+                          <div className="w-full">
+                            <ReasonsActivity
+                              CurrentItem={activity?.activity}
+                              id={`reasons-activity-${idx}`}
+                            />
+                          </div>
+                        }
+                        placement="top"
+                        className="pointer text-canGrey2"
+                        id={`popover-${idx}`}
+                      >
+                        <i
+                          className="icon-info ml-2"
+                          id={`icon-info-${idx}`}
+                        ></i>
+                      </Popover>
+                    )}
                 </Text>
                 <Text
                   id={`time-${activity.id}`}

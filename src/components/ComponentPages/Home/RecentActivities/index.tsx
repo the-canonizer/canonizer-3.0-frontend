@@ -325,6 +325,7 @@ export default function RecentActivities() {
                       handleTextOverflow={handleTextOverflow}
                       covertToTime={covertToTime}
                       bodyCount={15}
+                      isOnlyCamp={!!isOnlyCamp}
                     />
                   </TabPane>
                 }

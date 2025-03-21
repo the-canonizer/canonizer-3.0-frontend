@@ -98,13 +98,12 @@ function ManageStatements({ isEdit = false }) {
 
   const getBreadCrumbApiCall = async () => {
     const topicNum =
-      currentGetCheckSupportExistsData?.topic_num ||
-      router?.query?.statement?.[0]?.split("-")?.at(0);
-
+      router?.query?.statement?.[0]?.split("-")?.at(0) ||
+      currentGetCheckSupportExistsData?.topic_num;
     const campNum =
-      currentGetCheckSupportExistsData?.camp_num ||
-      router?.query?.statement?.[1]?.split("-")?.at(0);
-
+      router?.query?.statement?.[1]?.split("-")?.at(0) ||
+      currentGetCheckSupportExistsData?.camp_num;
+      
     let reqBody = {
       topic_num: topicNum,
       camp_num: campNum,
@@ -127,7 +126,7 @@ function ManageStatements({ isEdit = false }) {
         campName === "Agreement"
           ? res?.data?.topic_name
           : res?.data?.bread_crumb?.at(-1)?.camp_name;
-      setEditorState(`<h2>${contentText}</h2><p>&nbsp;</p>`);
+      setEditorState(`<h2><b>${contentText}</b></h2><p>&nbsp;</p>`);
     }
   };
 
@@ -997,7 +996,7 @@ function ManageStatements({ isEdit = false }) {
         onPreveiwClose={onAiPreveiwClose}
         onInsertClick={onInsertClick}
       />
-       </div>
+    </div>
   );
 }
 

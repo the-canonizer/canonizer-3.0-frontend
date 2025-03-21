@@ -192,7 +192,6 @@ export const UserProfileCard = ({
                         title={
                           <div className="flex flex-col items-start justify-center gap-2">
                             <span className="flex items-center justify-start gap-4">
-                              <AlignIcon fill="#242B37" />
                               <Link href={data.title_link}>
                                 <a className="!text-canBlue hover:!text-canHoverBlue text-sm font-medium">
                                   {data.title.length > 20
