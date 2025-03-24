@@ -24,14 +24,12 @@ import styles from "./HeaderMenu.module.scss";
 import JoinCanonizer from "src/components/shared/Buttons/JoinCanoizerButton";
 import CreateTopic from "src/components/shared/Buttons/TopicCreationButton";
 import { useIsMobile } from "src/hooks/useIsMobile";
-import { getGravatarPicApi } from "src/network/api/notificationAPI";
 import { logout } from "src/network/api/userApi";
 import { RootState, store } from "src/store";
 import Logo from "../logoHeader";
 import Notifications from "../notification";
 import ProfileInfoTab from "./profileInfo";
 import { setLogOutType } from "src/store/slices/authSlice";
-import { getGravatarImage } from "components/shared/AvaratGroup/avatar";
 import { getCookiesExpirationTime } from "src/utils/generalUtility";
 
 const menuItems = [
@@ -142,26 +140,6 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
       console.log("logout");
     }
   };
-
-  useEffect(() => {
-    const fetchGravatarImage = async () => {
-      if (
-        isUserAuthenticated &&
-        loggedInUser &&
-        !loggedInUser?.profile_picture
-      ) {
-        setLoadingImage(true);
-        const res = await getGravatarImage(loggedInUser?.email);
-        if (res) {
-          setIsGravatarImage(res); // Set Gravatar image if found
-        } else {
-          setIsGravatarImage(false); // Fallback to initials if Gravatar not found
-        }
-        setLoadingImage(false);
-      }
-    };
-    fetchGravatarImage();
-  }, [loggedInUser, isUserAuthenticated]);
 
   const menu = (
     <Menu onClick={onClick}>
@@ -336,8 +314,6 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
               cls="hidden tab:flex justify-center items-center !pr-0"
             >
               <ProfileInfoTab
-                isGravatarImage={isGravatarImage}
-                loadingImage={loadingImage}
                 loggedUser={loggedInUser}
                 toggleMobNav={""}
                 logOut={""}
@@ -358,8 +334,6 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
           >
             <div className="flex items-center">
               <ProfileInfoTab
-                isGravatarImage={isGravatarImage}
-                loadingImage={loadingImage}
                 loggedUser={loggedInUser}
                 toggleMobNav={""}
                 logOut={""}
