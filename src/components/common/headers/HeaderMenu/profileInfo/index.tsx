@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { DownOutlined } from "@ant-design/icons";
 import { RootState } from "src/store";
 
-const ProfileInfo = ({ 
+const ProfileInfo = ({
   isGravatarImage,
   loadingImage,
   loggedUser,
@@ -16,7 +16,6 @@ const ProfileInfo = ({
   const { loggedInUser } = useSelector((state: RootState) => ({
     loggedInUser: state.auth.loggedInUser,
   }));
-
 
   let dataMain;
 
@@ -30,7 +29,10 @@ const ProfileInfo = ({
     );
   } else if (!loadingImage) {
     dataMain = (
-      <Avatar src={loggedInUser?.profile_picture} className="-mb-[10px] cursor-pointer" />
+      <Avatar
+        src={loggedInUser?.profile_picture}
+        className="-mb-[10px] cursor-pointer"
+      />
     );
   } else {
     dataMain = (
