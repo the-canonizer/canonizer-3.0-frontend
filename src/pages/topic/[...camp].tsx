@@ -43,7 +43,8 @@ const TopicDetailsPage = ({
   const dispatch = useDispatch();
   const serverSideCall = useRef(serverCall || false);
 
-  console.log("client-side-payload ---------------->>>>: ", reqBodyForService);
+  console.log("get-api-payload -->>: ", reqBodyForService);
+  console.log("tree_api_response -->>", tree);
 
   useEffect(() => {
     dispatch(setNewsFeed(newsFeed));
@@ -186,8 +187,7 @@ export async function getServerSideProps({ req, query, res }) {
     page: 1,
   };
 
-  console.log("server-side-payload ---------------->>>>: ", reqBodyForService);
-
+  console.log("server-side-payload - >>: ", reqBodyForService);
   let token = await createToken(req, res);
 
   const [
@@ -205,6 +205,8 @@ export async function getServerSideProps({ req, query, res }) {
     getHistoryApi(reqBodyForCampData, "1", "statement", token),
     getTreesApi(reqBodyForService, token),
   ]);
+
+  console.log("tree api response -->>", tree);
 
   const resTopicName = topicRecord?.topic_name?.replaceAll(" ", "-");
   const resCampName = campRecord?.campData?.camp_name?.replaceAll(" ", "-");
