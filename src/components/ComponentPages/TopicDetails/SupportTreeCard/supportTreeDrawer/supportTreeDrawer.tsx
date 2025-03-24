@@ -243,8 +243,8 @@ function SupportTreeDrawer({
         setcampIds(campsIds);
         setParentSupportDataList(response?.data?.remove_camps);
         dispatch(setCheckSupportExistsData(response?.data));
-      }else{
-        setcampIds([])
+      } else {
+        setcampIds([]);
       }
       getActiveSupportTopic(response?.data?.remove_camps);
     }
@@ -701,7 +701,7 @@ function SupportTreeDrawer({
                 )}
                 {drawerFor !== "delegateAdd" && (
                   <>
-                    {renderSupportBtn() == "Manage Support" && !loader&& (
+                    {renderSupportBtn() == "Manage Support" && !loader && (
                       <div className="checkbox-wrapper">
                         <Form.Item label="Quick Action" className="mb-0">
                           <Checkbox

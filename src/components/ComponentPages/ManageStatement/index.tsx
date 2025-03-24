@@ -103,7 +103,7 @@ function ManageStatements({ isEdit = false }) {
     const campNum =
       router?.query?.statement?.[1]?.split("-")?.at(0) ||
       currentGetCheckSupportExistsData?.camp_num;
-      
+
     let reqBody = {
       topic_num: topicNum,
       camp_num: campNum,
@@ -287,7 +287,7 @@ function ManageStatements({ isEdit = false }) {
             !statement.parsed_value.startsWith("<p>") &&
             !statement.parsed_value.startsWith("<div>")
           ) {
-            statement.parsed_value 
+            statement.parsed_value;
           }
           setEditCampStatementData(editRes?.data?.statement?.note);
           setEditStatementData(editRes.data);

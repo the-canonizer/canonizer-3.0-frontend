@@ -126,7 +126,6 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
     </Menu>
   );
 
-
   return (
     <Header className={`${styles.wrap} printHIde`}>
       <Logo />

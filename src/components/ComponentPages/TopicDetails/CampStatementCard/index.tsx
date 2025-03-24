@@ -193,11 +193,15 @@ const CampStatementCard = ({ loadingIndicator }) => {
           ? "[&_.ant-card-body]:h-full [&_.ant-card-body]:w-full [&_.ant-card-body]:items-center fixed top-0  left-0 w-full h-full z-[9999] bg-white border-none flex justify-start items-start shadow-md flex-col [&_.ant-card-head]:w-full"
           : `border-0 h-100  bg-white [&_.ant-card-body]:p-0  [&_.ant-card-body]:lg:p-[24px] [&_.ant-card-body]:h-full [&_.ant-card-body]:flex overflow-hidden lg:bg-canGray mb-8 lg:mb-14 border-t-8  
           ${
-            router?.query?.status == "in_review" ? "!border-canOrange"
-              : router?.query?.status == "old"? "!border-canBlue":
-              router?.query?.status == "live"?"!border-canGreen":
-              router?.query?.status == "objected"?"!border-canRed":
-              router?.query?.asof == "review"
+            router?.query?.status == "in_review"
+              ? "!border-canOrange"
+              : router?.query?.status == "old"
+              ? "!border-canBlue"
+              : router?.query?.status == "live"
+              ? "!border-canGreen"
+              : router?.query?.status == "objected"
+              ? "!border-canRed"
+              : router?.query?.asof == "review"
               ? "!border-canOrange"
               : router?.query?.asof == "bydate"
               ? "border-[#4786CB]"

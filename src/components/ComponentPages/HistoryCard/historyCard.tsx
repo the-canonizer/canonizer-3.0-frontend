@@ -744,7 +744,9 @@ function HistoryCard({
                       : "1-Agreement")
                   }?algo=${algorithm}&asofdate=${
                     campStatement?.go_live_time
-                  }&asof=bydate&canon=${namespace_id}&viewversion=${1}&status=${campStatement?.status} `}
+                  }&asof=bydate&canon=${namespace_id}&viewversion=${1}&status=${
+                    campStatement?.status
+                  } `}
                 >
                   View This Version
                 </Link>

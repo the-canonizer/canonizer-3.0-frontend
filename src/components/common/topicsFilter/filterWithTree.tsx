@@ -107,7 +107,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
     clearScoreFromRefineFilter,
     disbaleApplyBtn,
     userEmail,
-    algorithm
+    algorithm,
   } = useSelector((state: RootState) => ({
     algorithms: state.homePage?.algorithms,
     filteredScore: state?.filters?.filterObject?.filterByScore,

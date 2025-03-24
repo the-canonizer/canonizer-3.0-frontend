@@ -318,7 +318,7 @@ const ProfileInfo = () => {
       if (res.data != undefined) {
         let profileData = res.data;
         setViewEmail(profileData?.email);
-        if (profileData.birthday != null && profileData.birthday != ""){
+        if (profileData.birthday != null && profileData.birthday != "") {
           profileData.birthday = moment(profileData.birthday, "YYYY-MM-DD");
         }
         setUserProfileData(profileData);

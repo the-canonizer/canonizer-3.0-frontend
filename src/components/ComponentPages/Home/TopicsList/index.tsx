@@ -100,7 +100,7 @@ const TopicsList = () => {
   const [searchLoading, setSearchLoading] = useState(false);
   const [searchedResult, setSearchedResult] = useState([]);
   const [isReview, setIsReview] = useState(asof == "review");
-  const [loader,setLoader] = useState(false);
+  const [loader, setLoader] = useState(false);
 
   const mapItemsToValueLabel = (items) => {
     return items?.map((item) => ({
