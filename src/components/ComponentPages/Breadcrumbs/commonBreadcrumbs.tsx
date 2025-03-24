@@ -501,7 +501,7 @@ function CommanBreadcrumbs({
                   : topicRecord?.topic_name}
               </p>
             </div>
-            {!topicRecord?.in_review_changes > 0 && (
+            {topicRecord?.in_review_changes > 0 && (
               <Popover
                 content={warningTextForTopic}
                 className="title-popover"
@@ -656,7 +656,7 @@ function CommanBreadcrumbs({
                 </Link>
               </p>
             </div>
-            {!campRecord?.in_review_changes > 0 && (
+            {/* {campRecord?.in_review_changes > 0 && ( */}
               <Popover
                 content={warningText}
                 className="title-popover"
@@ -672,7 +672,7 @@ function CommanBreadcrumbs({
                   Under Review
                 </Tag>
               </Popover>
-            )}
+            {/* )} */}
           </div>
           <hr className="horizontal_line my-5" />
           <Row gutter={1} className="pb-[4.5rem]">
@@ -1117,8 +1117,8 @@ function CommanBreadcrumbs({
       >
         {
           <Breadcrumb.Item className="flex items-center gap-1.5">
-            {(topicRecord?.in_review_changes > 0 ||
-              campRecord?.in_review_changes > 0) && (
+            {/* {(topicRecord?.in_review_changes > 0 ||
+              campRecord?.in_review_changes > 0) && ( */}
               <Popover
                 content={warningTextForTopicAndCamp}
                 className="title-popover"
@@ -1130,7 +1130,7 @@ function CommanBreadcrumbs({
                   // onClick={() => handleTopicwarningIcon()}
                 />
               </Popover>
-            )}
+            {/* )} */}
 
             <div className="flex items-center gap-1.5 text-sm">
               {/* Topic:{" "} */}
