@@ -588,40 +588,20 @@ const CreateCampFormUI = ({
 
         <Row
           gutter={16}
-          className={`mt-6 pt-[1rem] rounded-md relative ${
-            shouldDisableOneLevelAndAdditionalCheckbox() ? "bg-[#f7f8fc]" : ""
-          }`}
+          className={`mt-6 pt-[1rem] rounded-md relative`}
           id="form-row-3"
         >
           <Col
-            className={`flex flex-col [&_.ant-checkbox-wrapper]:ml-0 [&_.ant-checkbox-wrapper]:mb-4 [&_.ant-checkbox-wrapper>span]:text-canBlack [&_.ant-checkbox-wrapper>span]:text-sm [&_.ant-checkbox-wrapper>span]:font-medium ${
-              shouldDisableOneLevelAndAdditionalCheckbox()
-                ? "pointer-events-none opacity-70"
-                : ""
-            }`}
+            className={`flex flex-col [&_.ant-checkbox-wrapper]:ml-0 [&_.ant-checkbox-wrapper]:mb-4 [&_.ant-checkbox-wrapper>span]:text-canBlack [&_.ant-checkbox-wrapper>span]:text-sm [&_.ant-checkbox-wrapper>span]:font-medium`}
             id="form-col-prevent-sub-camps"
           >
             <PreventSubCamps
               options={options}
               onCheckboxChange={onCheckboxChange}
               id="prevent-sub-camps"
+              shouldDisableOneLevelAndAdditionalCheckbox={shouldDisableOneLevelAndAdditionalCheckbox()}
             />
           </Col>
-          {shouldDisableOneLevelAndAdditionalCheckbox() && (
-            <Text
-              className="text-xs text-[#777F93] mt-2 absolute top-2 right-5"
-              id="disable-checkbox-text"
-            >
-              <Tooltip
-                title="The parent camp does not allow the creation of multiple sub-camps."
-                key="camp_subscribed_icon"
-              >
-                <small style={{ alignSelf: "center" }}>
-                  <i className="icon-info"></i>
-                </small>
-              </Tooltip>
-            </Text>
-          )}
         </Row>
 
         {isLoading ? (

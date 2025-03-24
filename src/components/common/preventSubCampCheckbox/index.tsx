@@ -1,7 +1,13 @@
-import { Checkbox, Tooltip } from "antd";
+import { Checkbox, Tooltip, Typography } from "antd";
 import { useRouter } from "next/router";
+import { Fragment } from "react";
 
-const PreventSubCamps = ({ options, onCheckboxChange }: any) => {
+const { Text } = Typography;
+const PreventSubCamps = ({
+  options,
+  onCheckboxChange,
+  shouldDisableOneLevelAndAdditionalCheckbox,
+}: any) => {
   const router = useRouter();
   const filterLabels = options.filter((obj) => {
     return obj.id != "is_archive";
@@ -9,7 +15,7 @@ const PreventSubCamps = ({ options, onCheckboxChange }: any) => {
   return (
     router?.asPath.includes("/camp/create") ? filterLabels : options
   )?.map((option) => (
-    <Tooltip title={option.tooltip} key={option.id}>
+    <Fragment key={"fragment_" + option.id}>
       <Checkbox
         onChange={onCheckboxChange}
         name={option.id}
@@ -17,11 +23,32 @@ const PreventSubCamps = ({ options, onCheckboxChange }: any) => {
         checked={option.checked}
         id={option.id}
         data-testid={option.id}
-        disabled={option.disable}
+        disabled={
+          option?.id !== "is_archive"
+            ? shouldDisableOneLevelAndAdditionalCheckbox || option.disable
+            : option?.disable
+        }
+        className="!mb-2 [&_span]:!text-sm [&_span]:!font-semibold"
       >
-        {option?.label?.replace(/\.$/, "")}
+        <Tooltip title={option.tooltip} key={option.id} className="d-flex">
+          {option?.label?.replace(/\.$/, "")}
+        </Tooltip>
+        {option?.id !== "is_archive" &&
+          shouldDisableOneLevelAndAdditionalCheckbox && (
+            <Tooltip
+              title="The parent camp does not allow the creation of multiple sub-camps."
+              key="camp_subscribed_icon"
+            >
+              <Text
+                className="text-xs text-[#777F93] d-inline-block"
+                id="disable-checkbox-text"
+              >
+                <i className="icon-info"></i>
+              </Text>
+            </Tooltip>
+          )}
       </Checkbox>
-    </Tooltip>
+    </Fragment>
   ));
 };
 
