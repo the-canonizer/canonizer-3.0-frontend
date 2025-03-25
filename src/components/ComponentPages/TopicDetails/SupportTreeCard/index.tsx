@@ -865,7 +865,7 @@ const SupportTreeCard = ({
             disabled={disableSignPetition()}
             onClick={() => signPetitionHandler()}
           >
-            Sign Petition<i className="icon-user-plus ml-2"></i>
+            Sign Petition Camp<i className="icon-user-plus ml-2"></i>
           </Button>
         </Popover>
       </div>

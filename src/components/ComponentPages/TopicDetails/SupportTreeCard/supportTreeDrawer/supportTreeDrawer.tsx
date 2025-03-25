@@ -617,7 +617,7 @@ function SupportTreeDrawer({
       } else if (drawerFor === "directRemove") {
         return "Remove Support";
       } else if (drawerFor === "signPetition") {
-        return "Sign Petition";
+        return "Sign Petition Camp";
       } else {
         return;
       }
