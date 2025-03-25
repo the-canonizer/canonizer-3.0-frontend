@@ -196,7 +196,6 @@ function CommanBreadcrumbs({
     setTagsArrayList(transformDataForTags(topicRecord?.tags));
   }, [topicRecord]);
 
-
   const objectToQueryString = (obj) => {
     const keys = Object.keys(obj);
     const keyValuePairs = keys.map((key) => {
@@ -438,7 +437,6 @@ function CommanBreadcrumbs({
     payload?.topic_num || topicId
   }-${replaceSpecialCharacters(breadCrumbRes?.topic_name || "", "-")}`;
 
-
   const topicContent = (
     <div className="popoverParent">
       <Row>
@@ -611,9 +609,13 @@ function CommanBreadcrumbs({
                     campRecord?.camp_num
                   }-${replaceSpecialCharacters(campRecord?.camp_name, "-")}`}
                 >
-                  {campRecord && campRecord?.camp_name?.length > 50
-                    ? `${campRecord?.camp_name.substring(0, 20)}....`
-                    : campRecord?.camp_name}
+                  {topicRecord?.agreement_camp_record &&
+                  topicRecord?.agreement_camp_record?.camp_name?.length > 50
+                    ? `${topicRecord?.agreement_camp_record?.camp_name.substring(
+                        0,
+                        20
+                      )}....`
+                    : topicRecord?.agreement_camp_record?.camp_name}
                 </Link>
               </p>
             </div>
