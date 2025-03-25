@@ -315,11 +315,11 @@ const UpdateTopic = () => {
       <Breadcrumbs
         key="breadcrumbs"
         items={[
-          {
-            icon: <HomeOutlined className="text-canBlack" />,
-            href: "/",
-            key: "home",
-          },
+          // {
+          //   icon: <HomeOutlined className="text-canBlack" />,
+          //   href: "/",
+          //   key: "home",
+          // },
           {
             href: `/topic/history/${
               currentTopic?.topic_num
