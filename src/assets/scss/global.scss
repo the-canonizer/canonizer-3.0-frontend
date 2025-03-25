@@ -434,19 +434,29 @@ body {
         @apply mt-2;
         ol {
           @apply items-center;
-
+      
           li,
           a {
             @apply text-canLight;
           }
-
+      
           li {
             @apply text-sm flex items-center;
-            &:last-child {
-              @apply font-semibold text-[#4EB966];
+            &:hover {
+              a {
+                @apply text-canBlue;
+              }
+            }
+            &:last-child{
+              a{
+                @apply font-semibold text-[#4EB966];
+                &:hover{
+                  @apply text-canBlue;
+                }
+              }
             }
           }
-
+      
           .ant-breadcrumb-separator {
             @apply text-[10px] mx-[6px] text-canLight;
           }

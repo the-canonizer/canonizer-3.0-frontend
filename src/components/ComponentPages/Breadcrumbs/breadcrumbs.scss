@@ -49,3 +49,34 @@
 
   }
 }
+.drawer-breadcrumb-wrap.ant-breadcrumb{
+  ol {
+    @apply items-center;
+    li{ 
+      &:hover{
+        a{
+          @apply text-canBlue;
+        }
+      }
+      &:last-child{
+        a{
+          @apply font-semibold text-[#4EB966];
+          &:hover{
+            @apply text-canBlue;
+          }
+        }
+      }
+    }
+    li,
+    a {
+      @apply  gap-1 flex items-center text-[#777F93];
+    
+    }
+    .ant-breadcrumb-separator {
+      @apply mt-0.5 self-center max-md:mx-[6px] md:mx-[0.50rem] text-[#777F93];
+      i {
+        @apply max-lg:text-xs leading-[0] lg:text-base;
+      }
+    }
+  }
+}
