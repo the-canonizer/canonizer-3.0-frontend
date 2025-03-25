@@ -69,8 +69,6 @@ function CommanBreadcrumbs({
   const [showAll, setShowAll] = useState(false);
   const [tagsArrayList, setTagsArrayList] = useState([]);
   const tagsToShow = showAll ? tagsArrayList : tagsArrayList?.slice(0, 4);
-  //   const historyOf = compareMode ? historyOF : router?.asPath.split("/")[1];
-
   const {
     topicRecord,
     campRecord,
@@ -141,9 +139,7 @@ function CommanBreadcrumbs({
       as_of_date: isDefaultOrReview
         ? Math.floor(Date.now() / 1000)
         : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
-        include_agreement_camp_record:true,
     };
-
     const fetchTopicRecord = async () => {
       await getCurrentTopicRecordApi(reqBody);
     };
@@ -154,7 +150,7 @@ function CommanBreadcrumbs({
 
     fetchCampRecord();
     fetchTopicRecord();
-  }, []);
+  }, [campSubscriptionID, topicSubscriptionID]);
 
   useEffect(() => {
     if (isTopicPage) {
@@ -200,23 +196,6 @@ function CommanBreadcrumbs({
     setTagsArrayList(transformDataForTags(topicRecord?.tags));
   }, [topicRecord]);
 
-  const onCampForumClick = () => {
-    const topicName = topicRecord?.topic_name?.replaceAll(" ", "-");
-    const campName = campRecord?.camp_name?.replaceAll(" ", "-");
-    router?.push({
-      pathname: `/forum/${topicRecord?.topic_num}-${replaceSpecialCharacters(
-        topicName,
-        "-"
-      )}/${campRecord?.camp_num}-${replaceSpecialCharacters(
-        campName,
-        "-"
-      )}/threads`,
-    });
-  };
-
-  const eventLinePath2 = () => {
-    router.push(router.asPath.replace("support", "eventline"));
-  };
 
   const objectToQueryString = (obj) => {
     const keys = Object.keys(obj);
@@ -459,18 +438,6 @@ function CommanBreadcrumbs({
     payload?.topic_num || topicId
   }-${replaceSpecialCharacters(breadCrumbRes?.topic_name || "", "-")}`;
 
-  // const title = (
-  //   <div className="popover_header">
-  //     <span className="text-xs 2xl:text-sm text-canLight mb-1.5 font-normal capitalize">
-  //       Topic Name:
-  //     </span>
-  //     <p className="font-bold mb-5 text-sm text-canBlack">
-  //       {topicRecord && topicRecord?.topic_name?.length > 50
-  //         ? `${topicRecord?.topic_name.substring(0, 20)}....`
-  //         : topicRecord?.topic_name}
-  //     </p>
-  //   </div>
-  // );
 
   const topicContent = (
     <div className="popoverParent">
@@ -482,10 +449,7 @@ function CommanBreadcrumbs({
                 Topic Name:
               </span>
               <p className="font-bold mb-5 text-sm text-canBlack">
-                {
-                  // breadCrumbRes &&
-                  //         !!campSubscriptionID &&
-                  //         !isTopicHistoryPage && (
+                {breadCrumbRes && !!topicSubscriptionID && (
                   <Tooltip
                     title="You have subscribed to the entire topic."
                     key="camp_subscribed_icon"
@@ -494,8 +458,7 @@ function CommanBreadcrumbs({
                       <i className="icon-subscribe text-canBlue"></i>
                     </small>
                   </Tooltip>
-                  // )
-                }{" "}
+                )}{" "}
                 {topicRecord && topicRecord?.topic_name?.length > 50
                   ? `${topicRecord?.topic_name.substring(0, 20)}....`
                   : topicRecord?.topic_name}
@@ -629,20 +592,18 @@ function CommanBreadcrumbs({
                 Camp Name:
               </span>
               <p className="font-bold mb-5 text-sm text-canBlack line-clamp-1 overflow-hidden">
-                {
-                  // breadCrumbRes &&
-                  //         !!campSubscriptionID &&
-                  //         !isTopicHistoryPage && (
-                  <Tooltip
-                    title="You have subscribed to this camp."
-                    key="camp_subscribed_icon"
-                  >
-                    <small style={{ alignSelf: "center" }}>
-                      <i className="icon-subscribe text-canBlue"></i>
-                    </small>
-                  </Tooltip>
-                  // )
-                }{" "}
+                {breadCrumbRes &&
+                  !!topicRecord?.agreement_camp_record?.subscriptionId &&
+                  !isTopicHistoryPage && (
+                    <Tooltip
+                      title="You have subscribed to this camp."
+                      key="camp_subscribed_icon"
+                    >
+                      <small style={{ alignSelf: "center" }}>
+                        <i className="icon-subscribe text-canBlue"></i>
+                      </small>
+                    </Tooltip>
+                  )}{" "}
                 <Link
                   href={`/topic/${
                     topicRecord?.topic_num
@@ -656,7 +617,7 @@ function CommanBreadcrumbs({
                 </Link>
               </p>
             </div>
-            {/* {campRecord?.in_review_changes > 0 && ( */}
+            {topicRecord?.agreement_camp_record?.in_review_changes > 0 && (
               <Popover
                 content={warningText}
                 className="title-popover"
@@ -672,7 +633,7 @@ function CommanBreadcrumbs({
                   Under Review
                 </Tag>
               </Popover>
-            {/* )} */}
+            )}
           </div>
           <hr className="horizontal_line my-5" />
           <Row gutter={1} className="pb-[4.5rem]">
@@ -682,12 +643,12 @@ function CommanBreadcrumbs({
               </span>
               <Link
                 href={{
-                  pathname: `/user/supports/${campRecord?.submitter_nick_id}`,
+                  pathname: `/user/supports/${topicRecord?.agreement_camp_record?.submitter_nick_id}`,
                   query: { canon: topicRecord?.namespace_id || 1 },
                 }}
               >
                 <a className="author-name !text-canBlue hover:!text-canHoverBlue text-sm font-medium underline">
-                  {campRecord?.submitter_nick_name}
+                  {topicRecord?.agreement_camp_record?.submitter_nick_name}
                 </a>
               </Link>
             </Col>
@@ -696,10 +657,11 @@ function CommanBreadcrumbs({
                 Submitted On:
               </span>
               <span className="text-sm text-canBlack font-medium">
-                {campRecord && covertToTime(campRecord?.submit_time)}
+                {topicRecord?.agreement_camp_record &&
+                  covertToTime(topicRecord?.agreement_camp_record?.submit_time)}
               </span>
             </Col>
-            {campRecord?.camp_about_nick_name && (
+            {topicRecord?.agreement_camp_record?.camp_about_nick_name && (
               <>
                 <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
                   <span className="text-xs 2xl:text-sm text-canLight capitalize">
@@ -707,18 +669,20 @@ function CommanBreadcrumbs({
                   </span>
                   <Link
                     href={{
-                      pathname: `/user/supports/${campRecord?.camp_about_nick_id}`,
+                      pathname: `/user/supports/${topicRecord?.agreement_camp_record?.camp_about_nick_id}`,
                       query: { canon: topicRecord?.namespace_id || 1 },
                     }}
                   >
                     <a className="text-sm !text-canBlue hover:!text-canHoverBlue font-medium">
-                      {campRecord && campRecord?.camp_about_nick_name}
+                      {topicRecord?.agreement_camp_record &&
+                        topicRecord?.agreement_camp_record
+                          ?.camp_about_nick_name}
                     </a>
                   </Link>
                 </Col>
               </>
             )}
-            {campRecord?.camp_about_url && (
+            {topicRecord?.agreement_camp_record?.camp_about_url && (
               <Col
                 md={12}
                 sm={12}
@@ -729,12 +693,16 @@ function CommanBreadcrumbs({
                   Camp about URL:
                 </span>
                 <a
-                  href={campRecord && campRecord?.camp_about_url}
+                  href={
+                    topicRecord?.agreement_camp_record &&
+                    topicRecord?.agreement_camp_record?.camp_about_url
+                  }
                   className="text-sm block !text-canBlue hover:!text-canHoverBlue font-medium"
                   target="_blank"
                   rel="noreferrer"
                 >
-                  {campRecord && campRecord?.camp_about_url}
+                  {topicRecord?.agreement_camp_record &&
+                    topicRecord?.agreement_camp_record?.camp_about_url}
                 </a>
               </Col>
             )}
@@ -743,7 +711,10 @@ function CommanBreadcrumbs({
                 Single level camps only:
               </span>
               <span className="text-sm text-canBlack font-medium">
-                {campRecord && campRecord.is_one_level == 0 ? "No" : "Yes"}
+                {topicRecord?.agreement_camp_record &&
+                topicRecord?.agreement_camp_record.is_one_level == 0
+                  ? "No"
+                  : "Yes"}
               </span>
             </Col>
             <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
@@ -751,7 +722,10 @@ function CommanBreadcrumbs({
                 Disable additional sub camps:
               </span>
               <span className="text-sm text-canBlack font-medium">
-                {campRecord && campRecord.is_disabled == 0 ? "No" : "Yes"}
+                {topicRecord?.agreement_camp_record &&
+                topicRecord?.agreement_camp_record.is_disabled == 0
+                  ? "No"
+                  : "Yes"}
               </span>
             </Col>
             <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
@@ -759,7 +733,10 @@ function CommanBreadcrumbs({
                 Camp archive:
               </span>
               <span className="text-sm text-canBlack font-medium">
-                {campRecord && campRecord.is_archive == 0 ? "No" : "Yes"}
+                {topicRecord?.agreement_camp_record &&
+                topicRecord?.agreement_camp_record.is_archive == 0
+                  ? "No"
+                  : "Yes"}
               </span>
             </Col>
             <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
@@ -767,7 +744,10 @@ function CommanBreadcrumbs({
                 Go live time:
               </span>
               <span className="text-sm text-canBlack font-medium">
-                {campRecord && covertToTime(campRecord?.go_live_time)}
+                {topicRecord?.agreement_camp_record &&
+                  covertToTime(
+                    topicRecord?.agreement_camp_record?.go_live_time
+                  )}
               </span>
             </Col>
             <Col md={12} sm={12} xs={12} className=" flex flex-col">
@@ -788,7 +768,7 @@ function CommanBreadcrumbs({
                   : topicRecord?.topic_name}
               </span>
             </Col>
-            {campRecord?.camp_leader_nick_name && (
+            {topicRecord?.agreement_camp_record?.camp_leader_nick_name && (
               <Col md={12} sm={12} xs={12} className=" flex flex-col mt-4">
                 <span className="text-xs 2xl:text-sm text-canLight capitalize">
                   Camp Leader:
@@ -796,14 +776,14 @@ function CommanBreadcrumbs({
                 <Link
                   className="flex flex-wrap"
                   href={{
-                    pathname: `/user/supports/${campRecord?.camp_leader_nick_id}`,
+                    pathname: `/user/supports/${topicRecord?.agreement_camp_record?.camp_leader_nick_id}`,
                     query: {
                       canon: topicRecord?.namespace_id,
                     },
                   }}
                 >
                   <span className="!text-canBlue cursor-pointer font-medium">
-                    {campRecord?.camp_leader_nick_name}
+                    {topicRecord?.agreement_camp_record?.camp_leader_nick_name}
                   </span>
                 </Link>
               </Col>
@@ -848,7 +828,7 @@ function CommanBreadcrumbs({
           )}`}
         >
           {campRecord && campRecord?.camp_name?.length > 50
-            ? `${campRecord?.camp_name.substring(0, 20)}....`
+            ? `${campRecord?.camp_name?.substring(0, 20)}....`
             : campRecord?.camp_name}
         </Link>
       </p>
@@ -881,7 +861,7 @@ function CommanBreadcrumbs({
             {campRecord && covertToTime(campRecord?.submit_time)}
           </span>
         </Col>
-        {campRecord.camp_about_nick_name && (
+        {campRecord?.camp_about_nick_name && (
           <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
             <span className="text-xs 2xl:text-sm text-canLight capitalize">
               Camp about nickname:
@@ -893,7 +873,7 @@ function CommanBreadcrumbs({
               }}
             >
               <a className="text-sm !text-canBlue hover:!text-canHoverBlue font-medium">
-                {campRecord && campRecord.camp_about_nick_name}
+                {campRecord && campRecord?.camp_about_nick_name}
               </a>
             </Link>
           </Col>
@@ -923,7 +903,7 @@ function CommanBreadcrumbs({
             Single level camps only:
           </span>
           <span className="text-sm text-canBlack font-medium">
-            {campRecord && campRecord.is_one_level == 0 ? "No" : "Yes"}
+            {campRecord && campRecord?.is_one_level == 0 ? "No" : "Yes"}
           </span>
         </Col>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
@@ -931,7 +911,7 @@ function CommanBreadcrumbs({
             Disable additional sub camps:
           </span>
           <span className="text-sm text-canBlack font-medium">
-            {campRecord && campRecord.is_disabled == 0 ? "No" : "Yes"}
+            {campRecord && campRecord?.is_disabled == 0 ? "No" : "Yes"}
           </span>
         </Col>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
@@ -939,7 +919,7 @@ function CommanBreadcrumbs({
             Camp archive:
           </span>
           <span className="text-sm text-canBlack font-medium">
-            {campRecord && campRecord.is_archive == 0 ? "No" : "Yes"}
+            {campRecord && campRecord?.is_archive == 0 ? "No" : "Yes"}
           </span>
         </Col>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
@@ -964,7 +944,7 @@ function CommanBreadcrumbs({
           </span>
           <span className="text-sm text-canBlack font-medium">
             {topicRecord && topicRecord?.topic_name?.length > 50
-              ? `${topicRecord?.topic_name.substring(0, 20)}....`
+              ? `${topicRecord?.topic_name?.substring(0, 20)}....`
               : topicRecord?.topic_name}
           </span>
         </Col>
@@ -1046,9 +1026,6 @@ function CommanBreadcrumbs({
     // Return null if conditions are not met
     return null;
   };
-  console.log("toipic", topicRecord?.in_review_changes > 0);
-  console.log("camp", campRecord?.in_review_changes > 0);
-  console.log("-------->>>",topicRecord?.agreement_camp_record)
 
   const handleClick = () => {
     const lastCamp =
@@ -1117,8 +1094,8 @@ function CommanBreadcrumbs({
       >
         {
           <Breadcrumb.Item className="flex items-center gap-1.5">
-            {/* {(topicRecord?.in_review_changes > 0 ||
-              campRecord?.in_review_changes > 0) && ( */}
+            {(topicRecord?.in_review_changes > 0 ||
+              campRecord?.in_review_changes > 0) && (
               <Popover
                 content={warningTextForTopicAndCamp}
                 className="title-popover"
@@ -1130,10 +1107,9 @@ function CommanBreadcrumbs({
                   // onClick={() => handleTopicwarningIcon()}
                 />
               </Popover>
-            {/* )} */}
+            )}
 
             <div className="flex items-center gap-1.5 text-sm">
-              {/* Topic:{" "} */}
               {loadingIndicator ? (
                 <CustomSkelton skeltonFor="topicName" bodyCount={1} />
               ) : (
@@ -1167,10 +1143,8 @@ function CommanBreadcrumbs({
                   </Link>
                   {isMobile && (
                     <Popover
-                      // open
                       placement="topLeft"
                       content={topicContent}
-                      // title={title}
                       className="title-popover"
                       overlayClassName="max-lg:hidden popover-content-wrap"
                     >
