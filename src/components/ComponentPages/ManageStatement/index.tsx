@@ -902,10 +902,10 @@ function ManageStatements({ isEdit = false }) {
             <Breadcrumbs
               id="breadcrumbs"
               items={[
-                {
-                  icon: <HomeOutlined className="text-canBlack" />,
-                  href: "/",
-                },
+                // {
+                //   icon: <HomeOutlined className="text-canBlack" />,
+                //   href: "/",
+                // },
                 {
                   href: getBackURL(),
                   label:

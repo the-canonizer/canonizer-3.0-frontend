@@ -100,11 +100,8 @@ function Breadcrumbs({ compareMode = false, updateId, historyOF = null }: any) {
             </>
           }
         >
-          <Breadcrumb.Item href="/">
-            <i className="icon-home"></i>
-          </Breadcrumb.Item>
           <Breadcrumb.Item href={href}>
-            Topic: {breadCrumbRes && breadCrumbRes?.topic_name}
+            {breadCrumbRes && breadCrumbRes?.topic_name}
           </Breadcrumb.Item>
           <Breadcrumb.Item>
             {historyTitle() == "Statement History"

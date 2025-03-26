@@ -244,11 +244,11 @@ const CreateNewTopic = () => {
       <Breadcrumbs
         key="breadcrumbs"
         items={[
-          {
-            icon: <HomeOutlined className="text-canBlack" />,
-            href: "/",
-            key: "home",
-          },
+          // {
+          //   icon: <HomeOutlined className="text-canBlack" />,
+          //   href: "/",
+          //   key: "home",
+          // },
           { label: "Creating a New Topic", key: "creating-new-topic" },
         ]}
       />
