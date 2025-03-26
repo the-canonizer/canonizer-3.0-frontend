@@ -45,7 +45,10 @@ const TopicDetailsPage = ({
 
   console.log("get-api-payload -->>: ", reqBodyForService);
   console.log("tree_api_response -->>", tree);
-
+  console.log("statement_history -->>: ", statementHistory);
+  console.log("topic_api_response -->>: ", topicRecord);
+  console.log("call_api_response -->>: ", campRecord);
+  
   useEffect(() => {
     dispatch(setNewsFeed(newsFeed));
     dispatch(setCurrentTopicRecord(topicRecord));
@@ -207,6 +210,8 @@ export async function getServerSideProps({ req, query, res }) {
   ]);
 
   console.log("tree api response -->>", tree);
+  console.log("topic api response -->>", topicRecord);
+  console.log("camp api response -->>", campRecord);
 
   const resTopicName = topicRecord?.topic_name?.replaceAll(" ", "-");
   const resCampName = campRecord?.campData?.camp_name?.replaceAll(" ", "-");
