@@ -12,6 +12,9 @@ import { createNewToken, logout } from "./api/userApi";
 import { store } from "../store";
 import { updateStatus } from "../store/slices/uiSlice";
 import { setLoadingAction } from "src/store/slices/loading";
+import https from "https"; // Import https module
+
+
 
 export default class NetworkCall {
   static counter = 1;
@@ -116,8 +119,15 @@ export default class NetworkCall {
     throw new Error("Method not implemented.");
   }
 }
+
+// Create an HTTPS Agent that disables SSL verification
+const agent = new https.Agent({
+  rejectUnauthorized: false, // Disable SSL certificate verification
+});
+
 NetworkCall.axios = axios.create({
   baseURL: K.Network.URL.BaseAPI,
   timeout: +K.Network.URL.Timeout,
   headers: {},
+  httpsAgent: agent, // Attach the custom HTTPS Agent
 });
