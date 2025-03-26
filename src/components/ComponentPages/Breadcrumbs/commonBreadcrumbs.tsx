@@ -1097,7 +1097,7 @@ function CommanBreadcrumbs({
         {
           <Breadcrumb.Item className="flex items-center gap-1.5">
             {(topicRecord?.in_review_changes > 0 ||
-              campRecord?.in_review_changes > 0) && (
+              topicRecord?.agreement_camp_record?.in_review_changes > 0) && (
               <Popover
                 content={warningTextForTopicAndCamp}
                 className="title-popover"
