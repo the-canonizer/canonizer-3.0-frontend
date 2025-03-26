@@ -92,17 +92,24 @@ function AddOrEdit({ edit }) {
           display_text: values?.display_text,
           submitter_nick_id: values?.nick_name,
         }));
+
+    setLoading(false);
     if (res?.status_code == 200) {
       if (edit) {
-        router?.push(
-          `/topic/${replaceSpecialCharacters(
-            router?.query?.camp[0],
-            "-"
-          )}/${replaceSpecialCharacters(router?.query?.camp[1], "-")}`
-        );
+        setTimeout(() => {
+          router?.push(
+            `/topic/${replaceSpecialCharacters(
+              router?.query?.camp[0],
+              "-"
+            )}/${replaceSpecialCharacters(router?.query?.camp[1], "-")}`
+          );
+        }, 200);
+
         return;
       } else {
-        router?.push(router?.asPath.replace("addnews", "topic"));
+        setTimeout(() => {
+          router?.push(router?.asPath.replace("addnews", "topic"));
+        }, 200);
         return;
       }
     } else if (res?.status_code == 400) {
@@ -141,7 +148,6 @@ function AddOrEdit({ edit }) {
         });
       }
     }
-    setLoading(false);
   };
 
   useEffect(() => {
